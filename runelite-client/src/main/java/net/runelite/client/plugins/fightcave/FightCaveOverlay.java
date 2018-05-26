@@ -27,99 +27,208 @@ package net.runelite.client.plugins.fightcave;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import javax.imageio.ImageIO;
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
+
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.ComponentConstants;
-import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Slf4j
 public class FightCaveOverlay extends Overlay
 {
-	private static final Color NOT_ACTIVATED_BACKGROUND_COLOR = new Color(150, 0, 0, 150);
-
 	private final Client client;
 	private final FightCavePlugin plugin;
-	private final PanelComponent imagePanelComponent = new PanelComponent();
-	private BufferedImage protectFromMagicImg;
-	private BufferedImage protectFromMissilesImg;
+	private final FightCaveConfig config;
+	private final PanelComponent panelComponent = new PanelComponent();
+	private HashMap<Integer, Integer> thisWave;
+	private HashMap<Integer, Integer> nextWave;
+	/*
+		22 = Bat
+		45 = Small Melee
+		221 = Small Melee Spawns
+		90 = Ranger
+		180 = Big Melee
+		360 = Mager
+		702 = Jad
+	*/
+	private Map<Integer, String> monsters = new HashMap<Integer, String>()
+	{
+		{
+			put(22, "Bat - Level 22");
+			put(45, "Melee - Level 45");
+			put(221, "Melee - Level 22");
+			put(90, "Ranger - Level 90");
+			put(180, "Melee - Level 180");
+			put(360, "Mager - Level 360");
+			put(702, "Jad - Level 702");
+		}
+	};
+	private Map<Integer, int[]> waves = new HashMap<Integer, int[]>()
+	{
+		{
+			put(1, new int[]{22});
+			put(2, new int[]{22,22});
+			put(3, new int[]{45});
+			put(4, new int[]{45,22});
+			put(5, new int[]{45,22,22});
+			put(6, new int[]{45,45});
+			put(7, new int[]{90});
+			put(8, new int[]{90,22});
+			put(9, new int[]{90,22,22});
+			put(10, new int[]{90,45});
+			put(11, new int[]{90,45,22});
+			put(12, new int[]{90,45,22,22});
+			put(13, new int[]{90,45,45});
+			put(14, new int[]{90,90});
+			put(15, new int[]{180});
+			put(16, new int[]{180,22});
+			put(17, new int[]{180,22,22});
+			put(18, new int[]{180,45});
+			put(19, new int[]{180,45,22});
+			put(20, new int[]{180,45,22,22});
+			put(21, new int[]{180,45,45});
+			put(22, new int[]{180,});
+			put(23, new int[]{180,90,22});
+			put(24, new int[]{180,90,22,22});
+			put(25, new int[]{180,90,45});
+			put(26, new int[]{180,90,45,22});
+			put(27, new int[]{180,90,45,22,22});
+			put(28, new int[]{180,90,45,45});
+			put(29, new int[]{180,90,90});
+			put(30, new int[]{180});
+			put(31, new int[]{360});
+			put(32, new int[]{360,22});
+			put(33, new int[]{360,22,22});
+			put(34, new int[]{360,45});
+			put(35, new int[]{360,45,22});
+			put(36, new int[]{360,45,22,22});
+			put(37, new int[]{360,45,45});
+			put(38, new int[]{360});
+			put(39, new int[]{360,90,22});
+			put(40, new int[]{360,90,22,22});
+			put(41, new int[]{360,90,45});
+			put(42, new int[]{360,90,45,22});
+			put(43, new int[]{360,90,45,22,22});
+			put(44, new int[]{360,90,45,45});
+			put(45, new int[]{360,90,90});
+			put(46, new int[]{360,180});
+			put(47, new int[]{360,180,22});
+			put(48, new int[]{360,180,22,22});
+			put(49, new int[]{360});
+			put(50, new int[]{360,180,45,22});
+			put(51, new int[]{360,180,45,22,22});
+			put(52, new int[]{360,180,45,45});
+			put(53, new int[]{360});
+			put(54, new int[]{360,180,90,22});
+			put(55, new int[]{360,180,90,22,22});
+			put(56, new int[]{360,180,90,45});
+			put(57, new int[]{360,180,90,45,22});
+			put(58, new int[]{360,180,90,45,22,22});
+			put(59, new int[]{360,180,90,45,45});
+			put(60, new int[]{360,180,90,90});
+			put(61, new int[]{360,180,180});
+			put(62, new int[]{360,360});
+			put(63, new int[]{702});
+		}
+	};
+
+
+	private HashMap arrayElementCount(int inputArray[])
+	{
+		HashMap<Integer, Integer> elementCountMap = new HashMap<Integer, Integer>();
+		for (int i : inputArray)
+		{
+			if(elementCountMap.containsKey(i))
+			{
+				elementCountMap.put(i, elementCountMap.get(i)+1);
+			}
+			else
+			{
+				elementCountMap.put(i, 1);
+			}
+		}
+		return elementCountMap;
+	}
+
 
 	@Inject
-	FightCaveOverlay(Client client, FightCavePlugin plugin)
+	FightCaveOverlay(Client client, FightCavePlugin plugin, FightCaveConfig config)
 	{
-		setPosition(OverlayPosition.BOTTOM_RIGHT);
+		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.HIGH);
 		this.client = client;
 		this.plugin = plugin;
+		this.config = config;
+	}
+
+	public void newWave(int wave)
+	{
+		thisWave = arrayElementCount(waves.get(wave));
+		if (wave < 63)
+		{
+			nextWave = arrayElementCount(waves.get(wave + 1));
+		}
+	}
+
+	public void killedMonster(int combat)
+	{
+		thisWave.put(combat, thisWave.get(combat) - 1);
+	}
+
+	public void addKek()
+	{
+		thisWave.put(221, 2);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		JadAttack attack = plugin.getAttack();
-
-		if (attack == null)
+		int currentWave = plugin.getCurrentWave();
+		if (currentWave == 0)
 		{
 			return null;
 		}
+		panelComponent.getChildren().clear();
+		panelComponent.getChildren().add(TitleComponent.builder()
+				.text("Wave " + currentWave)
+				.color(Color.orange)
+				.build());
 
-		final BufferedImage prayerImage = getPrayerImage(attack);
-
-		imagePanelComponent.getChildren().clear();
-		imagePanelComponent.getChildren().add(new ImageComponent(prayerImage));
-		imagePanelComponent.setBackgroundColor(client.isPrayerActive(attack.getPrayer())
-			? ComponentConstants.STANDARD_BACKGROUND_COLOR
-			: NOT_ACTIVATED_BACKGROUND_COLOR);
-
-		return imagePanelComponent.render(graphics);
-	}
-
-	private BufferedImage getPrayerImage(JadAttack attack)
-	{
-		return attack == JadAttack.MAGIC ? getProtectFromMagicImage() : getProtectFromMissilesImage();
-	}
-
-	private BufferedImage getProtectFromMagicImage()
-	{
-		if (protectFromMagicImg == null)
+		for (Map.Entry<Integer, Integer> entry : thisWave.entrySet())
 		{
-			String path = "/prayers/protect_from_magic.png";
-			protectFromMagicImg = getImage(path);
-		}
-		return protectFromMagicImg;
-	}
-
-	private BufferedImage getProtectFromMissilesImage()
-	{
-		if (protectFromMissilesImg == null)
-		{
-			String path = "/prayers/protect_from_missiles.png";
-			protectFromMissilesImg = getImage(path);
-		}
-		return protectFromMissilesImg;
-	}
-
-	private BufferedImage getImage(String path)
-	{
-		BufferedImage image = null;
-		try
-		{
-			synchronized (ImageIO.class)
+			int monsterID = entry.getKey();
+			int quantity = entry.getValue();
+			if (quantity <= 0)
 			{
-				image = ImageIO.read(FightCaveOverlay.class.getResourceAsStream(path));
+				continue;
+			}
+			panelComponent.getChildren().add(TitleComponent.builder()
+					.text(quantity + "x " + monsters.get(monsterID))
+					.color(Color.white)
+					.build());
+		}
+		if (config.showNextWave() && currentWave <= 62)
+		{
+			panelComponent.getChildren().add(TitleComponent.builder()
+					.text("Next Wave:")
+					.color(Color.orange)
+					.build());
+			for (Map.Entry<Integer, Integer> entry : nextWave.entrySet())
+			{
+				int monsterID = entry.getKey();
+				int quantity = entry.getValue();
+				panelComponent.getChildren().add(TitleComponent.builder()
+						.text(quantity + "x " + monsters.get(monsterID))
+						.color(Color.white)
+						.build());
 			}
 		}
-		catch (IOException e)
-		{
-			log.warn("Error loading image", e);
-		}
-		return image;
+		return panelComponent.render(graphics);
 	}
 }

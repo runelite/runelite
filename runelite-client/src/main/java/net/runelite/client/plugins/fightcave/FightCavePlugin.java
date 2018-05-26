@@ -25,12 +25,18 @@
 package net.runelite.client.plugins.fightcave;
 
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.Collection;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.NPC;
-import net.runelite.api.Query;
+import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.*;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.queries.NPCQuery;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
@@ -40,6 +46,7 @@ import net.runelite.client.util.QueryRunner;
 @PluginDescriptor(
 	name = "Fight Cave"
 )
+@Slf4j
 public class FightCavePlugin extends Plugin
 {
 	@Inject
@@ -51,25 +58,104 @@ public class FightCavePlugin extends Plugin
 	@Inject
 	private FightCaveOverlay overlay;
 
+	@Inject
+	private JadOverlay jadOverlay;
+
 	private JadAttack attack;
 
+	private int currentWave = 0;
+
+	private static final int[] FIGHT_CAVE_REGION = { 9551 };
+
 	@Override
-	public Overlay getOverlay()
+	public Collection<Overlay> getOverlays()
 	{
-		return overlay;
+		return Arrays.asList(overlay, jadOverlay);
 	}
 
 	@Schedule(
 		period = 600,
 		unit = ChronoUnit.MILLIS
 	)
+
+	@Provides
+	FightCaveConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(FightCaveConfig.class);
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+	}
+
+	public boolean isInFightCaveInstance()
+	{
+		return Arrays.equals(client.getMapRegions(), FIGHT_CAVE_REGION);
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() != ChatMessageType.SERVER)
+		{
+			return;
+		}
+		String message = event.getMessage();
+		if (event.getMessage().contains("Wave:"))
+		{
+			message = message.substring(message.indexOf(": ") + 2);
+			message = message.substring(0, message.indexOf("<"));
+			currentWave = Integer.parseInt(message);
+			overlay.newWave(currentWave);
+		}
+	}
+
+	@Subscribe
+<<<<<<< HEAD
+	public void onNpcDespawned(final NpcDespawned event) {
+=======
+	public void onActorDeath(ActorDeath event)
+	{
+		Actor actor = event.getActor();
+>>>>>>> 73451a40... Changed onNPCDespawn to onActorDeath.
+		if (currentWave == 0)
+		{
+			return;
+		}
+		if (event.getNpc().getName().equals("Tz-Kek"))
+		{
+			switch(event.getNpc().getCombatLevel())
+			{
+				case 22:
+					overlay.killedMonster(221);
+				break;
+				case 45:
+					overlay.killedMonster(45);
+					overlay.addKek();
+				break;
+			}
+		}
+		else
+		{
+			overlay.killedMonster(event.getNpc().getCombatLevel());
+		}
+	}
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (!isInFightCaveInstance())
+		{
+			currentWave = 0;
+			return;
+		}
+	}
 	public void update()
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
-
 		NPC jad = findJad();
 		if (jad != null)
 		{
@@ -98,5 +184,10 @@ public class FightCavePlugin extends Plugin
 	JadAttack getAttack()
 	{
 		return attack;
+	}
+
+	int getCurrentWave()
+	{
+		return currentWave;
 	}
 }
