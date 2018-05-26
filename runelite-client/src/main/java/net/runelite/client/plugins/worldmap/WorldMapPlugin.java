@@ -61,6 +61,7 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_LUNAR_TELEPORT_ICON = "lunarSpellbookIcon";
 	static final String CONFIG_KEY_ARCEUUS_TELEPORT_ICON = "arceuusSpellbookIcon";
 	static final String CONFIG_KEY_JEWELLERY_TELEPORT_ICON = "jewelleryIcon";
+	static final String CONFIG_KEY_MISC_TELEPORT_ICON = "miscellanwousTeleportIcon";
 
 	static
 	{
@@ -157,6 +158,18 @@ public class WorldMapPlugin extends Plugin
 						worldMapPointManager.removeIf(JewelleryTeleportPoint.class::isInstance);
 					}
 					break;
+				case CONFIG_KEY_MISC_TELEPORT_ICON:
+					if (config.miscellaneousTeleportIcon())
+					{
+						Arrays.stream(MiscTeleportLocationData.values())
+							.map(data -> new MiscTeleportPoint(data))
+							.forEach(worldMapPointManager::add);
+					}
+					else
+					{
+						worldMapPointManager.removeIf(MiscTeleportPoint.class::isInstance);
+					}
+					break;
 			}
 		}
 	}
@@ -193,6 +206,12 @@ public class WorldMapPlugin extends Plugin
 				.map(data -> new JewelleryTeleportPoint(data))
 				.forEach(worldMapPointManager::add);
 		}
+		if (config.miscellaneousTeleportIcon())
+		{
+			Arrays.stream((MiscTeleportLocationData.values()))
+				.map(data -> new MiscTeleportPoint(data))
+				.forEach(worldMapPointManager::add);
+		}
 	}
 
 	@Override
@@ -202,6 +221,7 @@ public class WorldMapPlugin extends Plugin
 		worldMapPointManager.removeIf(AgilityShortcutPoint.class::isInstance);
 		worldMapPointManager.removeIf(MagicTeleportPoint.class::isInstance);
 		worldMapPointManager.removeIf(JewelleryTeleportPoint.class::isInstance);
+		worldMapPointManager.removeIf(MiscTeleportPoint.class::isInstance);
 	}
 
 	@Subscribe
