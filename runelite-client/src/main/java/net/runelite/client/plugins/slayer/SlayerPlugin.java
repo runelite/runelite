@@ -90,9 +90,11 @@ public class SlayerPlugin extends Plugin
 	private static final String CHAT_BRACELET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer";
 	private static final Pattern CHAT_BRACELET_SLAUGHTER_REGEX = Pattern.compile("Your bracelet of slaughter prevents your slayer count decreasing. It has (\\d{1,2}) charge[s]? left.");
 	private static final String CHAT_BRACELET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your";
-	private static final Pattern CHAT_BRACELET_EXPEDITIOUS_REGEX = Pattern.compile("Your expeditious bracelet helps you progress your slayer task faster. It has (\\d{1,2}) charge[s]? left.");
+	private static final Pattern CHAT_BRACELET_EXPEDITIOUS_REGEX = Pattern.compile("Your expeditious bracelet helps you progress your slayer faster. It has (\\d{1,2}) charge[s]? left.");
 	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE = "Your bracelet of slaughter has ";
+	private static final Pattern CHAT_BRACELET_SLAUGHTER_CHARGE_REGEX = Pattern.compile("Your bracelet of slaughter has (\\d{1,2}) charge[s]? left.");
 	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE = "Your expeditious bracelet has ";
+	private static final Pattern CHAT_BRACELET_EXPEDITIOUS_CHARGE_REGEX = Pattern.compile("Your expeditious bracelet has (\\d{1,2}) charge[s]? left.");
 
 	//NPC messages
 	private static final Pattern NPC_ASSIGN_MESSAGE = Pattern.compile(".*Your new task is to kill\\s*(\\d*) (.*)\\.");
@@ -337,16 +339,25 @@ public class SlayerPlugin extends Plugin
 
 		if (chatMsg.startsWith(CHAT_BRACELET_EXPEDITIOUS_CHARGE))
 		{
-			expeditiousChargeCount = Integer.parseInt(chatMsg
-				.replace(CHAT_BRACELET_EXPEDITIOUS_CHARGE, "")
-				.replace(" charges left.", ""));
+			Matcher mExpeditious = CHAT_BRACELET_EXPEDITIOUS_CHARGE_REGEX.matcher(chatMsg);
+
+			if (!mExpeditious.find())
+			{
+				return;
+			}
+
+			expeditiousChargeCount = Integer.parseInt(mExpeditious.group(1));
 			config.expeditious(expeditiousChargeCount);
 		}
 		if (chatMsg.startsWith(CHAT_BRACELET_SLAUGHTER_CHARGE))
 		{
-			slaughterChargeCount = Integer.parseInt(chatMsg
-				.replace(CHAT_BRACELET_SLAUGHTER_CHARGE, "")
-				.replace(" charges left.", ""));
+			Matcher mSlaughter = CHAT_BRACELET_SLAUGHTER_CHARGE_REGEX.matcher(chatMsg);
+			if (!mSlaughter.find())
+			{
+				return;
+			}
+
+			slaughterChargeCount = Integer.parseInt(mSlaughter.group(1));
 			config.slaughter(slaughterChargeCount);
 		}
 
