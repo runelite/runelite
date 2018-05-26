@@ -119,7 +119,7 @@ class ConfigInvocationHandler implements InvocationHandler
 			else
 			{
 				String newValueStr = ConfigManager.objectToString(newValue);
-				manager.setConfiguration(group.keyName(), item.keyName(), newValueStr);
+				manager.setConfiguration(group.keyName(), item.keyName(), newValueStr, item.sync());
 			}
 			return null;
 		}

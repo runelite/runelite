@@ -142,7 +142,15 @@ public class ConfigManager
 			return;
 		}
 
-		properties.clear();
+		try
+		{
+			FileInputStream fileInputStream = new FileInputStream(propertiesFile);
+			properties.load(fileInputStream);
+		}
+		catch (IOException e)
+		{
+			log.warn("Error loading previous properties, using local or synced properties.");
+		}
 
 		for (ConfigEntry entry : configuration.getConfig())
 		{
@@ -261,11 +269,16 @@ public class ConfigManager
 
 	public void setConfiguration(String groupName, String key, String value)
 	{
+		setConfiguration(groupName, key, value, true);
+	}
+
+	public void setConfiguration(String groupName, String key, String value, boolean sync)
+	{
 		log.debug("Setting configuration value for {}.{} to {}", groupName, key, value);
 
 		String oldValue = (String) properties.setProperty(groupName + "." + key, value);
 
-		if (client != null)
+		if (client != null && sync)
 		{
 			client.set(groupName + "." + key, value);
 		}
@@ -417,7 +430,7 @@ public class ConfigManager
 
 			log.debug("Setting default configuration value for {}.{} to {}", group.keyName(), item.keyName(), defaultValue);
 
-			setConfiguration(group.keyName(), item.keyName(), valueString);
+			setConfiguration(group.keyName(), item.keyName(), valueString, item.sync());
 		}
 	}
 

@@ -44,4 +44,11 @@ public @interface ConfigItem
 	boolean hidden() default false;
 
 	String warning() default "";
+
+	/**
+	 * Determines whether to cloud sync. If calling setConfiguration manually, and do not want to sync, then it
+	 * needs to be added as a parameter to setConfiguration.
+	 * @return
+	 */
+	boolean sync() default true;
 }

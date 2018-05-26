@@ -95,6 +95,7 @@ public class ConfigPanel extends PluginPanel
 	private static final ImageIcon ON_SWITCHER;
 	private static final ImageIcon OFF_SWITCHER;
 	private static final ImageIcon SEARCH;
+	private static final ImageIcon ERROR_ICON;
 
 	static
 	{
@@ -108,6 +109,7 @@ public class ConfigPanel extends PluginPanel
 				ON_SWITCHER = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("switchers/on.png")));
 				OFF_SWITCHER = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("switchers/off.png")));
 				SEARCH = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("search.png")));
+				ERROR_ICON = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("error.png")));
 			}
 		}
 		catch (IOException e)
@@ -403,31 +405,31 @@ public class ConfigPanel extends PluginPanel
 		if (component instanceof JCheckBox)
 		{
 			JCheckBox checkbox = (JCheckBox) component;
-			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + checkbox.isSelected());
+			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + checkbox.isSelected(), cid.getItem().sync());
 		}
 
 		if (component instanceof JSpinner)
 		{
 			JSpinner spinner = (JSpinner) component;
-			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + spinner.getValue());
+			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + spinner.getValue(), cid.getItem().sync());
 		}
 
 		if (component instanceof JTextArea)
 		{
 			JTextArea textField = (JTextArea) component;
-			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), textField.getText());
+			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), textField.getText(), cid.getItem().sync());
 		}
 
 		if (component instanceof JColorChooser)
 		{
 			JColorChooser jColorChooser = (JColorChooser) component;
-			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), String.valueOf(jColorChooser.getColor().getRGB()));
+			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), String.valueOf(jColorChooser.getColor().getRGB()), cid.getItem().sync());
 		}
 
 		if (component instanceof JComboBox)
 		{
 			JComboBox jComboBox = (JComboBox) component;
-			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), ((Enum) jComboBox.getSelectedItem()).name());
+			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), ((Enum) jComboBox.getSelectedItem()).name(), cid.getItem().sync());
 		}
 	}
 
@@ -440,6 +442,11 @@ public class ConfigPanel extends PluginPanel
 		title.setForeground(Color.WHITE);
 		title.setToolTipText(cd.getGroup().description());
 		add(title);
+
+		// Warning icon if not syncing
+		final JLabel warning = new JLabel(ERROR_ICON);
+		warning.setToolTipText("This configuration option is not synced.");
+		warning.setBorder(new EmptyBorder(0, 0, 0, 5));
 
 		for (ConfigItemDescriptor cid : cd.getItems())
 		{
@@ -455,6 +462,11 @@ public class ConfigPanel extends PluginPanel
 			configEntryName.setForeground(Color.WHITE);
 			configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
 			item.add(configEntryName, BorderLayout.CENTER);
+
+			if (!cid.getItem().sync())
+			{
+				item.add(warning, BorderLayout.WEST);
+			}
 
 			if (cid.getType() == boolean.class)
 			{
@@ -557,7 +569,7 @@ public class ConfigPanel extends PluginPanel
 				heightSpinnerTextField.setColumns(4);
 
 				ChangeListener listener = e ->
-					configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue());
+					configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue(), cid.getItem().sync());
 
 				widthSpinner.addChangeListener(listener);
 				heightSpinner.addChangeListener(listener);
