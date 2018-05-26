@@ -67,6 +67,8 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -118,7 +120,7 @@ public class MotherlodePlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Integer depositsLeft;
 
-	private final MotherlodeSession session = new MotherlodeSession();
+	private MotherlodeSession session;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<WallObject> veins = new HashSet<>();
@@ -140,14 +142,28 @@ public class MotherlodePlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		session = new MotherlodeSession();
 		inMlm = checkInMlm();
+
+		if (inMlm)
+		{
+			refreshSackValues();
+		}
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		session = null;
 		veins.clear();
 		rocks.clear();
+
+		Widget sack = client.getWidget(WidgetInfo.MOTHERLODE_MINE);
+
+		if (sack != null && sack.isHidden())
+		{
+			sack.setHidden(false);
+		}
 	}
 
 	public MotherlodeSession getSession()
@@ -160,9 +176,7 @@ public class MotherlodePlugin extends Plugin
 	{
 		if (inMlm)
 		{
-			curSackSize = client.getVar(Varbits.SACK_NUMBER);
-			boolean sackUpgraded = client.getVar(Varbits.SACK_UPGRADED) == 1;
-			maxSackSize = sackUpgraded ? SACK_LARGE_SIZE : SACK_SIZE;
+			refreshSackValues();
 		}
 	}
 
@@ -408,6 +422,13 @@ public class MotherlodePlugin extends Plugin
 		}
 
 		return true;
+	}
+
+	private void refreshSackValues()
+	{
+		curSackSize = client.getVar(Varbits.SACK_NUMBER);
+		boolean sackUpgraded = client.getVar(Varbits.SACK_UPGRADED) == 1;
+		maxSackSize = sackUpgraded ? SACK_LARGE_SIZE : SACK_SIZE;
 	}
 
 	/**

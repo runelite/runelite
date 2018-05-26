@@ -28,41 +28,101 @@ import java.util.List;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 
+/**
+ * Represents a tile in the game.
+ */
 public interface Tile
 {
 	/**
-	 * Get the decorative object for this tile.
+	 * Gets the decoration on the tile.
 	 *
-	 * @return
+	 * @return the tile decoration
 	 */
 	DecorativeObject getDecorativeObject();
 
+	/**
+	 * Gets all game objects on the tile.
+	 *
+	 * @return the game objects
+	 */
 	GameObject[] getGameObjects();
 
+	/**
+	 * Gets the items held on this tile.
+	 *
+	 * @return the item
+	 */
 	ItemLayer getItemLayer();
 
+	/**
+	 * Gets the object on the ground layer of the tile.
+	 *
+	 * @return the ground object
+	 */
 	GroundObject getGroundObject();
 
+	/**
+	 * Gets the wall of the tile.
+	 *
+	 * @return the wall object
+	 */
 	WallObject getWallObject();
 
+	/**
+	 * Gets the scene paint of the tile.
+	 *
+	 * @return the paint
+	 */
 	SceneTilePaint getSceneTilePaint();
 
+	/**
+	 * Gets the model of the tile in the scene.
+	 *
+	 * @return the tile model
+	 */
 	SceneTileModel getSceneTileModel();
 
+	/**
+	 * Gets the location coordinate of the tile in the world.
+	 *
+	 * @return the world location
+	 */
 	WorldPoint getWorldLocation();
 
+	/**
+	 * Gets the location coordinate of the tile relative to the current
+	 * region start point.
+	 *
+	 * @return the region location
+	 */
 	Point getRegionLocation();
 
+	/**
+	 * Gets the local coordinate of the tile.
+	 *
+	 * @return the local location
+	 */
 	LocalPoint getLocalLocation();
 
+	/**
+	 * Gets the plane that this tile is on.
+	 *
+	 * @return the plane
+	 */
 	int getPlane();
 
+	/**
+	 * Computes and returns whether this tile has line of sight to another.
+	 *
+	 * @param other the other tile
+	 * @return true if there is no sight obstruction, false otherwise
+	 */
 	boolean hasLineOfSightTo(Tile other);
 
 	/**
 	 * Get all the ground items for this tile
 	 *
-	 * @return
+	 * @return the ground items
 	 */
 	List<Item> getGroundItems();
 }

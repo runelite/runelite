@@ -27,6 +27,9 @@ package net.runelite.api;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * An enumeration of local player variables.
+ */
 @AllArgsConstructor
 @Getter
 public enum VarPlayer
@@ -41,7 +44,7 @@ public enum VarPlayer
 	IN_RAID_PARTY(1427),
 
 	/**
-	 * Experience tracker goal start
+	 * Experience tracker goal start.
 	 */
 	ATTACK_GOAL_START(1229),
 	STRENGTH_GOAL_START(1230),
@@ -68,7 +71,7 @@ public enum VarPlayer
 	HUNTER_GOAL_START(1251),
 
 	/**
-	 * Experience tracker goal end
+	 * Experience tracker goal end.
 	 */
 	ATTACK_GOAL_END(1253),
 	STRENGTH_GOAL_END(1254),

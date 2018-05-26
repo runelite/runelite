@@ -30,7 +30,7 @@ import lombok.Data;
 public class PlayerMenuOptionsChanged
 {
 	/**
-	 * Index in playerOptions which changed
+	 * Index in playerOptions which changed.
 	 */
 	private int index;
 }

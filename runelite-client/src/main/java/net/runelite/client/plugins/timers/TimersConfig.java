@@ -115,7 +115,7 @@ public interface TimersConfig extends Config
 	@ConfigItem(
 		position = 7,
 		keyName = "showAntiFire",
-		name = "AntiFire timer",
+		name = "Antifire timer",
 		description = "Configures whether antifire timer is displayed"
 	)
 	default boolean showAntiFire()

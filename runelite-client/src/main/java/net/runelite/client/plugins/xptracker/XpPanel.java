@@ -133,7 +133,6 @@ class XpPanel extends PluginPanel
 		}
 
 		errorPanel.setContent("Exp trackers", "You have not gained experience yet.");
-		errorPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		add(errorPanel);
 	}
 

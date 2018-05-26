@@ -436,7 +436,7 @@ public class HiscorePanel extends PluginPanel
 		For some reason, the fetch results would sometimes return a not null object
 		with all null attributes, to check for that, i'll just null check one of the attributes.
 		 */
-		if (result.getAttack() == null)
+		if (result == null || result.getAttack() == null)
 		{
 			input.setIcon(ERROR_ICON);
 			input.setEditable(true);
@@ -493,12 +493,12 @@ public class HiscorePanel extends PluginPanel
 
 	void addInputKeyListener(KeyListener l)
 	{
-		this.input.addInputKeyListener(l);
+		this.input.addKeyListener(l);
 	}
 
 	void removeInputKeyListener(KeyListener l)
 	{
-		this.input.removeInputKeyListener(l);
+		this.input.removeKeyListener(l);
 	}
 
 	/*
