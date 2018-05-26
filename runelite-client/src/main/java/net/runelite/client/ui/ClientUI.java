@@ -383,7 +383,9 @@ public class ClientUI
 			navContainer = new JPanel();
 			navContainer.setLayout(cardLayout);
 			navContainer.setMinimumSize(new Dimension(0, 0));
-			navContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
+			navContainer.setMaximumSize(new Dimension(0, 0));
+			navContainer.setPreferredSize(new Dimension(0, 0));
+
 			// To reduce substance's colorization (tinting)
 			navContainer.putClientProperty(SubstanceSynapse.COLORIZATION_FACTOR, 1.0);
 			container.add(navContainer);
@@ -656,7 +658,6 @@ public class ClientUI
 
 		// Revalidate sizes of affected Swing components
 		container.revalidate();
-		container.repaint();
 		giveClientFocus();
 
 		if (sidebarOpen)
@@ -688,18 +689,15 @@ public class ClientUI
 			toggleSidebar();
 		}
 
-		int expandBy = panel.getWrappedPanel().getPreferredSize().width;
-
-		if (pluginPanel != null)
-		{
-			expandBy = pluginPanel.getWrappedPanel().getPreferredSize().width - expandBy;
-		}
-
+		int width = panel.getWrappedPanel().getPreferredSize().width;
+		int expandBy = pluginPanel != null ? pluginPanel.getWrappedPanel().getPreferredSize().width - width : width;
 		pluginPanel = panel;
-		navContainer.setMinimumSize(new Dimension(pluginPanel.getWrappedPanel().getPreferredSize().width, 0));
-		navContainer.setMaximumSize(new Dimension(pluginPanel.getWrappedPanel().getPreferredSize().width, Integer.MAX_VALUE));
 
-		final JPanel wrappedPanel = panel.getWrappedPanel();
+		// Expand sidebar
+		navContainer.setMinimumSize(new Dimension(width, 0));
+		navContainer.setMaximumSize(new Dimension(width, Integer.MAX_VALUE));
+		navContainer.setPreferredSize(new Dimension(width, 0));
+		navContainer.revalidate();
 		cardLayout.show(navContainer, button.getTooltip());
 
 		// panel.onActivate has to go after giveClientFocus so it can get focus if it needs.
@@ -727,6 +725,8 @@ public class ClientUI
 		pluginPanel.onDeactivate();
 		navContainer.setMinimumSize(new Dimension(0, 0));
 		navContainer.setMaximumSize(new Dimension(0, 0));
+		navContainer.setPreferredSize(new Dimension(0, 0));
+		navContainer.revalidate();
 		giveClientFocus();
 		frame.contractBy(pluginPanel.getWrappedPanel().getPreferredSize().width);
 		pluginPanel = null;
