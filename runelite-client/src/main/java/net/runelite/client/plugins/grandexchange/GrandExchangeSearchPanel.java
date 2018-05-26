@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -66,6 +67,8 @@ class GrandExchangeSearchPanel extends JPanel
 	private static final ImageIcon SEARCH_ICON;
 	private static final ImageIcon LOADING_ICON;
 	private static final ImageIcon ERROR_ICON;
+
+	private static final Pattern PATTERN = Pattern.compile("^[A-Za-z0-9_\\s'()\"-]*$");
 
 	private final GridBagConstraints constraints = new GridBagConstraints();
 	private final CardLayout cardLayout = new CardLayout();
@@ -187,6 +190,17 @@ class GrandExchangeSearchPanel extends JPanel
 			return;
 		}
 
+		// If the input contains characters not part of the pattern
+		// then show an error. This is to prevent bad lookups that can
+		// cause an npe and therefore soft-crash the plugin
+		if (!PATTERN.matcher(lookup).matches())
+		{
+			searchBox.setIcon(ERROR_ICON);
+			errorPanel.setContent("No results found.", "No items were found with that name, please try again.");
+			cardLayout.show(centerPanel, ERROR_PANEL);
+			return;
+		}
+
 		// Input is not empty, add searching label
 		searchItemsPanel.removeAll();
 		searchBox.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
@@ -204,7 +218,7 @@ class GrandExchangeSearchPanel extends JPanel
 			log.warn("Unable to search for item {}", lookup, ex);
 			searchBox.setIcon(ERROR_ICON);
 			searchBox.setEditable(true);
-			errorPanel.setContent("Error fetching results", "An error occured why trying to fetch item data, please try again later.");
+			errorPanel.setContent("Error fetching results", "An error occurred why trying to fetch item data, please try again later.");
 			cardLayout.show(centerPanel, ERROR_PANEL);
 			return;
 		}

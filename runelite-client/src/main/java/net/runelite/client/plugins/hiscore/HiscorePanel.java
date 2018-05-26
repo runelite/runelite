@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
@@ -101,6 +102,8 @@ public class HiscorePanel extends PluginPanel
 	private static final ImageIcon SEARCH_ICON;
 	private static final ImageIcon LOADING_ICON;
 	private static final ImageIcon ERROR_ICON;
+
+	private static final Pattern PATTERN = Pattern.compile("^[A-Za-z0-9_\\s-]*$");
 
 	/**
 	 * Real skills, ordered in the way they should be displayed in the panel.
@@ -394,8 +397,10 @@ public class HiscorePanel extends PluginPanel
 			return;
 		}
 
-		/* Runescape usernames can't be longer than 12 characters long */
-		if (lookup.length() > MAX_USERNAME_LENGTH)
+		// Runescape usernames can't be longer than 12 characters long and
+		// only lookup if input is a set of valid characters to prevent bad character lookups,
+		// as this can cause a soft-crash.
+		if (lookup.length() > MAX_USERNAME_LENGTH || !PATTERN.matcher(lookup).matches())
 		{
 			input.setIcon(ERROR_ICON);
 			loading = false;
