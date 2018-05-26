@@ -146,8 +146,9 @@ public class DailyTasksPlugin extends Plugin
 
 	private boolean checkCanCollectHerbBox()
 	{
+		// Exclude ironmen from herb box notifications
 		int value = client.getVar(Varbits.DAILY_HERB_BOX);
-		return value < 15; // < 15 can claim
+		return client.getAccountType() == AccountType.NORMAL && value < 15; // < 15 can claim
 	}
 
 	private boolean checkCanCollectStaves()

@@ -28,7 +28,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.4.0-SNAPSHOT</version>
+		<version>1.4.1-SNAPSHOT</version>
 	</parent>
 
 	<name>Web Service</name>
@@ -167,15 +167,6 @@
 					<server>runelite-tomcat</server>
 					<path>/runelite-${project.version}</path>
 				</configuration>
-				<executions>
-					<execution>
-						<id>tomcat-deploy</id>
-						<phase>deploy</phase>
-						<goals>
-							<goal>redeploy</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>

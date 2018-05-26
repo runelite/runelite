@@ -27,6 +27,9 @@ package net.runelite.api;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * An enumeration of local client variables.
+ */
 @AllArgsConstructor
 @Getter
 public enum Varbits
@@ -347,7 +350,7 @@ public enum Varbits
 	ACCOUNT_TYPE(1777);
 
 	/**
-	 * varbit id
+	 * The raw varbit ID.
 	 */
 	private final int id;
 }
