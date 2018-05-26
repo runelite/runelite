@@ -33,6 +33,7 @@ import com.google.gson.reflect.TypeToken;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -170,6 +171,7 @@ public class ScreenMarkerPlugin extends Plugin
 	public void startCreation(Point location)
 	{
 		currentMarker = new ScreenMarker(
+			Instant.now().toEpochMilli(),
 			DEFAULT_MARKER_NAME + " " + (screenMarkers.size() + 1),
 			pluginPanel.getSelectedBorderThickness(),
 			pluginPanel.getSelectedColor(),
