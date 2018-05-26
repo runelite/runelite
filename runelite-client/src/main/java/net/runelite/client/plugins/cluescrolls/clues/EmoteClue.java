@@ -643,7 +643,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 					.left(requirement.getCollectiveName(plugin.getClient()))
 					.leftColor(TITLED_CONTENT_COLOR)
 					.right(equipmentFulfilled || inventoryFulfilled || combinedFulfilled ? "\u2713" : "\u2717")
-					.rightColor(equipmentFulfilled ? Color.GREEN : (inventoryFulfilled ? Color.ORANGE : (combinedFulfilled ? Color.YELLOW : Color.RED)))
+					.rightColor(equipmentFulfilled ? Color.GREEN : ((inventoryFulfilled || combinedFulfilled) ? Color.ORANGE  : Color.RED))
 					.build());
 			}
 		}
