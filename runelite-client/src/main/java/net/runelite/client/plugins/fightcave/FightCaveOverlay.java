@@ -68,6 +68,7 @@ public class FightCaveOverlay extends Overlay
 			put(702, "Jad - Level 702");
 		}
 	};
+
 	private Map<Integer, int[]> waves = new HashMap<Integer, int[]>()
 	{
 		{
@@ -137,7 +138,6 @@ public class FightCaveOverlay extends Overlay
 		}
 	};
 
-
 	private HashMap arrayElementCount(int inputArray[])
 	{
 		HashMap<Integer, Integer> elementCountMap = new HashMap<Integer, Integer>();
@@ -197,7 +197,6 @@ public class FightCaveOverlay extends Overlay
 				.text("Wave " + currentWave)
 				.color(Color.orange)
 				.build());
-
 		for (Map.Entry<Integer, Integer> entry : thisWave.entrySet())
 		{
 			int monsterID = entry.getKey();

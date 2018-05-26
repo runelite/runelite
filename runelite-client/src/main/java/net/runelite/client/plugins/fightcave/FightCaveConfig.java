@@ -42,6 +42,7 @@ public interface FightCaveConfig extends Config
 			name = "Show next wave",
 			description = "Shows monsters that will be spawning on the wave after your current one."
 			)
+
 	default boolean showNextWave()
 	{
 		return true;

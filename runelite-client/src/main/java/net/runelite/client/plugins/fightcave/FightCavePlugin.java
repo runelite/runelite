@@ -46,6 +46,7 @@ import net.runelite.client.util.QueryRunner;
 @PluginDescriptor(
 	name = "Fight Cave"
 )
+
 @Slf4j
 public class FightCavePlugin extends Plugin
 {
@@ -137,6 +138,7 @@ public class FightCavePlugin extends Plugin
 			overlay.killedMonster(actor.getCombatLevel());
 		}
 	}
+
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
@@ -146,6 +148,7 @@ public class FightCavePlugin extends Plugin
 			return;
 		}
 	}
+
 	public void update()
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
