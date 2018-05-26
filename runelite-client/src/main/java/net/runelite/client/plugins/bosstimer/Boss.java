@@ -55,7 +55,8 @@ enum Boss
 	DERANGED_ARCHAEOLOGIST("Deranged archaeologist", 30, ChronoUnit.SECONDS, ItemID.UNIDENTIFIED_LARGE_FOSSIL),
 	CERBERUS("Cerberus", 10800, ChronoUnit.MILLIS, ItemID.HELLPUPPY),
 	THERMONUCLEAR_SMOKE_DEVIL("Thermonuclear smoke devil", 12, ChronoUnit.SECONDS, ItemID.PET_SMOKE_DEVIL),
-	KRAKEN("Kraken", 10800, ChronoUnit.MILLIS, ItemID.PET_KRAKEN);
+	KRAKEN("Kraken", 10800, ChronoUnit.MILLIS, ItemID.PET_KRAKEN),
+	KALPHITE_QUEEN("Kalphite Queen", 30, ChronoUnit.SECONDS, ItemID.KALPHITE_PRINCESS);
 
 	private static final Map<String, Boss> bosses = new HashMap<>();
 
