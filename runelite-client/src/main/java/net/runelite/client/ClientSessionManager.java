@@ -107,7 +107,7 @@ public class ClientSessionManager
 			log.warn(null, ex);
 		}
 
-		boolean inGame = client.getGameState() != GameState.LOGIN_SCREEN;
+		boolean inGame = client.getGameState().compareTo(GameState.LOGIN_SCREEN) > 0;
 
 		try
 		{
