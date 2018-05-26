@@ -221,4 +221,15 @@ public interface RuneLiteConfig extends Config
 	{
 		return 4;
 	}
+
+	@ConfigItem(
+			keyName = "resetPluginConfirmation",
+			name = "Show plug-in reset confirmation",
+			description = "Show a confirmation dialog when resetting a plug-in",
+			position = 34
+	)
+	default boolean resetPluginConfirmation()
+	{
+		return true;
+	}
 }
