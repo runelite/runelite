@@ -36,6 +36,7 @@ import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.events.BoostedLevelChanged;
 import net.runelite.api.events.ConfigChanged;
@@ -193,6 +194,10 @@ public class BoostsPlugin extends Plugin
 
 	public int getChangeTime()
 	{
+		if (client.isPrayerActive(Prayer.PRESERVE))
+		{
+			return 90 - (int) Duration.between(lastChange, Instant.now()).getSeconds();
+		}
 		return 60 - (int) Duration.between(lastChange, Instant.now()).getSeconds();
 	}
 }
