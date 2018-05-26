@@ -51,6 +51,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.swing.JOptionPane;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -70,7 +71,6 @@ import static net.runelite.api.widgets.WidgetID.RAIDS_REWARD_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.Notifier;
-import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -170,7 +170,7 @@ public class ScreenshotPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		SCREENSHOT_DIR.mkdirs();
+		config.screenshotDirectory().mkdirs();
 		keyManager.registerKeyListener(inputListener);
 
 		try
@@ -191,7 +191,7 @@ public class ScreenshotPlugin extends Plugin
 					{
 						try
 						{
-							Desktop.getDesktop().open(SCREENSHOT_DIR);
+							Desktop.getDesktop().open(config.screenshotDirectory());
 						}
 						catch (IOException ex)
 						{
@@ -432,6 +432,15 @@ public class ScreenshotPlugin extends Plugin
 			return;
 		}
 
+		if (config.screenshotDirectory().isFile())
+		{
+			JOptionPane.showMessageDialog(null,
+					"<html>The screenshot directory is set to a file. This must be fixed!<br>" +
+					config.screenshotDirectory().getAbsolutePath() + "</html>",
+					"Screenshot Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
 		Consumer<Image> screenshotConsumer = image ->
 		{
 			BufferedImage screenshot = config.includeFrame()
@@ -460,11 +469,11 @@ public class ScreenshotPlugin extends Plugin
 			File playerFolder;
 			if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
 			{
-				playerFolder = new File(SCREENSHOT_DIR, client.getLocalPlayer().getName());
+				playerFolder = new File(config.screenshotDirectory(), client.getLocalPlayer().getName());
 			}
 			else
 			{
-				playerFolder = SCREENSHOT_DIR;
+				playerFolder = config.screenshotDirectory();
 			}
 
 			playerFolder.mkdirs();
