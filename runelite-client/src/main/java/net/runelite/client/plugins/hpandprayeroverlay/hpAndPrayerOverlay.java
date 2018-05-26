@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Jos <Malevolentdev@gmail.com>
+ * Creation date : 26-5-2018
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,36 +25,19 @@
  */
 package net.runelite.client.plugins.hpandprayeroverlay;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Stroke;
-import java.awt.geom.Arc2D;
 import javax.inject.Inject;
-
-import com.google.common.eventbus.Subscribe;
-import com.sun.javafx.scene.web.Debugger;
 import net.runelite.api.Client;
-import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
-import net.runelite.api.events.BoostedLevelChanged;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.ResizeableChanged;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.PanelComponent;
-import sun.security.ssl.Debug;
 
 class hpAndPrayerOverlay extends Overlay
 {
-
     private final Client client;
     private hpAndPrayerPlugin plugin;
     private hpAndPrayerConfig config;
@@ -61,22 +45,18 @@ class hpAndPrayerOverlay extends Overlay
     @Inject
     public hpAndPrayerOverlay(Client client, hpAndPrayerPlugin plugin, hpAndPrayerConfig config)
     {
-
         setPosition(OverlayPosition.DYNAMIC);
         setLayer(OverlayLayer.ABOVE_WIDGETS);
-
         this.client = client;
         this.plugin = plugin;
         this.config = config;
     }
-
     @Inject
     private SkillIconManager iconManager;
 
 
     @Override
     public Dimension render(Graphics2D g) {
-
 
         int realHpLevel = client.getRealSkillLevel(Skill.HITPOINTS);
         int realPrayerLevel = client.getRealSkillLevel(Skill.PRAYER);
@@ -86,8 +66,6 @@ class hpAndPrayerOverlay extends Overlay
         int prayerBarheight = (boostedPrayerLevel * 224) / realPrayerLevel;
         int healthBarPosition = 455 - healthBarheight;
         int prayerBarPosition = 453 - prayerBarheight;
-
-
 
         if (config.enableHP()){
 
@@ -118,6 +96,7 @@ class hpAndPrayerOverlay extends Overlay
 
         }
 
+        // Resizable position settings are changed here
         if (client.isResized()){
             setPosition(OverlayPosition.BOTTOM_RIGHT);
 

@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Jos <Malevolentdev@gmail.com>
+ * Creation date : 26-5-2018
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,12 +25,10 @@
  */
 package net.runelite.client.plugins.hpandprayeroverlay;
 
-import com.google.inject.Provides;
+
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.metronome.MetronomePluginConfiguration;
 
 @ConfigGroup(
         keyName = "hpandprayeroverlay",
@@ -38,7 +37,6 @@ import net.runelite.client.plugins.metronome.MetronomePluginConfiguration;
 )
 public interface hpAndPrayerConfig extends Config
 {
-
     @ConfigItem(
             keyName = "enableHP",
             name = "Enable HP bar",
@@ -49,6 +47,7 @@ public interface hpAndPrayerConfig extends Config
     {
         return true;
     }
+
 
     @ConfigItem(
             keyName = "enablePray",
