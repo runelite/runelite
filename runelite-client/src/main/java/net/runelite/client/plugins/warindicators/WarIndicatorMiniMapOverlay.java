@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Andrew | ElPinche256 <https://github.com/ElPinche256>
+ * Copyright (c) 2018, Andrew EP | ElPinche256 <https://github.com/ElPinche256>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -62,26 +62,22 @@ public class WarIndicatorMiniMapOverlay extends Overlay {
     private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
     {
         final String name = actor.getName().replace('\u00A0', ' ');
-        String[] callers = config.getActiveCallers().split(", ");
-        String[] targets = config.getTargetedSnipes().split(", ");
+        final net.runelite.api.Point minimapLocation = actor.getMinimapLocation();
 
-        if (config.snipeMinimap() && ArrayUtils.contains(targets, actor.getName()))
+        if (config.snipeMinimap())
         {
-            final net.runelite.api.Point sminimapLocation = actor.getMinimapLocation();
 
-            if (sminimapLocation != null)
+            if (minimapLocation != null)
             {
-                OverlayUtil.renderTextLocation(graphics, sminimapLocation, name, color);
+                OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
             }
         }
-
-        if (config.callerMinimap() && ArrayUtils.contains(callers, actor.getName()))
+        else if (config.callerMinimap())
         {
-            final net.runelite.api.Point cminimapLocation = actor.getMinimapLocation();
 
-            if (cminimapLocation != null)
+            if (minimapLocation != null)
             {
-                OverlayUtil.renderTextLocation(graphics, cminimapLocation, name, color);
+                OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
             }
         }
     }

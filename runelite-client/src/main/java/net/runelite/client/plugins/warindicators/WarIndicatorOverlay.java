@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Andrew | ElPinche256 <https://github.com/ElPinche256>
+ * Copyright (c) 2018, Andrew EP | ElPinche256 <https://github.com/ElPinche256>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -77,7 +77,8 @@ public class WarIndicatorOverlay extends Overlay {
                 OverlayUtil.renderPolygon(graphics, poly, color);
             }
         }
-        else if (config.snipeTile() && ArrayUtils.contains(targets, actor.getName()))
+
+        if (config.snipeTile() && ArrayUtils.contains(targets, actor.getName()))
         {
             if (poly != null)
             {
