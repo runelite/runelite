@@ -246,6 +246,7 @@ class SkillCalculator extends JPanel
 
 			slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
 			slot.setAvailable(currentLevel >= action.getLevel());
+			slot.setOverlapping(action.getLevel() < targetLevel);
 			slot.setValue((int) xp);
 		}
 	}
