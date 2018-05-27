@@ -74,6 +74,7 @@ class LootRecordPanel extends JPanel
 		this.add(total, c);
 	}
 
+	// Used specifically for the Total Value element inside the tab
 	LootRecordPanel(Long totalValue)
 	{
 		GridBagLayout layout = new GridBagLayout();
@@ -118,7 +119,7 @@ class LootRecordPanel extends JPanel
 		return (new DecimalFormat("#,###.#").format(v) + suffix);
 	}
 
-	// Color label to match Runescape coloring
+	// Color label to match RuneScape coloring
 	private void ColorLabel(JLabel label, long val)
 	{
 		Color labelColor = Color.yellow;

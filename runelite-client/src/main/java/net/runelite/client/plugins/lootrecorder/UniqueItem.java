@@ -252,7 +252,7 @@ public enum UniqueItem
 	ARCHERS_RING("Archers ring", ItemID.ARCHERS_RING, "Dagannoth Supreme", "Uniques", -1),
 	PET_DAGANNOTH_SUPREME("Pet dagannoth supreme", ItemID.PET_DAGANNOTH_SUPREME, "Dagannoth Supreme", "Uniques", -1);
 
-
+	// Shared Unique Items
 	UniqueItem(String n, int id, String... activities)
 	{
 		this.name = n;
@@ -262,6 +262,7 @@ public enum UniqueItem
 		this.position = -1;
 	}
 
+	// Non-Shared Unique Items
 	UniqueItem(String n, int id, String a, String set, int position)
 	{
 		this.name = n;
@@ -297,7 +298,7 @@ public enum UniqueItem
 		return byName;
 	}
 
-	// Returns an array of UniqueItems by `activity`
+	// Returns an array of UniqueItems by an individual `activities` name
 	private static final Map<String, ArrayList<UniqueItem>> byActivityName = buildActivityMap();
 	public static ArrayList<UniqueItem> getByActivityName(String name)
 	{
@@ -337,7 +338,7 @@ public enum UniqueItem
 		return byName;
 	}
 
-	// Take a list of UniqueItems and maps them by Position
+	// Takes a list of UniqueItems and maps them by Position to ensure adding in predefined order
 	static Map<Integer, ArrayList<UniqueItem>> createPositionSetMap(ArrayList<UniqueItem> items)
 	{
 		Map<Integer, ArrayList<UniqueItem>> setNames = new HashMap<Integer, ArrayList<UniqueItem>>();

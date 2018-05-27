@@ -51,6 +51,9 @@ class UniqueItemPanel extends JPanel
 	private ArrayList<UniqueItem> items;
 	private Map<String, LootRecord> loots;
 
+	private final Float alpha_missing = 0.3f;
+	private final Float alpha_has = 1.0f;
+
 	UniqueItemPanel(ArrayList<UniqueItem> _items, Map<String, LootRecord> _loots, ItemManager _itemManager)
 	{
 		items = _items;
@@ -77,7 +80,7 @@ class UniqueItemPanel extends JPanel
 			boolean shouldStack = comp.isStackable();
 			Integer quantity = 0;
 			Integer imageID = comp.getId();
-			Float alpha = 0.3f;
+			Float alpha = alpha_missing;
 
 			// If we have a loot entry for this item then update the icon accordingly
 			if (it != null)
@@ -86,7 +89,7 @@ class UniqueItemPanel extends JPanel
 				shouldStack = shouldStack || it.getAmount() > 1;
 				if (quantity > 0)
 				{
-					alpha = 1.0f;
+					alpha = alpha_has;
 				}
 			}
 
@@ -111,6 +114,7 @@ class UniqueItemPanel extends JPanel
 
 	}
 
+	// Used to refresh the item icon if the image was still loading when attempting to create it earlier
 	private void refreshImage(JLabel label, AsyncBufferedImage image, Float finalAlpha)
 	{
 		BufferedImage opaque = createOpaqueImage(image, finalAlpha);
@@ -121,6 +125,7 @@ class UniqueItemPanel extends JPanel
 		label.repaint();
 	}
 
+	// Creates the Item Icon with opacity depending on if they have received the item or not
 	private BufferedImage createOpaqueImage(AsyncBufferedImage image, Float alpha)
 	{
 		BufferedImage x = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
