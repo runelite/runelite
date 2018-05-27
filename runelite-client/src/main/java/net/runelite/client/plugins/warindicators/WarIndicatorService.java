@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Andrew | ElPinche256 <https://github.com/ElPinche256>
+ * Copyright (c) 2018, Andrew EP | ElPinche256 <https://github.com/ElPinche256>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -62,7 +62,7 @@ public class WarIndicatorService
 
                 String[] targets = config.getTargetedSnipes().split(", ");
 
-                if (targets.length == 0 || targets == null) {
+                if (targets == null) {
                     return;
                 }
 
@@ -83,7 +83,7 @@ public class WarIndicatorService
 
                 String[] callers = config.getActiveCallers().split(", ");
 
-                if (callers.length == 0 || callers == null) {
+                if (callers == null) {
                     return;
                 }
 

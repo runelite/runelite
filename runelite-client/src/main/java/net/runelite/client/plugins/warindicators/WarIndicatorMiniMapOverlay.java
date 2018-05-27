@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Andrew | ElPinche256 <https://github.com/ElPinche256>
+ * Copyright (c) 2018, Andrew EP | ElPinche256 <https://github.com/ElPinche256>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,6 +35,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import org.apache.commons.lang3.ArrayUtils;
 
 @Singleton
 public class WarIndicatorMiniMapOverlay extends Overlay {
@@ -61,24 +62,25 @@ public class WarIndicatorMiniMapOverlay extends Overlay {
     private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
     {
         final String name = actor.getName().replace('\u00A0', ' ');
+        final net.runelite.api.Point minimapLocation = actor.getMinimapLocation();
 
-        if (config.snipeMinimap())
+        String[] callers = config.getActiveCallers().split(", ");
+        String[] targets = config.getTargetedSnipes().split(", ");
+
+        if (config.callerMinimap() && ArrayUtils.contains(callers, actor.getName()))
         {
-            final net.runelite.api.Point sminimapLocation = actor.getMinimapLocation();
 
-            if (sminimapLocation != null)
+            if (minimapLocation != null)
             {
-                OverlayUtil.renderTextLocation(graphics, sminimapLocation, name, color);
+                OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
             }
         }
-
-        if (config.callerMinimap())
+        if (config.snipeMinimap() && ArrayUtils.contains(targets, actor.getName()))
         {
-            final net.runelite.api.Point cminimapLocation = actor.getMinimapLocation();
 
-            if (cminimapLocation != null)
+            if (minimapLocation != null)
             {
-                OverlayUtil.renderTextLocation(graphics, cminimapLocation, name, color);
+                OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
             }
         }
     }

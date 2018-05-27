@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Andrew | ElPinche256 <https://github.com/ElPinche256>
+ * Copyright (c) 2018, Andrew EP | ElPinche256 <https://github.com/ElPinche256>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -67,7 +67,7 @@ public interface WarIndicatorConfig extends Config
 
     @ConfigItem(
             position = 4,
-            keyName = "callerTiler",
+            keyName = "callerTile",
             name = "Show Caller's Tile",
             description = "Show the tile your target is standing on"
     )

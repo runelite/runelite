@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Andrew | ElPinche256 <https://github.com/ElPinche256>
+ * Copyright (c) 2018, Andrew EP | ElPinche256 <https://github.com/ElPinche256>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,6 +31,8 @@ import java.awt.Color;
 import java.util.Collection;
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.FOLLOW;
 import static net.runelite.api.MenuAction.ITEM_USE_ON_PLAYER;
@@ -58,93 +60,97 @@ import net.runelite.client.ui.overlay.Overlay;
 
 public class WarIndicatorPlugin extends Plugin
 {
-    @Inject
-    private WarIndicatorConfig config;
+	@Inject
+	private WarIndicatorConfig config;
 
-    @Inject
-    private WarIndicatorOverlay warIndicatorOverlay;
+	@Inject
+	private WarIndicatorOverlay warIndicatorOverlay;
 
-    @Inject
-    private WarIndicatorMiniMapOverlay warIndicatorMiniMapOverlay;
+	@Inject
+	private WarIndicatorMiniMapOverlay warIndicatorMinimapOverlay;
 
-    @Inject
-    private Client client;
+	@Inject
+	private Client client;
 
-    @Provides
-    WarIndicatorConfig provideConfig(ConfigManager configManager)
-    {
-        return configManager.getConfig(WarIndicatorConfig.class);
-    }
+	@Provides
+	WarIndicatorConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(WarIndicatorConfig.class);
+	}
 
-    @Override
-    public Collection<Overlay> getOverlays() {
-        return Sets.newHashSet(warIndicatorOverlay, warIndicatorMiniMapOverlay);
-    }
+	@Override
+	public Collection<Overlay> getOverlays()
+	{
+		return Sets.newHashSet(warIndicatorOverlay, warIndicatorMinimapOverlay);
+	}
 
-    @Subscribe
-    public void onMenuEntryAdd(MenuEntryAdded menuEntryAdded) {
-        int type = menuEntryAdded.getType();
+	@Subscribe
+	public void onMenuEntryAdd(MenuEntryAdded menuEntryAdded)
+	{
+		int type = menuEntryAdded.getType();
 
-        if (type >= 2000) {
-            type -= 2000;
-        }
+		if (type >= 2000)
+		{
+			type -= 2000;
+		}
 
-        int identifier = menuEntryAdded.getIdentifier();
-        if (type == FOLLOW.getId() || type == TRADE.getId()
-                || type == SPELL_CAST_ON_PLAYER.getId() || type == ITEM_USE_ON_PLAYER.getId()
-                || type == PLAYER_FIRST_OPTION.getId()
-                || type == PLAYER_SECOND_OPTION.getId()
-                || type == PLAYER_THIRD_OPTION.getId()
-                || type == PLAYER_FOURTH_OPTION.getId()
-                || type == PLAYER_FIFTH_OPTION.getId()
-                || type == PLAYER_SIXTH_OPTION.getId()
-                || type == PLAYER_SEVENTH_OPTION.getId()
-                || type == PLAYER_EIGTH_OPTION.getId()) {
-            Player[] players = client.getCachedPlayers();
-            Player player = null;
+		int identifier = menuEntryAdded.getIdentifier();
+		if (type == FOLLOW.getId() || type == TRADE.getId()
+			|| type == SPELL_CAST_ON_PLAYER.getId() || type == ITEM_USE_ON_PLAYER.getId()
+			|| type == PLAYER_FIRST_OPTION.getId()
+			|| type == PLAYER_SECOND_OPTION.getId()
+			|| type == PLAYER_THIRD_OPTION.getId()
+			|| type == PLAYER_FOURTH_OPTION.getId()
+			|| type == PLAYER_FIFTH_OPTION.getId()
+			|| type == PLAYER_SIXTH_OPTION.getId()
+			|| type == PLAYER_SEVENTH_OPTION.getId()
+			|| type == PLAYER_EIGTH_OPTION.getId())
+		{
+			Player[] players = client.getCachedPlayers();
+			Player player = null;
+			String player2 = null;
 
-            if (identifier >= 0 && identifier < players.length) {
-                player = players[identifier];
-            }
+            String[] callers = config.getActiveCallers().split(", ");
+            String[] targets = config.getTargetedSnipes().split(", ");
 
-            if (player == null) {
-                return;
-            }
+			if (identifier >= 0 && identifier < players.length)
+			{
+				player = players[identifier];
+				player2 = players[identifier].getName();
+			}
 
-            Color color = null;
+			if (player == null)
+			{
+				return;
+			}
 
-            if (config.highlightSnipes())
+			Color color = null;
+
+			if (config.highLightCallers() && ArrayUtils.contains(callers, player2))
+			{
+				color = config.getCallerColor();
+			}
+
+			if (config.highlightSnipes() && ArrayUtils.contains(targets, player2))
             {
                 color = config.getSnipeColor();
-            }
-            else if (config.highLightCallers())
-            {
-                color = config.getCallerColor();
-            }
+			}
 
-            if (color != null)
-            {
-                MenuEntry[] menuEntries = client.getMenuEntries();
-                MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
+			if (color != null)
+			{
+				MenuEntry[] menuEntries = client.getMenuEntries();
+				MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
+				String target = lastEntry.getTarget();
 
-                if (color != null)
-                {
-                    String[] callers = config.getActiveCallers().split(", ");
-                    for (int i = 0; i < callers.length; i++) {
-                        if (player.getName().equalsIgnoreCase(callers[i])) {
-                            String caller = lastEntry.getTarget();
-                            int idx = caller.indexOf('>');
-                            if (idx != -1)
-                            {
-                                caller = caller.substring(idx + 1);
-                                lastEntry.setTarget("<col=" + Integer.toHexString(color.getRGB() & 0xFFFFFF) + ">" + caller);
-                            }
-                        }
-                    }
-                }
-
-                client.setMenuEntries(menuEntries);
-            }
-        }
-    }
+				// strip out existing <col...
+				int idx = target.indexOf('>');
+				if (idx != -1)
+				{
+					target = target.substring(idx + 1);
+				}
+				lastEntry.setTarget("<col=" + Integer.toHexString(color.getRGB() & 0xFFFFFF) + ">" + target);
+				client.setMenuEntries(menuEntries);
+			}
+		}
+	}
 }
