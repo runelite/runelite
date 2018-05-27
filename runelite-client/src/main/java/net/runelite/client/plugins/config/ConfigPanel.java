@@ -89,6 +89,7 @@ import net.runelite.client.util.SwingUtil;
 public class ConfigPanel extends PluginPanel
 {
 	private static final int SPINNER_FIELD_WIDTH = 6;
+	private static final Dimension CONFIG_ROW_DIMENSIONS = new Dimension(PluginPanel.PANEL_WIDTH, 30);
 
 	private static final ImageIcon CONFIG_ICON;
 	private static final ImageIcon CONFIG_ICON_HOVER;
@@ -136,7 +137,7 @@ public class ConfigPanel extends PluginPanel
 		this.chatColorConfig = chatColorConfig;
 
 		searchBar.setIcon(SEARCH);
-		searchBar.setPreferredSize(new Dimension(100, 30));
+		searchBar.setPreferredSize(CONFIG_ROW_DIMENSIONS);
 		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		searchBar.getDocument().addDocumentListener(new DocumentListener()
@@ -160,8 +161,8 @@ public class ConfigPanel extends PluginPanel
 			}
 		});
 
-		setBorder(new EmptyBorder(10, 10, 10, 10));
-		setLayout(new DynamicGridLayout(0, 1, 0, 5));
+		setBorder(new EmptyBorder(10, 0, 0, 0));
+		setLayout(new DynamicGridLayout(0, 1, 0, 0));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		rebuildPluginList();
@@ -184,11 +185,10 @@ public class ConfigPanel extends PluginPanel
 				final JPanel groupPanel = buildGroupPanel();
 
 				JLabel name = new JLabel(pluginName);
-				name.setForeground(Color.WHITE);
-
 				groupPanel.add(name, BorderLayout.CENTER);
 
 				final JPanel buttonPanel = new JPanel();
+				buttonPanel.setOpaque(false);
 				buttonPanel.setLayout(new GridLayout(1, 2));
 				groupPanel.add(buttonPanel, BorderLayout.LINE_END);
 
@@ -205,6 +205,17 @@ public class ConfigPanel extends PluginPanel
 		addCoreConfig(newChildren, "RuneLite", runeLiteConfig);
 		addCoreConfig(newChildren, "Chat Color", chatColorConfig);
 
+		// Apply striping to alternating rows
+		boolean applyStripe = false;
+		for (JPanel panel : newChildren.values())
+		{
+			if (applyStripe)
+			{
+				panel.setBackground(ColorScheme.DARK_GRAY_STRIPE_COLOR);
+			}
+			applyStripe = !applyStripe;
+		}
+
 		children = newChildren;
 		openConfigList();
 	}
@@ -214,11 +225,10 @@ public class ConfigPanel extends PluginPanel
 		final JPanel groupPanel = buildGroupPanel();
 
 		JLabel name = new JLabel(configName);
-		name.setForeground(Color.WHITE);
-
 		groupPanel.add(name, BorderLayout.CENTER);
 
 		final JPanel buttonPanel = new JPanel();
+		buttonPanel.setOpaque(false);
 		buttonPanel.setLayout(new GridLayout(1, 2));
 		groupPanel.add(buttonPanel, BorderLayout.LINE_END);
 
@@ -236,8 +246,9 @@ public class ConfigPanel extends PluginPanel
 	{
 		// Create base panel for the config button and enabled/disabled button
 		final JPanel groupPanel = new JPanel();
+		groupPanel.setBorder(new EmptyBorder(0, 10, 0, 10));
 		groupPanel.setLayout(new BorderLayout(3, 0));
-		groupPanel.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, 20));
+		groupPanel.setPreferredSize(CONFIG_ROW_DIMENSIONS);
 		return groupPanel;
 	}
 
@@ -372,6 +383,7 @@ public class ConfigPanel extends PluginPanel
 
 		JLabel title = new JLabel("Configuration", SwingConstants.LEFT);
 		title.setForeground(Color.WHITE);
+		title.setBorder(new EmptyBorder(1, 10, 10, 10));
 
 		add(title);
 		add(searchBar);
@@ -403,6 +415,7 @@ public class ConfigPanel extends PluginPanel
 		if (component instanceof JCheckBox)
 		{
 			JCheckBox checkbox = (JCheckBox) component;
+			checkbox.setOpaque(false);
 			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + checkbox.isSelected());
 		}
 
@@ -436,11 +449,13 @@ public class ConfigPanel extends PluginPanel
 		scrollBarPosition = getScrollPane().getVerticalScrollBar().getValue();
 		removeAll();
 		String name = cd.getGroup().name() + " Configuration";
-		JLabel title = new JLabel(name, SwingConstants.CENTER);
+		JLabel title = new JLabel(name);
 		title.setForeground(Color.WHITE);
+		title.setBorder(new EmptyBorder(1, 10, 10, 10));
 		title.setToolTipText(cd.getGroup().description());
 		add(title);
 
+		boolean applyStripe = false;
 		for (ConfigItemDescriptor cid : cd.getItems())
 		{
 			if (cid.getItem().hidden())
@@ -449,16 +464,17 @@ public class ConfigPanel extends PluginPanel
 			}
 
 			JPanel item = new JPanel();
+			item.setOpaque(false);
 			item.setLayout(new BorderLayout());
 			name = cid.getItem().name();
 			JLabel configEntryName = new JLabel(name);
-			configEntryName.setForeground(Color.WHITE);
 			configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
 			item.add(configEntryName, BorderLayout.CENTER);
 
 			if (cid.getType() == boolean.class)
 			{
 				JCheckBox checkbox = new JCheckBox();
+				checkbox.setOpaque(false);
 				checkbox.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
 				checkbox.setSelected(Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName())));
 				checkbox.addActionListener(ae -> changeConfiguration(config, checkbox, cd, cid));
@@ -599,8 +615,28 @@ public class ConfigPanel extends PluginPanel
 				item.add(box, BorderLayout.EAST);
 			}
 
-			add(item);
+			JPanel itemContainer = new JPanel();
+			itemContainer.setOpaque(false);
+			itemContainer.setLayout(new BorderLayout());
+			itemContainer.setBorder(new EmptyBorder(3, 10, 3, 10));
+			itemContainer.setPreferredSize(CONFIG_ROW_DIMENSIONS);
+			itemContainer.add(item);
+
+			// Apply striping to alternating rows
+			if (applyStripe)
+			{
+				itemContainer.setBackground(ColorScheme.DARK_GRAY_STRIPE_COLOR);
+				itemContainer.setOpaque(true);
+			}
+			applyStripe = !applyStripe;
+
+			add(itemContainer);
 		}
+
+		JPanel buttonContainer = new JPanel();
+		buttonContainer.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		buttonContainer.setLayout(new GridLayout(2, 0, 0, 5));
+		buttonContainer.setBorder(new EmptyBorder(10, 10, 10, 10));
 
 		JButton resetButton = new JButton("Reset");
 		resetButton.addActionListener((e) ->
@@ -610,11 +646,13 @@ public class ConfigPanel extends PluginPanel
 			// Reload configuration panel
 			openGroupConfigPanel(config, cd, configManager);
 		});
-		add(resetButton);
+		buttonContainer.add(resetButton);
 
 		JButton backButton = new JButton("Back");
 		backButton.addActionListener(e -> openConfigList());
-		add(backButton);
+		buttonContainer.add(backButton);
+
+		add(buttonContainer);
 
 		revalidate();
 		getScrollPane().getVerticalScrollBar().setValue(0);

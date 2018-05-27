@@ -44,6 +44,7 @@ public class ColorScheme
 
 	public static final Color DARKER_GRAY_HOVER_COLOR = new Color(60,  60 , 60);
 	public static final Color DARK_GRAY_HOVER_COLOR = new Color(35, 35, 35);
+	public static final Color DARK_GRAY_STRIPE_COLOR = new Color(45, 45, 45);
 
 	/* The color for the green progress bar (used in ge offers, farming tracker, etc)*/
 	public static final Color PROGRESS_COMPLETE_COLOR = new Color(55, 240, 70);
