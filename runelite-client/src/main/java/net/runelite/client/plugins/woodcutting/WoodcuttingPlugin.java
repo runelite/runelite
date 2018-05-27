@@ -26,9 +26,16 @@ package net.runelite.client.plugins.woodcutting;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.time.Duration;
+import java.time.Instant;
 import javax.inject.Inject;
+import lombok.Getter;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.Player;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -47,12 +54,19 @@ public class WoodcuttingPlugin extends Plugin
 	private Notifier notifier;
 
 	@Inject
+	private Client client;
+
+	@Inject
 	private WoodcuttingOverlay overlay;
 
 	@Inject
 	private WoodcuttingConfig config;
 
-	private final WoodcuttingSession session = new WoodcuttingSession();
+	@Getter
+	private WoodcuttingSession session;
+
+	@Getter
+	private Axe axe;
 
 	@Provides
 	WoodcuttingConfig getConfig(ConfigManager configManager)
@@ -66,9 +80,29 @@ public class WoodcuttingPlugin extends Plugin
 		return overlay;
 	}
 
-	public WoodcuttingSession getSession()
+	@Override
+	protected void shutDown() throws Exception
 	{
-		return session;
+		session = null;
+		axe = null;
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		if (session == null || session.getLastLogCut() == null)
+		{
+			return;
+		}
+
+		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
+		Duration sinceCut = Duration.between(session.getLastLogCut(), Instant.now());
+
+		if (sinceCut.compareTo(statTimeout) >= 0)
+		{
+			session = null;
+			axe = null;
+		}
 	}
 
 	@Subscribe
@@ -78,6 +112,11 @@ public class WoodcuttingPlugin extends Plugin
 		{
 			if (event.getMessage().startsWith("You get some") && event.getMessage().endsWith("logs."))
 			{
+				if (session == null)
+				{
+					session = new WoodcuttingSession();
+				}
+
 				session.setLastLogCut();
 			}
 
@@ -85,6 +124,24 @@ public class WoodcuttingPlugin extends Plugin
 			{
 				notifier.notify("A bird nest has spawned!");
 			}
+		}
+	}
+
+	@Subscribe
+	public void onAnimationChanged(final AnimationChanged event)
+	{
+		Player local = client.getLocalPlayer();
+
+		if (event.getActor() != local)
+		{
+			return;
+		}
+
+		int animId = local.getAnimation();
+		Axe axe = Axe.findAxeByAnimId(animId);
+		if (axe != null)
+		{
+			this.axe = axe;
 		}
 	}
 }
