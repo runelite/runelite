@@ -71,6 +71,7 @@ class LootRecorderPanel extends PluginPanel
 		tabsPanel.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 	}
 
+	// Creates the side panel for this plugin, including the different tabs inside it
 	private void createPanel(LootRecorderPanel panel)
 	{
 		// Create each Tab of the Panel
@@ -93,6 +94,7 @@ class LootRecorderPanel extends PluginPanel
 		panel.add(refresh);
 	}
 
+	// Wrapper for creating LootPanel
 	private LootPanel createLootPanel(Tab tab)
 	{
 		// Grab Tab Data
@@ -104,6 +106,7 @@ class LootRecorderPanel extends PluginPanel
 		return new LootPanel(data, sets, itemManager);
 	}
 
+	// Refresh the entire Tab Panel
 	private void refreshPanel(LootRecorderPanel panel)
 	{
 		// Refresh Log Data
@@ -118,6 +121,7 @@ class LootRecorderPanel extends PluginPanel
 		panel.repaint();
 	}
 
+	// Refresh the Loot Panel with updated data (requests the data from file)
 	private void refreshLootPanel(LootPanel lootPanel, Tab tab)
 	{
 		// Refresh data for necessary tab
@@ -178,6 +182,7 @@ class LootRecorderPanel extends PluginPanel
 		lootMap.put(tab.getName().toUpperCase(), lootPanel);
 	}
 
+	// Helps with dynamically adding/removing panel tabs in the correct positions.
 	private int adjustTabIndex(int wantedIndex)
 	{
 		int insertTabAt = tabsPanel.getTabCount();
@@ -207,9 +212,11 @@ class LootRecorderPanel extends PluginPanel
 		return insertTabAt;
 	}
 
+	// Removes tab by name using its current position
 	private void removeTabPosition(String tabName)
 	{
 		int index = tabPositions.get(tabName);
+		// Adjust index for every tab behind this one
 		for (Map.Entry<String, Integer> entry : tabPositions.entrySet())
 		{
 			if (entry.getValue() > index)
@@ -219,27 +226,32 @@ class LootRecorderPanel extends PluginPanel
 		}
 		tabPositions.remove(tabName);
 	}
+
+	// Removes the panel for this Tab
 	private void removeTab(Tab tab)
 	{
 		String tabName = tab.getName().toUpperCase();
 		JPanel panel = tabsMap.get(tabName);
-
+		// Remove from panel
 		panel.getParent().remove(panel);
+		// Remove from/update mapping variables
 		tabsMap.remove(tabName);
 		removeTabPosition(tabName);
 	}
 
+	// Updates panel for this tab name
 	void updateTab(String tabName)
 	{
 		Tab tab = Tab.getByName(tabName);
 		// Reload data from file to ensure data and UI match
 		lootRecorderPlugin.loadTabData(tab);
 		// Grab LootPanel that needs to be updated
-		LootPanel p = lootMap.get(tab.getName().toUpperCase());
+		LootPanel lootPanel = lootMap.get(tab.getName().toUpperCase());
 		// Invoke Later to ensure EDT thread
-		SwingUtilities.invokeLater(() -> p.updateRecords(lootRecorderPlugin.getData(tabName)));
+		SwingUtilities.invokeLater(() -> lootPanel.updateRecords(lootRecorderPlugin.getData(tabName)));
 	}
 
+	// Toggles Tab panel visibility
 	void toggleTab(String tabName, Boolean status)
 	{
 		Tab tab = Tab.getByName(tabName);
