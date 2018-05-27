@@ -208,16 +208,7 @@ class XpInfoBox extends JPanel
 
 	public static String htmlLabel(String key, int value)
 	{
-		String valueStr = value + "";
-
-		if (value > 9999999 || value < -9999999)
-		{
-			valueStr = "Lots!";
-		}
-		else
-		{
-			valueStr = StackFormatter.quantityToRSDecimalStack(value);
-		}
+		String valueStr = StackFormatter.quantityToRSDecimalStack(value);
 
 		return "<html><body style = 'color:" + SwingUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "'>" + key + "<span style = 'color:white'>" + valueStr + "</span></body></html>";
 	}
