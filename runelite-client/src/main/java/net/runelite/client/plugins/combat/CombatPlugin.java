@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.combat;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.text.DecimalFormat;
@@ -32,6 +33,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
@@ -47,7 +49,14 @@ import net.runelite.client.ui.overlay.Overlay;
 public class CombatPlugin extends Plugin
 {
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.###");
-	private static final int FIXED_VIEWPORT_MULTI_Y = 300;
+	private static final int FIXED_VIEWPORT_MULTI_ADJUSTED = 300;
+	private static final int FIXED_VIEWPORT_MULTI_DEFAULT = 296;
+
+	private static final ImmutableList<WorldType> EXCLUDE_WORLD_TYPES = ImmutableList.of(
+		WorldType.DEADMAN,
+		WorldType.SEASONAL_DEADMAN,
+		WorldType.PVP,
+		WorldType.PVP_HIGH_RISK);
 
 	@Inject
 	private CombatOverlay overlay;
@@ -74,35 +83,41 @@ public class CombatPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		restoreCombatLevel();
+		restoreWidgetPosition();
 	}
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged configChanged)
 	{
-		if (configChanged.getGroup().equals("combat")
-			|| !config.showCombatDecimals())
+		if (configChanged.getGroup().equals("combat"))
 		{
-			restoreCombatLevel();
+			if (!config.showCombatDecimals())
+			{
+				restoreCombatLevel();
+			}
+			else if (!config.showCombatRange())
+			{
+				restoreWidgetPosition();
+			}
 		}
 	}
 
 	@Subscribe
 	public void updateCombatLevel(GameTick event)
 	{
-		Widget multiWidget = client.getWidget(WidgetInfo.FIXED_VIEWPORT_MULTI_INDICATOR);
-		if (multiWidget != null)
-		{
-			multiWidget.setRelativeY(FIXED_VIEWPORT_MULTI_Y);
-		}
-
-		if (client.getGameState() != GameState.LOGGED_IN
-			|| !config.showCombatDecimals())
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
 
+		Widget multiWidget = client.getWidget(WidgetInfo.FIXED_VIEWPORT_MULTI_INDICATOR);
+		if (config.showCombatRange() && multiWidget != null && !isExcludedWorld())
+		{
+			multiWidget.setRelativeY(FIXED_VIEWPORT_MULTI_ADJUSTED);
+		}
+
 		Widget combatLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
-		if (combatLevelWidget == null)
+		if (!config.showCombatDecimals() || combatLevelWidget == null)
 		{
 			return;
 		}
@@ -120,6 +135,11 @@ public class CombatPlugin extends Plugin
 		combatLevelWidget.setText("Combat Lvl: " + DECIMAL_FORMAT.format(combatLevelPrecise));
 	}
 
+	public boolean isExcludedWorld()
+	{
+		return EXCLUDE_WORLD_TYPES.stream().anyMatch(entry -> client.getWorldType().contains(entry));
+	}
+
 	private void restoreCombatLevel()
 	{
 		Widget combatLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
@@ -131,6 +151,15 @@ public class CombatPlugin extends Plugin
 			{
 				combatLevelWidget.setText(widgetText.substring(0, widgetText.indexOf(".")));
 			}
+		}
+	}
+
+	private void restoreWidgetPosition()
+	{
+		Widget multiWidget = client.getWidget(WidgetInfo.FIXED_VIEWPORT_MULTI_INDICATOR);
+		if (multiWidget != null)
+		{
+			multiWidget.setRelativeY(FIXED_VIEWPORT_MULTI_DEFAULT);
 		}
 	}
 }

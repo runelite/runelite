@@ -25,14 +25,12 @@
  */
 package net.runelite.client.plugins.combat;
 
-import com.google.common.collect.ImmutableList;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.WorldType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
@@ -47,64 +45,55 @@ public class CombatOverlay extends Overlay
 	private static final int FIXED_VIEWPORT_OFFSET_X = 4;
 	private static final int FIXED_VIEWPORT_OFFSET_Y = 4;
 
-	private static final ImmutableList<WorldType> EXCLUDE_WORLD_TYPES = ImmutableList.of(
-		WorldType.DEADMAN,
-		WorldType.SEASONAL_DEADMAN,
-		WorldType.PVP,
-		WorldType.PVP_HIGH_RISK);
-
 	private Client client;
 
 	private CombatConfig config;
 
+	private CombatPlugin plugin;
+
 	@Inject
-	CombatOverlay(Client client, CombatConfig config)
+	CombatOverlay(Client client, CombatConfig config, CombatPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.config = config;
+		this.plugin = plugin;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (isExcludedWorld() || !config.showCombatRange())
+		if (!isWidgetVisible(client.getWidget(WidgetInfo.WILDERNESS_CONTAINER))
+			|| plugin.isExcludedWorld()
+			|| !config.showCombatRange())
 		{
 			return null;
 		}
 
-		if (isWidgetVisible(client.getWidget(WidgetInfo.WILDERNESS_CONTAINER)))
+		Widget wildernessWidget = client.getWidget(WidgetInfo.WILDERNESS_CONTAINER);
+
+		int centerX = wildernessWidget.getRelativeX() + wildernessWidget.getWidth() / 2;
+		int centerY = wildernessWidget.getRelativeY() + wildernessWidget.getHeight() + TEXT_OFFSET;
+
+		if (isWidgetVisible(client.getWidget(WidgetInfo.FIXED_VIEWPORT)))
 		{
-			Widget wildernessWidget = client.getWidget(WidgetInfo.WILDERNESS_CONTAINER);
-
-			int centerX = wildernessWidget.getRelativeX() + wildernessWidget.getWidth() / 2;
-			int centerY = wildernessWidget.getRelativeY() + wildernessWidget.getHeight() + TEXT_OFFSET;
-
-			if (isWidgetVisible(client.getWidget(WidgetInfo.FIXED_VIEWPORT)))
-			{
-				centerX += FIXED_VIEWPORT_OFFSET_X;
-				centerY += FIXED_VIEWPORT_OFFSET_Y;
-			}
-
-			Widget textWidget = client.getWidget(WidgetInfo.WILDERNESS_LEVEL);
-			textWidget.setTextColor(getDecimalColor(TEXT_COLOR_FRONT));
-
-			String bracketText = getCombatRange(client.getWidget(WidgetInfo.WILDERNESS_LEVEL).getText());
-			int offsetX = graphics.getFontMetrics().stringWidth(bracketText) / 2;
-
-			graphics.setColor(TEXT_COLOR_BACKGROUND);
-			graphics.drawString(bracketText, centerX - offsetX + 1, centerY + 1);
-
-			graphics.setColor(TEXT_COLOR_FRONT);
-			graphics.drawString(bracketText, centerX - offsetX, centerY);
+			centerX += FIXED_VIEWPORT_OFFSET_X;
+			centerY += FIXED_VIEWPORT_OFFSET_Y;
 		}
 
-		return null;
-	}
+		Widget textWidget = client.getWidget(WidgetInfo.WILDERNESS_LEVEL);
+		textWidget.setTextColor(getDecimalColor(TEXT_COLOR_FRONT));
 
-	private boolean isExcludedWorld()
-	{
-		return EXCLUDE_WORLD_TYPES.stream().anyMatch(entry -> client.getWorldType().contains(entry));
+		String bracketText = getCombatRange(client.getWidget(WidgetInfo.WILDERNESS_LEVEL).getText());
+		int offsetX = graphics.getFontMetrics().stringWidth(bracketText) / 2;
+
+		graphics.setColor(TEXT_COLOR_BACKGROUND);
+		graphics.drawString(bracketText, centerX - offsetX + 1, centerY + 1);
+
+		graphics.setColor(TEXT_COLOR_FRONT);
+		graphics.drawString(bracketText, centerX - offsetX, centerY);
+
+		return null;
 	}
 
 	private String getCombatRange(String text)
