@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fps;
+package net.runelite.client.plugins.performance;
 
 import java.awt.Image;
 import java.util.function.Consumer;
@@ -46,7 +46,7 @@ public class FpsDrawListener implements Consumer<Image>
 {
 	private static final int SAMPLE_SIZE = 4;
 
-	private final FpsConfig config;
+	private final PerformanceConfig config;
 
 	private long targetDelay = 0;
 
@@ -60,7 +60,7 @@ public class FpsDrawListener implements Consumer<Image>
 	private long sleepDelay = 0;
 
 	@Inject
-	private FpsDrawListener(FpsConfig config)
+	private FpsDrawListener(PerformanceConfig config)
 	{
 		this.config = config;
 		reloadConfig();

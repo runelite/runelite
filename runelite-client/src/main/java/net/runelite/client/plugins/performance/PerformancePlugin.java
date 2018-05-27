@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fps;
+package net.runelite.client.plugins.performance;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
@@ -49,22 +49,28 @@ import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.overlay.Overlay;
 
 /**
- * FPS Control has two primary areas, this plugin class just keeps those areas up to date and handles setup / teardown.
+ * Performance has a few areas, this plugin class just keeps those areas up to date and handles setup / teardown.
  *
- * <p>Overlay paints the current FPS, the color depends on whether or not FPS is being enforced.
- * The overlay is lightweight and is merely and indicator.
+ * <p>Overlay paints the current FPS and ping, both are toggled for display.
+ * For FPS, the color depends on whether or not FPS is being enforced.
+ * For Ping, the color depends on the value, &lt;50 green, &lt;100 yellow, &gt;=100 red.
+ * The overlay is lightweight and is merely and indicator, it does not
  *
  * <p>Draw Listener, sleeps a calculated amount after each canvas paint operation.
- * This is the heart of the plugin, the amount of sleep taken is regularly adjusted to account varying
+ * This is the heart of the FPS control, the amount of sleep taken is regularly adjusted to account varying
  * game and system load, it usually finds the sweet spot in about two seconds.
+ *
+ * <p>Pinging the world, when logged in and ping display is enabled, every 5 seconds the remote server
+ * for the current world is pinged. A scheduled method in this class is responsible for that. When ping fails
+ * or those conditions are not met, ping will have the value of -1.
  */
 @PluginDescriptor(
-	name = "FPS Control",
+	name = "Performance",
 	enabledByDefault = false
 )
-public class FpsPlugin extends Plugin
+public class PerformancePlugin extends Plugin
 {
-	static final String CONFIG_GROUP_KEY = "fpscontrol";
+	static final String CONFIG_GROUP_KEY = "performance";
 
 	ScheduledExecutorService scheduledExecutorService;
 
@@ -75,7 +81,7 @@ public class FpsPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private FpsOverlay overlay;
+	private PerformanceOverlay overlay;
 
 	@Inject
 	private FpsDrawListener drawListener;
@@ -84,12 +90,12 @@ public class FpsPlugin extends Plugin
 	private DrawManager drawManager;
 
 	@Inject
-	private FpsConfig fpsConfig;
+	private PerformanceConfig performanceConfig;
 
 	@Provides
-	FpsConfig provideConfig(ConfigManager configManager)
+	PerformanceConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(FpsConfig.class);
+		return configManager.getConfig(PerformanceConfig.class);
 	}
 
 	@Override
@@ -132,7 +138,7 @@ public class FpsPlugin extends Plugin
 
 	public void getPingToCurrentWorld()
 	{
-		if (client.getGameState().equals(GameState.LOGGED_IN) && fpsConfig.drawPing())
+		if (client.getGameState().equals(GameState.LOGGED_IN) && performanceConfig.drawPing())
 		{
 			ping = pingWorld(client.getWorld());
 		}

@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fps;
+package net.runelite.client.plugins.performance;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -40,29 +40,33 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
 /**
- * The built in FPS overlay has a few problems that this one does not have, most of all: it is distracting.
- * 1. The built in one also shows memory, which constantly fluctuates and garbage collects.
- * It is useful for devs profiling memory.
- * 2. The built in one shifts around constantly because it is not monospace.
- * This locks "FPS:" into one position (the far top right corner of the canvas),
- * along with a locked position for the FPS value.
+ * The native FPS/memory overlay has a few problems that this one does not have, most of all: it is distracting.
+ *
+ * <ul compact>
+ * <li> The built in one also shows memory, which constantly fluctuates and garbage collects.
+ *  It is useful for devs profiling memory, but not to most players.
+ * <li> The built in one shifts around constantly.
+ * </ul>
+ *
+ * <p>This locks "## FPS" into one position (the far top right corner of the canvas) right aligned
+ * Ping time to the current logged in server is also available (refreshed every 5 seconds) in the form "###ms"
  */
-public class FpsOverlay extends Overlay
+public class PerformanceOverlay extends Overlay
 {
 	private static final int Y_OFFSET = 14;
 
 	// Local dependencies
-	private final FpsConfig config;
+	private final PerformanceConfig config;
 	private final Client client;
 
 	@Inject
-	private FpsPlugin plugin;
+	private PerformancePlugin plugin;
 
 	// Often changing values
 	private boolean isFocused = true;
 
 	@Inject
-	private FpsOverlay(FpsConfig config, Client client)
+	private PerformanceOverlay(PerformanceConfig config, Client client)
 	{
 		this.config = config;
 		this.client = client;

@@ -22,18 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fps;
+package net.runelite.client.plugins.performance;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-	keyName = FpsPlugin.CONFIG_GROUP_KEY,
-	name = "FPS Control",
+	keyName = PerformancePlugin.CONFIG_GROUP_KEY,
+	name = "Performance",
 	description = "Lets you control what your game frame rate is, often helps keep CPU down too"
 )
-public interface FpsConfig extends Config
+public interface PerformanceConfig extends Config
 {
 	@ConfigItem(
 		keyName = "limitMode",
