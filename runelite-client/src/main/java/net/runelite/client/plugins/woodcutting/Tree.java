@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Mantautas Jurksa <https://github.com/Juzzed>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,58 +24,39 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.util.HashMap;
+import java.util.Map;
+import lombok.Getter;
+import static net.runelite.api.ObjectID.REDWOOD;
+import static net.runelite.api.ObjectID.REDWOOD_29670;
 
-@ConfigGroup(
-	keyName = "woodcutting",
-	name = "Woodcutting",
-	description = "Configuration for the woodcutting plugin"
-)
-public interface WoodcuttingConfig extends Config
+@Getter
+enum Tree
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "statTimeout",
-		name = "Reset stats (minutes)",
-		description = "Configures the time until statistic is reset. Also configures when tree indicator is hidden"
-	)
-	default int statTimeout()
+	REDWOOD_TREE_SPAWN(REDWOOD, REDWOOD_29670);
+
+	private final int[] treeIds;
+
+	Tree(int... treeIds)
 	{
-		return 5;
+		this.treeIds = treeIds;
 	}
 
-	@ConfigItem(
-		position = 2,
-		keyName = "showNestNotification",
-		name = "Bird nest notification",
-		description = "Configures whether to notify you of a bird nest spawn"
-	)
-	default boolean showNestNotification()
+	private static final Map<Integer, Tree> TREES = new HashMap<>();
+
+	static
 	{
-		return true;
+		for (Tree tree : values())
+		{
+			for (int treeId : tree.treeIds)
+			{
+				TREES.put(treeId, tree);
+			}
+		}
 	}
 
-	@ConfigItem(
-		position = 3,
-		keyName = "showWoodcuttingStats",
-		name = "Show session stats",
-		description = "Configures whether to display woodcutting session stats"
-	)
-	default boolean showWoodcuttingStats()
+	static Tree findTree(int objectId)
 	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 4,
-		keyName = "showRedwoods",
-		name = "Show Redwood trees",
-		description = "Configures whether to show a indicator for redwood trees"
-	)
-	default boolean showRedwoodTrees()
-	{
-		return true;
+		return TREES.get(objectId);
 	}
 }
