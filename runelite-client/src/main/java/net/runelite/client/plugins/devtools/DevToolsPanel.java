@@ -200,6 +200,14 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(graphicsObjectsBtn);
 
+		final JButton cameraPositionBtn = new JButton("Camera Position");
+		cameraPositionBtn.addActionListener(e ->
+		{
+			highlightButton(cameraPositionBtn);
+			plugin.toggleCamera();
+		});
+		container.add(cameraPositionBtn);
+
 		return container;
 	}
 
