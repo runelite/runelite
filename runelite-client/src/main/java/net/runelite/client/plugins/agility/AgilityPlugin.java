@@ -39,6 +39,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.ItemLayer;
 import net.runelite.api.Node;
+import net.runelite.api.Player;
 import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
@@ -266,7 +267,14 @@ public class AgilityPlugin extends Plugin
 
 	private boolean isInAgilityArena()
 	{
-		return AGILITY_ARENA_REGION_ID == client.getLocalPlayer().getWorldLocation().getRegionID();
+		Player local = client.getLocalPlayer();
+		if (local == null)
+		{
+			return false;
+		}
+
+		WorldPoint location = local.getWorldLocation();
+		return location.getRegionID() == AGILITY_ARENA_REGION_ID;
 	}
 
 	private void removeAgilityArenaTimer()
