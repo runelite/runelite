@@ -109,7 +109,23 @@ enum TeleportLocationData
 	DESERT_EAGLE_STATION(TeleportType.JEWELLERY, "Necklace of Passage" , "Desert eagle station of the eagle transport system", new WorldPoint(3406, 3157, 0), "necklace_of_passage_teleport_icon.png"),
 	CHAOS_TEMPLE(TeleportType.JEWELLERY, "Burning Amulet" , "Chaos Temple (lvl 15)", new WorldPoint(3234, 3637, 0), "burning_amulet_teleport_icon.png"),
 	BANDIT_CAMP(TeleportType.JEWELLERY, "Burning Amulet" , "Bandit Camp (lvl 17)", new WorldPoint(3038, 3651, 0), "burning_amulet_teleport_icon.png"),
-	LAVA_MAZE(TeleportType.JEWELLERY, "Burning Amulet" , "Lava Maze (lvl 41)", new WorldPoint(3028, 3840, 0), "burning_amulet_teleport_icon.png");
+	LAVA_MAZE(TeleportType.JEWELLERY, "Burning Amulet" , "Lava Maze (lvl 41)", new WorldPoint(3028, 3840, 0), "burning_amulet_teleport_icon.png"),
+
+	// Misc
+	XERICS_LOOKOUT(TeleportType.OTHER, "Xeric's Talisman", "Xeric's Lookout", new WorldPoint(1576, 3528, 0), "xerics_talisman_teleport_icon.png"),
+	XERICS_GLADE(TeleportType.OTHER, "Xeric's Talisman", "Xeric's Glade", new WorldPoint(1773, 3502, 0), "xerics_talisman_teleport_icon.png"),
+	XERICS_INFERNO(TeleportType.OTHER, "Xeric's Talisman", "Xeric's Inferno", new WorldPoint(1504, 3819, 0), "xerics_talisman_teleport_icon.png"),
+	XERICS_HEART(TeleportType.OTHER, "Xeric's Talisman", "Xeric's Heart", new WorldPoint(1641, 3670, 0), "xerics_talisman_teleport_icon.png"),
+	XERICS_HONOUR(TeleportType.OTHER, "Xeric's Talisman", "Xeric's Honour", new WorldPoint(1254, 3559, 0), "xerics_talisman_teleport_icon.png"),
+	STRONGHOLD_OF_SECURITY(TeleportType.OTHER, "Skull Sceptre", "Stronghold of Security", new WorldPoint(3081, 3421, 0), "skull_sceptre_teleport_icon.png"),
+	MYTHS_GUILD(TeleportType.OTHER, "Mythical Cape", "Myth's Guild", new WorldPoint(2458, 2851, 0), "mythical_cape_teleport_icon.png"),
+	ECTOFUNTUS(TeleportType.OTHER, "Ectophial", "Ectofuntus", new WorldPoint(3660, 3522, 0), "ectophial_teleport_icon.png"),
+	CHAMPIONS_GUILD_CHRONICLE(TeleportType.OTHER, "Chronicle", "Champion's Guild", new WorldPoint(3202, 3357, 0), "chronicle_teleport_icon.png"),
+	GRAND_TREE(TeleportType.OTHER, "Royal Seed Pod", "Grand Tree", new WorldPoint(2465, 3495, 0), "royal_seed_pod_teleport_icon.png"),
+	RELLEKKKA_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Rellekka", new WorldPoint(2664, 3643, 0), "enchanted_lyre_teleport_icon.png"),
+	WATERBIRTH_ISLAND_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Waterbirth Island", new WorldPoint(2550, 3756, 0), "enchanted_lyre_teleport_icon.png"),
+	NEITIZNOT_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Neitiznot", new WorldPoint(2336, 3801, 0), "enchanted_lyre_teleport_icon.png"),
+	JATIZSO_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Jatizso", new WorldPoint(2409, 3809, 0), "enchanted_lyre_teleport_icon.png");
 
 	private final TeleportType type;
 	private final String tooltip;
