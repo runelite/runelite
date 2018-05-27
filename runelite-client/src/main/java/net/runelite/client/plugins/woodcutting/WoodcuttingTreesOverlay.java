@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,87 +25,52 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.Skill;
-import net.runelite.client.plugins.xptracker.XpTrackerService;
+import net.runelite.api.GameObject;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
-class WoodcuttingOverlay extends Overlay
+class WoodcuttingTreesOverlay extends Overlay
 {
 	private final Client client;
-	private final WoodcuttingPlugin plugin;
 	private final WoodcuttingConfig config;
-	private final XpTrackerService xpTrackerService;
-	private final PanelComponent panelComponent = new PanelComponent();
+	private final ItemManager itemManager;
+	private final WoodcuttingPlugin plugin;
 
 	@Inject
-	private WoodcuttingOverlay(Client client, WoodcuttingPlugin plugin, WoodcuttingConfig config, XpTrackerService xpTrackerService)
+	private WoodcuttingTreesOverlay(final Client client, final WoodcuttingConfig config, final ItemManager itemManager, final WoodcuttingPlugin plugin)
 	{
-		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
-		this.plugin = plugin;
 		this.config = config;
-		this.xpTrackerService = xpTrackerService;
+		this.itemManager = itemManager;
+		this.plugin = plugin;
+		setLayer(OverlayLayer.ABOVE_SCENE);
+		setPosition(OverlayPosition.DYNAMIC);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showWoodcuttingStats())
+		if (plugin.getSession() == null || !config.showRedwoodTrees())
 		{
 			return null;
 		}
 
-		WoodcuttingSession session = plugin.getSession();
-		if (session == null)
+		for (GameObject treeObject : plugin.getTreeObjects())
 		{
-			return null;
-		}
-
-		panelComponent.getChildren().clear();
-
-		Axe axe = plugin.getAxe();
-		if (axe != null && axe.getAnimId() == client.getLocalPlayer().getAnimation())
-		{
-			panelComponent.getChildren().add(TitleComponent.builder()
-				.text("Woodcutting")
-				.color(Color.GREEN)
-				.build());
-		}
-		else
-		{
-			panelComponent.getChildren().add(TitleComponent.builder()
-				.text("NOT woodcutting")
-				.color(Color.RED)
-				.build());
-		}
-
-		int actions = xpTrackerService.getActions(Skill.WOODCUTTING);
-		if (actions > 0)
-		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Logs cut:")
-				.right(Integer.toString(actions))
-				.build());
-
-			if (actions > 2)
+			if (treeObject.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) <= 12)
 			{
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Logs/hr:")
-					.right(Integer.toString(xpTrackerService.getActionsHr(Skill.WOODCUTTING)))
-					.build());
+				Axe axe = plugin.getAxe();
+				OverlayUtil.renderImageLocation(client, graphics, treeObject.getLocalLocation(), itemManager.getImage(axe.getItemId()), 120);
 			}
 		}
 
-		return panelComponent.render(graphics);
+		return null;
 	}
-
 }
