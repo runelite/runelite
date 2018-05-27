@@ -32,12 +32,12 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import lombok.Getter;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemID;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.http.api.item.ItemPrice;
@@ -87,10 +87,15 @@ class LootPanel extends JPanel
 					Integer price;
 					try
 					{
+						// Get item price
 						ItemPrice IM = itemManager.getItemPrice(item.getId());
-						if (IM == null)
+						if (item.getId() == ItemID.COINS_995)
 						{
 							price = 1;
+						}
+						else if (IM == null)
+						{
+							price = 0;
 						}
 						else
 						{
@@ -99,8 +104,11 @@ class LootPanel extends JPanel
 					}
 					catch (IOException e)
 					{
+						// Fallback price = General Store Buy Price (You selling it to the store)
 						price = item.getPrice();
 					}
+
+					// Create the new LootRecord
 					LootRecord entry = new LootRecord(item.getName(), item.getId(), de.getItem_amount(), price, icon, item);
 					this.consolidated.put(item.getName(), entry);
 				}
@@ -138,7 +146,7 @@ class LootPanel extends JPanel
 		c.gridy = 0;
 
 
-		// Attach all the Unique Items
+		// Attach all the Unique Items first
 		this.uniqueMap.forEach((setPosition, set) ->
 		{
 			UniqueItemPanel p = new UniqueItemPanel(set, this.consolidated, panel.itemManager);
@@ -146,8 +154,9 @@ class LootPanel extends JPanel
 			c.gridy++;
 		});
 
-
+		// Track total price of all tracked items for this panel
 		long totalValue = 0;
+		// Ensure it is placed on top of all other panels
 		int totalValueIndex = c.gridy;
 		c.gridy++;
 		// Loop over each unique item and create a LootRecordPanel
@@ -160,6 +169,7 @@ class LootPanel extends JPanel
 			totalValue = totalValue + item.getTotal();
 		}
 
+		// Only add the total value element if it has something useful to display
 		if (totalValue > 0)
 		{
 			c.gridy = totalValueIndex;
@@ -178,7 +188,7 @@ class LootPanel extends JPanel
 	}
 
 	// Refresh the Panel without updating any data
-	void refreshPanel()
+	private void refreshPanel()
 	{
 		this.removeAll();
 		createConsolidatedArray();

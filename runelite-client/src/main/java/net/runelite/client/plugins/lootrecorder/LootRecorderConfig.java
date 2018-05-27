@@ -363,7 +363,7 @@ public interface LootRecorderConfig extends Config
 		keyName = "showChatMessages",
 		name = "In-game Chat Message Alerts",
 		description = "In-Game Chat Messages when Loot Recorded",
-		position = 97
+		position = 96
 	)
 	default boolean showChatMessages()
 	{
@@ -403,17 +403,4 @@ public interface LootRecorderConfig extends Config
 	{
 		return true;
 	}
-
-	@ConfigItem(
-		keyName = "activeTab",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default Tab activeTab()
-	{
-		return Tab.BARROWS;
-	}
-
-	void setActiveTab(Tab activeTab);
 }
