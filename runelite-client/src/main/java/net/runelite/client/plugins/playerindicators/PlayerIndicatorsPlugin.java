@@ -52,7 +52,9 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.warindicators.WarIndicatorConfig;
 import net.runelite.client.ui.overlay.Overlay;
+import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Player Indicators"
@@ -74,11 +76,19 @@ public class PlayerIndicatorsPlugin extends Plugin
 	@Inject
 	private ClanManager clanManager;
 
+	@Inject WarIndicatorConfig warConfig;
+
 	@Provides
 	PlayerIndicatorsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(PlayerIndicatorsConfig.class);
 	}
+
+	@Provides
+    WarIndicatorConfig provideConfig2(ConfigManager configManager)
+    {
+        return configManager.getConfig(WarIndicatorConfig.class);
+    }
 
 	@Override
 	public Collection<Overlay> getOverlays()
@@ -111,10 +121,15 @@ public class PlayerIndicatorsPlugin extends Plugin
 			final Player localPlayer = client.getLocalPlayer();
 			Player[] players = client.getCachedPlayers();
 			Player player = null;
+            String player2 = null;
+
+            String[] callers = warConfig.getActiveCallers().split(", ");
+            String[] targets = warConfig.getTargetedSnipes().split(", ");
 
 			if (identifier >= 0 && identifier < players.length)
 			{
 				player = players[identifier];
+                player2 = players[identifier].getName();
 			}
 
 			if (player == null)
@@ -143,10 +158,18 @@ public class PlayerIndicatorsPlugin extends Plugin
 			{
 				color = config.getTeamMemberColor();
 			}
+            else if (warConfig.highLightCallers() && ArrayUtils.contains(callers, player2))
+            {
+                color = warConfig.getCallerColor();
+            }
+            else if (warConfig.highlightSnipes() && ArrayUtils.contains(targets, player2)) {
+                color = warConfig.getSnipeColor();
+            }
 			else if (config.highlightNonClanMembers() && !player.isClanMember())
 			{
 				color = config.getNonClanMemberColor();
-			}
+            }
+
 
 			if (image != -1 || color != null)
 			{
