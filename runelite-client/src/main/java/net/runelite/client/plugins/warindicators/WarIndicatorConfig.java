@@ -67,7 +67,7 @@ public interface WarIndicatorConfig extends Config
 
     @ConfigItem(
             position = 4,
-            keyName = "callerTiler",
+            keyName = "callerTile",
             name = "Show Caller's Tile",
             description = "Show the tile your target is standing on"
     )

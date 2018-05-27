@@ -35,6 +35,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import org.apache.commons.lang3.ArrayUtils;
 
 @Singleton
 public class WarIndicatorMiniMapOverlay extends Overlay {
@@ -61,8 +62,10 @@ public class WarIndicatorMiniMapOverlay extends Overlay {
     private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
     {
         final String name = actor.getName().replace('\u00A0', ' ');
+        String[] callers = config.getActiveCallers().split(", ");
+        String[] targets = config.getTargetedSnipes().split(", ");
 
-        if (config.snipeMinimap())
+        if (config.snipeMinimap() && ArrayUtils.contains(targets, actor.getName()))
         {
             final net.runelite.api.Point sminimapLocation = actor.getMinimapLocation();
 
@@ -72,7 +75,7 @@ public class WarIndicatorMiniMapOverlay extends Overlay {
             }
         }
 
-        if (config.callerMinimap())
+        if (config.callerMinimap() && ArrayUtils.contains(callers, actor.getName()))
         {
             final net.runelite.api.Point cminimapLocation = actor.getMinimapLocation();
 

@@ -31,9 +31,10 @@ import java.awt.Polygon;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import net.runelite.api.Player;
 import net.runelite.api.Point;
-import net.runelite.client.game.ClanManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -45,8 +46,7 @@ public class WarIndicatorOverlay extends Overlay {
     private final WarIndicatorConfig config;
 
     @Inject
-    private WarIndicatorOverlay(WarIndicatorConfig config, WarIndicatorService warIndicatorService,
-                                ClanManager clanManager)
+    private WarIndicatorOverlay(WarIndicatorConfig config, WarIndicatorService warIndicatorService)
     {
         this.config = config;
         this.warIndicatorService = warIndicatorService;
@@ -67,25 +67,30 @@ public class WarIndicatorOverlay extends Overlay {
         }
 
         Polygon poly = actor.getCanvasTilePoly();
+        String[] callers = config.getActiveCallers().split(", ");
+        String[] targets = config.getTargetedSnipes().split(", ");
 
-        if (config.snipeTile()) {
-            if (poly != null) {
+        if (config.callerTile() && ArrayUtils.contains(callers, actor.getName()))
+        {
+            if (poly != null)
+            {
                 OverlayUtil.renderPolygon(graphics, poly, color);
             }
-
-            if (config.callerTile()) {
-                if (poly != null) {
-                    OverlayUtil.renderPolygon(graphics, poly, color);
-                }
+        }
+        else if (config.snipeTile() && ArrayUtils.contains(targets, actor.getName()))
+        {
+            if (poly != null)
+            {
+                OverlayUtil.renderPolygon(graphics, poly, color);
             }
+        }
 
-            String name = actor.getName().replace('\u00A0', ' ');
-            int offset = actor.getLogicalHeight() + 40;
-            Point textLocation = actor.getCanvasTextLocation(graphics, name, offset);
+        String name = actor.getName().replace('\u00A0', ' ');
+        int offset = actor.getLogicalHeight() + 40;
+        Point textLocation = actor.getCanvasTextLocation(graphics, name, offset);
 
-            if (textLocation != null) {
-                OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
-            }
+        if (textLocation != null) {
+            OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
         }
     }
 }
