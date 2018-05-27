@@ -28,13 +28,23 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameObject;
+import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameObjectChanged;
+import net.runelite.api.events.GameObjectDespawned;
+import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
@@ -60,6 +70,9 @@ public class WoodcuttingPlugin extends Plugin
 	private WoodcuttingOverlay overlay;
 
 	@Inject
+	private WoodcuttingTreesOverlay treesOverlay;
+
+	@Inject
 	private WoodcuttingConfig config;
 
 	@Getter
@@ -68,6 +81,9 @@ public class WoodcuttingPlugin extends Plugin
 	@Getter
 	private Axe axe;
 
+	@Getter
+	private final Set<GameObject> treeObjects = new HashSet<>();
+
 	@Provides
 	WoodcuttingConfig getConfig(ConfigManager configManager)
 	{
@@ -75,14 +91,15 @@ public class WoodcuttingPlugin extends Plugin
 	}
 
 	@Override
-	public Overlay getOverlay()
+	public Collection<Overlay> getOverlays()
 	{
-		return overlay;
+		return Arrays.asList(overlay, treesOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		treeObjects.clear();
 		session = null;
 		axe = null;
 	}
@@ -124,6 +141,39 @@ public class WoodcuttingPlugin extends Plugin
 			{
 				notifier.notify("A bird nest has spawned!");
 			}
+		}
+	}
+
+	@Subscribe
+	public void onGameObjectSpawned(final GameObjectSpawned event)
+	{
+		GameObject gameObject = event.getGameObject();
+		Tree tree = Tree.findTree(gameObject.getId());
+
+		if (tree != null)
+		{
+			treeObjects.add(gameObject);
+		}
+	}
+
+	@Subscribe
+	public void onGameObjectDespawned(final GameObjectDespawned event)
+	{
+		treeObjects.remove(event.getGameObject());
+	}
+
+	@Subscribe
+	public void onGameObjectChanged(final GameObjectChanged event)
+	{
+		treeObjects.remove(event.getGameObject());
+	}
+
+	@Subscribe
+	public void onGameStateChanged(final GameStateChanged event)
+	{
+		if (event.getGameState() != GameState.LOGGED_IN)
+		{
+			treeObjects.clear();
 		}
 	}
 
