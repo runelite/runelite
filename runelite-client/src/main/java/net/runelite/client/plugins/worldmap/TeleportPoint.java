@@ -30,12 +30,12 @@ import javax.imageio.ImageIO;
 import lombok.Getter;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 
-class JewelleryTeleportPoint extends WorldMapPoint
+class TeleportPoint extends WorldMapPoint
 {
 	@Getter
-	private final JewelleryTeleportLocationData data;
+	private final TeleportLocationData data;
 
-	JewelleryTeleportPoint(JewelleryTeleportLocationData data)
+	TeleportPoint(TeleportLocationData data)
 	{
 		super(data.getLocation(), WorldMapPlugin.BLANK_ICON);
 
