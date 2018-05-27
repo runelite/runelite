@@ -25,10 +25,12 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
+import com.google.common.base.Joiner;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.util.Collection;
-import java.util.Collections;
+
+import java.util.*;
+import java.util.regex.Matcher;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
@@ -68,6 +70,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private static final String CONFIG_GROUP = "shiftclick";
 	private static final String ITEM_KEY_PREFIX = "item_";
+
+    private List<String> clickthroughList = new ArrayList<>();
 
 	private static final WidgetMenuOption FIXED_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
 		MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB);
@@ -149,7 +153,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				disableCustomization();
 			}
 		}
+
+		clickthroughList = Arrays.asList(config.clickthroughList().split("\\s*,\\s*"));
 	}
+
+
 
 	private Integer getSwapConfig(int itemId)
 	{
@@ -420,6 +428,27 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("chase", option, target, true);
 		}
+		else if (config.swapAttack())
+		{
+		    for(String s : clickthroughList){
+                if(target.contains(s) && !s.equals("") && target.contains("level")) {
+                    // Keep moving 'Walk here' to the end of the entries (left-click option)
+                    MenuEntry[] entries = client.getMenuEntries();
+                    int walkIdx = searchIndex(entries, "Walk here", "", false);
+
+                    if (walkIdx > 0 && walkIdx <= entries.length)
+                    {
+                        MenuEntry walkHere = entries[walkIdx];
+                        MenuEntry currentTop = entries[entries.length - 1];
+
+                        entries[walkIdx] = currentTop;
+                        entries[entries.length - 1] = walkHere;
+
+                        client.setMenuEntries(entries);
+                    }
+                }
+            }
+        }
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
 			Integer customOption = getSwapConfig(itemId);

@@ -221,4 +221,26 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			position = 17,
+			keyName = "clickthrough",
+			name = "Click-through",
+			description = "Click-through listed NPCs"
+	)
+	default boolean swapAttack()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "clickthroughList",
+			name = "Clickthrough NPCs",
+			description = "List NPCs to click-through",
+			position = 18
+	)
+	default String clickthroughList()
+	{
+		return "";
+	}
 }

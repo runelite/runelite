@@ -478,7 +478,7 @@ public interface Client extends GameEngine
 	 *
 	 * @return array of open menu entries
 	 */
-	MenuEntry[] getMenuEntries();
+	MenuEntry[]  getMenuEntries();
 
 	/**
 	 * Sets the array of open menu entries.
