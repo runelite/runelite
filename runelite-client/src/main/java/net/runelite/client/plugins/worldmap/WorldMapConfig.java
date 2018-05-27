@@ -134,4 +134,15 @@ public interface WorldMapConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_MISC_TELEPORT_ICON,
+		name = "Show misc teleport locations",
+		description = "Show icons at the destinations for miscellaneous teleport items",
+		position = 10
+	)
+	default boolean miscellaneousTeleportIcon()
+	{
+		return true;
+	}
 }
