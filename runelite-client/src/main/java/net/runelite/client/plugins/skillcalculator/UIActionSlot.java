@@ -76,6 +76,9 @@ class UIActionSlot extends JPanel
 	private boolean isSelected;
 
 	@Getter(AccessLevel.PACKAGE)
+	private boolean isOverlapping;
+
+	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private int value = 0;
 
@@ -152,6 +155,12 @@ class UIActionSlot extends JPanel
 		this.updateBackground();
 	}
 
+	void setOverlapping(boolean overlapping)
+	{
+		isOverlapping = overlapping;
+		this.updateBackground();
+	}
+
 	void setText(String text)
 	{
 		uiLabelActions.setText(text);
@@ -162,6 +171,10 @@ class UIActionSlot extends JPanel
 		if (isAvailable)
 		{
 			this.setBorder(GREEN_BORDER);
+		}
+		else if (isOverlapping)
+		{
+			this.setBorder(ORANGE_BORDER);
 		}
 		else
 		{
