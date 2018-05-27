@@ -182,7 +182,7 @@ class GrandExchangeSearchPanel extends JPanel
 	{
 		String lookup = searchBox.getText();
 
-		if (Strings.isNullOrEmpty(lookup))
+		if (Strings.isNullOrEmpty(lookup) || lookup.contains("/"))
 		{
 			searchItemsPanel.removeAll();
 			return;
