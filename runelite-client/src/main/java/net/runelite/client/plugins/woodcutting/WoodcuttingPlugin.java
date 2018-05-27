@@ -26,9 +26,25 @@ package net.runelite.client.plugins.woodcutting;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import javax.inject.Inject;
+import lombok.Getter;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.GameObject;
+import net.runelite.api.GameState;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameObjectChanged;
+import net.runelite.api.events.GameObjectDespawned;
+import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -47,12 +63,31 @@ public class WoodcuttingPlugin extends Plugin
 	private Notifier notifier;
 
 	@Inject
+	private Client client;
+
+	@Inject
 	private WoodcuttingOverlay overlay;
+
+	@Inject
+	private WoodcuttingTreesOverlay treesOverlay;
 
 	@Inject
 	private WoodcuttingConfig config;
 
+	@Getter
 	private final WoodcuttingSession session = new WoodcuttingSession();
+
+	@Getter
+	private final List<Integer> treesToDraw = new ArrayList<>();
+
+	@Getter
+	private Integer axeID;
+
+	@Getter
+	private final List<GameObject> treeObjects = new ArrayList<>();
+
+	private Integer lastClickedObject;
+	private Instant woodcuttingTime;
 
 	@Provides
 	WoodcuttingConfig getConfig(ConfigManager configManager)
@@ -61,14 +96,17 @@ public class WoodcuttingPlugin extends Plugin
 	}
 
 	@Override
-	public Overlay getOverlay()
+	public Collection<Overlay> getOverlays()
 	{
-		return overlay;
+		return Arrays.asList(overlay, treesOverlay);
 	}
 
-	public WoodcuttingSession getSession()
+	@Override
+	protected void shutDown() throws Exception
 	{
-		return session;
+		treeObjects.clear();
+		treesToDraw.clear();
+		woodcuttingTime = null;
 	}
 
 	@Subscribe
@@ -85,6 +123,82 @@ public class WoodcuttingPlugin extends Plugin
 			{
 				notifier.notify("A bird nest has spawned!");
 			}
+		}
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(final MenuOptionClicked event)
+	{
+		lastClickedObject = event.getId();
+	}
+
+	@Subscribe
+	public void onGameObjectSpawned(final GameObjectSpawned event)
+	{
+		if (Tree.getTrees().contains(event.getGameObject().getId()))
+		{
+			treeObjects.add(event.getGameObject());
+		}
+	}
+
+	@Subscribe
+	public void onGameObjectDespawned(final GameObjectDespawned event)
+	{
+		treeObjects.remove(event.getGameObject());
+	}
+
+	@Subscribe
+	public void onGameObjectChanged(final GameObjectChanged event)
+	{
+		treeObjects.remove(event.getGameObject());
+	}
+
+	@Subscribe
+	public void onGameStateChanged(final GameStateChanged event)
+	{
+		if (event.getGameState() != GameState.LOGGED_IN)
+		{
+			treeObjects.clear();
+		}
+	}
+
+	@Subscribe
+	public void onAnimationChanged(final AnimationChanged event)
+	{
+		if (!config.showAvailableTrees())
+		{
+			treesToDraw.clear();
+			return;
+		}
+
+		if (event.getActor() != client.getLocalPlayer())
+		{
+			return;
+		}
+
+		if (Axe.getAxeAnimIds().contains(client.getLocalPlayer().getAnimation()))
+		{
+			woodcuttingTime = Instant.now();
+			axeID = Axe.getItemID(client.getLocalPlayer().getAnimation());
+
+			for (final Tree treeEnum : Tree.values())
+			{
+				final List<Integer> treeIds = treeEnum.getTreeIds();
+
+				if (treeIds.contains(lastClickedObject))
+				{
+					treesToDraw.clear();
+					treesToDraw.addAll(treeIds);
+					break;
+				}
+			}
+		}
+		else if (woodcuttingTime == null || Duration
+			.between(woodcuttingTime, Instant.now())
+			.compareTo(Duration.ofMinutes(config.statTimeout())) > 0)
+		{
+			treesToDraw.clear();
+			woodcuttingTime = null;
 		}
 	}
 }

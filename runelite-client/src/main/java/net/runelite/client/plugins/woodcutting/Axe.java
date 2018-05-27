@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Mantautas Jurksa <https://github.com/Juzzed>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,60 +22,56 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package net.runelite.client.plugins.woodcutting;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.AllArgsConstructor;
+import static net.runelite.api.AnimationID.*;
+import static net.runelite.api.ItemID.*;
 
-@ConfigGroup(
-	keyName = "woodcutting",
-	name = "Woodcutting",
-	description = "Configuration for the woodcutting plugin"
-)
-public interface WoodcuttingConfig extends Config
+@AllArgsConstructor
+enum Axe
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "statTimeout",
-		name = "Reset stats (minutes)",
-		description = "Configures the time until statistic is reset. Also configures when tree indicator is hidden"
-	)
-	default int statTimeout()
+	BRONZE(WOODCUTTING_BRONZE, BRONZE_AXE),
+	IRON(WOODCUTTING_IRON, IRON_AXE),
+	STEEL(WOODCUTTING_STEEL, STEEL_AXE),
+	BLACK(WOODCUTTING_BLACK, BLACK_AXE),
+	MITHRIL(WOODCUTTING_MITHRIL, MITHRIL_AXE),
+	ADAMANT(WOODCUTTING_ADAMANT, ADAMANT_AXE),
+	RUNE(WOODCUTTING_RUNE, RUNE_AXE),
+	DRAGON(WOODCUTTING_DRAGON, DRAGON_AXE),
+	INFERNAL(WOODCUTTING_INFERNAL, INFERNAL_AXE),
+	THIRDAGE(WOODCUTTING_3A_AXE, _3RD_AGE_AXE);
+
+	private static final List<Integer> AXE_ANIM_IDS = new ArrayList<>();
+	private final Integer animID;
+	private final Integer itemID;
+
+	static
 	{
-		return 5;
+		for (Axe axe : values())
+		{
+			AXE_ANIM_IDS.add(axe.animID);
+		}
 	}
 
-	@ConfigItem(
-		position = 2,
-		keyName = "showNestNotification",
-		name = "Bird nest notification",
-		description = "Configures whether to notify you of a bird nest spawn"
-	)
-	default boolean showNestNotification()
+	public static List<Integer> getAxeAnimIds()
 	{
-		return true;
+		return AXE_ANIM_IDS;
 	}
 
-	@ConfigItem(
-		position = 3,
-		keyName = "showWoodcuttingStats",
-		name = "Show session stats",
-		description = "Configures whether to display woodcutting session stats"
-	)
-	default boolean showWoodcuttingStats()
+	public static Integer getItemID(int animID)
 	{
-		return true;
-	}
+		for (Axe axe : Axe.values())
+		{
+			if (axe.animID == animID)
+			{
+				return axe.itemID;
+			}
+		}
 
-	@ConfigItem(
-		position = 4,
-		keyName = "showAvailableTrees",
-		name = "Show available trees",
-		description = "Configures whether to show a indicator for available trees. Shows you recent Trees"
-	)
-	default boolean showAvailableTrees()
-	{
-		return true;
+		return null;
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Mantautas Jurksa <https://github.com/Juzzed>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,58 +24,48 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import lombok.Getter;
+import static net.runelite.api.ObjectID.*;
 
-@ConfigGroup(
-	keyName = "woodcutting",
-	name = "Woodcutting",
-	description = "Configuration for the woodcutting plugin"
-)
-public interface WoodcuttingConfig extends Config
+@Getter
+enum Tree
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "statTimeout",
-		name = "Reset stats (minutes)",
-		description = "Configures the time until statistic is reset. Also configures when tree indicator is hidden"
-	)
-	default int statTimeout()
+	NORMAL_TREE_SPAWN (TREE, TREE_1277, TREE_1278, TREE_1279, TREE_1280, DEAD_TREE, DEAD_TREE_1283, DEAD_TREE_1284, DEAD_TREE_1285, DEAD_TREE_1286, DEAD_TREE_1287, DEAD_TREE_1288, DEAD_TREE_1289, DEAD_TREE_1290,
+	DEAD_TREE_1291, DEAD_TREE_1333, DEAD_TREE_1365, DEAD_TREE_1383, DEAD_TREE_1384, EVERGREEN_2091, EVERGREEN_2092),
+	ACHEY_TREE_SPAWN (ACHEY_TREE),
+	OAK_TREE_SPAWN (OAK),
+	WILLOW_TREE_SPAWN (WILLOW, WILLOW_1756, WILLOW_1758, WILLOW_1760),
+	TEAK_TREE_SPAWN (TEAK),
+	JUNIPER_TREE_SPAWN (MATURE_JUNIPER_TREE),
+	MAPLE_TREE_SPAWN (MAPLE_TREE),
+	HALLOW_TREE_SPAWN (HOLLOW_TREE_1752, HOLLOW_TREE_1757),
+	MAHOGANY_TREE_SPAWN (MAHOGANY),
+	ARCTIC_PINE_TREE_SPAWN (ARCTIC_PINE),
+	YEW_TREE_SPAWN (YEW, NULL_1754),
+	MAGIC_TREE_SPAWN (MAGIC_TREE),
+	REDWOOD_TREE_SPAWN (REDWOOD, REDWOOD_29669, REDWOOD_29670, REDWOOD_29671);
+
+	private static final List<Integer> TREES = new ArrayList<>();
+	private final List<Integer> treeIds;
+
+	Tree(Integer... treeIds)
 	{
-		return 5;
+		this.treeIds = Arrays.asList(treeIds);
 	}
 
-	@ConfigItem(
-		position = 2,
-		keyName = "showNestNotification",
-		name = "Bird nest notification",
-		description = "Configures whether to notify you of a bird nest spawn"
-	)
-	default boolean showNestNotification()
+	static
 	{
-		return true;
+		for (Tree tree : values())
+		{
+			TREES.addAll(tree.getTreeIds());
+		}
 	}
 
-	@ConfigItem(
-		position = 3,
-		keyName = "showWoodcuttingStats",
-		name = "Show session stats",
-		description = "Configures whether to display woodcutting session stats"
-	)
-	default boolean showWoodcuttingStats()
+	public static List<Integer> getTrees ()
 	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 4,
-		keyName = "showAvailableTrees",
-		name = "Show available trees",
-		description = "Configures whether to show a indicator for available trees. Shows you recent Trees"
-	)
-	default boolean showAvailableTrees()
-	{
-		return true;
+		return TREES;
 	}
 }

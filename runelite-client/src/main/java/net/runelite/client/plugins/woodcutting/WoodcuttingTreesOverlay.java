@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,58 +24,48 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.GameObject;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
-@ConfigGroup(
-	keyName = "woodcutting",
-	name = "Woodcutting",
-	description = "Configuration for the woodcutting plugin"
-)
-public interface WoodcuttingConfig extends Config
+class WoodcuttingTreesOverlay extends Overlay
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "statTimeout",
-		name = "Reset stats (minutes)",
-		description = "Configures the time until statistic is reset. Also configures when tree indicator is hidden"
-	)
-	default int statTimeout()
+	private final Client client;
+	private final ItemManager itemManager;
+	private final WoodcuttingPlugin plugin;
+
+	@Inject
+	private WoodcuttingTreesOverlay(final Client client, final ItemManager itemManager, final WoodcuttingPlugin plugin)
 	{
-		return 5;
+		this.client = client;
+		this.itemManager = itemManager;
+		this.plugin = plugin;
+		setLayer(OverlayLayer.ABOVE_SCENE);
+		setPosition(OverlayPosition.DYNAMIC);
 	}
 
-	@ConfigItem(
-		position = 2,
-		keyName = "showNestNotification",
-		name = "Bird nest notification",
-		description = "Configures whether to notify you of a bird nest spawn"
-	)
-	default boolean showNestNotification()
+	@Override
+	public Dimension render(Graphics2D graphics)
 	{
-		return true;
-	}
+		if (!plugin.getTreesToDraw().isEmpty())
+		{
+			for (final GameObject tree : plugin.getTreeObjects())
+			{
+				if (plugin.getTreesToDraw().contains(tree.getId())
+					&& tree.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) <= 12)
+				{
+					OverlayUtil.renderImageLocation(client, graphics, tree.getLocalLocation(), itemManager.getImage(plugin.getAxeID()), 120);
+				}
+			}
+		}
 
-	@ConfigItem(
-		position = 3,
-		keyName = "showWoodcuttingStats",
-		name = "Show session stats",
-		description = "Configures whether to display woodcutting session stats"
-	)
-	default boolean showWoodcuttingStats()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 4,
-		keyName = "showAvailableTrees",
-		name = "Show available trees",
-		description = "Configures whether to show a indicator for available trees. Shows you recent Trees"
-	)
-	default boolean showAvailableTrees()
-	{
-		return true;
+		return null;
 	}
 }
