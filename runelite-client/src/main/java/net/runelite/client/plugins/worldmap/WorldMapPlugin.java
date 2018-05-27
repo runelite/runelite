@@ -61,7 +61,7 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_LUNAR_TELEPORT_ICON = "lunarSpellbookIcon";
 	static final String CONFIG_KEY_ARCEUUS_TELEPORT_ICON = "arceuusSpellbookIcon";
 	static final String CONFIG_KEY_JEWELLERY_TELEPORT_ICON = "jewelleryIcon";
-	static final String CONFIG_KEY_MISC_TELEPORT_ICON = "miscellanwousTeleportIcon";
+	static final String CONFIG_KEY_MISC_TELEPORT_ICON = "miscellaneousTeleportIcon";
 
 	static
 	{
