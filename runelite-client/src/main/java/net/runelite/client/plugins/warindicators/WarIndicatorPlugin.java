@@ -108,6 +108,7 @@ public class WarIndicatorPlugin extends Plugin
 		{
 			Player[] players = client.getCachedPlayers();
 			Player player = null;
+			String player2 = null;
 
             String[] callers = config.getActiveCallers().split(", ");
             String[] targets = config.getTargetedSnipes().split(", ");
@@ -115,6 +116,7 @@ public class WarIndicatorPlugin extends Plugin
 			if (identifier >= 0 && identifier < players.length)
 			{
 				player = players[identifier];
+				player2 = players[identifier].getName();
 			}
 
 			if (player == null)
@@ -124,11 +126,12 @@ public class WarIndicatorPlugin extends Plugin
 
 			Color color = null;
 
-			if (config.highLightCallers() && ArrayUtils.contains(callers, player))
+			if (config.highLightCallers() && ArrayUtils.contains(callers, player2))
 			{
 				color = config.getCallerColor();
 			}
-			else if (config.highlightSnipes() && ArrayUtils.contains(targets, player))
+
+			if (config.highlightSnipes() && ArrayUtils.contains(targets, player2))
             {
                 color = config.getSnipeColor();
 			}
@@ -137,20 +140,15 @@ public class WarIndicatorPlugin extends Plugin
 			{
 				MenuEntry[] menuEntries = client.getMenuEntries();
 				MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
+				String target = lastEntry.getTarget();
 
-				if (color != null)
+				// strip out existing <col...
+				int idx = target.indexOf('>');
+				if (idx != -1)
 				{
-					// strip out existing <col...
-					String target = lastEntry.getTarget();
-					int idx = target.indexOf('>');
-					if (idx != -1)
-					{
-						target = target.substring(idx + 1);
-					}
-
-					lastEntry.setTarget("<col=" + Integer.toHexString(color.getRGB() & 0xFFFFFF) + ">" + target);
+					target = target.substring(idx + 1);
 				}
-
+				lastEntry.setTarget("<col=" + Integer.toHexString(color.getRGB() & 0xFFFFFF) + ">" + target);
 				client.setMenuEntries(menuEntries);
 			}
 		}

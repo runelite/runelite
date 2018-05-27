@@ -64,7 +64,10 @@ public class WarIndicatorMiniMapOverlay extends Overlay {
         final String name = actor.getName().replace('\u00A0', ' ');
         final net.runelite.api.Point minimapLocation = actor.getMinimapLocation();
 
-        if (config.snipeMinimap())
+        String[] callers = config.getActiveCallers().split(", ");
+        String[] targets = config.getTargetedSnipes().split(", ");
+
+        if (config.callerMinimap() && ArrayUtils.contains(callers, actor.getName()))
         {
 
             if (minimapLocation != null)
@@ -72,7 +75,7 @@ public class WarIndicatorMiniMapOverlay extends Overlay {
                 OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
             }
         }
-        else if (config.callerMinimap())
+        if (config.snipeMinimap() && ArrayUtils.contains(targets, actor.getName()))
         {
 
             if (minimapLocation != null)
