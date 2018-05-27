@@ -84,26 +84,32 @@ public class TeleportNameChangesPlugin extends Plugin
 				{
 					object.setTarget("<col=ff9040>Digsite teleport");
 				}
+
 				if (object.getTarget().equals("<col=ff9040>Lassar teleport"))
 				{
 					object.setTarget("<col=ff9040>Ice mountain teleport");
 				}
+
 				if (object.getTarget().equals("<col=ff9040>Ghorrock teleport"))
 				{
 					object.setTarget("<col=ff9040>Ice Plateau teleport");
 				}
+
 				if (object.getTarget().equals("<col=ff9040>Paddewwa teleport"))
 				{
 					object.setTarget("<col=ff9040>Edgeville dungeon teleport");
 				}
+
 				if (object.getTarget().equals("<col=ff9040>Dareeyak teleport"))
 				{
 					object.setTarget("<col=ff9040>Ruins west of banditcamp teleport");
 				}
+
 				if (object.getTarget().equals("<col=ff9040>Annakarl teleport"))
 				{
 					object.setTarget("<col=ff9040>Demonic ruins teleport");
 				}
+
 				if (object.getTarget().equals("<col=ff9040>Carrallangar teleport"))
 				{
 					object.setTarget("<col=ff9040>Graveyard of shadows teleport");
