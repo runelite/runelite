@@ -639,8 +639,11 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 				boolean equipmentFulfilled = requirement.fulfilledBy(equipment);
 				boolean inventoryFulfilled = requirement.fulfilledBy(inventory);
 				boolean combinedFulfilled = false;
-				if(!equipmentFulfilled && !inventoryFulfilled)
+
+				if (!equipmentFulfilled && !inventoryFulfilled)
+				{
 					combinedFulfilled = requirement.fulfilledBy(combined);
+				}
 
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left(requirement.getCollectiveName(plugin.getClient()))
