@@ -61,6 +61,7 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_LUNAR_TELEPORT_ICON = "lunarSpellbookIcon";
 	static final String CONFIG_KEY_ARCEUUS_TELEPORT_ICON = "arceuusSpellbookIcon";
 	static final String CONFIG_KEY_JEWELLERY_TELEPORT_ICON = "jewelleryIcon";
+	static final String CONFIG_KEY_MISC_TELEPORT_ICON = "miscellaneousTeleportIcon";
 
 	static
 	{
@@ -143,6 +144,7 @@ public class WorldMapPlugin extends Plugin
 				case CONFIG_KEY_LUNAR_TELEPORT_ICON:
 				case CONFIG_KEY_ARCEUUS_TELEPORT_ICON:
 				case CONFIG_KEY_JEWELLERY_TELEPORT_ICON:
+				case CONFIG_KEY_MISC_TELEPORT_ICON:
 					worldMapPointManager.removeIf(TeleportPoint.class::isInstance);
 					createMagicTeleportPoints();
 					break;
@@ -172,7 +174,8 @@ public class WorldMapPlugin extends Plugin
 			|| config.ancientTeleportIcon()
 			|| config.lunarTeleportIcon()
 			|| config.arceuusTeleportIcon()
-			|| config.jewelleryTeleportIcon())
+			|| config.jewelleryTeleportIcon()
+			|| config.miscellaneousTeleportIcon())
 		{
 			createMagicTeleportPoints();
 		}
@@ -221,6 +224,8 @@ public class WorldMapPlugin extends Plugin
 						return config.arceuusTeleportIcon();
 					case JEWELLERY:
 						return config.jewelleryTeleportIcon();
+					case OTHER:
+						return config.miscellaneousTeleportIcon();
 					default:
 						return false;
 				}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Morgan Lewis <https://github.com/MESLewis>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,22 +25,19 @@
  */
 package net.runelite.client.plugins.worldmap;
 
-import lombok.Getter;
+import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
 
-@Getter
-public enum TeleportType
+public class TeleportLocationDataTest
 {
-	NORMAL_MAGIC(""),
-	ANCIENT_MAGICKS("Ancient - "),
-	LUNAR_MAGIC("Lunar - "),
-	ARCEUUS_MAGIC("Arceuus - "),
-	JEWELLERY("Jewellery - "),
-	OTHER("");
-
-	private String prefix;
-
-	TeleportType(String prefix)
+	@Test
+	public void testResources()
 	{
-		this.prefix = prefix;
+		for (TeleportLocationData data : TeleportLocationData.values())
+		{
+			String path = data.getIconPath();
+			assertNotNull(path);
+			assertNotNull(path, getClass().getResourceAsStream(path));
+		}
 	}
 }
