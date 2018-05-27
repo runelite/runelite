@@ -29,7 +29,7 @@ import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
 @Getter
-enum MagicTeleportLocationData
+enum TeleportLocationData
 {
 	VARROCK(TeleportType.NORMAL_MAGIC, "Varrock", 25, new WorldPoint(3213, 3424, 0), "varrock_teleport_icon.png"),
 	VARROCK_GE(TeleportType.NORMAL_MAGIC, "Varrock GE", 25, new WorldPoint(3164, 3478, 0), "varrock_teleport_icon.png"),
@@ -68,19 +68,66 @@ enum MagicTeleportLocationData
 	HARMONY_ISLAND(TeleportType.ARCEUUS_MAGIC, "Harmony Island", 65, new WorldPoint(3797, 2866, 0), "harmony_island_teleport_icon.png"),
 	CEMETERY(TeleportType.ARCEUUS_MAGIC, "Cemetery", 71, new WorldPoint(2978, 3763, 0), "cemetery_teleport_icon.png"),
 	BARROWS(TeleportType.ARCEUUS_MAGIC, "Barrows", 83, new WorldPoint(3565, 3315, 0), "barrows_teleport_icon.png"),
-	APE_ATOLL_ARCEUUS(TeleportType.ARCEUUS_MAGIC, "Ape Atoll", 90, new WorldPoint(2771, 9102, 0), "ape_atoll_teleport_icon_arceuus.png");
+	APE_ATOLL_ARCEUUS(TeleportType.ARCEUUS_MAGIC, "Ape Atoll", 90, new WorldPoint(2771, 9102, 0), "ape_atoll_teleport_icon_arceuus.png"),
+
+	// Jewellery
+	BARBARIAN_ASSAULT(TeleportType.JEWELLERY, "Games Necklace" , "Barbarian Assault", new WorldPoint(2520, 3571, 0), "games_necklace_teleport_icon.png"),
+	BURTHORPE_GAMES_ROOM(TeleportType.JEWELLERY, "Games Necklace" , "Burthorpe Games Room", new WorldPoint(2898, 3554, 0), "games_necklace_teleport_icon.png"),
+	TEARS_OF_GUTHIX(TeleportType.JEWELLERY, "Games Necklace" , "Tears of Guthix", new WorldPoint(3245, 9500, 0), "games_necklace_teleport_icon.png"),
+	CORPOREAL_BEAST(TeleportType.JEWELLERY, "Games Necklace" , "Corporeal Beast", new WorldPoint(2967, 4384, 0), "games_necklace_teleport_icon.png"),
+	WINTERTODT_CAMP(TeleportType.JEWELLERY, "Games Necklace" , "Wintertodt Camp", new WorldPoint(1624, 3938, 0), "games_necklace_teleport_icon.png"),
+	DUEL_ARENA(TeleportType.JEWELLERY, "Ring of Dueling" , "Duel Arena", new WorldPoint(3315, 3235, 0), "ring_of_dueling_teleport_icon.png"),
+	CLAN_WARS(TeleportType.JEWELLERY, "Ring of Dueling" , "Clan Wars", new WorldPoint(3387, 3158, 0), "ring_of_dueling_teleport_icon.png"),
+	CASTLE_WARS(TeleportType.JEWELLERY, "Ring of Dueling" , "Castle Wars", new WorldPoint(2441, 3091, 0), "ring_of_dueling_teleport_icon.png"),
+	WARRIORS_GUILD(TeleportType.JEWELLERY, "Combat Bracelet" , "Warriors' Guild", new WorldPoint(2883, 3549, 0), "combat_bracelet_teleport_icon.png"),
+	CHAMPIONS_GUILD(TeleportType.JEWELLERY, "Combat Bracelet" , "Champions' Guild", new WorldPoint(3189, 3368, 0), "combat_bracelet_teleport_icon.png"),
+	EDGEVILLE_MONASTERY(TeleportType.JEWELLERY, "Combat Bracelet" , "Edgeville Monastery", new WorldPoint(3053, 3487, 0), "combat_bracelet_teleport_icon.png"),
+	RANGING_GUILD(TeleportType.JEWELLERY, "Combat Bracelet" , "Ranging Guild", new WorldPoint(2654, 3441, 0), "combat_bracelet_teleport_icon.png"),
+	FISHING_GUILD_NECK(TeleportType.JEWELLERY, "Skills Necklace" , "Fishing Guild", new WorldPoint(2613, 3390, 0), "skills_necklace_teleport_icon.png"),
+	MINING_GUILD(TeleportType.JEWELLERY, "Skills Necklace" , "Mining Guild", new WorldPoint(3049, 9762, 0), "skills_necklace_teleport_icon.png"),
+	CRAFTING_GUILD(TeleportType.JEWELLERY, "Skills Necklace" , "Crafting Guild", new WorldPoint(2934, 3294, 0), "skills_necklace_teleport_icon.png"),
+	COOKING_GUILD(TeleportType.JEWELLERY, "Skills Necklace" , "Cooking Guild", new WorldPoint(3145, 3438, 0), "skills_necklace_teleport_icon.png"),
+	WOODCUTTING_GUILD(TeleportType.JEWELLERY, "Skills Necklace" , "Woodcutting Guild", new WorldPoint(1662, 3505, 0), "skills_necklace_teleport_icon.png"),
+	EDGEVILLE(TeleportType.JEWELLERY, "Amulet of Glory" , "Edgeville", new WorldPoint(3087, 3496, 0), "amulet_of_glory_teleport_icon.png"),
+	KARAMJA(TeleportType.JEWELLERY, "Amulet of Glory" , "Karamja", new WorldPoint(2918, 3176, 0), "amulet_of_glory_teleport_icon.png"),
+	DRAYNOR_VILLAGE(TeleportType.JEWELLERY, "Amulet of Glory" , "Draynor Village", new WorldPoint(3105, 3251, 0), "amulet_of_glory_teleport_icon.png"),
+	AL_KHARID(TeleportType.JEWELLERY, "Amulet of Glory" , "Al-Kharid", new WorldPoint(3293, 3163, 0), "amulet_of_glory_teleport_icon.png"),
+	MISCELLANIA(TeleportType.JEWELLERY, "Ring of Wealth" , "Miscellania", new WorldPoint(2535, 3862, 0), "ring_of_wealth_teleport_icon.png"),
+	GRAND_EXCHANGE(TeleportType.JEWELLERY, "Ring of Wealth" , "Grand Exchange", new WorldPoint(3162, 3480, 0), "ring_of_wealth_teleport_icon.png"),
+	FALADOR_PARK(TeleportType.JEWELLERY, "Ring of Wealth" , "Falador Park", new WorldPoint(2995, 3375, 0), "ring_of_wealth_teleport_icon.png"),
+	DONDAKAN(TeleportType.JEWELLERY, "Ring of Wealth" , "Dondakan", new WorldPoint(2831, 10165, 0), "ring_of_wealth_teleport_icon.png"),
+	SLAYER_TOWER(TeleportType.JEWELLERY, "Slayer Ring" , "Slayer Tower", new WorldPoint(3429, 3531, 0), "slayer_ring_teleport_icon.png"),
+	FREMENNIK_SLAYER_DUNGEON(TeleportType.JEWELLERY, "Slayer Ring" , "Fremennik Slayer Dungeon", new WorldPoint(2800, 9998, 0), "slayer_ring_teleport_icon.png"),
+	TARNS_LAIR(TeleportType.JEWELLERY, "Slayer Ring" , "Tarn's Lair", new WorldPoint(3187, 4601, 0), "slayer_ring_teleport_icon.png"),
+	STRONGHOLD_SLAYER_CAVE(TeleportType.JEWELLERY, "Slayer Ring" , "Stronghold Slayer Cave", new WorldPoint(2433, 3421, 0), "slayer_ring_teleport_icon.png"),
+	DARK_BEASTS(TeleportType.JEWELLERY, "Slayer Ring" , "Dark Beasts", new WorldPoint(2028, 4638, 0), "slayer_ring_teleport_icon.png"),
+	DIGSITE(TeleportType.JEWELLERY, "Digsite Pendant" , "Digsite", new WorldPoint(3339, 3445, 0), "digsite_pendant_teleport_icon.png"),
+	HOUSE_ON_THE_HILL(TeleportType.JEWELLERY, "Digsite Pendant" , "House on the Hill", new WorldPoint(3763, 3869, 0), "digsite_pendant_teleport_icon.png"),
+	LITHKREN(TeleportType.JEWELLERY, "Digsite Pendant" , "Lithkren", new WorldPoint(3547, 10456, 0), "digsite_pendant_teleport_icon.png"),
+	WIZARDS_TOWER(TeleportType.JEWELLERY, "Necklace of Passage" , "Wizards' Tower", new WorldPoint(3114, 3181, 0), "necklace_of_passage_teleport_icon.png"),
+	JORRALS_OUTPOST(TeleportType.JEWELLERY, "Necklace of Passage" , "Jorral's Outpost", new WorldPoint(2431, 3348, 0), "necklace_of_passage_teleport_icon.png"),
+	DESERT_EAGLE_STATION(TeleportType.JEWELLERY, "Necklace of Passage" , "Desert eagle station of the eagle transport system", new WorldPoint(3406, 3157, 0), "necklace_of_passage_teleport_icon.png"),
+	CHAOS_TEMPLE(TeleportType.JEWELLERY, "Burning Amulet" , "Chaos Temple (lvl 15)", new WorldPoint(3234, 3637, 0), "burning_amulet_teleport_icon.png"),
+	BANDIT_CAMP(TeleportType.JEWELLERY, "Burning Amulet" , "Bandit Camp (lvl 17)", new WorldPoint(3038, 3651, 0), "burning_amulet_teleport_icon.png"),
+	LAVA_MAZE(TeleportType.JEWELLERY, "Burning Amulet" , "Lava Maze (lvl 41)", new WorldPoint(3028, 3840, 0), "burning_amulet_teleport_icon.png");
 
 	private final TeleportType type;
 	private final String tooltip;
-	private final int magicLevel;
 	private final WorldPoint location;
 	private final String iconPath;
 
-	MagicTeleportLocationData(TeleportType type, String destination, int magicLevel, WorldPoint location, String iconPath)
+	TeleportLocationData(TeleportType type, String destination, int magicLevel, WorldPoint location, String iconPath)
 	{
 		this.type = type;
 		this.tooltip = type.getPrefix() + " " + destination + " - lvl " + magicLevel;
-		this.magicLevel = magicLevel;
+		this.location = location;
+		this.iconPath = iconPath;
+	}
+
+	TeleportLocationData(TeleportType type, String item, String destination, WorldPoint location, String iconPath)
+	{
+		this.type = type;
+		this.tooltip = item + " - " + destination;
 		this.location = location;
 		this.iconPath = iconPath;
 	}
