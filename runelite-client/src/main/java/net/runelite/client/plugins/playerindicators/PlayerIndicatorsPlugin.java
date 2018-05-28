@@ -76,20 +76,21 @@ public class PlayerIndicatorsPlugin extends Plugin
 	@Inject
 	private ClanManager clanManager;
 
-	@Inject
-	private WarIndicatorConfig warConfig;
-
 	@Provides
 	PlayerIndicatorsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(PlayerIndicatorsConfig.class);
 	}
 
+	@Inject
+	private WarIndicatorConfig warConfig;
+
 	@Provides
-	WarIndicatorConfig provideConfig2(ConfigManager configManager)
+	WarIndicatorConfig provideWIConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(WarIndicatorConfig.class);
 	}
+
 
 	@Override
 	public Collection<Overlay> getOverlays()
