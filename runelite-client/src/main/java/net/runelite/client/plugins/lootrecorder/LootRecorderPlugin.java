@@ -141,7 +141,7 @@ public class LootRecorderPlugin extends Plugin
 
 	// Variables for handling NPC death
 	private String deathName;				// NPC Name
-	private String lastBossKilled;			// NPC Name (Saved for pet purposes)
+	private String lastBossKilled;			// NPC Name, saved for potential pet logging issues
 	private int deathSize;					// NPC Size
 	private int deathID;					// NPC ID
 	private WorldPoint deathSpot;			// NPC Death WorldPoint
@@ -178,43 +178,10 @@ public class LootRecorderPlugin extends Plugin
 		LOOTS_DIR.mkdir();
 	}
 
-	// Separated from startUp for toggling panel from settings
-	private void createPanel()
-	{
-		panel = new LootRecorderPanel(itemManager, this);
-		// Panel Icon (Looting Bag)
-		BufferedImage icon = null;
-		synchronized (ImageIO.class)
-		{
-			try
-			{
-				icon = ImageIO.read(getClass().getResourceAsStream("panel_icon.png"));
-			}
-			catch (IOException e)
-			{
-				log.warn("Error getting panel icon:", e);
-			}
-		}
-
-		navButton = NavigationButton.builder()
-			.tooltip("Loot Recorder")
-			.icon(icon)
-			.panel(panel)
-			.priority(10)
-			.build();
-
-		pluginToolbar.addNavigation(navButton);
-	}
-
 	@Override
 	protected void shutDown() throws Exception
 	{
 		removePanel();
-	}
-
-	private void removePanel()
-	{
-		pluginToolbar.removeNavigation(navButton);
 	}
 
 	// Check for loot that is rewarded via interfaces
@@ -378,6 +345,227 @@ public class LootRecorderPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		// Only update if our plugin config was changed
+		if (!event.getGroup().equals("lootrecorder"))
+		{
+			return;
+		}
+
+		handleConfigChanged(event.getKey());
+	}
+
+	// Searches chat messages for kill count value or pet drop
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
+		{
+			return;
+		}
+
+		String chatMessage = event.getMessage();
+
+		// Barrows KC
+		if (chatMessage.startsWith("Your Barrows chest count is"))
+		{
+			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
+			if (m.find())
+			{
+				killcountMap.put("BARROWS", Integer.valueOf(m.group()));
+				return;
+			}
+		}
+
+		// Raids KC
+		if (chatMessage.startsWith("Your completed Chambers of Xeric count is:"))
+		{
+			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
+			if (m.find())
+			{
+				killcountMap.put("RAIDS", Integer.valueOf(m.group()));
+				return;
+			}
+		}
+
+		// Handle all other boss
+		Matcher boss = BOSS_NAME_PATTERN.matcher(Text.removeTags(chatMessage));
+		if (boss.find())
+		{
+			String bossName = boss.group(1);
+			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
+			if (!m.find())
+				return;
+			int KC = Integer.valueOf(m.group());
+			killcountMap.put(bossName.toUpperCase(), KC);
+		}
+
+		// Pet Drop
+		Matcher pet1 = PET_RECEIVED_PATTERN.matcher(Text.removeTags(chatMessage));
+		Matcher pet2 = PET_RECEIVED_INVENTORY_PATTERN.matcher(Text.removeTags(chatMessage));
+		if (pet1.find() || pet2.find())
+		{
+			gotPet = true;
+		}
+	}
+
+	private void init()
+	{
+		// Create maps for easy management of certain features
+		Map<String, Boolean> mapRecording = new HashMap<>();
+		Map<String, ArrayList<LootEntry>> mapLoot = new HashMap<>();
+		Map<String, Integer> mapKillcount = new HashMap<>();
+		Map<String, String> mapFilename = new HashMap<>();
+		for (Tab tab : Tab.values())
+		{
+			String bossName = tab.getBossName().toUpperCase();
+			// Is Boss being recorded?
+			mapRecording.put(bossName, isBeingRecorded(tab.getName()));
+			// Loot Entries by Tab Name
+			ArrayList<LootEntry> array = new ArrayList<LootEntry>();
+			mapLoot.put(bossName, array);
+			// Kill Count
+			Integer killcount = 0;
+			mapKillcount.put(bossName, killcount);
+			// Filenames. Removes all spaces, periods, and apostrophes
+			String filename = tab.getName().replaceAll("( |'|\\.)", "").toLowerCase() + ".log";
+			mapFilename.put(bossName, filename);
+		}
+		recordingMap = mapRecording;
+		lootMap = mapLoot;
+		killcountMap = mapKillcount;
+		filenameMap = mapFilename;
+
+		// Ensure we are using the requested message coloring for in-game messages
+		updateMessageColor();
+	}
+
+	//
+	// Panel Functions
+	//
+
+	// Separated from startUp for toggling panel from settings
+	private void createPanel()
+	{
+		panel = new LootRecorderPanel(itemManager, this);
+		// Panel Icon (Looting Bag)
+		BufferedImage icon = null;
+		synchronized (ImageIO.class)
+		{
+			try
+			{
+				icon = ImageIO.read(getClass().getResourceAsStream("panel_icon.png"));
+			}
+			catch (IOException e)
+			{
+				log.warn("Error getting panel icon:", e);
+			}
+		}
+
+		navButton = NavigationButton.builder()
+				.tooltip("Loot Recorder")
+				.icon(icon)
+				.panel(panel)
+				.priority(10)
+				.build();
+
+		pluginToolbar.addNavigation(navButton);
+	}
+
+	private void removePanel()
+	{
+		pluginToolbar.removeNavigation(navButton);
+	}
+
+
+	// Toggles visibility of tab in side panel
+	private void ToggleTab(String tabName, Boolean status)
+	{
+		// Remove panel tab if showing panel
+		if (lootRecorderConfig.showLootTotals())
+		{
+			panel.toggleTab(tabName, status);
+		}
+		// Update tab map
+		String bossName = Tab.getByName(tabName).getBossName().toUpperCase();
+		recordingMap.put(bossName, status);
+	}
+
+
+
+	//
+	// General Functionality functions
+	//
+
+	// Will use the main loots folder if your ingame username is not available
+	private void updatePlayerFolder()
+	{
+		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
+		{
+			playerFolder = new File(LOOTS_DIR, client.getLocalPlayer().getName());
+			// Ensure player folder is made
+			playerFolder.mkdir();
+		}
+		else
+		{
+			playerFolder = LOOTS_DIR;
+		}
+	}
+
+	// All alerts from this plugin should use this function
+	private void lootRecordedAlert(String message)
+	{
+		message = "Loot Recorder: " + message;
+		if (lootRecorderConfig.showChatMessages())
+		{
+			final ChatMessageBuilder chatMessage = new ChatMessageBuilder()
+					.append("<col=" + messageColor + ">")
+					.append(message)
+					.append("</col>");
+
+			chatMessageManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.EXAMINE_ITEM)
+					.runeLiteFormattedMessage(chatMessage.build())
+					.build());
+		}
+
+		if (lootRecorderConfig.showTrayAlerts())
+		{
+			notifier.notify(message);
+		}
+	}
+
+	void loadTabData(Tab tab)
+	{
+		loadLootEntries(tab);
+	}
+
+	// Load data for all bosses being recorded
+	void loadAllData()
+	{
+		for (Tab tab : Tab.values())
+		{
+			if (isBeingRecorded(tab.getName()))
+			{
+				loadLootEntries(tab);
+			}
+		}
+	}
+
+	// Returns stored data by tab name
+	ArrayList<LootEntry> getData(String type)
+	{
+		// Loot Entries are stored on lootMap by boss name (upper cased)
+		String name = Tab.getByName(type).getBossName().toUpperCase();
+		return lootMap.get(name);
+	}
+
+	//
+	// LootEntry helper functions
+	//
+
 	// Adds the data to the correct boss log file
 	private void AddBossLootEntry(String bossName, ArrayList<DropEntry> drops)
 	{
@@ -385,6 +573,173 @@ public class LootRecorderPlugin extends Plugin
 		LootEntry newEntry = new LootEntry(KC, drops);
 		addLootEntry(bossName, newEntry);
 		lootRecordedAlert(bossName + " kill added to log.");
+	}
+
+	// Create Loot Entry for ItemContainer
+	private LootEntry createLootEntry(Integer kill_count, ItemContainer container)
+	{
+		ArrayList<DropEntry> drops = new ArrayList<>();
+		for (Item item : container.getItems())
+		{
+			int id = item.getId();
+			int amount = item.getQuantity();
+			drops.add(new DropEntry(id, amount));
+		}
+
+		return new LootEntry(kill_count, drops);
+	}
+
+	// Add Loot Entry to the necessary file
+	private void addLootEntry(String bossName, LootEntry entry)
+	{
+		// Update data inside plugin
+		ArrayList<LootEntry> loots = lootMap.get(bossName.toUpperCase());
+		loots.add(entry);
+		lootMap.put(bossName.toUpperCase(), loots);
+		// Convert entry to JSON
+		String dataAsString = RuneLiteAPI.GSON.toJson(entry);
+		// Grab file by username or loots directory if not logged in
+		updatePlayerFolder();
+		String fileName = filenameMap.get(bossName.toUpperCase());
+		// Open File and append data
+		File lootFile = new File(playerFolder, fileName);
+		try
+		{
+			BufferedWriter file = new BufferedWriter(new FileWriter(String.valueOf(lootFile), true));
+			file.append(dataAsString);
+			file.newLine();
+			file.close();
+		}
+		catch (IOException ioe)
+		{
+			log.warn("Error witting loot data in file.", ioe);
+		}
+
+		// Update tab if being displayed;
+		Tab tab = Tab.getByBossName(bossName);
+		if (isBeingRecorded(tab.getName()))
+		{
+			panel.updateTab(tab.getName());
+		}
+	}
+
+	// Receive Loot from the necessary file
+	private synchronized void loadLootEntries(Tab tab)
+	{
+		ArrayList<LootEntry> data = new ArrayList<>();
+		// Grab target directory (username or loots directory if not logged in)
+		updatePlayerFolder();
+		String fileName = filenameMap.get(tab.getBossName().toUpperCase());
+
+		// Open File and read line by line
+		File file = new File(playerFolder, fileName);
+		try (BufferedReader br = new BufferedReader(new FileReader(file)))
+		{
+			String line;
+			while ((line = br.readLine()) != null)
+			{
+				// Convert JSON to LootEntry and add to data ArrayList
+				if (line.length() > 0)
+				{
+					LootEntry entry = RuneLiteAPI.GSON.fromJson(line, LootEntry.class);
+					data.add(entry);
+				}
+			}
+
+			// Update Loot Map with new data
+			lootMap.put(tab.getBossName().toUpperCase(), data);
+			// Update Killcount map with latest value
+			if (data.size() > 0)
+			{
+				int killcount = data.get(data.size() - 1).getKill_count();
+				killcountMap.put(tab.getBossName().toUpperCase(), killcount);
+			}
+		}
+		catch (FileNotFoundException e)
+		{
+			log.debug("File not found: " + fileName);
+		}
+		catch (IOException e)
+		{
+			log.warn("Unexpected error", e);
+		}
+	}
+
+	// Add Loot Entry to the necessary file
+	private void addDropToLastLootEntry(String bossName, DropEntry newDrop)
+	{
+		// Update data inside plugin
+		ArrayList<LootEntry> loots = lootMap.get(bossName.toUpperCase());
+		LootEntry entry = loots.get(loots.size() - 1);
+		entry.drops.add(newDrop);
+		// Ensure updates are applied, may not be necessary
+		loots.add(loots.size() - 1, entry);
+		lootMap.put(bossName.toUpperCase(), loots);
+
+		// Grab file by username or loots directory if not logged in
+		updatePlayerFolder();
+		String fileName = filenameMap.get(bossName.toUpperCase());
+
+		// Rewrite the log file (to update the last loot entry)
+		File lootFile = new File(playerFolder, fileName);
+		try
+		{
+			BufferedWriter file = new BufferedWriter(new FileWriter(String.valueOf(lootFile), false));
+			for ( LootEntry lootEntry : loots)
+			{
+				// Convert entry to JSON
+				String dataAsString = RuneLiteAPI.GSON.toJson(lootEntry);
+				file.append(dataAsString);
+				file.newLine();
+			}
+			file.close();
+		}
+		catch (IOException ioe)
+		{
+			log.warn("Error witting loot data in file.", ioe);
+		}
+		// Update tab if being displayed;
+		Tab tab = Tab.getByBossName(bossName);
+		if (isBeingRecorded(tab.getName()))
+		{
+			panel.updateTab(tab.getName());
+		}
+	}
+
+	//
+	// Loot Helping Functions
+	//
+
+	// Taken from Wooxs droplogger plugin
+	private List<DropEntry> getGroundItems(Tile tile)
+	{
+		List<Item> items = tile.getGroundItems();
+		if (items == null)
+		{
+			return null;
+		}
+		return items.stream()
+				.map(x -> new DropEntry(x.getId(), x.getQuantity()))
+				.collect(Collectors.toList());
+	}
+
+	// Taken from Wooxs droplogger plugin
+	private int getUnnotedItemId(int itemId)
+	{
+		ItemComposition comp = itemManager.getItemComposition(itemId);
+		if (comp.getNote() == -1)
+		{
+			return itemId;
+		}
+		return comp.getLinkedNoteId();
+	}
+
+	// Upon cleaning an Unsired add the item to the previous LootEntry
+	private void receivedUnsiredLoot(int itemID)
+	{
+		DropEntry drop = new DropEntry(itemID, 1);
+		// Update the last drop
+		addDropToLastLootEntry("Abyssal Sire", drop);
 	}
 
 	// Credit to @WooxSolo (www.github.com/wooxsolo), ripped and modified slightly from `droplogger` plugin
@@ -551,6 +906,7 @@ public class LootRecorderPlugin extends Plugin
 		return client.getRegion().getTiles()[location.getPlane()][regionX][regionY];
 	}
 
+	// Creates an item map (ID,amount) for the tiles item layer
 	private Map<Integer, Integer> createItemMap(ItemLayer layer)
 	{
 		Map<Integer, Integer> map = new HashMap<>();
@@ -573,6 +929,8 @@ public class LootRecorderPlugin extends Plugin
 		return map;
 	}
 
+
+	// Figures out what items the boss dropped
 	private ArrayList<DropEntry> createDropEntryArray(NPC npc)
 	{
 		// Checks all deathLocations for spawned loot
@@ -651,6 +1009,11 @@ public class LootRecorderPlugin extends Plugin
 		return drops;
 	}
 
+
+	//
+	// Other Helper Functions
+	//
+
 	private int getPetIdByNpcName(String name)
 	{
 		Pet pet = Pet.getByBossName(name);
@@ -661,16 +1024,89 @@ public class LootRecorderPlugin extends Plugin
 		return -1;
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	// Updates in-game alert chat color based on config settings
+	private void updateMessageColor()
 	{
-		// Only update if our plugin config was changed
-		if (!event.getGroup().equals("lootrecorder"))
-		{
-			return;
-		}
+		Color c = lootRecorderConfig.chatMessageColor();
+		messageColor = String.format("%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue());
+	}
 
-		switch (event.getKey())
+	// Handles if panel should be shown by Tab Name
+	Boolean isBeingRecorded(String tabName)
+	{
+		switch (tabName.toUpperCase())
+		{
+			case "BARROWS":
+				return lootRecorderConfig.recordBarrowsChest();
+			case "RAIDS":
+				return lootRecorderConfig.recordRaidsChest();
+			case "ZULRAH":
+				return lootRecorderConfig.recordZulrahKills();
+			case "VORKATH":
+				return lootRecorderConfig.recordVorkathKills();
+			// God Wars Dungeon
+			case "ARMADYL":
+				return lootRecorderConfig.recordArmadylKills();
+			case "BANDOS":
+				return lootRecorderConfig.recordBandosKills();
+			case "SARADOMIN":
+				return lootRecorderConfig.recordSaradominKills();
+			case "ZAMMY":
+				return lootRecorderConfig.recordZammyKills();
+			// Wildy Bosses
+			case "VET'ION":
+				return lootRecorderConfig.recordVetionKills();
+			case "VENENATIS":
+				return lootRecorderConfig.recordVenenatisKills();
+			case "CALLISTO":
+				return lootRecorderConfig.recordCallistoKills();
+			case "CHAOS ELEMENTAL":
+				return lootRecorderConfig.recordChaosElementalKills();
+			case "CHAOS FANATIC":
+				return lootRecorderConfig.recordChaosFanaticKills();
+			case "CRAZY ARCHAEOLOGIST":
+				return lootRecorderConfig.recordCrazyArchaeologistKills();
+			case "SCORPIA":
+				return lootRecorderConfig.recordScorpiaKills();
+			case "KING BLACK DRAGON":
+				return lootRecorderConfig.recordKbdKills();
+			// Slayer Bosses
+			case "SKOTIZO":
+				return lootRecorderConfig.recordSkotizoKills();
+			case "GROTESQUE GUARDIANS":
+				return lootRecorderConfig.recordGrotesqueGuardiansKills();
+			case "ABYSSAL SIRE":
+				return lootRecorderConfig.recordAbyssalSireKills();
+			case "KRAKEN":
+				return lootRecorderConfig.recordKrakenKills();
+			case "CERBERUS":
+				return lootRecorderConfig.recordCerberusKills();
+			case "THERMONUCLEAR SMOKE DEVIL":
+				return lootRecorderConfig.recordThermonuclearSmokeDevilKills();
+			// Other
+			case "GIANT MOLE":
+				return lootRecorderConfig.recordGiantMoleKills();
+			case "KALPHITE QUEEN":
+				return lootRecorderConfig.recordKalphiteQueenKills();
+			case "CORPOREAL BEAST":
+				return lootRecorderConfig.recordCorporealBeastKills();
+			case "DAGANNOTH REX":
+				return lootRecorderConfig.recordDagannothRexKills();
+			case "DAGANNOTH PRIME":
+				return lootRecorderConfig.recordDagannothPrimeKills();
+			case "DAGANNOTH SUPREME":
+				return lootRecorderConfig.recordDagannothSupremeKills();
+			case "BRUTAL BLACK DRAGON":
+				return lootRecorderConfig.recordBrutalBlackKills();
+			default:
+				return false;
+		}
+	}
+
+	// Keep the subscribe a bit cleaner, may be a better way to handle this
+	private void handleConfigChanged(String eventKey)
+	{
+		switch (eventKey)
 		{
 			case "recordBarrowsChest":
 				ToggleTab("Barrows", lootRecorderConfig.recordBarrowsChest());
@@ -778,408 +1214,5 @@ public class LootRecorderPlugin extends Plugin
 			default:
 				break;
 		}
-	}
-
-	private void updateMessageColor()
-	{
-		Color c = lootRecorderConfig.chatMessageColor();
-		messageColor = String.format("%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue());
-	}
-
-	// All alerts from this plugin should use this function
-	private void lootRecordedAlert(String message)
-	{
-		message = "Loot Recorder: " + message;
-		if (lootRecorderConfig.showChatMessages())
-		{
-			final ChatMessageBuilder chatMessage = new ChatMessageBuilder()
-					.append("<col=" + messageColor + ">")
-					.append(message)
-					.append("</col>");
-
-			chatMessageManager.queue(QueuedMessage.builder()
-					.type(ChatMessageType.EXAMINE_ITEM)
-					.runeLiteFormattedMessage(chatMessage.build())
-					.build());
-		}
-
-		if (lootRecorderConfig.showTrayAlerts())
-		{
-			notifier.notify(message);
-		}
-	}
-
-	// Toggle visibility of the tab in side panel
-	private void ToggleTab(String tabName, Boolean status)
-	{
-		// Remove panel tab if showing panel
-		if (lootRecorderConfig.showLootTotals())
-		{
-			panel.toggleTab(tabName, status);
-		}
-		// Update tab map
-		String bossName = Tab.getByName(tabName).getBossName().toUpperCase();
-		recordingMap.put(bossName, status);
-	}
-
-	// Wrapper function
-	void loadTabData(Tab tab)
-	{
-		loadLootEntries(tab);
-	}
-
-	// Load data for all bosses being recorded
-	void loadAllData()
-	{
-		for (Tab tab : Tab.values())
-		{
-			if (isBeingRecorded(tab.getName()))
-			{
-				loadLootEntries(tab);
-			}
-		}
-	}
-
-	// Searches chat messages for kill count value or pet drop
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
-	{
-		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
-		{
-			return;
-		}
-
-		String chatMessage = event.getMessage();
-
-		// Barrows KC
-		if (chatMessage.startsWith("Your Barrows chest count is"))
-		{
-			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
-			if (m.find())
-			{
-				killcountMap.put("BARROWS", Integer.valueOf(m.group()));
-				return;
-			}
-		}
-
-		// Raids KC
-		if (chatMessage.startsWith("Your completed Chambers of Xeric count is:"))
-		{
-			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
-			if (m.find())
-			{
-				killcountMap.put("RAIDS", Integer.valueOf(m.group()));
-				return;
-			}
-		}
-
-		// Handle all other boss
-		Matcher boss = BOSS_NAME_PATTERN.matcher(Text.removeTags(chatMessage));
-		if (boss.find())
-		{
-			String bossName = boss.group(1);
-			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
-			if (!m.find())
-				return;
-			int KC = Integer.valueOf(m.group());
-			killcountMap.put(bossName.toUpperCase(), KC);
-		}
-
-		// Pet Drop
-		Matcher pet1 = PET_RECEIVED_PATTERN.matcher(Text.removeTags(chatMessage));
-		Matcher pet2 = PET_RECEIVED_INVENTORY_PATTERN.matcher(Text.removeTags(chatMessage));
-		if (pet1.find() || pet2.find())
-		{
-			gotPet = true;
-		}
-	}
-
-	// Create Loot Entry for ItemContainer
-	private LootEntry createLootEntry(Integer kill_count, ItemContainer container)
-	{
-		ArrayList<DropEntry> drops = new ArrayList<>();
-		for (Item item : container.getItems())
-		{
-			int id = item.getId();
-			int amount = item.getQuantity();
-			drops.add(new DropEntry(id, amount));
-		}
-
-		return new LootEntry(kill_count, drops);
-	}
-
-	// Add Loot Entry to the necessary file
-	private void addLootEntry(String bossName, LootEntry entry)
-	{
-		// Update data inside plugin
-		ArrayList<LootEntry> loots = lootMap.get(bossName.toUpperCase());
-		loots.add(entry);
-		lootMap.put(bossName.toUpperCase(), loots);
-		// Convert entry to JSON
-		String dataAsString = RuneLiteAPI.GSON.toJson(entry);
-		// Grab file by username or loots directory if not logged in
-		updatePlayerFolder();
-		String fileName = filenameMap.get(bossName.toUpperCase());
-		// Open File and append data
-		File lootFile = new File(playerFolder, fileName);
-		try
-		{
-			BufferedWriter file = new BufferedWriter(new FileWriter(String.valueOf(lootFile), true));
-			file.append(dataAsString);
-			file.newLine();
-			file.close();
-		}
-		catch (IOException ioe)
-		{
-			log.warn("Error witting loot data in file.", ioe);
-		}
-
-		// Update tab if being displayed;
-		Tab tab = Tab.getByBossName(bossName);
-		if (isBeingRecorded(tab.getName()))
-		{
-			panel.updateTab(tab.getName());
-		}
-	}
-
-	// Receive Loot from the necessary file
-	private synchronized void loadLootEntries(Tab tab)
-	{
-		ArrayList<LootEntry> data = new ArrayList<>();
-		// Grab target directory (username or loots directory if not logged in)
-		updatePlayerFolder();
-		String fileName = filenameMap.get(tab.getBossName().toUpperCase());
-
-		// Open File and read line by line
-		File file = new File(playerFolder, fileName);
-		try (BufferedReader br = new BufferedReader(new FileReader(file)))
-		{
-			String line;
-			while ((line = br.readLine()) != null)
-			{
-				// Convert JSON to LootEntry and add to data ArrayList
-				if (line.length() > 0)
-				{
-					LootEntry entry = RuneLiteAPI.GSON.fromJson(line, LootEntry.class);
-					data.add(entry);
-				}
-			}
-
-			// Update Loot Map with new data
-			lootMap.put(tab.getBossName().toUpperCase(), data);
-			// Update Killcount map with latest value
-			if (data.size() > 0)
-			{
-				int killcount = data.get(data.size() - 1).getKill_count();
-				killcountMap.put(tab.getBossName().toUpperCase(), killcount);
-			}
-		}
-		catch (FileNotFoundException e)
-		{
-			log.debug("File not found: " + fileName);
-		}
-		catch (IOException e)
-		{
-			log.warn("Unexpected error", e);
-		}
-	}
-
-	// Returns stored data by tab name
-	ArrayList<LootEntry> getData(String type)
-	{
-		// Loot Entries are stored on lootMap by boss name (upper cased)
-		String name = Tab.getByName(type).getBossName().toUpperCase();
-		return lootMap.get(name);
-	}
-
-	// Handles if panel should be shown by Tab Name
-	Boolean isBeingRecorded(String tabName)
-	{
-		switch (tabName.toUpperCase())
-		{
-			case "BARROWS":
-				return lootRecorderConfig.recordBarrowsChest();
-			case "RAIDS":
-				return lootRecorderConfig.recordRaidsChest();
-			case "ZULRAH":
-				return lootRecorderConfig.recordZulrahKills();
-			case "VORKATH":
-				return lootRecorderConfig.recordVorkathKills();
-			// God Wars Dungeon
-			case "ARMADYL":
-				return lootRecorderConfig.recordArmadylKills();
-			case "BANDOS":
-				return lootRecorderConfig.recordBandosKills();
-			case "SARADOMIN":
-				return lootRecorderConfig.recordSaradominKills();
-			case "ZAMMY":
-				return lootRecorderConfig.recordZammyKills();
-			// Wildy Bosses
-			case "VET'ION":
-				return lootRecorderConfig.recordVetionKills();
-			case "VENENATIS":
-				return lootRecorderConfig.recordVenenatisKills();
-			case "CALLISTO":
-				return lootRecorderConfig.recordCallistoKills();
-			case "CHAOS ELEMENTAL":
-				return lootRecorderConfig.recordChaosElementalKills();
-			case "CHAOS FANATIC":
-				return lootRecorderConfig.recordChaosFanaticKills();
-			case "CRAZY ARCHAEOLOGIST":
-				return lootRecorderConfig.recordCrazyArchaeologistKills();
-			case "SCORPIA":
-				return lootRecorderConfig.recordScorpiaKills();
-			case "KING BLACK DRAGON":
-				return lootRecorderConfig.recordKbdKills();
-			// Slayer Bosses
-			case "SKOTIZO":
-				return lootRecorderConfig.recordSkotizoKills();
-			case "GROTESQUE GUARDIANS":
-				return lootRecorderConfig.recordGrotesqueGuardiansKills();
-			case "ABYSSAL SIRE":
-				return lootRecorderConfig.recordAbyssalSireKills();
-			case "KRAKEN":
-				return lootRecorderConfig.recordKrakenKills();
-			case "CERBERUS":
-				return lootRecorderConfig.recordCerberusKills();
-			case "THERMONUCLEAR SMOKE DEVIL":
-				return lootRecorderConfig.recordThermonuclearSmokeDevilKills();
-			// Other
-			case "GIANT MOLE":
-				return lootRecorderConfig.recordGiantMoleKills();
-			case "KALPHITE QUEEN":
-				return lootRecorderConfig.recordKalphiteQueenKills();
-			case "CORPOREAL BEAST":
-				return lootRecorderConfig.recordCorporealBeastKills();
-			case "DAGANNOTH REX":
-				return lootRecorderConfig.recordDagannothRexKills();
-			case "DAGANNOTH PRIME":
-				return lootRecorderConfig.recordDagannothPrimeKills();
-			case "DAGANNOTH SUPREME":
-				return lootRecorderConfig.recordDagannothSupremeKills();
-			case "BRUTAL BLACK DRAGON":
-				return lootRecorderConfig.recordBrutalBlackKills();
-			default:
-				return false;
-		}
-	}
-
-	private void init()
-	{
-		// Create maps for easy management of certain features
-		Map<String, Boolean> mapRecording = new HashMap<>();
-		Map<String, ArrayList<LootEntry>> mapLoot = new HashMap<>();
-		Map<String, Integer> mapKillcount = new HashMap<>();
-		Map<String, String> mapFilename = new HashMap<>();
-		for (Tab tab : Tab.values())
-		{
-			String bossName = tab.getBossName().toUpperCase();
-			// Is Boss being recorded?
-			mapRecording.put(bossName, isBeingRecorded(tab.getName()));
-			// Loot Entries by Tab Name
-			ArrayList<LootEntry> array = new ArrayList<LootEntry>();
-			mapLoot.put(bossName, array);
-			// Kill Count
-			Integer killcount = 0;
-			mapKillcount.put(bossName, killcount);
-			// Filenames. Removes all spaces, periods, and apostrophes
-			String filename = tab.getName().replaceAll("( |'|\\.)", "").toLowerCase() + ".log";
-			mapFilename.put(bossName, filename);
-		}
-		recordingMap = mapRecording;
-		lootMap = mapLoot;
-		killcountMap = mapKillcount;
-		filenameMap = mapFilename;
-
-		// Ensure we are using the requested message coloring for in-game messages
-		updateMessageColor();
-	}
-
-	// Will check the main folder `loots` if can't find your username
-	private void updatePlayerFolder()
-	{
-		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
-		{
-			playerFolder = new File(LOOTS_DIR, client.getLocalPlayer().getName());
-			// Ensure player folder is made
-			playerFolder.mkdir();
-		}
-		else
-		{
-			playerFolder = LOOTS_DIR;
-		}
-	}
-
-	// Upon cleaning an Unsired add the item to the previous LootEntry
-	private void receivedUnsiredLoot(int itemID)
-	{
-		DropEntry drop = new DropEntry(itemID, 1);
-		// Update the last drop
-		addDropToLastLootEntry("Abyssal Sire", drop);
-	}
-
-	// Add Loot Entry to the necessary file
-	private void addDropToLastLootEntry(String bossName, DropEntry newDrop)
-	{
-		// Update data inside plugin
-		ArrayList<LootEntry> loots = lootMap.get(bossName.toUpperCase());
-		LootEntry entry = loots.get(loots.size() - 1);
-		entry.drops.add(newDrop);
-		// Ensure updates are applied, may not be necessary
-		loots.add(loots.size() - 1, entry);
-		lootMap.put(bossName.toUpperCase(), loots);
-
-		// Grab file by username or loots directory if not logged in
-		updatePlayerFolder();
-		String fileName = filenameMap.get(bossName.toUpperCase());
-
-		// Rewrite the log file (to update the last loot entry)
-		File lootFile = new File(playerFolder, fileName);
-		try
-		{
-			BufferedWriter file = new BufferedWriter(new FileWriter(String.valueOf(lootFile), false));
-			for ( LootEntry lootEntry : loots)
-			{
-				// Convert entry to JSON
-				String dataAsString = RuneLiteAPI.GSON.toJson(lootEntry);
-				file.append(dataAsString);
-				file.newLine();
-			}
-			file.close();
-		}
-		catch (IOException ioe)
-		{
-			log.warn("Error witting loot data in file.", ioe);
-		}
-		// Update tab if being displayed;
-		Tab tab = Tab.getByBossName(bossName);
-		if (isBeingRecorded(tab.getName()))
-		{
-			panel.updateTab(tab.getName());
-		}
-	}
-
-	// Taken from Wooxs droplogger plugin
-	private List<DropEntry> getGroundItems(Tile tile)
-	{
-		List<Item> items = tile.getGroundItems();
-		if (items == null)
-		{
-			return null;
-		}
-		return items.stream()
-				.map(x -> new DropEntry(x.getId(), x.getQuantity()))
-				.collect(Collectors.toList());
-	}
-
-	// Taken from Wooxs droplogger plugin
-	private int getUnnotedItemId(int itemId)
-	{
-		ItemComposition comp = itemManager.getItemComposition(itemId);
-		if (comp.getNote() == -1)
-		{
-			return itemId;
-		}
-		return comp.getLinkedNoteId();
 	}
 }
