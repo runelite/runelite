@@ -37,6 +37,7 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -48,6 +49,9 @@ class BarrowsOverlay extends Overlay
 	private final Client client;
 	private final BarrowsPlugin plugin;
 	private final BarrowsConfig config;
+
+	@Inject
+	private ConfigManager configManager;
 
 	@Inject
 	BarrowsOverlay(Client client, BarrowsPlugin plugin, BarrowsConfig config)
@@ -74,7 +78,7 @@ class BarrowsOverlay extends Overlay
 				net.runelite.api.Point minimapLocation = npc.getMinimapLocation();
 				if (minimapLocation != null)
 				{
-					graphics.setColor(Color.yellow);
+					graphics.setColor(configManager.getConfiguration("minimap", "npc", Color.class));
 					graphics.fillOval(minimapLocation.getX(), minimapLocation.getY(), 4, 4);
 				}
 			}
