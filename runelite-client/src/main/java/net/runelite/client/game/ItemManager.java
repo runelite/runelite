@@ -201,12 +201,12 @@ public class ItemManager
 			{
 				// Do a query for the items not in the cache
 				ItemPrice[] itemPrices = itemClient.lookupItemPrice(lookup.toArray(new Integer[lookup.size()]));
+				for (int itemId : lookup)
+				{
+					itemPriceCache.put(itemId, NONE);
+				}
 				if (itemPrices != null)
 				{
-					for (int itemId : lookup)
-					{
-						itemPriceCache.put(itemId, NONE);
-					}
 					for (ItemPrice itemPrice : itemPrices)
 					{
 						itemPriceCache.put(itemPrice.getItem().getId(), itemPrice);
