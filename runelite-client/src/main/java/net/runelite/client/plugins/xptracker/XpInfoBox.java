@@ -108,32 +108,19 @@ class XpInfoBox extends JPanel
 		headerPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		headerPanel.setLayout(new BorderLayout());
 
-		statsPanel.setLayout(new BorderLayout());
+		statsPanel.setLayout(new GridLayout(2, 2, 15, 0));
 		statsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		statsPanel.setBorder(new EmptyBorder(9, 5, 9, 10));
-
-		JPanel leftPanel = new JPanel();
-		leftPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		leftPanel.setLayout(new GridLayout(2, 1));
+		statsPanel.setBorder(new EmptyBorder(9, 5, 9, 5));
 
 		expGained.setFont(FontManager.getRunescapeSmallFont());
 		expHour.setFont(FontManager.getRunescapeSmallFont());
-
-		leftPanel.add(expGained);
-		leftPanel.add(expHour);
-
-		JPanel rightPanel = new JPanel();
-		rightPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		rightPanel.setLayout(new GridLayout(2, 1));
-
 		expLeft.setFont(FontManager.getRunescapeSmallFont());
 		actionsLeft.setFont(FontManager.getRunescapeSmallFont());
 
-		rightPanel.add(expLeft);
-		rightPanel.add(actionsLeft);
-
-		statsPanel.add(leftPanel, BorderLayout.WEST);
-		statsPanel.add(rightPanel, BorderLayout.EAST);
+		statsPanel.add(expGained);
+		statsPanel.add(expLeft);
+		statsPanel.add(expHour);
+		statsPanel.add(actionsLeft);
 
 		headerPanel.add(skillIcon, BorderLayout.WEST);
 		headerPanel.add(statsPanel, BorderLayout.CENTER);
