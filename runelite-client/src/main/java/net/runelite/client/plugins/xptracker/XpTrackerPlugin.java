@@ -32,7 +32,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.EnumSet;
 import java.util.Objects;
-import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -70,9 +69,6 @@ public class XpTrackerPlugin extends Plugin
 
 	@Inject
 	private SkillIconManager skillIconManager;
-
-	@Inject
-	private ScheduledExecutorService executor;
 
 	private NavigationButton navButton;
 	private XpPanel xpPanel;
@@ -164,19 +160,7 @@ public class XpTrackerPlugin extends Plugin
 			String username = local != null ? local.getName() : null;
 			if (username != null)
 			{
-				log.debug("Submitting xp track for {}", username);
-
-				executor.submit(() ->
-				{
-					try
-					{
-						xpClient.update(username);
-					}
-					catch (IOException ex)
-					{
-						log.warn("error submitting xp track", ex);
-					}
-				});
+				xpClient.update(username);
 			}
 		}
 	}
