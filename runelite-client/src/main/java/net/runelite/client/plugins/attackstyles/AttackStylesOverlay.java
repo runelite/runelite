@@ -64,7 +64,7 @@ public class AttackStylesOverlay extends Overlay
 
 			panelComponent.setPreferredSize(new Dimension(
 				graphics.getFontMetrics().stringWidth(attackStyleString) + 10,
-				0));
+				28));
 
 			return panelComponent.render(graphics);
 		}
