@@ -183,7 +183,7 @@ public class ExaminePlugin extends Plugin
 		}
 
 		cache.put(key, Boolean.TRUE);
-		executor.submit(() -> submitExamine(pendingExamine, event.getMessage()));
+		submitExamine(pendingExamine, event.getMessage());
 	}
 
 	private void findExamineItem(PendingExamine pendingExamine)
@@ -356,24 +356,17 @@ public class ExaminePlugin extends Plugin
 	{
 		int id = examine.getId();
 
-		try
+		switch (examine.getType())
 		{
-			switch (examine.getType())
-			{
-				case ITEM:
-					examineClient.submitItem(id, text);
-					break;
-				case OBJECT:
-					examineClient.submitObject(id, text);
-					break;
-				case NPC:
-					examineClient.submitNpc(id, text);
-					break;
-			}
-		}
-		catch (IOException ex)
-		{
-			log.warn("Error submitting examine", ex);
+			case ITEM:
+				examineClient.submitItem(id, text);
+				break;
+			case OBJECT:
+				examineClient.submitObject(id, text);
+				break;
+			case NPC:
+				examineClient.submitNpc(id, text);
+				break;
 		}
 	}
 
