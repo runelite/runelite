@@ -55,7 +55,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-        name = "War Indicators"
+	name = "War Indicators"
 )
 
 public class WarIndicatorPlugin extends Plugin
@@ -110,8 +110,8 @@ public class WarIndicatorPlugin extends Plugin
 			Player player = null;
 			String player2 = null;
 
-            String[] callers = config.getActiveCallers().split(", ");
-            String[] targets = config.getTargetedSnipes().split(", ");
+			String[] callers = config.getActiveCallers().split(", ");
+			String[] targets = config.getTargetedSnipes().split(", ");
 
 			if (identifier >= 0 && identifier < players.length)
 			{
@@ -132,8 +132,8 @@ public class WarIndicatorPlugin extends Plugin
 			}
 
 			if (config.highlightSnipes() && ArrayUtils.contains(targets, player2))
-            {
-                color = config.getSnipeColor();
+			{
+				color = config.getSnipeColor();
 			}
 
 			if (color != null)
