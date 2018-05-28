@@ -61,6 +61,7 @@ import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.HitsplatApplied;
+import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostItemComposition;
@@ -455,6 +456,11 @@ public class Hooks
 
 	public static void onSetCombatInfo(Actor actor, int combatInfoId, int gameCycle, int var3, int var4, int healthRatio, int health)
 	{
+		if (healthRatio == 0 && actor == client.getLocalPlayer())
+		{
+			LocalPlayerDeath event = new LocalPlayerDeath();
+			eventBus.post(event);
+		}
 	}
 
 	public static void postItemComposition(ItemComposition itemComposition)
