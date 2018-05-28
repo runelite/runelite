@@ -266,19 +266,7 @@ public class ConfigManager
 
 		if (client != null)
 		{
-			Runnable task = () ->
-			{
-				try
-				{
-					client.set(groupName + "." + key, value);
-				}
-				catch (IOException ex)
-				{
-					log.warn("unable to set configuration item", ex);
-				}
-			};
-			executor.execute(task);
-
+			client.set(groupName + "." + key, value);
 		}
 
 		Runnable task = () ->
@@ -316,19 +304,7 @@ public class ConfigManager
 
 		if (client != null)
 		{
-			final Runnable task = () ->
-			{
-				try
-				{
-					client.unset(groupName + "." + key);
-				}
-				catch (IOException ex)
-				{
-					log.warn("unable to set configuration item", ex);
-				}
-			};
-
-			executor.execute(task);
+			client.unset(groupName + "." + key);
 		}
 
 		Runnable task = () ->
