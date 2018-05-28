@@ -1142,10 +1142,6 @@ public class BossLoggerPlugin extends Plugin
 				return bossLoggerConfig.recordDagannothPrimeKills();
 			case "DAGANNOTH SUPREME":
 				return bossLoggerConfig.recordDagannothSupremeKills();
-			case "BRUTAL BLACK DRAGON":
-				return bossLoggerConfig.recordBrutalBlackKills();
-			case "GREEN DRAGON":
-				return bossLoggerConfig.recordDragonKills();
 			default:
 				return false;
 		}
@@ -1239,12 +1235,6 @@ public class BossLoggerPlugin extends Plugin
 				return;
 			case "recordDagannothSupremeKills":
 				ToggleTab("Dagannoth Supreme", bossLoggerConfig.recordDagannothSupremeKills());
-				return;
-			case "recordBrutalBlackKills":
-				ToggleTab("Brutal Black Dragon", bossLoggerConfig.recordBrutalBlackKills());
-				return;
-			case "GREEN DRAGON":
-				ToggleTab("Green Dragon", bossLoggerConfig.recordBrutalBlackKills());
 				return;
 			case "showLootTotals":
 				loadAllData();

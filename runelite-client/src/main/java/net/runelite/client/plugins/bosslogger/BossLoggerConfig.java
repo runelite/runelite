@@ -347,30 +347,6 @@ public interface BossLoggerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "recordBrutalBlackKills",
-			name = "Record Brutal Black Dragon Loot",
-			description = "Configures whether or not loot from Brutal Black Dragons is recorded",
-			position = 28
-	)
-	default boolean recordBrutalBlackKills()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-			keyName = "recordDragonKills",
-			name = "Record Brutal Black Dragon Loot",
-			description = "Configures whether or not loot from Brutal Black Dragons is recorded",
-			position = 29
-	)
-	default boolean recordDragonKills()
-	{
-		return true;
-	}
-
-
-
-	@ConfigItem(
 		keyName = "showChatMessages",
 		name = "In-game Chat Message Alerts",
 		description = "In-Game Chat Messages when Loot Recorded",
