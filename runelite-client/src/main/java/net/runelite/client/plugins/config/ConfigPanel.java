@@ -494,16 +494,19 @@ public class ConfigPanel extends PluginPanel
 
 			if (cid.getType() == Color.class)
 			{
+				String existing = configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName());
+				Color existingColor = existing == null ? Color.BLACK : Color.decode(existing);
+
 				JButton colorPicker = new JButton("Pick a color");
 				colorPicker.setFocusable(false);
-				colorPicker.setBackground(Color.decode(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName())));
+				colorPicker.setBackground(existingColor);
 				colorPicker.addMouseListener(new MouseAdapter()
 				{
 					@Override
 					public void mouseClicked(MouseEvent e)
 					{
 						final JFrame parent = new JFrame();
-						JColorChooser jColorChooser = new JColorChooser(Color.decode(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName())));
+						JColorChooser jColorChooser = new JColorChooser(existingColor);
 						jColorChooser.getSelectionModel().addChangeListener(e1 -> colorPicker.setBackground(jColorChooser.getColor()));
 						parent.addWindowListener(new WindowAdapter()
 						{
