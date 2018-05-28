@@ -164,6 +164,25 @@ public class ItemManager
 	}
 
 	/**
+	 * Look up an item's price from the price cache
+	 *
+	 * @param itemId
+	 * @return
+	 */
+	public ItemPrice getCachedItemPrice(int itemId)
+	{
+		itemId = ItemMapping.mapFirst(itemId);
+
+		ItemPrice itemPrice = itemPriceCache.getIfPresent(itemId);
+		if (itemPrice != null && itemPrice != EMPTY && itemPrice != NONE)
+		{
+			return itemPrice;
+		}
+
+		return null;
+	}
+
+	/**
 	 * Look up bulk item prices asynchronously
 	 *
 	 * @param itemIds array of item Ids
