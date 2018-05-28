@@ -197,7 +197,7 @@ public class BossLoggerPlugin extends Plugin
 			int kc = killcountMap.get("BARROWS");
 			LootEntry entry = createLootEntry(kc, rewardContainer);
 			addLootEntry("Barrows", entry);
-			lootRecordedAlert("Barrows Chest added to log.");
+			BossLoggedAlert("Barrows Chest added to log.");
 		}
 
 		// Raids Chest
@@ -208,7 +208,7 @@ public class BossLoggerPlugin extends Plugin
 			int kc = killcountMap.get("RAIDS");
 			LootEntry entry = createLootEntry(kc, rewardContainer);
 			addLootEntry("Raids", entry);
-			lootRecordedAlert("Raids Chest Loot added to log.");
+			BossLoggedAlert("Raids Chest Loot added to log.");
 		}
 
 
@@ -561,7 +561,7 @@ public class BossLoggerPlugin extends Plugin
 	}
 
 	// All alerts from this plugin should use this function
-	private void lootRecordedAlert(String message)
+	private void BossLoggedAlert(String message)
 	{
 		message = "Boss Logger: " + message;
 		if (bossLoggerConfig.showChatMessages())
@@ -618,7 +618,7 @@ public class BossLoggerPlugin extends Plugin
 		int KC = killcountMap.get(bossName.toUpperCase());
 		LootEntry newEntry = new LootEntry(KC, drops);
 		addLootEntry(bossName, newEntry);
-		lootRecordedAlert(bossName + " kill added to log.");
+		BossLoggedAlert(bossName + " kill added to log.");
 	}
 
 	// Create Loot Entry for ItemContainer
@@ -658,7 +658,7 @@ public class BossLoggerPlugin extends Plugin
 		}
 		catch (IOException ioe)
 		{
-			log.warn("Error witting loot data in file.", ioe);
+			log.warn("Error writing loot data in file.", ioe);
 		}
 
 		// Update tab if being displayed;
@@ -990,7 +990,7 @@ public class BossLoggerPlugin extends Plugin
 			// Still not able to find correct world point
 			if (correctWP == null)
 			{
-				lootRecordedAlert("Unable to find loot for: " + npc.getName());
+				BossLoggedAlert("Unable to find loot for: " + npc.getName());
 				log.debug("Unable to find correct location for NPC", npc.getName());
 				return null;
 			}
@@ -1000,7 +1000,7 @@ public class BossLoggerPlugin extends Plugin
 		Tile tile = getLootTile(correctWP);
 		if (tile == null)
 		{
-			lootRecordedAlert("Unable to find loot at expected location for: " + npc.getName());
+			BossLoggedAlert("Unable to find loot at expected location for: " + npc.getName());
 			log.debug("Unable to find loot tile at expected location for NPC", npc.getName(), correctWP);
 			return null;
 		}
@@ -1014,7 +1014,7 @@ public class BossLoggerPlugin extends Plugin
 		// Tile doesn't have items or no new items
 		if (layer == null || newItems.equals(oldMap))
 		{
-			lootRecordedAlert("Unable to create drop entry for: " + npc.getName());
+			BossLoggedAlert("Unable to create drop entry for: " + npc.getName());
 			log.debug("No Layer Items or no NEW Layer Items", layer, newItems, oldMap, tile);
 			return null;
 		}
@@ -1049,7 +1049,7 @@ public class BossLoggerPlugin extends Plugin
 			int petID = getPetIdByNpcName(npc.getName());
 			drops.add(new DropEntry(petID, 1));
 			gotPet = false;
-			lootRecordedAlert("Oh lookie a pet!");
+			BossLoggedAlert("Oh lookie a pet!");
 		}
 
 		return drops;
@@ -1260,7 +1260,7 @@ public class BossLoggerPlugin extends Plugin
 			case "chatMessageColor":
 				// Update in-game alert color
 				updateMessageColor();
-				lootRecordedAlert("Example Message");
+				BossLoggedAlert("Example Message");
 				return;
 			default:
 				break;
