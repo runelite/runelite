@@ -24,9 +24,16 @@
  */
 package net.runelite.api;
 
+import java.util.HashMap;
+import java.util.Map;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * Enumeration of message types that can be received in the chat.
  */
+@AllArgsConstructor
+@Getter
 public enum ChatMessageType
 {
 	/**
@@ -124,9 +131,14 @@ public enum ChatMessageType
 
 	private final int type;
 
-	ChatMessageType(int type)
+	private static final Map<Integer, ChatMessageType> CHAT_MESSAGE_TYPES = new HashMap<>();
+
+	static
 	{
-		this.type = type;
+		for (ChatMessageType chatMessageType : values())
+		{
+			CHAT_MESSAGE_TYPES.put(chatMessageType.type, chatMessageType);
+		}
 	}
 
 	/**
@@ -138,23 +150,6 @@ public enum ChatMessageType
 	 */
 	public static ChatMessageType of(int type)
 	{
-		for (ChatMessageType ct : ChatMessageType.values())
-		{
-			if (ct.type == type)
-			{
-				return ct;
-			}
-		}
-		return UNKNOWN;
-	}
-
-	/**
-	 * Gets the raw type value of the message type.
-	 *
-	 * @return the raw type
-	 */
-	public int getType()
-	{
-		return type;
+		return CHAT_MESSAGE_TYPES.getOrDefault(type, UNKNOWN);
 	}
 }
