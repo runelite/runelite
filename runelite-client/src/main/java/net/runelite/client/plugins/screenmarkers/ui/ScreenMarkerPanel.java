@@ -253,7 +253,7 @@ class ScreenMarkerPanel extends JPanel
 		nameActions.add(cancel, BorderLayout.WEST);
 		nameActions.add(rename, BorderLayout.CENTER);
 
-		nameInput.setText(marker.getName());
+		nameInput.setText(marker.getMarker().getName());
 		nameInput.setBorder(null);
 		nameInput.setEditable(false);
 		nameInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
