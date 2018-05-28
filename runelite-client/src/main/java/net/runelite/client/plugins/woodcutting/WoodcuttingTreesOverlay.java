@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kamiel, <https://github.com/Kamielvf>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
@@ -23,58 +23,54 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.screenmarkers;
+package net.runelite.client.plugins.woodcutting;
 
-import java.awt.BasicStroke;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import lombok.Getter;
+import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.GameObject;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
-public class ScreenMarkerOverlay extends Overlay
+class WoodcuttingTreesOverlay extends Overlay
 {
-	@Getter
-	private final ScreenMarker marker;
-	private final ScreenMarkerRenderable screenMarkerRenderable;
+	private final Client client;
+	private final WoodcuttingConfig config;
+	private final ItemManager itemManager;
+	private final WoodcuttingPlugin plugin;
 
-	ScreenMarkerOverlay(ScreenMarker marker)
+	@Inject
+	private WoodcuttingTreesOverlay(final Client client, final WoodcuttingConfig config, final ItemManager itemManager, final WoodcuttingPlugin plugin)
 	{
-		this.marker = marker;
-		this.screenMarkerRenderable = new ScreenMarkerRenderable();
-		setPosition(OverlayPosition.DETACHED);
-		setLayer(OverlayLayer.ALWAYS_ON_TOP);
-		setPriority(OverlayPriority.HIGH);
-	}
-
-	@Override
-	public String getName()
-	{
-		return "marker" + marker.getId();
+		this.client = client;
+		this.config = config;
+		this.itemManager = itemManager;
+		this.plugin = plugin;
+		setLayer(OverlayLayer.ABOVE_SCENE);
+		setPosition(OverlayPosition.DYNAMIC);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!marker.isVisible())
+		if (plugin.getSession() == null || !config.showRedwoodTrees())
 		{
 			return null;
 		}
 
-		Dimension preferredSize = getPreferredSize();
-		if (preferredSize == null)
+		for (GameObject treeObject : plugin.getTreeObjects())
 		{
-			// overlay has no preferred size in the renderer configuration!
-			return null;
+			if (treeObject.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) <= 12)
+			{
+				Axe axe = plugin.getAxe();
+				OverlayUtil.renderImageLocation(client, graphics, treeObject.getLocalLocation(), itemManager.getImage(axe.getItemId()), 120);
+			}
 		}
 
-		screenMarkerRenderable.setBorderThickness(marker.getBorderThickness());
-		screenMarkerRenderable.setColor(marker.getColor());
-		screenMarkerRenderable.setFill(marker.getFill());
-		screenMarkerRenderable.setStroke(new BasicStroke(marker.getBorderThickness()));
-		screenMarkerRenderable.setPreferredSize(preferredSize);
-		return screenMarkerRenderable.render(graphics);
+		return null;
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Matthew Steglinski <https://github.com/sainttx>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,89 +22,77 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.woodcutting;
+package net.runelite.client.plugins.devtools;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.Skill;
-import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-class WoodcuttingOverlay extends Overlay
+public class CameraOverlay extends Overlay
 {
 	private final Client client;
-	private final WoodcuttingPlugin plugin;
-	private final WoodcuttingConfig config;
-	private final XpTrackerService xpTrackerService;
+	private final DevToolsPlugin plugin;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private WoodcuttingOverlay(Client client, WoodcuttingPlugin plugin, WoodcuttingConfig config, XpTrackerService xpTrackerService)
+	CameraOverlay(Client client, DevToolsPlugin plugin)
 	{
-		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
 		this.plugin = plugin;
-		this.config = config;
-		this.xpTrackerService = xpTrackerService;
+		panelComponent.setPreferredSize(new Dimension(150, 0));
+		setPosition(OverlayPosition.TOP_LEFT);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showWoodcuttingStats())
-		{
-			return null;
-		}
-
-		WoodcuttingSession session = plugin.getSession();
-		if (session == null)
+		if (!plugin.isToggleCamera())
 		{
 			return null;
 		}
 
 		panelComponent.getChildren().clear();
 
-		Axe axe = plugin.getAxe();
-		if (axe != null && axe.getAnimId() == client.getLocalPlayer().getAnimation())
-		{
-			panelComponent.getChildren().add(TitleComponent.builder()
-				.text("Woodcutting")
-				.color(Color.GREEN)
-				.build());
-		}
-		else
-		{
-			panelComponent.getChildren().add(TitleComponent.builder()
-				.text("NOT woodcutting")
-				.color(Color.RED)
-				.build());
-		}
-
-		int actions = xpTrackerService.getActions(Skill.WOODCUTTING);
-		if (actions > 0)
-		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Logs cut:")
-				.right(Integer.toString(actions))
+		panelComponent.getChildren().add(TitleComponent.builder()
+				.text("Camera")
 				.build());
 
-			if (actions > 2)
-			{
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Logs/hr:")
-					.right(Integer.toString(xpTrackerService.getActionsHr(Skill.WOODCUTTING)))
-					.build());
-			}
-		}
+		panelComponent.getChildren().add(LineComponent.builder()
+				.left("X")
+				.right("" + client.getCameraX())
+				.build());
+
+		panelComponent.getChildren().add(LineComponent.builder()
+				.left("Y")
+				.right("" + client.getCameraY())
+				.build());
+
+		panelComponent.getChildren().add(LineComponent.builder()
+				.left("Z")
+				.right("" + client.getCameraZ())
+				.build());
+
+		panelComponent.getChildren().add(LineComponent.builder()
+				.left("Pitch")
+				.right("" + client.getCameraPitch())
+				.build());
+
+		panelComponent.getChildren().add(LineComponent.builder()
+				.left("Yaw")
+				.right("" + client.getCameraYaw())
+				.build());
+
+		panelComponent.getChildren().add(LineComponent.builder()
+				.left("Scale")
+				.right("" + client.getScale())
+				.build());
 
 		return panelComponent.render(graphics);
 	}
-
 }

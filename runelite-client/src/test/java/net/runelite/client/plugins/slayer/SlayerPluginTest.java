@@ -67,16 +67,19 @@ public class SlayerPluginTest
 	private static final String SUPERIOR_MESSAGE = "A superior foe has appeared...";
 
 	private static final String BRACLET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count decreasing. It has 9 charges left.";
-	private static final String BRACLET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your slayer task faster. It has 9 charges left.";
+	private static final String BRACLET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your slayer faster. It has 9 charges left.";
 
 	private static final String BRACLET_SLAUGHTER_V2 = "Your bracelet of slaughter prevents your slayer count decreasing. It has 1 charge left.";
-	private static final String BRACLET_EXPEDITIOUS_V2 = "Your expeditious bracelet helps you progress your slayer task faster. It has 1 charge left.";
+	private static final String BRACLET_EXPEDITIOUS_V2 = "Your expeditious bracelet helps you progress your slayer faster. It has 1 charge left.";
 
 	private static final String BRACLET_SLAUGHTER_V3 = "Your bracelet of slaughter prevents your slayer count decreasing. It then crumbles to dust.";
-	private static final String BRACLET_EXPEDITIOUS_V3 = "Your expeditious bracelet helps you progress your slayer task faster. It then crumbles to dust.";
+	private static final String BRACLET_EXPEDITIOUS_V3 = "Your expeditious bracelet helps you progress your slayer faster. It then crumbles to dust.";
 
 	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE = "Your bracelet of slaughter has 12 charges left.";
 	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE = "Your expeditious bracelet has 12 charges left.";
+
+	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE_ONE = "Your bracelet of slaughter has 1 charge left.";
+	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE_ONE = "Your expeditious bracelet has 1 charge left.";
 
 	private static final String BREAK_SLAUGHTER = "The bracelet shatters. Your next bracelet of slaughter<br>will start afresh from 30 charges.";
 	private static final String BREAK_EXPEDITIOUS = "The bracelet shatters. Your next expeditious bracelet<br>will start afresh from 30 charges.";
@@ -242,6 +245,11 @@ public class SlayerPluginTest
 
 		assertEquals(12, slayerPlugin.getSlaughterChargeCount());
 
+		chatMessageEvent = new ChatMessage(SERVER, "", CHAT_BRACELET_SLAUGHTER_CHARGE_ONE, null);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals(1, slayerPlugin.getSlaughterChargeCount());
+
 		slayerPlugin.setSlaughterChargeCount(1);
 		chatMessageEvent = new ChatMessage(SERVER, "", BRACLET_SLAUGHTER_V3, null);
 		slayerPlugin.onChatMessage(chatMessageEvent);
@@ -284,6 +292,11 @@ public class SlayerPluginTest
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(12, slayerPlugin.getExpeditiousChargeCount());
+
+		chatMessageEvent = new ChatMessage(SERVER, "", CHAT_BRACELET_EXPEDITIOUS_CHARGE_ONE, null);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals(1, slayerPlugin.getExpeditiousChargeCount());
 
 		slayerPlugin.setExpeditiousChargeCount(1);
 		chatMessageEvent = new ChatMessage(SERVER, "", BRACLET_EXPEDITIOUS_V3, null);
