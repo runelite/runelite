@@ -87,7 +87,6 @@ public enum Tab
 		this.index = index;
 	}
 
-
 	Tab(String name, int itemID, int index)
 	{
 		this.name = name;
@@ -95,6 +94,7 @@ public enum Tab
 		this.itemID = itemID;
 		this.index = index;
 	}
+
 	private final String name;
 	private final String bossName;
 	private final int itemID;

@@ -118,22 +118,43 @@ public class LootRecorderPlugin extends Plugin
 	@Inject
 	private PluginToolbar pluginToolbar;
 
-	private File playerFolder;
+	private File playerFolder;	// Where we are storing files
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern BOSS_NAME_PATTERN = Pattern.compile("Your (.*) kill count is:");
 	private static final Pattern PET_RECEIVED_PATTERN = Pattern.compile("You have a funny feeling like ");
 	private static final Pattern PET_RECEIVED_INVENTORY_PATTERN = Pattern.compile("You feel something weird sneaking into your backpack.");
+	private String messageColor = ""; // in-game chat message color
 
 	private LootRecorderPanel panel;
 	private NavigationButton navButton;
 
-	// String = NPC Name (uppercase) Boolean = Config Setting value
-	private Map<String, Boolean> recordingMap = new HashMap<>();
-	// String = Boss Name
-	private Map<String, ArrayList<LootEntry>> lootMap = new HashMap<>();
-	private Map<String, Integer> killcountMap = new HashMap<>();
-	private Map<String, String> filenameMap = new HashMap<>();
-	private Boolean gotPet = false;
+	// Mapping Variables
+	private Map<String, Boolean> recordingMap = new HashMap<>(); 			// Store config recording value by tab boss name
+	private Map<String, ArrayList<LootEntry>> lootMap = new HashMap<>();	// Store loot entries by boss name
+	private Map<String, Integer> killcountMap = new HashMap<>(); 			// Store boss kill count by name
+	private Map<String, String> filenameMap = new HashMap<>(); 				// Stores filename for each boss name
+
+	// Loot Finding Variables
+	private Set<Tile> changedItemLayerTiles = new HashSet<Tile>();				// Stores tiles that have had ItemLayer changes
+	private WorldPoint[] deathLocations;										// Stores NPC Death Worldpoints
+	private Map<WorldPoint, Map<Integer, Integer>> itemArray = new HashMap<>();	// Stores item map for a specific WorldPoint
+
+	// Variables for handling NPC death
+	private String deathName;				// NPC Name
+	private String lastBossKilled;			// NPC Name (Saved for pet purposes)
+	private int deathSize;					// NPC Size
+	private int deathID;					// NPC ID
+	private WorldPoint deathSpot;			// NPC Death WorldPoint
+	private WorldPoint playerLocation;		// Players WorldPoint at time of NPC death animation
+	private Boolean gotPet = false;			// Got the pet chat message?
+
+	// Watching flags (actor death/changed item layer)
+	private Boolean watching = false;				// Watching for ActorDespawn?
+	private Boolean watchingItemLayers = false;		// Watching for ItemLayerChanged?
+
+	// Grotesque guardian has two npcs so we should only check for loot if both are dead.
+	private Boolean duskDead = false;
+	private Boolean dawnDead = false;
 
 	@Provides
 	LootRecorderConfig provideConfig(ConfigManager configManager)
@@ -151,15 +172,14 @@ public class LootRecorderPlugin extends Plugin
 			ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 			scheduler.schedule(() -> SwingUtilities.invokeLater(this::createPanel), 2, TimeUnit.SECONDS);
 		}
-		createMaps();
-		updateMessageColor();
+		init();
 
 		// Ensure Loot Directory has been created
 		LOOTS_DIR.mkdir();
 	}
 
 	// Separated from startUp for toggling panel from settings
-	void createPanel()
+	private void createPanel()
 	{
 		panel = new LootRecorderPanel(itemManager, this);
 		// Panel Icon (Looting Bag)
@@ -197,7 +217,7 @@ public class LootRecorderPlugin extends Plugin
 		pluginToolbar.removeNavigation(navButton);
 	}
 
-	// Checks for loot that is rewarded via interfaces
+	// Check for loot that is rewarded via interfaces
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
@@ -242,26 +262,10 @@ public class LootRecorderPlugin extends Plugin
 				default:
 					return;
 			}
+
 			receivedUnsiredLoot(itemID);
 		}
 	}
-
-	// Variables for getting items from NPC death
-	private WorldPoint[] deathLocations;						// Stores NPC Death Worldpoints
-	private Map<WorldPoint, Map<Integer, Integer>> itemArray = new HashMap<>();	// Stores item map for a specific WorldPoint
-	// Variables for handling NPC death
-	private String deathName;				// NPC Name
-	private String lastBossKilled;			// NPC Name (Saved for pet purposes)
-	private int deathSize;					// NPC Size
-	private int deathID;					// NPC ID
-	private WorldPoint playerLocation;		// Players WorldPoint
-	private WorldPoint deathSpot;			// NPC Death WorldPoint
-	// Watching flags (actor death/changed item layer)
-	private Boolean watching = false;				// Watching for ActorDespawn?
-	private Boolean watchingItemLayers = false;		// Watching for ItemLayerChanged?
-	// For checking grotesque guardian death
-	private Boolean duskDead = false;
-	private Boolean dawnDead = false;
 
 	@Subscribe
 	public void onActorDeath(ActorDeath death)
@@ -334,13 +338,12 @@ public class LootRecorderPlugin extends Plugin
 				// Correct Boss Despawned
 				watching = false;
 				// Find the drops from the correct tile and return them in the correct format
-				//log.info("Actor despawned, creating entry:");
-				//System.out.println(npc);
 				ArrayList<DropEntry> drops = createDropEntryArray((NPC) npc);
 				// Specific use case
 				String npcName = npc.getName();
 				if (npcName.equals("Dusk") || npcName.equals("Dawn"))
 					npcName = "Grotesque Guardians";
+
 				if (drops != null)
 				{
 					// Add LootEntry by Boss Name
@@ -348,7 +351,7 @@ public class LootRecorderPlugin extends Plugin
 				}
 				else
 				{
-					log.info("Error creating DropEntry array");
+					log.debug("Error creating DropEntry array");
 				}
 
 				// Reset Variables
@@ -366,8 +369,6 @@ public class LootRecorderPlugin extends Plugin
 		}
 	}
 
-	// Store changed tiles (for zulrah)
-	private Set<Tile> changedItemLayerTiles = new HashSet<Tile>();
 	@Subscribe
 	public void onItemLayerChanged(ItemLayerChanged event)
 	{
@@ -377,7 +378,8 @@ public class LootRecorderPlugin extends Plugin
 		}
 	}
 
-	void AddBossLootEntry(String bossName, ArrayList<DropEntry> drops)
+	// Adds the data to the correct boss log file
+	private void AddBossLootEntry(String bossName, ArrayList<DropEntry> drops)
 	{
 		int KC = killcountMap.get(bossName.toUpperCase());
 		LootEntry newEntry = new LootEntry(KC, drops);
@@ -420,6 +422,7 @@ public class LootRecorderPlugin extends Plugin
 			case NpcID.ZULRAH:
 			case NpcID.ZULRAH_2043:
 			case NpcID.ZULRAH_2044:
+				// Stop tracking which ItemLayers have been updated.
 				watchingItemLayers = false;
 				// The drop appears on the tile where zulrah scales appeared
 				WorldPoint loc = changedItemLayerTiles.stream()
@@ -428,8 +431,6 @@ public class LootRecorderPlugin extends Plugin
 							List<DropEntry> groundItems = getGroundItems(x);
 							if (groundItems != null)
 							{
-								log.info("Found location with zulrah scales on it!");
-								System.out.println(x);
 								return groundItems.stream().anyMatch(y -> y.getItem_id() == ItemID.ZULRAHS_SCALES);
 							}
 							return false;
@@ -505,37 +506,31 @@ public class LootRecorderPlugin extends Plugin
 	// Checks which WorldPoint has had item changes
 	private WorldPoint getCorrectWorldPoint(WorldPoint[] points)
 	{
-		//log.info("Getting correct world point");
 		Tile tile;
 		for (WorldPoint location : points)
 		{
-			//log.info("location: ");
-			//System.out.println(location);
 			if (location == null)
 			{
 				continue;
 			}
+
 			tile = getLootTile(location);
 			if (tile != null)
 			{
 				// Loops over layer.getBottom() and stores K,V as ItemID,ItemAmount
 				Map<Integer, Integer> itemMap = createItemMap(tile.getItemLayer());
-				// Tile has items and items have changed
-				//System.out.println(tile);
-				//System.out.println(itemMap);
 				if (itemMap != null && itemMap.size() > 0)
 				{
 					Map<Integer, Integer> oldItems = itemArray.get(location);
-					//System.out.println(oldItems);
 					if (oldItems != null )
 					{
 						if (itemMap.equals(oldItems))
 						{
-							// Didn't Change
+							// Didn't Change, try another location
 							continue;
 						}
 					}
-					// Returns this location
+					// Tile has items and items have changed, returns this location
 					return location;
 				}
 			}
@@ -543,7 +538,7 @@ public class LootRecorderPlugin extends Plugin
 		return null;
 	}
 
-	// Get tile based on WorldPoint
+	// Get tile based on WorldPoint. Taken from Wooxs droplogger plugin
 	private Tile getLootTile(WorldPoint location)
 	{
 		int regionX = location.getX() - client.getBaseX();
@@ -552,12 +547,11 @@ public class LootRecorderPlugin extends Plugin
 		{
 			return null;
 		}
-		Tile tile = client.getRegion().getTiles()[location.getPlane()][regionX][regionY];
 
-		return tile;
+		return client.getRegion().getTiles()[location.getPlane()][regionX][regionY];
 	}
 
-	Map<Integer, Integer> createItemMap(ItemLayer layer)
+	private Map<Integer, Integer> createItemMap(ItemLayer layer)
 	{
 		Map<Integer, Integer> map = new HashMap<>();
 		if (layer == null)
@@ -579,30 +573,34 @@ public class LootRecorderPlugin extends Plugin
 		return map;
 	}
 
-	ArrayList<DropEntry> createDropEntryArray(NPC npc)
+	private ArrayList<DropEntry> createDropEntryArray(NPC npc)
 	{
 		// Checks all deathLocations for spawned loot
 		WorldPoint correctWP = getCorrectWorldPoint(deathLocations);
 		if (correctWP == null)
 		{
-			// Certain NPCs are checking for tiles with a certain item so this would be null
+			// May be null for bosses that look for the tile where new items are added
 			WorldPoint[] points = getExpectedLootPoints(npc, deathSpot);
 			correctWP = getCorrectWorldPoint(points);
 
 			// Still not able to find correct world point
 			if (correctWP == null)
 			{
-				lootRecordedAlert("Unable to find loot tile for: " + npc.getName());
+				lootRecordedAlert("Unable to find loot for: " + npc.getName());
+				log.debug("Unable to find correct location for NPC", npc.getName());
 				return null;
 			}
 		}
+
 		// Grab the tile from this correct WorldPoint
 		Tile tile = getLootTile(correctWP);
 		if (tile == null)
 		{
-			lootRecordedAlert("Unable to find loot tile for: " + npc.getName() + " at WP: " + correctWP);
+			lootRecordedAlert("Unable to find loot at expected location for: " + npc.getName());
+			log.debug("Unable to find loot tile at expected location for NPC", npc.getName(), correctWP);
 			return null;
 		}
+
 		// Get item layer from correct tile
 		ItemLayer layer = tile.getItemLayer();
 		// Grab old items for this world point
@@ -613,20 +611,17 @@ public class LootRecorderPlugin extends Plugin
 		if (layer == null || newItems.equals(oldMap))
 		{
 			lootRecordedAlert("Unable to create drop entry for: " + npc.getName());
-			//log.info("No Layer Items or no NEW Layer Items");
-			//System.out.println(newItems);
-			//System.out.println(oldMap);
-			//System.out.println(layer);
-			//System.out.println(tile);
+			log.debug("No Layer Items or no NEW Layer Items", layer, newItems, oldMap, tile);
 			return null;
 		}
+
 		// Loop Through the new items and add them to the drops array list
 		ArrayList<DropEntry> drops = new ArrayList<DropEntry>();
 		Map<Integer, Integer> finalOldMap = oldMap;
 		newItems.forEach((id, amount) ->
 				{
 					// If some of this item already existed remove the existing amount
-					if (oldMap != null)
+					if (finalOldMap != null)
 					{
 						Integer existing = finalOldMap.get(id);
 						if (existing != null)
@@ -643,6 +638,8 @@ public class LootRecorderPlugin extends Plugin
 				}
 
 		);
+
+		// Not sure if this works since pets are so rare.
 		if (gotPet)
 		{
 			int petID = getPetIdByNpcName(npc.getName());
@@ -650,6 +647,7 @@ public class LootRecorderPlugin extends Plugin
 			gotPet = false;
 			lootRecordedAlert("Oh lookie a pet!");
 		}
+
 		return drops;
 	}
 
@@ -773,21 +771,22 @@ public class LootRecorderPlugin extends Plugin
 				}
 				return;
 			case "chatMessageColor":
-				// Updated chat color
+				// Update in-game alert color
 				updateMessageColor();
 				lootRecordedAlert("Example Message");
+				return;
 			default:
 				break;
 		}
 	}
 
-	private String messageColor = "";
-	public void updateMessageColor()
+	private void updateMessageColor()
 	{
 		Color c = lootRecorderConfig.chatMessageColor();
 		messageColor = String.format("%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue());
 	}
 
+	// All alerts from this plugin should use this function
 	private void lootRecordedAlert(String message)
 	{
 		message = "Loot Recorder: " + message;
@@ -810,6 +809,7 @@ public class LootRecorderPlugin extends Plugin
 		}
 	}
 
+	// Toggle visibility of the tab in side panel
 	private void ToggleTab(String tabName, Boolean status)
 	{
 		// Remove panel tab if showing panel
@@ -822,11 +822,13 @@ public class LootRecorderPlugin extends Plugin
 		recordingMap.put(bossName, status);
 	}
 
+	// Wrapper function
 	void loadTabData(Tab tab)
 	{
 		loadLootEntries(tab);
 	}
 
+	// Load data for all bosses being recorded
 	void loadAllData()
 	{
 		for (Tab tab : Tab.values())
@@ -838,7 +840,7 @@ public class LootRecorderPlugin extends Plugin
 		}
 	}
 
-	// Update KC variable on chat message event
+	// Searches chat messages for kill count value or pet drop
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
@@ -871,12 +873,6 @@ public class LootRecorderPlugin extends Plugin
 			}
 		}
 
-		Matcher pet1 = PET_RECEIVED_PATTERN.matcher(Text.removeTags(chatMessage));
-		Matcher pet2 = PET_RECEIVED_INVENTORY_PATTERN.matcher(Text.removeTags(chatMessage));
-		if (pet1.find() || pet2.find())
-		{
-			gotPet = true;
-		}
 		// Handle all other boss
 		Matcher boss = BOSS_NAME_PATTERN.matcher(Text.removeTags(chatMessage));
 		if (boss.find())
@@ -886,7 +882,15 @@ public class LootRecorderPlugin extends Plugin
 			if (!m.find())
 				return;
 			int KC = Integer.valueOf(m.group());
-			updateBossKillcount(bossName, KC);
+			killcountMap.put(bossName.toUpperCase(), KC);
+		}
+
+		// Pet Drop
+		Matcher pet1 = PET_RECEIVED_PATTERN.matcher(Text.removeTags(chatMessage));
+		Matcher pet2 = PET_RECEIVED_INVENTORY_PATTERN.matcher(Text.removeTags(chatMessage));
+		if (pet1.find() || pet2.find())
+		{
+			gotPet = true;
 		}
 	}
 
@@ -900,6 +904,7 @@ public class LootRecorderPlugin extends Plugin
 			int amount = item.getQuantity();
 			drops.add(new DropEntry(id, amount));
 		}
+
 		return new LootEntry(kill_count, drops);
 	}
 
@@ -928,6 +933,7 @@ public class LootRecorderPlugin extends Plugin
 		{
 			log.warn("Error witting loot data in file.", ioe);
 		}
+
 		// Update tab if being displayed;
 		Tab tab = Tab.getByBossName(bossName);
 		if (isBeingRecorded(tab.getName()))
@@ -940,7 +946,7 @@ public class LootRecorderPlugin extends Plugin
 	private synchronized void loadLootEntries(Tab tab)
 	{
 		ArrayList<LootEntry> data = new ArrayList<>();
-		// Grab file by username or loots directory if not logged in
+		// Grab target directory (username or loots directory if not logged in)
 		updatePlayerFolder();
 		String fileName = filenameMap.get(tab.getBossName().toUpperCase());
 
@@ -961,7 +967,7 @@ public class LootRecorderPlugin extends Plugin
 
 			// Update Loot Map with new data
 			lootMap.put(tab.getBossName().toUpperCase(), data);
-			// Update Killcount map with latest killcount value for display purposes
+			// Update Killcount map with latest value
 			if (data.size() > 0)
 			{
 				int killcount = data.get(data.size() - 1).getKill_count();
@@ -970,20 +976,12 @@ public class LootRecorderPlugin extends Plugin
 		}
 		catch (FileNotFoundException e)
 		{
-			log.warn("File not found: " + fileName);
+			log.debug("File not found: " + fileName);
 		}
 		catch (IOException e)
 		{
 			log.warn("Unexpected error", e);
 		}
-	}
-
-	void updateBossKillcount(String bossName, int KC)
-	{
-		log.info("Boss " + bossName + ", Kill Count: " + KC);
-		//Integer currentKC = killcountMap.get(bossName.toUpperCase());
-		//currentKC++;
-		killcountMap.put(bossName.toUpperCase(), KC);
 	}
 
 	// Returns stored data by tab name
@@ -1016,6 +1014,7 @@ public class LootRecorderPlugin extends Plugin
 				return lootRecorderConfig.recordSaradominKills();
 			case "ZAMMY":
 				return lootRecorderConfig.recordZammyKills();
+			// Wildy Bosses
 			case "VET'ION":
 				return lootRecorderConfig.recordVetionKills();
 			case "VENENATIS":
@@ -1032,6 +1031,7 @@ public class LootRecorderPlugin extends Plugin
 				return lootRecorderConfig.recordScorpiaKills();
 			case "KING BLACK DRAGON":
 				return lootRecorderConfig.recordKbdKills();
+			// Slayer Bosses
 			case "SKOTIZO":
 				return lootRecorderConfig.recordSkotizoKills();
 			case "GROTESQUE GUARDIANS":
@@ -1044,6 +1044,7 @@ public class LootRecorderPlugin extends Plugin
 				return lootRecorderConfig.recordCerberusKills();
 			case "THERMONUCLEAR SMOKE DEVIL":
 				return lootRecorderConfig.recordThermonuclearSmokeDevilKills();
+			// Other
 			case "GIANT MOLE":
 				return lootRecorderConfig.recordGiantMoleKills();
 			case "KALPHITE QUEEN":
@@ -1063,8 +1064,9 @@ public class LootRecorderPlugin extends Plugin
 		}
 	}
 
-	void createMaps()
+	private void init()
 	{
+		// Create maps for easy management of certain features
 		Map<String, Boolean> mapRecording = new HashMap<>();
 		Map<String, ArrayList<LootEntry>> mapLoot = new HashMap<>();
 		Map<String, Integer> mapKillcount = new HashMap<>();
@@ -1080,7 +1082,7 @@ public class LootRecorderPlugin extends Plugin
 			// Kill Count
 			Integer killcount = 0;
 			mapKillcount.put(bossName, killcount);
-			// Filenames
+			// Filenames. Removes all spaces, periods, and apostrophes
 			String filename = tab.getName().replaceAll("( |'|\\.)", "").toLowerCase() + ".log";
 			mapFilename.put(bossName, filename);
 		}
@@ -1088,9 +1090,13 @@ public class LootRecorderPlugin extends Plugin
 		lootMap = mapLoot;
 		killcountMap = mapKillcount;
 		filenameMap = mapFilename;
+
+		// Ensure we are using the requested message coloring for in-game messages
+		updateMessageColor();
 	}
 
-	void updatePlayerFolder()
+	// Will check the main folder `loots` if can't find your username
+	private void updatePlayerFolder()
 	{
 		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
 		{
@@ -1104,7 +1110,8 @@ public class LootRecorderPlugin extends Plugin
 		}
 	}
 
-	void receivedUnsiredLoot(int itemID)
+	// Upon cleaning an Unsired add the item to the previous LootEntry
+	private void receivedUnsiredLoot(int itemID)
 	{
 		DropEntry drop = new DropEntry(itemID, 1);
 		// Update the last drop
@@ -1165,7 +1172,8 @@ public class LootRecorderPlugin extends Plugin
 				.collect(Collectors.toList());
 	}
 
-	public int getUnnotedItemId(int itemId)
+	// Taken from Wooxs droplogger plugin
+	private int getUnnotedItemId(int itemId)
 	{
 		ItemComposition comp = itemManager.getItemComposition(itemId);
 		if (comp.getNote() == -1)
