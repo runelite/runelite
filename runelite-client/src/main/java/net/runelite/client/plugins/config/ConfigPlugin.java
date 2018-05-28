@@ -30,6 +30,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.events.PluginChanged;
@@ -61,13 +62,16 @@ public class ConfigPlugin extends Plugin
 	@Inject
 	private RuneLiteConfig runeLiteConfig;
 
+	@Inject
+	private ChatColorConfig chatColorConfig;
+
 	private ConfigPanel configPanel;
 	private NavigationButton navButton;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		configPanel = new ConfigPanel(pluginManager, configManager, executorService, runeLiteConfig);
+		configPanel = new ConfigPanel(pluginManager, configManager, executorService, runeLiteConfig, chatColorConfig);
 
 		BufferedImage icon;
 		synchronized (ImageIO.class)

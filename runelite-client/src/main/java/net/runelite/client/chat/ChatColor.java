@@ -25,16 +25,28 @@
 package net.runelite.client.chat;
 
 import java.awt.Color;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@AllArgsConstructor
-@EqualsAndHashCode(exclude = "color")
+@EqualsAndHashCode(exclude = {"color", "isDefault"})
 public class ChatColor
 {
 	private ChatColorType type;
 	private Color color;
 	private boolean transparent;
+	private boolean isDefault;
+
+	public ChatColor(ChatColorType type, Color color, boolean transparent)
+	{
+		this(type, color, transparent, false);
+	}
+
+	public ChatColor(ChatColorType type, Color color, boolean transparent, boolean isDefault)
+	{
+		this.type = type;
+		this.color = color;
+		this.transparent = transparent;
+		this.isDefault = isDefault;
+	}
 }
