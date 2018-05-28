@@ -34,6 +34,7 @@ import lombok.Getter;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import static net.runelite.api.ObjectID.CONVEYOR_BELT;
+import static net.runelite.api.ObjectID.NULL_9092;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
@@ -47,8 +48,13 @@ import net.runelite.client.ui.overlay.Overlay;
 )
 public class BlastFurnacePlugin extends Plugin
 {
+	private static final int BAR_DISPENSER = NULL_9092;
+
 	@Getter(AccessLevel.PACKAGE)
 	private GameObject conveyorBelt;
+
+	@Getter(AccessLevel.PACKAGE)
+	private GameObject barDispenser;
 
 	@Inject
 	private BlastFurnaceOverlay overlay;
@@ -57,12 +63,13 @@ public class BlastFurnacePlugin extends Plugin
 	private BlastFurnaceCofferOverlay cofferOverlay;
 
 	@Inject
-	private ConveyorBeltOverlay conveyorBeltOverlay;
+	private BlastFurnaceClickBoxOverlay clickBoxOverlay;
 
 	@Override
 	protected void shutDown()
 	{
 		conveyorBelt = null;
+		barDispenser = null;
 	}
 
 	@Provides
@@ -74,16 +81,23 @@ public class BlastFurnacePlugin extends Plugin
 	@Override
 	public Collection<Overlay> getOverlays()
 	{
-		return Arrays.asList(overlay, cofferOverlay, conveyorBeltOverlay);
+		return Arrays.asList(overlay, cofferOverlay, clickBoxOverlay);
 	}
 
 	@Subscribe
 	public void onGameObjectSpawn(GameObjectSpawned event)
 	{
 		GameObject gameObject = event.getGameObject();
-		if (gameObject.getId() == CONVEYOR_BELT)
+
+		switch (gameObject.getId())
 		{
-			conveyorBelt = gameObject;
+			case CONVEYOR_BELT:
+				conveyorBelt = gameObject;
+				break;
+
+			case BAR_DISPENSER:
+				barDispenser = gameObject;
+				break;
 		}
 	}
 
@@ -91,9 +105,16 @@ public class BlastFurnacePlugin extends Plugin
 	public void onGameObjectDespawn(GameObjectDespawned event)
 	{
 		GameObject gameObject = event.getGameObject();
-		if (gameObject.getId() == CONVEYOR_BELT)
+
+		switch (gameObject.getId())
 		{
-			conveyorBelt = null;
+			case CONVEYOR_BELT:
+				conveyorBelt = null;
+				break;
+
+			case BAR_DISPENSER:
+				barDispenser = null;
+				break;
 		}
 	}
 
@@ -103,6 +124,7 @@ public class BlastFurnacePlugin extends Plugin
 		if (event.getGameState() == GameState.LOADING)
 		{
 			conveyorBelt = null;
+			barDispenser = null;
 		}
 	}
 }

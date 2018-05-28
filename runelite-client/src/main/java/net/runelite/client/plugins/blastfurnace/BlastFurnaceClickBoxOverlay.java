@@ -30,13 +30,19 @@ import java.awt.Graphics2D;
 import java.awt.geom.Area;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.GameObject;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 import net.runelite.api.Point;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
-class ConveyorBeltOverlay extends Overlay
+class BlastFurnaceClickBoxOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2350;
 
@@ -45,7 +51,7 @@ class ConveyorBeltOverlay extends Overlay
 	private final BlastFurnaceConfig config;
 
 	@Inject
-	ConveyorBeltOverlay(Client client, BlastFurnacePlugin plugin, BlastFurnaceConfig config)
+	BlastFurnaceClickBoxOverlay(Client client, BlastFurnacePlugin plugin, BlastFurnaceConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
@@ -56,17 +62,52 @@ class ConveyorBeltOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showConveyorBelt() || plugin.getConveyorBelt() == null)
+		int dispenserState = client.getVar(Varbits.BAR_DISPENSER);
+
+		if (config.showConveyorBelt() && plugin.getConveyorBelt() != null)
 		{
-			return null;
+			Color color = dispenserState == 1 ? Color.RED : Color.GREEN;
+			renderObject(plugin.getConveyorBelt(), graphics, color);
 		}
 
+		if (config.showBarDispenser() && plugin.getBarDispenser() != null)
+		{
+			boolean hasIceGloves = hasIceGloves();
+			Color color = dispenserState == 2 && hasIceGloves ? Color.GREEN : (dispenserState == 3 ? Color.GREEN : Color.RED);
+
+			renderObject(plugin.getBarDispenser(), graphics, color);
+		}
+
+		return null;
+	}
+
+	private boolean hasIceGloves()
+	{
+		ItemContainer equipmentContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+		if (equipmentContainer == null)
+		{
+			return false;
+		}
+
+		Item[] items = equipmentContainer.getItems();
+		int idx = EquipmentInventorySlot.GLOVES.getSlotIdx();
+
+		if (items == null || idx >= items.length)
+		{
+			return false;
+		}
+
+		Item glove = items[idx];
+		return glove != null && glove.getId() == ItemID.ICE_GLOVES;
+	}
+
+	private void renderObject(GameObject object, Graphics2D graphics, Color color)
+	{
 		LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
 		Point mousePosition = client.getMouseCanvasPosition();
 
-		GameObject object = plugin.getConveyorBelt();
-
 		LocalPoint location = object.getLocalLocation();
+
 		if (localLocation.distanceTo(location) <= MAX_DISTANCE)
 		{
 			Area objectClickbox = object.getClickbox();
@@ -74,17 +115,16 @@ class ConveyorBeltOverlay extends Overlay
 			{
 				if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))
 				{
-					graphics.setColor(Color.RED.darker());
+					graphics.setColor(color.darker());
 				}
 				else
 				{
-					graphics.setColor(Color.RED);
+					graphics.setColor(color);
 				}
 				graphics.draw(objectClickbox);
 				graphics.setColor(new Color(0xFF, 0, 0, 20));
 				graphics.fill(objectClickbox);
 			}
 		}
-		return null;
 	}
 }
