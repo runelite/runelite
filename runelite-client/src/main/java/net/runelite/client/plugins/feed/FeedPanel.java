@@ -46,7 +46,6 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
@@ -55,7 +54,6 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.LinkBrowser;
-import net.runelite.client.util.SwingUtil;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.feed.FeedItem;
 import net.runelite.http.api.feed.FeedItemType;
@@ -71,8 +69,6 @@ class FeedPanel extends PluginPanel
 {
 	private static final ImageIcon RUNELITE_ICON;
 	private static final ImageIcon OSRS_ICON;
-	private static final ImageIcon RESET_ICON;
-	private static final ImageIcon RESET_ICON_CLICK; //used as a click effect (darker version of the reset icon)
 
 	private static final Color TWEET_BACKGROUND = new Color(15, 15, 15);
 	private static final Color OSRS_NEWS_BACKGROUND = new Color(36, 30, 19);
@@ -110,11 +106,8 @@ class FeedPanel extends PluginPanel
 		{
 			synchronized (ImageIO.class)
 			{
-				BufferedImage reset = ImageIO.read(FeedPanel.class.getResourceAsStream("reset.png"));
 				RUNELITE_ICON = new ImageIcon(ImageIO.read(FeedPanel.class.getResourceAsStream("runelite.png")));
 				OSRS_ICON = new ImageIcon(ImageIO.read(FeedPanel.class.getResourceAsStream("osrs.png")));
-				RESET_ICON = new ImageIcon(reset);
-				RESET_ICON_CLICK = new ImageIcon(SwingUtil.grayscaleOffset(reset, -100));
 			}
 		}
 		catch (IOException e)
@@ -138,47 +131,11 @@ class FeedPanel extends PluginPanel
 		feedContainer.setLayout(new GridLayout(0, 1, 0, 4));
 		feedContainer.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
-		/**
-		 * This header contains the "News Feed" title and a refresh icon button.
-		 */
-		JPanel header = new JPanel();
-		header.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		header.setLayout(new BorderLayout());
-		header.setBorder(new EmptyBorder(0, 0, 9, 0));
-
-		/**
-		 * A refresh icon button, when clicked, it will swap icons for feedback effect and then call
-		 * the rebuildFeed method.
-		 */
-		JLabel reset = new JLabel();
-		reset.setIcon(RESET_ICON);
-		reset.setVerticalAlignment(SwingConstants.CENTER);
-		reset.setHorizontalAlignment(SwingConstants.CENTER);
-		reset.setToolTipText("Refresh");
-
-		reset.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mousePressed(MouseEvent mouseEvent)
-			{
-				reset.setIcon(RESET_ICON_CLICK);
-				rebuildFeed();
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent mouseEvent)
-			{
-				reset.setIcon(RESET_ICON);
-			}
-		});
-
 		JLabel title = new JLabel("News feed");
+		title.setBorder(new EmptyBorder(0, 0, 9, 0));
 		title.setForeground(Color.WHITE);
 
-		header.add(title, BorderLayout.WEST);
-		header.add(reset, BorderLayout.EAST);
-
-		add(header, BorderLayout.NORTH);
+		add(title, BorderLayout.NORTH);
 		add(feedContainer, BorderLayout.CENTER);
 	}
 

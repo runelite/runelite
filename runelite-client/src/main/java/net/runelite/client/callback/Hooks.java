@@ -56,7 +56,6 @@ import net.runelite.api.RenderOverview;
 import net.runelite.api.TextureProvider;
 import net.runelite.api.WorldMapManager;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
@@ -456,12 +455,6 @@ public class Hooks
 
 	public static void onSetCombatInfo(Actor actor, int combatInfoId, int gameCycle, int var3, int var4, int healthRatio, int health)
 	{
-		if (healthRatio == 0)
-		{
-			ActorDeath death = new ActorDeath();
-			death.setActor(actor);
-			eventBus.post(death);
-		}
 	}
 
 	public static void postItemComposition(ItemComposition itemComposition)
