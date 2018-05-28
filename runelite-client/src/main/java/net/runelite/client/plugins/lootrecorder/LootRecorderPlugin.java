@@ -253,12 +253,16 @@ public class LootRecorderPlugin extends Plugin
 
 		if (interacting instanceof NPC)
 		{
-			Boolean flag = recordingMap.get(interacting.getName().toUpperCase());
-			if (flag != null && flag)
+			// Only add if the NPC is interacting us
+			Actor target = interacting.getInteracting();
+			if (target != null && target.getName().equals(client.getLocalPlayer().getName()))
 			{
-				actors.putIfAbsent(interacting, interacting);
+				Boolean flag = recordingMap.get(interacting.getName().toUpperCase());
+				if (flag != null && flag)
+				{
+					actors.putIfAbsent(interacting, interacting);
+				}
 			}
-			actors.putIfAbsent(interacting, interacting);
 		}
 	}
 
@@ -279,61 +283,55 @@ public class LootRecorderPlugin extends Plugin
 	// Use to be a subscribe event but was removed on 5/27/2018. Recreated above.
 	private void onActorDeath(Actor actor)
 	{
-		// Only check Actors who are interacting with us
-		if (actor.getInteracting() == null)
-			return;
-		if (actor.getInteracting().getName().equals(client.getLocalPlayer().getName()))
+		// Grotesque Guardians Handling
+		Boolean gFlag = recordingMap.get("GROTESQUE GUARDIANS");
+		if (gFlag != null && gFlag)
 		{
-			// Grotesque Guardians Handling
-			Boolean gFlag = recordingMap.get("GROTESQUE GUARDIANS");
-			if (gFlag != null && gFlag)
-			{
-				if (actor.getName().equals("Dusk"))
-					duskDead = true;
-				if (actor.getName().equals("Dawn"))
-					dawnDead = true;
-			}
-			// Are kills for this Boss being recorded?
-			Boolean flag = recordingMap.get(actor.getName().toUpperCase());
-			if (duskDead && dawnDead)
-				flag = true;
-			if (flag == null || !flag)
-				return;
-
-			// Yes they are
-			NPC npc = (NPC) actor;
-			NPCComposition comp = npc.getComposition();
-			// Record Death info in global variables
-			deathSize = comp.getSize();										// NPC Size
-			deathSpot = actor.getWorldLocation();   						// Death Location
-			playerLocation = client.getLocalPlayer().getWorldLocation(); 	// Player Location on NPC Death
-			deathName = actor.getName();									// NPC Name
-			deathID = npc.getId();											// NPC ID
-			lastBossKilled = actor.getName();								// NPC Name (stored for pets)
-
-			// Get possible death locations
-			deathLocations = getExpectedLootPoints(npc, deathSpot);
-			// Loop over each death location and store its current item contents
-			for (WorldPoint point : deathLocations)
-			{
-				if (point != null)
-				{
-					Tile tile = getLootTile(point);
-					Map<Integer, Integer> items = createItemMap(tile.getItemLayer());
-					if (items.size() > 0)
-						itemArray.put(point, items);
-				}
-			}
-
-			// Start watching for NPC Despawn
-			watching = true;
-			if (deathName.equals("Zulrah"))
-				watchingItemLayers = true;
-
-			// Reset Grotesque Guardians flags
-			duskDead = false;
-			dawnDead = false;
+			if (actor.getName().equals("Dusk"))
+				duskDead = true;
+			if (actor.getName().equals("Dawn"))
+				dawnDead = true;
 		}
+		// Are kills for this Boss being recorded?
+		Boolean flag = recordingMap.get(actor.getName().toUpperCase());
+		if (duskDead && dawnDead)
+			flag = true;
+		if (flag == null || !flag)
+			return;
+
+		// Yes they are
+		NPC npc = (NPC) actor;
+		NPCComposition comp = npc.getComposition();
+		// Record Death info in global variables
+		deathSize = comp.getSize();										// NPC Size
+		deathSpot = actor.getWorldLocation();   						// Death Location
+		playerLocation = client.getLocalPlayer().getWorldLocation(); 	// Player Location on NPC Death
+		deathName = actor.getName();									// NPC Name
+		deathID = npc.getId();											// NPC ID
+		lastBossKilled = actor.getName();								// NPC Name (stored for pets)
+
+		// Get possible death locations
+		deathLocations = getExpectedLootPoints(npc, deathSpot);
+		// Loop over each death location and store its current item contents
+		for (WorldPoint point : deathLocations)
+		{
+			if (point != null)
+			{
+				Tile tile = getLootTile(point);
+				Map<Integer, Integer> items = createItemMap(tile.getItemLayer());
+				if (items.size() > 0)
+					itemArray.put(point, items);
+			}
+		}
+
+		// Start watching for NPC Despawn
+		watching = true;
+		if (deathName.equals("Zulrah"))
+			watchingItemLayers = true;
+
+		// Reset Grotesque Guardians flags
+		duskDead = false;
+		dawnDead = false;
 	}
 
 	@Subscribe
@@ -1146,6 +1144,8 @@ public class LootRecorderPlugin extends Plugin
 				return lootRecorderConfig.recordDagannothSupremeKills();
 			case "BRUTAL BLACK DRAGON":
 				return lootRecorderConfig.recordBrutalBlackKills();
+			case "GREEN DRAGON":
+				return lootRecorderConfig.recordDragonKills();
 			default:
 				return false;
 		}
@@ -1242,6 +1242,9 @@ public class LootRecorderPlugin extends Plugin
 				return;
 			case "recordBrutalBlackKills":
 				ToggleTab("Brutal Black Dragon", lootRecorderConfig.recordBrutalBlackKills());
+				return;
+			case "GREEN DRAGON":
+				ToggleTab("Green Dragon", lootRecorderConfig.recordBrutalBlackKills());
 				return;
 			case "showLootTotals":
 				loadAllData();

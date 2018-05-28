@@ -357,6 +357,17 @@ public interface LootRecorderConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+			keyName = "recordDragonKills",
+			name = "Record Brutal Black Dragon Loot",
+			description = "Configures whether or not loot from Brutal Black Dragons is recorded",
+			position = 29
+	)
+	default boolean recordDragonKills()
+	{
+		return true;
+	}
+
 
 
 	@ConfigItem(

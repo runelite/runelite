@@ -77,7 +77,8 @@ public enum Tab
 	DAGANNOTH_REX("Dagannoth Rex", ItemID.PET_DAGANNOTH_REX, 25),
 	DAGANNOTH_PRIME("Dagannoth Prime", ItemID.PET_DAGANNOTH_PRIME, 26),
 	DAGANNOTH_SUPREME("Dagannoth Supreme", ItemID.PET_DAGANNOTH_SUPREME, 27),
-	BRUTAL_BLACK_DRAGON("Brutal Black Dragon", ItemID.BRUTAL_BLACK_DRAGON, 28);
+	BRUTAL_BLACK_DRAGON("Brutal Black Dragon", ItemID.BRUTAL_BLACK_DRAGON, 28),
+	GREEN_DRAGON("Green Dragon", ItemID.GREEN_DRAGON_MASK, 29);
 
 	Tab(String name, String bossName, int itemID, int index)
 	{
