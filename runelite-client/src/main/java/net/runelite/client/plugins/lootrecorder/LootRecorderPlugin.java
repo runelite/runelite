@@ -254,7 +254,7 @@ public class LootRecorderPlugin extends Plugin
 		if (interacting instanceof NPC)
 		{
 			Boolean flag = recordingMap.get(interacting.getName().toUpperCase());
-			if (flag != null && !flag)
+			if (flag != null && flag)
 			{
 				actors.putIfAbsent(interacting, interacting);
 			}
