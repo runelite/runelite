@@ -46,10 +46,10 @@ import net.runelite.client.ui.PluginPanel;
 
 
 @Slf4j
-class LootRecorderPanel extends PluginPanel
+class BossLoggerPanel extends PluginPanel
 {
 	private final ItemManager itemManager;
-	private final LootRecorderPlugin lootRecorderPlugin;
+	private final BossLoggerPlugin bossLoggerPlugin;
 
 	private JTabbedPane tabsPanel = new JTabbedPane();
 
@@ -58,11 +58,11 @@ class LootRecorderPanel extends PluginPanel
 	private Map<String, LootPanel> lootMap = new HashMap<>();
 
 	@Inject
-	LootRecorderPanel(ItemManager itemManager, LootRecorderPlugin lootRecorderPlugin)
+	BossLoggerPanel(ItemManager itemManager, BossLoggerPlugin bossLoggerPlugin)
 	{
 		super(false);
 		this.itemManager = itemManager;
-		this.lootRecorderPlugin = lootRecorderPlugin;
+		this.bossLoggerPlugin = bossLoggerPlugin;
 
 		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		this.setLayout(layout);
@@ -72,13 +72,13 @@ class LootRecorderPanel extends PluginPanel
 	}
 
 	// Creates the side panel for this plugin, including the different tabs inside it
-	private void createPanel(LootRecorderPanel panel)
+	private void createPanel(BossLoggerPanel panel)
 	{
 		// Create each Tab of the Panel
 		for (Tab tab : Tab.values())
 		{
 			// Only create tabs for enabled recording options
-			if (lootRecorderPlugin.isBeingRecorded(tab.getName()))
+			if (bossLoggerPlugin.isBeingRecorded(tab.getName()))
 			{
 				createTab(tab);
 			}
@@ -98,7 +98,7 @@ class LootRecorderPanel extends PluginPanel
 	private LootPanel createLootPanel(Tab tab)
 	{
 		// Grab Tab Data
-		ArrayList<LootEntry> data = lootRecorderPlugin.getData(tab.getName());
+		ArrayList<LootEntry> data = bossLoggerPlugin.getData(tab.getName());
 		// Unique Items Info
 		ArrayList<UniqueItem> list = UniqueItem.getByActivityName(tab.getName());
 		Map<Integer, ArrayList<UniqueItem>> sets = UniqueItem.createPositionSetMap(list);
@@ -107,10 +107,10 @@ class LootRecorderPanel extends PluginPanel
 	}
 
 	// Refresh the entire Tab Panel
-	private void refreshPanel(LootRecorderPanel panel)
+	private void refreshPanel(BossLoggerPanel panel)
 	{
 		// Refresh Log Data
-		lootRecorderPlugin.loadAllData();
+		bossLoggerPlugin.loadAllData();
 		// Remove All Panel Components
 		panel.removeAll();
 		tabsPanel.removeAll();
@@ -125,9 +125,9 @@ class LootRecorderPanel extends PluginPanel
 	private void refreshLootPanel(LootPanel lootPanel, Tab tab)
 	{
 		// Refresh data for necessary tab
-		lootRecorderPlugin.loadTabData(tab);
+		bossLoggerPlugin.loadTabData(tab);
 		// Recreate the loot panel
-		lootPanel.updateRecords(lootRecorderPlugin.getData(tab.getName()));
+		lootPanel.updateRecords(bossLoggerPlugin.getData(tab.getName()));
 		// Ensure changes are applied
 		this.revalidate();
 		this.repaint();
@@ -244,11 +244,11 @@ class LootRecorderPanel extends PluginPanel
 	{
 		Tab tab = Tab.getByName(tabName);
 		// Reload data from file to ensure data and UI match
-		lootRecorderPlugin.loadTabData(tab);
+		bossLoggerPlugin.loadTabData(tab);
 		// Grab LootPanel that needs to be updated
 		LootPanel lootPanel = lootMap.get(tab.getName().toUpperCase());
 		// Invoke Later to ensure EDT thread
-		SwingUtilities.invokeLater(() -> lootPanel.updateRecords(lootRecorderPlugin.getData(tabName)));
+		SwingUtilities.invokeLater(() -> lootPanel.updateRecords(bossLoggerPlugin.getData(tabName)));
 	}
 
 	// Toggles Tab panel visibility

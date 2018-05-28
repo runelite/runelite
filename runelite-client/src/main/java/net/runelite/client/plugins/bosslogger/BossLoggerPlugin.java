@@ -94,11 +94,11 @@ import net.runelite.http.api.RuneLiteAPI;
 import static net.runelite.client.RuneLite.LOOTS_DIR;
 
 @PluginDescriptor(
-	name = "Loot Recorder"
+	name = "Boss Logger"
 )
 
 @Slf4j
-public class LootRecorderPlugin extends Plugin
+public class BossLoggerPlugin extends Plugin
 {
 	@Inject
 	private Client client;
@@ -107,7 +107,7 @@ public class LootRecorderPlugin extends Plugin
 	private ItemManager itemManager;
 
 	@Inject
-	private LootRecorderConfig lootRecorderConfig;
+	private BossLoggerConfig bossLoggerConfig;
 
 	@Inject
 	private Notifier notifier;
@@ -125,7 +125,7 @@ public class LootRecorderPlugin extends Plugin
 	private static final Pattern PET_RECEIVED_INVENTORY_PATTERN = Pattern.compile("You feel something weird sneaking into your backpack.");
 	private String messageColor = ""; // in-game chat message color
 
-	private LootRecorderPanel panel;
+	private BossLoggerPanel panel;
 	private NavigationButton navButton;
 
 	// Mapping Variables
@@ -158,15 +158,15 @@ public class LootRecorderPlugin extends Plugin
 	private Boolean dawnDead = false;
 
 	@Provides
-	LootRecorderConfig provideConfig(ConfigManager configManager)
+	BossLoggerConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(LootRecorderConfig.class);
+		return configManager.getConfig(BossLoggerConfig.class);
 	}
 
 	@Override
 	protected void startUp()
 	{
-		if (lootRecorderConfig.showLootTotals())
+		if (bossLoggerConfig.showLootTotals())
 		{
 			// Waits 2 seconds, helps ensure itemManager is loaded
 			// Client cache loading is async, plugins can be loaded before it is finished
@@ -190,7 +190,7 @@ public class LootRecorderPlugin extends Plugin
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
 		// Barrows Chests
-		if (event.getGroupId() == WidgetID.BARROWS_REWARD_GROUP_ID && lootRecorderConfig.recordBarrowsChest())
+		if (event.getGroupId() == WidgetID.BARROWS_REWARD_GROUP_ID && bossLoggerConfig.recordBarrowsChest())
 		{
 			// ID 141 (Reward Chest)
 			ItemContainer rewardContainer = client.getItemContainer(InventoryID.BARROWS_REWARD);
@@ -201,7 +201,7 @@ public class LootRecorderPlugin extends Plugin
 		}
 
 		// Raids Chest
-		if (event.getGroupId() == WidgetID.RAIDS_REWARD_GROUP_ID && lootRecorderConfig.recordRaidsChest())
+		if (event.getGroupId() == WidgetID.RAIDS_REWARD_GROUP_ID && bossLoggerConfig.recordRaidsChest())
 		{
 			// Id 581 (Chambers of xeric chest)
 			ItemContainer rewardContainer = client.getItemContainer(InventoryID.valueOf("RAIDS_REWARD_GROUP_ID")); // TODO: Update to RAIDS REWARD ONCE implemented
@@ -395,7 +395,7 @@ public class LootRecorderPlugin extends Plugin
 	public void onConfigChanged(ConfigChanged event)
 	{
 		// Only update if our plugin config was changed
-		if (!event.getGroup().equals("lootrecorder"))
+		if (!event.getGroup().equals("bosslogger"))
 		{
 			return;
 		}
@@ -495,7 +495,7 @@ public class LootRecorderPlugin extends Plugin
 	// Separated from startUp for toggling panel from settings
 	private void createPanel()
 	{
-		panel = new LootRecorderPanel(itemManager, this);
+		panel = new BossLoggerPanel(itemManager, this);
 		// Panel Icon (Looting Bag)
 		BufferedImage icon = null;
 		synchronized (ImageIO.class)
@@ -511,7 +511,7 @@ public class LootRecorderPlugin extends Plugin
 		}
 
 		navButton = NavigationButton.builder()
-				.tooltip("Loot Recorder")
+				.tooltip("Boss Logger")
 				.icon(icon)
 				.panel(panel)
 				.priority(10)
@@ -530,7 +530,7 @@ public class LootRecorderPlugin extends Plugin
 	private void ToggleTab(String tabName, Boolean status)
 	{
 		// Remove panel tab if showing panel
-		if (lootRecorderConfig.showLootTotals())
+		if (bossLoggerConfig.showLootTotals())
 		{
 			panel.toggleTab(tabName, status);
 		}
@@ -563,8 +563,8 @@ public class LootRecorderPlugin extends Plugin
 	// All alerts from this plugin should use this function
 	private void lootRecordedAlert(String message)
 	{
-		message = "Loot Recorder: " + message;
-		if (lootRecorderConfig.showChatMessages())
+		message = "Boss Logger: " + message;
+		if (bossLoggerConfig.showChatMessages())
 		{
 			final ChatMessageBuilder chatMessage = new ChatMessageBuilder()
 					.append("<col=" + messageColor + ">")
@@ -577,7 +577,7 @@ public class LootRecorderPlugin extends Plugin
 					.build());
 		}
 
-		if (lootRecorderConfig.showTrayAlerts())
+		if (bossLoggerConfig.showTrayAlerts())
 		{
 			notifier.notify(message);
 		}
@@ -1073,7 +1073,7 @@ public class LootRecorderPlugin extends Plugin
 	// Updates in-game alert chat color based on config settings
 	private void updateMessageColor()
 	{
-		Color c = lootRecorderConfig.chatMessageColor();
+		Color c = bossLoggerConfig.chatMessageColor();
 		messageColor = String.format("%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue());
 	}
 
@@ -1083,69 +1083,69 @@ public class LootRecorderPlugin extends Plugin
 		switch (tabName.toUpperCase())
 		{
 			case "BARROWS":
-				return lootRecorderConfig.recordBarrowsChest();
+				return bossLoggerConfig.recordBarrowsChest();
 			case "RAIDS":
-				return lootRecorderConfig.recordRaidsChest();
+				return bossLoggerConfig.recordRaidsChest();
 			case "ZULRAH":
-				return lootRecorderConfig.recordZulrahKills();
+				return bossLoggerConfig.recordZulrahKills();
 			case "VORKATH":
-				return lootRecorderConfig.recordVorkathKills();
+				return bossLoggerConfig.recordVorkathKills();
 			// God Wars Dungeon
 			case "ARMADYL":
-				return lootRecorderConfig.recordArmadylKills();
+				return bossLoggerConfig.recordArmadylKills();
 			case "BANDOS":
-				return lootRecorderConfig.recordBandosKills();
+				return bossLoggerConfig.recordBandosKills();
 			case "SARADOMIN":
-				return lootRecorderConfig.recordSaradominKills();
+				return bossLoggerConfig.recordSaradominKills();
 			case "ZAMMY":
-				return lootRecorderConfig.recordZammyKills();
+				return bossLoggerConfig.recordZammyKills();
 			// Wildy Bosses
 			case "VET'ION":
-				return lootRecorderConfig.recordVetionKills();
+				return bossLoggerConfig.recordVetionKills();
 			case "VENENATIS":
-				return lootRecorderConfig.recordVenenatisKills();
+				return bossLoggerConfig.recordVenenatisKills();
 			case "CALLISTO":
-				return lootRecorderConfig.recordCallistoKills();
+				return bossLoggerConfig.recordCallistoKills();
 			case "CHAOS ELEMENTAL":
-				return lootRecorderConfig.recordChaosElementalKills();
+				return bossLoggerConfig.recordChaosElementalKills();
 			case "CHAOS FANATIC":
-				return lootRecorderConfig.recordChaosFanaticKills();
+				return bossLoggerConfig.recordChaosFanaticKills();
 			case "CRAZY ARCHAEOLOGIST":
-				return lootRecorderConfig.recordCrazyArchaeologistKills();
+				return bossLoggerConfig.recordCrazyArchaeologistKills();
 			case "SCORPIA":
-				return lootRecorderConfig.recordScorpiaKills();
+				return bossLoggerConfig.recordScorpiaKills();
 			case "KING BLACK DRAGON":
-				return lootRecorderConfig.recordKbdKills();
+				return bossLoggerConfig.recordKbdKills();
 			// Slayer Bosses
 			case "SKOTIZO":
-				return lootRecorderConfig.recordSkotizoKills();
+				return bossLoggerConfig.recordSkotizoKills();
 			case "GROTESQUE GUARDIANS":
-				return lootRecorderConfig.recordGrotesqueGuardiansKills();
+				return bossLoggerConfig.recordGrotesqueGuardiansKills();
 			case "ABYSSAL SIRE":
-				return lootRecorderConfig.recordAbyssalSireKills();
+				return bossLoggerConfig.recordAbyssalSireKills();
 			case "KRAKEN":
-				return lootRecorderConfig.recordKrakenKills();
+				return bossLoggerConfig.recordKrakenKills();
 			case "CERBERUS":
-				return lootRecorderConfig.recordCerberusKills();
+				return bossLoggerConfig.recordCerberusKills();
 			case "THERMONUCLEAR SMOKE DEVIL":
-				return lootRecorderConfig.recordThermonuclearSmokeDevilKills();
+				return bossLoggerConfig.recordThermonuclearSmokeDevilKills();
 			// Other
 			case "GIANT MOLE":
-				return lootRecorderConfig.recordGiantMoleKills();
+				return bossLoggerConfig.recordGiantMoleKills();
 			case "KALPHITE QUEEN":
-				return lootRecorderConfig.recordKalphiteQueenKills();
+				return bossLoggerConfig.recordKalphiteQueenKills();
 			case "CORPOREAL BEAST":
-				return lootRecorderConfig.recordCorporealBeastKills();
+				return bossLoggerConfig.recordCorporealBeastKills();
 			case "DAGANNOTH REX":
-				return lootRecorderConfig.recordDagannothRexKills();
+				return bossLoggerConfig.recordDagannothRexKills();
 			case "DAGANNOTH PRIME":
-				return lootRecorderConfig.recordDagannothPrimeKills();
+				return bossLoggerConfig.recordDagannothPrimeKills();
 			case "DAGANNOTH SUPREME":
-				return lootRecorderConfig.recordDagannothSupremeKills();
+				return bossLoggerConfig.recordDagannothSupremeKills();
 			case "BRUTAL BLACK DRAGON":
-				return lootRecorderConfig.recordBrutalBlackKills();
+				return bossLoggerConfig.recordBrutalBlackKills();
 			case "GREEN DRAGON":
-				return lootRecorderConfig.recordDragonKills();
+				return bossLoggerConfig.recordDragonKills();
 			default:
 				return false;
 		}
@@ -1157,98 +1157,98 @@ public class LootRecorderPlugin extends Plugin
 		switch (eventKey)
 		{
 			case "recordBarrowsChest":
-				ToggleTab("Barrows", lootRecorderConfig.recordBarrowsChest());
+				ToggleTab("Barrows", bossLoggerConfig.recordBarrowsChest());
 				return;
 			case "recordRaidsChest":
-				ToggleTab("Raids", lootRecorderConfig.recordRaidsChest());
+				ToggleTab("Raids", bossLoggerConfig.recordRaidsChest());
 				return;
 			case "recordZulrahKills":
-				ToggleTab("Zulrah", lootRecorderConfig.recordZulrahKills());
+				ToggleTab("Zulrah", bossLoggerConfig.recordZulrahKills());
 				return;
 			case "recordVorkathKills":
-				ToggleTab("Vorkath", lootRecorderConfig.recordVorkathKills());
+				ToggleTab("Vorkath", bossLoggerConfig.recordVorkathKills());
 				return;
 			case "recordArmadylKills":
-				ToggleTab("Armadyl", lootRecorderConfig.recordArmadylKills());
+				ToggleTab("Armadyl", bossLoggerConfig.recordArmadylKills());
 				return;
 			case "recordBandosKills":
-				ToggleTab("Bandos", lootRecorderConfig.recordBandosKills());
+				ToggleTab("Bandos", bossLoggerConfig.recordBandosKills());
 				return;
 			case "recordSaradominKills":
-				ToggleTab("Saradomin", lootRecorderConfig.recordSaradominKills());
+				ToggleTab("Saradomin", bossLoggerConfig.recordSaradominKills());
 				return;
 			case "recordZammyKills":
-				ToggleTab("Zammy", lootRecorderConfig.recordZammyKills());
+				ToggleTab("Zammy", bossLoggerConfig.recordZammyKills());
 				return;
 			case "recordVetionKills":
-				ToggleTab("Vet'ion", lootRecorderConfig.recordVetionKills());
+				ToggleTab("Vet'ion", bossLoggerConfig.recordVetionKills());
 				return;
 			case "recordVenenatisKills":
-				ToggleTab("Venenatis", lootRecorderConfig.recordVenenatisKills());
+				ToggleTab("Venenatis", bossLoggerConfig.recordVenenatisKills());
 				return;
 			case "recordCallistoKills":
-				ToggleTab("Callisto", lootRecorderConfig.recordCallistoKills());
+				ToggleTab("Callisto", bossLoggerConfig.recordCallistoKills());
 				return;
 			case "recordChaosElementalKills":
-				ToggleTab("Chaos Elemental", lootRecorderConfig.recordChaosElementalKills());
+				ToggleTab("Chaos Elemental", bossLoggerConfig.recordChaosElementalKills());
 				return;
 			case "recordChaosFanaticKills":
-				ToggleTab("Chaos Fanatic", lootRecorderConfig.recordChaosFanaticKills());
+				ToggleTab("Chaos Fanatic", bossLoggerConfig.recordChaosFanaticKills());
 				return;
 			case "recordCrazyArchaeologistKills":
-				ToggleTab("Crazy Archaeologist", lootRecorderConfig.recordCrazyArchaeologistKills());
+				ToggleTab("Crazy Archaeologist", bossLoggerConfig.recordCrazyArchaeologistKills());
 				return;
 			case "recordScorpiaKills":
-				ToggleTab("Scorpia", lootRecorderConfig.recordScorpiaKills());
+				ToggleTab("Scorpia", bossLoggerConfig.recordScorpiaKills());
 				return;
 			case "recordKbdKills":
-				ToggleTab("King Black Dragon", lootRecorderConfig.recordKbdKills());
+				ToggleTab("King Black Dragon", bossLoggerConfig.recordKbdKills());
 				return;
 			case "recordSkotizoKills":
-				ToggleTab("Skotizo", lootRecorderConfig.recordSkotizoKills());
+				ToggleTab("Skotizo", bossLoggerConfig.recordSkotizoKills());
 				return;
 			case "recordGrotesqueGuardiansKills":
-				ToggleTab("Grotesque Guardians", lootRecorderConfig.recordGrotesqueGuardiansKills());
+				ToggleTab("Grotesque Guardians", bossLoggerConfig.recordGrotesqueGuardiansKills());
 				return;
 			case "recordAbyssalSireKills":
-				ToggleTab("Abyssal Sire", lootRecorderConfig.recordAbyssalSireKills());
+				ToggleTab("Abyssal Sire", bossLoggerConfig.recordAbyssalSireKills());
 				return;
 			case "recordKrakenKills":
-				ToggleTab("Kraken", lootRecorderConfig.recordKrakenKills());
+				ToggleTab("Kraken", bossLoggerConfig.recordKrakenKills());
 				return;
 			case "recordCerberusKills":
-				ToggleTab("Cerberus", lootRecorderConfig.recordCerberusKills());
+				ToggleTab("Cerberus", bossLoggerConfig.recordCerberusKills());
 				return;
 			case "recordThermonuclearSmokeDevilKills":
-				ToggleTab("Thermonuclear Smoke Devil", lootRecorderConfig.recordThermonuclearSmokeDevilKills());
+				ToggleTab("Thermonuclear Smoke Devil", bossLoggerConfig.recordThermonuclearSmokeDevilKills());
 				return;
 			case "recordGiantMoleKills":
-				ToggleTab("Giant Mole", lootRecorderConfig.recordGiantMoleKills());
+				ToggleTab("Giant Mole", bossLoggerConfig.recordGiantMoleKills());
 				return;
 			case "recordKalphiteQueenKills":
-				ToggleTab("Kalphite Queen", lootRecorderConfig.recordKalphiteQueenKills());
+				ToggleTab("Kalphite Queen", bossLoggerConfig.recordKalphiteQueenKills());
 				return;
 			case "recordCorporealBeastKills":
-				ToggleTab("Corporeal Beast", lootRecorderConfig.recordCorporealBeastKills());
+				ToggleTab("Corporeal Beast", bossLoggerConfig.recordCorporealBeastKills());
 				return;
 			case "recordDagannothRexKills":
-				ToggleTab("Dagannoth Rex", lootRecorderConfig.recordDagannothRexKills());
+				ToggleTab("Dagannoth Rex", bossLoggerConfig.recordDagannothRexKills());
 				return;
 			case "recordDagannothPrimeKills":
-				ToggleTab("Dagannoth Prime", lootRecorderConfig.recordDagannothPrimeKills());
+				ToggleTab("Dagannoth Prime", bossLoggerConfig.recordDagannothPrimeKills());
 				return;
 			case "recordDagannothSupremeKills":
-				ToggleTab("Dagannoth Supreme", lootRecorderConfig.recordDagannothSupremeKills());
+				ToggleTab("Dagannoth Supreme", bossLoggerConfig.recordDagannothSupremeKills());
 				return;
 			case "recordBrutalBlackKills":
-				ToggleTab("Brutal Black Dragon", lootRecorderConfig.recordBrutalBlackKills());
+				ToggleTab("Brutal Black Dragon", bossLoggerConfig.recordBrutalBlackKills());
 				return;
 			case "GREEN DRAGON":
-				ToggleTab("Green Dragon", lootRecorderConfig.recordBrutalBlackKills());
+				ToggleTab("Green Dragon", bossLoggerConfig.recordBrutalBlackKills());
 				return;
 			case "showLootTotals":
 				loadAllData();
-				if (lootRecorderConfig.showLootTotals())
+				if (bossLoggerConfig.showLootTotals())
 				{
 					createPanel();
 				}

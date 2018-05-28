@@ -31,12 +31,12 @@ import net.runelite.client.config.ConfigItem;
 import java.awt.Color;
 
 @ConfigGroup(
-	keyName = "lootrecorder",
-	name = "Loot Recorder",
-	description = "Configuration for the Loot Recorder plugin"
+	keyName = "bosslogger",
+	name = "Boss Logger",
+	description = "Configuration for the Boss Logger plugin"
 )
 
-public interface LootRecorderConfig extends Config
+public interface BossLoggerConfig extends Config
 {
 	@ConfigItem(
 		keyName = "recordBarrowsChest",
