@@ -69,10 +69,10 @@ import net.runelite.api.Node;
 import net.runelite.api.NpcID;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ActorDespawned;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemLayerChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
@@ -138,6 +138,7 @@ public class LootRecorderPlugin extends Plugin
 	private Set<Tile> changedItemLayerTiles = new HashSet<Tile>();				// Stores tiles that have had ItemLayer changes
 	private WorldPoint[] deathLocations;										// Stores NPC Death Worldpoints
 	private Map<WorldPoint, Map<Integer, Integer>> itemArray = new HashMap<>();	// Stores item map for a specific WorldPoint
+	private Map<Actor, Actor> actors = new HashMap<>();							// Stores Actors we've interacted with to check for their deaths
 
 	// Variables for handling NPC death
 	private String deathName;				// NPC Name
@@ -234,17 +235,58 @@ public class LootRecorderPlugin extends Plugin
 		}
 	}
 
+	//
+	// Recreate the `onActorDeath` event
+	//
+
 	@Subscribe
-	public void onActorDeath(ActorDeath death)
+	public void onGameTick(GameTick event)
+	{
+		checkInteractingNpcs();
+		checkDeadActors();
+	}
+
+	// Find the NPC the player is interacting with
+	private void checkInteractingNpcs()
+	{
+		Actor interacting = client.getLocalPlayer().getInteracting();
+
+		if (interacting instanceof NPC)
+		{
+			Boolean flag = recordingMap.get(interacting.getName().toUpperCase());
+			if (flag != null && !flag)
+			{
+				actors.putIfAbsent(interacting, interacting);
+			}
+			actors.putIfAbsent(interacting, interacting);
+		}
+	}
+
+	// Did any of the NPCs we interacted with die?
+	private void checkDeadActors()
+	{
+		for (Map.Entry<Actor, Actor> entry : actors.entrySet())
+		{
+			Actor actor = entry.getKey();
+			if (actor.getHealthRatio() == 0)
+			{
+				onActorDeath(actor);
+				actors.remove(entry.getKey());
+			}
+		}
+	}
+
+	// Use to be a subscribe event but was removed on 5/27/2018. Recreated above.
+	private void onActorDeath(Actor actor)
 	{
 		// Only check Actors who are interacting with us
-		Actor actor = death.getActor();
 		if (actor.getInteracting() == null)
 			return;
 		if (actor.getInteracting().getName().equals(client.getLocalPlayer().getName()))
 		{
 			// Grotesque Guardians Handling
-			if (recordingMap.get("GROTESQUE GUARDIANS"))
+			Boolean gFlag = recordingMap.get("GROTESQUE GUARDIANS");
+			if (gFlag != null && gFlag)
 			{
 				if (actor.getName().equals("Dusk"))
 					duskDead = true;
@@ -297,6 +339,12 @@ public class LootRecorderPlugin extends Plugin
 	@Subscribe
 	public void onActorDespawn(ActorDespawned despawned)
 	{
+		Actor actor = actors.get(despawned.getActor());
+		if (actor != null)
+		{
+			actors.remove(actor);
+		}
+
 		if (watching)
 		{
 			Actor npc = despawned.getActor();
