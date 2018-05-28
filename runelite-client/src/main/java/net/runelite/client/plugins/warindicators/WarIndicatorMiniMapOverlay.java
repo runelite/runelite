@@ -38,50 +38,50 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 import org.apache.commons.lang3.ArrayUtils;
 
 @Singleton
-public class WarIndicatorMiniMapOverlay extends Overlay {
-    private final WarIndicatorService warIndicatorService;
-    private final WarIndicatorConfig config;
+public class WarIndicatorMiniMapOverlay extends Overlay
+{
+	private final WarIndicatorService warIndicatorService;
+	private final WarIndicatorConfig config;
 
-    @Inject
-    private WarIndicatorMiniMapOverlay(WarIndicatorConfig config, WarIndicatorService warIndicatorService)
-    {
-        this.config = config;
-        this.warIndicatorService = warIndicatorService;
-        setLayer(OverlayLayer.ABOVE_WIDGETS);
-        setPosition(OverlayPosition.DYNAMIC);
-        setPriority(OverlayPriority.HIGH);
-    }
+	@Inject
+	private WarIndicatorMiniMapOverlay(WarIndicatorConfig config, WarIndicatorService warIndicatorService)
+	{
+		this.config = config;
+		this.warIndicatorService = warIndicatorService;
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		setPosition(OverlayPosition.DYNAMIC);
+		setPriority(OverlayPriority.HIGH);
+	}
 
-    @Override
-    public Dimension render(Graphics2D graphics)
-    {
-        warIndicatorService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
-        return null;
-    }
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		warIndicatorService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
+		return null;
+	}
 
-    private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
-    {
-        final String name = actor.getName().replace('\u00A0', ' ');
-        final net.runelite.api.Point minimapLocation = actor.getMinimapLocation();
+	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
+	{
+		final String name = actor.getName().replace('\u00A0', ' ');
+		final net.runelite.api.Point minimapLocation = actor.getMinimapLocation();
 
-        String[] callers = config.getActiveCallers().split(", ");
-        String[] targets = config.getTargetedSnipes().split(", ");
+		String[] callers = config.getActiveCallers().split(", ");
+		String[] targets = config.getTargetedSnipes().split(", ");
 
-        if (config.callerMinimap() && ArrayUtils.contains(callers, actor.getName()))
-        {
+		if (config.callerMinimap() && ArrayUtils.contains(callers, actor.getName()))
+		{
+			if (minimapLocation != null)
+			{
+				OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
+			}
+			}
 
-            if (minimapLocation != null)
-            {
-                OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
-            }
-        }
-        if (config.snipeMinimap() && ArrayUtils.contains(targets, actor.getName()))
-        {
-
-            if (minimapLocation != null)
-            {
-                OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
-            }
-        }
-    }
+		if (config.snipeMinimap() && ArrayUtils.contains(targets, actor.getName()))
+		{
+			if (minimapLocation != null)
+			{
+				OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
+			}
+		}
+	}
 }
