@@ -33,6 +33,8 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Quests;
+import net.runelite.api.QuestState;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
@@ -133,7 +135,7 @@ public class KingdomPlugin extends Plugin
 
 	private boolean hasCompletedQuest()
 	{
-		return client.getVar(Varbits.THRONE_OF_MISCELLANIA_QUEST) == 1;
+		return Quests.THRONE_OF_MISCELLANIA.getQuestState(client) == QuestState.COMPLETED;
 	}
 
 	static int getFavorPercent(int favor)
