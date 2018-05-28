@@ -41,57 +41,61 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
 @Singleton
-public class WarIndicatorOverlay extends Overlay {
-    private final WarIndicatorService warIndicatorService;
-    private final WarIndicatorConfig config;
+public class WarIndicatorOverlay extends Overlay
+{
+	private final WarIndicatorService warIndicatorService;
+	private final WarIndicatorConfig config;
 
-    @Inject
-    private WarIndicatorOverlay(WarIndicatorConfig config, WarIndicatorService warIndicatorService)
-    {
-        this.config = config;
-        this.warIndicatorService = warIndicatorService;
-        setPosition(OverlayPosition.DYNAMIC);
-        setPriority(OverlayPriority.HIGH);
-    }
+	@Inject
+	private WarIndicatorOverlay(WarIndicatorConfig config, WarIndicatorService warIndicatorService)
+	{
+		this.config = config;
+		this.warIndicatorService = warIndicatorService;
+		setPosition(OverlayPosition.DYNAMIC);
+		setPriority(OverlayPriority.HIGH);
+	}
 
-    @Override
-    public Dimension render(Graphics2D graphics)
-    {
-        warIndicatorService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
-        return null;
-    }
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		warIndicatorService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
+		return null;
+	}
 
-    private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color) {
-        if (!config.highlightSnipes() && !config.highLightCallers()) {
-            return;
-        }
+	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
+	{
+		if (!config.highlightSnipes() && !config.highLightCallers())
+		{
+			return;
+		}
 
-        Polygon poly = actor.getCanvasTilePoly();
-        String[] callers = config.getActiveCallers().split(", ");
-        String[] targets = config.getTargetedSnipes().split(", ");
+		Polygon poly = actor.getCanvasTilePoly();
+		String[] callers = config.getActiveCallers().split(", ");
+		String[] targets = config.getTargetedSnipes().split(", ");
 
-        if (config.callerTile() && ArrayUtils.contains(callers, actor.getName()))
-        {
-            if (poly != null)
-            {
-                OverlayUtil.renderPolygon(graphics, poly, color);
-            }
-        }
+		if (config.callerTile() && ArrayUtils.contains(callers, actor.getName()))
+		{
+			if (poly != null)
+			{
+				OverlayUtil.renderPolygon(graphics, poly, color);
+			}
+		}
 
-        if (config.snipeTile() && ArrayUtils.contains(targets, actor.getName()))
-        {
-            if (poly != null)
-            {
-                OverlayUtil.renderPolygon(graphics, poly, color);
-            }
-        }
+		if (config.snipeTile() && ArrayUtils.contains(targets, actor.getName()))
+		{
+			if (poly != null)
+			{
+				OverlayUtil.renderPolygon(graphics, poly, color);
+			}
+		}
 
-        String name = actor.getName().replace('\u00A0', ' ');
-        int offset = actor.getLogicalHeight() + 40;
-        Point textLocation = actor.getCanvasTextLocation(graphics, name, offset);
+		String name = actor.getName().replace('\u00A0', ' ');
+		int offset = actor.getLogicalHeight() + 40;
+		Point textLocation = actor.getCanvasTextLocation(graphics, name, offset);
 
-        if (textLocation != null) {
-            OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
-        }
-    }
+		if (textLocation != null)
+		{
+			OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
+		}
+	}
 }

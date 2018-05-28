@@ -35,64 +35,74 @@ import java.util.function.BiConsumer;
 @Singleton
 public class WarIndicatorService
 {
-    private final Client client;
-    private final WarIndicatorConfig config;
+	private final Client client;
+	private final WarIndicatorConfig config;
 
-    @Inject
-    private WarIndicatorService(Client client, WarIndicatorConfig config)
-    {
-        this.config = config;
-        this.client = client;
-    }
+	@Inject
+	private WarIndicatorService(Client client, WarIndicatorConfig config)
+	{
+		this.config = config;
+		this.client = client;
+	}
 
 
-    public void forEachPlayer(final BiConsumer<Player, Color> consumer)
-    {
-        if (!config.highlightSnipes() && !config.highLightCallers())
-        {
-            return;
-        }
+	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
+	{
+		if (!config.highlightSnipes() && !config.highLightCallers())
+		{
+			return;
+		}
 
-        if (config.highlightSnipes())
-        {
-            for (Player player : client.getPlayers()) {
-                if (player == null || player.getName() == null) {
-                    continue;
-                }
+		if (config.highlightSnipes())
+		{
+			for (Player player : client.getPlayers())
+			{
+				if (player == null || player.getName() == null)
+				{
+					continue;
+				}
 
-                String[] targets = config.getTargetedSnipes().split(", ");
+				String[] targets = config.getTargetedSnipes().split(", ");
 
-                if (targets == null) {
-                    return;
-                }
+				if (targets == null)
+				{
+					return;
+				}
 
-                for (int i = 0; i < targets.length; i++) {
-                    if (player.getName().equalsIgnoreCase(targets[i])) {
-                        consumer.accept(player, config.getSnipeColor());
-                    }
-                }
-            }
-        }
+				for (int i = 0; i < targets.length; i++)
+				{
+					if (player.getName().equalsIgnoreCase(targets[i]))
+					{
+						consumer.accept(player, config.getSnipeColor());
+					}
+				}
+			}
+		}
 
-        if (config.highLightCallers())
-        {
-            for (Player player : client.getPlayers()) {
-                if (player == null || player.getName() == null) {
-                    continue;
-                }
+		if (config.highLightCallers())
+		{
+			for (Player player : client.getPlayers())
+			{
+				if (player == null || player.getName() == null)
+				{
+					continue;
+				}
 
-                String[] callers = config.getActiveCallers().split(", ");
+				String[] callers = config.getActiveCallers().split(", ");
 
-                if (callers == null) {
-                    return;
-                }
+				if (callers == null)
+				{
+					return;
+				}
 
-                for (int i = 0; i < callers.length; i++) {
-                    if (player.getName().equalsIgnoreCase(callers[i])) {
-                        consumer.accept(player, config.getCallerColor());
-                    }
-                }
-            }
-        }
-    }
+				for (int i = 0; i < callers.length; i++)
+				{
+					if (player.getName().equalsIgnoreCase(callers[i]))
+					{
+						consumer.accept(player, config.getCallerColor());
+					}
+				}
+			}
+		}
+	}
 }
