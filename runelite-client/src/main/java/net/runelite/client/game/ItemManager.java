@@ -151,6 +151,8 @@ public class ItemManager
 	 */
 	public ItemPrice getItemPriceAsync(int itemId)
 	{
+		itemId = ItemMapping.mapFirst(itemId);
+
 		ItemPrice itemPrice = itemPriceCache.getIfPresent(itemId);
 		if (itemPrice != null && itemPrice != EMPTY)
 		{
@@ -173,14 +175,17 @@ public class ItemManager
 		final List<ItemPrice> existing = new ArrayList<>();
 		for (int itemId : itemIds)
 		{
-			ItemPrice itemPrice = itemPriceCache.getIfPresent(itemId);
-			if (itemPrice != null)
+			for (int mappedItemId : ItemMapping.map(itemId))
 			{
-				existing.add(itemPrice);
-			}
-			else
-			{
-				lookup.add(itemId);
+				ItemPrice itemPrice = itemPriceCache.getIfPresent(mappedItemId);
+				if (itemPrice != null)
+				{
+					existing.add(itemPrice);
+				}
+				else
+				{
+					lookup.add(mappedItemId);
+				}
 			}
 		}
 		// All cached?
@@ -234,6 +239,8 @@ public class ItemManager
 	 */
 	public ItemPrice getItemPrice(int itemId) throws IOException
 	{
+		itemId = ItemMapping.mapFirst(itemId);
+
 		ItemPrice itemPrice = itemPriceCache.getIfPresent(itemId);
 		if (itemPrice != null && itemPrice != EMPTY)
 		{
