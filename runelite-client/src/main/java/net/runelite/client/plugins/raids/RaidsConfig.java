@@ -144,4 +144,15 @@ public interface RaidsConfig extends Config
 	{
 		return "";
 	}
+
+	@ConfigItem(
+		position = 10,
+		keyName = "itemsOverlay",
+		name = "Show items overlay",
+		description = "Display an overlay that shows the required items for the current raid layout (when entering the lobby)"
+	)
+	default boolean itemsOverlay()
+	{
+		return false;
+	}
 }

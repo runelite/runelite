@@ -125,6 +125,14 @@ public class RaidRoom
 
 	@Getter
 	@Setter
+	private String itemType;
+
+	@Getter
+	@Setter
+	private int[] itemIds;
+
+	@Getter
+	@Setter
 	private Type type;
 
 	@Getter
