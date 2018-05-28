@@ -52,12 +52,10 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.warindicators.WarIndicatorConfig;
 import net.runelite.client.ui.overlay.Overlay;
-import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
-	name = "Player Indicators"
+		name = "Player Indicators"
 )
 public class PlayerIndicatorsPlugin extends Plugin
 {
@@ -82,16 +80,6 @@ public class PlayerIndicatorsPlugin extends Plugin
 		return configManager.getConfig(PlayerIndicatorsConfig.class);
 	}
 
-	@Inject
-	private WarIndicatorConfig warConfig;
-
-	@Provides
-	WarIndicatorConfig provideWIConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(WarIndicatorConfig.class);
-	}
-
-
 	@Override
 	public Collection<Overlay> getOverlays()
 	{
@@ -110,28 +98,23 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 		int identifier = menuEntryAdded.getIdentifier();
 		if (type == FOLLOW.getId() || type == TRADE.getId()
-			|| type == SPELL_CAST_ON_PLAYER.getId() || type == ITEM_USE_ON_PLAYER.getId()
-			|| type == PLAYER_FIRST_OPTION.getId()
-			|| type == PLAYER_SECOND_OPTION.getId()
-			|| type == PLAYER_THIRD_OPTION.getId()
-			|| type == PLAYER_FOURTH_OPTION.getId()
-			|| type == PLAYER_FIFTH_OPTION.getId()
-			|| type == PLAYER_SIXTH_OPTION.getId()
-			|| type == PLAYER_SEVENTH_OPTION.getId()
-			|| type == PLAYER_EIGTH_OPTION.getId())
+				|| type == SPELL_CAST_ON_PLAYER.getId() || type == ITEM_USE_ON_PLAYER.getId()
+				|| type == PLAYER_FIRST_OPTION.getId()
+				|| type == PLAYER_SECOND_OPTION.getId()
+				|| type == PLAYER_THIRD_OPTION.getId()
+				|| type == PLAYER_FOURTH_OPTION.getId()
+				|| type == PLAYER_FIFTH_OPTION.getId()
+				|| type == PLAYER_SIXTH_OPTION.getId()
+				|| type == PLAYER_SEVENTH_OPTION.getId()
+				|| type == PLAYER_EIGTH_OPTION.getId())
 		{
 			final Player localPlayer = client.getLocalPlayer();
 			Player[] players = client.getCachedPlayers();
 			Player player = null;
-			String player2 = null;
-
-			String[] callers = warConfig.getActiveCallers().split(", ");
-			String[] targets = warConfig.getTargetedSnipes().split(", ");
 
 			if (identifier >= 0 && identifier < players.length)
 			{
 				player = players[identifier];
-				player2 = players[identifier].getName();
 			}
 
 			if (player == null)
@@ -160,19 +143,10 @@ public class PlayerIndicatorsPlugin extends Plugin
 			{
 				color = config.getTeamMemberColor();
 			}
-			else if (warConfig.highLightCallers() && ArrayUtils.contains(callers, player2))
-			{
-				color = warConfig.getCallerColor();
-			}
-			else if (warConfig.highlightSnipes() && ArrayUtils.contains(targets, player2))
-			{
-				color = warConfig.getSnipeColor();
-			}
 			else if (config.highlightNonClanMembers() && !player.isClanMember())
 			{
 				color = config.getNonClanMemberColor();
 			}
-
 
 			if (image != -1 || color != null)
 			{
