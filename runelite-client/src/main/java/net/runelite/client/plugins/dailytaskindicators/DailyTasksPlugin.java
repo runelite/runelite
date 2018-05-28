@@ -27,7 +27,6 @@ package net.runelite.client.plugins.dailytaskindicators;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.awt.Color;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -37,7 +36,6 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.vars.AccountType;
-import net.runelite.client.chat.ChatColor;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -74,7 +72,6 @@ public class DailyTasksPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = false;
-		cacheColors();
 	}
 
 	@Override
@@ -162,11 +159,6 @@ public class DailyTasksPlugin extends Plugin
 	{
 		int value = client.getVar(Varbits.DAILY_ESSENCE);
 		return value == 0; // 1 = can't claim
-	}
-
-	private void cacheColors()
-	{
-		chatMessageManager.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, false), ChatMessageType.GAME).refreshAll();
 	}
 
 	private void sendChatMessage(String chatMessage)

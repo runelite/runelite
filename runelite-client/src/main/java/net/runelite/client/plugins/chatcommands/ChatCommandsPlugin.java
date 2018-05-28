@@ -38,10 +38,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.SetMessage;
-import net.runelite.client.chat.ChatColor;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -83,65 +80,10 @@ public class ChatCommandsPlugin extends Plugin
 	@Inject
 	private ScheduledExecutorService executor;
 
-	@Override
-	protected void startUp()
-	{
-		cacheConfiguredColors();
-		chatMessageManager.refreshAll();
-	}
-
 	@Provides
 	ChatCommandsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ChatCommandsConfig.class);
-	}
-
-	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
-	{
-		if (event.getGameState().equals(GameState.LOGIN_SCREEN))
-		{
-			cacheConfiguredColors();
-		}
-	}
-
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
-	{
-		if (event.getGroup().equals("chatcommands"))
-		{
-			cacheConfiguredColors();
-			chatMessageManager.refreshAll();
-		}
-	}
-
-	private void cacheConfiguredColors()
-	{
-		chatMessageManager
-			.cacheColor(new ChatColor(ChatColorType.NORMAL, config.getPublicRecolor(), false),
-				ChatMessageType.PUBLIC)
-			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, config.getPublicHRecolor(), false),
-				ChatMessageType.PUBLIC)
-			.cacheColor(new ChatColor(ChatColorType.NORMAL, config.getPrivateRecolor(), false),
-				ChatMessageType.PRIVATE_MESSAGE_SENT, ChatMessageType.PRIVATE_MESSAGE_RECEIVED)
-			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, config.getPrivateHRecolor(), false),
-				ChatMessageType.PRIVATE_MESSAGE_SENT, ChatMessageType.PRIVATE_MESSAGE_RECEIVED)
-			.cacheColor(new ChatColor(ChatColorType.NORMAL, config.getCcRecolor(), false),
-				ChatMessageType.CLANCHAT)
-			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, config.getCcHRecolor(), false),
-				ChatMessageType.CLANCHAT)
-			.cacheColor(new ChatColor(ChatColorType.NORMAL, config.getTransparentPublicRecolor(), true),
-				ChatMessageType.PUBLIC)
-			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, config.getTransparentPublicHRecolor(), true),
-				ChatMessageType.PUBLIC)
-			.cacheColor(new ChatColor(ChatColorType.NORMAL, config.getTransparentPrivateRecolor(), true),
-				ChatMessageType.PRIVATE_MESSAGE_SENT, ChatMessageType.PRIVATE_MESSAGE_RECEIVED)
-			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, config.getTransparentPrivateHRecolor(), true),
-				ChatMessageType.PRIVATE_MESSAGE_SENT, ChatMessageType.PRIVATE_MESSAGE_RECEIVED)
-			.cacheColor(new ChatColor(ChatColorType.NORMAL, config.getTransparentCcRecolor(), true),
-				ChatMessageType.CLANCHAT)
-			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, config.getTransparentCcHRecolor(), true),
-				ChatMessageType.CLANCHAT);
 	}
 
 	/**
