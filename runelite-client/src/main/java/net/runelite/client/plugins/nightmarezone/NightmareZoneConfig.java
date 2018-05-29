@@ -114,10 +114,21 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "hitpointregennotification",
+		name = "Hitpoint regen notifcation",
+		description =  "Toggles notifications when you are about to restore a hitpoint",
+		position = 8
+	)
+	default boolean hitpointRegenNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "absorptioncoloroverthreshold",
 		name = "Color above threshold",
 		description = "Configures the color for the absorption widget when above the threshold",
-		position = 8
+		position = 9
 	)
 	default Color absorptionColorAboveThreshold()
 	{
@@ -128,7 +139,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptioncolorbelowthreshold",
 		name = "Color below threshold",
 		description = "Configures the color for the absorption widget when below the threshold",
-		position = 9
+		position = 10
 	)
 	default Color absorptionColorBelowThreshold()
 	{
