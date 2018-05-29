@@ -125,7 +125,23 @@ enum TeleportLocationData
 	RELLEKKKA_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Rellekka", new WorldPoint(2664, 3643, 0), "enchanted_lyre_teleport_icon.png"),
 	WATERBIRTH_ISLAND_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Waterbirth Island", new WorldPoint(2550, 3756, 0), "enchanted_lyre_teleport_icon.png"),
 	NEITIZNOT_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Neitiznot", new WorldPoint(2336, 3801, 0), "enchanted_lyre_teleport_icon.png"),
-	JATIZSO_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Jatizso", new WorldPoint(2409, 3809, 0), "enchanted_lyre_teleport_icon.png");
+	JATIZSO_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Jatizso", new WorldPoint(2409, 3809, 0), "enchanted_lyre_teleport_icon.png"),
+
+	// Scrolls
+	DIGSITE_SCROLL(TeleportType.SCROLL, "Digsite Teleport", new WorldPoint(3324, 3412, 0), "scroll_teleport_icon.png"),
+	ELF_CAMP_SCROLL(TeleportType.SCROLL, "Elf Camp Teleport", new WorldPoint(2193, 3257, 0), "scroll_teleport_icon.png"),
+	FELDIP_HILLS_SCROLL(TeleportType.SCROLL, "Feldip Hills Teleport", new WorldPoint(2542, 2925, 0), "scroll_teleport_icon.png"),
+	LUMBERYARD_SCROLL(TeleportType.SCROLL, "Lumberyard Teleport", new WorldPoint(3303, 3487, 0), "scroll_teleport_icon.png"),
+	LUNAR_ISLE_SCROLL(TeleportType.SCROLL, "Lunar Aisle Teleport", new WorldPoint(2093, 3912, 0), "scroll_teleport_icon.png"),
+	MORTTON_SCROLL(TeleportType.SCROLL, "Mort'ton", new WorldPoint(3489, 3288, 0), "scroll_teleport_icon.png"),
+	MOS_LEHARMLESS_SCROLL(TeleportType.SCROLL, "Mos Le'Harmless Teleport", new WorldPoint(3701, 2996, 0), "scroll_teleport_icon.png"),
+	NARDAH_SCROLL(TeleportType.SCROLL, "Nardah Teleport", new WorldPoint(3421, 2917, 0), "scroll_teleport_icon.png"),
+	PEST_CONTROL_SCROLL(TeleportType.SCROLL, "Pest Control Teleport", new WorldPoint(2657, 2660, 0), "scroll_teleport_icon.png"),
+	PISCATORIS_SCROLL(TeleportType.SCROLL, "Piscatoris Teleport", new WorldPoint(2339, 3648, 0), "scroll_teleport_icon.png"),
+	TAI_BWO_WANNAI_SCROLL(TeleportType.SCROLL, "Tai Bwo Wannai Teleport", new WorldPoint(2788, 3066, 0), "scroll_teleport_icon.png"),
+	ZULANDRA_SCROLL(TeleportType.SCROLL, "Zul-Andra Teleport", new WorldPoint(2197, 3056, 0), "scroll_teleport_icon.png"),
+	KEY_MASTER_SCROLL(TeleportType.SCROLL, "Key Master Teleport", new WorldPoint(2686, 9882, 0), "scroll_teleport_icon.png"),
+	REVENANT_CAVE_SCROLL(TeleportType.SCROLL, "Revenant Cave Teleport", new WorldPoint(3127, 3833, 0), "scroll_teleport_icon.png");
 
 	private final TeleportType type;
 	private final String tooltip;
@@ -144,6 +160,14 @@ enum TeleportLocationData
 	{
 		this.type = type;
 		this.tooltip = item + " - " + destination;
+		this.location = location;
+		this.iconPath = iconPath;
+	}
+
+	TeleportLocationData(TeleportType type, String item, WorldPoint location, String iconPath)
+	{
+		this.type = type;
+		this.tooltip = item;
 		this.location = location;
 		this.iconPath = iconPath;
 	}

@@ -136,10 +136,21 @@ public interface WorldMapConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_SCROLL_TELEPORT_ICON,
+		name = "Show teleport scroll locations",
+		description = "Show icons at the destinations for teleports from scrolls",
+		position = 10
+	)
+	default boolean scrollTeleportIcon()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_MISC_TELEPORT_ICON,
 		name = "Show misc teleport locations",
 		description = "Show icons at the destinations for miscellaneous teleport items",
-		position = 10
+		position = 11
 	)
 	default boolean miscellaneousTeleportIcon()
 	{
