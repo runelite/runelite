@@ -81,7 +81,7 @@ class XpInfoBox extends JPanel
 		this.skill = skill;
 
 		setLayout(new BorderLayout());
-		setBorder(new EmptyBorder(10, 0, 0, 0));
+		setBorder(new EmptyBorder(5, 0, 0, 0));
 
 		container.setLayout(new BorderLayout());
 		container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -110,7 +110,7 @@ class XpInfoBox extends JPanel
 
 		statsPanel.setLayout(new DynamicGridLayout(2, 2));
 		statsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		statsPanel.setBorder(new EmptyBorder(9, 5, 9, 5));
+		statsPanel.setBorder(new EmptyBorder(9, 2, 9, 2));
 
 		expGained.setFont(FontManager.getRunescapeSmallFont());
 		expHour.setFont(FontManager.getRunescapeSmallFont());
