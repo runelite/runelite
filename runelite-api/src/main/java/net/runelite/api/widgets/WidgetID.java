@@ -94,6 +94,7 @@ public class WidgetID
 	public static final int TITHE_FARM_GROUP_ID = 241;
 	public static final int KINGDOM_GROUP_ID = 392;
 	public static final int BARROWS_GROUP_ID = 24;
+	public static final int MAGE_TRAINING_ARENA_GRAVEYARD_GROUP_ID = 196;
 
 	static class WorldMap
 	{
