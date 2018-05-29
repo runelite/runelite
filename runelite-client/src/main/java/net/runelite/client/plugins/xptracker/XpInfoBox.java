@@ -291,7 +291,10 @@ class XpInfoBox extends JPanel
 		@Override
 		public void mouseClicked(MouseEvent e)
 		{
-			xpInfoBox.toggleStyle();
+			if (SwingUtilities.isLeftMouseButton(e))
+			{
+				xpInfoBox.toggleStyle();
+			}
 		}
 	}
 }
