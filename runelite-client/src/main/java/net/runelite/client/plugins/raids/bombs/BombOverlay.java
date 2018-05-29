@@ -47,30 +47,22 @@ import java.util.Map;
 public class BombOverlay extends Overlay
 {
 
-	public enum Normal_Color
-	{
-		SAFE("#00cc00"), //safe
-		CAUTION("#ffff00"), //1 tile in range (minor damage)
-		WARNING("#ff9933"), //2 tiles in range (moderate damage)
-		DANGER("#ff6600"), //3 tiles in range/adjacent to bomg (major damage)
-		LETHAL("#cc0000"); //On the bomb, using it as a makeshift space launch vehicle. (massive damage)
-
-		private String hex;
-
-		Normal_Color(String hex_value)
-		{
-			this.hex = hex_value;
-		}
-
-		public Color getColor()
-		{
-			return Color.decode(hex);
-		}
-	}
+	private static final String SAFE = "#00cc00";
+	//safe
+	private static final String CAUTION = "#ffff00";
+	//1 tile in range (minor damage)
+	private static final String WARNING = "#ff9933";
+	//2 tiles in range (moderate damage)
+	private static final String DANGER = "#ff6600";
+	//3 tiles in range/adjacent to bomb (major damage)
+	private static final String LETHAL = "#cc0000";
+	//On the bomb, using it as a makeshift space launch vehicle. (massive damage)
 
 	private static final int BOMB_AOE = 7;
-	private static final int BOMB_DETONATE_TIME = 8; //This is in ticks. It should be 10, but it varies from 8 to 11.
-	private static final double ESTIMATED_TICK_LENGTH = .6; //Thank you Woox & co. for this assumption. .6 seconds/tick.
+	private static final int BOMB_DETONATE_TIME = 8;
+	//This is in ticks. It should be 10, but it varies from 8 to 11.
+	private static final double ESTIMATED_TICK_LENGTH = .6;
+	//Thank you Woox & co. for this assumption. .6 seconds/tick.
 
 
 	//Utilized from the npc highlight code for formatting text being displayed on the client canvas.
@@ -100,29 +92,22 @@ public class BombOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		drawBombs(graphics);
+		if (config.bombDisplay())
+		{
+			drawBombs(graphics);
+		}
 		return null;
 	}
 
-	private void drawBombs(Graphics2D graphics) //I can condense drawDangerZone into this. Ambivalent though.
+	private void drawBombs(Graphics2D graphics)
+	//I can condense drawDangerZone into this. Ambivalent though.
 	{
 		Iterator<Map.Entry<WorldPoint, CrystalBomb>> it = plugin.getBombs().entrySet().iterator();
 		while (it.hasNext())
 		{
 			Map.Entry<WorldPoint, CrystalBomb> entry = it.next();
 			CrystalBomb bomb = entry.getValue();
-
-			if (!config.bombDisplay())
-			{
-				return;
-			}
-
-			switch (bomb.getState())
-			{
-				case ACTIVE:
-					drawDangerZone(graphics, bomb);
-					break;
-			}
+			drawDangerZone(graphics, bomb);
 		}
 	}
 
@@ -132,30 +117,31 @@ public class BombOverlay extends Overlay
 		LocalPoint localLoc = LocalPoint.fromWorld(client, bomb.getWorldLocation());
 		double distance_x = Math.abs(bomb.getWorldLocation().getX() - localPlayer.getWorldLocation().getX());
 		double distance_y = Math.abs(bomb.getWorldLocation().getY() - localPlayer.getWorldLocation().getY());
-		Color color_code = Normal_Color.SAFE.getColor(); //defaults to this unless conditionals met below.
+		Color color_code = Color.decode(SAFE);
+		//defaults to this unless conditionals met below.
 
 		if (distance_x < 1 && distance_y < 1)
 		{
-			color_code = Normal_Color.LETHAL.getColor();
+			color_code = Color.decode(LETHAL);
 		}
 		else if (distance_x < 2 && distance_y < 2)
 		{
-			color_code = Normal_Color.DANGER.getColor();
+			color_code = Color.decode(DANGER);
 		}
 		else if (distance_x < 3 && distance_y < 3)
 		{
-			color_code = Normal_Color.WARNING.getColor();
+			color_code = Color.decode(WARNING);
 		}
 		else if (distance_x < 4 && distance_y < 4)
 		{
-			color_code = Normal_Color.CAUTION.getColor();
+			color_code = Color.decode(CAUTION);
 		}
 		LocalPoint CenterPoint = new LocalPoint(localLoc.getX() + 0, localLoc.getY() + 0);
 		Polygon poly = Perspective.getCanvasTileAreaPoly(client, CenterPoint, BOMB_AOE);
 
 		if (poly != null)
 		{
-//manually generating the polygon so as to assign a custom alpha value. Request adtl' arg for alpha maybe?
+			//manually generating the polygon so as to assign a custom alpha value. Request adtl' arg for alpha maybe?
 			graphics.setColor(color_code);
 			graphics.setStroke(new BasicStroke(1));
 			graphics.drawPolygon(poly);
@@ -164,10 +150,10 @@ public class BombOverlay extends Overlay
 		}
 
 		Instant now = Instant.now();
-		double timeLeft = ((BOMB_DETONATE_TIME - bomb.getTicksAlive()) * ESTIMATED_TICK_LENGTH) -
+		double timeLeft = ((BOMB_DETONATE_TIME - (client.getTickCount() -
+				bomb.getTickStarted())) * ESTIMATED_TICK_LENGTH) -
 				(now.toEpochMilli() - bomb.getLastClockUpdate().toEpochMilli()) / 1000.0;
-//divided by 1000.00 because of milliseconds :)
-//log.info("Current timeLeft value: {} .", bomb.getTicksAlive());
+				//divided by 1000.00 because of milliseconds :)
 
 		timeLeft = Math.max(0.0, timeLeft);
 		String bombTimerString = TIME_LEFT_FORMATTER.format(timeLeft);

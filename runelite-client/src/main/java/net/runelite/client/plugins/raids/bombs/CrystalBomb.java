@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.raids.bombs;
 
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.GameObject;
 import net.runelite.api.coords.WorldPoint;
@@ -43,38 +42,25 @@ public class CrystalBomb
 	private Instant lastClockUpdate;
 
 	@Getter
-	@Setter
-	private State state;
-
-	@Getter
 	private int objectId;
 
 	@Getter
-	private int ticksAlive;
-	//ticks that bomb has been 'live' for.
+	private int tickStarted;
+	//
 
 	@Getter
 	private WorldPoint worldLocation;
 
-	enum State
+	public CrystalBomb(GameObject gameObject, int startTick)
 	{
-		ACTIVE
-	}
-
-	public CrystalBomb(GameObject gameObject)
-	{
-		this.state = State.ACTIVE;
 		this.plantedOn = Instant.now();
 		this.objectId = gameObject.getId();
 		this.worldLocation = gameObject.getWorldLocation();
-		this.ticksAlive = 0;
+		this.tickStarted = startTick;
 	}
 
-	public void tickUpBombTime()
+	public void bombClockUpdate()
 	{
 		lastClockUpdate = Instant.now();
-		ticksAlive++;
-		//log.info("Bomb active for {} ticks.",ticksAlive);
 	}
-
 }

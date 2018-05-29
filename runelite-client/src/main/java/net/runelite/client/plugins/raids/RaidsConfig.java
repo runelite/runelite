@@ -69,10 +69,10 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 3,
-			keyName = "bombDisplay",
-			name = "Display crystal phase bomb tracker",
-			description = "Display a timer and colour-coded AoE for Olm's crystal-phase bombs."
+		position = 3,
+		keyName = "bombDisplay",
+		name = "Display crystal phase bomb tracker",
+		description = "Display a timer and colour-coded AoE for Olm's crystal-phase bombs."
 	)
 	default boolean bombDisplay()
 	{

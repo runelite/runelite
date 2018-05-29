@@ -334,45 +334,46 @@ public class RaidsPlugin extends Plugin
 		switch (gameObject.getId())
 		{
 			case ObjectID.CRYSTAL_BOMB:
-				bombs.put(bombLocation, new CrystalBomb(gameObject));
+				bombs.put(bombLocation, new CrystalBomb(gameObject, client.getTickCount()));
 				break;
 		}
 
 	}
 
 	@Subscribe
+	public void onGameObjectDespawned(GameObjectDespawned event)
+	{
+		GameObject gameObject = event.getGameObject();
+		switch (gameObject.getId())
+		{
+			case ObjectID.CRYSTAL_BOMB:
+				//might as well check the ObjectID to save some time.
+				purgeBombs(bombs);
+				break;
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged delta)
+	{
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			purgeBombs(bombs);
+		}
+	}
+
+	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		Iterator<Map.Entry<WorldPoint, CrystalBomb>> it = bombs.entrySet().iterator();
-		Tile[][][] tiles = client.getRegion().getTiles();
 
 		while (it.hasNext())
 		{
 			Map.Entry<WorldPoint, CrystalBomb> entry = it.next();
 			CrystalBomb bomb = entry.getValue();
-			WorldPoint world = entry.getKey();
-			LocalPoint local = LocalPoint.fromWorld(client, world);
-			bomb.tickUpBombTime();
-
-			Tile tile = tiles[world.getPlane()][local.getRegionX()][local.getRegionY()];
-			GameObject[] objects = tile.getGameObjects();
-			boolean containsObjects = false;
-
-			for (GameObject object : objects)
-			{
-				if (object != null)
-				{
-					containsObjects = true;
-				}
-			}
-
-			if (!containsObjects)
-			{
-				it.remove();
-			}
-
+			bomb.bombClockUpdate();
+			//bombClockUpdate smooths the shown timer; not using this results in 1.2 --> .6 vs. 1.2 --> 1.1, etc.
 		}
-
 	}
 
 	private void updateInfoBoxState()
@@ -686,5 +687,35 @@ public class RaidsPlugin extends Plugin
 		}
 
 		return raidsIcon;
+	}
+
+	private void purgeBombs(Map<WorldPoint, CrystalBomb> bombs)
+	{
+		Iterator<Map.Entry<WorldPoint, CrystalBomb>> it = bombs.entrySet().iterator();
+		Tile[][][] tiles = client.getRegion().getTiles();
+
+		while (it.hasNext())
+		{
+			Map.Entry<WorldPoint, CrystalBomb> entry = it.next();
+			WorldPoint world = entry.getKey();
+			LocalPoint local = LocalPoint.fromWorld(client, world);
+			Tile tile = tiles[world.getPlane()][local.getRegionX()][local.getRegionY()];
+			GameObject[] objects = tile.getGameObjects();
+			boolean containsObjects = false;
+
+			for (GameObject object : objects)
+			{
+				if (object != null)
+				{
+					containsObjects = true;
+				}
+			}
+
+			if (!containsObjects)
+			{
+				it.remove();
+			}
+
+		}
 	}
 }
