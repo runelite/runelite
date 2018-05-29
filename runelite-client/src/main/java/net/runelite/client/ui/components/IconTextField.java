@@ -26,6 +26,8 @@
  */
 package net.runelite.client.ui.components;
 
+import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.FontManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -35,13 +37,16 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 
 /**
- * This component is a FlatTextField with an icon on its left side.
+ * This component is a FlatTextField with an icon on its left side, and a clear button (×) on its right side.
  */
 public class IconTextField extends JPanel
 {
@@ -49,6 +54,8 @@ public class IconTextField extends JPanel
 
 	//to support gifs, the icon needs to be wrapped in a JLabel
 	private final JLabel iconWrapperLabel;
+
+	private final JButton clearButton;
 
 	public IconTextField()
 	{
@@ -95,8 +102,40 @@ public class IconTextField extends JPanel
 		textField.addMouseListener(hoverEffect);
 		innerTxt.addMouseListener(hoverEffect);
 
+		clearButton = new JButton();
+		clearButton.setPreferredSize(new Dimension(30, 0));
+		clearButton.setText("×");
+		clearButton.setFont(FontManager.getRunescapeBoldFont());
+		clearButton.setForeground(ColorScheme.PROGRESS_ERROR_COLOR);
+		clearButton.setBorder(null);
+		clearButton.setBorderPainted(false);
+		clearButton.setVisible(false);
+		clearButton.addActionListener(e -> setText(null));
+
+		// Show the clear button when text is present, and hide again when empty
+		getDocument().addDocumentListener(new DocumentListener()
+		{
+			@Override
+			public void insertUpdate(DocumentEvent e)
+			{
+				clearButton.setVisible(true);
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e)
+			{
+				clearButton.setVisible(!getText().isEmpty());
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e)
+			{
+			}
+		});
+
 		add(iconWrapperLabel, BorderLayout.WEST);
 		add(textField, BorderLayout.CENTER);
+		add(clearButton, BorderLayout.EAST);
 	}
 
 	public void addActionListener(ActionListener actionListener)
