@@ -33,6 +33,7 @@ import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.timers.TimerTimer;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -41,6 +42,9 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.StackFormatter;
 
+import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD;
+
+
 class NightmareZoneOverlay extends Overlay
 {
 	private final Client client;
@@ -48,7 +52,6 @@ class NightmareZoneOverlay extends Overlay
 	private final NightmareZonePlugin plugin;
 	private final InfoBoxManager infoBoxManager;
 	private final ItemManager itemManager;
-
 	private AbsorptionCounter absorptionCounter;
 	private final PanelComponent panelComponent = new PanelComponent();
 
@@ -84,6 +87,9 @@ class NightmareZoneOverlay extends Overlay
 					nmzWidget.setHidden(false);
 				}
 			}
+
+			removeOverloadTimer();
+
 			return null;
 		}
 
@@ -152,4 +158,11 @@ class NightmareZoneOverlay extends Overlay
 			absorptionCounter.setThreshold(config.absorptionThreshold());
 		}
 	}
+
+	public void removeOverloadTimer()
+	{
+		infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == OVERLOAD);
+	}
+
+
 }
