@@ -47,6 +47,7 @@ public final class AnimationID
 	public static final int FIREMAKING = 733;
 	public static final int COOKING_FIRE = 897;
 	public static final int COOKING_RANGE = 896;
+	public static final int COOKING_WINE = 7529;
 	public static final int FLETCHING_BOW_CUTTING = 1248;
 	public static final int HUNTER_LAY_BOXTRAP_BIRDSNARE = 5208; //same for laying bird snares and box traps
 	public static final int HUNTER_LAY_DEADFALLTRAP = 5212; //setting up deadfall trap
