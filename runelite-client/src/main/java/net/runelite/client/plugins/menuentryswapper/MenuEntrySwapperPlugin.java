@@ -404,9 +404,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("home", option, target, true);
 		}
-		else if (config.swapLastDestination() && (option.equals("zanaris") || option.equals("tree")))
+		else if (config.swapFairyRing() != FairyRingMode.ZANARIS && (option.equals("zanaris") || option.equals("tree")))
 		{
-			swap("last-destination (", option, target, false);
+			if (config.swapFairyRing() == FairyRingMode.LAST_DESTINATION)
+			{
+				swap("last-destination (", option, target, false);
+			}
+			else if (config.swapFairyRing() == FairyRingMode.CONFIGURE)
+			{
+				swap("configure", option, target, false);
+			}
 		}
 		else if (config.swapBoxTrap() && (option.equals("check") || option.equals("dismantle")))
 		{
