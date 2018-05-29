@@ -50,10 +50,10 @@ import javax.swing.text.Document;
  */
 public class IconTextField extends JPanel
 {
-	private final FlatTextField textField;
-
-	//to support gifs, the icon needs to be wrapped in a JLabel
+	// To support gifs, the icon needs to be wrapped in a JLabel
 	private final JLabel iconWrapperLabel;
+
+	private final FlatTextField textField;
 
 	private final JButton clearButton;
 
@@ -61,18 +61,18 @@ public class IconTextField extends JPanel
 	{
 		setLayout(new BorderLayout());
 
-		this.iconWrapperLabel = new JLabel();
-		this.iconWrapperLabel.setPreferredSize(new Dimension(30, 0));
-		this.iconWrapperLabel.setVerticalAlignment(JLabel.CENTER);
-		this.iconWrapperLabel.setHorizontalAlignment(JLabel.CENTER);
+		iconWrapperLabel = new JLabel();
+		iconWrapperLabel.setPreferredSize(new Dimension(30, 0));
+		iconWrapperLabel.setVerticalAlignment(JLabel.CENTER);
+		iconWrapperLabel.setHorizontalAlignment(JLabel.CENTER);
 
 		textField = new FlatTextField();
 		textField.setBorder(null);
 
-		JTextField innerTxt = textField.getTextField();
+		final JTextField innerTxt = textField.getTextField();
 		innerTxt.removeMouseListener(innerTxt.getMouseListeners()[innerTxt.getMouseListeners().length - 1]);
 
-		MouseListener hoverEffect = new MouseAdapter()
+		final MouseListener hoverEffect = new MouseAdapter()
 		{
 			@Override
 			public void mouseEntered(MouseEvent mouseEvent)
@@ -82,7 +82,7 @@ public class IconTextField extends JPanel
 					return;
 				}
 
-				Color hoverColor = textField.getHoverBackgroundColor();
+				final Color hoverColor = textField.getHoverBackgroundColor();
 
 				if (hoverColor != null)
 				{
