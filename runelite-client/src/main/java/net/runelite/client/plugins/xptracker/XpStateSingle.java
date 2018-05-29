@@ -37,25 +37,40 @@ import net.runelite.api.Skill;
 @RequiredArgsConstructor
 class XpStateSingle
 {
+	@Getter
 	private final Skill skill;
 
 	@Getter
 	private final int startXp;
 
-	@Getter
 	private int xpGained = 0;
 
 	private Instant skillTimeStart = null;
+	private Instant skillTimeLastGained = null;
 	private int actions = 0;
 	private int startLevelExp = 0;
 	private int endLevelExp = 0;
 	private boolean actionsHistoryInitialized = false;
 	private int[] actionExps = new int[10];
 	private int actionExpIndex = 0;
+	private int xpOffSet = 0;
+
+	int getXpGained()
+	{
+		return xpGained + xpOffSet;
+	}
+
+	void resetXpPerHour()
+	{
+		xpOffSet += xpGained;
+		xpGained = 0;
+		skillTimeLastGained = null;
+		skillTimeStart = null;
+	}
 
 	private int getCurrentXp()
 	{
-		return startXp + xpGained;
+		return startXp + xpGained + xpOffSet;
 	}
 
 	private int getActionsHr()
@@ -85,6 +100,16 @@ class XpStateSingle
 		// This will create a lower estimate for the first minute,
 		// but it isn't ridiculous like saying 2 billion XP per hour.
 		return Math.max(60, Duration.between(skillTimeStart, Instant.now()).getSeconds());
+	}
+
+	long getSkillTimeLastGained()
+	{
+		if (skillTimeLastGained == null)
+		{
+			return 0;
+		}
+
+		return Duration.between(skillTimeLastGained, Instant.now()).getSeconds();
 	}
 
 	private int getXpRemaining()
@@ -179,7 +204,7 @@ class XpStateSingle
 			return false;
 		}
 
-		int originalXp = xpGained + startXp;
+		int originalXp = xpGained + startXp + xpOffSet;
 		int actionExp = currentXp - originalXp;
 
 		// No experience gained
@@ -187,6 +212,8 @@ class XpStateSingle
 		{
 			return false;
 		}
+
+		skillTimeLastGained = Instant.now();
 
 		if (actionsHistoryInitialized)
 		{
@@ -207,7 +234,7 @@ class XpStateSingle
 		actions++;
 
 		// Calculate experience gained
-		xpGained = currentXp - startXp;
+		xpGained = currentXp - xpOffSet - startXp;
 
 		// Determine XP goals
 		if (goalStartXp <= 0)
@@ -243,7 +270,7 @@ class XpStateSingle
 		return XpSnapshotSingle.builder()
 			.startLevel(Experience.getLevelForXp(startLevelExp))
 			.endLevel(Experience.getLevelForXp(endLevelExp))
-			.xpGainedInSession(xpGained)
+			.xpGainedInSession(getXpGained())
 			.xpRemainingToGoal(getXpRemaining())
 			.xpPerHour(getXpHr())
 			.skillProgressToGoal(getSkillProgress())

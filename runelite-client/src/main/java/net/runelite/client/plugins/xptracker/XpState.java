@@ -54,22 +54,32 @@ class XpState
 	 * @param skill Skill to reset
 	 * @param currentXp Current XP to set to, if unknown set to -1
 	 */
-	void resetSkill(Skill skill, int currentXp)
+	void resetSkill(Skill skill, int currentXp, XpTrackerConfig config)
 	{
 		xpSkills.remove(skill);
 		xpSkills.put(skill, new XpStateSingle(skill, currentXp));
-		recalculateTotal();
+		recalculateTotal(config);
+	}
+
+	void resetSkillXpPerHour(Skill skill)
+	{
+		xpSkills.get(skill).resetXpPerHour();
 	}
 
 	/**
 	 * Calculates the total skill changes observed in this session or since the last reset
 	 */
-	void recalculateTotal()
+	void recalculateTotal(XpTrackerConfig config)
 	{
 		xpTotal.reset();
 
 		for (XpStateSingle state : xpSkills.values())
 		{
+			if (state.getSkillTimeLastGained() >= config.skillTimeOut())
+			{
+				resetSkillXpPerHour(state.getSkill());
+			}
+
 			xpTotal.addXpGainedInSession(state.getXpGained());
 			xpTotal.addXpPerHour(state.getXpHr());
 		}

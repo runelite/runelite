@@ -34,6 +34,7 @@ import java.util.EnumSet;
 import java.util.Objects;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -43,6 +44,7 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -70,6 +72,9 @@ public class XpTrackerPlugin extends Plugin
 	@Inject
 	private SkillIconManager skillIconManager;
 
+	@Inject
+	private XpTrackerConfig xpTrackerConfig;
+
 	private NavigationButton navButton;
 	private XpPanel xpPanel;
 
@@ -80,6 +85,12 @@ public class XpTrackerPlugin extends Plugin
 	private String lastUsername;
 
 	private final XpClient xpClient = new XpClient();
+
+	@Provides
+	XpTrackerConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(XpTrackerConfig.class);
+	}
 
 	@Override
 	public void configure(Binder binder)
@@ -233,12 +244,21 @@ public class XpTrackerPlugin extends Plugin
 	public void resetSkillState(Skill skill)
 	{
 		int currentXp = client.getSkillExperience(skill);
-		xpState.resetSkill(skill, currentXp);
-		xpState.recalculateTotal();
+		xpState.resetSkill(skill, currentXp, xpTrackerConfig);
+		xpState.recalculateTotal(xpTrackerConfig);
 		xpPanel.resetSkill(skill);
 		xpPanel.updateTotal(xpState.getTotalSnapshot());
 	}
 
+	/**
+	 * Reset the XP / H for the skill and this will also reset the XpGained for the skill
+	 * @param skill
+	 */
+	public void resetXpPerHourForSkill(Skill skill)
+	{
+		xpState.resetSkillXpPerHour(skill);
+		xpState.recalculateTotal(xpTrackerConfig);
+	}
 
 	@Subscribe
 	public void onXpChanged(ExperienceChanged event)
@@ -254,7 +274,7 @@ public class XpTrackerPlugin extends Plugin
 
 		final boolean updated = XpUpdateResult.UPDATED.equals(updateResult);
 		xpPanel.updateSkillExperience(updated, skill, xpState.getSkillSnapshot(skill));
-		xpState.recalculateTotal();
+		xpState.recalculateTotal(xpTrackerConfig);
 		xpPanel.updateTotal(xpState.getTotalSnapshot());
 	}
 
@@ -267,7 +287,7 @@ public class XpTrackerPlugin extends Plugin
 			xpPanel.updateSkillExperience(false, skill, xpState.getSkillSnapshot(skill));
 		}
 
-		xpState.recalculateTotal();
+		xpState.recalculateTotal(xpTrackerConfig);
 		xpPanel.updateTotal(xpState.getTotalSnapshot());
 	}
 
