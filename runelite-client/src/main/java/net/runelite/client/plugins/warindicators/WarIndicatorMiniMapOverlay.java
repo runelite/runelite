@@ -74,7 +74,7 @@ public class WarIndicatorMiniMapOverlay extends Overlay
 			{
 				OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
 			}
-			}
+		}
 
 		if (config.snipeMinimap() && ArrayUtils.contains(targets, actor.getName()))
 		{

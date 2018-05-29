@@ -30,9 +30,7 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.Collection;
 import javax.inject.Inject;
-
 import org.apache.commons.lang3.ArrayUtils;
-
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.FOLLOW;
 import static net.runelite.api.MenuAction.ITEM_USE_ON_PLAYER;
@@ -57,7 +55,6 @@ import net.runelite.client.ui.overlay.Overlay;
 @PluginDescriptor(
 	name = "War Indicators"
 )
-
 public class WarIndicatorPlugin extends Plugin
 {
 	@Inject
@@ -96,7 +93,8 @@ public class WarIndicatorPlugin extends Plugin
 
 		int identifier = menuEntryAdded.getIdentifier();
 		if (type == FOLLOW.getId() || type == TRADE.getId()
-			|| type == SPELL_CAST_ON_PLAYER.getId() || type == ITEM_USE_ON_PLAYER.getId()
+			|| type == SPELL_CAST_ON_PLAYER.getId()
+			|| type == ITEM_USE_ON_PLAYER.getId()
 			|| type == PLAYER_FIRST_OPTION.getId()
 			|| type == PLAYER_SECOND_OPTION.getId()
 			|| type == PLAYER_THIRD_OPTION.getId()
@@ -142,12 +140,12 @@ public class WarIndicatorPlugin extends Plugin
 				MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
 				String target = lastEntry.getTarget();
 
-				// strip out existing <col...
 				int idx = target.indexOf('>');
 				if (idx != -1)
 				{
 					target = target.substring(idx + 1);
 				}
+
 				lastEntry.setTarget("<col=" + Integer.toHexString(color.getRGB() & 0xFFFFFF) + ">" + target);
 				client.setMenuEntries(menuEntries);
 			}

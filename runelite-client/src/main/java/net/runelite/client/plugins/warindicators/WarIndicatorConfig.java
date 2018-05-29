@@ -24,10 +24,10 @@
  */
 package net.runelite.client.plugins.warindicators;
 
-		import java.awt.Color;
-		import net.runelite.client.config.Config;
-		import net.runelite.client.config.ConfigGroup;
-		import net.runelite.client.config.ConfigItem;
+import java.awt.Color;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
 		keyName = "warIndicators",
@@ -72,7 +72,7 @@ public interface WarIndicatorConfig extends Config
 
 
 	@ConfigItem(
-			position = 4,
+			position = 3,
 			keyName = "callerTile",
 			name = "Show Caller's Tile",
 			description = "Show the tile your target is standing on"
@@ -83,7 +83,7 @@ public interface WarIndicatorConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 5,
+			position = 4,
 			keyName = "activeCallers",
 			name = "Callers",
 			description = "Adds a user to your caller list. Format: (caller), (caller)"
@@ -94,6 +94,7 @@ public interface WarIndicatorConfig extends Config
 	}
 
 	@ConfigItem(
+			position = 5,
 			keyName = "activeCallers",
 			name = "",
 			description = ""
@@ -157,6 +158,7 @@ public interface WarIndicatorConfig extends Config
 	}
 
 	@ConfigItem(
+			position = 11,
 			keyName = "targetedSnipes",
 			name = "",
 			description = ""

@@ -26,7 +26,6 @@ package net.runelite.client.plugins.warindicators;
 
 import net.runelite.api.Client;
 import net.runelite.api.Player;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.awt.*;
@@ -44,7 +43,6 @@ public class WarIndicatorService
 		this.config = config;
 		this.client = client;
 	}
-
 
 	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
 	{
