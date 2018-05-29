@@ -358,7 +358,12 @@ public enum Varbits
 	/**
 	 * The varbit that stores the players {@code AccountType}.
 	 */
-	ACCOUNT_TYPE(1777);
+	ACCOUNT_TYPE(1777),
+
+	/**
+	 * Varbit used for Slayer reward points
+	 */
+	SLAYER_REWARD_POINTS(4068);
 
 	/**
 	 * The raw varbit ID.

@@ -30,8 +30,10 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import static net.runelite.api.ChatMessageType.SERVER;
 import net.runelite.api.Client;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
@@ -178,8 +180,12 @@ public class SlayerPluginTest
 	@Test
 	public void testPoints()
 	{
+		when(client.getVar(Varbits.SLAYER_REWARD_POINTS)).thenReturn(18_000);
+
 		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Perterter", TASK_POINTS, null);
 		slayerPlugin.onChatMessage(chatMessageEvent);
+		VarbitChanged varbitChanged = new VarbitChanged();
+		slayerPlugin.onVarbitChanged(varbitChanged);
 
 		assertEquals(9, slayerPlugin.getStreak());
 		assertEquals("", slayerPlugin.getTaskName());
