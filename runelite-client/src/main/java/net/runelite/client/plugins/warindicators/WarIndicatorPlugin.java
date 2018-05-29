@@ -149,6 +149,7 @@ public class WarIndicatorPlugin extends Plugin
 				lastEntry.setTarget("<col=" + Integer.toHexString(color.getRGB() & 0xFFFFFF) + ">" + target);
 				client.setMenuEntries(menuEntries);
 			}
+
 		}
 	}
 }
