@@ -92,10 +92,21 @@ public interface BarrowsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "doorColor",
+		name = "Catacombs door color",
+		description = "Change the color doors that can be opened in the catcombs",
+		position = 5
+	)
+	default Color doorColor()
+	{
+		return Color.GREEN;
+	}
+
+	@ConfigItem(
 		keyName = "showLadderTile",
 		name = "Show Ladder tile",
 		description = "Configures whether or not to label ladder tiles in the catacombs",
-		position = 5
+		position = 6
 	)
 	default boolean showLadderTile()
 	{
@@ -106,7 +117,7 @@ public interface BarrowsConfig extends Config
 		keyName = "ladderTileColor",
 		name = "Ladder Tile Color",
 		description = "Change the color of the ladder tile",
-		position = 6
+		position = 7
 	)
 	default Color ladderTileColor()
 	{

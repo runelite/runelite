@@ -131,7 +131,7 @@ class BarrowsOverlay extends Overlay
 
 		if (impostor != null && impostor.getActions()[0] != null)
 		{
-			graphics.setColor(Color.green);
+			graphics.setColor(config.doorColor());
 		}
 		else
 		{
