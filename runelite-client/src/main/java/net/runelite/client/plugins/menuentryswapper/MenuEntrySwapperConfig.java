@@ -125,13 +125,13 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 8,
-		keyName = "swapLastDestination",
-		name = "Last-destination (XXX)",
-		description = "Swap Zanaris with Last-destination on Fairy ring"
+		keyName = "swapFairyRing",
+		name = "Fairy ring",
+		description = "Swap Zanaris with Last-destination or Configure on Fairy rings"
 	)
-	default boolean swapLastDestination()
+	default FairyRingMode swapFairyRing()
 	{
-		return true;
+		return FairyRingMode.LAST_DESTINATION;
 	}
 
 	@ConfigItem(
