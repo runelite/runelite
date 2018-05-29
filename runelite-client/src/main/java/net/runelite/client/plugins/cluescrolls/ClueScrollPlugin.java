@@ -47,6 +47,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
 import net.runelite.api.Query;
 import net.runelite.api.Region;
@@ -63,6 +64,10 @@ import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -145,6 +150,9 @@ public class ClueScrollPlugin extends Plugin
 	@Inject
 	private WorldMapPointManager worldMapPointManager;
 
+	@Inject
+	private ChatMessageManager chatMessageManager;
+
 	private Integer clueItemId;
 	private boolean clueItemChanged = false;
 	private boolean worldMapPointsSet = false;
@@ -218,7 +226,12 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(final MenuOptionClicked event)
 	{
-		if (event.getMenuOption() != null && event.getMenuOption().equals("Read"))
+		if (event.getMenuOption() == null)
+		{
+			return;
+		}
+
+		if (event.getMenuOption().equals("Read"))
 		{
 			final ItemComposition itemComposition = itemManager.getItemComposition(event.getId());
 
@@ -228,6 +241,30 @@ public class ClueScrollPlugin extends Plugin
 				clueItemChanged = true;
 			}
 		}
+		else if (event.getMenuOption().equals("Examine")
+			&& (event.getMenuAction() == MenuAction.EXAMINE_ITEM || event.getMenuAction() == MenuAction.EXAMINE_ITEM_BANK_EQ)
+			&& config.displayExamineText())
+		{
+			int itemId = event.getId();
+			if (EmoteClue.isEmoteClueItem(itemId))
+			{
+				sendChatMessage("This is a clue item!", ChatColorType.HIGHLIGHT);
+			}
+		}
+	}
+
+	private void sendChatMessage(String chatMessage, ChatColorType cct)
+	{
+		final String message = new ChatMessageBuilder()
+			.append(cct)
+			.append(chatMessage)
+			.build();
+
+		chatMessageManager.queue(
+			QueuedMessage.builder()
+				.type(ChatMessageType.EXAMINE_ITEM)
+				.runeLiteFormattedMessage(message)
+				.build());
 	}
 
 	@Subscribe

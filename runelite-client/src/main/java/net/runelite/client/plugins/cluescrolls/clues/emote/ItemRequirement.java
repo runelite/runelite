@@ -32,4 +32,9 @@ public interface ItemRequirement
 	boolean fulfilledBy(Item[] items);
 
 	String getCollectiveName(Client client);
+
+	default boolean containsItem(int itemId)
+	{
+		return false;
+	}
 }

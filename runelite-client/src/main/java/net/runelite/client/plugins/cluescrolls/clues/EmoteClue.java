@@ -671,4 +671,19 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 
 		return null;
 	}
+
+	public static boolean isEmoteClueItem(int itemId)
+	{
+		for (EmoteClue clue : CLUES)
+		{
+			for (ItemRequirement ir : clue.getItemRequirements())
+			{
+				if (ir.containsItem(itemId))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

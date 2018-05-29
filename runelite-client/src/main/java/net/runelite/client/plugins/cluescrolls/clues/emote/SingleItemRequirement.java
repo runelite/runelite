@@ -42,13 +42,19 @@ public class SingleItemRequirement implements ItemRequirement
 	{
 		for (Item item : items)
 		{
-			if (item.getId() == itemId)
+			if (containsItem(item.getId()))
 			{
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	@Override
+	public boolean containsItem(int itemId)
+	{
+		return itemId == this.itemId;
 	}
 
 	@Override

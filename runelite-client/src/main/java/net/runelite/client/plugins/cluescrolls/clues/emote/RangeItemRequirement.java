@@ -45,13 +45,19 @@ public class RangeItemRequirement implements ItemRequirement
 	{
 		for (Item item : items)
 		{
-			if (item.getId() >= startItemId && item.getId() <= endItemId)
+			if (containsItem(item.getId()))
 			{
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	@Override
+	public boolean containsItem(int itemId)
+	{
+		return itemId >= startItemId && itemId <= endItemId;
 	}
 
 	@Override
