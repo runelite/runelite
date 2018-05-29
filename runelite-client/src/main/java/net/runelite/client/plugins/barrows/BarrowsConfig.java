@@ -90,4 +90,26 @@ public interface BarrowsConfig extends Config
 	{
 		return Color.RED;
 	}
+
+	@ConfigItem(
+		keyName = "showLadderTile",
+		name = "Show Ladder tile",
+		description = "Configures whether or not to label ladder tiles in the catacombs",
+		position = 5
+	)
+	default boolean showLadderTile()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "ladderTileColor",
+		name = "Ladder Tile Color",
+		description = "Change the color of the ladder tile",
+		position = 6
+	)
+	default Color ladderTileColor()
+	{
+		return Color.ORANGE;
+	}
 }

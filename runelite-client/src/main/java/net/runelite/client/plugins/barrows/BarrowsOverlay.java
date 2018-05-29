@@ -24,11 +24,10 @@
  */
 package net.runelite.client.plugins.barrows;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.util.List;
 import javax.inject.Inject;
+
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
@@ -37,9 +36,11 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 class BarrowsOverlay extends Overlay
 {
@@ -155,7 +156,35 @@ class BarrowsOverlay extends Overlay
 		{
 			graphics.setColor(Color.orange);
 			graphics.fillRect(minimapLocation.getX(), minimapLocation.getY(), 6, 6);
+			if (config.showLadderTile())
+			{
+				drawTile(graphics, ladder.getWorldLocation());
+			}
 		}
+	}
+
+	private void drawTile(Graphics2D graphics, WorldPoint point)
+	{
+		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
+
+		if (point.distanceTo(playerLocation) >= 32)
+		{
+			return;
+		}
+
+		LocalPoint lp = LocalPoint.fromWorld(client, point);
+		if (lp == null)
+		{
+			return;
+		}
+
+		Polygon poly = Perspective.getCanvasTilePoly(client, lp);
+		if (poly == null)
+		{
+			return;
+		}
+
+		OverlayUtil.renderPolygon(graphics, poly, config.ladderTileColor());
 	}
 
 	private void renderBarrowsBrothers(Graphics2D graphics)
