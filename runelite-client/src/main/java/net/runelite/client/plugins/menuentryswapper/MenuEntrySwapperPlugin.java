@@ -457,6 +457,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("use", option, target, true);
 		}
+		else if (config.swapBirdhouseEmpty() && option.equals("interact") && target.contains("birdhouse"))
+		{
+			swap("empty", option, target, true);
+		}
 	}
 
 	@Subscribe
