@@ -108,7 +108,7 @@ class XpInfoBox extends JPanel
 		headerPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		headerPanel.setLayout(new BorderLayout());
 
-		statsPanel.setLayout(new DynamicGridLayout(2, 2, 15, 0));
+		statsPanel.setLayout(new DynamicGridLayout(2, 2));
 		statsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		statsPanel.setBorder(new EmptyBorder(9, 5, 9, 5));
 
