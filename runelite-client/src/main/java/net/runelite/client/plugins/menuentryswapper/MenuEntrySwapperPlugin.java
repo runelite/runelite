@@ -457,6 +457,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("use", option, target, true);
 		}
+		else if (config.swapHerbs() && option.equals("clean"))
+		{
+			swap("use", option, target, true);
+		}
 	}
 
 	@Subscribe

@@ -221,4 +221,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			position = 17,
+			keyName = "swapHerbs",
+			name = "Clean",
+			description = "Swap Clean with Use on Grimy Herbs"
+	)
+	default boolean swapHerbs()
+	{
+		return true;
+	}
 }
