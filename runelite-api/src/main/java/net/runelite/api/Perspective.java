@@ -547,10 +547,10 @@ public class Perspective
 			// ...and the rectangles in the fixed client are shifted 4 pixels right and down
 			if (!client.isResized())
 			{
-				minX += 4;
-				minY += 4;
-				maxX += 4;
-				maxY += 4;
+				minX += client.getViewportXOffset();
+				minY += client.getViewportYOffset();
+				maxX += client.getViewportXOffset();
+				maxY += client.getViewportYOffset();
 			}
 
 			Rectangle clickableRect = new Rectangle(
