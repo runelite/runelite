@@ -28,6 +28,9 @@ package net.runelite.client.plugins.xptracker;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -74,10 +77,12 @@ class XpInfoBox extends JPanel
 
 	/* Contains the skill icon and the stats panel */
 	private final JPanel headerPanel = new JPanel();
+	private final JLabel skillIcon = new JLabel();
 
 	/* Contains all the skill information (exp gained, per hour, etc) */
 	private final JPanel statsPanel = new JPanel();
 
+	private final JPanel progressWrapper = new JPanel();
 	private final ProgressBar progressBar = new ProgressBar();
 
 	private final JLabel expGained = new JLabel();
@@ -87,6 +92,14 @@ class XpInfoBox extends JPanel
 	private final JMenuItem pauseSkill = new JMenuItem("Pause");
 
 	private boolean paused = false;
+
+	private Style style = Style.FULL;
+
+	private enum Style
+	{
+		FULL,
+		SIMPLE
+	}
 
 	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, JPanel panel, Skill skill, SkillIconManager iconManager) throws IOException
 	{
@@ -122,17 +135,18 @@ class XpInfoBox extends JPanel
 		popupMenu.add(resetOthers);
 		popupMenu.add(pauseSkill);
 
-		JLabel skillIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(skill)));
+		skillIcon.setIcon(new ImageIcon(iconManager.getSkillImage(skill)));
 		skillIcon.setHorizontalAlignment(SwingConstants.CENTER);
 		skillIcon.setVerticalAlignment(SwingConstants.CENTER);
-		skillIcon.setPreferredSize(new Dimension(35, 35));
+		skillIcon.setPreferredSize(new Dimension(30, 30));
 
 		headerPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		headerPanel.setLayout(new BorderLayout());
+		headerPanel.setBorder(new EmptyBorder(5, 5, 0, 5));
 
 		statsPanel.setLayout(new DynamicGridLayout(2, 2));
 		statsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		statsPanel.setBorder(new EmptyBorder(9, 2, 9, 2));
+		statsPanel.setBorder(new EmptyBorder(4, 2, 2, 2));
 
 		expGained.setFont(FontManager.getRunescapeSmallFont());
 		expHour.setFont(FontManager.getRunescapeSmallFont());
@@ -147,10 +161,9 @@ class XpInfoBox extends JPanel
 		headerPanel.add(skillIcon, BorderLayout.WEST);
 		headerPanel.add(statsPanel, BorderLayout.CENTER);
 
-		JPanel progressWrapper = new JPanel();
 		progressWrapper.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		progressWrapper.setLayout(new BorderLayout());
-		progressWrapper.setBorder(new EmptyBorder(0, 7, 7, 7));
+		progressWrapper.setBorder(new EmptyBorder(7, 7, 7, 7));
 
 		progressBar.setMaximumValue(100);
 		progressBar.setBackground(new Color(61, 56, 49));
@@ -165,7 +178,31 @@ class XpInfoBox extends JPanel
 		container.setComponentPopupMenu(popupMenu);
 		progressBar.setComponentPopupMenu(popupMenu);
 
+		MouseListener mouseListener = new XpInfoBoxMouseListener(this);
+		container.addMouseListener(mouseListener);
+		progressBar.addMouseListener(mouseListener);
+
 		add(container, BorderLayout.NORTH);
+	}
+
+	private void toggleStyle()
+	{
+		container.removeAll();
+		switch (style)
+		{
+			case FULL:
+				container.add(skillIcon, BorderLayout.WEST);
+				container.add(progressWrapper, BorderLayout.CENTER);
+				style = Style.SIMPLE;
+				break;
+			default:
+				headerPanel.add(skillIcon, BorderLayout.WEST);
+				container.add(headerPanel, BorderLayout.NORTH);
+				container.add(progressWrapper, BorderLayout.SOUTH);
+				style = Style.FULL;
+				break;
+		}
+		panel.revalidate();
 	}
 
 	void reset()
@@ -240,5 +277,21 @@ class XpInfoBox extends JPanel
 	{
 		String valueStr = StackFormatter.quantityToRSDecimalStack(value);
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
+	}
+
+	private class XpInfoBoxMouseListener extends MouseAdapter
+	{
+		private final XpInfoBox xpInfoBox;
+
+		private XpInfoBoxMouseListener(XpInfoBox xpInfoBox)
+		{
+			this.xpInfoBox = xpInfoBox;
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e)
+		{
+			xpInfoBox.toggleStyle();
+		}
 	}
 }
