@@ -151,6 +151,8 @@ public class ItemManager
 	 */
 	public ItemPrice getItemPriceAsync(int itemId)
 	{
+		itemId = ItemMapping.mapFirst(itemId);
+
 		ItemPrice itemPrice = itemPriceCache.getIfPresent(itemId);
 		if (itemPrice != null && itemPrice != EMPTY)
 		{
@@ -158,6 +160,25 @@ public class ItemManager
 		}
 
 		itemPriceCache.refresh(itemId);
+		return null;
+	}
+
+	/**
+	 * Look up an item's price from the price cache
+	 *
+	 * @param itemId
+	 * @return
+	 */
+	public ItemPrice getCachedItemPrice(int itemId)
+	{
+		itemId = ItemMapping.mapFirst(itemId);
+
+		ItemPrice itemPrice = itemPriceCache.getIfPresent(itemId);
+		if (itemPrice != null && itemPrice != EMPTY && itemPrice != NONE)
+		{
+			return itemPrice;
+		}
+
 		return null;
 	}
 
@@ -173,14 +194,17 @@ public class ItemManager
 		final List<ItemPrice> existing = new ArrayList<>();
 		for (int itemId : itemIds)
 		{
-			ItemPrice itemPrice = itemPriceCache.getIfPresent(itemId);
-			if (itemPrice != null)
+			for (int mappedItemId : ItemMapping.map(itemId))
 			{
-				existing.add(itemPrice);
-			}
-			else
-			{
-				lookup.add(itemId);
+				ItemPrice itemPrice = itemPriceCache.getIfPresent(mappedItemId);
+				if (itemPrice != null)
+				{
+					existing.add(itemPrice);
+				}
+				else
+				{
+					lookup.add(mappedItemId);
+				}
 			}
 		}
 		// All cached?
@@ -196,12 +220,12 @@ public class ItemManager
 			{
 				// Do a query for the items not in the cache
 				ItemPrice[] itemPrices = itemClient.lookupItemPrice(lookup.toArray(new Integer[lookup.size()]));
+				for (int itemId : lookup)
+				{
+					itemPriceCache.put(itemId, NONE);
+				}
 				if (itemPrices != null)
 				{
-					for (int itemId : lookup)
-					{
-						itemPriceCache.put(itemId, NONE);
-					}
 					for (ItemPrice itemPrice : itemPrices)
 					{
 						itemPriceCache.put(itemPrice.getItem().getId(), itemPrice);
@@ -234,6 +258,8 @@ public class ItemManager
 	 */
 	public ItemPrice getItemPrice(int itemId) throws IOException
 	{
+		itemId = ItemMapping.mapFirst(itemId);
+
 		ItemPrice itemPrice = itemPriceCache.getIfPresent(itemId);
 		if (itemPrice != null && itemPrice != EMPTY)
 		{

@@ -125,13 +125,13 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 8,
-		keyName = "swapLastDestination",
-		name = "Last-destination (XXX)",
-		description = "Swap Zanaris with Last-destination on Fairy ring"
+		keyName = "swapFairyRing",
+		name = "Fairy ring",
+		description = "Swap Zanaris with Last-destination or Configure on Fairy rings"
 	)
-	default boolean swapLastDestination()
+	default FairyRingMode swapFairyRing()
 	{
-		return true;
+		return FairyRingMode.LAST_DESTINATION;
 	}
 
 	@ConfigItem(
@@ -218,6 +218,17 @@ public interface MenuEntrySwapperConfig extends Config
 		description = "Swap Talk-to with Claim Slime from Morytania diaries"
 	)
 	default boolean claimSlime()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 17,
+		keyName = "swapBirdhouseEmpty",
+		name = "Birdhouse",
+		description = "Swap Interact with Empty for birdhouses on Fossil Island"
+	)
+	default boolean swapBirdhouseEmpty()
 	{
 		return true;
 	}

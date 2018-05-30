@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Matthew Steglinski <https://github.com/sainttx>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,31 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.chat;
+package net.runelite.api.events;
 
-import java.awt.Color;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-@Data
-@EqualsAndHashCode(exclude = {"color", "isDefault"})
-public class ChatColor
+/**
+ * An event when the local player dies.
+ */
+public class LocalPlayerDeath
 {
-	private ChatColorType type;
-	private Color color;
-	private boolean transparent;
-	private boolean isDefault;
-
-	public ChatColor(ChatColorType type, Color color, boolean transparent)
-	{
-		this(type, color, transparent, false);
-	}
-
-	public ChatColor(ChatColorType type, Color color, boolean transparent, boolean isDefault)
-	{
-		this.type = type;
-		this.color = color;
-		this.transparent = transparent;
-		this.isDefault = isDefault;
-	}
 }

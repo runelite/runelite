@@ -111,6 +111,7 @@ public class IdleNotifierPlugin extends Plugin
 			/* Cooking(Fire, Range) */
 			case COOKING_FIRE:
 			case COOKING_RANGE:
+			case COOKING_WINE:
 			/* Crafting(Gem Cutting, Glassblowing, Spinning) */
 			case GEM_CUTTING_OPAL:
 			case GEM_CUTTING_JADE:

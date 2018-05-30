@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Ethan <https://github.com/shmeeps>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,31 +22,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.chat;
+package net.runelite.client.plugins.grandexchange;
 
-import java.awt.Color;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import java.time.Instant;
+import lombok.Value;
+import net.runelite.api.GrandExchangeOfferState;
 
-@Data
-@EqualsAndHashCode(exclude = {"color", "isDefault"})
-public class ChatColor
+@Value
+class GrandExchangeNotification
 {
-	private ChatColorType type;
-	private Color color;
-	private boolean transparent;
-	private boolean isDefault;
+	private final int slot;
+	private final int quantitySold;
+	private final int totalQuantity;
+	private final String itemName;
+	private final GrandExchangeOfferState state;
+	private final Instant insertedOn = Instant.now();
 
-	public ChatColor(ChatColorType type, Color color, boolean transparent)
+	String getNotificationMessage()
 	{
-		this(type, color, transparent, false);
-	}
+		// Send complete or X/Y notification
+		switch (this.state)
+		{
+			case BUYING:
+				return String.format("Grand Exchange: Bought %d / %d x %s", quantitySold, totalQuantity, itemName);
 
-	public ChatColor(ChatColorType type, Color color, boolean transparent, boolean isDefault)
-	{
-		this.type = type;
-		this.color = color;
-		this.transparent = transparent;
-		this.isDefault = isDefault;
+			case SELLING:
+				return String.format("Grand Exchange: Sold %d / %d x %s", quantitySold, totalQuantity, itemName);
+
+			case BOUGHT:
+				return String.format("Grand Exchange: Finished buying %d x %s", totalQuantity, itemName);
+
+			case SOLD:
+				return String.format("Grand Exchange: Finished selling %d x %s", totalQuantity, itemName);
+
+			default:
+				// Not possible
+				return null;
+		}
 	}
 }

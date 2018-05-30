@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Ethan <http://github.com/shmeeps>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,31 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.chat;
+package net.runelite.client.plugins.menuentryswapper;
 
-import java.awt.Color;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@Data
-@EqualsAndHashCode(exclude = {"color", "isDefault"})
-public class ChatColor
+@Getter
+@RequiredArgsConstructor
+public enum FairyRingMode
 {
-	private ChatColorType type;
-	private Color color;
-	private boolean transparent;
-	private boolean isDefault;
+	ZANARIS("Zanaris"),
+	LAST_DESTINATION("Last-Destination"),
+	CONFIGURE("Configure");
 
-	public ChatColor(ChatColorType type, Color color, boolean transparent)
-	{
-		this(type, color, transparent, false);
-	}
+	private final String name;
 
-	public ChatColor(ChatColorType type, Color color, boolean transparent, boolean isDefault)
+	@Override
+	public String toString()
 	{
-		this.type = type;
-		this.color = color;
-		this.transparent = transparent;
-		this.isDefault = isDefault;
+		return name;
 	}
 }
