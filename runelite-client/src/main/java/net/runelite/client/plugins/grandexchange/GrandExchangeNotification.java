@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <https://github.com/sethtroll>
+ * Copyright (c) 2018, Ethan <https://github.com/shmeeps>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,47 +24,40 @@
  */
 package net.runelite.client.plugins.grandexchange;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.time.Instant;
+import lombok.Value;
+import net.runelite.api.GrandExchangeOfferState;
 
-@ConfigGroup(
-	keyName = "grandexchange",
-	name = "Grand Exchange",
-	description = "Configuration for the Grand Exchange"
-)
-public interface GrandExchangeConfig extends Config
+@Value
+class GrandExchangeNotification
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "quickLookup",
-		name = "Hotkey lookup (Alt + Left click)",
-		description = "Configures whether to enable the hotkey lookup for ge searches"
-	)
-	default boolean quickLookup()
-	{
-		return true;
-	}
+	private final int slot;
+	private final int quantitySold;
+	private final int totalQuantity;
+	private final String itemName;
+	private final GrandExchangeOfferState state;
+	private final Instant insertedOn = Instant.now();
 
-	@ConfigItem(
-		position = 2,
-		keyName = "enableNotifications",
-		name = "Enable Notifications",
-		description = "Configures whether to enable notifications when an offer updates"
-	)
-	default boolean enableNotifications()
+	String getNotificationMessage()
 	{
-		return true;
-	}
+		// Send complete or X/Y notification
+		switch (this.state)
+		{
+			case BUYING:
+				return String.format("Grand Exchange: Bought %d / %d x %s", quantitySold, totalQuantity, itemName);
 
-	@ConfigItem(
-		position = 3,
-		keyName = "notificationDelay",
-		name = "Notification Delay",
-		description = "Number of seconds between notifications on offer updates"
-	)
-	default int notificationDelay()
-	{
-		return 5;
+			case SELLING:
+				return String.format("Grand Exchange: Sold %d / %d x %s", quantitySold, totalQuantity, itemName);
+
+			case BOUGHT:
+				return String.format("Grand Exchange: Finished buying %d x %s", totalQuantity, itemName);
+
+			case SOLD:
+				return String.format("Grand Exchange: Finished selling %d x %s", totalQuantity, itemName);
+
+			default:
+				// Not possible
+				return null;
+		}
 	}
 }
