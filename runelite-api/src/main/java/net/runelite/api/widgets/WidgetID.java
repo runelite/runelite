@@ -99,6 +99,8 @@ public class WidgetID
 	{
 		static final int OPTION = 36;
 		static final int TOOLTIP = 35;
+		static final int SURFACE_SELECTOR = 29;
+		static final int OVERVIEW_MAP = 6;
 		static final int MAPVIEW = 3;
 	}
 
