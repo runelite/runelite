@@ -36,11 +36,7 @@ public class MemorizedNpc extends MemorizedActor
 	public MemorizedNpc(NPC npc)
 	{
 		super(npc);
-		NPCComposition composition = npc.getComposition();
-		if (composition == null)
-		{
-			composition = composition.transform();
-		}
-		this.npcComposition = composition;
+
+		this.npcComposition = npc.getTransformedComposition();
 	}
 }

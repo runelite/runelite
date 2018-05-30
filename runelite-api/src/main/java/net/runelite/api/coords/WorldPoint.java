@@ -231,10 +231,11 @@ public class WorldPoint
 	@Override
 	public boolean equals(Object other)
 	{
-		if (other == null || !(other instanceof WorldPoint))
+		if (!(other instanceof WorldPoint))
 		{
 			return false;
 		}
+
 		WorldPoint wp2 = (WorldPoint)other;
 		return this.x == wp2.x && this.y == wp2.y && this.plane == wp2.plane;
 	}

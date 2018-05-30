@@ -381,6 +381,7 @@ public class ItemManager
 		{
 			return composition;
 		}
+
 		return getItemComposition(composition.getLinkedNoteId());
 	}
 }
