@@ -172,7 +172,17 @@ class XpInfoBox extends JPanel
 		container.setComponentPopupMenu(popupMenu);
 		progressBar.setComponentPopupMenu(popupMenu);
 
-		MouseListener mouseListener = new XpInfoBoxMouseListener(this);
+		MouseListener mouseListener = new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				if (SwingUtilities.isLeftMouseButton(e))
+				{
+					toggleStyle();
+				}
+			}
+		};
 		container.addMouseListener(mouseListener);
 		progressBar.addMouseListener(mouseListener);
 
@@ -285,24 +295,5 @@ class XpInfoBox extends JPanel
 	{
 		String valueStr = StackFormatter.quantityToRSDecimalStack(value);
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
-	}
-
-	private class XpInfoBoxMouseListener extends MouseAdapter
-	{
-		private final XpInfoBox xpInfoBox;
-
-		private XpInfoBoxMouseListener(XpInfoBox xpInfoBox)
-		{
-			this.xpInfoBox = xpInfoBox;
-		}
-
-		@Override
-		public void mouseClicked(MouseEvent e)
-		{
-			if (SwingUtilities.isLeftMouseButton(e))
-			{
-				xpInfoBox.toggleStyle();
-			}
-		}
 	}
 }
