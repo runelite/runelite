@@ -102,15 +102,41 @@ public class IconTextField extends JPanel
 		textField.addMouseListener(hoverEffect);
 		innerTxt.addMouseListener(hoverEffect);
 
-		clearButton = new JButton();
+		clearButton = new JButton("×");
 		clearButton.setPreferredSize(new Dimension(30, 0));
-		clearButton.setText("×");
 		clearButton.setFont(FontManager.getRunescapeBoldFont());
 		clearButton.setForeground(ColorScheme.PROGRESS_ERROR_COLOR);
 		clearButton.setBorder(null);
 		clearButton.setBorderPainted(false);
+		clearButton.setContentAreaFilled(false);
 		clearButton.setVisible(false);
-		clearButton.addActionListener(e -> setText(null));
+
+		// ActionListener for keyboard use (via Tab -> Space)
+		clearButton.addActionListener((l) -> setText(null));
+
+		// MouseListener for hover and click events
+		clearButton.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				setText(null);
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				clearButton.setForeground(Color.PINK);
+				textField.dispatchEvent(mouseEvent);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				clearButton.setForeground(ColorScheme.PROGRESS_ERROR_COLOR);
+				textField.dispatchEvent(mouseEvent);
+			}
+		});
 
 		// Show the clear button when text is present, and hide again when empty
 		getDocument().addDocumentListener(new DocumentListener()
