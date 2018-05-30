@@ -36,6 +36,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.GameObject;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -49,9 +50,6 @@ import net.runelite.client.ui.overlay.Overlay;
 )
 public class TitheFarmPlugin extends Plugin
 {
-	@Inject
-	private TitheFarmPluginConfig config;
-
 	@Inject
 	private TitheFarmPlantOverlay titheFarmOverlay;
 
@@ -74,6 +72,21 @@ public class TitheFarmPlugin extends Plugin
 	public Collection<Overlay> getOverlays()
 	{
 		return Arrays.asList(titheFarmOverlay, titheFarmSackOverlay, titheFarmInventoryOverlay);
+	}
+
+	@Override
+	public void startUp() throws Exception
+	{
+		titheFarmOverlay.updateConfig();
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("tithefarmplugin"))
+		{
+			titheFarmOverlay.updateConfig();
+		}
 	}
 
 	@Schedule(period = 600, unit = ChronoUnit.MILLIS)
