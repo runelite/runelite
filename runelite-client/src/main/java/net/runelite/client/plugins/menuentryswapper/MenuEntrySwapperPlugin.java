@@ -461,6 +461,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("empty", option, target, true);
 		}
+		else if (config.swapRelease() && option.equals("use"))
+		{
+			swap("release", option, target, true);
+		}
 	}
 
 	@Subscribe
