@@ -37,13 +37,6 @@ public class Vertex
 	private final int y;
 	private final int z;
 
-	public Vertex(int x, int y, int z)
-	{
-		this.x = x;
-		this.y = y;
-		this.z = z;
-	}
-
 	/**
 	 * Rotates the triangle by the given orientation.
 	 *
