@@ -192,7 +192,6 @@ public class ConfigPanel extends PluginPanel
 				groupPanel.add(name, BorderLayout.CENTER);
 
 				final JPanel buttonPanel = new JPanel();
-				buttonPanel.setOpaque(false);
 				buttonPanel.setLayout(new GridLayout(1, 2));
 				groupPanel.add(buttonPanel, BorderLayout.LINE_END);
 
@@ -213,8 +212,10 @@ public class ConfigPanel extends PluginPanel
 		boolean applyStripe = false;
 		for (JPanel panel : newChildren.values())
 		{
-			panel.setBackground(applyStripe ? ColorScheme.DARK_GRAY_STRIPE_COLOR : ColorScheme.DARK_GRAY_COLOR);
+			Color rowColor = applyStripe ? ColorScheme.DARK_GRAY_STRIPE_COLOR : ColorScheme.DARK_GRAY_COLOR;
 			applyStripe = !applyStripe;
+			panel.setBackground(rowColor);
+			panel.getComponent(1).setBackground(rowColor); // Recolor the inner button panel
 		}
 
 		children = newChildren;
@@ -229,7 +230,6 @@ public class ConfigPanel extends PluginPanel
 		groupPanel.add(name, BorderLayout.CENTER);
 
 		final JPanel buttonPanel = new JPanel();
-		buttonPanel.setOpaque(false);
 		buttonPanel.setLayout(new GridLayout(1, 2));
 		groupPanel.add(buttonPanel, BorderLayout.LINE_END);
 
@@ -416,7 +416,6 @@ public class ConfigPanel extends PluginPanel
 		if (component instanceof JCheckBox)
 		{
 			JCheckBox checkbox = (JCheckBox) component;
-			checkbox.setOpaque(false);
 			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + checkbox.isSelected());
 		}
 
@@ -464,9 +463,12 @@ public class ConfigPanel extends PluginPanel
 				continue;
 			}
 
+			Color rowColor = applyStripe ? ColorScheme.DARK_GRAY_STRIPE_COLOR : ColorScheme.DARK_GRAY_COLOR;
+			applyStripe = !applyStripe;
+
 			JPanel item = new JPanel();
-			item.setOpaque(false);
 			item.setLayout(new BorderLayout());
+			item.setBackground(rowColor);
 			name = cid.getItem().name();
 			JLabel configEntryName = new JLabel(name);
 			configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
@@ -475,7 +477,6 @@ public class ConfigPanel extends PluginPanel
 			if (cid.getType() == boolean.class)
 			{
 				JCheckBox checkbox = new JCheckBox();
-				checkbox.setOpaque(false);
 				checkbox.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
 				checkbox.setSelected(Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName())));
 				checkbox.addActionListener(ae -> changeConfiguration(config, checkbox, cd, cid));
@@ -623,8 +624,7 @@ public class ConfigPanel extends PluginPanel
 			itemContainer.add(item);
 
 			// Apply striping to alternating rows
-			itemContainer.setBackground(applyStripe ? ColorScheme.DARK_GRAY_STRIPE_COLOR : ColorScheme.DARK_GRAY_COLOR);
-			applyStripe = !applyStripe;
+			itemContainer.setBackground(rowColor);
 
 			add(itemContainer);
 		}
