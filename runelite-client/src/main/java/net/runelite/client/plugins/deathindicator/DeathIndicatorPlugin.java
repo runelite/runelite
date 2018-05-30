@@ -152,7 +152,7 @@ public class DeathIndicatorPlugin extends Plugin
 
 		if (config.showDeathInfoBox())
 		{
-			config.timeOfDeath(Instant.now().toString());
+			config.timeOfDeath(Instant.now());
 			deathTimer = new Timer(60, ChronoUnit.MINUTES, BONES, this);
 			deathTimer.setTooltip("Died on world: " + config.deathWorld());
 			infoBoxManager.addInfoBox(deathTimer);
@@ -169,21 +169,21 @@ public class DeathIndicatorPlugin extends Plugin
 				config.hasRespawned(true);
 			}
 
-			if ((!config.hasDied()) && (config.timeOfDeath().equals("")))
+			if ((!config.hasDied()) && (config.timeOfDeath() == null))
 			{
 				return;
 			}
 
 			if (event.getMessage().equals("Welcome to RuneScape.") && config.showDeathInfoBox())
 			{
-				if (Instant.now().isBefore(Instant.parse(config.timeOfDeath()).plus(1, ChronoUnit.HOURS)))
+				if (Instant.now().isBefore(config.timeOfDeath().plus(1, ChronoUnit.HOURS)))
 				{
 					if (deathTimer != null)
 					{
 						infoBoxManager.removeInfoBox(deathTimer);
 						deathTimer = null;
 					}
-					deathTimer = new Timer(Duration.ofHours(1).minus(Duration.between(Instant.parse(config.timeOfDeath()), Instant.now())).getSeconds(), ChronoUnit.SECONDS, BONES, this);
+					deathTimer = new Timer(Duration.ofHours(1).minus(Duration.between(config.timeOfDeath(), Instant.now())).getSeconds(), ChronoUnit.SECONDS, BONES, this);
 					deathTimer.setTooltip("Died on world: " + config.deathWorld());
 					infoBoxManager.addInfoBox(deathTimer);
 				}
@@ -228,7 +228,7 @@ public class DeathIndicatorPlugin extends Plugin
 			config.deathLocationX(-1);
 			config.deathLocationY(-1);
 			config.deathLocationPlane(-1);
-			config.timeOfDeath("");
+			config.timeOfDeath(null);
 		}
 	}
 

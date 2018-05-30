@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.deathindicator;
 
+import java.time.Instant;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -203,9 +204,9 @@ public interface DeathIndicatorConfig extends Config
 		description = "",
 		hidden = true
 	)
-	default String timeOfDeath()
+	default Instant timeOfDeath()
 	{
-		return "";
+		return null;
 	}
 
 	@ConfigItem(
@@ -213,5 +214,5 @@ public interface DeathIndicatorConfig extends Config
 		name = "",
 		description = ""
 	)
-	void timeOfDeath(String timeOfDeath);
+	void timeOfDeath(Instant timeOfDeath);
 }
