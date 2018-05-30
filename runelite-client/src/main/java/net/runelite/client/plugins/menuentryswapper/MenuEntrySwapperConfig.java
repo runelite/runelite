@@ -185,9 +185,9 @@ public interface MenuEntrySwapperConfig extends Config
 			description = "Swap use with release on butterfly jars"
 	)
 	default boolean swapRelease()
-    {
-        return true;
-    }
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		position = 14,
