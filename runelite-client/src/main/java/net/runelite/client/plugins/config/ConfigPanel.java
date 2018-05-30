@@ -107,7 +107,7 @@ public class ConfigPanel extends PluginPanel
 		{
 			synchronized (ImageIO.class)
 			{
-				BufferedImage configIcon = ImageIO.read(ConfigPanel.class.getResourceAsStream("config_edit_icon.png"));
+				final BufferedImage configIcon = ImageIO.read(ConfigPanel.class.getResourceAsStream("config_edit_icon.png"));
 				CONFIG_ICON = new ImageIcon(configIcon);
 				CONFIG_ICON_HOVER = new ImageIcon(SwingUtil.grayscaleOffset(configIcon, -100));
 				ON_SWITCHER = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("switchers/on.png")));
@@ -176,7 +176,7 @@ public class ConfigPanel extends PluginPanel
 	final void rebuildPluginList()
 	{
 		scrollBarPosition = getScrollPane().getVerticalScrollBar().getValue();
-		Map<String, JPanel> newChildren = new TreeMap<>();
+		final Map<String, JPanel> newChildren = new TreeMap<>();
 
 		pluginManager.getPlugins().stream()
 			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).hidden())
@@ -188,7 +188,7 @@ public class ConfigPanel extends PluginPanel
 
 				final JPanel groupPanel = buildGroupPanel();
 
-				JLabel name = new JLabel(pluginName);
+				final JLabel name = new JLabel(pluginName);
 				groupPanel.add(name, BorderLayout.CENTER);
 
 				final JPanel buttonPanel = new JPanel();
@@ -212,7 +212,7 @@ public class ConfigPanel extends PluginPanel
 		boolean applyStripe = false;
 		for (JPanel panel : newChildren.values())
 		{
-			Color rowColor = applyStripe ? ColorScheme.DARK_GRAY_STRIPE_COLOR : ColorScheme.DARK_GRAY_COLOR;
+			final Color rowColor = applyStripe ? ColorScheme.DARK_GRAY_STRIPE_COLOR : ColorScheme.DARK_GRAY_COLOR;
 			applyStripe = !applyStripe;
 			panel.setBackground(rowColor);
 			panel.getComponent(1).setBackground(rowColor); // Recolor the inner button panel
@@ -226,7 +226,7 @@ public class ConfigPanel extends PluginPanel
 	{
 		final JPanel groupPanel = buildGroupPanel();
 
-		JLabel name = new JLabel(configName);
+		final JLabel name = new JLabel(configName);
 		groupPanel.add(name, BorderLayout.CENTER);
 
 		final JPanel buttonPanel = new JPanel();
@@ -382,7 +382,7 @@ public class ConfigPanel extends PluginPanel
 	{
 		removeAll();
 
-		JLabel title = new JLabel("Configuration", SwingConstants.LEFT);
+		final JLabel title = new JLabel("Configuration", SwingConstants.LEFT);
 		title.setForeground(Color.WHITE);
 		title.setBorder(new EmptyBorder(CONFIG_HEADER_INSETS));
 
@@ -391,14 +391,15 @@ public class ConfigPanel extends PluginPanel
 
 		onSearchBarChanged();
 		searchBar.requestFocusInWindow();
-		JScrollPane scrollbar = getScrollPane();
+
+		final JScrollPane scrollbar = getScrollPane();
 		scrollbar.validate();
 		scrollbar.getVerticalScrollBar().setValue(scrollBarPosition);
 	}
 
 	private void changeConfiguration(Config config, JComponent component, ConfigDescriptor cd, ConfigItemDescriptor cid)
 	{
-		ConfigItem configItem = cid.getItem();
+		final ConfigItem configItem = cid.getItem();
 
 		if (!Strings.isNullOrEmpty(configItem.warning()))
 		{
@@ -415,31 +416,31 @@ public class ConfigPanel extends PluginPanel
 
 		if (component instanceof JCheckBox)
 		{
-			JCheckBox checkbox = (JCheckBox) component;
+			final JCheckBox checkbox = (JCheckBox) component;
 			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + checkbox.isSelected());
 		}
 
 		if (component instanceof JSpinner)
 		{
-			JSpinner spinner = (JSpinner) component;
+			final JSpinner spinner = (JSpinner) component;
 			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + spinner.getValue());
 		}
 
 		if (component instanceof JTextArea)
 		{
-			JTextArea textField = (JTextArea) component;
+			final JTextArea textField = (JTextArea) component;
 			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), textField.getText());
 		}
 
 		if (component instanceof JColorChooser)
 		{
-			JColorChooser jColorChooser = (JColorChooser) component;
+			final JColorChooser jColorChooser = (JColorChooser) component;
 			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), String.valueOf(jColorChooser.getColor().getRGB()));
 		}
 
 		if (component instanceof JComboBox)
 		{
-			JComboBox jComboBox = (JComboBox) component;
+			final JComboBox jComboBox = (JComboBox) component;
 			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), ((Enum) jComboBox.getSelectedItem()).name());
 		}
 	}
@@ -449,7 +450,7 @@ public class ConfigPanel extends PluginPanel
 		scrollBarPosition = getScrollPane().getVerticalScrollBar().getValue();
 		removeAll();
 		String name = cd.getGroup().name() + " Configuration";
-		JLabel title = new JLabel(name);
+		final JLabel title = new JLabel(name);
 		title.setForeground(Color.WHITE);
 		title.setBorder(new EmptyBorder(CONFIG_HEADER_INSETS));
 		title.setToolTipText(cd.getGroup().description());
@@ -463,20 +464,20 @@ public class ConfigPanel extends PluginPanel
 				continue;
 			}
 
-			Color rowColor = applyStripe ? ColorScheme.DARK_GRAY_STRIPE_COLOR : ColorScheme.DARK_GRAY_COLOR;
+			final Color rowColor = applyStripe ? ColorScheme.DARK_GRAY_STRIPE_COLOR : ColorScheme.DARK_GRAY_COLOR;
 			applyStripe = !applyStripe;
 
-			JPanel item = new JPanel();
+			final JPanel item = new JPanel();
 			item.setLayout(new BorderLayout());
 			item.setBackground(rowColor);
 			name = cid.getItem().name();
-			JLabel configEntryName = new JLabel(name);
+			final JLabel configEntryName = new JLabel(name);
 			configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
 			item.add(configEntryName, BorderLayout.CENTER);
 
 			if (cid.getType() == boolean.class)
 			{
-				JCheckBox checkbox = new JCheckBox();
+				final JCheckBox checkbox = new JCheckBox();
 				checkbox.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
 				checkbox.setSelected(Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName())));
 				checkbox.addActionListener(ae -> changeConfiguration(config, checkbox, cd, cid));
@@ -488,10 +489,10 @@ public class ConfigPanel extends PluginPanel
 			{
 				int value = Integer.parseInt(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName()));
 
-				SpinnerModel model = new SpinnerNumberModel(value, 0, Integer.MAX_VALUE, 1);
-				JSpinner spinner = new JSpinner(model);
-				Component editor = spinner.getEditor();
-				JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
+				final SpinnerModel model = new SpinnerNumberModel(value, 0, Integer.MAX_VALUE, 1);
+				final JSpinner spinner = new JSpinner(model);
+				final Component editor = spinner.getEditor();
+				final JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
 				spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
 				spinner.addChangeListener(ce -> changeConfiguration(config, spinner, cd, cid));
 
@@ -500,7 +501,7 @@ public class ConfigPanel extends PluginPanel
 
 			if (cid.getType() == String.class)
 			{
-				JTextArea textField = new JTextArea();
+				final JTextArea textField = new JTextArea();
 				textField.setLineWrap(true);
 				textField.setWrapStyleWord(true);
 				textField.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -522,10 +523,10 @@ public class ConfigPanel extends PluginPanel
 
 			if (cid.getType() == Color.class)
 			{
-				String existing = configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName());
-				Color existingColor = existing == null ? Color.BLACK : Color.decode(existing);
+				final String existing = configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName());
+				final Color existingColor = existing == null ? Color.BLACK : Color.decode(existing);
 
-				JButton colorPicker = new JButton("Pick a color");
+				final JButton colorPicker = new JButton("Pick a color");
 				colorPicker.setFocusable(false);
 				colorPicker.setBackground(existingColor);
 				colorPicker.addMouseListener(new MouseAdapter()
@@ -534,7 +535,7 @@ public class ConfigPanel extends PluginPanel
 					public void mouseClicked(MouseEvent e)
 					{
 						final JFrame parent = new JFrame();
-						JColorChooser jColorChooser = new JColorChooser(existingColor);
+						final JColorChooser jColorChooser = new JColorChooser(existingColor);
 						jColorChooser.getSelectionModel().addChangeListener(e1 -> colorPicker.setBackground(jColorChooser.getColor()));
 						parent.addWindowListener(new WindowAdapter()
 						{
@@ -554,27 +555,27 @@ public class ConfigPanel extends PluginPanel
 
 			if (cid.getType() == Dimension.class)
 			{
-				JPanel dimensionPanel = new JPanel();
+				final JPanel dimensionPanel = new JPanel();
 				dimensionPanel.setLayout(new BorderLayout());
 
-				String str = configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName());
-				String[] splitStr = str.split("x");
-				int width = Integer.parseInt(splitStr[0]);
-				int height = Integer.parseInt(splitStr[1]);
+				final String str = configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName());
+				final String[] splitStr = str.split("x");
+				final int width = Integer.parseInt(splitStr[0]);
+				final int height = Integer.parseInt(splitStr[1]);
 
-				SpinnerModel widthModel = new SpinnerNumberModel(width, 0, Integer.MAX_VALUE, 1);
-				JSpinner widthSpinner = new JSpinner(widthModel);
-				Component widthEditor = widthSpinner.getEditor();
-				JFormattedTextField widthSpinnerTextField = ((JSpinner.DefaultEditor) widthEditor).getTextField();
+				final SpinnerModel widthModel = new SpinnerNumberModel(width, 0, Integer.MAX_VALUE, 1);
+				final JSpinner widthSpinner = new JSpinner(widthModel);
+				final Component widthEditor = widthSpinner.getEditor();
+				final JFormattedTextField widthSpinnerTextField = ((JSpinner.DefaultEditor) widthEditor).getTextField();
 				widthSpinnerTextField.setColumns(4);
 
-				SpinnerModel heightModel = new SpinnerNumberModel(height, 0, Integer.MAX_VALUE, 1);
-				JSpinner heightSpinner = new JSpinner(heightModel);
-				Component heightEditor = heightSpinner.getEditor();
-				JFormattedTextField heightSpinnerTextField = ((JSpinner.DefaultEditor) heightEditor).getTextField();
+				final SpinnerModel heightModel = new SpinnerNumberModel(height, 0, Integer.MAX_VALUE, 1);
+				final JSpinner heightSpinner = new JSpinner(heightModel);
+				final Component heightEditor = heightSpinner.getEditor();
+				final JFormattedTextField heightSpinnerTextField = ((JSpinner.DefaultEditor) heightEditor).getTextField();
 				heightSpinnerTextField.setColumns(4);
 
-				ChangeListener listener = e ->
+				final ChangeListener listener = e ->
 					configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue());
 
 				widthSpinner.addChangeListener(listener);
@@ -589,8 +590,8 @@ public class ConfigPanel extends PluginPanel
 
 			if (cid.getType().isEnum())
 			{
-				Class<? extends Enum> type = (Class<? extends Enum>) cid.getType();
-				JComboBox box = new JComboBox(type.getEnumConstants());
+				final Class<? extends Enum> type = (Class<? extends Enum>) cid.getType();
+				final JComboBox box = new JComboBox(type.getEnumConstants());
 				box.setPreferredSize(new Dimension(box.getPreferredSize().width, 25));
 				box.setRenderer(new ComboBoxListRenderer());
 				box.setForeground(Color.WHITE);
@@ -598,7 +599,7 @@ public class ConfigPanel extends PluginPanel
 				box.setPrototypeDisplayValue("XXXXXXXX"); //sorry but this is the way to keep the size of the combobox in check.
 				try
 				{
-					Enum selectedItem = Enum.valueOf(type, configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName()));
+					final Enum selectedItem = Enum.valueOf(type, configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName()));
 					box.setSelectedItem(selectedItem);
 					box.setToolTipText(selectedItem.toString());
 				}
@@ -617,7 +618,7 @@ public class ConfigPanel extends PluginPanel
 				item.add(box, BorderLayout.EAST);
 			}
 
-			JPanel itemContainer = new JPanel();
+			final JPanel itemContainer = new JPanel();
 			itemContainer.setLayout(new BorderLayout());
 			itemContainer.setBorder(new EmptyBorder(CONFIG_ROW_INSETS));
 			itemContainer.setPreferredSize(CONFIG_ROW_DIMENSIONS);
@@ -629,12 +630,12 @@ public class ConfigPanel extends PluginPanel
 			add(itemContainer);
 		}
 
-		JPanel buttonContainer = new JPanel();
+		final JPanel buttonContainer = new JPanel();
 		buttonContainer.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		buttonContainer.setLayout(new GridLayout(2, 0, 0, 5));
 		buttonContainer.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-		JButton resetButton = new JButton("Reset");
+		final JButton resetButton = new JButton("Reset");
 		resetButton.addActionListener((e) ->
 		{
 			configManager.setDefaultConfiguration(config, true);
@@ -644,7 +645,7 @@ public class ConfigPanel extends PluginPanel
 		});
 		buttonContainer.add(resetButton);
 
-		JButton backButton = new JButton("Back");
+		final JButton backButton = new JButton("Back");
 		backButton.addActionListener(e -> openConfigList());
 		buttonContainer.add(backButton);
 
