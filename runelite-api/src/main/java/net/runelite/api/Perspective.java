@@ -541,8 +541,8 @@ public class Perspective
 			int minY = Math.min(Math.min(a.getY(), b.getY()), c.getY());
 
 			// For some reason, this calculation is always 4 pixels short of the actual in-client one
-			int maxX = Math.max(Math.max(a.getX(), b.getX()), c.getX()) + client.getViewportXOffset();
-			int maxY = Math.max(Math.max(a.getY(), b.getY()), c.getY()) + client.getViewportYOffset();
+			int maxX = Math.max(Math.max(a.getX(), b.getX()), c.getX()) + 4;
+			int maxY = Math.max(Math.max(a.getY(), b.getY()), c.getY()) + 4;
 
 			// ...and the rectangles in the fixed client are shifted 4 pixels right and down
 			if (!client.isResized())
