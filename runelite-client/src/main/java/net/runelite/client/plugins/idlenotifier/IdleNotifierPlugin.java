@@ -182,6 +182,8 @@ public class IdleNotifierPlugin extends Plugin
 			case HERBLORE_MAKE_TAR:
 			/* Magic */
 			case MAGIC_CHARGING_ORBS:
+			case MAGIC_LUNAR_STRING_JEWELRY:
+			case MAGIC_LUNAR_BAKE_PIE:
 			/* Prayer */
 			case USING_GILDED_ALTAR:
 				resetTimers();
