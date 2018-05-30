@@ -30,6 +30,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
@@ -89,6 +90,9 @@ import net.runelite.client.util.SwingUtil;
 public class ConfigPanel extends PluginPanel
 {
 	private static final int SPINNER_FIELD_WIDTH = 6;
+
+	private static final Insets CONFIG_HEADER_INSETS = new Insets(1, 10, 10, 10);
+	private static final Insets CONFIG_ROW_INSETS = new Insets(3, 10, 3, 10);
 	private static final Dimension CONFIG_ROW_DIMENSIONS = new Dimension(PluginPanel.PANEL_WIDTH, 30);
 
 	private static final ImageIcon CONFIG_ICON;
@@ -209,10 +213,7 @@ public class ConfigPanel extends PluginPanel
 		boolean applyStripe = false;
 		for (JPanel panel : newChildren.values())
 		{
-			if (applyStripe)
-			{
-				panel.setBackground(ColorScheme.DARK_GRAY_STRIPE_COLOR);
-			}
+			panel.setBackground(applyStripe ? ColorScheme.DARK_GRAY_STRIPE_COLOR : ColorScheme.DARK_GRAY_COLOR);
 			applyStripe = !applyStripe;
 		}
 
@@ -246,7 +247,7 @@ public class ConfigPanel extends PluginPanel
 	{
 		// Create base panel for the config button and enabled/disabled button
 		final JPanel groupPanel = new JPanel();
-		groupPanel.setBorder(new EmptyBorder(0, 10, 0, 10));
+		groupPanel.setBorder(new EmptyBorder(CONFIG_ROW_INSETS));
 		groupPanel.setLayout(new BorderLayout(3, 0));
 		groupPanel.setPreferredSize(CONFIG_ROW_DIMENSIONS);
 		return groupPanel;
@@ -383,7 +384,7 @@ public class ConfigPanel extends PluginPanel
 
 		JLabel title = new JLabel("Configuration", SwingConstants.LEFT);
 		title.setForeground(Color.WHITE);
-		title.setBorder(new EmptyBorder(1, 10, 10, 10));
+		title.setBorder(new EmptyBorder(CONFIG_HEADER_INSETS));
 
 		add(title);
 		add(searchBar);
@@ -451,7 +452,7 @@ public class ConfigPanel extends PluginPanel
 		String name = cd.getGroup().name() + " Configuration";
 		JLabel title = new JLabel(name);
 		title.setForeground(Color.WHITE);
-		title.setBorder(new EmptyBorder(1, 10, 10, 10));
+		title.setBorder(new EmptyBorder(CONFIG_HEADER_INSETS));
 		title.setToolTipText(cd.getGroup().description());
 		add(title);
 
@@ -616,18 +617,13 @@ public class ConfigPanel extends PluginPanel
 			}
 
 			JPanel itemContainer = new JPanel();
-			itemContainer.setOpaque(false);
 			itemContainer.setLayout(new BorderLayout());
-			itemContainer.setBorder(new EmptyBorder(3, 10, 3, 10));
+			itemContainer.setBorder(new EmptyBorder(CONFIG_ROW_INSETS));
 			itemContainer.setPreferredSize(CONFIG_ROW_DIMENSIONS);
 			itemContainer.add(item);
 
 			// Apply striping to alternating rows
-			if (applyStripe)
-			{
-				itemContainer.setBackground(ColorScheme.DARK_GRAY_STRIPE_COLOR);
-				itemContainer.setOpaque(true);
-			}
+			itemContainer.setBackground(applyStripe ? ColorScheme.DARK_GRAY_STRIPE_COLOR : ColorScheme.DARK_GRAY_COLOR);
 			applyStripe = !applyStripe;
 
 			add(itemContainer);
