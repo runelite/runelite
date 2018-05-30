@@ -26,7 +26,6 @@ package net.runelite.client.plugins.tithefarm;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -38,10 +37,10 @@ import net.runelite.api.GameObject;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 
 @Slf4j
@@ -89,8 +88,8 @@ public class TitheFarmPlugin extends Plugin
 		}
 	}
 
-	@Schedule(period = 600, unit = ChronoUnit.MILLIS)
-	public void checkPlants()
+	@Subscribe
+	public void onGameTick(final GameTick event)
 	{
 		plants.removeIf(plant -> plant.getPlantTimeRelative() == 1);
 	}
