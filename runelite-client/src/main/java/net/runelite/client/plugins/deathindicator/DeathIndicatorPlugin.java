@@ -34,17 +34,15 @@ import java.time.temporal.ChronoUnit;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ActorDespawned;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -118,16 +116,9 @@ public class DeathIndicatorPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onActorDespawned(ActorDespawned event)
+	public void onLocalPlayerDeath(LocalPlayerDeath event)
 	{
 		if (client.isInInstancedRegion())
-		{
-			return;
-		}
-
-		Actor actor = event.getActor();
-
-		if (actor != client.getLocalPlayer())
 		{
 			return;
 		}
@@ -136,9 +127,9 @@ public class DeathIndicatorPlugin extends Plugin
 
 		config.hasRespawned(false);
 
-		config.deathLocationX(actor.getWorldLocation().getX());
-		config.deathLocationY(actor.getWorldLocation().getY());
-		config.deathLocationPlane(actor.getWorldLocation().getPlane());
+		config.deathLocationX(client.getLocalPlayer().getWorldLocation().getX());
+		config.deathLocationY(client.getLocalPlayer().getWorldLocation().getY());
+		config.deathLocationPlane(client.getLocalPlayer().getWorldLocation().getPlane());
 
 		config.deathWorld(client.getWorld());
 
@@ -208,11 +199,9 @@ public class DeathIndicatorPlugin extends Plugin
 			return;
 		}
 
-		Player player = client.getLocalPlayer();
-
-		if ((player.getWorldLocation().getX() == config.deathLocationX())
-			&& (player.getWorldLocation().getY() == config.deathLocationY())
-			&& (player.getWorldLocation().getPlane() == config.deathLocationPlane())
+		if ((client.getLocalPlayer().getWorldLocation().getX() == config.deathLocationX())
+			&& (client.getLocalPlayer().getWorldLocation().getY() == config.deathLocationY())
+			&& (client.getLocalPlayer().getWorldLocation().getPlane() == config.deathLocationPlane())
 			|| ((deathTimer != null) && (deathTimer.getText().equals("0:00"))))
 		{
 			if (client.hasHintArrow())
