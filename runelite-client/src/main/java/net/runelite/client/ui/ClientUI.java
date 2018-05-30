@@ -755,16 +755,19 @@ public class ClientUI
 		{
 			final Rectangle bounds = frame.getBounds();
 
-			// Try to contract sidebar
-			if (sidebarOpen)
+			if (config.automaticResizeType() == ExpandResizeType.KEEP_GAME_SIZE)
 			{
-				bounds.width -= pluginToolbar.getWidth();
-			}
+				// Try to contract sidebar
+				if (sidebarOpen)
+				{
+					bounds.width -= pluginToolbar.getWidth();
+				}
 
-			// Try to contract plugin panel
-			if (pluginPanel != null)
-			{
-				bounds.width -= pluginPanel.getWrappedPanel().getPreferredSize().width;
+				// Try to contract plugin panel
+				if (pluginPanel != null)
+				{
+					bounds.width -= pluginPanel.getWrappedPanel().getPreferredSize().width;
+				}
 			}
 
 			configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED);
