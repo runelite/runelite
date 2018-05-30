@@ -67,12 +67,14 @@ class XpPanel extends PluginPanel
 	{
 		super();
 
-		setBorder(new EmptyBorder(10, 10, 10, 10));
+		setBorder(new EmptyBorder(10, 6, 10, 6));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
+		setLayout(new BorderLayout());
 
 		final JPanel layoutPanel = new JPanel();
-		layoutPanel.setLayout(new BorderLayout());
-		add(layoutPanel);
+		BoxLayout boxLayout = new BoxLayout(layoutPanel, BoxLayout.Y_AXIS);
+		layoutPanel.setLayout(boxLayout);
+		add(layoutPanel, BorderLayout.NORTH);
 
 		overallPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		overallPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -113,8 +115,8 @@ class XpPanel extends PluginPanel
 
 		final JPanel infoBoxPanel = new JPanel();
 		infoBoxPanel.setLayout(new BoxLayout(infoBoxPanel, BoxLayout.Y_AXIS));
-		layoutPanel.add(infoBoxPanel, BorderLayout.CENTER);
-		layoutPanel.add(overallPanel, BorderLayout.NORTH);
+		layoutPanel.add(overallPanel);
+		layoutPanel.add(infoBoxPanel);
 
 		try
 		{
