@@ -29,17 +29,23 @@ import java.util.List;
 import net.runelite.api.Point;
 
 /**
- * Implementation of the Jarvis march algorithm
- * https://en.wikipedia.org/wiki/Gift_wrapping_algorithm
- * @author adam
+ * Provides utility methods for computing the convex hull of a list of
+ * <em>n</em> points.
+ * <p>
+ * The implementation uses the Jarvis march algorithm and runs in O(nh)
+ * time in the worst case, where n is the number of points and h the
+ * number of points on the convex hull.
  */
 public class Jarvis
 {
 	/**
-	 * compute the convex hull of a given set of points
+	 * Computes and returns the convex hull of the passed points.
+	 * <p>
+	 * The size of the list must be at least 4, otherwise this method will
+	 * return null.
 	 *
-	 * @param points
-	 * @return
+	 * @param points list of points
+	 * @return list containing the points part of the convex hull
 	 */
 	public static List<Point> convexHull(List<Point> points)
 	{

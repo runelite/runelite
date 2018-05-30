@@ -78,8 +78,17 @@ class Bookcase
 	{
 		StringBuilder b = new StringBuilder();
 
+		// Floors 2 and 3
 		boolean north = location.getY() > 3815;
-		boolean west = location.getX() < 1627;
+		boolean west = location.getX() < 1625;
+
+		// Floor 1 has slightly different dimensions
+		if (location.getPlane() == 0)
+		{
+			north = location.getY() > 3813;
+			west = location.getX() < 1627;
+		}
+
 		if (north && west)
 		{
 			b.append("Northwest");

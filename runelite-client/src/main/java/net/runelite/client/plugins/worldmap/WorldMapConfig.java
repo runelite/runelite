@@ -82,8 +82,8 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_NORMAL_TELEPORT_ICON,
-		name = "Show standard spellbook destionations",
-		description = "Show icons at the destinations for teleports in the standard spellbook",
+		name = "Show Standard Spellbook destinations",
+		description = "Show icons at the destinations for teleports in the Standard Spellbook",
 		position = 5
 	)
 	default boolean normalTeleportIcon()
@@ -93,8 +93,8 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_ANCIENT_TELEPORT_ICON,
-		name = "Show ancient magicks destionations",
-		description = "Show icons at the destinations for teleports in the ancient spellbook",
+		name = "Show Ancient Magicks destinations",
+		description = "Show icons at the destinations for teleports in the Ancient Spellbook",
 		position = 6
 	)
 	default boolean ancientTeleportIcon()
@@ -104,8 +104,8 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_LUNAR_TELEPORT_ICON,
-		name = "Show lunar spellbook destionations",
-		description = "Show icons at the destinations for teleports in the lunar spellbook",
+		name = "Show Lunar Spellbook destinations",
+		description = "Show icons at the destinations for teleports in the Lunar Spellbook",
 		position = 7
 	)
 	default boolean lunarTeleportIcon()
@@ -115,8 +115,8 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_ARCEUUS_TELEPORT_ICON,
-		name = "Show arceuus spellbook destionations",
-		description = "Show icons at the destinations for teleports in the arceuus spellbook",
+		name = "Show Arceuus Spellbook destinations",
+		description = "Show icons at the destinations for teleports in the Arceuus Spellbook",
 		position = 8
 	)
 	default boolean arceuusTeleportIcon()
@@ -131,6 +131,28 @@ public interface WorldMapConfig extends Config
 		position = 9
 	)
 	default boolean jewelleryTeleportIcon()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_SCROLL_TELEPORT_ICON,
+		name = "Show teleport scroll locations",
+		description = "Show icons at the destinations for teleports from scrolls",
+		position = 10
+	)
+	default boolean scrollTeleportIcon()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_MISC_TELEPORT_ICON,
+		name = "Show misc teleport locations",
+		description = "Show icons at the destinations for miscellaneous teleport items",
+		position = 11
+	)
+	default boolean miscellaneousTeleportIcon()
 	{
 		return true;
 	}

@@ -25,11 +25,20 @@
 package net.runelite.api.events;
 
 import lombok.Data;
+import net.runelite.api.Client;
 
+/**
+ * An event where a map region has been modified.
+ * <p>
+ * This event exposes the index into the map that is changing,
+ * the value of which can be obtained by using the index with
+ * the {@link Client#getMapRegions()} array.
+ */
 @Data
 public class MapRegionChanged
 {
-	/** index into the region map that is changing
+	/**
+	 * The map region index.
 	 */
 	private int index;
 }

@@ -52,7 +52,7 @@ public class ScreenMarkerOverlay extends Overlay
 	@Override
 	public String getName()
 	{
-		return marker.getName();
+		return "marker" + marker.getId();
 	}
 
 	@Override
@@ -63,11 +63,18 @@ public class ScreenMarkerOverlay extends Overlay
 			return null;
 		}
 
+		Dimension preferredSize = getPreferredSize();
+		if (preferredSize == null)
+		{
+			// overlay has no preferred size in the renderer configuration!
+			return null;
+		}
+
 		screenMarkerRenderable.setBorderThickness(marker.getBorderThickness());
 		screenMarkerRenderable.setColor(marker.getColor());
 		screenMarkerRenderable.setFill(marker.getFill());
 		screenMarkerRenderable.setStroke(new BasicStroke(marker.getBorderThickness()));
-		screenMarkerRenderable.setPreferredSize(getPreferredSize());
+		screenMarkerRenderable.setPreferredSize(preferredSize);
 		return screenMarkerRenderable.render(graphics);
 	}
 }

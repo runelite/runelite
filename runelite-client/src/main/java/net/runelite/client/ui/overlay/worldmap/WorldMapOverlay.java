@@ -171,7 +171,12 @@ public class WorldMapOverlay extends Overlay
 		return null;
 	}
 
-	private Point mapWorldPointToGraphicsPoint(WorldPoint worldPoint)
+	/**
+	 * Get the screen coordinates for a WorldPoint on the world map
+	 * @param worldPoint WorldPoint to get screen coordinates of
+	 * @return Point of screen coordinates of the center of the world point
+	 */
+	public Point mapWorldPointToGraphicsPoint(WorldPoint worldPoint)
 	{
 		RenderOverview ro = clientProvider.get().getRenderOverview();
 
