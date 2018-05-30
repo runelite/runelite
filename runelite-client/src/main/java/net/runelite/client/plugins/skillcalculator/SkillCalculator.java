@@ -154,7 +154,7 @@ class SkillCalculator extends JPanel
 
 		for (UIActionSlot slot : combinedActionSlots)
 		{
-      xp += slot.getValue();
+      			xp += slot.getValue();
 		}
 			
 		if (neededXP > 0)
@@ -234,7 +234,7 @@ class SkillCalculator extends JPanel
 					}
 
 					if (slot.isSelected())
-          {
+          				{
 						combinedActionSlots.remove(slot);
 					}
 					else
@@ -344,5 +344,5 @@ class SkillCalculator extends JPanel
 		xpFactor -= lastBonus;
 		calculate();
 	}
-  
+	
 }
