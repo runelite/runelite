@@ -379,6 +379,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("pay", option, target, true);
 			}
+
+			if (config.swapDarkMage() && target.equals("dark mage"))
+			{
+				swap("repairs", option, target, true);
+			}
 		}
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
 		{
