@@ -93,6 +93,7 @@ public class ConfigPanel extends PluginPanel
 
 	private static final Insets CONFIG_HEADER_INSETS = new Insets(1, 10, 10, 10);
 	private static final Insets CONFIG_ROW_INSETS = new Insets(3, 10, 3, 10);
+	private static final Insets CONFIG_ROW_MULTILINE_INSETS = new Insets(4, 0, 4, 0);
 	private static final Dimension CONFIG_ROW_DIMENSIONS = new Dimension(PluginPanel.PANEL_WIDTH, 30);
 
 	private static final ImageIcon CONFIG_ICON;
@@ -209,11 +210,11 @@ public class ConfigPanel extends PluginPanel
 		addCoreConfig(newChildren, "Chat Color", chatColorConfig);
 
 		// Apply striping to alternating rows
-		boolean applyStripe = false;
+		boolean useAltRowColor = true;
 		for (JPanel panel : newChildren.values())
 		{
-			final Color rowColor = applyStripe ? ColorScheme.DARK_GRAY_STRIPE_COLOR : ColorScheme.DARK_GRAY_COLOR;
-			applyStripe = !applyStripe;
+			final Color rowColor = useAltRowColor ? ColorScheme.DARK_GRAY_ALT_ROW_COLOR : ColorScheme.DARK_GRAY_COLOR;
+			useAltRowColor = !useAltRowColor;
 			panel.setBackground(rowColor);
 			panel.getComponent(1).setBackground(rowColor); // Recolor the inner button panel
 		}
@@ -456,7 +457,7 @@ public class ConfigPanel extends PluginPanel
 		title.setToolTipText(cd.getGroup().description());
 		add(title);
 
-		boolean applyStripe = false;
+		boolean useAltRowColor = true;
 		for (ConfigItemDescriptor cid : cd.getItems())
 		{
 			if (cid.getItem().hidden())
@@ -464,8 +465,8 @@ public class ConfigPanel extends PluginPanel
 				continue;
 			}
 
-			final Color rowColor = applyStripe ? ColorScheme.DARK_GRAY_STRIPE_COLOR : ColorScheme.DARK_GRAY_COLOR;
-			applyStripe = !applyStripe;
+			final Color rowColor = useAltRowColor ? ColorScheme.DARK_GRAY_ALT_ROW_COLOR : ColorScheme.DARK_GRAY_COLOR;
+			useAltRowColor = !useAltRowColor;
 
 			final JPanel item = new JPanel();
 			item.setLayout(new BorderLayout());
@@ -501,6 +502,8 @@ public class ConfigPanel extends PluginPanel
 
 			if (cid.getType() == String.class)
 			{
+				configEntryName.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+
 				final JTextArea textField = new JTextArea();
 				textField.setLineWrap(true);
 				textField.setWrapStyleWord(true);
@@ -519,6 +522,7 @@ public class ConfigPanel extends PluginPanel
 
 				textField.setToolTipText(textField.getText());
 				item.add(textField, BorderLayout.SOUTH);
+				item.setBorder(new EmptyBorder(CONFIG_ROW_MULTILINE_INSETS));
 			}
 
 			if (cid.getType() == Color.class)
@@ -621,7 +625,6 @@ public class ConfigPanel extends PluginPanel
 			final JPanel itemContainer = new JPanel();
 			itemContainer.setLayout(new BorderLayout());
 			itemContainer.setBorder(new EmptyBorder(CONFIG_ROW_INSETS));
-			itemContainer.setPreferredSize(CONFIG_ROW_DIMENSIONS);
 			itemContainer.add(item);
 
 			// Apply striping to alternating rows
@@ -631,7 +634,7 @@ public class ConfigPanel extends PluginPanel
 		}
 
 		final JPanel buttonContainer = new JPanel();
-		buttonContainer.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		buttonContainer.setBackground(useAltRowColor ? ColorScheme.DARK_GRAY_ALT_ROW_COLOR : ColorScheme.DARK_GRAY_COLOR);
 		buttonContainer.setLayout(new GridLayout(2, 0, 0, 5));
 		buttonContainer.setBorder(new EmptyBorder(10, 10, 10, 10));
 
