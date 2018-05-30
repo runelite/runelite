@@ -364,6 +364,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (config.swapTravel())
 			{
 				swap("travel", option, target, true);
+				swap("quick-travel", option, target, true);
 				swap("pay-fare", option, target, true);
 				swap("charter", option, target, true);
 				swap("take-boat", option, target, true);
