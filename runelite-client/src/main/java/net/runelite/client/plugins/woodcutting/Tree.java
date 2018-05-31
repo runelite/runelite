@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Mantautas Jurksa <https://github.com/Juzzed>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.client.plugins.woodcutting;
 
-import lombok.Data;
-import net.runelite.api.Actor;
+import java.util.HashMap;
+import java.util.Map;
+import lombok.Getter;
+import static net.runelite.api.ObjectID.REDWOOD;
+import static net.runelite.api.ObjectID.REDWOOD_29670;
 
-/**
- * An event where the {@link Actor} has died.
- */
-@Data
-public class ActorDeath
+@Getter
+enum Tree
 {
-	/**
-	 * The player or NPC who died.
-	 */
-	private Actor actor;
+	REDWOOD_TREE_SPAWN(REDWOOD, REDWOOD_29670);
+
+	private final int[] treeIds;
+
+	Tree(int... treeIds)
+	{
+		this.treeIds = treeIds;
+	}
+
+	private static final Map<Integer, Tree> TREES = new HashMap<>();
+
+	static
+	{
+		for (Tree tree : values())
+		{
+			for (int treeId : tree.treeIds)
+			{
+				TREES.put(treeId, tree);
+			}
+		}
+	}
+
+	static Tree findTree(int objectId)
+	{
+		return TREES.get(objectId);
+	}
 }

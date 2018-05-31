@@ -28,9 +28,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.GameObject;
 import net.runelite.api.coords.WorldPoint;
-
 import java.time.Instant;
-
 
 @Slf4j
 public class CrystalBomb

@@ -758,6 +758,12 @@
     },
     {
       "level": 59,
+      "icon": 8154,
+      "name": "Limestone attack stone",
+      "xp": 200
+    },
+    {
+      "level": 59,
       "icon": 8343,
       "name": "Lunar Globe",
       "xp": 570

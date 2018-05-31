@@ -388,6 +388,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("pay-toll(10gp)", option, target, true);
 		}
+		else if (config.swapTravel() && option.equals("inspect") && target.equals("trapdoor"))
+		{
+			swap("travel", option, target, true);
+		}
 		else if (config.swapHarpoon() && option.equals("cage"))
 		{
 			swap("harpoon", option, target, true);
@@ -400,9 +404,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("home", option, target, true);
 		}
-		else if (config.swapLastDestination() && (option.equals("zanaris") || option.equals("tree")))
+		else if (config.swapFairyRing() != FairyRingMode.ZANARIS && (option.equals("zanaris") || option.equals("tree")))
 		{
-			swap("last-destination (", option, target, false);
+			if (config.swapFairyRing() == FairyRingMode.LAST_DESTINATION)
+			{
+				swap("last-destination (", option, target, false);
+			}
+			else if (config.swapFairyRing() == FairyRingMode.CONFIGURE)
+			{
+				swap("configure", option, target, false);
+			}
 		}
 		else if (config.swapBoxTrap() && (option.equals("check") || option.equals("dismantle")))
 		{
@@ -445,6 +456,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapBones() && option.equals("bury"))
 		{
 			swap("use", option, target, true);
+		}
+		else if (config.swapBirdhouseEmpty() && option.equals("interact") && target.contains("birdhouse"))
+		{
+			swap("empty", option, target, true);
 		}
 	}
 
