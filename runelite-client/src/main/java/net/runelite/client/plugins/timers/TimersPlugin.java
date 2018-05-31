@@ -51,6 +51,7 @@ import static net.runelite.client.plugins.timers.GameTimer.ANTIVENOM;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIVENOMPLUS;
 import static net.runelite.client.plugins.timers.GameTimer.BIND;
 import static net.runelite.client.plugins.timers.GameTimer.CANNON;
+import static net.runelite.client.plugins.timers.GameTimer.CHARGE;
 import static net.runelite.client.plugins.timers.GameTimer.ENTANGLE;
 import static net.runelite.client.plugins.timers.GameTimer.EXANTIFIRE;
 import static net.runelite.client.plugins.timers.GameTimer.EXSUPERANTIFIRE;
@@ -121,6 +122,11 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void updateConfig(ConfigChanged event)
 	{
+		if (!config.showCharge())
+		{
+			removeGameTimer(CHARGE);
+		}
+
 		if (!config.showStamina())
 		{
 			removeGameTimer(STAMINA);
@@ -423,6 +429,11 @@ public class TimersPlugin extends Plugin
 		if (actor != client.getLocalPlayer())
 		{
 			return;
+		}
+
+		if (config.showCharge() && actor.getGraphic() == CHARGE.getGraphicId())
+		{
+			createGameTimer(CHARGE);
 		}
 
 		if (config.showImbuedHeart() && actor.getGraphic() == IMBUEDHEART.getGraphicId())
