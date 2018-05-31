@@ -67,7 +67,7 @@ public class SlayerPluginTest
 	private static final String SUPERIOR_MESSAGE = "A superior foe has appeared...";
 
 	private static final String BRACLET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count decreasing. It has 9 charges left.";
-	private static final String BRACLET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your slayer faster. It has 9 charges left.";
+	private static final String BRACLET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your slayer task faster. It has 9 charges left.";
 
 	private static final String BRACLET_SLAUGHTER_V2 = "Your bracelet of slaughter prevents your slayer count decreasing. It has 1 charge left.";
 	private static final String BRACLET_EXPEDITIOUS_V2 = "Your expeditious bracelet helps you progress your slayer faster. It has 1 charge left.";
