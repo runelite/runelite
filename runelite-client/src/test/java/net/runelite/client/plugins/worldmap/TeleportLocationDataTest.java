@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Morgan Lewis <https://github.com/MESLewis>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,30 +25,19 @@
  */
 package net.runelite.client.plugins.worldmap;
 
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import lombok.Getter;
-import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
+import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
 
-class MagicTeleportPoint extends WorldMapPoint
+public class TeleportLocationDataTest
 {
-	@Getter
-	private final MagicTeleportLocationData data;
-
-	MagicTeleportPoint(MagicTeleportLocationData data)
+	@Test
+	public void testResources()
 	{
-		super(data.getLocation(), WorldMapPlugin.BLANK_ICON);
-
-		this.data = data;
-		setTooltip(data.getTooltip());
-
-		try
+		for (TeleportLocationData data : TeleportLocationData.values())
 		{
-			setImage(ImageIO.read(WorldMapPlugin.class.getResourceAsStream(data.getIconPath())));
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
+			String path = data.getIconPath();
+			assertNotNull(path);
+			assertNotNull(path, getClass().getResourceAsStream(path));
 		}
 	}
 }

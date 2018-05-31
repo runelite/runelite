@@ -28,7 +28,6 @@ package net.runelite.client.plugins.xptracker;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -45,6 +44,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.ProgressBar;
 import net.runelite.client.util.LinkBrowser;
@@ -81,7 +81,7 @@ class XpInfoBox extends JPanel
 		this.skill = skill;
 
 		setLayout(new BorderLayout());
-		setBorder(new EmptyBorder(10, 0, 0, 0));
+		setBorder(new EmptyBorder(5, 0, 0, 0));
 
 		container.setLayout(new BorderLayout());
 		container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -108,32 +108,19 @@ class XpInfoBox extends JPanel
 		headerPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		headerPanel.setLayout(new BorderLayout());
 
-		statsPanel.setLayout(new BorderLayout());
+		statsPanel.setLayout(new DynamicGridLayout(2, 2));
 		statsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		statsPanel.setBorder(new EmptyBorder(9, 5, 9, 10));
-
-		JPanel leftPanel = new JPanel();
-		leftPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		leftPanel.setLayout(new GridLayout(2, 1));
+		statsPanel.setBorder(new EmptyBorder(9, 2, 9, 2));
 
 		expGained.setFont(FontManager.getRunescapeSmallFont());
 		expHour.setFont(FontManager.getRunescapeSmallFont());
-
-		leftPanel.add(expGained);
-		leftPanel.add(expHour);
-
-		JPanel rightPanel = new JPanel();
-		rightPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		rightPanel.setLayout(new GridLayout(2, 1));
-
 		expLeft.setFont(FontManager.getRunescapeSmallFont());
 		actionsLeft.setFont(FontManager.getRunescapeSmallFont());
 
-		rightPanel.add(expLeft);
-		rightPanel.add(actionsLeft);
-
-		statsPanel.add(leftPanel, BorderLayout.WEST);
-		statsPanel.add(rightPanel, BorderLayout.EAST);
+		statsPanel.add(expGained);
+		statsPanel.add(expLeft);
+		statsPanel.add(expHour);
+		statsPanel.add(actionsLeft);
 
 		headerPanel.add(skillIcon, BorderLayout.WEST);
 		headerPanel.add(statsPanel, BorderLayout.CENTER);
@@ -208,16 +195,7 @@ class XpInfoBox extends JPanel
 
 	public static String htmlLabel(String key, int value)
 	{
-		String valueStr = value + "";
-
-		if (value > 9999999 || value < -9999999)
-		{
-			valueStr = "Lots!";
-		}
-		else
-		{
-			valueStr = StackFormatter.quantityToRSDecimalStack(value);
-		}
+		String valueStr = StackFormatter.quantityToRSDecimalStack(value);
 
 		return "<html><body style = 'color:" + SwingUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "'>" + key + "<span style = 'color:white'>" + valueStr + "</span></body></html>";
 	}

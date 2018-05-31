@@ -40,6 +40,10 @@ import net.runelite.api.model.Jarvis;
 import net.runelite.api.model.Triangle;
 import net.runelite.api.model.Vertex;
 
+/**
+ * A utility class containing methods to help with conversion between
+ * in-game features to canvas areas.
+ */
 public class Perspective
 {
 	private static final double UNIT = Math.PI / 1024d; // How much of the circle each unit of SINE/COSINE is
@@ -65,7 +69,7 @@ public class Perspective
 	 * Translates two-dimensional ground coordinates within the 3D world to
 	 * their corresponding coordinates on the game screen.
 	 *
-	 * @param client
+	 * @param client the game client
 	 * @param x ground coordinate on the x axis
 	 * @param y ground coordinate on the y axis
 	 * @param plane ground plane on the z axis
@@ -81,7 +85,7 @@ public class Perspective
 	 * Translates two-dimensional ground coordinates within the 3D world to
 	 * their corresponding coordinates on the game screen.
 	 *
-	 * @param client
+	 * @param client the game client
 	 * @param x ground coordinate on the x axis
 	 * @param y ground coordinate on the y axis
 	 * @param plane ground plane on the z axis
@@ -97,12 +101,14 @@ public class Perspective
 	/**
 	 * Translates two-dimensional ground coordinates within the 3D world to
 	 * their corresponding coordinates on the game screen. Calculating heights
-	 * based on the coordinates of the tile provided, rather than the world coordinates
+	 * based on the coordinates of the tile provided, rather than the world
+	 * coordinates.
+	 * <p>
+	 * Using the position of each vertex, rather than the location of the
+	 * object, to determine the height of each vertex causes the mesh to be
+	 * vertically warped, based on the terrain below.
 	 *
-	 * Using the position of each vertex, rather than the location of the object, to determine the
-	 * height of each vertex causes the mesh to be vertically warped, based on the terrain below
-	 *
-	 * @param client
+	 * @param client the game client
 	 * @param x ground coordinate on the x axis
 	 * @param y ground coordinate on the y axis
 	 * @param plane ground plane on the z axis
@@ -119,12 +125,14 @@ public class Perspective
 	/**
 	 * Translates two-dimensional ground coordinates within the 3D world to
 	 * their corresponding coordinates on the game screen. Calculating heights
-	 * based on the coordinates of the tile provided, rather than the world coordinates
+	 * based on the coordinates of the tile provided, rather than the world
+	 * coordinates.
+	 * <p>
+	 * Using the position of each vertex, rather than the location of the
+	 * object, to determine the height of each vertex causes the mesh to be
+	 * vertically warped, based on the terrain below.
 	 *
-	 * Using the position of each vertex, rather than the location of the object, to determine the
-	 * height of each vertex causes the mesh to be vertically warped, based on the terrain below
-	 *
-	 * @param client
+	 * @param client the game client
 	 * @param x ground coordinate on the x axis
 	 * @param y ground coordinate on the y axis
 	 * @param plane ground plane on the z axis
@@ -174,7 +182,7 @@ public class Perspective
 	 * Translates two-dimensional ground coordinates within the 3D world to
 	 * their corresponding coordinates on the Minimap.
 	 *
-	 * @param client
+	 * @param client the game client
 	 * @param x ground coordinate on the x axis
 	 * @param y ground coordinate on the y axis
 	 * @return a {@link Point} on screen corresponding to the position in
@@ -189,7 +197,7 @@ public class Perspective
 	 * Translates two-dimensional ground coordinates within the 3D world to
 	 * their corresponding coordinates on the Minimap.
 	 *
-	 * @param client
+	 * @param client the game client
 	 * @param x ground coordinate on the x axis
 	 * @param y ground coordinate on the y axis
 	 * @param distance max distance from local player to minimap point
@@ -228,7 +236,7 @@ public class Perspective
 	/**
 	 * Calculates the above ground height of a tile point.
 	 *
-	 * @param client
+	 * @param client the game client
 	 * @param localX the ground coordinate on the x axis
 	 * @param localY the ground coordinate on the y axis
 	 * @param plane the client plane/ground level
@@ -262,7 +270,7 @@ public class Perspective
 	/**
 	 * Calculates a tile polygon from offset worldToScreen() points.
 	 *
-	 * @param client
+	 * @param client the game client
 	 * @param localLocation local location of the tile
 	 * @return a {@link Polygon} on screen corresponding to the given
 	 * localLocation.
@@ -275,10 +283,9 @@ public class Perspective
 	/**
 	 * Returns a polygon representing an area.
 	 *
-	 * @param client
-	 * @param localLocation Center location of the AoE
-	 * @param size size of the area. Ex. Lizardman Shaman AoE is a 3x3, so
-	 * size = 3
+	 * @param client the game client
+	 * @param localLocation the center location of the AoE
+	 * @param size the size of the area (ie. 3x3 AoE evaluates to size 3)
 	 * @return a polygon representing the tiles in the area
 	 */
 	public static Polygon getCanvasTileAreaPoly(@Nonnull Client client, @Nonnull LocalPoint localLocation, int size)
@@ -322,8 +329,8 @@ public class Perspective
 	/**
 	 * Calculates text position and centers depending on string length.
 	 *
-	 * @param client
-	 * @param graphics
+	 * @param client the game client
+	 * @param graphics the game graphics
 	 * @param localLocation local location of the tile
 	 * @param text string for width measurement
 	 * @param zOffset offset from ground plane
@@ -357,8 +364,8 @@ public class Perspective
 	/**
 	 * Calculates image position and centers depending on image size.
 	 *
-	 * @param client
-	 * @param graphics
+	 * @param client the game client
+	 * @param graphics the game graphics
 	 * @param localLocation local location of the tile
 	 * @param image image for size measurement
 	 * @param zOffset offset from ground plane
@@ -390,7 +397,7 @@ public class Perspective
 	/**
 	 * Calculates image position and centers depending on image size.
 	 *
-	 * @param client
+	 * @param client the game client
 	 * @param localLocation local location of the tile
 	 * @param image image for size measurement
 	 * @return a {@link Point} on screen corresponding to the given
@@ -399,8 +406,7 @@ public class Perspective
 	public static Point getMiniMapImageLocation(
 		@Nonnull Client client,
 		@Nonnull LocalPoint localLocation,
-		@Nonnull BufferedImage image
-	)
+		@Nonnull BufferedImage image)
 	{
 		Point p = Perspective.worldToMiniMap(client, localLocation.getX(), localLocation.getY());
 
@@ -418,21 +424,19 @@ public class Perspective
 	/**
 	 * Calculates sprite position and centers depending on sprite size.
 	 *
-	 * @param client
-	 * @param graphics
+	 * @param client the game client
+	 * @param graphics the game graphics
 	 * @param localLocation local location of the tile
 	 * @param sprite SpritePixel for size measurement
 	 * @param zOffset offset from ground plane
-	 * @return a {@link Point} on screen corresponding to the given
-	 * localLocation.
+	 * @return a {@link Point} on screen corresponding to the given localLocation.
 	 */
 	public static Point getCanvasSpriteLocation(
 		@Nonnull Client client,
 		@Nonnull Graphics2D graphics,
 		@Nonnull LocalPoint localLocation,
 		@Nonnull SpritePixels sprite,
-		int zOffset
-	)
+		int zOffset)
 	{
 		int plane = client.getPlane();
 
@@ -450,17 +454,18 @@ public class Perspective
 	}
 
 	/**
-	 * You don't want this. Use {@link TileObject#getClickbox()} instead
+	 * You don't want this. Use {@link TileObject#getClickbox()} instead.
+	 * <p>
+	 * Get the on-screen clickable area of {@code model} as though it's for the
+	 * object on the tile at ({@code tileX}, {@code tileY}) and rotated to
+	 * angle {@code orientation}.
 	 *
-	 * Get the on-screen clickable area of {@code model} as though it's for the object on the tile at
-	 * 	({@code tileX}, {@code tileY}) and rotated to angle {@code orientation}
-	 *
-	 * @param client
+	 * @param client the game client
 	 * @param model the model to calculate a clickbox for
 	 * @param orientation the orientation of the model (0-2048, where 0 is north)
-	 * @param tileX the X coordinate of the tile that the object using the model is on
-	 * @param tileY the Y coordinate of the tile that the object using the model is on
-	 * @return the clickable area of {@code model}, rotated to angle {@code orientation}, at the height of tile ({@code tileX}, {@code tileY})
+	 * @param tileX the x-axis coordinate of the tile
+	 * @param tileY the y-axis coordinate of the tile
+	 * @return the clickable area of the model
 	 */
 	public static Area getClickbox(@Nonnull Client client, Model model, int orientation, int tileX, int tileY)
 	{
@@ -487,6 +492,29 @@ public class Perspective
 
 		clickBox.intersect(visibleAABB);
 		return clickBox;
+	}
+
+	/**
+	 * Determine if a triangle goes counter clockwise
+	 *
+	 * @return Returns true if the triangle goes counter clockwise and should be culled, otherwise false
+	 */
+	private static boolean cullFace(int x1, int y1, int x2, int y2, int x3, int y3)
+	{
+		return (y2 - y1) * (x3 - x2) - (x2 - x1) * (y3 - y2) < 0;
+	}
+
+	/**
+	 * Determine if a given point is off-screen.
+	 *
+	 * @param client
+	 * @param point
+	 * @return
+	 */
+	private static boolean isOffscreen(@Nonnull Client client, @Nonnull Point point)
+	{
+		return (point.getX() < 0 || point.getX() >= client.getViewportWidth())
+			&& (point.getY() < 0 || point.getY() >= client.getViewportHeight());
 	}
 
 	private static Area get2DGeometry(
@@ -532,26 +560,42 @@ public class Perspective
 				continue;
 			}
 
+			if (cullFace(a.getX(), a.getY(), b.getX(), b.getY(), c.getX(), c.getY()))
+			{
+				continue;
+			}
+
+			if (isOffscreen(client, a) && isOffscreen(client, b) && isOffscreen(client, c))
+			{
+				continue;
+			}
+
 			int minX = Math.min(Math.min(a.getX(), b.getX()), c.getX());
 			int minY = Math.min(Math.min(a.getY(), b.getY()), c.getY());
 
 			// For some reason, this calculation is always 4 pixels short of the actual in-client one
-			int maxX = Math.max(Math.max(a.getX(), b.getX()), c.getX()) + client.getViewportXOffset();
-			int maxY = Math.max(Math.max(a.getY(), b.getY()), c.getY()) + client.getViewportYOffset();
+			int maxX = Math.max(Math.max(a.getX(), b.getX()), c.getX()) + 4;
+			int maxY = Math.max(Math.max(a.getY(), b.getY()), c.getY()) + 4;
 
 			// ...and the rectangles in the fixed client are shifted 4 pixels right and down
 			if (!client.isResized())
 			{
-				minX += 4;
-				minY += 4;
-				maxX += 4;
-				maxY += 4;
+				minX += client.getViewportXOffset();
+				minY += client.getViewportYOffset();
+				maxX += client.getViewportXOffset();
+				maxY += client.getViewportYOffset();
 			}
 
 			Rectangle clickableRect = new Rectangle(
 				minX - radius, minY - radius,
 				maxX - minX + radius, maxY - minY + radius
 			);
+
+			if (geometry.contains(clickableRect))
+			{
+				continue;
+			}
+
 			geometry.add(new Area(clickableRect));
 		}
 
@@ -683,8 +727,8 @@ public class Perspective
 	/**
 	 * Calculates text position and centers on minimap depending on string length.
 	 *
-	 * @param client
-	 * @param graphics
+	 * @param client the game client
+	 * @param graphics the game graphics
 	 * @param localLocation local location of the tile
 	 * @param text string for width measurement
 	 * @return a {@link Point} on screen corresponding to the given
@@ -694,8 +738,7 @@ public class Perspective
 		@Nonnull Client client,
 		@Nonnull Graphics2D graphics,
 		@Nonnull LocalPoint localLocation,
-		@Nonnull String text
-	)
+		@Nonnull String text)
 	{
 		Point p = Perspective.worldToMiniMap(client, localLocation.getX(), localLocation.getY());
 

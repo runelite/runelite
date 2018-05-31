@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Ethan <https://github.com/shmeeps>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +22,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.client.plugins.grandexchange;
 
-import lombok.Data;
-import net.runelite.api.Actor;
+import java.time.Instant;
+import lombok.Value;
+import net.runelite.api.GrandExchangeOfferState;
 
-@Data
-public class ActorDeath
+@Value
+class GrandExchangeNotification
 {
-	private Actor actor;
+	private final int slot;
+	private final int quantitySold;
+	private final int totalQuantity;
+	private final String itemName;
+	private final GrandExchangeOfferState state;
+	private final Instant insertedOn = Instant.now();
+
+	String getNotificationMessage()
+	{
+		// Send complete or X/Y notification
+		switch (this.state)
+		{
+			case BUYING:
+				return String.format("Grand Exchange: Bought %d / %d x %s", quantitySold, totalQuantity, itemName);
+
+			case SELLING:
+				return String.format("Grand Exchange: Sold %d / %d x %s", quantitySold, totalQuantity, itemName);
+
+			case BOUGHT:
+				return String.format("Grand Exchange: Finished buying %d x %s", totalQuantity, itemName);
+
+			case SOLD:
+				return String.format("Grand Exchange: Finished selling %d x %s", totalQuantity, itemName);
+
+			default:
+				// Not possible
+				return null;
+		}
+	}
 }

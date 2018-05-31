@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Mantautas Jurksa <https://github.com/Juzzed>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,61 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.examine;
+package net.runelite.client.plugins.woodcutting;
 
-import java.awt.Color;
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.util.HashMap;
+import java.util.Map;
+import lombok.Getter;
+import static net.runelite.api.ObjectID.REDWOOD;
+import static net.runelite.api.ObjectID.REDWOOD_29670;
 
-@ConfigGroup(
-	keyName = "examine",
-	name = "Examine",
-	description = "Configuration for examine plugin"
-)
-public interface ExamineConfig extends Config
+@Getter
+enum Tree
 {
-	@ConfigItem(
-		position = 2,
-		keyName = "hexColorExamine",
-		name = "Examine messages",
-		description = "Color of examine messages"
-	)
-	default Color getExamineRecolor()
+	REDWOOD_TREE_SPAWN(REDWOOD, REDWOOD_29670);
+
+	private final int[] treeIds;
+
+	Tree(int... treeIds)
 	{
-		return Color.decode("#000000");
+		this.treeIds = treeIds;
 	}
 
-	@ConfigItem(
-		position = 3,
-		keyName = "hexColorExamineH",
-		name = "Examine messages highlight",
-		description = "Color of examine messages highlight"
-	)
-	default Color getExamineHRecolor()
+	private static final Map<Integer, Tree> TREES = new HashMap<>();
+
+	static
 	{
-		return Color.decode("#0000FF");
+		for (Tree tree : values())
+		{
+			for (int treeId : tree.treeIds)
+			{
+				TREES.put(treeId, tree);
+			}
+		}
 	}
 
-	@ConfigItem(
-		position = 4,
-		keyName = "transparentHexColorExamine",
-		name = "Transparent examine messages",
-		description = "Color of examine messages"
-	)
-	default Color getTransparentExamineRecolor()
+	static Tree findTree(int objectId)
 	{
-		return Color.decode("#FFFFFF");
-	}
-
-	@ConfigItem(
-		position = 5,
-		keyName = "transparentHexColorExamineH",
-		name = "Transparent examine messages highlight",
-		description = "Color of examine messages highlight"
-	)
-	default Color getTransparentExamineHRecolor()
-	{
-		return Color.decode("#9090FF");
+		return TREES.get(objectId);
 	}
 }

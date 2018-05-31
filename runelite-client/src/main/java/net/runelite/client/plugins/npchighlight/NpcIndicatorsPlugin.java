@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.npchighlight;
 
+import com.google.common.base.Splitter;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -61,7 +63,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	private static final String TAG = "Tag";
 
 	// Regex for splitting the hidden items in the config.
-	private static final String DELIMITER_REGEX = "\\s*,\\s*";
+	private static final Splitter COMMA_SPLITTER = Splitter.on(Pattern.compile("\\s*,\\s*")).trimResults();
 
 	@Inject
 	private Client client;
@@ -85,13 +87,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	private KeyManager keyManager;
 
 	/**
-	 * NPCs tagged with the Tag option
-	 */
-	@Getter(AccessLevel.PACKAGE)
-	private final Set<Integer> npcTags = new HashSet<>();
-
-	/**
-	 * NPCs tagged due to highlight in the config
+	 * NPCs to highlight
 	 */
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<NPC> highlightedNpcs = new HashSet<>();
@@ -101,14 +97,12 @@ public class NpcIndicatorsPlugin extends Plugin
 	 */
 	private List<String> highlights = new ArrayList<>();
 
-	private boolean hotKeyPressed = false;
+	/**
+	 * NPC ids marked with the Tag option
+	 */
+	private final Set<Integer> npcTags = new HashSet<>();
 
-	private void toggleTag(int npcId)
-	{
-		boolean removed = npcTags.remove(npcId);
-		if (!removed)
-			npcTags.add(npcId);
-	}
+	private boolean hotKeyPressed = false;
 
 	@Provides
 	NpcIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -121,7 +115,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	{
 		keyManager.registerKeyListener(inputListener);
 		highlights = getHighlights();
-		rebuildNpcs();
+		rebuildAllNpcs();
 	}
 
 	@Override
@@ -150,44 +144,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 
 		highlights = getHighlights();
-		rebuildNpcs();
-	}
-
-	private List<String> getHighlights()
-	{
-		String configNpcs = config.getNpcToHighlight().toLowerCase();
-		if (configNpcs.isEmpty())
-			return Collections.emptyList();
-
-		List<String> highlightedNpcs = Arrays.asList(configNpcs.split(DELIMITER_REGEX));
-		return highlightedNpcs;
-	}
-
-	/**
-	 * Rebuild highlighted npcs
-	 */
-	private void rebuildNpcs()
-	{
-		highlightedNpcs.clear();
-
-		for (NPC npc : client.getNpcs())
-		{
-			String npcName = npc.getName();
-
-			if (npcName == null)
-			{
-				continue;
-			}
-
-			for (String highlight : highlights)
-			{
-				if (WildcardMatcher.matches(highlight, npcName))
-				{
-					highlightedNpcs.add(npc);
-					break;
-				}
-			}
-		}
+		rebuildAllNpcs();
 	}
 
 	@Subscribe
@@ -204,16 +161,41 @@ public class NpcIndicatorsPlugin extends Plugin
 	public void onMenuObjectClicked(MenuOptionClicked click)
 	{
 		if (click.getMenuOption().equals(TAG))
-			toggleTag(click.getId());
+		{
+			final int id = click.getId();
+			final boolean removed = npcTags.remove(id);
+			final NPC[] cachedNPCs = client.getCachedNPCs();
+			final NPC npc = cachedNPCs[id];
+
+			if (npc != null && npc.getName() != null)
+			{
+				if (removed)
+				{
+					highlightedNpcs.remove(npc);
+				}
+				else
+				{
+					npcTags.add(id);
+					highlightedNpcs.add(npc);
+				}
+			}
+		}
 	}
 
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned npcSpawned)
 	{
-		NPC npc = npcSpawned.getNpc();
-		String npcName = npc.getName();
+		final NPC npc = npcSpawned.getNpc();
+		final String npcName = npc.getName();
+
 		if (npcName != null)
 		{
+			if (npcTags.contains(npc.getIndex()))
+			{
+				highlightedNpcs.add(npc);
+				return;
+			}
+
 			for (String highlight : highlights)
 			{
 				if (WildcardMatcher.matches(highlight, npcName))
@@ -228,8 +210,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Subscribe
 	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
-		NPC npc = npcDespawned.getNpc();
-		highlightedNpcs.remove(npc);
+		highlightedNpcs.remove(npcDespawned.getNpc());
 	}
 
 	@Override
@@ -256,4 +237,47 @@ public class NpcIndicatorsPlugin extends Plugin
 
 		hotKeyPressed = pressed;
 	}
+
+	private List<String> getHighlights()
+	{
+		final String configNpcs = config.getNpcToHighlight().toLowerCase();
+
+		if (configNpcs.isEmpty())
+		{
+			return Collections.emptyList();
+		}
+
+		return COMMA_SPLITTER.splitToList(configNpcs);
+	}
+
+	private void rebuildAllNpcs()
+	{
+		highlightedNpcs.clear();
+
+		for (NPC npc : client.getNpcs())
+		{
+			String npcName = npc.getName();
+
+			if (npcName == null)
+			{
+				continue;
+			}
+
+			if (npcTags.contains(npc.getIndex()))
+			{
+				highlightedNpcs.add(npc);
+				continue;
+			}
+
+			for (String highlight : highlights)
+			{
+				if (WildcardMatcher.matches(highlight, npcName))
+				{
+					highlightedNpcs.add(npc);
+					break;
+				}
+			}
+		}
+	}
+
 }

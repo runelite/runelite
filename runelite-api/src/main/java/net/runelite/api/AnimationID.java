@@ -24,8 +24,12 @@
  */
 package net.runelite.api;
 
-// Note: This class is not complete: these animations were manually gathered
-// through getAnimation(). Please add animations as you happen to use them.
+/**
+ * Utility class used for mapping animation IDs.
+ * <p>
+ * Note: This class is not complete and may not contain a specific animation
+ * required.
+ */
 public final class AnimationID
 {
 	public static final int IDLE = -1;
@@ -43,6 +47,7 @@ public final class AnimationID
 	public static final int FIREMAKING = 733;
 	public static final int COOKING_FIRE = 897;
 	public static final int COOKING_RANGE = 896;
+	public static final int COOKING_WINE = 7529;
 	public static final int FLETCHING_BOW_CUTTING = 1248;
 	public static final int HUNTER_LAY_BOXTRAP_BIRDSNARE = 5208; //same for laying bird snares and box traps
 	public static final int HUNTER_LAY_DEADFALLTRAP = 5212; //setting up deadfall trap

@@ -233,7 +233,7 @@ public class GrandExchangeOfferSlot extends JPanel
 
 			offerInfo.setText(offerState);
 
-			itemPrice.setText(htmlLabel("Price each: ", newOffer.getPrice() + ""));
+			itemPrice.setText(htmlLabel("Price each: ", StackFormatter.formatNumber(newOffer.getPrice())));
 
 			String action = buying ? "Spent: " : "Received: ";
 

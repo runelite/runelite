@@ -26,6 +26,8 @@ package net.runelite.http.api.examine;
 
 import java.io.IOException;
 import net.runelite.http.api.RuneLiteAPI;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.Request;
@@ -40,22 +42,22 @@ public class ExamineClient
 
 	private static final MediaType TEXT = MediaType.parse("text");
 
-	public void submitObject(int id, String text) throws IOException
+	public void submitObject(int id, String text)
 	{
 		submit("object", id, text);
 	}
 
-	public void submitNpc(int id, String text) throws IOException
+	public void submitNpc(int id, String text)
 	{
 		submit("npc", id, text);
 	}
 
-	public void submitItem(int id, String text) throws IOException
+	public void submitItem(int id, String text)
 	{
 		submit("item", id, text);
 	}
 
-	private void submit(String type, int id, String text) throws IOException
+	private void submit(String type, int id, String text)
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("examine")
@@ -70,10 +72,20 @@ public class ExamineClient
 			.post(RequestBody.create(TEXT, text))
 			.build();
 
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
 		{
-			logger.debug("Submitted examine info for {} {}: {}",
-				type, id, text);
-		}
+			@Override
+			public void onFailure(Call call, IOException e)
+			{
+				logger.warn("Error submitting examine", e);
+			}
+
+			@Override
+			public void onResponse(Call call, Response response)
+			{
+				response.close();
+				logger.debug("Submitted examine info for {} {}: {}", type, id, text);
+			}
+		});
 	}
 }

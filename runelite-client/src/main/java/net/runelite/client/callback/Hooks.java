@@ -56,12 +56,12 @@ import net.runelite.api.RenderOverview;
 import net.runelite.api.TextureProvider;
 import net.runelite.api.WorldMapManager;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.HitsplatApplied;
+import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostItemComposition;
@@ -456,11 +456,10 @@ public class Hooks
 
 	public static void onSetCombatInfo(Actor actor, int combatInfoId, int gameCycle, int var3, int var4, int healthRatio, int health)
 	{
-		if (healthRatio == 0)
+		if (healthRatio == 0 && actor == client.getLocalPlayer())
 		{
-			ActorDeath death = new ActorDeath();
-			death.setActor(actor);
-			eventBus.post(death);
+			LocalPlayerDeath event = new LocalPlayerDeath();
+			eventBus.post(event);
 		}
 	}
 
