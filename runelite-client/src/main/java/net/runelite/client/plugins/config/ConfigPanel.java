@@ -91,7 +91,7 @@ public class ConfigPanel extends PluginPanel
 {
 	private static final int SPINNER_FIELD_WIDTH = 6;
 
-	private static final Insets CONFIG_HEADER_INSETS = new Insets(1, 10, 10, 10);
+	private static final Insets CONFIG_HEADER_INSETS = new Insets(11, 10, 10, 10);
 	private static final Insets CONFIG_ROW_INSETS = new Insets(3, 10, 3, 10);
 	private static final Insets CONFIG_ROW_MULTILINE_INSETS = new Insets(4, 0, 4, 0);
 	private static final Dimension CONFIG_ROW_DIMENSIONS = new Dimension(PluginPanel.PANEL_WIDTH, 30);
@@ -166,8 +166,8 @@ public class ConfigPanel extends PluginPanel
 			}
 		});
 
-		setBorder(new EmptyBorder(10, 0, 0, 0));
-		setLayout(new DynamicGridLayout(0, 1, 0, 0));
+		setBorder(null);
+		setLayout(new DynamicGridLayout(0, 1));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		rebuildPluginList();
@@ -383,12 +383,17 @@ public class ConfigPanel extends PluginPanel
 	{
 		removeAll();
 
-		final JLabel title = new JLabel("Configuration", SwingConstants.LEFT);
+		final JLabel title = new JLabel("Configuration");
 		title.setForeground(Color.WHITE);
-		title.setBorder(new EmptyBorder(CONFIG_HEADER_INSETS));
+		title.setBorder(new EmptyBorder(0, 0, 10, 0));
 
-		add(title);
-		add(searchBar);
+		final JPanel headerContainer = new JPanel();
+		headerContainer.setLayout(new DynamicGridLayout(0, 1));
+		headerContainer.setBorder(new EmptyBorder(CONFIG_HEADER_INSETS));
+		headerContainer.add(title);
+		headerContainer.add(searchBar);
+
+		add(headerContainer);
 
 		onSearchBarChanged();
 		searchBar.requestFocusInWindow();
