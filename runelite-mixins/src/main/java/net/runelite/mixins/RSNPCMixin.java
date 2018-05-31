@@ -48,6 +48,9 @@ public abstract class RSNPCMixin implements RSNPC
 	private int npcIndex;
 
 	@Inject
+	private boolean dead;
+
+	@Inject
 	@Override
 	public int getId()
 	{
@@ -148,5 +151,19 @@ public abstract class RSNPCMixin implements RSNPC
 			composition = composition.transform();
 		}
 		return composition;
+	}
+
+	@Inject
+	@Override
+	public boolean isDead()
+	{
+		return dead;
+	}
+
+	@Inject
+	@Override
+	public void setDead(boolean dead)
+	{
+		this.dead = dead;
 	}
 }

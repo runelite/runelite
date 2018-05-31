@@ -49,6 +49,7 @@ import net.runelite.api.KeyFocusListener;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
+import net.runelite.api.NPC;
 import net.runelite.api.PacketBuffer;
 import net.runelite.api.Projectile;
 import net.runelite.api.Region;
@@ -456,10 +457,17 @@ public class Hooks
 
 	public static void onSetCombatInfo(Actor actor, int combatInfoId, int gameCycle, int var3, int var4, int healthRatio, int health)
 	{
-		if (healthRatio == 0 && actor == client.getLocalPlayer())
+		if (healthRatio == 0)
 		{
-			LocalPlayerDeath event = new LocalPlayerDeath();
-			eventBus.post(event);
+			if (actor == client.getLocalPlayer())
+			{
+				LocalPlayerDeath event = new LocalPlayerDeath();
+				eventBus.post(event);
+			}
+			else if (actor instanceof NPC)
+			{
+				((NPC) actor).setDead(true);
+			}
 		}
 	}
 

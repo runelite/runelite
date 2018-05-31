@@ -65,4 +65,8 @@ public interface NPC extends Actor
 	 * @return the transformed NPC
 	 */
 	NPCComposition getTransformedComposition();
+
+	boolean isDead();
+
+	void setDead(boolean dead);
 }
