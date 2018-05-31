@@ -58,7 +58,7 @@ public class BossTimersPlugin extends Plugin
 	{
 		NPC npc = npcDespawned.getNpc();
 
-		if (npc.getHealthRatio() != 0)
+		if (!npc.isDead())
 		{
 			return;
 		}
