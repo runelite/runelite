@@ -95,6 +95,7 @@ public class WidgetID
 	public static final int KINGDOM_GROUP_ID = 392;
 	public static final int BARROWS_GROUP_ID = 24;
 	public static final int MAGE_TRAINING_ARENA_GRAVEYARD_GROUP_ID = 196;
+	public static final int MAGE_TRAINING_ARENA_TELEKINETIC_GROUP_ID = 198;
 
 	static class WorldMap
 	{

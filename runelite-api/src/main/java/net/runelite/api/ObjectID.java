@@ -10756,7 +10756,7 @@ public final class ObjectID
 	public static final int NULL_10752 = 10752;
 	public static final int NULL_10753 = 10753;
 	public static final int NULL_10754 = 10754;
-	public static final int NULL_10755 = 10755;
+	public static final int TELEKINETIC_ROOM_WALL = 10755;
 	public static final int NULL_10756 = 10756;
 	public static final int NULL_10757 = 10757;
 	public static final int NULL_10758 = 10758;
@@ -23672,7 +23672,7 @@ public final class ObjectID
 	public static final int SKELETON_23669 = 23669;
 	public static final int NULL_23670 = 23670;
 	public static final int NULL_23671 = 23671;
-	public static final int NULL_23672 = 23672;
+	public static final int TELEKINETIC_GOAL = 23672;
 	public static final int TELEKINETIC_TELEPORT = 23673;
 	public static final int ENCHANTERS_TELEPORT = 23674;
 	public static final int ALCHEMISTS_TELEPORT = 23675;

@@ -22,21 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.magetrainingarena;
 
 import com.google.common.eventbus.Subscribe;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.GroundObject;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
+import net.runelite.api.ObjectID;
+import net.runelite.api.Tile;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.queries.GameObjectQuery;
+import net.runelite.api.queries.GroundObjectQuery;
 import net.runelite.api.queries.InventoryItemQuery;
+import net.runelite.api.queries.NPCQuery;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
@@ -48,9 +56,10 @@ import net.runelite.client.util.QueryRunner;
 
 import javax.inject.Inject;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
 import static net.runelite.client.plugins.magetrainingarena.AlchemyRoomItem.ADAMANT_KITESHIELD;
 import static net.runelite.client.plugins.magetrainingarena.AlchemyRoomItem.ADAMANT_MED_HELM;
 import static net.runelite.client.plugins.magetrainingarena.AlchemyRoomItem.EMERALD;
@@ -64,20 +73,17 @@ public class MageTrainingArenaPlugin extends Plugin
 {
 	@Inject
 	private Client client;
-
 	@Inject
 	private QueryRunner queryRunner;
-
 	@Inject
 	ItemManager itemManager;
-
 	@Inject
 	private InfoBoxManager infoBoxManager;
 
 	private AlchemyRoomOverlay alchemyRoomOverlay;
+	private TelekineticOverlay telekineticOverlay;
 
 	private Map<Integer, Integer> alchemyObjectIDToArrayIndexMap;
-
 	//Permutation order goes from north west->south west->south west->north east
 	private AlchemyRoomItem[][] alchemyPermutations = {
 			{LEATHER_BOOTS, null, null, null, RUNE_LONGSWORD, EMERALD, ADAMANT_MED_HELM, ADAMANT_KITESHIELD},
@@ -89,23 +95,29 @@ public class MageTrainingArenaPlugin extends Plugin
 			{null, null, RUNE_LONGSWORD, EMERALD, ADAMANT_MED_HELM, ADAMANT_KITESHIELD, LEATHER_BOOTS, null},
 			{null, null, null, RUNE_LONGSWORD, EMERALD, ADAMANT_MED_HELM, ADAMANT_KITESHIELD, LEATHER_BOOTS}
 	};
-
 	private int lastObjectIdClicked = -1;
-
 	private AlchemyRoomItem[] currentPermutation;
-
 	@Getter
 	private GameObject[] cabinets;
 
 	@Getter
 	private int totalFruitFromBones = 0;
-
 	private GraveyardBoneCounter counter;
+
+	TelekineticPuzzle currentTelekineticPuzzle;
+	private int telekineticPuzzleStep = 0;
+
+	//Holds the current target and next target for the overlay to render
+	@Getter
+	private Tile[] playerTargetTiles = new Tile[2];
+	@Getter
+	private Tile[] guardianTargetTiles = new Tile[2];
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		alchemyRoomOverlay = new AlchemyRoomOverlay(client, this);
+		telekineticOverlay = new TelekineticOverlay(client, this);
 		setupHashMap();
 	}
 
@@ -131,10 +143,9 @@ public class MageTrainingArenaPlugin extends Plugin
 		addCabientToHashMap(AlchemyRoomCabinet.EAST_0, 7);
 	}
 
-	@Override
-	public Overlay getOverlay()
+	public List<Overlay> getOverlays()
 	{
-		return alchemyRoomOverlay;
+		return Arrays.asList(alchemyRoomOverlay, telekineticOverlay);
 	}
 
 	@Subscribe
@@ -220,19 +231,86 @@ public class MageTrainingArenaPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void OnGameTick(GameTick event)
+	public void onGameTick(GameTick event)
 	{
 		final GameObjectQuery query = new GameObjectQuery().idEquals(getCabinetObjectIds());
 		cabinets = queryRunner.runQuery(query);
 
-		Item[] items = queryRunner.runQuery(new InventoryItemQuery(InventoryID.INVENTORY));
+		sumTotalFruitFromBones();
+		checkForTelekineticPuzzle();
+	}
+
+	private void checkForTelekineticPuzzle()
+	{
+		Widget telekineticTitle = client.getWidget(WidgetInfo.MAGE_TRAINING_ARENA_TELEKINETIC_TITLE);
+		if (telekineticTitle != null && !telekineticTitle.isHidden())
+		{
+			final GroundObjectQuery groundObjectQuery = new GroundObjectQuery().idEquals(ObjectID.TELEKINETIC_GOAL);
+			GroundObject[] groundObjectResult = queryRunner.runQuery(groundObjectQuery);
+			GroundObject telekineticGoalGroundObject = groundObjectResult.length >= 1 ? groundObjectResult[0] : null;
+
+			final NPCQuery npcQuery = new NPCQuery().idEquals(NpcID.MAZE_GUARDIAN);
+			NPC[] npcResult = queryRunner.runQuery(npcQuery);
+			NPC telekineticGuardianNpc = npcResult.length >= 1 ? npcResult[0] : null;
+
+			if (telekineticGoalGroundObject == null)
+			{
+				resetTelekinetic();
+			}
+
+
+			if (currentTelekineticPuzzle == null && telekineticGoalGroundObject != null && telekineticGuardianNpc != null)
+			{
+				Tile[][] tiles = client.getRegion().getTiles()[client.getPlane()];
+				WorldPoint startPoint = telekineticGuardianNpc.getWorldLocation();
+				WorldPoint endPoint = telekineticGoalGroundObject.getWorldLocation();
+
+				currentTelekineticPuzzle = TelekineticPuzzle.findTelekineticPuzzle(startPoint, endPoint, tiles);
+			}
+			getTargetTiles(telekineticGoalGroundObject, telekineticGuardianNpc);
+		}
+	}
+
+	private void getTargetTiles(GroundObject telekineticGoalGroundObject, NPC telekineticGuardianNpc)
+	{
+		if (currentTelekineticPuzzle != null)
+		{
+			List<TelekineticTile> puzzleShortestPath = currentTelekineticPuzzle.getPuzzleShortestPath();
+
+			if (telekineticGoalGroundObject != null && telekineticGuardianNpc != null && puzzleShortestPath != null)
+			{
+				if (telekineticPuzzleStep < puzzleShortestPath.size())
+				{
+					WorldPoint currentGuardianTargetPoint = puzzleShortestPath.get(telekineticPuzzleStep).getTile().getWorldLocation();
+					if (telekineticGuardianNpc.getWorldLocation().equals(currentGuardianTargetPoint))
+					{
+						telekineticPuzzleStep++;
+					}
+
+					guardianTargetTiles[0] = puzzleShortestPath.get(telekineticPuzzleStep).getTile();
+					guardianTargetTiles[1] = telekineticPuzzleStep + 1 < puzzleShortestPath.size() ? puzzleShortestPath.get(telekineticPuzzleStep + 1).getTile() : null;
+
+				}
+
+				List<TelekineticTile> playerPredictedTiles = currentTelekineticPuzzle.getPlayerPredictedTiles();
+				playerTargetTiles[0] = telekineticPuzzleStep > 0 ? playerPredictedTiles.get(telekineticPuzzleStep - 1).getTile() : null;
+				playerTargetTiles[1] = telekineticPuzzleStep < playerPredictedTiles.size() ? playerPredictedTiles.get(telekineticPuzzleStep).getTile() : null;
+			}
+		}
+	}
+
+	private void sumTotalFruitFromBones()
+	{
+
+		final InventoryItemQuery inventoryItemQuery = new InventoryItemQuery(InventoryID.INVENTORY);
+		Item[] items = queryRunner.runQuery(inventoryItemQuery);
 
 		//Sum fruit from bones
 		totalFruitFromBones = 0;
 
-		Widget widget = client.getWidget(WidgetInfo.MAGE_TRAINING_ARENA_GRAVEYARD_TITLE);
+		Widget graveyardTitle = client.getWidget(WidgetInfo.MAGE_TRAINING_ARENA_GRAVEYARD_TITLE);
 
-		if (widget != null && !widget.isHidden())
+		if (graveyardTitle != null && !graveyardTitle.isHidden())
 		{
 			if (counter == null)
 			{
@@ -242,7 +320,7 @@ public class MageTrainingArenaPlugin extends Plugin
 
 			for (Item item : items)
 			{
-				GraveyardBone bone = GraveyardBone.GetBoneById(item.getId());
+				GraveyardBone bone = GraveyardBone.getBoneById(item.getId());
 				if (bone != null)
 				{
 					totalFruitFromBones += bone.fruitAmount;
@@ -260,7 +338,25 @@ public class MageTrainingArenaPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void OnMenuEntryOptionClicked(MenuOptionClicked event)
+	public void onMapRegionChange(MapRegionChanged event)
+	{
+		resetTelekinetic();
+	}
+
+	private void resetTelekinetic()
+	{
+		currentTelekineticPuzzle = null;
+		telekineticPuzzleStep = 0;
+
+		guardianTargetTiles[0] = null;
+		guardianTargetTiles[1] = null;
+
+		playerTargetTiles[0] = null;
+		playerTargetTiles[1] = null;
+	}
+
+	@Subscribe
+	public void onMenuEntryOptionClicked(MenuOptionClicked event)
 	{
 		lastObjectIdClicked = event.getId();
 	}

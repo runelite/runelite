@@ -40,7 +40,7 @@ public enum GraveyardBone
 		this.fruitAmount = fruitAmount;
 	}
 
-	static GraveyardBone GetBoneById(int itemId)
+	static GraveyardBone getBoneById(int itemId)
 	{
 		for (GraveyardBone bone : values())
 		{
