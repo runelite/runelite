@@ -25,6 +25,8 @@
 package net.runelite.mixins;
 
 import java.awt.geom.Area;
+import net.runelite.api.Model;
+import net.runelite.api.Renderable;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.rs.api.RSItemLayer;
@@ -54,5 +56,65 @@ public abstract class RSItemLayerMixin implements RSItemLayer
 	public Area getClickbox()
 	{
 		throw new UnsupportedOperationException();
+	}
+
+	@Inject
+	@Override
+	public Model getModelBottom()
+	{
+		Renderable renderable = getBottom();
+		if (renderable == null)
+		{
+			return null;
+		}
+
+		if (renderable instanceof Model)
+		{
+			return (Model) renderable;
+		}
+		else
+		{
+			return renderable.getModel();
+		}
+	}
+
+	@Inject
+	@Override
+	public Model getModelMiddle()
+	{
+		Renderable renderable = getMiddle();
+		if (renderable == null)
+		{
+			return null;
+		}
+
+		if (renderable instanceof Model)
+		{
+			return (Model) renderable;
+		}
+		else
+		{
+			return renderable.getModel();
+		}
+	}
+
+	@Inject
+	@Override
+	public Model getModelTop()
+	{
+		Renderable renderable = getTop();
+		if (renderable == null)
+		{
+			return null;
+		}
+
+		if (renderable instanceof Model)
+		{
+			return (Model) renderable;
+		}
+		else
+		{
+			return renderable.getModel();
+		}
 	}
 }

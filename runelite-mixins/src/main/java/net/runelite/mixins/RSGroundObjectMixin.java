@@ -58,7 +58,8 @@ public abstract class RSGroundObjectMixin implements RSGroundObject
 	}
 
 	@Inject
-	private Model getModel()
+	@Override
+	public Model getModel()
 	{
 		Renderable renderable = getRenderable();
 		if (renderable == null)

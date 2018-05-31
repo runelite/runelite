@@ -58,7 +58,8 @@ public abstract class RSWallObjectMixin implements RSWallObject
 	}
 
 	@Inject
-	private Model getModelA()
+	@Override
+	public Model getModelA()
 	{
 		Renderable renderable = getRenderable1();
 		if (renderable == null)
@@ -77,7 +78,8 @@ public abstract class RSWallObjectMixin implements RSWallObject
 	}
 
 	@Inject
-	private Model getModelB()
+	@Override
+	public Model getModelB()
 	{
 		Renderable renderable = getRenderable2();
 		if (renderable == null)

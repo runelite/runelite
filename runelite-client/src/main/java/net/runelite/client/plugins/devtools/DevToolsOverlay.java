@@ -60,6 +60,7 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.graphics.ModelOutlineRenderer;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -90,6 +91,7 @@ class DevToolsOverlay extends Overlay
 	private final Client client;
 	private final DevToolsPlugin plugin;
 	private final TooltipManager toolTipManager;
+	private final ModelOutlineRenderer modelOutliner;
 
 	@Setter
 	@Getter
@@ -99,13 +101,14 @@ class DevToolsOverlay extends Overlay
 	private int itemIndex = -1;
 
 	@Inject
-	private DevToolsOverlay(Client client, DevToolsPlugin plugin, TooltipManager toolTipManager)
+	private DevToolsOverlay(Client client, DevToolsPlugin plugin, TooltipManager toolTipManager, ModelOutlineRenderer modelOutliner)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_MAP);
 		this.client = client;
 		this.plugin = plugin;
 		this.toolTipManager = toolTipManager;
+		this.modelOutliner = modelOutliner;
 	}
 
 	@Override
@@ -296,13 +299,7 @@ class DevToolsOverlay extends Overlay
 						OverlayUtil.renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId(), GREEN);
 					}
 
-					// Draw a polygon around the convex hull
-					// of the model vertices
-					Polygon p = gameObject.getConvexHull();
-					if (p != null)
-					{
-						graphics.drawPolygon(p);
-					}
+					modelOutliner.drawOutline(gameObject, 1, Color.WHITE);
 				}
 			}
 		}
@@ -342,17 +339,7 @@ class DevToolsOverlay extends Overlay
 				OverlayUtil.renderTileOverlay(graphics, decorObject, "ID: " + decorObject.getId(), DEEP_PURPLE);
 			}
 
-			Polygon p = decorObject.getConvexHull();
-			if (p != null)
-			{
-				graphics.drawPolygon(p);
-			}
-
-			p = decorObject.getConvexHull2();
-			if (p != null)
-			{
-				graphics.drawPolygon(p);
-			}
+			modelOutliner.drawOutline(decorObject, 1, Color.WHITE);
 		}
 	}
 

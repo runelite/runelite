@@ -159,4 +159,6 @@ public interface Projectile extends Renderable
 	 * @return the z-axis velocity
 	 */
 	double getVelocityZ();
+
+	int getOrientation();
 }

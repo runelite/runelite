@@ -26,28 +26,32 @@
  */
 package net.runelite.client.plugins.slayer;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
 import java.util.List;
 import javax.inject.Inject;
+import net.runelite.api.Client;
 import net.runelite.api.NPC;
+import net.runelite.client.graphics.ModelOutlineRenderer;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
 public class TargetClickboxOverlay extends Overlay
 {
+	private final Client client;
 	private final SlayerConfig config;
 	private final SlayerPlugin plugin;
+	private final ModelOutlineRenderer modelOutliner;
 
 	@Inject
-	TargetClickboxOverlay(SlayerConfig config, SlayerPlugin plugin)
+	TargetClickboxOverlay(Client client, SlayerConfig config, SlayerPlugin plugin,
+		ModelOutlineRenderer modelOutlineRenderer)
 	{
+		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
+		this.modelOutliner = modelOutlineRenderer;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 	}
@@ -63,22 +67,9 @@ public class TargetClickboxOverlay extends Overlay
 		List<NPC> targets = plugin.getHighlightedTargets();
 		for (NPC target : targets)
 		{
-			renderTargetOverlay(graphics, target, config.getTargetColor());
+			modelOutliner.drawOutline(target, 1, config.getTargetColor());
 		}
 
 		return null;
-	}
-
-	private void renderTargetOverlay(Graphics2D graphics, NPC actor, Color color)
-	{
-		Polygon objectClickbox = actor.getConvexHull();
-		if (objectClickbox != null)
-		{
-			graphics.setColor(color);
-			graphics.setStroke(new BasicStroke(2));
-			graphics.draw(objectClickbox);
-			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
-			graphics.fill(objectClickbox);
-		}
 	}
 }

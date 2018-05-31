@@ -54,11 +54,13 @@ import net.runelite.client.game.ClanManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.LootManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
+import net.runelite.client.graphics.ModelOutlineRenderer;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.rs.ClientUpdateCheckMode;
+import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -151,6 +153,12 @@ public class RuneLite
 	@Inject
 	@Nullable
 	private Client client;
+
+	@Inject
+	private Provider<ModelOutlineRenderer> modelOutlineRenderer;
+
+	@Inject
+	private Scheduler scheduler;
 
 	public static void main(String[] args) throws Exception
 	{
@@ -294,6 +302,12 @@ public class RuneLite
 
 		// Start plugins
 		pluginManager.startCorePlugins();
+
+		// Register additional schedulers
+		if (this.client != null)
+		{
+			scheduler.registerObject(modelOutlineRenderer.get());
+		}
 	}
 
 	public void shutdown()

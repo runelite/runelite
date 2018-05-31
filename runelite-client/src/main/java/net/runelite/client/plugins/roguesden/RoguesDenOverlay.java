@@ -31,6 +31,7 @@ import java.awt.Polygon;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.client.graphics.ModelOutlineRenderer;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -41,14 +42,16 @@ public class RoguesDenOverlay extends Overlay
 
 	private final Client client;
 	private final RoguesDenPlugin plugin;
+	private final ModelOutlineRenderer modelOutliner;
 
 	@Inject
-	public RoguesDenOverlay(Client client, RoguesDenPlugin plugin)
+	public RoguesDenOverlay(Client client, RoguesDenPlugin plugin, ModelOutlineRenderer modelOutliner)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
 		this.plugin = plugin;
+		this.modelOutliner = modelOutliner;
 	}
 
 	@Override
@@ -65,12 +68,7 @@ public class RoguesDenOverlay extends Overlay
 		{
 			if (tile.getPlane() == client.getPlane() && obstacle.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
 			{
-				Polygon p = tile.getGameObjects()[0].getConvexHull();
-				if (p != null)
-				{
-					graphics.setColor(Color.CYAN);
-					graphics.drawPolygon(p);
-				}
+				modelOutliner.drawOutline(tile.getGameObjects()[0], 1, Color.CYAN);
 			}
 		});
 

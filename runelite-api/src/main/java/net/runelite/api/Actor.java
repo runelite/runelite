@@ -114,6 +114,8 @@ public interface Actor extends Renderable
 	 */
 	int getOrientation();
 
+	int getCurrentOrientation();
+
 	/**
 	 * Gets the current animation the actor is performing.
 	 *

@@ -60,6 +60,33 @@ public class Scheduler
 		return Collections.unmodifiableList(scheduledMethods);
 	}
 
+	public void registerObject(Object obj)
+	{
+		for (Method method : obj.getClass().getMethods())
+		{
+			Schedule schedule = method.getAnnotation(Schedule.class);
+			if (schedule == null)
+			{
+				continue;
+			}
+
+			ScheduledMethod scheduledMethod = new ScheduledMethod(schedule, method, obj);
+			addScheduledMethod(scheduledMethod);
+		}
+	}
+
+	public void unregisterObject(Object obj)
+	{
+		for (ScheduledMethod sm : scheduledMethods)
+		{
+			if (sm.getObject() == obj)
+			{
+				removeScheduledMethod(sm);
+				break;
+			}
+		}
+	}
+
 	public void tick()
 	{
 		Instant now = Instant.now();

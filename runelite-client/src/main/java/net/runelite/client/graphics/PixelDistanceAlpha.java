@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,50 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.graphics;
 
-import net.runelite.api.GameObject;
-import net.runelite.mapping.Import;
+import lombok.RequiredArgsConstructor;
+import lombok.Value;
 
-public interface RSGameObject extends GameObject
+@Value
+@RequiredArgsConstructor
+class PixelDistanceAlpha
 {
-	@Import("renderable")
-	RSRenderable getRenderable();
-
-	@Import("plane")
-	int getPlane();
-
-	@Import("relativeX")
-	int getRelativeX();
-
-	@Import("relativeY")
-	int getRelativeY();
-
-	@Import("offsetX")
-	int getOffsetX();
-
-	@Import("offsetY")
-	int getOffsetY();
-
-	@Import("x")
-	@Override
-	int getX();
-
-	@Import("y")
-	@Override
-	int getY();
-
-	@Import("height")
-	int getHeight();
-
-	@Import("orientation")
-	@Override
-	int getRsOrientation();
-
-	@Import("hash")
-	@Override
-	long getHash();
-
-	@Import("flags")
-	int getFlags();
+	private final int outerAlpha;
+	private final int distArrayPos;
 }

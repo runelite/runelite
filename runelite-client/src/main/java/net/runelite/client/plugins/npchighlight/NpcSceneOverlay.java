@@ -43,6 +43,7 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.graphics.ModelOutlineRenderer;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -51,6 +52,8 @@ import net.runelite.client.util.Text;
 
 public class NpcSceneOverlay extends Overlay
 {
+	private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
+
 	// Anything but white text is quite hard to see since it is drawn on
 	// a dark background
 	private static final Color TEXT_COLOR = Color.WHITE;
@@ -65,13 +68,15 @@ public class NpcSceneOverlay extends Overlay
 	private final Client client;
 	private final NpcIndicatorsConfig config;
 	private final NpcIndicatorsPlugin plugin;
+	private final ModelOutlineRenderer modelOutliner;
 
 	@Inject
-	NpcSceneOverlay(Client client, NpcIndicatorsConfig config, NpcIndicatorsPlugin plugin)
+	NpcSceneOverlay(Client client, NpcIndicatorsConfig config, NpcIndicatorsPlugin plugin, ModelOutlineRenderer modelOutliner)
 	{
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
+		this.modelOutliner = modelOutliner;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 	}
@@ -170,6 +175,18 @@ public class NpcSceneOverlay extends Overlay
 				Polygon objectClickbox = actor.getConvexHull();
 
 				renderPoly(graphics, color, objectClickbox);
+				break;
+
+			case THIN_OUTLINE:
+				modelOutliner.drawOutline(actor, 1, color);
+				break;
+
+			case OUTLINE:
+				modelOutliner.drawOutline(actor, 2, color);
+				break;
+
+			case GLOW:
+				modelOutliner.drawOutline(actor, 8, color, TRANSPARENT);
 				break;
 		}
 
