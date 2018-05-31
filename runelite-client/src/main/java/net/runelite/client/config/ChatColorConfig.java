@@ -195,7 +195,10 @@ public interface ChatColorConfig extends Config
 		name = "Examine Highlight",
 		description = "Color of highlights in Examine Text"
 	)
-	Color opaqueExamineHighlight();
+	default Color opaqueExamineHighlight()
+	{
+		return Color.decode("#0000FF");
+	}
 
 	@ConfigItem(
 		position = 50,
@@ -407,7 +410,10 @@ public interface ChatColorConfig extends Config
 		name = "Examine Highlight (transparent)",
 		description = "Color of highlights in Examine Text (transparent)"
 	)
-	Color transparentExamineHighlight();
+	default Color transparentExamineHighlight()
+	{
+		return Color.decode("#0000FF");
+	}
 
 	@ConfigItem(
 		position = 80,
