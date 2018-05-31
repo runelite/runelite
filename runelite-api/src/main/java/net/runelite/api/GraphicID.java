@@ -26,6 +26,7 @@ package net.runelite.api;
 
 public class GraphicID
 {
+	public static final int CHARGE = 111;
 	public static final int ENTANGLE = 179;
 	public static final int SNARE = 180;
 	public static final int BIND = 181;
