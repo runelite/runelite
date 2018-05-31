@@ -36,6 +36,7 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
 import javax.swing.JFrame;
@@ -45,16 +46,24 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerOverlay;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerPlugin;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.components.FlatTextField;
 import net.runelite.client.util.SwingUtil;
 
 class ScreenMarkerPanel extends JPanel
 {
 	private static final int DEFAULT_FILL_OPACITY = 75;
+
+	private static final Border NAME_BOTTOM_BORDER = new CompoundBorder(
+		BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.DARK_GRAY_COLOR),
+		BorderFactory.createLineBorder(ColorScheme.DARKER_GRAY_COLOR));
 
 	private static final ImageIcon BORDER_COLOR_ICON;
 	private static final ImageIcon BORDER_COLOR_HOVER_ICON;
@@ -86,6 +95,11 @@ class ScreenMarkerPanel extends JPanel
 	private final JLabel opacityIndicator = new JLabel();
 	private final JLabel visibilityLabel = new JLabel();
 	private final JLabel deleteLabel = new JLabel();
+
+	private final FlatTextField nameInput = new FlatTextField();
+	private final JLabel save = new JLabel("Save");
+	private final JLabel cancel = new JLabel("Cancel");
+	private final JLabel rename = new JLabel("Rename");
 
 	private final SpinnerModel spinnerModel = new SpinnerNumberModel(5, 0, Integer.MAX_VALUE, 1);
 	private final JSpinner thicknessSpinner = new JSpinner(spinnerModel);
@@ -146,6 +160,109 @@ class ScreenMarkerPanel extends JPanel
 
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
+		JPanel nameWrapper = new JPanel(new BorderLayout());
+		nameWrapper.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		nameWrapper.setBorder(NAME_BOTTOM_BORDER);
+
+		JPanel nameActions = new JPanel(new BorderLayout(3, 0));
+		nameActions.setBorder(new EmptyBorder(0, 0, 0, 8));
+		nameActions.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
+		save.setVisible(false);
+		save.setFont(FontManager.getRunescapeSmallFont());
+		save.setForeground(ColorScheme.PROGRESS_COMPLETE_COLOR);
+		save.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				marker.getMarker().setName(nameInput.getText());
+				plugin.updateConfig();
+
+				nameInput.setEditable(false);
+				updateNameActions(false);
+				requestFocusInWindow();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				save.setForeground(ColorScheme.PROGRESS_COMPLETE_COLOR.darker());
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				save.setForeground(ColorScheme.PROGRESS_COMPLETE_COLOR);
+			}
+		});
+
+		cancel.setVisible(false);
+		cancel.setFont(FontManager.getRunescapeSmallFont());
+		cancel.setForeground(ColorScheme.PROGRESS_ERROR_COLOR);
+		cancel.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				nameInput.setEditable(false);
+				nameInput.setText(marker.getName());
+				updateNameActions(false);
+				requestFocusInWindow();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				cancel.setForeground(ColorScheme.PROGRESS_ERROR_COLOR.darker());
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				cancel.setForeground(ColorScheme.PROGRESS_ERROR_COLOR);
+			}
+		});
+
+		rename.setFont(FontManager.getRunescapeSmallFont());
+		rename.setForeground(ColorScheme.LIGHT_GRAY_COLOR.darker());
+		rename.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				nameInput.setEditable(true);
+				updateNameActions(true);
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				rename.setForeground(ColorScheme.LIGHT_GRAY_COLOR.darker().darker());
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				rename.setForeground(ColorScheme.LIGHT_GRAY_COLOR.darker());
+			}
+		});
+
+		nameActions.add(save, BorderLayout.EAST);
+		nameActions.add(cancel, BorderLayout.WEST);
+		nameActions.add(rename, BorderLayout.CENTER);
+
+		nameInput.setText(marker.getMarker().getName());
+		nameInput.setBorder(null);
+		nameInput.setEditable(false);
+		nameInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		nameInput.setPreferredSize(new Dimension(0, 24));
+		nameInput.getTextField().setForeground(Color.WHITE);
+		nameInput.getTextField().setBorder(new EmptyBorder(0, 8, 0, 0));
+
+		nameWrapper.add(nameInput, BorderLayout.CENTER);
+		nameWrapper.add(nameActions, BorderLayout.EAST);
 
 		JPanel bottomContainer = new JPanel(new BorderLayout());
 		bottomContainer.setBorder(new EmptyBorder(8, 0, 8, 0));
@@ -305,6 +422,7 @@ class ScreenMarkerPanel extends JPanel
 		bottomContainer.add(leftActions, BorderLayout.WEST);
 		bottomContainer.add(rightActions, BorderLayout.EAST);
 
+		add(nameWrapper, BorderLayout.NORTH);
 		add(bottomContainer, BorderLayout.CENTER);
 
 		updateVisibility();
@@ -312,6 +430,19 @@ class ScreenMarkerPanel extends JPanel
 		updateBorder();
 		updateBorder();
 
+	}
+
+	private void updateNameActions(boolean saveAndCancel)
+	{
+		save.setVisible(saveAndCancel);
+		cancel.setVisible(saveAndCancel);
+		rename.setVisible(!saveAndCancel);
+
+		if (saveAndCancel)
+		{
+			nameInput.getTextField().requestFocusInWindow();
+			nameInput.getTextField().selectAll();
+		}
 	}
 
 	/* Updates the thickness without saving on config */

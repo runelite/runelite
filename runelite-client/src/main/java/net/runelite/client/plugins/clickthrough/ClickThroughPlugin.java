@@ -43,7 +43,7 @@ public class ClickThroughPlugin  extends Plugin
     private Client client;
 
     @Inject
-    private MenuEntrySwapperConfig config;
+    private ClickThroughConfig config;
 
     @Inject
     private ShiftClickInputListener inputListener;
