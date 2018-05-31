@@ -166,7 +166,7 @@ public class SpecialCounterPlugin extends Plugin
 	{
 		NPC actor = npcDespawned.getNpc();
 
-		if (actor.getHealthRatio() == 0 && actor.getId() == interactedNpcId)
+		if (actor.isDead() && actor.getId() == interactedNpcId)
 		{
 			removeCounters();
 		}
