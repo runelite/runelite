@@ -46,9 +46,6 @@ public class ClickThroughPlugin  extends Plugin
     private ClickThroughConfig config;
 
     @Inject
-    private ShiftClickInputListener inputListener;
-
-    @Inject
     private ConfigManager configManager;
 
     @Inject
