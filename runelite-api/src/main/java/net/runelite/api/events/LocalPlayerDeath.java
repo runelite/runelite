@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Matthew Steglinski <https://github.com/sainttx>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,17 +24,9 @@
  */
 package net.runelite.api.events;
 
-import lombok.Data;
-import net.runelite.api.Actor;
-
 /**
- * An event where the {@link Actor} has died.
+ * An event when the local player dies.
  */
-@Data
-public class ActorDeath
+public class LocalPlayerDeath
 {
-	/**
-	 * The player or NPC who died.
-	 */
-	private Actor actor;
 }
