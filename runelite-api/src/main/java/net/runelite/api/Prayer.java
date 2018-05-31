@@ -126,10 +126,6 @@ public enum Prayer
 	 */
 	SMITE(Varbits.PRAYER_SMITE),
 	/**
-	 * Preserve (Level 55).
-	 */
-	PRESERVE(Varbits.PRAYER_PRESERVE),
-	/**
 	 * Chivalry (Level 60, Defence/Strength/Attack).
 	 */
 	CHIVALRY(Varbits.PRAYER_CHIVALRY),
@@ -137,6 +133,10 @@ public enum Prayer
 	 * Piety (Level 70, Defence/Strength/Attack).
 	 */
 	PIETY(Varbits.PRAYER_PIETY),
+	/**
+	 * Preserve (Level 55).
+	 */
+	PRESERVE(Varbits.PRAYER_PRESERVE),
 	/**
 	 * Rigour (Level 74, Ranging/Damage/Defence).
 	 */
