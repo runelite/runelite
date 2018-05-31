@@ -54,6 +54,7 @@ import net.runelite.rs.api.RSCombatInfo2;
 import net.runelite.rs.api.RSCombatInfoList;
 import net.runelite.rs.api.RSCombatInfoListHolder;
 import net.runelite.rs.api.RSModel;
+import net.runelite.rs.api.RSNPC;
 import net.runelite.rs.api.RSNode;
 
 @Mixin(RSActor.class)
@@ -235,12 +236,19 @@ public abstract class RSActorMixin implements RSActor
 	@MethodHook("setCombatInfo")
 	public void setCombatInfo(int combatInfoId, int gameCycle, int var3, int var4, int healthRatio, int health)
 	{
-		if (healthRatio == 0 && this == client.getLocalPlayer())
+		if (healthRatio == 0)
 		{
-			log.debug("You died!");
+			if (this == client.getLocalPlayer())
+			{
+				log.debug("You died!");
 
-			LocalPlayerDeath event = new LocalPlayerDeath();
-			eventBus.post(event);
+				LocalPlayerDeath event = new LocalPlayerDeath();
+				eventBus.post(event);
+			}
+			else if (this instanceof RSNPC)
+			{
+				((RSNPC) this).setDead(true);
+			}
 		}
 	}
 }
