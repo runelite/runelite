@@ -216,6 +216,14 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(worldMapBtn);
 
+		final JButton tileLocationBtn = new JButton("Tile Location Tooltip");
+		tileLocationBtn.addActionListener(e ->
+		{
+			highlightButton(tileLocationBtn);
+			plugin.toggleTileLocation();
+		});
+		container.add(tileLocationBtn);
+
 		return container;
 	}
 
