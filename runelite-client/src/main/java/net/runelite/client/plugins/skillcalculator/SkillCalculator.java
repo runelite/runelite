@@ -36,7 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.JCheckBox;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.runelite.api.Client;
@@ -73,6 +74,7 @@ class SkillCalculator extends JPanel
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
 	private float xpFactor = 1.0f;
+	private float lastBonus = 0.0f;
 
 	SkillCalculator(Client client, UICalculatorInputArea uiInput)
 	{
@@ -115,7 +117,7 @@ class SkillCalculator extends JPanel
 		// Remove all components (action slots) from this panel.
 		removeAll();
 
-		// Add in checkboxes for available skill bonuses.
+		// Add in radiobuttons for available skill bonuses.
 		renderBonusOptions();
 
 		// Add the combined action slot.
@@ -151,10 +153,14 @@ class SkillCalculator extends JPanel
 		double xp = 0;
 
 		for (UIActionSlot slot : combinedActionSlots)
+		{
 			xp += slot.getValue();
-
+		}
+			
 		if (neededXP > 0)
+		{
 			actionCount = (int) Math.ceil(neededXP / xp);
+		}
 
 		combinedActionSlot.setText(formatXPActionString(xp, actionCount, "exp - "));
 	}
@@ -162,7 +168,9 @@ class SkillCalculator extends JPanel
 	private void clearCombinedSlots()
 	{
 		for (UIActionSlot slot : combinedActionSlots)
+		{
 			slot.setSelected(false);
+		}
 
 		combinedActionSlots.clear();
 	}
@@ -171,11 +179,14 @@ class SkillCalculator extends JPanel
 	{
 		if (skillData.getBonuses() != null)
 		{
+			ButtonGroup uiButtonGroup = new ButtonGroup();
+			lastBonus = 0.0f;
 			for (SkillDataBonus bonus : skillData.getBonuses())
 			{
 				JPanel uiOption = new JPanel(new BorderLayout());
 				JLabel uiLabel = new JLabel(bonus.getName());
-				JCheckBox uiCheckbox = new JCheckBox();
+				JRadioButton uiRadioButton = new JRadioButton();
+				uiButtonGroup.add(uiRadioButton);
 
 				uiLabel.setForeground(Color.WHITE);
 				uiLabel.setFont(FontManager.getRunescapeSmallFont());
@@ -183,12 +194,16 @@ class SkillCalculator extends JPanel
 				uiOption.setBorder(BorderFactory.createEmptyBorder(3, 7, 3, 0));
 				uiOption.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-				// Adjust XP bonus depending on check-state of the boxes.
-				uiCheckbox.addActionListener(e -> adjustXPBonus(uiCheckbox.isSelected(), bonus.getValue()));
-				uiCheckbox.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+				// Adjust XP bonus depending on selected modifier.
+				uiRadioButton.addActionListener(e -> 
+				{
+					adjustXPBonus(uiRadioButton.isSelected(), bonus.getValue());
+					lastBonus = bonus.getValue();
+				});
+				uiRadioButton.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
 
 				uiOption.add(uiLabel, BorderLayout.WEST);
-				uiOption.add(uiCheckbox, BorderLayout.EAST);
+				uiOption.add(uiRadioButton, BorderLayout.EAST);
 
 				add(uiOption);
 				add(Box.createRigidArea(new Dimension(0, 5)));
@@ -214,12 +229,18 @@ class SkillCalculator extends JPanel
 				public void mousePressed(MouseEvent e)
 				{
 					if (!e.isShiftDown())
+					{
 						clearCombinedSlots();
+					}
 
 					if (slot.isSelected())
+					{
 						combinedActionSlots.remove(slot);
+					}
 					else
+					{
 						combinedActionSlots.add(slot);
+					}
 
 					slot.setSelected(!slot.isSelected());
 					updateCombinedAction();
@@ -242,7 +263,9 @@ class SkillCalculator extends JPanel
 			double xp = (action.isIgnoreBonus()) ? action.getXp() : action.getXp() * xpFactor;
 
 			if (neededXP > 0)
+			{
 				actionCount = (int) Math.ceil(neededXP / xp);
+			}
 
 			slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
 			slot.setAvailable(currentLevel >= action.getLevel());
@@ -273,6 +296,7 @@ class SkillCalculator extends JPanel
 
 	private void adjustXPBonus(boolean addBonus, float value)
 	{
+		clearLastBonus();
 		xpFactor += addBonus ? value : -value;
 		calculate();
 	}
@@ -314,4 +338,11 @@ class SkillCalculator extends JPanel
 	{
 		return Math.min(MAX_XP, Math.max(0, input));
 	}
+
+	private void clearLastBonus()
+	{
+		xpFactor -= lastBonus;
+		calculate();
+	}
+	
 }
