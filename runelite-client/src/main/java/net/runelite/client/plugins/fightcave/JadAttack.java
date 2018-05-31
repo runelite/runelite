@@ -33,6 +33,7 @@ public enum JadAttack
 	RANGE(AnimationID.TZTOK_JAD_RANGE_ATTACK, Prayer.PROTECT_FROM_MISSILES);
 
 	private final int animation;
+
 	private final Prayer prayer;
 
 	JadAttack(int animation, Prayer prayer)

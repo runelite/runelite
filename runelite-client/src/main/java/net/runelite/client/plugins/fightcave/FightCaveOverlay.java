@@ -42,11 +42,17 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 public class FightCaveOverlay extends Overlay
 {
 	private final Client client;
+
 	private final FightCavePlugin plugin;
+
 	private final FightCaveConfig config;
+
 	private final PanelComponent panelComponent = new PanelComponent();
+
 	private HashMap<Integer, Integer> thisWave;
+
 	private HashMap<Integer, Integer> nextWave;
+
 	/*
 		22 = Bat
 		45 = Small Melee
@@ -192,6 +198,7 @@ public class FightCaveOverlay extends Overlay
 		{
 			return null;
 		}
+
 		panelComponent.getChildren().clear();
 		panelComponent.getChildren().add(TitleComponent.builder()
 				.text("Wave " + currentWave)
@@ -205,6 +212,7 @@ public class FightCaveOverlay extends Overlay
 			{
 				continue;
 			}
+
 			panelComponent.getChildren().add(TitleComponent.builder()
 					.text(quantity + "x " + monsters.get(monsterID))
 					.color(Color.white)

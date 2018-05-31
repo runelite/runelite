@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, DrizzyBot <https://github.com/drizzybot>
+ * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,7 +47,6 @@ import net.runelite.client.util.QueryRunner;
 @PluginDescriptor(
 	name = "Fight Cave"
 )
-
 @Slf4j
 public class FightCavePlugin extends Plugin
 {
@@ -85,11 +85,6 @@ public class FightCavePlugin extends Plugin
 		return configManager.getConfig(FightCaveConfig.class);
 	}
 
-	@Override
-	protected void startUp() throws Exception
-	{
-	}
-
 	private boolean isInFightCaveInstance()
 	{
 		return Arrays.equals(client.getMapRegions(), FIGHT_CAVE_REGION);
@@ -102,6 +97,7 @@ public class FightCavePlugin extends Plugin
 		{
 			return;
 		}
+
 		String message = event.getMessage();
 		if (event.getMessage().contains("Wave:"))
 		{
@@ -120,6 +116,7 @@ public class FightCavePlugin extends Plugin
 		{
 			return;
 		}
+
 		if (actor.getName().equals("Tz-Kek"))
 		{
 			switch (actor.getCombatLevel())
@@ -155,6 +152,7 @@ public class FightCavePlugin extends Plugin
 		{
 			return;
 		}
+
 		NPC jad = findJad();
 		if (jad != null)
 		{
