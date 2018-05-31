@@ -126,11 +126,45 @@ public class WorldMapOverlay extends Overlay
 					else
 					{
 						drawPoint = clipToRectangle(drawPoint, worldMapRectangle);
-						if (!worldPoint.isCurrentlyEdgeSnapped())
+						WorldMapSnapEdge horizontalEdge = WorldMapSnapEdge.NONE;
+						WorldMapSnapEdge verticalEdge = WorldMapSnapEdge.NONE;
+						if (drawPoint.getX() <= worldMapRectangle.x)
+						{
+							horizontalEdge = WorldMapSnapEdge.LEFT;
+						}
+						else if (drawPoint.getX() + image.getWidth() / 2 >= worldMapRectangle.width)
+						{
+							horizontalEdge = WorldMapSnapEdge.RIGHT;
+						}
+
+						if (drawPoint.getY() <= worldMapRectangle.y)
+						{
+							verticalEdge = WorldMapSnapEdge.TOP;
+						}
+						else if (drawPoint.getY() + image.getHeight() / 2 >= worldMapRectangle.height)
+						{
+							verticalEdge = WorldMapSnapEdge.BOTTOM;
+						}
+
+						WorldMapSnapEdge newEdge = WorldMapSnapEdge.combineEdges(verticalEdge, horizontalEdge);
+
+						if (worldPoint.isCurrentlyEdgeSnapped())
+						{
+							WorldMapSnapEdge oldEdge = worldPoint.getSnappedEdge();
+							worldPoint.setSnappedEdge(newEdge);
+
+							if (oldEdge != newEdge)
+							{
+								worldPoint.onSnapEdgeChanged(newEdge);
+							}
+						}
+						else
 						{
 							worldPoint.setCurrentlyEdgeSnapped(true);
+							worldPoint.onSnapEdgeChanged(newEdge);
 							worldPoint.onEdgeSnap();
 						}
+						worldPoint.setSnappedEdge(newEdge);
 					}
 				}
 				else
@@ -143,8 +177,24 @@ public class WorldMapOverlay extends Overlay
 
 				if (worldPoint.getImagePoint() == null)
 				{
-					drawX -= image.getWidth() / 2;
-					drawY -= image.getHeight() / 2;
+					if (worldPoint.isCurrentlyEdgeSnapped())
+					{
+						switch (worldPoint.getSnappedEdge())
+						{
+							case BOTTOM:
+							case BOTTOM_LEFT:
+								drawY -= image.getHeight();
+								break;
+							case RIGHT:
+							case TOP_RIGHT:
+								drawX -= image.getWidth();
+								break;
+							case BOTTOM_RIGHT:
+								drawX -= image.getWidth();
+								drawY -= image.getHeight();
+								break;
+						}
+					}
 				}
 				else
 				{
