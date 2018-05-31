@@ -162,7 +162,8 @@ public class ClientUI
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("runelite"))
+		// Ignore all window related settings in fullscreen
+		if (!event.getGroup().equals("runelite") || config.enableFullscreen())
 		{
 			return;
 		}
@@ -367,6 +368,7 @@ public class ClientUI
 			SwingUtil.addGracefulExitCallback(frame,
 				() ->
 				{
+					frame.getGraphicsConfiguration().getDevice().setFullScreenWindow(null);
 					saveClientBoundsConfig();
 					runelite.shutdown();
 				},
@@ -406,14 +408,15 @@ public class ClientUI
 	 */
 	public void show() throws Exception
 	{
-		final boolean withTitleBar = config.enableCustomChrome();
-
 		SwingUtilities.invokeAndWait(() ->
 		{
-			frame.setUndecorated(withTitleBar);
-
-			if (withTitleBar)
+			if (config.enableFullscreen())
 			{
+				frame.setUndecorated(OSType.getOSType() != OSType.MacOS);
+			}
+			else if (config.enableCustomChrome())
+			{
+				frame.setUndecorated(true);
 				frame.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
 
 				final JComponent titleBar = SubstanceCoreUtilities.getTitlePaneComponent(frame);
@@ -463,12 +466,12 @@ public class ClientUI
 			frame.pack();
 			frame.revalidateMinimumSize();
 
-			if (config.rememberScreenBounds())
+			if (!config.enableFullscreen() && config.rememberScreenBounds())
 			{
 				try
 				{
-					Rectangle clientBounds = configManager.getConfiguration(
-						CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, Rectangle.class);
+					Rectangle clientBounds = configManager.getConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, Rectangle.class);
+
 					if (clientBounds != null)
 					{
 						frame.setBounds(clientBounds);
@@ -481,6 +484,19 @@ public class ClientUI
 					if (configManager.getConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED) != null)
 					{
 						frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+					}
+
+					// If the frame is well hidden (e.g. unplugged 2nd screen),
+					// we want to move it back to default position as it can be
+					// hard for the user to reposition it themselves otherwise.
+					clientBounds = frame.getBounds();
+					Rectangle screenBounds = frame.getGraphicsConfiguration().getBounds();
+					if (clientBounds.x + clientBounds.width - CLIENT_WELL_HIDDEN_MARGIN < screenBounds.getX() ||
+						clientBounds.x + CLIENT_WELL_HIDDEN_MARGIN > screenBounds.getX() + screenBounds.getWidth() ||
+						clientBounds.y + CLIENT_WELL_HIDDEN_MARGIN_TOP < screenBounds.getY() ||
+						clientBounds.y + CLIENT_WELL_HIDDEN_MARGIN > screenBounds.getY() + screenBounds.getHeight())
+					{
+						frame.setLocationRelativeTo(frame.getOwner());
 					}
 				}
 				catch (Exception ex)
@@ -501,19 +517,6 @@ public class ClientUI
 			requestFocus();
 			giveClientFocus();
 
-			// If the frame is well hidden (e.g. unplugged 2nd screen),
-			// we want to move it back to default position as it can be
-			// hard for the user to reposition it themselves otherwise.
-			Rectangle clientBounds = frame.getBounds();
-			Rectangle screenBounds = frame.getGraphicsConfiguration().getBounds();
-			if (clientBounds.x + clientBounds.width - CLIENT_WELL_HIDDEN_MARGIN < screenBounds.getX() ||
-				clientBounds.x + CLIENT_WELL_HIDDEN_MARGIN > screenBounds.getX() + screenBounds.getWidth() ||
-				clientBounds.y + CLIENT_WELL_HIDDEN_MARGIN_TOP < screenBounds.getY() ||
-				clientBounds.y + CLIENT_WELL_HIDDEN_MARGIN > screenBounds.getY() + screenBounds.getHeight())
-			{
-				frame.setLocationRelativeTo(frame.getOwner());
-			}
-
 			// Create hide sidebar button
 			sidebarNavigationButton = NavigationButton
 				.builder()
@@ -528,6 +531,23 @@ public class ClientUI
 
 			titleToolbar.addComponent(sidebarNavigationButton, sidebarNavigationJButton);
 			toggleSidebar();
+
+			// Force fullscreen
+			if (config.enableFullscreen())
+			{
+				frame.setExpandResizeType(ExpandResizeType.KEEP_WINDOW_SIZE);
+				frame.setBounds(frame.getGraphicsConfiguration().getBounds());
+
+				if (!OSXUtil.toggleFullscreen(frame))
+				{
+					frame.setResizable(false);
+
+					if (OSType.getOSType() != OSType.Windows && frame.getGraphicsConfiguration().getDevice().isFullScreenSupported())
+					{
+						frame.getGraphicsConfiguration().getDevice().setFullScreenWindow(frame);
+					}
+				}
+			}
 		});
 
 		eventBus.post(new ClientUILoaded());
