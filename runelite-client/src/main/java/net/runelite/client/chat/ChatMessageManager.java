@@ -174,6 +174,10 @@ public class ChatMessageManager
 					return Color.decode("#00FFFF");
 				case CLANCHAT:
 					return Color.decode("#7F0000");
+				case EXAMINE_ITEM:
+				case EXAMINE_OBJECT:
+				case EXAMINE_NPC:
+					return Color.decode("#000000");
 			}
 		}
 		else
@@ -187,6 +191,10 @@ public class ChatMessageManager
 					return Color.decode("#00FFFF");
 				case CLANCHAT:
 					return Color.decode("#7F0000");
+				case EXAMINE_ITEM:
+				case EXAMINE_OBJECT:
+				case EXAMINE_NPC:
+					return Color.decode("#FFFFFF");
 			}
 		}
 
