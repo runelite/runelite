@@ -48,6 +48,9 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
@@ -58,6 +61,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.Widget;
@@ -145,6 +149,8 @@ public class SlayerPlugin extends Plugin
 	private String taskName;
 	private int amount;
 	private TaskCounter counter;
+	private TaskCounter expeditiousCounter;
+	private TaskCounter slaughterCounter;
 	private int streak;
 	private int points;
 	private int cachedXp;
@@ -156,6 +162,12 @@ public class SlayerPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private int slaughterChargeCount;
+	private boolean hasExpeditious = false;
+	private boolean hasSlaughter = false;
+	private boolean hasExpeditiousInvent = false;
+	private boolean hasSlaughterInvent = false;
+	private boolean hasExpeditiousEquip = false;
+	private boolean hasSlaughterEquip = false;
 
 	@Override
 	protected void startUp() throws Exception
@@ -168,6 +180,8 @@ public class SlayerPlugin extends Plugin
 			setStreak(config.streak());
 			setExpeditiousChargeCount(config.expeditious());
 			setSlaughterChargeCount(config.slaughter());
+			checkBracelets(client.getItemContainer(InventoryID.EQUIPMENT), true);
+			checkBracelets(client.getItemContainer(InventoryID.INVENTORY), false);
 			clientThread.invokeLater(() -> setTask(config.taskName(), config.amount()));
 		}
 	}
@@ -176,6 +190,8 @@ public class SlayerPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		removeCounter();
+		removeSlaughterCounter();
+		removeExpeditiousCounter();
 	}
 
 	@Provides
@@ -284,6 +300,8 @@ public class SlayerPlugin extends Plugin
 			if (timeSinceInfobox.compareTo(statTimeout) >= 0)
 			{
 				removeCounter();
+				removeSlaughterCounter();
+				removeExpeditiousCounter();
 			}
 		}
 
@@ -309,6 +327,48 @@ public class SlayerPlugin extends Plugin
 		slayerItems = ImmutableList.copyOf(items);
 	}
 
+	private void checkBracelets(ItemContainer itemContainer, boolean isEquipment)
+	{
+		hasSlaughterEquip = !isEquipment && hasSlaughterEquip;
+		hasExpeditiousEquip = !isEquipment && hasExpeditiousEquip;
+		hasSlaughterInvent = isEquipment && hasSlaughterInvent;
+		hasExpeditiousInvent = isEquipment && hasExpeditiousInvent;
+		for (Item item : itemContainer.getItems())
+		{
+			if (item.getId() == ItemID.BRACELET_OF_SLAUGHTER)
+			{
+				hasSlaughterEquip = isEquipment || hasSlaughterEquip;
+				hasSlaughterInvent = !isEquipment || hasSlaughterInvent;
+			}
+			else if (item.getId() == ItemID.EXPEDITIOUS_BRACELET)
+			{
+				hasExpeditiousEquip = isEquipment || hasExpeditiousEquip;
+				hasExpeditiousInvent = !isEquipment || hasExpeditiousInvent;
+			}
+		}
+
+		hasExpeditious = (hasExpeditiousEquip || hasExpeditiousInvent);
+		hasSlaughter = (hasSlaughterEquip || hasSlaughterInvent);
+	}
+
+	@Subscribe
+	public void onItemContainerChanged(final ItemContainerChanged event)
+	{
+		if (event.getItemContainer() == client.getItemContainer(InventoryID.EQUIPMENT))
+		{
+			checkBracelets(event.getItemContainer(), true);
+		}
+		else if (event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
+		{
+			checkBracelets(event.getItemContainer(), false);
+		}
+
+		removeExpeditiousCounter();
+		removeSlaughterCounter();
+		addSlaughterCounter();
+		addExpeditiousCounter();
+	}
+
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
@@ -326,6 +386,12 @@ public class SlayerPlugin extends Plugin
 			amount++;
 			slaughterChargeCount = mSlaughter.find() ? Integer.parseInt(mSlaughter.group(1)) : SLAUGHTER_CHARGE;
 			config.slaughter(slaughterChargeCount);
+
+			if (config.showBraceletInfoBox())
+			{
+				addSlaughterCounter();
+				slaughterCounter.setText(String.valueOf(slaughterChargeCount));
+			}
 		}
 
 		if (chatMsg.startsWith(CHAT_BRACELET_EXPEDITIOUS))
@@ -335,6 +401,12 @@ public class SlayerPlugin extends Plugin
 			amount--;
 			expeditiousChargeCount = mExpeditious.find() ? Integer.parseInt(mExpeditious.group(1)) : EXPEDITIOUS_CHARGE;
 			config.expeditious(expeditiousChargeCount);
+
+			if (config.showBraceletInfoBox())
+			{
+				addExpeditiousCounter();
+				expeditiousCounter.setText(String.valueOf(expeditiousChargeCount));
+			}
 		}
 
 		if (chatMsg.startsWith(CHAT_BRACELET_EXPEDITIOUS_CHARGE))
@@ -348,6 +420,12 @@ public class SlayerPlugin extends Plugin
 
 			expeditiousChargeCount = Integer.parseInt(mExpeditious.group(1));
 			config.expeditious(expeditiousChargeCount);
+
+			if (config.showBraceletInfoBox())
+			{
+				addExpeditiousCounter();
+				expeditiousCounter.setText(String.valueOf(expeditiousChargeCount));
+			}
 		}
 		if (chatMsg.startsWith(CHAT_BRACELET_SLAUGHTER_CHARGE))
 		{
@@ -359,6 +437,12 @@ public class SlayerPlugin extends Plugin
 
 			slaughterChargeCount = Integer.parseInt(mSlaughter.group(1));
 			config.slaughter(slaughterChargeCount);
+
+			if (config.showBraceletInfoBox())
+			{
+				addSlaughterCounter();
+				slaughterCounter.setText(String.valueOf(slaughterChargeCount));
+			}
 		}
 
 		if (chatMsg.endsWith("; return to a Slayer master."))
@@ -455,6 +539,17 @@ public class SlayerPlugin extends Plugin
 		{
 			removeCounter();
 		}
+
+		if (config.showBraceletInfoBox())
+		{
+			clientThread.invokeLater(this::addExpeditiousCounter);
+			clientThread.invokeLater(this::addSlaughterCounter);
+		}
+		else
+		{
+			removeExpeditiousCounter();
+			removeSlaughterCounter();
+		}
 	}
 
 	private void killedOne()
@@ -467,14 +562,12 @@ public class SlayerPlugin extends Plugin
 		amount--;
 		config.amount(amount); // save changed value
 
-		if (!config.showInfobox())
+		if (config.showInfobox())
 		{
-			return;
+			// add and update counter, set timer
+			addCounter();
+			counter.setText(String.valueOf(amount));
 		}
-
-		// add and update counter, set timer
-		addCounter();
-		counter.setText(String.valueOf(amount));
 		infoTimer = Instant.now();
 	}
 
@@ -510,6 +603,30 @@ public class SlayerPlugin extends Plugin
 		infoBoxManager.addInfoBox(counter);
 	}
 
+	private void addSlaughterCounter()
+	{
+		if (!config.showBraceletInfoBox() || slaughterCounter != null || !hasSlaughter)
+		{
+			return;
+		}
+
+		BufferedImage slaughterImg = itemManager.getImage(ItemID.BRACELET_OF_SLAUGHTER);
+		slaughterCounter = new TaskCounter(slaughterImg, this, slaughterChargeCount);
+		infoBoxManager.addInfoBox(slaughterCounter);
+	}
+
+	private void addExpeditiousCounter()
+	{
+		if (!config.showBraceletInfoBox() || expeditiousCounter != null || !hasExpeditious)
+		{
+			return;
+		}
+
+		BufferedImage expeditiousImg = itemManager.getImage(ItemID.EXPEDITIOUS_BRACELET);
+		expeditiousCounter = new TaskCounter(expeditiousImg, this, expeditiousChargeCount);
+		infoBoxManager.addInfoBox(expeditiousCounter);
+	}
+
 	private void removeCounter()
 	{
 		if (counter == null)
@@ -519,6 +636,28 @@ public class SlayerPlugin extends Plugin
 
 		infoBoxManager.removeInfoBox(counter);
 		counter = null;
+	}
+
+	private void removeSlaughterCounter()
+	{
+		if (slaughterCounter == null)
+		{
+			return;
+		}
+
+		infoBoxManager.removeInfoBox(slaughterCounter);
+		slaughterCounter = null;
+	}
+
+	private void removeExpeditiousCounter()
+	{
+		if (expeditiousCounter == null)
+		{
+			return;
+		}
+
+		infoBoxManager.removeInfoBox(expeditiousCounter);
+		expeditiousCounter = null;
 	}
 
 	private List<NPC> buildTargetsToHighlight()

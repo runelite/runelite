@@ -52,7 +52,7 @@ public interface SlayerConfig extends Config
 		position = 2,
 		keyName = "itemoverlay",
 		name = "Count on Items",
-		description = "Display task count remaining on slayer items"
+		description = "Display task count remaining on slayer items and slayer bracelet count on slayer bracelets"
 	)
 	default boolean showItemOverlay()
 	{
@@ -61,6 +61,17 @@ public interface SlayerConfig extends Config
 
 	@ConfigItem(
 		position = 3,
+		keyName = "braceletinfobox",
+		name = "Bracelet InfoBox",
+		description = "Display Slayer bracelet information in an InfoBox"
+	)
+	default boolean showBraceletInfoBox()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 5,
 		keyName = "superiornotification",
 		name = "Superior foe notification",
 		description = "Toggles notifications on superior foe encounters"
@@ -71,7 +82,7 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 6,
 		keyName = "statTimeout",
 		name = "InfoBox Expiry (minutes)",
 		description = "Set the time until the InfoBox expires"
@@ -82,7 +93,7 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 7,
 		keyName = "highlightTargets",
 		name = "Highlight Targets",
 		description = "Highlight monsters you can kill for your current slayer assignment"
@@ -93,7 +104,7 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 8,
 		keyName = "targetColor",
 		name = "Target Color",
 		description = "Color of the highlighted targets"
@@ -184,7 +195,7 @@ public interface SlayerConfig extends Config
 	)
 	default int expeditious()
 	{
-		return -1;
+		return 30;
 	}
 
 	@ConfigItem(
@@ -202,7 +213,7 @@ public interface SlayerConfig extends Config
 	)
 	default int slaughter()
 	{
-		return -1;
+		return 30;
 	}
 
 	@ConfigItem(
