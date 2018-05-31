@@ -37,9 +37,9 @@ class DeathWorldMapPoint extends WorldMapPoint
 
 	static
 	{
-		WORLDMAP_HINT_ARROW = new BufferedImage(DeathIndicatorPlugin.WORLDMAP_ARROW.getWidth(), DeathIndicatorPlugin.WORLDMAP_ARROW.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		WORLDMAP_HINT_ARROW = new BufferedImage(DeathIndicatorPlugin.MAP_ARROW.getWidth(), DeathIndicatorPlugin.MAP_ARROW.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics graphics = WORLDMAP_HINT_ARROW.getGraphics();
-		graphics.drawImage(DeathIndicatorPlugin.WORLDMAP_ARROW, 0, 0, null);
+		graphics.drawImage(DeathIndicatorPlugin.MAP_ARROW, 0, 0, null);
 		graphics.drawImage(DeathIndicatorPlugin.BONES, 3, 7, null);
 		WORLDMAP_HINT_ARROW_POINT = new Point(WORLDMAP_HINT_ARROW.getWidth() / 2, WORLDMAP_HINT_ARROW.getHeight());
 	}

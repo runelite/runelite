@@ -37,6 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.ItemID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
@@ -44,8 +45,10 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ui.overlay.infobox.Timer;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
@@ -56,7 +59,7 @@ import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 @Slf4j
 public class DeathIndicatorPlugin extends Plugin
 {
-	public static final BufferedImage WORLDMAP_ARROW;
+	public static final BufferedImage MAP_ARROW;
 	public static final BufferedImage BONES;
 
 	private Timer deathTimer;
@@ -76,14 +79,17 @@ public class DeathIndicatorPlugin extends Plugin
 	@Inject
 	private ConfigManager configManager;
 
+	@Inject
+	private static ItemManager itemManager;
+
 	static
 	{
 		try
 		{
 			synchronized (ImageIO.class)
 			{
-				WORLDMAP_ARROW = ImageIO.read(DeathIndicatorPlugin.class.getResourceAsStream("worldmap_arrow.png"));
-				BONES = ImageIO.read(DeathIndicatorPlugin.class.getResourceAsStream("bones.png"));
+				MAP_ARROW = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("clue_arrow.png"));
+				BONES = itemManager.getImage(ItemID.BONES);
 			}
 		}
 		catch (IOException e)
@@ -261,7 +267,7 @@ public class DeathIndicatorPlugin extends Plugin
 				&& (config.hasRespawned())
 				&& (!config.deathMarkerReset())
 				&& (config.deathWorld() == -1)
-				&& (config.timeOfDeath().equals("")))
+				&& (config.timeOfDeath() == null))
 			{
 				if (client.hasHintArrow())
 				{
