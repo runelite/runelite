@@ -59,7 +59,6 @@ import net.runelite.api.SpritePixels;
 import net.runelite.api.Tile;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
-import net.runelite.api.WidgetNode;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -659,20 +658,6 @@ public abstract class RSClientMixin implements RSClient
 		{
 			set3dZoom(zoom);
 		}
-	}
-
-	@Copy("closeWidget")
-	public static void rs$closeWidget(WidgetNode widget, boolean b)
-	{
-		throw new RuntimeException();
-	}
-
-	@Replace("closeWidget")
-	public static void rl$closeWidget(WidgetNode widget, boolean b)
-	{
-		MenuEntry[] entries = client.getMenuEntries();
-		rs$closeWidget(widget, b);
-		client.setMenuEntries(entries);
 	}
 
 	@Copy("runWidgetOnLoadListener")
