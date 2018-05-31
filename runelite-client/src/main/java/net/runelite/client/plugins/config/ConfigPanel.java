@@ -519,6 +519,7 @@ public class ConfigPanel extends PluginPanel
 				textField.setWrapStyleWord(true);
 				textField.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 				textField.setText(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName()));
+				textField.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 				textField.addFocusListener(new FocusAdapter()
 				{
