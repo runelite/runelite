@@ -495,16 +495,6 @@ public class Perspective
 	}
 
 	/**
-	 * Determine if a triangle goes counter clockwise
-	 *
-	 * @return Returns true if the triangle goes counter clockwise and should be culled, otherwise false
-	 */
-	private static boolean cullFace(int x1, int y1, int x2, int y2, int x3, int y3)
-	{
-		return (y2 - y1) * (x3 - x2) - (x2 - x1) * (y3 - y2) < 0;
-	}
-
-	/**
 	 * Determine if a given point is off-screen.
 	 *
 	 * @param client
@@ -556,11 +546,6 @@ public class Perspective
 				tileY - _c.getZ(),
 				-_c.getY(), tileX, tileY);
 			if (c == null)
-			{
-				continue;
-			}
-
-			if (cullFace(a.getX(), a.getY(), b.getX(), b.getY(), c.getX(), c.getY()))
 			{
 				continue;
 			}
