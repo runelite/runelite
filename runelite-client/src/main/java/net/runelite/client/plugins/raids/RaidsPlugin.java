@@ -339,7 +339,6 @@ public class RaidsPlugin extends Plugin
 				bombs.put(bombLocation, new CrystalBomb(gameObject, client.getTickCount()));
 				break;
 		}
-
 	}
 
 	@Subscribe
