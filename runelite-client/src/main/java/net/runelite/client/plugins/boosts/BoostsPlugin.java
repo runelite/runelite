@@ -36,6 +36,7 @@ import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.events.BoostedLevelChanged;
 import net.runelite.api.events.ConfigChanged;
@@ -89,6 +90,10 @@ public class BoostsPlugin extends Plugin
 	private StatChangeIndicator statChangeIndicator;
 
 	private BufferedImage overallIcon;
+
+	private boolean preserveBeenActive = false;
+
+	private int timeSinceChange;
 
 	@Provides
 	BoostsConfig provideConfig(ConfigManager configManager)
@@ -191,8 +196,54 @@ public class BoostsPlugin extends Plugin
 		}
 	}
 
+	/**
+	 * Calculates the amount of time until boosted stats decay,
+	 * accounting for the effect of preserve prayer.
+	 * Preserve extends the time of boosted stats by 50% while active.
+	 * The length of a boost is split into 4 sections of 15 seconds each.
+	 * If the preserve prayer is active for the entire duration of the final
+	 * section it will "activate" adding an additional 15 second section
+	 * to the boost timing. If again the preserve prayer is active for that
+	 * entire section a second 15 second section will be added.
+	 *
+	 * Preserve is only required to be on for the 4th and 5th sections of the boost timer
+	 * to gain full effect (seconds 45-75).
+	 *
+	 * @return integer value in seconds until next boost change
+	 */
 	public int getChangeTime()
 	{
-		return 60 - (int) Duration.between(lastChange, Instant.now()).getSeconds();
+		timeSinceChange = timeSinceLastChange();
+
+		if (client.isPrayerActive(Prayer.PRESERVE) && timeSinceChange < 45)
+		{
+			preserveBeenActive = true;
+			return 90 - timeSinceChange;
+		}
+
+		if (client.isPrayerActive(Prayer.PRESERVE) && preserveBeenActive)
+		{
+			return 90 - timeSinceChange;
+		}
+
+		if (timeSinceChange > 60 && timeSinceChange <= 75)
+		{
+			preserveBeenActive = false;
+			return 75 - timeSinceChange;
+		}
+
+		if (timeSinceChange > 75)
+		{
+			return 90 - timeSinceChange;
+		}
+
+		preserveBeenActive = false;
+		return 60 - timeSinceChange;
 	}
+
+	public int timeSinceLastChange()
+	{
+		return (int) Duration.between(lastChange, Instant.now()).getSeconds();
+	}
+
 }
