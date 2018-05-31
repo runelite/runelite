@@ -40,7 +40,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ScheduledExecutorService;
@@ -209,15 +212,7 @@ public class ConfigPanel extends PluginPanel
 		addCoreConfig(newChildren, "RuneLite", runeLiteConfig);
 		addCoreConfig(newChildren, "Chat Color", chatColorConfig);
 
-		// Apply striping to alternating rows
-		boolean useAltRowColor = true;
-		for (JPanel panel : newChildren.values())
-		{
-			final Color rowColor = useAltRowColor ? ColorScheme.DARK_GRAY_ALT_ROW_COLOR : ColorScheme.DARK_GRAY_COLOR;
-			useAltRowColor = !useAltRowColor;
-			panel.setBackground(rowColor);
-			panel.getComponent(1).setBackground(rowColor); // Recolor the inner button panel
-		}
+		applyStripingTo(newChildren.values(), true);
 
 		children = newChildren;
 		openConfigList();
@@ -361,11 +356,21 @@ public class ConfigPanel extends PluginPanel
 		if (text.isEmpty())
 		{
 			children.values().forEach(this::add);
+
+			applyStripingTo(children.values(), true);
 			revalidate();
 			return;
 		}
 
-		FuzzySearch.findAndProcess(text, children.keySet(), (k) -> add(children.get(k)));
+		final List<JPanel> filteredChildren = new ArrayList<>();
+		FuzzySearch.findAndProcess(text, children.keySet(), (k) ->
+		{
+			final JPanel child = children.get(k);
+			filteredChildren.add(child);
+			add(child);
+		});
+
+		applyStripingTo(filteredChildren, true);
 		revalidate();
 	}
 
@@ -661,5 +666,25 @@ public class ConfigPanel extends PluginPanel
 
 		revalidate();
 		getScrollPane().getVerticalScrollBar().setValue(0);
+	}
+
+	/**
+	 * Apply striping to alternating rows.
+	 */
+	private static void applyStripingTo(Collection<JPanel> panels, boolean andChildIndex1)
+	{
+		boolean useAltRowColor = true;
+
+		for (JPanel panel : panels)
+		{
+			final Color rowColor = useAltRowColor ? ColorScheme.DARK_GRAY_ALT_ROW_COLOR : ColorScheme.DARK_GRAY_COLOR;
+			useAltRowColor = !useAltRowColor;
+
+			panel.setBackground(rowColor);
+			if (andChildIndex1)
+			{
+				panel.getComponent(1).setBackground(rowColor); // Recolor the inner button panel
+			}
+		}
 	}
 }
