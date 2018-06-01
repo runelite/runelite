@@ -307,7 +307,7 @@ public class ClientUI
 			final int iconSize = ClientTitleToolbar.TITLEBAR_SIZE - 6;
 			final JButton button = SwingUtil.createSwingButton(event.getButton(), iconSize, null);
 
-			if (config.enableCustomChrome() || SwingUtil.isCustomTitlePanePresent(frame))
+			if (!config.enableFullscreen() && (config.enableCustomChrome() || SwingUtil.isCustomTitlePanePresent(frame)))
 			{
 				titleToolbar.addComponent(event.getButton(), button);
 				return;
@@ -322,7 +322,7 @@ public class ClientUI
 	{
 		SwingUtilities.invokeLater(() ->
 		{
-			if (config.enableCustomChrome() || SwingUtil.isCustomTitlePanePresent(frame))
+			if (!config.enableFullscreen() && (config.enableCustomChrome() || SwingUtil.isCustomTitlePanePresent(frame)))
 			{
 				titleToolbar.removeComponent(event.getButton());
 				return;
