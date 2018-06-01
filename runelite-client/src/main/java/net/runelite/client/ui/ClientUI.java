@@ -65,6 +65,7 @@ import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ExpandResizeType;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.config.WindowMode;
 import net.runelite.client.events.ClientUILoaded;
 import net.runelite.client.events.PluginToolbarButtonAdded;
 import net.runelite.client.events.PluginToolbarButtonRemoved;
@@ -158,7 +159,7 @@ public class ClientUI
 	public void onConfigChanged(ConfigChanged event)
 	{
 		// Ignore all window related settings in fullscreen
-		if (!event.getGroup().equals("runelite") || config.enableFullscreen())
+		if (!event.getGroup().equals("runelite") || WindowMode.FULLSCREEN_WINDOW == config.windowMode())
 		{
 			return;
 		}
@@ -183,10 +184,9 @@ public class ClientUI
 				frame.setExpandResizeType(config.automaticResizeType());
 			}
 
-			if (event.getKey().equals("containInScreen") ||
-				event.getKey().equals("uiEnableCustomChrome"))
+			if (event.getKey().equals("containInScreen"))
 			{
-				frame.setContainedInScreen(config.containInScreen() && config.enableCustomChrome());
+				frame.setContainedInScreen(config.containInScreen());
 			}
 
 			if (event.getKey().equals("rememberScreenBounds") && event.getNewValue().equals("false"))
@@ -302,7 +302,7 @@ public class ClientUI
 			final int iconSize = ClientTitleToolbar.TITLEBAR_SIZE - 6;
 			final JButton button = SwingUtil.createSwingButton(event.getButton(), iconSize, null);
 
-			if (!config.enableFullscreen() && (config.enableCustomChrome() || SwingUtil.isCustomTitlePanePresent(frame)))
+			if (WindowMode.DECORATED_WINDOW == config.windowMode())
 			{
 				titleToolbar.addComponent(event.getButton(), button);
 				return;
@@ -317,7 +317,7 @@ public class ClientUI
 	{
 		SwingUtilities.invokeLater(() ->
 		{
-			if (!config.enableFullscreen() && (config.enableCustomChrome() || SwingUtil.isCustomTitlePanePresent(frame)))
+			if (WindowMode.DECORATED_WINDOW == config.windowMode())
 			{
 				titleToolbar.removeComponent(event.getButton());
 				return;
@@ -367,9 +367,7 @@ public class ClientUI
 					saveClientBoundsConfig();
 					runelite.shutdown();
 				},
-				() -> client != null
-					&& client instanceof Client
-					&& ((Client) client).getGameState() != GameState.LOGIN_SCREEN);
+				() -> client instanceof Client && ((Client) client).getGameState() != GameState.LOGIN_SCREEN);
 
 			container = new JPanel();
 			container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
@@ -405,63 +403,65 @@ public class ClientUI
 	{
 		SwingUtilities.invokeAndWait(() ->
 		{
-			if (config.enableFullscreen())
+			switch (config.windowMode())
 			{
-				frame.setUndecorated(OSType.getOSType() != OSType.MacOS);
-			}
-			else if (config.enableCustomChrome())
-			{
-				frame.setUndecorated(true);
-				frame.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+				case FULLSCREEN_WINDOW:
+					frame.setUndecorated(OSType.getOSType() != OSType.MacOS);
+					break;
+				case DECORATED_WINDOW:
+					frame.setUndecorated(true);
+					frame.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
 
-				final JComponent titleBar = SubstanceCoreUtilities.getTitlePaneComponent(frame);
-				titleToolbar.putClientProperty(SubstanceTitlePaneUtilities.EXTRA_COMPONENT_KIND, SubstanceTitlePaneUtilities.ExtraComponentKind.TRAILING);
-				titleBar.add(titleToolbar);
+					final JComponent titleBar = SubstanceCoreUtilities.getTitlePaneComponent(frame);
+					titleToolbar.putClientProperty(SubstanceTitlePaneUtilities.EXTRA_COMPONENT_KIND, SubstanceTitlePaneUtilities.ExtraComponentKind.TRAILING);
+					titleBar.add(titleToolbar);
 
-				// Substance's default layout manager for the title bar only lays out substance's components
-				// This wraps the default manager and lays out the TitleToolbar as well.
-				LayoutManager delegate = titleBar.getLayout();
-				titleBar.setLayout(new LayoutManager()
-				{
-					@Override
-					public void addLayoutComponent(String name, Component comp)
+					// Substance's default layout manager for the title bar only lays out substance's components
+					// This wraps the default manager and lays out the TitleToolbar as well.
+					LayoutManager delegate = titleBar.getLayout();
+					titleBar.setLayout(new LayoutManager()
 					{
-						delegate.addLayoutComponent(name, comp);
-					}
+						@Override
+						public void addLayoutComponent(String name, Component comp)
+						{
+							delegate.addLayoutComponent(name, comp);
+						}
 
-					@Override
-					public void removeLayoutComponent(Component comp)
-					{
-						delegate.removeLayoutComponent(comp);
-					}
+						@Override
+						public void removeLayoutComponent(Component comp)
+						{
+							delegate.removeLayoutComponent(comp);
+						}
 
-					@Override
-					public Dimension preferredLayoutSize(Container parent)
-					{
-						return delegate.preferredLayoutSize(parent);
-					}
+						@Override
+						public Dimension preferredLayoutSize(Container parent)
+						{
+							return delegate.preferredLayoutSize(parent);
+						}
 
-					@Override
-					public Dimension minimumLayoutSize(Container parent)
-					{
-						return delegate.minimumLayoutSize(parent);
-					}
+						@Override
+						public Dimension minimumLayoutSize(Container parent)
+						{
+							return delegate.minimumLayoutSize(parent);
+						}
 
-					@Override
-					public void layoutContainer(Container parent)
-					{
-						delegate.layoutContainer(parent);
-						final int width = titleToolbar.getPreferredSize().width;
-						titleToolbar.setBounds(titleBar.getWidth() - 75 - width, 0, width, titleBar.getHeight());
-					}
-				});
+						@Override
+						public void layoutContainer(Container parent)
+						{
+							delegate.layoutContainer(parent);
+							final int width = titleToolbar.getPreferredSize().width;
+							titleToolbar.setBounds(titleBar.getWidth() - 75 - width, 0, width, titleBar.getHeight());
+						}
+					});
+
+					break;
 			}
 
 			// Show frame
 			frame.pack();
 			frame.revalidateMinimumSize();
 
-			if (!config.enableFullscreen() && config.rememberScreenBounds())
+			if (config.rememberScreenBounds() && WindowMode.FULLSCREEN_WINDOW != config.windowMode())
 			{
 				try
 				{
@@ -528,7 +528,7 @@ public class ClientUI
 			toggleSidebar();
 
 			// Force fullscreen
-			if (config.enableFullscreen())
+			if (WindowMode.FULLSCREEN_WINDOW == config.windowMode())
 			{
 				final NavigationButton exitButton = NavigationButton
 					.builder()

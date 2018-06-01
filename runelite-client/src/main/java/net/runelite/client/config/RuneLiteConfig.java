@@ -57,10 +57,22 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "windowMode",
+		name = "Window mode",
+		description = "Change between various window modes. Decorated will use Runelite's custom window title and borders, native OS window title and borders.",
+		warning = "Please restart your client after changing this setting",
+		position = 12
+	)
+	default WindowMode windowMode()
+	{
+		return WindowMode.NATIVE_WINDOW;
+	}
+
+	@ConfigItem(
 		keyName = "lockWindowSize",
 		name = "Lock window size",
 		description = "Determines if the window resizing is allowed or not",
-		position = 12
+		position = 13
 	)
 	default boolean lockWindowSize()
 	{
@@ -71,7 +83,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "containInScreen",
 		name = "Contain in screen",
 		description = "Makes the client stay contained in the screen when attempted to move out of it.<br>Note: Only works if custom chrome is enabled.",
-		position = 13
+		position = 14
 	)
 	default boolean containInScreen()
 	{
@@ -82,21 +94,9 @@ public interface RuneLiteConfig extends Config
 		keyName = "rememberScreenBounds",
 		name = "Remember client position",
 		description = "Save the position and size of the client after exiting",
-		position = 14
-	)
-	default boolean rememberScreenBounds()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "uiEnableCustomChrome",
-		name = "Enable custom window chrome",
-		description = "Use Runelite's custom window title and borders.",
-		warning = "Please restart your client after changing this setting",
 		position = 15
 	)
-	default boolean enableCustomChrome()
+	default boolean rememberScreenBounds()
 	{
 		return true;
 	}
