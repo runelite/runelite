@@ -189,6 +189,18 @@ public interface BossLoggerConfig extends Config
 		position = 12
 	)
 
+	default boolean recordScorpiaKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "recordKbdKills",
+		name = "Record King Black Dragon Loot",
+		description = "Configures whether or not loot from King Black Dragon is recorded",
+		position = 13
+	)
+
 	default boolean recordChaosFanaticKills()
 	{
 		return true;
@@ -198,7 +210,7 @@ public interface BossLoggerConfig extends Config
 		keyName = "recordCrazyArchaeologistKills",
 		name = "Record Crazy Archaeologist Loot",
 		description = "Configures whether or not loot from Crazy Archaeologist is recorded",
-		position = 13
+		position = 14
 	)
 
 	default boolean recordCrazyArchaeologistKills()
@@ -210,18 +222,6 @@ public interface BossLoggerConfig extends Config
 		keyName = "recordScorpiaKills",
 		name = "Record Scorpia Loot",
 		description = "Configures whether or not loot from Scorpia is recorded",
-		position = 14
-	)
-
-	default boolean recordScorpiaKills()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "recordKbdKills",
-		name = "Record King Black Dragon Loot",
-		description = "Configures whether or not loot from King Black Dragon is recorded",
 		position = 15
 	)
 

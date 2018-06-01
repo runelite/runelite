@@ -39,13 +39,13 @@ import net.runelite.client.game.ItemManager;
 class LootRecord
 {
 	@Setter(AccessLevel.PACKAGE)
-	private String item_name;
+	private String itemName;
 	@Setter(AccessLevel.PACKAGE)
-	private Integer item_id;
+	private int itemId;
 	@Setter(AccessLevel.PACKAGE)
-	private Integer amount;
+	private int amount;
 	@Setter(AccessLevel.PACKAGE)
-	private Integer value;
+	private int value;
 	@Setter(AccessLevel.PACKAGE)
 	private long total;
 	@Setter(AccessLevel.PACKAGE)
@@ -53,31 +53,27 @@ class LootRecord
 	@Setter(AccessLevel.PACKAGE)
 	private ItemComposition item;
 
-	LootRecord(String item_name, Integer item_id, Integer amount, Integer value, AsyncBufferedImage icon, ItemComposition item)
+	LootRecord(String itemName, int itemId, int amount, int value, AsyncBufferedImage icon, ItemComposition item)
 	{
 		this.item = item;
-		this.item_id = item_id;
-		this.item_name = item_name;
+		this.itemId = itemId;
+		this.itemName = itemName;
 		this.amount = amount;
 		this.icon = icon;
 		this.value = value;
 
-		long val = this.value;
-		long am = this.amount;
-		this.total = val * am;
+		this.total = ((long) value) * amount;
 	}
 
-	void incrementAmount(LootRecord l, Integer amount)
+	void incrementAmount(LootRecord l, int amount)
 	{
 		l.amount = l.amount + amount;
-		long val = this.value;
-		long am = this.amount;
-		l.total = val * am;
+		l.total = this.value * this.amount;
 	}
 
 	void updateIconAmount(LootRecord l, ItemManager itemManager)
 	{
-		Boolean stackable = l.item.isStackable() || l.amount > 1;
-		l.icon = itemManager.getImage(l.item_id, l.amount, stackable);
+		boolean stackable = l.item.isStackable() || l.amount > 1;
+		l.icon = itemManager.getImage(l.itemId, l.amount, stackable);
 	}
 }

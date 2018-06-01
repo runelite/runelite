@@ -77,14 +77,14 @@ class LootPanel extends JPanel
 			ArrayList<DropEntry> drops = rec.getDrops();
 			drops.forEach(de ->
 			{
-				ItemComposition item = itemManager.getItemComposition(de.getItem_id());
+				ItemComposition item = itemManager.getItemComposition(de.getItemId());
 				LootRecord uniq = this.consolidated.get(item.getName());
 				if (uniq == null)
 				{
 					// Create new entry
-					boolean shouldStack = item.isStackable() || de.getItem_amount() > 1;
-					AsyncBufferedImage icon = itemManager.getImage(de.getItem_id(), de.getItem_amount(), shouldStack);
-					Integer price;
+					boolean shouldStack = item.isStackable() || de.getItemAmount() > 1;
+					AsyncBufferedImage icon = itemManager.getImage(de.getItemId(), de.getItemAmount(), shouldStack);
+					int price;
 					try
 					{
 						// Get item price
@@ -109,13 +109,13 @@ class LootPanel extends JPanel
 					}
 
 					// Create the new LootRecord
-					LootRecord entry = new LootRecord(item.getName(), item.getId(), de.getItem_amount(), price, icon, item);
+					LootRecord entry = new LootRecord(item.getName(), item.getId(), de.getItemAmount(), price, icon, item);
 					this.consolidated.put(item.getName(), entry);
 				}
 				else
 				{
 					// Update Entry
-					uniq.incrementAmount(uniq, de.getItem_amount());
+					uniq.incrementAmount(uniq, de.getItemAmount());
 					uniq.updateIconAmount(uniq, itemManager);
 				}
 			});
@@ -145,7 +145,6 @@ class LootPanel extends JPanel
 		c.gridx = 0;
 		c.gridy = 0;
 
-
 		// Attach all the Unique Items first
 		this.uniqueMap.forEach((setPosition, set) ->
 		{
@@ -159,7 +158,7 @@ class LootPanel extends JPanel
 		{
 			int amount = this.records.size();
 			LootEntry entry = this.records.get(amount - 1);
-			LootRecordPanel p = new LootRecordPanel(amount, entry.getKill_count());
+			LootRecordPanel p = new LootRecordPanel(amount, entry.getKillCount());
 			panel.add(p, c);
 			c.gridy++;
 		}

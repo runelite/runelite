@@ -30,11 +30,11 @@ import javax.swing.SwingConstants;
 import javax.swing.border.MatteBorder;
 
 import lombok.Getter;
+import net.runelite.client.util.StackFormatter;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.text.DecimalFormat;
 
 @Getter
 class LootRecordPanel extends JPanel
@@ -53,11 +53,11 @@ class LootRecordPanel extends JPanel
 		JLabel icon = new JLabel();
 		this.record.getIcon().addTo(icon);
 		// Item Name (Colored off Item Price)
-		JLabel item_name = new JLabel(this.record.getItem_name());
-		ColorLabel(item_name, this.record.getValue());
+		JLabel item_name = new JLabel(this.record.getItemName());
+		colorLabel(item_name, this.record.getValue());
 		// Item Values (Colored off Total Value of item)
-		JLabel total = new JLabel(numberToString(this.record.getTotal()), SwingConstants.RIGHT);
-		ColorLabel(total, this.record.getTotal());
+		JLabel total = new JLabel(StackFormatter.quantityToStackSize(this.record.getTotal()) + " gp", SwingConstants.RIGHT);
+		colorLabel(total, this.record.getTotal());
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -75,7 +75,7 @@ class LootRecordPanel extends JPanel
 	}
 
 	// Used specifically for the Total Value element inside the tab
-	LootRecordPanel(Long totalValue)
+	LootRecordPanel(long totalValue)
 	{
 		GridBagLayout layout = new GridBagLayout();
 		this.setLayout(layout);
@@ -89,11 +89,11 @@ class LootRecordPanel extends JPanel
 		c.ipady = 20;
 
 		JLabel totalText = new JLabel("Total Value:", SwingConstants.LEFT);
-		ColorLabel(totalText, totalValue);
+		colorLabel(totalText, totalValue);
 
 		// Item Values (Colored off Total Value of item)
-		JLabel total = new JLabel(numberToString(totalValue), SwingConstants.RIGHT);
-		ColorLabel(total, totalValue);
+		JLabel total = new JLabel(StackFormatter.quantityToStackSize(totalValue) + " gp", SwingConstants.RIGHT);
+		colorLabel(total, totalValue);
 
 		this.add(totalText, c);
 		c.gridx++;
@@ -126,37 +126,10 @@ class LootRecordPanel extends JPanel
 		this.add(recorder, c);
 	}
 
-	// Add K and M Suffix to items
-	private String numberToString(long v)
-	{
-		String suffix = " gp";
-		if (v >= 10000000)
-		{
-			v = v / 1000000;
-			suffix = "M" + suffix;
-
-		}
-		else if (v >= 100000)
-		{
-			v = v / 1000;
-			suffix = "K" + suffix;
-		}
-
-		return (new DecimalFormat("#,###.#").format(v) + suffix);
-	}
-
 	// Color label to match RuneScape coloring
-	private void ColorLabel(JLabel label, long val)
+	private void colorLabel(JLabel label, long val)
 	{
-		Color labelColor = Color.yellow;
-		if (val >= 10000000)
-		{
-			labelColor = Color.green;
-		}
-		else if (val >= 100000)
-		{
-			labelColor = Color.white;
-		}
+		Color labelColor = (val >= 10000000) ? Color.GREEN : (val >= 100000) ? Color.WHITE : Color.YELLOW;
 		label.setForeground(labelColor);
 	}
 }

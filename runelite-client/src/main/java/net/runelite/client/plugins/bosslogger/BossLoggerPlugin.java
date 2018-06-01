@@ -147,11 +147,11 @@ public class BossLoggerPlugin extends Plugin
 	private int deathID;					// NPC ID
 	private WorldPoint deathSpot;			// NPC Death WorldPoint
 	private WorldPoint playerLocation;		// Players WorldPoint at time of NPC death animation
-	private Boolean gotPet = false;			// Got the pet chat message?
+	private boolean gotPet = false;			// Got the pet chat message?
 
 	// Watching flags (actor death/changed item layer)
-	private Boolean watching = false;				// Watching for ActorDespawn?
-	private Boolean watchingItemLayers = false;		// Watching for ItemLayerChanged?
+	private boolean watching = false;				// Watching for ActorDespawn?
+	private boolean watchingItemLayers = false;		// Watching for ItemLayerChanged?
 
 	@Provides
 	BossLoggerConfig provideConfig(ConfigManager configManager)
@@ -501,7 +501,7 @@ public class BossLoggerPlugin extends Plugin
 			ArrayList<LootEntry> array = new ArrayList<LootEntry>();
 			mapLoot.put(bossName, array);
 			// Kill Count
-			Integer killcount = 0;
+			int killcount = 0;
 			mapKillcount.put(bossName, killcount);
 			// Filenames. Removes all spaces, periods, and apostrophes
 			String filename = tab.getName().replaceAll("( |'|\\.)", "").toLowerCase() + ".log";
@@ -555,7 +555,7 @@ public class BossLoggerPlugin extends Plugin
 
 
 	// Toggles visibility of tab in side panel
-	private void ToggleTab(String tabName, Boolean status)
+	private void ToggleTab(String tabName, boolean status)
 	{
 		// Remove panel tab if showing panel
 		if (bossLoggerConfig.showLootTotals())
@@ -663,7 +663,7 @@ public class BossLoggerPlugin extends Plugin
 	}
 
 	// Create Loot Entry for ItemContainer
-	private LootEntry createLootEntry(Integer kill_count, ItemContainer container)
+	private LootEntry createLootEntry(int kill_count, ItemContainer container)
 	{
 		ArrayList<DropEntry> drops = new ArrayList<>();
 		for (Item item : container.getItems())
@@ -738,7 +738,7 @@ public class BossLoggerPlugin extends Plugin
 			// Update Killcount map with latest value
 			if (data.size() > 0)
 			{
-				int killcount = data.get(data.size() - 1).getKill_count();
+				int killcount = data.get(data.size() - 1).getKillCount();
 				killcountMap.put(tab.getBossName().toUpperCase(), killcount);
 			}
 		}
@@ -868,7 +868,7 @@ public class BossLoggerPlugin extends Plugin
 							List<DropEntry> groundItems = getGroundItems(x);
 							if (groundItems != null)
 							{
-								return groundItems.stream().anyMatch(y -> y.getItem_id() == ItemID.ZULRAHS_SCALES);
+								return groundItems.stream().anyMatch(y -> y.getItemId() == ItemID.ZULRAHS_SCALES);
 							}
 							return false;
 						})
@@ -1114,7 +1114,7 @@ public class BossLoggerPlugin extends Plugin
 	}
 
 	// Handles if panel should be shown by Tab Name
-	Boolean isBeingRecorded(String tabName)
+	boolean isBeingRecorded(String tabName)
 	{
 		switch (tabName.toUpperCase())
 		{

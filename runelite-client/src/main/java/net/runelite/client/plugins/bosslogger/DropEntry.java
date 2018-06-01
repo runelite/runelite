@@ -28,15 +28,15 @@ import lombok.Getter;
 
 class DropEntry
 {
-	DropEntry(Integer item_id, Integer item_amount)
+	@Getter
+	private final int itemId;
+
+	@Getter
+	private final int itemAmount;
+
+	DropEntry(int itemId, int itemAmount)
 	{
-		this.item_id = item_id;
-		this.item_amount = item_amount;
+		this.itemId = itemId;
+		this.itemAmount = itemAmount;
 	}
-
-	@Getter
-	private final Integer item_id;
-
-	@Getter
-	private final Integer item_amount;
 }

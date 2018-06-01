@@ -51,14 +51,14 @@ class UniqueItemPanel extends JPanel
 	private ArrayList<UniqueItem> items;
 	private Map<String, LootRecord> loots;
 
-	private final Float alpha_missing = 0.3f;
-	private final Float alpha_has = 1.0f;
+	private final float alphaMissing = 0.3f;
+	private final float alphaHas = 1.0f;
 
-	UniqueItemPanel(ArrayList<UniqueItem> _items, Map<String, LootRecord> _loots, ItemManager _itemManager)
+	UniqueItemPanel(ArrayList<UniqueItem> items, Map<String, LootRecord> loots, ItemManager itemManager)
 	{
-		items = _items;
-		loots = _loots;
-		itemManager = _itemManager;
+		this.items = items;
+		this.loots = loots;
+		this.itemManager = itemManager;
 
 		GridBagLayout layout = new GridBagLayout();
 		this.setLayout(layout);
@@ -74,13 +74,13 @@ class UniqueItemPanel extends JPanel
 		// Add each Unique Item icon to the panel
 		for (UniqueItem item : items)
 		{
-			Integer id = item.getItemID();
+			int id = item.getItemID();
 			ItemComposition comp = itemManager.getItemComposition(id);
 			LootRecord it = loots.get(comp.getName());
 			boolean shouldStack = comp.isStackable();
-			Integer quantity = 0;
-			Integer imageID = comp.getId();
-			Float alpha = alpha_missing;
+			int quantity = 0;
+			int imageID = comp.getId();
+			float alpha = alphaMissing;
 
 			// If we have a loot entry for this item then update the icon accordingly
 			if (it != null)
@@ -89,13 +89,13 @@ class UniqueItemPanel extends JPanel
 				shouldStack = shouldStack || it.getAmount() > 1;
 				if (quantity > 0)
 				{
-					alpha = alpha_has;
+					alpha = alphaHas;
 				}
 			}
 
 			// Create Image
-			Float finalAlpha = alpha;
-			Integer finalQuantity = quantity;
+			float finalAlpha = alpha;
+			int finalQuantity = quantity;
 			AsyncBufferedImage image = itemManager.getImage(imageID, finalQuantity, shouldStack);
 			BufferedImage opaque = createOpaqueImage(image, finalAlpha);
 			// Attach Image to Label and append label to Panel
@@ -111,11 +111,10 @@ class UniqueItemPanel extends JPanel
 			};
 			image.onChanged(() -> SwingUtilities.invokeLater(task));
 		}
-
 	}
 
 	// Used to refresh the item icon if the image was still loading when attempting to create it earlier
-	private void refreshImage(JLabel label, AsyncBufferedImage image, Float finalAlpha)
+	private void refreshImage(JLabel label, AsyncBufferedImage image, float finalAlpha)
 	{
 		BufferedImage opaque = createOpaqueImage(image, finalAlpha);
 		ImageIcon o = new ImageIcon(opaque);
@@ -126,7 +125,7 @@ class UniqueItemPanel extends JPanel
 	}
 
 	// Creates the Item Icon with opacity depending on if they have received the item or not
-	private BufferedImage createOpaqueImage(AsyncBufferedImage image, Float alpha)
+	private BufferedImage createOpaqueImage(AsyncBufferedImage image, float alpha)
 	{
 		BufferedImage x = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2d = (Graphics2D)x.getGraphics();

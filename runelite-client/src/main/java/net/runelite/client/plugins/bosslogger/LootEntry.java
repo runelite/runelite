@@ -29,15 +29,15 @@ import lombok.Getter;
 
 class LootEntry
 {
-	LootEntry(Integer kill_count, ArrayList<DropEntry> drops)
-	{
-		this.kill_count = kill_count;
-		this.drops = drops;
-	}
-
 	@Getter
-	private final Integer kill_count;
+	private final Integer killCount;
 
 	@Getter
 	final ArrayList<DropEntry> drops;
+
+	LootEntry(int killCount, ArrayList<DropEntry> drops)
+	{
+		this.killCount = killCount;
+		this.drops = drops;
+	}
 }
