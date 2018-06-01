@@ -130,7 +130,7 @@ public class BarrowsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWallObjectSpanwed(WallObjectSpawned event)
+	public void onWallObjectSpawned(WallObjectSpawned event)
 	{
 		WallObject wallObject = event.getWallObject();
 		if (BARROWS_WALLS.contains(wallObject.getId()))
