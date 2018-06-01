@@ -78,9 +78,11 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
+		int dragDelay = (int) Math.floor(config.dragDelay() / 20);
+
 		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
 		{
-			client.setInventoryDragDelay(config.dragDelay());
+			client.setInventoryDragDelay(dragDelay);
 		}
 	}
 
