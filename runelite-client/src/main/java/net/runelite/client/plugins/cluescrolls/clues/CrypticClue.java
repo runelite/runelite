@@ -356,7 +356,12 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 
 		if (objectId != -1)
 		{
-			ObjectComposition object = plugin.getClient().getObjectDefinition(getObjectId());
+			ObjectComposition object = plugin.getClient().getObjectDefinition(objectId);
+
+			if (object != null && object.getImpostorIds() != null)
+			{
+				object = object.getImpostor();
+			}
 
 			if (object != null)
 			{
