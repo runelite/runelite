@@ -38,6 +38,7 @@ import java.awt.GraphicsConfiguration;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.TrayIcon;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.annotation.Nullable;
@@ -93,30 +94,24 @@ public class ClientUI
 	public static final BufferedImage ICON;
 	private static final BufferedImage SIDEBAR_OPEN;
 	private static final BufferedImage SIDEBAR_CLOSE;
+	private static final BufferedImage FRAME_EXIT;
 
 	static
 	{
-		BufferedImage icon;
-		BufferedImage sidebarOpen;
-		BufferedImage sidebarClose;
-
 		try
 		{
 			synchronized (ImageIO.class)
 			{
-				icon = ImageIO.read(ClientUI.class.getResourceAsStream("/runelite.png"));
-				sidebarOpen = ImageIO.read(ClientUI.class.getResourceAsStream("open.png"));
-				sidebarClose = ImageIO.read(ClientUI.class.getResourceAsStream("close.png"));
+				ICON = ImageIO.read(ClientUI.class.getResourceAsStream("/runelite.png"));
+				SIDEBAR_OPEN = ImageIO.read(ClientUI.class.getResourceAsStream("open.png"));
+				SIDEBAR_CLOSE = ImageIO.read(ClientUI.class.getResourceAsStream("close.png"));
+				FRAME_EXIT = ImageIO.read(ClientUI.class.getResourceAsStream("exit.png"));
 			}
 		}
 		catch (IOException e)
 		{
 			throw new RuntimeException(e);
 		}
-
-		ICON = icon;
-		SIDEBAR_OPEN = sidebarOpen;
-		SIDEBAR_CLOSE = sidebarClose;
 	}
 
 	@Getter
@@ -535,6 +530,17 @@ public class ClientUI
 			// Force fullscreen
 			if (config.enableFullscreen())
 			{
+				final NavigationButton exitButton = NavigationButton
+					.builder()
+					.icon(FRAME_EXIT)
+					.onClick(() -> frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)))
+					.tooltip("Exit")
+					.build();
+
+				// Add exit button in fullscreen
+				final JButton jExitButton = SwingUtil.createSwingButton(exitButton, 30, null);
+				pluginToolbar.addComponent(-1, exitButton, jExitButton);
+
 				frame.setExpandResizeType(ExpandResizeType.KEEP_WINDOW_SIZE);
 				frame.setBounds(frame.getGraphicsConfiguration().getBounds());
 
