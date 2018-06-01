@@ -1,4 +1,4 @@
-package net.runelite.client.plugins.cleanermenuentries;
+package net.runelite.client.plugins.cleanermenus;
 
 import com.google.common.eventbus.Subscribe;
 import net.runelite.api.Client;
@@ -9,11 +9,10 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 import javax.inject.Inject;
 import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 @PluginDescriptor(name = "Cleaner Menus")
-public class CleanerMenuEntriesPlugin extends Plugin {
+public class CleanerMenusPlugin extends Plugin {
     @Inject
     private Client client;
 
