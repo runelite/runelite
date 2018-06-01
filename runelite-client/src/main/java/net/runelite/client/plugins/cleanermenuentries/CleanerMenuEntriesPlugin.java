@@ -19,7 +19,7 @@ public class CleanerMenuEntriesPlugin extends Plugin {
 
     @Subscribe
     public void onMenuOpened(MenuOpened event) {
-        //  target      option                                                        one to show| position| number of times shown
+        //                      target      option                                    one to show| position| number of times shown
         HashMap<String, HashMap<String, AbstractMap.SimpleEntry<AbstractMap.SimpleEntry<MenuEntry, Integer>, Integer>>> repeated = new HashMap<>();
 
         int count = 0;
