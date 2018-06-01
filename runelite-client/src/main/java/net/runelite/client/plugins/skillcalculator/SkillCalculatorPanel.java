@@ -36,7 +36,6 @@ import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.Client;
 import net.runelite.client.game.SkillIconManager;
@@ -118,15 +117,9 @@ class SkillCalculatorPanel extends PluginPanel
 	{
 		for (CalculatorType calculatorType : CalculatorType.values())
 		{
-			MaterialTab tab = new MaterialTab("", tabGroup, null);
-			tab.setOpaque(true);
-			tab.setVerticalAlignment(SwingConstants.CENTER);
-			tab.setHorizontalAlignment(SwingConstants.CENTER);
-			tab.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-			tab.setIcon(new ImageIcon(iconManager.getSkillImage(calculatorType.getSkill(), true)));
+			ImageIcon icon = new ImageIcon(iconManager.getSkillImage(calculatorType.getSkill(), true));
+			MaterialTab tab = new MaterialTab(icon, tabGroup, null);
 			tab.setOnSelectEvent(() -> uiCalculator.openCalculator(calculatorType));
-			tab.addMouseListener(tabHoverListener);
-
 			tabGroup.addTab(tab);
 		}
 	}
