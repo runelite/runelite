@@ -60,7 +60,7 @@ public enum HotColdLocation
 	ASGARNIA_CRAFT_GUILD(new WorldPoint(2917, 3295, 0), ASGARNIA, "Outside the Crafting Guild cow pen."),
 	ASGARNIA_RIMMINGTON(new WorldPoint(2978, 3241, 0), ASGARNIA, "In the centre of the Rimmington mine."),
 	ASGARNIA_MUDSKIPPER(new WorldPoint(2984, 3109, 0), ASGARNIA, "Mudskipper Point, on the starfish in the south-west corner."),
-	ASGARNIA_TROLL(new WorldPoint(2910, 3616, 0), ASGARNIA, "The Troll arena, where the player fights Dadduring the Troll Stronghold quest. Bring climbing boots."),
+	ASGARNIA_TROLL(new WorldPoint(2910, 3616, 0), ASGARNIA, "The Troll arena, where the player fights Dad during the Troll Stronghold quest. Bring climbing boots if travelling from Burthorpe."),
 	DESERT_GENIE(new WorldPoint(3363, 2905, 0), DESERT, "West of Nardah genie cave."),
 	DESERT_ALKHARID_MINE(new WorldPoint(3280, 3271, 0), DESERT, "West of Al Kharid mine."),
 	DESERT_MENAPHOS_GATE(new WorldPoint(3224, 2816, 0), DESERT, "North of Menaphos gate."),

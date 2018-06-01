@@ -39,11 +39,14 @@ import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GraphicChanged;
+import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
 import static net.runelite.client.callback.Hooks.eventBus;
+import static net.runelite.client.callback.Hooks.log;
 import net.runelite.rs.api.RSActor;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSCombatInfo1;
@@ -51,6 +54,7 @@ import net.runelite.rs.api.RSCombatInfo2;
 import net.runelite.rs.api.RSCombatInfoList;
 import net.runelite.rs.api.RSCombatInfoListHolder;
 import net.runelite.rs.api.RSModel;
+import net.runelite.rs.api.RSNPC;
 import net.runelite.rs.api.RSNode;
 
 @Mixin(RSActor.class)
@@ -226,5 +230,25 @@ public abstract class RSActorMixin implements RSActor
 		}
 
 		return new WorldArea(this.getWorldLocation(), size, size);
+	}
+
+	@Inject
+	@MethodHook("setCombatInfo")
+	public void setCombatInfo(int combatInfoId, int gameCycle, int var3, int var4, int healthRatio, int health)
+	{
+		if (healthRatio == 0)
+		{
+			if (this == client.getLocalPlayer())
+			{
+				log.debug("You died!");
+
+				LocalPlayerDeath event = new LocalPlayerDeath();
+				eventBus.post(event);
+			}
+			else if (this instanceof RSNPC)
+			{
+				((RSNPC) this).setDead(true);
+			}
+		}
 	}
 }
