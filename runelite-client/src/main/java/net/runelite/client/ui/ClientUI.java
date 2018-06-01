@@ -538,7 +538,7 @@ public class ClientUI
 					.build();
 
 				// Add exit button in fullscreen
-				final JButton jExitButton = SwingUtil.createSwingButton(exitButton, 30, null);
+				final JButton jExitButton = SwingUtil.createSwingButton(exitButton, 0, null);
 				pluginToolbar.addComponent(-1, exitButton, jExitButton);
 
 				frame.setExpandResizeType(ExpandResizeType.KEEP_WINDOW_SIZE);
