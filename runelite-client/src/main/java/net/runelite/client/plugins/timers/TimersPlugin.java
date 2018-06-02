@@ -122,51 +122,9 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void updateConfig(ConfigChanged event)
 	{
-		if (!config.showCharge())
+		if (!config.showAntidotePlus())
 		{
-			removeGameTimer(CHARGE);
-		}
-
-		if (!config.showStamina())
-		{
-			removeGameTimer(STAMINA);
-		}
-
-		if (!config.showAntiFire())
-		{
-			removeGameTimer(ANTIFIRE);
-		}
-
-		if (!config.showExAntiFire())
-		{
-			removeGameTimer(EXANTIFIRE);
-		}
-
-		if (!config.showOverload())
-		{
-			removeGameTimer(OVERLOAD);
-			removeGameTimer(OVERLOAD_RAID);
-		}
-
-		if (!config.showCannon())
-		{
-			removeGameTimer(CANNON);
-		}
-
-		if (!config.showMagicImbue())
-		{
-			removeGameTimer(MAGICIMBUE);
-		}
-
-		if (!config.showTeleblock())
-		{
-			removeGameTimer(FULLTB);
-			removeGameTimer(HALFTB);
-		}
-
-		if (!config.showSuperAntiFire())
-		{
-			removeGameTimer(SUPERANTIFIRE);
+			removeGameTimer(ANTIDOTEPLUS);
 		}
 
 		if (!config.showAntidotePlusPlus())
@@ -174,9 +132,9 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(ANTIDOTEPLUSPLUS);
 		}
 
-		if (!config.showAntidotePlus())
+		if (!config.showSanfew())
 		{
-			removeGameTimer(ANTIDOTEPLUS);
+			removeGameTimer(SANFEW);
 		}
 
 		if (!config.showAntiVenom())
@@ -189,9 +147,55 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(ANTIVENOMPLUS);
 		}
 
-		if (!config.showSanfew())
+		if (!config.showAntiFire())
 		{
-			removeGameTimer(SANFEW);
+			removeGameTimer(ANTIFIRE);
+		}
+
+		if (!config.showExAntiFire())
+		{
+			removeGameTimer(EXANTIFIRE);
+		}
+
+		if (!config.showSuperAntiFire())
+		{
+			removeGameTimer(SUPERANTIFIRE);
+		}
+
+		if (!config.showStamina())
+		{
+			removeGameTimer(STAMINA);
+		}
+
+		if (!config.showOverload())
+		{
+			removeGameTimer(OVERLOAD);
+			removeGameTimer(OVERLOAD_RAID);
+		}
+
+		if (!config.showPrayerEnhance())
+		{
+			removeGameTimer(PRAYER_ENHANCE);
+		}
+
+		if (!config.showCannon())
+		{
+			removeGameTimer(CANNON);
+		}
+
+		if (!config.showMagicImbue())
+		{
+			removeGameTimer(MAGICIMBUE);
+		}
+
+		if (!config.showCharge())
+		{
+			removeGameTimer(CHARGE);
+		}
+
+		if (!config.showImbuedHeart())
+		{
+			removeGameTimer(IMBUEDHEART);
 		}
 
 		if (!config.showVengeance())
@@ -204,9 +208,10 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(VENGEANCEOTHER);
 		}
 
-		if (!config.showImbuedHeart())
+		if (!config.showTeleblock())
 		{
-			removeGameTimer(IMBUEDHEART);
+			removeGameTimer(FULLTB);
+			removeGameTimer(HALFTB);
 		}
 
 		if (!config.showFreezes())
@@ -221,11 +226,6 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(ICEBURST);
 			removeGameTimer(ICEBLITZ);
 			removeGameTimer(ICEBARRAGE);
-		}
-
-		if (!config.showPrayerEnhance())
-		{
-			removeGameTimer(PRAYER_ENHANCE);
 		}
 	}
 
