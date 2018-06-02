@@ -23,42 +23,45 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.stretchedfixedmode;
+package net.runelite.client.plugins.fixedmode;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.event.MouseWheelEvent;
+import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.Constants;
+import net.runelite.client.input.MouseWheelListener;
 
-@ConfigGroup("stretchedfixedmode")
-public interface StretchedFixedModeConfig extends Config
+public class TranslateMouseWheelListener implements MouseWheelListener
 {
-	@ConfigItem(
-		keyName = "keepAspectRatio",
-		name = "Keep aspect ratio",
-		description = "Keeps the aspect ratio when stretching"
-	)
-	default boolean keepAspectRatio()
+	private final Client client;
+
+	@Inject
+	public TranslateMouseWheelListener(Client client)
 	{
-		return false;
+		this.client = client;
 	}
 
-	@ConfigItem(
-		keyName = "increasedPerformance",
-		name = "Increased performance mode",
-		description = "Uses a fast algorithm when stretching, lowering quality but increasing performance"
-	)
-	default boolean increasedPerformance()
+	@Override
+	public MouseWheelEvent mouseWheelMoved(MouseWheelEvent event)
 	{
-		return false;
+		return translateEvent(event);
 	}
 
-	@ConfigItem(
-		keyName = "integerScaling",
-		name = "Integer Scaling",
-		description = "Forces use of a whole number scale factor"
-	)
-	default boolean integerScaling()
+	private MouseWheelEvent translateEvent(MouseWheelEvent e)
 	{
-		return false;
+		if (!client.isResized())
+		{
+			Dimension stretchedDimensions = client.getStretchedDimensions();
+
+			int newX = (int) (e.getX() / (stretchedDimensions.width / (double) Constants.GAME_FIXED_WIDTH));
+			int newY = (int) (e.getY() / (stretchedDimensions.height / (double) Constants.GAME_FIXED_HEIGHT));
+
+			return new MouseWheelEvent((Component) e.getSource(), e.getID(), e.getWhen(), e.getModifiers(), newX, newY,
+					e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation());
+		}
+
+		return e;
 	}
 }

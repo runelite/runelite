@@ -23,7 +23,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.stretchedfixedmode;
+package net.runelite.client.plugins.fixedmode;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
@@ -36,18 +36,18 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Stretched Fixed Mode",
+	name = "Fixed Mode",
 	description = "Resize the game while in fixed mode",
 	tags = {"resize"},
 	enabledByDefault = false
 )
-public class StretchedFixedModePlugin extends Plugin
+public class FixedModePlugin extends Plugin
 {
 	@Inject
 	private Client client;
 
 	@Inject
-	private StretchedFixedModeConfig config;
+	private FixedModeConfig config;
 
 	@Inject
 	private MouseManager mouseManager;
@@ -59,9 +59,9 @@ public class StretchedFixedModePlugin extends Plugin
 	private TranslateMouseWheelListener mouseWheelListener;
 
 	@Provides
-	StretchedFixedModeConfig provideConfig(ConfigManager configManager)
+	FixedModeConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(StretchedFixedModeConfig.class);
+		return configManager.getConfig(FixedModeConfig.class);
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class StretchedFixedModePlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("stretchedfixedmode"))
+		if (!event.getGroup().equals("fixedmode"))
 		{
 			return;
 		}
