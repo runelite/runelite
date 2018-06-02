@@ -30,9 +30,6 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -50,29 +47,10 @@ class SkillCalculatorPanel extends PluginPanel
 	private final SkillIconManager iconManager;
 	private final MaterialTabGroup tabGroup;
 
-	private final MouseListener tabHoverListener;
-
 	SkillCalculatorPanel(SkillIconManager iconManager, Client client)
 	{
 		super();
 		getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
-		tabHoverListener = new MouseAdapter()
-		{
-			@Override
-			public void mouseEntered(MouseEvent e)
-			{
-				MaterialTab tab = (MaterialTab) e.getSource();
-				tab.setBackground(ColorScheme.DARKER_GRAY_HOVER_COLOR);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e)
-			{
-				MaterialTab tab = (MaterialTab) e.getSource();
-				tab.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-			}
-		};
 
 		this.iconManager = iconManager;
 
