@@ -40,10 +40,10 @@ import java.awt.Rectangle;
 public class LightBoxSolverOverlay extends Overlay
 {
 	private final Client client;
-	private final LightBoxSolverPlugin plugin;
+	private final PuzzleSolverPlugin plugin;
 
 	@Inject
-	public LightBoxSolverOverlay(Client client, LightBoxSolverPlugin plugin)
+	public LightBoxSolverOverlay(Client client, PuzzleSolverPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
