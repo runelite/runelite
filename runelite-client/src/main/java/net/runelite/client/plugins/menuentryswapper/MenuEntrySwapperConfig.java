@@ -149,11 +149,11 @@ public interface MenuEntrySwapperConfig extends Config
 		position = 10,
 		keyName = "swapHome",
 		name = "Home",
-		description = "Swap Enter with Home on Portal"
+		description = "Swap Enter with Home or Build or Friend's house on Portal"
 	)
-	default boolean swapHome()
+	default HouseMode swapHome()
 	{
-		return true;
+		return HouseMode.HOME;
 	}
 
 	@ConfigItem(
