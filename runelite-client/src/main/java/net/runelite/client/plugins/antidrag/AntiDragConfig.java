@@ -28,6 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
+
 @ConfigGroup(
 	keyName = "antiDrag",
 	name = "Anti Drag",
@@ -52,4 +53,16 @@ public interface AntiDragConfig extends Config
 		description = ""
 	)
 	void dragDelay(int delay);
+
+	@ConfigItem(
+		keyName = "whichButton",
+		name = "Use this button for antidrag: ",
+		description = "",
+		position = 2
+	)
+	default AntiDragMode whichButton()
+	{
+		return AntiDragMode.CONTROL;
+	}
+
 }
