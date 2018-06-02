@@ -61,7 +61,7 @@ class HunterTrackerPanel extends PluginPanel
 	private final ConfigManager configManager;
 	private final HunterTrackerConfig config;
 
-	private boolean active;
+	boolean active;
 
 	private List<BirdhouseSpacePanel> spacePanels = new ArrayList<>();
 
@@ -245,13 +245,13 @@ class HunterTrackerPanel extends PluginPanel
 					itemManager.getImage(state.getBirdhouse().getItemID()).addTo(panel.getIcon());
 					panel.getIcon().setToolTipText(state.getBirdhouse().getName());
 				}
-				long doneEstimate = startTime + config.DURATION; // Magic number for 50 minutes to build a huntertracker
+				long doneEstimate = startTime + config.DURATION.getSeconds();
 
 				panel.getProgress().setVisible(true);
 				panel.getProgress().setForeground(state.getSpaceState().getColor().darker());
 				if (doneEstimate < unixNow)
 				{
-					panel.getProgress().setValue(config.DURATION); // Mark as complete
+					panel.getProgress().setValue((int)config.DURATION.getSeconds()); // Mark as complete
 					panel.getProgress().setForeground(BirdhouseState.COMPLETE.getColor());
 					panel.getEstimate().setText("Done");
 				}
@@ -260,15 +260,17 @@ class HunterTrackerPanel extends PluginPanel
 					switch (state.getSpaceState())
 					{
 						case EMPTY:
+							panel.getProgress().setVisible(false);
 							panel.getEstimate().setText("Empty");
 							break;
 						case BUILT:
+							panel.getProgress().setValue(0);
 							panel.getEstimate().setText("Built");
 							break;
 						case SEEDED:
 							int remainingSeconds = (int) (59 + doneEstimate - unixNow);
 							int remaining = remainingSeconds / 60;
-							panel.getProgress().setValue(config.DURATION - remainingSeconds);
+							panel.getProgress().setValue((int)config.DURATION.getSeconds() - remainingSeconds);
 							StringBuilder f = new StringBuilder("Done in ");
 							int min = remaining % 60;
 							int hours = (remaining / 60) % 24;

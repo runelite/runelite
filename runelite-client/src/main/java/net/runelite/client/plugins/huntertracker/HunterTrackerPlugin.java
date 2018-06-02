@@ -36,6 +36,7 @@ import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.VarClientInt;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
@@ -77,8 +78,6 @@ public class HunterTrackerPlugin extends Plugin
 	private NavigationButton navButton;
 
 	private WorldPoint lastTickLoc;
-
-	private int tickCount = 0;
 
 	@Provides
 	HunterTrackerConfig provideConfig(ConfigManager configManager)
@@ -126,9 +125,14 @@ public class HunterTrackerPlugin extends Plugin
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
-			// Reset the ticks if you aren't logged in due to VarP initialization
-			tickCount = 0;
 			lastTickLoc = null;
+			return;
+		}
+
+		// This VarClientInt is only -1 when you aren't actively in game (including at the post-login screen)
+		// The Birdhouse VarPs are only initialized once you've clicked CLICK HERE TO PLAY
+		if (client.getVar(VarClientInt.INVENTORY_TAB) == -1)
+		{
 			return;
 		}
 
@@ -139,17 +143,11 @@ public class HunterTrackerPlugin extends Plugin
 			return;
 		}
 
-		// It takes a bit for the VarPs to initialize, if you login at the birdhouses give it a few to update
-		if (tickCount <= 10)
-		{
-			tickCount++;
-		}
-
 		BirdhouseRegion region = hunterWorld.getRegions().get(loc.getRegionID());
-		if (region != null && tickCount > 10)
+		if (region != null)
 		{
 			// Write config with new varp and timestamps
-			// huntertracker.<username>.<regionID>.<VarpId>=<varpValue>:<startTime>:<updatedAt>
+			// huntertracker.<username>.<regionID>.<varpID>=<varpValue>:<startTime>:<updatedAt>
 			String group = HunterTrackerConfig.KEY_NAME + "." + client.getUsername() + "." + region.getRegionID();
 			long unixNow = Instant.now().getEpochSecond();
 			for (VarPlayer varp : region.getVarps())
@@ -161,7 +159,8 @@ public class HunterTrackerPlugin extends Plugin
 				if (storedValue != null)
 				{
 					String[] parts = storedValue.split(":");
-					if (parts.length == 3) {
+					if (parts.length == 3)
+					{
 						long startTime = 0;
 						long updatedAt = 0;
 						try
@@ -203,6 +202,10 @@ public class HunterTrackerPlugin extends Plugin
 	@Schedule(period = 10, unit = ChronoUnit.SECONDS)
 	public void updatePanel()
 	{
-		SwingUtilities.invokeLater(panel::update);
+		// Only update this panel if it's active
+		if (panel.active)
+		{
+			SwingUtilities.invokeLater(panel::update);
+		}
 	}
 }

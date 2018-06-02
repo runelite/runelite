@@ -35,7 +35,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import lombok.Getter;
-import net.runelite.api.VarPlayer;
 
 @Singleton
 public class HunterWorld
@@ -53,16 +52,9 @@ public class HunterWorld
 
 	public HunterWorld()
 	{
-		add(new BirdhouseRegion("Verdant Valley", 14906,
-				new BirdhouseSpace("Southwest", VarPlayer.BIRDHOUSE_1629, SpaceImplementation.BIRDHOUSE),
-				new BirdhouseSpace("Northeast", VarPlayer.BIRDHOUSE_1628, SpaceImplementation.BIRDHOUSE)
-		));
-		add(new BirdhouseRegion("Mushroom Meadow", 14652,
-				new BirdhouseSpace("North", VarPlayer.BIRDHOUSE_1626, SpaceImplementation.BIRDHOUSE)
-		));
-		add(new BirdhouseRegion("Mushroom Meadow", 14651,
-				new BirdhouseSpace("South", VarPlayer.BIRDHOUSE_1627, SpaceImplementation.BIRDHOUSE)
-		));
+		add(BirdhouseRegion.VERDANT_VALLEY);
+		add(BirdhouseRegion.MUSHROOM_MEADOW_NORTH);
+		add(BirdhouseRegion.MUSHROOM_MEADOW_SOUTH);
 
 		// Finalize
 		this.regions = Collections.unmodifiableMap(regions);

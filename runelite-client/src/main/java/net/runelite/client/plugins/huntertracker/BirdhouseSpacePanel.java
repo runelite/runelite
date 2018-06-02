@@ -83,7 +83,7 @@ class BirdhouseSpacePanel extends JPanel
 		topContainer.add(infoPanel, BorderLayout.CENTER);
 
 		progress.setValue(0);
-		progress.setMaximumValue(HunterTrackerConfig.DURATION);
+		progress.setMaximumValue((int)HunterTrackerConfig.DURATION.getSeconds());
 
 		add(topContainer, BorderLayout.NORTH);
 		add(progress, BorderLayout.SOUTH);

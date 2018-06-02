@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.huntertracker;
 
+import java.time.Duration;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -37,7 +38,7 @@ import net.runelite.client.config.ConfigItem;
 public interface HunterTrackerConfig extends Config
 {
 	String KEY_NAME = "huntertracker";
-	int DURATION = 50 * 60; // constant for how long in seconds it takes for a birdhouse to fully harvest 10 birds
+	Duration DURATION = Duration.ofMinutes(50); // constant for how long in minutes it takes to harvest 10 birds
 
 	@ConfigItem(
 			keyName = "region",

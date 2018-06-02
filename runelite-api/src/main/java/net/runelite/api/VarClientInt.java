@@ -34,7 +34,8 @@ import lombok.Getter;
 @Getter
 public enum VarClientInt
 {
-	TOOLTIP_TIMEOUT(1);
+	TOOLTIP_TIMEOUT(1),
+	INVENTORY_TAB(171);
 
 	private final int index;
 }
