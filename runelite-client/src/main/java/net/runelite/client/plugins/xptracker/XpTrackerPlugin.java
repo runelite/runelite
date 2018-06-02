@@ -239,6 +239,21 @@ public class XpTrackerPlugin extends Plugin
 		xpPanel.updateTotal(xpState.getTotalSnapshot());
 	}
 
+	/**
+	 * Reset all skills except for the one provided
+	 * @param skill Skill to ignore during reset
+	 */
+	public void resetOtherSkillState(Skill skill)
+	{
+		for (Skill s : Skill.values())
+		{
+			if (skill != s)
+			{
+				resetSkillState(s);
+			}
+		}
+	}
+
 
 	@Subscribe
 	public void onXpChanged(ExperienceChanged event)
