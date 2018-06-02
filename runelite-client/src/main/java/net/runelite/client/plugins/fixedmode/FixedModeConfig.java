@@ -33,9 +33,21 @@ import net.runelite.client.config.ConfigItem;
 public interface FixedModeConfig extends Config
 {
 	@ConfigItem(
+		keyName = "expandView",
+		name = "Expand view to chat",
+		description = "Expands main view to chat and makes the chat toggleable",
+		position = 1
+	)
+	default boolean expandViewToChat()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "stretchedEnabled",
 		name = "Stretch fixed mode",
-		description = "Resizes the game while in fixed mode"
+		description = "Resizes the game while in fixed mode",
+		position = 2
 	)
 	default boolean stretchedEnabled()
 	{
@@ -45,7 +57,8 @@ public interface FixedModeConfig extends Config
 	@ConfigItem(
 		keyName = "keepAspectRatio",
 		name = "Keep aspect ratio",
-		description = "Keeps the aspect ratio when stretching"
+		description = "Keeps the aspect ratio when stretching",
+		position = 3
 	)
 	default boolean keepAspectRatio()
 	{
@@ -55,7 +68,8 @@ public interface FixedModeConfig extends Config
 	@ConfigItem(
 		keyName = "increasedPerformance",
 		name = "Increased performance mode",
-		description = "Uses a fast algorithm when stretching, lowering quality but increasing performance"
+		description = "Uses a fast algorithm when stretching, lowering quality but increasing performance",
+		position = 4
 	)
 	default boolean increasedPerformance()
 	{
@@ -64,8 +78,9 @@ public interface FixedModeConfig extends Config
 
 	@ConfigItem(
 		keyName = "integerScaling",
-		name = "Integer Scaling",
-		description = "Forces use of a whole number scale factor"
+		name = "Integer scaling",
+		description = "Forces use of a whole number scale factor",
+		position = 5
 	)
 	default boolean integerScaling()
 	{
