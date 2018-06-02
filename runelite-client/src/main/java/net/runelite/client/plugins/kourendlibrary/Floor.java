@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2018 Abex
  * Copyright (c) 2018, Franck Maillot <https://github.com/Franck-M>
  * All rights reserved.
  *
@@ -25,79 +24,69 @@
  */
 package net.runelite.client.plugins.kourendlibrary;
 
-import java.util.HashMap;
-import java.util.Map;
 import lombok.Getter;
-import net.runelite.api.NpcID;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Class for the Kourend Library customers.
- * Each customer is defined by its npc id and his/her name.
+ * The Kourend Library is composed of floors containing rooms. A floor is defined by its level (z coordinate).
  */
-public enum LibraryCustomer
+class Floor
 {
-	VILLIA(NpcID.VILLIA, "Villia"),
-	PROFESSOR_GRACKLEBONE(NpcID.PROFESSOR_GRACKLEBONE, "Prof. Gracklebone"),
-	Sam(NpcID.SAM_7049, "Sam");
-
 	/**
-	 * Map of all customer by their npc id.
-	 */
-	private static final Map<Integer, LibraryCustomer> byId;
-
-	/**
-	 * Npc id of the customer.
-	 */
-	@Getter
-	private final int id;
-
-	/**
-	 * Name of the customer.
+	 * Full name of the floor. In the case of the Kourend Library Plugin this is representative of the library level
+	 * of the floor.
 	 */
 	@Getter
 	private final String name;
 
-	// Static variables initialization
-	static
-	{
-		byId = buildIdMap();
-	}
+	/**
+	 * Level of this floor.
+	 */
+	@Getter
+	private final Integer level;
 
 	/**
-	 * Static method, return a customer given its npc id.
-	 *
-	 * @param id Npc id of the customer.
-	 * @return The LibraryCustomer object for the specified id.
+	 * List of rooms available on this floor. Set when a room register to the floor.
+	 * Values are stored in an ArrayList to ensure order is conserved.
 	 */
-	public static LibraryCustomer getById(int id)
-	{
-		return byId.get(id);
-	}
+	@Getter
+	private List<Room> rooms = new ArrayList<>();
 
 	/**
-	 * Static method, create a HashMap of customer using their npc id as key.
+	 * Constructor for the Floor class. A floor is defined by its level and name.
 	 *
-	 * @return Map of customers by id.
+	 * @param name Name of the floor.
+	 * @param z    z coordinate of the floor.
 	 */
-	private static Map<Integer, LibraryCustomer> buildIdMap()
+	Floor(String name, Integer z)
 	{
-		Map<Integer, LibraryCustomer> byId = new HashMap<>();
-		for (LibraryCustomer c : values())
-		{
-			byId.put(c.id, c);
-		}
-		return byId;
-	}
-
-	/**
-	 * Constructor for Library customers.
-	 *
-	 * @param id   Npc id of the customer.
-	 * @param name Name of the customer.
-	 */
-	LibraryCustomer(int id, String name)
-	{
-		this.id = id;
 		this.name = name;
+		this.level = z;
+	}
+
+	/**
+	 * Adding a room to this floor.
+	 *
+	 * @param room Room to add to this floor.
+	 */
+	void addRoom(Room room)
+	{
+		this.rooms.add(room);
+	}
+
+	/**
+	 * Get a list of bookcases on the floor.
+	 *
+	 * @return List of bookcases on this floor.
+	 */
+	List<Bookcase> getBookcases()
+	{
+		List<Bookcase> bookcases = new ArrayList<>();
+		for (Room room : this.getRooms())
+		{
+			bookcases.addAll(room.getBookcases());
+		}
+		return bookcases;
 	}
 }

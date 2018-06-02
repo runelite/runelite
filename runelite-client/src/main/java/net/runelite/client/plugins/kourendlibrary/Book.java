@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Franck Maillot <https://github.com/Franck-M>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,14 +25,22 @@
  */
 package net.runelite.client.plugins.kourendlibrary;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.ItemID;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 
+/**
+ * Numerous books are available in the Kourend Library, this class makes an enumeration of those books.
+ * We make a distinction between dark manuscripts and other books in this class. Dark manuscript are specific in that
+ * they share the same name (although not the same item id) and by the fact that only one can be retrieved at a time.
+ * At the time of writing the Library contains 26 books, including 10 dark manuscripts.
+ */
 public enum Book
 {
 	DARK_MANUSCRIPT_13514(ItemID.DARK_MANUSCRIPT),
@@ -44,7 +53,6 @@ public enum Book
 	DARK_MANUSCRIPT_13521(ItemID.DARK_MANUSCRIPT_13521),
 	DARK_MANUSCRIPT_13522(ItemID.DARK_MANUSCRIPT_13522),
 	DARK_MANUSCRIPT_13523(ItemID.DARK_MANUSCRIPT_13523),
-
 	RADAS_CENSUS(ItemID.RADAS_CENSUS, "Rada's Census", "Census of King Rada III, by Matthias Vorseth."),
 	RICKTORS_DIARY_7(ItemID.RICKTORS_DIARY_7, "Ricktor's Diary 7", "Diary of Steklan Ricktor, volume 7."),
 	EATHRAM_RADA_EXTRACT(ItemID.EATHRAM__RADA_EXTRACT, "Eathram & Rada extract", "An extract from Eathram & Rada, by Anonymous."),
@@ -59,13 +67,74 @@ public enum Book
 	TRISTESSAS_TRAGEDY(ItemID.TRISTESSAS_TRAGEDY, "Tristessa's Tragedy", "The Tragedy of Tristessa."),
 	TREACHERY_OF_ROYALTY(ItemID.TREACHERY_OF_ROYALTY, "The Treachery of Royalty", "The Treachery of Royalty, by Professor Answith."),
 	TRANSPORTATION_INCANTATIONS(ItemID.TRANSPORTATION_INCANTATIONS, "Transportation Incantations", "Transportation Incantations, by Amon Ducot."),
-	SOUL_JORUNEY(ItemID.SOUL_JOURNEY, "Soul Journey", "The Journey of Souls, by Aretha."),
+	SOUL_JOURNEY(ItemID.SOUL_JOURNEY, "Soul Journey", "The Journey of Souls, by Aretha."),
 	VARLAMORE_ENVOY(ItemID.VARLAMORE_ENVOY, "Varlamore Envoy", "The Envoy to Varlamore, by Deryk Paulson.");
 
-	private static final Map<Integer, Book> BY_ID = buildById();
+	/**
+	 * Map of books by id. Used in KourendLibraryPlugin when we need to get a book by its id.
+	 */
+	private static final Map<Integer, Book> BY_ID;
 
-	private static final Map<String, Book> BY_NAME = buildByName();
+	/**
+	 * Map of books by name. Used in KourendLibraryPlugin  when we need to get a book by its name.
+	 */
+	private static final Map<String, Book> BY_NAME;
 
+	/**
+	 * Item id of the book.
+	 */
+	@Getter
+	private final int item;
+
+	/**
+	 * Full name of the book used by the Library customers when requesting a book.
+	 */
+	@Getter
+	private final String name;
+
+	/**
+	 * Short name of the book used in the overlays.
+	 */
+	@Getter
+	private final String shortName;
+
+	/**
+	 * Icon of the book used in the overlays.
+	 */
+	@Getter
+	private AsyncBufferedImage icon;
+
+	/**
+	 * Whether or not the book is a dark manuscript.
+	 */
+	@Getter
+	private final boolean isDarkManuscript;
+
+	/**
+	 * Whether this is the last dark manuscript that was found.
+	 */
+	private boolean isCheckedDarkManuscript;
+
+	/**
+	 * Whether or not a book is present in the player inventory.
+	 * This value is updated whenever the player's inventory changes.
+	 */
+	@Getter
+	@Setter
+	private boolean isInInventory;
+
+	// Static variables initialization
+	static
+	{
+		BY_ID = buildById();
+		BY_NAME = buildByName();
+	}
+
+	/**
+	 * Static method, create a HashMap of books using their id as key.
+	 *
+	 * @return Map of books by id.
+	 */
 	private static Map<Integer, Book> buildById()
 	{
 		HashMap<Integer, Book> byId = new HashMap<>();
@@ -76,6 +145,12 @@ public enum Book
 		return Collections.unmodifiableMap(byId);
 	}
 
+	/**
+	 * Static method, create a HashMap of books using their name as key. This is used to identify the book required by
+	 * the customers. We do not need dark manuscripts in this map as they are never requested.
+	 *
+	 * @return Map of books by name.
+	 */
 	private static Map<String, Book> buildByName()
 	{
 		HashMap<String, Book> byName = new HashMap<>();
@@ -89,31 +164,41 @@ public enum Book
 		return Collections.unmodifiableMap(byName);
 	}
 
+	/**
+	 * Static method, return a book given its id.
+	 *
+	 * @param id Id of the book.
+	 * @return The book associated to the id if it exists.
+	 */
 	public static Book byId(int id)
 	{
 		return BY_ID.get(id);
 	}
 
+	/**
+	 * Static method, return a book given its name.
+	 *
+	 * @param name Name of the book.
+	 * @return The book associated to the name if it exists.
+	 */
 	public static Book byName(String name)
 	{
 		return BY_NAME.get(name);
 	}
 
-	@Getter
-	private final int item;
+	// Variables initialization
+	{
+		isInInventory = false;
+		isCheckedDarkManuscript = false;
+	}
 
-	@Getter
-	private final String name;
-
-	@Getter
-	private final String shortName;
-
-	@Getter
-	private AsyncBufferedImage icon;
-
-	@Getter
-	private final boolean isDarkManuscript;
-
+	/**
+	 * Constructor for books (not dark manuscripts).
+	 *
+	 * @param id        Id of the book as found in the client.
+	 * @param shortName Short name of the book displayed to the player.
+	 * @param name      Full name of the book used by the Library customers.
+	 */
 	Book(int id, String shortName, String name)
 	{
 		this.item = id;
@@ -122,6 +207,11 @@ public enum Book
 		this.name = name;
 	}
 
+	/**
+	 * Constructor for dark manuscripts.
+	 *
+	 * @param id Id of the dark manuscript as found in the client.
+	 */
 	Book(int id)
 	{
 		this.item = id;
@@ -130,7 +220,74 @@ public enum Book
 		this.shortName = "Dark Manuscript";
 	}
 
-	static void fillImages(ItemManager itemManager)
+	/**
+	 * Reset the book.
+	 * As of now this simply set dark manuscripts to unchecked.
+	 */
+	public void reset()
+	{
+		if (isDarkManuscript)
+		{
+			isCheckedDarkManuscript = false;
+		}
+	}
+
+	/**
+	 * A book can be found in the bookcase if it's a dark manuscript and we haven't checked the bookcase yet / dark
+	 * manuscripts haven't reset yet or otherwise if it's not in the player's inventory.
+	 *
+	 * @return Availability of this book in its respective bookcase.
+	 */
+	public boolean isAvailableInBookcase()
+	{
+		return this.isDarkManuscript ? !this.isCheckedDarkManuscript : !this.isInInventory;
+	}
+
+	/**
+	 * Alternative function to set isCheckedDarkManuscript to false.
+	 */
+	public void setIsCheckedDarkManuscriptToFalse()
+	{
+		this.isCheckedDarkManuscript = false;
+	}
+
+	/**
+	 * Should only be called for dark manuscripts. When called set the current book as checked (not in the bookcase)
+	 * and in the case where we actually picked a book from the bookcase also reset this variable for other manuscripts.
+	 *
+	 * @param bookFoundWasDarkManuscript Whether or not we just picked a dark manuscript.
+	 */
+	public void setIsCheckedDarkManuscript(boolean bookFoundWasDarkManuscript)
+	{
+		this.isCheckedDarkManuscript = true;
+		if (bookFoundWasDarkManuscript)
+		{
+			Arrays.stream(Book.values())
+				.filter(b -> b.isDarkManuscript() && b != this)
+				.forEach(Book::setIsCheckedDarkManuscriptToFalse);
+		}
+	}
+
+	/**
+	 * Used to count currently available (potentially present in the bookcase) dark manuscripts.
+	 *
+	 * @return The current number of available dark manuscripts.
+	 */
+	public static int countAvailableDarkManuscripts()
+	{
+		return (int) Arrays.stream(Book.values())
+			.filter(Book::isDarkManuscript)
+			.filter(Book::isAvailableInBookcase)
+			.count();
+	}
+
+	/**
+	 * Fill the book icon of all books. This is deliberately done outside of constructor to let the item manager get
+	 * the images beforehand.
+	 *
+	 * @param itemManager Item manager of Runelite.
+	 */
+	public static void fillImages(ItemManager itemManager)
 	{
 		for (Book b : values())
 		{
