@@ -35,7 +35,7 @@ public @interface ConfigItem
 {
 	int position() default -1;
 
-	String keyName();
+	String keyName() default "";
 
 	String name();
 
