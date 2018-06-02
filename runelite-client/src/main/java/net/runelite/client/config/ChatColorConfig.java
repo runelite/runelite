@@ -197,7 +197,10 @@ public interface ChatColorConfig extends Config
 		name = "Game message highlight",
 		description = "Color of highlights in Game Messages"
 	)
-	Color opaqueGameMessageHighlight();
+	default Color opaqueGameMessageHighlight()
+	{
+		return Color.decode("#EF1020");
+	}
 
 	@ConfigItem(
 		position = 49,
@@ -430,7 +433,10 @@ public interface ChatColorConfig extends Config
 		name = "Game message highlight",
 		description = "Color of highlights in Game Messages (transparent)"
 	)
-	Color transparentGameMessageHighlight();
+	default Color transparentGameMessageHighlight()
+	{
+		return Color.decode("#EF1020");
+	}
 
 	@ConfigItem(
 		position = 79,
