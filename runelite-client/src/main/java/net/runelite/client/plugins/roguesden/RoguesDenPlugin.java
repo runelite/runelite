@@ -126,6 +126,31 @@ public class RoguesDenPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOADING)
+		{
+			obstaclesHull.clear();
+			obstaclesTile.clear();
+		}
+	}
+
+	private void onTileObject(Tile tile, TileObject oldObject, TileObject newObject)
+	{
+		obstaclesHull.remove(oldObject);
+		if (newObject != null)
+		{
+			WorldPoint point = tile.getWorldLocation();
+
+			Obstacles.Obstacle obstacle = Obstacles.TILE_MAP.get(point.getX(), point.getY());
+			if (obstacle != null && obstacle.getObjectId() == newObject.getId())
+			{
+				obstaclesHull.put(newObject, tile);
+			}
+		}
+	}
+
+	@Subscribe
 	public void GameObjectSpawned(GameObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getGameObject());
@@ -195,31 +220,5 @@ public class RoguesDenPlugin extends Plugin
 	public void DecorativeObjectDespawned(DecorativeObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getDecorativeObject(), null);
-	}
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
-	{
-		if (event.getGameState() == GameState.LOADING)
-		{
-			obstaclesHull.clear();
-			obstaclesTile.clear();
-		}
-	}
-
-	private void onTileObject(Tile tile, TileObject oldObject, TileObject newObject)
-	{
-		obstaclesHull.remove(oldObject);
-		if (newObject != null)
-		{
-			WorldPoint point = tile.getWorldLocation();
-
-			Obstacles.Obstacle obstacle = Obstacles.TILE_MAP.get(point.getX(), point.getY());
-			if (obstacle != null && obstacle.objectId == newObject.getId())
-			{
-
-				obstaclesHull.put(newObject, tile);
-			}
-		}
 	}
 }

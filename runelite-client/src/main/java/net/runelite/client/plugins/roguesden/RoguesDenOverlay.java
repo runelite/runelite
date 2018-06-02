@@ -50,8 +50,6 @@ public class RoguesDenOverlay extends Overlay
 	private final Client client;
 	private final RoguesDenPlugin plugin;
 
-	public static final Color COL_GROUND = Color.GREEN;
-	public static final Color COL_GROUND_AVOID = Color.RED;
 	public static final Color COL_OBJ_BORDER = Color.RED;
 	private static Color COL_OBJ = new Color(COL_OBJ_BORDER.getRed(), COL_OBJ_BORDER.getGreen(), COL_OBJ_BORDER.getBlue(), 50);
 	private static Color COL_OBJ_BORDER_HOVER = COL_OBJ_BORDER.darker();
@@ -95,15 +93,18 @@ public class RoguesDenOverlay extends Overlay
 					graphics.draw(clickBox);
 					graphics.setColor(COL_OBJ);
 					graphics.fill(clickBox);
-
 				}
 				else
 				{
 					Polygon p;
 					if (obstacle instanceof GameObject)
+					{
 						p = ((GameObject) obstacle).getConvexHull();
+					}
 					else
+					{
 						p = obstacle.getCanvasTilePoly();
+					}
 
 					if (p != null)
 					{
@@ -116,67 +117,33 @@ public class RoguesDenOverlay extends Overlay
 
 		for (Obstacles.Obstacle obstacle : Obstacles.OBSTACLES)
 		{
-			LocalPoint localPoint = LocalPoint.fromWorld(client, obstacle.tile);
+			LocalPoint localPoint = LocalPoint.fromWorld(client, obstacle.getTile());
 
-			if (localPoint != null && obstacle.tile.getPlane() == client.getPlane() && localPoint.distanceTo(playerLocation) < MAX_DISTANCE)
+			if (localPoint != null && obstacle.getTile().getPlane() == client.getPlane()
+				&& localPoint.distanceTo(playerLocation) < MAX_DISTANCE)
 			{
-				Point mp = Perspective.worldToMiniMap(client, localPoint.getX(), localPoint.getY());
-				if (mp != null)
-					OverlayUtil.renderMinimapLocation(graphics, mp, obstacle.objectId == -1 ? COL_GROUND : COL_OBJ_BORDER);
-
-				if (obstacle.hint.length() > 0)
+				if (obstacle.getHint().length() > 0)
 				{
 					Polygon p = Perspective.getCanvasTilePoly(client, localPoint);
 					if (p != null)
 					{
-						graphics.setColor(COL_GROUND);
+						graphics.setColor(obstacle.getTileColor());
 						graphics.drawPolygon(p);
 					}
 				}
 
-				Point textLocation = Perspective.getCanvasTextLocation(client, graphics, localPoint, obstacle.hint, 0);
+				Point textLocation = Perspective.getCanvasTextLocation(client, graphics, localPoint, obstacle.getHint(), 0);
 				if (textLocation != null)
 				{
 					int x = textLocation.getX();
 					int y = textLocation.getY();
 
 					graphics.setColor(Color.LIGHT_GRAY);
-					graphics.drawString(obstacle.hint, x, y);
+					graphics.drawString(obstacle.getHint(), x, y);
 				}
 			}
 		}
 
-		for (Obstacles.Obstacle obstacle : Obstacles.OBSTACLES_AVOID)
-		{
-			LocalPoint localPoint = LocalPoint.fromWorld(client, obstacle.tile);
-
-			if (localPoint != null && obstacle.tile.getPlane() == client.getPlane() && localPoint.distanceTo(playerLocation) < MAX_DISTANCE)
-			{
-				Point mp = Perspective.worldToMiniMap(client, localPoint.getX(), localPoint.getY());
-				if (mp != null)
-					OverlayUtil.renderMinimapLocation(graphics, mp, COL_GROUND_AVOID);
-
-				if (obstacle.hint.length() > 0)
-				{
-					Polygon p = Perspective.getCanvasTilePoly(client, localPoint);
-					if (p != null)
-					{
-						graphics.setColor(COL_GROUND_AVOID);
-						graphics.drawPolygon(p);
-					}
-				}
-
-				Point textLocation = Perspective.getCanvasTextLocation(client, graphics, localPoint, obstacle.hint, 0);
-				if (textLocation != null)
-				{
-					int x = textLocation.getX();
-					int y = textLocation.getY();
-
-					graphics.setColor(Color.LIGHT_GRAY);
-					graphics.drawString(obstacle.hint, x, y);
-				}
-			}
-		}
 		return null;
 	}
 }
@@ -207,14 +174,18 @@ class RoguesDenMinimapOverlay extends Overlay
 
 		for (Obstacles.Obstacle obstacle : Obstacles.OBSTACLES)
 		{
-			LocalPoint localPoint = LocalPoint.fromWorld(client, obstacle.tile);
+			LocalPoint localPoint = LocalPoint.fromWorld(client, obstacle.getTile());
 
-			if (localPoint == null || obstacle.tile.getPlane() != client.getPlane())
+			if (localPoint == null || obstacle.getTile().getPlane() != client.getPlane())
+			{
 				continue;
+			}
 
 			Point mp = Perspective.worldToMiniMap(client, localPoint.getX(), localPoint.getY());
 			if (mp != null)
-				OverlayUtil.renderMinimapLocation(graphics, mp, obstacle.objectId == -1 ? RoguesDenOverlay.COL_GROUND : RoguesDenOverlay.COL_OBJ_BORDER);
+			{
+				OverlayUtil.renderMinimapLocation(graphics, mp, obstacle.getObjectId() == -1 ? Color.GREEN : Color.RED);
+			}
 		}
 
 		return null;
