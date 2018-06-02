@@ -26,6 +26,7 @@ package net.runelite.client.game;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -38,9 +39,11 @@ public class SkillIconManager
 	// * 2 to account for the small version of each icon
 	private final BufferedImage[] imgCache = new BufferedImage[Skill.values().length * 2];
 
+	private final HashMap<String, BufferedImage> imageCache = new HashMap<>();
+
 	public BufferedImage getSkillImage(Skill skill, boolean small)
 	{
-		int skillIdx = skill.ordinal() + (small ? Skill.values().length : 0);
+		/*int skillIdx = skill.ordinal() + (small ? Skill.values().length : 0);
 		BufferedImage skillImage = null;
 
 		if (imgCache[skillIdx] != null)
@@ -64,12 +67,46 @@ public class SkillIconManager
 			log.debug("Error Loading skill icons {}", e);
 		}
 
-		return skillImage;
+		return skillImage;*/
+		return getSkillImage(skill.getName(), small);
 	}
 
 	public BufferedImage getSkillImage(Skill skill)
 	{
 		return getSkillImage(skill, false);
+	}
+
+	public BufferedImage getSkillImage(String skillName)
+	{
+		return getSkillImage(skillName, false);
+	}
+
+	public BufferedImage getSkillImage(String skillName, boolean small)
+	{
+		BufferedImage skillImage = null;
+		String key = skillName.toLowerCase() + small;
+		if (imageCache.containsKey(key))
+		{
+			return imageCache.get(key);
+		}
+
+		try
+		{
+			String skillIconPath = (small ? "/skill_icons_small/" : "/skill_icons/")
+				+ skillName.toLowerCase() + ".png";
+			log.debug("Loading skill icon from {}", skillIconPath);
+			synchronized (ImageIO.class)
+			{
+				skillImage = ImageIO.read(SkillIconManager.class.getResourceAsStream(skillIconPath));
+			}
+			imageCache.put(key, skillImage);
+		}
+		catch (IOException e)
+		{
+			log.debug("Error Loading skill icons {}", e);
+		}
+
+		return skillImage;
 	}
 
 }
