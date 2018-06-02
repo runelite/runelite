@@ -104,7 +104,7 @@ public enum Produce
 	PALM("Palm", ItemID.COCONUT, 160, 7, 45, 7),
 
 	// Special crops
-	SEAWEED("Seaweed", ItemID.GIANT_SEAWEED, 10, 8, 0, 4),
+	SEAWEED("Seaweed", ItemID.GIANT_SEAWEED, 5, 8, 0, 4),
 	TEAK("Teak", ItemID.TEAK_LOGS, 560, 9),
 	GRAPE("Grape", ItemID.GRAPES, 5, 8, 0, 5),
 	MUSHROOM("Mushroom", ItemID.MUSHROOM, 40, 7, 0, 7),
