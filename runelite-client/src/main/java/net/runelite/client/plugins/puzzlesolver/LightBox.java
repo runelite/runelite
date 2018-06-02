@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Not Noob
+ * Copyright (c) 2018, Not Noob <https://github.com/DikkeNoob>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.lightbox;
+package net.runelite.client.plugins.puzzlesolver;
 
 public class LightBox
 {
