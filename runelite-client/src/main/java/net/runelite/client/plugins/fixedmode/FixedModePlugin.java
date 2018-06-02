@@ -38,8 +38,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 @PluginDescriptor(
 	name = "Fixed Mode",
 	description = "Resize the game while in fixed mode",
-	tags = {"resize"},
-	enabledByDefault = false
+	tags = {"resize"}
 )
 public class FixedModePlugin extends Plugin
 {
@@ -67,20 +66,17 @@ public class FixedModePlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		mouseManager.registerMouseListener(0, mouseListener);
-		mouseManager.registerMouseWheelListener(0, mouseWheelListener);
-
-		client.setStretchedEnabled(true);
 		updateConfig();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		client.setStretchedEnabled(false);
+		// Unregister mouse translation listeners
+		unregisterListeners();
 
-		mouseManager.unregisterMouseListener(mouseListener);
-		mouseManager.unregisterMouseWheelListener(mouseWheelListener);
+		// Disable stretched fixed mode
+		client.setStretchedEnabled(false);
 	}
 
 	@Subscribe
@@ -96,8 +92,23 @@ public class FixedModePlugin extends Plugin
 
 	private void updateConfig()
 	{
+		unregisterListeners();
+
+		if (config.stretchedEnabled())
+		{
+			mouseManager.registerMouseListener(0, mouseListener);
+			mouseManager.registerMouseWheelListener(0, mouseWheelListener);
+		}
+
+		client.setStretchedEnabled(config.stretchedEnabled());
 		client.setStretchedIntegerScaling(config.integerScaling());
 		client.setStretchedKeepAspectRatio(config.keepAspectRatio());
 		client.setStretchedFast(config.increasedPerformance());
+	}
+
+	private void unregisterListeners()
+	{
+		mouseManager.unregisterMouseListener(mouseListener);
+		mouseManager.unregisterMouseWheelListener(mouseWheelListener);
 	}
 }

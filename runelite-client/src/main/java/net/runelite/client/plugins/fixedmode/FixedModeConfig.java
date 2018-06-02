@@ -33,6 +33,16 @@ import net.runelite.client.config.ConfigItem;
 public interface FixedModeConfig extends Config
 {
 	@ConfigItem(
+		keyName = "stretchedEnabled",
+		name = "Stretch fixed mode",
+		description = "Resizes the game while in fixed mode"
+	)
+	default boolean stretchedEnabled()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "keepAspectRatio",
 		name = "Keep aspect ratio",
 		description = "Keeps the aspect ratio when stretching"
