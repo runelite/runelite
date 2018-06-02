@@ -65,6 +65,12 @@ public class Jarvis
 		do
 		{
 			ch.add(current);
+			assert ch.size() <= points.size() : "hull has more points than graph";
+			if (ch.size() > points.size())
+			{
+				// Just to make sure we never somehow get stuck in this loop
+				return null;
+			}
 
 			// the next point - all points are to the right of the
 			// line between current and next
@@ -78,7 +84,7 @@ public class Jarvis
 					continue;
 				}
 
-				int cp = crossProduct(current, p, next);
+				long cp = crossProduct(current, p, next);
 				if (cp > 0 || (cp == 0 && current.distanceTo(p) > current.distanceTo(next)))
 				{
 					next = p;
@@ -91,7 +97,6 @@ public class Jarvis
 				return null;
 			}
 
-			assert ch.size() <= points.size() : "hull has more points than graph";
 			current = next;
 		}
 		while (current != left);
@@ -118,10 +123,10 @@ public class Jarvis
 		return left;
 	}
 
-	private static int crossProduct(Point p, Point q, Point r)
+	private static long crossProduct(Point p, Point q, Point r)
 	{
-		int val = (q.getY() - p.getY()) * (r.getX() - q.getX())
-			- (q.getX() - p.getX()) * (r.getY() - q.getY());
+		long val = (long)(q.getY() - p.getY()) * (r.getX() - q.getX())
+			- (long)(q.getX() - p.getX()) * (r.getY() - q.getY());
 		return val;
 	}
 }
