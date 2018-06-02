@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Franck Maillot <https://github.com/Franck-M>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -75,8 +76,8 @@ class BookPanel extends JPanel
 		this.location.setText(location);
 	}
 
-	public void setIsTarget(boolean target)
+	void setColor(Color color)
 	{
-		location.setForeground(target ? Color.GREEN : Color.WHITE);
+		location.setForeground(color);
 	}
 }

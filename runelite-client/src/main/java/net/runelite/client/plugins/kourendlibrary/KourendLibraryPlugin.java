@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Franck Maillot <https://github.com/Franck-M>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,22 +27,30 @@ package net.runelite.client.plugins.kourendlibrary;
 
 import com.google.common.eventbus.Subscribe;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.MenuAction;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -55,7 +64,19 @@ import net.runelite.client.ui.overlay.Overlay;
 @Slf4j
 public class KourendLibraryPlugin extends Plugin
 {
-	final static boolean debug = false;
+	final static WorldPoint LIBRARY_CENTER = new WorldPoint(1632, 3807, 1);
+	final static int OVERLAY_MAXIMUM_DISTANCE = 24;
+	final static int ROUGH_ENABLE_DISTANCE = 30;
+
+	private static final Pattern BOOK_EXTRACTOR = Pattern.compile("'<col=0000ff>(.*)</col>'");
+	private static final Pattern TAG_MATCHER = Pattern.compile("(<[^>]*>)");
+
+	private KourendLibraryPanel panel;
+
+	private NavigationButton navButton;
+
+	private WorldPoint lastBookcaseClick = null;
+	private WorldPoint lastBookcaseAnimatedOn = null;
 
 	@Inject
 	private PluginToolbar pluginToolbar;
@@ -67,16 +88,22 @@ public class KourendLibraryPlugin extends Plugin
 	private Library library;
 
 	@Inject
+	private KourendLibraryConfig config;
+
+	@Inject
 	private KourendLibraryOverlay overlay;
+
+	@Inject
+	private KourendLibraryMinimapOverlay minimapOverlay;
 
 	@Inject
 	private ItemManager itemManager;
 
-	private KourendLibraryPanel panel;
-	private NavigationButton navButton;
-
-	private WorldPoint lastBookcaseClick = null;
-	private WorldPoint lastBookcaseAnimatedOn = null;
+	@Provides
+	KourendLibraryConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(KourendLibraryConfig.class);
+	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -109,9 +136,9 @@ public class KourendLibraryPlugin extends Plugin
 	}
 
 	@Override
-	public Overlay getOverlay()
+	public Collection<Overlay> getOverlays()
 	{
-		return overlay;
+		return Arrays.asList(overlay, minimapOverlay);
 	}
 
 	@Subscribe
@@ -146,8 +173,29 @@ public class KourendLibraryPlugin extends Plugin
 		}
 	}
 
-	private static final Pattern BOOK_EXTRACTOR = Pattern.compile("'<col=0000ff>(.*)</col>'");
-	private static final Pattern TAG_MATCHER = Pattern.compile("(<[^>]*>)");
+	@Subscribe
+	public void onItemContainerChanged(final ItemContainerChanged event)
+	{
+		// Check if item was removed from inventory
+		if (event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
+		{
+			final Item[] items = Objects.requireNonNull(client.getItemContainer(InventoryID.INVENTORY)).getItems();
+			for (Book b : Book.values())
+			{
+				if (!b.isDarkManuscript())
+				{
+					if (Arrays.stream(items).anyMatch(i -> i.getId() == b.getItem()))
+					{
+						b.setInInventory(true);
+					}
+					else
+					{
+						b.setInInventory(false);
+					}
+				}
+			}
+		}
+	}
 
 	@Subscribe
 	void onTick(GameTick tick)
