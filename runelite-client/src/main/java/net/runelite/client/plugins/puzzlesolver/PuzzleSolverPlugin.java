@@ -27,12 +27,10 @@ package net.runelite.client.plugins.puzzlesolver;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
-
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.events.GameTick;
@@ -57,8 +55,6 @@ public class PuzzleSolverPlugin extends Plugin
 
 	@Inject
 	private ScheduledExecutorService executorService;
-
-
 
 	@Inject
 	private Client client;
