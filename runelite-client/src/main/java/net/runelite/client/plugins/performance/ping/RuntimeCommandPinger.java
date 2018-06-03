@@ -46,7 +46,6 @@ public abstract class RuntimeCommandPinger implements Pinger
 	abstract String[] formatCommand(String address);
 
 	/**
-	 *
 	 * @param line
 	 * @return -1 if the line does not have a time in ms
 	 */
