@@ -256,6 +256,11 @@ public class ChatMessageManager
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueClanChatInfo(), false),
 				ChatMessageType.CLANCHAT_INFO);
 		}
+		if (chatColorConfig.opaqueClanChatInfoHighlight() != null)
+		{
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaqueClanChatInfoHighlight(), false),
+				ChatMessageType.CLANCHAT_INFO);
+		}
 		if (chatColorConfig.opaqueClanChatMessage() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueClanChatMessage(), false),
@@ -381,6 +386,11 @@ public class ChatMessageManager
 		if (chatColorConfig.transparentClanChatInfo() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentClanChatInfo(), true),
+				ChatMessageType.CLANCHAT_INFO);
+		}
+		if (chatColorConfig.transparentClanChatInfoHighlight() != null)
+		{
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentClanChatInfoHighlight(), true),
 				ChatMessageType.CLANCHAT_INFO);
 		}
 		if (chatColorConfig.transparentClanChatMessage() != null)

@@ -454,6 +454,12 @@ public class ConfigPanel extends PluginPanel
 			JLabel configEntryName = new JLabel(name);
 			configEntryName.setForeground(Color.WHITE);
 			configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
+
+			if (cid.getType() == void.class)
+			{
+				configEntryName.setText("<html><u>" + name + "</u></html>");
+			}
+
 			item.add(configEntryName, BorderLayout.CENTER);
 
 			if (cid.getType() == boolean.class)
