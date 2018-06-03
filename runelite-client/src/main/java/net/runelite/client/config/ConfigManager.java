@@ -367,7 +367,8 @@ public class ConfigManager
 		{
 			ConfigItem item = method.getAnnotation(ConfigItem.class);
 
-			if (item == null)
+			// only apply default configuration for methods which read configuration (0 args)
+			if (item == null || method.getParameterCount() != 0)
 			{
 				continue;
 			}
