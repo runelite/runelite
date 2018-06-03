@@ -45,6 +45,7 @@ public final class AnimationID
 	public static final int WOODCUTTING_3A_AXE = 7264;
 	public static final int CONSUMING = 829; // consuming consumables
 	public static final int FIREMAKING = 733;
+	public static final int DEATH = 836;
 	public static final int COOKING_FIRE = 897;
 	public static final int COOKING_RANGE = 896;
 	public static final int COOKING_WINE = 7529;
