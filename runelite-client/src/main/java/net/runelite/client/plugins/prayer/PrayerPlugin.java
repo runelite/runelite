@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Raqes <j.raqes@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,19 +26,52 @@
 package net.runelite.client.plugins.prayer;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.Prayer;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Prayer Flicking"
+	name = "Prayer"
 )
 public class PrayerPlugin extends Plugin
 {
+	private final PrayerCounter[] prayerCounter = new PrayerCounter[PrayerType.values().length];
+
+	@Inject
+	private Client client;
+
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private SpriteManager spriteManager;
+
 	@Inject
 	private PrayerFlickOverlay overlay;
+
+	@Inject
+	private PrayerConfig config;
+
+	@Provides
+	PrayerConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(PrayerConfig.class);
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		removeIndicators();
+	}
 
 	@Override
 	public Overlay getOverlay()
@@ -46,8 +80,70 @@ public class PrayerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onTick(GameTick tick)
+	private void onConfigChanged(ConfigChanged event)
 	{
-		overlay.onTick();
+		if (event.getGroup().equals("prayer"))
+		{
+			if (!config.prayerIndicator())
+			{
+				removeIndicators();
+			}
+			else if (!config.prayerIndicatorOverheads())
+			{
+				removeOverheadsIndicators();
+			}
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick tick)
+	{
+		if (config.prayerFlickHelper())
+		{
+			overlay.onTick();
+		}
+
+		if (!config.prayerIndicator())
+		{
+			return;
+		}
+
+		for (PrayerType prayerType : PrayerType.values())
+		{
+			Prayer prayer = prayerType.getPrayer();
+			int ord = prayerType.ordinal();
+
+			if (client.isPrayerActive(prayer))
+			{
+				if (prayerType.isOverhead() && !config.prayerIndicatorOverheads())
+				{
+					continue;
+				}
+
+				if (prayerCounter[ord] == null)
+				{
+					PrayerCounter counter = prayerCounter[ord] = new PrayerCounter(this, prayerType);
+					spriteManager.getSpriteAsync(prayerType.getSpriteID(), 0,
+						counter::setImage);
+					infoBoxManager.addInfoBox(counter);
+				}
+			}
+			else if (prayerCounter[ord] != null)
+			{
+					infoBoxManager.removeInfoBox(prayerCounter[ord]);
+					prayerCounter[ord] = null;
+			}
+		}
+	}
+
+	private void removeIndicators()
+	{
+		infoBoxManager.removeIf(entry -> entry instanceof PrayerCounter);
+	}
+
+	private void removeOverheadsIndicators()
+	{
+		infoBoxManager.removeIf(entry -> entry instanceof PrayerCounter
+			&& ((PrayerCounter) entry).getPrayerType().isOverhead());
 	}
 }
