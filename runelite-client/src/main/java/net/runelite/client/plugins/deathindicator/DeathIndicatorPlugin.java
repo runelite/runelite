@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.deathindicator;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
@@ -31,8 +32,10 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -52,8 +55,15 @@ import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 @PluginDescriptor(
 	name = "Death Indicator"
 )
+@Slf4j
 public class DeathIndicatorPlugin extends Plugin
 {
+	private static final Set<Integer> RESPAWN_REGIONS = ImmutableSet.of(
+		12850, // Lumbridge
+		11828, // Falador
+		12342, // Edgeville
+		11062 // Camelot
+	);
 	static BufferedImage BONES;
 
 	@Inject
@@ -71,6 +81,10 @@ public class DeathIndicatorPlugin extends Plugin
 	private Timer deathTimer;
 
 	private boolean hasRespawned = true;
+
+	private WorldPoint lastDeath;
+	private Instant lastDeathTime;
+	private int lastDeathWorld;
 
 	static
 	{
@@ -150,36 +164,59 @@ public class DeathIndicatorPlugin extends Plugin
 
 		hasRespawned = false;
 
-		config.deathLocationX(client.getLocalPlayer().getWorldLocation().getX());
-		config.deathLocationY(client.getLocalPlayer().getWorldLocation().getY());
-		config.deathLocationPlane(client.getLocalPlayer().getWorldLocation().getPlane());
-		config.deathWorld(client.getWorld());
-		config.timeOfDeath(Instant.now());
-
-		if (config.showDeathHintArrow())
-		{
-			client.setHintArrow(new WorldPoint(config.deathLocationX(), config.deathLocationY(), config.deathLocationPlane()));
-		}
-
-		if (config.showDeathOnWorldMap())
-		{
-			worldMapPointManager.removeIf(DeathWorldMapPoint.class::isInstance);
-			worldMapPointManager.add(new DeathWorldMapPoint(new WorldPoint(config.deathLocationX(), config.deathLocationY(), config.deathLocationPlane())));
-		}
-
-		resetInfobox();
+		lastDeath = client.getLocalPlayer().getWorldLocation();
+		lastDeathWorld = client.getWorld();
+		lastDeathTime = Instant.now();
 	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() == ChatMessageType.SERVER)
+		if (event.getType() != ChatMessageType.SERVER)
 		{
-			if (event.getMessage().equals("Oh dear, you are dead!"))
-			{
-				hasRespawned = true;
-			}
+			return;
 		}
+
+		if (lastDeath == null || !event.getMessage().equals("Oh dear, you are dead!"))
+		{
+			return;
+		}
+
+		// Check if player respawned in a death respawn location
+		int region = client.getLocalPlayer().getWorldLocation().getRegionID();
+		if (!RESPAWN_REGIONS.contains(region))
+		{
+			log.debug("Died, but did not respawn in a known respawn location: {}", region);
+
+			lastDeath = null;
+			lastDeathTime = null;
+			return;
+		}
+
+		hasRespawned = true;
+
+		// Save death to config
+		config.deathLocationX(lastDeath.getX());
+		config.deathLocationY(lastDeath.getY());
+		config.deathLocationPlane(lastDeath.getPlane());
+		config.timeOfDeath(lastDeathTime);
+		config.deathWorld(lastDeathWorld);
+
+		if (config.showDeathHintArrow())
+		{
+			client.setHintArrow(lastDeath);
+		}
+
+		if (config.showDeathOnWorldMap())
+		{
+			worldMapPointManager.removeIf(DeathWorldMapPoint.class::isInstance);
+			worldMapPointManager.add(new DeathWorldMapPoint(lastDeath));
+		}
+
+		resetInfobox();
+
+		lastDeath = null;
+		lastDeathTime = null;
 	}
 
 	@Subscribe
