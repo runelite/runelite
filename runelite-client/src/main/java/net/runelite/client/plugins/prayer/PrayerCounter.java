@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Raqes <j.raqes@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,32 +22,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.prayflick;
+package net.runelite.client.plugins.prayer;
 
-import com.google.common.eventbus.Subscribe;
-import javax.inject.Inject;
-import net.runelite.api.events.GameTick;
+import java.awt.image.BufferedImage;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.infobox.Counter;
 
-@PluginDescriptor(
-	name = "Prayer Flicking"
-)
-public class PrayerFlickPlugin extends Plugin
+public class PrayerCounter extends Counter
 {
-	@Inject
-	private PrayerFlickOverlay overlay;
+	@Getter
+	private final PrayerType prayerType;
 
-	@Override
-	public Overlay getOverlay()
+	@Setter
+	private BufferedImage image;
+
+	PrayerCounter(Plugin plugin, PrayerType prayerType)
 	{
-		return overlay;
+		super(null, plugin, "");
+		this.prayerType = prayerType;
 	}
 
-	@Subscribe
-	public void onTick(GameTick tick)
+	@Override
+	public String toString()
 	{
-		overlay.onTick();
+		return "Counter{" + "prayer=" + prayerType.getName() + '}';
+	}
+
+	@Override
+	public String getTooltip()
+	{
+		return prayerType.getDescription();
+	}
+
+	@Override
+	public BufferedImage getImage()
+	{
+		return image;
 	}
 }
