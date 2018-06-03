@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.prayflick;
+package net.runelite.client.plugins.prayer;
 
 import com.google.common.eventbus.Subscribe;
 import javax.inject.Inject;
@@ -34,7 +34,7 @@ import net.runelite.client.ui.overlay.Overlay;
 @PluginDescriptor(
 	name = "Prayer Flicking"
 )
-public class PrayerFlickPlugin extends Plugin
+public class PrayerPlugin extends Plugin
 {
 	@Inject
 	private PrayerFlickOverlay overlay;
