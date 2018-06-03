@@ -29,6 +29,7 @@ package net.runelite.client.plugins.fixedmode;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.event.KeyEvent;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -38,6 +39,8 @@ import net.runelite.api.events.WidgetPositioned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.input.KeyListener;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -47,7 +50,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 	description = "Resize the game while in fixed mode",
 	tags = {"resize"}
 )
-public class FixedModePlugin extends Plugin
+public class FixedModePlugin extends Plugin implements KeyListener
 {
 	private static final int DEFAULT_VIEW_HEIGHT = 334;
 	private static final int EXPANDED_VIEW_HEIGHT = 476;
@@ -77,6 +80,9 @@ public class FixedModePlugin extends Plugin
 	@Inject
 	private TranslateMouseWheelListener mouseWheelListener;
 
+	@Inject
+	private KeyManager keyManager;
+
 	private int lastMenu = 0;
 	private boolean hideChat = true;
 
@@ -90,6 +96,7 @@ public class FixedModePlugin extends Plugin
 	protected void startUp()
 	{
 		updateConfig();
+		keyManager.registerKeyListener(this);
 	}
 
 	@Override
@@ -107,6 +114,27 @@ public class FixedModePlugin extends Plugin
 
 		// Reset widgets
 		resetWidgets();
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e)
+	{
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		if (config.expandViewToChat() && !client.isResized() && e.getKeyCode() == KeyEvent.VK_ESCAPE && !hideChat)
+		{
+			hideChat = true;
+			e.consume();
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+
 	}
 
 	@Subscribe
