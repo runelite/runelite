@@ -36,13 +36,15 @@ import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import static net.runelite.api.AnimationID.DEATH;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -151,9 +153,13 @@ public class DeathIndicatorPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onLocalPlayerDeath(LocalPlayerDeath event)
+	public void onAnimationChanged(AnimationChanged animationChanged)
 	{
-		if (client.isInInstancedRegion())
+		Player local = client.getLocalPlayer();
+		if (animationChanged.getActor() != local
+			|| local.getAnimation() != DEATH
+			|| client.isInInstancedRegion()
+			|| local.getHealthRatio() != 0)
 		{
 			return;
 		}
@@ -304,8 +310,6 @@ public class DeathIndicatorPlugin extends Plugin
 		config.deathLocationPlane(0);
 		config.deathWorld(0);
 		config.timeOfDeath(null);
-
-		hasRespawned = false;
 	}
 
 	private void resetInfobox()
