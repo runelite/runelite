@@ -407,6 +407,11 @@ public class TimersPlugin extends Plugin
 		{
 			createGameTimer(CHARGE);
 		}
+
+		if (event.getMessage().equals("<col=ef1020>Your magical charge fades away.</col>"))
+		{
+			removeGameTimer(CHARGE);
+		}
 	}
 
 	@Subscribe
