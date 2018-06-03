@@ -27,12 +27,6 @@ package net.runelite.client.plugins.performance;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -45,6 +39,8 @@ import static net.runelite.client.callback.Hooks.log;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.performance.ping.Pinger;
+import net.runelite.client.plugins.performance.ping.PingerFactory;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.overlay.Overlay;
 
@@ -92,6 +88,11 @@ public class PerformancePlugin extends Plugin
 	@Inject
 	private PerformanceConfig performanceConfig;
 
+	@Inject
+	private PingerFactory pingerFactory;
+
+	private Pinger pinger;
+
 	@Provides
 	PerformanceConfig provideConfig(ConfigManager configManager)
 	{
@@ -127,6 +128,8 @@ public class PerformancePlugin extends Plugin
 		scheduledExecutorService.scheduleAtFixedRate(this::getPingToCurrentWorld, 5, 5, TimeUnit.SECONDS);
 		drawManager.registerEveryFrameListener(drawListener);
 		drawListener.reloadConfig();
+		pinger = pingerFactory.makePinger();
+		pinger.startup();
 	}
 
 	@Override
@@ -134,6 +137,9 @@ public class PerformancePlugin extends Plugin
 	{
 		scheduledExecutorService.shutdown();
 		drawManager.unregisterEveryFrameListener(drawListener);
+		pinger.shutdown();
+		pinger = null;
+
 	}
 
 	public void getPingToCurrentWorld()
@@ -150,46 +156,14 @@ public class PerformancePlugin extends Plugin
 
 	int pingWorld(int world)
 	{
-		InetAddress host;
-
-		try
+		if (pinger == null)
 		{
-			// Will update to the below code once hook for host name has been added
-			// Host hook will fix issues where the world host name sometimes ends in a or b (oldschool[0-9]{1,3}[ab]?.runescape.com)
-			// host = InetAddress.getByName(client.getWorldHostname());
-			final String hostDomain = String.format("oldschool%d.runescape.com",  world - 300);
-			host = InetAddress.getByName(hostDomain);
-		}
-		catch (UnknownHostException he)
-		{
-			log.warn("Cannot ping host", he);
-			return -1;
+			log.warn("Pinger not initialized");
+			return - 1;
 		}
 
-		Instant start = Instant.now();
+		final String hostDomain = String.format("oldschool%d.runescape.com",  world - 300);
 
-		// Java cannot use ping (via ICMP), use sockets instead
-		try (Socket sock = new Socket(host, 443))
-		{
-			sock.setSoTimeout(5000);
-
-			if (sock.isConnected())
-			{
-				return Math.toIntExact(ChronoUnit.MILLIS.between(start, Instant.now()));
-			}
-
-			log.warn("Host {} is not reachable", host);
-		}
-		catch (SocketTimeoutException e)
-		{
-			log.warn("Host {} timed out", host, e);
-			return 5000;
-		}
-		catch (Exception e)
-		{
-			log.warn("Could not create new socket", e);
-		}
-
-		return -1;
+		return pinger.ping(hostDomain);
 	}
 }
