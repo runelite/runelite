@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Levi <me@levischuck.com>
+ * Copyright (c) 2018, Levi <me@levischuck.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,6 +36,8 @@ public class PingerFactory
 				return new LinuxPinger();
 			case Windows:
 				return new WindowsPinger();
+			case MacOS:
+				return new MacPinger();
 			default:
 				return new NullPinger();
 		}

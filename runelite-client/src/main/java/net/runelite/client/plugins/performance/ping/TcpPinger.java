@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, William Gray <wgray5093@gmail.com>
+ * Copyright (c) 2018, William Gray <wgray5093@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
