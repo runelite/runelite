@@ -402,6 +402,11 @@ public class TimersPlugin extends Plugin
 		{
 			createGameTimer(PRAYER_ENHANCE);
 		}
+
+		if (config.showCharge() && event.getMessage().equals("<col=ef1020>You feel charged with magic power.</col>"))
+		{
+			createGameTimer(CHARGE);
+		}
 	}
 
 	@Subscribe
@@ -429,11 +434,6 @@ public class TimersPlugin extends Plugin
 		if (actor != client.getLocalPlayer())
 		{
 			return;
-		}
-
-		if (config.showCharge() && actor.getGraphic() == CHARGE.getGraphicId())
-		{
-			createGameTimer(CHARGE);
 		}
 
 		if (config.showImbuedHeart() && actor.getGraphic() == IMBUEDHEART.getGraphicId())
