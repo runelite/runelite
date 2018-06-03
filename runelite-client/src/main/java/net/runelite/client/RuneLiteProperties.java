@@ -41,6 +41,7 @@ public class RuneLiteProperties
 	private static final String DISCORD_APP_ID = "runelite.discord.appid";
 	private static final String DISCORD_INVITE = "runelite.discord.invite";
 	private static final String GITHUB_LINK = "runelite.github.link";
+	private static final String WIKI_LINK = "runelite.wiki.link";
 	private static final String PATREON_LINK = "runelite.patreon.link";
 	private static final String LAUNCHER_VERSION_PROPERTY = "runelite.launcher.version";
 
@@ -89,6 +90,11 @@ public class RuneLiteProperties
 	public String getGithubLink()
 	{
 		return properties.getProperty(GITHUB_LINK);
+	}
+
+	public String getWikiLink()
+	{
+		return properties.getProperty(WIKI_LINK);
 	}
 
 	public String getPatreonLink()
