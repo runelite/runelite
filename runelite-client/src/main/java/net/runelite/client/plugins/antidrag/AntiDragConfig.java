@@ -38,18 +38,11 @@ public interface AntiDragConfig extends Config
 	@ConfigItem(
 		keyName = "dragDelay",
 		name = "Drag Delay",
-		description = "Configures the inventory drag delay in client ticks (20ms)",
+		description = "Configures the inventory drag delay in milliseconds",
 		position = 1
 	)
 	default int dragDelay()
 	{
-		return 600 / 20; // one game tick
+		return 600; // one game tick
 	}
-
-	@ConfigItem(
-		keyName = "dragDelay",
-		name = "",
-		description = ""
-	)
-	void dragDelay(int delay);
 }
