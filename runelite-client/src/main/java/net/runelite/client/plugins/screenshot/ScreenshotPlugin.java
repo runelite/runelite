@@ -107,7 +107,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile("Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
 
-	private ImmutableList<String> petMessages = ImmutableList.of("You have a funny feeling like you're being followed",
+	private static final ImmutableList<String> petMessages = ImmutableList.of("You have a funny feeling like you're being followed",
 		"You feel something weird sneaking into your backpack",
 		"You have a funny feeling like you would have been followed");
 
