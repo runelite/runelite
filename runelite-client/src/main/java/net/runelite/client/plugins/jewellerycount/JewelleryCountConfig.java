@@ -56,4 +56,37 @@ public interface JewelleryCountConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showAmuletInfobox",
+		name = "Show Amulet/Necklace Infobox",
+		description = "Configures whether to show an infobox for teleport amulets and necklaces",
+		position = 3
+	)
+	default boolean showAmuletInfobox()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showBraceletInfobox",
+		name = "Show Bracelet Infobox",
+		description = "Configures whether to show an infobox for teleport bracelets",
+		position = 4
+	)
+	default boolean showBraceletInfobox()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showRingInfobox",
+		name = "Show Ring Infobox",
+		description = "Configures whether to show an infobox for teleport rings",
+		position = 5
+	)
+	default boolean showRingInfobox()
+	{
+		return true;
+	}
 }
