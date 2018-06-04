@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.droplogger.data;
 
-/**
- * An enumeration of possible inventory types.
- */
-public enum InventoryID
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.Instant;
+
+public class EventOccurrenceCollection
 {
-	/**
-	 * Standard player inventory.
-	 */
-	INVENTORY(93),
-	/**
-	 * Equipment inventory.
-	 */
-	EQUIPMENT(94),
-	/**
-	 * Bank inventory.
-	 */
-	BANK(95),
-	/**
-	 * A puzzle box inventory.
-	 */
-	PUZZLE_BOX(140),
-	/**
-	 * Barrows reward chest inventory and clue scroll rewards.
-	 */
-	REWARD_CHEST(141),
-	/**
-	 * Chambers of Xeric reward chest inventory at the end of the raid.
-	 */
-	CHAMBERS_OF_XERIC_CHEST(581);
+	@Getter
+	private String eventName;
 
-	private final int id;
+	@Getter
+	private int count;
 
-	InventoryID(int id)
+	@Getter
+	@Setter
+	private long value;
+
+	@Getter
+	@Setter
+	private Instant firstOccurrence;
+
+	@Getter
+	@Setter
+	private Instant lastOccurrence;
+
+	public EventOccurrenceCollection(String eventName)
 	{
-		this.id = id;
+		this.eventName = eventName;
+		this.count = 0;
+		this.value = 0;
 	}
 
-	/**
-	 * Gets the raw inventory type ID.
-	 *
-	 * @return inventory type
-	 */
-	public int getId()
+	public void addOccurrence(Instant instant)
 	{
-		return id;
+		count++;
+
+		if (firstOccurrence == null || firstOccurrence.compareTo(instant) > 0)
+		{
+			firstOccurrence = instant;
+		}
+		if (lastOccurrence == null || lastOccurrence.compareTo(instant) < 0)
+		{
+			lastOccurrence = instant;
+		}
 	}
 }

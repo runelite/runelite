@@ -227,4 +227,22 @@ public class WorldPoint
 	{
 		return ((x >> 6) << 8) | (y >> 6);
 	}
+
+	@Override
+	public boolean equals(Object other)
+	{
+		if (!(other instanceof WorldPoint))
+		{
+			return false;
+		}
+
+		WorldPoint wp2 = (WorldPoint)other;
+		return this.x == wp2.x && this.y == wp2.y && this.plane == wp2.plane;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return (plane << 30) | (y << 15) | x;
+	}
 }

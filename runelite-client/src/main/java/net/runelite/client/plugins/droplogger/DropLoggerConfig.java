@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.droplogger;
 
-/**
- * An enumeration of possible inventory types.
- */
-public enum InventoryID
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+
+@ConfigGroup(
+	keyName = "droplogger",
+	name = "Drop Logger",
+	description = "Configuration for the drop logging plugin"
+)
+public interface DropLoggerConfig extends Config
 {
-	/**
-	 * Standard player inventory.
-	 */
-	INVENTORY(93),
-	/**
-	 * Equipment inventory.
-	 */
-	EQUIPMENT(94),
-	/**
-	 * Bank inventory.
-	 */
-	BANK(95),
-	/**
-	 * A puzzle box inventory.
-	 */
-	PUZZLE_BOX(140),
-	/**
-	 * Barrows reward chest inventory and clue scroll rewards.
-	 */
-	REWARD_CHEST(141),
-	/**
-	 * Chambers of Xeric reward chest inventory at the end of the raid.
-	 */
-	CHAMBERS_OF_XERIC_CHEST(581);
-
-	private final int id;
-
-	InventoryID(int id)
+	@ConfigItem(
+		position = 1,
+		keyName = "hideChambersOfXeric",
+		name = "Hide Chambers of Xeric NPCs",
+		description = "Don't show loot from NPCs inside Chambers of Xeric"
+	)
+	default boolean hideChambersOfXeric()
 	{
-		this.id = id;
+		return true;
 	}
 
-	/**
-	 * Gets the raw inventory type ID.
-	 *
-	 * @return inventory type
-	 */
-	public int getId()
+	@ConfigItem(
+		position = 2,
+		keyName = "hideBarbarianAssault",
+		name = "Hide Barbarian Assault NPCs",
+		description = "Don't show loot from NPCs inside Barbarian Assault"
+	)
+	default boolean hideBarbarianAssault()
 	{
-		return id;
+		return true;
 	}
 }
