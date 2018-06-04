@@ -133,4 +133,15 @@ public interface ScreenshotConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "kills",
+		name = "Screenshot PvP Kills",
+		description = "Configures whether or not screenshots are automatically taken of PvP kills",
+		position = 9
+	)
+	default boolean screenshotKills()
+	{
+		return false;
+	}
 }
