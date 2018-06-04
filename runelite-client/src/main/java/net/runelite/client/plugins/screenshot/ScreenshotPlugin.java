@@ -266,7 +266,7 @@ public class ScreenshotPlugin extends Plugin
 
 		if (config.screenshotKills() && KILL_MESSAGES.stream().anyMatch(chatMessage::contains))
 		{
-			String fileName = "Kill " + " " + LocalDate.now();
+			String fileName = "Kill " + TIME_FORMAT.format(new Date());
 			takeScreenshot(fileName);
 		}
 	}
