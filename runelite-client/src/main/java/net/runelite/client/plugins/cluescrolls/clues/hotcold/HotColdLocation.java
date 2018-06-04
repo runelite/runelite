@@ -95,7 +95,7 @@ public enum HotColdLocation
 	KANDARIN_CATHERBY(new WorldPoint(2774, 3433, 0), KANDARIN, "Catherby, between the bank and the beehives, near small rock formation."),
 	KANDARIN_GRAND_TREE(new WorldPoint(2449, 3509, 0), KANDARIN, "Grand Tree, just east of the terrorchick gnome enclosure."),
 	KANDARIN_SEERS(new WorldPoint(2735, 3486, 0), KANDARIN, "Between the Seers' Village bank and Camelot."),
-	KANDARIN_MCGRUBORS_WOOD(new WorldPoint(2658, 3487, 0), KANDARIN, "McGrubor's Wood"),
+	KANDARIN_MCGRUBORS_WOOD(new WorldPoint(2653, 3485, 0), KANDARIN, "McGrubor's Wood"),
 	KANDARIN_FISHING_BUILD(new WorldPoint(2586, 3372, 0), KANDARIN, "South of Fishing Guild"),
 	KANDARIN_WITCHHAVEN(new WorldPoint(2708, 3304, 0), KANDARIN, "Outside Witchaven, west of Jeb, Holgart, and Caroline."),
 	KANDARIN_NECRO_TOWER(new WorldPoint(2669, 3242, 0), KANDARIN, "Ground floor inside the Necromancer Tower. Easily accessed by using fairy ring code djp."),
