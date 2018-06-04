@@ -43,7 +43,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Skill;
 import net.runelite.client.config.ConfigManager;
@@ -126,7 +125,10 @@ public class TripCheckerPlugin extends Plugin
 	private void loadExistingLists()
 	{
 		// Search directory
-		Type mapType = new TypeToken<HashMap<String, TripItemList>>() {}.getType();
+		Type mapType = new TypeToken<HashMap<String, TripItemList>>()
+		{
+
+		}.getType();
 		try
 		{
 			HashMap<String, TripItemList> loadedTripLists = gson.fromJson(config.loadouts(), mapType);
