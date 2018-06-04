@@ -30,7 +30,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
@@ -56,8 +55,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Slf4j
 public class KourendLibraryPlugin extends Plugin
 {
-	final static int REGION = 6459;
-
 	final static boolean debug = false;
 
 	@Inject
@@ -80,7 +77,6 @@ public class KourendLibraryPlugin extends Plugin
 
 	private KourendLibraryPanel panel;
 	private NavigationButton navButton;
-	private boolean buttonAttached = false;
 
 	private WorldPoint lastBookcaseClick = null;
 	private WorldPoint lastBookcaseAnimatedOn = null;
@@ -106,13 +102,14 @@ public class KourendLibraryPlugin extends Plugin
 			.icon(icon)
 			.panel(panel)
 			.build();
+
+		pluginToolbar.addNavigation(navButton);
 	}
 
 	@Override
 	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
-
 		pluginToolbar.removeNavigation(navButton);
 	}
 
@@ -154,28 +151,6 @@ public class KourendLibraryPlugin extends Plugin
 	@Subscribe
 	void onTick(GameTick tick)
 	{
-		boolean inRegion = client.getLocalPlayer().getWorldLocation().getRegionID() == REGION;
-		if (inRegion != buttonAttached)
-		{
-			SwingUtilities.invokeLater(() ->
-			{
-				if (inRegion)
-				{
-					pluginToolbar.addNavigation(navButton);
-				}
-				else
-				{
-					pluginToolbar.removeNavigation(navButton);
-				}
-			});
-			buttonAttached = inRegion;
-		}
-
-		if (!inRegion)
-		{
-			return;
-		}
-
 		if (lastBookcaseAnimatedOn != null)
 		{
 			Widget find = client.getWidget(WidgetInfo.DIALOG_SPRITE_SPRITE);
