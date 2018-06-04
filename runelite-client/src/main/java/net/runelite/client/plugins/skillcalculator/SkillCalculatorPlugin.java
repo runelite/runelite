@@ -35,13 +35,13 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.UsernameChanged;
-import net.runelite.api.queries.BankItemQuery;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SkillIconManager;
@@ -51,7 +51,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
-import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(name = "Skill Calculator")
 public class SkillCalculatorPlugin extends Plugin
@@ -79,9 +78,6 @@ public class SkillCalculatorPlugin extends Plugin
 
 	private NavigationButton uiNavigationButton;
 	private SkillCalculatorPanel uiPanel;
-
-	@Inject
-	private QueryRunner queryRunner;
 
 	@Getter
 	private Map<Integer, Integer> bankMap = new HashMap<>();
@@ -162,16 +158,16 @@ public class SkillCalculatorPlugin extends Plugin
 		if (showBankedXp())
 		{
 
-			WidgetItem[] widgetItems = queryRunner.runQuery(new BankItemQuery());
+			Item[] widgetItems = client.getItemContainer(InventoryID.BANK).getItems();
 
-			if (widgetItems.length == 0)
+			if (widgetItems == null || widgetItems.length == 0)
 			{
 				return;
 			}
 
 			Map<Integer, Integer> map = new HashMap<>();
 
-			for (WidgetItem widgetItem : widgetItems)
+			for (Item widgetItem : widgetItems)
 			{
 				map.put(widgetItem.getId(), widgetItem.getQuantity());
 			}
