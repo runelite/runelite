@@ -37,7 +37,6 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 
 public class TripCheckerOverlay extends Overlay
 {
-
 	@Inject
 	private ItemManager itemManager;
 

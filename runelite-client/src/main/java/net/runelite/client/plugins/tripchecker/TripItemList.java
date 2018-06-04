@@ -29,7 +29,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.widgets.WidgetItem;
 
 /**
  * Wrapper around the items in a trip setup
