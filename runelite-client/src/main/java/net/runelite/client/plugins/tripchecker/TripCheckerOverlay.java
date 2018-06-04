@@ -24,58 +24,55 @@
  */
 package net.runelite.client.plugins.tripchecker;
 
-import java.util.HashMap;
-import lombok.AccessLevel;
-import lombok.Getter;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import javax.inject.Inject;
 import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.ImageComponent;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 
-/**
- * Wrapper around the items in a trip setup
- */
-class TripItemList
+public class TripCheckerOverlay extends Overlay
 {
-	@Getter(AccessLevel.PACKAGE)
-	private HashMap<Integer, Integer> inventoryItems;
 
-	@Getter(AccessLevel.PACKAGE)
-	private int[] equipmentIds;
+	@Inject
+	private ItemManager itemManager;
 
-	/**
-	 * Sets the inventory in this loadout. For non-stacking items like food, keep
-	 * track of how many there are in one key.
-	 *
-	 * @param inventoryContainer The inventory items
-	 */
-	void setInventory(ItemContainer inventoryContainer)
+	private TripCheckerPlugin plugin;
+	private final PanelComponent imagePanelComponent = new PanelComponent();
+
+	@Inject
+	TripCheckerOverlay(TripCheckerPlugin plugin)
 	{
-		inventoryItems = new HashMap<>();
-		for (Item item : inventoryContainer.getItems())
-		{
-			int key = item.getId();
-			if (inventoryItems.containsKey(key))
-			{
-				inventoryItems.put(key, inventoryItems.get(key) + item.getQuantity());
-			}
-			else
-			{
-				inventoryItems.put(key, item.getQuantity());
-			}
-		}
+		this.plugin = plugin;
+		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
+		imagePanelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
 	}
 
-	/**
-	 * Sets the equipment in this loadout.
-	 *
-	 * @param equipmentContainer The equipment items
-	 */
-	void setEquipment(ItemContainer equipmentContainer)
+	@Override
+	public Dimension render(Graphics2D graphics)
 	{
-		equipmentIds = new int[equipmentContainer.getItems().length];
-		for (int i = 0; i < equipmentIds.length; i++)
+		if (!plugin.isMissingItem())
 		{
-			equipmentIds[i] = equipmentContainer.getItems()[i].getId();
+			return null;
 		}
+
+		imagePanelComponent.getChildren().clear();
+		for (Item missingItem : plugin.getMissingItems())
+		{
+			imagePanelComponent.getChildren()
+				.add(new ImageComponent(getItemImage(missingItem.getId(), missingItem.getQuantity())));
+		}
+
+		return imagePanelComponent.render(graphics);
+	}
+
+	private BufferedImage getItemImage(int id, int quantity)
+	{
+		return quantity > 1 ? itemManager.getImage(id, quantity, true)
+			: itemManager.getImage(id, quantity, false);
 	}
 }

@@ -34,6 +34,7 @@ public interface RSItem extends RSRenderable, Item
 	int getId();
 
 	@Import("id")
+	@Override
 	void setId(int id);
 
 	@Import("quantity")
@@ -41,5 +42,6 @@ public interface RSItem extends RSRenderable, Item
 	int getQuantity();
 
 	@Import("quantity")
+	@Override
 	void setQuantity(int quantity);
 }

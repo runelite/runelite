@@ -297,6 +297,8 @@ public interface Client extends GameEngine
 	 */
 	SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted, int scale);
 
+	Item createItem();
+
 	/**
 	 * Loads and creates the sprite image of the passed archive and file IDs.
 	 *

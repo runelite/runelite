@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Sir Girion <https://github.com/sirgirion>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,29 +22,46 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.tripchecker;
 
-/**
- * Represents an item inside an {@link ItemContainer}.
- */
-public interface Item extends Renderable
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+
+@ConfigGroup(
+	keyName = "tripChecker",
+	name = "Trip Checker",
+	description = "Configuration for the Trip Checker plugin"
+)
+public interface TripCheckerConfig extends Config
 {
-	/**
-	 * Gets the items ID.
-	 *
-	 * @return the ID of the item
-	 * @see ItemID
-	 */
-	int getId();
+	@ConfigItem(
+		position = 1,
+		keyName = "displayMode",
+		name = "Notification Style",
+		description = "Configures how to display missing items."
+	)
+	default DisplayMode getNotificationStyle()
+	{
+		return DisplayMode.BOTH;
+	}
 
-	void setId(int id);
+	@ConfigItem(
+		keyName = "loadouts",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default String loadouts()
+	{
+		return "";
+	}
 
-	/**
-	 * Gets the items quantity.
-	 *
-	 * @return the items quantity
-	 */
-	int getQuantity();
-
-	void setQuantity(int quantity);
+	@ConfigItem(
+		keyName = "loadouts",
+		name = "",
+		description = ""
+	)
+	void loadouts(String loadouts);
 }
+

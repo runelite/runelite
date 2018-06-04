@@ -24,14 +24,81 @@
  */
 package net.runelite.client.plugins.tripchecker;
 
-import javax.swing.BoxLayout;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.util.Set;
+import javax.inject.Inject;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.ComboBoxListRenderer;
 
 class TripCheckerPanel extends PluginPanel
 {
-	TripCheckerPanel()
+	private TripCheckerPlugin plugin;
+
+	private JComboBox<String> existingLoadouts;
+
+	@Inject
+	TripCheckerPanel(TripCheckerPlugin plugin)
 	{
-		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
-		setLayout(layout);
+		this.plugin = plugin;
+
+		setBorder(new EmptyBorder(10, 10, 10, 10));
+		setLayout(new DynamicGridLayout(0, 1, 0, 5));
+		setBackground(ColorScheme.DARK_GRAY_COLOR);
+
+		JPanel item = new JPanel();
+		item.setLayout(new BorderLayout());
+		JLabel loadoutsLabel = new JLabel("Existing Loadouts");
+		loadoutsLabel.setForeground(Color.WHITE);
+		item.add(loadoutsLabel, BorderLayout.WEST);
+
+		if (!this.plugin.getTripLists().isEmpty())
+		{
+			existingLoadouts = new JComboBox<>(this.plugin.getTripLists().keySet().toArray(new String[0]));
+		}
+		else
+		{
+			existingLoadouts = new JComboBox<>();
+		}
+		existingLoadouts.setPreferredSize(new Dimension(existingLoadouts.getPreferredSize().width, 25));
+		existingLoadouts.setRenderer(new ComboBoxListRenderer());
+		existingLoadouts.setForeground(Color.WHITE);
+		existingLoadouts.setFocusable(false);
+		//existingLoadouts.addItem("");
+		if (this.plugin.getTripLists().isEmpty())
+		{
+			existingLoadouts.setEnabled(false);
+		}
+		item.add(existingLoadouts, BorderLayout.CENTER);
+		add(item);
+
+		JButton saveCurrentLoadoutButton = new JButton("Save Current Loadout");
+		saveCurrentLoadoutButton.addActionListener(e -> this.plugin.copyCurrentItemsToTripList());
+		add(saveCurrentLoadoutButton);
+
+		JButton checkLoadoutButton = new JButton("Check Loadout");
+		checkLoadoutButton.addActionListener(e -> this.plugin.checkInventoryAgainstLoadout(existingLoadouts.getSelectedItem().toString()));
+		add(checkLoadoutButton);
+	}
+
+	void refreshLoadouts(Set<String> loadoutNames)
+	{
+		existingLoadouts.removeAllItems();
+		for (String s : loadoutNames)
+		{
+			existingLoadouts.addItem(s);
+		}
+		if (existingLoadouts.getItemCount() > 0)
+		{
+			existingLoadouts.setEnabled(true);
+		}
 	}
 }

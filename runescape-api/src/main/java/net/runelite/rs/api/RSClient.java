@@ -461,6 +461,7 @@ public interface RSClient extends RSGameEngine, Client
 	void setObjectCompositionLowDetail(boolean lowDetail);
 
 	@Construct
+	@Override
 	RSItem createItem();
 
 	@Import("intStackSize")

@@ -24,35 +24,46 @@
  */
 package net.runelite.client.plugins.tripchecker;
 
-import static com.google.common.collect.ObjectArrays.concat;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
+import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import javax.imageio.ImageIO;
+import java.util.List;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.Query;
+import net.runelite.api.GameState;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.Skill;
-import net.runelite.api.queries.EquipmentItemQuery;
-import net.runelite.api.queries.InventoryWidgetItemQuery;
-import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ChatboxInputManager;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
-import net.runelite.client.util.QueryRunner;
+import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
 	name = "Trip Checker"
 )
+@Slf4j
 public class TripCheckerPlugin extends Plugin
 {
 	@Inject
 	private Client client;
-
-	@Inject
-	private QueryRunner queryRunner;
 
 	@Inject
 	private PluginToolbar pluginToolbar;
@@ -60,15 +71,48 @@ public class TripCheckerPlugin extends Plugin
 	@Inject
 	private SkillIconManager iconManager;
 
-	private static final HashMap<String, TripItemList> tripLists = new HashMap<>();
+	@Inject
+	private ChatboxInputManager chatboxInputManager;
+
+	@Inject
+	private ItemManager itemManager;
+
+	@Inject
+	private TripCheckerConfig config;
+
+	@Inject
+	private TripCheckerOverlay overlay;
+
+	@Getter(AccessLevel.PACKAGE)
+	private final HashMap<String, TripItemList> tripLists = new HashMap<>();
+	private final Gson gson = new Gson();
+
 	private NavigationButton uiNavigationButton;
 	private TripCheckerPanel uiPanel;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean isMissingItem;
+	@Getter(AccessLevel.PACKAGE)
+	private List<Item> missingItems = new ArrayList<>();
+
+	@Provides
+	TripCheckerConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(TripCheckerConfig.class);
+	}
+
+	@Override
+	public Overlay getOverlay()
+	{
+		return overlay;
+	}
 
 	@Override
 	public void startUp()
 	{
+		loadExistingLists();
 		BufferedImage icon = iconManager.getSkillImage(Skill.COMBAT);
-		uiPanel = new TripCheckerPanel();
+		uiPanel = injector.getInstance(TripCheckerPanel.class);
 		uiNavigationButton = NavigationButton.builder()
 			.tooltip("Trip Checker")
 			.icon(icon)
@@ -79,14 +123,130 @@ public class TripCheckerPlugin extends Plugin
 		pluginToolbar.addNavigation(uiNavigationButton);
 	}
 
-	private void copyCurrentItemsToTripList()
+	private void loadExistingLists()
 	{
-		Query inventoryQuery = new InventoryWidgetItemQuery();
-		WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(inventoryQuery);
+		// Search directory
+		Type mapType = new TypeToken<HashMap<String, TripItemList>>() {}.getType();
+		try
+		{
+			HashMap<String, TripItemList> loadedTripLists = gson.fromJson(config.loadouts(), mapType);
+			if (loadedTripLists == null || loadedTripLists.isEmpty())
+			{
+				return;
+			}
+			for (String key : loadedTripLists.keySet())
+			{
+				tripLists.put(key, loadedTripLists.get(key));
+			}
+		}
+		catch (JsonSyntaxException ex)
+		{
+			log.warn("Error loading existing loadouts: {}", ex);
+		}
+	}
 
-		Query equipmentQuery = new EquipmentItemQuery();
-		WidgetItem[] equipmentWidgetItems = queryRunner.runQuery(equipmentQuery);
+	void copyCurrentItemsToTripList()
+	{
+		TripItemList itemList = new TripItemList();
 
-		WidgetItem[] items = concat(inventoryWidgetItems, equipmentWidgetItems, WidgetItem.class);
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
+		chatboxInputManager.openInputWindow("Loadout Name:", "", (name) ->
+		{
+			ItemContainer inventoryContainer = client.getItemContainer(InventoryID.INVENTORY);
+			ItemContainer equipmentContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+
+			itemList.setInventory(inventoryContainer);
+			itemList.setEquipment(equipmentContainer);
+
+			tripLists.put(name, itemList);
+			uiPanel.refreshLoadouts(tripLists.keySet());
+			saveLoadouts();
+		});
+	}
+
+	private void saveLoadouts()
+	{
+		String json = gson.toJson(tripLists);
+		config.loadouts(json);
+	}
+
+	void checkInventoryAgainstLoadout(String loadoutName)
+	{
+		TripItemList tripLoadout = tripLists.get(loadoutName);
+		if (tripLoadout == null)
+		{
+			return;
+		}
+
+		//Check equipment
+		ItemContainer equipmentContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+		if (equipmentContainer == null)
+		{
+			return;
+		}
+
+		isMissingItem = false;
+		missingItems = new ArrayList<>();
+		DisplayMode missingItemDisplayMode = config.getNotificationStyle();
+
+		for (int loadoutEquipmentId : tripLoadout.getEquipmentIds())
+		{
+			if (Arrays.stream(equipmentContainer.getItems()).noneMatch(e -> e.getId() == loadoutEquipmentId))
+			{
+				//No item
+				if (missingItemDisplayMode == DisplayMode.BOTH || missingItemDisplayMode == DisplayMode.CHATBOX)
+				{
+					client.addChatMessage(ChatMessageType.SERVER, "", "<col=FF0000>Missing " + itemManager.getItemComposition(loadoutEquipmentId).getName(), null);
+				}
+				if (missingItemDisplayMode == DisplayMode.BOTH || missingItemDisplayMode == DisplayMode.PANEL)
+				{
+					Item item = client.createItem();
+					item.setId(loadoutEquipmentId);
+					item.setQuantity(1);
+					missingItems.add(item);
+				}
+				isMissingItem = true;
+			}
+		}
+
+		//Check inventory
+		ItemContainer inventoryContainer = client.getItemContainer(InventoryID.INVENTORY);
+		if (inventoryContainer == null)
+		{
+			return;
+		}
+
+		for (Integer loadoutInventoryId : tripLoadout.getInventoryItems().keySet())
+		{
+			int expectedQuantity = tripLoadout.getInventoryItems().get(loadoutInventoryId);
+			int quantityInInventory = 0;
+			for (Item i : inventoryContainer.getItems())
+			{
+				if (i.getId() == loadoutInventoryId)
+				{
+					quantityInInventory++;
+				}
+			}
+			if (quantityInInventory != expectedQuantity)
+			{
+				int delta = expectedQuantity - quantityInInventory;
+				if (missingItemDisplayMode == DisplayMode.BOTH || missingItemDisplayMode == DisplayMode.CHATBOX)
+				{
+					client.addChatMessage(ChatMessageType.SERVER, "", "<col=FF0000>Missing " + delta + " " + itemManager.getItemComposition(loadoutInventoryId).getName(), null);
+				}
+				if (missingItemDisplayMode == DisplayMode.BOTH || missingItemDisplayMode == DisplayMode.PANEL)
+				{
+					Item item = client.createItem();
+					item.setId(loadoutInventoryId);
+					item.setQuantity(delta);
+					missingItems.add(item);
+				}
+				isMissingItem = true;
+			}
+		}
 	}
 }
