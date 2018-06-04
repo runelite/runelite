@@ -107,6 +107,7 @@ class SkillCalculator extends JPanel
 	{
 		// Load the skill data.
 		skillData = cacheSkillData.getSkillData(calculatorType.getDataFile());
+
 		// Reset the XP factor, removing bonuses.
 		xpFactor = 1.0f;
 
