@@ -129,7 +129,7 @@ public class InfoPanel extends PluginPanel
 		String engineVer = "Unknown";
 		if (client != null)
 		{
-			engineVer = String.format("Rev %s", runeLiteProperties.getRunescapeVersion());
+			engineVer = String.format("Rev %d", client.getRevision());
 		}
 
 		revision.setText(htmlLabel("Oldschool revision: ", engineVer));
