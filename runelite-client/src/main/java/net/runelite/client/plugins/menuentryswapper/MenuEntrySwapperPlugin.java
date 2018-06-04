@@ -400,9 +400,20 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("harpoon", option, target, true);
 		}
-		else if (config.swapHome() && option.equals("enter"))
+		else if (config.swapHomePortal() != HouseMode.ENTER && option.equals("enter"))
 		{
-			swap("home", option, target, true);
+			switch (config.swapHomePortal())
+			{
+				case HOME:
+					swap("home", option, target, true);
+					break;
+				case BUILD_MODE:
+					swap("build mode", option, target, true);
+					break;
+				case FRIENDS_HOUSE:
+					swap("friend's house", option, target, true);
+					break;
+			}
 		}
 		else if (config.swapFairyRing() != FairyRingMode.ZANARIS && (option.equals("zanaris") || option.equals("tree")))
 		{
