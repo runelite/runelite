@@ -151,6 +151,11 @@ public class ItemManager
 	 */
 	public ItemPrice getItemPriceAsync(int itemId)
 	{
+<<<<<<< HEAD
+=======
+		itemId = ItemMapping.mapFirst(itemId);
+
+>>>>>>> upstream/master
 		ItemPrice itemPrice = itemPriceCache.getIfPresent(itemId);
 		if (itemPrice != null && itemPrice != EMPTY)
 		{
@@ -162,6 +167,28 @@ public class ItemManager
 	}
 
 	/**
+<<<<<<< HEAD
+=======
+	 * Look up an item's price from the price cache
+	 *
+	 * @param itemId
+	 * @return
+	 */
+	public ItemPrice getCachedItemPrice(int itemId)
+	{
+		itemId = ItemMapping.mapFirst(itemId);
+
+		ItemPrice itemPrice = itemPriceCache.getIfPresent(itemId);
+		if (itemPrice != null && itemPrice != EMPTY && itemPrice != NONE)
+		{
+			return itemPrice;
+		}
+
+		return null;
+	}
+
+	/**
+>>>>>>> upstream/master
 	 * Look up bulk item prices asynchronously
 	 *
 	 * @param itemIds array of item Ids
@@ -173,6 +200,7 @@ public class ItemManager
 		final List<ItemPrice> existing = new ArrayList<>();
 		for (int itemId : itemIds)
 		{
+<<<<<<< HEAD
 			ItemPrice itemPrice = itemPriceCache.getIfPresent(itemId);
 			if (itemPrice != null)
 			{
@@ -181,6 +209,19 @@ public class ItemManager
 			else
 			{
 				lookup.add(itemId);
+=======
+			for (int mappedItemId : ItemMapping.map(itemId))
+			{
+				ItemPrice itemPrice = itemPriceCache.getIfPresent(mappedItemId);
+				if (itemPrice != null)
+				{
+					existing.add(itemPrice);
+				}
+				else
+				{
+					lookup.add(mappedItemId);
+				}
+>>>>>>> upstream/master
 			}
 		}
 		// All cached?
@@ -196,12 +237,21 @@ public class ItemManager
 			{
 				// Do a query for the items not in the cache
 				ItemPrice[] itemPrices = itemClient.lookupItemPrice(lookup.toArray(new Integer[lookup.size()]));
+<<<<<<< HEAD
 				if (itemPrices != null)
 				{
 					for (int itemId : lookup)
 					{
 						itemPriceCache.put(itemId, NONE);
 					}
+=======
+				for (int itemId : lookup)
+				{
+					itemPriceCache.put(itemId, NONE);
+				}
+				if (itemPrices != null)
+				{
+>>>>>>> upstream/master
 					for (ItemPrice itemPrice : itemPrices)
 					{
 						itemPriceCache.put(itemPrice.getItem().getId(), itemPrice);
@@ -234,6 +284,11 @@ public class ItemManager
 	 */
 	public ItemPrice getItemPrice(int itemId) throws IOException
 	{
+<<<<<<< HEAD
+=======
+		itemId = ItemMapping.mapFirst(itemId);
+
+>>>>>>> upstream/master
 		ItemPrice itemPrice = itemPriceCache.getIfPresent(itemId);
 		if (itemPrice != null && itemPrice != EMPTY)
 		{

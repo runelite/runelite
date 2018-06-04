@@ -35,6 +35,10 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.chat.ChatMessageManager;
+<<<<<<< HEAD
+=======
+import net.runelite.client.config.ChatColorConfig;
+>>>>>>> upstream/master
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
@@ -75,6 +79,16 @@ public class RuneLiteModule extends AbstractModule
 
 	@Provides
 	@Singleton
+<<<<<<< HEAD
+=======
+	ChatColorConfig provideChatColorConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(ChatColorConfig.class);
+	}
+
+	@Provides
+	@Singleton
+>>>>>>> upstream/master
 	EventBus provideEventBus()
 	{
 		return new EventBus(RuneLiteModule::eventExceptionHandler);

@@ -35,11 +35,20 @@ import net.runelite.api.Skill;
 @Slf4j
 public class SkillIconManager
 {
+<<<<<<< HEAD
 	private final BufferedImage[] imgCache = new BufferedImage[Skill.values().length];
 
 	public BufferedImage getSkillImage(Skill skill)
 	{
 		int skillIdx = skill.ordinal();
+=======
+	// * 2 to account for the small version of each icon
+	private final BufferedImage[] imgCache = new BufferedImage[Skill.values().length * 2];
+
+	public BufferedImage getSkillImage(Skill skill, boolean small)
+	{
+		int skillIdx = skill.ordinal() + (small ? Skill.values().length : 0);
+>>>>>>> upstream/master
 		BufferedImage skillImage = null;
 
 		if (imgCache[skillIdx] != null)
@@ -49,7 +58,12 @@ public class SkillIconManager
 
 		try
 		{
+<<<<<<< HEAD
 			String skillIconPath = "/skill_icons/" + skill.getName().toLowerCase() + ".png";
+=======
+			String skillIconPath = (small ? "/skill_icons_small/" : "/skill_icons/")
+				+ skill.getName().toLowerCase() + ".png";
+>>>>>>> upstream/master
 			log.debug("Loading skill icon from {}", skillIconPath);
 			synchronized (ImageIO.class)
 			{
@@ -64,4 +78,13 @@ public class SkillIconManager
 
 		return skillImage;
 	}
+<<<<<<< HEAD
+=======
+
+	public BufferedImage getSkillImage(Skill skill)
+	{
+		return getSkillImage(skill, false);
+	}
+
+>>>>>>> upstream/master
 }

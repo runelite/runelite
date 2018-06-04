@@ -33,7 +33,13 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
+<<<<<<< HEAD
 import net.runelite.api.NPC;
+=======
+import net.runelite.api.GameState;
+import net.runelite.api.NPC;
+import net.runelite.api.events.GameStateChanged;
+>>>>>>> upstream/master
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
@@ -64,6 +70,18 @@ public class CerberusPlugin extends Plugin
 	}
 
 	@Subscribe
+<<<<<<< HEAD
+=======
+	public void onGameStateChange(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.HOPPING)
+		{
+			ghosts.clear();
+		}
+	}
+
+	@Subscribe
+>>>>>>> upstream/master
 	public void onNpcSpawned(final NpcSpawned event)
 	{
 		final NPC npc = event.getNpc();

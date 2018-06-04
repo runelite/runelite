@@ -37,9 +37,15 @@ import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
+<<<<<<< HEAD
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+=======
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.NpcDespawned;
+>>>>>>> upstream/master
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -162,11 +168,19 @@ public class SpecialCounterPlugin extends Plugin
 	}
 
 	@Subscribe
+<<<<<<< HEAD
 	public void onActorDeath(ActorDeath death)
 	{
 		Actor actor = death.getActor();
 
 		if (actor instanceof NPC && ((NPC) actor).getId() == interactedNpcId)
+=======
+	public void onNpcDespawn(NpcDespawned npcDespawned)
+	{
+		NPC actor = npcDespawned.getNpc();
+
+		if (actor.isDead() && actor.getId() == interactedNpcId)
+>>>>>>> upstream/master
 		{
 			removeCounters();
 		}

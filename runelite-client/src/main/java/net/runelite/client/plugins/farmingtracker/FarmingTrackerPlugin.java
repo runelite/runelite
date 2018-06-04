@@ -95,9 +95,16 @@ public class FarmingTrackerPlugin extends Plugin
 		panel = new FarmingTrackerPanel(client, itemManager, configManager, config, farmingWorld);
 
 		navButton = NavigationButton.builder()
+<<<<<<< HEAD
 			.name("Farming Tracker")
 			.icon(icon)
 			.panel(panel)
+=======
+			.tooltip("Farming Tracker")
+			.icon(icon)
+			.panel(panel)
+			.priority(4)
+>>>>>>> upstream/master
 			.build();
 
 		pluginToolbar.addNavigation(navButton);

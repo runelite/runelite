@@ -26,6 +26,16 @@ package net.runelite.api.events;
 
 import lombok.Data;
 
+<<<<<<< HEAD
+=======
+/**
+ * An event where a new RuneLite account session has been closed,
+ * typically when logging out of the account.
+ * <p>
+ * Note: This event is not to be confused with a RuneScape session,
+ * it has nothing to do with whether an account is being logged out.
+ */
+>>>>>>> upstream/master
 @Data
 public class SessionClose
 {

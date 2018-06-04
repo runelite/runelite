@@ -36,6 +36,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @Builder
+<<<<<<< HEAD
 @EqualsAndHashCode(of = {"name", "tooltip"})
 public class NavigationButton
 {
@@ -45,6 +46,12 @@ public class NavigationButton
 	private final String name;
 
 	/**
+=======
+@EqualsAndHashCode(of = {"tooltip"})
+public class NavigationButton
+{
+	/**
+>>>>>>> upstream/master
 	 * Icon of button.
 	 */
 	private final BufferedImage icon;
@@ -52,7 +59,11 @@ public class NavigationButton
 	/**
 	 * Tooltip to show when hovered.
 	 */
+<<<<<<< HEAD
 	private String tooltip;
+=======
+	private final String tooltip;
+>>>>>>> upstream/master
 
 	/**
 	 * Button selection state
@@ -74,6 +85,15 @@ public class NavigationButton
 	 */
 	private PluginPanel panel;
 
+<<<<<<< HEAD
+=======
+
+	/**
+	 * The order in which the button should be displayed in the side bar. (from lower to higher)
+	 */
+	private int priority;
+
+>>>>>>> upstream/master
 	/**
 	 * Map of key-value pairs for setting the popup menu
 	 */

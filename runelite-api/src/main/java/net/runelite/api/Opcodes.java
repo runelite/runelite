@@ -24,7 +24,18 @@
  */
 package net.runelite.api;
 
+<<<<<<< HEAD
 public class Opcodes
 {
+=======
+/**
+ * Utility class containing ASM opcodes used by the RuneLite client.
+ */
+public class Opcodes
+{
+	/**
+	 * RuneLite execution opcode used to inject scripts.
+	 */
+>>>>>>> upstream/master
 	public static final int RUNELITE_EXECUTE = 6599;
 }

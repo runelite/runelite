@@ -24,6 +24,7 @@
  */
 package net.runelite.api;
 
+<<<<<<< HEAD
 public interface MessageNode
 {
 	ChatMessageType getType();
@@ -42,5 +43,77 @@ public interface MessageNode
 
 	String getRuneLiteFormatMessage();
 
+=======
+/**
+ * Represents a message in the chatbox.
+ */
+public interface MessageNode
+{
+	/**
+	 * Gets the type of message.
+	 *
+	 * @return the message type
+	 */
+	ChatMessageType getType();
+
+	/**
+	 * Gets the name of the player that sent the message.
+	 *
+	 * @return the player name
+	 */
+	String getName();
+
+	/**
+	 * Sets the name of the player that sent the message.
+	 *
+	 * @param name the new player name
+	 */
+	void setName(String name);
+
+	/**
+	 * Gets the sender of the message (ie. clan name).
+	 *
+	 * @return the message sender
+	 */
+	String getSender();
+
+	/**
+	 * Sets the sender of the message.
+	 *
+	 * @param sender the new message sender
+	 */
+	void setSender(String sender);
+
+	/**
+	 * Gets the message contents.
+	 *
+	 * @return the message contents
+	 */
+	String getValue();
+
+	/**
+	 * Sets the message contents.
+	 *
+	 * @param value the new message contents
+	 */
+	void setValue(String value);
+
+	/**
+	 * Gets the overriden message format.
+	 *
+	 * @return the message format
+	 */
+	String getRuneLiteFormatMessage();
+
+	/**
+	 * Sets the overriden message format.
+	 * <p>
+	 * If this value is not null, the message contents as returned by
+	 * {@link #getValue()} will be replaced with the format set here
+	 * when a message is processed.
+	 *
+	 * @param runeLiteFormatMessage the new message format
+	 */
+>>>>>>> upstream/master
 	void setRuneLiteFormatMessage(String runeLiteFormatMessage);
 }

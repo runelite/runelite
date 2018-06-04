@@ -123,4 +123,29 @@ public interface AgilityConfig extends Config
 	{
 		return Color.RED;
 	}
+<<<<<<< HEAD
+=======
+
+	@ConfigItem(
+		keyName = "agilityArenaNotifier",
+		name = "Agility Arena notifier",
+		description = "Notify on ticket location change in Agility Arena",
+		position = 9
+	)
+	default boolean notifyAgilityArena()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "agilityArenaTimer",
+		name = "Agility Arena timer",
+		description = "Configures whether Agility Arena timer is displayed",
+		position = 10
+	)
+	default boolean showAgilityArenaTimer()
+	{
+		return true;
+	}
+>>>>>>> upstream/master
 }

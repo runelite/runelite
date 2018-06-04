@@ -82,9 +82,17 @@ class XpState
 	 * and also first-login when the skills are not initialized (the start XP will be -1 in this case).
 	 * @param skill Skill to update
 	 * @param currentXp Current known XP for this skill
+<<<<<<< HEAD
 	 * @return Whether or not the skill has been initialized, there was no change, or it has been updated
 	 */
 	XpUpdateResult updateSkill(Skill skill, int currentXp)
+=======
+	 * @param goalStartXp Possible XP start goal
+	 * @param goalEndXp Possible XP end goal
+	 * @return Whether or not the skill has been initialized, there was no change, or it has been updated
+	 */
+	XpUpdateResult updateSkill(Skill skill, int currentXp, int goalStartXp, int goalEndXp)
+>>>>>>> upstream/master
 	{
 		XpStateSingle state = getSkill(skill);
 
@@ -113,7 +121,11 @@ class XpState
 			}
 			else
 			{
+<<<<<<< HEAD
 				return state.update(currentXp) ? XpUpdateResult.UPDATED : XpUpdateResult.NO_CHANGE;
+=======
+				return state.update(currentXp, goalStartXp, goalEndXp) ? XpUpdateResult.UPDATED : XpUpdateResult.NO_CHANGE;
+>>>>>>> upstream/master
 			}
 		}
 	}

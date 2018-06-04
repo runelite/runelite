@@ -1,5 +1,9 @@
 /*
  * Copyright (c) 2018 Abex
+<<<<<<< HEAD
+=======
+ * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
+>>>>>>> upstream/master
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,11 +28,19 @@
  */
 package net.runelite.client.plugins.farmingtracker;
 
+<<<<<<< HEAD
+=======
+import com.google.common.base.Strings;
+>>>>>>> upstream/master
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+<<<<<<< HEAD
+=======
+import java.awt.image.BufferedImage;
+>>>>>>> upstream/master
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -37,9 +49,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import javax.swing.ImageIcon;
+<<<<<<< HEAD
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+=======
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+>>>>>>> upstream/master
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -47,7 +65,15 @@ import net.runelite.api.vars.Autoweed;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
+<<<<<<< HEAD
 import net.runelite.client.ui.PluginPanel;
+=======
+import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.materialtabs.MaterialTab;
+import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
+>>>>>>> upstream/master
 
 @Slf4j
 class FarmingTrackerPanel extends PluginPanel
@@ -61,6 +87,13 @@ class FarmingTrackerPanel extends PluginPanel
 
 	private List<FarmingPatchPanel> patchPanels = new ArrayList<>();
 
+<<<<<<< HEAD
+=======
+	/* This is the panel the tabs' respective panels will be displayed on. */
+	private final JPanel display = new JPanel();
+	private final MaterialTabGroup tabGroup = new MaterialTabGroup(display);
+
+>>>>>>> upstream/master
 	FarmingTrackerPanel(
 		Client client,
 		ItemManager itemManager,
@@ -77,11 +110,26 @@ class FarmingTrackerPanel extends PluginPanel
 		this.config = config;
 
 		setLayout(new BorderLayout());
+<<<<<<< HEAD
 
 		JTabbedPane tabs = new JTabbedPane();
 		farmingWorld.getTabs().forEach((tab, patches) ->
 		{
 			JPanel panel = new JPanel(new GridBagLayout())
+=======
+		setBackground(ColorScheme.DARK_GRAY_COLOR);
+
+		display.setBorder(new EmptyBorder(10, 10, 8, 10));
+
+		tabGroup.setBorder(new EmptyBorder(10, 1, 0, 0));
+
+		add(tabGroup, BorderLayout.NORTH);
+		add(display, BorderLayout.CENTER);
+
+		farmingWorld.getTabs().forEach((tab, patches) ->
+		{
+			JPanel container = new JPanel(new GridBagLayout())
+>>>>>>> upstream/master
 			{
 				@Override
 				public Dimension getPreferredSize()
@@ -89,7 +137,11 @@ class FarmingTrackerPanel extends PluginPanel
 					return new Dimension(PluginPanel.PANEL_WIDTH, super.getPreferredSize().height);
 				}
 			};
+<<<<<<< HEAD
 			panel.setBorder(new EmptyBorder(2, 6, 6, 6));
+=======
+			container.setBackground(ColorScheme.DARK_GRAY_COLOR);
+>>>>>>> upstream/master
 
 			GridBagConstraints c = new GridBagConstraints();
 			c.fill = GridBagConstraints.HORIZONTAL;
@@ -97,6 +149,7 @@ class FarmingTrackerPanel extends PluginPanel
 			c.gridx = 0;
 			c.gridy = 0;
 
+<<<<<<< HEAD
 			for (FarmingPatch patch : patches)
 			{
 				FarmingPatchPanel p = new FarmingPatchPanel(patch);
@@ -117,10 +170,74 @@ class FarmingTrackerPanel extends PluginPanel
 			Runnable resize = () ->
 			{
 				tabs.setIconAt(idx, new ImageIcon(icon.getScaledInstance(24, 21, Image.SCALE_SMOOTH)));
+=======
+			PatchImplementation lastImpl = null;
+
+			boolean first = true;
+			for (FarmingPatch patch : patches)
+			{
+				FarmingPatchPanel p = new FarmingPatchPanel(patch);
+
+				/* Show labels to subdivide tabs into sections */
+				if (patch.getImplementation() != lastImpl && !Strings.isNullOrEmpty(patch.getImplementation().getName()))
+				{
+					JLabel groupLabel = new JLabel(patch.getImplementation().getName());
+
+					if (first)
+					{
+						first = false;
+						groupLabel.setBorder(new EmptyBorder(4, 0, 0, 0));
+					}
+					else
+					{
+						groupLabel.setBorder(new EmptyBorder(15, 0, 0, 0));
+					}
+
+					groupLabel.setFont(FontManager.getRunescapeSmallFont());
+
+					container.add(groupLabel, c);
+					c.gridy++;
+					lastImpl = patch.getImplementation();
+				}
+
+				patchPanels.add(p);
+				container.add(p, c);
+				c.gridy++;
+
+				/* This is a weird hack to remove the top border on the first tracker of every tab */
+				if (first)
+				{
+					first = false;
+					p.setBorder(null);
+				}
+			}
+
+			JPanel wrapped = new JPanel(new BorderLayout());
+			wrapped.add(container, BorderLayout.NORTH);
+			wrapped.setBackground(ColorScheme.DARK_GRAY_COLOR);
+
+			JScrollPane scroller = new JScrollPane(wrapped);
+			scroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			scroller.getVerticalScrollBar().setPreferredSize(new Dimension(16, 0));
+			scroller.getVerticalScrollBar().setBorder(new EmptyBorder(0, 9, 0, 0));
+			scroller.setBackground(ColorScheme.DARK_GRAY_COLOR);
+
+			//Use a placeholder icon until the async image gets loaded
+			MaterialTab materialTab = new MaterialTab(new ImageIcon(), tabGroup, scroller);
+			materialTab.setPreferredSize(new Dimension(30, 27));
+			materialTab.setName(tab.getName());
+
+			AsyncBufferedImage icon = itemManager.getImage(tab.getItemID());
+			Runnable resize = () ->
+			{
+				BufferedImage subIcon = icon.getSubimage(0, 0, 32, 32);
+				materialTab.setIcon(new ImageIcon(subIcon.getScaledInstance(24, 24, Image.SCALE_SMOOTH)));
+>>>>>>> upstream/master
 			};
 			icon.onChanged(resize);
 			resize.run();
 
+<<<<<<< HEAD
 			if (config.patch() == tab)
 			{
 				tabs.setSelectedComponent(scroller);
@@ -134,6 +251,16 @@ class FarmingTrackerPanel extends PluginPanel
 			});
 		});
 		add(tabs, BorderLayout.CENTER);
+=======
+			materialTab.setOnSelectEvent(() -> config.setPatch(tab));
+
+			tabGroup.addTab(materialTab);
+			if (config.patch() == tab)
+			{
+				tabGroup.select(materialTab);
+			}
+		});
+>>>>>>> upstream/master
 	}
 
 	void update()
@@ -178,10 +305,18 @@ class FarmingTrackerPanel extends PluginPanel
 			PatchState state = unixTime <= 0 ? null : patch.getImplementation().forVarbitValue(value);
 			if (state == null)
 			{
+<<<<<<< HEAD
 				panel.getIcon().setIcon(null);
 				panel.getIcon().setToolTipText("Unknown state");
 				panel.getProgress().setMaximum(0);
 				panel.getProgress().setValue(0);
+=======
+				itemManager.getImage(Produce.WEEDS.getItemID()).addTo(panel.getIcon());
+				panel.getIcon().setToolTipText("Unknown state");
+				panel.getProgress().setMaximumValue(0);
+				panel.getProgress().setValue(0);
+				panel.getProgress().setVisible(false);
+>>>>>>> upstream/master
 				panel.getEstimate().setText("Unknown");
 				panel.getProgress().setBackground(null);
 			}
@@ -298,9 +433,26 @@ class FarmingTrackerPanel extends PluginPanel
 					}
 				}
 
+<<<<<<< HEAD
 				panel.getProgress().setBackground(state.getCropState().getColor().darker());
 				panel.getProgress().setMaximum(stages - 1);
 				panel.getProgress().setValue(stage);
+=======
+				/* Hide any fully grown weeds' progress bar. */
+				if (state.getProduce() != Produce.WEEDS
+					|| (state.getProduce() == Produce.WEEDS && !autoweed && stage < stages - 1))
+				{
+					panel.getProgress().setVisible(true);
+					panel.getProgress().setForeground(state.getCropState().getColor().darker());
+					panel.getProgress().setMaximumValue(stages - 1);
+					panel.getProgress().setValue(stage);
+					panel.getProgress().update();
+				}
+				else
+				{
+					panel.getProgress().setVisible(false);
+				}
+>>>>>>> upstream/master
 			}
 		}
 	}

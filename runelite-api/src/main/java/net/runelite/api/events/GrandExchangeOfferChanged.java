@@ -26,10 +26,38 @@ package net.runelite.api.events;
 
 import lombok.Data;
 import net.runelite.api.GrandExchangeOffer;
+<<<<<<< HEAD
 
 @Data
 public class GrandExchangeOfferChanged
 {
 	private GrandExchangeOffer offer;
+=======
+import net.runelite.api.GrandExchangeOfferState;
+
+/**
+ * An event where a {@link GrandExchangeOffer} has been updated with
+ * new information.
+ * <p>
+ * When the client initially logs in, this event is called for all grand
+ * exchange slots with the {@link GrandExchangeOfferState#EMPTY} state,
+ * regardless of whether any slots have offers. Once the exchange is
+ * initialized, the client then updates any offers with items as it
+ * receives information from the server.
+ * <p>
+ * See {@link GrandExchangeOfferState} for potential states an offer
+ * can change into.
+ */
+@Data
+public class GrandExchangeOfferChanged
+{
+	/**
+	 * The offer that has been modified.
+	 */
+	private GrandExchangeOffer offer;
+	/**
+	 * The index value of the slot.
+	 */
+>>>>>>> upstream/master
 	private int slot;
 }

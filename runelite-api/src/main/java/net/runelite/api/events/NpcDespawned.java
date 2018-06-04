@@ -28,9 +28,21 @@ import lombok.Value;
 import net.runelite.api.Actor;
 import net.runelite.api.NPC;
 
+<<<<<<< HEAD
 @Value
 public class NpcDespawned implements ActorDespawned
 {
+=======
+/**
+ * An event where an {@link NPC} has despawned.
+ */
+@Value
+public class NpcDespawned implements ActorDespawned
+{
+	/**
+	 * The despawned NPC.
+	 */
+>>>>>>> upstream/master
 	private final NPC npc;
 
 	@Override

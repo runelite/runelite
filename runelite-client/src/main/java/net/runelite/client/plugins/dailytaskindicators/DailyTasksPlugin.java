@@ -27,16 +27,27 @@ package net.runelite.client.plugins.dailytaskindicators;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+<<<<<<< HEAD
 import java.awt.Color;
+=======
+>>>>>>> upstream/master
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+<<<<<<< HEAD
 import net.runelite.api.GameState;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.chat.ChatColor;
+=======
+import net.runelite.api.Varbits;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.vars.AccountType;
+>>>>>>> upstream/master
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -61,7 +72,11 @@ public class DailyTasksPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
+<<<<<<< HEAD
 	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg;
+=======
+	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg, check;
+>>>>>>> upstream/master
 
 	@Provides
 	DailyTasksConfig provideConfig(ConfigManager configManager)
@@ -73,7 +88,10 @@ public class DailyTasksPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = false;
+<<<<<<< HEAD
 		cacheColors();
+=======
+>>>>>>> upstream/master
 	}
 
 	@Override
@@ -105,6 +123,7 @@ public class DailyTasksPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
+<<<<<<< HEAD
 		if (event.getGameState().equals(GameState.LOGGED_IN))
 		{
 			if (config.showHerbBoxes() && !hasSentHerbMsg && checkCanCollectHerbBox())
@@ -122,13 +141,57 @@ public class DailyTasksPlugin extends Plugin
 				sendChatMessage("You have pure essence waiting to be collected from Wizard Cromperty.");
 				hasSentEssenceMsg = true;
 			}
+=======
+		switch (event.getGameState())
+		{
+			case HOPPING:
+			case LOGGED_IN:
+				//load the varbits on first available tick
+				check = true;
+				break;
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (!check)
+		{
+			return;
+		}
+		
+		check = false;
+
+		if (config.showHerbBoxes() && !hasSentHerbMsg && checkCanCollectHerbBox())
+		{
+			sendChatMessage("You have herb boxes waiting to be collected at NMZ.");
+			hasSentHerbMsg = true;
+		}
+
+		if (config.showStaves() && !hasSentStavesMsg && checkCanCollectStaves())
+		{
+			sendChatMessage("You have staves waiting to be collected from Zaff.");
+			hasSentStavesMsg = true;
+		}
+
+		if (config.showEssence() && !hasSentEssenceMsg && checkCanCollectEssence())
+		{
+			sendChatMessage("You have pure essence waiting to be collected from Wizard Cromperty.");
+			hasSentEssenceMsg = true;
+>>>>>>> upstream/master
 		}
 	}
 
 	private boolean checkCanCollectHerbBox()
 	{
+<<<<<<< HEAD
 		int value = client.getVar(Varbits.DAILY_HERB_BOX);
 		return value < 15; // < 15 can claim
+=======
+		// Exclude ironmen from herb box notifications
+		int value = client.getVar(Varbits.DAILY_HERB_BOX);
+		return client.getAccountType() == AccountType.NORMAL && value < 15; // < 15 can claim
+>>>>>>> upstream/master
 	}
 
 	private boolean checkCanCollectStaves()
@@ -143,11 +206,14 @@ public class DailyTasksPlugin extends Plugin
 		return value == 0; // 1 = can't claim
 	}
 
+<<<<<<< HEAD
 	private void cacheColors()
 	{
 		chatMessageManager.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, false), ChatMessageType.GAME).refreshAll();
 	}
 
+=======
+>>>>>>> upstream/master
 	private void sendChatMessage(String chatMessage)
 	{
 		final String message = new ChatMessageBuilder()

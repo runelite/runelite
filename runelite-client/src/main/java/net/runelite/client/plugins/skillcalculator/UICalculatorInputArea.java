@@ -1,5 +1,9 @@
 /*
  * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
+<<<<<<< HEAD
+=======
+ * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
+>>>>>>> upstream/master
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,6 +28,7 @@
  */
 package net.runelite.client.plugins.skillcalculator;
 
+<<<<<<< HEAD
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -39,6 +44,21 @@ class UICalculatorInputArea extends JPanel
 	private int gridX = 0;
 	private int gridY = 0;
 
+=======
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.components.FlatTextField;
+
+class UICalculatorInputArea extends JPanel
+{
+>>>>>>> upstream/master
 	JTextField uiFieldCurrentLevel;
 	JTextField uiFieldCurrentXP;
 	JTextField uiFieldTargetLevel;
@@ -46,6 +66,7 @@ class UICalculatorInputArea extends JPanel
 
 	UICalculatorInputArea()
 	{
+<<<<<<< HEAD
 		uiLayout = new GridBagLayout();
 		uiConstraints = new GridBagConstraints();
 		uiConstraints.insets = new Insets(3, 9, 3, 9);
@@ -55,6 +76,13 @@ class UICalculatorInputArea extends JPanel
 		uiFieldCurrentXP = addComponent("Current XP");
 		uiFieldTargetLevel = addComponent("Target Level");
 		uiFieldTargetXP = addComponent("Target XP");
+=======
+		setLayout(new GridLayout(2, 2, 7, 7));
+		uiFieldCurrentLevel = addComponent("Current Level");
+		uiFieldCurrentXP = addComponent("Current Experience");
+		uiFieldTargetLevel = addComponent("Target Level");
+		uiFieldTargetXP = addComponent("Target Experience");
+>>>>>>> upstream/master
 	}
 
 	int getCurrentLevelInput()
@@ -116,6 +144,7 @@ class UICalculatorInputArea extends JPanel
 
 	private JTextField addComponent(String label)
 	{
+<<<<<<< HEAD
 		final JLabel uiLabel = new JLabel(label);
 		final JTextField uiField = new JTextField(6);
 
@@ -137,5 +166,27 @@ class UICalculatorInputArea extends JPanel
 		}
 
 		return uiField;
+=======
+		final JPanel container = new JPanel();
+		container.setLayout(new BorderLayout());
+
+		final JLabel uiLabel = new JLabel(label);
+		final FlatTextField uiInput = new FlatTextField();
+
+		uiInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		uiInput.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
+		uiInput.setBorder(new EmptyBorder(5, 7, 5, 7));
+
+		uiLabel.setFont(FontManager.getRunescapeSmallFont());
+		uiLabel.setBorder(new EmptyBorder(0, 0, 4, 0));
+		uiLabel.setForeground(Color.WHITE);
+
+		container.add(uiLabel, BorderLayout.NORTH);
+		container.add(uiInput, BorderLayout.CENTER);
+
+		add(container);
+
+		return uiInput.getTextField();
+>>>>>>> upstream/master
 	}
 }

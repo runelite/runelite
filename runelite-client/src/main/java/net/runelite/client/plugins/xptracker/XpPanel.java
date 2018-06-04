@@ -1,5 +1,9 @@
 /*
  * Copyright (c) 2017, Cameron <moberg@tuta.io>
+<<<<<<< HEAD
+=======
+ * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
+>>>>>>> upstream/master
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,33 +33,64 @@ import java.awt.GridLayout;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+<<<<<<< HEAD
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+=======
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
+>>>>>>> upstream/master
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.game.SkillIconManager;
+<<<<<<< HEAD
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.StackFormatter;
+=======
+import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.PluginErrorPanel;
+import net.runelite.client.util.LinkBrowser;
+>>>>>>> upstream/master
 import okhttp3.HttpUrl;
 
 @Slf4j
 class XpPanel extends PluginPanel
 {
 	private final Map<Skill, XpInfoBox> infoBoxes = new HashMap<>();
+<<<<<<< HEAD
 	private final JLabel totalXpGained = new JLabel();
 	private final JLabel totalXpHr = new JLabel();
+=======
+
+	private final JLabel overallExpGained = new JLabel(XpInfoBox.htmlLabel("Gained: ", 0));
+	private final JLabel overallExpHour = new JLabel(XpInfoBox.htmlLabel("Per hour: ", 0));
+
+	private final JPanel overallPanel = new JPanel();
+
+	/* This displays the "No exp gained" text */
+	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
+>>>>>>> upstream/master
 
 	XpPanel(XpTrackerPlugin xpTrackerPlugin, Client client, SkillIconManager iconManager)
 	{
 		super();
 
+<<<<<<< HEAD
 		final JPanel layoutPanel = new JPanel();
 		layoutPanel.setLayout(new BorderLayout(0, 3));
 		add(layoutPanel);
@@ -87,6 +122,58 @@ class XpPanel extends PluginPanel
 		final JPanel infoBoxPanel = new JPanel();
 		infoBoxPanel.setLayout(new BoxLayout(infoBoxPanel, BoxLayout.Y_AXIS));
 		layoutPanel.add(infoBoxPanel, BorderLayout.CENTER);
+=======
+		setBorder(new EmptyBorder(10, 6, 10, 6));
+		setBackground(ColorScheme.DARK_GRAY_COLOR);
+		setLayout(new BorderLayout());
+
+		final JPanel layoutPanel = new JPanel();
+		BoxLayout boxLayout = new BoxLayout(layoutPanel, BoxLayout.Y_AXIS);
+		layoutPanel.setLayout(boxLayout);
+		add(layoutPanel, BorderLayout.NORTH);
+
+		overallPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		overallPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		overallPanel.setLayout(new BorderLayout());
+		overallPanel.setVisible(false); // this will only become visible when the player gets exp
+
+		// Create open xp tracker menu
+		final JMenuItem openXpTracker = new JMenuItem("Open online tracker");
+		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(client.getLocalPlayer(), Skill.OVERALL)));
+
+		// Create reset all menu
+		final JMenuItem reset = new JMenuItem("Reset All");
+		reset.addActionListener(e -> xpTrackerPlugin.resetAndInitState());
+
+		// Create popup menu
+		final JPopupMenu popupMenu = new JPopupMenu();
+		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+		popupMenu.add(openXpTracker);
+		popupMenu.add(reset);
+		overallPanel.setComponentPopupMenu(popupMenu);
+
+		final JLabel overallIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(Skill.OVERALL)));
+
+		final JPanel overallInfo = new JPanel();
+		overallInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		overallInfo.setLayout(new GridLayout(2, 1));
+		overallInfo.setBorder(new EmptyBorder(0, 10, 0, 0));
+
+		overallExpGained.setFont(FontManager.getRunescapeSmallFont());
+		overallExpHour.setFont(FontManager.getRunescapeSmallFont());
+
+		overallInfo.add(overallExpGained);
+		overallInfo.add(overallExpHour);
+
+		overallPanel.add(overallIcon, BorderLayout.WEST);
+		overallPanel.add(overallInfo, BorderLayout.CENTER);
+
+
+		final JPanel infoBoxPanel = new JPanel();
+		infoBoxPanel.setLayout(new BoxLayout(infoBoxPanel, BoxLayout.Y_AXIS));
+		layoutPanel.add(overallPanel);
+		layoutPanel.add(infoBoxPanel);
+>>>>>>> upstream/master
 
 		try
 		{
@@ -96,7 +183,10 @@ class XpPanel extends PluginPanel
 				{
 					break;
 				}
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/master
 				infoBoxes.put(skill, new XpInfoBox(xpTrackerPlugin, client, infoBoxPanel, skill, iconManager));
 			}
 		}
@@ -104,6 +194,12 @@ class XpPanel extends PluginPanel
 		{
 			log.warn(null, e);
 		}
+<<<<<<< HEAD
+=======
+
+		errorPanel.setContent("Exp trackers", "You have not gained experience yet.");
+		add(errorPanel);
+>>>>>>> upstream/master
 	}
 
 	static String buildXpTrackerUrl(final Actor player, final Skill skill)
@@ -150,13 +246,27 @@ class XpPanel extends PluginPanel
 		}
 	}
 
+<<<<<<< HEAD
 	void updateTotal(XpSnapshotTotal xpSnapshotTotal)
 	{
+=======
+
+	public void updateTotal(XpSnapshotTotal xpSnapshotTotal)
+	{
+		// if player has gained exp and hasn't switched displays yet, hide error panel and show overall info
+		if (xpSnapshotTotal.getXpGainedInSession() > 0 && !overallPanel.isVisible())
+		{
+			overallPanel.setVisible(true);
+			remove(errorPanel);
+		}
+
+>>>>>>> upstream/master
 		SwingUtilities.invokeLater(() -> rebuildAsync(xpSnapshotTotal));
 	}
 
 	private void rebuildAsync(XpSnapshotTotal xpSnapshotTotal)
 	{
+<<<<<<< HEAD
 		totalXpGained.setText(formatLine(xpSnapshotTotal.getXpGainedInSession(), "total xp gained"));
 		totalXpHr.setText(formatLine(xpSnapshotTotal.getXpPerHour(), "total xp/hr"));
 	}
@@ -176,4 +286,10 @@ class XpPanel extends PluginPanel
 
 		return numberStr + " " + description;
 	}
+=======
+		overallExpGained.setText(XpInfoBox.htmlLabel("Gained: ", xpSnapshotTotal.getXpGainedInSession()));
+		overallExpHour.setText(XpInfoBox.htmlLabel("Per hour: ", xpSnapshotTotal.getXpPerHour()));
+	}
+
+>>>>>>> upstream/master
 }

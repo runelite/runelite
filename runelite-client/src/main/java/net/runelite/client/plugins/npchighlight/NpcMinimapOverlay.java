@@ -58,6 +58,7 @@ public class NpcMinimapOverlay extends Overlay
 	{
 		for (NPC npc : plugin.getHighlightedNpcs())
 		{
+<<<<<<< HEAD
 			renderNpcOverlay(graphics, npc, npc.getName(), config.getNpcColor());
 		}
 
@@ -69,6 +70,9 @@ public class NpcMinimapOverlay extends Overlay
 			{
 				renderNpcOverlay(graphics, npc, npc.getName(), config.getTagColor());
 			}
+=======
+			renderNpcOverlay(graphics, npc, npc.getName(), config.getHighlightColor());
+>>>>>>> upstream/master
 		}
 
 		return null;

@@ -26,9 +26,32 @@ package net.runelite.client.plugins.woodcutting;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+<<<<<<< HEAD
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.events.ChatMessage;
+=======
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import javax.inject.Inject;
+import lombok.Getter;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.GameObject;
+import net.runelite.api.GameState;
+import net.runelite.api.Player;
+import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameObjectChanged;
+import net.runelite.api.events.GameObjectDespawned;
+import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+>>>>>>> upstream/master
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -47,12 +70,34 @@ public class WoodcuttingPlugin extends Plugin
 	private Notifier notifier;
 
 	@Inject
+<<<<<<< HEAD
 	private WoodcuttingOverlay overlay;
 
 	@Inject
 	private WoodcuttingConfig config;
 
 	private final WoodcuttingSession session = new WoodcuttingSession();
+=======
+	private Client client;
+
+	@Inject
+	private WoodcuttingOverlay overlay;
+
+	@Inject
+	private WoodcuttingTreesOverlay treesOverlay;
+
+	@Inject
+	private WoodcuttingConfig config;
+
+	@Getter
+	private WoodcuttingSession session;
+
+	@Getter
+	private Axe axe;
+
+	@Getter
+	private final Set<GameObject> treeObjects = new HashSet<>();
+>>>>>>> upstream/master
 
 	@Provides
 	WoodcuttingConfig getConfig(ConfigManager configManager)
@@ -61,6 +106,7 @@ public class WoodcuttingPlugin extends Plugin
 	}
 
 	@Override
+<<<<<<< HEAD
 	public Overlay getOverlay()
 	{
 		return overlay;
@@ -69,6 +115,37 @@ public class WoodcuttingPlugin extends Plugin
 	public WoodcuttingSession getSession()
 	{
 		return session;
+=======
+	public Collection<Overlay> getOverlays()
+	{
+		return Arrays.asList(overlay, treesOverlay);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		treeObjects.clear();
+		session = null;
+		axe = null;
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		if (session == null || session.getLastLogCut() == null)
+		{
+			return;
+		}
+
+		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
+		Duration sinceCut = Duration.between(session.getLastLogCut(), Instant.now());
+
+		if (sinceCut.compareTo(statTimeout) >= 0)
+		{
+			session = null;
+			axe = null;
+		}
+>>>>>>> upstream/master
 	}
 
 	@Subscribe
@@ -78,6 +155,14 @@ public class WoodcuttingPlugin extends Plugin
 		{
 			if (event.getMessage().startsWith("You get some") && event.getMessage().endsWith("logs."))
 			{
+<<<<<<< HEAD
+=======
+				if (session == null)
+				{
+					session = new WoodcuttingSession();
+				}
+
+>>>>>>> upstream/master
 				session.setLastLogCut();
 			}
 
@@ -87,4 +172,59 @@ public class WoodcuttingPlugin extends Plugin
 			}
 		}
 	}
+<<<<<<< HEAD
 }
+=======
+
+	@Subscribe
+	public void onGameObjectSpawned(final GameObjectSpawned event)
+	{
+		GameObject gameObject = event.getGameObject();
+		Tree tree = Tree.findTree(gameObject.getId());
+
+		if (tree != null)
+		{
+			treeObjects.add(gameObject);
+		}
+	}
+
+	@Subscribe
+	public void onGameObjectDespawned(final GameObjectDespawned event)
+	{
+		treeObjects.remove(event.getGameObject());
+	}
+
+	@Subscribe
+	public void onGameObjectChanged(final GameObjectChanged event)
+	{
+		treeObjects.remove(event.getGameObject());
+	}
+
+	@Subscribe
+	public void onGameStateChanged(final GameStateChanged event)
+	{
+		if (event.getGameState() != GameState.LOGGED_IN)
+		{
+			treeObjects.clear();
+		}
+	}
+
+	@Subscribe
+	public void onAnimationChanged(final AnimationChanged event)
+	{
+		Player local = client.getLocalPlayer();
+
+		if (event.getActor() != local)
+		{
+			return;
+		}
+
+		int animId = local.getAnimation();
+		Axe axe = Axe.findAxeByAnimId(animId);
+		if (axe != null)
+		{
+			this.axe = axe;
+		}
+	}
+}
+>>>>>>> upstream/master

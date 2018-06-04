@@ -24,6 +24,12 @@
  */
 package net.runelite.api;
 
+<<<<<<< HEAD
+=======
+/**
+ * Represents an engine graphic buffer.
+ */
+>>>>>>> upstream/master
 public interface BufferProvider
 {
 }

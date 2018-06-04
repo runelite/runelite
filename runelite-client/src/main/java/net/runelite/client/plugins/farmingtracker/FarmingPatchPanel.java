@@ -1,5 +1,9 @@
 /*
  * Copyright (c) 2018 Abex
+<<<<<<< HEAD
+=======
+ * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
+>>>>>>> upstream/master
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,6 +28,7 @@
  */
 package net.runelite.client.plugins.farmingtracker;
 
+<<<<<<< HEAD
 import java.awt.Dimension;
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
@@ -31,6 +36,21 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import lombok.Getter;
 import net.runelite.client.ui.FontManager;
+=======
+import com.google.common.base.Strings;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import lombok.Getter;
+import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.components.ThinProgressBar;
+import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
+>>>>>>> upstream/master
 
 @Getter
 class FarmingPatchPanel extends JPanel
@@ -38,12 +58,17 @@ class FarmingPatchPanel extends JPanel
 	private final FarmingPatch patch;
 	private final JLabel icon = new JLabel();
 	private final JLabel estimate = new JLabel();
+<<<<<<< HEAD
 	private final JProgressBar progress = new JProgressBar();
+=======
+	private final ThinProgressBar progress = new ThinProgressBar();
+>>>>>>> upstream/master
 
 	FarmingPatchPanel(FarmingPatch patch)
 	{
 		this.patch = patch;
 
+<<<<<<< HEAD
 		GroupLayout layout = new GroupLayout(this);
 		this.setLayout(layout);
 
@@ -75,5 +100,38 @@ class FarmingPatchPanel extends JPanel
 			)
 			.addComponent(progress)
 		);
+=======
+		setLayout(new BorderLayout());
+		setBorder(new EmptyBorder(7, 0, 0, 0));
+
+		JPanel topContainer = new JPanel();
+		topContainer.setBorder(new EmptyBorder(7, 7, 6, 0));
+		topContainer.setLayout(new BorderLayout());
+		topContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
+		icon.setMinimumSize(new Dimension(36, 32));
+
+		JPanel infoPanel = new JPanel();
+		infoPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		infoPanel.setLayout(new GridLayout(2, 1));
+		infoPanel.setBorder(new EmptyBorder(4, 4, 4, 0));
+
+		final JLabel location = new JShadowedLabel(patch.getRegion().getName()
+			+ (Strings.isNullOrEmpty(patch.getName()) ? "" : " (" + patch.getName() + ")"));
+		location.setFont(FontManager.getRunescapeSmallFont());
+		location.setForeground(Color.WHITE);
+
+		estimate.setFont(FontManager.getRunescapeSmallFont());
+		estimate.setForeground(Color.GRAY);
+
+		infoPanel.add(location);
+		infoPanel.add(estimate);
+
+		topContainer.add(icon, BorderLayout.WEST);
+		topContainer.add(infoPanel, BorderLayout.CENTER);
+
+		add(topContainer, BorderLayout.NORTH);
+		add(progress, BorderLayout.SOUTH);
+>>>>>>> upstream/master
 	}
 }

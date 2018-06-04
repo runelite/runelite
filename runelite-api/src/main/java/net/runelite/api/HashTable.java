@@ -26,9 +26,31 @@ package net.runelite.api;
 
 import java.util.Collection;
 
+<<<<<<< HEAD
 public interface HashTable
 {
 	Node get(long value);
 
+=======
+/**
+ * A data structure that uses a hash function to compute an index into an
+ * array of buckets from which node objects can be quickly obtained.
+ */
+public interface HashTable
+{
+	/**
+	 * Gets a node by its hash value.
+	 *
+	 * @param value the node value
+	 * @return the associated node
+	 */
+	Node get(long value);
+
+	/**
+	 * Gets a collection of all nodes stored in this table.
+	 *
+	 * @return the nodes stored
+	 */
+>>>>>>> upstream/master
 	Collection<Node> getNodes();
 }

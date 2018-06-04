@@ -61,6 +61,11 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+<<<<<<< HEAD
+=======
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
+>>>>>>> upstream/master
 
 public class DevToolsOverlay extends Overlay
 {
@@ -82,14 +87,25 @@ public class DevToolsOverlay extends Overlay
 
 	private final Client client;
 	private final DevToolsPlugin plugin;
+<<<<<<< HEAD
 
 	@Inject
 	public DevToolsOverlay(Client client, DevToolsPlugin plugin)
+=======
+	private final TooltipManager toolTipManager;
+
+	@Inject
+	public DevToolsOverlay(Client client, DevToolsPlugin plugin, TooltipManager toolTipManager)
+>>>>>>> upstream/master
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 		this.client = client;
 		this.plugin = plugin;
+<<<<<<< HEAD
+=======
+		this.toolTipManager = toolTipManager;
+>>>>>>> upstream/master
 	}
 
 	@Override
@@ -111,7 +127,11 @@ public class DevToolsOverlay extends Overlay
 			renderNpcs(graphics);
 		}
 
+<<<<<<< HEAD
 		if (plugin.isToggleGroundItems() || plugin.isToggleGroundObjects() || plugin.isToggleGameObjects() || plugin.isToggleWalls() || plugin.isToggleDecor())
+=======
+		if (plugin.isToggleGroundItems() || plugin.isToggleGroundObjects() || plugin.isToggleGameObjects() || plugin.isToggleWalls() || plugin.isToggleDecor() || plugin.isToggleTileLocation())
+>>>>>>> upstream/master
 		{
 			renderTileObjects(graphics);
 		}
@@ -233,10 +253,31 @@ public class DevToolsOverlay extends Overlay
 				{
 					renderDecorObject(graphics, tile, player);
 				}
+<<<<<<< HEAD
+=======
+
+				if (plugin.isToggleTileLocation())
+				{
+					renderTileTooltip(graphics, tile);
+				}
+>>>>>>> upstream/master
 			}
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	private void renderTileTooltip(Graphics2D graphics, Tile tile)
+	{
+		Polygon poly = Perspective.getCanvasTilePoly(client, tile.getLocalLocation());
+		if (poly != null && poly.contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
+		{
+			toolTipManager.add(new Tooltip("World Location: " + tile.getWorldLocation().getX() + ", " + tile.getWorldLocation().getY() + ", " + client.getPlane()));
+			OverlayUtil.renderPolygon(graphics, poly, GREEN);
+		}
+	}
+
+>>>>>>> upstream/master
 	private void renderGroundItems(Graphics2D graphics, Tile tile, Player player)
 	{
 		ItemLayer itemLayer = tile.getItemLayer();

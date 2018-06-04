@@ -24,7 +24,10 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
+<<<<<<< HEAD
 import java.awt.Color;
+=======
+>>>>>>> upstream/master
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -57,6 +60,7 @@ public interface ChatCommandsConfig extends Config
 	{
 		return true;
 	}
+<<<<<<< HEAD
 
 	@ConfigItem(
 		position = 2,
@@ -189,4 +193,6 @@ public interface ChatCommandsConfig extends Config
 	{
 		return Color.decode("#FFFFFF");
 	}
+=======
+>>>>>>> upstream/master
 }

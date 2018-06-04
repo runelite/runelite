@@ -26,6 +26,7 @@ package net.runelite.api;
 
 import net.runelite.api.kit.KitType;
 
+<<<<<<< HEAD
 public interface PlayerComposition
 {
 	/**
@@ -39,5 +40,37 @@ public interface PlayerComposition
 
 	int getEquipmentId(KitType type);
 
+=======
+/**
+ * Represents the template of a player.
+ */
+public interface PlayerComposition
+{
+	/**
+	 * Gets an array of IDs related to equipment slots.
+	 * <p>
+	 * If the ID for a specific slot is between 256 and 512, subtracting
+	 * 256 will result in the kit ID. Values above 512 indicate an item
+	 * and can be converted to the item ID by subtracting 512.
+	 *
+	 * @return the equipment IDs
+	 */
+	int[] getEquipmentIds();
+
+	/**
+	 * Gets the equipment ID of a particular slot.
+	 *
+	 * @param type equipment slot
+	 * @return the equipment ID
+	 */
+	int getEquipmentId(KitType type);
+
+	/**
+	 * Gets the kit ID of a particular slot.
+	 *
+	 * @param type equipment slot
+	 * @return the kit ID
+	 */
+>>>>>>> upstream/master
 	int getKitId(KitType type);
 }

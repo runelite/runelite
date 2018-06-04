@@ -26,11 +26,38 @@ package net.runelite.api.events;
 
 import lombok.Data;
 
+<<<<<<< HEAD
 @Data
 public class ConfigChanged
 {
 	private String group;
 	private String key;
 	private String oldValue;
+=======
+/**
+ * An event where a configuration entry has been modified.
+ */
+@Data
+public class ConfigChanged
+{
+	/**
+	 * The parent group for the key.
+	 * <p>
+	 * Typically set to the name of a plugin to prevent potential collisions
+	 * between other key values that may have the same name.
+	 */
+	private String group;
+	/**
+	 * The configuration key that has been modified.
+	 */
+	private String key;
+	/**
+	 * The previous value of the entry.
+	 */
+	private String oldValue;
+	/**
+	 * The new value of the entry, null if the entry has been unset.
+	 */
+>>>>>>> upstream/master
 	private String newValue;
 }

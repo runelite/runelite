@@ -32,6 +32,10 @@ import net.runelite.api.Node;
 import net.runelite.api.Point;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.events.WidgetHiddenChanged;
+<<<<<<< HEAD
+=======
+import net.runelite.api.events.WidgetPositioned;
+>>>>>>> upstream/master
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -40,7 +44,13 @@ import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
+<<<<<<< HEAD
 import static net.runelite.client.callback.Hooks.eventBus;
+=======
+import static net.runelite.client.callback.Hooks.deferredEventBus;
+import static net.runelite.client.callback.Hooks.eventBus;
+import static net.runelite.client.callback.Hooks.log;
+>>>>>>> upstream/master
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSHashTable;
 import net.runelite.rs.api.RSNode;
@@ -55,6 +65,12 @@ public abstract class RSWidgetMixin implements RSWidget
 	private static RSClient client;
 
 	@Inject
+<<<<<<< HEAD
+=======
+	private static int rl$widgetLastPosChanged;
+
+	@Inject
+>>>>>>> upstream/master
 	@Override
 	public Widget getParent()
 	{
@@ -418,4 +434,31 @@ public abstract class RSWidgetMixin implements RSWidget
 
 		broadcastHidden(isSelfHidden());
 	}
+<<<<<<< HEAD
+=======
+
+	@FieldHook("relativeY")
+	@Inject
+	public void onPositionChanged(int idx)
+	{
+		int id = getId();
+		if (id == -1)
+		{
+			return;
+		}
+
+		int tick = client.getGameCycle();
+		if (tick == rl$widgetLastPosChanged)
+		{
+			return;
+		}
+
+		rl$widgetLastPosChanged = tick;
+
+		log.trace("Posting widget position changed");
+
+		WidgetPositioned widgetPositioned = new WidgetPositioned();
+		deferredEventBus.post(widgetPositioned);
+	}
+>>>>>>> upstream/master
 }

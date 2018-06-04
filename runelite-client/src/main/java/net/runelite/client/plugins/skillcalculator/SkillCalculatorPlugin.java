@@ -75,7 +75,16 @@ public class SkillCalculatorPlugin extends Plugin
 		SkillCalculator.itemManager = itemManager;
 
 		uiPanel = new SkillCalculatorPanel(skillIconManager, client);
+<<<<<<< HEAD
 		uiNavigationButton = NavigationButton.builder().name("Skill Calculator").icon(icon).panel(uiPanel).build();
+=======
+		uiNavigationButton = NavigationButton.builder()
+			.tooltip("Skill Calculator")
+			.icon(icon)
+			.priority(6)
+			.panel(uiPanel)
+			.build();
+>>>>>>> upstream/master
 		pluginToolbar.addNavigation(uiNavigationButton);
 	}
 

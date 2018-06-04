@@ -24,6 +24,12 @@
  */
 package net.runelite.api;
 
+<<<<<<< HEAD
+=======
+/**
+ * Represents an object on the ground of a tile.
+ */
+>>>>>>> upstream/master
 public interface GroundObject extends TileObject
 {
 }

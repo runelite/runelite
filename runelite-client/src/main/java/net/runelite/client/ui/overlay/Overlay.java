@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui.overlay;
 
+<<<<<<< HEAD
 import java.awt.Point;
 import java.awt.Rectangle;
 import lombok.Data;
@@ -32,9 +33,34 @@ import lombok.Data;
 public abstract class Overlay implements RenderableEntity
 {
 	private Point preferredLocation;
+=======
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Rectangle;
+import lombok.Data;
+import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
+
+@Data
+public abstract class Overlay implements LayoutableRenderableEntity
+{
+	private Point preferredLocation;
+	private Dimension preferredSize;
+>>>>>>> upstream/master
 	private OverlayPosition preferredPosition;
 	private Rectangle bounds = new Rectangle();
 	private OverlayPosition position = OverlayPosition.TOP_LEFT;
 	private OverlayPriority priority = OverlayPriority.NONE;
 	private OverlayLayer layer = OverlayLayer.UNDER_WIDGETS;
+<<<<<<< HEAD
+=======
+
+	/**
+	 * Overlay name, used for saving the overlay, needs to be unique
+	 * @return overlay name
+	 */
+	public String getName()
+	{
+		return this.getClass().getSimpleName();
+	}
+>>>>>>> upstream/master
 }

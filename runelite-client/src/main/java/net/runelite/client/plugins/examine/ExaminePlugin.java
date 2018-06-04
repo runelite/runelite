@@ -27,7 +27,10 @@ package net.runelite.client.plugins.examine;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.eventbus.Subscribe;
+<<<<<<< HEAD
 import com.google.inject.Provides;
+=======
+>>>>>>> upstream/master
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayDeque;
@@ -37,10 +40,15 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+<<<<<<< HEAD
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+=======
+import net.runelite.api.ItemComposition;
+import net.runelite.api.events.ChatMessage;
+>>>>>>> upstream/master
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
@@ -48,12 +56,18 @@ import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
+<<<<<<< HEAD
 import net.runelite.client.chat.ChatColor;
+=======
+>>>>>>> upstream/master
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
+<<<<<<< HEAD
 import net.runelite.client.config.ConfigManager;
+=======
+>>>>>>> upstream/master
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -84,9 +98,12 @@ public class ExaminePlugin extends Plugin
 	private Client client;
 
 	@Inject
+<<<<<<< HEAD
 	private ExamineConfig config;
 
 	@Inject
+=======
+>>>>>>> upstream/master
 	private ItemManager itemManager;
 
 	@Inject
@@ -95,6 +112,7 @@ public class ExaminePlugin extends Plugin
 	@Inject
 	private ScheduledExecutorService executor;
 
+<<<<<<< HEAD
 	@Override
 	protected void startUp()
 	{
@@ -130,16 +148,21 @@ public class ExaminePlugin extends Plugin
 			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, config.getTransparentExamineHRecolor(), true),
 				ChatMessageType.EXAMINE_ITEM, ChatMessageType.EXAMINE_NPC, ChatMessageType.EXAMINE_OBJECT);
 	}
+=======
+>>>>>>> upstream/master
 
 	@Subscribe
 	public void onGameStateChange(GameStateChanged event)
 	{
 		pending.clear();
+<<<<<<< HEAD
 
 		if (event.getGameState().equals(GameState.LOGIN_SCREEN))
 		{
 			cacheConfiguredColors();
 		}
+=======
+>>>>>>> upstream/master
 	}
 
 	@Subscribe
@@ -231,7 +254,11 @@ public class ExaminePlugin extends Plugin
 		}
 
 		cache.put(key, Boolean.TRUE);
+<<<<<<< HEAD
 		executor.submit(() -> submitExamine(pendingExamine, event.getMessage()));
+=======
+		submitExamine(pendingExamine, event.getMessage());
+>>>>>>> upstream/master
 	}
 
 	private void findExamineItem(PendingExamine pendingExamine)
@@ -404,6 +431,7 @@ public class ExaminePlugin extends Plugin
 	{
 		int id = examine.getId();
 
+<<<<<<< HEAD
 		try
 		{
 			switch (examine.getType())
@@ -422,6 +450,19 @@ public class ExaminePlugin extends Plugin
 		catch (IOException ex)
 		{
 			log.warn("Error submitting examine", ex);
+=======
+		switch (examine.getType())
+		{
+			case ITEM:
+				examineClient.submitItem(id, text);
+				break;
+			case OBJECT:
+				examineClient.submitObject(id, text);
+				break;
+			case NPC:
+				examineClient.submitNpc(id, text);
+				break;
+>>>>>>> upstream/master
 		}
 	}
 

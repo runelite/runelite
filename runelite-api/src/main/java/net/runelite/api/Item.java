@@ -24,9 +24,30 @@
  */
 package net.runelite.api;
 
+<<<<<<< HEAD
 public interface Item extends Renderable
 {
 	int getId();
 
+=======
+/**
+ * Represents an item inside an {@link ItemContainer}.
+ */
+public interface Item extends Renderable
+{
+	/**
+	 * Gets the items ID.
+	 *
+	 * @return the ID of the item
+	 * @see ItemID
+	 */
+	int getId();
+
+	/**
+	 * Gets the items quantity.
+	 *
+	 * @return the items quantity
+	 */
+>>>>>>> upstream/master
 	int getQuantity();
 }

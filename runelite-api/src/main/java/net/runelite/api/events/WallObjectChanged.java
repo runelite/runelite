@@ -28,10 +28,30 @@ import lombok.Data;
 import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
 
+<<<<<<< HEAD
 @Data
 public class WallObjectChanged
 {
 	private Tile tile;
 	private WallObject previous;
+=======
+/**
+ * An event where the {@link WallObject} of a {@link Tile} has been changed.
+ */
+@Data
+public class WallObjectChanged
+{
+	/**
+	 * The affected tile.
+	 */
+	private Tile tile;
+	/**
+	 * The wall object that has been replaced.
+	 */
+	private WallObject previous;
+	/**
+	 * The new wall object on the tile.
+	 */
+>>>>>>> upstream/master
 	private WallObject wallObject;
 }

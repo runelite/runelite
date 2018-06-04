@@ -31,7 +31,12 @@ import lombok.Value;
 @Value
 class XpSnapshotSingle
 {
+<<<<<<< HEAD
 	private int currentLevel;
+=======
+	private int startLevel;
+	private int endLevel;
+>>>>>>> upstream/master
 	private int xpGainedInSession;
 	private int xpRemainingToGoal;
 	private int xpPerHour;

@@ -28,9 +28,29 @@ import java.util.List;
 import net.runelite.api.model.Triangle;
 import net.runelite.api.model.Vertex;
 
+<<<<<<< HEAD
 public interface Model extends Renderable
 {
 	List<Vertex> getVertices();
 
+=======
+/**
+ * Represents the model of an object.
+ */
+public interface Model extends Renderable
+{
+	/**
+	 * Gets a list of all vertices of the model.
+	 *
+	 * @return the vertices
+	 */
+	List<Vertex> getVertices();
+
+	/**
+	 * Gets a list of all triangles of the model.
+	 *
+	 * @return the triangle
+	 */
+>>>>>>> upstream/master
 	List<Triangle> getTriangles();
 }

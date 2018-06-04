@@ -27,13 +27,22 @@ package net.runelite.client.ui;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import java.applet.Applet;
+<<<<<<< HEAD
 import java.awt.BorderLayout;
 import java.awt.Canvas;
+=======
+import java.awt.Canvas;
+import java.awt.CardLayout;
+>>>>>>> upstream/master
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
+<<<<<<< HEAD
+=======
+import java.awt.GraphicsConfiguration;
+>>>>>>> upstream/master
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.TrayIcon;
@@ -61,6 +70,10 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.ConfigManager;
+<<<<<<< HEAD
+=======
+import net.runelite.client.config.ExpandResizeType;
+>>>>>>> upstream/master
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.events.ClientUILoaded;
 import net.runelite.client.events.PluginToolbarButtonAdded;
@@ -68,10 +81,18 @@ import net.runelite.client.events.PluginToolbarButtonRemoved;
 import net.runelite.client.events.TitleToolbarButtonAdded;
 import net.runelite.client.events.TitleToolbarButtonRemoved;
 import net.runelite.client.input.KeyManager;
+<<<<<<< HEAD
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
 import net.runelite.client.util.SwingUtil;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
+=======
+import net.runelite.client.ui.skin.SubstanceRuneLiteLookAndFeel;
+import net.runelite.client.util.OSType;
+import net.runelite.client.util.OSXUtil;
+import net.runelite.client.util.SwingUtil;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
+>>>>>>> upstream/master
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
 
@@ -124,6 +145,10 @@ public class ClientUI
 	private final RuneLiteConfig config;
 	private final EventBus eventBus;
 	private final KeyManager keyManager;
+<<<<<<< HEAD
+=======
+	private final CardLayout cardLayout = new CardLayout();
+>>>>>>> upstream/master
 	private Applet client;
 	private ContainableFrame frame;
 	private JPanel navContainer;
@@ -134,7 +159,10 @@ public class ClientUI
 	private NavigationButton currentNavButton;
 	private boolean sidebarOpen;
 	private JPanel container;
+<<<<<<< HEAD
 	private PluginPanel lastPluginPanel;
+=======
+>>>>>>> upstream/master
 	private NavigationButton sidebarNavigationButton;
 	private JButton sidebarNavigationJButton;
 
@@ -229,7 +257,19 @@ public class ClientUI
 	{
 		SwingUtilities.invokeLater(() ->
 		{
+<<<<<<< HEAD
 			final JButton button = SwingUtil.createSwingButton(event.getButton(), 0, (navButton, jButton) ->
+=======
+			final NavigationButton navigationButton = event.getButton();
+			final PluginPanel pluginPanel = navigationButton.getPanel();
+
+			if (pluginPanel != null)
+			{
+				navContainer.add(pluginPanel.getWrappedPanel(), navigationButton.getTooltip());
+			}
+
+			final JButton button = SwingUtil.createSwingButton(navigationButton, 0, (navButton, jButton) ->
+>>>>>>> upstream/master
 			{
 				final PluginPanel panel = navButton.getPanel();
 
@@ -264,7 +304,11 @@ public class ClientUI
 					currentNavButton = navButton;
 					currentButton.setSelected(true);
 					currentNavButton.setSelected(true);
+<<<<<<< HEAD
 					expand(panel);
+=======
+					expand(navButton);
+>>>>>>> upstream/master
 				}
 			});
 
@@ -275,7 +319,20 @@ public class ClientUI
 	@Subscribe
 	public void onPluginToolbarButtonRemoved(final PluginToolbarButtonRemoved event)
 	{
+<<<<<<< HEAD
 		SwingUtilities.invokeLater(() -> pluginToolbar.removeComponent(event.getButton()));
+=======
+		SwingUtilities.invokeLater(() ->
+		{
+			pluginToolbar.removeComponent(event.getButton());
+			final PluginPanel pluginPanel = event.getButton().getPanel();
+
+			if (pluginPanel != null)
+			{
+				navContainer.remove(pluginPanel.getWrappedPanel());
+			}
+		});
+>>>>>>> upstream/master
 	}
 
 	@Subscribe
@@ -327,7 +384,11 @@ public class ClientUI
 			SwingUtil.setupDefaults();
 
 			// Use substance look and feel
+<<<<<<< HEAD
 			SwingUtil.setTheme(new SubstanceGraphiteLookAndFeel());
+=======
+			SwingUtil.setTheme(new SubstanceRuneLiteLookAndFeel());
+>>>>>>> upstream/master
 
 			// Use custom UI font
 			SwingUtil.setFont(FontManager.getRunescapeFont());
@@ -359,9 +420,19 @@ public class ClientUI
 			container.add(new ClientPanel(client));
 
 			navContainer = new JPanel();
+<<<<<<< HEAD
 			navContainer.setLayout(new BorderLayout(0, 0));
 			navContainer.setMinimumSize(new Dimension(0, 0));
 			navContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
+=======
+			navContainer.setLayout(cardLayout);
+			navContainer.setMinimumSize(new Dimension(0, 0));
+			navContainer.setMaximumSize(new Dimension(0, 0));
+			navContainer.setPreferredSize(new Dimension(0, 0));
+
+			// To reduce substance's colorization (tinting)
+			navContainer.putClientProperty(SubstanceSynapse.COLORIZATION_FACTOR, 1.0);
+>>>>>>> upstream/master
 			container.add(navContainer);
 
 			pluginToolbar = new ClientPluginToolbar();
@@ -565,6 +636,10 @@ public class ClientUI
 
 	/**
 	 * Get offset of game canvas in game window
+<<<<<<< HEAD
+=======
+	 *
+>>>>>>> upstream/master
 	 * @return game canvas offset
 	 */
 	public Point getCanvasOffset()
@@ -578,6 +653,14 @@ public class ClientUI
 		return new Point(0, 0);
 	}
 
+<<<<<<< HEAD
+=======
+	public GraphicsConfiguration getGraphicsConfiguration()
+	{
+		return frame.getGraphicsConfiguration();
+	}
+
+>>>>>>> upstream/master
 	void toggleSidebar()
 	{
 		// Toggle sidebar open
@@ -600,8 +683,11 @@ public class ClientUI
 			sidebarNavigationJButton.setIcon(new ImageIcon(SIDEBAR_OPEN));
 			sidebarNavigationJButton.setToolTipText("Open SideBar");
 
+<<<<<<< HEAD
 			// Save last panel and close current one
 			lastPluginPanel = pluginPanel;
+=======
+>>>>>>> upstream/master
 			contract();
 
 			// Remove plugin toolbar
@@ -613,7 +699,11 @@ public class ClientUI
 			sidebarNavigationJButton.setToolTipText("Close SideBar");
 
 			// Try to restore last panel
+<<<<<<< HEAD
 			expand(lastPluginPanel);
+=======
+			expand(currentNavButton);
+>>>>>>> upstream/master
 
 			// Add plugin toolbar back
 			container.add(pluginToolbar);
@@ -621,7 +711,10 @@ public class ClientUI
 
 		// Revalidate sizes of affected Swing components
 		container.revalidate();
+<<<<<<< HEAD
 		container.repaint();
+=======
+>>>>>>> upstream/master
 		giveClientFocus();
 
 		if (sidebarOpen)
@@ -634,13 +727,20 @@ public class ClientUI
 		}
 	}
 
+<<<<<<< HEAD
 	private void expand(@Nullable PluginPanel panel)
 	{
 		if (panel == null)
+=======
+	private void expand(@Nullable NavigationButton button)
+	{
+		if (button == null)
+>>>>>>> upstream/master
 		{
 			return;
 		}
 
+<<<<<<< HEAD
 		if (!sidebarOpen)
 		{
 			toggleSidebar();
@@ -661,11 +761,38 @@ public class ClientUI
 		final JPanel wrappedPanel = panel.getWrappedPanel();
 		navContainer.add(wrappedPanel);
 		navContainer.revalidate();
+=======
+		final PluginPanel panel = button.getPanel();
+
+		if (panel == null)
+		{
+			return;
+		}
+
+		if (!sidebarOpen)
+		{
+			toggleSidebar();
+		}
+
+		int width = panel.getWrappedPanel().getPreferredSize().width;
+		int expandBy = pluginPanel != null ? pluginPanel.getWrappedPanel().getPreferredSize().width - width : width;
+		pluginPanel = panel;
+
+		// Expand sidebar
+		navContainer.setMinimumSize(new Dimension(width, 0));
+		navContainer.setMaximumSize(new Dimension(width, Integer.MAX_VALUE));
+		navContainer.setPreferredSize(new Dimension(width, 0));
+		navContainer.revalidate();
+		cardLayout.show(navContainer, button.getTooltip());
+>>>>>>> upstream/master
 
 		// panel.onActivate has to go after giveClientFocus so it can get focus if it needs.
 		giveClientFocus();
 		panel.onActivate();
+<<<<<<< HEAD
 		wrappedPanel.repaint();
+=======
+>>>>>>> upstream/master
 
 		// Check if frame was really expanded or contracted
 		if (expandBy > 0)
@@ -686,9 +813,15 @@ public class ClientUI
 		}
 
 		pluginPanel.onDeactivate();
+<<<<<<< HEAD
 		navContainer.remove(0);
 		navContainer.setMinimumSize(new Dimension(0, 0));
 		navContainer.setMaximumSize(new Dimension(0, 0));
+=======
+		navContainer.setMinimumSize(new Dimension(0, 0));
+		navContainer.setMaximumSize(new Dimension(0, 0));
+		navContainer.setPreferredSize(new Dimension(0, 0));
+>>>>>>> upstream/master
 		navContainer.revalidate();
 		giveClientFocus();
 		frame.contractBy(pluginPanel.getWrappedPanel().getPreferredSize().width);
@@ -718,6 +851,7 @@ public class ClientUI
 		{
 			final Rectangle bounds = frame.getBounds();
 
+<<<<<<< HEAD
 			// Try to contract sidebar
 			if (sidebarOpen)
 			{
@@ -728,6 +862,21 @@ public class ClientUI
 			if (pluginPanel != null)
 			{
 				bounds.width -= pluginPanel.getWrappedPanel().getPreferredSize().width;
+=======
+			if (config.automaticResizeType() == ExpandResizeType.KEEP_GAME_SIZE)
+			{
+				// Try to contract sidebar
+				if (sidebarOpen)
+				{
+					bounds.width -= pluginToolbar.getWidth();
+				}
+
+				// Try to contract plugin panel
+				if (pluginPanel != null)
+				{
+					bounds.width -= pluginPanel.getWrappedPanel().getPreferredSize().width;
+				}
+>>>>>>> upstream/master
 			}
 
 			configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED);

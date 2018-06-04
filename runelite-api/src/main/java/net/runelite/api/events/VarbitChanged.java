@@ -28,6 +28,12 @@ package net.runelite.api.events;
 
 import lombok.Data;
 
+<<<<<<< HEAD
+=======
+/**
+ * An event where a varbit has changed.
+ */
+>>>>>>> upstream/master
 @Data
 public class VarbitChanged
 {

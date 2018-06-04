@@ -1,5 +1,9 @@
 /*
  * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
+<<<<<<< HEAD
+=======
+ * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
+>>>>>>> upstream/master
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,6 +29,7 @@
 
 package net.runelite.client.plugins.skillcalculator;
 
+<<<<<<< HEAD
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -49,10 +54,33 @@ class SkillCalculatorPanel extends PluginPanel
 	private final JPanel uiButtonGrid = new JPanel();
 	private final GridBagLayout uiButtonGridLayout = new GridBagLayout();
 	private final GridBagConstraints uiButtonGridConstraints = new GridBagConstraints();
+=======
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.border.EmptyBorder;
+import net.runelite.api.Client;
+import net.runelite.client.game.SkillIconManager;
+import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.materialtabs.MaterialTab;
+import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
+
+class SkillCalculatorPanel extends PluginPanel
+{
+	private final SkillCalculator uiCalculator;
+	private final SkillIconManager iconManager;
+	private final MaterialTabGroup tabGroup;
+>>>>>>> upstream/master
 
 	SkillCalculatorPanel(SkillIconManager iconManager, Client client)
 	{
 		super();
+<<<<<<< HEAD
 		this.iconManager = iconManager;
 
 		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
@@ -75,12 +103,54 @@ class SkillCalculatorPanel extends PluginPanel
 		add(uiInput);
 		add(Box.createRigidArea(new Dimension(0, 14)));
 		add(uiCalculator);
+=======
+		getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+		this.iconManager = iconManager;
+
+		setBorder(new EmptyBorder(10, 10, 10, 10));
+		setLayout(new GridBagLayout());
+
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 1;
+		c.gridx = 0;
+		c.gridy = 0;
+
+		tabGroup = new MaterialTabGroup();
+		tabGroup.setLayout(new GridLayout(0, 6, 7, 7));
+
+		addCalculatorButtons();
+
+		final UICalculatorInputArea uiInput = new UICalculatorInputArea();
+		uiInput.setBorder(new EmptyBorder(15, 0, 15, 0));
+		uiInput.setBackground(ColorScheme.DARK_GRAY_COLOR);
+
+		uiCalculator = new SkillCalculator(client, uiInput);
+
+		JLabel title = new JLabel("Skilling Calculator");
+		title.setBorder(new EmptyBorder(0, 1, 8, 0));
+		title.setForeground(Color.WHITE);
+
+		add(title, c);
+		c.gridy++;
+
+		add(tabGroup, c);
+		c.gridy++;
+
+		add(uiInput, c);
+		c.gridy++;
+
+		add(uiCalculator, c);
+		c.gridy++;
+>>>>>>> upstream/master
 	}
 
 	private void addCalculatorButtons()
 	{
 		for (CalculatorType calculatorType : CalculatorType.values())
 		{
+<<<<<<< HEAD
 			final JButton uiButton = new JButton();
 			final BufferedImage icon = iconManager.getSkillImage(calculatorType.getSkill());
 			uiButton.addActionListener(e -> openCalculator(calculatorType, uiButton));
@@ -113,4 +183,12 @@ class SkillCalculatorPanel extends PluginPanel
 		revalidate();
 		repaint();
 	}
+=======
+			ImageIcon icon = new ImageIcon(iconManager.getSkillImage(calculatorType.getSkill(), true));
+			MaterialTab tab = new MaterialTab(icon, tabGroup, null);
+			tab.setOnSelectEvent(() -> uiCalculator.openCalculator(calculatorType));
+			tabGroup.addTab(tab);
+		}
+	}
+>>>>>>> upstream/master
 }

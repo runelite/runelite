@@ -44,10 +44,19 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
+<<<<<<< HEAD
+=======
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+>>>>>>> upstream/master
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
+<<<<<<< HEAD
+=======
+import net.runelite.client.Notifier;
+>>>>>>> upstream/master
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
@@ -93,6 +102,15 @@ public class GrandExchangePlugin extends Plugin
 	@Inject
 	private GrandExchangeConfig config;
 
+<<<<<<< HEAD
+=======
+	@Inject
+	private Notifier notifier;
+
+	@Inject
+	private GrandExchangeNotificationHandler notificationHandler;
+
+>>>>>>> upstream/master
 	@Provides
 	GrandExchangeConfig provideConfig(ConfigManager configManager)
 	{
@@ -111,8 +129,14 @@ public class GrandExchangePlugin extends Plugin
 		}
 
 		button = NavigationButton.builder()
+<<<<<<< HEAD
 			.name("GE Offers")
 			.icon(icon)
+=======
+			.tooltip("GE Offers")
+			.icon(icon)
+			.priority(3)
+>>>>>>> upstream/master
 			.panel(panel)
 			.build();
 
@@ -161,7 +185,47 @@ public class GrandExchangePlugin extends Plugin
 		ItemComposition offerItem = itemManager.getItemComposition(offer.getItemId());
 		boolean shouldStack = offerItem.isStackable() || offer.getTotalQuantity() > 1;
 		BufferedImage itemImage = itemManager.getImage(offer.getItemId(), offer.getTotalQuantity(), shouldStack);
+<<<<<<< HEAD
 		SwingUtilities.invokeLater(() -> panel.updateOffer(offerItem, itemImage, offerEvent.getOffer(), offerEvent.getSlot()));
+=======
+		SwingUtilities.invokeLater(() -> panel.getOffersPanel().updateOffer(offerItem, itemImage, offerEvent.getOffer(), offerEvent.getSlot()));
+		this.queueNotification(offerItem, offerEvent.getOffer(), offerEvent.getSlot());
+	}
+
+	private void queueNotification(ItemComposition offerItem, GrandExchangeOffer newOffer, int slot)
+	{
+		if (!this.config.enableNotifications())
+		{
+			return;
+		}
+
+		// Queue a notification
+		this.notificationHandler.queueNotification(slot, offerItem, newOffer);
+	}
+
+	@Subscribe
+	public void onTick(GameTick tick)
+	{
+		// Send a notification is the handler and a notification are available
+		if (this.notificationHandler.canSendNotification())
+		{
+			// Get the next notification and send it
+			String notification = this.notificationHandler.getNextNotification();
+			if (notification != null)
+			{
+				this.notifier.notify(notification);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			panel.getOffersPanel().resetOffers();
+		}
+>>>>>>> upstream/master
 	}
 
 	@Subscribe

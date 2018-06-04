@@ -49,7 +49,11 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: A HEART", "Aretha", new WorldPoint(1814, 3851, 0), "Soul altar", "2"),
 		new AnagramClue("This anagram reveals who to speak to next: A ZEN SHE", "Zenesha", new WorldPoint(2652, 3295, 0), "Platebody Southern Ardougne centre square"),
 		new AnagramClue("This anagram reveals who to speak to next: ACE MATCH ELM", "Cam The Camel", new WorldPoint(3300, 3231, 0), "North of the glider in Al Kharid"),
+<<<<<<< HEAD
 		new AnagramClue("This anagram reveals who to speak to next: AHA JAR", "Jaraah", new WorldPoint(3359, 3276, 0), "Duel Arena hosptial"),
+=======
+		new AnagramClue("This anagram reveals who to speak to next: AHA JAR", "Jaraah", new WorldPoint(3359, 3276, 0), "Duel Arena hospital"),
+>>>>>>> upstream/master
 		new AnagramClue("This anagram reveals who to speak to next: AN PAINT TONIC", "Captain Ninto", new WorldPoint(2865, 9877, 0), "Bar under White Wolf Mountain"),
 		new AnagramClue("This anagram reveals who to speak to next: ARC O LINE", "Caroline", new WorldPoint(2715, 3302, 0), "North Witchaven next to the row boat", "11"),
 		new AnagramClue("This anagram reveals who to speak to next: ARE COL", "Oracle", new WorldPoint(3013, 3501, 0), "Ice Mountain West of Edgeville", "48"),
@@ -72,7 +76,11 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: DO SAY MORE", "Doomsayer", new WorldPoint(3230, 3230, 0), "East of Lumbridge Castle", "95"),
 		new AnagramClue("This anagram reveals who to speak to next: DIM THARN", "Mandrith", new WorldPoint(3182, 3946, 0), "Wilderness Resource Area", "28 or Puzzle box"),
 		new AnagramClue("This anagram reveals who to speak to next: DR HITMAN", "Mandrith", new WorldPoint(3182, 3946, 0), "Wilderness Resource Area", "28, Light box or Puzzle box"),
+<<<<<<< HEAD
 		new AnagramClue("This anagram reveals who to speak to next: DR WARDEN FUNK", "Drunken Dwarf", new WorldPoint(2913, 10221, 0), "East Side of Keldagrim"),
+=======
+		new AnagramClue("This anagram reveals who to speak to next: DR WARDEN FUNK", "Drunken Dwarf", new WorldPoint(2913, 10221, 0), "East Side of Keldagrim", "Puzzle box"),
+>>>>>>> upstream/master
 		new AnagramClue("This anagram reveals who to speak to next: DRAGONS LAMENT", "Strange old Man", new WorldPoint(3564, 3288, 0), "Barrows", "40"),
 		new AnagramClue("This anagram reveals who to speak to next: DT RUN B", "Brundt the Chieftain", new WorldPoint(2658, 3670, 0), "Rellekka, main hall", "4"),
 		new AnagramClue("This anagram reveals who to speak to next: DUO PLUG", "Dugopul", new WorldPoint(2803, 2744, 0), "Graveyard on Ape Atoll"),

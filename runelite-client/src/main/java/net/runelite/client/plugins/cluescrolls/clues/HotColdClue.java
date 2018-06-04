@@ -29,7 +29,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
+<<<<<<< HEAD
 import java.awt.Polygon;
+=======
+>>>>>>> upstream/master
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -42,7 +45,10 @@ import java.util.regex.Pattern;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.NPC;
+<<<<<<< HEAD
 import net.runelite.api.Perspective;
+=======
+>>>>>>> upstream/master
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
@@ -217,12 +223,17 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 			}
 		}
 
+<<<<<<< HEAD
 		// once the number of possible dig locations is below 10, highlight their ground areas
+=======
+		// once the number of possible dig locations is below 10, show the dig spots
+>>>>>>> upstream/master
 		if (digLocations.size() < 10)
 		{
 			// Mark potential dig locations
 			for (HotColdLocation hotColdLocation : digLocations)
 			{
+<<<<<<< HEAD
 				Rectangle2D r = hotColdLocation.getRect();
 
 				for (int i = (int) r.getMinX(); i <= r.getMaxX(); i++)
@@ -243,6 +254,17 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 						}
 					}
 				}
+=======
+				WorldPoint wp = hotColdLocation.getWorldPoint();
+				LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), wp.getX(), wp.getY());
+
+				if (localLocation == null)
+				{
+					return;
+				}
+
+				OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, SPADE_IMAGE, Color.ORANGE);
+>>>>>>> upstream/master
 			}
 		}
 	}

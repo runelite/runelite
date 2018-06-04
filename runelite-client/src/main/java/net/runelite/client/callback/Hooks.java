@@ -30,12 +30,21 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+<<<<<<< HEAD
+=======
+import java.awt.GraphicsConfiguration;
+import java.awt.Image;
+>>>>>>> upstream/master
 import java.awt.RenderingHints;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
+<<<<<<< HEAD
+=======
+import java.awt.image.VolatileImage;
+>>>>>>> upstream/master
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -53,7 +62,10 @@ import net.runelite.api.RenderOverview;
 import net.runelite.api.TextureProvider;
 import net.runelite.api.WorldMapManager;
 import net.runelite.api.coords.LocalPoint;
+<<<<<<< HEAD
 import net.runelite.api.events.ActorDeath;
+=======
+>>>>>>> upstream/master
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
@@ -72,6 +84,10 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.task.Scheduler;
+<<<<<<< HEAD
+=======
+import net.runelite.client.ui.ClientUI;
+>>>>>>> upstream/master
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayRenderer;
@@ -102,9 +118,16 @@ public class Hooks
 	private static final GameTick tick = new GameTick();
 	private static final DrawManager renderHooks = injector.getInstance(DrawManager.class);
 	private static final Notifier notifier = injector.getInstance(Notifier.class);
+<<<<<<< HEAD
 
 	private static Dimension lastStretchedDimensions;
 	private static BufferedImage stretchedImage;
+=======
+	private static final ClientUI clientUi = injector.getInstance(ClientUI.class);
+
+	private static Dimension lastStretchedDimensions;
+	private static VolatileImage stretchedImage;
+>>>>>>> upstream/master
 	private static Graphics2D stretchedGraphics;
 
 	private static long lastCheck;
@@ -264,7 +287,11 @@ public class Hooks
 			return;
 		}
 
+<<<<<<< HEAD
 		BufferedImage image = (BufferedImage) mainBufferProvider.getImage();
+=======
+		Image image = mainBufferProvider.getImage();
+>>>>>>> upstream/master
 		final Graphics2D graphics2d = (Graphics2D) image.getGraphics();
 
 		try
@@ -281,14 +308,26 @@ public class Hooks
 		// Stretch the game image if the user has that enabled
 		if (!client.isResized() && client.isStretchedEnabled())
 		{
+<<<<<<< HEAD
 			Dimension stretchedDimensions = client.getStretchedDimensions();
 
 			if (lastStretchedDimensions == null || !lastStretchedDimensions.equals(stretchedDimensions))
+=======
+			GraphicsConfiguration gc = clientUi.getGraphicsConfiguration();
+			Dimension stretchedDimensions = client.getStretchedDimensions();
+
+			if (lastStretchedDimensions == null || !lastStretchedDimensions.equals(stretchedDimensions)
+				|| (stretchedImage != null && stretchedImage.validate(gc) == VolatileImage.IMAGE_INCOMPATIBLE))
+>>>>>>> upstream/master
 			{
 				/*
 					Reuse the resulting image instance to avoid creating an extreme amount of objects
 				 */
+<<<<<<< HEAD
 				stretchedImage = new BufferedImage(stretchedDimensions.width, stretchedDimensions.height, BufferedImage.TYPE_INT_RGB);
+=======
+				stretchedImage = gc.createCompatibleVolatileImage(stretchedDimensions.width, stretchedDimensions.height);
+>>>>>>> upstream/master
 
 				if (stretchedGraphics != null)
 				{
@@ -447,6 +486,7 @@ public class Hooks
 		shouldProcessGameTick = true;
 	}
 
+<<<<<<< HEAD
 	public static void onSetCombatInfo(Actor actor, int combatInfoId, int gameCycle, int var3, int var4, int healthRatio, int health)
 	{
 		if (healthRatio == 0)
@@ -457,6 +497,8 @@ public class Hooks
 		}
 	}
 
+=======
+>>>>>>> upstream/master
 	public static void postItemComposition(ItemComposition itemComposition)
 	{
 		PostItemComposition event = new PostItemComposition();

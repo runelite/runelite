@@ -93,7 +93,12 @@ public class KourendLibraryPlugin extends Plugin
 		}
 
 		navButton = NavigationButton.builder()
+<<<<<<< HEAD
 			.name("Kourend Library")
+=======
+			.tooltip("Kourend Library")
+			.priority(6)
+>>>>>>> upstream/master
 			.icon(icon)
 			.panel(panel)
 			.build();

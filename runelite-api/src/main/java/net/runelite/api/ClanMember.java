@@ -24,11 +24,38 @@
  */
 package net.runelite.api;
 
+<<<<<<< HEAD
 public interface ClanMember
 {
 	String getUsername();
 
 	int getWorld();
 
+=======
+/**
+ * Represents a clan member.
+ */
+public interface ClanMember
+{
+	/**
+	 * Gets the username of the member.
+	 *
+	 * @return the username
+	 */
+	String getUsername();
+
+	/**
+	 * Gets the world the member is in.
+	 *
+	 * @return the world
+	 */
+	int getWorld();
+
+	/**
+	 * Gets the rank of the clan member.
+	 *
+	 * @return the rank
+	 */
+>>>>>>> upstream/master
 	ClanMemberRank getRank();
 }

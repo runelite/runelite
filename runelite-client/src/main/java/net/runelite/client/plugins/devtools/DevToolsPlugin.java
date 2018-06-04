@@ -78,6 +78,15 @@ public class DevToolsPlugin extends Plugin
 	private SceneOverlay sceneOverlay;
 
 	@Inject
+<<<<<<< HEAD
+=======
+	private CameraOverlay cameraOverlay;
+
+	@Inject
+	private WorldMapLocationOverlay worldMapLocationOverlay;
+
+	@Inject
+>>>>>>> upstream/master
 	private EventBus eventBus;
 
 	private boolean togglePlayers;
@@ -95,6 +104,12 @@ public class DevToolsPlugin extends Plugin
 	private boolean toggleValidMovement;
 	private boolean toggleLineOfSight;
 	private boolean toggleGraphicsObjects;
+<<<<<<< HEAD
+=======
+	private boolean toggleCamera;
+	private boolean toggleWorldMapLocation;
+	private boolean toggleTileLocation;
+>>>>>>> upstream/master
 
 	Widget currentWidget;
 	int itemIndex = -1;
@@ -120,8 +135,14 @@ public class DevToolsPlugin extends Plugin
 		}
 
 		navButton = NavigationButton.builder()
+<<<<<<< HEAD
 			.name("Developer Tools")
 			.icon(icon)
+=======
+			.tooltip("Developer Tools")
+			.icon(icon)
+			.priority(1)
+>>>>>>> upstream/master
 			.panel(panel)
 			.build();
 
@@ -140,7 +161,11 @@ public class DevToolsPlugin extends Plugin
 	@Override
 	public Collection<Overlay> getOverlays()
 	{
+<<<<<<< HEAD
 		return Arrays.asList(overlay, locationOverlay, sceneOverlay);
+=======
+		return Arrays.asList(overlay, locationOverlay, sceneOverlay, cameraOverlay, worldMapLocationOverlay);
+>>>>>>> upstream/master
 	}
 
 	@Subscribe
@@ -173,7 +198,11 @@ public class DevToolsPlugin extends Plugin
 			case "getvar":
 			{
 				int varbit = Integer.parseInt(args[0]);
+<<<<<<< HEAD
 				int value = client.getVarbitValue(varbit);
+=======
+				int value = client.getVarbitValue(client.getVarps(), varbit);
+>>>>>>> upstream/master
 				client.addChatMessage(ChatMessageType.SERVER, "", "Varbit " + varbit + ": " + value, null);
 				break;
 			}
@@ -181,7 +210,11 @@ public class DevToolsPlugin extends Plugin
 			{
 				int varbit = Integer.parseInt(args[0]);
 				int value = Integer.parseInt(args[1]);
+<<<<<<< HEAD
 				client.setVarbitValue(varbit, value);
+=======
+				client.setVarbitValue(client.getVarps(), varbit, value);
+>>>>>>> upstream/master
 				client.addChatMessage(ChatMessageType.SERVER, "", "Set varbit " + varbit + " to " + value, null);
 				eventBus.post(new VarbitChanged()); // fake event
 				break;
@@ -307,6 +340,24 @@ public class DevToolsPlugin extends Plugin
 		toggleGraphicsObjects = !toggleGraphicsObjects;
 	}
 
+<<<<<<< HEAD
+=======
+	void toggleCamera()
+	{
+		toggleCamera = !toggleCamera;
+	}
+
+	void toggleWorldMapLocation()
+	{
+		toggleWorldMapLocation = !toggleWorldMapLocation;
+	}
+
+	void toggleTileLocation()
+	{
+		toggleTileLocation = !toggleTileLocation;
+	}
+
+>>>>>>> upstream/master
 	boolean isTogglePlayers()
 	{
 		return togglePlayers;
@@ -381,4 +432,22 @@ public class DevToolsPlugin extends Plugin
 	{
 		return toggleGraphicsObjects;
 	}
+<<<<<<< HEAD
+=======
+
+	boolean isToggleCamera()
+	{
+		return toggleCamera;
+	}
+
+	boolean isToggleWorldMapLocation()
+	{
+		return toggleWorldMapLocation;
+	}
+
+	boolean isToggleTileLocation()
+	{
+		return toggleTileLocation;
+	}
+>>>>>>> upstream/master
 }

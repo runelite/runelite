@@ -27,15 +27,33 @@ package net.runelite.api;
 import static java.lang.Math.floor;
 import static java.lang.Math.max;
 
+<<<<<<< HEAD
 public class Experience
 {
 	/**
 	 * Maximum virtual skill level at 200m xp
+=======
+/**
+ * A utility class used for calculating experience related values.
+ * <p>
+ * Skill levels calculated and handled by this class are within (inclusive)
+ * the range 1-126 rather than 1-99 to account for virtual levels obtained
+ * when reaching the 200M experience limit.
+ */
+public class Experience
+{
+	/**
+	 * The maximum virtual skill level for any skill (200M experience).
+>>>>>>> upstream/master
 	 */
 	public static final int MAX_VIRT_LEVEL = 126;
 
 	/**
+<<<<<<< HEAD
 	 * Total xp requirements of each skill level
+=======
+	 * The total experience required for each skill level.
+>>>>>>> upstream/master
 	 */
 	private static final int[] XP_FOR_LEVEL = new int[MAX_VIRT_LEVEL];
 
@@ -53,10 +71,19 @@ public class Experience
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Gets the total quantity of xp required to hit a skill level.
 	 *
 	 * @param level Level between 1 and 126 (inclusive).
 	 * @return Positive quantity of xp.
+=======
+	 * Gets the total experience required to obtain the passed skill
+	 * level.
+	 *
+	 * @param level the skill level
+	 * @return the required experience for the level
+	 * @throws IllegalArgumentException if skill level is invalid
+>>>>>>> upstream/master
 	 */
 	public static int getXpForLevel(int level)
 	{
@@ -70,10 +97,17 @@ public class Experience
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Gets the skill level reached with a total quantity of xp.
 	 *
 	 * @param xp Positive quantity of xp.
 	 * @return Level between 1 and 126 (inclusive).
+=======
+	 * Gets the skill level for the passed total experience.
+	 *
+	 * @param xp the passed experience (non-negative)
+	 * @return the skill level
+>>>>>>> upstream/master
 	 */
 	public static int getLevelForXp(int xp)
 	{
@@ -108,9 +142,25 @@ public class Experience
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Calculates a high-precision combat level without integer rounding.
 	 *
 	 * @return Combat level between 1.15 and ~126.1 (assuming non-virtual levels).
+=======
+	 * Calculates a non-virtual high-precision combat level without integer
+	 * rounding.
+	 * <p>
+	 * Combat levels range between 1.15 and ~126.1.
+	 *
+	 * @param attackLevel the attack level
+	 * @param strengthLevel the strength level
+	 * @param defenceLevel the defence level
+	 * @param hitpointsLevel the hitpoints level
+	 * @param magicLevel the magic level
+	 * @param rangeLevel the range level
+	 * @param prayerLevel the prayer level
+	 * @return the non-virtual combat level
+>>>>>>> upstream/master
 	 */
 	public static double getCombatLevelPrecise(int attackLevel, int strengthLevel,
 		int defenceLevel, int hitpointsLevel, int magicLevel,
@@ -128,7 +178,18 @@ public class Experience
 	/**
 	 * Calculates a regular combat level.
 	 *
+<<<<<<< HEAD
 	 * @return Combat level between 1 and 126 (assuming non-virtual levels).
+=======
+	 * @param attackLevel the attack level
+	 * @param strengthLevel the strength level
+	 * @param defenceLevel the defence level
+	 * @param hitpointsLevel the hitpoints level
+	 * @param magicLevel the magic level
+	 * @param rangeLevel the range level
+	 * @param prayerLevel the prayer level
+	 * @return the combat level, rounded down
+>>>>>>> upstream/master
 	 */
 	public static int getCombatLevel(int attackLevel, int strengthLevel,
 		int defenceLevel, int hitpointsLevel, int magicLevel,

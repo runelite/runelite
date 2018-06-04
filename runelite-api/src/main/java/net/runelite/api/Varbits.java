@@ -27,6 +27,12 @@ package net.runelite.api;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+<<<<<<< HEAD
+=======
+/**
+ * An enumeration of local client variables.
+ */
+>>>>>>> upstream/master
 @AllArgsConstructor
 @Getter
 public enum Varbits
@@ -199,6 +205,20 @@ public enum Varbits
 	IN_GAME_BA(3923),
 
 	/**
+<<<<<<< HEAD
+=======
+	 * Blast Furnace Bar Dispenser
+	 *
+	 * These are the expected values:
+	 *	0 = No bars being processed
+	 *	1 = Ores are being processed on the conveyor belt, bar dispenser cannot be checked
+	 *	2 = Bars are cooling down
+	 *	3 = Bars can be collected
+	 */
+	BAR_DISPENSER(936),
+
+	/**
+>>>>>>> upstream/master
 	 * Motherlode mine sack
 	 */
 	SACK_NUMBER(5558),
@@ -347,7 +367,11 @@ public enum Varbits
 	ACCOUNT_TYPE(1777);
 
 	/**
+<<<<<<< HEAD
 	 * varbit id
+=======
+	 * The raw varbit ID.
+>>>>>>> upstream/master
 	 */
 	private final int id;
 }

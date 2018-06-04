@@ -56,8 +56,14 @@ public class InfoPlugin extends Plugin
 		}
 
 		navButton = NavigationButton.builder()
+<<<<<<< HEAD
 			.name("Info")
 			.icon(icon)
+=======
+			.tooltip("Info")
+			.icon(icon)
+			.priority(9)
+>>>>>>> upstream/master
 			.panel(panel)
 			.build();
 

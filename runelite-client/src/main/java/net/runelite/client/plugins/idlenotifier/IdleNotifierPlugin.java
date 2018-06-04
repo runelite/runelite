@@ -111,6 +111,10 @@ public class IdleNotifierPlugin extends Plugin
 			/* Cooking(Fire, Range) */
 			case COOKING_FIRE:
 			case COOKING_RANGE:
+<<<<<<< HEAD
+=======
+			case COOKING_WINE:
+>>>>>>> upstream/master
 			/* Crafting(Gem Cutting, Glassblowing, Spinning) */
 			case GEM_CUTTING_OPAL:
 			case GEM_CUTTING_JADE:
@@ -181,6 +185,11 @@ public class IdleNotifierPlugin extends Plugin
 			case HERBLORE_MAKE_TAR:
 			/* Magic */
 			case MAGIC_CHARGING_ORBS:
+<<<<<<< HEAD
+=======
+			/* Prayer */
+			case USING_GILDED_ALTAR:
+>>>>>>> upstream/master
 				resetTimers();
 				notifyIdle = true;
 				break;

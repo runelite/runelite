@@ -26,12 +26,47 @@ package net.runelite.client.util;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
+<<<<<<< HEAD
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+=======
+import java.util.Locale;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import org.junit.Before;
+>>>>>>> upstream/master
 import org.junit.Test;
 
 public class StackFormatterTest
 {
+<<<<<<< HEAD
+=======
+	@Before
+	public void setUp()
+	{
+		Locale.setDefault(Locale.ENGLISH);
+	}
+
+	@Test
+	public void quantityToRSDecimalStackSize()
+	{
+		assertEquals("0", StackFormatter.quantityToRSDecimalStack(0));
+		assertEquals("8500", StackFormatter.quantityToRSDecimalStack(8_500));
+		assertEquals("10K", StackFormatter.quantityToRSDecimalStack(10_000));
+		assertEquals("21,7K", StackFormatter.quantityToRSDecimalStack(21_700));
+		assertEquals("100K", StackFormatter.quantityToRSDecimalStack(100_000));
+		assertEquals("100,3K", StackFormatter.quantityToRSDecimalStack(100_300));
+		assertEquals("1M", StackFormatter.quantityToRSDecimalStack(1_000_000));
+		assertEquals("8,4M", StackFormatter.quantityToRSDecimalStack(8_450_000));
+		assertEquals("10M", StackFormatter.quantityToRSDecimalStack(10_000_000));
+		assertEquals("12,8M", StackFormatter.quantityToRSDecimalStack(12_800_000));
+		assertEquals("100M", StackFormatter.quantityToRSDecimalStack(100_000_000));
+		assertEquals("250,1M", StackFormatter.quantityToRSDecimalStack(250_100_000));
+		assertEquals("1B", StackFormatter.quantityToRSDecimalStack(1_000_000_000));
+		assertEquals("1,5B", StackFormatter.quantityToRSDecimalStack(1500_000_000));
+		assertEquals("2,1B", StackFormatter.quantityToRSDecimalStack(Integer.MAX_VALUE));
+	}
+>>>>>>> upstream/master
 
 	@Test
 	public void quantityToRSStackSize()

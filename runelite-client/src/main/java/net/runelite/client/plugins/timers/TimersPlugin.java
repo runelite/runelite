@@ -51,6 +51,10 @@ import static net.runelite.client.plugins.timers.GameTimer.ANTIVENOM;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIVENOMPLUS;
 import static net.runelite.client.plugins.timers.GameTimer.BIND;
 import static net.runelite.client.plugins.timers.GameTimer.CANNON;
+<<<<<<< HEAD
+=======
+import static net.runelite.client.plugins.timers.GameTimer.CHARGE;
+>>>>>>> upstream/master
 import static net.runelite.client.plugins.timers.GameTimer.ENTANGLE;
 import static net.runelite.client.plugins.timers.GameTimer.EXANTIFIRE;
 import static net.runelite.client.plugins.timers.GameTimer.EXSUPERANTIFIRE;
@@ -121,6 +125,7 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void updateConfig(ConfigChanged event)
 	{
+<<<<<<< HEAD
 		if (!config.showStamina())
 		{
 			removeGameTimer(STAMINA);
@@ -156,6 +161,41 @@ public class TimersPlugin extends Plugin
 		{
 			removeGameTimer(FULLTB);
 			removeGameTimer(HALFTB);
+=======
+		if (!config.showAntidotePlus())
+		{
+			removeGameTimer(ANTIDOTEPLUS);
+		}
+
+		if (!config.showAntidotePlusPlus())
+		{
+			removeGameTimer(ANTIDOTEPLUSPLUS);
+		}
+
+		if (!config.showSanfew())
+		{
+			removeGameTimer(SANFEW);
+		}
+
+		if (!config.showAntiVenom())
+		{
+			removeGameTimer(ANTIVENOM);
+		}
+
+		if (!config.showAntiVenomPlus())
+		{
+			removeGameTimer(ANTIVENOMPLUS);
+		}
+
+		if (!config.showAntiFire())
+		{
+			removeGameTimer(ANTIFIRE);
+		}
+
+		if (!config.showExAntiFire())
+		{
+			removeGameTimer(EXANTIFIRE);
+>>>>>>> upstream/master
 		}
 
 		if (!config.showSuperAntiFire())
@@ -163,6 +203,7 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(SUPERANTIFIRE);
 		}
 
+<<<<<<< HEAD
 		if (!config.showAntidotePlusPlus())
 		{
 			removeGameTimer(ANTIDOTEPLUSPLUS);
@@ -186,6 +227,42 @@ public class TimersPlugin extends Plugin
 		if (!config.showSanfew())
 		{
 			removeGameTimer(SANFEW);
+=======
+		if (!config.showStamina())
+		{
+			removeGameTimer(STAMINA);
+		}
+
+		if (!config.showOverload())
+		{
+			removeGameTimer(OVERLOAD);
+			removeGameTimer(OVERLOAD_RAID);
+		}
+
+		if (!config.showPrayerEnhance())
+		{
+			removeGameTimer(PRAYER_ENHANCE);
+		}
+
+		if (!config.showCannon())
+		{
+			removeGameTimer(CANNON);
+		}
+
+		if (!config.showMagicImbue())
+		{
+			removeGameTimer(MAGICIMBUE);
+		}
+
+		if (!config.showCharge())
+		{
+			removeGameTimer(CHARGE);
+		}
+
+		if (!config.showImbuedHeart())
+		{
+			removeGameTimer(IMBUEDHEART);
+>>>>>>> upstream/master
 		}
 
 		if (!config.showVengeance())
@@ -198,9 +275,16 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(VENGEANCEOTHER);
 		}
 
+<<<<<<< HEAD
 		if (!config.showImbuedHeart())
 		{
 			removeGameTimer(IMBUEDHEART);
+=======
+		if (!config.showTeleblock())
+		{
+			removeGameTimer(FULLTB);
+			removeGameTimer(HALFTB);
+>>>>>>> upstream/master
 		}
 
 		if (!config.showFreezes())
@@ -216,11 +300,14 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(ICEBLITZ);
 			removeGameTimer(ICEBARRAGE);
 		}
+<<<<<<< HEAD
 
 		if (!config.showPrayerEnhance())
 		{
 			removeGameTimer(PRAYER_ENHANCE);
 		}
+=======
+>>>>>>> upstream/master
 	}
 
 	@Subscribe
@@ -396,6 +483,19 @@ public class TimersPlugin extends Plugin
 		{
 			createGameTimer(PRAYER_ENHANCE);
 		}
+<<<<<<< HEAD
+=======
+
+		if (config.showCharge() && event.getMessage().equals("<col=ef1020>You feel charged with magic power.</col>"))
+		{
+			createGameTimer(CHARGE);
+		}
+
+		if (event.getMessage().equals("<col=ef1020>Your magical charge fades away.</col>"))
+		{
+			removeGameTimer(CHARGE);
+		}
+>>>>>>> upstream/master
 	}
 
 	@Subscribe

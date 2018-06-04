@@ -28,9 +28,23 @@ import lombok.Value;
 import net.runelite.api.Actor;
 import net.runelite.api.Player;
 
+<<<<<<< HEAD
 @Value
 public class PlayerDespawned implements ActorDespawned
 {
+=======
+/**
+ * An event where a {@link Player} has despawned.
+ * <p>
+ * Note: This event does not get called for the local player.
+ */
+@Value
+public class PlayerDespawned implements ActorDespawned
+{
+	/**
+	 * The despawned player.
+	 */
+>>>>>>> upstream/master
 	private final Player player;
 
 	@Override

@@ -38,10 +38,14 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
+<<<<<<< HEAD
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.SetMessage;
 import net.runelite.client.chat.ChatColor;
+=======
+import net.runelite.api.events.SetMessage;
+>>>>>>> upstream/master
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -83,6 +87,7 @@ public class ChatCommandsPlugin extends Plugin
 	@Inject
 	private ScheduledExecutorService executor;
 
+<<<<<<< HEAD
 	@Override
 	protected void startUp()
 	{
@@ -90,12 +95,15 @@ public class ChatCommandsPlugin extends Plugin
 		chatMessageManager.refreshAll();
 	}
 
+=======
+>>>>>>> upstream/master
 	@Provides
 	ChatCommandsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ChatCommandsConfig.class);
 	}
 
+<<<<<<< HEAD
 	@Subscribe
 	public void onGameStateChange(GameStateChanged event)
 	{
@@ -144,6 +152,8 @@ public class ChatCommandsPlugin extends Plugin
 				ChatMessageType.CLANCHAT);
 	}
 
+=======
+>>>>>>> upstream/master
 	/**
 	 * Checks if the chat message is a command.
 	 *

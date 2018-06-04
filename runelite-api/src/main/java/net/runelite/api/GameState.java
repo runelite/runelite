@@ -24,6 +24,7 @@
  */
 package net.runelite.api;
 
+<<<<<<< HEAD
 public enum GameState
 {
 	UNKNOWN(-1),
@@ -35,6 +36,49 @@ public enum GameState
 	CONNECTION_LOST(40),
 	HOPPING(45);
 
+=======
+/**
+ * An enumeration of game states the client is in.
+ */
+public enum GameState
+{
+	/**
+	 * Unknown game state.
+	 */
+	UNKNOWN(-1),
+	/**
+	 * The client is starting.
+	 */
+	STARTING(0),
+	/**
+	 * The client is at the login screen.
+	 */
+	LOGIN_SCREEN(10),
+	/**
+	 * There is a player logging in.
+	 */
+	LOGGING_IN(20),
+	/**
+	 * The game is being loaded.
+	 */
+	LOADING(25),
+	/**
+	 * The user has successfully logged in.
+	 */
+	LOGGED_IN(30),
+	/**
+	 * Connection to the server was lost.
+	 */
+	CONNECTION_LOST(40),
+	/**
+	 * A world hop is taking place.
+	 */
+	HOPPING(45);
+
+	/**
+	 * The raw state value.
+	 */
+>>>>>>> upstream/master
 	private final int state;
 
 	GameState(int state)
@@ -42,6 +86,16 @@ public enum GameState
 		this.state = state;
 	}
 
+<<<<<<< HEAD
+=======
+	/**
+	 * Utility method that maps the rank value to its respective
+	 * {@link GameState} value.
+	 *
+	 * @param state the raw state value
+	 * @return the gamestate
+	 */
+>>>>>>> upstream/master
 	public static GameState of(int state)
 	{
 		for (GameState gs : GameState.values())

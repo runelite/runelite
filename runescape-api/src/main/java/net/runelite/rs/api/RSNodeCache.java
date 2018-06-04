@@ -30,4 +30,11 @@ public interface RSNodeCache
 {
 	@Import("get")
 	RSCacheableNode get(long id);
+<<<<<<< HEAD
 }
+=======
+
+	@Import("reset")
+	void reset();
+}
+>>>>>>> upstream/master

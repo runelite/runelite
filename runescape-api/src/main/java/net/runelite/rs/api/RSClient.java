@@ -621,4 +621,13 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("flags")
 	int getFlags();
+<<<<<<< HEAD
+=======
+
+	@Import("compass")
+	void setCompass(SpritePixels spritePixels);
+
+	@Import("widgetSpriteCache")
+	RSNodeCache getWidgetSpriteCache();
+>>>>>>> upstream/master
 }

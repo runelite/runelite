@@ -1,5 +1,6 @@
 #!/bin/bash
 
+<<<<<<< HEAD
 PROJECT_VERSION=`mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec`
 
 # Don't deploy pull requests (there are no secrets, anyway)
@@ -10,3 +11,6 @@ if [[ "${TRAVIS_PULL_REQUEST}" == "false" && $PROJECT_VERSION == *"-SNAPSHOT" &&
 else
 	mvn clean install --settings travis/settings.xml
 fi
+=======
+mvn clean install --settings travis/settings.xml
+>>>>>>> upstream/master

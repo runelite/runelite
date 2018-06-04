@@ -30,6 +30,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+<<<<<<< HEAD
+=======
+import java.util.Objects;
+>>>>>>> upstream/master
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -38,9 +42,18 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.ItemLayer;
 import net.runelite.api.Node;
+<<<<<<< HEAD
 import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
+=======
+import net.runelite.api.Player;
+import static net.runelite.api.Skill.AGILITY;
+import net.runelite.api.Tile;
+import net.runelite.api.TileObject;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ConfigChanged;
+>>>>>>> upstream/master
 import net.runelite.api.events.DecorativeObjectChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
@@ -49,6 +62,10 @@ import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+<<<<<<< HEAD
+=======
+import net.runelite.api.events.GameTick;
+>>>>>>> upstream/master
 import net.runelite.api.events.GroundObjectChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
@@ -56,10 +73,18 @@ import net.runelite.api.events.ItemLayerChanged;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
+<<<<<<< HEAD
+=======
+import net.runelite.client.Notifier;
+>>>>>>> upstream/master
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
+<<<<<<< HEAD
+=======
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+>>>>>>> upstream/master
 
 @PluginDescriptor(
 	name = "Agility"
@@ -67,6 +92,11 @@ import net.runelite.client.ui.overlay.Overlay;
 @Slf4j
 public class AgilityPlugin extends Plugin
 {
+<<<<<<< HEAD
+=======
+	private static final int AGILITY_ARENA_REGION_ID = 11157;
+
+>>>>>>> upstream/master
 	@Getter
 	private final Map<TileObject, Tile> obstacles = new HashMap<>();
 
@@ -81,15 +111,31 @@ public class AgilityPlugin extends Plugin
 	private LapCounterOverlay lapOverlay;
 
 	@Inject
+<<<<<<< HEAD
 	private Client client;
 
 	@Inject
+=======
+	private Notifier notifier;
+
+	@Inject
+	private Client client;
+
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	@Inject
+>>>>>>> upstream/master
 	private AgilityConfig config;
 
 	@Getter
 	private AgilitySession session;
 
 	private int lastAgilityXp;
+<<<<<<< HEAD
+=======
+	private WorldPoint lastArenaTicketPosition;
+>>>>>>> upstream/master
 
 	@Provides
 	AgilityConfig getConfig(ConfigManager configManager)
@@ -119,11 +165,35 @@ public class AgilityPlugin extends Plugin
 			case HOPPING:
 			case LOGIN_SCREEN:
 				session = null;
+<<<<<<< HEAD
+=======
+				lastArenaTicketPosition = null;
+				removeAgilityArenaTimer();
+>>>>>>> upstream/master
 				break;
 			case LOADING:
 				markOfGrace = null;
 				obstacles.clear();
 				break;
+<<<<<<< HEAD
+=======
+			case LOGGED_IN:
+				if (!isInAgilityArena())
+				{
+					lastArenaTicketPosition = null;
+					removeAgilityArenaTimer();
+				}
+				break;
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!config.showAgilityArenaTimer())
+		{
+			removeAgilityArenaTimer();
+>>>>>>> upstream/master
 		}
 	}
 
@@ -205,6 +275,59 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
+<<<<<<< HEAD
+=======
+	public void onGameTick(GameTick tick)
+	{
+		if (isInAgilityArena())
+		{
+			WorldPoint newTicketPosition = client.getHintArrowPoint();
+			if (!Objects.equals(lastArenaTicketPosition, newTicketPosition))
+			{
+				// We don't want to notify when players first enter the course
+				if (lastArenaTicketPosition != null)
+				{
+					if (config.notifyAgilityArena())
+					{
+						notifier.notify("Ticket location changed");
+					}
+
+					if (config.showAgilityArenaTimer())
+					{
+						showNewAgilityArenaTimer();
+					}
+				}
+
+				lastArenaTicketPosition = newTicketPosition;
+			}
+		}
+	}
+
+	private boolean isInAgilityArena()
+	{
+		Player local = client.getLocalPlayer();
+		if (local == null)
+		{
+			return false;
+		}
+
+		WorldPoint location = local.getWorldLocation();
+		return location.getRegionID() == AGILITY_ARENA_REGION_ID;
+	}
+
+	private void removeAgilityArenaTimer()
+	{
+		infoBoxManager.removeIf(infoBox -> infoBox instanceof AgilityArenaTimer);
+	}
+
+	private void showNewAgilityArenaTimer()
+	{
+		removeAgilityArenaTimer();
+		infoBoxManager.addInfoBox(new AgilityArenaTimer(this));
+	}
+
+	@Subscribe
+>>>>>>> upstream/master
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getGameObject());
@@ -287,7 +410,12 @@ public class AgilityPlugin extends Plugin
 
 		if (Obstacles.COURSE_OBSTACLE_IDS.contains(newObject.getId()) ||
 				Obstacles.SHORTCUT_OBSTACLE_IDS.contains(newObject.getId()) ||
+<<<<<<< HEAD
 				Obstacles.TRAP_OBSTACLE_IDS.contains(newObject.getId()))
+=======
+				(Obstacles.TRAP_OBSTACLE_IDS.contains(newObject.getId())
+					&& Obstacles.TRAP_OBSTACLE_REGIONS.contains(newObject.getWorldLocation().getRegionID())))
+>>>>>>> upstream/master
 		{
 			obstacles.put(newObject, tile);
 		}

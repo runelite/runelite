@@ -27,7 +27,10 @@ package net.runelite.client.plugins.raids;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
+<<<<<<< HEAD
 import java.awt.Color;
+=======
+>>>>>>> upstream/master
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -46,18 +49,29 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
 import net.runelite.api.ObjectID;
+<<<<<<< HEAD
 import net.runelite.api.Point;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Tile;
 import net.runelite.api.Varbits;
 import static net.runelite.api.Perspective.SCENE_SIZE;
+=======
+import static net.runelite.api.Perspective.SCENE_SIZE;
+import net.runelite.api.Point;
+import net.runelite.api.Tile;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
+>>>>>>> upstream/master
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+<<<<<<< HEAD
 import net.runelite.client.chat.ChatColor;
+=======
+>>>>>>> upstream/master
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -156,11 +170,14 @@ public class RaidsPlugin extends Plugin
 			updateInfoBoxState();
 		}
 
+<<<<<<< HEAD
 		if (config.pointsMessage())
 		{
 			cacheColors();
 		}
 
+=======
+>>>>>>> upstream/master
 		updateLists();
 	}
 
@@ -176,11 +193,14 @@ public class RaidsPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
+<<<<<<< HEAD
 		if (config.pointsMessage())
 		{
 			cacheColors();
 		}
 
+=======
+>>>>>>> upstream/master
 		if (event.getKey().equals("raidsTimer"))
 		{
 			updateInfoBoxState();
@@ -379,6 +399,7 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
+<<<<<<< HEAD
 	private void cacheColors()
 	{
 		chatMessageManager.cacheColor(new ChatColor(ChatColorType.NORMAL, Color.BLACK, false), ChatMessageType.CLANCHAT_INFO)
@@ -388,6 +409,8 @@ public class RaidsPlugin extends Plugin
 				.refreshAll();
 	}
 
+=======
+>>>>>>> upstream/master
 	public int getRotationMatches()
 	{
 		String rotation = raid.getRotationString().toLowerCase();

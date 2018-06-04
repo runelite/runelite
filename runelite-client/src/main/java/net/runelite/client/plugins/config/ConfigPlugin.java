@@ -30,6 +30,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+<<<<<<< HEAD
+=======
+import net.runelite.client.config.ChatColorConfig;
+>>>>>>> upstream/master
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.events.PluginChanged;
@@ -61,13 +65,23 @@ public class ConfigPlugin extends Plugin
 	@Inject
 	private RuneLiteConfig runeLiteConfig;
 
+<<<<<<< HEAD
+=======
+	@Inject
+	private ChatColorConfig chatColorConfig;
+
+>>>>>>> upstream/master
 	private ConfigPanel configPanel;
 	private NavigationButton navButton;
 
 	@Override
 	protected void startUp() throws Exception
 	{
+<<<<<<< HEAD
 		configPanel = new ConfigPanel(pluginManager, configManager, executorService, runeLiteConfig);
+=======
+		configPanel = new ConfigPanel(pluginManager, configManager, executorService, runeLiteConfig, chatColorConfig);
+>>>>>>> upstream/master
 
 		BufferedImage icon;
 		synchronized (ImageIO.class)
@@ -76,8 +90,14 @@ public class ConfigPlugin extends Plugin
 		}
 
 		navButton = NavigationButton.builder()
+<<<<<<< HEAD
 			.name("Configuration")
 			.icon(icon)
+=======
+			.tooltip("Configuration")
+			.icon(icon)
+			.priority(0)
+>>>>>>> upstream/master
 			.panel(configPanel)
 			.build();
 

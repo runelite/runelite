@@ -29,9 +29,15 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
+<<<<<<< HEAD
 	keyName = AntiDragPlugin.CONFIG_GROUP,
 	name = "Anti Drag",
 	description = "Configuration for the anti drag plugin"
+=======
+	keyName = "antiDrag",
+	name = "Anti Drag",
+	description = "Configuration for the anti drag plugin (shift only)"
+>>>>>>> upstream/master
 )
 public interface AntiDragConfig extends Config
 {
@@ -45,6 +51,7 @@ public interface AntiDragConfig extends Config
 	{
 		return 600 / 20; // one game tick
 	}
+<<<<<<< HEAD
 
 	@ConfigItem(
 		keyName = "dragDelay",
@@ -63,4 +70,6 @@ public interface AntiDragConfig extends Config
 	{
 		return true;
 	}
+=======
+>>>>>>> upstream/master
 }

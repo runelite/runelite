@@ -69,7 +69,12 @@ public enum GameTimer
 	PRAYER_ENHANCE("prayerenhance", "Prayer enhance", 275, ChronoUnit.SECONDS),
 	GOD_WARS_ALTAR("altar", "God wars altar", 10, ChronoUnit.MINUTES),
 	ANTIPOISON("antipoison", "Antipoison", 90, ChronoUnit.SECONDS),
+<<<<<<< HEAD
 	SUPERANTIPOISON("superantipoison", "Superantipoison", 346, ChronoUnit.SECONDS);
+=======
+	SUPERANTIPOISON("superantipoison", "Superantipoison", 346, ChronoUnit.SECONDS),
+	CHARGE("charge", "Charge", 6, ChronoUnit.MINUTES);
+>>>>>>> upstream/master
 
 	@Getter
 	private final String imageResource;

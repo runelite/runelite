@@ -27,6 +27,7 @@ package net.runelite.client.plugins.woodcutting;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+<<<<<<< HEAD
 import java.time.Duration;
 import java.time.Instant;
 import java.util.stream.IntStream;
@@ -40,6 +41,9 @@ import static net.runelite.api.AnimationID.WOODCUTTING_IRON;
 import static net.runelite.api.AnimationID.WOODCUTTING_MITHRIL;
 import static net.runelite.api.AnimationID.WOODCUTTING_RUNE;
 import static net.runelite.api.AnimationID.WOODCUTTING_STEEL;
+=======
+import javax.inject.Inject;
+>>>>>>> upstream/master
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
@@ -51,6 +55,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 
 class WoodcuttingOverlay extends Overlay
 {
+<<<<<<< HEAD
 	private static final int[] animationIds =
 	{
 		WOODCUTTING_BRONZE, WOODCUTTING_IRON, WOODCUTTING_STEEL, WOODCUTTING_BLACK,
@@ -58,6 +63,8 @@ class WoodcuttingOverlay extends Overlay
 		WOODCUTTING_INFERNAL
 	};
 
+=======
+>>>>>>> upstream/master
 	private final Client client;
 	private final WoodcuttingPlugin plugin;
 	private final WoodcuttingConfig config;
@@ -65,7 +72,11 @@ class WoodcuttingOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
+<<<<<<< HEAD
 	public WoodcuttingOverlay(Client client, WoodcuttingPlugin plugin, WoodcuttingConfig config, XpTrackerService xpTrackerService)
+=======
+	private WoodcuttingOverlay(Client client, WoodcuttingPlugin plugin, WoodcuttingConfig config, XpTrackerService xpTrackerService)
+>>>>>>> upstream/master
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
@@ -83,6 +94,7 @@ class WoodcuttingOverlay extends Overlay
 		}
 
 		WoodcuttingSession session = plugin.getSession();
+<<<<<<< HEAD
 
 		if (session.getLastLogCut() == null)
 		{
@@ -93,13 +105,21 @@ class WoodcuttingOverlay extends Overlay
 		Duration sinceCut = Duration.between(session.getLastLogCut(), Instant.now());
 
 		if (sinceCut.compareTo(statTimeout) >= 0)
+=======
+		if (session == null)
+>>>>>>> upstream/master
 		{
 			return null;
 		}
 
 		panelComponent.getChildren().clear();
 
+<<<<<<< HEAD
 		if (IntStream.of(animationIds).anyMatch(x -> x == client.getLocalPlayer().getAnimation()))
+=======
+		Axe axe = plugin.getAxe();
+		if (axe != null && axe.getAnimId() == client.getLocalPlayer().getAnimation())
+>>>>>>> upstream/master
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
 				.text("Woodcutting")
@@ -133,4 +153,9 @@ class WoodcuttingOverlay extends Overlay
 
 		return panelComponent.render(graphics);
 	}
+<<<<<<< HEAD
 }
+=======
+
+}
+>>>>>>> upstream/master

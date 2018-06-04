@@ -57,6 +57,7 @@ class FriendNoteOverlay extends Overlay
 			return null;
 		}
 
+<<<<<<< HEAD
 		final HoveredFriend hovered = plugin.getHoveredFriend();
 		if (hovered == null)
 		{
@@ -66,6 +67,17 @@ class FriendNoteOverlay extends Overlay
 		final String content = hovered.getNote();
 		tooltipManager.add(new Tooltip(content));
 
+=======
+		// Add a friend note tooltip to a hovered friend list entry
+		final HoveredFriend hovered = plugin.getHoveredFriend();
+
+		if (hovered != null) // Will always have a friend note if non-null
+		{
+			final String content = hovered.getNote();
+			tooltipManager.add(new Tooltip(content));
+		}
+
+>>>>>>> upstream/master
 		return null;
 	}
 }

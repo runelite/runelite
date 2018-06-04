@@ -25,6 +25,7 @@
 package net.runelite.api;
 
 /**
+<<<<<<< HEAD
  * A wall object, which is a boundary you can't walk through.
  *
  * @author Adam
@@ -35,5 +36,30 @@ public interface WallObject extends TileObject
 
 	int getOrientationB();
 
+=======
+ * Represents the wall of a tile, which is an un-passable boundary.
+ */
+public interface WallObject extends TileObject
+{
+	/**
+	 * Gets the first orientation of the wall.
+	 *
+	 * @return the first orientation, 0-2048 where 0 is north
+	 */
+	int getOrientationA();
+
+	/**
+	 * Gets the second orientation value of the wall.
+	 *
+	 * @return the second orientation, 0-2048 where 0 is north
+	 */
+	int getOrientationB();
+
+	/**
+	 * Gets the boundary configuration of the wall.
+	 *
+	 * @return the boundary configuration
+	 */
+>>>>>>> upstream/master
 	int getConfig();
 }

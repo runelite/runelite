@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.skillcalculator.beans;
 
+<<<<<<< HEAD
 public class SkillDataEntry
 {
 	public String name;
@@ -31,4 +32,17 @@ public class SkillDataEntry
 	public double xp;
 	public Integer icon;
 	public Integer sprite;
+=======
+import lombok.Getter;
+
+@Getter
+public class SkillDataEntry
+{
+	private String name;
+	private int level;
+	private double xp;
+	private Integer icon;
+	private Integer sprite;
+	private boolean ignoreBonus;
+>>>>>>> upstream/master
 }

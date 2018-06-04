@@ -29,11 +29,18 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.Collection;
+<<<<<<< HEAD
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+=======
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+>>>>>>> upstream/master
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -131,7 +138,11 @@ public class BarrowsPlugin extends Plugin
 	}
 
 	@Subscribe
+<<<<<<< HEAD
 	public void onWallObjectSpanwed(WallObjectSpawned event)
+=======
+	public void onWallObjectSpawned(WallObjectSpawned event)
+>>>>>>> upstream/master
 	{
 		WallObject wallObject = event.getWallObject();
 		if (BARROWS_WALLS.contains(wallObject.getId()))
@@ -207,6 +218,7 @@ public class BarrowsPlugin extends Plugin
 		if (event.getGroupId() == WidgetID.BARROWS_REWARD_GROUP_ID && config.showChestValue())
 		{
 			ItemContainer barrowsRewardContainer = client.getItemContainer(InventoryID.BARROWS_REWARD);
+<<<<<<< HEAD
 			Map<Integer, Integer> itemMap = new HashMap<>();
 			chestPrice = 0;
 
@@ -224,6 +236,21 @@ public class BarrowsPlugin extends Plugin
 			}
 
 			CompletableFuture<ItemPrice[]> future = itemManager.getItemPriceBatch(itemMap.keySet());
+=======
+			Item[] items = barrowsRewardContainer.getItems();
+			chestPrice = 0;
+
+			for (Item item : items)
+			{
+				if (item.getId() == COINS_995)
+				{
+					chestPrice += item.getQuantity();
+				}
+			}
+
+			CompletableFuture<ItemPrice[]> future = itemManager.getItemPriceBatch(
+				Arrays.stream(items).map(Item::getId).collect(Collectors.toList()));
+>>>>>>> upstream/master
 			future.whenComplete((ItemPrice[] itemPrices, Throwable ex) ->
 			{
 				if (ex != null)
@@ -242,6 +269,7 @@ public class BarrowsPlugin extends Plugin
 
 				try
 				{
+<<<<<<< HEAD
 					for (ItemPrice itemPrice : itemPrices)
 					{
 						if (itemPrice.getItem() == null)
@@ -250,6 +278,17 @@ public class BarrowsPlugin extends Plugin
 						}
 
 						long itemStack = (long) itemPrice.getPrice() * (long) itemMap.get(itemPrice.getItem().getId());
+=======
+					for (Item item : items)
+					{
+						ItemPrice cachedItemPrice = itemManager.getCachedItemPrice(item.getId());
+						if (cachedItemPrice == null)
+						{
+							continue;
+						}
+
+						long itemStack = (long) cachedItemPrice.getPrice() * (long) item.getQuantity();
+>>>>>>> upstream/master
 						chestPrice += itemStack;
 					}
 

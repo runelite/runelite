@@ -32,6 +32,10 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+<<<<<<< HEAD
+=======
+import net.runelite.client.ui.ColorScheme;
+>>>>>>> upstream/master
 import net.runelite.client.ui.PluginPanel;
 
 @Slf4j
@@ -40,25 +44,44 @@ public class DevToolsPanel extends PluginPanel
 	private final Client client;
 	private final DevToolsPlugin plugin;
 
+<<<<<<< HEAD
 	private final VarTracker varTracker;
 
 	private WidgetInspector widgetInspector;
 
 	@Inject
 	public DevToolsPanel(Client client, DevToolsPlugin plugin, WidgetInspector widgetInspector)
+=======
+	private final WidgetInspector widgetInspector;
+	private final VarInspector varInspector;
+
+	@Inject
+	public DevToolsPanel(Client client, DevToolsPlugin plugin, WidgetInspector widgetInspector, VarInspector varInspector)
+>>>>>>> upstream/master
 	{
 		super();
 		this.client = client;
 		this.plugin = plugin;
 		this.widgetInspector = widgetInspector;
+<<<<<<< HEAD
 
 		varTracker = new VarTracker(client);
+=======
+		this.varInspector = varInspector;
+
+		setBackground(ColorScheme.DARK_GRAY_COLOR);
+
+>>>>>>> upstream/master
 		add(createOptionsPanel());
 	}
 
 	private JPanel createOptionsPanel()
 	{
 		final JPanel container = new JPanel();
+<<<<<<< HEAD
+=======
+		container.setBackground(ColorScheme.DARK_GRAY_COLOR);
+>>>>>>> upstream/master
 		container.setLayout(new GridLayout(0, 2, 3, 3));
 
 		final JButton renderPlayersBtn = new JButton("Players");
@@ -133,6 +156,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderProjectilesBtn);
 
+<<<<<<< HEAD
 		final JButton varSnapshotBtn = new JButton("Snapshot Vars");
 		varSnapshotBtn.addActionListener(varTracker::snapshot);
 		container.add(varSnapshotBtn);
@@ -141,6 +165,8 @@ public class DevToolsPanel extends PluginPanel
 		varClearBtn.addActionListener(varTracker::clear);
 		container.add(varClearBtn);
 
+=======
+>>>>>>> upstream/master
 		final JButton renderLocationBtn = new JButton("Location");
 		renderLocationBtn.addActionListener(e ->
 		{
@@ -149,7 +175,11 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderLocationBtn);
 
+<<<<<<< HEAD
 		final JButton widgetInspectorBtn = new JButton("Inspector");
+=======
+		final JButton widgetInspectorBtn = new JButton("Widget Tools");
+>>>>>>> upstream/master
 		widgetInspectorBtn.addActionListener(e ->
 		{
 			widgetInspector.setVisible(true);
@@ -158,6 +188,16 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(widgetInspectorBtn);
 
+<<<<<<< HEAD
+=======
+		final JButton varInspectorBtn = new JButton("Var Tools");
+		varInspectorBtn.addActionListener(e ->
+		{
+			varInspector.open();
+		});
+		container.add(varInspectorBtn);
+
+>>>>>>> upstream/master
 		final JButton chunkBordersBtn = new JButton("Chunk borders");
 		chunkBordersBtn.addActionListener(e ->
 		{
@@ -198,6 +238,33 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(graphicsObjectsBtn);
 
+<<<<<<< HEAD
+=======
+		final JButton cameraPositionBtn = new JButton("Camera Position");
+		cameraPositionBtn.addActionListener(e ->
+		{
+			highlightButton(cameraPositionBtn);
+			plugin.toggleCamera();
+		});
+		container.add(cameraPositionBtn);
+
+		final JButton worldMapBtn = new JButton("World Map Location");
+		worldMapBtn.addActionListener(e ->
+		{
+			highlightButton(worldMapBtn);
+			plugin.toggleWorldMapLocation();
+		});
+		container.add(worldMapBtn);
+
+		final JButton tileLocationBtn = new JButton("Tile Location Tooltip");
+		tileLocationBtn.addActionListener(e ->
+		{
+			highlightButton(tileLocationBtn);
+			plugin.toggleTileLocation();
+		});
+		container.add(tileLocationBtn);
+
+>>>>>>> upstream/master
 		return container;
 	}
 

@@ -41,6 +41,12 @@ public abstract class StretchedFixedModeMixin implements RSClient
 	private static boolean stretchedFast;
 
 	@Inject
+<<<<<<< HEAD
+=======
+	private static boolean stretchedIntegerScaling;
+
+	@Inject
+>>>>>>> upstream/master
 	private static boolean stretchedKeepAspectRatio;
 
 	@Inject
@@ -79,6 +85,17 @@ public abstract class StretchedFixedModeMixin implements RSClient
 
 	@Inject
 	@Override
+<<<<<<< HEAD
+=======
+	public void setStretchedIntegerScaling(boolean state)
+	{
+		stretchedIntegerScaling = state;
+		cachedStretchedDimensions = null;
+	}
+
+	@Inject
+	@Override
+>>>>>>> upstream/master
 	public void setStretchedKeepAspectRatio(boolean state)
 	{
 		stretchedKeepAspectRatio = state;
@@ -122,6 +139,21 @@ public abstract class StretchedFixedModeMixin implements RSClient
 				}
 			}
 
+<<<<<<< HEAD
+=======
+			if (stretchedIntegerScaling)
+			{
+				if (width > Constants.GAME_FIXED_WIDTH)
+				{
+					width = width - (width % Constants.GAME_FIXED_WIDTH);
+				}
+				if (height > Constants.GAME_FIXED_HEIGHT)
+				{
+					height = height - (height % Constants.GAME_FIXED_HEIGHT);
+				}
+			}
+
+>>>>>>> upstream/master
 			cachedStretchedDimensions = new Dimension(width, height);
 			lastCanvasDimensions = new Dimension(width, height);
 		}

@@ -60,6 +60,7 @@ public class NpcClickboxOverlay extends Overlay
 	{
 		for (NPC npc : plugin.getHighlightedNpcs())
 		{
+<<<<<<< HEAD
 			renderNpcOverlay(graphics, npc, npc.getName(), config.getNpcColor());
 		}
 
@@ -71,6 +72,9 @@ public class NpcClickboxOverlay extends Overlay
 			{
 				renderNpcOverlay(graphics, npc, npc.getName(), config.getTagColor());
 			}
+=======
+			renderNpcOverlay(graphics, npc, npc.getName(), config.getHighlightColor());
+>>>>>>> upstream/master
 		}
 
 		return null;
@@ -88,7 +92,11 @@ public class NpcClickboxOverlay extends Overlay
 					graphics.setColor(color);
 					graphics.setStroke(new BasicStroke(2));
 					graphics.draw(objectTile);
+<<<<<<< HEAD
 					graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 255)); // ollie 5-14-2018
+=======
+					graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
+>>>>>>> upstream/master
 					graphics.fill(objectTile);
 				}
 				break;
@@ -101,7 +109,11 @@ public class NpcClickboxOverlay extends Overlay
 					graphics.setColor(color);
 					graphics.setStroke(new BasicStroke(2));
 					graphics.draw(objectClickbox);
+<<<<<<< HEAD
 					graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 255));
+=======
+					graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
+>>>>>>> upstream/master
 					graphics.fill(objectClickbox);
 				}
 				break;

@@ -28,6 +28,11 @@ import java.awt.Color;
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+<<<<<<< HEAD
+=======
+import javax.swing.border.EmptyBorder;
+import net.runelite.client.ui.ColorScheme;
+>>>>>>> upstream/master
 import net.runelite.client.ui.FontManager;
 
 class BookPanel extends JPanel
@@ -36,6 +41,12 @@ class BookPanel extends JPanel
 
 	BookPanel(Book b)
 	{
+<<<<<<< HEAD
+=======
+		setBorder(new EmptyBorder(3, 3, 3, 3));
+		setBackground(ColorScheme.DARK_GRAY_COLOR);
+
+>>>>>>> upstream/master
 		GroupLayout layout = new GroupLayout(this);
 		this.setLayout(layout);
 
@@ -74,4 +85,8 @@ class BookPanel extends JPanel
 	{
 		location.setForeground(target ? Color.GREEN : Color.WHITE);
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> upstream/master

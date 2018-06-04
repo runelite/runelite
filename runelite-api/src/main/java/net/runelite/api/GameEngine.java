@@ -26,11 +26,38 @@ package net.runelite.api;
 
 import java.awt.Canvas;
 
+<<<<<<< HEAD
 public interface GameEngine
 {
 	Canvas getCanvas();
 
 	Thread getClientThread();
 
+=======
+/**
+ * Represents the client game engine.
+ */
+public interface GameEngine
+{
+	/**
+	 * Gets the canvas that contains everything.
+	 *
+	 * @return the game canvas
+	 */
+	Canvas getCanvas();
+
+	/**
+	 * Gets the client main thread.
+	 *
+	 * @return the main thread
+	 */
+	Thread getClientThread();
+
+	/**
+	 * Checks whether this code is executing on the client main thread.
+	 *
+	 * @return true if on the main thread, false otherwise
+	 */
+>>>>>>> upstream/master
 	boolean isClientThread();
 }

@@ -26,15 +26,43 @@ package net.runelite.api;
 
 import net.runelite.api.coords.LocalPoint;
 
+<<<<<<< HEAD
 public interface GraphicsObject extends Renderable
 {
 	int getId();
 
+=======
+/**
+ * Represents a graphics object.
+ */
+public interface GraphicsObject extends Renderable
+{
+	/**
+	 * The graphics object ID.
+	 *
+	 * @return the ID
+	 */
+	int getId();
+
+	/**
+	 * The location of the object.
+	 *
+	 * @return the location
+	 */
+>>>>>>> upstream/master
 	LocalPoint getLocation();
 
 	int getStartCycle();
 
 	int getLevel();
 
+<<<<<<< HEAD
+=======
+	/**
+	 * Gets the height of the graphic.
+	 *
+	 * @return the height
+	 */
+>>>>>>> upstream/master
 	int getHeight();
 }

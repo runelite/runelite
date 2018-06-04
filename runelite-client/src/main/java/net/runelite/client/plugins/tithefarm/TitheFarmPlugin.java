@@ -26,7 +26,10 @@ package net.runelite.client.plugins.tithefarm;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+<<<<<<< HEAD
 import java.time.temporal.ChronoUnit;
+=======
+>>>>>>> upstream/master
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -36,11 +39,20 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.GameObject;
 import net.runelite.api.coords.WorldPoint;
+<<<<<<< HEAD
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
+=======
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+>>>>>>> upstream/master
 import net.runelite.client.ui.overlay.Overlay;
 
 @Slf4j
@@ -50,9 +62,12 @@ import net.runelite.client.ui.overlay.Overlay;
 public class TitheFarmPlugin extends Plugin
 {
 	@Inject
+<<<<<<< HEAD
 	private TitheFarmPluginConfig config;
 
 	@Inject
+=======
+>>>>>>> upstream/master
 	private TitheFarmPlantOverlay titheFarmOverlay;
 
 	@Inject
@@ -76,8 +91,28 @@ public class TitheFarmPlugin extends Plugin
 		return Arrays.asList(titheFarmOverlay, titheFarmSackOverlay, titheFarmInventoryOverlay);
 	}
 
+<<<<<<< HEAD
 	@Schedule(period = 600, unit = ChronoUnit.MILLIS)
 	public void checkPlants()
+=======
+	@Override
+	public void startUp() throws Exception
+	{
+		titheFarmOverlay.updateConfig();
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("tithefarmplugin"))
+		{
+			titheFarmOverlay.updateConfig();
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(final GameTick event)
+>>>>>>> upstream/master
 	{
 		plants.removeIf(plant -> plant.getPlantTimeRelative() == 1);
 	}

@@ -67,6 +67,11 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
+<<<<<<< HEAD
+=======
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+>>>>>>> upstream/master
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -118,7 +123,11 @@ public class MotherlodePlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Integer depositsLeft;
 
+<<<<<<< HEAD
 	private final MotherlodeSession session = new MotherlodeSession();
+=======
+	private MotherlodeSession session;
+>>>>>>> upstream/master
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<WallObject> veins = new HashSet<>();
@@ -140,14 +149,37 @@ public class MotherlodePlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+<<<<<<< HEAD
 		inMlm = checkInMlm();
+=======
+		session = new MotherlodeSession();
+		inMlm = checkInMlm();
+
+		if (inMlm)
+		{
+			refreshSackValues();
+		}
+>>>>>>> upstream/master
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+<<<<<<< HEAD
 		veins.clear();
 		rocks.clear();
+=======
+		session = null;
+		veins.clear();
+		rocks.clear();
+
+		Widget sack = client.getWidget(WidgetInfo.MOTHERLODE_MINE);
+
+		if (sack != null && sack.isHidden())
+		{
+			sack.setHidden(false);
+		}
+>>>>>>> upstream/master
 	}
 
 	public MotherlodeSession getSession()
@@ -160,9 +192,13 @@ public class MotherlodePlugin extends Plugin
 	{
 		if (inMlm)
 		{
+<<<<<<< HEAD
 			curSackSize = client.getVar(Varbits.SACK_NUMBER);
 			boolean sackUpgraded = client.getVar(Varbits.SACK_UPGRADED) == 1;
 			maxSackSize = sackUpgraded ? SACK_LARGE_SIZE : SACK_SIZE;
+=======
+			refreshSackValues();
+>>>>>>> upstream/master
 		}
 	}
 
@@ -410,6 +446,16 @@ public class MotherlodePlugin extends Plugin
 		return true;
 	}
 
+<<<<<<< HEAD
+=======
+	private void refreshSackValues()
+	{
+		curSackSize = client.getVar(Varbits.SACK_NUMBER);
+		boolean sackUpgraded = client.getVar(Varbits.SACK_UPGRADED) == 1;
+		maxSackSize = sackUpgraded ? SACK_LARGE_SIZE : SACK_SIZE;
+	}
+
+>>>>>>> upstream/master
 	/**
 	 * Checks if the given point is "upstairs" in the mlm.
 	 * The upper floor is actually on z=0.
