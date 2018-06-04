@@ -120,7 +120,7 @@ public class GrandExchangePlugin extends Plugin
 		}
 
 		button = NavigationButton.builder()
-			.tooltip("GE Offers")
+			.tooltip("Grand Exchange")
 			.icon(icon)
 			.priority(3)
 			.panel(panel)
