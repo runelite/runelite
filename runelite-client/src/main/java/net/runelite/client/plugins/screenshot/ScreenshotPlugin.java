@@ -111,6 +111,11 @@ public class ScreenshotPlugin extends Plugin
 		"You feel something weird sneaking into your backpack",
 		"You have a funny feeling like you would have been followed");
 
+	private static final ImmutableList<String> KILL_MESSAGES = ImmutableList.of("into tiny pieces and sat on them", "you have obliterated",
+		"falls before your might", "A humiliating defeat for", "With a crushing blow you", "thinking challenging you",
+		"Can anyone defeat you? Certainly", "was no match for you", "You were clearly a better fighter than", "RIP",
+		"You have defeated", "What an embarrassing performance by", "was no match for your awesomeness");
+
 	private String clueType;
 	private Integer clueNumber;
 
@@ -256,6 +261,12 @@ public class ScreenshotPlugin extends Plugin
 		if (config.screenshotPet() && PET_MESSAGES.stream().anyMatch(chatMessage::contains))
 		{
 			String fileName = "Pet " + TIME_FORMAT.format(new Date());
+			takeScreenshot(fileName);
+		}
+
+		if (config.screenshotKills() && KILL_MESSAGES.stream().anyMatch(chatMessage::contains))
+		{
+			String fileName = "Kill " + " " + LocalDate.now();
 			takeScreenshot(fileName);
 		}
 	}
