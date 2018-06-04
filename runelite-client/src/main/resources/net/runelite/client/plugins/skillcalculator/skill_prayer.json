@@ -1,11 +1,11 @@
 {
   "bonuses": [
     {
-      "name": "Lit Gilded Altar (250%)",
+      "name": "Lit Gilded Altar (+250%)",
       "value": 2.5
     },
     {
-      "name": "Ectofuntus (300%)",
+      "name": "Ectofuntus (+300%)",
       "value": 3
     }
   ],
