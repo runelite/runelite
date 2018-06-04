@@ -6221,6 +6221,7 @@ public final class NpcID
 	public static final int GALLOW = 6775;
 	public static final int MAN_6776 = 6776;
 	public static final int MAZE_GUARDIAN = 6777;
+	public static final int MAZE_GUARDIAN_MOVING = 6778;
 	public static final int MAZE_GUARDIAN_6779 = 6779;
 	public static final int PILIAR = 6780;
 	public static final int SHAYDA = 6781;
