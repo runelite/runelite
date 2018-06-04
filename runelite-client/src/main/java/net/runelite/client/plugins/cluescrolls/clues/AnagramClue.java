@@ -100,7 +100,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: LAND DOOMD", "Odd Old Man", new WorldPoint(3359, 3506, 0), "Limestone mine northeast of Varrock"),
 		new AnagramClue("This anagram reveals who to speak to next: LARK IN DOG", "King Roald", new WorldPoint(3220, 3476, 0), "Ground floor of Varrock castle", "24"),
 		new AnagramClue("This anagram reveals who to speak to next: LOW LAG", "Gallow", new WorldPoint(1805, 3566, 0), "Vinery in the Great Kourend", "12"),
-		new AnagramClue("This anagram reveals who to speak to next: LADDER MEMO GUV", "Guard Vemmeldo", new WorldPoint(2447, 3418, 0), "Gnome Stronghold Bank", "3"),
+		new AnagramClue("This anagram reveals who to speak to next: LADDER MEMO GUV", "Guard Vemmeldo", new WorldPoint(2447, 3418, 1), "Gnome Stronghold Bank", "3"),
 		new AnagramClue("This anagram reveals who to speak to next: MAL IN TAU", "Luminata", new WorldPoint(3508, 3237, 0), "Near Burgh de Rott entrance"),
 		new AnagramClue("This anagram reveals who to speak to next: ME AM THE CALC", "Cam the Camel", new WorldPoint(3300, 3231, 0), "Outside Duel Arena"),
 		new AnagramClue("This anagram reveals who to speak to next: MACHETE CLAM", "Cam the Camel", new WorldPoint(3300, 3231, 0), "Outside Duel Arena", "6"),
