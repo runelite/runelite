@@ -200,7 +200,7 @@ public class FarmingWorld
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.CALQUAT)
 		));
 
-		add(new FarmingRegion("Taverly", 11573,
+		add(new FarmingRegion("Taverley", 11573,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.TREE)
 		));
 
