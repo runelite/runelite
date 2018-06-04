@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,20 +22,58 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.npchighlight;
 
-public class GraphicID
+import java.util.ArrayList;
+import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
+import net.runelite.api.coords.WorldPoint;
+
+class MemorizedNpc
 {
-	public static final int TELEPORT = 111;
-	public static final int GREY_BUBBLE_TELEPORT = 86;
-	public static final int ENTANGLE = 179;
-	public static final int SNARE = 180;
-	public static final int BIND = 181;
-	public static final int ICE_RUSH = 361;
-	public static final int ICE_BURST = 363;
-	public static final int ICE_BLITZ = 367;
-	public static final int ICE_BARRAGE = 369;
-	public static final int VENGEANCE = 726;
-	public static final int IMBUED_HEART = 1316;
-	public static final int FLYING_FISH = 1387;
+	@Getter
+	private int npcIndex;
+
+	@Getter
+	private String npcName;
+
+	@Getter
+	private int npcSize;
+
+	/**
+	 * The time the npc died at, in game ticks, relative to the tick counter
+	 */
+	@Getter
+	@Setter
+	private int diedOnTick;
+
+	/**
+	 * The time it takes for the npc to respawn, in game ticks
+	 */
+	@Getter
+	@Setter
+	private int respawnTime;
+
+	@Getter
+	@Setter
+	private List<WorldPoint> possibleRespawnLocations;
+
+	MemorizedNpc(NPC npc)
+	{
+		this.npcName = npc.getName();
+		this.npcIndex = npc.getIndex();
+		this.possibleRespawnLocations = new ArrayList<>();
+		this.respawnTime = -1;
+		this.diedOnTick = -1;
+
+		final NPCComposition composition = npc.getTransformedComposition();
+
+		if (composition != null)
+		{
+			this.npcSize = composition.getSize();
+		}
+	}
 }
