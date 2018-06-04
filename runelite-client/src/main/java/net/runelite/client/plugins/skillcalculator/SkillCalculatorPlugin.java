@@ -26,9 +26,23 @@
 package net.runelite.client.plugins.skillcalculator;
 
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+
+import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
+import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.UsernameChanged;
+import net.runelite.api.queries.BankItemQuery;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.game.SpriteManager;
@@ -37,6 +51,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(name = "Skill Calculator")
 public class SkillCalculatorPlugin extends Plugin
@@ -59,8 +74,23 @@ public class SkillCalculatorPlugin extends Plugin
 	@Inject
 	private PluginToolbar pluginToolbar;
 
+	@Inject
+	private SkillCalculatorConfig skillCalculatorConfig;
+
 	private NavigationButton uiNavigationButton;
 	private SkillCalculatorPanel uiPanel;
+
+	@Inject
+	private QueryRunner queryRunner;
+
+	@Getter
+	private Map<Integer, Integer> bankMap = new HashMap<>();
+
+	@Provides
+	SkillCalculatorConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(SkillCalculatorConfig.class);
+	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -73,6 +103,7 @@ public class SkillCalculatorPlugin extends Plugin
 
 		SkillCalculator.spriteManager = spriteManager;
 		SkillCalculator.itemManager = itemManager;
+		SkillCalculator.plugin = this;
 
 		uiPanel = new SkillCalculatorPanel(skillIconManager, client);
 		uiNavigationButton = NavigationButton.builder()
@@ -88,5 +119,70 @@ public class SkillCalculatorPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		pluginToolbar.removeNavigation(uiNavigationButton);
+		bankMap.clear();
+	}
+
+	@Subscribe
+	public void onUsernameChanged(UsernameChanged e)
+	{
+		bankMap.clear();
+		uiPanel.refreshCurrentCalc();
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("skillCalculator"))
+		{
+			// Reset everything when banked experience toggled
+			bankMap.clear();
+			uiPanel.refreshCurrentCalc();
+		}
+	}
+
+	// Pulled from bankvalue plugin to grab bank data when bank is open
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+
+		// Don't update on a search because rs seems to constantly update the title
+		if (widgetBankTitleBar == null || widgetBankTitleBar.isHidden() || widgetBankTitleBar.getText().contains("Showing"))
+		{
+			return;
+		}
+
+		// Is there a way to only run when bank first opened/bank gets updated? Currently runs every tick bank is open.
+		updateBankItems();
+	}
+
+	// Recreates the bankMap hashmap
+	private void updateBankItems()
+	{
+		if (showBankedXp())
+		{
+
+			WidgetItem[] widgetItems = queryRunner.runQuery(new BankItemQuery());
+
+			if (widgetItems.length == 0)
+			{
+				return;
+			}
+
+			Map<Integer, Integer> map = new HashMap<>();
+
+			for (WidgetItem widgetItem : widgetItems)
+			{
+				map.put(widgetItem.getId(), widgetItem.getQuantity());
+			}
+
+			bankMap = map;
+		}
+	}
+
+	// Wrapper function so i don't need to pass the config to SkillCalculator
+	boolean showBankedXp()
+	{
+		return skillCalculatorConfig.showBankedXp();
 	}
 }

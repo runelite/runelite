@@ -32,24 +32,25 @@ import net.runelite.api.Skill;
 @Getter
 enum CalculatorType
 {
-	MINING(Skill.MINING, "skill_mining.json"),
-	AGILITY(Skill.AGILITY, "skill_agility.json"),
-	SMITHING(Skill.SMITHING, "skill_smithing.json"),
-	HERBLORE(Skill.HERBLORE, "skill_herblore.json"),
-	FISHING(Skill.FISHING, "skill_fishing.json"),
-	THIEVING(Skill.THIEVING, "skill_thieving.json"),
-	COOKING(Skill.COOKING, "skill_cooking.json"),
-	PRAYER(Skill.PRAYER, "skill_prayer.json"),
-	CRAFTING(Skill.CRAFTING, "skill_crafting.json"),
-	FIREMAKING(Skill.FIREMAKING, "skill_firemaking.json"),
-	MAGIC(Skill.MAGIC, "skill_magic.json"),
-	FLETCHING(Skill.FLETCHING, "skill_fletching.json"),
-	WOODCUTTING(Skill.WOODCUTTING, "skill_woodcutting.json"),
-	RUNECRAFT(Skill.RUNECRAFT, "skill_runecraft.json"),
-	FARMING(Skill.FARMING, "skill_farming.json"),
-	CONSTRUCTION(Skill.CONSTRUCTION, "skill_construction.json"),
-	HUNTER(Skill.HUNTER, "skill_hunter.json");
+	MINING(Skill.MINING, "skill_mining.json", false),
+	AGILITY(Skill.AGILITY, "skill_agility.json", false),
+	SMITHING(Skill.SMITHING, "skill_smithing.json", true),
+	HERBLORE(Skill.HERBLORE, "skill_herblore.json", false),
+	FISHING(Skill.FISHING, "skill_fishing.json", false),
+	THIEVING(Skill.THIEVING, "skill_thieving.json", false),
+	COOKING(Skill.COOKING, "skill_cooking.json", true),
+	PRAYER(Skill.PRAYER, "skill_prayer.json", true),
+	CRAFTING(Skill.CRAFTING, "skill_crafting.json", true),
+	FIREMAKING(Skill.FIREMAKING, "skill_firemaking.json", false),
+	MAGIC(Skill.MAGIC, "skill_magic.json", false),
+	FLETCHING(Skill.FLETCHING, "skill_fletching.json", false),
+	WOODCUTTING(Skill.WOODCUTTING, "skill_woodcutting.json", false),
+	RUNECRAFT(Skill.RUNECRAFT, "skill_runecraft.json", false),
+	FARMING(Skill.FARMING, "skill_farming.json", false),
+	CONSTRUCTION(Skill.CONSTRUCTION, "skill_construction.json", true),
+	HUNTER(Skill.HUNTER, "skill_hunter.json", false);
 
 	private final Skill skill;
 	private final String dataFile;
+	private final boolean bankedXpFlag;
 }

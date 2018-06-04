@@ -46,6 +46,7 @@ class SkillCalculatorPanel extends PluginPanel
 	private final SkillCalculator uiCalculator;
 	private final SkillIconManager iconManager;
 	private final MaterialTabGroup tabGroup;
+	private CalculatorType currentCalc;
 
 	SkillCalculatorPanel(SkillIconManager iconManager, Client client)
 	{
@@ -97,8 +98,19 @@ class SkillCalculatorPanel extends PluginPanel
 		{
 			ImageIcon icon = new ImageIcon(iconManager.getSkillImage(calculatorType.getSkill(), true));
 			MaterialTab tab = new MaterialTab(icon, tabGroup, null);
-			tab.setOnSelectEvent(() -> uiCalculator.openCalculator(calculatorType));
+			tab.setOnSelectEvent(() ->
+			{
+				uiCalculator.openCalculator(calculatorType);
+				currentCalc = calculatorType;
+			});
 			tabGroup.addTab(tab);
 		}
+	}
+
+	void refreshCurrentCalc()
+	{
+		if (currentCalc == null)
+			return;
+		uiCalculator.openCalculator(currentCalc);
 	}
 }
