@@ -39,6 +39,8 @@ import javax.swing.Box;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.client.game.ItemManager;
@@ -65,14 +67,17 @@ class SkillCalculator extends JPanel
 
 	private CacheSkillData cacheSkillData = new CacheSkillData();
 
+	@Getter(AccessLevel.PACKAGE)
 	private UICombinedActionSlot combinedActionSlot = new UICombinedActionSlot();
-	private ArrayList<UIActionSlot> combinedActionSlots = new ArrayList<>();
+	@Getter(AccessLevel.PACKAGE)
+	private List<UIActionSlot> combinedActionSlots = new ArrayList<>();
 
 	private int currentLevel = 1;
 	private int currentXP = Experience.getXpForLevel(currentLevel);
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
 	private float xpFactor = 1.0f;
+	private float lastBonus = 0.0f;
 
 	SkillCalculator(Client client, UICalculatorInputArea uiInput)
 	{
@@ -102,7 +107,6 @@ class SkillCalculator extends JPanel
 	{
 		// Load the skill data.
 		skillData = cacheSkillData.getSkillData(calculatorType.getDataFile());
-
 		// Reset the XP factor, removing bonuses.
 		xpFactor = 1.0f;
 
@@ -133,15 +137,15 @@ class SkillCalculator extends JPanel
 		int size = combinedActionSlots.size();
 		if (size > 1)
 		{
-			combinedActionSlot.setTitle(size + " actions selected");
+			combinedActionSlot.setTitle(size + " Actions Selected");
 		}
 		else if (size == 1)
 		{
-			combinedActionSlot.setTitle("1 action selected");
+			combinedActionSlot.setTitle("1 Action Selected");
 		}
 		else
 		{
-			combinedActionSlot.setTitle("No action selected");
+			combinedActionSlot.setTitle("No Action Selected");
 			combinedActionSlot.setText("Shift-click to select multiple");
 			return;
 		}
@@ -171,11 +175,12 @@ class SkillCalculator extends JPanel
 	{
 		if (skillData.getBonuses() != null)
 		{
+			List<JCheckBox> uiCheckBoxList = new ArrayList<>();
+			lastBonus = 0.0f;
 			for (SkillDataBonus bonus : skillData.getBonuses())
 			{
 				JPanel uiOption = new JPanel(new BorderLayout());
 				JLabel uiLabel = new JLabel(bonus.getName());
-				JCheckBox uiCheckbox = new JCheckBox();
 
 				uiLabel.setForeground(Color.WHITE);
 				uiLabel.setFont(FontManager.getRunescapeSmallFont());
@@ -183,16 +188,39 @@ class SkillCalculator extends JPanel
 				uiOption.setBorder(BorderFactory.createEmptyBorder(3, 7, 3, 0));
 				uiOption.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-				// Adjust XP bonus depending on check-state of the boxes.
-				uiCheckbox.addActionListener(e -> adjustXPBonus(uiCheckbox.isSelected(), bonus.getValue()));
-				uiCheckbox.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+				JCheckBox uiCheckBox = new JCheckBox();
+				uiCheckBoxList.add(uiCheckBox);
+				uiCheckBox.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+				uiCheckBox.addActionListener(e ->
+				{
+					if (uiCheckBox.isSelected())
+					{
+						adjustXPBonus(uiCheckBox.isSelected(), bonus.getValue());
+						lastBonus = bonus.getValue();
+						for (JCheckBox checkBox : uiCheckBoxList)
+						{
+							if (checkBox != uiCheckBox)
+							{
+								checkBox.setSelected(false);
+							}
+						}
+					}
+					else if (xpFactor > 1.0)
+					{
+						xpFactor = 1.0f;
+						lastBonus = 0.0f;
+						calculate();
+					}
 
+					updateCombinedAction();
+				});
+
+				uiOption.add(uiCheckBox, BorderLayout.EAST);
 				uiOption.add(uiLabel, BorderLayout.WEST);
-				uiOption.add(uiCheckbox, BorderLayout.EAST);
 
 				add(uiOption);
-				add(Box.createRigidArea(new Dimension(0, 5)));
 			}
+			add(Box.createRigidArea(new Dimension(0, 5)));
 		}
 	}
 
@@ -247,7 +275,7 @@ class SkillCalculator extends JPanel
 			slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
 			slot.setAvailable(currentLevel >= action.getLevel());
 			slot.setOverlapping(action.getLevel() < targetLevel);
-			slot.setValue((int) xp);
+			slot.setValue(xp);
 		}
 	}
 
@@ -273,6 +301,7 @@ class SkillCalculator extends JPanel
 
 	private void adjustXPBonus(boolean addBonus, float value)
 	{
+		clearLastBonus();
 		xpFactor += addBonus ? value : -value;
 		calculate();
 	}
@@ -313,5 +342,11 @@ class SkillCalculator extends JPanel
 	private static int enforceXPBounds(int input)
 	{
 		return Math.min(MAX_XP, Math.max(0, input));
+	}
+
+	private void clearLastBonus()
+	{
+		xpFactor -= lastBonus;
+		calculate();
 	}
 }
