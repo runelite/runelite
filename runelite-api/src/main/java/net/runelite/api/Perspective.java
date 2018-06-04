@@ -291,14 +291,10 @@ public class Perspective
 	public static Polygon getCanvasTileAreaPoly(@Nonnull Client client, @Nonnull LocalPoint localLocation, int size)
 	{
 		int plane = client.getPlane();
-		int halfTile = LOCAL_TILE_SIZE / 2;
-
-		// If the size is 5, we need to shift it up and left 2 units, then expand by 5 units to make a 5x5
-		int aoeSize = size / 2;
 
 		// Shift over one half tile as localLocation is the center point of the tile, and then shift the area size
-		Point southWestCorner = new Point(localLocation.getX() - (aoeSize * LOCAL_TILE_SIZE) - halfTile + 1,
-			localLocation.getY() - (aoeSize * LOCAL_TILE_SIZE) - halfTile + 1);
+		Point southWestCorner = new Point(localLocation.getX() - (size * LOCAL_TILE_SIZE / 2),
+			localLocation.getY() - (size * LOCAL_TILE_SIZE / 2));
 		// expand by size
 		Point northEastCorner = new Point(southWestCorner.getX() + size * LOCAL_TILE_SIZE - 1,
 			southWestCorner.getY() + size * LOCAL_TILE_SIZE - 1);
