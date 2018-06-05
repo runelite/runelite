@@ -115,16 +115,16 @@ public interface GroundItemsConfig extends Config
 	{
 		return false;
 	}
-	
+
 	@ConfigItem(
 		keyName = "highlightTiles",
 		name = "Highlight Tiles",
 		description = "Configures whether or not to highlight tiles containing ground items",
 		position = 6
 	)
-	default boolean highlightTiles() 
-	{ 
-		return false; 
+	default boolean highlightTiles()
+	{
+		return false;
 	}
 
 	@ConfigItem(
@@ -336,4 +336,14 @@ public interface GroundItemsConfig extends Config
 		return 250;
 	}
 
+	@ConfigItem(
+			keyName = "menuGroupingEnabled",
+			name = "Enable menu grouping",
+			description = "Groups together duplicate entries in the menu",
+			position = 26
+	)
+	default boolean isMenuGroupingEnabled()
+	{
+		return false;
+	}
 }
