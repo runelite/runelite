@@ -122,7 +122,7 @@ public class NpcSceneOverlay extends Overlay
 		}
 
 		final Instant now = Instant.now();
-		final double baseTick = (npc.getDiedOnTick() + npc.getRespawnTime()) - client.getTickCount() * ESTIMATED_TICK_LENGTH;
+		final double baseTick = ((npc.getDiedOnTick() + npc.getRespawnTime()) - client.getTickCount()) * ESTIMATED_TICK_LENGTH;
 		final double sinceLast = (now.toEpochMilli() - plugin.getLastTickUpdate().toEpochMilli()) / 1000.0;
 		final double timeLeft = Math.max(0.0, baseTick - sinceLast);
 		final String timeLeftStr = TIME_LEFT_FORMATTER.format(timeLeft);
