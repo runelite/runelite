@@ -25,7 +25,6 @@ public class EquipmentInspectorPanel extends PluginPanel
 
 	private GridBagConstraints c;
 	private JPanel equipmentPanels;
-	private GroupLayout layout;
 	private JPanel header;
 	private JLabel nameLabel;
 
@@ -34,32 +33,7 @@ public class EquipmentInspectorPanel extends PluginPanel
 
 	public EquipmentInspectorPanel()
 	{
-//		layout = new GroupLayout(this);
-//		setLayout(layout);
-//		setBorder(new EmptyBorder(10, 10, 10, 10));
-//		setBackground(ColorScheme.DARK_GRAY_COLOR);
-//
-//		equipmentPanels = new JPanel(new GridBagLayout());
-//		c = new GridBagConstraints();
-//		c.fill = GridBagConstraints.HORIZONTAL;
-//		c.weightx = 1;
-//		c.gridx = 0;
-//		c.gridy = 0;
-//
-//		JPanel header = new JPanel();
-//		header.setLayout(new BorderLayout());
-//		header.setBorder(new CompoundBorder(
-//				BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(58, 58, 58)),
-//				BorderFactory.createEmptyBorder(0, 0, 10, 0)));
-//
-//		JLabel title = new JLabel("Equipment Inspector");
-//		title.setForeground(Color.WHITE);
-//
-//		header.add(title, c);
-//		c.gridy++;
-//
-//		equipmentPanels = new JPanel(new GridBagLayout());
-		layout = new GroupLayout(this);
+		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
 		setBorder(new EmptyBorder(10, 10, 10, 10));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);

@@ -35,8 +35,6 @@ public class EquipmentInspectorPlugin extends Plugin
 {
 	private static final String INSPECT_EQUIPMENT = "Inspect Equipment";
 	private static final String KICK_OPTION = "Kick";
-	private static final ImmutableList<String> BEFORE_OPTIONS = ImmutableList.of("Add friend", "Remove friend", KICK_OPTION);
-	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message");
 
 	@Inject
 	@Nullable
@@ -80,55 +78,6 @@ public class EquipmentInspectorPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		menuManager.removePlayerMenuItem(INSPECT_EQUIPMENT);
-	}
-
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
-	{
-		int groupId = WidgetInfo.TO_GROUP(event.getActionParam1());
-		String option = event.getOption();
-
-		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.CLAN_CHAT.getGroupId() ||
-				groupId == WidgetInfo.CHATBOX.getGroupId() && !KICK_OPTION.equals(option) || //prevent from adding for Kick option (interferes with the raiding party one)
-				groupId == WidgetInfo.RAIDING_PARTY.getGroupId() || groupId == WidgetInfo.PRIVATE_CHAT_MESSAGE.getGroupId())
-		{
-			boolean after;
-
-			if (AFTER_OPTIONS.contains(option))
-			{
-				after = true;
-			}
-			else if (BEFORE_OPTIONS.contains(option))
-			{
-				after = false;
-			}
-			else
-			{
-				return;
-			}
-
-			final MenuEntry lookup = new MenuEntry();
-			lookup.setOption(INSPECT_EQUIPMENT);
-			lookup.setTarget(event.getTarget());
-			lookup.setType(MenuAction.RUNELITE.getId());
-			lookup.setParam0(event.getActionParam0());
-			lookup.setParam1(event.getActionParam1());
-
-			insertMenuEntry(lookup, client.getMenuEntries(), after);
-		}
-	}
-
-	private void insertMenuEntry(MenuEntry newEntry, MenuEntry[] entries, boolean after)
-	{
-		MenuEntry[] newMenu = ObjectArrays.concat(entries, newEntry);
-
-		if (after)
-		{
-			int menuEntryCount = newMenu.length;
-			ArrayUtils.swap(newMenu, menuEntryCount - 1, menuEntryCount - 2);
-		}
-
-		client.setMenuEntries(newMenu);
 	}
 
 	@Subscribe
