@@ -27,7 +27,6 @@ package net.runelite.client.plugins.xptracker;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Skill;
-import net.runelite.client.plugins.PluginManager;
 
 @Singleton
 class XpTrackerServiceImpl implements XpTrackerService
@@ -35,18 +34,9 @@ class XpTrackerServiceImpl implements XpTrackerService
 	private final XpTrackerPlugin plugin;
 
 	@Inject
-	private PluginManager pluginManager;
-
-	@Inject
 	XpTrackerServiceImpl(XpTrackerPlugin plugin)
 	{
 		this.plugin = plugin;
-	}
-
-	@Override
-	public boolean isPluginEnabled()
-	{
-		return pluginManager.isPluginEnabled(plugin);
 	}
 
 	@Override

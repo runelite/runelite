@@ -247,9 +247,8 @@ public class XpGlobesOverlay extends Overlay
 
 		if (mouseOverSkill.getGoalXp() != -1)
 		{
-			boolean serviceActive = xpTrackerService.isPluginEnabled();
 			int actionsLeft = xpTrackerService.getActionsLeft(mouseOverSkill.getSkill());
-			if (serviceActive)
+			if (actionsLeft != Integer.MAX_VALUE)
 			{
 				String actionsLeftString = decimalFormat.format(actionsLeft);
 				xpTooltip.getChildren().add(LineComponent.builder()
@@ -267,9 +266,9 @@ public class XpGlobesOverlay extends Overlay
 				.right(skillXpToLvl)
 				.build());
 
-			if (serviceActive)
+			int xpHr = xpTrackerService.getXpHr(mouseOverSkill.getSkill());
+			if (xpHr != 0)
 			{
-				int xpHr = xpTrackerService.getXpHr(mouseOverSkill.getSkill());
 				String xpHrString = decimalFormat.format(xpHr);
 				xpTooltip.getChildren().add(LineComponent.builder()
 					.left("Xp per hour:")
