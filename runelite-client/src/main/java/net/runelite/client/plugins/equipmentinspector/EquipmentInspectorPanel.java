@@ -3,9 +3,12 @@ package net.runelite.client.plugins.equipmentinspector;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.kit.KitType;
+import net.runelite.client.game.AsyncBufferedImage;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -23,8 +26,8 @@ public class EquipmentInspectorPanel extends PluginPanel
 	private GroupLayout layout;
 	private JPanel header;
 
-	//@Inject
-	//private HashMap<KitType, ItemComposition> playerEquipment;
+	@Inject
+	private ItemManager itemManager;
 
 	public EquipmentInspectorPanel()
 	{
@@ -96,7 +99,8 @@ public class EquipmentInspectorPanel extends PluginPanel
 					equipmentPanels.removeAll();
 					playerEquipment.forEach((kitType, itemComposition) ->
 					{
-						equipmentPanels.add(new ItemPanel(itemComposition, kitType), c);
+						AsyncBufferedImage itemImage = itemManager.getImage(itemComposition.getId());
+						equipmentPanels.add(new ItemPanel(itemComposition, kitType, itemImage), c);
 						c.gridy++;
 
 					});
