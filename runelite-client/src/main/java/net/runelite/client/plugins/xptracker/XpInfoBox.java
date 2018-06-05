@@ -25,16 +25,20 @@
  */
 package net.runelite.client.plugins.xptracker;
 
+import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
-import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
@@ -92,12 +96,18 @@ class XpInfoBox extends JPanel
 		final JMenuItem openXpTracker = new JMenuItem("Open online tracker");
 		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(client.getLocalPlayer(), skill)));
 
+		// Create skill icon panel for pause icon overlay
+		SkillIconPanel skillIconPanel = new SkillIconPanel(iconManager.getSkillImage(skill));
+
 		// Create pause menu
 		pause = new JMenuItem("Pause");
 		pause.addActionListener(e ->
 		{
-			pause.setText(pause.getText().equalsIgnoreCase("Pause") ? "Resume" : "Pause");
+			boolean paused = pause.getText().equalsIgnoreCase("Pause");
+			pause.setText(paused ? "Resume" : "Pause");
 			xpTrackerPlugin.handlePauseFor(skill);
+			skillIconPanel.setPaused(paused);
+			repaint();
 		});
 
 		// Create reset menu
@@ -116,11 +126,6 @@ class XpInfoBox extends JPanel
 		popupMenu.add(reset);
 		popupMenu.add(resetOthers);
 
-		JLabel skillIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(skill)));
-		skillIcon.setHorizontalAlignment(SwingConstants.CENTER);
-		skillIcon.setVerticalAlignment(SwingConstants.CENTER);
-		skillIcon.setPreferredSize(new Dimension(35, 35));
-
 		headerPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		headerPanel.setLayout(new BorderLayout());
 
@@ -138,7 +143,7 @@ class XpInfoBox extends JPanel
 		statsPanel.add(expHour);
 		statsPanel.add(actionsLeft);
 
-		headerPanel.add(skillIcon, BorderLayout.WEST);
+		headerPanel.add(skillIconPanel, BorderLayout.WEST);
 		headerPanel.add(statsPanel, BorderLayout.CENTER);
 
 		JPanel progressWrapper = new JPanel();
@@ -153,7 +158,7 @@ class XpInfoBox extends JPanel
 		progressWrapper.add(progressBar, BorderLayout.NORTH);
 
 		container.add(headerPanel, BorderLayout.NORTH);
-		container.add(progressWrapper, BorderLayout.SOUTH);
+		container.add(progressWrapper, BorderLayout.CENTER);
 
 		container.setComponentPopupMenu(popupMenu);
 		progressBar.setComponentPopupMenu(popupMenu);
@@ -220,6 +225,43 @@ class XpInfoBox extends JPanel
 
 		// Update exp per hour seperately, everytime (not only when there's an update)
 		expHour.setText(htmlLabel("XP/Hour: ", xpSnapshotSingle.getXpPerHour()));
+	}
+
+	class SkillIconPanel extends JPanel
+	{
+		private final BufferedImage pause;
+		private final BufferedImage skill;
+		private final AlphaComposite opaque;
+		private boolean paused;
+
+		public SkillIconPanel(BufferedImage skill) throws IOException
+		{
+			this.setPreferredSize(new Dimension(35, 35));
+			this.skill = skill;
+			this.pause = ImageIO.read(XpTrackerPlugin.class.getResource("pause.png"));
+			this.opaque = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
+			this.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		}
+
+		@Override
+		public void paintComponent(Graphics g)
+		{
+			Graphics2D g2d = (Graphics2D) g;
+			g2d.drawImage(skill, 5, 5, null);
+			if (paused)
+			{
+				Composite old = g2d.getComposite();
+				g2d.setComposite(opaque);
+				g2d.drawImage(pause, 12, 12, null);
+				g2d.setComposite(old);
+			}
+		}
+
+		public void setPaused(boolean paused)
+		{
+			this.paused = paused;
+		}
+
 	}
 
 }
