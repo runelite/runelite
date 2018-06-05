@@ -1374,4 +1374,10 @@ public interface Client extends GameEngine
 	 * @return the types for current world
 	 */
 	EnumSet<WorldType> getWorldType();
+
+	/**
+	 * Checks if a player has a membership
+	 * @return if the player is a member or not
+	 */
+	boolean isMember();
 }

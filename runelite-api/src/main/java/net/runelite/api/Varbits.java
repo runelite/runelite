@@ -317,6 +317,10 @@ public enum Varbits
 	DAILY_HERB_BOX(3961),
 	DAILY_STAVES(4539),
 	DAILY_ESSENCE(4547),
+	DAILY_SAND(4549),
+	DAILY_ECTO(4543),
+	DAILY_BOWSTRING(4559),
+	DAILY_RUNES(4540),
 
 	/**
 	 * Fairy Ring
@@ -358,7 +362,12 @@ public enum Varbits
 	/**
 	 * The varbit that stores the players {@code AccountType}.
 	 */
-	ACCOUNT_TYPE(1777);
+	ACCOUNT_TYPE(1777),
+
+	/**
+	 * Quests
+	 */
+	QUEST_A_HAND_IN_THE_SAND(1527);
 
 	/**
 	 * The raw varbit ID.
