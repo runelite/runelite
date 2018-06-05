@@ -178,6 +178,7 @@ class SkillCalculator extends JPanel
 		{
 			List<JCheckBox> uiCheckBoxList = new ArrayList<>();
 			lastBonus = 0.0f;
+			
 			for (SkillDataBonus bonus : skillData.getBonuses())
 			{
 				JPanel uiOption = new JPanel(new BorderLayout());
@@ -190,7 +191,6 @@ class SkillCalculator extends JPanel
 				uiOption.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 				JCheckBox uiCheckBox = new JCheckBox();
-				uiCheckBoxList.add(uiCheckBox);
 				uiCheckBox.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
 				uiCheckBox.addActionListener(e ->
 				{
@@ -198,6 +198,7 @@ class SkillCalculator extends JPanel
 					{
 						adjustXPBonus(uiCheckBox.isSelected(), bonus.getValue());
 						lastBonus = bonus.getValue();
+						
 						for (JCheckBox checkBox : uiCheckBoxList)
 						{
 							if (checkBox != uiCheckBox)
@@ -215,12 +216,15 @@ class SkillCalculator extends JPanel
 
 					updateCombinedAction();
 				});
-
+				
+				uiCheckBoxList.add(uiCheckBox);
+				
 				uiOption.add(uiCheckBox, BorderLayout.EAST);
 				uiOption.add(uiLabel, BorderLayout.WEST);
 
 				add(uiOption);
 			}
+			
 			add(Box.createRigidArea(new Dimension(0, 5)));
 		}
 	}
