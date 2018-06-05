@@ -56,6 +56,7 @@ import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.MenuManager;
@@ -95,6 +96,9 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	@Inject
 	private KeyManager keyManager;
+
+	@Inject
+	private ClientThread clientThread;
 
 	/**
 	 * NPCs to highlight
@@ -172,7 +176,11 @@ public class NpcIndicatorsPlugin extends Plugin
 	{
 		keyManager.registerKeyListener(inputListener);
 		highlights = getHighlights();
-		rebuildAllNpcs();
+		clientThread.invokeLater(() ->
+		{
+			skipNextSpawnCheck = true;
+			rebuildAllNpcs();
+		});
 	}
 
 	@Override
@@ -412,6 +420,14 @@ public class NpcIndicatorsPlugin extends Plugin
 	{
 		highlightedNpcs.clear();
 
+		if (client.getGameState() != GameState.LOGGED_IN &&
+			client.getGameState() != GameState.LOADING)
+		{
+			// NPCs are still in the client after logging out,
+			// but we don't want to highlight those.
+			return;
+		}
+
 		outer:
 		for (NPC npc : client.getNpcs())
 		{
@@ -490,7 +506,7 @@ public class NpcIndicatorsPlugin extends Plugin
 					}
 				}
 
-				if (isInViewRange(lastPlayerLocation, npc.getWorldLocation()))
+				if (lastPlayerLocation != null && isInViewRange(lastPlayerLocation, npc.getWorldLocation()))
 				{
 					final MemorizedNpc mn = memorizedNpcs.get(npc.getIndex());
 
