@@ -21,10 +21,13 @@ import java.util.Map;
 @Singleton
 public class EquipmentInspectorPanel extends PluginPanel
 {
+	private final static String NO_PLAYER_SELECTED = "No player selected";
+
 	private GridBagConstraints c;
 	private JPanel equipmentPanels;
 	private GroupLayout layout;
 	private JPanel header;
+	private JLabel nameLabel;
 
 	@Inject
 	private ItemManager itemManager;
@@ -74,10 +77,10 @@ public class EquipmentInspectorPanel extends PluginPanel
 				BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(58, 58, 58)),
 				BorderFactory.createEmptyBorder(0, 0, 10, 0)));
 
-		JLabel pluginName = new JLabel("Equipment Inspector Plugin");
-		pluginName.setForeground(Color.WHITE);
+		nameLabel = new JLabel(NO_PLAYER_SELECTED);
+		nameLabel.setForeground(Color.WHITE);
 
-		header.add(pluginName, BorderLayout.CENTER);
+		header.add(nameLabel, BorderLayout.CENTER);
 
 		layout.setHorizontalGroup(layout.createParallelGroup()
 				.addComponent(equipmentPanels)
@@ -89,11 +92,20 @@ public class EquipmentInspectorPanel extends PluginPanel
 				.addComponent(equipmentPanels)
 		);
 
-		update(new HashMap<>());
+		update(new HashMap<>(), "");
 	}
 
-	public void update(Map<KitType, ItemComposition> playerEquipment)
+	public void update(Map<KitType, ItemComposition> playerEquipment, String playerName)
 	{
+		if (playerName.isEmpty() || playerName == null)
+		{
+			nameLabel.setText(NO_PLAYER_SELECTED);
+		}
+		else
+		{
+			nameLabel.setText("Player: " + playerName);
+		}
+
 		SwingUtilities.invokeLater(() ->
 				{
 					equipmentPanels.removeAll();

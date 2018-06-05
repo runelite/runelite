@@ -1,21 +1,18 @@
 package net.runelite.client.plugins.equipmentinspector;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ObjectArrays;
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
-import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.Client;
+import net.runelite.api.ItemComposition;
+import net.runelite.api.Player;
 import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.kit.KitType;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.util.Text;
-import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
@@ -178,7 +175,7 @@ public class EquipmentInspectorPlugin extends Plugin
 						}
 					}
 
-					equipmentInspectorPanel.update(playerEquipment);
+					equipmentInspectorPanel.update(playerEquipment, playerName);
 				}
 			});
 		}
