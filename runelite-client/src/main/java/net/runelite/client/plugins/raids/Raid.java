@@ -41,7 +41,7 @@ public class Raid
 	@Getter
 	private Layout layout;
 
-	private final Joiner JOINER = Joiner.on(", ");
+	private static final Joiner JOINER = Joiner.on(", ");
 
 	public void updateLayout(Layout layout)
 	{
