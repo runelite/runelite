@@ -92,16 +92,17 @@ class XpInfoBox extends JPanel
 		final JMenuItem openXpTracker = new JMenuItem("Open online tracker");
 		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(client.getLocalPlayer(), skill)));
 
-		// Create reset menu
-		final JMenuItem reset = new JMenuItem("Reset");
-		reset.addActionListener(e -> xpTrackerPlugin.resetSkillState(skill));
-
 		// Create pause menu
 		pause = new JMenuItem("Pause");
-		pause.addActionListener(e -> {
+		pause.addActionListener(e ->
+		{
 			pause.setText(pause.getText().equalsIgnoreCase("Pause") ? "Resume" : "Pause");
 			xpTrackerPlugin.handlePauseFor(skill);
 		});
+
+		// Create reset menu
+		final JMenuItem reset = new JMenuItem("Reset");
+		reset.addActionListener(e -> xpTrackerPlugin.resetSkillState(skill));
 
 		// Create reset others menu
 		final JMenuItem resetOthers = new JMenuItem("Reset others");
@@ -169,6 +170,7 @@ class XpInfoBox extends JPanel
 
 	void reset()
 	{
+		pause.setText("Pause");
 		container.remove(statsPanel);
 		panel.remove(this);
 		panel.revalidate();

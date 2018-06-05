@@ -57,6 +57,10 @@ class XpState
 	 */
 	void resetSkill(Skill skill, int currentXp)
 	{
+		if (getSkill(skill).isPaused())
+		{
+			getSkill(skill).setPaused(false);
+		}
 		xpSkills.remove(skill);
 		xpSkills.put(skill, new XpStateSingle(skill, currentXp));
 		recalculateTotal();
@@ -130,10 +134,6 @@ class XpState
 		state.setPaused(!state.isPaused());
 	}
 
-	boolean isPaused(Skill skill)
-	{
-		return getSkill(skill).isPaused();
-	}
 
 	/**
 	 * Forcefully initialize a skill with a known start XP from the current XP.
