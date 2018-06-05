@@ -54,6 +54,8 @@ import net.runelite.client.util.SwingUtil;
 @Slf4j
 class XpInfoBox extends JPanel
 {
+	private final JMenuItem pause;
+
 	private final JPanel panel;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -94,6 +96,13 @@ class XpInfoBox extends JPanel
 		final JMenuItem reset = new JMenuItem("Reset");
 		reset.addActionListener(e -> xpTrackerPlugin.resetSkillState(skill));
 
+		// Create pause menu
+		pause = new JMenuItem("Pause");
+		pause.addActionListener(e -> {
+			pause.setText(pause.getText().equalsIgnoreCase("Pause") ? "Resume" : "Pause");
+			xpTrackerPlugin.handlePauseFor(skill);
+		});
+
 		// Create reset others menu
 		final JMenuItem resetOthers = new JMenuItem("Reset others");
 		resetOthers.addActionListener(e -> xpTrackerPlugin.resetOtherSkillState(skill));
@@ -102,6 +111,7 @@ class XpInfoBox extends JPanel
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		popupMenu.add(openXpTracker);
+		popupMenu.add(pause);
 		popupMenu.add(reset);
 		popupMenu.add(resetOthers);
 
@@ -150,6 +160,13 @@ class XpInfoBox extends JPanel
 		add(container, BorderLayout.NORTH);
 	}
 
+	public static String htmlLabel(String key, int value)
+	{
+		String valueStr = StackFormatter.quantityToRSDecimalStack(value);
+
+		return "<html><body style = 'color:" + SwingUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "'>" + key + "<span style = 'color:white'>" + valueStr + "</span></body></html>";
+	}
+
 	void reset()
 	{
 		container.remove(statsPanel);
@@ -164,6 +181,11 @@ class XpInfoBox extends JPanel
 
 	private void rebuildAsync(boolean updated, XpSnapshotSingle xpSnapshotSingle)
 	{
+		if (pause.getText().equals("Resume"))
+		{
+			return;
+		}
+
 		if (updated)
 		{
 			if (getParent() != panel)
@@ -184,25 +206,18 @@ class XpInfoBox extends JPanel
 			progressBar.setRightLabel("Lvl. " + (xpSnapshotSingle.getEndLevel()));
 
 			progressBar.setToolTipText("<html>"
-				+ xpSnapshotSingle.getActionsInSession() + " actions done"
-				+ "<br/>"
-				+ xpSnapshotSingle.getActionsPerHour() + " actions/hr"
-				+ "<br/>"
-				+ xpSnapshotSingle.getTimeTillGoal() + " till goal lvl"
-				+ "</html>");
+					+ xpSnapshotSingle.getActionsInSession() + " actions done"
+					+ "<br/>"
+					+ xpSnapshotSingle.getActionsPerHour() + " actions/hr"
+					+ "<br/>"
+					+ xpSnapshotSingle.getTimeTillGoal() + " till goal lvl"
+					+ "</html>");
 
 			progressBar.repaint();
 		}
 
 		// Update exp per hour seperately, everytime (not only when there's an update)
 		expHour.setText(htmlLabel("XP/Hour: ", xpSnapshotSingle.getXpPerHour()));
-	}
-
-	public static String htmlLabel(String key, int value)
-	{
-		String valueStr = StackFormatter.quantityToRSDecimalStack(value);
-
-		return "<html><body style = 'color:" + SwingUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "'>" + key + "<span style = 'color:white'>" + valueStr + "</span></body></html>";
 	}
 
 }
