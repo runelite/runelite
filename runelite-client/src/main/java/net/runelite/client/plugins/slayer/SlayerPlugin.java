@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
  * Copyright (c) 2018, Shaun Dreclin <shaundreclin@gmail.com>
+ * Copyright (c) 2018, GETrackerDan <dan@ge-tracker.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -21,7 +22,7 @@
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.t
  */
 package net.runelite.client.plugins.slayer;
 
@@ -75,7 +76,7 @@ import net.runelite.client.util.QueryRunner;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Slayer"
+		name = "Slayer"
 )
 @Slf4j
 public class SlayerPlugin extends Plugin
@@ -145,6 +146,9 @@ public class SlayerPlugin extends Plugin
 	private String taskName;
 	private int amount;
 	private TaskCounter counter;
+	@Getter(AccessLevel.PUBLIC)
+	@Setter(AccessLevel.PACKAGE)
+	private int initialAmount;
 	private int streak;
 	private int points;
 	private int cachedXp;
@@ -161,8 +165,8 @@ public class SlayerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		if (client.getGameState() == GameState.LOGGED_IN
-			&& config.amount() != -1
-			&& !config.taskName().isEmpty())
+				&& config.amount() != -1
+				&& !config.taskName().isEmpty())
 		{
 			setPoints(config.points());
 			setStreak(config.streak());
@@ -198,8 +202,8 @@ public class SlayerPlugin extends Plugin
 				break;
 			case LOGGED_IN:
 				if (config.amount() != -1
-					&& !config.taskName().isEmpty()
-					&& loginFlag == true)
+						&& !config.taskName().isEmpty()
+						&& loginFlag == true)
 				{
 					setPoints(config.points());
 					setStreak(config.streak());
@@ -216,6 +220,7 @@ public class SlayerPlugin extends Plugin
 	{
 		config.amount(amount);
 		config.taskName(taskName);
+		config.initialAmount(initialAmount);
 		config.points(points);
 		config.streak(streak);
 		config.expeditious(expeditiousChargeCount);
@@ -482,6 +487,7 @@ public class SlayerPlugin extends Plugin
 	{
 		taskName = name.toLowerCase();
 		amount = amt;
+		initialAmount = amt;
 		save();
 		removeCounter();
 		addCounter();
@@ -505,7 +511,7 @@ public class SlayerPlugin extends Plugin
 		BufferedImage taskImg = itemManager.getImage(itemSpriteId);
 		counter = new TaskCounter(taskImg, this, amount);
 		counter.setTooltip(String.format("<col=ff7700>%s</br><col=ffff00>Pts:</col> %s</br><col=ffff00>Streak:</col> %s",
-			capsString(taskName), points, streak));
+				capsString(taskName), points, streak));
 
 		infoBoxManager.addInfoBox(counter);
 	}
@@ -541,7 +547,7 @@ public class SlayerPlugin extends Plugin
 			for (String highlight : highlightedNpcs)
 			{
 				if (name.toLowerCase().contains(highlight.toLowerCase())
-					&& Arrays.asList(composition.getActions()).contains("Attack"))
+						&& Arrays.asList(composition.getActions()).contains("Attack"))
 				{
 					npcs.add(npc);
 					break;
@@ -620,7 +626,7 @@ public class SlayerPlugin extends Plugin
 	}
 
 	//Utils
-	private String capsString(String str)
+	public String capsString(String str)
 	{
 		return str.substring(0, 1).toUpperCase() + str.substring(1);
 	}

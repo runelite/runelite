@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, GETrackerDan <dan@ge-tracker.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -56,4 +57,13 @@ public interface ChatCommandsConfig extends Config
 	{
 		return true;
 	}
-}
+
+	@ConfigItem(
+			position = 2,
+			keyName = "task",
+			name = "Task Command",
+			description = "Configures whether the Task command is enabled"
+	)
+	default boolean task() { return true; }
+
+		}

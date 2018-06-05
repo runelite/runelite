@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2017. l2-
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, GETrackerDan <dan@ge-tracker.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,6 +26,7 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
+import com.google.common.base.Strings;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.io.IOException;
@@ -38,6 +40,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.events.SetMessage;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -45,7 +48,10 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.plugins.slayer.SlayerPlugin;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreSkill;
@@ -56,8 +62,9 @@ import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
 
 @PluginDescriptor(
-	name = "Chat Commands"
+		name = "Chat Commands"
 )
+@PluginDependency(SlayerPlugin.class)
 @Slf4j
 public class ChatCommandsPlugin extends Plugin
 {
@@ -79,6 +86,12 @@ public class ChatCommandsPlugin extends Plugin
 
 	@Inject
 	private ScheduledExecutorService executor;
+
+	@Inject
+	private PluginManager pluginManager;
+
+	@Inject
+	private SlayerPlugin slayerPlugin;
 
 	@Provides
 	ChatCommandsConfig provideConfig(ConfigManager configManager)
@@ -121,22 +134,81 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			log.debug("Running total level lookup");
 			executor.submit(() -> playerSkillLookup(setMessage.getType(), setMessage, "total"));
-		}
-		else if (config.price() && message.toLowerCase().startsWith("!price") && message.length() > 7)
+
+		} else if (config.price() && message.toLowerCase().startsWith("!price") && message.length() > 7)
 		{
 			String search = message.substring(7);
-
 			log.debug("Running price lookup for {}", search);
-
 			executor.submit(() -> itemPriceLookup(setMessage.getMessageNode(), search));
-		}
-		else if (config.lvl() && message.toLowerCase().startsWith("!lvl") && message.length() > 5)
+
+		} else if (config.lvl() && message.toLowerCase().startsWith("!lvl") && message.length() > 5)
 		{
 			String search = message.substring(5);
-
-			log.debug("Running level lookup for {}", search);
 			executor.submit(() -> playerSkillLookup(setMessage.getType(), setMessage, search));
+
+		} else if (message.toLowerCase().startsWith("!task") && pluginManager.isPluginEnabled(slayerPlugin))
+		{
+			if (!Strings.isNullOrEmpty(slayerPlugin.getTaskName()))
+			{
+				executor.submit(() -> slayerTaskMessage(setMessage));
+			} else
+			{
+				executor.submit(() -> slayerEmptyTaskMessage(setMessage));
+			}
+		} else if (message.toLowerCase().startsWith("!qp"))
+		{
+			executor.submit(() -> questPointsMessage(setMessage));
 		}
+	}
+
+	private void slayerTaskMessage(SetMessage setMessage)
+	{
+		String response = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("Slayer Task: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(slayerPlugin.capsString(slayerPlugin.getTaskName()))
+				.append(ChatColorType.NORMAL)
+				.append(" Start:")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.format(" %d ", slayerPlugin.getInitialAmount()))
+				.append(ChatColorType.NORMAL)
+				.append(" Current:")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.format(" %d ", slayerPlugin.getAmount()))
+				.build();
+
+		final MessageNode messageNode = setMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
+	}
+
+	private void slayerEmptyTaskMessage(SetMessage setMessage)
+	{
+		String response = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("Slayer Task: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append("No task assigned.")
+				.build();
+
+		final MessageNode messageNode = setMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
+	}
+
+	private void questPointsMessage(SetMessage setMessage)
+	{
+		String response = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("Quest Points: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.format(" %d ", client.getVar(VarPlayer.QUEST_POINTS)))
+				.build();
+
+		final MessageNode messageNode = setMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
 	}
 
 	/**
@@ -144,7 +216,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param messageNode The chat message containing the command.
-	 * @param search The item given with the command.
+	 * @param search      The item given with the command.
 	 */
 	private void itemPriceLookup(MessageNode messageNode, String search)
 	{
@@ -153,8 +225,7 @@ public class ChatCommandsPlugin extends Plugin
 		try
 		{
 			result = itemManager.searchForItem(search);
-		}
-		catch (ExecutionException ex)
+		} catch (ExecutionException ex)
 		{
 			log.warn("Unable to search for item {}", search, ex);
 			return;
@@ -175,32 +246,31 @@ public class ChatCommandsPlugin extends Plugin
 			try
 			{
 				itemPrice = itemManager.getItemPrice(itemId);
-			}
-			catch (IOException ex)
+			} catch (IOException ex)
 			{
 				log.warn("Unable to fetch item price for {}", itemId, ex);
 				return;
 			}
 
 			final ChatMessageBuilder builder = new ChatMessageBuilder()
-				.append(ChatColorType.NORMAL)
-				.append("Price of ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(item.getName())
-				.append(ChatColorType.NORMAL)
-				.append(": GE average ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(StackFormatter.formatNumber(itemPrice.getPrice()));
+					.append(ChatColorType.NORMAL)
+					.append("Price of ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(item.getName())
+					.append(ChatColorType.NORMAL)
+					.append(": GE average ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(StackFormatter.formatNumber(itemPrice.getPrice()));
 
 			ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 			if (itemComposition != null)
 			{
 				int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
 				builder
-					.append(ChatColorType.NORMAL)
-					.append(" HA value ")
-					.append(ChatColorType.HIGHLIGHT)
-					.append(StackFormatter.formatNumber(alchPrice));
+						.append(ChatColorType.NORMAL)
+						.append(" HA value ")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(StackFormatter.formatNumber(alchPrice));
 			}
 
 			String response = builder.build();
@@ -217,7 +287,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param setMessage The chat message containing the command.
-	 * @param search The item given with the command.
+	 * @param search     The item given with the command.
 	 */
 	private void playerSkillLookup(ChatMessageType type, SetMessage setMessage, String search)
 	{
@@ -227,8 +297,7 @@ public class ChatCommandsPlugin extends Plugin
 		if (type.equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
 		{
 			player = client.getLocalPlayer().getName();
-		}
-		else
+		} else
 		{
 			player = sanitize(setMessage.getName());
 		}
@@ -237,8 +306,7 @@ public class ChatCommandsPlugin extends Plugin
 		try
 		{
 			skill = HiscoreSkill.valueOf(search.toUpperCase());
-		}
-		catch (IllegalArgumentException i)
+		} catch (IllegalArgumentException i)
 		{
 			return;
 		}
@@ -249,27 +317,26 @@ public class ChatCommandsPlugin extends Plugin
 			Skill hiscoreSkill = result.getSkill();
 
 			String response = new ChatMessageBuilder()
-				.append(ChatColorType.NORMAL)
-				.append("Level ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(skill.getName()).append(": ").append(String.valueOf(hiscoreSkill.getLevel()))
-				.append(ChatColorType.NORMAL)
-				.append(" Experience: ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(String.format("%,d", hiscoreSkill.getExperience()))
-				.append(ChatColorType.NORMAL)
-				.append(" Rank: ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(String.format("%,d", hiscoreSkill.getRank()))
-				.build();
+					.append(ChatColorType.NORMAL)
+					.append("Level ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(skill.getName()).append(": ").append(String.valueOf(hiscoreSkill.getLevel()))
+					.append(ChatColorType.NORMAL)
+					.append(" Experience: ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(String.format("%,d", hiscoreSkill.getExperience()))
+					.append(ChatColorType.NORMAL)
+					.append(" Rank: ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(String.format("%,d", hiscoreSkill.getRank()))
+					.build();
 
 			log.debug("Setting response {}", response);
 			final MessageNode messageNode = setMessage.getMessageNode();
 			messageNode.setRuneLiteFormatMessage(response);
 			chatMessageManager.update(messageNode);
 			client.refreshChat();
-		}
-		catch (IOException ex)
+		} catch (IOException ex)
 		{
 			log.warn("unable to look up skill {} for {}", skill, search, ex);
 		}
@@ -280,7 +347,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * Returns the item if its name is equal to the original input or null
 	 * if it can't find the item.
 	 *
-	 * @param items List of items.
+	 * @param items         List of items.
 	 * @param originalInput String with the original input.
 	 * @return Item which has a name equal to the original input.
 	 */

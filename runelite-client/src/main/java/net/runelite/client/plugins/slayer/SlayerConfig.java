@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
  * Copyright (c) 2018, Shaun Dreclin <shaundreclin@gmail.com>
+ * Copyright (c) 2018, GETrackerDan <dan@ge-tracker.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -140,6 +141,24 @@ public interface SlayerConfig extends Config
 	)
 	void amount(int amt);
 
+    @ConfigItem(
+            keyName = "amount",
+            name = "",
+            description = "",
+            hidden = true
+    )
+    default int initialAmount()
+    {
+        return -1;
+    }
+
+    @ConfigItem(
+            keyName = "amount",
+            name = "",
+            description = ""
+    )
+    void initialAmount(int amt);
+
 	@ConfigItem(
 		keyName = "streak",
 		name = "",
@@ -211,4 +230,6 @@ public interface SlayerConfig extends Config
 		description = ""
 	)
 	void slaughter(int slaughter);
+
+
 }
