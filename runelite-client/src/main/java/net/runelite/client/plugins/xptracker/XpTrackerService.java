@@ -29,6 +29,11 @@ import net.runelite.api.Skill;
 public interface XpTrackerService
 {
 	/**
+	 * Returns whether the XpTracker plugin is enabled
+	 */
+	boolean isPluginEnabled();
+
+	/**
 	 * Get the number of actions done
 	 * @param skill
 	 * @return

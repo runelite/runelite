@@ -247,13 +247,17 @@ public class XpGlobesOverlay extends Overlay
 
 		if (mouseOverSkill.getGoalXp() != -1)
 		{
+			boolean serviceActive = xpTrackerService.isPluginEnabled();
 			int actionsLeft = xpTrackerService.getActionsLeft(mouseOverSkill.getSkill());
-			String actionsLeftString = decimalFormat.format(actionsLeft);
-			xpTooltip.getChildren().add(LineComponent.builder()
-				.left("Actions left:")
-				.leftColor(Color.ORANGE)
-				.right(actionsLeftString)
-				.build());
+			if (serviceActive)
+			{
+				String actionsLeftString = decimalFormat.format(actionsLeft);
+				xpTooltip.getChildren().add(LineComponent.builder()
+					.left("Actions left:")
+					.leftColor(Color.ORANGE)
+					.right(actionsLeftString)
+					.build());
+			}
 
 			int xpLeft = mouseOverSkill.getGoalXp() - mouseOverSkill.getCurrentXp();
 			String skillXpToLvl = decimalFormat.format(xpLeft);
@@ -263,13 +267,16 @@ public class XpGlobesOverlay extends Overlay
 				.right(skillXpToLvl)
 				.build());
 
-			int xpHr = xpTrackerService.getXpHr(mouseOverSkill.getSkill());
-			String xpHrString = decimalFormat.format(xpHr);
-			xpTooltip.getChildren().add(LineComponent.builder()
-				.left("Xp per hour:")
-				.leftColor(Color.ORANGE)
-				.right(xpHrString)
-				.build());
+			if (serviceActive)
+			{
+				int xpHr = xpTrackerService.getXpHr(mouseOverSkill.getSkill());
+				String xpHrString = decimalFormat.format(xpHr);
+				xpTooltip.getChildren().add(LineComponent.builder()
+					.left("Xp per hour:")
+					.leftColor(Color.ORANGE)
+					.right(xpHrString)
+					.build());
+			}
 
 			//Create progress bar for skill.
 			ProgressBarComponent progressBar = new ProgressBarComponent();
