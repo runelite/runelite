@@ -165,9 +165,27 @@ public class TripCheckerPlugin extends Plugin
 			itemList.setEquipment(equipmentContainer);
 
 			tripLists.put(name, itemList);
-			uiPanel.refreshLoadouts(tripLists.keySet());
+			uiPanel.refreshLoadouts();
 			saveLoadouts();
 		});
+	}
+
+	boolean deleteLoadout(String loadoutName)
+	{
+		if (!tripLists.containsKey(loadoutName))
+		{
+			return false;
+		}
+
+		TripItemList deletedLoadout = tripLists.remove(loadoutName);
+		if (deletedLoadout != null)
+		{
+			//Only save the loadouts if we successfully deleted the loadout
+			saveLoadouts();
+			return true;
+		}
+
+		return false;
 	}
 
 	private void saveLoadouts()
@@ -249,6 +267,11 @@ public class TripCheckerPlugin extends Plugin
 				}
 				isMissingItem = true;
 			}
+		}
+
+		if (!isMissingItem)
+		{
+			client.addChatMessage(ChatMessageType.SERVER, "", "<col=FF0000>No items missing!", null);
 		}
 	}
 }

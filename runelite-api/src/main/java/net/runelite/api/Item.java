@@ -37,6 +37,11 @@ public interface Item extends Renderable
 	 */
 	int getId();
 
+	/**
+	 * Sets the item's ID.
+	 *
+	 * @param id the ID of the item
+	 */
 	void setId(int id);
 
 	/**
@@ -46,5 +51,10 @@ public interface Item extends Renderable
 	 */
 	int getQuantity();
 
+	/**
+	 * Sets the item's quantity.
+	 *
+	 * @param quantity the items quantity
+	 */
 	void setQuantity(int quantity);
 }

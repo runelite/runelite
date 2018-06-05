@@ -59,8 +59,11 @@ public final class ComboBoxListRenderer extends JLabel implements ListCellRender
 
 		if (o != null)
 		{
-			String text = (String) o.toString();
-			setText(text);
+			setText(o.toString());
+		}
+		else
+		{
+			setText("");
 		}
 
 		return this;

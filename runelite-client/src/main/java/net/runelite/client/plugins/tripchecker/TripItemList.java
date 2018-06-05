@@ -24,7 +24,9 @@
  */
 package net.runelite.client.plugins.tripchecker;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Item;
@@ -53,6 +55,11 @@ class TripItemList
 		for (Item item : inventoryContainer.getItems())
 		{
 			int key = item.getId();
+			if (key == -1)
+			{
+				continue;
+			}
+
 			if (inventoryItems.containsKey(key))
 			{
 				inventoryItems.put(key, inventoryItems.get(key) + item.getQuantity());
@@ -71,10 +78,19 @@ class TripItemList
 	 */
 	void setEquipment(ItemContainer equipmentContainer)
 	{
-		equipmentIds = new int[equipmentContainer.getItems().length];
-		for (int i = 0; i < equipmentIds.length; i++)
+		List<Integer> tempEquipmentIds = new ArrayList<>();
+		//equipmentIds = new int[equipmentContainer.getItems().length];
+		for (int i = 0; i < equipmentContainer.getItems().length; i++)
 		{
-			equipmentIds[i] = equipmentContainer.getItems()[i].getId();
+			int equipmentId = equipmentContainer.getItems()[i].getId();
+			if (equipmentId == -1)
+			{
+				continue;
+			}
+
+			tempEquipmentIds.add(equipmentId);
 		}
+
+		equipmentIds = tempEquipmentIds.stream().mapToInt(i -> i).toArray();
 	}
 }

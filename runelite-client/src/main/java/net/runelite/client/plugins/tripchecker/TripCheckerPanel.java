@@ -27,7 +27,6 @@ package net.runelite.client.plugins.tripchecker;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.util.Set;
 import javax.inject.Inject;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -72,7 +71,6 @@ class TripCheckerPanel extends PluginPanel
 		existingLoadouts.setRenderer(new ComboBoxListRenderer());
 		existingLoadouts.setForeground(Color.WHITE);
 		existingLoadouts.setFocusable(false);
-		//existingLoadouts.addItem("");
 		if (this.plugin.getTripLists().isEmpty())
 		{
 			existingLoadouts.setEnabled(false);
@@ -85,20 +83,53 @@ class TripCheckerPanel extends PluginPanel
 		add(saveCurrentLoadoutButton);
 
 		JButton checkLoadoutButton = new JButton("Check Loadout");
-		checkLoadoutButton.addActionListener(e -> this.plugin.checkInventoryAgainstLoadout(existingLoadouts.getSelectedItem().toString()));
+		checkLoadoutButton.addActionListener(e ->
+		{
+			Object selectedItem = existingLoadouts.getSelectedItem();
+			if (selectedItem == null)
+			{
+				return;
+			}
+
+			this.plugin.checkInventoryAgainstLoadout(selectedItem.toString());
+		});
 		add(checkLoadoutButton);
+
+		JButton deleteLoadoutButton = new JButton("Delete Current Loadout");
+		deleteLoadoutButton.addActionListener(e ->
+		{
+			Object selectedItem = existingLoadouts.getSelectedItem();
+			if (selectedItem == null)
+			{
+				return;
+			}
+
+			if (this.plugin.deleteLoadout(selectedItem.toString()))
+			{
+				refreshLoadouts();
+			}
+		});
+		add(deleteLoadoutButton);
 	}
 
-	void refreshLoadouts(Set<String> loadoutNames)
+	void refreshLoadouts()
 	{
 		existingLoadouts.removeAllItems();
-		for (String s : loadoutNames)
+		for (String s : plugin.getTripLists().keySet())
 		{
 			existingLoadouts.addItem(s);
 		}
+
 		if (existingLoadouts.getItemCount() > 0)
 		{
 			existingLoadouts.setEnabled(true);
+		}
+		else
+		{
+			existingLoadouts.removeAllItems();
+			existingLoadouts.setSelectedItem(null);
+			existingLoadouts.setSelectedIndex(-1);
+			existingLoadouts.setEnabled(false);
 		}
 	}
 }
