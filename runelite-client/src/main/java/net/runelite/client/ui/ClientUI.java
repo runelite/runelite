@@ -38,6 +38,7 @@ import java.awt.GraphicsConfiguration;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.TrayIcon;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.annotation.Nullable;
@@ -64,6 +65,7 @@ import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ExpandResizeType;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.config.WindowMode;
 import net.runelite.client.events.ClientUILoaded;
 import net.runelite.client.events.PluginToolbarButtonAdded;
 import net.runelite.client.events.PluginToolbarButtonRemoved;
@@ -93,30 +95,24 @@ public class ClientUI
 	public static final BufferedImage ICON;
 	private static final BufferedImage SIDEBAR_OPEN;
 	private static final BufferedImage SIDEBAR_CLOSE;
+	private static final BufferedImage FRAME_EXIT;
 
 	static
 	{
-		BufferedImage icon;
-		BufferedImage sidebarOpen;
-		BufferedImage sidebarClose;
-
 		try
 		{
 			synchronized (ImageIO.class)
 			{
-				icon = ImageIO.read(ClientUI.class.getResourceAsStream("/runelite.png"));
-				sidebarOpen = ImageIO.read(ClientUI.class.getResourceAsStream("open.png"));
-				sidebarClose = ImageIO.read(ClientUI.class.getResourceAsStream("close.png"));
+				ICON = ImageIO.read(ClientUI.class.getResourceAsStream("/runelite.png"));
+				SIDEBAR_OPEN = ImageIO.read(ClientUI.class.getResourceAsStream("open.png"));
+				SIDEBAR_CLOSE = ImageIO.read(ClientUI.class.getResourceAsStream("close.png"));
+				FRAME_EXIT = ImageIO.read(ClientUI.class.getResourceAsStream("exit.png"));
 			}
 		}
 		catch (IOException e)
 		{
 			throw new RuntimeException(e);
 		}
-
-		ICON = icon;
-		SIDEBAR_OPEN = sidebarOpen;
-		SIDEBAR_CLOSE = sidebarClose;
 	}
 
 	@Getter
@@ -162,7 +158,8 @@ public class ClientUI
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("runelite"))
+		// Ignore all window related settings in fullscreen
+		if (!event.getGroup().equals("runelite") || WindowMode.FULLSCREEN_WINDOW == config.windowMode())
 		{
 			return;
 		}
@@ -187,10 +184,9 @@ public class ClientUI
 				frame.setExpandResizeType(config.automaticResizeType());
 			}
 
-			if (event.getKey().equals("containInScreen") ||
-				event.getKey().equals("uiEnableCustomChrome"))
+			if (event.getKey().equals("containInScreen"))
 			{
-				frame.setContainedInScreen(config.containInScreen() && config.enableCustomChrome());
+				frame.setContainedInScreen(config.containInScreen());
 			}
 
 			if (event.getKey().equals("rememberScreenBounds") && event.getNewValue().equals("false"))
@@ -306,7 +302,7 @@ public class ClientUI
 			final int iconSize = ClientTitleToolbar.TITLEBAR_SIZE - 6;
 			final JButton button = SwingUtil.createSwingButton(event.getButton(), iconSize, null);
 
-			if (config.enableCustomChrome() || SwingUtil.isCustomTitlePanePresent(frame))
+			if (WindowMode.DECORATED_WINDOW == config.windowMode())
 			{
 				titleToolbar.addComponent(event.getButton(), button);
 				return;
@@ -321,7 +317,7 @@ public class ClientUI
 	{
 		SwingUtilities.invokeLater(() ->
 		{
-			if (config.enableCustomChrome() || SwingUtil.isCustomTitlePanePresent(frame))
+			if (WindowMode.DECORATED_WINDOW == config.windowMode())
 			{
 				titleToolbar.removeComponent(event.getButton());
 				return;
@@ -367,12 +363,11 @@ public class ClientUI
 			SwingUtil.addGracefulExitCallback(frame,
 				() ->
 				{
+					frame.getGraphicsConfiguration().getDevice().setFullScreenWindow(null);
 					saveClientBoundsConfig();
 					runelite.shutdown();
 				},
-				() -> client != null
-					&& client instanceof Client
-					&& ((Client) client).getGameState() != GameState.LOGIN_SCREEN);
+				() -> client instanceof Client && ((Client) client).getGameState() != GameState.LOGIN_SCREEN);
 
 			container = new JPanel();
 			container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
@@ -406,69 +401,72 @@ public class ClientUI
 	 */
 	public void show() throws Exception
 	{
-		final boolean withTitleBar = config.enableCustomChrome();
-
 		SwingUtilities.invokeAndWait(() ->
 		{
-			frame.setUndecorated(withTitleBar);
-
-			if (withTitleBar)
+			switch (config.windowMode())
 			{
-				frame.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+				case FULLSCREEN_WINDOW:
+					frame.setUndecorated(OSType.getOSType() != OSType.MacOS);
+					break;
+				case DECORATED_WINDOW:
+					frame.setUndecorated(true);
+					frame.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
 
-				final JComponent titleBar = SubstanceCoreUtilities.getTitlePaneComponent(frame);
-				titleToolbar.putClientProperty(SubstanceTitlePaneUtilities.EXTRA_COMPONENT_KIND, SubstanceTitlePaneUtilities.ExtraComponentKind.TRAILING);
-				titleBar.add(titleToolbar);
+					final JComponent titleBar = SubstanceCoreUtilities.getTitlePaneComponent(frame);
+					titleToolbar.putClientProperty(SubstanceTitlePaneUtilities.EXTRA_COMPONENT_KIND, SubstanceTitlePaneUtilities.ExtraComponentKind.TRAILING);
+					titleBar.add(titleToolbar);
 
-				// Substance's default layout manager for the title bar only lays out substance's components
-				// This wraps the default manager and lays out the TitleToolbar as well.
-				LayoutManager delegate = titleBar.getLayout();
-				titleBar.setLayout(new LayoutManager()
-				{
-					@Override
-					public void addLayoutComponent(String name, Component comp)
+					// Substance's default layout manager for the title bar only lays out substance's components
+					// This wraps the default manager and lays out the TitleToolbar as well.
+					LayoutManager delegate = titleBar.getLayout();
+					titleBar.setLayout(new LayoutManager()
 					{
-						delegate.addLayoutComponent(name, comp);
-					}
+						@Override
+						public void addLayoutComponent(String name, Component comp)
+						{
+							delegate.addLayoutComponent(name, comp);
+						}
 
-					@Override
-					public void removeLayoutComponent(Component comp)
-					{
-						delegate.removeLayoutComponent(comp);
-					}
+						@Override
+						public void removeLayoutComponent(Component comp)
+						{
+							delegate.removeLayoutComponent(comp);
+						}
 
-					@Override
-					public Dimension preferredLayoutSize(Container parent)
-					{
-						return delegate.preferredLayoutSize(parent);
-					}
+						@Override
+						public Dimension preferredLayoutSize(Container parent)
+						{
+							return delegate.preferredLayoutSize(parent);
+						}
 
-					@Override
-					public Dimension minimumLayoutSize(Container parent)
-					{
-						return delegate.minimumLayoutSize(parent);
-					}
+						@Override
+						public Dimension minimumLayoutSize(Container parent)
+						{
+							return delegate.minimumLayoutSize(parent);
+						}
 
-					@Override
-					public void layoutContainer(Container parent)
-					{
-						delegate.layoutContainer(parent);
-						final int width = titleToolbar.getPreferredSize().width;
-						titleToolbar.setBounds(titleBar.getWidth() - 75 - width, 0, width, titleBar.getHeight());
-					}
-				});
+						@Override
+						public void layoutContainer(Container parent)
+						{
+							delegate.layoutContainer(parent);
+							final int width = titleToolbar.getPreferredSize().width;
+							titleToolbar.setBounds(titleBar.getWidth() - 75 - width, 0, width, titleBar.getHeight());
+						}
+					});
+
+					break;
 			}
 
 			// Show frame
 			frame.pack();
 			frame.revalidateMinimumSize();
 
-			if (config.rememberScreenBounds())
+			if (config.rememberScreenBounds() && WindowMode.FULLSCREEN_WINDOW != config.windowMode())
 			{
 				try
 				{
-					Rectangle clientBounds = configManager.getConfiguration(
-						CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, Rectangle.class);
+					Rectangle clientBounds = configManager.getConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, Rectangle.class);
+
 					if (clientBounds != null)
 					{
 						frame.setBounds(clientBounds);
@@ -481,6 +479,19 @@ public class ClientUI
 					if (configManager.getConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED) != null)
 					{
 						frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+					}
+
+					// If the frame is well hidden (e.g. unplugged 2nd screen),
+					// we want to move it back to default position as it can be
+					// hard for the user to reposition it themselves otherwise.
+					clientBounds = frame.getBounds();
+					Rectangle screenBounds = frame.getGraphicsConfiguration().getBounds();
+					if (clientBounds.x + clientBounds.width - CLIENT_WELL_HIDDEN_MARGIN < screenBounds.getX() ||
+						clientBounds.x + CLIENT_WELL_HIDDEN_MARGIN > screenBounds.getX() + screenBounds.getWidth() ||
+						clientBounds.y + CLIENT_WELL_HIDDEN_MARGIN_TOP < screenBounds.getY() ||
+						clientBounds.y + CLIENT_WELL_HIDDEN_MARGIN > screenBounds.getY() + screenBounds.getHeight())
+					{
+						frame.setLocationRelativeTo(frame.getOwner());
 					}
 				}
 				catch (Exception ex)
@@ -501,19 +512,6 @@ public class ClientUI
 			requestFocus();
 			giveClientFocus();
 
-			// If the frame is well hidden (e.g. unplugged 2nd screen),
-			// we want to move it back to default position as it can be
-			// hard for the user to reposition it themselves otherwise.
-			Rectangle clientBounds = frame.getBounds();
-			Rectangle screenBounds = frame.getGraphicsConfiguration().getBounds();
-			if (clientBounds.x + clientBounds.width - CLIENT_WELL_HIDDEN_MARGIN < screenBounds.getX() ||
-				clientBounds.x + CLIENT_WELL_HIDDEN_MARGIN > screenBounds.getX() + screenBounds.getWidth() ||
-				clientBounds.y + CLIENT_WELL_HIDDEN_MARGIN_TOP < screenBounds.getY() ||
-				clientBounds.y + CLIENT_WELL_HIDDEN_MARGIN > screenBounds.getY() + screenBounds.getHeight())
-			{
-				frame.setLocationRelativeTo(frame.getOwner());
-			}
-
 			// Create hide sidebar button
 			sidebarNavigationButton = NavigationButton
 				.builder()
@@ -528,6 +526,34 @@ public class ClientUI
 
 			titleToolbar.addComponent(sidebarNavigationButton, sidebarNavigationJButton);
 			toggleSidebar();
+
+			// Force fullscreen
+			if (WindowMode.FULLSCREEN_WINDOW == config.windowMode())
+			{
+				final NavigationButton exitButton = NavigationButton
+					.builder()
+					.icon(FRAME_EXIT)
+					.onClick(() -> frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)))
+					.tooltip("Exit")
+					.build();
+
+				// Add exit button in fullscreen
+				final JButton jExitButton = SwingUtil.createSwingButton(exitButton, 0, null);
+				pluginToolbar.addComponent(-1, exitButton, jExitButton);
+
+				frame.setExpandResizeType(ExpandResizeType.KEEP_WINDOW_SIZE);
+				frame.setBounds(frame.getGraphicsConfiguration().getBounds());
+
+				if (!OSXUtil.toggleFullscreen(frame))
+				{
+					frame.setResizable(false);
+
+					if (OSType.getOSType() != OSType.Windows && frame.getGraphicsConfiguration().getDevice().isFullScreenSupported())
+					{
+						frame.getGraphicsConfiguration().getDevice().setFullScreenWindow(frame);
+					}
+				}
+			}
 		});
 
 		eventBus.post(new ClientUILoaded());

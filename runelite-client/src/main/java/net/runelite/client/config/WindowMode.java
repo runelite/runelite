@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,60 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.util;
+package net.runelite.client.config;
 
-import com.apple.eawt.Application;
-import com.apple.eawt.FullScreenUtilities;
-import java.awt.Window;
-import javax.swing.JFrame;
-import lombok.extern.slf4j.Slf4j;
+import lombok.AllArgsConstructor;
 
-/**
- * A class with OSX-specific functions to improve integration.
- */
-@Slf4j
-public class OSXUtil
+@AllArgsConstructor
+public enum WindowMode
 {
-	/**
-	 * Enables the osx native fullscreen if running on a mac.
-	 *
-	 * @param gui The gui to enable the fullscreen on.
-	 */
-	public static void tryEnableFullscreen(JFrame gui)
-	{
-		if (OSType.getOSType() == OSType.MacOS)
-		{
-			FullScreenUtilities.setWindowCanFullScreen(gui, true);
-			log.debug("Enabled fullscreen on macOS");
-		}
-	}
+	NATIVE_WINDOW("Native window"),
+	DECORATED_WINDOW("Decorated window"),
+	FULLSCREEN_WINDOW("Fullscreen window");
 
-	/**
-	 * Requests the foreground in a macOS friendly way.
-	 */
-	public static void requestFocus()
-	{
-		if (OSType.getOSType() == OSType.MacOS)
-		{
-			Application app = Application.getApplication();
-			app.requestForeground(true);
-			log.debug("Requested focus on macOS");
-		}
-	}
+	private final String name;
 
-	/**
-	 * Requests the fullscreen in a macOS friendly way
-	 */
-	public static boolean toggleFullscreen(final Window window)
+	@Override
+	public String toString()
 	{
-		if (OSType.getOSType() == OSType.MacOS)
-		{
-			Application app = Application.getApplication();
-			app.requestToggleFullScreen(window);
-			log.debug("Requested fullscreen on macOS");
-			return true;
-		}
-
-		return false;
+		return name;
 	}
 }
