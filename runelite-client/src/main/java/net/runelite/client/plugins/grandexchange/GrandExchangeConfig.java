@@ -36,11 +36,23 @@ import net.runelite.client.config.ConfigItem;
 public interface GrandExchangeConfig extends Config
 {
 	@ConfigItem(
+		position = 1,
 		keyName = "quickLookup",
 		name = "Hotkey lookup (Alt + Left click)",
 		description = "Configures whether to enable the hotkey lookup for ge searches"
 	)
 	default boolean quickLookup()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "enableNotifications",
+		name = "Enable Notifications",
+		description = "Configures whether to enable notifications when an offer updates"
+	)
+	default boolean enableNotifications()
 	{
 		return true;
 	}

@@ -32,7 +32,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -94,6 +96,7 @@ public class ScreenMarkerPlugin extends Plugin
 
 	@Getter
 	private boolean creatingScreenMarker = false;
+	private Point startLocation = null;
 
 	@Override
 	public Collection<Overlay> getOverlays()
@@ -170,6 +173,7 @@ public class ScreenMarkerPlugin extends Plugin
 	public void startCreation(Point location)
 	{
 		currentMarker = new ScreenMarker(
+			Instant.now().toEpochMilli(),
 			DEFAULT_MARKER_NAME + " " + (screenMarkers.size() + 1),
 			pluginPanel.getSelectedBorderThickness(),
 			pluginPanel.getSelectedColor(),
@@ -178,6 +182,7 @@ public class ScreenMarkerPlugin extends Plugin
 		);
 
 		// Set overlay creator bounds to current position and default size
+		startLocation = location;
 		overlay.setPreferredLocation(location);
 		overlay.setPreferredSize(DEFAULT_SIZE);
 		creatingScreenMarker = true;
@@ -199,6 +204,7 @@ public class ScreenMarkerPlugin extends Plugin
 		}
 
 		creatingScreenMarker = false;
+		startLocation = null;
 		currentMarker = null;
 		setMouseListenerEnabled(false);
 
@@ -220,11 +226,12 @@ public class ScreenMarkerPlugin extends Plugin
 		overlayRenderer.rebuildOverlays();
 	}
 
-	public void resizeMarker(int dx, int dy)
+	void resizeMarker(Point point)
 	{
-		// TODO: Allow resizing below base point
-		Dimension currentSize = overlay.getPreferredSize();
-		overlay.setPreferredSize(new Dimension(currentSize.width + dx, currentSize.height + dy));
+		Rectangle bounds = new Rectangle(startLocation);
+		bounds.add(point);
+		overlay.setPreferredLocation(bounds.getLocation());
+		overlay.setPreferredSize(bounds.getSize());
 	}
 
 	public void updateConfig()

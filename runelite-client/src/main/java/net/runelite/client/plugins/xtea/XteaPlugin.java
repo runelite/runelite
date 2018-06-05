@@ -25,10 +25,8 @@
 package net.runelite.client.plugins.xtea;
 
 import com.google.common.eventbus.Subscribe;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -36,7 +34,6 @@ import net.runelite.api.events.MapRegionChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.http.api.xtea.XteaClient;
-import okhttp3.Response;
 
 @PluginDescriptor(
 	name = "Xtea",
@@ -51,9 +48,6 @@ public class XteaPlugin extends Plugin
 
 	@Inject
 	private Client client;
-
-	@Inject
-	private ScheduledExecutorService executor;
 
 	@Subscribe
 	public void onMapRegionChanged(MapRegionChanged event)
@@ -82,19 +76,6 @@ public class XteaPlugin extends Plugin
 
 		sentRegions.add(region);
 
-		executor.execute(() ->
-		{
-			try (Response response = xteaClient.submit(revision, region, keys))
-			{
-				if (!response.isSuccessful())
-				{
-					log.debug("unsuccessful xtea response");
-				}
-			}
-			catch (IOException ex)
-			{
-				log.debug("unable to submit xtea keys", ex);
-			}
-		});
+		xteaClient.submit(revision, region, keys);
 	}
 }

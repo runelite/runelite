@@ -27,7 +27,6 @@ package net.runelite.client.plugins.raids;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -46,18 +45,17 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Point;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Tile;
-import net.runelite.api.Varbits;
 import static net.runelite.api.Perspective.SCENE_SIZE;
+import net.runelite.api.Point;
+import net.runelite.api.Tile;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.chat.ChatColor;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -266,8 +264,6 @@ public class RaidsPlugin extends Plugin
 
 	private void postRaidsLayout()
 	{
-		cacheRotationColors();
-
 		final ChatMessageBuilder message = new ChatMessageBuilder()
 			.append(ChatColorType.NORMAL)
 			.append("Rotation: ")
@@ -308,7 +304,6 @@ public class RaidsPlugin extends Plugin
 
 				if (config.pointsMessage())
 				{
-					cachePointColors();
 					int totalPoints = client.getVar(Varbits.TOTAL_POINTS);
 					int personalPoints = client.getVar(Varbits.PERSONAL_POINTS);
 
@@ -389,21 +384,6 @@ public class RaidsPlugin extends Plugin
 		{
 			list.addAll(Arrays.asList(input.toLowerCase().split(SPLIT_REGEX)));
 		}
-	}
-
-	private void cachePointColors()
-	{
-		chatMessageManager.cacheColor(new ChatColor(ChatColorType.NORMAL, Color.BLACK, false), ChatMessageType.CLANCHAT_INFO)
-			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, false), ChatMessageType.CLANCHAT_INFO)
-			.cacheColor(new ChatColor(ChatColorType.NORMAL, Color.WHITE, true), ChatMessageType.CLANCHAT_INFO)
-			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, true), ChatMessageType.CLANCHAT_INFO)
-			.refreshAll();
-	}
-
-	private void cacheRotationColors()
-	{	chatMessageManager.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.MAGENTA, false), ChatMessageType.CLANCHAT_INFO)
-			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.MAGENTA, true), ChatMessageType.CLANCHAT_INFO)
-			.refreshAll();
 	}
 
 	public int getRotationMatches()

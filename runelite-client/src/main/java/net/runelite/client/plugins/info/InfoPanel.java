@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.info;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
@@ -128,10 +129,14 @@ public class InfoPanel extends PluginPanel
 		String engineVer = "Unknown";
 		if (client != null)
 		{
-			engineVer = String.format("Rev %s", runeLiteProperties.getRunescapeVersion());
+			engineVer = String.format("Rev %d", client.getRevision());
 		}
 
 		revision.setText(htmlLabel("Oldschool revision: ", engineVer));
+
+		JLabel launcher = new JLabel(htmlLabel("Launcher version: ", MoreObjects
+			.firstNonNull(runeLiteProperties.getLauncherVersion(), "Unknown")));
+		launcher.setFont(smallFont);
 
 		loggedLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		loggedLabel.setFont(smallFont);
@@ -152,6 +157,7 @@ public class InfoPanel extends PluginPanel
 
 		versionPanel.add(version);
 		versionPanel.add(revision);
+		versionPanel.add(launcher);
 		versionPanel.add(Box.createGlue());
 		versionPanel.add(loggedLabel);
 		versionPanel.add(emailLabel);

@@ -67,6 +67,12 @@ public class CommandManager
 
 		String[] split = typedText.split(" ");
 
+		// Fixes ArrayIndexOutOfBounds when typing ":: "
+		if (split.length == 0)
+		{
+			return;
+		}
+
 		String command = split[0];
 		String[] args = Arrays.copyOfRange(split, 1, split.length);
 

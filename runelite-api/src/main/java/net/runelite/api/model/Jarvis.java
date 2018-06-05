@@ -29,17 +29,23 @@ import java.util.List;
 import net.runelite.api.Point;
 
 /**
- * Implementation of the Jarvis march algorithm
- * https://en.wikipedia.org/wiki/Gift_wrapping_algorithm
- * @author adam
+ * Provides utility methods for computing the convex hull of a list of
+ * <em>n</em> points.
+ * <p>
+ * The implementation uses the Jarvis march algorithm and runs in O(nh)
+ * time in the worst case, where n is the number of points and h the
+ * number of points on the convex hull.
  */
 public class Jarvis
 {
 	/**
-	 * compute the convex hull of a given set of points
+	 * Computes and returns the convex hull of the passed points.
+	 * <p>
+	 * The size of the list must be at least 4, otherwise this method will
+	 * return null.
 	 *
-	 * @param points
-	 * @return
+	 * @param points list of points
+	 * @return list containing the points part of the convex hull
 	 */
 	public static List<Point> convexHull(List<Point> points)
 	{
@@ -59,6 +65,12 @@ public class Jarvis
 		do
 		{
 			ch.add(current);
+			assert ch.size() <= points.size() : "hull has more points than graph";
+			if (ch.size() > points.size())
+			{
+				// Just to make sure we never somehow get stuck in this loop
+				return null;
+			}
 
 			// the next point - all points are to the right of the
 			// line between current and next
@@ -72,7 +84,7 @@ public class Jarvis
 					continue;
 				}
 
-				int cp = crossProduct(current, p, next);
+				long cp = crossProduct(current, p, next);
 				if (cp > 0 || (cp == 0 && current.distanceTo(p) > current.distanceTo(next)))
 				{
 					next = p;
@@ -85,7 +97,6 @@ public class Jarvis
 				return null;
 			}
 
-			assert ch.size() <= points.size() : "hull has more points than graph";
 			current = next;
 		}
 		while (current != left);
@@ -112,10 +123,10 @@ public class Jarvis
 		return left;
 	}
 
-	private static int crossProduct(Point p, Point q, Point r)
+	private static long crossProduct(Point p, Point q, Point r)
 	{
-		int val = (q.getY() - p.getY()) * (r.getX() - q.getX())
-			- (q.getX() - p.getX()) * (r.getY() - q.getY());
+		long val = (long)(q.getY() - p.getY()) * (r.getX() - q.getX())
+			- (long)(q.getX() - p.getX()) * (r.getY() - q.getY());
 		return val;
 	}
 }

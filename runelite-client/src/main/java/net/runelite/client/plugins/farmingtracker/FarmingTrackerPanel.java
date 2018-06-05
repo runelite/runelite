@@ -31,8 +31,6 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -45,7 +43,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -139,7 +136,7 @@ class FarmingTrackerPanel extends PluginPanel
 					{
 						groupLabel.setBorder(new EmptyBorder(15, 0, 0, 0));
 					}
-					
+
 					groupLabel.setFont(FontManager.getRunescapeSmallFont());
 
 					container.add(groupLabel, c);
@@ -169,7 +166,9 @@ class FarmingTrackerPanel extends PluginPanel
 			scroller.getVerticalScrollBar().setBorder(new EmptyBorder(0, 9, 0, 0));
 			scroller.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
-			MaterialTab materialTab = new MaterialTab("", tabGroup, scroller);
+			//Use a placeholder icon until the async image gets loaded
+			MaterialTab materialTab = new MaterialTab(new ImageIcon(), tabGroup, scroller);
+			materialTab.setPreferredSize(new Dimension(30, 27));
 			materialTab.setName(tab.getName());
 
 			AsyncBufferedImage icon = itemManager.getImage(tab.getItemID());
@@ -177,30 +176,11 @@ class FarmingTrackerPanel extends PluginPanel
 			{
 				BufferedImage subIcon = icon.getSubimage(0, 0, 32, 32);
 				materialTab.setIcon(new ImageIcon(subIcon.getScaledInstance(24, 24, Image.SCALE_SMOOTH)));
-				materialTab.setHorizontalAlignment(SwingConstants.CENTER);
-				materialTab.setVerticalAlignment(SwingConstants.CENTER);
-				materialTab.setOpaque(true);
-				materialTab.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-				materialTab.setPreferredSize(new Dimension(30, 27));
 			};
 			icon.onChanged(resize);
 			resize.run();
 
 			materialTab.setOnSelectEvent(() -> config.setPatch(tab));
-			materialTab.addMouseListener(new MouseAdapter()
-			{
-				@Override
-				public void mouseEntered(MouseEvent e)
-				{
-					materialTab.setBackground(ColorScheme.DARKER_GRAY_HOVER_COLOR);
-				}
-
-				@Override
-				public void mouseExited(MouseEvent e)
-				{
-					materialTab.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-				}
-			});
 
 			tabGroup.addTab(materialTab);
 			if (config.patch() == tab)

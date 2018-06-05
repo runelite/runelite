@@ -27,8 +27,22 @@ package net.runelite.api.events;
 import lombok.Value;
 import net.runelite.api.Tile;
 
+/**
+ * An event called when an item pile on a {@link Tile} is modified.
+ * <p>
+ * Examples of when this event may trigger include:
+ * <ul>
+ *     <li>Dropping an item</li>
+ *     <li>Picking up an item</li>
+ *     <li>A dropped item spawning</li>
+ *     <li>Loading a region with dropped items</li>
+ * </ul>
+ */
 @Value
 public class ItemLayerChanged
 {
+	/**
+	 * The affected tile.
+	 */
 	private Tile tile;
 }

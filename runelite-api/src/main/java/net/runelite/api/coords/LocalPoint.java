@@ -31,18 +31,27 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 
 /**
- * A LocolPoint is a Two-Dimensional point in the local coordinate space. Because the local coordinate space moves,
- * it is not safe to keep a LocalPoint after a loading zone. The unit is 1/128th of a Tile
+ * A two-dimensional point in the local coordinate space.
+ * <p>
+ * Local points are immutable, however since the local coordinate space moves,
+ * it is not safe to keep a LocalPoint after a loading zone.
+ * <p>
+ * The unit of a LocalPoint is 1/128th of a tile.
  */
 @Value
 public class LocalPoint
 {
+	/**
+	 * X and Y axis coordinates.
+	 */
 	private final int x, y;
 
 	/**
-	 * Returns a LocalPoint of the center of the passed tile
+	 * Gets the local coordinate at the center of the passed tile.
 	 *
-	 * @return LocalPoint if in scene, otherwise null
+	 * @param client the client
+	 * @param world  the passed tile
+	 * @return coordinate if the tile is in the current scene, otherwise null
 	 */
 	@Nullable
 	public static LocalPoint fromWorld(Client client, WorldPoint world)
@@ -55,9 +64,12 @@ public class LocalPoint
 	}
 
 	/**
-	 * Returns a LocalPoint of the center of the passed tile
+	 * Gets the local coordinate at the center of the passed tile.
 	 *
-	 * @return LocalPoint if in scene, otherwise null
+	 * @param client the client
+	 * @param x      x-axis coordinate of the tile
+	 * @param y      y-axis coordinate of the tile
+	 * @return coordinate if the tile is in the current scene, otherwise null
 	 */
 	public static LocalPoint fromWorld(Client client, int x, int y)
 	{
@@ -73,10 +85,10 @@ public class LocalPoint
 	}
 
 	/**
-	 * Find the distance from this point to another point
+	 * Gets the distance between this point and another.
 	 *
-	 * @param other
-	 * @return
+	 * @param other other point
+	 * @return the distance
 	 */
 	public int distanceTo(LocalPoint other)
 	{
@@ -84,7 +96,17 @@ public class LocalPoint
 	}
 
 	/**
-	 * Returns a LocalPoint of the center of the passed tile
+	 * Gets the coordinate at the center of the passed tile.
+	 * <p>
+	 * The coordinate returned by this method is the true tile location,
+	 * in LocalPoint units, relative to tile (0, 0).
+	 * <p>
+	 * e.g. If the local player is standing on tile 3170, the method returns
+	 * 405823, or 3170 * 128 + 64.
+	 *
+	 * @param x      x-axis coordinate of the tile
+	 * @param y      y-axis coordinate of the tile
+	 * @return true coordinate of the tile
 	 */
 	public static LocalPoint fromRegion(int x, int y)
 	{
@@ -95,16 +117,19 @@ public class LocalPoint
 	}
 
 	/**
-	 * Returns the X coordinate in Scene space (tiles)
+	 * Gets the x-axis coordinate in scene space (tiles).
+	 *
+	 * @return x-axis coordinate
 	 */
 	public int getRegionX()
 	{
 		return x >>> Perspective.LOCAL_COORD_BITS;
 	}
 
-
 	/**
-	 * Returns the Y coordinate in Scene space (tiles)
+	 * Gets the y-axis coordinate in scene space (tiles).
+	 *
+	 * @return y-axis coordinate
 	 */
 	public int getRegionY()
 	{

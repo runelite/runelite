@@ -24,6 +24,9 @@
  */
 package net.runelite.api;
 
+/**
+ * Utility class used for mapping sound effect IDs.
+ */
 public final class SoundEffectID
 {
 	public final static int UI_BOOP = 2266;
@@ -51,7 +54,7 @@ public final class SoundEffectID
 	public final static int SMITH_ANVIL_TONK = 3791;
 
 	/**
-	 * Used for random event NPCs spawning, and the imp teleport
+	 * Used for random event NPCs spawning, and the imp teleport.
 	 */
 	public final static int NPC_TELEPORT_WOOSH = 1930;
 

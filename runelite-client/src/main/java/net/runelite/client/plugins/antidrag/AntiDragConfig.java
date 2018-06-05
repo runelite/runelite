@@ -45,11 +45,4 @@ public interface AntiDragConfig extends Config
 	{
 		return 600 / 20; // one game tick
 	}
-
-	@ConfigItem(
-		keyName = "dragDelay",
-		name = "",
-		description = ""
-	)
-	void dragDelay(int delay);
 }

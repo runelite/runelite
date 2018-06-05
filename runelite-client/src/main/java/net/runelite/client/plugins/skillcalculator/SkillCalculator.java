@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -48,19 +47,23 @@ import net.runelite.client.plugins.skillcalculator.beans.SkillData;
 import net.runelite.client.plugins.skillcalculator.beans.SkillDataBonus;
 import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 
 class SkillCalculator extends JPanel
 {
+	private static final int MAX_XP = 200_000_000;
+	private static final DecimalFormat XP_FORMAT = new DecimalFormat("#.#");
+
+	static SpriteManager spriteManager;
+	static ItemManager itemManager;
+
 	private Client client;
 	private SkillData skillData;
 	private List<UIActionSlot> uiActionSlots = new ArrayList<>();
 	private UICalculatorInputArea uiInput;
 
 	private CacheSkillData cacheSkillData = new CacheSkillData();
-
-	static SpriteManager spriteManager;
-	static ItemManager itemManager;
 
 	private UICombinedActionSlot combinedActionSlot = new UICombinedActionSlot();
 	private ArrayList<UIActionSlot> combinedActionSlots = new ArrayList<>();
@@ -71,16 +74,12 @@ class SkillCalculator extends JPanel
 	private int targetXP = Experience.getXpForLevel(targetLevel);
 	private float xpFactor = 1.0f;
 
-	private static int MAX_XP = Experience.getXpForLevel(Experience.MAX_VIRT_LEVEL);
-
-	private static DecimalFormat XP_FORMAT = new DecimalFormat("#.#");
-
 	SkillCalculator(Client client, UICalculatorInputArea uiInput)
 	{
 		this.client = client;
 		this.uiInput = uiInput;
 
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setLayout(new DynamicGridLayout(0, 1, 0, 5));
 
 		// Register listeners on the input fields and then move on to the next related text field
 		uiInput.uiFieldCurrentLevel.addActionListener(e ->
@@ -125,8 +124,6 @@ class SkillCalculator extends JPanel
 		// Create action slots for the skill actions.
 		renderActionSlots();
 
-		add(Box.createRigidArea(new Dimension(0, 15)));
-
 		// Update the input fields.
 		updateInputFields();
 	}
@@ -154,7 +151,7 @@ class SkillCalculator extends JPanel
 		double xp = 0;
 
 		for (UIActionSlot slot : combinedActionSlots)
-			xp += slot.value;
+			xp += slot.getValue();
 
 		if (neededXP > 0)
 			actionCount = (int) Math.ceil(neededXP / xp);
@@ -209,8 +206,6 @@ class SkillCalculator extends JPanel
 		{
 			UIActionSlot slot = new UIActionSlot(action);
 			uiActionSlots.add(slot); // Keep our own reference.
-
-			add(Box.createRigidArea(new Dimension(0, 5)));
 			add(slot); // Add component to the panel.
 
 			slot.addMouseListener(new MouseAdapter()
@@ -221,12 +216,12 @@ class SkillCalculator extends JPanel
 					if (!e.isShiftDown())
 						clearCombinedSlots();
 
-					if (slot.isSelected)
+					if (slot.isSelected())
 						combinedActionSlots.remove(slot);
 					else
 						combinedActionSlots.add(slot);
 
-					slot.setSelected(!slot.isSelected);
+					slot.setSelected(!slot.isSelected());
 					updateCombinedAction();
 				}
 			});
@@ -243,14 +238,16 @@ class SkillCalculator extends JPanel
 		{
 			int actionCount = 0;
 			int neededXP = targetXP - currentXP;
-			double xp = (slot.action.isIgnoreBonus()) ? slot.action.getXp() : slot.action.getXp() * xpFactor;
+			SkillDataEntry action = slot.getAction();
+			double xp = (action.isIgnoreBonus()) ? action.getXp() : action.getXp() * xpFactor;
 
 			if (neededXP > 0)
 				actionCount = (int) Math.ceil(neededXP / xp);
 
-			slot.setText("Lvl. " + slot.action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
-			slot.setAvailable(currentLevel >= slot.action.getLevel());
-			slot.value = xp;
+			slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
+			slot.setAvailable(currentLevel >= action.getLevel());
+			slot.setOverlapping(action.getLevel() < targetLevel);
+			slot.setValue((int) xp);
 		}
 	}
 

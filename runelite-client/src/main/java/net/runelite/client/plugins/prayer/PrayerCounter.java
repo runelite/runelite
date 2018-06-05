@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Raqes <j.raqes@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +22,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.client.plugins.prayer;
 
-import lombok.Data;
-import net.runelite.api.Actor;
+import java.awt.image.BufferedImage;
+import lombok.Getter;
+import lombok.Setter;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.infobox.Counter;
 
-@Data
-public class ActorDeath
+public class PrayerCounter extends Counter
 {
-	private Actor actor;
+	@Getter
+	private final PrayerType prayerType;
+
+	@Setter
+	private BufferedImage image;
+
+	PrayerCounter(Plugin plugin, PrayerType prayerType)
+	{
+		super(null, plugin, "");
+		this.prayerType = prayerType;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Counter{" + "prayer=" + prayerType.getName() + '}';
+	}
+
+	@Override
+	public String getTooltip()
+	{
+		return prayerType.getDescription();
+	}
+
+	@Override
+	public BufferedImage getImage()
+	{
+		return image;
+	}
 }

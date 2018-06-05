@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.screenshot;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
@@ -105,6 +106,15 @@ public class ScreenshotPlugin extends Plugin
 
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile("Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
+
+	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
+		"You feel something weird sneaking into your backpack",
+		"You have a funny feeling like you would have been followed");
+
+	private static final ImmutableList<String> KILL_MESSAGES = ImmutableList.of("into tiny pieces and sat on them", "you have obliterated",
+		"falls before your might", "A humiliating defeat for", "With a crushing blow you", "thinking challenging you",
+		"Can anyone defeat you? Certainly", "was no match for you", "You were clearly a better fighter than", "RIP",
+		"You have defeated", "What an embarrassing performance by", "was no match for your awesomeness");
 
 	private String clueType;
 	private Integer clueNumber;
@@ -246,6 +256,18 @@ public class ScreenshotPlugin extends Plugin
 				raidsNumber = Integer.valueOf(m.group());
 				return;
 			}
+		}
+
+		if (config.screenshotPet() && PET_MESSAGES.stream().anyMatch(chatMessage::contains))
+		{
+			String fileName = "Pet " + TIME_FORMAT.format(new Date());
+			takeScreenshot(fileName);
+		}
+
+		if (config.screenshotKills() && KILL_MESSAGES.stream().anyMatch(chatMessage::contains))
+		{
+			String fileName = "Kill " + " " + LocalDate.now();
+			takeScreenshot(fileName);
 		}
 	}
 

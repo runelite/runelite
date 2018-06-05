@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, James Swindle <wilingua@gmail.com>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
@@ -23,98 +23,54 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.npchighlight;
+package net.runelite.client.plugins.woodcutting;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.NPC;
-import net.runelite.api.Point;
+import net.runelite.api.GameObject;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-public class NpcClickboxOverlay extends Overlay
+class WoodcuttingTreesOverlay extends Overlay
 {
 	private final Client client;
-	private final NpcIndicatorsConfig config;
-	private final NpcIndicatorsPlugin plugin;
+	private final WoodcuttingConfig config;
+	private final ItemManager itemManager;
+	private final WoodcuttingPlugin plugin;
 
 	@Inject
-	NpcClickboxOverlay(Client client, NpcIndicatorsConfig config, NpcIndicatorsPlugin plugin)
+	private WoodcuttingTreesOverlay(final Client client, final WoodcuttingConfig config, final ItemManager itemManager, final WoodcuttingPlugin plugin)
 	{
 		this.client = client;
 		this.config = config;
+		this.itemManager = itemManager;
 		this.plugin = plugin;
-		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
+		setPosition(OverlayPosition.DYNAMIC);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		for (NPC npc : plugin.getHighlightedNpcs())
+		if (plugin.getSession() == null || !config.showRedwoodTrees())
 		{
-			renderNpcOverlay(graphics, npc, npc.getName(), config.getNpcColor());
+			return null;
 		}
 
-		NPC[] npcs = client.getCachedNPCs();
-		for (int npcId : plugin.getNpcTags())
+		for (GameObject treeObject : plugin.getTreeObjects())
 		{
-			NPC npc = npcs[npcId];
-			if (npc != null && npc.getName() != null)
+			if (treeObject.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) <= 12)
 			{
-				renderNpcOverlay(graphics, npc, npc.getName(), config.getTagColor());
+				Axe axe = plugin.getAxe();
+				OverlayUtil.renderImageLocation(client, graphics, treeObject.getLocalLocation(), itemManager.getImage(axe.getItemId()), 120);
 			}
 		}
 
 		return null;
-	}
-
-	private void renderNpcOverlay(Graphics2D graphics, NPC actor, String name, Color color)
-	{
-		switch (config.renderStyle())
-		{
-			case TILE:
-				Polygon objectTile = actor.getCanvasTilePoly();
-
-				if (objectTile != null)
-				{
-					graphics.setColor(color);
-					graphics.setStroke(new BasicStroke(2));
-					graphics.draw(objectTile);
-					graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
-					graphics.fill(objectTile);
-				}
-				break;
-
-			case HULL:
-				Polygon objectClickbox = actor.getConvexHull();
-
-				if (objectClickbox != null)
-				{
-					graphics.setColor(color);
-					graphics.setStroke(new BasicStroke(2));
-					graphics.draw(objectClickbox);
-					graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
-					graphics.fill(objectClickbox);
-				}
-				break;
-		}
-
-		if (config.drawNames())
-		{
-			Point textLocation = actor.getCanvasTextLocation(graphics, name, actor.getLogicalHeight() + 40);
-
-			if (textLocation != null)
-			{
-				OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
-			}
-		}
 	}
 }

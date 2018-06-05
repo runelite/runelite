@@ -40,6 +40,7 @@ import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import joptsimple.util.EnumConverter;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.account.SessionManager;
@@ -68,7 +69,10 @@ public class RuneLite
 	private static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
 	private static final File LOGS_FILE_NAME = new File(LOGS_DIR, "application");
 
+	@Getter
 	private static Injector injector;
+
+	@Getter
 	private static OptionSet options;
 
 	@Inject
@@ -122,10 +126,12 @@ public class RuneLite
 	{
 		Locale.setDefault(Locale.ENGLISH);
 
-		OptionParser parser = new OptionParser();
+		final OptionParser parser = new OptionParser();
 		parser.accepts("developer-mode", "Enable developer tools");
 		parser.accepts("debug", "Show extra debugging output");
-		ArgumentAcceptingOptionSpec<UpdateCheckMode> updateMode = parser.accepts("rs", "Select client type")
+
+		final ArgumentAcceptingOptionSpec<UpdateCheckMode> updateMode = parser
+			.accepts("rs", "Select client type")
 			.withRequiredArg()
 			.ofType(UpdateCheckMode.class)
 			.defaultsTo(UpdateCheckMode.AUTO)
@@ -137,13 +143,24 @@ public class RuneLite
 					return super.convert(v.toUpperCase());
 				}
 			});
+
 		parser.accepts("help", "Show this text").forHelp();
-		setOptions(parser.parse(args));
+		options = parser.parse(args);
 
 		if (getOptions().has("help"))
 		{
 			parser.printHelpOn(System.out);
 			System.exit(0);
+		}
+
+		if (RuneLite.getOptions().has("developer-mode"))
+		{
+			boolean assertions = false;
+			assert assertions = true;
+			if (!assertions)
+			{
+				throw new RuntimeException("Developers should enable assertions; Add `-ea` to your JVM arguments`");
+			}
 		}
 
 		PROFILES_DIR.mkdirs();
@@ -166,7 +183,7 @@ public class RuneLite
 			}
 		});
 
-		setInjector(Guice.createInjector(new RuneLiteModule()));
+		injector = Guice.createInjector(new RuneLiteModule());
 		injector.getInstance(RuneLite.class).start(getOptions().valueOf(updateMode));
 	}
 
@@ -197,6 +214,7 @@ public class RuneLite
 		eventBus.register(commandManager);
 		eventBus.register(pluginManager);
 		eventBus.register(clanManager);
+
 		if (this.client != null)
 		{
 			eventBus.register(itemManager.get());
@@ -239,28 +257,20 @@ public class RuneLite
 	}
 
 	@VisibleForTesting
-	public void setClient(Client client)
-	{
-		this.client = client;
-	}
-
-	public static Injector getInjector()
-	{
-		return injector;
-	}
-
 	public static void setInjector(Injector injector)
 	{
 		RuneLite.injector = injector;
 	}
 
-	public static OptionSet getOptions()
-	{
-		return options;
-	}
-
+	@VisibleForTesting
 	public static void setOptions(OptionSet options)
 	{
 		RuneLite.options = options;
+	}
+
+	@VisibleForTesting
+	public void setClient(Client client)
+	{
+		this.client = client;
 	}
 }
