@@ -139,7 +139,6 @@ class WidgetInspector extends JFrame
 				plugin.itemIndex = node.getWidgetItem().getIndex();
 				log.debug("Set item index to {}", plugin.itemIndex);
 			}
-
 		});
 
 		final JScrollPane treeScrollPane = new JScrollPane(widgetTree);
@@ -236,7 +235,6 @@ class WidgetInspector extends JFrame
 				searchNodes.clear();
 				widgetResults.clear();
 			}
-
 			searchIndex = 0;
 			mousePos = client.getMouseCanvasPosition();
 			event.consume();
