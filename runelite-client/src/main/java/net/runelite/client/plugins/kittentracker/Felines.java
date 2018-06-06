@@ -24,17 +24,14 @@
  */
 package net.runelite.client.plugins.kittentracker;
 
-
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemID;
-
 import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
 public enum Felines
 {
-
 	//white/black
 	KITTEN_5591(5591, ItemID.PET_KITTEN),
 	CAT_1619(1619, ItemID.PET_CAT),
@@ -63,11 +60,9 @@ public enum Felines
 	HELLKITTEN(5597, ItemID.HELLKITTEN),
 	HELL_CAT(1625, ItemID.HELL_CAT);
 
-
 	private static final Map<Integer, Felines> felines = new HashMap<>();
 	private final int id;
 	private final int itemSpriteId;
-
 
 	static
 	{
@@ -81,7 +76,6 @@ public enum Felines
 	{
 		this.id = id;
 		this.itemSpriteId = ItemSpriteId;
-
 	}
 
 	public int getItemSpriteId()

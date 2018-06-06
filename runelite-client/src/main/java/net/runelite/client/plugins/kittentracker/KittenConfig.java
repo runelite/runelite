@@ -29,18 +29,18 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-		keyName = "kittenConfig",
-		name = "kitten",
-		description = "Configuration for the kitten plugin"
+	keyName = "kittenConfig",
+	name = "kitten",
+	description = "Configuration for the kitten plugin"
 )
 
 public interface KittenConfig extends Config
 {
 	@ConfigItem(
-			keyName = "kittenInfoBox",
-			name = "Display kitten info box",
-			description = "Displays a countdown for your kitten to grow into a cat",
-			position = 1
+		keyName = "kittenInfoBox",
+		name = "Display kitten info box",
+		description = "Displays a countdown for your kitten to grow into a cat",
+		position = 1
 	)
 	default boolean kittenInfoBox()
 	{
@@ -48,10 +48,10 @@ public interface KittenConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "catInfoBox",
-			name = "Display cat info box",
-			description = "Displays a countdown for your cat to grow into a overgrown cat",
-			position = 2
+		keyName = "catInfoBox",
+		name = "Display cat info box",
+		description = "Displays a countdown for your cat to grow into a overgrown cat",
+		position = 2
 	)
 	default boolean catInfoBox()
 	{
@@ -59,10 +59,10 @@ public interface KittenConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "kittenHungryBox",
-			name = "Display kitten hunger",
-			description = "Displays a countdown until your kitten leaves you for being underfed",
-			position = 3
+		keyName = "kittenHungryBox",
+		name = "Display kitten hunger",
+		description = "Displays a countdown until your kitten leaves you for being underfed",
+		position = 3
 	)
 	default boolean kittenHungryBox()
 	{
@@ -70,10 +70,10 @@ public interface KittenConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "kittenAttentionBox",
-			name = "Display kitten attention",
-			description = "Displays a countdown until your kitten leaves you for being neglectful",
-			position = 4
+		keyName = "kittenAttentionBox",
+		name = "Display kitten attention",
+		description = "Displays a countdown until your kitten leaves you for being neglectful",
+		position = 4
 	)
 	default boolean kittenAttentionBox()
 	{
@@ -81,10 +81,10 @@ public interface KittenConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "kittenNotifications",
-			name = "Display kitten notifications",
-			description = "Displays a notification when your kitten is hungry or requires attention",
-			position = 5
+		keyName = "kittenNotifications",
+		name = "Display kitten notifications",
+		description = "Displays a notification when your kitten is hungry or requires attention",
+		position = 5
 	)
 	default boolean kittenNotifications()
 	{
@@ -92,10 +92,10 @@ public interface KittenConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "secondsAlive",
-			name = "",
-			description = "",
-			hidden = true
+		keyName = "secondsAlive",
+		name = "",
+		description = "",
+		hidden = true
 	)
 	default int secondsAlive()
 	{
@@ -103,17 +103,17 @@ public interface KittenConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "secondsAlive",
-			name = "",
-			description = ""
+		keyName = "secondsAlive",
+		name = "",
+		description = ""
 	)
 	void secondsAlive(int seconds);
 
 	@ConfigItem(
-			keyName = "secondsHungry",
-			name = "",
-			description = "",
-			hidden = true
+		keyName = "secondsHungry",
+		name = "",
+		description = "",
+		hidden = true
 	)
 	default int secondsHungry()
 	{
@@ -121,17 +121,17 @@ public interface KittenConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "secondsHungry",
-			name = "",
-			description = ""
+		keyName = "secondsHungry",
+		name = "",
+		description = ""
 	)
 	void secondsHungry(int seconds);
 
 	@ConfigItem(
-			keyName = "secondsNeglected",
-			name = "",
-			description = "",
-			hidden = true
+		keyName = "secondsNeglected",
+		name = "",
+		description = "",
+		hidden = true
 	)
 	default int secondsNeglected()
 	{
@@ -139,17 +139,17 @@ public interface KittenConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "secondsNeglected",
-			name = "",
-			description = ""
+		keyName = "secondsNeglected",
+		name = "",
+		description = ""
 	)
 	void secondsNeglected(int seconds);
 
 	@ConfigItem(
-			keyName = "felineId",
-			name = "",
-			description = "",
-			hidden = true
+		keyName = "felineId",
+		name = "",
+		description = "",
+		hidden = true
 	)
 	default int felineId()
 	{
@@ -157,12 +157,9 @@ public interface KittenConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "felineId",
-			name = "",
-			description = ""
+		keyName = "felineId",
+		name = "",
+		description = ""
 	)
 	void felineId(int id);
-
-
-
 }

@@ -41,20 +41,17 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
-
 import javax.inject.Inject;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
-
 @PluginDescriptor(
-		name = "Kitten"
+	name = "Kitten"
 )
 
 public class KittenPlugin extends Plugin
 {
-
 	private boolean ready;
 	private Instant kittenSpawned;
 	private Instant catSpawned;
@@ -69,16 +66,13 @@ public class KittenPlugin extends Plugin
 	private static final String CHAT_CAT_OVERGROWN = "Your cat has grown into a mighty feline, but it will no longer be ableto chase vermin.";
 	private int followerID = 0;
 	private int previousFeline = 0;
-
-
-
+	private int followerVarbit = 0;
 	private boolean cat = false; // npcId 1619-1625
 	private boolean lazycat = false; // npcId 1626-1632
 	private boolean wilycat = false; // npcId 5584-5590
 	private boolean kitten = false; // npcId 5591-5597
 	private boolean overgrown = false; // npcId 5598-5604
 	private boolean nonFeline = false;
-
 
 	@Provides
 	KittenConfig provideConfig(ConfigManager configManager)
@@ -103,8 +97,6 @@ public class KittenPlugin extends Plugin
 
 	@Inject
 	private InfoBoxManager infoBoxManager;
-
-
 
 	@Override
 	public void startUp()
@@ -135,6 +127,13 @@ public class KittenPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChange(VarbitChanged event)
 	{
+		if (client.getVar(VarPlayer.FOLLOWER) == followerVarbit)
+		{
+			return; //VarPlayer.FOLLOWER did not change, exit
+		}
+
+		followerVarbit = client.getVar(VarPlayer.FOLLOWER);
+
 		if (playerHasFollower() & followerID == 0) // player gained a follower
 		{
 			getFollowerID();
@@ -149,17 +148,19 @@ public class KittenPlugin extends Plugin
 		{
 			byeFollower();
 		}
-
 	}
 
 	private void getFollowerID()
 	{
 		String s = Integer.toBinaryString(client.getVar(VarPlayer.FOLLOWER));
+
 		while (s.length() < 32)
 		{
 			s = "0" + s;
 		}
+
 		int previousFollowerID = 0;
+
 		if (followerID != 0)
 		{
 			previousFollowerID = followerID;
@@ -167,10 +168,12 @@ public class KittenPlugin extends Plugin
 
 		// followerID is the first 2 octets converted into decimals
 		followerID = Integer.parseInt(s.substring(0, 16), 2);
+
 		if (followerID == previousFollowerID)
 		{
 			return;
 		}
+
 		if (followerID != 0) //Varbit needs to fill up first after logging in
 		{
 			newFollower();
@@ -179,22 +182,29 @@ public class KittenPlugin extends Plugin
 
 	private void newFollower()
 	{
+		kitten = false;
+		cat = false;
+
 		if (followerID >= 1619 && followerID <= 1625)
 		{
 			cat = true;
 		}
+
 		if (followerID >= 1626 && followerID <= 1632)
 		{
 			lazycat = true;
 		}
+
 		if (followerID >= 5584 && followerID <= 5590)
 		{
 			wilycat = true;
 		}
+
 		if (followerID >= 5591 && followerID <= 5597)
 		{
 			kitten = true;
 		}
+
 		if (followerID >= 5598 && followerID <= 5604)
 		{
 			overgrown = true;
@@ -205,6 +215,9 @@ public class KittenPlugin extends Plugin
 			nonFeline = true;
 			return; // The NPC that spawned is not a feline.
 		}
+
+		previousFeline = config.felineId();
+
 		if (kitten == true)
 		{
 			if (followerID == previousFeline) // The same kitten is back!
@@ -213,38 +226,45 @@ public class KittenPlugin extends Plugin
 				timeNeglected = config.secondsNeglected();
 				timeHungry = config.secondsHungry();
 				kittenSpawned = Instant.now();
-				addKittenGrowthBox((14400 - timeSpendGrowing));
+
+				addKittenGrowthBox((11790 - timeSpendGrowing));
 				addHungryTimer(1800 - timeHungry);
 				addAttentionTimer(1800 - timeNeglected);
 			}
+
 			if (followerID != previousFeline) // new kitten, new timer
 			{
 				config.secondsAlive(0);
 				config.secondsHungry(0);
 				config.secondsNeglected(0);
+				timeSpendGrowing = 0;
+				timeNeglected = 0;
+				timeHungry = 0;
 
 				kittenSpawned = Instant.now();
 				kittenFed = Instant.now();
 				kittenAttention = Instant.now();
-				addKittenGrowthBox(14400);
-				addHungryTimer(1800);
-				addAttentionTimer(1800);
+				addKittenGrowthBox(11790);
+				addHungryTimer(1980);
+				addAttentionTimer(2100);
 				saveGrowthProgress();
 			}
-
 		}
+
 		if (cat == true)
 		{
 			if (followerID == previousFeline) // The same cat is back!
 			{
 				catSpawned = Instant.now();
 				timeSpendGrowing = config.secondsAlive();
-				addKittenGrowthBox((14400 - timeSpendGrowing));
+				addKittenGrowthBox((11400 - timeSpendGrowing));
 			}
+
 			if (followerID != previousFeline) // new cat, new timer
 			{
+				timeSpendGrowing = 0;
 				catSpawned = Instant.now();
-				addKittenGrowthBox(14400);
+				addKittenGrowthBox(11400);
 				saveGrowthProgress();
 			}
 		}
@@ -265,6 +285,7 @@ public class KittenPlugin extends Plugin
 			saveGrowthProgress();
 			catSpawned = null;
 		}
+
 		infoBoxManager.removeIf(t -> t instanceof KittenGrowthTimer);
 		infoBoxManager.removeIf(t -> t instanceof KittenHungryTimer);
 		infoBoxManager.removeIf(t -> t instanceof KittenAttentionTimer);
@@ -294,6 +315,7 @@ public class KittenPlugin extends Plugin
 				int secondsFed = toIntExact(timeFed.getSeconds());
 				config.secondsHungry(secondsFed);
 			}
+
 			if (kittenFed == null)
 			{
 				//kitten was not fed, so we add the time it has been out to the time it was already hungry for
@@ -316,8 +338,6 @@ public class KittenPlugin extends Plugin
 				int secondsSinceSpawn = toIntExact(timeSinceSpawn.getSeconds());
 				config.secondsNeglected(timeNeglected + secondsSinceSpawn);
 			}
-
-
 		}
 
 		if (cat == true)
@@ -326,7 +346,6 @@ public class KittenPlugin extends Plugin
 			Duration timeAlive = Duration.between(catSpawned, Instant.now());
 			int secondsAlive = toIntExact(timeAlive.getSeconds());
 			config.secondsAlive(timeSpendGrowing + secondsAlive);
-			catSpawned = null;
 		}
 	}
 
@@ -337,6 +356,7 @@ public class KittenPlugin extends Plugin
 		{
 			return;
 		}
+
 		Felines feline = Felines.find(followerID);
 
 		if (feline == null)
@@ -364,7 +384,6 @@ public class KittenPlugin extends Plugin
 				infoBoxManager.addInfoBox(timer);
 			}
 		}
-
 	}
 
 	private void addHungryTimer(int seconds)
@@ -373,6 +392,7 @@ public class KittenPlugin extends Plugin
 		{
 			return;
 		}
+
 		infoBoxManager.removeIf(t -> t instanceof KittenHungryTimer);
 		KittenHungryTimer timer = new KittenHungryTimer(itemManager.getImage(1552), this, Duration.ofSeconds(seconds));
 
@@ -389,6 +409,7 @@ public class KittenPlugin extends Plugin
 		{
 			return;
 		}
+
 		infoBoxManager.removeIf(t -> t instanceof KittenAttentionTimer);
 		KittenAttentionTimer timer = new KittenAttentionTimer(itemManager.getImage(1759), this, Duration.ofSeconds(seconds));
 
@@ -409,65 +430,80 @@ public class KittenPlugin extends Plugin
 			if (message.equals("The kitten gobbles up the fish.") || message.equals("The kitten laps up the milk.") )
 			{
 				kittenFed = Instant.now();
+
 				if (config.kittenHungryBox())
 				{
 					addHungryTimer(1800);
 				}
 			}
+
 			if (message.equals("Your kitten is hungry.")) // 5 minute warning
 			{
 				if (config.kittenNotifications())
 				{
 					notifier.notify(message);
 				}
+
 				if (config.kittenHungryBox())
 				{
 					addHungryTimer(300);
 				}
+
 				kittenFed = (Instant.now().minus(25, ChronoUnit.MINUTES));
 			}
+
 			if (message.equals("Your kitten is very hungry."))
 			{
 				if (config.kittenNotifications())
 				{
 					notifier.notify(message);
 				}
+
 				if (config.kittenHungryBox())
 				{
 					addHungryTimer(120);
 				}
+
 				kittenFed = (Instant.now().minus(28, ChronoUnit.MINUTES));
 			}
+
 			if (message.equals( "Your kitten wants attention."))
 			{
 				if (config.kittenNotifications())
 				{
 					notifier.notify(message);
 				}
+
 				if (config.kittenAttentionBox())
 				{
 					addAttentionTimer(300);
 				}
+
 				kittenAttention = (Instant.now().minus(45, ChronoUnit.MINUTES));
 			}
+
 			if (message.equals("Your kitten really wants attention."))
 			{
 				if (config.kittenNotifications())
 				{
 					notifier.notify(message);
 				}
+
 				if (config.kittenAttentionBox())
 				{
 					addAttentionTimer(120);
 				}
+
 				kittenAttention = (Instant.now().minus(48, ChronoUnit.MINUTES));
 			}
+
 			if (message.equals("Your kitten got lonely and ran off."))
 			{
 				if (config.kittenNotifications())
 				{
 					notifier.notify(message);
 				}
+
 				kittenSpawned = null;
 				kittenFed = null;
 				kittenAttention = null;
@@ -485,6 +521,7 @@ public class KittenPlugin extends Plugin
 				overgrown = false;
 				nonFeline = false;
 			}
+
 			if (message.equals("The cat has run away.")) //shoo away option
 			{
 				if (config.kittenNotifications())
@@ -510,8 +547,7 @@ public class KittenPlugin extends Plugin
 			}
 		}
 	}
-
-
+	
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
@@ -543,13 +579,13 @@ public class KittenPlugin extends Plugin
 			if (notificationText.equals(CHAT_CAT_GROWN))
 			{
 				kitten = false;
-				getFollowerID();
 				infoBoxManager.removeIf(t -> t instanceof KittenAttentionTimer);
 				infoBoxManager.removeIf(t -> t instanceof KittenHungryTimer);
 			}
 			if (notificationText.equals(CHAT_CAT_OVERGROWN))
 			{
 				cat = false;
+				infoBoxManager.removeIf(t -> t instanceof KittenGrowthTimer);
 				getFollowerID();
 			}
 		}
@@ -639,6 +675,7 @@ public class KittenPlugin extends Plugin
 					int secondsHungry = toIntExact(timeHungry.getSeconds());
 					addHungryTimer(1800 - secondsHungry);
 				}
+
 				if (kittenFed == null)
 				{
 					timeHungry = config.secondsHungry();
@@ -647,12 +684,12 @@ public class KittenPlugin extends Plugin
 					addHungryTimer(1800 - timeHungry - secondsSinceSpawn);
 				}
 			}
+
 			if (event.getNewValue().equals("false"))
 			{
 				infoBoxManager.removeIf(t -> t instanceof KittenHungryTimer);
 			}
 		}
-
 	}
 
 	@Subscribe
@@ -663,6 +700,7 @@ public class KittenPlugin extends Plugin
 		{
 			case LOGGING_IN:
 			case HOPPING:
+				saveGrowthProgress();
 			case CONNECTION_LOST:
 				ready = true;
 				break;
@@ -682,5 +720,4 @@ public class KittenPlugin extends Plugin
 	{
 		return (client.getVar(VarPlayer.FOLLOWER)) != -1;
 	}
-
 }

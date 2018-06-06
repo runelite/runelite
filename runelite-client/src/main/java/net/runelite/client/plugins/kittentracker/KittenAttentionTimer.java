@@ -26,15 +26,12 @@ package net.runelite.client.plugins.kittentracker;
 
 import net.runelite.client.ui.overlay.infobox.Timer;
 import net.runelite.client.plugins.Plugin;
-
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
-
 public class KittenAttentionTimer extends Timer
 {
-
 	public KittenAttentionTimer(BufferedImage infoImage, Plugin plugin, Duration seconds)
 	{
 		super(seconds.toMillis(), ChronoUnit.MILLIS, infoImage, plugin);
