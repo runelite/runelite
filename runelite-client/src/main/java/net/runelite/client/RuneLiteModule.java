@@ -25,7 +25,7 @@
 package net.runelite.client;
 
 import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.SubscriberExceptionContext;
+import com.google.common.eventbus.ImmediateEventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.name.Names;
@@ -57,6 +57,7 @@ public class RuneLiteModule extends AbstractModule
 	protected void configure()
 	{
 		bind(ScheduledExecutorService.class).toInstance(Executors.newSingleThreadScheduledExecutor());
+		bind(EventBus.class).toInstance(new ImmediateEventBus());
 		bind(QueryRunner.class);
 		bind(MenuManager.class);
 		bind(ChatMessageManager.class);
@@ -95,17 +96,5 @@ public class RuneLiteModule extends AbstractModule
 	ChatColorConfig provideChatColorConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ChatColorConfig.class);
-	}
-
-	@Provides
-	@Singleton
-	EventBus provideEventBus()
-	{
-		return new EventBus(RuneLiteModule::eventExceptionHandler);
-	}
-
-	private static void eventExceptionHandler(Throwable exception, SubscriberExceptionContext context)
-	{
-		log.warn("uncaught exception in event subscriber", exception);
 	}
 }
