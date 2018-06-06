@@ -27,6 +27,7 @@ package net.runelite.client.plugins.cluescrolls.clues;
 import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.List;
 import java.util.Set;
 import lombok.Getter;
 import net.runelite.api.GameObject;
@@ -178,6 +179,11 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 			}
 		}
 
+		return null;
+	}
+
+	public List<Integer> getObjectIds()
+	{
 		return null;
 	}
 }

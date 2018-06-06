@@ -408,4 +408,9 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		this.location = wp;
 		reset();
 	}
+
+	public List<String> getNpcs()
+	{
+		return null;
+	}
 }

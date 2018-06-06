@@ -27,6 +27,7 @@ package net.runelite.client.plugins.cluescrolls.clues;
 import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.List;
 import java.util.Set;
 import lombok.Getter;
 import net.runelite.api.GameObject;
@@ -431,6 +432,16 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			}
 		}
 
+		return null;
+	}
+
+	public List<Integer> getObjectIds()
+	{
+		return null;
+	}
+
+	public List<String> getNpcs()
+	{
 		return null;
 	}
 }

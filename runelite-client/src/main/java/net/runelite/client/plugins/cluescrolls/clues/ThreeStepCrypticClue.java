@@ -50,7 +50,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.util.Text;
 
 @Getter
-public class ThreeStepCrypticClue extends ClueScroll implements TextClueScroll, ObjectsClueScroll, NpcsClueScroll
+public class ThreeStepCrypticClue extends ClueScroll implements TextClueScroll, ObjectClueScroll, NpcClueScroll, LocationsClueScroll
 {
 
 	private List<Map.Entry<CrypticClue, Boolean>> clueSteps;
@@ -114,13 +114,13 @@ public class ThreeStepCrypticClue extends ClueScroll implements TextClueScroll, 
 	{
 		if (event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
 		{
-			checkForPart(client, event, itemManager, TORN_CLUE_SCROLL_PART_1, 0);
-			checkForPart(client, event, itemManager, TORN_CLUE_SCROLL_PART_2, 1);
-			checkForPart(client, event, itemManager, TORN_CLUE_SCROLL_PART_3, 2);
+			checkForPart(event, itemManager, TORN_CLUE_SCROLL_PART_1, 0);
+			checkForPart(event, itemManager, TORN_CLUE_SCROLL_PART_2, 1);
+			checkForPart(event, itemManager, TORN_CLUE_SCROLL_PART_3, 2);
 		}
 	}
 
-	private void checkForPart(Client client, final ItemContainerChanged event, ItemManager itemManager, int clueScrollPart, int index)
+	private void checkForPart(final ItemContainerChanged event, ItemManager itemManager, int clueScrollPart, int index)
 	{
 		final Stream<Item> items = Arrays.stream(event.getItemContainer().getItems());
 
@@ -193,5 +193,23 @@ public class ThreeStepCrypticClue extends ClueScroll implements TextClueScroll, 
 		}
 
 		return new ThreeStepCrypticClue(steps, plainText);
+	}
+
+	@Override
+	public int getObjectId()
+	{
+		return -1;
+	}
+
+	@Override
+	public String getNpc()
+	{
+		return null;
+	}
+
+	@Override
+	public WorldPoint getLocation()
+	{
+		return null;
 	}
 }

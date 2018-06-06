@@ -80,9 +80,7 @@ import net.runelite.client.plugins.cluescrolls.clues.LocationClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.LocationsClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.MapClue;
 import net.runelite.client.plugins.cluescrolls.clues.NpcClueScroll;
-import net.runelite.client.plugins.cluescrolls.clues.NpcsClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ObjectClueScroll;
-import net.runelite.client.plugins.cluescrolls.clues.ObjectsClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.TextClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ThreeStepCrypticClue;
 import net.runelite.client.ui.overlay.Overlay;
@@ -282,6 +280,39 @@ public class ClueScrollPlugin extends Plugin
 			{
 				addMapPoints(locations.toArray(new WorldPoint[locations.size()]));
 			}
+
+			if (clue instanceof ObjectClueScroll)
+			{
+				List<Integer> objectIds = ((ObjectClueScroll) clue).getObjectIds();
+
+				if (!objectIds.isEmpty())
+				{
+					if (!locations.isEmpty())
+					{
+						for (WorldPoint location : locations)
+						{
+							final LocalPoint localLocation = LocalPoint.fromWorld(client, location);
+
+							if (localLocation != null)
+							{
+								final Region region = client.getRegion();
+								final Tile[][][] tiles = region.getTiles();
+								final Tile tile = tiles[client.getPlane()][localLocation.getRegionX()][localLocation.getRegionY()];
+
+								objectsToMark = Arrays.stream(tile.getGameObjects())
+									.filter(object -> object != null && objectIds.contains(object.getId()))
+									.toArray(GameObject[]::new);
+
+								// Set hint arrow to first object found as there can only be 1 hint arrow
+								if (config.displayHintArrows() && objectsToMark.length >= 1)
+								{
+									client.setHintArrow(objectsToMark[0].getWorldLocation());
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 
 		// If we have location clue, set world location before all other types of clues
@@ -321,11 +352,8 @@ public class ClueScrollPlugin extends Plugin
 					addMapPoints(npcsToMark[0].getWorldLocation());
 				}
 			}
-		}
 
-		if (clue instanceof NpcsClueScroll)
-		{
-			List<String> npcs = ((NpcsClueScroll) clue).getNpcs();
+			List<String> npcs = ((NpcClueScroll) clue).getNpcs();
 
 			if (!npcs.isEmpty())
 			{
@@ -373,43 +401,6 @@ public class ClueScrollPlugin extends Plugin
 						if (config.displayHintArrows() && objectsToMark.length >= 1)
 						{
 							client.setHintArrow(objectsToMark[0].getWorldLocation());
-						}
-					}
-				}
-			}
-		}
-
-		if (clue instanceof ObjectsClueScroll)
-		{
-			final ObjectsClueScroll objectsClueScroll = (ObjectsClueScroll) clue;
-			List<Integer> objectIds = objectsClueScroll.getObjectIds();
-
-			if (!objectIds.isEmpty())
-			{
-				// Match object with location every time
-				final List<WorldPoint> locations = objectsClueScroll.getLocations();
-
-				if (!locations.isEmpty())
-				{
-					for (WorldPoint location : locations)
-					{
-						final LocalPoint localLocation = LocalPoint.fromWorld(client, location);
-
-						if (localLocation != null)
-						{
-							final Region region = client.getRegion();
-							final Tile[][][] tiles = region.getTiles();
-							final Tile tile = tiles[client.getPlane()][localLocation.getRegionX()][localLocation.getRegionY()];
-
-							objectsToMark = Arrays.stream(tile.getGameObjects())
-								.filter(object -> object != null && objectIds.contains(object.getId()))
-								.toArray(GameObject[]::new);
-
-							// Set hint arrow to first object found as there can only be 1 hint arrow
-							if (config.displayHintArrows() && objectsToMark.length >= 1)
-							{
-								client.setHintArrow(objectsToMark[0].getWorldLocation());
-							}
 						}
 					}
 				}
