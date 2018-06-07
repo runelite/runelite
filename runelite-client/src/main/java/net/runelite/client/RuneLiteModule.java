@@ -49,6 +49,8 @@ import net.runelite.client.util.DeferredEventBus;
 import net.runelite.client.util.QueryRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import net.runelite.http.api.RuneLiteAPI;
+import okhttp3.OkHttpClient;
 
 @Slf4j
 public class RuneLiteModule extends AbstractModule
@@ -57,6 +59,7 @@ public class RuneLiteModule extends AbstractModule
 	protected void configure()
 	{
 		bind(ScheduledExecutorService.class).toInstance(Executors.newSingleThreadScheduledExecutor());
+		bind(OkHttpClient.class).toInstance(RuneLiteAPI.CLIENT);
 		bind(QueryRunner.class);
 		bind(MenuManager.class);
 		bind(ChatMessageManager.class);

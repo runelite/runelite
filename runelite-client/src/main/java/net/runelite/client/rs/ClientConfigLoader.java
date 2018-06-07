@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,35 +25,39 @@
  */
 package net.runelite.client.rs;
 
+import com.google.common.annotations.VisibleForTesting;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
-import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.HttpUrl;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class ClientConfigLoader
+@Singleton
+class ClientConfigLoader
 {
-	private static final HttpUrl CONFIG_URL = HttpUrl.parse("http://oldschool.runescape.com/jav_config.ws"); // https redirects us to rs3
+	private static final String CONFIG_URL = "http://oldschool.runescape.com/jav_config.ws";
+	private final OkHttpClient httpClient;
 
-	public static final String CODEBASE = "codebase";
-	public static final String INITIAL_JAR = "initial_jar";
-	public static final String INITIAL_CLASS = "initial_class";
-
-	private final Map<String, String> properties = new HashMap<>(),
-		appletProperties = new HashMap<>();
-
-	public void fetch() throws IOException
+	@Inject
+	@VisibleForTesting
+	ClientConfigLoader(final OkHttpClient httpClient)
 	{
-		Request request = new Request.Builder()
+		this.httpClient = httpClient;
+	}
+
+	RSConfig fetch() throws IOException
+	{
+		final Request request = new Request.Builder()
 			.url(CONFIG_URL)
 			.build();
 
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute();
-			BufferedReader in = new BufferedReader(new InputStreamReader(response.body().byteStream())))
+		final RSConfig config = new RSConfig();
+
+		try (final Response response = httpClient.newCall(request).execute(); final BufferedReader in = new BufferedReader(
+			new InputStreamReader(response.body().byteStream())))
 		{
 			String str;
 
@@ -67,43 +72,25 @@ public class ClientConfigLoader
 
 				String s = str.substring(0, idx);
 
-				if (s.equals("param"))
+				switch (s)
 				{
-					str = str.substring(idx + 1);
-					idx = str.indexOf('=');
-					s = str.substring(0, idx);
+					case "param":
+						str = str.substring(idx + 1);
+						idx = str.indexOf('=');
+						s = str.substring(0, idx);
 
-					appletProperties.put(s, str.substring(idx + 1));
-				}
-				else if (s.equals("msg"))
-				{
-					// ignore
-				}
-				else
-				{
-					properties.put(s, str.substring(idx + 1));
+						config.getAppletProperties().put(s, str.substring(idx + 1));
+						break;
+					case "msg":
+						// ignore
+						break;
+					default:
+						config.getClassLoaderProperties().put(s, str.substring(idx + 1));
+						break;
 				}
 			}
 		}
-	}
 
-	public String getProperty(String name)
-	{
-		return properties.get(name);
-	}
-
-	public Map<String, String> getProperties()
-	{
-		return properties;
-	}
-
-	public String getAppletProperty(String name)
-	{
-		return appletProperties.get(name);
-	}
-
-	public Map<String, String> getAppletProperties()
-	{
-		return appletProperties;
+		return config;
 	}
 }

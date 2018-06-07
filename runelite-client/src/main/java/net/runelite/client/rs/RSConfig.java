@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,36 +23,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.rs;
 
-import java.io.IOException;
-import okhttp3.OkHttpClient;
-import org.junit.Test;
+import java.util.HashMap;
+import java.util.Map;
+import lombok.Getter;
 
-/**
- *
- * @author Adam
- */
-public class ClientConfigLoaderTest
+@Getter
+class RSConfig
 {
-	@Test
-	public void test() throws IOException
+	private final Map<String, String> appletProperties = new HashMap<>();
+	private final Map<String, String> classLoaderProperties = new HashMap<>();
+
+	String getCodeBase()
 	{
-		final ClientConfigLoader loader = new ClientConfigLoader(new OkHttpClient());
-		final RSConfig config = loader.fetch();
-
-		for (String key : config.getClassLoaderProperties().keySet())
-		{
-			System.out.println(key + ": " + config.getClassLoaderProperties().get(key));
-		}
-
-		System.out.println("Applet properties:");
-
-		for (String key : config.getAppletProperties().keySet())
-		{
-			System.out.println(key + ": " + config.getAppletProperties().get(key));
-		}
+		return classLoaderProperties.get("codebase");
 	}
 
+	String getInitialJar()
+	{
+		return classLoaderProperties.get("initial_jar");
+	}
+
+	String getInitialClass()
+	{
+		return classLoaderProperties.get("initial_class").replace(".class", "");
+	}
 }

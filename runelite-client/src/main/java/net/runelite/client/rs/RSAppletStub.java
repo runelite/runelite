@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,22 +23,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.rs;
 
 import java.applet.AppletContext;
 import java.applet.AppletStub;
 import java.net.MalformedURLException;
 import java.net.URL;
+import lombok.RequiredArgsConstructor;
 
-public class RSStub implements AppletStub
+@RequiredArgsConstructor
+class RSAppletStub implements AppletStub
 {
-	private final ClientConfigLoader config;
-
-	public RSStub(ClientConfigLoader config)
-	{
-		this.config = config;
-	}
+	private final RSConfig config;
 
 	@Override
 	public boolean isActive()
@@ -56,7 +53,7 @@ public class RSStub implements AppletStub
 	{
 		try
 		{
-			return new URL(config.getProperty(ClientConfigLoader.CODEBASE));
+			return new URL(config.getCodeBase());
 		}
 		catch (MalformedURLException ex)
 		{
@@ -67,7 +64,7 @@ public class RSStub implements AppletStub
 	@Override
 	public String getParameter(String name)
 	{
-		return config.getAppletProperty(name);
+		return config.getAppletProperties().get(name);
 	}
 
 	@Override
@@ -79,7 +76,5 @@ public class RSStub implements AppletStub
 	@Override
 	public void appletResize(int width, int height)
 	{
-
 	}
-
 }

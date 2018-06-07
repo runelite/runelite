@@ -131,6 +131,9 @@ public class RuneLite
 	private InfoBoxManager infoBoxManager;
 
 	@Inject
+	private ClientLoader clientLoader;
+
+	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
@@ -212,7 +215,8 @@ public class RuneLite
 	public void start(ClientUpdateCheckMode updateMode) throws Exception
 	{
 		// Load RuneLite or Vanilla client
-		final Applet client = new ClientLoader().loadRs(updateMode);
+		clientLoader.setUpdateCheckMode(updateMode);
+		final Applet client = clientLoader.load();
 
 		final boolean isOutdated = !(client instanceof Client);
 

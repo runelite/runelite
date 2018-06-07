@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,31 +29,70 @@ import java.applet.Applet;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import javax.inject.Inject;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.updatecheck.UpdateCheckClient;
 
 @Slf4j
 public class ClientLoader
 {
-	public Applet loadRs(ClientUpdateCheckMode updateMode)
-	{
-		if (updateMode == ClientUpdateCheckMode.AUTO)
-		{
-			final UpdateCheckClient updateCheck = new UpdateCheckClient();
-			updateMode = updateCheck.isOutdated() ?
-				ClientUpdateCheckMode.VANILLA :
-				ClientUpdateCheckMode.RUNELITE;
-		}
+	private final UpdateCheckClient updateCheckClient = new UpdateCheckClient();
+	private final ClientConfigLoader clientConfigLoader;
 
+	@Setter
+	private ClientUpdateCheckMode updateCheckMode = ClientUpdateCheckMode.AUTO;
+
+	@Inject
+	private ClientLoader(final ClientConfigLoader clientConfigLoader)
+	{
+		this.clientConfigLoader = clientConfigLoader;
+	}
+
+	private static Applet loadRuneLite(final RSConfig config) throws ClassNotFoundException, InstantiationException, IllegalAccessException
+	{
+		// the injected client is a runtime scoped dependency
+		final Class<?> clientClass = ClientLoader.class.getClassLoader().loadClass(config.getInitialClass());
+		return loadFromClass(config, clientClass);
+	}
+
+	private static Applet loadVanilla(final RSConfig config) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
+	{
+		final String codebase = config.getCodeBase();
+		final String initialJar = config.getInitialJar();
+		final String initialClass = config.getInitialClass();
+		final URL url = new URL(codebase + initialJar);
+
+		// Must set parent classloader to null, or it will pull from
+		// this class's classloader first
+		final URLClassLoader classloader = new URLClassLoader(new URL[]{url}, null);
+		final Class<?> clientClass = classloader.loadClass(initialClass);
+		return loadFromClass(config, clientClass);
+	}
+
+	private static Applet loadFromClass(final RSConfig config, final Class<?> clientClass) throws IllegalAccessException, InstantiationException
+	{
+		final Applet rs = (Applet) clientClass.newInstance();
+		rs.setStub(new RSAppletStub(config));
+		return rs;
+	}
+
+	public Applet load()
+	{
 		try
 		{
+			final RSConfig config = clientConfigLoader.fetch();
+			final ClientUpdateCheckMode updateMode = updateCheckMode == ClientUpdateCheckMode.AUTO
+				? updateCheckClient.isOutdated() ? ClientUpdateCheckMode.VANILLA : ClientUpdateCheckMode.RUNELITE
+				: updateCheckMode;
+
 			switch (updateMode)
 			{
 				case RUNELITE:
-					return loadRuneLite();
+					return loadRuneLite(config);
 				default:
 				case VANILLA:
-					return loadVanilla();
+					return loadVanilla(config);
 				case NONE:
 					return null;
 			}
@@ -70,49 +110,5 @@ public class ClientLoader
 			System.exit(-1);
 			return null;
 		}
-	}
-
-	private Applet loadRuneLite() throws ClassNotFoundException, IOException, InstantiationException, IllegalAccessException
-	{
-		ClientConfigLoader config = new ClientConfigLoader();
-
-		config.fetch();
-
-		String initialClass = config.getProperty(ClientConfigLoader.INITIAL_CLASS).replace(".class", "");
-
-		// the injected client is a runtime scoped dependency
-		Class<?> clientClass = this.getClass().getClassLoader().loadClass(initialClass);
-		Applet rs = (Applet) clientClass.newInstance();
-
-		rs.setStub(new RSStub(config));
-
-		return rs;
-	}
-
-	private Applet loadVanilla() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
-	{
-		ClientConfigLoader config = new ClientConfigLoader();
-
-		config.fetch();
-
-		String codebase = config.getProperty(ClientConfigLoader.CODEBASE);
-		String initialJar = config.getProperty(ClientConfigLoader.INITIAL_JAR);
-		String initialClass = config.getProperty(ClientConfigLoader.INITIAL_CLASS).replace(".class", "");
-
-		URL url = new URL(codebase + initialJar);
-
-		// Must set parent classloader to null, or it will pull from
-		// this class's classloader first
-		URLClassLoader classloader = new URLClassLoader(new URL[]
-			{
-				url
-			}, null);
-
-		Class<?> clientClass = classloader.loadClass(initialClass);
-		Applet rs = (Applet) clientClass.newInstance();
-
-		rs.setStub(new RSStub(config));
-
-		return rs;
 	}
 }
