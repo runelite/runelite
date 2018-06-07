@@ -31,7 +31,9 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.grapher.graphviz.GraphvizGrapher;
 import com.google.inject.grapher.graphviz.GraphvizModule;
+import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.applet.Applet;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -63,11 +65,15 @@ public class PluginManagerTest
 	@Rule
 	public TemporaryFolder folder = new TemporaryFolder();
 
-	private RuneLite runelite;
-	private Set<Class> pluginClasses;
+	@Mock
+	@Bind
+	public Applet applet;
 
 	@Mock
-	Client client;
+	@Bind
+	public Client client;
+
+	private Set<Class> pluginClasses;
 
 	@Before
 	public void before() throws IOException
@@ -77,8 +83,6 @@ public class PluginManagerTest
 		Injector injector = Guice.createInjector(new RuneLiteModule(),
 			BoundFieldModule.of(this));
 		RuneLite.setInjector(injector);
-
-		runelite = injector.getInstance(RuneLite.class);
 
 		// Find plugins we expect to have
 		pluginClasses = new HashSet<>();
@@ -105,11 +109,9 @@ public class PluginManagerTest
 		long expected = pluginClasses.stream()
 			.map(cl -> (PluginDescriptor) cl.getAnnotation(PluginDescriptor.class))
 			.filter(Objects::nonNull)
-			.filter(pd -> pd.loadWhenOutdated())
+			.filter(PluginDescriptor::loadWhenOutdated)
 			.count();
 		assertEquals(expected, plugins.size());
-
-		runelite.setClient(client);
 
 		pluginManager = new PluginManager();
 		pluginManager.loadCorePlugins();
@@ -129,8 +131,6 @@ public class PluginManagerTest
 		List<Module> modules = new ArrayList<>();
 		modules.add(new GraphvizModule());
 		modules.add(new RuneLiteModule());
-
-		runelite.setClient(client);
 
 		PluginManager pluginManager = new PluginManager();
 		pluginManager.loadCorePlugins();

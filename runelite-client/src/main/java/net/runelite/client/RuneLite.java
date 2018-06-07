@@ -31,10 +31,11 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.google.inject.Provider;
 import java.applet.Applet;
 import java.io.File;
 import java.util.Locale;
+import javax.annotation.Nullable;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.OptionParser;
@@ -131,9 +132,6 @@ public class RuneLite
 	private InfoBoxManager infoBoxManager;
 
 	@Inject
-	private ClientLoader clientLoader;
-
-	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
@@ -145,7 +143,13 @@ public class RuneLite
 	@Inject
 	private WorldMapOverlay worldMapOverlay;
 
-	Client client;
+	@Inject
+	@Nullable
+	private Applet applet;
+
+	@Inject
+	@Nullable
+	private Client client;
 
 	public static void main(String[] args) throws Exception
 	{
@@ -209,27 +213,23 @@ public class RuneLite
 		});
 
 		injector = Guice.createInjector(new RuneLiteModule());
-		injector.getInstance(RuneLite.class).start(getOptions().valueOf(updateMode));
+		injector.getInstance(ClientLoader.class).setUpdateCheckMode(getOptions().valueOf(updateMode));
+		injector.getInstance(RuneLite.class).start();
 	}
 
-	public void start(ClientUpdateCheckMode updateMode) throws Exception
+	public void start() throws Exception
 	{
 		// Load RuneLite or Vanilla client
-		clientLoader.setUpdateCheckMode(updateMode);
-		final Applet client = clientLoader.load();
-
-		final boolean isOutdated = !(client instanceof Client);
+		final boolean isOutdated = client == null;
 
 		if (!isOutdated)
 		{
-			this.client = (Client) client;
-
 			// Inject members into client
 			injector.injectMembers(client);
 		}
 
 		// Initialize UI
-		clientUI.init(client);
+		clientUI.init(applet);
 
 		// Initialize Discord service
 		discordService.init();
@@ -246,7 +246,7 @@ public class RuneLite
 		eventBus.register(clanManager);
 		eventBus.register(infoBoxManager);
 
-		if (this.client != null)
+		if (!isOutdated)
 		{
 			eventBus.register(itemManager.get());
 		}
@@ -303,11 +303,5 @@ public class RuneLite
 	public static void setOptions(OptionSet options)
 	{
 		RuneLite.options = options;
-	}
-
-	@VisibleForTesting
-	public void setClient(Client client)
-	{
-		this.client = client;
 	}
 }

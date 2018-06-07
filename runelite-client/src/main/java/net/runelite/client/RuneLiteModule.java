@@ -29,8 +29,10 @@ import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.name.Names;
+import java.applet.Applet;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import javax.annotation.Nullable;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -44,6 +46,7 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.rs.ClientLoader;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.util.DeferredEventBus;
 import net.runelite.client.util.QueryRunner;
@@ -81,9 +84,17 @@ public class RuneLiteModule extends AbstractModule
 	}
 
 	@Provides
-	Client provideClient(RuneLite runeLite)
+	@Singleton
+	Applet provideApplet(ClientLoader clientLoader)
 	{
-		return runeLite.client;
+		return clientLoader.load();
+	}
+
+	@Provides
+	@Singleton
+	Client provideClient(@Nullable Applet applet)
+	{
+		return applet instanceof Client ? (Client) applet : null;
 	}
 
 	@Provides
