@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Ethan <https://github.com/shmeeps>
+ * Copyright (c) 2018, Raqes <j.raqes@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,42 +22,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grandexchange;
+package net.runelite.client.plugins.prayer;
 
-import java.time.Instant;
-import lombok.Value;
-import net.runelite.api.GrandExchangeOfferState;
+import java.awt.image.BufferedImage;
+import lombok.Getter;
+import lombok.Setter;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.infobox.Counter;
 
-@Value
-class GrandExchangeNotification
+public class PrayerCounter extends Counter
 {
-	private final int slot;
-	private final int quantitySold;
-	private final int totalQuantity;
-	private final String itemName;
-	private final GrandExchangeOfferState state;
-	private final Instant insertedOn = Instant.now();
+	@Getter
+	private final PrayerType prayerType;
 
-	String getNotificationMessage()
+	@Setter
+	private BufferedImage image;
+
+	PrayerCounter(Plugin plugin, PrayerType prayerType)
 	{
-		// Send complete or X/Y notification
-		switch (this.state)
-		{
-			case BUYING:
-				return String.format("Grand Exchange: Bought %d / %d x %s", quantitySold, totalQuantity, itemName);
+		super(null, plugin, "");
+		this.prayerType = prayerType;
+	}
 
-			case SELLING:
-				return String.format("Grand Exchange: Sold %d / %d x %s", quantitySold, totalQuantity, itemName);
+	@Override
+	public String toString()
+	{
+		return "Counter{" + "prayer=" + prayerType.getName() + '}';
+	}
 
-			case BOUGHT:
-				return String.format("Grand Exchange: Finished buying %d x %s", totalQuantity, itemName);
+	@Override
+	public String getTooltip()
+	{
+		return prayerType.getDescription();
+	}
 
-			case SOLD:
-				return String.format("Grand Exchange: Finished selling %d x %s", totalQuantity, itemName);
-
-			default:
-				// Not possible
-				return null;
-		}
+	@Override
+	public BufferedImage getImage()
+	{
+		return image;
 	}
 }

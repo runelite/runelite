@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <https://github.com/sethtroll>
+ * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,38 +22,58 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grandexchange;
+package net.runelite.client.plugins.npchighlight;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
+import net.runelite.api.coords.WorldPoint;
 
-@ConfigGroup(
-	keyName = "grandexchange",
-	name = "Grand Exchange",
-	description = "Configuration for the Grand Exchange"
-)
-public interface GrandExchangeConfig extends Config
+class MemorizedNpc
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "quickLookup",
-		name = "Hotkey lookup (Alt + Left click)",
-		description = "Configures whether to enable the hotkey lookup for ge searches"
-	)
-	default boolean quickLookup()
-	{
-		return true;
-	}
+	@Getter
+	private int npcIndex;
 
-	@ConfigItem(
-		position = 2,
-		keyName = "enableNotifications",
-		name = "Enable Notifications",
-		description = "Configures whether to enable notifications when an offer updates"
-	)
-	default boolean enableNotifications()
+	@Getter
+	private String npcName;
+
+	@Getter
+	private int npcSize;
+
+	/**
+	 * The time the npc died at, in game ticks, relative to the tick counter
+	 */
+	@Getter
+	@Setter
+	private int diedOnTick;
+
+	/**
+	 * The time it takes for the npc to respawn, in game ticks
+	 */
+	@Getter
+	@Setter
+	private int respawnTime;
+
+	@Getter
+	@Setter
+	private List<WorldPoint> possibleRespawnLocations;
+
+	MemorizedNpc(NPC npc)
 	{
-		return true;
+		this.npcName = npc.getName();
+		this.npcIndex = npc.getIndex();
+		this.possibleRespawnLocations = new ArrayList<>();
+		this.respawnTime = -1;
+		this.diedOnTick = -1;
+
+		final NPCComposition composition = npc.getTransformedComposition();
+
+		if (composition != null)
+		{
+			this.npcSize = composition.getSize();
+		}
 	}
 }

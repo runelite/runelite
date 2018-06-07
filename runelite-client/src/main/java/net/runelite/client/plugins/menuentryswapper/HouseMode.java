@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <https://github.com/sethtroll>
+ * Copyright (c) 2018, Snakk <http://github.com/SnakkSnokk>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,38 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grandexchange;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+package net.runelite.client.plugins.menuentryswapper;
 
-@ConfigGroup(
-	keyName = "grandexchange",
-	name = "Grand Exchange",
-	description = "Configuration for the Grand Exchange"
-)
-public interface GrandExchangeConfig extends Config
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
+public enum HouseMode
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "quickLookup",
-		name = "Hotkey lookup (Alt + Left click)",
-		description = "Configures whether to enable the hotkey lookup for ge searches"
-	)
-	default boolean quickLookup()
-	{
-		return true;
-	}
+	ENTER("Enter"),
+	HOME("Home"),
+	BUILD_MODE("Build mode"),
+	FRIENDS_HOUSE("Friend's House");
 
-	@ConfigItem(
-		position = 2,
-		keyName = "enableNotifications",
-		name = "Enable Notifications",
-		description = "Configures whether to enable notifications when an offer updates"
-	)
-	default boolean enableNotifications()
+	private final String name;
+
+	@Override
+	public String toString()
 	{
-		return true;
+		return name;
 	}
 }

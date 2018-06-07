@@ -162,8 +162,7 @@ public class ClientUI
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		// Ignore all window related settings in fullscreen
-		if (!event.getGroup().equals("runelite") || config.enableFullscreen())
+		if (!event.getGroup().equals("runelite"))
 		{
 			return;
 		}
@@ -368,7 +367,6 @@ public class ClientUI
 			SwingUtil.addGracefulExitCallback(frame,
 				() ->
 				{
-					frame.getGraphicsConfiguration().getDevice().setFullScreenWindow(null);
 					saveClientBoundsConfig();
 					runelite.shutdown();
 				},
@@ -408,11 +406,13 @@ public class ClientUI
 	 */
 	public void show() throws Exception
 	{
+		final boolean withTitleBar = config.enableCustomChrome();
+
 		SwingUtilities.invokeAndWait(() ->
 		{
-			frame.setUndecorated(config.enableCustomChrome() || config.enableFullscreen());
+			frame.setUndecorated(withTitleBar);
 
-			if (config.enableCustomChrome() && !config.enableFullscreen())
+			if (withTitleBar)
 			{
 				frame.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
 
@@ -528,15 +528,6 @@ public class ClientUI
 
 			titleToolbar.addComponent(sidebarNavigationButton, sidebarNavigationJButton);
 			toggleSidebar();
-
-			// Force fullscreen
-			if (config.enableFullscreen() && !OSXUtil.toggleFullscreen(frame))
-			{
-				frame.setExpandResizeType(ExpandResizeType.KEEP_WINDOW_SIZE);
-				frame.setResizable(false);
-				frame.getGraphicsConfiguration().getDevice().setFullScreenWindow(frame);
-				frame.setIgnoreRepaint(true);
-			}
 		});
 
 		eventBus.post(new ClientUILoaded());
@@ -755,16 +746,19 @@ public class ClientUI
 		{
 			final Rectangle bounds = frame.getBounds();
 
-			// Try to contract sidebar
-			if (sidebarOpen)
+			if (config.automaticResizeType() == ExpandResizeType.KEEP_GAME_SIZE)
 			{
-				bounds.width -= pluginToolbar.getWidth();
-			}
+				// Try to contract sidebar
+				if (sidebarOpen)
+				{
+					bounds.width -= pluginToolbar.getWidth();
+				}
 
-			// Try to contract plugin panel
-			if (pluginPanel != null)
-			{
-				bounds.width -= pluginPanel.getWrappedPanel().getPreferredSize().width;
+				// Try to contract plugin panel
+				if (pluginPanel != null)
+				{
+					bounds.width -= pluginPanel.getWrappedPanel().getPreferredSize().width;
+				}
 			}
 
 			configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED);

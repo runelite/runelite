@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -367,7 +368,8 @@ public class ConfigManager
 		{
 			ConfigItem item = method.getAnnotation(ConfigItem.class);
 
-			if (item == null)
+			// only apply default configuration for methods which read configuration (0 args)
+			if (item == null || method.getParameterCount() != 0)
 			{
 				continue;
 			}
@@ -460,6 +462,10 @@ public class ConfigManager
 		{
 			return Enum.valueOf((Class<? extends Enum>) type, str);
 		}
+		if (type == Instant.class)
+		{
+			return Instant.parse(str);
+		}
 		return str;
 	}
 
@@ -487,6 +493,10 @@ public class ConfigManager
 		{
 			Rectangle r = (Rectangle)object;
 			return r.x + ":" + r.y + ":" + r.width + ":" + r.height;
+		}
+		if (object instanceof Instant)
+		{
+			return ((Instant) object).toString();
 		}
 		return object.toString();
 	}

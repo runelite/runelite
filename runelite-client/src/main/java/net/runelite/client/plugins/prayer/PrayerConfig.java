@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Raqes <j.raqes@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,32 +22,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.prayflick;
+package net.runelite.client.plugins.prayer;
 
-import com.google.common.eventbus.Subscribe;
-import javax.inject.Inject;
-import net.runelite.api.events.GameTick;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@PluginDescriptor(
-	name = "Prayer Flicking"
+@ConfigGroup(
+	keyName = "prayer",
+	name = "Prayer",
+	description = "Various tools related to prayer"
 )
-public class PrayerFlickPlugin extends Plugin
+public interface PrayerConfig extends Config
 {
-	@Inject
-	private PrayerFlickOverlay overlay;
-
-	@Override
-	public Overlay getOverlay()
+	@ConfigItem(
+		position = 0,
+		keyName = "prayerflick",
+		name = "Prayer flick helper",
+		description = "Enable the prayer flick helper"
+	)
+	default boolean prayerFlickHelper()
 	{
-		return overlay;
+		return true;
 	}
 
-	@Subscribe
-	public void onTick(GameTick tick)
+	@ConfigItem(
+		position = 1,
+		keyName = "prayerIndicator",
+		name = "Boost Indicator",
+		description = "Enable infoboxes for prayers"
+	)
+	default boolean prayerIndicator()
 	{
-		overlay.onTick();
+		return false;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "prayerIndicatorOverheads",
+		name = "Overhead Indicator",
+		description = "Also enable infoboxes for overheads"
+	)
+	default boolean prayerIndicatorOverheads()
+	{
+		return false;
 	}
 }

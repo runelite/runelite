@@ -128,7 +128,7 @@ public class Obstacles
 		GAP_29326,
 		// Gnome Stronghold Slayer Underground
 		TUNNEL_30174, TUNNEL_30175,
-		// Taverly Underground
+		// Taverley Underground
 		OBSTACLE_PIPE_16509, STRANGE_FLOOR, ROCKS, ROCKS_14106, LOOSE_RAILING_28849,
 		// Heroes Guild
 		CREVICE_9739, CREVICE_9740,
