@@ -31,7 +31,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import java.applet.Applet;
 import java.io.File;
 import java.util.Locale;
 import javax.annotation.Nullable;
@@ -56,7 +55,6 @@ import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
-import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -116,9 +114,6 @@ public class RuneLite
 	private ClientUI clientUI;
 
 	@Inject
-	private TitleToolbar titleToolbar;
-
-	@Inject
 	private Provider<ItemManager> itemManager;
 
 	@Inject
@@ -138,10 +133,6 @@ public class RuneLite
 
 	@Inject
 	private WorldMapOverlay worldMapOverlay;
-
-	@Inject
-	@Nullable
-	private Applet applet;
 
 	@Inject
 	@Nullable
@@ -228,9 +219,6 @@ public class RuneLite
 			injector.injectMembers(client);
 		}
 
-		// Initialize UI
-		clientUI.init(applet);
-
 		// Initialize Discord service
 		discordService.init();
 
@@ -271,6 +259,9 @@ public class RuneLite
 		// Load the session, including saved configuration
 		sessionManager.loadSession();
 
+		// Initialize UI
+		clientUI.open(this);
+
 		// Add core overlays after configuration has been loaded so their properties will be
 		// loaded properly
 		overlayManager.add(infoBoxOverlay);
@@ -279,12 +270,6 @@ public class RuneLite
 
 		// Start plugins
 		pluginManager.startCorePlugins();
-
-		// Refresh title toolbar
-		titleToolbar.refresh();
-
-		// Show UI after all plugins are loaded
-		clientUI.show();
 	}
 
 	public void shutdown()

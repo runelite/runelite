@@ -125,13 +125,13 @@ public class ClientUI
 	@Getter
 	private TrayIcon trayIcon;
 
-	private final RuneLite runelite;
 	private final RuneLiteProperties properties;
 	private final RuneLiteConfig config;
 	private final EventBus eventBus;
 	private final KeyManager keyManager;
+	private final Applet client;
+	private final ConfigManager configManager;
 	private final CardLayout cardLayout = new CardLayout();
-	private Applet client;
 	private ContainableFrame frame;
 	private JPanel navContainer;
 	private PluginPanel pluginPanel;
@@ -145,21 +145,20 @@ public class ClientUI
 	private JButton sidebarNavigationJButton;
 
 	@Inject
-	private ConfigManager configManager;
-
-	@Inject
 	private ClientUI(
-		RuneLite runelite,
 		RuneLiteProperties properties,
 		RuneLiteConfig config,
 		EventBus eventBus,
-		KeyManager keyManager)
+		KeyManager keyManager,
+		@Nullable Applet client,
+		ConfigManager configManager)
 	{
-		this.runelite = runelite;
 		this.properties = properties;
 		this.config = config;
 		this.eventBus = eventBus;
 		this.keyManager = keyManager;
+		this.client = client;
+		this.configManager = configManager;
 	}
 
 	@Subscribe
@@ -337,13 +336,11 @@ public class ClientUI
 	/**
 	 * Initialize UI.
 	 *
-	 * @param client the client
+	 * @param runelite runelite instance that will be shut down on exit
 	 * @throws Exception exception that can occur during creation of the UI
 	 */
-	public void init(@Nullable final Applet client) throws Exception
+	public void open(final RuneLite runelite) throws Exception
 	{
-		this.client = client;
-
 		SwingUtilities.invokeAndWait(() ->
 		{
 			// Set some sensible swing defaults
@@ -373,9 +370,7 @@ public class ClientUI
 					saveClientBoundsConfig();
 					runelite.shutdown();
 				},
-				() -> client != null
-					&& client instanceof Client
-					&& showWarningOnExit()
+				this::showWarningOnExit
 			);
 
 			container = new JPanel();
@@ -401,6 +396,8 @@ public class ClientUI
 			frame.addKeyListener(uiKeyListener);
 			keyManager.registerKeyListener(uiKeyListener);
 		});
+
+		show();
 	}
 
 	private boolean showWarningOnExit()
@@ -410,7 +407,7 @@ public class ClientUI
 			return true;
 		}
 
-		if (config.warningOnExit() == WarningOnExit.LOGGED_IN)
+		if (config.warningOnExit() == WarningOnExit.LOGGED_IN && client instanceof Client)
 		{
 			return ((Client) client).getGameState() != GameState.LOGIN_SCREEN;
 		}
@@ -423,7 +420,7 @@ public class ClientUI
 	 *
 	 * @throws Exception exception that can occur during modification of the UI
 	 */
-	public void show() throws Exception
+	private void show() throws Exception
 	{
 		final boolean withTitleBar = config.enableCustomChrome();
 
