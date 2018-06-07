@@ -23,21 +23,22 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.client;
+package net.runelite.client.rs;
 
 import java.io.IOException;
+import net.runelite.client.rs.ClientConfigLoader;
 import org.junit.Test;
 
 /**
  *
  * @author Adam
  */
-public class ConfigLoaderTest
+public class ClientConfigLoaderTest
 {
 	@Test
 	public void test() throws IOException
 	{
-		ConfigLoader loader = new ConfigLoader();
+		ClientConfigLoader loader = new ClientConfigLoader();
 		loader.fetch();
 
 		for (String key : loader.getProperties().keySet())

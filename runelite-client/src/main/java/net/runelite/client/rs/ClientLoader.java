@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client;
+package net.runelite.client.rs;
 
 import java.applet.Applet;
 import java.io.IOException;
@@ -34,14 +34,14 @@ import net.runelite.http.api.updatecheck.UpdateCheckClient;
 @Slf4j
 public class ClientLoader
 {
-	public Applet loadRs(UpdateCheckMode updateMode)
+	public Applet loadRs(ClientUpdateCheckMode updateMode)
 	{
-		if (updateMode == UpdateCheckMode.AUTO)
+		if (updateMode == ClientUpdateCheckMode.AUTO)
 		{
 			final UpdateCheckClient updateCheck = new UpdateCheckClient();
 			updateMode = updateCheck.isOutdated() ?
-				UpdateCheckMode.VANILLA :
-				UpdateCheckMode.RUNELITE;
+				ClientUpdateCheckMode.VANILLA :
+				ClientUpdateCheckMode.RUNELITE;
 		}
 
 		try
@@ -74,11 +74,11 @@ public class ClientLoader
 
 	private Applet loadRuneLite() throws ClassNotFoundException, IOException, InstantiationException, IllegalAccessException
 	{
-		ConfigLoader config = new ConfigLoader();
+		ClientConfigLoader config = new ClientConfigLoader();
 
 		config.fetch();
 
-		String initialClass = config.getProperty(ConfigLoader.INITIAL_CLASS).replace(".class", "");
+		String initialClass = config.getProperty(ClientConfigLoader.INITIAL_CLASS).replace(".class", "");
 
 		// the injected client is a runtime scoped dependency
 		Class<?> clientClass = this.getClass().getClassLoader().loadClass(initialClass);
@@ -91,13 +91,13 @@ public class ClientLoader
 
 	private Applet loadVanilla() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
 	{
-		ConfigLoader config = new ConfigLoader();
+		ClientConfigLoader config = new ClientConfigLoader();
 
 		config.fetch();
 
-		String codebase = config.getProperty(ConfigLoader.CODEBASE);
-		String initialJar = config.getProperty(ConfigLoader.INITIAL_JAR);
-		String initialClass = config.getProperty(ConfigLoader.INITIAL_CLASS).replace(".class", "");
+		String codebase = config.getProperty(ClientConfigLoader.CODEBASE);
+		String initialJar = config.getProperty(ClientConfigLoader.INITIAL_JAR);
+		String initialClass = config.getProperty(ClientConfigLoader.INITIAL_CLASS).replace(".class", "");
 
 		URL url = new URL(codebase + initialJar);
 

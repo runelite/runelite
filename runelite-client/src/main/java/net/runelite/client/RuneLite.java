@@ -52,6 +52,8 @@ import net.runelite.client.game.ClanManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.rs.ClientLoader;
+import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.TitleToolbar;
@@ -150,15 +152,15 @@ public class RuneLite
 		parser.accepts("developer-mode", "Enable developer tools");
 		parser.accepts("debug", "Show extra debugging output");
 
-		final ArgumentAcceptingOptionSpec<UpdateCheckMode> updateMode = parser
+		final ArgumentAcceptingOptionSpec<ClientUpdateCheckMode> updateMode = parser
 			.accepts("rs", "Select client type")
 			.withRequiredArg()
-			.ofType(UpdateCheckMode.class)
-			.defaultsTo(UpdateCheckMode.AUTO)
-			.withValuesConvertedBy(new EnumConverter<UpdateCheckMode>(UpdateCheckMode.class)
+			.ofType(ClientUpdateCheckMode.class)
+			.defaultsTo(ClientUpdateCheckMode.AUTO)
+			.withValuesConvertedBy(new EnumConverter<ClientUpdateCheckMode>(ClientUpdateCheckMode.class)
 			{
 				@Override
-				public UpdateCheckMode convert(String v)
+				public ClientUpdateCheckMode convert(String v)
 				{
 					return super.convert(v.toUpperCase());
 				}
@@ -207,7 +209,7 @@ public class RuneLite
 		injector.getInstance(RuneLite.class).start(getOptions().valueOf(updateMode));
 	}
 
-	public void start(UpdateCheckMode updateMode) throws Exception
+	public void start(ClientUpdateCheckMode updateMode) throws Exception
 	{
 		// Load RuneLite or Vanilla client
 		final Applet client = new ClientLoader().loadRs(updateMode);
