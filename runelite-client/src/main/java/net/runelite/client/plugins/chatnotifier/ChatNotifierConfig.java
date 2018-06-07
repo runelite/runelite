@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2018, Tanner <https://github.com/Reasel>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,27 +22,71 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellerycount;
+package net.runelite.client.plugins.chatnotifier;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-	keyName = "jewelleryCount",
-	name = "Jewellery Count",
-	description = "Configuration for the Jewellery count plugin"
+	keyName = "chatnotifier",
+	name = "Chat Notifier",
+	description = "Configuration for the chat notifier plugin"
 )
-public interface JewelleryCountConfig extends Config
+public interface ChatNotifierConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showJewelleryCount",
-		name = "Show Jewellery Count Configuration",
-		description = "Configures if jewellery count is shown",
+		keyName = "messageNotification",
+		name = "Notified messages",
+		description = "Configures specifically which messages to notify you of. Leave blank to disable. Format: message, message",
 		position = 1
 	)
-	default boolean showJewelleryCount()
+	default String getMessageNotification()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "ignoreFiltered",
+		name = "Ignore filtered",
+		description = "Configures whether or not to ignore messages that are being filtered.",
+		position = 2
+	)
+	default boolean ignoreFiltered()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "notifyTrade",
+		name = "Notify trades",
+		description = "Configures whether or not to send a notification on incoming trade requests",
+		position = 3
+	)
+	default boolean notifyTrade()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "notifyDuel",
+		name = "Notify duels",
+		description = "Configures whether or not to send a notification on incoming duels",
+		position = 4
+	)
+	default boolean notifyDuel()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "notifyRecoil",
+		name = "Notify recoil",
+		description = "Configures whether or not to send a notification on ring of recoil breaking",
+		position = 5
+	)
+	default boolean notifyRecoil()
+	{
+		return false;
 	}
 }

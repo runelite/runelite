@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellerycount;
+package net.runelite.client.util;
 
-import javax.inject.Inject;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.Overlay;
-import com.google.inject.Provides;
-import net.runelite.client.Notifier;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.PluginDescriptor;
+import java.util.Arrays;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
-@PluginDescriptor(
-	name = "Jewellery Count"
-)
-public class JewelleryCountPlugin extends Plugin
+public class WildcardMatchLoaderTest
 {
-	@Inject
-	private JewelleryCountOverlay overlay;
-
-	@Inject
-	private Notifier notifier;
-
-	@Inject
-	private JewelleryCountConfig config;
-
-	@Override
-	public Overlay getOverlay()
+	@Test
+	public void testLoad()
 	{
-		return overlay;
-	}
-
-	@Provides
-	JewelleryCountConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(JewelleryCountConfig.class);
+		WildcardMatchLoader loader = new WildcardMatchLoader(Arrays.asList("rune*", "Abyssal whip"));
+		assertTrue(loader.load("rune pouch"));
+		assertTrue(loader.load("Rune pouch"));
+		assertFalse(loader.load("Adamant dagger"));
+		assertTrue(loader.load("Runeite Ore"));
+		assertTrue(loader.load("Abyssal whip"));
+		assertFalse(loader.load("Abyssal dagger"));
 	}
 }
