@@ -135,7 +135,7 @@ public class InfoPanel extends PluginPanel
 		revision.setText(htmlLabel("Oldschool revision: ", engineVer));
 
 		JLabel launcher = new JLabel(htmlLabel("Launcher version: ", MoreObjects
-			.firstNonNull(runeLiteProperties.getLauncherVersion(), "Unknown")));
+			.firstNonNull(RuneLiteProperties.getLauncherVersion(), "Unknown")));
 		launcher.setFont(smallFont);
 
 		loggedLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
