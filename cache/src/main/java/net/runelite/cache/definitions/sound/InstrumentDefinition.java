@@ -90,7 +90,7 @@ public class InstrumentDefinition
 		int var12;
 		int var13;
 
-        InstrumentDefinition.method3854(samples, 0, var1);
+		InstrumentDefinition.method3854(samples, 0, var1);
 
 		if (var2 < 10)
 		{
