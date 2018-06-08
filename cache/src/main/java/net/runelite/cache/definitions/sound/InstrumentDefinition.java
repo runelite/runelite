@@ -53,7 +53,7 @@ public class InstrumentDefinition
 	public SoundEffectDefinition filter;
 	public AudioEnvelopeDefinition filterEnvelope;
 
-	static int[] samples = new int[22050];
+	static int[] samples = new int[220500];
 
 	static int[] NOISE = new int[32768];
 	static int[] AUDIO_SINE = new int[32768];
@@ -89,8 +89,6 @@ public class InstrumentDefinition
 		int var11;
 		int var12;
 		int var13;
-
-		InstrumentDefinition.method3854(samples, 0, var1);
 
 		if (var2 < 10)
 		{
