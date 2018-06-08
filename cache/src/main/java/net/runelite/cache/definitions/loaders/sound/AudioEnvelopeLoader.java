@@ -22,12 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.definitions.sound;
+package net.runelite.cache.definitions.loaders.sound;
 
-public class SoundEffect3Definition
+import net.runelite.cache.definitions.sound.AudioEnvelopeDefinition;
+import net.runelite.cache.io.InputStream;
+
+public class AudioEnvelopeLoader
 {
-	public int[][][] field1154 = new int[2][2][4];
-	public int[] field1155 = new int[2];
-	public int[] field1156 = new int[2];
-	public int[][][] field1159 = new int[2][2][4];
+	public AudioEnvelopeDefinition load(InputStream in)
+	{
+		AudioEnvelopeDefinition audioEnvelope = new AudioEnvelopeDefinition();
+
+		load(audioEnvelope, in);
+
+		return audioEnvelope;
+	}
+
+	private void load(AudioEnvelopeDefinition audioEnvelope, InputStream in)
+	{
+		audioEnvelope.form = in.readUnsignedByte();
+		audioEnvelope.start = in.readInt();
+		audioEnvelope.end = in.readInt();
+		this.loadSegments(audioEnvelope, in);
+	}
+
+	final void loadSegments(AudioEnvelopeDefinition audioEnvelope, InputStream in)
+	{
+		audioEnvelope.segments = in.readUnsignedByte();
+		audioEnvelope.durations = new int[audioEnvelope.segments];
+		audioEnvelope.phases = new int[audioEnvelope.segments];
+
+		for (int i = 0; i < audioEnvelope.segments; ++i)
+		{
+			audioEnvelope.durations[i] = in.readUnsignedShort();
+			audioEnvelope.phases[i] = in.readUnsignedShort();
+		}
+
+	}
 }

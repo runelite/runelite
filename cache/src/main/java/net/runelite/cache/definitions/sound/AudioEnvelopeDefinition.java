@@ -24,25 +24,25 @@
  */
 package net.runelite.cache.definitions.sound;
 
-public class SoundEffect2Definition
+public class AudioEnvelopeDefinition
 {
 	public int field1085;
-	public int[] field1086 = new int[2];
-	public int field1087;
-	public int field1088;
-	public int field1089;
-	public int[] field1090 = new int[2];
+	public int[] durations = new int[2];
+	public int form;
+	public int start;
+	public int end;
+	public int[] phases = new int[2];
 	public int field1091;
-	public int field1092 = 2;
+	public int segments = 2;
 	public int field1093;
 	public int field1094;
 	public int field1095;
 
-	public SoundEffect2Definition()
+	public AudioEnvelopeDefinition()
 	{
-		this.field1086[0] = 0;
-		this.field1086[1] = '\uffff';
-		this.field1090[0] = 0;
-		this.field1090[1] = '\uffff';
+		this.durations[0] = 0;
+		this.durations[1] = '\uffff';
+		this.phases[0] = 0;
+		this.phases[1] = '\uffff';
 	}
 }

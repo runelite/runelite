@@ -30,8 +30,8 @@ import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import net.runelite.cache.definitions.loaders.sound.SoundEffectLoader;
-import net.runelite.cache.definitions.sound.SoundEffectDefinition;
+import net.runelite.cache.definitions.loaders.sound.SoundEffectTrackLoader;
+import net.runelite.cache.definitions.sound.SoundEffectTrackDefinition;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
@@ -68,8 +68,8 @@ public class SoundEffectsDumperTest
 			{
 				byte[] contents = archive.decompress(storage.loadArchive(archive));
 
-				SoundEffectLoader soundEffectLoader = new SoundEffectLoader();
-				SoundEffectDefinition soundEffect = soundEffectLoader.load(contents);
+				SoundEffectTrackLoader setLoader = new SoundEffectTrackLoader();
+				SoundEffectTrackDefinition soundEffect = setLoader.load(contents);
 
 				Files.write(gson.toJson(soundEffect), new File(dumpDir, archive.getArchiveId() + ".json"), Charset.defaultCharset());
 				++count;

@@ -24,32 +24,32 @@
  */
 package net.runelite.cache.definitions.sound;
 
-public class SoundEffect1Definition
+public class InstrumentDefinition
 {
-	public SoundEffect2Definition field1173;
-	public SoundEffect2Definition field1174;
-	public SoundEffect2Definition field1175;
-	public int field1176 = 500;
-	public int[] field1177 = new int[]
+	public AudioEnvelopeDefinition volume;
+	public AudioEnvelopeDefinition pitchModifier;
+	public AudioEnvelopeDefinition field1175;
+	public int duration = 500;
+	public int[] oscillatorDelays = new int[]
 	{
 		0, 0, 0, 0, 0
 	};
-	public SoundEffect2Definition field1178;
-	public int[] field1179 = new int[]
+	public AudioEnvelopeDefinition release;
+	public int[] oscillatorPitch = new int[]
 	{
 		0, 0, 0, 0, 0
 	};
-	public int[] field1180 = new int[]
+	public int[] oscillatorVolume = new int[]
 	{
 		0, 0, 0, 0, 0
 	};
-	public SoundEffect2Definition field1181;
-	public SoundEffect3Definition field1182;
-	public SoundEffect2Definition field1183;
-	public int field1184 = 100;
-	public SoundEffect2Definition field1186;
-	public int field1187 = 0;
-	public int field1188 = 0;
-	public SoundEffect2Definition field1192;
-	public SoundEffect2Definition field1193;
+	public AudioEnvelopeDefinition pitch;
+	public SoundEffectDefinition filter;
+	public AudioEnvelopeDefinition volumeMultiplier;
+	public int delayDecay = 100;
+	public AudioEnvelopeDefinition filterEnvelope;
+	public int delayTime = 0;
+	public int offset = 0;
+	public AudioEnvelopeDefinition volumeMultiplierAmplitude;
+	public AudioEnvelopeDefinition pitchModifierAmplitude;
 }
