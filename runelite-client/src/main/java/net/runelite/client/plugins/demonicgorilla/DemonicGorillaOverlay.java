@@ -97,6 +97,10 @@ public class DemonicGorillaOverlay extends Overlay
 					gorilla.getNpc().getLogicalHeight() + 16);
 				if (point != null)
 				{
+					point = new Point(
+						client.getViewportXOffset() + point.getX(),
+						client.getViewportYOffset() + point.getY());
+
 					List<DemonicGorilla.AttackStyle> attackStyles = gorilla.getNextPosibleAttackStyles();
 					List<BufferedImage> icons = new ArrayList<>();
 					int totalWidth = (attackStyles.size() - 1) * OVERLAY_ICON_MARGIN;

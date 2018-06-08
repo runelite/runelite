@@ -26,6 +26,7 @@ package net.runelite.client.plugins.opponentinfo;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -42,6 +43,7 @@ import net.runelite.client.game.HiscoreManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
@@ -160,9 +162,13 @@ class OpponentInfoOverlay extends Overlay
 			return null; //don't draw anything.
 		}
 
+		final FontMetrics fontMetrics = graphics.getFontMetrics();
+
 		panelComponent.getChildren().clear();
 
 		// Opponent name
+		int textWidth = Math.max(ComponentConstants.STANDARD_WIDTH, fontMetrics.stringWidth(opponentName));
+		panelComponent.setPreferredSize(new Dimension(textWidth, 0));
 		panelComponent.getChildren().add(TitleComponent.builder()
 			.text(opponentName)
 			.build());
@@ -191,6 +197,8 @@ class OpponentInfoOverlay extends Overlay
 		// Opponents opponent
 		if (opponentsOpponentName != null)
 		{
+			textWidth = Math.max(textWidth, fontMetrics.stringWidth(opponentsOpponentName));
+			panelComponent.setPreferredSize(new Dimension(textWidth, 0));
 			panelComponent.getChildren().add(TitleComponent.builder()
 				.text(opponentsOpponentName)
 				.build());

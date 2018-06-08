@@ -68,7 +68,6 @@ import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
-import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.PlayerDespawned;
@@ -733,15 +732,6 @@ public abstract class RSClientMixin implements RSClient
 			boostedLevelChanged.setSkill(updatedSkill);
 			eventBus.post(boostedLevelChanged);
 		}
-	}
-
-	@FieldHook("mapRegions")
-	@Inject
-	public static void mapRegionsChanged(int idx)
-	{
-		MapRegionChanged regionChanged = new MapRegionChanged();
-		regionChanged.setIndex(idx);
-		eventBus.post(regionChanged);
 	}
 
 	@FieldHook("playerOptions")

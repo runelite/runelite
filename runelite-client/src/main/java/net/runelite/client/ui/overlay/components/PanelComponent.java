@@ -100,22 +100,6 @@ public class PanelComponent implements LayoutableRenderableEntity
 			preferredSize.width - border.x - border.width,
 			preferredSize.height - border.y - border.height);
 
-		// Adjust preferred size of children based on orientation and children
-		// sizes exceeding the parent size
-		switch (orientation)
-		{
-			case VERTICAL:
-				childPreferredSize.setSize(
-					Math.max(childDimensions.width, childPreferredSize.width),
-					childPreferredSize.height);
-				break;
-			case HORIZONTAL:
-				childPreferredSize.setSize(
-					childPreferredSize.width,
-					Math.max(childDimensions.height, childPreferredSize.height));
-				break;
-		}
-
 		// Render all children
 		for (final LayoutableRenderableEntity child : children)
 		{
