@@ -129,6 +129,7 @@ public class XpTrackerPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		xpState.reset();
 		pluginToolbar.removeNavigation(navButton);
 	}
 
