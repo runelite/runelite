@@ -62,7 +62,6 @@ import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
@@ -332,12 +331,6 @@ public class MotherlodePlugin extends Plugin
 
 		GameObject gameObject = event.getGameObject();
 		rocks.remove(gameObject);
-	}
-
-	@Subscribe
-	public void onRegionChanged(MapRegionChanged event)
-	{
-		inMlm = checkInMlm();
 	}
 
 	@Subscribe
