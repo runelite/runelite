@@ -169,7 +169,7 @@ public class NightmareZonePlugin extends Plugin
 		}
 	}
 
-	public boolean isInNightmareZone()
+	boolean isInNightmareZone()
 	{
 		Widget nmz = client.getWidget(WidgetInfo.NIGHTMARE_ZONE);
 		return nmz != null && !nmz.isSelfHidden();
