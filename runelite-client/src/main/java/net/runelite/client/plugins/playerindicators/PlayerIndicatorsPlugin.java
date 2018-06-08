@@ -47,6 +47,7 @@ import static net.runelite.api.MenuAction.SPELL_CAST_ON_PLAYER;
 import static net.runelite.api.MenuAction.TRADE;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ClanManager;
@@ -89,6 +90,11 @@ public class PlayerIndicatorsPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdd(MenuEntryAdded menuEntryAdded)
 	{
+		if (config.showInWildernessOnly() && client.getVar(Varbits.IN_THE_WILDERNESS) != 1)
+		{
+			return;
+		}
+
 		int type = menuEntryAdded.getType();
 
 		if (type >= 2000)

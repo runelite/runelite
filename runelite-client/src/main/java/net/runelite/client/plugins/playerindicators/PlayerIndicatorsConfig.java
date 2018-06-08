@@ -200,4 +200,15 @@ public interface PlayerIndicatorsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 15,
+		keyName = "wildernessOnly",
+		name = "Show only in wilderness",
+		description = "Toggle whether or not to only show player indicators in the wilderness"
+	)
+	default boolean showInWildernessOnly()
+	{
+		return false;
+	}
 }
