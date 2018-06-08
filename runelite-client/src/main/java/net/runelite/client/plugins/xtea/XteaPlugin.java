@@ -30,10 +30,13 @@ import java.util.Set;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.events.MapRegionChanged;
+import net.runelite.api.GameState;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.http.api.xtea.XteaClient;
+import net.runelite.http.api.xtea.XteaKey;
+import net.runelite.http.api.xtea.XteaRequest;
 
 @PluginDescriptor(
 	name = "Xtea",
@@ -50,32 +53,45 @@ public class XteaPlugin extends Plugin
 	private Client client;
 
 	@Subscribe
-	public void onMapRegionChanged(MapRegionChanged event)
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		int idx = event.getIndex();
-
-		if (idx == -1)
+		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
 		{
-			return; // this is the new array being assigned to the field
+			return;
 		}
 
 		int revision = client.getRevision();
 		int[] regions = client.getMapRegions();
 		int[][] xteaKeys = client.getXteaKeys();
 
-		int region = regions[idx];
-		int[] keys = xteaKeys[idx];
+		XteaRequest xteaRequest = new XteaRequest();
+		xteaRequest.setRevision(revision);
 
-		log.debug("Region {} keys {}, {}, {}, {}", region, keys[0], keys[1], keys[2], keys[3]);
+		for (int idx = 0; idx < regions.length; ++idx)
+		{
+			int region = regions[idx];
+			int[] keys = xteaKeys[idx];
 
-		// No need to ever send more than once
-		if (sentRegions.contains(region))
+			if (sentRegions.contains(region))
+			{
+				continue;
+			}
+
+			sentRegions.add(region);
+
+			log.debug("Region {} keys {}, {}, {}, {}", region, keys[0], keys[1], keys[2], keys[3]);
+
+			XteaKey xteaKey = new XteaKey();
+			xteaKey.setRegion(region);
+			xteaKey.setKeys(keys);
+			xteaRequest.addKey(xteaKey);
+		}
+
+		if (xteaRequest.getKeys().isEmpty())
 		{
 			return;
 		}
 
-		sentRegions.add(region);
-
-		xteaClient.submit(revision, region, keys);
+		xteaClient.submit(xteaRequest);
 	}
 }
