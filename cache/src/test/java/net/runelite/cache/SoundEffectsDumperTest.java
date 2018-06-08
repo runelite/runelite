@@ -99,20 +99,41 @@ public class SoundEffectsDumperTest
 
             for (Archive archive : index.getArchives())
             {
-                byte[] contents = archive.decompress(storage.loadArchive(archive));
+				byte[] contents = archive.decompress(storage.loadArchive(archive));
 
-                SoundEffectTrackLoader setLoader = new SoundEffectTrackLoader();
-                SoundEffectTrackDefinition soundEffect = setLoader.load(contents);
+				SoundEffectTrackLoader setLoader = new SoundEffectTrackLoader();
+				SoundEffectTrackDefinition soundEffect = setLoader.load(contents);
+				try
+				{
+					Object audioStream;
+					byte[] data = soundEffect.mix();
 
-                AudioFormat audioFormat = new AudioFormat(22050.0f, 8, 1, true, false);
-                Object audioStream = new AudioInputStream(new ByteArrayInputStream(soundEffect.mix()), audioFormat, soundEffect.mix().length);
+					AudioFormat audioFormat = new AudioFormat(22050.0f, 8, 1, true, false);
+					audioStream = new AudioInputStream(new ByteArrayInputStream(data), audioFormat, data.length);
 
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                AudioSystem.write((AudioInputStream) audioStream, AudioFileFormat.Type.WAVE, bos);
+					ByteArrayOutputStream bos = new ByteArrayOutputStream();
+					AudioSystem.write((AudioInputStream) audioStream, AudioFileFormat.Type.WAVE, bos);
+					data = bos.toByteArray();
 
-                FileOutputStream fos = new FileOutputStream(new File(dumpDir, archive.getArchiveId() + ".wav"));
-                ++count;
-            }
+					FileOutputStream fos = new FileOutputStream(new File(dumpDir, archive.getArchiveId() + ".wav"));
+					audioStream = null;
+
+					try
+					{
+						fos.write(data);
+					}
+					finally
+					{
+						fos.close();
+					}
+
+					++count;
+				}
+				catch (Exception e)
+				{
+					continue;
+				}
+			}
         }
 
 		logger.info("Dumped {} sound effects to {}", count, dumpDir);
