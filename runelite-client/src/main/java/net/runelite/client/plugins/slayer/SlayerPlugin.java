@@ -53,11 +53,13 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Query;
 import static net.runelite.api.Skill.SLAYER;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.Widget;
@@ -99,9 +101,6 @@ public class SlayerPlugin extends Plugin
 	//NPC messages
 	private static final Pattern NPC_ASSIGN_MESSAGE = Pattern.compile(".*Your new task is to kill\\s*(\\d*) (.*)\\.");
 	private static final Pattern NPC_CURRENT_MESSAGE = Pattern.compile("You're still hunting (.*); you have (\\d*) to go\\..*");
-
-	//Reward UI
-	private static final Pattern REWARD_POINTS = Pattern.compile("Reward points: (\\d*)");
 
 	private static final int EXPEDITIOUS_CHARGE = 30;
 	private static final int SLAUGHTER_CHARGE = 30;
@@ -148,6 +147,7 @@ public class SlayerPlugin extends Plugin
 	private int streak;
 	private int points;
 	private int cachedXp;
+	private int cachedPoints;
 	private Instant infoTimer;
 	private boolean loginFlag;
 	@Getter(AccessLevel.PACKAGE)
@@ -164,7 +164,6 @@ public class SlayerPlugin extends Plugin
 			&& config.amount() != -1
 			&& !config.taskName().isEmpty())
 		{
-			setPoints(config.points());
 			setStreak(config.streak());
 			setExpeditiousChargeCount(config.expeditious());
 			setSlaughterChargeCount(config.slaughter());
@@ -192,6 +191,7 @@ public class SlayerPlugin extends Plugin
 			case HOPPING:
 			case LOGGING_IN:
 				cachedXp = 0;
+				cachedPoints = 0;
 				taskName = "";
 				amount = 0;
 				loginFlag = true;
@@ -201,7 +201,6 @@ public class SlayerPlugin extends Plugin
 					&& !config.taskName().isEmpty()
 					&& loginFlag == true)
 				{
-					setPoints(config.points());
 					setStreak(config.streak());
 					setExpeditiousChargeCount(config.expeditious());
 					setSlaughterChargeCount(config.slaughter());
@@ -212,11 +211,29 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		if (client.getVar(Varbits.SLAYER_REWARD_POINTS) == cachedPoints)
+		{
+			return;
+		}
+
+		setPoints(client.getVar(Varbits.SLAYER_REWARD_POINTS));
+		
+		if (!config.showInfobox())
+		{
+			return;
+		}
+
+		addCounter();
+		counter.setText(String.valueOf(amount));
+	}
+
 	private void save()
 	{
 		config.amount(amount);
 		config.taskName(taskName);
-		config.points(points);
 		config.streak(streak);
 		config.expeditious(expeditiousChargeCount);
 		config.slaughter(slaughterChargeCount);
@@ -259,20 +276,6 @@ public class SlayerPlugin extends Plugin
 			{
 				expeditiousChargeCount = EXPEDITIOUS_CHARGE;
 				config.expeditious(expeditiousChargeCount);
-			}
-		}
-
-		Widget rewardsBarWidget = client.getWidget(WidgetInfo.SLAYER_REWARDS_TOPBAR);
-		if (rewardsBarWidget != null)
-		{
-			for (Widget w : rewardsBarWidget.getDynamicChildren())
-			{
-				Matcher mPoints = REWARD_POINTS.matcher(w.getText());
-				if (mPoints.find())
-				{
-					points = Integer.parseInt(mPoints.group(1));
-					break;
-				}
 			}
 		}
 
@@ -381,7 +384,6 @@ public class SlayerPlugin extends Plugin
 					break;
 				case 3:
 					streak = Integer.parseInt(matches.get(0));
-					points = Integer.parseInt(matches.get(2).replaceAll(",", ""));
 					break;
 				default:
 					log.warn("Unreachable default case for message ending in '; return to Slayer master'");
@@ -617,6 +619,7 @@ public class SlayerPlugin extends Plugin
 	void setPoints(int points)
 	{
 		this.points = points;
+		this.cachedPoints = points;
 	}
 
 	//Utils
