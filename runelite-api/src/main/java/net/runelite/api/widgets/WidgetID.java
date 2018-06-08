@@ -67,6 +67,8 @@ public class WidgetID
 	public static final int GUIDE_PRICES_INVENTORY_GROUP_ID = 238;
 	public static final int COMBAT_GROUP_ID = 593;
 	public static final int DIALOG_NPC_GROUP_ID = 231;
+	public static final int DIALOG_PLAYER_GROUP_ID = 217;
+	public static final int CHATBOX_SELECT_OPTION_GROUP_ID = 219;
 	public static final int SLAYER_REWARDS_GROUP_ID = 426;
 	public static final int PRIVATE_CHAT = 163;
 	public static final int CHATBOX_GROUP_ID = 162;
@@ -94,6 +96,9 @@ public class WidgetID
 	public static final int TITHE_FARM_GROUP_ID = 241;
 	public static final int KINGDOM_GROUP_ID = 392;
 	public static final int BARROWS_GROUP_ID = 24;
+	public static final int POH_JEWELRY_BOX_GROUP_ID = 590;
+	public static final int TELEPORT_SELECTION_GROUP_ID = 187;
+	public static final int FURNITURE_CREATION_GROUP_ID = 458;
 
 	static class WorldMap
 	{
@@ -306,6 +311,8 @@ public class WidgetID
 		static final int CHATBOX_REPORT_TEXT = 29;
 		static final int CHATBOX_FRAME = 1;
 		static final int CHATBOX_BUTTONS = 2;
+		static final int CHATBOX_CHAT_INPUT_LINE = 46;
+		static final int CHATBOX_TEXT_PROMPT = 37;
 	}
 
 	static class Prayer
@@ -343,8 +350,6 @@ public class WidgetID
 
 	public static class QuickPrayer
 	{
-		static final int PRAYERS = 4;
-
 		public static final int THICK_SKIN_CHILD_ID = 0;
 		public static final int BURST_OF_STRENGTH_CHILD_ID = 1;
 		public static final int CLARITY_OF_THOUGHT_CHILD_ID = 2;
@@ -374,6 +379,7 @@ public class WidgetID
 		public static final int PIETY_CHILD_ID = 26;
 		public static final int RIGOUR_CHILD_ID = 24;
 		public static final int AUGURY_CHILD_ID = 27;
+		static final int PRAYERS = 4;
 	}
 
 	static class Combat
@@ -412,6 +418,12 @@ public class WidgetID
 
 	static class BarbarianAssault
 	{
+		static final int CURRENT_WAVE = 1;
+		static final int CORRECT_STYLE = 3;
+		static final int TO_CALL = 5;
+		static final int ROLE_SPRITE = 6;
+		static final int ROLE = 7;
+
 		static class ATK
 		{
 			static final int CORRECT_STYLE2 = 4;
@@ -419,12 +431,6 @@ public class WidgetID
 			static final int ROLE = 8;
 			static final int ROLE_SPRITE = 7;
 		}
-
-		static final int CURRENT_WAVE = 1;
-		static final int CORRECT_STYLE = 3;
-		static final int TO_CALL = 5;
-		static final int ROLE_SPRITE = 6;
-		static final int ROLE = 7;
 	}
 
 	static class LevelUp
@@ -442,7 +448,7 @@ public class WidgetID
 	{
 		static final int POINTS_INFOBOX = 3;
 	}
-	
+
 	static class ExperienceDrop
 	{
 		static final int DROP_1 = 15;
