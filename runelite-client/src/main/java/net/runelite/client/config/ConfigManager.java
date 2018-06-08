@@ -254,7 +254,14 @@ public class ConfigManager
 		String value = getConfiguration(groupName, key);
 		if (!Strings.isNullOrEmpty(value))
 		{
-			return (T) stringToObject(value, clazz);
+			try
+			{
+				return (T) stringToObject(value, clazz);
+			}
+			catch (Exception e)
+			{
+				log.warn("Unable to unmarshal {}.{} ", groupName, key, e);
+			}
 		}
 		return null;
 	}
