@@ -1374,4 +1374,11 @@ public interface Client extends GameEngine
 	 * @return the types for current world
 	 */
 	EnumSet<WorldType> getWorldType();
+
+	/**
+	 * Sets the enabled state for the Oculus orb state
+	 *
+	 * @param state boolean enabled value
+	 */
+	void setOculusOrbState(int state);
 }

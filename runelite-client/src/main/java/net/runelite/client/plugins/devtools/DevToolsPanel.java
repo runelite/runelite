@@ -224,6 +224,14 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(tileLocationBtn);
 
+		final JButton oculusOrbBtn = new JButton("Detached camera");
+		oculusOrbBtn.addActionListener(e ->
+		{
+			highlightButton(oculusOrbBtn);
+			client.setOculusOrbState(oculusOrbBtn.getBackground().equals(Color.GREEN) ? 1 : 0);
+		});
+		container.add(oculusOrbBtn);
+
 		return container;
 	}
 
