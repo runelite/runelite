@@ -63,6 +63,8 @@ public class FixedModePlugin extends Plugin implements KeyListener
 	private static final Set<WidgetInfo> TO_CONTRACT_WIDGETS = ImmutableSet
 		.<WidgetInfo>builder()
 		.add(WidgetInfo.FIXED_VIEWPORT_BANK_POPUP_CONTAINER)
+		.add(WidgetInfo.THEATRE_OF_BLOOD_DARK_OVERLAY_PARENT)
+		.add(WidgetInfo.THEATRE_OF_BLOOD_DARK_OVERLAY_BODY)
 		.build();
 
 	@Inject
@@ -251,16 +253,14 @@ public class FixedModePlugin extends Plugin implements KeyListener
 
 	}
 
-	private static void changeWidgetHeight(int originalHeight, int newHeight, Widget child)
+	private static void changeWidgetHeight(int originalHeight, int newHeight, Widget widget)
 	{
-		if (child.getHeight() == originalHeight)
+		if (widget.getHeight() == originalHeight)
 		{
-			child.setHeight(newHeight);
+			widget.setHeight(newHeight);
 
-			final Widget[] nestedChildren = child.getNestedChildren();
+			final Widget[] nestedChildren = widget.getNestedChildren();
 
-			// Expand nested children (e.g basically full-view overlays, so God Wars
-			// and the new raids 2 city)
 			if (nestedChildren != null)
 			{
 				for (final Widget nestedChild : nestedChildren)
@@ -268,6 +268,19 @@ public class FixedModePlugin extends Plugin implements KeyListener
 					if (nestedChild.getHeight() == originalHeight)
 					{
 						nestedChild.setHeight(newHeight);
+					}
+				}
+			}
+
+			final Widget[] dynamicChildren = widget.getDynamicChildren();
+
+			if (dynamicChildren != null)
+			{
+				for (final Widget child : dynamicChildren)
+				{
+					if (child.getHeight() == originalHeight)
+					{
+						child.setHeight(newHeight);
 					}
 				}
 			}

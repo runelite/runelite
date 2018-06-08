@@ -536,6 +536,12 @@ public class WidgetID
 		static final int BARROWS_REWARD_INVENTORY = 3;
 	}
 
+	static class TheatreOfBlood
+	{
+		static final int DARK_OVERLAY = 28;
+		static final int DARK_OVERLAY_BODY = 1;
+	}
+
 	static class MTA
 	{
 		static final int BONUS_COMPONENT = 7;
