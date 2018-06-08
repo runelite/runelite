@@ -46,7 +46,7 @@ public class XteaClient
 	private static final MediaType JSON = MediaType.parse("application/json");
 
 	private static final Logger logger = LoggerFactory.getLogger(XteaClient.class);
-	
+
 	public void submit(XteaRequest xteaRequest)
 	{
 		String json = RuneLiteAPI.GSON.toJson(xteaRequest);
