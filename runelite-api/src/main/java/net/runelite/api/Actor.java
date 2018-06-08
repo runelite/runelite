@@ -85,8 +85,8 @@ public interface Actor extends Renderable
 	/**
 	 * Gets the server-side location of the actor.
 	 * <p>
-	 * This value is typically ahead of where the client renders and may
-	 * be affected by things such as animations.
+	 * This value is typically ahead of where the client renders and is not
+	 * affected by things such as animations.
 	 *
 	 * @return the server location
 	 */
