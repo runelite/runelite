@@ -617,10 +617,25 @@ public class ConfigPanel extends PluginPanel
 		JButton resetButton = new JButton("Reset");
 		resetButton.addActionListener((e) ->
 		{
-			configManager.setDefaultConfiguration(config, true);
+			int result = JOptionPane.OK_OPTION;
+			if (this.runeLiteConfig.resetPluginConfirmation())
+			{
+				result = JOptionPane.showConfirmDialog(
+						resetButton,
+						"Are you sure you wish to reset this plug-in?",
+						"Reset Plug-in",
+						JOptionPane.OK_CANCEL_OPTION,
+						JOptionPane.QUESTION_MESSAGE
+				);
+			}
 
-			// Reload configuration panel
-			openGroupConfigPanel(config, cd, configManager);
+			if (result == JOptionPane.OK_OPTION)
+			{
+				configManager.setDefaultConfiguration(config, true);
+
+				// Reload configuration panel
+				openGroupConfigPanel(config, cd, configManager);
+			}
 		});
 		add(resetButton);
 
