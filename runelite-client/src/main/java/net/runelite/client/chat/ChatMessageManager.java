@@ -122,6 +122,7 @@ public class ChatMessageManager
 			case TRADE:
 			case AUTOCHAT:
 			case PUBLIC:
+			case PUBLIC_MOD:
 				usernameColor = isChatboxTransparent ? chatColorConfig.transparentUsername() : chatColorConfig.opaqueUsername();
 				break;
 
@@ -168,6 +169,7 @@ public class ChatMessageManager
 			switch (type)
 			{
 				case PUBLIC:
+				case PUBLIC_MOD:
 					return Color.decode("#0000FF");
 				case PRIVATE_MESSAGE_SENT:
 				case PRIVATE_MESSAGE_RECEIVED:
@@ -185,6 +187,7 @@ public class ChatMessageManager
 			switch (type)
 			{
 				case PUBLIC:
+				case PUBLIC_MOD:
 					return Color.decode("#9090FF");
 				case PRIVATE_MESSAGE_SENT:
 				case PRIVATE_MESSAGE_RECEIVED:
@@ -225,11 +228,15 @@ public class ChatMessageManager
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaquePublicChat(), false),
 				ChatMessageType.PUBLIC);
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaquePublicChat(), false),
+				ChatMessageType.PUBLIC_MOD);
 		}
 		if (chatColorConfig.opaquePublicChatHighlight() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaquePublicChatHighlight(), false),
 				ChatMessageType.PUBLIC);
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaquePublicChatHighlight(), false),
+				ChatMessageType.PUBLIC_MOD);
 		}
 		if (chatColorConfig.opaquePrivateMessageSent() != null)
 		{
@@ -357,11 +364,15 @@ public class ChatMessageManager
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentPublicChat(), true),
 				ChatMessageType.PUBLIC);
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentPublicChat(), true),
+				ChatMessageType.PUBLIC_MOD);
 		}
 		if (chatColorConfig.transparentPublicChatHighlight() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentPublicChatHighlight(), true),
 				ChatMessageType.PUBLIC);
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentPublicChatHighlight(), true),
+				ChatMessageType.PUBLIC_MOD);
 		}
 		if (chatColorConfig.transparentPrivateMessageSent() != null)
 		{
