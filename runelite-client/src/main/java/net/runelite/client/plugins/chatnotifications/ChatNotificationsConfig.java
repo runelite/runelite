@@ -60,17 +60,45 @@ public interface ChatNotificationsConfig extends Config
 
 	@ConfigItem(
 		position = 2,
+		keyName = "notifyOnOwnName",
+		name = "Notify on own name",
+		description = "Notifies you whenever your name is mentioned"
+	)
+	default boolean notifyOnOwnName()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "notifyOnHighlight",
+		name = "Notify on hightlight",
+		description = "Notifies you whenever a word is above is highlighted"
+	)
+	default boolean notifyOnHighlight()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 4,
 		keyName = "notifyOnTrade",
 		name = "Notify on trade",
 		description = "Notifies you whenever you are traded"
 	)
-	default boolean notifyOnTrade() { return false; }
+	default boolean notifyOnTrade()
+	{
+		return false;
+	}
 
 	@ConfigItem(
-		position = 3,
+		position = 5,
 		keyName = "notifyOnDuel",
 		name = "Notify on duel",
 		description = "Notifies you whenever you are challenged to a duel"
 	)
-	default boolean notifyOnDuel() { return false; }
+	default boolean notifyOnDuel()
+	{
+		return false;
+	}
 }

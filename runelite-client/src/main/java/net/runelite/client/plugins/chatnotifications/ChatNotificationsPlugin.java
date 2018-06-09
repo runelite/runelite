@@ -138,6 +138,8 @@ public class ChatNotificationsPlugin extends Plugin
 			Matcher matcher = usernameMatcher.matcher(messageNode.getValue());
 			if (matcher.find())
 			{
+				//notifier.notify(event.getValue());
+				sendNotification(event);
 				messageNode.setValue(matcher.replaceAll(usernameReplacer));
 				update = true;
 			}
@@ -146,6 +148,12 @@ public class ChatNotificationsPlugin extends Plugin
 		if (highlightMatcher != null)
 		{
 			Matcher matcher = highlightMatcher.matcher(messageNode.getValue());
+			if (matcher.find())
+			{
+				//notifier.notify(event.getValue());
+				sendNotification(event);
+				matcher.reset();
+			}
 			while (matcher.find())
 			{
 				String value = matcher.group();
@@ -159,5 +167,21 @@ public class ChatNotificationsPlugin extends Plugin
 			messageNode.setRuneLiteFormatMessage(messageNode.getValue());
 			chatMessageManager.update(messageNode);
 		}
+	}
+
+	private void sendNotification(SetMessage message)
+	{
+		String notificationMessage = message.getValue();
+		if (message.getName() != null && !message.getName().equals(""))
+		{
+			notificationMessage = String.format("%s: %s", message.getName().substring(message.getName().indexOf(">") + 1), notificationMessage);
+		}
+
+		if (message.getSender() != null && !message.getSender().equals(""))
+		{
+			notificationMessage = String.format("[%s] %s", message.getSender(), notificationMessage);
+		}
+
+		notifier.notify(notificationMessage);
 	}
 }
