@@ -398,8 +398,8 @@ class SkillCalculator extends JPanel
 			else if (currentTab.equals("Planner"))
 			{
 				// Right-Click Menu
-				JPopupMenu menu = new JPopupMenu("Adjust Action Amount");
-				JMenuItem item = new JMenuItem("Adjust Action Amount");
+				JPopupMenu menu = new JPopupMenu("");
+				JMenuItem item = new JMenuItem("Input Amount");
 				item.addActionListener(new ActionListener()
 				{
 					@Override
@@ -408,7 +408,30 @@ class SkillCalculator extends JPanel
 						specifyPlannerSlotAmount(slot);
 					}
 				});
+
+				JMenuItem clearItem = new JMenuItem("Clear Amount");
+				clearItem.addActionListener(new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						clearSlot(slot);
+					}
+				});
+
+				JMenuItem clearAllItem = new JMenuItem("Clear All Amounts");
+				clearAllItem.addActionListener(new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						clearAllSlots();
+					}
+				});
+
 				menu.add(item);
+				menu.add(clearItem);
+				menu.add(clearAllItem);
 
 				slot.setComponentPopupMenu(menu);
 			}
@@ -484,10 +507,7 @@ class SkillCalculator extends JPanel
 			totalPlannerXp += slot.getValue() * xp;
 		}
 
-		// Update Input Fields
-		targetXP = (int) (currentXP + totalPlannerXp);
-		targetLevel = Experience.getLevelForXp(targetXP);
-		syncInputFields();
+		updatePlannerXP();
 	}
 
 	// Calculate the total banked experience and display it in the panel
@@ -629,13 +649,46 @@ class SkillCalculator extends JPanel
 		// Add new XP total
 		totalPlannerXp = totalPlannerXp + (slot.getValue() * xp);
 
+		updatePlannerXP();
+
+		// Update Slot UI
+		updatePlannerSlot(slot);
+	}
+
+	private void updatePlannerXP()
+	{
 		// Update UI inputs to account for new XP
 		targetXP = (int) (currentXP + totalPlannerXp);
 		targetLevel = Experience.getLevelForXp(targetXP);
 		syncInputFields();
+	}
 
-		// Update Slot UI
+	private void clearSlot(UIActionSlot slot)
+	{
+		// Remove value from totalPlannerXp
+		if (slot.getValue() > 0)
+		{
+			SkillDataEntry action = slot.getAction();
+			double xp = (action.isIgnoreBonus()) ? action.getXp() : action.getXp() * xpFactor;
+			totalPlannerXp -= xp * slot.getValue();
+		}
+		slot.setValue(0);
+
 		updatePlannerSlot(slot);
+
+		updatePlannerXP();
+	}
+
+	// Used for the planner right-click option
+	private void clearAllSlots()
+	{
+		for (UIActionSlot slot : uiActionSlots)
+		{
+			clearSlot(slot);
+		}
+
+		totalPlannerXp = 0.0f;
+		updatePlannerXP();
 	}
 
 	private String formatXPActionString(double xp, int actionCount, String expExpression)
