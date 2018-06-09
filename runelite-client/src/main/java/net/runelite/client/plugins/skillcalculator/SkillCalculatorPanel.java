@@ -135,8 +135,6 @@ class SkillCalculatorPanel extends PluginPanel
 		{
 			MaterialTab matTab = new MaterialTab(s, tabGroup, null);
 
-			// Change font to better fit the containers
-			matTab.setDefaultFont(FontManager.getRunescapeFont());
 			matTab.setHorizontalAlignment(SwingUtilities.CENTER);
 
 			// Ensure Background is applied

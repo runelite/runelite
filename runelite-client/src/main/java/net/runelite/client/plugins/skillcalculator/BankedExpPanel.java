@@ -44,7 +44,7 @@ import java.text.DecimalFormat;
 class BankedExpPanel extends JPanel
 {
 	private static final Dimension ICON_SIZE = new Dimension(35, 35);
-	private final DecimalFormat FORMAT_COMMA = new DecimalFormat("#,###.#");
+	private static final DecimalFormat FORMAT_COMMA = new DecimalFormat("#,###.#");
 
 	BankedExpPanel(ItemManager itemManager, BankedItems item, int amount, double total)
 	{

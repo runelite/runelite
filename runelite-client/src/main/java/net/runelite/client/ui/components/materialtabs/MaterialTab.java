@@ -54,11 +54,11 @@ import net.runelite.client.ui.FontManager;
 @Slf4j
 public class MaterialTab extends JLabel
 {
-	private Border SELECTED_BORDER = new CompoundBorder(
+	private Border selectedBorder = new CompoundBorder(
 		BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.BRAND_ORANGE),
 		BorderFactory.createEmptyBorder(5, 10, 4, 10));
 
-	private Border UNSELECTED_BORDER = BorderFactory
+	private Border unselectedBorder = BorderFactory
 		.createEmptyBorder(5, 10, 5, 10);
 
 	/* The tab's containing group */
@@ -72,7 +72,7 @@ public class MaterialTab extends JLabel
 	@Setter
 	private BooleanSupplier onSelectEvent;
 
-	private Font FONT = FontManager.getRunescapeFont();
+	private Font font = FontManager.getRunescapeFont();
 
 	@Getter
 	private boolean selected;
@@ -80,7 +80,7 @@ public class MaterialTab extends JLabel
 	public MaterialTab(String string, MaterialTabGroup group, JComponent content)
 	{
 		super(string);
-		setFont(FONT);
+		setFont(font);
 
 		this.group = group;
 		this.content = content;
@@ -165,36 +165,38 @@ public class MaterialTab extends JLabel
 			}
 		}
 
-		setBorder(SELECTED_BORDER);
+		setBorder(selectedBorder);
 		setForeground(Color.WHITE);
+		setFont(font);
 		return selected = true;
 	}
 
 	public void unselect()
 	{
-		setBorder(UNSELECTED_BORDER);
+		setBorder(unselectedBorder);
 		setForeground(Color.GRAY);
-		setFont(FONT);
+		setFont(font);
 		selected = false;
 	}
 
 	public void setSelectedBorder(Border border)
 	{
-		SELECTED_BORDER = border;
+		selectedBorder = border;
 		if (selected)
-			setBorder(SELECTED_BORDER);
+			setBorder(selectedBorder);
 	}
 
 	public void setUnselectedBorder(Border border)
 	{
-		UNSELECTED_BORDER = border;
+		unselectedBorder = border;
 		if (!selected)
-			setBorder(UNSELECTED_BORDER);
+			setBorder(unselectedBorder);
 	}
 
-	public void setDefaultFont(Font font)
+	@Override
+	public void setFont(Font f)
 	{
-		FONT = font;
-		setFont(FONT);
+		font = f;
+		super.setFont(font);
 	}
 }
