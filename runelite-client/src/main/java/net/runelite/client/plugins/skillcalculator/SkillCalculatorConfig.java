@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
+ * Copyright (c) 2018, TheStonedTurtle <http://www.github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,33 +24,24 @@
  */
 package net.runelite.client.plugins.skillcalculator;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import net.runelite.api.Skill;
 
-@AllArgsConstructor
-@Getter
-enum CalculatorType
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+
+@ConfigGroup(
+		keyName = "skillCalculator",
+		name = "Skill Calculators",
+		description = "Skill Calculator Panel configuration")
+
+public interface  SkillCalculatorConfig extends Config
 {
-	MINING(Skill.MINING, "skill_mining.json", false),
-	AGILITY(Skill.AGILITY, "skill_agility.json", false),
-	SMITHING(Skill.SMITHING, "skill_smithing.json", true),
-	HERBLORE(Skill.HERBLORE, "skill_herblore.json", false),
-	FISHING(Skill.FISHING, "skill_fishing.json", false),
-	THIEVING(Skill.THIEVING, "skill_thieving.json", false),
-	COOKING(Skill.COOKING, "skill_cooking.json", true),
-	PRAYER(Skill.PRAYER, "skill_prayer.json", true),
-	CRAFTING(Skill.CRAFTING, "skill_crafting.json", true),
-	FIREMAKING(Skill.FIREMAKING, "skill_firemaking.json", false),
-	MAGIC(Skill.MAGIC, "skill_magic.json", false),
-	FLETCHING(Skill.FLETCHING, "skill_fletching.json", false),
-	WOODCUTTING(Skill.WOODCUTTING, "skill_woodcutting.json", false),
-	RUNECRAFT(Skill.RUNECRAFT, "skill_runecraft.json", false),
-	FARMING(Skill.FARMING, "skill_farming.json", false),
-	CONSTRUCTION(Skill.CONSTRUCTION, "skill_construction.json", true),
-	HUNTER(Skill.HUNTER, "skill_hunter.json", false);
-
-	private final Skill skill;
-	private final String dataFile;
-	private final boolean bankedXpFlag;
+	@ConfigItem(
+			keyName = "showBankedXp",
+			name = "Show Banked xp",
+			description = "Shows banked xp assuming all raw skill items are used")
+	default boolean showBankedXp()
+	{
+		return true;
+	}
 }
