@@ -322,29 +322,17 @@ public class ChatMessageManager
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueExamine(), false),
 				ChatMessageType.EXAMINE_OBJECT);
-		}
-		if (chatColorConfig.opaqueExamineHighlight() != null)
-		{
-			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaqueExamineHighlight(), false),
-				ChatMessageType.EXAMINE_OBJECT);
-		}
-		if (chatColorConfig.opaqueExamine() != null)
-		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueExamine(), false),
 				ChatMessageType.EXAMINE_NPC);
-		}
-		if (chatColorConfig.opaqueExamineHighlight() != null)
-		{
-			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaqueExamineHighlight(), false),
-				ChatMessageType.EXAMINE_NPC);
-		}
-		if (chatColorConfig.opaqueExamine() != null)
-		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueExamine(), false),
 				ChatMessageType.EXAMINE_ITEM);
 		}
 		if (chatColorConfig.opaqueExamineHighlight() != null)
 		{
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaqueExamineHighlight(), false),
+				ChatMessageType.EXAMINE_OBJECT);
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaqueExamineHighlight(), false),
+				ChatMessageType.EXAMINE_NPC);
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaqueExamineHighlight(), false),
 				ChatMessageType.EXAMINE_ITEM);
 		}
@@ -458,29 +446,17 @@ public class ChatMessageManager
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentExamine(), true),
 				ChatMessageType.EXAMINE_OBJECT);
-		}
-		if (chatColorConfig.transparentExamineHighlight() != null)
-		{
-			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentExamineHighlight(), true),
-				ChatMessageType.EXAMINE_OBJECT);
-		}
-		if (chatColorConfig.transparentExamine() != null)
-		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentExamine(), true),
 				ChatMessageType.EXAMINE_NPC);
-		}
-		if (chatColorConfig.transparentExamineHighlight() != null)
-		{
-			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentExamineHighlight(), true),
-				ChatMessageType.EXAMINE_NPC);
-		}
-		if (chatColorConfig.transparentExamine() != null)
-		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentExamine(), true),
 				ChatMessageType.EXAMINE_ITEM);
 		}
 		if (chatColorConfig.transparentExamineHighlight() != null)
 		{
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentExamineHighlight(), true),
+				ChatMessageType.EXAMINE_OBJECT);
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentExamineHighlight(), true),
+				ChatMessageType.EXAMINE_NPC);
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentExamineHighlight(), true),
 				ChatMessageType.EXAMINE_ITEM);
 		}
