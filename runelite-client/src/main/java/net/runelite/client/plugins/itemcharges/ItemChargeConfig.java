@@ -22,26 +22,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellerycount;
+package net.runelite.client.plugins.itemcharges;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-	keyName = "jewelleryCount",
-	name = "Jewellery Count",
-	description = "Configuration for the Jewellery count plugin"
+	keyName = "itemCharge",
+	name = "Item Charges",
+	description = "Configuration for the Item Charges plugin"
 )
-public interface JewelleryCountConfig extends Config
+public interface ItemChargeConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showJewelleryCount",
-		name = "Show Jewellery Count Configuration",
-		description = "Configures if jewellery count is shown",
+		keyName = "showTeleportCharges",
+		name = "Show Teleport Charges",
+		description = "Configures if teleport item count is shown",
 		position = 1
 	)
-	default boolean showJewelleryCount()
+	default boolean showTeleportCharges()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showImpCharges",
+		name = "Show Imp-in-a-box charges",
+		description = "Configures if imp-in-a-box item charges is shown",
+		position = 2
+	)
+	default boolean showImpCharges()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showWaterskinCharges",
+		name = "Show Waterskin Charges",
+		description = "Configures if waterskin item charge is shown",
+		position = 3
+	)
+	default boolean showWaterskinCharges()
 	{
 		return true;
 	}
@@ -50,7 +72,7 @@ public interface JewelleryCountConfig extends Config
 		keyName = "recoilNotification",
 		name = "Ring of Recoil Notification",
 		description = "Configures if the ring of recoil breaking notification is shown",
-		position = 2
+		position = 4
 	)
 	default boolean recoilNotification()
 	{

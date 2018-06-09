@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellerycount;
+package net.runelite.client.plugins.itemcharges;
 
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
@@ -30,25 +30,24 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.Overlay;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import javax.inject.Inject;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Jewellery Count"
+	name = "Item Charges"
 )
-public class JewelleryCountPlugin extends Plugin
+public class ItemChargePlugin extends Plugin
 {
 	@Inject
-	private JewelleryCountOverlay overlay;
+	private ItemChargeOverlay overlay;
 
 	@Inject
 	private Notifier notifier;
 
 	@Inject
-	private JewelleryCountConfig config;
+	private ItemChargeConfig config;
 
 	@Override
 	public Overlay getOverlay()
@@ -57,9 +56,9 @@ public class JewelleryCountPlugin extends Plugin
 	}
 
 	@Provides
-	JewelleryCountConfig getConfig(ConfigManager configManager)
+	ItemChargeConfig getConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(JewelleryCountConfig.class);
+		return configManager.getConfig(ItemChargeConfig.class);
 	}
 
 	@Subscribe
