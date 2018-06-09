@@ -505,9 +505,21 @@ public class ConfigPanel extends PluginPanel
 			if (cid.getType() == Color.class)
 			{
 				String existing = configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName());
-				Color existingColor = existing == null ? Color.BLACK : Color.decode(existing);
 
-				JButton colorPicker = new JButton("Pick a color");
+				Color existingColor;
+				JButton colorPicker;
+
+				if (existing == null)
+				{
+					existingColor = Color.BLACK;
+					colorPicker = new JButton("Pick a color");
+				}
+				else
+				{
+					existingColor = Color.decode(existing);
+					colorPicker = new JButton("#" + Integer.toHexString(existingColor.getRGB()).substring(2).toUpperCase());
+				}
+
 				colorPicker.setFocusable(false);
 				colorPicker.setBackground(existingColor);
 				colorPicker.addMouseListener(new MouseAdapter()
