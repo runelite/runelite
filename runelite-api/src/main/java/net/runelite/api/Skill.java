@@ -25,6 +25,9 @@
 
 package net.runelite.api;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * An enumeration of skills that a player can level.
  */
@@ -73,5 +76,35 @@ public enum Skill
 	public String getName()
 	{
 		return name;
+	}
+
+	/**
+	 * Gets the skill by name
+	 *
+	 * @return the requested skill (or null)
+	 */
+	public static Skill getByName(String name)
+	{
+		return byName.get(name.toUpperCase());
+	}
+
+	/**
+	 * Stores each skill by its name for use in getting skill by name
+	 */
+	private final static Map<String, Skill> byName = buildNameMap();
+
+	/**
+	 * Creates the map we use for getting skill by name
+	 *
+	 * @return Map of Skill (value) stored by Name (key)
+	 */
+	private static Map<String, Skill> buildNameMap()
+	{
+		Map<String, Skill> map = new HashMap<>();
+
+		for (Skill s : values())
+			map.put(s.getName().toUpperCase(), s);
+
+		return map;
 	}
 }
