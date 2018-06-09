@@ -26,6 +26,7 @@ package net.runelite.client.ui.components.materialtabs;
 
 import com.google.common.base.Strings;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.function.BooleanSupplier;
@@ -40,6 +41,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.FontManager;
 
 /**
  * This class represents a Material Design inspired tab.
@@ -52,11 +54,11 @@ import net.runelite.client.ui.ColorScheme;
 @Slf4j
 public class MaterialTab extends JLabel
 {
-	private static final Border SELECTED_BORDER = new CompoundBorder(
+	private Border SELECTED_BORDER = new CompoundBorder(
 		BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.BRAND_ORANGE),
 		BorderFactory.createEmptyBorder(5, 10, 4, 10));
 
-	private static final Border UNSELECTED_BORDER = BorderFactory
+	private Border UNSELECTED_BORDER = BorderFactory
 		.createEmptyBorder(5, 10, 5, 10);
 
 	/* The tab's containing group */
@@ -70,12 +72,15 @@ public class MaterialTab extends JLabel
 	@Setter
 	private BooleanSupplier onSelectEvent;
 
+	private Font FONT = FontManager.getRunescapeFont();
+
 	@Getter
 	private boolean selected;
 
 	public MaterialTab(String string, MaterialTabGroup group, JComponent content)
 	{
 		super(string);
+		setFont(FONT);
 
 		this.group = group;
 		this.content = content;
@@ -169,6 +174,27 @@ public class MaterialTab extends JLabel
 	{
 		setBorder(UNSELECTED_BORDER);
 		setForeground(Color.GRAY);
+		setFont(FONT);
 		selected = false;
+	}
+
+	public void setSelectedBorder(Border border)
+	{
+		SELECTED_BORDER = border;
+		if (selected)
+			setBorder(SELECTED_BORDER);
+	}
+
+	public void setUnselectedBorder(Border border)
+	{
+		UNSELECTED_BORDER = border;
+		if (!selected)
+			setBorder(UNSELECTED_BORDER);
+	}
+
+	public void setDefaultFont(Font font)
+	{
+		FONT = font;
+		setFont(FONT);
 	}
 }
