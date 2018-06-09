@@ -3,7 +3,7 @@
 We'd love for you to contribute to our source code and to make runelite even better than it is
 today!
 
-Check out the [wiki](https://github.com/runelite/runelite/wiki) for setup instructions, and general tips and tricks.
+Check out the Developer's Guide on the [wiki](https://github.com/runelite/runelite/wiki) for setup instructions, and general tips and tricks.
 
 Here are the guidelines we'd like you to follow:
 
