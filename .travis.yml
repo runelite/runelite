@@ -10,4 +10,3 @@ install: true
 script: ./travis/build.sh
 notifications:
   irc: "irc.rizon.net#runelite"
-  webhooks: http://discord.runelite.net/discord-webhook.php
