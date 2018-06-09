@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellerycount;
+package net.runelite.client.plugins.itemcharges;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -37,6 +37,9 @@ import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.IMPBOX;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.TELEPORT;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERSKIN;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -44,13 +47,13 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.QueryRunner;
 
-class JewelleryCountOverlay extends Overlay
+class ItemChargeOverlay extends Overlay
 {
 	private final QueryRunner queryRunner;
-	private final JewelleryCountConfig config;
+	private final ItemChargeConfig config;
 
 	@Inject
-	JewelleryCountOverlay(QueryRunner queryRunner, JewelleryCountConfig config)
+	ItemChargeOverlay(QueryRunner queryRunner, ItemChargeConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
@@ -61,33 +64,40 @@ class JewelleryCountOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showJewelleryCount())
+		if (!config.showTeleportCharges() && !config.showImpCharges() && !config.showWaterskinCharges())
 		{
 			return null;
 		}
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
-		for (WidgetItem item : getJewelleryWidgetItems())
+		for (WidgetItem item : getChargeWidgetItems())
 		{
-			JewelleryCharges charges = JewelleryCharges.getCharges(item.getId());
-
-			if (charges == null)
+			ItemWithCharge chargeItem = ItemWithCharge.findItem(item.getId());
+			if (chargeItem == null)
 			{
 				continue;
 			}
 
+			ItemChargeType type = chargeItem.getType();
+			if ((type == TELEPORT && !config.showTeleportCharges())
+				|| (type == IMPBOX && !config.showImpCharges())
+				|| (type == WATERSKIN && !config.showWaterskinCharges()))
+			{
+				continue;
+			}
+
+			int charges = chargeItem.getCharges();
 			final Rectangle bounds = item.getCanvasBounds();
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
-			textComponent.setText(String.valueOf(charges.getCharges()));
+			textComponent.setText(String.valueOf(charges));
 			textComponent.render(graphics);
 		}
-
 		return null;
 	}
 
-	private Collection<WidgetItem> getJewelleryWidgetItems()
+	private Collection<WidgetItem> getChargeWidgetItems()
 	{
 		Query inventoryQuery = new InventoryWidgetItemQuery();
 		WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(inventoryQuery);

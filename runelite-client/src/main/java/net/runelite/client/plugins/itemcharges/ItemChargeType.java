@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2017, Mitchell <https://github.com/Mitchell-Kovacs>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellerycount;
+package net.runelite.client.plugins.itemcharges;
 
-public enum JewelleryType
+enum ItemChargeType
 {
-	GLORY,
-	ROD,
-	GAMES,
-	ROW,
-	ROS,
-	SKILLS,
-	CBRACE,
-	DIGSITE,
-	BURNING,
-	PASSAGE,
-	RETURNING,
-	TCRYSTAL,
-	PHARAO,
-	WATERSKIN,
-	IMP_IN_A_BOX,
-	ELYRE
+	IMPBOX,
+	TELEPORT,
+	WATERSKIN
 }
