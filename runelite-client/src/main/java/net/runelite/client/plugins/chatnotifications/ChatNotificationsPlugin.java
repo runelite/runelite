@@ -82,14 +82,6 @@ public class ChatNotificationsPlugin extends Plugin
 			case HOPPING:
 				usernameMatcher = null;
 				break;
-			case LOGGED_IN:
-				// update username matcher on login
-				if (usernameMatcher == null && client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
-				{
-					String username = client.getLocalPlayer().getName();
-					usernameMatcher = Pattern.compile("\\b(" + quote(username) + ")\\b", Pattern.CASE_INSENSITIVE);
-					usernameReplacer = "<col" + ChatColorType.HIGHLIGHT.name() + "><u>" + username + "</u><col" + ChatColorType.NORMAL.name() + ">";
-				}
 		}
 	}
 
@@ -131,6 +123,13 @@ public class ChatNotificationsPlugin extends Plugin
 					notifier.notify(event.getValue());
 				}
 				break;
+		}
+
+		if (usernameMatcher == null && client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
+		{
+			String username = client.getLocalPlayer().getName();
+			usernameMatcher = Pattern.compile("\\b(" + quote(username) + ")\\b", Pattern.CASE_INSENSITIVE);
+			usernameReplacer = "<col" + ChatColorType.HIGHLIGHT.name() + "><u>" + username + "</u><col" + ChatColorType.NORMAL.name() + ">";
 		}
 
 		if (usernameMatcher != null)
