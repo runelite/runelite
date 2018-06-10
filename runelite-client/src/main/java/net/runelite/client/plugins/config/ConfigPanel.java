@@ -529,7 +529,11 @@ public class ConfigPanel extends PluginPanel
 					{
 						final JFrame parent = new JFrame();
 						JColorChooser jColorChooser = new JColorChooser(existingColor);
-						jColorChooser.getSelectionModel().addChangeListener(e1 -> colorPicker.setBackground(jColorChooser.getColor()));
+						jColorChooser.getSelectionModel().addChangeListener(e1 ->
+						{
+							colorPicker.setBackground(jColorChooser.getColor());
+							colorPicker.setText("#" + Integer.toHexString(jColorChooser.getColor().getRGB()).substring(2).toUpperCase());
+						});
 						parent.addWindowListener(new WindowAdapter()
 						{
 							@Override
