@@ -47,8 +47,7 @@ public class TimerTimer extends Timer
 		this.timer = timer;
 		setPriority(InfoBoxPriority.MED);
 	}
-
-
+	
 	public GameTimer getTimer()
 	{
 		return timer;

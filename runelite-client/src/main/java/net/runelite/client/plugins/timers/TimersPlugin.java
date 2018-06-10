@@ -641,7 +641,6 @@ public class TimersPlugin extends Plugin
 		infoBoxManager.addInfoBox(t);
 	}
 
-
 	public void createGameTimer(GameTimer timer)
 	{
 		removeGameTimer(timer);
