@@ -28,12 +28,18 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import javax.inject.Inject;
-import net.runelite.api.ChatMessageType;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.GameState;
+import net.runelite.api.Prayer;
+import net.runelite.api.Skill;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -46,6 +52,8 @@ import net.runelite.client.util.Text;
 )
 public class NightmareZonePlugin extends Plugin
 {
+	private static final int NORMAL_HP_REGEN_TICKS = 100;
+
 	private static final int[] NMZ_MAP_REGION = {9033};
 
 	@Inject
@@ -63,6 +71,12 @@ public class NightmareZonePlugin extends Plugin
 	// This starts as true since you need to get
 	// above the threshold before sending notifications
 	private boolean absorptionNotificationSend = true;
+	private boolean hitpointRegenNotificationSend = true;
+
+	@Getter
+	private double hitpointsPercentage;
+	private int ticksSinceHPRegen;
+	private boolean wasRapidHeal;
 
 	@Override
 	protected void shutDown()
@@ -89,6 +103,26 @@ public class NightmareZonePlugin extends Plugin
 	}
 
 	@Subscribe
+	private void onGameStateChanged(GameStateChanged ev)
+	{
+		if (ev.getGameState() == GameState.HOPPING || ev.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			ticksSinceHPRegen = -2; // For some reason this makes this accurate (this is the same code as in RegenMeterPlugin)
+		}
+	}
+
+	@Subscribe
+	private void onVarbitChanged(VarbitChanged ev)
+	{
+		boolean isRapidHeal = client.isPrayerActive(Prayer.RAPID_HEAL);
+		if (wasRapidHeal != isRapidHeal)
+		{
+			ticksSinceHPRegen = 0;
+		}
+		wasRapidHeal = isRapidHeal;
+	}
+
+	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		if (!isInNightmareZone())
@@ -98,11 +132,23 @@ public class NightmareZonePlugin extends Plugin
 				absorptionNotificationSend = true;
 			}
 
+			if (!hitpointRegenNotificationSend)
+			{
+				hitpointRegenNotificationSend = true;
+			}
+
 			return;
 		}
+
 		if (config.absorptionNotification())
 		{
 			checkAbsorption();
+		}
+
+		calculateHitpointPercentage();
+		if (config.hitpointRegenNotification())
+		{
+			checkHitpointRegen();
 		}
 	}
 
@@ -166,6 +212,49 @@ public class NightmareZonePlugin extends Plugin
 			if (absorptionPoints > config.absorptionThreshold())
 			{
 				absorptionNotificationSend = false;
+			}
+		}
+	}
+
+	private void calculateHitpointPercentage()
+	{
+		int ticksPerHPRegen = NORMAL_HP_REGEN_TICKS;
+		if (client.isPrayerActive(Prayer.RAPID_HEAL))
+		{
+			ticksPerHPRegen /= 2;
+		}
+
+		ticksSinceHPRegen = (ticksSinceHPRegen + 1) % ticksPerHPRegen;
+		hitpointsPercentage = ticksSinceHPRegen / (double) ticksPerHPRegen;
+
+		int currentHP = client.getBoostedSkillLevel(Skill.HITPOINTS);
+		int maxHP = client.getRealSkillLevel(Skill.HITPOINTS);
+		if (currentHP == maxHP)
+		{
+			hitpointsPercentage = 0;
+		}
+		else if (currentHP > maxHP)
+		{
+			// Show it going down
+			hitpointsPercentage = 1 - hitpointsPercentage;
+		}
+	}
+
+	private void checkHitpointRegen()
+	{
+		if (!hitpointRegenNotificationSend)
+		{
+			if (hitpointsPercentage >= 0.85)
+			{
+				notifier.notify("Hitpoints is about to regen!");
+				hitpointRegenNotificationSend = true;
+			}
+		}
+		else
+		{
+			if (hitpointsPercentage < 0.85)
+			{
+				hitpointRegenNotificationSend = false;
 			}
 		}
 	}
