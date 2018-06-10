@@ -171,25 +171,6 @@ public class NightmareZonePlugin extends Plugin
 
 	boolean isInNightmareZone()
 	{
-		/*
-		This check works because each frame RuneScape unhides the widget every frame. As a result, we can use the state
-		of this widget to check whether we are in the Nightmare Zone. We can't check if the widget exists as it doesn't
-		get removed as soon as we leave, just hidden. If the widget is hidden at this stage in the code execution, this
-		means RuneScape has hidden it, so we have left NMZ.	The widget is not shown because, after this check is done,
-		the NightmareZoneOverlay hides it to show the custom one.
-
-		In short:
-
-		RuneScape unhides it
-		Is it hidden?
-		-yes? We're not in NMZ
-		-no? We're in NMZ, so hide it and show our overlay
-
-
-		The old check asked if the only region loaded was the KBD lair (9033), as the normal KBD lair has a few valid
-		(but mostly empty) regions around it that would be loaded at the same time. However, since there an instanced
-		version of the KBD lair, it also thought that was NMZ since that also only loads 9033.
-		 */
 		Widget nmz = client.getWidget(WidgetInfo.NIGHTMARE_ZONE);
 		return nmz != null && !nmz.isSelfHidden();
 	}
