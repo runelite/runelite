@@ -41,6 +41,10 @@ public enum ChatMessageType
 	 */
 	SERVER(0),
 	/**
+ 	* A message in the public chat from a moderator
+ 	*/
+	PUBLIC_MOD(1),
+	/**
 	 * A message in the public chat.
 	 */
 	PUBLIC(2),
