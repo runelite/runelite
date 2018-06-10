@@ -26,7 +26,7 @@ import java.util.concurrent.ScheduledExecutorService;
 
 @PluginDescriptor(
 		name = "Equipment Inspector",
-		enabledByDefault = true
+		enabledByDefault = false
 )
 
 @Slf4j
