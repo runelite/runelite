@@ -22,24 +22,54 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellerycount;
+package net.runelite.client.plugins.itemcharges;
 
-public enum JewelleryType
+import javax.inject.Inject;
+import net.runelite.api.ChatMessageType;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.Overlay;
+import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.client.Notifier;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.PluginDescriptor;
+
+@PluginDescriptor(
+	name = "Item Charges"
+)
+public class ItemChargePlugin extends Plugin
 {
-	GLORY,
-	ROD,
-	GAMES,
-	ROW,
-	ROS,
-	SKILLS,
-	CBRACE,
-	DIGSITE,
-	BURNING,
-	PASSAGE,
-	RETURNING,
-	TCRYSTAL,
-	PHARAO,
-	WATERSKIN,
-	IMP_IN_A_BOX,
-	ELYRE
+	@Inject
+	private ItemChargeOverlay overlay;
+
+	@Inject
+	private Notifier notifier;
+
+	@Inject
+	private ItemChargeConfig config;
+
+	@Override
+	public Overlay getOverlay()
+	{
+		return overlay;
+	}
+
+	@Provides
+	ItemChargeConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(ItemChargeConfig.class);
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() == ChatMessageType.SERVER)
+		{
+			if (config.recoilNotification() && event.getMessage().contains("<col=7f007f>Your Ring of Recoil has shattered.</col>"))
+			{
+				notifier.notify("Your Ring of Recoil has shattered");
+			}
+		}
+	}
 }

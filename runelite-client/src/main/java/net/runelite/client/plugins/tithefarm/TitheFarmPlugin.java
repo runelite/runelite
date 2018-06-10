@@ -55,9 +55,6 @@ public class TitheFarmPlugin extends Plugin
 	@Inject
 	private TitheFarmSackOverlay titheFarmSackOverlay;
 
-	@Inject
-	private TitheFarmInventoryOverlay titheFarmInventoryOverlay;
-
 	@Getter
 	private final Set<TitheFarmPlant> plants = new HashSet<>();
 
@@ -70,7 +67,7 @@ public class TitheFarmPlugin extends Plugin
 	@Override
 	public Collection<Overlay> getOverlays()
 	{
-		return Arrays.asList(titheFarmOverlay, titheFarmSackOverlay, titheFarmInventoryOverlay);
+		return Arrays.asList(titheFarmOverlay, titheFarmSackOverlay);
 	}
 
 	@Override
