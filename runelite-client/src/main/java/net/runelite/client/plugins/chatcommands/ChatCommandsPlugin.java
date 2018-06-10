@@ -189,17 +189,7 @@ public class ChatCommandsPlugin extends Plugin
 			}
 
 			int itemId = item.getId();
-			ItemPrice itemPrice;
-
-			try
-			{
-				itemPrice = itemManager.getItemPrice(itemId);
-			}
-			catch (IOException ex)
-			{
-				log.warn("Unable to fetch item price for {}", itemId, ex);
-				return;
-			}
+			ItemPrice itemPrice = itemManager.getItemPrice(itemId);
 
 			final ChatMessageBuilder builder = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)

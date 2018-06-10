@@ -174,7 +174,7 @@ public class GroundItemsOverlay extends Overlay
 			}
 
 			// Update GE price for item
-			final ItemPrice itemPrice = itemManager.getItemPriceAsync(item.getItemId());
+			final ItemPrice itemPrice = itemManager.getItemPrice(item.getItemId());
 
 			if (itemPrice != null && itemPrice.getPrice() > 0)
 			{
