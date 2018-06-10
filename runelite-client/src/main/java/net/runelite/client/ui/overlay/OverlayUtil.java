@@ -29,7 +29,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
@@ -173,11 +172,6 @@ public class OverlayUtil
 			graphics.setColor(fillColor);
 			graphics.fill(area);
 		}
-	}
-
-	public static void setGraphicProperties(Graphics2D graphics)
-	{
-		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	}
 
 	public static java.awt.Point padPosition(OverlayPosition position, Dimension dimension, final int padding)

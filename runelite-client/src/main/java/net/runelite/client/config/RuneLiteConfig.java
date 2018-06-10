@@ -221,4 +221,15 @@ public interface RuneLiteConfig extends Config
 	{
 		return 4;
 	}
+
+	@ConfigItem(
+		keyName = "antialiasing",
+		name = "Enable anti-aliasing",
+		description = "Enables the anti-aliasing (line smoothing). Disabling this can increase performance.",
+		position = 34
+	)
+	default boolean enableAntiAliasing()
+	{
+		return true;
+	}
 }

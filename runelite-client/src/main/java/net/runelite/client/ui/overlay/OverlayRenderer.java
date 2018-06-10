@@ -31,6 +31,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Collections;
@@ -322,7 +323,11 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 		// Create copy of snap corners because overlays will modify them
 		OverlayBounds snapCorners = new OverlayBounds(this.snapCorners);
-		OverlayUtil.setGraphicProperties(graphics);
+
+		// Set antialiasing based on configuration
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, runeLiteConfig.enableAntiAliasing()
+			? RenderingHints.VALUE_ANTIALIAS_ON
+			: RenderingHints.VALUE_ANTIALIAS_OFF);
 
 		// Draw snap corners
 		if (layer == OverlayLayer.UNDER_WIDGETS && movedOverlay != null && movedOverlay.getPosition() != OverlayPosition.DETACHED)
