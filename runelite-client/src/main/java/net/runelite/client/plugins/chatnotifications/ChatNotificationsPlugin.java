@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.chatnotifications;
 
+import com.google.common.base.Strings;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
@@ -170,17 +171,21 @@ public class ChatNotificationsPlugin extends Plugin
 
 	private void sendNotification(SetMessage message)
 	{
-		String notificationMessage = message.getValue();
-		if (message.getName() != null && !message.getName().equals(""))
-		{
-			notificationMessage = String.format("%s: %s", message.getName().substring(message.getName().indexOf(">") + 1), notificationMessage);
-		}
+		String name = message.getName();
+		String sender = message.getSender();
+		StringBuilder stringBuilder = new StringBuilder();
 
-		if (message.getSender() != null && !message.getSender().equals(""))
+		if (!Strings.isNullOrEmpty(sender))
 		{
-			notificationMessage = String.format("[%s] %s", message.getSender(), notificationMessage);
+			stringBuilder.append('[').append(sender).append("] ");
 		}
+		if (!Strings.isNullOrEmpty(name))
+		{
+			stringBuilder.append(name).append(' ');
+		}
+		stringBuilder.append(message.getValue());
 
-		notifier.notify(notificationMessage);
+		String notification = stringBuilder.toString();
+		notifier.notify(notification);
 	}
 }
