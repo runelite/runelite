@@ -263,6 +263,14 @@ public interface ChatColorConfig extends Config
 	Color opaqueClanUsernames();
 
 	@ConfigItem(
+		position = 57,
+		keyName = "opaquePublicFriendUsernames",
+		name = "Public friend usernames",
+		description = "Color of Friend Usernames in Public Chat"
+	)
+	Color opaquePublicFriendUsernames();
+
+	@ConfigItem(
 		position = 61,
 		keyName = "transparentPublicChat",
 		name = "Public chat (transparent)",
@@ -490,4 +498,12 @@ public interface ChatColorConfig extends Config
 		description = "Color of Usernames in Clan Chat (transparent)"
 	)
 	Color transparentClanUsernames();
+
+	@ConfigItem(
+		position = 87,
+		keyName = "transparentPublicFriendUsernames",
+		name = "Public friend usernames (transparent)",
+		description = "Color of Friend Usernames in Public Chat (transparent)"
+	)
+	Color transparentPublicFriendUsernames();
 }
