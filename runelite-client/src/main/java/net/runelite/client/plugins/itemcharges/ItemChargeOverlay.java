@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.itemcharges;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -92,6 +93,7 @@ class ItemChargeOverlay extends Overlay
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
 			textComponent.setText(String.valueOf(charges));
+			textComponent.setColor(getColor(charges));
 			textComponent.render(graphics);
 		}
 		return null;
@@ -114,5 +116,19 @@ class ItemChargeOverlay extends Overlay
 		jewellery.addAll(Arrays.asList(inventoryWidgetItems));
 		jewellery.addAll(Arrays.asList(equipmentWidgetItems));
 		return jewellery;
+	}
+
+	private Color getColor(int charges)
+	{
+		Color color = Color.WHITE;
+		if (charges <= config.veryLowWarning())
+		{
+			color = config.veryLowWarningColor();
+		}
+		else if (charges <= config.lowWarning())
+		{
+			color = config.lowWarningolor();
+		}
+		return color;
 	}
 }

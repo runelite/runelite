@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.itemcharges;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -36,10 +37,54 @@ import net.runelite.client.config.ConfigItem;
 public interface ItemChargeConfig extends Config
 {
 	@ConfigItem(
+		keyName = "veryLowWarningColor",
+		name = "Very Low Warning Color",
+		description = "Configure the color of the overlay when charges are very low",
+		position = 1
+	)
+	default Color veryLowWarningColor()
+	{
+		return Color.RED;
+	}
+
+	@ConfigItem(
+		keyName = "lowWarningColor",
+		name = "Low Warning Color",
+		description = "Configure the color of the overlay when charges are low",
+		position = 2
+	)
+	default Color lowWarningolor()
+	{
+		return Color.YELLOW;
+	}
+
+	@ConfigItem(
+		keyName = "veryLowWarning",
+		name = "Very Low Warning",
+		description = "Configure the charge count for the very low warning color",
+		position = 3
+	)
+	default int veryLowWarning()
+	{
+		return 1;
+	}
+
+	@ConfigItem(
+		keyName = "lowWarning",
+		name = "Low Warning",
+		description = "Configure the charge count for the low warning color",
+		position = 4
+	)
+	default int lowWarning()
+	{
+		return 2;
+	}
+
+	@ConfigItem(
 		keyName = "showTeleportCharges",
 		name = "Show Teleport Charges",
 		description = "Configures if teleport item count is shown",
-		position = 1
+		position = 5
 	)
 	default boolean showTeleportCharges()
 	{
@@ -50,7 +95,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "showImpCharges",
 		name = "Show Imp-in-a-box charges",
 		description = "Configures if imp-in-a-box item charges is shown",
-		position = 2
+		position = 6
 	)
 	default boolean showImpCharges()
 	{
@@ -61,7 +106,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "showWaterskinCharges",
 		name = "Show Waterskin Charges",
 		description = "Configures if waterskin item charge is shown",
-		position = 3
+		position = 7
 	)
 	default boolean showWaterskinCharges()
 	{
@@ -72,7 +117,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "recoilNotification",
 		name = "Ring of Recoil Notification",
 		description = "Configures if the ring of recoil breaking notification is shown",
-		position = 4
+		position = 8
 	)
 	default boolean recoilNotification()
 	{
