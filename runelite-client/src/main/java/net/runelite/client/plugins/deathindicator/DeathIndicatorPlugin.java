@@ -78,11 +78,16 @@ public class DeathIndicatorPlugin extends Plugin
 	@Inject
 	private InfoBoxManager infoBoxManager;
 
+	@Inject
+	private DeathIndicatorOverlay overlay;
+
 	private Timer deathTimer;
 
 	private WorldPoint lastDeath;
 	private Instant lastDeathTime;
 	private int lastDeathWorld;
+
+	private boolean highlightTile = false;
 
 	static
 	{
@@ -106,6 +111,12 @@ public class DeathIndicatorPlugin extends Plugin
 	}
 
 	@Override
+	public DeathIndicatorOverlay getOverlay()
+	{
+		return overlay;
+	}
+
+	@Override
 	protected void startUp()
 	{
 		if (!hasDied())
@@ -120,12 +131,9 @@ public class DeathIndicatorPlugin extends Plugin
 			return;
 		}
 
-		if (config.showDeathHintArrow())
+		if (config.showDeathTileHighlight())
 		{
-			if (!client.hasHintArrow())
-			{
-				client.setHintArrow(new WorldPoint(config.deathLocationX(), config.deathLocationY(), config.deathLocationPlane()));
-			}
+			highlightTile = true;
 		}
 
 		if (config.showDeathOnWorldMap())
@@ -138,11 +146,6 @@ public class DeathIndicatorPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		if (client.hasHintArrow())
-		{
-			client.clearHintArrow();
-		}
-
 		if (deathTimer != null)
 		{
 			infoBoxManager.removeInfoBox(deathTimer);
@@ -150,6 +153,7 @@ public class DeathIndicatorPlugin extends Plugin
 		}
 
 		worldMapPointManager.removeIf(DeathWorldMapPoint.class::isInstance);
+		highlightTile = false;
 	}
 
 	@Subscribe
@@ -194,9 +198,9 @@ public class DeathIndicatorPlugin extends Plugin
 			config.timeOfDeath(lastDeathTime);
 			config.deathWorld(lastDeathWorld);
 
-			if (config.showDeathHintArrow())
+			if (config.showDeathTileHighlight())
 			{
-				client.setHintArrow(lastDeath);
+				highlightTile = true;
 			}
 
 			if (config.showDeathOnWorldMap())
@@ -220,8 +224,6 @@ public class DeathIndicatorPlugin extends Plugin
 		WorldPoint deathPoint = new WorldPoint(config.deathLocationX(), config.deathLocationY(), config.deathLocationPlane());
 		if (deathPoint.equals(client.getLocalPlayer().getWorldLocation()) || (deathTimer != null && deathTimer.cull()))
 		{
-			client.clearHintArrow();
-
 			if (deathTimer != null)
 			{
 				infoBoxManager.removeInfoBox(deathTimer);
@@ -229,6 +231,7 @@ public class DeathIndicatorPlugin extends Plugin
 			}
 
 			worldMapPointManager.removeIf(DeathWorldMapPoint.class::isInstance);
+			highlightTile = false;
 
 			resetDeath();
 		}
@@ -239,9 +242,9 @@ public class DeathIndicatorPlugin extends Plugin
 	{
 		if (event.getGroup().equals("deathIndicator"))
 		{
-			if (!config.showDeathHintArrow() && hasDied())
+			if (!config.showDeathTileHighlight())
 			{
-				client.clearHintArrow();
+				highlightTile = false;
 			}
 
 			if (!config.showDeathInfoBox() && deathTimer != null)
@@ -257,11 +260,9 @@ public class DeathIndicatorPlugin extends Plugin
 
 			if (!hasDied())
 			{
-				client.clearHintArrow();
-
 				resetInfobox();
-
 				worldMapPointManager.removeIf(DeathWorldMapPoint.class::isInstance);
+				highlightTile = false;
 			}
 		}
 	}
@@ -280,9 +281,9 @@ public class DeathIndicatorPlugin extends Plugin
 			{
 				WorldPoint deathPoint = new WorldPoint(config.deathLocationX(), config.deathLocationY(), config.deathLocationPlane());
 
-				if (config.showDeathHintArrow())
+				if (config.showDeathTileHighlight())
 				{
-					client.setHintArrow(deathPoint);
+					highlightTile = true;
 				}
 
 				if (config.showDeathOnWorldMap())
@@ -294,6 +295,7 @@ public class DeathIndicatorPlugin extends Plugin
 			else
 			{
 				worldMapPointManager.removeIf(DeathWorldMapPoint.class::isInstance);
+				highlightTile = false;
 			}
 		}
 	}
@@ -331,5 +333,10 @@ public class DeathIndicatorPlugin extends Plugin
 				infoBoxManager.addInfoBox(deathTimer);
 			}
 		}
+	}
+
+	public boolean HighlightTileEnabled()
+	{
+		return highlightTile;
 	}
 }

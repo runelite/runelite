@@ -38,11 +38,11 @@ public interface DeathIndicatorConfig extends Config
 {
 	@ConfigItem(
 		position = 1,
-		keyName = "deathHintArrow",
-		name = "Death Hint Arrow",
-		description = "Configures whether or not to show a hint arrow to death location"
+		keyName = "deathTileHighlight",
+		name = "Highlight Death Tile",
+		description = "Configures whether or not to highlight the death location"
 	)
-	default boolean showDeathHintArrow()
+	default boolean showDeathTileHighlight()
 	{
 		return true;
 	}
@@ -50,7 +50,7 @@ public interface DeathIndicatorConfig extends Config
 	@ConfigItem(
 		position = 2,
 		keyName = "deathInfoBox",
-		name = "Death InfoBox",
+		name = "Show Death InfoBox",
 		description = "Configures whether or not to show item reclaim timer and death world infobox"
 	)
 	default boolean showDeathInfoBox()
