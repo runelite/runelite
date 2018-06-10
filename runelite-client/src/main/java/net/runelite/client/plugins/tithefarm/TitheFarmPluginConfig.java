@@ -38,17 +38,6 @@ public interface TitheFarmPluginConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
-		keyName = "showWateringCanOverlay",
-		name = "Show watering can doses",
-		description = "Configures whether or not the watering can doses are displayed"
-	)
-	default boolean showWateringCanOverlay()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 1,
 		keyName = "showSack",
 		name = "Show fruit sack",
 		description = "Configures whether or not the fruit sack is displayed"
@@ -59,7 +48,7 @@ public interface TitheFarmPluginConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
+		position = 1,
 		keyName = "hexColorUnwatered",
 		name = "Unwatered plant",
 		description = "Color of unwatered plant timer"
@@ -70,7 +59,7 @@ public interface TitheFarmPluginConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 2,
 		keyName = "hexColorWatered",
 		name = "Watered plant",
 		description = "Color of watered plant timer"
@@ -81,7 +70,7 @@ public interface TitheFarmPluginConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 3,
 		keyName = "hexColorGrown",
 		name = "Grown plant",
 		description = "Color of grown plant timer"
