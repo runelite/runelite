@@ -169,4 +169,35 @@ public class ItemClient
 			throw new IOException(ex);
 		}
 	}
+
+	public ItemPrice[] getPrices() throws IOException
+	{
+		HttpUrl.Builder urlBuilder = RuneLiteAPI.getApiBase().newBuilder()
+			.addPathSegment("item")
+			.addPathSegment("prices");
+
+		HttpUrl url = urlBuilder.build();
+
+		logger.debug("Built URI: {}", url);
+
+		Request request = new Request.Builder()
+			.url(url)
+			.build();
+
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		{
+			if (!response.isSuccessful())
+			{
+				logger.warn("Error looking up prices: {}", response.message());
+				return null;
+			}
+
+			InputStream in = response.body().byteStream();
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), ItemPrice[].class);
+		}
+		catch (JsonParseException ex)
+		{
+			throw new IOException(ex);
+		}
+	}
 }

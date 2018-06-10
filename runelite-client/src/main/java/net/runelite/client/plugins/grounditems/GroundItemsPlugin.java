@@ -403,7 +403,7 @@ public class GroundItemsPlugin extends Plugin
 
 			final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemComposition.getId();
-			final ItemPrice itemPrice = itemManager.getItemPriceAsync(realItemId);
+			final ItemPrice itemPrice = itemManager.getItemPrice(realItemId);
 			final int price = itemPrice == null ? itemComposition.getPrice() : itemPrice.getPrice();
 			final int haPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity;
 			final int gePrice = quantity * price;
