@@ -78,4 +78,15 @@ public interface BoostsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "boostThreshold",
+		name = "Boost Amount Threshold",
+		description = "The amount of levels boosted to send a notification at. A value of 0 will disable notification.",
+		position = 5
+	)
+	default int boostThreshold()
+	{
+		return 0;
+	}
 }

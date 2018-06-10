@@ -39,6 +39,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.api.events.BoostedLevelChanged;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
@@ -67,6 +68,9 @@ public class BoostsPlugin extends Plugin
 
 	@Getter
 	private Instant lastChange;
+
+	@Inject
+	private Notifier notifier;
 
 	@Inject
 	private Client client;
@@ -155,7 +159,7 @@ public class BoostsPlugin extends Plugin
 		int last = lastSkillLevels[skillIdx];
 		int cur = client.getBoostedSkillLevel(skill);
 
-		// Check if stat goes +1 or -2
+		// Check if stat goes +1 or -1
 		if (cur == last + 1 || cur == last - 1)
 		{
 			log.debug("Skill {} healed", skill);
@@ -163,6 +167,18 @@ public class BoostsPlugin extends Plugin
 			addStatChangeIndicator();
 		}
 		lastSkillLevels[skillIdx] = cur;
+
+		int boostThreshold = config.boostThreshold();
+		if (boostThreshold != 0)
+		{
+			int real = client.getRealSkillLevel(skill);
+			int lastBoost = last - real;
+			int boost = cur - real;
+			if (boost <= boostThreshold && boostThreshold < lastBoost)
+			{
+				notifier.notify(skill.getName() + " level is getting low!");
+			}
+		}
 	}
 
 	private void updateShownSkills(boolean showSkillingSkills)
