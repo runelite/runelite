@@ -32,6 +32,7 @@ import lombok.Getter;
 import static net.runelite.api.ItemID.*;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.IMPBOX;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.TELEPORT;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERCAN;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERSKIN;
 
 @AllArgsConstructor
@@ -131,6 +132,15 @@ enum ItemWithCharge
 	TCRYSTAL3(TELEPORT, TELEPORT_CRYSTAL_3, 3),
 	TCRYSTAL4(TELEPORT, TELEPORT_CRYSTAL_4, 4),
 	TCRYSTAL5(TELEPORT, TELEPORT_CRYSTAL_5, 5),
+	WCAN0(WATERCAN, WATERING_CAN, 0),
+	WCAN1(WATERCAN, WATERING_CAN1, 1),
+	WCAN2(WATERCAN, WATERING_CAN2, 2),
+	WCAN3(WATERCAN, WATERING_CAN3, 3),
+	WCAN4(WATERCAN, WATERING_CAN4, 4),
+	WCAN5(WATERCAN, WATERING_CAN5, 5),
+	WCAN6(WATERCAN, WATERING_CAN6, 6),
+	WCAN7(WATERCAN, WATERING_CAN7, 7),
+	WCAN8(WATERCAN, WATERING_CAN8, 8),
 	WSKIN0(WATERSKIN, WATERSKIN0, 0),
 	WSKIN1(WATERSKIN, WATERSKIN1, 1),
 	WSKIN2(WATERSKIN, WATERSKIN2, 2),

@@ -28,5 +28,6 @@ enum ItemChargeType
 {
 	IMPBOX,
 	TELEPORT,
+	WATERCAN,
 	WATERSKIN
 }
