@@ -133,7 +133,8 @@ public class RunecraftingProfitPlugin extends Plugin
 			{
 				ArrayList<Item> items = getInventoryContents();
 				session.updatePreviousRunesInInventory(items);
-			} catch (NullPointerException e)
+			}
+			catch (NullPointerException e)
 			{
 				log.debug("inventory is empty...");
 			}

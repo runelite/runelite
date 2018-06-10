@@ -70,7 +70,8 @@ public class RunecraftingProfitSession
 			{
 				ItemPrice price = itemManager.getItemPrice(rune.getItemId());
 				runePrices.put(rune.getItemId(), price.getPrice());
-			} catch (IOException e)
+			}
+			catch (IOException e)
 			{
 				log.debug(Arrays.asList(e.getStackTrace()).toString());
 			}
