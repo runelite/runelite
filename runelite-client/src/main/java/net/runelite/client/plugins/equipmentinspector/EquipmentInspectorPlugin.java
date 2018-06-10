@@ -103,11 +103,14 @@ public class EquipmentInspectorPlugin extends Plugin
 				}
 
 				String playerName = Text.removeTags(event.getMenuTarget());
+				// The player menu uses a non-breaking space in the player name, we need to replace this to compare
+				// against the playerName in the player cache.
+				String finalPlayerName = playerName.replace('\u00A0', ' ');
 
-				List<Player> players = Arrays.asList(client.getCachedPlayers());
+				List<Player> players = client.getPlayers();
 				Optional<Player> targetPlayer = players.stream()
 						.filter(Objects::nonNull)
-						.filter(p -> p.getName().equals(playerName)).findFirst();
+						.filter(p -> p.getName().equals(finalPlayerName)).findFirst();
 
 				if (targetPlayer.isPresent())
 				{
