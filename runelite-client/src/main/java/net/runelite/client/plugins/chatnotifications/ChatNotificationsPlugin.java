@@ -113,13 +113,13 @@ public class ChatNotificationsPlugin extends Plugin
 		switch (event.getType())
 		{
 			case TRADE:
-				if (event.getValue().contains("wishes to trade with you."))
+				if (event.getValue().contains("wishes to trade with you.") && config.notifyOnTrade())
 				{
 					notifier.notify(event.getValue());
 				}
 				break;
 			case DUEL:
-				if (event.getValue().contains("wishes to duel with you."))
+				if (event.getValue().contains("wishes to duel with you.") && config.notifyOnDuel())
 				{
 					notifier.notify(event.getValue());
 				}
@@ -133,7 +133,7 @@ public class ChatNotificationsPlugin extends Plugin
 			usernameReplacer = "<col" + ChatColorType.HIGHLIGHT.name() + "><u>" + username + "</u><col" + ChatColorType.NORMAL.name() + ">";
 		}
 
-		if (usernameMatcher != null)
+		if (config.highlightOwnName() && usernameMatcher != null)
 		{
 			Matcher matcher = usernameMatcher.matcher(messageNode.getValue());
 			if (matcher.find())
@@ -145,7 +145,7 @@ public class ChatNotificationsPlugin extends Plugin
 			}
 		}
 
-		if (highlightMatcher != null)
+		if (config.notifyOnHighlight() && highlightMatcher != null)
 		{
 			Matcher matcher = highlightMatcher.matcher(messageNode.getValue());
 			if (matcher.find())
