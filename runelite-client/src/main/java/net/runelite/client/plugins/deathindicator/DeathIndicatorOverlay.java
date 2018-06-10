@@ -59,7 +59,10 @@ public class DeathIndicatorOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.HighlightTileEnabled())
+		// Check that the player wants tile highlight, has died, and is on the death world
+		if (!config.showDeathTileHighlight()
+			|| !plugin.hasDied()
+			|| !plugin.onDeathWorld())
 		{
 			return null;
 		}
