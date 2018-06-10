@@ -1,7 +1,11 @@
 # Contributing to runelite
 
 We'd love for you to contribute to our source code and to make runelite even better than it is
-today! Here are the guidelines we'd like you to follow:
+today!
+
+Check out the Developer's Guide on the [wiki](https://github.com/runelite/runelite/wiki) for setup instructions, and general tips and tricks.
+
+Here are the guidelines we'd like you to follow:
 
  - [Question or Problem?](#question)
  - [Issues and Bugs](#issue)
@@ -41,6 +45,18 @@ Before you submit your pull request consider the following guidelines:
 
 * Search [GitHub](https://github.com/runelite/runelite/pulls) for an open or closed Pull Request
   that relates to your submission. You don't want to duplicate effort.
+* [Fork](https://help.github.com/articles/fork-a-repo/) this repo.
+* [Clone](https://help.github.com/articles/cloning-a-repository/) your copy.
+    ```shell
+    git clone https://github.com/YOUR_USERNAME/runelite.git
+    cd runelite/
+    ```
+* After cloning, set a new remote [upstream](https://help.github.com/articles/configuring-a-remote-for-a-fork/) (this helps to keep your fork up to date)
+    
+    ```shell
+    git remote add upstream https://github.com/runelite/runelite.git
+    ```
+
 * Make your changes in a new git branch:
 
     ```shell
@@ -73,7 +89,8 @@ If we suggest changes, then:
 If the PR gets too outdated we may ask you to rebase and force push to update the PR:
 
 ```shell
-git rebase master -i
+git fetch upstream
+git rebase upstream/master
 git push origin my-fix-branch -f
 ```
 
