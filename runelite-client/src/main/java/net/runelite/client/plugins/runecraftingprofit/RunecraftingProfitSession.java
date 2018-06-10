@@ -167,37 +167,4 @@ public class RunecraftingProfitSession
 		double timeElapsedHours = (double) ChronoUnit.SECONDS.between(plugin.getStartTime(), Instant.now()) / 3600.0;
 		this.totalProfitPerHour = this.totalProfit / timeElapsedHours;
 	}
-
-	private void logProfitPerRuneType()
-	{
-		log.debug("Profit Per Runetype: ------------------------");
-		StringBuilder totalRunesCrafted = new StringBuilder();
-		for (Runes rune : Runes.values())
-		{
-			totalRunesCrafted.append(rune.getName()).append(",").append(this.profitPerRuneType.get(rune)).append("\n");
-		}
-		totalRunesCrafted.append("Total," + Integer.toString(totalProfit));
-		log.debug(totalRunesCrafted.toString());
-	}
-
-	private void logTotalNumberOfRunesCrafted()
-	{
-		log.debug("Total Number of runes crafted: ------------------------");
-		StringBuilder totalRunesCrafted = new StringBuilder();
-		for (Runes rune : Runes.values())
-		{
-			totalRunesCrafted.append(rune.getName()).append(",").append(this.numberOfTotalRunesCrafted.get(rune.getItemId())).append(";");
-		}
-		log.debug(totalRunesCrafted.toString());
-	}
-
-	void logPreviousRunesInInventory()
-	{
-		StringBuilder previousRunesInInventory = new StringBuilder();
-		for (Runes rune : Runes.values())
-		{
-			previousRunesInInventory.append(rune.getName()).append(",").append(this.previousRunesInInventory.get(rune.getItemId())).append(";");
-		}
-		log.debug(previousRunesInInventory.toString());
-	}
 }

@@ -70,7 +70,6 @@ public class RunecraftingProfitOverlay extends Overlay
 
 	public static String format(long value)
 	{
-		//Long.MIN_VALUE == -Long.MIN_VALUE so we need an adjustment here
 		if (value == Long.MIN_VALUE) return format(Long.MIN_VALUE + 1);
 		if (value < 0) return "-" + format(-value);
 		if (value < 1000) return Long.toString(value); //deal with easy case
