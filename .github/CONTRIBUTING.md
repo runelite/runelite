@@ -45,8 +45,8 @@ Before you submit your pull request consider the following guidelines:
 
 * Search [GitHub](https://github.com/runelite/runelite/pulls) for an open or closed Pull Request
   that relates to your submission. You don't want to duplicate effort.
-* Fork this repo.
-* Clone your copy.
+* [Fork](https://help.github.com/articles/fork-a-repo/) this repo.
+* [Clone](https://help.github.com/articles/cloning-a-repository/) your copy.
     ```shell
     git clone https://github.com/YOUR_USERNAME/runelite.git
     cd runelite/
@@ -90,10 +90,7 @@ If the PR gets too outdated we may ask you to rebase and force push to update th
 
 ```shell
 git fetch upstream
-git checkout master
-git merge upstream/master
-git checkout my-fix-branch
-git rebase master -i
+git rebase upstream/master
 git push origin my-fix-branch -f
 ```
 
