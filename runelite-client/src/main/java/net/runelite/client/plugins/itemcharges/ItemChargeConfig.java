@@ -103,10 +103,21 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showFungicideCharges",
+		name = "Show Fungicide Charges",
+		description = "Configures if fungicide item charges is shown",
+		position = 7
+	)
+	default boolean showFungicideCharges()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showWateringCanCharges",
 		name = "Show Watering Can Charges",
 		description = "Configures if watering can item charge is shown",
-		position = 7
+		position = 8
 	)
 	default boolean showWateringCanCharges()
 	{
@@ -117,7 +128,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "showWaterskinCharges",
 		name = "Show Waterskin Charges",
 		description = "Configures if waterskin item charge is shown",
-		position = 8
+		position = 9
 	)
 	default boolean showWaterskinCharges()
 	{
@@ -128,7 +139,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "recoilNotification",
 		name = "Ring of Recoil Notification",
 		description = "Configures if the ring of recoil breaking notification is shown",
-		position = 9
+		position = 10
 	)
 	default boolean recoilNotification()
 	{

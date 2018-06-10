@@ -26,6 +26,7 @@ package net.runelite.client.plugins.itemcharges;
 
 enum ItemChargeType
 {
+	FUNGICIDE_SPRAY,
 	IMPBOX,
 	TELEPORT,
 	WATERCAN,

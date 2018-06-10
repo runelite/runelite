@@ -38,6 +38,7 @@ import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.FUNGICIDE_SPRAY;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.IMPBOX;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.TELEPORT;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERCAN;
@@ -66,7 +67,8 @@ class ItemChargeOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showTeleportCharges() && !config.showImpCharges() && !config.showWateringCanCharges() && !config.showWaterskinCharges())
+		if (!config.showTeleportCharges() && !config.showFungicideCharges() && !config.showImpCharges()
+			&& !config.showWateringCanCharges() && !config.showWaterskinCharges())
 		{
 			return null;
 		}
@@ -83,6 +85,7 @@ class ItemChargeOverlay extends Overlay
 
 			ItemChargeType type = chargeItem.getType();
 			if ((type == TELEPORT && !config.showTeleportCharges())
+				|| (type == FUNGICIDE_SPRAY && !config.showFungicideCharges())
 				|| (type == IMPBOX && !config.showImpCharges())
 				|| (type == WATERCAN && !config.showWateringCanCharges())
 				|| (type == WATERSKIN && !config.showWaterskinCharges()))
