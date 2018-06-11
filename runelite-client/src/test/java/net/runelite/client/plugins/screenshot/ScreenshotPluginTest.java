@@ -27,6 +27,7 @@ package net.runelite.client.plugins.screenshot;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.io.File;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 import javax.inject.Inject;
@@ -41,6 +42,7 @@ import static net.runelite.api.widgets.WidgetInfo.DIALOG_SPRITE_TEXT;
 import static net.runelite.api.widgets.WidgetInfo.LEVEL_UP_LEVEL;
 import static net.runelite.api.widgets.WidgetInfo.PACK;
 import net.runelite.client.Notifier;
+import static net.runelite.client.RuneLite.RUNELITE_DIR;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
@@ -99,6 +101,7 @@ public class ScreenshotPluginTest
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 		when(screenshotConfig.screenshotRewards()).thenReturn(true);
 		when(screenshotConfig.screenshotLevels()).thenReturn(true);
+		when(screenshotConfig.screenshotDirectory()).thenReturn(new File(RUNELITE_DIR, "screenshots"));
 	}
 
 	@Test

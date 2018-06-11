@@ -38,6 +38,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.Map;
@@ -51,6 +52,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -59,6 +61,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
@@ -95,6 +98,7 @@ public class ConfigPanel extends PluginPanel
 	private static final ImageIcon ON_SWITCHER;
 	private static final ImageIcon OFF_SWITCHER;
 	private static final ImageIcon SEARCH;
+	private static final ImageIcon ERROR_ICON;
 
 	static
 	{
@@ -108,6 +112,7 @@ public class ConfigPanel extends PluginPanel
 				ON_SWITCHER = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("switchers/on.png")));
 				OFF_SWITCHER = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("switchers/off.png")));
 				SEARCH = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("search.png")));
+				ERROR_ICON = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("error.png")));
 			}
 		}
 		catch (IOException e)
@@ -403,31 +408,31 @@ public class ConfigPanel extends PluginPanel
 		if (component instanceof JCheckBox)
 		{
 			JCheckBox checkbox = (JCheckBox) component;
-			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + checkbox.isSelected());
+			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + checkbox.isSelected(), cid.getItem().sync());
 		}
 
 		if (component instanceof JSpinner)
 		{
 			JSpinner spinner = (JSpinner) component;
-			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + spinner.getValue());
+			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + spinner.getValue(), cid.getItem().sync());
 		}
 
 		if (component instanceof JTextArea)
 		{
 			JTextArea textField = (JTextArea) component;
-			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), textField.getText());
+			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), textField.getText(), cid.getItem().sync());
 		}
 
 		if (component instanceof JColorChooser)
 		{
 			JColorChooser jColorChooser = (JColorChooser) component;
-			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), String.valueOf(jColorChooser.getColor().getRGB()));
+			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), String.valueOf(jColorChooser.getColor().getRGB()), cid.getItem().sync());
 		}
 
 		if (component instanceof JComboBox)
 		{
 			JComboBox jComboBox = (JComboBox) component;
-			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), ((Enum) jComboBox.getSelectedItem()).name());
+			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), ((Enum) jComboBox.getSelectedItem()).name(), cid.getItem().sync());
 		}
 	}
 
@@ -440,6 +445,11 @@ public class ConfigPanel extends PluginPanel
 		title.setForeground(Color.WHITE);
 		title.setToolTipText(cd.getGroup().description());
 		add(title);
+
+		// Warning icon if not syncing
+		final JLabel warning = new JLabel(ERROR_ICON);
+		warning.setToolTipText("This configuration option is not synced.");
+		warning.setBorder(new EmptyBorder(0, 0, 0, 5));
 
 		for (ConfigItemDescriptor cid : cd.getItems())
 		{
@@ -455,6 +465,11 @@ public class ConfigPanel extends PluginPanel
 			configEntryName.setForeground(Color.WHITE);
 			configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
 			item.add(configEntryName, BorderLayout.CENTER);
+
+			if (!cid.getItem().sync())
+			{
+				item.add(warning, BorderLayout.WEST);
+			}
 
 			if (cid.getType() == boolean.class)
 			{
@@ -573,7 +588,7 @@ public class ConfigPanel extends PluginPanel
 				heightSpinnerTextField.setColumns(4);
 
 				ChangeListener listener = e ->
-					configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue());
+					configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue(), cid.getItem().sync());
 
 				widthSpinner.addChangeListener(listener);
 				heightSpinner.addChangeListener(listener);
@@ -613,6 +628,62 @@ public class ConfigPanel extends PluginPanel
 					}
 				});
 				item.add(box, BorderLayout.EAST);
+			}
+
+			if (cid.getType() == File.class)
+			{
+				JPanel filePanel = new JPanel();
+				filePanel.setLayout(new BorderLayout());
+				filePanel.setBorder(new EmptyBorder(5, 0, 0, 0));
+				filePanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
+
+				// Text field
+				String location = configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName());
+				JTextField textField = new JTextField(location);
+
+				textField.addFocusListener(new FocusAdapter()
+				{
+					@Override
+					public void focusLost(FocusEvent e)
+					{
+						changeConfiguration(config, textField, cd, cid);
+						textField.setToolTipText(textField.getText());
+					}
+				});
+
+				textField.addActionListener(e ->
+				{
+					changeConfiguration(config, textField, cd, cid);
+					textField.setToolTipText(textField.getText());
+				});
+
+				textField.setToolTipText(textField.getText());
+
+				filePanel.add(textField, BorderLayout.CENTER);
+
+				// Browse button
+				JButton browseButton = new JButton("Browse...");
+
+				browseButton.addActionListener(e ->
+				{
+					String currentLocation = configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName());
+					JFileChooser chooser = new JFileChooser(currentLocation);
+					chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+
+					int option = chooser.showDialog(this, null);
+
+					if (option == JFileChooser.APPROVE_OPTION)
+					{
+						File file = chooser.getSelectedFile();
+						textField.setText(file.getAbsolutePath());
+						changeConfiguration(config, textField, cd, cid);
+						textField.setToolTipText(textField.getText());
+					}
+				});
+
+				filePanel.add(browseButton, BorderLayout.EAST);
+
+				item.add(filePanel, BorderLayout.SOUTH);
 			}
 
 			add(item);
