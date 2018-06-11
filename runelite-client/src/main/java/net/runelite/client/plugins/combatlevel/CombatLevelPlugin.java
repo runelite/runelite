@@ -26,10 +26,7 @@ package net.runelite.client.plugins.combatlevel;
 
 import com.google.common.eventbus.Subscribe;
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Map;
 import javax.inject.Inject;
-
 import com.google.inject.Provides;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
@@ -41,10 +38,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
-
-import static java.lang.Math.ceil;
-import static java.lang.Math.floor;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Combat Level"
@@ -54,13 +48,13 @@ public class CombatLevelPlugin extends Plugin
 	private final DecimalFormat decimalFormat = new DecimalFormat("#.###");
 
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	CombatLevelConfig config;
+	private CombatLevelOverlay overlay;
 
 	@Inject
-	CombatLevelOverlay overlay;
+	private OverlayManager overlayManager;
 
 	@Provides
 	CombatLevelConfig provideConfig(ConfigManager configManager)
@@ -69,8 +63,15 @@ public class CombatLevelPlugin extends Plugin
 	}
 
 	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(overlay);
+	}
+
+	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
 		Widget combatLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
 
 		if (combatLevelWidget != null)
@@ -82,12 +83,6 @@ public class CombatLevelPlugin extends Plugin
 				combatLevelWidget.setText(widgetText.substring(0, widgetText.indexOf(".")));
 			}
 		}
-	}
-
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
 	}
 
 	@Subscribe
@@ -115,96 +110,5 @@ public class CombatLevelPlugin extends Plugin
 		);
 
 		combatLevelWidget.setText("Combat Lvl: " + decimalFormat.format(combatLevelPrecise));
-	}
-
-	public Map<Skill, Integer> getLevelsUntil()
-	{
-		// put together information
-		int attackLevel = client.getRealSkillLevel(Skill.ATTACK);
-		int strengthLevel = client.getRealSkillLevel(Skill.STRENGTH);
-		int defenceLevel = client.getRealSkillLevel(Skill.DEFENCE);
-		int hitpointsLevel = client.getRealSkillLevel(Skill.HITPOINTS);
-		int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
-		int rangedLevel = client.getRealSkillLevel(Skill.RANGED);
-		int prayerLevel = client.getRealSkillLevel(Skill.PRAYER);
-		final Map<Skill, Integer> skillsLeft = new HashMap<>();
-		skillsLeft.put(Skill.ATTACK, 0);
-		skillsLeft.put(Skill.DEFENCE, 0);
-		skillsLeft.put(Skill.MAGIC, 0);
-		skillsLeft.put(Skill.RANGED, 0);
-		skillsLeft.put(Skill.PRAYER, 0);
-		double base = 0.25 * (defenceLevel + hitpointsLevel + floor(prayerLevel / 2));
-		double melee = 0.325 * (attackLevel + strengthLevel);
-		double range = 0.325 * (floor(rangedLevel / 2) + rangedLevel);
-		double mage = 0.325 * (floor(magicLevel / 2) + magicLevel);
-		double max = Math.max(melee, Math.max(range, mage));
-
-		// begin calculating levels
-		int next = (int) floor(base + max) + 1;
-		int meleeNeed = calcLevels((base + melee), next, 0.325);
-		int hpdefNeed = calcLevels((base + max), next, 0.25025);
-		int prayNeed = calcLevels((base + max), next, 0.125);
-		int rangeNeed = calcLevelsRM(rangedLevel, next, base);
-		int magicNeed = calcLevelsRM(magicLevel, next, base);
-
-
-		if ((attackLevel + strengthLevel + meleeNeed) <= 198)
-		{
-			skillsLeft.put(Skill.ATTACK, meleeNeed);
-		}
-		if ((hitpointsLevel + defenceLevel + hpdefNeed) <= 198)
-		{
-			skillsLeft.put(Skill.DEFENCE, hpdefNeed);
-		}
-		if ((rangedLevel + rangeNeed) <= 99)
-		{
-			skillsLeft.put(Skill.RANGED, rangeNeed);
-		}
-		if ((magicLevel + magicNeed) <= 99)
-		{
-			skillsLeft.put(Skill.MAGIC, magicNeed);
-		}
-		if ((prayerLevel + prayNeed) <= 99)
-		{
-			skillsLeft.put(Skill.PRAYER, prayNeed);
-		}
-		return skillsLeft;
-	}
-
-	private int calcLevels(double start, int end, double multiple)
-	{
-		int need = 0;
-		while(start < end)
-		{
-			start += multiple;
-			need++;
-		}
-		return need;
-	}
-
-	private int calcLevelsRM(double start, int end, double dhp)
-	{
-		int need = 0;
-		double base = start;
-		start = floor(start * 1.5) * 0.325;
-		while((start + dhp) < end)
-		{
-			need++;
-			start = floor((base + need) * 1.5) * 0.325;
-		}
-		return need;
-	}
-
-	public int getCombatLevel()
-	{
-		return Experience.getCombatLevel(
-			client.getRealSkillLevel(Skill.ATTACK),
-			client.getRealSkillLevel(Skill.STRENGTH),
-			client.getRealSkillLevel(Skill.DEFENCE),
-			client.getRealSkillLevel(Skill.HITPOINTS),
-			client.getRealSkillLevel(Skill.MAGIC),
-			client.getRealSkillLevel(Skill.RANGED),
-			client.getRealSkillLevel(Skill.PRAYER)
-		);
 	}
 }
