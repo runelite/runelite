@@ -94,16 +94,27 @@ public class ChatNotificationsPlugin extends Plugin
 	{
 		if (event.getGroup().equals("chatnotification"))
 		{
-			highlightMatcher = null;
+			updateHighlights();
+		}
+	}
 
-			if (!config.highlightWordsString().trim().equals(""))
-			{
-				String[] items = config.highlightWordsString().trim().split(", ");
-				String joined = Arrays.stream(items)
-					.map(Pattern::quote)
-					.collect(Collectors.joining("|"));
-				highlightMatcher = Pattern.compile("\\b(" + joined + ")\\b", Pattern.CASE_INSENSITIVE);
-			}
+	@Override
+	public void startUp()
+	{
+		updateHighlights();
+	}
+
+	private void updateHighlights()
+	{
+		highlightMatcher = null;
+
+		if (!config.highlightWordsString().trim().equals(""))
+		{
+			String[] items = config.highlightWordsString().trim().split(", ");
+			String joined = Arrays.stream(items)
+				.map(Pattern::quote)
+				.collect(Collectors.joining("|"));
+			highlightMatcher = Pattern.compile("\\b(" + joined + ")\\b", Pattern.CASE_INSENSITIVE);
 		}
 	}
 
