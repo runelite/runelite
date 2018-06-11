@@ -31,10 +31,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.ItemLayer;
@@ -45,6 +48,7 @@ import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.DecorativeObjectChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
@@ -67,6 +71,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Agility"
@@ -75,6 +80,9 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 public class AgilityPlugin extends Plugin
 {
 	private static final int AGILITY_ARENA_REGION_ID = 11157;
+
+	// Chat messages
+	private static final Pattern CHAT_DORGESH_KAAN_PART_REGEX = Pattern.compile("The engineer asks you to get a (?<light>.+) or a (?<heavy>.+)\\.");
 
 	@Getter
 	private final Map<TileObject, Tile> obstacles = new HashMap<>();
@@ -90,9 +98,13 @@ public class AgilityPlugin extends Plugin
 	private LapCounterOverlay lapOverlay;
 
 	@Inject
+	private DorgeshKaanOverlay dorgeshKaanOverlay;
+
+	@Inject
 	private Notifier notifier;
 
 	@Inject
+	@Getter
 	private Client client;
 
 	@Inject
@@ -103,6 +115,12 @@ public class AgilityPlugin extends Plugin
 
 	@Getter
 	private AgilitySession session;
+
+	@Getter
+	private String currentHeavyPart;
+
+	@Getter
+	private String currentLightPart;
 
 	private int lastAgilityXp;
 	private WorldPoint lastArenaTicketPosition;
@@ -116,7 +134,14 @@ public class AgilityPlugin extends Plugin
 	@Override
 	public Collection<Overlay> getOverlays()
 	{
-		return Arrays.asList(overlay, lapOverlay);
+		return Arrays.asList(overlay, lapOverlay, dorgeshKaanOverlay);
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		currentHeavyPart = config.currentHeavyPart().isEmpty() ? "?" : config.currentHeavyPart();
+		currentLightPart = config.currentLightPart().isEmpty() ? "?" : config.currentLightPart();
 	}
 
 	@Override
@@ -158,6 +183,27 @@ public class AgilityPlugin extends Plugin
 		if (!config.showAgilityArenaTimer())
 		{
 			removeAgilityArenaTimer();
+		}
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() != ChatMessageType.SERVER || event.getType() == ChatMessageType.FILTERED)
+		{
+			return;
+		}
+
+		String chatMsg = Text.removeTags(event.getMessage());
+
+		Matcher m = CHAT_DORGESH_KAAN_PART_REGEX.matcher(chatMsg);
+
+		if (m.find())
+		{
+			currentHeavyPart = m.group("heavy");
+			currentLightPart = m.group("light");
+			config.currentHeavyPart(currentHeavyPart);
+			config.currentLightPart(currentLightPart);
 		}
 	}
 

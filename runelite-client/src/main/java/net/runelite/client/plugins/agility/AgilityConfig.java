@@ -145,4 +145,53 @@ public interface AgilityConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showDorgeshKaanOverlay",
+		name = "Show Dorgesh-Kaan Overlay",
+		description = "Enable/disable the Dorgesh-Kaan course overlay",
+		position = 11
+	)
+	default boolean showDorgeshKaanOverlay()
+	{
+		return true;
+	}
+
+
+	// Stored data
+	@ConfigItem(
+		keyName = "currentHeavyPart",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default String currentHeavyPart()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "currentHeavyPart",
+		name = "",
+		description = ""
+	)
+	void currentHeavyPart(String part);
+
+	@ConfigItem(
+			keyName = "currentLightPart",
+			name = "",
+			description = "",
+			hidden = true
+	)
+	default String currentLightPart()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+			keyName = "currentLightPart",
+			name = "",
+			description = ""
+	)
+	void currentLightPart(String part);
 }
