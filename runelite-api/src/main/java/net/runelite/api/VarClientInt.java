@@ -34,7 +34,15 @@ import lombok.Getter;
 @Getter
 public enum VarClientInt
 {
-	TOOLTIP_TIMEOUT(1);
+	TOOLTIP_TIMEOUT(1),
+
+	/**
+	 * Current opened tab
+	 * 	Attack Styles = 0, Stats = 1, Quest log = 2, Inventory = 3, Worn Equipment = 4,
+	 * 	Prayer = 5, Magic = 6, Clan Chat = 7, Friends List = 8, Ignore List = 9, Logout = 10,
+	 *	Options = 11, Emotes = 12, Music Player = 13
+	 */
+	CURRENT_TAB(171);
 
 	private final int index;
 }
