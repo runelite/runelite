@@ -35,7 +35,6 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import net.runelite.api.Client;
 import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -81,18 +80,18 @@ public class InfoBoxOverlay extends Overlay
 			return null;
 		}
 
-		graphics.setFont(FontManager.getRunescapeSmallFont());
 		panelComponent.getChildren().clear();
 		panelComponent.setWrapping(config.infoBoxWrap());
 		panelComponent.setOrientation(config.infoBoxVertical()
 			? PanelComponent.Orientation.VERTICAL
 			: PanelComponent.Orientation.HORIZONTAL);
+		panelComponent.setPreferredSize(new Dimension(config.infoBoxSize(), config.infoBoxSize()));
 
 		infoBoxes.forEach(box ->
 		{
 			final InfoBoxComponent infoBoxComponent = new InfoBoxComponent();
 			infoBoxComponent.setColor(box.getTextColor());
-			infoBoxComponent.setImage(box.getImage());
+			infoBoxComponent.setImage(box.getScaledImage());
 			infoBoxComponent.setText(box.getText());
 			infoBoxComponent.setTooltip(box.getTooltip());
 			panelComponent.getChildren().add(infoBoxComponent);

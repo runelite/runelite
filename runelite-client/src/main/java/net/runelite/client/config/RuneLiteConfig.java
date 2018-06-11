@@ -221,4 +221,15 @@ public interface RuneLiteConfig extends Config
 	{
 		return 4;
 	}
+
+	@ConfigItem(
+		keyName = "infoBoxSize",
+		name = "Infobox size (px)",
+		description = "Configures the size of each infobox in pixels",
+		position = 34
+	)
+	default int infoBoxSize()
+	{
+		return 35;
+	}
 }
