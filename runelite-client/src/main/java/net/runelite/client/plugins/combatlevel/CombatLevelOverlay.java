@@ -1,16 +1,13 @@
 package net.runelite.client.plugins.combatlevel;
 
-import joptsimple.util.KeyValuePair;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.api.VarClientInt;
-import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
-
 import javax.inject.Inject;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
