@@ -104,17 +104,6 @@ public interface ChatNotificationsConfig extends Config
 
 	@ConfigItem(
 		position = 6,
-		keyName = "ignoreSelfNotifications",
-		name = "Ignore own messages",
-		description = "Ignores your messages for notifications"
-	)
-	default boolean ignoreSelfNotifications()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 7,
 		keyName = "ignoreFilteredNotifications",
 		name = "Ignore filtered messages",
 		description = "Ignore filtered messages for notifications"

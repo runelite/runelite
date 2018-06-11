@@ -178,7 +178,7 @@ public class ChatNotificationsPlugin extends Plugin
 	private void sendNotification(SetMessage message)
 	{
 		String name = message.getName();
-		if (name.equals(client.getLocalPlayer().getName()) && config.ignoreSelfNotifications())
+		if (name.equals(client.getLocalPlayer().getName()))
 		{
 			return;
 		}
