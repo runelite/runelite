@@ -26,20 +26,22 @@ package net.runelite.client.ui.overlay.infobox;
 
 import java.awt.Color;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.plugins.Plugin;
 
 public abstract class InfoBox
 {
-	private static final int SIZE = 24;
-
 	@Getter
 	private final Plugin plugin;
 
 	@Getter
+	@Setter
 	private Image image;
+
+	@Getter
+	@Setter
+	private Image scaledImage;
 
 	@Getter
 	@Setter
@@ -59,21 +61,6 @@ public abstract class InfoBox
 	public abstract String getText();
 
 	public abstract Color getTextColor();
-
-	public void setImage(final Image image)
-	{
-		if (image == null)
-		{
-			return;
-		}
-
-		double width = image.getWidth(null);
-		double height = image.getHeight(null);
-		double scalex = (double) SIZE / width;
-		double scaley = (double) SIZE / height;
-		double scale = Math.min(scalex, scaley);
-		this.image = image.getScaledInstance((int) (width * scale), (int) (height * scale), BufferedImage.TYPE_INT_ARGB);
-	}
 
 	public boolean render()
 	{

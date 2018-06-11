@@ -33,17 +33,22 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.client.ui.FontManager;
 
 @Setter
 public class InfoBoxComponent implements LayoutableRenderableEntity
 {
 	private static final int SEPARATOR = 3;
+	private static final int DEFAULT_SIZE = 32;
 
 	@Getter
 	private String tooltip;
 
 	@Getter
 	private Point preferredLocation = new Point();
+
+	@Setter
+	private Dimension preferredSize = new Dimension(DEFAULT_SIZE, DEFAULT_SIZE);
 
 	private String text;
 	private Color color = Color.WHITE;
@@ -58,13 +63,12 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 			return new Dimension();
 		}
 
+		graphics.setFont(getSize() < DEFAULT_SIZE ? FontManager.getRunescapeSmallFont() : FontManager.getRunescapeFont());
 		graphics.translate(preferredLocation.x, preferredLocation.y);
 
 		// Calculate dimensions
 		final FontMetrics metrics = graphics.getFontMetrics();
-		final int w = image.getWidth(null) + SEPARATOR * 2;
-		final int h = image.getHeight(null) + SEPARATOR * 2;
-		final int size = Math.max(w, h);
+		final int size = getSize();
 		final Rectangle bounds = new Rectangle(size, size);
 
 		// Render background
@@ -93,15 +97,11 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 
 	public Dimension getPreferredSize()
 	{
-		final int w = image.getWidth(null) + SEPARATOR * 2;
-		final int h = image.getHeight(null) + SEPARATOR * 2;
-		final int size = Math.max(w, h);
-		return new Dimension(size, size);
+		return new Dimension(getSize(), getSize());
 	}
 
-	@Override
-	public void setPreferredSize(Dimension dimension)
+	private int getSize()
 	{
-		// Just use infobox dimensions for now
+		return Math.max(preferredSize.width, preferredSize.height);
 	}
 }
