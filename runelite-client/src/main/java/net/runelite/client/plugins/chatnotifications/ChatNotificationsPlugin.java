@@ -34,6 +34,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static java.util.regex.Pattern.quote;
 import java.util.stream.Collectors;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.events.ConfigChanged;
@@ -177,6 +178,14 @@ public class ChatNotificationsPlugin extends Plugin
 	private void sendNotification(SetMessage message)
 	{
 		String name = message.getName();
+		if (name.equals(client.getLocalPlayer().getName()) && config.ignoreSelfNotifications())
+		{
+			return;
+		}
+		if (message.getType() == ChatMessageType.FILTERED && config.ignoreFilteredNotifications())
+		{
+			return;
+		}
 		String sender = message.getSender();
 		StringBuilder stringBuilder = new StringBuilder();
 
