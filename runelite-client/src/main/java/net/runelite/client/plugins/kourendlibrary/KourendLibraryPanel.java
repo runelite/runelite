@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018 Abex
  * Copyright (c) 2018 Psikoi
+ * Copyright (c) 2018, Franck Maillot <https://github.com/Franck-M>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,13 +56,19 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.SwingUtil;
 
 @Singleton
-public class KourendLibraryPanel extends PluginPanel
+class KourendLibraryPanel extends PluginPanel
 {
-	private static final ImageIcon RESET_ICON;
-	private static final ImageIcon RESET_CLICK_ICON;
+	private Library library;
+	private final KourendLibraryConfig config;
+
+	private static final ImageIcon RESET_ICON, RESET_CLICK_ICON;
 
 	@Inject
-	private Library library;
+	KourendLibraryPanel(Library library, KourendLibraryConfig config)
+	{
+		this.library = library;
+		this.config = config;
+	}
 
 	private final HashMap<Book, BookPanel> bookPanels = new HashMap<>();
 
@@ -153,27 +160,32 @@ public class KourendLibraryPanel extends PluginPanel
 	{
 		SwingUtilities.invokeLater(() ->
 		{
-			Book customerBook = library.getCustomerBook();
-			for (Map.Entry<Book, BookPanel> b : bookPanels.entrySet())
-			{
-				b.getValue().setIsTarget(customerBook == b.getKey());
-			}
-
 			HashMap<Book, HashSet<String>> bookLocations = new HashMap<>();
 
-			for (Bookcase bookcase : library.getBookcases())
+			for (Floor floor : library.getFloors())
 			{
-				if (bookcase.getBook() != null)
+				for (Room room : floor.getRooms())
 				{
-					bookLocations.computeIfAbsent(bookcase.getBook(), a -> new HashSet<>()).add(bookcase.getLocationString());
-				}
-				else
-				{
-					for (Book book : bookcase.getPossibleBooks())
+					for (Bookcase bookcase : room.getBookcases())
 					{
-						if (book != null)
+						if (bookcase.isBookSet())
 						{
-							bookLocations.computeIfAbsent(book, a -> new HashSet<>()).add(bookcase.getLocationString());
+							if (bookcase.getBook() != null)
+							{
+								bookLocations.computeIfAbsent(bookcase.getBook(), a -> new HashSet<>())
+									.add(room.getName() + " " + floor.getName().toLowerCase() + " floor");
+							}
+						}
+						else
+						{
+							for (Book book : bookcase.getPossibleBooks())
+							{
+								if (book != null)
+								{
+									bookLocations.computeIfAbsent(book, a -> new HashSet<>())
+										.add(room.getName() + " " + floor.getName().toLowerCase() + " floor");
+								}
+							}
 						}
 					}
 				}
@@ -181,10 +193,30 @@ public class KourendLibraryPanel extends PluginPanel
 
 			for (Map.Entry<Book, BookPanel> e : bookPanels.entrySet())
 			{
+				Book book = e.getKey();
 				HashSet<String> locs = bookLocations.get(e.getKey());
-				if (locs == null || locs.size() > 3)
+
+				// Set color according to config
+				if (locs == null || locs.size() > 1)
+				{
+					e.getValue().setColor(config.unknownBook());
+				}
+				else
+				{
+					e.getValue().setColor(
+						!book.isAvailableInBookcase() ? config.noAvailableActionColor() :
+							book == library.getCustomerBook() ? config.requestedBook() :
+								config.availableActionColor());
+				}
+
+				// Set known location of each book
+				if (locs == null)
 				{
 					e.getValue().setLocation("Unknown");
+				}
+				else if (locs.size() > 3)
+				{
+					e.getValue().setLocation("Too many possibilities");
 				}
 				else
 				{

@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Franck Maillot <https://github.com/Franck-M>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,14 +30,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.coords.WorldPoint;
-
 import static net.runelite.client.plugins.kourendlibrary.Book.*;
 
 /**
@@ -59,12 +61,17 @@ import static net.runelite.client.plugins.kourendlibrary.Book.*;
 @Slf4j
 public class Library
 {
-	private final Map<WorldPoint, Bookcase> byPoint = new HashMap<>();
-	private final Map<Integer, ArrayList<Bookcase>> byLevel = new HashMap<>();
-	private final List<Bookcase> byIndex = new ArrayList<>();
+	@Getter
+	private final List<Floor> floors = new ArrayList<>();
+	private final Map<WorldPoint, Bookcase> bookcaseByPoint = new HashMap<>();
 
+	@Getter
+	private final List<Bookcase> bookcaseByIndex = new ArrayList<>();
+
+	@Getter
 	private final List<List<Book>> sequences = populateSequences();
 
+	@Getter
 	private final int step;
 
 	@Getter
@@ -76,24 +83,19 @@ public class Library
 	@Getter
 	private LibraryCustomer customer;
 
+	@Getter
+	private Integer countAvailableSequences;
+
 	Library()
 	{
-		populateBooks();
-		step = byIndex.size() / Book.values().length;
+		populateFloors();
+		populateRooms();
+		populateBookcases();
+		step = bookcaseByIndex.size() / Book.values().length;
 		reset();
 	}
 
-	public synchronized List<Bookcase> getBookcasesOnLevel(int z)
-	{
-		return Collections.unmodifiableList(byLevel.get(z));
-	}
-
-	public synchronized List<Bookcase> getBookcases()
-	{
-		return Collections.unmodifiableList(byIndex);
-	}
-
-	public void setCustomer(LibraryCustomer customer, Book book)
+	void setCustomer(LibraryCustomer customer, Book book)
 	{
 		this.customer = customer;
 		this.customerBook = book;
@@ -102,30 +104,59 @@ public class Library
 	public synchronized void reset()
 	{
 		state = SolvedState.NO_DATA;
-		for (Bookcase b : byIndex)
-		{
-			b.clearBook();
-			b.getPossibleBooks().clear();
-		}
-		log.info("Library is now reset");
+		bookcaseByPoint.values().forEach(Bookcase::reset);
+		Arrays.stream(Book.values()).forEach(Book::reset);
 	}
 
 	public synchronized void mark(WorldPoint loc, Book book)
 	{
-		Bookcase bookcase = byPoint.get(loc);
+		Bookcase bookcase = bookcaseByPoint.get(loc);
 		if (bookcase == null)
 		{
-			log.debug("Requested non-existent bookcase at {}", loc);
 			return;
 		}
 
 		if (bookcase.isBookSet())
 		{
-			// Bookcase is set from a previous mark
-			// Check for a mismatch, unless it is now null and had a dark manuscript
-			if (book != bookcase.getBook() && !(book == null && bookcase.getBook().isDarkManuscript()))
+			Book bcBook = bookcase.getBook();
+			/*
+			 * Bookcase is set from a previous mark, no issue if anything below is false :
+			 * The books are different.
+			 *  - book != bcBook
+			 * State is completed and we should have found the last unchecked dark manuscript. This is making the
+			 * assumption that dark manuscripts do not change on their own while the library is completed.
+			 *  - NOT : // everything needs to be true to not reset
+			 *    - state is completed
+			 *    - book is null
+			 *    - bcBook is a dark manuscript
+			 *    - ANY : // any needs to be true to not reset
+			 *      - bcBook is already known to be absent
+			 *      - more than one dark manuscript is unchecked
+			 * State is not complete and we found a dark manuscript in a bookcase we thought was empty.
+			 *  - NOT : // everything needs to be true to not reset
+			 *    - library is not completed
+			 *    - book is not null
+			 *    - book is a dark manuscript
+			 *    - bcBook is null
+			 */
+			if (book != bcBook
+				&& !(state == SolvedState.COMPLETE && book == null && bcBook.isDarkManuscript()
+				&& (!bcBook.isAvailableInBookcase() || Book.countAvailableDarkManuscripts() > 1))
+				&& !(state != SolvedState.COMPLETE && book != null && book.isDarkManuscript() && bcBook == null))
 			{
 				reset();
+			}
+			// As this does not give us any valuable information stop here
+			else
+			{
+				/*
+				 * If we just checked a dark manuscript bookcase update our knowledge of currently available manuscripts
+				 */
+				if (state == SolvedState.COMPLETE && bookcase.getBook() != null && bookcase.getBook().isDarkManuscript())
+				{
+					bookcase.getBook().setIsCheckedDarkManuscript(book != null);
+				}
+				return;
 			}
 		}
 		else if (state != SolvedState.NO_DATA)
@@ -141,133 +172,208 @@ public class Library
 			}
 		}
 
-		// Everything is known, nothing to do
-		if (state == SolvedState.COMPLETE)
+		// No issue happened, we can safely set the book in this bookcase and proceed with the check of the library.
+		bookcase.setBook(book);
+
+		List<Integer> verificationBookcaseIndex = bookcase.getIndex();
+
+		// Basing the sequences on null is not supported unless we already have some useful data.
+		if (book == null)
 		{
-			return;
+			if (state == SolvedState.NO_DATA)
+			{
+				return;
+			}
+			else
+			{
+				// Try to use bookcases with a single index since processing will be faster.
+				Iterator bookcaseIterator = bookcaseByPoint.values().stream()
+					.filter(b -> b.getBook() != null && b.getIndex().size() == 1)
+					.iterator();
+				if (bookcaseIterator.hasNext())
+				{
+					verificationBookcaseIndex = ((Bookcase) bookcaseIterator.next()).getIndex();
+				}
+				else
+				{
+					// Use bookcases with more than one index if no other was found.
+					bookcaseIterator = bookcaseByPoint.values().stream()
+						.filter(b -> b.getBook() != null)
+						.iterator();
+					assert bookcaseIterator.hasNext();
+					verificationBookcaseIndex = ((Bookcase) bookcaseIterator.next()).getIndex();
+				}
+			}
 		}
 
-		log.info("Setting bookcase {} to {}", bookcase.getIndex(), book);
-		for (; ; )
+		// We have an usable bookcase index to run the verification process, clear existing possible books.
+		for (Bookcase b : bookcaseByPoint.values())
 		{
-			bookcase.setBook(book);
+			b.getPossibleBooks().clear();
+		}
 
-			// Basing the sequences on null is not supported, though possible
-			if (book == null)
-			{
-				return;
-			}
+		state = SolvedState.INCOMPLETE;
 
-			// This is one of the 6 bookcases with 2 ids. Not fully supported.
-			if (bookcase.getIndex().size() != 1)
-			{
-				return;
-			}
-
-			int bookcaseIndex = bookcase.getIndex().get(0);
-
-			state = SolvedState.INCOMPLETE;
-
-			// Map each sequence to the number of bookcases that match the sequence
-			// return 0 if it is a mismatch.
-			// Keep in mind that Bookcases with dark manuscripts may be set to null.
-			int[] certainty = sequences.stream().mapToInt(sequence ->
-			{
-				int zero = getBookcaseZeroIndexForSequenceWithBook(sequence, bookcaseIndex, book);
-
-				int found = 0;
-				for (int i = 0; i < byIndex.size(); i++)
-				{
-					int ai = (i + zero) % byIndex.size();
-					Bookcase iBookcase = byIndex.get(ai);
-					if (i % step == 0)
+		Map<Integer, int[]> bookcaseIndexCertainty = verificationBookcaseIndex.stream().collect
+			(
+				Collectors.toMap(
+					i -> i, bookcaseIndex -> sequences.stream().mapToInt(sequence ->
 					{
-						int seqI = i / step;
-						if (iBookcase.isBookSet() && seqI < sequence.size())
+						/*
+						 * Map each sequence to the number of bookcases that match the sequence
+						 * return 0 if it is a mismatch.
+						 * Keep in mind that Bookcases with dark manuscripts may be set to null.
+						 */
+						int zero = getBookcaseZeroIndexForSequence(sequence, bookcaseIndex);
+						List<Bookcase> checkedOnceDoubleBookcase = new ArrayList<>();
+
+						int found = 0;
+						for (int i = 0; i < bookcaseByIndex.size(); i++)
 						{
-							Book seqBook = sequence.get(seqI);
-							boolean isSeqManuscript = seqBook == null || seqBook.isDarkManuscript();
-							if (!((isSeqManuscript && iBookcase.getBook() == null) || (iBookcase.getBook() == seqBook)))
+							int ai = (i + zero) % bookcaseByIndex.size();
+							Book seqBook = ((i % step == 0) &&
+								(i / step < sequence.size())) ? sequence.get(i / step) : null;
+							Bookcase iBookcase = bookcaseByIndex.get(ai);
+							Book iBook = iBookcase.getBook();
+							if (seqBook != null)
 							{
-								log.debug("Bailing @ i={} ai={} {}; {} != {}", i, ai, iBookcase.getIndex(), iBookcase.getBook(), seqBook);
-								found = 0;
-								break;
+								if (iBookcase.isBookSet())
+								{
+									if (!(seqBook == iBook || (seqBook.isDarkManuscript() && iBook == null)))
+									{
+										found = 0;
+										break;
+									}
+									found++;
+								}
 							}
-							found++;
-						}
-					}
-					else
-					{
-						// Only bail if this isn't a double bookcase
-						if (iBookcase.isBookSet() && iBookcase.getBook() != null && iBookcase.getIndex().size() == 1)
-						{
-							log.debug("Bailing @ i={} ai={} {}; {} is set", i, ai, iBookcase.getIndex(), iBookcase.getBook());
-							found = 0;
-							break;
-						}
-					}
-				}
-				return found;
-			}).toArray();
-			log.info("Certainty is now {}", certainty);
-
-			for (Bookcase b : byIndex)
-			{
-				b.getPossibleBooks().clear();
-			}
-
-			// Write the most likely sequences onto the bookcases
-			int max = IntStream.of(certainty).max().getAsInt();
-
-			// We have books set, but 0 sequences match, Something is wrong, reset.
-			if (max == 0)
-			{
-				reset();
-				continue;
-			}
-
-			IntStream.range(0, sequences.size())
-				.filter(i -> certainty[i] == max)
-				.forEach(isequence ->
-				{
-					List<Book> sequence = sequences.get(isequence);
-					int zero = getBookcaseZeroIndexForSequenceWithBook(sequence, bookcaseIndex, book);
-
-					for (int i = 0; i < byIndex.size(); i++)
-					{
-						int ai = (i + zero) % byIndex.size();
-						Bookcase iBookcase = byIndex.get(ai);
-						if (iBookcase.getBook() == null)
-						{
-							int iseq = i / step;
-							if (i % step == 0 && iseq < sequence.size())
+							else
 							{
-								Book seqBook = sequence.get(iseq);
+								if (iBookcase.isBookSet() && iBook != null)
+								{
+									if (iBookcase.getIndex().size() == 1 || checkedOnceDoubleBookcase.contains(iBookcase))
+									{
+										found = 0;
+										break;
+									}
+									checkedOnceDoubleBookcase.add(iBookcase);
+								}
+							}
+						}
+						return found;
+					}).toArray()
+				)
+			);
+
+		this.countAvailableSequences = 0;
+		for (Map.Entry<Integer, int[]> e : bookcaseIndexCertainty.entrySet())
+		{
+			this.countAvailableSequences += (int) Arrays.stream(e.getValue()).filter(c -> c > 0).count();
+		}
+
+		// A single sequence is left, set state to COMPLETE
+		if (this.countAvailableSequences == 1)
+		{
+			state = SolvedState.COMPLETE;
+		}
+
+		/*
+		 * For each sequence that is still possible loop through all the bookcases and assign books in the possible
+		 * books list if the sequence thinks they should be a book there.
+		 */
+		for (Map.Entry<Integer, int[]> e : bookcaseIndexCertainty.entrySet())
+		{
+			IntStream.range(0, sequences.size())
+				.filter(i -> e.getValue()[i] > 0)
+				.forEach(iSequence ->
+				{
+					List<Book> sequence = sequences.get(iSequence);
+					int zero = getBookcaseZeroIndexForSequence(sequence, e.getKey());
+
+					for (int i = 0; i < bookcaseByIndex.size(); i++)
+					{
+						int ai = (i + zero) % bookcaseByIndex.size();
+						Book seqBook = ((i % step == 0) && (i / step < sequence.size())) ? sequence.get(i / step) : null;
+						Bookcase iBookcase = bookcaseByIndex.get(ai);
+
+						/*
+						 * The state is SolvedState.COMPLETE only if a single sequence is correct,
+						 * in which case we simply put the sequence books in the bookcases
+						 */
+						if (state == SolvedState.COMPLETE)
+						{
+							if (iBookcase.getIndex().size() == 1)
+							{
+								iBookcase.setBook(seqBook);
+							}
+							else
+							{
+								if (seqBook != null || !iBookcase.isBookSet())
+								{
+									iBookcase.setBook(seqBook);
+								}
+							}
+						}
+						// If no book is present already put our sequence book in the list of possible books
+						else if (!iBookcase.isBookSet())
+						{
+							if (seqBook != null)
+							{
 								iBookcase.getPossibleBooks().add(seqBook);
 							}
 						}
 					}
 				});
-			if (IntStream.range(0, certainty.length).filter(i -> certainty[i] == max).count() == 1)
+		}
+
+		for (Bookcase b : bookcaseByPoint.values())
+		{
+			if (!b.isBookSet())
 			{
-				state = SolvedState.COMPLETE;
+				if (b.getPossibleBooks().isEmpty())
+				{
+					b.setBook(null);
+				}
+				else if (b.getPossibleBooks().size() == this.countAvailableSequences)
+				{
+					Book book0 = b.getPossibleBooks().get(0);
+					if (b.getPossibleBooks().stream()
+						.filter(iBook -> iBook == book0).count() == this.countAvailableSequences)
+					{
+						b.setBook(book0);
+					}
+				}
 			}
-			return;
+		}
+
+		/*
+		 * If we just checked a dark manuscript bookcase update our knowledge of currently available manuscripts
+		 * This is to prevent us from showing this book as available when we are sure it is not.
+		 */
+		if (state == SolvedState.COMPLETE && bookcase.getBook() != null && bookcase.getBook().isDarkManuscript())
+		{
+			bookcase.getBook().setIsCheckedDarkManuscript(book != null);
 		}
 	}
 
 	/**
-	 * Find the bookcase index that is index zero in the sequence, identifying by the book in bookcase
+	 * Find the bookcase index that is index zero in the sequence, identifying it using the book
+	 * found in the given bookcase
+	 *
+	 * @param sequences     The sequence of book on which we want the zero index.
+	 * @param bookcaseIndex The bookcase for which we know the book.
+	 * @return The bookcase zero index for the given sequence.
 	 */
-	private int getBookcaseZeroIndexForSequenceWithBook(List<Book> sequences, int bookcaseIndex, Book book)
+	private int getBookcaseZeroIndexForSequence(List<Book> sequences, int bookcaseIndex)
 	{
+		Book book = bookcaseByIndex.get(bookcaseIndex).getBook();
 		int bookSequence = sequences.indexOf(book);
 		assert bookSequence >= 0;
 
 		bookcaseIndex -= step * bookSequence;
 		for (; bookcaseIndex < 0; )
 		{
-			bookcaseIndex += byIndex.size();
+			bookcaseIndex += bookcaseByIndex.size();
 		}
 		return bookcaseIndex;
 	}
@@ -299,7 +405,7 @@ public class Library
 				DARK_MANUSCRIPT_13515,
 				BYRNES_CORONATION_SPEECH,
 				DARK_MANUSCRIPT_13517,
-				SOUL_JORUNEY,
+				SOUL_JOURNEY,
 				DARK_MANUSCRIPT_13518,
 				TRANSPORTATION_INCANTATIONS
 			),
@@ -322,7 +428,7 @@ public class Library
 				DARK_MANUSCRIPT_13514,
 				EATHRAM_RADA_EXTRACT,
 				DARK_MANUSCRIPT_13522,
-				SOUL_JORUNEY,
+				SOUL_JOURNEY,
 				WINTERTODT_PARABLE,
 				TWILL_ACCORD,
 				DARK_MANUSCRIPT_13515,
@@ -348,7 +454,7 @@ public class Library
 				DARK_MANUSCRIPT_13519,
 				BYRNES_CORONATION_SPEECH,
 				DARK_MANUSCRIPT_13517,
-				SOUL_JORUNEY,
+				SOUL_JOURNEY,
 				DARK_MANUSCRIPT_13522,
 				WINTERTODT_PARABLE,
 				TWILL_ACCORD,
@@ -384,7 +490,7 @@ public class Library
 				TREACHERY_OF_ROYALTY,
 				DARK_MANUSCRIPT_13518,
 				TRANSPORTATION_INCANTATIONS,
-				SOUL_JORUNEY,
+				SOUL_JOURNEY,
 				VARLAMORE_ENVOY
 			),
 			Arrays.asList(
@@ -409,7 +515,7 @@ public class Library
 				IDEOLOGY_OF_DARKNESS,
 				WINTERTODT_PARABLE,
 				TWILL_ACCORD,
-				SOUL_JORUNEY,
+				SOUL_JOURNEY,
 				DARK_MANUSCRIPT_13515,
 				EATHRAM_RADA_EXTRACT,
 				DARK_MANUSCRIPT_13518,
@@ -425,23 +531,95 @@ public class Library
 		return Collections.unmodifiableList(books);
 	}
 
+	/**
+	 * Create a floor in the library.
+	 *
+	 * @param name Name of the floor.
+	 * @param z    z coordinate of the floor.
+	 */
+	private void createFloor(String name, int z)
+	{
+		assert z == floors.size();
+		Floor floor = new Floor(name, z);
+		floors.add(floor);
+	}
+
+	/**
+	 * Create a room in the library.
+	 *
+	 * @param name Name of the floor.
+	 * @param minX Minimum x coordinate of the room.
+	 * @param maxX Maximum x coordinate of the room.
+	 * @param minY Minimum y coordinate of the room.
+	 * @param maxY Maximum y coordinate of the room.
+	 * @param z    z coordinate of the room.
+	 */
+	private void createRooms(String name, int minX, int maxX, Integer minY, Integer maxY, Integer z)
+	{
+		assert floors.get(z) != null;
+		assert floors.get(z).getRooms().stream()
+			.noneMatch(r ->
+				(r.getMaxX() > minX) && (r.getMinX() < maxX) && (r.getMaxY() > minY) && (r.getMinY() < maxY));
+		Room room = new Room(name, minX, maxX, minY, maxY, z);
+		floors.get(z).addRoom(room);
+	}
+
+	/**
+	 * Create a bookcase in the library.
+	 *
+	 * @param x X coordinate of the bookcase.
+	 * @param y Y coordinate of the bookcase.
+	 * @param z Z coordinate of the bookcase.
+	 * @param i Index given to the bookcase.
+	 */
 	private void add(int x, int y, int z, int i)
 	{
-		// 'i' is added as a parameter for readability
 		WorldPoint p = new WorldPoint(x, y, z);
-		Bookcase b = byPoint.get(p);
+		Bookcase b = bookcaseByPoint.get(p);
 		if (b == null)
 		{
 			b = new Bookcase(p);
-			byPoint.put(p, b);
-			byLevel.computeIfAbsent(z, a -> new ArrayList<>()).add(b);
+			bookcaseByPoint.put(p, b);
+			assert floors.get(z) != null;
+			Room room = null;
+			for (Room r : floors.get(z).getRooms())
+			{
+				if (x <= r.getMaxX() && x >= r.getMinX() && y <= r.getMaxY() && y >= r.getMinY())
+				{
+					room = r;
+				}
+			}
+			assert room != null;
+			room.addBookcase(b);
 		}
 		b.getIndex().add(i);
-		assert i == byIndex.size();
-		byIndex.add(b);
+		assert i == bookcaseByIndex.size();
+		bookcaseByIndex.add(b);
 	}
 
-	private void populateBooks()
+	private void populateFloors()
+	{
+		createFloor("Ground", 0);
+		createFloor("Middle", 1);
+		createFloor("Top", 2);
+	}
+
+	private void populateRooms()
+	{
+		createRooms("Northwest", 1607, 1626, 3814, 3831, 0);
+		createRooms("Northeast", 1639, 1658, 3814, 3831, 0);
+		createRooms("Southwest", 1607, 1626, 3784, 3801, 0);
+		createRooms("Northwest", 1607, 1624, 3816, 3831, 1);
+		createRooms("Northeast", 1641, 1658, 3816, 3831, 1);
+		createRooms("Center", 1625, 1640, 3800, 3815, 1);
+		createRooms("Southwest", 1607, 1624, 3784, 3799, 1);
+		createRooms("Northwest", 1607, 1624, 3816, 3831, 2);
+		createRooms("Northeast", 1641, 1658, 3816, 3831, 2);
+		createRooms("Center", 1625, 1640, 3800, 3815, 2);
+		createRooms("Southwest", 1607, 1624, 3784, 3799, 2);
+	}
+
+	private void populateBookcases()
 	{
 		add(1626, 3795, 0, 0);
 		add(1625, 3793, 0, 1);

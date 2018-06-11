@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Franck Maillot <https://github.com/Franck-M>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,106 +26,90 @@
 package net.runelite.client.plugins.kourendlibrary;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
+/**
+ * A bookcase in the library is defined by its location and its indexes. Once the book found in a bookcase is known,
+ * it is set in the parameter book and isBookSet is set to true. In the same manner if we know that no book is found
+ * in the bookcase isBookSet is set to true.
+ */
 class Bookcase
 {
-	public Bookcase(WorldPoint location)
-	{
-		this.location = location;
-		this.index = new ArrayList<>();
-	}
-
+	/**
+	 * The 'physical' emplacement of a bookcase, used when drawing the bookcase overlay.
+	 */
 	@Getter
 	private final WorldPoint location;
 
+	/**
+	 * Some bookcases might have two indexes which are used by the book sequences.
+	 * Values are stored in an ArrayList to ensure order is conserved.
+	 */
 	@Getter
-	private final List<Integer> index;
+	private final List<Integer> index = new ArrayList<>();
 
+	/**
+	 * If library.state != SolvedState.COMPLETE, isBookSet is set to true when the player checks a bookcase
+	 * or when we know for sure the book present in this bookcase (or absence of book).
+	 * Otherwise when the library is completed, isBookSet is always true.
+	 */
 	@Getter
 	private boolean isBookSet;
 
 	/**
-	 * Book in this bookcase as found by the player.
-	 * Will be correct as long as isBookSet is true, unless the library has reset;
+	 * Either null or a Book value.
+	 * When this.isBookSet == true, this is the book currently available in the bookcase. In some cases a bookcase
+	 * that should contain a dark manuscript may be set to null, this is fixed when completing the library.
 	 */
 	@Getter
 	private Book book;
 
 	/**
-	 * Books that can be in this slot. Will only be populated if library.state != SolvedState.NO_DATA
+	 * Can have values only if isBookSet is false, in which case it lists the potential books found in this bookcase.
+	 * Having a single possible book does not mean that it will necessarily be found in the bookcase but that a single
+	 * sequence thought there would be one here.
+	 * The choice was made to allow the same book in this list more than once, this is done so that we can check
+	 * afterward if all sequences wanted to put the same book. This also means that on the overlay the same book might
+	 * appear more than once currently, this might seem like redundant information but a book that appears twice is in
+	 * fact twice as likely to be in the bookcase compared to a book appearing only once.
 	 */
 	@Getter
-	private Set<Book> possibleBooks = new HashSet<>();
+	private List<Book> possibleBooks;
 
-	public void clearBook()
+	// Variables initialization
 	{
-		book = null;
-		isBookSet = false;
+		possibleBooks = new ArrayList<>();
 	}
 
+	/**
+	 * Constructor for the Bookcase class. Simply the location of the bookcase used for drawing on it.
+	 *
+	 * @param location WorldPoint location of the bookcase.
+	 */
+	Bookcase(WorldPoint location)
+	{
+		this.location = location;
+	}
+
+	/**
+	 * Reset the bookcase to the base state.
+	 */
+	void reset()
+	{
+		isBookSet = false;
+		book = null;
+	}
+
+	/**
+	 * Used to set the book found or determined to be in the bookcase.
+	 *
+	 * @param book Book found in this bookcase.
+	 */
 	public void setBook(Book book)
 	{
 		this.book = book;
 		this.isBookSet = true;
-	}
-
-	public String getLocationString()
-	{
-		StringBuilder b = new StringBuilder();
-
-		// Floors 2 and 3
-		boolean north = location.getY() > 3815;
-		boolean west = location.getX() < 1625;
-
-		// Floor 1 has slightly different dimensions
-		if (location.getPlane() == 0)
-		{
-			north = location.getY() > 3813;
-			west = location.getX() < 1627;
-		}
-
-		if (north && west)
-		{
-			b.append("Northwest");
-		}
-		else if (north)
-		{
-			b.append("Northeast");
-		}
-		else if (west)
-		{
-			b.append("Southwest");
-		}
-		else
-		{
-			b.append("Center");
-		}
-
-		b.append(" ");
-
-		switch (location.getPlane())
-		{
-			case 0:
-				b.append("ground floor");
-				break;
-			case 1:
-				b.append("middle floor");
-				break;
-			case 2:
-				b.append("top floor");
-				break;
-		}
-
-		if (KourendLibraryPlugin.debug)
-		{
-			b.append(" ").append(index.stream().map(Object::toString).collect(Collectors.joining(", ")));
-		}
-		return b.toString();
 	}
 }

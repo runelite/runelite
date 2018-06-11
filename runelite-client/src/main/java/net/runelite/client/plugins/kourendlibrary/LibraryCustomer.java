@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Franck Maillot <https://github.com/Franck-M>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,34 +28,57 @@ package net.runelite.client.plugins.kourendlibrary;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
-
 import net.runelite.api.NpcID;
 
+/**
+ * Class for the Kourend Library customers.
+ * Each customer is defined by its npc id and his/her name.
+ */
 public enum LibraryCustomer
 {
 	VILLIA(NpcID.VILLIA, "Villia"),
 	PROFESSOR_GRACKLEBONE(NpcID.PROFESSOR_GRACKLEBONE, "Prof. Gracklebone"),
 	Sam(NpcID.SAM_7049, "Sam");
 
+	/**
+	 * Map of all customer by their npc id.
+	 */
+	private static final Map<Integer, LibraryCustomer> byId;
+
+	/**
+	 * Npc id of the customer.
+	 */
 	@Getter
 	private final int id;
 
+	/**
+	 * Name of the customer.
+	 */
 	@Getter
 	private final String name;
 
-	private static final Map<Integer, LibraryCustomer> byId = buildIdMap();
-
-	LibraryCustomer(int id, String name)
+	// Static variables initialization
+	static
 	{
-		this.id = id;
-		this.name = name;
+		byId = buildIdMap();
 	}
 
+	/**
+	 * Static method, return a customer given its npc id.
+	 *
+	 * @param id Npc id of the customer.
+	 * @return The LibraryCustomer object for the specified id.
+	 */
 	public static LibraryCustomer getById(int id)
 	{
 		return byId.get(id);
 	}
 
+	/**
+	 * Static method, create a HashMap of customer using their npc id as key.
+	 *
+	 * @return Map of customers by id.
+	 */
 	private static Map<Integer, LibraryCustomer> buildIdMap()
 	{
 		Map<Integer, LibraryCustomer> byId = new HashMap<>();
@@ -63,5 +87,17 @@ public enum LibraryCustomer
 			byId.put(c.id, c);
 		}
 		return byId;
+	}
+
+	/**
+	 * Constructor for Library customers.
+	 *
+	 * @param id   Npc id of the customer.
+	 * @param name Name of the customer.
+	 */
+	LibraryCustomer(int id, String name)
+	{
+		this.id = id;
+		this.name = name;
 	}
 }

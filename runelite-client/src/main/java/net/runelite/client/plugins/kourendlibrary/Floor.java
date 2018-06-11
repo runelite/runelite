@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2018 Abex
  * Copyright (c) 2018, Franck Maillot <https://github.com/Franck-M>
  * All rights reserved.
  *
@@ -25,59 +24,69 @@
  */
 package net.runelite.client.plugins.kourendlibrary;
 
-import java.awt.Color;
-import javax.swing.GroupLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.FontManager;
+import lombok.Getter;
+import java.util.ArrayList;
+import java.util.List;
 
-class BookPanel extends JPanel
+/**
+ * The Kourend Library is composed of floors containing rooms. A floor is defined by its level (z coordinate).
+ */
+class Floor
 {
-	private JLabel location = new JLabel();
+	/**
+	 * Full name of the floor. In the case of the Kourend Library Plugin this is representative of the library level
+	 * of the floor.
+	 */
+	@Getter
+	private final String name;
 
-	BookPanel(Book b)
+	/**
+	 * Level of this floor.
+	 */
+	@Getter
+	private final Integer level;
+
+	/**
+	 * List of rooms available on this floor. Set when a room register to the floor.
+	 * Values are stored in an ArrayList to ensure order is conserved.
+	 */
+	@Getter
+	private List<Room> rooms = new ArrayList<>();
+
+	/**
+	 * Constructor for the Floor class. A floor is defined by its level and name.
+	 *
+	 * @param name Name of the floor.
+	 * @param z    z coordinate of the floor.
+	 */
+	Floor(String name, Integer z)
 	{
-		setBorder(new EmptyBorder(3, 3, 3, 3));
-		setBackground(ColorScheme.DARK_GRAY_COLOR);
-
-		GroupLayout layout = new GroupLayout(this);
-		this.setLayout(layout);
-
-		JLabel image = new JLabel();
-		b.getIcon().addTo(image);
-		JLabel name = new JLabel(b.getShortName());
-		location.setFont(FontManager.getRunescapeSmallFont());
-
-		layout.setVerticalGroup(layout.createParallelGroup()
-			.addComponent(image)
-			.addGroup(layout.createSequentialGroup()
-				.addComponent(name)
-				.addComponent(location)
-			)
-		);
-
-		layout.setHorizontalGroup(layout.createSequentialGroup()
-			.addComponent(image)
-			.addGap(8)
-			.addGroup(layout.createParallelGroup()
-				.addComponent(name)
-				.addComponent(location)
-			)
-		);
-
-		// AWT's Z order is weird. This put image at the back of the stack
-		setComponentZOrder(image, getComponentCount() - 1);
+		this.name = name;
+		this.level = z;
 	}
 
-	public void setLocation(String location)
+	/**
+	 * Adding a room to this floor.
+	 *
+	 * @param room Room to add to this floor.
+	 */
+	void addRoom(Room room)
 	{
-		this.location.setText(location);
+		this.rooms.add(room);
 	}
 
-	void setColor(Color color)
+	/**
+	 * Get a list of bookcases on the floor.
+	 *
+	 * @return List of bookcases on this floor.
+	 */
+	List<Bookcase> getBookcases()
 	{
-		location.setForeground(color);
+		List<Bookcase> bookcases = new ArrayList<>();
+		for (Room room : this.getRooms())
+		{
+			bookcases.addAll(room.getBookcases());
+		}
+		return bookcases;
 	}
 }
