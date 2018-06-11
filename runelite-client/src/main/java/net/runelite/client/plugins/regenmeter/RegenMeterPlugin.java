@@ -151,11 +151,11 @@ public class RegenMeterPlugin extends Plugin
 			hitpointsPercentage = 1 - hitpointsPercentage;
 		}
 
-		if(config.notifyWhenAboutToRegenerate())
+		if (config.notifyWhenAboutToRegenerate())
 		{
-			if(!hitpointRegenNotificationSend)
+			if (!hitpointRegenNotificationSend)
 			{
-				if((hitpointsPercentage * 100) >= config.hitpointRegenerationThreshold())
+				if ((hitpointsPercentage * 100) >= config.hitpointRegenerationThreshold())
 				{
 					notifier.notify("Hitpoints is about to regen!");
 					hitpointRegenNotificationSend = true;
@@ -163,7 +163,7 @@ public class RegenMeterPlugin extends Plugin
 			}
 			else
 			{
-				if((hitpointsPercentage * 100) < config.hitpointRegenerationThreshold())
+				if ((hitpointsPercentage * 100) < config.hitpointRegenerationThreshold())
 				{
 					hitpointRegenNotificationSend = false;
 				}
