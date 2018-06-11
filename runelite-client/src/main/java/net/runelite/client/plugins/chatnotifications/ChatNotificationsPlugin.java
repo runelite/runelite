@@ -97,7 +97,7 @@ public class ChatNotificationsPlugin extends Plugin
 			{
 				String[] items = config.highlightWordsString().trim().split(", ");
 				String joined = Arrays.stream(items)
-					.map(item -> quote(item))
+					.map(Pattern::quote)
 					.collect(Collectors.joining("|"));
 				highlightMatcher = Pattern.compile("\\b(" + joined + ")\\b", Pattern.CASE_INSENSITIVE);
 			}
@@ -133,32 +133,37 @@ public class ChatNotificationsPlugin extends Plugin
 			usernameReplacer = "<col" + ChatColorType.HIGHLIGHT.name() + "><u>" + username + "</u><col" + ChatColorType.NORMAL.name() + ">";
 		}
 
-		if (config.highlightOwnName() && usernameMatcher != null)
+		if (usernameMatcher != null)
 		{
 			Matcher matcher = usernameMatcher.matcher(messageNode.getValue());
 			if (matcher.find())
 			{
-				//notifier.notify(event.getValue());
-				sendNotification(event);
 				messageNode.setValue(matcher.replaceAll(usernameReplacer));
 				update = true;
+
+				if (config.highlightOwnName())
+				{
+					sendNotification(event);
+				}
 			}
 		}
 
-		if (config.notifyOnHighlight() && highlightMatcher != null)
+		if (highlightMatcher != null)
 		{
 			Matcher matcher = highlightMatcher.matcher(messageNode.getValue());
-			if (matcher.find())
-			{
-				//notifier.notify(event.getValue());
-				sendNotification(event);
-				matcher.reset();
-			}
+			boolean found = false;
+
 			while (matcher.find())
 			{
 				String value = matcher.group();
 				messageNode.setValue(matcher.replaceFirst("<col" + ChatColorType.HIGHLIGHT + ">" + value + "<col" + ChatColorType.NORMAL + ">"));
 				update = true;
+				found = true;
+			}
+
+			if (found && config.notifyOnHighlight())
+			{
+				sendNotification(event);
 			}
 		}
 
