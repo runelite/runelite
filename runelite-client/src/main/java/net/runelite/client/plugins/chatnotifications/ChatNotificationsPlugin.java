@@ -37,6 +37,7 @@ import java.util.stream.Collectors;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.SetMessage;
@@ -182,7 +183,7 @@ public class ChatNotificationsPlugin extends Plugin
 		{
 			return;
 		}
-		if (message.getType() == ChatMessageType.FILTERED && config.ignoreFilteredNotifications())
+		if (message.getType() == ChatMessageType.FILTERED && client.getVar(Varbits.GAME_FILTERED) == 1)
 		{
 			return;
 		}

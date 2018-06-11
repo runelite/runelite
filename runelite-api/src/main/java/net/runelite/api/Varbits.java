@@ -34,10 +34,15 @@ import lombok.Getter;
 @Getter
 public enum Varbits
 {
-	/*
+	/**
 	 * If chatbox is transparent or not
 	 */
 	TRANSPARENT_CHATBOX(4608),
+
+	/**
+	 * Whether game messages are filtered or not
+	 */
+	GAME_FILTERED(26),
 
 	/**
 	 * Runecraft pouches
