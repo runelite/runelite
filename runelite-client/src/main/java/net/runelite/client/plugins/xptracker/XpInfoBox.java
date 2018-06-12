@@ -51,8 +51,10 @@ import net.runelite.client.util.SwingUtil;
 @Slf4j
 class XpInfoBox extends JPanel
 {
-	private final JMenuItem pause;
+	private static final String PAUSED_STATE = "Resume";
+	private static final String UNPAUSED_STATE = "Pause";
 
+	private final JMenuItem pause;
 	private final JPanel panel;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -93,11 +95,11 @@ class XpInfoBox extends JPanel
 		SkillIconPanel skillIconPanel = new SkillIconPanel(iconManager.getSkillImage(skill));
 
 		// Create pause menu
-		pause = new JMenuItem("Pause");
+		pause = new JMenuItem(UNPAUSED_STATE);
 		pause.addActionListener(e ->
 		{
-			boolean paused = pause.getText().equalsIgnoreCase("Pause");
-			pause.setText(paused ? "Resume" : "Pause");
+			boolean paused = pause.getText().equalsIgnoreCase(UNPAUSED_STATE);
+			pause.setText(paused ? PAUSED_STATE : UNPAUSED_STATE);
 			xpTrackerPlugin.handlePauseFor(skill);
 			skillIconPanel.setPaused(paused);
 			repaint();
