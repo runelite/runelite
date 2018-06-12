@@ -240,7 +240,8 @@ public class BankTagsPlugin extends Plugin
 			return;
 		}
 		MenuEntry prevTagMenu = entries[entries.length - ADD_PREVIOUS_TAG_MENU_INDEX];
-		if (prevTagMenu.getOption().startsWith(ADD_PREVIOUS_TAG_MENU_OPTION)) {
+		if (prevTagMenu.getOption().startsWith(ADD_PREVIOUS_TAG_MENU_OPTION))
+		{
 			String prevTag = getPrevTag();
 			if (!prevTag.isEmpty())
 			{
@@ -318,45 +319,47 @@ public class BankTagsPlugin extends Plugin
 				&& event.getMenuOption().startsWith(ADD_PREVIOUS_TAG_MENU_OPTION))
 		{
 			event.consume();
-            int inventoryIndex = event.getActionParam();
-            ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
-            if (bankContainer == null)
-            {
-                return;
-            }
-            Item[] items = bankContainer.getItems();
-            if (inventoryIndex < 0 || inventoryIndex >= items.length)
-            {
-                return;
-            }
-            Item item = bankContainer.getItems()[inventoryIndex];
-            if (item == null)
-            {
-                return;
-            }
-            ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
-            int itemId;
-            if (itemComposition.getPlaceholderTemplateId() != -1)
-            {
-                // if the item is a placeholder then get the item id for the normal item
-                itemId = itemComposition.getPlaceholderId();
-            }
-            else
-            {
-                itemId = item.getId();
-            }
+			int inventoryIndex = event.getActionParam();
+			ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
+			if (bankContainer == null)
+			{
+				return;
+			}
+			Item[] items = bankContainer.getItems();
 
-            // Add new Tag to old Tags
-            String oldTags = getTags(itemId);
-            String newTag = getPrevTag();
-            if (getTagCount(itemId) == 0) {
-            	setTags(itemId, newTag);
+			if (inventoryIndex < 0 || inventoryIndex >= items.length)
+			{
+				return;
+			}
+			Item item = bankContainer.getItems()[inventoryIndex];
+			if (item == null)
+			{
+				return;
+			}
+			ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
+			int itemId;
+			if (itemComposition.getPlaceholderTemplateId() != -1)
+			{
+				// if the item is a placeholder then get the item id for the normal item
+				itemId = itemComposition.getPlaceholderId();
+			}
+			else
+			{
+				itemId = item.getId();
+			}
+
+			// Add new Tag to old Tags
+			String oldTags = getTags(itemId);
+			String newTag = getPrevTag();
+			if (getTagCount(itemId) == 0)
+			{
+				setTags(itemId, newTag);
 			}
 			else if (!Arrays.asList(oldTags.replaceAll("\\s", "").split(",")).contains(newTag))
 			{
 				setTags(itemId, oldTags + "," + newTag);
 			}
-            updateTagCount(itemId, inventoryIndex);
+			updateTagCount(itemId, inventoryIndex);
 		}
 	}
 
@@ -366,31 +369,32 @@ public class BankTagsPlugin extends Plugin
 	 * @param itemId   ID of item to get tag count for
 	 * @param inventoryIndex index of inventory stack to update on bank interface
 	 */
-	private void updateTagCount(int itemId, int inventoryIndex) {
-        Widget bankContainerWidget = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
-        if (bankContainerWidget == null)
-        {
-            return;
-        }
-        Widget[] bankItemWidgets = bankContainerWidget.getDynamicChildren();
-        if (bankItemWidgets == null || inventoryIndex >= bankItemWidgets.length)
-        {
-            return;
-        }
-        Widget bankItemWidget = bankItemWidgets[inventoryIndex];
-        String[] actions = bankItemWidget.getActions();
-        if (actions == null || EDIT_TAGS_MENU_INDEX - 1 >= actions.length
-                || itemId != bankItemWidget.getItemId())
-        {
-            return;
-        }
-        int tagCount = getTagCount(itemId);
-        actions[EDIT_TAGS_MENU_INDEX - 1] = EDIT_TAGS_MENU_OPTION;
-        if (tagCount > 0)
-        {
-            actions[EDIT_TAGS_MENU_INDEX - 1] += " (" + tagCount + ")";
-        }
-    }
+	private void updateTagCount(int itemId, int inventoryIndex)
+	{
+		Widget bankContainerWidget = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		if (bankContainerWidget == null)
+		{
+			return;
+		}
+		Widget[] bankItemWidgets = bankContainerWidget.getDynamicChildren();
+		if (bankItemWidgets == null || inventoryIndex >= bankItemWidgets.length)
+		{
+			return;
+		}
+		Widget bankItemWidget = bankItemWidgets[inventoryIndex];
+		String[] actions = bankItemWidget.getActions();
+		if (actions == null || EDIT_TAGS_MENU_INDEX - 1 >= actions.length
+				|| itemId != bankItemWidget.getItemId())
+		{
+			return;
+		}
+		int tagCount = getTagCount(itemId);
+		actions[EDIT_TAGS_MENU_INDEX - 1] = EDIT_TAGS_MENU_OPTION;
+		if (tagCount > 0)
+		{
+			actions[EDIT_TAGS_MENU_INDEX - 1] += " (" + tagCount + ")";
+		}
+	}
 
 	/**
 	 * Determine new changed tag to save for add-tag
@@ -398,7 +402,8 @@ public class BankTagsPlugin extends Plugin
 	 * @param prevValue   Old Value to compare new value to
 	 * @param newValue    New Input to get tags from
 	 */
-	private String getChangedTag(String prevValue, String newValue) {
+	private String getChangedTag(String prevValue, String newValue)
+	{
 		String[] newValues = newValue.replaceAll("\\s", "").split(",");
 		if (prevValue.isEmpty() || newValues.length == 1)
 		{
