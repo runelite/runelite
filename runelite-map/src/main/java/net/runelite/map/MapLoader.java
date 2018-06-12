@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,36 +22,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls;
+package net.runelite.map;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+import javax.imageio.ImageIO;
 
-@ConfigGroup(
-	name = "Clue Scroll",
-	keyName = "cluescroll",
-	description = "Configuration for the clue scroll plugin"
-)
-public interface ClueScrollConfig extends Config
+public class MapLoader
 {
-	@ConfigItem(
-		keyName = "displayHintArrows",
-		name = "Display hint arrows",
-		description = "Configures whether or not to display hint arrows for clues"
-	)
-	default boolean displayHintArrows()
+	private static final int REGION_IMAGE_SIZE = 256;
+	private static final BufferedImage EMPTY_REGION;
+
+	static
 	{
-		return true;
+		EMPTY_REGION = new BufferedImage(REGION_IMAGE_SIZE, REGION_IMAGE_SIZE, BufferedImage.TYPE_INT_RGB);
+		final Graphics graphics = EMPTY_REGION.getGraphics();
+		graphics.setColor(Color.BLACK);
+		graphics.fillRect(0, 0, REGION_IMAGE_SIZE, REGION_IMAGE_SIZE);
+		graphics.dispose();
 	}
 
-	@ConfigItem(
-		keyName = "showMapOnFirstRead",
-		name = "Show instance map on first read",
-		description = "Configures whether or not the instance map is auto-shown on first read"
-	)
-	default boolean showOnFirstRead()
+	/**
+	 * Reads map region image
+	 * @param plane plane on map
+	 * @param regionId region id
+	 * @return map region image
+	 * @throws IOException exception when image is not found
+	 */
+	public static BufferedImage readMapRegionImage(final int plane, final int regionId) throws IOException
 	{
-		return false;
+		final URL resource = MapLoader.class.getResource(String.format("map-%d-%d.png", plane, regionId));
+		return resource != null ? ImageIO.read(resource) : EMPTY_REGION;
 	}
 }

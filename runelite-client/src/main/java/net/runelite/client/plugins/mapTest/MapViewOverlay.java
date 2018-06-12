@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2018, Morgan Lewis <https://github.com/MESLewis>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,36 +22,52 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls;
+package net.runelite.client.plugins.mapTest;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+import javax.inject.Inject;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.ui.overlay.Overlay;
 
-@ConfigGroup(
-	name = "Clue Scroll",
-	keyName = "cluescroll",
-	description = "Configuration for the clue scroll plugin"
-)
-public interface ClueScrollConfig extends Config
+public class MapViewOverlay extends Overlay
 {
-	@ConfigItem(
-		keyName = "displayHintArrows",
-		name = "Display hint arrows",
-		description = "Configures whether or not to display hint arrows for clues"
-	)
-	default boolean displayHintArrows()
+	private final MapTestPlugin plugin;
+
+	@Inject
+	private MapTestConfig config;
+
+	private BufferedImage image = null;
+
+	@Inject
+	MapViewOverlay(MapTestPlugin plugin, MapTestConfig config)
 	{
-		return true;
+		this.plugin = plugin;
+		this.config = config;
 	}
 
-	@ConfigItem(
-		keyName = "showMapOnFirstRead",
-		name = "Show instance map on first read",
-		description = "Configures whether or not the instance map is auto-shown on first read"
-	)
-	default boolean showOnFirstRead()
+
+	void setImage(BufferedImage image)
 	{
-		return false;
+		this.image = image;
+	}
+
+
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		graphics.drawImage(image, 0, 0, null);
+		graphics.setColor(Color.WHITE);
+		int pixelsPerTile = (int) plugin.getMapView().getPixelsPerTile();
+		graphics.fillRect(image.getWidth() / 2, image.getHeight() / 2, pixelsPerTile, pixelsPerTile);
+
+		Point mapMarker = plugin.getMapView().worldPointToGraphicsPoint(new WorldPoint(config.mapTestMarkerCoords().width, config.mapTestMarkerCoords().height, 0));
+		graphics.setColor(Color.CYAN);
+		graphics.fillOval(mapMarker.x, mapMarker.y, pixelsPerTile, pixelsPerTile);
+
+		return config.mapTestDisplay();
 	}
 }

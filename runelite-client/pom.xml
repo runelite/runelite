@@ -120,6 +120,11 @@
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>
+			<artifactId>map</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.runelite</groupId>
 			<artifactId>http-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>

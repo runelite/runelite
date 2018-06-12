@@ -29,10 +29,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseWheelListener;
 
+@Singleton
 public class InstanceMapInputListener extends MouseListener implements KeyListener, MouseWheelListener
 {
 	@Inject
@@ -50,15 +52,20 @@ public class InstanceMapInputListener extends MouseListener implements KeyListen
 	@Override
 	public void keyPressed(KeyEvent event)
 	{
-		if (!overlay.isMapShown())
-		{
-			return;
-		}
-
 		if (event.getKeyCode() == KeyEvent.VK_ESCAPE)
 		{
-			plugin.closeMap();
-			event.consume();
+			if (overlay.isMapShown())
+			{
+				overlay.setShowMap(false);
+				plugin.setMenuState(false);
+				event.consume();
+			}
+			else if (event.isShiftDown())
+			{
+				overlay.setShowMap(true);
+				plugin.setMenuState(true);
+				event.consume();
+			}
 		}
 	}
 

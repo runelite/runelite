@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2018 Morgan Lewis <http://github.com/MESLewis>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,36 +22,61 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls;
+package net.runelite.client.plugins.mapTest;
 
+import java.awt.Dimension;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-	name = "Clue Scroll",
-	keyName = "cluescroll",
-	description = "Configuration for the clue scroll plugin"
+	keyName = "devtoolsmap",
+	name = "Dev Tools Map",
+	description = "Configuration for developer tools map test"
 )
-public interface ClueScrollConfig extends Config
+public interface MapTestConfig extends Config
 {
 	@ConfigItem(
-		keyName = "displayHintArrows",
-		name = "Display hint arrows",
-		description = "Configures whether or not to display hint arrows for clues"
+		keyName = "mapTestCoords",
+		name = "Coordinates",
+		description = "Coordinates to display",
+		position = 2
 	)
-	default boolean displayHintArrows()
+	default Dimension mapTestCoords()
 	{
-		return true;
+		return new Dimension(3222, 3217);
 	}
 
 	@ConfigItem(
-		keyName = "showMapOnFirstRead",
-		name = "Show instance map on first read",
-		description = "Configures whether or not the instance map is auto-shown on first read"
+		keyName = "mapTestSize",
+		name = "Display Size",
+		description = "",
+		position = 3
 	)
-	default boolean showOnFirstRead()
+	default Dimension mapTestDisplay()
 	{
-		return false;
+		return new Dimension(100, 100);
+	}
+
+	@ConfigItem(
+		keyName = "mapTestZoom",
+		name = "Zoom",
+		description = "",
+		position = 4
+	)
+	default int mapTestZoom()
+	{
+		return 100;
+	}
+
+	@ConfigItem(
+		keyName = "mapTestMarkerCoords",
+		name = "Map Marker",
+		description = "Coordinates to display a mark on the map",
+		position = 5
+	)
+	default Dimension mapTestMarkerCoords()
+	{
+		return new Dimension(3225, 3217);
 	}
 }
