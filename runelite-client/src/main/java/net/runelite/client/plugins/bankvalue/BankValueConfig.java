@@ -30,26 +30,48 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-	keyName = "bankvalue",
-	name = "Bank Value",
-	description = "Shows the value of your bank and/or current tab")
+        keyName = "bankvalue",
+        name = "Bank Value",
+        description = "Shows the value of your bank and/or current tab")
 public interface BankValueConfig extends Config
 {
-	@ConfigItem(
-		keyName = "showGE",
-		name = "Show Grand Exchange price",
-		description = "Show grand exchange price total (GE)")
-	default boolean showGE()
-	{
-		return true;
-	}
+    @ConfigItem(
+            keyName = "showGE",
+            name = "Show Grand Exchange price",
+            description = "Show grand exchange price total (GE)",
+            position = 1)
+    default boolean showGE()
+    {
+        return true;
+    }
 
-	@ConfigItem(
-		keyName = "showHA",
-		name = "Show high alchemy price",
-		description = "Show high alchemy price total (HA)")
-	default boolean showHA()
-	{
-		return false;
-	}
+    @ConfigItem(
+            keyName = "showHA",
+            name = "Show high alchemy price",
+            description = "Show high alchemy price total (HA)",
+            position = 2)
+    default boolean showHA()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            keyName = "showExactValue",
+            name = "Show exact exchange value",
+            description = "Shows the exact exchange value of your bank",
+            position = 3)
+    default boolean showExactValue()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            keyName = "showExactAlchValue",
+            name = "Show exact high alchemy value",
+            description = "Shows the exact high alchemy value of your bank",
+            position = 4)
+    default boolean showExactHAValue()
+    {
+        return false;
+    }
 }

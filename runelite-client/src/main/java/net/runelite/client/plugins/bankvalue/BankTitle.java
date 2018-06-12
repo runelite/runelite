@@ -31,76 +31,91 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.util.StackFormatter;
 
+import java.text.NumberFormat;
+
 @Slf4j
 class BankTitle
 {
-	private final Client client;
-	private final BankValueConfig config;
+    private final Client client;
+    private final BankValueConfig config;
 
-	private String bankTitle;
+    private String bankTitle;
 
-	@Inject
-	BankTitle(Client client, BankValueConfig config)
-	{
-		this.client = client;
-		this.config = config;
-	}
+    private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
 
-	void reset()
-	{
-		Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+    @Inject
+    BankTitle(Client client, BankValueConfig config)
+    {
+        this.client = client;
+        this.config = config;
+    }
 
-		if (widgetBankTitleBar == null || widgetBankTitleBar.isHidden())
-		{
-			return;
-		}
+    void reset()
+    {
+        Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
 
-		widgetBankTitleBar.setText(bankTitle);
-	}
+        if (widgetBankTitleBar == null || widgetBankTitleBar.isHidden())
+        {
+            return;
+        }
 
-	void save()
-	{
-		Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+        widgetBankTitleBar.setText(bankTitle);
+    }
 
-		// Only save if the title hasn't been modified
-		// Don't update on a search because rs seems to constantly update the title
-		if (widgetBankTitleBar == null ||
-				widgetBankTitleBar.isHidden() ||
-				widgetBankTitleBar.getText().contains("(") ||
-				widgetBankTitleBar.getText().contains("Showing"))
-		{
-			return;
-		}
+    void save()
+    {
+        Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
 
-		bankTitle = widgetBankTitleBar.getText();
-	}
+        // Only save if the title hasn't been modified
+        // Don't update on a search because rs seems to constantly update the title
+        if (widgetBankTitleBar == null ||
+                widgetBankTitleBar.isHidden() ||
+                widgetBankTitleBar.getText().contains("(") ||
+                widgetBankTitleBar.getText().contains("Showing"))
+        {
+            return;
+        }
 
-	void update(long gePrice, long haPrice)
-	{
-		Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+        bankTitle = widgetBankTitleBar.getText();
+    }
 
-		// Don't update on a search because rs seems to constantly update the title
-		if (widgetBankTitleBar == null ||
-				widgetBankTitleBar.isHidden() ||
-				widgetBankTitleBar.getText().contains("Showing") ||
-				widgetBankTitleBar.getText().contains("("))
-		{
-			return;
-		}
+    void update(long gePrice, long haPrice)
+    {
+        update(gePrice, haPrice, false);
+    }
 
-		String strCurrentTab = "";
+    void update(long gePrice, long haPrice, boolean force)
+    {
+        Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
 
-		if (config.showGE() && gePrice != 0)
-		{
-			strCurrentTab += " (EX: " + StackFormatter.quantityToStackSize(gePrice) + ")";
-		}
+        // Don't update on a search because rs seems to constantly update the title
+        if (widgetBankTitleBar == null ||
+                widgetBankTitleBar.isHidden() ||
+                widgetBankTitleBar.getText().contains("Showing"))
+        {
+            return;
+        }
 
-		if (config.showHA() && haPrice != 0)
-		{
-			strCurrentTab += " (HA: " + StackFormatter.quantityToStackSize(haPrice) + ")";
-		}
+        if (!force && widgetBankTitleBar.getText().contains("("))
+        {
+            return;
+        }
 
-		log.debug("Setting bank title: {}", bankTitle + strCurrentTab);
-		widgetBankTitleBar.setText(bankTitle + strCurrentTab);
-	}
+        String strCurrentTab = "";
+
+        if (config.showGE() && gePrice != 0)
+        {
+            strCurrentTab += " (EX: " + (config.showExactValue() ? NUMBER_FORMATTER.format(gePrice) :
+                    StackFormatter.quantityToStackSize(gePrice)) + ")";
+        }
+
+        if (config.showHA() && haPrice != 0)
+        {
+            strCurrentTab += " (HA: " + (config.showExactHAValue() ? NUMBER_FORMATTER.format(haPrice) :
+                    StackFormatter.quantityToStackSize(haPrice)) + ")";
+        }
+
+        log.debug("Setting bank title: {}", bankTitle + strCurrentTab);
+        widgetBankTitleBar.setText(bankTitle + strCurrentTab);
+    }
 }
