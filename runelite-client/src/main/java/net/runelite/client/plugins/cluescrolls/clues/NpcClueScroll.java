@@ -24,7 +24,11 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import java.util.List;
+
 public interface NpcClueScroll
 {
 	String getNpc();
+
+	List<String> getNpcs();
 }

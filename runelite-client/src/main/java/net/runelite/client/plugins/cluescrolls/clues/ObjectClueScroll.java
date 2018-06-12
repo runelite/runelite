@@ -24,7 +24,11 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import java.util.List;
+
 public interface ObjectClueScroll extends LocationClueScroll
 {
 	int getObjectId();
+
+	List<Integer> getObjectIds();
 }
