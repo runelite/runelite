@@ -388,6 +388,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("pay-toll(10gp)", option, target, true);
 		}
+		else if (config.swapChestSearch() && option.equals("open") && target.equals("chest"))
+		{
+			swap("search for traps", option, target, true);
+		}
 		else if (config.swapTravel() && option.equals("inspect") && target.equals("trapdoor"))
 		{
 			swap("travel", option, target, true);

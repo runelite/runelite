@@ -232,4 +232,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+	
+	@ConfigItem(
+		position = 18,
+		keyName = "swapChestSearch",
+		name = "Search Chests",
+		description = "Swap Search Chests for Traps with Open"
+	)
+	default boolean swapChestSearch()
+	{
+		return true;
+	}	
 }
