@@ -101,4 +101,15 @@ public interface ChatNotificationsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "ignoreFiltered",
+		name = "Ignore filtered messages",
+		description = "Whether notifications ignore filtered messages or not"
+	)
+	default boolean ignoreFiltered()
+	{
+		return true;
+	}
 }
