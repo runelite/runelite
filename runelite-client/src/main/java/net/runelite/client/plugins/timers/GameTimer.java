@@ -70,7 +70,9 @@ public enum GameTimer
 	GOD_WARS_ALTAR("altar", "God wars altar", 10, ChronoUnit.MINUTES),
 	ANTIPOISON("antipoison", "Antipoison", 90, ChronoUnit.SECONDS),
 	SUPERANTIPOISON("superantipoison", "Superantipoison", 346, ChronoUnit.SECONDS),
-	CHARGE("charge", "Charge", 6, ChronoUnit.MINUTES);
+	CHARGE("charge", "Charge", 6, ChronoUnit.MINUTES),
+	HOME_TELEPORT("hometeleport", "Home Teleport", 30, ChronoUnit.MINUTES),
+	MINIGAME_TELEPORT("minigameteleport", "Minigame Teleport", 20, ChronoUnit.MINUTES);
 
 	@Getter
 	private final String imageResource;

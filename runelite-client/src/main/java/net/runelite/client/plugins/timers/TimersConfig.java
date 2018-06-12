@@ -287,4 +287,26 @@ public interface TimersConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 23,
+		keyName = "showHomeTeleport",
+		name = "Home Teleport Timer",
+		description = "Configures whether the Home Teleport timer is displayed"
+	)
+	default boolean showHomeTeleport()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 24,
+		keyName = "showMinigameTeleport",
+		name = "Minigame Teleport Timer",
+		description = "Configures whether the Minigame Teleport timer is displayed"
+	)
+	default boolean showMinigameTeleport()
+	{
+		return true;
+	}
 }
