@@ -30,12 +30,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
+
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
+
 import static net.runelite.api.ItemID.COINS_995;
 import static net.runelite.api.ItemID.PLATINUM_TOKEN;
+
 import net.runelite.api.queries.BankItemQuery;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
@@ -139,60 +142,59 @@ class BankCalculation
 		{
 			CompletableFuture<ItemPrice[]> future = itemManager.getItemPriceBatch(itemIds);
 			future.whenComplete((ItemPrice[] itemPrices, Throwable ex) ->
+			{
+				if (ex != null)
+				{
+					log.debug("Error looking up item prices", ex);
+					return;
+				}
+
+				if (itemPrices == null)
+				{
+					log.debug("Error looking up item prices");
+					return;
+				}
+
+				log.debug("Price lookup is complete. {} prices.", itemPrices.length);
+
+				try
+				{
+					for (WidgetItem widgetItem : widgetItems)
 					{
-						if (ex != null)
+						int itemId = widgetItem.getId();
+						int quantity = widgetItem.getQuantity();
+
+						if (itemId <= 0 || quantity == 0
+								|| itemId == ItemID.COINS_995 || itemId == ItemID.PLATINUM_TOKEN)
 						{
-							log.debug("Error looking up item prices", ex);
-							return;
+							continue;
 						}
 
-						if (itemPrices == null)
+						long price = 0;
+						for (int mappedItemId : ItemMapping.map(itemId))
 						{
-							log.debug("Error looking up item prices");
-							return;
-						}
-
-						log.debug("Price lookup is complete. {} prices.", itemPrices.length);
-
-						try
-						{
-							for (WidgetItem widgetItem : widgetItems)
+							ItemPrice cachedItemPrice = itemManager.getCachedItemPrice(mappedItemId);
+							if (cachedItemPrice == null)
 							{
-								int itemId = widgetItem.getId();
-								int quantity = widgetItem.getQuantity();
-
-								if (itemId <= 0 || quantity == 0
-										|| itemId == ItemID.COINS_995 || itemId == ItemID.PLATINUM_TOKEN)
-								{
-									continue;
-								}
-
-								long price = 0;
-								for (int mappedItemId : ItemMapping.map(itemId))
-								{
-									ItemPrice cachedItemPrice = itemManager.getCachedItemPrice(mappedItemId);
-									if (cachedItemPrice == null)
-									{
-										// this happens to items which have no ge price
-										continue;
-									}
-
-									price += cachedItemPrice.getPrice();
-								}
-
-								gePrice += price * quantity;
+								// this happens to items which have no ge price
+								continue;
 							}
+
+							price += cachedItemPrice.getPrice();
 						}
-						catch (Exception ex2)
-						{
-							log.warn("error calculating price", ex2);
-						}
-						finally
-						{
-							finished = true;
-						}
+
+						gePrice += price * quantity;
 					}
-			);
+				}
+				catch (Exception ex2)
+				{
+					log.warn("error calculating price", ex2);
+				}
+				finally
+				{
+					finished = true;
+				}
+			});
 		}
 		else
 		{
