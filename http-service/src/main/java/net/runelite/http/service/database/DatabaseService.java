@@ -25,14 +25,13 @@
 package net.runelite.http.service.database;
 
 import net.runelite.http.api.database.DatabaseEndpoint;
-import net.runelite.http.api.database.LootRecord;
 import net.runelite.http.api.database.DropEntry;
+import net.runelite.http.api.database.LootRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

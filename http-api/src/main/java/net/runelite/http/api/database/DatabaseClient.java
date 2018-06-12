@@ -25,23 +25,20 @@
 package net.runelite.http.api.database;
 
 import com.google.gson.JsonParseException;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+@Slf4j
 public class DatabaseClient
 {
-	private static final Logger logger = LoggerFactory.getLogger(DatabaseClient.class);
-
 	private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
 	// Wrapper for looking up by boss ID (API can find records by name or id)
@@ -60,7 +57,7 @@ public class DatabaseClient
 
 		HttpUrl url = builder.build();
 
-		logger.debug("Built Database URI: {}", url);
+		log.debug("Built Database URI: {}", url);
 
 		Request request = new Request.Builder()
 				.url(url)
@@ -76,8 +73,8 @@ public class DatabaseClient
 			}
 			else
 			{
-				logger.debug("Error Executing Database URI request: {}", url);
-				logger.debug(response.body().toString());
+				log.debug("Error Executing Database URI request: {}", url);
+				log.debug(response.body().toString());
 				return new ArrayList<LootRecord>();
 			}
 		}
@@ -104,18 +101,18 @@ public class DatabaseClient
 
 		HttpUrl url = builder.build();
 
-		logger.debug("Built Database URI: {}", url);
+		log.debug("Built Database URI: {}", url);
 
 		Request request = new Request.Builder()
 				.url(url)
 				.post(RequestBody.create(JSON, RuneLiteAPI.GSON.toJson(record)))
 				.build();
 
-		logger.debug("JSON Data to store: " + request.body().toString());
+		log.debug("JSON Data to store: " + request.body().toString());
 
 		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
-			logger.debug("Data Storage: " + (response.message().equals("OK") ? "SUCCESS" : "FAIL"));
+			log.debug("Data Storage: " + (response.message().equals("OK") ? "SUCCESS" : "FAIL"));
 			return response.message().equals("OK");
 		}
 		catch (JsonParseException ex)

@@ -24,9 +24,6 @@
  */
 package net.runelite.http.service.database;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 import net.runelite.http.api.database.DatabaseEndpoint;
 import net.runelite.http.api.database.LootRecord;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +37,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
+import java.io.IOException;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/database")

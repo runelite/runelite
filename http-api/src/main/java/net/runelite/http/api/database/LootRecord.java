@@ -27,7 +27,6 @@ package net.runelite.http.api.database;
 import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
 import net.runelite.http.api.RuneLiteAPI;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,7 +107,14 @@ public class LootRecord
 	public String toString()
 	{
 		StringBuilder m = new StringBuilder();
-		m.append("LootRecord{npcID=").append(npcID).append(", npcName=").append(npcName).append(", killCount=").append(killCount).append(", drops=[");
+		m.append("LootRecord{npcID=")
+				.append(npcID)
+				.append(", npcName=")
+				.append(npcName)
+				.append(", killCount=")
+				.append(killCount)
+				.append(", drops=[");
+
 		if (drops != null)
 		{
 			boolean first = true;
