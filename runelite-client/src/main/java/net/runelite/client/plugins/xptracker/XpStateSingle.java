@@ -42,8 +42,8 @@ class XpStateSingle
 
 	@Getter
 	private final int startXp;
-	private int xpGained = 0;
 
+	private int xpGained = 0;
 	private int xpPaused;
 	private Instant skillTimeStart = null;
 	private Instant skillTimePause = null;

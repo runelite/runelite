@@ -52,7 +52,6 @@ import net.runelite.http.api.worlds.WorldClient;
 import net.runelite.http.api.worlds.WorldResult;
 import net.runelite.http.api.worlds.WorldType;
 import net.runelite.http.api.xp.XpClient;
-
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
 
