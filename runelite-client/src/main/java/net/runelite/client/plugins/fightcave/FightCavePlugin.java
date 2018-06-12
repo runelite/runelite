@@ -34,7 +34,7 @@ import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
@@ -49,14 +49,23 @@ public class FightCavePlugin extends Plugin
 	private QueryRunner queryRunner;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private FightCaveOverlay overlay;
 
 	private JadAttack attack;
 
 	@Override
-	public Overlay getOverlay()
+	protected void startUp() throws Exception
 	{
-		return overlay;
+		overlayManager.add(overlay);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
 	}
 
 	@Schedule(

@@ -49,6 +49,7 @@ import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Rogues' Den"
@@ -69,12 +70,21 @@ public class RoguesDenPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	@Getter
+	private OverlayManager overlayManager;
+
+	@Inject
 	private RoguesDenOverlay overlay;
 
 	@Override
-	protected void shutDown()
+	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
 		obstaclesHull.clear();
 		obstaclesTile.clear();
 		hasGem = false;
