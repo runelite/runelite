@@ -213,12 +213,12 @@ class XpInfoBox extends JPanel
 			progressBar.setRightLabel("Lvl. " + (xpSnapshotSingle.getEndLevel()));
 
 			progressBar.setToolTipText("<html>"
-					+ xpSnapshotSingle.getActionsInSession() + " actions done"
-					+ "<br/>"
-					+ xpSnapshotSingle.getActionsPerHour() + " actions/hr"
-					+ "<br/>"
-					+ xpSnapshotSingle.getTimeTillGoal() + " till goal lvl"
-					+ "</html>");
+				+ xpSnapshotSingle.getActionsInSession() + " actions done"
+				+ "<br/>"
+				+ xpSnapshotSingle.getActionsPerHour() + " actions/hr"
+				+ "<br/>"
+				+ xpSnapshotSingle.getTimeTillGoal() + " till goal lvl"
+				+ "</html>");
 
 			progressBar.repaint();
 		}
