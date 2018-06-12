@@ -30,12 +30,14 @@ import java.util.List;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.MenuAction;
 import net.runelite.api.IntegerNode;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.MenuAction;
+import net.runelite.api.InventoryID;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.Widget;
@@ -56,6 +58,7 @@ public class BankTagsPlugin extends Plugin
 	private static final String CONFIG_GROUP = "banktags";
 
 	private static final String ITEM_KEY_PREFIX = "item_";
+	private static final String PREVIOUS_TAG_KEY = "add_tag";
 
 	private static final String SEARCH_BANK_INPUT_TEXT =
 		"Show items whose names or tags contain the following text:<br>" +
@@ -64,8 +67,10 @@ public class BankTagsPlugin extends Plugin
 	private static final String TAG_SEARCH = "tag:";
 
 	private static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
+	private static final String ADD_PREVIOUS_TAG_MENU_OPTION = "Add-tag";
 
 	private static final int EDIT_TAGS_MENU_INDEX = 8;
+	private static final int ADD_PREVIOUS_TAG_MENU_INDEX = 9;
 
 	@Inject
 	private Client client;
@@ -98,6 +103,28 @@ public class BankTagsPlugin extends Plugin
 		else
 		{
 			configManager.setConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId, tags);
+		}
+	}
+
+	private String getPrevTag()
+	{
+		String config = configManager.getConfiguration(CONFIG_GROUP, PREVIOUS_TAG_KEY);
+		if (config == null)
+		{
+			return "";
+		}
+		return config;
+	}
+
+	private void setPrevTag(String tag)
+	{
+		if (tag == null || tag.isEmpty())
+		{
+			configManager.unsetConfiguration(CONFIG_GROUP, PREVIOUS_TAG_KEY);
+		}
+		else
+		{
+			configManager.setConfiguration(CONFIG_GROUP, PREVIOUS_TAG_KEY, tag);
 		}
 	}
 
@@ -134,6 +161,7 @@ public class BankTagsPlugin extends Plugin
 			{
 				// set menu action index so the edit tags option will not be overridden
 				intStack[intStackSize - 3] = EDIT_TAGS_MENU_INDEX;
+				intStack[intStackSize - 4] = ADD_PREVIOUS_TAG_MENU_INDEX;
 
 				int itemId = intStack[intStackSize - 2];
 				int tagCount = getTagCount(itemId);
@@ -142,7 +170,7 @@ public class BankTagsPlugin extends Plugin
 					stringStack[stringStackSize - 1] += " (" + tagCount + ")";
 				}
 
-				int index = intStack[intStackSize - 1];
+				int index = intStack[intStackSize - 2];
 				long key = (long) index + ((long) WidgetInfo.BANK_ITEM_CONTAINER.getId() << 32);
 				IntegerNode flagNode = (IntegerNode) client.getWidgetFlags().get(key);
 				if (flagNode != null && flagNode.getValue() != 0)
@@ -197,6 +225,34 @@ public class BankTagsPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onMenuOpened(MenuOpened event)
+	{
+		MenuEntry firstEntry = event.getFirstEntry();
+		int widgetId = firstEntry.getParam1();
+		if (widgetId != WidgetInfo.BANK_ITEM_CONTAINER.getId())
+		{
+			return;
+		}
+
+		MenuEntry[] entries = event.getMenuEntries();
+		if (entries.length <= ADD_PREVIOUS_TAG_MENU_INDEX)
+		{
+			return;
+		}
+		MenuEntry prevTagMenu = entries[entries.length - ADD_PREVIOUS_TAG_MENU_INDEX];
+		if (prevTagMenu.getOption().startsWith(ADD_PREVIOUS_TAG_MENU_OPTION)) {
+			String prevTag = getPrevTag();
+			if (!prevTag.isEmpty())
+			{
+				prevTagMenu.setOption(ADD_PREVIOUS_TAG_MENU_OPTION + " (" + getPrevTag() + ")");
+			}
+			entries[entries.length - ADD_PREVIOUS_TAG_MENU_INDEX] = prevTagMenu;
+		}
+
+		client.setMenuEntries(entries);
+	}
+
+	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
@@ -243,32 +299,117 @@ public class BankTagsPlugin extends Plugin
 				{
 					return;
 				}
+
+				String changedTag = getChangedTag(initialValue, newTags);
+				if (!changedTag.isEmpty())
+				{
+					setPrevTag(changedTag);
+				}
+
 				setTags(itemId, newTags);
-				Widget bankContainerWidget = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
-				if (bankContainerWidget == null)
-				{
-					return;
-				}
-				Widget[] bankItemWidgets = bankContainerWidget.getDynamicChildren();
-				if (bankItemWidgets == null || inventoryIndex >= bankItemWidgets.length)
-				{
-					return;
-				}
-				Widget bankItemWidget = bankItemWidgets[inventoryIndex];
-				String[] actions = bankItemWidget.getActions();
-				if (actions == null || EDIT_TAGS_MENU_INDEX - 1 >= actions.length
-						|| itemId != bankItemWidget.getItemId())
-				{
-					return;
-				}
-				int tagCount = getTagCount(itemId);
-				actions[EDIT_TAGS_MENU_INDEX - 1] = EDIT_TAGS_MENU_OPTION;
-				if (tagCount > 0)
-				{
-					actions[EDIT_TAGS_MENU_INDEX - 1] += " (" + tagCount + ")";
-				}
+
+				updateTagCount(itemId, inventoryIndex);
 			});
 		}
+		// Check if menu option clicked is add-tags
+		if (event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+				&& event.getMenuAction() == MenuAction.EXAMINE_ITEM_BANK_EQ
+				&& event.getId() == ADD_PREVIOUS_TAG_MENU_INDEX
+				&& event.getMenuOption().startsWith(ADD_PREVIOUS_TAG_MENU_OPTION))
+		{
+			event.consume();
+            int inventoryIndex = event.getActionParam();
+            ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
+            if (bankContainer == null)
+            {
+                return;
+            }
+            Item[] items = bankContainer.getItems();
+            if (inventoryIndex < 0 || inventoryIndex >= items.length)
+            {
+                return;
+            }
+            Item item = bankContainer.getItems()[inventoryIndex];
+            if (item == null)
+            {
+                return;
+            }
+            ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
+            int itemId;
+            if (itemComposition.getPlaceholderTemplateId() != -1)
+            {
+                // if the item is a placeholder then get the item id for the normal item
+                itemId = itemComposition.getPlaceholderId();
+            }
+            else
+            {
+                itemId = item.getId();
+            }
+
+            // Add new Tag to old Tags
+            String oldTags = getTags(itemId);
+            String newTag = getPrevTag();
+            if (getTagCount(itemId) == 0) {
+            	setTags(itemId, newTag);
+			}
+			else if (!Arrays.asList(oldTags.replaceAll("\\s", "").split(",")).contains(newTag))
+			{
+				setTags(itemId, oldTags + "," + newTag);
+			}
+            updateTagCount(itemId, inventoryIndex);
+		}
+	}
+
+	/**
+	 * Update Tag Count On Bank Interface
+	 *
+	 * @param itemId   ID of item to get tag count for
+	 * @param inventoryIndex index of inventory stack to update on bank interface
+	 */
+	private void updateTagCount(int itemId, int inventoryIndex) {
+        Widget bankContainerWidget = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+        if (bankContainerWidget == null)
+        {
+            return;
+        }
+        Widget[] bankItemWidgets = bankContainerWidget.getDynamicChildren();
+        if (bankItemWidgets == null || inventoryIndex >= bankItemWidgets.length)
+        {
+            return;
+        }
+        Widget bankItemWidget = bankItemWidgets[inventoryIndex];
+        String[] actions = bankItemWidget.getActions();
+        if (actions == null || EDIT_TAGS_MENU_INDEX - 1 >= actions.length
+                || itemId != bankItemWidget.getItemId())
+        {
+            return;
+        }
+        int tagCount = getTagCount(itemId);
+        actions[EDIT_TAGS_MENU_INDEX - 1] = EDIT_TAGS_MENU_OPTION;
+        if (tagCount > 0)
+        {
+            actions[EDIT_TAGS_MENU_INDEX - 1] += " (" + tagCount + ")";
+        }
+    }
+
+	/**
+	 * Determine new changed tag to save for add-tag
+	 *
+	 * @param prevValue   Old Value to compare new value to
+	 * @param newValue    New Input to get tags from
+	 */
+	private String getChangedTag(String prevValue, String newValue) {
+		String[] newValues = newValue.replaceAll("\\s", "").split(",");
+		if (prevValue.isEmpty() || newValues.length == 1)
+		{
+			return newValue;
+		}
+		else if (newValue.startsWith(prevValue))
+		{
+			String[] newTags = newValue.replace("\\s", "").split(",");
+			return newTags[newTags.length - 1];
+		}
+		return "";
 	}
 
 }
