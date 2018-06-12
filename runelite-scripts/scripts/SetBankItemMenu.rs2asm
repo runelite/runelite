@@ -82,8 +82,10 @@ LABEL66:
    widget_put_action
    jump                   LABEL75
 LABEL72:
-   load_int               1                  ; if the bank tags plugin is not active this will not get changed and thus
+   load_int               1
+   load_int               2                  ; if the bank tags plugin is not active this will not get changed and thus
                                              ; overridden by the Withdraw-1 option
+   load_string            "Add-tag"     ; push menu action name
    load_string            "Edit-tags"        ; push menu action name
    iload                  0                  ; push item id
    widget_get_index                          ; push the item index for setting the widget flag
@@ -92,6 +94,7 @@ LABEL72:
    pop_int                                   ; pop widget index
    pop_int                                   ; pop item id
    widget_put_action                         ; add edit tags menu action
+   widget_put_action
    load_int               1
    load_string            "Withdraw-1"
    widget_put_action
