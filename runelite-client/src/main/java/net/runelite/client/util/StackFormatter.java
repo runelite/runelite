@@ -69,7 +69,8 @@ public class StackFormatter
 		{
 			// Long.MIN_VALUE = -1 * Long.MIN_VALUE so we need to correct for it.
 			return "-" + quantityToStackSize(quantity == Long.MIN_VALUE ? Long.MAX_VALUE : -quantity);
-		} else if (quantity < 10_000)
+		}
+		else if (quantity < 10_000)
 		{
 			return NUMBER_FORMATTER.format(quantity);
 		}
@@ -133,16 +134,20 @@ public class StackFormatter
 		{
 			// Integer.MIN_VALUE = Integer.MIN_VALUE * -1 so we need to correct for it.
 			return "-" + quantityToRSStackSize(Integer.MAX_VALUE);
-		} else if (quantity < 0)
+		}
+		else if (quantity < 0)
 		{
 			return "-" + quantityToRSStackSize(-quantity);
-		} else if (quantity < 100_000)
+		}
+		else if (quantity < 100_000)
 		{
 			return Integer.toString(quantity);
-		} else if (quantity < 10_000_000)
+		}
+		else if (quantity < 10_000_000)
 		{
 			return quantity / 1_000 + "K";
-		} else
+		}
+		else
 		{
 			return quantity / 1_000_000 + "M";
 		}
@@ -168,28 +173,32 @@ public class StackFormatter
 		if (quantity < 10_000)
 		{
 			return Integer.toString(quantity);
-		} else if (quantity < 1_000_000)
+		}
+		else if (quantity < 1_000_000)
 		{
 			if (quantity % 1000 == 0)
 			{
 				return quantity / 1000 + "K";
 			}
 			return NUMBER_FORMATTER.format(quantity).substring(0, Integer.toString(quantity).length() - 1) + "K";
-		} else if (quantity < 10_000_000)
+		}
+		else if (quantity < 10_000_000)
 		{
 			if (quantity % 1_000_000 == 0)
 			{
 				return quantity / 1_000_000 + "M";
 			}
 			return NUMBER_FORMATTER.format(quantity).substring(0, Integer.toString(quantity).length() - 4) + "M";
-		} else if (quantity < 1_000_000_000)
+		}
+		else if (quantity < 1_000_000_000)
 		{
 			if (quantity % 1_000_000 == 0)
 			{
 				return quantity / 1_000_000 + "M";
 			}
 			return NUMBER_FORMATTER.format(quantity).substring(0, Integer.toString(quantity).length() - 4) + "M";
-		} else
+		}
+		else
 		{
 			if (quantity % 1_000_000_000 == 0)
 			{
@@ -256,7 +265,8 @@ public class StackFormatter
 		if (matcher.find())
 		{
 			suffix = matcher.group(1);
-		} else
+		}
+		else
 		{
 			throw new ParseException(string + " does not resemble a properly formatted stack.", string.length() - 1);
 		}
@@ -272,7 +282,8 @@ public class StackFormatter
 			}
 
 			throw new ParseException("Invalid Suffix: " + suffix, string.length() - 1);
-		} else
+		}
+		else
 		{
 			return 1;
 		}

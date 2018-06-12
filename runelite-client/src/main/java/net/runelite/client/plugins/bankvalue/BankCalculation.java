@@ -139,58 +139,62 @@ class BankCalculation
 		{
 			CompletableFuture<ItemPrice[]> future = itemManager.getItemPriceBatch(itemIds);
 			future.whenComplete((ItemPrice[] itemPrices, Throwable ex) ->
-			{
-				if (ex != null)
-				{
-					log.debug("Error looking up item prices", ex);
-					return;
-				}
-
-				if (itemPrices == null)
-				{
-					log.debug("Error looking up item prices");
-					return;
-				}
-
-				log.debug("Price lookup is complete. {} prices.", itemPrices.length);
-
-				try
-				{
-					for (WidgetItem widgetItem : widgetItems)
 					{
-						int itemId = widgetItem.getId();
-						int quantity = widgetItem.getQuantity();
-
-						if (itemId <= 0 || quantity == 0
-								|| itemId == ItemID.COINS_995 || itemId == ItemID.PLATINUM_TOKEN)
+						if (ex != null)
 						{
-							continue;
+							log.debug("Error looking up item prices", ex);
+							return;
 						}
 
-						long price = 0;
-						for (int mappedItemId : ItemMapping.map(itemId))
+						if (itemPrices == null)
 						{
-							ItemPrice cachedItemPrice = itemManager.getCachedItemPrice(mappedItemId);
-							if (cachedItemPrice == null)
+							log.debug("Error looking up item prices");
+							return;
+						}
+
+						log.debug("Price lookup is complete. {} prices.", itemPrices.length);
+
+						try
+						{
+							for (WidgetItem widgetItem : widgetItems)
 							{
-								// this happens to items which have no ge price
-								continue;
+								int itemId = widgetItem.getId();
+								int quantity = widgetItem.getQuantity();
+
+								if (itemId <= 0 || quantity == 0
+										|| itemId == ItemID.COINS_995 || itemId == ItemID.PLATINUM_TOKEN)
+								{
+									continue;
+								}
+
+								long price = 0;
+								for (int mappedItemId : ItemMapping.map(itemId))
+								{
+									ItemPrice cachedItemPrice = itemManager.getCachedItemPrice(mappedItemId);
+									if (cachedItemPrice == null)
+									{
+										// this happens to items which have no ge price
+										continue;
+									}
+
+									price += cachedItemPrice.getPrice();
+								}
+
+								gePrice += price * quantity;
 							}
-
-							price += cachedItemPrice.getPrice();
 						}
-
-						gePrice += price * quantity;
+						catch (Exception ex2)
+						{
+							log.warn("error calculating price", ex2);
+						}
+						finally
+						{
+							finished = true;
+						}
 					}
-				} catch (Exception ex2)
-				{
-					log.warn("error calculating price", ex2);
-				} finally
-				{
-					finished = true;
-				}
-			});
-		} else
+			);
+		}
+		else
 		{
 			finished = true;
 		}
