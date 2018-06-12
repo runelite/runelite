@@ -36,7 +36,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
@@ -56,6 +56,9 @@ public class PrayerPlugin extends Plugin
 	private SpriteManager spriteManager;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private PrayerFlickOverlay overlay;
 
 	@Inject
@@ -68,15 +71,16 @@ public class PrayerPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown()
+	protected void startUp()
 	{
-		removeIndicators();
+		overlayManager.add(overlay);
 	}
 
 	@Override
-	public Overlay getOverlay()
+	protected void shutDown()
 	{
-		return overlay;
+		overlayManager.remove(overlay);
+		removeIndicators();
 	}
 
 	@Subscribe
