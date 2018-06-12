@@ -30,12 +30,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
+
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
+
 import static net.runelite.api.ItemID.COINS_995;
 import static net.runelite.api.ItemID.PLATINUM_TOKEN;
+
 import net.runelite.api.queries.BankItemQuery;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
@@ -129,7 +132,7 @@ class BankCalculation
 				if (price > 0)
 				{
 					haPrice += (long) Math.round(price * HIGH_ALCHEMY_CONSTANT) *
-						(long) quantity;
+							(long) quantity;
 				}
 			}
 		}
@@ -162,7 +165,7 @@ class BankCalculation
 						int quantity = widgetItem.getQuantity();
 
 						if (itemId <= 0 || quantity == 0
-							|| itemId == ItemID.COINS_995 || itemId == ItemID.PLATINUM_TOKEN)
+								|| itemId == ItemID.COINS_995 || itemId == ItemID.PLATINUM_TOKEN)
 						{
 							continue;
 						}
@@ -182,18 +185,15 @@ class BankCalculation
 
 						gePrice += price * quantity;
 					}
-				}
-				catch (Exception ex2)
+				} catch (Exception ex2)
 				{
 					log.warn("error calculating price", ex2);
-				}
-				finally
+				} finally
 				{
 					finished = true;
 				}
 			});
-		}
-		else
+		} else
 		{
 			finished = true;
 		}
