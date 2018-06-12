@@ -220,25 +220,10 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		for (final Overlay overlay : overlays)
 		{
 			final Point location = loadOverlayLocation(overlay);
-
-			if (location != null
-				&& client.getCanvas() != null
-				&& !client.getCanvas().contains(location))
-			{
-				overlay.setPreferredLocation(null);
-				saveOverlayLocation(overlay);
-			}
-			else if (location != null)
-			{
-				overlay.setPreferredLocation(location);
-			}
+			overlay.setPreferredLocation(location);
 
 			final Dimension size = loadOverlaySize(overlay);
-
-			if (size != null)
-			{
-				overlay.setPreferredSize(size);
-			}
+			overlay.setPreferredSize(size);
 
 			final OverlayPosition position = loadOverlayPosition(overlay);
 			overlay.setPreferredPosition(position);
@@ -379,9 +364,14 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 				}
 				else
 				{
-					if (overlay.getPreferredLocation() != null)
+					final Point preferredLocation = overlay.getPreferredLocation();
+
+					if (preferredLocation != null)
 					{
-						location.setLocation(overlay.getPreferredLocation());
+						final Dimension realDimensions = client.getRealDimensions();
+						final int x = Math.min(realDimensions.width - 5, preferredLocation.x);
+						final int y = Math.min(realDimensions.height - 5, preferredLocation.y);
+						location.setLocation(x, y);
 					}
 				}
 
