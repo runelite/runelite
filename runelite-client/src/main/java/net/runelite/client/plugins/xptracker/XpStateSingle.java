@@ -283,16 +283,16 @@ class XpStateSingle
 	XpSnapshotSingle snapshot()
 	{
 		return XpSnapshotSingle.builder()
-				.startLevel(Experience.getLevelForXp(startLevelExp))
-				.endLevel(Experience.getLevelForXp(endLevelExp))
-				.xpGainedInSession(getXpGained())
-				.xpRemainingToGoal(getXpRemaining())
-				.xpPerHour(getXpHr())
-				.skillProgressToGoal(getSkillProgress())
-				.actionsInSession(actions)
-				.actionsRemainingToGoal(getActionsRemaining())
-				.actionsPerHour(getActionsHr())
-				.timeTillGoal(getTimeTillLevel())
-				.build();
+			.startLevel(Experience.getLevelForXp(startLevelExp))
+			.endLevel(Experience.getLevelForXp(endLevelExp))
+			.xpGainedInSession(getXpGained())
+			.xpRemainingToGoal(getXpRemaining())
+			.xpPerHour(getXpHr())
+			.skillProgressToGoal(getSkillProgress())
+			.actionsInSession(actions)
+			.actionsRemainingToGoal(getActionsRemaining())
+			.actionsPerHour(getActionsHr())
+			.timeTillGoal(getTimeTillLevel())
+			.build();
 	}
 }

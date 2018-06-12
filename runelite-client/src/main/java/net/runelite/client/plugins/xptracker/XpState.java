@@ -75,10 +75,8 @@ class XpState
 
 		for (XpStateSingle state : xpSkills.values())
 		{
-
 			xpTotal.addXpGainedInSession(state.getXpGained());
 			xpTotal.addXpPerHour(state.getXpHr());
-
 		}
 	}
 
@@ -133,7 +131,6 @@ class XpState
 		XpStateSingle state = getSkill(skill);
 		state.setPaused(!state.isPaused());
 	}
-
 
 	/**
 	 * Forcefully initialize a skill with a known start XP from the current XP.

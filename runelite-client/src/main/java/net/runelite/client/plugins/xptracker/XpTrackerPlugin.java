@@ -57,7 +57,7 @@ import static com.google.common.base.MoreObjects.firstNonNull;
 import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
 
 @PluginDescriptor(
-		name = "XP Tracker"
+	name = "XP Tracker"
 )
 @Slf4j
 public class XpTrackerPlugin extends Plugin
@@ -222,11 +222,11 @@ public class XpTrackerPlugin extends Plugin
 		}
 
 		navButton = NavigationButton.builder()
-				.tooltip("XP Tracker")
-				.icon(icon)
-				.priority(2)
-				.panel(xpPanel)
-				.build();
+			.tooltip("XP Tracker")
+			.icon(icon)
+			.priority(2)
+			.panel(xpPanel)
+			.build();
 
 		pluginToolbar.addNavigation(navButton);
 	}
@@ -250,9 +250,9 @@ public class XpTrackerPlugin extends Plugin
 			{
 				// Reset
 				log.debug("World change: {} -> {}, {} -> {}",
-						lastUsername, client.getUsername(),
-						firstNonNull(lastWorldType, "<unknown>"),
-						firstNonNull(type, "<unknown>"));
+					lastUsername, client.getUsername(),
+					firstNonNull(lastWorldType, "<unknown>"),
+					firstNonNull(type, "<unknown>"));
 
 				lastUsername = client.getUsername();
 				lastWorldType = type;
