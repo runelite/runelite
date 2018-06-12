@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Unmoon <https://github.com/Unmoon>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.tithefarm;
+package net.runelite.client.plugins.grounditems.config;
 
-import java.awt.Color;
-import java.util.HashMap;
-import java.util.Map;
 import lombok.Getter;
-import net.runelite.api.ItemID;
+import lombok.RequiredArgsConstructor;
 
-enum WateringCan
+@Getter
+@RequiredArgsConstructor
+public enum PriceDisplayMode
 {
-	WATERING_CAN0(ItemID.WATERING_CAN, 0, Color.RED),
-	WATERING_CAN1(ItemID.WATERING_CAN1, 1, Color.ORANGE),
-	WATERING_CAN2(ItemID.WATERING_CAN2, 2, Color.YELLOW),
-	WATERING_CAN3(ItemID.WATERING_CAN3, 3, Color.WHITE),
-	WATERING_CAN4(ItemID.WATERING_CAN4, 4, Color.WHITE),
-	WATERING_CAN5(ItemID.WATERING_CAN5, 5, Color.WHITE),
-	WATERING_CAN6(ItemID.WATERING_CAN6, 6, Color.WHITE),
-	WATERING_CAN7(ItemID.WATERING_CAN7, 7, Color.WHITE),
-	WATERING_CAN8(ItemID.WATERING_CAN8, 8, Color.WHITE);
+	HA("High Alchemy"),
+	GE("Grand Exchange"),
+	BOTH("Both"),
+	OFF("Off");
 
-	@Getter
-	private final int id;
-	@Getter
-	private final int charges;
-	@Getter
-	private final Color color;
+	private final String name;
 
-	private static final Map<Integer, WateringCan> wateringCans = new HashMap<>();
-
-	static
+	@Override
+	public String toString()
 	{
-		for (WateringCan can : values())
-		{
-			wateringCans.put(can.getId(), can);
-		}
-	}
-
-	WateringCan(int id, int charges, Color color)
-	{
-		this.id = id;
-		this.charges = charges;
-		this.color = color;
-	}
-
-	public static WateringCan getWateringCan(int itemId)
-	{
-		return wateringCans.get(itemId);
+		return name;
 	}
 }

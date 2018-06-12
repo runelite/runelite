@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Hydrox6 <ikada@protonmail.ch>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,71 +23,82 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.boosts;
+package net.runelite.client.plugins.chatnotifications;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-	keyName = "boosts",
-	name = "Boosts Information",
-	description = "Configuration for the Boosts plugin"
+	keyName = "chatnotification",
+	name = "Chat Notifications",
+	description = "Highlights and notifies you of chat messages"
 )
-public interface BoostsConfig extends Config
+public interface ChatNotificationsConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enableSkill",
-		name = "Enable Skill Boosts",
-		description = "Configures whether or not to display skill boost information",
-		position = 1
+		position = 0,
+		keyName = "highlightOwnName",
+		name = "Highlight own name",
+		description = "Highlights any instance of your username in chat"
 	)
-	default boolean enableSkill()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "relativeBoost",
-		name = "Use Relative Boosts",
-		description = "Configures whether or not relative boost is used",
-		position = 2
-	)
-	default boolean useRelativeBoost()
+	default boolean highlightOwnName()
 	{
 		return false;
 	}
 
 	@ConfigItem(
-		keyName = "displayIndicators",
-		name = "Display as indicators",
-		description = "Configures whether or not to display the boost as indicators",
-		position = 3
+		position = 1,
+		keyName = "highlightWordsString",
+		name = "Highlight words",
+		description = "Highlights the following words in chat"
 	)
-	default boolean displayIndicators()
+	default String highlightWordsString()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "notifyOnOwnName",
+		name = "Notify on own name",
+		description = "Notifies you whenever your name is mentioned"
+	)
+	default boolean notifyOnOwnName()
 	{
 		return false;
 	}
 
 	@ConfigItem(
-		keyName = "displayNextChange",
-		name = "Display next change",
-		description = "Configures whether or not to display when the next stat change will be",
-		position = 4
+		position = 3,
+		keyName = "notifyOnHighlight",
+		name = "Notify on hightlight",
+		description = "Notifies you whenever a word is above is highlighted"
 	)
-	default boolean displayNextChange()
+	default boolean notifyOnHighlight()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
-		keyName = "boostThreshold",
-		name = "Boost Amount Threshold",
-		description = "The amount of levels boosted to send a notification at. A value of 0 will disable notification.",
-		position = 5
+		position = 4,
+		keyName = "notifyOnTrade",
+		name = "Notify on trade",
+		description = "Notifies you whenever you are traded"
 	)
-	default int boostThreshold()
+	default boolean notifyOnTrade()
 	{
-		return 0;
+		return false;
+	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "notifyOnDuel",
+		name = "Notify on duel",
+		description = "Notifies you whenever you are challenged to a duel"
+	)
+	default boolean notifyOnDuel()
+	{
+		return false;
 	}
 }
