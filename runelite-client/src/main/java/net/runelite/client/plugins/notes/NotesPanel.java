@@ -26,30 +26,43 @@
 package net.runelite.client.plugins.notes;
 
 import java.awt.Color;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
+import javax.swing.InputMap;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+import javax.swing.undo.UndoManager;
 
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 
 import java.awt.BorderLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
 
 @Slf4j
 public class NotesPanel extends PluginPanel
 {
+	private static final String UNDO = "Undo";
+	private static final String REDO = "Redo";
+	private static final int MODIFIER_KEY = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+
 	private final JTextArea notesEditor = new JTextArea();
+	private final UndoManager undoManager = new UndoManager();
 
 	void init(NotesConfig config)
 	{
-		// this may or may not qualify as a hack
+		// This may or may not qualify as a hack
 		// but this lets the editor pane expand to fill the whole parent panel
 		getParent().setLayout(new BorderLayout());
 		getParent().add(this, BorderLayout.CENTER);
@@ -67,22 +80,56 @@ public class NotesPanel extends PluginPanel
 		notesEditor.setLineWrap(true);
 		notesEditor.setWrapStyleWord(true);
 
-		JPanel notesContainer = new JPanel();
+		final JPanel notesContainer = new JPanel();
 		notesContainer.setLayout(new BorderLayout());
 		notesContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		notesEditor.setOpaque(false);
 
-		// load note text
-		String data = config.notesData();
+		// Load note text
+		final String data = config.notesData();
 		notesEditor.setText(data);
 
+		// Enable undo listener
+		undoManager.setLimit(300); // Triple the default history limit
+		notesEditor.getDocument().addUndoableEditListener(undoManager);
+
+		// Set hotkeys to respond to
+		final InputMap inputs = notesEditor.getInputMap();
+		inputs.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, MODIFIER_KEY), UNDO); // Ctrl+Z (or Cmd+Z)
+		inputs.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, MODIFIER_KEY), REDO); // Ctrl+Y (or Cmd+Y)
+
+		// Set hotkey actions
+		final ActionMap actions = notesEditor.getActionMap();
+		actions.put(UNDO, new AbstractAction()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				if (undoManager.canUndo())
+				{
+					undoManager.undo();
+				}
+			}
+		});
+		actions.put(REDO, new AbstractAction()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				if (undoManager.canRedo())
+				{
+					undoManager.redo();
+				}
+			}
+		});
+
+		// Save notes whenever they lose keyboard focus
 		notesEditor.addFocusListener(new FocusListener()
 		{
 			@Override
 			public void focusGained(FocusEvent e)
 			{
-
 			}
 
 			@Override
@@ -95,8 +142,8 @@ public class NotesPanel extends PluginPanel
 			{
 				try
 				{
-					// get document text and save to config whenever editor is changed
-					String data = doc.getText(0, doc.getLength());
+					// Get document text and save to config whenever editor is changed
+					final String data = doc.getText(0, doc.getLength());
 					config.notesData(data);
 				}
 				catch (BadLocationException ex)
