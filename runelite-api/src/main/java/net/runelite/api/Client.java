@@ -626,6 +626,14 @@ public interface Client extends GameEngine
 	String getVar(VarClientStr varClientStr);
 
 	/**
+	 * Sets the given variable
+	 *
+	 * @param varClientStr
+	 * @param value
+	 */
+	void setVar(VarClientStr varClientStr, String value);
+
+	/**
 	 * Sets the value of a given variable.
 	 *
 	 * @param varbit the variable
