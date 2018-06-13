@@ -168,7 +168,7 @@ public enum HotColdLocation
 	ZEAH_PISCARILUS_MINE(new WorldPoint(1768, 3705, 0), ZEAH, "South of the Piscarilius mine."),
 	ZEAH_GOLDEN_FIELD_TAVERN(new WorldPoint(1718, 3647, 0), ZEAH, "South of The Golden Field tavern in the northern area of Great Kourend's Hosidius House."),
 	ZEAH_MESS_HALL(new WorldPoint(1658, 3621, 0), ZEAH, "East of Mess hall."),
-	ZEAH_WATSONS_HOUSE(new WorldPoint(1653, 3577, 0), ZEAH, "East of Watson's house."),
+	ZEAH_WATSONS_HOUSE(new WorldPoint(1653, 3573, 0), ZEAH, "East of Watson's house."),
 	ZEAH_VANNAHS_FARM_STORE(new WorldPoint(1806, 3521, 0), ZEAH, "North of Vannah's Farm Store, between the chicken coop and willow trees.");
 
 	private final WorldPoint worldPoint;
