@@ -29,17 +29,21 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.List;
 import javax.inject.Inject;
+import net.runelite.api.ClanMemberRank;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
+import net.runelite.api.Point;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.client.game.ClanManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 class BarrowsOverlay extends Overlay
 {
@@ -48,6 +52,9 @@ class BarrowsOverlay extends Overlay
 	private final Client client;
 	private final BarrowsPlugin plugin;
 	private final BarrowsConfig config;
+
+	@Inject
+	private ClanManager clanManager;
 
 	@Inject
 	BarrowsOverlay(Client client, BarrowsPlugin plugin, BarrowsConfig config)
@@ -91,6 +98,15 @@ class BarrowsOverlay extends Overlay
 			renderBarrowsBrothers(graphics);
 		}
 
+		if (plugin.getPuzzleAnswerWidget() != null)
+		{
+			final Color answerFillColor = new Color(config.puzzleAnswerColor().getRed(), config.puzzleAnswerColor().getGreen(), config.puzzleAnswerColor().getBlue(), 25);
+			final Color answerBorderColor = new Color(config.puzzleAnswerColor().getRed(), config.puzzleAnswerColor().getGreen(), config.puzzleAnswerColor().getBlue());
+			OverlayUtil.renderWidget(
+				graphics, plugin.getPuzzleAnswerWidget(), client.getMouseCanvasPosition(), answerFillColor, answerBorderColor.darker(), answerBorderColor.brighter()
+			);
+		}
+
 		return null;
 	}
 
@@ -113,6 +129,11 @@ class BarrowsOverlay extends Overlay
 			{
 				renderLadders(graphics, ladder);
 			}
+		}
+
+		if (plugin.getBarrowsChest() != null)
+		{
+			renderChest(graphics, plugin.getBarrowsChest());
 		}
 	}
 
@@ -155,6 +176,18 @@ class BarrowsOverlay extends Overlay
 		{
 			graphics.setColor(Color.orange);
 			graphics.fillRect(minimapLocation.getX(), minimapLocation.getY(), 6, 6);
+		}
+	}
+
+	private void renderChest(Graphics2D graphics, GameObject chest)
+	{
+		if (chest != null)
+		{
+			Point minimapLocation = chest.getMinimapLocation();
+			if (minimapLocation != null)
+			{
+				OverlayUtil.renderImageLocation(graphics, minimapLocation, clanManager.getClanImage(ClanMemberRank.GENERAL));
+			}
 		}
 	}
 

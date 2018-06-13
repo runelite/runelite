@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
@@ -66,6 +67,10 @@ public class BarrowsBrotherSlainOverlay extends Overlay
 		{
 			barrowsBrothers.setHidden(true);
 		}
+		if (potential != null)
+		{
+			potential.setHidden(true);
+		}
 
 		panelComponent.getChildren().clear();
 
@@ -78,6 +83,13 @@ public class BarrowsBrotherSlainOverlay extends Overlay
 				.rightColor(slain.isEmpty() ? Color.WHITE : Color.GREEN)
 				.build());
 		}
+
+		int rewardPercent = client.getVar(Varbits.BARROWS_REWARD_POTENTIAL);
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Potential")
+			.right(rewardPercent != 0 ? rewardPercent * 100 / 1012 + "%" : "")
+			.rightColor(rewardPercent == 887 ? Color.GREEN : rewardPercent < 756 ? Color.WHITE : Color.YELLOW)
+			.build());
 
 		return panelComponent.render(graphics);
 	}

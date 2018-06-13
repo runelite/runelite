@@ -52,7 +52,9 @@ import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -109,6 +111,12 @@ public class BarrowsPlugin extends Plugin
 
 	@Inject
 	private BarrowsConfig config;
+
+	@Getter
+	private GameObject barrowsChest;
+
+	@Getter
+	private Widget puzzleAnswerWidget;
 
 	@Provides
 	BarrowsConfig provideConfig(ConfigManager configManager)
@@ -170,6 +178,10 @@ public class BarrowsPlugin extends Plugin
 		{
 			ladders.add(gameObject);
 		}
+		if (gameObject.getId() == 20973)
+		{
+			barrowsChest = gameObject;
+		}
 	}
 
 	@Subscribe
@@ -200,6 +212,8 @@ public class BarrowsPlugin extends Plugin
 			// on region changes the tiles get set to null
 			walls.clear();
 			ladders.clear();
+			barrowsChest = null;
+			puzzleAnswerWidget = null;
 		}
 	}
 
@@ -243,6 +257,19 @@ public class BarrowsPlugin extends Plugin
 				.type(ChatMessageType.EXAMINE_ITEM)
 				.runeLiteFormattedMessage(message.build())
 				.build());
+		}
+
+		if (config.showPuzzleAnswer() && event.getGroupId() == WidgetID.BARROWS_PUZZLE_GROUP_ID)
+		{
+			int puzzleAnswerModelId = client.getWidget(WidgetInfo.BARROWS_FIRST_PUZZLE_PIECE).getModelId() - 3;
+			for (Widget puzzleNode : client.getWidget(WidgetInfo.BARROWS_FIRST_PUZZLE_PIECE).getParent().getParent().getNestedChildren())
+			{
+				if (puzzleNode.getModelId() == puzzleAnswerModelId)
+				{
+					puzzleAnswerWidget = puzzleNode;
+					break;
+				}
+			}
 		}
 	}
 }
