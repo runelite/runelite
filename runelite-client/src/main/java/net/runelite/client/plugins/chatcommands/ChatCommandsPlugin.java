@@ -44,6 +44,7 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.StackFormatter;
@@ -79,6 +80,24 @@ public class ChatCommandsPlugin extends Plugin
 
 	@Inject
 	private ScheduledExecutorService executor;
+
+	@Inject
+	private KeyManager keyManager;
+
+	@Inject
+	private ChatKeyboardListener chatKeyboardListener;
+
+	@Override
+	public void startUp()
+	{
+		keyManager.registerKeyListener(chatKeyboardListener);
+	}
+
+	@Override
+	public void shutDown()
+	{
+		keyManager.unregisterKeyListener(chatKeyboardListener);
+	}
 
 	@Provides
 	ChatCommandsConfig provideConfig(ConfigManager configManager)
