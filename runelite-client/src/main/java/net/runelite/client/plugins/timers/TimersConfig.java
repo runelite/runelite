@@ -200,12 +200,11 @@ public interface TimersConfig extends Config
 		return true;
 	}
 
-	// Stored Data
 	@ConfigItem(
-			keyName = "cannonWorld",
-			name = "",
-			description = "",
-			hidden = true
+		keyName = "cannonWorld",
+		name = "",
+		description = "",
+		hidden = true
 	)
 	default int cannonWorld()
 	{
@@ -213,9 +212,9 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "cannonWorld",
-			name = "",
-			description = ""
+		keyName = "cannonWorld",
+		name = "",
+		description = ""
 	)
 	void cannonWorld(int cannonWorld);
 
