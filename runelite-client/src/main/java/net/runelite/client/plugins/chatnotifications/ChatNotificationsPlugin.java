@@ -45,6 +45,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Chat Notifications"
@@ -187,7 +188,7 @@ public class ChatNotificationsPlugin extends Plugin
 
 	private void sendNotification(SetMessage message)
 	{
-		String name = message.getName();
+		String name = Text.removeTags(message.getName());
 		String sender = message.getSender();
 		StringBuilder stringBuilder = new StringBuilder();
 
@@ -197,7 +198,7 @@ public class ChatNotificationsPlugin extends Plugin
 		}
 		if (!Strings.isNullOrEmpty(name))
 		{
-			stringBuilder.append(name).append(' ');
+			stringBuilder.append(name).append(": ");
 		}
 		stringBuilder.append(message.getValue());
 
