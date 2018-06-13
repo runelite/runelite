@@ -28,13 +28,11 @@ import com.google.common.annotations.VisibleForTesting;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Predicate;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -77,12 +75,11 @@ public class OverlayManager
 
 	/**
 	 * Sorted set of overlays
-	 * All access to this must be guarded by a lock on this OverlayManager
 	 */
 	@Getter(AccessLevel.PACKAGE)
-	private final Set<Overlay> overlays = new TreeSet<>(OVERLAY_COMPARATOR);
+	private final List<Overlay> overlays = new CopyOnWriteArrayList<>();
 
-	private final Map<OverlayLayer, List<Overlay>> overlayLayers = new HashMap<>();
+	private Map<OverlayLayer, List<Overlay>> overlayLayers = new HashMap<>();
 
 	private final ConfigManager configManager;
 
@@ -98,7 +95,7 @@ public class OverlayManager
 	 * @param layer the layer
 	 * @return An immutable list of all of the overlays on that layer
 	 */
-	synchronized List<Overlay> getLayer(OverlayLayer layer)
+	List<Overlay> getLayer(OverlayLayer layer)
 	{
 		return overlayLayers.get(layer);
 	}
@@ -109,7 +106,7 @@ public class OverlayManager
 	 * @param overlay the overlay
 	 * @return true if overlay was added
 	 */
-	public synchronized boolean add(final Overlay overlay)
+	public boolean add(final Overlay overlay)
 	{
 		final boolean add = overlays.add(overlay);
 
@@ -133,7 +130,7 @@ public class OverlayManager
 	 * @param overlay the overlay
 	 * @return true if overlay was removed
 	 */
-	public synchronized boolean remove(final Overlay overlay)
+	public boolean remove(final Overlay overlay)
 	{
 		final boolean remove = overlays.remove(overlay);
 
@@ -151,7 +148,7 @@ public class OverlayManager
 	 * @param filter the filter
 	 * @return true if any overlay was removed
 	 */
-	public synchronized boolean removeIf(Predicate<Overlay> filter)
+	public boolean removeIf(Predicate<Overlay> filter)
 	{
 		final boolean removeIf = overlays.removeIf(filter);
 		rebuildOverlayLayers();
@@ -161,7 +158,7 @@ public class OverlayManager
 	/**
 	 * Clear all overlays
 	 */
-	public synchronized void clear()
+	public void clear()
 	{
 		overlays.clear();
 		rebuildOverlayLayers();
@@ -172,7 +169,7 @@ public class OverlayManager
 	 *
 	 * @param overlay overlay to save
 	 */
-	public synchronized void saveOverlay(final Overlay overlay)
+	public void saveOverlay(final Overlay overlay)
 	{
 		saveOverlayPosition(overlay);
 		saveOverlaySize(overlay);
@@ -185,7 +182,7 @@ public class OverlayManager
 	 *
 	 * @param overlay overlay to reset
 	 */
-	public synchronized void resetOverlay(final Overlay overlay)
+	public void resetOverlay(final Overlay overlay)
 	{
 		final String locationKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_LOCATION;
 		final String positionKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_POSITION;
@@ -196,8 +193,12 @@ public class OverlayManager
 		rebuildOverlayLayers();
 	}
 
-	private synchronized void rebuildOverlayLayers()
+	private void rebuildOverlayLayers()
 	{
+		overlays.sort(OVERLAY_COMPARATOR);
+
+		final Map<OverlayLayer, List<Overlay>> overlayLayers = new HashMap<>();
+
 		for (OverlayLayer l : OverlayLayer.values())
 		{
 			overlayLayers.put(l, new ArrayList<>());
@@ -220,7 +221,7 @@ public class OverlayManager
 			overlayLayers.get(layer).add(overlay);
 		}
 
-		overlayLayers.forEach((layer, value) -> overlayLayers.put(layer, Collections.unmodifiableList(value)));
+		this.overlayLayers = overlayLayers;
 	}
 
 	private void saveOverlayLocation(final Overlay overlay)

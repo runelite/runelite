@@ -245,39 +245,36 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		final Point mousePoint = mouseEvent.getPoint();
 		mousePosition.setLocation(mousePoint);
 
-		synchronized (overlayManager)
+		for (Overlay overlay : overlayManager.getOverlays())
 		{
-			for (Overlay overlay : overlayManager.getOverlays())
+			if (overlay.getBounds().contains(mousePoint))
 			{
-				if (overlay.getBounds().contains(mousePoint))
+				if (SwingUtilities.isRightMouseButton(mouseEvent))
 				{
-					if (SwingUtilities.isRightMouseButton(mouseEvent))
+					// detached overlays have no place to reset back to
+					if (overlay.getPosition() != OverlayPosition.DETACHED)
 					{
-						// detached overlays have no place to reset back to
-						if (overlay.getPosition() != OverlayPosition.DETACHED)
-						{
-							overlay.setPreferredPosition(null);
-							overlay.setPreferredSize(null);
-							overlay.setPreferredLocation(null);
-							overlayManager.resetOverlay(overlay);
-						}
+						overlay.setPreferredPosition(null);
+						overlay.setPreferredSize(null);
+						overlay.setPreferredLocation(null);
+						overlayManager.resetOverlay(overlay);
 					}
-					else
-					{
-						final Point offset = new Point(mousePoint.x, mousePoint.y);
-						offset.translate(-overlay.getBounds().x, -overlay.getBounds().y);
-						overlayOffset.setLocation(offset);
-
-						mousePoint.translate(-offset.x, -offset.y);
-						movedOverlay = overlay;
-						movedOverlay.setPreferredPosition(null);
-						movedOverlay.setPreferredLocation(mousePoint);
-						overlayManager.saveOverlay(movedOverlay);
-					}
-
-					mouseEvent.consume();
-					break;
 				}
+				else
+				{
+					final Point offset = new Point(mousePoint.x, mousePoint.y);
+					offset.translate(-overlay.getBounds().x, -overlay.getBounds().y);
+					overlayOffset.setLocation(offset);
+
+					mousePoint.translate(-offset.x, -offset.y);
+					movedOverlay = overlay;
+					movedOverlay.setPreferredPosition(null);
+					movedOverlay.setPreferredLocation(mousePoint);
+					overlayManager.saveOverlay(movedOverlay);
+				}
+
+				mouseEvent.consume();
+				break;
 			}
 		}
 
