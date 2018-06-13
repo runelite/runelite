@@ -291,6 +291,16 @@ public class ItemService
 		}
 	}
 
+	public List<PriceEntry> fetchPrices()
+	{
+		try (Connection con = sql2o.beginTransaction())
+		{
+			Query query = con.createQuery("select t2.item, t2.time, prices.price, prices.fetched_time from (select t1.item as item, max(t1.time) as time from prices t1 group by item) t2 join prices on t2.item=prices.item and t2.time=prices.time");
+			List<PriceEntry> entries = query.executeAndFetch(PriceEntry.class);
+			return entries;
+		}
+	}
+
 	private RSItem fetchRSItem(int itemId) throws IOException
 	{
 		HttpUrl itemUrl = RS_ITEM_URL

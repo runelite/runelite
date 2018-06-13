@@ -33,14 +33,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -49,18 +42,13 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.FocusChanged;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.client.events.PluginChanged;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
-import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
@@ -83,19 +71,9 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 	private static final Color SNAP_CORNER_ACTIVE_COLOR = new Color(0, 255, 0, 100);
 	private static final Color MOVING_OVERLAY_COLOR = new Color(255, 255, 0, 100);
 	private static final Color MOVING_OVERLAY_ACTIVE_COLOR = new Color(255, 255, 0, 200);
-	private static final String OVERLAY_CONFIG_PREFERRED_LOCATION = "_preferredLocation";
-	private static final String OVERLAY_CONFIG_PREFERRED_POSITION = "_preferredPosition";
-	private static final String OVERLAY_CONFIG_PREFERRED_SIZE = "_preferredSize";
-
-	private final PluginManager pluginManager;
 	private final Provider<Client> clientProvider;
-	private final InfoBoxOverlay infoBoxOverlay;
-	private final ConfigManager configManager;
+	private final OverlayManager overlayManager;
 	private final RuneLiteConfig runeLiteConfig;
-	private final TooltipOverlay tooltipOverlay;
-	private final WorldMapOverlay worldMapOverlay;
-	private final List<Overlay> allOverlays = new CopyOnWriteArrayList<>();
-	private final String runeliteGroupName = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).keyName();
 
 	// Overlay movement variables
 	private final Point overlayOffset = new Point();
@@ -109,52 +87,28 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 	private boolean chatboxHidden;
 	private boolean isResizeable;
 	private OverlayBounds snapCorners;
-	private final Map<OverlayLayer, List<Overlay>> overlayLayerOverlayMap = Collections
-		.synchronizedMap(new HashMap<>());
 
 	@Inject
 	private OverlayRenderer(
 		final Provider<Client> clientProvider,
-		final PluginManager pluginManager,
+		final OverlayManager overlayManager,
+		final RuneLiteConfig runeLiteConfig,
 		final MouseManager mouseManager,
 		final KeyManager keyManager,
-		final TooltipOverlay tooltipOverlay,
 		final InfoBoxOverlay infoBoxOverlay,
-		final WorldMapOverlay worldMapOverlay,
-		final ConfigManager configManager,
-		final RuneLiteConfig runeLiteConfig)
+		final TooltipOverlay tooltipOverlay,
+		final WorldMapOverlay worldMapOverlay)
 	{
 		this.clientProvider = clientProvider;
-		this.pluginManager = pluginManager;
-		this.tooltipOverlay = tooltipOverlay;
-		this.infoBoxOverlay = infoBoxOverlay;
-		this.worldMapOverlay = worldMapOverlay;
-		this.configManager = configManager;
+		this.overlayManager = overlayManager;
 		this.runeLiteConfig = runeLiteConfig;
 		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseListener(this);
-	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
-	{
-		final Client client = clientProvider.get();
-
-		if (client == null)
-		{
-			return;
-		}
-
-		if (event.getGameState().equals(GameState.LOGGED_IN))
-		{
-			rebuildOverlays();
-		}
-	}
-
-	@Subscribe
-	public void onPluginChanged(PluginChanged event)
-	{
-		rebuildOverlays();
+		// Register core overlays
+		overlayManager.add(infoBoxOverlay);
+		overlayManager.add(worldMapOverlay);
+		overlayManager.add(tooltipOverlay);
 	}
 
 	@Subscribe
@@ -166,144 +120,10 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		}
 	}
 
-	/**
-	 * Force save overlay data
-	 * @param overlay overlay to save
-	 */
-	public void saveOverlay(final Overlay overlay)
-	{
-		saveOverlayPosition(overlay);
-		saveOverlaySize(overlay);
-		saveOverlayLocation(overlay);
-	}
-
-	/**
-	 * Resets stored overlay position data
-	 * @param overlay overlay to reset
-	 */
-	public void resetOverlay(final Overlay overlay)
-	{
-		final String locationKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_LOCATION;
-		final String positionKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_POSITION;
-		final String sizeKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_SIZE;
-		configManager.unsetConfiguration(runeliteGroupName, locationKey);
-		configManager.unsetConfiguration(runeliteGroupName, positionKey);
-		configManager.unsetConfiguration(runeliteGroupName, sizeKey);
-	}
-
-	/**
-	 * Rebuild overlay cache for rendering
-	 */
-	public void rebuildOverlays()
-	{
-		final List<Overlay> overlays = Stream
-			.concat(
-				pluginManager.getPlugins()
-					.stream()
-					.filter(pluginManager::isPluginEnabled)
-					.flatMap(plugin -> plugin.getOverlays().stream()),
-				Stream.of(infoBoxOverlay, tooltipOverlay, worldMapOverlay))
-			.filter(Objects::nonNull)
-			.collect(Collectors.toList());
-
-		sortOverlays(overlays);
-		allOverlays.clear();
-		allOverlays.addAll(overlays);
-
-		final Client client = clientProvider.get();
-
-		if (client == null)
-		{
-			return;
-		}
-
-		for (final Overlay overlay : overlays)
-		{
-			final Point location = loadOverlayLocation(overlay);
-
-			if (location != null
-				&& client.getCanvas() != null
-				&& !client.getCanvas().contains(location))
-			{
-				overlay.setPreferredLocation(null);
-				saveOverlayLocation(overlay);
-			}
-			else if (location != null)
-			{
-				overlay.setPreferredLocation(location);
-			}
-
-			final Dimension size = loadOverlaySize(overlay);
-
-			if (size != null)
-			{
-				overlay.setPreferredSize(size);
-			}
-
-			final OverlayPosition position = loadOverlayPosition(overlay);
-			overlay.setPreferredPosition(position);
-		}
-
-		rebuildOverlayLayers();
-	}
-
-	private void rebuildOverlayLayers()
-	{
-		overlayLayerOverlayMap.clear();
-
-		for (final Overlay overlay : allOverlays)
-		{
-			OverlayLayer layer = overlay.getLayer();
-
-			if (overlay.getPreferredLocation() != null && overlay.getPreferredPosition() == null)
-			{
-				// When UNDER_WIDGET overlays are in preferred locations, move to
-				// ABOVE_WIDGETS so that it can draw over interfaces
-				if (layer == OverlayLayer.UNDER_WIDGETS)
-				{
-					layer = OverlayLayer.ABOVE_WIDGETS;
-				}
-			}
-
-			overlayLayerOverlayMap.compute(layer, (key, value) ->
-			{
-				if (value == null)
-				{
-					value = new CopyOnWriteArrayList<>();
-				}
-
-				value.add(overlay);
-				return value;
-			});
-		}
-	}
-
-	static void sortOverlays(List<Overlay> overlays)
-	{
-		overlays.sort((a, b) ->
-		{
-			if (a.getPosition() != b.getPosition())
-			{
-				// This is so non-dynamic overlays render after dynamic
-				// overlays, which are generally in the scene
-				return a.getPosition().compareTo(b.getPosition());
-			}
-
-			// For dynamic overlays, higher priority means to
-			// draw *later* so it is on top.
-			// For non-dynamic overlays, higher priority means
-			// draw *first* so that they are closer to their
-			// defined position.
-			return a.getPosition() == OverlayPosition.DYNAMIC
-				? a.getPriority().compareTo(b.getPriority())
-				: b.getPriority().compareTo(a.getPriority());
-		});
-	}
-
 	public void render(Graphics2D graphics, final OverlayLayer layer)
 	{
 		final Client client = clientProvider.get();
-		final List<Overlay> overlays = overlayLayerOverlayMap.get(layer);
+		final List<Overlay> overlays = overlayManager.getLayer(layer);
 
 		if (client == null
 			|| overlays == null
@@ -379,9 +199,14 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 				}
 				else
 				{
-					if (overlay.getPreferredLocation() != null)
+					final Point preferredLocation = overlay.getPreferredLocation();
+
+					if (preferredLocation != null)
 					{
-						location.setLocation(overlay.getPreferredLocation());
+						final Dimension realDimensions = client.getRealDimensions();
+						final int x = Math.min(realDimensions.width - 5, preferredLocation.x);
+						final int y = Math.min(realDimensions.height - 5, preferredLocation.y);
+						location.setLocation(x, y);
 					}
 				}
 
@@ -420,31 +245,39 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		final Point mousePoint = mouseEvent.getPoint();
 		mousePosition.setLocation(mousePoint);
 
-		for (Overlay overlay : allOverlays)
+		synchronized (overlayManager)
 		{
-			if (overlay.getBounds().contains(mousePoint))
+			for (Overlay overlay : overlayManager.getOverlays())
 			{
-				if (SwingUtilities.isRightMouseButton(mouseEvent))
+				if (overlay.getBounds().contains(mousePoint))
 				{
-					// detached overlays have no place to reset back to
-					if (overlay.getPosition() != OverlayPosition.DETACHED)
+					if (SwingUtilities.isRightMouseButton(mouseEvent))
 					{
-						overlay.setPreferredPosition(null);
-						overlay.setPreferredSize(null);
-						overlay.setPreferredLocation(null);
-						saveOverlay(overlay);
-						rebuildOverlayLayers();
+						// detached overlays have no place to reset back to
+						if (overlay.getPosition() != OverlayPosition.DETACHED)
+						{
+							overlay.setPreferredPosition(null);
+							overlay.setPreferredSize(null);
+							overlay.setPreferredLocation(null);
+							overlayManager.resetOverlay(overlay);
+						}
 					}
-				}
-				else
-				{
-					mousePoint.translate(-overlay.getBounds().x, -overlay.getBounds().y);
-					overlayOffset.setLocation(mousePoint);
-					movedOverlay = overlay;
-				}
+					else
+					{
+						final Point offset = new Point(mousePoint.x, mousePoint.y);
+						offset.translate(-overlay.getBounds().x, -overlay.getBounds().y);
+						overlayOffset.setLocation(offset);
 
-				mouseEvent.consume();
-				break;
+						mousePoint.translate(-offset.x, -offset.y);
+						movedOverlay = overlay;
+						movedOverlay.setPreferredPosition(null);
+						movedOverlay.setPreferredLocation(mousePoint);
+						overlayManager.saveOverlay(movedOverlay);
+					}
+
+					mouseEvent.consume();
+					break;
+				}
 			}
 		}
 
@@ -480,7 +313,6 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 			mousePoint.translate(-overlayOffset.x, -overlayOffset.y);
 			movedOverlay.setPreferredPosition(null);
 			movedOverlay.setPreferredLocation(mousePoint);
-			rebuildOverlayLayers();
 			mouseEvent.consume();
 		}
 
@@ -504,11 +336,13 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 					if (snapCorner.contains(mouseEvent.getPoint()))
 					{
 						OverlayPosition position = snapCorners.fromBounds(snapCorner);
+
 						if (position == movedOverlay.getPosition())
 						{
 							// overlay moves back to default position
 							position = null;
 						}
+
 						movedOverlay.setPreferredPosition(position);
 						movedOverlay.setPreferredLocation(null); // from dragging
 						break;
@@ -516,9 +350,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 				}
 			}
 
-			saveOverlayPosition(movedOverlay);
-			saveOverlayLocation(movedOverlay);
-			rebuildOverlayLayers();
+			overlayManager.saveOverlay(movedOverlay);
 			movedOverlay = null;
 			mouseEvent.consume();
 		}
@@ -659,77 +491,5 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 			new Rectangle(bottomLeftPoint, SNAP_CORNER_SIZE),
 			new Rectangle(bottomRightPoint, SNAP_CORNER_SIZE),
 			new Rectangle(rightChatboxPoint, SNAP_CORNER_SIZE));
-	}
-
-	private void saveOverlayLocation(final Overlay overlay)
-	{
-		final String key = overlay.getName() + OVERLAY_CONFIG_PREFERRED_LOCATION;
-		if (overlay.getPreferredLocation() != null)
-		{
-			configManager.setConfiguration(
-				runeliteGroupName,
-				key,
-				overlay.getPreferredLocation());
-		}
-		else
-		{
-			configManager.unsetConfiguration(
-				runeliteGroupName,
-				key);
-		}
-	}
-
-	private void saveOverlaySize(final Overlay overlay)
-	{
-		final String key = overlay.getName() + OVERLAY_CONFIG_PREFERRED_SIZE;
-		if (overlay.getPreferredSize() != null)
-		{
-			configManager.setConfiguration(
-				runeliteGroupName,
-				key,
-				overlay.getPreferredSize());
-		}
-		else
-		{
-			configManager.unsetConfiguration(
-				runeliteGroupName,
-				key);
-		}
-	}
-
-	private void saveOverlayPosition(final Overlay overlay)
-	{
-		final String key = overlay.getName() + OVERLAY_CONFIG_PREFERRED_POSITION;
-		if (overlay.getPreferredPosition() != null)
-		{
-			configManager.setConfiguration(
-				runeliteGroupName,
-				key,
-				overlay.getPreferredPosition());
-		}
-		else
-		{
-			configManager.unsetConfiguration(
-				runeliteGroupName,
-				key);
-		}
-	}
-
-	private Point loadOverlayLocation(final Overlay overlay)
-	{
-		final String key = overlay.getName() + OVERLAY_CONFIG_PREFERRED_LOCATION;
-		return configManager.getConfiguration(runeliteGroupName, key, Point.class);
-	}
-
-	private Dimension loadOverlaySize(final Overlay overlay)
-	{
-		final String key = overlay.getName() + OVERLAY_CONFIG_PREFERRED_SIZE;
-		return configManager.getConfiguration(runeliteGroupName, key, Dimension.class);
-	}
-
-	private OverlayPosition loadOverlayPosition(final Overlay overlay)
-	{
-		final String locationKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_POSITION;
-		return configManager.getConfiguration(runeliteGroupName, locationKey, OverlayPosition.class);
 	}
 }

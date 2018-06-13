@@ -33,9 +33,9 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Prayer;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.Skill;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
@@ -43,7 +43,7 @@ import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(name = "Regeneration Meter")
 public class RegenMeterPlugin extends Plugin
@@ -61,37 +61,45 @@ public class RegenMeterPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	RegenMeterConfig config;
+	private OverlayManager overlayManager;
 
+	@Inject
+	private RegenMeterOverlay overlay;
 
-	private int ticksSinceHPRegen;
-
-	private boolean wasRapidHeal;
+	@Inject
+	private RegenMeterConfig config;
 
 	@Getter
 	private double hitpointsPercentage;
 
-
-	private int ticksSinceSpecRegen;
-
 	@Getter
 	private double specialPercentage;
+
+	private int ticksSinceSpecRegen;
+	private int ticksSinceHPRegen;
+	private boolean wasRapidHeal;
+
+	@Provides
+	RegenMeterConfig provideConfig(ConfigManager configManager)
+	{
+  	configurationManager = configManager;
+		return configManager.getConfig(RegenMeterConfig.class);
+	}
 
 	private ConfigManager configurationManager;
 
 	private boolean hitpointRegenNotificationSend = true;
 
 	@Override
-	public Overlay getOverlay()
+	protected void startUp() throws Exception
 	{
-		return overlay;
+		overlayManager.add(overlay);
 	}
 
-	@Provides
-	RegenMeterConfig provideConfig(ConfigManager configManager)
+	@Override
+	protected void shutDown() throws Exception
 	{
-		configurationManager = configManager;
-		return configManager.getConfig(RegenMeterConfig.class);
+		overlayManager.remove(overlay);
 	}
 
 	@Subscribe

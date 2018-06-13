@@ -22,37 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay.components;
+package net.runelite.client.plugins.grounditems.config;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.image.BufferedImage;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
+@Getter
 @RequiredArgsConstructor
-@Setter
-public class ImageComponent implements LayoutableRenderableEntity
+public enum PriceDisplayMode
 {
-	private final BufferedImage image;
-	private Point preferredLocation = new Point();
+	HA("High Alchemy"),
+	GE("Grand Exchange"),
+	BOTH("Both"),
+	OFF("Off");
+
+	private final String name;
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public String toString()
 	{
-		if (image == null)
-		{
-			return null;
-		}
-
-		graphics.drawImage(image, preferredLocation.x, preferredLocation.y, null);
-		return new Dimension(image.getWidth(), image.getHeight());
-	}
-
-	@Override
-	public void setPreferredSize(Dimension dimension)
-	{
-		// Just use image dimensions for now
+		return name;
 	}
 }

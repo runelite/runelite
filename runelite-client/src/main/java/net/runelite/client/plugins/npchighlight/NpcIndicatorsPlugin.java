@@ -30,8 +30,6 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -62,7 +60,7 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.WildcardMatcher;
 
 @PluginDescriptor(name = "NPC Indicators")
@@ -84,6 +82,9 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	@Inject
 	private NpcIndicatorsConfig config;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private NpcSceneOverlay npcSceneOverlay;
@@ -174,6 +175,8 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(npcSceneOverlay);
+		overlayManager.add(npcMinimapOverlay);
 		keyManager.registerKeyListener(inputListener);
 		highlights = getHighlights();
 		clientThread.invokeLater(() ->
@@ -186,6 +189,8 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(npcSceneOverlay);
+		overlayManager.remove(npcMinimapOverlay);
 		deadNpcsToDisplay.clear();
 		memorizedNpcs.clear();
 		spawnedNpcsThisTick.clear();
@@ -319,12 +324,6 @@ public class NpcIndicatorsPlugin extends Plugin
 		validateSpawnedNpcs();
 		lastTickUpdate = Instant.now();
 		lastPlayerLocation = client.getLocalPlayer().getWorldLocation();
-	}
-
-	@Override
-	public Collection<Overlay> getOverlays()
-	{
-		return Arrays.asList(npcSceneOverlay, npcMinimapOverlay);
 	}
 
 	private static boolean isInViewRange(WorldPoint wp1, WorldPoint wp2)

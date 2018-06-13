@@ -69,7 +69,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.QueryRunner;
 import net.runelite.client.util.Text;
@@ -113,6 +113,9 @@ public class SlayerPlugin extends Plugin
 	private SlayerConfig config;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private SlayerOverlay overlay;
 
 	@Inject
@@ -142,30 +145,46 @@ public class SlayerPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Collection<WidgetItem> slayerItems = Collections.emptyList();
 
-	private String taskName;
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private int amount;
-	private TaskCounter counter;
-	private int streak;
-	private int points;
-	private int cachedXp;
-	private Instant infoTimer;
-	private boolean loginFlag;
+
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private int expeditiousChargeCount;
+
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private int slaughterChargeCount;
 
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private String taskName;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int streak;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int points;
+
+	private TaskCounter counter;
+	private int cachedXp;
+	private Instant infoTimer;
+	private boolean loginFlag;
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
+		overlayManager.add(targetClickboxOverlay);
+		overlayManager.add(targetMinimapOverlay);
+
 		if (client.getGameState() == GameState.LOGGED_IN
 			&& config.amount() != -1
 			&& !config.taskName().isEmpty())
 		{
-			setPoints(config.points());
-			setStreak(config.streak());
+			points = config.points();
+			streak = config.streak();
 			setExpeditiousChargeCount(config.expeditious());
 			setSlaughterChargeCount(config.slaughter());
 			clientThread.invokeLater(() -> setTask(config.taskName(), config.amount()));
@@ -175,6 +194,9 @@ public class SlayerPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
+		overlayManager.remove(targetClickboxOverlay);
+		overlayManager.remove(targetMinimapOverlay);
 		removeCounter();
 	}
 
@@ -199,10 +221,10 @@ public class SlayerPlugin extends Plugin
 			case LOGGED_IN:
 				if (config.amount() != -1
 					&& !config.taskName().isEmpty()
-					&& loginFlag == true)
+					&& loginFlag)
 				{
-					setPoints(config.points());
-					setStreak(config.streak());
+					points = config.points();
+					streak = config.streak();
 					setExpeditiousChargeCount(config.expeditious());
 					setSlaughterChargeCount(config.slaughter());
 					setTask(config.taskName(), config.amount());
@@ -570,53 +592,6 @@ public class SlayerPlugin extends Plugin
 		}
 
 		return composition;
-	}
-
-	//Getters
-	@Override
-	public Collection<Overlay> getOverlays()
-	{
-		return Arrays.asList(overlay, targetClickboxOverlay, targetMinimapOverlay);
-	}
-
-	public String getTaskName()
-	{
-		return taskName;
-	}
-
-	void setTaskName(String taskName)
-	{
-		this.taskName = taskName;
-	}
-
-	public int getAmount()
-	{
-		return amount;
-	}
-
-	void setAmount(int amount)
-	{
-		this.amount = amount;
-	}
-
-	public int getStreak()
-	{
-		return streak;
-	}
-
-	void setStreak(int streak)
-	{
-		this.streak = streak;
-	}
-
-	public int getPoints()
-	{
-		return points;
-	}
-
-	void setPoints(int points)
-	{
-		this.points = points;
 	}
 
 	//Utils

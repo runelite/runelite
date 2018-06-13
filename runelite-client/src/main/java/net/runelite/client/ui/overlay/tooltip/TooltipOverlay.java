@@ -50,12 +50,12 @@ public class TooltipOverlay extends Overlay
 	private final Provider<Client> clientProvider;
 
 	@Inject
-	public TooltipOverlay(Provider<Client> clientProvider, TooltipManager tooltipManager)
+	private TooltipOverlay(Provider<Client> clientProvider, TooltipManager tooltipManager)
 	{
 		this.clientProvider = clientProvider;
 		this.tooltipManager = tooltipManager;
 		setPosition(OverlayPosition.TOOLTIP);
-		setPriority(OverlayPriority.HIGH);
+		setPriority(OverlayPriority.HIGHEST);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 	}
 

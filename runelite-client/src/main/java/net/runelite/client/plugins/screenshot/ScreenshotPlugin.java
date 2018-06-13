@@ -81,7 +81,7 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.TitleToolbar;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
@@ -127,6 +127,9 @@ public class ScreenshotPlugin extends Plugin
 	private ScreenshotConfig config;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private ScreenshotOverlay screenshotOverlay;
 
 	@Inject
@@ -162,14 +165,9 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Override
-	public Overlay getOverlay()
-	{
-		return screenshotOverlay;
-	}
-
-	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(screenshotOverlay);
 		SCREENSHOT_DIR.mkdirs();
 		keyManager.registerKeyListener(inputListener);
 
@@ -213,6 +211,7 @@ public class ScreenshotPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(screenshotOverlay);
 		titleToolbar.removeNavigation(titleBarButton);
 		keyManager.unregisterKeyListener(inputListener);
 	}

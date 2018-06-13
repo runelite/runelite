@@ -28,7 +28,6 @@ import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -64,7 +63,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.item.ItemPrice;
 
@@ -88,25 +87,18 @@ public class BarrowsPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<WallObject> walls = new HashSet<>();
+
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<GameObject> ladders = new HashSet<>();
+
+	@Inject
+	private OverlayManager overlayManager;
+
 	@Inject
 	private BarrowsOverlay barrowsOverlay;
 
 	@Inject
 	private BarrowsBrotherSlainOverlay brotherOverlay;
-
-	@Provides
-	BarrowsConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(BarrowsConfig.class);
-	}
-
-	@Override
-	public Collection<Overlay> getOverlays()
-	{
-		return Arrays.asList(barrowsOverlay, brotherOverlay);
-	}
 
 	@Inject
 	private Client client;
@@ -122,9 +114,24 @@ public class BarrowsPlugin extends Plugin
 
 	private long chestPrice;
 
+	@Provides
+	BarrowsConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(BarrowsConfig.class);
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(barrowsOverlay);
+		overlayManager.add(brotherOverlay);
+	}
+
 	@Override
 	protected void shutDown()
 	{
+		overlayManager.remove(barrowsOverlay);
+		overlayManager.remove(brotherOverlay);
 		walls.clear();
 		ladders.clear();
 	}

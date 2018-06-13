@@ -47,7 +47,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Kourend Library"
@@ -67,6 +67,9 @@ public class KourendLibraryPlugin extends Plugin
 	private Library library;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private KourendLibraryOverlay overlay;
 
 	@Inject
@@ -81,6 +84,7 @@ public class KourendLibraryPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
 		Book.fillImages(itemManager);
 
 		panel = injector.getInstance(KourendLibraryPanel.class);
@@ -105,13 +109,8 @@ public class KourendLibraryPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		overlayManager.remove(overlay);
 		pluginToolbar.removeNavigation(navButton);
-	}
-
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
 	}
 
 	@Subscribe
