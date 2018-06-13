@@ -33,8 +33,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.function.Predicate;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -80,7 +78,7 @@ public class OverlayManager
 	 * All access to this must be guarded by a lock on this OverlayManager
 	 */
 	@Getter(AccessLevel.PACKAGE)
-	private final Set<Overlay> overlays = new TreeSet<>(OVERLAY_COMPARATOR);
+	private final List<Overlay> overlays = new ArrayList<>();
 
 	private final Map<OverlayLayer, List<Overlay>> overlayLayers = new HashMap<>();
 
@@ -198,6 +196,8 @@ public class OverlayManager
 
 	private synchronized void rebuildOverlayLayers()
 	{
+		overlays.sort(OVERLAY_COMPARATOR);
+
 		for (OverlayLayer l : OverlayLayer.values())
 		{
 			overlayLayers.put(l, new ArrayList<>());
