@@ -55,7 +55,7 @@ public class OverlayManagerTest
 		Overlay tlh = new TestOverlay(OverlayPosition.TOP_LEFT, OverlayPriority.HIGH);
 		Overlay tll = new TestOverlay(OverlayPosition.TOP_LEFT, OverlayPriority.LOW);
 		List<Overlay> overlays = Arrays.asList(tlh, tll);
-		OverlayManager.sortOverlays(overlays);
+		overlays.sort(OverlayManager.OVERLAY_COMPARATOR);
 		assertEquals(tlh, overlays.get(0));
 		assertEquals(tll, overlays.get(1));
 	}
@@ -67,7 +67,7 @@ public class OverlayManagerTest
 		Overlay tlh = new TestOverlay(OverlayPosition.TOP_LEFT, OverlayPriority.HIGH);
 		Overlay dyn = new TestOverlay(OverlayPosition.DYNAMIC, OverlayPriority.HIGH);
 		List<Overlay> overlays = Arrays.asList(tlh, dyn);
-		OverlayManager.sortOverlays(overlays);
+		overlays.sort(OverlayManager.OVERLAY_COMPARATOR);
 		assertEquals(dyn, overlays.get(0));
 		assertEquals(tlh, overlays.get(1));
 	}
@@ -80,7 +80,7 @@ public class OverlayManagerTest
 		Overlay dyn = new TestOverlay(OverlayPosition.DYNAMIC, OverlayPriority.HIGH);
 		Overlay tlh = new TestOverlay(OverlayPosition.TOP_LEFT, OverlayPriority.HIGH);
 		List<Overlay> overlays = Arrays.asList(t, dyn, tlh);
-		OverlayManager.sortOverlays(overlays);
+		overlays.sort(OverlayManager.OVERLAY_COMPARATOR);
 		assertEquals(dyn, overlays.get(0));
 		assertEquals(tlh, overlays.get(1));
 		assertEquals(t, overlays.get(2));

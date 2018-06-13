@@ -123,7 +123,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 	public void render(Graphics2D graphics, final OverlayLayer layer)
 	{
 		final Client client = clientProvider.get();
-		final List<Overlay> overlays = overlayManager.getOverlayLayers().get(layer);
+		final List<Overlay> overlays = overlayManager.getLayer(layer);
 
 		if (client == null
 			|| overlays == null
@@ -245,36 +245,39 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		final Point mousePoint = mouseEvent.getPoint();
 		mousePosition.setLocation(mousePoint);
 
-		for (Overlay overlay : overlayManager.getOverlays())
+		synchronized (overlayManager)
 		{
-			if (overlay.getBounds().contains(mousePoint))
+			for (Overlay overlay : overlayManager.getOverlays())
 			{
-				if (SwingUtilities.isRightMouseButton(mouseEvent))
+				if (overlay.getBounds().contains(mousePoint))
 				{
-					// detached overlays have no place to reset back to
-					if (overlay.getPosition() != OverlayPosition.DETACHED)
+					if (SwingUtilities.isRightMouseButton(mouseEvent))
 					{
-						overlay.setPreferredPosition(null);
-						overlay.setPreferredSize(null);
-						overlay.setPreferredLocation(null);
-						overlayManager.resetOverlay(overlay);
+						// detached overlays have no place to reset back to
+						if (overlay.getPosition() != OverlayPosition.DETACHED)
+						{
+							overlay.setPreferredPosition(null);
+							overlay.setPreferredSize(null);
+							overlay.setPreferredLocation(null);
+							overlayManager.resetOverlay(overlay);
+						}
 					}
-				}
-				else
-				{
-					final Point offset = new Point(mousePoint.x, mousePoint.y);
-					offset.translate(-overlay.getBounds().x, -overlay.getBounds().y);
-					overlayOffset.setLocation(offset);
+					else
+					{
+						final Point offset = new Point(mousePoint.x, mousePoint.y);
+						offset.translate(-overlay.getBounds().x, -overlay.getBounds().y);
+						overlayOffset.setLocation(offset);
 
-					mousePoint.translate(-offset.x, -offset.y);
-					movedOverlay = overlay;
-					movedOverlay.setPreferredPosition(null);
-					movedOverlay.setPreferredLocation(mousePoint);
-					overlayManager.saveOverlay(movedOverlay);
-				}
+						mousePoint.translate(-offset.x, -offset.y);
+						movedOverlay = overlay;
+						movedOverlay.setPreferredPosition(null);
+						movedOverlay.setPreferredLocation(mousePoint);
+						overlayManager.saveOverlay(movedOverlay);
+					}
 
-				mouseEvent.consume();
-				break;
+					mouseEvent.consume();
+					break;
+				}
 			}
 		}
 
