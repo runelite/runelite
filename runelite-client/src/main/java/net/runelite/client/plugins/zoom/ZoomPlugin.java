@@ -37,7 +37,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Camera Zoom"
+	name = "Camera Zoom",
+	enabledByDefault = false
 )
 @Slf4j
 public class ZoomPlugin extends Plugin
