@@ -34,6 +34,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static java.util.regex.Pattern.quote;
 import java.util.stream.Collectors;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.events.ConfigChanged;
@@ -45,9 +46,11 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Chat Notifications"
+	name = "Chat Notifications",
+	enabledByDefault = false
 )
 public class ChatNotificationsPlugin extends Plugin
 {
@@ -91,16 +94,27 @@ public class ChatNotificationsPlugin extends Plugin
 	{
 		if (event.getGroup().equals("chatnotification"))
 		{
-			highlightMatcher = null;
+			updateHighlights();
+		}
+	}
 
-			if (!config.highlightWordsString().trim().equals(""))
-			{
-				String[] items = config.highlightWordsString().trim().split(", ");
-				String joined = Arrays.stream(items)
-					.map(Pattern::quote)
-					.collect(Collectors.joining("|"));
-				highlightMatcher = Pattern.compile("\\b(" + joined + ")\\b", Pattern.CASE_INSENSITIVE);
-			}
+	@Override
+	public void startUp()
+	{
+		updateHighlights();
+	}
+
+	private void updateHighlights()
+	{
+		highlightMatcher = null;
+
+		if (!config.highlightWordsString().trim().equals(""))
+		{
+			String[] items = config.highlightWordsString().trim().split(", ");
+			String joined = Arrays.stream(items)
+				.map(Pattern::quote)
+				.collect(Collectors.joining("|"));
+			highlightMatcher = Pattern.compile("\\b(" + joined + ")\\b", Pattern.CASE_INSENSITIVE);
 		}
 	}
 
@@ -133,7 +147,7 @@ public class ChatNotificationsPlugin extends Plugin
 			usernameReplacer = "<col" + ChatColorType.HIGHLIGHT.name() + "><u>" + username + "</u><col" + ChatColorType.NORMAL.name() + ">";
 		}
 
-		if (usernameMatcher != null)
+		if (config.highlightOwnName() && usernameMatcher != null)
 		{
 			Matcher matcher = usernameMatcher.matcher(messageNode.getValue());
 			if (matcher.find())
@@ -141,7 +155,7 @@ public class ChatNotificationsPlugin extends Plugin
 				messageNode.setValue(matcher.replaceAll(usernameReplacer));
 				update = true;
 
-				if (config.highlightOwnName())
+				if (config.notifyOnOwnName())
 				{
 					sendNotification(event);
 				}
@@ -176,7 +190,15 @@ public class ChatNotificationsPlugin extends Plugin
 
 	private void sendNotification(SetMessage message)
 	{
-		String name = message.getName();
+		String name = Text.removeTags(message.getName());
+		if (name.equals(client.getLocalPlayer().getName()))
+		{
+			return;
+		}
+		if (message.getType() == ChatMessageType.FILTERED && config.ignoreFiltered())
+		{
+			return;
+		}
 		String sender = message.getSender();
 		StringBuilder stringBuilder = new StringBuilder();
 
@@ -186,7 +208,7 @@ public class ChatNotificationsPlugin extends Plugin
 		}
 		if (!Strings.isNullOrEmpty(name))
 		{
-			stringBuilder.append(name).append(' ');
+			stringBuilder.append(name).append(": ");
 		}
 		stringBuilder.append(message.getValue());
 
