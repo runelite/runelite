@@ -56,6 +56,7 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.ui.overlay.OverlayRenderer;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
@@ -119,6 +120,9 @@ public class RuneLite
 
 	@Inject
 	private ClanManager clanManager;
+
+	@Inject
+	private InfoBoxManager infoBoxManager;
 
 	Client client;
 
@@ -214,6 +218,7 @@ public class RuneLite
 		eventBus.register(commandManager);
 		eventBus.register(pluginManager);
 		eventBus.register(clanManager);
+		eventBus.register(infoBoxManager);
 
 		if (this.client != null)
 		{

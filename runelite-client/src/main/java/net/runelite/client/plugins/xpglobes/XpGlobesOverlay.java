@@ -231,7 +231,7 @@ public class XpGlobesOverlay extends Overlay
 		String skillCurrentXp = decimalFormat.format(mouseOverSkill.getCurrentXp());
 
 		xpTooltip.getChildren().clear();
-		graphics.translate(x, y);
+		xpTooltip.setPreferredLocation(new java.awt.Point(x, y));
 		xpTooltip.setPreferredSize(new Dimension(TOOLTIP_RECT_SIZE_X, 0));
 
 		xpTooltip.getChildren().add(LineComponent.builder()
@@ -286,6 +286,5 @@ public class XpGlobesOverlay extends Overlay
 		}
 
 		xpTooltip.render(graphics);
-		graphics.translate(-x, -y);
 	}
 }
