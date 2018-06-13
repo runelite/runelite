@@ -27,13 +27,13 @@ package net.runelite.client.plugins.chatnotifications;
 
 import com.google.common.base.Strings;
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static java.util.regex.Pattern.quote;
 import java.util.stream.Collectors;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.events.ConfigChanged;
@@ -165,18 +165,25 @@ public class ChatNotificationsPlugin extends Plugin
 		{
 			Matcher matcher = highlightMatcher.matcher(messageNode.getValue());
 			boolean found = false;
+			StringBuffer stringBuffer = new StringBuffer();
 
 			while (matcher.find())
 			{
 				String value = matcher.group();
-				messageNode.setValue(matcher.replaceFirst("<col" + ChatColorType.HIGHLIGHT + ">" + value + "<col" + ChatColorType.NORMAL + ">"));
+				matcher.appendReplacement(stringBuffer, "<col" + ChatColorType.HIGHLIGHT + ">" + value + "<col" + ChatColorType.NORMAL + ">");
 				update = true;
 				found = true;
 			}
 
-			if (found && config.notifyOnHighlight())
+			if (found)
 			{
-				sendNotification(event);
+				matcher.appendTail(stringBuffer);
+				messageNode.setValue(stringBuffer.toString());
+
+				if (config.notifyOnHighlight())
+				{
+					sendNotification(event);
+				}
 			}
 		}
 
