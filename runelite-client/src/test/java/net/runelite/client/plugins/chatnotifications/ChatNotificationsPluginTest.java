@@ -30,7 +30,10 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.MessageNode;
+import net.runelite.api.Player;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.SetMessage;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatMessageManager;
@@ -87,5 +90,30 @@ public class ChatNotificationsPluginTest
 		chatNotificationsPlugin.onSetMessage(setMessage);
 
 		verify(messageNode).setValue("<colHIGHLIGHT>Deathbeam<colNORMAL>, <colHIGHLIGHT>Deathbeam<colNORMAL> OSRS");
+	}
+
+	@Test
+	public void onSetMessageUsername()
+	{
+		when(config.highlightOwnName()).thenReturn(true);
+
+		MessageNode messageNode = mock(MessageNode.class);
+		when(messageNode.getValue()).thenReturn("Deathbeam, Deathbeam OSRS, Really deathbeam");
+
+		SetMessage setMessage = new SetMessage();
+		setMessage.setType(ChatMessageType.PUBLIC);
+		setMessage.setMessageNode(messageNode);
+
+		Player localPlayer = mock(Player.class);
+		when(localPlayer.getName()).thenReturn("Deathbeam");
+		when(client.getLocalPlayer()).thenReturn(localPlayer);
+
+		GameStateChanged event = new GameStateChanged();
+		event.setGameState(GameState.LOGGED_IN); // load username
+
+		chatNotificationsPlugin.onGameStateChanged(event);
+		chatNotificationsPlugin.onSetMessage(setMessage);
+
+		verify(messageNode).setValue("<colHIGHLIGHT><u>Deathbeam</u><colNORMAL>, <colHIGHLIGHT><u>Deathbeam</u><colNORMAL> OSRS, Really <colHIGHLIGHT><u>deathbeam</u><colNORMAL>");
 	}
 }

@@ -67,7 +67,6 @@ public class ChatNotificationsPlugin extends Plugin
 
 	//Custom Highlights
 	private Pattern usernameMatcher = null;
-	private String usernameReplacer = "";
 	private Pattern highlightMatcher = null;
 
 	@Provides
@@ -91,6 +90,12 @@ public class ChatNotificationsPlugin extends Plugin
 			case HOPPING:
 				usernameMatcher = null;
 				break;
+			case LOGGED_IN:
+				if (usernameMatcher == null && client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
+				{
+					final String username = client.getLocalPlayer().getName();
+					usernameMatcher = Pattern.compile("\\b(" + quote(username) + ")\\b", Pattern.CASE_INSENSITIVE);
+				}
 		}
 	}
 
@@ -120,7 +125,7 @@ public class ChatNotificationsPlugin extends Plugin
 	@Subscribe
 	public void onSetMessage(SetMessage event)
 	{
-		MessageNode messageNode = event.getMessageNode();
+		final MessageNode messageNode = event.getMessageNode();
 		boolean update = false;
 
 		switch (event.getType())
@@ -139,20 +144,24 @@ public class ChatNotificationsPlugin extends Plugin
 				break;
 		}
 
-		if (usernameMatcher == null && client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
-		{
-			String username = client.getLocalPlayer().getName();
-			usernameMatcher = Pattern.compile("\\b(" + quote(username) + ")\\b", Pattern.CASE_INSENSITIVE);
-			usernameReplacer = "<col" + ChatColorType.HIGHLIGHT.name() + "><u>" + username + "</u><col" + ChatColorType.NORMAL.name() + ">";
-		}
-
 		if (config.highlightOwnName() && usernameMatcher != null)
 		{
-			Matcher matcher = usernameMatcher.matcher(messageNode.getValue());
-			if (matcher.find())
+			final Matcher matcher = usernameMatcher.matcher(messageNode.getValue());
+			final StringBuffer buffer = new StringBuffer();
+			boolean found = false;
+
+			while (matcher.find())
 			{
-				messageNode.setValue(matcher.replaceAll(usernameReplacer));
+				final String value = matcher.group(1);
+				matcher.appendReplacement(buffer, "<col" + ChatColorType.HIGHLIGHT + "><u>" + value + "</u><col" + ChatColorType.NORMAL + ">");
+				found = true;
 				update = true;
+			}
+
+			if (found)
+			{
+				matcher.appendTail(buffer);
+				messageNode.setValue(buffer.toString());
 
 				if (config.notifyOnOwnName())
 				{
@@ -163,22 +172,23 @@ public class ChatNotificationsPlugin extends Plugin
 
 		if (highlightMatcher != null)
 		{
-			Matcher matcher = highlightMatcher.matcher(messageNode.getValue());
+			final Matcher matcher = highlightMatcher.matcher(messageNode.getValue());
+			final StringBuffer buffer = new StringBuffer();
 			boolean found = false;
-			StringBuffer stringBuffer = new StringBuffer();
 
 			while (matcher.find())
 			{
-				String value = matcher.group();
-				matcher.appendReplacement(stringBuffer, "<col" + ChatColorType.HIGHLIGHT + ">" + value + "<col" + ChatColorType.NORMAL + ">");
-				update = true;
+				final String value = matcher.group(1);
+				matcher.appendReplacement(buffer, "<col" + ChatColorType.HIGHLIGHT + ">" + value + "<col" + ChatColorType.NORMAL + ">");
 				found = true;
+				update = true;
 			}
 
 			if (found)
 			{
-				matcher.appendTail(stringBuffer);
-				messageNode.setValue(stringBuffer.toString());
+				matcher.appendTail(buffer);
+				messageNode.setValue(buffer.toString());
+				chatMessageManager.update(messageNode);
 
 				if (config.notifyOnHighlight())
 				{
