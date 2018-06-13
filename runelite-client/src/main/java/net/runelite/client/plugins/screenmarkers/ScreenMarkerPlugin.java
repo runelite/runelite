@@ -129,7 +129,7 @@ public class ScreenMarkerPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		overlayManager.removeIf(ScreenMarkerOverlay.class::isInstance);
-		screenMarkers.clear();;
+		screenMarkers.clear();
 		pluginToolbar.removeNavigation(navigationButton);
 		setMouseListenerEnabled(false);
 		creatingScreenMarker = false;
@@ -190,8 +190,8 @@ public class ScreenMarkerPlugin extends Plugin
 			screenMarkerOverlay.setPreferredSize(overlay.getBounds().getSize());
 
 			screenMarkers.add(screenMarkerOverlay);
-			overlayManager.add(screenMarkerOverlay);
 			overlayManager.saveOverlay(screenMarkerOverlay);
+			overlayManager.add(screenMarkerOverlay);
 			pluginPanel.rebuild();
 			updateConfig();
 		}
