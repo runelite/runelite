@@ -153,7 +153,7 @@ public enum HotColdLocation
 	ZEAH_BLASTMINE_NORTH(new WorldPoint(1490, 3883, 0), ZEAH, "Northern part of the Lovakengj House blast mine."),
 	ZEAH_LOVAKITE_FURNACE(new WorldPoint(1505, 3814, 0), ZEAH, "Next to the lovakite furnace in the Lovakengj House."),
 	ZEAH_LOVAKENGJ_MINE(new WorldPoint(1477, 3779, 0), ZEAH, "Next to mithril rock in the Lovakengj mine."),
-	ZEAH_SULPHR_MINE(new WorldPoint(1428, 3864, 0), ZEAH, "Western entrance in the Lovakengj House's sulphur mine."),
+	ZEAH_SULPHR_MINE(new WorldPoint(1428, 3866, 0), ZEAH, "Western entrance in the Lovakengj House's sulphur mine."),
 	ZEAH_SHAYZIEN_BANK(new WorldPoint(1517, 3603, 0), ZEAH, "South-east of the bank in the Shayzien House."),
 	ZEAH_OVERPASS(new WorldPoint(1467, 3714, 0), ZEAH, "Overpass between the Lovakengj and Shayzien House."),
 	ZEAH_LIZARDMAN(new WorldPoint(1493, 3694, 0), ZEAH, "Within Lizardman Canyon, east of the ladder. Requires 5% favour with the Shayzien House."),
