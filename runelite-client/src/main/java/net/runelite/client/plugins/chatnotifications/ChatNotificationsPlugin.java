@@ -48,7 +48,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Chat Notifications"
+	name = "Chat Notifications",
+	enabledByDefault = false
 )
 public class ChatNotificationsPlugin extends Plugin
 {
