@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.banktags;
 
 import com.google.common.eventbus.Subscribe;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
@@ -40,6 +42,7 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
 import net.runelite.api.widgets.WidgetInfo;
@@ -136,6 +139,16 @@ public class BankTagsPlugin extends Plugin
 			return tags.split(",").length;
 		}
 		return 0;
+	}
+
+	@Subscribe
+	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
+	{
+		Widget widget = event.getWidget();
+		if (widget.getId() == WidgetInfo.BANK_TITLE_BAR.getId())
+		{
+			setPrevTag(null);
+		}
 	}
 
 	@Subscribe
@@ -239,18 +252,37 @@ public class BankTagsPlugin extends Plugin
 		{
 			return;
 		}
-		MenuEntry prevTagMenu = entries[entries.length - ADD_PREVIOUS_TAG_MENU_INDEX];
-		if (prevTagMenu.getOption().startsWith(ADD_PREVIOUS_TAG_MENU_OPTION))
+
+		String prevTag = getPrevTag();
+		int inventoryIndex = firstEntry.getParam0();
+		Item item = getItemForInventoryIndex(inventoryIndex);
+		String itemTags = getTags(item.getId());
+
+		List<MenuEntry> entryList = Arrays.asList(entries);
+		entryList = new ArrayList<>(entryList);
+
+		// Remove Add Tag menu option if prevTag doesnt exist
+		if (prevTag == null || prevTag.isEmpty())
 		{
-			String prevTag = getPrevTag();
-			if (!prevTag.isEmpty())
+			entryList.remove(entries.length - ADD_PREVIOUS_TAG_MENU_INDEX);
+		}
+		// Remove Add Tag menu option if prevTag already is on item
+		else if (Arrays.asList(itemTags.replaceAll("\\s", "").split(",")).contains(prevTag))
+		{
+			entryList.remove(entries.length - ADD_PREVIOUS_TAG_MENU_INDEX);
+		}
+		else
+		{
+			MenuEntry prevTagMenuOption = entries[entries.length - ADD_PREVIOUS_TAG_MENU_INDEX];
+			if (prevTagMenuOption.getOption().startsWith(ADD_PREVIOUS_TAG_MENU_OPTION))
 			{
-				prevTagMenu.setOption(ADD_PREVIOUS_TAG_MENU_OPTION + " (" + getPrevTag() + ")");
+				prevTagMenuOption.setOption(ADD_PREVIOUS_TAG_MENU_OPTION + " (" + getPrevTag() + ")");
+				entries[entries.length - ADD_PREVIOUS_TAG_MENU_INDEX] = prevTagMenuOption;
 			}
-			entries[entries.length - ADD_PREVIOUS_TAG_MENU_INDEX] = prevTagMenu;
 		}
 
-		client.setMenuEntries(entries);
+		MenuEntry[] newEntries = new MenuEntry[entryList.size()];
+		client.setMenuEntries(entryList.toArray(newEntries));
 	}
 
 	@Subscribe
@@ -263,35 +295,13 @@ public class BankTagsPlugin extends Plugin
 		{
 			event.consume();
 			int inventoryIndex = event.getActionParam();
-			ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
-			if (bankContainer == null)
-			{
-				return;
-			}
-			Item[] items = bankContainer.getItems();
-			if (inventoryIndex < 0 || inventoryIndex >= items.length)
-			{
-				return;
-			}
-			Item item = bankContainer.getItems()[inventoryIndex];
-			if (item == null)
-			{
-				return;
-			}
+
+			Item item = getItemForInventoryIndex(inventoryIndex);
 			ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
-			int itemId;
-			if (itemComposition.getPlaceholderTemplateId() != -1)
-			{
-				// if the item is a placeholder then get the item id for the normal item
-				itemId = itemComposition.getPlaceholderId();
-			}
-			else
-			{
-				itemId = item.getId();
-			}
+
+			int itemId = getItemIdForItem(item);
 
 			String itemName = itemComposition.getName();
-
 			String initialValue = getTags(itemId);
 
 			chatboxInputManager.openInputWindow(itemName + " tags:", initialValue, (newTags) ->
@@ -320,33 +330,14 @@ public class BankTagsPlugin extends Plugin
 		{
 			event.consume();
 			int inventoryIndex = event.getActionParam();
-			ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
-			if (bankContainer == null)
-			{
-				return;
-			}
-			Item[] items = bankContainer.getItems();
-
-			if (inventoryIndex < 0 || inventoryIndex >= items.length)
-			{
-				return;
-			}
-			Item item = bankContainer.getItems()[inventoryIndex];
+			Item item = getItemForInventoryIndex(inventoryIndex);
 			if (item == null)
 			{
 				return;
 			}
-			ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
-			int itemId;
-			if (itemComposition.getPlaceholderTemplateId() != -1)
-			{
-				// if the item is a placeholder then get the item id for the normal item
-				itemId = itemComposition.getPlaceholderId();
-			}
-			else
-			{
-				itemId = item.getId();
-			}
+
+			// Get Item Id for Bank Inventory Location
+			int itemId = getItemIdForItem(item);
 
 			// Add new Tag to old Tags
 			String oldTags = getTags(itemId);
@@ -415,6 +406,45 @@ public class BankTagsPlugin extends Plugin
 			return newTags[newTags.length - 1];
 		}
 		return "";
+	}
+
+	/**
+	 * Get Item for bank inventory index
+	 *
+	 * @param inventoryIndex   Bank Inventory Index
+	 */
+	private Item getItemForInventoryIndex(int inventoryIndex)
+	{
+		ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
+		if (bankContainer == null)
+		{
+			return null;
+		}
+		Item[] items = bankContainer.getItems();
+		if (inventoryIndex < 0 || inventoryIndex >= items.length)
+		{
+			return null;
+		}
+		return bankContainer.getItems()[inventoryIndex];
+	}
+
+	/**
+	 * Get ItemId for Bank Item stack
+	 *
+	 * @param item   Item Stack to retrieve Id For
+	 */
+	private int getItemIdForItem(Item item)
+	{
+		ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
+		if (itemComposition.getPlaceholderTemplateId() != -1)
+		{
+			// if the item is a placeholder then get the item id for the normal item
+			return itemComposition.getPlaceholderId();
+		}
+		else
+		{
+			return item.getId();
+		}
 	}
 
 }
