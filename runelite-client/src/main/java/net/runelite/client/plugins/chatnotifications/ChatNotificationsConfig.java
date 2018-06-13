@@ -44,7 +44,7 @@ public interface ChatNotificationsConfig extends Config
 	)
 	default boolean highlightOwnName()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
@@ -73,7 +73,7 @@ public interface ChatNotificationsConfig extends Config
 		position = 3,
 		keyName = "notifyOnHighlight",
 		name = "Notify on hightlight",
-		description = "Notifies you whenever a word is above is highlighted"
+		description = "Notifies you whenever a highlighted word is matched"
 	)
 	default boolean notifyOnHighlight()
 	{
