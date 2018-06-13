@@ -47,7 +47,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Chat Notifications"
+	name = "Chat Notifications",
+	enabledByDefault = false
 )
 public class ChatNotificationsPlugin extends Plugin
 {
@@ -141,7 +142,7 @@ public class ChatNotificationsPlugin extends Plugin
 				messageNode.setValue(matcher.replaceAll(usernameReplacer));
 				update = true;
 
-				if (config.highlightOwnName())
+				if (config.notifyOnOwnName())
 				{
 					sendNotification(event);
 				}
