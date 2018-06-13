@@ -74,6 +74,12 @@ public class ChatNotificationsPlugin extends Plugin
 		return configManager.getConfig(ChatNotificationsConfig.class);
 	}
 
+	@Override
+	public void startUp()
+	{
+		updateHighlights();
+	}
+
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
@@ -91,16 +97,21 @@ public class ChatNotificationsPlugin extends Plugin
 	{
 		if (event.getGroup().equals("chatnotification"))
 		{
-			highlightMatcher = null;
+			updateHighlights();
+		}
+	}
 
-			if (!config.highlightWordsString().trim().equals(""))
-			{
-				String[] items = config.highlightWordsString().trim().split(", ");
-				String joined = Arrays.stream(items)
-					.map(Pattern::quote)
-					.collect(Collectors.joining("|"));
-				highlightMatcher = Pattern.compile("\\b(" + joined + ")\\b", Pattern.CASE_INSENSITIVE);
-			}
+	private void updateHighlights()
+	{
+		highlightMatcher = null;
+
+		if (!config.highlightWordsString().trim().equals(""))
+		{
+			String[] items = config.highlightWordsString().trim().split(", ");
+			String joined = Arrays.stream(items)
+				.map(Pattern::quote)
+				.collect(Collectors.joining("|"));
+			highlightMatcher = Pattern.compile("\\b(" + joined + ")\\b", Pattern.CASE_INSENSITIVE);
 		}
 	}
 
