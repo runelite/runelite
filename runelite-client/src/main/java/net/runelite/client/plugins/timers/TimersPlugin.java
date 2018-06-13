@@ -95,6 +95,8 @@ public class TimersPlugin extends Plugin
 	@Inject
 	private InfoBoxManager infoBoxManager;
 
+	private int cannonWorld;
+
 	@Provides
 	TimersConfig getConfig(ConfigManager configManager)
 	{
@@ -340,11 +342,13 @@ public class TimersPlugin extends Plugin
 
 		if (config.showCannon() && (event.getMessage().equals("You add the furnace.") || event.getMessage().contains("You repair your cannon, restoring it to working order.")))
 		{
+			config.cannonWorld(client.getWorld());
 			createGameTimer(CANNON);
 		}
 
 		if (event.getMessage().equals("You pick up the cannon. It's really heavy."))
 		{
+			config.cannonWorld(0);
 			removeGameTimer(CANNON);
 		}
 
@@ -516,7 +520,16 @@ public class TimersPlugin extends Plugin
 		removeGameTimer(timer);
 
 		TimerTimer t = new TimerTimer(timer, this);
-		t.setTooltip(timer.getDescription());
+
+		if (timer.getDescription().equals(("Cannon")))
+		{
+			t.setTooltip("Cannon on world: " + config.cannonWorld());
+		}
+		else
+		{
+			t.setTooltip(timer.getDescription());
+		}
+
 		infoBoxManager.addInfoBox(t);
 	}
 

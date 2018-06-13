@@ -200,6 +200,25 @@ public interface TimersConfig extends Config
 		return true;
 	}
 
+	// Stored Data
+	@ConfigItem(
+			keyName = "cannonWorld",
+			name = "",
+			description = "",
+			hidden = true
+	)
+	default int cannonWorld()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+			keyName = "cannonWorld",
+			name = "",
+			description = ""
+	)
+	void cannonWorld(int cannonWorld);
+
 	@ConfigItem(
 		position = 15,
 		keyName = "showMagicImbue",
