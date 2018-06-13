@@ -27,13 +27,18 @@ package net.runelite.client.ui.overlay;
 import com.google.common.annotations.VisibleForTesting;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Predicate;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
@@ -50,11 +55,34 @@ public class OverlayManager
 	private static final String OVERLAY_CONFIG_PREFERRED_SIZE = "_preferredSize";
 	private static final String RUNELITE_CONFIG_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).keyName();
 
-	@Getter
-	private final List<Overlay> overlays = new CopyOnWriteArrayList<>();
+	@VisibleForTesting
+	static final Comparator<Overlay> OVERLAY_COMPARATOR = (a, b) ->
+	{
+		if (a.getPosition() != b.getPosition())
+		{
+			// This is so non-dynamic overlays render after dynamic
+			// overlays, which are generally in the scene
+			return a.getPosition().compareTo(b.getPosition());
+		}
 
-	@Getter
-	private final Map<OverlayLayer, List<Overlay>> overlayLayers = new ConcurrentHashMap<>();
+		// For dynamic overlays, higher priority means to
+		// draw *later* so it is on top.
+		// For non-dynamic overlays, higher priority means
+		// draw *first* so that they are closer to their
+		// defined position.
+		return a.getPosition() == OverlayPosition.DYNAMIC
+			? a.getPriority().compareTo(b.getPriority())
+			: b.getPriority().compareTo(a.getPriority());
+	};
+
+	/**
+	 * Sorted set of overlays
+	 * All access to this must be guarded by a lock on this OverlayManager
+	 */
+	@Getter(AccessLevel.PACKAGE)
+	private final Set<Overlay> overlays = new TreeSet<>(OVERLAY_COMPARATOR);
+
+	private final Map<OverlayLayer, List<Overlay>> overlayLayers = new HashMap<>();
 
 	private final ConfigManager configManager;
 
@@ -65,12 +93,23 @@ public class OverlayManager
 	}
 
 	/**
+	 * Gets all of the overlays on a layer
+	 *
+	 * @param layer the layer
+	 * @return An immutable list of all of the overlays on that layer
+	 */
+	synchronized List<Overlay> getLayer(OverlayLayer layer)
+	{
+		return overlayLayers.get(layer);
+	}
+
+	/**
 	 * Add overlay.
 	 *
 	 * @param overlay the overlay
 	 * @return true if overlay was added
 	 */
-	public boolean add(final Overlay overlay)
+	public synchronized boolean add(final Overlay overlay)
 	{
 		final boolean add = overlays.add(overlay);
 
@@ -82,7 +121,6 @@ public class OverlayManager
 			overlay.setPreferredSize(size);
 			final OverlayPosition position = loadOverlayPosition(overlay);
 			overlay.setPreferredPosition(position);
-			sortOverlays(overlays);
 			rebuildOverlayLayers();
 		}
 
@@ -95,13 +133,12 @@ public class OverlayManager
 	 * @param overlay the overlay
 	 * @return true if overlay was removed
 	 */
-	public boolean remove(final Overlay overlay)
+	public synchronized boolean remove(final Overlay overlay)
 	{
 		final boolean remove = overlays.remove(overlay);
 
 		if (remove)
 		{
-			sortOverlays(overlays);
 			rebuildOverlayLayers();
 		}
 
@@ -114,10 +151,9 @@ public class OverlayManager
 	 * @param filter the filter
 	 * @return true if any overlay was removed
 	 */
-	public boolean removeIf(Predicate<Overlay> filter)
+	public synchronized boolean removeIf(Predicate<Overlay> filter)
 	{
 		final boolean removeIf = overlays.removeIf(filter);
-		sortOverlays(overlays);
 		rebuildOverlayLayers();
 		return removeIf;
 	}
@@ -125,10 +161,9 @@ public class OverlayManager
 	/**
 	 * Clear all overlays
 	 */
-	public void clear()
+	public synchronized void clear()
 	{
 		overlays.clear();
-		sortOverlays(overlays);
 		rebuildOverlayLayers();
 	}
 
@@ -137,12 +172,11 @@ public class OverlayManager
 	 *
 	 * @param overlay overlay to save
 	 */
-	public void saveOverlay(final Overlay overlay)
+	public synchronized void saveOverlay(final Overlay overlay)
 	{
 		saveOverlayPosition(overlay);
 		saveOverlaySize(overlay);
 		saveOverlayLocation(overlay);
-		sortOverlays(overlays);
 		rebuildOverlayLayers();
 	}
 
@@ -151,7 +185,7 @@ public class OverlayManager
 	 *
 	 * @param overlay overlay to reset
 	 */
-	public void resetOverlay(final Overlay overlay)
+	public synchronized void resetOverlay(final Overlay overlay)
 	{
 		final String locationKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_LOCATION;
 		final String positionKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_POSITION;
@@ -159,13 +193,15 @@ public class OverlayManager
 		configManager.unsetConfiguration(RUNELITE_CONFIG_GROUP_NAME, locationKey);
 		configManager.unsetConfiguration(RUNELITE_CONFIG_GROUP_NAME, positionKey);
 		configManager.unsetConfiguration(RUNELITE_CONFIG_GROUP_NAME, sizeKey);
-		sortOverlays(overlays);
 		rebuildOverlayLayers();
 	}
 
-	private void rebuildOverlayLayers()
+	private synchronized void rebuildOverlayLayers()
 	{
-		overlayLayers.clear();
+		for (OverlayLayer l : OverlayLayer.values())
+		{
+			overlayLayers.put(l, new ArrayList<>());
+		}
 
 		for (final Overlay overlay : overlays)
 		{
@@ -181,17 +217,10 @@ public class OverlayManager
 				}
 			}
 
-			overlayLayers.compute(layer, (key, value) ->
-			{
-				if (value == null)
-				{
-					value = new CopyOnWriteArrayList<>();
-				}
-
-				value.add(overlay);
-				return value;
-			});
+			overlayLayers.get(layer).add(overlay);
 		}
+
+		overlayLayers.forEach((layer, value) -> overlayLayers.put(layer, Collections.unmodifiableList(value)));
 	}
 
 	private void saveOverlayLocation(final Overlay overlay)
@@ -264,28 +293,5 @@ public class OverlayManager
 	{
 		final String locationKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_POSITION;
 		return configManager.getConfiguration(RUNELITE_CONFIG_GROUP_NAME, locationKey, OverlayPosition.class);
-	}
-
-	@VisibleForTesting
-	static void sortOverlays(List<Overlay> overlays)
-	{
-		overlays.sort((a, b) ->
-		{
-			if (a.getPosition() != b.getPosition())
-			{
-				// This is so non-dynamic overlays render after dynamic
-				// overlays, which are generally in the scene
-				return a.getPosition().compareTo(b.getPosition());
-			}
-
-			// For dynamic overlays, higher priority means to
-			// draw *later* so it is on top.
-			// For non-dynamic overlays, higher priority means
-			// draw *first* so that they are closer to their
-			// defined position.
-			return a.getPosition() == OverlayPosition.DYNAMIC
-				? a.getPriority().compareTo(b.getPriority())
-				: b.getPriority().compareTo(a.getPriority());
-		});
 	}
 }
