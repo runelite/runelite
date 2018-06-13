@@ -520,21 +520,27 @@ public class TimersPlugin extends Plugin
 		removeGameTimer(timer);
 
 		TimerTimer t = new TimerTimer(timer, this);
-
-		if (timer.getDescription().equals(("Cannon")))
-		{
-			t.setTooltip("Cannon on world: " + config.cannonWorld());
-		}
-		else
-		{
-			t.setTooltip(timer.getDescription());
-		}
-
+		t.setTooltip(toolTip(timer));
 		infoBoxManager.addInfoBox(t);
 	}
 
 	public void removeGameTimer(GameTimer timer)
 	{
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer);
+	}
+
+	public String toolTip(GameTimer timer)
+	{
+		if (isCannon(timer))
+		{
+			return "Cannon on world: " + config.cannonWorld();
+		}
+
+		return timer.getDescription();
+	}
+
+	public boolean isCannon(GameTimer timer)
+	{
+		return timer.getDescription().equals("Cannon");
 	}
 }
