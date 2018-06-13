@@ -44,7 +44,7 @@ public interface ChatNotificationsConfig extends Config
 	)
 	default boolean highlightOwnName()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
