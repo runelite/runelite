@@ -109,6 +109,11 @@ public class OverlayManager
 	 */
 	public synchronized boolean add(final Overlay overlay)
 	{
+		if (overlays.contains(overlay))
+		{
+			return false;
+		}
+
 		final boolean add = overlays.add(overlay);
 
 		if (add)
