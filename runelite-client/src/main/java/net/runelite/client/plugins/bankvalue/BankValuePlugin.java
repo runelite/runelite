@@ -40,71 +40,71 @@ import net.runelite.client.plugins.PluginDescriptor;
 @PluginDescriptor(name = "Bank Value")
 public class BankValuePlugin extends Plugin
 {
-    @Inject
-    private Client client;
+	@Inject
+	private Client client;
 
-    @Inject
-    private BankCalculation bankCalculation;
+	@Inject
+	private BankCalculation bankCalculation;
 
-    @Inject
-    private BankTitle bankTitle;
+	@Inject
+	private BankTitle bankTitle;
 
-    @Provides
-    BankValueConfig getConfig(ConfigManager configManager)
-    {
-        return configManager.getConfig(BankValueConfig.class);
-    }
+	@Provides
+	BankValueConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(BankValueConfig.class);
+	}
 
-    @Override
-    protected void shutDown()
-    {
-        bankTitle.reset();
-    }
+	@Override
+	protected void shutDown()
+	{
+		bankTitle.reset();
+	}
 
-    @Subscribe
-    public void onGameTick(GameTick event)
-    {
-        Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
 
-        if (widgetBankTitleBar == null || widgetBankTitleBar.isHidden())
-        {
-            return;
-        }
+		if (widgetBankTitleBar == null || widgetBankTitleBar.isHidden())
+		{
+			return;
+		}
 
-        bankTitle.save();
-        calculate(widgetBankTitleBar);
-        if (bankCalculation.isFinished())
-        {
-            bankTitle.update(bankCalculation.getGePrice(), bankCalculation.getHaPrice());
-        }
-    }
+		bankTitle.save();
+		calculate(widgetBankTitleBar);
+		if (bankCalculation.isFinished())
+		{
+			bankTitle.update(bankCalculation.getGePrice(), bankCalculation.getHaPrice());
+		}
+	}
 
-    @Subscribe
-    public void onConfigChanged(ConfigChanged event)
-    {
-        if (bankCalculation.getGePrice() > 0)
-        {
-            Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (bankCalculation.getGePrice() > 0)
+		{
+			Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
 
-            if (widgetBankTitleBar == null || widgetBankTitleBar.isHidden())
-            {
-                return;
-            }
+			if (widgetBankTitleBar == null || widgetBankTitleBar.isHidden())
+			{
+				return;
+			}
 
-            bankTitle.update(bankCalculation.getGePrice(), bankCalculation.getHaPrice(), true);
-        }
-    }
+			bankTitle.update(bankCalculation.getGePrice(), bankCalculation.getHaPrice(), true);
+		}
+	}
 
-    private void calculate(Widget bankTitleBar)
-    {
-        // Don't update on a search because rs seems to constantly update the title
-        if (bankTitleBar == null ||
-                bankTitleBar.isHidden() ||
-                bankTitleBar.getText().contains("Showing"))
-        {
-            return;
-        }
+	private void calculate(Widget bankTitleBar)
+	{
+		// Don't update on a search because rs seems to constantly update the title
+		if (bankTitleBar == null ||
+			bankTitleBar.isHidden() ||
+			bankTitleBar.getText().contains("Showing"))
+		{
+			return;
+		}
 
-        bankCalculation.calculate();
-    }
+		bankCalculation.calculate();
+	}
 }

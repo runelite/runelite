@@ -35,246 +35,257 @@ import java.util.regex.Pattern;
  */
 public class StackFormatter
 {
-    /**
-     * A list of suffixes to use when formatting stack sizes.
-     */
-    private static final String[] SUFFIXES = {"", "K", "M", "B"};
+	/**
+	 * A list of suffixes to use when formatting stack sizes.
+	 */
+	private static final String[] SUFFIXES = {"", "K", "M", "B"};
 
-    /**
-     * A list of suffixes to use when formatting stack sizes.
-     */
-    private static final int[] SUFFIX_PRECISION = {3, 3, 3, 4};
+	/**
+	 * A list of suffixes to use when formatting stack sizes.
+	 */
+	private static final int[] SUFFIX_PRECISION = {3, 3, 3, 4};
 
-    /**
-     * A pattern to match a value suffix (K, M etc) in a string.
-     */
-    private static final Pattern SUFFIX_PATTERN = Pattern.compile("^-?[0-9,.]+([a-zA-Z]?)$");
+	/**
+	 * A pattern to match a value suffix (K, M etc) in a string.
+	 */
+	private static final Pattern SUFFIX_PATTERN = Pattern.compile("^-?[0-9,.]+([a-zA-Z]?)$");
 
-    /**
-     * A number formatter
-     */
-    private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
+	/**
+	 * A number formatter
+	 */
+	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
 
-    /**
-     * Convert a quantity to a nicely formatted stack size.
-     * See the StackFormatterTest to see expected output.
-     *
-     * @param quantity The quantity to convert.
-     * @return A condensed version, with commas, K, M or B
-     * as needed to 3 significant figures.
-     */
-    public static String quantityToStackSize(long quantity)
-    {
-        if (quantity < 0)
-        {
-            // Long.MIN_VALUE = -1 * Long.MIN_VALUE so we need to correct for it.
-            return "-" + quantityToStackSize(quantity == Long.MIN_VALUE ? Long.MAX_VALUE : -quantity);
-        } else if (quantity < 10_000)
-        {
-            return NUMBER_FORMATTER.format(quantity);
-        }
+	/**
+	 * Convert a quantity to a nicely formatted stack size.
+	 * See the StackFormatterTest to see expected output.
+	 *
+	 * @param quantity The quantity to convert.
+	 * @return A condensed version, with commas, K, M or B
+	 * as needed to 3 significant figures.
+	 */
+	public static String quantityToStackSize(long quantity)
+	{
+		if (quantity < 0)
+		{
+			// Long.MIN_VALUE = -1 * Long.MIN_VALUE so we need to correct for it.
+			return "-" + quantityToStackSize(quantity == Long.MIN_VALUE ? Long.MAX_VALUE : -quantity);
+		}
+		else if (quantity < 10_000)
+		{
+			return NUMBER_FORMATTER.format(quantity);
+		}
 
-        String suffix = SUFFIXES[0];
-        long divideBy = 1;
-        int suffixIdx = 0;
+		String suffix = SUFFIXES[0];
+		long divideBy = 1;
+		int suffixIdx = 0;
 
-        // determine correct suffix by iterating backward through the list
-        // of suffixes until the suffix results in a value >= 1
-        for (int i = (SUFFIXES.length - 1); i >= 0; i--)
-        {
-            divideBy = (long) Math.pow(10, i * 3);
-            if ((double) quantity / divideBy >= 1)
-            {
-                suffix = SUFFIXES[i];
-                suffixIdx = i;
-                break;
-            }
-        }
+		// determine correct suffix by iterating backward through the list
+		// of suffixes until the suffix results in a value >= 1
+		for (int i = (SUFFIXES.length - 1); i >= 0; i--)
+		{
+			divideBy = (long) Math.pow(10, i * 3);
+			if ((double) quantity / divideBy >= 1)
+			{
+				suffix = SUFFIXES[i];
+				suffixIdx = i;
+				break;
+			}
+		}
 
-        // our calculated display quantity
-        double calculatedDisplay = (double) quantity / divideBy;
+		// our calculated display quantity
+		double calculatedDisplay = (double) quantity / divideBy;
 
-        String integerValue = (int) calculatedDisplay + "";
+		String integerValue = (int) calculatedDisplay + "";
 
-        // modulus of 1000 to find the decimal remainder
-        short decimals = (short) (calculatedDisplay * 1000 % 1000);
+		// modulus of 1000 to find the decimal remainder
+		short decimals = (short) (calculatedDisplay * 1000 % 1000);
 
-        // if no decimals, return integer portion
-        if (decimals == 0) return integerValue + suffix;
+		// if no decimals, return integer portion
+		if (decimals == 0) return integerValue + suffix;
 
-        // M & B - higher precision
-        int precision = SUFFIX_PRECISION[suffixIdx] - integerValue.length() +
-                (integerValue.length() == 3 ? 1 : 0); // add extra digit for 100K, 100M, 100B
-        double divisor = Math.pow(10, precision);
-        double formattedValue = (int) (Math.round(calculatedDisplay * divisor)) / divisor;
+		// M & B - higher precision
+		int precision = SUFFIX_PRECISION[suffixIdx] - integerValue.length() +
+			(integerValue.length() == 3 ? 1 : 0); // add extra digit for 100K, 100M, 100B
+		double divisor = Math.pow(10, precision);
+		double formattedValue = (int) (Math.round(calculatedDisplay * divisor)) / divisor;
 
-        // get locale formatted string
-        String formattedString = NUMBER_FORMATTER.format(formattedValue);
+		// get locale formatted string
+		String formattedString = NUMBER_FORMATTER.format(formattedValue);
 
-        // remove trailing zeros
-        formattedString = !formattedString.contains(".") ? formattedString :
-                formattedString.replaceAll("0*$", "").replaceAll("\\.$", "");
+		// remove trailing zeros
+		formattedString = !formattedString.contains(".") ? formattedString :
+			formattedString.replaceAll("0*$", "").replaceAll("\\.$", "");
 
-        // add suffix to the result
-        return formattedString + suffix;
-    }
+		// add suffix to the result
+		return formattedString + suffix;
+	}
 
-    /**
-     * Convert a quantity to stack size as it would
-     * appear in RuneScape.
-     *
-     * @param quantity The quantity to convert.
-     * @return The stack size as it would appear in RS,
-     * with K after 100,000 and M after 10,000,000
-     */
-    public static String quantityToRSStackSize(int quantity)
-    {
-        if (quantity == Integer.MIN_VALUE)
-        {
-            // Integer.MIN_VALUE = Integer.MIN_VALUE * -1 so we need to correct for it.
-            return "-" + quantityToRSStackSize(Integer.MAX_VALUE);
-        } else if (quantity < 0)
-        {
-            return "-" + quantityToRSStackSize(-quantity);
-        } else if (quantity < 100_000)
-        {
-            return Integer.toString(quantity);
-        } else if (quantity < 10_000_000)
-        {
-            return quantity / 1_000 + "K";
-        } else
-        {
-            return quantity / 1_000_000 + "M";
-        }
-    }
+	/**
+	 * Convert a quantity to stack size as it would
+	 * appear in RuneScape.
+	 *
+	 * @param quantity The quantity to convert.
+	 * @return The stack size as it would appear in RS,
+	 * with K after 100,000 and M after 10,000,000
+	 */
+	public static String quantityToRSStackSize(int quantity)
+	{
+		if (quantity == Integer.MIN_VALUE)
+		{
+			// Integer.MIN_VALUE = Integer.MIN_VALUE * -1 so we need to correct for it.
+			return "-" + quantityToRSStackSize(Integer.MAX_VALUE);
+		}
+		else if (quantity < 0)
+		{
+			return "-" + quantityToRSStackSize(-quantity);
+		}
+		else if (quantity < 100_000)
+		{
+			return Integer.toString(quantity);
+		}
+		else if (quantity < 10_000_000)
+		{
+			return quantity / 1_000 + "K";
+		}
+		else
+		{
+			return quantity / 1_000_000 + "M";
+		}
+	}
 
-    /**
-     * Convert a quantity to stack size as it would
-     * appear in RuneScape. (with decimals)
-     * <p>
-     * This differs from quantityToRSStack in that it displays
-     * decimals. Ex: 27100 is 27,1k (not 27k)
-     * <p>
-     * This uses the NumberFormat singleton instead of the
-     * NUMBER_FORMATTER variable to ensure the UK locale.
-     *
-     * @param quantity The quantity to convert.
-     * @return The stack size as it would appear in RS, with decimals,
-     * with K after 100,000 and M after 10,000,000
-     */
-    public static String quantityToRSDecimalStack(int quantity)
-    {
+	/**
+	 * Convert a quantity to stack size as it would
+	 * appear in RuneScape. (with decimals)
+	 * <p>
+	 * This differs from quantityToRSStack in that it displays
+	 * decimals. Ex: 27100 is 27,1k (not 27k)
+	 * <p>
+	 * This uses the NumberFormat singleton instead of the
+	 * NUMBER_FORMATTER variable to ensure the UK locale.
+	 *
+	 * @param quantity The quantity to convert.
+	 * @return The stack size as it would appear in RS, with decimals,
+	 * with K after 100,000 and M after 10,000,000
+	 */
+	public static String quantityToRSDecimalStack(int quantity)
+	{
 
-        if (quantity < 10_000)
-        {
-            return Integer.toString(quantity);
-        } else if (quantity < 1_000_000)
-        {
-            if (quantity % 1000 == 0)
-            {
-                return quantity / 1000 + "K";
-            }
-            return NUMBER_FORMATTER.format(quantity).substring(0, Integer.toString(quantity).length() - 1) + "K";
-        } else if (quantity < 10_000_000)
-        {
-            if (quantity % 1_000_000 == 0)
-            {
-                return quantity / 1_000_000 + "M";
-            }
-            return NUMBER_FORMATTER.format(quantity).substring(0, Integer.toString(quantity).length() - 4) + "M";
-        } else if (quantity < 1_000_000_000)
-        {
-            if (quantity % 1_000_000 == 0)
-            {
-                return quantity / 1_000_000 + "M";
-            }
-            return NUMBER_FORMATTER.format(quantity).substring(0, Integer.toString(quantity).length() - 4) + "M";
-        } else
-        {
-            if (quantity % 1_000_000_000 == 0)
-            {
-                return quantity / 1_000_000_000 + "B";
-            }
-            return NUMBER_FORMATTER.format(quantity).substring(0, Integer.toString(quantity).length() - 7) + "B";
-        }
-    }
+		if (quantity < 10_000)
+		{
+			return Integer.toString(quantity);
+		}
+		else if (quantity < 1_000_000)
+		{
+			if (quantity % 1000 == 0)
+			{
+				return quantity / 1000 + "K";
+			}
+			return NUMBER_FORMATTER.format(quantity).substring(0, Integer.toString(quantity).length() - 1) + "K";
+		}
+		else if (quantity < 10_000_000)
+		{
+			if (quantity % 1_000_000 == 0)
+			{
+				return quantity / 1_000_000 + "M";
+			}
+			return NUMBER_FORMATTER.format(quantity).substring(0, Integer.toString(quantity).length() - 4) + "M";
+		}
+		else if (quantity < 1_000_000_000)
+		{
+			if (quantity % 1_000_000 == 0)
+			{
+				return quantity / 1_000_000 + "M";
+			}
+			return NUMBER_FORMATTER.format(quantity).substring(0, Integer.toString(quantity).length() - 4) + "M";
+		}
+		else
+		{
+			if (quantity % 1_000_000_000 == 0)
+			{
+				return quantity / 1_000_000_000 + "B";
+			}
+			return NUMBER_FORMATTER.format(quantity).substring(0, Integer.toString(quantity).length() - 7) + "B";
+		}
+	}
 
-    /**
-     * Converts a string representation of a stack
-     * back to (close to) it's original value.
-     *
-     * @param string The string to convert.
-     * @return A long representation of it.
-     */
-    public static long stackSizeToQuantity(String string) throws ParseException
-    {
-        int multiplier = getMultiplier(string);
-        float parsedValue = NUMBER_FORMATTER.parse(string).floatValue();
-        return (long) (parsedValue * multiplier);
-    }
+	/**
+	 * Converts a string representation of a stack
+	 * back to (close to) it's original value.
+	 *
+	 * @param string The string to convert.
+	 * @return A long representation of it.
+	 */
+	public static long stackSizeToQuantity(String string) throws ParseException
+	{
+		int multiplier = getMultiplier(string);
+		float parsedValue = NUMBER_FORMATTER.parse(string).floatValue();
+		return (long) (parsedValue * multiplier);
+	}
 
-    /**
-     * Specialization of format.
-     *
-     * @param number the long number to format
-     * @return the formatted String
-     * @throws ArithmeticException if rounding is needed with rounding
-     *                             mode being set to RoundingMode.UNNECESSARY
-     * @see java.text.Format#format
-     */
-    public static String formatNumber(final long number)
-    {
-        return NUMBER_FORMATTER.format(number);
-    }
+	/**
+	 * Specialization of format.
+	 *
+	 * @param number the long number to format
+	 * @return the formatted String
+	 * @throws ArithmeticException if rounding is needed with rounding
+	 *                             mode being set to RoundingMode.UNNECESSARY
+	 * @see java.text.Format#format
+	 */
+	public static String formatNumber(final long number)
+	{
+		return NUMBER_FORMATTER.format(number);
+	}
 
-    /**
-     * Specialization of format.
-     *
-     * @param number the double number to format
-     * @return the formatted String
-     * @throws ArithmeticException if rounding is needed with rounding
-     *                             mode being set to RoundingMode.UNNECESSARY
-     * @see java.text.Format#format
-     */
-    public static String formatNumber(double number)
-    {
-        return NUMBER_FORMATTER.format(number);
-    }
+	/**
+	 * Specialization of format.
+	 *
+	 * @param number the double number to format
+	 * @return the formatted String
+	 * @throws ArithmeticException if rounding is needed with rounding
+	 *                             mode being set to RoundingMode.UNNECESSARY
+	 * @see java.text.Format#format
+	 */
+	public static String formatNumber(double number)
+	{
+		return NUMBER_FORMATTER.format(number);
+	}
 
-    /**
-     * Calculates, given a string with a value denominator (ex. 20K)
-     * the multiplier that the denominator represents (in this case 1000).
-     *
-     * @param string The string to check.
-     * @return The value of the value denominator.
-     * @throws ParseException When the denominator does not match a known value.
-     */
-    private static int getMultiplier(String string) throws ParseException
-    {
-        String suffix;
-        Matcher matcher = SUFFIX_PATTERN.matcher(string);
-        if (matcher.find())
-        {
-            suffix = matcher.group(1);
-        } else
-        {
-            throw new ParseException(string + " does not resemble a properly formatted stack.", string.length() - 1);
-        }
+	/**
+	 * Calculates, given a string with a value denominator (ex. 20K)
+	 * the multiplier that the denominator represents (in this case 1000).
+	 *
+	 * @param string The string to check.
+	 * @return The value of the value denominator.
+	 * @throws ParseException When the denominator does not match a known value.
+	 */
+	private static int getMultiplier(String string) throws ParseException
+	{
+		String suffix;
+		Matcher matcher = SUFFIX_PATTERN.matcher(string);
+		if (matcher.find())
+		{
+			suffix = matcher.group(1);
+		}
+		else
+		{
+			throw new ParseException(string + " does not resemble a properly formatted stack.", string.length() - 1);
+		}
 
-        if (!suffix.equals(""))
-        {
-            for (int i = 1; i < SUFFIXES.length; i++)
-            {
-                if (SUFFIXES[i].equals(suffix.toUpperCase()))
-                {
-                    return (int) Math.pow(10, i * 3);
-                }
-            }
+		if (!suffix.equals(""))
+		{
+			for (int i = 1; i < SUFFIXES.length; i++)
+			{
+				if (SUFFIXES[i].equals(suffix.toUpperCase()))
+				{
+					return (int) Math.pow(10, i * 3);
+				}
+			}
 
-            throw new ParseException("Invalid Suffix: " + suffix, string.length() - 1);
-        } else
-        {
-            return 1;
-        }
-    }
+			throw new ParseException("Invalid Suffix: " + suffix, string.length() - 1);
+		}
+		else
+		{
+			return 1;
+		}
+	}
 }
