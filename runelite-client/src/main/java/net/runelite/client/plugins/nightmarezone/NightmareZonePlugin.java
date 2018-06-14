@@ -26,6 +26,7 @@ package net.runelite.client.plugins.nightmarezone;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.util.Arrays;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -33,8 +34,6 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -47,6 +46,8 @@ import net.runelite.client.util.Text;
 )
 public class NightmareZonePlugin extends Plugin
 {
+	private static final int[] NMZ_MAP_REGION = {9033};
+
 	@Inject
 	private Notifier notifier;
 
@@ -174,9 +175,8 @@ public class NightmareZonePlugin extends Plugin
 		}
 	}
 
-	boolean isInNightmareZone()
+	public boolean isInNightmareZone()
 	{
-		Widget nmz = client.getWidget(WidgetInfo.NIGHTMARE_ZONE);
-		return nmz != null && !nmz.isSelfHidden();
+		return Arrays.equals(client.getMapRegions(), NMZ_MAP_REGION);
 	}
 }
