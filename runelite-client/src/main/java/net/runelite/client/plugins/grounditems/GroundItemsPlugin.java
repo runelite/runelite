@@ -472,7 +472,7 @@ public class GroundItemsPlugin extends Plugin
 	{
 		final boolean isExplicitHidden = TRUE.equals(hiddenItems.getUnchecked(item));
 		final boolean isExplicitHighlight = TRUE.equals(highlightedItems.getUnchecked(item));
-		final boolean canBeHidden = isTradeable || !config.dontHideUntradeables();
+		final boolean canBeHidden = gePrice > 0 || isTradeable || !config.dontHideUntradeables();
 		final boolean underGe = gePrice < config.getHideUnderValue();
 		final boolean underHa = haPrice < config.getHideUnderValue();
 
