@@ -30,15 +30,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
-
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
-
 import static net.runelite.api.ItemID.COINS_995;
 import static net.runelite.api.ItemID.PLATINUM_TOKEN;
-
 import net.runelite.api.queries.BankItemQuery;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
@@ -49,176 +46,173 @@ import net.runelite.http.api.item.ItemPrice;
 @Slf4j
 class BankCalculation
 {
-	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
+    private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 
-	private final QueryRunner queryRunner;
-	private final BankValueConfig config;
-	private final ItemManager itemManager;
+    private final QueryRunner queryRunner;
+    private final BankValueConfig config;
+    private final ItemManager itemManager;
 
-	// Used to avoid extra calculation if the bank has not changed
-	private int itemsHash;
+    // Used to avoid extra calculation if the bank has not changed
+    private int itemsHash;
 
-	@Getter
-	private long gePrice;
+    @Getter
+    private long gePrice;
 
-	@Getter
-	private long haPrice;
+    @Getter
+    private long haPrice;
 
-	@Getter
-	private boolean finished;
+    @Getter
+    private boolean finished;
 
-	@Inject
-	BankCalculation(QueryRunner queryRunner, ItemManager itemManager, BankValueConfig config)
-	{
-		this.queryRunner = queryRunner;
-		this.itemManager = itemManager;
-		this.config = config;
-	}
+    @Inject
+    BankCalculation(QueryRunner queryRunner, ItemManager itemManager, BankValueConfig config)
+    {
+        this.queryRunner = queryRunner;
+        this.itemManager = itemManager;
+        this.config = config;
+    }
 
-	/**
-	 * Calculate the bank based on the cache, price can be 0 if bank not active, or cache not set
-	 */
-	void calculate()
-	{
-		WidgetItem[] widgetItems = queryRunner.runQuery(new BankItemQuery());
+    /**
+     * Calculate the bank based on the cache, price can be 0 if bank not active, or cache not set
+     */
+    void calculate()
+    {
+        WidgetItem[] widgetItems = queryRunner.runQuery(new BankItemQuery());
 
-		if (widgetItems.length == 0 || !isBankDifferent(widgetItems))
-		{
-			return;
-		}
+        if (widgetItems.length == 0 || !isBankDifferent(widgetItems))
+        {
+            return;
+        }
 
-		log.debug("Calculating new bank value...");
+        log.debug("Calculating new bank value...");
 
-		gePrice = haPrice = 0;
-		finished = false;
+        gePrice = haPrice = 0;
+        finished = false;
 
-		List<Integer> itemIds = new ArrayList<>();
+        List<Integer> itemIds = new ArrayList<>();
 
-		// Generate our lists (and do some quick price additions)
-		for (WidgetItem widgetItem : widgetItems)
-		{
-			int quantity = widgetItem.getQuantity();
+        // Generate our lists (and do some quick price additions)
+        for (WidgetItem widgetItem : widgetItems)
+        {
+            int quantity = widgetItem.getQuantity();
 
-			if (widgetItem.getId() <= 0 || quantity == 0)
-			{
-				continue;
-			}
+            if (widgetItem.getId() <= 0 || quantity == 0)
+            {
+                continue;
+            }
 
-			if (widgetItem.getId() == COINS_995)
-			{
-				gePrice += quantity;
-				haPrice += quantity;
-				continue;
-			}
+            if (widgetItem.getId() == COINS_995)
+            {
+                gePrice += quantity;
+                haPrice += quantity;
+                continue;
+            }
 
-			if (widgetItem.getId() == PLATINUM_TOKEN)
-			{
-				gePrice += quantity * 1000L;
-				haPrice += quantity * 1000L;
-				continue;
-			}
+            if (widgetItem.getId() == PLATINUM_TOKEN)
+            {
+                gePrice += quantity * 1000L;
+                haPrice += quantity * 1000L;
+                continue;
+            }
 
-			final ItemComposition itemComposition = itemManager.getItemComposition(widgetItem.getId());
+            final ItemComposition itemComposition = itemManager.getItemComposition(widgetItem.getId());
 
-			if (config.showGE())
-			{
-				itemIds.add(widgetItem.getId());
-			}
+            if (config.showGE())
+            {
+                itemIds.add(widgetItem.getId());
+            }
 
-			if (config.showHA())
-			{
-				int price = itemComposition.getPrice();
+            if (config.showHA())
+            {
+                int price = itemComposition.getPrice();
 
-				if (price > 0)
-				{
-					haPrice += (long) Math.round(price * HIGH_ALCHEMY_CONSTANT) *
-							(long) quantity;
-				}
-			}
-		}
+                if (price > 0)
+                {
+                    haPrice += (long) Math.round(price * HIGH_ALCHEMY_CONSTANT) *
+                            (long) quantity;
+                }
+            }
+        }
 
-		// Now do the calculations
-		if (config.showGE() && !itemIds.isEmpty())
-		{
-			CompletableFuture<ItemPrice[]> future = itemManager.getItemPriceBatch(itemIds);
-			future.whenComplete((ItemPrice[] itemPrices, Throwable ex) ->
-			{
-				if (ex != null)
-				{
-					log.debug("Error looking up item prices", ex);
-					return;
-				}
+        // Now do the calculations
+        if (config.showGE() && !itemIds.isEmpty())
+        {
+            CompletableFuture<ItemPrice[]> future = itemManager.getItemPriceBatch(itemIds);
+            future.whenComplete((ItemPrice[] itemPrices, Throwable ex) ->
+            {
+                if (ex != null)
+                {
+                    log.debug("Error looking up item prices", ex);
+                    return;
+                }
 
-				if (itemPrices == null)
-				{
-					log.debug("Error looking up item prices");
-					return;
-				}
+                if (itemPrices == null)
+                {
+                    log.debug("Error looking up item prices");
+                    return;
+                }
 
-				log.debug("Price lookup is complete. {} prices.", itemPrices.length);
+                log.debug("Price lookup is complete. {} prices.", itemPrices.length);
 
-				try
-				{
-					for (WidgetItem widgetItem : widgetItems)
-					{
-						int itemId = widgetItem.getId();
-						int quantity = widgetItem.getQuantity();
+                try
+                {
+                    for (WidgetItem widgetItem : widgetItems)
+                    {
+                        int itemId = widgetItem.getId();
+                        int quantity = widgetItem.getQuantity();
 
-						if (itemId <= 0 || quantity == 0
-								|| itemId == ItemID.COINS_995 || itemId == ItemID.PLATINUM_TOKEN)
-						{
-							continue;
-						}
+                        if (itemId <= 0 || quantity == 0
+                                || itemId == ItemID.COINS_995 || itemId == ItemID.PLATINUM_TOKEN)
+                        {
+                            continue;
+                        }
 
-						long price = 0;
-						for (int mappedItemId : ItemMapping.map(itemId))
-						{
-							ItemPrice cachedItemPrice = itemManager.getCachedItemPrice(mappedItemId);
-							if (cachedItemPrice == null)
-							{
-								// this happens to items which have no ge price
-								continue;
-							}
+                        long price = 0;
+                        for (int mappedItemId : ItemMapping.map(itemId))
+                        {
+                            ItemPrice cachedItemPrice = itemManager.getCachedItemPrice(mappedItemId);
+                            if (cachedItemPrice == null)
+                            {
+                                // this happens to items which have no ge price
+                                continue;
+                            }
 
-							price += cachedItemPrice.getPrice();
-						}
+                            price += cachedItemPrice.getPrice();
+                        }
 
-						gePrice += price * quantity;
-					}
-				}
-				catch (Exception ex2)
-				{
-					log.warn("error calculating price", ex2);
-				}
-				finally
-				{
-					finished = true;
-				}
-			});
-		}
-		else
-		{
-			finished = true;
-		}
-	}
+                        gePrice += price * quantity;
+                    }
+                } catch (Exception ex2)
+                {
+                    log.warn("error calculating price", ex2);
+                } finally
+                {
+                    finished = true;
+                }
+            });
+        } else
+        {
+            finished = true;
+        }
+    }
 
-	private boolean isBankDifferent(WidgetItem[] widgetItems)
-	{
-		Map<Integer, Integer> mapCheck = new HashMap<>();
+    private boolean isBankDifferent(WidgetItem[] widgetItems)
+    {
+        Map<Integer, Integer> mapCheck = new HashMap<>();
 
-		for (WidgetItem widgetItem : widgetItems)
-		{
-			mapCheck.put(widgetItem.getId(), widgetItem.getQuantity());
-		}
+        for (WidgetItem widgetItem : widgetItems)
+        {
+            mapCheck.put(widgetItem.getId(), widgetItem.getQuantity());
+        }
 
-		int curHash = mapCheck.hashCode();
+        int curHash = mapCheck.hashCode();
 
-		if (curHash != itemsHash)
-		{
-			itemsHash = curHash;
-			return true;
-		}
+        if (curHash != itemsHash)
+        {
+            itemsHash = curHash;
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 }
