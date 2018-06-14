@@ -187,10 +187,21 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "hiddenColor",
+		name = "Hidden items color",
+		description = "Configures the color for hidden items in right-click menu and when holding ALT",
+		position = 12
+	)
+	default Color hiddenColor()
+	{
+		return Color.GRAY;
+	}
+
+	@ConfigItem(
 		keyName = "lowValueColor",
 		name = "Low value items color",
 		description = "Configures the color for low value items",
-		position = 12
+		position = 13
 	)
 	default Color lowValueColor()
 	{
@@ -201,7 +212,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "lowValuePrice",
 		name = "Low value price",
 		description = "Configures the start price for low value items",
-		position = 13
+		position = 14
 	)
 	default int lowValuePrice()
 	{
@@ -212,7 +223,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "mediumValueColor",
 		name = "Medium value items color",
 		description = "Configures the color for medium value items",
-		position = 14
+		position = 15
 	)
 	default Color mediumValueColor()
 	{
@@ -223,7 +234,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "mediumValuePrice",
 		name = "Medium value price",
 		description = "Configures the start price for medium value items",
-		position = 15
+		position = 16
 	)
 	default int mediumValuePrice()
 	{
@@ -234,7 +245,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "highValueColor",
 		name = "High value items color",
 		description = "Configures the color for high value items",
-		position = 16
+		position = 17
 	)
 	default Color highValueColor()
 	{
@@ -245,7 +256,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "highValuePrice",
 		name = "High value price",
 		description = "Configures the start price for high value items",
-		position = 17
+		position = 18
 	)
 	default int highValuePrice()
 	{
@@ -256,7 +267,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "insaneValueColor",
 		name = "Insane value items color",
 		description = "Configures the color for insane value items",
-		position = 18
+		position = 19
 	)
 	default Color insaneValueColor()
 	{
@@ -267,7 +278,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "insaneValuePrice",
 		name = "Insane value price",
 		description = "Configures the start price for insane value items",
-		position = 19
+		position = 20
 	)
 	default int insaneValuePrice()
 	{
