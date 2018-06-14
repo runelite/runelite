@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -132,11 +133,15 @@ public class PlayerIndicatorsPlugin extends Plugin
 			int image = -1;
 			Color color = null;
 
-			if (config.highlightFriends() && player.isFriend())
+			if ((config.displayFriends() == DisplayOption.PLAYER
+				|| config.displayFriends() == DisplayOption.BOTH)
+				&& player.isFriend())
 			{
 				color = config.getFriendColor();
 			}
-			else if (config.drawClanMemberNames() && player.isClanMember())
+			else if ((config.displayClanMembers() == DisplayOption.PLAYER
+					|| config.displayClanMembers() == DisplayOption.BOTH)
+					&& player.isClanMember())
 			{
 				color = config.getClanMemberColor();
 
@@ -146,11 +151,16 @@ public class PlayerIndicatorsPlugin extends Plugin
 					image = clanManager.getIconNumber(rank);
 				}
 			}
-			else if (config.highlightTeamMembers() && player.getTeam() > 0 && localPlayer.getTeam() == player.getTeam())
+			else if ((config.displayTeamMembers() == DisplayOption.PLAYER
+					|| config.displayTeamMembers() == DisplayOption.BOTH)
+					&& player.getTeam() > 0
+					&& localPlayer.getTeam() == player.getTeam())
 			{
 				color = config.getTeamMemberColor();
 			}
-			else if (config.highlightNonClanMembers() && !player.isClanMember())
+			else if ((config.displayNonClanMembers() == DisplayOption.PLAYER
+					|| config.displayNonClanMembers() == DisplayOption.BOTH)
+					&& !player.isClanMember())
 			{
 				color = config.getNonClanMemberColor();
 			}

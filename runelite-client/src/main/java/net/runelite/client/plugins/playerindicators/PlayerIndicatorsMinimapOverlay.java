@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,22 +56,18 @@ public class PlayerIndicatorsMinimapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		playerIndicatorsService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
+		playerIndicatorsService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color), DisplayOption.MINIMAP);
 		return null;
 	}
 
 	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
 	{
 		final String name = actor.getName().replace('\u00A0', ' ');
+		final net.runelite.api.Point minimapLocation = actor.getMinimapLocation();
 
-		if (config.drawMinimapNames())
+		if (minimapLocation != null)
 		{
-			final net.runelite.api.Point minimapLocation = actor.getMinimapLocation();
-
-			if (minimapLocation != null)
-			{
-				OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
-			}
+			OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
 		}
 	}
 }

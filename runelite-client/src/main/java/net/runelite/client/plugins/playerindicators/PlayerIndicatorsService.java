@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,10 +45,13 @@ public class PlayerIndicatorsService
 		this.client = client;
 	}
 
-	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
+	public void forEachPlayer(final BiConsumer<Player, Color> consumer, final DisplayOption display)
 	{
-		if (!config.highlightOwnPlayer() && !config.drawClanMemberNames()
-			&& !config.highlightFriends() && !config.highlightNonClanMembers())
+		if (config.displayOwnPlayer() == DisplayOption.DISABLED
+			&& config.displayFriends() == DisplayOption.DISABLED
+			&& config.displayClanMembers() == DisplayOption.DISABLED
+			&& config.displayTeamMembers() == DisplayOption.DISABLED
+			&& config.displayNonClanMembers() == DisplayOption.DISABLED)
 		{
 			return;
 		}
@@ -65,24 +69,34 @@ public class PlayerIndicatorsService
 
 			if (player == localPlayer)
 			{
-				if (config.highlightOwnPlayer())
+				if (config.displayOwnPlayer() == DisplayOption.BOTH
+					|| config.displayOwnPlayer() == display)
 				{
 					consumer.accept(player, config.getOwnPlayerColor());
 				}
 			}
-			else if (config.highlightFriends() && player.isFriend())
+			else if ((config.displayFriends() == DisplayOption.BOTH
+					|| config.displayFriends() == display)
+					&& player.isFriend())
 			{
 				consumer.accept(player, config.getFriendColor());
 			}
-			else if (config.drawClanMemberNames() && isClanMember)
+			else if ((config.displayClanMembers() == DisplayOption.BOTH
+					|| config.displayClanMembers() == display)
+					&& isClanMember)
 			{
 				consumer.accept(player, config.getClanMemberColor());
 			}
-			else if (config.highlightTeamMembers() && localPlayer.getTeam() > 0 && localPlayer.getTeam() == player.getTeam())
+			else if ((config.displayTeamMembers() == DisplayOption.BOTH
+					|| config.displayTeamMembers() == DisplayOption.BOTH)
+					&& localPlayer.getTeam() > 0
+					&& localPlayer.getTeam() == player.getTeam())
 			{
 				consumer.accept(player, config.getTeamMemberColor());
 			}
-			else if (config.highlightNonClanMembers() && !isClanMember)
+			else if ((config.displayNonClanMembers() == DisplayOption.BOTH
+					|| config.displayNonClanMembers() == display)
+					&& !isClanMember)
 			{
 				consumer.accept(player, config.getNonClanMemberColor());
 			}

@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,13 +35,13 @@ public interface PlayerIndicatorsConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
-		keyName = "drawOwnName",
-		name = "Highlight own player",
-		description = "Configures whether or not your own player should be highlighted"
+		keyName = "displayOwnPlayer",
+		name = "Own player indicator",
+		description = "Configures whether or not your own player should be highlighted and/or shown on the minimap"
 	)
-	default boolean highlightOwnPlayer()
+	default DisplayOption displayOwnPlayer()
 	{
-		return false;
+		return DisplayOption.DISABLED;
 	}
 
 	@ConfigItem(
@@ -56,13 +57,13 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "drawFriendNames",
-		name = "Highlight friends",
-		description = "Configures whether or not friends should be highlighted"
+		keyName = "displayFriends",
+		name = "Friend indicators",
+		description = "Configures whether or not friends should be highlighted and/or shown on the minimap"
 	)
-	default boolean highlightFriends()
+	default DisplayOption displayFriends()
 	{
-		return true;
+		return DisplayOption.PLAYER;
 	}
 
 	@ConfigItem(
@@ -78,13 +79,13 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 4,
-		keyName = "drawClanMemberNames",
-		name = "Highlight clan members",
-		description = "Configures whether or clan members should be highlighted"
+		keyName = "displayClanMembers",
+		name = "Clan member indicators",
+		description = "Configures whether or not clan members should be highlighted and/or shown on the minimap"
 	)
-	default boolean drawClanMemberNames()
+	default DisplayOption displayClanMembers()
 	{
-		return true;
+		return DisplayOption.PLAYER;
 	}
 
 	@ConfigItem(
@@ -100,13 +101,13 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 6,
-		keyName = "drawTeamMemberNames",
-		name = "Highlight team members",
-		description = "Configures whether or not team members should be highlighted"
+		keyName = "displayTeamMembers",
+		name = "Team member indicators",
+		description = "Configures whether or not team members should be highlighted and/or shown on the minimap"
 	)
-	default boolean highlightTeamMembers()
+	default DisplayOption displayTeamMembers()
 	{
-		return true;
+		return DisplayOption.PLAYER;
 	}
 
 	@ConfigItem(
@@ -122,13 +123,13 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 8,
-		keyName = "drawNonClanMemberNames",
-		name = "Highlight non-clan members",
-		description = "Configures whether or not non-clan members should be highlighted"
+		keyName = "displayNonClanMembers",
+		name = "Non-clan member indicators",
+		description = "Configures whether or not non-clan members should be highlighted and/or shown on the minimap"
 	)
-	default boolean highlightNonClanMembers()
+	default DisplayOption displayNonClanMembers()
 	{
-		return false;
+		return DisplayOption.DISABLED;
 	}
 
 	@ConfigItem(
@@ -166,17 +167,6 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 12,
-		keyName = "drawMinimapNames",
-		name = "Draw names on minimap",
-		description = "Configures whether or not minimap names for players with rendered names should be drawn"
-	)
-	default boolean drawMinimapNames()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 13,
 		keyName = "colorPlayerMenu",
 		name = "Colorize player menu",
 		description = "Color right click menu for players"
@@ -187,7 +177,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+		position = 13,
 		keyName = "clanMenuIcons",
 		name = "Show clan ranks",
 		description = "Add clan rank to right click menu and next to player names"
