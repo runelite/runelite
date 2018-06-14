@@ -40,6 +40,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.SetMessage;
 import net.runelite.client.Notifier;
+import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
@@ -64,6 +65,9 @@ public class ChatNotificationsPlugin extends Plugin
 
 	@Inject
 	private Notifier notifier;
+
+	@Inject
+	private RuneLiteProperties runeLiteProperties;
 
 	//Custom Highlights
 	private Pattern usernameMatcher = null;
@@ -135,6 +139,13 @@ public class ChatNotificationsPlugin extends Plugin
 				if (event.getValue().contains("wishes to duel with you.") && config.notifyOnDuel())
 				{
 					notifier.notify(event.getValue());
+				}
+				break;
+			case GAME:
+				// Don't notify for notification messages
+				if (event.getName().equals(runeLiteProperties.getTitle()))
+				{
+					return;
 				}
 				break;
 		}
