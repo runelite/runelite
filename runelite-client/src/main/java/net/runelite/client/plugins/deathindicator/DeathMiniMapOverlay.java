@@ -27,7 +27,6 @@ package net.runelite.client.plugins.deathindicator;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
@@ -40,17 +39,17 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-public class DeathIndicatorOverlay extends Overlay
+public class DeathMiniMapOverlay extends Overlay
 {
 	private final Client client;
 	private final DeathIndicatorConfig config;
 	private final DeathIndicatorPlugin plugin;
 
 	@Inject
-	DeathIndicatorOverlay(Client client, DeathIndicatorConfig config, DeathIndicatorPlugin plugin)
+	DeathMiniMapOverlay(Client client, DeathIndicatorConfig config, DeathIndicatorPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPriority(OverlayPriority.HIGH);
 		this.client = client;
 		this.config = config;
@@ -71,39 +70,25 @@ public class DeathIndicatorOverlay extends Overlay
 
 		WorldPoint deathLocation = new WorldPoint(config.deathLocationX(), config.deathLocationY(), config.deathLocationPlane());
 
-		drawTile(graphics, deathLocation);
+		drawOnMiniMap(graphics, deathLocation);
 
 		return null;
 	}
 
-	private void drawTile(Graphics2D graphics, WorldPoint deathLocation)
+	private void drawOnMiniMap(Graphics2D graphics, WorldPoint deathLocation)
 	{
-		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
-		if (deathLocation.distanceTo(playerLocation) >= 32)
-		{
-			return;
-		}
-
 		LocalPoint lp = LocalPoint.fromWorld(client, deathLocation);
 		if (lp == null)
 		{
 			return;
 		}
 
-		Polygon poly = Perspective.getCanvasTilePoly(client, lp);
-		if (poly == null)
+		Point miniMapLocation = Perspective.getCanvasTextMiniMapLocation(client, graphics, lp, "Grave");
+		if (miniMapLocation == null)
 		{
 			return;
 		}
 
-		OverlayUtil.renderPolygon(graphics, poly, Color.RED);
-
-		Point textLocation = Perspective.getCanvasTextLocation(client, graphics, lp, "Grave", 0);
-		if (textLocation == null)
-		{
-			return;
-		}
-
-		OverlayUtil.renderTextLocation(graphics, textLocation, "Grave", Color.YELLOW);
+		OverlayUtil.renderTextLocation(graphics, miniMapLocation, "Grave", Color.YELLOW);
 	}
 }
