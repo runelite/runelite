@@ -29,6 +29,8 @@ import java.awt.Graphics2D;
 import java.util.Arrays;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 public class OverlayManagerTest
@@ -46,6 +48,38 @@ public class OverlayManagerTest
 		{
 			throw new UnsupportedOperationException("Not supported yet.");
 		}
+	}
+
+	private static class OverlayA extends Overlay
+	{
+		@Override
+		public Dimension render(Graphics2D graphics)
+		{
+			return null;
+		}
+	}
+
+	private static class OverlayB extends Overlay
+	{
+		@Override
+		public Dimension render(Graphics2D graphics)
+		{
+			return null;
+		}
+	}
+
+	@Test
+	public void testEquality()
+	{
+		Overlay a1 = new OverlayA();
+		Overlay a2 = new OverlayA();
+		Overlay b = new OverlayB();
+		// The same instance of the same overlay should be equal
+		assertTrue(a1.equals(a1));
+		// A different instance of the same overlay should not be equal by default
+		assertFalse(a1.equals(a2));
+		// A different instance of a different overlay should not be equal
+		assertFalse(a1.equals(b));
 	}
 
 	@Test
