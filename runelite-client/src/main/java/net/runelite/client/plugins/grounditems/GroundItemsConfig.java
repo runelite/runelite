@@ -150,7 +150,7 @@ public interface GroundItemsConfig extends Config
 	)
 	default int getHighlightOverValue()
 	{
-		return 10000;
+		return 0;
 	}
 
 	@ConfigItem(
