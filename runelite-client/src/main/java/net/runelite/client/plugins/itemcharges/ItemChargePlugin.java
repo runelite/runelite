@@ -24,22 +24,25 @@
  */
 package net.runelite.client.plugins.itemcharges;
 
-import javax.inject.Inject;
-import net.runelite.api.ChatMessageType;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.Overlay;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import javax.inject.Inject;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Item Charges"
 )
 public class ItemChargePlugin extends Plugin
 {
+	@Inject
+	private OverlayManager overlayManager;
+
 	@Inject
 	private ItemChargeOverlay overlay;
 
@@ -49,16 +52,22 @@ public class ItemChargePlugin extends Plugin
 	@Inject
 	private ItemChargeConfig config;
 
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
-	}
-
 	@Provides
 	ItemChargeConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ItemChargeConfig.class);
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(overlay);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
 	}
 
 	@Subscribe

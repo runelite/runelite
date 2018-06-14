@@ -249,6 +249,8 @@ class SkillCalculator extends JPanel
 			slot.setOverlapping(action.getLevel() < targetLevel);
 			slot.setValue((int) xp);
 		}
+
+		updateCombinedAction();
 	}
 
 	private String formatXPActionString(double xp, int actionCount, String expExpression)

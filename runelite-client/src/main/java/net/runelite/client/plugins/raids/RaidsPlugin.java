@@ -33,7 +33,6 @@ import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
@@ -66,7 +65,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
@@ -81,7 +80,7 @@ public class RaidsPlugin extends Plugin
 	private static final String LEVEL_COMPLETE_MESSAGE = "level complete!";
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
-	public static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
+	static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final String SPLIT_REGEX = "\\s*,\\s*";
 	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)\\]");
 
@@ -102,6 +101,9 @@ public class RaidsPlugin extends Plugin
 
 	@Inject
 	private RaidsConfig config;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private RaidsOverlay overlay;
@@ -140,14 +142,11 @@ public class RaidsPlugin extends Plugin
 	}
 
 	@Override
-	public List<Overlay> getOverlays()
-	{
-		return Arrays.asList(overlay, pointsOverlay);
-	}
-
-	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
+		overlayManager.add(pointsOverlay);
+
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
 			inRaidChambers = client.getVar(Varbits.IN_RAID) == 1;
@@ -160,6 +159,9 @@ public class RaidsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
+		overlayManager.remove(pointsOverlay);
+
 		if (timer != null)
 		{
 			infoBoxManager.removeInfoBox(timer);

@@ -24,27 +24,14 @@
  */
 package net.runelite.client.plugins.playerindicators;
 
-import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
-import java.util.Collection;
 import javax.inject.Inject;
 import net.runelite.api.ClanMemberRank;
 import static net.runelite.api.ClanMemberRank.UNRANKED;
 import net.runelite.api.Client;
-import static net.runelite.api.MenuAction.FOLLOW;
-import static net.runelite.api.MenuAction.ITEM_USE_ON_PLAYER;
-import static net.runelite.api.MenuAction.PLAYER_EIGTH_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_FIFTH_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_FIRST_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_FOURTH_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_SECOND_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_SEVENTH_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_SIXTH_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_THIRD_OPTION;
-import static net.runelite.api.MenuAction.SPELL_CAST_ON_PLAYER;
-import static net.runelite.api.MenuAction.TRADE;
+import static net.runelite.api.MenuAction.*;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
 import net.runelite.api.events.MenuEntryAdded;
@@ -52,13 +39,16 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Player Indicators"
 )
 public class PlayerIndicatorsPlugin extends Plugin
 {
+	@Inject
+	private OverlayManager overlayManager;
+
 	@Inject
 	private PlayerIndicatorsConfig config;
 
@@ -81,9 +71,17 @@ public class PlayerIndicatorsPlugin extends Plugin
 	}
 
 	@Override
-	public Collection<Overlay> getOverlays()
+	protected void startUp() throws Exception
 	{
-		return Sets.newHashSet(playerIndicatorsOverlay, playerIndicatorsMinimapOverlay);
+		overlayManager.add(playerIndicatorsOverlay);
+		overlayManager.add(playerIndicatorsMinimapOverlay);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(playerIndicatorsOverlay);
+		overlayManager.remove(playerIndicatorsMinimapOverlay);
 	}
 
 	@Subscribe
