@@ -498,7 +498,7 @@ public class GroundItemsPlugin extends Plugin
 
 		// Explicit highlight takes priority over implicit hide
 		return isExplicitHidden || (!isExplicitHighlight && canBeHidden && underGe && underHa)
-			? Color.GRAY
+			? config.hiddenColor()
 			: null;
 	}
 
