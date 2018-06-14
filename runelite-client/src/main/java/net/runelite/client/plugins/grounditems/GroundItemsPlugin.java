@@ -342,11 +342,31 @@ public class GroundItemsPlugin extends Plugin
 
 		// Cache colors
 		priceChecks.clear();
-		priceChecks.put(config.insaneValuePrice(), config.insaneValueColor());
-		priceChecks.put(config.highValuePrice(), config.highValueColor());
-		priceChecks.put(config.mediumValuePrice(), config.mediumValueColor());
-		priceChecks.put(config.lowValuePrice(), config.lowValueColor());
-		priceChecks.put(config.getHighlightOverValue(), config.highlightedColor());
+
+		if (config.insaneValuePrice() > 0)
+		{
+			priceChecks.put(config.insaneValuePrice(), config.insaneValueColor());
+		}
+
+		if (config.highValuePrice() > 0)
+		{
+			priceChecks.put(config.highValuePrice(), config.highValueColor());
+		}
+
+		if (config.mediumValuePrice() > 0)
+		{
+			priceChecks.put(config.mediumValuePrice(), config.mediumValueColor());
+		}
+
+		if (config.lowValuePrice() > 0)
+		{
+			priceChecks.put(config.lowValuePrice(), config.lowValueColor());
+		}
+
+		if (config.getHighlightOverValue() > 0)
+		{
+			priceChecks.put(config.getHighlightOverValue(), config.highlightedColor());
+		}
 	}
 
 	@Subscribe
@@ -478,7 +498,7 @@ public class GroundItemsPlugin extends Plugin
 
 		// Explicit highlight takes priority over implicit hide
 		return isExplicitHidden || (!isExplicitHighlight && canBeHidden && underGe && underHa)
-			? Color.GRAY
+			? config.hiddenColor()
 			: null;
 	}
 
