@@ -26,11 +26,9 @@ package net.runelite.http.service.osb.grandexchange;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import net.runelite.http.service.osb.grandexchange.osbuddy.GuidePriceResponse;
+import net.runelite.http.service.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,8 +41,6 @@ public class GrandExchangeController
 	private static final int CACHE_MAX_SIZE = 2048;
 
 	private static final int CACHE_EXPIRY_MINUTES = 2;
-
-	private static final int RSBUDDY_DB_CACHE_MILLIS = 1000 * 60 * 5;
 
 	private final GrandExchangeService grandExchangeService;
 
@@ -69,17 +65,7 @@ public class GrandExchangeController
 
 			if (entry == null)
 			{
-				GuidePriceResponse guidePrice = grandExchangeService.lookupItem(itemId);
-				entry = grandExchangeService.insert(itemId, guidePrice);
-			}
-			else
-			{
-				long timeSinceUpdate = Duration.between(entry.getLast_update(), Instant.now()).toMillis();
-				if (timeSinceUpdate >= RSBUDDY_DB_CACHE_MILLIS)
-				{
-					GuidePriceResponse guidePrice = grandExchangeService.lookupItem(itemId);
-					entry = grandExchangeService.update(itemId, guidePrice);
-				}
+				throw new NotFoundException();
 			}
 
 			return entry;

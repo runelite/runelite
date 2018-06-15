@@ -126,7 +126,7 @@ public class GrandExchangeAveragesPlugin extends Plugin
 			@Override
 			public void onSuccess(GrandExchangeResult result)
 			{
-				setCurrentItemPrice(itemId, StackFormatter.formatNumber(result.getOverall()));
+				setCurrentItemPrice(itemId, StackFormatter.formatNumber(result.getOverall_average()));
 			}
 
 			@Override

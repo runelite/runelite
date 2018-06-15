@@ -27,17 +27,13 @@ package net.runelite.http.service.osb.grandexchange;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.RuneLiteAPI;
-import net.runelite.http.service.osb.grandexchange.osbuddy.GuidePriceResponse;
-import net.runelite.http.service.util.exception.InternalServerErrorException;
-import net.runelite.http.service.util.exception.NotFoundException;
-import okhttp3.HttpUrl;
-import okhttp3.Request;
-import okhttp3.Response;
+import net.runelite.http.service.osb.grandexchange.osbuddy.OsbuddyClient;
+import net.runelite.http.service.osb.grandexchange.osbuddy.SummaryItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
@@ -48,21 +44,22 @@ public class GrandExchangeService
 {
 	private static final String CREATE_GRAND_EXCHANGE_PRICES = "CREATE TABLE IF NOT EXISTS `osb_ge` (\n"
 		+ "  `item_id` int(11) NOT NULL,\n"
-		+ "  `overall` int(11) NOT NULL,\n"
-		+ "  `buying` int(11) NOT NULL,\n"
-		+ "  `buying_quantity` int(11) NOT NULL,\n"
-		+ "  `selling` int(11) NOT NULL,\n"
-		+ "  `selling_quantity` int(11) NOT NULL,\n"
+		+ "  `buy_average` int(11) NOT NULL,\n"
+		+ "  `sell_average` int(11) NOT NULL,\n"
+		+ "  `overall_average` int(11) NOT NULL,\n"
 		+ "  `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n"
 		+ "  PRIMARY KEY (`item_id`)\n"
 		+ ") ENGINE=InnoDB";
 
 	private final Sql2o sql2o;
 
+	private final OsbuddyClient osbuddyClient;
+
 	@Autowired
 	public GrandExchangeService(@Qualifier("Runelite SQL2O") Sql2o sql2o)
 	{
 		this.sql2o = sql2o;
+		this.osbuddyClient = new OsbuddyClient();
 
 		try (Connection con = sql2o.open())
 		{
@@ -70,88 +67,88 @@ public class GrandExchangeService
 		}
 	}
 
-	public GrandExchangeEntry insert(int itemId, GuidePriceResponse guidePrice)
+	public void insert(int itemId, SummaryItem item)
 	{
 		Instant insertTime = Instant.now();
 
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("INSERT INTO osb_ge (item_id, overall, buying, buying_quantity, selling, "
-				+ "selling_quantity, last_update) values (:itemId, :overall, :buying, :buyingQ, :selling, "
-				+ ":sellingQ, :lastUpdate)")
+			con.createQuery("INSERT INTO osb_ge (item_id, buy_average, sell_average, overall_average, last_update) "
+				+ "values (:itemId, :buyAverage, :sellAverage, :overallAverage, :lastUpdate)")
 				.addParameter("itemId", itemId)
-				.addParameter("overall", guidePrice.getOverall())
-				.addParameter("buying", guidePrice.getBuying())
-				.addParameter("buyingQ", guidePrice.getBuyingQuantity())
-				.addParameter("selling", guidePrice.getSelling())
-				.addParameter("sellingQ", guidePrice.getSellingQuantity())
+				.addParameter("buyAverage", item.getBuy_average())
+				.addParameter("sellAverage", item.getSell_average())
+				.addParameter("overallAverage", item.getOverall_average())
 				.addParameter("lastUpdate", Timestamp.from(insertTime))
 				.executeUpdate();
 		}
-
-		return new GrandExchangeEntry(itemId, guidePrice, insertTime);
 	}
 
-	public GrandExchangeEntry update(int itemId, GuidePriceResponse guidePrice)
+	public void update(int itemId, SummaryItem item)
 	{
 		Instant updateTime = Instant.now();
 
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("UPDATE osb_ge SET overall = :overall, buying = :buying, buying_quantity = :buyingQ, "
-				+ "selling = :selling, selling_quantity = :sellingQ, last_update = :lastUpdate WHERE item_id = :itemId")
+			con.createQuery("UPDATE osb_ge SET buy_average = :buyAverage, sell_average = :sellAverage, "
+				+ "overall_average = :overallAverage, last_update = :lastUpdate WHERE item_id = :itemId")
 				.addParameter("itemId", itemId)
-				.addParameter("overall", guidePrice.getOverall())
-				.addParameter("buying", guidePrice.getBuying())
-				.addParameter("buyingQ", guidePrice.getBuyingQuantity())
-				.addParameter("selling", guidePrice.getSelling())
-				.addParameter("sellingQ", guidePrice.getSellingQuantity())
+				.addParameter("buyAverage", item.getBuy_average())
+				.addParameter("sellAverage", item.getSell_average())
+				.addParameter("overallAverage", item.getOverall_average())
 				.addParameter("lastUpdate", Timestamp.from(updateTime))
 				.executeUpdate();
 		}
+	}
 
-		return new GrandExchangeEntry(itemId, guidePrice, updateTime);
+	public boolean has(int itemId)
+	{
+		try (Connection con = sql2o.open())
+		{
+			Integer exists = con.createQuery("SELECT EXISTS(SELECT 1 FROM osb_ge WHERE item_id = :itemId)")
+				.addParameter("itemId", itemId)
+				.executeAndFetchFirst(Integer.class);
+
+			return exists == 1;
+		}
 	}
 
 	public GrandExchangeEntry get(int itemId)
 	{
 		try (Connection con = sql2o.open())
 		{
-			return con.createQuery("SELECT item_id, overall, buying, buying_quantity, selling, selling_quantity, "
-				+ "last_update FROM osb_ge WHERE item_id = :itemId")
+			return con.createQuery("SELECT item_id, buy_average, sell_average, overall_average, last_update"
+				+ " FROM osb_ge WHERE item_id = :itemId")
 				.addParameter("itemId", itemId)
 				.executeAndFetchFirst(GrandExchangeEntry.class);
 		}
 	}
 
-	public GuidePriceResponse lookupItem(int itemId) throws IOException
+	@Scheduled(initialDelay = 1000 * 5, fixedDelay = 1000 * 60 * 30)
+	private void updateDatabase()
 	{
-		HttpUrl httpUrl = new HttpUrl.Builder()
-			.scheme("https")
-			.host("api.rsbuddy.com")
-			.addPathSegment("grandExchange")
-			.addQueryParameter("a", "guidePrice")
-			.addQueryParameter("i", String.valueOf(itemId))
-			.build();
-
-		Request request = new Request.Builder()
-			.url(httpUrl)
-			.build();
-
-		try (Response responseOk = RuneLiteAPI.CLIENT.newCall(request).execute())
+		try
 		{
-			if (!responseOk.isSuccessful())
+			Map<Integer, SummaryItem> summary = osbuddyClient.getSummary();
+
+			for (Map.Entry<Integer, SummaryItem> entry : summary.entrySet())
 			{
-				switch (HttpStatus.valueOf(responseOk.code()))
+				Integer key = entry.getKey();
+				SummaryItem value = entry.getValue();
+
+				if (has(key))
 				{
-					case NOT_FOUND:
-						throw new NotFoundException();
-					default:
-						throw new InternalServerErrorException("Error retrieving data from RsBuddy: " + responseOk.message());
+					update(key, value);
+				}
+				else
+				{
+					insert(key, value);
 				}
 			}
-
-			return RuneLiteAPI.GSON.fromJson(responseOk.body().string(), GuidePriceResponse.class);
+		}
+		catch (IOException e)
+		{
+			log.warn("Error while updating the osb grand exchange table", e);
 		}
 	}
 }

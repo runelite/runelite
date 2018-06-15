@@ -26,37 +26,17 @@ package net.runelite.http.service.osb.grandexchange;
 
 import java.time.Instant;
 import lombok.Data;
-import net.runelite.http.service.osb.grandexchange.osbuddy.GuidePriceResponse;
 
 @Data
 public class GrandExchangeEntry
 {
 	private int item_id;
 
-	private int overall;
+	private int buy_average;
 
-	private int buying;
+	private int sell_average;
 
-	private int buying_quantity;
-
-	private int selling;
-
-	private int selling_quantity;
+	private int overall_average;
 
 	private Instant last_update;
-
-	public GrandExchangeEntry()
-	{
-	}
-
-	public GrandExchangeEntry(int itemId, GuidePriceResponse guidePrice, Instant lastUpdate)
-	{
-		this.item_id = itemId;
-		this.overall = guidePrice.getOverall();
-		this.buying = guidePrice.getBuying();
-		this.buying_quantity = guidePrice.getBuyingQuantity();
-		this.selling = guidePrice.getSelling();
-		this.selling_quantity = guidePrice.getSellingQuantity();
-		this.last_update = lastUpdate;
-	}
 }
