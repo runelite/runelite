@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <https://github.com/sethtroll>
+ * Copyright (c) 2018, AeonLucid <https://github.com/AeonLucid>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,49 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grandexchange;
+package net.runelite.http.service.osbuddy;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-@ConfigGroup(
-	keyName = "grandexchange",
-	name = "Grand Exchange",
-	description = "Configuration for the Grand Exchange"
-)
-public interface GrandExchangeConfig extends Config
+@RestController
+@RequestMapping("/osb/ge")
+public class GrandExchangeController
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "quickLookup",
-		name = "Hotkey lookup (Alt + Left click)",
-		description = "Configures whether to enable the hotkey lookup for ge searches"
-	)
-	default boolean quickLookup()
+	private final GrandExchangeService grandExchangeService;
+
+	@Autowired
+	public GrandExchangeController(GrandExchangeService grandExchangeService)
 	{
-		return true;
+		this.grandExchangeService = grandExchangeService;
 	}
 
-	@ConfigItem(
-		position = 2,
-		keyName = "enableNotifications",
-		name = "Enable Notifications",
-		description = "Configures whether to enable notifications when an offer updates"
-	)
-	default boolean enableNotifications()
+	@RequestMapping
+	public ResponseEntity<GrandExchangeEntry> get(@RequestParam("itemId") int itemId) throws ExecutionException
 	{
-		return true;
-	}
+		GrandExchangeEntry grandExchangeEntry = grandExchangeService.get(itemId);
 
-	@ConfigItem(
-		position = 3,
-		keyName = "enableOsbPrices",
-		name = "Enable OSB actively traded prices",
-		description = "Shows the OSBuddy actively traded price at the GE"
-	)
-	default boolean enableOsbPrices()
-	{
-		return true;
+		return ResponseEntity.ok()
+			.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
+			.body(grandExchangeEntry);
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <https://github.com/sethtroll>
+ * Copyright (c) 2018, AeonLucid <https://github.com/AeonLucid>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,49 +22,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grandexchange;
+package net.runelite.http.api.osbuddy;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import com.google.gson.JsonParseException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.http.api.RuneLiteAPI;
+import okhttp3.HttpUrl;
+import okhttp3.Request;
+import okhttp3.Response;
 
-@ConfigGroup(
-	keyName = "grandexchange",
-	name = "Grand Exchange",
-	description = "Configuration for the Grand Exchange"
-)
-public interface GrandExchangeConfig extends Config
+@Slf4j
+public class GrandExchangeClient
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "quickLookup",
-		name = "Hotkey lookup (Alt + Left click)",
-		description = "Configures whether to enable the hotkey lookup for ge searches"
-	)
-	default boolean quickLookup()
+	public GrandExchangeResult lookupItem(int itemId) throws IOException
 	{
-		return true;
-	}
+		final HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+			.addPathSegment("osb")
+			.addPathSegment("ge")
+			.addQueryParameter("itemId", Integer.toString(itemId))
+			.build();
 
-	@ConfigItem(
-		position = 2,
-		keyName = "enableNotifications",
-		name = "Enable Notifications",
-		description = "Configures whether to enable notifications when an offer updates"
-	)
-	default boolean enableNotifications()
-	{
-		return true;
-	}
+		log.debug("Built URI: {}", url);
 
-	@ConfigItem(
-		position = 3,
-		keyName = "enableOsbPrices",
-		name = "Enable OSB actively traded prices",
-		description = "Shows the OSBuddy actively traded price at the GE"
-	)
-	default boolean enableOsbPrices()
-	{
-		return true;
+		final Request request = new Request.Builder()
+			.url(url)
+			.build();
+
+		try (final Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		{
+			if (!response.isSuccessful())
+			{
+				throw new IOException("Error looking up item id: " + response.message());
+			}
+
+			final InputStream in = response.body().byteStream();
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), GrandExchangeResult.class);
+		}
+		catch (JsonParseException ex)
+		{
+			throw new IOException(ex);
+		}
 	}
 }

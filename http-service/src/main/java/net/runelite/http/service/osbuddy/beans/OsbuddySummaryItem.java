@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <https://github.com/sethtroll>
+ * Copyright (c) 2018, AeonLucid <https://github.com/AeonLucid>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,49 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grandexchange;
+package net.runelite.http.service.osbuddy.beans;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.Data;
 
-@ConfigGroup(
-	keyName = "grandexchange",
-	name = "Grand Exchange",
-	description = "Configuration for the Grand Exchange"
-)
-public interface GrandExchangeConfig extends Config
+@Data
+public class OsbuddySummaryItem
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "quickLookup",
-		name = "Hotkey lookup (Alt + Left click)",
-		description = "Configures whether to enable the hotkey lookup for ge searches"
-	)
-	default boolean quickLookup()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 2,
-		keyName = "enableNotifications",
-		name = "Enable Notifications",
-		description = "Configures whether to enable notifications when an offer updates"
-	)
-	default boolean enableNotifications()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 3,
-		keyName = "enableOsbPrices",
-		name = "Enable OSB actively traded prices",
-		description = "Shows the OSBuddy actively traded price at the GE"
-	)
-	default boolean enableOsbPrices()
-	{
-		return true;
-	}
+	private int id;
+	private String name;
+	private boolean members;
+	private int sp;
+	private int buy_average;
+	private int sell_average;
+	private int overall_average;
 }
