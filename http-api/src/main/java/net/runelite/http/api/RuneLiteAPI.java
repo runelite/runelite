@@ -70,7 +70,7 @@ public class RuneLiteAPI
 
 	public static HttpUrl getApiBase()
 	{
-		return HttpUrl.parse(BASE + getVersion());
+		return HttpUrl.parse("http://localhost:8080");
 	}
 
 	public static String getWsEndpoint()
