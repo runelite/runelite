@@ -22,13 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.grandexchange;
+package net.runelite.http.service.osb.grandexchange;
 
 import java.time.Instant;
 import lombok.Data;
+import net.runelite.http.service.osb.grandexchange.osbuddy.GuidePriceResponse;
 
 @Data
-public class GrandExchangeResult
+public class GrandExchangeEntry
 {
 	private int item_id;
 
@@ -43,4 +44,19 @@ public class GrandExchangeResult
 	private int selling_quantity;
 
 	private Instant last_update;
+
+	public GrandExchangeEntry()
+	{
+	}
+
+	public GrandExchangeEntry(int itemId, GuidePriceResponse guidePrice, Instant lastUpdate)
+	{
+		this.item_id = itemId;
+		this.overall = guidePrice.getOverall();
+		this.buying = guidePrice.getBuying();
+		this.buying_quantity = guidePrice.getBuyingQuantity();
+		this.selling = guidePrice.getSelling();
+		this.selling_quantity = guidePrice.getSellingQuantity();
+		this.last_update = lastUpdate;
+	}
 }

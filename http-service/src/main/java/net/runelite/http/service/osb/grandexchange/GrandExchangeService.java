@@ -1,11 +1,35 @@
-package net.runelite.http.service.grandexchange;
+/*
+ * Copyright (c) 2018, AeonLucid <https://github.com/AeonLucid>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+package net.runelite.http.service.osb.grandexchange;
 
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
-import net.runelite.http.service.grandexchange.osbuddy.GuidePriceResponse;
+import net.runelite.http.service.osb.grandexchange.osbuddy.GuidePriceResponse;
 import net.runelite.http.service.util.exception.InternalServerErrorException;
 import net.runelite.http.service.util.exception.NotFoundException;
 import okhttp3.HttpUrl;
@@ -22,7 +46,7 @@ import org.sql2o.Sql2o;
 @Slf4j
 public class GrandExchangeService
 {
-	private static final String CREATE_GRAND_EXCHANGE_PRICES = "CREATE TABLE IF NOT EXISTS `ge_prices` (\n"
+	private static final String CREATE_GRAND_EXCHANGE_PRICES = "CREATE TABLE IF NOT EXISTS `osb_ge` (\n"
 		+ "  `item_id` int(11) NOT NULL,\n"
 		+ "  `overall` int(11) NOT NULL,\n"
 		+ "  `buying` int(11) NOT NULL,\n"
@@ -52,7 +76,7 @@ public class GrandExchangeService
 
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("INSERT INTO ge_prices (item_id, overall, buying, buying_quantity, selling, "
+			con.createQuery("INSERT INTO osb_ge (item_id, overall, buying, buying_quantity, selling, "
 				+ "selling_quantity, last_update) values (:itemId, :overall, :buying, :buyingQ, :selling, "
 				+ ":sellingQ, :lastUpdate)")
 				.addParameter("itemId", itemId)
@@ -62,10 +86,6 @@ public class GrandExchangeService
 				.addParameter("selling", guidePrice.getSelling())
 				.addParameter("sellingQ", guidePrice.getSellingQuantity())
 				.addParameter("lastUpdate", Timestamp.from(insertTime))
-				.addColumnMapping("item_id", "itemId")
-				.addColumnMapping("buying_quantity", "buyingQuantity")
-				.addColumnMapping("selling_quantity", "sellingQuantity")
-				.addColumnMapping("last_update", "lastUpdate")
 				.executeUpdate();
 		}
 
@@ -78,7 +98,7 @@ public class GrandExchangeService
 
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("UPDATE ge_prices SET overall = :overall, buying = :buying, buying_quantity = :buyingQ, "
+			con.createQuery("UPDATE osb_ge SET overall = :overall, buying = :buying, buying_quantity = :buyingQ, "
 				+ "selling = :selling, selling_quantity = :sellingQ, last_update = :lastUpdate WHERE item_id = :itemId")
 				.addParameter("itemId", itemId)
 				.addParameter("overall", guidePrice.getOverall())
@@ -87,10 +107,6 @@ public class GrandExchangeService
 				.addParameter("selling", guidePrice.getSelling())
 				.addParameter("sellingQ", guidePrice.getSellingQuantity())
 				.addParameter("lastUpdate", Timestamp.from(updateTime))
-				.addColumnMapping("item_id", "itemId")
-				.addColumnMapping("buying_quantity", "buyingQuantity")
-				.addColumnMapping("selling_quantity", "sellingQuantity")
-				.addColumnMapping("last_update", "lastUpdate")
 				.executeUpdate();
 		}
 
@@ -102,12 +118,8 @@ public class GrandExchangeService
 		try (Connection con = sql2o.open())
 		{
 			return con.createQuery("SELECT item_id, overall, buying, buying_quantity, selling, selling_quantity, "
-				+ "last_update FROM ge_prices WHERE ge_prices.item_id = :itemId")
+				+ "last_update FROM osb_ge WHERE item_id = :itemId")
 				.addParameter("itemId", itemId)
-				.addColumnMapping("item_id", "itemId")
-				.addColumnMapping("buying_quantity", "buyingQuantity")
-				.addColumnMapping("selling_quantity", "sellingQuantity")
-				.addColumnMapping("last_update", "lastUpdate")
 				.executeAndFetchFirst(GrandExchangeEntry.class);
 		}
 	}
