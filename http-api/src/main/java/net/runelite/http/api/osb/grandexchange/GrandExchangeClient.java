@@ -62,15 +62,15 @@ public class GrandExchangeClient
 			@Override
 			public void onResponse(Call call, Response response) throws IOException
 			{
-				try (Response responseOk = RuneLiteAPI.CLIENT.newCall(request).execute())
+				try
 				{
-					if (!responseOk.isSuccessful())
+					if (!response.isSuccessful())
 					{
-						callback.onFailure(new IOException("Error looking up item id: " + responseOk.message()));
+						callback.onFailure(new IOException("Error looking up item id: " + response.message()));
 						return;
 					}
 
-					callback.onSuccess(RuneLiteAPI.GSON.fromJson(responseOk.body().string(), GrandExchangeResult.class));
+					callback.onSuccess(RuneLiteAPI.GSON.fromJson(response.body().string(), GrandExchangeResult.class));
 				}
 				catch (JsonParseException exception)
 				{
