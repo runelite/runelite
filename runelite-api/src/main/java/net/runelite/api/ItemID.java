@@ -3862,6 +3862,7 @@ public final class ItemID
 	public static final int COMPOST_POTION1 = 6476;
 	public static final int TROLLEY = 6478;
 	public static final int LIST = 6479;
+	public static final int NULL = 6512;
 	public static final int AGILITY_JUMP = 6514;
 	public static final int AGILITY_BALANCE = 6515;
 	public static final int AGILITY_CONTORTION = 6516;
