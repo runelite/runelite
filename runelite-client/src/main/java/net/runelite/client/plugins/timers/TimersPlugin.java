@@ -95,8 +95,6 @@ public class TimersPlugin extends Plugin
 	@Inject
 	private InfoBoxManager infoBoxManager;
 
-	private int cannonWorld;
-
 	@Provides
 	TimersConfig getConfig(ConfigManager configManager)
 	{
@@ -348,7 +346,7 @@ public class TimersPlugin extends Plugin
 
 		if (event.getMessage().equals("You pick up the cannon. It's really heavy."))
 		{
-			config.cannonWorld(0);
+			config.cannonWorld(TimersConfig.DEFAULT_CANNON_WORLD);
 			removeGameTimer(CANNON);
 		}
 
@@ -433,7 +431,6 @@ public class TimersPlugin extends Plugin
 			createGameTimer(VENGEANCEOTHER);
 		}
 	}
-
 
 	@Subscribe
 	public void onGraphicChanged(GraphicChanged event)
@@ -520,7 +517,7 @@ public class TimersPlugin extends Plugin
 		removeGameTimer(timer);
 
 		TimerTimer t = new TimerTimer(timer, this);
-		t.setTooltip(toolTip(timer));
+		t.setTooltip(getTooltipDescription(timer));
 		infoBoxManager.addInfoBox(t);
 	}
 
@@ -529,9 +526,9 @@ public class TimersPlugin extends Plugin
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer);
 	}
 
-	public String toolTip(GameTimer timer)
+	private String getTooltipDescription(GameTimer timer)
 	{
-		if (timer.equals(GameTimer.CANNON))
+		if (timer == GameTimer.CANNON)
 		{
 			return "Cannon on world: " + config.cannonWorld();
 		}
