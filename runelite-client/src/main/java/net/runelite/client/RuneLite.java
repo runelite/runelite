@@ -228,6 +228,7 @@ public class RuneLite
 		// Register event listeners
 		eventBus.register(clientUI);
 		eventBus.register(overlayRenderer);
+		eventBus.register(overlayManager);
 		eventBus.register(drawManager);
 		eventBus.register(menuManager);
 		eventBus.register(chatMessageManager);
