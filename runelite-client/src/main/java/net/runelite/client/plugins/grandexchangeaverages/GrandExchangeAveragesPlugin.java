@@ -37,8 +37,9 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.StackFormatter;
-import net.runelite.http.api.grandexchange.GrandExchangeClient;
-import net.runelite.http.api.grandexchange.GrandExchangeResult;
+import net.runelite.http.api.osb.grandexchange.GrandExchangeCallback;
+import net.runelite.http.api.osb.grandexchange.GrandExchangeClient;
+import net.runelite.http.api.osb.grandexchange.GrandExchangeResult;
 
 @PluginDescriptor(
 	name = "GrandExchange Averages",
@@ -120,14 +121,19 @@ public class GrandExchangeAveragesPlugin extends Plugin
 
 	private void loadCurrentItemPrice(final int itemId)
 	{
-		try
+		grandExchangeClient.lookupItem(itemId, new GrandExchangeCallback()
 		{
-			GrandExchangeResult result = grandExchangeClient.lookupItem(itemId);
-			setCurrentItemPrice(itemId, StackFormatter.formatNumber(result.getOverall()));
-		}
-		catch (IOException exception)
-		{
-			log.warn("Error while grabbing price of item id " + itemId, exception);
-		}
+			@Override
+			public void onSuccess(GrandExchangeResult result)
+			{
+				setCurrentItemPrice(itemId, StackFormatter.formatNumber(result.getOverall()));
+			}
+
+			@Override
+			public void onFailure(IOException exception)
+			{
+				log.warn("Error while grabbing price of item id " + itemId, exception);
+			}
+		});
 	}
 }

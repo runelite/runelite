@@ -22,12 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.grandexchange;
+package net.runelite.http.api.osb.grandexchange;
 
 import com.google.gson.JsonParseException;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -35,7 +37,7 @@ import okhttp3.Response;
 @Slf4j
 public class GrandExchangeClient
 {
-	public GrandExchangeResult lookupItem(int itemId) throws IOException
+	public void lookupItem(int itemId, GrandExchangeCallback callback)
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("osb")
@@ -49,19 +51,36 @@ public class GrandExchangeClient
 			.url(url)
 			.build();
 
-		try (Response responseOk = RuneLiteAPI.CLIENT.newCall(request).execute())
+		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
 		{
-			if (!responseOk.isSuccessful())
+			@Override
+			public void onFailure(Call call, IOException e)
 			{
-				log.debug("Error looking up item id: {}", responseOk.message());
-				return null;
+				callback.onFailure(e);
 			}
 
-			return RuneLiteAPI.GSON.fromJson(responseOk.body().string(), GrandExchangeResult.class);
-		}
-		catch (JsonParseException exception)
-		{
-			throw new IOException(exception);
-		}
+			@Override
+			public void onResponse(Call call, Response response) throws IOException
+			{
+				try (Response responseOk = RuneLiteAPI.CLIENT.newCall(request).execute())
+				{
+					if (!responseOk.isSuccessful())
+					{
+						callback.onFailure(new IOException("Error looking up item id: " + responseOk.message()));
+						return;
+					}
+
+					callback.onSuccess(RuneLiteAPI.GSON.fromJson(responseOk.body().string(), GrandExchangeResult.class));
+				}
+				catch (JsonParseException exception)
+				{
+					callback.onFailure(new IOException(exception));
+				}
+				finally
+				{
+					response.close();
+				}
+			}
+		});
 	}
 }
