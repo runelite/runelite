@@ -31,6 +31,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -107,11 +108,14 @@ public class GroundItemsOverlay extends Overlay
 		offsetMap.clear();
 		final LocalPoint localLocation = player.getLocalLocation();
 		final Point mousePos = client.getMouseCanvasPosition();
-		final Collection<GroundItem> groundItemList = plugin.getCollectedGroundItems().values();
+		Collection<GroundItem> groundItemList = plugin.getCollectedGroundItems().values();
 		GroundItem topGroundItem = null;
 
 		if (plugin.isHotKeyPressed())
 		{
+			// Make copy of ground items because we are going to modify them here, and the array list supports our
+			// desired behaviour here
+			groundItemList = new ArrayList<>(groundItemList);
 			final java.awt.Point awtMousePos = new java.awt.Point(mousePos.getX(), mousePos.getY());
 			GroundItem groundItem = null;
 
