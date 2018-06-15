@@ -50,6 +50,7 @@ public class GrandExchangeAveragesPlugin extends Plugin
 {
 	private static final int OFFER_CONTAINER_ITEM = 21;
 	private static final int OFFER_DEFAULT_ITEM_ID = 6512;
+	private static final GrandExchangeClient CLIENT = new GrandExchangeClient();
 
 	@Inject
 	private Client client;
@@ -101,15 +102,13 @@ public class GrandExchangeAveragesPlugin extends Plugin
 		}
 
 		lastItem = itemId;
-
 		final Widget geText = grandExchangeText;
-		final GrandExchangeClient grandExchangeClient = new GrandExchangeClient();
 
 		executorService.submit(() ->
 		{
 			try
 			{
-				final GrandExchangeResult result = grandExchangeClient.lookupItem(itemId);
+				final GrandExchangeResult result = CLIENT.lookupItem(itemId);
 				final String text = geText.getText() + "<br>OSBuddy Actively traded price: " + StackFormatter.formatNumber(result.getOverall_average());
 				geText.setText(text);
 			}
