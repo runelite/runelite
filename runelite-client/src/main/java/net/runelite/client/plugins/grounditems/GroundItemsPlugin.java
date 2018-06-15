@@ -412,7 +412,7 @@ public class GroundItemsPlugin extends Plugin
 			final Color highlighted = getHighlighted(itemComposition.getName(), haPrice, gePrice);
 			final Color color = getItemColor(highlighted, hidden);
 
-			if (color != null && !color.equals(config.defaultColor()))
+			if (color != null && hidden == null && !color.equals(config.defaultColor()))
 			{
 				String hexColor = Integer.toHexString(color.getRGB() & 0xFFFFFF);
 				String colTag = "<col=" + hexColor + ">";
