@@ -33,6 +33,7 @@ import java.awt.Rectangle;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.overlay.Overlay;
@@ -44,6 +45,7 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
+@Singleton
 public class InfoBoxOverlay extends Overlay
 {
 	private final PanelComponent panelComponent = new PanelComponent();
