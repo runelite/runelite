@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.kourendlibrary;
 
-import com.google.inject.Inject;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
@@ -36,18 +35,20 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import net.runelite.api.Client;
-import net.runelite.api.Perspective;
-import net.runelite.api.Player;
-import net.runelite.api.Point;
+
+import com.google.inject.Inject;
+import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.api.Item;
 
 import static net.runelite.api.Perspective.getCanvasTilePoly;
+
 
 class KourendLibraryOverlay extends Overlay
 {
@@ -56,11 +57,14 @@ class KourendLibraryOverlay extends Overlay
 	private final Library library;
 	private final Client client;
 
+	private final KourendLibraryPlugin plugin;
+
 	@Inject
-	KourendLibraryOverlay(Library library, Client client)
+	KourendLibraryOverlay(Library library, Client client, KourendLibraryPlugin plugin)
 	{
 		this.library = library;
 		this.client = client;
+		this.plugin = plugin;
 
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -83,6 +87,12 @@ class KourendLibraryOverlay extends Overlay
 		}
 
 		List<Bookcase> allBookcases = library.getBookcasesOnLevel(client.getPlane());
+		if (allBookcases == null)
+		{
+			return null;
+		}
+
+		Item [] items = plugin.getInventoryItems();
 
 		for (Bookcase bookcase : allBookcases)
 		{
@@ -123,8 +133,17 @@ class KourendLibraryOverlay extends Overlay
 					book = possible.iterator().next();
 					bookIsKnown = true;
 				}
+
 				Color color = bookIsKnown ? Color.ORANGE : Color.WHITE;
 
+				for (Item it : items)
+				{
+					if (it != null && book != null && !book.isDarkManuscript() && book == Book.byId(it.getId()))
+					{
+						color = Color.RED;
+						break;
+					}
+				}
 				// Render the poly on the floor
 				if (!(bookIsKnown && book == null) && (library.getState() == SolvedState.NO_DATA || book != null || possible.size() > 0))
 				{

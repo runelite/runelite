@@ -8,3 +8,4 @@ project.properties
 .project
 .settings/
 .classpath
+.jar

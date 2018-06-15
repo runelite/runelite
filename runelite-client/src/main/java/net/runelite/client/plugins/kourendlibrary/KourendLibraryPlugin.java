@@ -29,6 +29,7 @@ import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +44,9 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
+import lombok.Getter;
+import net.runelite.api.*;
+import net.runelite.api.events.*;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
@@ -53,6 +57,7 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.api.Item;
 
 @PluginDescriptor(
 	name = "Kourend Library",
@@ -82,6 +87,9 @@ public class KourendLibraryPlugin extends Plugin
 	private KourendLibraryOverlay overlay;
 
 	@Inject
+	private KourendLibraryCornerOverlay kourendLibraryCornerOverlay;
+
+	@Inject
 	private KourendLibraryConfig config;
 
 	@Inject
@@ -99,11 +107,14 @@ public class KourendLibraryPlugin extends Plugin
 	{
 		return configManager.getConfig(KourendLibraryConfig.class);
 	}
+	@Getter
+	private Item [] inventoryItems;
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		overlayManager.add(kourendLibraryCornerOverlay);
 		Book.fillImages(itemManager);
 
 		panel = injector.getInstance(KourendLibraryPanel.class);
@@ -177,6 +188,16 @@ public class KourendLibraryPlugin extends Plugin
 		if (anim.getActor() == client.getLocalPlayer() && anim.getActor().getAnimation() == AnimationID.LOOKING_INTO)
 		{
 			lastBookcaseAnimatedOn = lastBookcaseClick;
+			inventoryItems = client.getItemContainer(InventoryID.INVENTORY).getItems();
+		}
+	}
+
+	@Subscribe
+	public void onItemContainerChanged(final ItemContainerChanged event)
+	{
+		if (event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
+		{
+			inventoryItems = client.getItemContainer(InventoryID.INVENTORY).getItems();
 		}
 	}
 

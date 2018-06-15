@@ -235,8 +235,13 @@ public interface MenuEntrySwapperConfig extends Config
 		name = "Decant",
 		description = "Swap Talk-to with Decant for Bob Barter and Murky Matt at the Grand Exchange."
 	)
-	default boolean swapDecant()
-	{
-		return false;
-	}
+	default boolean swapDecant() { return false; }
+
+	@ConfigItem(
+	    position = 18,
+		keyName = "swapLibrary",
+		name = "Help",
+		description = "Swap Help on the library customers"
+	)
+	default boolean swapLibrary() { return true; }
 }
