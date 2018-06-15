@@ -44,6 +44,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -57,14 +58,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
+import javax.swing.JTextArea;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItem;
@@ -75,16 +78,23 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.ComboBoxListRenderer;
+import net.runelite.client.ui.components.IconTextField;
+import net.runelite.client.util.SwingUtil;
 
 @Slf4j
 public class ConfigPanel extends PluginPanel
 {
-	private static final int TEXT_FIELD_WIDTH = 7;
 	private static final int SPINNER_FIELD_WIDTH = 6;
-	private static BufferedImage CONFIG_ICON;
-	private static BufferedImage UNCHECK_ICON;
-	private static BufferedImage CHECK_ICON;
+
+	private static final ImageIcon CONFIG_ICON;
+	private static final ImageIcon CONFIG_ICON_HOVER;
+	private static final ImageIcon ON_SWITCHER;
+	private static final ImageIcon OFF_SWITCHER;
+	private static final ImageIcon SEARCH;
 
 	static
 	{
@@ -92,14 +102,17 @@ public class ConfigPanel extends PluginPanel
 		{
 			synchronized (ImageIO.class)
 			{
-				CONFIG_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("config_icon.png"));
-				UNCHECK_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("disabled.png"));
-				CHECK_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("enabled.png"));
+				BufferedImage configIcon = ImageIO.read(ConfigPanel.class.getResourceAsStream("config_edit_icon.png"));
+				CONFIG_ICON = new ImageIcon(configIcon);
+				CONFIG_ICON_HOVER = new ImageIcon(SwingUtil.grayscaleOffset(configIcon, -100));
+				ON_SWITCHER = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("switchers/on.png")));
+				OFF_SWITCHER = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("switchers/off.png")));
+				SEARCH = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("search.png")));
 			}
 		}
 		catch (IOException e)
 		{
-			log.warn("Failed to read icon", e);
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -107,18 +120,25 @@ public class ConfigPanel extends PluginPanel
 	private final ConfigManager configManager;
 	private final ScheduledExecutorService executorService;
 	private final RuneLiteConfig runeLiteConfig;
-	private final JTextField searchBar = new JTextField();
+	private final ChatColorConfig chatColorConfig;
+	private final IconTextField searchBar = new IconTextField();
 	private Map<String, JPanel> children = new TreeMap<>();
 	private int scrollBarPosition = 0;
 
-	public ConfigPanel(PluginManager pluginManager, ConfigManager configManager, ScheduledExecutorService executorService, RuneLiteConfig runeLiteConfig)
+	public ConfigPanel(PluginManager pluginManager, ConfigManager configManager, ScheduledExecutorService executorService,
+		RuneLiteConfig runeLiteConfig, ChatColorConfig chatColorConfig)
 	{
 		super();
 		this.pluginManager = pluginManager;
 		this.configManager = configManager;
 		this.executorService = executorService;
 		this.runeLiteConfig = runeLiteConfig;
+		this.chatColorConfig = chatColorConfig;
 
+		searchBar.setIcon(SEARCH);
+		searchBar.setPreferredSize(new Dimension(100, 30));
+		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		searchBar.getDocument().addDocumentListener(new DocumentListener()
 		{
 			@Override
@@ -140,6 +160,10 @@ public class ConfigPanel extends PluginPanel
 			}
 		});
 
+		setBorder(new EmptyBorder(10, 10, 10, 10));
+		setLayout(new DynamicGridLayout(0, 1, 0, 5));
+		setBackground(ColorScheme.DARK_GRAY_COLOR);
+
 		rebuildPluginList();
 		openConfigList();
 	}
@@ -150,46 +174,62 @@ public class ConfigPanel extends PluginPanel
 		Map<String, JPanel> newChildren = new TreeMap<>();
 
 		pluginManager.getPlugins().stream()
-				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).hidden())
-				.sorted(Comparator.comparing(left -> left.getClass().getAnnotation(PluginDescriptor.class).name()))
-				.forEach(plugin ->
-				{
-					final Config pluginConfigProxy = pluginManager.getPluginConfigProxy(plugin);
-					final String pluginName = plugin.getClass().getAnnotation(PluginDescriptor.class).name();
+			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).hidden())
+			.sorted(Comparator.comparing(left -> left.getClass().getAnnotation(PluginDescriptor.class).name()))
+			.forEach(plugin ->
+			{
+				final Config pluginConfigProxy = pluginManager.getPluginConfigProxy(plugin);
+				final String pluginName = plugin.getClass().getAnnotation(PluginDescriptor.class).name();
 
-					final JPanel groupPanel = buildGroupPanel();
-					groupPanel.add(new JLabel(pluginName), BorderLayout.CENTER);
+				final JPanel groupPanel = buildGroupPanel();
 
-					final JPanel buttonPanel = new JPanel();
-					buttonPanel.setLayout(new GridLayout(1, 2, 3, 0));
-					groupPanel.add(buttonPanel, BorderLayout.LINE_END);
+				JLabel name = new JLabel(pluginName);
+				name.setForeground(Color.WHITE);
 
-					final JButton editConfigButton = buildConfigButton(pluginConfigProxy);
-					buttonPanel.add(editConfigButton);
+				groupPanel.add(name, BorderLayout.CENTER);
 
-					final JButton toggleButton = buildToggleButton(plugin);
-					buttonPanel.add(toggleButton);
+				final JPanel buttonPanel = new JPanel();
+				buttonPanel.setLayout(new GridLayout(1, 2));
+				groupPanel.add(buttonPanel, BorderLayout.LINE_END);
 
-					newChildren.put(pluginName, groupPanel);
-				});
+				final JLabel editConfigButton = buildConfigButton(pluginConfigProxy);
+				buttonPanel.add(editConfigButton);
 
+				final JLabel toggleButton = buildToggleButton(plugin);
+				toggleButton.setHorizontalAlignment(SwingConstants.RIGHT);
+				buttonPanel.add(toggleButton);
 
-		final JPanel groupPanel = buildGroupPanel();
-		groupPanel.add(new JLabel("RuneLite"), BorderLayout.CENTER);
+				newChildren.put(pluginName, groupPanel);
+			});
 
-		final JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new GridLayout(1, 2, 3, 0));
-		groupPanel.add(buttonPanel, BorderLayout.LINE_END);
-
-		final JButton editConfigButton = buildConfigButton(runeLiteConfig);
-		buttonPanel.add(editConfigButton);
-
-		final JButton toggleButton = buildToggleButton(null);
-		buttonPanel.add(toggleButton);
-		newChildren.put("RuneLite", groupPanel);
+		addCoreConfig(newChildren, "RuneLite", runeLiteConfig);
+		addCoreConfig(newChildren, "Chat Color", chatColorConfig);
 
 		children = newChildren;
 		openConfigList();
+	}
+
+	private void addCoreConfig(Map<String, JPanel> newChildren, String configName, Config config)
+	{
+		final JPanel groupPanel = buildGroupPanel();
+
+		JLabel name = new JLabel(configName);
+		name.setForeground(Color.WHITE);
+
+		groupPanel.add(name, BorderLayout.CENTER);
+
+		final JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new GridLayout(1, 2));
+		groupPanel.add(buttonPanel, BorderLayout.LINE_END);
+
+		final JLabel editConfigButton = buildConfigButton(config);
+		buttonPanel.add(editConfigButton);
+
+		final JLabel toggleButton = buildToggleButton(null);
+		toggleButton.setVisible(false);
+		buttonPanel.add(toggleButton);
+
+		newChildren.put(configName, groupPanel);
 	}
 
 	private JPanel buildGroupPanel()
@@ -197,15 +237,16 @@ public class ConfigPanel extends PluginPanel
 		// Create base panel for the config button and enabled/disabled button
 		final JPanel groupPanel = new JPanel();
 		groupPanel.setLayout(new BorderLayout(3, 0));
+		groupPanel.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, 20));
 		return groupPanel;
 	}
 
-	private JButton buildConfigButton(Config config)
+	private JLabel buildConfigButton(Config config)
 	{
 		// Create edit config button and disable it by default
-		final JButton editConfigButton = new JButton(new ImageIcon(CONFIG_ICON));
-		editConfigButton.setPreferredSize(new Dimension(32, 0));
-		editConfigButton.setEnabled(false);
+		final JLabel editConfigButton = new JLabel(CONFIG_ICON);
+		editConfigButton.setPreferredSize(new Dimension(25, 0));
+		editConfigButton.setVisible(false);
 
 		// If we have configuration proxy enable the button and add edit config listener
 		if (config != null)
@@ -215,8 +256,28 @@ public class ConfigPanel extends PluginPanel
 
 			if (!configEmpty)
 			{
-				editConfigButton.addActionListener(ae -> openGroupConfigPanel(config, configDescriptor, configManager));
-				editConfigButton.setEnabled(true);
+				editConfigButton.addMouseListener(new MouseAdapter()
+				{
+					@Override
+					public void mousePressed(MouseEvent mouseEvent)
+					{
+						editConfigButton.setIcon(CONFIG_ICON);
+						openGroupConfigPanel(config, configDescriptor, configManager);
+					}
+
+					@Override
+					public void mouseEntered(MouseEvent e)
+					{
+						editConfigButton.setIcon(CONFIG_ICON_HOVER);
+					}
+
+					@Override
+					public void mouseExited(MouseEvent e)
+					{
+						editConfigButton.setIcon(CONFIG_ICON);
+					}
+				});
+				editConfigButton.setVisible(true);
 				editConfigButton.setToolTipText("Edit plugin configuration");
 			}
 		}
@@ -224,11 +285,11 @@ public class ConfigPanel extends PluginPanel
 		return editConfigButton;
 	}
 
-	private JButton buildToggleButton(Plugin plugin)
+	private JLabel buildToggleButton(Plugin plugin)
 	{
 		// Create enabling/disabling button
-		final JButton toggleButton = new JButton(new ImageIcon(CHECK_ICON));
-		toggleButton.setPreferredSize(new Dimension(32, 0));
+		final JLabel toggleButton = new JLabel(ON_SWITCHER);
+		toggleButton.setPreferredSize(new Dimension(25, 0));
 
 		if (plugin == null)
 		{
@@ -238,36 +299,43 @@ public class ConfigPanel extends PluginPanel
 
 		highlightButton(toggleButton, pluginManager.isPluginEnabled(plugin));
 
-		toggleButton.addActionListener(e -> executorService.submit(() ->
+		toggleButton.addMouseListener(new MouseAdapter()
 		{
-			final boolean enabled = pluginManager.isPluginEnabled(plugin);
-			pluginManager.setPluginEnabled(plugin, !enabled);
-
-			try
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
 			{
-				if (enabled)
+				executorService.submit(() ->
 				{
-					pluginManager.stopPlugin(plugin);
-				}
-				else
-				{
-					pluginManager.startPlugin(plugin);
-				}
-			}
-			catch (PluginInstantiationException ex)
-			{
-				log.warn("Error during starting/stopping plugin {}", plugin.getClass().getSimpleName(), ex);
-			}
+					final boolean enabled = pluginManager.isPluginEnabled(plugin);
+					pluginManager.setPluginEnabled(plugin, !enabled);
 
-			highlightButton(toggleButton, !enabled);
-		}));
+					try
+					{
+						if (enabled)
+						{
+							pluginManager.stopPlugin(plugin);
+						}
+						else
+						{
+							pluginManager.startPlugin(plugin);
+						}
+					}
+					catch (PluginInstantiationException ex)
+					{
+						log.warn("Error during starting/stopping plugin {}", plugin.getClass().getSimpleName(), ex);
+					}
+
+					highlightButton(toggleButton, !enabled);
+				});
+			}
+		});
 
 		return toggleButton;
 	}
 
-	private void highlightButton(JButton button, boolean enabled)
+	private void highlightButton(JLabel button, boolean enabled)
 	{
-		button.setIcon(enabled ? new ImageIcon(CHECK_ICON) : new ImageIcon(UNCHECK_ICON));
+		button.setIcon(enabled ? ON_SWITCHER : OFF_SWITCHER);
 		button.setToolTipText(enabled ? "Disable plugin" : "Enable plugin");
 	}
 
@@ -301,7 +369,11 @@ public class ConfigPanel extends PluginPanel
 	private void openConfigList()
 	{
 		removeAll();
-		add(new JLabel("Plugin Configuration", SwingConstants.CENTER));
+
+		JLabel title = new JLabel("Configuration", SwingConstants.LEFT);
+		title.setForeground(Color.WHITE);
+
+		add(title);
 		add(searchBar);
 
 		onSearchBarChanged();
@@ -340,9 +412,9 @@ public class ConfigPanel extends PluginPanel
 			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + spinner.getValue());
 		}
 
-		if (component instanceof JTextField)
+		if (component instanceof JTextArea)
 		{
-			JTextField textField = (JTextField) component;
+			JTextArea textField = (JTextArea) component;
 			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), textField.getText());
 		}
 
@@ -364,9 +436,10 @@ public class ConfigPanel extends PluginPanel
 		scrollBarPosition = getScrollPane().getVerticalScrollBar().getValue();
 		removeAll();
 		String name = cd.getGroup().name() + " Configuration";
-		JLabel title = new JLabel(name);
+		JLabel title = new JLabel(name, SwingConstants.CENTER);
+		title.setForeground(Color.WHITE);
 		title.setToolTipText(cd.getGroup().description());
-		add(title, SwingConstants.CENTER);
+		add(title);
 
 		for (ConfigItemDescriptor cid : cd.getItems())
 		{
@@ -379,12 +452,14 @@ public class ConfigPanel extends PluginPanel
 			item.setLayout(new BorderLayout());
 			name = cid.getItem().name();
 			JLabel configEntryName = new JLabel(name);
+			configEntryName.setForeground(Color.WHITE);
 			configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
 			item.add(configEntryName, BorderLayout.CENTER);
 
 			if (cid.getType() == boolean.class)
 			{
 				JCheckBox checkbox = new JCheckBox();
+				checkbox.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
 				checkbox.setSelected(Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName())));
 				checkbox.addActionListener(ae -> changeConfiguration(config, checkbox, cd, cid));
 
@@ -407,7 +482,10 @@ public class ConfigPanel extends PluginPanel
 
 			if (cid.getType() == String.class)
 			{
-				JTextField textField = new JTextField("", TEXT_FIELD_WIDTH);
+				JTextArea textField = new JTextArea();
+				textField.setLineWrap(true);
+				textField.setWrapStyleWord(true);
+				textField.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 				textField.setText(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName()));
 
 				textField.addFocusListener(new FocusAdapter()
@@ -420,29 +498,42 @@ public class ConfigPanel extends PluginPanel
 					}
 				});
 
-				textField.addActionListener(e ->
-				{
-					changeConfiguration(config, textField, cd, cid);
-					textField.setToolTipText(textField.getText());
-				});
-
 				textField.setToolTipText(textField.getText());
-				item.add(textField, BorderLayout.EAST);
+				item.add(textField, BorderLayout.SOUTH);
 			}
 
 			if (cid.getType() == Color.class)
 			{
-				JButton colorPicker = new JButton("Pick a color");
+				String existing = configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName());
+
+				Color existingColor;
+				JButton colorPicker;
+
+				if (existing == null)
+				{
+					existingColor = Color.BLACK;
+					colorPicker = new JButton("Pick a color");
+				}
+				else
+				{
+					existingColor = Color.decode(existing);
+					colorPicker = new JButton("#" + Integer.toHexString(existingColor.getRGB()).substring(2).toUpperCase());
+				}
+
 				colorPicker.setFocusable(false);
-				colorPicker.setBackground(Color.decode(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName())));
+				colorPicker.setBackground(existingColor);
 				colorPicker.addMouseListener(new MouseAdapter()
 				{
 					@Override
 					public void mouseClicked(MouseEvent e)
 					{
 						final JFrame parent = new JFrame();
-						JColorChooser jColorChooser = new JColorChooser(Color.decode(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName())));
-						jColorChooser.getSelectionModel().addChangeListener(e1 -> colorPicker.setBackground(jColorChooser.getColor()));
+						JColorChooser jColorChooser = new JColorChooser(existingColor);
+						jColorChooser.getSelectionModel().addChangeListener(e1 ->
+						{
+							colorPicker.setBackground(jColorChooser.getColor());
+							colorPicker.setText("#" + Integer.toHexString(jColorChooser.getColor().getRGB()).substring(2).toUpperCase());
+						});
 						parent.addWindowListener(new WindowAdapter()
 						{
 							@Override
@@ -482,7 +573,7 @@ public class ConfigPanel extends PluginPanel
 				heightSpinnerTextField.setColumns(4);
 
 				ChangeListener listener = e ->
-						configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue());
+					configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue());
 
 				widthSpinner.addChangeListener(listener);
 				heightSpinner.addChangeListener(listener);
@@ -498,6 +589,9 @@ public class ConfigPanel extends PluginPanel
 			{
 				Class<? extends Enum> type = (Class<? extends Enum>) cid.getType();
 				JComboBox box = new JComboBox(type.getEnumConstants());
+				box.setPreferredSize(new Dimension(box.getPreferredSize().width, 25));
+				box.setRenderer(new ComboBoxListRenderer());
+				box.setForeground(Color.WHITE);
 				box.setFocusable(false);
 				box.setPrototypeDisplayValue("XXXXXXXX"); //sorry but this is the way to keep the size of the combobox in check.
 				try

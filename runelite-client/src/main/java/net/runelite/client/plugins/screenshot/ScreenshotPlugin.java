@@ -25,11 +25,13 @@
 package net.runelite.client.plugins.screenshot;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Desktop;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.datatransfer.Clipboard;
@@ -79,7 +81,7 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.TitleToolbar;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
@@ -105,6 +107,15 @@ public class ScreenshotPlugin extends Plugin
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile("Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
 
+	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
+		"You feel something weird sneaking into your backpack",
+		"You have a funny feeling like you would have been followed");
+
+	private static final ImmutableList<String> KILL_MESSAGES = ImmutableList.of("into tiny pieces and sat on them", "you have obliterated",
+		"falls before your might", "A humiliating defeat for", "With a crushing blow you", "thinking challenging you",
+		"Can anyone defeat you? Certainly", "was no match for you", "You were clearly a better fighter than", "RIP",
+		"You have defeated", "What an embarrassing performance by", "was no match for your awesomeness");
+
 	private String clueType;
 	private Integer clueNumber;
 
@@ -114,6 +125,9 @@ public class ScreenshotPlugin extends Plugin
 
 	@Inject
 	private ScreenshotConfig config;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private ScreenshotOverlay screenshotOverlay;
@@ -151,14 +165,9 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Override
-	public Overlay getOverlay()
-	{
-		return screenshotOverlay;
-	}
-
-	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(screenshotOverlay);
 		SCREENSHOT_DIR.mkdirs();
 		keyManager.registerKeyListener(inputListener);
 
@@ -202,6 +211,7 @@ public class ScreenshotPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(screenshotOverlay);
 		titleToolbar.removeNavigation(titleBarButton);
 		keyManager.unregisterKeyListener(inputListener);
 	}
@@ -245,6 +255,18 @@ public class ScreenshotPlugin extends Plugin
 				raidsNumber = Integer.valueOf(m.group());
 				return;
 			}
+		}
+
+		if (config.screenshotPet() && PET_MESSAGES.stream().anyMatch(chatMessage::contains))
+		{
+			String fileName = "Pet " + TIME_FORMAT.format(new Date());
+			takeScreenshot(fileName);
+		}
+
+		if (config.screenshotKills() && KILL_MESSAGES.stream().anyMatch(chatMessage::contains))
+		{
+			String fileName = "Kill " + TIME_FORMAT.format(new Date());
+			takeScreenshot(fileName);
 		}
 	}
 
@@ -409,11 +431,11 @@ public class ScreenshotPlugin extends Plugin
 			return;
 		}
 
-		Consumer<BufferedImage> screenshotConsumer = image ->
+		Consumer<Image> screenshotConsumer = image ->
 		{
 			BufferedImage screenshot = config.includeFrame()
 				? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
-				: new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+				: new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 
 			Graphics graphics = screenshot.getGraphics();
 

@@ -37,10 +37,22 @@ public interface BlastFurnaceConfig extends Config
 {
 	@ConfigItem(
 		keyName = "showConveyorBelt",
-		name = "Show Conveyor belt clickbox",
-		description = "Configures whether or not the clickbox for the conveyor belt is displayed"
+		name = "Show conveyor belt clickbox",
+		description = "Configures whether or not the clickbox for the conveyor belt is displayed",
+		position = 1
 	)
 	default boolean showConveyorBelt()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showBarDispenser",
+		name = "Show bar dispenser clickbox",
+		description = "Configures whether or not the clickbox for the bar dispenser is displayed",
+		position = 2
+	)
+	default boolean showBarDispenser()
 	{
 		return true;
 	}

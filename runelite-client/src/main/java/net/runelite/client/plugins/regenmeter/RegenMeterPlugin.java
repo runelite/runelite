@@ -33,15 +33,15 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Prayer;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.Skill;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(name = "Regeneration Meter")
 public class RegenMeterPlugin extends Plugin
@@ -50,38 +50,43 @@ public class RegenMeterPlugin extends Plugin
 	private static final int NORMAL_HP_REGEN_TICKS = 100;
 
 	@Inject
-	private RegenMeterOverlay overlay;
-
-	@Inject
 	private Client client;
 
 	@Inject
-	RegenMeterConfig config;
+	private OverlayManager overlayManager;
 
+	@Inject
+	private RegenMeterOverlay overlay;
 
-	private int ticksSinceHPRegen;
-
-	private boolean wasRapidHeal;
+	@Inject
+	private RegenMeterConfig config;
 
 	@Getter
 	private double hitpointsPercentage;
 
-
-	private int ticksSinceSpecRegen;
-
 	@Getter
 	private double specialPercentage;
 
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
-	}
+	private int ticksSinceSpecRegen;
+	private int ticksSinceHPRegen;
+	private boolean wasRapidHeal;
 
 	@Provides
 	RegenMeterConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(RegenMeterConfig.class);
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(overlay);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
 	}
 
 	@Subscribe

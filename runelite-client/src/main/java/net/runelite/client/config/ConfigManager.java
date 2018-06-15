@@ -39,10 +39,12 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
@@ -252,7 +254,14 @@ public class ConfigManager
 		String value = getConfiguration(groupName, key);
 		if (!Strings.isNullOrEmpty(value))
 		{
-			return (T) stringToObject(value, clazz);
+			try
+			{
+				return (T) stringToObject(value, clazz);
+			}
+			catch (Exception e)
+			{
+				log.warn("Unable to unmarshal {}.{} ", groupName, key, e);
+			}
 		}
 		return null;
 	}
@@ -265,19 +274,7 @@ public class ConfigManager
 
 		if (client != null)
 		{
-			Runnable task = () ->
-			{
-				try
-				{
-					client.set(groupName + "." + key, value);
-				}
-				catch (IOException ex)
-				{
-					log.warn("unable to set configuration item", ex);
-				}
-			};
-			executor.execute(task);
-
+			client.set(groupName + "." + key, value);
 		}
 
 		Runnable task = () ->
@@ -315,19 +312,7 @@ public class ConfigManager
 
 		if (client != null)
 		{
-			final Runnable task = () ->
-			{
-				try
-				{
-					client.unset(groupName + "." + key);
-				}
-				catch (IOException ex)
-				{
-					log.warn("unable to set configuration item", ex);
-				}
-			};
-
-			executor.execute(task);
+			client.unset(groupName + "." + key);
 		}
 
 		Runnable task = () ->
@@ -390,8 +375,23 @@ public class ConfigManager
 		{
 			ConfigItem item = method.getAnnotation(ConfigItem.class);
 
-			if (item == null || !method.isDefault())
+			// only apply default configuration for methods which read configuration (0 args)
+			if (item == null || method.getParameterCount() != 0)
 			{
+				continue;
+			}
+
+			if (!method.isDefault())
+			{
+				if (override)
+				{
+					String current = getConfiguration(group.keyName(), item.keyName());
+					// only unset if already set
+					if (current != null)
+					{
+						unsetConfiguration(group.keyName(), item.keyName());
+					}
+				}
 				continue;
 			}
 
@@ -415,9 +415,15 @@ public class ConfigManager
 				continue;
 			}
 
+			String current = getConfiguration(group.keyName(), item.keyName());
+			String valueString = objectToString(defaultValue);
+			if (Objects.equals(current, valueString))
+			{
+				continue; // already set to the default value
+			}
+
 			log.debug("Setting default configuration value for {}.{} to {}", group.keyName(), item.keyName(), defaultValue);
 
-			String valueString = objectToString(defaultValue);
 			setConfiguration(group.keyName(), item.keyName(), valueString);
 		}
 	}
@@ -463,6 +469,10 @@ public class ConfigManager
 		{
 			return Enum.valueOf((Class<? extends Enum>) type, str);
 		}
+		if (type == Instant.class)
+		{
+			return Instant.parse(str);
+		}
 		return str;
 	}
 
@@ -490,6 +500,10 @@ public class ConfigManager
 		{
 			Rectangle r = (Rectangle)object;
 			return r.x + ":" + r.y + ":" + r.width + ":" + r.height;
+		}
+		if (object instanceof Instant)
+		{
+			return ((Instant) object).toString();
 		}
 		return object.toString();
 	}

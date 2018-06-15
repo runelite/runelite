@@ -56,6 +56,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
@@ -84,6 +85,9 @@ public class GroundMarkerPlugin extends Plugin
 
 	@Inject
 	private ConfigManager configManager;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private GroundMarkerOverlay overlay;
@@ -286,20 +290,17 @@ public class GroundMarkerPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		overlayManager.add(overlay);
 		keyManager.registerKeyListener(inputListener);
 	}
 
 	@Override
 	protected void shutDown()
 	{
+		overlayManager.remove(overlay);
 		keyManager.unregisterKeyListener(inputListener);
 	}
 
-	@Override
-	public GroundMarkerOverlay getOverlay()
-	{
-		return overlay;
-	}
 
 	protected void markTile(LocalPoint localPoint)
 	{

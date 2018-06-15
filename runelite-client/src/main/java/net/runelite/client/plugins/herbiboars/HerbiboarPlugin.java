@@ -27,7 +27,6 @@ package net.runelite.client.plugins.herbiboars;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -58,7 +57,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
@@ -97,22 +96,13 @@ public class HerbiboarPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private HerbiboarOverlay overlay;
 
 	@Inject
 	private HerbiboarMinimapOverlay minimapOverlay;
-
-	@Override
-	public Collection<Overlay> getOverlays()
-	{
-		return Arrays.asList(overlay, minimapOverlay);
-	}
-
-	@Provides
-	HerbiboarConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(HerbiboarConfig.class);
-	}
 
 	@Getter
 	private boolean inHerbiboarArea;
@@ -145,10 +135,25 @@ public class HerbiboarPlugin extends Plugin
 	@Setter
 	private int finishId;
 
+	@Provides
+	HerbiboarConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(HerbiboarConfig.class);
+	}
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
+		overlayManager.add(minimapOverlay);
 		inHerbiboarArea = checkArea();
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
+		overlayManager.remove(minimapOverlay);
 	}
 
 	private void updateTrailData()

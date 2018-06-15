@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,13 +25,19 @@
  */
 package net.runelite.client.plugins.farmingtracker;
 
+import com.google.common.base.Strings;
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
-import javax.swing.GroupLayout;
+import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
+import javax.swing.border.EmptyBorder;
 import lombok.Getter;
+import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.components.ThinProgressBar;
+import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
 @Getter
 class FarmingPatchPanel extends JPanel
@@ -38,42 +45,42 @@ class FarmingPatchPanel extends JPanel
 	private final FarmingPatch patch;
 	private final JLabel icon = new JLabel();
 	private final JLabel estimate = new JLabel();
-	private final JProgressBar progress = new JProgressBar();
+	private final ThinProgressBar progress = new ThinProgressBar();
 
 	FarmingPatchPanel(FarmingPatch patch)
 	{
 		this.patch = patch;
 
-		GroupLayout layout = new GroupLayout(this);
-		this.setLayout(layout);
+		setLayout(new BorderLayout());
+		setBorder(new EmptyBorder(7, 0, 0, 0));
 
-		final JLabel location = new JLabel(patch.getRegion().getName() + " " + patch.getName());
-		location.setFont(FontManager.getRunescapeSmallFont());
+		JPanel topContainer = new JPanel();
+		topContainer.setBorder(new EmptyBorder(7, 7, 6, 0));
+		topContainer.setLayout(new BorderLayout());
+		topContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
 		icon.setMinimumSize(new Dimension(36, 32));
 
-		layout.setVerticalGroup(layout.createSequentialGroup()
-			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-				.addComponent(icon)
-				.addGroup(layout.createSequentialGroup()
-					.addGap(1)
-					.addComponent(location)
-					.addGap(1)
-					.addComponent(estimate)
-				)
-			)
-			.addComponent(progress, 8, 8, 8)
-			.addGap(4)
-		);
+		JPanel infoPanel = new JPanel();
+		infoPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		infoPanel.setLayout(new GridLayout(2, 1));
+		infoPanel.setBorder(new EmptyBorder(4, 4, 4, 0));
 
-		layout.setHorizontalGroup(layout.createParallelGroup()
-			.addGroup(layout.createSequentialGroup()
-				.addComponent(icon)
-				.addGroup(layout.createParallelGroup()
-					.addComponent(location)
-					.addComponent(estimate)
-				)
-			)
-			.addComponent(progress)
-		);
+		final JLabel location = new JShadowedLabel(patch.getRegion().getName()
+			+ (Strings.isNullOrEmpty(patch.getName()) ? "" : " (" + patch.getName() + ")"));
+		location.setFont(FontManager.getRunescapeSmallFont());
+		location.setForeground(Color.WHITE);
+
+		estimate.setFont(FontManager.getRunescapeSmallFont());
+		estimate.setForeground(Color.GRAY);
+
+		infoPanel.add(location);
+		infoPanel.add(estimate);
+
+		topContainer.add(icon, BorderLayout.WEST);
+		topContainer.add(infoPanel, BorderLayout.CENTER);
+
+		add(topContainer, BorderLayout.NORTH);
+		add(progress, BorderLayout.SOUTH);
 	}
 }

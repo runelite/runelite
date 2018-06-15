@@ -32,6 +32,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 
 @Slf4j
@@ -40,25 +41,27 @@ public class DevToolsPanel extends PluginPanel
 	private final Client client;
 	private final DevToolsPlugin plugin;
 
-	private final VarTracker varTracker;
-
-	private WidgetInspector widgetInspector;
+	private final WidgetInspector widgetInspector;
+	private final VarInspector varInspector;
 
 	@Inject
-	public DevToolsPanel(Client client, DevToolsPlugin plugin, WidgetInspector widgetInspector)
+	public DevToolsPanel(Client client, DevToolsPlugin plugin, WidgetInspector widgetInspector, VarInspector varInspector)
 	{
 		super();
 		this.client = client;
 		this.plugin = plugin;
 		this.widgetInspector = widgetInspector;
+		this.varInspector = varInspector;
 
-		varTracker = new VarTracker(client);
+		setBackground(ColorScheme.DARK_GRAY_COLOR);
+
 		add(createOptionsPanel());
 	}
 
 	private JPanel createOptionsPanel()
 	{
 		final JPanel container = new JPanel();
+		container.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		container.setLayout(new GridLayout(0, 2, 3, 3));
 
 		final JButton renderPlayersBtn = new JButton("Players");
@@ -133,14 +136,6 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderProjectilesBtn);
 
-		final JButton varSnapshotBtn = new JButton("Snapshot Vars");
-		varSnapshotBtn.addActionListener(varTracker::snapshot);
-		container.add(varSnapshotBtn);
-
-		final JButton varClearBtn = new JButton("Clear Vars");
-		varClearBtn.addActionListener(varTracker::clear);
-		container.add(varClearBtn);
-
 		final JButton renderLocationBtn = new JButton("Location");
 		renderLocationBtn.addActionListener(e ->
 		{
@@ -149,7 +144,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderLocationBtn);
 
-		final JButton widgetInspectorBtn = new JButton("Inspector");
+		final JButton widgetInspectorBtn = new JButton("Widget Tools");
 		widgetInspectorBtn.addActionListener(e ->
 		{
 			widgetInspector.setVisible(true);
@@ -157,6 +152,13 @@ public class DevToolsPanel extends PluginPanel
 			widgetInspector.repaint();
 		});
 		container.add(widgetInspectorBtn);
+
+		final JButton varInspectorBtn = new JButton("Var Tools");
+		varInspectorBtn.addActionListener(e ->
+		{
+			varInspector.open();
+		});
+		container.add(varInspectorBtn);
 
 		final JButton chunkBordersBtn = new JButton("Chunk borders");
 		chunkBordersBtn.addActionListener(e ->
@@ -197,6 +199,38 @@ public class DevToolsPanel extends PluginPanel
 			plugin.toggleGraphicsObjects();
 		});
 		container.add(graphicsObjectsBtn);
+
+		final JButton cameraPositionBtn = new JButton("Camera Position");
+		cameraPositionBtn.addActionListener(e ->
+		{
+			highlightButton(cameraPositionBtn);
+			plugin.toggleCamera();
+		});
+		container.add(cameraPositionBtn);
+
+		final JButton worldMapBtn = new JButton("World Map Location");
+		worldMapBtn.addActionListener(e ->
+		{
+			highlightButton(worldMapBtn);
+			plugin.toggleWorldMapLocation();
+		});
+		container.add(worldMapBtn);
+
+		final JButton tileLocationBtn = new JButton("Tile Location Tooltip");
+		tileLocationBtn.addActionListener(e ->
+		{
+			highlightButton(tileLocationBtn);
+			plugin.toggleTileLocation();
+		});
+		container.add(tileLocationBtn);
+
+		final JButton oculusOrbBtn = new JButton("Detached camera");
+		oculusOrbBtn.addActionListener(e ->
+		{
+			highlightButton(oculusOrbBtn);
+			client.setOculusOrbState(oculusOrbBtn.getBackground().equals(Color.GREEN) ? 1 : 0);
+		});
+		container.add(oculusOrbBtn);
 
 		return container;
 	}

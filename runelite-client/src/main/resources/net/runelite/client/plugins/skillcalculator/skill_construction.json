@@ -758,6 +758,12 @@
     },
     {
       "level": 59,
+      "icon": 8154,
+      "name": "Limestone attack stone",
+      "xp": 200
+    },
+    {
+      "level": 59,
       "icon": 8343,
       "name": "Lunar Globe",
       "xp": 570
@@ -833,6 +839,12 @@
       "icon": 8318,
       "name": "Opulent Rug",
       "xp": 360
+    },
+    {
+      "level": 66,
+      "icon": 20649,
+      "name": "Teak Garden Bench",
+      "xp": 540
     },
     {
       "level": 66,

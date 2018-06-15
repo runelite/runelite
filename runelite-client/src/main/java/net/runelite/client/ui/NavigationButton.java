@@ -36,14 +36,9 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @Builder
-@EqualsAndHashCode(of = {"name", "tooltip"})
+@EqualsAndHashCode(of = {"tooltip"})
 public class NavigationButton
 {
-	/**
-	 * Button name.
-	 */
-	private final String name;
-
 	/**
 	 * Icon of button.
 	 */
@@ -52,7 +47,7 @@ public class NavigationButton
 	/**
 	 * Tooltip to show when hovered.
 	 */
-	private String tooltip;
+	private final String tooltip;
 
 	/**
 	 * Button selection state
@@ -73,6 +68,12 @@ public class NavigationButton
 	 * Plugin panel, used when expanding and contracting sidebar.
 	 */
 	private PluginPanel panel;
+
+
+	/**
+	 * The order in which the button should be displayed in the side bar. (from lower to higher)
+	 */
+	private int priority;
 
 	/**
 	 * Map of key-value pairs for setting the popup menu

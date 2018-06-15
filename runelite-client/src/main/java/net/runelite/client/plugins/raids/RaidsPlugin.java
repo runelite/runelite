@@ -27,14 +27,12 @@ package net.runelite.client.plugins.raids;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
@@ -46,18 +44,17 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Point;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Tile;
-import net.runelite.api.Varbits;
 import static net.runelite.api.Perspective.SCENE_SIZE;
+import net.runelite.api.Point;
+import net.runelite.api.Tile;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.chat.ChatColor;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -68,7 +65,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
@@ -83,7 +80,7 @@ public class RaidsPlugin extends Plugin
 	private static final String LEVEL_COMPLETE_MESSAGE = "level complete!";
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
-	public static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
+	static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final String SPLIT_REGEX = "\\s*,\\s*";
 	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)\\]");
 
@@ -104,6 +101,9 @@ public class RaidsPlugin extends Plugin
 
 	@Inject
 	private RaidsConfig config;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private RaidsOverlay overlay;
@@ -142,23 +142,15 @@ public class RaidsPlugin extends Plugin
 	}
 
 	@Override
-	public List<Overlay> getOverlays()
-	{
-		return Arrays.asList(overlay, pointsOverlay);
-	}
-
-	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
+		overlayManager.add(pointsOverlay);
+
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
 			inRaidChambers = client.getVar(Varbits.IN_RAID) == 1;
 			updateInfoBoxState();
-		}
-
-		if (config.pointsMessage())
-		{
-			cacheColors();
 		}
 
 		updateLists();
@@ -167,6 +159,9 @@ public class RaidsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
+		overlayManager.remove(pointsOverlay);
+
 		if (timer != null)
 		{
 			infoBoxManager.removeInfoBox(timer);
@@ -176,11 +171,6 @@ public class RaidsPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (config.pointsMessage())
-		{
-			cacheColors();
-		}
-
 		if (event.getKey().equals("raidsTimer"))
 		{
 			updateInfoBoxState();
@@ -377,15 +367,6 @@ public class RaidsPlugin extends Plugin
 		{
 			list.addAll(Arrays.asList(input.toLowerCase().split(SPLIT_REGEX)));
 		}
-	}
-
-	private void cacheColors()
-	{
-		chatMessageManager.cacheColor(new ChatColor(ChatColorType.NORMAL, Color.BLACK, false), ChatMessageType.CLANCHAT_INFO)
-				.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, false), ChatMessageType.CLANCHAT_INFO)
-				.cacheColor(new ChatColor(ChatColorType.NORMAL, Color.WHITE, true), ChatMessageType.CLANCHAT_INFO)
-				.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, true), ChatMessageType.CLANCHAT_INFO)
-				.refreshAll();
 	}
 
 	public int getRotationMatches()

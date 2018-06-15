@@ -33,7 +33,6 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
@@ -82,7 +81,7 @@ import net.runelite.client.plugins.cluescrolls.clues.MapClue;
 import net.runelite.client.plugins.cluescrolls.clues.NpcClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ObjectClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.TextClueScroll;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.QueryRunner;
 import net.runelite.client.util.Text;
@@ -113,6 +112,9 @@ public class ClueScrollPlugin extends Plugin
 	private Item[] equippedItems;
 
 	@Getter
+	private Item[] inventoryItems;
+
+	@Getter
 	private Instant clueTimeout;
 
 	@Inject
@@ -124,6 +126,9 @@ public class ClueScrollPlugin extends Plugin
 
 	@Inject
 	private QueryRunner queryRunner;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private ClueScrollOverlay clueScrollOverlay;
@@ -169,15 +174,20 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void startUp() throws Exception
 	{
-		resetClue();
+		overlayManager.add(clueScrollOverlay);
+		overlayManager.add(clueScrollEmoteOverlay);
+		overlayManager.add(clueScrollWorldOverlay);
 	}
 
 	@Override
-	public Collection<Overlay> getOverlays()
+	protected void shutDown() throws Exception
 	{
-		return Arrays.asList(clueScrollOverlay, clueScrollEmoteOverlay, clueScrollWorldOverlay);
+		overlayManager.remove(clueScrollOverlay);
+		overlayManager.remove(clueScrollEmoteOverlay);
+		overlayManager.remove(clueScrollWorldOverlay);
+		resetClue();
 	}
 
 	@Subscribe
@@ -260,6 +270,7 @@ public class ClueScrollPlugin extends Plugin
 		npcsToMark = null;
 		objectsToMark = null;
 		equippedItems = null;
+		inventoryItems = null;
 
 		if (clue instanceof LocationsClueScroll)
 		{
@@ -346,11 +357,18 @@ public class ClueScrollPlugin extends Plugin
 
 		if (clue instanceof EmoteClue)
 		{
-			ItemContainer container = client.getItemContainer(InventoryID.EQUIPMENT);
+			ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
 			
-			if (container != null)
+			if (equipment != null)
 			{
-				equippedItems = container.getItems();
+				equippedItems = equipment.getItems();
+			}
+
+			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+
+			if (inventory != null)
+			{
+				inventoryItems = inventory.getItems();
 			}
 		}
 

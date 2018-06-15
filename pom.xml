@@ -28,7 +28,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>runelite-parent</artifactId>
-	<version>1.3.9-SNAPSHOT</version>
+	<version>1.4.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>RuneLite</name>
@@ -38,12 +38,12 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
-		<lombok.version>1.16.20</lombok.version>
+		<lombok.version>1.16.22</lombok.version>
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
 
-		<rs.version>170</rs.version>
+		<rs.version>171</rs.version>
 	</properties>
 
 	<licenses>
@@ -80,13 +80,6 @@
 		<url>https://travis-ci.org/runelite/runelite</url>
 	</ciManagement>
 
-	<distributionManagement>
-		<repository>
-			<id>runelite</id>
-			<url>dav:http://repo.runelite.net</url>
-		</repository>
-	</distributionManagement>
-
 	<repositories>
 		<repository>
 			<id>maven-central</id>
@@ -96,6 +89,10 @@
 			<id>runelite</id>
 			<name>RuneLite</name>
 			<url>http://repo.runelite.net</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
 		</repository>
 	</repositories>
 	<pluginRepositories>
@@ -107,6 +104,10 @@
 			<id>runelite-plugins</id>
 			<name>RuneLite Plugins</name>
 			<url>http://repo.runelite.net</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
 
@@ -140,6 +141,11 @@
 				<artifactId>lombok</artifactId>
 				<version>${lombok.version}</version>
 				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.google.code.gson</groupId>
+				<artifactId>gson</artifactId>
+				<version>2.8.5</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -226,12 +232,5 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-		<extensions>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-webdav-jackrabbit</artifactId>
-				<version>2.12</version>
-			</extension>
-		</extensions>
 	</build>
 </project>

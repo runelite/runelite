@@ -24,6 +24,7 @@
  */
 package net.runelite.mixins;
 
+import net.runelite.api.NPCComposition;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.FieldHook;
@@ -45,6 +46,9 @@ public abstract class RSNPCMixin implements RSNPC
 
 	@Inject
 	private int npcIndex;
+
+	@Inject
+	private boolean dead;
 
 	@Inject
 	@Override
@@ -135,5 +139,31 @@ public abstract class RSNPCMixin implements RSNPC
 			setPoseFrame(poseFrame);
 			setSpotAnimFrame(spotAnimFrame);
 		}
+	}
+
+	@Inject
+	@Override
+	public NPCComposition getTransformedComposition()
+	{
+		RSNPCComposition composition = getComposition();
+		if (composition != null && composition.getConfigs() != null)
+		{
+			composition = composition.transform();
+		}
+		return composition;
+	}
+
+	@Inject
+	@Override
+	public boolean isDead()
+	{
+		return dead;
+	}
+
+	@Inject
+	@Override
+	public void setDead(boolean dead)
+	{
+		this.dead = dead;
 	}
 }

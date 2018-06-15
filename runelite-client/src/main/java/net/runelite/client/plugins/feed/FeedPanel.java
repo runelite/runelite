@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,8 +27,10 @@ package net.runelite.client.plugins.feed;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.FontRenderContext;
@@ -47,6 +50,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.LinkBrowser;
@@ -63,8 +67,8 @@ import okhttp3.ResponseBody;
 @Slf4j
 class FeedPanel extends PluginPanel
 {
-	private static BufferedImage RUNELITE_ICON;
-	private static BufferedImage OSRS_ICON;
+	private static final ImageIcon RUNELITE_ICON;
+	private static final ImageIcon OSRS_ICON;
 
 	private static final Color TWEET_BACKGROUND = new Color(15, 15, 15);
 	private static final Color OSRS_NEWS_BACKGROUND = new Color(36, 30, 19);
@@ -73,6 +77,11 @@ class FeedPanel extends PluginPanel
 	private static final int MAX_CONTENT_LINES = 3;
 	private static final int CONTENT_WIDTH = 148;
 	private static final int TIME_WIDTH = 20;
+
+	/**
+	 * Holds all feed items.
+	 */
+	private final JPanel feedContainer = new JPanel();
 
 	private static final Comparator<FeedItem> FEED_ITEM_COMPARATOR = (o1, o2) ->
 	{
@@ -97,24 +106,13 @@ class FeedPanel extends PluginPanel
 		{
 			synchronized (ImageIO.class)
 			{
-				RUNELITE_ICON = ImageIO.read(FeedPanel.class.getResourceAsStream("runelite.png"));
+				RUNELITE_ICON = new ImageIcon(ImageIO.read(FeedPanel.class.getResourceAsStream("runelite.png")));
+				OSRS_ICON = new ImageIcon(ImageIO.read(FeedPanel.class.getResourceAsStream("osrs.png")));
 			}
 		}
 		catch (IOException e)
 		{
-			log.warn("Client icon failed to load", e);
-		}
-
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				OSRS_ICON = ImageIO.read(FeedPanel.class.getResourceAsStream("osrs.png"));
-			}
-		}
-		catch (IOException e)
-		{
-			log.warn("OSRS icon failed to load", e);
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -125,6 +123,20 @@ class FeedPanel extends PluginPanel
 	{
 		this.config = config;
 		this.feedSupplier = feedSupplier;
+
+		setBorder(new EmptyBorder(10, 10, 10, 10));
+		setBackground(ColorScheme.DARK_GRAY_COLOR);
+		setLayout(new BorderLayout());
+
+		feedContainer.setLayout(new GridLayout(0, 1, 0, 4));
+		feedContainer.setBackground(ColorScheme.DARK_GRAY_COLOR);
+
+		JLabel title = new JLabel("News feed");
+		title.setBorder(new EmptyBorder(0, 0, 9, 0));
+		title.setForeground(Color.WHITE);
+
+		add(title, BorderLayout.NORTH);
+		add(feedContainer, BorderLayout.CENTER);
 	}
 
 	void rebuildFeed()
@@ -138,7 +150,7 @@ class FeedPanel extends PluginPanel
 
 		SwingUtilities.invokeLater(() ->
 		{
-			removeAll();
+			feedContainer.removeAll();
 
 			feed.getItems()
 				.stream()
@@ -207,14 +219,14 @@ class FeedPanel extends PluginPanel
 			case OSRS_NEWS:
 				if (OSRS_ICON != null)
 				{
-					avatar.setIcon(new ImageIcon(OSRS_ICON));
+					avatar.setIcon(OSRS_ICON);
 				}
 				avatarAndRight.setBackground(OSRS_NEWS_BACKGROUND);
 				break;
 			default:
 				if (RUNELITE_ICON != null)
 				{
-					avatar.setIcon(new ImageIcon(RUNELITE_ICON));
+					avatar.setIcon(RUNELITE_ICON);
 				}
 				avatarAndRight.setBackground(BLOG_POST_BACKGROUND);
 				break;
@@ -274,12 +286,14 @@ class FeedPanel extends PluginPanel
 			public void mouseEntered(MouseEvent e)
 			{
 				avatarAndRight.setBackground(hoverColor);
+				avatarAndRight.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e)
 			{
 				avatarAndRight.setBackground(backgroundColor);
+				avatarAndRight.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 
 			@Override
@@ -296,7 +310,7 @@ class FeedPanel extends PluginPanel
 			}
 		});
 
-		add(avatarAndRight);
+		feedContainer.add(avatarAndRight);
 	}
 
 	private String durationToString(Duration duration)

@@ -26,11 +26,11 @@
 package net.runelite.client.plugins.puzzlesolver;
 
 import com.google.inject.Provides;
-import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Puzzle Solver"
@@ -38,10 +38,10 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class PuzzleSolverPlugin extends Plugin
 {
 	@Inject
-	private PuzzleSolverOverlay puzzleSolverOverlay;
+	private OverlayManager overlayManager;
 
 	@Inject
-	private ScheduledExecutorService executorService;
+	private PuzzleSolverOverlay overlay;
 
 	@Provides
 	PuzzleSolverConfig provideConfig(ConfigManager configManager)
@@ -50,8 +50,14 @@ public class PuzzleSolverPlugin extends Plugin
 	}
 
 	@Override
-	public PuzzleSolverOverlay getOverlay()
+	protected void startUp() throws Exception
 	{
-		return puzzleSolverOverlay;
+		overlayManager.add(overlay);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
 	}
 }
