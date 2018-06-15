@@ -191,13 +191,10 @@ public class OverlayManager
 	 */
 	public synchronized void resetOverlay(final Overlay overlay)
 	{
-		final String locationKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_LOCATION;
-		final String positionKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_POSITION;
-		final String sizeKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_SIZE;
-		configManager.unsetConfiguration(RUNELITE_CONFIG_GROUP_NAME, locationKey);
-		configManager.unsetConfiguration(RUNELITE_CONFIG_GROUP_NAME, positionKey);
-		configManager.unsetConfiguration(RUNELITE_CONFIG_GROUP_NAME, sizeKey);
-		rebuildOverlayLayers();
+		overlay.setPreferredPosition(null);
+		overlay.setPreferredSize(null);
+		overlay.setPreferredLocation(null);
+		saveOverlay(overlay);
 	}
 
 	private synchronized void rebuildOverlayLayers()
