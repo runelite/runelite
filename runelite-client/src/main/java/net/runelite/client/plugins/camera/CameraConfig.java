@@ -63,4 +63,15 @@ public interface CameraConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "freeRoamCamera",
+		name = "Free roam camera",
+		description = "Add option to toggle free roam camera to world map right click menu",
+		position = 5
+	)
+	default boolean freeRoamCamera()
+	{
+		return false;
+	}
 }

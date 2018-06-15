@@ -29,13 +29,21 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.WidgetMenuOptionClicked;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
+import net.runelite.client.input.MouseListener;
+import net.runelite.client.input.MouseManager;
+import net.runelite.client.menus.MenuManager;
+import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -45,7 +53,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 	tags = {"limit", "vertical", "detached"},
 	enabledByDefault = false
 )
-public class CameraPlugin extends Plugin implements KeyListener
+public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 {
 	/**
 	 * The largest (most zoomed in) value that can be used without the client crashing.
@@ -54,7 +62,11 @@ public class CameraPlugin extends Plugin implements KeyListener
 	 */
 	private static final int INNER_ZOOM_LIMIT = 1004;
 
+	private static final WidgetMenuOption TOGGLE_FREE_CAMERA_OPTION = new WidgetMenuOption(
+		"Toggle", "Free Camera", WidgetInfo.WORLD_MAP_OPTION);
+
 	private boolean controlDown;
+	private boolean oculusManualEnable;
 
 	@Inject
 	private Client client;
@@ -64,6 +76,12 @@ public class CameraPlugin extends Plugin implements KeyListener
 
 	@Inject
 	private KeyManager keyManager;
+
+	@Inject
+	private MenuManager menuManager;
+
+	@Inject
+	private MouseManager mouseManager;
 
 	@Provides
 	CameraConfig getConfig(ConfigManager configManager)
@@ -135,6 +153,12 @@ public class CameraPlugin extends Plugin implements KeyListener
 	{
 		client.setCameraPitchRelaxerEnabled(config.relaxCameraPitch());
 		keyManager.registerKeyListener(this);
+		mouseManager.registerMouseListener(this);
+
+		if (config.freeRoamCamera())
+		{
+			menuManager.addManagedCustomMenu(TOGGLE_FREE_CAMERA_OPTION);
+		}
 	}
 
 	@Override
@@ -142,13 +166,41 @@ public class CameraPlugin extends Plugin implements KeyListener
 	{
 		client.setCameraPitchRelaxerEnabled(false);
 		keyManager.unregisterKeyListener(this);
+		mouseManager.unregisterMouseListener(this);
+		menuManager.removeManagedCustomMenu(TOGGLE_FREE_CAMERA_OPTION);
 		controlDown = false;
+		setOculusEnabled(false);
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged ev)
+	public void onConfigChanged(ConfigChanged event)
 	{
 		client.setCameraPitchRelaxerEnabled(config.relaxCameraPitch());
+
+		if (config.freeRoamCamera())
+		{
+			menuManager.addManagedCustomMenu(TOGGLE_FREE_CAMERA_OPTION);
+		}
+		else
+		{
+			menuManager.removeManagedCustomMenu(TOGGLE_FREE_CAMERA_OPTION);
+		}
+	}
+
+	@Subscribe
+	public void onWidgetMenuOptionClicked(final WidgetMenuOptionClicked event)
+	{
+		if (event.getWidget() != WidgetInfo.WORLD_MAP_OPTION)
+		{
+			return;
+		}
+
+		if (event.getMenuOption().equals(TOGGLE_FREE_CAMERA_OPTION.getMenuOption()) &&
+			event.getMenuTarget().equals(TOGGLE_FREE_CAMERA_OPTION.getMenuTarget()))
+		{
+			// Invert orb enabled state for free roam camera
+			setOculusEnabled(!isOculusEnabled());
+		}
 	}
 
 	@Override
@@ -172,5 +224,68 @@ public class CameraPlugin extends Plugin implements KeyListener
 		{
 			controlDown = false;
 		}
+	}
+
+	@Override
+	public MouseEvent mouseClicked(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mousePressed(MouseEvent mouseEvent)
+	{
+		if (config.freeRoamCamera()
+			&& isOculusEnabled()
+			&& oculusManualEnable
+			&& (SwingUtilities.isLeftMouseButton(mouseEvent) || SwingUtilities.isRightMouseButton(mouseEvent)))
+		{
+			setOculusEnabled(false);
+			mouseEvent.consume();
+		}
+
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseReleased(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseEntered(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseExited(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseDragged(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseMoved(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	private boolean isOculusEnabled()
+	{
+		return client.getOculusOrbState() == 1;
+	}
+
+	private void setOculusEnabled(boolean enabled)
+	{
+		client.setOculusOrbNormalSpeed(enabled ? 36 : 12);
+		client.setOculusOrbState(enabled ? 1 : 0);
+		oculusManualEnable = enabled;
 	}
 }
