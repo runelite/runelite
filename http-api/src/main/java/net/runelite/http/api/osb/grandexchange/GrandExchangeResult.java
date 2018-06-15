@@ -31,12 +31,8 @@ import lombok.Data;
 public class GrandExchangeResult
 {
 	private int item_id;
-
 	private int buy_average;
-
 	private int sell_average;
-
 	private int overall_average;
-
 	private Instant last_update;
 }

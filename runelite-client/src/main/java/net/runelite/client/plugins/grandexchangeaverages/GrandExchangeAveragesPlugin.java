@@ -42,34 +42,22 @@ import net.runelite.http.api.osb.grandexchange.GrandExchangeClient;
 import net.runelite.http.api.osb.grandexchange.GrandExchangeResult;
 
 @PluginDescriptor(
-	name = "GrandExchange Averages",
+	name = "OSB Grand Exchange Averages",
 	enabledByDefault = false
 )
 @Slf4j
 public class GrandExchangeAveragesPlugin extends Plugin
 {
 	private static final int OFFER_CONTAINER_ITEM = 21;
-
 	private static final int OFFER_DEFAULT_ITEM_ID = 6512;
 
 	@Inject
 	private Client client;
 
-	private GrandExchangeClient grandExchangeClient = new GrandExchangeClient();
-
-	private Widget grandExchangeOffer;
-
 	private Widget grandExchangeText;
-
 	private Widget grandExchangeItem;
 
-	private int currentItemId = -1;
-
-	private String currentItemText;
-
-	private boolean lastItemFinished;
-
-	private String lastItemText;
+	private int lastItem = -1;
 
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
@@ -78,18 +66,17 @@ public class GrandExchangeAveragesPlugin extends Plugin
 		{
 			// Grand exchange was opened.
 			case WidgetID.GRAND_EXCHANGE_GROUP_ID:
-				grandExchangeOffer = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_CONTAINER);
+				Widget grandExchangeOffer = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_CONTAINER);
 				grandExchangeText = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_TEXT);
 				grandExchangeItem = grandExchangeOffer.getDynamicChildren()[OFFER_CONTAINER_ITEM];
-				currentItemId = OFFER_DEFAULT_ITEM_ID;
+				lastItem = -1;
 				break;
 
 			// Grand exchange was closed (if it was open before).
 			case WidgetID.INVENTORY_GROUP_ID:
-				grandExchangeOffer = null;
 				grandExchangeText = null;
 				grandExchangeItem = null;
-				currentItemId = OFFER_DEFAULT_ITEM_ID;
+				lastItem = -1;
 				break;
 		}
 	}
@@ -97,55 +84,37 @@ public class GrandExchangeAveragesPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (grandExchangeOffer == null || grandExchangeText == null || grandExchangeItem == null)
+		if (grandExchangeText == null || grandExchangeItem == null)
 		{
 			return;
 		}
 
 		int itemId = grandExchangeItem.getItemId();
-		if (itemId == OFFER_DEFAULT_ITEM_ID || itemId == -1)
+		if (itemId == OFFER_DEFAULT_ITEM_ID
+			|| itemId == -1
+			|| lastItem == itemId)
 		{
 			return;
 		}
 
-		if (itemId == currentItemId && lastItemFinished)
-		{
-			grandExchangeText.setText(lastItemText);
-			return;
-		}
+		lastItem = itemId;
 
-		currentItemId = itemId;
-		currentItemText = grandExchangeText.getText();
+		final Widget geText = grandExchangeText;
+		final GrandExchangeClient grandExchangeClient = new GrandExchangeClient();
 
-		setCurrentItemPrice(itemId, "Loading..");
-		loadCurrentItemPrice(itemId);
-	}
-
-	private void setCurrentItemPrice(int itemId, String priceText)
-	{
-		if (currentItemId == itemId)
-		{
-			lastItemText = currentItemText + "<br>Actively traded price (OSB): " + priceText;
-			grandExchangeText.setText(lastItemText);
-		}
-	}
-
-	private void loadCurrentItemPrice(final int itemId)
-	{
-		lastItemFinished = false;
 		grandExchangeClient.lookupItem(itemId, new GrandExchangeCallback()
 		{
 			@Override
 			public void onSuccess(GrandExchangeResult result)
 			{
-				setCurrentItemPrice(itemId, StackFormatter.formatNumber(result.getOverall_average()));
-				lastItemFinished = true;
+				String text = geText.getText() + "<br>OSBuddy actively traded price: " + StackFormatter.formatNumber(result.getOverall_average());
+				geText.setText(text);
 			}
 
 			@Override
 			public void onFailure(IOException exception)
 			{
-				log.warn("Error while grabbing price of item id " + itemId, exception);
+				log.warn("Error getting price of item {}", itemId, exception);
 			}
 		});
 	}

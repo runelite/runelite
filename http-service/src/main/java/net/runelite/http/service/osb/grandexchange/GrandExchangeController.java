@@ -24,12 +24,11 @@
  */
 package net.runelite.http.service.osb.grandexchange;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import net.runelite.http.service.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,37 +37,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/osb/ge")
 public class GrandExchangeController
 {
-	private static final int CACHE_MAX_SIZE = 2048;
-
-	private static final int CACHE_EXPIRY_MINUTES = 2;
-
 	private final GrandExchangeService grandExchangeService;
-
-	private final Cache<Integer, GrandExchangeEntry> cache;
 
 	@Autowired
 	public GrandExchangeController(GrandExchangeService grandExchangeService)
 	{
 		this.grandExchangeService = grandExchangeService;
-		this.cache = CacheBuilder.newBuilder()
-			.maximumSize(CACHE_MAX_SIZE)
-			.expireAfterWrite(CACHE_EXPIRY_MINUTES, TimeUnit.MINUTES)
-			.build();
 	}
 
 	@RequestMapping
-	public GrandExchangeEntry get(@RequestParam("itemId") int itemId) throws ExecutionException
+	public ResponseEntity<GrandExchangeEntry> get(@RequestParam("itemId") int itemId) throws ExecutionException
 	{
-		return this.cache.get(itemId, () ->
-		{
-			GrandExchangeEntry entry = grandExchangeService.get(itemId);
+		GrandExchangeEntry grandExchangeEntry = grandExchangeService.get(itemId);
 
-			if (entry == null)
-			{
-				throw new NotFoundException();
-			}
-
-			return entry;
-		});
+		return ResponseEntity.ok()
+			.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
+			.body(grandExchangeEntry);
 	}
 }

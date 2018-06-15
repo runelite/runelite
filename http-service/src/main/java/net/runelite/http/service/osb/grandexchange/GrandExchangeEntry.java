@@ -28,15 +28,11 @@ import java.time.Instant;
 import lombok.Data;
 
 @Data
-public class GrandExchangeEntry
+class GrandExchangeEntry
 {
 	private int item_id;
-
 	private int buy_average;
-
 	private int sell_average;
-
 	private int overall_average;
-
 	private Instant last_update;
 }

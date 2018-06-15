@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, AeonLucid <https://github.com/AeonLucid>
+ * Copyright (c) 2018, AeonLucid <https://github.com/AeonLucid>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,7 @@ public class GrandExchangeClient
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("osb")
 			.addPathSegment("ge")
-			.addQueryParameter("itemId", String.valueOf(itemId))
+			.addQueryParameter("itemId", Integer.toString(itemId))
 			.build();
 
 		log.debug("Built URI: {}", url);

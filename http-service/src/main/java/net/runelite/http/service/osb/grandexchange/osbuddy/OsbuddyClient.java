@@ -24,12 +24,12 @@
  */
 package net.runelite.http.service.osb.grandexchange.osbuddy;
 
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Map;
 import net.runelite.http.api.RuneLiteAPI;
-import net.runelite.http.service.util.exception.InternalServerErrorException;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -56,7 +56,7 @@ public class OsbuddyClient
 		{
 			if (!responseOk.isSuccessful())
 			{
-				throw new InternalServerErrorException("Error retrieving summary from OSBuddy: " + responseOk.message());
+				throw new IOException("Error retrieving summary from OSBuddy: " + responseOk.message());
 			}
 
 			Type type = new TypeToken<Map<Integer, SummaryItem>>()
@@ -64,6 +64,10 @@ public class OsbuddyClient
 			}.getType();
 
 			return RuneLiteAPI.GSON.fromJson(responseOk.body().string(), type);
+		}
+		catch (JsonSyntaxException ex)
+		{
+			throw new IOException(ex);
 		}
 	}
 }

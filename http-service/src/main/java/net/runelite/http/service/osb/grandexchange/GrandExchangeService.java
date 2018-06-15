@@ -36,6 +36,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.sql2o.Connection;
+import org.sql2o.Query;
 import org.sql2o.Sql2o;
 
 @Service
@@ -53,63 +54,14 @@ public class GrandExchangeService
 
 	private final Sql2o sql2o;
 
-	private final OsbuddyClient osbuddyClient;
-
 	@Autowired
 	public GrandExchangeService(@Qualifier("Runelite SQL2O") Sql2o sql2o)
 	{
 		this.sql2o = sql2o;
-		this.osbuddyClient = new OsbuddyClient();
 
 		try (Connection con = sql2o.open())
 		{
 			con.createQuery(CREATE_GRAND_EXCHANGE_PRICES).executeUpdate();
-		}
-	}
-
-	public void insert(int itemId, SummaryItem item)
-	{
-		Instant insertTime = Instant.now();
-
-		try (Connection con = sql2o.open())
-		{
-			con.createQuery("INSERT INTO osb_ge (item_id, buy_average, sell_average, overall_average, last_update) "
-				+ "values (:itemId, :buyAverage, :sellAverage, :overallAverage, :lastUpdate)")
-				.addParameter("itemId", itemId)
-				.addParameter("buyAverage", item.getBuy_average())
-				.addParameter("sellAverage", item.getSell_average())
-				.addParameter("overallAverage", item.getOverall_average())
-				.addParameter("lastUpdate", Timestamp.from(insertTime))
-				.executeUpdate();
-		}
-	}
-
-	public void update(int itemId, SummaryItem item)
-	{
-		Instant updateTime = Instant.now();
-
-		try (Connection con = sql2o.open())
-		{
-			con.createQuery("UPDATE osb_ge SET buy_average = :buyAverage, sell_average = :sellAverage, "
-				+ "overall_average = :overallAverage, last_update = :lastUpdate WHERE item_id = :itemId")
-				.addParameter("itemId", itemId)
-				.addParameter("buyAverage", item.getBuy_average())
-				.addParameter("sellAverage", item.getSell_average())
-				.addParameter("overallAverage", item.getOverall_average())
-				.addParameter("lastUpdate", Timestamp.from(updateTime))
-				.executeUpdate();
-		}
-	}
-
-	public boolean has(int itemId)
-	{
-		try (Connection con = sql2o.open())
-		{
-			Integer exists = con.createQuery("SELECT EXISTS(SELECT 1 FROM osb_ge WHERE item_id = :itemId)")
-				.addParameter("itemId", itemId)
-				.executeAndFetchFirst(Integer.class);
-
-			return exists == 1;
 		}
 	}
 
@@ -129,21 +81,34 @@ public class GrandExchangeService
 	{
 		try
 		{
+			OsbuddyClient osbuddyClient = new OsbuddyClient();
 			Map<Integer, SummaryItem> summary = osbuddyClient.getSummary();
 
-			for (Map.Entry<Integer, SummaryItem> entry : summary.entrySet())
+			try (Connection con = sql2o.beginTransaction())
 			{
-				Integer key = entry.getKey();
-				SummaryItem value = entry.getValue();
+				Instant updateTime = Instant.now();
 
-				if (has(key))
+				Query query = con.createQuery("INSERT INTO osb_ge (item_id, buy_average, sell_average, overall_average,"
+					+" last_update) VALUES (:itemId, :buyAverage, :sellAverage, :overallAverage, :lastUpdate)"
+					+ " ON DUPLICATE KEY UPDATE buy_average = VALUES(buy_average), sell_average = VALUES(sell_average),"
+					+ " overall_average = VALUES(overall_average), last_update = VALUES(last_update)");
+
+				for (Map.Entry<Integer, SummaryItem> entry : summary.entrySet())
 				{
-					update(key, value);
+					Integer itemId = entry.getKey();
+					SummaryItem item = entry.getValue();
+
+					query
+						.addParameter("itemId", itemId)
+						.addParameter("buyAverage", item.getBuy_average())
+						.addParameter("sellAverage", item.getSell_average())
+						.addParameter("overallAverage", item.getOverall_average())
+						.addParameter("lastUpdate", Timestamp.from(updateTime))
+						.addToBatch();
 				}
-				else
-				{
-					insert(key, value);
-				}
+
+				query.executeBatch();
+				con.commit(false);
 			}
 		}
 		catch (IOException e)

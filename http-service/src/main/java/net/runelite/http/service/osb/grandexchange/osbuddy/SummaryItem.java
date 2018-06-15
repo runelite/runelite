@@ -30,16 +30,10 @@ import lombok.Data;
 public class SummaryItem
 {
 	private int id;
-
 	private String name;
-
 	private boolean members;
-
 	private int sp;
-
 	private int buy_average;
-
 	private int sell_average;
-
 	private int overall_average;
 }
