@@ -189,7 +189,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "hiddenColor",
 		name = "Hidden items color",
-		description = "Configures the color for hidden items in right-click menu and when holding ALT",
+		description = "Configures the color for hidden items when holding ALT",
 		position = 12
 	)
 	default Color hiddenColor()
