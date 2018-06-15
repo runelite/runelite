@@ -531,16 +531,11 @@ public class TimersPlugin extends Plugin
 
 	public String toolTip(GameTimer timer)
 	{
-		if (isCannon(timer))
+		if (timer.equals(GameTimer.CANNON))
 		{
 			return "Cannon on world: " + config.cannonWorld();
 		}
 
 		return timer.getDescription();
-	}
-
-	public boolean isCannon(GameTimer timer)
-	{
-		return timer.getDescription().equals("Cannon");
 	}
 }
