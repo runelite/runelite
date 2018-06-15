@@ -256,9 +256,6 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 						// detached overlays have no place to reset back to
 						if (overlay.getPosition() != OverlayPosition.DETACHED)
 						{
-							overlay.setPreferredPosition(null);
-							overlay.setPreferredSize(null);
-							overlay.setPreferredLocation(null);
 							overlayManager.resetOverlay(overlay);
 						}
 					}
