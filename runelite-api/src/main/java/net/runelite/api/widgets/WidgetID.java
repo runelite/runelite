@@ -241,7 +241,11 @@ public class WidgetID
 
 	static class Viewport
 	{
-		static final int MINIMAP_WIDGET = 17;
+		static final int MINIMAP_RESIZABLE_WIDGET = 17;
+		static final int MINIMAP_RESIZABLE_CLICKBOX = 18;
+		static final int MINIMAP_RESIZABLE_DRAW_AREA = 25;
+		static final int MINIMAP_RESIZABLE_DECORATIONS = 27;
+		static final int MINIMAP_RESIZABLE_ORB_HOLDER = 28;
 		static final int FIXED_VIEWPORT = 17;
 		static final int RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX = 12;
 		static final int RESIZABLE_VIEWPORT_BOTTOM_LINE = 12;
