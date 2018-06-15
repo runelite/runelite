@@ -89,7 +89,7 @@ public class GrandExchangeService
 				Instant updateTime = Instant.now();
 
 				Query query = con.createQuery("INSERT INTO osb_ge (item_id, buy_average, sell_average, overall_average,"
-					+" last_update) VALUES (:itemId, :buyAverage, :sellAverage, :overallAverage, :lastUpdate)"
+					+ " last_update) VALUES (:itemId, :buyAverage, :sellAverage, :overallAverage, :lastUpdate)"
 					+ " ON DUPLICATE KEY UPDATE buy_average = VALUES(buy_average), sell_average = VALUES(sell_average),"
 					+ " overall_average = VALUES(overall_average), last_update = VALUES(last_update)");
 
