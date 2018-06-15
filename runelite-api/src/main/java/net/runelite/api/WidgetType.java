@@ -24,40 +24,7 @@
  */
 package net.runelite.api;
 
-public final class ScriptID
+public final class WidgetType
 {
-	/**
-	 * Sends a chat message
-	 * <ul>
-	 * <li> int (byte) Flags </li>
-	 * <li> String Message to send </li>
-	 * </ul>
-	 */
-	public static final int CHATBOX_INPUT = 96;
-
-	/**
-	 * Closes the chatbox input
-	 * <ul>
-	 * <li> int (boolean) Clear the current text </li>
-	 * <li> int (boolean) Unknown; set to 1 </li>
-	 * </ul>
-	 */
-	public static final int CLOSE_CHATBOX_INPUT = 299;
-
-	/**
-	 * Initializes the chatbox input to use RuneLite callbacks
-	 * <ul>
-	 * <li> String  Prompt text </li>
-	 * <li> String  Default value </li>
-	 * </ul>
-	 */
-	public static final int RUNELITE_CHATBOX_INPUT_INIT = 10001;
-
-	/**
-	 * Does nothing
-	 *
-	 * This is used to eat events when you want a menu action attached to it
-	 * because you need an op listener attached to it for it to work
-	 */
-	public static final int NULL = 10003;
+	public static final int GRAPHIC = 5;
 }
