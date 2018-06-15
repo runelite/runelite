@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -53,7 +55,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Trip Checker"
@@ -77,6 +79,9 @@ public class TripCheckerPlugin extends Plugin
 	private ItemManager itemManager;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private TripCheckerConfig config;
 
 	@Inject
@@ -85,6 +90,7 @@ public class TripCheckerPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final HashMap<String, TripItemList> tripLists = new HashMap<>();
 	private final Gson gson = new Gson();
+	private static final Pattern REMOVE_CHARGES_PATTERN = Pattern.compile("\\(\\d+\\)");
 
 	private NavigationButton uiNavigationButton;
 	private TripCheckerPanel uiPanel;
@@ -101,14 +107,9 @@ public class TripCheckerPlugin extends Plugin
 	}
 
 	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
-	}
-
-	@Override
 	public void startUp()
 	{
+		overlayManager.add(overlay);
 		loadExistingLists();
 		BufferedImage icon = iconManager.getSkillImage(Skill.COMBAT);
 		uiPanel = injector.getInstance(TripCheckerPanel.class);
@@ -125,6 +126,7 @@ public class TripCheckerPlugin extends Plugin
 	@Override
 	public void shutDown()
 	{
+		overlayManager.remove(overlay);
 		pluginToolbar.removeNavigation(uiNavigationButton);
 		tripLists.clear();
 		missingItems.clear();
@@ -251,14 +253,29 @@ public class TripCheckerPlugin extends Plugin
 			int quantityInInventory = 0;
 			for (Item i : inventoryContainer.getItems())
 			{
+				//First check by ID
 				if (i.getId() == loadoutInventoryId)
 				{
 					quantityInInventory += i.getQuantity();
+				}
+				else if (config.ignoreItemCharges()
+					&& compareItemNames(itemManager.getItemComposition(loadoutInventoryId).getName(),
+					itemManager.getItemComposition(i.getId()).getName()))
+				{
+					quantityInInventory++;
 				}
 			}
 			if (quantityInInventory != expectedQuantity)
 			{
 				int delta = expectedQuantity - quantityInInventory;
+				//If the difference is less than 0 and we don't care about item
+				//quantities, move onto the next item (only works for stackable items).
+				if (delta <= 0 && !config.checkItemQuantities()
+					&& !itemManager.getItemComposition(loadoutInventoryId).isStackable())
+				{
+					continue;
+				}
+
 				if (missingItemDisplayMode == DisplayMode.BOTH || missingItemDisplayMode == DisplayMode.CHATBOX)
 				{
 					client.addChatMessage(ChatMessageType.SERVER, "", "<col=FF0000>Missing " + delta + " " + itemManager.getItemComposition(loadoutInventoryId).getName(), null);
@@ -278,5 +295,22 @@ public class TripCheckerPlugin extends Plugin
 		{
 			client.addChatMessage(ChatMessageType.SERVER, "", "<col=00FF00>No items missing!", null);
 		}
+	}
+
+	/**
+	 * Checks if two names are similar (ignore things like charges left)
+	 *
+	 * @param nameComparedTo The name used for reference
+	 * @param nameComparing The name of the item being evaluated
+	 *
+	 * @return True if the items share similar names
+	 */
+	private boolean compareItemNames(String nameComparedTo, String nameComparing)
+	{
+		Matcher base = REMOVE_CHARGES_PATTERN.matcher(nameComparedTo);
+		Matcher comparing = REMOVE_CHARGES_PATTERN.matcher(nameComparedTo);
+
+		return base.replaceAll("").toLowerCase()
+			.contains(comparing.replaceAll("").toLowerCase());
 	}
 }

@@ -58,6 +58,17 @@ public interface TripCheckerConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 3,
+		keyName = "ignoreItemCharges",
+		name = "Ignore item charges",
+		description = "Configures if item charges should be ignored."
+	)
+	default boolean ignoreItemCharges()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "loadouts",
 		name = "",
 		description = "",
