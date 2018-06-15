@@ -410,8 +410,9 @@ public class GroundItemsPlugin extends Plugin
 			final Color hidden = getHidden(itemComposition.getName(), gePrice, haPrice, itemComposition.isTradeable());
 			final Color highlighted = getHighlighted(itemComposition.getName(), gePrice, haPrice);
 			final Color color = getItemColor(highlighted, hidden);
+			final boolean canBeRecolored = highlighted != null || (hidden != null && config.recolorMenuHiddenItems());
 
-			if (color != null && hidden == null && !color.equals(config.defaultColor()))
+			if (color != null && canBeRecolored && !color.equals(config.defaultColor()))
 			{
 				String hexColor = Integer.toHexString(color.getRGB() & 0xFFFFFF);
 				String colTag = "<col=" + hexColor + ">";
