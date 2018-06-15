@@ -89,42 +89,6 @@ public class MinimapPlugin extends Plugin
 		}
 	}
 
-	private Color[] getColors()
-	{
-		Color[] colors = new Color[NUM_MAPDOTS];
-		colors[0] = config.itemColor();
-		colors[1] = config.npcColor();
-		colors[2] = config.playerColor();
-		colors[3] = config.friendColor();
-		colors[4] = config.teamColor();
-		colors[5] = config.clanColor();
-		return colors;
-	}
-
-	private void storeOriginalDots()
-	{
-		SpritePixels[] originalDots = client.getMapDots();
-
-		if (originalDots == null)
-		{
-			return;
-		}
-
-		originalDotSprites = Arrays.copyOf(originalDots, originalDots.length);
-	}
-
-	private void restoreOriginalDots()
-	{
-		SpritePixels[] mapDots = client.getMapDots();
-
-		if (originalDotSprites == null || mapDots == null)
-		{
-			return;
-		}
-
-		System.arraycopy(originalDotSprites, 0, mapDots, 0, mapDots.length);
-	}
-
 	@Subscribe
 	public void configChanged(ConfigChanged event)
 	{
@@ -179,5 +143,41 @@ public class MinimapPlugin extends Plugin
 		{
 			mapDots[i] = MinimapDot.create(this.client, minimapDotColors[i]);
 		}
+	}
+
+	private Color[] getColors()
+	{
+		Color[] colors = new Color[NUM_MAPDOTS];
+		colors[0] = config.itemColor();
+		colors[1] = config.npcColor();
+		colors[2] = config.playerColor();
+		colors[3] = config.friendColor();
+		colors[4] = config.teamColor();
+		colors[5] = config.clanColor();
+		return colors;
+	}
+
+	private void storeOriginalDots()
+	{
+		SpritePixels[] originalDots = client.getMapDots();
+
+		if (originalDots == null)
+		{
+			return;
+		}
+
+		originalDotSprites = Arrays.copyOf(originalDots, originalDots.length);
+	}
+
+	private void restoreOriginalDots()
+	{
+		SpritePixels[] mapDots = client.getMapDots();
+
+		if (originalDotSprites == null || mapDots == null)
+		{
+			return;
+		}
+
+		System.arraycopy(originalDotSprites, 0, mapDots, 0, mapDots.length);
 	}
 }
