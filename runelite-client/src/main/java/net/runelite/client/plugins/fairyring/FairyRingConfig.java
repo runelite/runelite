@@ -22,52 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.fairyring;
 
-public final class ScriptID
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+
+@ConfigGroup("fairyrings")
+public interface FairyRingConfig extends Config
 {
-	/**
-	 * Updates the scrollbar handle and container to the new height of the content container
-	 * <ul>
-	 * <li> int (WidgetID) Scrollbar's widget ID </li>
-	 * <li> int (WidgetID) Container widget ID </li>
-	 * <li> int how far down to scroll </li>
-	 * </ul>
-	 */
-	public static final int UPDATE_SCROLLBAR = 72;
-
-	/**
-	 * Sends a chat message
-	 * <ul>
-	 * <li> int (byte) Flags </li>
-	 * <li> String Message to send </li>
-	 * </ul>
-	 */
-	public static final int CHATBOX_INPUT = 96;
-
-	/**
-	 * Closes the chatbox input
-	 * <ul>
-	 * <li> int (boolean) Clear the current text </li>
-	 * <li> int (boolean) Unknown; set to 1 </li>
-	 * </ul>
-	 */
-	public static final int CLOSE_CHATBOX_INPUT = 299;
-
-	/**
-	 * Initializes the chatbox input to use RuneLite callbacks
-	 * <ul>
-	 * <li> String  Prompt text </li>
-	 * <li> String  Default value </li>
-	 * </ul>
-	 */
-	public static final int RUNELITE_CHATBOX_INPUT_INIT = 10001;
-
-	/**
-	 * Does nothing
-	 *
-	 * This is used to eat events when you want a menu action attached to it
-	 * because you need an op listener attached to it for it to work
-	 */
-	public static final int NULL = 10003;
+	@ConfigItem(
+		keyName = "autoOpen",
+		name = "Open search automatically",
+		description = "Open the search widget every time you enter a fairy ring"
+	)
+	default boolean autoOpen()
+	{
+		return true;
+	}
 }
