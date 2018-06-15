@@ -58,8 +58,6 @@ public class GrandExchangeController
 				long timeSinceUpdate = Duration.between(entry.getLastUpdate(), Instant.now()).toMillis();
 				if (timeSinceUpdate >= RSBUDDY_DB_CACHE_MILLIS)
 				{
-					logger.info("Outdated " + timeSinceUpdate + " millis");
-
 					GuidePriceResponse guidePrice = grandExchangeService.lookupItem(itemId);
 					entry = grandExchangeService.update(itemId, guidePrice);
 				}
