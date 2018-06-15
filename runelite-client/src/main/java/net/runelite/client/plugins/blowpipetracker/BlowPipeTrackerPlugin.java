@@ -26,6 +26,7 @@ package net.runelite.client.plugins.blowpipetracker;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.Color;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.events.*;
@@ -41,7 +42,6 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,7 @@ import java.util.regex.Pattern;
 	name = "Blowpipe Tracker"
 )
 @Slf4j
-public class BlowPipeTrackerPlugin extends Plugin
+class BlowPipeTrackerPlugin extends Plugin
 {
 
 	@Inject
@@ -151,7 +151,7 @@ public class BlowPipeTrackerPlugin extends Plugin
 		if (dartRoll <= attractorDefinition.getSavedChance())
 			return false;
 		else
-			return dartRoll > 1 - (attractorDefinition.getBreakOnImpactPercentage() + attractorDefinition.getDropToFloorChance());
+			return dartRoll > 1 - (attractorDefinition.getBreakOnImpactChance() + attractorDefinition.getDropToFloorChance());
 	}
 
 	private boolean shouldConsumeScales()
@@ -217,7 +217,7 @@ public class BlowPipeTrackerPlugin extends Plugin
 			return;
 		}
 
-		if (!config.showInfobox())
+		if (config.showInfobox())
 		{
 			removeDartCounter();
 			removeScaleCounter();
@@ -243,7 +243,9 @@ public class BlowPipeTrackerPlugin extends Plugin
 	private void removeDartCounter()
 	{
 		if (dartCounter == null)
+		{
 			return;
+		}
 
 		infoBoxManager.removeInfoBox(dartCounter);
 		dartCounter = null;
@@ -252,7 +254,9 @@ public class BlowPipeTrackerPlugin extends Plugin
 	private void removeScaleCounter()
 	{
 		if (scaleCounter == null)
+		{
 			return;
+		}
 
 		infoBoxManager.removeInfoBox(scaleCounter);
 		scaleCounter = null;
@@ -261,7 +265,9 @@ public class BlowPipeTrackerPlugin extends Plugin
 	private void removeCombinedCounter()
 	{
 		if (combinedCounter == null)
+		{
 			return;
+		}
 
 		infoBoxManager.removeInfoBox(combinedCounter);
 		combinedCounter = null;
@@ -270,6 +276,7 @@ public class BlowPipeTrackerPlugin extends Plugin
 	private int getDartIdByName(String dartName)
 	{
 		dartType = dartName;
+
 		switch (dartName.toLowerCase())
 		{
 			case "bronze":
@@ -293,14 +300,16 @@ public class BlowPipeTrackerPlugin extends Plugin
 
 	private void modifyCounters()
 	{
-		if (!parsedValuesFromText || !config.showInfobox())
+		if (!parsedValuesFromText || config.showInfobox())
+		{
 			return;
+		}
 
 		if (config.displayStyleMode() == DisplayStyleMode.COMBINED)
 		{
 			if (combinedCounter == null)
 			{
-				BufferedImage blowpipeImg = itemManager.getImage(ItemID.TOXIC_BLOWPIPE);
+				final BufferedImage blowpipeImg = itemManager.getImage(ItemID.TOXIC_BLOWPIPE);
 				combinedCounter = new Counter(blowpipeImg, this,
 					String.format("%.1f%%", 100 * (double)scalesLeft / MAX_SCALES));
 				combinedCounter.setTooltip(String.format("<col=ffff00>Darts (%s):</col> %s</br><col=ffff00>Scales:</col> %s", dartType, dartsLeft, scalesLeft));
@@ -321,7 +330,7 @@ public class BlowPipeTrackerPlugin extends Plugin
 			{
 				if (dartCounter == null)
 				{
-					BufferedImage dartImg = itemManager.getImage(dartId);
+					final BufferedImage dartImg = itemManager.getImage(dartId);
 					dartCounter = new Counter(dartImg, this, String.valueOf(dartsLeft));
 					dartCounter.setTooltip(String.format("<col=ff7700>Darts:</col> %s", dartsLeft));
 

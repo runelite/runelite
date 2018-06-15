@@ -33,7 +33,7 @@ import net.runelite.client.config.ConfigItem;
 	name = "Blowpipe Tracker",
 	description = "Configuration for the blowpipe tracker plugin"
 )
-public interface BlowPipeTrackerConfig extends Config
+interface BlowPipeTrackerConfig extends Config
 {
 	@ConfigItem(
 		position = 1,
@@ -43,7 +43,7 @@ public interface BlowPipeTrackerConfig extends Config
 	)
 	default boolean showInfobox()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
