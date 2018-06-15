@@ -233,12 +233,14 @@ public interface MenuEntrySwapperConfig extends Config
 		return true;
 	}
 
+
 	@ConfigItem(
 			position = 18,
 			keyName = "makeAll",
-			name = "Make All",
+			name = "Make all",
 			description = "Some things the new make all doesn't work for, like jewelry, this fixes most if not all of those"
 	)
 	default boolean makeAll()
 	{ return true; }
+
 }
