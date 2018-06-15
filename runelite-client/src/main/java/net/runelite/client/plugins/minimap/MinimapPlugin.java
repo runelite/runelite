@@ -67,13 +67,7 @@ public class MinimapPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		Widget minimapWidget = client.getWidget(WidgetInfo.MINIMAP_WIDGET);
-
-		if (minimapWidget != null)
-		{
-			minimapWidget.setHidden(config.hideMinimap());
-		}
-
+		updateMinimapWidgetVisibility(config.hideMinimap());
 		storeOriginalDots();
 		replaceMapDots();
 	}
@@ -81,13 +75,7 @@ public class MinimapPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		Widget minimapWidget = client.getWidget(WidgetInfo.MINIMAP_WIDGET);
-
-		if (minimapWidget != null)
-		{
-			minimapWidget.setHidden(false);
-		}
-
+		updateMinimapWidgetVisibility(false);
 		restoreOriginalDots();
 	}
 
@@ -147,12 +135,7 @@ public class MinimapPlugin extends Plugin
 
 		if (event.getKey().equals("hideMinimap"))
 		{
-			Widget minimapWidget = client.getWidget(WidgetInfo.MINIMAP_WIDGET);
-
-			if (minimapWidget != null)
-			{
-				minimapWidget.setHidden(config.hideMinimap());
-			}
+			updateMinimapWidgetVisibility(config.hideMinimap());
 			return;
 		}
 
@@ -162,11 +145,23 @@ public class MinimapPlugin extends Plugin
 	@Subscribe
 	public void onWidgetHiddenChange(WidgetHiddenChanged event)
 	{
-		Widget minimapWidget = client.getWidget(WidgetInfo.MINIMAP_WIDGET);
+		updateMinimapWidgetVisibility(config.hideMinimap());
+	}
 
-		if (event.getWidget() == minimapWidget)
+	private void updateMinimapWidgetVisibility(boolean enable)
+	{
+		final Widget resizableStonesWidget = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_STONES_WIDGET);
+
+		if (resizableStonesWidget != null)
 		{
-			minimapWidget.setHidden(config.hideMinimap());
+			resizableStonesWidget.setHidden(enable);
+		}
+
+		final Widget resizableNormalWidget = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_WIDGET);
+
+		if (resizableNormalWidget != null && !resizableNormalWidget.isSelfHidden())
+		{
+			resizableNormalWidget.setHidden(enable);
 		}
 	}
 
@@ -185,5 +180,4 @@ public class MinimapPlugin extends Plugin
 			mapDots[i] = MinimapDot.create(this.client, minimapDotColors[i]);
 		}
 	}
-
 }
