@@ -143,7 +143,7 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "highlightOverValue",
+		keyName = "highlightOverValue2",
 		name = "Highlight > Value",
 		description = "Configures highlighted ground items over either GE or HA value",
 		position = 8
