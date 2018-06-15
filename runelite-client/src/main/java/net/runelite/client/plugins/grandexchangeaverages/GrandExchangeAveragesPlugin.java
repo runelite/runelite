@@ -42,7 +42,7 @@ import net.runelite.http.api.osbuddy.GrandExchangeClient;
 import net.runelite.http.api.osbuddy.GrandExchangeResult;
 
 @PluginDescriptor(
-	name = "OSB Grand Exchange Averages",
+	name = "OSBuddy Grand Exchange",
 	enabledByDefault = false
 )
 @Slf4j
