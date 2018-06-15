@@ -67,6 +67,10 @@ public class GrandExchangeAveragesPlugin extends Plugin
 
 	private String currentItemText;
 
+	private boolean lastItemFinished;
+
+	private String lastItemText;
+
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
@@ -99,8 +103,14 @@ public class GrandExchangeAveragesPlugin extends Plugin
 		}
 
 		int itemId = grandExchangeItem.getItemId();
-		if (itemId == currentItemId || itemId == -1)
+		if (itemId == OFFER_DEFAULT_ITEM_ID || itemId == -1)
 		{
+			return;
+		}
+
+		if (itemId == currentItemId && lastItemFinished)
+		{
+			grandExchangeText.setText(lastItemText);
 			return;
 		}
 
@@ -115,18 +125,21 @@ public class GrandExchangeAveragesPlugin extends Plugin
 	{
 		if (currentItemId == itemId)
 		{
-			grandExchangeText.setText(currentItemText + "<br>Actively traded price (OSB): " + priceText);
+			lastItemText = currentItemText + "<br>Actively traded price (OSB): " + priceText;
+			grandExchangeText.setText(lastItemText);
 		}
 	}
 
 	private void loadCurrentItemPrice(final int itemId)
 	{
+		lastItemFinished = false;
 		grandExchangeClient.lookupItem(itemId, new GrandExchangeCallback()
 		{
 			@Override
 			public void onSuccess(GrandExchangeResult result)
 			{
 				setCurrentItemPrice(itemId, StackFormatter.formatNumber(result.getOverall_average()));
+				lastItemFinished = true;
 			}
 
 			@Override
