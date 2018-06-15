@@ -39,11 +39,12 @@ import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.api.events.BoostedLevelChanged;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
@@ -69,10 +70,16 @@ public class BoostsPlugin extends Plugin
 	private Instant lastChange;
 
 	@Inject
+	private Notifier notifier;
+
+	@Inject
 	private Client client;
 
 	@Inject
 	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private BoostsOverlay boostsOverlay;
@@ -97,14 +104,9 @@ public class BoostsPlugin extends Plugin
 	}
 
 	@Override
-	public Overlay getOverlay()
-	{
-		return boostsOverlay;
-	}
-
-	@Override
 	protected void startUp()
 	{
+		overlayManager.add(boostsOverlay);
 		updateShownSkills(config.enableSkill());
 		Arrays.fill(lastSkillLevels, -1);
 		overallIcon = skillIconManager.getSkillImage(Skill.OVERALL);
@@ -113,6 +115,7 @@ public class BoostsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(boostsOverlay);
 		infoBoxManager.removeIf(t -> t instanceof BoostIndicator || t instanceof StatChangeIndicator);
 	}
 
@@ -155,7 +158,7 @@ public class BoostsPlugin extends Plugin
 		int last = lastSkillLevels[skillIdx];
 		int cur = client.getBoostedSkillLevel(skill);
 
-		// Check if stat goes +1 or -2
+		// Check if stat goes +1 or -1
 		if (cur == last + 1 || cur == last - 1)
 		{
 			log.debug("Skill {} healed", skill);
@@ -163,6 +166,18 @@ public class BoostsPlugin extends Plugin
 			addStatChangeIndicator();
 		}
 		lastSkillLevels[skillIdx] = cur;
+
+		int boostThreshold = config.boostThreshold();
+		if (boostThreshold != 0)
+		{
+			int real = client.getRealSkillLevel(skill);
+			int lastBoost = last - real;
+			int boost = cur - real;
+			if (boost <= boostThreshold && boostThreshold < lastBoost)
+			{
+				notifier.notify(skill.getName() + " level is getting low!");
+			}
+		}
 	}
 
 	private void updateShownSkills(boolean showSkillingSkills)

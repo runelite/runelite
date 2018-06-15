@@ -52,6 +52,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE_CASTING;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Attack Styles"
@@ -74,6 +75,9 @@ public class AttackStylesPlugin extends Plugin
 	private AttackStylesConfig config;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private AttackStylesOverlay overlay;
 
 	@Provides
@@ -83,15 +87,10 @@ public class AttackStylesPlugin extends Plugin
 	}
 
 	@Override
-	public AttackStylesOverlay getOverlay()
-	{
-		return overlay;
-	}
-
-
-	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
+
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
 			updateWarnedSkills(config.warnForAttack(), Skill.ATTACK);
@@ -111,6 +110,7 @@ public class AttackStylesPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		overlayManager.remove(overlay);
 		hideWarnedStyles(false);
 		processWidgets();
 	}

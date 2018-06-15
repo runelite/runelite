@@ -32,8 +32,6 @@ import com.google.inject.Provides;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
-import java.util.Arrays;
-import java.util.Collection;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +50,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
@@ -67,6 +65,9 @@ public class DevToolsPlugin extends Plugin
 
 	@Inject
 	private PluginToolbar pluginToolbar;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private DevToolsOverlay overlay;
@@ -103,6 +104,7 @@ public class DevToolsPlugin extends Plugin
 	private boolean toggleGraphicsObjects;
 	private boolean toggleCamera;
 	private boolean toggleWorldMapLocation;
+	private boolean toggleTileLocation;
 
 	Widget currentWidget;
 	int itemIndex = -1;
@@ -119,6 +121,12 @@ public class DevToolsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
+		overlayManager.add(locationOverlay);
+		overlayManager.add(sceneOverlay);
+		overlayManager.add(cameraOverlay);
+		overlayManager.add(worldMapLocationOverlay);
+
 		final DevToolsPanel panel = injector.getInstance(DevToolsPanel.class);
 
 		BufferedImage icon;
@@ -143,13 +151,12 @@ public class DevToolsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
+		overlayManager.remove(locationOverlay);
+		overlayManager.remove(sceneOverlay);
+		overlayManager.remove(cameraOverlay);
+		overlayManager.remove(worldMapLocationOverlay);
 		pluginToolbar.removeNavigation(navButton);
-	}
-
-	@Override
-	public Collection<Overlay> getOverlays()
-	{
-		return Arrays.asList(overlay, locationOverlay, sceneOverlay, cameraOverlay, worldMapLocationOverlay);
 	}
 
 	@Subscribe
@@ -326,6 +333,11 @@ public class DevToolsPlugin extends Plugin
 		toggleWorldMapLocation = !toggleWorldMapLocation;
 	}
 
+	void toggleTileLocation()
+	{
+		toggleTileLocation = !toggleTileLocation;
+	}
+
 	boolean isTogglePlayers()
 	{
 		return togglePlayers;
@@ -409,5 +421,10 @@ public class DevToolsPlugin extends Plugin
 	boolean isToggleWorldMapLocation()
 	{
 		return toggleWorldMapLocation;
+	}
+
+	boolean isToggleTileLocation()
+	{
+		return toggleTileLocation;
 	}
 }

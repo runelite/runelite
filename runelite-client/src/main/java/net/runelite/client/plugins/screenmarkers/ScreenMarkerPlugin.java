@@ -32,10 +32,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -52,8 +52,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.screenmarkers.ui.ScreenMarkerPluginPanel;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayRenderer;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Screen Markers"
@@ -81,10 +80,10 @@ public class ScreenMarkerPlugin extends Plugin
 	private PluginToolbar pluginToolbar;
 
 	@Inject
-	private ScreenMarkerCreationOverlay overlay;
+	private OverlayManager overlayManager;
 
 	@Inject
-	private OverlayRenderer overlayRenderer;
+	private ScreenMarkerCreationOverlay overlay;
 
 	private ScreenMarkerMouseListener mouseListener;
 	private ScreenMarkerPluginPanel pluginPanel;
@@ -95,21 +94,14 @@ public class ScreenMarkerPlugin extends Plugin
 
 	@Getter
 	private boolean creatingScreenMarker = false;
-
-	@Override
-	public Collection<Overlay> getOverlays()
-	{
-		final List<Overlay> overlays = new ArrayList<>();
-		overlays.add(overlay);
-		overlays.addAll(screenMarkers);
-		return overlays;
-	}
+	private Point startLocation = null;
 
 	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
 		loadConfig(configManager.getConfiguration(CONFIG_GROUP, CONFIG_KEY)).forEach(screenMarkers::add);
-		overlayRenderer.rebuildOverlays();
+		screenMarkers.forEach(overlayManager::add);
 
 		pluginPanel = injector.getInstance(ScreenMarkerPluginPanel.class);
 		pluginPanel.init();
@@ -135,10 +127,12 @@ public class ScreenMarkerPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
+		overlayManager.removeIf(ScreenMarkerOverlay.class::isInstance);
+		screenMarkers.clear();
 		pluginToolbar.removeNavigation(navigationButton);
 		setMouseListenerEnabled(false);
 		creatingScreenMarker = false;
-		screenMarkers.clear();
 
 		pluginPanel = null;
 		currentMarker = null;
@@ -152,7 +146,8 @@ public class ScreenMarkerPlugin extends Plugin
 		if (screenMarkers.isEmpty() && event.getGroup().equals(CONFIG_GROUP) && event.getKey().equals(CONFIG_KEY))
 		{
 			loadConfig(event.getNewValue()).forEach(screenMarkers::add);
-			overlayRenderer.rebuildOverlays();
+			overlayManager.removeIf(ScreenMarkerOverlay.class::isInstance);
+			screenMarkers.forEach(overlayManager::add);
 		}
 	}
 
@@ -180,6 +175,7 @@ public class ScreenMarkerPlugin extends Plugin
 		);
 
 		// Set overlay creator bounds to current position and default size
+		startLocation = location;
 		overlay.setPreferredLocation(location);
 		overlay.setPreferredSize(DEFAULT_SIZE);
 		creatingScreenMarker = true;
@@ -194,13 +190,14 @@ public class ScreenMarkerPlugin extends Plugin
 			screenMarkerOverlay.setPreferredSize(overlay.getBounds().getSize());
 
 			screenMarkers.add(screenMarkerOverlay);
+			overlayManager.saveOverlay(screenMarkerOverlay);
+			overlayManager.add(screenMarkerOverlay);
 			pluginPanel.rebuild();
 			updateConfig();
-			overlayRenderer.saveOverlay(screenMarkerOverlay);
-			overlayRenderer.rebuildOverlays();
 		}
 
 		creatingScreenMarker = false;
+		startLocation = null;
 		currentMarker = null;
 		setMouseListenerEnabled(false);
 
@@ -215,18 +212,19 @@ public class ScreenMarkerPlugin extends Plugin
 
 	public void deleteMarker(final ScreenMarkerOverlay marker)
 	{
-		overlayRenderer.resetOverlay(marker);
 		screenMarkers.remove(marker);
+		overlayManager.remove(marker);
+		overlayManager.resetOverlay(marker);
 		pluginPanel.rebuild();
 		updateConfig();
-		overlayRenderer.rebuildOverlays();
 	}
 
-	public void resizeMarker(int dx, int dy)
+	void resizeMarker(Point point)
 	{
-		// TODO: Allow resizing below base point
-		Dimension currentSize = overlay.getPreferredSize();
-		overlay.setPreferredSize(new Dimension(currentSize.width + dx, currentSize.height + dy));
+		Rectangle bounds = new Rectangle(startLocation);
+		bounds.add(point);
+		overlay.setPreferredLocation(bounds.getLocation());
+		overlay.setPreferredSize(bounds.getSize());
 	}
 
 	public void updateConfig()

@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.4.2-SNAPSHOT</version>
+		<version>1.4.4-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
@@ -72,7 +72,6 @@
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.4</version>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.pushingpixels</groupId>

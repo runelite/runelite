@@ -36,6 +36,7 @@ import static net.runelite.api.ObjectID.CRATE_18506;
 import static net.runelite.api.ObjectID.CRATE_2620;
 import static net.runelite.api.ObjectID.CRATE_354;
 import static net.runelite.api.ObjectID.CRATE_357;
+import static net.runelite.api.ObjectID.CRATE_6616;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
@@ -84,7 +85,8 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 		new MapClue(CLUE_SCROLL_ELITE_19782, new WorldPoint(2953, 9523, 1)),
 		new MapClue(CLUE_SCROLL_ELITE_19783, new WorldPoint(2202, 3062, 0)),
 		new MapClue(CLUE_SCROLL_ELITE_19784, new WorldPoint(1815, 3852, 0)),
-		new MapClue(CLUE_SCROLL_ELITE_19785, new WorldPoint(3538, 3208, 0))
+		new MapClue(CLUE_SCROLL_ELITE_19785, new WorldPoint(3538, 3208, 0)),
+		new MapClue(CLUE_SCROLL_ELITE_19786, new WorldPoint(2703, 2716, 0), CRATE_6616)
 	);
 
 	private int itemId;

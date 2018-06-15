@@ -56,15 +56,4 @@ public interface GrandExchangeConfig extends Config
 	{
 		return true;
 	}
-
-	@ConfigItem(
-		position = 3,
-		keyName = "notificationDelay",
-		name = "Notification Delay",
-		description = "Number of seconds between notifications on offer updates"
-	)
-	default int notificationDelay()
-	{
-		return 5;
-	}
 }

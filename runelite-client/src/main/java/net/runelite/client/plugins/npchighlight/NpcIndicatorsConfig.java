@@ -101,4 +101,14 @@ public interface NpcIndicatorsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "showRespawnTimer",
+		name = "Show respawn timer",
+		description = "Show respawn timer of tagged NPCs")
+	default boolean showRespawnTimer()
+	{
+		return false;
+	}
 }

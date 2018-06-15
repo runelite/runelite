@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Raqes <j.raqes@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellerycount;
+package net.runelite.client.plugins.prayer;
 
-public enum JewelleryType
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+
+@ConfigGroup(
+	keyName = "prayer",
+	name = "Prayer",
+	description = "Various tools related to prayer"
+)
+public interface PrayerConfig extends Config
 {
-	GLORY,
-	ROD,
-	GAMES,
-	ROW,
-	ROS,
-	SKILLS,
-	CBRACE,
-	DIGSITE,
-	BURNING,
-	PASSAGE,
-	RETURNING,
-	TCRYSTAL,
-	PHARAO,
-	WATERSKIN,
-	IMP_IN_A_BOX,
-	ELYRE
+	@ConfigItem(
+		position = 0,
+		keyName = "prayerflick",
+		name = "Prayer flick helper",
+		description = "Enable the prayer flick helper"
+	)
+	default boolean prayerFlickHelper()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "prayerIndicator",
+		name = "Boost Indicator",
+		description = "Enable infoboxes for prayers"
+	)
+	default boolean prayerIndicator()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "prayerIndicatorOverheads",
+		name = "Overhead Indicator",
+		description = "Also enable infoboxes for overheads"
+	)
+	default boolean prayerIndicatorOverheads()
+	{
+		return false;
+	}
 }

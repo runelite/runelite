@@ -26,8 +26,6 @@ package net.runelite.client.plugins.agility;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -65,7 +63,7 @@ import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
@@ -83,11 +81,13 @@ public class AgilityPlugin extends Plugin
 	private Tile markOfGrace;
 
 	@Inject
-	@Getter
-	private AgilityOverlay overlay;
+	private OverlayManager overlayManager;
 
 	@Inject
-	private LapCounterOverlay lapOverlay;
+	private AgilityOverlay agilityOverlay;
+
+	@Inject
+	private LapCounterOverlay lapCounterOverlay;
 
 	@Inject
 	private Notifier notifier;
@@ -114,14 +114,17 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Override
-	public Collection<Overlay> getOverlays()
+	protected void startUp() throws Exception
 	{
-		return Arrays.asList(overlay, lapOverlay);
+		overlayManager.add(agilityOverlay);
+		overlayManager.add(lapCounterOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(agilityOverlay);
+		overlayManager.remove(lapCounterOverlay);
 		markOfGrace = null;
 		obstacles.clear();
 		session = null;

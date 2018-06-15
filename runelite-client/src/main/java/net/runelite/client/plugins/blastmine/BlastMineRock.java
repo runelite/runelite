@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Ethan <https://github.com/shmeeps>
+ * Copyright (c) 2018, Unmoon <https://github.com/Unmoon>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,42 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grandexchange;
+package net.runelite.client.plugins.blastmine;
 
+import java.time.Duration;
 import java.time.Instant;
-import lombok.Value;
-import net.runelite.api.GrandExchangeOfferState;
+import lombok.Getter;
+import net.runelite.api.GameObject;
 
-@Value
-class GrandExchangeNotification
+class BlastMineRock
 {
-	private final int slot;
-	private final int quantitySold;
-	private final int totalQuantity;
-	private final String itemName;
-	private final GrandExchangeOfferState state;
-	private final Instant insertedOn = Instant.now();
+	private static final Duration PLANT_TIME = Duration.ofSeconds(30);
+	private static final Duration FUSE_TIME = Duration.ofMillis(4200);
 
-	String getNotificationMessage()
+	@Getter
+	private final GameObject gameObject;
+
+	@Getter
+	private final BlastMineRockType type;
+
+	private final Instant creationTime = Instant.now();
+
+	BlastMineRock(final GameObject gameObject, BlastMineRockType blastMineRockType)
 	{
-		// Send complete or X/Y notification
-		switch (this.state)
-		{
-			case BUYING:
-				return String.format("Grand Exchange: Bought %d / %d x %s", quantitySold, totalQuantity, itemName);
+		this.gameObject = gameObject;
+		this.type = blastMineRockType;
+	}
 
-			case SELLING:
-				return String.format("Grand Exchange: Sold %d / %d x %s", quantitySold, totalQuantity, itemName);
+	double getRemainingFuseTimeRelative()
+	{
+		Duration duration = Duration.between(creationTime, Instant.now());
+		return duration.compareTo(FUSE_TIME) < 0 ? (double) duration.toMillis() / FUSE_TIME.toMillis() : 1;
+	}
 
-			case BOUGHT:
-				return String.format("Grand Exchange: Finished buying %d x %s", totalQuantity, itemName);
-
-			case SOLD:
-				return String.format("Grand Exchange: Finished selling %d x %s", totalQuantity, itemName);
-
-			default:
-				// Not possible
-				return null;
-		}
+	double getRemainingTimeRelative()
+	{
+		Duration duration = Duration.between(creationTime, Instant.now());
+		return duration.compareTo(PLANT_TIME) < 0 ? (double) duration.toMillis() / PLANT_TIME.toMillis() : 1;
 	}
 }

@@ -216,6 +216,22 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(worldMapBtn);
 
+		final JButton tileLocationBtn = new JButton("Tile Location Tooltip");
+		tileLocationBtn.addActionListener(e ->
+		{
+			highlightButton(tileLocationBtn);
+			plugin.toggleTileLocation();
+		});
+		container.add(tileLocationBtn);
+
+		final JButton oculusOrbBtn = new JButton("Detached camera");
+		oculusOrbBtn.addActionListener(e ->
+		{
+			highlightButton(oculusOrbBtn);
+			client.setOculusOrbState(oculusOrbBtn.getBackground().equals(Color.GREEN) ? 1 : 0);
+		});
+		container.add(oculusOrbBtn);
+
 		return container;
 	}
 

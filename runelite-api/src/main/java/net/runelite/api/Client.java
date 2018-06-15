@@ -633,6 +633,14 @@ public interface Client extends GameEngine
 	String getVar(VarClientStr varClientStr);
 
 	/**
+	 * Sets the given variable
+	 *
+	 * @param varClientStr
+	 * @param value
+	 */
+	void setVar(VarClientStr varClientStr, String value);
+
+	/**
 	 * Sets the value of a given variable.
 	 *
 	 * @param varbit the variable
@@ -1381,4 +1389,11 @@ public interface Client extends GameEngine
 	 * @return the types for current world
 	 */
 	EnumSet<WorldType> getWorldType();
+
+	/**
+	 * Sets the enabled state for the Oculus orb state
+	 *
+	 * @param state boolean enabled value
+	 */
+	void setOculusOrbState(int state);
 }

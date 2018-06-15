@@ -32,8 +32,6 @@ import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
@@ -62,7 +60,6 @@ import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
@@ -73,7 +70,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Motherlode Mine",
@@ -91,6 +88,9 @@ public class MotherlodePlugin extends Plugin
 	private static final int SACK_SIZE = 81;
 
 	private static final int UPPER_FLOOR_HEIGHT = -500;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private MotherlodeOverlay overlay;
@@ -134,14 +134,13 @@ public class MotherlodePlugin extends Plugin
 	}
 
 	@Override
-	public Collection<Overlay> getOverlays()
-	{
-		return Arrays.asList(overlay, rocksOverlay, motherlodeSackOverlay, motherlodeGemOverlay);
-	}
-
-	@Override
 	protected void startUp()
 	{
+		overlayManager.add(overlay);
+		overlayManager.add(rocksOverlay);
+		overlayManager.add(motherlodeGemOverlay);
+		overlayManager.add(motherlodeSackOverlay);
+
 		session = new MotherlodeSession();
 		inMlm = checkInMlm();
 
@@ -154,6 +153,10 @@ public class MotherlodePlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
+		overlayManager.remove(rocksOverlay);
+		overlayManager.remove(motherlodeGemOverlay);
+		overlayManager.remove(motherlodeSackOverlay);
 		session = null;
 		veins.clear();
 		rocks.clear();
@@ -332,12 +335,6 @@ public class MotherlodePlugin extends Plugin
 
 		GameObject gameObject = event.getGameObject();
 		rocks.remove(gameObject);
-	}
-
-	@Subscribe
-	public void onRegionChanged(MapRegionChanged event)
-	{
-		inMlm = checkInMlm();
 	}
 
 	@Subscribe

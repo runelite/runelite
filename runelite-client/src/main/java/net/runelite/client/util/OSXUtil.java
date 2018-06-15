@@ -26,7 +26,6 @@ package net.runelite.client.util;
 
 import com.apple.eawt.Application;
 import com.apple.eawt.FullScreenUtilities;
-import java.awt.Window;
 import javax.swing.JFrame;
 import lombok.extern.slf4j.Slf4j;
 
@@ -61,21 +60,5 @@ public class OSXUtil
 			app.requestForeground(true);
 			log.debug("Requested focus on macOS");
 		}
-	}
-
-	/**
-	 * Requests the fullscreen in a macOS friendly way
-	 */
-	public static boolean toggleFullscreen(final Window window)
-	{
-		if (OSType.getOSType() == OSType.MacOS)
-		{
-			Application app = Application.getApplication();
-			app.requestToggleFullScreen(window);
-			log.debug("Requested fullscreen on macOS");
-			return true;
-		}
-
-		return false;
 	}
 }

@@ -28,7 +28,6 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import javax.inject.Inject;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP_OPTION;
@@ -38,7 +37,7 @@ import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Instance Map"
@@ -49,6 +48,9 @@ public class InstanceMapPlugin extends Plugin
 
 	@Inject
 	private InstanceMapInputListener inputListener;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private InstanceMapOverlay overlay;
@@ -81,6 +83,7 @@ public class InstanceMapPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
 		addCustomOptions();
 		keyManager.registerKeyListener(inputListener);
 		mouseManager.registerMouseListener(inputListener);
@@ -90,16 +93,11 @@ public class InstanceMapPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
 		removeCustomOptions();
 		keyManager.unregisterKeyListener(inputListener);
 		mouseManager.registerMouseListener(inputListener);
 		mouseManager.unregisterMouseWheelListener(inputListener);
-	}
-
-	@Subscribe
-	public void regionChange(MapRegionChanged event)
-	{
-		overlay.onRegionChange(event);
 	}
 
 	@Subscribe
@@ -132,12 +130,6 @@ public class InstanceMapPlugin extends Plugin
 				showMap();
 			}
 		}
-	}
-
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
 	}
 
 	public void showMap()

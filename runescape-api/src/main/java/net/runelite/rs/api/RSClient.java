@@ -628,4 +628,8 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("widgetSpriteCache")
 	RSNodeCache getWidgetSpriteCache();
+
+	@Import("oculusOrbState")
+	@Override
+	void setOculusOrbState(int state);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Mitchell <https://github.com/Mitchell-Kovacs>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.client.plugins.itemcharges;
 
-import lombok.Data;
-import net.runelite.api.Client;
-
-/**
- * An event where a map region has been modified.
- * <p>
- * This event exposes the index into the map that is changing,
- * the value of which can be obtained by using the index with
- * the {@link Client#getMapRegions()} array.
- */
-@Data
-public class MapRegionChanged
+enum ItemChargeType
 {
-	/**
-	 * The map region index.
-	 */
-	private int index;
+	FUNGICIDE_SPRAY,
+	IMPBOX,
+	TELEPORT,
+	WATERCAN,
+	WATERSKIN
 }
