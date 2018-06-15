@@ -40,7 +40,7 @@ import net.runelite.client.ui.components.ComboBoxListRenderer;
 
 class TripCheckerPanel extends PluginPanel
 {
-	private TripCheckerPlugin plugin;
+	private final TripCheckerPlugin plugin;
 
 	private JComboBox<String> existingLoadouts;
 

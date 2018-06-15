@@ -122,6 +122,14 @@ public class TripCheckerPlugin extends Plugin
 		pluginToolbar.addNavigation(uiNavigationButton);
 	}
 
+	@Override
+	public void shutDown()
+	{
+		pluginToolbar.removeNavigation(uiNavigationButton);
+		tripLists.clear();
+		missingItems.clear();
+	}
+
 	private void loadExistingLists()
 	{
 		// Search directory
@@ -136,10 +144,7 @@ public class TripCheckerPlugin extends Plugin
 			{
 				return;
 			}
-			for (String key : loadedTripLists.keySet())
-			{
-				tripLists.put(key, loadedTripLists.get(key));
-			}
+			tripLists.putAll(loadedTripLists);
 		}
 		catch (JsonSyntaxException ex)
 		{
@@ -248,7 +253,7 @@ public class TripCheckerPlugin extends Plugin
 			{
 				if (i.getId() == loadoutInventoryId)
 				{
-					quantityInInventory++;
+					quantityInInventory += i.getQuantity();
 				}
 			}
 			if (quantityInInventory != expectedQuantity)
@@ -271,7 +276,7 @@ public class TripCheckerPlugin extends Plugin
 
 		if (!isMissingItem)
 		{
-			client.addChatMessage(ChatMessageType.SERVER, "", "<col=FF0000>No items missing!", null);
+			client.addChatMessage(ChatMessageType.SERVER, "", "<col=00FF00>No items missing!", null);
 		}
 	}
 }

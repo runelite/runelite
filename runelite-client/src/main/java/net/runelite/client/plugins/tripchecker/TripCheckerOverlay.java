@@ -40,7 +40,7 @@ public class TripCheckerOverlay extends Overlay
 	@Inject
 	private ItemManager itemManager;
 
-	private TripCheckerPlugin plugin;
+	private final TripCheckerPlugin plugin;
 	private final PanelComponent imagePanelComponent = new PanelComponent();
 
 	@Inject

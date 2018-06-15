@@ -47,6 +47,17 @@ public interface TripCheckerConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 2,
+		keyName = "checkItemQuantities",
+		name = "Check item quantities",
+		description = "Configures if loadouts should care about item quantities."
+	)
+	default boolean checkItemQuantities()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "loadouts",
 		name = "",
 		description = "",

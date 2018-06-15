@@ -79,7 +79,6 @@ class TripItemList
 	void setEquipment(ItemContainer equipmentContainer)
 	{
 		List<Integer> tempEquipmentIds = new ArrayList<>();
-		//equipmentIds = new int[equipmentContainer.getItems().length];
 		for (int i = 0; i < equipmentContainer.getItems().length; i++)
 		{
 			int equipmentId = equipmentContainer.getItems()[i].getId();
