@@ -26,6 +26,7 @@ package net.runelite.client.plugins.grandexchangeaverages;
 
 import com.google.common.eventbus.Subscribe;
 import java.io.IOException;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -37,9 +38,8 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.StackFormatter;
-import net.runelite.http.api.osb.grandexchange.GrandExchangeCallback;
-import net.runelite.http.api.osb.grandexchange.GrandExchangeClient;
-import net.runelite.http.api.osb.grandexchange.GrandExchangeResult;
+import net.runelite.http.api.osbuddy.GrandExchangeClient;
+import net.runelite.http.api.osbuddy.GrandExchangeResult;
 
 @PluginDescriptor(
 	name = "OSB Grand Exchange Averages",
@@ -53,6 +53,9 @@ public class GrandExchangeAveragesPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ScheduledExecutorService executorService;
 
 	private Widget grandExchangeText;
 	private Widget grandExchangeItem;
@@ -102,19 +105,17 @@ public class GrandExchangeAveragesPlugin extends Plugin
 		final Widget geText = grandExchangeText;
 		final GrandExchangeClient grandExchangeClient = new GrandExchangeClient();
 
-		grandExchangeClient.lookupItem(itemId, new GrandExchangeCallback()
+		executorService.submit(() ->
 		{
-			@Override
-			public void onSuccess(GrandExchangeResult result)
+			try
 			{
-				String text = geText.getText() + "<br>OSBuddy actively traded price: " + StackFormatter.formatNumber(result.getOverall_average());
+				final GrandExchangeResult result = grandExchangeClient.lookupItem(itemId);
+				final String text = geText.getText() + "<br>OSBuddy Actively traded price: " + StackFormatter.formatNumber(result.getOverall_average());
 				geText.setText(text);
 			}
-
-			@Override
-			public void onFailure(IOException exception)
+			catch (IOException e)
 			{
-				log.warn("Error getting price of item {}", itemId, exception);
+				log.debug("Error getting price of item {}", itemId, e);
 			}
 		});
 	}

@@ -22,15 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.osb.grandexchange;
+package net.runelite.http.service.osbuddy;
 
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.service.osb.grandexchange.osbuddy.OsbuddyClient;
-import net.runelite.http.service.osb.grandexchange.osbuddy.SummaryItem;
+import net.runelite.http.service.osbuddy.beans.OsbuddySummaryItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -51,6 +50,8 @@ public class GrandExchangeService
 		+ "  `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n"
 		+ "  PRIMARY KEY (`item_id`)\n"
 		+ ") ENGINE=InnoDB";
+
+	private static final OsbuddyClient CLIENT = new OsbuddyClient();
 
 	private final Sql2o sql2o;
 
@@ -81,8 +82,7 @@ public class GrandExchangeService
 	{
 		try
 		{
-			OsbuddyClient osbuddyClient = new OsbuddyClient();
-			Map<Integer, SummaryItem> summary = osbuddyClient.getSummary();
+			Map<Integer, OsbuddySummaryItem> summary = CLIENT.getSummary();
 
 			try (Connection con = sql2o.beginTransaction())
 			{
@@ -93,10 +93,10 @@ public class GrandExchangeService
 					+ " ON DUPLICATE KEY UPDATE buy_average = VALUES(buy_average), sell_average = VALUES(sell_average),"
 					+ " overall_average = VALUES(overall_average), last_update = VALUES(last_update)");
 
-				for (Map.Entry<Integer, SummaryItem> entry : summary.entrySet())
+				for (Map.Entry<Integer, OsbuddySummaryItem> entry : summary.entrySet())
 				{
 					Integer itemId = entry.getKey();
-					SummaryItem item = entry.getValue();
+					OsbuddySummaryItem item = entry.getValue();
 
 					query
 						.addParameter("itemId", itemId)

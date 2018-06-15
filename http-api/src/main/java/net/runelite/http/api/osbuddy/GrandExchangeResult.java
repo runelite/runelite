@@ -22,18 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.osb.grandexchange.osbuddy;
+package net.runelite.http.api.osbuddy;
 
+import java.time.Instant;
 import lombok.Data;
 
 @Data
-public class SummaryItem
+public class GrandExchangeResult
 {
-	private int id;
-	private String name;
-	private boolean members;
-	private int sp;
+	private int item_id;
 	private int buy_average;
 	private int sell_average;
 	private int overall_average;
+	private Instant last_update;
 }

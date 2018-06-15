@@ -22,65 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.osb.grandexchange;
+package net.runelite.http.service.osbuddy;
 
-import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
-import lombok.extern.slf4j.Slf4j;
+import java.lang.reflect.Type;
+import java.util.Map;
 import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.Call;
-import okhttp3.Callback;
+import net.runelite.http.service.osbuddy.beans.OsbuddySummaryItem;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
 
-@Slf4j
-public class GrandExchangeClient
+public class OsbuddyClient
 {
-	public void lookupItem(int itemId, GrandExchangeCallback callback)
-	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("osb")
-			.addPathSegment("ge")
-			.addQueryParameter("itemId", Integer.toString(itemId))
-			.build();
+	private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36";
 
-		log.debug("Built URI: {}", url);
+	public Map<Integer, OsbuddySummaryItem> getSummary() throws IOException
+	{
+		HttpUrl httpUrl = new HttpUrl.Builder()
+			.scheme("https")
+			.host("rsbuddy.com")
+			.addPathSegment("exchange")
+			.addPathSegment("summary.json")
+			.build();
 
 		Request request = new Request.Builder()
-			.url(url)
+			.url(httpUrl)
+			.header("User-Agent", USER_AGENT)
 			.build();
 
-		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
+		try (Response responseOk = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
-			@Override
-			public void onFailure(Call call, IOException e)
+			if (!responseOk.isSuccessful())
 			{
-				callback.onFailure(e);
+				throw new IOException("Error retrieving summary from OSBuddy: " + responseOk.message());
 			}
 
-			@Override
-			public void onResponse(Call call, Response response) throws IOException
+			Type type = new TypeToken<Map<Integer, OsbuddySummaryItem>>()
 			{
-				try
-				{
-					if (!response.isSuccessful())
-					{
-						callback.onFailure(new IOException("Error looking up item id: " + response.message()));
-						return;
-					}
+			}.getType();
 
-					callback.onSuccess(RuneLiteAPI.GSON.fromJson(response.body().string(), GrandExchangeResult.class));
-				}
-				catch (JsonParseException exception)
-				{
-					callback.onFailure(new IOException(exception));
-				}
-				finally
-				{
-					response.close();
-				}
-			}
-		});
+			return RuneLiteAPI.GSON.fromJson(responseOk.body().string(), type);
+		}
+		catch (JsonSyntaxException ex)
+		{
+			throw new IOException(ex);
+		}
 	}
 }

@@ -22,52 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.osb.grandexchange.osbuddy;
+package net.runelite.http.service.osbuddy;
 
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.Map;
-import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.HttpUrl;
-import okhttp3.Request;
-import okhttp3.Response;
+import java.time.Instant;
+import lombok.Data;
 
-public class OsbuddyClient
+@Data
+class GrandExchangeEntry
 {
-	private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36";
-
-	public Map<Integer, SummaryItem> getSummary() throws IOException
-	{
-		HttpUrl httpUrl = new HttpUrl.Builder()
-			.scheme("https")
-			.host("rsbuddy.com")
-			.addPathSegment("exchange")
-			.addPathSegment("summary.json")
-			.build();
-
-		Request request = new Request.Builder()
-			.url(httpUrl)
-			.header("User-Agent", USER_AGENT)
-			.build();
-
-		try (Response responseOk = RuneLiteAPI.CLIENT.newCall(request).execute())
-		{
-			if (!responseOk.isSuccessful())
-			{
-				throw new IOException("Error retrieving summary from OSBuddy: " + responseOk.message());
-			}
-
-			Type type = new TypeToken<Map<Integer, SummaryItem>>()
-			{
-			}.getType();
-
-			return RuneLiteAPI.GSON.fromJson(responseOk.body().string(), type);
-		}
-		catch (JsonSyntaxException ex)
-		{
-			throw new IOException(ex);
-		}
-	}
+	private int item_id;
+	private int buy_average;
+	private int sell_average;
+	private int overall_average;
+	private Instant last_update;
 }
