@@ -279,7 +279,7 @@ public class GroundItemsOverlay extends Overlay
 				// Hidden box
 				x += width + 2;
 				y = textY - (RECTANGLE_SIZE + stringHeight) / 2;
-				width = height = RECTANGLE_SIZE - 2;
+				width = height = RECTANGLE_SIZE;
 				final Rectangle itemHiddenBox = new Rectangle(x, y, width, height);
 
 				// Highlight box
