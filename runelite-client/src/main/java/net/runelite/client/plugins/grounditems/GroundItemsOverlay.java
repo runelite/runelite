@@ -31,9 +31,8 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -108,7 +107,7 @@ public class GroundItemsOverlay extends Overlay
 		offsetMap.clear();
 		final LocalPoint localLocation = player.getLocalLocation();
 		final Point mousePos = client.getMouseCanvasPosition();
-		final List<GroundItem> groundItemList = new ArrayList<>(plugin.getCollectedGroundItems().values());
+		final Collection<GroundItem> groundItemList = plugin.getCollectedGroundItems().values();
 		GroundItem topGroundItem = null;
 
 		if (plugin.isHotKeyPressed())

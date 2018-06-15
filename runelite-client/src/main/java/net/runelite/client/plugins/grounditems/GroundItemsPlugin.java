@@ -190,7 +190,6 @@ public class GroundItemsPlugin extends Plugin
 		mouseManager.unregisterMouseListener(inputListener);
 		keyManager.unregisterKeyListener(inputListener);
 		groundItems.clear();
-		collectedGroundItems.clear();
 		highlightedItems.invalidateAll();
 		highlightedItems = null;
 		hiddenItems.invalidateAll();
