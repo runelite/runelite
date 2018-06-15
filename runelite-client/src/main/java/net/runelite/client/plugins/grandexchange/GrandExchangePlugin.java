@@ -310,6 +310,13 @@ public class GrandExchangePlugin extends Plugin
 			try
 			{
 				final GrandExchangeResult result = CLIENT.lookupItem(itemId);
+
+				if (result.getItem_id() != lastItem)
+				{
+					// something else has since been looked up?
+					return;
+				}
+
 				final String text = geText.getText() + "<br>OSBuddy Actively traded price: " + StackFormatter.formatNumber(result.getOverall_average());
 				geText.setText(text);
 			}
