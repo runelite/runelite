@@ -65,6 +65,6 @@ public interface GrandExchangeConfig extends Config
 	)
 	default boolean enableOsbPrices()
 	{
-		return true;
+		return false;
 	}
 }
