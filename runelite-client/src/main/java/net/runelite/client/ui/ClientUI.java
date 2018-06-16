@@ -373,7 +373,7 @@ public class ClientUI
 				},
 				() -> client != null
 					&& client instanceof Client
-					&& showWarningonExit()
+					&& showWarningOnExit()
 			);
 
 			container = new JPanel();
@@ -401,13 +401,14 @@ public class ClientUI
 		});
 	}
 
-	private boolean showWarningonExit()
+	private boolean showWarningOnExit()
 	{
-		if(config.warningOnExit() == WarningOnExit.ALWAYS)
+		if (config.warningOnExit() == WarningOnExit.ALWAYS)
 		{
 			return true;
 		}
-		else if(config.warningOnExit() == WarningOnExit.ONLY_WHEN_LOGGED_IN)
+
+		if (config.warningOnExit() == WarningOnExit.ONLY_WHEN_LOGGED_IN)
 		{
 			return((Client) client).getGameState() != GameState.LOGIN_SCREEN;
 		}

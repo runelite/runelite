@@ -113,6 +113,17 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName= "warningOnExit",
+			name = "Display warning on exit",
+			description = "Toggles a warning popup when trying to exit the client",
+			position = 35
+	)
+	default WarningOnExit warningOnExit()
+	{
+		return WarningOnExit.ONLY_WHEN_LOGGED_IN;
+	}
+
+	@ConfigItem(
 		keyName = "notificationTray",
 		name = "Enable tray notifications",
 		description = "Enables tray notifications",
@@ -231,16 +242,5 @@ public interface RuneLiteConfig extends Config
 	default int infoBoxSize()
 	{
 		return 35;
-	}
-
-	@ConfigItem(
-		keyName= "warningOnExit",
-		name = "Display warning on exit",
-		description = "Toggles a warning popup when trying to exit the client",
-		position = 35
-	)
-	default WarningOnExit warningOnExit()
-	{
-		return WarningOnExit.ONLY_WHEN_LOGGED_IN;
 	}
 }
