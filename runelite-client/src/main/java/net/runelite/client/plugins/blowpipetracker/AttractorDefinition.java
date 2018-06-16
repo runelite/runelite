@@ -59,7 +59,9 @@ enum AttractorDefinition
 		for (AttractorDefinition attractorDefinition : values())
 		{
 			if (attractorDefinition.getItemId() == itemId)
+			{
 				return attractorDefinition;
+			}
 		}
 
 		return null;

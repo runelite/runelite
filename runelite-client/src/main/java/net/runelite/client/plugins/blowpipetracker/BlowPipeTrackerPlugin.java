@@ -27,9 +27,24 @@ package net.runelite.client.plugins.blowpipetracker;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
-import net.runelite.api.events.*;
+import net.runelite.api.AnimationID;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.ItemID;
+import net.runelite.api.Player;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.kit.KitType;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
@@ -41,21 +56,12 @@ import net.runelite.client.ui.overlay.infobox.Counter;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
-import javax.inject.Inject;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 @PluginDescriptor(
 	name = "Blowpipe Tracker"
 )
 @Slf4j
 class BlowPipeTrackerPlugin extends Plugin
 {
-
 	@Inject
 	private Client client;
 
@@ -91,7 +97,7 @@ class BlowPipeTrackerPlugin extends Plugin
 	private static final Random random = new Random();
 	private static final Pattern DART_AND_SCALE_PATTERN = Pattern.compile("Darts: (\\S*)(?: dart)? x (\\d*[,]?\\d*). Scales: \\d+[.]?\\d%, (\\d*[,]?\\d*)");
 	private static final String OUT_OF_DARTS = "Your blowpipe has run out of darts";
-	private static final String OUT_OF_SCALES = "Your blowpipe needs to be charged Zulrah's scales";
+	private static final String OUT_OF_SCALES = "Your blowpipe needs to be charged with Zulrah's scales";
 
 	private static final int TICKS_RAPID_PVM = 2;
 	private static final int TICKS_RAPID_PVP = 3;
@@ -109,16 +115,21 @@ class BlowPipeTrackerPlugin extends Plugin
 		}
 		if (ticks == ticksInAnimation && (player.getAnimation() == AnimationID.BLOWPIPE_ATTACK_ANIMATION))
 		{
-			log.info("Fired a shot from blowpipe");
 			AttractorDefinition attractorDefinition = getAttractorForPlayer();
 			if (attractorDefinition == null)
+			{
 				return;
+			}
 
 			if (shouldConsumeDart(attractorDefinition))
+			{
 				dartsLeft--;
+			}
 
 			if (shouldConsumeScales())
+			{
 				scalesLeft--;
+			}
 
 			modifyCounters();
 			ticks = 0;
@@ -132,9 +143,13 @@ class BlowPipeTrackerPlugin extends Plugin
 		{
 			attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
 			if (attackStyleVarbit == 0 || attackStyleVarbit == 3)
+			{
 				ticksInAnimation = client.getLocalPlayer().getInteracting() instanceof Player ? TICKS_NORMAL_PVP : TICKS_NORMAL_PVM;
+			}
 			else if (attackStyleVarbit == 1)
+			{
 				ticksInAnimation = client.getLocalPlayer().getInteracting() instanceof Player ? TICKS_RAPID_PVP : TICKS_RAPID_PVM;
+			}
 		}
 	}
 
@@ -149,9 +164,13 @@ class BlowPipeTrackerPlugin extends Plugin
 	{
 		double dartRoll = random.nextDouble();
 		if (dartRoll <= attractorDefinition.getSavedChance())
+		{
 			return false;
+		}
 		else
+		{
 			return dartRoll > 1 - (attractorDefinition.getBreakOnImpactChance() + attractorDefinition.getDropToFloorChance());
+		}
 	}
 
 	private boolean shouldConsumeScales()
@@ -163,25 +182,31 @@ class BlowPipeTrackerPlugin extends Plugin
 	public void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
+		{
 			return;
+		}
 
 		String chatMsg = Text.removeTags(event.getMessage()); //remove color and linebreaks
 		if (chatMsg.contains(OUT_OF_DARTS))
 		{
 			if (config.showEmptyBlowpipeNotification())
+			{
 				notifier.notify("You have run out of darts!");
+			}
 
 			return;
 		}
 		if (chatMsg.contains(OUT_OF_SCALES))
 		{
 			if (config.showEmptyBlowpipeNotification())
+			{
 				notifier.notify("You have run out of scales!");
+			}
 
 			return;
 		}
 
-		//Extract dart quantity and type as well as number of scal
+		//Extract dart quantity and type as well as number of scales
 		Matcher mComplete = DART_AND_SCALE_PATTERN.matcher(chatMsg);
 
 		List<String> matches = new ArrayList<>();
@@ -229,14 +254,18 @@ class BlowPipeTrackerPlugin extends Plugin
 			removeScaleCounter();
 
 			if (dartsLeft >= 0 || scalesLeft >= 0)
+			{
 				clientThread.invokeLater(this::modifyCounters);
+			}
 		}
 		if (config.displayStyleMode() == DisplayStyleMode.INDIVIDUAL)
 		{
 			removeCombinedCounter();
 
 			if (dartsLeft >= 0 || scalesLeft >= 0)
+			{
 				clientThread.invokeLater(this::modifyCounters);
+			}
 		}
 	}
 
@@ -284,7 +313,7 @@ class BlowPipeTrackerPlugin extends Plugin
 			case "iron":
 				return ItemID.IRON_DART;
 			case "steel":
-				return  ItemID.STEEL_DART;
+				return ItemID.STEEL_DART;
 			case "mithril":
 				return ItemID.MITHRIL_DART;
 			case "adamant":
@@ -311,7 +340,7 @@ class BlowPipeTrackerPlugin extends Plugin
 			{
 				final BufferedImage blowpipeImg = itemManager.getImage(ItemID.TOXIC_BLOWPIPE);
 				combinedCounter = new Counter(blowpipeImg, this,
-					String.format("%.1f%%", 100 * (double)scalesLeft / MAX_SCALES));
+					String.format("%.1f%%", 100 * (double) scalesLeft / MAX_SCALES));
 				combinedCounter.setTooltip(String.format("<col=ffff00>Darts (%s):</col> %s</br><col=ffff00>Scales:</col> %s", dartType, dartsLeft, scalesLeft));
 				combinedCounter.setTextColor(getColorForScalesLeft());
 
@@ -319,7 +348,7 @@ class BlowPipeTrackerPlugin extends Plugin
 			}
 			else
 			{
-				combinedCounter.setText(String.format("%.1f%%", 100 * (double)scalesLeft / MAX_SCALES));
+				combinedCounter.setText(String.format("%.1f%%", 100 * (double) scalesLeft / MAX_SCALES));
 				combinedCounter.setTooltip(String.format("<col=ffff00>Darts (%s):</col> %s</br><col=ffff00>Scales:</col> %s", dartType, dartsLeft, scalesLeft));
 				combinedCounter.setTextColor(getColorForScalesLeft());
 			}
@@ -363,7 +392,7 @@ class BlowPipeTrackerPlugin extends Plugin
 
 	private Color getColorForScalesLeft()
 	{
-		float percent = (float)scalesLeft / MAX_SCALES;
+		float percent = (float) scalesLeft / MAX_SCALES;
 
 		return Color.getHSBColor((float) (percent * 0.334), 1F, 1F);
 	}
