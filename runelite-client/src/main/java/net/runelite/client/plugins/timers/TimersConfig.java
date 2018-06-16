@@ -35,8 +35,6 @@ import net.runelite.client.config.ConfigItem;
 )
 public interface TimersConfig extends Config
 {
-	int DEFAULT_CANNON_WORLD = -1;
-
 	@ConfigItem(
 		position = 0,
 		keyName = "showAntipoison",
@@ -201,24 +199,6 @@ public interface TimersConfig extends Config
 	{
 		return true;
 	}
-
-	@ConfigItem(
-		keyName = "cannonWorld",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default int cannonWorld()
-	{
-		return DEFAULT_CANNON_WORLD;
-	}
-
-	@ConfigItem(
-		keyName = "cannonWorld",
-		name = "",
-		description = ""
-	)
-	void cannonWorld(int cannonWorld);
 
 	@ConfigItem(
 		position = 15,

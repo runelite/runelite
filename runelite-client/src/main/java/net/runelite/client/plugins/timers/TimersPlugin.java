@@ -79,6 +79,8 @@ import static net.runelite.client.plugins.timers.GameTimer.VENGEANCE;
 import static net.runelite.client.plugins.timers.GameTimer.VENGEANCEOTHER;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
+import java.util.function.Function;
+
 @PluginDescriptor(
 	name = "Timers"
 )
@@ -340,13 +342,11 @@ public class TimersPlugin extends Plugin
 
 		if (config.showCannon() && (event.getMessage().equals("You add the furnace.") || event.getMessage().contains("You repair your cannon, restoring it to working order.")))
 		{
-			config.cannonWorld(client.getWorld());
-			createGameTimer(CANNON);
+			createGameTimerFunc(CANNON, timer -> timer.getDescription() + " is on world " + client.getWorld());
 		}
 
 		if (event.getMessage().equals("You pick up the cannon. It's really heavy."))
 		{
-			config.cannonWorld(TimersConfig.DEFAULT_CANNON_WORLD);
 			removeGameTimer(CANNON);
 		}
 
@@ -517,7 +517,16 @@ public class TimersPlugin extends Plugin
 		removeGameTimer(timer);
 
 		TimerTimer t = new TimerTimer(timer, this);
-		t.setTooltip(getTooltipDescription(timer));
+		t.setTooltip(timer.getDescription());
+		infoBoxManager.addInfoBox(t);
+	}
+
+	public void createGameTimerFunc(GameTimer timer, Function<GameTimer, String> getDescription)
+	{
+		removeGameTimer(timer);
+
+		TimerTimer t = new TimerTimer(timer, this);
+		t.setTooltip(getDescription.apply(timer));
 		infoBoxManager.addInfoBox(t);
 	}
 
@@ -526,13 +535,4 @@ public class TimersPlugin extends Plugin
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer);
 	}
 
-	private String getTooltipDescription(GameTimer timer)
-	{
-		if (timer == GameTimer.CANNON)
-		{
-			return "Cannon on world: " + config.cannonWorld();
-		}
-
-		return timer.getDescription();
-	}
 }
