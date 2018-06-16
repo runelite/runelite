@@ -116,7 +116,7 @@ public class ExaminePlugin extends Plugin
 				break;
 			case EXAMINE_OBJECT:
 				type = ExamineType.OBJECT;
-				id = event.getId() >>> 14;
+				id = event.getId();
 				break;
 			case EXAMINE_NPC:
 				type = ExamineType.NPC;
