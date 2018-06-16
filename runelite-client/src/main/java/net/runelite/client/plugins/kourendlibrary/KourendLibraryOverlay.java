@@ -86,11 +86,6 @@ public class KourendLibraryOverlay extends Overlay
 
 		List<Bookcase> allBookcases = library.getBookcasesOnLevel(client.getPlane());
 
-		if (allBookcases == null)
-		{
-			return null;
-		}
-
 		for (Bookcase bookcase : allBookcases)
 		{
 			// AABB

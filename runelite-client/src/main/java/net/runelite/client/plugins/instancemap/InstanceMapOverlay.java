@@ -172,11 +172,6 @@ class InstanceMapOverlay extends Overlay
 			drawPlayerDot(graphics, client.getLocalPlayer(), Color.white, Color.black);
 		}
 
-		if (image == null)
-		{
-			return null;
-		}
-
 		return new Dimension(image.getWidth(), image.getHeight());
 	}
 
