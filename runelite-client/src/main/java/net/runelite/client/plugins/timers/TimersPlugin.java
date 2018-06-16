@@ -72,6 +72,7 @@ import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD_RAID;
 import static net.runelite.client.plugins.timers.GameTimer.PRAYER_ENHANCE;
 import static net.runelite.client.plugins.timers.GameTimer.SANFEW;
 import static net.runelite.client.plugins.timers.GameTimer.SNARE;
+import static net.runelite.client.plugins.timers.GameTimer.STAFF_OF_THE_DEAD;
 import static net.runelite.client.plugins.timers.GameTimer.STAMINA;
 import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIFIRE;
 import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIPOISON;
@@ -84,6 +85,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 )
 public class TimersPlugin extends Plugin
 {
+	private int lastEquippedWeapVarb;
 	private int lastRaidVarb;
 
 	@Inject
@@ -110,6 +112,12 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChange(VarbitChanged event)
 	{
+		int equippedWeap = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
+		if (lastEquippedWeapVarb != equippedWeap)
+		{
+			removeGameTimer(STAFF_OF_THE_DEAD);
+		}
+
 		int raidVarb = client.getVar(Varbits.IN_RAID);
 		if (lastRaidVarb != raidVarb)
 		{
@@ -196,6 +204,11 @@ public class TimersPlugin extends Plugin
 		if (!config.showImbuedHeart())
 		{
 			removeGameTimer(IMBUEDHEART);
+		}
+
+		if (!config.showStaffOfTheDead())
+		{
+			removeGameTimer(STAFF_OF_THE_DEAD);
 		}
 
 		if (!config.showVengeance())
@@ -449,6 +462,11 @@ public class TimersPlugin extends Plugin
 		if (config.showVengeance() && actor.getGraphic() == VENGEANCE.getGraphicId())
 		{
 			createGameTimer(VENGEANCE);
+		}
+
+		if (config.showStaffOfTheDead() && actor.getGraphic() == STAFF_OF_THE_DEAD.getGraphicId())
+		{
+			createGameTimer(STAFF_OF_THE_DEAD);
 		}
 
 		if (config.showFreezes())
