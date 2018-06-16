@@ -43,30 +43,30 @@ public class FontManager
 		try
 		{
 			Font font = Font.createFont(Font.TRUETYPE_FONT,
-				FontManager.class.getResourceAsStream("runescape.ttf"))
-				.deriveFont(Font.PLAIN, 16);
+					FontManager.class.getResourceAsStream("Lato-Heavy.ttf"))
+					.deriveFont(Font.PLAIN, 12);
 			ge.registerFont(font);
 
 			runescapeFont = StyleContext.getDefaultStyleContext()
-					.getFont(font.getName(), Font.PLAIN, 16);
+					.getFont(font.getName(), Font.PLAIN, 10);
 			ge.registerFont(runescapeFont);
 
 			Font smallFont = Font.createFont(Font.TRUETYPE_FONT,
-				FontManager.class.getResourceAsStream("runescape_small.ttf"))
-				.deriveFont(Font.PLAIN, 16);
+					FontManager.class.getResourceAsStream("Lato-Heavy.ttf"))
+					.deriveFont(Font.PLAIN, 12);
 			ge.registerFont(smallFont);
 
 			runescapeSmallFont = StyleContext.getDefaultStyleContext()
-					.getFont(smallFont.getName(), Font.PLAIN, 16);
+					.getFont(smallFont.getName(), Font.PLAIN, 9);
 			ge.registerFont(runescapeSmallFont);
 
 			Font boldFont = Font.createFont(Font.TRUETYPE_FONT,
-					FontManager.class.getResourceAsStream("runescape_bold.ttf"))
-					.deriveFont(Font.PLAIN, 16);
+					FontManager.class.getResourceAsStream("Lato-Heavy.ttf"))
+					.deriveFont(Font.PLAIN, 12);
 			ge.registerFont(boldFont);
 
 			runescapeBoldFont = StyleContext.getDefaultStyleContext()
-					.getFont(boldFont.getName(), Font.PLAIN, 16);
+					.getFont(boldFont.getName(), Font.BOLD, 10);
 			ge.registerFont(runescapeBoldFont);
 		}
 		catch (FontFormatException ex)
