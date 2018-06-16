@@ -68,6 +68,7 @@ import net.runelite.client.plugins.raids.solver.RotationSolver;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
+import net.runelite.client.plugins.raids.solver.Room;
 
 @PluginDescriptor(
 	name = "Chambers Of Xeric"
@@ -76,6 +77,7 @@ import net.runelite.client.util.Text;
 public class RaidsPlugin extends Plugin
 {
 	private static final int LOBBY_PLANE = 3;
+	private static final String RAID_INVITE_MESSAGE = "Inviting party...";
 	private static final String RAID_START_MESSAGE = "The raid has begun!";
 	private static final String LEVEL_COMPLETE_MESSAGE = "level complete!";
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
@@ -244,6 +246,10 @@ public class RaidsPlugin extends Plugin
 				raid.updateLayout(layout);
 				RotationSolver.solve(raid.getCombatRooms());
 				overlay.setScoutOverlayShown(true);
+				if (config.scoutChatPrint())
+				{
+					chatRaidScout();
+				}
 			}
 			else if (!config.scoutOverlayAtBank())
 			{
@@ -259,9 +265,54 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
+	private void chatRaidScout()
+	{
+		String layout = getRaid().getLayout().toCode().replaceAll("¤", "");
+		String scouted = "";
+		final String UNKNOWN = "Unknown";
+		for (Room layoutRoom : getRaid().getLayout().getRooms())
+		{
+			int position = layoutRoom.getPosition();
+			RaidRoom room = getRaid().getRoom(position);
+
+			if (room == null) {
+				continue;
+			}
+			String name;
+			switch (room.getType()) {
+				case COMBAT:
+					name = room.getBoss().getName();
+					scouted += name;
+					if (name.equals(UNKNOWN)) scouted += (" Combat");
+					scouted += ", ";
+					break;
+
+				case PUZZLE:
+					name = room.getPuzzle().getName();
+					scouted += name;
+					if (name.equals(UNKNOWN)) scouted += (" Puzzle");
+					scouted += ", ";
+					break;
+			}
+		}
+		scouted = scouted.substring(0, scouted.length() - 2);
+		sendChatMessage("Rotation: " + layout);
+		sendChatMessage("Rooms: " + scouted);
+	}
+
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
+		if (inRaidChambers)
+		{
+			String message2 = Text.removeTags(event.getMessage());
+
+			if (message2.startsWith(RAID_INVITE_MESSAGE))
+			{
+				chatRaidScout();
+			}
+		}
+
 		if (inRaidChambers && event.getType() == ChatMessageType.CLANCHAT_INFO)
 		{
 			String message = Text.removeTags(event.getMessage());
@@ -310,13 +361,15 @@ public class RaidsPlugin extends Plugin
 							.build();
 
 					chatMessageManager.queue(QueuedMessage.builder()
-						.type(ChatMessageType.CLANCHAT_INFO)
-						.runeLiteFormattedMessage(chatMessage)
-						.build());
+							.type(ChatMessageType.CLANCHAT_INFO)
+							.runeLiteFormattedMessage(chatMessage)
+							.build());
+
 				}
 			}
 		}
 	}
+
 
 	private void updateInfoBoxState()
 	{
@@ -620,5 +673,19 @@ public class RaidsPlugin extends Plugin
 		}
 
 		return raidsIcon;
+	}
+
+	private void sendChatMessage(String chatMessage)
+	{
+		final String message = new ChatMessageBuilder()
+				.append(ChatColorType.HIGHLIGHT)
+				.append(chatMessage)
+				.build();
+
+		chatMessageManager.queue(
+				QueuedMessage.builder()
+						.type(ChatMessageType.CLANCHAT_INFO)
+						.runeLiteFormattedMessage(message)
+						.build());
 	}
 }

@@ -68,8 +68,20 @@ public interface RaidsConfig extends Config
 		return true;
 	}
 
+
 	@ConfigItem(
-		position = 3,
+			position = 3,
+			keyName = "scoutPrint",
+			name = "Print scout result to the chatbox",
+			description = "Prints the the current raid layout to the chatbox (when entering lobby)"
+	)
+	default boolean scoutChatPrint()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 4,
 		keyName = "scoutOverlayAtBank",
 		name = "Show scout overlay outside lobby",
 		description = "Keep the overlay active while at the raids area"
@@ -80,7 +92,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 5,
 		keyName = "whitelistedRooms",
 		name = "Whitelisted rooms",
 		description = "Display whitelisted rooms in green on the overlay. Separate with comma (full name)"
@@ -91,7 +103,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 6,
 		keyName = "blacklistedRooms",
 		name = "Blacklisted rooms",
 		description = "Display blacklisted rooms in red on the overlay. Separate with comma (full name)"
@@ -102,7 +114,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 7,
 		keyName = "enableRotationWhitelist",
 		name = "Enable rotation whitelist",
 		description = "Enable the rotation whitelist"
@@ -113,7 +125,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 8,
 		keyName = "whitelistedRotations",
 		name = "Whitelisted rotations",
 		description = "Warn when boss rotation doesn't match a whitelisted one. Add rotations like [tekton, muttadile, guardians]"
@@ -124,7 +136,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 9,
 		keyName = "enableLayoutWhitelist",
 		name = "Enable layout whitelist",
 		description = "Enable the layout whitelist"
@@ -135,7 +147,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 10,
 		keyName = "whitelistedLayouts",
 		name = "Whitelisted layouts",
 		description = "Warn when layout doesn't match a whitelisted one. Add layouts like CFSCPPCSCF separated with comma"
