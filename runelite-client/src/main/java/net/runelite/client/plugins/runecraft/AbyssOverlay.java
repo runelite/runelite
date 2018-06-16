@@ -93,11 +93,7 @@ class AbyssOverlay extends Overlay
 			LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
 			for (DecorativeObject object : plugin.getAbyssObjects())
 			{
-				LocalPoint location = object.getLocalLocation();
-				if (localLocation.distanceTo(location) <= MAX_DISTANCE)
-				{
-					renderRifts(graphics, object);
-				}
+				renderRifts(graphics, object);
 			}
 		}
 
