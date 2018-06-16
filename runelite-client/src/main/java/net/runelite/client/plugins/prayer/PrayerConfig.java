@@ -67,4 +67,16 @@ public interface PrayerConfig extends Config
 	{
 		return false;
 	}
+
+    @ConfigItem(
+            position = 3,
+            keyName = "prayerPotionAlerter",
+            name = "Prayer Potion Alerter",
+            description = "Alerts player when to drink prayer potion"
+    )
+    default boolean prayerPotionAlerter()
+    {
+        return true;
+    }
+
 }

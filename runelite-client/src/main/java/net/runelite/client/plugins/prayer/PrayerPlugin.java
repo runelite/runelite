@@ -59,7 +59,10 @@ public class PrayerPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
-	private PrayerFlickOverlay overlay;
+	private PrayerFlickOverlay prayerFlickOverlay;
+
+	@Inject
+	private PrayerPotionAlerterOverlay prayerPotionAlerterOverlay;
 
 	@Inject
 	private PrayerConfig config;
@@ -73,13 +76,15 @@ public class PrayerPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		overlayManager.add(overlay);
+		overlayManager.add(prayerFlickOverlay);
+		overlayManager.add(prayerPotionAlerterOverlay);
 	}
 
 	@Override
 	protected void shutDown()
 	{
-		overlayManager.remove(overlay);
+		overlayManager.remove(prayerFlickOverlay);
+		overlayManager.remove(prayerPotionAlerterOverlay);
 		removeIndicators();
 	}
 
@@ -104,7 +109,7 @@ public class PrayerPlugin extends Plugin
 	{
 		if (config.prayerFlickHelper())
 		{
-			overlay.onTick();
+			prayerFlickOverlay.onTick();
 		}
 
 		if (!config.prayerIndicator())
@@ -128,14 +133,14 @@ public class PrayerPlugin extends Plugin
 				{
 					PrayerCounter counter = prayerCounter[ord] = new PrayerCounter(this, prayerType);
 					spriteManager.getSpriteAsync(prayerType.getSpriteID(), 0,
-						counter::setImage);
+							counter::setImage);
 					infoBoxManager.addInfoBox(counter);
 				}
 			}
 			else if (prayerCounter[ord] != null)
 			{
-					infoBoxManager.removeInfoBox(prayerCounter[ord]);
-					prayerCounter[ord] = null;
+				infoBoxManager.removeInfoBox(prayerCounter[ord]);
+				prayerCounter[ord] = null;
 			}
 		}
 	}
