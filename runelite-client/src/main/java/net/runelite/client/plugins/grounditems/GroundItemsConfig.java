@@ -78,7 +78,7 @@ public interface GroundItemsConfig extends Config
 
 	@ConfigItem(
 			keyName = "useAltKeybind",
-			name = "Use Alternate Keybind",
+			name = "Use an Alternate Keybind",
 			description = "Change Item Priority UI Keybind to L-Shift",
 			position = 2
 	)
