@@ -239,8 +239,8 @@ public interface RuneLiteConfig extends Config
         description = "Toggles a warning popup when trying to exit the client",
         position = 35
 	)
-	default boolean warningOnExit()
+	default WarningOnExit warningOnExit()
     {
-	    return true;
+	    return WarningOnExit.ONLY_WHEN_LOGGED_IN;
 	}
 }

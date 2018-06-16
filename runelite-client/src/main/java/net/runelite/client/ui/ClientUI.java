@@ -64,6 +64,7 @@ import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ExpandResizeType;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.config.WarningOnExit;
 import net.runelite.client.events.ClientUILoaded;
 import net.runelite.client.events.PluginToolbarButtonAdded;
 import net.runelite.client.events.PluginToolbarButtonRemoved;
@@ -372,8 +373,8 @@ public class ClientUI
 				},
 				() -> client != null
 					&& client instanceof Client
-                    && config.warningOnExit()
-					&& ((Client) client).getGameState() != GameState.LOGIN_SCREEN)                       ;
+                    && showWarningonExit()
+			);
 
 			container = new JPanel();
 			container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
@@ -398,6 +399,20 @@ public class ClientUI
 			frame.addKeyListener(uiKeyListener);
 			keyManager.registerKeyListener(uiKeyListener);
 		});
+	}
+
+	private boolean showWarningonExit()
+	{
+		if(config.warningOnExit() == WarningOnExit.ALWAYS)
+		{
+			return true;
+		}
+		else if(config.warningOnExit() == WarningOnExit.ONLY_WHEN_LOGGED_IN)
+		{
+			return((Client) client).getGameState() != GameState.LOGIN_SCREEN;
+		}
+
+		return false;
 	}
 
 	/**
