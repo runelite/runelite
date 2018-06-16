@@ -24,7 +24,6 @@
  */
 package net.runelite.http.service.database;
 
-import net.runelite.http.api.database.DatabaseEndpoint;
 import net.runelite.http.api.database.DropEntry;
 import net.runelite.http.api.database.LootRecord;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,12 +48,12 @@ public class DatabaseService
 		this.sql2o = sql2o;
 	}
 
-	public ArrayList<LootRecord> lookupBoss(DatabaseEndpoint endpoint, String username, int boss) throws IOException
+	public ArrayList<LootRecord> getLootRecordsByNpcId(String username, int npcId) throws IOException
 	{
-		return lookupBoss(endpoint, username, String.valueOf(boss));
+		return getLootRecordsByNpcName(username, String.valueOf(npcId));
 	}
 
-	public ArrayList<LootRecord> lookupBoss(DatabaseEndpoint endpoint, String username, String boss) throws IOException
+	public ArrayList<LootRecord> getLootRecordsByNpcName(String username, String npcName) throws IOException
 	{
 		String queryText = "SELECT kills.*, CONCAT(\"[\", group_concat( CONCAT(\"{'itemId':\", drops.itemId,\",'itemAmount':\",drops.itemAmount,\"}\")), \"]\") as drops2 " +
 				"FROM kills JOIN " +
@@ -68,7 +67,7 @@ public class DatabaseService
 			ArrayList<LootRecord> result = new ArrayList<>();
 			List<LootRecord> records = con.createQuery(queryText)
 					.addParameter("username", username)
-					.addParameter("id", boss)
+					.addParameter("id", npcName)
 					.throwOnMappingFailure(false)		// Ignores entry_id mapping error
 					.executeAndFetch(LootRecord.class);
 

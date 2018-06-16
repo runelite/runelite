@@ -24,7 +24,6 @@
  */
 package net.runelite.http.service.database;
 
-import net.runelite.http.api.database.DatabaseEndpoint;
 import net.runelite.http.api.database.LootRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -75,13 +74,13 @@ public class DatabaseController
 	@Autowired
 	private DatabaseService service;
 
-	@RequestMapping(value = "/boss", method = RequestMethod.GET)
-	public ArrayList<LootRecord> lookupBoss(@RequestParam String username, @RequestParam String boss) throws IOException
+	@RequestMapping(value = "/loot", method = RequestMethod.GET)
+	public ArrayList<LootRecord> getLootRecordsByNpcName(@RequestParam String username, @RequestParam String id) throws IOException
 	{
-		return service.lookupBoss(DatabaseEndpoint.BOSS, username, boss);
+		return service.getLootRecordsByNpcName(username, id);
 	}
 
-	@RequestMapping(value = "/boss", method = RequestMethod.POST)
+	@RequestMapping(value = "/loot", method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void storeLootRecord(@RequestBody LootRecord record, @RequestParam String username) throws IOException
 	{

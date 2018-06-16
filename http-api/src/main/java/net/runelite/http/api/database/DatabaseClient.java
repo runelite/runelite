@@ -41,19 +41,19 @@ public class DatabaseClient
 {
 	private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-	// Wrapper for looking up by boss ID (API can find records by name or id)
-	public ArrayList<LootRecord> lookupBoss(String username, int id) throws IOException
+	// Wrapper for looking up by NPC ID (API can find records by NPC Name or NPC ID)
+	public ArrayList<LootRecord> getLootRecordsByNpcId(String username, int id) throws IOException
 	{
-		return lookupBoss(username, String.valueOf(id));
+		return getLootRecordsByNpcName(username, String.valueOf(id));
 	}
 
 	// Returns all LootRecords by
-	public ArrayList<LootRecord> lookupBoss(String username, String boss) throws IOException
+	public ArrayList<LootRecord> getLootRecordsByNpcName(String username, String npcName) throws IOException
 	{
-		DatabaseEndpoint bossEndpoint = DatabaseEndpoint.BOSS;
+		DatabaseEndpoint bossEndpoint = DatabaseEndpoint.LOOT;
 		HttpUrl.Builder builder = bossEndpoint.getDatabaseURL().newBuilder()
 				.addQueryParameter("username", username)
-				.addQueryParameter("boss", boss);
+				.addQueryParameter("id", npcName);
 
 		HttpUrl url = builder.build();
 
@@ -95,7 +95,7 @@ public class DatabaseClient
 	// Stores the Loot Record via a post request to the API and returns a success boolean
 	public boolean storeLootRecord(LootRecord record, String username) throws IOException
 	{
-		DatabaseEndpoint bossEndpoint = DatabaseEndpoint.BOSS;
+		DatabaseEndpoint bossEndpoint = DatabaseEndpoint.LOOT;
 		HttpUrl.Builder builder = bossEndpoint.getDatabaseURL().newBuilder()
 				.addQueryParameter("username", username);
 

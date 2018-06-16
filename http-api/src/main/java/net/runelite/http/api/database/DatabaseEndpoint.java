@@ -29,7 +29,7 @@ import okhttp3.HttpUrl;
 
 public enum DatabaseEndpoint
 {
-	BOSS("Boss", Constants.BASE_URL + "/boss");
+	LOOT("Loot", Constants.BASE_URL + "/loot");
 
 	private static class Constants
 	{
