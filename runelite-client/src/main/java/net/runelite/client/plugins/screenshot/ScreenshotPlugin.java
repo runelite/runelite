@@ -102,7 +102,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final HttpUrl IMGUR_IMAGE_UPLOAD_URL = HttpUrl.parse("https://api.imgur.com/3/image");
 	private static final MediaType JSON = MediaType.parse("application/json");
 
-	static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile("Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
@@ -115,6 +115,14 @@ public class ScreenshotPlugin extends Plugin
 		"falls before your might", "A humiliating defeat for", "With a crushing blow you", "thinking challenging you",
 		"Can anyone defeat you? Certainly", "was no match for you", "You were clearly a better fighter than", "RIP",
 		"You have defeated", "What an embarrassing performance by", "was no match for your awesomeness");
+
+	static String format(Date date)
+	{
+		synchronized (TIME_FORMAT)
+		{
+			return TIME_FORMAT.format(date);
+		}
+	}
 
 	private String clueType;
 	private Integer clueNumber;
@@ -182,7 +190,7 @@ public class ScreenshotPlugin extends Plugin
 			titleBarButton = NavigationButton.builder()
 				.tooltip("Take screenshot")
 				.icon(iconImage)
-				.onClick(() -> takeScreenshot(TIME_FORMAT.format(new Date())))
+				.onClick(() -> takeScreenshot(format(new Date())))
 				.popup(ImmutableMap
 					.<String, Runnable>builder()
 					.put("Open screenshot folder...", () ->
@@ -259,13 +267,13 @@ public class ScreenshotPlugin extends Plugin
 
 		if (config.screenshotPet() && PET_MESSAGES.stream().anyMatch(chatMessage::contains))
 		{
-			String fileName = "Pet " + TIME_FORMAT.format(new Date());
+			String fileName = "Pet " + format(new Date());
 			takeScreenshot(fileName);
 		}
 
 		if (config.screenshotKills() && KILL_MESSAGES.stream().anyMatch(chatMessage::contains))
 		{
-			String fileName = "Kill " + TIME_FORMAT.format(new Date());
+			String fileName = "Kill " + format(new Date());
 			takeScreenshot(fileName);
 		}
 	}
