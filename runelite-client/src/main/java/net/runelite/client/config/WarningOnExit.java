@@ -31,15 +31,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum WarningOnExit
 {
-    ALWAYS("Always"),
-    LOGGED_IN("Logged in"),
-    NEVER("Never");
+	ALWAYS("Always"),
+	LOGGED_IN("Logged in"),
+	NEVER("Never");
 
-    private final String type;
+	private final String type;
 
-    @Override
-    public String toString()
-    {
-        return type;
-    }
+	@Override
+	public String toString()
+	{
+		return type;
+	}
 }
