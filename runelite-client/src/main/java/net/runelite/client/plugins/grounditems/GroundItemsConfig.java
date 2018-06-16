@@ -82,7 +82,10 @@ public interface GroundItemsConfig extends Config
 			description = "Change Item Priority UI Keybind to L-Shift",
 			position = 2
 	)
-	default boolean useAltKeybind() { return false; }
+	default boolean useAltKeybind()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "showHighlightedOnly",

@@ -51,10 +51,11 @@ public class GroundItemInputListener extends MouseListener implements KeyListene
 	public void keyPressed(KeyEvent e)
 	{
 
-		if(plugin.altHotkey())
+		if (plugin.altHotkey())
 		{
 			HOTKEY = KeyEvent.VK_SHIFT;
 		}
+
 		else
 		{
 			HOTKEY = KeyEvent.VK_ALT;
@@ -64,6 +65,7 @@ public class GroundItemInputListener extends MouseListener implements KeyListene
 		{
 			plugin.setHotKeyPressed(true);
 		}
+
 	}
 
 	@Override
