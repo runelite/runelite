@@ -70,7 +70,7 @@ class ConfigInvocationHandler implements InvocationHandler
 			{
 				if (method.isDefault())
 				{
-					return callDefaultMethod(proxy, method, args);
+					return callDefaultMethod(proxy, method, null);
 				}
 
 				return null;
@@ -88,7 +88,7 @@ class ConfigInvocationHandler implements InvocationHandler
 				log.warn("Unable to unmarshal {}.{} ", group.keyName(), item.keyName(), e);
 				if (method.isDefault())
 				{
-					return callDefaultMethod(proxy, method, args);
+					return callDefaultMethod(proxy, method, null);
 				}
 				return null;
 			}
