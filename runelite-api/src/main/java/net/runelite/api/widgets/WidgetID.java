@@ -96,6 +96,7 @@ public class WidgetID
 	public static final int KINGDOM_GROUP_ID = 392;
 	public static final int BARROWS_GROUP_ID = 24;
 	public static final int BLAST_MINE_GROUP_ID = 598;
+	public static final int EQUIPMENT_PAGE_GROUP_ID = 84;
 
 	static class WorldMap
 	{
@@ -506,5 +507,27 @@ public class WidgetID
 		static final int BARROWS_BROTHERS = 8;
 		static final int BARROWS_POTENTIAL = 9;
 		static final int BARROWS_REWARD_INVENTORY = 3;
+	}
+
+	static class EquipmentWidgetIdentifiers
+	{
+		static final int EQUIP_YOUR_CHARACTER = 3;
+		static final int STAB_ATTACK_BONUS = 23;
+		static final int SLASH_ATTACK_BONUS = 24;
+		static final int CRUSH_ATTACK_BONUS = 25;
+		static final int MAGIC_ATTACK_BONUS = 26;
+		static final int RANGED_ATTACK_BONUS = 27;
+		static final int STAB_DEFENCE_BONUS = 29;
+		static final int SLASH_DEFENCE_BONUS = 30;
+		static final int CRUSH_DEFENCE_BONUS = 31;
+		static final int MAGIC_DEFENCE_BONUS = 32;
+		static final int RANGED_DEFENCE_BONUS = 33;
+		static final int MELEE_STRENGTH = 35;
+		static final int RANGED_STRENGTH = 36;
+		static final int MAGIC_DAMAGE = 37;
+		static final int PRAYER_BONUS = 38;
+		static final int UNDEAD_DAMAGE_BONUS = 40;
+		static final int SLAYER_DAMAGE_BONUS = 41;
+		static final int WEIGHT = 43;
 	}
 }
