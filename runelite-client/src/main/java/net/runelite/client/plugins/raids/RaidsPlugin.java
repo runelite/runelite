@@ -43,7 +43,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
-import net.runelite.api.ObjectID;
+import net.runelite.api.NullObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
@@ -419,7 +419,7 @@ public class RaidsPlugin extends Plugin
 					continue;
 				}
 
-				if (tiles[x][y].getWallObject().getId() == ObjectID.NULL_12231)
+				if (tiles[x][y].getWallObject().getId() == NullObjectID.NULL_12231)
 				{
 					return tiles[x][y].getRegionLocation();
 				}

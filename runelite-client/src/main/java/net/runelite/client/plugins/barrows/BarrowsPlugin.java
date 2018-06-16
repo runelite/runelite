@@ -44,6 +44,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import static net.runelite.api.ItemID.COINS_995;
+import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.WallObject;
 import net.runelite.api.events.GameObjectChanged;
@@ -76,14 +77,14 @@ public class BarrowsPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private static final Set<Integer> BARROWS_WALLS = Sets.newHashSet
 	(
-		ObjectID.DOOR_20678, ObjectID.NULL_20681, ObjectID.NULL_20682, ObjectID.NULL_20683, ObjectID.NULL_20684, ObjectID.NULL_20685, ObjectID.NULL_20686, ObjectID.NULL_20687,
-		ObjectID.NULL_20688, ObjectID.NULL_20689, ObjectID.NULL_20690, ObjectID.NULL_20691, ObjectID.NULL_20692, ObjectID.NULL_20693, ObjectID.NULL_20694, ObjectID.NULL_20695,
-		ObjectID.NULL_20696, ObjectID.DOOR_20697, ObjectID.NULL_20700, ObjectID.NULL_20701, ObjectID.NULL_20702, ObjectID.NULL_20703, ObjectID.NULL_20704, ObjectID.NULL_20705,
-		ObjectID.NULL_20706, ObjectID.NULL_20707, ObjectID.NULL_20708, ObjectID.NULL_20709, ObjectID.NULL_20710, ObjectID.NULL_20711, ObjectID.NULL_20712, ObjectID.NULL_20713,
-		ObjectID.NULL_20714, ObjectID.NULL_20715, ObjectID.NULL_20728, ObjectID.NULL_20730
+		ObjectID.DOOR_20678, NullObjectID.NULL_20681, NullObjectID.NULL_20682, NullObjectID.NULL_20683, NullObjectID.NULL_20684, NullObjectID.NULL_20685, NullObjectID.NULL_20686, NullObjectID.NULL_20687,
+		NullObjectID.NULL_20688, NullObjectID.NULL_20689, NullObjectID.NULL_20690, NullObjectID.NULL_20691, NullObjectID.NULL_20692, NullObjectID.NULL_20693, NullObjectID.NULL_20694, NullObjectID.NULL_20695,
+		NullObjectID.NULL_20696, ObjectID.DOOR_20697, NullObjectID.NULL_20700, NullObjectID.NULL_20701, NullObjectID.NULL_20702, NullObjectID.NULL_20703, NullObjectID.NULL_20704, NullObjectID.NULL_20705,
+		NullObjectID.NULL_20706, NullObjectID.NULL_20707, NullObjectID.NULL_20708, NullObjectID.NULL_20709, NullObjectID.NULL_20710, NullObjectID.NULL_20711, NullObjectID.NULL_20712, NullObjectID.NULL_20713,
+		NullObjectID.NULL_20714, NullObjectID.NULL_20715, NullObjectID.NULL_20728, NullObjectID.NULL_20730
 	);
 
-	private static final Set<Integer> BARROWS_LADDERS = Sets.newHashSet(ObjectID.NULL_20675, ObjectID.NULL_20676, ObjectID.NULL_20677);
+	private static final Set<Integer> BARROWS_LADDERS = Sets.newHashSet(NullObjectID.NULL_20675, NullObjectID.NULL_20676, NullObjectID.NULL_20677);
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<WallObject> walls = new HashSet<>();
