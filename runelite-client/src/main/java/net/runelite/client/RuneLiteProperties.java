@@ -50,9 +50,7 @@ public class RuneLiteProperties
 	@Inject
 	public RuneLiteProperties()
 	{
-		final InputStream in = getClass().getResourceAsStream("runelite.properties");
-
-		try
+		try (InputStream in = getClass().getResourceAsStream("runelite.properties"))
 		{
 			properties.load(in);
 		}
