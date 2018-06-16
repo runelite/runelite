@@ -242,6 +242,8 @@ public class NpcIndicatorsPlugin extends Plugin
 	{
 		if (click.getMenuOption().equals(TAG))
 		{
+			click.consume();
+
 			final int id = click.getId();
 			final boolean removed = npcTags.remove(id);
 			final NPC[] cachedNPCs = client.getCachedNPCs();

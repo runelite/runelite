@@ -50,9 +50,6 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
-import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
-import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 
 @Singleton
 @Slf4j
@@ -94,21 +91,13 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		final OverlayManager overlayManager,
 		final RuneLiteConfig runeLiteConfig,
 		final MouseManager mouseManager,
-		final KeyManager keyManager,
-		final InfoBoxOverlay infoBoxOverlay,
-		final TooltipOverlay tooltipOverlay,
-		final WorldMapOverlay worldMapOverlay)
+		final KeyManager keyManager)
 	{
 		this.clientProvider = clientProvider;
 		this.overlayManager = overlayManager;
 		this.runeLiteConfig = runeLiteConfig;
 		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseListener(this);
-
-		// Register core overlays
-		overlayManager.add(infoBoxOverlay);
-		overlayManager.add(worldMapOverlay);
-		overlayManager.add(tooltipOverlay);
 	}
 
 	@Subscribe
@@ -256,9 +245,6 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 						// detached overlays have no place to reset back to
 						if (overlay.getPosition() != OverlayPosition.DETACHED)
 						{
-							overlay.setPreferredPosition(null);
-							overlay.setPreferredSize(null);
-							overlay.setPreferredLocation(null);
 							overlayManager.resetOverlay(overlay);
 						}
 					}

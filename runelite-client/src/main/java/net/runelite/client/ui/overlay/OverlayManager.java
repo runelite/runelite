@@ -25,6 +25,7 @@
 package net.runelite.client.ui.overlay;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.eventbus.Subscribe;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ import lombok.Getter;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.events.PluginChanged;
 
 /**
  * Manages state of all game overlays
@@ -90,6 +92,13 @@ public class OverlayManager
 		this.configManager = configManager;
 	}
 
+	@Subscribe
+	public void onPluginChanged(final PluginChanged event)
+	{
+		overlays.forEach(this::loadOverlay);
+		rebuildOverlayLayers();
+	}
+
 	/**
 	 * Gets all of the overlays on a layer
 	 *
@@ -109,20 +118,16 @@ public class OverlayManager
 	 */
 	public synchronized boolean add(final Overlay overlay)
 	{
-		final boolean add = overlays.add(overlay);
-
-		if (add)
+		if (overlays.contains(overlay))
 		{
-			final Point location = loadOverlayLocation(overlay);
-			overlay.setPreferredLocation(location);
-			final Dimension size = loadOverlaySize(overlay);
-			overlay.setPreferredSize(size);
-			final OverlayPosition position = loadOverlayPosition(overlay);
-			overlay.setPreferredPosition(position);
-			rebuildOverlayLayers();
+			return false;
 		}
 
-		return add;
+		// Add is always true
+		overlays.add(overlay);
+		loadOverlay(overlay);
+		rebuildOverlayLayers();
+		return true;
 	}
 
 	/**
@@ -152,7 +157,12 @@ public class OverlayManager
 	public synchronized boolean removeIf(Predicate<Overlay> filter)
 	{
 		final boolean removeIf = overlays.removeIf(filter);
-		rebuildOverlayLayers();
+
+		if (removeIf)
+		{
+			rebuildOverlayLayers();
+		}
+
 		return removeIf;
 	}
 
@@ -185,13 +195,10 @@ public class OverlayManager
 	 */
 	public synchronized void resetOverlay(final Overlay overlay)
 	{
-		final String locationKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_LOCATION;
-		final String positionKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_POSITION;
-		final String sizeKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_SIZE;
-		configManager.unsetConfiguration(RUNELITE_CONFIG_GROUP_NAME, locationKey);
-		configManager.unsetConfiguration(RUNELITE_CONFIG_GROUP_NAME, positionKey);
-		configManager.unsetConfiguration(RUNELITE_CONFIG_GROUP_NAME, sizeKey);
-		rebuildOverlayLayers();
+		overlay.setPreferredPosition(null);
+		overlay.setPreferredSize(null);
+		overlay.setPreferredLocation(null);
+		saveOverlay(overlay);
 	}
 
 	private synchronized void rebuildOverlayLayers()
@@ -221,6 +228,16 @@ public class OverlayManager
 		}
 
 		overlayLayers.forEach((layer, value) -> overlayLayers.put(layer, Collections.unmodifiableList(value)));
+	}
+
+	private void loadOverlay(final Overlay overlay)
+	{
+		final Point location = loadOverlayLocation(overlay);
+		overlay.setPreferredLocation(location);
+		final Dimension size = loadOverlaySize(overlay);
+		overlay.setPreferredSize(size);
+		final OverlayPosition position = loadOverlayPosition(overlay);
+		overlay.setPreferredPosition(position);
 	}
 
 	private void saveOverlayLocation(final Overlay overlay)

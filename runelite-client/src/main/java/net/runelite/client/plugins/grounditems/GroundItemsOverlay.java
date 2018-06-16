@@ -32,8 +32,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -108,11 +108,14 @@ public class GroundItemsOverlay extends Overlay
 		offsetMap.clear();
 		final LocalPoint localLocation = player.getLocalLocation();
 		final Point mousePos = client.getMouseCanvasPosition();
-		final List<GroundItem> groundItemList = new ArrayList<>(plugin.getCollectedGroundItems().values());
+		Collection<GroundItem> groundItemList = plugin.getCollectedGroundItems().values();
 		GroundItem topGroundItem = null;
 
 		if (plugin.isHotKeyPressed())
 		{
+			// Make copy of ground items because we are going to modify them here, and the array list supports our
+			// desired behaviour here
+			groundItemList = new ArrayList<>(groundItemList);
 			final java.awt.Point awtMousePos = new java.awt.Point(mousePos.getX(), mousePos.getY());
 			GroundItem groundItem = null;
 
@@ -280,7 +283,7 @@ public class GroundItemsOverlay extends Overlay
 				// Hidden box
 				x += width + 2;
 				y = textY - (RECTANGLE_SIZE + stringHeight) / 2;
-				width = height = RECTANGLE_SIZE - 2;
+				width = height = RECTANGLE_SIZE;
 				final Rectangle itemHiddenBox = new Rectangle(x, y, width, height);
 
 				// Highlight box
