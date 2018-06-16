@@ -81,8 +81,6 @@ public class DemonicGorillaOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Player player = client.getLocalPlayer();
-
 		for (DemonicGorilla gorilla : plugin.getGorillas().values())
 		{
 			if (gorilla.getNpc().getInteracting() == null)
