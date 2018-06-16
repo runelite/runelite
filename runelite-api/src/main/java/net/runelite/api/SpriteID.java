@@ -217,8 +217,8 @@ public final class SpriteID
 	public static final int MUSIC_PLAYER_BUTTON = 185;
 	public static final int MUSIC_PLAYER_BUTTON_SELECTED = 186;
 	/* Unmapped: 187~194 */
-	public static final int UNKNOWN_BUTTON_SQUARE_SMALL = 195;
-	public static final int UNKNOWN_BUTTON_SQUARE_SMALL_SELECTED = 196;
+	public static final int UNKNOWN_SMALL_SQUARE_BUTTON = 195;
+	public static final int UNKNOWN_SMALL_SQUARE_BUTTON_SELECTED = 196;
 	public static final int SKILL_ATTACK = 197;
 	public static final int SKILL_STRENGTH = 198;
 	public static final int SKILL_DEFENCE = 199;
@@ -323,8 +323,8 @@ public final class SpriteID
 	public static final int RS2_TAB_STONE_FAR_LEFT_SELECTED = 305;
 	public static final int RS2_TAB_STONE_MIDDLE_LEFT_SELECTED = 306;
 	public static final int RS2_TAB_STONE_MIDDLE_SELECTED = 307;
-	public static final int RS2_BUTTON_BACK_ARROW = 308;
-	public static final int RS2_BUTTON_FORWARD_ARROW = 309;
+	public static final int RS2_ARROW_BUTTON_BACK = 308;
+	public static final int RS2_ARROW_BUTTON_FORWARD = 309;
 	public static final int IRON_RIVETS_CORNER_TOP_LEFT = 310;
 	public static final int IRON_RIVETS_CORNER_TOP_RIGHT = 311;
 	public static final int IRON_RIVETS_CORNER_BOTTOM_LEFT = 312;
@@ -436,8 +436,8 @@ public final class SpriteID
 	public static final int MINIMAP_DESTINATION_FLAG = 422;
 	public static final int CHATBOX_BADGE_CROWN_PLAYER_MODERATOR = 423;
 	public static final int RED_GUIDE_ARROW = 424;
-	public static final int BACK_ARROW_BUTTON_SMALL = 425;
-	public static final int FORWARD_ARROW_BUTTON_SMALL = 426;
+	public static final int SMALL_ARROW_BUTTON_BACK = 425;
+	public static final int SMALL_ARROW_BUTTON_FORWARD = 426;
 	public static final int UNKNOWN_X_3D_RENDER = 427;
 	public static final int WELCOME_SCREEN_BUTTON_MARBLE = 428;
 	public static final int WELCOME_SCREEN_BUTTON_CLICK_HERE_TO_PLAY = 429;
@@ -452,7 +452,7 @@ public final class SpriteID
 	public static final int WELCOME_SCREEN_BUTTON_COBBLESTONE = 438;
 	public static final int PLAYER_KILLER_SKULL = 439;
 	public static final int OVERHEAD_PROTECT_FROM_MELEE = 440;
-	public static final int MINIMAP_GUIDE_ARROW_YELLOW = 441;
+	public static final int MINIMAP_YELLOW_GUIDE_ARROW = 441;
 	public static final int MULTI_COMBAT_ZONE_CROSSED_SWORDS = 442;
 	public static final int DUEL_ARENA_ZONE_SHINING_AXE = 443;
 	public static final int BANK_PIN_MARBLE_BACKGROUND = 444;
@@ -500,8 +500,8 @@ public final class SpriteID
 	public static final int TEXTURE_LEAVES_486 = 486;
 	public static final int TEXTURE_TILES_STONE = 487;
 	public static final int TEXTURE_ROOF_TILES_STONE = 488;
-	public static final int UNKNOWN_SMALL_GREEN_UP_ARROW = 489;
-	public static final int TEXTURE_COBBLESTONE = 490;
+	public static final int UNKNOWN_SMALL_GREEN_ARROW_UP = 489;
+	public static final int TEXTURE_HOSIDIUS_COBBLESTONE = 490;
 	public static final int TEXTURE_BRICKS_SANDSTONE = 491;
 	public static final int TEXTURE_HEIROGLYPHS = 492;
 	public static final int TEXTURE_493 = 493;
@@ -542,7 +542,7 @@ public final class SpriteID
 	public static final int TEXTURE_WATER_531 = 531;
 	public static final int TEXTURE_MARBLE_ROUGH = 532;
 	public static final int TEXTURE_ROOF_TILES_SLATE_GREY = 533;
-	public static final int UNKNOWN_SMALL_RED_DOWN_ARROW = 534;
+	public static final int UNKNOWN_SMALL_RED_ARROW_DOWN = 534;
 	public static final int WINDOW_CLOSE_BUTTON = 535;
 	public static final int WINDOW_CLOSE_BUTTON_HOVERED = 536;
 	public static final int WINDOW_CLOSE_BUTTON_PARCHMENT = 537;
@@ -642,7 +642,7 @@ public final class SpriteID
 	public static final int SPELL_OURANIA_TELEPORT_DISABLED = 636;
 	/* Unmapped: 637~642 */
 	public static final int TEXTURE_ROOF_TILES_SLATE_DIRTY = 643;
-	public static final int TEXTURE_POLISHED_TIMBER = 644;
+	public static final int TEXTURE_HOSIDIUS_WOODEN_FLOOR = 644;
 	/* Unmapped: 645~648 */
 	public static final int EQUIPMENT_WEIGHT = 649;
 	public static final int WORLD_MAP_KEY_EFFECTS_THUNDERBOLT = 650;
@@ -767,7 +767,7 @@ public final class SpriteID
 	public static final int BARBARIAN_ASSAULT_HORN_FOR_DEFENDER_ICON = 769;
 	public static final int BARBARIAN_ASSAULT_HORN_FOR_COLLECTOR_ICON = 770;
 	public static final int BARBARIAN_ASSAULT_HORN_FOR_HEALER_ICON = 771;
-	public static final int UNKNOWN_ARROW_RIGHT_YELLOW = 772;
+	public static final int UNKNOWN_YELLOW_ARROW_RIGHT = 772;
 	public static final int SCROLLBAR_ARROW_UP = 773;
 	public static final int RS2_TAB_COMBAT = 774;
 	public static final int RS2_TAB_STATS = 775;
@@ -807,8 +807,8 @@ public final class SpriteID
 	public static final int EMOTE_PENGUIN_PREEN = 809;
 	public static final int EMOTE_PENGUIN_FLAP = 810;
 	public static final int LOGIN_SCREEN_MUSIC_BUTTON = 811;
-	public static final int SLAYER_REWARDS_AND_POLL_HISTORY_BUTTON = 812;
-	public static final int SLAYER_REWARDS_AND_POLL_HISTORY_BUTTON_SELECTED = 813;
+	public static final int DIALOG_HEADER_BUTTON = 812;          // Used in the dialogs for in-game polls, Slayer rewards,
+	public static final int DIALOG_HEADER_BUTTON_SELECTED = 813; // and Nightmare Zone rewards.
 	public static final int LOGIN_SCREEN_FREE_WORLD_BACKGROUND = 814;
 	public static final int LOGIN_SCREEN_REGION_USA = 815;
 	public static final int LOGIN_SCREEN_SORTING_ARROW_UP_DISABLED = 816;
@@ -1091,15 +1091,15 @@ public final class SpriteID
 	public static final int GE_BUTTON_HOVERED = 1111;
 	public static final int GE_GUIDE_PRICE = 1112;
 	public static final int GE_SEARCH = 1113;
-	public static final int GE_FAST_DECREMENT_ARROW = 1114;
-	public static final int GE_FAST_INCREMENT_ARROW = 1115;
+	public static final int GE_ARROW_FAST_DECREMENT = 1114;
+	public static final int GE_ARROW_FAST_INCREMENT = 1115;
 	public static final int GE_DECREMENT_BUTTON = 1116;
 	public static final int GE_INCREMENT_BUTTON = 1117;
 	public static final int GE_COLLECTION_BOX_OFFER_BUY = 1118;
 	public static final int GE_COLLECTION_BOX_OFFER_SELL = 1119;
 	public static final int GE_SELECTED_ITEM_BOX = 1120;
 	public static final int GE_SELECTED_ITEM_BOX_GLOWING = 1121;
-	public static final int GE_BACK_ARROW_BUTTON = 1122;
+	public static final int GE_ARROW_BUTTON_BACK = 1122;
 	public static final int GE_NUMBER_FIELD_EDGE_LEFT = 1123;
 	public static final int GE_NUMBER_FIELD_MIDDLE = 1124;
 	public static final int GE_NUMBER_FIELD_EDGE_RIGHT = 1125;
@@ -1167,7 +1167,7 @@ public final class SpriteID
 	public static final int CHATBOX_TRANSPARENT_SCROLLBAR_THUMB_TOP = 1187;
 	public static final int CHATBOX_TRANSPARENT_SCROLLBAR_THUMB_MIDDLE = 1188;
 	public static final int CHATBOX_TRANSPARENT_SCROLLBAR_THUMB_BOTTOM = 1190;
-	public static final int UNUSED_TAB_LOGOUT_1191 = 1191;
+	public static final int WORLD_SWITCHER_LOGOUT = 1191;
 	public static final int ROUND_CHECK_BOX_CHECKED_RED_HOVERED = 1192;
 	public static final int OPTIONS_DISABLED_OPTION_OVERLAY = 1193;
 	public static final int DUEL_ARENA_SAVE_PRESET = 1194;
@@ -1368,7 +1368,7 @@ public final class SpriteID
 	public static final int PREMIER_CLUB_SILVER = 1409;
 	public static final int PREMIER_CLUB_GOLD = 1410;
 	public static final int UNKNOWN_DIAGONAL_COMING_SOON_TEXT = 1411;
-	public static final int UNKNOWN_WHITE_REFRESH_ARROWS = 1412;
+	public static final int UNKNOWN_WHITE_ARROWS_REFRESHING = 1412;
 	public static final int TAB_QUESTS_BROWN_RAIDING_PARTY = 1413;
 	public static final int TAB_QUESTS_BROWN_RAIDING_PARTY_1414 = 1414;
 	public static final int UNKNOWN_GREEN_BAR = 1415;
@@ -1382,8 +1382,8 @@ public final class SpriteID
 	public static final int PRAYER_RIGOUR_DISABLED = 1424;
 	public static final int PRAYER_AUGURY_DISABLED = 1425;
 	/* Unmapped: 1426, 1427 */
-	public static final int UNKNOWN_BLACK_ANTICLOCKWISE_ARROW_SHADOWED = 1428;
-	public static final int UNKNOWN_BLACK_ANTICLOCKWISE_ARROW = 1429;
+	public static final int UNKNOWN_BLACK_ARROW_ANTICLOCKWISE_SHADOWED = 1428;
+	public static final int UNKNOWN_BLACK_ARROW_ANTICLOCKWISE = 1429;
 	public static final int YELLOW_CLICK_ANIMATION_1_1430 = 1430;
 	public static final int YELLOW_CLICK_ANIMATION_2_1431 = 1431;
 	public static final int YELLOW_CLICK_ANIMATION_3_1432 = 1432;
@@ -1516,7 +1516,9 @@ public final class SpriteID
 	public static final int OPTIONS_SHIFT_KEY_DISABLED = 1566;
 	public static final int OPTIONS_FINGER_POINTING_AT_PET = 1567;
 	public static final int OPTIONS_SCROLL = 1568;
-	/* Unmapped: 1569, 1570, 1571 */
+	public static final int ORB_OF_OCULUS_KEYBOARD_BUTTON = 1569;
+	public static final int ORB_OF_OCULUS_KEYBOARD_ARROW = 1570;
+	public static final int OPTIONS_RESIZEABLE_MODE_SCROLLBAR_POSITION = 1571;
 	public static final int OPTIONS_FIXED_MODE_ENABLED = 1572;
 	public static final int OPTIONS_RESIZEABLE_MODE_ENABLED = 1573;
 	public static final int OPTIONS_FIXED_MODE_ENABLED_VERTICAL = 1574;
@@ -1555,7 +1557,9 @@ public final class SpriteID
 	/* Unmapped: 1609 */
 	public static final int MINIMAP_ORB_SPECIAL_ICON = 1610;
 	public static final int FIXED_MODE_MINIMAP_FRAME_BOTTOM = 1611;
-	/* Unmapped: 1612, 1613, 1614 */
+	public static final int ORB_OF_OCULUS_KEYBOARD_BUTTON_EDGE_LEFT = 1612;
+	public static final int ORB_OF_OCULUS_KEYBOARD_BUTTON_MIDDLE = 1613;
+	public static final int ORB_OF_OCULUS_KEYBOARD_BUTTON_EDGE_RIGHT = 1614;
 	public static final int MOBILE_TUTORIAL_FUNCTION_MODE_BUTTON = 1615;
 	public static final int MOBILE_TUTORIAL_CAMERA_MOVEMENT = 1616;
 	public static final int MOBILE_CONCEPT_SKETCH_UI = 1617;
@@ -1568,4 +1572,5 @@ public final class SpriteID
 	public static final int MOBILE_FUNCTION_MODE_DISABLED = 1624;
 	public static final int MOBILE_YELLOW_TOUCH_ANIMATION_1 = 1625;
 	public static final int MOBILE_YELLOW_TOUCH_ANIMATION_2 = 1626;
+	public static final int RAIDS_CHALLENGE_MODE_ICON = 1627;
 }
