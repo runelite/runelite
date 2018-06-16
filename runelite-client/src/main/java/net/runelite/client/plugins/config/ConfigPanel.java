@@ -494,11 +494,9 @@ public class ConfigPanel extends PluginPanel
 					public void focusLost(FocusEvent e)
 					{
 						changeConfiguration(config, textField, cd, cid);
-						textField.setToolTipText(textField.getText());
 					}
 				});
 
-				textField.setToolTipText(textField.getText());
 				item.add(textField, BorderLayout.SOUTH);
 			}
 
