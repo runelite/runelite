@@ -275,11 +275,13 @@ public class RaidsPlugin extends Plugin
 			int position = layoutRoom.getPosition();
 			RaidRoom room = getRaid().getRoom(position);
 
-			if (room == null) {
+			if (room == null)
+			{
 				continue;
 			}
 			String name;
-			switch (room.getType()) {
+			switch (room.getType())
+			{
 				case COMBAT:
 					name = room.getBoss().getName();
 					scouted += name;
