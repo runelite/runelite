@@ -34,7 +34,9 @@ import net.runelite.client.input.MouseListener;
 
 public class GroundItemInputListener extends MouseListener implements KeyListener
 {
-	private static final int HOTKEY = KeyEvent.VK_ALT;
+	private static int HOTKEY = KeyEvent.VK_ALT;
+
+	private static boolean useAltKeybind = false;
 
 	@Inject
 	private GroundItemsPlugin plugin;
@@ -48,6 +50,16 @@ public class GroundItemInputListener extends MouseListener implements KeyListene
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
+
+		if(plugin.altHotkey())
+		{
+			HOTKEY = KeyEvent.VK_SHIFT;
+		}
+		else
+		{
+			HOTKEY = KeyEvent.VK_ALT;
+		}
+
 		if (e.getKeyCode() == HOTKEY)
 		{
 			plugin.setHotKeyPressed(true);
