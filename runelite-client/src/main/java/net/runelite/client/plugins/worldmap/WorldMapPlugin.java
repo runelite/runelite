@@ -140,6 +140,7 @@ public class WorldMapPlugin extends Plugin
 							.map(value -> new AgilityShortcutPoint(value, config.agilityShortcutLevelIcon() && value.getLevelReq() > agilityLevel ? NOPE_ICON : BLANK_ICON))
 							.forEach(worldMapPointManager::add);
 					}
+					break;
 				case CONFIG_KEY_NORMAL_TELEPORT_ICON:
 				case CONFIG_KEY_ANCIENT_TELEPORT_ICON:
 				case CONFIG_KEY_LUNAR_TELEPORT_ICON:
