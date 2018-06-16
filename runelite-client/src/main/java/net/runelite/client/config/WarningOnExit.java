@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Matt <https://github.com/ms813>
+ * Copyright (c) 2018, Matt <https://github.com/ms813>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
