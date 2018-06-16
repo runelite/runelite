@@ -32,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 public enum WarningOnExit
 {
     ALWAYS("Always"),
-    ONLY_WHEN_LOGGED_IN("Only when logged in"),
+    LOGGED_IN("Logged in"),
     NEVER("Never");
 
     private final String type;

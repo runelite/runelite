@@ -408,7 +408,7 @@ public class ClientUI
 			return true;
 		}
 
-		if (config.warningOnExit() == WarningOnExit.ONLY_WHEN_LOGGED_IN)
+		if (config.warningOnExit() == WarningOnExit.LOGGED_IN)
 		{
 			return((Client) client).getGameState() != GameState.LOGIN_SCREEN;
 		}

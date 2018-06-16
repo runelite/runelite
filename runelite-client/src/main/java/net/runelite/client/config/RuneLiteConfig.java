@@ -120,7 +120,7 @@ public interface RuneLiteConfig extends Config
 	)
 	default WarningOnExit warningOnExit()
 	{
-		return WarningOnExit.ONLY_WHEN_LOGGED_IN;
+		return WarningOnExit.LOGGED_IN;
 	}
 
 	@ConfigItem(
