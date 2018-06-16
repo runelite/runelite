@@ -62,7 +62,6 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 class AbyssOverlay extends Overlay
 {
-	private static final int MAX_DISTANCE = 2350;
 	private static final Dimension IMAGE_SIZE = new Dimension(15, 14);
 
 	private final Set<AbyssRifts> rifts = new HashSet<>();
