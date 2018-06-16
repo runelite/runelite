@@ -373,7 +373,7 @@ public class ClientUI
 				},
 				() -> client != null
 					&& client instanceof Client
-                    && showWarningonExit()
+					&& showWarningonExit()
 			);
 
 			container = new JPanel();
