@@ -372,7 +372,8 @@ public class ClientUI
 				},
 				() -> client != null
 					&& client instanceof Client
-					&& ((Client) client).getGameState() != GameState.LOGIN_SCREEN);
+                    && config.warningOnExit()
+					&& ((Client) client).getGameState() != GameState.LOGIN_SCREEN)                       ;
 
 			container = new JPanel();
 			container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));

@@ -232,4 +232,15 @@ public interface RuneLiteConfig extends Config
 	{
 		return 35;
 	}
+
+	@ConfigItem(
+	    keyName= "warningOnExit",
+        name = "Display warning on exit",
+        description = "Toggles a warning popup when trying to exit the client",
+        position = 35
+	)
+	default boolean warningOnExit()
+    {
+	    return true;
+	}
 }
