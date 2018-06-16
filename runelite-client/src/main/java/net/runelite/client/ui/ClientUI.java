@@ -410,7 +410,7 @@ public class ClientUI
 
 		if (config.warningOnExit() == WarningOnExit.LOGGED_IN)
 		{
-			return((Client) client).getGameState() != GameState.LOGIN_SCREEN;
+			return ((Client) client).getGameState() != GameState.LOGIN_SCREEN;
 		}
 
 		return false;
