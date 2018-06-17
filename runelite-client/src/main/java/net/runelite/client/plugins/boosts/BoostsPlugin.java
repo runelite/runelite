@@ -93,8 +93,6 @@ public class BoostsPlugin extends Plugin
 
 	private boolean preserveBeenActive = false;
 
-	private int timeSinceChange;
-
 	@Provides
 	BoostsConfig provideConfig(ConfigManager configManager)
 	{
@@ -213,7 +211,7 @@ public class BoostsPlugin extends Plugin
 	 */
 	public int getChangeTime()
 	{
-		timeSinceChange = timeSinceLastChange();
+		int timeSinceChange = timeSinceLastChange();
 
 		if (client.isPrayerActive(Prayer.PRESERVE) && timeSinceChange < 45)
 		{
@@ -241,7 +239,7 @@ public class BoostsPlugin extends Plugin
 		return 60 - timeSinceChange;
 	}
 
-	public int timeSinceLastChange()
+	private int timeSinceLastChange()
 	{
 		return (int) Duration.between(lastChange, Instant.now()).getSeconds();
 	}
