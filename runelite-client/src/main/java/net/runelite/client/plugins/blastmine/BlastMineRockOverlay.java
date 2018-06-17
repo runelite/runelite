@@ -35,6 +35,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.ItemID;
+import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
@@ -53,8 +54,8 @@ public class BlastMineRockOverlay extends Overlay
 	private static final int MAX_DISTANCE = 16;
 	private static final int WARNING_DISTANCE = 2;
 	private static final ImmutableSet<Integer> WALL_OBJECTS = ImmutableSet.of(
-		ObjectID.NULL_28570, ObjectID.NULL_28571, ObjectID.NULL_28572, ObjectID.NULL_28573, ObjectID.NULL_28574,
-		ObjectID.NULL_28575, ObjectID.NULL_28576, ObjectID.NULL_28577, ObjectID.NULL_28578,
+		NullObjectID.NULL_28570, NullObjectID.NULL_28571, NullObjectID.NULL_28572, NullObjectID.NULL_28573, NullObjectID.NULL_28574,
+		NullObjectID.NULL_28575, NullObjectID.NULL_28576, NullObjectID.NULL_28577, NullObjectID.NULL_28578,
 		ObjectID.HARD_ROCK, ObjectID.HARD_ROCK_28580, ObjectID.CAVITY, ObjectID.CAVITY_28582,
 		ObjectID.POT_OF_DYNAMITE, ObjectID.POT_OF_DYNAMITE_28584, ObjectID.POT_OF_DYNAMITE_28585, ObjectID.POT_OF_DYNAMITE_28586,
 		ObjectID.SHATTERED_ROCKFACE, ObjectID.SHATTERED_ROCKFACE_28588);
