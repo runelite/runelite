@@ -67,4 +67,26 @@ public interface PrayerConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "showPrayerDoseIndicator",
+		name = "Show Prayer Dose Indicator",
+		description = "Enables the prayer dose indicator."
+	)
+	default boolean showPrayerDoseIndicator()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "Statistics",
+		name = "Show Prayer Stats",
+		description = "Displays time remaining and prayer bonus as a tooltip on the quick-prayer icon."
+	)
+	default boolean showPrayerStatistics()
+	{
+		return true;
+	}
 }
