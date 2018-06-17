@@ -60,7 +60,7 @@ import net.runelite.client.util.Text;
 	name = "Blowpipe Tracker"
 )
 @Slf4j
-class BlowPipeTrackerPlugin extends Plugin
+public class BlowPipeTrackerPlugin extends Plugin
 {
 	@Inject
 	private Client client;
