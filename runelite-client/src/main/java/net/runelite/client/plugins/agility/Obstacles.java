@@ -29,6 +29,7 @@ import com.google.common.collect.ImmutableSet;
 import java.util.List;
 import java.util.Set;
 import static net.runelite.api.ObjectID.*;
+import static net.runelite.api.NullObjectID.*;
 
 public class Obstacles
 {
