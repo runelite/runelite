@@ -212,27 +212,18 @@ public class BoostsPlugin extends Plugin
 	public int getChangeTime()
 	{
 		int timeSinceChange = timeSinceLastChange();
+		boolean isPreserveActive = client.isPrayerActive(Prayer.PRESERVE);
 
-		if (client.isPrayerActive(Prayer.PRESERVE) && timeSinceChange < 45)
+		if ((isPreserveActive && (timeSinceChange < 45 || preserveBeenActive)) || timeSinceChange > 75)
 		{
 			preserveBeenActive = true;
 			return 90 - timeSinceChange;
 		}
 
-		if (client.isPrayerActive(Prayer.PRESERVE) && preserveBeenActive)
-		{
-			return 90 - timeSinceChange;
-		}
-
-		if (timeSinceChange > 60 && timeSinceChange <= 75)
+		if (timeSinceChange > 60)
 		{
 			preserveBeenActive = false;
 			return 75 - timeSinceChange;
-		}
-
-		if (timeSinceChange > 75)
-		{
-			return 90 - timeSinceChange;
 		}
 
 		preserveBeenActive = false;
