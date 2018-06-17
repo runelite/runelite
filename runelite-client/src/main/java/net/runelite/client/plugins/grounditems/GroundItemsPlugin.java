@@ -407,8 +407,8 @@ public class GroundItemsPlugin extends Plugin
 			final int price = itemPrice == null ? itemComposition.getPrice() : itemPrice.getPrice();
 			final int haPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity;
 			final int gePrice = quantity * price;
-			final Color hidden = getHidden(itemComposition.getName(), haPrice, gePrice, itemComposition.isTradeable());
-			final Color highlighted = getHighlighted(itemComposition.getName(), haPrice, gePrice);
+			final Color hidden = getHidden(itemComposition.getName(), gePrice, haPrice, itemComposition.isTradeable());
+			final Color highlighted = getHighlighted(itemComposition.getName(), gePrice, haPrice);
 			final Color color = getItemColor(highlighted, hidden);
 
 			if (color != null && hidden == null && !color.equals(config.defaultColor()))
