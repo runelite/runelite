@@ -716,6 +716,12 @@ class SkillCalculator extends JPanel
 		uiInput.setCurrentXPInput(currentXP);
 		uiInput.setTargetLevelInput(targetLevel);
 		uiInput.setTargetXPInput(targetXP);
+
+		// Can only edit input fields when on Calculator tab
+		if (currentTab.equals("Calculator"))
+		{
+			calculate();
+		}
 	}
 
 	private void adjustXPBonus(boolean addBonus, float value)

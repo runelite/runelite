@@ -145,7 +145,11 @@ class SkillCalculatorPanel extends PluginPanel
 			matTab.setSelectedBorder(SELECTED_BORDER);
 
 			// When Clicked
-			matTab.setOnSelectEvent(() -> selectedTab(s));
+			matTab.setOnSelectEvent(() ->
+			{
+				selectedTab(s);
+				return true;
+			});
 
 			tabGroup.addTab(matTab);
 		}
