@@ -47,7 +47,7 @@ public class DatabaseController
 	private static final String CREATE_KILLS = "CREATE TABLE IF NOT EXISTS `kills` (\n"
 			+ "  `killId` INT AUTO_INCREMENT UNIQUE,\n"
 			+ "  `username` VARCHAR(255) NOT NULL,\n"
-			+ "  `npcName` VARCHAR(255) NOT NULL,\n"
+			+ "  `npcName` VARCHAR(255),\n"
 			+ "  `npcID` INT NOT NULL,\n"
 			+ "  `killCount` INT NOT NULL\n"
 			+ ") ENGINE=InnoDB";
