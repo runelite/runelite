@@ -295,6 +295,4 @@ public interface GroundItemsConfig extends Config
 	{
 		return 10000000;
 	}
-
-
 }

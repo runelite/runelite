@@ -65,7 +65,6 @@ public class GroundItemInputListener extends MouseListener implements KeyListene
 		{
 			plugin.setHotKeyPressed(true);
 		}
-
 	}
 
 	@Override
