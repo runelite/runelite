@@ -44,7 +44,7 @@ enum CalculatorType
 	FIREMAKING(Skill.FIREMAKING, "skill_firemaking.json", false),
 	FLETCHING(Skill.FLETCHING, "skill_fletching.json", false),
 	FISHING(Skill.FISHING, "skill_fishing.json", false),
-	HERBLORE(Skill.HERBLORE, "skill_herblore.json", false),
+	HERBLORE(Skill.HERBLORE, "skill_herblore.json", true),
 	HUNTER(Skill.HUNTER, "skill_hunter.json", false),
 	MAGIC(Skill.MAGIC, "skill_magic.json", false),
 	MINING(Skill.MINING, "skill_mining.json", false),

@@ -34,11 +34,19 @@ public class ComboBoxIconEntry
 {
 	private Icon icon;
 	private String text;
+	private Object object = null;
 
 	public ComboBoxIconEntry(Icon icon, String text)
 	{
 		this.icon = icon;
 		this.text = text;
+	}
+
+	public ComboBoxIconEntry(Icon icon, String text, Object object)
+	{
+		this.icon = icon;
+		this.text = text;
+		this.object = object;
 	}
 
 	public Icon getIcon()
@@ -49,6 +57,11 @@ public class ComboBoxIconEntry
 	public String getText()
 	{
 		return this.text;
+	}
+
+	public Object getObject()
+	{
+		return this.object;
 	}
 
 }

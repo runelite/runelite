@@ -59,6 +59,7 @@ class BankedExpPanel extends JPanel
 		image.setPreferredSize(ICON_SIZE);
 		image.setHorizontalAlignment(SwingConstants.LEFT);
 		image.setBorder(new EmptyBorder(0, 8, 0, 0));
+		image.setToolTipText(itemManager.getItemComposition(item.getItemID()).getName());
 
 		Runnable resize = () ->
 			image.setIcon(new ImageIcon(icon.getScaledInstance((int)ICON_SIZE.getWidth(), (int)ICON_SIZE.getHeight(), Image.SCALE_SMOOTH)));

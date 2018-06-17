@@ -29,6 +29,8 @@ package net.runelite.client.plugins.skillcalculator;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -46,6 +48,7 @@ import java.util.regex.Pattern;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -53,10 +56,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
+import javax.swing.border.MatteBorder;
 
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
+import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.skillcalculator.beans.SkillData;
@@ -65,6 +70,8 @@ import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.components.materialtabs.MaterialTab;
+import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 
 class SkillCalculator extends JPanel
 {
@@ -359,6 +366,84 @@ class SkillCalculator extends JPanel
 
 			add(uiOption);
 			add(Box.createRigidArea(new Dimension(0, 5)));
+		}
+
+		ArrayList<BankedItemOptions> options = BankedItemOptions.getBySkill(skill);
+		if (options != null)
+		{
+			Map<Integer, ArrayList<BankedItemOptions>> dropdown = BankedItemOptions.resourceSetMap(options);
+			for (Map.Entry<Integer, ArrayList<BankedItemOptions>> entry : dropdown.entrySet())
+			{
+				JPanel panel = createBankedOptionDropdown(entry);
+
+				add(panel);
+			}
+		}
+	}
+
+	// Creates the Options for changing xp rates
+	private JPanel createBankedOptionDropdown(Map.Entry<Integer, ArrayList<BankedItemOptions>> entry)
+	{
+		ArrayList<BankedItemOptions> options = entry.getValue();
+
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+
+		JLabel label = new JLabel(itemManager.getItemComposition(entry.getKey()).getName());
+
+		MaterialTabGroup group = new MaterialTabGroup();
+		group.setLayout(new GridLayout(0, 3, 0, 2));
+		group.setBorder(new MatteBorder(1, 1, 1, 1, Color.BLACK));
+
+		for (BankedItemOptions option : options)
+		{
+			final double newxp = option.getBasexp();
+			final int[] itemIds = option.getItemOption().getItems();
+
+			AsyncBufferedImage icon = itemManager.getImage(option.getItemID());
+			MaterialTab matTab = new MaterialTab("", group, null);
+			matTab.setHorizontalAlignment(SwingUtilities.RIGHT);
+			matTab.setToolTipText(option.getName());
+
+			matTab.setOnSelectEvent(() ->
+			{
+				newBankedXpValue(newxp, itemIds);
+				return true;
+			});
+
+			Runnable resize = () ->
+					matTab.setIcon(new ImageIcon(icon.getScaledInstance(24, 21, Image.SCALE_SMOOTH)));
+			icon.onChanged(resize);
+			resize.run();
+
+			group.addTab(matTab);
+		}
+
+		group.select(group.getTab(0)); // Select first option;
+
+		panel.add(label, BorderLayout.WEST);
+		panel.add(group, BorderLayout.EAST);
+
+		return panel;
+	}
+
+	// Used to adjust base xp rate for certain item ids
+	private void newBankedXpValue(double xp, int[] itemIDs)
+	{
+		for (int id : itemIDs)
+		{
+			BankedItems item = BankedItems.getByItemId(id);
+			if (item != null)
+			{
+				item.setBasexp(xp);
+			}
+		}
+
+		// Only recalculate if banked experience has already been calculated
+		if (totalBankedXp > 0.0f)
+		{
+			calculateBankedExpTotal();
+			refreshBankedExpDetails();
 		}
 	}
 

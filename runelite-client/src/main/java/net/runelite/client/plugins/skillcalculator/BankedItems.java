@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.skillcalculator;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
 
@@ -36,7 +37,7 @@ import java.util.Set;
 
 public enum BankedItems
 {
-	/*
+	/**
 	 * Construction Items
 	 */
 	// Planks
@@ -50,7 +51,56 @@ public enum BankedItems
 	TEAK_LOGS(ItemID.TEAK_LOGS, "Logs", Skill.CONSTRUCTION, 90.0),
 	MAHOGANY_LOGS(ItemID.MAHOGANY_LOGS, "Logs", Skill.CONSTRUCTION, 140.0),
 
-	/*
+	/**
+	 * Herblore Items
+	 */
+	// Grimy Herbs
+	GRIMY_GUAM_LEAF(ItemID.GRIMY_GUAM_LEAF, "Grimy Herbs", Skill.HERBLORE, 2.5),
+	GRIMY_MARRENTILL(ItemID.GRIMY_MARRENTILL, "Grimy Herbs", Skill.HERBLORE, 3.8),
+	GRIMY_TARROMIN(ItemID.GRIMY_TARROMIN, "Grimy Herbs", Skill.HERBLORE, 5),
+	GRIMY_HARRALANDER(ItemID.GRIMY_HARRALANDER, "Grimy Herbs", Skill.HERBLORE, 6.3),
+	GRIMY_RANARR_WEED(ItemID.GRIMY_RANARR_WEED, "Grimy Herbs", Skill.HERBLORE, 7.5),
+	GRIMY_TOADFLAX(ItemID.GRIMY_TOADFLAX, "Grimy Herbs", Skill.HERBLORE, 8),
+	GRIMY_IRIT_LEAF(ItemID.GRIMY_IRIT_LEAF, "Grimy Herbs", Skill.HERBLORE, 8.8),
+	GRIMY_AVANTOE(ItemID.GRIMY_AVANTOE, "Grimy Herbs", Skill.HERBLORE, 10),
+	GRIMY_KWUARM(ItemID.GRIMY_KWUARM, "Grimy Herbs", Skill.HERBLORE, 11.3),
+	GRIMY_SNAPDRAGON(ItemID.GRIMY_SNAPDRAGON, "Grimy Herbs", Skill.HERBLORE, 11.8),
+	GRIMY_CADANTINE(ItemID.GRIMY_CADANTINE, "Grimy Herbs", Skill.HERBLORE, 12.5),
+	GRIMY_LANTADYME(ItemID.GRIMY_LANTADYME, "Grimy Herbs", Skill.HERBLORE, 13.1),
+	GRIMY_DWARF_WEED(ItemID.GRIMY_DWARF_WEED, "Grimy Herbs", Skill.HERBLORE, 13.8),
+	GRIMY_TORSTOL(ItemID.GRIMY_TORSTOL, "Grimy Herbs", Skill.HERBLORE, 15),
+	// Cleaned Herbs
+	GUAM_LEAF(ItemID.GUAM_LEAF, "Cleaned Herbs", Skill.HERBLORE, 25),
+	MARRENTILL(ItemID.MARRENTILL, "Cleaned Herbs", Skill.HERBLORE, 37.5),
+	TARROMIN(ItemID.TARROMIN, "Cleaned Herbs", Skill.HERBLORE, 50),
+	HARRALANDER(ItemID.HARRALANDER, "Cleaned Herbs", Skill.HERBLORE, 67.5),
+	RANARR_WEED(ItemID.RANARR_WEED, "Cleaned Herbs", Skill.HERBLORE, 87.5),
+	TOADFLAX(ItemID.TOADFLAX, "Cleaned Herbs", Skill.HERBLORE, 180),
+	IRIT_LEAF(ItemID.IRIT_LEAF, "Cleaned Herbs", Skill.HERBLORE, 100),
+	AVANTOE(ItemID.AVANTOE, "Cleaned Herbs", Skill.HERBLORE, 117.5),
+	KWUARM(ItemID.KWUARM, "Cleaned Herbs", Skill.HERBLORE, 125),
+	SNAPDRAGON(ItemID.SNAPDRAGON, "Cleaned Herbs", Skill.HERBLORE, 142.5),
+	CADANTINE(ItemID.CADANTINE, "Cleaned Herbs", Skill.HERBLORE, 150),
+	LANTADYME(ItemID.LANTADYME, "Cleaned Herbs", Skill.HERBLORE, 157.5),
+	DWARF_WEED(ItemID.DWARF_WEED, "Cleaned Herbs", Skill.HERBLORE, 162.5),
+	TORSTOL(ItemID.TORSTOL, "Cleaned Herbs", Skill.HERBLORE, 150),
+	// Unfinished Potions
+	GUAM_LEAF_POTION_UNF(ItemID.GUAM_POTION_UNF, "Unfinished Potions", Skill.HERBLORE, 25),
+	MARRENTILL_POTION_UNF(ItemID.MARRENTILL_POTION_UNF, "Unfinished Potions", Skill.HERBLORE, 37.5),
+	TARROMIN_POTION_UNF(ItemID.TARROMIN_POTION_UNF, "Unfinished Potions", Skill.HERBLORE, 50),
+	HARRALANDER_POTION_UNF(ItemID.HARRALANDER_POTION_UNF, "Unfinished Potions", Skill.HERBLORE, 67.5),
+	RANARR_POTION_UNF(ItemID.RANARR_POTION_UNF, "Unfinished Potions", Skill.HERBLORE, 87.5),
+	TOADFLAX_POTION_UNF(ItemID.TOADFLAX_POTION_UNF, "Unfinished Potions", Skill.HERBLORE, 180),
+	IRIT_POTION_UNF(ItemID.IRIT_POTION_UNF, "Unfinished Potions", Skill.HERBLORE, 100),
+	AVANTOE_POTION_UNF(ItemID.AVANTOE_POTION_UNF, "Unfinished Potions", Skill.HERBLORE, 117.5),
+	KWUARM_POTION_UNF(ItemID.KWUARM_POTION_UNF, "Unfinished Potions", Skill.HERBLORE, 125),
+	SNAPDRAGON_POTION_UNF(ItemID.SNAPDRAGON_POTION_UNF, "Unfinished Potions", Skill.HERBLORE, 142.5),
+	CADANTINE_POTION_UNF(ItemID.CADANTINE_POTION_UNF, "Unfinished Potions", Skill.HERBLORE, 150),
+	LANTADYME_POTION_UNF(ItemID.LANTADYME_POTION_UNF, "Unfinished Potions", Skill.HERBLORE, 157.5),
+	DWARF_WEED_POTION_UNF(ItemID.DWARF_WEED_POTION_UNF, "Unfinished Potions", Skill.HERBLORE, 162.5),
+	TORSTOL_POTION_UNF(ItemID.TORSTOL_POTION_UNF, "Unfinished Potions", Skill.HERBLORE, 175),
+
+	/**
 	 * Prayer Items
 	 */
 	// Bones
@@ -165,7 +215,8 @@ public enum BankedItems
 	@Getter
 	private final Skill skill;
 	@Getter
-	private final double basexp;
+	@Setter
+	private double basexp;
 	@Getter
 	private final boolean bonusExempt;
 
@@ -185,6 +236,26 @@ public enum BankedItems
 		this.skill = skill;
 		this.basexp = xp;
 		this.bonusExempt = exemptFlag;
+	}
+
+	// Return the items that we should be searching for inside the bank by skill
+	// Unused atm
+	private static final Map<Integer, BankedItems> byItemID = buildItemIdMap();
+
+	public static BankedItems getByItemId(int id)
+	{
+		return byItemID.get(id);
+	}
+
+	private static Map<Integer, BankedItems> buildItemIdMap()
+	{
+		Map<Integer, BankedItems> map = new HashMap<>();
+		for (BankedItems item : values())
+		{
+			map.put(item.getItemID(), item);
+		}
+
+		return map;
 	}
 
 	// Return the items that we should be searching for inside the bank by skill
