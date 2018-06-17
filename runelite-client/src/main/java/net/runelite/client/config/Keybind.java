@@ -37,12 +37,6 @@ import lombok.Getter;
 @Getter
 public class Keybind
 {
-	public static final Keybind NOT_SET = new Keybind(KeyEvent.VK_UNDEFINED, 0);
-
-	public static final Keybind CTRL = new Keybind(KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK);
-	public static final Keybind ALT = new Keybind(KeyEvent.VK_UNDEFINED, InputEvent.ALT_DOWN_MASK);
-	public static final Keybind SHIFT = new Keybind(KeyEvent.VK_UNDEFINED, InputEvent.SHIFT_DOWN_MASK);
-
 	private static final BiMap<Integer, Integer> modifierToKeyCode = new ImmutableBiMap.Builder<Integer, Integer>()
 		.put(InputEvent.CTRL_DOWN_MASK, KeyEvent.VK_CONTROL)
 		.put(InputEvent.ALT_DOWN_MASK, KeyEvent.VK_ALT)
@@ -53,6 +47,12 @@ public class Keybind
 	// Bitmask of all supported modifers
 	private static final int KEYBOARD_MODIFIER_MASK = modifierToKeyCode.keySet().stream()
 		.reduce((a, b) -> a | b).get();
+
+	public static final Keybind NOT_SET = new Keybind(KeyEvent.VK_UNDEFINED, 0);
+
+	public static final Keybind CTRL = new Keybind(KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK);
+	public static final Keybind ALT = new Keybind(KeyEvent.VK_UNDEFINED, InputEvent.ALT_DOWN_MASK);
+	public static final Keybind SHIFT = new Keybind(KeyEvent.VK_UNDEFINED, InputEvent.SHIFT_DOWN_MASK);
 
 	private final int keyCode;
 	private final int modifiers;
