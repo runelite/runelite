@@ -29,9 +29,13 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.Prayer;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
@@ -59,7 +63,10 @@ public class PrayerPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
-	private PrayerFlickOverlay overlay;
+	private PrayerFlickOverlay flickOverlay;
+
+	@Inject
+	private PrayerDoseOverlay doseOverlay;
 
 	@Inject
 	private PrayerConfig config;
@@ -73,13 +80,15 @@ public class PrayerPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		overlayManager.add(overlay);
+		overlayManager.add(flickOverlay);
+		overlayManager.add(doseOverlay);
 	}
 
 	@Override
 	protected void shutDown()
 	{
-		overlayManager.remove(overlay);
+		overlayManager.remove(flickOverlay);
+		overlayManager.remove(doseOverlay);
 		removeIndicators();
 	}
 
@@ -100,11 +109,42 @@ public class PrayerPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onItemContainerChanged(final ItemContainerChanged event)
+	{
+		final ItemContainer container = event.getItemContainer();
+		final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+		final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+
+		if (container == inventory || container == equipment)
+		{
+			doseOverlay.setHasHolyWrench(false);
+			doseOverlay.setHasPrayerPotion(false);
+			doseOverlay.setHasRestorePotion(false);
+
+			if (inventory != null)
+			{
+				checkContainerForPrayer(inventory.getItems());
+			}
+
+			if (equipment != null)
+			{
+				doseOverlay.setPrayerBonus(checkContainerForPrayer(equipment.getItems()));
+			}
+
+		}
+	}
+
+	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
 		if (config.prayerFlickHelper())
 		{
-			overlay.onTick();
+			flickOverlay.onTick();
+		}
+
+		if (config.showPrayerDoseIndicator())
+		{
+			doseOverlay.onTick();
 		}
 
 		if (!config.prayerIndicator())
@@ -134,10 +174,51 @@ public class PrayerPlugin extends Plugin
 			}
 			else if (prayerCounter[ord] != null)
 			{
-					infoBoxManager.removeInfoBox(prayerCounter[ord]);
-					prayerCounter[ord] = null;
+				infoBoxManager.removeInfoBox(prayerCounter[ord]);
+				prayerCounter[ord] = null;
 			}
 		}
+	}
+
+	private int checkContainerForPrayer(Item[] items)
+	{
+		if (items == null)
+		{
+			return 0;
+		}
+
+		int total = 0;
+
+		for (Item item : items)
+		{
+			if (item == null)
+			{
+				continue;
+			}
+
+			final PrayerRestoreType type = PrayerRestoreType.getType(item.getId());
+
+			if (type != null)
+			{
+				switch (type)
+				{
+					case PRAYERPOT:
+						doseOverlay.setHasPrayerPotion(true);
+						break;
+					case HOLYWRENCH:
+						doseOverlay.setHasHolyWrench(true);
+						break;
+					case RESTOREPOT:
+						doseOverlay.setHasRestorePotion(true);
+						break;
+				}
+			}
+
+			int bonus = PrayerItems.getItemPrayerBonus(item.getId());
+			total += bonus;
+		}
+
+		return total;
 	}
 
 	private void removeIndicators()
