@@ -64,7 +64,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.cluescrolls.clues.*;
 import net.runelite.client.plugins.cluescrolls.clues.cryptic.RegionRequirement;
-import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.QueryRunner;
@@ -289,29 +288,27 @@ public class ClueScrollPlugin extends Plugin
 
 			if (npc != null)
 			{
-				boolean displayHint = true;
+				Query query = new NPCQuery();
 
 				//	If this clue is region locked, only display the hint arrow if we're in the correct region.
 				if (clue instanceof RegionLockedClueScroll)
 				{
-					RegionRequirement requirement = ((RegionLockedClueScroll) clue).getRegionRequirements();
+					RegionRequirement requirements = ((RegionLockedClueScroll) clue).getRegionRequirements();
 
-					if (requirement != null)
+					if (requirements != null)
 					{
-						displayHint = requirement.fulfilledBy(client.getMapRegions());
+						int[] regionIds = requirements.getRegions().stream().mapToInt(i -> i).toArray();
+						query = ((NPCQuery) query).isWithinRegions(regionIds);
 					}
 				}
 
-				if (displayHint)
-				{
-					Query query = new NPCQuery().nameEquals(npc);
-					npcsToMark = queryRunner.runQuery(query);
+				query = ((NPCQuery) query).nameEquals(npc);
+				npcsToMark = queryRunner.runQuery(query);
 
-					// Set hint arrow to first NPC found as there can only be 1 hint arrow
-					if (config.displayHintArrows() && npcsToMark.length >= 1)
-					{
-						client.setHintArrow(npcsToMark[0]);
-					}
+				// Set hint arrow to first NPC found as there can only be 1 hint arrow
+				if (config.displayHintArrows() && npcsToMark.length >= 1)
+				{
+					client.setHintArrow(npcsToMark[0]);
 				}
 			}
 		}
