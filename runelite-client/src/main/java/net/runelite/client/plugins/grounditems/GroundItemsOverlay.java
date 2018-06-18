@@ -25,11 +25,7 @@
  */
 package net.runelite.client.plugins.grounditems;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,6 +44,7 @@ import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.BackgroundComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.StackFormatter;
@@ -90,11 +87,6 @@ public class GroundItemsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isHotKeyPressed() && config.itemHighlightMode() == MENU)
-		{
-			return null;
-		}
-
 		final FontMetrics fm = graphics.getFontMetrics();
 		final Player player = client.getLocalPlayer();
 
@@ -129,24 +121,24 @@ public class GroundItemsOverlay extends Overlay
 				}
 
 				if (plugin.getTextBoxBounds() != null
-					&& item.equals(plugin.getTextBoxBounds().getValue())
-					&& plugin.getTextBoxBounds().getKey().contains(awtMousePos))
+						&& item.equals(plugin.getTextBoxBounds().getValue())
+						&& plugin.getTextBoxBounds().getKey().contains(awtMousePos))
 				{
 					groundItem = item;
 					continue;
 				}
 
 				if (plugin.getHiddenBoxBounds() != null
-					&& item.equals(plugin.getHiddenBoxBounds().getValue())
-					&& plugin.getHiddenBoxBounds().getKey().contains(awtMousePos))
+						&& item.equals(plugin.getHiddenBoxBounds().getValue())
+						&& plugin.getHiddenBoxBounds().getKey().contains(awtMousePos))
 				{
 					groundItem = item;
 					continue;
 				}
 
 				if (plugin.getHighlightBoxBounds() != null
-					&& item.equals(plugin.getHighlightBoxBounds().getValue())
-					&& plugin.getHighlightBoxBounds().getKey().contains(awtMousePos))
+						&& item.equals(plugin.getHighlightBoxBounds().getValue())
+						&& plugin.getHighlightBoxBounds().getKey().contains(awtMousePos))
 				{
 					groundItem = item;
 				}
@@ -172,6 +164,8 @@ public class GroundItemsOverlay extends Overlay
 			{
 				continue;
 			}
+
+			final Polygon poly = Perspective.getCanvasTilePoly(client, groundPoint);
 
 			// Update GE price for item
 			final ItemPrice itemPrice = itemManager.getItemPriceAsync(item.getItemId());
@@ -200,50 +194,48 @@ public class GroundItemsOverlay extends Overlay
 			}
 
 			final Color color = plugin.getItemColor(highlighted, hidden);
-			itemStringBuilder.append(item.getName());
 
-			if (item.getQuantity() > 1)
+			if(config.highlightTiles() && poly != null)
 			{
-				if (item.getQuantity() >= MAX_QUANTITY)
-				{
-					itemStringBuilder.append(" (Lots!)");
-				}
-				else
-				{
-					itemStringBuilder.append(" (")
-							.append(StackFormatter.quantityToStackSize(item.getQuantity()))
-							.append(")");
-				}
+				OverlayUtil.renderPolygon(graphics, poly, color);
 			}
 
-			if (config.priceDisplayMode() == PriceDisplayMode.BOTH)
+			if((config.itemHighlightMode() != MENU) || plugin.isHotKeyPressed())
 			{
-				if (item.getGePrice() > 0)
-				{
-					itemStringBuilder.append(" (EX: ")
-						.append(StackFormatter.quantityToStackSize(item.getGePrice()))
-						.append(" gp)");
+				itemStringBuilder.append(item.getName());
+				if (item.getQuantity() > 1) {
+					if (item.getQuantity() >= MAX_QUANTITY) {
+						itemStringBuilder.append(" (Lots!)");
+					} else {
+						itemStringBuilder.append(" (")
+								.append(StackFormatter.quantityToStackSize(item.getQuantity()))
+								.append(")");
+					}
 				}
 
-				if (item.getHaPrice() > 0)
-				{
-					itemStringBuilder.append(" (HA: ")
-						.append(StackFormatter.quantityToStackSize(item.getHaPrice()))
-						.append(" gp)");
-				}
-			}
-			else if (config.priceDisplayMode() != PriceDisplayMode.OFF)
-			{
-				final int price = config.priceDisplayMode() == PriceDisplayMode.GE
-					? item.getGePrice()
-					: item.getHaPrice();
+				if (config.priceDisplayMode() == PriceDisplayMode.BOTH) {
+					if (item.getGePrice() > 0) {
+						itemStringBuilder.append(" (EX: ")
+								.append(StackFormatter.quantityToStackSize(item.getGePrice()))
+								.append(" gp)");
+					}
 
-				if (price > 0)
-				{
-					itemStringBuilder
-						.append(" (")
-						.append(StackFormatter.quantityToStackSize(price))
-						.append(" gp)");
+					if (item.getHaPrice() > 0) {
+						itemStringBuilder.append(" (HA: ")
+								.append(StackFormatter.quantityToStackSize(item.getHaPrice()))
+								.append(" gp)");
+					}
+				} else if (config.priceDisplayMode() != PriceDisplayMode.OFF) {
+					final int price = config.priceDisplayMode() == PriceDisplayMode.GE
+							? item.getGePrice()
+							: item.getHaPrice();
+
+					if (price > 0) {
+						itemStringBuilder
+								.append(" (")
+								.append(StackFormatter.quantityToStackSize(price))
+								.append(" gp)");
+					}
 				}
 			}
 
@@ -251,10 +243,10 @@ public class GroundItemsOverlay extends Overlay
 			itemStringBuilder.setLength(0);
 
 			final Point textPoint = Perspective.getCanvasTextLocation(client,
-				graphics,
-				groundPoint,
-				itemString,
-				item.getHeight() + OFFSET_Z);
+					graphics,
+					groundPoint,
+					itemString,
+					item.getHeight() + OFFSET_Z);
 
 			if (textPoint == null)
 			{
@@ -262,8 +254,8 @@ public class GroundItemsOverlay extends Overlay
 			}
 
 			final int offset = plugin.isHotKeyPressed()
-				? item.getOffset()
-				: offsetMap.compute(item.getLocation(), (k, v) -> v != null ? v + 1 : 0);
+					? item.getOffset()
+					: offsetMap.compute(item.getLocation(), (k, v) -> v != null ? v + 1 : 0);
 
 			final int textX = textPoint.getX();
 			final int textY = textPoint.getY() - (STRING_GAP * offset);
@@ -349,23 +341,23 @@ public class GroundItemsOverlay extends Overlay
 		graphics.setColor(Color.WHITE);
 		// Minus symbol
 		graphics.drawLine
-			(
-				rect.x + 2,
-				rect.y + (rect.height / 2),
-				rect.x + rect.width - 2,
-				rect.y + (rect.height / 2)
-			);
+				(
+						rect.x + 2,
+						rect.y + (rect.height / 2),
+						rect.x + rect.width - 2,
+						rect.y + (rect.height / 2)
+				);
 
 		if (!hiddenBox)
 		{
 			// Plus symbol
 			graphics.drawLine
-				(
-					rect.x + (rect.width / 2),
-					rect.y + 2,
-					rect.x + (rect.width / 2),
-					rect.y + rect.height - 2
-				);
+					(
+							rect.x + (rect.width / 2),
+							rect.y + 2,
+							rect.x + (rect.width / 2),
+							rect.y + rect.height - 2
+					);
 		}
 
 	}
