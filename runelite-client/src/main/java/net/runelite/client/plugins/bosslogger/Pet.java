@@ -60,7 +60,7 @@ public enum Pet
 	BABY_MOLE(ItemID.BABY_MOLE, "Giant Mole"),
 	KALPHITE_PRINCESS(ItemID.KALPHITE_PRINCESS, "Kalphite Queen"),
 	OLMLET(ItemID.OLMLET, "Raids"),
-	LIL_ZIK(22473, "Lil' zik"),
+	LIL_ZIK(ItemID.LIL_ZIK, "Raids 2"),
 	PET_CORPOREAL_CRITTER(ItemID.PET_CORPOREAL_CRITTER, "Corporeal Beast"),
 	PET_SNAKELING(ItemID.PET_SNAKELING, "Zulrah"),
 	PET_DAGANNOTH_REX(ItemID.PET_DAGANNOTH_REX, "Dagannoth Rex"),

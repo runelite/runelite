@@ -211,8 +211,31 @@ public class BossLoggerPlugin extends Plugin
 			}
 			int kc = killcountMap.get("RAIDS");
 			LootEntry entry = createLootEntry(kc, rewardContainer);
+			if (gotPet)
+			{
+				entry.drops.add(handlePet("Raids"));
+			}
 			addLootEntry("Raids", entry);
 			BossLoggedAlert("Raids Chest Loot added to log.");
+		}
+
+		// Theater of Blood Chest (Raids 2)
+		if (event.getGroupId() == WidgetID.THEATER_OF_BLOOD_GROUP_ID && bossLoggerConfig.recordTobChest())
+		{
+			ItemContainer rewardContainer = client.getItemContainer(InventoryID.THEATER_OF_BLOOD_CHEST);
+			if (rewardContainer == null)
+			{
+				BossLoggedAlert("Couldn't find Theater of Blood Chest Loot");
+				return;
+			}
+			int kc = killcountMap.get("RAIDS 2");
+			LootEntry entry = createLootEntry(kc, rewardContainer);
+			if (gotPet)
+			{
+				entry.drops.add(handlePet("Raids 2"));
+			}
+			addLootEntry("Raids 2", entry);
+			BossLoggedAlert("Theater of Blood Chest Loot added to log.");
 		}
 
 
@@ -434,6 +457,17 @@ public class BossLoggerPlugin extends Plugin
 			if (m.find())
 			{
 				killcountMap.put("RAIDS", Integer.valueOf(m.group()));
+				return;
+			}
+		}
+
+		// Raids KC
+		if (chatMessage.startsWith("Your completed Theatre of Blood count is:"))
+		{
+			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
+			if (m.find())
+			{
+				killcountMap.put("RAIDS 2", Integer.valueOf(m.group()));
 				return;
 			}
 		}
@@ -1098,10 +1132,7 @@ public class BossLoggerPlugin extends Plugin
 		// Not sure if this works since pets are so rare.
 		if (gotPet)
 		{
-			int petID = getPetIdByNpcName(npc.getName());
-			drops.add(new DropEntry(petID, 1));
-			gotPet = false;
-			BossLoggedAlert("Oh lookie a pet! Don't forget to insure it!");
+			drops.add(handlePet(npc.getName()));
 		}
 
 		return drops;
@@ -1111,6 +1142,14 @@ public class BossLoggerPlugin extends Plugin
 	//
 	// Other Helper Functions
 	//
+
+	private DropEntry handlePet(String name)
+	{
+		gotPet = false;
+		int petID = getPetIdByNpcName(name);
+		BossLoggedAlert("Oh lookie a pet! Don't forget to insure it!");
+		return new DropEntry(petID, 1);
+	}
 
 	void clearData(Tab tab)
 	{

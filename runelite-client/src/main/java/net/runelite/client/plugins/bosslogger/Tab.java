@@ -39,7 +39,7 @@ public enum Tab
 	// Chest Rewards
 	BARROWS("Barrows", "Barrows", ItemID.BARROWS_TELEPORT, "Other"),
 	RAIDS("Raids", "Raids", ItemID.OLMLET, "Other"),
-	RAIDS_2("Raids 2", "Raids 2", 22473, "Other"),
+	RAIDS_2("Raids 2", "Raids 2", ItemID.LIL_ZIK, "Other"),
 
 	// Special Drops  (How loot is dropped)
 	ZULRAH("Zulrah", "Zulrah", ItemID.PET_SNAKELING, "Other"),

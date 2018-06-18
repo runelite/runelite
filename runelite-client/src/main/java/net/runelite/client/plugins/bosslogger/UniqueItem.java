@@ -112,15 +112,15 @@ public enum UniqueItem
 
 	// Raids 2 Unqiues (Theater of Blood)
 	// Weapons / Pet
-	GHRAZI_RAPIER("Ghrazi rapier", 22484, "Raids 2", "Weapons", 0),
-	SCYTHE_OF_VITUR_UNCHARGED("Scythe of vitur (uncharged)", 22486, "Raids 2", "Weapons", 0),
-	SANGUINESTI_STAFF_UNCHAGRED("Sanguinesti staff (uncharged)", 22481, "Raids 2", "Weapons", 0),
-	LIL_ZIK("Lil' zik", 22473, "Raids 2", "Weapons", 0),
+	GHRAZI_RAPIER("Ghrazi rapier", ItemID.GHRAZI_RAPIER, "Raids 2", "Weapons", 0),
+	SCYTHE_OF_VITUR_UNCHARGED("Scythe of vitur (uncharged)", ItemID.SCYTHE_OF_VITUR_UNCHARGED, "Raids 2", "Weapons", 0),
+	SANGUINESTI_STAFF_UNCHAGRED("Sanguinesti staff (uncharged)", ItemID.SANGUINESTI_STAFF_UNCHARGED, "Raids 2", "Weapons", 0),
+	LIL_ZIK("Lil' zik", ItemID.LIL_ZIK, "Raids 2", "Weapons", 0),
 	// Armor
-	AVERNIC_DEFENDER_HILT("Avernic defender hilt", 22477, "Raids 2", "Armor", 1),
-	JUSTICIAR_FACEGUARD("Justiciar faceguard", 22489, "Raids 2", "Armor", 1),
-	JUSTICIAR_CHESTGUARD("Justiciar chestguard", 22491, "Raids 2", "Armor", 1),
-	JUSTICIAR_LEGGUARDS("Justiciar legguards", 22493, "Raids 2", "Armor", 1),
+	AVERNIC_DEFENDER_HILT("Avernic defender hilt", ItemID.AVERNIC_DEFENDER_HILT, "Raids 2", "Armor", 1),
+	JUSTICIAR_FACEGUARD("Justiciar faceguard", ItemID.JUSTICIAR_FACEGUARD, "Raids 2", "Armor", 1),
+	JUSTICIAR_CHESTGUARD("Justiciar chestguard", ItemID.JUSTICIAR_CHESTGUARD, "Raids 2", "Armor", 1),
+	JUSTICIAR_LEGGUARDS("Justiciar legguards", ItemID.JUSTICIAR_LEGGUARDS, "Raids 2", "Armor", 1),
 
 
 	// Zulrah
