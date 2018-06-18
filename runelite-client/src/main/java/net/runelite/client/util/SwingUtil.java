@@ -372,4 +372,27 @@ public class SwingUtil
 	{
 		return SubstanceCoreUtilities.getTitlePaneComponent(frame) != null;
 	}
+
+	/**
+	 * Linearly interpolates between colors a and b by t.
+	 * @param a first color
+	 * @param b second color
+	 * @param t factor
+	 * @return interpolated color
+	 */
+	public static Color colorLerp(Color a, Color b, double t)
+	{
+		final double r1 = a.getRed();
+		final double r2 = b.getRed();
+		final double g1 = a.getGreen();
+		final double g2 = b.getGreen();
+		final double b1 = a.getBlue();
+		final double b2 = b.getBlue();
+
+		return new Color(
+			(int) Math.round(r1 + (t * (r2 - r1))),
+			(int) Math.round(g1 + (t * (g2 - g1))),
+			(int) Math.round(b1 + (t * (b2 - b1)))
+		);
+	}
 }

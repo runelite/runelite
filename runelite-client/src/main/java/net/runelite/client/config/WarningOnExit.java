@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Shaun Dreclin <shaundreclin@gmail.com>
+ * Copyright (c) 2018, Matt <https://github.com/ms813>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,32 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.roguesden;
+package net.runelite.client.config;
 
-import com.google.common.collect.Sets;
-import java.util.Set;
-import static net.runelite.api.ObjectID.*;
-import static net.runelite.api.NullObjectID.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-class Obstacles
+@Getter
+@RequiredArgsConstructor
+public enum WarningOnExit
 {
-	public static final Set<Integer> OBSTACLE_IDS_HULL = Sets.newHashSet(
-			SPINNING_BLADES_7224,
-			CONTORTION_BARS,
-			PENDULUM,
-			WALL_7249,	/*Wall crushers*/
-			WALL_7248,	/*Wall blade*/
-			LEDGE_7240,	/*Ledge climb*/
-			NULL_7235	/*Wall safe*/
-	);
+	ALWAYS("Always"),
+	LOGGED_IN("Logged in"),
+	NEVER("Never");
 
-	public static final Set<Integer> OBSTACLE_IDS_TILE = Sets.newHashSet(
-			FLOOR,		/*Floor spikes*/
-			WALL_7228,	/*Wall spikes*/
-			WALL_7229,	/*Wall spears*/
-			FLOOR_7245,	/*Pressure pad a*/
-			FLOOR_7230,	/*Pressure pad b*/
-			BLADE_7252,	/*Floor blade*/
-			7239		/*Bridge [Ground object]*/
-	);
+	private final String type;
+
+	@Override
+	public String toString()
+	{
+		return type;
+	}
 }
