@@ -33,6 +33,7 @@ import static net.runelite.client.plugins.raids.RaidsPlugin.POINTS_FORMAT;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
@@ -44,13 +45,15 @@ public class RaidsPointsOverlay extends Overlay
 	@Inject
 	private RaidsPlugin plugin;
 
+	private final RaidsConfig config;
 	private final PanelComponent panel = new PanelComponent();
 
 	@Inject
-	public RaidsPointsOverlay()
+	public RaidsPointsOverlay(RaidsConfig config)
 	{
 		setPosition(OverlayPosition.TOP_RIGHT);
 		setPriority(OverlayPriority.HIGH);
+		this.config = config;
 	}
 
 	@Override
@@ -79,6 +82,19 @@ public class RaidsPointsOverlay extends Overlay
 			.left("Party size:")
 			.right(String.valueOf(client.getVar(Varbits.RAID_PARTY_SIZE)))
 			.build());
+
+		if (config.uniqueChance())
+		{
+			this.panel.setPreferredSize(new Dimension(ComponentConstants.STANDARD_WIDTH + 10, 0));
+			panel.getChildren().add(LineComponent.builder()
+				.left("Unique Chance:")
+				.right(String.valueOf(Math.round(totalPoints / 7125.0 * 10.0) / 10.0) + "%")
+				.build());
+		}
+		else
+		{
+			this.panel.setPreferredSize(new Dimension(ComponentConstants.STANDARD_WIDTH, 0));
+		}
 
 		return panel.render(graphics);
 	}
