@@ -224,13 +224,15 @@ public class GroundItemsOverlay extends Overlay
 			{
 				if (groundItemID != 617 && groundItemID != 995 && groundItemID != 6964 && groundItemID != 8890)
 				{
-					if (item.getGePrice() > 0) {
+					if (item.getGePrice() > 0)
+					{
 						itemStringBuilder.append(" (EX: ")
 								.append(StackFormatter.quantityToStackSize(item.getGePrice()))
 								.append(" gp)");
 					}
 
-					if (item.getHaPrice() > 0) {
+					if (item.getHaPrice() > 0)
+					{
 						itemStringBuilder.append(" (HA: ")
 								.append(StackFormatter.quantityToStackSize(item.getHaPrice()))
 								.append(" gp)");
