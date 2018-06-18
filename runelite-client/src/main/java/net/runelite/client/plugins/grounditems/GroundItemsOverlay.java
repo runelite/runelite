@@ -36,10 +36,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.Perspective;
-import net.runelite.api.Player;
-import net.runelite.api.Point;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.ItemManager;
@@ -218,7 +216,7 @@ public class GroundItemsOverlay extends Overlay
 
 			if (config.priceDisplayMode() == PriceDisplayMode.BOTH)
 			{
-				if (item.getItemId() != 995)
+				if (item.getItemId() != ItemID.COINS_995)
 				{
 					if (item.getGePrice() > 0)
 					{
@@ -241,7 +239,7 @@ public class GroundItemsOverlay extends Overlay
 					? item.getGePrice()
 					: item.getHaPrice();
 
-				if (price > 0)
+				if (price > 0 && item.getItemId() != ItemID.COINS_995)
 				{
 					itemStringBuilder
 						.append(" (")
