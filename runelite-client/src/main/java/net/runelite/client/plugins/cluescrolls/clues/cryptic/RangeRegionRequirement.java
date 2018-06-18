@@ -26,18 +26,18 @@ package net.runelite.client.plugins.cluescrolls.clues.cryptic;
 
 public class RangeRegionRequirement implements RegionRequirement
 {
-    private int startRegionId;
-    private int endRegionId;
+	private int startRegionId;
+	private int endRegionId;
 
-    public RangeRegionRequirement(int startRegionId, int endRegionId)
-    {
-        this.startRegionId = startRegionId;
-        this.endRegionId = endRegionId;
-    }
+	public RangeRegionRequirement(int startRegionId, int endRegionId)
+	{
+		this.startRegionId = startRegionId;
+		this.endRegionId = endRegionId;
+	}
 
-    @Override
-    public boolean fulfilledBy(int regionId)
-    {
-        return regionId >= startRegionId && regionId <= endRegionId;
-    }
+	@Override
+	public boolean fulfilledBy(int regionId)
+	{
+		return regionId >= startRegionId && regionId <= endRegionId;
+	}
 }

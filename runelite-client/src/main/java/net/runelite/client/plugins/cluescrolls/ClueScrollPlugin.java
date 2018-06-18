@@ -303,7 +303,8 @@ public class ClueScrollPlugin extends Plugin
 					npcsToMark = queryRunner.runQuery(query);
 
 					// Set hint arrow to first NPC found as there can only be 1 hint arrow
-					if (config.displayHintArrows() && npcsToMark.length >= 1) {
+					if (config.displayHintArrows() && npcsToMark.length >= 1)
+					{
 						client.setHintArrow(npcsToMark[0]);
 					}
 				}

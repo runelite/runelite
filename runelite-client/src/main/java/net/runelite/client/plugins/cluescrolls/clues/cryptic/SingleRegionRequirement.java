@@ -26,16 +26,16 @@ package net.runelite.client.plugins.cluescrolls.clues.cryptic;
 
 public class SingleRegionRequirement implements RegionRequirement
 {
-    int regionId;
+	int regionId;
 
-    public SingleRegionRequirement(int regionId)
-    {
-        this.regionId = regionId;
-    }
+	public SingleRegionRequirement(int regionId)
+	{
+		this.regionId = regionId;
+	}
 
-    @Override
-    public boolean fulfilledBy(int regionId)
-    {
-        return this.regionId == regionId;
-    }
+	@Override
+	public boolean fulfilledBy(int regionId)
+	{
+		return this.regionId == regionId;
+	}
 }

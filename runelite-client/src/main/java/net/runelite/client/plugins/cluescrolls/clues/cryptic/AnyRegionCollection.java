@@ -24,29 +24,26 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues.cryptic;
 
-import net.runelite.api.Client;
-import net.runelite.api.Item;
-
 public class AnyRegionCollection implements RegionRequirement
 {
-    private RegionRequirement[] regions;
+	private RegionRequirement[] regions;
 
-    public AnyRegionCollection(RegionRequirement... requirements)
-    {
-        this.regions = requirements;
-    }
+	public AnyRegionCollection(RegionRequirement... requirements)
+	{
+		this.regions = requirements;
+	}
 
-    @Override
-    public boolean fulfilledBy(int regionId)
-    {
-        for (RegionRequirement region : regions)
-        {
-            if (region.fulfilledBy(regionId))
-            {
-                return true;
-            }
-        }
+	@Override
+	public boolean fulfilledBy(int regionId)
+	{
+		for (RegionRequirement region : regions)
+		{
+			if (region.fulfilledBy(regionId))
+			{
+				return true;
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 }

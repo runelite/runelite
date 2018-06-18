@@ -28,5 +28,5 @@ import net.runelite.client.plugins.cluescrolls.clues.cryptic.RegionRequirement;
 
 public interface RegionLockedClueScroll
 {
-    RegionRequirement getRegionRequirements();
+	RegionRequirement getRegionRequirements();
 }
