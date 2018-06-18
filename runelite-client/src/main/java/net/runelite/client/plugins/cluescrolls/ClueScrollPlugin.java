@@ -53,12 +53,7 @@ import net.runelite.api.Region;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.*;
 import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.api.widgets.Widget;
@@ -67,20 +62,8 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.cluescrolls.clues.AnagramClue;
-import net.runelite.client.plugins.cluescrolls.clues.CipherClue;
-import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
-import net.runelite.client.plugins.cluescrolls.clues.CoordinateClue;
-import net.runelite.client.plugins.cluescrolls.clues.CrypticClue;
-import net.runelite.client.plugins.cluescrolls.clues.EmoteClue;
-import net.runelite.client.plugins.cluescrolls.clues.FairyRingClue;
-import net.runelite.client.plugins.cluescrolls.clues.HotColdClue;
-import net.runelite.client.plugins.cluescrolls.clues.LocationClueScroll;
-import net.runelite.client.plugins.cluescrolls.clues.LocationsClueScroll;
-import net.runelite.client.plugins.cluescrolls.clues.MapClue;
-import net.runelite.client.plugins.cluescrolls.clues.NpcClueScroll;
-import net.runelite.client.plugins.cluescrolls.clues.ObjectClueScroll;
-import net.runelite.client.plugins.cluescrolls.clues.TextClueScroll;
+import net.runelite.client.plugins.cluescrolls.clues.*;
+import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.QueryRunner;
@@ -305,18 +288,24 @@ public class ClueScrollPlugin extends Plugin
 
 			if (npc != null)
 			{
-				Query query = new NPCQuery().nameEquals(npc);
-				npcsToMark = queryRunner.runQuery(query);
+				boolean displayHint = true;
 
-				// Set hint arrow to first NPC found as there can only be 1 hint arrow
-				if (npcsToMark.length >= 1)
+				//	If this clue is region locked, only display the hint arrow if we're in the correct region.
+				if (clue instanceof RegionLockedClueScroll)
 				{
-					if (config.displayHintArrows())
-					{
+					int region = client.getLocalPlayer().getWorldLocation().getRegionID();
+					displayHint = ((RegionLockedClueScroll) clue).getRegionRequirements().fulfilledBy(region);
+				}
+
+				if (displayHint)
+				{
+					Query query = new NPCQuery().nameEquals(npc);
+					npcsToMark = queryRunner.runQuery(query);
+
+					// Set hint arrow to first NPC found as there can only be 1 hint arrow
+					if (config.displayHintArrows() && npcsToMark.length >= 1) {
 						client.setHintArrow(npcsToMark[0]);
 					}
-
-					addMapPoints(npcsToMark[0].getWorldLocation());
 				}
 			}
 		}
