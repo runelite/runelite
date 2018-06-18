@@ -229,32 +229,32 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (checkIdleLogout())
 		{
-			notifier.notify("[" + local.getName() + "] is about to log out from idling too long!");
+			notifier.notify("[" + local.getName() + "] is about to log out from idling too long!", config.sendNotificationsWhenFocused());
 		}
 
 		if (check6hrLogout())
 		{
-			notifier.notify("[" + local.getName() + "] is about to log out from being online for 6 hours!");
+			notifier.notify("[" + local.getName() + "] is about to log out from being online for 6 hours!", config.sendNotificationsWhenFocused());
 		}
 
 		if (config.animationIdle() && checkAnimationIdle(waitDuration, local))
 		{
-			notifier.notify("[" + local.getName() + "] is now idle!");
+			notifier.notify("[" + local.getName() + "] is now idle!", config.sendNotificationsWhenFocused());
 		}
 
 		if (config.combatIdle() && checkOutOfCombat(waitDuration, local))
 		{
-			notifier.notify("[" + local.getName() + "] is now out of combat!");
+			notifier.notify("[" + local.getName() + "] is now out of combat!", config.sendNotificationsWhenFocused());
 		}
 
 		if (checkLowHitpoints())
 		{
-			notifier.notify("[" + local.getName() + "] has low hitpoints!");
+			notifier.notify("[" + local.getName() + "] has low hitpoints!", config.sendNotificationsWhenFocused());
 		}
 
 		if (checkLowPrayer())
 		{
-			notifier.notify("[" + local.getName() + "] has low prayer!");
+			notifier.notify("[" + local.getName() + "] has low prayer!", config.sendNotificationsWhenFocused());
 		}
 	}
 

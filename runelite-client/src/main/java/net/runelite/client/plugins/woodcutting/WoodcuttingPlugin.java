@@ -143,7 +143,7 @@ public class WoodcuttingPlugin extends Plugin
 
 			if (event.getMessage().contains("A bird's nest falls out of the tree") && config.showNestNotification())
 			{
-				notifier.notify("A bird nest has spawned!");
+				notifier.notify("A bird nest has spawned!", config.sendNotificationsWhenFocused());
 			}
 		}
 	}

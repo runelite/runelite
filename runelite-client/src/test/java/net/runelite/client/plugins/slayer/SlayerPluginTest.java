@@ -225,7 +225,7 @@ public class SlayerPluginTest
 
 		when(slayerConfig.showSuperiorNotification()).thenReturn(true);
 		slayerPlugin.onChatMessage(chatMessageEvent);
-		verify(notifier).notify(SUPERIOR_MESSAGE);
+		verify(notifier).notify(SUPERIOR_MESSAGE, slayerConfig.sendNotificationsWhenFocused());
 
 		when(slayerConfig.showSuperiorNotification()).thenReturn(false);
 		slayerPlugin.onChatMessage(chatMessageEvent);

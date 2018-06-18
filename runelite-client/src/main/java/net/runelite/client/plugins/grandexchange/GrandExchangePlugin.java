@@ -206,7 +206,7 @@ public class GrandExchangePlugin extends Plugin
 
 		if (message.startsWith("Grand Exchange:"))
 		{
-			this.notifier.notify(message);
+			this.notifier.notify(message, config.sendNotificationsWhenFocused());
 		}
 	}
 

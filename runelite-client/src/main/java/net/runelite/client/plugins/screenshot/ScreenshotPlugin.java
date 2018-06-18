@@ -490,7 +490,7 @@ public class ScreenshotPlugin extends Plugin
 					}
 					else if (config.notifyWhenTaken())
 					{
-						notifier.notify("A screenshot was saved to " + screenshotFile, TrayIcon.MessageType.INFO);
+						notifier.notify("A screenshot was saved to " + screenshotFile, TrayIcon.MessageType.INFO, config.sendNotificationsWhenFocused());
 					}
 				}
 				catch (IOException ex)
@@ -553,7 +553,7 @@ public class ScreenshotPlugin extends Plugin
 
 						if (config.notifyWhenTaken())
 						{
-							notifier.notify("A screenshot was uploaded and inserted into your clipboard!", TrayIcon.MessageType.INFO);
+							notifier.notify("A screenshot was uploaded and inserted into your clipboard!", TrayIcon.MessageType.INFO, config.sendNotificationsWhenFocused());
 						}
 					}
 				}

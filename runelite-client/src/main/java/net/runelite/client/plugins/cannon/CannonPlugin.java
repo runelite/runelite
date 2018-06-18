@@ -292,7 +292,7 @@ public class CannonPlugin extends Plugin
 
 			if (config.showEmptyCannonNotification())
 			{
-				notifier.notify("Your cannon is out of ammo!");
+				notifier.notify("Your cannon is out of ammo!", config.sendNotificationsWhenFocused());
 			}
 		}
 

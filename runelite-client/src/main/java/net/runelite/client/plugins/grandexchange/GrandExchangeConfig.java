@@ -67,4 +67,15 @@ public interface GrandExchangeConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "notificationFocused",
+		name = "Send notifications when focused",
+		description = "Toggles notifications for when the client is focused"
+	)
+	default boolean sendNotificationsWhenFocused()
+	{
+		return false;
+	}
 }

@@ -78,4 +78,15 @@ public interface WoodcuttingConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "notificationFocused",
+		name = "Send notifications when focused",
+		description = "Toggles notifications for when the client is focused"
+	)
+	default boolean sendNotificationsWhenFocused()
+	{
+		return false;
+	}
 }

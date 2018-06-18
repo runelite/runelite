@@ -179,17 +179,6 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notificationFocused",
-		name = "Send notifications when focused",
-		description = "Toggles idle notifications for when the client is focused",
-		position = 25
-	)
-	default boolean sendNotificationsWhenFocused()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "fontType",
 		name = "Dynamic Overlay Font",
 		description = "Configures what font type is used for in-game overlays such as player name, ground items, etc.",

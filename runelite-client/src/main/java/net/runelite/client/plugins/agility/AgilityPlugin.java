@@ -254,7 +254,7 @@ public class AgilityPlugin extends Plugin
 				{
 					if (config.notifyAgilityArena())
 					{
-						notifier.notify("Ticket location changed");
+						notifier.notify("Ticket location changed", config.sendNotificationsWhenFocused());
 					}
 
 					if (config.showAgilityArenaTimer())

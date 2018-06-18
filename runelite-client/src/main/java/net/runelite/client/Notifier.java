@@ -92,12 +92,12 @@ public class Notifier
 		storeIcon();
 	}
 
-	public void notify(String message)
+	public void notify(String message, boolean sendWhenFocused)
 	{
-		notify(message, TrayIcon.MessageType.NONE);
+		notify(message, TrayIcon.MessageType.NONE, sendWhenFocused);
 	}
 
-	public void notify(String message, TrayIcon.MessageType type)
+	public void notify(String message, TrayIcon.MessageType type, boolean sendWhenFocused)
 	{
 		final ClientUI clientUI = this.clientUI.get();
 
@@ -106,7 +106,7 @@ public class Notifier
 			return;
 		}
 
-		if (!runeLiteConfig.sendNotificationsWhenFocused() && clientUI.isFocused())
+		if (!sendWhenFocused && clientUI.isFocused())
 		{
 			return;
 		}

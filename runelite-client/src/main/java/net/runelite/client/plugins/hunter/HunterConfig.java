@@ -90,4 +90,15 @@ public interface HunterConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "notificationFocused",
+		name = "Send notifications when focused",
+		description = "Toggles notifications for when the client is focused"
+	)
+	default boolean sendNotificationsWhenFocused()
+	{
+		return false;
+	}
 }

@@ -210,7 +210,7 @@ public class HunterPlugin extends Plugin
 
 					if (config.maniacalMonkeyNotify() && myTrap.getObjectId() == ObjectID.MONKEY_TRAP)
 					{
-						notifier.notify("You've caught part of a monkey's tail.");
+						notifier.notify("You've caught part of a monkey's tail.", config.sendNotificationsWhenFocused());
 					}
 				}
 
@@ -369,7 +369,7 @@ public class HunterPlugin extends Plugin
 				if (config.maniacalMonkeyNotify() && trap.getObjectId() == ObjectID.MONKEY_TRAP &&
 					!trap.getState().equals(HunterTrap.State.FULL) && !trap.getState().equals(HunterTrap.State.OPEN))
 				{
-					notifier.notify("The monkey escaped.");
+					notifier.notify("The monkey escaped.", config.sendNotificationsWhenFocused());
 				}
 			}
 		}

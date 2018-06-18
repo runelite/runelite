@@ -77,7 +77,7 @@ public class ItemChargePlugin extends Plugin
 		{
 			if (config.recoilNotification() && event.getMessage().contains("<col=7f007f>Your Ring of Recoil has shattered.</col>"))
 			{
-				notifier.notify("Your Ring of Recoil has shattered");
+				notifier.notify("Your Ring of Recoil has shattered", config.sendNotificationsWhenFocused());
 			}
 		}
 	}

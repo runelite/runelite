@@ -132,13 +132,13 @@ public class ChatNotificationsPlugin extends Plugin
 			case TRADE:
 				if (event.getValue().contains("wishes to trade with you.") && config.notifyOnTrade())
 				{
-					notifier.notify(event.getValue());
+					notifier.notify(event.getValue(), config.sendNotificationsWhenFocused());
 				}
 				break;
 			case DUEL:
 				if (event.getValue().contains("wishes to duel with you.") && config.notifyOnDuel())
 				{
-					notifier.notify(event.getValue());
+					notifier.notify(event.getValue(), config.sendNotificationsWhenFocused());
 				}
 				break;
 			case GAME:
@@ -222,6 +222,6 @@ public class ChatNotificationsPlugin extends Plugin
 		stringBuilder.append(message.getValue());
 
 		String notification = stringBuilder.toString();
-		notifier.notify(notification);
+		notifier.notify(notification, config.sendNotificationsWhenFocused());
 	}
 }

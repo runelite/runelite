@@ -420,7 +420,7 @@ public class SlayerPlugin extends Plugin
 
 		if (config.showSuperiorNotification() && chatMsg.equals(CHAT_SUPERIOR_MESSAGE))
 		{
-			notifier.notify(CHAT_SUPERIOR_MESSAGE);
+			notifier.notify(CHAT_SUPERIOR_MESSAGE, config.sendNotificationsWhenFocused());
 			return;
 		}
 

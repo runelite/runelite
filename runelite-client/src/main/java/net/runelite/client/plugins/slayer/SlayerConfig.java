@@ -103,6 +103,17 @@ public interface SlayerConfig extends Config
 		return Color.RED;
 	}
 
+	@ConfigItem(
+		position = 7,
+		keyName = "notificationFocused",
+		name = "Send notifications when focused",
+		description = "Toggles notifications for when the client is focused"
+	)
+	default boolean sendNotificationsWhenFocused()
+	{
+		return false;
+	}
+
 	// Stored data
 	@ConfigItem(
 		keyName = "taskName",

@@ -89,4 +89,15 @@ public interface BoostsConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+		keyName = "notificationFocused",
+		name = "Send notifications when focused",
+		description = "Toggles notifications for when the client is focused",
+		position = 6
+	)
+	default boolean sendNotificationsWhenFocused()
+	{
+		return false;
+	}
 }

@@ -37,6 +37,7 @@ import net.runelite.client.config.ConfigItem;
 public interface CannonConfig extends Config
 {
 	@ConfigItem(
+		position = 1,
 		keyName = "showEmptyCannonNotification",
 		name = "Empty cannon notification",
 		description = "Configures whether to notify you that the cannon is empty"
@@ -47,6 +48,7 @@ public interface CannonConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 2,
 		keyName = "showInfobox",
 		name = "Show Cannonball infobox",
 		description = "Configures whether to show the cannonballs in an infobox"
@@ -57,6 +59,7 @@ public interface CannonConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 3,
 		keyName = "showDoubleHitSpot",
 		name = "Show double hit spots",
 		description = "Configures whether to show the NPC double hit spot"
@@ -67,6 +70,7 @@ public interface CannonConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 4,
 		keyName = "highlightDoubleHitColor",
 		name = "Color of double hit spots",
 		description = "Configures the highlight color of double hit spots"
@@ -77,6 +81,7 @@ public interface CannonConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 5,
 		keyName = "showCannonSpots",
 		name = "Show common cannon spots",
 		description = "Configures whether to show common cannon spots or not"
@@ -84,5 +89,16 @@ public interface CannonConfig extends Config
 	default boolean showCannonSpots()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "notificationFocused",
+		name = "Send notifications when focused",
+		description = "Toggles notifications for when the client is focused"
+	)
+	default boolean sendNotificationsWhenFocused()
+	{
+		return false;
 	}
 }
