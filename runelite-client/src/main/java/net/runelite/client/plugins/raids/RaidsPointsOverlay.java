@@ -85,11 +85,34 @@ public class RaidsPointsOverlay extends Overlay
 
 		if (config.uniqueChance())
 		{
+			double chance = Math.min(totalPoints / 7125.0, 80.0);
+			double chance2 = Math.min((totalPoints - 570000.0) / 7125.0, 80.0);
+			double chance3 = Math.min((totalPoints - 1140000.0) / 7125.0, 80.0);
+
 			this.panel.setPreferredSize(new Dimension(ComponentConstants.STANDARD_WIDTH + 10, 0));
 			panel.getChildren().add(LineComponent.builder()
 				.left("Unique Chance:")
-				.right(String.valueOf(Math.round(totalPoints / 7125.0 * 10.0) / 10.0) + "%")
+				.right(String.valueOf(Math.round(chance * 10.0) / 10.0) + "%")
 				.build());
+
+			if (totalPoints >= 570000.0)
+			{
+				this.panel.setPreferredSize(new Dimension(ComponentConstants.STANDARD_WIDTH + 20, 0));
+				panel.getChildren().add(LineComponent.builder()
+					.left("Unique Chance 2:")
+					.right(String.valueOf(Math.round(chance2 * 10.0) / 10.0) + "%")
+					.build());
+
+				if (totalPoints >= 1140000.0)
+				{
+					panel.getChildren().add(LineComponent.builder()
+						.left("Unique Chance 3:")
+						.right(String.valueOf(Math.round(chance3 * 10.0) / 10.0) + "%")
+						.build());
+				}
+			}
+
+
 		}
 		else
 		{

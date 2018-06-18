@@ -83,7 +83,7 @@ public interface RaidsConfig extends Config
 		position = 4,
 		keyName = "uniqueChance",
 		name = "Show unique drop chance",
-		description = "Display the chance of receiving a unique drop with the current amount of points"
+		description = "Display the team's chance of receiving a unique drop with the current amount of points"
 	)
 	default boolean uniqueChance()
 	{
