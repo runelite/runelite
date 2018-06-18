@@ -222,6 +222,7 @@ public class BlowPipeTrackerPlugin extends Plugin
 		switch (matches.size())
 		{
 			case 3:
+				dartType = matches.get(0);
 				dartId = getDartIdByName(matches.get(0));
 				dartsLeft = Integer.valueOf(matches.get(1).replace(",", ""));
 				scalesLeft = Integer.valueOf(matches.get(2).replace(",", ""));
@@ -304,8 +305,6 @@ public class BlowPipeTrackerPlugin extends Plugin
 
 	private int getDartIdByName(String dartName)
 	{
-		dartType = dartName;
-
 		switch (dartName.toLowerCase())
 		{
 			case "bronze":
@@ -342,7 +341,7 @@ public class BlowPipeTrackerPlugin extends Plugin
 				combinedCounter = new Counter(blowpipeImg, this,
 					String.format("%.1f%%", 100 * (double) scalesLeft / MAX_SCALES));
 				combinedCounter.setTooltip(String.format("<col=ffff00>Darts (%s):</col> %s</br><col=ffff00>Scales:</col> %s", dartType, dartsLeft, scalesLeft));
-				combinedCounter.setTextColor(getColorForScalesLeft());
+				combinedCounter.setColor(getColorForScalesLeft());
 
 				infoBoxManager.addInfoBox(combinedCounter);
 			}
@@ -350,7 +349,7 @@ public class BlowPipeTrackerPlugin extends Plugin
 			{
 				combinedCounter.setText(String.format("%.1f%%", 100 * (double) scalesLeft / MAX_SCALES));
 				combinedCounter.setTooltip(String.format("<col=ffff00>Darts (%s):</col> %s</br><col=ffff00>Scales:</col> %s", dartType, dartsLeft, scalesLeft));
-				combinedCounter.setTextColor(getColorForScalesLeft());
+				combinedCounter.setColor(getColorForScalesLeft());
 			}
 		}
 		else if (config.displayStyleMode() == DisplayStyleMode.INDIVIDUAL)

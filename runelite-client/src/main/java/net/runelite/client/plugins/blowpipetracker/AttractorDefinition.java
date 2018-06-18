@@ -24,9 +24,12 @@
  */
 package net.runelite.client.plugins.blowpipetracker;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 
+@AllArgsConstructor
+@Getter
 enum AttractorDefinition
 {
 
@@ -37,22 +40,10 @@ enum AttractorDefinition
 	ASSEMBLER(ItemID.AVAS_ASSEMBLER, 0.2f, 0.0f, 0.8f),
 	ASSEMBLER_MAX_CAPE(ItemID.AVAS_ACCUMULATOR, 0.2f, 0.08f, 0.72f);
 
-	@Getter
 	private int itemId;
-	@Getter
 	private float breakOnImpactChance;
-	@Getter
 	private float dropToFloorChance;
-	@Getter
 	private float savedChance;
-
-	AttractorDefinition(int itemId, float breakOnImpact, float dropToFloor, float saved)
-	{
-		this.itemId = itemId;
-		breakOnImpactChance = breakOnImpact;
-		dropToFloorChance = dropToFloor;
-		savedChance = saved;
-	}
 
 	static AttractorDefinition getAttractorById(int itemId)
 	{
