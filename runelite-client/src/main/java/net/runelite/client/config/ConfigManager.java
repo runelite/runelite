@@ -195,7 +195,7 @@ public class ConfigManager
 			Map<String, String> copy = (Map) ImmutableMap.copyOf(properties);
 			copy.forEach((groupAndKey, value) ->
 			{
-				final String[] split = ((String) groupAndKey).split("\\.", 2);
+				final String[] split = groupAndKey.split("\\.", 2);
 				if (split.length != 2)
 				{
 					log.debug("Properties key malformed!: {}", groupAndKey);
@@ -209,7 +209,7 @@ public class ConfigManager
 				configChanged.setGroup(groupName);
 				configChanged.setKey(key);
 				configChanged.setOldValue(null);
-				configChanged.setNewValue((String) value);
+				configChanged.setNewValue(value);
 				eventBus.post(configChanged);
 			});
 		}
