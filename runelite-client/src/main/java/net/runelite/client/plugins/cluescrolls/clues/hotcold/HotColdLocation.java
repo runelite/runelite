@@ -73,7 +73,7 @@ public enum HotColdLocation
 	FELDIP_HILLS_SW(new WorldPoint(2582, 2895, 0), FELDIP_HILLS, "West of the southeasternmost lake in Feldip Hills."),
 	FELDIP_HILLS_GNOME_GLITER(new WorldPoint(2553, 2972, 0), FELDIP_HILLS, "East of the gnome glider (Lemantolly Undri)."),
 	FELDIP_HILLS_RANTZ(new WorldPoint(2611, 2946, 0), FELDIP_HILLS, "South of Rantz, six steps west of the empty glass bottles."),
-	FELDIP_HILLS_SOUTH(new WorldPoint(2487, 3001, 0), FELDIP_HILLS, "South of Jiggig."),
+	FELDIP_HILLS_SOUTH(new WorldPoint(2487, 3005, 0), FELDIP_HILLS, "South of Jiggig."),
 	FELDIP_HILLS_RED_CHIN(new WorldPoint(2532, 2900, 0), FELDIP_HILLS, "Outside the red chinchompa hunting groundentrance, south of the Hunting expert's hut."),
 	FELDIP_HILLS_SE(new WorldPoint(2567, 2916, 0), FELDIP_HILLS, "South-east of the ∩-shaped lake, near the icon."),
 	FELDIP_HILLS_CW_BALLOON(new WorldPoint(2452, 3108, 0), FELDIP_HILLS, "Directly west of the Castle Wars balloon."),
