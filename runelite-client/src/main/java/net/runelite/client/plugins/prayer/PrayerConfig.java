@@ -81,8 +81,8 @@ public interface PrayerConfig extends Config
 
 	@ConfigItem(
 		position = 4,
-		keyName = "Statistics",
-		name = "Show Prayer Stats",
+		keyName = "showPrayerTooltip",
+		name = "Show Prayer Orb Tooltip",
 		description = "Displays time remaining and prayer bonus as a tooltip on the quick-prayer icon."
 	)
 	default boolean showPrayerStatistics()
