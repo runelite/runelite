@@ -110,7 +110,11 @@ class SkillCalculator extends JPanel
 	private Map<String, Boolean> categoryMap = new HashMap<>();
 	private float totalBankedXp = 0.0f;
 	private JLabel totalLabel = new JLabel();
+	private JPanel detailConfigContainer;
 	private JPanel detailContainer;
+
+	// Ignore item ids for banked experience
+	private Map<Integer, Boolean> ignoreMap = new HashMap<>();
 
 	SkillCalculator(Client client, UICalculatorInputArea uiInput)
 	{
@@ -137,6 +141,9 @@ class SkillCalculator extends JPanel
 
 		detailContainer = new JPanel();
 		detailContainer.setLayout(new BoxLayout(detailContainer, BoxLayout.Y_AXIS));
+
+		detailConfigContainer = new JPanel();
+		detailConfigContainer.setLayout(new BoxLayout(detailConfigContainer, BoxLayout.Y_AXIS));
 	}
 
 	private void updateData(CalculatorType calculatorType)
@@ -152,6 +159,7 @@ class SkillCalculator extends JPanel
 		xpFactor = 1.0f;
 		totalBankedXp = 0.0f;
 		totalPlannerXp = 0.0f;
+		ignoreMap.clear();
 
 		// Update internal skill/XP values.
 		currentXP = client.getSkillExperience(skill);
@@ -247,6 +255,9 @@ class SkillCalculator extends JPanel
 			// Adds in checkboxes for available skill bonuses, same as Skill Calc
 			renderBonusOptions();
 
+			// Adds in the Detail Container config options
+			renderBankedConfigOptions();
+
 			// Total banked experience
 			calculateBankedExpTotal();
 
@@ -254,6 +265,7 @@ class SkillCalculator extends JPanel
 			detailContainer.removeAll();
 			refreshBankedExpDetails();
 
+			add(detailConfigContainer);
 			add(totalLabel);
 			add(detailContainer);
 		}
@@ -367,6 +379,12 @@ class SkillCalculator extends JPanel
 			add(uiOption);
 			add(Box.createRigidArea(new Dimension(0, 5)));
 		}
+	}
+
+
+	private void renderBankedConfigOptions()
+	{
+		detailConfigContainer.removeAll();
 
 		ArrayList<BankedItemOptions> options = BankedItemOptions.getBySkill(skill);
 		if (options != null)
@@ -376,7 +394,8 @@ class SkillCalculator extends JPanel
 			{
 				JPanel panel = createBankedOptionDropdown(entry);
 
-				add(panel);
+				if (panel != null)
+					detailConfigContainer.add(panel);
 			}
 		}
 	}
@@ -400,6 +419,20 @@ class SkillCalculator extends JPanel
 			final double newxp = option.getBasexp();
 			final int[] itemIds = option.getItemOption().getItems();
 
+			// If all items this effects are ignored or not available in bank map don't add this option
+			boolean dontAddFlag = true;
+			for (int itemID : itemIds)
+			{
+				Integer amount = bankMap.get(itemID);
+				if ((amount != null && amount > 0) && (!ignoreMap.containsKey(itemID)))
+				{
+					dontAddFlag = false;
+					break;
+				}
+			}
+			if (dontAddFlag)
+				continue;
+
 			AsyncBufferedImage icon = itemManager.getImage(option.getItemID());
 			MaterialTab matTab = new MaterialTab("", group, null);
 			matTab.setHorizontalAlignment(SwingUtilities.RIGHT);
@@ -419,12 +452,19 @@ class SkillCalculator extends JPanel
 			group.addTab(matTab);
 		}
 
-		group.select(group.getTab(0)); // Select first option;
+		if (group.getComponentCount() > 0)
+		{
+			group.select(group.getTab(0)); // Select first option;
 
-		panel.add(label, BorderLayout.WEST);
-		panel.add(group, BorderLayout.EAST);
+			panel.add(label, BorderLayout.WEST);
+			panel.add(group, BorderLayout.EAST);
 
-		return panel;
+			return panel;
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	// Used to adjust base xp rate for certain item ids
@@ -537,14 +577,26 @@ class SkillCalculator extends JPanel
 		{
 			BankedItems item = entry.getKey();
 			Boolean flag = categoryMap.get(item.getCategory());
-			if (flag != null && flag)	// Only adds items that are in enabled categories.
+			boolean ignoreFlag = ignoreMap.containsKey(item.getItemID());
+			// Category Included and Not ignoring this item ID?
+			if ((flag != null && flag) && (!ignoreFlag))
 			{
 				double xp = item.getBasexp();
 				if (!item.isBonusExempt())
 					xp = xp * xpFactor;
 				double total = entry.getValue() * xp;
 
-				detailContainer.add(new BankedExpPanel(itemManager, item, entry.getValue(), total));
+				// Right-Click Menu
+				JPopupMenu menu = new JPopupMenu("");
+				JMenuItem ignore = new JMenuItem("Ignore Item");
+				ignore.addActionListener(e -> ignoreItemID(item.getItemID()));
+				menu.add(ignore);
+
+				// Exp panel
+				BankedExpPanel panel = new BankedExpPanel(itemManager, item, entry.getValue(), total);
+				panel.setComponentPopupMenu(menu);
+
+				detailContainer.add(panel);
 			}
 		}
 
@@ -657,7 +709,8 @@ class SkillCalculator extends JPanel
 		for (BankedItems item : items)
 		{
 			Integer amount = bankMap.get(item.getItemID());
-			if (amount != null && amount > 0)
+			boolean ignoreFlag = ignoreMap.containsKey(item.getItemID());
+			if ((amount != null && amount > 0) && !ignoreFlag)
 			{
 				// Find out xp for this stack (including any xp factors that should be applied)
 				double xp = item.getBasexp();
@@ -891,5 +944,15 @@ class SkillCalculator extends JPanel
 			SwingUtilities.invokeLater(this::calculateBankedExpTotal);
 			SwingUtilities.invokeLater(this::refreshBankedExpDetails);
 		}
+	}
+
+	private void ignoreItemID(int id)
+	{
+		ignoreMap.put(id, true);
+
+		// Update bonus experience calculations
+		renderBankedConfigOptions();
+		calculateBankedExpTotal();
+		refreshBankedExpDetails();
 	}
 }
