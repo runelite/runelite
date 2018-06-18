@@ -22,106 +22,68 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.database;
+package net.runelite.http.service.database;
 
 import lombok.Getter;
+import net.runelite.http.api.database.DropEntry;
+import net.runelite.http.api.database.LootRecord;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class LootRecord
+@Getter
+public class LootRecordRow
 {
-	@Getter
+	private final int id;
 	private final int npcID;
-	@Getter
 	private final String npcName;
-	@Getter
 	private final int killCount;
-	@Getter
-	private ArrayList<DropEntry> drops;
+	private final int itemId;
+	private final int itemAmount;
 
-	public LootRecord(int npcId, String npcName, int kc, ArrayList<DropEntry> drops)
+	public LootRecordRow(int id, int npcId, String npcName, int kc, int itemId, int itemAmount)
 	{
+		this.id = id;
 		this.npcID = npcId;
 		this.npcName = npcName;
 		this.killCount = kc;
-		this.drops = drops;
+		this.itemId = itemId;
+		this.itemAmount = itemAmount;
 	}
 
-	public LootRecord(int npcId, String npcName, ArrayList<DropEntry> drops)
+	/**
+	 * Consolidates all rows from query and makes unique LootRecords
+	 * Converts itemId and itemAmount into DropEntry
+	 *
+	 * @param list of LootRecordRow (result from sq2lo query)
+	 * @return Array of LootRecord's
+	 */
+	static ArrayList<LootRecord> consildateRows(List<LootRecordRow> list)
 	{
-		this.npcID = npcId;
-		this.npcName = npcName;
-		this.killCount = -1;
-		this.drops = drops;
-	}
-
-	public LootRecord(String npcName, int kc, ArrayList<DropEntry> drops)
-	{
-		this.npcID = -1;
-		this.npcName = npcName;
-		this.killCount = kc;
-		this.drops = drops;
-	}
-
-	public LootRecord(String npcName, ArrayList<DropEntry> drops)
-	{
-		this.npcID = -1;
-		this.npcName = npcName;
-		this.killCount = -1;
-		this.drops = drops;
-	}
-
-	public LootRecord(int npcId, int kc, ArrayList<DropEntry> drops)
-	{
-		this.npcID = npcId;
-		this.npcName = null;
-		this.killCount = kc;
-		this.drops = drops;
-	}
-
-	public LootRecord(int npcId, ArrayList<DropEntry> drops)
-	{
-		this.npcID = npcId;
-		this.npcName = null;
-		this.killCount = -1;
-		this.drops = drops;
-	}
-
-	public void addDrop(DropEntry drop)
-	{
-		drops.add(drop);
-	}
-
-	@Override
-	public String toString()
-	{
-		StringBuilder m = new StringBuilder();
-		m.append("LootRecord{npcID=")
-				.append(npcID)
-				.append(", npcName=")
-				.append(npcName)
-				.append(", killCount=")
-				.append(killCount)
-				.append(", drops=[");
-
-		if (drops != null)
+		HashMap<Integer, LootRecord> lootMap = new HashMap<>();
+		for (LootRecordRow r : list)
 		{
-			boolean first = true;
-			for (DropEntry d : drops)
+			DropEntry drop = new DropEntry(r.itemId, r.itemAmount);
+			LootRecord record = lootMap.get(r.id);
+			if (record == null)
 			{
-				if (!first)
-					m.append(", ");
-
-				m.append(d.toString());
-				first = false;
+				ArrayList<DropEntry> drops = new ArrayList<DropEntry>();
+				drops.add(drop);
+				lootMap.put(r.id, new LootRecord(r.npcID, r.npcName, r.killCount, drops));
 			}
-			m.append("]");
+			else
+			{
+				record.addDrop(drop);
+			}
 		}
-		else
-		{
-			m.append("null]");
-		}
-		m.append("}");
 
-		return m.toString();
+		ArrayList<LootRecord> result = new ArrayList<>();
+		for (Map.Entry<Integer, LootRecord> e : lootMap.entrySet())
+		{
+			result.add(e.getValue());
+		}
+
+		return result;
 	}
 }

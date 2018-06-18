@@ -55,29 +55,22 @@ public class DatabaseService
 
 	public ArrayList<LootRecord> getLootRecordsByNpcName(String username, String npcName) throws IOException
 	{
-		String queryText = "SELECT kills.*, CONCAT(\"[\", group_concat( CONCAT(\"{'itemId':\", drops.itemId,\",'itemAmount':\",drops.itemAmount,\"}\")), \"]\") as drops2 " +
-				"FROM kills JOIN " +
-				"drops " +
-				"on drops.killId = kills.killId " +
-				"WHERE (username = :username AND npcID = :id) OR (username = :username AND npcName = :id) " +
-				"group by kills.killId";
+		String queryText = "SELECT * FROM kills JOIN drops ON kills.id = drops.killId " +
+				"WHERE (kills.username = :username AND kills.npcID = :id) OR (kills.username = :username AND kills.npcName = :id) ";
 
 		try (Connection con = sql2o.open())
 		{
 			ArrayList<LootRecord> result = new ArrayList<>();
-			List<LootRecord> records = con.createQuery(queryText)
+
+			List<LootRecordRow> records = con.createQuery(queryText)
 					.addParameter("username", username)
 					.addParameter("id", npcName)
-					.throwOnMappingFailure(false)		// Ignores entry_id mapping error
-					.executeAndFetch(LootRecord.class);
+					.throwOnMappingFailure(false)
+					.executeAndFetch(LootRecordRow.class);
 
 			if (records != null)
 			{
-				result = new ArrayList<>(records);
-				for (LootRecord r : result)
-				{
-					r.parseDrops();
-				}
+				result = LootRecordRow.consildateRows(records);
 			}
 
 			return result;

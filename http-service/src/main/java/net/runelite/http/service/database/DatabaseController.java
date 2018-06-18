@@ -45,11 +45,12 @@ public class DatabaseController
 {
 	// Storage for LootRecord's
 	private static final String CREATE_KILLS = "CREATE TABLE IF NOT EXISTS `kills` (\n"
-			+ "  `killId` INT AUTO_INCREMENT UNIQUE,\n"
+			+ "  `id` INT AUTO_INCREMENT UNIQUE,\n"
 			+ "  `username` VARCHAR(255) NOT NULL,\n"
 			+ "  `npcName` VARCHAR(255),\n"
 			+ "  `npcID` INT NOT NULL,\n"
-			+ "  `killCount` INT NOT NULL\n"
+			+ "  `killCount` INT NOT NULL,\n"
+			+ "  PRIMARY KEY (`id`)\n"
 			+ ") ENGINE=InnoDB";
 
 	// Storage for DropEntry (Tied to LootRecord)
@@ -57,7 +58,7 @@ public class DatabaseController
 			+ "  `killId` INT NOT NULL,\n"
 			+ "  `itemId` INT NOT NULL,\n"
 			+ "  `itemAmount` INT NOT NULL,\n"
-			+ "  FOREIGN KEY (killId) REFERENCES kills(killId)\n"
+			+ "  FOREIGN KEY (killId) REFERENCES kills(id)\n"
 			+ ") ENGINE=InnoDB";
 
 	@Autowired
