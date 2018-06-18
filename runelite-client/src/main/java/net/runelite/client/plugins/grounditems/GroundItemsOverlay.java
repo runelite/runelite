@@ -218,7 +218,7 @@ public class GroundItemsOverlay extends Overlay
 
 			if (config.priceDisplayMode() == PriceDisplayMode.BOTH)
 			{
-				if (item.getItemId() == 995)
+				if (item.getItemId() != 995)
 				{
 					if (item.getGePrice() > 0)
 					{
