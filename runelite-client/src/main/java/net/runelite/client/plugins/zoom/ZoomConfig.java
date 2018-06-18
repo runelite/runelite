@@ -42,7 +42,7 @@ public interface ZoomConfig extends Config
 	)
 	default boolean outerLimit()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
