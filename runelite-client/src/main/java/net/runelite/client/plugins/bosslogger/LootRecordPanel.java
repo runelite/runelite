@@ -27,37 +27,68 @@ package net.runelite.client.plugins.bosslogger;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.border.MatteBorder;
+import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 
 import lombok.Getter;
+import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 import net.runelite.client.util.StackFormatter;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 
 @Getter
 class LootRecordPanel extends JPanel
 {
 	private LootRecord record;
+	private static final GridBagLayout layout = new GridBagLayout();
+	private static final Border panelBorder = new EmptyBorder(3, 0, 3, 0);
+	private static final Color panelBackgroundColor = ColorScheme.DARK_GRAY_COLOR;
+
+	private static final Border containerBorder = new EmptyBorder(0, 15, 0, 15);
+	private static final Color backgroundColor = ColorScheme.DARKER_GRAY_COLOR;
+
 
 	LootRecordPanel(LootRecord record)
 	{
 		this.record = record;
-
-		GridBagLayout layout = new GridBagLayout();
 		this.setLayout(layout);
-		this.setBorder(new MatteBorder( 0, 0, 1, 0, Color.GRAY));
+		this.setBorder(panelBorder);
+		this.setBackground(panelBackgroundColor);
 
 		// Item Image Icon
 		JLabel icon = new JLabel();
 		this.record.getIcon().addTo(icon);
-		// Item Name (Colored off Item Price)
-		JLabel item_name = new JLabel(this.record.getItemName());
-		colorLabel(item_name, this.record.getValue());
-		// Item Values (Colored off Total Value of item)
-		JLabel total = new JLabel(StackFormatter.quantityToStackSize(this.record.getTotal()) + " gp", SwingConstants.RIGHT);
-		colorLabel(total, this.record.getTotal());
+		icon.setHorizontalAlignment(JLabel.CENTER);
+
+		// Container for Info
+		JPanel uiInfo = new JPanel(new GridLayout(2, 1));
+		uiInfo.setBorder(new EmptyBorder(0, 5, 0, 0));
+		uiInfo.setBackground(backgroundColor);
+
+		JShadowedLabel labelName = new JShadowedLabel(this.record.getItemName());
+		labelName.setForeground(Color.WHITE);
+		colorLabel(labelName, this.record.getValue());
+		labelName.setVerticalAlignment(SwingUtilities.BOTTOM);
+
+		JShadowedLabel labelValue = new JShadowedLabel(StackFormatter.quantityToStackSize(this.record.getTotal()) + " gp");
+		labelValue.setFont(FontManager.getRunescapeSmallFont());
+		colorLabel(labelValue, this.record.getTotal());
+		labelValue.setVerticalAlignment(SwingUtilities.TOP);
+
+		uiInfo.add(labelName);
+		uiInfo.add(labelValue);
+
+		// Create and append elements to container panel
+		JPanel panel = createPanel();
+		panel.add(icon, BorderLayout.LINE_START);
+		panel.add(uiInfo, BorderLayout.CENTER);
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -66,20 +97,28 @@ class LootRecordPanel extends JPanel
 		c.gridy = 0;
 		c.ipady = 20;
 
-		// Add to Panel
-		this.add(icon, c);
-		c.gridx++;
-		this.add(item_name, c);
-		c.gridx++;
-		this.add(total, c);
+		this.add(panel, c);
 	}
 
 	// Used specifically for the Total Value element inside the tab
 	LootRecordPanel(long totalValue)
 	{
-		GridBagLayout layout = new GridBagLayout();
 		this.setLayout(layout);
-		this.setBorder(new MatteBorder( 0, 0, 1, 0, Color.GRAY));
+		this.setBorder(panelBorder);
+		this.setBackground(panelBackgroundColor);
+
+		JLabel totalText = new JLabel("Total Value:", SwingConstants.LEFT);
+		totalText.setForeground(Color.WHITE);
+
+		// Item Values (Colored off Total Value of item)
+		JLabel total = new JLabel(StackFormatter.quantityToStackSize(totalValue) + " gp", SwingConstants.LEFT);
+		total.setBorder(new EmptyBorder(0, 5, 0, 0));
+		colorLabel(total, totalValue);
+
+		JPanel panel = createPanel();
+
+		panel.add(totalText, BorderLayout.LINE_START);
+		panel.add(total, BorderLayout.CENTER);
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -88,25 +127,26 @@ class LootRecordPanel extends JPanel
 		c.gridy = 0;
 		c.ipady = 20;
 
-		JLabel totalText = new JLabel("Total Value:", SwingConstants.LEFT);
-		colorLabel(totalText, totalValue);
-
-		// Item Values (Colored off Total Value of item)
-		JLabel total = new JLabel(StackFormatter.quantityToStackSize(totalValue) + " gp", SwingConstants.RIGHT);
-		colorLabel(total, totalValue);
-
-		this.add(totalText, c);
-		c.gridx++;
-		this.add(total, c);
+		this.add(panel, c);
 	}
 
 
 	// Used specifically for the Killcount entry
-	LootRecordPanel(int size, int last)
+	LootRecordPanel(String text, int value)
 	{
-		GridBagLayout layout = new GridBagLayout();
 		this.setLayout(layout);
-		this.setBorder(new MatteBorder( 0, 0, 1, 0, Color.GRAY));
+		this.setBorder(panelBorder);
+		this.setBackground(panelBackgroundColor);
+
+		JLabel textLabel = new JLabel(text, SwingConstants.LEFT);
+		textLabel.setForeground(Color.WHITE);
+
+		JLabel valueLabel = new JLabel(String.valueOf(value), SwingConstants.LEFT);
+		valueLabel.setBorder(new EmptyBorder(0, 5, 0, 0));
+
+		JPanel panel = createPanel();
+		panel.add(textLabel, BorderLayout.LINE_START);
+		panel.add(valueLabel, BorderLayout.CENTER);
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -115,15 +155,17 @@ class LootRecordPanel extends JPanel
 		c.gridy = 0;
 		c.ipady = 20;
 
+		this.add(panel, c);
+	}
 
-		JLabel current = new JLabel("Current KC: " + last, SwingConstants.LEFT);
-		current.setForeground(Color.CYAN);
-		JLabel recorder = new JLabel("Kills Logged: " + size, SwingConstants.RIGHT);
-		recorder.setForeground(Color.CYAN);
+	private JPanel createPanel()
+	{
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+		panel.setBorder(containerBorder);
+		panel.setBackground(backgroundColor);
 
-		this.add(current, c);
-		c.gridx++;
-		this.add(recorder, c);
+		return panel;
 	}
 
 	// Color label to match RuneScape coloring

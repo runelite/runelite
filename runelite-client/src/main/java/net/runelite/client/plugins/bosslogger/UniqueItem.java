@@ -110,6 +110,19 @@ public enum UniqueItem
 	DRAGON_HARPOON("Dragon harpoon", ItemID.DRAGON_HARPOON, "Raids", "Other", 4),
 	DARK_RELIC("Dark relic", ItemID.DARK_RELIC, "Raids", "Other", 4),
 
+	// Raids 2 Unqiues (Theater of Blood)
+	// Weapons / Pet
+	GHRAZI_RAPIER("Ghrazi rapier", 22484, "Raids 2", "Weapons", 0),
+	SCYTHE_OF_VITUR_UNCHARGED("Scythe of vitur (uncharged)", 22486, "Raids 2", "Weapons", 0),
+	SANGUINESTI_STAFF_UNCHAGRED("Sanguinesti staff (uncharged)", 22481, "Raids 2", "Weapons", 0),
+	LIL_ZIK("Lil' zik", 22473, "Raids 2", "Weapons", 0),
+	// Armor
+	AVERNIC_DEFENDER_HILT("Avernic defender hilt", 22477, "Raids 2", "Armor", 1),
+	JUSTICIAR_FACEGUARD("Justiciar faceguard", 22489, "Raids 2", "Armor", 1),
+	JUSTICIAR_CHESTGUARD("Justiciar chestguard", 22491, "Raids 2", "Armor", 1),
+	JUSTICIAR_LEGGUARDS("Justiciar legguards", 22493, "Raids 2", "Armor", 1),
+
+
 	// Zulrah
 	// Uniques
 	TANZANITE_FANG("Tanzanite fang", ItemID.TANZANITE_FANG, "Zulrah", "Uniques", -1),

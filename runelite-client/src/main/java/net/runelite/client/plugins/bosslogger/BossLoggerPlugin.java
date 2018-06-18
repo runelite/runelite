@@ -710,6 +710,22 @@ public class BossLoggerPlugin extends Plugin
 		}
 	}
 
+	private synchronized void clearLootFile(Tab tab)
+	{
+		String fileName = filenameMap.get(tab.getBossName().toUpperCase());
+		File lootFile = new File(playerFolder, fileName);
+
+		try
+		{
+			BufferedWriter file = new BufferedWriter(new FileWriter(String.valueOf(lootFile), false));
+			file.close();
+		}
+		catch (IOException e)
+		{
+			log.warn("Error clearing loot data in file.", e);
+		}
+	}
+
 	// Receive Loot from the necessary file
 	private synchronized void loadLootEntries(Tab tab)
 	{
@@ -1085,7 +1101,7 @@ public class BossLoggerPlugin extends Plugin
 			int petID = getPetIdByNpcName(npc.getName());
 			drops.add(new DropEntry(petID, 1));
 			gotPet = false;
-			BossLoggedAlert("Oh lookie a pet!");
+			BossLoggedAlert("Oh lookie a pet! Don't forget to insure it!");
 		}
 
 		return drops;
@@ -1095,6 +1111,12 @@ public class BossLoggerPlugin extends Plugin
 	//
 	// Other Helper Functions
 	//
+
+	void clearData(Tab tab)
+	{
+		log.debug("Clearing data for tab: " + tab.getName());
+		clearLootFile(tab);
+	}
 
 	private int getPetIdByNpcName(String name)
 	{
@@ -1112,6 +1134,10 @@ public class BossLoggerPlugin extends Plugin
 		Color c = bossLoggerConfig.chatMessageColor();
 		messageColor = String.format("%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue());
 	}
+
+	//
+	// Config Helper Switch Statements
+	//
 
 	// Handles if panel should be shown by Tab Name
 	boolean isBeingRecorded(String tabName)
@@ -1178,6 +1204,8 @@ public class BossLoggerPlugin extends Plugin
 				return bossLoggerConfig.recordDagannothPrimeKills();
 			case "DAGANNOTH SUPREME":
 				return bossLoggerConfig.recordDagannothSupremeKills();
+			case "RAIDS 2":
+				return bossLoggerConfig.recordTobChest();
 			default:
 				return false;
 		}
@@ -1271,6 +1299,9 @@ public class BossLoggerPlugin extends Plugin
 				return;
 			case "recordDagannothSupremeKills":
 				ToggleTab("Dagannoth Supreme", bossLoggerConfig.recordDagannothSupremeKills());
+				return;
+			case "recordTobChest":
+				ToggleTab("Raids 2", bossLoggerConfig.recordTobChest());
 				return;
 			case "showLootTotals":
 				loadAllData();

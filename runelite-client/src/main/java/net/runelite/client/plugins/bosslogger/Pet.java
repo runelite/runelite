@@ -59,7 +59,8 @@ public enum Pet
 	// Other Bosses
 	BABY_MOLE(ItemID.BABY_MOLE, "Giant Mole"),
 	KALPHITE_PRINCESS(ItemID.KALPHITE_PRINCESS, "Kalphite Queen"),
-	OLMLET(ItemID.OLMLET, "Raids"),								// Need to figure this one out.
+	OLMLET(ItemID.OLMLET, "Raids"),
+	LIL_ZIK(22473, "Lil' zik"),
 	PET_CORPOREAL_CRITTER(ItemID.PET_CORPOREAL_CRITTER, "Corporeal Beast"),
 	PET_SNAKELING(ItemID.PET_SNAKELING, "Zulrah"),
 	PET_DAGANNOTH_REX(ItemID.PET_DAGANNOTH_REX, "Dagannoth Rex"),

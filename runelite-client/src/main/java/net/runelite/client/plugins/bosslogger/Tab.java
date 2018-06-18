@@ -27,77 +27,82 @@ package net.runelite.client.plugins.bosslogger;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Getter
 public enum Tab
 {
 	// Chest Rewards
-	BARROWS("Barrows", "Barrows", ItemID.BARROWS_TELEPORT, 0),
-	RAIDS("Raids", "Raids", ItemID.OLMLET, 1),
+	BARROWS("Barrows", "Barrows", ItemID.BARROWS_TELEPORT, "Other"),
+	RAIDS("Raids", "Raids", ItemID.OLMLET, "Other"),
+	RAIDS_2("Raids 2", "Raids 2", 22473, "Other"),
 
 	// Special Drops  (How loot is dropped)
-	ZULRAH("Zulrah", "Zulrah", ItemID.PET_SNAKELING, 2),
-	VORKATH("Vorkath", "Vorkath", ItemID.VORKI, 3),
+	ZULRAH("Zulrah", "Zulrah", ItemID.PET_SNAKELING, "Other"),
+	VORKATH("Vorkath", "Vorkath", ItemID.VORKI, "Other"),
 
 	// Normal Drops (How loot is dropped)
 	// God wars dungeon
-	ARMADYL("Armadyl", "Kree'arra", ItemID.PET_KREEARRA , 4),
-	BANDOS("Bandos", "General Graardor", ItemID.PET_GENERAL_GRAARDOR , 5),
-	SARADOMIN("Saradomin", "Commander Zilyana", ItemID.PET_ZILYANA , 6),
-	ZAMMY("Zammy", "K'ril Tsutsaroth", ItemID.PET_KRIL_TSUTSAROTH , 7),
+	ARMADYL("Armadyl", "Kree'arra", ItemID.PET_KREEARRA , "God Wars Dungeon"),
+	BANDOS("Bandos", "General Graardor", ItemID.PET_GENERAL_GRAARDOR , "God Wars Dungeon"),
+	SARADOMIN("Saradomin", "Commander Zilyana", ItemID.PET_ZILYANA , "God Wars Dungeon"),
+	ZAMMY("Zammy", "K'ril Tsutsaroth", ItemID.PET_KRIL_TSUTSAROTH , "God Wars Dungeon"),
 
 
 	// Wildy Bosses
-	VETION("Vet'ion", ItemID.VETION_JR , 8),
-	VENENATIS("Venenatis", ItemID.VENENATIS_SPIDERLING , 9),
-	CALLISTO("Callisto", ItemID.CALLISTO_CUB , 10),
-	CHAOS_ELEMENTAL("Chaos Elemental", ItemID.PET_CHAOS_ELEMENTAL , 11),
+	VETION("Vet'ion", ItemID.VETION_JR , "Wilderness"),
+	VENENATIS("Venenatis", ItemID.VENENATIS_SPIDERLING , "Wilderness"),
+	CALLISTO("Callisto", ItemID.CALLISTO_CUB , "Wilderness"),
+	CHAOS_ELEMENTAL("Chaos Elemental", ItemID.PET_CHAOS_ELEMENTAL , "Wilderness"),
 	// Wildy Demi-Bosses
-	SCORPIA("Scorpia", ItemID.SCORPIAS_OFFSPRING, 12),
-	CHAOS_FANATIC("Chaos Fanatic", ItemID.ANCIENT_STAFF , 13),
-	CRAZY_ARCHAEOLOGIST("Crazy Archaeologist", ItemID.FEDORA , 14),
+	SCORPIA("Scorpia", ItemID.SCORPIAS_OFFSPRING, "Wilderness"),
+	CHAOS_FANATIC("Chaos Fanatic", ItemID.ANCIENT_STAFF , "Wilderness"),
+	CRAZY_ARCHAEOLOGIST("Crazy Archaeologist", ItemID.FEDORA , "Wilderness"),
 	// Wildy Other
-	KING_BLACK_DRAGON("King Black Dragon", ItemID.PRINCE_BLACK_DRAGON , 15),
+	KING_BLACK_DRAGON("King Black Dragon", ItemID.PRINCE_BLACK_DRAGON , "Wilderness"),
 
 
 	// Slayer Bosses
-	SKOTIZO("Skotizo", ItemID.SKOTOS, 16),
-	GROTESQUE_GUARDIANS("Grotesque Guardians", ItemID.NOON, 17),		// Special Drop
-	ABYSSAL_SIRE("Abyssal Sire", ItemID.ABYSSAL_ORPHAN, 18),			// Special Drop
-	KRAKEN("Kraken", ItemID.PET_KRAKEN, 19),							// Special Drop
-	CERBERUS("Cerberus", ItemID.HELLPUPPY, 20),
-	THERMONUCLEAR_SMOKE_DEVIL("Thermonuclear Smoke Devil", ItemID.PET_SMOKE_DEVIL, 21),
+	KALPHITE_QUEEN("Kalphite Queen", ItemID.KALPHITE_PRINCESS, "Other"),
+	SKOTIZO("Skotizo", ItemID.SKOTOS, "Slayer"),
+	GROTESQUE_GUARDIANS("Grotesque Guardians", ItemID.NOON, "Slayer"),		// Special Drop
+	ABYSSAL_SIRE("Abyssal Sire", ItemID.ABYSSAL_ORPHAN, "Slayer"),			// Special Drop
+	KRAKEN("Kraken", ItemID.PET_KRAKEN, "Slayer"),							// Special Drop
+	CERBERUS("Cerberus", ItemID.HELLPUPPY, "Slayer"),
+	THERMONUCLEAR_SMOKE_DEVIL("Thermonuclear Smoke Devil", ItemID.PET_SMOKE_DEVIL, "Slayer"),
 
 	// Other Bosses
-	GIANT_MOLE("Giant Mole", ItemID.BABY_MOLE, 22),
-	KALPHITE_QUEEN("Kalphite Queen", ItemID.KALPHITE_PRINCESS, 23),
-	CORPOREAL_BEAST("Corporeal Beast", ItemID.PET_CORPOREAL_CRITTER, 24),
-	DAGANNOTH_REX("Dagannoth Rex", ItemID.PET_DAGANNOTH_REX, 25),
-	DAGANNOTH_PRIME("Dagannoth Prime", ItemID.PET_DAGANNOTH_PRIME, 26),
-	DAGANNOTH_SUPREME("Dagannoth Supreme", ItemID.PET_DAGANNOTH_SUPREME, 27);
+	GIANT_MOLE("Giant Mole", ItemID.BABY_MOLE, "Other"),
+	CORPOREAL_BEAST("Corporeal Beast", ItemID.PET_CORPOREAL_CRITTER, "Other"),
+	// Dagannoth Kings
+	DAGANNOTH_REX("Dagannoth Rex", ItemID.PET_DAGANNOTH_REX, "Dagannoth Kings"),
+	DAGANNOTH_PRIME("Dagannoth Prime", ItemID.PET_DAGANNOTH_PRIME, "Dagannoth Kings"),
+	DAGANNOTH_SUPREME("Dagannoth Supreme", ItemID.PET_DAGANNOTH_SUPREME, "Dagannoth Kings");
 
-	Tab(String name, String bossName, int itemID, int index)
+	Tab(String name, String bossName, int itemID, String category)
 	{
 		this.name = name;
 		this.bossName = bossName;
 		this.itemID = itemID;
-		this.index = index;
+		this.category = category;
 	}
 
-	Tab(String name, int itemID, int index)
+	Tab(String name, int itemID, String category)
 	{
 		this.name = name;
 		this.bossName = name;
 		this.itemID = itemID;
-		this.index = index;
+		this.category = category;
 	}
 
 	private final String name;
 	private final String bossName;
 	private final int itemID;
-	private final int index;
+	private final String category;
 
 	private static final Map<String, Tab> byName = buildMap();
 
@@ -133,5 +138,39 @@ public enum Tab
 		}
 
 		return byName;
+	}
+
+	private static final Map<String, ArrayList<Tab>> byCategoryName = buildCategoryMap();
+
+	public static ArrayList<Tab> getByCategoryName(String name)
+	{
+		return byCategoryName.get(name.toUpperCase());
+	}
+
+	private static Map<String, ArrayList<Tab>> buildCategoryMap()
+	{
+		Map<String, ArrayList<Tab>> map = new HashMap<>();
+		for (Tab tab : values())
+		{
+			map.computeIfAbsent(tab.getCategory().toUpperCase(), e -> new ArrayList<Tab>()).add(tab);
+		}
+
+		return map;
+	}
+
+	public static final Set<String> categories = getCategories();
+	private static Set<String> getCategories()
+	{
+		Set<String> s = new TreeSet<String>();
+		for (Tab tab : values())
+		{
+			s.add(tab.getCategory());
+		}
+		return s;
+	}
+
+	public int getIndex()
+	{
+		return -1;
 	}
 }

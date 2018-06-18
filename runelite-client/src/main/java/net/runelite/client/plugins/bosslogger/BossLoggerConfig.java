@@ -40,7 +40,7 @@ public interface BossLoggerConfig extends Config
 {
 	@ConfigItem(
 		keyName = "recordBarrowsChest",
-		name = "Record Barrows Chest Loot",
+		name = "Barrows Chest Loot",
 		description = "Configures whether or not loot from Barrows Chests is recorded",
 		position = 0
 	)
@@ -52,7 +52,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordRaidsChest",
-		name = "Record Raids Chest Loot",
+		name = "Raids Chest Loot",
 		description = "Configures whether or not loot from Raids is recorded",
 		position = 1
 	)
@@ -63,8 +63,20 @@ public interface BossLoggerConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "recordTobChest",
+			name = "Theater of Blood Loot",
+			description = "Configures whether or not loot from Theater of Blood is recorded",
+			position = 2
+	)
+
+	default boolean recordTobChest()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "recordZulrahKills",
-		name = "Record Zulrah Loot",
+		name = "Zulrah Loot",
 		description = "Configures whether or not loot from Zulrah is recorded",
 		position = 2
 	)
@@ -76,7 +88,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordVorkathKills",
-		name = "Record Vorkath Loot",
+		name = "Vorkath Loot",
 		description = "Configures whether or not loot from Vorkath is recorded",
 		position = 3
 	)
@@ -88,7 +100,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordArmadylKills",
-		name = "Record Kree'arra Loot",
+		name = "Kree'arra Loot",
 		description = "Configures whether or not loot from Kree'arra is recorded",
 		position = 4
 	)
@@ -100,7 +112,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordBandosKills",
-		name = "Record General Graardor Loot",
+		name = "General Graardor Loot",
 		description = "Configures whether or not loot from General Graardor is recorded",
 		position = 5
 	)
@@ -112,7 +124,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordSaradominKills",
-		name = "Record Commander Zilyana Loot",
+		name = "Commander Zilyana Loot",
 		description = "Configures whether or not loot from Commander Zilyana is recorded",
 		position = 6
 	)
@@ -124,7 +136,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordZammyKills",
-		name = "Record K'ril Tsutsaroth Loot",
+		name = "K'ril Tsutsaroth Loot",
 		description = "Configures whether or not loot from K'ril Tsutsaroth is recorded",
 		position = 7
 	)
@@ -136,7 +148,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordVetionKills",
-		name = "Record Vet'ion Loot",
+		name = "Vet'ion Loot",
 		description = "Configures whether or not loot from Vet'ion is recorded",
 		position = 8
 	)
@@ -148,7 +160,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordVenenatisKills",
-		name = "Record Venenatis Loot",
+		name = "Venenatis Loot",
 		description = "Configures whether or not loot from Venenatis is recorded",
 		position = 9
 	)
@@ -160,7 +172,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordCallistoKills",
-		name = "Record Callisto Loot",
+		name = "Callisto Loot",
 		description = "Configures whether or not loot from Callisto is recorded",
 		position = 10
 	)
@@ -172,7 +184,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordChaosElementalKills",
-		name = "Record Chaos Elemental Loot",
+		name = "Chaos Elemental Loot",
 		description = "Configures whether or not loot from Chaos Elemental is recorded",
 		position = 11
 	)
@@ -184,7 +196,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordChaosFanaticKills",
-		name = "Record Chaos Fanatic Loot",
+		name = "Chaos Fanatic Loot",
 		description = "Configures whether or not loot from Chaos Fanatic is recorded",
 		position = 12
 	)
@@ -196,7 +208,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordKbdKills",
-		name = "Record King Black Dragon Loot",
+		name = "King Black Dragon Loot",
 		description = "Configures whether or not loot from King Black Dragon is recorded",
 		position = 13
 	)
@@ -208,7 +220,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordCrazyArchaeologistKills",
-		name = "Record Crazy Archaeologist Loot",
+		name = "Crazy Archaeologist Loot",
 		description = "Configures whether or not loot from Crazy Archaeologist is recorded",
 		position = 14
 	)
@@ -220,7 +232,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordScorpiaKills",
-		name = "Record Scorpia Loot",
+		name = "Scorpia Loot",
 		description = "Configures whether or not loot from Scorpia is recorded",
 		position = 15
 	)
@@ -232,7 +244,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordSkotizoKills",
-		name = "Record Skotizo Loot",
+		name = "Skotizo Loot",
 		description = "Configures whether or not loot from Skotizo is recorded",
 		position = 16
 	)
@@ -244,7 +256,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordGrotesqueGuardiansKills",
-		name = "Record Grotesque Guardians Loot",
+		name = "Grotesque Guardians Loot",
 		description = "Configures whether or not loot from Grotesque Guardians is recorded",
 		position = 17
 	)
@@ -256,7 +268,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordAbyssalSireKills",
-		name = "Record Abyssal Sire Loot",
+		name = "Abyssal Sire Loot",
 		description = "Configures whether or not loot from Abyssal Sire is recorded",
 		position = 18
 	)
@@ -268,7 +280,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordKrakenKills",
-		name = "Record Kraken Loot",
+		name = "Kraken Loot",
 		description = "Configures whether or not loot from Kraken is recorded",
 		position = 19
 	)
@@ -280,7 +292,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordCerberusKills",
-		name = "Record Cerberus Loot",
+		name = "Cerberus Loot",
 		description = "Configures whether or not loot from Cerberus is recorded",
 		position = 20
 	)
@@ -292,7 +304,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordThermonuclearSmokeDevilKills",
-		name = "Record Thermonuclear Smoke Devil Loot",
+		name = "Thermonuclear Smoke Devil Loot",
 		description = "Configures whether or not loot from Thermonuclear Smoke Devil is recorded",
 		position = 21
 	)
@@ -304,7 +316,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordGiantMoleKills",
-		name = "Record Giant Mole Loot",
+		name = "Giant Mole Loot",
 		description = "Configures whether or not loot from Giant Mole is recorded",
 		position = 22
 	)
@@ -316,7 +328,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordKalphiteQueenKills",
-		name = "Record Kalphite Queen Loot",
+		name = "Kalphite Queen Loot",
 		description = "Configures whether or not loot from Kalphite Queen is recorded",
 		position = 23
 	)
@@ -328,7 +340,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordCorporealBeastKills",
-		name = "Record Corporeal Beast Loot",
+		name = "Corporeal Beast Loot",
 		description = "Configures whether or not loot from Corporeal Beast is recorded",
 		position = 24
 	)
@@ -340,7 +352,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordDagannothRexKills",
-		name = "Record Dagannoth Rex Loot",
+		name = "Dagannoth Rex Loot",
 		description = "Configures whether or not loot from Dagannoth Rex is recorded",
 		position = 25
 	)
@@ -352,7 +364,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordDagannothPrimeKills",
-		name = "Record Dagannoth Prime Loot",
+		name = "Dagannoth Prime Loot",
 		description = "Configures whether or not loot from Dagannoth Prime is recorded",
 		position = 26
 	)
@@ -364,7 +376,7 @@ public interface BossLoggerConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordDagannothSupremeKills",
-		name = "Record Dagannoth Supreme Loot",
+		name = "Dagannoth Supreme Loot",
 		description = "Configures whether or not loot from Dagannoth Supreme is recorded",
 		position = 27
 	)
