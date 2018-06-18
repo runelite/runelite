@@ -524,4 +524,9 @@ public class GroundItemsPlugin extends Plugin
 			setHotKeyPressed(false);
 		}
 	}
+
+	boolean altHotkey()
+	{
+		return config.useAltKeybind();
+	}
 }

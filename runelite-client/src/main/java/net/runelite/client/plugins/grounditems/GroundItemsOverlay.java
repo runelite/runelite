@@ -66,6 +66,8 @@ public class GroundItemsOverlay extends Overlay
 	private static final int STRING_GAP = 15;
 	// Size of the hidden/highlight boxes
 	private static final int RECTANGLE_SIZE = 8;
+	//Ground item ID
+	private int groundItemID;
 
 	private final Client client;
 	private final GroundItemsPlugin plugin;
@@ -168,6 +170,8 @@ public class GroundItemsOverlay extends Overlay
 		{
 			final LocalPoint groundPoint = LocalPoint.fromWorld(client, item.getLocation());
 
+			groundItemID = item.getItemId();
+
 			if (groundPoint == null || localLocation.distanceTo(groundPoint) > MAX_DISTANCE)
 			{
 				continue;
@@ -218,18 +222,21 @@ public class GroundItemsOverlay extends Overlay
 
 			if (config.priceDisplayMode() == PriceDisplayMode.BOTH)
 			{
-				if (item.getGePrice() > 0)
+				if (groundItemID != 617 && groundItemID != 995 && groundItemID != 6964 && groundItemID != 8890)
 				{
-					itemStringBuilder.append(" (EX: ")
-						.append(StackFormatter.quantityToStackSize(item.getGePrice()))
-						.append(" gp)");
-				}
+					if (item.getGePrice() > 0)
+					{
+						itemStringBuilder.append(" (EX: ")
+								.append(StackFormatter.quantityToStackSize(item.getGePrice()))
+								.append(" gp)");
+					}
 
-				if (item.getHaPrice() > 0)
-				{
-					itemStringBuilder.append(" (HA: ")
-						.append(StackFormatter.quantityToStackSize(item.getHaPrice()))
-						.append(" gp)");
+					if (item.getHaPrice() > 0)
+					{
+						itemStringBuilder.append(" (HA: ")
+								.append(StackFormatter.quantityToStackSize(item.getHaPrice()))
+								.append(" gp)");
+					}
 				}
 			}
 			else if (config.priceDisplayMode() != PriceDisplayMode.OFF)
