@@ -82,7 +82,7 @@ public class RaidsPlugin extends Plugin
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
 	static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final String SPLIT_REGEX = "\\s*,\\s*";
-	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)\\]");
+	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)]");
 
 	private BufferedImage raidsIcon;
 	private RaidsTimer timer;

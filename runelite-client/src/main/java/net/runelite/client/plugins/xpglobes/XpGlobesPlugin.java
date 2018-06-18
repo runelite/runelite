@@ -129,11 +129,8 @@ public class XpGlobesPlugin extends Plugin
 
 	public void addXpGlobe(XpGlobe xpGlobe, int maxLength)
 	{
-		if (xpGlobes.contains(xpGlobe))
-		{
-			//remove the old globe, allowing it to be readded as the most recent (right) side when drawn
-			xpGlobes.remove(xpGlobe);
-		}
+		//remove the old globe, allowing it to be readded as the most recent (right) side when drawn
+		xpGlobes.remove(xpGlobe);
 		if (getXpGlobesSize() >= maxLength)
 		{
 			xpGlobes.remove(0);

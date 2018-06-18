@@ -231,7 +231,7 @@ public class ItemManager
 						itemPriceCache.put(itemPrice.getItem().getId(), itemPrice);
 					}
 					// Append these to the already cached items
-					Arrays.stream(itemPrices).forEach(existing::add);
+					existing.addAll(Arrays.asList(itemPrices));
 				}
 				future.complete(existing.toArray(new ItemPrice[existing.size()]));
 			}
