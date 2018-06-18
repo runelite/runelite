@@ -220,14 +220,9 @@ public class BoostsPlugin extends Plugin
 			return 90 - timeSinceChange;
 		}
 
-		if (timeSinceChange > 60)
-		{
-			preserveBeenActive = false;
-			return 75 - timeSinceChange;
-		}
-
 		preserveBeenActive = false;
-		return 60 - timeSinceChange;
+		return (timeSinceChange > 60) ? 75-timeSinceChange : 60-timeSinceChange;
+
 	}
 
 	private int timeSinceLastChange()
