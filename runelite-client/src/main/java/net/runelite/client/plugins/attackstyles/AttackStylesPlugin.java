@@ -319,7 +319,8 @@ public class AttackStylesPlugin extends Plugin
 			// Magic staves defensive casting mode
 			// Note: Staff of  the Dead is weapon type 21, rather than the expected type 18
 			if (equippedWeaponType == WeaponType.TYPE_18
-				|| equippedWeaponType == WeaponType.TYPE_21)
+				|| equippedWeaponType == WeaponType.TYPE_21
+				|| !enabled)
 			{
 				widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_DEFENSIVE_SPELL_BOX, enabled && (warnedSkills.contains(Skill.DEFENCE) || warnedSkill));
 				widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_DEFENSIVE_SPELL_ICON, enabled && (warnedSkills.contains(Skill.DEFENCE) || warnedSkill));
