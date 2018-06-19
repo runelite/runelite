@@ -83,10 +83,8 @@ public class IdleNotifierPlugin extends Plugin
 	private boolean notify6HourLogout = true;
 	private boolean timerRendered = false;
 
-
 	private Instant sixHourWarningTime;
 	private boolean ready;
-
 	private int idleTicks = 0;
 
 	@Provides
@@ -239,7 +237,7 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (config.getTimerEnabled())
 		{
-			renderIdleTimer();
+			updateTimer();
 		}
 		else if (timerRendered)
 		{
@@ -282,17 +280,14 @@ public class IdleNotifierPlugin extends Plugin
 		}
 	}
 
-	private void renderIdleTimer()
+	private void updateTimer()
 	{
-
 		if (client.getKeyboardIdleTicks() > idleTicks && client.getMouseIdleTicks() > idleTicks)
 		{
-			Duration timeToLogout = durationTillLogout();
-			if (timeToLogout.compareTo(Duration.ofSeconds(config.getTimerThreshold())) < 0 && !timerRendered)
+			if(!timerRendered)
 			{
-				IdleTimer timer = new IdleTimer(spriteManager.getSprite(SpriteID.RS2_TAB_LOGOUT, 0), this, timeToLogout);
-				infoBoxManager.addInfoBox(timer);
-				timerRendered = true;
+				Duration timeToLogout = durationTillLogout();
+				renderIdleTimer(timeToLogout);
 			}
 		}
 		else
@@ -300,12 +295,17 @@ public class IdleNotifierPlugin extends Plugin
 			Duration timeToLogout = durationTillLogout();
 			infoBoxManager.removeIf(t -> t instanceof IdleTimer);
 			timerRendered = false;
-			if (timeToLogout.compareTo(Duration.ofSeconds(config.getTimerThreshold())) < 0)
-			{
-				IdleTimer timer = new IdleTimer(spriteManager.getSprite(SpriteID.RS2_TAB_LOGOUT, 0), this, timeToLogout);
-				infoBoxManager.addInfoBox(timer);
-				timerRendered = true;
-			}
+			renderIdleTimer(timeToLogout);
+		}
+	}
+
+	private void renderIdleTimer(Duration timeToLogout)
+	{
+		if (timeToLogout.compareTo(Duration.ofSeconds(config.getTimerThreshold())) < 0)
+		{
+			IdleTimer timer = new IdleTimer(spriteManager.getSprite(SpriteID.RS2_TAB_LOGOUT, 0), this, timeToLogout);
+			infoBoxManager.addInfoBox(timer);
+			timerRendered = true;
 		}
 	}
 
