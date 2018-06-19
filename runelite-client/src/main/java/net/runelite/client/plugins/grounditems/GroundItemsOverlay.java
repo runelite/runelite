@@ -199,12 +199,12 @@ public class GroundItemsOverlay extends Overlay
 
 			final Color color = plugin.getItemColor(highlighted, hidden);
 
-			if(config.highlightTiles() && poly != null)
+			if (config.highlightTiles() && poly != null)
 			{
 				OverlayUtil.renderPolygon(graphics, poly, color);
 			}
 
-			if((config.itemHighlightMode() != MENU) || plugin.isHotKeyPressed())
+			if ((config.itemHighlightMode() != MENU) || plugin.isHotKeyPressed())
 			{
 				itemStringBuilder.append(item.getName());
 
