@@ -53,8 +53,8 @@ public class GroundMarkerOverlay extends Overlay
 		this.config = config;
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.HIGH);
-		setLayer(OverlayLayer.UNDER_WIDGETS);
+		setPriority(OverlayPriority.LOW);
+		setLayer(OverlayLayer.ABOVE_SCENE);
 	}
 
 	@Override
