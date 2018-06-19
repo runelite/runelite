@@ -282,31 +282,35 @@ public class IdleNotifierPlugin extends Plugin
 
 	private void updateTimer()
 	{
-		if (client.getKeyboardIdleTicks() > idleTicks && client.getMouseIdleTicks() > idleTicks)
+		Duration durationTillLogout = durationTillLogout();
+		if (client.getKeyboardIdleTicks() > idleTicks && client.getMouseIdleTicks() > idleTicks && shouldRenderTimer(durationTillLogout))
 		{
 			if(!timerRendered)
 			{
-				Duration timeToLogout = durationTillLogout();
-				renderIdleTimer(timeToLogout);
+				renderIdleTimer(durationTillLogout);
 			}
 		}
 		else
 		{
-			Duration timeToLogout = durationTillLogout();
 			infoBoxManager.removeIf(t -> t instanceof IdleTimer);
 			timerRendered = false;
-			renderIdleTimer(timeToLogout);
+			if(shouldRenderTimer(durationTillLogout))
+			{
+				renderIdleTimer(durationTillLogout);
+			}
 		}
+	}
+
+	private boolean shouldRenderTimer(Duration timeToLogout)
+	{
+		return timeToLogout.compareTo(Duration.ofSeconds(config.getTimerThreshold())) < 0;
 	}
 
 	private void renderIdleTimer(Duration timeToLogout)
 	{
-		if (timeToLogout.compareTo(Duration.ofSeconds(config.getTimerThreshold())) < 0)
-		{
-			IdleTimer timer = new IdleTimer(spriteManager.getSprite(SpriteID.RS2_TAB_LOGOUT, 0), this, timeToLogout);
-			infoBoxManager.addInfoBox(timer);
-			timerRendered = true;
-		}
+		IdleTimer timer = new IdleTimer(spriteManager.getSprite(SpriteID.RS2_TAB_LOGOUT, 0), this, timeToLogout);
+		infoBoxManager.addInfoBox(timer);
+		timerRendered = true;
 	}
 
 	private Duration durationTillLogout()
