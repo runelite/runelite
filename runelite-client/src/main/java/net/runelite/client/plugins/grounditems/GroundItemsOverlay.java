@@ -213,10 +213,9 @@ public class GroundItemsOverlay extends Overlay
 							.append(")");
 				}
 			}
-
-			if (config.priceDisplayMode() == PriceDisplayMode.BOTH)
+			if (item.getItemId() != ItemID.COINS_995)
 			{
-				if (item.getItemId() != ItemID.COINS_995)
+				if (config.priceDisplayMode() == PriceDisplayMode.BOTH)
 				{
 					if (item.getGePrice() > 0)
 					{
@@ -232,22 +231,21 @@ public class GroundItemsOverlay extends Overlay
 								.append(" gp)");
 					}
 				}
-			}
-			else if (config.priceDisplayMode() != PriceDisplayMode.OFF)
-			{
-				final int price = config.priceDisplayMode() == PriceDisplayMode.GE
-					? item.getGePrice()
-					: item.getHaPrice();
-
-				if (price > 0 && item.getItemId() != ItemID.COINS_995)
+				else if (config.priceDisplayMode() != PriceDisplayMode.OFF)
 				{
-					itemStringBuilder
-						.append(" (")
-						.append(StackFormatter.quantityToStackSize(price))
-						.append(" gp)");
+					final int price = config.priceDisplayMode() == PriceDisplayMode.GE
+							? item.getGePrice()
+							: item.getHaPrice();
+
+					if (price > 0)
+					{
+						itemStringBuilder
+								.append(" (")
+								.append(StackFormatter.quantityToStackSize(price))
+								.append(" gp)");
+					}
 				}
 			}
-
 			final String itemString = itemStringBuilder.toString();
 			itemStringBuilder.setLength(0);
 
