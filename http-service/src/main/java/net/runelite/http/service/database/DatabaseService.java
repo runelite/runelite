@@ -26,11 +26,15 @@ package net.runelite.http.service.database;
 
 import net.runelite.http.api.database.DropEntry;
 import net.runelite.http.api.database.LootRecord;
+import net.runelite.http.service.account.AuthFilter;
+import net.runelite.http.service.account.beans.SessionEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,21 +52,35 @@ public class DatabaseService
 		this.sql2o = sql2o;
 	}
 
-	public ArrayList<LootRecord> getLootRecordsByNpcId(String username, int npcId) throws IOException
+	// Check header for RUNELITE-AUTH and validate the session
+	public SessionEntry authCheck(HttpServletRequest request, HttpServletResponse response)
 	{
-		return getLootRecordsByNpcName(username, String.valueOf(npcId));
+		// User Authentication
+		AuthFilter filter = new AuthFilter(sql2o);
+		SessionEntry sessionEntry = null;
+		try
+		{
+			sessionEntry = filter.handle(request, response);
+		}
+		catch (IOException e)
+		{
+			return null;
+		}
+
+		return sessionEntry;
 	}
 
-	public ArrayList<LootRecord> getLootRecordsByNpcName(String username, String npcName) throws IOException
+	public ArrayList<LootRecord> getLootRecordsByNpcName(String username, String npcName, int accountId) throws IOException
 	{
 		String queryText = "SELECT * FROM kills JOIN drops ON kills.id = drops.killId " +
-				"WHERE (kills.username = :username AND kills.npcID = :id) OR (kills.username = :username AND kills.npcName = :id) ";
+				"WHERE (kills.accountId = :accountId AND kills.username = :username) AND (kills.npcID = :id OR kills.npcName = :id) ";
 
 		try (Connection con = sql2o.open())
 		{
 			ArrayList<LootRecord> result = new ArrayList<>();
 
 			List<LootRecordRow> records = con.createQuery(queryText)
+					.addParameter("accountId", accountId)
 					.addParameter("username", username)
 					.addParameter("id", npcName)
 					.throwOnMappingFailure(false)
@@ -78,14 +96,15 @@ public class DatabaseService
 	}
 
 	// Insert loot record into mysql database
-	public void storeLootRecord(LootRecord record, String username)
+	public Boolean storeLootRecord(LootRecord record, String username, int accountId)
 	{
-		String killQuery = "INSERT INTO kills (username, npcName, npcID, killCount) VALUES(:username, :npcName, :npcID, :killCount)";
-		String dropQuery = "INSERT INTO drops (killId, itemId, itemAmount) VALUES(LAST_INSERT_ID(), :itemId, :itemAmount)";
+		String killQuery = "INSERT INTO kills (accountId, username, npcName, npcID, killCount) VALUES (:accountId, :username, :npcName, :npcID, :killCount)";
+		String dropQuery = "INSERT INTO drops (killId, itemId, itemAmount) VALUES (LAST_INSERT_ID(), :itemId, :itemAmount)";
 		try (Connection con = sql2o.beginTransaction())
 		{
 			// Kill Entry Query
 			con.createQuery(killQuery)
+					.addParameter("accountId", accountId)
 					.addParameter("username", username)
 					.addParameter("npcName", record.getNpcName())
 					.addParameter("npcID", record.getNpcID())
@@ -102,5 +121,7 @@ public class DatabaseService
 			}
 			con.commit();
 		}
+
+		return true;
 	}
 }

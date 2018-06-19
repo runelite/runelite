@@ -35,21 +35,36 @@ import okhttp3.Response;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.UUID;
 
 @Slf4j
 public class DatabaseClient
 {
 	private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
+	private UUID uuid;
+
+	public DatabaseClient(UUID uuid)
+	{
+		this.uuid = uuid;
+		log.debug("Created Database Client with UUID: {}", this.uuid);
+	}
+
 	// Wrapper for looking up by NPC ID (API can find records by NPC Name or NPC ID)
 	public ArrayList<LootRecord> getLootRecordsByNpcId(String username, int id) throws IOException
 	{
+		if (uuid == null)
+			return null;
+
 		return getLootRecordsByNpcName(username, String.valueOf(id));
 	}
 
 	// Returns all LootRecords by
 	public ArrayList<LootRecord> getLootRecordsByNpcName(String username, String npcName) throws IOException
 	{
+		if (uuid == null)
+			return null;
+
 		DatabaseEndpoint bossEndpoint = DatabaseEndpoint.LOOT;
 		HttpUrl.Builder builder = bossEndpoint.getDatabaseURL().newBuilder()
 				.addQueryParameter("username", username)
@@ -60,6 +75,7 @@ public class DatabaseClient
 		log.debug("Built Database URI: {}", url);
 
 		Request request = new Request.Builder()
+				.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
 				.url(url)
 				.build();
 
@@ -95,6 +111,9 @@ public class DatabaseClient
 	// Stores the Loot Record via a post request to the API and returns a success boolean
 	public boolean storeLootRecord(LootRecord record, String username) throws IOException
 	{
+		if (uuid == null)
+			return false;
+
 		DatabaseEndpoint bossEndpoint = DatabaseEndpoint.LOOT;
 		HttpUrl.Builder builder = bossEndpoint.getDatabaseURL().newBuilder()
 				.addQueryParameter("username", username);
@@ -104,6 +123,7 @@ public class DatabaseClient
 		log.debug("Built Database URI: {}", url);
 
 		Request request = new Request.Builder()
+				.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
 				.url(url)
 				.post(RequestBody.create(JSON, RuneLiteAPI.GSON.toJson(record)))
 				.build();

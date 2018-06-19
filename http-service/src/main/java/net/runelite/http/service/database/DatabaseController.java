@@ -25,6 +25,7 @@
 package net.runelite.http.service.database;
 
 import net.runelite.http.api.database.LootRecord;
+import net.runelite.http.service.account.beans.SessionEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -46,11 +49,13 @@ public class DatabaseController
 	// Storage for LootRecord's
 	private static final String CREATE_KILLS = "CREATE TABLE IF NOT EXISTS `kills` (\n"
 			+ "  `id` INT AUTO_INCREMENT UNIQUE,\n"
+			+ "  `accountId` INT NOT NULL,\n"
 			+ "  `username` VARCHAR(255) NOT NULL,\n"
 			+ "  `npcName` VARCHAR(255),\n"
 			+ "  `npcID` INT NOT NULL,\n"
 			+ "  `killCount` INT NOT NULL,\n"
-			+ "  PRIMARY KEY (`id`)\n"
+			+ "  PRIMARY KEY (id),\n"
+			+ "  FOREIGN KEY (accountId) REFERENCES sessions(user) ON DELETE CASCADE\n"
 			+ ") ENGINE=InnoDB";
 
 	// Storage for DropEntry (Tied to LootRecord)
@@ -58,7 +63,7 @@ public class DatabaseController
 			+ "  `killId` INT NOT NULL,\n"
 			+ "  `itemId` INT NOT NULL,\n"
 			+ "  `itemAmount` INT NOT NULL,\n"
-			+ "  FOREIGN KEY (killId) REFERENCES kills(id)\n"
+			+ "  FOREIGN KEY (killId) REFERENCES kills(id) ON DELETE CASCADE\n"
 			+ ") ENGINE=InnoDB";
 
 	@Autowired
@@ -76,15 +81,19 @@ public class DatabaseController
 	private DatabaseService service;
 
 	@RequestMapping(value = "/loot", method = RequestMethod.GET)
-	public ArrayList<LootRecord> getLootRecordsByNpcName(@RequestParam String username, @RequestParam String id) throws IOException
+	public ArrayList<LootRecord> getLootRecordsByNpcName(HttpServletRequest request, HttpServletResponse response, @RequestParam String username, @RequestParam String id) throws IOException
 	{
-		return service.getLootRecordsByNpcName(username, id);
+		// Auth Check and grab user id
+		SessionEntry entry = service.authCheck(request, response);
+		return service.getLootRecordsByNpcName(username, id, entry.getUser());
 	}
 
 	@RequestMapping(value = "/loot", method = RequestMethod.POST)
-	@ResponseStatus(value = HttpStatus.OK)
-	public void storeLootRecord(@RequestBody LootRecord record, @RequestParam String username) throws IOException
+	@ResponseStatus
+	public HttpStatus storeLootRecord(HttpServletRequest request, HttpServletResponse response, @RequestBody LootRecord record, @RequestParam String username) throws IOException
 	{
-		service.storeLootRecord(record, username);
+		// Auth Check and grab user id
+		SessionEntry entry = service.authCheck(request, response);
+		return service.storeLootRecord(record, username, entry.getUser()) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
 	}
 }
