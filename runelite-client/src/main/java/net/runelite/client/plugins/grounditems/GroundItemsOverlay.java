@@ -29,6 +29,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.BackgroundComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.StackFormatter;
@@ -90,11 +92,6 @@ public class GroundItemsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isHotKeyPressed() && config.itemHighlightMode() == MENU)
-		{
-			return null;
-		}
-
 		final FontMetrics fm = graphics.getFontMetrics();
 		final Player player = client.getLocalPlayer();
 
@@ -173,6 +170,7 @@ public class GroundItemsOverlay extends Overlay
 				continue;
 			}
 
+			final Polygon poly = Perspective.getCanvasTilePoly(client, groundPoint);
 			// Update GE price for item
 			final ItemPrice itemPrice = itemManager.getItemPriceAsync(item.getItemId());
 
@@ -200,50 +198,59 @@ public class GroundItemsOverlay extends Overlay
 			}
 
 			final Color color = plugin.getItemColor(highlighted, hidden);
-			itemStringBuilder.append(item.getName());
 
-			if (item.getQuantity() > 1)
+			if(config.highlightTiles() && poly != null)
 			{
-				if (item.getQuantity() >= MAX_QUANTITY)
-				{
-					itemStringBuilder.append(" (Lots!)");
-				}
-				else
-				{
-					itemStringBuilder.append(" (")
-							.append(StackFormatter.quantityToStackSize(item.getQuantity()))
-							.append(")");
-				}
+				OverlayUtil.renderPolygon(graphics, poly, color);
 			}
 
-			if (config.priceDisplayMode() == PriceDisplayMode.BOTH)
+			if((config.itemHighlightMode() != MENU) || plugin.isHotKeyPressed())
 			{
-				if (item.getGePrice() > 0)
+				itemStringBuilder.append(item.getName());
+
+				if (item.getQuantity() > 1)
 				{
-					itemStringBuilder.append(" (EX: ")
-						.append(StackFormatter.quantityToStackSize(item.getGePrice()))
-						.append(" gp)");
+					if (item.getQuantity() >= MAX_QUANTITY)
+					{
+						itemStringBuilder.append(" (Lots!)");
+					}
+					else
+					{
+						itemStringBuilder.append(" (")
+								.append(StackFormatter.quantityToStackSize(item.getQuantity()))
+								.append(")");
+					}
 				}
 
-				if (item.getHaPrice() > 0)
+				if (config.priceDisplayMode() == PriceDisplayMode.BOTH)
 				{
-					itemStringBuilder.append(" (HA: ")
-						.append(StackFormatter.quantityToStackSize(item.getHaPrice()))
-						.append(" gp)");
-				}
-			}
-			else if (config.priceDisplayMode() != PriceDisplayMode.OFF)
-			{
-				final int price = config.priceDisplayMode() == PriceDisplayMode.GE
-					? item.getGePrice()
-					: item.getHaPrice();
+					if (item.getGePrice() > 0)
+					{
+						itemStringBuilder.append(" (EX: ")
+								.append(StackFormatter.quantityToStackSize(item.getGePrice()))
+								.append(" gp)");
+					}
 
-				if (price > 0)
+					if (item.getHaPrice() > 0)
+					{
+						itemStringBuilder.append(" (HA: ")
+								.append(StackFormatter.quantityToStackSize(item.getHaPrice()))
+								.append(" gp)");
+					}
+				}
+				else if (config.priceDisplayMode() != PriceDisplayMode.OFF)
 				{
-					itemStringBuilder
-						.append(" (")
-						.append(StackFormatter.quantityToStackSize(price))
-						.append(" gp)");
+					final int price = config.priceDisplayMode() == PriceDisplayMode.GE
+							? item.getGePrice()
+							: item.getHaPrice();
+
+					if (price > 0)
+					{
+						itemStringBuilder
+								.append(" (")
+								.append(StackFormatter.quantityToStackSize(price))
+								.append(" gp)");
+					}
 				}
 			}
 
