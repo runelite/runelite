@@ -198,7 +198,7 @@ class ItemPricesOverlay extends Overlay
 
 		if (config.showGEPrice())
 		{
-			final ItemPrice price = itemManager.getItemPriceAsync(id);
+			final ItemPrice price = itemManager.getItemPrice(id);
 			if (price != null)
 			{
 				gePrice = price.getPrice();

@@ -403,15 +403,16 @@ public class GroundItemsPlugin extends Plugin
 
 			final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemComposition.getId();
-			final ItemPrice itemPrice = itemManager.getItemPriceAsync(realItemId);
+			final ItemPrice itemPrice = itemManager.getItemPrice(realItemId);
 			final int price = itemPrice == null ? itemComposition.getPrice() : itemPrice.getPrice();
 			final int haPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity;
 			final int gePrice = quantity * price;
 			final Color hidden = getHidden(itemComposition.getName(), gePrice, haPrice, itemComposition.isTradeable());
 			final Color highlighted = getHighlighted(itemComposition.getName(), gePrice, haPrice);
 			final Color color = getItemColor(highlighted, hidden);
+			final boolean canBeRecolored = highlighted != null || (hidden != null && config.recolorMenuHiddenItems());
 
-			if (color != null && hidden == null && !color.equals(config.defaultColor()))
+			if (color != null && canBeRecolored && !color.equals(config.defaultColor()))
 			{
 				String hexColor = Integer.toHexString(color.getRGB() & 0xFFFFFF);
 				String colTag = "<col=" + hexColor + ">";
