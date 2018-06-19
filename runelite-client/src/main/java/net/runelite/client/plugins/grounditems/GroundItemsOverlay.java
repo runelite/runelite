@@ -79,7 +79,7 @@ public class GroundItemsOverlay extends Overlay
 	private final ItemManager itemManager;
 
 	@Inject
-	public GroundItemsOverlay(Client client, GroundItemsPlugin plugin, GroundItemsConfig config, ItemManager itemManager)
+	private GroundItemsOverlay(Client client, GroundItemsPlugin plugin, GroundItemsConfig config, ItemManager itemManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -92,13 +92,13 @@ public class GroundItemsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		
 		final boolean dontShowOverlay = config.itemHighlightMode() == MENU && !plugin.isHotKeyPressed();
-		
+
 		if (dontShowOverlay && !config.highlightTiles())
 		{
 			return null;
 		}
+
 		final FontMetrics fm = graphics.getFontMetrics();
 		final Player player = client.getLocalPlayer();
 
@@ -208,12 +208,13 @@ public class GroundItemsOverlay extends Overlay
 			if (config.highlightTiles())
 			{
 				final Polygon poly = Perspective.getCanvasTilePoly(client, groundPoint);
+
 				if (poly != null)
 				{
 					OverlayUtil.renderPolygon(graphics, poly, color);
 				}
 			}
-			
+
 			if (dontShowOverlay)
 			{
 				continue;
@@ -230,8 +231,8 @@ public class GroundItemsOverlay extends Overlay
 				else
 				{
 					itemStringBuilder.append(" (")
-							.append(StackFormatter.quantityToStackSize(item.getQuantity()))
-							.append(")");
+						.append(StackFormatter.quantityToStackSize(item.getQuantity()))
+						.append(")");
 				}
 			}
 
@@ -240,29 +241,29 @@ public class GroundItemsOverlay extends Overlay
 				if (item.getGePrice() > 0)
 				{
 					itemStringBuilder.append(" (EX: ")
-							.append(StackFormatter.quantityToStackSize(item.getGePrice()))
-							.append(" gp)");
+						.append(StackFormatter.quantityToStackSize(item.getGePrice()))
+						.append(" gp)");
 				}
 
 				if (item.getHaPrice() > 0)
 				{
 					itemStringBuilder.append(" (HA: ")
-							.append(StackFormatter.quantityToStackSize(item.getHaPrice()))
-							.append(" gp)");
+						.append(StackFormatter.quantityToStackSize(item.getHaPrice()))
+						.append(" gp)");
 				}
 			}
 			else if (config.priceDisplayMode() != PriceDisplayMode.OFF)
 			{
 				final int price = config.priceDisplayMode() == PriceDisplayMode.GE
-						? item.getGePrice()
-						: item.getHaPrice();
+					? item.getGePrice()
+					: item.getHaPrice();
 
 				if (price > 0)
 				{
 					itemStringBuilder
-							.append(" (")
-							.append(StackFormatter.quantityToStackSize(price))
-							.append(" gp)");
+						.append(" (")
+						.append(StackFormatter.quantityToStackSize(price))
+						.append(" gp)");
 				}
 			}
 
