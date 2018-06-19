@@ -92,6 +92,11 @@ public class GroundItemsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (!plugin.isHotKeyPressed() && config.itemHighlightMode() == MENU && !config.highlightTiles())
+		{
+			return null;
+		}
+		
 		final FontMetrics fm = graphics.getFontMetrics();
 		final Player player = client.getLocalPlayer();
 
@@ -170,7 +175,6 @@ public class GroundItemsOverlay extends Overlay
 				continue;
 			}
 
-			final Polygon poly = Perspective.getCanvasTilePoly(client, groundPoint);
 			// Update GE price for item
 			final ItemPrice itemPrice = itemManager.getItemPriceAsync(item.getItemId());
 
@@ -199,9 +203,13 @@ public class GroundItemsOverlay extends Overlay
 
 			final Color color = plugin.getItemColor(highlighted, hidden);
 
-			if (config.highlightTiles() && poly != null)
+			if (config.highlightTiles())
 			{
-				OverlayUtil.renderPolygon(graphics, poly, color);
+				final Polygon poly = Perspective.getCanvasTilePoly(client, groundPoint);
+				if(poly != null)
+				{
+					OverlayUtil.renderPolygon(graphics, poly, color);
+				}
 			}
 
 			if ((config.itemHighlightMode() != MENU) || plugin.isHotKeyPressed())
