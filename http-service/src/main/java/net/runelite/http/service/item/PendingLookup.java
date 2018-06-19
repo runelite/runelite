@@ -31,7 +31,6 @@ class PendingLookup
 {
 	enum Type
 	{
-		PRICE,
 		SEARCH,
 		ITEM;
 	}
