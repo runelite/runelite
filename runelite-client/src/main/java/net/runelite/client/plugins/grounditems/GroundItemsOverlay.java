@@ -92,7 +92,10 @@ public class GroundItemsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isHotKeyPressed() && config.itemHighlightMode() == MENU && !config.highlightTiles())
+		
+		final boolean dontShowOverlay = config.itemHighlightMode() == MENU && !plugin.isHotKeyPressed();
+		
+		if (dontShowOverlay && !config.highlightTiles())
 		{
 			return null;
 		}
@@ -210,54 +213,56 @@ public class GroundItemsOverlay extends Overlay
 					OverlayUtil.renderPolygon(graphics, poly, color);
 				}
 			}
-
-			if ((config.itemHighlightMode() != MENU) || plugin.isHotKeyPressed())
+			
+			if (dontShowOverlay)
 			{
-				itemStringBuilder.append(item.getName());
+				continue;
+			}
 
-				if (item.getQuantity() > 1)
+			itemStringBuilder.append(item.getName());
+
+			if (item.getQuantity() > 1)
+			{
+				if (item.getQuantity() >= MAX_QUANTITY)
 				{
-					if (item.getQuantity() >= MAX_QUANTITY)
-					{
-						itemStringBuilder.append(" (Lots!)");
-					}
-					else
-					{
-						itemStringBuilder.append(" (")
-								.append(StackFormatter.quantityToStackSize(item.getQuantity()))
-								.append(")");
-					}
+					itemStringBuilder.append(" (Lots!)");
+				}
+				else
+				{
+					itemStringBuilder.append(" (")
+							.append(StackFormatter.quantityToStackSize(item.getQuantity()))
+							.append(")");
+				}
+			}
+
+			if (config.priceDisplayMode() == PriceDisplayMode.BOTH)
+			{
+				if (item.getGePrice() > 0)
+				{
+					itemStringBuilder.append(" (EX: ")
+							.append(StackFormatter.quantityToStackSize(item.getGePrice()))
+							.append(" gp)");
 				}
 
-				if (config.priceDisplayMode() == PriceDisplayMode.BOTH)
+				if (item.getHaPrice() > 0)
 				{
-					if (item.getGePrice() > 0)
-					{
-						itemStringBuilder.append(" (EX: ")
-								.append(StackFormatter.quantityToStackSize(item.getGePrice()))
-								.append(" gp)");
-					}
-
-					if (item.getHaPrice() > 0)
-					{
-						itemStringBuilder.append(" (HA: ")
-								.append(StackFormatter.quantityToStackSize(item.getHaPrice()))
-								.append(" gp)");
-					}
+					itemStringBuilder.append(" (HA: ")
+							.append(StackFormatter.quantityToStackSize(item.getHaPrice()))
+							.append(" gp)");
 				}
-				else if (config.priceDisplayMode() != PriceDisplayMode.OFF)
-				{
-					final int price = config.priceDisplayMode() == PriceDisplayMode.GE
-							? item.getGePrice()
-							: item.getHaPrice();
+			}
+			else if (config.priceDisplayMode() != PriceDisplayMode.OFF)
+			{
+				final int price = config.priceDisplayMode() == PriceDisplayMode.GE
+						? item.getGePrice()
+						: item.getHaPrice();
 
-					if (price > 0)
-					{
-						itemStringBuilder
-								.append(" (")
-								.append(StackFormatter.quantityToStackSize(price))
-								.append(" gp)");
-					}
+				if (price > 0)
+				{
+					itemStringBuilder
+							.append(" (")
+							.append(StackFormatter.quantityToStackSize(price))
+							.append(" gp)");
 				}
 			}
 
