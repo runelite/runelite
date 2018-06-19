@@ -109,15 +109,15 @@ public interface GroundItemsConfig extends Config
 		return true;
 	}
 
-    @ConfigItem(
-         keyName = "highlightTiles",
-         name = "Highlight Tiles",
-         description = "Configures whether or not to highlight tiles containing ground items",
-         position = 5
-    )
-    default boolean highlightTiles() { return false; }
+    	@ConfigItem(
+         	keyName = "highlightTiles",
+         	name = "Highlight Tiles",
+         	description = "Configures whether or not to highlight tiles containing ground items",
+         	position = 5
+    	)
+    	default boolean highlightTiles() { return false; }
 
-    @ConfigItem(
+    	@ConfigItem(
 		keyName = "priceDisplayMode",
 		name = "Price Display Mode",
 		description = "Configures what price types are shown alongside of ground item name",
