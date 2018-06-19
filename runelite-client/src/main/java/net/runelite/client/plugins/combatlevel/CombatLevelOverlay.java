@@ -36,8 +36,6 @@ import javax.inject.Inject;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import static java.lang.Math.floor;
 
 public class CombatLevelOverlay extends Overlay
@@ -50,8 +48,6 @@ public class CombatLevelOverlay extends Overlay
 
 	@Inject
 	private TooltipManager tooltipManager;
-
-	private final Map<Skill, Integer> skillsLeft = new LinkedHashMap<>();
 
 	@Override
 	public Dimension render(Graphics2D graphics)
@@ -67,38 +63,14 @@ public class CombatLevelOverlay extends Overlay
 
 		if (combatCanvas.contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
 		{
-			getLevelsUntil();
-			StringBuilder sb = new StringBuilder();
-			sb.append("<col=ff981f>Next combat level:</col></br>");
-
-			for (Map.Entry<Skill, Integer> entry : skillsLeft.entrySet())
-			{
-				String skillType;
-				switch (entry.getKey())
-				{
-					case ATTACK:
-						skillType = " Attack/Strength";
-						break;
-					case DEFENCE:
-						skillType = " Defence/Hitpoints";
-						break;
-					default:
-						skillType = " " + entry.getKey().getName();
-				}
-
-				sb.append(entry.getValue()).append(skillType).append("</br>");
-			}
-
-			tooltipManager.add(new Tooltip(sb.toString()));
+			tooltipManager.add(new Tooltip(getLevelsUntil()));
 		}
 
 		return null;
 	}
 
-	private void getLevelsUntil()
+	private String getLevelsUntil()
 	{
-		skillsLeft.clear();
-
 		// put together information
 		int attackLevel = client.getRealSkillLevel(Skill.ATTACK);
 		int strengthLevel = client.getRealSkillLevel(Skill.STRENGTH);
@@ -121,26 +93,32 @@ public class CombatLevelOverlay extends Overlay
 		int rangeNeed = calcLevelsRM(rangedLevel, next, base);
 		int magicNeed = calcLevelsRM(magicLevel, next, base);
 
+		// create and populate tooltip string
+		StringBuilder sb = new StringBuilder();
+		sb.append("<col=ff981f>Next combat level:</col></br>");
+
 		if ((attackLevel + strengthLevel + meleeNeed) <= 198)
 		{
-			skillsLeft.put(Skill.ATTACK, meleeNeed);
+			sb.append(meleeNeed).append(" Attack/Strength</br>");
 		}
 		if ((hitpointsLevel + defenceLevel + hpdefNeed) <= 198)
 		{
-			skillsLeft.put(Skill.DEFENCE, hpdefNeed);
+			sb.append(hpdefNeed).append(" Defence/Hitpoints</br>");
 		}
 		if ((rangedLevel + rangeNeed) <= 99)
 		{
-			skillsLeft.put(Skill.RANGED, rangeNeed);
+			sb.append(rangeNeed).append(" Ranged</br>");
 		}
 		if ((magicLevel + magicNeed) <= 99)
 		{
-			skillsLeft.put(Skill.MAGIC, magicNeed);
+			sb.append(magicNeed).append(" Magic</br>");
 		}
 		if ((prayerLevel + prayNeed) <= 99)
 		{
-			skillsLeft.put(Skill.PRAYER, prayNeed);
+			sb.append(prayNeed).append(" Prayer");
 		}
+
+		return sb.toString();
 	}
 
 	private static int calcLevels(double start, int end, double multiple)
