@@ -206,7 +206,7 @@ public class GroundItemsOverlay extends Overlay
 			if (config.highlightTiles())
 			{
 				final Polygon poly = Perspective.getCanvasTilePoly(client, groundPoint);
-				if(poly != null)
+				if (poly != null)
 				{
 					OverlayUtil.renderPolygon(graphics, poly, color);
 				}
