@@ -27,6 +27,7 @@ package net.runelite.client.plugins.idlenotifier;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import static java.lang.Math.min;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
@@ -36,14 +37,17 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
+import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Idle Notifier"
@@ -51,6 +55,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class IdleNotifierPlugin extends Plugin
 {
 	private static final int LOGOUT_WARNING_AFTER_TICKS = 14000; // 4 minutes and 40 seconds
+	private static final int LOGOUT_AFTER_TICKS = 15000; // 5 minutes
 	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
 
 	@Inject
@@ -62,6 +67,12 @@ public class IdleNotifierPlugin extends Plugin
 	@Inject
 	private IdleNotifierConfig config;
 
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private SpriteManager spriteManager;
+
 	private Actor lastOpponent;
 	private Instant lastAnimating;
 	private Instant lastInteracting;
@@ -70,9 +81,13 @@ public class IdleNotifierPlugin extends Plugin
 	private boolean notifyPrayer = true;
 	private boolean notifyIdleLogout = true;
 	private boolean notify6HourLogout = true;
+	private boolean timerRendered = false;
+
 
 	private Instant sixHourWarningTime;
 	private boolean ready;
+
+	private int idleTicks = 0;
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
@@ -222,6 +237,15 @@ public class IdleNotifierPlugin extends Plugin
 		final Player local = client.getLocalPlayer();
 		final Duration waitDuration = Duration.ofMillis(config.getIdleNotificationDelay());
 
+		if (config.getTimerEnabled())
+		{
+			renderIdleTimer();
+		}
+		else if (timerRendered)
+		{
+			infoBoxManager.removeIf(t -> t instanceof IdleTimer);
+		}
+
 		if (client.getGameState() != GameState.LOGGED_IN || local == null)
 		{
 			return;
@@ -256,6 +280,39 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			notifier.notify("[" + local.getName() + "] has low prayer!");
 		}
+	}
+
+	private void renderIdleTimer()
+	{
+
+		if (client.getKeyboardIdleTicks() > idleTicks && client.getMouseIdleTicks() > idleTicks)
+		{
+			Duration timeToLogout = durationTillLogout();
+			if (timeToLogout.compareTo(Duration.ofSeconds(config.getTimerThreshold())) < 0 && !timerRendered)
+			{
+				IdleTimer timer = new IdleTimer(spriteManager.getSprite(SpriteID.RS2_TAB_LOGOUT, 0), this, timeToLogout);
+				infoBoxManager.addInfoBox(timer);
+				timerRendered = true;
+			}
+		}
+		else
+		{
+			Duration timeToLogout = durationTillLogout();
+			infoBoxManager.removeIf(t -> t instanceof IdleTimer);
+			timerRendered = false;
+			if (timeToLogout.compareTo(Duration.ofSeconds(config.getTimerThreshold())) < 0)
+			{
+				IdleTimer timer = new IdleTimer(spriteManager.getSprite(SpriteID.RS2_TAB_LOGOUT, 0), this, timeToLogout);
+				infoBoxManager.addInfoBox(timer);
+				timerRendered = true;
+			}
+		}
+	}
+
+	private Duration durationTillLogout()
+	{
+		idleTicks = min(client.getKeyboardIdleTicks(), client.getMouseIdleTicks());
+		return Duration.ofSeconds((LOGOUT_AFTER_TICKS - idleTicks) / 50);
 	}
 
 	private boolean checkLowHitpoints()
