@@ -119,14 +119,14 @@ public interface GroundItemsConfig extends Config
 	{
 		return false;
 	}
-  
+  	
 	@ConfigItem(
-    keyName = "highlightTiles",
-    name = "Highlight Tiles",
-    description = "Configures whether or not to highlight tiles containing ground items",
-    position = 6
-  )
-  default boolean highlightTiles() 
+    	keyName = "highlightTiles",
+    	name = "Highlight Tiles",
+    	description = "Configures whether or not to highlight tiles containing ground items",
+    	position = 6
+  	)
+  	default boolean highlightTiles() 
 	{ 
 		return false; 
 	}
