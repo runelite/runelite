@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2018, Nathen Sample <https://github.com/nathensample>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -96,7 +97,10 @@ public interface IdleNotifierConfig extends Config
 			description = "Displays a MM:SS timer until the user will log out due to idling.",
 			position = 6
 	)
-	default boolean getTimerEnabled() { return false;}
+	default boolean getTimerEnabled()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 			keyName = "timerThreshold",

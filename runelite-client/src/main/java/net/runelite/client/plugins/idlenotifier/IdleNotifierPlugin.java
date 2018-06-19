@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2016-2017, Abel Briggs
  * Copyright (c) 2017, Kronos <https://github.com/KronosDesign>
+ * Copyright (c) 2018, Nathen Sample <https://github.com/nathensample>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -285,7 +286,7 @@ public class IdleNotifierPlugin extends Plugin
 		Duration durationTillLogout = durationTillLogout();
 		if (client.getKeyboardIdleTicks() > idleTicks && client.getMouseIdleTicks() > idleTicks && shouldRenderTimer(durationTillLogout))
 		{
-			if(!timerRendered)
+			if (!timerRendered)
 			{
 				renderIdleTimer(durationTillLogout);
 			}
@@ -294,7 +295,7 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			infoBoxManager.removeIf(t -> t instanceof IdleTimer);
 			timerRendered = false;
-			if(shouldRenderTimer(durationTillLogout))
+			if (shouldRenderTimer(durationTillLogout))
 			{
 				renderIdleTimer(durationTillLogout);
 			}
