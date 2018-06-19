@@ -96,7 +96,6 @@ public class GroundItemsOverlay extends Overlay
 		{
 			return null;
 		}
-		
 		final FontMetrics fm = graphics.getFontMetrics();
 		final Player player = client.getLocalPlayer();
 
