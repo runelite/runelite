@@ -226,4 +226,11 @@ public interface Actor extends Renderable
 	 * @return the world area
 	 */
 	WorldArea getWorldArea();
+
+	/**
+	 * Gets the overhead text that is displayed above the actor
+	 *
+	 * @return the overhead text
+	 */
+	String getOverhead();
 }
