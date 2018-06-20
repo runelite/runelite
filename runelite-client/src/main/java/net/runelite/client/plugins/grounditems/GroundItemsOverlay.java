@@ -53,7 +53,6 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.BackgroundComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.StackFormatter;
-import net.runelite.http.api.item.ItemPrice;
 
 public class GroundItemsOverlay extends Overlay
 {
@@ -175,14 +174,6 @@ public class GroundItemsOverlay extends Overlay
 			if (groundPoint == null || localLocation.distanceTo(groundPoint) > MAX_DISTANCE)
 			{
 				continue;
-			}
-
-			// Update GE price for item
-			final ItemPrice itemPrice = itemManager.getItemPrice(item.getItemId());
-
-			if (itemPrice != null && itemPrice.getPrice() > 0)
-			{
-				item.setGePrice(itemPrice.getPrice() * item.getQuantity());
 			}
 
 			final Color highlighted = plugin.getHighlighted(item);
