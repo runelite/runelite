@@ -92,10 +92,10 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "timer",
-			name = "Display Idle Timer",
-			description = "Displays a MM:SS timer until the user will log out due to idling.",
-			position = 6
+		keyName = "timer",
+		name = "Display Idle Timer",
+		description = "Displays a MM:SS timer until the user will log out due to idling.",
+		position = 6
 	)
 	default boolean getTimerEnabled()
 	{
@@ -103,10 +103,13 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "timerThreshold",
-			name = "Display when X seconds until logout",
-			description = "Threshold in seconds for when the timer should be displayed",
-			position = 7
+		keyName = "timerThreshold",
+		name = "Display when X seconds until logout",
+		description = "Threshold in seconds for when the timer should be displayed",
+		position = 7
 	)
-	default int getTimerThreshold() { return 120; }
+	default int getTimerThreshold()
+	{
+		return 120;
+	}
 }
