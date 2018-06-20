@@ -59,10 +59,20 @@ public class CombatLevelOverlay extends Overlay
 		}
 
 		Widget combatLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
+
+		if (combatLevelWidget == null)
+		{
+			return null;
+		}
+
 		Rectangle combatCanvas = combatLevelWidget.getBounds();
 
-		if (combatLevelWidget != null && combatCanvas != null
-			&& combatCanvas.contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
+		if (combatCanvas == null)
+		{
+			return null;
+		}
+		
+		if (combatCanvas.contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
 		{
 			tooltipManager.add(new Tooltip(getLevelsUntil()));
 		}
