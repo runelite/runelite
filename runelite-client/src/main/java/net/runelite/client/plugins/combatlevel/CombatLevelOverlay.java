@@ -26,6 +26,7 @@ package net.runelite.client.plugins.combatlevel;
 
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import net.runelite.api.TabIndex;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -52,7 +53,7 @@ public class CombatLevelOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		if (!config.showLevelsUntil() || client.getLocalPlayer().getCombatLevel() == 126
-			|| client.getVar(VarClientInt.CURRENT_TAB) != 0)
+			|| client.getVar(VarClientInt.CURRENT_TAB) != TabIndex.ATTACK_STYLES.getValue())
 		{
 			return null;
 		}
