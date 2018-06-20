@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
+ * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,20 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.game.loot.data;
+package net.runelite.api.events;
 
-import java.util.Map;
+
+import lombok.Data;
 import lombok.Getter;
-import net.runelite.api.NPCComposition;
 
-public class SessionNpcLog extends SessionLog
+/**
+ * An event that is triggered when you picked up an item from the floor
+ */
+@Data
+public class ItemPickedUp
 {
 	@Getter
-	private NPCComposition npcComposition;
+	private final int id;
 
-	public SessionNpcLog(Map<Integer, Integer> droppedItems, NPCComposition npcComposition)
-	{
-		super(droppedItems);
-		this.npcComposition = npcComposition;
-	}
+	@Getter
+	private final int qty;
 }
