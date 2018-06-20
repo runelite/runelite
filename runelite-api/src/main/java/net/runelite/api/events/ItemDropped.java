@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
+ * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.game.loot.data;
+package net.runelite.api.events;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import lombok.Data;
 import lombok.Getter;
 
-public class SessionLogData
+/**
+ * An event that is triggered when you picked up an item from the floor
+ */
+@Data
+public class ItemDropped
 {
 	@Getter
-	private List<SessionLog> sessionLogs;
+	private final int id;
 
-	public SessionLogData()
-	{
-		this.sessionLogs = new ArrayList<>();
-	}
-
-	public void reset()
-	{
-		this.sessionLogs.clear();
-	}
+	@Getter
+	private final int qty;
 }

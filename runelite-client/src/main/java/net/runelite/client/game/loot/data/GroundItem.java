@@ -41,18 +41,13 @@ public class GroundItem
 	private WorldPoint location;
 
 	@Getter
-	private SessionLog responsibleLog;
-
-	@Getter
 	private int disappearsOnTick;
 
-	public GroundItem(int itemId, int quantity, WorldPoint location,
-		int disappearsOnTick, SessionLog responsibleLog)
+	public GroundItem(int itemId, int quantity, WorldPoint location, int disappearsOnTick)
 	{
 		this.itemId = itemId;
 		this.quantity = quantity;
 		this.location = location;
 		this.disappearsOnTick = disappearsOnTick;
-		this.responsibleLog = responsibleLog;
 	}
 }
