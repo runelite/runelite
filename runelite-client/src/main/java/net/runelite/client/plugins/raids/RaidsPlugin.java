@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2018, Kamiel, Matsyir
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,6 +64,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
+import net.runelite.client.plugins.raids.solver.Room;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -270,6 +271,57 @@ public class RaidsPlugin extends Plugin
 			{
 				timer = new RaidsTimer(getRaidsIcon(), this, Instant.now());
 				infoBoxManager.addInfoBox(timer);
+
+				if (config.layoutChatMsg())
+				{
+					// Write the layout, and then every room, the same way the panel
+					// overlay displays it. The layout, then combat & puzzle rooms.
+					String layout = getRaid().getLayout().toCode().replaceAll("#", "").replaceAll("¤", "");
+					ChatMessageBuilder msgBuilder = new ChatMessageBuilder()
+							.append(ChatColorType.HIGHLIGHT)
+							.append("[")
+							.append(layout)
+							.append("]: ");
+
+					boolean firstElement = true;
+					for (Room layoutRoom : getRaid().getLayout().getRooms())
+					{
+						int position = layoutRoom.getPosition();
+						RaidRoom room = getRaid().getRoom(position);
+
+						if (room == null) continue;
+
+						if (room.getType() == RaidRoom.Type.COMBAT)
+						{
+							if (!firstElement)
+							{
+								msgBuilder.append(", ");
+							}
+							else
+							{
+								firstElement = false;
+							}
+							msgBuilder.append(room.getBoss().getName());
+						}
+						else if (room.getType() == RaidRoom.Type.PUZZLE)
+						{
+							if (!firstElement)
+							{
+								msgBuilder.append(", ");
+							}
+							else
+							{
+								firstElement = false;
+							}
+							msgBuilder.append(room.getPuzzle().getName());
+						}
+					}
+
+					chatMessageManager.queue(QueuedMessage.builder()
+							.type(ChatMessageType.CLANCHAT_INFO)
+							.runeLiteFormattedMessage(msgBuilder.build())
+							.build());
+				}
 			}
 
 			if (timer != null && message.contains(LEVEL_COMPLETE_MESSAGE))
