@@ -185,8 +185,8 @@ public class GroundItemsOverlay extends Overlay
 				item.setGePrice(itemPrice.getPrice() * item.getQuantity());
 			}
 
-			final Color highlighted = plugin.getHighlighted(item.getName(), item.getGePrice(), item.getHaPrice());
-			final Color hidden = plugin.getHidden(item.getName(), item.getGePrice(), item.getHaPrice(), item.isTradeable());
+			final Color highlighted = plugin.getHighlighted(item);
+			final Color hidden = plugin.getHidden(item);
 
 			if (highlighted == null && !plugin.isHotKeyPressed())
 			{
