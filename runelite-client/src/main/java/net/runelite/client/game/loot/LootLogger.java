@@ -30,7 +30,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
-import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import java.util.ArrayList;
@@ -72,7 +71,9 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.ItemDropped;
 import net.runelite.api.events.ItemLayerChanged;
+import net.runelite.api.events.ItemPickedUp;
 import net.runelite.api.events.LootReceived;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.events.VarbitChanged;
@@ -85,11 +86,6 @@ import net.runelite.client.game.loot.data.MemorizedNpc;
 import net.runelite.client.game.loot.data.MemorizedNpcAndLocation;
 import net.runelite.client.game.loot.data.MemorizedPlayer;
 import net.runelite.client.game.loot.data.PendingItem;
-import net.runelite.client.game.loot.data.SessionEventLog;
-import net.runelite.client.game.loot.data.SessionLog;
-import net.runelite.client.game.loot.data.SessionLogData;
-import net.runelite.client.game.loot.data.SessionNpcLog;
-import net.runelite.client.game.loot.data.SessionPlayerLog;
 
 @Slf4j
 @Singleton
@@ -140,8 +136,6 @@ public class LootLogger
 	private WorldPoint playerLocationLastTick;
 	private WorldPoint cannonLocation;
 
-	private SessionLogData sessionLogData;
-
 	private Item[] prevTickInventoryItems;
 	/**
 	 * An array containing the items in the inventory during the current tick,
@@ -158,7 +152,6 @@ public class LootLogger
 
 	private Multimap<WorldPoint, GroundItem> myItems;
 	private Multimap<Integer, GroundItem> itemDisappearMap;
-	private Multimap<Integer, SessionLog> responsibleLogs;
 	private List<PendingItem> pendingItems; // Items that are in the rewards interface for clues/barrows
 
 	private int tickCounter;
@@ -168,7 +161,6 @@ public class LootLogger
 		this.tickCounter = 0;
 		this.interactedActors = new HashMap<>();
 		this.deadActorsThisTick = new ArrayList<>();
-		this.sessionLogData = new SessionLogData();
 		this.groundItemsLastTick = new HashMap<>();
 		this.changedItemLayerTiles = new HashSet<>();
 		if (client != null && client.getGameState() == GameState.LOGGED_IN)
@@ -185,20 +177,17 @@ public class LootLogger
 		}
 		this.myItems = ArrayListMultimap.create();
 		this.itemDisappearMap = Multimaps.newListMultimap(Maps.newTreeMap(), Lists::newArrayList);
-		this.responsibleLogs = Multimaps.newSetMultimap(Maps.newHashMap(), Sets::newHashSet);
 		this.pendingItems = new ArrayList<>();
 	}
 
 	protected void shutDown()
 	{
 		this.deadActorsThisTick = null;
-		this.sessionLogData = null;
 		this.groundItemsLastTick = null;
 		this.changedItemLayerTiles = null;
 		this.prevTickInventoryItems = null;
 		this.myItems = null;
 		this.itemDisappearMap = null;
-		this.responsibleLogs = null;
 		this.pendingItems = null;
 	}
 
@@ -211,8 +200,6 @@ public class LootLogger
 		changedItemLayerTiles.clear();
 		myItems.clear();
 		itemDisappearMap.clear();
-		responsibleLogs.clear();
-		sessionLogData.reset();
 		pendingItems.clear();
 	}
 
@@ -236,6 +223,24 @@ public class LootLogger
 	private void onNewEventLogCreated(String event, Map<Integer, Integer> drops)
 	{
 		eventBus.post(new EventLootReceived(event, drops));
+	}
+
+	// Player picked up an item
+	private void onItemPickup(int id, int qty)
+	{
+		eventBus.post(new ItemPickedUp(id, qty));
+	}
+
+	// Player Dropped an item
+	private void onItemDropped(int id, int qty)
+	{
+		eventBus.post(new ItemDropped(id, qty));
+	}
+
+	// Player Looted an item from an Event Container
+	private void onEventItemLooted(int id, int qty)
+	{
+		eventBus.post(new ItemPickedUp(id, qty));
 	}
 
 	/*
@@ -385,10 +390,8 @@ public class LootLogger
 	// When the player picks up an item
 	private void onItemsPickedUp(int itemId, int quantity, WorldPoint location)
 	{
-		boolean foundAny = false;
-		int quantityLeft = quantity;
 		Iterator<GroundItem> it = myItems.get(location).iterator();
-		while (quantityLeft > 0 && it.hasNext())
+		while (quantity > 0 && it.hasNext())
 		{
 			GroundItem groundItem = it.next();
 			if (groundItem.getItemId() != itemId)
@@ -396,11 +399,7 @@ public class LootLogger
 				continue;
 			}
 
-			foundAny = true;
-
-			int pickedUp = groundItem.getResponsibleLog().pickUpItemStack(itemId, quantityLeft);
-			groundItem.setQuantity(groundItem.getQuantity() - pickedUp);
-			quantityLeft -= pickedUp;
+			groundItem.setQuantity(groundItem.getQuantity() - quantity);
 			if (groundItem.getQuantity() == 0)
 			{
 				it.remove();
@@ -408,77 +407,23 @@ public class LootLogger
 			}
 		}
 
-		if (foundAny)
-		{
-			log.debug("Picked up {1} of itemId: {0}", itemId, quantity - quantityLeft);
-		}
+		log.debug("Picked up {1} of itemId: {0}", itemId, quantity);
+		onItemPickup(itemId, quantity);
 	}
 
 	// When the player drops an item
-	private void onItemsDropped(int itemId, int quantity, WorldPoint location, SessionLog responsibleLog)
+	private void onItemsDropped(int itemId, int quantity, WorldPoint location)
 	{
 		int itemDuration = (client.isInInstancedRegion() ? INSTANCE_DROP_DISAPPEAR_TIME : PLAYER_DROP_DISAPPEAR_TIME);
-		boolean foundAny = false;
-		int quantityLeft = quantity;
-		if (responsibleLog == null)
-		{
-			Iterator<SessionLog> it = responsibleLogs.get(itemId).iterator();
-			while (quantityLeft > 0 && it.hasNext())
-			{
-				SessionLog log = it.next();
-				int dropped = log.dropItemStack(itemId, quantityLeft);
-				quantityLeft -= dropped;
 
-				if (dropped > 0)
-				{
-					foundAny = true;
+		int disappearsOnTick = tickCounter + itemDuration;
+		GroundItem groundItem = new GroundItem(itemId, quantity, location,
+				disappearsOnTick);
+		myItems.put(location, groundItem);
+		itemDisappearMap.put(disappearsOnTick, groundItem);
 
-					int disappearsOnTick = tickCounter + itemDuration;
-					GroundItem groundItem = new GroundItem(itemId, dropped, location,
-							disappearsOnTick, log);
-					myItems.put(location, groundItem);
-					itemDisappearMap.put(disappearsOnTick, groundItem);
-				}
-			}
-		}
-		else
-		{
-			int disappearsOnTick = tickCounter + itemDuration;
-			GroundItem groundItem = new GroundItem(itemId, quantity, location,
-					disappearsOnTick, responsibleLog);
-			myItems.put(location, groundItem);
-			itemDisappearMap.put(disappearsOnTick, groundItem);
-			foundAny = true;
-			quantityLeft = 0;
-		}
-
-		if (foundAny)
-		{
-			log.debug("Dropped {1} of itemId: {0}", itemId, quantity - quantityLeft);
-		}
-	}
-
-	private void onItemsFinalized(int itemId, int quantity)
-	{
-		int quantityLeft = quantity;
-		Iterator<SessionLog> it = responsibleLogs.get(itemId).iterator();
-		while (quantityLeft > 0 && it.hasNext())
-		{
-			SessionLog log = it.next();
-			int finalized = log.finalizeItemStack(itemId, quantityLeft);
-			if (finalized == quantityLeft && log.isEverythingFinalized())
-			{
-				// All drops in the log are finalized so we don't need to keep
-				// track of them any more
-				it.remove();
-			}
-			quantityLeft -= finalized;
-		}
-
-		if (quantity - quantityLeft > 0)
-		{
-			log.debug("Finalized {1} of itemId: {0}    : 1", itemId, quantity - quantityLeft);
-		}
+		log.debug("Dropped {1} of itemId: {0}", itemId, quantity);
+		onItemDropped(itemId, quantity);
 	}
 
 	private void pickupRewardItems()
@@ -496,7 +441,6 @@ public class LootLogger
 		while (it.hasNext())
 		{
 			PendingItem item = it.next();
-			item.getEventLog().pickUpItemStack(item.getItemId(), item.getQuantity());
 			log.debug("Picked up event items (id: {0}, qty: {1}", item.getItemId(), item.getQuantity());
 			if (!inventoryItems.contains(item.getItemId()))
 			{
@@ -583,10 +527,9 @@ public class LootLogger
 			{
 				Map<Integer, Integer> barrowsReward = Arrays.stream(thisTickRewardItems)
 						.collect(Collectors.toMap(Item::getId, Item::getQuantity));
-				SessionEventLog eventLog = new SessionEventLog(barrowsReward, "Barrows");
 				onNewEventLogCreated(LootTypes.BARROWS, barrowsReward);
 				pendingItems.addAll(Arrays.stream(thisTickRewardItems)
-						.map(x -> new PendingItem(x.getId(), x.getQuantity(), eventLog))
+						.map(x -> new PendingItem(x.getId(), x.getQuantity()))
 						.collect(Collectors.toList()));
 				pickupRewardItems();
 			}
@@ -626,10 +569,9 @@ public class LootLogger
 					}
 					break;
 				}
-				SessionEventLog eventLog = new SessionEventLog(clueScrollReward, clueScrollType);
 				onNewEventLogCreated(clueScrollType, clueScrollReward);
 				pendingItems.addAll(Arrays.stream(thisTickRewardItems)
-						.map(x -> new PendingItem(x.getId(), x.getQuantity(), eventLog))
+						.map(x -> new PendingItem(x.getId(), x.getQuantity()))
 						.collect(Collectors.toList()));
 				pickupRewardItems();
 			}
@@ -638,10 +580,9 @@ public class LootLogger
 		{
 			Map<Integer, Integer> reward = Arrays.stream(chambersOfXericItems)
 					.collect(Collectors.toMap(Item::getId, Item::getQuantity));
-			SessionEventLog eventLog = new SessionEventLog(reward, LootTypes.RAIDS);
 			onNewEventLogCreated(LootTypes.RAIDS, reward);
 			pendingItems.addAll(Arrays.stream(chambersOfXericItems)
-					.map(x -> new PendingItem(x.getId(), x.getQuantity(), eventLog))
+					.map(x -> new PendingItem(x.getId(), x.getQuantity()))
 					.collect(Collectors.toList()));
 			pickupRewardItems();
 
@@ -664,8 +605,7 @@ public class LootLogger
 					if (itemDiff.getOrDefault(pendingItem.getItemId(), 0) ==
 							pendingItem.getQuantity())
 					{
-						onItemsDropped(pendingItem.getItemId(), pendingItem.getQuantity(),
-								playerLocationLastTick, pendingItem.getEventLog());
+						onItemsDropped(pendingItem.getItemId(), pendingItem.getQuantity(), playerLocationLastTick);
 						it.remove();
 					}
 				}
@@ -686,17 +626,6 @@ public class LootLogger
 
 			GroundItem groundItem = entry.getValue();
 			myItems.get(groundItem.getLocation()).remove(groundItem);
-			groundItem.getResponsibleLog().disappearItems(
-					groundItem.getItemId(), groundItem.getQuantity());
-			if (groundItem.getResponsibleLog().isEverythingFinalized())
-			{
-				// Items in the log can no longer be dropped or picked up,
-				// so we don't need to keep track of them any more
-				responsibleLogs.get(groundItem.getItemId())
-						.remove(groundItem.getResponsibleLog());
-				log.debug("Finalized {1} of itemId: {0}    : 2", groundItem.getItemId(),
-						groundItem.getQuantity());
-			}
 			it.remove();
 		}
 	}
@@ -756,13 +685,13 @@ public class LootLogger
 			{
 				// Items were dropped
 				int amount = Math.min(-value, groundItemCount);
-				onItemsDropped(key, amount, playerLocationLastTick, null);
+				onItemsDropped(key, amount, playerLocationLastTick);
 			}
 			else if (value < 0)
 			{
 				// Items disappeared from the inventory in some
 				// other way, such as banking them
-				onItemsFinalized(key, -value);
+				return;
 			}
 		});
 	}
@@ -1043,17 +972,13 @@ public class LootLogger
 				drops.put(entry.getValue().getItemId(), nextCount + count);
 			}
 
-			SessionLog detailedLog;
 			Actor actor = pad.getActor();
 			if (pad instanceof MemorizedNpc)
 			{
-				detailedLog = new SessionNpcLog(drops, ((MemorizedNpc) pad).getNpcComposition());
 				onNewNpcLogCreated(pad.getName(), actor, drops);
 			}
 			else if (pad instanceof MemorizedPlayer)
 			{
-						detailedLog = new SessionPlayerLog(drops, ((MemorizedPlayer) pad).getName(),
-						actor.getCombatLevel());
 				onNewPlayerLogCreated(pad.getName(), actor, drops);
 			}
 			else
@@ -1077,7 +1002,7 @@ public class LootLogger
 				int itemDuration = (client.isInInstancedRegion() ? INSTANCE_DROP_DISAPPEAR_TIME : NPC_DROP_DISAPPEAR_TIME);
 				int disappearsOnTick = tickCounter + itemDuration;
 				GroundItem groundItem = new GroundItem(entry.getValue().getItemId(),
-						nextCount, entry.getKey(), disappearsOnTick, detailedLog);
+						nextCount, entry.getKey(), disappearsOnTick);
 
 				// Memorize which items on the ground were dropped by the users
 				// kills and when we can forget them

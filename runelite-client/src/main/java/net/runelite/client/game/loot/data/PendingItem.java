@@ -36,13 +36,9 @@ public class PendingItem
 	@Setter
 	private int quantity;
 
-	@Getter
-	private SessionEventLog eventLog;
-
-	public PendingItem(int itemId, int quantity, SessionEventLog eventLog)
+	public PendingItem(int itemId, int quantity)
 	{
 		this.itemId = itemId;
 		this.quantity = quantity;
-		this.eventLog = eventLog;
 	}
 }
