@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Brett Middle <github.com/bmiddle>
+ * Copyright (c) 2018, Brett Middle <https://github.com/bmiddle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
