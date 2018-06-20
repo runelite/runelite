@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.events;
+
+import lombok.Data;
+import lombok.Getter;
+import net.runelite.api.Actor;
+import java.util.Map;
 
 /**
- * An enumeration of possible inventory types.
+ * An event where you killed an {@link Actor} and received loot
  */
-public enum InventoryID
+@Data
+public class LootReceived
 {
-	/**
-	 * Standard player inventory.
-	 */
-	INVENTORY(93),
-	/**
-	 * Equipment inventory.
-	 */
-	EQUIPMENT(94),
-	/**
-	 * Bank inventory.
-	 */
-	BANK(95),
-	/**
-	 * A puzzle box inventory.
-	 */
-	PUZZLE_BOX(140),
-	/**
-	 * Barrows reward chest inventory.
-	 */
-	BARROWS_REWARD(141),
-	/**
-	 * Chambers of Xeric chest inventory.
-	 */
-	CHAMBERS_OF_XERIC_CHEST(581);
+	@Getter
+	private final String type;
 
-	private final int id;
+	@Getter
+	private final String name;
 
-	InventoryID(int id)
-	{
-		this.id = id;
-	}
+	@Getter
+	private final Actor actor;
 
-	/**
-	 * Gets the raw inventory type ID.
-	 *
-	 * @return inventory type
-	 */
-	public int getId()
-	{
-		return id;
-	}
+	@Getter
+	private final Map<Integer, Integer> items;
 }

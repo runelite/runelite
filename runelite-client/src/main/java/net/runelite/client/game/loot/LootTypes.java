@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.game.loot;
 
-/**
- * An enumeration of possible inventory types.
- */
-public enum InventoryID
+public class LootTypes
 {
-	/**
-	 * Standard player inventory.
-	 */
-	INVENTORY(93),
-	/**
-	 * Equipment inventory.
-	 */
-	EQUIPMENT(94),
-	/**
-	 * Bank inventory.
-	 */
-	BANK(95),
-	/**
-	 * A puzzle box inventory.
-	 */
-	PUZZLE_BOX(140),
-	/**
-	 * Barrows reward chest inventory.
-	 */
-	BARROWS_REWARD(141),
-	/**
-	 * Chambers of Xeric chest inventory.
-	 */
-	CHAMBERS_OF_XERIC_CHEST(581);
-
-	private final int id;
-
-	InventoryID(int id)
-	{
-		this.id = id;
-	}
-
-	/**
-	 * Gets the raw inventory type ID.
-	 *
-	 * @return inventory type
-	 */
-	public int getId()
-	{
-		return id;
-	}
+	public static final String NPC = "NPC";
+	public static final String PLAYER = "PLAYER";
+	public static final String UNKNOWN_EVENT = "UNKNOWN EVENT";
+	public static final String BARROWS = "BARROWS";
+	public static final String RAIDS = "RAIDS";
+	public static final String CHAMBERS_OF_XERIC = "RAIDS";
+	public static final String RAIDS_2 = "THEATRE OF BLOOD";
+	public static final String THEATRE_OF_BLOOD = "THEATRE OF BLOOD";
+	public static final String CLUE_SCROLL_EASY = "CLUE SCROLL EASY";
+	public static final String CLUE_SCROLL_MEDIUM = "CLUE SCROLL MEDIUM";
+	public static final String CLUE_SCROLL_HARD = "CLUE SCROLL HARD";
+	public static final String CLUE_SCROLL_ELITE = "CLUE SCROLL ELITE";
+	public static final String CLUE_SCROLL_MASTER = "CLUE SCROLL MASTER";
 }
