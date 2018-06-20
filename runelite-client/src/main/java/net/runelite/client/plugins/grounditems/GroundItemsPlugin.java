@@ -371,72 +371,74 @@ public class GroundItemsPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (config.itemHighlightMode() != OVERLAY
-			&& event.getOption().equals("Take")
-			&& event.getType() == MenuAction.GROUND_ITEM_THIRD_OPTION.getId())
+		if (config.itemHighlightMode() == OVERLAY
+			|| !event.getOption().equals("Take")
+			|| event.getType() != MenuAction.GROUND_ITEM_THIRD_OPTION.getId())
 		{
-			int itemId = event.getIdentifier();
-			Region region = client.getRegion();
-			Tile tile = region.getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
-			ItemLayer itemLayer = tile.getItemLayer();
-
-			if (itemLayer == null)
-			{
-				return;
-			}
-
-			MenuEntry[] menuEntries = client.getMenuEntries();
-			MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
-
-			int quantity = 1;
-			Node current = itemLayer.getBottom();
-
-			while (current instanceof Item)
-			{
-				Item item = (Item) current;
-				if (item.getId() == itemId)
-				{
-					quantity = item.getQuantity();
-				}
-				current = current.getNext();
-			}
-
-			final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemComposition.getId();
-			final ItemPrice itemPrice = itemManager.getItemPrice(realItemId);
-			final int price = itemPrice == null ? itemComposition.getPrice() : itemPrice.getPrice();
-			final int haPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity;
-			final int gePrice = quantity * price;
-			final Color hidden = getHidden(itemComposition.getName(), gePrice, haPrice, itemComposition.isTradeable());
-			final Color highlighted = getHighlighted(itemComposition.getName(), gePrice, haPrice);
-			final Color color = getItemColor(highlighted, hidden);
-			final boolean canBeRecolored = highlighted != null || (hidden != null && config.recolorMenuHiddenItems());
-
-			if (color != null && canBeRecolored && !color.equals(config.defaultColor()))
-			{
-				String hexColor = Integer.toHexString(color.getRGB() & 0xFFFFFF);
-				String colTag = "<col=" + hexColor + ">";
-				final MenuHighlightMode mode = config.menuHighlightMode();
-
-				if (mode == BOTH || mode == OPTION)
-				{
-					lastEntry.setOption(colTag + "Take");
-				}
-
-				if (mode == BOTH || mode == NAME)
-				{
-					String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
-					lastEntry.setTarget(colTag + target);
-				}
-			}
-
-			if (config.showMenuItemQuantities() && itemComposition.isStackable() && quantity > 1)
-			{
-				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
-			}
-
-			client.setMenuEntries(menuEntries);
+			return;
 		}
+
+		int itemId = event.getIdentifier();
+		Region region = client.getRegion();
+		Tile tile = region.getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
+		ItemLayer itemLayer = tile.getItemLayer();
+
+		if (itemLayer == null)
+		{
+			return;
+		}
+
+		MenuEntry[] menuEntries = client.getMenuEntries();
+		MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
+
+		int quantity = 1;
+		Node current = itemLayer.getBottom();
+
+		while (current instanceof Item)
+		{
+			Item item = (Item) current;
+			if (item.getId() == itemId)
+			{
+				quantity = item.getQuantity();
+			}
+			current = current.getNext();
+		}
+
+		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemComposition.getId();
+		final ItemPrice itemPrice = itemManager.getItemPrice(realItemId);
+		final int price = itemPrice == null ? itemComposition.getPrice() : itemPrice.getPrice();
+		final int haPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity;
+		final int gePrice = quantity * price;
+		final Color hidden = getHidden(itemComposition.getName(), gePrice, haPrice, itemComposition.isTradeable());
+		final Color highlighted = getHighlighted(itemComposition.getName(), gePrice, haPrice);
+		final Color color = getItemColor(highlighted, hidden);
+		final boolean canBeRecolored = highlighted != null || (hidden != null && config.recolorMenuHiddenItems());
+
+		if (color != null && canBeRecolored && !color.equals(config.defaultColor()))
+		{
+			String hexColor = Integer.toHexString(color.getRGB() & 0xFFFFFF);
+			String colTag = "<col=" + hexColor + ">";
+			final MenuHighlightMode mode = config.menuHighlightMode();
+
+			if (mode == BOTH || mode == OPTION)
+			{
+				lastEntry.setOption(colTag + "Take");
+			}
+
+			if (mode == BOTH || mode == NAME)
+			{
+				String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
+				lastEntry.setTarget(colTag + target);
+			}
+		}
+
+		if (config.showMenuItemQuantities() && itemComposition.isStackable() && quantity > 1)
+		{
+			lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
+		}
+
+		client.setMenuEntries(menuEntries);
 	}
 
 	void updateList(String item, boolean hiddenList)
