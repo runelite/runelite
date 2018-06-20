@@ -102,6 +102,7 @@ public class WidgetID
 	public static final int MTA_TELEKINETIC_GROUP_ID = 198;
 	public static final int CORP_DAMAGE = 13;
 	public static final int DESTROY_ITEM_GROUP_ID = 584;
+	public static final int THEATRE_OF_BLOOD_GROUP_ID = 23;
 
 	static class WorldMap
 	{
