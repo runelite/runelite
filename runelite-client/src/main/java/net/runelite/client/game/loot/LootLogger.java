@@ -144,11 +144,15 @@ public class LootLogger
 	private Item[] thisTickInventoryItems;
 	private Item[] thisTickRewardItems;
 	private Item[] chambersOfXericItems;
+	private Item[] theatreOfBloodItems;
+
 
 	private boolean openedClueScrollThisTick = false;
 	private boolean openedBarrowsChestThisTick = false;
 	private boolean completedChambersOfXericThisTick = false;
 	private boolean hasOpenedRaidsRewardChest = false;
+	private boolean completedTheatreOfBloodThisTick = false;
+	private boolean hasOpenedTheatreOfBloodRewardChest = false;
 
 	private Multimap<WorldPoint, GroundItem> myItems;
 	private Multimap<Integer, GroundItem> itemDisappearMap;
@@ -587,6 +591,19 @@ public class LootLogger
 			pickupRewardItems();
 
 			completedChambersOfXericThisTick = false;
+		}
+
+		if (completedTheatreOfBloodThisTick)
+		{
+			Map<Integer, Integer> reward = Arrays.stream(theatreOfBloodItems)
+					.collect(Collectors.toMap(Item::getId, Item::getQuantity));
+			onNewEventLogCreated(LootTypes.THEATRE_OF_BLOOD, reward);
+			pendingItems.addAll(Arrays.stream(theatreOfBloodItems)
+					.map(x -> new PendingItem(x.getId(), x.getQuantity()))
+					.collect(Collectors.toList()));
+			pickupRewardItems();
+
+			completedTheatreOfBloodThisTick = false;
 		}
 
 		if (!pendingItems.isEmpty())
@@ -1045,6 +1062,7 @@ public class LootLogger
 		this.openedClueScrollThisTick = false;
 		this.openedBarrowsChestThisTick = false;
 		this.completedChambersOfXericThisTick = false;
+		this.completedTheatreOfBloodThisTick = false;
 	}
 
 	/*
@@ -1116,6 +1134,11 @@ public class LootLogger
 		{
 			completedChambersOfXericThisTick = true;
 			hasOpenedRaidsRewardChest = true;
+		}
+		else if (event.getGroupId() == WidgetID.THEATRE_OF_BLOOD_GROUP_ID && !hasOpenedTheatreOfBloodRewardChest)
+		{
+			completedTheatreOfBloodThisTick = true;
+			hasOpenedTheatreOfBloodRewardChest = true;
 		}
 	}
 
@@ -1196,6 +1219,10 @@ public class LootLogger
 		else if (event.getItemContainer() == client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST))
 		{
 			this.chambersOfXericItems = event.getItemContainer().getItems();
+		}
+		else if (event.getItemContainer() == client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST))
+		{
+			this.theatreOfBloodItems = event.getItemContainer().getItems();
 		}
 	}
 
