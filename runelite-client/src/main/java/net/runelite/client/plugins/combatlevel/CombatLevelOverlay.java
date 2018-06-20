@@ -36,7 +36,6 @@ import javax.inject.Inject;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import static java.lang.Math.floor;
 
 public class CombatLevelOverlay extends Overlay
 {
@@ -61,7 +60,8 @@ public class CombatLevelOverlay extends Overlay
 		Widget combatLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
 		Rectangle combatCanvas = combatLevelWidget.getBounds();
 
-		if (combatCanvas.contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
+		if (combatLevelWidget != null && combatCanvas != null
+			&& combatCanvas.contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
 		{
 			tooltipManager.add(new Tooltip(getLevelsUntil()));
 		}
@@ -79,17 +79,18 @@ public class CombatLevelOverlay extends Overlay
 		int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
 		int rangedLevel = client.getRealSkillLevel(Skill.RANGED);
 		int prayerLevel = client.getRealSkillLevel(Skill.PRAYER);
-		double base = 0.25 * (defenceLevel + hitpointsLevel + floor(prayerLevel / 2));
+
+		double base = 0.25 * (defenceLevel + hitpointsLevel + Math.floor(prayerLevel / 2));
 		double melee = 0.325 * (attackLevel + strengthLevel);
-		double range = 0.325 * (floor(rangedLevel / 2) + rangedLevel);
-		double mage = 0.325 * (floor(magicLevel / 2) + magicLevel);
+		double range = 0.325 * Math.floor(rangedLevel * 1.5);
+		double mage = 0.325 * Math.floor(magicLevel * 1.5);
 		double max = Math.max(melee, Math.max(range, mage));
 
 		// begin calculating levels
-		int next = (int) floor(base + max) + 1;
-		int meleeNeed = calcLevels((base + melee), next, 0.325);
-		int hpdefNeed = calcLevels((base + max), next, 0.25025);
-		int prayNeed = calcLevels((base + max), next, 0.125);
+		int next = client.getLocalPlayer().getCombatLevel() + 1;
+		int meleeNeed = calcLevels(base + melee, next, 0.325);
+		int hpdefNeed = calcLevels(base + max, next, 0.25025);
+		int prayNeed = calcLevels(base + max, next, 0.125);
 		int rangeNeed = calcLevelsRM(rangedLevel, next, base);
 		int magicNeed = calcLevelsRM(magicLevel, next, base);
 
@@ -123,25 +124,12 @@ public class CombatLevelOverlay extends Overlay
 
 	private static int calcLevels(double start, int end, double multiple)
 	{
-		int need = 0;
-		while (start < end)
-		{
-			start += multiple;
-			need++;
-		}
-		return need;
+		return (int) Math.ceil((end - start) / multiple);
 	}
 
 	private static int calcLevelsRM(double start, int end, double dhp)
 	{
-		int need = 0;
-		double base = start;
-		start = floor(start * 1.5) * 0.325;
-		while ((start + dhp) < end)
-		{
-			need++;
-			start = floor((base + need) * 1.5) * 0.325;
-		}
-		return need;
+		start = Math.floor(start * 0.4875);
+		return (int) Math.ceil((end - dhp - start) / 0.4875);
 	}
 }
