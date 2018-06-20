@@ -475,4 +475,10 @@ public class IdleNotifierPlugin extends Plugin
 		lastOpponent = null;
 		lastInteracting = null;
 	}
+
+	@Override
+	protected void shutDown()
+	{
+		infoBoxManager.removeIf(t -> t instanceof IdleTimer);
+	}
 }
