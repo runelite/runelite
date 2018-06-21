@@ -22,20 +22,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.client.game.loot.events;
 
 import lombok.Data;
 import lombok.Getter;
+import net.runelite.api.Actor;
 import java.util.Map;
 
 /**
- * An event where you finished an event and received loot
+ * An event where you killed an {@link Actor} and received loot
  */
 @Data
-public class EventLootReceived
+public class LootReceived
 {
 	@Getter
-	private final String event;
+	private final String type;
+
+	@Getter
+	private final String name;
+
+	@Getter
+	private final Actor actor;
 
 	@Getter
 	private final Map<Integer, Integer> items;
