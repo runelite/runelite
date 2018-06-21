@@ -28,8 +28,6 @@ package net.runelite.client.plugins.puzzlesolver;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -40,7 +38,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Puzzle Solver"
@@ -51,10 +49,10 @@ public class PuzzleSolverPlugin extends Plugin
 	private PuzzleSolverOverlay puzzleSolverOverlay;
 
 	@Inject
-	private LightBoxSolverOverlay overlay;
+	private LightBoxSolverOverlay lightBoxSolverOverlay;
 
 	@Inject
-	private ScheduledExecutorService executorService;
+	private OverlayManager overlayManager;
 
 	@Inject
 	private Client client;
@@ -255,8 +253,16 @@ public class PuzzleSolverPlugin extends Plugin
 	}
 
 	@Override
-	public List<Overlay> getOverlays()
+	protected void startUp() throws Exception
 	{
-		return Arrays.asList(puzzleSolverOverlay, overlay);
+		overlayManager.add(puzzleSolverOverlay);
+		overlayManager.add(lightBoxSolverOverlay);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(puzzleSolverOverlay);
+		overlayManager.remove(lightBoxSolverOverlay);
 	}
 }
