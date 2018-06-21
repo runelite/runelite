@@ -66,15 +66,11 @@ import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDespawned;
 import net.runelite.api.events.AnimationChanged;
-import net.runelite.api.events.EventLootReceived;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.ItemDropped;
 import net.runelite.api.events.ItemLayerChanged;
-import net.runelite.api.events.ItemPickedUp;
-import net.runelite.api.events.LootReceived;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
@@ -86,6 +82,10 @@ import net.runelite.client.game.loot.data.MemorizedNpc;
 import net.runelite.client.game.loot.data.MemorizedNpcAndLocation;
 import net.runelite.client.game.loot.data.MemorizedPlayer;
 import net.runelite.client.game.loot.data.PendingItem;
+import net.runelite.client.game.loot.events.EventLootReceived;
+import net.runelite.client.game.loot.events.ItemDropped;
+import net.runelite.client.game.loot.events.ItemPickedUp;
+import net.runelite.client.game.loot.events.LootReceived;
 
 @Slf4j
 @Singleton
