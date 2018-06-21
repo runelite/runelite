@@ -95,6 +95,10 @@ public abstract class RSNPCMixin implements RSNPC
 	@Inject
 	public void onCompositionChanged(RSNPCComposition composition)
 	{
+		// Update cached composition
+		if (this.composition == null || composition != null)
+			this.composition = composition;
+
 		if (composition == null)
 		{
 			eventBus.post(new NpcDespawned(this));
