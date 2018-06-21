@@ -27,131 +27,105 @@ package net.runelite.client.plugins.boosts;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.time.Instant;
 import javax.inject.Inject;
-import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
-import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 class BoostsOverlay extends Overlay
 {
-	@Getter
-	private final BoostIndicator[] indicators = new BoostIndicator[Skill.values().length - 1];
-
 	private final Client client;
 	private final BoostsConfig config;
-	private final InfoBoxManager infoBoxManager;
 	private final PanelComponent panelComponent = new PanelComponent();
+	private final BoostsPlugin plugin;
 
 	@Inject
-	private BoostsPlugin plugin;
-
-	@Inject
-	private SkillIconManager iconManager;
-
-	private boolean overlayActive;
-
-	@Inject
-	BoostsOverlay(Client client, BoostsConfig config, InfoBoxManager infoBoxManager)
+	private BoostsOverlay(Client client, BoostsConfig config, BoostsPlugin plugin)
 	{
-		setPosition(OverlayPosition.TOP_LEFT);
-		setPriority(OverlayPriority.MED);
+		this.plugin = plugin;
 		this.client = client;
 		this.config = config;
-		this.infoBoxManager = infoBoxManager;
+		setPosition(OverlayPosition.TOP_LEFT);
+		setPriority(OverlayPriority.MED);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Instant lastChange = plugin.getLastChange();
+		if (config.displayIndicators())
+		{
+			return null;
+		}
+
 		panelComponent.getChildren().clear();
 
-		if (!config.displayIndicators()
-			&& config.displayNextChange()
-			&& lastChange != null
-			&& overlayActive)
+		if (config.displayNextBuffChange())
 		{
-			int nextChange = plugin.getChangeTime();
-			if (nextChange > 0)
+			int nextChange = plugin.getChangeDownTime();
+
+			if (nextChange != -1)
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Next change in")
+					.left("Next + restore in")
 					.right(String.valueOf(nextChange))
 					.build());
 			}
 		}
 
-		overlayActive = false;
+		if (config.displayNextDebuffChange())
+		{
+			int nextChange = plugin.getChangeUpTime();
+
+			if (nextChange != -1)
+			{
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("Next - restore in")
+					.right(String.valueOf(nextChange))
+					.build());
+			}
+		}
+
+		if (!plugin.canShowBoosts())
+		{
+			return null;
+		}
 
 		for (Skill skill : plugin.getShownSkills())
 		{
-			int boosted = client.getBoostedSkillLevel(skill),
-				base = client.getRealSkillLevel(skill);
-
-			BoostIndicator indicator = indicators[skill.ordinal()];
+			final int boosted = client.getBoostedSkillLevel(skill);
+			final int base = client.getRealSkillLevel(skill);
 
 			if (boosted == base)
 			{
-				if (indicator != null && infoBoxManager.getInfoBoxes().contains(indicator))
-				{
-					infoBoxManager.removeInfoBox(indicator);
-				}
-
 				continue;
 			}
 
-			overlayActive = true;
+			final int boost = boosted - base;
+			final Color strColor = getTextColor(boost);
+			String str;
 
-			if (config.displayIndicators())
+			if (config.useRelativeBoost())
 			{
-				if (indicator == null)
+				str = String.valueOf(boost);
+				if (boost > 0)
 				{
-					indicator = new BoostIndicator(skill, iconManager.getSkillImage(skill), plugin, client, config);
-					indicators[skill.ordinal()] = indicator;
-				}
-
-				if (!infoBoxManager.getInfoBoxes().contains(indicator))
-				{
-					infoBoxManager.addInfoBox(indicator);
+					str = "+" + str;
 				}
 			}
 			else
 			{
-				if (indicator != null && infoBoxManager.getInfoBoxes().contains(indicator))
-				{
-					infoBoxManager.removeInfoBox(indicator);
-				}
-
-				String str;
-				int boost = boosted - base;
-				Color strColor = getTextColor(boost);
-				if (!config.useRelativeBoost())
-				{
-					str = "<col=" + Integer.toHexString(strColor.getRGB() & 0xFFFFFF) + ">" + boosted + "<col=ffffff>/" + base;
-				}
-				else
-				{
-					str = String.valueOf(boost);
-					if (boost > 0)
-					{
-						str = "+" + str;
-					}
-				}
-
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left(skill.getName())
-					.right(str)
-					.rightColor(strColor)
-					.build());
+				str = "<col=" + Integer.toHexString(strColor.getRGB() & 0xFFFFFF) + ">" + boosted + "<col=ffffff>/" + base;
 			}
+
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(skill.getName())
+				.right(str)
+				.rightColor(strColor)
+				.build());
 		}
 
 		return panelComponent.render(graphics);
