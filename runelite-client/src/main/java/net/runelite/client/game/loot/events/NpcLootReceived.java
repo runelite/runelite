@@ -29,7 +29,8 @@ import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.coords.WorldPoint;
-import java.util.Map;
+import net.runelite.client.game.loot.data.ItemStack;
+import java.util.List;
 
 /**
  * An event where you killed an {@link NPC} and received loot
@@ -47,5 +48,5 @@ public class NpcLootReceived
 	private final WorldPoint location;
 
 	@Getter
-	private final Map<Integer, Integer> items;
+	private final List<ItemStack> items;
 }

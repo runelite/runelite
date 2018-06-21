@@ -29,14 +29,14 @@ import lombok.Getter;
 public class ItemStack
 {
 	@Getter
-	private int itemId;
+	private int id;
 
 	@Getter
 	private int quantity;
 
 	public ItemStack(int itemId, int quantity)
 	{
-		this.itemId = itemId;
+		this.id = itemId;
 		this.quantity = quantity;
 	}
 }
