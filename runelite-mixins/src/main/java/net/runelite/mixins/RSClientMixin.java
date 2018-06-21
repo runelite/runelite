@@ -59,7 +59,6 @@ import net.runelite.api.SpritePixels;
 import net.runelite.api.Tile;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
-import net.runelite.api.WidgetNode;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -69,7 +68,6 @@ import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
-import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.PlayerDespawned;
@@ -661,20 +659,6 @@ public abstract class RSClientMixin implements RSClient
 		}
 	}
 
-	@Copy("closeWidget")
-	public static void rs$closeWidget(WidgetNode widget, boolean b)
-	{
-		throw new RuntimeException();
-	}
-
-	@Replace("closeWidget")
-	public static void rl$closeWidget(WidgetNode widget, boolean b)
-	{
-		MenuEntry[] entries = client.getMenuEntries();
-		rs$closeWidget(widget, b);
-		client.setMenuEntries(entries);
-	}
-
 	@Copy("runWidgetOnLoadListener")
 	public static void rs$runWidgetOnLoadListener(int groupId)
 	{
@@ -748,15 +732,6 @@ public abstract class RSClientMixin implements RSClient
 			boostedLevelChanged.setSkill(updatedSkill);
 			eventBus.post(boostedLevelChanged);
 		}
-	}
-
-	@FieldHook("mapRegions")
-	@Inject
-	public static void mapRegionsChanged(int idx)
-	{
-		MapRegionChanged regionChanged = new MapRegionChanged();
-		regionChanged.setIndex(idx);
-		eventBus.post(regionChanged);
 	}
 
 	@FieldHook("playerOptions")

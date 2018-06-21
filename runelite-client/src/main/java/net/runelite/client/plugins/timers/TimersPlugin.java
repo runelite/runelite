@@ -31,6 +31,10 @@ import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.Prayer;
 import net.runelite.api.Varbits;
@@ -38,6 +42,7 @@ import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GraphicChanged;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
@@ -51,6 +56,7 @@ import static net.runelite.client.plugins.timers.GameTimer.ANTIVENOM;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIVENOMPLUS;
 import static net.runelite.client.plugins.timers.GameTimer.BIND;
 import static net.runelite.client.plugins.timers.GameTimer.CANNON;
+import static net.runelite.client.plugins.timers.GameTimer.CHARGE;
 import static net.runelite.client.plugins.timers.GameTimer.ENTANGLE;
 import static net.runelite.client.plugins.timers.GameTimer.EXANTIFIRE;
 import static net.runelite.client.plugins.timers.GameTimer.EXSUPERANTIFIRE;
@@ -71,6 +77,7 @@ import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD_RAID;
 import static net.runelite.client.plugins.timers.GameTimer.PRAYER_ENHANCE;
 import static net.runelite.client.plugins.timers.GameTimer.SANFEW;
 import static net.runelite.client.plugins.timers.GameTimer.SNARE;
+import static net.runelite.client.plugins.timers.GameTimer.STAFF_OF_THE_DEAD;
 import static net.runelite.client.plugins.timers.GameTimer.STAMINA;
 import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIFIRE;
 import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIPOISON;
@@ -121,46 +128,9 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void updateConfig(ConfigChanged event)
 	{
-		if (!config.showStamina())
+		if (!config.showAntidotePlus())
 		{
-			removeGameTimer(STAMINA);
-		}
-
-		if (!config.showAntiFire())
-		{
-			removeGameTimer(ANTIFIRE);
-		}
-
-		if (!config.showExAntiFire())
-		{
-			removeGameTimer(EXANTIFIRE);
-		}
-
-		if (!config.showOverload())
-		{
-			removeGameTimer(OVERLOAD);
-			removeGameTimer(OVERLOAD_RAID);
-		}
-
-		if (!config.showCannon())
-		{
-			removeGameTimer(CANNON);
-		}
-
-		if (!config.showMagicImbue())
-		{
-			removeGameTimer(MAGICIMBUE);
-		}
-
-		if (!config.showTeleblock())
-		{
-			removeGameTimer(FULLTB);
-			removeGameTimer(HALFTB);
-		}
-
-		if (!config.showSuperAntiFire())
-		{
-			removeGameTimer(SUPERANTIFIRE);
+			removeGameTimer(ANTIDOTEPLUS);
 		}
 
 		if (!config.showAntidotePlusPlus())
@@ -168,9 +138,9 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(ANTIDOTEPLUSPLUS);
 		}
 
-		if (!config.showAntidotePlus())
+		if (!config.showSanfew())
 		{
-			removeGameTimer(ANTIDOTEPLUS);
+			removeGameTimer(SANFEW);
 		}
 
 		if (!config.showAntiVenom())
@@ -183,9 +153,60 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(ANTIVENOMPLUS);
 		}
 
-		if (!config.showSanfew())
+		if (!config.showAntiFire())
 		{
-			removeGameTimer(SANFEW);
+			removeGameTimer(ANTIFIRE);
+		}
+
+		if (!config.showExAntiFire())
+		{
+			removeGameTimer(EXANTIFIRE);
+		}
+
+		if (!config.showSuperAntiFire())
+		{
+			removeGameTimer(SUPERANTIFIRE);
+		}
+
+		if (!config.showStamina())
+		{
+			removeGameTimer(STAMINA);
+		}
+
+		if (!config.showOverload())
+		{
+			removeGameTimer(OVERLOAD);
+			removeGameTimer(OVERLOAD_RAID);
+		}
+
+		if (!config.showPrayerEnhance())
+		{
+			removeGameTimer(PRAYER_ENHANCE);
+		}
+
+		if (!config.showCannon())
+		{
+			removeGameTimer(CANNON);
+		}
+
+		if (!config.showMagicImbue())
+		{
+			removeGameTimer(MAGICIMBUE);
+		}
+
+		if (!config.showCharge())
+		{
+			removeGameTimer(CHARGE);
+		}
+
+		if (!config.showImbuedHeart())
+		{
+			removeGameTimer(IMBUEDHEART);
+		}
+
+		if (!config.showStaffOfTheDead())
+		{
+			removeGameTimer(STAFF_OF_THE_DEAD);
 		}
 
 		if (!config.showVengeance())
@@ -198,9 +219,10 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(VENGEANCEOTHER);
 		}
 
-		if (!config.showImbuedHeart())
+		if (!config.showTeleblock())
 		{
-			removeGameTimer(IMBUEDHEART);
+			removeGameTimer(FULLTB);
+			removeGameTimer(HALFTB);
 		}
 
 		if (!config.showFreezes())
@@ -215,11 +237,6 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(ICEBURST);
 			removeGameTimer(ICEBLITZ);
 			removeGameTimer(ICEBARRAGE);
-		}
-
-		if (!config.showPrayerEnhance())
-		{
-			removeGameTimer(PRAYER_ENHANCE);
 		}
 	}
 
@@ -396,6 +413,16 @@ public class TimersPlugin extends Plugin
 		{
 			createGameTimer(PRAYER_ENHANCE);
 		}
+
+		if (config.showCharge() && event.getMessage().equals("<col=ef1020>You feel charged with magic power.</col>"))
+		{
+			createGameTimer(CHARGE);
+		}
+
+		if (event.getMessage().equals("<col=ef1020>Your magical charge fades away.</col>"))
+		{
+			removeGameTimer(CHARGE);
+		}
 	}
 
 	@Subscribe
@@ -433,6 +460,11 @@ public class TimersPlugin extends Plugin
 		if (config.showVengeance() && actor.getGraphic() == VENGEANCE.getGraphicId())
 		{
 			createGameTimer(VENGEANCE);
+		}
+
+		if (config.showStaffOfTheDead() && actor.getGraphic() == STAFF_OF_THE_DEAD.getGraphicId())
+		{
+			createGameTimer(STAFF_OF_THE_DEAD);
 		}
 
 		if (config.showFreezes())
@@ -491,6 +523,47 @@ public class TimersPlugin extends Plugin
 			if (actor.getGraphic() == ICEBARRAGE.getGraphicId())
 			{
 				createGameTimer(ICEBARRAGE);
+			}
+		}
+	}
+
+	/**
+	 * remove SOTD timer when weapon is changed
+	 *
+	 * @param itemContainerChanged
+	 */
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
+	{
+		ItemContainer container = itemContainerChanged.getItemContainer();
+		if (container == client.getItemContainer(InventoryID.EQUIPMENT))
+		{
+			Item[] items = container.getItems();
+			int weaponIdx = EquipmentInventorySlot.WEAPON.getSlotIdx();
+
+			if (items == null || weaponIdx >= items.length)
+			{
+				removeGameTimer(STAFF_OF_THE_DEAD);
+				return;
+			}
+
+			Item weapon = items[weaponIdx];
+			if (weapon == null)
+			{
+				removeGameTimer(STAFF_OF_THE_DEAD);
+				return;
+			}
+
+			switch (weapon.getId())
+			{
+				case ItemID.STAFF_OF_THE_DEAD:
+				case ItemID.TOXIC_STAFF_OF_THE_DEAD:
+				case ItemID.STAFF_OF_LIGHT:
+				case ItemID.TOXIC_STAFF_UNCHARGED:
+					// don't reset timer if still weilding staff
+					return;
+				default:
+					removeGameTimer(STAFF_OF_THE_DEAD);
 			}
 		}
 	}

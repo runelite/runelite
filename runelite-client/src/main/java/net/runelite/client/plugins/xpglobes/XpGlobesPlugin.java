@@ -43,7 +43,7 @@ import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.task.Schedule;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "XP Globes"
@@ -63,6 +63,9 @@ public class XpGlobesPlugin extends Plugin
 	private XpGlobesConfig config;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private XpGlobesOverlay overlay;
 
 	@Provides
@@ -72,9 +75,15 @@ public class XpGlobesPlugin extends Plugin
 	}
 
 	@Override
-	public Overlay getOverlay()
+	protected void startUp() throws Exception
 	{
-		return overlay;
+		overlayManager.add(overlay);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
 	}
 
 	@Subscribe
@@ -120,11 +129,8 @@ public class XpGlobesPlugin extends Plugin
 
 	public void addXpGlobe(XpGlobe xpGlobe, int maxLength)
 	{
-		if (xpGlobes.contains(xpGlobe))
-		{
-			//remove the old globe, allowing it to be readded as the most recent (right) side when drawn
-			xpGlobes.remove(xpGlobe);
-		}
+		//remove the old globe, allowing it to be readded as the most recent (right) side when drawn
+		xpGlobes.remove(xpGlobe);
 		if (getXpGlobesSize() >= maxLength)
 		{
 			xpGlobes.remove(0);

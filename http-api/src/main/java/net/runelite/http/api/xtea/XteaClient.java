@@ -31,6 +31,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import net.runelite.http.api.RuneLiteAPI;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.Request;
@@ -45,17 +47,8 @@ public class XteaClient
 
 	private static final Logger logger = LoggerFactory.getLogger(XteaClient.class);
 
-	public Response submit(int revision, int region, int[] keys) throws IOException
+	public void submit(XteaRequest xteaRequest)
 	{
-		XteaRequest xteaRequest = new XteaRequest();
-		xteaRequest.setRevision(revision);
-
-		XteaKey xteaKey = new XteaKey();
-		xteaKey.setRegion(region);
-		xteaKey.setKeys(keys);
-
-		xteaRequest.addKey(xteaKey);
-
 		String json = RuneLiteAPI.GSON.toJson(xteaRequest);
 
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
@@ -69,7 +62,30 @@ public class XteaClient
 			.url(url)
 			.build();
 
-		return RuneLiteAPI.CLIENT.newCall(request).execute();
+		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
+		{
+			@Override
+			public void onFailure(Call call, IOException e)
+			{
+				logger.warn("unable to submit xtea keys", e);
+			}
+
+			@Override
+			public void onResponse(Call call, Response response)
+			{
+				try
+				{
+					if (!response.isSuccessful())
+					{
+						logger.debug("unsuccessful xtea response");
+					}
+				}
+				finally
+				{
+					response.close();
+				}
+			}
+		});
 	}
 
 	public List<XteaKey> get() throws IOException

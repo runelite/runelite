@@ -26,6 +26,8 @@ package net.runelite.api;
 
 public class GraphicID
 {
+	public static final int TELEPORT = 111;
+	public static final int GREY_BUBBLE_TELEPORT = 86;
 	public static final int ENTANGLE = 179;
 	public static final int SNARE = 180;
 	public static final int BIND = 181;
@@ -34,6 +36,7 @@ public class GraphicID
 	public static final int ICE_BLITZ = 367;
 	public static final int ICE_BARRAGE = 369;
 	public static final int VENGEANCE = 726;
+	public static final int STAFF_OF_THE_DEAD = 1228;
 	public static final int IMBUED_HEART = 1316;
 	public static final int FLYING_FISH = 1387;
 }

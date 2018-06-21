@@ -27,14 +27,44 @@ package net.runelite.api;
 
 import java.awt.Dimension;
 
+/**
+ * A utility class containing constant values.
+ */
 public class Constants
 {
+	/**
+	 * The original width of the game when running in fixed mode.
+	 */
 	public static final int GAME_FIXED_WIDTH = 765;
+	/**
+	 * The original height of the game when running in fixed mode.
+	 */
 	public static final int GAME_FIXED_HEIGHT = 503;
+	/**
+	 * Dimension representation of the width and height of the game in fixed mode.
+	 */
 	public static final Dimension GAME_FIXED_SIZE = new Dimension(GAME_FIXED_WIDTH, GAME_FIXED_HEIGHT);
+	/**
+	 * The aspect ratio of the game when running in fixed mode.
+	 */
 	public static final double GAME_FIXED_ASPECT_RATIO = (double) GAME_FIXED_WIDTH / (double) GAME_FIXED_HEIGHT;
+	/**
+	 * The default camera zoom value.
+	 */
 	public static final int CLIENT_DEFAULT_ZOOM = 512;
+	/**
+	 * The width and length of a chunk (8x8 tiles).
+	 */
 	public static final int CHUNK_SIZE = 8;
+	/**
+	 * The width and length of a region (13 chunks x 8 tiles).
+	 */
 	public static final int REGION_SIZE = 104;
+	/**
+	 * The max allowed plane by the game.
+	 * <p>
+	 * This value is exclusive. The plane is set by 2 bits which restricts
+	 * the plane value to 0-3.
+	 */
 	public static final int MAX_Z = 4;
 }

@@ -34,7 +34,6 @@ import java.awt.GridBagLayout;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -200,7 +199,7 @@ class GrandExchangeSearchPanel extends JPanel
 		{
 			result = itemManager.searchForItem(lookup);
 		}
-		catch (ExecutionException ex)
+		catch (Exception ex) // handle com.google.common.cache.CacheLoader$InvalidCacheLoadException
 		{
 			log.warn("Unable to search for item {}", lookup, ex);
 			searchBox.setIcon(ERROR_ICON);
@@ -226,16 +225,7 @@ class GrandExchangeSearchPanel extends JPanel
 					continue;
 				}
 
-				ItemPrice itemPrice = null;
-				try
-				{
-					itemPrice = itemManager.getItemPrice(itemId);
-				}
-				catch (IOException ex)
-				{
-					log.warn("Unable to fetch item price for {}", itemId, ex);
-				}
-
+				ItemPrice itemPrice = itemManager.getItemPrice(itemId);
 				AsyncBufferedImage itemImage = itemManager.getImage(itemId);
 
 				itemsList.add(new GrandExchangeItems(itemImage, item.getName(), itemId, itemPrice != null ? itemPrice.getPrice() : 0, itemComp.getPrice() * 0.6));

@@ -28,7 +28,7 @@ import java.awt.event.KeyEvent;
 import java.util.Date;
 import javax.inject.Inject;
 import net.runelite.client.input.KeyListener;
-import static net.runelite.client.plugins.screenshot.ScreenshotPlugin.TIME_FORMAT;
+import static net.runelite.client.plugins.screenshot.ScreenshotPlugin.format;
 
 public class ScreenshotInput implements KeyListener
 {
@@ -60,7 +60,7 @@ public class ScreenshotInput implements KeyListener
 
 		if (event.getKeyCode() == KeyEvent.VK_INSERT)
 		{
-			plugin.takeScreenshot(TIME_FORMAT.format(new Date()));
+			plugin.takeScreenshot(format(new Date()));
 		}
 	}
 

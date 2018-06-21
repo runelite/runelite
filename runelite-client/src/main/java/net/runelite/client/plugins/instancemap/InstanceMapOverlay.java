@@ -37,7 +37,6 @@ import net.runelite.api.SpritePixels;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.MapRegionChanged;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -173,11 +172,6 @@ class InstanceMapOverlay extends Overlay
 			drawPlayerDot(graphics, client.getLocalPlayer(), Color.white, Color.black);
 		}
 
-		if (image == null)
-		{
-			return null;
-		}
-
 		return new Dimension(image.getWidth(), image.getHeight());
 	}
 
@@ -206,22 +200,12 @@ class InstanceMapOverlay extends Overlay
 		int tileX = playerLoc.getRegionX();
 		int tileY = (tiles[0].length - 1) - playerLoc.getRegionY(); // flip the y value
 
-		int x = (int) (tileX * TILE_SIZE);
-		int y = (int) (tileY * TILE_SIZE);
+		int x = tileX * TILE_SIZE;
+		int y = tileY * TILE_SIZE;
 		graphics.setColor(dotColor);
 		graphics.fillRect(x, y, PLAYER_MARKER_SIZE, PLAYER_MARKER_SIZE);//draw the players point on the map
 		graphics.setColor(outlineColor);
 		graphics.drawRect(x, y, PLAYER_MARKER_SIZE, PLAYER_MARKER_SIZE);//outline
-	}
-
-	/**
-	 * Handles region changes and re-draws the map
-	 *
-	 * @param event The region change event
-	 */
-	public void onRegionChange(MapRegionChanged event)
-	{
-		mapImage = null;
 	}
 
 	/**

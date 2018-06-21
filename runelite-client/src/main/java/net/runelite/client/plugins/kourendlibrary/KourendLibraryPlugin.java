@@ -30,6 +30,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
@@ -47,7 +48,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Kourend Library"
@@ -55,6 +56,8 @@ import net.runelite.client.ui.overlay.Overlay;
 @Slf4j
 public class KourendLibraryPlugin extends Plugin
 {
+	final static int REGION = 6459;
+
 	final static boolean debug = false;
 
 	@Inject
@@ -67,6 +70,9 @@ public class KourendLibraryPlugin extends Plugin
 	private Library library;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private KourendLibraryOverlay overlay;
 
 	@Inject
@@ -74,6 +80,7 @@ public class KourendLibraryPlugin extends Plugin
 
 	private KourendLibraryPanel panel;
 	private NavigationButton navButton;
+	private boolean buttonAttached = false;
 
 	private WorldPoint lastBookcaseClick = null;
 	private WorldPoint lastBookcaseAnimatedOn = null;
@@ -81,6 +88,7 @@ public class KourendLibraryPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
 		Book.fillImages(itemManager);
 
 		panel = injector.getInstance(KourendLibraryPanel.class);
@@ -98,20 +106,14 @@ public class KourendLibraryPlugin extends Plugin
 			.icon(icon)
 			.panel(panel)
 			.build();
-
-		pluginToolbar.addNavigation(navButton);
 	}
 
 	@Override
 	protected void shutDown()
 	{
-		pluginToolbar.removeNavigation(navButton);
-	}
+		overlayManager.remove(overlay);
 
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
+		pluginToolbar.removeNavigation(navButton);
 	}
 
 	@Subscribe
@@ -152,6 +154,28 @@ public class KourendLibraryPlugin extends Plugin
 	@Subscribe
 	void onTick(GameTick tick)
 	{
+		boolean inRegion = client.getLocalPlayer().getWorldLocation().getRegionID() == REGION;
+		if (inRegion != buttonAttached)
+		{
+			SwingUtilities.invokeLater(() ->
+			{
+				if (inRegion)
+				{
+					pluginToolbar.addNavigation(navButton);
+				}
+				else
+				{
+					pluginToolbar.removeNavigation(navButton);
+				}
+			});
+			buttonAttached = inRegion;
+		}
+
+		if (!inRegion)
+		{
+			return;
+		}
+
 		if (lastBookcaseAnimatedOn != null)
 		{
 			Widget find = client.getWidget(WidgetInfo.DIALOG_SPRITE_SPRITE);

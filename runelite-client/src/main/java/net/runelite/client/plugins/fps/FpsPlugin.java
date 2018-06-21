@@ -33,7 +33,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.DrawManager;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 /**
  * FPS Control has two primary areas, this plugin class just keeps those areas up to date and handles setup / teardown.
@@ -54,6 +54,9 @@ public class FpsPlugin extends Plugin
 	static final String CONFIG_GROUP_KEY = "fpscontrol";
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private FpsOverlay overlay;
 
 	@Inject
@@ -66,12 +69,6 @@ public class FpsPlugin extends Plugin
 	FpsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(FpsConfig.class);
-	}
-
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
 	}
 
 	@Subscribe
@@ -93,6 +90,7 @@ public class FpsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
 		drawManager.registerEveryFrameListener(drawListener);
 		drawListener.reloadConfig();
 	}
@@ -100,6 +98,7 @@ public class FpsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
 		drawManager.unregisterEveryFrameListener(drawListener);
 	}
 }

@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.info;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
@@ -68,6 +69,7 @@ public class InfoPanel extends PluginPanel
 	private static final ImageIcon GITHUB_ICON;
 	private static final ImageIcon DISCORD_ICON;
 	private static final ImageIcon PATREON_ICON;
+	private static final ImageIcon WIKI_ICON;
 
 	private final JLabel loggedLabel = new JLabel();
 	private final JRichTextPane emailLabel = new JRichTextPane();
@@ -98,6 +100,7 @@ public class InfoPanel extends PluginPanel
 				GITHUB_ICON = new ImageIcon(ImageIO.read(InfoPanel.class.getResourceAsStream("github_icon.png")));
 				DISCORD_ICON = new ImageIcon(ImageIO.read(InfoPanel.class.getResourceAsStream("discord_icon.png")));
 				PATREON_ICON = new ImageIcon(ImageIO.read(InfoPanel.class.getResourceAsStream("patreon_icon.png")));
+				WIKI_ICON = new ImageIcon(ImageIO.read(InfoPanel.class.getResourceAsStream("wiki_icon.png")));
 			}
 		}
 		catch (IOException e)
@@ -128,10 +131,14 @@ public class InfoPanel extends PluginPanel
 		String engineVer = "Unknown";
 		if (client != null)
 		{
-			engineVer = String.format("Rev %s", runeLiteProperties.getRunescapeVersion());
+			engineVer = String.format("Rev %d", client.getRevision());
 		}
 
 		revision.setText(htmlLabel("Oldschool revision: ", engineVer));
+
+		JLabel launcher = new JLabel(htmlLabel("Launcher version: ", MoreObjects
+			.firstNonNull(RuneLiteProperties.getLauncherVersion(), "Unknown")));
+		launcher.setFont(smallFont);
 
 		loggedLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		loggedLabel.setFont(smallFont);
@@ -152,6 +159,7 @@ public class InfoPanel extends PluginPanel
 
 		versionPanel.add(version);
 		versionPanel.add(revision);
+		versionPanel.add(launcher);
 		versionPanel.add(Box.createGlue());
 		versionPanel.add(loggedLabel);
 		versionPanel.add(emailLabel);
@@ -160,11 +168,12 @@ public class InfoPanel extends PluginPanel
 
 		JPanel actionsContainer = new JPanel();
 		actionsContainer.setBorder(new EmptyBorder(10, 0, 0, 0));
-		actionsContainer.setLayout(new GridLayout(3, 1, 0, 10));
+		actionsContainer.setLayout(new GridLayout(4, 1, 0, 10));
 
 		actionsContainer.add(buildLinkPanel(GITHUB_ICON, "Report an issue or", "make a suggestion", runeLiteProperties.getGithubLink()));
 		actionsContainer.add(buildLinkPanel(DISCORD_ICON, "Talk to us on our", "discord server", runeLiteProperties.getDiscordInvite()));
 		actionsContainer.add(buildLinkPanel(PATREON_ICON, "Become a patron to", "help support RuneLite", runeLiteProperties.getPatreonLink()));
+		actionsContainer.add(buildLinkPanel(WIKI_ICON, "Information about", "RuneLite and plugins", runeLiteProperties.getWikiLink()));
 
 		add(versionPanel, BorderLayout.NORTH);
 		add(actionsContainer, BorderLayout.CENTER);

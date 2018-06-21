@@ -46,7 +46,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class PuzzleSolverPlugin extends Plugin
 {
 	@Inject
-	private PuzzleSolverOverlay puzzleSolverOverlay;
+	private OverlayManager overlayManager;
 
 	@Inject
 	private LightBoxSolverOverlay lightBoxSolverOverlay;

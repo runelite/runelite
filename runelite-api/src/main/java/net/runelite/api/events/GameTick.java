@@ -26,10 +26,22 @@ package net.runelite.api.events;
 
 import lombok.Data;
 
+// The NPC update event seem to run every server tick,
+// but having the game tick event after all packets
+// have been processed is typically more useful.
+
 /**
- * Event called once per tick.
- *
- * @author Adam
+ * An event called once every game tick, after all packets have processed.
+ * <p>
+ * A game tick is a unit of time used by the RuneScape server that refers to
+ * the time-frame of all actions performed. Each game tick is approximately
+ * 0.6 seconds. All actions are a multiple of this time-frame and include
+ * instances such as when messages appear in the chat interface, experience
+ * being gained, monster spawns and more. All actions registered by the client
+ * within a single tick will begin to occur by the beginning of the next tick.
+ * <p>
+ * Note that occurrences that take place purely on the client, such as right
+ * click menus, are independent of the game tick.
  */
 @Data
 public class GameTick

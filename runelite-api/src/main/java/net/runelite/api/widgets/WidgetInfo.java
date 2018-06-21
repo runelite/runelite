@@ -24,6 +24,11 @@
  */
 package net.runelite.api.widgets;
 
+/**
+ * Represents a group-child {@link Widget} relationship.
+ * <p>
+ * For getting a specific widget from the client, see {@link net.runelite.api.Client#getWidget(WidgetInfo)}.
+ */
 public enum WidgetInfo
 {
 	FAIRY_QUEEN_HIDEOUT_CODE(WidgetID.FAIRY_RING_CODE_GROUP_ID, WidgetID.FairyRingCode.FAIRY_QUEEN_HIDEOUT),
@@ -109,7 +114,12 @@ public enum WidgetInfo
 	BANK_TITLE_BAR(WidgetID.BANK_GROUP_ID, WidgetID.Bank.BANK_TITLE_BAR),
 	BANK_ITEM_COUNT(WidgetID.BANK_GROUP_ID, WidgetID.Bank.BANK_ITEM_COUNT),
 
-	GRAND_EXCHANGE_INVENTORY_ITEMS_CONTAINER(WidgetID.GRAND_EXCHANGE_INVENTORY_GROUP_ID, WidgetID.GrandExchange.INVENTORY_ITEM_CONTAINER),
+	GRAND_EXCHANGE_WINDOW_CONTAINER(WidgetID.GRAND_EXCHANGE_GROUP_ID, WidgetID.GrandExchange.WINDOW_CONTAINER),
+	GRAND_EXCHANGE_OFFER_CONTAINER(WidgetID.GRAND_EXCHANGE_GROUP_ID, WidgetID.GrandExchange.OFFER_CONTAINER),
+	GRAND_EXCHANGE_OFFER_TEXT(WidgetID.GRAND_EXCHANGE_GROUP_ID, WidgetID.GrandExchange.OFFER_DESCRIPTION),
+	GRAND_EXCHANGE_OFFER_PRICE(WidgetID.GRAND_EXCHANGE_GROUP_ID, WidgetID.GrandExchange.OFFER_PRICE),
+
+	GRAND_EXCHANGE_INVENTORY_ITEMS_CONTAINER(WidgetID.GRAND_EXCHANGE_INVENTORY_GROUP_ID, WidgetID.GrandExchangeInventory.INVENTORY_ITEM_CONTAINER),
 
 	DEPOSIT_BOX_INVENTORY_ITEMS_CONTAINER(WidgetID.DEPOSIT_BOX_GROUP_ID, WidgetID.DepositBox.INVENTORY_ITEM_CONTAINER),
 
@@ -320,7 +330,12 @@ public enum WidgetInfo
 	BARROWS_INFO(WidgetID.BARROWS_GROUP_ID, 0),
 	BARROWS_BROTHERS(WidgetID.BARROWS_GROUP_ID, WidgetID.Barrows.BARROWS_BROTHERS),
 	BARROWS_POTENTIAL(WidgetID.BARROWS_GROUP_ID, WidgetID.Barrows.BARROWS_POTENTIAL),
-	BARROWS_REWARD_INVENTORY(WidgetID.BARROWS_REWARD_GROUP_ID, WidgetID.Barrows.BARROWS_REWARD_INVENTORY);
+	BARROWS_REWARD_INVENTORY(WidgetID.BARROWS_REWARD_GROUP_ID, WidgetID.Barrows.BARROWS_REWARD_INVENTORY),
+
+	BLAST_MINE(WidgetID.BLAST_MINE_GROUP_ID, 0),
+
+	MTA_ENCHANTMENT_BONUS_TEXT(WidgetID.MTA_ENCHANTMENT_GROUP_ID, WidgetID.MTA.BONUS_TEXT_COMPONENT),
+	MTA_ENCHANTMENT_BONUS(WidgetID.MTA_ENCHANTMENT_GROUP_ID, WidgetID.MTA.BONUS_COMPONENT);
 
 	private final int groupId;
 	private final int childId;
@@ -331,36 +346,77 @@ public enum WidgetInfo
 		this.childId = childId;
 	}
 
+	/**
+	 * Gets the ID of the group-child pairing.
+	 *
+	 * @return the ID
+	 */
 	public int getId()
 	{
 		return groupId << 16 | childId;
 	}
 
+	/**
+	 * Gets the group ID of the pair.
+	 *
+	 * @return the group ID
+	 */
 	public int getGroupId()
 	{
 		return groupId;
 	}
 
+	/**
+	 * Gets the ID of the child in the group.
+	 *
+	 * @return the child ID
+	 */
 	public int getChildId()
 	{
 		return childId;
 	}
 
+	/**
+	 * Gets the packed widget ID.
+	 *
+	 * @return the packed ID
+	 */
 	public int getPackedId()
 	{
 		return groupId << 16 | childId;
 	}
 
+	/**
+	 * Utility method that converts an ID returned by {@link #getId()} back
+	 * to its group ID.
+	 *
+	 * @param id passed group-child ID
+	 * @return the group ID
+	 */
 	public static int TO_GROUP(int id)
 	{
 		return id >>> 16;
 	}
 
+	/**
+	 * Utility method that converts an ID returned by {@link #getId()} back
+	 * to its child ID.
+	 *
+	 * @param id passed group-child ID
+	 * @return the child ID
+	 */
 	public static int TO_CHILD(int id)
 	{
 		return id & 0xFFFF;
 	}
 
+	/**
+	 * Packs the group and child IDs into a single integer.
+	 *
+	 * @param groupId the group ID
+	 * @param childId the child ID
+	 * @return the packed ID
+	 */
 	public static int PACK(int groupId, int childId)
 	{
 		return groupId << 16 | childId;

@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.screenshot;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
@@ -80,7 +81,7 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.TitleToolbar;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
@@ -101,10 +102,27 @@ public class ScreenshotPlugin extends Plugin
 	private static final HttpUrl IMGUR_IMAGE_UPLOAD_URL = HttpUrl.parse("https://api.imgur.com/3/image");
 	private static final MediaType JSON = MediaType.parse("application/json");
 
-	static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile("Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
+
+	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
+		"You feel something weird sneaking into your backpack",
+		"You have a funny feeling like you would have been followed");
+
+	private static final ImmutableList<String> KILL_MESSAGES = ImmutableList.of("into tiny pieces and sat on them", "you have obliterated",
+		"falls before your might", "A humiliating defeat for", "With a crushing blow you", "thinking challenging you",
+		"Can anyone defeat you? Certainly", "was no match for you", "You were clearly a better fighter than", "RIP",
+		"You have defeated", "What an embarrassing performance by", "was no match for your awesomeness");
+
+	static String format(Date date)
+	{
+		synchronized (TIME_FORMAT)
+		{
+			return TIME_FORMAT.format(date);
+		}
+	}
 
 	private String clueType;
 	private Integer clueNumber;
@@ -115,6 +133,9 @@ public class ScreenshotPlugin extends Plugin
 
 	@Inject
 	private ScreenshotConfig config;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private ScreenshotOverlay screenshotOverlay;
@@ -152,14 +173,9 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Override
-	public Overlay getOverlay()
-	{
-		return screenshotOverlay;
-	}
-
-	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(screenshotOverlay);
 		SCREENSHOT_DIR.mkdirs();
 		keyManager.registerKeyListener(inputListener);
 
@@ -174,7 +190,7 @@ public class ScreenshotPlugin extends Plugin
 			titleBarButton = NavigationButton.builder()
 				.tooltip("Take screenshot")
 				.icon(iconImage)
-				.onClick(() -> takeScreenshot(TIME_FORMAT.format(new Date())))
+				.onClick(() -> takeScreenshot(format(new Date())))
 				.popup(ImmutableMap
 					.<String, Runnable>builder()
 					.put("Open screenshot folder...", () ->
@@ -203,6 +219,7 @@ public class ScreenshotPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(screenshotOverlay);
 		titleToolbar.removeNavigation(titleBarButton);
 		keyManager.unregisterKeyListener(inputListener);
 	}
@@ -246,6 +263,18 @@ public class ScreenshotPlugin extends Plugin
 				raidsNumber = Integer.valueOf(m.group());
 				return;
 			}
+		}
+
+		if (config.screenshotPet() && PET_MESSAGES.stream().anyMatch(chatMessage::contains))
+		{
+			String fileName = "Pet " + format(new Date());
+			takeScreenshot(fileName);
+		}
+
+		if (config.screenshotKills() && KILL_MESSAGES.stream().anyMatch(chatMessage::contains))
+		{
+			String fileName = "Kill " + format(new Date());
+			takeScreenshot(fileName);
 		}
 	}
 

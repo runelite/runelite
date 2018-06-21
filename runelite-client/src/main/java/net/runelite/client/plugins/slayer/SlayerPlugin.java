@@ -69,7 +69,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.QueryRunner;
 import net.runelite.client.util.Text;
@@ -88,13 +88,17 @@ public class SlayerPlugin extends Plugin
 	private static final String CHAT_CANCEL_MESSAGE_JAD = "You no longer have a slayer task as you left the fight cave.";
 	private static final String CHAT_SUPERIOR_MESSAGE = "A superior foe has appeared...";
 	private static final String CHAT_BRACELET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer";
+	private static final Pattern CHAT_BRACELET_SLAUGHTER_REGEX = Pattern.compile("Your bracelet of slaughter prevents your slayer count decreasing. It has (\\d{1,2}) charge[s]? left.");
 	private static final String CHAT_BRACELET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your";
+	private static final Pattern CHAT_BRACELET_EXPEDITIOUS_REGEX = Pattern.compile("Your expeditious bracelet helps you progress your slayer (?:task )?faster. It has (\\d{1,2}) charge[s]? left.");
 	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE = "Your bracelet of slaughter has ";
+	private static final Pattern CHAT_BRACELET_SLAUGHTER_CHARGE_REGEX = Pattern.compile("Your bracelet of slaughter has (\\d{1,2}) charge[s]? left.");
 	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE = "Your expeditious bracelet has ";
+	private static final Pattern CHAT_BRACELET_EXPEDITIOUS_CHARGE_REGEX = Pattern.compile("Your expeditious bracelet has (\\d{1,2}) charge[s]? left.");
 
 	//NPC messages
-	private static final Pattern NPC_ASSIGN_MESSAGE = Pattern.compile(".*Your new task is to kill (\\d*) (.*)\\.");
-	private static final Pattern NPC_CURRENT_MESSAGE = Pattern.compile("You're still hunting (.*), you have (\\d*) to go\\..*");
+	private static final Pattern NPC_ASSIGN_MESSAGE = Pattern.compile(".*Your new task is to kill\\s*(\\d*) (.*)\\.");
+	private static final Pattern NPC_CURRENT_MESSAGE = Pattern.compile("You're still hunting (.*); you have (\\d*) to go\\..*");
 
 	//Reward UI
 	private static final Pattern REWARD_POINTS = Pattern.compile("Reward points: (\\d*)");
@@ -107,6 +111,9 @@ public class SlayerPlugin extends Plugin
 
 	@Inject
 	private SlayerConfig config;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private SlayerOverlay overlay;
@@ -138,30 +145,46 @@ public class SlayerPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Collection<WidgetItem> slayerItems = Collections.emptyList();
 
-	private String taskName;
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private int amount;
-	private TaskCounter counter;
-	private int streak;
-	private int points;
-	private int cachedXp;
-	private Instant infoTimer;
-	private boolean loginFlag;
+
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private int expeditiousChargeCount;
+
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private int slaughterChargeCount;
 
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private String taskName;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int streak;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int points;
+
+	private TaskCounter counter;
+	private int cachedXp;
+	private Instant infoTimer;
+	private boolean loginFlag;
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
+		overlayManager.add(targetClickboxOverlay);
+		overlayManager.add(targetMinimapOverlay);
+
 		if (client.getGameState() == GameState.LOGGED_IN
 			&& config.amount() != -1
 			&& !config.taskName().isEmpty())
 		{
-			setPoints(config.points());
-			setStreak(config.streak());
+			points = config.points();
+			streak = config.streak();
 			setExpeditiousChargeCount(config.expeditious());
 			setSlaughterChargeCount(config.slaughter());
 			clientThread.invokeLater(() -> setTask(config.taskName(), config.amount()));
@@ -171,6 +194,9 @@ public class SlayerPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
+		overlayManager.remove(targetClickboxOverlay);
+		overlayManager.remove(targetMinimapOverlay);
 		removeCounter();
 	}
 
@@ -195,10 +221,10 @@ public class SlayerPlugin extends Plugin
 			case LOGGED_IN:
 				if (config.amount() != -1
 					&& !config.taskName().isEmpty()
-					&& loginFlag == true)
+					&& loginFlag)
 				{
-					setPoints(config.points());
-					setStreak(config.streak());
+					points = config.points();
+					streak = config.streak();
 					setExpeditiousChargeCount(config.expeditious());
 					setSlaughterChargeCount(config.slaughter());
 					setTask(config.taskName(), config.amount());
@@ -317,30 +343,43 @@ public class SlayerPlugin extends Plugin
 
 		if (chatMsg.startsWith(CHAT_BRACELET_SLAUGHTER))
 		{
+			Matcher mSlaughter = CHAT_BRACELET_SLAUGHTER_REGEX.matcher(chatMsg);
+
 			amount++;
-			slaughterChargeCount = --slaughterChargeCount <= 0 ? SLAUGHTER_CHARGE : slaughterChargeCount;
+			slaughterChargeCount = mSlaughter.find() ? Integer.parseInt(mSlaughter.group(1)) : SLAUGHTER_CHARGE;
 			config.slaughter(slaughterChargeCount);
 		}
 
 		if (chatMsg.startsWith(CHAT_BRACELET_EXPEDITIOUS))
 		{
+			Matcher mExpeditious = CHAT_BRACELET_EXPEDITIOUS_REGEX.matcher(chatMsg);
+
 			amount--;
-			expeditiousChargeCount = --expeditiousChargeCount <= 0 ? EXPEDITIOUS_CHARGE : expeditiousChargeCount;
+			expeditiousChargeCount = mExpeditious.find() ? Integer.parseInt(mExpeditious.group(1)) : EXPEDITIOUS_CHARGE;
 			config.expeditious(expeditiousChargeCount);
 		}
 
 		if (chatMsg.startsWith(CHAT_BRACELET_EXPEDITIOUS_CHARGE))
 		{
-			expeditiousChargeCount = Integer.parseInt(chatMsg
-				.replace(CHAT_BRACELET_EXPEDITIOUS_CHARGE, "")
-				.replace(" charges left.", ""));
+			Matcher mExpeditious = CHAT_BRACELET_EXPEDITIOUS_CHARGE_REGEX.matcher(chatMsg);
+
+			if (!mExpeditious.find())
+			{
+				return;
+			}
+
+			expeditiousChargeCount = Integer.parseInt(mExpeditious.group(1));
 			config.expeditious(expeditiousChargeCount);
 		}
 		if (chatMsg.startsWith(CHAT_BRACELET_SLAUGHTER_CHARGE))
 		{
-			slaughterChargeCount = Integer.parseInt(chatMsg
-				.replace(CHAT_BRACELET_SLAUGHTER_CHARGE, "")
-				.replace(" charges left.", ""));
+			Matcher mSlaughter = CHAT_BRACELET_SLAUGHTER_CHARGE_REGEX.matcher(chatMsg);
+			if (!mSlaughter.find())
+			{
+				return;
+			}
+
+			slaughterChargeCount = Integer.parseInt(mSlaughter.group(1));
 			config.slaughter(slaughterChargeCount);
 		}
 
@@ -553,53 +592,6 @@ public class SlayerPlugin extends Plugin
 		}
 
 		return composition;
-	}
-
-	//Getters
-	@Override
-	public Collection<Overlay> getOverlays()
-	{
-		return Arrays.asList(overlay, targetClickboxOverlay, targetMinimapOverlay);
-	}
-
-	public String getTaskName()
-	{
-		return taskName;
-	}
-
-	void setTaskName(String taskName)
-	{
-		this.taskName = taskName;
-	}
-
-	public int getAmount()
-	{
-		return amount;
-	}
-
-	void setAmount(int amount)
-	{
-		this.amount = amount;
-	}
-
-	public int getStreak()
-	{
-		return streak;
-	}
-
-	void setStreak(int streak)
-	{
-		this.streak = streak;
-	}
-
-	public int getPoints()
-	{
-		return points;
-	}
-
-	void setPoints(int points)
-	{
-		this.points = points;
 	}
 
 	//Utils

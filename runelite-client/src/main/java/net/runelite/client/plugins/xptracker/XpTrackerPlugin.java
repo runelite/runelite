@@ -32,7 +32,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.EnumSet;
 import java.util.Objects;
-import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -70,9 +69,6 @@ public class XpTrackerPlugin extends Plugin
 
 	@Inject
 	private SkillIconManager skillIconManager;
-
-	@Inject
-	private ScheduledExecutorService executor;
 
 	private NavigationButton navButton;
 	private XpPanel xpPanel;
@@ -133,6 +129,7 @@ public class XpTrackerPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		xpState.reset();
 		pluginToolbar.removeNavigation(navButton);
 	}
 
@@ -164,19 +161,7 @@ public class XpTrackerPlugin extends Plugin
 			String username = local != null ? local.getName() : null;
 			if (username != null)
 			{
-				log.debug("Submitting xp track for {}", username);
-
-				executor.submit(() ->
-				{
-					try
-					{
-						xpClient.update(username);
-					}
-					catch (IOException ex)
-					{
-						log.warn("error submitting xp track", ex);
-					}
-				});
+				xpClient.update(username);
 			}
 		}
 	}
@@ -253,6 +238,21 @@ public class XpTrackerPlugin extends Plugin
 		xpState.recalculateTotal();
 		xpPanel.resetSkill(skill);
 		xpPanel.updateTotal(xpState.getTotalSnapshot());
+	}
+
+	/**
+	 * Reset all skills except for the one provided
+	 * @param skill Skill to ignore during reset
+	 */
+	public void resetOtherSkillState(Skill skill)
+	{
+		for (Skill s : Skill.values())
+		{
+			if (skill != s)
+			{
+				resetSkillState(s);
+			}
+		}
 	}
 
 

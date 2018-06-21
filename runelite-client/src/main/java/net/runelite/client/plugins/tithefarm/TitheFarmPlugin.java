@@ -26,9 +26,6 @@ package net.runelite.client.plugins.tithefarm;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
@@ -36,12 +33,13 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.GameObject;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.task.Schedule;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
@@ -50,16 +48,13 @@ import net.runelite.client.ui.overlay.Overlay;
 public class TitheFarmPlugin extends Plugin
 {
 	@Inject
-	private TitheFarmPluginConfig config;
+	private OverlayManager overlayManager;
 
 	@Inject
 	private TitheFarmPlantOverlay titheFarmOverlay;
 
 	@Inject
 	private TitheFarmSackOverlay titheFarmSackOverlay;
-
-	@Inject
-	private TitheFarmInventoryOverlay titheFarmInventoryOverlay;
 
 	@Getter
 	private final Set<TitheFarmPlant> plants = new HashSet<>();
@@ -71,13 +66,31 @@ public class TitheFarmPlugin extends Plugin
 	}
 
 	@Override
-	public Collection<Overlay> getOverlays()
+	protected void startUp() throws Exception
 	{
-		return Arrays.asList(titheFarmOverlay, titheFarmSackOverlay, titheFarmInventoryOverlay);
+		overlayManager.add(titheFarmOverlay);
+		overlayManager.add(titheFarmSackOverlay);
+		titheFarmOverlay.updateConfig();
 	}
 
-	@Schedule(period = 600, unit = ChronoUnit.MILLIS)
-	public void checkPlants()
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(titheFarmOverlay);
+		overlayManager.remove(titheFarmSackOverlay);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("tithefarmplugin"))
+		{
+			titheFarmOverlay.updateConfig();
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(final GameTick event)
 	{
 		plants.removeIf(plant -> plant.getPlantTimeRelative() == 1);
 	}

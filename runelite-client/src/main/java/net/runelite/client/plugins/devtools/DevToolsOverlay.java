@@ -61,6 +61,8 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 public class DevToolsOverlay extends Overlay
 {
@@ -82,14 +84,16 @@ public class DevToolsOverlay extends Overlay
 
 	private final Client client;
 	private final DevToolsPlugin plugin;
+	private final TooltipManager toolTipManager;
 
 	@Inject
-	public DevToolsOverlay(Client client, DevToolsPlugin plugin)
+	public DevToolsOverlay(Client client, DevToolsPlugin plugin, TooltipManager toolTipManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 		this.client = client;
 		this.plugin = plugin;
+		this.toolTipManager = toolTipManager;
 	}
 
 	@Override
@@ -111,7 +115,7 @@ public class DevToolsOverlay extends Overlay
 			renderNpcs(graphics);
 		}
 
-		if (plugin.isToggleGroundItems() || plugin.isToggleGroundObjects() || plugin.isToggleGameObjects() || plugin.isToggleWalls() || plugin.isToggleDecor())
+		if (plugin.isToggleGroundItems() || plugin.isToggleGroundObjects() || plugin.isToggleGameObjects() || plugin.isToggleWalls() || plugin.isToggleDecor() || plugin.isToggleTileLocation())
 		{
 			renderTileObjects(graphics);
 		}
@@ -233,7 +237,22 @@ public class DevToolsOverlay extends Overlay
 				{
 					renderDecorObject(graphics, tile, player);
 				}
+
+				if (plugin.isToggleTileLocation())
+				{
+					renderTileTooltip(graphics, tile);
+				}
 			}
+		}
+	}
+
+	private void renderTileTooltip(Graphics2D graphics, Tile tile)
+	{
+		Polygon poly = Perspective.getCanvasTilePoly(client, tile.getLocalLocation());
+		if (poly != null && poly.contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
+		{
+			toolTipManager.add(new Tooltip("World Location: " + tile.getWorldLocation().getX() + ", " + tile.getWorldLocation().getY() + ", " + client.getPlane()));
+			OverlayUtil.renderPolygon(graphics, poly, GREEN);
 		}
 	}
 

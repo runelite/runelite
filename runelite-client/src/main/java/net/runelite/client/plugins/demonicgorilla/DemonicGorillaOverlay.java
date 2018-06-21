@@ -35,7 +35,6 @@ import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
-import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.LocalPoint;
@@ -81,8 +80,6 @@ public class DemonicGorillaOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Player player = client.getLocalPlayer();
-
 		for (DemonicGorilla gorilla : plugin.getGorillas().values())
 		{
 			if (gorilla.getNpc().getInteracting() == null)
@@ -97,6 +94,10 @@ public class DemonicGorillaOverlay extends Overlay
 					gorilla.getNpc().getLogicalHeight() + 16);
 				if (point != null)
 				{
+					point = new Point(
+						client.getViewportXOffset() + point.getX(),
+						client.getViewportYOffset() + point.getY());
+
 					List<DemonicGorilla.AttackStyle> attackStyles = gorilla.getNextPosibleAttackStyles();
 					List<BufferedImage> icons = new ArrayList<>();
 					int totalWidth = (attackStyles.size() - 1) * OVERLAY_ICON_MARGIN;

@@ -36,14 +36,16 @@ import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.events.BoostedLevelChanged;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
@@ -69,10 +71,16 @@ public class BoostsPlugin extends Plugin
 	private Instant lastChange;
 
 	@Inject
+	private Notifier notifier;
+
+	@Inject
 	private Client client;
 
 	@Inject
 	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private BoostsOverlay boostsOverlay;
@@ -90,6 +98,8 @@ public class BoostsPlugin extends Plugin
 
 	private BufferedImage overallIcon;
 
+	private boolean preserveBeenActive = false;
+
 	@Provides
 	BoostsConfig provideConfig(ConfigManager configManager)
 	{
@@ -97,14 +107,9 @@ public class BoostsPlugin extends Plugin
 	}
 
 	@Override
-	public Overlay getOverlay()
-	{
-		return boostsOverlay;
-	}
-
-	@Override
 	protected void startUp()
 	{
+		overlayManager.add(boostsOverlay);
 		updateShownSkills(config.enableSkill());
 		Arrays.fill(lastSkillLevels, -1);
 		overallIcon = skillIconManager.getSkillImage(Skill.OVERALL);
@@ -113,6 +118,7 @@ public class BoostsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(boostsOverlay);
 		infoBoxManager.removeIf(t -> t instanceof BoostIndicator || t instanceof StatChangeIndicator);
 	}
 
@@ -155,7 +161,7 @@ public class BoostsPlugin extends Plugin
 		int last = lastSkillLevels[skillIdx];
 		int cur = client.getBoostedSkillLevel(skill);
 
-		// Check if stat goes +1 or -2
+		// Check if stat goes +1 or -1
 		if (cur == last + 1 || cur == last - 1)
 		{
 			log.debug("Skill {} healed", skill);
@@ -163,6 +169,18 @@ public class BoostsPlugin extends Plugin
 			addStatChangeIndicator();
 		}
 		lastSkillLevels[skillIdx] = cur;
+
+		int boostThreshold = config.boostThreshold();
+		if (boostThreshold != 0)
+		{
+			int real = client.getRealSkillLevel(skill);
+			int lastBoost = last - real;
+			int boost = cur - real;
+			if (boost <= boostThreshold && boostThreshold < lastBoost)
+			{
+				notifier.notify(skill.getName() + " level is getting low!");
+			}
+		}
 	}
 
 	private void updateShownSkills(boolean showSkillingSkills)
@@ -191,8 +209,39 @@ public class BoostsPlugin extends Plugin
 		}
 	}
 
+	/**
+	 * Calculates the amount of time until boosted stats decay,
+	 * accounting for the effect of preserve prayer.
+	 * Preserve extends the time of boosted stats by 50% while active.
+	 * The length of a boost is split into 4 sections of 15 seconds each.
+	 * If the preserve prayer is active for the entire duration of the final
+	 * section it will "activate" adding an additional 15 second section
+	 * to the boost timing. If again the preserve prayer is active for that
+	 * entire section a second 15 second section will be added.
+	 *
+	 * Preserve is only required to be on for the 4th and 5th sections of the boost timer
+	 * to gain full effect (seconds 45-75).
+	 *
+	 * @return integer value in seconds until next boost change
+	 */
 	public int getChangeTime()
 	{
-		return 60 - (int) Duration.between(lastChange, Instant.now()).getSeconds();
+		int timeSinceChange = timeSinceLastChange();
+		boolean isPreserveActive = client.isPrayerActive(Prayer.PRESERVE);
+
+		if ((isPreserveActive && (timeSinceChange < 45 || preserveBeenActive)) || timeSinceChange > 75)
+		{
+			preserveBeenActive = true;
+			return 90 - timeSinceChange;
+		}
+
+		preserveBeenActive = false;
+		return (timeSinceChange > 60) ? 75 - timeSinceChange : 60 - timeSinceChange;
 	}
+
+	private int timeSinceLastChange()
+	{
+		return (int) Duration.between(lastChange, Instant.now()).getSeconds();
+	}
+
 }

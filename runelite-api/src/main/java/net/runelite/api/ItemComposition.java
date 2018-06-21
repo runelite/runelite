@@ -24,96 +24,118 @@
  */
 package net.runelite.api;
 
+/**
+ * Represents the template of a specific item type.
+ */
 public interface ItemComposition
 {
 	/**
-	 * Returns the item's name as a string.
+	 * Gets the items name.
 	 *
 	 * @return the name of the item
 	 */
 	String getName();
 
 	/**
-	 * Returns the item's ID. A list of item IDs can be found in
-	 * ItemID.
+	 * Gets the items ID.
 	 *
-	 * @return the item's ID as an integer
+	 * @return the items ID
+	 * @see ItemID
 	 */
 	int getId();
 
 	/**
-	 * Returns a result that depends on whether the item is in noted form or
-	 * not.
+	 * Gets a value specifying whether the item is noted.
 	 *
-	 * @return 799 if noted, -1 if unnoted
+	 * @return 799 if noted, -1 otherwise
 	 */
 	int getNote();
 
 	/**
-	 * Returns the item ID of the noted/unnoted counterpart. For example, if
-	 * you call this on an unnoted monkfish(ID 7946), this method will
-	 * return the ID of a noted monkfish(ID 7947), and vice versa.
+	 * Gets the item ID of the noted or unnoted variant of this item.
+	 * <p>
+	 * Calling this method on a noted item will result in the ID of itself
+	 * in unnoted form, and on an unnoted item its noted variant.
 	 *
-	 * @return the ID that is linked to this item in noted/unnoted form.
+	 * @return the noted or unnoted variant of this item
 	 */
 	int getLinkedNoteId();
 
 	/**
-	 * Returns the item ID of the normal/placeholder counterpart. For example, if
-	 * you call this on a monkfish(ID 7946), this method will
-	 * return the ID of a placeholder monkfish(ID 17065), and vice versa.
+	 * Gets the item ID of the normal or placeholder variant of this item.
+	 * <p>
+	 * Calling this method on a normal item will result in the ID of itself
+	 * in placeholder form, and on a placeholder item its normal variant.
 	 *
-	 * @return the ID that is linked to this item in normal/placeholder form.
+	 * @return the normal or placeholder variant of this item
 	 */
 	int getPlaceholderId();
 
 	/**
-	 * Returns a result that depends on whether the item is in placeholder form or
-	 * not.
+	 * Gets a value specifying whether the item is a placeholder.
 	 *
-	 * @return 14401 if placeholder, -1 if normal
+	 * @return 14401 if placeholder, -1 otherwise
 	 */
 	int getPlaceholderTemplateId();
 
 	/**
-	 * Returns the store price of the item. Even if the item cannot be found
-	 * in a store, all items have a store price from which the High and Low
-	 * Alchemy values are calculated. Multiply the price by 0.6 to get the
-	 * High Alchemy value, or 0.4 to get the Low Alchemy value.
+	 * Gets the store price of the item.
+	 * <p>
+	 * Although not all items can be found in a store, they have a store price
+	 * which can be used to calculate high and low alchemy values. Multiplying
+	 * the price by {@code 0.6} and {@code 0.4} gives these high and low
+	 * alchemy values, respectively.
 	 *
 	 * @return the general store value of the item
 	 */
 	int getPrice();
 
 	/**
-	 * Returns whether or not the item is members-only.
+	 * Checks whether the item is members only.
 	 *
-	 * @return true if members-only, false otherwise.
+	 * @return true if members only, false otherwise.
 	 */
 	boolean isMembers();
 
 	/**
-	 * Returns whether or not the item stacks in the players' inventories
+	 * Checks whether the item is able to stack in a players inventory.
 	 *
 	 * @return true if stackable, false otherwise
 	 */
 	boolean isStackable();
 
 	/**
-	 * Returns the menu actions the item has in a players' inventory
+	 * Returns whether or not the item can be traded to other players.
+	 *
+	 * @return true if tradeable, false otherwise
+	 */
+	boolean isTradeable();
+
+	/**
+	 * Gets an array of possible right-click menu actions the item
+	 * has in a player inventory.
 	 *
 	 * @return the inventory menu actions
 	 */
 	String[] getInventoryActions();
 
 	/**
-	 * Returns the menu action index of the shift-click action
+	 * Gets the menu action index of the shift-click action.
 	 *
-	 * @return menu index of the shift-click action
+	 * @return the index of the shift-click action
 	 */
 	int getShiftClickActionIndex();
 
+	/**
+	 * Sets the menu action index of the shift-click action.
+	 *
+	 * @param shiftclickActionIndex the new index of the shift-click action
+	 */
 	void setShiftClickActionIndex(int shiftclickActionIndex);
 
+	/**
+	 * Resets the menu action index of the shift-click action to its
+	 * default value.
+	 */
 	void resetShiftClickActionIndex();
 }
