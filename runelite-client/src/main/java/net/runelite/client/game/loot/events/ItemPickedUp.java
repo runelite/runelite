@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.client.game.loot.events;
 
 
 import lombok.Data;
@@ -32,7 +32,7 @@ import lombok.Getter;
  * An event that is triggered when you picked up an item from the floor
  */
 @Data
-public class ItemDropped
+public class ItemPickedUp
 {
 	@Getter
 	private final int id;
