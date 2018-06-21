@@ -50,7 +50,8 @@ import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Kourend Library"
+	name = "Kourend Library",
+	enabledByDefault = false
 )
 @Slf4j
 public class KourendLibraryPlugin extends Plugin
