@@ -53,6 +53,7 @@ public class KourendLibraryOverlay extends Overlay
 {
 	private final static WorldPoint LIBRARY_CENTER = new WorldPoint(1632, 3807, 1);
 	private final static int MAXIMUM_DISTANCE = 24;
+	private final static int ROUGH_ENABLE_DISTANCE = 45;
 
 	private final Library library;
 	private final Client client;
@@ -78,7 +79,7 @@ public class KourendLibraryOverlay extends Overlay
 
 		WorldPoint playerLoc = player.getWorldLocation();
 
-		if (playerLoc.getRegionID() != KourendLibraryPlugin.REGION)
+		if (playerLoc.distanceTo2D(LIBRARY_CENTER) > ROUGH_ENABLE_DISTANCE)
 		{
 			return null;
 		}
