@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.specialcounter;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -41,13 +42,15 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.Notifier;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Special Attack Counter",
+	name = "Special Attack",
 	enabledByDefault = false
 )
 public class SpecialCounterPlugin extends Plugin
@@ -63,6 +66,9 @@ public class SpecialCounterPlugin extends Plugin
 	private final SpecialCounter[] specialCounter = new SpecialCounter[SpecialWeapon.values().length];
 
 	@Inject
+	private Notifier notifier;
+
+	@Inject
 	private Client client;
 
 	@Inject
@@ -70,6 +76,15 @@ public class SpecialCounterPlugin extends Plugin
 
 	@Inject
 	private ItemManager itemManager;
+
+	@Inject
+	private SpecialCounterConfig config;
+
+	@Provides
+	SpecialCounterConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(SpecialCounterConfig.class);
+	}
 
 	@Override
 	protected void shutDown()
@@ -101,11 +116,18 @@ public class SpecialCounterPlugin extends Plugin
 
 		if (this.specialPercentage == -1 || specialPercentage >= this.specialPercentage)
 		{
+			// Check if special is at a notifiable percentage
+			notifySpecialChange(specialPercentage);
+
 			this.specialPercentage = specialPercentage;
 			return;
 		}
-
 		this.specialPercentage = specialPercentage;
+
+		if (!config.enableSpecialAttackCounter())
+		{
+			return;
+		}
 		this.specialWeapon = usedSpecialWeapon();
 
 		checkInteracting();
@@ -117,7 +139,7 @@ public class SpecialCounterPlugin extends Plugin
 	@Subscribe
 	private void onGameTick(GameTick tick)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN || !config.enableSpecialAttackCounter())
 		{
 			return;
 		}
@@ -244,6 +266,21 @@ public class SpecialCounterPlugin extends Plugin
 		else
 		{
 			return (int) Math.round(damageOutput);
+		}
+	}
+
+	private void notifySpecialChange(int special)
+	{
+		// Not enabled, break
+		if (!config.enableSpecialAttackNotification())
+		{
+			return;
+		}
+		// Notify if we are now 100% and the last updated percentage was not default, 0%, or 100%
+		// Logging in with full special simultaneously triggers 0% and 100%
+		if (special == 1000 && this.specialPercentage > 0 && this.specialPercentage < 1000)
+		{
+			notifier.notify("[" + client.getLocalPlayer().getName() + "] has full special attack!");
 		}
 	}
 }
