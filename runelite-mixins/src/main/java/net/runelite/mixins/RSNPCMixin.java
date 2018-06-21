@@ -51,14 +51,13 @@ public abstract class RSNPCMixin implements RSNPC
 	private boolean dead;
 
 	@Inject
+	private RSNPCComposition composition;
+
+	@Inject
 	@Override
 	public int getId()
 	{
-		RSNPCComposition composition = getComposition();
-		if (composition != null && composition.getConfigs() != null)
-		{
-			composition = composition.transform();
-		}
+		updateComposition();
 		return composition == null ? -1 : composition.getId();
 	}
 
@@ -66,11 +65,7 @@ public abstract class RSNPCMixin implements RSNPC
 	@Override
 	public String getName()
 	{
-		RSNPCComposition composition = getComposition();
-		if (composition != null && composition.getConfigs() != null)
-		{
-			composition = composition.transform();
-		}
+		updateComposition();
 		return composition == null ? null : composition.getName().replace('\u00A0', ' ');
 	}
 
@@ -78,11 +73,7 @@ public abstract class RSNPCMixin implements RSNPC
 	@Override
 	public int getCombatLevel()
 	{
-		RSNPCComposition composition = getComposition();
-		if (composition != null && composition.getConfigs() != null)
-		{
-			composition = composition.transform();
-		}
+		updateComposition();
 		return composition == null ? -1 : composition.getCombatLevel();
 	}
 
@@ -145,11 +136,7 @@ public abstract class RSNPCMixin implements RSNPC
 	@Override
 	public NPCComposition getTransformedComposition()
 	{
-		RSNPCComposition composition = getComposition();
-		if (composition != null && composition.getConfigs() != null)
-		{
-			composition = composition.transform();
-		}
+		updateComposition();
 		return composition;
 	}
 
@@ -165,5 +152,18 @@ public abstract class RSNPCMixin implements RSNPC
 	public void setDead(boolean dead)
 	{
 		this.dead = dead;
+	}
+
+	@Inject
+	private void updateComposition()
+	{
+		if (composition == null || getComposition() != null)
+		{
+			composition = getComposition();
+			if (composition != null && composition.getConfigs() != null)
+			{
+				composition = composition.transform();
+			}
+		}
 	}
 }
