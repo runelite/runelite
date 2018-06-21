@@ -56,6 +56,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
@@ -85,7 +86,8 @@ import net.runelite.client.game.loot.data.PendingItem;
 import net.runelite.client.game.loot.events.EventLootReceived;
 import net.runelite.client.game.loot.events.ItemDropped;
 import net.runelite.client.game.loot.events.ItemPickedUp;
-import net.runelite.client.game.loot.events.LootReceived;
+import net.runelite.client.game.loot.events.NpcLootReceived;
+import net.runelite.client.game.loot.events.PlayerLootReceived;
 
 @Slf4j
 @Singleton
@@ -212,15 +214,15 @@ public class LootLogger
 	 */
 
 	// Loot Received from killing an NPC
-	private void onNewNpcLogCreated(String name, Actor deadActor, Map<Integer, Integer> drops)
+	private void onNewNpcLogCreated(int npc, NPCComposition comp, WorldPoint location, Map<Integer, Integer> drops)
 	{
-		eventBus.post(new LootReceived(LootTypes.NPC, name, deadActor, drops));
+		eventBus.post(new NpcLootReceived(npc, comp, location, drops));
 	}
 
 	// Loot Received from killing an NPC
-	private void onNewPlayerLogCreated(String name, Actor deadActor, Map<Integer, Integer> drops)
+	private void onNewPlayerLogCreated(String name, WorldPoint location, Map<Integer, Integer> drops)
 	{
-		eventBus.post(new LootReceived(LootTypes.PLAYER, name, deadActor, drops));
+		eventBus.post(new PlayerLootReceived(name, location, drops));
 	}
 
 	// Loot Received from events (Barrows, Raids, Clue Scrolls, etc)
@@ -989,14 +991,14 @@ public class LootLogger
 				drops.put(entry.getValue().getItemId(), nextCount + count);
 			}
 
-			Actor actor = pad.getActor();
 			if (pad instanceof MemorizedNpc)
 			{
-				onNewNpcLogCreated(pad.getName(), actor, drops);
+				NPCComposition c = ((MemorizedNpc) pad).getNpcComposition();
+				onNewNpcLogCreated(c.getId(), c, pad.getActor().getWorldLocation(), drops);
 			}
 			else if (pad instanceof MemorizedPlayer)
 			{
-				onNewPlayerLogCreated(pad.getName(), actor, drops);
+				onNewPlayerLogCreated(pad.getName(), pad.getActor().getWorldLocation(), drops);
 			}
 			else
 			{
