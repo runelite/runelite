@@ -216,13 +216,13 @@ public class LootLogger
 	// Loot Received from killing an NPC
 	private void onNewNpcLogCreated(int npc, NPCComposition comp, WorldPoint location, Map<Integer, Integer> drops)
 	{
-		eventBus.post(new NpcLootReceived(npc, comp, location, drops));
+		eventBus.post(new NpcLootReceived(npc, comp, location, createItemList(drops)));
 	}
 
 	// Loot Received from killing an NPC
 	private void onNewPlayerLogCreated(String name, WorldPoint location, Map<Integer, Integer> drops)
 	{
-		eventBus.post(new PlayerLootReceived(name, location, drops));
+		eventBus.post(new PlayerLootReceived(name, location, createItemList(drops)));
 	}
 
 	// Loot Received from events (Barrows, Raids, Clue Scrolls, etc)
@@ -249,6 +249,15 @@ public class LootLogger
 		eventBus.post(new ItemPickedUp(id, qty));
 	}
 
+	private List<ItemStack> createItemList(Map<Integer, Integer> drops)
+	{
+		List<ItemStack> items = new ArrayList<>();
+		for (Map.Entry<Integer, Integer> e : drops.entrySet())
+		{
+			items.add(new ItemStack(e.getValue(), e.getKey()));
+		}
+		return items;
+	}
 	/*
 	 * Functions that help with Item management
 	 */
@@ -987,8 +996,8 @@ public class LootLogger
 				{
 					continue;
 				}
-				int count = drops.getOrDefault(entry.getValue().getItemId(), 0);
-				drops.put(entry.getValue().getItemId(), nextCount + count);
+				int count = drops.getOrDefault(entry.getValue().getId(), 0);
+				drops.put(entry.getValue().getId(), nextCount + count);
 			}
 
 			if (pad instanceof MemorizedNpc)
@@ -1020,7 +1029,7 @@ public class LootLogger
 				// so we memorize the items for 30 minutes if the player is in an instance.
 				int itemDuration = (client.isInInstancedRegion() ? INSTANCE_DROP_DISAPPEAR_TIME : NPC_DROP_DISAPPEAR_TIME);
 				int disappearsOnTick = tickCounter + itemDuration;
-				GroundItem groundItem = new GroundItem(entry.getValue().getItemId(),
+				GroundItem groundItem = new GroundItem(entry.getValue().getId(),
 						nextCount, entry.getKey(), disappearsOnTick);
 
 				// Memorize which items on the ground were dropped by the users
