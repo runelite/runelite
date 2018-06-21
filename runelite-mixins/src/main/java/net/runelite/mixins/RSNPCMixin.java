@@ -57,7 +57,6 @@ public abstract class RSNPCMixin implements RSNPC
 	@Override
 	public int getId()
 	{
-		updateComposition();
 		return composition == null ? -1 : composition.getId();
 	}
 
@@ -65,7 +64,6 @@ public abstract class RSNPCMixin implements RSNPC
 	@Override
 	public String getName()
 	{
-		updateComposition();
 		return composition == null ? null : composition.getName().replace('\u00A0', ' ');
 	}
 
@@ -73,7 +71,6 @@ public abstract class RSNPCMixin implements RSNPC
 	@Override
 	public int getCombatLevel()
 	{
-		updateComposition();
 		return composition == null ? -1 : composition.getCombatLevel();
 	}
 
@@ -95,9 +92,14 @@ public abstract class RSNPCMixin implements RSNPC
 	@Inject
 	public void onCompositionChanged(RSNPCComposition composition)
 	{
-		// Update cached composition
-		if (this.composition == null || composition != null)
+		if (composition != null)
+		{
+			if (composition.getConfigs() != null)
+			{
+				composition = composition.transform();
+			}
 			this.composition = composition;
+		}
 
 		if (composition == null)
 		{
@@ -140,7 +142,6 @@ public abstract class RSNPCMixin implements RSNPC
 	@Override
 	public NPCComposition getTransformedComposition()
 	{
-		updateComposition();
 		return composition;
 	}
 
@@ -156,18 +157,5 @@ public abstract class RSNPCMixin implements RSNPC
 	public void setDead(boolean dead)
 	{
 		this.dead = dead;
-	}
-
-	@Inject
-	private void updateComposition()
-	{
-		if (composition == null || getComposition() != null)
-		{
-			composition = getComposition();
-			if (composition != null && composition.getConfigs() != null)
-			{
-				composition = composition.transform();
-			}
-		}
 	}
 }
