@@ -26,23 +26,21 @@ package net.runelite.client.game.loot.events;
 
 import lombok.Data;
 import lombok.Getter;
-import net.runelite.api.Actor;
+import net.runelite.api.Player;
+import net.runelite.api.coords.WorldPoint;
 import java.util.Map;
 
 /**
- * An event where you killed an {@link Actor} and received loot
+ * An event where you killed an {@link Player} and received loot
  */
 @Data
-public class LootReceived
+public class PlayerLootReceived
 {
-	@Getter
-	private final String type;
-
 	@Getter
 	private final String name;
 
 	@Getter
-	private final Actor actor;
+	private final WorldPoint location;
 
 	@Getter
 	private final Map<Integer, Integer> items;
