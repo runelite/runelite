@@ -104,6 +104,11 @@ public class Hooks
 		throw new RuntimeException();
 	}
 
+	public static void updateNpcs()
+	{
+		throw new RuntimeException();
+	}
+
 	public static boolean menuActionHook(int actionParam, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
 	{
 		throw new RuntimeException();
