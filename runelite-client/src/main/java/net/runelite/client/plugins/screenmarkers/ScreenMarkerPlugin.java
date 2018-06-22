@@ -47,7 +47,6 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.WidgetPositioned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.config.ConfigManager;
@@ -171,16 +170,6 @@ public class ScreenMarkerPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onWidgetPositioned(WidgetPositioned event)
-	{
-		//Update positions for the screen markers that are 'attached' to a widget or item
-		for (ScreenMarkerOverlay overlay : screenMarkers)
-		{
-			overlay.updatePosition();
-		}
-	}
-
 	public void setMouseListenerEnabled(boolean enabled)
 	{
 		if (enabled)
@@ -195,47 +184,40 @@ public class ScreenMarkerPlugin extends Plugin
 
 	public void createWidgetMarker(Point location)
 	{
-		ItemContainerSlot clickedItem = findItemSlotContaining(location);
+		Rectangle bounds = null;
+		WidgetItem clickedItem = findItemSlotContaining(location);
+
 		if (clickedItem != null)
 		{
-			currentMarker = new WidgetItemScreenMarker(
-				Instant.now().toEpochMilli(),
-				DEFAULT_MARKER_NAME + " " + (screenMarkers.size() + 1),
-				pluginPanel.getSelectedBorderThickness(),
-				pluginPanel.getSelectedColor(),
-				pluginPanel.getSelectedFillColor(),
-				true,
-				clickedItem
-			);
-
-			Widget container = clickedItem.getContainer();
-			Rectangle bounds = container.getWidgetItemBounds(clickedItem.getSlotIndex());
-			startLocation = new Point(bounds.x, bounds.y);
-			overlay.setPreferredLocation(startLocation);
-			overlay.setPreferredSize(bounds.getSize());
+			bounds = clickedItem.getCanvasBounds();
 		}
 		else
 		{
 			Widget clickedWidget = findSmallestWidgetContaining(location);
-			if (clickedWidget == null)
+
+			if (clickedWidget != null)
 			{
-				return;
+				bounds = clickedWidget.getBounds();
 			}
-
-			currentMarker = new WidgetScreenMarker(
-				Instant.now().toEpochMilli(),
-				DEFAULT_MARKER_NAME + " " + (screenMarkers.size() + 1),
-				pluginPanel.getSelectedBorderThickness(),
-				pluginPanel.getSelectedColor(),
-				pluginPanel.getSelectedFillColor(),
-				true,
-				clickedWidget.getId()
-			);
-
-			startLocation = new Point(clickedWidget.getCanvasLocation().getX(), clickedWidget.getCanvasLocation().getY());
-			overlay.setPreferredLocation(startLocation);
-			overlay.setPreferredSize(clickedWidget.getBounds().getSize());
 		}
+
+		if (bounds == null)
+		{
+			return;
+		}
+
+		currentMarker = new ScreenMarker(
+			Instant.now().toEpochMilli(),
+			DEFAULT_MARKER_NAME + " " + (screenMarkers.size() + 1),
+			pluginPanel.getSelectedBorderThickness(),
+			pluginPanel.getSelectedColor(),
+			pluginPanel.getSelectedFillColor(),
+			true
+		);
+
+		startLocation = new Point(bounds.x, bounds.y);
+		overlay.setPreferredLocation(startLocation);
+		overlay.setPreferredSize(bounds.getSize());
 	}
 
 
@@ -289,12 +271,12 @@ public class ScreenMarkerPlugin extends Plugin
 		return null;
 	}
 
-	public ItemContainerSlot findItemSlotContaining(Point point)
+	public WidgetItem findItemSlotContaining(Point point)
 	{
 		return findItemSlotContaining(client.getWidgetRoots(), point);
 	}
 
-	private ItemContainerSlot findItemSlotContaining(Widget[] widgets, Point location)
+	private WidgetItem findItemSlotContaining(Widget[] widgets, Point location)
 	{
 		for (Widget widget : widgets)
 		{
@@ -309,7 +291,7 @@ public class ScreenMarkerPlugin extends Plugin
 				{
 					if (widgetItem.getCanvasBounds().contains(location))
 					{
-						return new ItemContainerSlot(widgetItem.getIndex(), widget);
+						return widgetItem;
 					}
 				}
 			}
@@ -319,7 +301,7 @@ public class ScreenMarkerPlugin extends Plugin
 				continue;
 			}
 
-			ItemContainerSlot childResult = findItemSlotContaining(getUnifiedChildren(widget), location);
+			WidgetItem childResult = findItemSlotContaining(getUnifiedChildren(widget), location);
 			if (childResult != null)
 			{
 				return childResult;

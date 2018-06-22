@@ -60,32 +60,6 @@ public class ScreenMarkerOverlay extends Overlay
 		return "marker" + marker.getId();
 	}
 
-	public void updatePosition()
-	{
-		if (marker instanceof WidgetScreenMarker)
-		{
-			WidgetScreenMarker widgetScreenMarker = (WidgetScreenMarker) marker;
-			Widget widget = plugin.findWidgetById(widgetScreenMarker.getWidgetId());
-			if (widget != null)
-			{
-				Point converted = new Point(widget.getCanvasLocation().getX(), widget.getCanvasLocation().getY());
-				setPreferredLocation(converted);
-			}
-		}
-		else if (marker instanceof WidgetItemScreenMarker)
-		{
-			WidgetItemScreenMarker widgetScreenMarker = (WidgetItemScreenMarker) marker;
-			ItemContainerSlot slot = widgetScreenMarker.getSlot();
-			Widget container = plugin.findWidgetById(slot.getContainer().getId());
-			if (container != null)
-			{
-				Rectangle bounds = container.getWidgetItemBounds(slot.getSlotIndex());
-				Point converted = new Point(bounds.x, bounds.y);
-				setPreferredLocation(converted);
-			}
-		}
-	}
-
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
