@@ -1050,4 +1050,11 @@ public abstract class RSClientMixin implements RSClient
 		final ChatMessage chatMessage = new ChatMessage(chatMessageType, name, message, sender);
 		eventBus.post(chatMessage);
 	}
+
+	@Inject
+	@MethodHook("methodDraw")
+	public void methodDraw(boolean var1)
+	{
+		Hooks.clientMainLoop();
+	}
 }

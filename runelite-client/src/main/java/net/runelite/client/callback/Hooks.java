@@ -93,7 +93,7 @@ public class Hooks
 	private static long lastCheck;
 	private static boolean shouldProcessGameTick;
 
-	public static void clientMainLoop(Client client, boolean arg1)
+	public static void clientMainLoop()
 	{
 		if (shouldProcessGameTick)
 		{
