@@ -305,7 +305,7 @@ public class LootLogger
 		List<ItemStack> items = new ArrayList<>();
 		for (Map.Entry<Integer, Integer> e : drops.entrySet())
 		{
-			items.add(new ItemStack(e.getValue(), e.getKey()));
+			items.add(new ItemStack(e.getKey(), e.getValue()));
 		}
 		return items;
 	}
