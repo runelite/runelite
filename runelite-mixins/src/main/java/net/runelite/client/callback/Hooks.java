@@ -49,6 +49,11 @@ public class Hooks
 		throw new IllegalStateException();
 	}
 
+	public static void drawAboveOverheads()
+	{
+		throw new IllegalStateException();
+	}
+
 	public static MouseEvent mousePressed(MouseEvent mouseEvent)
 	{
 		throw new RuntimeException();

@@ -43,7 +43,6 @@ import net.runelite.api.MainBufferProvider;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Region;
 import net.runelite.api.RenderOverview;
-import net.runelite.api.TextureProvider;
 import net.runelite.api.WorldMapManager;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
@@ -307,7 +306,7 @@ public class Hooks
 		}
 	}
 
-	public static void drawAboveOverheads(TextureProvider textureProvider, int var1)
+	public static void drawAboveOverheads()
 	{
 		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
 		BufferedImage image = (BufferedImage) bufferProvider.getImage();
