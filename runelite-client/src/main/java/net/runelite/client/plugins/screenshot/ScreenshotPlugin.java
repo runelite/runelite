@@ -82,6 +82,7 @@ import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
@@ -156,15 +157,21 @@ public class ScreenshotPlugin extends Plugin
 	private DrawManager drawManager;
 
 	@Inject
-	private ScreenshotInput inputListener;
-
-	@Inject
 	private ScheduledExecutorService executor;
 
 	@Inject
 	private KeyManager keyManager;
 
 	private NavigationButton titleBarButton;
+
+	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.hotkey())
+	{
+		@Override
+		public void hotkeyReleased()
+		{
+			takeScreenshot(format(new Date()));
+		}
+	};
 
 	@Provides
 	ScreenshotConfig getConfig(ConfigManager configManager)
@@ -177,7 +184,7 @@ public class ScreenshotPlugin extends Plugin
 	{
 		overlayManager.add(screenshotOverlay);
 		SCREENSHOT_DIR.mkdirs();
-		keyManager.registerKeyListener(inputListener);
+		keyManager.registerKeyListener(hotkeyListener);
 
 		try
 		{
@@ -221,7 +228,7 @@ public class ScreenshotPlugin extends Plugin
 	{
 		overlayManager.remove(screenshotOverlay);
 		titleToolbar.removeNavigation(titleBarButton);
-		keyManager.unregisterKeyListener(inputListener);
+		keyManager.unregisterKeyListener(hotkeyListener);
 	}
 
 	@Subscribe
