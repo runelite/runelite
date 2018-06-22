@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.screenshot;
+package net.runelite.client.plugins.config;
 
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.Date;
-import javax.inject.Inject;
-import net.runelite.client.input.KeyListener;
-import static net.runelite.client.plugins.screenshot.ScreenshotPlugin.format;
+import javax.swing.JButton;
+import lombok.Getter;
+import net.runelite.client.config.Keybind;
 
-public class ScreenshotInput implements KeyListener
+public class HotkeyButton extends JButton
 {
-	private final ScreenshotConfig config;
-	private final ScreenshotPlugin plugin;
+	@Getter
+	private Keybind value;
 
-	@Inject
-	ScreenshotInput(ScreenshotConfig config, ScreenshotPlugin plugin)
+	public HotkeyButton(Keybind value)
 	{
-		this.config = config;
-		this.plugin = plugin;
-	}
-
-	@Override
-	public void keyPressed(KeyEvent event)
-	{
-	}
-
-	@Override
-	public void keyTyped(KeyEvent event)
-	{
-	}
-
-	@Override
-	public void keyReleased(KeyEvent event)
-	{
-		if (!config.isScreenshotEnabled())
-			return;
-
-		if (event.getKeyCode() == KeyEvent.VK_INSERT)
+		setValue(value);
+		addActionListener(e ->
 		{
-			plugin.takeScreenshot(format(new Date()));
-		}
+			setValue(Keybind.NOT_SET);
+		});
+		addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				setValue(new Keybind(e));
+			}
+		});
 	}
 
+	public void setValue(Keybind value)
+	{
+		if (value == null)
+		{
+			value = Keybind.NOT_SET;
+		}
+
+		this.value = value;
+		setText(value.toString());
+	}
 }

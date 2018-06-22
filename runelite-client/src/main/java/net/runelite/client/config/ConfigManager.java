@@ -359,6 +359,7 @@ public class ConfigManager
 
 	/**
 	 * Initialize the configuration from the default settings
+	 *
 	 * @param proxy
 	 */
 	public void setDefaultConfiguration(Object proxy, boolean override)
@@ -459,7 +460,7 @@ public class ConfigManager
 		if (type == Rectangle.class)
 		{
 			String[] splitStr = str.split(":");
-			int x  = Integer.parseInt(splitStr[0]);
+			int x = Integer.parseInt(splitStr[0]);
 			int y = Integer.parseInt(splitStr[1]);
 			int width = Integer.parseInt(splitStr[2]);
 			int height = Integer.parseInt(splitStr[3]);
@@ -472,6 +473,13 @@ public class ConfigManager
 		if (type == Instant.class)
 		{
 			return Instant.parse(str);
+		}
+		if (type == Keybind.class)
+		{
+			String[] splitStr = str.split(":");
+			int code = Integer.parseInt(splitStr[0]);
+			int mods = Integer.parseInt(splitStr[1]);
+			return new Keybind(code, mods);
 		}
 		return str;
 	}
@@ -498,12 +506,17 @@ public class ConfigManager
 		}
 		if (object instanceof Rectangle)
 		{
-			Rectangle r = (Rectangle)object;
+			Rectangle r = (Rectangle) object;
 			return r.x + ":" + r.y + ":" + r.width + ":" + r.height;
 		}
 		if (object instanceof Instant)
 		{
 			return ((Instant) object).toString();
+		}
+		if (object instanceof Keybind)
+		{
+			Keybind k = (Keybind) object;
+			return k.getKeyCode() + ":" + k.getModifiers();
 		}
 		return object.toString();
 	}
