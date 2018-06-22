@@ -235,17 +235,6 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 18,
-		keyName = "swapAge",
-		name = "Age",
-		description = "Swap Talk-to with Age for Hans"
-	)
-	default boolean swapAge()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 19,
 		keyName = "swapAssignment",
 		name = "Assignment",
 		description = "Swap Talk-to with Assignment for Slayer Masters. This will take priority over swapping Trade."
