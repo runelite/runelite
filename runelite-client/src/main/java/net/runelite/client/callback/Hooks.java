@@ -58,7 +58,6 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicsObjectCreated;
-import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.events.ProjectileMoved;
@@ -454,13 +453,6 @@ public class Hooks
 	{
 		PostItemComposition event = new PostItemComposition();
 		event.setItemComposition(itemComposition);
-		eventBus.post(event);
-	}
-
-	public static void menuOpened(Client client, int var1, int var2)
-	{
-		MenuOpened event = new MenuOpened();
-		event.setMenuEntries(client.getMenuEntries());
 		eventBus.post(event);
 	}
 

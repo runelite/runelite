@@ -69,6 +69,7 @@ import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
@@ -80,6 +81,7 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
@@ -1014,5 +1016,14 @@ public abstract class RSClientMixin implements RSClient
 	{
 		int flags = getFlags();
 		return WorldType.fromMask(flags);
+	}
+
+	@Inject
+	@MethodHook("openMenu")
+	public void menuOpened(int var1, int var2)
+	{
+		final MenuOpened event = new MenuOpened();
+		event.setMenuEntries(getMenuEntries());
+		eventBus.post(event);
 	}
 }
