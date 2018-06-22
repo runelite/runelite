@@ -43,9 +43,11 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.WidgetPositioned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.config.ConfigManager;
@@ -91,13 +93,14 @@ public class ScreenMarkerPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
+	@Getter
 	private Client client;
 
 	@Inject
 	private ScreenMarkerCreationOverlay overlay;
 
 	@Inject
-	private ScreenMarkerKeyListener keyListener;
+	private ScreenMarkerWidgetHighlight widgetHighlight;
 
 	private ScreenMarkerMouseListener mouseListener;
 	private ScreenMarkerPluginPanel pluginPanel;
@@ -107,14 +110,15 @@ public class ScreenMarkerPlugin extends Plugin
 	private ScreenMarker currentMarker;
 
 	@Getter
+	@Setter
 	private boolean creatingScreenMarker = false;
 	private Point startLocation = null;
-	private boolean shiftModifier = false;
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		overlayManager.add(widgetHighlight);
 		loadConfig(configManager.getConfiguration(CONFIG_GROUP, CONFIG_KEY)).forEach(screenMarkers::add);
 		screenMarkers.forEach(overlayManager::add);
 
@@ -143,11 +147,11 @@ public class ScreenMarkerPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+		overlayManager.remove(widgetHighlight);
 		overlayManager.removeIf(ScreenMarkerOverlay.class::isInstance);
 		screenMarkers.clear();
 		pluginToolbar.removeNavigation(navigationButton);
 		setMouseListenerEnabled(false);
-		setKeyListenerEnabled(false);
 		creatingScreenMarker = false;
 
 		pluginPanel = null;
@@ -167,6 +171,16 @@ public class ScreenMarkerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onWidgetPositioned(WidgetPositioned event)
+	{
+		//Update positions for the screen markers that are 'attached' to a widget or item
+		for (ScreenMarkerOverlay overlay : screenMarkers)
+		{
+			overlay.updatePosition();
+		}
+	}
+
 	public void setMouseListenerEnabled(boolean enabled)
 	{
 		if (enabled)
@@ -179,17 +193,51 @@ public class ScreenMarkerPlugin extends Plugin
 		}
 	}
 
-	public void setKeyListenerEnabled(boolean enabled)
+	public void createWidgetMarker(Point location)
 	{
-		if (enabled)
+		ItemContainerSlot clickedItem = findItemSlotContaining(location);
+		if (clickedItem != null)
 		{
-			keyManager.registerKeyListener(keyListener);
+			currentMarker = new WidgetItemScreenMarker(
+				Instant.now().toEpochMilli(),
+				DEFAULT_MARKER_NAME + " " + (screenMarkers.size() + 1),
+				pluginPanel.getSelectedBorderThickness(),
+				pluginPanel.getSelectedColor(),
+				pluginPanel.getSelectedFillColor(),
+				true,
+				clickedItem
+			);
+
+			Widget container = clickedItem.getContainer();
+			Rectangle bounds = container.getWidgetItemBounds(clickedItem.getSlotIndex());
+			startLocation = new Point(bounds.x, bounds.y);
+			overlay.setPreferredLocation(startLocation);
+			overlay.setPreferredSize(bounds.getSize());
 		}
 		else
 		{
-			keyManager.unregisterKeyListener(keyListener);
+			Widget clickedWidget = findSmallestWidgetContaining(location);
+			if (clickedWidget == null)
+			{
+				return;
+			}
+
+			currentMarker = new WidgetScreenMarker(
+				Instant.now().toEpochMilli(),
+				DEFAULT_MARKER_NAME + " " + (screenMarkers.size() + 1),
+				pluginPanel.getSelectedBorderThickness(),
+				pluginPanel.getSelectedColor(),
+				pluginPanel.getSelectedFillColor(),
+				true,
+				clickedWidget.getId()
+			);
+
+			startLocation = new Point(clickedWidget.getCanvasLocation().getX(), clickedWidget.getCanvasLocation().getY());
+			overlay.setPreferredLocation(startLocation);
+			overlay.setPreferredSize(clickedWidget.getBounds().getSize());
 		}
 	}
+
 
 	public void startCreation(Point location)
 	{
@@ -202,64 +250,117 @@ public class ScreenMarkerPlugin extends Plugin
 			true
 		);
 
-		overlay.setPreferredLocation(location);
 		creatingScreenMarker = true;
 
-		Rectangle clicked = findContaining(client.getWidgetRoots(), location, Integer.MAX_VALUE);
-		if (shiftModifier && clicked != null)
-		{
-			startLocation = new Point(clicked.x, clicked.y);
-			overlay.setPreferredLocation(startLocation);
-			overlay.setPreferredSize(clicked.getBounds().getSize());
-		}
-		else
-		{
-			// Set overlay creator bounds to current position and default size
-			startLocation = location;
-			overlay.setPreferredLocation(location);
-			overlay.setPreferredSize(DEFAULT_SIZE);
-		}
+		// Set overlay creator bounds to current position and default size
+		startLocation = location;
+		overlay.setPreferredLocation(location);
+		overlay.setPreferredSize(DEFAULT_SIZE);
+
 	}
 
-	private Rectangle findContaining(Widget[] widgets, Point location, int size)
+	public Widget findWidgetById(int id)
 	{
-		Rectangle best = null;
+		return findWidgetById(id, client.getWidgetRoots());
+	}
+
+	private Widget findWidgetById(int id, Widget[] widgets)
+	{
 		for (Widget widget : widgets)
 		{
+			if (widget.isHidden() || widget.isSelfHidden())
+			{
+				continue;
+			}
+
+			if (widget.getId() == id)
+			{
+				return widget;
+			}
+
+			Widget[] children = getUnifiedChildren(widget);
+			Widget childResult = findWidgetById(id, children);
+			if (childResult != null)
+			{
+				return childResult;
+			}
+		}
+
+		return null;
+	}
+
+	public ItemContainerSlot findItemSlotContaining(Point point)
+	{
+		return findItemSlotContaining(client.getWidgetRoots(), point);
+	}
+
+	private ItemContainerSlot findItemSlotContaining(Widget[] widgets, Point location)
+	{
+		for (Widget widget : widgets)
+		{
+			if (widget.isHidden())
+			{
+				continue;
+			}
+
 			if (widget.getWidgetItems() != null)
 			{
-				for (WidgetItem item : widget.getWidgetItems())
+				for (WidgetItem widgetItem : widget.getWidgetItems())
 				{
-					Rectangle itemBounds = item.getCanvasBounds();
-					if (itemBounds.contains(location))
+					if (widgetItem.getCanvasBounds().contains(location))
 					{
-
-						return itemBounds;
+						return new ItemContainerSlot(widgetItem.getIndex(), widget);
 					}
 				}
 			}
 
+			if (!widget.getBounds().contains(location))
+			{
+				continue;
+			}
+
+			ItemContainerSlot childResult = findItemSlotContaining(getUnifiedChildren(widget), location);
+			if (childResult != null)
+			{
+				return childResult;
+			}
+		}
+
+		return null;
+	}
+
+	public Widget findSmallestWidgetContaining(Point location)
+	{
+		return findSmallestWidgetContaining(client.getWidgetRoots(), location, Integer.MAX_VALUE);
+	}
+
+	private Widget findSmallestWidgetContaining(Widget[] widgets, Point location, int size)
+	{
+		Widget best = null;
+
+		for (Widget widget : widgets)
+		{
 			if (!widget.getBounds().contains(location) || widget.isHidden() || widget.isSelfHidden())
 			{
 				continue;
 			}
 
-			Widget[] children = ArrayUtils.addAll(new Widget[0], widget.getChildren());
-			children = ArrayUtils.addAll(children, widget.getStaticChildren());
-			children = ArrayUtils.addAll(children, widget.getNestedChildren());
-			children = ArrayUtils.addAll(children, widget.getDynamicChildren());
+			//Add all types of children to one array
+			Widget[] children = getUnifiedChildren(widget);
 
-			Rectangle check = widget.getBounds();
+			Widget check = widget;
+
+			//If it has children try to see if a child can
 			if (children.length > 0)
 			{
-				Rectangle find = findContaining(children, location, size);
+				Widget find = findSmallestWidgetContaining(children, location, size);
 				if (find != null)
 				{
 					check = find;
 				}
 			}
 
-			int currSize = (int) (check.getHeight() * check.getWidth());
+			int currSize = (check.getHeight() * check.getWidth());
 			if (currSize < size)
 			{
 				best = check;
@@ -268,19 +369,22 @@ public class ScreenMarkerPlugin extends Plugin
 
 		}
 
-		if (best != null)
-		{
-			return best;
-		}
+		return best;
+	}
 
-		return null;
+	private Widget[] getUnifiedChildren(Widget widget)
+	{
+		Widget[] children = ArrayUtils.addAll(new Widget[0], widget.getChildren());
+		children = ArrayUtils.addAll(children, widget.getStaticChildren());
+		children = ArrayUtils.addAll(children, widget.getNestedChildren());
+		return ArrayUtils.addAll(children, widget.getDynamicChildren());
 	}
 
 	public void finishCreation(boolean aborted)
 	{
 		if (!aborted)
 		{
-			final ScreenMarkerOverlay screenMarkerOverlay = new ScreenMarkerOverlay(currentMarker);
+			final ScreenMarkerOverlay screenMarkerOverlay = new ScreenMarkerOverlay(this, currentMarker);
 			screenMarkerOverlay.setPreferredLocation(overlay.getBounds().getLocation());
 			screenMarkerOverlay.setPreferredSize(overlay.getBounds().getSize());
 
@@ -336,11 +440,6 @@ public class ScreenMarkerPlugin extends Plugin
 		configManager.setConfiguration(CONFIG_GROUP, CONFIG_KEY, json);
 	}
 
-	public void setShiftModifier(boolean shiftModifier)
-	{
-		this.shiftModifier = shiftModifier;
-	}
-
 	private Stream<ScreenMarkerOverlay> loadConfig(String json)
 	{
 		if (Strings.isNullOrEmpty(json))
@@ -353,6 +452,6 @@ public class ScreenMarkerPlugin extends Plugin
 		{
 		}.getType());
 
-		return screenMarkerData.stream().map(ScreenMarkerOverlay::new);
+		return screenMarkerData.stream().map(e -> new ScreenMarkerOverlay(this, e));
 	}
 }

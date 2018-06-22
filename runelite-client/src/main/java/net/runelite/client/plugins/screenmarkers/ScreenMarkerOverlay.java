@@ -28,7 +28,10 @@ package net.runelite.client.plugins.screenmarkers;
 import java.awt.BasicStroke;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
 import lombok.Getter;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -38,11 +41,13 @@ public class ScreenMarkerOverlay extends Overlay
 {
 	@Getter
 	private final ScreenMarker marker;
+	private final ScreenMarkerPlugin plugin;
 	private final ScreenMarkerRenderable screenMarkerRenderable;
 
-	ScreenMarkerOverlay(ScreenMarker marker)
+	ScreenMarkerOverlay(ScreenMarkerPlugin plugin, ScreenMarker marker)
 	{
 		this.marker = marker;
+		this.plugin = plugin;
 		this.screenMarkerRenderable = new ScreenMarkerRenderable();
 		setPosition(OverlayPosition.DETACHED);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
@@ -53,6 +58,32 @@ public class ScreenMarkerOverlay extends Overlay
 	public String getName()
 	{
 		return "marker" + marker.getId();
+	}
+
+	public void updatePosition()
+	{
+		if (marker instanceof WidgetScreenMarker)
+		{
+			WidgetScreenMarker widgetScreenMarker = (WidgetScreenMarker) marker;
+			Widget widget = plugin.findWidgetById(widgetScreenMarker.getWidgetId());
+			if (widget != null)
+			{
+				Point converted = new Point(widget.getCanvasLocation().getX(), widget.getCanvasLocation().getY());
+				setPreferredLocation(converted);
+			}
+		}
+		else if (marker instanceof WidgetItemScreenMarker)
+		{
+			WidgetItemScreenMarker widgetScreenMarker = (WidgetItemScreenMarker) marker;
+			ItemContainerSlot slot = widgetScreenMarker.getSlot();
+			Widget container = plugin.findWidgetById(slot.getContainer().getId());
+			if (container != null)
+			{
+				Rectangle bounds = container.getWidgetItemBounds(slot.getSlotIndex());
+				Point converted = new Point(bounds.x, bounds.y);
+				setPreferredLocation(converted);
+			}
+		}
 	}
 
 	@Override

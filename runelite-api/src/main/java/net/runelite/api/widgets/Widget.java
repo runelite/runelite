@@ -316,6 +316,15 @@ public interface Widget
 	Rectangle getBounds();
 
 	/**
+	 * Gets the bounds for a widget item at a specific index. This will still
+	 * return the bounds if there is no widget item at the specified index.
+	 *
+	 * @param index index of the item
+	 * @return the bounds for the widget item at the specified index
+	 */
+	Rectangle getWidgetItemBounds(int index);
+
+	/**
 	 * Gets any items that are being displayed in the widget.
 	 *
 	 * @return any items displayed, or null if there are no items

@@ -47,6 +47,11 @@ public class ScreenMarkerMouseListener extends MouseListener
 			return event;
 		}
 
+		if (SwingUtilities.isLeftMouseButton(event))
+		{
+			plugin.createWidgetMarker(event.getPoint());
+		}
+
 		event.consume();
 		return event;
 	}
@@ -58,7 +63,6 @@ public class ScreenMarkerMouseListener extends MouseListener
 		{
 			return event;
 		}
-
 
 		if (SwingUtilities.isLeftMouseButton(event))
 		{

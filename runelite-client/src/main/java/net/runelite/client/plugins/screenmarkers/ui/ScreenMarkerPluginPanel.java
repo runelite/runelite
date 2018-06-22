@@ -205,7 +205,7 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 		{
 			creationPanel.lockConfirm();
 			plugin.setMouseListenerEnabled(true);
-			plugin.setKeyListenerEnabled(true);
+			plugin.setCreatingScreenMarker(true);
 		}
 	}
 }

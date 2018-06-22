@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import javax.inject.Inject;
+import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -39,7 +40,7 @@ public class ScreenMarkerCreationOverlay extends Overlay
 	private ScreenMarkerPlugin plugin;
 
 	@Inject
-	private ScreenMarkerCreationOverlay(final ScreenMarkerPlugin plugin)
+	private ScreenMarkerCreationOverlay(final ScreenMarkerPlugin plugin, final Client client)
 	{
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DETACHED);
@@ -71,6 +72,6 @@ public class ScreenMarkerCreationOverlay extends Overlay
 
 	private Stroke createStripedStroke(int thickness)
 	{
-		return new BasicStroke(thickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
+		return new BasicStroke(thickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] {9}, 0);
 	}
 }
