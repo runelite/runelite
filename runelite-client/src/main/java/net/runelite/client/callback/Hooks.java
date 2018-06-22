@@ -40,11 +40,9 @@ import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
 import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
-import net.runelite.api.MenuAction;
 import net.runelite.api.RenderOverview;
 import net.runelite.api.WorldMapManager;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP_VIEW;
 import net.runelite.client.Notifier;
@@ -266,7 +264,7 @@ public class Hooks
 				stretchedGraphics = (Graphics2D) stretchedImage.getGraphics();
 
 				lastStretchedDimensions = stretchedDimensions;
-				
+
 				/*
 					Fill Canvas before drawing stretched image to prevent artifacts.
 				*/
@@ -335,31 +333,6 @@ public class Hooks
 		{
 			log.warn("Error during overlay rendering", ex);
 		}
-	}
-
-	public static boolean menuActionHook(int actionParam, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
-	{
-		/* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
-		 * I have no idea why, but it does. Their code contains the same conditional statement.
-		 */
-		if (menuAction >= 2000)
-		{
-			menuAction -= 2000;
-		}
-
-		MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
-		menuOptionClicked.setActionParam(actionParam);
-		menuOptionClicked.setMenuOption(menuOption);
-		menuOptionClicked.setMenuTarget(menuTarget);
-		menuOptionClicked.setMenuAction(MenuAction.of(menuAction));
-		menuOptionClicked.setId(id);
-		menuOptionClicked.setWidgetId(widgetId);
-
-		log.debug("Menu action clicked: {}", menuOptionClicked);
-
-		eventBus.post(menuOptionClicked);
-
-		return menuOptionClicked.isConsumed();
 	}
 
 	public static void updateNpcs()
