@@ -66,6 +66,7 @@ public class EnchantmentRoom extends MTARoom
 			if (!inside())
 			{
 				dragonstones.clear();
+				client.clearHintArrow();
 			}
 		}
 	}
