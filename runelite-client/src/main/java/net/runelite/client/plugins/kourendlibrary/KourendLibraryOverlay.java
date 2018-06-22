@@ -49,9 +49,8 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 import static net.runelite.api.Perspective.getCanvasTilePoly;
 
-public class KourendLibraryOverlay extends Overlay
+class KourendLibraryOverlay extends Overlay
 {
-	private final static WorldPoint LIBRARY_CENTER = new WorldPoint(1632, 3807, 1);
 	private final static int MAXIMUM_DISTANCE = 24;
 
 	private final Library library;
