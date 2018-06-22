@@ -41,7 +41,6 @@ import java.awt.image.VolatileImage;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GraphicsObject;
-import net.runelite.api.ItemComposition;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
@@ -55,7 +54,6 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.events.SetMessage;
 import net.runelite.api.widgets.Widget;
@@ -427,13 +425,6 @@ public class Hooks
 		// but having the game tick event after all packets
 		// have been processed is typically more useful.
 		shouldProcessGameTick = true;
-	}
-
-	public static void postItemComposition(ItemComposition itemComposition)
-	{
-		PostItemComposition event = new PostItemComposition();
-		event.setItemComposition(itemComposition);
-		eventBus.post(event);
 	}
 
 	public static void onGraphicsObjectCreated(GraphicsObject go, int var1, int var2, int var3, int var4, int var5, int var6, int var7)
