@@ -49,6 +49,7 @@ import static net.runelite.api.MenuAction.PLAYER_THIRD_OPTION;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Node;
+import net.runelite.api.PacketBuffer;
 import static net.runelite.api.Perspective.LOCAL_TILE_SIZE;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
@@ -1025,5 +1026,12 @@ public abstract class RSClientMixin implements RSClient
 		final MenuOpened event = new MenuOpened();
 		event.setMenuEntries(getMenuEntries());
 		eventBus.post(event);
+	}
+
+	@Inject
+	@MethodHook("updateNpcs")
+	public static void updateNpcs(boolean var0, PacketBuffer var1)
+	{
+		Hooks.updateNpcs();
 	}
 }
