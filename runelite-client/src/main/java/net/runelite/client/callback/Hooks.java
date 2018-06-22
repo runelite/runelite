@@ -43,17 +43,14 @@ import net.runelite.api.Client;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.MenuAction;
-import net.runelite.api.Projectile;
 import net.runelite.api.Region;
 import net.runelite.api.RenderOverview;
 import net.runelite.api.TextureProvider;
 import net.runelite.api.WorldMapManager;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP_VIEW;
 import net.runelite.client.Notifier;
@@ -382,27 +379,6 @@ public class Hooks
 		ChatMessage chatMessage = new ChatMessage(chatMessageType, name, message, sender);
 
 		eventBus.post(chatMessage);
-	}
-
-	/**
-	 * Called when a projectile is set to move towards a point. For
-	 * projectiles that target the ground, like AoE projectiles from
-	 * Lizardman Shamans, this is only called once
-	 *
-	 * @param projectile The projectile being moved
-	 * @param targetX X position of where the projectile is being moved to
-	 * @param targetY Y position of where the projectile is being moved to
-	 * @param targetZ Z position of where the projectile is being moved to
-	 * @param cycle
-	 */
-	public static void projectileMoved(Projectile projectile, int targetX, int targetY, int targetZ, int cycle)
-	{
-		LocalPoint position = new LocalPoint(targetX, targetY);
-		ProjectileMoved projectileMoved = new ProjectileMoved();
-		projectileMoved.setProjectile(projectile);
-		projectileMoved.setPosition(position);
-		projectileMoved.setZ(targetZ);
-		eventBus.post(projectileMoved);
 	}
 
 	public static void updateNpcs()
