@@ -125,7 +125,7 @@ public class LootLogger
 	{
 		this.eventBus = eventBus;
 		eventBus.register(this);
-		startUp();
+		init();
 	}
 
 	private Map<Actor, MemorizedActor> interactedActors;
@@ -157,11 +157,17 @@ public class LootLogger
 
 	private Multimap<WorldPoint, GroundItem> myItems;
 	private Multimap<Integer, GroundItem> itemDisappearMap;
-	private List<ItemStack> pendingItems; // Items that are in the rewards interface for clues/barrows
+	/**
+	 * Items that are in the rewards interface for clues/barrows
+	 */
+	private List<ItemStack> pendingItems;
 
 	private int tickCounter;
 
-	protected void startUp()
+	/**
+	 * Initializes all necessary variables for the loot tracking system
+	 */
+	protected void init()
 	{
 		this.tickCounter = 0;
 		this.interactedActors = new HashMap<>();
@@ -185,6 +191,9 @@ public class LootLogger
 		this.pendingItems = new ArrayList<>();
 	}
 
+	/**
+	 * Nulls all stored data maps and lists
+	 */
 	protected void shutDown()
 	{
 		this.deadActorsThisTick = null;
@@ -196,6 +205,9 @@ public class LootLogger
 		this.pendingItems = null;
 	}
 
+	/**
+	 * Clears all stored data maps and lists
+	 */
 	public void clearStoredData()
 	{
 		log.debug("Clearing LootLogger data");
@@ -212,42 +224,83 @@ public class LootLogger
 	 * Wrappers for posting new events
 	 */
 
-	// Loot Received from killing an NPC
+	/**
+	 * Called when loot was received by killing an NPC. Triggers the NpcLootReceived event.
+	 *
+	 * @param npc Killed NpcID
+	 * @param comp Killed NPC's NPCComposition
+	 * @param location WorldPoint the NPC died at
+	 * @param drops	A Integer, Integer map of ItemIDs and Quantities
+ 	 */
 	private void onNewNpcLogCreated(int npc, NPCComposition comp, WorldPoint location, Map<Integer, Integer> drops)
 	{
 		eventBus.post(new NpcLootReceived(npc, comp, location, createItemList(drops)));
 	}
 
-	// Loot Received from killing an NPC
+	/**
+	 * Called when loot was received by killing another Player. Triggers the PlayerLootReceived event.
+	 *
+	 * @param name Players Name
+	 * @param location WorldPoint the Player died at
+	 * @param drops	A Integer, Integer map of ItemIDs and Quantities
+	 */
 	private void onNewPlayerLogCreated(String name, WorldPoint location, Map<Integer, Integer> drops)
 	{
 		eventBus.post(new PlayerLootReceived(name, location, createItemList(drops)));
 	}
 
-	// Loot Received from events (Barrows, Raids, Clue Scrolls, etc)
+	/**
+	 * Called when loot was received by completing an activity. Triggers the EventLootReceived event.
+	 *
+	 * The types of events are static and available on the LootTypes class
+	 *
+	 * @param event LootTypes event name
+	 * @param drops	A Integer, Integer map of ItemIDs and Quantities
+	 */
 	private void onNewEventLogCreated(String event, Map<Integer, Integer> drops)
 	{
 		eventBus.post(new EventLootReceived(event, drops));
 	}
 
-	// Player picked up an item
+	/**
+	 * Called when the local player picks up an item from the ground
+	 *
+	 * @param id Item ID
+	 * @param qty Item Quantity
+	 */
 	private void onItemPickup(int id, int qty)
 	{
 		eventBus.post(new ItemPickedUp(id, qty));
 	}
 
-	// Player Dropped an item
+	/**
+	 * Called when the local player drops up an item from their inventory
+	 *
+	 * @param id Item ID
+	 * @param qty Item Quantity
+	 */
 	private void onItemDropped(int id, int qty)
 	{
 		eventBus.post(new ItemDropped(id, qty));
 	}
 
-	// Player Looted an item from an Event Container
+	/**
+	 * Called when the local player Loots an item from an Event/Activity Reward container
+	 *
+	 * @param id Item ID
+	 * @param qty Item Quantity
+	 */
 	private void onEventItemLooted(int id, int qty)
 	{
 		eventBus.post(new ItemPickedUp(id, qty));
 	}
 
+	/**
+	 * Converts the drops Map into a List of ItemStacks
+	 *
+	 * @param drops A Integer, Integer map of ItemIDs and Quantities
+	 * @return A list of ItemStack's
+	 */
 	private List<ItemStack> createItemList(Map<Integer, Integer> drops)
 	{
 		List<ItemStack> items = new ArrayList<>();
@@ -257,11 +310,17 @@ public class LootLogger
 		}
 		return items;
 	}
+
 	/*
 	 * Functions that help with Item management
 	 */
 
-	// Remove all items from other sources and return loot items
+	/**
+	 * Grabs loot for specific WorldPoint and filters items from other sources. Returns new items (Loot)
+	 *
+	 * @param location WorldPoint to check for new items
+	 * @return Item id and quantity Map (Integer,Integer) for new items
+	 */
 	private Map<Integer, Integer> getItemDifferencesAt(WorldPoint location)
 	{
 		Map<Integer, Integer> newItems = new HashMap<>();
@@ -377,7 +436,13 @@ public class LootLogger
 		return newItems;
 	}
 
-	// Returns the different items between two lists
+	/**
+	 * Returns the difference between two lists of Item's
+	 *
+	 * @param prevItems Items from previous Tick
+	 * @param currItems Items from this Tick
+	 * @return Item id and quantity Map (Integer,Integer) for new items (currItems removing all of prevItems)
+	 */
 	private Map<Integer, Integer> getItemDifferences(Iterable<Item> prevItems, Iterable<Item> currItems)
 	{
 		Map<Integer, Integer> diff = new HashMap<>();
@@ -401,7 +466,13 @@ public class LootLogger
 		return diff;
 	}
 
-	// When the player picks up an item
+	/**
+	 * When an item is Picked Up update the GroundItem record and trigger the `ItemPickedUp` event
+	 *
+	 * @param itemId Picked Up Item ID
+	 * @param quantity Amount of Item
+	 * @param location WorldPoint where item was picked up
+	 */
 	private void onItemsPickedUp(int itemId, int quantity, WorldPoint location)
 	{
 		Iterator<GroundItem> it = myItems.get(location).iterator();
@@ -425,7 +496,13 @@ public class LootLogger
 		onItemPickup(itemId, quantity);
 	}
 
-	// When the player drops an item
+	/**
+	 * When an item is dropped create a GroundItem record of it and Trigger the `ItemDropped` event
+	 *
+	 * @param itemId Dropped Item ID
+	 * @param quantity Amount of Dropped Item
+	 * @param location WorldPoint where item was dropped
+	 */
 	private void onItemsDropped(int itemId, int quantity, WorldPoint location)
 	{
 		int itemDuration = (client.isInInstancedRegion() ? INSTANCE_DROP_DISAPPEAR_TIME : PLAYER_DROP_DISAPPEAR_TIME);
@@ -440,6 +517,9 @@ public class LootLogger
 		onItemDropped(itemId, quantity);
 	}
 
+	/**
+	 * Local player looted an item from an Event/Activity reward container
+	 */
 	private void pickupRewardItems()
 	{
 		List<Integer> inventoryItems = Arrays.stream(
@@ -456,6 +536,7 @@ public class LootLogger
 		{
 			ItemStack item = it.next();
 			log.debug("Picked up event items (id: {0}, qty: {1})", item.getId(), item.getQuantity());
+			onEventItemLooted(item.getId(), item.getQuantity());
 			if (!inventoryItems.contains(item.getId()))
 			{
 				invSpace--;
@@ -468,6 +549,9 @@ public class LootLogger
 		}
 	}
 
+	/**
+	 * Memorizes any NPCs the local player is interacting with (Including AOE/Cannon)
+	 */
 	private void checkInteracting()
 	{
 		// We should memorize which actors the player has interacted with
@@ -531,7 +615,9 @@ public class LootLogger
 		}
 	}
 
-	// Check if player opened any reward chests
+	/**
+	 * Check if the local player opened any Event/Activity reward chests
+ 	 */
 	private void checkOpenedRewards()
 	{
 		// Check if barrows or clue scroll reward just appeared on the screen
@@ -640,6 +726,9 @@ public class LootLogger
 		}
 	}
 
+	/**
+	 * Checks if any Ground Items have disappeared from being on the floor too long
+	 */
 	private void checkGroundItemsDisappeared()
 	{
 		Iterator<Map.Entry<Integer, GroundItem>> it = itemDisappearMap.entries().iterator();
@@ -657,6 +746,9 @@ public class LootLogger
 		}
 	}
 
+	/**
+	 * Check if the local player picked up/dropped any items
+	 */
 	private void checkInventoryItemsChanged()
 	{
 		if (this.thisTickInventoryItems == null ||
@@ -723,7 +815,12 @@ public class LootLogger
 		});
 	}
 
-	// Determine where the NPCs loot will spawn
+	/**
+	 * Determine where the NPCs loot will spawn
+	 *
+	 * @param pad The MemorizedActor that we are checking
+	 * @return A List of WorldPoint's where the NPC might spawn loot
+ 	 */
 	private WorldPoint[] getExpectedDropLocations(MemorizedActor pad)
 	{
 		WorldPoint defaultLocation = pad.getActor().getWorldLocation();
@@ -931,7 +1028,9 @@ public class LootLogger
 		return new WorldPoint[] { defaultLocation };
 	}
 
-	// Check all dead actors for loot
+	/**
+	 * Loops over deadActorsThisTick and determines what loot the Actor(s) dropped
+	 */
 	private void checkActorDeaths()
 	{
 		for (MemorizedActor pad : deadActorsThisTick)
@@ -947,6 +1046,7 @@ public class LootLogger
 			boolean foundIndex = false;
 			int index = 0;
 			int killsAtWP = 0;
+			// Support for multiple NPCs dying on the same tick at the same time
 			for (MemorizedActor pad2 : deadActorsThisTick)
 			{
 				if (pad2.getActor().getWorldLocation().distanceTo(pad.getActor().getWorldLocation()) == 0)
@@ -963,6 +1063,7 @@ public class LootLogger
 				}
 			}
 
+			// Stores new items for each new world point
 			WorldPoint[] locations = getExpectedDropLocations(pad);
 			Multimap<WorldPoint, ItemStack> worldDrops = ArrayListMultimap.create();
 			for (WorldPoint location : locations)
@@ -977,6 +1078,7 @@ public class LootLogger
 						new ItemStack(x.getKey(), x.getValue())).collect(Collectors.toList()));
 			}
 
+			// No new drops?
 			if (worldDrops.size() == 0)
 			{
 				continue;
@@ -999,6 +1101,7 @@ public class LootLogger
 				drops.put(entry.getValue().getId(), nextCount + count);
 			}
 
+			// Actor type, Calls the wrapper for trigger the proper LootReceived event
 			if (pad instanceof MemorizedNpc)
 			{
 				NPCComposition c = ((MemorizedNpc) pad).getNpcComposition();
@@ -1006,7 +1109,8 @@ public class LootLogger
 			}
 			else if (pad instanceof MemorizedPlayer)
 			{
-				onNewPlayerLogCreated(pad.getName(), pad.getActor().getWorldLocation(), drops);
+				MemorizedPlayer player = (MemorizedPlayer) pad;
+				onNewPlayerLogCreated(player.getName(), player.getActor().getWorldLocation(), drops);
 			}
 			else
 			{
@@ -1015,6 +1119,7 @@ public class LootLogger
 				continue;
 			}
 
+			// Memorize which items were dropped by the users kill and when they de-spawn
 			for (Map.Entry<WorldPoint, ItemStack> entry : worldDrops.entries())
 			{
 				int nextCount = (entry.getValue().getQuantity() * index / killsAtWP) -
@@ -1043,6 +1148,10 @@ public class LootLogger
 	/*
 	 * Helper Functions for moving to next tick (clear old data, copy new data to compare against)
 	 */
+
+	/**
+	 * Stores all GroundItems still on the floor to the previous tick variable
+	 */
 	private void updateGroundItemLayers()
 	{
 		for (Tile tile : this.changedItemLayerTiles)
@@ -1061,6 +1170,9 @@ public class LootLogger
 		this.changedItemLayerTiles.clear();
 	}
 
+	/**
+	 * Resets all flags and move Inventory Items to prev tick variable
+	 */
 	private void updateInventoryItems()
 	{
 		if (this.thisTickInventoryItems != null)
@@ -1079,6 +1191,9 @@ public class LootLogger
 	 * Subscribe events which do some basics checks and information updating
 	 */
 
+	/**
+	 * Location Checks
+	 */
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
@@ -1089,6 +1204,9 @@ public class LootLogger
 		}
 	}
 
+	/**
+	 * Cannon Placement Support
+	 */
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
@@ -1104,6 +1222,9 @@ public class LootLogger
 		}
 	}
 
+	/**
+	 * Cannon Kill Support
+	 */
 	@Subscribe
 	public void onProjectileMoved(ProjectileMoved event)
 	{
@@ -1128,6 +1249,9 @@ public class LootLogger
 		}
 	}
 
+	/**
+	 * Event/Activity reward flag management
+	 */
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
@@ -1152,6 +1276,9 @@ public class LootLogger
 		}
 	}
 
+	/**
+	 * Certain NPCs determine loot tile on death animation and not on de-spawn
+	 */
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)
 	{
@@ -1190,6 +1317,9 @@ public class LootLogger
 		}
 	}
 
+	/**
+	 * Remember dead actors until next tick if we interacted with them
+	 */
 	@Subscribe
 	public void onActorDespawned(ActorDespawned event)
 	{
@@ -1205,6 +1335,9 @@ public class LootLogger
 		}
 	}
 
+	/**
+	 * Track tiles where an item layer changed (for each tick)
+	 */
 	@Subscribe
 	public void onItemLayerChanged(ItemLayerChanged event)
 	{
@@ -1215,6 +1348,9 @@ public class LootLogger
 		this.changedItemLayerTiles.add(event.getTile());
 	}
 
+	/**
+	 * Event/Activity reward items support
+	 */
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
@@ -1236,6 +1372,9 @@ public class LootLogger
 		}
 	}
 
+	/**
+	 * User game state management
+	 */
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
@@ -1247,6 +1386,19 @@ public class LootLogger
 		}
 	}
 
+	/**
+	 * Every game tick we call all necessary functions to calculate Received Loot
+	 *
+	 * <p><strong>We must do the following to correctly determine dropped NPC loot</strong></p>
+	 * <p>1) Memorize which actors we have interacted with</p>
+	 * <p>2) Check for Event/Activity rewards being opened</p>
+	 * <p>3) Check for any item changes (Disappearing from floor, Added/Removed from inventory)</p>
+	 * <p>4) Loop over all dead actor and determine what loot they dropped</p>
+	 * <p><strong>Now that we are done determining loot we need to prepare for the next tick.</strong></p>
+	 * <p>1) Move all data to lastTick variables (Ground Items/Inventory Items)</p>
+	 * <p>2) Store current player world point</p>
+	 * <p>3) Increment tick counter for disappearing item support</p>
+	 */
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
