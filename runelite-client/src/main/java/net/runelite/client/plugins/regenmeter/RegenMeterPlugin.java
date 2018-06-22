@@ -34,10 +34,12 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -48,6 +50,12 @@ public class RegenMeterPlugin extends Plugin
 {
 	private static final int SPEC_REGEN_TICKS = 50;
 	private static final int NORMAL_HP_REGEN_TICKS = 100;
+
+	@Inject
+	private Notifier notifier;
+
+	@Inject
+	private RegenMeterOverlay overlay;
 
 	@Inject
 	private Client client;
@@ -74,8 +82,13 @@ public class RegenMeterPlugin extends Plugin
 	@Provides
 	RegenMeterConfig provideConfig(ConfigManager configManager)
 	{
+  	configurationManager = configManager;
 		return configManager.getConfig(RegenMeterConfig.class);
 	}
+
+	private ConfigManager configurationManager;
+
+	private boolean hitpointRegenNotificationSend = true;
 
 	@Override
 	protected void startUp() throws Exception
@@ -144,6 +157,41 @@ public class RegenMeterPlugin extends Plugin
 		{
 			// Show it going down
 			hitpointsPercentage = 1 - hitpointsPercentage;
+		}
+
+		if (config.notifyWhenAboutToRegenerate())
+		{
+			if (!hitpointRegenNotificationSend)
+			{
+				if ((hitpointsPercentage * 100) >= config.hitpointRegenerationThreshold())
+				{
+					notifier.notify("Hitpoints is about to regen!");
+					hitpointRegenNotificationSend = true;
+				}
+			}
+			else
+			{
+				if ((hitpointsPercentage * 100) < config.hitpointRegenerationThreshold())
+				{
+					hitpointRegenNotificationSend = false;
+				}
+			}
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getKey().equals("regenNotifierThreshold"))
+		{
+			if (config.hitpointRegenerationThreshold() > 100)
+			{
+				configurationManager.setConfiguration("regenmeter", "regenNotifierThreshold", 100);
+			}
+			else if (config.hitpointRegenerationThreshold() < 0)
+			{
+				configurationManager.setConfiguration("regenmeter", "regenNotifierThreshold", 0);
+			}
 		}
 	}
 }
