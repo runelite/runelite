@@ -64,6 +64,7 @@ import net.runelite.api.WorldType;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BoostedLevelChanged;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ClanChanged;
 import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.ExperienceChanged;
@@ -92,6 +93,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.Hooks;
 import static net.runelite.client.callback.Hooks.deferredEventBus;
 import static net.runelite.client.callback.Hooks.eventBus;
+import static net.runelite.client.callback.Hooks.log;
 import net.runelite.rs.api.RSClanMemberManager;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSDeque;
@@ -1033,5 +1035,19 @@ public abstract class RSClientMixin implements RSClient
 	public static void updateNpcs(boolean var0, PacketBuffer var1)
 	{
 		Hooks.updateNpcs();
+	}
+
+	@Inject
+	@MethodHook("addChatMessage")
+	public static void onAddChatMessage(int type, String name, String message, String sender)
+	{
+		if (log.isDebugEnabled())
+		{
+			log.debug("Chat message type {}: {}", ChatMessageType.of(type), message);
+		}
+
+		final ChatMessageType chatMessageType = ChatMessageType.of(type);
+		final ChatMessage chatMessage = new ChatMessage(chatMessageType, name, message, sender);
+		eventBus.post(chatMessage);
 	}
 }
