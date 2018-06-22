@@ -240,14 +240,6 @@ public class Hooks
 		keyManager.processKeyTyped(keyEvent);
 	}
 
-	public static void focusGained(KeyFocusListener l, FocusEvent focusEvent)
-	{
-		FocusChanged focusChanged = new FocusChanged();
-		focusChanged.setFocused(true);
-
-		eventBus.post(focusChanged);
-	}
-
 	public static void focusLost(KeyFocusListener l, FocusEvent focusEvent)
 	{
 		FocusChanged focusChanged = new FocusChanged();
