@@ -41,7 +41,6 @@ import java.awt.image.VolatileImage;
 import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.MenuAction;
-import net.runelite.api.Region;
 import net.runelite.api.RenderOverview;
 import net.runelite.api.WorldMapManager;
 import net.runelite.api.events.GameTick;
@@ -290,7 +289,7 @@ public class Hooks
 		renderHooks.processDrawComplete(image);
 	}
 
-	public static void drawRegion(Region region, int var1, int var2, int var3, int var4, int var5, int var6)
+	public static void drawRegion()
 	{
 		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
 		BufferedImage image = (BufferedImage) bufferProvider.getImage();
