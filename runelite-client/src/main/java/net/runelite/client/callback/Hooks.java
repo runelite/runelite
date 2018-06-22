@@ -39,11 +39,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
-import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GraphicsObject;
-import net.runelite.api.Hitsplat;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.KeyFocusListener;
 import net.runelite.api.MainBufferProvider;
@@ -60,7 +58,6 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicsObjectCreated;
-import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostItemComposition;
@@ -464,31 +461,6 @@ public class Hooks
 	{
 		MenuOpened event = new MenuOpened();
 		event.setMenuEntries(client.getMenuEntries());
-		eventBus.post(event);
-	}
-
-	/**
-	 * Called after a hitsplat has been processed on an actor.
-	 * Note that this event runs even if the hitsplat didn't show up,
-	 * i.e. the actor already had 4 visible hitsplats.
-	 *
-	 * @param actor The actor the hitsplat was applied to
-	 * @param type The hitsplat type (i.e. color)
-	 * @param value The value of the hitsplat (i.e. how high the hit was)
-	 * @param var3
-	 * @param var4
-	 * @param gameCycle The gamecycle the hitsplat was applied on
-	 * @param duration The amount of gamecycles the hitsplat will last for
-	 */
-	public static void onActorHitsplat(Actor actor, int type, int value, int var3, int var4,
-		int gameCycle, int duration)
-	{
-		Hitsplat hitsplat = new Hitsplat(Hitsplat.HitsplatType.fromInteger(type), value,
-			gameCycle + duration);
-
-		HitsplatApplied event = new HitsplatApplied();
-		event.setActor(actor);
-		event.setHitsplat(hitsplat);
 		eventBus.post(event);
 	}
 
