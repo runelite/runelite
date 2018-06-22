@@ -38,7 +38,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.MainBufferProvider;
@@ -47,7 +46,6 @@ import net.runelite.api.Region;
 import net.runelite.api.RenderOverview;
 import net.runelite.api.TextureProvider;
 import net.runelite.api.WorldMapManager;
-import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.MenuOptionClicked;
@@ -366,19 +364,6 @@ public class Hooks
 		eventBus.post(menuOptionClicked);
 
 		return menuOptionClicked.isConsumed();
-	}
-
-	public static void addChatMessage(int type, String name, String message, String sender)
-	{
-		if (log.isDebugEnabled())
-		{
-			log.debug("Chat message type {}: {}", ChatMessageType.of(type), message);
-		}
-
-		ChatMessageType chatMessageType = ChatMessageType.of(type);
-		ChatMessage chatMessage = new ChatMessage(chatMessageType, name, message, sender);
-
-		eventBus.post(chatMessage);
 	}
 
 	public static void updateNpcs()
