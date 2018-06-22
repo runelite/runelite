@@ -60,6 +60,11 @@ import net.runelite.client.util.DeferredEventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This class contains field required for mixins and runelite hooks to work.
+ * All remaining method hooks in this class are performance-critical or contain client-specific logic and so they
+ * can't just be placed in mixins or sent through event bus.
+ */
 public class Hooks
 {
 	// must be public as the mixins use it
