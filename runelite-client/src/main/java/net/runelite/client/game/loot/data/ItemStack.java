@@ -39,4 +39,10 @@ public class ItemStack
 		this.id = itemId;
 		this.quantity = quantity;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "ItemStack(id=" + this.id + ",quantity=" + this.quantity + ")";
+	}
 }
