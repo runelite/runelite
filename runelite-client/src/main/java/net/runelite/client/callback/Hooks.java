@@ -47,7 +47,6 @@ import net.runelite.api.KeyFocusListener;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
-import net.runelite.api.PacketBuffer;
 import net.runelite.api.Projectile;
 import net.runelite.api.Region;
 import net.runelite.api.RenderOverview;
@@ -441,7 +440,7 @@ public class Hooks
 		eventBus.post(setMessage);
 	}
 
-	public static void onNpcUpdate(boolean var0, PacketBuffer var1)
+	public static void updateNpcs()
 	{
 		// The NPC update event seem to run every server tick,
 		// but having the game tick event after all packets
