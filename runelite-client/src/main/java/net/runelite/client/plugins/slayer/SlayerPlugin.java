@@ -131,9 +131,6 @@ public class SlayerPlugin extends Plugin
 	private ClientThread clientThread;
 
 	@Inject
-	private QueryRunner queryRunner;
-
-	@Inject
 	private TargetClickboxOverlay targetClickboxOverlay;
 
 	@Inject
@@ -141,9 +138,6 @@ public class SlayerPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private List<NPC> highlightedTargets = new ArrayList<>();
-
-	@Getter(AccessLevel.PACKAGE)
-	private Collection<WidgetItem> slayerItems = Collections.emptyList();
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -247,8 +241,6 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		checkInventories();
-
 		Widget NPCDialog = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
 		if (NPCDialog != null)
 		{
@@ -317,18 +309,6 @@ public class SlayerPlugin extends Plugin
 		{
 			highlightedTargets.clear();
 		}
-	}
-
-	private void checkInventories()
-	{
-		Query inventoryQuery = new InventoryWidgetItemQuery();
-		WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(inventoryQuery);
-
-		Query equipmentQuery = new EquipmentItemQuery().slotEquals(WidgetInfo.EQUIPMENT_HELMET, WidgetInfo.EQUIPMENT_RING, WidgetInfo.EQUIPMENT_GLOVES);
-		WidgetItem[] equipmentWidgetItems = queryRunner.runQuery(equipmentQuery);
-
-		WidgetItem[] items = concat(inventoryWidgetItems, equipmentWidgetItems, WidgetItem.class);
-		slayerItems = ImmutableList.copyOf(items);
 	}
 
 	@Subscribe
