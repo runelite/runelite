@@ -82,7 +82,6 @@ import net.runelite.client.game.loot.data.MemorizedActor;
 import net.runelite.client.game.loot.data.MemorizedNpc;
 import net.runelite.client.game.loot.data.MemorizedNpcAndLocation;
 import net.runelite.client.game.loot.data.MemorizedPlayer;
-import net.runelite.client.game.loot.data.PendingItem;
 import net.runelite.client.game.loot.events.EventLootReceived;
 import net.runelite.client.game.loot.events.ItemDropped;
 import net.runelite.client.game.loot.events.ItemPickedUp;
@@ -158,7 +157,7 @@ public class LootLogger
 
 	private Multimap<WorldPoint, GroundItem> myItems;
 	private Multimap<Integer, GroundItem> itemDisappearMap;
-	private List<PendingItem> pendingItems; // Items that are in the rewards interface for clues/barrows
+	private List<ItemStack> pendingItems; // Items that are in the rewards interface for clues/barrows
 
 	private int tickCounter;
 
@@ -452,12 +451,12 @@ public class LootLogger
 		int invSpace = INVENTORY_SPACE - (int)inventoryItems.stream()
 				.filter(x -> x != null && x != -1).count();
 
-		Iterator<PendingItem> it = pendingItems.iterator();
+		Iterator<ItemStack> it = pendingItems.iterator();
 		while (it.hasNext())
 		{
-			PendingItem item = it.next();
-			log.debug("Picked up event items (id: {0}, qty: {1}", item.getItemId(), item.getQuantity());
-			if (!inventoryItems.contains(item.getItemId()))
+			ItemStack item = it.next();
+			log.debug("Picked up event items (id: {0}, qty: {1})", item.getId(), item.getQuantity());
+			if (!inventoryItems.contains(item.getId()))
 			{
 				invSpace--;
 				if (invSpace < 0)
@@ -544,7 +543,7 @@ public class LootLogger
 						.collect(Collectors.toMap(Item::getId, Item::getQuantity));
 				onNewEventLogCreated(LootTypes.BARROWS, barrowsReward);
 				pendingItems.addAll(Arrays.stream(thisTickRewardItems)
-						.map(x -> new PendingItem(x.getId(), x.getQuantity()))
+						.map(x -> new ItemStack(x.getId(), x.getQuantity()))
 						.collect(Collectors.toList()));
 				pickupRewardItems();
 			}
@@ -586,7 +585,7 @@ public class LootLogger
 				}
 				onNewEventLogCreated(clueScrollType, clueScrollReward);
 				pendingItems.addAll(Arrays.stream(thisTickRewardItems)
-						.map(x -> new PendingItem(x.getId(), x.getQuantity()))
+						.map(x -> new ItemStack(x.getId(), x.getQuantity()))
 						.collect(Collectors.toList()));
 				pickupRewardItems();
 			}
@@ -597,7 +596,7 @@ public class LootLogger
 					.collect(Collectors.toMap(Item::getId, Item::getQuantity));
 			onNewEventLogCreated(LootTypes.RAIDS, reward);
 			pendingItems.addAll(Arrays.stream(chambersOfXericItems)
-					.map(x -> new PendingItem(x.getId(), x.getQuantity()))
+					.map(x -> new ItemStack(x.getId(), x.getQuantity()))
 					.collect(Collectors.toList()));
 			pickupRewardItems();
 
@@ -610,7 +609,7 @@ public class LootLogger
 					.collect(Collectors.toMap(Item::getId, Item::getQuantity));
 			onNewEventLogCreated(LootTypes.THEATRE_OF_BLOOD, reward);
 			pendingItems.addAll(Arrays.stream(theatreOfBloodItems)
-					.map(x -> new PendingItem(x.getId(), x.getQuantity()))
+					.map(x -> new ItemStack(x.getId(), x.getQuantity()))
 					.collect(Collectors.toList()));
 			pickupRewardItems();
 
@@ -626,14 +625,14 @@ public class LootLogger
 			Map<Integer, Integer> itemDiff = getItemDifferencesAt(playerLocationLastTick);
 			if (itemDiff != null)
 			{
-				Iterator<PendingItem> it = pendingItems.iterator();
+				Iterator<ItemStack> it = pendingItems.iterator();
 				while (it.hasNext())
 				{
-					PendingItem pendingItem = it.next();
-					if (itemDiff.getOrDefault(pendingItem.getItemId(), 0) ==
+					ItemStack pendingItem = it.next();
+					if (itemDiff.getOrDefault(pendingItem.getId(), 0) ==
 							pendingItem.getQuantity())
 					{
-						onItemsDropped(pendingItem.getItemId(), pendingItem.getQuantity(), playerLocationLastTick);
+						onItemsDropped(pendingItem.getId(), pendingItem.getQuantity(), playerLocationLastTick);
 						it.remove();
 					}
 				}
