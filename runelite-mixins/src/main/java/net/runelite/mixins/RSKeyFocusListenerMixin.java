@@ -24,11 +24,16 @@
  */
 package net.runelite.mixins;
 
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.api.mixins.Copy;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.client.callback.Hooks;
+import static net.runelite.client.callback.Hooks.eventBus;
 import net.runelite.rs.api.RSKeyFocusListener;
 
 @Mixin(RSKeyFocusListener.class)
@@ -74,5 +79,14 @@ public abstract class RSKeyFocusListenerMixin implements RSKeyFocusListener
 		{
 			rs$keyTyped(keyEvent);
 		}
+	}
+
+	@Inject
+	@MethodHook("focusLost")
+	public void onFocusLost(FocusEvent focusEvent)
+	{
+		final FocusChanged focusChanged = new FocusChanged();
+		focusChanged.setFocused(false);
+		eventBus.post(focusChanged);
 	}
 }
