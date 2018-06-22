@@ -32,7 +32,7 @@ import net.runelite.client.game.loot.data.ItemStack;
 import java.util.List;
 
 /**
- * An event where you killed an {@link Player} and received loot
+ * An event where you killed a {@link Player} and received loot
  */
 @Data
 public class PlayerLootReceived
