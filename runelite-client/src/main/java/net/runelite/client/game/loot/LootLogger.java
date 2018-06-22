@@ -147,7 +147,6 @@ public class LootLogger
 	private Item[] chambersOfXericItems;
 	private Item[] theatreOfBloodItems;
 
-
 	private boolean openedClueScrollThisTick = false;
 	private boolean openedBarrowsChestThisTick = false;
 	private boolean completedChambersOfXericThisTick = false;
