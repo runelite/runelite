@@ -205,7 +205,7 @@ public class ScreenMarkerPlugin extends Plugin
 		overlay.setPreferredLocation(location);
 		creatingScreenMarker = true;
 
-		Rectangle clicked = findContaining(client.getWidgetRoots(), location);
+		Rectangle clicked = findContaining(client.getWidgetRoots(), location, Integer.MAX_VALUE);
 		if (shiftModifier && clicked != null)
 		{
 			startLocation = new Point(clicked.x, clicked.y);
@@ -221,12 +221,11 @@ public class ScreenMarkerPlugin extends Plugin
 		}
 	}
 
-	private Rectangle findContaining(Widget[] widgets, Point location)
+	private Rectangle findContaining(Widget[] widgets, Point location, int size)
 	{
-		Widget last = null;
+		Rectangle best = null;
 		for (Widget widget : widgets)
 		{
-
 			if (widget.getWidgetItems() != null)
 			{
 				for (WidgetItem item : widget.getWidgetItems())
@@ -234,6 +233,7 @@ public class ScreenMarkerPlugin extends Plugin
 					Rectangle itemBounds = item.getCanvasBounds();
 					if (itemBounds.contains(location))
 					{
+
 						return itemBounds;
 					}
 				}
@@ -244,43 +244,35 @@ public class ScreenMarkerPlugin extends Plugin
 				continue;
 			}
 
-			Widget[] children = new Widget[0];
+			Widget[] children = ArrayUtils.addAll(new Widget[0], widget.getChildren());
+			children = ArrayUtils.addAll(children, widget.getStaticChildren());
+			children = ArrayUtils.addAll(children, widget.getNestedChildren());
+			children = ArrayUtils.addAll(children, widget.getDynamicChildren());
 
-			if (widget.getChildren() != null)
+			int currSize = widget.getHeight() * widget.getWidth();
+			if (widget.getParent() != null && currSize < size)
 			{
-				children = ArrayUtils.addAll(children, widget.getChildren());
-			}
-
-			if (widget.getStaticChildren() != null)
-			{
-				children = ArrayUtils.addAll(children, widget.getStaticChildren());
-			}
-
-			if (widget.getNestedChildren() != null)
-			{
-				children = ArrayUtils.addAll(children, widget.getNestedChildren());
-			}
-
-			if (widget.getDynamicChildren() != null)
-			{
-				children = ArrayUtils.addAll(children, widget.getDynamicChildren());
+				size = currSize;
+				best = widget.getBounds();
 			}
 
 			if (children.length > 0)
 			{
-				Rectangle find = findContaining(children, location);
+				Rectangle find = findContaining(children, location, size);
 				if (find != null)
 				{
-					return find;
+					currSize = (int) (find.getHeight() * find.getWidth());
+					if (currSize < size)
+					{
+						best = find;
+					}
 				}
 			}
-
-			last = widget;
 		}
 
-		if (last != null)
+		if (best != null)
 		{
-			return last.getBounds();
+			return best;
 		}
 
 		return null;
