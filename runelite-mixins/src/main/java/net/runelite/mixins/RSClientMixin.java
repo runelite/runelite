@@ -72,6 +72,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
@@ -983,13 +984,31 @@ public abstract class RSClientMixin implements RSClient
 	}
 
 	@Replace("menuAction")
-	static void rl$menuAction(int var0, int var1, int var2, int var3, String var4, String var5, int var6, int var7)
+	static void rl$menuAction(int actionParam, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
 	{
-		if (Hooks.menuActionHook(var0, var1, var2, var3, var4, var5, var6, var7))
+		/* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
+		 * I have no idea why, but it does. Their code contains the same conditional statement.
+		 */
+		if (menuAction >= 2000)
+		{
+			menuAction -= 2000;
+		}
+
+		final MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
+		menuOptionClicked.setActionParam(actionParam);
+		menuOptionClicked.setMenuOption(menuOption);
+		menuOptionClicked.setMenuTarget(menuTarget);
+		menuOptionClicked.setMenuAction(MenuAction.of(menuAction));
+		menuOptionClicked.setId(id);
+		menuOptionClicked.setWidgetId(widgetId);
+		eventBus.post(menuOptionClicked);
+
+		if (menuOptionClicked.isConsumed())
 		{
 			return;
 		}
-		rs$menuAction(var0, var1, var2, var3, var4, var5, var6, var7);
+
+		rs$menuAction(actionParam, widgetId, menuAction, id, menuOption, menuTarget, var6, var7);
 	}
 
 	@FieldHook("username")
