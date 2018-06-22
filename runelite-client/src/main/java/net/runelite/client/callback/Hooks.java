@@ -43,7 +43,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.MenuAction;
-import net.runelite.api.MessageNode;
 import net.runelite.api.Projectile;
 import net.runelite.api.Region;
 import net.runelite.api.RenderOverview;
@@ -55,7 +54,6 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ProjectileMoved;
-import net.runelite.api.events.SetMessage;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP_VIEW;
 import net.runelite.client.Notifier;
@@ -405,18 +403,6 @@ public class Hooks
 		projectileMoved.setPosition(position);
 		projectileMoved.setZ(targetZ);
 		eventBus.post(projectileMoved);
-	}
-
-	public static void setMessage(MessageNode messageNode, int type, String name, String sender, String value)
-	{
-		SetMessage setMessage = new SetMessage();
-		setMessage.setMessageNode(messageNode);
-		setMessage.setType(ChatMessageType.of(type));
-		setMessage.setName(name);
-		setMessage.setSender(sender);
-		setMessage.setValue(value);
-
-		eventBus.post(setMessage);
 	}
 
 	public static void updateNpcs()
