@@ -28,6 +28,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
+import net.runelite.api.Hitsplat;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Perspective;
@@ -39,6 +40,7 @@ import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GraphicChanged;
+import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
@@ -250,5 +252,28 @@ public abstract class RSActorMixin implements RSActor
 				((RSNPC) this).setDead(true);
 			}
 		}
+	}
+
+	/**
+	 * Called after a hitsplat has been processed on an actor.
+	 * Note that this event runs even if the hitsplat didn't show up,
+	 * i.e. the actor already had 4 visible hitsplats.
+	 *
+	 * @param type The hitsplat type (i.e. color)
+	 * @param value The value of the hitsplat (i.e. how high the hit was)
+	 * @param var3 unknown
+	 * @param var4 unknown
+	 * @param gameCycle The gamecycle the hitsplat was applied on
+	 * @param duration The amount of gamecycles the hitsplat will last for
+	 */
+	@Inject
+	@MethodHook(value = "applyActorHitsplat", end = true)
+	public void applyActorHitsplat(int type, int value, int var3, int var4, int gameCycle, int duration)
+	{
+		final Hitsplat hitsplat = new Hitsplat(Hitsplat.HitsplatType.fromInteger(type), value, gameCycle + duration);
+		final HitsplatApplied event = new HitsplatApplied();
+		event.setActor(this);
+		event.setHitsplat(hitsplat);
+		eventBus.post(event);
 	}
 }
