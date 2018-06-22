@@ -24,11 +24,8 @@
  */
 package net.runelite.client.plugins.screenmarkers;
 
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
 
 public class ScreenMarkerKeyListener implements KeyListener

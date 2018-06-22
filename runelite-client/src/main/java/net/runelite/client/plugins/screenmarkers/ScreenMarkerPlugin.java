@@ -249,25 +249,23 @@ public class ScreenMarkerPlugin extends Plugin
 			children = ArrayUtils.addAll(children, widget.getNestedChildren());
 			children = ArrayUtils.addAll(children, widget.getDynamicChildren());
 
-			int currSize = widget.getHeight() * widget.getWidth();
-			if (widget.getParent() != null && currSize < size)
-			{
-				size = currSize;
-				best = widget.getBounds();
-			}
-
+			Rectangle check = widget.getBounds();
 			if (children.length > 0)
 			{
 				Rectangle find = findContaining(children, location, size);
 				if (find != null)
 				{
-					currSize = (int) (find.getHeight() * find.getWidth());
-					if (currSize < size)
-					{
-						best = find;
-					}
+					check = find;
 				}
 			}
+
+			int currSize = (int) (check.getHeight() * check.getWidth());
+			if (currSize < size)
+			{
+				best = check;
+				size = currSize;
+			}
+
 		}
 
 		if (best != null)
