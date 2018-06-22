@@ -54,6 +54,11 @@ public class Hooks
 		throw new IllegalStateException();
 	}
 
+	public static void drawRegion()
+	{
+		throw new IllegalStateException();
+	}
+
 	public static MouseEvent mousePressed(MouseEvent mouseEvent)
 	{
 		throw new RuntimeException();
