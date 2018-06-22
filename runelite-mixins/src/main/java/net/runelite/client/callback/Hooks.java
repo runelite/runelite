@@ -44,6 +44,11 @@ public class Hooks
 	public static EventBus eventBus;
 	public static EventBus deferredEventBus;
 
+	public static void clientMainLoop()
+	{
+		throw new IllegalStateException();
+	}
+
 	public static void draw(MainBufferProvider mainBufferProvider, Graphics graphics, int x, int y)
 	{
 		throw new IllegalStateException();
