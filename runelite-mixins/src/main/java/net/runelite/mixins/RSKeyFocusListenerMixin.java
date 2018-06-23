@@ -32,13 +32,16 @@ import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
-import net.runelite.client.callback.Hooks;
-import static net.runelite.client.callback.Hooks.eventBus;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSKeyFocusListener;
 
 @Mixin(RSKeyFocusListener.class)
 public abstract class RSKeyFocusListenerMixin implements RSKeyFocusListener
 {
+	@Shadow("clientInstance")
+	private static RSClient client;
+
 	@Copy("keyPressed")
 	abstract void rs$keyPressed(KeyEvent keyEvent);
 
@@ -52,7 +55,7 @@ public abstract class RSKeyFocusListenerMixin implements RSKeyFocusListener
 	@Replace("keyPressed")
 	public final synchronized void keyPressed(KeyEvent keyEvent)
 	{
-		Hooks.keyPressed(keyEvent);
+		client.getCallbacks().keyPressed(keyEvent);
 		if (!keyEvent.isConsumed())
 		{
 			rs$keyPressed(keyEvent);
@@ -63,7 +66,7 @@ public abstract class RSKeyFocusListenerMixin implements RSKeyFocusListener
 	@Replace("keyReleased")
 	public final synchronized void keyReleased(KeyEvent keyEvent)
 	{
-		Hooks.keyReleased(keyEvent);
+		client.getCallbacks().keyReleased(keyEvent);
 		if (!keyEvent.isConsumed())
 		{
 			rs$keyReleased(keyEvent);
@@ -74,7 +77,7 @@ public abstract class RSKeyFocusListenerMixin implements RSKeyFocusListener
 	@Replace("keyTyped")
 	public final void keyTyped(KeyEvent keyEvent)
 	{
-		Hooks.keyTyped(keyEvent);
+		client.getCallbacks().keyTyped(keyEvent);
 		if (!keyEvent.isConsumed())
 		{
 			rs$keyTyped(keyEvent);
@@ -87,6 +90,6 @@ public abstract class RSKeyFocusListenerMixin implements RSKeyFocusListener
 	{
 		final FocusChanged focusChanged = new FocusChanged();
 		focusChanged.setFocused(false);
-		eventBus.post(focusChanged);
+		client.getCallbacks().post(focusChanged);
 	}
 }

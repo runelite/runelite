@@ -41,9 +41,6 @@ import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
-import static net.runelite.client.callback.Hooks.deferredEventBus;
-import static net.runelite.client.callback.Hooks.eventBus;
-import static net.runelite.client.callback.Hooks.log;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSHashTable;
 import net.runelite.rs.api.RSNode;
@@ -365,7 +362,7 @@ public abstract class RSWidgetMixin implements RSWidget
 		event.setWidget(this);
 		event.setHidden(hidden);
 
-		eventBus.post(event);
+		client.getCallbacks().post(event);
 
 		RSWidget[] children = getChildren();
 
@@ -443,9 +440,9 @@ public abstract class RSWidgetMixin implements RSWidget
 
 		rl$widgetLastPosChanged = tick;
 
-		log.trace("Posting widget position changed");
+		client.getLogger().trace("Posting widget position changed");
 
 		WidgetPositioned widgetPositioned = new WidgetPositioned();
-		deferredEventBus.post(widgetPositioned);
+		client.getCallbacks().postDeferred(widgetPositioned);
 	}
 }

@@ -31,7 +31,6 @@ import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
-import static net.runelite.client.callback.Hooks.eventBus;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSNPC;
 import net.runelite.rs.api.RSPlayer;
@@ -101,6 +100,6 @@ public abstract class RSProjectileMixin implements RSProjectile
 		projectileMoved.setProjectile(this);
 		projectileMoved.setPosition(position);
 		projectileMoved.setZ(targetZ);
-		eventBus.post(projectileMoved);
+		client.getCallbacks().post(projectileMoved);
 	}
 }
