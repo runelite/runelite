@@ -89,4 +89,15 @@ public interface IdleNotifierConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+		keyName = "inventory",
+		name = "Inventory Space Notifier",
+		description = "The amount of full inventory slots to send a notification at. A value of 0 will disable notification.",
+		position = 5
+	)
+	default int getInventoryThreshold()
+	{
+		return 0;
+	}
 }
