@@ -33,39 +33,16 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.awt.RenderingHints;
-import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
-import net.runelite.api.Actor;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.GraphicsObject;
-import net.runelite.api.Hitsplat;
-import net.runelite.api.ItemComposition;
-import net.runelite.api.KeyFocusListener;
 import net.runelite.api.MainBufferProvider;
-import net.runelite.api.MenuAction;
-import net.runelite.api.MessageNode;
-import net.runelite.api.PacketBuffer;
-import net.runelite.api.Projectile;
-import net.runelite.api.Region;
 import net.runelite.api.RenderOverview;
-import net.runelite.api.TextureProvider;
 import net.runelite.api.WorldMapManager;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.GraphicsObjectCreated;
-import net.runelite.api.events.HitsplatApplied;
-import net.runelite.api.events.MenuOpened;
-import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.PostItemComposition;
-import net.runelite.api.events.ProjectileMoved;
-import net.runelite.api.events.SetMessage;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP_VIEW;
 import net.runelite.client.Notifier;
@@ -83,6 +60,11 @@ import net.runelite.client.util.DeferredEventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This class contains field required for mixins and runelite hooks to work.
+ * All remaining method hooks in this class are performance-critical or contain client-specific logic and so they
+ * can't just be placed in mixins or sent through event bus.
+ */
 public class Hooks
 {
 	// must be public as the mixins use it
@@ -114,7 +96,7 @@ public class Hooks
 	private static long lastCheck;
 	private static boolean shouldProcessGameTick;
 
-	public static void clientMainLoop(Client client, boolean arg1)
+	public static void clientMainLoop()
 	{
 		if (shouldProcessGameTick)
 		{
@@ -245,22 +227,6 @@ public class Hooks
 		keyManager.processKeyTyped(keyEvent);
 	}
 
-	public static void focusGained(KeyFocusListener l, FocusEvent focusEvent)
-	{
-		FocusChanged focusChanged = new FocusChanged();
-		focusChanged.setFocused(true);
-
-		eventBus.post(focusChanged);
-	}
-
-	public static void focusLost(KeyFocusListener l, FocusEvent focusEvent)
-	{
-		FocusChanged focusChanged = new FocusChanged();
-		focusChanged.setFocused(false);
-
-		eventBus.post(focusChanged);
-	}
-
 	public static void draw(MainBufferProvider mainBufferProvider, Graphics graphics, int x, int y)
 	{
 		if (graphics == null)
@@ -303,7 +269,7 @@ public class Hooks
 				stretchedGraphics = (Graphics2D) stretchedImage.getGraphics();
 
 				lastStretchedDimensions = stretchedDimensions;
-				
+
 				/*
 					Fill Canvas before drawing stretched image to prevent artifacts.
 				*/
@@ -326,7 +292,7 @@ public class Hooks
 		renderHooks.processDrawComplete(image);
 	}
 
-	public static void drawRegion(Region region, int var1, int var2, int var3, int var4, int var5, int var6)
+	public static void drawRegion()
 	{
 		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
 		BufferedImage image = (BufferedImage) bufferProvider.getImage();
@@ -342,7 +308,7 @@ public class Hooks
 		}
 	}
 
-	public static void drawAboveOverheads(TextureProvider textureProvider, int var1)
+	public static void drawAboveOverheads()
 	{
 		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
 		BufferedImage image = (BufferedImage) bufferProvider.getImage();
@@ -374,127 +340,11 @@ public class Hooks
 		}
 	}
 
-	public static boolean menuActionHook(int actionParam, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
-	{
-		/* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
-		 * I have no idea why, but it does. Their code contains the same conditional statement.
-		 */
-		if (menuAction >= 2000)
-		{
-			menuAction -= 2000;
-		}
-
-		MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
-		menuOptionClicked.setActionParam(actionParam);
-		menuOptionClicked.setMenuOption(menuOption);
-		menuOptionClicked.setMenuTarget(menuTarget);
-		menuOptionClicked.setMenuAction(MenuAction.of(menuAction));
-		menuOptionClicked.setId(id);
-		menuOptionClicked.setWidgetId(widgetId);
-
-		log.debug("Menu action clicked: {}", menuOptionClicked);
-
-		eventBus.post(menuOptionClicked);
-
-		return menuOptionClicked.isConsumed();
-	}
-
-	public static void addChatMessage(int type, String name, String message, String sender)
-	{
-		if (log.isDebugEnabled())
-		{
-			log.debug("Chat message type {}: {}", ChatMessageType.of(type), message);
-		}
-
-		ChatMessageType chatMessageType = ChatMessageType.of(type);
-		ChatMessage chatMessage = new ChatMessage(chatMessageType, name, message, sender);
-
-		eventBus.post(chatMessage);
-	}
-
-	/**
-	 * Called when a projectile is set to move towards a point. For
-	 * projectiles that target the ground, like AoE projectiles from
-	 * Lizardman Shamans, this is only called once
-	 *
-	 * @param projectile The projectile being moved
-	 * @param targetX X position of where the projectile is being moved to
-	 * @param targetY Y position of where the projectile is being moved to
-	 * @param targetZ Z position of where the projectile is being moved to
-	 * @param cycle
-	 */
-	public static void projectileMoved(Projectile projectile, int targetX, int targetY, int targetZ, int cycle)
-	{
-		LocalPoint position = new LocalPoint(targetX, targetY);
-		ProjectileMoved projectileMoved = new ProjectileMoved();
-		projectileMoved.setProjectile(projectile);
-		projectileMoved.setPosition(position);
-		projectileMoved.setZ(targetZ);
-		eventBus.post(projectileMoved);
-	}
-
-	public static void setMessage(MessageNode messageNode, int type, String name, String sender, String value)
-	{
-		SetMessage setMessage = new SetMessage();
-		setMessage.setMessageNode(messageNode);
-		setMessage.setType(ChatMessageType.of(type));
-		setMessage.setName(name);
-		setMessage.setSender(sender);
-		setMessage.setValue(value);
-
-		eventBus.post(setMessage);
-	}
-
-	public static void onNpcUpdate(boolean var0, PacketBuffer var1)
+	public static void updateNpcs()
 	{
 		// The NPC update event seem to run every server tick,
 		// but having the game tick event after all packets
 		// have been processed is typically more useful.
 		shouldProcessGameTick = true;
-	}
-
-	public static void postItemComposition(ItemComposition itemComposition)
-	{
-		PostItemComposition event = new PostItemComposition();
-		event.setItemComposition(itemComposition);
-		eventBus.post(event);
-	}
-
-	public static void menuOpened(Client client, int var1, int var2)
-	{
-		MenuOpened event = new MenuOpened();
-		event.setMenuEntries(client.getMenuEntries());
-		eventBus.post(event);
-	}
-
-	/**
-	 * Called after a hitsplat has been processed on an actor.
-	 * Note that this event runs even if the hitsplat didn't show up,
-	 * i.e. the actor already had 4 visible hitsplats.
-	 *
-	 * @param actor The actor the hitsplat was applied to
-	 * @param type The hitsplat type (i.e. color)
-	 * @param value The value of the hitsplat (i.e. how high the hit was)
-	 * @param var3
-	 * @param var4
-	 * @param gameCycle The gamecycle the hitsplat was applied on
-	 * @param duration The amount of gamecycles the hitsplat will last for
-	 */
-	public static void onActorHitsplat(Actor actor, int type, int value, int var3, int var4,
-		int gameCycle, int duration)
-	{
-		Hitsplat hitsplat = new Hitsplat(Hitsplat.HitsplatType.fromInteger(type), value,
-			gameCycle + duration);
-
-		HitsplatApplied event = new HitsplatApplied();
-		event.setActor(actor);
-		event.setHitsplat(hitsplat);
-		eventBus.post(event);
-	}
-
-	public static void onGraphicsObjectCreated(GraphicsObject go, int var1, int var2, int var3, int var4, int var5, int var6, int var7)
-	{
-		GraphicsObjectCreated event = new GraphicsObjectCreated(go);
-		eventBus.post(event);
 	}
 }

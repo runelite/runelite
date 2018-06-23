@@ -49,6 +49,7 @@ import static net.runelite.api.MenuAction.PLAYER_THIRD_OPTION;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Node;
+import net.runelite.api.PacketBuffer;
 import static net.runelite.api.Perspective.LOCAL_TILE_SIZE;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
@@ -63,12 +64,15 @@ import net.runelite.api.WorldType;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BoostedLevelChanged;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ClanChanged;
 import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOpened;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
@@ -80,6 +84,7 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
@@ -89,6 +94,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.Hooks;
 import static net.runelite.client.callback.Hooks.deferredEventBus;
 import static net.runelite.client.callback.Hooks.eventBus;
+import static net.runelite.client.callback.Hooks.log;
 import net.runelite.rs.api.RSClanMemberManager;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSDeque;
@@ -978,13 +984,31 @@ public abstract class RSClientMixin implements RSClient
 	}
 
 	@Replace("menuAction")
-	static void rl$menuAction(int var0, int var1, int var2, int var3, String var4, String var5, int var6, int var7)
+	static void rl$menuAction(int actionParam, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
 	{
-		if (Hooks.menuActionHook(var0, var1, var2, var3, var4, var5, var6, var7))
+		/* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
+		 * I have no idea why, but it does. Their code contains the same conditional statement.
+		 */
+		if (menuAction >= 2000)
+		{
+			menuAction -= 2000;
+		}
+
+		final MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
+		menuOptionClicked.setActionParam(actionParam);
+		menuOptionClicked.setMenuOption(menuOption);
+		menuOptionClicked.setMenuTarget(menuTarget);
+		menuOptionClicked.setMenuAction(MenuAction.of(menuAction));
+		menuOptionClicked.setId(id);
+		menuOptionClicked.setWidgetId(widgetId);
+		eventBus.post(menuOptionClicked);
+
+		if (menuOptionClicked.isConsumed())
 		{
 			return;
 		}
-		rs$menuAction(var0, var1, var2, var3, var4, var5, var6, var7);
+
+		rs$menuAction(actionParam, widgetId, menuAction, id, menuOption, menuTarget, var6, var7);
 	}
 
 	@FieldHook("username")
@@ -1014,5 +1038,42 @@ public abstract class RSClientMixin implements RSClient
 	{
 		int flags = getFlags();
 		return WorldType.fromMask(flags);
+	}
+
+	@Inject
+	@MethodHook("openMenu")
+	public void menuOpened(int var1, int var2)
+	{
+		final MenuOpened event = new MenuOpened();
+		event.setMenuEntries(getMenuEntries());
+		eventBus.post(event);
+	}
+
+	@Inject
+	@MethodHook("updateNpcs")
+	public static void updateNpcs(boolean var0, PacketBuffer var1)
+	{
+		Hooks.updateNpcs();
+	}
+
+	@Inject
+	@MethodHook("addChatMessage")
+	public static void onAddChatMessage(int type, String name, String message, String sender)
+	{
+		if (log.isDebugEnabled())
+		{
+			log.debug("Chat message type {}: {}", ChatMessageType.of(type), message);
+		}
+
+		final ChatMessageType chatMessageType = ChatMessageType.of(type);
+		final ChatMessage chatMessage = new ChatMessage(chatMessageType, name, message, sender);
+		eventBus.post(chatMessage);
+	}
+
+	@Inject
+	@MethodHook("methodDraw")
+	public void methodDraw(boolean var1)
+	{
+		Hooks.clientMainLoop();
 	}
 }
