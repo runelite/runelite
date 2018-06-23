@@ -25,25 +25,28 @@
  */
 package net.runelite.client.plugins.idlenotifier;
 
-import com.google.common.eventbus.Subscribe;
-import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
+import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import net.runelite.api.Actor;
-import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.InventoryID;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.api.AnimationID.*;
 
 @PluginDescriptor(
 	name = "Idle Notifier"
@@ -73,6 +76,7 @@ public class IdleNotifierPlugin extends Plugin
 
 	private Instant sixHourWarningTime;
 	private boolean ready;
+	private int previousInventoryCount;
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
@@ -257,6 +261,35 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			notifier.notify("[" + local.getName() + "] has low prayer!");
 		}
+	}
+
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		int threshold = config.getInventoryThreshold();
+		ItemContainer container = event.getItemContainer();
+
+		if (threshold == 0 || container != client.getItemContainer(InventoryID.INVENTORY))
+		{
+			return;
+		}
+
+		int count = container.getItems().length;
+
+		if (container.getItems() != null && count != previousInventoryCount && count == threshold)
+		{
+			Player local = client.getLocalPlayer();
+
+			//We don't want to bombard the user with notifications so idle will take priority if enabled
+			if (config.animationIdle() && local.getAnimation() == -1)
+			{
+				return;
+			}
+
+			notifier.notify(String.format("[%s] has %d full inventory slots!", local.getName(), threshold));
+		}
+
+		previousInventoryCount = count;
 	}
 
 	private boolean checkLowHitpoints()
