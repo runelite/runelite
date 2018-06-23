@@ -36,49 +36,131 @@ import net.runelite.api.MainBufferProvider;
 public interface Callbacks
 {
 	/**
-	 * Post an event. See the events in net.runelite.api.events
-	 * @param event
+	 * Post an event. See the events in net.runelite.api.events.
+	 *
+	 * @param event the event
 	 */
 	void post(Object event);
 
 	/**
-	 * Post a deferred event, which gets delayed until the next cycle
-	 * @param event
+	 * Post a deferred event, which gets delayed until the next cycle.
+	 *
+	 * @param event the event
 	 */
 	void postDeferred(Object event);
 
 	/**
-	 * Called each client cycle
+	 * Called each client cycle.
 	 */
 	void clientMainLoop();
 
+	/**
+	 * Called after receiving update NPCs packet from server.
+	 */
 	void updateNpcs();
 
+	/**
+	 * Called after region is drawn.
+	 */
 	void drawRegion();
 
+	/**
+	 * Called after logic that is drawing 2D objects is processed.
+	 */
 	void drawAboveOverheads();
 
+	/**
+	 * Client top-most draw method, rendering over top of most of game interfaces.
+	 *
+	 * @param mainBufferProvider the main buffer provider
+	 * @param graphics           the graphics
+	 * @param x                  the x
+	 * @param y                  the y
+	 */
 	void draw(MainBufferProvider mainBufferProvider, Graphics graphics, int x, int y);
 
+	/**
+	 * Mouse pressed event. If this event will be consumed it will not be propagated further to client.
+	 *
+	 * @param mouseEvent the mouse event
+	 * @return the mouse event
+	 */
 	MouseEvent mousePressed(MouseEvent mouseEvent);
 
+	/**
+	 * Mouse released event. If this event will be consumed it will not be propagated further to client.
+	 *
+	 * @param mouseEvent the mouse event
+	 * @return the mouse event
+	 */
 	MouseEvent mouseReleased(MouseEvent mouseEvent);
 
+	/**
+	 * Mouse clicked event. If this event will be consumed it will not be propagated further to client.
+	 *
+	 * @param mouseEvent the mouse event
+	 * @return the mouse event
+	 */
 	MouseEvent mouseClicked(MouseEvent mouseEvent);
 
+	/**
+	 * Mouse entered event. If this event will be consumed it will not be propagated further to client.
+	 *
+	 * @param mouseEvent the mouse event
+	 * @return the mouse event
+	 */
 	MouseEvent mouseEntered(MouseEvent mouseEvent);
 
+	/**
+	 * Mouse exited event. If this event will be consumed it will not be propagated further to client.
+	 *
+	 * @param mouseEvent the mouse event
+	 * @return the mouse event
+	 */
 	MouseEvent mouseExited(MouseEvent mouseEvent);
 
+	/**
+	 * Mouse dragged event. If this event will be consumed it will not be propagated further to client.
+	 *
+	 * @param mouseEvent the mouse event
+	 * @return the mouse event
+	 */
 	MouseEvent mouseDragged(MouseEvent mouseEvent);
 
+	/**
+	 * Mouse moved event. If this event will be consumed it will not be propagated further to client.
+	 *
+	 * @param mouseEvent the mouse event
+	 * @return the mouse event
+	 */
 	MouseEvent mouseMoved(MouseEvent mouseEvent);
 
+	/**
+	 * Mouse wheel moved event. If this event will be consumed it will not be propagated further to client.
+	 *
+	 * @param event the event
+	 * @return the mouse wheel event
+	 */
 	MouseWheelEvent mouseWheelMoved(MouseWheelEvent event);
 
+	/**
+	 * Key pressed event.
+	 *
+	 * @param keyEvent the key event
+	 */
 	void keyPressed(KeyEvent keyEvent);
 
+	/**
+	 * Key released event.
+	 *
+	 * @param keyEvent the key event
+	 */
 	void keyReleased(KeyEvent keyEvent);
 
+	/**
+	 * Key typed event.
+	 *
+	 * @param keyEvent the key event
+	 */
 	void keyTyped(KeyEvent keyEvent);
 }
