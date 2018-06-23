@@ -56,6 +56,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
@@ -482,22 +483,32 @@ public class ConfigPanel extends PluginPanel
 
 			if (cid.getType() == String.class)
 			{
-				JTextArea textField = new JTextArea();
-				textField.setLineWrap(true);
-				textField.setWrapStyleWord(true);
-				textField.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-				textField.setText(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName()));
-
-				textField.addFocusListener(new FocusAdapter()
+				if (!cid.getItem().secret())
 				{
-					@Override
-					public void focusLost(FocusEvent e)
-					{
-						changeConfiguration(config, textField, cd, cid);
-					}
-				});
+					JTextArea textField = new JTextArea();
+					textField.setLineWrap(true);
+					textField.setWrapStyleWord(true);
+					textField.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+					textField.setText(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName()));
 
-				item.add(textField, BorderLayout.SOUTH);
+					textField.addFocusListener(new FocusAdapter()
+					{
+						@Override
+						public void focusLost(FocusEvent e)
+						{
+							changeConfiguration(config, textField, cd, cid);
+						}
+					});
+
+					item.add(textField, BorderLayout.SOUTH);
+				}
+				else
+				{
+					JPasswordField passwordField = new JPasswordField();
+					passwordField.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+					item.add(passwordField, BorderLayout.SOUTH);
+				}
 			}
 
 			if (cid.getType() == Color.class)
