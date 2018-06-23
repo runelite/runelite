@@ -31,6 +31,7 @@ import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
+import net.runelite.client.callback.Hooks;
 import static net.runelite.client.callback.Hooks.log;
 import net.runelite.rs.api.RSDecorativeObject;
 import net.runelite.rs.api.RSGroundObject;
@@ -54,6 +55,7 @@ public abstract class RSRegionMixin implements RSRegion
 		{
 			isDrawingRegion = true;
 			rs$drawRegion(cameraX, cameraY, cameraZ, cameraPitch, cameraYaw, plane);
+			Hooks.drawRegion();
 		}
 		finally
 		{
