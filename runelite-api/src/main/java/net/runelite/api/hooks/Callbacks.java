@@ -22,33 +22,63 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.mixins;
+package net.runelite.api.hooks;
 
+import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import net.runelite.api.mixins.Copy;
-import net.runelite.api.mixins.Mixin;
-import net.runelite.api.mixins.Replace;
-import net.runelite.api.mixins.Shadow;
-import net.runelite.rs.api.RSClient;
-import net.runelite.rs.api.RSMouseWheelHandler;
+import net.runelite.api.MainBufferProvider;
 
-@Mixin(RSMouseWheelHandler.class)
-public abstract class RSMouseWheelHandlerMixin implements RSMouseWheelHandler
+/**
+ * Interface of callbacks the injected client uses to send events
+ */
+public interface Callbacks
 {
-	@Shadow("clientInstance")
-	private static RSClient client;
+	/**
+	 * Post an event. See the events in net.runelite.api.events
+	 * @param event
+	 */
+	void post(Object event);
 
-	@Copy("mouseWheelMoved")
-	abstract void rs$mouseWheelMoved(MouseWheelEvent event);
+	/**
+	 * Post a deferred event, which gets delayed until the next cycle
+	 * @param event
+	 */
+	void postDeferred(Object event);
 
-	@Override
-	@Replace("mouseWheelMoved")
-	public void mouseWheelMoved(MouseWheelEvent event)
-	{
-		event = client.getCallbacks().mouseWheelMoved(event);
-		if (!event.isConsumed())
-		{
-			rs$mouseWheelMoved(event);
-		}
-	}
+	/**
+	 * Called each client cycle
+	 */
+	void clientMainLoop();
+
+	void updateNpcs();
+
+	void drawRegion();
+
+	void drawAboveOverheads();
+
+	void draw(MainBufferProvider mainBufferProvider, Graphics graphics, int x, int y);
+
+	MouseEvent mousePressed(MouseEvent mouseEvent);
+
+	MouseEvent mouseReleased(MouseEvent mouseEvent);
+
+	MouseEvent mouseClicked(MouseEvent mouseEvent);
+
+	MouseEvent mouseEntered(MouseEvent mouseEvent);
+
+	MouseEvent mouseExited(MouseEvent mouseEvent);
+
+	MouseEvent mouseDragged(MouseEvent mouseEvent);
+
+	MouseEvent mouseMoved(MouseEvent mouseEvent);
+
+	MouseWheelEvent mouseWheelMoved(MouseWheelEvent event);
+
+	void keyPressed(KeyEvent keyEvent);
+
+	void keyReleased(KeyEvent keyEvent);
+
+	void keyTyped(KeyEvent keyEvent);
 }

@@ -29,12 +29,16 @@ import net.runelite.api.events.SetMessage;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
-import static net.runelite.client.callback.Hooks.eventBus;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSMessageNode;
 
 @Mixin(RSMessageNode.class)
 public abstract class RSMessageNodeMixin implements RSMessageNode
 {
+	@Shadow("clientInstance")
+	private static RSClient client;
+
 	@Inject
 	private String runeLiteFormatMessage;
 
@@ -47,7 +51,7 @@ public abstract class RSMessageNodeMixin implements RSMessageNode
 		setMessage.setName(getName());
 		setMessage.setSender(getSender());
 		setMessage.setValue(getValue());
-		eventBus.post(setMessage);
+		client.getCallbacks().post(setMessage);
 	}
 
 	@Inject
@@ -81,6 +85,6 @@ public abstract class RSMessageNodeMixin implements RSMessageNode
 		setMessage.setName(name);
 		setMessage.setSender(sender);
 		setMessage.setValue(value);
-		eventBus.post(setMessage);
+		client.getCallbacks().post(setMessage);
 	}
 }
