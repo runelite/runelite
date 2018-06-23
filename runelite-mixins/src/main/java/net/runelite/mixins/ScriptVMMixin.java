@@ -33,7 +33,6 @@ import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
-import net.runelite.client.callback.Hooks;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSScript;
 import net.runelite.rs.api.RSScriptEvent;
@@ -91,7 +90,7 @@ public abstract class ScriptVMMixin implements RSClient
 				}
 				m.appendTail(out);
 
-				Hooks.log.debug(out.toString());
+				client.getLogger().debug(out.toString());
 
 				client.setStringStackSize(stringStackSize);
 				client.setIntStackSize(intStackSize);
@@ -101,7 +100,7 @@ public abstract class ScriptVMMixin implements RSClient
 			ScriptCallbackEvent event = new ScriptCallbackEvent();
 			event.setScript(currentScript);
 			event.setEventName(stringOp);
-			Hooks.eventBus.post(event);
+			client.getCallbacks().post(event);
 			return true;
 		}
 		return false;
