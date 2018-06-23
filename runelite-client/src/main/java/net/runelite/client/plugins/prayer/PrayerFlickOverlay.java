@@ -46,7 +46,7 @@ class PrayerFlickOverlay extends Overlay
 	private Instant startOfLastTick = Instant.now();
 
 	@Inject
-	PrayerFlickOverlay(Client client)
+	private PrayerFlickOverlay(Client client)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
