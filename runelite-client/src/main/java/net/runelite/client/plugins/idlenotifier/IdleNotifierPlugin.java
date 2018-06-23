@@ -27,6 +27,8 @@ package net.runelite.client.plugins.idlenotifier;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.Objects;
 import javax.inject.Inject;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
@@ -42,6 +44,7 @@ import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -274,19 +277,16 @@ public class IdleNotifierPlugin extends Plugin
 			return;
 		}
 
-		int count = container.getItems().length;
+		//Apparently container.getItems().length does not return the correct number so using a query
+		//int count = (int) Arrays.stream(container.getItems()).filter(Objects::nonNull).count();
+		int count = new InventoryWidgetItemQuery().result(client).length;
 
 		//Make sure the amount of items actually increased and it was not just items moving around/being dropped
 		if (container.getItems() != null && count > previousInventoryCount && count == threshold)
 		{
 			Player local = client.getLocalPlayer();
-
-			//We don't want to bombard the user with notifications so idle will take priority if enabled
-			if (config.animationIdle() && local.getAnimation() == -1)
-			{
-				return;
-			}
-
+			//We don't want to bombard the user with notifications so will reset the timers if this triggers
+			resetTimers();
 			notifier.notify(String.format("[%s] has %d full inventory slots!", local.getName(), threshold));
 		}
 
