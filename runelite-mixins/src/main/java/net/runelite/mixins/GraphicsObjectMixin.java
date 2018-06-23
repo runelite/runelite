@@ -28,17 +28,21 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
-import static net.runelite.client.callback.Hooks.eventBus;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSGraphicsObject;
 
 @Mixin(RSGraphicsObject.class)
 public abstract class GraphicsObjectMixin implements RSGraphicsObject
 {
+	@Shadow("clientInstance")
+	private static RSClient client;
+
 	@Inject
 	GraphicsObjectMixin()
 	{
 		final GraphicsObjectCreated event = new GraphicsObjectCreated(this);
-		eventBus.post(event);
+		client.getCallbacks().post(event);
 	}
 
 	@Override

@@ -27,16 +27,20 @@ package net.runelite.mixins;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
-import net.runelite.client.callback.Hooks;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSTextureProvider;
 
 @Mixin(RSTextureProvider.class)
 public abstract class RSTextureProviderMixin implements RSTextureProvider
 {
+	@Shadow("clientInstance")
+	private static RSClient client;
+
 	@Inject
 	@MethodHook(value = "checkTextures", end = true)
 	public void checkTextures(int var1)
 	{
-		Hooks.drawAboveOverheads();
+		client.getCallbacks().drawAboveOverheads();
 	}
 }

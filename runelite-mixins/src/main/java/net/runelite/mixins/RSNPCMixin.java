@@ -32,7 +32,6 @@ import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
-import static net.runelite.client.callback.Hooks.eventBus;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSModel;
 import net.runelite.rs.api.RSNPC;
@@ -106,7 +105,7 @@ public abstract class RSNPCMixin implements RSNPC
 	{
 		if (composition == null)
 		{
-			eventBus.post(new NpcDespawned(this));
+			client.getCallbacks().post(new NpcDespawned(this));
 		}
 	}
 

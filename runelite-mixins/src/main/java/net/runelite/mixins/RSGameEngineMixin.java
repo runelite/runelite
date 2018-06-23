@@ -31,12 +31,16 @@ import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
-import static net.runelite.client.callback.Hooks.eventBus;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSGameEngine;
 
 @Mixin(RSGameEngine.class)
 public abstract class RSGameEngineMixin implements RSGameEngine
 {
+	@Shadow("clientInstance")
+	private static RSClient client;
+
 	@Inject
 	private Thread thread;
 
@@ -70,6 +74,6 @@ public abstract class RSGameEngineMixin implements RSGameEngine
 	{
 		final FocusChanged focusChanged = new FocusChanged();
 		focusChanged.setFocused(true);
-		eventBus.post(focusChanged);
+		client.getCallbacks().post(focusChanged);
 	}
 }
