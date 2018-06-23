@@ -83,6 +83,14 @@ class MouseHighlightOverlay extends Overlay
 		{
 			case "Walk here":
 			case "Cancel":
+			case "Accept trade":
+				//This case is used for the twitch chat plugin
+				//Normal trade messages will be <col=ffffff>NAME</col> but the twitch chat plugin does not have a name to it
+				final String twitchPluginMessage = "<col=ffffff></col>";
+				if (target.equals(twitchPluginMessage))
+				{
+					return null;
+				}
 			case "Continue":
 				return null;
 			case "Move":
