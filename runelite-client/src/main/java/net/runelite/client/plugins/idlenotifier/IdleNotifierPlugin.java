@@ -27,8 +27,6 @@ package net.runelite.client.plugins.idlenotifier;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.Objects;
 import javax.inject.Inject;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
