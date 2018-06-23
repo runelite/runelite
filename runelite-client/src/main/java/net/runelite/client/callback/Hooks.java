@@ -345,7 +345,7 @@ public class Hooks implements Callbacks
 	{
 		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
 		BufferedImage image = (BufferedImage) bufferProvider.getImage();
-		Graphics2D graphics2d = (Graphics2D) image.getGraphics();
+		Graphics2D graphics2d = image.createGraphics();
 
 		try
 		{
@@ -355,6 +355,10 @@ public class Hooks implements Callbacks
 		{
 			log.warn("Error during overlay rendering", ex);
 		}
+		finally
+		{
+			graphics2d.dispose();
+		}
 	}
 
 	@Override
@@ -362,7 +366,7 @@ public class Hooks implements Callbacks
 	{
 		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
 		BufferedImage image = (BufferedImage) bufferProvider.getImage();
-		Graphics2D graphics2d = (Graphics2D) image.getGraphics();
+		Graphics2D graphics2d = image.createGraphics();
 
 		try
 		{
@@ -372,13 +376,17 @@ public class Hooks implements Callbacks
 		{
 			log.warn("Error during overlay rendering", ex);
 		}
+		finally
+		{
+			graphics2d.dispose();
+		}
 	}
 
 	public static void drawAfterWidgets()
 	{
 		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
 		BufferedImage image = (BufferedImage) bufferProvider.getImage();
-		Graphics2D graphics2d = (Graphics2D) image.getGraphics();
+		Graphics2D graphics2d = image.createGraphics();
 
 		try
 		{
@@ -387,6 +395,10 @@ public class Hooks implements Callbacks
 		catch (Exception ex)
 		{
 			log.warn("Error during overlay rendering", ex);
+		}
+		finally
+		{
+			graphics2d.dispose();
 		}
 	}
 
