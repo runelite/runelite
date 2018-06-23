@@ -261,4 +261,15 @@ public interface RuneLiteConfig extends Config
 	{
 		return 35;
 	}
+
+	@ConfigItem(
+		keyName = "actionBind",
+		name = "RuneLite hotkey",
+		description = "Configures the hotkey for RuneLite actions",
+		position = 36
+	)
+	default Keybind hotkey()
+	{
+		return Keybind.ALT;
+	}
 }
