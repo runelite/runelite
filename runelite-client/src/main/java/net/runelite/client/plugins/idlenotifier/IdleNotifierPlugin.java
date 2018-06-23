@@ -276,7 +276,8 @@ public class IdleNotifierPlugin extends Plugin
 
 		int count = container.getItems().length;
 
-		if (container.getItems() != null && count != previousInventoryCount && count == threshold)
+		//Make sure the amount of items actually increased and it was not just items moving around/being dropped
+		if (container.getItems() != null && count > previousInventoryCount && count == threshold)
 		{
 			Player local = client.getLocalPlayer();
 
