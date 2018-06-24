@@ -26,7 +26,6 @@ package net.runelite.client.plugins.bosslogger;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -104,7 +103,7 @@ class LootPanel extends JPanel
 							price = IM.getPrice();
 						}
 					}
-					catch (IOException e)
+					catch (Exception e)
 					{
 						// Fallback price = General Store Buy Price (You selling it to the store)
 						price = item.getPrice();
