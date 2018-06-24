@@ -26,10 +26,7 @@
 package net.runelite.client.game.loot;
 
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import java.util.ArrayList;
@@ -76,7 +73,6 @@ import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
-import net.runelite.client.game.loot.data.GroundItem;
 import net.runelite.client.game.loot.data.ItemStack;
 import net.runelite.client.game.loot.data.MemorizedActor;
 import net.runelite.client.game.loot.data.MemorizedNpc;
@@ -93,11 +89,6 @@ import net.runelite.client.game.loot.events.PlayerLootReceived;
 public class LootLogger
 {
 	private static final int INVENTORY_SPACE = 28;
-
-	// Time as in amount of game ticks
-	private static final int NPC_DROP_DISAPPEAR_TIME = 199; 		// 2 minutes if item was dropped by an NPC
-	private static final int PLAYER_DROP_DISAPPEAR_TIME = 299; 		// 3 minutes if player drops an item
-	private static final int INSTANCE_DROP_DISAPPEAR_TIME = 2999;	// 30 minutes for various instances
 
 	private static final Map<Integer, Integer> NPC_DEATH_ANIMATIONS;
 
@@ -154,21 +145,16 @@ public class LootLogger
 	private boolean completedTheatreOfBloodThisTick = false;
 	private boolean hasOpenedTheatreOfBloodRewardChest = false;
 
-	private Multimap<WorldPoint, GroundItem> myItems;
-	private Multimap<Integer, GroundItem> itemDisappearMap;
 	/**
 	 * Items that are in the rewards interface for clues/barrows
 	 */
 	private List<ItemStack> pendingItems;
-
-	private int tickCounter;
 
 	/**
 	 * Initializes all necessary variables for the loot tracking system
 	 */
 	protected void init()
 	{
-		this.tickCounter = 0;
 		this.interactedActors = new HashMap<>();
 		this.deadActorsThisTick = new ArrayList<>();
 		this.groundItemsLastTick = new HashMap<>();
@@ -185,8 +171,6 @@ public class LootLogger
 				this.prevTickInventoryItems = c.getItems();
 			}
 		}
-		this.myItems = ArrayListMultimap.create();
-		this.itemDisappearMap = Multimaps.newListMultimap(Maps.newTreeMap(), Lists::newArrayList);
 		this.pendingItems = new ArrayList<>();
 	}
 
@@ -199,8 +183,6 @@ public class LootLogger
 		this.groundItemsLastTick = null;
 		this.changedItemLayerTiles = null;
 		this.prevTickInventoryItems = null;
-		this.myItems = null;
-		this.itemDisappearMap = null;
 		this.pendingItems = null;
 	}
 
@@ -214,8 +196,6 @@ public class LootLogger
 		deadActorsThisTick.clear();
 		groundItemsLastTick.clear();
 		changedItemLayerTiles.clear();
-		myItems.clear();
-		itemDisappearMap.clear();
 		pendingItems.clear();
 	}
 
@@ -267,9 +247,10 @@ public class LootLogger
 	 * @param id Item ID
 	 * @param qty Item Quantity
 	 */
-	private void onItemPickup(int id, int qty)
+	private void onItemPickedUp(int id, int qty, WorldPoint location)
 	{
-		eventBus.post(new ItemPickedUp(id, qty));
+		log.debug("Picked Up {1} of itemId: {0} at {2}", id, qty, location);
+		eventBus.post(new ItemPickedUp(id, qty, location));
 	}
 
 	/**
@@ -278,9 +259,10 @@ public class LootLogger
 	 * @param id Item ID
 	 * @param qty Item Quantity
 	 */
-	private void onItemDropped(int id, int qty)
+	private void onItemDropped(int id, int qty, WorldPoint location)
 	{
-		eventBus.post(new ItemDropped(id, qty));
+		log.debug("Dropped {1} of itemId: {0} at {2}", id, qty, location);
+		eventBus.post(new ItemDropped(id, qty, location));
 	}
 
 	/**
@@ -291,7 +273,7 @@ public class LootLogger
 	 */
 	private void onEventItemLooted(int id, int qty)
 	{
-		eventBus.post(new ItemPickedUp(id, qty));
+		//eventBus.post(new ItemDropped(id, qty));
 	}
 
 	/**
@@ -463,57 +445,6 @@ public class LootLogger
 		}
 		diff.entrySet().removeIf(x -> x.getValue() == 0);
 		return diff;
-	}
-
-	/**
-	 * When an item is Picked Up update the GroundItem record and trigger the `ItemPickedUp` event
-	 *
-	 * @param itemId Picked Up Item ID
-	 * @param quantity Amount of Item
-	 * @param location WorldPoint where item was picked up
-	 */
-	private void onItemsPickedUp(int itemId, int quantity, WorldPoint location)
-	{
-		Iterator<GroundItem> it = myItems.get(location).iterator();
-		while (quantity > 0 && it.hasNext())
-		{
-			GroundItem groundItem = it.next();
-			if (groundItem.getItemId() != itemId)
-			{
-				continue;
-			}
-
-			groundItem.setQuantity(groundItem.getQuantity() - quantity);
-			if (groundItem.getQuantity() == 0)
-			{
-				it.remove();
-				itemDisappearMap.get(groundItem.getDisappearsOnTick()).remove(groundItem);
-			}
-		}
-
-		log.debug("Picked up {1} of itemId: {0}", itemId, quantity);
-		onItemPickup(itemId, quantity);
-	}
-
-	/**
-	 * When an item is dropped create a GroundItem record of it and Trigger the `ItemDropped` event
-	 *
-	 * @param itemId Dropped Item ID
-	 * @param quantity Amount of Dropped Item
-	 * @param location WorldPoint where item was dropped
-	 */
-	private void onItemsDropped(int itemId, int quantity, WorldPoint location)
-	{
-		int itemDuration = (client.isInInstancedRegion() ? INSTANCE_DROP_DISAPPEAR_TIME : PLAYER_DROP_DISAPPEAR_TIME);
-
-		int disappearsOnTick = tickCounter + itemDuration;
-		GroundItem groundItem = new GroundItem(itemId, quantity, location,
-				disappearsOnTick);
-		myItems.put(location, groundItem);
-		itemDisappearMap.put(disappearsOnTick, groundItem);
-
-		log.debug("Dropped {1} of itemId: {0}", itemId, quantity);
-		onItemDropped(itemId, quantity);
 	}
 
 	/**
@@ -705,8 +636,7 @@ public class LootLogger
 		{
 			log.debug("Pending {} stacks of items", pendingItems.size());
 
-			// Wait for the reward items to appear on the floor,
-			// and then start timing them.
+			// Trigger drop events for loot falling on floor
 			Map<Integer, Integer> itemDiff = getItemDifferencesAt(playerLocationLastTick);
 			if (itemDiff != null)
 			{
@@ -714,34 +644,13 @@ public class LootLogger
 				while (it.hasNext())
 				{
 					ItemStack pendingItem = it.next();
-					if (itemDiff.getOrDefault(pendingItem.getId(), 0) ==
-							pendingItem.getQuantity())
+					if (itemDiff.getOrDefault(pendingItem.getId(), 0) == pendingItem.getQuantity())
 					{
-						onItemsDropped(pendingItem.getId(), pendingItem.getQuantity(), playerLocationLastTick);
+						onItemDropped(pendingItem.getId(), pendingItem.getQuantity(), playerLocationLastTick);
 						it.remove();
 					}
 				}
 			}
-		}
-	}
-
-	/**
-	 * Checks if any Ground Items have disappeared from being on the floor too long
-	 */
-	private void checkGroundItemsDisappeared()
-	{
-		Iterator<Map.Entry<Integer, GroundItem>> it = itemDisappearMap.entries().iterator();
-		while (it.hasNext())
-		{
-			Map.Entry<Integer, GroundItem> entry = it.next();
-			if (entry.getKey() > tickCounter)
-			{
-				break;
-			}
-
-			GroundItem groundItem = entry.getValue();
-			myItems.get(groundItem.getLocation()).remove(groundItem);
-			it.remove();
 		}
 	}
 
@@ -787,29 +696,29 @@ public class LootLogger
 		List<Item> currItems = tile.getGroundItems();
 
 		Map<Integer, Integer> groundItemDiff = getItemDifferences(prevItems, currItems);
-		Map<Integer, Integer> iventoryItemDiff = getItemDifferences(
+		Map<Integer, Integer> inventoryItemDiff = getItemDifferences(
 				Arrays.asList(this.prevTickInventoryItems),
 				Arrays.asList(this.thisTickInventoryItems));
-		iventoryItemDiff.forEach((key, value) ->
+		inventoryItemDiff.forEach((key, value) ->
 		{
 			int groundItemCount = groundItemDiff.getOrDefault(key, 0);
 			if (groundItemCount < 0 && value > 0)
 			{
 				// Items were picked up
 				int amount = Math.min(value, -groundItemCount);
-				onItemsPickedUp(key, amount, playerLocationLastTick);
+				onItemPickedUp(key, amount, playerLocationLastTick);
 			}
 			else if (groundItemCount > 0 && value < 0)
 			{
 				// Items were dropped
 				int amount = Math.min(-value, groundItemCount);
-				onItemsDropped(key, amount, playerLocationLastTick);
+				onItemDropped(key, amount, playerLocationLastTick);
 			}
 			else if (value < 0)
 			{
 				// Items disappeared from the inventory in some
 				// other way, such as banking them
-				return;
+				log.debug("Item Disappeared from inventory, maybe banked.");
 			}
 		});
 	}
@@ -1115,30 +1024,6 @@ public class LootLogger
 			{
 				log.error("Unrecognized actor death");
 				log.debug("Error: Unrecognized actor death");
-				continue;
-			}
-
-			// Memorize which items were dropped by the users kill and when they de-spawn
-			for (Map.Entry<WorldPoint, ItemStack> entry : worldDrops.entries())
-			{
-				int nextCount = (entry.getValue().getQuantity() * index / killsAtWP) -
-						(entry.getValue().getQuantity() * (index - 1) / killsAtWP);
-				if (nextCount == 0)
-				{
-					continue;
-				}
-
-				// In some instances, items dropped last for 30 minutes rather than 2,
-				// so we memorize the items for 30 minutes if the player is in an instance.
-				int itemDuration = (client.isInInstancedRegion() ? INSTANCE_DROP_DISAPPEAR_TIME : NPC_DROP_DISAPPEAR_TIME);
-				int disappearsOnTick = tickCounter + itemDuration;
-				GroundItem groundItem = new GroundItem(entry.getValue().getId(),
-						nextCount, entry.getKey(), disappearsOnTick);
-
-				// Memorize which items on the ground were dropped by the users
-				// kills and when we can forget them
-				myItems.put(groundItem.getLocation(), groundItem);
-				itemDisappearMap.put(disappearsOnTick, groundItem);
 			}
 		}
 		deadActorsThisTick.clear();
@@ -1403,13 +1288,10 @@ public class LootLogger
 	{
 		checkInteracting();
 		checkOpenedRewards();
-		checkGroundItemsDisappeared();
 		checkInventoryItemsChanged();
 		checkActorDeaths();
 		updateGroundItemLayers();
 		updateInventoryItems();
 		playerLocationLastTick = client.getLocalPlayer().getWorldLocation();
-
-		tickCounter++;
 	}
 }
