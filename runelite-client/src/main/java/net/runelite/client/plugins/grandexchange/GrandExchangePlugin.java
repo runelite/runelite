@@ -41,7 +41,6 @@ import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -52,7 +51,6 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GrandExchangeOfferChanged;
@@ -63,6 +61,7 @@ import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
@@ -70,6 +69,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.client.util.Text;
@@ -103,12 +103,8 @@ public class GrandExchangePlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private GrandExchangePanel panel;
 
-	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
-	private boolean hotKeyPressed;
-
 	@Inject
-	private GrandExchangeInputListener inputListener;
+	private GrandExchangeMouseListener mouseListener;
 
 	@Inject
 	private ItemManager itemManager;
@@ -134,9 +130,15 @@ public class GrandExchangePlugin extends Plugin
 	@Inject
 	private ScheduledExecutorService executorService;
 
+	@Inject
+	private RuneLiteConfig runeLiteConfig;
+
 	private Widget grandExchangeText;
 	private Widget grandExchangeItem;
 	private Map<Integer, Integer> itemGELimits;
+
+	@Getter(AccessLevel.PACKAGE)
+	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> runeLiteConfig.hotkey());
 
 	@Provides
 	GrandExchangeConfig provideConfig(ConfigManager configManager)
@@ -164,8 +166,8 @@ public class GrandExchangePlugin extends Plugin
 
 		if (config.quickLookup())
 		{
-			mouseManager.registerMouseListener(inputListener);
-			keyManager.registerKeyListener(inputListener);
+			mouseManager.registerMouseListener(mouseListener);
+			keyManager.registerKeyListener(hotkeyListener);
 		}
 	}
 
@@ -173,8 +175,8 @@ public class GrandExchangePlugin extends Plugin
 	protected void shutDown()
 	{
 		clientToolbar.removeNavigation(button);
-		mouseManager.unregisterMouseListener(inputListener);
-		keyManager.unregisterKeyListener(inputListener);
+		mouseManager.unregisterMouseListener(mouseListener);
+		keyManager.unregisterKeyListener(hotkeyListener);
 		grandExchangeText = null;
 		grandExchangeItem = null;
 		itemGELimits = null;
@@ -189,13 +191,13 @@ public class GrandExchangePlugin extends Plugin
 			{
 				if (config.quickLookup())
 				{
-					mouseManager.registerMouseListener(inputListener);
-					keyManager.registerKeyListener(inputListener);
+					mouseManager.registerMouseListener(mouseListener);
+					keyManager.registerKeyListener(hotkeyListener);
 				}
 				else
 				{
-					mouseManager.unregisterMouseListener(inputListener);
-					keyManager.unregisterKeyListener(inputListener);
+					mouseManager.unregisterMouseListener(mouseListener);
+					keyManager.unregisterKeyListener(hotkeyListener);
 				}
 			}
 		}
@@ -242,7 +244,7 @@ public class GrandExchangePlugin extends Plugin
 		// At the moment, if the user disables quick lookup, the input listener gets disabled. Thus, isHotKeyPressed()
 		// should always return false when quick lookup is disabled.
 		// Replace the default option with "Search ..." when holding alt
-		if (client.getGameState() != GameState.LOGGED_IN || !hotKeyPressed)
+		if (client.getGameState() != GameState.LOGGED_IN || !hotkeyListener.isPressed())
 		{
 			return;
 		}
@@ -267,15 +269,6 @@ public class GrandExchangePlugin extends Plugin
 				menuEntry.setOption(SEARCH_GRAND_EXCHANGE);
 				menuEntry.setType(MenuAction.RUNELITE.getId());
 				client.setMenuEntries(entries);
-		}
-	}
-
-	@Subscribe
-	public void onFocusChanged(FocusChanged focusChanged)
-	{
-		if (!focusChanged.isFocused())
-		{
-			setHotKeyPressed(false);
 		}
 	}
 

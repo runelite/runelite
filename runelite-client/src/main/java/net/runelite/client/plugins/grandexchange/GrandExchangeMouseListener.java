@@ -24,24 +24,22 @@
  */
 package net.runelite.client.plugins.grandexchange;
 
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
-import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseAdapter;
 import static net.runelite.client.plugins.grandexchange.GrandExchangePlugin.SEARCH_GRAND_EXCHANGE;
 import net.runelite.client.util.Text;
 
-public class GrandExchangeInputListener extends MouseAdapter implements KeyListener
+class GrandExchangeMouseListener extends MouseAdapter
 {
 	private final Client client;
 	private final GrandExchangePlugin plugin;
 
 	@Inject
-	private GrandExchangeInputListener(Client client, GrandExchangePlugin plugin)
+	private GrandExchangeMouseListener(Client client, GrandExchangePlugin plugin)
 	{
 		this.client = client;
 		this.plugin = plugin;
@@ -51,7 +49,7 @@ public class GrandExchangeInputListener extends MouseAdapter implements KeyListe
 	public MouseEvent mouseClicked(MouseEvent e)
 	{
 		// Check if left click + alt
-		if (e.getButton() == MouseEvent.BUTTON1 && e.isAltDown())
+		if (e.getButton() == MouseEvent.BUTTON1 && plugin.getHotkeyListener().isPressed())
 		{
 			final MenuEntry[] menuEntries = client.getMenuEntries();
 			for (final MenuEntry menuEntry : menuEntries)
@@ -81,29 +79,5 @@ public class GrandExchangeInputListener extends MouseAdapter implements KeyListe
 
 			plugin.getPanel().getSearchPanel().priceLookup(itemName);
 		});
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e)
-	{
-
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e)
-	{
-		if (e.isAltDown())
-		{
-			plugin.setHotKeyPressed(true);
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e)
-	{
-		if (!e.isAltDown())
-		{
-			plugin.setHotKeyPressed(false);
-		}
 	}
 }
