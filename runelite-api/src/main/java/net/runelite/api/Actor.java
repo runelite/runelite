@@ -99,6 +99,12 @@ public interface Actor extends Renderable
 	 */
 	LocalPoint getLocalLocation();
 
+	@VisibleForDevtools
+	void setIdlePoseAnimation(int animation);
+
+	@VisibleForDevtools
+	void setPoseAnimation(int animation);
+
 	/**
 	 * Gets the orientation of the actor.
 	 *
