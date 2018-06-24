@@ -41,6 +41,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.HitsplatApplied;
+import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
@@ -68,7 +69,7 @@ public abstract class RSActorMixin implements RSActor
 	public Actor getInteracting()
 	{
 		int i = getRSInteracting();
-		if (i == -1)
+		if (i == -1 || i == 65535)
 		{
 			return null;
 		}
@@ -197,6 +198,14 @@ public abstract class RSActorMixin implements RSActor
 		GraphicChanged graphicChanged = new GraphicChanged();
 		graphicChanged.setActor(this);
 		client.getCallbacks().post(graphicChanged);
+	}
+
+	@FieldHook("interacting")
+	@Inject
+	public void interactingChanged(int idx)
+	{
+		InteractingChanged interactingChanged = new InteractingChanged(this, getInteracting());
+		client.getCallbacks().post(interactingChanged);
 	}
 
 	@Inject
