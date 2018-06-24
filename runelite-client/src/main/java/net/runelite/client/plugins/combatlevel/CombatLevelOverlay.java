@@ -105,6 +105,11 @@ public class CombatLevelOverlay extends Overlay
 		int rangeNeed = calcLevelsRM(rangedLevel, next, base);
 		int magicNeed = calcLevelsRM(magicLevel, next, base);
 
+		if (prayerLevel % 2 == 0)
+		{
+			prayNeed++;
+		}
+
 		// create and populate tooltip string
 		StringBuilder sb = new StringBuilder();
 		sb.append("<col=ff981f>Next combat level:</col></br>");
