@@ -335,7 +335,7 @@ public class ChatCommandsPlugin extends Plugin
 					hiscoreSkill = result.getClueScrollElite();
 					break;
 				case "master":
-					hiscoreSkill = result.getClueScrollElite();
+					hiscoreSkill = result.getClueScrollMaster();
 					break;
 				case "total":
 					hiscoreSkill = result.getClueScrollAll();
