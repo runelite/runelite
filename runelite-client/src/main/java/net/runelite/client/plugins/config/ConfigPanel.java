@@ -38,9 +38,12 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -68,6 +71,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigDescriptor;
+import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
@@ -89,6 +93,8 @@ public class ConfigPanel extends PluginPanel
 	private static final int SPINNER_FIELD_WIDTH = 6;
 	private static final ImageIcon SEARCH;
 
+	private static final String RUNELITE_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).keyName();
+	private static final String PINNED_PLUGINS_CONFIG_KEY = "pinnedPlugins";
 	private static final String RUNELITE_PLUGIN = "RuneLite";
 	private static final String CHAT_COLOR_PLUGIN = "Chat Color";
 
@@ -162,6 +168,8 @@ public class ConfigPanel extends PluginPanel
 
 	private void initializePluginList()
 	{
+		List<String> pinnedPlugins = getPinnedPluginNames();
+
 		// populate pluginList with all non-hidden plugins
 		pluginManager.getPlugins().stream()
 			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).hidden())
@@ -170,14 +178,23 @@ public class ConfigPanel extends PluginPanel
 				final Config config = pluginManager.getPluginConfigProxy(plugin);
 				final ConfigDescriptor configDescriptor = config == null ? null : configManager.getConfigDescriptor(config);
 
-				pluginList.add(new PluginListItem(this, plugin, config, configDescriptor));
+				final PluginListItem listItem = new PluginListItem(this, plugin, config, configDescriptor);
+				listItem.setPinned(pinnedPlugins.contains(listItem.getName()));
+				pluginList.add(listItem);
 			});
 
 		// add special entries for core client configurations
-		pluginList.add(new PluginListItem(this, runeLiteConfig, configManager.getConfigDescriptor(runeLiteConfig),
-			RUNELITE_PLUGIN, "RuneLite client settings", "client"));
-		pluginList.add(new PluginListItem(this, chatColorConfig, configManager.getConfigDescriptor(chatColorConfig),
-			CHAT_COLOR_PLUGIN, "Recolor chat text", "colour", "messages"));
+		final PluginListItem runeLite = new PluginListItem(this, runeLiteConfig,
+			configManager.getConfigDescriptor(runeLiteConfig),
+			RUNELITE_PLUGIN, "RuneLite client settings", "client");
+		runeLite.setPinned(pinnedPlugins.contains(RUNELITE_PLUGIN));
+		pluginList.add(runeLite);
+
+		final PluginListItem chatColor = new PluginListItem(this, chatColorConfig,
+			configManager.getConfigDescriptor(chatColorConfig),
+			CHAT_COLOR_PLUGIN, "Recolor chat text", "colour", "messages");
+		chatColor.setPinned(pinnedPlugins.contains(CHAT_COLOR_PLUGIN));
+		pluginList.add(chatColor);
 
 		pluginList.sort(Comparator.comparing(PluginListItem::getName));
 	}
@@ -202,7 +219,7 @@ public class ConfigPanel extends PluginPanel
 		}
 	}
 
-	private void openConfigList()
+	void openConfigList()
 	{
 		currentMode = DisplayMode.PLUGIN_LIST;
 		removeAll();
@@ -226,24 +243,28 @@ public class ConfigPanel extends PluginPanel
 
 		pluginList.forEach(this::remove);
 
+		showMatchingPlugins(pluginList.stream().filter(PluginListItem::isPinned), text);
+		showMatchingPlugins(pluginList.stream().filter(item -> !item.isPinned()), text);
+
+		revalidate();
+	}
+
+	private void showMatchingPlugins(Stream<PluginListItem> listItems, String text)
+	{
 		if (text.isEmpty())
 		{
-			pluginList.forEach(this::add);
-			revalidate();
+			listItems.forEach(this::add);
 			return;
 		}
 
-		// show plugins with keywords that matches all the given search terms
 		final String[] searchTerms = text.toLowerCase().split(" ");
-		pluginList.forEach(listItem ->
+		listItems.forEach(listItem ->
 		{
 			if (listItem.matchesSearchTerms(searchTerms))
 			{
 				add(listItem);
 			}
 		});
-
-		revalidate();
 	}
 
 	void openGroupConfigPanel(Config config, ConfigDescriptor cd)
@@ -558,6 +579,27 @@ public class ConfigPanel extends PluginPanel
 
 			listItem.setPluginEnabled(false);
 		});
+	}
+
+	private List<String> getPinnedPluginNames()
+	{
+		final String config = configManager.getConfiguration(RUNELITE_GROUP_NAME, PINNED_PLUGINS_CONFIG_KEY);
+
+		if (config == null)
+		{
+			return new ArrayList<>();
+		}
+
+		return Arrays.asList(config.split(","));
+	}
+
+	void savePinnedPlugins()
+	{
+		String value = pluginList.stream()
+			.filter(PluginListItem::isPinned)
+			.map(PluginListItem::getName)
+			.collect(Collectors.joining(","));
+		configManager.setConfiguration(RUNELITE_GROUP_NAME, PINNED_PLUGINS_CONFIG_KEY, value);
 	}
 
 	@Override

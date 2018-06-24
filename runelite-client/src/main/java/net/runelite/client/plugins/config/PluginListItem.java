@@ -58,20 +58,24 @@ class PluginListItem extends JPanel
 	private static final ImageIcon CONFIG_ICON_HOVER;
 	private static final ImageIcon ON_SWITCHER;
 	private static final ImageIcon OFF_SWITCHER;
+	private static final ImageIcon ON_STAR;
+	private static final ImageIcon OFF_STAR;
 
 	private final ConfigPanel configPanel;
 	private @Getter @Nullable final Plugin plugin;
 	private @Nullable final Config config;
 	private @Nullable final ConfigDescriptor configDescriptor;
 
-	private final String name;
+	private @Getter final String name;
 	private final String description;
 	private final List<String> keywords = new ArrayList<>();
 
+	private final JLabel pinButton = new JLabel(OFF_STAR);
 	private final JLabel configButton = new JLabel(CONFIG_ICON);
 	private final JLabel toggleButton = new JLabel(OFF_SWITCHER);
 
 	private boolean isPluginEnabled = false;
+	private @Getter boolean isPinned = false;
 
 	static
 	{
@@ -84,6 +88,8 @@ class PluginListItem extends JPanel
 				CONFIG_ICON_HOVER = new ImageIcon(SwingUtil.grayscaleOffset(configIcon, -100));
 				ON_SWITCHER = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("switchers/on.png")));
 				OFF_SWITCHER = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("switchers/off.png")));
+				ON_STAR = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("stars/on.png")));
+				OFF_STAR = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("stars/off.png")));
 			}
 		}
 		catch (IOException e)
@@ -148,6 +154,10 @@ class PluginListItem extends JPanel
 
 		add(nameLabel, BorderLayout.CENTER);
 
+		pinButton.setPreferredSize(new Dimension(25, 0));
+		attachPinButtonListener();
+		add(pinButton, BorderLayout.LINE_START);
+
 		final JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new GridLayout(1, 2));
 		add(buttonPanel, BorderLayout.LINE_END);
@@ -161,6 +171,20 @@ class PluginListItem extends JPanel
 		toggleButton.setHorizontalAlignment(SwingConstants.RIGHT);
 		attachToggleButtonListener();
 		buttonPanel.add(toggleButton);
+	}
+
+	private void attachPinButtonListener()
+	{
+		pinButton.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				setPinned(!isPinned);
+				configPanel.savePinnedPlugins();
+				configPanel.openConfigList();
+			}
+		});
 	}
 
 	private void attachConfigButtonListener()
@@ -227,6 +251,13 @@ class PluginListItem extends JPanel
 		isPluginEnabled = enabled;
 		toggleButton.setIcon(enabled ? ON_SWITCHER : OFF_SWITCHER);
 		toggleButton.setToolTipText(enabled ? "Disable plugin" : "Enable plugin");
+	}
+
+	void setPinned(boolean pinned)
+	{
+		isPinned = pinned;
+		pinButton.setIcon(pinned ? ON_STAR : OFF_STAR);
+		pinButton.setToolTipText(pinned ? "Unpin plugin" : "Pin plugin");
 	}
 
 	/**
