@@ -42,7 +42,6 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.ui.overlay.components.TitleComponent;
 
 class CorpDamageOverlay extends Overlay
 {
@@ -84,10 +83,6 @@ class CorpDamageOverlay extends Overlay
 		int damageForKill = players != 0 ? totalDamage / players : 0;
 
 		panelComponent.getChildren().clear();
-
-		panelComponent.getChildren().add(TitleComponent.builder()
-			.text("Corporeal Beast")
-			.build());
 
 		NPC core = corpPlugin.getCore();
 		if (core != null)
