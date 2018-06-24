@@ -50,7 +50,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.loot.LootLogger;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
@@ -108,9 +107,6 @@ public class RuneLite
 
 	@Inject
 	private SessionManager sessionManager;
-
-	@Inject
-	private LootLogger lootLogger;
 
 	@Inject
 	private DiscordService discordService;
@@ -269,10 +265,6 @@ public class RuneLite
 
 		// Load the session, including saved configuration
 		sessionManager.loadSession();
-
-		// Pass Needed Info to LootLogger
-		lootLogger.setClient((Client)client);
-		lootLogger.setItemManager(itemManager.get());
 
 		// Add core overlays after configuration has been loaded so their properties will be
 		// loaded properly

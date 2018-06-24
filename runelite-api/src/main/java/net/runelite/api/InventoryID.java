@@ -48,15 +48,15 @@ public enum InventoryID
 	/**
 	 * Clue Scroll / Barrows reward chest inventory.
 	 */
-	BARROWS_REWARD(141),
+	REWARD_CHEST(141),
 	/**
-	 * Chambers of Xeric chest inventory.
+	 * Raids reward chest inventory.
 	 */
 	CHAMBERS_OF_XERIC_CHEST(581),
 	/**
 	 * Theater of Blood reward chest inventory (Raids 2)
 	 */
-	THEATRE_OF_BLOOD_CHEST(10);
+	THEATER_OF_BLOOD_CHEST(10);
 
 	private final int id;
 
