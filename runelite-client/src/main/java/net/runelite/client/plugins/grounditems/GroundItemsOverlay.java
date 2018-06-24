@@ -36,7 +36,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
-
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
