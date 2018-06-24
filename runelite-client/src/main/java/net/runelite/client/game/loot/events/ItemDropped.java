@@ -27,6 +27,7 @@ package net.runelite.client.game.loot.events;
 
 import lombok.Data;
 import lombok.Getter;
+import net.runelite.api.coords.WorldPoint;
 
 /**
  * An event that is triggered when you picked up an item from the floor
@@ -39,4 +40,7 @@ public class ItemDropped
 
 	@Getter
 	private final int qty;
+
+	@Getter
+	private final WorldPoint location;
 }
