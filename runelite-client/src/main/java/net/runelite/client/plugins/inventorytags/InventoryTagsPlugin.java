@@ -39,7 +39,6 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
@@ -130,17 +129,6 @@ public class InventoryTagsPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		hasTaggedItems = editorMode = false;
-	}
-
-	@Subscribe
-	public void onConfigChanged(ConfigChanged configChanged)
-	{
-		if (!configChanged.getGroup().equals("inventorytags"))
-		{
-			return;
-		}
-
-		overlay.clearStoredOutlines();
 	}
 
 	@Subscribe
