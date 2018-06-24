@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -65,7 +64,6 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDespawned;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameObjectSpawned;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemLayerChanged;
@@ -73,6 +71,7 @@ import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.loot.data.ItemStack;
 import net.runelite.client.game.loot.data.MemorizedActor;
 import net.runelite.client.game.loot.data.MemorizedNpc;
@@ -108,6 +107,10 @@ public class LootLogger
 
 	@Setter
 	private Client client;
+
+	@Setter
+	private ItemManager itemManager;
+
 	// posting new events
 	private final EventBus eventBus;
 
@@ -146,11 +149,6 @@ public class LootLogger
 	private boolean hasOpenedTheatreOfBloodRewardChest = false;
 
 	/**
-	 * Items that are in the rewards interface for clues/barrows
-	 */
-	private List<ItemStack> pendingItems;
-
-	/**
 	 * Initializes all necessary variables for the loot tracking system
 	 */
 	protected void init()
@@ -171,7 +169,6 @@ public class LootLogger
 				this.prevTickInventoryItems = c.getItems();
 			}
 		}
-		this.pendingItems = new ArrayList<>();
 	}
 
 	/**
@@ -183,7 +180,6 @@ public class LootLogger
 		this.groundItemsLastTick = null;
 		this.changedItemLayerTiles = null;
 		this.prevTickInventoryItems = null;
-		this.pendingItems = null;
 	}
 
 	/**
@@ -196,7 +192,6 @@ public class LootLogger
 		deadActorsThisTick.clear();
 		groundItemsLastTick.clear();
 		changedItemLayerTiles.clear();
-		pendingItems.clear();
 	}
 
 	/*
@@ -210,7 +205,7 @@ public class LootLogger
 	 * @param comp Killed NPC's NPCComposition
 	 * @param location WorldPoint the NPC died at
 	 * @param drops	A Integer, Integer map of ItemIDs and Quantities
- 	 */
+	 */
 	private void onNewNpcLogCreated(int npc, NPCComposition comp, WorldPoint location, Map<Integer, Integer> drops)
 	{
 		eventBus.post(new NpcLootReceived(npc, comp, location, createItemList(drops)));
@@ -261,19 +256,20 @@ public class LootLogger
 	 */
 	private void onItemDropped(int id, int qty, WorldPoint location)
 	{
-		log.debug("Dropped {1} of itemId: {0} at {2}", id, qty, location);
-		eventBus.post(new ItemDropped(id, qty, location));
-	}
+		if (!itemManager.getItemComposition(id).isStackable())
+		{
+			for (int i = 0; i < qty; i++)
+			{
+				log.debug("Dropped {1} of itemId: {0} at {2}", id, qty, location);
+				eventBus.post(new ItemDropped(id, 1, location));
+			}
+		}
+		else
+		{
+			log.debug("Dropped {1} of itemId: {0} at {2}", id, qty, location);
+			eventBus.post(new ItemDropped(id, qty, location));
+		}
 
-	/**
-	 * Called when the local player Loots an item from an Event/Activity Reward container
-	 *
-	 * @param id Item ID
-	 * @param qty Item Quantity
-	 */
-	private void onEventItemLooted(int id, int qty)
-	{
-		//eventBus.post(new ItemDropped(id, qty));
 	}
 
 	/**
@@ -448,38 +444,6 @@ public class LootLogger
 	}
 
 	/**
-	 * Local player looted an item from an Event/Activity reward container
-	 */
-	private void pickupRewardItems()
-	{
-		List<Integer> inventoryItems = Arrays.stream(
-				thisTickInventoryItems == null ?
-						prevTickInventoryItems :
-						thisTickInventoryItems)
-				.map(Item::getId)
-				.collect(Collectors.toList());
-		int invSpace = INVENTORY_SPACE - (int)inventoryItems.stream()
-				.filter(x -> x != null && x != -1).count();
-
-		Iterator<ItemStack> it = pendingItems.iterator();
-		while (it.hasNext())
-		{
-			ItemStack item = it.next();
-			log.debug("Picked up event items (id: {0}, qty: {1})", item.getId(), item.getQuantity());
-			onEventItemLooted(item.getId(), item.getQuantity());
-			if (!inventoryItems.contains(item.getId()))
-			{
-				invSpace--;
-				if (invSpace < 0)
-				{
-					continue;
-				}
-			}
-			it.remove();
-		}
-	}
-
-	/**
 	 * Memorizes any NPCs the local player is interacting with (Including AOE/Cannon)
 	 */
 	private void checkInteracting()
@@ -547,7 +511,7 @@ public class LootLogger
 
 	/**
 	 * Check if the local player opened any Event/Activity reward chests
- 	 */
+	 */
 	private void checkOpenedRewards()
 	{
 		// Check if barrows or clue scroll reward just appeared on the screen
@@ -558,10 +522,6 @@ public class LootLogger
 				Map<Integer, Integer> barrowsReward = Arrays.stream(thisTickRewardItems)
 						.collect(Collectors.toMap(Item::getId, Item::getQuantity));
 				onNewEventLogCreated(LootTypes.BARROWS, barrowsReward);
-				pendingItems.addAll(Arrays.stream(thisTickRewardItems)
-						.map(x -> new ItemStack(x.getId(), x.getQuantity()))
-						.collect(Collectors.toList()));
-				pickupRewardItems();
 			}
 			else if (openedClueScrollThisTick)
 			{
@@ -600,10 +560,6 @@ public class LootLogger
 					break;
 				}
 				onNewEventLogCreated(clueScrollType, clueScrollReward);
-				pendingItems.addAll(Arrays.stream(thisTickRewardItems)
-						.map(x -> new ItemStack(x.getId(), x.getQuantity()))
-						.collect(Collectors.toList()));
-				pickupRewardItems();
 			}
 		}
 		if (completedChambersOfXericThisTick)
@@ -611,10 +567,6 @@ public class LootLogger
 			Map<Integer, Integer> reward = Arrays.stream(chambersOfXericItems)
 					.collect(Collectors.toMap(Item::getId, Item::getQuantity));
 			onNewEventLogCreated(LootTypes.RAIDS, reward);
-			pendingItems.addAll(Arrays.stream(chambersOfXericItems)
-					.map(x -> new ItemStack(x.getId(), x.getQuantity()))
-					.collect(Collectors.toList()));
-			pickupRewardItems();
 
 			completedChambersOfXericThisTick = false;
 		}
@@ -624,33 +576,8 @@ public class LootLogger
 			Map<Integer, Integer> reward = Arrays.stream(theatreOfBloodItems)
 					.collect(Collectors.toMap(Item::getId, Item::getQuantity));
 			onNewEventLogCreated(LootTypes.THEATRE_OF_BLOOD, reward);
-			pendingItems.addAll(Arrays.stream(theatreOfBloodItems)
-					.map(x -> new ItemStack(x.getId(), x.getQuantity()))
-					.collect(Collectors.toList()));
-			pickupRewardItems();
 
 			completedTheatreOfBloodThisTick = false;
-		}
-
-		if (!pendingItems.isEmpty())
-		{
-			log.debug("Pending {} stacks of items", pendingItems.size());
-
-			// Trigger drop events for loot falling on floor
-			Map<Integer, Integer> itemDiff = getItemDifferencesAt(playerLocationLastTick);
-			if (itemDiff != null)
-			{
-				Iterator<ItemStack> it = pendingItems.iterator();
-				while (it.hasNext())
-				{
-					ItemStack pendingItem = it.next();
-					if (itemDiff.getOrDefault(pendingItem.getId(), 0) == pendingItem.getQuantity())
-					{
-						onItemDropped(pendingItem.getId(), pendingItem.getQuantity(), playerLocationLastTick);
-						it.remove();
-					}
-				}
-			}
 		}
 	}
 
@@ -728,7 +655,7 @@ public class LootLogger
 	 *
 	 * @param pad The MemorizedActor that we are checking
 	 * @return A List of WorldPoint's where the NPC might spawn loot
- 	 */
+	 */
 	private WorldPoint[] getExpectedDropLocations(MemorizedActor pad)
 	{
 		WorldPoint defaultLocation = pad.getActor().getWorldLocation();
@@ -1253,20 +1180,6 @@ public class LootLogger
 		else if (event.getItemContainer() == client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST))
 		{
 			this.theatreOfBloodItems = event.getItemContainer().getItems();
-		}
-	}
-
-	/**
-	 * User game state management
-	 */
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
-	{
-		if (event.getGameState() == GameState.LOGIN_SCREEN ||
-				event.getGameState() == GameState.HOPPING ||
-				event.getGameState() == GameState.CONNECTION_LOST)
-		{
-			pendingItems.clear();
 		}
 	}
 
