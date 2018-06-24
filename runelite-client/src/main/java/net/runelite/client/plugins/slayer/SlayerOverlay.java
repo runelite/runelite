@@ -31,14 +31,10 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.Collection;
 import java.util.Set;
 import javax.inject.Inject;
-
-import com.google.common.eventbus.Subscribe;
 import net.runelite.api.ItemID;
 import net.runelite.api.Query;
-import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetInfo;
@@ -54,7 +50,7 @@ class SlayerOverlay extends Overlay
 {
 	private final SlayerConfig config;
 	private final SlayerPlugin plugin;
-	private Collection<WidgetItem> items;
+
 	@Inject
 	private QueryRunner queryRunner;
 
@@ -101,12 +97,6 @@ class SlayerOverlay extends Overlay
 		return ImmutableList.copyOf(items);
 	}
 
-	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
-	{
-		items = checkInventory();
-	}
-
 	@Inject
 	private SlayerOverlay(SlayerPlugin plugin, SlayerConfig config)
 	{
@@ -135,7 +125,7 @@ class SlayerOverlay extends Overlay
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
-		for (WidgetItem item : items)
+		for (WidgetItem item : checkInventory())
 		{
 			int itemId = item.getId();
 
