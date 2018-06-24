@@ -63,69 +63,61 @@ class BoostsOverlay extends Overlay
 
 		panelComponent.getChildren().clear();
 
-		if (config.displayNextBuffChange())
+		int nextChange = plugin.getChangeDownTicks();
+
+		if (nextChange != -1)
 		{
-			int nextChange = plugin.getChangeDownTime();
-
-			if (nextChange != -1)
-			{
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Next + restore in")
-					.right(String.valueOf(nextChange))
-					.build());
-			}
-		}
-
-		if (config.displayNextDebuffChange())
-		{
-			int nextChange = plugin.getChangeUpTime();
-
-			if (nextChange != -1)
-			{
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Next - restore in")
-					.right(String.valueOf(nextChange))
-					.build());
-			}
-		}
-
-		if (!plugin.canShowBoosts())
-		{
-			return null;
-		}
-
-		for (Skill skill : plugin.getShownSkills())
-		{
-			final int boosted = client.getBoostedSkillLevel(skill);
-			final int base = client.getRealSkillLevel(skill);
-
-			if (boosted == base)
-			{
-				continue;
-			}
-
-			final int boost = boosted - base;
-			final Color strColor = getTextColor(boost);
-			String str;
-
-			if (config.useRelativeBoost())
-			{
-				str = String.valueOf(boost);
-				if (boost > 0)
-				{
-					str = "+" + str;
-				}
-			}
-			else
-			{
-				str = "<col=" + Integer.toHexString(strColor.getRGB() & 0xFFFFFF) + ">" + boosted + "<col=ffffff>/" + base;
-			}
-
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left(skill.getName())
-				.right(str)
-				.rightColor(strColor)
+				.left("Next + restore in")
+				.right(String.valueOf(plugin.getChangeTime(nextChange)))
 				.build());
+		}
+
+		nextChange = plugin.getChangeUpTicks();
+
+		if (nextChange != -1)
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Next - restore in")
+				.right(String.valueOf(plugin.getChangeTime(nextChange)))
+				.build());
+		}
+
+		if (plugin.canShowBoosts())
+		{
+			for (Skill skill : plugin.getShownSkills())
+			{
+				final int boosted = client.getBoostedSkillLevel(skill);
+				final int base = client.getRealSkillLevel(skill);
+
+				if (boosted == base)
+				{
+					continue;
+				}
+
+				final int boost = boosted - base;
+				final Color strColor = getTextColor(boost);
+				String str;
+
+				if (config.useRelativeBoost())
+				{
+					str = String.valueOf(boost);
+					if (boost > 0)
+					{
+						str = "+" + str;
+					}
+				}
+				else
+				{
+					str = "<col=" + Integer.toHexString(strColor.getRGB() & 0xFFFFFF) + ">" + boosted + "<col=ffffff>/" + base;
+				}
+
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left(skill.getName())
+					.right(str)
+					.rightColor(strColor)
+					.build());
+			}
 		}
 
 		return panelComponent.render(graphics);

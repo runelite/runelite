@@ -31,6 +31,13 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("boosts")
 public interface BoostsConfig extends Config
 {
+	enum DisplayChangeMode
+	{
+		ALWAYS,
+		BOOSTED,
+		NEVER
+	}
+
 	@ConfigItem(
 		keyName = "enableSkill",
 		name = "Enable Skill Boosts",
@@ -65,14 +72,14 @@ public interface BoostsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "displayNextChange",
+		keyName = "displayNextBuffChange",
 		name = "Display next buff change",
 		description = "Configures whether or not to display when the next buffed stat change will be",
 		position = 4
 	)
-	default boolean displayNextBuffChange()
+	default DisplayChangeMode displayNextBuffChange()
 	{
-		return true;
+		return DisplayChangeMode.BOOSTED;
 	}
 
 	@ConfigItem(
@@ -81,9 +88,9 @@ public interface BoostsConfig extends Config
 		description = "Configures whether or not to display when the next debuffed stat change will be",
 		position = 5
 	)
-	default boolean displayNextDebuffChange()
+	default DisplayChangeMode displayNextDebuffChange()
 	{
-		return false;
+		return DisplayChangeMode.NEVER;
 	}
 
 	@ConfigItem(

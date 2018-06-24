@@ -27,13 +27,12 @@ package net.runelite.client.plugins.boosts;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -41,6 +40,7 @@ import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.events.BoostedLevelChanged;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
@@ -56,6 +56,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 	tags = {"combat", "notifications", "skilling", "overlay"}
 )
 @Slf4j
+@Singleton
 public class BoostsPlugin extends Plugin
 {
 	private static final Set<Skill> BOOSTABLE_COMBAT_SKILLS = ImmutableSet.of(
@@ -97,9 +98,10 @@ public class BoostsPlugin extends Plugin
 	private boolean isChangedDown = false;
 	private boolean isChangedUp = false;
 	private final int[] lastSkillLevels = new int[Skill.values().length - 1];
-	private Instant lastChangeDown;
-	private Instant lastChangeUp;
+	private int lastChangeDown = -1;
+	private int lastChangeUp = -1;
 	private boolean preserveBeenActive = false;
+	private long lastTickMillis;
 
 	@Provides
 	BoostsConfig provideConfig(ConfigManager configManager)
@@ -137,10 +139,23 @@ public class BoostsPlugin extends Plugin
 		overlayManager.remove(boostsOverlay);
 		infoBoxManager.removeIf(t -> t instanceof BoostIndicator || t instanceof StatChangeIndicator);
 		preserveBeenActive = false;
-		lastChangeDown = null;
-		lastChangeUp = null;
+		lastChangeDown = -1;
+		lastChangeUp = -1;
 		isChangedUp = false;
 		isChangedDown = false;
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		switch (event.getGameState())
+		{
+			case LOGIN_SCREEN:
+			case HOPPING:
+				// After world hop and log out timers are in undefined state so just reset
+				lastChangeDown = -1;
+				lastChangeUp = -1;
+		}
 	}
 
 	@Subscribe
@@ -152,6 +167,16 @@ public class BoostsPlugin extends Plugin
 		}
 
 		updateShownSkills();
+
+		if (config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.NEVER)
+		{
+			lastChangeDown = -1;
+		}
+
+		if (config.displayNextDebuffChange() == BoostsConfig.DisplayChangeMode.NEVER)
+		{
+			lastChangeUp = -1;
+		}
 	}
 
 	@Subscribe
@@ -171,13 +196,13 @@ public class BoostsPlugin extends Plugin
 		if (cur == last - 1)
 		{
 			// Stat was restored down (from buff)
-			lastChangeDown = Instant.now();
+			lastChangeDown = client.getTickCount();
 		}
 
 		if (cur == last + 1)
 		{
 			// Stat was restored up (from debuff)
-			lastChangeUp = Instant.now();
+			lastChangeUp = client.getTickCount();
 		}
 
 		lastSkillLevels[skillIdx] = cur;
@@ -200,14 +225,42 @@ public class BoostsPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (config.displayNextDebuffChange() && getChangeUpTime() < 0)
+		lastTickMillis = System.currentTimeMillis();
+
+		if (getChangeUpTicks() <= 0)
 		{
-			lastChangeUp = null;
+			switch (config.displayNextDebuffChange())
+			{
+				case ALWAYS:
+					if (lastChangeUp != -1)
+					{
+						lastChangeUp = client.getTickCount();
+					}
+
+					break;
+				case BOOSTED:
+				case NEVER:
+					lastChangeUp = -1;
+					break;
+			}
 		}
 
-		if (config.displayNextBuffChange() && getChangeDownTime() < 0)
+		if (getChangeDownTicks() <= 0)
 		{
-			lastChangeDown = null;
+			switch (config.displayNextBuffChange())
+			{
+				case ALWAYS:
+					if (lastChangeDown != -1)
+					{
+						lastChangeDown = client.getTickCount();
+					}
+
+					break;
+				case BOOSTED:
+				case NEVER:
+					lastChangeDown = -1;
+					break;
+			}
 		}
 	}
 
@@ -271,42 +324,54 @@ public class BoostsPlugin extends Plugin
 	 * Preserve is only required to be on for the 4th and 5th sections of the boost timer
 	 * to gain full effect (seconds 45-75).
 	 *
-	 * @return integer value in seconds until next boost change
+	 * @return integer value in ticks until next boost change
 	 */
-	int getChangeDownTime()
+	int getChangeDownTicks()
 	{
-		if (lastChangeDown == null || !isChangedUp)
+		if (lastChangeDown == -1 || (config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.BOOSTED && !isChangedUp))
 		{
 			return -1;
 		}
 
-		int timeSinceChange = (int) Duration.between(lastChangeDown, Instant.now()).getSeconds();
+		int ticksSinceChange = client.getTickCount() - lastChangeDown;
 		boolean isPreserveActive = client.isPrayerActive(Prayer.PRESERVE);
 
-		if ((isPreserveActive && (timeSinceChange < 45 || preserveBeenActive)) || timeSinceChange > 75)
+		if ((isPreserveActive && (ticksSinceChange < 75 || preserveBeenActive)) || ticksSinceChange > 125)
 		{
 			preserveBeenActive = true;
-			return 90 - timeSinceChange;
+			return 150 - ticksSinceChange;
 		}
 
 		preserveBeenActive = false;
-		return (timeSinceChange > 60) ? 75 - timeSinceChange : 60 - timeSinceChange;
+		return (ticksSinceChange > 100) ? 125 - ticksSinceChange : 100 - ticksSinceChange;
 	}
 
 	/**
-	 * Restoration from debuff is separate timer as restoration from buff, and is always ticking, so just find
-	 * diff between last change up and now and limit it to cycles of 60.
+	 * Restoration from debuff is separate timer as restoration from buff because of preserve messing up the buff timer.
+	 * Restoration timer is always in 100 tick cycles.
 	 *
-	 * @return integer value in seconds until next stat restoration up
+	 * @return integer value in ticks until next stat restoration up
 	 */
-	int getChangeUpTime()
+	int getChangeUpTicks()
 	{
-		if (lastChangeUp == null || !isChangedDown)
+		if (lastChangeUp == -1 || (config.displayNextDebuffChange() == BoostsConfig.DisplayChangeMode.BOOSTED && !isChangedDown))
 		{
 			return -1;
 		}
 
-		int timeSinceChange = (int) Duration.between(lastChangeUp, Instant.now()).getSeconds();
-		return 60 - timeSinceChange;
+		int ticksSinceChange = client.getTickCount() - lastChangeUp;
+		return 100 - ticksSinceChange;
+	}
+
+
+	/**
+	 * Converts tick-based time to accurate second time
+	 * @param time tick-based time
+	 * @return second-based time
+	 */
+	int getChangeTime(final int time)
+	{
+		final long diff = System.currentTimeMillis() - lastTickMillis;
+		return time != -1 ? (int)(time * 0.6 - (diff / 1000d)) : time;
 	}
 }
