@@ -28,8 +28,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,13 +38,13 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import lombok.Getter;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.IconButton;
 import net.runelite.client.util.SwingUtil;
 import org.apache.commons.text.similarity.JaroWinklerDistance;
 
@@ -62,35 +60,45 @@ class PluginListItem extends JPanel
 	private static final ImageIcon OFF_STAR;
 
 	private final ConfigPanel configPanel;
-	private @Getter @Nullable final Plugin plugin;
-	private @Nullable final Config config;
-	private @Nullable final ConfigDescriptor configDescriptor;
 
-	private @Getter final String name;
+	@Getter
+	@Nullable
+	private final Plugin plugin;
+
+	@Getter
+	private final String name;
+
+	@Getter
 	private final String description;
+
 	private final List<String> keywords = new ArrayList<>();
 
-	private final JLabel pinButton = new JLabel(OFF_STAR);
-	private final JLabel configButton = new JLabel(CONFIG_ICON);
-	private final JLabel toggleButton = new JLabel(OFF_SWITCHER);
+	private final IconButton pinButton = new IconButton(OFF_STAR);
+	private final IconButton configButton = new IconButton(CONFIG_ICON, CONFIG_ICON_HOVER);
+	private final IconButton toggleButton = new IconButton(OFF_SWITCHER);
 
 	private boolean isPluginEnabled = false;
-	private @Getter boolean isPinned = false;
+
+	@Getter
+	private boolean isPinned = false;
 
 	static
 	{
 		try
 		{
+			BufferedImage configIcon;
+
 			synchronized (ImageIO.class)
 			{
-				BufferedImage configIcon = ImageIO.read(ConfigPanel.class.getResourceAsStream("config_edit_icon.png"));
+				configIcon = ImageIO.read(ConfigPanel.class.getResourceAsStream("config_edit_icon.png"));
 				CONFIG_ICON = new ImageIcon(configIcon);
-				CONFIG_ICON_HOVER = new ImageIcon(SwingUtil.grayscaleOffset(configIcon, -100));
 				ON_SWITCHER = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("switchers/on.png")));
 				OFF_SWITCHER = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("switchers/off.png")));
 				ON_STAR = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("stars/on.png")));
 				OFF_STAR = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("stars/off.png")));
 			}
+
+			CONFIG_ICON_HOVER = new ImageIcon(SwingUtil.grayscaleOffset(configIcon, -100));
 		}
 		catch (IOException e)
 		{
@@ -104,21 +112,11 @@ class PluginListItem extends JPanel
 	 * Note that {@code config} and {@code configDescriptor} can be {@code null}
 	 * if there is no configuration associated with the plugin.
 	 */
-	PluginListItem(ConfigPanel configPanel, Plugin plugin, @Nullable Config config,
-		@Nullable ConfigDescriptor configDescriptor)
+	PluginListItem(ConfigPanel configPanel, Plugin plugin, PluginDescriptor descriptor,
+		@Nullable Config config, @Nullable ConfigDescriptor configDescriptor)
 	{
-		final PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
-
-		this.configPanel = configPanel;
-		this.plugin = plugin;
-		this.config = config;
-		this.configDescriptor = configDescriptor;
-		this.name = descriptor.name();
-		this.description = descriptor.description();
-		Collections.addAll(keywords, name.toLowerCase().split(" "));
-		Collections.addAll(keywords, descriptor.tags());
-
-		initialize();
+		this(configPanel, plugin, config, configDescriptor,
+			descriptor.name(), descriptor.description(), descriptor.tags());
 	}
 
 	/**
@@ -127,20 +125,19 @@ class PluginListItem extends JPanel
 	PluginListItem(ConfigPanel configPanel, Config config, ConfigDescriptor configDescriptor,
 		String name, String description, String... tags)
 	{
+		this(configPanel, null, config, configDescriptor, name, description, tags);
+	}
+
+	private PluginListItem(ConfigPanel configPanel, @Nullable Plugin plugin, @Nullable Config config,
+		@Nullable ConfigDescriptor configDescriptor, String name, String description, String... tags)
+	{
 		this.configPanel = configPanel;
-		this.plugin = null;
-		this.config = config;
-		this.configDescriptor = configDescriptor;
+		this.plugin = plugin;
 		this.name = name;
 		this.description = description;
 		Collections.addAll(keywords, name.toLowerCase().split(" "));
 		Collections.addAll(keywords, tags);
 
-		initialize();
-	}
-
-	private void initialize()
-	{
 		setLayout(new BorderLayout(3, 0));
 		setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, 20));
 
@@ -154,9 +151,15 @@ class PluginListItem extends JPanel
 
 		add(nameLabel, BorderLayout.CENTER);
 
-		pinButton.setPreferredSize(new Dimension(25, 0));
-		attachPinButtonListener();
+		pinButton.setPreferredSize(new Dimension(21, 0));
 		add(pinButton, BorderLayout.LINE_START);
+
+		pinButton.addActionListener(e ->
+		{
+			setPinned(!isPinned);
+			configPanel.savePinnedPlugins();
+			configPanel.openConfigList();
+		});
 
 		final JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new GridLayout(1, 2));
@@ -164,93 +167,64 @@ class PluginListItem extends JPanel
 
 		configButton.setPreferredSize(new Dimension(25, 0));
 		configButton.setVisible(false);
-		attachConfigButtonListener();
 		buttonPanel.add(configButton);
 
+		// add a listener to configButton only if there are config items to show
+		if (config != null && !configDescriptor.getItems().stream().allMatch(item -> item.getItem().hidden()))
+		{
+			configButton.addActionListener(e ->
+			{
+				configButton.setIcon(CONFIG_ICON);
+				configPanel.openGroupConfigPanel(PluginListItem.this, config, configDescriptor);
+			});
+
+			configButton.setVisible(true);
+			configButton.setToolTipText("Edit plugin configuration");
+		}
+
 		toggleButton.setPreferredSize(new Dimension(25, 0));
-		toggleButton.setHorizontalAlignment(SwingConstants.RIGHT);
-		attachToggleButtonListener();
+		attachToggleButtonListener(toggleButton);
 		buttonPanel.add(toggleButton);
 	}
 
-	private void attachPinButtonListener()
-	{
-		pinButton.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mousePressed(MouseEvent mouseEvent)
-			{
-				setPinned(!isPinned);
-				configPanel.savePinnedPlugins();
-				configPanel.openConfigList();
-			}
-		});
-	}
-
-	private void attachConfigButtonListener()
-	{
-		// no need for a listener if there are no config item to show
-		if (config == null || configDescriptor.getItems().stream().allMatch(item -> item.getItem().hidden()))
-		{
-			return;
-		}
-
-		configButton.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mousePressed(MouseEvent mouseEvent)
-			{
-				configButton.setIcon(CONFIG_ICON);
-				configPanel.openGroupConfigPanel(config, configDescriptor);
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e)
-			{
-				configButton.setIcon(CONFIG_ICON_HOVER);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e)
-			{
-				configButton.setIcon(CONFIG_ICON);
-			}
-		});
-		configButton.setVisible(true);
-		configButton.setToolTipText("Edit plugin configuration");
-	}
-
-	private void attachToggleButtonListener()
+	private void attachToggleButtonListener(IconButton button)
 	{
 		// no need for a listener if there is no plugin to enable / disable
 		if (plugin == null)
 		{
-			toggleButton.setEnabled(false);
+			button.setVisible(false);
 			return;
 		}
 
-		toggleButton.addMouseListener(new MouseAdapter()
+		button.addActionListener(e ->
 		{
-			@Override
-			public void mousePressed(MouseEvent mouseEvent)
+			if (isPluginEnabled)
 			{
-				if (isPluginEnabled)
-				{
-					configPanel.stopPlugin(plugin, PluginListItem.this);
-				}
-				else
-				{
-					configPanel.startPlugin(plugin, PluginListItem.this);
-				}
+				configPanel.stopPlugin(plugin, PluginListItem.this);
 			}
+			else
+			{
+				configPanel.startPlugin(plugin, PluginListItem.this);
+			}
+
+			setPluginEnabled(!isPluginEnabled);
+			updateToggleButton(button);
 		});
+	}
+
+	IconButton createToggleButton()
+	{
+		IconButton button = new IconButton(OFF_SWITCHER);
+		button.setPreferredSize(new Dimension(25, 0));
+		updateToggleButton(button);
+		attachToggleButtonListener(button);
+		return button;
 	}
 
 	void setPluginEnabled(boolean enabled)
 	{
 		isPluginEnabled = enabled;
-		toggleButton.setIcon(enabled ? ON_SWITCHER : OFF_SWITCHER);
-		toggleButton.setToolTipText(enabled ? "Disable plugin" : "Enable plugin");
+		updateToggleButton(toggleButton);
 	}
 
 	void setPinned(boolean pinned)
@@ -258,6 +232,12 @@ class PluginListItem extends JPanel
 		isPinned = pinned;
 		pinButton.setIcon(pinned ? ON_STAR : OFF_STAR);
 		pinButton.setToolTipText(pinned ? "Unpin plugin" : "Pin plugin");
+	}
+
+	private void updateToggleButton(IconButton button)
+	{
+		button.setIcon(isPluginEnabled ? ON_SWITCHER : OFF_SWITCHER);
+		button.setToolTipText(isPluginEnabled ? "Disable plugin" : "Enable plugin");
 	}
 
 	/**
