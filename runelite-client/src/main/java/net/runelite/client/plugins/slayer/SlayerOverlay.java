@@ -34,8 +34,11 @@ import java.awt.Rectangle;
 import java.util.Collection;
 import java.util.Set;
 import javax.inject.Inject;
+
+import com.google.common.eventbus.Subscribe;
 import net.runelite.api.ItemID;
 import net.runelite.api.Query;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetInfo;
@@ -51,7 +54,7 @@ class SlayerOverlay extends Overlay
 {
 	private final SlayerConfig config;
 	private final SlayerPlugin plugin;
-        
+	private Collection<WidgetItem> items;
 	@Inject
 	private QueryRunner queryRunner;
 
@@ -86,8 +89,8 @@ class SlayerOverlay extends Overlay
 		ItemID.EXPEDITIOUS_BRACELET
 	);
 
-        private ImmutableList<WidgetItem> checkInventory()
-        {    
+	private ImmutableList<WidgetItem> checkInventory()
+	{
 		Query inventoryQuery = new InventoryWidgetItemQuery();
 		WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(inventoryQuery);
 
@@ -96,8 +99,14 @@ class SlayerOverlay extends Overlay
 
 		WidgetItem[] items = concat(inventoryWidgetItems, equipmentWidgetItems, WidgetItem.class);
 		return ImmutableList.copyOf(items);
-        }
-        
+	}
+
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		items = checkInventory();
+	}
+
 	@Inject
 	private SlayerOverlay(SlayerPlugin plugin, SlayerConfig config)
 	{
@@ -126,7 +135,6 @@ class SlayerOverlay extends Overlay
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
-		Collection<WidgetItem> items = checkInventory();
 		for (WidgetItem item : items)
 		{
 			int itemId = item.getId();
