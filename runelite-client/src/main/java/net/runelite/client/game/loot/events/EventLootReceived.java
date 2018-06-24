@@ -26,7 +26,8 @@ package net.runelite.client.game.loot.events;
 
 import lombok.Data;
 import lombok.Getter;
-import java.util.Map;
+import net.runelite.client.game.loot.data.ItemStack;
+import java.util.List;
 
 /**
  * An event where you finished an event and received loot
@@ -38,5 +39,5 @@ public class EventLootReceived
 	private final String event;
 
 	@Getter
-	private final Map<Integer, Integer> items;
+	private final List<ItemStack> items;
 }

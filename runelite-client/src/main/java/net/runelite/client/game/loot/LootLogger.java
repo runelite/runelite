@@ -233,7 +233,7 @@ public class LootLogger
 	 */
 	private void onNewEventLogCreated(String event, Map<Integer, Integer> drops)
 	{
-		eventBus.post(new EventLootReceived(event, drops));
+		eventBus.post(new EventLootReceived(event, createItemList(drops)));
 	}
 
 	/**
@@ -961,7 +961,7 @@ public class LootLogger
 	 */
 
 	/**
-	 * Stores all GroundItems still on the floor to the previous tick variable
+	 * Stores all Items still on the floor to the previous tick variable
 	 */
 	private void updateGroundItemLayers()
 	{
