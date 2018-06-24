@@ -38,4 +38,8 @@ public interface RSPlayerComposition extends PlayerComposition
 	@Import("equipmentIds")
 	@Override
 	int[] getEquipmentIds();
+
+	@Import("transformedNpcId")
+	@Override
+	void setTransformedNpcId(int id);
 }
