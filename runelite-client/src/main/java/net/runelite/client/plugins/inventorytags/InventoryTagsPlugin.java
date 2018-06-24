@@ -52,6 +52,8 @@ import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Inventory Tags",
+	description = "Add the ability to tag items in your inventory",
+	tags = {"highlight", "items", "overlay", "tagging"},
 	enabledByDefault = false
 )
 public class InventoryTagsPlugin extends Plugin

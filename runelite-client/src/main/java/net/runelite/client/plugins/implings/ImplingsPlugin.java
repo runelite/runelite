@@ -46,7 +46,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
  * @author robin
  */
 @PluginDescriptor(
-	name = "Implings"
+	name = "Implings",
+	description = "Highlight nearby implings on the minimap and on-screen",
+	tags = {"hunter", "minimap", "overlay"}
 )
 public class ImplingsPlugin extends Plugin
 {

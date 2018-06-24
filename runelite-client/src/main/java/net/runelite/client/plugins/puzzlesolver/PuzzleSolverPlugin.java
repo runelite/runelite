@@ -56,7 +56,9 @@ import net.runelite.client.plugins.puzzlesolver.lightbox.LightboxState;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Puzzle Solver"
+	name = "Puzzle Solver",
+	description = "Show you where to click to solve puzzle boxes",
+	tags = {"clues", "scrolls", "overlay"}
 )
 @Slf4j
 public class PuzzleSolverPlugin extends Plugin
