@@ -269,8 +269,9 @@ public class RuneLite
 		// Load the session, including saved configuration
 		sessionManager.loadSession();
 
-		// Pass Client to LootLogger
+		// Pass Needed Info to LootLogger
 		lootLogger.setClient((Client)client);
+		lootLogger.setItemManager(itemManager.get());
 
 		// Add core overlays after configuration has been loaded so their properties will be
 		// loaded properly
