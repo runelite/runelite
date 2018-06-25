@@ -50,7 +50,6 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -81,9 +80,6 @@ public class ScreenMarkerPlugin extends Plugin
 
 	@Inject
 	private MouseManager mouseManager;
-
-	@Inject
-	private KeyManager keyManager;
 
 	@Inject
 	private PluginToolbar pluginToolbar;
@@ -232,13 +228,11 @@ public class ScreenMarkerPlugin extends Plugin
 			true
 		);
 
-		creatingScreenMarker = true;
-
 		// Set overlay creator bounds to current position and default size
 		startLocation = location;
 		overlay.setPreferredLocation(location);
 		overlay.setPreferredSize(DEFAULT_SIZE);
-
+		creatingScreenMarker = true;
 	}
 
 	public Widget findWidgetById(int id)
@@ -366,7 +360,7 @@ public class ScreenMarkerPlugin extends Plugin
 	{
 		if (!aborted)
 		{
-			final ScreenMarkerOverlay screenMarkerOverlay = new ScreenMarkerOverlay(this, currentMarker);
+			final ScreenMarkerOverlay screenMarkerOverlay = new ScreenMarkerOverlay(currentMarker);
 			screenMarkerOverlay.setPreferredLocation(overlay.getBounds().getLocation());
 			screenMarkerOverlay.setPreferredSize(overlay.getBounds().getSize());
 
@@ -434,6 +428,6 @@ public class ScreenMarkerPlugin extends Plugin
 		{
 		}.getType());
 
-		return screenMarkerData.stream().map(e -> new ScreenMarkerOverlay(this, e));
+		return screenMarkerData.stream().map(ScreenMarkerOverlay::new);
 	}
 }

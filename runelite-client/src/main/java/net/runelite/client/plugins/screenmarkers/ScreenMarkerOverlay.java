@@ -38,13 +38,11 @@ public class ScreenMarkerOverlay extends Overlay
 {
 	@Getter
 	private final ScreenMarker marker;
-	private final ScreenMarkerPlugin plugin;
 	private final ScreenMarkerRenderable screenMarkerRenderable;
 
-	ScreenMarkerOverlay(ScreenMarkerPlugin plugin, ScreenMarker marker)
+	ScreenMarkerOverlay(ScreenMarker marker)
 	{
 		this.marker = marker;
-		this.plugin = plugin;
 		this.screenMarkerRenderable = new ScreenMarkerRenderable();
 		setPosition(OverlayPosition.DETACHED);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
