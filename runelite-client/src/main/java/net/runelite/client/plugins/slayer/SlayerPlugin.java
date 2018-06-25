@@ -528,6 +528,7 @@ public class SlayerPlugin extends Plugin
 		amount = amt;
 		save();
 		removeCounter();
+
 		if (action)
 		{
 			infoTimer = Instant.now();
