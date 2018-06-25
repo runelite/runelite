@@ -66,7 +66,6 @@ public class EnchantmentRoom extends MTARoom
 			if (!inside())
 			{
 				dragonstones.clear();
-				client.clearHintArrow();
 			}
 		}
 	}
@@ -121,6 +120,7 @@ public class EnchantmentRoom extends MTARoom
 			boolean removed = dragonstones.remove(worldPoint);
 			if (removed)
 			{
+				clearArrowIfPresent(worldPoint);
 				log.debug("Removed dragonstone at {}", worldPoint);
 			}
 			return;
@@ -139,7 +139,16 @@ public class EnchantmentRoom extends MTARoom
 		boolean removed = dragonstones.remove(worldPoint);
 		if (removed)
 		{
+			clearArrowIfPresent(worldPoint);
 			log.debug("Removed dragonstone at {}", worldPoint);
+		}
+	}
+
+	private void clearArrowIfPresent(WorldPoint point)
+	{
+		if (client.getHintArrowPoint().equals(point))
+		{
+			client.clearHintArrow();
 		}
 	}
 
