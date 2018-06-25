@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2016-2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,13 +31,13 @@ import java.util.HashSet;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import static net.runelite.api.ItemID.*;
-import net.runelite.client.plugins.itemstats.special.SpicyStew;
-import net.runelite.client.plugins.itemstats.potions.SuperRestore;
 import static net.runelite.client.plugins.itemstats.Builders.*;
-import static net.runelite.client.plugins.itemstats.stats.Stats.*;
 import net.runelite.client.plugins.itemstats.food.Anglerfish;
 import net.runelite.client.plugins.itemstats.potions.PrayerPotion;
 import net.runelite.client.plugins.itemstats.potions.SaradominBrew;
+import net.runelite.client.plugins.itemstats.potions.SuperRestore;
+import net.runelite.client.plugins.itemstats.special.SpicyStew;
+import static net.runelite.client.plugins.itemstats.stats.Stats.*;
 
 @Singleton
 @Slf4j
