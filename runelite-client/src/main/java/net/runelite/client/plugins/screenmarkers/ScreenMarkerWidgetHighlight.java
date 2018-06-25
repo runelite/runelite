@@ -41,6 +41,8 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 
 public class ScreenMarkerWidgetHighlight extends Overlay
 {
+	private static final int MAX_SIZE = 8000;
+
 	private ScreenMarkerPlugin plugin;
 	private Client client;
 
@@ -69,7 +71,7 @@ public class ScreenMarkerWidgetHighlight extends Overlay
 			else
 			{
 				Widget hover = plugin.findSmallestWidgetContaining(converted);
-				if (hover != null)
+				if (hover != null && hover.getWidth() * hover.getHeight() < MAX_SIZE)
 				{
 					graphics.setColor(Color.GREEN);
 					graphics.draw(hover.getBounds());
