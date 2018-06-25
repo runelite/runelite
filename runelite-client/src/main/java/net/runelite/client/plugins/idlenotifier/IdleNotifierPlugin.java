@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2016-2017, Abel Briggs
  * Copyright (c) 2017, Kronos <https://github.com/KronosDesign>
+ * Copyright (c) 2018, Nathen Sample <https://github.com/nathensample>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,6 +28,7 @@ package net.runelite.client.plugins.idlenotifier;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import static java.lang.Math.min;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
@@ -36,14 +38,17 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
+import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Idle Notifier"
@@ -51,6 +56,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class IdleNotifierPlugin extends Plugin
 {
 	private static final int LOGOUT_WARNING_AFTER_TICKS = 14000; // 4 minutes and 40 seconds
+	private static final int LOGOUT_AFTER_TICKS = 15000; // 5 minutes
 	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
 
 	@Inject
@@ -62,6 +68,12 @@ public class IdleNotifierPlugin extends Plugin
 	@Inject
 	private IdleNotifierConfig config;
 
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private SpriteManager spriteManager;
+
 	private Actor lastOpponent;
 	private Instant lastAnimating;
 	private Instant lastInteracting;
@@ -70,9 +82,11 @@ public class IdleNotifierPlugin extends Plugin
 	private boolean notifyPrayer = true;
 	private boolean notifyIdleLogout = true;
 	private boolean notify6HourLogout = true;
+	private boolean timerRendered = false;
 
 	private Instant sixHourWarningTime;
 	private boolean ready;
+	private int idleTicks = 0;
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
@@ -108,11 +122,11 @@ public class IdleNotifierPlugin extends Plugin
 			case WOODCUTTING_DRAGON:
 			case WOODCUTTING_INFERNAL:
 			case WOODCUTTING_3A_AXE:
-			/* Cooking(Fire, Range) */
+				/* Cooking(Fire, Range) */
 			case COOKING_FIRE:
 			case COOKING_RANGE:
 			case COOKING_WINE:
-			/* Crafting(Gem Cutting, Glassblowing, Spinning) */
+				/* Crafting(Gem Cutting, Glassblowing, Spinning) */
 			case GEM_CUTTING_OPAL:
 			case GEM_CUTTING_JADE:
 			case GEM_CUTTING_REDTOPAZ:
@@ -122,7 +136,7 @@ public class IdleNotifierPlugin extends Plugin
 			case GEM_CUTTING_DIAMOND:
 			case CRAFTING_GLASSBLOWING:
 			case CRAFTING_SPINNING:
-			/* Fletching(Cutting, Stringing) */
+				/* Fletching(Cutting, Stringing) */
 			case FLETCHING_BOW_CUTTING:
 			case FLETCHING_STRING_NORMAL_SHORTBOW:
 			case FLETCHING_STRING_OAK_SHORTBOW:
@@ -136,11 +150,11 @@ public class IdleNotifierPlugin extends Plugin
 			case FLETCHING_STRING_MAPLE_LONGBOW:
 			case FLETCHING_STRING_YEW_LONGBOW:
 			case FLETCHING_STRING_MAGIC_LONGBOW:
-			/* Smithing(Anvil, Furnace, Cannonballs */
+				/* Smithing(Anvil, Furnace, Cannonballs */
 			case SMITHING_ANVIL:
 			case SMITHING_SMELTING:
 			case SMITHING_CANNONBALL:
-			/* Fishing */
+				/* Fishing */
 			case FISHING_NET:
 			case FISHING_BIG_NET:
 			case FISHING_HARPOON:
@@ -153,7 +167,7 @@ public class IdleNotifierPlugin extends Plugin
 			case FISHING_KARAMBWAN:
 			case FISHING_CRUSHING_INFERNAL_EELS:
 			case FISHING_BAREHAND:
-			/* Mining(Normal) */
+				/* Mining(Normal) */
 			case MINING_BRONZE_PICKAXE:
 			case MINING_IRON_PICKAXE:
 			case MINING_STEEL_PICKAXE:
@@ -165,7 +179,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_DRAGON_PICKAXE_ORN:
 			case MINING_INFERNAL_PICKAXE:
 			case MINING_3A_PICKAXE:
-			/* Mining(Motherlode) */
+				/* Mining(Motherlode) */
 			case MINING_MOTHERLODE_BRONZE:
 			case MINING_MOTHERLODE_IRON:
 			case MINING_MOTHERLODE_STEEL:
@@ -177,14 +191,14 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_MOTHERLODE_DRAGON_ORN:
 			case MINING_MOTHERLODE_INFERNAL:
 			case MINING_MOTHERLODE_3A:
-			/* Herblore */
+				/* Herblore */
 			case HERBLORE_POTIONMAKING:
 			case HERBLORE_MAKE_TAR:
-			/* Magic */
+				/* Magic */
 			case MAGIC_CHARGING_ORBS:
 			case MAGIC_LUNAR_STRING_JEWELRY:
 			case MAGIC_LUNAR_BAKE_PIE:
-			/* Prayer */
+				/* Prayer */
 			case USING_GILDED_ALTAR:
 				resetTimers();
 				notifyIdle = true;
@@ -222,6 +236,15 @@ public class IdleNotifierPlugin extends Plugin
 		final Player local = client.getLocalPlayer();
 		final Duration waitDuration = Duration.ofMillis(config.getIdleNotificationDelay());
 
+		if (config.getTimerEnabled())
+		{
+			updateTimer();
+		}
+		else if (timerRendered)
+		{
+			infoBoxManager.removeIf(t -> t instanceof IdleTimer);
+		}
+
 		if (client.getGameState() != GameState.LOGGED_IN || local == null)
 		{
 			return;
@@ -256,6 +279,45 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			notifier.notify("[" + local.getName() + "] has low prayer!");
 		}
+	}
+
+	private void updateTimer()
+	{
+		Duration durationTillLogout = durationTillLogout();
+		if (client.getKeyboardIdleTicks() > idleTicks && client.getMouseIdleTicks() > idleTicks && shouldRenderTimer(durationTillLogout))
+		{
+			if (!timerRendered)
+			{
+				renderIdleTimer(durationTillLogout);
+			}
+		}
+		else
+		{
+			infoBoxManager.removeIf(t -> t instanceof IdleTimer);
+			timerRendered = false;
+			if (shouldRenderTimer(durationTillLogout))
+			{
+				renderIdleTimer(durationTillLogout);
+			}
+		}
+	}
+
+	private boolean shouldRenderTimer(Duration timeToLogout)
+	{
+		return timeToLogout.compareTo(Duration.ofSeconds(config.getTimerThreshold())) < 0;
+	}
+
+	private void renderIdleTimer(Duration timeToLogout)
+	{
+		IdleTimer timer = new IdleTimer(spriteManager.getSprite(SpriteID.RS2_TAB_LOGOUT, 0), this, timeToLogout);
+		infoBoxManager.addInfoBox(timer);
+		timerRendered = true;
+	}
+
+	private Duration durationTillLogout()
+	{
+		idleTicks = min(client.getKeyboardIdleTicks(), client.getMouseIdleTicks());
+		return Duration.ofSeconds((LOGOUT_AFTER_TICKS - idleTicks) / 50);
 	}
 
 	private boolean checkLowHitpoints()
@@ -412,5 +474,11 @@ public class IdleNotifierPlugin extends Plugin
 		// Reset combat idle timer
 		lastOpponent = null;
 		lastInteracting = null;
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		infoBoxManager.removeIf(t -> t instanceof IdleTimer);
 	}
 }

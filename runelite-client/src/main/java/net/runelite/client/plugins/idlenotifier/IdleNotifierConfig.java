@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2018, Nathen Sample <https://github.com/nathensample>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -88,5 +89,27 @@ public interface IdleNotifierConfig extends Config
 	default int getPrayerThreshold()
 	{
 		return 0;
+	}
+
+	@ConfigItem(
+		keyName = "timer",
+		name = "Display Idle Timer",
+		description = "Displays a MM:SS timer until the user will log out due to idling.",
+		position = 6
+	)
+	default boolean getTimerEnabled()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "timerThreshold",
+		name = "Display when X seconds until logout",
+		description = "Threshold in seconds for when the timer should be displayed",
+		position = 7
+	)
+	default int getTimerThreshold()
+	{
+		return 120;
 	}
 }
