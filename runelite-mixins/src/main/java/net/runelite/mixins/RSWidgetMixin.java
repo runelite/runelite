@@ -38,16 +38,16 @@ import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.api.widgets.Widget;
+import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
+import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
+import static net.runelite.client.callback.Hooks.deferredEventBus;
+import static net.runelite.client.callback.Hooks.eventBus;
+import static net.runelite.client.callback.Hooks.log;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSHashTable;
 import net.runelite.rs.api.RSNode;
 import net.runelite.rs.api.RSWidget;
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
-import static net.runelite.client.callback.Hooks.deferredEventBus;
-import static net.runelite.client.callback.Hooks.eventBus;
-import static net.runelite.client.callback.Hooks.log;
 
 @Mixin(RSWidget.class)
 public abstract class RSWidgetMixin implements RSWidget
@@ -241,32 +241,25 @@ public abstract class RSWidgetMixin implements RSWidget
 		}
 
 		int columns = getWidth(); // the number of item slot columns is stored here
+		int paddingX = getPaddingX();
+		int paddingY = getPaddingY();
 		int itemId = itemIds[index];
 		int itemQuantity = itemQuantities[index];
+
+		Point widgetCanvasLocation = getCanvasLocation();
 
 		if (itemId <= 0 || itemQuantity <= 0 || columns <= 0)
 		{
 			return null;
 		}
 
-		return new WidgetItem(itemId - 1, itemQuantity, index, getWidgetItemBounds(index));
-	}
-
-	@Inject
-	@Override
-	public Rectangle getWidgetItemBounds(int index)
-	{
-		Point widgetCanvasLocation = getCanvasLocation();
-		int paddingX = getPaddingX();
-		int paddingY = getPaddingY();
-
-		int columns = getWidth();
 		int row = index / columns;
 		int col = index % columns;
 		int itemX = widgetCanvasLocation.getX() + ((ITEM_SLOT_SIZE + paddingX) * col);
 		int itemY = widgetCanvasLocation.getY() + ((ITEM_SLOT_SIZE + paddingY) * row);
 
-		return new Rectangle(itemX - 1, itemY - 1, ITEM_SLOT_SIZE, ITEM_SLOT_SIZE);
+		Rectangle bounds = new Rectangle(itemX - 1, itemY - 1, ITEM_SLOT_SIZE, ITEM_SLOT_SIZE);
+		return new WidgetItem(itemId - 1, itemQuantity, index, bounds);
 	}
 
 	@Inject
@@ -383,9 +376,7 @@ public abstract class RSWidgetMixin implements RSWidget
 			{
 				// if the widget is hidden it will not magically unhide from its parent changing
 				if (child == null || child.isSelfHidden())
-				{
 					continue;
-				}
 
 				child.broadcastHidden(hidden);
 			}
@@ -398,9 +389,7 @@ public abstract class RSWidgetMixin implements RSWidget
 		for (Widget nestedChild : nestedChildren)
 		{
 			if (nestedChild == null || nestedChild.isSelfHidden())
-			{
 				continue;
-			}
 
 			((RSWidget) nestedChild).broadcastHidden(hidden);
 		}
