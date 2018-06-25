@@ -245,7 +245,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 17,
+		position = 19,
 		keyName = "shiftWalkHere",
 		name = "Shift-Click Walk here",
 		description = "Make Walk here the left-click option when holding shift"
