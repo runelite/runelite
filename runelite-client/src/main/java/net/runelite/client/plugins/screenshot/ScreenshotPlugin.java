@@ -60,13 +60,14 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetID.BARROWS_REWARD_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.CLUE_SCROLL_REWARD_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.KINGDOM_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.QUEST_COMPLETED_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.RAIDS_REWARD_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.Notifier;
@@ -128,11 +129,14 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	private String clueType;
+
 	private Integer clueNumber;
 
 	private Integer barrowsNumber;
 
-	private Integer raidsNumber;
+	private Integer chambersOfXericNumber;
+
+	private Integer theatreOfBloodNumber;
 
 	@Inject
 	private ScreenshotConfig config;
@@ -269,7 +273,17 @@ public class ScreenshotPlugin extends Plugin
 			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
 			if (m.find())
 			{
-				raidsNumber = Integer.valueOf(m.group());
+				chambersOfXericNumber = Integer.valueOf(m.group());
+				return;
+			}
+		}
+
+		if (chatMessage.startsWith("Your completed Theatre of Blood count is:"))
+		{
+			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
+			if (m.find())
+			{
+				theatreOfBloodNumber = Integer.valueOf(m.group());
 				return;
 			}
 		}
@@ -290,15 +304,73 @@ public class ScreenshotPlugin extends Plugin
 	@Subscribe
 	public void loadWidgets(WidgetLoaded event)
 	{
-		if (!config.screenshotKingdom())
+		String fileName;
+		int groupId = event.getGroupId();
+
+		switch (groupId)
 		{
-			return;
+			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
+			case THEATRE_OF_BLOOD_REWARD_GROUP_ID:
+			case BARROWS_REWARD_GROUP_ID:
+				if (!config.screenshotRewards())
+				{
+					return;
+				}
+				break;
+			case KINGDOM_GROUP_ID:
+				if (!config.screenshotKingdom())
+				{
+					return;
+				}
+				break;
 		}
-		if (event.getGroupId() == WidgetID.KINGDOM_GROUP_ID)
+
+		switch (groupId)
 		{
-			String fileName = "Kingdom " + LocalDate.now();
-			takeScreenshot(fileName);
+			case KINGDOM_GROUP_ID:
+			{
+				fileName = "Kingdom " + LocalDate.now();
+				takeScreenshot(fileName);
+				break;
+			}
+			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
+			{
+				if (chambersOfXericNumber == null)
+				{
+					return;
+				}
+
+				fileName = "Chambers of Xeric(" + chambersOfXericNumber + ")";
+				chambersOfXericNumber = null;
+				break;
+			}
+			case THEATRE_OF_BLOOD_REWARD_GROUP_ID:
+			{
+				if (theatreOfBloodNumber == null)
+				{
+					return;
+				}
+
+				fileName = "Theatres of Blood(" + theatreOfBloodNumber + ")";
+				theatreOfBloodNumber = null;
+				break;
+			}
+			case BARROWS_REWARD_GROUP_ID:
+			{
+				if (barrowsNumber == null)
+				{
+					return;
+				}
+
+				fileName = "Barrows(" + barrowsNumber + ")";
+				barrowsNumber = null;
+				break;
+			}
+			default:
+				return;
 		}
+
+		takeScreenshot(fileName);
 	}
 
 	@Subscribe
@@ -322,8 +394,6 @@ public class ScreenshotPlugin extends Plugin
 				break;
 			case QUEST_COMPLETED_GROUP_ID:
 			case CLUE_SCROLL_REWARD_GROUP_ID:
-			case BARROWS_REWARD_GROUP_ID:
-			case RAIDS_REWARD_GROUP_ID:
 				if (!config.screenshotRewards())
 				{
 					return;
@@ -370,28 +440,6 @@ public class ScreenshotPlugin extends Plugin
 				fileName = Character.toUpperCase(clueType.charAt(0)) + clueType.substring(1) + "(" + clueNumber + ")";
 				clueType = null;
 				clueNumber = null;
-				break;
-			}
-			case BARROWS_REWARD_GROUP_ID:
-			{
-				if (barrowsNumber == null)
-				{
-					return;
-				}
-
-				fileName = "Barrows(" + barrowsNumber + ")";
-				barrowsNumber = null;
-				break;
-			}
-			case RAIDS_REWARD_GROUP_ID:
-			{
-				if (raidsNumber == null)
-				{
-					return;
-				}
-
-				fileName = "Raids(" + raidsNumber + ")";
-				raidsNumber = null;
 				break;
 			}
 			default:
@@ -589,8 +637,14 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@VisibleForTesting
-	int getRaidsNumber()
+	int getchambersOfXericNumber()
 	{
-		return raidsNumber;
+		return chambersOfXericNumber;
+	}
+
+	@VisibleForTesting
+	int gettheatreOfBloodNumber()
+	{
+		return theatreOfBloodNumber;
 	}
 }
