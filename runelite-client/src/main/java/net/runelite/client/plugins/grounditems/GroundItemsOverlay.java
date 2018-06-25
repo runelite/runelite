@@ -216,6 +216,7 @@ public class GroundItemsOverlay extends Overlay
 							.append(")");
 				}
 			}
+
 			if (item.getItemId() != ItemID.COINS_995)
 			{
 				if (config.priceDisplayMode() == PriceDisplayMode.BOTH)
@@ -243,12 +244,13 @@ public class GroundItemsOverlay extends Overlay
 					if (price > 0)
 					{
 						itemStringBuilder
-								.append(" (")
-								.append(StackFormatter.quantityToStackSize(price))
-								.append(" gp)");
+							.append(" (")
+							.append(StackFormatter.quantityToStackSize(price))
+							.append(" gp)");
 					}
 				}
 			}
+
 			final String itemString = itemStringBuilder.toString();
 			itemStringBuilder.setLength(0);
 
