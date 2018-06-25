@@ -1,7 +1,5 @@
 /*
- * Copyright (c) 2018, Kamiel, <https://github.com/Kamielvf>
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
- * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
+ * Copyright (c) 2018, Jasper <Jasper0781@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,12 +37,12 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 
-public class ScreenMarkerWidgetHighlight extends Overlay
+class ScreenMarkerWidgetHighlight extends Overlay
 {
 	private static final int MAX_SIZE = 8000;
 
-	private ScreenMarkerPlugin plugin;
-	private Client client;
+	private final ScreenMarkerPlugin plugin;
+	private final Client client;
 
 	@Inject
 	private ScreenMarkerWidgetHighlight(final ScreenMarkerPlugin plugin, final Client client)

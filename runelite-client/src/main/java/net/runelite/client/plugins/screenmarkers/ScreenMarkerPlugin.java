@@ -216,7 +216,6 @@ public class ScreenMarkerPlugin extends Plugin
 		overlay.setPreferredSize(bounds.getSize());
 	}
 
-
 	public void startCreation(Point location)
 	{
 		currentMarker = new ScreenMarker(
