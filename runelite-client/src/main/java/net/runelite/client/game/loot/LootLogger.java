@@ -214,13 +214,13 @@ public class LootLogger
 	/**
 	 * Called when loot was received by killing another Player. Triggers the PlayerLootReceived event.
 	 *
-	 * @param name Players Name
+	 * @param player Player that was killed
 	 * @param location WorldPoint the Player died at
 	 * @param drops	A Integer, Integer map of ItemIDs and Quantities
 	 */
-	private void onNewPlayerLogCreated(String name, WorldPoint location, Map<Integer, Integer> drops)
+	private void onNewPlayerLogCreated(Player player, WorldPoint location, Map<Integer, Integer> drops)
 	{
-		eventBus.post(new PlayerLootReceived(name, location, createItemList(drops)));
+		eventBus.post(new PlayerLootReceived(player, location, createItemList(drops)));
 	}
 
 	/**
@@ -944,8 +944,8 @@ public class LootLogger
 			}
 			else if (pad instanceof MemorizedPlayer)
 			{
-				MemorizedPlayer player = (MemorizedPlayer) pad;
-				onNewPlayerLogCreated(player.getName(), player.getActor().getWorldLocation(), drops);
+				Player p = (Player) pad.getActor();
+				onNewPlayerLogCreated(p, p.getWorldLocation(), drops);
 			}
 			else
 			{

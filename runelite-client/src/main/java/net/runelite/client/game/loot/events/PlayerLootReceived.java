@@ -38,7 +38,7 @@ import java.util.List;
 public class PlayerLootReceived
 {
 	@Getter
-	private final String name;
+	private final Player player;
 
 	@Getter
 	private final WorldPoint location;
