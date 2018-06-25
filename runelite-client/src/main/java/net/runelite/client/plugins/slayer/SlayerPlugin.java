@@ -25,10 +25,6 @@
  */
 package net.runelite.client.plugins.slayer;
 
-import com.google.common.collect.ImmutableList;
-import static com.google.common.collect.ObjectArrays.concat;
-import com.google.common.eventbus.Subscribe;
-import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
@@ -40,6 +36,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import com.google.common.collect.ImmutableList;
+import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import joptsimple.internal.Strings;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -52,7 +51,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Query;
-import static net.runelite.api.Skill.SLAYER;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
@@ -73,6 +71,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.QueryRunner;
 import net.runelite.client.util.Text;
+import static com.google.common.collect.ObjectArrays.concat;
+import static net.runelite.api.Skill.SLAYER;
 
 @PluginDescriptor(
 	name = "Slayer"
@@ -172,6 +172,28 @@ public class SlayerPlugin extends Plugin
 	private Instant infoTimer;
 	private boolean loginFlag;
 
+	/**
+	 * Get npc composition, account for imposters
+	 *
+	 * @param npc
+	 * @return
+	 */
+	private static NPCComposition getComposition(NPC npc)
+	{
+		if (npc == null)
+		{
+			return null;
+		}
+
+		NPCComposition composition = npc.getComposition();
+		if (composition != null && composition.getConfigs() != null)
+		{
+			composition = composition.transform();
+		}
+
+		return composition;
+	}
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -187,7 +209,7 @@ public class SlayerPlugin extends Plugin
 			streak = config.streak();
 			setExpeditiousChargeCount(config.expeditious());
 			setSlaughterChargeCount(config.slaughter());
-			clientThread.invokeLater(() -> setTask(config.taskName(), config.amount()));
+			clientThread.invokeLater(() -> setTask(config.taskName(), config.amount(), false));
 		}
 	}
 
@@ -227,7 +249,7 @@ public class SlayerPlugin extends Plugin
 					streak = config.streak();
 					setExpeditiousChargeCount(config.expeditious());
 					setSlaughterChargeCount(config.slaughter());
-					setTask(config.taskName(), config.amount());
+					setTask(config.taskName(), config.amount(), false);
 					loginFlag = false;
 				}
 				break;
@@ -265,7 +287,7 @@ public class SlayerPlugin extends Plugin
 			String taskName = found1 ? mAssign.group(2) : mCurrent.group(1);
 			int amount = Integer.parseInt(found1 ? mAssign.group(1) : mCurrent.group(2));
 
-			setTask(taskName, amount);
+			setTask(taskName, amount, true);
 		}
 
 		Widget braceletBreakWidget = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
@@ -408,13 +430,13 @@ public class SlayerPlugin extends Plugin
 				default:
 					log.warn("Unreachable default case for message ending in '; return to Slayer master'");
 			}
-			setTask("", 0);
+			setTask("", 0, true);
 			return;
 		}
 
 		if (chatMsg.equals(CHAT_GEM_COMPLETE_MESSAGE) || chatMsg.equals(CHAT_CANCEL_MESSAGE) || chatMsg.equals(CHAT_CANCEL_MESSAGE_JAD))
 		{
-			setTask("", 0);
+			setTask("", 0, true);
 			return;
 		}
 
@@ -432,7 +454,7 @@ public class SlayerPlugin extends Plugin
 		String taskName = mProgress.group(1);
 		int amount = Integer.parseInt(mProgress.group(2));
 
-		setTask(taskName, amount);
+		setTask(taskName, amount, true);
 	}
 
 	@Subscribe
@@ -464,7 +486,7 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("slayer"))
+		if (!event.getGroup().equals("slayer") || !event.getKey().equals("infobox"))
 		{
 			return;
 		}
@@ -500,19 +522,23 @@ public class SlayerPlugin extends Plugin
 		infoTimer = Instant.now();
 	}
 
-	private void setTask(String name, int amt)
+	private void setTask(String name, int amt, boolean action)
 	{
 		taskName = name.toLowerCase();
 		amount = amt;
 		save();
 		removeCounter();
+
+		if (action)
+		{
+			infoTimer = Instant.now();
+		}
 		addCounter();
-		infoTimer = Instant.now();
 	}
 
 	private void addCounter()
 	{
-		if (!config.showInfobox() || counter != null || Strings.isNullOrEmpty(taskName))
+		if (!config.showInfobox() || counter != null || Strings.isNullOrEmpty(taskName) || infoTimer == null)
 		{
 			return;
 		}
@@ -546,7 +572,9 @@ public class SlayerPlugin extends Plugin
 	private List<NPC> buildTargetsToHighlight()
 	{
 		if (Strings.isNullOrEmpty(taskName))
+		{
 			return Collections.EMPTY_LIST;
+		}
 
 		List<NPC> npcs = new ArrayList<>();
 		List<String> highlightedNpcs = new ArrayList<>(Arrays.asList(Task.getTask(taskName).getTargetNames()));
@@ -557,7 +585,9 @@ public class SlayerPlugin extends Plugin
 			NPCComposition composition = getComposition(npc);
 
 			if (composition == null || composition.getName() == null)
+			{
 				continue;
+			}
 
 			String name = npc.getName();
 			for (String highlight : highlightedNpcs)
@@ -572,26 +602,6 @@ public class SlayerPlugin extends Plugin
 		}
 
 		return npcs;
-	}
-
-	/**
-	 * Get npc composition, account for imposters
-	 *
-	 * @param npc
-	 * @return
-	 */
-	private static NPCComposition getComposition(NPC npc)
-	{
-		if (npc == null)
-			return null;
-
-		NPCComposition composition = npc.getComposition();
-		if (composition != null && composition.getConfigs() != null)
-		{
-			composition = composition.transform();
-		}
-
-		return composition;
 	}
 
 	//Utils
