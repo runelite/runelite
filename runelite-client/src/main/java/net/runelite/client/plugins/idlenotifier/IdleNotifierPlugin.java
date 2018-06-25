@@ -279,8 +279,8 @@ public class IdleNotifierPlugin extends Plugin
 		//int count = (int) Arrays.stream(container.getItems()).filter(Objects::nonNull).count();
 		int count = new InventoryWidgetItemQuery().result(client).length;
 
-		//Make sure the amount of items actually increased and it was not just items moving around/being dropped
-		if (container.getItems() != null && count > previousInventoryCount && count == threshold)
+		//Make sure the amount of items actually changed and it was not just items moving around causing the event
+		if (container.getItems() != null && count != previousInventoryCount && count == threshold)
 		{
 			Player local = client.getLocalPlayer();
 			//We don't want to bombard the user with notifications so will reset the timers if this triggers
