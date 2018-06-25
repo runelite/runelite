@@ -24,10 +24,10 @@
  */
 package net.runelite.client.plugins.mta.enchantment;
 
-import com.google.common.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
