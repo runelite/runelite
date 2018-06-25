@@ -235,36 +235,6 @@ public class ScreenMarkerPlugin extends Plugin
 		creatingScreenMarker = true;
 	}
 
-	public Widget findWidgetById(int id)
-	{
-		return findWidgetById(id, client.getWidgetRoots());
-	}
-
-	private Widget findWidgetById(int id, Widget[] widgets)
-	{
-		for (Widget widget : widgets)
-		{
-			if (widget.isHidden() || widget.isSelfHidden())
-			{
-				continue;
-			}
-
-			if (widget.getId() == id)
-			{
-				return widget;
-			}
-
-			Widget[] children = getUnifiedChildren(widget);
-			Widget childResult = findWidgetById(id, children);
-			if (childResult != null)
-			{
-				return childResult;
-			}
-		}
-
-		return null;
-	}
-
 	public WidgetItem findItemSlotContaining(Point point)
 	{
 		return findItemSlotContaining(client.getWidgetRoots(), point);
