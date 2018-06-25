@@ -42,6 +42,6 @@ public interface CombatLevelConfig extends Config
 	)
 	default boolean showLevelsUntil()
 	{
-		return false;
+		return true;
 	}
 }
