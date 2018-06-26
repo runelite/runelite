@@ -253,10 +253,12 @@ public class XpGlobesOverlay extends Overlay
 			int actionsLeft = combat.contains(selectedSkill)
 					? xpTrackerService.getKillsLeft(selectedSkill)
 					: xpTrackerService.getActionsLeft(selectedSkill);
-			if (actionsLeft == Integer.MAX_VALUE) {
+			if (actionsLeft == Integer.MAX_VALUE)
+			{
 				actionsLeft = xpTrackerService.getActionsLeft(selectedSkill);
 			}
-			if (actionsLeft != Integer.MAX_VALUE) {
+			if (actionsLeft != Integer.MAX_VALUE)
+			{
 				String actionsLeftString = decimalFormat.format(actionsLeft);
 				xpTooltip.getChildren().add(LineComponent.builder()
 						.left(getActionKillsText(selectedSkill))

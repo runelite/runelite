@@ -135,7 +135,8 @@ class XpStateSingle
 	private int getKillsRemaining(Client client)
 	{
 		Player local = client.getLocalPlayer();
-		if (local == null){
+		if (local == null)
+		{
 			return Integer.MAX_VALUE;
 		}
 		Actor opponent = local.getInteracting();
@@ -171,11 +172,14 @@ class XpStateSingle
 
 		int styleIndex = client.getVar(VarPlayer.ATTACK_STYLE);
 		WeaponType weaponType = WeaponType.getWeaponType(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE));
-		if (weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.CONTROLLED)){
+		if (weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.CONTROLLED))
+		{
 			return sharedXPModifier;
-		} else if (weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.LONGRANGE)) {
+		} else if (weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.LONGRANGE))
+		{
 			return longRangedXPModifier;
-		} else {
+		} else
+			{
 			return defaultModifier;
 		}
 	}
