@@ -156,12 +156,12 @@ public class ChatCommandsPlugin extends Plugin
 			log.debug("Running level lookup for {}", search);
 			executor.submit(() -> playerSkillLookup(setMessage.getType(), setMessage, search));
 		}
-    else if (config.calc() && message.toLowerCase().startsWith("!calc") && message.length() > 6)
-        {
-            String strEqn = message.substring(6);
+		else if (config.calc() && message.toLowerCase().startsWith("!calc") && message.length() > 6)
+		{
+			String strEqn = message.substring(6);
 			log.debug("Running calc, eqn = {}", strEqn);
 
-            executor.submit(() -> calculate(setMessage.getMessageNode(), strEqn));
+			executor.submit(() -> calculate(setMessage.getMessageNode(), strEqn));
 		}
     
 		else if (config.clue() && message.toLowerCase().equals("!clues"))
