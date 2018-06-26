@@ -22,23 +22,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.specialcounter;
+package net.runelite.client.plugins.specialattack;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import net.runelite.api.ItemID;
+import java.awt.image.BufferedImage;
+import net.runelite.client.ui.overlay.infobox.Counter;
 
-@AllArgsConstructor
-@Getter
-enum SpecialWeapon
+public class SpecialCounter extends Counter
 {
-	DRAGON_WARHAMMER("Dragon Warhammer", ItemID.DRAGON_WARHAMMER, false),
-	ARCLIGHT("Arclight", ItemID.ARCLIGHT, false),
-	DARKLIGHT("Darklight", ItemID.DARKLIGHT, false),
-	BANDOS_GODSWORD("Bandos Godsword", ItemID.BANDOS_GODSWORD, true),
-	BANDOS_GODSWORD_OR("Bandos Godsword", ItemID.BANDOS_GODSWORD_OR, true);
+	private int hitValue;
+	private SpecialWeapon weapon;
 
-	private final String name;
-	private final int itemID;
-	private final boolean damage;
+	public SpecialCounter(BufferedImage image, SpecialAttackPlugin plugin, int hitValue, SpecialWeapon weapon)
+	{
+		super(image, plugin, null);
+		this.weapon = weapon;
+		this.hitValue = hitValue;
+	}
+
+	public void addHits(double hit)
+	{
+		this.hitValue += hit;
+	}
+
+	@Override
+	public String getText()
+	{
+		return Integer.toString(hitValue);
+	}
+
+	@Override
+	public String getTooltip()
+	{
+		if (!weapon.isDamage())
+		{
+			if (hitValue == 1)
+			{
+				return weapon.getName() + " special has hit " + hitValue + " time.";
+			}
+			else
+			{
+				return weapon.getName() + " special has hit " + hitValue + " times.";
+			}
+		}
+		else
+		{
+			return weapon.getName() + " special has hit " + hitValue + " total.";
+		}
+	}
 }

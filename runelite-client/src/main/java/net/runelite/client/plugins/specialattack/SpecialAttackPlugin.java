@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.specialcounter;
+package net.runelite.client.plugins.specialattack;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
@@ -53,10 +53,10 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 	name = "Special Attack",
 	enabledByDefault = false
 )
-public class SpecialCounterPlugin extends Plugin
+public class SpecialAttackPlugin extends Plugin
 {
 	private int currentWorld = -1;
-	private int specialPercentage = -1;
+	private int previousSpecialPercentage = -1;
 	private int specialHitpointsExperience = -1;
 	private boolean specialUsed;
 	private double modifier = 1d;
@@ -78,12 +78,12 @@ public class SpecialCounterPlugin extends Plugin
 	private ItemManager itemManager;
 
 	@Inject
-	private SpecialCounterConfig config;
+	private SpecialAttackConfig config;
 
 	@Provides
-	SpecialCounterConfig provideConfig(ConfigManager configManager)
+	SpecialAttackConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(SpecialCounterConfig.class);
+		return configManager.getConfig(SpecialAttackConfig.class);
 	}
 
 	@Override
@@ -114,15 +114,15 @@ public class SpecialCounterPlugin extends Plugin
 	{
 		int specialPercentage = client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT);
 
-		if (this.specialPercentage == -1 || specialPercentage >= this.specialPercentage)
+		if (this.previousSpecialPercentage == -1 || specialPercentage >= this.previousSpecialPercentage)
 		{
 			// Check if special is at a notifiable percentage
-			notifySpecialChange(specialPercentage);
+			checkFullSpecial(specialPercentage);
 
-			this.specialPercentage = specialPercentage;
+			this.previousSpecialPercentage = specialPercentage;
 			return;
 		}
-		this.specialPercentage = specialPercentage;
+		this.previousSpecialPercentage = specialPercentage;
 
 		if (!config.enableSpecialAttackCounter())
 		{
@@ -269,16 +269,17 @@ public class SpecialCounterPlugin extends Plugin
 		}
 	}
 
-	private void notifySpecialChange(int special)
+	private void checkFullSpecial(int special)
 	{
 		// Not enabled, break
 		if (!config.enableSpecialAttackNotification())
 		{
 			return;
 		}
-		// Notify if we are now 100% and the last updated percentage was not default, 0%, or 100%
-		// Logging in with full special simultaneously triggers 0% and 100%
-		if (special == 1000 && this.specialPercentage > 0 && this.specialPercentage < 1000)
+		// Notify if we (most likely) reached 100% naturally from regeneration
+		// If someone is at 90% or 95% special when they use a fountain, they will still be notified
+		// Logging in with full special simultaneously triggers 0% and 100% so both bounds should be checked
+		if (special == 1000 && this.previousSpecialPercentage >= 900 && this.previousSpecialPercentage < 1000)
 		{
 			notifier.notify("[" + client.getLocalPlayer().getName() + "] has full special attack!");
 		}

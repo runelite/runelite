@@ -22,43 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.specialcounter;
+package net.runelite.client.plugins.specialattack;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.ToString;
+import net.runelite.api.ItemID;
 
 @AllArgsConstructor
 @Getter
-@ToString
-enum Boss
+enum SpecialWeapon
 {
-	ABYSSAL_SIRE("Abyssal sire", 1.25d),
-	CALLISTO("Callisto", 1.225d),
-	CERBERUS("Cerberus", 1.15d),
-	CHAOS_ELEMENTAL("Chaos elemental", 1.075d),
-	CORPOREAL_BEAST("Corporeal Beast", 1.55d),
-	GENERAL_GRAARDOR("General Graardor", 1.325d),
-	GIANT_MOLE("Giant Mole", 1.075d),
-	KALPHITE_QUEEN("Kalphite Queen", 1.05d),
-	KING_BLACK_DRAGON("King Black Dragon", 1.075d),
-	KRIL_TSUROTH("K'ril Tsutsaroth", 1.375d),
-	VENETENATIS("Venenatis", 1.4d),
-	VETION("Vet'ion", 1.225d);
+	DRAGON_WARHAMMER("Dragon Warhammer", ItemID.DRAGON_WARHAMMER, false),
+	ARCLIGHT("Arclight", ItemID.ARCLIGHT, false),
+	DARKLIGHT("Darklight", ItemID.DARKLIGHT, false),
+	BANDOS_GODSWORD("Bandos Godsword", ItemID.BANDOS_GODSWORD, true),
+	BANDOS_GODSWORD_OR("Bandos Godsword", ItemID.BANDOS_GODSWORD_OR, true);
 
 	private final String name;
-	private final double modifier; // Some NPCs have a modifier to the experience a player receives.
-
-	public static Boss getBoss(String name)
-	{
-		for (Boss boss : values())
-		{
-			if (boss.getName().equals(name))
-			{
-				return boss;
-			}
-		}
-		return null;
-	}
-
+	private final int itemID;
+	private final boolean damage;
 }

@@ -22,51 +22,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.specialcounter;
+package net.runelite.client.plugins.specialattack;
 
-import java.awt.image.BufferedImage;
-import net.runelite.client.ui.overlay.infobox.Counter;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
 
-public class SpecialCounter extends Counter
+@AllArgsConstructor
+@Getter
+@ToString
+enum Boss
 {
-	private int hitValue;
-	private SpecialWeapon weapon;
+	ABYSSAL_SIRE("Abyssal sire", 1.25d),
+	CALLISTO("Callisto", 1.225d),
+	CERBERUS("Cerberus", 1.15d),
+	CHAOS_ELEMENTAL("Chaos elemental", 1.075d),
+	CORPOREAL_BEAST("Corporeal Beast", 1.55d),
+	GENERAL_GRAARDOR("General Graardor", 1.325d),
+	GIANT_MOLE("Giant Mole", 1.075d),
+	KALPHITE_QUEEN("Kalphite Queen", 1.05d),
+	KING_BLACK_DRAGON("King Black Dragon", 1.075d),
+	KRIL_TSUROTH("K'ril Tsutsaroth", 1.375d),
+	VENETENATIS("Venenatis", 1.4d),
+	VETION("Vet'ion", 1.225d);
 
-	public SpecialCounter(BufferedImage image, SpecialCounterPlugin plugin, int hitValue, SpecialWeapon weapon)
-	{
-		super(image, plugin, null);
-		this.weapon = weapon;
-		this.hitValue = hitValue;
-	}
+	private final String name;
+	private final double modifier; // Some NPCs have a modifier to the experience a player receives.
 
-	public void addHits(double hit)
+	public static Boss getBoss(String name)
 	{
-		this.hitValue += hit;
-	}
-
-	@Override
-	public String getText()
-	{
-		return Integer.toString(hitValue);
-	}
-
-	@Override
-	public String getTooltip()
-	{
-		if (!weapon.isDamage())
+		for (Boss boss : values())
 		{
-			if (hitValue == 1)
+			if (boss.getName().equals(name))
 			{
-				return weapon.getName() + " special has hit " + hitValue + " time.";
-			}
-			else
-			{
-				return weapon.getName() + " special has hit " + hitValue + " times.";
+				return boss;
 			}
 		}
-		else
-		{
-			return weapon.getName() + " special has hit " + hitValue + " total.";
-		}
+		return null;
 	}
+
 }
