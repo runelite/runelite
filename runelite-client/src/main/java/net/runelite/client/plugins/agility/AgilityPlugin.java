@@ -249,8 +249,8 @@ public class AgilityPlugin extends Plugin
 			WorldPoint newTicketPosition = client.getHintArrowPoint();
 			if (!Objects.equals(lastArenaTicketPosition, newTicketPosition))
 			{
-				// We don't want to notify when players first enter the course
-				if (lastArenaTicketPosition != null)
+				// We don't want to notify when players first enter the course or when they fall below
+				if (lastArenaTicketPosition != null && newTicketPosition != null)
 				{
 					if (config.notifyAgilityArena())
 					{
