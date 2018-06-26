@@ -80,7 +80,7 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 2,
+			position = 4,
 			keyName = "calc",
 			name = "Calc Command",
 			description = "Configures whether the calculator command is enabled"
