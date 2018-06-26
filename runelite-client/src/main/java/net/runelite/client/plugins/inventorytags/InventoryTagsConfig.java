@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 kulers
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,63 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.mapping;
+package net.runelite.client.plugins.inventorytags;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.awt.Color;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface Implements
+@ConfigGroup(
+	keyName = "inventorytags",
+	name = "Inventory Tags",
+	description = "Configuration for the Inventory Item Tagging plugin"
+)
+public interface InventoryTagsConfig extends Config
 {
-	String value();
+	String GROUP = "inventorytags";
+
+	@ConfigItem(
+		position = 0,
+		keyName = "groupColor1",
+		name = "Group 1 Color",
+		description = "Color of the Tag"
+	)
+	default Color getGroup1Color()
+	{
+		return new Color(255, 0, 0);
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "groupColor2",
+		name = "Group 2 Color",
+		description = "Color of the Tag"
+	)
+	default Color getGroup2Color()
+	{
+		return new Color(0, 255, 0);
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "groupColor3",
+		name = "Group 3 Color",
+		description = "Color of the Tag"
+	)
+	default Color getGroup3Color()
+	{
+		return new Color(0, 0, 255);
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "groupColor4",
+		name = "Group 4 Color",
+		description = "Color of the Tag"
+	)
+	default Color getGroup4Color()
+	{
+		return new Color(255, 0, 255);
+	}
 }

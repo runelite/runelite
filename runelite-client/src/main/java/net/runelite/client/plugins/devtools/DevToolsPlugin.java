@@ -240,6 +240,15 @@ public class DevToolsPlugin extends Plugin
 				localPlayer.setSpotAnimFrame(0);
 				break;
 			}
+			case "transform":
+			{
+				int id = Integer.parseInt(args[0]);
+				Player player = client.getLocalPlayer();
+				player.getPlayerComposition().setTransformedNpcId(id);
+				player.setIdlePoseAnimation(-1);
+				player.setPoseAnimation(-1);
+				break;
+			}
 		}
 	}
 

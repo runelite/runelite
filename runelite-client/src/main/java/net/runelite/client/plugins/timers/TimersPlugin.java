@@ -288,6 +288,16 @@ public class TimersPlugin extends Plugin
 			createGameTimer(SUPERANTIPOISON);
 			return;
 		}
+
+		if (config.showStamina()
+			&& event.getMenuOption().contains("Drink")
+			&& (event.getId() == ItemID.STAMINA_MIX1
+			|| event.getId() == ItemID.STAMINA_MIX2))
+		{
+			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
+			createGameTimer(STAMINA);
+			return;
+		}
 	}
 
 	@Subscribe

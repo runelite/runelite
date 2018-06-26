@@ -136,6 +136,7 @@ public final class AnimationID
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
 	public static final int TZTOK_JAD_RANGE_ATTACK = 2652;
+	public static final int HELLHOUND_DEFENCE = 6566;
 
 	// Farming
 	public static final int FARMING_HARVEST_FRUIT_TREE = 2280;
@@ -153,4 +154,7 @@ public final class AnimationID
 
 	// Arceuus spellbook
 	public static final int MAGIC_ARCEUUS_RESURRECT_CROPS = 7118;
+
+	// Battlestaff Crafting
+	public static final int CRAFTING_BATTLESTAVES = 7531;
 }

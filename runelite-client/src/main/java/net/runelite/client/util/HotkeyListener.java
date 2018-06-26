@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.mapping;
+package net.runelite.client.util;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.awt.event.KeyEvent;
+import java.util.function.Supplier;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import net.runelite.client.config.Keybind;
+import net.runelite.client.input.KeyListener;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(
+@RequiredArgsConstructor
+public abstract class HotkeyListener implements KeyListener
 {
-	ElementType.FIELD, ElementType.METHOD
-})
-public @interface Export
-{
-	String value();
+	private final Supplier<Keybind> keybind;
+
+	@Getter
+	private boolean isPressed = false;
+
+	@Override
+	public void keyTyped(KeyEvent e)
+	{
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		if (keybind.get().matches(e))
+		{
+			isPressed = true;
+			hotkeyPressed();
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+		if (keybind.get().matches(e))
+		{
+			isPressed = false;
+			hotkeyReleased();
+		}
+	}
+
+	public void hotkeyPressed()
+	{
+	}
+
+	public void hotkeyReleased()
+	{
+	}
 }

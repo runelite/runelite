@@ -89,7 +89,7 @@ public class EquipmentItemQuery extends WidgetItemQuery
 				Widget parentWidget = client.getWidget(slot);
 				Widget itemWidget = parentWidget.getChild(1);
 				// Check if background icon is hidden. if hidden, item is equipped.
-				boolean equipped = parentWidget.getChild(2).isHidden();
+				boolean equipped = parentWidget.getChild(2).isSelfHidden();
 				// set bounds to same size as default inventory
 				Rectangle bounds = itemWidget.getBounds();
 				bounds.setBounds(bounds.x - 1, bounds.y - 1, 32, 32);
