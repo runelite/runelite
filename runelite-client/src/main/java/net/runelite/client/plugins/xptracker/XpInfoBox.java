@@ -98,12 +98,17 @@ class XpInfoBox extends JPanel
 		final JMenuItem resetOthers = new JMenuItem("Reset others");
 		resetOthers.addActionListener(e -> xpTrackerPlugin.resetOtherSkillState(skill));
 
+		// Create reset all menu
+		final JMenuItem resetAll = new JMenuItem("Reset all");
+		resetAll.addActionListener(e -> xpTrackerPlugin.resetAllSkillStates());
+
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		popupMenu.add(openXpTracker);
 		popupMenu.add(reset);
 		popupMenu.add(resetOthers);
+		popupMenu.add(resetAll);
 
 		JLabel skillIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(skill)));
 		skillIcon.setHorizontalAlignment(SwingConstants.CENTER);
