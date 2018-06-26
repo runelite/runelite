@@ -163,7 +163,6 @@ public class ChatCommandsPlugin extends Plugin
 
 			executor.submit(() -> calculate(setMessage.getMessageNode(), strEqn));
 		}
-    
 		else if (config.clue() && message.toLowerCase().equals("!clues"))
 		{
 			log.debug("Running lookup for overall clues");
