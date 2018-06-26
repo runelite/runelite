@@ -106,6 +106,7 @@ public class AgilityPlugin extends Plugin
 
 	private int lastAgilityXp;
 	private WorldPoint lastArenaTicketPosition;
+	private boolean pastTightrope;
 
 	@Provides
 	AgilityConfig getConfig(ConfigManager configManager)
@@ -186,6 +187,14 @@ public class AgilityPlugin extends Plugin
 
 		if (session != null && session.getCourse() == course)
 		{
+			//todo track entire course experience instead of just the last obstacle
+			if (course == Courses.AL_KARID) {
+				if (!pastTightrope) {
+					this.pastTightrope = true;
+					return;
+				}
+				this.pastTightrope = false;
+			}
 			session.incrementLapCount(client);
 		}
 		else
