@@ -31,7 +31,8 @@ import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
-import static net.runelite.client.callback.Hooks.log;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSDecorativeObject;
 import net.runelite.rs.api.RSGroundObject;
 import net.runelite.rs.api.RSItemLayer;
@@ -41,6 +42,9 @@ import net.runelite.rs.api.RSWallObject;
 @Mixin(RSRegion.class)
 public abstract class RSRegionMixin implements RSRegion
 {
+	@Shadow("clientInstance")
+	private static RSClient client;
+
 	@Inject
 	static boolean isDrawingRegion;
 
@@ -54,6 +58,7 @@ public abstract class RSRegionMixin implements RSRegion
 		{
 			isDrawingRegion = true;
 			rs$drawRegion(cameraX, cameraY, cameraZ, cameraPitch, cameraYaw, plane);
+			client.getCallbacks().drawRegion();
 		}
 		finally
 		{
@@ -145,7 +150,7 @@ public abstract class RSRegionMixin implements RSRegion
 		}
 		catch (Exception ex)
 		{
-			log.warn("error during tile underlay rendering", ex);
+			client.getLogger().warn("error during tile underlay rendering", ex);
 		}
 	}
 }

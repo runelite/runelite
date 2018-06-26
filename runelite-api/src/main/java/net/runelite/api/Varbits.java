@@ -367,7 +367,12 @@ public enum Varbits
 	/**
 	 * The varbit that stores the players {@code AccountType}.
 	 */
-	ACCOUNT_TYPE(1777);
+	ACCOUNT_TYPE(1777),
+
+	/**
+	 * Corp beast damage
+	 */
+	CORP_DAMAGE(999);
 
 	/**
 	 * The raw varbit ID.

@@ -100,6 +100,8 @@ public class WidgetID
 	public static final int MTA_ENCHANTMENT_GROUP_ID = 195;
 	public static final int MTA_GRAVEYARD_GROUP_ID = 196;
 	public static final int MTA_TELEKINETIC_GROUP_ID = 198;
+	public static final int CORP_DAMAGE = 13;
+	public static final int DESTROY_ITEM_GROUP_ID = 584;
 
 	static class WorldMap
 	{
@@ -516,5 +518,12 @@ public class WidgetID
 	{
 		static final int BONUS_COMPONENT = 7;
 		static final int BONUS_TEXT_COMPONENT = 12;
+	}
+
+	static class DestroyItem
+	{
+		static final int DESTROY_ITEM_NAME = 6;
+		static final int DESTROY_ITEM_YES = 1;
+		static final int DESTROY_ITEM_NO = 3;
 	}
 }

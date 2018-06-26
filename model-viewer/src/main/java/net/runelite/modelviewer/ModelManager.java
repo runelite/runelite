@@ -24,14 +24,17 @@
  */
 package net.runelite.modelviewer;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
+import net.runelite.cache.IndexType;
 import net.runelite.cache.definitions.ModelDefinition;
 import net.runelite.cache.definitions.ObjectDefinition;
 import net.runelite.cache.definitions.loaders.ModelLoader;
+import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Storage;
+import net.runelite.cache.fs.Store;
 import net.runelite.cache.region.Location;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,16 +43,23 @@ public class ModelManager
 {
 	private static final Logger logger = LoggerFactory.getLogger(ModelManager.class);
 
-	private static Map<LocationKey, ModelDefinition> models = new HashMap<>();
+	private final Store store;
+	private final Map<LocationKey, ModelDefinition> models = new HashMap<>();
 
-	public static ModelDefinition getModel(int id, ObjectDefinition object, Location location)
+	public ModelManager(Store store)
+	{
+		this.store = store;
+	}
+
+	public ModelDefinition getModel(int id, ObjectDefinition object, Location location)
 	{
 		LocationKey key;
 
-		int rot = location.getOrientation();
+		Integer rot = null;
 
 		if (location != null)
 		{
+			rot = location.getOrientation();
 			key = new LocationKey(id, location.getType(), rot);
 		}
 		else
@@ -63,12 +73,22 @@ public class ModelManager
 			return md;
 		}
 
+		Storage storage = store.getStorage();
+		Index index = store.getIndex(IndexType.MODELS);
+
+		Archive modelArchive = index.getArchive(id);
+		byte[] contents;
 		try
 		{
-			byte[] b = Files.readAllBytes(new File("models/" + id + ".model").toPath());
+			contents = modelArchive.decompress(storage.loadArchive(modelArchive));
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
+		}
 
-			ModelLoader loader = new ModelLoader();
-			md = loader.load(id, b);
+		ModelLoader loader = new ModelLoader();
+		md = loader.load(modelArchive.getArchiveId(), contents);
 
 			if (object != null && location != null)
 			{
@@ -78,12 +98,6 @@ public class ModelManager
 
 			models.put(key, md);
 			return md;
-		}
-		catch (IOException ex)
-		{
-			logger.warn(null, ex);
-			return null;
-		}
 	}
 
 	// this logic is from method3697 in 140

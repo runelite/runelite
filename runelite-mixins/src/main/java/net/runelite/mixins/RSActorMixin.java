@@ -28,6 +28,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
+import net.runelite.api.Hitsplat;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Perspective;
@@ -39,14 +40,14 @@ import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GraphicChanged;
+import net.runelite.api.events.HitsplatApplied;
+import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
-import static net.runelite.client.callback.Hooks.eventBus;
-import static net.runelite.client.callback.Hooks.log;
 import net.runelite.rs.api.RSActor;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSCombatInfo1;
@@ -68,7 +69,7 @@ public abstract class RSActorMixin implements RSActor
 	public Actor getInteracting()
 	{
 		int i = getRSInteracting();
-		if (i == -1)
+		if (i == -1 || i == 65535)
 		{
 			return null;
 		}
@@ -187,7 +188,7 @@ public abstract class RSActorMixin implements RSActor
 	{
 		AnimationChanged animationChange = new AnimationChanged();
 		animationChange.setActor(this);
-		eventBus.post(animationChange);
+		client.getCallbacks().post(animationChange);
 	}
 
 	@FieldHook("graphic")
@@ -196,7 +197,15 @@ public abstract class RSActorMixin implements RSActor
 	{
 		GraphicChanged graphicChanged = new GraphicChanged();
 		graphicChanged.setActor(this);
-		eventBus.post(graphicChanged);
+		client.getCallbacks().post(graphicChanged);
+	}
+
+	@FieldHook("interacting")
+	@Inject
+	public void interactingChanged(int idx)
+	{
+		InteractingChanged interactingChanged = new InteractingChanged(this, getInteracting());
+		client.getCallbacks().post(interactingChanged);
 	}
 
 	@Inject
@@ -240,15 +249,38 @@ public abstract class RSActorMixin implements RSActor
 		{
 			if (this == client.getLocalPlayer())
 			{
-				log.debug("You died!");
+				client.getLogger().debug("You died!");
 
 				LocalPlayerDeath event = new LocalPlayerDeath();
-				eventBus.post(event);
+				client.getCallbacks().post(event);
 			}
 			else if (this instanceof RSNPC)
 			{
 				((RSNPC) this).setDead(true);
 			}
 		}
+	}
+
+	/**
+	 * Called after a hitsplat has been processed on an actor.
+	 * Note that this event runs even if the hitsplat didn't show up,
+	 * i.e. the actor already had 4 visible hitsplats.
+	 *
+	 * @param type The hitsplat type (i.e. color)
+	 * @param value The value of the hitsplat (i.e. how high the hit was)
+	 * @param var3 unknown
+	 * @param var4 unknown
+	 * @param gameCycle The gamecycle the hitsplat was applied on
+	 * @param duration The amount of gamecycles the hitsplat will last for
+	 */
+	@Inject
+	@MethodHook(value = "applyActorHitsplat", end = true)
+	public void applyActorHitsplat(int type, int value, int var3, int var4, int gameCycle, int duration)
+	{
+		final Hitsplat hitsplat = new Hitsplat(Hitsplat.HitsplatType.fromInteger(type), value, gameCycle + duration);
+		final HitsplatApplied event = new HitsplatApplied();
+		event.setActor(this);
+		event.setHitsplat(hitsplat);
+		client.getCallbacks().post(event);
 	}
 }

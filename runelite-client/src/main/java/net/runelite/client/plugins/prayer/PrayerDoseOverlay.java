@@ -48,7 +48,7 @@ import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.SwingUtil;
 import org.apache.commons.lang3.StringUtils;
 
-public class PrayerDoseOverlay extends Overlay
+class PrayerDoseOverlay extends Overlay
 {
 	private static final float PULSE_TIME = 1200f;
 

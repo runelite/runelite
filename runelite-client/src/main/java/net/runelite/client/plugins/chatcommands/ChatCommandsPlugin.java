@@ -49,6 +49,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.hiscore.HiscoreClient;
+import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.HiscoreSkill;
 import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
 import net.runelite.http.api.hiscore.Skill;
@@ -146,7 +147,6 @@ public class ChatCommandsPlugin extends Plugin
 			String search = message.substring(7);
 
 			log.debug("Running price lookup for {}", search);
-
 			executor.submit(() -> itemPriceLookup(setMessage.getMessageNode(), search));
 		}
 		else if (config.lvl() && message.toLowerCase().startsWith("!lvl") && message.length() > 5)
@@ -156,6 +156,19 @@ public class ChatCommandsPlugin extends Plugin
 			log.debug("Running level lookup for {}", search);
 			executor.submit(() -> playerSkillLookup(setMessage.getType(), setMessage, search));
 		}
+		else if (config.clue() && message.toLowerCase().equals("!clues"))
+		{
+			log.debug("Running lookup for overall clues");
+			executor.submit(() -> playerClueLookup(setMessage.getType(), setMessage, "total"));
+		}
+		else if (config.clue() && message.toLowerCase().startsWith("!clues") && message.length() > 7)
+		{
+			String search = message.substring(7);
+
+			log.debug("Running clue lookup for {}", search);
+			executor.submit(() -> playerClueLookup(setMessage.getType(), setMessage, search));
+		}
+
 	}
 
 	/**
@@ -281,6 +294,87 @@ public class ChatCommandsPlugin extends Plugin
 		catch (IOException ex)
 		{
 			log.warn("unable to look up skill {} for {}", skill, search, ex);
+		}
+	}
+
+	/**
+	 * Looks up the quantities of clues completed
+	 * for the requested clue-level (no arg if requesting total)
+	 * easy, medium, hard, elite, master
+	 */
+	private void playerClueLookup(ChatMessageType type, SetMessage setMessage, String search)
+	{
+		String player;
+		if (type.equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
+		{
+			player = client.getLocalPlayer().getName();
+		}
+		else
+		{
+			player = sanitize(setMessage.getName());
+		}
+
+		try
+		{
+			Skill hiscoreSkill;
+			HiscoreResult result = hiscoreClient.lookup(player);
+			String level = search.toLowerCase();
+
+			switch (level)
+			{
+				case "easy":
+					hiscoreSkill = result.getClueScrollEasy();
+					break;
+				case "medium":
+					hiscoreSkill = result.getClueScrollMedium();
+					break;
+				case "hard":
+					hiscoreSkill = result.getClueScrollHard();
+					break;
+				case "elite":
+					hiscoreSkill = result.getClueScrollElite();
+					break;
+				case "master":
+					hiscoreSkill = result.getClueScrollMaster();
+					break;
+				case "total":
+					hiscoreSkill = result.getClueScrollAll();
+					break;
+				default:
+					return;
+			}
+
+			int quantity = hiscoreSkill.getLevel();
+			int rank = hiscoreSkill.getRank();
+			if (quantity == -1)
+			{
+				return;
+			}
+
+			ChatMessageBuilder chatMessageBuilder = new ChatMessageBuilder()
+				.append("Clue scroll (" + level + ")").append(": ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(Integer.toString(quantity));
+
+			if (rank != -1)
+			{
+				chatMessageBuilder.append(ChatColorType.NORMAL)
+					.append(" Rank: ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(String.format("%,d", rank));
+			}
+
+			String response = chatMessageBuilder.build();
+
+			log.debug("Setting response {}", response);
+			final MessageNode messageNode = setMessage.getMessageNode();
+			messageNode.setRuneLiteFormatMessage(response);
+			chatMessageManager.update(messageNode);
+			client.refreshChat();
+		}
+		catch (IOException ex)
+		{
+			log.warn("error looking up clues", ex);
 		}
 	}
 

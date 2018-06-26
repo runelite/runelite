@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 AWPH-I
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.mapping;
+package net.runelite.client.plugins.inventoryviewer;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import javax.inject.Inject;
+import net.runelite.client.ui.overlay.OverlayManager;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(
-	{
-		ElementType.FIELD, ElementType.METHOD, ElementType.TYPE
-	})
-public @interface ObfuscatedName
+@PluginDescriptor(
+	name = "Inventory Viewer",
+	enabledByDefault = false
+)
+public class InventoryViewerPlugin extends Plugin
 {
-	String value();
+	@Inject
+	private InventoryViewerOverlay overlay;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Override
+	public void startUp()
+	{
+		overlayManager.add(overlay);
+	}
+
+	@Override
+	public void shutDown()
+	{
+		overlayManager.remove(overlay);
+	}
 }

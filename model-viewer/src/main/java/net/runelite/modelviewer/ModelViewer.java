@@ -24,34 +24,46 @@
  */
 package net.runelite.modelviewer;
 
-import com.google.gson.Gson;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import java.awt.Color;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import net.runelite.cache.ConfigType;
 import net.runelite.cache.IndexType;
+import net.runelite.cache.NpcManager;
 import net.runelite.cache.ObjectManager;
 import net.runelite.cache.OverlayManager;
 import net.runelite.cache.SpriteManager;
 import net.runelite.cache.TextureManager;
 import net.runelite.cache.UnderlayManager;
+import net.runelite.cache.definitions.FrameDefinition;
+import net.runelite.cache.definitions.FramemapDefinition;
 import net.runelite.cache.definitions.KitDefinition;
 import net.runelite.cache.definitions.LocationsDefinition;
 import net.runelite.cache.definitions.MapDefinition;
 import net.runelite.cache.definitions.ModelDefinition;
 import net.runelite.cache.definitions.NpcDefinition;
 import net.runelite.cache.definitions.ObjectDefinition;
+import net.runelite.cache.definitions.SequenceDefinition;
 import net.runelite.cache.definitions.SpriteDefinition;
 import net.runelite.cache.definitions.TextureDefinition;
+import net.runelite.cache.definitions.loaders.FrameLoader;
+import net.runelite.cache.definitions.loaders.FramemapLoader;
 import net.runelite.cache.definitions.loaders.LocationsLoader;
 import net.runelite.cache.definitions.loaders.MapLoader;
+import net.runelite.cache.definitions.loaders.SequenceLoader;
 import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.ArchiveFiles;
+import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
@@ -87,13 +99,15 @@ public class ModelViewer
 	 * size of a tile in local coordinates
 	 */
 	private static final int TILE_SCALE = 128;
-	private static final int HEIGHT_MOD = 4;
 
 	private static ObjectManager objectManager;
 	private static TextureManager textureManager;
 	private static SpriteManager spriteManager;
+	private static ModelManager modelManager;
 
 	private static Map<Integer, Texture> textures = new HashMap<>();
+	private static Map<Integer, SequenceDefinition> seqs = new HashMap<>();
+	private static Multimap<Integer, FrameDefinition> frames = HashMultimap.create();
 
 	public static void main(String[] args) throws Exception
 	{
@@ -101,8 +115,6 @@ public class ModelViewer
 
 		options.addOption(null, "store", true, "store directory");
 
-		options.addOption(null, "npcdir", true, "npc directory");
-		options.addOption(null, "mapdir", true, "maps directory");
 		options.addOption(null, "objectdir", true, "objects directory");
 
 		options.addOption(null, "npc", true, "npc to render");
@@ -110,19 +122,18 @@ public class ModelViewer
 		options.addOption(null, "model", true, "model to render");
 		options.addOption(null, "map", true, "map region to render");
 		options.addOption(null, "kits", true, "kits to render");
+		options.addOption(null, "seq", true, "sequence id");
 
 		CommandLineParser parser = new DefaultParser();
 		CommandLine cmd = parser.parse(options, args);
-
-		String npcdir = cmd.getOptionValue("npcdir");
-		String mapdir = cmd.getOptionValue("mapdir");
-		String objectdir = cmd.getOptionValue("objectdir");
 
 		NpcDefinition npcdef = null;
 		ObjectDefinition objdef = null;
 		Store store = null;
 		UnderlayManager underlayManager = null;
 		OverlayManager overlayManager = null;
+		NpcManager npcManager = null;
+		Integer seq = null;
 
 		List<ModelDefinition> models = new ArrayList<>();
 		Region region = null;
@@ -146,27 +157,35 @@ public class ModelViewer
 
 			spriteManager = new SpriteManager(store);
 			spriteManager.load();
+
+			npcManager = new NpcManager(store);
+			npcManager.load();
+
+			modelManager = new ModelManager(store);
+
+			if (cmd.hasOption("seq"))
+			{
+				loadSeqs(store);
+				loadFrames(store);
+			}
 		}
 		if (cmd.hasOption("model"))
 		{
 			// render model
 			String model = cmd.getOptionValue("model");
 
-			ModelDefinition md = ModelManager.getModel(Integer.parseInt(model), null, null);
+			ModelDefinition md = modelManager.getModel(Integer.parseInt(model), null, null);
 			models.add(md);
 		}
 		if (cmd.hasOption("npc"))
 		{
 			String npc = cmd.getOptionValue("npc");
 
-			try (FileInputStream fin = new FileInputStream(npcdir + "/" + npc + ".json"))
-			{
-				npcdef = new Gson().fromJson(new InputStreamReader(fin), NpcDefinition.class);
-			}
+			npcdef = npcManager.get(Integer.parseInt(npc));
 
 			for (int model : npcdef.models)
 			{
-				ModelDefinition md = ModelManager.getModel(model, null, null);
+				ModelDefinition md = modelManager.getModel(model, null, null);
 				models.add(md);
 			}
 		}
@@ -174,14 +193,11 @@ public class ModelViewer
 		{
 			String obj = cmd.getOptionValue("object");
 
-			try (FileInputStream fin = new FileInputStream(objectdir + "/" + obj + ".json"))
-			{
-				objdef = new Gson().fromJson(new InputStreamReader(fin), ObjectDefinition.class);
-			}
+			objdef = objectManager.getObject(Integer.parseInt(obj));
 
 			for (int model : objdef.getObjectModels())
 			{
-				ModelDefinition md = ModelManager.getModel(model, null, null);
+				ModelDefinition md = modelManager.getModel(model, null, null);
 				models.add(md);
 			}
 		}
@@ -228,10 +244,14 @@ public class ModelViewer
 				KitDefinition kit = KitManager.getKit(kitId);
 				for (int model : kit.modelIds)
 				{
-					ModelDefinition md = ModelManager.getModel(model, null, null);
+					ModelDefinition md = modelManager.getModel(model, null, null);
 					models.add(md);
 				}
 			}
+		}
+		if (cmd.hasOption("seq"))
+		{
+			seq = Integer.parseInt(cmd.getOptionValue("seq"));
 		}
 
 		Display.setDisplayMode(new DisplayMode(800, 600));
@@ -259,13 +279,65 @@ public class ModelViewer
 		long last = 0;
 
 		Camera camera = new Camera();
-		Scene scene = new Scene(underlayManager, overlayManager);
-		scene.loadRegion(region);
+		Scene scene = null;
+		if (region != null)
+		{
+			scene = new Scene(underlayManager, overlayManager);
+			scene.loadRegion(region);
+		}
+
+		SequenceDefinition sequenceDefinition = null;
+		int frameCount = 0;
+		int frameLength = 0;
+		if (seq != null)
+		{
+			sequenceDefinition = seqs.get(seq);
+			frameCount = 0;
+			frameLength = sequenceDefinition.frameLenghts[0];
+		}
 
 		while (!Display.isCloseRequested())
 		{
 			// Clear the screen and depth buffer
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+
+			if (seq != null)
+			{
+				if (frameLength-- <= 0)
+				{
+					frameCount++;
+					frameLength = sequenceDefinition.frameLenghts[frameCount % sequenceDefinition.frameIDs.length];
+				}
+
+				int seqFrameId = sequenceDefinition.frameIDs[frameCount % sequenceDefinition.frameIDs.length];
+				Collection<FrameDefinition> frames = ModelViewer.frames.get(seqFrameId >>> 16);
+				int frameFileId = seqFrameId & 65535;
+
+				Optional<FrameDefinition> first = frames.stream().filter(frame -> frame.id == frameFileId).findFirst();
+				FrameDefinition frame = first.get();
+				FramemapDefinition framemap = frame.framemap;
+
+				ModelDefinition.animOffsetX = ModelDefinition.animOffsetY = ModelDefinition.animOffsetZ = 0;
+
+				for (ModelDefinition def : models)
+				{
+					def.resetAnim();
+				}
+				for (int i = 0; i < frame.translatorCount; ++i)
+				{
+					int type = frame.indexFrameIds[i];
+					int fmType = framemap.types[type];
+					int[] fm = framemap.frameMaps[type];
+					int dx = frame.translator_x[i];
+					int dy = frame.translator_y[i];
+					int dz = frame.translator_z[i];
+
+					for (ModelDefinition def : models)
+					{
+						def.animate(fmType, fm, dx, dy, dz);
+					}
+				}
+			}
 
 			for (ModelDefinition def : models)
 			{
@@ -284,11 +356,13 @@ public class ModelViewer
 				drawModel(def, recolourToFind, recolourToReplace);
 			}
 
-			drawScene(region, scene);
-			//drawRegion(region);
+			if (region != null)
+			{
+				drawScene(region, scene);
+			}
 
 			Display.update();
-			Display.sync(20); // fps
+			Display.sync(50); // fps
 
 			long delta = System.currentTimeMillis() - last;
 			last = System.currentTimeMillis();
@@ -611,7 +685,7 @@ public class ModelViewer
 
 			int regionX = objectPos.getX() - region.getBaseX();
 			int regionY = objectPos.getY() - region.getBaseY();
-			int height = -region.getTileHeight(objectPos.getZ(), regionX, regionY); // / HEIGHT_MOD;
+			int height = -region.getTileHeight(objectPos.getZ(), regionX, regionY);
 
 			GL11.glMatrixMode(GL11.GL_MODELVIEW);
 			// TILE_SCALE/2 to draw the object from the center of the tile it is on
@@ -624,7 +698,7 @@ public class ModelViewer
 					continue;
 				}
 
-				ModelDefinition md = ModelManager.getModel(object.getObjectModels()[i], object, location);
+				ModelDefinition md = modelManager.getModel(object.getObjectModels()[i], object, location);
 
 				if (md == null)
 				{
@@ -700,6 +774,55 @@ public class ModelViewer
 		textures.put(id, texture);
 
 		return texture;
+	}
+
+	private static void loadSeqs(Store store) throws IOException
+	{
+		Storage storage = store.getStorage();
+		Index index = store.getIndex(IndexType.CONFIGS);
+		Archive archive = index.getArchive(ConfigType.SEQUENCE.getId());
+
+		byte[] archiveData = storage.loadArchive(archive);
+		ArchiveFiles files = archive.getFiles(archiveData);
+
+		for (FSFile file : files.getFiles())
+		{
+			SequenceLoader loader = new SequenceLoader();
+			SequenceDefinition seq = loader.load(file.getFileId(), file.getContents());
+
+			seqs.put(file.getFileId(), seq);
+		}
+	}
+
+	private static void loadFrames(Store store) throws IOException
+	{
+		Storage storage = store.getStorage();
+		Index frameIndex = store.getIndex(IndexType.FRAMES);
+		Index framemapIndex = store.getIndex(IndexType.FRAMEMAPS);
+
+		for (Archive archive : frameIndex.getArchives())
+		{
+			byte[] archiveData = storage.loadArchive(archive);
+			ArchiveFiles archiveFiles = archive.getFiles(archiveData);
+			for (FSFile archiveFile : archiveFiles.getFiles())
+			{
+				byte[] contents = archiveFile.getContents();
+
+				int framemapArchiveId = (contents[0] & 0xff) << 8 | contents[1] & 0xff;
+
+				Archive framemapArchive = framemapIndex.getArchives().get(framemapArchiveId);
+				archiveData = storage.loadArchive(framemapArchive);
+				byte[] framemapContents = framemapArchive.decompress(archiveData);
+
+				FramemapLoader fmloader = new FramemapLoader();
+				FramemapDefinition framemap = fmloader.load(framemapArchive.getArchiveId(), framemapContents);
+
+				FrameLoader frameLoader = new FrameLoader();
+				FrameDefinition frame = frameLoader.load(framemap, archiveFile.getFileId(), contents);
+
+				frames.put(archive.getArchiveId(), frame);
+			}
+		}
 	}
 
 	// found these two functions here https://www.rune-server.org/runescape-development/rs2-client/tools/589900-rs2-hsb-color-picker.html

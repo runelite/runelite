@@ -59,10 +59,11 @@ public class ShopItemQuery extends WidgetItemQuery
 			Widget[] children = shop.getDynamicChildren();
 			for (int i = 1; i < children.length; i++)
 			{
+				Widget child = children[i];
 				// set bounds to same size as default inventory
-				Rectangle bounds = children[i].getBounds();
+				Rectangle bounds = child.getBounds();
 				bounds.setBounds(bounds.x - 1, bounds.y - 1, 32, 32);
-				widgetItems.add(new WidgetItem(children[i].getItemId(), children[i].getItemQuantity(), i - 1, bounds));
+				widgetItems.add(new WidgetItem(child.getItemId(), child.getItemQuantity(), i - 1, bounds));
 			}
 		}
 		return widgetItems;

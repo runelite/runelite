@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,47 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.mapping;
+package net.runelite.client.plugins.corp;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.NPC;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(
-	{
-		ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD
-	})
-public @interface ObfuscatedSignature
+class CoreOverlay extends Overlay
 {
-	String signature();
+	private final Client client;
+	private final CorpPlugin corpPlugin;
 
-	String garbageValue() default ""; // valid garbage value for last parameter. can't be an Object because Java.
+	@Inject
+	private CoreOverlay(Client client, CorpPlugin corpPlugin)
+	{
+		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_SCENE);
+		this.client = client;
+		this.corpPlugin = corpPlugin;
+	}
+
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		NPC core = corpPlugin.getCore();
+		if (core != null)
+		{
+			Polygon canvasTilePoly = core.getCanvasTilePoly();
+			if (canvasTilePoly != null)
+			{
+				OverlayUtil.renderPolygon(graphics, canvasTilePoly, Color.RED.brighter());
+			}
+		}
+
+		return null;
+	}
 }

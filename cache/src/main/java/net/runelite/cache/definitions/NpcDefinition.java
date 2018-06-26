@@ -34,7 +34,7 @@ public class NpcDefinition
 
 	public final int id;
 	public short[] recolorToFind;
-	public int anInt2156 = 32;
+	public int rotation = 32;
 	public String name = "null";
 	public short[] recolorToReplace;
 	public int[] models;
@@ -49,7 +49,7 @@ public class NpcDefinition
 	public int resizeX = 128;
 	public int contrast = 0;
 	public int rotate180Animation = -1;
-	public int anInt2174 = -1;
+	public int varbitIndex = -1;
 	public String[] options = new String[5];
 	public boolean renderOnMinimap = true;
 	public int combatLevel = -1;
@@ -58,9 +58,9 @@ public class NpcDefinition
 	public boolean hasRenderPriority = false;
 	public int ambient = 0;
 	public int headIcon = -1;
-	public int[] anIntArray2185;
+	public int[] configs;
 	public short[] retextureToFind;
-	public int anInt2187 = -1;
+	public int varpIndex = -1;
 	public boolean isClickable = true;
 	public int anInt2189 = -1;
 	public boolean aBool2190 = false;

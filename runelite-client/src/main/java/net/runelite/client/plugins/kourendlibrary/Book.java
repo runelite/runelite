@@ -32,7 +32,7 @@ import net.runelite.api.ItemID;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 
-public enum Book
+enum Book
 {
 	DARK_MANUSCRIPT_13514(ItemID.DARK_MANUSCRIPT),
 	DARK_MANUSCRIPT_13515(ItemID.DARK_MANUSCRIPT_13515),
@@ -89,12 +89,12 @@ public enum Book
 		return Collections.unmodifiableMap(byName);
 	}
 
-	public static Book byId(int id)
+	static Book byId(int id)
 	{
 		return BY_ID.get(id);
 	}
 
-	public static Book byName(String name)
+	static Book byName(String name)
 	{
 		return BY_NAME.get(name);
 	}

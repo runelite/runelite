@@ -385,11 +385,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("pay", option, target, true);
 			}
-
-			if (config.swapAge())
-			{
-				swap("age", option, target, true);
-			}
 		}
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
 		{

@@ -28,7 +28,7 @@ import lombok.Getter;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.Counter;
 
-public class PrayerCounter extends Counter
+class PrayerCounter extends Counter
 {
 	@Getter
 	private final PrayerType prayerType;

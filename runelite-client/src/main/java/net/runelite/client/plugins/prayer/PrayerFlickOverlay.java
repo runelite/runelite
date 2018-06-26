@@ -39,14 +39,14 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
-public class PrayerFlickOverlay extends Overlay
+class PrayerFlickOverlay extends Overlay
 {
 	private final Client client;
 	private boolean prayersActive = false;
 	private Instant startOfLastTick = Instant.now();
 
 	@Inject
-	public PrayerFlickOverlay(Client client)
+	private PrayerFlickOverlay(Client client)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
