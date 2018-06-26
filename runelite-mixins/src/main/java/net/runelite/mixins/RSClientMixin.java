@@ -35,6 +35,7 @@ import net.runelite.api.Friend;
 import net.runelite.api.GameState;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GraphicsObject;
+import net.runelite.api.HashTable;
 import net.runelite.api.HintArrowType;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.InventoryID;
@@ -61,6 +62,7 @@ import net.runelite.api.SpritePixels;
 import net.runelite.api.Tile;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.WidgetNode;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -321,9 +323,9 @@ public abstract class RSClientMixin implements RSClient
 	{
 		int topGroup = getWidgetRoot();
 		List<Widget> widgets = new ArrayList<Widget>();
-		for (Widget widget : getWidgets()[topGroup])
+		for (RSWidget widget : getWidgets()[topGroup])
 		{
-			if (widget != null && widget.getParentId() == -1)
+			if (widget != null && widget.getRSParentId() == -1)
 			{
 				widgets.add(widget);
 			}
@@ -343,7 +345,7 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public Widget[] getGroup(int groupId)
+	public RSWidget[] getGroup(int groupId)
 	{
 		RSWidget[][] widgets = getWidgets();
 
@@ -352,15 +354,7 @@ public abstract class RSClientMixin implements RSClient
 			return null;
 		}
 
-		List<Widget> w = new ArrayList<Widget>();
-		for (Widget widget : widgets[groupId])
-		{
-			if (widget != null)
-			{
-				w.add(widget);
-			}
-		}
-		return w.toArray(new Widget[w.size()]);
+		return widgets[groupId];
 	}
 
 	@Inject
@@ -564,7 +558,7 @@ public abstract class RSClientMixin implements RSClient
 
 		for (Node node = head.getNext(); node != head; node = node.getNext())
 		{
-			graphicsObjects.add((GraphicsObject)node);
+			graphicsObjects.add((GraphicsObject) node);
 		}
 
 		return graphicsObjects;
@@ -1098,5 +1092,46 @@ public abstract class RSClientMixin implements RSClient
 	public void methodDraw(boolean var1)
 	{
 		callbacks.clientMainLoop();
+	}
+
+	@MethodHook("gameDraw")
+	@Inject
+	public static void gameDraw(Widget[] widgets, int parentId, int var2, int var3, int var4, int var5, int x, int y, int var8)
+	{
+		for (Widget rlWidget : widgets)
+		{
+			RSWidget widget = (RSWidget) rlWidget;
+			if (widget == null)
+			{
+				continue;
+			}
+
+			if (widget.getRSParentId() == parentId)
+			{
+				if (parentId != -1)
+				{
+					widget.setRenderParentId(parentId);
+				}
+				widget.setRenderX(x + widget.getRelativeX());
+				widget.setRenderY(y + widget.getRelativeY());
+			}
+
+			HashTable<WidgetNode> componentTable = client.getComponentTable();
+			WidgetNode childNode = componentTable.get(widget.getId());
+			if (childNode != null)
+			{
+				int widgetId = widget.getId();
+				int groupId = childNode.getId();
+				RSWidget[] children = client.getWidgets()[groupId];
+
+				for (RSWidget child : children)
+				{
+					if (child.getRSParentId() == -1)
+					{
+						child.setRenderParentId(widgetId);
+					}
+				}
+			}
+		}
 	}
 }

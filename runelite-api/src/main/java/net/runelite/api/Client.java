@@ -413,15 +413,6 @@ public interface Client extends GameEngine
 	Widget getWidget(WidgetInfo widget);
 
 	/**
-	 * Gets an array of widgets that correspond to the passed group ID.
-	 *
-	 * @param groupId the group ID
-	 * @return the widget group
-	 * @see net.runelite.api.widgets.WidgetID
-	 */
-	Widget[] getGroup(int groupId);
-
-	/**
 	 * Gets a widget by its raw group ID and child ID.
 	 * <p>
 	 * Note: Use {@link #getWidget(WidgetInfo)} for a more human-readable

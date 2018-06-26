@@ -40,6 +40,12 @@ public interface RSWidget extends Widget
 	@Override
 	int getId();
 
+	void setRenderParentId(int parentId);
+
+	void setRenderX(int x);
+
+	void setRenderY(int y);
+
 	@Import("parentId")
 	int getRSParentId();
 

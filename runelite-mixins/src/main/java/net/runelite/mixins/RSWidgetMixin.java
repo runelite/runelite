@@ -28,7 +28,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import net.runelite.api.Node;
+import net.runelite.api.HashTable;
 import net.runelite.api.Point;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.events.WidgetHiddenChanged;
@@ -42,8 +42,6 @@ import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.rs.api.RSClient;
-import net.runelite.rs.api.RSHashTable;
-import net.runelite.rs.api.RSNode;
 import net.runelite.rs.api.RSWidget;
 
 @Mixin(RSWidget.class)
@@ -56,6 +54,44 @@ public abstract class RSWidgetMixin implements RSWidget
 
 	@Inject
 	private static int rl$widgetLastPosChanged;
+
+	@Inject
+	private int rl$parentId;
+
+	@Inject
+	private int rl$x;
+
+	@Inject
+	private int rl$y;
+
+	@Inject
+	RSWidgetMixin()
+	{
+		rl$parentId = -1;
+		rl$x = -1;
+		rl$y = -1;
+	}
+
+	@Inject
+	@Override
+	public void setRenderParentId(int parentId)
+	{
+		rl$parentId = parentId;
+	}
+
+	@Inject
+	@Override
+	public void setRenderX(int x)
+	{
+		rl$x = x;
+	}
+
+	@Inject
+	@Override
+	public void setRenderY(int y)
+	{
+		rl$y = y;
+	}
 
 	@Inject
 	@Override
@@ -74,34 +110,27 @@ public abstract class RSWidgetMixin implements RSWidget
 	@Override
 	public int getParentId()
 	{
-		int parentId = getRSParentId();
-		if (parentId != -1)
-		{
-			return parentId;
-		}
+		int parentId = rl$parentId;
 
-		int groupId = TO_GROUP(getId());
-		RSHashTable componentTable = client.getComponentTable();
-		RSNode[] buckets = componentTable.getBuckets();
-		for (int i = 0; i < buckets.length; ++i)
+		if (parentId != -1 && getRSParentId() == -1)
 		{
-			Node node = buckets[i];
+			// if this happens, the widget is or was nested.
+			// rl$parentId is updated when drawing, but will not be updated when
+			// the widget is no longer reachable in the tree, leaving
+			// parent id potentially incorrect
 
-			// It looks like the first node in the bucket is always
-			// a sentinel
-			Node cur = node.getNext();
-			while (cur != node)
+			// check the parent in the component table
+			HashTable<WidgetNode> componentTable = client.getComponentTable();
+			WidgetNode widgetNode = componentTable.get(parentId);
+			if (widgetNode == null || widgetNode.getId() != TO_GROUP(getId()))
 			{
-				WidgetNode wn = (WidgetNode) cur;
-
-				if (groupId == wn.getId())
-				{
-					return (int) wn.getHash();
-				}
-				cur = cur.getNext();
+				// invalidate parent
+				rl$parentId = -1;
+				return -1;
 			}
 		}
-		return -1;
+
+		return parentId;
 	}
 
 	@Inject
@@ -153,42 +182,7 @@ public abstract class RSWidgetMixin implements RSWidget
 	@Override
 	public Point getCanvasLocation()
 	{
-		int x = 0;
-		int y = 0;
-		RSWidget cur;
-
-		for (cur = this; cur.getParent() != null; cur = (RSWidget) cur.getParent())
-		{
-			x += cur.getRelativeX();
-			y += cur.getRelativeY();
-
-			x -= cur.getScrollX();
-			y -= cur.getScrollY();
-		}
-
-		// cur is now the root
-		int[] widgetBoundsWidth = client.getWidgetPositionsX();
-		int[] widgetBoundsHeight = client.getWidgetPositionsY();
-
-		int boundsIndex = cur.getBoundsIndex();
-		if (boundsIndex != -1)
-		{
-			x += widgetBoundsWidth[boundsIndex];
-			y += widgetBoundsHeight[boundsIndex];
-
-			if (cur.getType() > 0)
-			{
-				x += cur.getRelativeX();
-				y += cur.getRelativeY();
-			}
-		}
-		else
-		{
-			x += cur.getRelativeX();
-			y += cur.getRelativeY();
-		}
-
-		return new Point(x, y);
+		return new Point(rl$x, rl$y);
 	}
 
 	@Inject
@@ -285,9 +279,9 @@ public abstract class RSWidgetMixin implements RSWidget
 		}
 
 		List<Widget> widgets = new ArrayList<Widget>();
-		for (Widget widget : children)
+		for (RSWidget widget : children)
 		{
-			if (widget != null && widget.getParentId() == getId())
+			if (widget != null && widget.getRSParentId() == getId())
 			{
 				widgets.add(widget);
 			}
@@ -300,50 +294,39 @@ public abstract class RSWidgetMixin implements RSWidget
 	public Widget[] getStaticChildren()
 	{
 		List<Widget> widgets = new ArrayList<Widget>();
-		for (Widget widget : client.getGroup(TO_GROUP(getId())))
+		for (RSWidget widget : client.getGroup(TO_GROUP(getId())))
 		{
-			if (widget != null && widget.getParentId() == getId())
+			if (widget != null && widget.getRSParentId() == getId())
 			{
 				widgets.add(widget);
 			}
 		}
-		return widgets.toArray(new Widget[widgets.size()]);
+		return widgets.toArray(new RSWidget[widgets.size()]);
 	}
 
 	@Inject
 	@Override
 	public Widget[] getNestedChildren()
 	{
-		RSHashTable componentTable = client.getComponentTable();
-		int group = -1;
+		HashTable<WidgetNode> componentTable = client.getComponentTable();
 
-		// XXX can actually use hashtable lookup instead of table
-		// iteration here...
-		for (Node node : componentTable.getNodes())
+		WidgetNode wn = componentTable.get(getId());
+		if (wn == null)
 		{
-			WidgetNode wn = (WidgetNode) node;
-
-			if (wn.getHash() == getId())
-			{
-				group = wn.getId();
-				break;
-			}
+			return new RSWidget[0];
 		}
 
-		if (group == -1)
-		{
-			return new Widget[0];
-		}
+		int group = wn.getId();
 
-		List<Widget> widgets = new ArrayList<Widget>();
-		for (Widget widget : client.getGroup(group))
+		List<RSWidget> widgets = new ArrayList<RSWidget>();
+		for (RSWidget widget : client.getGroup(group))
 		{
-			if (widget != null && widget.getParentId() == getId())
+			if (widget != null && widget.getRSParentId() == -1)
 			{
 				widgets.add(widget);
 			}
 		}
-		return widgets.toArray(new Widget[widgets.size()]);
+		return widgets.toArray(new RSWidget[widgets.size()]);
 	}
 
 	@Inject
@@ -373,7 +356,9 @@ public abstract class RSWidgetMixin implements RSWidget
 			{
 				// if the widget is hidden it will not magically unhide from its parent changing
 				if (child == null || child.isSelfHidden())
+				{
 					continue;
+				}
 
 				child.broadcastHidden(hidden);
 			}
@@ -386,7 +371,9 @@ public abstract class RSWidgetMixin implements RSWidget
 		for (Widget nestedChild : nestedChildren)
 		{
 			if (nestedChild == null || nestedChild.isSelfHidden())
+			{
 				continue;
+			}
 
 			((RSWidget) nestedChild).broadcastHidden(hidden);
 		}
