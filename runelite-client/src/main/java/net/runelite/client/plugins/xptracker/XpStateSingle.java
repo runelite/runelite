@@ -175,11 +175,13 @@ class XpStateSingle
 		if (weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.CONTROLLED))
 		{
 			return sharedXPModifier;
-		} else if (weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.LONGRANGE))
+		}
+		else if (weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.LONGRANGE))
 		{
 			return longRangedXPModifier;
-		} else
-			{
+		}
+		else
+		{
 			return defaultModifier;
 		}
 	}
