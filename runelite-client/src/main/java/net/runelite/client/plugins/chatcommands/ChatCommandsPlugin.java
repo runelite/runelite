@@ -177,7 +177,6 @@ public class ChatCommandsPlugin extends Plugin
 			log.debug("Running clue lookup for {}", search);
 			executor.submit(() -> playerClueLookup(setMessage.getType(), setMessage, search));
 		}
-
 	}
 
 	/**
