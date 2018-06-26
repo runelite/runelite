@@ -56,4 +56,15 @@ public interface ChatCommandsConfig extends Config
 	{
 		return true;
 	}
+
+    @ConfigItem(
+            position = 2,
+            keyName = "calc",
+            name = "Calc Command",
+            description = "Configures whether the calculator command is enabled"
+    )
+    default boolean calc()
+    {
+        return true;
+    }
 }

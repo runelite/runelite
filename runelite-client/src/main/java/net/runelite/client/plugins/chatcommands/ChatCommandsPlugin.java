@@ -156,6 +156,13 @@ public class ChatCommandsPlugin extends Plugin
 			log.debug("Running level lookup for {}", search);
 			executor.submit(() -> playerSkillLookup(setMessage.getType(), setMessage, search));
 		}
+        else if (config.calc() && message.toLowerCase().startsWith("!calc") && message.length() > 6)
+        {
+            String strEqn = message.substring(6);
+			log.debug("Running calc, eqn = {}", strEqn);
+
+            executor.submit(() -> calculate(setMessage.getMessageNode(), strEqn));
+		}
 	}
 
 	/**
@@ -283,6 +290,46 @@ public class ChatCommandsPlugin extends Plugin
 			log.warn("unable to look up skill {} for {}", skill, search, ex);
 		}
 	}
+
+    /**
+     * Calculates a simple equation and changes the original message to the
+     * response.
+     *
+     * @param messageNode The chat message containing the command.
+     * @param eqn The equation to calculate.
+     */
+    private void calculate(MessageNode messageNode, String eqn)
+    {
+        String result;
+
+        ChatMessageBuilder builder = new ChatMessageBuilder();
+
+        try
+        {
+             result = String.valueOf(Calculator.eval(eqn));
+                builder.append(ChatColorType.NORMAL)
+                .append("Calc: " + eqn + " = ")
+                .append(ChatColorType.HIGHLIGHT)
+                .append(result);
+
+        }
+        catch (Exception ex)
+        {
+            // log.warn("Unable to search for item {}", search, ex);
+            result = "Calc: Unable to calculate expression: " + eqn;
+            builder.append(ChatColorType.HIGHLIGHT)
+                    .append(result);
+            //log.warn("Calculator exception: ", ex);
+        }
+
+            String response = builder.build();
+
+            log.debug("Setting response {}", response);
+            messageNode.setRuneLiteFormatMessage(response);
+            chatMessageManager.update(messageNode);
+            client.refreshChat();
+
+    }
 
 	/**
 	 * Compares the names of the items in the list with the original input.
