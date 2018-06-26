@@ -339,10 +339,9 @@ public class ReorderPrayersPlugin extends Plugin
 
 	private PrayerTabState getPrayerTabState()
 	{
-		HashTable componentTable = client.getComponentTable();
-		for (Node node : componentTable.getNodes())
+		HashTable<WidgetNode> componentTable = client.getComponentTable();
+		for (WidgetNode widgetNode : componentTable.getNodes())
 		{
-			WidgetNode widgetNode = (WidgetNode) node;
 			if (widgetNode.getId() == WidgetID.PRAYER_GROUP_ID)
 			{
 				return PrayerTabState.PRAYERS;
