@@ -58,10 +58,10 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
-		keyName = "clue",
-		name = "Clue Command",
-		description = "Configures whether the Clue command is enabled"
+			position = 2,
+			keyName = "clue",
+			name = "Clue Command",
+			description = "Configures whether the Clue command is enabled"
 	)
 	default boolean clue()
 	{
@@ -69,10 +69,10 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
-		keyName = "clearShortcuts",
-		name = "Clear shortcuts",
-		description = "Enable shortcuts (ctrl+w and backspace) for clearing the chatbox"
+			position = 3,
+			keyName = "clearShortcuts",
+			name = "Clear shortcuts",
+			description = "Enable shortcuts (ctrl+w and backspace) for clearing the chatbox"
 	)
 	default boolean clearShortcuts()
 	{
@@ -80,15 +80,13 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
-		keyName = "calc",
-		name = "Calc Command",
-		description = "Configures whether the calculator command is enabled"
+			position = 2,
+			keyName = "calc",
+			name = "Calc Command",
+			description = "Configures whether the calculator command is enabled"
 	)
-
 	default boolean calc()
 	{
 		return true;
 	}
-	
 }
