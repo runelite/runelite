@@ -75,7 +75,7 @@ public class Calculator
 			{
 				Operator op = (Operator) expr;
 
-				if(op == Operator.ADDITION || op == Operator.MULTIPLICATION) 
+				if (op == Operator.ADDITION || op == Operator.MULTIPLICATION) 
 				{
 					d1 = operandStack.pop();
 					d2 = operandStack.pop();
@@ -91,7 +91,7 @@ public class Calculator
 
 
 			}
-			else if(expr instanceof Double)
+			else if (expr instanceof Double)
 			{
 				operandStack.add((Double) expr);
 			}
@@ -120,12 +120,12 @@ public class Calculator
 		for (String token : tokens)
 		{
 
-			if(isNumeric(token))
+			if (isNumeric(token))
 			{
 				outputQueue.offer(Double.parseDouble(token));
 			}
 
-			if(isFunction(token))
+			if (isFunction(token))
 			{
 				Operator op = getOp(token);
 
