@@ -24,6 +24,7 @@
  */
 package net.runelite.mixins;
 
+import net.runelite.api.AnimationID;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.mixins.Copy;
@@ -115,7 +116,8 @@ public abstract class RSNPCMixin implements RSNPC
 	@Replace("getModel")
 	public RSModel rl$getModel()
 	{
-		if (!client.isInterpolateNpcAnimations())
+		if (!client.isInterpolateNpcAnimations()
+			|| getAnimation() == AnimationID.HELLHOUND_DEFENCE)
 		{
 			return rs$getModel();
 		}

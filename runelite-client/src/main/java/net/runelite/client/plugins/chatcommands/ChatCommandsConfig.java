@@ -67,4 +67,15 @@ public interface ChatCommandsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "clearShortcuts",
+		name = "Clear shortcuts",
+		description = "Enable shortcuts (ctrl+w and backspace) for clearing the chatbox"
+	)
+	default boolean clearShortcuts()
+	{
+		return true;
+	}
 }
