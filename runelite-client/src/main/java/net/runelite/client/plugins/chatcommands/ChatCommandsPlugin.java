@@ -305,45 +305,45 @@ public class ChatCommandsPlugin extends Plugin
 		}
 	}
 
-    /**
-     * Calculates a simple equation and changes the original message to the
-     * response.
-     *
-     * @param messageNode The chat message containing the command.
-     * @param eqn The equation to calculate.
-     */
-    private void calculate(MessageNode messageNode, String eqn)
-    {
-        String result;
+	/**
+	 * Calculates a simple equation and changes the original message to the
+	 * response.
+	 *
+	 * @param messageNode The chat message containing the command.
+	 * @param eqn The equation to calculate.
+	 */
+	private void calculate(MessageNode messageNode, String eqn)
+	{
+		String result;
 
-        ChatMessageBuilder builder = new ChatMessageBuilder();
+		ChatMessageBuilder builder = new ChatMessageBuilder();
 
-        try
-        {
-             result = String.valueOf(Calculator.eval(eqn));
-                builder.append(ChatColorType.NORMAL)
-                .append("Calc: " + eqn + " = ")
-                .append(ChatColorType.HIGHLIGHT)
-                .append(result);
+		try
+		{
+			result = String.valueOf(Calculator.eval(eqn));
+			builder.append(ChatColorType.NORMAL)
+					.append("Calc: " + eqn + " = ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(result);
 
-        }
-        catch (Exception ex)
-        {
-            // log.warn("Unable to search for item {}", search, ex);
-            result = "Calc: Unable to calculate expression: " + eqn;
-            builder.append(ChatColorType.HIGHLIGHT)
-                    .append(result);
-            //log.warn("Calculator exception: ", ex);
-        }
+		}
+		catch (Exception ex)
+		{
+			// log.warn("Unable to search for item {}", search, ex);
+			result = "Calc: Unable to calculate expression: " + eqn;
+			builder.append(ChatColorType.HIGHLIGHT)
+					.append(result);
+			//log.warn("Calculator exception: ", ex);
+		}
 
-            String response = builder.build();
+		String response = builder.build();
 
-            log.debug("Setting response {}", response);
-            messageNode.setRuneLiteFormatMessage(response);
-            chatMessageManager.update(messageNode);
-            client.refreshChat();
+		log.debug("Setting response {}", response);
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
+		client.refreshChat();
 
-    }
+	}
 
 	/**
 	 * Looks up the quantities of clues completed
