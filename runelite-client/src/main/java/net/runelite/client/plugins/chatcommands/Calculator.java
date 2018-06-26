@@ -12,16 +12,19 @@ import java.util.function.BinaryOperator;
  * @author IronApeiron
  *         Date Created: 2018-06-25
  */
-public class Calculator {
+public class Calculator 
+{
 
 
-	enum Operator{
+	enum Operator
+	{
 		ADDITION("+", 2, Associativity.LEFT, (x, y) -> x + y), SUBTRACTION("-", 1, Associativity.LEFT, (x, y) -> x - y),
 		MULTIPLICATION("*", 3, Associativity.LEFT, (x, y) -> x * y), DIVISION("/", 4, Associativity.LEFT, (x, y) -> x / y),
 		EXPONENTIATION("^", 5, Associativity.RIGHT, Math::pow), LEFT_BRACKET("(", 6, Associativity.NONE, null),
 		RIGHT_BRACKET(")", 6, Associativity.NONE, null);
 
-		enum Associativity{
+		enum Associativity
+		{
 			LEFT, RIGHT, NONE
 		}
 
@@ -30,7 +33,8 @@ public class Calculator {
 		Associativity associativity;
 		BinaryOperator<Double> func;
 
-		Operator(String symbol, int precedence, Associativity associativity, BinaryOperator<Double> func){
+		Operator (String symbol, int precedence, Associativity associativity, BinaryOperator<Double> func)
+		{
 			this.symbol = symbol;
 			this.precedence = precedence;
 			this.associativity = associativity;
@@ -48,7 +52,8 @@ public class Calculator {
 	 * @param eqn An infix expression.
 	 * @return The evaluation of the infix expression.
 	 */
-	protected static double eval(String eqn) throws IllegalFormatException{
+	protected static double eval(String eqn) throws IllegalFormatException
+	{
 		return evalRevPolish(toRevPolishNotation(eqn));
 	}
 
@@ -58,19 +63,25 @@ public class Calculator {
 	 * @param revPolishEqn An equation to be evaluated in reverse polish notation represented by tokens in a queue.
 	 * @return The evaluation of the expression.
 	 */
-	protected static double evalRevPolish(Queue<Object> revPolishEqn){
+	protected static double evalRevPolish(Queue<Object> revPolishEqn)
+	{
 		double d1, d2;
 
 		Stack<Double> operandStack = new Stack<>();
 
-		for(Object expr : revPolishEqn){
-			if(expr instanceof Operator){
+		for (Object expr : revPolishEqn)
+		{
+			if (expr instanceof Operator)
+			{
 				Operator op = (Operator) expr;
 
-				if(op == Operator.ADDITION || op == Operator.MULTIPLICATION) {
+				if(op == Operator.ADDITION || op == Operator.MULTIPLICATION) 
+				{
 					d1 = operandStack.pop();
 					d2 = operandStack.pop();
-				}else{
+				}
+				else
+				{
 					d2 = operandStack.pop();
 					d1 = operandStack.pop();
 				}
@@ -79,7 +90,9 @@ public class Calculator {
 				operandStack.add(op.func.apply(d1, d2));
 
 
-			}else if(expr instanceof Double){
+			}
+			else if(expr instanceof Double)
+			{
 				operandStack.add((Double) expr);
 			}
 		}
@@ -96,38 +109,46 @@ public class Calculator {
 	 *
 	 * @return The reverse polish notational equivalent to eqn.
 	 */
-	protected static Queue<Object> toRevPolishNotation(String eqn){
+	protected static Queue<Object> toRevPolishNotation(String eqn)
+	{
 		eqn = eqn.replaceAll("\\s+", "");
 		String[] tokens = eqn.split("(?<=op)|(?=op)".replace("op", "[-+*^/()]"));
 
 		Queue<Object> outputQueue = new LinkedList<>();
 		Stack<Operator> opStack = new Stack<>();
 
-		for(String token : tokens){
+		for (String token : tokens)
+		{
 
-			if(isNumeric(token)){
+			if(isNumeric(token))
+			{
 				outputQueue.offer(Double.parseDouble(token));
 			}
 
-			if(isFunction(token)){
+			if(isFunction(token))
+			{
 				Operator op = getOp(token);
 
-				while(!opStack.isEmpty() &&
+				while (!opStack.isEmpty() &&
 						((opStack.peek().precedence > op.precedence || (opStack.peek().precedence == op.precedence && op.associativity == Operator.Associativity.LEFT))
-								&& opStack.peek() != Operator.LEFT_BRACKET)){
+								&& opStack.peek() != Operator.LEFT_BRACKET))
+				{
 					outputQueue.offer(opStack.pop());
 				}
 
 				opStack.push(op);
 			}
 
-			if(token.equals("(")){
+			if (token.equals("("))
+			{
 				opStack.push(Operator.LEFT_BRACKET);
 			}
 
 
-			if(token.equals(")")){
-				while (!opStack.isEmpty() && opStack.peek() != Operator.LEFT_BRACKET){
+			if (token.equals(")"))
+			{
+				while (!opStack.isEmpty() && opStack.peek() != Operator.LEFT_BRACKET)
+				{
 					outputQueue.offer(opStack.pop());
 				}
 
@@ -136,24 +157,28 @@ public class Calculator {
 
 		}
 
-		while (!opStack.isEmpty()){
+		while (!opStack.isEmpty())
+		{
 			outputQueue.offer(opStack.pop());
 		}
 
 		return outputQueue;
 	}
 
-	private static boolean isFunction(String op){
+	private static boolean isFunction(String op)
+	{
 		return Arrays.stream(Operator.values()).anyMatch(e -> e.symbol.equals(op)
 				&& e != Operator.LEFT_BRACKET
 				&& e != Operator.RIGHT_BRACKET);
 	}
 
-	private static Operator getOp(String op){
+	private static Operator getOp(String op)
+	{
 		return Arrays.stream(Operator.values()).filter(e -> e.symbol.equals(op)).findFirst().orElseThrow(() -> new UnsupportedOperationException(String.format("Unsupported type %s.", op)));
 	}
 
-	private static boolean isNumeric(String s) {
+	private static boolean isNumeric(String s) 
+	{
 		return s != null && s.matches("[-+]?\\d*\\.?\\d+");
 	}
 }
