@@ -692,7 +692,7 @@ public interface Client extends GameEngine
 	 * @return the widget node component table
 	 * @see WidgetNode
 	 */
-	HashTable getComponentTable();
+	HashTable<WidgetNode> getComponentTable();
 
 	/**
 	 * Gets an array of current grand exchange offers.
