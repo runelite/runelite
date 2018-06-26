@@ -164,7 +164,7 @@ class XpStateSingle
 					avgHealth = opponentHealth;
 					lastOpponent = opponent;
 				}
-				else if(avgHealth != 0)
+				else if (avgHealth != 0)
 				{
 					avgHealth = (int) Math.floor((avgHealth + opponentHealth) / 2);
 				}
