@@ -30,7 +30,6 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import javax.inject.Inject;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,13 +66,6 @@ class XpStateSingle
 	private boolean actionsHistoryInitialized = false;
 	private int[] actionExps = new int[10];
 	private int actionExpIndex = 0;
-
-	//public XpStateSingle(Skill skill, Client client, int initXp)
-	//{
-	//	this.client = client;
-	//	this.startXp = initXp;
-	//	this.skill = skill;
-	//}
 
 
 	private int getCurrentXp()
