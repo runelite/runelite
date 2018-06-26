@@ -329,7 +329,6 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		catch (Exception ex)
 		{
-			// log.warn("Unable to search for item {}", search, ex);
 			result = "Calc: Unable to calculate expression: " + eqn;
 			builder.append(ChatColorType.HIGHLIGHT)
 				.append(result);
