@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.xpglobes;
 
-import com.google.common.collect.ImmutableList;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -36,15 +35,19 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.time.Instant;
+import java.time.Duration;
 import java.util.List;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Skill;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.SkillIconManager;
+import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -61,6 +64,8 @@ public class XpGlobesOverlay extends Overlay
 	private final XpGlobesConfig config;
 	private final XpTrackerService xpTrackerService;
 	private final PanelComponent xpTooltip = new PanelComponent();
+	private Actor lastOpponent;
+	private Instant lastInteracting;
 
 	@Inject
 	private SkillIconManager iconManager;
@@ -74,7 +79,7 @@ public class XpGlobesOverlay extends Overlay
 
 	private static final int TOOLTIP_RECT_SIZE_X = 150;
 
-	private static final ImmutableList<Skill> combat = ImmutableList.of(Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.HITPOINTS);
+	private static final Duration COMBAT_TIMEOUT = Duration.ofSeconds(30);
 
 	@Inject
 	public XpGlobesOverlay(Client client, XpGlobesPlugin plugin, XpGlobesConfig config, XpTrackerService xpTrackerService)
@@ -250,10 +255,12 @@ public class XpGlobesOverlay extends Overlay
 		if (mouseOverSkill.getGoalXp() != -1)
 		{
 			Skill selectedSkill = mouseOverSkill.getSkill();
-			int actionsLeft = combat.contains(selectedSkill)
-					? xpTrackerService.getKillsLeft(selectedSkill)
-					: xpTrackerService.getActionsLeft(selectedSkill);
-			if (actionsLeft == Integer.MAX_VALUE)
+			int actionsLeft;
+			if (XpTrackerPlugin.COMBAT.contains(selectedSkill))
+			{
+				actionsLeft = xpTrackerService.getKillsLeft(selectedSkill);
+			}
+			else
 			{
 				actionsLeft = xpTrackerService.getActionsLeft(selectedSkill);
 			}
@@ -261,10 +268,10 @@ public class XpGlobesOverlay extends Overlay
 			{
 				String actionsLeftString = decimalFormat.format(actionsLeft);
 				xpTooltip.getChildren().add(LineComponent.builder()
-						.left(getActionKillsText(selectedSkill))
-						.leftColor(Color.ORANGE)
-						.right(actionsLeftString)
-						.build());
+					.left(getActionKillsText(selectedSkill))
+					.leftColor(Color.ORANGE)
+					.right(actionsLeftString)
+					.build());
 			}
 
 			int xpLeft = mouseOverSkill.getGoalXp() - mouseOverSkill.getCurrentXp();
@@ -299,10 +306,34 @@ public class XpGlobesOverlay extends Overlay
 
 	private String getActionKillsText(Skill skillName)
 	{
+		if (!XpTrackerPlugin.COMBAT.contains(skillName))
+		{
+			return "Actions left:";
+		}
 
-		return (combat.contains(skillName) && client.getLocalPlayer().getInteracting() != null)
-				? "Kills left:"
-				: "Actions left:";
+		Actor opponent = client.getLocalPlayer().getInteracting();
+		boolean isPlayer = opponent instanceof Player;
+		String text = "Actions left:";
+		if (opponent != null
+			&& !isPlayer
+			&& opponent.getCombatLevel() > 0)
+		{
+			lastOpponent = opponent;
+		}
+
+		if (lastOpponent != null)
+		{
+			lastInteracting = Instant.now();
+			text = "Kills left:";
+		}
+
+		if (lastInteracting != null && Instant.now().compareTo(lastInteracting.plus(COMBAT_TIMEOUT)) >= 0)
+		{
+			lastInteracting = null;
+			lastOpponent = null;
+			text = "Actions left:";
+		}
+
+		return text;
 	}
-
 }

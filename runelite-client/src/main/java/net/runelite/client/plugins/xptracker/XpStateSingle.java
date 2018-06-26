@@ -25,10 +25,13 @@
  */
 package net.runelite.client.plugins.xptracker;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +45,6 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.client.plugins.attackstyles.AttackStyle;
 import net.runelite.client.plugins.attackstyles.WeaponType;
-import net.runelite.client.plugins.opponentinfo.OpponentInfoPlugin;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -50,8 +52,7 @@ class XpStateSingle
 {
 	private final Skill skill;
 
-	private final Map<String, Integer> oppInfoHealth = OpponentInfoPlugin.loadNpcHealth();
-	private static final List<Skill> COMBAT = Arrays.asList(Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.HITPOINTS);
+	private final Map<String, Integer> oppInfoHealth = loadNpcHealth();
 
 	@Getter
 	private final int startXp;
@@ -66,7 +67,11 @@ class XpStateSingle
 	private boolean actionsHistoryInitialized = false;
 	private int[] actionExps = new int[10];
 	private int actionExpIndex = 0;
-
+	private Actor lastOpponent;
+	private int avgHealth = 0;
+	private static final double LONG_RANGE_XP_MODIFIER = 2.0;
+	private static final double DEFAULT_XP_MODIFIER = 4.0;
+	private static final double SHARED_XP_MODIFIER = DEFAULT_XP_MODIFIER / 3.0;
 
 	private int getCurrentXp()
 	{
@@ -134,24 +139,42 @@ class XpStateSingle
 
 	private int getKillsRemaining(Client client)
 	{
+		int killsRemaining = Integer.MAX_VALUE;
 		Player local = client.getLocalPlayer();
 		if (local == null)
 		{
 			return Integer.MAX_VALUE;
 		}
 		Actor opponent = local.getInteracting();
-		int killsRemaining = Integer.MAX_VALUE;
 		if (opponent == null)
 			return killsRemaining;
 
-		boolean isPlayer = opponent instanceof Player;
-		if (COMBAT.contains(skill) && opponent.getCombatLevel() > 0 && !isPlayer)
+		if (opponent instanceof Player)
 		{
-			int opponentHealth = oppInfoHealth.get(opponent.getName() + "_" + opponent.getCombatLevel());
+			return killsRemaining;
+		}
+		if (XpTrackerPlugin.COMBAT.contains(skill) && opponent.getCombatLevel() > 0)
+		{
+			int opponentHealth = oppInfoHealth.get(opponent.getName() + '_' + opponent.getCombatLevel());
 			if (opponentHealth > 0)
 			{
+				if (lastOpponent == null || opponent != lastOpponent)
+				{
+					// New opponent, need to reset avgHealth
+					avgHealth = opponentHealth;
+					lastOpponent = opponent;
+				}
+				else if(avgHealth != 0)
+				{
+					avgHealth = (int) Math.floor((avgHealth + opponentHealth) / 2);
+				}
+				else
+				{
+					avgHealth = opponentHealth;
+				}
+
 				double modifier = getCombatXPModifier(client);
-				double actionExp = (opponentHealth * modifier);
+				double actionExp = (avgHealth * modifier);
 				killsRemaining = (int) Math.ceil(getXpRemaining() / actionExp);
 			}
 		}
@@ -161,28 +184,24 @@ class XpStateSingle
 
 	private double getCombatXPModifier(Client client)
 	{
-		final double longRangedXPModifier = 2.0;
-		final double defaultModifier = 4.0;
-		final double sharedXPModifier = defaultModifier / 3.0;
-
 		if (skill.equals(Skill.HITPOINTS))
 		{
-			return sharedXPModifier;
+			return SHARED_XP_MODIFIER;
 		}
 
 		int styleIndex = client.getVar(VarPlayer.ATTACK_STYLE);
 		WeaponType weaponType = WeaponType.getWeaponType(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE));
 		if (weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.CONTROLLED))
 		{
-			return sharedXPModifier;
+			return SHARED_XP_MODIFIER;
 		}
 		else if (weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.LONGRANGE))
 		{
-			return longRangedXPModifier;
+			return LONG_RANGE_XP_MODIFIER;
 		}
 		else
 		{
-			return defaultModifier;
+			return DEFAULT_XP_MODIFIER;
 		}
 	}
 
@@ -232,6 +251,17 @@ class XpStateSingle
 
 		// Minutes and seconds will always be present
 		return String.format("%02d:%02d", durationMinutes, durationSeconds);
+	}
+
+	private static Map<String, Integer> loadNpcHealth()
+	{
+		Gson gson = new Gson();
+		Type type = new TypeToken<Map<String, Integer>>()
+		{
+		}.getType();
+
+		InputStream healthFile = XpStateSingle.class.getResourceAsStream("/npc_health.json");
+		return gson.fromJson(new InputStreamReader(healthFile), type);
 	}
 
 

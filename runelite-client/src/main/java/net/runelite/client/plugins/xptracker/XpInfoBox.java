@@ -29,9 +29,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.time.Duration;
+import java.time.Instant;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -43,10 +42,11 @@ import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.client.game.SkillIconManager;
-import net.runelite.client.plugins.opponentinfo.OpponentInfoPlugin;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
@@ -78,11 +78,10 @@ class XpInfoBox extends JPanel
 	private final JLabel expHour = new JLabel();
 	private final JLabel expLeft = new JLabel();
 	private final JLabel actionsLeft = new JLabel();
-	private final Map<String, Integer> oppInfoHealth = OpponentInfoPlugin.loadNpcHealth();
 
-	private static final List<Skill> COMBAT = Arrays.asList(Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.HITPOINTS);
-
-	private int killsRemaining = Integer.MAX_VALUE;
+	private Actor lastOpponent;
+	private Instant lastInteracting;
+	private static final Duration COMBAT_TIMEOUT = Duration.ofSeconds(30);
 
 	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, JPanel panel, Skill skill, SkillIconManager iconManager) throws IOException
 	{
@@ -185,10 +184,7 @@ class XpInfoBox extends JPanel
 			// Update information labels
 			expGained.setText(htmlLabel("XP Gained: ", xpSnapshotSingle.getXpGainedInSession()));
 			expLeft.setText(htmlLabel("XP Left: ", xpSnapshotSingle.getXpRemainingToGoal()));
-			actionsLeft.setText((COMBAT.contains(skill) && client.getLocalPlayer().getInteracting() != null)
-					? htmlLabel("Kills Left: ", xpSnapshotSingle.getKillsRemainingToGoal())
-					: htmlLabel("Actions Left: ", xpSnapshotSingle.getActionsRemainingToGoal()));
-
+			actionsLeft.setText(getActionKillsLabel(skill, xpSnapshotSingle));
 
 			// Update progress bar
 			progressBar.setValue(xpSnapshotSingle.getSkillProgressToGoal());
@@ -209,6 +205,39 @@ class XpInfoBox extends JPanel
 
 		// Update exp per hour seperately, everytime (not only when there's an update)
 		expHour.setText(htmlLabel("XP/Hour: ", xpSnapshotSingle.getXpPerHour()));
+	}
+
+	private String getActionKillsLabel(Skill skillName, XpSnapshotSingle snapShot)
+	{
+		if (!XpTrackerPlugin.COMBAT.contains(skillName))
+		{
+			return htmlLabel("Actions Left: ", snapShot.getActionsRemainingToGoal());
+		}
+
+		Actor opponent = client.getLocalPlayer().getInteracting();
+		boolean isPlayer = opponent instanceof Player;
+		String label = htmlLabel("Actions Left: ", snapShot.getActionsRemainingToGoal());
+		if (opponent != null
+			&& !isPlayer
+			&& opponent.getCombatLevel() > 0)
+		{
+			lastOpponent = opponent;
+		}
+
+		if (lastOpponent != null)
+		{
+			lastInteracting = Instant.now();
+			label = htmlLabel("Kills Left: ", snapShot.getKillsRemainingToGoal());
+		}
+
+		if (lastInteracting != null && Instant.now().compareTo(lastInteracting.plus(COMBAT_TIMEOUT)) >= 0)
+		{
+			lastInteracting = null;
+			lastOpponent = null;
+			label = htmlLabel("Actions Left: ", snapShot.getActionsRemainingToGoal());
+		}
+
+		return label;
 	}
 
 	public static String htmlLabel(String key, int value)

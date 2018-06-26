@@ -30,10 +30,14 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Objects;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -80,6 +84,10 @@ public class XpTrackerPlugin extends Plugin
 	private String lastUsername;
 
 	private final XpClient xpClient = new XpClient();
+
+	@Getter(AccessLevel.PACKAGE)
+	public static final List<Skill> COMBAT = Arrays.asList(Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.HITPOINTS, Skill.MAGIC);
+
 
 	@Override
 	public void configure(Binder binder)
