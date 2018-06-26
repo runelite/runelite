@@ -58,10 +58,7 @@ class XpTrackerServiceImpl implements XpTrackerService
 	}
 
 	@Override
-	public int getKillsLeft(Skill skill)
-	{
-		return plugin.getXpPanel().getInfoBoxes().get(skill).getKillsRemaining(plugin.getSkillSnapshot(skill));
-	}
+	public int getKillsLeft(Skill skill) { return plugin.getSkillSnapshot(skill).getKillsRemainingToGoal(); }
 
 	@Override
 	public int getXpHr(Skill skill)

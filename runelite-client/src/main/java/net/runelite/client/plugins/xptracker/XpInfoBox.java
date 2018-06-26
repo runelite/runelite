@@ -84,10 +84,9 @@ class XpInfoBox extends JPanel
 	private final JLabel expLeft = new JLabel();
 	private final JLabel actionsLeft = new JLabel();
 	private final Map<String, Integer> oppInfoHealth = OpponentInfoPlugin.loadNpcHealth();
-	@Getter(AccessLevel.PACKAGE)
+
 	private static final List<Skill> COMBAT = Arrays.asList(Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.HITPOINTS);
 
-	@Getter
 	private int killsRemaining = Integer.MAX_VALUE;
 
 	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, JPanel panel, Skill skill, SkillIconManager iconManager) throws IOException
@@ -191,9 +190,9 @@ class XpInfoBox extends JPanel
 			// Update information labels
 			expGained.setText(htmlLabel("XP Gained: ", xpSnapshotSingle.getXpGainedInSession()));
 			expLeft.setText(htmlLabel("XP Left: ", xpSnapshotSingle.getXpRemainingToGoal()));
-			actionsLeft.setText(COMBAT.contains(skill)
-					? htmlLabel("Kills: ", getKillsRemaining(xpSnapshotSingle))
-					: htmlLabel("Actions: ", xpSnapshotSingle.getActionsRemainingToGoal()));
+			actionsLeft.setText((COMBAT.contains(skill) && client.getLocalPlayer().getInteracting() != null)
+					? htmlLabel("Kills Left: ", xpSnapshotSingle.getKillsRemainingToGoal())
+					: htmlLabel("Actions Left: ", xpSnapshotSingle.getActionsRemainingToGoal()));
 
 
 			// Update progress bar
@@ -215,42 +214,6 @@ class XpInfoBox extends JPanel
 
 		// Update exp per hour seperately, everytime (not only when there's an update)
 		expHour.setText(htmlLabel("XP/Hour: ", xpSnapshotSingle.getXpPerHour()));
-	}
-
-	int getKillsRemaining(XpSnapshotSingle xpSnapshotSingle)
-	{
-		Actor opponent = client.getLocalPlayer().getInteracting();
-		
-		if (opponent != null)
-		{
-			int opponentHealth = oppInfoHealth.get(opponent.getName() + "_" + opponent.getCombatLevel());
-			double modifier = getCombatXPModifier(skill);
-			double actionExp = (opponentHealth * modifier);
-			killsRemaining = (int) Math.ceil(xpSnapshotSingle.getXpRemainingToGoal() / actionExp);
-		}
-
-		return killsRemaining;
-	}
-
-	private double getCombatXPModifier(Skill skill)
-	{
-		final double longRangedXPModifier = 2.0;
-		final double defaultModifier = 4.0;
-		final double sharedXPModifier = defaultModifier / 3.0;
-
-		if (skill.equals(Skill.HITPOINTS))
-		{
-			return sharedXPModifier;
-		}
-
-		int styleIndex = client.getVar(VarPlayer.ATTACK_STYLE);
-		WeaponType weaponType = WeaponType.getWeaponType(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE));
-
-		return weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.CONTROLLED)
-				? sharedXPModifier
-				: weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.LONGRANGE)
-				? longRangedXPModifier
-				: defaultModifier;
 	}
 
 	public static String htmlLabel(String key, int value)

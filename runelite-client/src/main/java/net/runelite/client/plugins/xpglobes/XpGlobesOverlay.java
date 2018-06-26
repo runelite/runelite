@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.xpglobes;
 
+import com.google.common.collect.ImmutableList;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -73,6 +74,8 @@ public class XpGlobesOverlay extends Overlay
 	private static final int DEFAULT_START_Y = 10;
 
 	private static final int TOOLTIP_RECT_SIZE_X = 150;
+
+	private static final ImmutableList<Skill> combat = ImmutableList.of(Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.HITPOINTS);
 
 	@Inject
 	public XpGlobesOverlay(Client client, XpGlobesPlugin plugin, XpGlobesConfig config, XpTrackerService xpTrackerService)
@@ -210,7 +213,6 @@ public class XpGlobesOverlay extends Overlay
 
 	private void drawTooltipIfMouseover(Graphics2D graphics, XpGlobe mouseOverSkill, Ellipse2D drawnGlobe)
 	{
-		List<Skill> combat = Arrays.asList(Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.HITPOINTS);
 		Point mouse = client.getMouseCanvasPosition();
 		int mouseX = mouse.getX();
 		int mouseY = mouse.getY();
@@ -248,15 +250,20 @@ public class XpGlobesOverlay extends Overlay
 
 		if (mouseOverSkill.getGoalXp() != -1)
 		{
-			int actionsLeft = xpTrackerService.getActionsLeft(mouseOverSkill.getSkill());
-			if (actionsLeft != Integer.MAX_VALUE)
-			{
+			Skill selectedSkill = mouseOverSkill.getSkill();
+			int actionsLeft = combat.contains(selectedSkill)
+					? xpTrackerService.getKillsLeft(selectedSkill)
+					: xpTrackerService.getActionsLeft(selectedSkill);
+			if (actionsLeft == Integer.MAX_VALUE) {
+				actionsLeft = xpTrackerService.getActionsLeft(selectedSkill);
+			}
+			if (actionsLeft != Integer.MAX_VALUE) {
 				String actionsLeftString = decimalFormat.format(actionsLeft);
 				xpTooltip.getChildren().add(LineComponent.builder()
-					.left(getActionKillsText(skillName))
-					.leftColor(Color.ORANGE)
-					.right(actionsLeftString)
-					.build());
+						.left(getActionKillsText(selectedSkill))
+						.leftColor(Color.ORANGE)
+						.right(actionsLeftString)
+						.build());
 			}
 
 			int xpLeft = mouseOverSkill.getGoalXp() - mouseOverSkill.getCurrentXp();
@@ -289,11 +296,10 @@ public class XpGlobesOverlay extends Overlay
 		xpTooltip.render(graphics);
 	}
 
-	private String getActionKillsText(String skillName)
+	private String getActionKillsText(Skill skillName)
 	{
-		List<Skill> COMBAT = Arrays.asList(Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.HITPOINTS);
-		return COMBAT.stream()
-				.anyMatch(s -> s.getName().equals(skillName))
+
+		return (combat.contains(skillName) && client.getLocalPlayer().getInteracting() != null)
 				? "Kills left:"
 				: "Actions left:";
 	}

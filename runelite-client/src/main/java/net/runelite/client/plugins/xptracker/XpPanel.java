@@ -54,7 +54,6 @@ import okhttp3.HttpUrl;
 @Slf4j
 class XpPanel extends PluginPanel
 {
-	@Getter
 	private final Map<Skill, XpInfoBox> infoBoxes = new HashMap<>();
 
 	private final JLabel overallExpGained = new JLabel(XpInfoBox.htmlLabel("Gained: ", 0));

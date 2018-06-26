@@ -72,7 +72,6 @@ public class XpTrackerPlugin extends Plugin
 	private SkillIconManager skillIconManager;
 
 	private NavigationButton navButton;
-	@Getter
 	private XpPanel xpPanel;
 
 	private final XpState xpState = new XpState();
@@ -271,7 +270,7 @@ public class XpTrackerPlugin extends Plugin
 		final XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp, startGoalXp, endGoalXp);
 
 		final boolean updated = XpUpdateResult.UPDATED.equals(updateResult);
-		xpPanel.updateSkillExperience(updated, skill, xpState.getSkillSnapshot(skill));
+		xpPanel.updateSkillExperience(updated, skill, xpState.getSkillSnapshot(skill, client));
 		xpState.recalculateTotal();
 		xpPanel.updateTotal(xpState.getTotalSnapshot());
 	}
@@ -282,7 +281,7 @@ public class XpTrackerPlugin extends Plugin
 		// Rebuild calculated values like xp/hr in panel
 		for (Skill skill : Skill.values())
 		{
-			xpPanel.updateSkillExperience(false, skill, xpState.getSkillSnapshot(skill));
+			xpPanel.updateSkillExperience(false, skill, xpState.getSkillSnapshot(skill, client));
 		}
 
 		xpState.recalculateTotal();
@@ -291,7 +290,7 @@ public class XpTrackerPlugin extends Plugin
 
 	public XpSnapshotSingle getSkillSnapshot(Skill skill)
 	{
-		return xpState.getSkillSnapshot(skill);
+		return xpState.getSkillSnapshot(skill, client);
 	}
 
 	private static VarPlayer startGoalVarpForSkill(final Skill skill)

@@ -27,17 +27,32 @@ package net.runelite.client.plugins.xptracker;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import javax.inject.Inject;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
+import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.Player;
 import net.runelite.api.Skill;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
+import net.runelite.client.plugins.attackstyles.AttackStyle;
+import net.runelite.client.plugins.attackstyles.WeaponType;
+import net.runelite.client.plugins.opponentinfo.OpponentInfoPlugin;
 
 @Slf4j
 @RequiredArgsConstructor
 class XpStateSingle
 {
 	private final Skill skill;
+
+	private final Map<String, Integer> oppInfoHealth = OpponentInfoPlugin.loadNpcHealth();
+	private static final List<Skill> COMBAT = Arrays.asList(Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.HITPOINTS);
 
 	@Getter
 	private final int startXp;
@@ -52,6 +67,14 @@ class XpStateSingle
 	private boolean actionsHistoryInitialized = false;
 	private int[] actionExps = new int[10];
 	private int actionExpIndex = 0;
+
+	//public XpStateSingle(Skill skill, Client client, int initXp)
+	//{
+	//	this.client = client;
+	//	this.startXp = initXp;
+	//	this.skill = skill;
+	//}
+
 
 	private int getCurrentXp()
 	{
@@ -115,6 +138,54 @@ class XpStateSingle
 		}
 
 		return Integer.MAX_VALUE;
+	}
+
+	private int getKillsRemaining(Client client)
+	{
+		Player local = client.getLocalPlayer();
+		if (local == null){
+			return Integer.MAX_VALUE;
+		}
+		Actor opponent = local.getInteracting();
+		int killsRemaining = Integer.MAX_VALUE;
+		if (opponent == null)
+			return killsRemaining;
+
+		boolean isPlayer = opponent instanceof Player;
+		if (COMBAT.contains(skill) && opponent.getCombatLevel() > 0 && !isPlayer)
+		{
+			int opponentHealth = oppInfoHealth.get(opponent.getName() + "_" + opponent.getCombatLevel());
+			if (opponentHealth > 0)
+			{
+				double modifier = getCombatXPModifier(client);
+				double actionExp = (opponentHealth * modifier);
+				killsRemaining = (int) Math.ceil(getXpRemaining() / actionExp);
+			}
+		}
+
+		return killsRemaining;
+	}
+
+	private double getCombatXPModifier(Client client)
+	{
+		final double longRangedXPModifier = 2.0;
+		final double defaultModifier = 4.0;
+		final double sharedXPModifier = defaultModifier / 3.0;
+
+		if (skill.equals(Skill.HITPOINTS))
+		{
+			return sharedXPModifier;
+		}
+
+		int styleIndex = client.getVar(VarPlayer.ATTACK_STYLE);
+		WeaponType weaponType = WeaponType.getWeaponType(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE));
+		if (weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.CONTROLLED)){
+			return sharedXPModifier;
+		} else if (weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.LONGRANGE)) {
+			return longRangedXPModifier;
+		} else {
+			return defaultModifier;
+		}
 	}
 
 	private int getSkillProgress()
@@ -238,7 +309,7 @@ class XpStateSingle
 		return true;
 	}
 
-	XpSnapshotSingle snapshot()
+	XpSnapshotSingle snapshot(Client client)
 	{
 		return XpSnapshotSingle.builder()
 			.startLevel(Experience.getLevelForXp(startLevelExp))
@@ -250,6 +321,7 @@ class XpStateSingle
 			.actionsInSession(actions)
 			.actionsRemainingToGoal(getActionsRemaining())
 			.actionsPerHour(getActionsHr())
+			.killsRemainingToGoal(getKillsRemaining(client))
 			.timeTillGoal(getTimeTillLevel())
 			.build();
 	}

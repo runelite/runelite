@@ -27,6 +27,7 @@ package net.runelite.client.plugins.xptracker;
 import java.util.EnumMap;
 import java.util.Map;
 import lombok.NonNull;
+import net.runelite.api.Client;
 import net.runelite.api.Skill;
 
 /**
@@ -144,9 +145,9 @@ class XpState
 	 * @return An immutable snapshot of the specified skill for this session since first login or last reset
 	 */
 	@NonNull
-	XpSnapshotSingle getSkillSnapshot(Skill skill)
+	XpSnapshotSingle getSkillSnapshot(Skill skill, Client client)
 	{
-		return getSkill(skill).snapshot();
+		return getSkill(skill).snapshot(client);
 	}
 
 	/**
