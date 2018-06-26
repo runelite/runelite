@@ -309,7 +309,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param messageNode The chat message containing the command.
-	 * @param eqn The equation to calculate.
+	 * @param eqn         The equation to calculate.
 	 */
 	private void calculate(MessageNode messageNode, String eqn)
 	{
@@ -321,27 +321,25 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			result = String.valueOf(Calculator.eval(eqn));
 			builder.append(ChatColorType.NORMAL)
-					.append("Calc: " + eqn + " = ")
-					.append(ChatColorType.HIGHLIGHT)
-					.append(result);
-
+				.append("Calc: ")
+				.append(eqn)
+				.append(" = ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(result);
 		}
 		catch (Exception ex)
 		{
 			// log.warn("Unable to search for item {}", search, ex);
 			result = "Calc: Unable to calculate expression: " + eqn;
 			builder.append(ChatColorType.HIGHLIGHT)
-					.append(result);
+				.append(result);
 			//log.warn("Calculator exception: ", ex);
 		}
-
 		String response = builder.build();
-
 		log.debug("Setting response {}", response);
 		messageNode.setRuneLiteFormatMessage(response);
 		chatMessageManager.update(messageNode);
 		client.refreshChat();
-
 	}
 
 	/**
