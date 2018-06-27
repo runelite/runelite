@@ -293,6 +293,12 @@ public abstract class RSWidgetMixin implements RSWidget
 	@Override
 	public Widget[] getStaticChildren()
 	{
+		if (getRSParentId() == getId())
+		{
+			// This is a dynamic widget, so it can't have static children
+			return new Widget[0];
+		}
+
 		List<Widget> widgets = new ArrayList<Widget>();
 		for (RSWidget widget : client.getGroup(TO_GROUP(getId())))
 		{
@@ -308,6 +314,12 @@ public abstract class RSWidgetMixin implements RSWidget
 	@Override
 	public Widget[] getNestedChildren()
 	{
+		if (getRSParentId() == getId())
+		{
+			// This is a dynamic widget, so it can't have nested children
+			return new Widget[0];
+		}
+
 		HashTable<WidgetNode> componentTable = client.getComponentTable();
 
 		WidgetNode wn = componentTable.get(getId());
