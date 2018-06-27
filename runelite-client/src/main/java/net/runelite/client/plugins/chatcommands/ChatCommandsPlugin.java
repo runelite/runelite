@@ -315,12 +315,11 @@ public class ChatCommandsPlugin extends Plugin
 	 */
 	private void calculate(MessageNode messageNode, String eqn)
 	{
-		String result;
 		ChatMessageBuilder builder = new ChatMessageBuilder();
 		try
 		{
 			Expression expr = new ExpressionBuilder(eqn).build();
-			result = String.valueOf(expr.evaluate());
+			String result = String.valueOf(expr.evaluate());
 			builder.append(ChatColorType.NORMAL)
 				.append("Calc: ")
 				.append(eqn)
@@ -330,11 +329,12 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		catch (Exception ex)
 		{
-			result = "Calc: Unable to calculate expression: " + eqn;
 			builder.append(ChatColorType.HIGHLIGHT)
-				.append(result);
+				.append("Calc: Unable to calculate expression: ")
+				.append(eqn);
 		}
-		String response = builder.build();
+
+		final String response = builder.build();
 		log.debug("Setting response {}", response);
 		messageNode.setRuneLiteFormatMessage(response);
 		chatMessageManager.update(messageNode);
