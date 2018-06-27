@@ -219,13 +219,13 @@ public class BossLoggerPlugin extends Plugin
 			BossLoggedAlert("Raids Chest Loot added to log.");
 		}
 
-		// Theater of Blood Chest (Raids 2)
-		if (event.getGroupId() == WidgetID.THEATER_OF_BLOOD_GROUP_ID && bossLoggerConfig.recordTobChest())
+		// Theatre of Blood Chest (Raids 2)
+		if (event.getGroupId() == WidgetID.THEATRE_OF_BLOOD_GROUP_ID && bossLoggerConfig.recordTobChest())
 		{
-			ItemContainer rewardContainer = client.getItemContainer(InventoryID.THEATER_OF_BLOOD_CHEST);
+			ItemContainer rewardContainer = client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST);
 			if (rewardContainer == null)
 			{
-				BossLoggedAlert("Couldn't find Theater of Blood Chest Loot");
+				BossLoggedAlert("Couldn't find Theatre of Blood Chest Loot");
 				return;
 			}
 			int kc = killcountMap.get("RAIDS 2");
@@ -235,7 +235,7 @@ public class BossLoggerPlugin extends Plugin
 				entry.drops.add(handlePet("Raids 2"));
 			}
 			addLootEntry("Raids 2", entry);
-			BossLoggedAlert("Theater of Blood Chest Loot added to log.");
+			BossLoggedAlert("Theatre of Blood Chest Loot added to log.");
 		}
 
 
