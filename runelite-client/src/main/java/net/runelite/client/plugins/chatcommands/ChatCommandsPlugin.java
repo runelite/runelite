@@ -328,18 +328,13 @@ public class ChatCommandsPlugin extends Plugin
 				.append(ChatColorType.HIGHLIGHT)
 				.append(result);
 		}
-		catch (IllegalArgumentException ex)
-		{
-			builder.append(ChatColorType.HIGHLIGHT)
-				.append("Calc: Unable to calculate expression. ")
-				.append(" Error: IllegalArgumentException: ")
-				.append(ex.getMessage());
-		}
 		catch (RuntimeException ex)
 		{
 			builder.append(ChatColorType.HIGHLIGHT)
 				.append("Calc: Unable to calculate expression. ")
-				.append(" Error: RuntimeException: ")
+				.append(" Error: ")
+				.append(ex.getClass().getCanonicalName())
+				.append(": ")
 				.append(ex.getMessage());
 		}
 
