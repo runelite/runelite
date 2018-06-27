@@ -33,6 +33,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -156,6 +158,13 @@ public class ChatCommandsPlugin extends Plugin
 			log.debug("Running level lookup for {}", search);
 			executor.submit(() -> playerSkillLookup(setMessage.getType(), setMessage, search));
 		}
+		else if (config.calc() && message.toLowerCase().startsWith("!calc") && message.length() > 6)
+		{
+			String strEqn = message.substring(6);
+			log.debug("Running calc, eqn = {}", strEqn);
+
+			executor.submit(() -> calculate(setMessage.getMessageNode(), strEqn));
+		}
 		else if (config.clue() && message.toLowerCase().equals("!clues"))
 		{
 			log.debug("Running lookup for overall clues");
@@ -168,7 +177,6 @@ public class ChatCommandsPlugin extends Plugin
 			log.debug("Running clue lookup for {}", search);
 			executor.submit(() -> playerClueLookup(setMessage.getType(), setMessage, search));
 		}
-
 	}
 
 	/**
@@ -295,6 +303,45 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			log.warn("unable to look up skill {} for {}", skill, search, ex);
 		}
+	}
+
+	/**
+	 * Calculates a simple equation and changes the original message to the
+	 * response.
+	 *
+	 * @param messageNode The chat message containing the command.
+	 * @param eqn         The equation to calculate.
+	 */
+	private void calculate(MessageNode messageNode, String eqn)
+	{
+		final ChatMessageBuilder builder = new ChatMessageBuilder();
+
+		try
+		{
+			final Expression expr = new ExpressionBuilder(eqn).build();
+			final String result = String.valueOf(expr.evaluate());
+			builder.append(ChatColorType.NORMAL)
+				.append("Calc: ")
+				.append(eqn)
+				.append(" = ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(result);
+		}
+		catch (RuntimeException ex)
+		{
+			builder.append(ChatColorType.HIGHLIGHT)
+				.append("Calc: Unable to calculate expression. ")
+				.append(" Error: ")
+				.append(ex.getClass().getSimpleName())
+				.append(": ")
+				.append(ex.getMessage());
+		}
+
+		final String response = builder.build();
+		log.debug("Setting response {}", response);
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
+		client.refreshChat();
 	}
 
 	/**
