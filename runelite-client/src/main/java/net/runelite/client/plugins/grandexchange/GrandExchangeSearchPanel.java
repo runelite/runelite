@@ -225,16 +225,7 @@ class GrandExchangeSearchPanel extends JPanel
 					continue;
 				}
 
-				ItemPrice itemPrice = null;
-				try
-				{
-					itemPrice = itemManager.getItemPrice(itemId);
-				}
-				catch (IOException ex)
-				{
-					log.warn("Unable to fetch item price for {}", itemId, ex);
-				}
-
+				ItemPrice itemPrice = itemManager.getItemPrice(itemId);
 				AsyncBufferedImage itemImage = itemManager.getImage(itemId);
 
 				itemsList.add(new GrandExchangeItems(itemImage, item.getName(), itemId, itemPrice != null ? itemPrice.getPrice() : 0, itemComp.getPrice() * 0.6));

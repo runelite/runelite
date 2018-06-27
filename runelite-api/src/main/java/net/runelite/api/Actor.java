@@ -99,6 +99,12 @@ public interface Actor extends Renderable
 	 */
 	LocalPoint getLocalLocation();
 
+	@VisibleForDevtools
+	void setIdlePoseAnimation(int animation);
+
+	@VisibleForDevtools
+	void setPoseAnimation(int animation);
+
 	/**
 	 * Gets the orientation of the actor.
 	 *
@@ -226,4 +232,11 @@ public interface Actor extends Renderable
 	 * @return the world area
 	 */
 	WorldArea getWorldArea();
+
+	/**
+	 * Gets the overhead text that is displayed above the actor
+	 *
+	 * @return the overhead text
+	 */
+	String getOverhead();
 }

@@ -32,7 +32,7 @@ import net.runelite.api.ItemID;
 
 @AllArgsConstructor
 @Getter
-public enum PrayerItems
+enum PrayerItems
 {
 	// Blessings
 	PEACEFUL_BLESSING(ItemID.PEACEFUL_BLESSING, 1),
@@ -453,7 +453,7 @@ public enum PrayerItems
 		}
 	}
 
-	public static int getItemPrayerBonus(int itemId)
+	static int getItemPrayerBonus(int itemId)
 	{
 		Integer value = prayerBonuses.get(itemId);
 		return value == null ? 0 : value;

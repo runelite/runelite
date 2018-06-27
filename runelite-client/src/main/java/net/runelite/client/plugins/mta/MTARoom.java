@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Jasper Ketelaar <Jasper0781@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.mapping;
+package net.runelite.client.plugins.mta;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.awt.Graphics2D;
+import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(
+public abstract class MTARoom
 {
-	ElementType.FIELD, ElementType.METHOD
-})
-public @interface Export
-{
-	String value();
+	@Getter(AccessLevel.PROTECTED)
+	protected final MTAConfig config;
+
+	@Inject
+	protected MTARoom(MTAConfig config)
+	{
+		this.config = config;
+	}
+
+	public abstract boolean inside();
+
+	public void under(Graphics2D graphics2D)
+	{
+	}
+
+	public void over(Graphics2D graphics2D)
+	{
+	}
 }

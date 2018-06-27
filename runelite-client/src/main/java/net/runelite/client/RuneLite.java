@@ -217,6 +217,9 @@ public class RuneLite
 		if (!isOutdated)
 		{
 			this.client = (Client) client;
+
+			// Inject members into client
+			injector.injectMembers(client);
 		}
 
 		// Initialize UI

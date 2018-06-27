@@ -49,6 +49,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
@@ -548,6 +550,17 @@ public class ClientUI
 		});
 
 		eventBus.post(new ClientUILoaded());
+
+		final boolean isOutdated = !(client instanceof Client);
+		if (isOutdated)
+		{
+			SwingUtilities.invokeLater(() ->
+			{
+				JOptionPane.showMessageDialog(frame, "RuneLite has not yet been updated to work with the latest\n"
+						+ "game update, it will work with reduced functionality until then.",
+					"RuneLite is outdated", INFORMATION_MESSAGE);
+			});
+		}
 	}
 
 	/**

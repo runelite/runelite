@@ -24,6 +24,7 @@
  */
 package net.runelite.api;
 
+import net.runelite.api.annotations.VisibleForDevtools;
 import net.runelite.api.kit.KitType;
 
 /**
@@ -57,4 +58,7 @@ public interface PlayerComposition
 	 * @return the kit ID
 	 */
 	int getKitId(KitType type);
+
+	@VisibleForDevtools
+	void setTransformedNpcId(int id);
 }

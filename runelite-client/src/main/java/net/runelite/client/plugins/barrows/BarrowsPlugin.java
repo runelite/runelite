@@ -27,11 +27,8 @@ package net.runelite.client.plugins.barrows;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -112,8 +109,6 @@ public class BarrowsPlugin extends Plugin
 
 	@Inject
 	private BarrowsConfig config;
-
-	private long chestPrice;
 
 	@Provides
 	BarrowsConfig provideConfig(ConfigManager configManager)
@@ -215,7 +210,7 @@ public class BarrowsPlugin extends Plugin
 		{
 			ItemContainer barrowsRewardContainer = client.getItemContainer(InventoryID.BARROWS_REWARD);
 			Item[] items = barrowsRewardContainer.getItems();
-			chestPrice = 0;
+			long chestPrice = 0;
 
 			for (Item item : items)
 			{
@@ -225,55 +220,29 @@ public class BarrowsPlugin extends Plugin
 				}
 			}
 
-			CompletableFuture<ItemPrice[]> future = itemManager.getItemPriceBatch(
-				Arrays.stream(items).map(Item::getId).collect(Collectors.toList()));
-			future.whenComplete((ItemPrice[] itemPrices, Throwable ex) ->
+			for (Item item : items)
 			{
-				if (ex != null)
+				ItemPrice cachedItemPrice = itemManager.getItemPrice(item.getId());
+				if (cachedItemPrice == null)
 				{
-					log.debug("Error looking up item prices", ex);
-					return;
+					continue;
 				}
 
-				if (itemPrices == null)
-				{
-					log.debug("Error looking up item prices");
-					return;
-				}
+				long itemStack = (long) cachedItemPrice.getPrice() * (long) item.getQuantity();
+				chestPrice += itemStack;
+			}
 
-				log.debug("Price lookup is complete. {} prices.", itemPrices.length);
+			final ChatMessageBuilder message = new ChatMessageBuilder()
+				.append(ChatColorType.HIGHLIGHT)
+				.append("Your chest is worth around ")
+				.append(StackFormatter.formatNumber(chestPrice))
+				.append(" coins.")
+				.append(ChatColorType.NORMAL);
 
-				try
-				{
-					for (Item item : items)
-					{
-						ItemPrice cachedItemPrice = itemManager.getCachedItemPrice(item.getId());
-						if (cachedItemPrice == null)
-						{
-							continue;
-						}
-
-						long itemStack = (long) cachedItemPrice.getPrice() * (long) item.getQuantity();
-						chestPrice += itemStack;
-					}
-
-					final ChatMessageBuilder message = new ChatMessageBuilder()
-						.append(ChatColorType.HIGHLIGHT)
-						.append("Your chest is worth around ")
-						.append(StackFormatter.formatNumber(chestPrice))
-						.append(" coins.")
-						.append(ChatColorType.NORMAL);
-
-					chatMessageManager.queue(QueuedMessage.builder()
-						.type(ChatMessageType.EXAMINE_ITEM)
-						.runeLiteFormattedMessage(message.build())
-						.build());
-				}
-				catch (Exception ex2)
-				{
-					log.warn("error calculating price", ex2);
-				}
-			});
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.EXAMINE_ITEM)
+				.runeLiteFormattedMessage(message.build())
+				.build());
 		}
 	}
 }
