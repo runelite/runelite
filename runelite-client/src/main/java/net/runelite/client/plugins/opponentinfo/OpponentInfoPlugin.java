@@ -28,6 +28,7 @@ package net.runelite.client.plugins.opponentinfo;
 import com.google.common.eventbus.Subscribe;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.google.inject.Provides;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
@@ -45,6 +46,7 @@ import net.runelite.api.WorldType;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -61,10 +63,16 @@ public class OpponentInfoPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private OpponentInfoConfig config;
+
+	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
-	private OpponentInfoOverlay overlay;
+	private OpponentInfoOverlay opponentInfoOverlay;
+
+	@Inject
+	private PlayerComparisonOverlay playerComparisonOverlay;
 
 	@Getter(AccessLevel.PACKAGE)
 	private HiscoreEndpoint hiscoreEndpoint = HiscoreEndpoint.NORMAL;
@@ -77,16 +85,24 @@ public class OpponentInfoPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<String, Integer> oppInfoHealth = loadNpcHealth();
 
+	@Provides
+	OpponentInfoConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(OpponentInfoConfig.class);
+	}
+
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(overlay);
+		overlayManager.add(opponentInfoOverlay);
+		overlayManager.add(playerComparisonOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(overlay);
+		overlayManager.remove(opponentInfoOverlay);
+		overlayManager.remove(playerComparisonOverlay);
 	}
 
 	@Subscribe
