@@ -315,11 +315,12 @@ public class ChatCommandsPlugin extends Plugin
 	 */
 	private void calculate(MessageNode messageNode, String eqn)
 	{
-		ChatMessageBuilder builder = new ChatMessageBuilder();
+		final ChatMessageBuilder builder = new ChatMessageBuilder();
+		
 		try
 		{
-			Expression expr = new ExpressionBuilder(eqn).build();
-			String result = String.valueOf(expr.evaluate());
+			final Expression expr = new ExpressionBuilder(eqn).build();
+			final String result = String.valueOf(expr.evaluate());
 			builder.append(ChatColorType.NORMAL)
 				.append("Calc: ")
 				.append(eqn)
