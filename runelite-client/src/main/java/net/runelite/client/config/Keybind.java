@@ -28,6 +28,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 /**
@@ -35,6 +36,7 @@ import lombok.Getter;
  * and an optional non-modifier key
  */
 @Getter
+@EqualsAndHashCode
 public class Keybind
 {
 	private static final BiMap<Integer, Integer> modifierToKeyCode = new ImmutableBiMap.Builder<Integer, Integer>()
