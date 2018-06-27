@@ -250,7 +250,7 @@ public class AgilityPlugin extends Plugin
 			if (!Objects.equals(lastArenaTicketPosition, newTicketPosition))
 			{
 				// We don't want to notify when players first enter the course
-				if (lastArenaTicketPosition != null)
+				if (lastArenaTicketPosition != null && newTicketPosition != null)
 				{
 					if (config.notifyAgilityArena())
 					{
