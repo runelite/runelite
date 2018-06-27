@@ -243,4 +243,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			position = 19,
+			keyName = "swapSpellTeleport",
+			name = "Teleport spell",
+			description = "Swap teleport spells that have a second option<br>Example: Varrock, Camelot"
+	)
+	default boolean swapTeleportSpell()
+	{
+		return true;
+	}
 }

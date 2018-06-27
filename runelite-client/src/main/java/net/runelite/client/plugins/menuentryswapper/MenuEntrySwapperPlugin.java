@@ -448,6 +448,21 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("chase", option, target, true);
 		}
+		else if (config.swapTeleportSpell() && shiftModifier && option.equals("cast"))
+		{
+			if (target.equals("varrock teleport"))
+			{
+				swap("grand exchange", option, target, true);
+			}
+			else if (target.equals("camelot teleport"))
+			{
+				swap("seers'", option, target, true);
+			}
+			else if (target.equals("watchtower teleport"))
+			{
+				swap("yanille", option, target, true);
+			}
+		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
 			Integer customOption = getSwapConfig(itemId);
