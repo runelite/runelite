@@ -327,11 +327,12 @@ public class ChatCommandsPlugin extends Plugin
 				.append(ChatColorType.HIGHLIGHT)
 				.append(result);
 		}
-		catch (Exception ex)
+		catch (RuntimeException ex)
 		{
 			builder.append(ChatColorType.HIGHLIGHT)
 				.append("Calc: Unable to calculate expression: ")
-				.append(eqn);
+				.append(eqn)
+				.append(" Reason: Illegal argument");
 		}
 
 		final String response = builder.build();
