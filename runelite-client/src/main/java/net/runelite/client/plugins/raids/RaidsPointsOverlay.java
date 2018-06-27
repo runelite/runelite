@@ -26,6 +26,7 @@ package net.runelite.client.plugins.raids;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.text.DecimalFormat;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
@@ -85,34 +86,41 @@ public class RaidsPointsOverlay extends Overlay
 
 		if (config.uniqueChance())
 		{
-			double chance = Math.min(totalPoints / 7125.0, 80.0);
-			double chance2 = Math.min((totalPoints - 570000.0) / 7125.0, 80.0);
-			double chance3 = Math.min((totalPoints - 1140000.0) / 7125.0, 80.0);
+			// The number of points corresponding to a 1% chance
+			final double POINTS_PER_PERCENT = 7125.0;
+			// The maximum number of unique drops that can be received
+			final int MAX_DROPS = 3;
+			// The maximum chance of getting a unique drop
+			final double MAX_PERCENT = 80.0;
+			// Round percentages to one decimal place
+			final DecimalFormat df = new DecimalFormat("0.0");
 
-			this.panel.setPreferredSize(new Dimension(ComponentConstants.STANDARD_WIDTH + 10, 0));
-			panel.getChildren().add(LineComponent.builder()
-				.left("Unique Chance:")
-				.right(String.valueOf(Math.round(chance * 10.0) / 10.0) + "%")
-				.build());
+			double percentage = totalPoints / POINTS_PER_PERCENT;
+			int numDrops = Math.min(MAX_DROPS, (int) Math.ceil(percentage / MAX_PERCENT));
 
-			if (totalPoints >= 570000.0)
+			// Overlay needs to be a different size if there's more than one drop
+			if (numDrops > 1)
 			{
 				this.panel.setPreferredSize(new Dimension(ComponentConstants.STANDARD_WIDTH + 20, 0));
-				panel.getChildren().add(LineComponent.builder()
-					.left("Unique Chance 2:")
-					.right(String.valueOf(Math.round(chance2 * 10.0) / 10.0) + "%")
-					.build());
-
-				if (totalPoints >= 1140000.0)
+				for (int i = 1; i <= numDrops; i++)
 				{
+					double chance = Math.min(percentage - (i - 1) * MAX_PERCENT, MAX_PERCENT);
 					panel.getChildren().add(LineComponent.builder()
-						.left("Unique Chance 3:")
-						.right(String.valueOf(Math.round(chance3 * 10.0) / 10.0) + "%")
+						.left("Unique Chance " + i + ": ")
+						.right(String.valueOf(df.format(chance)) + "%")
 						.build());
 				}
 			}
+			else
+			{
+				double chance = Math.min(percentage, MAX_PERCENT);
 
-
+				this.panel.setPreferredSize(new Dimension(ComponentConstants.STANDARD_WIDTH + 10, 0));
+				panel.getChildren().add(LineComponent.builder()
+					.left("Unique Chance:")
+					.right(String.valueOf(df.format(chance)) + "%")
+					.build());
+			}
 		}
 		else
 		{
