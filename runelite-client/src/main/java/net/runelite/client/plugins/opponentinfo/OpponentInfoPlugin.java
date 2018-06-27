@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,15 +31,20 @@ import com.google.gson.Gson;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.EnumSet;
 import java.util.Map;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -49,6 +55,8 @@ import net.runelite.http.api.hiscore.HiscoreEndpoint;
 )
 public class OpponentInfoPlugin extends Plugin
 {
+	private static final Duration WAIT = Duration.ofSeconds(5);
+
 	@Inject
 	private Client client;
 
@@ -60,6 +68,14 @@ public class OpponentInfoPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private HiscoreEndpoint hiscoreEndpoint = HiscoreEndpoint.NORMAL;
+
+	@Getter(AccessLevel.PACKAGE)
+	private Actor lastOpponent;
+
+	private Instant lastTime = null;
+
+	@Getter(AccessLevel.PACKAGE)
+	private final Map<String, Integer> oppInfoHealth = loadNpcHealth();
 
 	@Override
 	protected void startUp() throws Exception
@@ -96,7 +112,38 @@ public class OpponentInfoPlugin extends Plugin
 		}
 	}
 
-	public static Map<String, Integer> loadNpcHealth()
+	@Subscribe
+	public void onInteractingChanged(InteractingChanged event)
+	{
+		if (event.getSource() != client.getLocalPlayer())
+		{
+			return;
+		}
+
+		Actor opponent = event.getTarget();
+
+		if (opponent == null)
+		{
+			lastTime = Instant.now();
+			return;
+		}
+
+		lastOpponent = opponent;
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		if (lastOpponent != null && client.getLocalPlayer().getInteracting() == null)
+		{
+			if (Duration.between(lastTime, Instant.now()).compareTo(WAIT) > 0)
+			{
+				lastOpponent = null;
+			}
+		}
+	}
+
+	private Map<String, Integer> loadNpcHealth()
 	{
 		Gson gson = new Gson();
 		Type type = new TypeToken<Map<String, Integer>>()
