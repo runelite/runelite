@@ -273,8 +273,11 @@ class GrandExchangeSearchPanel extends JPanel
 				constraints.gridy++;
 			}
 
-			// remove focus from the search bar
-			searchItemsPanel.requestFocusInWindow();
+			// if exactMatch was set, then it came from the applet, so don't lose focus
+			if (!exactMatch)
+			{
+				searchItemsPanel.requestFocusInWindow();
+			}
 			searchBox.setEditable(true);
 
 			// Remove searching label after search is complete
