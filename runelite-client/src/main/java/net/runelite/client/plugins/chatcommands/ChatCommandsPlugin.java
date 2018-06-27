@@ -333,7 +333,7 @@ public class ChatCommandsPlugin extends Plugin
 			builder.append(ChatColorType.HIGHLIGHT)
 				.append("Calc: Unable to calculate expression. ")
 				.append(" Error: ")
-				.append(ex.getClass().getCanonicalName())
+				.append(ex.getClass().getSimpleName())
 				.append(": ")
 				.append(ex.getMessage());
 		}
