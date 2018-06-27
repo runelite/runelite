@@ -56,4 +56,26 @@ public interface ChatCommandsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "clue",
+		name = "Clue Command",
+		description = "Configures whether the Clue command is enabled"
+	)
+	default boolean clue()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "clearShortcuts",
+		name = "Clear shortcuts",
+		description = "Enable shortcuts (ctrl+w and backspace) for clearing the chatbox"
+	)
+	default boolean clearShortcuts()
+	{
+		return true;
+	}
 }

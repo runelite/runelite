@@ -36,6 +36,9 @@ import net.runelite.client.input.KeyListener;
 public class ChatKeyboardListener implements KeyListener
 {
 	@Inject
+	private ChatCommandsConfig chatCommandsConfig;
+
+	@Inject
 	private Client client;
 
 	@Inject
@@ -50,7 +53,7 @@ public class ChatKeyboardListener implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (!e.isControlDown())
+		if (!e.isControlDown() || !chatCommandsConfig.clearShortcuts())
 		{
 			return;
 		}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2018 AWPH-I
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.screenshot;
+package net.runelite.client.plugins.inventoryviewer;
 
-import java.awt.event.KeyEvent;
-import java.util.Date;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import javax.inject.Inject;
-import net.runelite.client.input.KeyListener;
-import static net.runelite.client.plugins.screenshot.ScreenshotPlugin.format;
+import net.runelite.client.ui.overlay.OverlayManager;
 
-public class ScreenshotInput implements KeyListener
+@PluginDescriptor(
+	name = "Inventory Viewer",
+	enabledByDefault = false
+)
+public class InventoryViewerPlugin extends Plugin
 {
-	private final ScreenshotConfig config;
-	private final ScreenshotPlugin plugin;
+	@Inject
+	private InventoryViewerOverlay overlay;
 
 	@Inject
-	ScreenshotInput(ScreenshotConfig config, ScreenshotPlugin plugin)
+	private OverlayManager overlayManager;
+
+	@Override
+	public void startUp()
 	{
-		this.config = config;
-		this.plugin = plugin;
+		overlayManager.add(overlay);
 	}
 
 	@Override
-	public void keyPressed(KeyEvent event)
+	public void shutDown()
 	{
+		overlayManager.remove(overlay);
 	}
-
-	@Override
-	public void keyTyped(KeyEvent event)
-	{
-	}
-
-	@Override
-	public void keyReleased(KeyEvent event)
-	{
-		if (!config.isScreenshotEnabled())
-			return;
-
-		if (event.getKeyCode() == KeyEvent.VK_INSERT)
-		{
-			plugin.takeScreenshot(format(new Date()));
-		}
-	}
-
 }

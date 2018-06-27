@@ -28,12 +28,15 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.google.inject.name.Names;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.hooks.Callbacks;
 import net.runelite.client.account.SessionManager;
+import net.runelite.client.callback.Hooks;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
@@ -42,7 +45,10 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.task.Scheduler;
+import net.runelite.client.util.DeferredEventBus;
 import net.runelite.client.util.QueryRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Slf4j
 public class RuneLiteModule extends AbstractModule
@@ -59,6 +65,16 @@ public class RuneLiteModule extends AbstractModule
 		bind(PluginManager.class);
 		bind(RuneLiteProperties.class);
 		bind(SessionManager.class);
+
+		bind(Callbacks.class).to(Hooks.class);
+
+		bind(EventBus.class)
+			.annotatedWith(Names.named("Deferred EventBus"))
+			.to(DeferredEventBus.class);
+
+		bind(Logger.class)
+			.annotatedWith(Names.named("Core Logger"))
+			.toInstance(LoggerFactory.getLogger(RuneLite.class));
 	}
 
 	@Provides

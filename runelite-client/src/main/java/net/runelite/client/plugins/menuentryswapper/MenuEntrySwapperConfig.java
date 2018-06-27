@@ -37,6 +37,17 @@ public interface MenuEntrySwapperConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
+		keyName = "shiftClickCustomization",
+		name = "Customizable shift-click",
+		description = "Allows customization of shift-clicks on items"
+	)
+	default boolean shiftClickCustomization()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 1,
 		keyName = "swapBanker",
 		name = "Bank",
 		description = "Swap Talk-to with Bank on Bank NPC<br>Example: Banker"
@@ -47,7 +58,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 1,
+		position = 2,
 		keyName = "swapBirdhouseEmpty",
 		name = "Birdhouse",
 		description = "Swap Interact with Empty for birdhouses on Fossil Island"
@@ -58,7 +69,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
+		position = 3,
 		keyName = "swapBones",
 		name = "Bury",
 		description = "Swap Bury with Use on Bones"
@@ -69,7 +80,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 4,
 		keyName = "swapCatacombEntrance",
 		name = "Catacomb entrance",
 		description = "Swap Read with Investigate on Catacombs of Kourend entrance"
@@ -80,7 +91,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 5,
 		keyName = "swapChase",
 		name = "Chase",
 		description = "Allows to left click your cat to chase"
@@ -91,23 +102,12 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 6,
 		keyName = "claimSlime",
 		name = "Claim Slime",
 		description = "Swap Talk-to with Claim Slime from Morytania diaries"
 	)
 	default boolean claimSlime()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 6,
-		keyName = "shiftClickCustomization",
-		name = "Customizable shift-click",
-		description = "Allows customization of shift-clicks on items"
-	)
-	default boolean shiftClickCustomization()
 	{
 		return true;
 	}
@@ -229,6 +229,17 @@ public interface MenuEntrySwapperConfig extends Config
 		description = "Swap Talk-to with Travel, Take-boat, Pay-fare, Charter on NPC<br>Example: Squire, Monk of Entrana, Customs officer, Trader Crewmember"
 	)
 	default boolean swapTravel()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 18,
+		keyName = "swapAssignment",
+		name = "Assignment",
+		description = "Swap Talk-to with Assignment for Slayer Masters. This will take priority over swapping Trade."
+	)
+	default boolean swapAssignment()
 	{
 		return true;
 	}

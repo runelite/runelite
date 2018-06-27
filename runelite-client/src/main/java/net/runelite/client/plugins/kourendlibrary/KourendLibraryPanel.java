@@ -55,7 +55,7 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.SwingUtil;
 
 @Singleton
-public class KourendLibraryPanel extends PluginPanel
+class KourendLibraryPanel extends PluginPanel
 {
 	private static final ImageIcon RESET_ICON;
 	private static final ImageIcon RESET_CLICK_ICON;

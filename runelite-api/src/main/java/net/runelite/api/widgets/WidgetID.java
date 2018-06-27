@@ -96,6 +96,12 @@ public class WidgetID
 	public static final int KINGDOM_GROUP_ID = 392;
 	public static final int BARROWS_GROUP_ID = 24;
 	public static final int BLAST_MINE_GROUP_ID = 598;
+	public static final int MTA_ALCHEMY_GROUP_ID = 194;
+	public static final int MTA_ENCHANTMENT_GROUP_ID = 195;
+	public static final int MTA_GRAVEYARD_GROUP_ID = 196;
+	public static final int MTA_TELEKINETIC_GROUP_ID = 198;
+	public static final int CORP_DAMAGE = 13;
+	public static final int DESTROY_ITEM_GROUP_ID = 584;
 
 	static class WorldMap
 	{
@@ -506,5 +512,18 @@ public class WidgetID
 		static final int BARROWS_BROTHERS = 8;
 		static final int BARROWS_POTENTIAL = 9;
 		static final int BARROWS_REWARD_INVENTORY = 3;
+	}
+
+	static class MTA
+	{
+		static final int BONUS_COMPONENT = 7;
+		static final int BONUS_TEXT_COMPONENT = 12;
+	}
+
+	static class DestroyItem
+	{
+		static final int DESTROY_ITEM_NAME = 6;
+		static final int DESTROY_ITEM_YES = 1;
+		static final int DESTROY_ITEM_NO = 3;
 	}
 }
