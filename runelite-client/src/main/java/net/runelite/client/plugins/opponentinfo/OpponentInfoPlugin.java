@@ -80,7 +80,7 @@ public class OpponentInfoPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Actor lastOpponent;
 
-	private Instant lastTime = null;
+	private Instant lastTime;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<String, Integer> oppInfoHealth = loadNpcHealth();
@@ -101,6 +101,8 @@ public class OpponentInfoPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		lastOpponent = null;
+		lastTime = null;
 		overlayManager.remove(opponentInfoOverlay);
 		overlayManager.remove(playerComparisonOverlay);
 	}
