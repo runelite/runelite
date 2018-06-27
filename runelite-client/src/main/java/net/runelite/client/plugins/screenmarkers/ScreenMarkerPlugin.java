@@ -104,7 +104,7 @@ public class ScreenMarkerPlugin extends Plugin
 		screenMarkers.forEach(overlayManager::add);
 
 		pluginPanel = injector.getInstance(ScreenMarkerPluginPanel.class);
-		pluginPanel.init();
+		pluginPanel.rebuild();
 
 		BufferedImage icon;
 		synchronized (ImageIO.class)
