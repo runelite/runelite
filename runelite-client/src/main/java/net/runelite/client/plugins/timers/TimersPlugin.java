@@ -27,24 +27,10 @@ package net.runelite.client.plugins.timers;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
-import net.runelite.api.Actor;
-import net.runelite.api.AnimationID;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
-import net.runelite.api.Prayer;
-import net.runelite.api.Varbits;
-import net.runelite.api.events.AnimationChanged;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GraphicChanged;
-import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.VarbitChanged;
+
+import net.runelite.api.*;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.*;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -83,13 +69,37 @@ import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIFIRE;
 import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIPOISON;
 import static net.runelite.client.plugins.timers.GameTimer.VENGEANCE;
 import static net.runelite.client.plugins.timers.GameTimer.VENGEANCEOTHER;
+
+import net.runelite.client.ui.overlay.infobox.InfoBox;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Predicate;
 
 @PluginDescriptor(
 	name = "Timers"
 )
 public class TimersPlugin extends Plugin
 {
+	private static final GameTimer[] FREEZE_TIMERS = {
+            BIND, HALFBIND, SNARE, HALFSNARE, ENTANGLE, HALFENTANGLE, ICERUSH, ICEBURST, ICEBLITZ, ICEBARRAGE
+    };
+
+    private static Predicate<InfoBox> isOfTimer(GameTimer... timers) {
+        return t -> {
+            if (t instanceof TimerTimer) {
+                for (GameTimer timer : timers) {
+                    if (timer == ((TimerTimer) t).getTimer()) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        };
+    }
+
 	private int lastRaidVarb;
 
 	@Inject
@@ -100,6 +110,8 @@ public class TimersPlugin extends Plugin
 
 	@Inject
 	private InfoBoxManager infoBoxManager;
+
+	private WorldPoint previousPoint;
 
 	@Provides
 	TimersConfig getConfig(ConfigManager configManager)
@@ -227,16 +239,7 @@ public class TimersPlugin extends Plugin
 
 		if (!config.showFreezes())
 		{
-			removeGameTimer(BIND);
-			removeGameTimer(HALFBIND);
-			removeGameTimer(SNARE);
-			removeGameTimer(HALFSNARE);
-			removeGameTimer(ENTANGLE);
-			removeGameTimer(HALFENTANGLE);
-			removeGameTimer(ICERUSH);
-			removeGameTimer(ICEBURST);
-			removeGameTimer(ICEBLITZ);
-			removeGameTimer(ICEBARRAGE);
+			removeGameTimers(FREEZE_TIMERS);
 		}
 	}
 
@@ -578,6 +581,30 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onGameTick(GameTick tick)
+	{
+		if (!config.showFreezes())
+		{
+		    if (hasGameTimer(FREEZE_TIMERS)) {
+                WorldPoint current = client.getLocalPlayer().getWorldLocation();
+                if (previousPoint != null) {
+                    if (!current.equals(previousPoint) && client.getLocalDestinationLocation() != null) {
+                        removeGameTimers(FREEZE_TIMERS);
+                    }
+                } else {
+                    this.previousPoint = current;
+                }
+            } else {
+		        this.previousPoint = null;
+            }
+		}
+	}
+
+	public boolean hasGameTimer(GameTimer... timers) {
+        return infoBoxManager.getInfoBoxes().stream().anyMatch(isOfTimer(timers));
+	}
+
 	public void createGameTimer(GameTimer timer)
 	{
 		removeGameTimer(timer);
@@ -586,6 +613,11 @@ public class TimersPlugin extends Plugin
 		t.setTooltip(timer.getDescription());
 		infoBoxManager.addInfoBox(t);
 	}
+
+    public void removeGameTimers(GameTimer... timers)
+    {
+        infoBoxManager.removeIf(isOfTimer(timers));
+    }
 
 	public void removeGameTimer(GameTimer timer)
 	{
