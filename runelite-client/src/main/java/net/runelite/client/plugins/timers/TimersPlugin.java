@@ -29,6 +29,7 @@ import com.google.inject.Provides;
 import javax.inject.Inject;
 
 import net.runelite.api.Actor;
+import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
@@ -599,22 +600,30 @@ public class TimersPlugin extends Plugin
 	{
 		if (!config.showFreezes())
 		{
-		    if (hasGameTimer(FREEZE_TIMERS)) {
-                WorldPoint current = client.getLocalPlayer().getWorldLocation();
-                if (previousPoint != null) {
-                    if (!current.equals(previousPoint) && client.getLocalDestinationLocation() != null) {
-                        removeGameTimers(FREEZE_TIMERS);
-                    }
-                } else {
-                    this.previousPoint = current;
-                }
-            } else {
-		        this.previousPoint = null;
-            }
+			return;
 		}
+		if (!hasGameTimer(FREEZE_TIMERS))
+		{
+			this.previousPoint = null;
+			return;
+		}
+        WorldPoint current = client.getLocalPlayer().getWorldLocation();
+        if (previousPoint != null)
+        {
+            if (!current.equals(previousPoint) && client.getLocalDestinationLocation() != null)
+            {
+                removeGameTimers(FREEZE_TIMERS);
+                this.previousPoint = null;
+            }
+        }
+        else
+        {
+            this.previousPoint = current;
+        }
 	}
 
-	public boolean hasGameTimer(GameTimer... timers) {
+	public boolean hasGameTimer(GameTimer... timers)
+    {
         return infoBoxManager.getInfoBoxes().stream().anyMatch(isOfTimer(timers));
 	}
 
