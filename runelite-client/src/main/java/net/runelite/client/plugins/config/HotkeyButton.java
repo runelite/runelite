@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.mapping;
+package net.runelite.client.plugins.config;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import javax.swing.JButton;
+import lombok.Getter;
+import net.runelite.client.config.Keybind;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(
-	{
-		ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD
-	})
-public @interface ObfuscatedSignature
+public class HotkeyButton extends JButton
 {
-	String signature();
+	@Getter
+	private Keybind value;
 
-	String garbageValue() default ""; // valid garbage value for last parameter. can't be an Object because Java.
+	public HotkeyButton(Keybind value)
+	{
+		setValue(value);
+		addActionListener(e ->
+		{
+			setValue(Keybind.NOT_SET);
+		});
+		addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				setValue(new Keybind(e));
+			}
+		});
+	}
+
+	public void setValue(Keybind value)
+	{
+		if (value == null)
+		{
+			value = Keybind.NOT_SET;
+		}
+
+		this.value = value;
+		setText(value.toString());
+	}
 }

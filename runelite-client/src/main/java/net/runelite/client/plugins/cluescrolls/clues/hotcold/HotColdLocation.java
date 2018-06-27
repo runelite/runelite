@@ -53,7 +53,7 @@ public enum HotColdLocation
 {
 	ASGARNIA_WARRIORS(new WorldPoint(2854, 3558, 0), ASGARNIA, "North of the Warriors' Guild in Burthorpe."),
 	ASGARNIA_JATIX(new WorldPoint(2914, 3429, 0), ASGARNIA, "East of Jatix's Herblore Shop in Taverley."),
-	ASGARNIA_BARB(new WorldPoint(3038, 3438, 0), ASGARNIA, "West of Barbarian Village."),
+	ASGARNIA_BARB(new WorldPoint(3043, 3436, 0), ASGARNIA, "West of Barbarian Village."),
 	ASGARNIA_MIAZRQA(new WorldPoint(2972, 3489, 0), ASGARNIA, "North of Miazrqa's tower, outside Goblin Village."),
 	ASGARNIA_COW(new WorldPoint(3033, 3308, 0), ASGARNIA, "In the cow pen north of Sarah's Farming Shop."),
 	ASGARNIA_PARTY_ROOM(new WorldPoint(3034, 3368, 0), ASGARNIA, "Outside the Falador Party Room."),
@@ -109,7 +109,7 @@ public enum HotColdLocation
 	KANDARIN_BAXTORIAN_FALLS(new WorldPoint(2534, 3479, 0), KANDARIN, "South-east of Almera's house on Baxtorian Falls."),
 	KANDARIN_BA_AGILITY_COURSE(new WorldPoint(2536, 3546, 0), KANDARIN, "Inside the Barbarian Agility Course. Completion of Alfred Grimhand's Barcrawl is required."),
 	KARAMJA_MUSA_POINT(new WorldPoint(2914, 3168, 0), KARAMJA, "Musa Point, banana plantation."),
-	KARAMJA_BRIMHAVEN_FRUIT_TREE(new WorldPoint(2783, 3210, 0), KARAMJA, "Brimhaven, east of the fruit tree patch."),
+	KARAMJA_BRIMHAVEN_FRUIT_TREE(new WorldPoint(2783, 3214, 0), KARAMJA, "Brimhaven, east of the fruit tree patch."),
 	KARAMJA_WEST_BRIMHAVEN(new WorldPoint(2715, 3161, 0), KARAMJA, "West of Brimhaven."),
 	KARAMJA_GLIDER(new WorldPoint(2966, 2975, 0), KARAMJA, "West of the gnome glider."),
 	KARAMJA_KHARAZI_NE(new WorldPoint(2909, 2926, 0), KARAMJA, "North-eastern part of Kharazi Jungle."),

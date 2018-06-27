@@ -26,8 +26,10 @@ package net.runelite.cache;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import net.runelite.cache.definitions.NpcDefinition;
 import net.runelite.cache.definitions.exporters.NpcExporter;
 import net.runelite.cache.definitions.loaders.NpcLoader;
@@ -42,7 +44,7 @@ import net.runelite.cache.util.IDClass;
 public class NpcManager
 {
 	private final Store store;
-	private final List<NpcDefinition> npcs = new ArrayList<>();
+	private final Map<Integer, NpcDefinition> npcs = new HashMap<>();
 
 	public NpcManager(Store store)
 	{
@@ -63,20 +65,25 @@ public class NpcManager
 		for (FSFile f : files.getFiles())
 		{
 			NpcDefinition npc = loader.load(f.getFileId(), f.getContents());
-			npcs.add(npc);
+			npcs.put(f.getFileId(), npc);
 		}
 	}
-	
-	public List<NpcDefinition> getNpcs()
+
+	public Collection<NpcDefinition> getNpcs()
 	{
-		return npcs;
+		return Collections.unmodifiableCollection(npcs.values());
+	}
+
+	public NpcDefinition get(int npcId)
+	{
+		return npcs.get(npcId);
 	}
 
 	public void dump(File out) throws IOException
 	{
 		out.mkdirs();
 
-		for (NpcDefinition def : npcs)
+		for (NpcDefinition def : npcs.values())
 		{
 			NpcExporter exporter = new NpcExporter(def);
 
@@ -90,7 +97,7 @@ public class NpcManager
 		java.mkdirs();
 		try (IDClass ids = IDClass.create(java, "NpcID"))
 		{
-			for (NpcDefinition def : npcs)
+			for (NpcDefinition def : npcs.values())
 			{
 				if (def.name.equalsIgnoreCase("NULL"))
 				{

@@ -27,6 +27,7 @@ package net.runelite.client.plugins.screenshot;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
 
 @ConfigGroup(
 	keyName = "screenshot",
@@ -124,14 +125,14 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "enableShortcut",
-		name = "Screenshot with [Insert]",
-		description = "Configures whether or not screenshots can be taken with the Insert key",
-		position = 8
+		keyName = "hotkey",
+		name = "Screenshot hotkey",
+		description = "When you press this key a screenshot will be taken",
+		position = 10
 	)
-	default boolean isScreenshotEnabled()
+	default Keybind hotkey()
 	{
-		return false;
+		return Keybind.NOT_SET;
 	}
 
 	@ConfigItem(
