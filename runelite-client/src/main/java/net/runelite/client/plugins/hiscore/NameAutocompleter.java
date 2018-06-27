@@ -32,6 +32,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
+import javax.print.Doc;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -157,10 +158,13 @@ class NameAutocompleter implements KeyListener
 			{
 				try
 				{
-					input.getDocument().insertString(
-						nameStart.length(),
-						name.substring(nameStart.length()),
-						null);
+					Document document = input.getDocument();
+					document.remove(nameStart.length(), document.getLength() - nameStart.length());
+					document.insertString(
+							nameStart.length(),
+							name.substring(nameStart.length()),
+							null
+					);
 					input.select(nameStart.length(), name.length());
 				}
 				catch (BadLocationException ex)
