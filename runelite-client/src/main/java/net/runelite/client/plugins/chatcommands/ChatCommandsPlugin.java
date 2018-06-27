@@ -316,9 +316,7 @@ public class ChatCommandsPlugin extends Plugin
 	private void calculate(MessageNode messageNode, String eqn)
 	{
 		String result;
-
 		ChatMessageBuilder builder = new ChatMessageBuilder();
-
 		try
 		{
 			Expression expr = new ExpressionBuilder(eqn).build();
