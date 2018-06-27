@@ -33,6 +33,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -319,7 +321,8 @@ public class ChatCommandsPlugin extends Plugin
 
 		try
 		{
-			result = String.valueOf(Calculator.eval(eqn));
+			Expression expr = new ExpressionBuilder(eqn).build();
+			result = String.valueOf(expr.evaluate());
 			builder.append(ChatColorType.NORMAL)
 				.append("Calc: ")
 				.append(eqn)
@@ -332,7 +335,6 @@ public class ChatCommandsPlugin extends Plugin
 			result = "Calc: Unable to calculate expression: " + eqn;
 			builder.append(ChatColorType.HIGHLIGHT)
 				.append(result);
-			//log.warn("Calculator exception: ", ex);
 		}
 		String response = builder.build();
 		log.debug("Setting response {}", response);
