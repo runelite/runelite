@@ -316,7 +316,7 @@ public class ChatCommandsPlugin extends Plugin
 	private void calculate(MessageNode messageNode, String eqn)
 	{
 		final ChatMessageBuilder builder = new ChatMessageBuilder();
-		
+
 		try
 		{
 			final Expression expr = new ExpressionBuilder(eqn).build();
@@ -331,17 +331,16 @@ public class ChatCommandsPlugin extends Plugin
 		catch (IllegalArgumentException ex)
 		{
 			builder.append(ChatColorType.HIGHLIGHT)
-				.append("Calc: Unable to calculate expression: ")
-				.append(eqn)
-				.append(" Error: Illegal arguments.");
+				.append("Calc: Unable to calculate expression. ")
+				.append(" Error: IllegalArgumentException: ")
+				.append(ex.getMessage());
 		}
-
 		catch (RuntimeException ex)
 		{
 			builder.append(ChatColorType.HIGHLIGHT)
-				.append("Calc: Unable to calculate expression: ")
-				.append(eqn)
-				.append(" Error: Runtime exception.");
+				.append("Calc: Unable to calculate expression. ")
+				.append(" Error: RuntimeException: ")
+				.append(ex.getMessage());
 		}
 
 		final String response = builder.build();
