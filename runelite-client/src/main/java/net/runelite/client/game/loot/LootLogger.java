@@ -1033,7 +1033,7 @@ public class LootLogger
 	public void onActorDespawned(ActorDespawned event)
 	{
 		MemorizedActor ma = interactedActors.get(event.getActor());
-		if (ma != null)
+		if (ma != null && (event.getActor().getHealthRatio() == 0))
 		{
 			interactedActors.remove(event.getActor());
 
