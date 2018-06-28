@@ -24,7 +24,7 @@
  */
 package net.runelite.client.game.loot;
 
-public enum LootTypes
+public enum LootEventType
 {
 	UNKNOWN_EVENT,
 	BARROWS,

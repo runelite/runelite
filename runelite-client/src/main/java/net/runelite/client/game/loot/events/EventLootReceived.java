@@ -25,7 +25,7 @@
 package net.runelite.client.game.loot.events;
 
 import lombok.Value;
-import net.runelite.client.game.loot.LootTypes;
+import net.runelite.client.game.loot.LootEventType;
 import net.runelite.client.game.loot.data.ItemStack;
 import java.util.List;
 
@@ -35,7 +35,7 @@ import java.util.List;
 @Value
 public class EventLootReceived
 {
-	private final LootTypes event;
+	private final LootEventType event;
 
 	private final List<ItemStack> items;
 }
