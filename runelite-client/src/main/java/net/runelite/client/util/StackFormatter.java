@@ -147,7 +147,7 @@ public class StackFormatter
 	 */
 	public static String quantityToRSDecimalStack(int quantity)
 	{
-		if (quantity == 0 || String.valueOf(quantity).length() <= 4)
+		if (String.valueOf(quantity).length() <= 4)
 		{
 			return String.valueOf(quantity);
 		}
