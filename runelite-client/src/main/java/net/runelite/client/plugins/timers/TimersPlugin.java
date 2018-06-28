@@ -445,7 +445,7 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (config.showVengeanceOther() && actor.getAnimation() == AnimationID.VENGEANCE_OTHER)
+		if (config.showVengeanceOther() && actor.getAnimation() == AnimationID.ENERGY_TRANSFER_VENGEANCE_OTHER)
 		{
 			createGameTimer(VENGEANCEOTHER);
 		}
