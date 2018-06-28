@@ -55,6 +55,7 @@ public class StackFormatter
 	 * A decimal number formatter
 	 */
 	private static final NumberFormat DECIMAL_FORMATTER = new DecimalFormat("#,###.#");
+
 	/**
 	 * Convert a quantity to a nicely formatted stack size.
 	 * See the StackFormatterTest to see expected output.
@@ -147,13 +148,14 @@ public class StackFormatter
 	 */
 	public static String quantityToRSDecimalStack(int quantity)
 	{
-		if (String.valueOf(quantity).length() <= 4)
+		String quantityStr = String.valueOf(quantity);
+		if (quantityStr.length() <= 4)
 		{
-			return String.valueOf(quantity);
+			return quantityStr;
 		}
 
 		int power = (int) StrictMath.log10(quantity);
-		return DECIMAL_FORMATTER.format(quantity / (Math.pow(10, (power / 3) * 3))) + SUFFIXES[power/3];
+		return DECIMAL_FORMATTER.format(quantity / (Math.pow(10, (power / 3) * 3))) + SUFFIXES[power / 3];
 	}
 
 	/**
