@@ -24,8 +24,7 @@
  */
 package net.runelite.client.game.loot.events;
 
-import lombok.Data;
-import lombok.Getter;
+import lombok.Value;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.loot.data.ItemStack;
@@ -34,15 +33,12 @@ import java.util.List;
 /**
  * An event where you killed a {@link Player} and received loot
  */
-@Data
+@Value
 public class PlayerLootReceived
 {
-	@Getter
 	private final Player player;
 
-	@Getter
 	private final WorldPoint location;
 
-	@Getter
 	private final List<ItemStack> items;
 }
