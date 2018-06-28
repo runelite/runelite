@@ -64,6 +64,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDespawned;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemLayerChanged;
@@ -244,7 +245,7 @@ public class LootLogger
 	 */
 	private void onItemPickedUp(int id, int qty, WorldPoint location)
 	{
-		log.debug("Picked Up {1} of itemId: {0} at {2}", id, qty, location);
+		log.debug("Picked Up {} of itemId: {} at {}", qty, id, location);
 		eventBus.post(new ItemPickedUp(id, qty, location));
 	}
 
@@ -260,13 +261,13 @@ public class LootLogger
 		{
 			for (int i = 0; i < qty; i++)
 			{
-				log.debug("Dropped {1} of itemId: {0} at {2}", id, qty, location);
+				log.debug("Dropped {} of itemId: {} at {}", qty, id, location);
 				eventBus.post(new ItemDropped(id, 1, location));
 			}
 		}
 		else
 		{
-			log.debug("Dropped {1} of itemId: {0} at {2}", id, qty, location);
+			log.debug("Dropped {} of itemId: {} at {}", qty, id, location);
 			eventBus.post(new ItemDropped(id, qty, location));
 		}
 
@@ -641,12 +642,6 @@ public class LootLogger
 				int amount = Math.min(-value, groundItemCount);
 				onItemDropped(key, amount, playerLocationLastTick);
 			}
-			else if (value < 0)
-			{
-				// Items disappeared from the inventory in some
-				// other way, such as banking them
-				log.debug("Item Disappeared from inventory, maybe banked.");
-			}
 		});
 	}
 
@@ -1002,6 +997,17 @@ public class LootLogger
 	 * Subscribe events which do some basics checks and information updating
 	 */
 
+	/**
+	 * Clear ground items map on region change
+	 */
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged e)
+	{
+		if (e.getGameState() == GameState.LOGGED_IN)
+		{
+			groundItemsLastTick.clear();
+		}
+	}
 	/**
 	 * Location Checks
 	 */
