@@ -98,10 +98,10 @@ public class LootLogger
 		// This list may be incomplete, I didn't test every NPC in the game.
 		NPC_DEATH_ANIMATIONS = new HashMap<>();
 		NPC_DEATH_ANIMATIONS.put(NpcID.CAVE_KRAKEN, AnimationID.CAVE_KRAKEN_DEATH);
-		NPC_DEATH_ANIMATIONS.put(NpcID.AIR_WIZARD, AnimationID.AIR_WIZARD_DEATH);
-		NPC_DEATH_ANIMATIONS.put(NpcID.WATER_WIZARD, AnimationID.WATER_WIZARD_DEATH);
-		NPC_DEATH_ANIMATIONS.put(NpcID.EARTH_WIZARD, AnimationID.EARTH_WIZARD_DEATH);
-		NPC_DEATH_ANIMATIONS.put(NpcID.FIRE_WIZARD, AnimationID.FIRE_WIZARD_DEATH);
+		NPC_DEATH_ANIMATIONS.put(NpcID.AIR_WIZARD, AnimationID.WIZARD_DEATH);
+		NPC_DEATH_ANIMATIONS.put(NpcID.WATER_WIZARD, AnimationID.WIZARD_DEATH);
+		NPC_DEATH_ANIMATIONS.put(NpcID.EARTH_WIZARD, AnimationID.WIZARD_DEATH);
+		NPC_DEATH_ANIMATIONS.put(NpcID.FIRE_WIZARD, AnimationID.WIZARD_DEATH);
 	}
 
 	@Inject
@@ -113,11 +113,11 @@ public class LootLogger
 	// posting new events
 	private final EventBus eventBus;
 
-	private final Map<Actor, MemorizedActor> interactedActors;
-	private final List<MemorizedActor> deadActorsThisTick;
+	private final Map<Actor, MemorizedActor> interactedActors = new HashMap<>();
+	private final List<MemorizedActor> deadActorsThisTick = new ArrayList<>();
 
-	private final Map<WorldPoint, List<Item>> groundItemsLastTick;
-	private final Set<Tile> changedItemLayerTiles;
+	private final Map<WorldPoint, List<Item>> groundItemsLastTick = new HashMap<>();
+	private final Set<Tile> changedItemLayerTiles = new HashSet<>();
 
 	private WorldPoint playerLocationLastTick;
 	private WorldPoint cannonLocation;
@@ -143,12 +143,6 @@ public class LootLogger
 	private LootLogger(EventBus eventBus)
 	{
 		this.eventBus = eventBus;
-
-		// Init
-		this.interactedActors = new HashMap<>();
-		this.deadActorsThisTick = new ArrayList<>();
-		this.groundItemsLastTick = new HashMap<>();
-		this.changedItemLayerTiles = new HashSet<>();
 	}
 
 	/*
@@ -226,7 +220,6 @@ public class LootLogger
 			log.debug("Dropped {} of itemId: {} at {}", qty, id, location);
 			eventBus.post(new ItemDropped(id, qty, location));
 		}
-
 	}
 
 	/**
@@ -421,7 +414,7 @@ public class LootLogger
 			// all targets in the 3x3 area
 			int animation = player.getAnimation();
 			if (animation == AnimationID.THROW_CHINCHOMPA ||
-					animation == AnimationID.CAST_BARRAGE) // Burst is same animation as barrage
+					animation == AnimationID.CAST_BURST_BARRAGE) // Burst is same animation as barrage
 			{
 				WorldPoint targetLocation = interacting.getWorldLocation();
 

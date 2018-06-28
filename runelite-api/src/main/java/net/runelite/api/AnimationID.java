@@ -132,13 +132,9 @@ public final class AnimationID
 	public static final int DEMONIC_GORILLA_DEFEND = 7224;
 	public static final int IMP_DEATH = 172;
 	public static final int THROW_CHINCHOMPA = 7618;
-	public static final int CAST_BARRAGE = 1979;
-	public static final int CAST_BURST = 1979;
+	public static final int CAST_BURST_BARRAGE = 1979;
 	public static final int CAVE_KRAKEN_DEATH = 3993;
-	public static final int AIR_WIZARD_DEATH = 2553;
-	public static final int WATER_WIZARD_DEATH = 2553;
-	public static final int EARTH_WIZARD_DEATH = 2553;
-	public static final int FIRE_WIZARD_DEATH = 2553;
+	public static final int WIZARD_DEATH = 2553;
 
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
