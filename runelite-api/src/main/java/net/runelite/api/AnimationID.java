@@ -124,7 +124,6 @@ public final class AnimationID
 	public static final int USING_GILDED_ALTAR = 3705;
 	public static final int LOOKING_INTO = 832;
 	public static final int DIG = 830;
-	public static final int VENGEANCE_OTHER = 4411;
 	public static final int DEMONIC_GORILLA_MAGIC_ATTACK = 7225;
 	public static final int DEMONIC_GORILLA_MELEE_ATTACK = 7226;
 	public static final int DEMONIC_GORILLA_RANGED_ATTACK = 7227;
@@ -148,6 +147,7 @@ public final class AnimationID
 	public static final int FARMING_HARVEST_FLOWER = 2292;
 
 	// Lunar spellbook
+	public static final int ENERGY_TRANSFER_VENGEANCE_OTHER = 4411;
 	public static final int MAGIC_LUNAR_FERTILE_SOIL = 4413;
 	public static final int MAGIC_LUNAR_CURE_PLANT = 4432;
 	public static final int MAGIC_LUNAR_GEOMANCY = 7118;
