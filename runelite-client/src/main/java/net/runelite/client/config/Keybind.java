@@ -133,7 +133,7 @@ public class Keybind
 		String mod = "";
 		if (modifiers != 0)
 		{
-			mod = InputEvent.getModifiersExText(modifiers);
+			mod = getModifiersExText(modifiers);
 		}
 
 		if (mod.isEmpty() && key.isEmpty())
@@ -149,5 +149,32 @@ public class Keybind
 			return key;
 		}
 		return mod;
+	}
+
+	public static String getModifiersExText(int modifiers)
+	{
+		StringBuilder buf = new StringBuilder();
+		if ((modifiers & InputEvent.META_DOWN_MASK) != 0)
+		{
+			buf.append("Meta+");
+		}
+		if ((modifiers & InputEvent.CTRL_DOWN_MASK) != 0)
+		{
+			buf.append("Ctrl+");
+		}
+		if ((modifiers & InputEvent.ALT_DOWN_MASK) != 0)
+		{
+			buf.append("Alt+");
+		}
+		if ((modifiers & InputEvent.SHIFT_DOWN_MASK) != 0)
+		{
+			buf.append("Shift+");
+		}
+
+		if (buf.length() > 0)
+		{
+			buf.setLength(buf.length() - 1); // remove trailing '+'
+		}
+		return buf.toString();
 	}
 }
