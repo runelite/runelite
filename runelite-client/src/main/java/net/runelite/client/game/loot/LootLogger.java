@@ -183,12 +183,12 @@ public class LootLogger
 	/**
 	 * Called when loot was received by completing an activity. Triggers the EventLootReceived event.
 	 *
-	 * The types of events are static and available on the LootTypes class
+	 * The types of events are static and available on the LootEventType class
 	 *
-	 * @param event LootTypes event name
+	 * @param event LootEventType event name
 	 * @param drops	A Integer, Integer map of ItemIDs and Quantities
 	 */
-	private void onNewEventLogCreated(LootTypes event, Map<Integer, Integer> drops)
+	private void onNewEventLogCreated(LootEventType event, Map<Integer, Integer> drops)
 	{
 		eventBus.post(new EventLootReceived(event, createItemList(drops)));
 	}
@@ -478,7 +478,7 @@ public class LootLogger
 			{
 				Map<Integer, Integer> barrowsReward = Arrays.stream(thisTickRewardItems)
 						.collect(Collectors.toMap(Item::getId, Item::getQuantity));
-				onNewEventLogCreated(LootTypes.BARROWS, barrowsReward);
+				onNewEventLogCreated(LootEventType.BARROWS, barrowsReward);
 			}
 			else if (openedClueScrollThisTick)
 			{
@@ -487,7 +487,7 @@ public class LootLogger
 				Map<Integer, Integer> itemDiff = getItemDifferences(
 						Arrays.asList(prevTickInventoryItems),
 						Arrays.asList(thisTickInventoryItems));
-				LootTypes clueScrollType = LootTypes.UNKNOWN_EVENT;
+				LootEventType clueScrollType = LootEventType.UNKNOWN_EVENT;
 				for (Map.Entry<Integer, Integer> entry : itemDiff.entrySet())
 				{
 					if (entry.getValue() >= 0)
@@ -497,19 +497,19 @@ public class LootLogger
 					switch (entry.getKey())
 					{
 						case ItemID.REWARD_CASKET_EASY:
-							clueScrollType = LootTypes.CLUE_SCROLL_EASY;
+							clueScrollType = LootEventType.CLUE_SCROLL_EASY;
 							break;
 						case ItemID.REWARD_CASKET_MEDIUM:
-							clueScrollType = LootTypes.CLUE_SCROLL_MEDIUM;
+							clueScrollType = LootEventType.CLUE_SCROLL_MEDIUM;
 							break;
 						case ItemID.REWARD_CASKET_HARD:
-							clueScrollType = LootTypes.CLUE_SCROLL_HARD;
+							clueScrollType = LootEventType.CLUE_SCROLL_HARD;
 							break;
 						case ItemID.REWARD_CASKET_ELITE:
-							clueScrollType = LootTypes.CLUE_SCROLL_ELITE;
+							clueScrollType = LootEventType.CLUE_SCROLL_ELITE;
 							break;
 						case ItemID.REWARD_CASKET_MASTER:
-							clueScrollType = LootTypes.CLUE_SCROLL_MASTER;
+							clueScrollType = LootEventType.CLUE_SCROLL_MASTER;
 							break;
 						default:
 							continue;
@@ -523,7 +523,7 @@ public class LootLogger
 		{
 			Map<Integer, Integer> reward = Arrays.stream(chambersOfXericItems)
 					.collect(Collectors.toMap(Item::getId, Item::getQuantity));
-			onNewEventLogCreated(LootTypes.RAIDS, reward);
+			onNewEventLogCreated(LootEventType.RAIDS, reward);
 
 			completedChambersOfXericThisTick = false;
 		}
@@ -532,7 +532,7 @@ public class LootLogger
 		{
 			Map<Integer, Integer> reward = Arrays.stream(theatreOfBloodItems)
 					.collect(Collectors.toMap(Item::getId, Item::getQuantity));
-			onNewEventLogCreated(LootTypes.THEATRE_OF_BLOOD, reward);
+			onNewEventLogCreated(LootEventType.THEATRE_OF_BLOOD, reward);
 
 			completedTheatreOfBloodThisTick = false;
 		}
