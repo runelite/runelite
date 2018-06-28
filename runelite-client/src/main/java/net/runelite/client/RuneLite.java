@@ -109,7 +109,7 @@ public class RuneLite
 	private SessionManager sessionManager;
 
 	@Inject
-	private LootLogger lootLogger;
+	private Provider<LootLogger> lootLogger;
 
 	@Inject
 	private DiscordService discordService;
@@ -247,6 +247,7 @@ public class RuneLite
 		if (this.client != null)
 		{
 			eventBus.register(itemManager.get());
+			eventBus.register(lootLogger.get());
 		}
 
 		// Load user configuration
@@ -268,10 +269,6 @@ public class RuneLite
 
 		// Load the session, including saved configuration
 		sessionManager.loadSession();
-
-		// Pass Needed Info to LootLogger
-		lootLogger.setClient((Client)client);
-		lootLogger.setItemManager(itemManager.get());
 
 		// Add core overlays after configuration has been loaded so their properties will be
 		// loaded properly

@@ -24,20 +24,18 @@
  */
 package net.runelite.client.game.loot.events;
 
-import lombok.Data;
-import lombok.Getter;
+import lombok.Value;
+import net.runelite.client.game.loot.LootTypes;
 import net.runelite.client.game.loot.data.ItemStack;
 import java.util.List;
 
 /**
  * An event where you finished an event and received loot
  */
-@Data
+@Value
 public class EventLootReceived
 {
-	@Getter
-	private final String event;
+	private final LootTypes event;
 
-	@Getter
 	private final List<ItemStack> items;
 }

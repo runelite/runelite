@@ -39,7 +39,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
@@ -49,7 +48,6 @@ import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
@@ -106,28 +104,20 @@ public class LootLogger
 		NPC_DEATH_ANIMATIONS.put(NpcID.FIRE_WIZARD, AnimationID.FIRE_WIZARD_DEATH);
 	}
 
-	@Setter
+	@Inject
 	private Client client;
 
-	@Setter
+	@Inject
 	private ItemManager itemManager;
 
 	// posting new events
 	private final EventBus eventBus;
 
-	@Inject
-	public LootLogger(EventBus eventBus)
-	{
-		this.eventBus = eventBus;
-		eventBus.register(this);
-		init();
-	}
+	private final Map<Actor, MemorizedActor> interactedActors;
+	private final List<MemorizedActor> deadActorsThisTick;
 
-	private Map<Actor, MemorizedActor> interactedActors;
-	private List<MemorizedActor> deadActorsThisTick;
-
-	private Map<WorldPoint, List<Item>> groundItemsLastTick;
-	private Set<Tile> changedItemLayerTiles;
+	private final Map<WorldPoint, List<Item>> groundItemsLastTick;
+	private final Set<Tile> changedItemLayerTiles;
 
 	private WorldPoint playerLocationLastTick;
 	private WorldPoint cannonLocation;
@@ -149,50 +139,16 @@ public class LootLogger
 	private boolean completedTheatreOfBloodThisTick = false;
 	private boolean hasOpenedTheatreOfBloodRewardChest = false;
 
-	/**
-	 * Initializes all necessary variables for the loot tracking system
-	 */
-	protected void init()
+	@Inject
+	private LootLogger(EventBus eventBus)
 	{
+		this.eventBus = eventBus;
+
+		// Init
 		this.interactedActors = new HashMap<>();
 		this.deadActorsThisTick = new ArrayList<>();
 		this.groundItemsLastTick = new HashMap<>();
 		this.changedItemLayerTiles = new HashSet<>();
-		if (client != null && client.getGameState() == GameState.LOGGED_IN)
-		{
-			ItemContainer c = client.getItemContainer(InventoryID.INVENTORY);
-			if (c == null)
-			{
-				this.prevTickInventoryItems = null;
-			}
-			else
-			{
-				this.prevTickInventoryItems = c.getItems();
-			}
-		}
-	}
-
-	/**
-	 * Nulls all stored data maps and lists
-	 */
-	protected void shutDown()
-	{
-		this.deadActorsThisTick = null;
-		this.groundItemsLastTick = null;
-		this.changedItemLayerTiles = null;
-		this.prevTickInventoryItems = null;
-	}
-
-	/**
-	 * Clears all stored data maps and lists
-	 */
-	public void clearStoredData()
-	{
-		log.debug("Clearing LootLogger data");
-
-		deadActorsThisTick.clear();
-		groundItemsLastTick.clear();
-		changedItemLayerTiles.clear();
 	}
 
 	/*
@@ -232,7 +188,7 @@ public class LootLogger
 	 * @param event LootTypes event name
 	 * @param drops	A Integer, Integer map of ItemIDs and Quantities
 	 */
-	private void onNewEventLogCreated(String event, Map<Integer, Integer> drops)
+	private void onNewEventLogCreated(LootTypes event, Map<Integer, Integer> drops)
 	{
 		eventBus.post(new EventLootReceived(event, createItemList(drops)));
 	}
@@ -531,7 +487,7 @@ public class LootLogger
 				Map<Integer, Integer> itemDiff = getItemDifferences(
 						Arrays.asList(prevTickInventoryItems),
 						Arrays.asList(thisTickInventoryItems));
-				String clueScrollType = LootTypes.UNKNOWN_EVENT;
+				LootTypes clueScrollType = LootTypes.UNKNOWN_EVENT;
 				for (Map.Entry<Integer, Integer> entry : itemDiff.entrySet())
 				{
 					if (entry.getValue() >= 0)
@@ -780,61 +736,6 @@ public class LootLogger
 											pad.getActor().getWorldLocation().getY() + 2,
 											pad.getActor().getWorldLocation().getPlane())
 							};
-				}
-
-				case NpcID.PENANCE_FIGHTER:
-				case NpcID.PENANCE_FIGHTER_5739:
-				case NpcID.PENANCE_FIGHTER_5740:
-				case NpcID.PENANCE_FIGHTER_5741:
-				case NpcID.PENANCE_FIGHTER_5742:
-				case NpcID.PENANCE_FIGHTER_5743:
-				case NpcID.PENANCE_FIGHTER_5744:
-				case NpcID.PENANCE_FIGHTER_5745:
-				case NpcID.PENANCE_FIGHTER_5746:
-				case NpcID.PENANCE_FIGHTER_5747:
-				case NpcID.PENANCE_RANGER:
-				case NpcID.PENANCE_RANGER_5757:
-				case NpcID.PENANCE_RANGER_5758:
-				case NpcID.PENANCE_RANGER_5759:
-				case NpcID.PENANCE_RANGER_5760:
-				case NpcID.PENANCE_RANGER_5761:
-				case NpcID.PENANCE_RANGER_5762:
-				case NpcID.PENANCE_RANGER_5763:
-				case NpcID.PENANCE_RANGER_5764:
-				case NpcID.PENANCE_RANGER_5765:
-				case NpcID.PENANCE_HEALER:
-				case NpcID.PENANCE_HEALER_5766:
-				case NpcID.PENANCE_HEALER_5767:
-				case NpcID.PENANCE_HEALER_5768:
-				case NpcID.PENANCE_HEALER_5769:
-				case NpcID.PENANCE_HEALER_5770:
-				case NpcID.PENANCE_HEALER_5771:
-				case NpcID.PENANCE_HEALER_5772:
-				case NpcID.PENANCE_HEALER_5773:
-				case NpcID.PENANCE_HEALER_5774:
-				case NpcID.PENANCE_RUNNER:
-				case NpcID.PENANCE_RUNNER_5748:
-				case NpcID.PENANCE_RUNNER_5749:
-				case NpcID.PENANCE_RUNNER_5750:
-				case NpcID.PENANCE_RUNNER_5751:
-				case NpcID.PENANCE_RUNNER_5752:
-				case NpcID.PENANCE_RUNNER_5753:
-				case NpcID.PENANCE_RUNNER_5754:
-				case NpcID.PENANCE_RUNNER_5755:
-				case NpcID.PENANCE_RUNNER_5756:
-				{
-					WorldPoint wp = pad.getActor().getWorldLocation();
-					WorldPoint[] dropLocations = new WorldPoint[9];
-					int pos = 0;
-					for (int dx = -1; dx <= 1; dx++)
-					{
-						for (int dy = -1; dy <= 1; dy++)
-						{
-							dropLocations[pos++] = new WorldPoint(
-									wp.getX() + dx, wp.getY() + dy, wp.getPlane());
-						}
-					}
-					return dropLocations;
 				}
 			}
 

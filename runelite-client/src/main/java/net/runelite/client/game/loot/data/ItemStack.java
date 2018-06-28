@@ -24,14 +24,13 @@
  */
 package net.runelite.client.game.loot.data;
 
-import lombok.Getter;
+import lombok.Value;
 
+@Value
 public class ItemStack
 {
-	@Getter
 	private int id;
 
-	@Getter
 	private int quantity;
 
 	public ItemStack(int itemId, int quantity)
