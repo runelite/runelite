@@ -482,15 +482,15 @@
     },
     {
       "level": 85,
-      "icon": 11936,
-      "name": "Dark Crab",
-      "xp": 215
-    },
-    {
-      "level": 85,
       "icon": 7208,
       "name": "Wild Pie",
       "xp": 240
+    },
+    {
+      "level": 90,
+      "icon": 11936,
+      "name": "Dark Crab",
+      "xp": 215
     },
     {
       "level": 91,
