@@ -74,7 +74,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 35,
 		keyName = "opaquePrivateMessageReceived",
-		name = "Recieved private messages",
+		name = "Received private messages",
 		description = "Color of Private messages you've received"
 	)
 	Color opaquePrivateMessageReceived();
