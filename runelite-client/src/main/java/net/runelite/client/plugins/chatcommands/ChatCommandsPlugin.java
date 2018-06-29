@@ -33,11 +33,13 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.AccountType;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.SetMessage;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -50,6 +52,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreResult;
+import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreSkill;
 import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
 import net.runelite.http.api.hiscore.Skill;
@@ -244,18 +247,31 @@ public class ChatCommandsPlugin extends Plugin
 	private void playerSkillLookup(ChatMessageType type, SetMessage setMessage, String search)
 	{
 		search = SkillAbbreviations.getFullName(search);
+		final String player;
+		final HiscoreEndpoint ironmanStatus;
 
-		String player;
 		if (type.equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
 		{
 			player = client.getLocalPlayer().getName();
+			ironmanStatus = getIronmanStatusByVarbit();
 		}
 		else
 		{
 			player = sanitize(setMessage.getName());
+
+			if (player.equals(client.getLocalPlayer().getName()))
+			{
+				// Get ironman btw status from varbit
+				ironmanStatus = getIronmanStatusByVarbit();
+			}
+			else
+			{
+				// Get ironman btw status from their icon in chat
+				ironmanStatus = getIronmanStatusByName(setMessage.getName());
+			}
 		}
 
-		HiscoreSkill skill;
+		final HiscoreSkill skill;
 		try
 		{
 			skill = HiscoreSkill.valueOf(search.toUpperCase());
@@ -267,7 +283,7 @@ public class ChatCommandsPlugin extends Plugin
 
 		try
 		{
-			SingleHiscoreSkillResult result = hiscoreClient.lookup(player, skill);
+			SingleHiscoreSkillResult result = hiscoreClient.lookup(player, skill, ironmanStatus);
 			Skill hiscoreSkill = result.getSkill();
 
 			String response = new ChatMessageBuilder()
@@ -410,5 +426,44 @@ public class ChatCommandsPlugin extends Plugin
 	{
 		String cleaned = lookup.contains("<img") ? lookup.substring(lookup.lastIndexOf('>') + 1) : lookup;
 		return cleaned.replace('\u00A0', ' ');
+	}
+
+	/**
+	 * Looks up the ironman status of the local player. Does NOT work on other players.
+	 * @return hiscore endpoint
+	 */
+	private HiscoreEndpoint getIronmanStatusByVarbit()
+	{
+		return toEndPoint(AccountType.fromVarbit(client.getVarbitValue(client.getVarps(), Varbits.IRONMAN_STATUS.getId())));
+	}
+
+	/**
+	 * Returns the ironman status based on the symbol in the name of the player.
+	 * @param name player name
+	 * @return hiscore endpoint
+	 */
+	private static HiscoreEndpoint getIronmanStatusByName(final String name)
+	{
+		return toEndPoint(AccountType.fromName(name));
+	}
+
+	/**
+	 * Converts account type to hiscore endpoint
+	 * @param accountType account type
+	 * @return hiscore endpoint
+	 */
+	private static HiscoreEndpoint toEndPoint(final AccountType accountType)
+	{
+		switch (accountType)
+		{
+			case IRONMAN:
+				return HiscoreEndpoint.IRONMAN;
+			case ULTIMATE_IRONMAN:
+				return HiscoreEndpoint.ULTIMATE_IRONMAN;
+			case HARDCORE_IRONMAN:
+				return HiscoreEndpoint.HARDCORE_IRONMAN;
+			default:
+				return HiscoreEndpoint.NORMAL;
+		}
 	}
 }
