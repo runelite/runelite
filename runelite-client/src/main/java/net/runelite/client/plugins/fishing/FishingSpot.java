@@ -27,6 +27,8 @@ package net.runelite.client.plugins.fishing;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
+import static net.runelite.api.NpcID.FISHING_SPOT_1497;
+import static net.runelite.api.NpcID.FISHING_SPOT_1498;
 import static net.runelite.api.NpcID.FISHING_SPOT_1510;
 import static net.runelite.api.NpcID.FISHING_SPOT_1511;
 import static net.runelite.api.NpcID.FISHING_SPOT_1518;
@@ -41,6 +43,9 @@ import static net.runelite.api.NpcID.FISHING_SPOT_1528;
 import static net.runelite.api.NpcID.FISHING_SPOT_1530;
 import static net.runelite.api.NpcID.FISHING_SPOT_1542;
 import static net.runelite.api.NpcID.FISHING_SPOT_1544;
+import static net.runelite.api.NpcID.FISHING_SPOT_2653;
+import static net.runelite.api.NpcID.FISHING_SPOT_2654;
+import static net.runelite.api.NpcID.FISHING_SPOT_2655;
 import static net.runelite.api.NpcID.FISHING_SPOT_3913;
 import static net.runelite.api.NpcID.FISHING_SPOT_3914;
 import static net.runelite.api.NpcID.FISHING_SPOT_3915;
@@ -137,6 +142,12 @@ public enum FishingSpot
 	),
 	SACRED_EEL("Sacred eel", ItemID.SACRED_EEL,
 		FISHING_SPOT_6488
+	),
+	CAVE_EEL("Cave eel", ItemID.RAW_CAVE_EEL,
+		FISHING_SPOT_1497, FISHING_SPOT_1498
+	),
+	SLIMY_EEL("Slimy eel", ItemID.RAW_SLIMY_EEL,
+		FISHING_SPOT_2653, FISHING_SPOT_2654, FISHING_SPOT_2655
 	);
 
 	private static final Map<Integer, FishingSpot> fishingSpots = new HashMap<>();
