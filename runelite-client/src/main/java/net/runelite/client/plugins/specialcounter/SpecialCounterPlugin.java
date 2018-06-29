@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.specialcounter;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -42,19 +43,20 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Special Attack Counter",
-	enabledByDefault = false
+	name = "Special Attack Counter"
 )
 public class SpecialCounterPlugin extends Plugin
 {
 	private int currentWorld = -1;
 	private int specialPercentage = -1;
 	private int specialHitpointsExperience = -1;
+	private int corpId = 319;
 	private boolean specialUsed;
 	private double modifier = 1d;
 
@@ -70,6 +72,15 @@ public class SpecialCounterPlugin extends Plugin
 
 	@Inject
 	private ItemManager itemManager;
+
+	@Inject
+	private SpecialCounterConfig config;
+
+	@Provides
+	SpecialCounterConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(SpecialCounterConfig.class);
+	}
 
 	@Override
 	protected void shutDown()
@@ -108,10 +119,10 @@ public class SpecialCounterPlugin extends Plugin
 		this.specialPercentage = specialPercentage;
 		this.specialWeapon = usedSpecialWeapon();
 
-		checkInteracting();
-
 		specialUsed = true;
 		specialHitpointsExperience = client.getSkillExperience(Skill.HITPOINTS);
+
+		checkInteracting();
 	}
 
 	@Subscribe
@@ -149,6 +160,13 @@ public class SpecialCounterPlugin extends Plugin
 		if (interacting instanceof NPC)
 		{
 			int interactingId = ((NPC) interacting).getId();
+
+			if (config.corpCounter() && interactingId != corpId)
+			{
+				specialUsed = false;
+				removeCounters();
+				return;
+			}
 
 			if (interactedNpcId != interactingId)
 			{
