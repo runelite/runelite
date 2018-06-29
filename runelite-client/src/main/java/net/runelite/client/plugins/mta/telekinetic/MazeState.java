@@ -40,12 +40,14 @@ import net.runelite.api.coords.WorldPoint;
 public class MazeState
 {
 	private final Maze maze;
+
 	@Getter
 	private final WorldPoint current;
+
 	@Getter
 	private final List<WorldPoint> solution;
 
-	public MazeState(Maze maze, WorldPoint current)
+	MazeState(Maze maze, WorldPoint current)
 	{
 		this.maze = maze;
 		this.current = current;
@@ -59,6 +61,7 @@ public class MazeState
 		this.solution = solution;
 	}
 
+	// Gets the next state assuming that the current state was correctly executed
 	public MazeState next()
 	{
 		List<WorldPoint> nextSolution = new ArrayList<>(solution);
@@ -67,16 +70,17 @@ public class MazeState
 		return new MazeState(maze, next, nextSolution);
 	}
 
-	public WorldPoint getMove(int move)
+	private WorldPoint getMove(int move)
 	{
 		return solution.get(solution.size() - (1 + move));
 	}
 
-	public int moves()
+	int moves()
 	{
 		return solution.size();
 	}
 
+	// A simple Dijkstra implementation to solve the maze from the current position the guardian is in.
 	private List<WorldPoint> solve()
 	{
 		WorldPoint finish = maze.getFinish();
@@ -128,6 +132,7 @@ public class MazeState
 		return result;
 	}
 
+	// The line on which you can stand to have the correct execution of telekinetic grab
 	private WorldArea getIndicatorLine(Direction direction)
 	{
 		Rectangle bounds = maze.getBounds();
@@ -146,30 +151,38 @@ public class MazeState
 		return null;
 	}
 
-	public boolean validate()
+	// Validating if the user is on the correct position
+	// Used for rendering but also for deciding whether or not to move to the next state.
+	boolean validate()
 	{
 		return between(getCurrent(), getMove(0)) == maze.getMyDirection();
 	}
 
-	public WorldPoint optimal(WorldPoint current)
+	// Computes the optimal world point to stand on, taking into consideration the move after the current one
+	WorldPoint optimal(WorldPoint current)
 	{
 		WorldPoint nextPoint = getMove(0);
 		Direction next = between(getCurrent(), nextPoint);
 		WorldArea areaNext = getIndicatorLine(next);
 		WorldPoint nearestNext = nearest(areaNext, current);
 
+		// If there is only 1 move left, we just return the nearest tile for the next move
 		if (moves() == 1)
 		{
 			return nearestNext;
 		}
 
+		// If there is more than 1 move, we get the move after the current one
 		Direction after = between(nextPoint, getMove(1));
 		WorldArea areaAfter = getIndicatorLine(after);
+
+		// We then compute the nearest point to this second move on the line for the next move
 		WorldPoint nearestAfter = nearest(areaAfter, nearestNext);
 
 		return nearest(areaNext, nearestAfter);
 	}
 
+	// Gets the direction between two points
 	private Direction between(WorldPoint from, WorldPoint to)
 	{
 		if (to.getX() > from.getX())
@@ -201,6 +214,8 @@ public class MazeState
 
 		for (WorldPoint areaPoint : area.toWorldPointList())
 		{
+			// Distance is computed with manhattan distance as you always
+			// need to walk in the 'manhattan way' around the maze
 			int currDist = manhattan(areaPoint, worldPoint);
 			if (nearest == null || dist > currDist)
 			{
@@ -214,6 +229,7 @@ public class MazeState
 
 	private WorldPoint[] neighbours(WorldPoint point)
 	{
+		// Returns the neighbours in all directions
 		return new WorldPoint[]
 			{
 				maze.neighbour(point, Direction.NORTH), maze.neighbour(point, Direction.SOUTH),

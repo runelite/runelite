@@ -24,11 +24,11 @@
  */
 package net.runelite.client.plugins.mta.telekinetic;
 
+import com.google.common.eventbus.Subscribe;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import javax.inject.Inject;
-import com.google.common.eventbus.Subscribe;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
@@ -78,11 +78,15 @@ public class TelekineticRoom extends MTARoom
 			return;
 		}
 
+		// Queries the walls around the maze. These are both used to detect when we enter a new maze
+		// as well as building the bounds around the maze.
 		WallObjectQuery qry = new WallObjectQuery()
 			.idEquals(TELEKINETIC_WALL);
 		WallObject[] result = qry.result(client);
 		int length = result.length;
 
+		// If the amount of walls in the currently stored maze are not equal to the amount of walls we've
+		// queried there must be a new maze.
 		if (maze == null || length != maze.getWalls())
 		{
 			maze = Maze.build(client, result);
@@ -90,17 +94,23 @@ public class TelekineticRoom extends MTARoom
 		}
 		else if (guardian != null)
 		{
+			// We don't want to get a new state when the projectile is moving as it will
+			// move the state back to the previous state (guardian hasnt moved yet) when we
+			// might have just moved to the next state (when telekinetic grab is cast and we
+			// saw that the player was in the right position)
 			if (!projectileMoving)
 			{
 				state = maze.getState(state, guardian);
 			}
 
+			// If there are no moves left we can clear the hint arrow
 			if (state.moves() == 0)
 			{
 				client.clearHintArrow();
 			}
 			else
 			{
+				// Only compute the optimal once per tick
 				WorldPoint current = client.getLocalPlayer().getWorldLocation();
 				WorldPoint currentOptimal = state.optimal(current);
 				if (optimal == null || !currentOptimal.equals(optimal))
@@ -124,18 +134,22 @@ public class TelekineticRoom extends MTARoom
 			return;
 		}
 
+		// If the current state is not null and we were in the correct position to cast the spell
+		// we can prematurely move to the next state so the user can see the next move a bit sooner
 		if (state != null
 			&& state.validate())
 		{
 			state = state.next();
 		}
 
+		// Used for determining whether or not to recompute the state
 		projectileMoving = projectile.getRemainingCycles() != 0;
 	}
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
+		// Clear if we loaded a region and we're not inside
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
 			if (!inside())
@@ -164,6 +178,7 @@ public class TelekineticRoom extends MTARoom
 	public void onNpcDespawned(NpcDespawned event)
 	{
 		NPC npc = event.getNpc();
+
 		if (npc.getId() == NpcID.MAZE_GUARDIAN)
 		{
 			guardian = null;
@@ -179,50 +194,47 @@ public class TelekineticRoom extends MTARoom
 	@Override
 	public void under(Graphics2D graphics2D)
 	{
-		if (inside() && maze != null && guardian != null && state != null)
+		if (!inside() || maze == null || guardian == null || state == null || state.moves() == 0)
 		{
-			if (state.moves() > 0)
-			{
-				if (state.validate())
-				{
-					graphics2D.setColor(Color.GREEN);
-				}
-				else
-				{
-					graphics2D.setColor(Color.RED);
-				}
-
-
-				Polygon tile = Perspective.getCanvasTilePoly(client, guardian.getLocalLocation());
-				if (tile != null)
-				{
-					graphics2D.drawPolygon(tile);
-				}
-
-				if (optimal != null)
-				{
-					client.setHintArrow(optimal);
-					renderWorldPoint(graphics2D, optimal);
-				}
-			}
+			return;
 		}
-	}
 
-
-	private void renderWorldPoint(Graphics2D graphics, WorldPoint worldPoint)
-	{
-		renderLocalPoint(graphics, LocalPoint.fromWorld(client, worldPoint));
-	}
-
-	private void renderLocalPoint(Graphics2D graphics, LocalPoint local)
-	{
-		if (local != null)
+		// If we are in the correct position we want to colour the tiles green
+		if (state.validate())
 		{
-			Polygon canvasTilePoly = Perspective.getCanvasTilePoly(client, local);
-			if (canvasTilePoly != null)
-			{
-				graphics.drawPolygon(canvasTilePoly);
-			}
+			graphics2D.setColor(Color.GREEN);
 		}
+		else
+		{
+			graphics2D.setColor(Color.RED);
+		}
+
+		Polygon guardianTilePoly = Perspective.getCanvasTilePoly(client, guardian.getLocalLocation());
+		if (guardianTilePoly != null)
+		{
+			graphics2D.drawPolygon(guardianTilePoly);
+		}
+
+		if (optimal == null)
+		{
+			return;
+		}
+
+		client.setHintArrow(optimal);
+		LocalPoint optimalPoint = LocalPoint.fromWorld(client, optimal);
+
+		if (optimalPoint == null)
+		{
+			return;
+		}
+
+		Polygon canvasTilePoly = Perspective.getCanvasTilePoly(client, optimalPoint);
+		if (canvasTilePoly == null)
+		{
+			return;
+		}
+
+		graphics2D.drawPolygon(canvasTilePoly);
+
 	}
 }

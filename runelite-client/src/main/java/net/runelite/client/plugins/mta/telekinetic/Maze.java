@@ -43,14 +43,18 @@ public class Maze
 	private static final int TELEKINETIC_FINISH = NullObjectID.NULL_23672;
 
 	private final Client client;
+
 	@Getter
 	private final int[][] flags;
+
 	@Getter
 	private final WorldPoint finish;
+
 	@Getter
 	private final int walls;
+
 	@Getter
-	private Rectangle bounds;
+	private final Rectangle bounds;
 
 	private Maze(Client client, int[][] flags, int walls, WorldPoint finish, Rectangle bounds)
 	{
@@ -63,8 +67,9 @@ public class Maze
 
 	public static Maze build(Client client, WallObject[] walls)
 	{
-		int[][] flags = client.getCollisionMaps()[client.getPlane()].getFlags();
+		final int[][] flags = client.getCollisionMaps()[client.getPlane()].getFlags();
 
+		// Find the finish object
 		GroundObjectQuery gqry = new GroundObjectQuery()
 			.idEquals(TELEKINETIC_FINISH);
 		GroundObject[] groundObjects = gqry.result(client);
@@ -73,7 +78,7 @@ public class Maze
 			return null;
 		}
 
-		WorldPoint finish = groundObjects[0].getWorldLocation();
+		final WorldPoint finish = groundObjects[0].getWorldLocation();
 
 		int minX = Integer.MAX_VALUE;
 		int minY = Integer.MAX_VALUE;
@@ -81,6 +86,8 @@ public class Maze
 		int maxX = Integer.MIN_VALUE;
 		int maxY = Integer.MIN_VALUE;
 
+		// Compute the bounsd by getting the smallest X and Y (Southwest corner)
+		// and the biggest X and Y (Northeast corner)
 		for (WallObject wall : walls)
 		{
 			WorldPoint point = wall.getWorldLocation();
@@ -91,16 +98,21 @@ public class Maze
 			maxY = Math.max(maxY, point.getY());
 		}
 
-		Rectangle bounds = new Rectangle(minX, minY, maxX - minX, maxY - minY);
+		final Rectangle bounds = new Rectangle(minX, minY, maxX - minX, maxY - minY);
 
 		return new Maze(client, flags, walls.length, finish, bounds);
 	}
 
-	public int getFlag(int worldX, int worldY)
+	private int getFlag(int worldX, int worldY)
 	{
 		return this.flags[worldX - client.getBaseX()][worldY - client.getBaseY()];
 	}
 
+	/*
+	 * Gets the state of the maze given the current state.
+	 * Will check if the guardian is in a location that does not match
+	 * the current state and if that is the case it will create a new state.
+	 */
 	public MazeState getState(MazeState current, NPC guardian)
 	{
 		if (current == null)
@@ -122,7 +134,11 @@ public class Maze
 	}
 
 
-	public Direction getMyDirection()
+	/*
+	 * Gets our current direction relative to the maze bounds for checking on which side
+	 * of the maze our character is located.
+	 */
+	Direction getMyDirection()
 	{
 		WorldPoint mine = client.getLocalPlayer().getWorldLocation();
 
@@ -146,6 +162,9 @@ public class Maze
 		return null;
 	}
 
+	/*
+	 * Gets the destination of the guardian based on its orientation.
+	 */
 	private WorldPoint getDestination(NPC guardian)
 	{
 		Angle angle = new Angle(guardian.getOrientation());
@@ -153,7 +172,7 @@ public class Maze
 		return neighbour(guardian.getWorldLocation(), facing);
 	}
 
-	protected WorldPoint neighbour(WorldPoint point, Direction direction)
+	WorldPoint neighbour(WorldPoint point, Direction direction)
 	{
 		if (point == null)
 		{
@@ -187,6 +206,7 @@ public class Maze
 		int current = getFlag(x, y);
 		int next = getFlag(x + dx, y + dy);
 
+		// This will keep looping until it encounters a blocked tile (a wall)
 		while (!isBlocked(current, next, direction))
 		{
 			x += dx;
@@ -195,6 +215,7 @@ public class Maze
 			next = getFlag(x + dx, y + dy);
 		}
 
+		// Returns the furthest it could go in the direction that was supplied as argument
 		return new WorldPoint(x, y, 0);
 	}
 
