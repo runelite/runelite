@@ -63,6 +63,7 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_JEWELLERY_TELEPORT_ICON = "jewelleryIcon";
 	static final String CONFIG_KEY_SCROLL_TELEPORT_ICON = "scrollIcon";
 	static final String CONFIG_KEY_MISC_TELEPORT_ICON = "miscellaneousTeleportIcon";
+	static final String CONFIG_KEY_RC_ALTAR_ICON = "runecraftingAltarIcon";
 
 	static
 	{
@@ -151,6 +152,18 @@ public class WorldMapPlugin extends Plugin
 					worldMapPointManager.removeIf(TeleportPoint.class::isInstance);
 					createMagicTeleportPoints();
 					break;
+				case CONFIG_KEY_RC_ALTAR_ICON:
+                    if (config.runecraftingAltarIcon())
+                    {
+                        Arrays.stream(RunecraftingAltarLocationData.values())
+                            .map(RunecraftingAltarPoint::new)
+                            .forEach(worldMapPointManager::add);
+                    }
+                    else
+                    {
+                        worldMapPointManager.removeIf(RunecraftingAltarPoint.class::isInstance);
+                    }
+					break;
 			}
 		}
 	}
@@ -183,6 +196,13 @@ public class WorldMapPlugin extends Plugin
 		{
 			createMagicTeleportPoints();
 		}
+
+		if (config.runecraftingAltarIcon())
+		{
+            Arrays.stream(RunecraftingAltarLocationData.values())
+                .map(RunecraftingAltarPoint::new)
+                .forEach(worldMapPointManager::add);
+		}
 	}
 
 	@Override
@@ -191,6 +211,7 @@ public class WorldMapPlugin extends Plugin
 		worldMapPointManager.removeIf(FairyRingPoint.class::isInstance);
 		worldMapPointManager.removeIf(AgilityShortcutPoint.class::isInstance);
 		worldMapPointManager.removeIf(TeleportPoint.class::isInstance);
+		worldMapPointManager.removeIf(RunecraftingAltarPoint.class::isInstance);
 	}
 
 	@Subscribe
