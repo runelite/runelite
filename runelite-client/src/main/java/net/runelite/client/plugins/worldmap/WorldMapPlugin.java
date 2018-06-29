@@ -153,16 +153,16 @@ public class WorldMapPlugin extends Plugin
 					createMagicTeleportPoints();
 					break;
 				case CONFIG_KEY_RC_ALTAR_ICON:
-                    if (config.runecraftingAltarIcon())
-                    {
-                        Arrays.stream(RunecraftingAltarLocationData.values())
-                            .map(RunecraftingAltarPoint::new)
-                            .forEach(worldMapPointManager::add);
-                    }
-                    else
-                    {
-                        worldMapPointManager.removeIf(RunecraftingAltarPoint.class::isInstance);
-                    }
+					if (config.runecraftingAltarIcon())
+					{
+						Arrays.stream(RunecraftingAltarLocationData.values())
+							.map(RunecraftingAltarPoint::new)
+							.forEach(worldMapPointManager::add);
+					}
+					else
+					{
+						worldMapPointManager.removeIf(RunecraftingAltarPoint.class::isInstance);
+					}
 					break;
 			}
 		}
@@ -199,9 +199,9 @@ public class WorldMapPlugin extends Plugin
 
 		if (config.runecraftingAltarIcon())
 		{
-            Arrays.stream(RunecraftingAltarLocationData.values())
-                .map(RunecraftingAltarPoint::new)
-                .forEach(worldMapPointManager::add);
+			Arrays.stream(RunecraftingAltarLocationData.values())
+				.map(RunecraftingAltarPoint::new)
+				.forEach(worldMapPointManager::add);
 		}
 	}
 

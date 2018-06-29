@@ -32,23 +32,23 @@ import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 
 class RunecraftingAltarPoint extends WorldMapPoint
 {
-       @Getter
-       private final RunecraftingAltarLocationData data;
+	@Getter
+	private final RunecraftingAltarLocationData data;
 
-       RunecraftingAltarPoint(RunecraftingAltarLocationData data)
-       {
-           super(data.getLocation(), WorldMapPlugin.BLANK_ICON);
+	RunecraftingAltarPoint(RunecraftingAltarLocationData data)
+	{
+		super(data.getLocation(), WorldMapPlugin.BLANK_ICON);
 
-           this.data = data;
-           setTooltip(data.getTooltip());
+		this.data = data;
+		setTooltip(data.getTooltip());
 
-           try
-           {
-               setImage(ImageIO.read(WorldMapPlugin.class.getResourceAsStream(data.getIconPath())));
-           }
-           catch (IOException e)
-           {
-               throw new RuntimeException(e);
-           }
-       }
+		try
+		{
+			setImage(ImageIO.read(WorldMapPlugin.class.getResourceAsStream(data.getIconPath())));
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
 }

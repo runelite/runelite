@@ -158,10 +158,10 @@ public interface WorldMapConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = WorldMapPlugin.CONFIG_KEY_RC_ALTAR_ICON,
-			name = "Show Runecrafting Altar Locations",
-			description = "Shows icons at the locations of runecrafting altars entrances",
-			position = 12
+		keyName = WorldMapPlugin.CONFIG_KEY_RC_ALTAR_ICON,
+		name = "Show Runecrafting Altar Locations",
+		description = "Shows icons at the locations of runecrafting altars entrances",
+		position = 12
 	)
 	default boolean runecraftingAltarIcon()
 	{

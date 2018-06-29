@@ -29,31 +29,32 @@ import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
 @Getter
-enum RunecraftingAltarLocationData {
-    AIR("Air Altar", new WorldPoint(2985,3292,0), "runecrafting_air_rune.png"),
-    MIND("Mind Altar", new WorldPoint(2982,3514,0), "runecrafting_mind_rune.png"),
-    WATER("Water Altar", new WorldPoint(3185,3165,0), "runecrafting_water_rune.png"),
-    EARTH("Earth Altar", new WorldPoint(3306,3474,0), "runecrafting_earth_rune.png"),
-    FIRE("Fire Altar", new WorldPoint(3313,3255,0), "runecrafting_fire_rune.png"),
-    BODY("Body Altar", new WorldPoint(3053,3445,0), "runecrafting_body_rune.png"),
-    COSMIC("Cosmic Altar", new WorldPoint(2408,4377,0), "runecrafting_cosmic_rune.png"),
-    CHAOS("Chaos Altar", new WorldPoint(3060,3591,0), "runecrafting_chaos_rune.png"),
-    ASTRAL("Astral Altar", new WorldPoint(2158,3864,0), "runecrafting_astral_rune.png"),
-    NATURE("Nature Altar", new WorldPoint(2869,3019,0), "runecrafting_nature_rune.png"),
-    LAW("Law Altar", new WorldPoint(2858,3381,0), "runecrafting_law_rune.png"),
-    DEATH("Death Altar", new WorldPoint(1860,4639,0), "runecrafting_death_rune.png"),
-    BLOOD("Blood Altar", new WorldPoint(1716,3830,0), "runecrafting_blood_rune.png"),
-    SOUL("Soul Altar", new WorldPoint(1814,3854,0), "runecrafting_soul_rune.png"),
-    WRATH("Wrath Altar", new WorldPoint(2446,2825,0), "runecrafting_wrath_rune.png");
+enum RunecraftingAltarLocationData
+{
+	AIR("Air Altar", new WorldPoint(2985, 3292, 0), "runecrafting_air_rune.png"),
+	MIND("Mind Altar", new WorldPoint(2982, 3514, 0), "runecrafting_mind_rune.png"),
+	WATER("Water Altar", new WorldPoint(3185, 3165, 0), "runecrafting_water_rune.png"),
+	EARTH("Earth Altar", new WorldPoint(3306, 3474, 0), "runecrafting_earth_rune.png"),
+	FIRE("Fire Altar", new WorldPoint(3313, 3255, 0), "runecrafting_fire_rune.png"),
+	BODY("Body Altar", new WorldPoint(3053, 3445, 0), "runecrafting_body_rune.png"),
+	COSMIC("Cosmic Altar", new WorldPoint(2408, 4377, 0), "runecrafting_cosmic_rune.png"),
+	CHAOS("Chaos Altar", new WorldPoint(3060, 3591, 0), "runecrafting_chaos_rune.png"),
+	ASTRAL("Astral Altar", new WorldPoint(2158, 3864, 0), "runecrafting_astral_rune.png"),
+	NATURE("Nature Altar", new WorldPoint(2869, 3019, 0), "runecrafting_nature_rune.png"),
+	LAW("Law Altar", new WorldPoint(2858, 3381, 0), "runecrafting_law_rune.png"),
+	DEATH("Death Altar", new WorldPoint(1860, 4639, 0), "runecrafting_death_rune.png"),
+	BLOOD("Blood Altar", new WorldPoint(1716, 3830, 0), "runecrafting_blood_rune.png"),
+	SOUL("Soul Altar", new WorldPoint(1814, 3854, 0), "runecrafting_soul_rune.png"),
+	WRATH("Wrath Altar", new WorldPoint(2446, 2825, 0), "runecrafting_wrath_rune.png");
 
-    private final String tooltip;
-    private final WorldPoint location;
-    private final String iconPath;
+	private final String tooltip;
+	private final WorldPoint location;
+	private final String iconPath;
 
-    RunecraftingAltarLocationData(String tooltip, WorldPoint location, String iconPath)
-    {
-        this.tooltip = tooltip;
-        this.location = location;
-        this.iconPath = iconPath;
-    }
+	RunecraftingAltarLocationData(String tooltip, WorldPoint location, String iconPath)
+	{
+		this.tooltip = tooltip;
+		this.location = location;
+		this.iconPath = iconPath;
+	}
 }
