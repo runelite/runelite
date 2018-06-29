@@ -911,6 +911,16 @@ public class LootLogger
 			this.hasOpenedRaidsRewardChest = false;
 			this.chambersOfXericItems = null;
 		}
+
+		if (this.theatreOfBloodItems != null)
+		{
+			int state = client.getVar(Varbits.THEATRE_OF_BLOOD);
+			if (state == 0 || state == 1) // 0 = Default, 1 = In Party, 2 = Inside, 3 = Dead?
+			{
+				this.hasOpenedTheatreOfBloodRewardChest = false;
+				this.theatreOfBloodItems = null;
+			}
+		}
 	}
 
 	/**
