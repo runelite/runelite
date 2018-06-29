@@ -58,6 +58,6 @@ public class TitleComponent implements LayoutableRenderableEntity
 		titleComponent.setPosition(new Point((preferredSize.width - metrics.stringWidth(text)) / 2, metrics.getHeight()));
 		final Dimension dimension = titleComponent.render(graphics);
 		graphics.translate(-preferredLocation.x, -preferredLocation.y);
-		return new Dimension(Math.min(preferredSize.width, dimension.width), dimension.height);
+		return new Dimension(preferredSize.width, dimension.height);
 	}
 }
