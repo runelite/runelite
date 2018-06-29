@@ -235,6 +235,5 @@ public class TelekineticRoom extends MTARoom
 		}
 
 		graphics2D.drawPolygon(canvasTilePoly);
-
 	}
 }
