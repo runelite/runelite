@@ -82,7 +82,7 @@ public class InventoryTagsOverlay extends Overlay
 				final Color color = plugin.getGroupNameColor(group);
 				if (color != null)
 				{
-					final BufferedImage outline = getOutline(item.getId(), color);
+					final BufferedImage outline = getOutline(item.getId(), item.getQuantity(), color);
 					graphics.drawImage(outline, item.getCanvasLocation().getX() + 1, item.getCanvasLocation().getY() + 1, null);
 				}
 			}
@@ -96,23 +96,23 @@ public class InventoryTagsOverlay extends Overlay
 		storedOutlines.clear();
 	}
 
-	private BufferedImage getOutline(final int id, final Color color)
+	private BufferedImage getOutline(final int id, final int quantity, final Color color)
 	{
-		final String key = getStringGeneratedId(id, color);
+		final String key = getStringGeneratedId(id, quantity, color);
 		BufferedImage stored = storedOutlines.get(key);
 		if (stored != null)
 		{
 			return stored;
 		}
 
-		final SpritePixels itemSprite = client.createItemSprite(id, 1, 1, 0, 0, true, 710);
+		final SpritePixels itemSprite = client.createItemSprite(id, quantity, 1, 0, 0, true, 710);
 		final BufferedImage generatedPicture = itemSprite.toBufferedOutline(color);
 		storedOutlines.put(key, generatedPicture);
 		return generatedPicture;
 	}
 
-	private String getStringGeneratedId(final int id, final Color color)
+	private String getStringGeneratedId(final int id, final int quantity, final Color color)
 	{
-		return id + "." + color.getRGB();
+		return id + "." + quantity + "." + color.getRGB();
 	}
 }
