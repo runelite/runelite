@@ -429,9 +429,19 @@ public class TimersPlugin extends Plugin
 			createGameTimer(CHARGE);
 		}
 
-		if (event.getMessage().equals("<col=ef1020>Your magical charge fades away.</col>"))
+		if (config.showCharge() && event.getMessage().equals("<col=ef1020>Your magical charge fades away.</col>"))
 		{
 			removeGameTimer(CHARGE);
+		}
+
+		if (config.showStaffOfTheDead() && event.getMessage().contains("Spirits of deceased evildoers offer you their protection"))
+		{
+			createGameTimer(STAFF_OF_THE_DEAD);
+		}
+
+		if (config.showStaffOfTheDead() && event.getMessage().contains("Your protection fades away"))
+		{
+			removeGameTimer(STAFF_OF_THE_DEAD);
 		}
 	}
 
@@ -472,11 +482,6 @@ public class TimersPlugin extends Plugin
 		if (config.showVengeance() && actor.getGraphic() == VENGEANCE.getGraphicId())
 		{
 			createGameTimer(VENGEANCE);
-		}
-
-		if (config.showStaffOfTheDead() && actor.getGraphic() == STAFF_OF_THE_DEAD.getGraphicId())
-		{
-			createGameTimer(STAFF_OF_THE_DEAD);
 		}
 
 		if (config.showFreezes())
