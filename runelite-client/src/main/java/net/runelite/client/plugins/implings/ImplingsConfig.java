@@ -314,4 +314,15 @@ public interface ImplingsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 26,
+		keyName = "showNameSuffix",
+		name = "Show impling suffix",
+		description = "Configures whether or not 'impling' suffix is displayed after impling's name"
+	)
+	default boolean showNameSuffix()
+	{
+		return false;
+	}
 }
