@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kamiel, Matsyir
+ * Copyright (c) 2018, Kamiel, Matsyir, Jasper-ketelaar
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,6 +33,7 @@ import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
@@ -64,7 +65,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
-import net.runelite.client.plugins.raids.solver.Room;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -245,6 +245,11 @@ public class RaidsPlugin extends Plugin
 				raid.updateLayout(layout);
 				RotationSolver.solve(raid.getCombatRooms());
 				overlay.setScoutOverlayShown(true);
+
+				if (config.layoutChatMsgOnEnter())
+				{
+					writeLayoutToChat();
+				}
 			}
 			else if (!config.scoutOverlayAtBank())
 			{
@@ -272,55 +277,9 @@ public class RaidsPlugin extends Plugin
 				timer = new RaidsTimer(getRaidsIcon(), this, Instant.now());
 				infoBoxManager.addInfoBox(timer);
 
-				if (config.layoutChatMsg())
+				if (config.layoutChatMsgOnStart())
 				{
-					// Write the layout, and then every room, the same way the panel
-					// overlay displays it. The layout, then combat & puzzle rooms.
-					String layout = getRaid().getLayout().toCode().replaceAll("#", "").replaceAll("¤", "");
-					ChatMessageBuilder msgBuilder = new ChatMessageBuilder()
-							.append(ChatColorType.HIGHLIGHT)
-							.append("[")
-							.append(layout)
-							.append("]: ");
-
-					boolean firstElement = true;
-					for (Room layoutRoom : getRaid().getLayout().getRooms())
-					{
-						int position = layoutRoom.getPosition();
-						RaidRoom room = getRaid().getRoom(position);
-
-						if (room == null) continue;
-
-						if (room.getType() == RaidRoom.Type.COMBAT)
-						{
-							if (!firstElement)
-							{
-								msgBuilder.append(", ");
-							}
-							else
-							{
-								firstElement = false;
-							}
-							msgBuilder.append(room.getBoss().getName());
-						}
-						else if (room.getType() == RaidRoom.Type.PUZZLE)
-						{
-							if (!firstElement)
-							{
-								msgBuilder.append(", ");
-							}
-							else
-							{
-								firstElement = false;
-							}
-							msgBuilder.append(room.getPuzzle().getName());
-						}
-					}
-
-					chatMessageManager.queue(QueuedMessage.builder()
-							.type(ChatMessageType.CLANCHAT_INFO)
-							.runeLiteFormattedMessage(msgBuilder.build())
-							.build());
+					writeLayoutToChat();
 				}
 			}
 
@@ -672,5 +631,33 @@ public class RaidsPlugin extends Plugin
 		}
 
 		return raidsIcon;
+	}
+
+	// Write the layout, and then every room, the same way the panel
+	// overlay displays it, to the chat: The layout, then combat & puzzle rooms.
+	// Also include Puzzle/Combat indicators for unknown rooms.
+	private void writeLayoutToChat()
+	{
+		String layout = getRaid().getLayout().toCode().replaceAll("#", "").replaceAll("¤", "");
+		ChatMessageBuilder msgBuilder = new ChatMessageBuilder()
+				.append(ChatColorType.HIGHLIGHT)
+				.append("[")
+				.append(layout)
+				.append("]: ");
+
+		getRaid().getLayout().getRooms().stream()
+				.map(e -> getRaid().getRoom(e.getPosition()))
+				.filter(Objects::nonNull)
+				.filter(e -> e.getType() == RaidRoom.Type.COMBAT || e.getType() == RaidRoom.Type.PUZZLE)
+				.map(e -> e.getType() == RaidRoom.Type.COMBAT ? // If the room name is unknown, put the type's code in parenthesis beside it.
+						(e.getBoss().equals(RaidRoom.Boss.UNKNOWN) ? e.getBoss().getName() + " (" + e.getType().getCode() + ")" : e.getBoss().getName()) :
+						(e.getPuzzle().equals(RaidRoom.Puzzle.UNKNOWN) ? e.getPuzzle().getName() + " (" + e.getType().getCode() + ")" : e.getPuzzle().getName()))
+				.reduce((s1, s2) -> s1 + ", " + s2)
+				.ifPresent(msgBuilder::append);
+
+		chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.CLANCHAT_INFO)
+				.runeLiteFormattedMessage(msgBuilder.build())
+				.build());
 	}
 }
