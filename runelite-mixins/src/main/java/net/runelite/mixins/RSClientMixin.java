@@ -217,18 +217,7 @@ public abstract class RSClientMixin implements RSClient
 	public AccountType getAccountType()
 	{
 		int varbit = getVar(Varbits.ACCOUNT_TYPE);
-
-		switch (varbit)
-		{
-			case 1:
-				return AccountType.IRONMAN;
-			case 2:
-				return AccountType.ULTIMATE_IRONMAN;
-			case 3:
-				return AccountType.HARDCORE_IRONMAN;
-		}
-
-		return AccountType.NORMAL;
+		return AccountType.fromVarbit(varbit);
 	}
 
 	@Inject
