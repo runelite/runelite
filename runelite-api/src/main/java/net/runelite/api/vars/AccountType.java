@@ -24,27 +24,53 @@
  */
 package net.runelite.api.vars;
 
+import java.util.HashMap;
+import java.util.Map;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 /**
  * An enumeration of possible account types.
  */
+@Getter
+@RequiredArgsConstructor
 public enum AccountType
 {
 	/**
 	 * Normal account type.
 	 */
-	NORMAL,
+	NORMAL(0, null),
 	/**
 	 * Ironman account type.
 	 */
-	IRONMAN,
+	IRONMAN(1, 2),
 	/**
 	 * Ultimate ironman account type.
 	 */
-	ULTIMATE_IRONMAN,
+	ULTIMATE_IRONMAN(2, 3),
 	/**
 	 * Hardcore ironman account type.
 	 */
-	HARDCORE_IRONMAN;
+	HARDCORE_IRONMAN(3, 10);
+
+	private static final Map<Integer, AccountType> FROM_VARBIT = new HashMap<>();
+	private static final Map<Integer, AccountType> FROM_ICON = new HashMap<>();
+
+	static
+	{
+		for (AccountType accountType : AccountType.values())
+		{
+			FROM_VARBIT.put(accountType.getVarbit(), accountType);
+
+			if (accountType.getIcon() != null)
+			{
+				FROM_ICON.put(accountType.getIcon(), accountType);
+			}
+		}
+	}
+
+	private final int varbit;
+	private final Integer icon;
 
 	/**
 	 * Checks whether this type is an ironman.
@@ -56,4 +82,49 @@ public enum AccountType
 		return this.ordinal() >= IRONMAN.ordinal() && this.ordinal() <= HARDCORE_IRONMAN.ordinal();
 	}
 
+	/**
+	 * Gets account type from {@code ACCOUNT_TYPE}. varbit value.
+	 *
+	 * @param varbitVal the varbit val
+	 * @return the account type
+	 */
+	public static AccountType fromVarbit(final int varbitVal)
+	{
+		return FROM_VARBIT.get(varbitVal);
+	}
+
+	/**
+	 * Gets account type from un-sanitized player name.
+	 *
+	 * @param name the name
+	 * @return the account type
+	 */
+	public static AccountType fromName(final String name)
+	{
+		if (name == null || !name.contains("<img="))
+		{
+			return NORMAL;
+		}
+
+		for (AccountType accountType : AccountType.values())
+		{
+			if (accountType.getIcon() != null && name.contains("<img=" + accountType.getIcon() + ">"))
+			{
+				return accountType;
+			}
+		}
+
+		return NORMAL;
+	}
+
+	/**
+	 * Gets account type from modicon.
+	 *
+	 * @param icon the icon
+	 * @return the account type
+	 */
+	public static AccountType fromIcon(final int icon)
+	{
+		return FROM_ICON.get(icon);
+	}
 }
