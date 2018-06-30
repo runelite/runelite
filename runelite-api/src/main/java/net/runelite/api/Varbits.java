@@ -58,11 +58,6 @@ public enum Varbits
 	RUNE_POUCH_AMOUNT3(1626),
 
 	/**
-	 * Ironman status. See {@link AccountType}
-	 */
-	IRONMAN_STATUS(1777),
-
-	/**
 	 * Prayers
 	 */
 	PRAYER_THICK_SKIN(4104),
