@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.Queue;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.SetMessage;
 import net.runelite.client.chat.ChatColorType;
@@ -46,7 +47,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 @PluginDescriptor(name = "World History in chat")
 public class PreviousWorldChatPlugin extends Plugin
 {
-	private static final String WORLD_TEXT = "You've previously logged in within the following worlds:";
+	private static final String WORLD_TEXT = "You've previously logged in to the following worlds: ";
 	private static final String WELCOME_MESSAGE = "Welcome to RuneScape.";
 
 	@Inject
@@ -58,7 +59,6 @@ public class PreviousWorldChatPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	private SetMessage lastMessage;
 	private Queue<QueuedMessage> messageQueue;
 
 	@Provides
@@ -80,30 +80,40 @@ public class PreviousWorldChatPlugin extends Plugin
 			{
 				chatMessageManager.queue(queuedMessage);
 			}
-		}
 
-		// If the messsage contains our world message, we want to update it to reflect new(er) worlds.
-		if (message.getValue().contains(WORLD_TEXT))
-		{
-			editWorldMessage(message);
+			// If the message contains our world's message, we want to update it to reflect new(er) worlds.
+			if (message.getValue().contains(WORLD_TEXT))
+			{
+				editWorldMessage(message);
+			}
+			else
+			{
+				sendWorldMessage(message);
+			}
+
+			return;
 		}
-		else
+	}
+
+	@Subscribe
+	public void onConfigChange(ConfigChanged event)
+	{
+		if (event.getKey().equals("maxWorlds"))
 		{
-			sendWorldMessage(message);
+			messageQueue = EvictingQueue.create(Integer.parseInt(event.getNewValue()));
 		}
 	}
 
 	@Override
 	protected void startUp()
 	{
-		messageQueue = EvictingQueue.create(100);
+		messageQueue = EvictingQueue.create(config.getMaxWorldCount());
 	}
 
 	@Override
 	protected void shutDown()
 	{
 		saveLatestWorld();
-		messageQueue.clear();
 		messageQueue = null;
 	}
 
@@ -120,13 +130,13 @@ public class PreviousWorldChatPlugin extends Plugin
 
 	/**
 	 * Edits the current message which contains the WORLD_TEXT property.
-	 * @param setMessage
+	 * @param setMessage Initial message to edit.
 	 */
-	private void editWorldMessage(SetMessage setMessage)
+	private void editWorldMessage(final SetMessage setMessage)
 	{
 		final String worldMessage = getWorldMessage();
 		final MessageNode messageNode = setMessage.getMessageNode();
-		messageNode.setValue(worldMessage);
+
 		messageNode.setRuneLiteFormatMessage(worldMessage);
 		chatMessageManager.update(messageNode);
 		client.refreshChat();
@@ -134,16 +144,13 @@ public class PreviousWorldChatPlugin extends Plugin
 
 	/**
 	 * Sends a new message containing the WORLD_TEXT property to the chatbox.
-	 * @param setMessage
+	 * @param setMessage Initial message used to set up the queued message.
 	 */
-	private void sendWorldMessage(SetMessage setMessage)
+	private void sendWorldMessage(final SetMessage setMessage)
 	{
 		final String worldMessage = getWorldMessage();
 		final QueuedMessage queuedMessage = QueuedMessage.builder()
 			.type(setMessage.getType())
-			.name(setMessage.getName())
-			.sender(setMessage.getSender())
-			.value(worldMessage)
 			.runeLiteFormattedMessage(worldMessage)
 			.build();
 
@@ -171,7 +178,7 @@ public class PreviousWorldChatPlugin extends Plugin
 		}
 
 		// Only save the latest worlds as actual 'latest'
-		if (latestWorld != lastSavedWorld)
+		if (!latestWorld.equals(lastSavedWorld))
 		{
 			worlds.add(0, String.valueOf(latestWorld));
 
@@ -191,19 +198,18 @@ public class PreviousWorldChatPlugin extends Plugin
 	 */
 	private ArrayList<String> getWorlds()
 	{
-		if (config != null)
+		if (config == null)
 		{
-			final String worldListText = config.pastWorldList();
-			return new ArrayList<>(Arrays.asList(worldListText.split(",")));
+			return new ArrayList<>();
 		}
 
-		return new ArrayList<>();
+		return new ArrayList<>(Arrays.asList(config.pastWorldList().split(",")));
 	}
 
 	private String getWorldMessage()
 	{
 		return new ChatMessageBuilder()
-			.append(ChatColorType.NORMAL)
+			.append(ChatColorType.HIGHLIGHT)
 			.append(WORLD_TEXT)
 			.append(ChatColorType.HIGHLIGHT)
 			.append(String.join(", ", getWorlds()))
