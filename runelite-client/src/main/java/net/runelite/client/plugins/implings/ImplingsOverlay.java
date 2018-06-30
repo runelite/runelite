@@ -135,18 +135,15 @@ public class ImplingsOverlay extends Overlay
 			OverlayUtil.renderPolygon(graphics, poly, color);
 		}
 
+		if (!config.showNameSuffix())
+		{
+			text = text.substring(0, text.indexOf(" "));
+		}
+
 		Point textLocation = actor.getCanvasTextLocation(graphics, text, actor.getLogicalHeight());
 		if (textLocation != null)
 		{
-			if (config.showNameSuffix())
-			{
-				OverlayUtil.renderTextLocation(graphics, textLocation, text, color);
-			}
-			else
-			{
-				Point textLocation2 = actor.getCanvasTextLocation(graphics, text.substring(0, text.indexOf(" ")), actor.getLogicalHeight());
-				OverlayUtil.renderTextLocation(graphics, textLocation2, text.substring(0, text.indexOf(" ")), color);
-			}
+			OverlayUtil.renderTextLocation(graphics, textLocation, text, color);
 		}
 	}
 
