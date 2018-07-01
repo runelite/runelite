@@ -376,11 +376,15 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		Map desktopHints = (Map)(tk.getDesktopProperty("awt.font.desktophints"));
 		if (desktopHints != null)
 		{
-			graphics.addRenderingHints(desktopHints);
+			subGraphics.addRenderingHints(desktopHints);
 		}
 
 		// Set font based on configuration
-		if (position == OverlayPosition.TOOLTIP)
+		if (position == OverlayPosition.DYNAMIC)
+		{
+			subGraphics.setFont(runeLiteConfig.dynamicOverlayFont());
+		}
+		else if (position == OverlayPosition.TOOLTIP)
 		{
 			subGraphics.setFont(runeLiteConfig.tooltipFont());
 		}

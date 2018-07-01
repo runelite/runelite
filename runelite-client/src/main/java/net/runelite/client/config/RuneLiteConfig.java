@@ -199,6 +199,50 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "clientFont",
+		name = "Client Font",
+		description = "Configures what font type is used for the client",
+		position = 26
+	)
+	default Font clientFont()
+	{
+		return FontManager.getRunescapeFont();
+	}
+
+	@ConfigItem(
+		keyName = "dynamicOverlayFont",
+		name = "Dynamic Overlay Font",
+		description = "Configures what font type is used for in-game overlays such as player name, ground items, etc.",
+		position = 27
+	)
+	default Font dynamicOverlayFont()
+	{
+		return FontManager.getRunescapeSmallFont();
+	}
+
+	@ConfigItem(
+		keyName = "overlayFont",
+		name = "Overlay Font",
+		description = "Configures what font type is used for in-game overlays such as boost info, opponent info and plugin specific overlays",
+		position = 28
+	)
+	default Font overlayFont()
+	{
+		return FontManager.getRunescapeFont();
+	}
+
+	@ConfigItem(
+		keyName = "tooltipFont",
+		name = "Tooltip Font",
+		description = "Configures what font type is used for in-game tooltips such as food stats, NPC names, etc.",
+		position = 29
+	)
+	default Font tooltipFont()
+	{
+		return FontManager.getRunescapeSmallFont();
+	}
+
+	@ConfigItem(
 		keyName = "infoBoxVertical",
 		name = "Display infoboxes vertically",
 		description = "Toggles the infoboxes to display vertically",
@@ -229,38 +273,5 @@ public interface RuneLiteConfig extends Config
 	default int infoBoxSize()
 	{
 		return 35;
-	}
-
-	@ConfigItem(
-		keyName = "overlayFont",
-		name = "Overlay Font",
-		description = "Configures what font type is used for in-game overlays such as player name, ground items, etc.",
-		position = 31
-	)
-	default Font overlayFont()
-	{
-		return FontManager.getRunescapeSmallFont();
-	}
-
-	@ConfigItem(
-		keyName = "tooltipFont",
-		name = "Tooltip Font",
-		description = "Configures what font type is used for in-game tooltips such as food stats, NPC names, etc.",
-		position = 31
-	)
-	default Font tooltipFont()
-	{
-		return FontManager.getRunescapeSmallFont();
-	}
-
-	@ConfigItem(
-		keyName = "clientFont",
-		name = "Client Font",
-		description = "Configures what font type is used for the client",
-		position = 30
-	)
-	default Font clientFont()
-	{
-		return FontManager.getRunescapeFont();
 	}
 }

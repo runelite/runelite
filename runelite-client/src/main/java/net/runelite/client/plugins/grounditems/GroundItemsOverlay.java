@@ -63,7 +63,7 @@ public class GroundItemsOverlay extends Overlay
 	// so we replace any item quantity higher with "Lots" instead.
 	private static final int MAX_QUANTITY = 65535;
 	// The 15 pixel gap between each drawn ground item.
-	private static final int STRING_GAP = 18;
+	private static final int STRING_GAP = 15;
 	// Size of the hidden/highlight boxes
 	private static final int RECTANGLE_SIZE = 8;
 

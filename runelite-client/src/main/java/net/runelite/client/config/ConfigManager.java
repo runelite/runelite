@@ -535,7 +535,7 @@ public class ConfigManager
 		}
 		if (object instanceof Font)
 		{
-			return FontManager.getFontMap().get(object);
+			return FontManager.getFontName((Font)object);
 		}
 		if (object instanceof Dimension)
 		{

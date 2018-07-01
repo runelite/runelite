@@ -24,9 +24,9 @@
  */
 package net.runelite.client.ui;
 
+import com.google.common.collect.ImmutableBiMap;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -39,10 +39,7 @@ public class FontManager
 	private static final Font runescapeSmallFont;
 	private static final Font runescapeBoldFont;
 
-	// By using a 2way map we're not dependant on the toString() method so we have control over the font naming in the UI.
-	private static final HashMap<String, Font> fontLookupMap;
-	// By using a linkedHashMap we decide the order in which the fonts a re represented which allows more intuitive ordering, i couldn't get ordering to swork with guave bimaps
-	private static final LinkedHashMap<Font, String> fontMap;
+	private static final ImmutableBiMap<String, Font> fontMap;
 
 	static
 	{
@@ -62,27 +59,23 @@ public class FontManager
 					FontManager.class.getResourceAsStream("runescape_bold.ttf"))
 					.deriveFont(Font.PLAIN, 16);
 
-			fontMap = new LinkedHashMap<>();
-			fontLookupMap = new HashMap<>();
-
-			fontMap.put(runescapeSmallFont, "rs small");
-			fontMap.put(runescapeFont, "rs default");
-			fontMap.put(runescapeBoldFont, "rs bold");
-			fontMap.forEach((k, v) -> fontLookupMap.put(v, k));
+			final LinkedHashMap<String, Font> _fontMap = new LinkedHashMap<>();
+			_fontMap.put("Runescape small", runescapeSmallFont);
+			_fontMap.put("Runescape default", runescapeFont);
+			_fontMap.put("Runescape bold", runescapeBoldFont);
 
 			// Get all available fonts on the system
 			Font[] availableFonts = ge.getAllFonts();
 			//build bidirectional map
 			Arrays.stream(availableFonts).sorted(Comparator.comparing(Font::getFontName)).forEach(f ->
 			{
-				if (!fontLookupMap.containsKey(f.getFontName()) && !fontMap.containsKey(f))
+				if (!_fontMap.containsKey(f.getFontName()))
 				{
-					// I believe font size 11 or 12 is for many fonts about the same size as font size 16 for the rs fonts
 					f = f.deriveFont(11f);
-					fontMap.put(f, f.getFontName());
-					fontLookupMap.put(f.getFontName(), f);
+					_fontMap.put(f.getFontName(), f);
 				}
 			});
+			fontMap = ImmutableBiMap.copyOf(_fontMap);
 
 			ge.registerFont(runescapeFont);
 			ge.registerFont(runescapeSmallFont);
@@ -113,13 +106,18 @@ public class FontManager
 		return runescapeBoldFont;
 	}
 
-	public static LinkedHashMap<Font, String> getFontMap()
-	{
-		return fontMap;
-	}
-
 	public static Font lookupFont(String fontName)
 	{
-		return fontLookupMap.get(fontName);
+		return fontMap.get(fontName);
+	}
+
+	public static String getFontName(Font font)
+	{
+		return fontMap.inverse().get(font);
+	}
+
+	public static String[] getAvailableFontNames()
+	{
+		return fontMap.keySet().toArray(new String[fontMap.keySet().size()]);
 	}
 }

@@ -490,7 +490,7 @@ public class ConfigPanel extends PluginPanel
 
 			if (cid.getType() == Font.class)
 			{
-				JComboBox box = new JComboBox(FontManager.getFontMap().values().toArray());
+				JComboBox box = new JComboBox(FontManager.getAvailableFontNames());
 				box.setPreferredSize(new Dimension(150, 25));
 				box.setRenderer(new ComboBoxListRenderer());
 				box.setForeground(Color.WHITE);
