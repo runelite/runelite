@@ -86,7 +86,6 @@ public class ItemStatChanges
 		add(new Anglerfish(), ANGLERFISH);
 		add(food(maxHP -> (int) Math.ceil(maxHP * .06)), STRAWBERRY);
 		add(food(maxHP -> (int) Math.ceil(maxHP * .05)), WATERMELON_SLICE);
-		add(food(perc(.1, 0)), COOKED_SLIMY_EEL);
 		add(food(perc(.1, 1)), COOKED_SWEETCORN, SWEETCORN_7088 /* Bowl of cooked sweetcorn */);
 		add(combo(food(1), boost(DEFENCE, perc(.02, 1))), CABBAGE_1967 /* Draynor Manor */);
 		add(combo(2, food(4), heal(RUN_ENERGY, 5)), PAPAYA_FRUIT);
@@ -95,9 +94,9 @@ public class ItemStatChanges
 		add(food(2), BAT_SHISH, COATED_FROGS_LEGS, FILLETS, FINGERS, FROGBURGER, FROGSPAWN_GUMBO, GREEN_GLOOP_SOUP,
 				GRUBS__LA_MODE, MUSHROOMS, ROAST_FROG);
 		add(food(3), LOACH);
-		// FROG_SPAWN (3~6?)
-		// COOKED_SLIMY_EEL (6~10?)
-		// CAVE_EEL (7~11?)
+		add(range(food(3), food(6)), FROG_SPAWN);
+		add(range(food(6), food(10)), COOKED_SLIMY_EEL);
+		add(range(food(8), food(12)), CAVE_EEL);
 		add(food(10), EEL_SUSHI);
 
 		// Alcoholic Gnome Cocktails
@@ -180,6 +179,7 @@ public class ItemStatChanges
 		add(combo(2, heal(HITPOINTS, 11), boost(AGILITY, 5), heal(RUN_ENERGY, 10)), SUMMER_PIE, HALF_A_SUMMER_PIE);
 
 		// Other
+		add(combo(range(food(1), food(3)), heal(RUN_ENERGY, 10)), PURPLE_SWEETS_10476);
 		add(new SpicyStew(), SPICY_STEW);
 		add(boost(MAGIC, perc(.10, 1)), IMBUED_HEART);
 		add(combo(boost(ATTACK, 2), boost(STRENGTH, 1), heal(DEFENCE, -1)), JANGERBERRIES);

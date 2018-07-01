@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,64 +24,51 @@
  */
 package net.runelite.client.plugins.itemstats;
 
-import net.runelite.client.plugins.itemstats.delta.DeltaCalculator;
-import net.runelite.client.plugins.itemstats.delta.DeltaPercentage;
-import net.runelite.client.plugins.itemstats.stats.Stat;
+import net.runelite.api.Client;
 
-public class Builders
+public class RangeStatBoost extends SingleEffect
 {
-	public static Food food(int diff)
+	private final StatBoost a;
+	private final StatBoost b;
+
+	RangeStatBoost(StatBoost a, StatBoost b)
 	{
-		return food((max) -> diff);
+		assert a.getStat() == b.getStat();
+
+		this.a = a;
+		this.b = b;
 	}
 
-	public static Food food(DeltaCalculator p)
+	@Override
+	public StatChange effect(Client client)
 	{
-		return new Food(p);
+		final StatChange a = this.a.effect(client);
+		final StatChange b = this.b.effect(client);
+
+		final StatChange r = new StatChange();
+		r.setAbsolute(concat(a.getAbsolute(), b.getAbsolute()));
+		r.setRelative(concat(a.getRelative(), b.getRelative()));
+		r.setTheoretical(concat(a.getTheoretical(), b.getTheoretical()));
+		r.setStat(a.getStat());
+
+		final int avg = (a.getPositivity().ordinal() + b.getPositivity().ordinal()) / 2;
+		r.setPositivity(Positivity.values()[avg]);
+
+		return r;
 	}
 
-	public static Effect combo(int primaries, SingleEffect... effect)
+	private String concat(String a, String b)
 	{
-		return new Combo(primaries, effect);
-	}
+		// If they share a operator, strip b's duplicate
+		if (a.length() > 1 && b.length() > 1)
+		{
+			final char a0 = a.charAt(0);
+			if ((a0 == '+' || a0 == '-' || a0 == '±') && b.charAt(0) == a0)
+			{
+				b = b.substring(1);
+			}
+		}
 
-	public static Effect combo(SingleEffect... effect)
-	{
-		return new Combo(effect);
-	}
-
-	public static SimpleStatBoost boost(Stat stat, int boost)
-	{
-		return boost(stat, (max) -> boost);
-	}
-
-	public static SimpleStatBoost boost(Stat stat, DeltaCalculator p)
-	{
-		return new SimpleStatBoost(stat, true, p);
-	}
-
-	public static SimpleStatBoost heal(Stat stat, int boost)
-	{
-		return heal(stat, (max) -> boost);
-	}
-
-	public static SimpleStatBoost heal(Stat stat, DeltaCalculator p)
-	{
-		return new SimpleStatBoost(stat, false, p);
-	}
-
-	public static SimpleStatBoost dec(Stat stat, int boost)
-	{
-		return heal(stat, -boost);
-	}
-
-	public static DeltaPercentage perc(double perc, int delta)
-	{
-		return new DeltaPercentage(perc, delta);
-	}
-
-	public static RangeStatBoost range(StatBoost a, StatBoost b)
-	{
-		return new RangeStatBoost(a, b);
+		return a + "~" + b;
 	}
 }
