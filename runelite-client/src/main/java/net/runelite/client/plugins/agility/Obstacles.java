@@ -186,7 +186,7 @@ public class Obstacles
 		GAP, GAP_2831,
 		// Lumbridge Swamp Caves
 		STEPPING_STONE_5948, STEPPING_STONE_5949,
-    // Morytania Pirate Ship
+		// Morytania Pirate Ship
 		ROCK_16115
 	);
 
