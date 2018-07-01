@@ -24,8 +24,6 @@
  */
 package net.runelite.client.ui;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;

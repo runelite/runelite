@@ -26,8 +26,6 @@ package net.runelite.client.plugins.config;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
