@@ -103,6 +103,7 @@ public class WidgetID
 	public static final int MTA_TELEKINETIC_GROUP_ID = 198;
 	public static final int CORP_DAMAGE = 13;
 	public static final int DESTROY_ITEM_GROUP_ID = 584;
+	public static final int XERICS_TALISMAN_MENU_GROUP_ID = 187;
 
 	static class WorldMap
 	{
@@ -541,5 +542,10 @@ public class WidgetID
 		static final int DESTROY_ITEM_NAME = 6;
 		static final int DESTROY_ITEM_YES = 1;
 		static final int DESTROY_ITEM_NO = 3;
+	}
+
+	static class XericsTalisman
+	{
+		static final int TELEPORT_OPTIONS_CONTAINER = 3;
 	}
 }
