@@ -25,6 +25,7 @@
 package net.runelite.client.game.loot.data;
 
 import lombok.Value;
+import java.util.List;
 
 @Value
 public class ItemStack
@@ -37,6 +38,18 @@ public class ItemStack
 	{
 		this.id = itemId;
 		this.quantity = quantity;
+	}
+
+	public static boolean containsItemId(List<ItemStack> list, int id)
+	{
+		for (ItemStack s : list)
+		{
+			if (s.getId() == id)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
