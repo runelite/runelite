@@ -24,23 +24,20 @@
  */
 package net.runelite.client.plugins.world;
 
-import com.google.common.collect.EvictingQueue;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.Queue;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.MessageNode;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.SessionOpen;
-import net.runelite.api.events.SetMessage;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -56,6 +53,9 @@ import net.runelite.http.api.worlds.WorldResult;
 @Slf4j
 public class WorldPlugin extends Plugin
 {
+	private static final int previousWorldLimit = 3;
+	private static final String WORLD_TEXT = "You've previously logged in to the following worlds: ";
+
 	@Inject
 	private Client client;
 
@@ -65,29 +65,25 @@ public class WorldPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	private Queue<QueuedMessage> messageQueue;
-
-	private final int previousWorldLimit = 3;
-	private static final String WORLD_TEXT = "You've previously logged in to the following worlds: ";
-	private static final String WELCOME_MESSAGE = "Welcome to RuneScape.";
-
 	private final WorldClient worldClient = new WorldClient();
 	private int worldCache;
 	private boolean worldChangeRequired;
+	private boolean sentPreviousWorlds = false;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		messageQueue = EvictingQueue.create(previousWorldLimit);
 		worldChangeRequired = true;
+		sentPreviousWorlds = false;
 		applyWorld();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		messageQueue = null;
 		worldChangeRequired = true;
+		sentPreviousWorlds = false;
+		saveWorld();
 		changeWorld(worldCache);
 	}
 
@@ -107,51 +103,27 @@ public class WorldPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChange(GameStateChanged event)
 	{
+		switch (event.getGameState())
+		{
+			case LOGGED_IN:
+				if (!sentPreviousWorlds)
+				{
+					sendWorldMessage();
+					sentPreviousWorlds = true;
+				}
+				break;
+			case HOPPING:
+			case CONNECTION_LOST:
+				saveWorld();
+		}
+		
 		applyWorld();
 	}
-
-	@Subscribe
-	public void onSetMessage(SetMessage message)
-	{
-		// Start sending old messages right after the welcome message, as that is most reliable source
-		// of information that chat history was reset
-		if (message.getValue().equals(WELCOME_MESSAGE))
-		{
-			QueuedMessage queuedMessage;
-
-			while ((queuedMessage = messageQueue.poll()) != null)
-			{
-				chatMessageManager.queue(queuedMessage);
-			}
-
-			// Display the last worlds if the option has been enabled.
-			if (config.displayLastWorlds())
-			{
-				// If the message is already within the chat, edit it.
-				// Otherwise, add it.
-				if (message.getValue().contains(WORLD_TEXT))
-				{
-					editWorldMessage(message);
-				}
-				else
-				{
-					sendWorldMessage(message);
-				}
-			}
-
-			return;
-		}
-	}
-
 
 	private void changeWorld(int newWorld)
 	{
 		if (!worldChangeRequired || client.getGameState() != GameState.LOGIN_SCREEN)
 		{
-			if (client.getGameState() == GameState.HOPPING || client.getGameState() == GameState.CONNECTION_LOST)
-			{
-				saveWorld(client.getWorld());
-			}
 			return;
 		}
 
@@ -221,9 +193,8 @@ public class WorldPlugin extends Plugin
 
 	/**
 	 * Saves the given world to the configuration as a previous world.
-	 * @param world world to save.
 	 */
-	private void saveWorld(final int world)
+	private void saveWorld()
 	{
 		//Do not save worlds if the user doesn't want it.
 		if (!config.displayLastWorlds())
@@ -231,7 +202,7 @@ public class WorldPlugin extends Plugin
 			return;
 		}
 
-		final String latestWorld = String.valueOf(world);
+		final String latestWorld = String.valueOf(client.getWorld());
 		final ArrayList<String> worlds = getWorlds();
 
 		String lastSavedWorld = "";
@@ -255,24 +226,9 @@ public class WorldPlugin extends Plugin
 	}
 
 	/**
-	 * Edits the current message which contains the WORLD_TEXT property.
-	 * @param setMessage Initial message to edit.
-	 */
-	private void editWorldMessage(final SetMessage setMessage)
-	{
-		final String worldMessage = formatPreviousWorldMessage();
-		final MessageNode messageNode = setMessage.getMessageNode();
-
-		messageNode.setRuneLiteFormatMessage(worldMessage);
-		chatMessageManager.update(messageNode);
-		client.refreshChat();
-	}
-
-	/**
 	 * Sends a new message containing the WORLD_TEXT property to the chatbox.
-	 * @param setMessage Initial message used to set up the queued message.
 	 */
-	private void sendWorldMessage(final SetMessage setMessage)
+	private void sendWorldMessage()
 	{
 		if (getWorlds().size() ==  0)
 		{
@@ -281,7 +237,7 @@ public class WorldPlugin extends Plugin
 
 		final String worldMessage = formatPreviousWorldMessage();
 		final QueuedMessage queuedMessage = QueuedMessage.builder()
-			.type(setMessage.getType())
+			.type(ChatMessageType.GAME)
 			.runeLiteFormattedMessage(worldMessage)
 			.build();
 
@@ -294,12 +250,27 @@ public class WorldPlugin extends Plugin
 	 */
 	private String formatPreviousWorldMessage()
 	{
-		return new ChatMessageBuilder()
-			.append(ChatColorType.HIGHLIGHT)
-			.append(WORLD_TEXT)
-			.append(ChatColorType.HIGHLIGHT)
-			.append(String.join(", ", getWorlds()))
-			.build();
+		final ChatMessageBuilder builder = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
+			.append(WORLD_TEXT);
+
+		final ArrayList<String> worlds = getWorlds();
+		for (int i = 0; i < worlds.size(); i++)
+		{
+			final String world = worlds.get(i);
+
+			if (i > 0)
+			{
+				builder.append(ChatColorType.NORMAL)
+				.append(", ");
+			}
+
+			builder
+				.append(ChatColorType.HIGHLIGHT)
+				.append(world);
+		}
+
+		return builder.build();
 	}
 
 	/**

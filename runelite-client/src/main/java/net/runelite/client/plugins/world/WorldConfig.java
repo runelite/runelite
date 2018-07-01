@@ -31,7 +31,7 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup(
 	keyName = "world",
 	name = "World",
-	description = "Sets the default world and remembers it"
+	description = "Sets default world and displays previously used worlds."
 )
 public interface WorldConfig extends Config
 {
@@ -54,7 +54,6 @@ public interface WorldConfig extends Config
 	{
 		return true;
 	}
-
 
 	@ConfigItem(
 		keyName = "pastworlds",
