@@ -26,15 +26,14 @@ package net.runelite.client.plugins.agility;
 
 import java.util.HashMap;
 import java.util.Map;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.runelite.api.coords.WorldPoint;
 
-@AllArgsConstructor
 public enum Courses
 {
 	GNOME(86.5, 46, 9781),
 	DRAYNOR(120.0, 79, 12338),
-	AL_KARID(180.0, 30, 13105),
+	AL_KARID(180.0, 30, 13105, new WorldPoint(3299, 3194, 0)),
 	PYRAMID(722.0, 300, 13356),
 	VARROCK(238.0, 125, 12853),
 	PENGUIN(540.0, 65, 10559),
@@ -59,12 +58,23 @@ public enum Courses
 	@Getter
 	private final int regionId;
 
+	@Getter
+	private final WorldPoint[] courseEndWorldPoints;
+
 	static
 	{
 		for (Courses course : values())
 		{
 			coursesByRegion.put(course.regionId, course);
 		}
+	}
+
+	Courses(double totalXp, int lastObstacleXp, int regionId, WorldPoint... courseEndWorldPoints)
+	{
+		this.totalXp = totalXp;
+		this.lastObstacleXp = lastObstacleXp;
+		this.regionId = regionId;
+		this.courseEndWorldPoints = courseEndWorldPoints;
 	}
 
 	public static Courses getCourse(int regionId)

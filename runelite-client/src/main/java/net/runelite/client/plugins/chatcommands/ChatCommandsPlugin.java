@@ -33,14 +33,13 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.AccountType;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.SetMessage;
+import net.runelite.api.vars.AccountType;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -51,8 +50,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.hiscore.HiscoreClient;
-import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
+import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.HiscoreSkill;
 import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
 import net.runelite.http.api.hiscore.Skill;
@@ -253,7 +252,7 @@ public class ChatCommandsPlugin extends Plugin
 		if (type.equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
 		{
 			player = client.getLocalPlayer().getName();
-			ironmanStatus = getIronmanStatusByVarbit();
+			ironmanStatus = getHiscoreEndpointType();
 		}
 		else
 		{
@@ -261,13 +260,13 @@ public class ChatCommandsPlugin extends Plugin
 
 			if (player.equals(client.getLocalPlayer().getName()))
 			{
-				// Get ironman btw status from varbit
-				ironmanStatus = getIronmanStatusByVarbit();
+				// Get ironman status from for the local player
+				ironmanStatus = getHiscoreEndpointType();
 			}
 			else
 			{
-				// Get ironman btw status from their icon in chat
-				ironmanStatus = getIronmanStatusByName(setMessage.getName());
+				// Get ironman status from their icon in chat
+				ironmanStatus = getHiscoreEndpointByName(setMessage.getName());
 			}
 		}
 
@@ -432,9 +431,9 @@ public class ChatCommandsPlugin extends Plugin
 	 * Looks up the ironman status of the local player. Does NOT work on other players.
 	 * @return hiscore endpoint
 	 */
-	private HiscoreEndpoint getIronmanStatusByVarbit()
+	private HiscoreEndpoint getHiscoreEndpointType()
 	{
-		return toEndPoint(AccountType.fromVarbit(client.getVarbitValue(client.getVarps(), Varbits.IRONMAN_STATUS.getId())));
+		return toEndPoint(client.getAccountType());
 	}
 
 	/**
@@ -442,9 +441,24 @@ public class ChatCommandsPlugin extends Plugin
 	 * @param name player name
 	 * @return hiscore endpoint
 	 */
-	private static HiscoreEndpoint getIronmanStatusByName(final String name)
+	private static HiscoreEndpoint getHiscoreEndpointByName(final String name)
 	{
-		return toEndPoint(AccountType.fromName(name));
+		if (name.contains("<img=2>"))
+		{
+			return toEndPoint(AccountType.IRONMAN);
+		}
+		else if (name.contains("<img=3>"))
+		{
+			return toEndPoint(AccountType.ULTIMATE_IRONMAN);
+		}
+		else if (name.contains("<img=10>"))
+		{
+			return toEndPoint(AccountType.HARDCORE_IRONMAN);
+		}
+		else
+		{
+			return toEndPoint(AccountType.NORMAL);
+		}
 	}
 
 	/**

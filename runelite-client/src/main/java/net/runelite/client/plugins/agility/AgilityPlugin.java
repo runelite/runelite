@@ -26,6 +26,7 @@ package net.runelite.client.plugins.agility;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -179,7 +180,9 @@ public class AgilityPlugin extends Plugin
 
 		// Get course
 		Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
-		if (course == null || Math.abs(course.getLastObstacleXp() - skillGained) > 1)
+		if (course == null
+			|| Math.abs(course.getLastObstacleXp() - skillGained) > 1
+			|| (course.getCourseEndWorldPoints().length > 0 && Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation()))))
 		{
 			return;
 		}
