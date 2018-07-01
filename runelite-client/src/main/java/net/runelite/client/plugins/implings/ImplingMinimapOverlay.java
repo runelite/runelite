@@ -82,7 +82,6 @@ public class ImplingMinimapOverlay extends Overlay
 				}
 
 				OverlayUtil.renderTextLocation(graphics, textLocation, impName, color);
-
 			}
 		}
 
