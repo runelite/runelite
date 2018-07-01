@@ -83,6 +83,10 @@ public class FontManager
 					fontLookupMap.put(f.getFontName(), f);
 				}
 			});
+
+			ge.registerFont(runescapeFont);
+			ge.registerFont(runescapeSmallFont);
+			ge.registerFont(runescapeBoldFont);
 		}
 		catch (FontFormatException ex)
 		{
