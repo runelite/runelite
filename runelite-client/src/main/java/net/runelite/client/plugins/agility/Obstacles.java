@@ -184,7 +184,9 @@ public class Obstacles
 		DENSE_FOREST_3998, DENSE_FOREST_3999, DENSE_FOREST, LEAVES, LEAVES_3924, LEAVES_3925, STICKS, TRIPWIRE,
 		// Gu'Tanoth bridge
 		GAP, GAP_2831,
-		// Morytania Pirate Ship
+		// Lumbridge Swamp Caves
+		STEPPING_STONE_5948, STEPPING_STONE_5949,
+    // Morytania Pirate Ship
 		ROCK_16115
 	);
 
