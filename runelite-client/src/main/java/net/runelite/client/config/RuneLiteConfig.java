@@ -233,9 +233,9 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "overlayFont",
-		name = "Dynamic Overlay Font",
+		name = "Overlay Font",
 		description = "Configures what font type is used for in-game overlays such as player name, ground items, etc.",
-		position = 30
+		position = 31
 	)
 	default Font overlayFont()
 	{
@@ -257,7 +257,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "clientFont",
 		name = "Client Font",
 		description = "Configures what font type is used for the client",
-		position = 31
+		position = 30
 	)
 	default Font clientFont()
 	{

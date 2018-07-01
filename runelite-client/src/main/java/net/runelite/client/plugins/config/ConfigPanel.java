@@ -26,10 +26,14 @@ package net.runelite.client.plugins.config;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
@@ -42,6 +46,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
 import javax.swing.BorderFactory;
@@ -82,6 +89,7 @@ import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.ComboBoxListRenderer;
 import net.runelite.client.ui.components.IconButton;
@@ -476,6 +484,38 @@ public class ConfigPanel extends PluginPanel
 					if (e.getStateChange() == ItemEvent.SELECTED)
 					{
 						changeConfiguration(listItem, config, box, cd, cid);
+						box.setToolTipText(box.getSelectedItem().toString());
+					}
+				});
+				item.add(box, BorderLayout.EAST);
+			}
+
+			if (cid.getType() == Font.class)
+			{
+				JComboBox box = new JComboBox(FontManager.getFontMap().values().toArray());
+				box.setPreferredSize(new Dimension(150, 25));
+				box.setRenderer(new ComboBoxListRenderer());
+				box.setForeground(Color.WHITE);
+				box.setFocusable(false);
+
+				String currentlyConfigured = configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName());
+
+				if (FontManager.lookupFont(currentlyConfigured) != null)
+				{
+					box.setSelectedItem(currentlyConfigured);
+					box.setToolTipText(currentlyConfigured);
+				}
+				else
+				{
+					log.debug("Selected font wasn't found on this system, resetting font back to runescape small");
+					configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), FontManager.getRunescapeSmallFont());
+				}
+				box.addItemListener(e ->
+				{
+					if (e.getStateChange() == ItemEvent.SELECTED)
+					{
+						final Font selected = FontManager.lookupFont(box.getSelectedItem().toString());
+						configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), selected);
 						box.setToolTipText(box.getSelectedItem().toString());
 					}
 				});

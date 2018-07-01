@@ -30,6 +30,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.EventBus;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.File;
@@ -58,6 +59,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
+import net.runelite.client.ui.FontManager;
 import net.runelite.http.api.config.ConfigClient;
 import net.runelite.http.api.config.ConfigEntry;
 import net.runelite.http.api.config.Configuration;
@@ -503,6 +505,10 @@ public class ConfigManager
 		{
 			return Enum.valueOf((Class<? extends Enum>) type, str);
 		}
+		if (type == Font.class)
+		{
+			return FontManager.lookupFont(str);
+		}
 		if (type == Instant.class)
 		{
 			return Instant.parse(str);
@@ -526,6 +532,10 @@ public class ConfigManager
 		if (object instanceof Enum)
 		{
 			return ((Enum) object).name();
+		}
+		if (object instanceof Font)
+		{
+			return FontManager.getFontMap().get(object);
 		}
 		if (object instanceof Dimension)
 		{

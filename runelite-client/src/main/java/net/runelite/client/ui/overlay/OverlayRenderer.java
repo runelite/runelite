@@ -370,17 +370,13 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		final OverlayPosition position = overlay.getPosition();
 
 		// Set font based on configuration
-		if (position == OverlayPosition.DYNAMIC || position == OverlayPosition.DETACHED)
-		{
-			subGraphics.setFont(runeLiteConfig.overlayFont());
-		}
-		else if (position == OverlayPosition.TOOLTIP)
+		if (position == OverlayPosition.TOOLTIP)
 		{
 			subGraphics.setFont(runeLiteConfig.tooltipFont());
 		}
 		else
 		{
-			subGraphics.setFont(runeLiteConfig.clientFont());
+			subGraphics.setFont(runeLiteConfig.overlayFont());
 		}
 
 		subGraphics.translate(point.x, point.y);

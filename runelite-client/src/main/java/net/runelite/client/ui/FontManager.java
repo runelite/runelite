@@ -24,7 +24,12 @@
  */
 package net.runelite.client.ui;
 
-import javax.swing.text.StyleContext;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
@@ -36,8 +41,10 @@ public class FontManager
 	private static final Font runescapeSmallFont;
 	private static final Font runescapeBoldFont;
 
-	public static Font clientFont;
-	public static Font overlayFont;
+	// By using a 2way map we're not dependant on the toString() method so we have control over the font naming in the UI.
+	private static final HashMap<String, Font> fontLookupMap;
+	// By using a linkedHashMap we decide the order in which the fonts a re represented which allows more intuitive ordering, i couldn't get ordering to swork with guave bimaps
+	private static final LinkedHashMap<Font, String> fontMap;
 
 	static
 	{
@@ -45,32 +52,39 @@ public class FontManager
 
 		try
 		{
-			Font font = Font.createFont(Font.TRUETYPE_FONT,
+			runescapeFont = Font.createFont(Font.TRUETYPE_FONT,
 				FontManager.class.getResourceAsStream("runescape.ttf"))
 				.deriveFont(Font.PLAIN, 16);
-			ge.registerFont(font);
 
-			runescapeFont = StyleContext.getDefaultStyleContext()
-					.getFont(font.getName(), Font.PLAIN, 16);
-			ge.registerFont(runescapeFont);
-
-			Font smallFont = Font.createFont(Font.TRUETYPE_FONT,
+			runescapeSmallFont = Font.createFont(Font.TRUETYPE_FONT,
 				FontManager.class.getResourceAsStream("runescape_small.ttf"))
 				.deriveFont(Font.PLAIN, 16);
-			ge.registerFont(smallFont);
 
-			runescapeSmallFont = StyleContext.getDefaultStyleContext()
-					.getFont(smallFont.getName(), Font.PLAIN, 16);
-			ge.registerFont(runescapeSmallFont);
-
-			Font boldFont = Font.createFont(Font.TRUETYPE_FONT,
+			runescapeBoldFont = Font.createFont(Font.TRUETYPE_FONT,
 					FontManager.class.getResourceAsStream("runescape_bold.ttf"))
 					.deriveFont(Font.PLAIN, 16);
-			ge.registerFont(boldFont);
 
-			runescapeBoldFont = StyleContext.getDefaultStyleContext()
-					.getFont(boldFont.getName(), Font.PLAIN, 16);
-			ge.registerFont(runescapeBoldFont);
+			fontMap = new LinkedHashMap<>();
+			fontLookupMap = new HashMap<>();
+
+			fontMap.put(runescapeSmallFont, "rs small");
+			fontMap.put(runescapeFont, "rs default");
+			fontMap.put(runescapeBoldFont, "rs bold");
+			fontMap.forEach((k, v) -> fontLookupMap.put(v, k));
+
+			// Get all available fonts on the system
+			Font[] availableFonts = ge.getAllFonts();
+			//build bidirectional map
+			Arrays.stream(availableFonts).sorted(Comparator.comparing(Font::getFontName)).forEach(f ->
+			{
+				if (!fontLookupMap.containsKey(f.getFontName()) && !fontMap.containsKey(f))
+				{
+					// I believe font size 11 or 12 is for many fonts about the same size as font size 16 for the rs fonts
+					f = f.deriveFont(11f);
+					fontMap.put(f, f.getFontName());
+					fontLookupMap.put(f.getFontName(), f);
+				}
+			});
 		}
 		catch (FontFormatException ex)
 		{
@@ -95,5 +109,15 @@ public class FontManager
 	public static Font getRunescapeBoldFont()
 	{
 		return runescapeBoldFont;
+	}
+
+	public static LinkedHashMap<Font, String> getFontMap()
+	{
+		return fontMap;
+	}
+
+	public static Font lookupFont(String fontName)
+	{
+		return fontLookupMap.get(fontName);
 	}
 }
