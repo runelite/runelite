@@ -3,7 +3,7 @@ package net.runelite.client.plugins.multilines;
 import com.google.gson.*;
 import com.google.inject.Provides;
 import net.runelite.api.Client;
-import net.runelite.api.Point;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -30,7 +30,7 @@ public class MultiLinesPlugin extends Plugin {
     @Inject
     private MultiLinesOverlay multiLinesOverlay;
 
-    private List<MultiLineBorder> multiLineBorders = loadMultiLineBorders();
+    public List<MultiLineBorder> multiLineBorders = loadMultiLineBorders();
 
     @Provides
     MultiLinesConfig getConfig(ConfigManager configManager) {
@@ -69,10 +69,10 @@ public class MultiLinesPlugin extends Plugin {
         return output;
     }
 
-    private Point fromJsonObject(JsonObject jsonObject) {
+    private WorldPoint fromJsonObject(JsonObject jsonObject) {
         JsonPrimitive x = jsonObject.getAsJsonPrimitive("x");
         JsonPrimitive y = jsonObject.getAsJsonPrimitive("y");
-        return new Point(x.getAsInt(), y.getAsInt());
+        return new WorldPoint(x.getAsInt(), y.getAsInt(), 0);
     }
 
 }
