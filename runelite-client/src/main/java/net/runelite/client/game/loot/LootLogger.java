@@ -61,6 +61,7 @@ import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDespawned;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -277,95 +278,56 @@ public class LootLogger
 		// The tile might previously have contained items that weren't dropped
 		// by the actor, so we need to check what new items appeared
 		List<ItemStack> prevItems = groundItemsLastTick.get(location);
-		List<Item> currItems = tile.getGroundItems();
-		if (currItems != null)
-		{
-			for (Item item : currItems)
-			{
-				Integer count = newItems.getOrDefault(item.getId(), 0);
-				newItems.put(item.getId(), count + item.getQuantity());
-			}
-		}
-		if (prevItems != null)
-		{
-			for (ItemStack item : prevItems)
-			{
-				Integer count = newItems.get(item.getId());
-				if (count == null)
-				{
-					continue;
-				}
-				count -= item.getQuantity();
-				if (count <= 0)
-				{
-					newItems.remove(item.getId());
-				}
-				else
-				{
-					newItems.put(item.getId(), count);
-				}
-			}
-		}
+		List<ItemStack> currItems = itemsToItemStack(tile.getGroundItems());
+
+		// Get item changes for this ground tile
+		Map<Integer, Integer> groundItemDiff = getItemDifferences(prevItems, currItems);
 
 		// If the player was standing on the location, we don't want to log
 		// any drops that the player may have dropped themselves
-		if (this.thisTickInventoryItems != null &&
-				location.distanceTo(playerLocationLastTick) == 0)
+		// This will adjust groundItemDiff to ignore any changes the player made to the ground items
+		if (this.thisTickInventoryItems != null && location.distanceTo(playerLocationLastTick) == 0)
 		{
-			Map<Integer, Integer> changedItems = new HashMap<>();
-			for (int i = 0; i < INVENTORY_SPACE; i++)
-			{
-				ItemStack prevStack = null;
-				ItemStack currStack = null;
-				if (i < this.prevTickInventoryItems.size())
-				{
-					prevStack = this.prevTickInventoryItems.get(i);
-				}
-				if (i < this.thisTickInventoryItems.size())
-				{
-					currStack = this.thisTickInventoryItems.get(i);
-				}
+			// Grab inventory item differences. (Positive=New Item, Negative=Removed Item)
+			Map<Integer, Integer> changedItems = getItemDifferences(prevTickInventoryItems, thisTickInventoryItems);
 
-				// If items were dropped, the inventory slot would be become empty (i.e. null)
-				if (prevStack != null && (currStack == null || currStack.getId() == -1))
-				{
-					changedItems.put(prevStack.getId(), 0);
-				}
-			}
-
-			// The user may have moved items in their inventory, so we want to make sure
-			// that they have less items now than they did earlier
-			for (ItemStack stack : this.prevTickInventoryItems)
-			{
-				Integer count = changedItems.get(stack.getId());
-				if (count != null)
-				{
-					changedItems.put(stack.getId(), count + stack.getQuantity());
-				}
-			}
-			for (ItemStack stack : this.thisTickInventoryItems)
-			{
-				Integer count = changedItems.get(stack.getId());
-				if (count != null)
-				{
-					changedItems.put(stack.getId(), count - stack.getQuantity());
-				}
-			}
-
+			// Adjust Ground Item Diff to account for inventory changes
 			for (Map.Entry<Integer, Integer> entry : changedItems.entrySet())
 			{
+				int count = groundItemDiff.getOrDefault(entry.getKey(), 0);
+
+				// Item was added to inventory?
 				if (entry.getValue() > 0)
 				{
-					int count = newItems.getOrDefault(entry.getKey(), 0);
-					if (count - entry.getValue() <= 0)
+					// If item existed on ground before that means we picked it up.
+					if (ItemStack.containsItemId(prevItems, entry.getKey()))
 					{
-						newItems.remove(entry.getKey());
-					}
-					else
-					{
-						newItems.put(entry.getKey(), count - entry.getValue());
+						// Add item to difference map
+						groundItemDiff.put(entry.getKey(), count + entry.getValue());
 					}
 				}
+				// Item removed from inventory
+				else if (entry.getValue() < 0)
+				{
+					// Does this item now exist on the ground?
+					if (ItemStack.containsItemId(currItems, entry.getKey()))
+					{
+						// Remove item from ground (adds a negative number)
+						groundItemDiff.put(entry.getKey(), count + entry.getValue());
+					}
+
+				}
+			}
+		}
+
+		// Create the newItems map by only returning the positive changes (new loot)
+		for (Map.Entry<Integer, Integer> e : groundItemDiff.entrySet())
+		{
+			// Items were added?
+			if (e.getValue() > 0)
+			{
+				Integer count = newItems.getOrDefault(e.getKey(), 0);
+				newItems.put(e.getKey(), count + e.getValue());
 			}
 		}
 
@@ -784,7 +746,7 @@ public class LootLogger
 				}
 			}
 
-			// Stores new items for each new world point
+			// Stores new items for each new world point. Some NPCs can drop loot on multiple tiles.
 			WorldPoint[] locations = getExpectedDropLocations(pad);
 			Multimap<WorldPoint, ItemStack> worldDrops = ArrayListMultimap.create();
 			for (WorldPoint location : locations)
@@ -947,11 +909,12 @@ public class LootLogger
 	@Subscribe
 	public void onProjectileMoved(ProjectileMoved event)
 	{
+		if (cannonLocation == null)
+			return;
+
 		Projectile projectile = event.getProjectile();
 
-		if (cannonLocation != null && (
-				projectile.getId() == ProjectileID.CANNONBALL ||
-						projectile.getId() == ProjectileID.GRANITE_CANNONBALL))
+		if (projectile.getId() == ProjectileID.CANNONBALL || projectile.getId() == ProjectileID.GRANITE_CANNONBALL)
 		{
 			WorldPoint projectileLoc = WorldPoint.fromLocal(client, projectile.getX1(), projectile.getY1(), client.getPlane());
 
@@ -1102,7 +1065,6 @@ public class LootLogger
 	 * <p><strong>Now that we are done determining loot we need to prepare for the next tick.</strong></p>
 	 * <p>1) Move all data to lastTick variables (Ground Items/Inventory Items)</p>
 	 * <p>2) Store current player world point</p>
-	 * <p>3) Increment tick counter for disappearing item support</p>
 	 */
 	@Subscribe
 	public void onGameTick(GameTick event)
@@ -1114,5 +1076,20 @@ public class LootLogger
 		updateGroundItemLayers();
 		updateInventoryItems();
 		playerLocationLastTick = client.getLocalPlayer().getWorldLocation();
+	}
+
+	/**
+	 * Cannon Pickup Support
+	 */
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (cannonLocation == null)
+			return;
+
+		if (event.getMessage().contains("You pick up the cannon"))
+		{
+			cannonLocation = null;
+		}
 	}
 }
