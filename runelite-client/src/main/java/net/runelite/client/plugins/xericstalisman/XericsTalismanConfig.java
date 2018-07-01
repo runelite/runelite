@@ -40,12 +40,18 @@ public interface XericsTalismanConfig extends Config
 		name = "Hide Original Teleport Name",
 		description = "Hide the original text and only show the actual location."
 	)
-	default boolean hideOriginalTeleportName() { return false; }
+	default boolean hideOriginalTeleportName()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "hideMenuActionTargetForTeleports",
 		name = "Hide Item Name Suffix For Teleports",
 		description = "Hide the 'Xeric's talisman' suffix on each teleport menu action."
 	)
-	default boolean hideMenuActionTargetForTeleports() { return true; }
+	default boolean hideMenuActionTargetForTeleports()
+	{
+		return true;
+	}
 }
