@@ -26,10 +26,16 @@ package net.runelite.client.plugins.itemstats;
 
 import net.runelite.client.plugins.itemstats.delta.DeltaCalculator;
 import net.runelite.client.plugins.itemstats.delta.DeltaPercentage;
+import net.runelite.client.plugins.itemstats.food.VariableHealingFood;
 import net.runelite.client.plugins.itemstats.stats.Stat;
 
 public class Builders
 {
+	public static VariableHealingFood food(int minDiff, int maxDiff)
+	{
+		return new VariableHealingFood(minDiff, maxDiff);
+	}
+
 	public static Food food(int diff)
 	{
 		return food((max) -> diff);
