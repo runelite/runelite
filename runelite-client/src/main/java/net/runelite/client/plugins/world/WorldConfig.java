@@ -22,18 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.defaultworld;
+package net.runelite.client.plugins.world;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-	keyName = "defaultworld",
-	name = "Default World",
+	keyName = "world",
+	name = "World",
 	description = "Sets the default world and remembers it"
 )
-public interface DefaultWorldConfig extends Config
+public interface WorldConfig extends Config
 {
 	@ConfigItem(
 		keyName = "defaultWorld",
@@ -44,4 +44,34 @@ public interface DefaultWorldConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+		keyName = "displayWorlds",
+		name = "Display previous worlds",
+		description = "Display previous worlds while logging in or hopping"
+	)
+	default boolean displayLastWorlds()
+	{
+		return true;
+	}
+
+
+	@ConfigItem(
+		keyName = "pastworlds",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default String pastWorldList()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "pastworlds",
+		name = "",
+		description = ""
+	)
+	void pastWorldList(String worldList);
+
 }
