@@ -24,17 +24,44 @@
  */
 package net.runelite.client.plugins.xpglobes;
 
+import java.awt.image.BufferedImage;
 import java.time.Instant;
+
+import lombok.Setter;
+import lombok.Getter;
 import net.runelite.api.Skill;
 
 public class XpGlobe
 {
-
+	@Setter
+	@Getter
 	private Skill skill;
+
+	@Setter
+	@Getter
 	private int currentXp;
+
+	@Setter
+	@Getter
 	private int currentLevel;
+
+	@Setter
+	@Getter
 	private int goalXp;
+
+	@Setter
+	@Getter
 	private Instant time;
+
+	@Setter
+	@Getter
+	private BufferedImage skillIcon;
+
+	@Setter
+	@Getter
+	private int globeSize;
+
+	@Getter
 	private double skillProgressRadius;
 
 	public XpGlobe(Skill skill, int currentXp, int currentLevel, int goalXp)
@@ -42,46 +69,6 @@ public class XpGlobe
 		this.skill = skill;
 		this.currentXp = currentXp;
 		this.currentLevel = currentLevel;
-		this.goalXp = goalXp;
-	}
-
-	public Skill getSkill()
-	{
-		return skill;
-	}
-
-	public void setSkill(Skill skill)
-	{
-		this.skill = skill;
-	}
-
-	public int getCurrentXp()
-	{
-		return currentXp;
-	}
-
-	public void setCurrentXp(int currentXp)
-	{
-		this.currentXp = currentXp;
-	}
-
-	public int getCurrentLevel()
-	{
-		return currentLevel;
-	}
-
-	public void setCurrentLevel(int currentLevel)
-	{
-		this.currentLevel = currentLevel;
-	}
-
-	public int getGoalXp()
-	{
-		return goalXp;
-	}
-
-	public void setGoalXp(int goalXp)
-	{
 		this.goalXp = goalXp;
 	}
 
@@ -95,11 +82,6 @@ public class XpGlobe
 		return skill.getName();
 	}
 
-	public double getSkillProgressRadius()
-	{
-		return skillProgressRadius;
-	}
-
 	public void setSkillProgressRadius(int startXp, int currentXp, int goalXp)
 	{
 		this.skillProgressRadius = -(3.6 * getSkillProgress(startXp, currentXp, goalXp)); //arc goes backwards
@@ -111,15 +93,5 @@ public class XpGlobe
 		double xpGoal = goalXp - startXp;
 
 		return ((xpGained / xpGoal) * 100);
-	}
-
-	public Instant getTime()
-	{
-		return time;
-	}
-
-	public void setTime(Instant time)
-	{
-		this.time = time;
 	}
 }

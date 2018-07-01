@@ -41,6 +41,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Point;
+import net.runelite.api.Skill;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
@@ -50,6 +51,7 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
+import net.runelite.client.util.SwingUtil;
 
 @Slf4j
 public class XpGlobesOverlay extends Overlay
@@ -59,6 +61,7 @@ public class XpGlobesOverlay extends Overlay
 	private final XpGlobesConfig config;
 	private final XpTrackerService xpTrackerService;
 	private final PanelComponent xpTooltip = new PanelComponent();
+	private final SwingUtil sUtil = new SwingUtil();
 
 	@Inject
 	private SkillIconManager iconManager;
@@ -71,6 +74,9 @@ public class XpGlobesOverlay extends Overlay
 	private static final int DEFAULT_START_Y = 10;
 
 	private static final int TOOLTIP_RECT_SIZE_X = 150;
+
+	private static final double GlOBE_HEIGHT_RATIO = 0.55;
+	private static final double GLOBE_WIDTH_RATIO = 0.45;
 
 	@Inject
 	public XpGlobesOverlay(Client client, XpGlobesPlugin plugin, XpGlobesConfig config, XpTrackerService xpTrackerService)
@@ -191,19 +197,48 @@ public class XpGlobesOverlay extends Overlay
 
 	private void drawSkillImage(Graphics2D graphics, XpGlobe xpGlobe, int x, int y)
 	{
-		BufferedImage skillImage = iconManager.getSkillImage(xpGlobe.getSkill());
-
-		if (skillImage == null)
+		BufferedImage toDraw;
+		if (xpGlobe.getSkillIcon() != null && xpGlobe.getGlobeSize() == config.xpOrbSize())
 		{
-			return;
+			toDraw = xpGlobe.getSkillIcon();
+		}
+		else
+		{
+			toDraw = generateScaledIcon(xpGlobe.getSkill());
+			if (toDraw == null)
+			{
+				return;
+			}
+			xpGlobe.setSkillIcon(toDraw);
+			xpGlobe.setGlobeSize(config.xpOrbSize());
 		}
 
 		graphics.drawImage(
-			skillImage,
-			x + (config.xpOrbSize() / 2) - (skillImage.getWidth() / 2),
-			y + (config.xpOrbSize() / 2) - (skillImage.getHeight() / 2),
+			toDraw,
+			x + (config.xpOrbSize() / 2) - (toDraw.getWidth() / 2),
+			y + (config.xpOrbSize() / 2) - (toDraw.getHeight() / 2),
 			null
 		);
+	}
+
+	private BufferedImage generateScaledIcon(Skill skill)
+	{
+		BufferedImage icon = iconManager.getSkillImage(skill);
+		if (icon == null)
+		{
+			return null;
+		}
+
+		final int height = (int)(config.xpOrbSize() * GlOBE_HEIGHT_RATIO);
+		final int width = (int)(config.xpOrbSize() * GLOBE_WIDTH_RATIO);
+
+		if (width == 0 || height == 0)
+		{
+			return null;
+		}
+
+		BufferedImage scaled = sUtil.resizeImage(icon, width, height);
+		return scaled;
 	}
 
 	private void drawTooltipIfMouseover(Graphics2D graphics, XpGlobe mouseOverSkill, Ellipse2D drawnGlobe)
