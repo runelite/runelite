@@ -31,6 +31,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -38,6 +40,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.SetMessage;
 import net.runelite.api.vars.AccountType;
 import net.runelite.client.chat.ChatColorType;
@@ -66,6 +69,8 @@ import net.runelite.http.api.item.SearchResult;
 public class ChatCommandsPlugin extends Plugin
 {
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
+	private static final Pattern KILLCOUNT_PATERN = Pattern.compile("Your ([a-zA-Z ]+) kill count is: <col=ff0000>(\\d+)</col>.");
+	private static final Pattern WINTERTODT_PATERN = Pattern.compile("Your subdued Wintertodt count is: <col=ff0000>(\\d+)</col>.");
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 
@@ -74,6 +79,9 @@ public class ChatCommandsPlugin extends Plugin
 
 	@Inject
 	private ChatCommandsConfig config;
+
+	@Inject
+	private ConfigManager configManager;
 
 	@Inject
 	private ItemManager itemManager;
@@ -106,6 +114,19 @@ public class ChatCommandsPlugin extends Plugin
 	ChatCommandsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ChatCommandsConfig.class);
+	}
+
+	private void setKc(String boss, int killcount)
+	{
+		configManager.setConfiguration("killcount." + client.getUsername().toLowerCase(),
+			boss.toLowerCase(), killcount);
+	}
+
+	private int getKc(String boss)
+	{
+		Integer killCount = configManager.getConfiguration("killcount." + client.getUsername().toLowerCase(),
+			boss.toLowerCase(), int.class);
+		return killCount == null ? 0 : killCount;
 	}
 
 	/**
@@ -170,7 +191,33 @@ public class ChatCommandsPlugin extends Plugin
 			log.debug("Running clue lookup for {}", search);
 			executor.submit(() -> playerClueLookup(setMessage.getType(), setMessage, search));
 		}
+	}
 
+	@Subscribe
+	public void onChatMessage(ChatMessage chatMessage)
+	{
+		if (chatMessage.getType() != ChatMessageType.SERVER && chatMessage.getType() != ChatMessageType.FILTERED)
+		{
+			return;
+		}
+
+		String message = chatMessage.getMessage();
+		Matcher matcher = KILLCOUNT_PATERN.matcher(message);
+		if (matcher.find())
+		{
+			String boss = matcher.group(1);
+			int kc = Integer.parseInt(matcher.group(2));
+
+			setKc(boss, kc);
+		}
+
+		matcher = WINTERTODT_PATERN.matcher(message);
+		if (matcher.find())
+		{
+			int kc = Integer.parseInt(matcher.group(1));
+
+			setKc("Wintertodt", kc);
+		}
 	}
 
 	/**
