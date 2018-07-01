@@ -185,7 +185,9 @@ public class Obstacles
 		// Gu'Tanoth bridge
 		GAP, GAP_2831,
 		// Lumbridge Swamp Caves
-		STEPPING_STONE_5948, STEPPING_STONE_5949
+		STEPPING_STONE_5948, STEPPING_STONE_5949,
+		// Morytania Pirate Ship
+		ROCK_16115
 	);
 
 	public static final Set<Integer> TRAP_OBSTACLE_IDS = ImmutableSet.of(
