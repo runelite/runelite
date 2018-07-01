@@ -104,7 +104,7 @@ public class TooltipComponent implements RenderableEntity
 					textComponent.setColor(nextColor);
 					String text = line.substring(begin, j);
 					textComponent.setText(text);
-					textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
+					textComponent.setPosition(new Point(lineX, textY + (i + 1) * metrics.getMaxAscent() + i * metrics.getMaxDescent()));
 					textComponent.render(graphics);
 
 					lineX += metrics.stringWidth(text);
@@ -141,7 +141,7 @@ public class TooltipComponent implements RenderableEntity
 						textComponent.setColor(nextColor);
 						String text = line.substring(begin, j + 1);
 						textComponent.setText(text);
-						textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
+						textComponent.setPosition(new Point(lineX, textY + (i + 1) * metrics.getMaxAscent() + i * metrics.getMaxDescent()));
 						textComponent.render(graphics);
 
 						lineX += metrics.stringWidth(text);
@@ -155,7 +155,7 @@ public class TooltipComponent implements RenderableEntity
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setColor(nextColor);
 			textComponent.setText(line.substring(begin, line.length()));
-			textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
+			textComponent.setPosition(new Point(lineX, textY + (i + 1) * metrics.getMaxAscent() + i * metrics.getMaxDescent()));
 			textComponent.render(graphics);
 		}
 
