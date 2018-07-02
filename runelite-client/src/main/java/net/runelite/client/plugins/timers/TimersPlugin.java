@@ -26,6 +26,7 @@ package net.runelite.client.plugins.timers;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.util.function.Predicate;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
@@ -38,9 +39,11 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.Prayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
@@ -83,13 +86,36 @@ import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIFIRE;
 import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIPOISON;
 import static net.runelite.client.plugins.timers.GameTimer.VENGEANCE;
 import static net.runelite.client.plugins.timers.GameTimer.VENGEANCEOTHER;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Timers"
+		name = "Timers"
 )
 public class TimersPlugin extends Plugin
 {
+	private static final GameTimer[] FREEZE_TIMERS = {
+			BIND, HALFBIND, SNARE, HALFSNARE, ENTANGLE, HALFENTANGLE, ICERUSH, ICEBURST, ICEBLITZ, ICEBARRAGE
+	};
+
+	private static Predicate<InfoBox> isOfTimer(GameTimer... timers)
+	{
+		return t ->
+		{
+			if (t instanceof TimerTimer)
+			{
+				for (GameTimer timer : timers)
+				{
+					if (timer == ((TimerTimer) t).getTimer())
+					{
+						return true;
+					}
+				}
+			}
+			return false;
+		};
+	}
+
 	private int lastRaidVarb;
 
 	@Inject
@@ -100,6 +126,8 @@ public class TimersPlugin extends Plugin
 
 	@Inject
 	private InfoBoxManager infoBoxManager;
+
+	private WorldPoint previousPoint;
 
 	@Provides
 	TimersConfig getConfig(ConfigManager configManager)
@@ -227,16 +255,7 @@ public class TimersPlugin extends Plugin
 
 		if (!config.showFreezes())
 		{
-			removeGameTimer(BIND);
-			removeGameTimer(HALFBIND);
-			removeGameTimer(SNARE);
-			removeGameTimer(HALFSNARE);
-			removeGameTimer(ENTANGLE);
-			removeGameTimer(HALFENTANGLE);
-			removeGameTimer(ICERUSH);
-			removeGameTimer(ICEBURST);
-			removeGameTimer(ICEBLITZ);
-			removeGameTimer(ICEBARRAGE);
+			removeGameTimers(FREEZE_TIMERS);
 		}
 	}
 
@@ -244,11 +263,11 @@ public class TimersPlugin extends Plugin
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (config.showAntidotePlusPlus()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.ANTIDOTE1_5958
-			|| event.getId() == ItemID.ANTIDOTE2_5956
-			|| event.getId() == ItemID.ANTIDOTE3_5954
-			|| event.getId() == ItemID.ANTIDOTE4_5952))
+				&& event.getMenuOption().contains("Drink")
+				&& (event.getId() == ItemID.ANTIDOTE1_5958
+				|| event.getId() == ItemID.ANTIDOTE2_5956
+				|| event.getId() == ItemID.ANTIDOTE3_5954
+				|| event.getId() == ItemID.ANTIDOTE4_5952))
 		{
 			// Needs menu option hook because drink message is intercepting with antipoison message
 			createGameTimer(ANTIDOTEPLUSPLUS);
@@ -256,11 +275,11 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showAntidotePlus()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.ANTIDOTE1
-			|| event.getId() == ItemID.ANTIDOTE2
-			|| event.getId() == ItemID.ANTIDOTE3
-			|| event.getId() == ItemID.ANTIDOTE4))
+				&& event.getMenuOption().contains("Drink")
+				&& (event.getId() == ItemID.ANTIDOTE1
+				|| event.getId() == ItemID.ANTIDOTE2
+				|| event.getId() == ItemID.ANTIDOTE3
+				|| event.getId() == ItemID.ANTIDOTE4))
 		{
 			// Needs menu option hook because drink message is intercepting with antipoison message
 			createGameTimer(ANTIDOTEPLUS);
@@ -268,31 +287,31 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showAntiPoison()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.ANTIPOISON1
-			|| event.getId() == ItemID.ANTIPOISON2
-			|| event.getId() == ItemID.ANTIPOISON3
-			|| event.getId() == ItemID.ANTIPOISON4))
+				&& event.getMenuOption().contains("Drink")
+				&& (event.getId() == ItemID.ANTIPOISON1
+				|| event.getId() == ItemID.ANTIPOISON2
+				|| event.getId() == ItemID.ANTIPOISON3
+				|| event.getId() == ItemID.ANTIPOISON4))
 		{
 			createGameTimer(ANTIPOISON);
 			return;
 		}
 
 		if (config.showSuperantipoison()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.SUPERANTIPOISON1
-			|| event.getId() == ItemID.SUPERANTIPOISON2
-			|| event.getId() == ItemID.SUPERANTIPOISON3
-			|| event.getId() == ItemID.SUPERANTIPOISON4))
+				&& event.getMenuOption().contains("Drink")
+				&& (event.getId() == ItemID.SUPERANTIPOISON1
+				|| event.getId() == ItemID.SUPERANTIPOISON2
+				|| event.getId() == ItemID.SUPERANTIPOISON3
+				|| event.getId() == ItemID.SUPERANTIPOISON4))
 		{
 			createGameTimer(SUPERANTIPOISON);
 			return;
 		}
 
 		if (config.showStamina()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.STAMINA_MIX1
-			|| event.getId() == ItemID.STAMINA_MIX2))
+				&& event.getMenuOption().contains("Drink")
+				&& (event.getId() == ItemID.STAMINA_MIX1
+				|| event.getId() == ItemID.STAMINA_MIX2))
 		{
 			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
 			createGameTimer(STAMINA);
@@ -585,6 +604,38 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onGameTick(GameTick tick)
+	{
+		if (!config.showFreezes())
+		{
+			return;
+		}
+		if (!hasGameTimer(FREEZE_TIMERS))
+		{
+			this.previousPoint = null;
+			return;
+		}
+		WorldPoint current = client.getLocalPlayer().getWorldLocation();
+		if (previousPoint != null)
+		{
+			if (!current.equals(previousPoint) && client.getLocalDestinationLocation() != null)
+			{
+				removeGameTimers(FREEZE_TIMERS);
+				this.previousPoint = null;
+			}
+		}
+		else
+		{
+			this.previousPoint = current;
+		}
+	}
+
+	public boolean hasGameTimer(GameTimer... timers)
+	{
+		return infoBoxManager.getInfoBoxes().stream().anyMatch(isOfTimer(timers));
+	}
+
 	public void createGameTimer(GameTimer timer)
 	{
 		removeGameTimer(timer);
@@ -592,6 +643,11 @@ public class TimersPlugin extends Plugin
 		TimerTimer t = new TimerTimer(timer, this);
 		t.setTooltip(timer.getDescription());
 		infoBoxManager.addInfoBox(t);
+	}
+
+	public void removeGameTimers(GameTimer... timers)
+	{
+		infoBoxManager.removeIf(isOfTimer(timers));
 	}
 
 	public void removeGameTimer(GameTimer timer)
