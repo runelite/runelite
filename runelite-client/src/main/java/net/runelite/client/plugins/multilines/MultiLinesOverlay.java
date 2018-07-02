@@ -68,19 +68,11 @@ public class MultiLinesOverlay extends Overlay {
             LocalPoint localPointEnd = LocalPoint.fromWorld(client, end);
 
             if (localPointStart != null && localPointEnd != null) {
-                Polygon polygon = linePoly(client, localPointStart, localPointEnd);
-                if (polygon != null) {
-                    OverlayUtil.renderPolygon(graphics, polygon, Color.WHITE);
-
-                    Point singlePoint = canvasPoint(client, border.getSingle());
-                    if (singlePoint != null) {
-                        OverlayUtil.renderTextLocation(graphics, singlePoint, "Single", Color.GREEN);
-                    }
-
-                    Point multiPoint = canvasPoint(client, border.getMulti());
-                    if (multiPoint != null) {
-                        OverlayUtil.renderTextLocation(graphics, multiPoint, "Multi", Color.RED);
-                    }
+                Polygon inner = linePoly(client, localPointStart, localPointEnd, 0, 0);
+                Polygon outer = linePoly(client, localPointStart, localPointEnd, 2, 2);
+                if (outer != null) {
+                    OverlayUtil.renderPolygon(graphics, inner, Color.RED);
+                    OverlayUtil.renderPolygon(graphics, outer, Color.GREEN);
                 }
             }
         }
@@ -88,24 +80,19 @@ public class MultiLinesOverlay extends Overlay {
         return null;
     }
 
-    private Point canvasPoint(@Nonnull Client client, @Nonnull WorldPoint worldPoint) {
-        LocalPoint localPoint = LocalPoint.fromWorld(client, worldPoint);
-        if (localPoint != null) {
-            return Perspective.worldToCanvas(client, localPoint.getX(), localPoint.getY(), client.getPlane());
-        }
-        return null;
-    }
-
     /**
      * Returns a polygon representing a line between two points. Top left corners.
      */
-    private Polygon linePoly(@Nonnull Client client, @Nonnull LocalPoint startLocation, @Nonnull LocalPoint endLocation) {
+    private Polygon linePoly(@Nonnull Client client, @Nonnull LocalPoint startLocation, @Nonnull LocalPoint endLocation, int adjustX, int adjustY) {
+        int adjustedPointsX = adjustX * (LOCAL_TILE_SIZE / 8);
+        int adjustedPointsY = adjustY * (LOCAL_TILE_SIZE / 8);
+
         Point startPoint = new Point(
-                startLocation.getX() - (1 * LOCAL_TILE_SIZE / 2),
-                startLocation.getY() + (1 * LOCAL_TILE_SIZE / 2));
+                startLocation.getX() - (1 * LOCAL_TILE_SIZE / 2) + adjustedPointsX,
+                startLocation.getY() + (1 * LOCAL_TILE_SIZE / 2) + adjustedPointsY);
         Point endPoint = new Point(
-                endLocation.getX() - (1 * LOCAL_TILE_SIZE / 2),
-                endLocation.getY() + (1 * LOCAL_TILE_SIZE / 2));
+                endLocation.getX() - (1 * LOCAL_TILE_SIZE / 2) + adjustedPointsX,
+                endLocation.getY() + (1 * LOCAL_TILE_SIZE / 2) + adjustedPointsY);
 
         int plane = client.getPlane();
 
