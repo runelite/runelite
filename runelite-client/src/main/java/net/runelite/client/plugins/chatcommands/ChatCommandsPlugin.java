@@ -31,16 +31,18 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.AccountType;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
-import net.runelite.api.Varbits;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.SetMessage;
+import net.runelite.api.vars.AccountType;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -51,8 +53,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.hiscore.HiscoreClient;
-import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
+import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.HiscoreSkill;
 import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
 import net.runelite.http.api.hiscore.Skill;
@@ -67,6 +69,8 @@ import net.runelite.http.api.item.SearchResult;
 public class ChatCommandsPlugin extends Plugin
 {
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
+	private static final Pattern KILLCOUNT_PATERN = Pattern.compile("Your ([a-zA-Z ]+) kill count is: <col=ff0000>(\\d+)</col>.");
+	private static final Pattern WINTERTODT_PATERN = Pattern.compile("Your subdued Wintertodt count is: <col=ff0000>(\\d+)</col>.");
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 
@@ -75,6 +79,9 @@ public class ChatCommandsPlugin extends Plugin
 
 	@Inject
 	private ChatCommandsConfig config;
+
+	@Inject
+	private ConfigManager configManager;
 
 	@Inject
 	private ItemManager itemManager;
@@ -107,6 +114,19 @@ public class ChatCommandsPlugin extends Plugin
 	ChatCommandsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ChatCommandsConfig.class);
+	}
+
+	private void setKc(String boss, int killcount)
+	{
+		configManager.setConfiguration("killcount." + client.getUsername().toLowerCase(),
+			boss.toLowerCase(), killcount);
+	}
+
+	private int getKc(String boss)
+	{
+		Integer killCount = configManager.getConfiguration("killcount." + client.getUsername().toLowerCase(),
+			boss.toLowerCase(), int.class);
+		return killCount == null ? 0 : killCount;
 	}
 
 	/**
@@ -171,7 +191,33 @@ public class ChatCommandsPlugin extends Plugin
 			log.debug("Running clue lookup for {}", search);
 			executor.submit(() -> playerClueLookup(setMessage.getType(), setMessage, search));
 		}
+	}
 
+	@Subscribe
+	public void onChatMessage(ChatMessage chatMessage)
+	{
+		if (chatMessage.getType() != ChatMessageType.SERVER && chatMessage.getType() != ChatMessageType.FILTERED)
+		{
+			return;
+		}
+
+		String message = chatMessage.getMessage();
+		Matcher matcher = KILLCOUNT_PATERN.matcher(message);
+		if (matcher.find())
+		{
+			String boss = matcher.group(1);
+			int kc = Integer.parseInt(matcher.group(2));
+
+			setKc(boss, kc);
+		}
+
+		matcher = WINTERTODT_PATERN.matcher(message);
+		if (matcher.find())
+		{
+			int kc = Integer.parseInt(matcher.group(1));
+
+			setKc("Wintertodt", kc);
+		}
 	}
 
 	/**
@@ -253,7 +299,7 @@ public class ChatCommandsPlugin extends Plugin
 		if (type.equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
 		{
 			player = client.getLocalPlayer().getName();
-			ironmanStatus = getIronmanStatusByVarbit();
+			ironmanStatus = getHiscoreEndpointType();
 		}
 		else
 		{
@@ -261,13 +307,13 @@ public class ChatCommandsPlugin extends Plugin
 
 			if (player.equals(client.getLocalPlayer().getName()))
 			{
-				// Get ironman btw status from varbit
-				ironmanStatus = getIronmanStatusByVarbit();
+				// Get ironman status from for the local player
+				ironmanStatus = getHiscoreEndpointType();
 			}
 			else
 			{
-				// Get ironman btw status from their icon in chat
-				ironmanStatus = getIronmanStatusByName(setMessage.getName());
+				// Get ironman status from their icon in chat
+				ironmanStatus = getHiscoreEndpointByName(setMessage.getName());
 			}
 		}
 
@@ -432,9 +478,9 @@ public class ChatCommandsPlugin extends Plugin
 	 * Looks up the ironman status of the local player. Does NOT work on other players.
 	 * @return hiscore endpoint
 	 */
-	private HiscoreEndpoint getIronmanStatusByVarbit()
+	private HiscoreEndpoint getHiscoreEndpointType()
 	{
-		return toEndPoint(AccountType.fromVarbit(client.getVarbitValue(client.getVarps(), Varbits.IRONMAN_STATUS.getId())));
+		return toEndPoint(client.getAccountType());
 	}
 
 	/**
@@ -442,9 +488,24 @@ public class ChatCommandsPlugin extends Plugin
 	 * @param name player name
 	 * @return hiscore endpoint
 	 */
-	private static HiscoreEndpoint getIronmanStatusByName(final String name)
+	private static HiscoreEndpoint getHiscoreEndpointByName(final String name)
 	{
-		return toEndPoint(AccountType.fromName(name));
+		if (name.contains("<img=2>"))
+		{
+			return toEndPoint(AccountType.IRONMAN);
+		}
+		else if (name.contains("<img=3>"))
+		{
+			return toEndPoint(AccountType.ULTIMATE_IRONMAN);
+		}
+		else if (name.contains("<img=10>"))
+		{
+			return toEndPoint(AccountType.HARDCORE_IRONMAN);
+		}
+		else
+		{
+			return toEndPoint(AccountType.NORMAL);
+		}
 	}
 
 	/**

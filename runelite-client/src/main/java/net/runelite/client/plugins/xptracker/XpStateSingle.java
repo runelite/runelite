@@ -210,7 +210,7 @@ class XpStateSingle
 		xpGained = currentXp - startXp;
 
 		// Determine XP goals
-		if (goalStartXp <= 0)
+		if (goalStartXp <= 0 || currentXp > goalEndXp)
 		{
 			startLevelExp = Experience.getXpForLevel(Experience.getLevelForXp(currentXp));
 		}

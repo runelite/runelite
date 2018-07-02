@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import net.runelite.api.HashTable;
+import net.runelite.api.Node;
 import net.runelite.api.Point;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.events.WidgetHiddenChanged;
@@ -42,6 +43,8 @@ import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.rs.api.RSClient;
+import net.runelite.rs.api.RSHashTable;
+import net.runelite.rs.api.RSNode;
 import net.runelite.rs.api.RSWidget;
 
 @Mixin(RSWidget.class)
@@ -110,9 +113,14 @@ public abstract class RSWidgetMixin implements RSWidget
 	@Override
 	public int getParentId()
 	{
-		int parentId = rl$parentId;
+		int rsParentId = getRSParentId();
+		if (rsParentId != -1)
+		{
+			return rsParentId;
+		}
 
-		if (parentId != -1 && getRSParentId() == -1)
+		int parentId = rl$parentId;
+		if (parentId != -1)
 		{
 			// if this happens, the widget is or was nested.
 			// rl$parentId is updated when drawing, but will not be updated when
@@ -126,11 +134,36 @@ public abstract class RSWidgetMixin implements RSWidget
 			{
 				// invalidate parent
 				rl$parentId = -1;
-				return -1;
+			}
+			else
+			{
+				return parentId;
 			}
 		}
 
-		return parentId;
+		// also the widget may not have been drawn, yet
+		int groupId = TO_GROUP(getId());
+		RSHashTable componentTable = client.getComponentTable();
+		RSNode[] buckets = componentTable.getBuckets();
+		for (RSNode node : buckets)
+		{
+			// It looks like the first node in the bucket is always
+			// a sentinel
+			Node cur = node.getNext();
+			while (cur != node)
+			{
+				WidgetNode wn = (WidgetNode) cur;
+
+				if (groupId == wn.getId())
+				{
+					return (int) wn.getHash();
+				}
+
+				cur = cur.getNext();
+			}
+		}
+
+		return -1;
 	}
 
 	@Inject

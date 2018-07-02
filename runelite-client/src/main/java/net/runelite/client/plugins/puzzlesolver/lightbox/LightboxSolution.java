@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,42 +22,47 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay.components;
+package net.runelite.client.plugins.puzzlesolver.lightbox;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import lombok.Builder;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-@Setter
-@Builder
-public class TitleComponent implements LayoutableRenderableEntity
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
+public class LightboxSolution
 {
-	private String text;
+	private int solution;
 
-	@Builder.Default
-	private Color color = Color.WHITE;
+	public void flip(Combination c)
+	{
+		solution ^= (1 << c.ordinal());
+	}
 
-	@Builder.Default
-	private Point preferredLocation = new Point();
-
-	@Builder.Default
-	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
+	public int numMoves()
+	{
+		int count = 0;
+		int cur = solution;
+		for (int i = 0; i < Combination.values().length; ++i)
+		{
+			count += cur & 1;
+			cur >>= 1;
+		}
+		return count;
+	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public String toString()
 	{
-		graphics.translate(preferredLocation.x, preferredLocation.y);
-		final FontMetrics metrics = graphics.getFontMetrics();
-		final TextComponent titleComponent = new TextComponent();
-		titleComponent.setText(text);
-		titleComponent.setColor(color);
-		titleComponent.setPosition(new Point((preferredSize.width - metrics.stringWidth(text)) / 2, metrics.getHeight()));
-		final Dimension dimension = titleComponent.render(graphics);
-		graphics.translate(-preferredLocation.x, -preferredLocation.y);
-		return new Dimension(preferredSize.width, dimension.height);
+		StringBuilder stringBuilder = new StringBuilder();
+		for (Combination combination : Combination.values())
+		{
+			if (((solution >>> combination.ordinal()) & 1) != 0)
+			{
+				stringBuilder.append(combination.name());
+			}
+		}
+		return stringBuilder.toString();
 	}
 }

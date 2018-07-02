@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,42 +22,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay.components;
+package net.runelite.client.plugins.puzzlesolver.lightbox;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import lombok.Builder;
-import lombok.Setter;
+import lombok.EqualsAndHashCode;
 
-@Setter
-@Builder
-public class TitleComponent implements LayoutableRenderableEntity
+@EqualsAndHashCode
+public class LightboxState
 {
-	private String text;
+	private final boolean[][] state = new boolean[LightBox.WIDTH][LightBox.HEIGHT];
 
-	@Builder.Default
-	private Color color = Color.WHITE;
-
-	@Builder.Default
-	private Point preferredLocation = new Point();
-
-	@Builder.Default
-	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
-
-	@Override
-	public Dimension render(Graphics2D graphics)
+	public void setState(int x, int y, boolean s)
 	{
-		graphics.translate(preferredLocation.x, preferredLocation.y);
-		final FontMetrics metrics = graphics.getFontMetrics();
-		final TextComponent titleComponent = new TextComponent();
-		titleComponent.setText(text);
-		titleComponent.setColor(color);
-		titleComponent.setPosition(new Point((preferredSize.width - metrics.stringWidth(text)) / 2, metrics.getHeight()));
-		final Dimension dimension = titleComponent.render(graphics);
-		graphics.translate(-preferredLocation.x, -preferredLocation.y);
-		return new Dimension(preferredSize.width, dimension.height);
+		state[x][y] = s;
+	}
+
+	public boolean getState(int x, int y)
+	{
+		return state[x][y];
+	}
+
+	public LightboxState diff(LightboxState other)
+	{
+		LightboxState newState = new LightboxState();
+
+		for (int i = 0; i < LightBox.WIDTH; ++i)
+		{
+			for (int j = 0; j < LightBox.HEIGHT; ++j)
+			{
+				newState.state[i][j] = state[i][j] ^ other.state[i][j];
+			}
+		}
+
+		return newState;
 	}
 }
