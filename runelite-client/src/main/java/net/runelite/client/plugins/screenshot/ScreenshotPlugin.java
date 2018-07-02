@@ -46,6 +46,7 @@ import java.text.SimpleDateFormat;
 import net.runelite.api.events.GameTick;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
@@ -57,6 +58,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Point;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
@@ -479,7 +481,17 @@ public class ScreenshotPlugin extends Plugin
 			File playerFolder;
 			if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
 			{
-				playerFolder = new File(SCREENSHOT_DIR, client.getLocalPlayer().getName());
+				final EnumSet<WorldType> worldTypes = client.getWorldType();
+				final boolean dmm = worldTypes.contains(WorldType.DEADMAN);
+				final boolean sdmm = worldTypes.contains(WorldType.SEASONAL_DEADMAN);
+				final boolean isDmmWorld = dmm || sdmm;
+
+				String playerDir = client.getLocalPlayer().getName();
+				if (isDmmWorld)
+				{
+					playerDir += "-Deadman";
+				}
+				playerFolder = new File(SCREENSHOT_DIR, playerDir);
 			}
 			else
 			{
