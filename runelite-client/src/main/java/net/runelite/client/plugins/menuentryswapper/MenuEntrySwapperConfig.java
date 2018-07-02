@@ -244,7 +244,6 @@ public interface MenuEntrySwapperConfig extends Config
 		return true;
 	}
 
-
 	@ConfigItem(
 		position = 20,
 		keyName = "decant",

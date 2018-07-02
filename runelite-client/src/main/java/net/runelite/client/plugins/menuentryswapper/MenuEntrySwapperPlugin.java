@@ -421,6 +421,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 					swap("friend's house", option, target, true);
 					break;
 			}
+			swap(config.swapHomePortal().getName(), option, target, true);
 		}
 		else if (config.swapFairyRing() != FairyRingMode.ZANARIS && (option.equals("zanaris") || option.equals("tree")))
 		{
