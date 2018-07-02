@@ -117,7 +117,7 @@ public class ScreenshotPlugin extends Plugin
 		"Can anyone defeat you? Certainly", "was no match for you", "You were clearly a better fighter than", "RIP",
 		"You have defeated", "What an embarrassing performance by", "was no match for your awesomeness");
 
-	static String format(Date date)
+	private static String format(Date date)
 	{
 		synchronized (TIME_FORMAT)
 		{
@@ -437,7 +437,7 @@ public class ScreenshotPlugin extends Plugin
 	 *
 	 * @param fileName    Filename to use, without file extension.
 	 */
-	void takeScreenshot(String fileName)
+	private void takeScreenshot(String fileName)
 	{
 		if (client.getGameState() == GameState.LOGIN_SCREEN)
 		{
