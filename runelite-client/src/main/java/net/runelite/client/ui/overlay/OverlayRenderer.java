@@ -105,15 +105,6 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 	public void render(Graphics2D graphics, final OverlayLayer layer)
 	{
-
-		// Set font rendering properties like the OS's font rendering
-		Toolkit tk = Toolkit.getDefaultToolkit();
-		Map desktopHints = (Map)(tk.getDesktopProperty("awt.font.desktophints"));
-		if (desktopHints != null)
-		{
-			graphics.addRenderingHints(desktopHints);
-		}
-
 		final List<Overlay> overlays = overlayManager.getLayer(layer);
 
 		if (overlays == null
@@ -123,6 +114,14 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 			|| client.getViewportWidget() == null)
 		{
 			return;
+		}
+
+		// Set font rendering properties like the OS's font rendering
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Map desktopHints = (Map)(tk.getDesktopProperty("awt.font.desktophints"));
+		if (desktopHints != null)
+		{
+			graphics.addRenderingHints(desktopHints);
 		}
 
 		if (shouldInvalidateBounds())
