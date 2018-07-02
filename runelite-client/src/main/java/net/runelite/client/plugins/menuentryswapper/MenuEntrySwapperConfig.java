@@ -243,4 +243,27 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+
+	@ConfigItem(
+		position = 20,
+		keyName = "decant",
+		name = "Decant",
+		description = "Decant for e.g. Bob Barter"
+	)
+	default boolean swapDecant()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 21,
+		keyName = "zahurOption",
+		name = "Zahur",
+		description = "Zahur default option"
+	)
+	default ZahurMode swapZahur()
+	{
+		return ZahurMode.MAKE_POTION;
+	}
 }

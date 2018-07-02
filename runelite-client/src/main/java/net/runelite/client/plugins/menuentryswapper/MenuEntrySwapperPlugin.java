@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2018, Viktor Horsmanheimo <Viktor.Horsmanheimo@teknik.io>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -477,6 +478,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapBirdhouseEmpty() && option.equals("interact") && target.contains("birdhouse"))
 		{
 			swap("empty", option, target, true);
+		}
+		else if (target.contains("bob barter") && config.swapDecant())
+		{
+			swap("decant", option, target, true);
+		}
+		else if (target.contains("zahur"))
+		{
+			swap(config.swapZahur().getOption().toLowerCase(), option, target, false);
 		}
 	}
 
