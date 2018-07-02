@@ -73,7 +73,6 @@ public class ImplingMinimapOverlay extends Overlay
 			if (config.showName())
 			{
 				Point textLocation = new Point(impLocation.getX() + 1, impLocation.getY());
-
 				String impName = imp.getName();
 
 				if (!config.showNameSuffix())
