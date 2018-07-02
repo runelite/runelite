@@ -28,6 +28,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import javax.inject.Inject;
+import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
@@ -67,6 +68,9 @@ public class NightmareZonePlugin extends Plugin
 	// above the threshold before sending notifications
 	private boolean absorptionNotificationSend = true;
 
+	@Getter
+	private NightmareZoneInfoModel nightmareZoneInfoModel;
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -103,8 +107,16 @@ public class NightmareZonePlugin extends Plugin
 				absorptionNotificationSend = true;
 			}
 
+			nightmareZoneInfoModel = null;
+
 			return;
 		}
+
+		if (nightmareZoneInfoModel == null)
+		{
+			nightmareZoneInfoModel = new NightmareZoneInfoModel(client, config);
+		}
+
 		if (config.absorptionNotification())
 		{
 			checkAbsorption();
