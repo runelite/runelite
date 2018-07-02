@@ -478,6 +478,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("empty", option, target, true);
 		}
+		else if (config.swapDagganothKings() && option.equals("standard") && target.contains("kings' ladder"))
+		{
+			swap("slayer", option, target, true);
+		}
+
 	}
 
 	@Subscribe
