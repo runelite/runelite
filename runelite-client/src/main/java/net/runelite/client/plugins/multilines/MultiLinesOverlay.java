@@ -42,6 +42,7 @@ public class MultiLinesOverlay extends Overlay {
 
             WorldPoint start;
             WorldPoint end;
+            int sign = 1;
 
             switch (border.getEdge()) {
                 case MultiLineBorder.NORTH:
@@ -51,6 +52,7 @@ public class MultiLinesOverlay extends Overlay {
                 case MultiLineBorder.SOUTH:
                     start = border.getSingle();
                     end = new WorldPoint(start.getX() + 1, start.getY(), start.getPlane());
+                    sign = -1;
                     break;
                 case MultiLineBorder.EAST:
                     start = border.getSingle();
@@ -59,6 +61,7 @@ public class MultiLinesOverlay extends Overlay {
                 case MultiLineBorder.WEST:
                     start = border.getMulti();
                     end = new WorldPoint(start.getX(), start.getY() - 1, start.getPlane());
+                    sign = -1;
                     break;
                 default:
                     throw new IllegalStateException("Unknown edge type.");
@@ -69,7 +72,7 @@ public class MultiLinesOverlay extends Overlay {
 
             if (localPointStart != null && localPointEnd != null) {
                 Polygon multiLine = linePoly(client, localPointStart, localPointEnd, 0, 0);
-                Polygon singleLine = linePoly(client, localPointStart, localPointEnd, 2, 2);
+                Polygon singleLine = linePoly(client, localPointStart, localPointEnd, 2 * sign, 2 * sign);
                 if (multiLine != null && singleLine != null) {
                     OverlayUtil.renderPolygon(graphics, multiLine, config.multiColor());
                     OverlayUtil.renderPolygon(graphics, singleLine, config.singleColor());
