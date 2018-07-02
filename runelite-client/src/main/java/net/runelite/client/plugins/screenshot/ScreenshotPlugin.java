@@ -401,6 +401,11 @@ public class ScreenshotPlugin extends Plugin
 			return;
 		}
 
+		if (config.enableDateInFilename())
+		{
+			fileName = TIME_FORMAT.format(new Date() + "-" + fileName);
+		}
+
 		takeScreenshot(fileName);
 	}
 

@@ -125,6 +125,28 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "kills",
+		name = "Screenshot PvP Kills",
+		description = "Configures whether or not screenshots are automatically taken of PvP kills",
+		position = 8
+	)
+	default boolean screenshotKills()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "dateInName",
+		name = "Add timestamp to filename",
+		description = "Configures whether all screenshots should include timestamps",
+		position = 9
+	)
+	default boolean enableDateInFilename()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "hotkey",
 		name = "Screenshot hotkey",
 		description = "When you press this key a screenshot will be taken",
@@ -133,16 +155,5 @@ public interface ScreenshotConfig extends Config
 	default Keybind hotkey()
 	{
 		return Keybind.NOT_SET;
-	}
-
-	@ConfigItem(
-		keyName = "kills",
-		name = "Screenshot PvP Kills",
-		description = "Configures whether or not screenshots are automatically taken of PvP kills",
-		position = 9
-	)
-	default boolean screenshotKills()
-	{
-		return false;
 	}
 }
