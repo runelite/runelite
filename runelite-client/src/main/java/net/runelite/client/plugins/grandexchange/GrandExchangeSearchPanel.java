@@ -184,6 +184,7 @@ class GrandExchangeSearchPanel extends JPanel
 		if (Strings.isNullOrEmpty(lookup))
 		{
 			searchItemsPanel.removeAll();
+			SwingUtilities.invokeLater(searchItemsPanel::updateUI);
 			return;
 		}
 
