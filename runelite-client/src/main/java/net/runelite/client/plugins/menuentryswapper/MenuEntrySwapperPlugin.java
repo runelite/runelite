@@ -482,7 +482,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("slayer", option, target, true);
 		}
-
 	}
 
 	@Subscribe
