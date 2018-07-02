@@ -117,9 +117,9 @@ public class XericsTalismanPlugin extends Plugin
 		// Listen for when the user opens the teleport menu via the 'rub' option on the talisman.
 		// The teleport options are dynamic widgets and therefore are not created yet when this is called. So instead
 		// we store the widget and check on tick to see if the children have been created.
-		if (event.getGroupId() == WidgetID.XERICS_TALISMAN_MENU_GROUP_ID)
+		if (event.getGroupId() == WidgetID.SCROLL_MENU_WIDGET_ID)
 		{
-			xericTeleportOptionsContainer = client.getWidget(WidgetInfo.XERICS_TALISMAN_TELEPORT_OPTIONS);
+			xericTeleportOptionsContainer = client.getWidget(WidgetInfo.SCROLL_MENU_WIDGET_OPTIONS_CONTAINER);
 			haveOptionedBeenPatched = false;
 		}
 	}
