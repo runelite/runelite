@@ -71,10 +71,28 @@ public class MultiLinesOverlay extends Overlay {
                 Polygon polygon = linePoly(client, localPointStart, localPointEnd);
                 if (polygon != null) {
                     OverlayUtil.renderPolygon(graphics, polygon, Color.WHITE);
+
+                    Point singlePoint = canvasPoint(client, border.getSingle());
+                    if (singlePoint != null) {
+                        OverlayUtil.renderTextLocation(graphics, singlePoint, "Single", Color.GREEN);
+                    }
+
+                    Point multiPoint = canvasPoint(client, border.getMulti());
+                    if (multiPoint != null) {
+                        OverlayUtil.renderTextLocation(graphics, multiPoint, "Multi", Color.RED);
+                    }
                 }
             }
         }
 
+        return null;
+    }
+
+    private Point canvasPoint(@Nonnull Client client, @Nonnull WorldPoint worldPoint) {
+        LocalPoint localPoint = LocalPoint.fromWorld(client, worldPoint);
+        if (localPoint != null) {
+            return Perspective.worldToCanvas(client, localPoint.getX(), localPoint.getY(), client.getPlane());
+        }
         return null;
     }
 
