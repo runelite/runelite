@@ -33,7 +33,13 @@ public class MultiLinesOverlay extends Overlay {
 
     @Override
     public Dimension render(Graphics2D graphics) {
+        WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
+
         for (MultiLineBorder border : plugin.multiLineBorders) {
+            if (playerLocation.distanceTo(border.getMulti()) > 18) {
+                continue;
+            }
+
             WorldPoint start;
             WorldPoint end;
 
