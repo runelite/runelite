@@ -68,11 +68,11 @@ public class MultiLinesOverlay extends Overlay {
             LocalPoint localPointEnd = LocalPoint.fromWorld(client, end);
 
             if (localPointStart != null && localPointEnd != null) {
-                Polygon inner = linePoly(client, localPointStart, localPointEnd, 0, 0);
-                Polygon outer = linePoly(client, localPointStart, localPointEnd, 2, 2);
-                if (outer != null) {
-                    OverlayUtil.renderPolygon(graphics, inner, Color.RED);
-                    OverlayUtil.renderPolygon(graphics, outer, Color.GREEN);
+                Polygon multiLine = linePoly(client, localPointStart, localPointEnd, 0, 0);
+                Polygon singleLine = linePoly(client, localPointStart, localPointEnd, 2, 2);
+                if (multiLine != null && singleLine != null) {
+                    OverlayUtil.renderPolygon(graphics, multiLine, config.multiColor());
+                    OverlayUtil.renderPolygon(graphics, singleLine, config.singleColor());
                 }
             }
         }
@@ -88,11 +88,11 @@ public class MultiLinesOverlay extends Overlay {
         int adjustedPointsY = adjustY * (LOCAL_TILE_SIZE / 8);
 
         Point startPoint = new Point(
-                startLocation.getX() - (1 * LOCAL_TILE_SIZE / 2) + adjustedPointsX,
-                startLocation.getY() + (1 * LOCAL_TILE_SIZE / 2) + adjustedPointsY);
+                startLocation.getX() - (LOCAL_TILE_SIZE / 2) + adjustedPointsX,
+                startLocation.getY() + (LOCAL_TILE_SIZE / 2) + adjustedPointsY);
         Point endPoint = new Point(
-                endLocation.getX() - (1 * LOCAL_TILE_SIZE / 2) + adjustedPointsX,
-                endLocation.getY() + (1 * LOCAL_TILE_SIZE / 2) + adjustedPointsY);
+                endLocation.getX() - (LOCAL_TILE_SIZE / 2) + adjustedPointsX,
+                endLocation.getY() + (LOCAL_TILE_SIZE / 2) + adjustedPointsY);
 
         int plane = client.getPlane();
 
