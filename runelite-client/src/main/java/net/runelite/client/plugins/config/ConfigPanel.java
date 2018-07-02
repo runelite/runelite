@@ -510,7 +510,7 @@ public class ConfigPanel extends PluginPanel
 				}
 				box.addItemListener(e ->
 				{
-					if (e.getStateChange() == ItemEvent.SELECTED)
+					if (e.getStateChange() == ItemEvent.SELECTED && box.getSelectedItem() != null)
 					{
 						final Font selected = FontManager.lookupFont(box.getSelectedItem().toString());
 						configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), selected);

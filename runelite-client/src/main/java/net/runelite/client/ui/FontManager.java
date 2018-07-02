@@ -25,6 +25,7 @@
 package net.runelite.client.ui;
 
 import com.google.common.collect.ImmutableBiMap;
+import java.awt.Canvas;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -66,12 +67,11 @@ public class FontManager
 
 			// Get all available fonts on the system
 			Font[] availableFonts = ge.getAllFonts();
-			//build bidirectional map
+			// build bidirectional map
 			Arrays.stream(availableFonts).sorted(Comparator.comparing(Font::getFontName)).forEach(f ->
 			{
 				if (!_fontMap.containsKey(f.getFontName()))
 				{
-					f = f.deriveFont(11f);
 					_fontMap.put(f.getFontName(), f);
 				}
 			});
@@ -89,6 +89,25 @@ public class FontManager
 		{
 			throw new RuntimeException("Font file not found.", ex);
 		}
+	}
+
+	public static Font getFontOffCorrectSize(Font f)
+	{
+		// Size of the font is already set
+		if (f.getSize2D() > 1)
+		{
+			return f;
+		}
+
+		// Dummy canvas for font metrics
+		Canvas c = new Canvas();
+
+		f = f.deriveFont(12f);
+		if (c.getFontMetrics(f).getMaxAscent() > 11)
+		{
+			f = f.deriveFont(11f);
+		}
+		return f;
 	}
 
 	public static Font getRunescapeFont()
@@ -119,5 +138,19 @@ public class FontManager
 	public static String[] getAvailableFontNames()
 	{
 		return fontMap.keySet().toArray(new String[fontMap.keySet().size()]);
+	}
+
+	public static boolean isAvailable(Font font)
+	{
+		return fontMap.containsKey(font.getFontName());
+	}
+
+	public static Font getFontOrDefault(Font font)
+	{
+		if (font == null || !fontMap.containsKey(font.getFontName()))
+		{
+			return getRunescapeFont();
+		}
+		return getFontOffCorrectSize(font);
 	}
 }

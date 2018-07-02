@@ -507,7 +507,7 @@ public class ConfigManager
 		}
 		if (type == Font.class)
 		{
-			return FontManager.lookupFont(str);
+			return FontManager.getFontOrDefault(FontManager.lookupFont(str));
 		}
 		if (type == Instant.class)
 		{
