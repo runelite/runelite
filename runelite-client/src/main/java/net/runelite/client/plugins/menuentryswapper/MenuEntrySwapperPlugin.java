@@ -331,7 +331,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
         if (option.equals("make one") && config.makeAll())
         {
-        	swap("make all", option, target,true);
+        	swap("make all", option, target, true);
         }
 
 		if (option.equals("talk-to"))
