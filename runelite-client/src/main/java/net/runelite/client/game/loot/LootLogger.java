@@ -26,6 +26,7 @@
 package net.runelite.client.game.loot;
 
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimap;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -72,7 +73,6 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.loot.data.ItemStack;
 import net.runelite.client.game.loot.data.MemorizedActor;
 import net.runelite.client.game.loot.data.MemorizedNpc;
 import net.runelite.client.game.loot.data.MemorizedNpcAndLocation;
@@ -87,23 +87,18 @@ import net.runelite.client.game.loot.events.PlayerLootReceived;
 @Singleton
 public class LootLogger
 {
-	private static final int INVENTORY_SPACE = 28;
-
-	private static final Map<Integer, Integer> NPC_DEATH_ANIMATIONS;
-
-	static
-	{
-		// Some NPCs decide where to drop the loot at the same time they
-		// start performing their death animation, so their death animation
-		// has to be known.
-		// This list may be incomplete, I didn't test every NPC in the game.
-		NPC_DEATH_ANIMATIONS = new HashMap<>();
-		NPC_DEATH_ANIMATIONS.put(NpcID.CAVE_KRAKEN, AnimationID.CAVE_KRAKEN_DEATH);
-		NPC_DEATH_ANIMATIONS.put(NpcID.AIR_WIZARD, AnimationID.WIZARD_DEATH);
-		NPC_DEATH_ANIMATIONS.put(NpcID.WATER_WIZARD, AnimationID.WIZARD_DEATH);
-		NPC_DEATH_ANIMATIONS.put(NpcID.EARTH_WIZARD, AnimationID.WIZARD_DEATH);
-		NPC_DEATH_ANIMATIONS.put(NpcID.FIRE_WIZARD, AnimationID.WIZARD_DEATH);
-	}
+	/**
+	 * Some NPCs decide where to drop the loot at the same time they start performing
+	 * their death animation, so their death animation has to be known.
+	 * This list may be incomplete, I didn't test every NPC in the game.
+	 */
+	private static final Map<Integer, Integer> NPC_DEATH_ANIMATIONS = ImmutableMap.of(
+		NpcID.CAVE_KRAKEN, AnimationID.CAVE_KRAKEN_DEATH,
+		NpcID.AIR_WIZARD, AnimationID.WIZARD_DEATH,
+		NpcID.WATER_WIZARD, AnimationID.WIZARD_DEATH,
+		NpcID.EARTH_WIZARD, AnimationID.WIZARD_DEATH,
+		NpcID.FIRE_WIZARD, AnimationID.WIZARD_DEATH
+	);
 
 	@Inject
 	private Client client;
@@ -117,21 +112,21 @@ public class LootLogger
 	private final Map<Actor, MemorizedActor> interactedActors = new HashMap<>();
 	private final List<MemorizedActor> deadActorsThisTick = new ArrayList<>();
 
-	private final Map<WorldPoint, List<ItemStack>> groundItemsLastTick = new HashMap<>();
+	private final Map<WorldPoint, List<Item>> groundItemsLastTick = new HashMap<>();
 	private final Set<Tile> changedItemLayerTiles = new HashSet<>();
 
 	private WorldPoint playerLocationLastTick;
 	private WorldPoint cannonLocation;
 
-	private List<ItemStack> prevTickInventoryItems;
+	private List<Item> prevTickInventoryItems;
 	/**
 	 * An array containing the items in the inventory during the current tick,
 	 * or null if they are the same as in the previous tick.
 	 */
-	private List<ItemStack> thisTickInventoryItems;
-	private List<ItemStack> thisTickRewardItems;
-	private List<ItemStack> chambersOfXericItems;
-	private List<ItemStack> theatreOfBloodItems;
+	private List<Item> thisTickInventoryItems;
+	private List<Item> thisTickRewardItems;
+	private List<Item> chambersOfXericItems;
+	private List<Item> theatreOfBloodItems;
 
 	private boolean openedClueScrollThisTick = false;
 	private boolean openedBarrowsChestThisTick = false;
@@ -158,7 +153,7 @@ public class LootLogger
 	 * @param location WorldPoint the NPC died at
 	 * @param drops	A Integer, Integer map of ItemIDs and Quantities
 	 */
-	private void onNewNpcLogCreated(int npc, NPCComposition comp, WorldPoint location, List<ItemStack> drops)
+	private void onNewNpcLogCreated(int npc, NPCComposition comp, WorldPoint location, List<Item> drops)
 	{
 		eventBus.post(new NpcLootReceived(npc, comp, location, drops));
 	}
@@ -170,7 +165,7 @@ public class LootLogger
 	 * @param location WorldPoint the Player died at
 	 * @param drops	A Integer, Integer map of ItemIDs and Quantities
 	 */
-	private void onNewPlayerLogCreated(Player player, WorldPoint location, List<ItemStack> drops)
+	private void onNewPlayerLogCreated(Player player, WorldPoint location, List<Item> drops)
 	{
 		eventBus.post(new PlayerLootReceived(player, location, drops));
 	}
@@ -183,7 +178,7 @@ public class LootLogger
 	 * @param event LootEventType event name
 	 * @param drops	A Integer, Integer map of ItemIDs and Quantities
 	 */
-	private void onNewEventLogCreated(LootEventType event, List<ItemStack> drops)
+	private void onNewEventLogCreated(LootEventType event, List<Item> drops)
 	{
 		eventBus.post(new EventLootReceived(event, drops));
 	}
@@ -223,31 +218,6 @@ public class LootLogger
 		}
 	}
 
-	/**
-	 * Converts a List of Items into a List of ItemStacks
-	 *
-	 * @param items A list of Item's
-	 * @return A list of ItemStack's
-	 */
-	private List<ItemStack> itemsToItemStack(List<Item> items)
-	{
-		if (items == null)
-			return null;
-		List<ItemStack> itemStacks = new ArrayList<>();
-		for (Item i : items)
-		{
-			itemStacks.add(new ItemStack(i.getId(), i.getQuantity()));
-		}
-		return itemStacks;
-	}
-	// Support for Array format
-	private List<ItemStack> itemsToItemStack(Item[] items)
-	{
-		if (items == null)
-			return null;
-		return itemsToItemStack(Arrays.asList(items));
-	}
-
 	/*
 	 * Functions that help with Item management
 	 */
@@ -277,8 +247,8 @@ public class LootLogger
 
 		// The tile might previously have contained items that weren't dropped
 		// by the actor, so we need to check what new items appeared
-		List<ItemStack> prevItems = groundItemsLastTick.get(location);
-		List<ItemStack> currItems = itemsToItemStack(tile.getGroundItems());
+		List<Item> prevItems = groundItemsLastTick.get(location);
+		List<Item> currItems = tile.getGroundItems();
 
 		// Get item changes for this ground tile
 		Map<Integer, Integer> groundItemDiff = getItemDifferences(prevItems, currItems);
@@ -300,7 +270,7 @@ public class LootLogger
 				if (entry.getValue() > 0)
 				{
 					// If item existed on ground before that means we picked it up.
-					if (ItemStack.containsItemId(prevItems, entry.getKey()))
+					if (containsItemId(prevItems, entry.getKey()))
 					{
 						// Add item to difference map
 						groundItemDiff.put(entry.getKey(), count + entry.getValue());
@@ -310,7 +280,7 @@ public class LootLogger
 				else if (entry.getValue() < 0)
 				{
 					// Does this item now exist on the ground?
-					if (ItemStack.containsItemId(currItems, entry.getKey()))
+					if (containsItemId(currItems, entry.getKey()))
 					{
 						// Remove item from ground (adds a negative number)
 						groundItemDiff.put(entry.getKey(), count + entry.getValue());
@@ -335,18 +305,36 @@ public class LootLogger
 	}
 
 	/**
+	 * Does this List contain this item ID?
+	 * @param list Items of Items to search through
+	 * @param id Item ID to check for
+	 * @return Found status
+	 */
+	private static boolean containsItemId(List<Item> list, int id)
+	{
+		for (Item s : list)
+		{
+			if (s.getId() == id)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Returns the difference between two lists of Item's
 	 *
 	 * @param prevItems Items from previous Tick
 	 * @param currItems Items from this Tick
 	 * @return Item id and quantity Map (Integer,Integer) for new items (currItems removing all of prevItems)
 	 */
-	private Map<Integer, Integer> getItemDifferences(Iterable<ItemStack> prevItems, Iterable<ItemStack> currItems)
+	private Map<Integer, Integer> getItemDifferences(Iterable<Item> prevItems, Iterable<Item> currItems)
 	{
 		Map<Integer, Integer> diff = new HashMap<>();
 		if (prevItems != null)
 		{
-			for (ItemStack item : prevItems)
+			for (Item item : prevItems)
 			{
 				int count = diff.getOrDefault(item.getId(), 0);
 				diff.put(item.getId(), count - item.getQuantity());
@@ -354,7 +342,7 @@ public class LootLogger
 		}
 		if (currItems != null)
 		{
-			for (ItemStack item : currItems)
+			for (Item item : currItems)
 			{
 				int count = diff.getOrDefault(item.getId(), 0);
 				diff.put(item.getId(), count + item.getQuantity());
@@ -530,8 +518,8 @@ public class LootLogger
 
 		// Calculate which items were dropped and which were picked up
 		WorldPoint wp = tile.getWorldLocation();
-		List<ItemStack> prevItems = this.groundItemsLastTick.get(wp);
-		List<ItemStack> currItems = itemsToItemStack(tile.getGroundItems());
+		List<Item> prevItems = this.groundItemsLastTick.get(wp);
+		List<Item> currItems = tile.getGroundItems();
 
 		Map<Integer, Integer> groundItemDiff = getItemDifferences(prevItems, currItems);
 		Map<Integer, Integer> inventoryItemDiff = getItemDifferences(this.prevTickInventoryItems, this.thisTickInventoryItems);
@@ -748,7 +736,7 @@ public class LootLogger
 
 			// Stores new items for each new world point. Some NPCs can drop loot on multiple tiles.
 			WorldPoint[] locations = getExpectedDropLocations(pad);
-			Multimap<WorldPoint, ItemStack> worldDrops = ArrayListMultimap.create();
+			Multimap<WorldPoint, Item> worldDrops = ArrayListMultimap.create();
 			for (WorldPoint location : locations)
 			{
 				Map<Integer, Integer> drops = getItemDifferencesAt(location);
@@ -758,7 +746,7 @@ public class LootLogger
 				}
 
 				worldDrops.putAll(location, drops.entrySet().stream().map(x ->
-						new ItemStack(x.getKey(), x.getValue())).collect(Collectors.toList()));
+						client.createItem(x.getKey(), x.getValue())).collect(Collectors.toList()));
 			}
 
 			// No new drops?
@@ -768,7 +756,7 @@ public class LootLogger
 			}
 
 			Map<Integer, Integer> drops = new HashMap<>();
-			for (Map.Entry<WorldPoint, ItemStack> entry : worldDrops.entries())
+			for (Map.Entry<WorldPoint, Item> entry : worldDrops.entries())
 			{
 				// The way we handle multiple kills on the same WorldPoint in the same tick
 				// is by splitting up all the drops equally, i.e. if 2 kills happened at the
@@ -784,8 +772,10 @@ public class LootLogger
 				drops.put(entry.getValue().getId(), nextCount + count);
 			}
 
-			List<ItemStack> dropList = drops.entrySet().stream().map(x -> new ItemStack(x.getKey(), x.getValue())).collect(Collectors.toList());
-			// Actor type, Calls the wrapper for trigger the proper LootReceived event
+			// Convert Map to List of Items
+			List<Item> dropList = drops.entrySet().stream().map(x -> client.createItem(x.getKey(), x.getValue())).collect(Collectors.toList());
+
+			// Actor type, Calls the wrapper for triggering the proper LootReceived event
 			if (pad instanceof MemorizedNpc)
 			{
 				NPCComposition c = ((MemorizedNpc) pad).getNpcComposition();
@@ -817,7 +807,7 @@ public class LootLogger
 		for (Tile tile : this.changedItemLayerTiles)
 		{
 			WorldPoint wp = tile.getWorldLocation();
-			List<ItemStack> groundItems = itemsToItemStack(tile.getGroundItems());
+			List<Item> groundItems = tile.getGroundItems();
 			if (groundItems == null)
 			{
 				groundItemsLastTick.remove(wp);
@@ -1036,21 +1026,38 @@ public class LootLogger
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
+		Item[] items = event.getItemContainer().getItems();
 		if (event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
 		{
-			this.thisTickInventoryItems = itemsToItemStack(event.getItemContainer().getItems());
+			this.thisTickInventoryItems = null;
+			if (items != null)
+			{
+				this.thisTickInventoryItems = Arrays.asList(items);
+			}
 		}
 		else if (event.getItemContainer() == client.getItemContainer(InventoryID.BARROWS_REWARD))
 		{
-			this.thisTickRewardItems = itemsToItemStack(event.getItemContainer().getItems());
+			this.thisTickRewardItems = null;
+			if (items != null)
+			{
+				this.thisTickRewardItems = Arrays.asList(items);
+			}
 		}
 		else if (event.getItemContainer() == client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST))
 		{
-			this.chambersOfXericItems = itemsToItemStack(event.getItemContainer().getItems());
+			this.chambersOfXericItems = null;
+			if (items != null)
+			{
+				this.chambersOfXericItems = Arrays.asList(items);
+			}
 		}
 		else if (event.getItemContainer() == client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST))
 		{
-			this.theatreOfBloodItems = itemsToItemStack(event.getItemContainer().getItems());
+			this.theatreOfBloodItems = null;
+			if (items != null)
+			{
+				this.theatreOfBloodItems = Arrays.asList(items);
+			}
 		}
 	}
 
