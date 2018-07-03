@@ -103,6 +103,7 @@ public class WidgetID
 	public static final int MTA_TELEKINETIC_GROUP_ID = 198;
 	public static final int CORP_DAMAGE = 13;
 	public static final int DESTROY_ITEM_GROUP_ID = 584;
+	public static final int VARROCK_MUSEUM_QUIZ_GROUP_ID = 533;
 
 	static class WorldMap
 	{
@@ -541,5 +542,13 @@ public class WidgetID
 		static final int DESTROY_ITEM_NAME = 6;
 		static final int DESTROY_ITEM_YES = 1;
 		static final int DESTROY_ITEM_NO = 3;
+	}
+
+	static class VarrockMuseum
+	{
+		static final int VARROCK_MUSEUM_QUESTION = 28;
+		static final int VARROCK_MUSEUM_FIRST_ANSWER = 29;
+		static final int VARROCK_MUSEUM_SECOND_ANSWER = 30;
+		static final int VARROCK_MUSEUM_THIRD_ANSWER = 31;
 	}
 }

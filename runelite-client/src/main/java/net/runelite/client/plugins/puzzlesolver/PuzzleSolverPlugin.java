@@ -33,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -93,6 +94,34 @@ public class PuzzleSolverPlugin extends Plugin
 	PuzzleSolverConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(PuzzleSolverConfig.class);
+	}
+
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded widget)
+	{
+		if (widget.getGroupId() != WidgetID.VARROCK_MUSEUM_QUIZ_GROUP_ID)
+		{
+			return;
+		}
+
+		final Widget questionWidget = client.getWidget(WidgetInfo.VARROCK_MUSEUM_QUESTION);
+
+		if (questionWidget == null)
+		{
+			return;
+		}
+
+		final Widget answerWidget = VarrockMuseumAnswer.findCorrect(
+			client,
+			questionWidget.getText(),
+			WidgetInfo.VARROCK_MUSEUM_FIRST_ANSWER,
+			WidgetInfo.VARROCK_MUSEUM_SECOND_ANSWER,
+			WidgetInfo.VARROCK_MUSEUM_THIRD_ANSWER);
+
+		if (answerWidget != null && !answerWidget.getText().contains("<col="))
+		{
+			answerWidget.setText("<col=00FF80>" + answerWidget.getText() + "</col>");
+		}
 	}
 
 	@Subscribe
