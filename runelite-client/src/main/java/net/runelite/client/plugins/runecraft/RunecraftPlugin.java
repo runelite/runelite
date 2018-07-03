@@ -67,7 +67,8 @@ import net.runelite.client.util.QueryRunner;
 public class RunecraftPlugin extends Plugin
 {
 	private static Pattern bindNeckString = Pattern.compile("You have ([0-9]+) charges left before your Binding necklace disintegrates.");
-	private static final String POUCH_DECAYED_MESSAGE = "Your rune pouch has decayed.";
+	private static final String POUCH_DECAYED_NOTIFICATION_MESSAGE = "Your rune pouch has decayed.";
+	private static final String POUCH_DECAYED_MESSAGE = "Your pouch has decayed through use.";
 	private static final int DESTROY_ITEM_WIDGET_ID = WidgetInfo.DESTROY_ITEM_YES.getId();
 
 	@Getter(AccessLevel.PACKAGE)
@@ -170,16 +171,16 @@ public class RunecraftPlugin extends Plugin
 			{
 				//set it to 17 because this message is triggered first before the above chat event
 				bindNeckOverlay.bindingCharges = 17;
+				return;
 			}
-			return;
 		}
 		if (config.degradingNotification())
 		{
-			if (event.getMessage().contains("Your pouch has decayed through use."))
+			if (event.getMessage().contains(POUCH_DECAYED_MESSAGE))
 			{
-				notifier.notify(POUCH_DECAYED_MESSAGE);
+				notifier.notify(POUCH_DECAYED_NOTIFICATION_MESSAGE);
+				return;
 			}
-			return;
 		}
 	}
 
