@@ -243,4 +243,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 19,
+		keyName = "swapMakeAll",
+		name = "Make All",
+		description ="Swaps all make one entries with make all entries"
+	)
+	default boolean makeAll()
+	{
+		return false;
+	}
 }
