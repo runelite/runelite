@@ -22,19 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.defaultworld;
+package net.runelite.client.plugins.world;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.SessionOpen;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -42,24 +49,32 @@ import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldClient;
 import net.runelite.http.api.worlds.WorldResult;
 
-@PluginDescriptor(name = "Default World")
+@PluginDescriptor(name = "World")
 @Slf4j
-public class DefaultWorldPlugin extends Plugin
+public class WorldPlugin extends Plugin
 {
+	private static final int previousWorldLimit = 3;
+	private static final String WORLD_TEXT = "You've previously logged in to the following worlds: ";
+
 	@Inject
 	private Client client;
 
 	@Inject
-	private DefaultWorldConfig config;
+	private WorldConfig config;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
 
 	private final WorldClient worldClient = new WorldClient();
 	private int worldCache;
 	private boolean worldChangeRequired;
+	private boolean sentPreviousWorlds = false;
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		worldChangeRequired = true;
+		sentPreviousWorlds = false;
 		applyWorld();
 	}
 
@@ -67,13 +82,15 @@ public class DefaultWorldPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		worldChangeRequired = true;
+		sentPreviousWorlds = false;
+		saveWorld();
 		changeWorld(worldCache);
 	}
 
 	@Provides
-	DefaultWorldConfig getConfig(ConfigManager configManager)
+	WorldConfig getConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(DefaultWorldConfig.class);
+		return configManager.getConfig(WorldConfig.class);
 	}
 
 	@Subscribe
@@ -86,6 +103,20 @@ public class DefaultWorldPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChange(GameStateChanged event)
 	{
+		switch (event.getGameState())
+		{
+			case LOGGED_IN:
+				if (!sentPreviousWorlds)
+				{
+					sendWorldMessage();
+					sentPreviousWorlds = true;
+				}
+				break;
+			case HOPPING:
+			case CONNECTION_LOST:
+				saveWorld();
+		}
+		
 		applyWorld();
 	}
 
@@ -120,6 +151,7 @@ public class DefaultWorldPlugin extends Plugin
 				rsWorld.setPlayerCount(world.getPlayers());
 				rsWorld.setLocation(world.getLocation());
 				rsWorld.setTypes(toWorldTypes(world.getTypes()));
+
 
 				client.changeWorld(rsWorld);
 				log.debug("Applied new world {}", correctedWorld);
@@ -157,5 +189,101 @@ public class DefaultWorldPlugin extends Plugin
 
 		final int newWorld = config.getWorld();
 		changeWorld(newWorld);
+	}
+
+	/**
+	 * Saves the given world to the configuration as a previous world.
+	 */
+	private void saveWorld()
+	{
+		//Do not save worlds if the user doesn't want it.
+		if (!config.displayLastWorlds())
+		{
+			return;
+		}
+
+		final String latestWorld = String.valueOf(client.getWorld());
+		final ArrayList<String> worlds = getWorlds();
+
+		String lastSavedWorld = "";
+		if (worlds.size() > 0)
+		{
+			lastSavedWorld = worlds.get(0);
+		}
+
+		// Only save the latest worlds as actual 'latest'
+		if (!latestWorld.equals(lastSavedWorld))
+		{
+			worlds.add(0, String.valueOf(latestWorld));
+
+			if (worlds.size() > previousWorldLimit)
+			{
+				worlds.subList(previousWorldLimit, worlds.size()).clear();
+			}
+
+			config.pastWorldList(String.join(",", worlds));
+		}
+	}
+
+	/**
+	 * Sends a new message containing the WORLD_TEXT property to the chatbox.
+	 */
+	private void sendWorldMessage()
+	{
+		if (getWorlds().size() ==  0)
+		{
+			return;
+		}
+
+		final String worldMessage = formatPreviousWorldMessage();
+		final QueuedMessage queuedMessage = QueuedMessage.builder()
+			.type(ChatMessageType.GAME)
+			.runeLiteFormattedMessage(worldMessage)
+			.build();
+
+		chatMessageManager.queue(queuedMessage);
+	}
+
+	/**
+	 * Formats the previous world message.
+	 * @return returns a String set up by the ChatMessageBuilder.
+	 */
+	private String formatPreviousWorldMessage()
+	{
+		final ChatMessageBuilder builder = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
+			.append(WORLD_TEXT);
+
+		final ArrayList<String> worlds = getWorlds();
+		for (int i = 0; i < worlds.size(); i++)
+		{
+			final String world = worlds.get(i);
+
+			if (i > 0)
+			{
+				builder.append(ChatColorType.NORMAL)
+				.append(", ");
+			}
+
+			builder
+				.append(ChatColorType.HIGHLIGHT)
+				.append(world);
+		}
+
+		return builder.build();
+	}
+
+	/**
+	 * Retrieves and converts the worlds from the configuration.
+	 * @return returns an ArrayList of worlds (as strings).
+	 */
+	private ArrayList<String> getWorlds()
+	{
+		if (config == null)
+		{
+			return new ArrayList<>();
+		}
+
+		return new ArrayList<>(Arrays.asList(config.pastWorldList().split(",")));
 	}
 }
