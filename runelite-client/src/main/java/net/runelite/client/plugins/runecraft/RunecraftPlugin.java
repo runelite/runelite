@@ -138,7 +138,12 @@ public class RunecraftPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SERVER && config.showBindNeck())
+		if (event.getType() != ChatMessageType.SERVER)
+		{
+			return;
+		}
+
+		if (config.showBindNeck())
 		{
 			Matcher match = bindNeckString.matcher(event.getMessage());
 			if (match.find())
@@ -166,6 +171,7 @@ public class RunecraftPlugin extends Plugin
 				//set it to 17 because this message is triggered first before the above chat event
 				bindNeckOverlay.bindingCharges = 17;
 			}
+			return;
 		}
 		if (config.degradingNotification())
 		{
@@ -173,6 +179,7 @@ public class RunecraftPlugin extends Plugin
 			{
 				notifier.notify(POUCH_DECAYED_MESSAGE);
 			}
+			return;
 		}
 	}
 
