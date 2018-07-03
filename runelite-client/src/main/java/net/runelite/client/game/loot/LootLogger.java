@@ -49,6 +49,7 @@ import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
@@ -124,15 +125,9 @@ public class LootLogger
 	 * or null if they are the same as in the previous tick.
 	 */
 	private List<Item> thisTickInventoryItems;
-	private List<Item> thisTickRewardItems;
-	private List<Item> chambersOfXericItems;
-	private List<Item> theatreOfBloodItems;
 
-	private boolean openedClueScrollThisTick = false;
-	private boolean openedBarrowsChestThisTick = false;
-	private boolean completedChambersOfXericThisTick = false;
+	private boolean insideChambersOfXeric = false;
 	private boolean hasOpenedRaidsRewardChest = false;
-	private boolean completedTheatreOfBloodThisTick = false;
 	private boolean hasOpenedTheatreOfBloodRewardChest = false;
 
 	@Inject
@@ -249,12 +244,11 @@ public class LootLogger
 		List<Item> prevItems = groundItemsLastTick.get(location);
 		List<Item> currItems = tile.getGroundItems();
 
-		// Get item changes for this ground tile
+		// Get item changes for this ground tile between last tick and this tick
 		Map<Integer, Integer> groundItemDiff = getItemDifferences(prevItems, currItems);
 
-		// If the player was standing on the location, we don't want to log
-		// any drops that the player may have dropped themselves
-		// This will adjust groundItemDiff to ignore any changes the player made to the ground items
+		// Adjusts groundItemDiff to ignore any changes made by the player in current groundItems
+		// Must be standing on loot tile and have dropped/picked up an item to do anything
 		if (this.thisTickInventoryItems != null && location.distanceTo(playerLocationLastTick) == 0)
 		{
 			// Grab inventory item differences. (Positive=New Item, Negative=Removed Item)
@@ -419,74 +413,11 @@ public class LootLogger
 	}
 
 	/**
-	 * Check if the local player opened any Event/Activity reward chests
-	 */
-	private void checkOpenedRewards()
-	{
-		// Check if barrows or clue scroll reward just appeared on the screen
-		if (thisTickRewardItems != null)
-		{
-			if (openedBarrowsChestThisTick)
-			{
-				onNewEventLogCreated(LootEventType.BARROWS, thisTickRewardItems);
-			}
-			else if (openedClueScrollThisTick)
-			{
-				Map<Integer, Integer> itemDiff = getItemDifferences(prevTickInventoryItems, thisTickInventoryItems);
-				LootEventType clueScrollType = LootEventType.UNKNOWN_EVENT;
-				for (Map.Entry<Integer, Integer> entry : itemDiff.entrySet())
-				{
-					if (entry.getValue() >= 0)
-					{
-						continue;
-					}
-					switch (entry.getKey())
-					{
-						case ItemID.REWARD_CASKET_EASY:
-							clueScrollType = LootEventType.CLUE_SCROLL_EASY;
-							break;
-						case ItemID.REWARD_CASKET_MEDIUM:
-							clueScrollType = LootEventType.CLUE_SCROLL_MEDIUM;
-							break;
-						case ItemID.REWARD_CASKET_HARD:
-							clueScrollType = LootEventType.CLUE_SCROLL_HARD;
-							break;
-						case ItemID.REWARD_CASKET_ELITE:
-							clueScrollType = LootEventType.CLUE_SCROLL_ELITE;
-							break;
-						case ItemID.REWARD_CASKET_MASTER:
-							clueScrollType = LootEventType.CLUE_SCROLL_MASTER;
-							break;
-						default:
-							continue;
-					}
-					break;
-				}
-				onNewEventLogCreated(clueScrollType, thisTickRewardItems);
-			}
-		}
-		if (completedChambersOfXericThisTick)
-		{
-			onNewEventLogCreated(LootEventType.RAIDS, chambersOfXericItems);
-
-			completedChambersOfXericThisTick = false;
-		}
-
-		if (completedTheatreOfBloodThisTick)
-		{
-			onNewEventLogCreated(LootEventType.THEATRE_OF_BLOOD, theatreOfBloodItems);
-
-			completedTheatreOfBloodThisTick = false;
-		}
-	}
-
-	/**
 	 * Check if the local player picked up/dropped any items
 	 */
 	private void checkInventoryItemsChanged()
 	{
-		if (this.thisTickInventoryItems == null ||
-				this.prevTickInventoryItems == null)
+		if (this.thisTickInventoryItems == null || this.prevTickInventoryItems == null)
 		{
 			// Nothing in inventory changed
 			return;
@@ -709,7 +640,7 @@ public class LootLogger
 			// Pvp kills can happen in Chambers of Xeric when someone
 			// dies and their raid potions drop, but we don't want to
 			// log those.
-			if (pad instanceof MemorizedPlayer && client.getVar(Varbits.IN_RAID) == 1)
+			if (pad instanceof MemorizedPlayer && insideChambersOfXeric)
 			{
 				continue;
 			}
@@ -738,16 +669,13 @@ public class LootLogger
 
 			List<Item> dropList;
 
-			int index = 1;
-			int killsAtWP = 1;
-
 			// If multiple interacted NPCs died on the same tick we need to calculate
 			// how many npcs died on the same tile to evenly split the loot
 			if (deadActorsThisTick.size() > 1)
 			{
 				boolean foundIndex = false;
-				index = 0;
-				killsAtWP = 0;
+				int index = 0;
+				int killsAtWP = 0;
 				// Support for multiple NPCs dying on the same tick at the same time
 				for (MemorizedActor pad2 : deadActorsThisTick)
 				{
@@ -856,11 +784,6 @@ public class LootLogger
 			this.prevTickInventoryItems = this.thisTickInventoryItems;
 			this.thisTickInventoryItems = null;
 		}
-		this.thisTickRewardItems = null;
-		this.openedClueScrollThisTick = false;
-		this.openedBarrowsChestThisTick = false;
-		this.completedChambersOfXericThisTick = false;
-		this.completedTheatreOfBloodThisTick = false;
 	}
 
 	/*
@@ -878,26 +801,23 @@ public class LootLogger
 			groundItemsLastTick.clear();
 		}
 	}
+
 	/**
 	 * Location Checks
 	 */
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (this.chambersOfXericItems != null && client.getVar(Varbits.IN_RAID) == 0)
+		insideChambersOfXeric = !(client.getVar(Varbits.IN_RAID) == 0);
+		if (!insideChambersOfXeric)
 		{
 			this.hasOpenedRaidsRewardChest = false;
-			this.chambersOfXericItems = null;
 		}
 
-		if (this.theatreOfBloodItems != null)
+		int theatreState = client.getVar(Varbits.THEATRE_OF_BLOOD);
+		if (theatreState == 0 || theatreState == 1)
 		{
-			int state = client.getVar(Varbits.THEATRE_OF_BLOOD);
-			if (state == 0 || state == 1) // 0 = Default, 1 = In Party, 2 = Inside, 3 = Dead?
-			{
-				this.hasOpenedTheatreOfBloodRewardChest = false;
-				this.theatreOfBloodItems = null;
-			}
+			this.hasOpenedTheatreOfBloodRewardChest = false;
 		}
 	}
 
@@ -926,7 +846,9 @@ public class LootLogger
 	public void onProjectileMoved(ProjectileMoved event)
 	{
 		if (cannonLocation == null)
+		{
 			return;
+		}
 
 		Projectile projectile = event.getProjectile();
 
@@ -948,29 +870,103 @@ public class LootLogger
 	}
 
 	/**
-	 * Event/Activity reward flag management
+	 * Event/Activity loot received management
 	 */
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
+		// Barrows
 		if (event.getGroupId() == WidgetID.BARROWS_REWARD_GROUP_ID)
 		{
-			openedBarrowsChestThisTick = true;
+			ItemContainer container = client.getItemContainer(InventoryID.BARROWS_REWARD);
+			if (container != null)
+			{
+				List<Item> items = Arrays.asList(container.getItems());
+				onNewEventLogCreated(LootEventType.BARROWS, items);
+			}
+			else
+			{
+				log.debug("Error finding Barrows Item Container");
+			}
 		}
-		else if (event.getGroupId() == WidgetID.CLUE_SCROLL_REWARD_GROUP_ID)
+		// Chambers of Xeric / Raids 1
+		else if (event.getGroupId() == WidgetID.RAIDS_REWARD_GROUP_ID && !hasOpenedRaidsRewardChest)
 		{
-			openedClueScrollThisTick = true;
-		}
-		else if (event.getGroupId() == WidgetID.RAIDS_REWARD_GROUP_ID &&
-				!hasOpenedRaidsRewardChest)
-		{
-			completedChambersOfXericThisTick = true;
 			hasOpenedRaidsRewardChest = true;
+
+			ItemContainer container = client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST);
+			if (container != null)
+			{
+				List<Item> items = Arrays.asList(container.getItems());
+				onNewEventLogCreated(LootEventType.RAIDS, items);
+			}
+			else
+			{
+				log.debug("Error finding Chamber of Xeric Item Container");
+			}
 		}
+		// Theatre of Blood / Raids 2
 		else if (event.getGroupId() == WidgetID.THEATRE_OF_BLOOD_GROUP_ID && !hasOpenedTheatreOfBloodRewardChest)
 		{
-			completedTheatreOfBloodThisTick = true;
 			hasOpenedTheatreOfBloodRewardChest = true;
+
+			ItemContainer container = client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST);
+			if (container != null)
+			{
+				List<Item> items = Arrays.asList(container.getItems());
+				onNewEventLogCreated(LootEventType.RAIDS, items);
+			}
+			else
+			{
+				log.debug("Error finding Theatre of Blood Item Container");
+			}
+		}
+		// Clue Scrolls
+		else if (event.getGroupId() == WidgetID.CLUE_SCROLL_REWARD_GROUP_ID)
+		{
+			// Not 100% sure this will work, needs testing. May need to convert to chat message.
+			Map<Integer, Integer> itemDiff = getItemDifferences(prevTickInventoryItems, thisTickInventoryItems);
+			LootEventType clueScrollType = LootEventType.UNKNOWN_EVENT;
+			for (Map.Entry<Integer, Integer> entry : itemDiff.entrySet())
+			{
+				if (entry.getValue() >= 0)
+				{
+					continue;
+				}
+				switch (entry.getKey())
+				{
+					case ItemID.REWARD_CASKET_EASY:
+						clueScrollType = LootEventType.CLUE_SCROLL_EASY;
+						break;
+					case ItemID.REWARD_CASKET_MEDIUM:
+						clueScrollType = LootEventType.CLUE_SCROLL_MEDIUM;
+						break;
+					case ItemID.REWARD_CASKET_HARD:
+						clueScrollType = LootEventType.CLUE_SCROLL_HARD;
+						break;
+					case ItemID.REWARD_CASKET_ELITE:
+						clueScrollType = LootEventType.CLUE_SCROLL_ELITE;
+						break;
+					case ItemID.REWARD_CASKET_MASTER:
+						clueScrollType = LootEventType.CLUE_SCROLL_MASTER;
+						break;
+					default:
+						continue;
+				}
+				break;
+			}
+
+			// Clue Scrolls use same InventoryID as Barrows
+			ItemContainer container = client.getItemContainer(InventoryID.BARROWS_REWARD);
+			if (container != null)
+			{
+				List<Item> items = Arrays.asList(container.getItems());
+				onNewEventLogCreated(clueScrollType, items);
+			}
+			else
+			{
+				log.debug("Error finding clue scroll Item Container");
+			}
 		}
 	}
 
@@ -1047,7 +1043,7 @@ public class LootLogger
 	}
 
 	/**
-	 * Event/Activity reward items support
+	 * Inventory Management Support
 	 */
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
@@ -1061,30 +1057,6 @@ public class LootLogger
 				this.thisTickInventoryItems = Arrays.asList(items);
 			}
 		}
-		else if (event.getItemContainer() == client.getItemContainer(InventoryID.BARROWS_REWARD))
-		{
-			this.thisTickRewardItems = null;
-			if (items != null)
-			{
-				this.thisTickRewardItems = Arrays.asList(items);
-			}
-		}
-		else if (event.getItemContainer() == client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST))
-		{
-			this.chambersOfXericItems = null;
-			if (items != null)
-			{
-				this.chambersOfXericItems = Arrays.asList(items);
-			}
-		}
-		else if (event.getItemContainer() == client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST))
-		{
-			this.theatreOfBloodItems = null;
-			if (items != null)
-			{
-				this.theatreOfBloodItems = Arrays.asList(items);
-			}
-		}
 	}
 
 	/**
@@ -1092,9 +1064,8 @@ public class LootLogger
 	 *
 	 * <p><strong>We must do the following to correctly determine dropped NPC loot</strong></p>
 	 * <p>1) Memorize which actors we have interacted with</p>
-	 * <p>2) Check for Event/Activity rewards being opened</p>
-	 * <p>3) Check for any item changes (Disappearing from floor, Added/Removed from inventory)</p>
-	 * <p>4) Loop over all dead actor and determine what loot they dropped</p>
+	 * <p>2) Check for any item changes (Disappearing from floor, Added/Removed from inventory)</p>
+	 * <p>3) Loop over all dead actor and determine what loot they dropped</p>
 	 * <p><strong>Now that we are done determining loot we need to prepare for the next tick.</strong></p>
 	 * <p>1) Move all data to lastTick variables (Ground Items/Inventory Items)</p>
 	 * <p>2) Store current player world point</p>
@@ -1103,7 +1074,6 @@ public class LootLogger
 	public void onGameTick(GameTick event)
 	{
 		checkInteracting();
-		checkOpenedRewards();
 		checkInventoryItemsChanged();
 		checkActorDeaths();
 		updateGroundItemLayers();
@@ -1118,7 +1088,9 @@ public class LootLogger
 	public void onChatMessage(ChatMessage event)
 	{
 		if (cannonLocation == null)
+		{
 			return;
+		}
 
 		if (event.getMessage().contains("You pick up the cannon"))
 		{
