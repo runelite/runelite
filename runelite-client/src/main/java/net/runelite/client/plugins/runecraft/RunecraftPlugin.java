@@ -167,7 +167,8 @@ public class RunecraftPlugin extends Plugin
 				bindNeckOverlay.bindingCharges = 17;
 			}
 		}
-		if (config.degradingNotification()) {
+		if (config.degradingNotification())
+		{
 			if (event.getMessage().contains("Your pouch has decayed through use."))
 			{
 				notifier.notify(POUCH_DECAYED_MESSAGE);
