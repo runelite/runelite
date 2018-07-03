@@ -386,11 +386,11 @@ public class ConfigManager
 			{
 				if (override)
 				{
-					String current = getConfiguration(group.keyName(), item.keyName());
+					String current = getConfiguration(group.value(), item.keyName());
 					// only unset if already set
 					if (current != null)
 					{
-						unsetConfiguration(group.keyName(), item.keyName());
+						unsetConfiguration(group.value(), item.keyName());
 					}
 				}
 				continue;
@@ -398,7 +398,7 @@ public class ConfigManager
 
 			if (!override)
 			{
-				String current = getConfiguration(group.keyName(), item.keyName());
+				String current = getConfiguration(group.value(), item.keyName());
 				if (current != null)
 				{
 					continue; // something else is already set
@@ -416,16 +416,16 @@ public class ConfigManager
 				continue;
 			}
 
-			String current = getConfiguration(group.keyName(), item.keyName());
+			String current = getConfiguration(group.value(), item.keyName());
 			String valueString = objectToString(defaultValue);
 			if (Objects.equals(current, valueString))
 			{
 				continue; // already set to the default value
 			}
 
-			log.debug("Setting default configuration value for {}.{} to {}", group.keyName(), item.keyName(), defaultValue);
+			log.debug("Setting default configuration value for {}.{} to {}", group.value(), item.keyName(), defaultValue);
 
-			setConfiguration(group.keyName(), item.keyName(), valueString);
+			setConfiguration(group.value(), item.keyName(), valueString);
 		}
 	}
 

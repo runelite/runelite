@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "discord",
-	name = "Discord",
-	description = "Configuration for Discord plugin"
-)
+@ConfigGroup("discord")
 public interface DiscordConfig extends Config
 {
 	@ConfigItem(

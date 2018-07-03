@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "mta",
-	name = "Mage Training Arena",
-	description = "Configuration for the Mage Training Arena plugin"
-)
+@ConfigGroup("mta")
 public interface MTAConfig extends Config
 {
 	@ConfigItem(

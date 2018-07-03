@@ -64,7 +64,7 @@ class ConfigInvocationHandler implements InvocationHandler
 		if (args == null)
 		{
 			// Getting configuration item
-			String value = manager.getConfiguration(group.keyName(), item.keyName());
+			String value = manager.getConfiguration(group.value(), item.keyName());
 
 			if (value == null)
 			{
@@ -85,7 +85,7 @@ class ConfigInvocationHandler implements InvocationHandler
 			}
 			catch (Exception e)
 			{
-				log.warn("Unable to unmarshal {}.{} ", group.keyName(), item.keyName(), e);
+				log.warn("Unable to unmarshal {}.{} ", group.value(), item.keyName(), e);
 				if (method.isDefault())
 				{
 					return callDefaultMethod(proxy, method, null);
@@ -111,19 +111,19 @@ class ConfigInvocationHandler implements InvocationHandler
 				if (Objects.equal(newValue, defaultValue))
 				{
 					// Just unset if it goes back to the default
-					manager.unsetConfiguration(group.keyName(), item.keyName());
+					manager.unsetConfiguration(group.value(), item.keyName());
 					return null;
 				}
 			}
 
 			if (newValue == null)
 			{
-				manager.unsetConfiguration(group.keyName(), item.keyName());
+				manager.unsetConfiguration(group.value(), item.keyName());
 			}
 			else
 			{
 				String newValueStr = ConfigManager.objectToString(newValue);
-				manager.setConfiguration(group.keyName(), item.keyName(), newValueStr);
+				manager.setConfiguration(group.value(), item.keyName(), newValueStr);
 			}
 			return null;
 		}

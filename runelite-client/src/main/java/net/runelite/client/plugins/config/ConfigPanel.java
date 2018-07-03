@@ -101,7 +101,7 @@ public class ConfigPanel extends PluginPanel
 	private static final ImageIcon BACK_ICON_HOVER;
 	private static final ImageIcon SEARCH;
 
-	private static final String RUNELITE_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).keyName();
+	private static final String RUNELITE_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).value();
 	private static final String PINNED_PLUGINS_CONFIG_KEY = "pinnedPlugins";
 	private static final String RUNELITE_PLUGIN = "RuneLite";
 	private static final String CHAT_COLOR_PLUGIN = "Chat Color";
@@ -349,7 +349,7 @@ public class ConfigPanel extends PluginPanel
 			{
 				JCheckBox checkbox = new JCheckBox();
 				checkbox.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
-				checkbox.setSelected(Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName())));
+				checkbox.setSelected(Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName())));
 				checkbox.addActionListener(ae -> changeConfiguration(listItem, config, checkbox, cd, cid));
 
 				item.add(checkbox, BorderLayout.EAST);
@@ -357,7 +357,7 @@ public class ConfigPanel extends PluginPanel
 
 			if (cid.getType() == int.class)
 			{
-				int value = Integer.parseInt(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName()));
+				int value = Integer.parseInt(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
 
 				SpinnerModel model = new SpinnerNumberModel(value, 0, Integer.MAX_VALUE, 1);
 				JSpinner spinner = new JSpinner(model);
@@ -375,7 +375,7 @@ public class ConfigPanel extends PluginPanel
 				textField.setLineWrap(true);
 				textField.setWrapStyleWord(true);
 				textField.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-				textField.setText(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName()));
+				textField.setText(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
 
 				textField.addFocusListener(new FocusAdapter()
 				{
@@ -391,7 +391,7 @@ public class ConfigPanel extends PluginPanel
 
 			if (cid.getType() == Color.class)
 			{
-				String existing = configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName());
+				String existing = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName());
 
 				Color existingColor;
 				JButton colorPicker;
@@ -442,7 +442,7 @@ public class ConfigPanel extends PluginPanel
 				JPanel dimensionPanel = new JPanel();
 				dimensionPanel.setLayout(new BorderLayout());
 
-				String str = configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName());
+				String str = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName());
 				String[] splitStr = str.split("x");
 				int width = Integer.parseInt(splitStr[0]);
 				int height = Integer.parseInt(splitStr[1]);
@@ -460,7 +460,7 @@ public class ConfigPanel extends PluginPanel
 				heightSpinnerTextField.setColumns(4);
 
 				ChangeListener listener = e ->
-					configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue());
+					configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue());
 
 				widthSpinner.addChangeListener(listener);
 				heightSpinner.addChangeListener(listener);
@@ -483,7 +483,7 @@ public class ConfigPanel extends PluginPanel
 				box.setPrototypeDisplayValue("XXXXXXXX"); //sorry but this is the way to keep the size of the combobox in check.
 				try
 				{
-					Enum selectedItem = Enum.valueOf(type, configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName()));
+					Enum selectedItem = Enum.valueOf(type, configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
 					box.setSelectedItem(selectedItem);
 					box.setToolTipText(selectedItem.toString());
 				}
@@ -504,7 +504,7 @@ public class ConfigPanel extends PluginPanel
 
 			if (cid.getType() == Keybind.class)
 			{
-				Keybind startingValue = configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), Keybind.class);
+				Keybind startingValue = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName(), Keybind.class);
 
 				HotkeyButton button = new HotkeyButton(startingValue);
 
@@ -561,32 +561,32 @@ public class ConfigPanel extends PluginPanel
 		if (component instanceof JCheckBox)
 		{
 			JCheckBox checkbox = (JCheckBox) component;
-			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + checkbox.isSelected());
+			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), "" + checkbox.isSelected());
 		}
 		else if (component instanceof JSpinner)
 		{
 			JSpinner spinner = (JSpinner) component;
-			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + spinner.getValue());
+			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), "" + spinner.getValue());
 		}
 		else if (component instanceof JTextArea)
 		{
 			JTextArea textField = (JTextArea) component;
-			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), textField.getText());
+			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), textField.getText());
 		}
 		else if (component instanceof JColorChooser)
 		{
 			JColorChooser jColorChooser = (JColorChooser) component;
-			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), String.valueOf(jColorChooser.getColor().getRGB()));
+			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), String.valueOf(jColorChooser.getColor().getRGB()));
 		}
 		else if (component instanceof JComboBox)
 		{
 			JComboBox jComboBox = (JComboBox) component;
-			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), ((Enum) jComboBox.getSelectedItem()).name());
+			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), ((Enum) jComboBox.getSelectedItem()).name());
 		}
 		else if (component instanceof HotkeyButton)
 		{
 			HotkeyButton hotkeyButton = (HotkeyButton) component;
-			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), hotkeyButton.getValue());
+			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), hotkeyButton.getValue());
 		}
 	}
 

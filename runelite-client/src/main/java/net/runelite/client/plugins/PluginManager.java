@@ -99,7 +99,7 @@ public class PluginManager
 	private final List<Plugin> plugins = new CopyOnWriteArrayList<>();
 	private final List<Plugin> activePlugins = new CopyOnWriteArrayList<>();
 	private final String runeliteGroupName = RuneLiteConfig.class
-			.getAnnotation(ConfigGroup.class).keyName();
+			.getAnnotation(ConfigGroup.class).value();
 
 	@Subscribe
 	public void onSessionOpen(SessionOpen event)
