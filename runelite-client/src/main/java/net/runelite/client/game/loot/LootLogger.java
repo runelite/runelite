@@ -228,9 +228,8 @@ public class LootLogger
 	 * @param location WorldPoint to check for new items
 	 * @return Item id and quantity Map (Integer,Integer) for new items
 	 */
-	private Map<Integer, Integer> getItemDifferencesAt(WorldPoint location)
+	private List<Item> getItemDifferencesAt(WorldPoint location)
 	{
-		Map<Integer, Integer> newItems = new HashMap<>();
 		int regionX = location.getX() - client.getBaseX();
 		int regionY = location.getY() - client.getBaseY();
 		if (regionX < 0 || regionX >= Constants.REGION_SIZE ||
@@ -290,18 +289,19 @@ public class LootLogger
 			}
 		}
 
+		List<Item> items = new ArrayList<>();
+
 		// Create the newItems map by only returning the positive changes (new loot)
 		for (Map.Entry<Integer, Integer> e : groundItemDiff.entrySet())
 		{
-			// Items were added?
 			if (e.getValue() > 0)
 			{
-				Integer count = newItems.getOrDefault(e.getKey(), 0);
-				newItems.put(e.getKey(), count + e.getValue());
+				// Add item to list if new item.
+				items.add(client.createItem(e.getKey(), e.getValue()));
 			}
 		}
 
-		return newItems;
+		return items;
 	}
 
 	/**
@@ -714,66 +714,92 @@ public class LootLogger
 				continue;
 			}
 
-			boolean foundIndex = false;
-			int index = 0;
-			int killsAtWP = 0;
-			// Support for multiple NPCs dying on the same tick at the same time
-			for (MemorizedActor pad2 : deadActorsThisTick)
-			{
-				if (pad2.getActor().getWorldLocation().distanceTo(pad.getActor().getWorldLocation()) == 0)
-				{
-					killsAtWP++;
-					if (!foundIndex)
-					{
-						index++;
-						if (pad == pad2)
-						{
-							foundIndex = true;
-						}
-					}
-				}
-			}
-
 			// Stores new items for each new world point. Some NPCs can drop loot on multiple tiles.
 			WorldPoint[] locations = getExpectedDropLocations(pad);
 			Multimap<WorldPoint, Item> worldDrops = ArrayListMultimap.create();
 			for (WorldPoint location : locations)
 			{
-				Map<Integer, Integer> drops = getItemDifferencesAt(location);
+				List<Item> drops = getItemDifferencesAt(location);
 				if (drops == null || drops.size() == 0)
 				{
 					continue;
 				}
 
-				worldDrops.putAll(location, drops.entrySet().stream().map(x ->
-						client.createItem(x.getKey(), x.getValue())).collect(Collectors.toList()));
+				worldDrops.putAll(location, drops);
 			}
 
-			// No new drops?
+			// Didn't find any loot for this Actor
 			if (worldDrops.size() == 0)
 			{
+				log.debug("No Loot found for Actor: {}", pad);
+				log.debug("Locations: {}", Arrays.asList(locations));
 				continue;
 			}
 
-			Map<Integer, Integer> drops = new HashMap<>();
-			for (Map.Entry<WorldPoint, Item> entry : worldDrops.entries())
-			{
-				// The way we handle multiple kills on the same WorldPoint in the same tick
-				// is by splitting up all the drops equally, i.e. if 2 kills happened at the
-				// same time and they dropped 3 items of the same type, 1 item would be
-				// accounted for the first kill and 2 for the second.
-				int nextCount = (entry.getValue().getQuantity() * index / killsAtWP) -
-						(entry.getValue().getQuantity() * (index - 1) / killsAtWP);
-				if (nextCount == 0)
-				{
-					continue;
-				}
-				int count = drops.getOrDefault(entry.getValue().getId(), 0);
-				drops.put(entry.getValue().getId(), nextCount + count);
-			}
+			List<Item> dropList;
 
-			// Convert Map to List of Items
-			List<Item> dropList = drops.entrySet().stream().map(x -> client.createItem(x.getKey(), x.getValue())).collect(Collectors.toList());
+			int index = 1;
+			int killsAtWP = 1;
+
+			// If multiple interacted NPCs died on the same tick we need to calculate
+			// how many npcs died on the same tile to evenly split the loot
+			if (deadActorsThisTick.size() > 1)
+			{
+				boolean foundIndex = false;
+				index = 0;
+				killsAtWP = 0;
+				// Support for multiple NPCs dying on the same tick at the same time
+				for (MemorizedActor pad2 : deadActorsThisTick)
+				{
+					if (pad2.getActor().getWorldLocation().distanceTo(pad.getActor().getWorldLocation()) == 0)
+					{
+						killsAtWP++;
+						if (!foundIndex)
+						{
+							index++;
+							if (pad == pad2)
+							{
+								foundIndex = true;
+							}
+						}
+					}
+				}
+
+				Map<Integer, Integer> drops = new HashMap<>();
+				for (Map.Entry<WorldPoint, Item> entry : worldDrops.entries())
+				{
+					// The way we handle multiple kills on the same WorldPoint in the same tick
+					// is by splitting up all the drops equally, i.e. if 2 kills happened at the
+					// same time and they dropped 3 items of the same type, 1 item would be
+					// accounted for the first kill and 2 for the second.
+					Item i = entry.getValue();
+					int nextCount = (i.getQuantity() * index / killsAtWP) -
+							(i.getQuantity() * (index - 1) / killsAtWP);
+					if (nextCount == 0)
+					{
+						continue;
+					}
+					int count = drops.getOrDefault(i.getId(), 0);
+					drops.put(i.getId(), nextCount + count);
+				}
+
+				// Convert Map to List of Items to return
+				dropList = drops.entrySet().stream().map(x -> client.createItem(x.getKey(), x.getValue())).collect(Collectors.toList());
+			}
+			else
+			{
+				// Creating a map in case the quantity needs to be updated for certain items
+				Map<Integer, Integer> drops = new HashMap<>();
+				for (Map.Entry<WorldPoint, Item> entry : worldDrops.entries())
+				{
+					Item i = entry.getValue();
+					int count = drops.getOrDefault(i.getId(), 0);
+					drops.put(i.getId(), i.getQuantity() + count);
+				}
+
+				// Convert Map to List of Items to return
+				dropList = drops.entrySet().stream().map(x -> client.createItem(x.getKey(), x.getValue())).collect(Collectors.toList());
+			}
 
 			// Actor type, Calls the wrapper for triggering the proper LootReceived event
 			if (pad instanceof MemorizedNpc)
