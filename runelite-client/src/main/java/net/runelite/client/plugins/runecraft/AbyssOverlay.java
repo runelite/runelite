@@ -89,7 +89,6 @@ class AbyssOverlay extends Overlay
 	{
 		if (config.showRifts())
 		{
-			LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
 			for (DecorativeObject object : plugin.getAbyssObjects())
 			{
 				renderRifts(graphics, object);
