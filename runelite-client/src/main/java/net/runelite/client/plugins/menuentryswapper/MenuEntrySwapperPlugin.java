@@ -421,7 +421,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 					swap("friend's house", option, target, true);
 					break;
 			}
-			swap(config.swapHomePortal().getName(), option, target, true);
 		}
 		else if (config.swapFairyRing() != FairyRingMode.ZANARIS && (option.equals("zanaris") || option.equals("tree")))
 		{
@@ -486,7 +485,20 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 		else if (target.contains("zahur"))
 		{
-			swap(config.swapZahur().getOption().toLowerCase(), option, target, false);
+			switch (config.swapZahur())
+			{
+				case MAKE_POTION:
+					swap("potion", option, target, false);
+					break;
+
+				case CLEAN:
+					swap("clean", option, target, true);
+					break;
+
+				case COMBINE:
+					swap("combine", option, target, true);
+					break;
+			}
 		}
 	}
 
