@@ -223,7 +223,7 @@ public interface RunecraftConfig extends Config
 	)
 	default boolean degradingNotification()
 	{
-		return false;
+		return true;
 	}
 
 }
