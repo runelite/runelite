@@ -108,7 +108,7 @@ public enum Produce
 	TEAK("Teak", ItemID.TEAK_LOGS, 560, 9),
 	GRAPE("Grape", ItemID.GRAPES, 5, 8, 0, 5),
 	MUSHROOM("Mushroom", ItemID.MUSHROOM, 40, 7, 0, 7),
-	MAHOGANY("Mahogany", ItemID.MAHOGANY_LOGS, 640, 10),
+	MAHOGANY("Mahogany", ItemID.MAHOGANY_LOGS, 512, 10),
 	CACTUS("Cactus", ItemID.POTATO_CACTUS, 80, 8, 20, 4),
 	BELLADONNA("Belladonna", ItemID.CAVE_NIGHTSHADE, 80, 5),
 	CALQUAT("Calquat", ItemID.CALQUAT_FRUIT, 160, 9, 0, 7),
