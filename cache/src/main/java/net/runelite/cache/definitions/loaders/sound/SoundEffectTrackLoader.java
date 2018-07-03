@@ -22,34 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.definitions.sound;
+package net.runelite.cache.definitions.loaders.sound;
 
-public class SoundEffect1Definition
+import net.runelite.cache.definitions.sound.SoundEffectTrackDefinition;
+import net.runelite.cache.definitions.sound.InstrumentDefinition;
+import net.runelite.cache.io.InputStream;
+
+public class SoundEffectTrackLoader
 {
-	public SoundEffect2Definition field1173;
-	public SoundEffect2Definition field1174;
-	public SoundEffect2Definition field1175;
-	public int field1176 = 500;
-	public int[] field1177 = new int[]
+	public SoundEffectTrackDefinition load(byte[] b)
 	{
-		0, 0, 0, 0, 0
-	};
-	public SoundEffect2Definition field1178;
-	public int[] field1179 = new int[]
+		SoundEffectTrackDefinition soundEffect = new SoundEffectTrackDefinition();
+		InputStream in = new InputStream(b);
+
+		load(soundEffect, in);
+
+		return soundEffect;
+	}
+
+	private void load(SoundEffectTrackDefinition soundEffect, InputStream in)
 	{
-		0, 0, 0, 0, 0
-	};
-	public int[] field1180 = new int[]
-	{
-		0, 0, 0, 0, 0
-	};
-	public SoundEffect2Definition field1181;
-	public SoundEffect3Definition field1182;
-	public SoundEffect2Definition field1183;
-	public int field1184 = 100;
-	public SoundEffect2Definition field1186;
-	public int field1187 = 0;
-	public int field1188 = 0;
-	public SoundEffect2Definition field1192;
-	public SoundEffect2Definition field1193;
+		for (int i = 0; i < 10; ++i)
+		{
+			int volume = in.readUnsignedByte();
+			if (volume != 0)
+			{
+				in.setOffset(in.getOffset() - 1);
+
+				InstrumentLoader instrumentLoader = new InstrumentLoader();
+				InstrumentDefinition instrument = instrumentLoader.load(in);
+
+				soundEffect.instruments[i] = instrument;
+			}
+		}
+
+		soundEffect.start = in.readUnsignedShort();
+		soundEffect.end = in.readUnsignedShort();
+	}
 }
