@@ -248,11 +248,7 @@ public interface MenuEntrySwapperConfig extends Config
 		position = 19,
 		keyName = "swapMakeAll",
 		name = "Make All",
-<<<<<<< HEAD
 		description = "Swaps all make one entries with make all entries"
-=======
-		description ="Swaps all make one entries with make all entries"
->>>>>>> makeAllAddition
 	)
 	default boolean makeAll()
 	{
