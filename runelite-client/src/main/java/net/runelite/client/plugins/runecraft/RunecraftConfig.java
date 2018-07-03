@@ -226,5 +226,4 @@ public interface RunecraftConfig extends Config
 		return false;
 	}
 
-
 }
