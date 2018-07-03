@@ -1151,6 +1151,7 @@ public abstract class RSClientMixin implements RSClient
 	}
 
 	@Inject
+	@Override
 	public RSItem createItem(int id, int quantity)
 	{
 		RSItem r = createItem();
