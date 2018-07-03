@@ -329,9 +329,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 		String option = Text.removeTags(event.getOption()).toLowerCase();
 		String target = Text.removeTags(event.getTarget()).toLowerCase();
 
-        if (option.equals("make one")&&config.makeAll())
+        if (option.equals("make one") && config.makeAll())
         {
-            swap("make all",option,target,true);
+        	swap("make all", option, target,true);
         }
 
 		if (option.equals("talk-to"))
