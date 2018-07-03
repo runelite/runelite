@@ -24,26 +24,35 @@
  */
 package net.runelite.client.plugins.slayer;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import static com.google.common.collect.ObjectArrays.concat;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.Collection;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.ItemID;
+import net.runelite.api.Query;
+import net.runelite.api.queries.EquipmentItemQuery;
+import net.runelite.api.queries.InventoryWidgetItemQuery;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TextComponent;
+import net.runelite.client.util.QueryRunner;
 
 class SlayerOverlay extends Overlay
 {
 	private final SlayerConfig config;
 	private final SlayerPlugin plugin;
+
+	@Inject
+	private QueryRunner queryRunner;
 
 	private final Set<Integer> slayerJewelry = ImmutableSet.of(
 		ItemID.SLAYER_RING_1,
@@ -76,6 +85,18 @@ class SlayerOverlay extends Overlay
 		ItemID.EXPEDITIOUS_BRACELET
 	);
 
+	private ImmutableList<WidgetItem> checkInventory()
+	{
+		Query inventoryQuery = new InventoryWidgetItemQuery();
+		WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(inventoryQuery);
+
+		Query equipmentQuery = new EquipmentItemQuery().slotEquals(WidgetInfo.EQUIPMENT_HELMET, WidgetInfo.EQUIPMENT_RING, WidgetInfo.EQUIPMENT_GLOVES);
+		WidgetItem[] equipmentWidgetItems = queryRunner.runQuery(equipmentQuery);
+
+		WidgetItem[] items = concat(inventoryWidgetItems, equipmentWidgetItems, WidgetItem.class);
+		return ImmutableList.copyOf(items);
+	}
+
 	@Inject
 	private SlayerOverlay(SlayerPlugin plugin, SlayerConfig config)
 	{
@@ -104,8 +125,7 @@ class SlayerOverlay extends Overlay
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
-		Collection<WidgetItem> items = plugin.getSlayerItems();
-		for (WidgetItem item : items)
+		for (WidgetItem item : checkInventory())
 		{
 			int itemId = item.getId();
 

@@ -56,6 +56,12 @@ public class HiscoreClient
 
 		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
+			if (!response.isSuccessful())
+			{
+				logger.debug("unsuccessful lookup for {}", username);
+				return null;
+			}
+
 			InputStream in = response.body().byteStream();
 			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), HiscoreResult.class);
 		}
@@ -88,6 +94,12 @@ public class HiscoreClient
 
 		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
+			if (!response.isSuccessful())
+			{
+				logger.debug("unsuccessful lookup for {}", username);
+				return null;
+			}
+
 			InputStream in = response.body().byteStream();
 			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), SingleHiscoreSkillResult.class);
 		}

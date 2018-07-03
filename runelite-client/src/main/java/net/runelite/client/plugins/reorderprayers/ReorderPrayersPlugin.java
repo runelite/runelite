@@ -36,14 +36,13 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.HashTable;
-import net.runelite.api.Node;
 import net.runelite.api.Prayer;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetConfig.DRAG;
 import static net.runelite.api.widgets.WidgetConfig.DRAG_ON;
@@ -56,7 +55,10 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @Slf4j
-@PluginDescriptor(name = "Reorder Prayers")
+@PluginDescriptor(
+	name = "Reorder Prayers",
+	description = "Reorder the prayers displayed on the Prayer panel"
+)
 public class ReorderPrayersPlugin extends Plugin
 {
 
@@ -339,10 +341,9 @@ public class ReorderPrayersPlugin extends Plugin
 
 	private PrayerTabState getPrayerTabState()
 	{
-		HashTable componentTable = client.getComponentTable();
-		for (Node node : componentTable.getNodes())
+		HashTable<WidgetNode> componentTable = client.getComponentTable();
+		for (WidgetNode widgetNode : componentTable.getNodes())
 		{
-			WidgetNode widgetNode = (WidgetNode) node;
 			if (widgetNode.getId() == WidgetID.PRAYER_GROUP_ID)
 			{
 				return PrayerTabState.PRAYERS;

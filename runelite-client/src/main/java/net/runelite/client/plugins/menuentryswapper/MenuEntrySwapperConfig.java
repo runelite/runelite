@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "menuentryswapper",
-	name = "Menu Entry Swapper",
-	description = "Swap menu entry options"
-)
+@ConfigGroup("menuentryswapper")
 public interface MenuEntrySwapperConfig extends Config
 {
 	@ConfigItem(

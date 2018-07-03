@@ -66,7 +66,9 @@ import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.item.ItemPrice;
 
 @PluginDescriptor(
-	name = "Barrows Brothers"
+	name = "Barrows Brothers",
+	description = "Show helpful information for the Barrows minigame",
+	tags = {"combat", "minigame", "minimap"}
 )
 @Slf4j
 public class BarrowsPlugin extends Plugin

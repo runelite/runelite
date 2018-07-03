@@ -74,7 +74,7 @@ public enum PatchImplementation
 				if (value == 31)
 				{
 					// Cactus[Check-health,Inspect,,Guide,] 7758
-					return new PatchState(Produce.CACTUS, CropState.GROWING, 6);
+					return new PatchState(Produce.CACTUS, CropState.GROWING, 7);
 				}
 				if (value >= 32 && value <= 255)
 				{
@@ -1784,7 +1784,7 @@ public enum PatchImplementation
 				if (value == 12)
 				{
 					// Oak[Check-health,Inspect,,Guide,] 8466
-					return new PatchState(Produce.OAK, CropState.GROWING, 5);
+					return new PatchState(Produce.OAK, CropState.GROWING, 4);
 				}
 				if (value == 13)
 				{
@@ -1804,7 +1804,7 @@ public enum PatchImplementation
 				if (value == 21)
 				{
 					// Willow Tree[Check-health,Inspect,,Guide,] 8487
-					return new PatchState(Produce.WILLOW, CropState.GROWING, 7);
+					return new PatchState(Produce.WILLOW, CropState.GROWING, 6);
 				}
 				if (value == 22)
 				{
@@ -1844,7 +1844,7 @@ public enum PatchImplementation
 				if (value >= 36 && value <= 44)
 				{
 					// Yew tree[,Inspect,,Guide,] 8503,8504,8505,8506,8507,8508,8509,8510,8511
-					return new PatchState(Produce.YEW, CropState.GROWING, value - 36);
+					return new PatchState(Produce.YEW, CropState.GROWING, value - 35);
 				}
 				if (value == 45)
 				{
@@ -1894,7 +1894,7 @@ public enum PatchImplementation
 				if (value == 77)
 				{
 					// Diseased Oak[Prune,Inspect,,Guide,] 8476
-					return new PatchState(Produce.OAK, CropState.DISEASED, 5);
+					return new PatchState(Produce.OAK, CropState.DISEASED, 4);
 				}
 				if (value >= 78 && value <= 79)
 				{
@@ -1909,7 +1909,7 @@ public enum PatchImplementation
 				if (value == 86)
 				{
 					// Diseased Willow[Prune,Inspect,,Guide,] 8495
-					return new PatchState(Produce.WILLOW, CropState.DISEASED, 7);
+					return new PatchState(Produce.WILLOW, CropState.DISEASED, 6);
 				}
 				if (value >= 87 && value <= 88)
 				{
@@ -1969,7 +1969,7 @@ public enum PatchImplementation
 				if (value == 141)
 				{
 					// Dead Oak[Clear,Inspect,,Guide,] 8480
-					return new PatchState(Produce.OAK, CropState.DEAD, 5);
+					return new PatchState(Produce.OAK, CropState.DEAD, 4);
 				}
 				if (value >= 142 && value <= 143)
 				{
@@ -1984,7 +1984,7 @@ public enum PatchImplementation
 				if (value == 150)
 				{
 					// Dead Willow[Clear,Inspect,,Guide,] 8501
-					return new PatchState(Produce.WILLOW, CropState.DEAD, 7);
+					return new PatchState(Produce.WILLOW, CropState.DEAD, 6);
 				}
 				if (value >= 151 && value <= 152)
 				{
@@ -2072,7 +2072,7 @@ public enum PatchImplementation
 				if (value == 15)
 				{
 					// Teak Tree[Check-health,Inspect,,Guide,] 30444
-					return new PatchState(Produce.TEAK, CropState.GROWING, 8);
+					return new PatchState(Produce.TEAK, CropState.GROWING, 7);
 				}
 				if (value == 16)
 				{
@@ -2102,12 +2102,12 @@ public enum PatchImplementation
 				if (value >= 31 && value <= 37)
 				{
 					// Mahogany tree[,Inspect,,Guide,] 30407,30408,30409,30410,30411,30412,30413
-					return new PatchState(Produce.MAHOGANY, CropState.GROWING, value - 31);
+					return new PatchState(Produce.MAHOGANY, CropState.GROWING, value - 30);
 				}
 				if (value == 38)
 				{
 					// Mahogany tree[Check-health,Inspect,,Guide,] 30416
-					return new PatchState(Produce.MAHOGANY, CropState.GROWING, 9);
+					return new PatchState(Produce.MAHOGANY, CropState.GROWING, 8);
 				}
 				if (value == 39)
 				{

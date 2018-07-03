@@ -29,11 +29,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "inventorytags",
-	name = "Inventory Tags",
-	description = "Configuration for the Inventory Item Tagging plugin"
-)
+@ConfigGroup("inventorytags")
 public interface InventoryTagsConfig extends Config
 {
 	String GROUP = "inventorytags";

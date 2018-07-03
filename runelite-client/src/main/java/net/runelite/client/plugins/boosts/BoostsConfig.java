@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "boosts",
-	name = "Boosts Information",
-	description = "Configuration for the Boosts plugin"
-)
+@ConfigGroup("boosts")
 public interface BoostsConfig extends Config
 {
 	@ConfigItem(

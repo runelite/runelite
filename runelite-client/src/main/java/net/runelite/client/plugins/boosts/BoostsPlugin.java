@@ -49,7 +49,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Boosts Information"
+	name = "Boosts Information",
+	description = "Show combat and/or skill boost information",
+	tags = {"combat", "notifications", "skilling", "overlay"}
 )
 @Slf4j
 public class BoostsPlugin extends Plugin

@@ -37,6 +37,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Metronome",
+	description = "Play a sound on a specified tick to aid in efficient skilling",
+	tags = {"skilling", "tick", "timers"},
 	enabledByDefault = false
 )
 public class MetronomePlugin extends Plugin

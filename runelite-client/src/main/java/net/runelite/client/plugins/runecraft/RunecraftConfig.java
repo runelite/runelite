@@ -29,11 +29,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "runecraft",
-	name = "Runecraft",
-	description = "Configuration for the runecrafting plugin"
-)
+@ConfigGroup("runecraft")
 public interface RunecraftConfig extends Config
 {
 	@ConfigItem(

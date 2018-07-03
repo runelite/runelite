@@ -61,7 +61,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
-	name = "Runecraft"
+	name = "Runecraft",
+	description = "Show minimap icons and clickboxes for abyssal rifts",
+	tags = {"abyssal", "minimap", "overlay", "rifts", "rc", "runecrafting"}
 )
 public class RunecraftPlugin extends Plugin
 {

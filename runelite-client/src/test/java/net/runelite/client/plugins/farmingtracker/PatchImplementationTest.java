@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.farmingtracker;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -34,6 +36,7 @@ public class PatchImplementationTest
 	{
 		for (PatchImplementation impl : PatchImplementation.values())
 		{
+			Map<Produce, boolean[]> harvestStages = new HashMap<>();
 			for (int i = 0; i < 256; i++)
 			{
 				PatchState s = impl.forVarbitValue(i);
@@ -53,6 +56,20 @@ public class PatchImplementationTest
 					{
 						Assert.assertTrue(pfx + ": dead seed", s.getStage() > 0);
 					}
+					if (s.getCropState() == CropState.GROWING && s.getProduce() != Produce.WEEDS)
+					{
+						harvestStages.computeIfAbsent(s.getProduce(), k -> new boolean[s.getProduce().getStages()])[s.getStage()] = true;
+					}
+				}
+			}
+
+			for (Map.Entry<Produce, boolean[]> produce : harvestStages.entrySet())
+			{
+				boolean[] states = produce.getValue();
+				// Alot of time the final stage is not hit, because some plants do not have a "Check-health" stage
+				for (int i = 0; i < states.length - 1; i++)
+				{
+					Assert.assertTrue(produce.getKey().getName() + " stage " + i + " never found by varbit", states[i]);
 				}
 			}
 		}

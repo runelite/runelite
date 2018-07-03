@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "specialAttack",
-	name = "Special Attack",
-	description = "Configuration for special attack options"
-)
+@ConfigGroup("specialAttack")
 public interface SpecialAttackConfig extends Config
 {
 	@ConfigItem(

@@ -44,7 +44,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Prayer"
+	name = "Prayer",
+	description = "Show various information related to prayer",
+	tags = {"combat", "flicking", "overlay"}
 )
 public class PrayerPlugin extends Plugin
 {

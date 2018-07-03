@@ -156,6 +156,15 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("widgets")
 	RSWidget[][] getWidgets();
 
+	/**
+	 * Gets an array of widgets that correspond to the passed group ID.
+	 *
+	 * @param groupId the group ID
+	 * @return the widget group
+	 * @see net.runelite.api.widgets.WidgetID
+	 */
+	RSWidget[] getGroup(int groupId);
+
 	@Import("region")
 	@Override
 	RSRegion getRegion();

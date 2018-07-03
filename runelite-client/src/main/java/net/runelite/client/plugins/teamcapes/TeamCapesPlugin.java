@@ -44,6 +44,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Team Capes",
+	description = "Show the different team capes in your area and the amount of each",
+	tags = {"overlay", "players"},
 	enabledByDefault = false
 )
 public class TeamCapesPlugin extends Plugin

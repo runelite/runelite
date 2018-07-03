@@ -184,6 +184,7 @@ class GrandExchangeSearchPanel extends JPanel
 		if (Strings.isNullOrEmpty(lookup))
 		{
 			searchItemsPanel.removeAll();
+			SwingUtilities.invokeLater(searchItemsPanel::updateUI);
 			return;
 		}
 
@@ -204,7 +205,7 @@ class GrandExchangeSearchPanel extends JPanel
 			log.warn("Unable to search for item {}", lookup, ex);
 			searchBox.setIcon(ERROR_ICON);
 			searchBox.setEditable(true);
-			errorPanel.setContent("Error fetching results", "An error occured why trying to fetch item data, please try again later.");
+			errorPanel.setContent("Error fetching results", "An error occurred while trying to fetch item data, please try again later.");
 			cardLayout.show(centerPanel, ERROR_PANEL);
 			return;
 		}

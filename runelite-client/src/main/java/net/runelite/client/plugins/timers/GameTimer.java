@@ -60,7 +60,7 @@ public enum GameTimer
 	ICEBARRAGE("icebarrage", "Ice barrage", GraphicID.ICE_BARRAGE, 20, ChronoUnit.SECONDS),
 	IMBUEDHEART("imbuedheart", "Imbued heart", GraphicID.IMBUED_HEART, 420, ChronoUnit.SECONDS),
 	VENGEANCE("vengeance", "Vengeance", GraphicID.VENGEANCE, 30, ChronoUnit.SECONDS),
-	VENGEANCEOTHER("vengeanceother", "Vengeance Other", -1, 30, ChronoUnit.SECONDS),
+	VENGEANCEOTHER("vengeanceother", "Vengeance Other", GraphicID.VENGEANCE_OTHER, 30, ChronoUnit.SECONDS),
 	ANTIDOTEPLUS("antidoteplus", "Antidote+", 518, ChronoUnit.SECONDS),
 	ANTIVENOM("antivenom", "Anti-venom", 12, ChronoUnit.MINUTES),
 	EXSUPERANTIFIRE("exsuperantifire", "Extended Super AntiFire", 6, ChronoUnit.MINUTES),
@@ -71,7 +71,7 @@ public enum GameTimer
 	ANTIPOISON("antipoison", "Antipoison", 90, ChronoUnit.SECONDS),
 	SUPERANTIPOISON("superantipoison", "Superantipoison", 346, ChronoUnit.SECONDS),
 	CHARGE("charge", "Charge", 6, ChronoUnit.MINUTES),
-	STAFF_OF_THE_DEAD("staffofthedead", "Staff of the Dead", GraphicID.STAFF_OF_THE_DEAD, 1, ChronoUnit.MINUTES);
+	STAFF_OF_THE_DEAD("staffofthedead", "Staff of the Dead", 1, ChronoUnit.MINUTES);
 
 	@Getter
 	private final String imageResource;

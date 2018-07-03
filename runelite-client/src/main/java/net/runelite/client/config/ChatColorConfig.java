@@ -26,11 +26,7 @@ package net.runelite.client.config;
 
 import java.awt.Color;
 
-@ConfigGroup(
-	keyName = "textrecolor",
-	name = "Chat Text Recolor",
-	description = "Configuration for chat text recoloring"
-)
+@ConfigGroup("textrecolor")
 public interface ChatColorConfig extends Config
 {
 	@ConfigItem(
@@ -74,7 +70,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 35,
 		keyName = "opaquePrivateMessageReceived",
-		name = "Recieved private messages",
+		name = "Received private messages",
 		description = "Color of Private messages you've received"
 	)
 	Color opaquePrivateMessageReceived();

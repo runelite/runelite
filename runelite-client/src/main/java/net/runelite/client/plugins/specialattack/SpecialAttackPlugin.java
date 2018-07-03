@@ -51,6 +51,8 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Special Attack",
+	description = "Send a notification when full special and track defence reducing special attacks",
+	tags = {"combat", "notifications", "npcs", "overlay"},
 	enabledByDefault = false
 )
 public class SpecialAttackPlugin extends Plugin

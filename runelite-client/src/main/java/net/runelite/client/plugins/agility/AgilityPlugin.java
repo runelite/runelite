@@ -26,6 +26,7 @@ package net.runelite.client.plugins.agility;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -67,7 +68,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Agility"
+	name = "Agility",
+	description = "Show helpful information about agility courses and obstacles",
+	tags = {"grace", "marks", "overlay", "shortcuts", "skilling", "traps"}
 )
 @Slf4j
 public class AgilityPlugin extends Plugin
@@ -179,7 +182,9 @@ public class AgilityPlugin extends Plugin
 
 		// Get course
 		Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
-		if (course == null || Math.abs(course.getLastObstacleXp() - skillGained) > 1)
+		if (course == null
+			|| Math.abs(course.getLastObstacleXp() - skillGained) > 1
+			|| (course.getCourseEndWorldPoints().length > 0 && Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation()))))
 		{
 			return;
 		}
@@ -250,7 +255,7 @@ public class AgilityPlugin extends Plugin
 			if (!Objects.equals(lastArenaTicketPosition, newTicketPosition))
 			{
 				// We don't want to notify when players first enter the course
-				if (lastArenaTicketPosition != null)
+				if (lastArenaTicketPosition != null && newTicketPosition != null)
 				{
 					if (config.notifyAgilityArena())
 					{

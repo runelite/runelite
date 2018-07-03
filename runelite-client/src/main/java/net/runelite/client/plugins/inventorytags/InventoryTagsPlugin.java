@@ -39,7 +39,6 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
@@ -53,6 +52,8 @@ import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Inventory Tags",
+	description = "Add the ability to tag items in your inventory",
+	tags = {"highlight", "items", "overlay", "tagging"},
 	enabledByDefault = false
 )
 public class InventoryTagsPlugin extends Plugin
@@ -130,17 +131,6 @@ public class InventoryTagsPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		hasTaggedItems = editorMode = false;
-	}
-
-	@Subscribe
-	public void onConfigChanged(ConfigChanged configChanged)
-	{
-		if (!configChanged.getGroup().equals("inventorytags"))
-		{
-			return;
-		}
-
-		overlay.clearStoredOutlines();
 	}
 
 	@Subscribe

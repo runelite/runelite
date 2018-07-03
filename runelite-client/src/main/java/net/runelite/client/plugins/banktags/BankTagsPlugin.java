@@ -48,7 +48,9 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Bank Tags"
+	name = "Bank Tags",
+	description = "Enable tagging of bank items and searching of bank tags",
+	tags = {"searching", "tagging"}
 )
 @Slf4j
 public class BankTagsPlugin extends Plugin

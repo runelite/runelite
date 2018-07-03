@@ -29,10 +29,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "bankvalue",
-	name = "Bank Value",
-	description = "Shows the value of your bank and/or current tab")
+@ConfigGroup("bankvalue")
 public interface BankValueConfig extends Config
 {
 	@ConfigItem(

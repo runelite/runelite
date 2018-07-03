@@ -31,6 +31,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -38,7 +40,9 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.SetMessage;
+import net.runelite.api.vars.AccountType;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -49,6 +53,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.hiscore.HiscoreClient;
+import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.HiscoreSkill;
 import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
@@ -58,12 +63,16 @@ import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
 
 @PluginDescriptor(
-	name = "Chat Commands"
+	name = "Chat Commands",
+	description = "Enable chat commands",
+	tags = {"grand", "exchange", "level", "prices"}
 )
 @Slf4j
 public class ChatCommandsPlugin extends Plugin
 {
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
+	private static final Pattern KILLCOUNT_PATERN = Pattern.compile("Your ([a-zA-Z ]+) kill count is: <col=ff0000>(\\d+)</col>.");
+	private static final Pattern WINTERTODT_PATERN = Pattern.compile("Your subdued Wintertodt count is: <col=ff0000>(\\d+)</col>.");
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 
@@ -72,6 +81,9 @@ public class ChatCommandsPlugin extends Plugin
 
 	@Inject
 	private ChatCommandsConfig config;
+
+	@Inject
+	private ConfigManager configManager;
 
 	@Inject
 	private ItemManager itemManager;
@@ -104,6 +116,19 @@ public class ChatCommandsPlugin extends Plugin
 	ChatCommandsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ChatCommandsConfig.class);
+	}
+
+	private void setKc(String boss, int killcount)
+	{
+		configManager.setConfiguration("killcount." + client.getUsername().toLowerCase(),
+			boss.toLowerCase(), killcount);
+	}
+
+	private int getKc(String boss)
+	{
+		Integer killCount = configManager.getConfiguration("killcount." + client.getUsername().toLowerCase(),
+			boss.toLowerCase(), int.class);
+		return killCount == null ? 0 : killCount;
 	}
 
 	/**
@@ -168,7 +193,33 @@ public class ChatCommandsPlugin extends Plugin
 			log.debug("Running clue lookup for {}", search);
 			executor.submit(() -> playerClueLookup(setMessage.getType(), setMessage, search));
 		}
+	}
 
+	@Subscribe
+	public void onChatMessage(ChatMessage chatMessage)
+	{
+		if (chatMessage.getType() != ChatMessageType.SERVER && chatMessage.getType() != ChatMessageType.FILTERED)
+		{
+			return;
+		}
+
+		String message = chatMessage.getMessage();
+		Matcher matcher = KILLCOUNT_PATERN.matcher(message);
+		if (matcher.find())
+		{
+			String boss = matcher.group(1);
+			int kc = Integer.parseInt(matcher.group(2));
+
+			setKc(boss, kc);
+		}
+
+		matcher = WINTERTODT_PATERN.matcher(message);
+		if (matcher.find())
+		{
+			int kc = Integer.parseInt(matcher.group(1));
+
+			setKc("Wintertodt", kc);
+		}
 	}
 
 	/**
@@ -244,18 +295,31 @@ public class ChatCommandsPlugin extends Plugin
 	private void playerSkillLookup(ChatMessageType type, SetMessage setMessage, String search)
 	{
 		search = SkillAbbreviations.getFullName(search);
+		final String player;
+		final HiscoreEndpoint ironmanStatus;
 
-		String player;
 		if (type.equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
 		{
 			player = client.getLocalPlayer().getName();
+			ironmanStatus = getHiscoreEndpointType();
 		}
 		else
 		{
 			player = sanitize(setMessage.getName());
+
+			if (player.equals(client.getLocalPlayer().getName()))
+			{
+				// Get ironman status from for the local player
+				ironmanStatus = getHiscoreEndpointType();
+			}
+			else
+			{
+				// Get ironman status from their icon in chat
+				ironmanStatus = getHiscoreEndpointByName(setMessage.getName());
+			}
 		}
 
-		HiscoreSkill skill;
+		final HiscoreSkill skill;
 		try
 		{
 			skill = HiscoreSkill.valueOf(search.toUpperCase());
@@ -267,7 +331,7 @@ public class ChatCommandsPlugin extends Plugin
 
 		try
 		{
-			SingleHiscoreSkillResult result = hiscoreClient.lookup(player, skill);
+			SingleHiscoreSkillResult result = hiscoreClient.lookup(player, skill, ironmanStatus);
 			Skill hiscoreSkill = result.getSkill();
 
 			String response = new ChatMessageBuilder()
@@ -410,5 +474,59 @@ public class ChatCommandsPlugin extends Plugin
 	{
 		String cleaned = lookup.contains("<img") ? lookup.substring(lookup.lastIndexOf('>') + 1) : lookup;
 		return cleaned.replace('\u00A0', ' ');
+	}
+
+	/**
+	 * Looks up the ironman status of the local player. Does NOT work on other players.
+	 * @return hiscore endpoint
+	 */
+	private HiscoreEndpoint getHiscoreEndpointType()
+	{
+		return toEndPoint(client.getAccountType());
+	}
+
+	/**
+	 * Returns the ironman status based on the symbol in the name of the player.
+	 * @param name player name
+	 * @return hiscore endpoint
+	 */
+	private static HiscoreEndpoint getHiscoreEndpointByName(final String name)
+	{
+		if (name.contains("<img=2>"))
+		{
+			return toEndPoint(AccountType.IRONMAN);
+		}
+		else if (name.contains("<img=3>"))
+		{
+			return toEndPoint(AccountType.ULTIMATE_IRONMAN);
+		}
+		else if (name.contains("<img=10>"))
+		{
+			return toEndPoint(AccountType.HARDCORE_IRONMAN);
+		}
+		else
+		{
+			return toEndPoint(AccountType.NORMAL);
+		}
+	}
+
+	/**
+	 * Converts account type to hiscore endpoint
+	 * @param accountType account type
+	 * @return hiscore endpoint
+	 */
+	private static HiscoreEndpoint toEndPoint(final AccountType accountType)
+	{
+		switch (accountType)
+		{
+			case IRONMAN:
+				return HiscoreEndpoint.IRONMAN;
+			case ULTIMATE_IRONMAN:
+				return HiscoreEndpoint.ULTIMATE_IRONMAN;
+			case HARDCORE_IRONMAN:
+				return HiscoreEndpoint.HARDCORE_IRONMAN;
+			default:
+				return HiscoreEndpoint.NORMAL;
+		}
 	}
 }

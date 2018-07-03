@@ -413,11 +413,7 @@ public class HiscorePanel extends PluginPanel
 			return;
 		}
 
-		/*
-		For some reason, the fetch results would sometimes return a not null object
-		with all null attributes, to check for that, i'll just null check one of the attributes.
-		 */
-		if (result == null || result.getAttack() == null)
+		if (result == null)
 		{
 			input.setIcon(ERROR_ICON);
 			input.setEditable(true);

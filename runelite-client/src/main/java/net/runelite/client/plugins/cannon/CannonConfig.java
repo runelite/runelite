@@ -29,11 +29,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "cannon",
-	name = "Cannon",
-	description = "Configuration for the Cannon plugin"
-)
+@ConfigGroup("cannon")
 public interface CannonConfig extends Config
 {
 	@ConfigItem(

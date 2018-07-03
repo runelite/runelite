@@ -38,7 +38,10 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
-@PluginDescriptor(name = "Chat History")
+@PluginDescriptor(
+	name = "Chat History",
+	description = "Retain your chat history when logging in/out or world hopping"
+)
 public class ChatHistoryPlugin extends Plugin
 {
 	private static final String WELCOME_MESSAGE = "Welcome to RuneScape.";

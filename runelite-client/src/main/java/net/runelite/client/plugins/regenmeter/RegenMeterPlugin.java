@@ -43,7 +43,11 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-@PluginDescriptor(name = "Regeneration Meter")
+@PluginDescriptor(
+	name = "Regeneration Meter",
+	description = "Track and show the hitpoints and special attack regeneration timers",
+	tags = {"combat", "health", "hitpoints", "special", "attack", "overlay"}
+)
 public class RegenMeterPlugin extends Plugin
 {
 	private static final int SPEC_REGEN_TICKS = 50;
