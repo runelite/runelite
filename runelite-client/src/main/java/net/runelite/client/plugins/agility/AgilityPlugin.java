@@ -68,7 +68,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Agility"
+	name = "Agility",
+	description = "Show helpful information about agility courses and obstacles",
+	tags = {"grace", "marks", "overlay", "shortcuts", "skilling", "traps"}
 )
 @Slf4j
 public class AgilityPlugin extends Plugin

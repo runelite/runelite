@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = AnimationSmoothingPlugin.CONFIG_GROUP,
-	name = "Smooth Animations",
-	description = "Configuration for the smooth animations plugin"
-)
+@ConfigGroup(AnimationSmoothingPlugin.CONFIG_GROUP)
 public interface AnimationSmoothingConfig extends Config
 {
 

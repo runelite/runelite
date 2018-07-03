@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "timers",
-	name = "Timers",
-	description = "Configuration for the timers plugin"
-)
+@ConfigGroup("timers")
 public interface TimersConfig extends Config
 {
 	@ConfigItem(

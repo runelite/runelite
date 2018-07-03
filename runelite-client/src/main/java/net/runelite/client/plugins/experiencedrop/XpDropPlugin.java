@@ -41,7 +41,9 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "XP Drop"
+	name = "XP Drop",
+	description = "Enable customization of the way XP drops are displayed",
+	tags = {"experience", "levels"}
 )
 public class XpDropPlugin extends Plugin
 {

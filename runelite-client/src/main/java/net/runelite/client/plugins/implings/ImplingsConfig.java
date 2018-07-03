@@ -33,11 +33,7 @@ import net.runelite.client.config.ConfigItem;
  *
  * @author robin
  */
-@ConfigGroup(
-	keyName = "implings",
-	name = "Implings",
-	description = "Configuration for the implings plugin"
-)
+@ConfigGroup("implings")
 public interface ImplingsConfig extends Config
 {
 	@ConfigItem(

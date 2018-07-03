@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "reportButton",
-	name = "Report Button",
-	description = "Configuration for report button"
-)
+@ConfigGroup("reportButton")
 public interface ReportButtonConfig extends Config
 {
 	@ConfigItem(

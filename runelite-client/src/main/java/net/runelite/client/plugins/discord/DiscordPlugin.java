@@ -48,7 +48,9 @@ import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.util.LinkBrowser;
 
 @PluginDescriptor(
-	name = "Discord"
+	name = "Discord",
+	description = "Show your status and activity in the Discord user panel",
+	tags = {"action", "activity", "external", "integration", "status"}
 )
 public class DiscordPlugin extends Plugin
 {

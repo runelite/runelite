@@ -67,7 +67,9 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Slayer"
+	name = "Slayer",
+	description = "Show additional slayer task related information",
+	tags = {"combat", "notifications", "overlay", "tasks"}
 )
 @Slf4j
 public class SlayerPlugin extends Plugin

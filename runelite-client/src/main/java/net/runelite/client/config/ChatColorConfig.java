@@ -26,11 +26,7 @@ package net.runelite.client.config;
 
 import java.awt.Color;
 
-@ConfigGroup(
-	keyName = "textrecolor",
-	name = "Chat Text Recolor",
-	description = "Configuration for chat text recoloring"
-)
+@ConfigGroup("textrecolor")
 public interface ChatColorConfig extends Config
 {
 	@ConfigItem(

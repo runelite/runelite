@@ -36,7 +36,11 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
-@PluginDescriptor(name = "Bank Value")
+@PluginDescriptor(
+	name = "Bank Value",
+	description = "Show the value of your bank and/or current tab",
+	tags = {"grand", "exchange", "high", "alchemy", "prices"}
+)
 public class BankValuePlugin extends Plugin
 {
 	@Inject

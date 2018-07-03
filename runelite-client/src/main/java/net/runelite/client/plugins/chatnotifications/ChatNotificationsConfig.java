@@ -29,11 +29,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "chatnotification",
-	name = "Chat Notifications",
-	description = "Highlights and notifies you of chat messages"
-)
+@ConfigGroup("chatnotification")
 public interface ChatNotificationsConfig extends Config
 {
 	@ConfigItem(

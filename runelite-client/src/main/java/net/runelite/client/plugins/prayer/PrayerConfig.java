@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "prayer",
-	name = "Prayer",
-	description = "Various tools related to prayer"
-)
+@ConfigGroup("prayer")
 public interface PrayerConfig extends Config
 {
 	@ConfigItem(
