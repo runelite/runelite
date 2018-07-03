@@ -217,13 +217,12 @@ public interface RunecraftConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "degradingNotification",
-			name = "Notify when pouch degrades",
-			description = "Send a notification when a pouch degrades"
+		keyName = "degradingNotification",
+		name = "Notify when pouch degrades",
+		description = "Send a notification when a pouch degrades"
 	)
 	default boolean degradingNotification()
 	{
 		return true;
 	}
-
 }
