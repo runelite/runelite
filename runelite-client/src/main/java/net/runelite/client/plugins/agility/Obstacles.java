@@ -31,9 +31,9 @@ import java.util.Set;
 import static net.runelite.api.ObjectID.*;
 import static net.runelite.api.NullObjectID.*;
 
-public class Obstacles
+class Obstacles
 {
-	public static final Set<Integer> COURSE_OBSTACLE_IDS = ImmutableSet.of(
+	static final Set<Integer> COURSE_OBSTACLE_IDS = ImmutableSet.of(
 		// Gnome
 		OBSTACLE_NET_23134, TREE_BRANCH_23559, TREE_BRANCH_23560, OBSTACLE_NET_23135, OBSTACLE_PIPE_23138,
 		OBSTACLE_PIPE_23139, LOG_BALANCE_23145, BALANCING_ROPE_23557,
@@ -79,7 +79,7 @@ public class Obstacles
 		GAP_11406, GAP_11429, GAP_11430, STEEP_ROOF, GAP_11630, PLANK_11631, WOODEN_BEAMS
 	);
 
-	public static final Set<Integer> SHORTCUT_OBSTACLE_IDS = ImmutableSet.of(
+	static final Set<Integer> SHORTCUT_OBSTACLE_IDS = ImmutableSet.of(
 		// Grand Exchange
 		UNDERWALL_TUNNEL_16529, UNDERWALL_TUNNEL_16530,
 		// South Varrock
@@ -192,10 +192,10 @@ public class Obstacles
 		CLIMBING_ROCKS_11948, CLIMBING_ROCKS_11949
 	);
 
-	public static final Set<Integer> TRAP_OBSTACLE_IDS = ImmutableSet.of(
+	static final Set<Integer> TRAP_OBSTACLE_IDS = ImmutableSet.of(
 		// Agility pyramid
 		NULL_3550, NULL_10872, NULL_10873
 	);
 
-	public static final List<Integer> TRAP_OBSTACLE_REGIONS = ImmutableList.of(12105, 13356);
+	static final List<Integer> TRAP_OBSTACLE_REGIONS = ImmutableList.of(12105, 13356);
 }

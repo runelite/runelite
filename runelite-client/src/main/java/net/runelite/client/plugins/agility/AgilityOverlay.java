@@ -40,7 +40,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-public class AgilityOverlay extends Overlay
+class AgilityOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2350;
 
@@ -49,7 +49,7 @@ public class AgilityOverlay extends Overlay
 	private final AgilityConfig config;
 
 	@Inject
-	public AgilityOverlay(Client client, AgilityPlugin plugin, AgilityConfig config)
+	private AgilityOverlay(Client client, AgilityPlugin plugin, AgilityConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);

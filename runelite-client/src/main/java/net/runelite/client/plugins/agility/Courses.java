@@ -29,7 +29,7 @@ import java.util.Map;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
-public enum Courses
+enum Courses
 {
 	GNOME(86.5, 46, 9781),
 	DRAYNOR(120.0, 79, 12338),
@@ -77,7 +77,7 @@ public enum Courses
 		this.courseEndWorldPoints = courseEndWorldPoints;
 	}
 
-	public static Courses getCourse(int regionId)
+	static Courses getCourse(int regionId)
 	{
 		return coursesByRegion.get(regionId);
 	}
