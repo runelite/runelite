@@ -25,10 +25,10 @@
 package net.runelite.client.game.loot.events;
 
 import lombok.Value;
+import net.runelite.api.Item;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.game.loot.data.ItemStack;
 import java.util.List;
 
 /**
@@ -43,5 +43,5 @@ public class NpcLootReceived
 
 	private final WorldPoint location;
 
-	private final List<ItemStack> items;
+	private final List<Item> items;
 }
