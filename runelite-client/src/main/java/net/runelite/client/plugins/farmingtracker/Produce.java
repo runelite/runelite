@@ -88,8 +88,8 @@ public enum Produce
 	ANYHERB("Any Herb", ItemID.GUAM_LEAF, 20, 5, 0, 3),
 
 	// Tree crops
-	OAK("Oak", ItemID.OAK_LOGS, 40, 6),
-	WILLOW("Willow", ItemID.WILLOW_LOGS, 40, 8),
+	OAK("Oak", ItemID.OAK_LOGS, 40, 5),
+	WILLOW("Willow", ItemID.WILLOW_LOGS, 40, 7),
 	MAPLE("Maple", ItemID.MAPLE_TREE, 40, 9),
 	YEW("Yew", ItemID.YEW_TREE, 40, 11),
 	MAGIC("Magic", ItemID.MAGIC_LOGS, 40, 13),
@@ -104,11 +104,11 @@ public enum Produce
 	PALM("Palm", ItemID.COCONUT, 160, 7, 45, 7),
 
 	// Special crops
-	SEAWEED("Seaweed", ItemID.GIANT_SEAWEED, 5, 8, 0, 4),
-	TEAK("Teak", ItemID.TEAK_LOGS, 560, 9),
+	SEAWEED("Seaweed", ItemID.GIANT_SEAWEED, 10, 5, 0, 4),
+	TEAK("Teak", ItemID.TEAK_LOGS, 560, 8),
 	GRAPE("Grape", ItemID.GRAPES, 5, 8, 0, 5),
 	MUSHROOM("Mushroom", ItemID.MUSHROOM, 40, 7, 0, 7),
-	MAHOGANY("Mahogany", ItemID.MAHOGANY_LOGS, 640, 10),
+	MAHOGANY("Mahogany", ItemID.MAHOGANY_LOGS, 640, 9),
 	CACTUS("Cactus", ItemID.POTATO_CACTUS, 80, 8, 20, 4),
 	BELLADONNA("Belladonna", ItemID.CAVE_NIGHTSHADE, 80, 5),
 	CALQUAT("Calquat", ItemID.CALQUAT_FRUIT, 160, 9, 0, 7),
