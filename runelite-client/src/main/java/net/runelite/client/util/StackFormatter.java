@@ -154,7 +154,7 @@ public class StackFormatter
 			return quantityStr;
 		}
 
-		int power = (int) StrictMath.log10(quantity);
+		int power = (int) Math.log10(quantity);
 		return DECIMAL_FORMATTER.format(quantity / (Math.pow(10, (power / 3) * 3))) + SUFFIXES[power / 3];
 	}
 
