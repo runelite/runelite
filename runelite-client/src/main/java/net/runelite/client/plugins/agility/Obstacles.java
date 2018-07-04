@@ -187,7 +187,9 @@ public class Obstacles
 		// Lumbridge Swamp Caves
 		STEPPING_STONE_5948, STEPPING_STONE_5949,
 		// Morytania Pirate Ship
-		ROCK_16115
+		ROCK_16115,
+		// Agility Pyramid Entrance
+		CLIMBING_ROCKS_11948, CLIMBING_ROCKS_11949
 	);
 
 	public static final Set<Integer> TRAP_OBSTACLE_IDS = ImmutableSet.of(
