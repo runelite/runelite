@@ -153,7 +153,7 @@ class DiscordState
 	void checkForTimeout()
 	{
 		final Duration actionTimeout = Duration.ofMinutes(config.actionTimeout());
-		events.removeIf(event -> event.getType().isShouldTimeout() &&
-			event.getUpdated().isAfter(event.getStart().plus(actionTimeout)));
+		final Instant now = Instant.now();
+		events.removeIf(event -> event.getType().isShouldTimeout() && now.isAfter(event.getUpdated().plus(actionTimeout)));
 	}
 }
