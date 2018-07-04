@@ -74,4 +74,15 @@ public interface DiscordConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showDungeonActivity",
+		name = "Show activity at dungeons",
+		description = "Configures if your activity at dungeons should be shown.",
+		position = 5
+	)
+	default boolean showDungeonActivity()
+	{
+		return true;
+	}
 }
