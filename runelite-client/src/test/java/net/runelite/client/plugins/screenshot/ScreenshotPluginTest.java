@@ -33,7 +33,7 @@ import javax.inject.Inject;
 import static net.runelite.api.ChatMessageType.SERVER;
 import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
@@ -152,9 +152,9 @@ public class ScreenshotPluginTest
 
 		assertEquals("Hitpoints(99)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
 
-		WidgetHiddenChanged event = new WidgetHiddenChanged();
-		event.setWidget(widget);
-		screenshotPlugin.hideWidgets(event);
+		WidgetLoaded event = new WidgetLoaded();
+		event.setGroupId(LEVEL_UP_GROUP_ID);
+		screenshotPlugin.loadWidgets(event);
 
 		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
 	}
@@ -172,9 +172,9 @@ public class ScreenshotPluginTest
 
 		assertEquals("Firemaking(9)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
 
-		WidgetHiddenChanged event = new WidgetHiddenChanged();
-		event.setWidget(widget);
-		screenshotPlugin.hideWidgets(event);
+		WidgetLoaded event = new WidgetLoaded();
+		event.setGroupId(LEVEL_UP_GROUP_ID);
+		screenshotPlugin.loadWidgets(event);
 
 		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
 	}
@@ -192,9 +192,9 @@ public class ScreenshotPluginTest
 
 		assertEquals("Attack(70)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
 
-		WidgetHiddenChanged event = new WidgetHiddenChanged();
-		event.setWidget(widget);
-		screenshotPlugin.hideWidgets(event);
+		WidgetLoaded event = new WidgetLoaded();
+		event.setGroupId(LEVEL_UP_GROUP_ID);
+		screenshotPlugin.loadWidgets(event);
 
 		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
 	}
@@ -212,9 +212,9 @@ public class ScreenshotPluginTest
 
 		assertEquals("Hunter(2)", screenshotPlugin.parseLevelUpWidget(DIALOG_SPRITE_TEXT));
 
-		WidgetHiddenChanged event = new WidgetHiddenChanged();
-		event.setWidget(widget);
-		screenshotPlugin.hideWidgets(event);
+		WidgetLoaded event = new WidgetLoaded();
+		event.setGroupId(DIALOG_SPRITE_GROUP_ID);
+		screenshotPlugin.loadWidgets(event);
 
 		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
 	}

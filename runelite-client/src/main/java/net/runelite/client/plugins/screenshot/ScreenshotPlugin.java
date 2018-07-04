@@ -57,7 +57,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Point;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.BARROWS_REWARD_GROUP_ID;
@@ -69,7 +68,6 @@ import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.QUEST_COMPLETED_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
@@ -317,8 +315,22 @@ public class ScreenshotPlugin extends Plugin
 					return;
 				}
 				break;
+			case LEVEL_UP_GROUP_ID:
+			case DIALOG_SPRITE_GROUP_ID:
+				if (!config.screenshotLevels())
+				{
+					return;
+				}
+				break;
 			case KINGDOM_GROUP_ID:
 				if (!config.screenshotKingdom())
+				{
+					return;
+				}
+				break;
+			case QUEST_COMPLETED_GROUP_ID:
+			case CLUE_SCROLL_REWARD_GROUP_ID:
+				if (!config.screenshotRewards())
 				{
 					return;
 				}
@@ -366,45 +378,6 @@ public class ScreenshotPlugin extends Plugin
 				barrowsNumber = null;
 				break;
 			}
-			default:
-				return;
-		}
-
-		takeScreenshot(fileName);
-	}
-
-	@Subscribe
-	public void hideWidgets(WidgetHiddenChanged event)
-	{
-		Widget widget = event.getWidget();
-
-		if (widget.isHidden())
-		{
-			return;
-		}
-
-		switch (TO_GROUP(widget.getId()))
-		{
-			case LEVEL_UP_GROUP_ID:
-			case DIALOG_SPRITE_GROUP_ID:
-				if (!config.screenshotLevels())
-				{
-					return;
-				}
-				break;
-			case QUEST_COMPLETED_GROUP_ID:
-			case CLUE_SCROLL_REWARD_GROUP_ID:
-				if (!config.screenshotRewards())
-				{
-					return;
-				}
-				break;
-		}
-
-		String fileName;
-
-		switch (TO_GROUP(widget.getId()))
-		{
 			case LEVEL_UP_GROUP_ID:
 			{
 				fileName = parseLevelUpWidget(WidgetInfo.LEVEL_UP_LEVEL);
