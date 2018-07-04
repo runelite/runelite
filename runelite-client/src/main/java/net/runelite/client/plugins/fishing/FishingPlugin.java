@@ -30,7 +30,6 @@ import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import javax.inject.Inject;
@@ -50,7 +49,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
@@ -70,6 +69,9 @@ public class FishingPlugin extends Plugin
 
 	@Inject
 	private QueryRunner queryRunner;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private FishingConfig config;
@@ -94,14 +96,18 @@ public class FishingPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		// Initialize overlay config
+		overlayManager.add(overlay);
+		overlayManager.add(spotOverlay);
+		overlayManager.add(fishingSpotMinimapOverlay);
 		updateConfig();
 	}
 
 	@Override
-	public Collection<Overlay> getOverlays()
+	protected void shutDown() throws Exception
 	{
-		return Arrays.asList(overlay, spotOverlay, fishingSpotMinimapOverlay);
+		overlayManager.remove(overlay);
+		overlayManager.remove(spotOverlay);
+		overlayManager.remove(fishingSpotMinimapOverlay);
 	}
 
 	public FishingSession getSession()

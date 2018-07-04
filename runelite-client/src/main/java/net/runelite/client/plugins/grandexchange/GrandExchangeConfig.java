@@ -56,4 +56,15 @@ public interface GrandExchangeConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "enableOsbPrices",
+		name = "Enable OSB actively traded prices",
+		description = "Shows the OSBuddy actively traded price at the GE"
+	)
+	default boolean enableOsbPrices()
+	{
+		return false;
+	}
 }

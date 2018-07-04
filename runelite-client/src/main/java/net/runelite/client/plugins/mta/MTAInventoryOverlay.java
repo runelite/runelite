@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Unmoon <https://github.com/Unmoon>
+ * Copyright (c) 2018, Jasper Ketelaar <Jasper0781@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,65 +22,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.tithefarm;
+package net.runelite.client.plugins.mta;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
 import javax.inject.Inject;
-import net.runelite.api.Query;
-import net.runelite.api.queries.InventoryWidgetItemQuery;
-import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.TextComponent;
-import net.runelite.client.util.QueryRunner;
 
-class TitheFarmInventoryOverlay extends Overlay
+public class MTAInventoryOverlay extends Overlay
 {
-	private final QueryRunner queryRunner;
-	private final TitheFarmPluginConfig config;
-
-	private final TextComponent textComponent = new TextComponent();
+	private final MTAPlugin plugin;
 
 	@Inject
-	TitheFarmInventoryOverlay(QueryRunner queryRunner, TitheFarmPluginConfig config)
+	public MTAInventoryOverlay(MTAPlugin plugin)
 	{
+		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
-		this.queryRunner = queryRunner;
-		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showWateringCanOverlay())
+		for (MTARoom room : plugin.getRooms())
 		{
-			return null;
-		}
-		graphics.setFont(FontManager.getRunescapeSmallFont());
-
-		Query inventoryQuery = new InventoryWidgetItemQuery();
-		WidgetItem[] inventoryItems = queryRunner.runQuery(inventoryQuery);
-
-		for (WidgetItem item : inventoryItems)
-		{
-			WateringCan wateringCan = WateringCan.getWateringCan(item.getId());
-			if (wateringCan == null)
+			if (room.inside())
 			{
-				continue;
+				graphics.setFont(FontManager.getRunescapeBoldFont());
+				room.over(graphics);
 			}
-
-			final Rectangle bounds = item.getCanvasBounds();
-			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
-			textComponent.setColor(wateringCan.getColor());
-			textComponent.setText(String.valueOf(wateringCan.getCharges()));
-			textComponent.render(graphics);
 		}
+
 		return null;
 	}
 }

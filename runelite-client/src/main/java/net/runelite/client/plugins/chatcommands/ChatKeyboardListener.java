@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,75 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.screenshot;
+package net.runelite.client.plugins.chatcommands;
 
 import java.awt.event.KeyEvent;
-import java.util.Date;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import net.runelite.api.Client;
+import net.runelite.api.VarClientStr;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
-import static net.runelite.client.plugins.screenshot.ScreenshotPlugin.TIME_FORMAT;
 
-public class ScreenshotInput implements KeyListener
+@Singleton
+public class ChatKeyboardListener implements KeyListener
 {
-	private final ScreenshotConfig config;
-	private final ScreenshotPlugin plugin;
+	@Inject
+	private Client client;
 
 	@Inject
-	ScreenshotInput(ScreenshotConfig config, ScreenshotPlugin plugin)
+	private ClientThread clientThread;
+
+	@Override
+	public void keyTyped(KeyEvent e)
 	{
-		this.config = config;
-		this.plugin = plugin;
+
 	}
 
 	@Override
-	public void keyPressed(KeyEvent event)
+	public void keyPressed(KeyEvent e)
 	{
-	}
-
-	@Override
-	public void keyTyped(KeyEvent event)
-	{
-	}
-
-	@Override
-	public void keyReleased(KeyEvent event)
-	{
-		if (!config.isScreenshotEnabled())
-			return;
-
-		if (event.getKeyCode() == KeyEvent.VK_INSERT)
+		if (!e.isControlDown())
 		{
-			plugin.takeScreenshot(TIME_FORMAT.format(new Date()));
+			return;
+		}
+
+		switch (e.getKeyCode())
+		{
+			case KeyEvent.VK_W:
+				String input = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
+				if (input != null)
+				{
+					// remove trailing space
+					while (input.endsWith(" "))
+					{
+						input = input.substring(0, input.length() - 1);
+					}
+
+					// find next word
+					int idx = input.lastIndexOf(' ');
+					final String replacement;
+					if (idx != -1)
+					{
+						replacement = input.substring(0, idx);
+					}
+					else
+					{
+						replacement = "";
+					}
+
+					clientThread.invokeLater(() -> client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, replacement));
+				}
+				break;
+			case KeyEvent.VK_BACK_SPACE:
+				clientThread.invokeLater(() -> client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, ""));
+				break;
 		}
 	}
 
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+
+	}
 }

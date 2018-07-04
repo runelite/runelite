@@ -72,10 +72,7 @@ public class BankValuePlugin extends Plugin
 
 		bankTitle.save();
 		calculate(widgetBankTitleBar);
-		if (bankCalculation.isFinished())
-		{
-			bankTitle.update(bankCalculation.getGePrice(), bankCalculation.getHaPrice());
-		}
+		bankTitle.update(bankCalculation.getGePrice(), bankCalculation.getHaPrice());
 	}
 
 	private void calculate(Widget bankTitleBar)

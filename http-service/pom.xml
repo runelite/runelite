@@ -28,7 +28,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.4.3-SNAPSHOT</version>
+		<version>1.4.5-SNAPSHOT</version>
 	</parent>
 
 	<name>Web Service</name>
@@ -164,6 +164,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${spring.boot.version}</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>

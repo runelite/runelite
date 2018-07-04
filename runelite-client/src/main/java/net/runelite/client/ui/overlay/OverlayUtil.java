@@ -225,6 +225,7 @@ public class OverlayUtil
 			case BOTTOM_RIGHT:
 			case ABOVE_CHATBOX_RIGHT:
 				result.y = result.y - dimension.height;
+				// FALLTHROUGH
 			case TOP_RIGHT:
 				result.x = result.x - dimension.width;
 				break;

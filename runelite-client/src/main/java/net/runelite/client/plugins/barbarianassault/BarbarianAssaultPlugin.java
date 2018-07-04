@@ -45,7 +45,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Barbarian Assault"
@@ -64,6 +64,9 @@ public class BarbarianAssaultPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private BarbarianAssaultConfig config;
 
 	@Inject
@@ -78,6 +81,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
 		font = FontManager.getRunescapeFont()
 			.deriveFont(Font.BOLD, 24);
 
@@ -85,6 +89,12 @@ public class BarbarianAssaultPlugin extends Plugin
 		{
 			clockImage = ImageIO.read(getClass().getResourceAsStream("clock.png"));
 		}
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
 	}
 
 	@Subscribe
@@ -153,12 +163,6 @@ public class BarbarianAssaultPlugin extends Plugin
 				}
 			}
 		}
-	}
-
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
 	}
 
 	public Font getFont()

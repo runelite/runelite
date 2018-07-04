@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Matt <https://github.com/ms813>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellerycount;
+package net.runelite.client.config;
 
-public enum JewelleryType
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
+public enum WarningOnExit
 {
-	GLORY,
-	ROD,
-	GAMES,
-	ROW,
-	ROS,
-	SKILLS,
-	CBRACE,
-	DIGSITE,
-	BURNING,
-	PASSAGE,
-	RETURNING,
-	TCRYSTAL,
-	PHARAO,
-	WATERSKIN,
-	IMP_IN_A_BOX,
-	ELYRE
+	ALWAYS("Always"),
+	LOGGED_IN("Logged in"),
+	NEVER("Never");
+
+	private final String type;
+
+	@Override
+	public String toString()
+	{
+		return type;
+	}
 }

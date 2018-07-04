@@ -25,29 +25,34 @@
 package net.runelite.client.plugins.kourendlibrary;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
+import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Kourend Library"
@@ -55,6 +60,8 @@ import net.runelite.client.ui.overlay.Overlay;
 @Slf4j
 public class KourendLibraryPlugin extends Plugin
 {
+	final static int REGION = 6459;
+
 	final static boolean debug = false;
 
 	@Inject
@@ -67,20 +74,34 @@ public class KourendLibraryPlugin extends Plugin
 	private Library library;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private KourendLibraryOverlay overlay;
+
+	@Inject
+	private KourendLibraryConfig config;
 
 	@Inject
 	private ItemManager itemManager;
 
 	private KourendLibraryPanel panel;
 	private NavigationButton navButton;
+	private boolean buttonAttached = false;
 
 	private WorldPoint lastBookcaseClick = null;
 	private WorldPoint lastBookcaseAnimatedOn = null;
 
+	@Provides
+	KourendLibraryConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(KourendLibraryConfig.class);
+	}
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
 		Book.fillImages(itemManager);
 
 		panel = injector.getInstance(KourendLibraryPanel.class);
@@ -99,19 +120,48 @@ public class KourendLibraryPlugin extends Plugin
 			.panel(panel)
 			.build();
 
-		pluginToolbar.addNavigation(navButton);
+		if (!config.hideButton())
+		{
+			pluginToolbar.addNavigation(navButton);
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged ev)
+	{
+		if (!KourendLibraryConfig.GROUP_KEY.equals(ev.getGroup()))
+		{
+			return;
+		}
+
+		SwingUtilities.invokeLater(() ->
+		{
+			if (!config.hideButton())
+			{
+				pluginToolbar.addNavigation(navButton);
+			}
+			else
+			{
+				Player lp = client.getLocalPlayer();
+				boolean inRegion = lp != null && lp.getWorldLocation().getRegionID() == REGION;
+				if (inRegion)
+				{
+					pluginToolbar.addNavigation(navButton);
+				}
+				else
+				{
+					pluginToolbar.removeNavigation(navButton);
+				}
+			}
+		});
 	}
 
 	@Override
 	protected void shutDown()
 	{
-		pluginToolbar.removeNavigation(navButton);
-	}
+		overlayManager.remove(overlay);
 
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
+		pluginToolbar.removeNavigation(navButton);
 	}
 
 	@Subscribe
@@ -152,6 +202,28 @@ public class KourendLibraryPlugin extends Plugin
 	@Subscribe
 	void onTick(GameTick tick)
 	{
+		boolean inRegion = client.getLocalPlayer().getWorldLocation().getRegionID() == REGION;
+		if (config.hideButton() && inRegion != buttonAttached)
+		{
+			SwingUtilities.invokeLater(() ->
+			{
+				if (inRegion)
+				{
+					pluginToolbar.addNavigation(navButton);
+				}
+				else
+				{
+					pluginToolbar.removeNavigation(navButton);
+				}
+			});
+			buttonAttached = inRegion;
+		}
+
+		if (!inRegion)
+		{
+			return;
+		}
+
 		if (lastBookcaseAnimatedOn != null)
 		{
 			Widget find = client.getWidget(WidgetInfo.DIALOG_SPRITE_SPRITE);

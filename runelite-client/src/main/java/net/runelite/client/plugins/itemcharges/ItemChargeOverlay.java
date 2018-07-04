@@ -22,8 +22,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellerycount;
+package net.runelite.client.plugins.itemcharges;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -32,11 +33,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import javax.inject.Inject;
+import net.runelite.api.ItemID;
 import net.runelite.api.Query;
 import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.FUNGICIDE_SPRAY;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.IMPBOX;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.TELEPORT;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERCAN;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERSKIN;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -44,50 +51,76 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.QueryRunner;
 
-class JewelleryCountOverlay extends Overlay
+class ItemChargeOverlay extends Overlay
 {
 	private final QueryRunner queryRunner;
-	private final JewelleryCountConfig config;
+	private final ItemChargePlugin itemChargePlugin;
+	private final ItemChargeConfig config;
 
 	@Inject
-	JewelleryCountOverlay(QueryRunner queryRunner, JewelleryCountConfig config)
+	ItemChargeOverlay(QueryRunner queryRunner, ItemChargePlugin itemChargePlugin, ItemChargeConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.queryRunner = queryRunner;
+		this.itemChargePlugin = itemChargePlugin;
 		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showJewelleryCount())
+		if (!displayOverlay())
 		{
 			return null;
 		}
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
-		for (WidgetItem item : getJewelleryWidgetItems())
+		for (WidgetItem item : getChargeWidgetItems())
 		{
-			JewelleryCharges charges = JewelleryCharges.getCharges(item.getId());
-
-			if (charges == null)
+			int charges;
+			if (item.getId() == ItemID.DODGY_NECKLACE)
 			{
-				continue;
+				if (!config.showDodgyCount())
+				{
+					continue;
+				}
+
+				charges = itemChargePlugin.getDodgyCharges();
+			}
+			else
+			{
+				ItemWithCharge chargeItem = ItemWithCharge.findItem(item.getId());
+				if (chargeItem == null)
+				{
+					continue;
+				}
+
+				ItemChargeType type = chargeItem.getType();
+				if ((type == TELEPORT && !config.showTeleportCharges())
+					|| (type == FUNGICIDE_SPRAY && !config.showFungicideCharges())
+					|| (type == IMPBOX && !config.showImpCharges())
+					|| (type == WATERCAN && !config.showWateringCanCharges())
+					|| (type == WATERSKIN && !config.showWaterskinCharges()))
+				{
+					continue;
+				}
+
+				charges = chargeItem.getCharges();
 			}
 
 			final Rectangle bounds = item.getCanvasBounds();
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
-			textComponent.setText(String.valueOf(charges.getCharges()));
+			textComponent.setText(charges < 0 ? "?" : String.valueOf(charges));
+			textComponent.setColor(getColor(charges));
 			textComponent.render(graphics);
 		}
-
 		return null;
 	}
 
-	private Collection<WidgetItem> getJewelleryWidgetItems()
+	private Collection<WidgetItem> getChargeWidgetItems()
 	{
 		Query inventoryQuery = new InventoryWidgetItemQuery();
 		WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(inventoryQuery);
@@ -104,5 +137,25 @@ class JewelleryCountOverlay extends Overlay
 		jewellery.addAll(Arrays.asList(inventoryWidgetItems));
 		jewellery.addAll(Arrays.asList(equipmentWidgetItems));
 		return jewellery;
+	}
+
+	private Color getColor(int charges)
+	{
+		Color color = Color.WHITE;
+		if (charges <= config.veryLowWarning())
+		{
+			color = config.veryLowWarningColor();
+		}
+		else if (charges <= config.lowWarning())
+		{
+			color = config.lowWarningolor();
+		}
+		return color;
+	}
+
+	private boolean displayOverlay()
+	{
+		return config.showTeleportCharges() || config.showDodgyCount() || config.showFungicideCharges()
+			|| config.showImpCharges() || config.showWateringCanCharges() || config.showWaterskinCharges();
 	}
 }

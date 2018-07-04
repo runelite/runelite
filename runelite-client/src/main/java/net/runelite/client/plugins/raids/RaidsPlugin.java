@@ -49,6 +49,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
+import net.runelite.api.NullObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
@@ -71,7 +72,7 @@ import net.runelite.client.plugins.raids.bombs.CrystalBomb;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
@@ -86,9 +87,9 @@ public class RaidsPlugin extends Plugin
 	private static final String LEVEL_COMPLETE_MESSAGE = "level complete!";
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
-	public static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
+	static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final String SPLIT_REGEX = "\\s*,\\s*";
-	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)\\]");
+	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)]");
 
 	private BufferedImage raidsIcon;
 	private RaidsTimer timer;
@@ -110,6 +111,9 @@ public class RaidsPlugin extends Plugin
 
 	@Inject
 	private RaidsConfig config;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private RaidsOverlay overlay;
@@ -151,14 +155,12 @@ public class RaidsPlugin extends Plugin
 	}
 
 	@Override
-	public List<Overlay> getOverlays()
-	{
-		return Arrays.asList(overlay, pointsOverlay, bombOverlay);
-	}
-
-	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
+		overlayManager.add(pointsOverlay);
+		overlayManager.add(bombOverlay);
+
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
 			inRaidChambers = client.getVar(Varbits.IN_RAID) == 1;
@@ -171,6 +173,10 @@ public class RaidsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
+		overlayManager.remove(pointsOverlay);
+		overlayManager.remove(bombOverlay);
+
 		if (timer != null)
 		{
 			infoBoxManager.removeInfoBox(timer);
@@ -478,7 +484,7 @@ public class RaidsPlugin extends Plugin
 					continue;
 				}
 
-				if (tiles[x][y].getWallObject().getId() == ObjectID.NULL_12231)
+				if (tiles[x][y].getWallObject().getId() == NullObjectID.NULL_12231)
 				{
 					return tiles[x][y].getRegionLocation();
 				}

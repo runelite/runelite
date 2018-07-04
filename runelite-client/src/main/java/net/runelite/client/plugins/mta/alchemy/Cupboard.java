@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,38 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellerycount;
+package net.runelite.client.plugins.mta.alchemy;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import net.runelite.api.GameObject;
 
-@ConfigGroup(
-	keyName = "jewelleryCount",
-	name = "Jewellery Count",
-	description = "Configuration for the Jewellery count plugin"
-)
-public interface JewelleryCountConfig extends Config
+class Cupboard
 {
-	@ConfigItem(
-		keyName = "showJewelleryCount",
-		name = "Show Jewellery Count Configuration",
-		description = "Configures if jewellery count is shown",
-		position = 1
-	)
-	default boolean showJewelleryCount()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "recoilNotification",
-		name = "Ring of Recoil Notification",
-		description = "Configures if the ring of recoil breaking notification is shown",
-		position = 2
-	)
-	default boolean recoilNotification()
-	{
-		return false;
-	}
+	GameObject gameObject;
+	AlchemyItem alchemyItem;
 }

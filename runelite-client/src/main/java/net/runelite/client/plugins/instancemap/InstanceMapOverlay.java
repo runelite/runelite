@@ -172,11 +172,6 @@ class InstanceMapOverlay extends Overlay
 			drawPlayerDot(graphics, client.getLocalPlayer(), Color.white, Color.black);
 		}
 
-		if (image == null)
-		{
-			return null;
-		}
-
 		return new Dimension(image.getWidth(), image.getHeight());
 	}
 
@@ -205,8 +200,8 @@ class InstanceMapOverlay extends Overlay
 		int tileX = playerLoc.getRegionX();
 		int tileY = (tiles[0].length - 1) - playerLoc.getRegionY(); // flip the y value
 
-		int x = (int) (tileX * TILE_SIZE);
-		int y = (int) (tileY * TILE_SIZE);
+		int x = tileX * TILE_SIZE;
+		int y = tileY * TILE_SIZE;
 		graphics.setColor(dotColor);
 		graphics.fillRect(x, y, PLAYER_MARKER_SIZE, PLAYER_MARKER_SIZE);//draw the players point on the map
 		graphics.setColor(outlineColor);

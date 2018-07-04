@@ -42,6 +42,7 @@ public class WidgetID
 	public static final int BANK_GROUP_ID = 12;
 	public static final int BANK_INVENTORY_GROUP_ID = 15;
 	public static final int GRAND_EXCHANGE_INVENTORY_GROUP_ID = 467;
+	public static final int GRAND_EXCHANGE_GROUP_ID = 465;
 	public static final int DEPOSIT_BOX_GROUP_ID = 192;
 	public static final int INVENTORY_GROUP_ID = 149;
 	public static final int FRIENDS_LIST_GROUP_ID = 429;
@@ -95,6 +96,10 @@ public class WidgetID
 	public static final int KINGDOM_GROUP_ID = 392;
 	public static final int BARROWS_GROUP_ID = 24;
 	public static final int BLAST_MINE_GROUP_ID = 598;
+	public static final int MTA_ALCHEMY_GROUP_ID = 194;
+	public static final int MTA_ENCHANTMENT_GROUP_ID = 195;
+	public static final int MTA_GRAVEYARD_GROUP_ID = 196;
+	public static final int MTA_TELEKINETIC_GROUP_ID = 198;
 
 	static class WorldMap
 	{
@@ -158,6 +163,18 @@ public class WidgetID
 	}
 
 	static class GrandExchange
+	{
+		static final int WINDOW_CONTAINER = 0;
+		static final int WINDOW_BORDERS = 2;
+		static final int HISTORY_BUTTON = 3;
+		static final int BACK_BUTTON = 4;
+		static final int OFFER_CONTAINER = 24;
+		static final int OFFER_DESCRIPTION = 25;
+		static final int OFFER_PRICE = 26;
+		static final int OFFER_CONFIRM_BUTTON = 27;
+	}
+
+	static class GrandExchangeInventory
 	{
 		static final int INVENTORY_ITEM_CONTAINER = 0;
 	}
@@ -493,5 +510,11 @@ public class WidgetID
 		static final int BARROWS_BROTHERS = 8;
 		static final int BARROWS_POTENTIAL = 9;
 		static final int BARROWS_REWARD_INVENTORY = 3;
+	}
+
+	static class MTA
+	{
+		static final int BONUS_COMPONENT = 7;
+		static final int BONUS_TEXT_COMPONENT = 12;
 	}
 }

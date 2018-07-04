@@ -55,7 +55,12 @@ import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.TitleToolbar;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.OverlayRenderer;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
+import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
+import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
@@ -119,6 +124,21 @@ public class RuneLite
 
 	@Inject
 	private ClanManager clanManager;
+
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private InfoBoxOverlay infoBoxOverlay;
+
+	@Inject
+	private TooltipOverlay tooltipOverlay;
+
+	@Inject
+	private WorldMapOverlay worldMapOverlay;
 
 	Client client;
 
@@ -208,12 +228,14 @@ public class RuneLite
 		// Register event listeners
 		eventBus.register(clientUI);
 		eventBus.register(overlayRenderer);
+		eventBus.register(overlayManager);
 		eventBus.register(drawManager);
 		eventBus.register(menuManager);
 		eventBus.register(chatMessageManager);
 		eventBus.register(commandManager);
 		eventBus.register(pluginManager);
 		eventBus.register(clanManager);
+		eventBus.register(infoBoxManager);
 
 		if (this.client != null)
 		{
@@ -239,6 +261,12 @@ public class RuneLite
 
 		// Load the session, including saved configuration
 		sessionManager.loadSession();
+
+		// Add core overlays after configuration has been loaded so their properties will be
+		// loaded properly
+		overlayManager.add(infoBoxOverlay);
+		overlayManager.add(worldMapOverlay);
+		overlayManager.add(tooltipOverlay);
 
 		// Start plugins
 		pluginManager.startCorePlugins();

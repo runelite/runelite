@@ -73,6 +73,7 @@ import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Keybind;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -429,6 +430,12 @@ public class ConfigPanel extends PluginPanel
 			JComboBox jComboBox = (JComboBox) component;
 			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), ((Enum) jComboBox.getSelectedItem()).name());
 		}
+
+		if (component instanceof HotkeyButton)
+		{
+			HotkeyButton hotkeyButton = (HotkeyButton) component;
+			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), hotkeyButton.getValue());
+		}
 	}
 
 	private void openGroupConfigPanel(Config config, ConfigDescriptor cd, ConfigManager configManager)
@@ -494,11 +501,9 @@ public class ConfigPanel extends PluginPanel
 					public void focusLost(FocusEvent e)
 					{
 						changeConfiguration(config, textField, cd, cid);
-						textField.setToolTipText(textField.getText());
 					}
 				});
 
-				textField.setToolTipText(textField.getText());
 				item.add(textField, BorderLayout.SOUTH);
 			}
 
@@ -529,7 +534,11 @@ public class ConfigPanel extends PluginPanel
 					{
 						final JFrame parent = new JFrame();
 						JColorChooser jColorChooser = new JColorChooser(existingColor);
-						jColorChooser.getSelectionModel().addChangeListener(e1 -> colorPicker.setBackground(jColorChooser.getColor()));
+						jColorChooser.getSelectionModel().addChangeListener(e1 ->
+						{
+							colorPicker.setBackground(jColorChooser.getColor());
+							colorPicker.setText("#" + Integer.toHexString(jColorChooser.getColor().getRGB()).substring(2).toUpperCase());
+						});
 						parent.addWindowListener(new WindowAdapter()
 						{
 							@Override
@@ -609,6 +618,24 @@ public class ConfigPanel extends PluginPanel
 					}
 				});
 				item.add(box, BorderLayout.EAST);
+			}
+
+			if (cid.getType() == Keybind.class)
+			{
+				Keybind startingValue = configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), Keybind.class);
+
+				HotkeyButton button = new HotkeyButton(startingValue);
+
+				button.addFocusListener(new FocusAdapter()
+				{
+					@Override
+					public void focusLost(FocusEvent e)
+					{
+						changeConfiguration(config, button, cd, cid);
+					}
+				});
+
+				item.add(button, BorderLayout.EAST);
 			}
 
 			add(item);

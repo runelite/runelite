@@ -49,6 +49,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
@@ -64,6 +66,7 @@ import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ExpandResizeType;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.config.WarningOnExit;
 import net.runelite.client.events.ClientUILoaded;
 import net.runelite.client.events.PluginToolbarButtonAdded;
 import net.runelite.client.events.PluginToolbarButtonRemoved;
@@ -372,7 +375,8 @@ public class ClientUI
 				},
 				() -> client != null
 					&& client instanceof Client
-					&& ((Client) client).getGameState() != GameState.LOGIN_SCREEN);
+					&& showWarningOnExit()
+			);
 
 			container = new JPanel();
 			container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
@@ -397,6 +401,21 @@ public class ClientUI
 			frame.addKeyListener(uiKeyListener);
 			keyManager.registerKeyListener(uiKeyListener);
 		});
+	}
+
+	private boolean showWarningOnExit()
+	{
+		if (config.warningOnExit() == WarningOnExit.ALWAYS)
+		{
+			return true;
+		}
+
+		if (config.warningOnExit() == WarningOnExit.LOGGED_IN)
+		{
+			return ((Client) client).getGameState() != GameState.LOGIN_SCREEN;
+		}
+
+		return false;
 	}
 
 	/**
@@ -531,6 +550,17 @@ public class ClientUI
 		});
 
 		eventBus.post(new ClientUILoaded());
+
+		final boolean isOutdated = !(client instanceof Client);
+		if (isOutdated)
+		{
+			SwingUtilities.invokeLater(() ->
+			{
+				JOptionPane.showMessageDialog(frame, "RuneLite has not yet been updated to work with the latest\n"
+						+ "game update, it will work with reduced functionality until then.",
+					"RuneLite is outdated", INFORMATION_MESSAGE);
+			});
+		}
 	}
 
 	/**

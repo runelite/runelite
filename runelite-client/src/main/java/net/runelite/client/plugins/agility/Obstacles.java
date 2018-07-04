@@ -29,6 +29,7 @@ import com.google.common.collect.ImmutableSet;
 import java.util.List;
 import java.util.Set;
 import static net.runelite.api.ObjectID.*;
+import static net.runelite.api.NullObjectID.*;
 
 public class Obstacles
 {
@@ -110,8 +111,8 @@ public class Obstacles
 		STEPPING_STONE_16466,
 		// Vine east of Shilo Village
 		NULL_26884, NULL_26886,
-		// Stepping stones east of Shilo Village (does not work)
-		NULL_23465, NULL_23466, NULL_23467,
+		// Stepping stones east of Shilo Village
+		STEPPING_STONES, STEPPING_STONES_23646, STEPPING_STONES_23647,
 		// Middle of Karamja
 		A_WOODEN_LOG,
 		// Slayer Tower
@@ -180,7 +181,7 @@ public class Obstacles
 		PILLAR_31561,
 		// Elf Camp Isafdar Tirranwn
 		LOG_BALANCE_3931, LOG_BALANCE_3930, LOG_BALANCE_3929, LOG_BALANCE_3932, DENSE_FOREST_3938, DENSE_FOREST_3939,
-		DENSE_FOREST, LEAVES, LEAVES_3924, LEAVES_3925, STICKS, TRIPWIRE,
+		DENSE_FOREST_3998, DENSE_FOREST_3999, DENSE_FOREST, LEAVES, LEAVES_3924, LEAVES_3925, STICKS, TRIPWIRE,
 		// Gu'Tanoth bridge
 		GAP, GAP_2831
 	);

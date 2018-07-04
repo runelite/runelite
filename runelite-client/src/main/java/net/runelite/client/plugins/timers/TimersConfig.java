@@ -287,4 +287,15 @@ public interface TimersConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 23,
+		keyName = "showStaffOfTheDead",
+		name = "Staff of the Dead timer",
+		description = "Configures whether staff of the dead timer is displayed"
+	)
+	default boolean showStaffOfTheDead()
+	{
+		return true;
+	}
 }

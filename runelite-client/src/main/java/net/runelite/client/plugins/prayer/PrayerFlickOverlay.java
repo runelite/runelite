@@ -53,7 +53,7 @@ public class PrayerFlickOverlay extends Overlay
 		this.client = client;
 	}
 
-	public void onTick()
+	void onTick()
 	{
 		startOfLastTick = Instant.now(); //Reset the tick timer
 		prayersActive = isAnyPrayerActive(); //Check if prayers are active

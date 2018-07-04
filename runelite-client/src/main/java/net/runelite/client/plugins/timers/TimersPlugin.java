@@ -31,6 +31,10 @@ import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.Prayer;
 import net.runelite.api.Varbits;
@@ -38,6 +42,7 @@ import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GraphicChanged;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
@@ -72,6 +77,7 @@ import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD_RAID;
 import static net.runelite.client.plugins.timers.GameTimer.PRAYER_ENHANCE;
 import static net.runelite.client.plugins.timers.GameTimer.SANFEW;
 import static net.runelite.client.plugins.timers.GameTimer.SNARE;
+import static net.runelite.client.plugins.timers.GameTimer.STAFF_OF_THE_DEAD;
 import static net.runelite.client.plugins.timers.GameTimer.STAMINA;
 import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIFIRE;
 import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIPOISON;
@@ -196,6 +202,11 @@ public class TimersPlugin extends Plugin
 		if (!config.showImbuedHeart())
 		{
 			removeGameTimer(IMBUEDHEART);
+		}
+
+		if (!config.showStaffOfTheDead())
+		{
+			removeGameTimer(STAFF_OF_THE_DEAD);
 		}
 
 		if (!config.showVengeance())
@@ -451,6 +462,11 @@ public class TimersPlugin extends Plugin
 			createGameTimer(VENGEANCE);
 		}
 
+		if (config.showStaffOfTheDead() && actor.getGraphic() == STAFF_OF_THE_DEAD.getGraphicId())
+		{
+			createGameTimer(STAFF_OF_THE_DEAD);
+		}
+
 		if (config.showFreezes())
 		{
 			if (actor.getGraphic() == BIND.getGraphicId())
@@ -507,6 +523,47 @@ public class TimersPlugin extends Plugin
 			if (actor.getGraphic() == ICEBARRAGE.getGraphicId())
 			{
 				createGameTimer(ICEBARRAGE);
+			}
+		}
+	}
+
+	/**
+	 * remove SOTD timer when weapon is changed
+	 *
+	 * @param itemContainerChanged
+	 */
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
+	{
+		ItemContainer container = itemContainerChanged.getItemContainer();
+		if (container == client.getItemContainer(InventoryID.EQUIPMENT))
+		{
+			Item[] items = container.getItems();
+			int weaponIdx = EquipmentInventorySlot.WEAPON.getSlotIdx();
+
+			if (items == null || weaponIdx >= items.length)
+			{
+				removeGameTimer(STAFF_OF_THE_DEAD);
+				return;
+			}
+
+			Item weapon = items[weaponIdx];
+			if (weapon == null)
+			{
+				removeGameTimer(STAFF_OF_THE_DEAD);
+				return;
+			}
+
+			switch (weapon.getId())
+			{
+				case ItemID.STAFF_OF_THE_DEAD:
+				case ItemID.TOXIC_STAFF_OF_THE_DEAD:
+				case ItemID.STAFF_OF_LIGHT:
+				case ItemID.TOXIC_STAFF_UNCHARGED:
+					// don't reset timer if still weilding staff
+					return;
+				default:
+					removeGameTimer(STAFF_OF_THE_DEAD);
 			}
 		}
 	}

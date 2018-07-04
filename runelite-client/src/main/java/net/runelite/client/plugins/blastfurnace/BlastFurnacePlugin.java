@@ -26,22 +26,20 @@ package net.runelite.client.plugins.blastfurnace;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.util.Arrays;
-import java.util.Collection;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import static net.runelite.api.ObjectID.CONVEYOR_BELT;
-import static net.runelite.api.ObjectID.NULL_9092;
+import static net.runelite.api.NullObjectID.NULL_9092;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Blast Furnace"
@@ -57,6 +55,9 @@ public class BlastFurnacePlugin extends Plugin
 	private GameObject barDispenser;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private BlastFurnaceOverlay overlay;
 
 	@Inject
@@ -66,8 +67,19 @@ public class BlastFurnacePlugin extends Plugin
 	private BlastFurnaceClickBoxOverlay clickBoxOverlay;
 
 	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(overlay);
+		overlayManager.add(cofferOverlay);
+		overlayManager.add(clickBoxOverlay);
+	}
+
+	@Override
 	protected void shutDown()
 	{
+		overlayManager.remove(overlay);
+		overlayManager.remove(cofferOverlay);
+		overlayManager.remove(clickBoxOverlay);
 		conveyorBelt = null;
 		barDispenser = null;
 	}
@@ -76,12 +88,6 @@ public class BlastFurnacePlugin extends Plugin
 	BlastFurnaceConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(BlastFurnaceConfig.class);
-	}
-
-	@Override
-	public Collection<Overlay> getOverlays()
-	{
-		return Arrays.asList(overlay, cofferOverlay, clickBoxOverlay);
 	}
 
 	@Subscribe
