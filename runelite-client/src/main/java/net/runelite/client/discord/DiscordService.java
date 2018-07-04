@@ -138,6 +138,8 @@ public class DiscordService implements AutoCloseable
 		discordRichPresence.joinSecret = discordPresence.getJoinSecret();
 		discordRichPresence.spectateSecret = discordPresence.getSpectateSecret();
 		discordRichPresence.instance = (byte) (discordPresence.isInstance() ? 1 : 0);
+
+		log.debug("Sending presence update {}", discordPresence);
 		discordRPC.Discord_UpdatePresence(discordRichPresence);
 	}
 
