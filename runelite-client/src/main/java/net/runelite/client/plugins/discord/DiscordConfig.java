@@ -63,4 +63,15 @@ public interface DiscordConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showCityActivity",
+		name = "Show activity at cities",
+		description = "Configures if your activity at cities should be shown.",
+		position = 4
+	)
+	default boolean showCityActivity()
+	{
+		return true;
+	}
 }
