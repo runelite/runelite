@@ -111,7 +111,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: MY MANGLE LAL", "Lammy Langle", new WorldPoint(1688, 3540, 0), "Hosidius House spirit tree patch"),
 		new AnagramClue("This anagram reveals who to speak to next: NO OWNER", "Oronwen", new WorldPoint(1162, 3178, 0), "Lletya Seamstress shop in Lletya", "20"),
 		new AnagramClue("This anagram reveals who to speak to next: NOD MED", "Edmond", new WorldPoint(2566, 3332, 0), "Behind the most NW house in East Ardougne", "3"),
-		new AnagramClue("This anagram reveals who to speak to next: O BIRDZ A ZANY EN PC", "Cap'n Izzy no Beard", new WorldPoint(2807, 3191, 0), "Brimhaven Agility Arena", "33"),
+		new AnagramClue("This anagram reveals who to speak to next: O BIRDZ A ZANY EN PC", "Cap'n Izzy No-Beard", new WorldPoint(2807, 3191, 0), "Brimhaven Agility Arena", "33"),
 		new AnagramClue("This anagram reveals who to speak to next: OK CO", "Cook", new WorldPoint(3207, 3214, 0), "Ground floor of Lumbridge Castle", "9"),
 		new AnagramClue("This anagram reveals who to speak to next: OR ZINC FUMES WARD", "Wizard Frumscone", new WorldPoint(2594, 3086, 0), "Downstairs in the Wizards' Guild"),
 		new AnagramClue("This anagram reveals who to speak to next: OUR OWN NEEDS", "Nurse Wooned", new WorldPoint(1575, 3590, 0), "Shayzien House Infirmary", "19"),
