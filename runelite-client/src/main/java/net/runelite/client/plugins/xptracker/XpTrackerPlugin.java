@@ -25,15 +25,14 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import static com.google.common.base.MoreObjects.firstNonNull;
-import com.google.common.eventbus.Subscribe;
-import com.google.inject.Binder;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.EnumSet;
 import java.util.Objects;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import com.google.common.eventbus.Subscribe;
+import com.google.inject.Binder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -46,7 +45,6 @@ import net.runelite.api.events.GameTick;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
 import net.runelite.http.api.worlds.World;
@@ -54,6 +52,8 @@ import net.runelite.http.api.worlds.WorldClient;
 import net.runelite.http.api.worlds.WorldResult;
 import net.runelite.http.api.worlds.WorldType;
 import net.runelite.http.api.xp.XpClient;
+import static com.google.common.base.MoreObjects.firstNonNull;
+import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
 
 @PluginDescriptor(
 	name = "XP Tracker",
@@ -63,25 +63,129 @@ import net.runelite.http.api.xp.XpClient;
 @Slf4j
 public class XpTrackerPlugin extends Plugin
 {
+	private final XpState xpState = new XpState();
+	private final XpClient xpClient = new XpClient();
 	@Inject
 	private PluginToolbar pluginToolbar;
-
 	@Inject
 	private Client client;
-
 	@Inject
 	private SkillIconManager skillIconManager;
-
 	private NavigationButton navButton;
 	private XpPanel xpPanel;
-
-	private final XpState xpState = new XpState();
-
 	private WorldResult worlds;
 	private XpWorldType lastWorldType;
 	private String lastUsername;
 
-	private final XpClient xpClient = new XpClient();
+	private static VarPlayer startGoalVarpForSkill(final Skill skill)
+	{
+		switch (skill)
+		{
+			case ATTACK:
+				return VarPlayer.ATTACK_GOAL_START;
+			case MINING:
+				return VarPlayer.MINING_GOAL_START;
+			case WOODCUTTING:
+				return VarPlayer.WOODCUTTING_GOAL_START;
+			case DEFENCE:
+				return VarPlayer.DEFENCE_GOAL_START;
+			case MAGIC:
+				return VarPlayer.MAGIC_GOAL_START;
+			case RANGED:
+				return VarPlayer.RANGED_GOAL_START;
+			case HITPOINTS:
+				return VarPlayer.HITPOINTS_GOAL_START;
+			case AGILITY:
+				return VarPlayer.AGILITY_GOAL_START;
+			case STRENGTH:
+				return VarPlayer.STRENGTH_GOAL_START;
+			case PRAYER:
+				return VarPlayer.PRAYER_GOAL_START;
+			case SLAYER:
+				return VarPlayer.SLAYER_GOAL_START;
+			case FISHING:
+				return VarPlayer.FISHING_GOAL_START;
+			case RUNECRAFT:
+				return VarPlayer.RUNECRAFT_GOAL_START;
+			case HERBLORE:
+				return VarPlayer.HERBLORE_GOAL_START;
+			case FIREMAKING:
+				return VarPlayer.FIREMAKING_GOAL_START;
+			case CONSTRUCTION:
+				return VarPlayer.CONSTRUCTION_GOAL_START;
+			case HUNTER:
+				return VarPlayer.HUNTER_GOAL_START;
+			case COOKING:
+				return VarPlayer.COOKING_GOAL_START;
+			case FARMING:
+				return VarPlayer.FARMING_GOAL_START;
+			case CRAFTING:
+				return VarPlayer.CRAFTING_GOAL_START;
+			case SMITHING:
+				return VarPlayer.SMITHING_GOAL_START;
+			case THIEVING:
+				return VarPlayer.THIEVING_GOAL_START;
+			case FLETCHING:
+				return VarPlayer.FLETCHING_GOAL_START;
+			default:
+				return null;
+		}
+	}
+
+	private static VarPlayer endGoalVarpForSkill(final Skill skill)
+	{
+		switch (skill)
+		{
+			case ATTACK:
+				return VarPlayer.ATTACK_GOAL_END;
+			case MINING:
+				return VarPlayer.MINING_GOAL_END;
+			case WOODCUTTING:
+				return VarPlayer.WOODCUTTING_GOAL_END;
+			case DEFENCE:
+				return VarPlayer.DEFENCE_GOAL_END;
+			case MAGIC:
+				return VarPlayer.MAGIC_GOAL_END;
+			case RANGED:
+				return VarPlayer.RANGED_GOAL_END;
+			case HITPOINTS:
+				return VarPlayer.HITPOINTS_GOAL_END;
+			case AGILITY:
+				return VarPlayer.AGILITY_GOAL_END;
+			case STRENGTH:
+				return VarPlayer.STRENGTH_GOAL_END;
+			case PRAYER:
+				return VarPlayer.PRAYER_GOAL_END;
+			case SLAYER:
+				return VarPlayer.SLAYER_GOAL_END;
+			case FISHING:
+				return VarPlayer.FISHING_GOAL_END;
+			case RUNECRAFT:
+				return VarPlayer.RUNECRAFT_GOAL_END;
+			case HERBLORE:
+				return VarPlayer.HERBLORE_GOAL_END;
+			case FIREMAKING:
+				return VarPlayer.FIREMAKING_GOAL_END;
+			case CONSTRUCTION:
+				return VarPlayer.CONSTRUCTION_GOAL_END;
+			case HUNTER:
+				return VarPlayer.HUNTER_GOAL_END;
+			case COOKING:
+				return VarPlayer.COOKING_GOAL_END;
+			case FARMING:
+				return VarPlayer.FARMING_GOAL_END;
+			case CRAFTING:
+				return VarPlayer.CRAFTING_GOAL_END;
+			case SMITHING:
+				return VarPlayer.SMITHING_GOAL_END;
+			case THIEVING:
+				return VarPlayer.THIEVING_GOAL_END;
+			case FLETCHING:
+				return VarPlayer.FLETCHING_GOAL_END;
+			default:
+				return null;
+		}
+	}
 
 	@Override
 	public void configure(Binder binder)
@@ -231,6 +335,7 @@ public class XpTrackerPlugin extends Plugin
 	/**
 	 * Reset an individual skill with the client's current known state of the skill
 	 * Will also clear the skill from the UI.
+	 *
 	 * @param skill Skill to reset
 	 */
 	public void resetSkillState(Skill skill)
@@ -244,6 +349,7 @@ public class XpTrackerPlugin extends Plugin
 
 	/**
 	 * Reset all skills except for the one provided
+	 *
 	 * @param skill Skill to ignore during reset
 	 */
 	public void resetOtherSkillState(Skill skill)
@@ -257,6 +363,10 @@ public class XpTrackerPlugin extends Plugin
 		}
 	}
 
+	public void handlePauseFor(Skill skill)
+	{
+		xpState.handlePause(skill);
+	}
 
 	@Subscribe
 	public void onXpChanged(ExperienceChanged event)
@@ -292,115 +402,5 @@ public class XpTrackerPlugin extends Plugin
 	public XpSnapshotSingle getSkillSnapshot(Skill skill)
 	{
 		return xpState.getSkillSnapshot(skill);
-	}
-
-	private static VarPlayer startGoalVarpForSkill(final Skill skill)
-	{
-		switch (skill)
-		{
-			case ATTACK:
-				return VarPlayer.ATTACK_GOAL_START;
-			case MINING:
-				return VarPlayer.MINING_GOAL_START;
-			case WOODCUTTING:
-				return VarPlayer.WOODCUTTING_GOAL_START;
-			case DEFENCE:
-				return VarPlayer.DEFENCE_GOAL_START;
-			case MAGIC:
-				return VarPlayer.MAGIC_GOAL_START;
-			case RANGED:
-				return VarPlayer.RANGED_GOAL_START;
-			case HITPOINTS:
-				return VarPlayer.HITPOINTS_GOAL_START;
-			case AGILITY:
-				return VarPlayer.AGILITY_GOAL_START;
-			case STRENGTH:
-				return VarPlayer.STRENGTH_GOAL_START;
-			case PRAYER:
-				return VarPlayer.PRAYER_GOAL_START;
-			case SLAYER:
-				return VarPlayer.SLAYER_GOAL_START;
-			case FISHING:
-				return VarPlayer.FISHING_GOAL_START;
-			case RUNECRAFT:
-				return VarPlayer.RUNECRAFT_GOAL_START;
-			case HERBLORE:
-				return VarPlayer.HERBLORE_GOAL_START;
-			case FIREMAKING:
-				return VarPlayer.FIREMAKING_GOAL_START;
-			case CONSTRUCTION:
-				return VarPlayer.CONSTRUCTION_GOAL_START;
-			case HUNTER:
-				return VarPlayer.HUNTER_GOAL_START;
-			case COOKING:
-				return VarPlayer.COOKING_GOAL_START;
-			case FARMING:
-				return VarPlayer.FARMING_GOAL_START;
-			case CRAFTING:
-				return VarPlayer.CRAFTING_GOAL_START;
-			case SMITHING:
-				return VarPlayer.SMITHING_GOAL_START;
-			case THIEVING:
-				return VarPlayer.THIEVING_GOAL_START;
-			case FLETCHING:
-				return VarPlayer.FLETCHING_GOAL_START;
-			default:
-				return null;
-		}
-	}
-
-	private static VarPlayer endGoalVarpForSkill(final Skill skill)
-	{
-		switch (skill)
-		{
-			case ATTACK:
-				return VarPlayer.ATTACK_GOAL_END;
-			case MINING:
-				return VarPlayer.MINING_GOAL_END;
-			case WOODCUTTING:
-				return VarPlayer.WOODCUTTING_GOAL_END;
-			case DEFENCE:
-				return VarPlayer.DEFENCE_GOAL_END;
-			case MAGIC:
-				return VarPlayer.MAGIC_GOAL_END;
-			case RANGED:
-				return VarPlayer.RANGED_GOAL_END;
-			case HITPOINTS:
-				return VarPlayer.HITPOINTS_GOAL_END;
-			case AGILITY:
-				return VarPlayer.AGILITY_GOAL_END;
-			case STRENGTH:
-				return VarPlayer.STRENGTH_GOAL_END;
-			case PRAYER:
-				return VarPlayer.PRAYER_GOAL_END;
-			case SLAYER:
-				return VarPlayer.SLAYER_GOAL_END;
-			case FISHING:
-				return VarPlayer.FISHING_GOAL_END;
-			case RUNECRAFT:
-				return VarPlayer.RUNECRAFT_GOAL_END;
-			case HERBLORE:
-				return VarPlayer.HERBLORE_GOAL_END;
-			case FIREMAKING:
-				return VarPlayer.FIREMAKING_GOAL_END;
-			case CONSTRUCTION:
-				return VarPlayer.CONSTRUCTION_GOAL_END;
-			case HUNTER:
-				return VarPlayer.HUNTER_GOAL_END;
-			case COOKING:
-				return VarPlayer.COOKING_GOAL_END;
-			case FARMING:
-				return VarPlayer.FARMING_GOAL_END;
-			case CRAFTING:
-				return VarPlayer.CRAFTING_GOAL_END;
-			case SMITHING:
-				return VarPlayer.SMITHING_GOAL_END;
-			case THIEVING:
-				return VarPlayer.THIEVING_GOAL_END;
-			case FLETCHING:
-				return VarPlayer.FLETCHING_GOAL_END;
-			default:
-				return null;
-		}
 	}
 }

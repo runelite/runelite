@@ -27,6 +27,7 @@ package net.runelite.client.plugins.xptracker;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,10 +43,10 @@ class XpStateSingle
 	@Getter
 	private final int startXp;
 
-	@Getter
 	private int xpGained = 0;
-
+	private int xpPaused;
 	private Instant skillTimeStart = null;
+	private Instant skillTimePause = null;
 	private int actions = 0;
 	private int startLevelExp = 0;
 	private int endLevelExp = 0;
@@ -73,6 +74,11 @@ class XpStateSingle
 		return (int) ((1.0 / (getTimeElapsedInSeconds() / 3600.0)) * value);
 	}
 
+	int getXpGained()
+	{
+		return xpGained - xpPaused;
+	}
+
 	private long getTimeElapsedInSeconds()
 	{
 		if (skillTimeStart == null)
@@ -80,11 +86,24 @@ class XpStateSingle
 			return 0;
 		}
 
+		final long seconds;
+		if (isPaused())
+		{
+			seconds = Duration.between(skillTimeStart, skillTimePause).getSeconds();
+		}
+		else
+		{
+			seconds = Duration.between(skillTimeStart, Instant.now()).getSeconds();
+		}
+
+		//To prevent total xp from getting wrong values when skill is paused we need to offset the xp/hr during the pause
+
 		// If the skill started just now, we can divide by near zero, this results in odd behavior.
 		// To prevent that, pretend the skill has been active for a minute (60 seconds)
 		// This will create a lower estimate for the first minute,
 		// but it isn't ridiculous like saying 2 billion XP per hour.
-		return Math.max(60, Duration.between(skillTimeStart, Instant.now()).getSeconds());
+
+		return Math.max(60, seconds);
 	}
 
 	private int getXpRemaining()
@@ -165,10 +184,27 @@ class XpStateSingle
 		return String.format("%02d:%02d", durationMinutes, durationSeconds);
 	}
 
+	boolean isPaused()
+	{
+		return skillTimePause != null;
+	}
+
+	void setPaused(boolean paused)
+	{
+		if (paused)
+		{
+			this.skillTimePause = Instant.now();
+		}
+		else
+		{
+			skillTimeStart = skillTimeStart.plus(Duration.between(skillTimePause, Instant.now()).getSeconds(), ChronoUnit.SECONDS);
+			skillTimePause = null;
+		}
+	}
 
 	int getXpHr()
 	{
-		return toHourly(xpGained);
+		return toHourly(xpGained - xpPaused);
 	}
 
 	boolean update(int currentXp, int goalStartXp, int goalEndXp)
@@ -181,6 +217,12 @@ class XpStateSingle
 
 		int originalXp = xpGained + startXp;
 		int actionExp = currentXp - originalXp;
+
+		//If we are currently paused we dont want to update
+		if (isPaused())
+		{
+			xpPaused += actionExp;
+		}
 
 		// No experience gained
 		if (actionExp == 0)
@@ -243,7 +285,7 @@ class XpStateSingle
 		return XpSnapshotSingle.builder()
 			.startLevel(Experience.getLevelForXp(startLevelExp))
 			.endLevel(Experience.getLevelForXp(endLevelExp))
-			.xpGainedInSession(xpGained)
+			.xpGainedInSession(getXpGained())
 			.xpRemainingToGoal(getXpRemaining())
 			.xpPerHour(getXpHr())
 			.skillProgressToGoal(getSkillProgress())

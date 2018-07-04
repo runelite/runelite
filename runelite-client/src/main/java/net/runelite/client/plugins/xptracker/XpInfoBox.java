@@ -27,14 +27,11 @@ package net.runelite.client.plugins.xptracker;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.io.IOException;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
@@ -54,6 +51,10 @@ import net.runelite.client.util.SwingUtil;
 @Slf4j
 class XpInfoBox extends JPanel
 {
+	private static final String PAUSED_STATE = "Resume";
+	private static final String UNPAUSED_STATE = "Pause";
+
+	private final JMenuItem pause;
 	private final JPanel panel;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -90,6 +91,20 @@ class XpInfoBox extends JPanel
 		final JMenuItem openXpTracker = new JMenuItem("Open online tracker");
 		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(client.getLocalPlayer(), skill)));
 
+		// Create skill icon panel for pause icon overlay
+		SkillIconPanel skillIconPanel = new SkillIconPanel(iconManager.getSkillImage(skill));
+
+		// Create pause menu
+		pause = new JMenuItem(UNPAUSED_STATE);
+		pause.addActionListener(e ->
+		{
+			boolean paused = pause.getText().equalsIgnoreCase(UNPAUSED_STATE);
+			pause.setText(paused ? PAUSED_STATE : UNPAUSED_STATE);
+			xpTrackerPlugin.handlePauseFor(skill);
+			skillIconPanel.setPaused(paused);
+			repaint();
+		});
+
 		// Create reset menu
 		final JMenuItem reset = new JMenuItem("Reset");
 		reset.addActionListener(e -> xpTrackerPlugin.resetSkillState(skill));
@@ -102,13 +117,9 @@ class XpInfoBox extends JPanel
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		popupMenu.add(openXpTracker);
+		popupMenu.add(pause);
 		popupMenu.add(reset);
 		popupMenu.add(resetOthers);
-
-		JLabel skillIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(skill)));
-		skillIcon.setHorizontalAlignment(SwingConstants.CENTER);
-		skillIcon.setVerticalAlignment(SwingConstants.CENTER);
-		skillIcon.setPreferredSize(new Dimension(35, 35));
 
 		headerPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		headerPanel.setLayout(new BorderLayout());
@@ -127,7 +138,7 @@ class XpInfoBox extends JPanel
 		statsPanel.add(expHour);
 		statsPanel.add(actionsLeft);
 
-		headerPanel.add(skillIcon, BorderLayout.WEST);
+		headerPanel.add(skillIconPanel, BorderLayout.WEST);
 		headerPanel.add(statsPanel, BorderLayout.CENTER);
 
 		JPanel progressWrapper = new JPanel();
@@ -142,7 +153,7 @@ class XpInfoBox extends JPanel
 		progressWrapper.add(progressBar, BorderLayout.NORTH);
 
 		container.add(headerPanel, BorderLayout.NORTH);
-		container.add(progressWrapper, BorderLayout.SOUTH);
+		container.add(progressWrapper, BorderLayout.CENTER);
 
 		container.setComponentPopupMenu(popupMenu);
 		progressBar.setComponentPopupMenu(popupMenu);
@@ -150,8 +161,16 @@ class XpInfoBox extends JPanel
 		add(container, BorderLayout.NORTH);
 	}
 
+	public static String htmlLabel(String key, int value)
+	{
+		String valueStr = StackFormatter.quantityToRSDecimalStack(value);
+
+		return "<html><body style = 'color:" + SwingUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "'>" + key + "<span style = 'color:white'>" + valueStr + "</span></body></html>";
+	}
+
 	void reset()
 	{
+		pause.setText("Pause");
 		container.remove(statsPanel);
 		panel.remove(this);
 		panel.revalidate();
@@ -164,6 +183,11 @@ class XpInfoBox extends JPanel
 
 	private void rebuildAsync(boolean updated, XpSnapshotSingle xpSnapshotSingle)
 	{
+		if (pause.getText().equals("Resume"))
+		{
+			return;
+		}
+
 		if (updated)
 		{
 			if (getParent() != panel)
@@ -197,12 +221,4 @@ class XpInfoBox extends JPanel
 		// Update exp per hour seperately, everytime (not only when there's an update)
 		expHour.setText(htmlLabel("XP/Hour: ", xpSnapshotSingle.getXpPerHour()));
 	}
-
-	public static String htmlLabel(String key, int value)
-	{
-		String valueStr = StackFormatter.quantityToRSDecimalStack(value);
-
-		return "<html><body style = 'color:" + SwingUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "'>" + key + "<span style = 'color:white'>" + valueStr + "</span></body></html>";
-	}
-
 }
