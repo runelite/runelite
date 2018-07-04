@@ -209,7 +209,32 @@ enum DiscordGameEventType
 	DUNGEON_WATERFALL("Waterfall Dungeon", DiscordAreaType.DUNGEONS, 10394),
 	DUNGEON_WHITE_WOLF_MOUNTAIN_CAVES("White Wolf Mountain Caves", DiscordAreaType.DUNGEONS, 11418, 11419, 11675),
 	DUNGEON_WITCHAVEN_SHRINE("Witchhaven Shrine Dungeon", DiscordAreaType.DUNGEONS, 10903),
-	DUNGEON_YANILLE_AGILITY("Yanile Agility Dungeon", DiscordAreaType.DUNGEONS, 10388);
+	DUNGEON_YANILLE_AGILITY("Yanile Agility Dungeon", DiscordAreaType.DUNGEONS, 10388),
+
+	// Minigames
+	MG_BARBARIAN_ASSAULT("Barbarian Assault", DiscordAreaType.MINIGAMES, 10332),
+	MG_BARROWS("Barrows", DiscordAreaType.MINIGAMES, 14131, 14231),
+	MG_BLAST_FURNACE("Blast Furnace", DiscordAreaType.MINIGAMES, 7757),
+	MG_BRIMHAVEN_AGILITY_ARENA("Brimhaven Agility Arena", DiscordAreaType.MINIGAMES, 11157),
+	MG_BURTHOPE_GAMES_ROOM("Burthope Games Room", DiscordAreaType.MINIGAMES, 8781),
+	MG_CASTLE_WARS("Castle Wars", DiscordAreaType.MINIGAMES, 9520),
+	MG_CLAN_WARS("Clan Wars", DiscordAreaType.MINIGAMES, 13135, 13134, 13133, 13131, 13130, 13387, 13386),
+	MG_DUEL_ARENA("Duel Arena", DiscordAreaType.MINIGAMES, 13362),
+	MG_FISHING_TRAWLER("Fishing Trawler", DiscordAreaType.MINIGAMES, 7499),
+	MG_INFERNO("The Inferno", DiscordAreaType.MINIGAMES, 9043),
+	MG_LAST_MAN_STANDING("Last Man Standing", DiscordAreaType.MINIGAMES, 13660, 13659, 13658, 13916, 13915, 13914),
+	MG_MAGE_TRAINING_ARENA("Mage Training Arena", DiscordAreaType.MINIGAMES, 13462, 13463),
+	MG_NIGHTMARE_ZONE("Nightmare Zone", DiscordAreaType.MINIGAMES, 9033),
+	MG_PEST_CONTROL("Pest Control", DiscordAreaType.MINIGAMES, 10536),
+	MG_PYRAMID_PLUNDER("Pyramid Plunder", DiscordAreaType.MINIGAMES, 7749),
+	MG_ROGUES_DEN("Rogues' Den", DiscordAreaType.MINIGAMES, 11855, 11854, 12111, 12110),
+	MG_SORCERESS_GARDEN("Sorceress's Garden", DiscordAreaType.MINIGAMES, 11605),
+	MG_TEMPLE_TREKKING("Temple Trekking", DiscordAreaType.MINIGAMES, 8014, 8270, 8256, 8782, 9038, 9294, 9550, 9806),
+	MG_TITHE_FARM("Tithe Farm", DiscordAreaType.MINIGAMES, 6968),
+	MG_TROUBLE_BREWING("Trouble Brewing", DiscordAreaType.MINIGAMES, 15150),
+	MG_TZHAAR_FIGHT_CAVES("Tzhaar Fight Caves", DiscordAreaType.MINIGAMES, 9551),
+	MG_TZHAAR_FIGHT_PITS("Tzhaar Fight Pits", DiscordAreaType.MINIGAMES, 9552),
+	MG_VOLCANIC_MINE("Volcanic Mine", DiscordAreaType.MINIGAMES, 15263, 15262);
 
 	private static final Map<Integer, DiscordGameEventType> FROM_REGION = new HashMap<>();
 

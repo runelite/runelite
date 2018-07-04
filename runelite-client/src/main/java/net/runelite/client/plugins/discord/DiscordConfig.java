@@ -85,4 +85,15 @@ public interface DiscordConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showMinigameActivity",
+		name = "Show activity at minigames",
+		description = "Configures if your activity at minigames should be shown.",
+		position = 6
+	)
+	default boolean showMinigameActivity()
+	{
+		return true;
+	}
 }
