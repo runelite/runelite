@@ -50,4 +50,15 @@ public interface DiscordConfig extends Config
 	{
 		return 10;
 	}
+
+	@ConfigItem(
+		keyName = "showSkillActivity",
+		name = "Show activity while skilling",
+		description = "Configures if your activity while training skills should be shown.",
+		position = 2
+	)
+	default boolean showSkillingActivity()
+	{
+		return true;
+	}
 }

@@ -126,7 +126,7 @@ public class DiscordPlugin extends Plugin
 
 		final DiscordGameEventType discordGameEventType = DiscordGameEventType.fromSkill(event.getSkill());
 
-		if (discordGameEventType != null)
+		if (discordGameEventType != null && config.showSkillingActivity())
 		{
 			discordState.triggerEvent(discordGameEventType, config.actionDelay());
 		}
