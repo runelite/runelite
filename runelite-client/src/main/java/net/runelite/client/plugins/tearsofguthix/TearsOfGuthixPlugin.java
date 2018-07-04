@@ -25,7 +25,9 @@
 package net.runelite.client.plugins.tearsofguthix;
 
 import com.google.common.eventbus.Subscribe;
+
 import javax.inject.Inject;
+
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.events.GameTick;
@@ -34,100 +36,101 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-        name = "Tears of Guthix",
-        enabledByDefault = true
+		name = "Tears of Guthix",
+		enabledByDefault = true
 )
 
 @Slf4j
 public class TearsOfGuthixPlugin extends Plugin
 {
-    @Inject
-    private Client client;
+	@Inject
+	private Client client;
 
-    @Inject
-    private OverlayManager overlayManager;
+	@Inject
+	private OverlayManager overlayManager;
 
-    @Inject
-    private TearsOfGuthixOverlay overlay;
+	@Inject
+	private TearsOfGuthixOverlay overlay;
 
-    private int tearsOfGuthixRegionID = 12948;
+	private int tearsOfGuthixRegionID = 12948;
 
-    public Skill playerLowestSkill;
+	public Skill playerLowestSkill;
 
-    public boolean overlayActivated = false;
+	public boolean overlayActivated = false;
 
-    @Override
-    protected void startUp() throws Exception
-    {
-        overlayManager.add(overlay);
-    }
+	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(overlay);
+	}
 
-    @Override
-    protected void shutDown() throws Exception
-    {
-        overlayManager.remove(overlay);
-    }
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
+	}
 
-    @Subscribe
-    public void onGameTick(GameTick gameTick)
-    {
-        if(client.getGameState() != GameState.LOGGED_IN)
-        {
-            return;
-        }
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
 
-        if(client.getLocalPlayer().getWorldLocation().getRegionID() == tearsOfGuthixRegionID)
-        {
-            activateTearsOverlay();
-        }
-        else
-        {
-            disableTearsOverlay();
-        }
-    }
+		if (client.getLocalPlayer().getWorldLocation().getRegionID() == tearsOfGuthixRegionID)
+		{
+			activateTearsOverlay();
+		}
+		else
+		{
+			disableTearsOverlay();
+		}
+	}
 
-    private void activateTearsOverlay()
-    {
-        if(!overlayActivated)
-        {
-            //Check to make sure player experience is loaded
-            if(client.getSkillExperience(Skill.HITPOINTS) > 0)
-            {
-                playerLowestSkill = getLowestPlayerSkill();
-                overlayActivated = true;
-            }
-        }
-    }
+	private void activateTearsOverlay()
+	{
+		if (!overlayActivated)
+		{
+			//Check to make sure player experience is loaded
+			if (client.getSkillExperience(Skill.HITPOINTS) > 0)
+			{
+				playerLowestSkill = getLowestPlayerSkill();
+				overlayActivated = true;
+			}
+		}
+	}
 
-    private void disableTearsOverlay()
-    {
-        if(overlayActivated)
-        {
-            overlayActivated = false;
-        }
-    }
+	private void disableTearsOverlay()
+	{
+		if (overlayActivated)
+		{
+			overlayActivated = false;
+		}
+	}
 
-    private Skill getLowestPlayerSkill()
-    {
-        Skill[] playerSkills = Skill.values();
+	private Skill getLowestPlayerSkill()
+	{
+		Skill[] playerSkills = Skill.values();
 
-        Skill lowestExperienceSkill = null;
-        int lowestExperienceAmount = Integer.MAX_VALUE;
+		Skill lowestExperienceSkill = null;
+		int lowestExperienceAmount = Integer.MAX_VALUE;
 
-        for(Skill skill : playerSkills)
-        {
-            int currentSkillExp = client.getSkillExperience(skill);
-            if(currentSkillExp < lowestExperienceAmount)
-            {
-                lowestExperienceAmount = currentSkillExp;
-                lowestExperienceSkill = skill;
-            }
-        }
-        return lowestExperienceSkill;
-    }
+		for (Skill skill : playerSkills)
+		{
+			int currentSkillExp = client.getSkillExperience(skill);
+			if (currentSkillExp < lowestExperienceAmount)
+			{
+				lowestExperienceAmount = currentSkillExp;
+				lowestExperienceSkill = skill;
+			}
+		}
+		return lowestExperienceSkill;
+	}
 
-    public Client getClient(){
-        return client;
-    }
+	public Client getClient()
+	{
+		return client;
+	}
 
 }
