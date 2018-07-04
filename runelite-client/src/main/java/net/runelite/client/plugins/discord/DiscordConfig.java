@@ -52,4 +52,15 @@ public interface DiscordConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showBossActivity",
+		name = "Show activity at bosses",
+		description = "Configures if your activity at bosses should be shown.",
+		position = 3
+	)
+	default boolean showBossActivity()
+	{
+		return true;
+	}
 }

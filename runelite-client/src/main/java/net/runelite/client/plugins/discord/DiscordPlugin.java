@@ -231,7 +231,12 @@ public class DiscordPlugin extends Plugin
 			return false;
 		}
 
-		return true;
+		switch (event.getDiscordAreaType())
+		{
+			case BOSSES: return config.showBossActivity();
+		}
+
+		return false;
 	}
 
 	private int getCurrentRegion()

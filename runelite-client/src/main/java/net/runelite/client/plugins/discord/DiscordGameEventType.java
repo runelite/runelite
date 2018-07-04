@@ -60,7 +60,24 @@ enum DiscordGameEventType
 	TRAINING_FARMING(Skill.FARMING),
 	TRAINING_RUNECRAFT(Skill.RUNECRAFT),
 	TRAINING_HUNTER(Skill.HUNTER),
-	TRAINING_CONSTRUCTION(Skill.CONSTRUCTION);
+	TRAINING_CONSTRUCTION(Skill.CONSTRUCTION),
+
+	// Bosses
+	BOSS_ABYSSAL_SIRE("Abyssal Sire", DiscordAreaType.BOSSES, 11851, 11850, 12363, 12362),
+	BOSS_CERBERUS("Cerberus", DiscordAreaType.BOSSES, 4883, 5140, 5395),
+	BOSS_COMMANDER_ZILYANA("Commander Zilyana", DiscordAreaType.BOSSES, 11602),
+	BOSS_DKS("Dagannoth Kings", DiscordAreaType.BOSSES, 11588, 11589),
+	BOSS_GENERAL_GRAARDOR("General Graardor", DiscordAreaType.BOSSES, 11347),
+	BOSS_GIANT_MOLE("Giant Mole", DiscordAreaType.BOSSES, 6993, 6992),
+	BOSS_GROTESQUE_GUARDIANS("Grotesque Guardians", DiscordAreaType.BOSSES, 6727),
+	BOSS_KQ("Kalphite Queen", DiscordAreaType.BOSSES, 13972),
+	BOSS_KRAKEN("Kraken", DiscordAreaType.BOSSES, 9116),
+	BOSS_KREEARRA("Kree'arra", DiscordAreaType.BOSSES, 11346),
+	BOSS_KRIL_TSUTSAROTH("K'ril Tsutsaroth", DiscordAreaType.BOSSES, 11603),
+	BOSS_SKOTIZO("Skotizo", DiscordAreaType.BOSSES, 6810),
+	BOSS_SMOKE_DEVIL("Thermonuclear smoke devil", DiscordAreaType.BOSSES, 9363, 9619),
+	BOSS_VORKATH("Vorkath", DiscordAreaType.BOSSES, 9023),
+	BOSS_ZULRAH("Zulrah", DiscordAreaType.BOSSES, 9007);
 
 	private static final Map<Integer, DiscordGameEventType> FROM_REGION = new HashMap<>();
 
