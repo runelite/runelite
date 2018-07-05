@@ -128,7 +128,7 @@ public class LootLogger
 	 */
 	private Set<InventoryItem> thisTickInventoryItems;
 
-	private Set<InventoryItem> thisTickInventoryDiff;
+	private Set<Item> thisTickInventoryPickDrop;
 
 	private boolean insideChambersOfXeric = false;
 	private boolean hasOpenedRaidsRewardChest = false;
@@ -267,12 +267,6 @@ public class LootLogger
 	 */
 	private Set<InventoryItem> calculateTrueInventoryDifferences()
 	{
-		// Prevent the same code from running twice in one tick
-		if (thisTickInventoryDiff != null)
-		{
-			return thisTickInventoryDiff;
-		}
-
 		Set<InventoryItem> results = new HashSet<>();
 		Set<InventoryItem> inventoryChanges = Sets.symmetricDifference(prevTickInventoryItems, thisTickInventoryItems);
 
@@ -319,7 +313,6 @@ public class LootLogger
 			handledSlots.add(item.getSlot());
 		}
 
-		thisTickInventoryDiff = results;
 		return results;
 	}
 
@@ -332,6 +325,12 @@ public class LootLogger
 	 */
 	private Set<Item> calculateInventoryPickedDroppedItems(Set<InventoryItem> prevTileItems, Set<InventoryItem> currTileItems)
 	{
+		// Prevent the same code from running twice in one tick
+		if (thisTickInventoryPickDrop != null)
+		{
+			return thisTickInventoryPickDrop;
+		}
+
 		// If there's nothing in both sets then there's no need to check what changed in the inventory.
 		if ((currTileItems == null || currTileItems.size() == 0) && (prevTileItems == null || prevTileItems.size() == 0))
 		{
@@ -427,6 +426,7 @@ public class LootLogger
 			}
 		}
 
+		thisTickInventoryPickDrop = results;
 		return results;
 	}
 
@@ -1033,7 +1033,7 @@ public class LootLogger
 			this.thisTickInventoryItems = null;
 		}
 
-		thisTickInventoryDiff = null;
+		thisTickInventoryPickDrop = null;
 	}
 
 	/*
