@@ -31,7 +31,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
@@ -44,9 +43,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
 import javax.swing.BorderFactory;
@@ -496,7 +492,7 @@ public class ConfigPanel extends PluginPanel
 				box.setForeground(Color.WHITE);
 				box.setFocusable(false);
 
-				String currentlyConfigured = configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName());
+				String currentlyConfigured = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName());
 
 				if (FontManager.lookupFont(currentlyConfigured) != null)
 				{
@@ -506,14 +502,14 @@ public class ConfigPanel extends PluginPanel
 				else
 				{
 					log.debug("Selected font wasn't found on this system, resetting font back to runescape small");
-					configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), FontManager.getRunescapeSmallFont());
+					configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), FontManager.getRunescapeSmallFont());
 				}
 				box.addItemListener(e ->
 				{
 					if (e.getStateChange() == ItemEvent.SELECTED && box.getSelectedItem() != null)
 					{
 						final Font selected = FontManager.lookupFont(box.getSelectedItem().toString());
-						configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), selected);
+						configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), selected);
 						box.setToolTipText(box.getSelectedItem().toString());
 					}
 				});
