@@ -43,6 +43,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import net.runelite.api.events.GameTick;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.concurrent.ScheduledExecutorService;
@@ -108,6 +109,7 @@ public class ScreenshotPlugin extends Plugin
 
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile("Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
+	private static final Pattern LEVEL_UP_PATTERN2 = Pattern.compile("Congratulations, you've just advanced your Crafting level. You are now level 2.");
 
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
 		"You feel something weird sneaking into your backpack",
@@ -135,6 +137,8 @@ public class ScreenshotPlugin extends Plugin
 	private Integer chambersOfXericNumber;
 
 	private Integer theatreOfBloodNumber;
+
+	private Boolean shouldTakeScreenshot = false;
 
 	@Inject
 	private ScreenshotConfig config;
@@ -236,6 +240,37 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		String fileName;
+		if (!shouldTakeScreenshot)
+		{
+			return;
+		}
+
+		if (client.getWidget(WidgetInfo.LEVEL_UP_LEVEL) != null)
+		{
+			shouldTakeScreenshot = false;
+			fileName = parseLevelUpWidget(WidgetInfo.LEVEL_UP_LEVEL);
+		}
+		else if (client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT) != null)
+		{
+			System.out.println("OwO");
+			shouldTakeScreenshot = false;
+			fileName = parseLevelUpWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
+		}
+		else
+		{
+			shouldTakeScreenshot = false;
+			return;
+		}
+		if (fileName != null)
+		{
+			takeScreenshot(fileName);
+		}
+	}
+
+	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
@@ -307,6 +342,8 @@ public class ScreenshotPlugin extends Plugin
 
 		switch (groupId)
 		{
+			case QUEST_COMPLETED_GROUP_ID:
+			case CLUE_SCROLL_REWARD_GROUP_ID:
 			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
 			case THEATRE_OF_BLOOD_REWARD_GROUP_ID:
 			case BARROWS_REWARD_GROUP_ID:
@@ -324,13 +361,6 @@ public class ScreenshotPlugin extends Plugin
 				break;
 			case KINGDOM_GROUP_ID:
 				if (!config.screenshotKingdom())
-				{
-					return;
-				}
-				break;
-			case QUEST_COMPLETED_GROUP_ID:
-			case CLUE_SCROLL_REWARD_GROUP_ID:
-				if (!config.screenshotRewards())
 				{
 					return;
 				}
@@ -380,13 +410,13 @@ public class ScreenshotPlugin extends Plugin
 			}
 			case LEVEL_UP_GROUP_ID:
 			{
-				fileName = parseLevelUpWidget(WidgetInfo.LEVEL_UP_LEVEL);
-				break;
+				shouldTakeScreenshot = true;
+				return;
 			}
 			case DIALOG_SPRITE_GROUP_ID:
 			{
-				fileName = parseLevelUpWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
-				break;
+				shouldTakeScreenshot = true;
+				return;
 			}
 			case QUEST_COMPLETED_GROUP_ID:
 			{
@@ -417,11 +447,6 @@ public class ScreenshotPlugin extends Plugin
 			}
 			default:
 				return;
-		}
-
-		if (fileName == null)
-		{
-			return;
 		}
 
 		takeScreenshot(fileName);
