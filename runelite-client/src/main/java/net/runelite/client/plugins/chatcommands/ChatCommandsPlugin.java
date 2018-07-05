@@ -349,68 +349,86 @@ public class ChatCommandsPlugin extends Plugin
 	{
 		final HiscoreLookup lookup = getCorrectLookupFor(setMessage);
 
+		ChatMessageBuilder chatMessageBuilder = new ChatMessageBuilder();
+		String level = search.toLowerCase();
+
+		chatMessageBuilder.append("Clue scroll (" + level + ")").append(": ")
+			.append(ChatColorType.HIGHLIGHT);
+
 		try
 		{
-			final Skill hiscoreSkill;
-			final HiscoreResult result = hiscoreClient.lookup(lookup.getName(), lookup.getEndpoint());
-			String level = search.toLowerCase();
-
-			switch (level)
+			try
 			{
-				case "easy":
-					hiscoreSkill = result.getClueScrollEasy();
-					break;
-				case "medium":
-					hiscoreSkill = result.getClueScrollMedium();
-					break;
-				case "hard":
-					hiscoreSkill = result.getClueScrollHard();
-					break;
-				case "elite":
-					hiscoreSkill = result.getClueScrollElite();
-					break;
-				case "master":
-					hiscoreSkill = result.getClueScrollMaster();
-					break;
-				case "total":
-					hiscoreSkill = result.getClueScrollAll();
-					break;
-				default:
-					return;
+				final HiscoreResult result = hiscoreClient.lookup(lookup.getName(), lookup.getEndpoint());
+				final Skill hiscoreSkill;
+				switch (level)
+				{
+					case "easy":
+						hiscoreSkill = result.getClueScrollEasy();
+						break;
+					case "medium":
+						hiscoreSkill = result.getClueScrollMedium();
+						break;
+					case "hard":
+						hiscoreSkill = result.getClueScrollHard();
+						break;
+					case "elite":
+						hiscoreSkill = result.getClueScrollElite();
+						break;
+					case "master":
+						hiscoreSkill = result.getClueScrollMaster();
+						break;
+					case "total":
+						hiscoreSkill = result.getClueScrollAll();
+						break;
+					default:
+						hiscoreSkill = null;
+						break;
+				}
+
+				int quantity = hiscoreSkill.getLevel();
+				int rank = hiscoreSkill.getRank();
+
+				if (quantity == -1)
+				{
+					quantity = 0;
+				}
+
+				chatMessageBuilder.append(Integer.toString(quantity))
+					.append(ChatColorType.NORMAL)
+					.append(" Rank: ")
+					.append(ChatColorType.HIGHLIGHT);
+
+				if (rank == -1)
+				{
+					chatMessageBuilder.append("Unranked");
+				}
+				else
+				{
+					chatMessageBuilder.append(String.format("%,d", rank));
+				}
 			}
-
-			int quantity = hiscoreSkill.getLevel();
-			int rank = hiscoreSkill.getRank();
-			if (quantity == -1)
+			catch (NullPointerException e)
 			{
-				return;
-			}
-
-			ChatMessageBuilder chatMessageBuilder = new ChatMessageBuilder()
-				.append("Clue scroll (" + level + ")").append(": ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(Integer.toString(quantity));
-
-			if (rank != -1)
-			{
-				chatMessageBuilder.append(ChatColorType.NORMAL)
+				chatMessageBuilder.append("Cannot determine")
+					.append(ChatColorType.NORMAL)
 					.append(" Rank: ")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(String.format("%,d", rank));
+					.append("Unranked");
 			}
 
-			String response = chatMessageBuilder.build();
-
-			log.debug("Setting response {}", response);
-			final MessageNode messageNode = setMessage.getMessageNode();
-			messageNode.setRuneLiteFormatMessage(response);
-			chatMessageManager.update(messageNode);
-			client.refreshChat();
 		}
 		catch (IOException ex)
 		{
 			log.warn("error looking up clues", ex);
+			chatMessageBuilder.append("Error fetching for data " + level);
 		}
+
+		final String response = chatMessageBuilder.build();
+		final MessageNode messageNode = setMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
+		client.refreshChat();
 	}
 
 	/**
