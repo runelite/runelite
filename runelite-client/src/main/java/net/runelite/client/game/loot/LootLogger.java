@@ -28,6 +28,7 @@ package net.runelite.client.game.loot;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import java.util.ArrayList;
@@ -37,7 +38,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -74,6 +74,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.loot.data.InventoryItem;
 import net.runelite.client.game.loot.data.MemorizedActor;
 import net.runelite.client.game.loot.data.MemorizedNpc;
 import net.runelite.client.game.loot.data.MemorizedNpcAndLocation;
@@ -88,6 +89,7 @@ import net.runelite.client.game.loot.events.PlayerLootReceived;
 @Singleton
 public class LootLogger
 {
+	private static final int INVENTORY_SPACE = 28;
 	/**
 	 * Some NPCs decide where to drop the loot at the same time they start performing
 	 * their death animation, so their death animation has to be known.
@@ -113,18 +115,18 @@ public class LootLogger
 	private final Map<Actor, MemorizedActor> interactedActors = new HashMap<>();
 	private final List<MemorizedActor> deadActorsThisTick = new ArrayList<>();
 
-	private final Map<WorldPoint, List<Item>> groundItemsLastTick = new HashMap<>();
+	private final Map<WorldPoint, Set<InventoryItem>> groundItemsLastTick = new HashMap<>();
 	private final Set<Tile> changedItemLayerTiles = new HashSet<>();
 
 	private WorldPoint playerLocationLastTick;
 	private WorldPoint cannonLocation;
 
-	private List<Item> prevTickInventoryItems;
+	private Set<InventoryItem> prevTickInventoryItems;
 	/**
 	 * An array containing the items in the inventory during the current tick,
 	 * or null if they are the same as in the previous tick.
 	 */
-	private List<Item> thisTickInventoryItems;
+	private Set<InventoryItem> thisTickInventoryItems;
 
 	private boolean insideChambersOfXeric = false;
 	private boolean hasOpenedRaidsRewardChest = false;
@@ -143,10 +145,10 @@ public class LootLogger
 	/**
 	 * Called when loot was received by killing an NPC. Triggers the NpcLootReceived event.
 	 *
-	 * @param npc Killed NpcID
-	 * @param comp Killed NPC's NPCComposition
+	 * @param npc      Killed NpcID
+	 * @param comp     Killed NPC's NPCComposition
 	 * @param location WorldPoint the NPC died at
-	 * @param drops	A Integer, Integer map of ItemIDs and Quantities
+	 * @param drops    A List of Items dropped
 	 */
 	private void onNewNpcLogCreated(int npc, NPCComposition comp, WorldPoint location, List<Item> drops)
 	{
@@ -156,9 +158,9 @@ public class LootLogger
 	/**
 	 * Called when loot was received by killing another Player. Triggers the PlayerLootReceived event.
 	 *
-	 * @param player Player that was killed
+	 * @param player   Player that was killed
 	 * @param location WorldPoint the Player died at
-	 * @param drops	A Integer, Integer map of ItemIDs and Quantities
+	 * @param drops    A List of Items dropped
 	 */
 	private void onNewPlayerLogCreated(Player player, WorldPoint location, List<Item> drops)
 	{
@@ -167,11 +169,10 @@ public class LootLogger
 
 	/**
 	 * Called when loot was received by completing an activity. Triggers the EventLootReceived event.
-	 *
 	 * The types of events are static and available on the LootEventType class
 	 *
 	 * @param event LootEventType event name
-	 * @param drops	A Integer, Integer map of ItemIDs and Quantities
+	 * @param drops    A List of Items received
 	 */
 	private void onNewEventLogCreated(LootEventType event, List<Item> drops)
 	{
@@ -181,7 +182,7 @@ public class LootLogger
 	/**
 	 * Called when the local player picks up an item from the ground
 	 *
-	 * @param id Item ID
+	 * @param id  Item ID
 	 * @param qty Item Quantity
 	 */
 	private void onItemPickedUp(int id, int qty, WorldPoint location)
@@ -193,7 +194,7 @@ public class LootLogger
 	/**
 	 * Called when the local player drops up an item from their inventory
 	 *
-	 * @param id Item ID
+	 * @param id  Item ID
 	 * @param qty Item Quantity
 	 */
 	private void onItemDropped(int id, int qty, WorldPoint location)
@@ -216,6 +217,212 @@ public class LootLogger
 	/*
 	 * Functions that help with Item management
 	 */
+
+
+	/**
+	 * Converts a List of Items to a Set of InventoryItems
+	 * @param groundItems List of Items
+	 * @return Set of InventoryItems
+	 */
+	private Set<InventoryItem> itemListToInventoryItemSet(List<Item> groundItems)
+	{
+		Set<InventoryItem> currItems = new HashSet<>();
+		if (groundItems == null)
+		{
+			return currItems;
+		}
+
+		for (int index = 0; index < groundItems.size(); index++)
+		{
+			Item i = groundItems.get(index);
+			currItems.add(new InventoryItem(i.getId(), i.getQuantity(), index));
+		}
+		return currItems;
+	}
+
+
+	/**
+	 * Grab the InventoryItem from set if ID and Slot match.
+	 *
+	 * @param set Set to search through
+	 * @param id item id to check for
+	 * @param slot inventory slot to check for.
+	 * @return InventoryItem from set if found, null if not
+	 */
+	private InventoryItem getInventoryItemByIdAndSlot(Set<InventoryItem> set, int id, int slot)
+	{
+
+		for (InventoryItem item : set)
+		{
+			if (item.getId() == id && item.getSlot() == slot)
+			{
+				return item;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Calculates the total items added/removed from the players inventory by any method.
+	 * @return A Set of InventoryItems with the qty set as the amount changed this tick
+	 */
+	private Set<InventoryItem> calculateTrueInventoryDifferences()
+	{
+		Set<InventoryItem> results = new HashSet<>();
+		Set<InventoryItem> inventoryChanges = Sets.symmetricDifference(prevTickInventoryItems, thisTickInventoryItems);
+
+		// Inventory Slots we've calculated difference for
+		Set<Integer> handledSlots = new HashSet<>();
+		for (InventoryItem item : inventoryChanges)
+		{
+			// We've already handled changes for this inventory slot
+			if (handledSlots.contains(item.getSlot()))
+			{
+				continue;
+			}
+
+			int quantity = item.getQuantity();
+
+			// Item Existed Before, could have been dropped or quantity updated.
+			if (prevTickInventoryItems.contains(item))
+			{
+				// If we still have this item the quantity must have changed from last tick.
+				InventoryItem oldItem = getInventoryItemByIdAndSlot(thisTickInventoryItems, item.getId(), item.getSlot());
+				if (oldItem != null)
+				{
+					// New Quantity - Old Quantity = New Quantity
+					quantity = oldItem.getQuantity() - item.getQuantity();
+				}
+				else
+				{
+					// Item no longer exists in inventory, should be a negative quantity.
+					quantity = -(quantity);
+				}
+			}
+			else
+			{
+				// If we had this item before that means we either added or removed items from this stack
+				InventoryItem oldItem = getInventoryItemByIdAndSlot(prevTickInventoryItems, item.getId(), item.getSlot());
+				if (oldItem != null)
+				{
+					// New Quantity - Old Quantity = New Quantity
+					quantity -= oldItem.getQuantity();
+				}
+			}
+
+			results.add(new InventoryItem(item.getId(), quantity, item.getSlot()));
+			handledSlots.add(item.getSlot());
+		}
+
+		return results;
+	}
+
+	/**
+	 * Calculates which items were dropped/picked up by the player this tick.
+	 *
+	 * @param prevTileItems Ground items last tick
+	 * @param currTileItems Ground items this tick
+	 * @return Set of Items that were dropped or picked up (indicated by negative/positive qty)
+	 */
+	private Set<Item> calculateInventoryPickedDroppedItems(Set<InventoryItem> prevTileItems, Set<InventoryItem> currTileItems)
+	{
+		// If there's nothing in both sets then there's no need to check what changed in the inventory.
+		if ((currTileItems == null || currTileItems.size() == 0) && (prevTileItems == null || prevTileItems.size() == 0))
+		{
+			return new HashSet<>();
+		}
+
+		Set<InventoryItem> inventoryChanges = calculateTrueInventoryDifferences();
+
+		Set<Item> results = new HashSet<>();
+		for (InventoryItem item : inventoryChanges)
+		{
+			// Now that we have the correct quantity of item changes for each slot we are going to
+			// Determine if the player dropped or picked up the item from the floor.
+			// Certain niche cases can cause this to function incorrectly.
+
+			// Item was added to the inventory
+			if (item.getQuantity() > 0)
+			{
+				// Can't pick up an item if there was nothing to pickup from.
+				if (prevTileItems == null || prevTileItems.size() == 0)
+				{
+					continue;
+				}
+
+				InventoryItem oldItem = containsItemId(prevTileItems, item.getId(), item.getQuantity());
+				InventoryItem currItem = containsItemId(currTileItems, item.getId(), item.getQuantity());
+				// If the item wasn't on the ground last tick then it wasn't picked up.
+				if (oldItem == null)
+				{
+					continue;
+				}
+
+				// Doesn't exist on the floor anymore, we must have picked it up?
+				if (currItem == null)
+				{
+					results.add(client.createItem(item.getId(), item.getQuantity()));
+				}
+				else
+				{
+					int prevCount = getSetCombinedQuantityForItemId(prevTileItems, item.getId());
+					int currCount = getSetCombinedQuantityForItemId(currTileItems, item.getId());
+
+					if (currCount < prevCount)
+					{
+						// Greater than supports people dropping the same item at the same time as you.
+						if (prevCount - currCount >= item.getQuantity())
+						{
+							results.add(client.createItem(item.getId(), item.getQuantity()));
+						}
+					}
+				}
+
+			}
+			// Item was removed from the inventory
+			else if (item.getQuantity() < 0)
+			{
+				// Nothing on floor, didn't drop anything.
+				if (currTileItems == null || currTileItems.size() == 0)
+				{
+					continue;
+				}
+
+				InventoryItem oldItem = containsItemId(prevTileItems, item.getId(), item.getQuantity());
+				InventoryItem currItem = containsItemId(currTileItems, item.getId(), item.getQuantity());
+
+				// Item is not on the ground now, wasn't dropped.
+				if (currItem == null)
+				{
+					continue;
+				}
+
+				// Item exists on floor now but didn't before.
+				if (oldItem == null)
+				{
+					results.add(client.createItem(item.getId(), item.getQuantity()));
+				}
+				// Item ID existed on ground before and after, lets check entire ground item set for total quantity diff
+				else
+				{
+					int prevCount = getSetCombinedQuantityForItemId(prevTileItems, item.getId());
+					int currCount = getSetCombinedQuantityForItemId(currTileItems, item.getId());
+
+					// More items exist now
+					if (currCount > prevCount)
+					{
+						// Greater than supports people dropping the same item at the same time as you.
+						if (currCount - prevCount >= -(item.getQuantity()))
+						{
+							results.add(client.createItem(item.getId(), item.getQuantity()));
+						}
+					}
+				}
+			}
+		}
+
+		return results;
+	}
 
 	/**
 	 * Grabs loot for specific WorldPoint and filters items from other sources. Returns new items (Loot)
@@ -241,79 +448,103 @@ public class LootLogger
 
 		// The tile might previously have contained items that weren't dropped
 		// by the actor, so we need to check what new items appeared
-		List<Item> prevItems = groundItemsLastTick.get(location);
-		List<Item> currItems = tile.getGroundItems();
-
-		// Get item changes for this ground tile between last tick and this tick
-		Map<Integer, Integer> groundItemDiff = getItemDifferences(prevItems, currItems);
+		Set<InventoryItem> prevItems = groundItemsLastTick.get(location) != null ? groundItemsLastTick.get(location) : new HashSet<>();
+		List<Item> currItemList = tile.getGroundItems();
+		Set<InventoryItem> currItems = itemListToInventoryItemSet(currItemList);
 
 		// Adjusts groundItemDiff to ignore any changes made by the player in current groundItems
 		// Must be standing on loot tile and have dropped/picked up an item to do anything
 		if (this.thisTickInventoryItems != null && location.distanceTo(playerLocationLastTick) == 0)
 		{
-			// Grab inventory item differences. (Positive=New Item, Negative=Removed Item)
-			Map<Integer, Integer> changedItems = getItemDifferences(prevTickInventoryItems, thisTickInventoryItems);
+			// Grab inventory item differences.
+			Set<Item> pickDropped = calculateInventoryPickedDroppedItems(prevItems, currItems);
 
 			// Adjust Ground Item Diff to account for inventory changes
-			for (Map.Entry<Integer, Integer> entry : changedItems.entrySet())
+			for (Item item : pickDropped)
 			{
-				int count = groundItemDiff.getOrDefault(entry.getKey(), 0);
-
-				// Item was added to inventory?
-				if (entry.getValue() > 0)
+				// Item was picked up, add back to ground for proper comparison
+				if (item.getQuantity() > 0)
 				{
-					// If item existed on ground before that means we picked it up.
-					if (containsItemId(prevItems, entry.getKey()))
-					{
-						// Add item to difference map
-						groundItemDiff.put(entry.getKey(), count + entry.getValue());
-					}
+					currItems.add(new InventoryItem(item.getId(), item.getQuantity(), currItems.size()));
 				}
-				// Item removed from inventory
-				else if (entry.getValue() < 0)
+				// Item was dropped, remove from curItems
+				else if (item.getQuantity() < 0)
 				{
-					// Does this item now exist on the ground?
-					if (containsItemId(currItems, entry.getKey()))
+					InventoryItem listItem = containsItemId(currItems, item.getId(), item.getQuantity());
+					if (listItem != null)
 					{
-						// Remove item from ground (adds a negative number)
-						groundItemDiff.put(entry.getKey(), count + entry.getValue());
+						currItems.remove(listItem);
+						log.info("Removed List Item: {}", listItem);
+						// Re-add correct amount if the item already existed and our item stacked with it.
+						if (listItem.getQuantity() > -item.getQuantity())
+						{
+							currItems.add(new InventoryItem(listItem.getId(), listItem.getQuantity() + item.getQuantity(), listItem.getSlot()));
+						}
 					}
-
 				}
 			}
 		}
 
-		List<Item> items = new ArrayList<>();
+		Set<InventoryItem> diff = Sets.difference(currItems, prevItems);
 
-		// Create the newItems map by only returning the positive changes (new loot)
-		for (Map.Entry<Integer, Integer> e : groundItemDiff.entrySet())
+		// Convert the Set to a List of Items
+		List<Item> items = new ArrayList<>();
+		for (InventoryItem i : diff)
 		{
-			if (e.getValue() > 0)
-			{
-				// Add item to list if new item.
-				items.add(client.createItem(e.getKey(), e.getValue()));
-			}
+			items.add(client.createItem(i.getId(), i.getQuantity()));
 		}
 
 		return items;
 	}
 
 	/**
-	 * Does this List contain this item ID?
-	 * @param list Items of Items to search through
-	 * @param id Item ID to check for
+	 * Does this Set contain this item ID?
+	 *
+	 * @param set Set of InventoryItem to search through
+	 * @param id  Item ID to check for
+	 * @param qty Item quantity must be equal to this value.
 	 * @return Found status
 	 */
-	private static boolean containsItemId(List<Item> list, int id)
+	private static InventoryItem containsItemId(Set<InventoryItem> set, int id, int qty)
 	{
-		for (Item s : list)
+		if (qty < 0)
 		{
-			if (s.getId() == id)
+			qty = -qty;
+		}
+
+		for (InventoryItem item : set)
+		{
+			if (item.getId() == id)
 			{
-				return true;
+				// Greater than supports dropping items on stackable items
+				if (item.getQuantity() >= qty)
+				{
+					return item;
+				}
 			}
 		}
-		return false;
+		return null;
+	}
+
+
+	/**
+	 * How many times does this Set contain this item ID?
+	 *
+	 * @param set Set of Items to search through
+	 * @param id  Item ID to check for
+	 * @return Found status
+	 */
+	private static int getSetCombinedQuantityForItemId(Set<InventoryItem> set, int id)
+	{
+		int count = 0;
+		for (InventoryItem item : set)
+		{
+			if (item.getId() == id)
+			{
+				count += item.getQuantity();
+			}
+		}
+		return count;
 	}
 
 	/**
@@ -413,6 +644,32 @@ public class LootLogger
 	}
 
 	/**
+	 * Converts a List of Items into a Set of InventoryItems.
+	 * For use purely by the Inventory to account for blank inventory slots.
+	 *
+	 * @param items List of Items
+	 * @return Set of InventoryItems
+	 */
+	private Set<InventoryItem> createInventoryItemSet(List<Item> items)
+	{
+		Set<InventoryItem> set = new HashSet<>();
+
+		for (int i = 0; i < INVENTORY_SPACE; i++)
+		{
+			if (i < items.size())
+			{
+				Item item = items.get(i);
+				if (item.getId() != -1)
+				{
+					set.add(new InventoryItem(item.getId(), item.getQuantity(), i));
+				}
+			}
+		}
+
+		return set;
+	}
+
+	/**
 	 * Check if the local player picked up/dropped any items
 	 */
 	private void checkInventoryItemsChanged()
@@ -447,29 +704,32 @@ public class LootLogger
 			return;
 		}
 
-		// Calculate which items were dropped and which were picked up
 		WorldPoint wp = tile.getWorldLocation();
-		List<Item> prevItems = this.groundItemsLastTick.get(wp);
-		List<Item> currItems = tile.getGroundItems();
+		Set<InventoryItem> prevItems = groundItemsLastTick.get(wp) != null ? groundItemsLastTick.get(wp) : new HashSet<>();
+		List<Item> groundItems = tile.getGroundItems();
+		Set<InventoryItem> currItems = itemListToInventoryItemSet(groundItems);
 
-		Map<Integer, Integer> groundItemDiff = getItemDifferences(prevItems, currItems);
-		Map<Integer, Integer> inventoryItemDiff = getItemDifferences(this.prevTickInventoryItems, this.thisTickInventoryItems);
-		inventoryItemDiff.forEach((key, value) ->
+		// Nothing was or is on the tile under the player, couldn't have dropped/picked up an item.
+		if (prevItems.size() == 0 && currItems.size() == 0)
 		{
-			int groundItemCount = groundItemDiff.getOrDefault(key, 0);
-			if (groundItemCount < 0 && value > 0)
+			return;
+		}
+
+		// Calculate which items were dropped/picked up and then trigger the necessary events.
+		Set<Item> itemChanges = calculateInventoryPickedDroppedItems(prevItems, currItems);
+		for (Item item : itemChanges)
+		{
+			// Item Picked Up
+			if (item.getQuantity() > 0)
 			{
-				// Items were picked up
-				int amount = Math.min(value, -groundItemCount);
-				onItemPickedUp(key, amount, playerLocationLastTick);
+				onItemPickedUp(item.getId(), item.getQuantity(), playerLocationLastTick);
 			}
-			else if (groundItemCount > 0 && value < 0)
+			else if (item.getQuantity() < 0)
 			{
-				// Items were dropped
-				int amount = Math.min(-value, groundItemCount);
-				onItemDropped(key, amount, playerLocationLastTick);
+				// Item Dropped (convert negative qty to positive)
+				onItemDropped(item.getId(), -item.getQuantity(), playerLocationLastTick);
 			}
-		});
+		}
 	}
 
 	/**
@@ -712,7 +972,11 @@ public class LootLogger
 				}
 
 				// Convert Map to List of Items to return
-				dropList = drops.entrySet().stream().map(x -> client.createItem(x.getKey(), x.getValue())).collect(Collectors.toList());
+				dropList = new ArrayList<>();
+				for (Map.Entry<Integer, Integer> e : drops.entrySet())
+				{
+					dropList.add(client.createItem(e.getKey(), e.getValue()));
+				}
 			}
 			else
 			{
@@ -726,7 +990,11 @@ public class LootLogger
 				}
 
 				// Convert Map to List of Items to return
-				dropList = drops.entrySet().stream().map(x -> client.createItem(x.getKey(), x.getValue())).collect(Collectors.toList());
+				dropList = new ArrayList<>();
+				for (Map.Entry<Integer, Integer> e : drops.entrySet())
+				{
+					dropList.add(client.createItem(e.getKey(), e.getValue()));
+				}
 			}
 
 			// Actor type, Calls the wrapper for triggering the proper LootReceived event
@@ -768,7 +1036,7 @@ public class LootLogger
 			}
 			else
 			{
-				groundItemsLastTick.put(wp, groundItems);
+				groundItemsLastTick.put(wp, itemListToInventoryItemSet(groundItems));
 			}
 		}
 		this.changedItemLayerTiles.clear();
@@ -925,15 +1193,11 @@ public class LootLogger
 		else if (event.getGroupId() == WidgetID.CLUE_SCROLL_REWARD_GROUP_ID)
 		{
 			// Not 100% sure this will work, needs testing. May need to convert to chat message.
-			Map<Integer, Integer> itemDiff = getItemDifferences(prevTickInventoryItems, thisTickInventoryItems);
+			Set<InventoryItem> itemDiff = Sets.difference(prevTickInventoryItems, thisTickInventoryItems);
 			LootEventType clueScrollType = LootEventType.UNKNOWN_EVENT;
-			for (Map.Entry<Integer, Integer> entry : itemDiff.entrySet())
+			for (InventoryItem item : itemDiff)
 			{
-				if (entry.getValue() >= 0)
-				{
-					continue;
-				}
-				switch (entry.getKey())
+				switch (item.getId())
 				{
 					case ItemID.REWARD_CASKET_EASY:
 						clueScrollType = LootEventType.CLUE_SCROLL_EASY;
@@ -1054,7 +1318,7 @@ public class LootLogger
 			this.thisTickInventoryItems = null;
 			if (items != null)
 			{
-				this.thisTickInventoryItems = Arrays.asList(items);
+				this.thisTickInventoryItems = createInventoryItemSet(Arrays.asList(items));
 			}
 		}
 	}
