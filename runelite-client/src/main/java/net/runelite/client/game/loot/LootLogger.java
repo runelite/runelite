@@ -128,6 +128,8 @@ public class LootLogger
 	 */
 	private Set<InventoryItem> thisTickInventoryItems;
 
+	private Set<InventoryItem> thisTickInventoryDiff;
+
 	private boolean insideChambersOfXeric = false;
 	private boolean hasOpenedRaidsRewardChest = false;
 	private boolean hasOpenedTheatreOfBloodRewardChest = false;
@@ -218,7 +220,6 @@ public class LootLogger
 	 * Functions that help with Item management
 	 */
 
-
 	/**
 	 * Converts a List of Items to a Set of InventoryItems
 	 * @param groundItems List of Items
@@ -240,7 +241,6 @@ public class LootLogger
 		return currItems;
 	}
 
-
 	/**
 	 * Grab the InventoryItem from set if ID and Slot match.
 	 *
@@ -251,7 +251,6 @@ public class LootLogger
 	 */
 	private InventoryItem getInventoryItemByIdAndSlot(Set<InventoryItem> set, int id, int slot)
 	{
-
 		for (InventoryItem item : set)
 		{
 			if (item.getId() == id && item.getSlot() == slot)
@@ -268,6 +267,12 @@ public class LootLogger
 	 */
 	private Set<InventoryItem> calculateTrueInventoryDifferences()
 	{
+		// Prevent the same code from running twice in one tick
+		if (thisTickInventoryDiff != null)
+		{
+			return thisTickInventoryDiff;
+		}
+
 		Set<InventoryItem> results = new HashSet<>();
 		Set<InventoryItem> inventoryChanges = Sets.symmetricDifference(prevTickInventoryItems, thisTickInventoryItems);
 
@@ -314,6 +319,7 @@ public class LootLogger
 			handledSlots.add(item.getSlot());
 		}
 
+		thisTickInventoryDiff = results;
 		return results;
 	}
 
@@ -439,6 +445,7 @@ public class LootLogger
 		{
 			return null;
 		}
+
 		Tile tile = client.getRegion().getTiles()[location.getPlane()][regionX][regionY];
 		if (!changedItemLayerTiles.contains(tile))
 		{
@@ -474,7 +481,6 @@ public class LootLogger
 					if (listItem != null)
 					{
 						currItems.remove(listItem);
-						log.info("Removed List Item: {}", listItem);
 						// Re-add correct amount if the item already existed and our item stacked with it.
 						if (listItem.getQuantity() > -item.getQuantity())
 						{
@@ -523,9 +529,9 @@ public class LootLogger
 				}
 			}
 		}
+
 		return null;
 	}
-
 
 	/**
 	 * How many times does this Set contain this item ID?
@@ -537,6 +543,7 @@ public class LootLogger
 	private static int getSetCombinedQuantityForItemId(Set<InventoryItem> set, int id)
 	{
 		int count = 0;
+
 		for (InventoryItem item : set)
 		{
 			if (item.getId() == id)
@@ -544,37 +551,8 @@ public class LootLogger
 				count += item.getQuantity();
 			}
 		}
-		return count;
-	}
 
-	/**
-	 * Returns the difference between two lists of Item's
-	 *
-	 * @param prevItems Items from previous Tick
-	 * @param currItems Items from this Tick
-	 * @return Item id and quantity Map (Integer,Integer) for new items (currItems removing all of prevItems)
-	 */
-	private Map<Integer, Integer> getItemDifferences(Iterable<Item> prevItems, Iterable<Item> currItems)
-	{
-		Map<Integer, Integer> diff = new HashMap<>();
-		if (prevItems != null)
-		{
-			for (Item item : prevItems)
-			{
-				int count = diff.getOrDefault(item.getId(), 0);
-				diff.put(item.getId(), count - item.getQuantity());
-			}
-		}
-		if (currItems != null)
-		{
-			for (Item item : currItems)
-			{
-				int count = diff.getOrDefault(item.getId(), 0);
-				diff.put(item.getId(), count + item.getQuantity());
-			}
-		}
-		diff.entrySet().removeIf(x -> x.getValue() == 0);
-		return diff;
+		return count;
 	}
 
 	/**
@@ -1014,6 +992,7 @@ public class LootLogger
 				log.debug("Error: Unrecognized actor death");
 			}
 		}
+
 		deadActorsThisTick.clear();
 	}
 
@@ -1039,6 +1018,7 @@ public class LootLogger
 				groundItemsLastTick.put(wp, itemListToInventoryItemSet(groundItems));
 			}
 		}
+
 		this.changedItemLayerTiles.clear();
 	}
 
@@ -1052,6 +1032,8 @@ public class LootLogger
 			this.prevTickInventoryItems = this.thisTickInventoryItems;
 			this.thisTickInventoryItems = null;
 		}
+
+		thisTickInventoryDiff = null;
 	}
 
 	/*
