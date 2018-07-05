@@ -480,6 +480,17 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("empty", option, target, true);
 		}
+		else if (config.swapCapeHanger() && option.equals("admire") && target.contains("mounted") && target.contains("cape"))
+		{
+			if (target.contains("max cape"))
+			{
+				swap("perks", option, target, true);
+			}
+			else
+			{
+				swap("teleport", option, target, true);
+			}
+		}
 	}
 
 	@Subscribe

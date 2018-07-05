@@ -239,4 +239,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			position = 19,
+			keyName =  "swapCapeHanger",
+			name = "Cape Hanger",
+			description = "Swap Admire and Teleport for capes on the Cape Hanger in POH."
+	)
+	default boolean swapCapeHanger()
+	{
+		return true;
+	}
 }
