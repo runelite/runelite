@@ -47,6 +47,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class XpDropPlugin extends Plugin
 {
+	private static final int EXPERIENCE_DROP_SPRITE_WIDTH = 16;
+
 	@Inject
 	private Client client;
 
@@ -76,10 +78,19 @@ public class XpDropPlugin extends Plugin
 			return;
 		}
 
-		if (config.hideSkillIcons() && widget.getSpriteId() > 0)
+		if (config.hideSkillIcons())
 		{
-			widget.setHidden(true);
-			return;
+			if (widget.getSpriteId() > 0)
+			{
+				widget.setHidden(true);
+				return;
+			}
+			else if (!widget.getText().isEmpty())
+			{
+				// Align text left accordingly to take up hidden skill icon space
+				final int xpDropPosition = client.getVar(Varbits.EXPERIENCE_TRACKER_POSITION);
+				widget.setRelativeX(EXPERIENCE_DROP_SPRITE_WIDTH * xpDropPosition * -1 / 2);
+			}
 		}
 
 		PrayerType prayer = getActivePrayerType();
