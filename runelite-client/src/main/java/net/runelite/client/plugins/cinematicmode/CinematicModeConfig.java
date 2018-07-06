@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Magic fTail
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,34 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay;
+package net.runelite.client.plugins.cinematicmode;
 
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@Getter
-@Setter
-public abstract class Overlay implements LayoutableRenderableEntity
+@ConfigGroup("cinmeaticmode")
+public interface CinematicModeConfig extends Config
 {
-	private Point preferredLocation;
-	private Dimension preferredSize;
-	private OverlayPosition preferredPosition;
-	private Rectangle bounds = new Rectangle();
-	private OverlayPosition position = OverlayPosition.TOP_LEFT;
-	private OverlayPriority priority = OverlayPriority.NONE;
-	private OverlayLayer layer = OverlayLayer.UNDER_WIDGETS;
-	private boolean Hidden;
-
-	/**
-	 * Overlay name, used for saving the overlay, needs to be unique
-	 * @return overlay name
-	 */
-	public String getName()
+	@ConfigItem(
+		keyName = "includeeffect",
+		name = "Include Screen Effect",
+		description = "Configures whether or not any screen effects are shown",
+		position = 0
+	)
+	default boolean includeEffect()
 	{
-		return this.getClass().getSimpleName();
+		return true;
 	}
 }

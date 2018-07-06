@@ -201,6 +201,14 @@ public class OverlayManager
 		saveOverlay(overlay);
 	}
 
+	public synchronized void hideAllOverlays(boolean hide)
+	{
+		for (Overlay overlay: overlays)
+		{
+			overlay.setHidden(hide);
+		}
+	}
+
 	private synchronized void rebuildOverlayLayers()
 	{
 		overlays.sort(OVERLAY_COMPARATOR);

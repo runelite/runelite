@@ -153,6 +153,11 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 		for (Overlay overlay : overlays)
 		{
+			if (overlay.isHidden())
+			{
+				return;
+			}
+
 			OverlayPosition overlayPosition = overlay.getPosition();
 
 			if (overlay.getPreferredPosition() != null)
