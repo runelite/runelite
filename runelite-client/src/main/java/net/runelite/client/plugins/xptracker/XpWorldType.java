@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import net.runelite.http.api.worlds.WorldType;
+import net.runelite.api.WorldType;
 
 enum XpWorldType
 {

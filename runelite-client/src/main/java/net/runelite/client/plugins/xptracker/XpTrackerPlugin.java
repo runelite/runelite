@@ -29,7 +29,6 @@ import static com.google.common.base.MoreObjects.firstNonNull;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.EnumSet;
 import java.util.Objects;
 import javax.imageio.ImageIO;
@@ -40,6 +39,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -49,10 +49,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
-import net.runelite.http.api.worlds.World;
-import net.runelite.http.api.worlds.WorldClient;
-import net.runelite.http.api.worlds.WorldResult;
-import net.runelite.http.api.worlds.WorldType;
 import net.runelite.http.api.xp.XpClient;
 
 @PluginDescriptor(
@@ -77,7 +73,6 @@ public class XpTrackerPlugin extends Plugin
 
 	private final XpState xpState = new XpState();
 
-	private WorldResult worlds;
 	private XpWorldType lastWorldType;
 	private String lastUsername;
 
@@ -92,24 +87,6 @@ public class XpTrackerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		WorldClient worldClient = new WorldClient();
-		try
-		{
-			worlds = worldClient.lookupWorlds();
-			if (worlds != null)
-			{
-				log.debug("Worlds list contains {} worlds", worlds.getWorlds().size());
-			}
-			else
-			{
-				log.warn("Unable to look up worlds");
-			}
-		}
-		catch (IOException e)
-		{
-			log.warn("Error looking up worlds list", e);
-		}
-
 		xpPanel = new XpPanel(this, client, skillIconManager);
 
 		BufferedImage icon;
@@ -142,7 +119,7 @@ public class XpTrackerPlugin extends Plugin
 		{
 			// LOGGED_IN is triggered between region changes too.
 			// Check that the username changed or the world type changed.
-			XpWorldType type = getWorldType(client.getWorld());
+			XpWorldType type = worldSetToType(client.getWorldType());
 
 			if (!Objects.equals(client.getUsername(), lastUsername) || lastWorldType != type)
 			{
@@ -166,25 +143,6 @@ public class XpTrackerPlugin extends Plugin
 				xpClient.update(username);
 			}
 		}
-	}
-
-	private XpWorldType getWorldType(int worldNum)
-	{
-		if (worlds == null)
-		{
-			return null;
-		}
-
-		World world = worlds.findWorld(worldNum);
-
-		if (world == null)
-		{
-			log.warn("Logged into nonexistent world {}?", client.getWorld());
-			return null;
-		}
-
-		XpWorldType type = worldSetToType(world.getTypes());
-		return type;
 	}
 
 	private XpWorldType worldSetToType(EnumSet<WorldType> types)
