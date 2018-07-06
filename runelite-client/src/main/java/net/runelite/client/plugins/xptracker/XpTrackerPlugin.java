@@ -29,7 +29,6 @@ import static com.google.common.base.MoreObjects.firstNonNull;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.EnumSet;
 import java.util.Objects;
 import javax.imageio.ImageIO;
@@ -40,6 +39,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -49,10 +49,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
-import net.runelite.http.api.worlds.World;
-import net.runelite.http.api.worlds.WorldClient;
-import net.runelite.http.api.worlds.WorldResult;
-import net.runelite.http.api.worlds.WorldType;
 import net.runelite.http.api.xp.XpClient;
 
 @PluginDescriptor(
@@ -77,7 +73,6 @@ public class XpTrackerPlugin extends Plugin
 
 	private final XpState xpState = new XpState();
 
-	private WorldResult worlds;
 	private XpWorldType lastWorldType;
 	private String lastUsername;
 
@@ -92,24 +87,6 @@ public class XpTrackerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		WorldClient worldClient = new WorldClient();
-		try
-		{
-			worlds = worldClient.lookupWorlds();
-			if (worlds != null)
-			{
-				log.debug("Worlds list contains {} worlds", worlds.getWorlds().size());
-			}
-			else
-			{
-				log.warn("Unable to look up worlds");
-			}
-		}
-		catch (IOException e)
-		{
-			log.warn("Error looking up worlds list", e);
-		}
-
 		xpPanel = new XpPanel(this, client, skillIconManager);
 
 		BufferedImage icon;
@@ -142,7 +119,7 @@ public class XpTrackerPlugin extends Plugin
 		{
 			// LOGGED_IN is triggered between region changes too.
 			// Check that the username changed or the world type changed.
-			XpWorldType type = getWorldType(client.getWorld());
+			XpWorldType type = worldSetToType(client.getWorldType());
 
 			if (!Objects.equals(client.getUsername(), lastUsername) || lastWorldType != type)
 			{
@@ -168,25 +145,6 @@ public class XpTrackerPlugin extends Plugin
 		}
 	}
 
-	private XpWorldType getWorldType(int worldNum)
-	{
-		if (worlds == null)
-		{
-			return null;
-		}
-
-		World world = worlds.findWorld(worldNum);
-
-		if (world == null)
-		{
-			log.warn("Logged into nonexistent world {}?", client.getWorld());
-			return null;
-		}
-
-		XpWorldType type = worldSetToType(world.getTypes());
-		return type;
-	}
-
 	private XpWorldType worldSetToType(EnumSet<WorldType> types)
 	{
 		XpWorldType xpType = NORMAL;
@@ -206,7 +164,7 @@ public class XpTrackerPlugin extends Plugin
 	 * This is called by the user manually clicking resetSkillState in the UI.
 	 * It reloads the current skills from the client after resetting internal state.
 	 */
-	public void resetAndInitState()
+	void resetAndInitState()
 	{
 		resetState();
 
@@ -221,7 +179,7 @@ public class XpTrackerPlugin extends Plugin
 	 * Throw out everything, the user has chosen a different account or world type.
 	 * This resets both the internal state and UI elements
 	 */
-	public void resetState()
+	private void resetState()
 	{
 		xpState.reset();
 		xpPanel.resetAllInfoBoxes();
@@ -233,7 +191,7 @@ public class XpTrackerPlugin extends Plugin
 	 * Will also clear the skill from the UI.
 	 * @param skill Skill to reset
 	 */
-	public void resetSkillState(Skill skill)
+	void resetSkillState(Skill skill)
 	{
 		int currentXp = client.getSkillExperience(skill);
 		xpState.resetSkill(skill, currentXp);
@@ -246,7 +204,7 @@ public class XpTrackerPlugin extends Plugin
 	 * Reset all skills except for the one provided
 	 * @param skill Skill to ignore during reset
 	 */
-	public void resetOtherSkillState(Skill skill)
+	void resetOtherSkillState(Skill skill)
 	{
 		for (Skill s : Skill.values())
 		{
@@ -289,7 +247,7 @@ public class XpTrackerPlugin extends Plugin
 		xpPanel.updateTotal(xpState.getTotalSnapshot());
 	}
 
-	public XpSnapshotSingle getSkillSnapshot(Skill skill)
+	XpSnapshotSingle getSkillSnapshot(Skill skill)
 	{
 		return xpState.getSkillSnapshot(skill);
 	}
