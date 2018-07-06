@@ -27,7 +27,7 @@ package net.runelite.client.plugins.xptracker;
 import java.awt.Color;
 import lombok.Getter;
 
-public enum SkillColor
+enum SkillColor
 {
 	ATTACK(105, 32, 7),
 	DEFENCE(98, 119, 190),

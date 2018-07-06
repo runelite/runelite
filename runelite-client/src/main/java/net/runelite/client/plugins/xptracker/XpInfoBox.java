@@ -198,7 +198,7 @@ class XpInfoBox extends JPanel
 		expHour.setText(htmlLabel("XP/Hour: ", xpSnapshotSingle.getXpPerHour()));
 	}
 
-	public static String htmlLabel(String key, int value)
+	static String htmlLabel(String key, int value)
 	{
 		String valueStr = StackFormatter.quantityToRSDecimalStack(value);
 

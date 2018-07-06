@@ -32,7 +32,7 @@ enum XpWorldType
 	DMM,
 	SDMM;
 
-	public static XpWorldType of(WorldType type)
+	static XpWorldType of(WorldType type)
 	{
 		switch (type)
 		{

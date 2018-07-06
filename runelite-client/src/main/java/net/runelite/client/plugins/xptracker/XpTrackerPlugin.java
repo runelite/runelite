@@ -206,7 +206,7 @@ public class XpTrackerPlugin extends Plugin
 	 * This is called by the user manually clicking resetSkillState in the UI.
 	 * It reloads the current skills from the client after resetting internal state.
 	 */
-	public void resetAndInitState()
+	void resetAndInitState()
 	{
 		resetState();
 
@@ -221,7 +221,7 @@ public class XpTrackerPlugin extends Plugin
 	 * Throw out everything, the user has chosen a different account or world type.
 	 * This resets both the internal state and UI elements
 	 */
-	public void resetState()
+	private void resetState()
 	{
 		xpState.reset();
 		xpPanel.resetAllInfoBoxes();
@@ -233,7 +233,7 @@ public class XpTrackerPlugin extends Plugin
 	 * Will also clear the skill from the UI.
 	 * @param skill Skill to reset
 	 */
-	public void resetSkillState(Skill skill)
+	void resetSkillState(Skill skill)
 	{
 		int currentXp = client.getSkillExperience(skill);
 		xpState.resetSkill(skill, currentXp);
@@ -246,7 +246,7 @@ public class XpTrackerPlugin extends Plugin
 	 * Reset all skills except for the one provided
 	 * @param skill Skill to ignore during reset
 	 */
-	public void resetOtherSkillState(Skill skill)
+	void resetOtherSkillState(Skill skill)
 	{
 		for (Skill s : Skill.values())
 		{
@@ -289,7 +289,7 @@ public class XpTrackerPlugin extends Plugin
 		xpPanel.updateTotal(xpState.getTotalSnapshot());
 	}
 
-	public XpSnapshotSingle getSkillSnapshot(Skill skill)
+	XpSnapshotSingle getSkillSnapshot(Skill skill)
 	{
 		return xpState.getSkillSnapshot(skill);
 	}
