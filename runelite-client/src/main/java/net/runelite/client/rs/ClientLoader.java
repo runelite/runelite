@@ -30,8 +30,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.updatecheck.UpdateCheckClient;
 
@@ -41,13 +41,14 @@ public class ClientLoader
 {
 	private final UpdateCheckClient updateCheckClient = new UpdateCheckClient();
 	private final ClientConfigLoader clientConfigLoader;
-
-	@Setter
-	private ClientUpdateCheckMode updateCheckMode = ClientUpdateCheckMode.AUTO;
+	private final ClientUpdateCheckMode updateCheckMode;
 
 	@Inject
-	private ClientLoader(final ClientConfigLoader clientConfigLoader)
+	private ClientLoader(
+		@Named("updateCheckMode") final ClientUpdateCheckMode updateCheckMode,
+		final ClientConfigLoader clientConfigLoader)
 	{
+		this.updateCheckMode = updateCheckMode;
 		this.clientConfigLoader = clientConfigLoader;
 	}
 

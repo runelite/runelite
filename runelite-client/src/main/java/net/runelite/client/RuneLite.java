@@ -53,7 +53,6 @@ import net.runelite.client.game.ClanManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
-import net.runelite.client.rs.ClientLoader;
 import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
@@ -79,9 +78,6 @@ public class RuneLite
 
 	@Getter
 	private static Injector injector;
-
-	@Getter
-	private static OptionSet options;
 
 	@Inject
 	private PluginManager pluginManager;
@@ -174,15 +170,17 @@ public class RuneLite
 			});
 
 		parser.accepts("help", "Show this text").forHelp();
-		options = parser.parse(args);
+		OptionSet options = parser.parse(args);
 
-		if (getOptions().has("help"))
+		if (options.has("help"))
 		{
 			parser.printHelpOn(System.out);
 			System.exit(0);
 		}
 
-		if (RuneLite.getOptions().has("developer-mode") && RuneLiteProperties.getLauncherVersion() == null)
+		final boolean developerMode = options.has("developer-mode");
+
+		if (developerMode && RuneLiteProperties.getLauncherVersion() == null)
 		{
 			boolean assertions = false;
 			assert assertions = true;
@@ -212,8 +210,10 @@ public class RuneLite
 			}
 		});
 
-		injector = Guice.createInjector(new RuneLiteModule());
-		injector.getInstance(ClientLoader.class).setUpdateCheckMode(getOptions().valueOf(updateMode));
+		injector = Guice.createInjector(new RuneLiteModule(
+			options.valueOf(updateMode),
+			developerMode));
+
 		injector.getInstance(RuneLite.class).start();
 	}
 
@@ -297,11 +297,5 @@ public class RuneLite
 	public static void setInjector(Injector injector)
 	{
 		RuneLite.injector = injector;
-	}
-
-	@VisibleForTesting
-	public static void setOptions(OptionSet options)
-	{
-		RuneLite.options = options;
 	}
 }

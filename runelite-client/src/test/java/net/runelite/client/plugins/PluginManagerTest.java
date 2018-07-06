@@ -33,6 +33,7 @@ import com.google.inject.grapher.graphviz.GraphvizGrapher;
 import com.google.inject.grapher.graphviz.GraphvizModule;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import com.google.inject.util.Modules;
 import java.applet.Applet;
 import java.io.File;
 import java.io.IOException;
@@ -43,10 +44,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import joptsimple.OptionSet;
 import net.runelite.api.Client;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteModule;
+import net.runelite.client.rs.ClientUpdateCheckMode;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Rule;
@@ -54,7 +55,6 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import static org.mockito.Mockito.mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -78,10 +78,10 @@ public class PluginManagerTest
 	@Before
 	public void before() throws IOException
 	{
-		RuneLite.setOptions(mock(OptionSet.class));
+		Injector injector = Guice.createInjector(Modules
+			.override(new RuneLiteModule(ClientUpdateCheckMode.AUTO, true))
+			.with(BoundFieldModule.of(this)));
 
-		Injector injector = Guice.createInjector(new RuneLiteModule(),
-			BoundFieldModule.of(this));
 		RuneLite.setInjector(injector);
 
 		// Find plugins we expect to have
@@ -102,7 +102,7 @@ public class PluginManagerTest
 	@Test
 	public void testLoadPlugins() throws Exception
 	{
-		PluginManager pluginManager = new PluginManager();
+		PluginManager pluginManager = new PluginManager(false, null, null, null, null, null);
 		pluginManager.setOutdated(true);
 		pluginManager.loadCorePlugins();
 		Collection<Plugin> plugins = pluginManager.getPlugins();
@@ -113,7 +113,7 @@ public class PluginManagerTest
 			.count();
 		assertEquals(expected, plugins.size());
 
-		pluginManager = new PluginManager();
+		pluginManager = new PluginManager(false, null, null, null, null, null);
 		pluginManager.loadCorePlugins();
 		plugins = pluginManager.getPlugins();
 
@@ -130,9 +130,9 @@ public class PluginManagerTest
 	{
 		List<Module> modules = new ArrayList<>();
 		modules.add(new GraphvizModule());
-		modules.add(new RuneLiteModule());
+		modules.add(new RuneLiteModule(ClientUpdateCheckMode.AUTO, true));
 
-		PluginManager pluginManager = new PluginManager();
+		PluginManager pluginManager = new PluginManager(true, null, null, null, null, null);
 		pluginManager.loadCorePlugins();
 		for (Plugin p : pluginManager.getPlugins())
 		{
