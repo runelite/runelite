@@ -57,27 +57,24 @@ public class DatabaseService
 	{
 		// User Authentication
 		AuthFilter filter = new AuthFilter(sql2o);
-		SessionEntry sessionEntry = null;
 		try
 		{
-			sessionEntry = filter.handle(request, response);
+			return filter.handle(request, response);
 		}
 		catch (IOException e)
 		{
 			return null;
 		}
-
-		return sessionEntry;
 	}
 
-	public ArrayList<LootRecord> getLootRecordsByNpcName(String username, String npcName, int accountId) throws IOException
+	public List<LootRecord> getLootRecordsByNpcName(String username, String npcName, int accountId)
 	{
 		String queryText = "SELECT * FROM kills JOIN drops ON kills.id = drops.killId " +
 				"WHERE (kills.accountId = :accountId AND kills.username = :username) AND (kills.npcID = :id OR kills.npcName = :id) ";
 
 		try (Connection con = sql2o.open())
 		{
-			ArrayList<LootRecord> result = new ArrayList<>();
+			List<LootRecord> result = new ArrayList<>();
 
 			List<LootRecordRow> records = con.createQuery(queryText)
 					.addParameter("accountId", accountId)
@@ -96,7 +93,7 @@ public class DatabaseService
 	}
 
 	// Insert loot record into mysql database
-	public Boolean storeLootRecord(LootRecord record, String username, int accountId)
+	public void storeLootRecord(LootRecord record, String username, int accountId)
 	{
 		String killQuery = "INSERT INTO kills (accountId, username, npcName, npcID, killCount) VALUES (:accountId, :username, :npcName, :npcID, :killCount)";
 		String dropQuery = "INSERT INTO drops (killId, itemId, itemAmount) VALUES (LAST_INSERT_ID(), :itemId, :itemAmount)";
@@ -121,7 +118,5 @@ public class DatabaseService
 			}
 			con.commit();
 		}
-
-		return true;
 	}
 }

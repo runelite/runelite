@@ -33,14 +33,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/database")
@@ -81,19 +79,31 @@ public class DatabaseController
 	private DatabaseService service;
 
 	@RequestMapping(value = "/loot", method = RequestMethod.GET)
-	public ArrayList<LootRecord> getLootRecordsByNpcName(HttpServletRequest request, HttpServletResponse response, @RequestParam String username, @RequestParam String id) throws IOException
+	public List<LootRecord> getLootRecordsByNpcName(HttpServletRequest request, HttpServletResponse response, @RequestParam String username, @RequestParam String id)
 	{
 		// Auth Check and grab user id
 		SessionEntry entry = service.authCheck(request, response);
+		if (entry == null)
+		{
+			return null;
+		}
 		return service.getLootRecordsByNpcName(username, id, entry.getUser());
 	}
 
 	@RequestMapping(value = "/loot", method = RequestMethod.POST)
-	@ResponseStatus
-	public HttpStatus storeLootRecord(HttpServletRequest request, HttpServletResponse response, @RequestBody LootRecord record, @RequestParam String username) throws IOException
+	public HttpStatus storeLootRecord(HttpServletRequest request, HttpServletResponse response, @RequestBody LootRecord record, @RequestParam String username)
 	{
 		// Auth Check and grab user id
 		SessionEntry entry = service.authCheck(request, response);
-		return service.storeLootRecord(record, username, entry.getUser()) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
+		if (entry == null)
+		{
+			return HttpStatus.UNAUTHORIZED;
+		}
+		else
+		{
+			// Actually store the record
+			service.storeLootRecord(record, username, entry.getUser());
+			return HttpStatus.OK;
+		}
 	}
 }

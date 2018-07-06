@@ -59,7 +59,7 @@ public class LootRecordRow
 	 * @param list of LootRecordRow (result from sq2lo query)
 	 * @return Array of LootRecord's
 	 */
-	static ArrayList<LootRecord> consildateRows(List<LootRecordRow> list)
+	static List<LootRecord> consildateRows(List<LootRecordRow> list)
 	{
 		HashMap<Integer, LootRecord> lootMap = new HashMap<>();
 		for (LootRecordRow r : list)
@@ -68,7 +68,7 @@ public class LootRecordRow
 			LootRecord record = lootMap.get(r.id);
 			if (record == null)
 			{
-				ArrayList<DropEntry> drops = new ArrayList<DropEntry>();
+				List<DropEntry> drops = new ArrayList<>();
 				drops.add(drop);
 				lootMap.put(r.id, new LootRecord(r.npcID, r.npcName, r.killCount, drops));
 			}
@@ -78,7 +78,7 @@ public class LootRecordRow
 			}
 		}
 
-		ArrayList<LootRecord> result = new ArrayList<>();
+		List<LootRecord> result = new ArrayList<>();
 		for (Map.Entry<Integer, LootRecord> e : lootMap.entrySet())
 		{
 			result.add(e.getValue());

@@ -24,14 +24,12 @@
  */
 package net.runelite.http.api.database;
 
-import lombok.Getter;
+import lombok.Data;
 
+@Data
 public class DropEntry
 {
-	@Getter
 	private final int itemId;
-
-	@Getter
 	private final int itemAmount;
 
 	public DropEntry(int itemId, int itemAmount)

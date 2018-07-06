@@ -24,21 +24,19 @@
  */
 package net.runelite.http.api.database;
 
-import lombok.Getter;
-import java.util.ArrayList;
+import lombok.Data;
+import java.util.List;
 
+@Data
 public class LootRecord
 {
-	@Getter
 	private final int npcID;
-	@Getter
 	private final String npcName;
-	@Getter
 	private final int killCount;
-	@Getter
-	private ArrayList<DropEntry> drops;
+	private List<DropEntry> drops;
 
-	public LootRecord(int npcId, String npcName, int kc, ArrayList<DropEntry> drops)
+	// Full Kill with Kill Count
+	public LootRecord(int npcId, String npcName, int kc, List<DropEntry> drops)
 	{
 		this.npcID = npcId;
 		this.npcName = npcName;
@@ -46,7 +44,8 @@ public class LootRecord
 		this.drops = drops;
 	}
 
-	public LootRecord(int npcId, String npcName, ArrayList<DropEntry> drops)
+	// Full Kill without Kill Count
+	public LootRecord(int npcId, String npcName, List<DropEntry> drops)
 	{
 		this.npcID = npcId;
 		this.npcName = npcName;
@@ -54,7 +53,8 @@ public class LootRecord
 		this.drops = drops;
 	}
 
-	public LootRecord(String npcName, int kc, ArrayList<DropEntry> drops)
+	// Name Only Kill with Kill Count
+	public LootRecord(String npcName, int kc, List<DropEntry> drops)
 	{
 		this.npcID = -1;
 		this.npcName = npcName;
@@ -62,7 +62,8 @@ public class LootRecord
 		this.drops = drops;
 	}
 
-	public LootRecord(String npcName, ArrayList<DropEntry> drops)
+	// Name Only Kill without Kill Count
+	public LootRecord(String npcName, List<DropEntry> drops)
 	{
 		this.npcID = -1;
 		this.npcName = npcName;
@@ -70,7 +71,8 @@ public class LootRecord
 		this.drops = drops;
 	}
 
-	public LootRecord(int npcId, int kc, ArrayList<DropEntry> drops)
+	// Npc ID Only Kill with Kill Count
+	public LootRecord(int npcId, int kc, List<DropEntry> drops)
 	{
 		this.npcID = npcId;
 		this.npcName = null;
@@ -78,7 +80,8 @@ public class LootRecord
 		this.drops = drops;
 	}
 
-	public LootRecord(int npcId, ArrayList<DropEntry> drops)
+	// Npc ID Only Kill without Kill Count
+	public LootRecord(int npcId, List<DropEntry> drops)
 	{
 		this.npcID = npcId;
 		this.npcName = null;
@@ -101,24 +104,27 @@ public class LootRecord
 				.append(npcName)
 				.append(", killCount=")
 				.append(killCount)
-				.append(", drops=[");
+				.append(", drops=");
 
 		if (drops != null)
 		{
-			boolean first = true;
+			m.append("[");
+			boolean addComma = false;
 			for (DropEntry d : drops)
 			{
-				if (!first)
+				if (addComma)
+				{
 					m.append(", ");
+				}
 
 				m.append(d.toString());
-				first = false;
+				addComma = true;
 			}
 			m.append("]");
 		}
 		else
 		{
-			m.append("null]");
+			m.append("null");
 		}
 		m.append("}");
 

@@ -33,8 +33,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -50,8 +50,14 @@ public class DatabaseClient
 		log.debug("Created Database Client with UUID: {}", this.uuid);
 	}
 
-	// Wrapper for looking up by NPC ID (API can find records by NPC Name or NPC ID)
-	public ArrayList<LootRecord> getLootRecordsByNpcId(String username, int id) throws IOException
+	/**
+	 * Wrapper for looking up by NPC Name (API can find records by NPC Name or NPC ID)
+	 *
+	 * @param username in-game username as String
+	 * @param id npc ID to filter for
+	 * @return List of requested LootRecords or null if an error querying database.
+	 */
+	public List<LootRecord> getLootRecordsByNpcId(String username, int id)
 	{
 		if (uuid == null)
 			return null;
@@ -59,8 +65,14 @@ public class DatabaseClient
 		return getLootRecordsByNpcName(username, String.valueOf(id));
 	}
 
-	// Returns all LootRecords by
-	public ArrayList<LootRecord> getLootRecordsByNpcName(String username, String npcName) throws IOException
+	/**
+	 * Returns a List of LootRecords for this username filtered by npcName.
+	 *
+	 * @param username in-game username as String
+	 * @param npcName npc name as String
+	 * @return List of LootRecords from RuneLite Database
+	 */
+	public List<LootRecord> getLootRecordsByNpcName(String username, String npcName)
 	{
 		if (uuid == null)
 			return null;
@@ -85,34 +97,40 @@ public class DatabaseClient
 			{
 				String result = response.body().string();
 				LootRecord[] records = RuneLiteAPI.GSON.fromJson(result, LootRecord[].class);
-				return unpackLootRecords(records);
+				return Arrays.asList(records);
 			}
 			else
 			{
 				log.debug("Error Executing Database URI request: {}", url);
 				log.debug(response.body().toString());
-				return new ArrayList<LootRecord>();
+				return null;
 			}
 		}
-		catch (JsonParseException ex)
+		catch (IOException e)
 		{
-			throw new IOException(ex);
+			log.debug("IOException: {}", e.getMessage());
+			return null;
+		}
+		catch (JsonParseException e)
+		{
+			log.debug("JsonParseException: {}", e.getMessage());
+			return null;
 		}
 	}
 
-	// Converts LootRecord[] to ArrayList format
-	public static ArrayList<LootRecord> unpackLootRecords(LootRecord[] r)
-	{
-		ArrayList<LootRecord> result = new ArrayList<LootRecord>();
-		Collections.addAll(result, r);
-		return result;
-	}
-
-	// Stores the Loot Record via a post request to the API and returns a success boolean
-	public boolean storeLootRecord(LootRecord record, String username) throws IOException
+	/**
+	 * Stores the Loot Record via a post request to the API and returns a success boolean
+	 *
+	 * @param record Loot Record to Store
+	 * @param username in-game username as String
+	 * @return Success Flag
+	 */
+	public boolean storeLootRecord(LootRecord record, String username)
 	{
 		if (uuid == null)
+		{
 			return false;
+		}
 
 		DatabaseEndpoint bossEndpoint = DatabaseEndpoint.LOOT;
 		HttpUrl.Builder builder = bossEndpoint.getDatabaseURL().newBuilder()
@@ -128,16 +146,22 @@ public class DatabaseClient
 				.post(RequestBody.create(JSON, RuneLiteAPI.GSON.toJson(record)))
 				.build();
 
-		log.debug("JSON Data to store: " + request.body().toString());
+		log.debug("JSON Data to store: " + RuneLiteAPI.GSON.toJson(record));
 
 		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
-			log.debug("Data Storage: " + (response.message().equals("OK") ? "SUCCESS" : "FAIL"));
+			log.debug("Response message: " + response.message());
 			return response.message().equals("OK");
 		}
-		catch (JsonParseException ex)
+		catch (IOException e)
 		{
-			throw new IOException(ex);
+			log.debug("IOException: {}", e.getMessage());
+			return false;
+		}
+		catch (JsonParseException e)
+		{
+			log.debug("JsonParseException: {}", e.getMessage());
+			return false;
 		}
 	}
 }
