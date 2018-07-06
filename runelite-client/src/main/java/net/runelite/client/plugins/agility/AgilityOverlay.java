@@ -31,7 +31,6 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.geom.Area;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
@@ -41,7 +40,6 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-@Slf4j
 public class AgilityOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2350;

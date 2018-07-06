@@ -47,9 +47,7 @@ public class AgilitySession
 
 	public void incrementLapCount(Client client)
 	{
-		Instant now = Instant.now();
-
-		lastLapCompleted = now;
+		lastLapCompleted = Instant.now();
 		++totalLaps;
 
 		int currentExp = client.getSkillExperience(Skill.AGILITY);
