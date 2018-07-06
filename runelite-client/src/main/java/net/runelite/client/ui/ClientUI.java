@@ -24,7 +24,6 @@
  */
 package net.runelite.client.ui;
 
-import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import java.applet.Applet;
 import java.awt.Canvas;
@@ -67,7 +66,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ExpandResizeType;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.config.WarningOnExit;
-import net.runelite.client.events.ClientUILoaded;
 import net.runelite.client.events.PluginToolbarButtonAdded;
 import net.runelite.client.events.PluginToolbarButtonRemoved;
 import net.runelite.client.events.TitleToolbarButtonAdded;
@@ -127,7 +125,6 @@ public class ClientUI
 
 	private final RuneLiteProperties properties;
 	private final RuneLiteConfig config;
-	private final EventBus eventBus;
 	private final KeyManager keyManager;
 	private final Applet client;
 	private final ConfigManager configManager;
@@ -143,19 +140,18 @@ public class ClientUI
 	private JPanel container;
 	private NavigationButton sidebarNavigationButton;
 	private JButton sidebarNavigationJButton;
+	private Dimension lastClientSize;
 
 	@Inject
 	private ClientUI(
 		RuneLiteProperties properties,
 		RuneLiteConfig config,
-		EventBus eventBus,
 		KeyManager keyManager,
 		@Nullable Applet client,
 		ConfigManager configManager)
 	{
 		this.properties = properties;
 		this.config = config;
-		this.eventBus = eventBus;
 		this.keyManager = keyManager;
 		this.client = client;
 		this.configManager = configManager;
@@ -164,69 +160,14 @@ public class ClientUI
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("runelite"))
+		if (!event.getGroup().equals("runelite") ||
+			event.getKey().equals(CONFIG_CLIENT_MAXIMIZED) ||
+			event.getKey().equals(CONFIG_CLIENT_BOUNDS))
 		{
 			return;
 		}
 
-		SwingUtilities.invokeLater(() ->
-		{
-			if (event.getKey().equals("gameAlwaysOnTop"))
-			{
-				if (frame.isAlwaysOnTopSupported())
-				{
-					frame.setAlwaysOnTop(config.gameAlwaysOnTop());
-				}
-			}
-
-			if (event.getKey().equals("lockWindowSize"))
-			{
-				frame.setResizable(!config.lockWindowSize());
-			}
-
-			if (event.getKey().equals("automaticResizeType"))
-			{
-				frame.setExpandResizeType(config.automaticResizeType());
-			}
-
-			if (event.getKey().equals("containInScreen") ||
-				event.getKey().equals("uiEnableCustomChrome"))
-			{
-				frame.setContainedInScreen(config.containInScreen() && config.enableCustomChrome());
-			}
-
-			if (event.getKey().equals("rememberScreenBounds") && event.getNewValue().equals("false"))
-			{
-				configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED);
-				configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS);
-			}
-
-			if (!event.getKey().equals("gameSize"))
-			{
-				return;
-			}
-
-			if (client == null)
-			{
-				return;
-			}
-
-			// The upper bounds are defined by the applet's max size
-			// The lower bounds are defined by the client's fixed size
-			int width = Math.max(Math.min(config.gameSize().width, 7680), Constants.GAME_FIXED_WIDTH);
-			int height = Math.max(Math.min(config.gameSize().height, 2160), Constants.GAME_FIXED_HEIGHT);
-			final Dimension size = new Dimension(width, height);
-
-			client.setSize(size);
-			client.setPreferredSize(size);
-			client.getParent().setPreferredSize(size);
-			client.getParent().setSize(size);
-
-			if (frame.isVisible())
-			{
-				frame.pack();
-			}
-		});
+		SwingUtilities.invokeLater(this::updateFrameConfig);
 	}
 
 	@Subscribe
@@ -395,37 +336,12 @@ public class ClientUI
 			final UiKeyListener uiKeyListener = new UiKeyListener(this);
 			frame.addKeyListener(uiKeyListener);
 			keyManager.registerKeyListener(uiKeyListener);
-		});
 
-		show();
-	}
+			// Update config
+			updateFrameConfig();
 
-	private boolean showWarningOnExit()
-	{
-		if (config.warningOnExit() == WarningOnExit.ALWAYS)
-		{
-			return true;
-		}
-
-		if (config.warningOnExit() == WarningOnExit.LOGGED_IN && client instanceof Client)
-		{
-			return ((Client) client).getGameState() != GameState.LOGIN_SCREEN;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Show client UI after everything else is done.
-	 *
-	 * @throws Exception exception that can occur during modification of the UI
-	 */
-	private void show() throws Exception
-	{
-		final boolean withTitleBar = config.enableCustomChrome();
-
-		SwingUtilities.invokeAndWait(() ->
-		{
+			// Decorate window with custom chrome and titlebar if needed
+			final boolean withTitleBar = config.enableCustomChrome();
 			frame.setUndecorated(withTitleBar);
 
 			if (withTitleBar)
@@ -544,20 +460,33 @@ public class ClientUI
 
 			titleToolbar.addComponent(sidebarNavigationButton, sidebarNavigationJButton);
 			toggleSidebar();
+			log.info("Showing frame {}", frame);
 		});
 
-		eventBus.post(new ClientUILoaded());
-
+		// Show out of date dialog if needed
 		final boolean isOutdated = !(client instanceof Client);
 		if (isOutdated)
 		{
-			SwingUtilities.invokeLater(() ->
-			{
-				JOptionPane.showMessageDialog(frame, "RuneLite has not yet been updated to work with the latest\n"
-						+ "game update, it will work with reduced functionality until then.",
-					"RuneLite is outdated", INFORMATION_MESSAGE);
-			});
+			SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame,
+				"RuneLite has not yet been updated to work with the latest\n"
+					+ "game update, it will work with reduced functionality until then.",
+				"RuneLite is outdated", INFORMATION_MESSAGE));
 		}
+	}
+
+	private boolean showWarningOnExit()
+	{
+		if (config.warningOnExit() == WarningOnExit.ALWAYS)
+		{
+			return true;
+		}
+
+		if (config.warningOnExit() == WarningOnExit.LOGGED_IN && client instanceof Client)
+		{
+			return ((Client) client).getGameState() != GameState.LOGIN_SCREEN;
+		}
+
+		return false;
 	}
 
 	/**
@@ -760,6 +689,54 @@ public class ClientUI
 		else if (client != null)
 		{
 			client.requestFocusInWindow();
+		}
+	}
+
+	private void updateFrameConfig()
+	{
+		if (frame == null)
+		{
+			return;
+		}
+
+		if (frame.isAlwaysOnTopSupported())
+		{
+			frame.setAlwaysOnTop(config.gameAlwaysOnTop());
+		}
+
+		frame.setResizable(!config.lockWindowSize());
+		frame.setExpandResizeType(config.automaticResizeType());
+		frame.setContainedInScreen(config.containInScreen() && config.enableCustomChrome());
+
+		if (!config.rememberScreenBounds())
+		{
+			configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED);
+			configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS);
+		}
+
+		if (client == null)
+		{
+			return;
+		}
+
+		// The upper bounds are defined by the applet's max size
+		// The lower bounds are defined by the client's fixed size
+		int width = Math.max(Math.min(config.gameSize().width, 7680), Constants.GAME_FIXED_WIDTH);
+		int height = Math.max(Math.min(config.gameSize().height, 2160), Constants.GAME_FIXED_HEIGHT);
+		final Dimension size = new Dimension(width, height);
+
+		if (!size.equals(lastClientSize))
+		{
+			lastClientSize = size;
+			client.setSize(size);
+			client.setPreferredSize(size);
+			client.getParent().setPreferredSize(size);
+			client.getParent().setSize(size);
+
+			if (frame.isVisible())
+			{
+				frame.pack();
+			}
 		}
 	}
 
