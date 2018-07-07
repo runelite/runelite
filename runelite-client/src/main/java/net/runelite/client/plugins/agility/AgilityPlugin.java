@@ -32,7 +32,6 @@ import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
@@ -72,7 +71,6 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 	description = "Show helpful information about agility courses and obstacles",
 	tags = {"grace", "marks", "overlay", "shortcuts", "skilling", "traps"}
 )
-@Slf4j
 public class AgilityPlugin extends Plugin
 {
 	private static final int AGILITY_ARENA_REGION_ID = 11157;
@@ -183,8 +181,9 @@ public class AgilityPlugin extends Plugin
 		// Get course
 		Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
 		if (course == null
-			|| Math.abs(course.getLastObstacleXp() - skillGained) > 1
-			|| (course.getCourseEndWorldPoints().length > 0 && Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation()))))
+			|| (course.getCourseEndWorldPoints().length == 0
+				? Math.abs(course.getLastObstacleXp() - skillGained) > 1
+				: Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation()))))
 		{
 			return;
 		}
