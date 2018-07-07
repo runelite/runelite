@@ -233,6 +233,13 @@ public class ChatCommandsPlugin extends Plugin
 	private void itemPriceLookup(MessageNode messageNode, String search)
 	{
 		SearchResult result;
+		String response;
+		final ChatMessageBuilder builder = new ChatMessageBuilder();
+
+		builder
+			.append(ChatColorType.NORMAL)
+			.append("Price of ")
+			.append(ChatColorType.HIGHLIGHT);
 
 		try
 		{
@@ -240,8 +247,8 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		catch (ExecutionException ex)
 		{
+			result = null;
 			log.warn("Unable to search for item {}", search, ex);
-			return;
 		}
 
 		if (result != null && !result.getItems().isEmpty())
@@ -256,10 +263,7 @@ public class ChatCommandsPlugin extends Plugin
 			int itemId = item.getId();
 			ItemPrice itemPrice = itemManager.getItemPrice(itemId);
 
-			final ChatMessageBuilder builder = new ChatMessageBuilder()
-				.append(ChatColorType.NORMAL)
-				.append("Price of ")
-				.append(ChatColorType.HIGHLIGHT)
+			builder
 				.append(item.getName())
 				.append(ChatColorType.NORMAL)
 				.append(": GE average ")
@@ -276,14 +280,19 @@ public class ChatCommandsPlugin extends Plugin
 					.append(ChatColorType.HIGHLIGHT)
 					.append(StackFormatter.formatNumber(alchPrice));
 			}
-
-			String response = builder.build();
-
-			log.debug("Setting response {}", response);
-			messageNode.setRuneLiteFormatMessage(response);
-			chatMessageManager.update(messageNode);
-			client.refreshChat();
 		}
+		else
+		{
+			builder
+				.append(search)
+				.append(ChatColorType.NORMAL)
+				.append(": Invalid item");
+		}
+		response = builder.build();
+		log.debug("Setting response {}", response);
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
+		client.refreshChat();
 	}
 
 	/**
@@ -297,12 +306,25 @@ public class ChatCommandsPlugin extends Plugin
 	{
 		search = SkillAbbreviations.getFullName(search);
 		final HiscoreSkill skill;
+		final ChatMessageBuilder builder = new ChatMessageBuilder();
+		final String response;
 		try
 		{
 			skill = HiscoreSkill.valueOf(search.toUpperCase());
 		}
 		catch (IllegalArgumentException i)
 		{
+			builder
+				.append("Invalid skill keyword: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(search);
+
+			response = builder.build();
+			log.debug("Setting response {}", response);
+			final MessageNode messageNode = setMessage.getMessageNode();
+			messageNode.setRuneLiteFormatMessage(response);
+			chatMessageManager.update(messageNode);
+			client.refreshChat();
 			return;
 		}
 
@@ -313,7 +335,7 @@ public class ChatCommandsPlugin extends Plugin
 			final SingleHiscoreSkillResult result = hiscoreClient.lookup(lookup.getName(), skill, lookup.getEndpoint());
 			final Skill hiscoreSkill = result.getSkill();
 
-			final String response = new ChatMessageBuilder()
+			builder
 				.append(ChatColorType.NORMAL)
 				.append("Level ")
 				.append(ChatColorType.HIGHLIGHT)
@@ -325,19 +347,23 @@ public class ChatCommandsPlugin extends Plugin
 				.append(ChatColorType.NORMAL)
 				.append(" Rank: ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(String.format("%,d", hiscoreSkill.getRank()))
-				.build();
-
-			log.debug("Setting response {}", response);
-			final MessageNode messageNode = setMessage.getMessageNode();
-			messageNode.setRuneLiteFormatMessage(response);
-			chatMessageManager.update(messageNode);
-			client.refreshChat();
+				.append(String.format("%,d", hiscoreSkill.getRank()));
 		}
 		catch (IOException ex)
 		{
 			log.warn("unable to look up skill {} for {}", skill, search, ex);
+			builder
+				.append("Error:")
+				.append(ChatColorType.HIGHLIGHT)
+				.append("problems fetching data");
 		}
+
+		response = builder.build();
+		log.debug("Setting response {}", response);
+		final MessageNode messageNode = setMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
+		client.refreshChat();
 	}
 
 	/**
