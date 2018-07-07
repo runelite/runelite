@@ -58,7 +58,6 @@ import net.runelite.api.Player;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemQuantityChanged;
@@ -66,6 +65,7 @@ import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
@@ -78,6 +78,7 @@ import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.N
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.OPTION;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.StackFormatter;
 
 @PluginDescriptor(
@@ -110,15 +111,11 @@ public class GroundItemsPlugin extends Plugin
 	@Setter(AccessLevel.PACKAGE)
 	private Map.Entry<Rectangle, GroundItem> highlightBoxBounds;
 
-	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
-	private boolean hotKeyPressed;
-
 	private List<String> hiddenItemList = new CopyOnWriteArrayList<>();
 	private List<String> highlightedItemsList = new CopyOnWriteArrayList<>();
 
 	@Inject
-	private GroundItemInputListener inputListener;
+	private GroundItemMouseListener mouseListener;
 
 	@Inject
 	private MouseManager mouseManager;
@@ -136,6 +133,9 @@ public class GroundItemsPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
+	private RuneLiteConfig runeLiteConfig;
+
+	@Inject
 	private GroundItemsConfig config;
 
 	@Inject
@@ -150,6 +150,18 @@ public class GroundItemsPlugin extends Plugin
 	private LoadingCache<String, Boolean> highlightedItems;
 	private LoadingCache<String, Boolean> hiddenItems;
 
+	@Getter(AccessLevel.PACKAGE)
+	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> runeLiteConfig.hotkey())
+	{
+		@Override
+		public void hotkeyReleased()
+		{
+			textBoxBounds = null;
+			hiddenBoxBounds = null;
+			highlightBoxBounds = null;
+		}
+	};
+
 	@Provides
 	GroundItemsConfig provideConfig(ConfigManager configManager)
 	{
@@ -161,16 +173,16 @@ public class GroundItemsPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		reset();
-		mouseManager.registerMouseListener(inputListener);
-		keyManager.registerKeyListener(inputListener);
+		mouseManager.registerMouseListener(mouseListener);
+		keyManager.registerKeyListener(hotkeyListener);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
-		mouseManager.unregisterMouseListener(inputListener);
-		keyManager.unregisterKeyListener(inputListener);
+		mouseManager.unregisterMouseListener(mouseListener);
+		keyManager.unregisterKeyListener(hotkeyListener);
 		highlightedItems.invalidateAll();
 		highlightedItems = null;
 		hiddenItems.invalidateAll();
@@ -487,15 +499,6 @@ public class GroundItemsPlugin extends Plugin
 		}
 
 		return config.defaultColor();
-	}
-
-	@Subscribe
-	public void onFocusChanged(FocusChanged focusChanged)
-	{
-		if (!focusChanged.isFocused())
-		{
-			setHotKeyPressed(false);
-		}
 	}
 
 	private void notifyHighlightedItem(GroundItem item)
