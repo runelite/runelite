@@ -24,17 +24,21 @@
  */
 package net.runelite.client.util;
 
+import com.google.common.eventbus.Subscribe;
 import java.awt.event.KeyEvent;
 import java.util.function.Supplier;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.input.KeyListener;
 
 @RequiredArgsConstructor
-public abstract class HotkeyListener implements KeyListener
+public class HotkeyListener implements KeyListener
 {
 	private final Supplier<Keybind> keybind;
 
+	@Getter
 	private boolean isPressed = false;
 
 	private boolean isConsumingTyped = false;
@@ -73,12 +77,30 @@ public abstract class HotkeyListener implements KeyListener
 	{
 		if (keybind.get().matches(e))
 		{
+			boolean wasPressed = isPressed;
 			isPressed = false;
+			if (wasPressed)
+			{
+				hotkeyReleased();
+			}
 			isConsumingTyped = false;
 		}
 	}
 
 	public void hotkeyPressed()
 	{
+	}
+
+	public void hotkeyReleased()
+	{
+	}
+
+	@Subscribe
+	public void onFocusChanged(FocusChanged focusChanged)
+	{
+		if (!focusChanged.isFocused())
+		{
+			isPressed = false;
+		}
 	}
 }
