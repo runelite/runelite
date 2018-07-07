@@ -27,7 +27,13 @@ package net.runelite.http.api;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Properties;
+import okhttp3.Dns;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
@@ -39,7 +45,7 @@ public class RuneLiteAPI
 
 	public static final String RUNELITE_AUTH = "RUNELITE-AUTH";
 
-	public static final OkHttpClient CLIENT = new OkHttpClient();
+	public static final OkHttpClient CLIENT = new OkHttpClient.Builder().dns(new DnsSelector()).build();
 	public static final Gson GSON = new Gson();
 
 	private static final String BASE = "https://api.runelite.net/runelite-";
@@ -93,4 +99,14 @@ public class RuneLiteAPI
 		return rsVersion;
 	}
 
+	private static class DnsSelector implements Dns
+	{
+		@Override
+		public List<InetAddress> lookup(String hostname) throws UnknownHostException
+		{
+			final List<InetAddress> lookup = Dns.SYSTEM.lookup(hostname);
+			lookup.sort(Comparator.comparing(Inet4Address.class::isInstance).reversed());
+			return lookup;
+		}
+	}
 }
