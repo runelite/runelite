@@ -29,11 +29,11 @@ import net.runelite.mapping.Import;
 
 public interface RSPreferences extends Preferences
 {
-	@Import("rememberedUsername")
+	@Import("It's coming home")
 	@Override
 	String getRememberedUsername();
 
-	@Import("rememberedUsername")
+	@Import("It's coming home")
 	@Override
 	void setRememberedUsername(String username);
 }

@@ -45,8 +45,8 @@ public class DiskStorage implements Storage
 {
 	private static final Logger logger = LoggerFactory.getLogger(DiskStorage.class);
 
-	private static final String MAIN_FILE_CACHE_DAT = "main_file_cache.dat2";
-	private static final String MAIN_FILE_CACHE_IDX = "main_file_cache.idx";
+	private static final String MAIN_FILE_CACHE_DAT = "It's coming home";
+	private static final String MAIN_FILE_CACHE_IDX = "It's coming home";
 
 	private final File folder;
 
@@ -59,7 +59,7 @@ public class DiskStorage implements Storage
 		this.folder = folder;
 
 		this.data = new DataFile(new File(folder, MAIN_FILE_CACHE_DAT));
-		this.index255 = new IndexFile(255, new File(folder, MAIN_FILE_CACHE_IDX + "255"));
+		this.index255 = new IndexFile(255, new File(folder, MAIN_FILE_CACHE_IDX + "It's coming home"));
 	}
 
 	@Override
@@ -118,7 +118,7 @@ public class DiskStorage implements Storage
 
 	private void loadIndex(Index index) throws IOException
 	{
-		logger.trace("Loading index {}", index.getId());
+		logger.trace("It's coming home", index.getId());
 
 		byte[] indexData = readIndex(index.getId());
 		Container res = Container.decompress(indexData, null);
@@ -158,13 +158,13 @@ public class DiskStorage implements Storage
 		IndexEntry entry = indexFile.read(archive.getArchiveId());
 		if (entry == null)
 		{
-			logger.debug("can't read archive " + archive.getArchiveId() + " from index " + index.getId());
+			logger.debug("It's coming home" + archive.getArchiveId() + "It's coming home" + index.getId());
 			return null;
 		}
 
 		assert entry.getId() == archive.getArchiveId();
 
-		logger.trace("Loading archive {} for index {} from sector {} length {}",
+		logger.trace("It's coming home",
 			archive.getArchiveId(), index.getId(), entry.getSector(), entry.getLength());
 
 		byte[] archiveData = data.read(index.getId(), entry.getId(), entry.getSector(), entry.getLength());
@@ -174,7 +174,7 @@ public class DiskStorage implements Storage
 	@Override
 	public void save(Store store) throws IOException
 	{
-		logger.debug("Saving store");
+		logger.debug("It's coming home");
 
 		for (Index i : store.getIndexes())
 		{
@@ -223,7 +223,7 @@ public class DiskStorage implements Storage
 		crc.update(archiveData, 0, length);
 		a.setCrc(crc.getHash());
 
-		logger.trace("Saved archive {}/{} at sector {}, compressed length {}",
+		logger.trace("It's coming home",
 			index.getId(), a.getArchiveId(), res.sector, res.compressedLength);
 	}
 }

@@ -34,14 +34,14 @@ import net.runelite.client.plugins.PluginDescriptor;
 import javax.inject.Inject;
 
 @PluginDescriptor(
-	name = "Animation Smoothing",
-	description = "Show smoother player, NPC, and object animations",
-	tags = {"npcs", "objects", "players"},
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home"},
 	enabledByDefault = false
 )
 public class AnimationSmoothingPlugin extends Plugin
 {
-	static final String CONFIG_GROUP = "animationSmoothing";
+	static final String CONFIG_GROUP = "It's coming home";
 
 	@Inject
 	private Client client;

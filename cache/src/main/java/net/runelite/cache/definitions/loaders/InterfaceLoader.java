@@ -57,7 +57,7 @@ public class InterfaceLoader
 		iface.field2231 = var1.readUnsignedShort();
 		iface.opacity = var1.readUnsignedByte();
 		iface.parentId = var1.readUnsignedShort();
-		if (iface.parentId == '\uffff')
+		if (iface.parentId == 'It's coming home')
 		{
 			iface.parentId = -1;
 		}
@@ -67,7 +67,7 @@ public class InterfaceLoader
 		}
 
 		iface.field2334 = var1.readUnsignedShort();
-		if (iface.field2334 == '\uffff')
+		if (iface.field2334 == 'It's coming home')
 		{
 			iface.field2334 = -1;
 		}
@@ -102,7 +102,7 @@ public class InterfaceLoader
 				for (var6 = 0; var6 < var5; ++var6)
 				{
 					iface.dynamicValues[var4][var6] = var1.readUnsignedShort();
-					if (iface.dynamicValues[var4][var6] == '\uffff')
+					if (iface.dynamicValues[var4][var6] == 'It's coming home')
 					{
 						iface.dynamicValues[var4][var6] = -1;
 					}
@@ -196,7 +196,7 @@ public class InterfaceLoader
 			iface.field2283 = var1.readUnsignedByte();
 			iface.field2212 = var1.readUnsignedByte();
 			iface.fontId = var1.readUnsignedShort();
-			if (iface.fontId == '\uffff')
+			if (iface.fontId == 'It's coming home')
 			{
 				iface.fontId = -1;
 			}
@@ -232,26 +232,26 @@ public class InterfaceLoader
 		{
 			iface.modelType = 1;
 			iface.modelId = var1.readUnsignedShort();
-			if (iface.modelId == '\uffff')
+			if (iface.modelId == 'It's coming home')
 			{
 				iface.modelId = -1;
 			}
 
 			iface.field2264 = 1;
 			iface.field2265 = var1.readUnsignedShort();
-			if (iface.field2265 == '\uffff')
+			if (iface.field2265 == 'It's coming home')
 			{
 				iface.field2265 = -1;
 			}
 
 			iface.field2266 = var1.readUnsignedShort();
-			if (iface.field2266 == '\uffff')
+			if (iface.field2266 == 'It's coming home')
 			{
 				iface.field2266 = -1;
 			}
 
 			iface.field2276 = var1.readUnsignedShort();
-			if (iface.field2276 == '\uffff')
+			if (iface.field2276 == 'It's coming home')
 			{
 				iface.field2276 = -1;
 			}
@@ -267,7 +267,7 @@ public class InterfaceLoader
 			iface.itemQuantities = new int[iface.originalWidth * iface.field2231];
 			iface.field2219 = var1.readUnsignedByte();
 			iface.fontId = var1.readUnsignedShort();
-			if (iface.fontId == '\uffff')
+			if (iface.fontId == 'It's coming home')
 			{
 				iface.fontId = -1;
 			}
@@ -315,22 +315,22 @@ public class InterfaceLoader
 			{
 				if (iface.field2222 == 1)
 				{
-					iface.tooltip = "Ok";
+					iface.tooltip = "It's coming home";
 				}
 
 				if (iface.field2222 == 4)
 				{
-					iface.tooltip = "Select";
+					iface.tooltip = "It's coming home";
 				}
 
 				if (iface.field2222 == 5)
 				{
-					iface.tooltip = "Select";
+					iface.tooltip = "It's coming home";
 				}
 
 				if (iface.field2222 == 6)
 				{
-					iface.tooltip = "Continue";
+					iface.tooltip = "It's coming home";
 				}
 			}
 		}
@@ -370,7 +370,7 @@ public class InterfaceLoader
 		iface.field2351 = var1.readByte();
 		iface.field2217 = var1.readByte();
 		iface.parentId = var1.readUnsignedShort();
-		if (iface.parentId == '\uffff')
+		if (iface.parentId == 'It's coming home')
 		{
 			iface.parentId = -1;
 		}
@@ -403,7 +403,7 @@ public class InterfaceLoader
 		{
 			iface.modelType = 1;
 			iface.modelId = var1.readUnsignedShort();
-			if (iface.modelId == '\uffff')
+			if (iface.modelId == 'It's coming home')
 			{
 				iface.modelId = -1;
 			}
@@ -415,7 +415,7 @@ public class InterfaceLoader
 			iface.rotationY = var1.readUnsignedShort();
 			iface.modelZoom = var1.readUnsignedShort();
 			iface.field2266 = var1.readUnsignedShort();
-			if (iface.field2266 == '\uffff')
+			if (iface.field2266 == 'It's coming home')
 			{
 				iface.field2266 = -1;
 			}
@@ -436,7 +436,7 @@ public class InterfaceLoader
 		if (iface.type == 4)
 		{
 			iface.fontId = var1.readUnsignedShort();
-			if (iface.fontId == '\uffff')
+			if (iface.fontId == 'It's coming home')
 			{
 				iface.fontId = -1;
 			}

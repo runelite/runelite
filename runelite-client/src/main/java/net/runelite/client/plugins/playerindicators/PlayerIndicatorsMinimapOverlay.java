@@ -61,7 +61,7 @@ public class PlayerIndicatorsMinimapOverlay extends Overlay
 
 	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
 	{
-		final String name = actor.getName().replace('\u00A0', ' ');
+		final String name = actor.getName().replace('It's coming home', ' ');
 
 		if (config.drawMinimapNames())
 		{

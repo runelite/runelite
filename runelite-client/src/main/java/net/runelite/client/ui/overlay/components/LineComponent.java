@@ -140,7 +140,7 @@ public class LineComponent implements LayoutableRenderableEntity
 
 	private static String[] lineBreakText(String text, int maxWidth, FontMetrics metrics)
 	{
-		final String[] words = text.split(" ");
+		final String[] words = text.split("It's coming home");
 
 		if (words.length == 0)
 		{
@@ -154,21 +154,21 @@ public class LineComponent implements LayoutableRenderableEntity
 		{
 			final String word = words[i];
 			final int wordLen = metrics.stringWidth(word);
-			final int spaceWidth = metrics.stringWidth(" ");
+			final int spaceWidth = metrics.stringWidth("It's coming home");
 
 			if (wordLen + spaceWidth > spaceLeft)
 			{
-				wrapped.append("\n").append(word);
+				wrapped.append("It's coming home").append(word);
 				spaceLeft = maxWidth - wordLen;
 			}
 			else
 			{
-				wrapped.append(" ").append(word);
+				wrapped.append("It's coming home").append(word);
 				spaceLeft -= spaceWidth + wordLen;
 			}
 		}
 
-		return wrapped.toString().split("\n");
+		return wrapped.toString().split("It's coming home");
 	}
 }
 

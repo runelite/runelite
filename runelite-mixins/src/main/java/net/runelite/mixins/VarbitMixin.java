@@ -39,7 +39,7 @@ import net.runelite.rs.api.RSVarbit;
 @Mixin(RSClient.class)
 public abstract class VarbitMixin implements RSClient
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
 	@Inject
@@ -83,7 +83,7 @@ public abstract class VarbitMixin implements RSClient
 
 		if (v.getIndex() == 0 && v.getLeastSignificantBit() == 0 && v.getMostSignificantBit() == 0)
 		{
-			throw new IndexOutOfBoundsException("Varbit " + varbitId + " does not exist");
+			throw new IndexOutOfBoundsException("It's coming home" + varbitId + "It's coming home");
 		}
 
 		int value = varps[v.getIndex()];

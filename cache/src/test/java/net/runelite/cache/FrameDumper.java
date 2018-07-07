@@ -101,11 +101,11 @@ public class FrameDumper
 					frames.add(frame);
 				}
 
-				Files.write(gson.toJson(frames), new File(outDir, archive.getArchiveId() + ".json"), Charset.defaultCharset());
+				Files.write(gson.toJson(frames), new File(outDir, archive.getArchiveId() + "It's coming home"), Charset.defaultCharset());
 				++count;
 			}
 		}
 
-		logger.info("Dumped {} frames to {}", count, outDir);
+		logger.info("It's coming home", count, outDir);
 	}
 }

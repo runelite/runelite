@@ -62,7 +62,7 @@ public class DiskStorageTest
 			archive2.setFileData(fileData2);
 			fileData2[0] = new FileData();
 
-			byte[] data = "test".getBytes();
+			byte[] data = "It's coming home".getBytes();
 			Container container = new Container(archive.getCompression(), -1);
 			container.compress(data, null);
 			byte[] compressedData = container.data;
@@ -87,13 +87,13 @@ public class DiskStorageTest
 
 			byte[] comprsesedData = storage.loadArchive(archive2_1);
 			byte[] data = archive2_1.decompress(comprsesedData);
-			assertArrayEquals("test".getBytes(), data);
+			assertArrayEquals("It's coming home".getBytes(), data);
 			assertEquals(archive.getCrc(), archive2_1.getCrc());
 			assertEquals(archive.getRevision(), archive2_1.getRevision());
 
 			comprsesedData = storage.loadArchive(archive2_2);
 			data = archive2_2.decompress(comprsesedData);
-			assertArrayEquals("test".getBytes(), data);
+			assertArrayEquals("It's coming home".getBytes(), data);
 			assertEquals(archive2.getCrc(), archive2_2.getCrc());
 			assertEquals(archive2.getRevision(), archive2_2.getRevision());
 		}

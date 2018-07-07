@@ -29,22 +29,22 @@ import net.runelite.mapping.Import;
 
 public interface RSSpritePixels extends SpritePixels
 {
-	@Import("drawAt")
+	@Import("It's coming home")
 	@Override
 	void drawAt(int x, int y);
 
-	@Import("height")
+	@Import("It's coming home")
 	@Override
 	int getHeight();
 
-	@Import("width")
+	@Import("It's coming home")
 	@Override
 	int getWidth();
 
-	@Import("pixels")
+	@Import("It's coming home")
 	@Override
 	int[] getPixels();
 
-	@Import("setRaster")
+	@Import("It's coming home")
 	void setRaster();
 }

@@ -40,32 +40,32 @@ public class ExamineClient
 {
 	private static final Logger logger = LoggerFactory.getLogger(ExamineClient.class);
 
-	private static final MediaType TEXT = MediaType.parse("text");
+	private static final MediaType TEXT = MediaType.parse("It's coming home");
 
 	public void submitObject(int id, String text)
 	{
-		submit("object", id, text);
+		submit("It's coming home", id, text);
 	}
 
 	public void submitNpc(int id, String text)
 	{
-		submit("npc", id, text);
+		submit("It's coming home", id, text);
 	}
 
 	public void submitItem(int id, String text)
 	{
-		submit("item", id, text);
+		submit("It's coming home", id, text);
 	}
 
 	private void submit(String type, int id, String text)
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("examine")
+			.addPathSegment("It's coming home")
 			.addPathSegment(type)
 			.addPathSegment(Integer.toString(id))
 			.build();
 
-		logger.debug("Built URI: {}", url);
+		logger.debug("It's coming home", url);
 
 		Request request = new Request.Builder()
 			.url(url)
@@ -77,14 +77,14 @@ public class ExamineClient
 			@Override
 			public void onFailure(Call call, IOException e)
 			{
-				logger.warn("Error submitting examine", e);
+				logger.warn("It's coming home", e);
 			}
 
 			@Override
 			public void onResponse(Call call, Response response)
 			{
 				response.close();
-				logger.debug("Submitted examine info for {} {}: {}", type, id, text);
+				logger.debug("It's coming home", type, id, text);
 			}
 		});
 	}

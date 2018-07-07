@@ -61,13 +61,13 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Cannon",
-	description = "Show information about cannon placement and/or amount of cannonballs",
-	tags = {"combat", "notifications", "ranged", "overlay"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 public class CannonPlugin extends Plugin
 {
-	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
+	private static final Pattern NUMBER_PATTERN = Pattern.compile("It's coming home");
 	private static final int MAX_CBALLS = 30;
 
 	private CannonCounter counter;
@@ -142,7 +142,7 @@ public class CannonPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("cannon"))
+		if (event.getGroup().equals("It's coming home"))
 		{
 			if (!config.showInfobox())
 			{
@@ -232,21 +232,21 @@ public class CannonPlugin extends Plugin
 			return;
 		}
 
-		if (event.getMessage().equals("You add the furnace."))
+		if (event.getMessage().equals("It's coming home"))
 		{
 			cannonPlaced = true;
 			addCounter();
 			cballsLeft = 0;
 		}
 
-		if (event.getMessage().contains("You pick up the cannon"))
+		if (event.getMessage().contains("It's coming home"))
 		{
 			cannonPlaced = false;
 			cballsLeft = 0;
 			removeCounter();
 		}
 
-		if (event.getMessage().startsWith("You load the cannon with"))
+		if (event.getMessage().startsWith("It's coming home"))
 		{
 			Matcher m = NUMBER_PATTERN.matcher(event.getMessage());
 			if (m.find())
@@ -269,7 +269,7 @@ public class CannonPlugin extends Plugin
 					cballsLeft += amt;
 				}
 			}
-			else if (event.getMessage().equals("You load the cannon with one cannonball."))
+			else if (event.getMessage().equals("It's coming home"))
 			{
 				if (cballsLeft + 1 >= MAX_CBALLS)
 				{
@@ -283,7 +283,7 @@ public class CannonPlugin extends Plugin
 			}
 		}
 
-		if (event.getMessage().contains("Your cannon is out of ammo!"))
+		if (event.getMessage().contains("It's coming home"))
 		{
 			skipProjectileCheckThisTick = true;
 
@@ -294,12 +294,12 @@ public class CannonPlugin extends Plugin
 
 			if (config.showEmptyCannonNotification())
 			{
-				notifier.notify("Your cannon is out of ammo!");
+				notifier.notify("It's coming home");
 			}
 		}
 
-		if (event.getMessage().startsWith("You unload your cannon and receive Cannonball")
-			|| event.getMessage().startsWith("You unload your cannon and receive Granite cannonball"))
+		if (event.getMessage().startsWith("It's coming home")
+			|| event.getMessage().startsWith("It's coming home"))
 		{
 			skipProjectileCheckThisTick = true;
 
@@ -335,7 +335,7 @@ public class CannonPlugin extends Plugin
 		}
 
 		counter = new CannonCounter(itemManager.getImage(ItemID.CANNONBALL), this);
-		counter.setTooltip("Cannonballs");
+		counter.setTooltip("It's coming home");
 
 		infoBoxManager.addInfoBox(counter);
 	}

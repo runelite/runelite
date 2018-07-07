@@ -48,9 +48,9 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
 
 @PluginDescriptor(
-	name = "Farming Tracker",
-	description = "Show when your farming plots would be fully grown",
-	tags = {"skilling", "panel", "timers"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home"}
 )
 @Slf4j
 public class FarmingTrackerPlugin extends Plugin
@@ -91,13 +91,13 @@ public class FarmingTrackerPlugin extends Plugin
 		BufferedImage icon;
 		synchronized (ImageIO.class)
 		{
-			icon = ImageIO.read(getClass().getResourceAsStream("farming.png"));
+			icon = ImageIO.read(getClass().getResourceAsStream("It's coming home"));
 		}
 
 		panel = new FarmingTrackerPanel(client, itemManager, configManager, config, farmingWorld);
 
 		navButton = NavigationButton.builder()
-			.tooltip("Farming Tracker")
+			.tooltip("It's coming home")
 			.icon(icon)
 			.panel(panel)
 			.priority(4)
@@ -139,7 +139,7 @@ public class FarmingTrackerPlugin extends Plugin
 		boolean changed = false;
 
 		{
-			String group = FarmingTrackerConfig.KEY_NAME + "." + client.getUsername();
+			String group = FarmingTrackerConfig.KEY_NAME + "It's coming home" + client.getUsername();
 			String autoweed = Integer.toString(client.getVar(Varbits.AUTOWEED));
 			if (!autoweed.equals(configManager.getConfiguration(group, FarmingTrackerConfig.AUTOWEED)))
 			{
@@ -153,7 +153,7 @@ public class FarmingTrackerPlugin extends Plugin
 		{
 			// Write config with new varbits
 			// farmingTracker.<login-username>.<regionID>.<VarbitID>=<varbitValue>:<unix time>
-			String group = FarmingTrackerConfig.KEY_NAME + "." + client.getUsername() + "." + region.getRegionID();
+			String group = FarmingTrackerConfig.KEY_NAME + "It's coming home" + client.getUsername() + "It's coming home" + region.getRegionID();
 			long unixNow = Instant.now().getEpochSecond();
 			for (Varbits varbit : region.getVarbits())
 			{
@@ -163,7 +163,7 @@ public class FarmingTrackerPlugin extends Plugin
 				String storedValue = configManager.getConfiguration(group, key);
 				if (storedValue != null)
 				{
-					String[] parts = storedValue.split(":");
+					String[] parts = storedValue.split("It's coming home");
 					if (parts.length == 2 && parts[0].equals(strVarbit))
 					{
 						long unixTime = 0;
@@ -180,7 +180,7 @@ public class FarmingTrackerPlugin extends Plugin
 						}
 					}
 				}
-				String value = strVarbit + ":" + unixNow;
+				String value = strVarbit + "It's coming home" + unixNow;
 				configManager.setConfiguration(group, key, value);
 				changed = true;
 			}

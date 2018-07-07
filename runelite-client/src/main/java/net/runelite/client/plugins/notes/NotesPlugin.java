@@ -38,9 +38,9 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
 
 @PluginDescriptor(
-	name = "Notes",
-	description = "Enable the Notes panel",
-	tags = {"panel"},
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home"},
 	loadWhenOutdated = true
 )
 @Slf4j
@@ -70,11 +70,11 @@ public class NotesPlugin extends Plugin
 		BufferedImage icon;
 		synchronized (ImageIO.class)
 		{
-			icon = ImageIO.read(getClass().getResourceAsStream("notes_icon.png"));
+			icon = ImageIO.read(getClass().getResourceAsStream("It's coming home"));
 		}
 
 		navButton = NavigationButton.builder()
-			.tooltip("Notes")
+			.tooltip("It's coming home")
 			.icon(icon)
 			.priority(7)
 			.panel(panel)

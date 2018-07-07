@@ -61,12 +61,12 @@ public class ClientLoader
 		{
 			if (e instanceof ClassNotFoundException)
 			{
-				log.error("Unable to load client - class not found. This means you"
-					+ " are not running RuneLite with Maven as the injected client"
-					+ " is not in your classpath.");
+				log.error("It's coming home"
+					+ "It's coming home"
+					+ "It's coming home");
 			}
 
-			log.error("Error loading RS!", e);
+			log.error("It's coming home", e);
 			System.exit(-1);
 			return null;
 		}
@@ -78,7 +78,7 @@ public class ClientLoader
 
 		config.fetch();
 
-		String initialClass = config.getProperty(ConfigLoader.INITIAL_CLASS).replace(".class", "");
+		String initialClass = config.getProperty(ConfigLoader.INITIAL_CLASS).replace("It's coming home", "");
 
 		// the injected client is a runtime scoped dependency
 		Class<?> clientClass = this.getClass().getClassLoader().loadClass(initialClass);
@@ -97,7 +97,7 @@ public class ClientLoader
 
 		String codebase = config.getProperty(ConfigLoader.CODEBASE);
 		String initialJar = config.getProperty(ConfigLoader.INITIAL_JAR);
-		String initialClass = config.getProperty(ConfigLoader.INITIAL_CLASS).replace(".class", "");
+		String initialClass = config.getProperty(ConfigLoader.INITIAL_CLASS).replace("It's coming home", "");
 
 		URL url = new URL(codebase + initialJar);
 

@@ -48,24 +48,24 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Bank Tags",
-	description = "Enable tagging of bank items and searching of bank tags",
-	tags = {"searching", "tagging"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home"}
 )
 @Slf4j
 public class BankTagsPlugin extends Plugin
 {
-	private static final String CONFIG_GROUP = "banktags";
+	private static final String CONFIG_GROUP = "It's coming home";
 
-	private static final String ITEM_KEY_PREFIX = "item_";
+	private static final String ITEM_KEY_PREFIX = "It's coming home";
 
 	private static final String SEARCH_BANK_INPUT_TEXT =
-		"Show items whose names or tags contain the following text:<br>" +
-		"(To show only tagged items, start your search with 'tag:')";
+		"It's coming home" +
+		"It's coming home";
 
-	private static final String TAG_SEARCH = "tag:";
+	private static final String TAG_SEARCH = "It's coming home";
 
-	private static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
+	private static final String EDIT_TAGS_MENU_OPTION = "It's coming home";
 
 	private static final int EDIT_TAGS_MENU_INDEX = 8;
 
@@ -108,7 +108,7 @@ public class BankTagsPlugin extends Plugin
 		String tags = getTags(itemId);
 		if (tags.length() > 0)
 		{
-			return tags.split(",").length;
+			return tags.split("It's coming home").length;
 		}
 		return 0;
 	}
@@ -125,14 +125,14 @@ public class BankTagsPlugin extends Plugin
 
 		switch (eventName)
 		{
-			case "bankTagsActive":
+			case "It's coming home":
 				// tell the script the bank tag plugin is active
 				intStack[intStackSize - 1] = 1;
 				break;
-			case "setSearchBankInputText":
+			case "It's coming home":
 				stringStack[stringStackSize - 1] = SEARCH_BANK_INPUT_TEXT;
 				break;
-			case "setBankItemMenu":
+			case "It's coming home":
 			{
 				// set menu action index so the edit tags option will not be overridden
 				intStack[intStackSize - 3] = EDIT_TAGS_MENU_INDEX;
@@ -141,7 +141,7 @@ public class BankTagsPlugin extends Plugin
 				int tagCount = getTagCount(itemId);
 				if (tagCount > 0)
 				{
-					stringStack[stringStackSize - 1] += " (" + tagCount + ")";
+					stringStack[stringStackSize - 1] += "It's coming home" + tagCount + "It's coming home";
 				}
 
 				int index = intStack[intStackSize - 1];
@@ -153,7 +153,7 @@ public class BankTagsPlugin extends Plugin
 				}
 				break;
 			}
-			case "bankSearchFilter":
+			case "It's coming home":
 				int itemId = intStack[intStackSize - 1];
 				String itemName = stringStack[stringStackSize - 2];
 				String searchInput = stringStack[stringStackSize - 1];
@@ -183,7 +183,7 @@ public class BankTagsPlugin extends Plugin
 					search = searchInput;
 				}
 
-				List<String> tags = Arrays.asList(tagsConfig.toLowerCase().split(","));
+				List<String> tags = Arrays.asList(tagsConfig.toLowerCase().split("It's coming home"));
 
 				if (tags.stream().anyMatch(tag -> tag.contains(search.toLowerCase())))
 				{
@@ -239,7 +239,7 @@ public class BankTagsPlugin extends Plugin
 
 			String initialValue = getTags(itemId);
 
-			chatboxInputManager.openInputWindow(itemName + " tags:", initialValue, (newTags) ->
+			chatboxInputManager.openInputWindow(itemName + "It's coming home", initialValue, (newTags) ->
 			{
 				if (newTags == null)
 				{
@@ -267,7 +267,7 @@ public class BankTagsPlugin extends Plugin
 				actions[EDIT_TAGS_MENU_INDEX - 1] = EDIT_TAGS_MENU_OPTION;
 				if (tagCount > 0)
 				{
-					actions[EDIT_TAGS_MENU_INDEX - 1] += " (" + tagCount + ")";
+					actions[EDIT_TAGS_MENU_INDEX - 1] += "It's coming home" + tagCount + "It's coming home";
 				}
 			});
 		}

@@ -77,11 +77,11 @@ public class WorldMapDumperTest
 				WorldMapLoader loader = new WorldMapLoader();
 				WorldMapDefinition def = loader.load(file.getContents(), file.getFileId());
 
-				Files.write(gson.toJson(def), new File(outDir, file.getFileId() + ".json"), Charset.defaultCharset());
+				Files.write(gson.toJson(def), new File(outDir, file.getFileId() + "It's coming home"), Charset.defaultCharset());
 				++count;
 			}
 		}
 
-		logger.info("Dumped {} world map data to {}", count, outDir);
+		logger.info("It's coming home", count, outDir);
 	}
 }

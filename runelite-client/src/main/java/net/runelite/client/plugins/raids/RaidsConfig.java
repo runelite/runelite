@@ -28,14 +28,14 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("raids")
+@ConfigGroup("It's coming home")
 public interface RaidsConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
-		keyName = "raidsTimer",
-		name = "Display elapsed raid time",
-		description = "Display elapsed raid time"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean raidsTimer()
 	{
@@ -44,9 +44,9 @@ public interface RaidsConfig extends Config
 
 	@ConfigItem(
 		position = 1,
-		keyName = "pointsMessage",
-		name = "Display points in chatbox after raid",
-		description = "Display a message with total points, individual points and percentage at the end of a raid"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean pointsMessage()
 	{
@@ -55,9 +55,9 @@ public interface RaidsConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "scoutOverlay",
-		name = "Show scout overlay",
-		description = "Display an overlay that shows the current raid layout (when entering lobby)"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean scoutOverlay()
 	{
@@ -66,9 +66,9 @@ public interface RaidsConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "scoutOverlayAtBank",
-		name = "Show scout overlay outside lobby",
-		description = "Keep the overlay active while at the raids area"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean scoutOverlayAtBank()
 	{
@@ -77,9 +77,9 @@ public interface RaidsConfig extends Config
 
 	@ConfigItem(
 		position = 4,
-		keyName = "whitelistedRooms",
-		name = "Whitelisted rooms",
-		description = "Display whitelisted rooms in green on the overlay. Separate with comma (full name)"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default String whitelistedRooms()
 	{
@@ -88,9 +88,9 @@ public interface RaidsConfig extends Config
 
 	@ConfigItem(
 		position = 5,
-		keyName = "blacklistedRooms",
-		name = "Blacklisted rooms",
-		description = "Display blacklisted rooms in red on the overlay. Separate with comma (full name)"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default String blacklistedRooms()
 	{
@@ -99,9 +99,9 @@ public interface RaidsConfig extends Config
 
 	@ConfigItem(
 		position = 6,
-		keyName = "enableRotationWhitelist",
-		name = "Enable rotation whitelist",
-		description = "Enable the rotation whitelist"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean enableRotationWhitelist()
 	{
@@ -110,9 +110,9 @@ public interface RaidsConfig extends Config
 
 	@ConfigItem(
 		position = 7,
-		keyName = "whitelistedRotations",
-		name = "Whitelisted rotations",
-		description = "Warn when boss rotation doesn't match a whitelisted one. Add rotations like [tekton, muttadile, guardians]"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default String whitelistedRotations()
 	{
@@ -121,9 +121,9 @@ public interface RaidsConfig extends Config
 
 	@ConfigItem(
 		position = 8,
-		keyName = "enableLayoutWhitelist",
-		name = "Enable layout whitelist",
-		description = "Enable the layout whitelist"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean enableLayoutWhitelist()
 	{
@@ -132,9 +132,9 @@ public interface RaidsConfig extends Config
 
 	@ConfigItem(
 		position = 9,
-		keyName = "whitelistedLayouts",
-		name = "Whitelisted layouts",
-		description = "Warn when layout doesn't match a whitelisted one. Add layouts like CFSCPPCSCF separated with comma"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default String whitelistedLayouts()
 	{

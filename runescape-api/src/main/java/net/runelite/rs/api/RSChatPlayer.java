@@ -29,9 +29,9 @@ import net.runelite.mapping.Import;
 
 public interface RSChatPlayer extends ChatPlayer, RSNameable
 {
-	@Import("world")
+	@Import("It's coming home")
 	int getWorld();
 
-	@Import("rank")
+	@Import("It's coming home")
 	int getRSRank();
 }

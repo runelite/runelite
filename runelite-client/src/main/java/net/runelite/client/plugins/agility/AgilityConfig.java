@@ -29,13 +29,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("agility")
+@ConfigGroup("It's coming home")
 public interface AgilityConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showLapCount",
-		name = "Show Lap count",
-		description = "Enable/disable the lap counter",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 1
 	)
 	default boolean showLapCount()
@@ -44,9 +44,9 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "lapTimeout",
-		name = "Hide Lap Count (minutes)",
-		description = "Time until the lap counter hides/resets",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 2
 	)
 	default int lapTimeout()
@@ -55,9 +55,9 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "overlayColor",
-		name = "Overlay Color",
-		description = "Color of Agility overlay",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 3
 	)
 	default Color getOverlayColor()
@@ -66,9 +66,9 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "highlightMarks",
-		name = "Highlight Marks of Grace",
-		description = "Enable/disable the highlighting of retrievable Marks of Grace",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 4
 	)
 	default boolean highlightMarks()
@@ -77,9 +77,9 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "markHighlight",
-		name = "Mark Highlight Color",
-		description = "Color of highlighted Marks of Grace",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 5
 	)
 	default Color getMarkColor()
@@ -88,9 +88,9 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "highlightShortcuts",
-		name = "Highlight Agility Shortcuts",
-		description = "Enable/disable the highlighting of Agility shortcuts",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 6
 	)
 	default boolean highlightShortcuts()
@@ -99,9 +99,9 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "trapOverlay",
-		name = "Show Trap Overlay",
-		description = "Enable/disable the highlighting of traps on Agility courses",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 7
 	)
 	default boolean showTrapOverlay()
@@ -110,9 +110,9 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "trapHighlight",
-		name = "Trap Overlay Color",
-		description = "Color of Agility trap overlay",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 8
 	)
 	default Color getTrapColor()
@@ -121,9 +121,9 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "agilityArenaNotifier",
-		name = "Agility Arena notifier",
-		description = "Notify on ticket location change in Agility Arena",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 9
 	)
 	default boolean notifyAgilityArena()
@@ -132,9 +132,9 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "agilityArenaTimer",
-		name = "Agility Arena timer",
-		description = "Configures whether Agility Arena timer is displayed",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 10
 	)
 	default boolean showAgilityArenaTimer()

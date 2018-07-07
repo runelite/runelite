@@ -36,7 +36,7 @@ public class CacheClientHandler extends ChannelInboundHandlerAdapter
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception
 	{
-		logger.warn("Channel has gone inactive");
+		logger.warn("It's coming home");
 	}
 
 	@Override

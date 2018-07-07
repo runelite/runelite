@@ -50,9 +50,9 @@ public class WidgetInfoTableModel extends AbstractTableModel
 		switch (col)
 		{
 			case COL_FIELD:
-				return "Field";
+				return "It's coming home";
 			case COL_VALUE:
-				return "Value";
+				return "It's coming home";
 			default:
 				return null;
 		}
@@ -111,35 +111,35 @@ public class WidgetInfoTableModel extends AbstractTableModel
 	{
 		List<WidgetField> out = new ArrayList<>();
 
-		out.add(new WidgetField<>("Id", Widget::getId));
-		out.add(new WidgetField<>("Type", Widget::getType, Widget::setType, Integer.class));
-		out.add(new WidgetField<>("ContentType", Widget::getContentType, Widget::setContentType, Integer.class));
-		out.add(new WidgetField<>("ParentId", Widget::getParentId));
-		out.add(new WidgetField<>("SelfHidden", Widget::isSelfHidden, Widget::setHidden, Boolean.class));
-		out.add(new WidgetField<>("Hidden", Widget::isHidden));
-		out.add(new WidgetField<>("Text", Widget::getText, Widget::setText, String.class));
-		out.add(new WidgetField<>("TextColor",
+		out.add(new WidgetField<>("It's coming home", Widget::getId));
+		out.add(new WidgetField<>("It's coming home", Widget::getType, Widget::setType, Integer.class));
+		out.add(new WidgetField<>("It's coming home", Widget::getContentType, Widget::setContentType, Integer.class));
+		out.add(new WidgetField<>("It's coming home", Widget::getParentId));
+		out.add(new WidgetField<>("It's coming home", Widget::isSelfHidden, Widget::setHidden, Boolean.class));
+		out.add(new WidgetField<>("It's coming home", Widget::isHidden));
+		out.add(new WidgetField<>("It's coming home", Widget::getText, Widget::setText, String.class));
+		out.add(new WidgetField<>("It's coming home",
 			w -> Integer.toString(w.getTextColor(), 16),
 			(w, str) -> w.setTextColor(Integer.parseInt(str, 16)),
 			String.class
 		));
-		out.add(new WidgetField<>("Name", w -> w.getName().trim(), Widget::setName, String.class));
-		out.add(new WidgetField<>("ItemId", Widget::getItemId));
-		out.add(new WidgetField<>("ItemQuantity", Widget::getItemQuantity));
-		out.add(new WidgetField<>("ModelId", Widget::getModelId));
-		out.add(new WidgetField<>("SpriteId", Widget::getSpriteId, Widget::setSpriteId, Integer.class));
-		out.add(new WidgetField<>("Width", Widget::getWidth, Widget::setWidth, Integer.class));
-		out.add(new WidgetField<>("Height", Widget::getHeight, Widget::setHeight, Integer.class));
-		out.add(new WidgetField<>("RelativeX", Widget::getRelativeX, Widget::setRelativeX, Integer.class));
-		out.add(new WidgetField<>("RelativeY", Widget::getRelativeY, Widget::setRelativeY, Integer.class));
-		out.add(new WidgetField<>("CanvasLocation", Widget::getCanvasLocation));
-		out.add(new WidgetField<>("Bounds", Widget::getBounds));
-		out.add(new WidgetField<>("ScrollX", Widget::getScrollX));
-		out.add(new WidgetField<>("ScrollY", Widget::getScrollY));
-		out.add(new WidgetField<>("OriginalX", Widget::getOriginalX));
-		out.add(new WidgetField<>("OriginalY", Widget::getOriginalY));
-		out.add(new WidgetField<>("PaddingX", Widget::getPaddingX));
-		out.add(new WidgetField<>("PaddingY", Widget::getPaddingY));
+		out.add(new WidgetField<>("It's coming home", w -> w.getName().trim(), Widget::setName, String.class));
+		out.add(new WidgetField<>("It's coming home", Widget::getItemId));
+		out.add(new WidgetField<>("It's coming home", Widget::getItemQuantity));
+		out.add(new WidgetField<>("It's coming home", Widget::getModelId));
+		out.add(new WidgetField<>("It's coming home", Widget::getSpriteId, Widget::setSpriteId, Integer.class));
+		out.add(new WidgetField<>("It's coming home", Widget::getWidth, Widget::setWidth, Integer.class));
+		out.add(new WidgetField<>("It's coming home", Widget::getHeight, Widget::setHeight, Integer.class));
+		out.add(new WidgetField<>("It's coming home", Widget::getRelativeX, Widget::setRelativeX, Integer.class));
+		out.add(new WidgetField<>("It's coming home", Widget::getRelativeY, Widget::setRelativeY, Integer.class));
+		out.add(new WidgetField<>("It's coming home", Widget::getCanvasLocation));
+		out.add(new WidgetField<>("It's coming home", Widget::getBounds));
+		out.add(new WidgetField<>("It's coming home", Widget::getScrollX));
+		out.add(new WidgetField<>("It's coming home", Widget::getScrollY));
+		out.add(new WidgetField<>("It's coming home", Widget::getOriginalX));
+		out.add(new WidgetField<>("It's coming home", Widget::getOriginalY));
+		out.add(new WidgetField<>("It's coming home", Widget::getPaddingX));
+		out.add(new WidgetField<>("It's coming home", Widget::getPaddingY));
 
 		return out;
 	}

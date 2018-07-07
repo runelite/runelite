@@ -36,9 +36,9 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Stretched Fixed Mode",
-	description = "Resize the game while in fixed mode",
-	tags = {"resize"},
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home"},
 	enabledByDefault = false
 )
 public class StretchedFixedModePlugin extends Plugin
@@ -86,7 +86,7 @@ public class StretchedFixedModePlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("stretchedfixedmode"))
+		if (!event.getGroup().equals("It's coming home"))
 		{
 			return;
 		}

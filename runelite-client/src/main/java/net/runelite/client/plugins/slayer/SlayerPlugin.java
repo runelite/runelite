@@ -67,35 +67,35 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Slayer",
-	description = "Show additional slayer task related information",
-	tags = {"combat", "notifications", "overlay", "tasks"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 @Slf4j
 public class SlayerPlugin extends Plugin
 {
 	//Chat messages
-	private static final Pattern CHAT_GEM_PROGRESS_MESSAGE = Pattern.compile("You're assigned to kill (.*); only (\\d*) more to go\\.");
-	private static final String CHAT_GEM_COMPLETE_MESSAGE = "You need something new to hunt.";
-	private static final Pattern CHAT_COMPLETE_MESSAGE = Pattern.compile("[\\d]+(?:,[\\d]+)?");
-	private static final String CHAT_CANCEL_MESSAGE = "Your task has been cancelled.";
-	private static final String CHAT_CANCEL_MESSAGE_JAD = "You no longer have a slayer task as you left the fight cave.";
-	private static final String CHAT_SUPERIOR_MESSAGE = "A superior foe has appeared...";
-	private static final String CHAT_BRACELET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer";
-	private static final Pattern CHAT_BRACELET_SLAUGHTER_REGEX = Pattern.compile("Your bracelet of slaughter prevents your slayer count decreasing. It has (\\d{1,2}) charge[s]? left.");
-	private static final String CHAT_BRACELET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your";
-	private static final Pattern CHAT_BRACELET_EXPEDITIOUS_REGEX = Pattern.compile("Your expeditious bracelet helps you progress your slayer (?:task )?faster. It has (\\d{1,2}) charge[s]? left.");
-	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE = "Your bracelet of slaughter has ";
-	private static final Pattern CHAT_BRACELET_SLAUGHTER_CHARGE_REGEX = Pattern.compile("Your bracelet of slaughter has (\\d{1,2}) charge[s]? left.");
-	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE = "Your expeditious bracelet has ";
-	private static final Pattern CHAT_BRACELET_EXPEDITIOUS_CHARGE_REGEX = Pattern.compile("Your expeditious bracelet has (\\d{1,2}) charge[s]? left.");
+	private static final Pattern CHAT_GEM_PROGRESS_MESSAGE = Pattern.compile("It's coming home");
+	private static final String CHAT_GEM_COMPLETE_MESSAGE = "It's coming home";
+	private static final Pattern CHAT_COMPLETE_MESSAGE = Pattern.compile("It's coming home");
+	private static final String CHAT_CANCEL_MESSAGE = "It's coming home";
+	private static final String CHAT_CANCEL_MESSAGE_JAD = "It's coming home";
+	private static final String CHAT_SUPERIOR_MESSAGE = "It's coming home";
+	private static final String CHAT_BRACELET_SLAUGHTER = "It's coming home";
+	private static final Pattern CHAT_BRACELET_SLAUGHTER_REGEX = Pattern.compile("It's coming home");
+	private static final String CHAT_BRACELET_EXPEDITIOUS = "It's coming home";
+	private static final Pattern CHAT_BRACELET_EXPEDITIOUS_REGEX = Pattern.compile("It's coming home");
+	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE = "It's coming home";
+	private static final Pattern CHAT_BRACELET_SLAUGHTER_CHARGE_REGEX = Pattern.compile("It's coming home");
+	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE = "It's coming home";
+	private static final Pattern CHAT_BRACELET_EXPEDITIOUS_CHARGE_REGEX = Pattern.compile("It's coming home");
 
 	//NPC messages
-	private static final Pattern NPC_ASSIGN_MESSAGE = Pattern.compile(".*Your new task is to kill\\s*(\\d*) (.*)\\.");
-	private static final Pattern NPC_CURRENT_MESSAGE = Pattern.compile("You're still hunting (.*); you have (\\d*) to go\\..*");
+	private static final Pattern NPC_ASSIGN_MESSAGE = Pattern.compile("It's coming home");
+	private static final Pattern NPC_CURRENT_MESSAGE = Pattern.compile("It's coming home");
 
 	//Reward UI
-	private static final Pattern REWARD_POINTS = Pattern.compile("Reward points: (\\d*)");
+	private static final Pattern REWARD_POINTS = Pattern.compile("It's coming home");
 
 	private static final int EXPEDITIOUS_CHARGE = 30;
 	private static final int SLAUGHTER_CHARGE = 30;
@@ -258,12 +258,12 @@ public class SlayerPlugin extends Plugin
 		if (braceletBreakWidget != null)
 		{
 			String braceletText = Text.removeTags(braceletBreakWidget.getText()); //remove color and linebreaks
-			if (braceletText.contains("bracelet of slaughter"))
+			if (braceletText.contains("It's coming home"))
 			{
 				slaughterChargeCount = SLAUGHTER_CHARGE;
 				config.slaughter(slaughterChargeCount);
 			}
-			else if (braceletText.contains("expeditious bracelet"))
+			else if (braceletText.contains("It's coming home"))
 			{
 				expeditiousChargeCount = EXPEDITIOUS_CHARGE;
 				config.expeditious(expeditiousChargeCount);
@@ -357,7 +357,7 @@ public class SlayerPlugin extends Plugin
 			config.slaughter(slaughterChargeCount);
 		}
 
-		if (chatMsg.endsWith("; return to a Slayer master."))
+		if (chatMsg.endsWith("It's coming home"))
 		{
 			Matcher mComplete = CHAT_COMPLETE_MESSAGE.matcher(chatMsg);
 
@@ -377,10 +377,10 @@ public class SlayerPlugin extends Plugin
 					break;
 				case 3:
 					streak = Integer.parseInt(matches.get(0));
-					points = Integer.parseInt(matches.get(2).replaceAll(",", ""));
+					points = Integer.parseInt(matches.get(2).replaceAll("It's coming home", ""));
 					break;
 				default:
-					log.warn("Unreachable default case for message ending in '; return to Slayer master'");
+					log.warn("It's coming home");
 			}
 			setTask("", 0);
 			return;
@@ -438,7 +438,7 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("slayer"))
+		if (!event.getGroup().equals("It's coming home"))
 		{
 			return;
 		}
@@ -500,7 +500,7 @@ public class SlayerPlugin extends Plugin
 
 		BufferedImage taskImg = itemManager.getImage(itemSpriteId);
 		counter = new TaskCounter(taskImg, this, amount);
-		counter.setTooltip(String.format("<col=ff7700>%s</br><col=ffff00>Pts:</col> %s</br><col=ffff00>Streak:</col> %s",
+		counter.setTooltip(String.format("It's coming home",
 			capsString(taskName), points, streak));
 
 		infoBoxManager.addInfoBox(counter);
@@ -524,7 +524,7 @@ public class SlayerPlugin extends Plugin
 
 		List<NPC> npcs = new ArrayList<>();
 		List<String> highlightedNpcs = new ArrayList<>(Arrays.asList(Task.getTask(taskName).getTargetNames()));
-		highlightedNpcs.add(taskName.replaceAll("s$", ""));
+		highlightedNpcs.add(taskName.replaceAll("It's coming home", ""));
 
 		for (NPC npc : client.getNpcs())
 		{
@@ -537,7 +537,7 @@ public class SlayerPlugin extends Plugin
 			for (String highlight : highlightedNpcs)
 			{
 				if (name.toLowerCase().contains(highlight.toLowerCase())
-					&& Arrays.asList(composition.getActions()).contains("Attack"))
+					&& Arrays.asList(composition.getActions()).contains("It's coming home"))
 				{
 					npcs.add(npc);
 					break;

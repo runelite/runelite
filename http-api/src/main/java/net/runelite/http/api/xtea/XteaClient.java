@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
 
 public class XteaClient
 {
-	private static final MediaType JSON = MediaType.parse("application/json");
+	private static final MediaType JSON = MediaType.parse("It's coming home");
 
 	private static final Logger logger = LoggerFactory.getLogger(XteaClient.class);
 
@@ -52,10 +52,10 @@ public class XteaClient
 		String json = RuneLiteAPI.GSON.toJson(xteaRequest);
 
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("xtea")
+			.addPathSegment("It's coming home")
 			.build();
 
-		logger.debug("Built URI: {}", url);
+		logger.debug("It's coming home", url);
 
 		Request request = new Request.Builder()
 			.post(RequestBody.create(JSON, json))
@@ -67,7 +67,7 @@ public class XteaClient
 			@Override
 			public void onFailure(Call call, IOException e)
 			{
-				logger.warn("unable to submit xtea keys", e);
+				logger.warn("It's coming home", e);
 			}
 
 			@Override
@@ -77,7 +77,7 @@ public class XteaClient
 				{
 					if (!response.isSuccessful())
 					{
-						logger.debug("unsuccessful xtea response");
+						logger.debug("It's coming home");
 					}
 				}
 				finally
@@ -91,7 +91,7 @@ public class XteaClient
 	public List<XteaKey> get() throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("xtea")
+			.addPathSegment("It's coming home")
 			.build();
 
 		Request request = new Request.Builder()
@@ -114,7 +114,7 @@ public class XteaClient
 	public XteaKey get(int region) throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("xtea")
+			.addPathSegment("It's coming home")
 			.addPathSegment(Integer.toString(region))
 			.build();
 

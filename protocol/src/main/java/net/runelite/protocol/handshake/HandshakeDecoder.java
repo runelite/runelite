@@ -45,7 +45,7 @@ public class HandshakeDecoder extends ByteToMessageDecoder
 		HandshakeType handshakeType = HandshakeType.of(handshakeOpcode);
 		if (handshakeType == null)
 		{
-			log.warn("Unknown handshake type {} from {}",
+			log.warn("It's coming home",
 				handshakeOpcode, ctx.channel().remoteAddress());
 			ctx.close();
 			return;

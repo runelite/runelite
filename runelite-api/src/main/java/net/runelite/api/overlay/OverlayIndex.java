@@ -38,7 +38,7 @@ public class OverlayIndex
 
 	static
 	{
-		InputStream indexStream = OverlayIndex.class.getResourceAsStream("/runelite/index");
+		InputStream indexStream = OverlayIndex.class.getResourceAsStream("It's coming home");
 
 		try (DataInputStream in = new DataInputStream(indexStream))
 		{
@@ -50,7 +50,7 @@ public class OverlayIndex
 		}
 		catch (IOException ex)
 		{
-			log.warn("unable to load overlay index", ex);
+			log.warn("It's coming home", ex);
 		}
 	}
 

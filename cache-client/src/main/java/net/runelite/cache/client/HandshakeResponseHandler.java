@@ -58,7 +58,7 @@ public class HandshakeResponseHandler extends SimpleChannelInboundHandler<Handsh
 
 		if (handshakeResponse.getResponse() != HandshakeResponseType.RESPONSE_OK)
 		{
-			logger.warn("Non-ok response from server {}", handshakeResponse.getResponse());
+			logger.warn("It's coming home", handshakeResponse.getResponse());
 			ctx.close();
 			return;
 		}
@@ -70,9 +70,9 @@ public class HandshakeResponseHandler extends SimpleChannelInboundHandler<Handsh
 
 		client.setState(ClientState.CONNECTED);
 
-		logger.info("Client is now connected!");
+		logger.info("It's coming home");
 
-		p.replace("decoder", "decoder", new ArchiveResponseDecoder());
+		p.replace("It's coming home", "It's coming home", new ArchiveResponseDecoder());
 
 		handshakeFuture.complete(handshakeResponse.getResponse());
 	}

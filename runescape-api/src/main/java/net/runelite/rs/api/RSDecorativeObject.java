@@ -29,20 +29,20 @@ import net.runelite.mapping.Import;
 
 public interface RSDecorativeObject extends DecorativeObject
 {
-	@Import("hash")
+	@Import("It's coming home")
 	@Override
 	long getHash();
 
-	@Import("x")
+	@Import("It's coming home")
 	int getX();
 
-	@Import("y")
+	@Import("It's coming home")
 	int getY();
 
-	@Import("rotation")
+	@Import("It's coming home")
 	int getOrientation();
 
-	@Import("renderable1")
+	@Import("It's coming home")
 	RSRenderable getRenderable();
 
 	void setPlane(int plane);

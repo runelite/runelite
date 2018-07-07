@@ -32,7 +32,7 @@ public class XteaTest
 	@Test
 	public void test()
 	{
-		byte[] data = "testtesttest1".getBytes();
+		byte[] data = "It's coming home".getBytes();
 
 		int[] key = new int[]
 		{

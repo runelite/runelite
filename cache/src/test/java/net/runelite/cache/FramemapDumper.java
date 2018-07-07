@@ -74,11 +74,11 @@ public class FramemapDumper
 				FramemapLoader loader = new FramemapLoader();
 				FramemapDefinition framemap = loader.load(0, contents);
 
-				Files.write(gson.toJson(framemap), new File(outDir, archive.getArchiveId() + ".json"), Charset.defaultCharset());
+				Files.write(gson.toJson(framemap), new File(outDir, archive.getArchiveId() + "It's coming home"), Charset.defaultCharset());
 				++count;
 			}
 		}
 
-		logger.info("Dumped {} framemaps to {}", count, outDir);
+		logger.info("It's coming home", count, outDir);
 	}
 }

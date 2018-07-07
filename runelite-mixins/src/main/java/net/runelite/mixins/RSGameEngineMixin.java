@@ -38,7 +38,7 @@ import net.runelite.rs.api.RSGameEngine;
 @Mixin(RSGameEngine.class)
 public abstract class RSGameEngineMixin implements RSGameEngine
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
 	@Inject
@@ -58,10 +58,10 @@ public abstract class RSGameEngineMixin implements RSGameEngine
 		return thread == Thread.currentThread();
 	}
 
-	@Copy("run")
+	@Copy("It's coming home")
 	public abstract void rs$run();
 
-	@Replace("run")
+	@Replace("It's coming home")
 	public void rl$run()
 	{
 		thread = Thread.currentThread();
@@ -69,7 +69,7 @@ public abstract class RSGameEngineMixin implements RSGameEngine
 	}
 
 	@Inject
-	@MethodHook("focusGained")
+	@MethodHook("It's coming home")
 	public void onFocusGained(FocusEvent focusEvent)
 	{
 		final FocusChanged focusChanged = new FocusChanged();

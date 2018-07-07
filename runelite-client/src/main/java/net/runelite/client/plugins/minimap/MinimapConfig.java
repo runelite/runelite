@@ -29,13 +29,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("minimap")
+@ConfigGroup("It's coming home")
 public interface MinimapConfig extends Config
 {
 	@ConfigItem(
-		keyName = "item",
-		name = "Item color",
-		description = "Set the minimap color items are drawn in"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color itemColor() //mapdot 0
 	{
@@ -43,9 +43,9 @@ public interface MinimapConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "npc",
-		name = "NPC color",
-		description = "Set the minimap color NPCs are drawn in"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color npcColor() //mapdot 1
 	{
@@ -53,9 +53,9 @@ public interface MinimapConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "player",
-		name = "Player color",
-		description = "Set the minimap Color players are drawn in"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color playerColor() //mapdot 2
 	{
@@ -63,9 +63,9 @@ public interface MinimapConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "friend",
-		name = "Friends color",
-		description = "Set the minimap color your friends are drawn in"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color friendColor() //mapdot 3
 	{
@@ -73,9 +73,9 @@ public interface MinimapConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "team",
-		name = "Team color",
-		description = "Set the minimap color your team is drawn in"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color teamColor() //mapdot 4
 	{
@@ -83,9 +83,9 @@ public interface MinimapConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "clan",
-		name = "Clan color",
-		description = "Set the minimap color your clan is drawn in"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color clanColor() //mapdot 5
 	{
@@ -93,9 +93,9 @@ public interface MinimapConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hideMinimap",
-		name = "Hide minimap",
-		description = "Do not show the minimap on screen (Resizable only)"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean hideMinimap()
 	{

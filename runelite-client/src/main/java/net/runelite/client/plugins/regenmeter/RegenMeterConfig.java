@@ -28,31 +28,31 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("regenmeter")
+@ConfigGroup("It's coming home")
 public interface RegenMeterConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showHitpoints",
-		name = "Show hitpoints regen",
-		description = "Show a ring around the hitpoints orb")
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home")
 	default boolean showHitpoints()
 	{
 		return true;
 	}
 
 	@ConfigItem(
-		keyName = "showSpecial",
-		name = "Show Spec. Attack regen",
-		description = "Show a ring around the Special Attack orb")
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home")
 	default boolean showSpecial()
 	{
 		return true;
 	}
 
 	@ConfigItem(
-		keyName = "showWhenNoChange",
-		name = "Show hitpoints regen at full hitpoints",
-		description = "Always show the hitpoints regen orb, even if there will be no stat change")
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home")
 	default boolean showWhenNoChange()
 	{
 		return false;

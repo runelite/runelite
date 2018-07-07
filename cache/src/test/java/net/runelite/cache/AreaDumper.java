@@ -64,11 +64,11 @@ public class AreaDumper
 
 			for (AreaDefinition area : areaManager.getAreas())
 			{
-				Files.write(gson.toJson(area), new File(outDir, area.id + ".json"), Charset.defaultCharset());
+				Files.write(gson.toJson(area), new File(outDir, area.id + "It's coming home"), Charset.defaultCharset());
 				++count;
 			}
 		}
 
-		logger.info("Dumped {} areas to {}", count, outDir);
+		logger.info("It's coming home", count, outDir);
 	}
 }

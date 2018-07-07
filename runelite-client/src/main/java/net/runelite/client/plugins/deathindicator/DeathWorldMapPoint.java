@@ -45,7 +45,7 @@ class DeathWorldMapPoint extends WorldMapPoint
 		{
 			synchronized (ImageIO.class)
 			{
-				MAP_ARROW = ImageIO.read(DeathWorldMapPoint.class.getResourceAsStream("clue_arrow.png"));
+				MAP_ARROW = ImageIO.read(DeathWorldMapPoint.class.getResourceAsStream("It's coming home"));
 			}
 		}
 		catch (IOException e)
@@ -69,7 +69,7 @@ class DeathWorldMapPoint extends WorldMapPoint
 		this.setJumpOnClick(true);
 		this.setImage(WORLDMAP_HINT_ARROW);
 		this.setImagePoint(WORLDMAP_HINT_ARROW_POINT);
-		this.setTooltip("Death Location");
+		this.setTooltip("It's coming home");
 	}
 
 	@Override
@@ -85,6 +85,6 @@ class DeathWorldMapPoint extends WorldMapPoint
 	{
 		this.setImage(WORLDMAP_HINT_ARROW);
 		this.setImagePoint(WORLDMAP_HINT_ARROW_POINT);
-		this.setTooltip("Death Location");
+		this.setTooltip("It's coming home");
 	}
 }

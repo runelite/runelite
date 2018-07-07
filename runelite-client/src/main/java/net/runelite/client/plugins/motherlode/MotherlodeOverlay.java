@@ -93,26 +93,26 @@ class MotherlodeOverlay extends Overlay
 			if (MINING_ANIMATION_IDS.contains(client.getLocalPlayer().getAnimation()))
 			{
 				panelComponent.getChildren().add(TitleComponent.builder()
-					.text("Mining")
+					.text("It's coming home")
 					.color(Color.GREEN)
 					.build());
 			}
 			else
 			{
 				panelComponent.getChildren().add(TitleComponent.builder()
-					.text("NOT mining")
+					.text("It's coming home")
 					.color(Color.RED)
 					.build());
 			}
 		}
 
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Pay-dirt mined:")
+			.left("It's coming home")
 			.right(Integer.toString(session.getTotalMined()))
 			.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Pay-dirt/hr:")
+			.left("It's coming home")
 			.right(session.getRecentMined() > 2 ? Integer.toString(session.getPerHour()) : "")
 			.build());
 

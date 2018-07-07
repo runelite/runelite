@@ -42,9 +42,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Player Indicators",
-	description = "Highlight players on-screen and/or on the minimap",
-	tags = {"highlight", "minimap", "overlay", "players"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 public class PlayerIndicatorsPlugin extends Plugin
 {
@@ -157,18 +157,18 @@ public class PlayerIndicatorsPlugin extends Plugin
 				{
 					// strip out existing <col...
 					String target = lastEntry.getTarget();
-					int idx = target.indexOf('>');
+					int idx = target.indexOf('It's coming home');
 					if (idx != -1)
 					{
 						target = target.substring(idx + 1);
 					}
 
-					lastEntry.setTarget("<col=" + Integer.toHexString(color.getRGB() & 0xFFFFFF) + ">" + target);
+					lastEntry.setTarget("It's coming home" + Integer.toHexString(color.getRGB() & 0xFFFFFF) + "It's coming home" + target);
 				}
 
 				if (image != -1 && config.showClanRanks())
 				{
-					lastEntry.setTarget("<img=" + image + ">" + lastEntry.getTarget());
+					lastEntry.setTarget("It's coming home" + image + "It's coming home" + lastEntry.getTarget());
 				}
 
 				client.setMenuEntries(menuEntries);

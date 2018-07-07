@@ -39,20 +39,20 @@ import net.runelite.rs.api.RSKeyFocusListener;
 @Mixin(RSKeyFocusListener.class)
 public abstract class RSKeyFocusListenerMixin implements RSKeyFocusListener
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
-	@Copy("keyPressed")
+	@Copy("It's coming home")
 	abstract void rs$keyPressed(KeyEvent keyEvent);
 
-	@Copy("keyReleased")
+	@Copy("It's coming home")
 	abstract void rs$keyReleased(KeyEvent keyEvent);
 
-	@Copy("keyTyped")
+	@Copy("It's coming home")
 	abstract void rs$keyTyped(KeyEvent keyEvent);
 
 	@Override
-	@Replace("keyPressed")
+	@Replace("It's coming home")
 	public final synchronized void keyPressed(KeyEvent keyEvent)
 	{
 		client.getCallbacks().keyPressed(keyEvent);
@@ -63,7 +63,7 @@ public abstract class RSKeyFocusListenerMixin implements RSKeyFocusListener
 	}
 
 	@Override
-	@Replace("keyReleased")
+	@Replace("It's coming home")
 	public final synchronized void keyReleased(KeyEvent keyEvent)
 	{
 		client.getCallbacks().keyReleased(keyEvent);
@@ -74,7 +74,7 @@ public abstract class RSKeyFocusListenerMixin implements RSKeyFocusListener
 	}
 
 	@Override
-	@Replace("keyTyped")
+	@Replace("It's coming home")
 	public final void keyTyped(KeyEvent keyEvent)
 	{
 		client.getCallbacks().keyTyped(keyEvent);
@@ -85,7 +85,7 @@ public abstract class RSKeyFocusListenerMixin implements RSKeyFocusListener
 	}
 
 	@Inject
-	@MethodHook("focusLost")
+	@MethodHook("It's coming home")
 	public void onFocusLost(FocusEvent focusEvent)
 	{
 		final FocusChanged focusChanged = new FocusChanged();

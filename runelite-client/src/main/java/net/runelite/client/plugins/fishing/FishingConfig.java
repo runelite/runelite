@@ -28,13 +28,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("fishing")
+@ConfigGroup("It's coming home")
 public interface FishingConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showIcons",
-		name = "Display Fish icons",
-		description = "Configures whether icons or text is displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showIcons()
 	{
@@ -42,9 +42,9 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "statTimeout",
-		name = "Reset stats (minutes)",
-		description = "Configures the time until statistic is reset"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default int statTimeout()
 	{
@@ -52,9 +52,9 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showShrimp",
-		name = "Show Shrimp/Anchovies",
-		description = "Configures whether shrimp/anchovies is displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showShrimp()
 	{
@@ -62,9 +62,9 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showLobster",
-		name = "Show Lobster/Swordfish/Tuna",
-		description = "Configures whether lobster/swordfish/tuna is displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showLobster()
 	{
@@ -72,9 +72,9 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showShark",
-		name = "Show Shark",
-		description = "Configures whether shark is displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showShark()
 	{
@@ -82,9 +82,9 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showMonkfish",
-		name = "Show Monkfish",
-		description = "Configures whether monkfish displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showMonkfish()
 	{
@@ -92,9 +92,9 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showSalmon",
-		name = "Show Salmon/Trout",
-		description = "Configures whether salmon/trout is displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showSalmon()
 	{
@@ -102,9 +102,9 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showBarb",
-		name = "Show Barbarian fish",
-		description = "Configures whether barbarian fish is displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showBarb()
 	{
@@ -112,9 +112,9 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showAngler",
-		name = "Show Anglerfish",
-		description = "Configures whether anglerfish is displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showAngler()
 	{
@@ -122,9 +122,9 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showMinnow",
-		name = "Show Minnow fish",
-		description = "Configures whether minnow fish is displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showMinnow()
 	{
@@ -132,9 +132,9 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showInfernalEel",
-		name = "Show Infernal Eel",
-		description = "Configures whether infernal eel is displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showInfernalEel()
 	{
@@ -142,9 +142,9 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showSacredEel",
-		name = "Show Sacred Eel",
-		description = "Configures whether sacred eel is displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showSacredEel()
 	{
@@ -152,9 +152,9 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showCaveEel",
-		name = "Show Cave Eel",
-		description = "Configures whether cave eel is displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showCaveEel()
 	{
@@ -162,9 +162,9 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showSlimyEel",
-		name = "Show Slimy Eel",
-		description = "Configures whether slimy eel is displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showSlimyEel()
 	{
@@ -172,9 +172,9 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showKarambwanji",
-		name = "Show Karambwanji",
-		description = "Configures whether karambwanji is displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showKarambwanji()
 	{
@@ -182,9 +182,9 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showKarambwan",
-		name = "Show Karambwan",
-		description = "Configures whether karambwan is displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showKarambwan()
 	{
@@ -192,9 +192,9 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showFishingStats",
-		name = "Show Fishing session stats",
-		description = "Configures whether to display the fishing session stats"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showFishingStats()
 	{

@@ -29,6 +29,6 @@ import net.runelite.mapping.Import;
 
 public interface RSWorldMapData extends WorldMapData
 {
-	@Import("surfaceContainsPosition")
+	@Import("It's coming home")
 	boolean surfaceContainsPosition(int x, int y);
 }

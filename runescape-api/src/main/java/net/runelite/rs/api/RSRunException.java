@@ -28,6 +28,6 @@ import net.runelite.mapping.Import;
 
 public interface RSRunException
 {
-	@Import("parent")
+	@Import("It's coming home")
 	Throwable getParent();
 }

@@ -36,7 +36,7 @@ import net.runelite.rs.api.RSGameCanvas;
 @Mixin(RSGameCanvas.class)
 public abstract class RSGameCanvasMixin extends Canvas implements RSGameCanvas
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
 	// This is inverted because it is false initialized.

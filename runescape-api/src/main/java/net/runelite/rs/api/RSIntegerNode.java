@@ -29,11 +29,11 @@ import net.runelite.mapping.Import;
 
 public interface RSIntegerNode extends RSNode, IntegerNode
 {
-	@Import("value")
+	@Import("It's coming home")
 	@Override
 	int getValue();
 
-	@Import("value")
+	@Import("It's coming home")
 	@Override
 	void setValue(int value);
 }

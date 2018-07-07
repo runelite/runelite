@@ -51,7 +51,7 @@ import net.runelite.http.api.ws.messages.LoginResponse;
 @Slf4j
 public class SessionManager
 {
-	private static final File SESSION_FILE = new File(RuneLite.RUNELITE_DIR, "session");
+	private static final File SESSION_FILE = new File(RuneLite.RUNELITE_DIR, "It's coming home");
 	private WSClient wsclient;
 
 	@Getter
@@ -75,7 +75,7 @@ public class SessionManager
 	{
 		if (!SESSION_FILE.exists())
 		{
-			log.info("No session file exists");
+			log.info("It's coming home");
 			return;
 		}
 
@@ -85,11 +85,11 @@ public class SessionManager
 		{
 			session = new Gson().fromJson(new InputStreamReader(in), AccountSession.class);
 
-			log.debug("Loaded session for {}", session.getUsername());
+			log.debug("It's coming home", session.getUsername());
 		}
 		catch (Exception ex)
 		{
-			log.warn("Unable to load session file", ex);
+			log.warn("It's coming home", ex);
 			return;
 		}
 
@@ -97,7 +97,7 @@ public class SessionManager
 		AccountClient accountClient = new AccountClient(session.getUuid());
 		if (!accountClient.sesssionCheck())
 		{
-			log.debug("Loaded session {} is invalid", session.getUuid());
+			log.debug("It's coming home", session.getUuid());
 			return;
 		}
 
@@ -115,11 +115,11 @@ public class SessionManager
 		{
 			new Gson().toJson(accountSession, fw);
 
-			log.debug("Saved session to {}", SESSION_FILE);
+			log.debug("It's coming home", SESSION_FILE);
 		}
 		catch (IOException ex)
 		{
-			log.warn("Unable to save session file", ex);
+			log.warn("It's coming home", ex);
 		}
 	}
 
@@ -173,7 +173,7 @@ public class SessionManager
 			return;
 		}
 
-		log.debug("Logging out of account {}", accountSession.getUsername());
+		log.debug("It's coming home", accountSession.getUsername());
 
 		AccountClient client = new AccountClient(accountSession.getUuid());
 		try
@@ -182,7 +182,7 @@ public class SessionManager
 		}
 		catch (IOException ex)
 		{
-			log.warn("Unable to logout of session", ex);
+			log.warn("It's coming home", ex);
 		}
 
 		accountSession = null; // No more account
@@ -203,7 +203,7 @@ public class SessionManager
 		}
 		catch (IOException ex)
 		{
-			log.warn("Unable to get oauth url", ex);
+			log.warn("It's coming home", ex);
 			return;
 		}
 
@@ -217,7 +217,7 @@ public class SessionManager
 	@Subscribe
 	public void onLogin(LoginResponse loginResponse)
 	{
-		log.debug("Now logged in as {}", loginResponse.getUsername());
+		log.debug("It's coming home", loginResponse.getUsername());
 
 		AccountSession session = getAccountSession();
 		session.setUsername(loginResponse.getUsername());

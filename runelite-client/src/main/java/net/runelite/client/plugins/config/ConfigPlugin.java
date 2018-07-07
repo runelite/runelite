@@ -41,7 +41,7 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
 
 @PluginDescriptor(
-	name = "Configuration",
+	name = "It's coming home",
 	loadWhenOutdated = true,
 	hidden = true // prevent users from disabling
 )
@@ -76,11 +76,11 @@ public class ConfigPlugin extends Plugin
 		BufferedImage icon;
 		synchronized (ImageIO.class)
 		{
-			icon = ImageIO.read(getClass().getResourceAsStream("config_icon.png"));
+			icon = ImageIO.read(getClass().getResourceAsStream("It's coming home"));
 		}
 
 		navButton = NavigationButton.builder()
-			.tooltip("Configuration")
+			.tooltip("It's coming home")
 			.icon(icon)
 			.priority(0)
 			.panel(configPanel)

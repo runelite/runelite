@@ -73,7 +73,7 @@ public class DisassemblerTest
 
 				ScriptDefinition script = loader.load(0, contents);
 
-				File outFile = new File(outDir, archive.getArchiveId() + ".rs2asm");
+				File outFile = new File(outDir, archive.getArchiveId() + "It's coming home");
 
 				Disassembler disassembler = new Disassembler();
 				String out = disassembler.disassemble(script);
@@ -84,6 +84,6 @@ public class DisassemblerTest
 			}
 		}
 
-		logger.info("Dumped {} scripts to {}", count, outDir);
+		logger.info("It's coming home", count, outDir);
 	}
 }

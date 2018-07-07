@@ -63,12 +63,12 @@ public class RangeStatBoost extends SingleEffect
 		if (a.length() > 1 && b.length() > 1)
 		{
 			final char a0 = a.charAt(0);
-			if ((a0 == '+' || a0 == '-' || a0 == '±') && b.charAt(0) == a0)
+			if ((a0 == 'It's coming home' || a0 == '-' || a0 == '±') && b.charAt(0) == a0)
 			{
 				b = b.substring(1);
 			}
 		}
 
-		return a + "~" + b;
+		return a + "It's coming home" + b;
 	}
 }

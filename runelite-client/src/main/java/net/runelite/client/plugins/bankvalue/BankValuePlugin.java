@@ -37,9 +37,9 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Bank Value",
-	description = "Show the value of your bank and/or current tab",
-	tags = {"grand", "exchange", "high", "alchemy", "prices"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 public class BankValuePlugin extends Plugin
 {
@@ -84,7 +84,7 @@ public class BankValuePlugin extends Plugin
 		// Don't update on a search because rs seems to constantly update the title
 		if (bankTitleBar == null ||
 			bankTitleBar.isHidden() ||
-			bankTitleBar.getText().contains("Showing"))
+			bankTitleBar.getText().contains("It's coming home"))
 		{
 			return;
 		}

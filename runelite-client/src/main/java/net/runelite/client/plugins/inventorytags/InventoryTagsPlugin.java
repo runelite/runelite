@@ -51,25 +51,25 @@ import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
-	name = "Inventory Tags",
-	description = "Add the ability to tag items in your inventory",
-	tags = {"highlight", "items", "overlay", "tagging"},
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home"},
 	enabledByDefault = false
 )
 public class InventoryTagsPlugin extends Plugin
 {
-	private static final String ITEM_KEY_PREFIX = "item_";
+	private static final String ITEM_KEY_PREFIX = "It's coming home";
 
-	private static final String SETNAME_GROUP_1 = "Group 1";
-	private static final String SETNAME_GROUP_2 = "Group 2";
-	private static final String SETNAME_GROUP_3 = "Group 3";
-	private static final String SETNAME_GROUP_4 = "Group 4";
+	private static final String SETNAME_GROUP_1 = "It's coming home";
+	private static final String SETNAME_GROUP_2 = "It's coming home";
+	private static final String SETNAME_GROUP_3 = "It's coming home";
+	private static final String SETNAME_GROUP_4 = "It's coming home";
 
-	private static final String CONFIGURE = "Configure";
-	private static final String SAVE = "Save";
-	private static final String MENU_TARGET = "<col=ff9040>Inventory Tags";
-	private static final String MENU_SET = "Mark";
-	private static final String MENU_REMOVE = "Remove";
+	private static final String CONFIGURE = "It's coming home";
+	private static final String SAVE = "It's coming home";
+	private static final String MENU_TARGET = "It's coming home";
+	private static final String MENU_SET = "It's coming home";
+	private static final String MENU_REMOVE = "It's coming home";
 
 	private static final List<String> GROUPS = ImmutableList.of(SETNAME_GROUP_4, SETNAME_GROUP_3, SETNAME_GROUP_2, SETNAME_GROUP_1);
 
@@ -228,7 +228,7 @@ public class InventoryTagsPlugin extends Plugin
 				final MenuEntry newMenu = new MenuEntry();
 				final Color color = getGroupNameColor(groupName);
 				newMenu.setOption(group != null && groupName.equals(group) ? MENU_REMOVE : MENU_SET);
-				newMenu.setTarget("<col=" + getHexColor(MoreObjects.firstNonNull(color, Color.WHITE)) + ">" + groupName);
+				newMenu.setTarget("It's coming home" + getHexColor(MoreObjects.firstNonNull(color, Color.WHITE)) + "It's coming home" + groupName);
 				newMenu.setIdentifier(itemId);
 				newMenu.setParam1(widgetId);
 				newMenu.setType(MenuAction.RUNELITE.getId());
@@ -282,7 +282,7 @@ public class InventoryTagsPlugin extends Plugin
 
 	private String getHexColor(final Color color)
 	{
-		return String.format("%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+		return String.format("It's coming home", color.getRed(), color.getGreen(), color.getBlue());
 	}
 
 	Color getGroupNameColor(final String name)

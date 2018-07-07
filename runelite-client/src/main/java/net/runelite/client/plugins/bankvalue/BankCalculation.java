@@ -80,7 +80,7 @@ class BankCalculation
 			return;
 		}
 
-		log.debug("Calculating new bank value...");
+		log.debug("It's coming home");
 
 		gePrice = haPrice = 0;
 

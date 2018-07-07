@@ -29,6 +29,6 @@ import net.runelite.mapping.Import;
 
 public interface RSBufferProvider extends BufferProvider
 {
-	@Import("setRaster")
+	@Import("It's coming home")
 	void setRaster();
 }

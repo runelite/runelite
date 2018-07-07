@@ -29,14 +29,14 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("herbiboar")
+@ConfigGroup("It's coming home")
 public interface HerbiboarConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
-		keyName = "showStart",
-		name = "Show Start Objects",
-		description = "Show highlights for starting rocks and logs"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean isStartShown()
 	{
@@ -45,9 +45,9 @@ public interface HerbiboarConfig extends Config
 
 	@ConfigItem(
 		position = 1,
-		keyName = "showClickboxes",
-		name = "Show Clickboxes",
-		description = "Show clickboxes on trail objects and tunnels instead of tiles"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showClickBoxes()
 	{
@@ -56,9 +56,9 @@ public interface HerbiboarConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "colorStart",
-		name = "Start Color",
-		description = "Color for rocks that start the trails"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getStartColor()
 	{
@@ -67,9 +67,9 @@ public interface HerbiboarConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "showTunnel",
-		name = "Show End Tunnels",
-		description = "Show highlights for tunnels with herbiboars"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean isTunnelShown()
 	{
@@ -78,9 +78,9 @@ public interface HerbiboarConfig extends Config
 
 	@ConfigItem(
 		position = 4,
-		keyName = "colorTunnel",
-		name = "Tunnel Color",
-		description = "Color for tunnels with herbiboars"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getTunnelColor()
 	{
@@ -89,9 +89,9 @@ public interface HerbiboarConfig extends Config
 
 	@ConfigItem(
 		position = 5,
-		keyName = "showObject",
-		name = "Show Trail Objects",
-		description = "Show highlights for mushrooms, mud, seaweed, etc"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean isObjectShown()
 	{
@@ -100,9 +100,9 @@ public interface HerbiboarConfig extends Config
 
 	@ConfigItem(
 		position = 6,
-		keyName = "colorGameObject",
-		name = "Trail Object Color",
-		description = "Color for mushrooms, mud, seaweed, etc"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getObjectColor()
 	{
@@ -111,9 +111,9 @@ public interface HerbiboarConfig extends Config
 
 	@ConfigItem(
 		position = 7,
-		keyName = "showTrail",
-		name = "Show Trail",
-		description = "Show highlights for trail prints"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean isTrailShown()
 	{
@@ -122,9 +122,9 @@ public interface HerbiboarConfig extends Config
 
 	@ConfigItem(
 		position = 8,
-		keyName = "colorTrail",
-		name = "Trail Color",
-		description = "Color for mushrooms, mud, seaweed, etc"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getTrailColor()
 	{

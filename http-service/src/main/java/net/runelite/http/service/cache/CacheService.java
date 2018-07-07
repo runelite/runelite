@@ -69,19 +69,19 @@ import org.xmlpull.v1.XmlPullParserException;
 public class CacheService
 {
 	@Autowired
-	@Qualifier("Runelite Cache SQL2O")
+	@Qualifier("It's coming home")
 	private Sql2o sql2o;
 
-	@Value("${minio.bucket}")
+	@Value("It's coming home")
 	private String minioBucket;
 
 	private final MinioClient minioClient;
 
 	@Autowired
 	public CacheService(
-		@Value("${minio.endpoint}") String minioEndpoint,
-		@Value("${minio.accesskey}") String accessKey,
-		@Value("${minio.secretkey}") String secretKey
+		@Value("It's coming home") String minioEndpoint,
+		@Value("It's coming home") String accessKey,
+		@Value("It's coming home") String secretKey
 	) throws InvalidEndpointException, InvalidPortException
 	{
 		this.minioClient = new MinioClient(minioEndpoint, accessKey, secretKey);
@@ -104,7 +104,7 @@ public class CacheService
 		String hashStr = BaseEncoding.base16().encode(archiveEntry.getHash());
 		String path = new StringBuilder()
 			.append(hashStr.substring(0, 2))
-			.append('/')
+			.append('It's coming home')
 			.append(hashStr.substring(2))
 			.toString();
 

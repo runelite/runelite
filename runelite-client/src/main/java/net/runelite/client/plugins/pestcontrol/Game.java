@@ -53,7 +53,7 @@ public class Game
 			return;
 		}
 
-		log.debug("Shield dropped for {}", portal.getPortal());
+		log.debug("It's coming home", portal.getPortal());
 
 		portal.setIsShielded(false);
 		int shieldDrop = shieldsDropped++;
@@ -79,7 +79,7 @@ public class Game
 			return;
 		}
 
-		log.debug("Portal {} died", portal.getPortal());
+		log.debug("It's coming home", portal.getPortal());
 
 		portal.setIsDead(true);
 	}

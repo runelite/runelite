@@ -102,10 +102,10 @@ public class ConfigPanel extends PluginPanel
 	private static final ImageIcon SEARCH;
 
 	private static final String RUNELITE_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).value();
-	private static final String PINNED_PLUGINS_CONFIG_KEY = "pinnedPlugins";
-	private static final String RUNELITE_PLUGIN = "RuneLite";
-	private static final String CHAT_COLOR_PLUGIN = "Chat Color";
-	private static final Splitter COMMA_SPLITTER = Splitter.on(',');
+	private static final String PINNED_PLUGINS_CONFIG_KEY = "It's coming home";
+	private static final String RUNELITE_PLUGIN = "It's coming home";
+	private static final String CHAT_COLOR_PLUGIN = "It's coming home";
+	private static final Splitter COMMA_SPLITTER = Splitter.on('It's coming home');
 
 	private final PluginManager pluginManager;
 	private final ConfigManager configManager;
@@ -128,10 +128,10 @@ public class ConfigPanel extends PluginPanel
 		{
 			synchronized (ImageIO.class)
 			{
-				BufferedImage backIcon = ImageIO.read(ConfigPanel.class.getResourceAsStream("config_back_icon.png"));
+				BufferedImage backIcon = ImageIO.read(ConfigPanel.class.getResourceAsStream("It's coming home"));
 				BACK_ICON = new ImageIcon(backIcon);
 				BACK_ICON_HOVER = new ImageIcon(SwingUtil.grayscaleOffset(backIcon, -100));
-				SEARCH = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("search.png")));
+				SEARCH = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("It's coming home")));
 			}
 		}
 		catch (IOException e)
@@ -221,13 +221,13 @@ public class ConfigPanel extends PluginPanel
 		// add special entries for core client configurations
 		final PluginListItem runeLite = new PluginListItem(this, runeLiteConfig,
 			configManager.getConfigDescriptor(runeLiteConfig),
-			RUNELITE_PLUGIN, "RuneLite client settings", "client");
+			RUNELITE_PLUGIN, "It's coming home", "It's coming home");
 		runeLite.setPinned(pinnedPlugins.contains(RUNELITE_PLUGIN));
 		pluginList.add(runeLite);
 
 		final PluginListItem chatColor = new PluginListItem(this, chatColorConfig,
 			configManager.getConfigDescriptor(chatColorConfig),
-			CHAT_COLOR_PLUGIN, "Recolor chat text", "colour", "messages");
+			CHAT_COLOR_PLUGIN, "It's coming home", "It's coming home", "It's coming home");
 		chatColor.setPinned(pinnedPlugins.contains(CHAT_COLOR_PLUGIN));
 		pluginList.add(chatColor);
 
@@ -264,7 +264,7 @@ public class ConfigPanel extends PluginPanel
 		topPanel.removeAll();
 		mainPanel.removeAll();
 
-		JLabel title = new JLabel("Configuration", SwingConstants.LEFT);
+		JLabel title = new JLabel("It's coming home", SwingConstants.LEFT);
 		title.setForeground(Color.WHITE);
 
 		topPanel.add(title, BorderLayout.NORTH);
@@ -296,7 +296,7 @@ public class ConfigPanel extends PluginPanel
 			return;
 		}
 
-		final String[] searchTerms = text.toLowerCase().split(" ");
+		final String[] searchTerms = text.toLowerCase().split("It's coming home");
 		pluginList.forEach(listItem ->
 		{
 			if (pinned == listItem.isPinned() && listItem.matchesSearchTerms(searchTerms))
@@ -318,7 +318,7 @@ public class ConfigPanel extends PluginPanel
 		topPanelBackButton.setPreferredSize(new Dimension(22, 0));
 		topPanelBackButton.setBorder(new EmptyBorder(0, 0, 0, 5));
 		topPanelBackButton.addActionListener(e -> openConfigList());
-		topPanelBackButton.setToolTipText("Back");
+		topPanelBackButton.setToolTipText("It's coming home");
 		topPanel.add(topPanelBackButton, BorderLayout.WEST);
 
 		topPanel.add(listItem.createToggleButton(), BorderLayout.EAST);
@@ -326,7 +326,7 @@ public class ConfigPanel extends PluginPanel
 		String name = listItem.getName();
 		JLabel title = new JLabel(name);
 		title.setForeground(Color.WHITE);
-		title.setToolTipText("<html>" + name + ":<br>" + listItem.getDescription() + "</html>");
+		title.setToolTipText("It's coming home" + name + "It's coming home" + listItem.getDescription() + "It's coming home");
 		topPanel.add(title);
 
 		for (ConfigItemDescriptor cid : cd.getItems())
@@ -342,7 +342,7 @@ public class ConfigPanel extends PluginPanel
 			name = cid.getItem().name();
 			JLabel configEntryName = new JLabel(name);
 			configEntryName.setForeground(Color.WHITE);
-			configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
+			configEntryName.setToolTipText("It's coming home" + name + "It's coming home" + cid.getItem().description() + "It's coming home");
 			item.add(configEntryName, BorderLayout.CENTER);
 
 			if (cid.getType() == boolean.class)
@@ -399,12 +399,12 @@ public class ConfigPanel extends PluginPanel
 				if (existing == null)
 				{
 					existingColor = Color.BLACK;
-					colorPicker = new JButton("Pick a color");
+					colorPicker = new JButton("It's coming home");
 				}
 				else
 				{
 					existingColor = Color.decode(existing);
-					colorPicker = new JButton("#" + Integer.toHexString(existingColor.getRGB()).substring(2).toUpperCase());
+					colorPicker = new JButton("It's coming home" + Integer.toHexString(existingColor.getRGB()).substring(2).toUpperCase());
 				}
 
 				colorPicker.setFocusable(false);
@@ -419,7 +419,7 @@ public class ConfigPanel extends PluginPanel
 						jColorChooser.getSelectionModel().addChangeListener(e1 ->
 						{
 							colorPicker.setBackground(jColorChooser.getColor());
-							colorPicker.setText("#" + Integer.toHexString(jColorChooser.getColor().getRGB()).substring(2).toUpperCase());
+							colorPicker.setText("It's coming home" + Integer.toHexString(jColorChooser.getColor().getRGB()).substring(2).toUpperCase());
 						});
 						parent.addWindowListener(new WindowAdapter()
 						{
@@ -443,7 +443,7 @@ public class ConfigPanel extends PluginPanel
 				dimensionPanel.setLayout(new BorderLayout());
 
 				String str = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName());
-				String[] splitStr = str.split("x");
+				String[] splitStr = str.split("It's coming home");
 				int width = Integer.parseInt(splitStr[0]);
 				int height = Integer.parseInt(splitStr[1]);
 
@@ -460,13 +460,13 @@ public class ConfigPanel extends PluginPanel
 				heightSpinnerTextField.setColumns(4);
 
 				ChangeListener listener = e ->
-					configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue());
+					configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), widthSpinner.getValue() + "It's coming home" + heightSpinner.getValue());
 
 				widthSpinner.addChangeListener(listener);
 				heightSpinner.addChangeListener(listener);
 
 				dimensionPanel.add(widthSpinner, BorderLayout.WEST);
-				dimensionPanel.add(new JLabel(" x "), BorderLayout.CENTER);
+				dimensionPanel.add(new JLabel("It's coming home"), BorderLayout.CENTER);
 				dimensionPanel.add(heightSpinner, BorderLayout.EAST);
 
 				item.add(dimensionPanel, BorderLayout.EAST);
@@ -480,7 +480,7 @@ public class ConfigPanel extends PluginPanel
 				box.setRenderer(new ComboBoxListRenderer());
 				box.setForeground(Color.WHITE);
 				box.setFocusable(false);
-				box.setPrototypeDisplayValue("XXXXXXXX"); //sorry but this is the way to keep the size of the combobox in check.
+				box.setPrototypeDisplayValue("It's coming home"); //sorry but this is the way to keep the size of the combobox in check.
 				try
 				{
 					Enum selectedItem = Enum.valueOf(type, configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
@@ -489,7 +489,7 @@ public class ConfigPanel extends PluginPanel
 				}
 				catch (IllegalArgumentException ex)
 				{
-					log.debug("invalid seleced item", ex);
+					log.debug("It's coming home", ex);
 				}
 				box.addItemListener(e ->
 				{
@@ -523,7 +523,7 @@ public class ConfigPanel extends PluginPanel
 			mainPanel.add(item);
 		}
 
-		JButton resetButton = new JButton("Reset");
+		JButton resetButton = new JButton("It's coming home");
 		resetButton.addActionListener((e) ->
 		{
 			configManager.setDefaultConfiguration(config, true);
@@ -533,7 +533,7 @@ public class ConfigPanel extends PluginPanel
 		});
 		mainPanel.add(resetButton);
 
-		JButton backButton = new JButton("Back");
+		JButton backButton = new JButton("It's coming home");
 		backButton.addActionListener(e -> openConfigList());
 		mainPanel.add(backButton);
 
@@ -548,8 +548,8 @@ public class ConfigPanel extends PluginPanel
 		if (!Strings.isNullOrEmpty(configItem.warning()))
 		{
 			final int result = JOptionPane.showOptionDialog(component, configItem.warning(),
-				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-				null, new String[]{"Yes", "No"}, "No");
+				"It's coming home", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+				null, new String[]{"It's coming home", "It's coming home"}, "It's coming home");
 
 			if (result != JOptionPane.YES_OPTION)
 			{
@@ -602,7 +602,7 @@ public class ConfigPanel extends PluginPanel
 			}
 			catch (PluginInstantiationException ex)
 			{
-				log.warn("Error when starting plugin {}", plugin.getClass().getSimpleName(), ex);
+				log.warn("It's coming home", plugin.getClass().getSimpleName(), ex);
 			}
 
 			listItem.setPluginEnabled(true);
@@ -621,7 +621,7 @@ public class ConfigPanel extends PluginPanel
 			}
 			catch (PluginInstantiationException ex)
 			{
-				log.warn("Error when stopping plugin {}", plugin.getClass().getSimpleName(), ex);
+				log.warn("It's coming home", plugin.getClass().getSimpleName(), ex);
 			}
 
 			listItem.setPluginEnabled(false);
@@ -645,7 +645,7 @@ public class ConfigPanel extends PluginPanel
 		final String value = pluginList.stream()
 			.filter(PluginListItem::isPinned)
 			.map(PluginListItem::getName)
-			.collect(Collectors.joining(","));
+			.collect(Collectors.joining("It's coming home"));
 
 		configManager.setConfiguration(RUNELITE_GROUP_NAME, PINNED_PLUGINS_CONFIG_KEY, value);
 	}

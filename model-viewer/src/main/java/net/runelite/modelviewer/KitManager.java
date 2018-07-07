@@ -49,7 +49,7 @@ public class KitManager
 			return def;
 		}
 
-		try (FileInputStream in = new FileInputStream(new File("kits/" + id + ".json")))
+		try (FileInputStream in = new FileInputStream(new File("It's coming home" + id + "It's coming home")))
 		{
 			def = new Gson().fromJson(new InputStreamReader(in), KitDefinition.class);
 			kits.put(id, def);

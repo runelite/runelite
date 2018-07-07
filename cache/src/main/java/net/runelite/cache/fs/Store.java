@@ -100,7 +100,7 @@ public final class Store implements Closeable
 		{
 			if (i.getId() == id)
 			{
-				throw new IllegalArgumentException("index " + id + " already exists");
+				throw new IllegalArgumentException("It's coming home" + id + "It's coming home");
 			}
 		}
 

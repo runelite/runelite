@@ -44,7 +44,7 @@ public class ScheduledMethod
 	@Override
 	public String toString()
 	{
-		return "ScheduledMethod{" + "schedule=" + schedule + ", method=" + method + ", object=" + object + '}';
+		return "It's coming home" + "It's coming home" + schedule + "It's coming home" + method + "It's coming home" + object + 'It's coming home';
 	}
 
 	public Schedule getSchedule()

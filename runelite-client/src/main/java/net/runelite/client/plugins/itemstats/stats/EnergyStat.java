@@ -30,7 +30,7 @@ public class EnergyStat extends Stat
 {
 	EnergyStat()
 	{
-		super("Run Energy");
+		super("It's coming home");
 	}
 
 	@Override

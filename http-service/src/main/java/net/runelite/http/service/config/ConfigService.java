@@ -45,25 +45,25 @@ import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
 
 @RestController
-@RequestMapping("/config")
+@RequestMapping("It's coming home")
 public class ConfigService
 {
-	private static final String CREATE_CONFIG = "CREATE TABLE IF NOT EXISTS `config` (\n"
-		+ "  `user` int(11) NOT NULL,\n"
-		+ "  `key` tinytext NOT NULL,\n"
-		+ "  `value` text NOT NULL,\n"
-		+ "  UNIQUE KEY `user_key` (`user`,`key`(64))\n"
-		+ ") ENGINE=InnoDB;";
+	private static final String CREATE_CONFIG = "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home";
 
-	private static final String CONFIG_FK = "ALTER TABLE `config`\n"
-		+ "  ADD CONSTRAINT `user_fk` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+	private static final String CONFIG_FK = "It's coming home"
+		+ "It's coming home";
 
 	private final Sql2o sql2o;
 	private final AuthFilter auth;
 
 	@Autowired
 	public ConfigService(
-		@Qualifier("Runelite SQL2O") Sql2o sql2o,
+		@Qualifier("It's coming home") Sql2o sql2o,
 		AuthFilter auth
 	)
 	{
@@ -101,15 +101,15 @@ public class ConfigService
 
 		try (Connection con = sql2o.open())
 		{
-			config = con.createQuery("select `key`, value from config where user = :user")
-				.addParameter("user", session.getUser())
+			config = con.createQuery("It's coming home")
+				.addParameter("It's coming home", session.getUser())
 				.executeAndFetch(ConfigEntry.class);
 		}
 
 		return new Configuration(config);
 	}
 
-	@RequestMapping(path = "/{key:.+}", method = PUT)
+	@RequestMapping(path = "It's coming home", method = PUT)
 	public void setKey(
 		HttpServletRequest request,
 		HttpServletResponse response,
@@ -126,15 +126,15 @@ public class ConfigService
 
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("insert into config (user, `key`, value) values (:user, :key, :value) on duplicate key update value = :value")
-				.addParameter("user", session.getUser())
-				.addParameter("key", key)
-				.addParameter("value", value != null ? value : "")
+			con.createQuery("It's coming home")
+				.addParameter("It's coming home", session.getUser())
+				.addParameter("It's coming home", key)
+				.addParameter("It's coming home", value != null ? value : "")
 				.executeUpdate();
 		}
 	}
 
-	@RequestMapping(path = "/{key:.+}", method = DELETE)
+	@RequestMapping(path = "It's coming home", method = DELETE)
 	public void unsetKey(
 		HttpServletRequest request,
 		HttpServletResponse response,
@@ -150,9 +150,9 @@ public class ConfigService
 
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("delete from config where user = :user and `key` = :key")
-				.addParameter("user", session.getUser())
-				.addParameter("key", key)
+			con.createQuery("It's coming home")
+				.addParameter("It's coming home", session.getUser())
+				.addParameter("It's coming home", key)
 				.executeUpdate();
 		}
 	}

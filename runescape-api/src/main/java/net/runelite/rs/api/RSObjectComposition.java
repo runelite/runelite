@@ -29,27 +29,27 @@ import net.runelite.mapping.Import;
 
 public interface RSObjectComposition extends ObjectComposition
 {
-	@Import("name")
+	@Import("It's coming home")
 	@Override
 	String getName();
 
-	@Import("actions")
+	@Import("It's coming home")
 	@Override
 	String[] getActions();
 
-	@Import("mapSceneId")
+	@Import("It's coming home")
 	@Override
 	int getMapSceneId();
 
-	@Import("mapIconId")
+	@Import("It's coming home")
 	@Override
 	int getMapIconId();
 
-	@Import("impostorIds")
+	@Import("It's coming home")
 	@Override
 	int[] getImpostorIds();
 
-	@Import("getImpostor")
+	@Import("It's coming home")
 	@Override
 	RSObjectComposition getImpostor();
 }

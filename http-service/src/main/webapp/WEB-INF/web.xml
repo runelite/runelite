@@ -22,11 +22,11 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
-<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
-		 http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
-	 version="3.1">
+<web-app xmlns="It's coming home"
+	 xmlns:xsi="It's coming home"
+	 xsi:schemaLocation="It's coming home
+It's coming home"
+	 version="It's coming home">
 
 	<display-name>RuneLite API</display-name>
 </web-app>

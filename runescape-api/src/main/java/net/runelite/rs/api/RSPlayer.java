@@ -29,35 +29,35 @@ import net.runelite.mapping.Import;
 
 public interface RSPlayer extends RSActor, Player
 {
-	@Import("name")
+	@Import("It's coming home")
 	RSName getRsName();
 
-	@Import("playerId")
+	@Import("It's coming home")
 	int getPlayerId();
 
-	@Import("composition")
+	@Import("It's coming home")
 	@Override
 	RSPlayerComposition getPlayerComposition();
 
-	@Import("combatLevel")
+	@Import("It's coming home")
 	@Override
 	int getCombatLevel();
 
-	@Import("totalLevel")
+	@Import("It's coming home")
 	int getTotalLevel();
 
-	@Import("team")
+	@Import("It's coming home")
 	@Override
 	int getTeam();
 
-	@Import("isClanMember")
+	@Import("It's coming home")
 	@Override
 	boolean isClanMember();
 
-	@Import("isFriend")
+	@Import("It's coming home")
 	@Override
 	boolean isFriend();
 
-	@Import("overheadIcon")
+	@Import("It's coming home")
 	int getRsOverheadIcon();
 }

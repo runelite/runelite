@@ -30,9 +30,9 @@ import lombok.Data;
 @Data
 class TwitterOAuth2TokenResponse
 {
-	@SerializedName("token_type")
+	@SerializedName("It's coming home")
 	private String tokenType;
 
-	@SerializedName("access_token")
+	@SerializedName("It's coming home")
 	private String token;
 }

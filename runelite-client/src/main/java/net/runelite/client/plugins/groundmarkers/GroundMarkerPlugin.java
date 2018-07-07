@@ -60,15 +60,15 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Ground Markers",
-	description = "Enable marking of tiles using the Shift key",
-	tags = {"overlay", "tiles"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home"}
 )
 public class GroundMarkerPlugin extends Plugin
 {
-	private static final String CONFIG_GROUP = "groundMarker";
-	private static final String MARK = "Mark tile";
-	private static final String WALK_HERE = "Walk here";
+	private static final String CONFIG_GROUP = "It's coming home";
+	private static final String MARK = "It's coming home";
+	private static final String WALK_HERE = "It's coming home";
 
 	private static final Gson gson = new Gson();
 
@@ -101,17 +101,17 @@ public class GroundMarkerPlugin extends Plugin
 	{
 		if (points == null || points.isEmpty())
 		{
-			configManager.unsetConfiguration(CONFIG_GROUP, "region_" + regionId);
+			configManager.unsetConfiguration(CONFIG_GROUP, "It's coming home" + regionId);
 			return;
 		}
 
 		String json = gson.toJson(points);
-		configManager.setConfiguration(CONFIG_GROUP, "region_" + regionId, json);
+		configManager.setConfiguration(CONFIG_GROUP, "It's coming home" + regionId, json);
 	}
 
 	private Collection<GroundMarkerPoint> getPoints(int regionId)
 	{
-		String json = configManager.getConfiguration(CONFIG_GROUP, "region_" + regionId);
+		String json = configManager.getConfiguration(CONFIG_GROUP, "It's coming home" + regionId);
 		if (Strings.isNullOrEmpty(json))
 		{
 			return Collections.EMPTY_LIST;
@@ -135,7 +135,7 @@ public class GroundMarkerPlugin extends Plugin
 		for (int regionId : regions)
 		{
 			// load points for region
-			log.debug("Loading points for region {}", regionId);
+			log.debug("It's coming home", regionId);
 			Collection<GroundMarkerPoint> regionPoints = getPoints(regionId);
 			Collection<WorldPoint> worldPoints = translateToWorld(regionPoints);
 			points.addAll(worldPoints);
@@ -347,7 +347,7 @@ public class GroundMarkerPlugin extends Plugin
 
 		int regionId = worldPoint.getRegionID();
 		GroundMarkerPoint point = new GroundMarkerPoint(regionId, worldPoint.getX() & 0x3f, worldPoint.getY() & 0x3f, client.getPlane());
-		log.debug("Updating point: {} - {}", point, worldPoint);
+		log.debug("It's coming home", point, worldPoint);
 
 		List<GroundMarkerPoint> points = new ArrayList<>(getPoints(regionId));
 		if (points.contains(point))

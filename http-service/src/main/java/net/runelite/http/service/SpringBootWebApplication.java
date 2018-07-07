@@ -62,7 +62,7 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 			@Override
 			public void contextInitialized(ServletContextEvent sce)
 			{
-				log.info("RuneLite API started");
+				log.info("It's coming home");
 			}
 
 			@Override
@@ -85,7 +85,7 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 					log.warn(null, ex);
 				}
 
-				log.info("RuneLite API stopped");
+				log.info("It's coming home");
 			}
 
 		};
@@ -94,31 +94,31 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 	private Context getContext() throws NamingException
 	{
 		Context initCtx = new InitialContext();
-		return (Context) initCtx.lookup("java:comp/env");
+		return (Context) initCtx.lookup("It's coming home");
 	}
 
-	@Bean("Runelite SQL2O")
+	@Bean("It's coming home")
 	Sql2o sql2o() throws NamingException
 	{
-		DataSource dataSource = (DataSource) getContext().lookup("jdbc/runelite");
+		DataSource dataSource = (DataSource) getContext().lookup("It's coming home");
 		Map<Class, Converter> converters = new HashMap<>();
 		converters.put(Instant.class, new InstantConverter());
 		return new Sql2o(dataSource, new NoQuirks(converters));
 	}
 
-	@Bean("Runelite Cache SQL2O")
+	@Bean("It's coming home")
 	Sql2o cacheSql2o() throws NamingException
 	{
-		DataSource dataSource = (DataSource) getContext().lookup("jdbc/runelite-cache2");
+		DataSource dataSource = (DataSource) getContext().lookup("It's coming home");
 		Map<Class, Converter> converters = new HashMap<>();
 		converters.put(Instant.class, new InstantConverter());
 		return new Sql2o(dataSource, new NoQuirks(converters));
 	}
 
-	@Bean("Runelite XP Tracker SQL2O")
+	@Bean("It's coming home")
 	Sql2o trackerSql2o() throws NamingException
 	{
-		DataSource dataSource = (DataSource) getContext().lookup("jdbc/runelite-tracker");
+		DataSource dataSource = (DataSource) getContext().lookup("It's coming home");
 		Map<Class, Converter> converters = new HashMap<>();
 		converters.put(Instant.class, new InstantConverter());
 		return new Sql2o(dataSource, new NoQuirks(converters));

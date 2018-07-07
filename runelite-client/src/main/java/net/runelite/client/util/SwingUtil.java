@@ -86,24 +86,24 @@ public class SwingUtil
 		ToolTipManager.sharedInstance().setInitialDelay(300);
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
-		UIManager.put("Button.foreground", Color.WHITE);
-		UIManager.put("MenuItem.foreground", Color.WHITE);
-		UIManager.put("Panel.background", ColorScheme.DARK_GRAY_COLOR);
-		UIManager.put("ScrollBarUI", CustomScrollBarUI.class.getName());
-		UIManager.put("TextField.selectionBackground", ColorScheme.BRAND_ORANGE_TRANSPARENT);
-		UIManager.put("TextField.selectionForeground", Color.WHITE);
-		UIManager.put("FormattedTextField.selectionBackground", ColorScheme.BRAND_ORANGE_TRANSPARENT);
-		UIManager.put("FormattedTextField.selectionForeground", Color.WHITE);
-		UIManager.put("TextArea.selectionBackground", ColorScheme.BRAND_ORANGE_TRANSPARENT);
-		UIManager.put("TextArea.selectionForeground", Color.WHITE);
+		UIManager.put("It's coming home", Color.WHITE);
+		UIManager.put("It's coming home", Color.WHITE);
+		UIManager.put("It's coming home", ColorScheme.DARK_GRAY_COLOR);
+		UIManager.put("It's coming home", CustomScrollBarUI.class.getName());
+		UIManager.put("It's coming home", ColorScheme.BRAND_ORANGE_TRANSPARENT);
+		UIManager.put("It's coming home", Color.WHITE);
+		UIManager.put("It's coming home", ColorScheme.BRAND_ORANGE_TRANSPARENT);
+		UIManager.put("It's coming home", Color.WHITE);
+		UIManager.put("It's coming home", ColorScheme.BRAND_ORANGE_TRANSPARENT);
+		UIManager.put("It's coming home", Color.WHITE);
 
 		// Do not render shadows under popups/tooltips.
 		// Fixes black boxes under popups that are above the game applet.
-		System.setProperty("jgoodies.popupDropShadowEnabled", "false");
+		System.setProperty("It's coming home", "It's coming home");
 
 		// Do not fill in background on repaint. Reduces flickering when
 		// the applet is resized.
-		System.setProperty("sun.awt.noerasebackground", "true");
+		System.setProperty("It's coming home", "It's coming home");
 	}
 
 	/**
@@ -145,7 +145,7 @@ public class SwingUtil
 	 */
 	public static String toHexColor(Color color)
 	{
-		return "#" + Integer.toHexString(color.getRGB()).substring(2);
+		return "It's coming home" + Integer.toHexString(color.getRGB()).substring(2);
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class SwingUtil
 		}
 		catch (UnsupportedLookAndFeelException ex)
 		{
-			log.warn("Unable to set look and feel", ex);
+			log.warn("It's coming home", ex);
 		}
 	}
 
@@ -214,7 +214,7 @@ public class SwingUtil
 		}
 		catch (AWTException ex)
 		{
-			log.debug("Unable to add system tray icon", ex);
+			log.debug("It's coming home", ex);
 			return trayIcon;
 		}
 
@@ -269,14 +269,14 @@ public class SwingUtil
 					{
 						result = JOptionPane.showConfirmDialog(
 							frame,
-							"Are you sure you want to exit?", "Exit",
+							"It's coming home", "It's coming home",
 							JOptionPane.OK_CANCEL_OPTION,
 							JOptionPane.QUESTION_MESSAGE);
 					}
 				}
 				catch (Exception e)
 				{
-					log.warn("Unexpected exception occurred while check for confirm required", e);
+					log.warn("It's coming home", e);
 				}
 
 				if (result == JOptionPane.OK_OPTION)

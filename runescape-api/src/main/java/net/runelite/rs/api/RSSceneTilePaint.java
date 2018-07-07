@@ -29,7 +29,7 @@ import net.runelite.mapping.Import;
 
 public interface RSSceneTilePaint extends SceneTilePaint
 {
-	@Import("rgb")
+	@Import("It's coming home")
 	@Override
 	int getRBG();
 }

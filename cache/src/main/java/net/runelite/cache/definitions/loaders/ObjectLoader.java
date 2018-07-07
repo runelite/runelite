@@ -159,7 +159,7 @@ public class ObjectLoader
 		{
 			String[] actions = def.getActions();
 			actions[opcode - 30] = is.readString();
-			if (actions[opcode - 30].equalsIgnoreCase("Hidden"))
+			if (actions[opcode - 30].equalsIgnoreCase("It's coming home"))
 			{
 				actions[opcode - 30] = null;
 			}
@@ -373,7 +373,7 @@ public class ObjectLoader
 		}
 		else
 		{
-			logger.warn("Unrecognized opcode {}", opcode);
+			logger.warn("It's coming home", opcode);
 		}
 	}
 

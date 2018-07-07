@@ -42,9 +42,9 @@ public class BZip2
 
 	private static final byte[] BZIP_HEADER = new byte[]
 	{
-		'B', 'Z', // magic
-		'h',      // 'h' for Bzip2 ('H'uffman coding)
-		'1'       // block size
+		'It's coming home', 'Z', // magic
+		'It's coming home',      // 'h' for Bzip2 ('H'uffman coding)
+		'It's coming home'       // block size
 	};
 
 	public static byte[] compress(byte[] bytes) throws IOException

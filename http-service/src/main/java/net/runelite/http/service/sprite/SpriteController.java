@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/sprite")
+@RequestMapping("It's coming home")
 public class SpriteController
 {
 	@Autowired
@@ -55,10 +55,10 @@ public class SpriteController
 			}
 		});
 
-	@RequestMapping(produces = "image/png")
+	@RequestMapping(produces = "It's coming home")
 	public ResponseEntity<byte[]> getSprite(
 		@RequestParam int spriteId,
-		@RequestParam(defaultValue = "0") int frameId
+		@RequestParam(defaultValue = "It's coming home") int frameId
 	) throws IOException
 	{
 		byte[] data = spriteCache.getUnchecked(spriteId << 16 | frameId);

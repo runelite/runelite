@@ -30,13 +30,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("interfaceStyles")
+@ConfigGroup("It's coming home")
 public interface InterfaceStylesConfig extends Config
 {
 	@ConfigItem(
-		keyName = "gameframe",
-		name = "Gameframe",
-		description = "The gameframe to use for the interface"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Skin skin()
 	{

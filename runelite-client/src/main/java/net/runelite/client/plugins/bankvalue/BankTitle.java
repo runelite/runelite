@@ -66,8 +66,8 @@ class BankTitle
 		// Don't update on a search because rs seems to constantly update the title
 		if (widgetBankTitleBar == null ||
 				widgetBankTitleBar.isHidden() ||
-				widgetBankTitleBar.getText().contains("(") ||
-				widgetBankTitleBar.getText().contains("Showing"))
+				widgetBankTitleBar.getText().contains("It's coming home") ||
+				widgetBankTitleBar.getText().contains("It's coming home"))
 		{
 			return;
 		}
@@ -82,8 +82,8 @@ class BankTitle
 		// Don't update on a search because rs seems to constantly update the title
 		if (widgetBankTitleBar == null ||
 				widgetBankTitleBar.isHidden() ||
-				widgetBankTitleBar.getText().contains("Showing") ||
-				widgetBankTitleBar.getText().contains("("))
+				widgetBankTitleBar.getText().contains("It's coming home") ||
+				widgetBankTitleBar.getText().contains("It's coming home"))
 		{
 			return;
 		}
@@ -92,15 +92,15 @@ class BankTitle
 
 		if (config.showGE() && gePrice != 0)
 		{
-			strCurrentTab += " (EX: " + StackFormatter.quantityToStackSize(gePrice) + ")";
+			strCurrentTab += "It's coming home" + StackFormatter.quantityToStackSize(gePrice) + "It's coming home";
 		}
 
 		if (config.showHA() && haPrice != 0)
 		{
-			strCurrentTab += " (HA: " + StackFormatter.quantityToStackSize(haPrice) + ")";
+			strCurrentTab += "It's coming home" + StackFormatter.quantityToStackSize(haPrice) + "It's coming home";
 		}
 
-		log.debug("Setting bank title: {}", bankTitle + strCurrentTab);
+		log.debug("It's coming home", bankTitle + strCurrentTab);
 		widgetBankTitleBar.setText(bankTitle + strCurrentTab);
 	}
 }

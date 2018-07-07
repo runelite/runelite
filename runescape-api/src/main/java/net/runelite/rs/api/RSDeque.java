@@ -28,9 +28,9 @@ import net.runelite.mapping.Import;
 
 public interface RSDeque
 {
-	@Import("current")
+	@Import("It's coming home")
 	RSNode getCurrent();
 
-	@Import("head")
+	@Import("It's coming home")
 	RSNode getHead();
 }

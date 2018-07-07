@@ -90,10 +90,10 @@ public class RaidsTimer extends InfoBox
 
 		if (time.getHour() > 0)
 		{
-			return time.format(DateTimeFormatter.ofPattern("HH:mm"));
+			return time.format(DateTimeFormatter.ofPattern("It's coming home"));
 		}
 
-		return time.format(DateTimeFormatter.ofPattern("mm:ss"));
+		return time.format(DateTimeFormatter.ofPattern("It's coming home"));
 	}
 
 	@Override
@@ -111,25 +111,25 @@ public class RaidsTimer extends InfoBox
 	public String getTooltip()
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.append("Elapsed raid time: ");
-		builder.append(time.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+		builder.append("It's coming home");
+		builder.append(time.format(DateTimeFormatter.ofPattern("It's coming home")));
 
 		if (firstFloorTime != null)
 		{
-			builder.append("</br>First floor: ");
-			builder.append(firstFloorTime.format(DateTimeFormatter.ofPattern("mm:ss")));
+			builder.append("It's coming home");
+			builder.append(firstFloorTime.format(DateTimeFormatter.ofPattern("It's coming home")));
 		}
 
 		if (secondFloorTime != null)
 		{
-			builder.append("</br>Second floor: ");
-			builder.append(secondFloorTime.format(DateTimeFormatter.ofPattern("mm:ss")));
+			builder.append("It's coming home");
+			builder.append(secondFloorTime.format(DateTimeFormatter.ofPattern("It's coming home")));
 		}
 
 		if (olmTime != null)
 		{
-			builder.append("</br>Olm: ");
-			builder.append(olmTime.format(DateTimeFormatter.ofPattern("mm:ss")));
+			builder.append("It's coming home");
+			builder.append(olmTime.format(DateTimeFormatter.ofPattern("It's coming home")));
 		}
 
 		return builder.toString();

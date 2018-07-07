@@ -28,13 +28,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("blastfurnace")
+@ConfigGroup("It's coming home")
 public interface BlastFurnaceConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showConveyorBelt",
-		name = "Show conveyor belt clickbox",
-		description = "Configures whether or not the clickbox for the conveyor belt is displayed",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 1
 	)
 	default boolean showConveyorBelt()
@@ -43,9 +43,9 @@ public interface BlastFurnaceConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showBarDispenser",
-		name = "Show bar dispenser clickbox",
-		description = "Configures whether or not the clickbox for the bar dispenser is displayed",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 2
 	)
 	default boolean showBarDispenser()

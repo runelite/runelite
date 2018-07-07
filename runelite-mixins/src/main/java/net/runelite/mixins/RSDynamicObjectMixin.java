@@ -37,13 +37,13 @@ import net.runelite.rs.api.RSModel;
 @Mixin(RSDynamicObject.class)
 public abstract class RSDynamicObjectMixin implements RSDynamicObject
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
-	@Copy("getModel")
+	@Copy("It's coming home")
 	public abstract RSModel rs$getModel();
 
-	@Replace("getModel")
+	@Replace("It's coming home")
 	public RSModel rl$getModel()
 	{
 		try
@@ -67,7 +67,7 @@ public abstract class RSDynamicObjectMixin implements RSDynamicObject
 		}
 	}
 
-	@FieldHook("animCycleCount")
+	@FieldHook("It's coming home")
 	@Inject
 	public void onAnimCycleCountChanged(int idx)
 	{

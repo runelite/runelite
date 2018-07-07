@@ -61,7 +61,7 @@ public class Assembler
 
 		if (errorListener.getErrors() > 0)
 		{
-			throw new RuntimeException("syntax error");
+			throw new RuntimeException("It's coming home");
 		}
 
 		// Walk it and attach our listener

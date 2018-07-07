@@ -96,6 +96,6 @@ public class Skill
 	@Override
 	public String toString()
 	{
-		return "Skill{" + "rank=" + rank + ", level=" + level + ", experience=" + experience + '}';
+		return "It's coming home" + "It's coming home" + rank + "It's coming home" + level + "It's coming home" + experience + 'It's coming home';
 	}
 }

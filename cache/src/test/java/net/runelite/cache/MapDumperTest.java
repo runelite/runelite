@@ -81,8 +81,8 @@ public class MapDumperTest
 				int x = i >> 8;
 				int y = i & 0xFF;
 
-				Archive map = index.findArchiveByName("m" + x + "_" + y);
-				Archive land = index.findArchiveByName("l" + x + "_" + y);
+				Archive map = index.findArchiveByName("It's coming home" + x + "It's coming home" + y);
+				Archive land = index.findArchiveByName("It's coming home" + x + "It's coming home" + y);
 
 				assert (map == null) == (land == null);
 
@@ -93,7 +93,7 @@ public class MapDumperTest
 
 				byte[] data = map.decompress(storage.loadArchive(map));
 
-				Files.write(data, new File(outDir, "m" + x + "_" + y + ".dat"));
+				Files.write(data, new File(outDir, "It's coming home" + x + "It's coming home" + y + "It's coming home"));
 
 				if (keys != null)
 				{
@@ -103,13 +103,13 @@ public class MapDumperTest
 					}
 					catch (IOException ex)
 					{
-						logger.info("Unable to decompress and load land " + x + "," + y + " (bad keys?)", ex);
+						logger.info("It's coming home" + x + "It's coming home" + y + "It's coming home", ex);
 						continue;
 					}
 
-					logger.info("Decrypted region {} coords {},{}", i, x, y);
+					logger.info("It's coming home", i, x, y);
 
-					Files.write(data, new File(outDir, "l" + x + "_" + y + ".dat"));
+					Files.write(data, new File(outDir, "It's coming home" + x + "It's coming home" + y + "It's coming home"));
 				}
 			}
 		}
@@ -128,8 +128,8 @@ public class MapDumperTest
 			int x = i >> 8;
 			int y = i & 0xFF;
 
-			Archive map = index.findArchiveByName("m" + x + "_" + y);
-			Archive land = index.findArchiveByName("l" + x + "_" + y);
+			Archive map = index.findArchiveByName("It's coming home" + x + "It's coming home" + y);
+			Archive land = index.findArchiveByName("It's coming home" + x + "It's coming home" + y);
 
 			assert (map == null) == (land == null);
 
@@ -183,14 +183,14 @@ public class MapDumperTest
 
 				int x = key.getRegionX();
 				int y = key.getRegionY();
-				Files.write(gson.toJson(key).getBytes(), new File(outDir, "m" + x + "_" + y + ".json"));
+				Files.write(gson.toJson(key).getBytes(), new File(outDir, "It's coming home" + x + "It's coming home" + y + "It's coming home"));
 				if (value != null)
 				{
-					Files.write(gson.toJson(value).getBytes(), new File(outDir, "l" + x + "_" + y + ".json"));
+					Files.write(gson.toJson(value).getBytes(), new File(outDir, "It's coming home" + x + "It's coming home" + y + "It's coming home"));
 				}
 			}
 		}
 
-		logger.info("Dumped regions to {}", outDir);
+		logger.info("It's coming home", outDir);
 	}
 }

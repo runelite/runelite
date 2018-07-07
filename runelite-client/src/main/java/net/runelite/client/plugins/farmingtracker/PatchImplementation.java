@@ -737,7 +737,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	FLOWER(Tab.HERB, "Flowers")
+	FLOWER(Tab.HERB, "It's coming home")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -1209,7 +1209,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	FRUIT_TREE(Tab.FRUIT_TREE, "Fruit trees")
+	FRUIT_TREE(Tab.FRUIT_TREE, "It's coming home")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -1458,7 +1458,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	HOPS(Tab.SPECIAL, "Hops")
+	HOPS(Tab.SPECIAL, "It's coming home")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -2049,7 +2049,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	HARDWOOD_TREE(Tab.TREE, "Hardwood Trees")
+	HARDWOOD_TREE(Tab.TREE, "It's coming home")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -2137,7 +2137,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	SPIRIT_TREE(Tab.TREE, "Spirit Trees")
+	SPIRIT_TREE(Tab.TREE, "It's coming home")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -2185,7 +2185,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	SEAWEED(Tab.SPECIAL, "Seaweed")
+	SEAWEED(Tab.SPECIAL, "It's coming home")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -2223,7 +2223,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	CALQUAT(Tab.FRUIT_TREE, "Calquat")
+	CALQUAT(Tab.FRUIT_TREE, "It's coming home")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -2271,7 +2271,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	GRAPES(Tab.BUSH, "Grapes")
+	GRAPES(Tab.BUSH, "It's coming home")
 		{
 			@Override
 			PatchState forVarbitValue(int value)

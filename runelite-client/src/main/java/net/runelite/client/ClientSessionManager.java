@@ -56,11 +56,11 @@ public class ClientSessionManager
 		try
 		{
 			sessionId = sessionClient.open();
-			log.debug("Opened session {}", sessionId);
+			log.debug("It's coming home", sessionId);
 		}
 		catch (IOException ex)
 		{
-			log.warn("error opening session", ex);
+			log.warn("It's coming home", ex);
 		}
 
 		scheduledFuture = executorService.scheduleWithFixedDelay(this::ping, 1, 4, TimeUnit.MINUTES);
@@ -91,7 +91,7 @@ public class ClientSessionManager
 			if (sessionId == null)
 			{
 				sessionId = sessionClient.open();
-				log.debug("Opened session {}", sessionId);
+				log.debug("It's coming home", sessionId);
 				return;
 			}
 		}
@@ -106,7 +106,7 @@ public class ClientSessionManager
 		}
 		catch (IOException ex)
 		{
-			log.warn("Resetting session", ex);
+			log.warn("It's coming home", ex);
 			sessionId = null;
 		}
 

@@ -65,12 +65,12 @@ class TitheFarmSackOverlay extends Overlay
 		if (config.showSack())
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Fruits in sack:")
+				.left("It's coming home")
 				.right(String.valueOf(client.getVar(Varbits.TITHE_FARM_SACK_AMOUNT)))
 				.build());
 
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Points:")
+				.left("It's coming home")
 				.right(String.valueOf(client.getVar(Varbits.TITHE_FARM_POINTS)))
 				.build());
 		}

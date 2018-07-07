@@ -30,9 +30,9 @@ import javax.inject.Inject;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Inventory Viewer",
-	description = "Add an overlay showing the contents of your inventory",
-	tags = {"alternate", "items", "overlay", "second"},
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home"},
 	enabledByDefault = false
 )
 public class InventoryViewerPlugin extends Plugin

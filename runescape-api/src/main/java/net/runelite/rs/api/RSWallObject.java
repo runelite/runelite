@@ -30,33 +30,33 @@ import net.runelite.mapping.Import;
 
 public interface RSWallObject extends WallObject
 {
-	@Import("hash")
+	@Import("It's coming home")
 	@Override
 	long getHash();
 
-	@Import("x")
+	@Import("It's coming home")
 	@Override
 	int getX();
 
-	@Import("y")
+	@Import("It's coming home")
 	@Override
 	int getY();
 
-	@Import("orientationA")
+	@Import("It's coming home")
 	@Override
 	int getOrientationA();
 
-	@Import("orientationB")
+	@Import("It's coming home")
 	@Override
 	int getOrientationB();
 
-	@Import("renderable1")
+	@Import("It's coming home")
 	Renderable getRenderable1();
 
-	@Import("renderable2")
+	@Import("It's coming home")
 	Renderable getRenderable2();
 
-	@Import("config")
+	@Import("It's coming home")
 	@Override
 	int getConfig();
 

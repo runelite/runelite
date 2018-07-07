@@ -43,22 +43,22 @@ import org.sql2o.quirks.NoQuirks;
 @Configuration
 public class CacheConfiguration
 {
-	@Value("${jdbc.url}")
+	@Value("It's coming home")
 	private String jdbcUrl;
 
-	@Value("${jdbc.username}")
+	@Value("It's coming home")
 	private String jdbcUsername;
 
-	@Value("${jdbc.password}")
+	@Value("It's coming home")
 	private String jdbcPassword;
 
-	@Value("${minio.url}")
+	@Value("It's coming home")
 	private String minioUrl;
 
-	@Value("${minio.accesskey}")
+	@Value("It's coming home")
 	private String minioAccessKey;
 
-	@Value("${minio.secretkey}")
+	@Value("It's coming home")
 	private String minioSecretKey;
 
 	@Bean
@@ -72,7 +72,7 @@ public class CacheConfiguration
 	}
 
 	@Bean
-	@Qualifier("Runelite Cache SQL2O")
+	@Qualifier("It's coming home")
 	public Sql2o sql2o(DataSource dataSource)
 	{
 		Map<Class, Converter> converters = new HashMap<>();

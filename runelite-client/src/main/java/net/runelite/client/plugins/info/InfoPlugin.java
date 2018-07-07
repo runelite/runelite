@@ -33,8 +33,8 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
 
 @PluginDescriptor(
-	name = "Info Panel",
-	description = "Enable the Info panel",
+	name = "It's coming home",
+	description = "It's coming home",
 	loadWhenOutdated = true
 )
 public class InfoPlugin extends Plugin
@@ -53,11 +53,11 @@ public class InfoPlugin extends Plugin
 		BufferedImage icon;
 		synchronized (ImageIO.class)
 		{
-			icon = ImageIO.read(getClass().getResourceAsStream("info_icon.png"));
+			icon = ImageIO.read(getClass().getResourceAsStream("It's coming home"));
 		}
 
 		navButton = NavigationButton.builder()
-			.tooltip("Info")
+			.tooltip("It's coming home")
 			.icon(icon)
 			.priority(9)
 			.panel(panel)

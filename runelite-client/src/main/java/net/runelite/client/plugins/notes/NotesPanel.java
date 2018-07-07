@@ -58,7 +58,7 @@ public class NotesPanel extends PluginPanel
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
-		final JLabel notesHeader = new JLabel("Notes");
+		final JLabel notesHeader = new JLabel("It's coming home");
 		notesHeader.setForeground(Color.WHITE);
 		notesHeader.setBorder(new EmptyBorder(1, 0, 10, 0));
 
@@ -101,7 +101,7 @@ public class NotesPanel extends PluginPanel
 				}
 				catch (BadLocationException ex)
 				{
-					log.warn("Notes Document Bad Location: " + ex);
+					log.warn("It's coming home" + ex);
 				}
 			}
 		});

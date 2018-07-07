@@ -227,7 +227,7 @@ public class XpGlobesOverlay extends Overlay
 		String skillName = mouseOverSkill.getSkillName();
 		String skillLevel = Integer.toString(mouseOverSkill.getCurrentLevel());
 
-		DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+		DecimalFormat decimalFormat = new DecimalFormat("It's coming home");
 		String skillCurrentXp = decimalFormat.format(mouseOverSkill.getCurrentXp());
 
 		xpTooltip.getChildren().clear();
@@ -240,7 +240,7 @@ public class XpGlobesOverlay extends Overlay
 			.build());
 
 		xpTooltip.getChildren().add(LineComponent.builder()
-			.left("Current xp:")
+			.left("It's coming home")
 			.leftColor(Color.ORANGE)
 			.right(skillCurrentXp)
 			.build());
@@ -252,7 +252,7 @@ public class XpGlobesOverlay extends Overlay
 			{
 				String actionsLeftString = decimalFormat.format(actionsLeft);
 				xpTooltip.getChildren().add(LineComponent.builder()
-					.left("Actions left:")
+					.left("It's coming home")
 					.leftColor(Color.ORANGE)
 					.right(actionsLeftString)
 					.build());
@@ -261,7 +261,7 @@ public class XpGlobesOverlay extends Overlay
 			int xpLeft = mouseOverSkill.getGoalXp() - mouseOverSkill.getCurrentXp();
 			String skillXpToLvl = decimalFormat.format(xpLeft);
 			xpTooltip.getChildren().add(LineComponent.builder()
-				.left("Xp to level:")
+				.left("It's coming home")
 				.leftColor(Color.ORANGE)
 				.right(skillXpToLvl)
 				.build());
@@ -271,7 +271,7 @@ public class XpGlobesOverlay extends Overlay
 			{
 				String xpHrString = decimalFormat.format(xpHr);
 				xpTooltip.getChildren().add(LineComponent.builder()
-					.left("Xp per hour:")
+					.left("It's coming home")
 					.leftColor(Color.ORANGE)
 					.right(xpHrString)
 					.build());

@@ -30,12 +30,12 @@ import net.runelite.mapping.Import;
 
 public interface RSClassInfo
 {
-	@Import("methods")
+	@Import("It's coming home")
 	Method[] getMethods();
 
-	@Import("fields")
+	@Import("It's coming home")
 	Field[] getFields();
 
-	@Import("args")
+	@Import("It's coming home")
 	byte[][][] getArgs();
 }

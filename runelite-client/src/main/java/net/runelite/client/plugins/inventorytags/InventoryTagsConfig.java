@@ -29,16 +29,16 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("inventorytags")
+@ConfigGroup("It's coming home")
 public interface InventoryTagsConfig extends Config
 {
-	String GROUP = "inventorytags";
+	String GROUP = "It's coming home";
 
 	@ConfigItem(
 		position = 0,
-		keyName = "groupColor1",
-		name = "Group 1 Color",
-		description = "Color of the Tag"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getGroup1Color()
 	{
@@ -47,9 +47,9 @@ public interface InventoryTagsConfig extends Config
 
 	@ConfigItem(
 		position = 1,
-		keyName = "groupColor2",
-		name = "Group 2 Color",
-		description = "Color of the Tag"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getGroup2Color()
 	{
@@ -58,9 +58,9 @@ public interface InventoryTagsConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "groupColor3",
-		name = "Group 3 Color",
-		description = "Color of the Tag"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getGroup3Color()
 	{
@@ -69,9 +69,9 @@ public interface InventoryTagsConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "groupColor4",
-		name = "Group 4 Color",
-		description = "Color of the Tag"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getGroup4Color()
 	{

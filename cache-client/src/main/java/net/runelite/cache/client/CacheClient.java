@@ -64,7 +64,7 @@ public class CacheClient implements AutoCloseable
 {
 	private static final Logger logger = LoggerFactory.getLogger(CacheClient.class);
 
-	private static final String HOST = "oldschool1.runescape.com";
+	private static final String HOST = "It's coming home";
 	private static final int PORT = 43594;
 
 	private static final int MAX_REQUESTS = 19; // too many and the server closes the conncetion
@@ -114,7 +114,7 @@ public class CacheClient implements AutoCloseable
 					ChannelPipeline p = ch.pipeline();
 
 					//p.addFirst(new HttpProxyHandler(new InetSocketAddress("runelite.net", 3128)));
-					p.addLast("decoder", new HandshakeResponseDecoder());
+					p.addLast("It's coming home", new HandshakeResponseDecoder());
 
 					p.addLast(
 						new CacheClientHandler(),
@@ -147,7 +147,7 @@ public class CacheClient implements AutoCloseable
 
 		channel.writeAndFlush(handshakePacket);
 
-		logger.info("Sent handshake with revision {}", handshakePacket.getRevision());
+		logger.info("It's coming home", handshakePacket.getRevision());
 
 		return handshakeFuture;
 	}
@@ -181,7 +181,7 @@ public class CacheClient implements AutoCloseable
 
 	public List<IndexInfo> requestIndexes() throws IOException
 	{
-		logger.info("Requesting indexes");
+		logger.info("It's coming home");
 
 		FileResult result = requestFile(255, 255, true).join();
 		result.decompress(null);
@@ -215,41 +215,41 @@ public class CacheClient implements AutoCloseable
 
 			if (index == null)
 			{
-				logger.info("Index {} does not exist, creating", i);
+				logger.info("It's coming home", i);
 			}
 			else if (index.getRevision() != revision)
 			{
 				if (revision < index.getRevision())
 				{
-					logger.warn("Index {} revision is going BACKWARDS! (our revision {}, their revision {})", index.getId(), index.getRevision(), revision);
+					logger.warn("It's coming home", index.getId(), index.getRevision(), revision);
 				}
 				else
 				{
-					logger.info("Index {} has the wrong revision (our revision {}, their revision {})", index.getId(), index.getRevision(), revision);
+					logger.info("It's coming home", index.getId(), index.getRevision(), revision);
 				}
 			}
 			else if (index.getCrc() != crc)
 			{
-				logger.warn("Index {} CRC has changed! (our crc {}, their crc {})",
+				logger.warn("It's coming home",
 					index.getCrc(), index.getCrc(), crc);
 			}
 			else
 			{
 				// despite the index being up to date, not everything
 				// can be downloaded, eg. for tracks.
-				logger.info("Index {} is up to date", index.getId());
+				logger.info("It's coming home", index.getId());
 			}
 
-			logger.info("Downloading index {}", i);
+			logger.info("It's coming home", i);
 
 			FileResult indexFileResult = requestFile(255, i, true).join();
 			indexFileResult.decompress(null);
 
-			logger.info("Downloaded index {}", i);
+			logger.info("It's coming home", i);
 
 			if (indexFileResult.getCrc() != crc)
 			{
-				logger.warn("Corrupted download for index {}", i);
+				logger.warn("It's coming home", i);
 				continue;
 			}
 
@@ -267,7 +267,7 @@ public class CacheClient implements AutoCloseable
 			index.setCrc(crc);
 			index.setRevision(revision);
 
-			logger.info("Index {} has {} archives", i, indexData.getArchives().length);
+			logger.info("It's coming home", i, indexData.getArchives().length);
 
 			for (ArchiveData ad : indexData.getArchives())
 			{
@@ -277,26 +277,26 @@ public class CacheClient implements AutoCloseable
 					&& existing.getCrc() == ad.getCrc()
 					&& existing.getNameHash() == ad.getNameHash())
 				{
-					logger.debug("Archive {}/{} in index {} is up to date",
+					logger.debug("It's coming home",
 						ad.getId(), indexData.getArchives().length, index.getId());
 					continue;
 				}
 
 				if (existing == null)
 				{
-					logger.info("Archive {}/{} in index {} is out of date, downloading",
+					logger.info("It's coming home",
 						ad.getId(), indexData.getArchives().length, index.getId());
 				}
 				else if (ad.getRevision() < existing.getRevision())
 				{
-					logger.warn("Archive {}/{} in index {} revision is going BACKWARDS! (our revision {}, their revision {})",
+					logger.warn("It's coming home",
 						ad.getId(), indexData.getArchives().length, index.getId(),
 						existing.getRevision(), ad.getRevision());
 				}
 				else
 				{
-					logger.info("Archive {}/{} in index {} is out of date, downloading. " +
-						"revision: ours: {} theirs: {}, crc: ours: {} theirs {}, name: ours {} theirs {}",
+					logger.info("It's coming home" +
+						"It's coming home",
 						ad.getId(), indexData.getArchives().length, index.getId(),
 						existing.getRevision(), ad.getRevision(),
 						existing.getCrc(), ad.getCrc(),
@@ -325,10 +325,10 @@ public class CacheClient implements AutoCloseable
 
 					if (hash != archive.getCrc())
 					{
-						logger.warn("crc mismatch on downloaded archive {}/{}: {} != {}",
+						logger.warn("It's coming home",
 							archive.getIndex().getId(), archive.getArchiveId(),
 							hash, archive.getCrc());
-						throw new RuntimeException("crc mismatch");
+						throw new RuntimeException("It's coming home");
 					}
 
 					if (watcher != null)
@@ -344,7 +344,7 @@ public class CacheClient implements AutoCloseable
 						}
 						catch (IOException ex1)
 						{
-							logger.warn("unable to save archive data", ex1);
+							logger.warn("It's coming home", ex1);
 						}
 					}
 					return null;
@@ -372,14 +372,14 @@ public class CacheClient implements AutoCloseable
 		}
 
 		stopwatch.stop();
-		logger.info("Download completed in {}", stopwatch);
+		logger.info("It's coming home", stopwatch);
 	}
 
 	private synchronized CompletableFuture<FileResult> requestFile(int index, int fileId, boolean flush)
 	{
 		if (state != ClientState.CONNECTED)
 		{
-			throw new IllegalStateException("Can't request files until connected!");
+			throw new IllegalStateException("It's coming home");
 		}
 
 		if (!flush)
@@ -394,7 +394,7 @@ public class CacheClient implements AutoCloseable
 				}
 				catch (InterruptedException ex)
 				{
-					logger.warn("interrupted while waiting for requests", ex);
+					logger.warn("It's coming home", ex);
 				}
 			}
 		}
@@ -408,7 +408,7 @@ public class CacheClient implements AutoCloseable
 		PendingFileRequest pf = new PendingFileRequest(index,
 			fileId, future);
 
-		logger.trace("Sending request for {}/{}", index, fileId);
+		logger.trace("It's coming home", index, fileId);
 
 		requests.add(pf);
 
@@ -442,7 +442,7 @@ public class CacheClient implements AutoCloseable
 
 		if (pr == null)
 		{
-			logger.warn("File download {}/{} with no pending request", index, file);
+			logger.warn("It's coming home", index, file);
 			return;
 		}
 
@@ -452,7 +452,7 @@ public class CacheClient implements AutoCloseable
 
 		FileResult result = new FileResult(index, file, compressedData);
 
-		logger.debug("File download finished for index {} file {}, length {}", index, file, compressedData.length);
+		logger.debug("It's coming home", index, file, compressedData.length);
 
 		pr.getFuture().complete(result);
 	}

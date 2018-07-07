@@ -31,7 +31,7 @@ import net.runelite.api.coords.LocalPoint;
 
 public abstract class ActorQuery<EntityType extends Actor, QueryType> extends Query<EntityType, QueryType>
 {
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("It's coming home")
 	public QueryType nameEquals(String... names)
 	{
 		predicate = and(actor ->
@@ -49,7 +49,7 @@ public abstract class ActorQuery<EntityType extends Actor, QueryType> extends Qu
 		return (QueryType) this;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("It's coming home")
 	public QueryType nameContains(String... names)
 	{
 		predicate = and(actor ->
@@ -67,42 +67,42 @@ public abstract class ActorQuery<EntityType extends Actor, QueryType> extends Qu
 		return (QueryType) this;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("It's coming home")
 	public QueryType atLocalLocation(LocalPoint location)
 	{
 		predicate = and(actor -> actor.getLocalLocation().equals(location));
 		return (QueryType) this;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("It's coming home")
 	public QueryType isLevel(int level)
 	{
 		predicate = and(actor -> actor.getCombatLevel() == level);
 		return (QueryType) this;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("It's coming home")
 	public QueryType animationEquals(int animation)
 	{
 		predicate = and(actor -> actor.getAnimation() == animation);
 		return (QueryType) this;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("It's coming home")
 	public QueryType isInteractingWith(Actor actor)
 	{
 		predicate = and(a -> a.getInteracting().equals(a));
 		return (QueryType) this;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("It's coming home")
 	public QueryType isWithinDistance(LocalPoint to, int distance)
 	{
 		predicate = and(a -> a.getLocalLocation().distanceTo(to) <= distance);
 		return (QueryType) this;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("It's coming home")
 	public QueryType isWithinArea(LocalPoint from, int area)
 	{
 		predicate = and(a ->

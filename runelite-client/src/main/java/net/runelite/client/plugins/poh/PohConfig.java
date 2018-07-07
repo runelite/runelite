@@ -28,13 +28,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("poh")
+@ConfigGroup("It's coming home")
 public interface PohConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showPortals",
-		name = "Show Portals",
-		description = "Configures whether to display teleport portals"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showPortals()
 	{
@@ -42,9 +42,9 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showAltar",
-		name = "Show Altar",
-		description = "Configures whether or not the altar is displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showAltar()
 	{
@@ -52,9 +52,9 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showGlory",
-		name = "Show Glory mount",
-		description = "Configures whether or not the mounted glory is displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showGlory()
 	{
@@ -62,9 +62,9 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showPools",
-		name = "Show Pools",
-		description = "Configures whether or not the pools are displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showPools()
 	{
@@ -72,9 +72,9 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showRepairStand",
-		name = "Show Repair stand",
-		description = "Configures whether or not the repair stand is displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showRepairStand()
 	{
@@ -82,9 +82,9 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showExitPortal",
-		name = "Show Exit portal",
-		description = "Configures whether or not the exit portal is displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showExitPortal()
 	{
@@ -92,9 +92,9 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showBurner",
-		name = "Show Unlit/Lit burner",
-		description = "Configures whether or not unlit/lit burners are displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showBurner()
 	{
@@ -102,9 +102,9 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showSpellbook",
-		name = "Show Spellbook altar",
-		description = "Configures whether or not the Spellbook altar is displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showSpellbook()
 	{
@@ -112,9 +112,9 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showJewelleryBox",
-		name = "Show Jewellery Box",
-		description = "Configures whether or not the Jewllery box is displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showJewelleryBox()
 	{
@@ -122,9 +122,9 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showMagicTravel",
-		name = "Show Fairy/ Spirit Tree/ Obelisk",
-		description = "Configures whether or not the Fairy ring, Spirit tree or Obelisk is displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showMagicTravel()
 	{

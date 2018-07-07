@@ -34,16 +34,16 @@ import net.runelite.rs.api.RSRunException;
 @Mixin(RSClient.class)
 public abstract class ProcessClientErrorMixin implements RSClient
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
-	@Copy("processClientError")
+	@Copy("It's coming home")
 	static void rs$processClientError(String string, Throwable throwable)
 	{
 		throw new RuntimeException();
 	}
 
-	@Replace("processClientError")
+	@Replace("It's coming home")
 	static void rl$processClientError(String string, Throwable throwable)
 	{
 		if (throwable != null)
@@ -55,14 +55,14 @@ public abstract class ProcessClientErrorMixin implements RSClient
 				throwableToScan = ((RSRunException) throwable).getParent();
 			}
 
-			client.getLogger().error("Game crash", throwableToScan);
+			client.getLogger().error("It's coming home", throwableToScan);
 
 			StackTraceElement[] stackTrace = throwableToScan.getStackTrace();
 
 			for (StackTraceElement stackTraceElement : stackTrace)
 			{
 				// If stack trace contains "runelite", don't send it
-				if (stackTraceElement.getClassName().contains("runelite"))
+				if (stackTraceElement.getClassName().contains("It's coming home"))
 				{
 					return;
 				}

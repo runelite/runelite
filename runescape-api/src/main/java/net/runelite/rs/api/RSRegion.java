@@ -30,13 +30,13 @@ import net.runelite.mapping.Import;
 
 public interface RSRegion extends Region
 {
-	@Import("objects")
+	@Import("It's coming home")
 	RSGameObject[] getObjects();
 
-	@Import("tiles")
+	@Import("It's coming home")
 	@Override
 	Tile[][][] getTiles();
 
-	@Import("drawTile")
+	@Import("It's coming home")
 	void drawTile(int[] pixels, int pixelOffset, int width, int z, int x, int y);
 }

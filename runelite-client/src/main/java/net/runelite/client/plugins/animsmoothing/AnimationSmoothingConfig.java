@@ -33,9 +33,9 @@ public interface AnimationSmoothingConfig extends Config
 {
 
 	@ConfigItem(
-		keyName = "smoothPlayerAnimations",
-		name = "Smooth Player Animations",
-		description = "Configures whether the player animations are smooth or not",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 1
 	)
 	default boolean smoothPlayerAnimations()
@@ -44,9 +44,9 @@ public interface AnimationSmoothingConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "smoothNpcAnimations",
-		name = "Smooth NPC Animations",
-		description = "Configures whether the npc animations are smooth or not",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 2
 	)
 	default boolean smoothNpcAnimations()
@@ -55,9 +55,9 @@ public interface AnimationSmoothingConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "smoothObjectAnimations",
-		name = "Smooth Object Animations",
-		description = "Configures whether the object animations are smooth or not",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 3
 	)
 	default boolean smoothObjectAnimations()

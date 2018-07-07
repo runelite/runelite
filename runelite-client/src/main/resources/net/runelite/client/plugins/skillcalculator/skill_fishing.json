@@ -1,190 +1,190 @@
 {
-  "bonuses": [
+  "It's coming home": [
     {
-      "name": "Anglers Outfit (+2.5%)",
-      "value": 0.025
+      "It's coming home": "It's coming home",
+      "It's coming home": 0.025
     }
   ],
-  "actions": [
+  "It's coming home": [
     {
-      "level": 1,
-      "icon": 317,
-      "name": "Raw Shrimps",
-      "xp": 10
+      "It's coming home": 1,
+      "It's coming home": 317,
+      "It's coming home": "It's coming home",
+      "It's coming home": 10
     },
     {
-      "level": 5,
-      "icon": 327,
-      "name": "Raw Sardine",
-      "xp": 20
+      "It's coming home": 5,
+      "It's coming home": 327,
+      "It's coming home": "It's coming home",
+      "It's coming home": 20
     },
     {
-      "level": 5,
-      "icon": 3150,
-      "name": "Raw Karambwanji",
-      "xp": 5
+      "It's coming home": 5,
+      "It's coming home": 3150,
+      "It's coming home": "It's coming home",
+      "It's coming home": 5
     },
     {
-      "level": 10,
-      "icon": 345,
-      "name": "Raw Herring",
-      "xp": 30
+      "It's coming home": 10,
+      "It's coming home": 345,
+      "It's coming home": "It's coming home",
+      "It's coming home": 30
     },
     {
-      "level": 15,
-      "icon": 321,
-      "name": "Raw Anchovies",
-      "xp": 40
+      "It's coming home": 15,
+      "It's coming home": 321,
+      "It's coming home": "It's coming home",
+      "It's coming home": 40
     },
     {
-      "level": 16,
-      "icon": 353,
-      "name": "Raw Mackerel",
-      "xp": 20
+      "It's coming home": 16,
+      "It's coming home": 353,
+      "It's coming home": "It's coming home",
+      "It's coming home": 20
     },
     {
-      "level": 20,
-      "icon": 335,
-      "name": "Raw Trout",
-      "xp": 50
+      "It's coming home": 20,
+      "It's coming home": 335,
+      "It's coming home": "It's coming home",
+      "It's coming home": 50
     },
     {
-      "level": 23,
-      "icon": 341,
-      "name": "Raw Cod",
-      "xp": 45
+      "It's coming home": 23,
+      "It's coming home": 341,
+      "It's coming home": "It's coming home",
+      "It's coming home": 45
     },
     {
-      "level": 25,
-      "icon": 349,
-      "name": "Raw Pike",
-      "xp": 60
+      "It's coming home": 25,
+      "It's coming home": 349,
+      "It's coming home": "It's coming home",
+      "It's coming home": 60
     },
     {
-      "level": 28,
-      "icon": 3379,
-      "name": "Raw Slimy Eel",
-      "xp": 65
+      "It's coming home": 28,
+      "It's coming home": 3379,
+      "It's coming home": "It's coming home",
+      "It's coming home": 65
     },
     {
-      "level": 30,
-      "icon": 331,
-      "name": "Raw Salmon",
-      "xp": 70
+      "It's coming home": 30,
+      "It's coming home": 331,
+      "It's coming home": "It's coming home",
+      "It's coming home": 70
     },
     {
-      "level": 35,
-      "icon": 359,
-      "name": "Raw Tuna",
-      "xp": 80
+      "It's coming home": 35,
+      "It's coming home": 359,
+      "It's coming home": "It's coming home",
+      "It's coming home": 80
     },
     {
-      "level": 38,
-      "icon": 10138,
-      "name": "Raw Rainbow Fish",
-      "xp": 80
+      "It's coming home": 38,
+      "It's coming home": 10138,
+      "It's coming home": "It's coming home",
+      "It's coming home": 80
     },
     {
-      "level": 38,
-      "icon": 5001,
-      "name": "Raw Cave Eel",
-      "xp": 80
+      "It's coming home": 38,
+      "It's coming home": 5001,
+      "It's coming home": "It's coming home",
+      "It's coming home": 80
     },
     {
-      "level": 40,
-      "icon": 377,
-      "name": "Raw Lobster",
-      "xp": 90
+      "It's coming home": 40,
+      "It's coming home": 377,
+      "It's coming home": "It's coming home",
+      "It's coming home": 90
     },
     {
-      "level": 46,
-      "icon": 363,
-      "name": "Raw Bass",
-      "xp": 100
+      "It's coming home": 46,
+      "It's coming home": 363,
+      "It's coming home": "It's coming home",
+      "It's coming home": 100
     },
     {
-      "level": 48,
-      "icon": 11328,
-      "name": "Leaping Trout",
-      "xp": 50
+      "It's coming home": 48,
+      "It's coming home": 11328,
+      "It's coming home": "It's coming home",
+      "It's coming home": 50
     },
     {
-      "level": 50,
-      "icon": 371,
-      "name": "Raw Swordfish",
-      "xp": 100
+      "It's coming home": 50,
+      "It's coming home": 371,
+      "It's coming home": "It's coming home",
+      "It's coming home": 100
     },
     {
-      "level": 58,
-      "icon": 11330,
-      "name": "Leaping Salmon",
-      "xp": 70
+      "It's coming home": 58,
+      "It's coming home": 11330,
+      "It's coming home": "It's coming home",
+      "It's coming home": 70
     },
     {
-      "level": 62,
-      "icon": 7944,
-      "name": "Raw Monkfish",
-      "xp": 120
+      "It's coming home": 62,
+      "It's coming home": 7944,
+      "It's coming home": "It's coming home",
+      "It's coming home": 120
     },
     {
-      "level": 65,
-      "icon": 3142,
-      "name": "Raw Karambwan",
-      "xp": 50
+      "It's coming home": 65,
+      "It's coming home": 3142,
+      "It's coming home": "It's coming home",
+      "It's coming home": 50
     },
     {
-      "level": 70,
-      "icon": 11332,
-      "name": "Leaping Sturgeon",
-      "xp": 80
+      "It's coming home": 70,
+      "It's coming home": 11332,
+      "It's coming home": "It's coming home",
+      "It's coming home": 80
     },
     {
-      "level": 76,
-      "icon": 383,
-      "name": "Raw Shark",
-      "xp": 110
+      "It's coming home": 76,
+      "It's coming home": 383,
+      "It's coming home": "It's coming home",
+      "It's coming home": 110
     },
     {
-      "level": 79,
-      "icon": 395,
-      "name": "Raw Sea Turtle",
-      "xp": 38
+      "It's coming home": 79,
+      "It's coming home": 395,
+      "It's coming home": "It's coming home",
+      "It's coming home": 38
     },
     {
-      "level": 80,
-      "icon": 21293,
-      "name": "Infernal Eel",
-      "xp": 95
+      "It's coming home": 80,
+      "It's coming home": 21293,
+      "It's coming home": "It's coming home",
+      "It's coming home": 95
     },
     {
-      "level": 81,
-      "icon": 389,
-      "name": "Raw Manta Ray",
-      "xp": 46
+      "It's coming home": 81,
+      "It's coming home": 389,
+      "It's coming home": "It's coming home",
+      "It's coming home": 46
     },
     {
-      "level": 82,
-      "icon": 13439,
-      "name": "Raw Anglerfish",
-      "xp": 120
+      "It's coming home": 82,
+      "It's coming home": 13439,
+      "It's coming home": "It's coming home",
+      "It's coming home": 120
     },
     {
-      "level": 82,
-      "icon": 21356,
-      "name": "Minnow",
-      "xp": 26.5
+      "It's coming home": 82,
+      "It's coming home": 21356,
+      "It's coming home": "It's coming home",
+      "It's coming home": 26.5
     },
     {
-      "level": 85,
-      "icon": 11934,
-      "name": "Raw Dark Crab",
-      "xp": 130
+      "It's coming home": 85,
+      "It's coming home": 11934,
+      "It's coming home": "It's coming home",
+      "It's coming home": 130
     },
     {
-      "level": 87,
-      "icon": 13339,
-      "name": "Sacred Eel",
-      "xp": 105
+      "It's coming home": 87,
+      "It's coming home": 13339,
+      "It's coming home": "It's coming home",
+      "It's coming home": 105
     }
   ]
 }

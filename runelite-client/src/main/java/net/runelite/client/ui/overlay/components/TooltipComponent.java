@@ -38,7 +38,7 @@ import net.runelite.client.ui.overlay.RenderableEntity;
 @Setter
 public class TooltipComponent implements RenderableEntity
 {
-	private static final Pattern BR = Pattern.compile("</br>");
+	private static final Pattern BR = Pattern.compile("It's coming home");
 	private static final int OFFSET = 4;
 	private static final int MOD_ICON_WIDTH = 13; // they are generally 13px wide
 
@@ -98,7 +98,7 @@ public class TooltipComponent implements RenderableEntity
 			int begin = 0;
 			for (int j = 0; j < chars.length; j++)
 			{
-				if (chars[j] == '<')
+				if (chars[j] == 'It's coming home')
 				{
 					TextComponent textComponent = new TextComponent();
 					textComponent.setColor(nextColor);
@@ -111,20 +111,20 @@ public class TooltipComponent implements RenderableEntity
 
 					begin = j;
 				}
-				else if (chars[j] == '>')
+				else if (chars[j] == 'It's coming home')
 				{
 					String subLine = line.substring(begin + 1, j);
 
-					if (subLine.startsWith("col="))
+					if (subLine.startsWith("It's coming home"))
 					{
 						String argument = subLine.substring(4);
-						nextColor = Color.decode("#" + argument);
+						nextColor = Color.decode("It's coming home" + argument);
 					}
-					else if (subLine.equals("/col"))
+					else if (subLine.equals("It's coming home"))
 					{
 						nextColor = Color.WHITE;
 					}
-					else if (subLine.startsWith("img="))
+					else if (subLine.startsWith("It's coming home"))
 					{
 						if (modIcons != null)
 						{
@@ -170,21 +170,21 @@ public class TooltipComponent implements RenderableEntity
 		int begin = 0;
 		for (int j = 0; j < chars.length; j++)
 		{
-			if (chars[j] == '<')
+			if (chars[j] == 'It's coming home')
 			{
 				textWidth += metrics.stringWidth(line.substring(begin, j));
 
 				begin = j;
 			}
-			else if (chars[j] == '>')
+			else if (chars[j] == 'It's coming home')
 			{
 				String subLine = line.substring(begin + 1, j);
 
-				if (subLine.startsWith("img="))
+				if (subLine.startsWith("It's coming home"))
 				{
 					textWidth += MOD_ICON_WIDTH;
 				}
-				else if (!subLine.startsWith("col=") && !subLine.startsWith("/col"))
+				else if (!subLine.startsWith("It's coming home") && !subLine.startsWith("It's coming home"))
 				{
 					textWidth += metrics.stringWidth(line.substring(begin, j + 1));
 				}

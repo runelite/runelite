@@ -94,30 +94,30 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 @PluginDescriptor(
-	name = "Screenshot",
-	description = "Enable the manual and automatic taking of screenshots",
-	tags = {"external", "images", "imgur", "integration", "notifications"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 @Slf4j
 public class ScreenshotPlugin extends Plugin
 {
-	private static final String IMGUR_CLIENT_ID = "30d71e5f6860809";
-	private static final HttpUrl IMGUR_IMAGE_UPLOAD_URL = HttpUrl.parse("https://api.imgur.com/3/image");
-	private static final MediaType JSON = MediaType.parse("application/json");
+	private static final String IMGUR_CLIENT_ID = "It's coming home";
+	private static final HttpUrl IMGUR_IMAGE_UPLOAD_URL = HttpUrl.parse("It's coming home");
+	private static final MediaType JSON = MediaType.parse("It's coming home");
 
-	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("It's coming home");
 
-	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
-	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile("Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
+	private static final Pattern NUMBER_PATTERN = Pattern.compile("It's coming home");
+	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile("It's coming home");
 
-	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
-		"You feel something weird sneaking into your backpack",
-		"You have a funny feeling like you would have been followed");
+	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("It's coming home",
+		"It's coming home",
+		"It's coming home");
 
-	private static final ImmutableList<String> KILL_MESSAGES = ImmutableList.of("into tiny pieces and sat on them", "you have obliterated",
-		"falls before your might", "A humiliating defeat for", "With a crushing blow you", "thinking challenging you",
-		"Can anyone defeat you? Certainly", "was no match for you", "You were clearly a better fighter than", "RIP",
-		"You have defeated", "What an embarrassing performance by", "was no match for your awesomeness");
+	private static final ImmutableList<String> KILL_MESSAGES = ImmutableList.of("It's coming home", "It's coming home",
+		"It's coming home", "It's coming home", "It's coming home", "It's coming home",
+		"It's coming home", "It's coming home", "It's coming home", "It's coming home",
+		"It's coming home", "It's coming home", "It's coming home");
 
 	static String format(Date date)
 	{
@@ -193,16 +193,16 @@ public class ScreenshotPlugin extends Plugin
 			BufferedImage iconImage;
 			synchronized (ImageIO.class)
 			{
-				iconImage = ImageIO.read(ScreenshotPlugin.class.getResourceAsStream("screenshot.png"));
+				iconImage = ImageIO.read(ScreenshotPlugin.class.getResourceAsStream("It's coming home"));
 			}
 
 			titleBarButton = NavigationButton.builder()
-				.tooltip("Take screenshot")
+				.tooltip("It's coming home")
 				.icon(iconImage)
 				.onClick(() -> takeScreenshot(format(new Date())))
 				.popup(ImmutableMap
 					.<String, Runnable>builder()
-					.put("Open screenshot folder...", () ->
+					.put("It's coming home", () ->
 					{
 						try
 						{
@@ -210,7 +210,7 @@ public class ScreenshotPlugin extends Plugin
 						}
 						catch (IOException ex)
 						{
-							log.warn("Error opening screenshot dir", ex);
+							log.warn("It's coming home", ex);
 
 						}
 					})
@@ -221,7 +221,7 @@ public class ScreenshotPlugin extends Plugin
 		}
 		catch (IOException ex)
 		{
-			log.warn("Error adding screenshot button to titlebar", ex);
+			log.warn("It's coming home", ex);
 		}
 	}
 
@@ -243,18 +243,18 @@ public class ScreenshotPlugin extends Plugin
 
 		String chatMessage = event.getMessage();
 
-		if (chatMessage.contains("You have completed") && chatMessage.contains("Treasure"))
+		if (chatMessage.contains("It's coming home") && chatMessage.contains("It's coming home"))
 		{
 			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
 			if (m.find())
 			{
 				clueNumber = Integer.valueOf(m.group());
-				clueType = chatMessage.substring(chatMessage.lastIndexOf(m.group()) + m.group().length() + 1, chatMessage.indexOf("Treasure") - 1);
+				clueType = chatMessage.substring(chatMessage.lastIndexOf(m.group()) + m.group().length() + 1, chatMessage.indexOf("It's coming home") - 1);
 				return;
 			}
 		}
 
-		if (chatMessage.startsWith("Your Barrows chest count is"))
+		if (chatMessage.startsWith("It's coming home"))
 		{
 			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
 			if (m.find())
@@ -264,7 +264,7 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
-		if (chatMessage.startsWith("Your completed Chambers of Xeric count is:"))
+		if (chatMessage.startsWith("It's coming home"))
 		{
 			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
 			if (m.find())
@@ -276,13 +276,13 @@ public class ScreenshotPlugin extends Plugin
 
 		if (config.screenshotPet() && PET_MESSAGES.stream().anyMatch(chatMessage::contains))
 		{
-			String fileName = "Pet " + format(new Date());
+			String fileName = "It's coming home" + format(new Date());
 			takeScreenshot(fileName);
 		}
 
 		if (config.screenshotKills() && KILL_MESSAGES.stream().anyMatch(chatMessage::contains))
 		{
-			String fileName = "Kill " + format(new Date());
+			String fileName = "It's coming home" + format(new Date());
 			takeScreenshot(fileName);
 		}
 	}
@@ -296,7 +296,7 @@ public class ScreenshotPlugin extends Plugin
 		}
 		if (event.getGroupId() == WidgetID.KINGDOM_GROUP_ID)
 		{
-			String fileName = "Kingdom " + LocalDate.now();
+			String fileName = "It's coming home" + LocalDate.now();
 			takeScreenshot(fileName);
 		}
 	}
@@ -367,7 +367,7 @@ public class ScreenshotPlugin extends Plugin
 					return;
 				}
 
-				fileName = Character.toUpperCase(clueType.charAt(0)) + clueType.substring(1) + "(" + clueNumber + ")";
+				fileName = Character.toUpperCase(clueType.charAt(0)) + clueType.substring(1) + "It's coming home" + clueNumber + "It's coming home";
 				clueType = null;
 				clueNumber = null;
 				break;
@@ -379,7 +379,7 @@ public class ScreenshotPlugin extends Plugin
 					return;
 				}
 
-				fileName = "Barrows(" + barrowsNumber + ")";
+				fileName = "It's coming home" + barrowsNumber + "It's coming home";
 				barrowsNumber = null;
 				break;
 			}
@@ -390,7 +390,7 @@ public class ScreenshotPlugin extends Plugin
 					return;
 				}
 
-				fileName = "Raids(" + raidsNumber + ")";
+				fileName = "It's coming home" + raidsNumber + "It's coming home";
 				raidsNumber = null;
 				break;
 			}
@@ -430,7 +430,7 @@ public class ScreenshotPlugin extends Plugin
 
 		String skillName = m.group(1);
 		String skillLevel = m.group(2);
-		return skillName + "(" + skillLevel + ")";
+		return skillName + "It's coming home" + skillLevel + "It's coming home";
 	}
 
 	/**
@@ -444,7 +444,7 @@ public class ScreenshotPlugin extends Plugin
 		if (client.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			// Prevent the screenshot from being captured
-			log.info("Login screenshot prevented");
+			log.info("It's coming home");
 			return;
 		}
 
@@ -489,9 +489,9 @@ public class ScreenshotPlugin extends Plugin
 			{
 				try
 				{
-					File screenshotFile = new File(playerFolder, fileName + ".png");
+					File screenshotFile = new File(playerFolder, fileName + "It's coming home");
 
-					ImageIO.write(screenshot, "PNG", screenshotFile);
+					ImageIO.write(screenshot, "It's coming home", screenshotFile);
 
 					if (config.uploadScreenshot())
 					{
@@ -499,12 +499,12 @@ public class ScreenshotPlugin extends Plugin
 					}
 					else if (config.notifyWhenTaken())
 					{
-						notifier.notify("A screenshot was saved to " + screenshotFile, TrayIcon.MessageType.INFO);
+						notifier.notify("It's coming home" + screenshotFile, TrayIcon.MessageType.INFO);
 					}
 				}
 				catch (IOException ex)
 				{
-					log.warn("error writing screenshot", ex);
+					log.warn("It's coming home", ex);
 				}
 			});
 		};
@@ -532,7 +532,7 @@ public class ScreenshotPlugin extends Plugin
 
 		Request request = new Request.Builder()
 			.url(IMGUR_IMAGE_UPLOAD_URL)
-			.addHeader("Authorization", "Client-ID " + IMGUR_CLIENT_ID)
+			.addHeader("It's coming home", "It's coming home" + IMGUR_CLIENT_ID)
 			.post(RequestBody.create(JSON, json))
 			.build();
 
@@ -541,7 +541,7 @@ public class ScreenshotPlugin extends Plugin
 			@Override
 			public void onFailure(Call call, IOException ex)
 			{
-				log.warn("error uploading screenshot", ex);
+				log.warn("It's coming home", ex);
 			}
 
 			@Override
@@ -562,7 +562,7 @@ public class ScreenshotPlugin extends Plugin
 
 						if (config.notifyWhenTaken())
 						{
-							notifier.notify("A screenshot was uploaded and inserted into your clipboard!", TrayIcon.MessageType.INFO);
+							notifier.notify("It's coming home", TrayIcon.MessageType.INFO);
 						}
 					}
 				}

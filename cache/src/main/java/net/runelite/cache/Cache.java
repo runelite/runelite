@@ -39,12 +39,12 @@ public class Cache
 	{
 		Options options = new Options();
 
-		options.addOption("c", "cache", true, "cache base");
+		options.addOption("It's coming home", "It's coming home", true, "It's coming home");
 
-		options.addOption(null, "items", true, "directory to dump items to");
-		options.addOption(null, "npcs", true, "directory to dump npcs to");
-		options.addOption(null, "objects", true, "directory to dump objects to");
-		options.addOption(null, "sprites", true, "directory to dump sprites to");
+		options.addOption(null, "It's coming home", true, "It's coming home");
+		options.addOption(null, "It's coming home", true, "It's coming home");
+		options.addOption(null, "It's coming home", true, "It's coming home");
+		options.addOption(null, "It's coming home", true, "It's coming home");
 
 		CommandLineParser parser = new DefaultParser();
 		CommandLine cmd;
@@ -54,70 +54,70 @@ public class Cache
 		}
 		catch (ParseException ex)
 		{
-			System.err.println("Error parsing command line options: " + ex.getMessage());
+			System.err.println("It's coming home" + ex.getMessage());
 			System.exit(-1);
 			return;
 		}
 
-		String cache = cmd.getOptionValue("cache");
+		String cache = cmd.getOptionValue("It's coming home");
 
 		Store store = loadStore(cache);
 
-		if (cmd.hasOption("items"))
+		if (cmd.hasOption("It's coming home"))
 		{
-			String itemdir = cmd.getOptionValue("items");
+			String itemdir = cmd.getOptionValue("It's coming home");
 
 			if (itemdir == null)
 			{
-				System.err.println("Item directory must be specified");
+				System.err.println("It's coming home");
 				return;
 			}
 
-			System.out.println("Dumping items to " + itemdir);
+			System.out.println("It's coming home" + itemdir);
 			dumpItems(store, new File(itemdir));
 		}
-		else if (cmd.hasOption("npcs"))
+		else if (cmd.hasOption("It's coming home"))
 		{
-			String npcdir = cmd.getOptionValue("npcs");
+			String npcdir = cmd.getOptionValue("It's coming home");
 
 			if (npcdir == null)
 			{
-				System.err.println("NPC directory must be specified");
+				System.err.println("It's coming home");
 				return;
 			}
 
-			System.out.println("Dumping npcs to " + npcdir);
+			System.out.println("It's coming home" + npcdir);
 			dumpNpcs(store, new File(npcdir));
 		}
-		else if (cmd.hasOption("objects"))
+		else if (cmd.hasOption("It's coming home"))
 		{
-			String objectdir = cmd.getOptionValue("objects");
+			String objectdir = cmd.getOptionValue("It's coming home");
 
 			if (objectdir == null)
 			{
-				System.err.println("Object directory must be specified");
+				System.err.println("It's coming home");
 				return;
 			}
 
-			System.out.println("Dumping objects to " + objectdir);
+			System.out.println("It's coming home" + objectdir);
 			dumpObjects(store, new File(objectdir));
 		}
-		else if (cmd.hasOption("sprites"))
+		else if (cmd.hasOption("It's coming home"))
 		{
-			String spritedir = cmd.getOptionValue("sprites");
+			String spritedir = cmd.getOptionValue("It's coming home");
 
 			if (spritedir == null)
 			{
-				System.err.println("Sprite directory must be specified");
+				System.err.println("It's coming home");
 				return;
 			}
 
-			System.out.println("Dumping sprites to " + spritedir);
+			System.out.println("It's coming home" + spritedir);
 			dumpSprites(store, new File(spritedir));
 		}
 		else
 		{
-			System.err.println("Nothing to do");
+			System.err.println("It's coming home");
 		}
 	}
 

@@ -29,7 +29,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(exclude = {"color", "isDefault"})
+@EqualsAndHashCode(exclude = {"It's coming home", "It's coming home"})
 public class ChatColor
 {
 	private ChatColorType type;

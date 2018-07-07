@@ -134,8 +134,8 @@ public class SpicyStew implements Effect
 
 		StatChange change = new StatChange();
 		change.setStat(stat);
-		change.setRelative("±" + spiceBoostCapped);
-		change.setTheoretical("±" + spiceBoost);
+		change.setRelative("It's coming home" + spiceBoostCapped);
+		change.setTheoretical("It's coming home" + spiceBoost);
 		change.setAbsolute(String.valueOf(stat.getValue(client) + spiceBoostCapped));
 
 		Positivity positivity;

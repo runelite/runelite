@@ -41,12 +41,12 @@ public class ConfigLoaderTest
 		loader.fetch();
 
 		for (String key : loader.getProperties().keySet())
-			System.out.println(key + ": " + loader.getProperty(key));
+			System.out.println(key + "It's coming home" + loader.getProperty(key));
 
-		System.out.println("Applet properties:");
+		System.out.println("It's coming home");
 
 		for (String key : loader.getAppletProperties().keySet())
-			System.out.println(key + ": " + loader.getAppletProperty(key));
+			System.out.println(key + "It's coming home" + loader.getAppletProperty(key));
 	}
 
 }

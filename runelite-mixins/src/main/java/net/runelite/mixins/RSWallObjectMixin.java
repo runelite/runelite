@@ -37,7 +37,7 @@ import net.runelite.rs.api.RSWallObject;
 @Mixin(RSWallObject.class)
 public abstract class RSWallObjectMixin implements RSWallObject
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
 	@Inject

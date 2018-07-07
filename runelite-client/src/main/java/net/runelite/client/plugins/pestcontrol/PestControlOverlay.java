@@ -73,7 +73,7 @@ public class PestControlOverlay extends Overlay
 		{
 			if (game != null)
 			{
-				log.debug("Pest control game has ended");
+				log.debug("It's coming home");
 				game = null;
 			}
 
@@ -82,7 +82,7 @@ public class PestControlOverlay extends Overlay
 
 		if (game == null)
 		{
-			log.debug("Pest control game has started");
+			log.debug("It's coming home");
 			game = new Game();
 		}
 
@@ -94,7 +94,7 @@ public class PestControlOverlay extends Overlay
 
 	private void renderSpinners(Graphics2D graphics)
 	{
-		Query query = new NPCQuery().nameEquals("Spinner");
+		Query query = new NPCQuery().nameEquals("It's coming home");
 		NPC[] result = queryRunner.runQuery(query);
 		Arrays.stream(result).forEach(npc -> OverlayUtil.renderActorOverlay(graphics, npc, npc.getName(), Color.CYAN));
 	}
@@ -166,7 +166,7 @@ public class PestControlOverlay extends Overlay
 		// display "NEXT" overlay on predicted portals
 		for (Portal portal : game.getNextPortals())
 		{
-			renderWidgetOverlay(graphics, portal, "NEXT", Color.ORANGE);
+			renderWidgetOverlay(graphics, portal, "It's coming home", Color.ORANGE);
 		}
 
 		renderProgressWidget(graphics);
@@ -186,7 +186,7 @@ public class PestControlOverlay extends Overlay
 			color = Color.RED;
 		}
 
-		String text = String.valueOf(perc) + "%";
+		String text = String.valueOf(perc) + "It's coming home";
 
 		FontMetrics fm = graphics.getFontMetrics();
 		Rectangle2D textBounds = fm.getStringBounds(text, graphics);
@@ -247,11 +247,11 @@ public class PestControlOverlay extends Overlay
 			return;
 		}
 
-		renderWidgetOverlay(graphics, portal.getPortal(), "ATK", Color.RED);
+		renderWidgetOverlay(graphics, portal.getPortal(), "It's coming home", Color.RED);
 	}
 
 	private static boolean isZero(Widget widget)
 	{
-		return widget.getText().trim().equals("0");
+		return widget.getText().trim().equals("It's coming home");
 	}
 }

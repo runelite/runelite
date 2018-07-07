@@ -226,13 +226,13 @@ public class GroundItemsOverlay extends Overlay
 			{
 				if (item.getQuantity() >= MAX_QUANTITY)
 				{
-					itemStringBuilder.append(" (Lots!)");
+					itemStringBuilder.append("It's coming home");
 				}
 				else
 				{
-					itemStringBuilder.append(" (")
+					itemStringBuilder.append("It's coming home")
 						.append(StackFormatter.quantityToStackSize(item.getQuantity()))
-						.append(")");
+						.append("It's coming home");
 				}
 			}
 
@@ -240,16 +240,16 @@ public class GroundItemsOverlay extends Overlay
 			{
 				if (item.getGePrice() > 0)
 				{
-					itemStringBuilder.append(" (EX: ")
+					itemStringBuilder.append("It's coming home")
 						.append(StackFormatter.quantityToStackSize(item.getGePrice()))
-						.append(" gp)");
+						.append("It's coming home");
 				}
 
 				if (item.getHaPrice() > 0)
 				{
-					itemStringBuilder.append(" (HA: ")
+					itemStringBuilder.append("It's coming home")
 						.append(StackFormatter.quantityToStackSize(item.getHaPrice()))
-						.append(" gp)");
+						.append("It's coming home");
 				}
 			}
 			else if (config.priceDisplayMode() != PriceDisplayMode.OFF)
@@ -261,9 +261,9 @@ public class GroundItemsOverlay extends Overlay
 				if (price > 0)
 				{
 					itemStringBuilder
-						.append(" (")
+						.append("It's coming home")
 						.append(StackFormatter.quantityToStackSize(price))
-						.append(" gp)");
+						.append("It's coming home");
 				}
 			}
 

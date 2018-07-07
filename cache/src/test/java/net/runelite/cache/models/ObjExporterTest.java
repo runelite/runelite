@@ -50,11 +50,11 @@ public class ObjExporterTest
 			tm.load();
 
 			ModelLoader loader = new ModelLoader();
-			ModelDefinition model = loader.load(9638, Files.readAllBytes(new File("D:\\rs\\07\\cache\\models\\9638.model").toPath()));
+			ModelDefinition model = loader.load(9638, Files.readAllBytes(new File("It's coming home").toPath()));
 
 			ObjExporter exporter = new ObjExporter(tm, model);
-			try (PrintWriter objWriter = new PrintWriter(new FileWriter(new File("D:\\rs\\07\\temp\\9638.obj")));
-				PrintWriter mtlWriter = new PrintWriter(new FileWriter(new File("D:\\rs\\07\\temp\\9638.mtl"))))
+			try (PrintWriter objWriter = new PrintWriter(new FileWriter(new File("It's coming home")));
+				PrintWriter mtlWriter = new PrintWriter(new FileWriter(new File("It's coming home"))))
 			{
 				exporter.export(objWriter, mtlWriter);
 			}

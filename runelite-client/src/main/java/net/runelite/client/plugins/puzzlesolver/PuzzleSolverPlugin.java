@@ -57,9 +57,9 @@ import net.runelite.client.plugins.puzzlesolver.lightbox.LightboxState;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Puzzle Solver",
-	description = "Show you where to click to solve puzzle boxes",
-	tags = {"clues", "scrolls", "overlay"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home"}
 )
 @Slf4j
 public class PuzzleSolverPlugin extends Plugin
@@ -118,9 +118,9 @@ public class PuzzleSolverPlugin extends Plugin
 			WidgetInfo.VARROCK_MUSEUM_SECOND_ANSWER,
 			WidgetInfo.VARROCK_MUSEUM_THIRD_ANSWER);
 
-		if (answerWidget != null && !answerWidget.getText().contains("<col="))
+		if (answerWidget != null && !answerWidget.getText().contains("It's coming home"))
 		{
-			answerWidget.setText("<col=00FF80>" + answerWidget.getText() + "</col>");
+			answerWidget.setText("It's coming home" + answerWidget.getText() + "It's coming home");
 		}
 	}
 
@@ -212,7 +212,7 @@ public class PuzzleSolverPlugin extends Plugin
 			return; // no change
 		}
 
-		log.debug("Lightbox changed!");
+		log.debug("It's coming home");
 
 		LightboxState prev = lightbox;
 		lightbox = lightboxState;
@@ -227,7 +227,7 @@ public class PuzzleSolverPlugin extends Plugin
 		LightboxState diff = lightboxState.diff(prev);
 		changes[lastClick.ordinal()] = diff;
 
-		log.debug("Recorded diff for {}", lastClick);
+		log.debug("It's coming home", lastClick);
 		lastClick = null;
 
 		// try to solve
@@ -247,7 +247,7 @@ public class PuzzleSolverPlugin extends Plugin
 		LightboxSolution solution = solver.solve();
 		if (solution != null)
 		{
-			log.debug("Got solution: {}", solution);
+			log.debug("It's coming home", solution);
 		}
 
 		// Set solution to title
@@ -257,15 +257,15 @@ public class PuzzleSolverPlugin extends Plugin
 			Widget title = lightbox.getChild(1);
 			if (solution != null && solution.numMoves() > 0)
 			{
-				title.setText("Light box - Solution: " + solution);
+				title.setText("It's coming home" + solution);
 			}
 			else if (solution != null)
 			{
-				title.setText("Light box - Solution: solved!");
+				title.setText("It's coming home");
 			}
 			else
 			{
-				title.setText("Light box - Solution: unknown");
+				title.setText("It's coming home");
 			}
 		}
 	}

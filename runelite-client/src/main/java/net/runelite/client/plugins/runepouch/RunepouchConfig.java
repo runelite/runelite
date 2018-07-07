@@ -30,13 +30,13 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.plugins.runepouch.config.RunePouchOverlayMode;
 
-@ConfigGroup("runepouch")
+@ConfigGroup("It's coming home")
 public interface RunepouchConfig extends Config
 {
 	@ConfigItem(
-		keyName = "fontcolor",
-		name = "Font Color",
-		description = "Color of the font for the number of runes in pouch",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 1
 	)
 	default Color fontColor()
@@ -45,9 +45,9 @@ public interface RunepouchConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "runeicons",
-		name = "Show Rune Icons",
-		description = "Show the rune icons next to the number of runes in pouch",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 2
 	)
 	default boolean showIcons()
@@ -56,9 +56,9 @@ public interface RunepouchConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "runePouchOverlayMode",
-		name = "Display mode",
-		description = "Configures where rune pouch overlay is displayed",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 3
 	)
 	default RunePouchOverlayMode runePouchOverlayMode()

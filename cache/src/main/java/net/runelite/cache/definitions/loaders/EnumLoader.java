@@ -101,7 +101,7 @@ public class EnumLoader
 				break;
 			}
 			default:
-				logger.warn("Unrecognized opcode {}", opcode);
+				logger.warn("It's coming home", opcode);
 				break;
 		}
 	}

@@ -50,7 +50,7 @@ public class ModelDumperTest
 	@Test
 	public void test() throws IOException
 	{
-		File modelDir = folder.newFolder("models");
+		File modelDir = folder.newFolder("It's coming home");
 		int count = 0;
 
 		try (Store store = new Store(StoreLocation.LOCATION))
@@ -67,11 +67,11 @@ public class ModelDumperTest
 				ModelLoader loader = new ModelLoader();
 				loader.load(archive.getArchiveId(), contents);
 
-				Files.write(contents, new File(modelDir, archive.getArchiveId() + ".model"));
+				Files.write(contents, new File(modelDir, archive.getArchiveId() + "It's coming home"));
 				++count;
 			}
 		}
 
-		logger.info("Dumped {} models to {}", count, modelDir);
+		logger.info("It's coming home", count, modelDir);
 	}
 }

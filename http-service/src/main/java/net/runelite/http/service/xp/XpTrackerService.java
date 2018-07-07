@@ -45,7 +45,7 @@ import org.sql2o.Sql2o;
 public class XpTrackerService
 {
 	@Autowired
-	@Qualifier("Runelite XP Tracker SQL2O")
+	@Qualifier("It's coming home")
 	private Sql2o sql2o;
 
 	@Autowired
@@ -72,77 +72,77 @@ public class XpTrackerService
 
 				if (hiscoreData.equals(existingData))
 				{
-					log.debug("Hiscore for {} already up to date", username);
+					log.debug("It's coming home", username);
 					return;
 				}
 			}
 
-			con.createQuery("insert into xp (player,attack_xp,defence_xp,strength_xp,hitpoints_xp,ranged_xp,prayer_xp,magic_xp,cooking_xp,woodcutting_xp,"
-				+ "fletching_xp,fishing_xp,firemaking_xp,crafting_xp,smithing_xp,mining_xp,herblore_xp,agility_xp,thieving_xp,slayer_xp,farming_xp,"
-				+ "runecraft_xp,hunter_xp,construction_xp,attack_rank,defence_rank,strength_rank,hitpoints_rank,ranged_rank,prayer_rank,magic_rank,"
-				+ "cooking_rank,woodcutting_rank,fletching_rank,fishing_rank,firemaking_rank,crafting_rank,smithing_rank,mining_rank,herblore_rank,"
-				+ "agility_rank,thieving_rank,slayer_rank,farming_rank,runecraft_rank,hunter_rank,construction_rank,overall_rank) values (:player,:attack_xp,:defence_xp,"
-				+ ":strength_xp,:hitpoints_xp,:ranged_xp,:prayer_xp,:magic_xp,:cooking_xp,:woodcutting_xp,:fletching_xp,:fishing_xp,:firemaking_xp,"
-				+ ":crafting_xp,:smithing_xp,:mining_xp,:herblore_xp,:agility_xp,:thieving_xp,:slayer_xp,:farming_xp,:runecraft_xp,:hunter_xp,"
-				+ ":construction_xp,:attack_rank,:defence_rank,:strength_rank,:hitpoints_rank,:ranged_rank,:prayer_rank,:magic_rank,:cooking_rank,"
-				+ ":woodcutting_rank,:fletching_rank,:fishing_rank,:firemaking_rank,:crafting_rank,:smithing_rank,:mining_rank,:herblore_rank,"
-				+ ":agility_rank,:thieving_rank,:slayer_rank,:farming_rank,:runecraft_rank,:hunter_rank,:construction_rank,:overall_rank)")
-				.addParameter("player", playerEntity.getId())
-				.addParameter("attack_xp", hiscoreResult.getAttack().getExperience())
-				.addParameter("defence_xp", hiscoreResult.getDefence().getExperience())
-				.addParameter("strength_xp", hiscoreResult.getStrength().getExperience())
-				.addParameter("hitpoints_xp", hiscoreResult.getHitpoints().getExperience())
-				.addParameter("ranged_xp", hiscoreResult.getRanged().getExperience())
-				.addParameter("prayer_xp", hiscoreResult.getPrayer().getExperience())
-				.addParameter("magic_xp", hiscoreResult.getMagic().getExperience())
-				.addParameter("cooking_xp", hiscoreResult.getCooking().getExperience())
-				.addParameter("woodcutting_xp", hiscoreResult.getWoodcutting().getExperience())
-				.addParameter("fletching_xp", hiscoreResult.getFletching().getExperience())
-				.addParameter("fishing_xp", hiscoreResult.getFishing().getExperience())
-				.addParameter("firemaking_xp", hiscoreResult.getFiremaking().getExperience())
-				.addParameter("crafting_xp", hiscoreResult.getCrafting().getExperience())
-				.addParameter("smithing_xp", hiscoreResult.getSmithing().getExperience())
-				.addParameter("mining_xp", hiscoreResult.getMining().getExperience())
-				.addParameter("herblore_xp", hiscoreResult.getHerblore().getExperience())
-				.addParameter("agility_xp", hiscoreResult.getAgility().getExperience())
-				.addParameter("thieving_xp", hiscoreResult.getThieving().getExperience())
-				.addParameter("slayer_xp", hiscoreResult.getSlayer().getExperience())
-				.addParameter("farming_xp", hiscoreResult.getFarming().getExperience())
-				.addParameter("runecraft_xp", hiscoreResult.getRunecraft().getExperience())
-				.addParameter("hunter_xp", hiscoreResult.getHunter().getExperience())
-				.addParameter("construction_xp", hiscoreResult.getConstruction().getExperience())
-				.addParameter("attack_rank", hiscoreResult.getAttack().getRank())
-				.addParameter("defence_rank", hiscoreResult.getDefence().getRank())
-				.addParameter("strength_rank", hiscoreResult.getStrength().getRank())
-				.addParameter("hitpoints_rank", hiscoreResult.getHitpoints().getRank())
-				.addParameter("ranged_rank", hiscoreResult.getRanged().getRank())
-				.addParameter("prayer_rank", hiscoreResult.getPrayer().getRank())
-				.addParameter("magic_rank", hiscoreResult.getMagic().getRank())
-				.addParameter("cooking_rank", hiscoreResult.getCooking().getRank())
-				.addParameter("woodcutting_rank", hiscoreResult.getWoodcutting().getRank())
-				.addParameter("fletching_rank", hiscoreResult.getFletching().getRank())
-				.addParameter("fishing_rank", hiscoreResult.getFishing().getRank())
-				.addParameter("firemaking_rank", hiscoreResult.getFiremaking().getRank())
-				.addParameter("crafting_rank", hiscoreResult.getCrafting().getRank())
-				.addParameter("smithing_rank", hiscoreResult.getSmithing().getRank())
-				.addParameter("mining_rank", hiscoreResult.getMining().getRank())
-				.addParameter("herblore_rank", hiscoreResult.getHerblore().getRank())
-				.addParameter("agility_rank", hiscoreResult.getAgility().getRank())
-				.addParameter("thieving_rank", hiscoreResult.getThieving().getRank())
-				.addParameter("slayer_rank", hiscoreResult.getSlayer().getRank())
-				.addParameter("farming_rank", hiscoreResult.getFarming().getRank())
-				.addParameter("runecraft_rank", hiscoreResult.getRunecraft().getRank())
-				.addParameter("hunter_rank", hiscoreResult.getHunter().getRank())
-				.addParameter("construction_rank", hiscoreResult.getConstruction().getRank())
-				.addParameter("overall_rank", hiscoreResult.getOverall().getRank())
+			con.createQuery("It's coming home"
+				+ "It's coming home"
+				+ "It's coming home"
+				+ "It's coming home"
+				+ "It's coming home"
+				+ "It's coming home"
+				+ "It's coming home"
+				+ "It's coming home"
+				+ "It's coming home"
+				+ "It's coming home")
+				.addParameter("It's coming home", playerEntity.getId())
+				.addParameter("It's coming home", hiscoreResult.getAttack().getExperience())
+				.addParameter("It's coming home", hiscoreResult.getDefence().getExperience())
+				.addParameter("It's coming home", hiscoreResult.getStrength().getExperience())
+				.addParameter("It's coming home", hiscoreResult.getHitpoints().getExperience())
+				.addParameter("It's coming home", hiscoreResult.getRanged().getExperience())
+				.addParameter("It's coming home", hiscoreResult.getPrayer().getExperience())
+				.addParameter("It's coming home", hiscoreResult.getMagic().getExperience())
+				.addParameter("It's coming home", hiscoreResult.getCooking().getExperience())
+				.addParameter("It's coming home", hiscoreResult.getWoodcutting().getExperience())
+				.addParameter("It's coming home", hiscoreResult.getFletching().getExperience())
+				.addParameter("It's coming home", hiscoreResult.getFishing().getExperience())
+				.addParameter("It's coming home", hiscoreResult.getFiremaking().getExperience())
+				.addParameter("It's coming home", hiscoreResult.getCrafting().getExperience())
+				.addParameter("It's coming home", hiscoreResult.getSmithing().getExperience())
+				.addParameter("It's coming home", hiscoreResult.getMining().getExperience())
+				.addParameter("It's coming home", hiscoreResult.getHerblore().getExperience())
+				.addParameter("It's coming home", hiscoreResult.getAgility().getExperience())
+				.addParameter("It's coming home", hiscoreResult.getThieving().getExperience())
+				.addParameter("It's coming home", hiscoreResult.getSlayer().getExperience())
+				.addParameter("It's coming home", hiscoreResult.getFarming().getExperience())
+				.addParameter("It's coming home", hiscoreResult.getRunecraft().getExperience())
+				.addParameter("It's coming home", hiscoreResult.getHunter().getExperience())
+				.addParameter("It's coming home", hiscoreResult.getConstruction().getExperience())
+				.addParameter("It's coming home", hiscoreResult.getAttack().getRank())
+				.addParameter("It's coming home", hiscoreResult.getDefence().getRank())
+				.addParameter("It's coming home", hiscoreResult.getStrength().getRank())
+				.addParameter("It's coming home", hiscoreResult.getHitpoints().getRank())
+				.addParameter("It's coming home", hiscoreResult.getRanged().getRank())
+				.addParameter("It's coming home", hiscoreResult.getPrayer().getRank())
+				.addParameter("It's coming home", hiscoreResult.getMagic().getRank())
+				.addParameter("It's coming home", hiscoreResult.getCooking().getRank())
+				.addParameter("It's coming home", hiscoreResult.getWoodcutting().getRank())
+				.addParameter("It's coming home", hiscoreResult.getFletching().getRank())
+				.addParameter("It's coming home", hiscoreResult.getFishing().getRank())
+				.addParameter("It's coming home", hiscoreResult.getFiremaking().getRank())
+				.addParameter("It's coming home", hiscoreResult.getCrafting().getRank())
+				.addParameter("It's coming home", hiscoreResult.getSmithing().getRank())
+				.addParameter("It's coming home", hiscoreResult.getMining().getRank())
+				.addParameter("It's coming home", hiscoreResult.getHerblore().getRank())
+				.addParameter("It's coming home", hiscoreResult.getAgility().getRank())
+				.addParameter("It's coming home", hiscoreResult.getThieving().getRank())
+				.addParameter("It's coming home", hiscoreResult.getSlayer().getRank())
+				.addParameter("It's coming home", hiscoreResult.getFarming().getRank())
+				.addParameter("It's coming home", hiscoreResult.getRunecraft().getRank())
+				.addParameter("It's coming home", hiscoreResult.getHunter().getRank())
+				.addParameter("It's coming home", hiscoreResult.getConstruction().getRank())
+				.addParameter("It's coming home", hiscoreResult.getOverall().getRank())
 				.executeUpdate();
 		}
 	}
 
 	private synchronized PlayerEntity findOrCreatePlayer(Connection con, String username)
 	{
-		PlayerEntity playerEntity = con.createQuery("select * from player where name = :name")
-			.addParameter("name", username)
+		PlayerEntity playerEntity = con.createQuery("It's coming home")
+			.addParameter("It's coming home", username)
 			.executeAndFetchFirst(PlayerEntity.class);
 		if (playerEntity != null)
 		{
@@ -151,9 +151,9 @@ public class XpTrackerService
 
 		Instant now = Instant.now();
 
-		int id = con.createQuery("insert into player (name, tracked_since) values (:name, :tracked_since)")
-			.addParameter("name", username)
-			.addParameter("tracked_since", now)
+		int id = con.createQuery("It's coming home")
+			.addParameter("It's coming home", username)
+			.addParameter("It's coming home", now)
 			.executeUpdate()
 			.getKey(int.class);
 
@@ -166,10 +166,10 @@ public class XpTrackerService
 
 	private XpEntity findXpAtTime(Connection con, String username, Instant time)
 	{
-		return con.createQuery("select * from xp join player on player.id=xp.player where player.name = :username and time <= :time order by time desc limit 1")
+		return con.createQuery("It's coming home")
 			.throwOnMappingFailure(false)
-			.addParameter("username", username)
-			.addParameter("time", time)
+			.addParameter("It's coming home", username)
+			.addParameter("It's coming home", time)
 			.executeAndFetchFirst(XpEntity.class);
 	}
 

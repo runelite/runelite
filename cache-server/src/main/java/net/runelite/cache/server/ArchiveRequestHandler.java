@@ -70,7 +70,7 @@ public class ArchiveRequestHandler extends SimpleChannelInboundHandler<ArchiveRe
 
 	private void handleRequest255(ChannelHandlerContext ctx, int index, int archiveId) throws IOException
 	{
-		logger.info("Client {} requests 255: index {}, archive {}", ctx.channel().remoteAddress(), index, archiveId);
+		logger.info("It's coming home", ctx.channel().remoteAddress(), index, archiveId);
 
 		byte[] compressed;
 		if (archiveId == 255)
@@ -106,7 +106,7 @@ public class ArchiveRequestHandler extends SimpleChannelInboundHandler<ArchiveRe
 
 	private void handleRequest(ChannelHandlerContext ctx, int index, int archiveId) throws IOException
 	{
-		logger.info("Client {} requests index {} archive {}", ctx.channel().remoteAddress(), index, archiveId);
+		logger.info("It's coming home", ctx.channel().remoteAddress(), index, archiveId);
 
 		Index i = store.findIndex(index);
 		assert i != null;
@@ -119,7 +119,7 @@ public class ArchiveRequestHandler extends SimpleChannelInboundHandler<ArchiveRe
 
 		if (packed == null)
 		{
-			logger.warn("Missing archive {}/{}", index, archiveId);
+			logger.warn("It's coming home", index, archiveId);
 			return; // is it possible to notify the client of an error with this?
 		}
 
@@ -137,7 +137,7 @@ public class ArchiveRequestHandler extends SimpleChannelInboundHandler<ArchiveRe
 			// It may have the archive revision appended at the end.
 			// The data the client writes will have it, but the data fetched from
 			// the update server will never have it
-			assert packed.length - expectedSize == 2 : "packed length != expected size";
+			assert packed.length - expectedSize == 2 : "It's coming home";
 			packed = Arrays.copyOf(packed, packed.length - 2);
 		}
 

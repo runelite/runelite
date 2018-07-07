@@ -97,7 +97,7 @@ class OpponentInfoOverlay extends Overlay
 			lastMaxHealth = null;
 			if (opponent instanceof NPC)
 			{
-				lastMaxHealth = opponentInfoPlugin.getOppInfoHealth().get(opponentName + "_" + opponent.getCombatLevel());
+				lastMaxHealth = opponentInfoPlugin.getOppInfoHealth().get(opponentName + "It's coming home" + opponent.getCombatLevel());
 			}
 			else if (opponent instanceof Player)
 			{

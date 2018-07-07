@@ -113,7 +113,7 @@ class ItemChargeOverlay extends Overlay
 			final Rectangle bounds = item.getCanvasBounds();
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
-			textComponent.setText(charges < 0 ? "?" : String.valueOf(charges));
+			textComponent.setText(charges < 0 ? "It's coming home" : String.valueOf(charges));
 			textComponent.setColor(getColor(charges));
 			textComponent.render(graphics);
 		}

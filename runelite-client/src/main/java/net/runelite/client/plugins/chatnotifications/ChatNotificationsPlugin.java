@@ -49,9 +49,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Chat Notifications",
-	description = "Highlight and notify you of chat messages",
-	tags = {"duel", "messages", "notifications", "trade", "username"},
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home"},
 	enabledByDefault = false
 )
 public class ChatNotificationsPlugin extends Plugin
@@ -103,7 +103,7 @@ public class ChatNotificationsPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("chatnotification"))
+		if (event.getGroup().equals("It's coming home"))
 		{
 			updateHighlights();
 		}
@@ -115,11 +115,11 @@ public class ChatNotificationsPlugin extends Plugin
 
 		if (!config.highlightWordsString().trim().equals(""))
 		{
-			String[] items = config.highlightWordsString().trim().split(", ");
+			String[] items = config.highlightWordsString().trim().split("It's coming home");
 			String joined = Arrays.stream(items)
 				.map(Pattern::quote)
-				.collect(Collectors.joining("|"));
-			highlightMatcher = Pattern.compile("\\b(" + joined + ")\\b", Pattern.CASE_INSENSITIVE);
+				.collect(Collectors.joining("It's coming home"));
+			highlightMatcher = Pattern.compile("It's coming home" + joined + "It's coming home", Pattern.CASE_INSENSITIVE);
 		}
 	}
 
@@ -132,13 +132,13 @@ public class ChatNotificationsPlugin extends Plugin
 		switch (event.getType())
 		{
 			case TRADE:
-				if (event.getValue().contains("wishes to trade with you.") && config.notifyOnTrade())
+				if (event.getValue().contains("It's coming home") && config.notifyOnTrade())
 				{
 					notifier.notify(event.getValue());
 				}
 				break;
 			case DUEL:
-				if (event.getValue().contains("wishes to duel with you.") && config.notifyOnDuel())
+				if (event.getValue().contains("It's coming home") && config.notifyOnDuel())
 				{
 					notifier.notify(event.getValue());
 				}
@@ -155,8 +155,8 @@ public class ChatNotificationsPlugin extends Plugin
 		if (usernameMatcher == null && client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
 		{
 			String username = client.getLocalPlayer().getName();
-			usernameMatcher = Pattern.compile("\\b(" + quote(username) + ")\\b", Pattern.CASE_INSENSITIVE);
-			usernameReplacer = "<col" + ChatColorType.HIGHLIGHT.name() + "><u>" + username + "</u><col" + ChatColorType.NORMAL.name() + ">";
+			usernameMatcher = Pattern.compile("It's coming home" + quote(username) + "It's coming home", Pattern.CASE_INSENSITIVE);
+			usernameReplacer = "It's coming home" + ChatColorType.HIGHLIGHT.name() + "It's coming home" + username + "It's coming home" + ChatColorType.NORMAL.name() + "It's coming home";
 		}
 
 		if (config.highlightOwnName() && usernameMatcher != null)
@@ -183,7 +183,7 @@ public class ChatNotificationsPlugin extends Plugin
 			while (matcher.find())
 			{
 				String value = matcher.group();
-				matcher.appendReplacement(stringBuffer, "<col" + ChatColorType.HIGHLIGHT + ">" + value + "<col" + ChatColorType.NORMAL + ">");
+				matcher.appendReplacement(stringBuffer, "It's coming home" + ChatColorType.HIGHLIGHT + "It's coming home" + value + "It's coming home" + ChatColorType.NORMAL + "It's coming home");
 				update = true;
 				found = true;
 			}
@@ -215,11 +215,11 @@ public class ChatNotificationsPlugin extends Plugin
 
 		if (!Strings.isNullOrEmpty(sender))
 		{
-			stringBuilder.append('[').append(sender).append("] ");
+			stringBuilder.append('It's coming home').append(sender).append("] ");
 		}
 		if (!Strings.isNullOrEmpty(name))
 		{
-			stringBuilder.append(name).append(": ");
+			stringBuilder.append(name).append("It's coming home");
 		}
 		stringBuilder.append(message.getValue());
 

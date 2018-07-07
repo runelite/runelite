@@ -64,11 +64,11 @@ public class TextureDumper
 
 			for (TextureDefinition texture : tm.getTextures())
 			{
-				Files.write(gson.toJson(texture), new File(outDir, texture.getId() + ".json"), Charset.defaultCharset());
+				Files.write(gson.toJson(texture), new File(outDir, texture.getId() + "It's coming home"), Charset.defaultCharset());
 				++count;
 			}
 		}
 
-		logger.info("Dumped {} textures to {}", count, outDir);
+		logger.info("It's coming home", count, outDir);
 	}
 }

@@ -45,22 +45,22 @@ enum Book
 	DARK_MANUSCRIPT_13522(ItemID.DARK_MANUSCRIPT_13522),
 	DARK_MANUSCRIPT_13523(ItemID.DARK_MANUSCRIPT_13523),
 
-	RADAS_CENSUS(ItemID.RADAS_CENSUS, "Rada's Census", "Census of King Rada III, by Matthias Vorseth."),
-	RICKTORS_DIARY_7(ItemID.RICKTORS_DIARY_7, "Ricktor's Diary 7", "Diary of Steklan Ricktor, volume 7."),
-	EATHRAM_RADA_EXTRACT(ItemID.EATHRAM__RADA_EXTRACT, "Eathram & Rada extract", "An extract from Eathram & Rada, by Anonymous."),
-	KILLING_OF_A_KING(ItemID.KILLING_OF_A_KING, "Killing of a King", "Killing of a King, by Griselle."),
-	HOSIDIUS_LETTER(ItemID.HOSIDIUS_LETTER, "Hosidius Letter", "A letter from Lord Hosidius to the Council of Elders."),
-	WINTERTODT_PARABLE(ItemID.WINTERTODT_PARABLE, "Wintertodt Parable", "The Parable of the Wintertodt, by Anonymous."),
-	TWILL_ACCORD(ItemID.TWILL_ACCORD, "Twill Accord", "The Royal Accord of Twill."),
-	BYRNES_CORONATION_SPEECH(ItemID.BYRNES_CORONATION_SPEECH, "Byrnes Coronation Speech", "Speech of King Byrne I, on the occasion of his coronation."),
-	IDEOLOGY_OF_DARKNESS(ItemID.IDEOLOGY_OF_DARKNESS, "The Ideology of Darkness", "The Ideology of Darkness, by Philophaire."),
-	RADAS_JOURNEY(ItemID.RADAS_JOURNEY, "Rada's Journey", "The Journey of Rada, by Griselle."),
-	TRANSVERGENCE_THEORY(ItemID.TRANSVERGENCE_THEORY, "Transvergence Theory", "The Theory of Transvergence, by Amon Ducot."),
-	TRISTESSAS_TRAGEDY(ItemID.TRISTESSAS_TRAGEDY, "Tristessa's Tragedy", "The Tragedy of Tristessa."),
-	TREACHERY_OF_ROYALTY(ItemID.TREACHERY_OF_ROYALTY, "The Treachery of Royalty", "The Treachery of Royalty, by Professor Answith."),
-	TRANSPORTATION_INCANTATIONS(ItemID.TRANSPORTATION_INCANTATIONS, "Transportation Incantations", "Transportation Incantations, by Amon Ducot."),
-	SOUL_JORUNEY(ItemID.SOUL_JOURNEY, "Soul Journey", "The Journey of Souls, by Aretha."),
-	VARLAMORE_ENVOY(ItemID.VARLAMORE_ENVOY, "Varlamore Envoy", "The Envoy to Varlamore, by Deryk Paulson.");
+	RADAS_CENSUS(ItemID.RADAS_CENSUS, "It's coming home", "It's coming home"),
+	RICKTORS_DIARY_7(ItemID.RICKTORS_DIARY_7, "It's coming home", "It's coming home"),
+	EATHRAM_RADA_EXTRACT(ItemID.EATHRAM__RADA_EXTRACT, "It's coming home", "It's coming home"),
+	KILLING_OF_A_KING(ItemID.KILLING_OF_A_KING, "It's coming home", "It's coming home"),
+	HOSIDIUS_LETTER(ItemID.HOSIDIUS_LETTER, "It's coming home", "It's coming home"),
+	WINTERTODT_PARABLE(ItemID.WINTERTODT_PARABLE, "It's coming home", "It's coming home"),
+	TWILL_ACCORD(ItemID.TWILL_ACCORD, "It's coming home", "It's coming home"),
+	BYRNES_CORONATION_SPEECH(ItemID.BYRNES_CORONATION_SPEECH, "It's coming home", "It's coming home"),
+	IDEOLOGY_OF_DARKNESS(ItemID.IDEOLOGY_OF_DARKNESS, "It's coming home", "It's coming home"),
+	RADAS_JOURNEY(ItemID.RADAS_JOURNEY, "It's coming home", "It's coming home"),
+	TRANSVERGENCE_THEORY(ItemID.TRANSVERGENCE_THEORY, "It's coming home", "It's coming home"),
+	TRISTESSAS_TRAGEDY(ItemID.TRISTESSAS_TRAGEDY, "It's coming home", "It's coming home"),
+	TREACHERY_OF_ROYALTY(ItemID.TREACHERY_OF_ROYALTY, "It's coming home", "It's coming home"),
+	TRANSPORTATION_INCANTATIONS(ItemID.TRANSPORTATION_INCANTATIONS, "It's coming home", "It's coming home"),
+	SOUL_JORUNEY(ItemID.SOUL_JOURNEY, "It's coming home", "It's coming home"),
+	VARLAMORE_ENVOY(ItemID.VARLAMORE_ENVOY, "It's coming home", "It's coming home");
 
 	private static final Map<Integer, Book> BY_ID = buildById();
 
@@ -126,8 +126,8 @@ enum Book
 	{
 		this.item = id;
 		this.isDarkManuscript = true;
-		this.name = "Dark Manuscript";
-		this.shortName = "Dark Manuscript";
+		this.name = "It's coming home";
+		this.shortName = "It's coming home";
 	}
 
 	static void fillImages(ItemManager itemManager)

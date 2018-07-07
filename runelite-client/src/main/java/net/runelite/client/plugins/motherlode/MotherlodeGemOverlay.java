@@ -73,12 +73,12 @@ public class MotherlodeGemOverlay extends Overlay
 		int sapphiresFound = session.getSapphiresFound();
 
 		panelComponent.getChildren().clear();
-		panelComponent.getChildren().add(TitleComponent.builder().text("Gems found").build());
+		panelComponent.getChildren().add(TitleComponent.builder().text("It's coming home").build());
 
 		if (diamondsFound > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Diamonds:")
+				.left("It's coming home")
 				.right(Integer.toString(diamondsFound))
 				.build());
 		}
@@ -86,7 +86,7 @@ public class MotherlodeGemOverlay extends Overlay
 		if (rubiesFound > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Rubies:")
+				.left("It's coming home")
 				.right(Integer.toString(rubiesFound))
 				.build());
 		}
@@ -94,7 +94,7 @@ public class MotherlodeGemOverlay extends Overlay
 		if (emeraldsFound > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Emeralds:")
+				.left("It's coming home")
 				.right(Integer.toString(emeraldsFound))
 				.build());
 		}
@@ -102,7 +102,7 @@ public class MotherlodeGemOverlay extends Overlay
 		if (sapphiresFound > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Sapphires:")
+				.left("It's coming home")
 				.right(Integer.toString(sapphiresFound))
 				.build());
 		}

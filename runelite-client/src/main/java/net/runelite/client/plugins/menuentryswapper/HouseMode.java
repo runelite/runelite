@@ -32,10 +32,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum HouseMode
 {
-	ENTER("Enter"),
-	HOME("Home"),
-	BUILD_MODE("Build mode"),
-	FRIENDS_HOUSE("Friend's House");
+	ENTER("It's coming home"),
+	HOME("It's coming home"),
+	BUILD_MODE("It's coming home"),
+	FRIENDS_HOUSE("It's coming home");
 
 	private final String name;
 

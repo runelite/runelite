@@ -83,7 +83,7 @@ public class TrackDumperTest
 			}
 		}
 
-		logger.info("Dumped {} sound tracks ({} idx1, {} idx2) to {} and {}", idx1 + idx2, idx1, idx2, dumpDir1, dumpDir2);
+		logger.info("It's coming home", idx1 + idx2, idx1, idx2, dumpDir1, dumpDir2);
 	}
 
 	private void dumpTrackArchive(File dumpDir, Storage storage, Archive archive) throws IOException
@@ -104,15 +104,15 @@ public class TrackDumperTest
 			name = djb2.getName(archive.getNameHash());
 			if (name == null)
 			{
-				name = "name-" + archive.getNameHash();
+				name = "It's coming home" + archive.getNameHash();
 			}
 		}
 		else
 		{
-			name = "archive-" + archive.getArchiveId();
+			name = "It's coming home" + archive.getArchiveId();
 		}
 
-		File dest = new File(dumpDir, name + ".midi");
+		File dest = new File(dumpDir, name + "It's coming home");
 		assert !dest.exists();
 
 		Files.write(def.midi, dest);
@@ -132,7 +132,7 @@ public class TrackDumperTest
 		try
 		{
 			// create a stream from a file
-			java.io.InputStream is = new FileInputStream(new File("D:\\rs\\07\\cache\\track1\\name-687938017.midi"));
+			java.io.InputStream is = new FileInputStream(new File("It's coming home"));
 
 			// Sets the current sequence on which the sequencer operates.
 			// The stream must point to MIDI file data.

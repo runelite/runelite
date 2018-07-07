@@ -27,11 +27,11 @@ package net.runelite.client.plugins.devtools;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("devtools")
+@ConfigGroup("It's coming home")
 public interface DevToolsConfig
 {
 	@ConfigItem(
-		keyName = "inspectorAlwaysOnTop",
+		keyName = "It's coming home",
 		name = "",
 		description = "",
 		hidden = true
@@ -42,7 +42,7 @@ public interface DevToolsConfig
 	}
 
 	@ConfigItem(
-		keyName = "inspectorAlwaysOnTop",
+		keyName = "It's coming home",
 		name = "",
 		description = ""
 	)

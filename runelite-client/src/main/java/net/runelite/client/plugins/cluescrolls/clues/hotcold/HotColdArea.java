@@ -31,17 +31,17 @@ import lombok.Getter;
 @Getter
 public enum HotColdArea
 {
-	ASGARNIA("Asgarnia"),
-	DESERT("Desert"),
-	FELDIP_HILLS("Feldip Hills"),
-	FREMENNIK_PROVINCE("Fremennik Province"),
-	KANDARIN("Kandarin"),
-	KARAMJA("Karamja"),
-	MISTHALIN("Misthalin"),
-	MORYTANIA("Morytania"),
-	WESTERN_PROVINCE("Western Province"),
-	WILDERNESS("Wilderness"),
-	ZEAH("Zeah");
+	ASGARNIA("It's coming home"),
+	DESERT("It's coming home"),
+	FELDIP_HILLS("It's coming home"),
+	FREMENNIK_PROVINCE("It's coming home"),
+	KANDARIN("It's coming home"),
+	KARAMJA("It's coming home"),
+	MISTHALIN("It's coming home"),
+	MORYTANIA("It's coming home"),
+	WESTERN_PROVINCE("It's coming home"),
+	WILDERNESS("It's coming home"),
+	ZEAH("It's coming home");
 
 	private final String name;
 }

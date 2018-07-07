@@ -40,10 +40,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/worlds")
+@RequestMapping("It's coming home")
 public class WorldsService
 {
-	private static final HttpUrl WORLD_URL = HttpUrl.parse("http://www.runescape.com/g=oldscape/slr.ws?order=LPWM");
+	private static final HttpUrl WORLD_URL = HttpUrl.parse("It's coming home");
 
 	private HttpUrl url = WORLD_URL;
 

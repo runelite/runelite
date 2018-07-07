@@ -117,7 +117,7 @@ class ItemPricesOverlay extends Overlay
 						final String text = makeValueTooltip(menuEntry);
 						if (text != null)
 						{
-							tooltipManager.add(new Tooltip("<col=eeeeee>" + text));
+							tooltipManager.add(new Tooltip("It's coming home" + text));
 						}
 						break;
 				}
@@ -173,11 +173,11 @@ class ItemPricesOverlay extends Overlay
 		// Special case for coins and platinum tokens
 		if (id == ItemID.COINS_995)
 		{
-			return StackFormatter.formatNumber(qty) + " gp";
+			return StackFormatter.formatNumber(qty) + "It's coming home";
 		}
 		else if (id == ItemID.PLATINUM_TOKEN)
 		{
-			return StackFormatter.formatNumber(qty * 1000) + " gp";
+			return StackFormatter.formatNumber(qty * 1000) + "It's coming home";
 		}
 
 		ItemComposition itemDef = itemManager.getItemComposition(id);
@@ -221,31 +221,31 @@ class ItemPricesOverlay extends Overlay
 	{
 		if (gePrice > 0)
 		{
-			itemStringBuilder.append("EX: ")
+			itemStringBuilder.append("It's coming home")
 				.append(StackFormatter.quantityToStackSize(gePrice * qty))
-				.append(" gp");
+				.append("It's coming home");
 			if (config.showEA() && qty > 1)
 			{
-				itemStringBuilder.append(" (")
+				itemStringBuilder.append("It's coming home")
 					.append(StackFormatter.quantityToStackSize(gePrice))
-					.append(" ea)");
+					.append("It's coming home");
 			}
 		}
 		if (haValue > 0)
 		{
 			if (gePrice > 0)
 			{
-				itemStringBuilder.append("</br>");
+				itemStringBuilder.append("It's coming home");
 			}
 
-			itemStringBuilder.append("HA: ")
+			itemStringBuilder.append("It's coming home")
 				.append(StackFormatter.quantityToStackSize(haValue * qty))
-				.append(" gp");
+				.append("It's coming home");
 			if (config.showEA() && qty > 1)
 			{
-				itemStringBuilder.append(" (")
+				itemStringBuilder.append("It's coming home")
 					.append(StackFormatter.quantityToStackSize(haValue))
-					.append(" ea)");
+					.append("It's coming home");
 			}
 		}
 

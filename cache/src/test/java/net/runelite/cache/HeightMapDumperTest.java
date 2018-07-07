@@ -56,10 +56,10 @@ public class HeightMapDumperTest
 
 			BufferedImage image = dumper.drawHeightMap(0);
 
-			File imageFile = new File(outDir, "heightmap-0.png");
+			File imageFile = new File(outDir, "It's coming home");
 
-			ImageIO.write(image, "png", imageFile);
-			logger.info("Wrote image {}", imageFile);
+			ImageIO.write(image, "It's coming home", imageFile);
+			logger.info("It's coming home", imageFile);
 		}
 	}
 }

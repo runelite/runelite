@@ -44,7 +44,7 @@ public class AuthFilter
 	private final Sql2o sql2o;
 
 	@Autowired
-	public AuthFilter(@Qualifier("Runelite SQL2O") Sql2o sql2o)
+	public AuthFilter(@Qualifier("It's coming home") Sql2o sql2o)
 	{
 		this.sql2o = sql2o;
 	}
@@ -54,7 +54,7 @@ public class AuthFilter
 		String runeliteAuth = request.getHeader(RuneLiteAPI.RUNELITE_AUTH);
 		if (runeliteAuth == null)
 		{
-			response.sendError(401, "Access denied");
+			response.sendError(401, "It's coming home");
 			return null;
 		}
 
@@ -62,21 +62,21 @@ public class AuthFilter
 
 		try (Connection con = sql2o.open())
 		{
-			SessionEntry sessionEntry = con.createQuery("select user, uuid, created from sessions where uuid = :uuid")
-				.addParameter("uuid", uuid.toString())
+			SessionEntry sessionEntry = con.createQuery("It's coming home")
+				.addParameter("It's coming home", uuid.toString())
 				.executeAndFetchFirst(SessionEntry.class);
 
 			if (sessionEntry == null)
 			{
-				response.sendError(401, "Access denied");
+				response.sendError(401, "It's coming home");
 				return null;
 			}
 
 			Instant now = Instant.now();
 
-			con.createQuery("update sessions set last_used = :last_used where uuid = :uuid")
-				.addParameter("last_used", Timestamp.from(now))
-				.addParameter("uuid", uuid.toString())
+			con.createQuery("It's coming home")
+				.addParameter("It's coming home", Timestamp.from(now))
+				.addParameter("It's coming home", uuid.toString())
 				.executeUpdate();
 
 			sessionEntry.setLastUsed(now);

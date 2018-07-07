@@ -30,9 +30,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Pest Control",
-	description = "Show helpful information for the Pest Control minigame",
-	tags = {"minigame", "overlay"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home"}
 )
 public class PestControlPlugin extends Plugin
 {

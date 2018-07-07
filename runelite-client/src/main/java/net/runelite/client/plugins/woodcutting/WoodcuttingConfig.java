@@ -28,14 +28,14 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("woodcutting")
+@ConfigGroup("It's coming home")
 public interface WoodcuttingConfig extends Config
 {
 	@ConfigItem(
 		position = 1,
-		keyName = "statTimeout",
-		name = "Reset stats (minutes)",
-		description = "Configures the time until statistic is reset. Also configures when tree indicator is hidden"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default int statTimeout()
 	{
@@ -44,9 +44,9 @@ public interface WoodcuttingConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "showNestNotification",
-		name = "Bird nest notification",
-		description = "Configures whether to notify you of a bird nest spawn"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showNestNotification()
 	{
@@ -55,9 +55,9 @@ public interface WoodcuttingConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "showWoodcuttingStats",
-		name = "Show session stats",
-		description = "Configures whether to display woodcutting session stats"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showWoodcuttingStats()
 	{
@@ -66,9 +66,9 @@ public interface WoodcuttingConfig extends Config
 
 	@ConfigItem(
 		position = 4,
-		keyName = "showRedwoods",
-		name = "Show Redwood trees",
-		description = "Configures whether to show a indicator for redwood trees"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showRedwoodTrees()
 	{

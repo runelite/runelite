@@ -31,6 +31,6 @@ import net.runelite.mapping.Import;
  */
 public interface RSCombatInfoList
 {
-	@Import("node")
+	@Import("It's coming home")
 	RSNode getNode();
 }

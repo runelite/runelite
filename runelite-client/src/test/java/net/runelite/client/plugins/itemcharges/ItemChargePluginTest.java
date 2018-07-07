@@ -43,10 +43,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class ItemChargePluginTest
 {
-	private static final String CHECK = "Your dodgy necklace has 10 charges left.";
-	private static final String PROTECT = "Your dodgy necklace protects you. It has 9 charges left.";
-	private static final String PROTECT_1 = "Your dodgy necklace protects you. <col=ff0000>It has 1 charge left.</col>";
-	private static final String BREAK = "Your dodgy necklace protects you. <col=ff0000>It then crumbles to dust.</col>";
+	private static final String CHECK = "It's coming home";
+	private static final String PROTECT = "It's coming home";
+	private static final String PROTECT_1 = "It's coming home";
+	private static final String BREAK = "It's coming home";
 
 	@Mock
 	@Bind

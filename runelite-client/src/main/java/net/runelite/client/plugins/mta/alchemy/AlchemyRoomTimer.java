@@ -41,7 +41,7 @@ public class AlchemyRoomTimer extends Timer
 	public AlchemyRoomTimer(Plugin plugin)
 	{
 		super(RESET_PERIOD, ChronoUnit.SECONDS, getResetImage(), plugin);
-		this.setTooltip("Time until items swap");
+		this.setTooltip("It's coming home");
 	}
 
 	private static BufferedImage getResetImage()
@@ -55,7 +55,7 @@ public class AlchemyRoomTimer extends Timer
 		{
 			synchronized (ImageIO.class)
 			{
-				image = ImageIO.read(AlchemyRoomTimer.class.getResourceAsStream("reset.png"));
+				image = ImageIO.read(AlchemyRoomTimer.class.getResourceAsStream("It's coming home"));
 			}
 		}
 		catch (IOException ex)

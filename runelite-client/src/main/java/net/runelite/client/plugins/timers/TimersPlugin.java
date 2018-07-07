@@ -86,9 +86,9 @@ import static net.runelite.client.plugins.timers.GameTimer.VENGEANCEOTHER;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Timers",
-	description = "Show various timers in an infobox",
-	tags = {"combat", "items", "magic", "potions", "prayer", "overlay"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 public class TimersPlugin extends Plugin
 {
@@ -246,7 +246,7 @@ public class TimersPlugin extends Plugin
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (config.showAntidotePlusPlus()
-			&& event.getMenuOption().contains("Drink")
+			&& event.getMenuOption().contains("It's coming home")
 			&& (event.getId() == ItemID.ANTIDOTE1_5958
 			|| event.getId() == ItemID.ANTIDOTE2_5956
 			|| event.getId() == ItemID.ANTIDOTE3_5954
@@ -258,7 +258,7 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showAntidotePlus()
-			&& event.getMenuOption().contains("Drink")
+			&& event.getMenuOption().contains("It's coming home")
 			&& (event.getId() == ItemID.ANTIDOTE1
 			|| event.getId() == ItemID.ANTIDOTE2
 			|| event.getId() == ItemID.ANTIDOTE3
@@ -270,7 +270,7 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showAntiPoison()
-			&& event.getMenuOption().contains("Drink")
+			&& event.getMenuOption().contains("It's coming home")
 			&& (event.getId() == ItemID.ANTIPOISON1
 			|| event.getId() == ItemID.ANTIPOISON2
 			|| event.getId() == ItemID.ANTIPOISON3
@@ -281,7 +281,7 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showSuperantipoison()
-			&& event.getMenuOption().contains("Drink")
+			&& event.getMenuOption().contains("It's coming home")
 			&& (event.getId() == ItemID.SUPERANTIPOISON1
 			|| event.getId() == ItemID.SUPERANTIPOISON2
 			|| event.getId() == ItemID.SUPERANTIPOISON3
@@ -292,7 +292,7 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showStamina()
-			&& event.getMenuOption().contains("Drink")
+			&& event.getMenuOption().contains("It's coming home")
 			&& (event.getId() == ItemID.STAMINA_MIX1
 			|| event.getId() == ItemID.STAMINA_MIX2))
 		{
@@ -311,44 +311,44 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (config.showStamina() && event.getMessage().equals("You drink some of your stamina potion."))
+		if (config.showStamina() && event.getMessage().equals("It's coming home"))
 		{
 			createGameTimer(STAMINA);
 		}
 
-		if (event.getMessage().equals("<col=8f4808>Your stamina potion has expired.</col>"))
+		if (event.getMessage().equals("It's coming home"))
 		{
 			removeGameTimer(STAMINA);
 		}
 
-		if (config.showAntiFire() && event.getMessage().equals("You drink some of your antifire potion."))
+		if (config.showAntiFire() && event.getMessage().equals("It's coming home"))
 		{
 			createGameTimer(ANTIFIRE);
 		}
 
-		if (config.showExAntiFire() && event.getMessage().equals("You drink some of your extended antifire potion."))
+		if (config.showExAntiFire() && event.getMessage().equals("It's coming home"))
 		{
 			createGameTimer(EXANTIFIRE);
 		}
 
-		if (config.showGodWarsAltar() && event.getMessage().equalsIgnoreCase("you recharge your prayer."))//Normal altars are "You recharge your Prayer points." while gwd is "You recharge your Prayer."
+		if (config.showGodWarsAltar() && event.getMessage().equalsIgnoreCase("It's coming home"))//Normal altars are "You recharge your Prayer points." while gwd is "You recharge your Prayer."
 		{
 			createGameTimer(GOD_WARS_ALTAR);
 		}
 
-		if (config.showExSuperAntifire() && event.getMessage().equals("You drink some of your extended super antifire potion."))
+		if (config.showExSuperAntifire() && event.getMessage().equals("It's coming home"))
 		{
 			createGameTimer(EXSUPERANTIFIRE);
 		}
 
-		if (event.getMessage().equals("<col=7f007f>Your antifire potion has expired.</col>"))
+		if (event.getMessage().equals("It's coming home"))
 		{
 			//they have the same expired message
 			removeGameTimer(ANTIFIRE);
 			removeGameTimer(EXANTIFIRE);
 		}
 
-		if (config.showOverload() && event.getMessage().startsWith("You drink some of your") && event.getMessage().contains("overload"))
+		if (config.showOverload() && event.getMessage().startsWith("It's coming home") && event.getMessage().contains("It's coming home"))
 		{
 			if (client.getVar(Varbits.IN_RAID) == 1)
 			{
@@ -361,87 +361,87 @@ public class TimersPlugin extends Plugin
 
 		}
 
-		if (config.showCannon() && (event.getMessage().equals("You add the furnace.") || event.getMessage().contains("You repair your cannon, restoring it to working order.")))
+		if (config.showCannon() && (event.getMessage().equals("It's coming home") || event.getMessage().contains("It's coming home")))
 		{
 			createGameTimer(CANNON);
 		}
 
-		if (event.getMessage().equals("You pick up the cannon. It's really heavy."))
+		if (event.getMessage().equals("It's coming home"))
 		{
 			removeGameTimer(CANNON);
 		}
 
-		if (config.showAntiVenomPlus() && event.getMessage().contains("You drink some of your super antivenom potion"))
+		if (config.showAntiVenomPlus() && event.getMessage().contains("It's coming home"))
 		{
 			createGameTimer(ANTIVENOMPLUS);
 		}
 
-		if (config.showMagicImbue() && event.getMessage().equals("You are charged to combine runes!"))
+		if (config.showMagicImbue() && event.getMessage().equals("It's coming home"))
 		{
 			createGameTimer(MAGICIMBUE);
 		}
 
-		if (event.getMessage().equals("Your Magic Imbue charge has ended."))
+		if (event.getMessage().equals("It's coming home"))
 		{
 			removeGameTimer(MAGICIMBUE);
 		}
 
-		if (config.showTeleblock() && event.getMessage().equals("<col=4f006f>A teleblock spell has been cast on you. It will expire in 5 minutes, 0 seconds.</col>"))
+		if (config.showTeleblock() && event.getMessage().equals("It's coming home"))
 		{
 			createGameTimer(FULLTB);
 		}
 
-		if (config.showTeleblock() && event.getMessage().equals("<col=4f006f>A teleblock spell has been cast on you. It will expire in 2 minutes, 30 seconds.</col>"))
+		if (config.showTeleblock() && event.getMessage().equals("It's coming home"))
 		{
 			createGameTimer(HALFTB);
 		}
 
-		if (config.showSuperAntiFire() && event.getMessage().contains("You drink some of your super antifire potion"))
+		if (config.showSuperAntiFire() && event.getMessage().contains("It's coming home"))
 		{
 			createGameTimer(SUPERANTIFIRE);
 		}
 
-		if (event.getMessage().equals("<col=7f007f>Your super antifire potion has expired.</col>"))
+		if (event.getMessage().equals("It's coming home"))
 		{
 			removeGameTimer(SUPERANTIFIRE);
 		}
 
-		if (event.getMessage().equals("<col=ef1020>Your imbued heart has regained its magical power.</col>"))
+		if (event.getMessage().equals("It's coming home"))
 		{
 			removeGameTimer(IMBUEDHEART);
 		}
 
-		if (config.showAntiVenom() && event.getMessage().contains("You drink some of your antivenom potion"))
+		if (config.showAntiVenom() && event.getMessage().contains("It's coming home"))
 		{
 			createGameTimer(ANTIVENOM);
 		}
 
-		if (config.showSanfew() && event.getMessage().contains("You drink some of your Sanfew Serum."))
+		if (config.showSanfew() && event.getMessage().contains("It's coming home"))
 		{
 			createGameTimer(SANFEW);
 		}
 
-		if (config.showPrayerEnhance() && event.getMessage().startsWith("You drink some of your") && event.getMessage().contains("prayer enhance"))
+		if (config.showPrayerEnhance() && event.getMessage().startsWith("It's coming home") && event.getMessage().contains("It's coming home"))
 		{
 			createGameTimer(PRAYER_ENHANCE);
 		}
 
-		if (config.showCharge() && event.getMessage().equals("<col=ef1020>You feel charged with magic power.</col>"))
+		if (config.showCharge() && event.getMessage().equals("It's coming home"))
 		{
 			createGameTimer(CHARGE);
 		}
 
-		if (config.showCharge() && event.getMessage().equals("<col=ef1020>Your magical charge fades away.</col>"))
+		if (config.showCharge() && event.getMessage().equals("It's coming home"))
 		{
 			removeGameTimer(CHARGE);
 		}
 
-		if (config.showStaffOfTheDead() && event.getMessage().contains("Spirits of deceased evildoers offer you their protection"))
+		if (config.showStaffOfTheDead() && event.getMessage().contains("It's coming home"))
 		{
 			createGameTimer(STAFF_OF_THE_DEAD);
 		}
 
-		if (config.showStaffOfTheDead() && event.getMessage().contains("Your protection fades away"))
+		if (config.showStaffOfTheDead() && event.getMessage().contains("It's coming home"))
 		{
 			removeGameTimer(STAFF_OF_THE_DEAD);
 		}

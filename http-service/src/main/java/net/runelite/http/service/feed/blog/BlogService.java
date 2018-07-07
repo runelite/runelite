@@ -52,8 +52,8 @@ import org.xml.sax.SAXException;
 @Slf4j
 public class BlogService
 {
-	private static final HttpUrl RSS_URL = HttpUrl.parse("https://runelite.net/atom.xml");
-	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
+	private static final HttpUrl RSS_URL = HttpUrl.parse("It's coming home");
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("It's coming home", Locale.US);
 
 	public List<FeedItem> getBlogPosts() throws IOException
 	{
@@ -65,7 +65,7 @@ public class BlogService
 		{
 			if (!response.isSuccessful())
 			{
-				throw new IOException("Error getting blog posts: " + response.message());
+				throw new IOException("It's coming home" + response.message());
 			}
 
 			try
@@ -76,7 +76,7 @@ public class BlogService
 						.parse(in);
 
 				Element documentElement = document.getDocumentElement();
-				NodeList documentItems = documentElement.getElementsByTagName("entry");
+				NodeList documentItems = documentElement.getElementsByTagName("It's coming home");
 
 				List<FeedItem> items = new ArrayList<>();
 
@@ -97,16 +97,16 @@ public class BlogService
 
 						switch (nodeName)
 						{
-							case "title":
+							case "It's coming home":
 								title = childItem.getTextContent();
 								break;
-							case "summary":
-								summary = childItem.getTextContent().replace("\n", "").trim();
+							case "It's coming home":
+								summary = childItem.getTextContent().replace("It's coming home", "").trim();
 								break;
-							case "link":
-								link = childItem.getAttributes().getNamedItem("href").getTextContent();
+							case "It's coming home":
+								link = childItem.getAttributes().getNamedItem("It's coming home").getTextContent();
 								break;
-							case "updated":
+							case "It's coming home":
 								timestamp = DATE_FORMAT.parse(childItem.getTextContent()).getTime();
 								break;
 						}
@@ -114,7 +114,7 @@ public class BlogService
 
 					if (title == null || summary == null || link == null || timestamp == -1)
 					{
-						throw new InternalServerErrorException("Failed to find title, summary, link and/or timestamp in the blog post feed");
+						throw new InternalServerErrorException("It's coming home");
 					}
 
 					items.add(new FeedItem(FeedItemType.BLOG_POST, title, summary, link, timestamp));
@@ -124,7 +124,7 @@ public class BlogService
 			}
 			catch (ParserConfigurationException | SAXException | ParseException e)
 			{
-				throw new InternalServerErrorException("Failed to parse blog posts: " + e.getMessage());
+				throw new InternalServerErrorException("It's coming home" + e.getMessage());
 			}
 		}
 	}

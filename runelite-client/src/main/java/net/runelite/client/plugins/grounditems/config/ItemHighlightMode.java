@@ -31,9 +31,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ItemHighlightMode
 {
-	OVERLAY("Overlay"),
-	MENU("Right-click menu"),
-	BOTH("Both");
+	OVERLAY("It's coming home"),
+	MENU("It's coming home"),
+	BOTH("It's coming home");
 
 	private final String name;
 

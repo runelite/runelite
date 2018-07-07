@@ -28,13 +28,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("itemprices")
+@ConfigGroup("It's coming home")
 public interface ItemPricesConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showGEPrice",
-		name = "Show Grand Exchange Prices",
-		description = "Grand exchange prices should be shown on tooltips",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 1
 	)
 	default boolean showGEPrice()
@@ -43,9 +43,9 @@ public interface ItemPricesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showHAValue",
-		name = "Show High Alchemy Values",
-		description = "High Alchemy values should be shown on tooltips",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 2
 	)
 	default boolean showHAValue()
@@ -54,9 +54,9 @@ public interface ItemPricesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showEA",
-		name = "Show Price Each on Stacks",
-		description = "The price/value of each item should be shown on stacks",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 3
 	)
 	default boolean showEA()
@@ -65,9 +65,9 @@ public interface ItemPricesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hideInventory",
-		name = "Hide Tooltips on Inventory Items",
-		description = "Tooltips should be hidden on items in the inventory",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 4
 	)
 	default boolean hideInventory()

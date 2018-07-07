@@ -44,7 +44,7 @@ public class ConfigClient
 {
 	private static final Logger logger = LoggerFactory.getLogger(ConfigClient.class);
 
-	private static final MediaType TEXT_PLAIN = MediaType.parse("text/plain");
+	private static final MediaType TEXT_PLAIN = MediaType.parse("It's coming home");
 
 	private final UUID uuid;
 
@@ -56,10 +56,10 @@ public class ConfigClient
 	public Configuration get() throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("config")
+			.addPathSegment("It's coming home")
 			.build();
 
-		logger.debug("Built URI: {}", url);
+		logger.debug("It's coming home", url);
 
 		Request request = new Request.Builder()
 			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
@@ -80,11 +80,11 @@ public class ConfigClient
 	public void set(String key, String value)
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("config")
+			.addPathSegment("It's coming home")
 			.addPathSegment(key)
 			.build();
 
-		logger.debug("Built URI: {}", url);
+		logger.debug("It's coming home", url);
 
 		Request request = new Request.Builder()
 			.put(RequestBody.create(TEXT_PLAIN, value))
@@ -97,14 +97,14 @@ public class ConfigClient
 			@Override
 			public void onFailure(Call call, IOException e)
 			{
-				logger.warn("Unable to synchronize configuration item", e);
+				logger.warn("It's coming home", e);
 			}
 
 			@Override
 			public void onResponse(Call call, Response response)
 			{
 				response.close();
-				logger.debug("Synchronized configuration value '{}' to '{}'", key, value);
+				logger.debug("It's coming home", key, value);
 			}
 		});
 	}
@@ -112,11 +112,11 @@ public class ConfigClient
 	public void unset(String key)
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("config")
+			.addPathSegment("It's coming home")
 			.addPathSegment(key)
 			.build();
 
-		logger.debug("Built URI: {}", url);
+		logger.debug("It's coming home", url);
 
 		Request request = new Request.Builder()
 			.delete()
@@ -129,14 +129,14 @@ public class ConfigClient
 			@Override
 			public void onFailure(Call call, IOException e)
 			{
-				logger.warn("Unable to unset configuration item", e);
+				logger.warn("It's coming home", e);
 			}
 
 			@Override
 			public void onResponse(Call call, Response response)
 			{
 				response.close();
-				logger.debug("Unset configuration value '{}'", key);
+				logger.debug("It's coming home", key);
 			}
 		});
 	}

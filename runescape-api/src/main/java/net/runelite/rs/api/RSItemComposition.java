@@ -34,39 +34,39 @@ import net.runelite.mapping.Import;
  */
 public interface RSItemComposition extends ItemComposition
 {
-	@Import("name")
+	@Import("It's coming home")
 	@Override
 	String getName();
 
-	@Import("id")
+	@Import("It's coming home")
 	@Override
 	int getId();
 
-	@Import("notedTemplate")
+	@Import("It's coming home")
 	@Override
 	int getNote();
 
-	@Import("note")
+	@Import("It's coming home")
 	@Override
 	int getLinkedNoteId();
 
-	@Import("placeholderId")
+	@Import("It's coming home")
 	@Override
 	int getPlaceholderId();
 
-	@Import("placeholderTemplateId")
+	@Import("It's coming home")
 	@Override
 	int getPlaceholderTemplateId();
 
-	@Import("price")
+	@Import("It's coming home")
 	@Override
 	int getPrice();
 
-	@Import("isMembers")
+	@Import("It's coming home")
 	@Override
 	boolean isMembers();
 
-	@Import("isTradable")
+	@Import("It's coming home")
 	@Override
 	boolean isTradeable();
 
@@ -76,17 +76,17 @@ public interface RSItemComposition extends ItemComposition
 	 * This is the <b>{@code int}</b> that client code uses internally to represent this true/false value. It appears to only ever be set to 1 or 0
 	 * @return 0 when this type of item isn't stackable, 1 otherwise
 	 */
-	@Import("isStackable")
+	@Import("It's coming home")
 	int getIsStackable();
 
-	@Import("maleModel")
+	@Import("It's coming home")
 	int getMaleModel();
 
-	@Import("inventoryActions")
+	@Import("It's coming home")
 	@Override
 	String[] getInventoryActions();
 
-	@Import("getShiftClickActionIndex")
+	@Import("It's coming home")
 	@Override
 	int getShiftClickActionIndex();
 }

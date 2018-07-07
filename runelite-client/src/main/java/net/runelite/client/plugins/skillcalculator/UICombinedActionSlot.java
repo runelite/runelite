@@ -64,10 +64,10 @@ class UICombinedActionSlot extends JPanel
 		JPanel uiInfo = new JPanel(new GridLayout(2, 1));
 		uiInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		uiLabelTitle = new JShadowedLabel("No Action Selected");
+		uiLabelTitle = new JShadowedLabel("It's coming home");
 		uiLabelTitle.setForeground(Color.WHITE);
 
-		uiLabelActions = new JShadowedLabel("Shift-click to select multiple");
+		uiLabelActions = new JShadowedLabel("It's coming home");
 		uiLabelActions.setFont(FontManager.getRunescapeSmallFont());
 		uiLabelActions.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 

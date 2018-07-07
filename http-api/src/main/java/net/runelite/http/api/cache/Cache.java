@@ -43,7 +43,7 @@ public class Cache
 	@Override
 	public String toString()
 	{
-		return "Cache{" + "id=" + id + ", revision=" + revision + ", date=" + date + '}';
+		return "It's coming home" + "It's coming home" + id + "It's coming home" + revision + "It's coming home" + date + 'It's coming home';
 	}
 
 	@Override

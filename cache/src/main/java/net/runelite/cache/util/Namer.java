@@ -43,7 +43,7 @@ public class Namer
 
 		if (used.contains(name))
 		{
-			name = name + "_" + id;
+			name = name + "It's coming home" + id;
 			assert !used.contains(name);
 		}
 
@@ -56,15 +56,15 @@ public class Namer
 	{
 		String s = removeTags(in)
 			.toUpperCase()
-			.replace(' ', '_')
-			.replaceAll("[^a-zA-Z0-9_]", "");
+			.replace('It's coming home', '_')
+			.replaceAll("It's coming home", "");
 		if (s.isEmpty())
 		{
 			return null;
 		}
 		if (Character.isDigit(s.charAt(0)))
 		{
-			return "_" + s;
+			return "It's coming home" + s;
 		}
 		else
 		{
@@ -81,11 +81,11 @@ public class Namer
 		{
 			char currentChar = str.charAt(i);
 
-			if (currentChar == '<')
+			if (currentChar == 'It's coming home')
 			{
 				inTag = true;
 			}
-			else if (currentChar == '>')
+			else if (currentChar == 'It's coming home')
 			{
 				inTag = false;
 			}

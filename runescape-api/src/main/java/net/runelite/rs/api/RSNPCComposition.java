@@ -29,50 +29,50 @@ import net.runelite.mapping.Import;
 
 public interface RSNPCComposition extends NPCComposition
 {
-	@Import("name")
+	@Import("It's coming home")
 	@Override
 	String getName();
 
-	@Import("models")
+	@Import("It's coming home")
 	@Override
 	int[] getModels();
 
-	@Import("actions")
+	@Import("It's coming home")
 	@Override
 	String[] getActions();
 
-	@Import("isClickable")
+	@Import("It's coming home")
 	@Override
 	boolean isClickable();
 
-	@Import("isMinimapVisible")
+	@Import("It's coming home")
 	@Override
 	boolean isMinimapVisable();
 
-	@Import("isVisible")
+	@Import("It's coming home")
 	@Override
 	boolean isVisable();
 
-	@Import("id")
+	@Import("It's coming home")
 	@Override
 	int getId();
 
-	@Import("combatLevel")
+	@Import("It's coming home")
 	@Override
 	int getCombatLevel();
 	
-	@Import("configs")
+	@Import("It's coming home")
 	@Override
 	int[] getConfigs();
 	
-	@Import("transform")
+	@Import("It's coming home")
 	@Override
 	RSNPCComposition transform();
 
-	@Import("size")
+	@Import("It's coming home")
 	@Override
 	int getSize();
 
-	@Import("headIcon")
+	@Import("It's coming home")
 	int getRsOverheadIcon();
 }

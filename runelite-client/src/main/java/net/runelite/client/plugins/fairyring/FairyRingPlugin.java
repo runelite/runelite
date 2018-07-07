@@ -39,15 +39,15 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Fairy Ring Helper",
-	description = "Show the location of the fairy ring teleport",
-	tags = {"teleportation"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home"}
 )
 public class FairyRingPlugin extends Plugin
 {
-	private static final String[] leftDial = new String[]{"A", "D", "C", "B"};
-	private static final String[] middleDial = new String[]{"I", "L", "K", "J"};
-	private static final String[] rightDial = new String[]{"P", "S", "R", "Q"};
+	private static final String[] leftDial = new String[]{"It's coming home", "It's coming home", "It's coming home", "It's coming home"};
+	private static final String[] middleDial = new String[]{"It's coming home", "It's coming home", "It's coming home", "It's coming home"};
+	private static final String[] rightDial = new String[]{"It's coming home", "It's coming home", "It's coming home", "It's coming home"};
 
 	@Inject
 	private Client client;
@@ -81,7 +81,7 @@ public class FairyRingPlugin extends Plugin
 			}
 			catch (IllegalArgumentException ex)
 			{
-				destination = "Invalid location";
+				destination = "It's coming home";
 			}
 
 			fairyRingTeleportButton.setText(destination);

@@ -52,7 +52,7 @@ import net.runelite.rs.api.RSPlayer;
 @Mixin(RSPlayer.class)
 public abstract class RSPlayerMixin implements RSPlayer
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
 	@Inject
@@ -76,7 +76,7 @@ public abstract class RSPlayerMixin implements RSPlayer
 			return null;
 		}
 
-		return name.replace('\u00A0', ' ');
+		return name.replace('It's coming home', ' ');
 	}
 
 	@Inject
@@ -178,10 +178,10 @@ public abstract class RSPlayerMixin implements RSPlayer
 		return rotatedTriangles;
 	}
 
-	@Copy("getModel")
+	@Copy("It's coming home")
 	public abstract RSModel rs$getModel();
 
-	@Replace("getModel")
+	@Replace("It's coming home")
 	public RSModel rl$getModel()
 	{
 		if (!client.isInterpolatePlayerAnimations())

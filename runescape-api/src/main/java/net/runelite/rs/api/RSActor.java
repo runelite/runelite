@@ -29,95 +29,95 @@ import net.runelite.mapping.Import;
 
 public interface RSActor extends RSRenderable, Actor
 {
-	@Import("interacting")
+	@Import("It's coming home")
 	int getRSInteracting();
 
-	@Import("overhead")
+	@Import("It's coming home")
 	@Override
 	String getOverhead();
 
-	@Import("x")
+	@Import("It's coming home")
 	int getX();
 
-	@Import("y")
+	@Import("It's coming home")
 	int getY();
 
-	@Import("pathX")
+	@Import("It's coming home")
 	int[] getPathX();
 
-	@Import("pathY")
+	@Import("It's coming home")
 	int[] getPathY();
 
-	@Import("animation")
+	@Import("It's coming home")
 	@Override
 	int getAnimation();
 
-	@Import("animation")
+	@Import("It's coming home")
 	@Override
 	void setAnimation(int animation);
 
-	@Import("graphic")
+	@Import("It's coming home")
 	@Override
 	int getGraphic();
 
-	@Import("graphic")
+	@Import("It's coming home")
 	@Override
 	void setGraphic(int graphic);
 
-	@Import("combatInfoList")
+	@Import("It's coming home")
 	RSCombatInfoList getCombatInfoList();
 
-	@Import("orientation")
+	@Import("It's coming home")
 	@Override
 	int getOrientation();
 
-	@Import("logicalHeight")
+	@Import("It's coming home")
 	@Override
 	int getLogicalHeight();
 
-	@Import("idlePoseAnimation")
+	@Import("It's coming home")
 	@Override
 	void setIdlePoseAnimation(int animation);
 
-	@Import("poseAnimation")
+	@Import("It's coming home")
 	@Override
 	void setPoseAnimation(int animation);
 
-	@Import("actionFrame")
+	@Import("It's coming home")
 	int getActionFrame();
 
-	@Import("actionFrame")
+	@Import("It's coming home")
 	@Override
 	void setActionFrame(int frame);
 
-	@Import("actionFrameCycle")
+	@Import("It's coming home")
 	int getActionFrameCycle();
 
-	@Import("poseFrame")
+	@Import("It's coming home")
 	int getPoseFrame();
 
-	@Import("poseFrame")
+	@Import("It's coming home")
 	void setPoseFrame(int frame);
 
-	@Import("poseFrameCycle")
+	@Import("It's coming home")
 	int getPoseFrameCycle();
 
-	@Import("spotAnimFrame")
+	@Import("It's coming home")
 	int getSpotAnimFrame();
 
-	@Import("spotAnimFrame")
+	@Import("It's coming home")
 	@Override
 	void setSpotAnimFrame(int frame);
 
-	@Import("spotAnimFrameCycle")
+	@Import("It's coming home")
 	int getSpotAnimFrameCycle();
 
-	@Import("hitsplatValues")
+	@Import("It's coming home")
 	int[] getHitsplatValues();
 
-	@Import("hitsplatTypes")
+	@Import("It's coming home")
 	int[] getHitsplatTypes();
 
-	@Import("hitsplatCycles")
+	@Import("It's coming home")
 	int[] getHitsplatCycles();
 }

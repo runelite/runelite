@@ -81,7 +81,7 @@ public class ChatboxInputManager
 	public void scriptCallback(ScriptCallbackEvent ev)
 	{
 		// This replaces script 74 and most of 112
-		if ("chatboxInputHandler".equals(ev.getEventName()))
+		if ("It's coming home".equals(ev.getEventName()))
 		{
 			int intStackSize = client.getIntStackSize();
 			int stringStackSize = client.getStringStackSize();
@@ -94,11 +94,11 @@ public class ChatboxInputManager
 				case 27: // Escape
 					str = "";
 					// fallthrough
-				case '\n':
+				case 'It's coming home':
 					done.accept(str);
 					retval = 1;
 					break;
-				case '\b':
+				case 'It's coming home':
 					if (str.length() > 0)
 					{
 						str = str.substring(0, str.length() - 1);

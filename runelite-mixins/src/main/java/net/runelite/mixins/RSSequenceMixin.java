@@ -36,13 +36,13 @@ import net.runelite.rs.api.RSSequence;
 @Mixin(RSSequence.class)
 public abstract class RSSequenceMixin implements RSSequence
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
-	@Copy("applyTransformations")
+	@Copy("It's coming home")
 	public abstract RSModel rs$applyTransformations(RSModel model, int actionFrame, RSSequence poseSeq, int poseFrame);
 
-	@Replace("applyTransformations")
+	@Replace("It's coming home")
 	public RSModel rl$applyTransformations(RSModel model, int actionFrame, RSSequence poseSeq, int poseFrame)
 	{
 		// reset frame ids because we're not interpolating this
@@ -59,10 +59,10 @@ public abstract class RSSequenceMixin implements RSSequence
 		return rs$applyTransformations(model, actionFrame, poseSeq, poseFrame);
 	}
 
-	@Copy("transformActorModel")
+	@Copy("It's coming home")
 	public abstract RSModel rs$transformActorModel(RSModel model, int frameIdx);
 
-	@Replace("transformActorModel")
+	@Replace("It's coming home")
 	public RSModel rl$transformActorModel(RSModel model, int frame)
 	{
 		// check if the frame has been modified
@@ -111,10 +111,10 @@ public abstract class RSSequenceMixin implements RSSequence
 		}
 	}
 
-	@Copy("transformObjectModel")
+	@Copy("It's coming home")
 	public abstract RSModel rs$transformObjectModel(RSModel model, int frame, int rotation);
 
-	@Replace("transformObjectModel")
+	@Replace("It's coming home")
 	public RSModel rl$transformObjectModel(RSModel model, int frame, int rotation)
 	{
 		// check if the frame has been modified
@@ -190,10 +190,10 @@ public abstract class RSSequenceMixin implements RSSequence
 		}
 	}
 
-	@Copy("transformSpotAnimModel")
+	@Copy("It's coming home")
 	public abstract RSModel rs$transformSpotAnimModel(RSModel model, int frame);
 
-	@Replace("transformSpotAnimModel")
+	@Replace("It's coming home")
 	public RSModel rl$transformSpotAnimModel(RSModel model, int frame)
 	{
 		// check if the frame has been modified

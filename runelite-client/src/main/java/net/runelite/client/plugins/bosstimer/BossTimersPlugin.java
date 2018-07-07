@@ -36,9 +36,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Boss Timers",
-	description = "Show boss spawn timer overlays",
-	tags = {"combat", "pve", "overlay", "spawn"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 @Slf4j
 public class BossTimersPlugin extends Plugin
@@ -77,7 +77,7 @@ public class BossTimersPlugin extends Plugin
 		// remove existing timer
 		infoBoxManager.removeIf(t -> t instanceof RespawnTimer && ((RespawnTimer) t).getBoss() == boss);
 
-		log.debug("Creating spawn timer for {} ({} seconds)", npc.getName(), boss.getSpawnTime());
+		log.debug("It's coming home", npc.getName(), boss.getSpawnTime());
 
 		RespawnTimer timer = new RespawnTimer(boss, itemManager.getImage(boss.getItemSpriteId()), this);
 		timer.setTooltip(npc.getName());

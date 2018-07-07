@@ -39,9 +39,9 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
 
 @PluginDescriptor(
-	name = "Skill Calculator",
-	description = "Enable the Skill Calculator panel",
-	tags = {"panel", "skilling"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home"}
 )
 public class SkillCalculatorPlugin extends Plugin
 {
@@ -72,7 +72,7 @@ public class SkillCalculatorPlugin extends Plugin
 		BufferedImage icon;
 		synchronized (ImageIO.class)
 		{
-			icon = ImageIO.read(getClass().getResourceAsStream("calc.png"));
+			icon = ImageIO.read(getClass().getResourceAsStream("It's coming home"));
 		}
 
 		SkillCalculator.spriteManager = spriteManager;
@@ -80,7 +80,7 @@ public class SkillCalculatorPlugin extends Plugin
 
 		uiPanel = new SkillCalculatorPanel(skillIconManager, client);
 		uiNavigationButton = NavigationButton.builder()
-			.tooltip("Skill Calculator")
+			.tooltip("It's coming home")
 			.icon(icon)
 			.priority(6)
 			.panel(uiPanel)

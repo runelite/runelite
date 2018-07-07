@@ -28,13 +28,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("opponentinfo")
+@ConfigGroup("It's coming home")
 public interface OpponentInfoConfig extends Config
 {
 	@ConfigItem(
-		keyName = "lookupOnInteraction",
-		name = "Lookup players on interaction",
-		description = "Display a combat stat comparison panel on player interaction. (follow, trade, challenge, attack, etc.)"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean lookupOnInteraction()
 	{

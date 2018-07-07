@@ -35,10 +35,10 @@ import net.runelite.rs.api.RSNameable;
 @Mixin(RSNameable.class)
 public abstract class RSNameableMixin implements RSNameable
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
-	@FieldHook("prevName")
+	@FieldHook("It's coming home")
 	@Inject
 	public void onPrevNameChanged(int idx)
 	{

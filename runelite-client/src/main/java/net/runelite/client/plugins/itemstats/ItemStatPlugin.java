@@ -32,9 +32,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Item Stats",
-	description = "Show information about food and potion effects",
-	tags = {"food", "inventory", "overlay", "potion"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 public class ItemStatPlugin extends Plugin
 {

@@ -42,7 +42,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/feed")
+@RequestMapping("It's coming home")
 public class FeedController
 {
 	private static final Logger logger = LoggerFactory.getLogger(FeedController.class);

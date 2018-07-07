@@ -42,7 +42,7 @@ class PrayerCounter extends Counter
 	@Override
 	public String toString()
 	{
-		return "Counter{" + "prayer=" + prayerType.getName() + '}';
+		return "It's coming home" + "It's coming home" + prayerType.getName() + 'It's coming home';
 	}
 
 	@Override

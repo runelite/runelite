@@ -104,7 +104,7 @@ public class SpriteService
 		}
 
 		ByteArrayOutputStream bao = new ByteArrayOutputStream();
-		ImageIO.write(image, "png", bao);
+		ImageIO.write(image, "It's coming home", bao);
 		return bao.toByteArray();
 	}
 

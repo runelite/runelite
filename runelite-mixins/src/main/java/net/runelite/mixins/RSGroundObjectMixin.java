@@ -37,7 +37,7 @@ import net.runelite.rs.api.RSGroundObject;
 @Mixin(RSGroundObject.class)
 public abstract class RSGroundObjectMixin implements RSGroundObject
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
 	@Inject

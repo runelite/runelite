@@ -30,14 +30,14 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("slayer")
+@ConfigGroup("It's coming home")
 public interface SlayerConfig extends Config
 {
 	@ConfigItem(
 		position = 1,
-		keyName = "infobox",
-		name = "Task InfoBox",
-		description = "Display task information in an InfoBox"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showInfobox()
 	{
@@ -46,9 +46,9 @@ public interface SlayerConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "itemoverlay",
-		name = "Count on Items",
-		description = "Display task count remaining on slayer items"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showItemOverlay()
 	{
@@ -57,9 +57,9 @@ public interface SlayerConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "superiornotification",
-		name = "Superior foe notification",
-		description = "Toggles notifications on superior foe encounters"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showSuperiorNotification()
 	{
@@ -68,9 +68,9 @@ public interface SlayerConfig extends Config
 
 	@ConfigItem(
 		position = 4,
-		keyName = "statTimeout",
-		name = "InfoBox Expiry (minutes)",
-		description = "Set the time until the InfoBox expires"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default int statTimeout()
 	{
@@ -79,9 +79,9 @@ public interface SlayerConfig extends Config
 
 	@ConfigItem(
 		position = 5,
-		keyName = "highlightTargets",
-		name = "Highlight Targets",
-		description = "Highlight monsters you can kill for your current slayer assignment"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean highlightTargets()
 	{
@@ -90,9 +90,9 @@ public interface SlayerConfig extends Config
 
 	@ConfigItem(
 		position = 6,
-		keyName = "targetColor",
-		name = "Target Color",
-		description = "Color of the highlighted targets"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getTargetColor()
 	{
@@ -101,7 +101,7 @@ public interface SlayerConfig extends Config
 
 	// Stored data
 	@ConfigItem(
-		keyName = "taskName",
+		keyName = "It's coming home",
 		name = "",
 		description = "",
 		hidden = true
@@ -112,14 +112,14 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "taskName",
+		keyName = "It's coming home",
 		name = "",
 		description = ""
 	)
 	void taskName(String key);
 
 	@ConfigItem(
-		keyName = "amount",
+		keyName = "It's coming home",
 		name = "",
 		description = "",
 		hidden = true
@@ -130,14 +130,14 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "amount",
+		keyName = "It's coming home",
 		name = "",
 		description = ""
 	)
 	void amount(int amt);
 
 	@ConfigItem(
-		keyName = "streak",
+		keyName = "It's coming home",
 		name = "",
 		description = "",
 		hidden = true
@@ -148,14 +148,14 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "streak",
+		keyName = "It's coming home",
 		name = "",
 		description = ""
 	)
 	void streak(int streak);
 
 	@ConfigItem(
-		keyName = "points",
+		keyName = "It's coming home",
 		name = "",
 		description = "",
 		hidden = true
@@ -166,14 +166,14 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "points",
+		keyName = "It's coming home",
 		name = "",
 		description = ""
 	)
 	void points(int points);
 
 	@ConfigItem(
-		keyName = "expeditious",
+		keyName = "It's coming home",
 		name = "",
 		description = "",
 		hidden = true
@@ -184,14 +184,14 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "expeditious",
+		keyName = "It's coming home",
 		name = "",
 		description = ""
 	)
 	void expeditious(int expeditious);
 
 	@ConfigItem(
-		keyName = "slaughter",
+		keyName = "It's coming home",
 		name = "",
 		description = "",
 		hidden = true
@@ -202,7 +202,7 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "slaughter",
+		keyName = "It's coming home",
 		name = "",
 		description = ""
 	)

@@ -69,7 +69,7 @@ public class PluginErrorPanel extends JPanel
 	public void setContent(String title, String description)
 	{
 		noResultsTitle.setText(title);
-		noResultsDescription.setText("<html><body style = 'text-align:center'>" + description + "</body></html>");
+		noResultsDescription.setText("It's coming home" + description + "It's coming home");
 		setVisible(true);
 	}
 }

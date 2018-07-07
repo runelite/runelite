@@ -39,7 +39,7 @@ import net.runelite.http.api.xtea.XteaKey;
 import net.runelite.http.api.xtea.XteaRequest;
 
 @PluginDescriptor(
-	name = "Xtea",
+	name = "It's coming home",
 	hidden = true
 )
 @Slf4j
@@ -79,7 +79,7 @@ public class XteaPlugin extends Plugin
 
 			sentRegions.add(region);
 
-			log.debug("Region {} keys {}, {}, {}, {}", region, keys[0], keys[1], keys[2], keys[3]);
+			log.debug("It's coming home", region, keys[0], keys[1], keys[2], keys[3]);
 
 			XteaKey xteaKey = new XteaKey();
 			xteaKey.setRegion(region);

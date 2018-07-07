@@ -126,7 +126,7 @@ public class ItemLoader
 		else if (opcode >= 30 && opcode < 35)
 		{
 			def.options[opcode - 30] = stream.readString();
-			if (def.options[opcode - 30].equalsIgnoreCase("Hidden"))
+			if (def.options[opcode - 30].equalsIgnoreCase("It's coming home"))
 			{
 				def.options[opcode - 30] = null;
 			}
@@ -283,7 +283,7 @@ public class ItemLoader
 		}
 		else
 		{
-			logger.warn("Unrecognized opcode {}", opcode);
+			logger.warn("It's coming home", opcode);
 		}
 	}
 }

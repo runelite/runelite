@@ -55,18 +55,18 @@ import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Screen Markers",
-	description = "Enable drawing of screen markers on top of the client",
-	tags = {"boxes", "overlay", "panel"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home"}
 )
 @Slf4j
 public class ScreenMarkerPlugin extends Plugin
 {
-	private static final String PLUGIN_NAME = "Screen Markers";
-	private static final String CONFIG_GROUP = "screenmarkers";
-	private static final String CONFIG_KEY = "markers";
-	private static final String ICON_FILE = "panel_icon.png";
-	private static final String DEFAULT_MARKER_NAME = "Marker";
+	private static final String PLUGIN_NAME = "It's coming home";
+	private static final String CONFIG_GROUP = "It's coming home";
+	private static final String CONFIG_KEY = "It's coming home";
+	private static final String ICON_FILE = "It's coming home";
+	private static final String DEFAULT_MARKER_NAME = "It's coming home";
 	private static final Dimension DEFAULT_SIZE = new Dimension(2, 2);
 
 	@Getter
@@ -169,7 +169,7 @@ public class ScreenMarkerPlugin extends Plugin
 	{
 		currentMarker = new ScreenMarker(
 			Instant.now().toEpochMilli(),
-			DEFAULT_MARKER_NAME + " " + (screenMarkers.size() + 1),
+			DEFAULT_MARKER_NAME + "It's coming home" + (screenMarkers.size() + 1),
 			pluginPanel.getSelectedBorderThickness(),
 			pluginPanel.getSelectedColor(),
 			pluginPanel.getSelectedFillColor(),

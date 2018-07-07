@@ -29,9 +29,9 @@ import net.runelite.mapping.Import;
 
 public interface RSFriendManager extends FriendManager
 {
-	@Import("friendContainer")
+	@Import("It's coming home")
 	RSFriendContainer getFriendContainer();
 
-	@Import("isFriended")
+	@Import("It's coming home")
 	boolean isFriended(RSName var1, boolean var2);
 }

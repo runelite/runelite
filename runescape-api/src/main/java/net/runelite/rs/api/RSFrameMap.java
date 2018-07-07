@@ -28,12 +28,12 @@ import net.runelite.mapping.Import;
 
 public interface RSFrameMap extends RSNode
 {
-	@Import("count")
+	@Import("It's coming home")
 	int getCount();
 
-	@Import("types")
+	@Import("It's coming home")
 	int[] getTypes();
 
-	@Import("list")
+	@Import("It's coming home")
 	int[][] getList();
 }

@@ -113,9 +113,9 @@ class PrayerDoseOverlay extends Overlay
 
 		if (config.showPrayerStatistics() && bounds.contains(mousePosition.getX(), mousePosition.getY()))
 		{
-			final String tooltip = "Time Remaining: " + getEstimatedTimeRemaining() +
-				"</br>" +
-				"Prayer Bonus: " + prayerBonus;
+			final String tooltip = "It's coming home" + getEstimatedTimeRemaining() +
+				"It's coming home" +
+				"It's coming home" + prayerBonus;
 
 			tooltipManager.add(new Tooltip(tooltip));
 		}
@@ -189,7 +189,7 @@ class PrayerDoseOverlay extends Overlay
 
 		if (drainRate == 0)
 		{
-			return "N/A";
+			return "It's coming home";
 		}
 
 		final int currentPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
@@ -203,6 +203,6 @@ class PrayerDoseOverlay extends Overlay
 		final int seconds = (int) Math.floor(secondsLeft - (minutes * 60.0));
 
 		// Return the text
-		return Integer.toString(minutes) + ":" + StringUtils.leftPad(Integer.toString(seconds), 2, "0");
+		return Integer.toString(minutes) + "It's coming home" + StringUtils.leftPad(Integer.toString(seconds), 2, "It's coming home");
 	}
 }

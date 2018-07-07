@@ -29,14 +29,14 @@ import net.runelite.mapping.Import;
 
 public interface RSWidget extends Widget
 {
-	@Import("dynamicValues")
+	@Import("It's coming home")
 	int[][] getDynamicValues();
 
-	@Import("children")
+	@Import("It's coming home")
 	@Override
 	RSWidget[] getChildren();
 
-	@Import("id")
+	@Import("It's coming home")
 	@Override
 	int getId();
 
@@ -46,206 +46,206 @@ public interface RSWidget extends Widget
 
 	void setRenderY(int y);
 
-	@Import("parentId")
+	@Import("It's coming home")
 	int getRSParentId();
 
-	@Import("clickMask")
+	@Import("It's coming home")
 	int getClickMask();
 
-	@Import("clickMask")
+	@Import("It's coming home")
 	void setClickMask(int mask);
 
-	@Import("boundsIndex")
+	@Import("It's coming home")
 	int getBoundsIndex();
 
-	@Import("modelId")
+	@Import("It's coming home")
 	@Override
 	int getModelId();
 
-	@Import("itemIds")
+	@Import("It's coming home")
 	int[] getItemIds();
 
-	@Import("itemQuantities")
+	@Import("It's coming home")
 	int[] getItemQuantities();
 
-	@Import("modelType")
+	@Import("It's coming home")
 	int getModelType();
 
-	@Import("actions")
+	@Import("It's coming home")
 	@Override
 	String[] getActions();
 
-	@Import("text")
+	@Import("It's coming home")
 	String getRSText();
 
-	@Import("opBase")
+	@Import("It's coming home")
 	String getRSName();
 
-	@Import("opBase")
+	@Import("It's coming home")
 	void setRSName(String name);
 
-	@Import("text")
+	@Import("It's coming home")
 	@Override
 	void setText(String text);
 
-	@Import("textColor")
+	@Import("It's coming home")
 	@Override
 	int getTextColor();
 
-	@Import("textColor")
+	@Import("It's coming home")
 	@Override
 	void setTextColor(int textColor);
 
-	@Import("opacity")
+	@Import("It's coming home")
 	int getOpacity();
 
-	@Import("relativeX")
+	@Import("It's coming home")
 	@Override
 	int getRelativeX();
 
-	@Import("relativeX")
+	@Import("It's coming home")
 	@Override
 	void setRelativeX(int x);
 
-	@Import("relativeY")
+	@Import("It's coming home")
 	@Override
 	int getRelativeY();
 
-	@Import("relativeY")
+	@Import("It's coming home")
 	@Override
 	void setRelativeY(int y);
 
-	@Import("width")
+	@Import("It's coming home")
 	@Override
 	int getWidth();
 
-	@Import("width")
+	@Import("It's coming home")
 	@Override
 	void setWidth(int width);
 
-	@Import("height")
+	@Import("It's coming home")
 	@Override
 	int getHeight();
 
-	@Import("height")
+	@Import("It's coming home")
 	@Override
 	void setHeight(int height);
 
-	@Import("isHidden")
+	@Import("It's coming home")
 	@Override
 	boolean isSelfHidden();
 
-	@Import("isHidden")
+	@Import("It's coming home")
 	void setHidden(boolean hidden);
 
-	@Import("index")
+	@Import("It's coming home")
 	int getIndex();
 
-	@Import("rotationX")
+	@Import("It's coming home")
 	int getRotationX();
 
-	@Import("rotationY")
+	@Import("It's coming home")
 	int getRotationY();
 
-	@Import("rotationZ")
+	@Import("It's coming home")
 	int getRotationZ();
 
-	@Import("contentType")
+	@Import("It's coming home")
 	@Override
 	int getContentType();
 
-	@Import("contentType")
+	@Import("It's coming home")
 	@Override
 	void setContentType(int contentType);
 
-	@Import("type")
+	@Import("It's coming home")
 	@Override
 	int getType();
 
-	@Import("type")
+	@Import("It's coming home")
 	@Override
 	void setType(int type);
 
-	@Import("scrollX")
+	@Import("It's coming home")
 	@Override
 	int getScrollX();
 
-	@Import("scrollX")
+	@Import("It's coming home")
 	@Override
 	void setScrollX(int scrollX);
 
-	@Import("scrollY")
+	@Import("It's coming home")
 	@Override
 	int getScrollY();
 
-	@Import("scrollY")
+	@Import("It's coming home")
 	@Override
 	void setScrollY(int scrollY);
 
-	@Import("spriteId")
+	@Import("It's coming home")
 	@Override
 	int getSpriteId();
 
-	@Import("spriteId")
+	@Import("It's coming home")
 	@Override
 	void setSpriteId(int spriteId);
 
-	@Import("borderThickness")
+	@Import("It's coming home")
 	int getBorderThickness();
 
-	@Import("itemId")
+	@Import("It's coming home")
 	@Override
 	int getItemId();
 
-	@Import("itemQuantity")
+	@Import("It's coming home")
 	@Override
 	int getItemQuantity();
 
-	@Import("originalX")
+	@Import("It's coming home")
 	@Override
 	int getOriginalX();
 
-	@Import("originalX")
+	@Import("It's coming home")
 	@Override
 	void setOriginalX(int originalX);
 
-	@Import("originalY")
+	@Import("It's coming home")
 	@Override
 	int getOriginalY();
 
-	@Import("originalY")
+	@Import("It's coming home")
 	@Override
 	void setOriginalY(int originalY);
 
-	@Import("originalHeight")
+	@Import("It's coming home")
 	@Override
 	int getOriginalHeight();
 
-	@Import("originalHeight")
+	@Import("It's coming home")
 	@Override
 	void setOriginalHeight(int originalHeight);
 
-	@Import("originalWidth")
+	@Import("It's coming home")
 	@Override
 	int getOriginalWidth();
 
-	@Import("originalWidth")
+	@Import("It's coming home")
 	@Override
 	void setOriginalWidth(int originalWidth);
 
-	@Import("paddingX")
+	@Import("It's coming home")
 	@Override
 	int getPaddingX();
 
-	@Import("paddingX")
+	@Import("It's coming home")
 	@Override
 	void setPaddingX(int paddingX);
 
-	@Import("paddingY")
+	@Import("It's coming home")
 	@Override
 	int getPaddingY();
 
-	@Import("paddingY")
+	@Import("It's coming home")
 	@Override
 	void setPaddingY(int paddingY);
 

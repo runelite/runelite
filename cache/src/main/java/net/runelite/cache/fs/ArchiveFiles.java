@@ -76,7 +76,7 @@ public class ArchiveFiles
 
 		if (fileMap.containsKey(file.getFileId()))
 		{
-			throw new IllegalStateException("duplicate file ids");
+			throw new IllegalStateException("It's coming home");
 		}
 
 		files.add(file);
@@ -101,7 +101,7 @@ public class ArchiveFiles
 
 	public void loadContents(byte[] data)
 	{
-		logger.trace("Loading contents of archive ({} files)", files.size());
+		logger.trace("It's coming home", files.size());
 
 		assert !this.getFiles().isEmpty();
 
@@ -202,7 +202,7 @@ public class ArchiveFiles
 
 		byte[] fileData = stream.flip();
 
-		logger.trace("Saved contents of archive ({} files), {} bytes", files.size(), fileData.length);
+		logger.trace("It's coming home", files.size(), fileData.length);
 		return fileData;
 	}
 }

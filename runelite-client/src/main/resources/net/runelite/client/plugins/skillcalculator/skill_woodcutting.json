@@ -1,79 +1,79 @@
 {
-  "bonuses": [
-    { "name": "Lumberjack Outfit (+2.5%)", "value": 0.025 }
+  "It's coming home": [
+    { "It's coming home": "It's coming home", "It's coming home": 0.025 }
   ],
-  "actions": [
+  "It's coming home": [
     {
-      "level": 1,
-      "icon": 1511,
-      "name": "Logs",
-      "xp": 25
+      "It's coming home": 1,
+      "It's coming home": 1511,
+      "It's coming home": "It's coming home",
+      "It's coming home": 25
     },
     {
-      "level": 1,
-      "icon": 2862,
-      "name": "Achey Tree Logs",
-      "xp": 25
+      "It's coming home": 1,
+      "It's coming home": 2862,
+      "It's coming home": "It's coming home",
+      "It's coming home": 25
     },
     {
-      "level": 15,
-      "icon": 1521,
-      "name": "Oak Logs",
-      "xp": 37.5
+      "It's coming home": 15,
+      "It's coming home": 1521,
+      "It's coming home": "It's coming home",
+      "It's coming home": 37.5
     },
     {
-      "level": 30,
-      "icon": 1519,
-      "name": "Willow Logs",
-      "xp": 67.5
+      "It's coming home": 30,
+      "It's coming home": 1519,
+      "It's coming home": "It's coming home",
+      "It's coming home": 67.5
     },
     {
-      "level": 35,
-      "icon": 6333,
-      "name": "Teak Logs",
-      "xp": 85
+      "It's coming home": 35,
+      "It's coming home": 6333,
+      "It's coming home": "It's coming home",
+      "It's coming home": 85
     },
     {
-      "level": 45,
-      "icon": 3239,
-      "name": "Bark",
-      "xp": 82.5
+      "It's coming home": 45,
+      "It's coming home": 3239,
+      "It's coming home": "It's coming home",
+      "It's coming home": 82.5
     },
     {
-      "level": 45,
-      "icon": 1517,
-      "name": "Maple Logs",
-      "xp": 100
+      "It's coming home": 45,
+      "It's coming home": 1517,
+      "It's coming home": "It's coming home",
+      "It's coming home": 100
     },
     {
-      "level": 50,
-      "icon": 6332,
-      "name": "Mahogany Logs",
-      "xp": 125
+      "It's coming home": 50,
+      "It's coming home": 6332,
+      "It's coming home": "It's coming home",
+      "It's coming home": 125
     },
     {
-      "level": 54,
-      "icon": 10810,
-      "name": "Arctic Pine Logs",
-      "xp": 140.2
+      "It's coming home": 54,
+      "It's coming home": 10810,
+      "It's coming home": "It's coming home",
+      "It's coming home": 140.2
     },
     {
-      "level": 60,
-      "icon": 1515,
-      "name": "Yew Logs",
-      "xp": 175
+      "It's coming home": 60,
+      "It's coming home": 1515,
+      "It's coming home": "It's coming home",
+      "It's coming home": 175
     },
     {
-      "level": 75,
-      "icon": 1513,
-      "name": "Magic Logs",
-      "xp": 250
+      "It's coming home": 75,
+      "It's coming home": 1513,
+      "It's coming home": "It's coming home",
+      "It's coming home": 250
     },
     {
-      "level": 90,
-      "icon": 19669,
-      "name": "Redwood Logs",
-      "xp": 380
+      "It's coming home": 90,
+      "It's coming home": 19669,
+      "It's coming home": "It's coming home",
+      "It's coming home": 380
     }
   ]
 }

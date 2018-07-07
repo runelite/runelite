@@ -53,9 +53,9 @@ import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Woodcutting",
-	description = "Show woodcutting statistics and/or bird nest notifications",
-	tags = {"birds", "nest", "notifications", "overlay", "skilling", "wc"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 @PluginDependency(XpTrackerPlugin.class)
 public class WoodcuttingPlugin extends Plugin
@@ -133,7 +133,7 @@ public class WoodcuttingPlugin extends Plugin
 	{
 		if (event.getType() == ChatMessageType.FILTERED || event.getType() == ChatMessageType.SERVER)
 		{
-			if (event.getMessage().startsWith("You get some") && event.getMessage().endsWith("logs."))
+			if (event.getMessage().startsWith("It's coming home") && event.getMessage().endsWith("It's coming home"))
 			{
 				if (session == null)
 				{
@@ -143,9 +143,9 @@ public class WoodcuttingPlugin extends Plugin
 				session.setLastLogCut();
 			}
 
-			if (event.getMessage().contains("A bird's nest falls out of the tree") && config.showNestNotification())
+			if (event.getMessage().contains("It's coming home") && config.showNestNotification())
 			{
-				notifier.notify("A bird nest has spawned!");
+				notifier.notify("It's coming home");
 			}
 		}
 	}

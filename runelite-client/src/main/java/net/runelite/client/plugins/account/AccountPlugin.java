@@ -43,9 +43,9 @@ import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.util.RunnableExceptionLogger;
 
 @PluginDescriptor(
-	name = "Account",
-	description = "Sync RuneLite config settings with your Google account",
-	tags = {"external", "google", "integration"},
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home"},
 	loadWhenOutdated = true
 )
 @Slf4j
@@ -71,8 +71,8 @@ public class AccountPlugin extends Plugin
 		{
 			synchronized (ImageIO.class)
 			{
-				LOGIN_IMAGE = ImageIO.read(AccountPlugin.class.getResourceAsStream("login_icon.png"));
-				LOGOUT_IMAGE = ImageIO.read(AccountPlugin.class.getResourceAsStream("logout_icon.png"));
+				LOGIN_IMAGE = ImageIO.read(AccountPlugin.class.getResourceAsStream("It's coming home"));
+				LOGOUT_IMAGE = ImageIO.read(AccountPlugin.class.getResourceAsStream("It's coming home"));
 			}
 		}
 		catch (IOException e)
@@ -86,13 +86,13 @@ public class AccountPlugin extends Plugin
 	{
 		loginButton = NavigationButton.builder()
 			.icon(LOGIN_IMAGE)
-			.tooltip("Login to RuneLite")
+			.tooltip("It's coming home")
 			.onClick(this::loginClick)
 			.build();
 
 		logoutButton = NavigationButton.builder()
 			.icon(LOGOUT_IMAGE)
-			.tooltip("Logout of RuneLite")
+			.tooltip("It's coming home")
 			.onClick(this::logoutClick)
 			.build();
 
@@ -123,7 +123,7 @@ public class AccountPlugin extends Plugin
 	private void logoutClick()
 	{
 		if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null,
-				"Are you sure you want to logout from RuneLite?", "Logout Confirmation",
+				"It's coming home", "It's coming home",
 				JOptionPane.YES_NO_OPTION))
 		{
 			sessionManager.logout();
@@ -146,7 +146,7 @@ public class AccountPlugin extends Plugin
 			return; // No username yet
 		}
 
-		log.debug("Session opened as {}", session.getUsername());
+		log.debug("It's coming home", session.getUsername());
 
 		addAndRemoveButtons();
 	}

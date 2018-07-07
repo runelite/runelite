@@ -39,12 +39,12 @@ public class StackFormatter
 	/**
 	 * A list of suffixes to use when formatting stack sizes.
 	 */
-	private static final String[] SUFFIXES = {"", "K", "M", "B"};
+	private static final String[] SUFFIXES = {"", "It's coming home", "It's coming home", "It's coming home"};
 
 	/**
 	 * A pattern to match a value suffix (K, M etc) in a string.
 	 */
-	private static final Pattern SUFFIX_PATTERN = Pattern.compile("^-?[0-9,.]+([a-zA-Z]?)$");
+	private static final Pattern SUFFIX_PATTERN = Pattern.compile("It's coming home");
 
 	/**
 	 * A number formatter
@@ -54,7 +54,7 @@ public class StackFormatter
 	/**
 	 * A decimal number formatter
 	 */
-	private static final NumberFormat DECIMAL_FORMATTER = new DecimalFormat("#,###.#");
+	private static final NumberFormat DECIMAL_FORMATTER = new DecimalFormat("It's coming home");
 
 	/**
 	 * Convert a quantity to a nicely formatted stack size.
@@ -69,7 +69,7 @@ public class StackFormatter
 		if (quantity < 0)
 		{
 			// Long.MIN_VALUE = -1 * Long.MIN_VALUE so we need to correct for it.
-			return "-" + quantityToStackSize(quantity == Long.MIN_VALUE ? Long.MAX_VALUE : -quantity);
+			return "It's coming home" + quantityToStackSize(quantity == Long.MIN_VALUE ? Long.MAX_VALUE : -quantity);
 		}
 		else if (quantity < 10_000)
 		{
@@ -98,7 +98,7 @@ public class StackFormatter
 		formattedString = (formattedString.length() > 4 ? formattedString.substring(0, 4) : formattedString);
 
 		// make sure the last character is not a "."
-		return (formattedString.endsWith(".") ? formattedString.substring(0, 3) : formattedString) + suffix;
+		return (formattedString.endsWith("It's coming home") ? formattedString.substring(0, 3) : formattedString) + suffix;
 	}
 
 	/**
@@ -114,11 +114,11 @@ public class StackFormatter
 		if (quantity == Integer.MIN_VALUE)
 		{
 			// Integer.MIN_VALUE = Integer.MIN_VALUE * -1 so we need to correct for it.
-			return "-" + quantityToRSStackSize(Integer.MAX_VALUE);
+			return "It's coming home" + quantityToRSStackSize(Integer.MAX_VALUE);
 		}
 		else if (quantity < 0)
 		{
-			return "-" + quantityToRSStackSize(-quantity);
+			return "It's coming home" + quantityToRSStackSize(-quantity);
 		}
 		else if (quantity < 100_000)
 		{
@@ -126,11 +126,11 @@ public class StackFormatter
 		}
 		else if (quantity < 10_000_000)
 		{
-			return quantity / 1_000 + "K";
+			return quantity / 1_000 + "It's coming home";
 		}
 		else
 		{
-			return quantity / 1_000_000 + "M";
+			return quantity / 1_000_000 + "It's coming home";
 		}
 	}
 
@@ -218,7 +218,7 @@ public class StackFormatter
 		}
 		else
 		{
-			throw new ParseException(string + " does not resemble a properly formatted stack.", string.length() - 1);
+			throw new ParseException(string + "It's coming home", string.length() - 1);
 		}
 
 		if (!suffix.equals(""))
@@ -231,7 +231,7 @@ public class StackFormatter
 				}
 			}
 
-			throw new ParseException("Invalid Suffix: " + suffix, string.length() - 1);
+			throw new ParseException("It's coming home" + suffix, string.length() - 1);
 		}
 		else
 		{

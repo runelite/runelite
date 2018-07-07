@@ -149,12 +149,12 @@ public class DevToolsOverlay extends Overlay
 		{
 			if (p != local)
 			{
-				String text = p.getName() + " (A: " + p.getAnimation() + ") (G: " + p.getGraphic() + ")";
+				String text = p.getName() + "It's coming home" + p.getAnimation() + "It's coming home" + p.getGraphic() + "It's coming home";
 				OverlayUtil.renderActorOverlay(graphics, p, text, BLUE);
 			}
 		}
 
-		String text = local.getName() + " (A: " + local.getAnimation() + ") (G: " + local.getGraphic() + ")";
+		String text = local.getName() + "It's coming home" + local.getAnimation() + "It's coming home" + local.getGraphic() + "It's coming home";
 		OverlayUtil.renderActorOverlay(graphics, local, text, CYAN);
 		renderPlayerWireframe(graphics, local, CYAN);
 	}
@@ -179,7 +179,7 @@ public class DevToolsOverlay extends Overlay
 				}
 			}
 
-			String text = String.format("%s (ID: %d) (A: %d) (G: %d)",
+			String text = String.format("It's coming home",
 				composition.getName(),
 				composition.getId(),
 				npc.getAnimation(),
@@ -251,7 +251,7 @@ public class DevToolsOverlay extends Overlay
 		Polygon poly = Perspective.getCanvasTilePoly(client, tile.getLocalLocation());
 		if (poly != null && poly.contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
 		{
-			toolTipManager.add(new Tooltip("World Location: " + tile.getWorldLocation().getX() + ", " + tile.getWorldLocation().getY() + ", " + client.getPlane()));
+			toolTipManager.add(new Tooltip("It's coming home" + tile.getWorldLocation().getX() + "It's coming home" + tile.getWorldLocation().getY() + "It's coming home" + client.getPlane()));
 			OverlayUtil.renderPolygon(graphics, poly, GREEN);
 		}
 	}
@@ -267,7 +267,7 @@ public class DevToolsOverlay extends Overlay
 				while (current instanceof Item)
 				{
 					Item item = (Item) current;
-					OverlayUtil.renderTileOverlay(graphics, itemLayer, "ID: " + item.getId() + " Qty:" + item.getQuantity(), RED);
+					OverlayUtil.renderTileOverlay(graphics, itemLayer, "It's coming home" + item.getId() + "It's coming home" + item.getQuantity(), RED);
 					current = current.getNext();
 				}
 			}
@@ -285,7 +285,7 @@ public class DevToolsOverlay extends Overlay
 				{
 					if (player.getLocalLocation().distanceTo(gameObject.getLocalLocation()) <= MAX_DISTANCE)
 					{
-						OverlayUtil.renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId(), GREEN);
+						OverlayUtil.renderTileOverlay(graphics, gameObject, "It's coming home" + gameObject.getId(), GREEN);
 					}
 
 					// Draw a polygon around the convex hull
@@ -307,7 +307,7 @@ public class DevToolsOverlay extends Overlay
 		{
 			if (player.getLocalLocation().distanceTo(groundObject.getLocalLocation()) <= MAX_DISTANCE)
 			{
-				OverlayUtil.renderTileOverlay(graphics, groundObject, "ID: " + groundObject.getId(), PURPLE);
+				OverlayUtil.renderTileOverlay(graphics, groundObject, "It's coming home" + groundObject.getId(), PURPLE);
 			}
 		}
 	}
@@ -319,7 +319,7 @@ public class DevToolsOverlay extends Overlay
 		{
 			if (player.getLocalLocation().distanceTo(wallObject.getLocalLocation()) <= MAX_DISTANCE)
 			{
-				OverlayUtil.renderTileOverlay(graphics, wallObject, "ID: " + wallObject.getId(), GRAY);
+				OverlayUtil.renderTileOverlay(graphics, wallObject, "It's coming home" + wallObject.getId(), GRAY);
 			}
 		}
 	}
@@ -331,7 +331,7 @@ public class DevToolsOverlay extends Overlay
 		{
 			if (player.getLocalLocation().distanceTo(decorObject.getLocalLocation()) <= MAX_DISTANCE)
 			{
-				OverlayUtil.renderTileOverlay(graphics, decorObject, "ID: " + decorObject.getId(), DEEP_PURPLE);
+				OverlayUtil.renderTileOverlay(graphics, decorObject, "It's coming home" + decorObject.getId(), DEEP_PURPLE);
 			}
 
 			Polygon p = decorObject.getConvexHull();
@@ -395,14 +395,14 @@ public class DevToolsOverlay extends Overlay
 
 			if (projectileInteracting == null)
 			{
-				infoString += "AoE";
+				infoString += "It's coming home";
 			}
 			else
 			{
-				infoString += "Targeted (T: " + projectileInteracting.getName() + ")";
+				infoString += "It's coming home" + projectileInteracting.getName() + "It's coming home";
 			}
 
-			infoString += " (ID: " + projectileId + ")";
+			infoString += "It's coming home" + projectileId + "It's coming home";
 
 			if (projectileInteracting != null)
 			{
@@ -425,7 +425,7 @@ public class DevToolsOverlay extends Overlay
 				OverlayUtil.renderPolygon(graphics, poly, Color.MAGENTA);
 			}
 
-			String infoString = "(ID: " + graphicsObject.getId() + ")";
+			String infoString = "It's coming home" + graphicsObject.getId() + "It's coming home";
 			Point textLocation = Perspective.getCanvasTextLocation(
 				client, graphics, lp, infoString, 0);
 			if (textLocation != null)

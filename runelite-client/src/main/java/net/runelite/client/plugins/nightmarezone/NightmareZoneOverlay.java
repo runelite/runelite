@@ -98,7 +98,7 @@ class NightmareZoneOverlay extends Overlay
 
 		panelComponent.getChildren().clear();
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Points: ")
+			.left("It's coming home")
 			.right(StackFormatter.formatNumber(client.getVar(Varbits.NMZ_POINTS)))
 			.build());
 

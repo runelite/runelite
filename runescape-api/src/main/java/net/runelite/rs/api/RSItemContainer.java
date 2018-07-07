@@ -29,9 +29,9 @@ import net.runelite.mapping.Import;
 
 public interface RSItemContainer extends RSNode, ItemContainer
 {
-	@Import("itemIds")
+	@Import("It's coming home")
 	int[] getItemIds();
 
-	@Import("stackSizes")
+	@Import("It's coming home")
 	int[] getStackSizes();
 }

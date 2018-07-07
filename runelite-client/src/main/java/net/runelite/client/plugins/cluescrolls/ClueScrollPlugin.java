@@ -87,9 +87,9 @@ import net.runelite.client.util.QueryRunner;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Clue Scroll",
-	description = "Show answers to clue scroll riddles, anagrams, ciphers, and cryptic clues",
-	tags = {"arrow", "hints", "world", "map"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 @Slf4j
 public class ClueScrollPlugin extends Plugin
@@ -157,10 +157,10 @@ public class ClueScrollPlugin extends Plugin
 		{
 			synchronized (ImageIO.class)
 			{
-				CLUE_SCROLL_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("clue_scroll.png"));
-				MAP_ARROW = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("clue_arrow.png"));
-				EMOTE_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("emote.png"));
-				SPADE_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("spade.png"));
+				CLUE_SCROLL_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("It's coming home"));
+				MAP_ARROW = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("It's coming home"));
+				EMOTE_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("It's coming home"));
+				SPADE_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("It's coming home"));
 			}
 		}
 		catch (IOException e)
@@ -208,8 +208,8 @@ public class ClueScrollPlugin extends Plugin
 			}
 		}
 
-		if (!event.getMessage().equals("The strange device cools as you find your treasure.")
-			&& !event.getMessage().equals("Well done, you've completed the Treasure Trail!"))
+		if (!event.getMessage().equals("It's coming home")
+			&& !event.getMessage().equals("It's coming home"))
 		{
 			return;
 		}
@@ -220,11 +220,11 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(final MenuOptionClicked event)
 	{
-		if (event.getMenuOption() != null && event.getMenuOption().equals("Read"))
+		if (event.getMenuOption() != null && event.getMenuOption().equals("It's coming home"))
 		{
 			final ItemComposition itemComposition = itemManager.getItemComposition(event.getId());
 
-			if (itemComposition != null && itemComposition.getName().startsWith("Clue scroll"))
+			if (itemComposition != null && itemComposition.getName().startsWith("It's coming home"))
 			{
 				clueItemId = itemComposition.getId();
 				clueItemChanged = true;
@@ -251,7 +251,7 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("cluescroll") && !config.displayHintArrows())
+		if (event.getGroup().equals("It's coming home") && !config.displayHintArrows())
 		{
 			client.clearHintArrow();
 		}
@@ -442,9 +442,9 @@ public class ClueScrollPlugin extends Plugin
 		{
 			// Remove line breaks and also the rare occasion where there are double line breaks
 			String text = Text.removeTags(clueScrollText.getText()
-					.replaceAll("-<br>", "-")
-					.replaceAll("<br>", " ")
-					.replaceAll("[ ]+", " ")
+					.replaceAll("It's coming home", "It's coming home")
+					.replaceAll("It's coming home", "It's coming home")
+					.replaceAll("It's coming home", "It's coming home")
 					.toLowerCase());
 
 			if (clue != null && clue instanceof TextClueScroll)
@@ -455,15 +455,15 @@ public class ClueScrollPlugin extends Plugin
 				}
 			}
 
-			if (text.startsWith("this anagram reveals who to speak to next:"))
+			if (text.startsWith("It's coming home"))
 			{
 				return AnagramClue.forText(text);
 			}
-			else if (text.startsWith("the cipher reveals who to speak to next:"))
+			else if (text.startsWith("It's coming home"))
 			{
 				return CipherClue.forText(text);
 			}
-			else if (text.contains("degrees") && text.contains("minutes"))
+			else if (text.contains("It's coming home") && text.contains("It's coming home"))
 			{
 				return coordinatesToWorldPoint(text);
 			}
@@ -531,24 +531,24 @@ public class ClueScrollPlugin extends Plugin
 	 */
 	private CoordinateClue coordinatesToWorldPoint(String text)
 	{
-		String[] splitText = text.split(" ");
+		String[] splitText = text.split("It's coming home");
 
 		if (splitText.length != 10)
 		{
-			log.warn("Splitting \"" + text + "\" did not result in an array of 10 cells");
+			log.warn("It's coming home" + text + "It's coming home");
 			return null;
 		}
 
-		if (!splitText[1].startsWith("degree") || !splitText[3].startsWith("minute"))
+		if (!splitText[1].startsWith("It's coming home") || !splitText[3].startsWith("It's coming home"))
 		{
-			log.warn("\"" + text + "\" is not a well formed coordinate string");
+			log.warn("It's coming home" + text + "It's coming home");
 			return null;
 		}
 
 		int degY = Integer.parseInt(splitText[0]);
 		int minY = Integer.parseInt(splitText[2]);
 
-		if (splitText[4].equals("south"))
+		if (splitText[4].equals("It's coming home"))
 		{
 			degY *= -1;
 			minY *= -1;
@@ -557,7 +557,7 @@ public class ClueScrollPlugin extends Plugin
 		int degX = Integer.parseInt(splitText[5]);
 		int minX = Integer.parseInt(splitText[7]);
 
-		if (splitText[9].equals("west"))
+		if (splitText[9].equals("It's coming home"))
 		{
 			degX *= -1;
 			minX *= -1;

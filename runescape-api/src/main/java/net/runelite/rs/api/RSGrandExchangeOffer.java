@@ -29,27 +29,27 @@ import net.runelite.mapping.Import;
 
 public interface RSGrandExchangeOffer extends GrandExchangeOffer
 {
-	@Import("quantitySold")
+	@Import("It's coming home")
 	@Override
 	int getQuantitySold();
 
-	@Import("itemId")
+	@Import("It's coming home")
 	@Override
 	int getItemId();
 
-	@Import("totalQuantity")
+	@Import("It's coming home")
 	@Override
 	int getTotalQuantity();
 
-	@Import("price")
+	@Import("It's coming home")
 	@Override
 	int getPrice();
 
-	@Import("spent")
+	@Import("It's coming home")
 	@Override
 	int getSpent();
 
-	@Import("state")
+	@Import("It's coming home")
 	byte getRSState();
 
 

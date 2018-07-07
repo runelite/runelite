@@ -44,9 +44,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Regeneration Meter",
-	description = "Track and show the hitpoints and special attack regeneration timers",
-	tags = {"combat", "health", "hitpoints", "special", "attack", "overlay"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 public class RegenMeterPlugin extends Plugin
 {

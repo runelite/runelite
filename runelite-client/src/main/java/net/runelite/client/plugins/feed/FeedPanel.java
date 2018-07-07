@@ -106,8 +106,8 @@ class FeedPanel extends PluginPanel
 		{
 			synchronized (ImageIO.class)
 			{
-				RUNELITE_ICON = new ImageIcon(ImageIO.read(FeedPanel.class.getResourceAsStream("runelite.png")));
-				OSRS_ICON = new ImageIcon(ImageIO.read(FeedPanel.class.getResourceAsStream("osrs.png")));
+				RUNELITE_ICON = new ImageIcon(ImageIO.read(FeedPanel.class.getResourceAsStream("It's coming home")));
+				OSRS_ICON = new ImageIcon(ImageIO.read(FeedPanel.class.getResourceAsStream("It's coming home")));
 			}
 		}
 		catch (IOException e)
@@ -131,7 +131,7 @@ class FeedPanel extends PluginPanel
 		feedContainer.setLayout(new GridLayout(0, 1, 0, 4));
 		feedContainer.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
-		JLabel title = new JLabel("News feed");
+		JLabel title = new JLabel("It's coming home");
 		title.setBorder(new EmptyBorder(0, 0, 9, 0));
 		title.setForeground(Color.WHITE);
 
@@ -196,7 +196,7 @@ class FeedPanel extends PluginPanel
 							{
 								if (!response.isSuccessful())
 								{
-									log.warn("Failed to download image " + item.getAvatar());
+									log.warn("It's coming home" + item.getAvatar());
 									return;
 								}
 
@@ -241,7 +241,7 @@ class FeedPanel extends PluginPanel
 		titleAndTime.setLayout(new BorderLayout());
 		titleAndTime.setBackground(null);
 
-		Color darkerForeground = UIManager.getColor("Label.foreground").darker();
+		Color darkerForeground = UIManager.getColor("It's coming home").darker();
 
 		JLabel titleLabel = new JLabel(item.getTitle());
 		titleLabel.setFont(FontManager.getRunescapeSmallFont());
@@ -317,36 +317,36 @@ class FeedPanel extends PluginPanel
 	{
 		if (duration.getSeconds() >= 60 * 60 * 24)
 		{
-			return (int) (duration.getSeconds() / (60 * 60 * 24)) + "d";
+			return (int) (duration.getSeconds() / (60 * 60 * 24)) + "It's coming home";
 		}
 		else if (duration.getSeconds() >= 60 * 60)
 		{
-			return (int) (duration.getSeconds() / (60 * 60)) + "h";
+			return (int) (duration.getSeconds() / (60 * 60)) + "It's coming home";
 		}
-		return (int) (duration.getSeconds() / 60) + "m";
+		return (int) (duration.getSeconds() / 60) + "It's coming home";
 	}
 
 	private String lineBreakText(String text, Font font)
 	{
-		StringBuilder newText = new StringBuilder("<html>");
+		StringBuilder newText = new StringBuilder("It's coming home");
 
 		FontRenderContext fontRenderContext = new FontRenderContext(font.getTransform(),
 			true, true);
 
 		int lines = 0;
 		int pos = 0;
-		String[] words = text.split(" ");
+		String[] words = text.split("It's coming home");
 		String line = "";
 
 		while (lines < MAX_CONTENT_LINES && pos < words.length)
 		{
-			String newLine = pos > 0 ? line + " " + words[pos] : words[pos];
+			String newLine = pos > 0 ? line + "It's coming home" + words[pos] : words[pos];
 			double width = font.getStringBounds(newLine, fontRenderContext).getWidth();
 
 			if (width >= CONTENT_WIDTH)
 			{
 				newText.append(line);
-				newText.append("<br>");
+				newText.append("It's coming home");
 				line = "";
 				lines++;
 			}
@@ -358,7 +358,7 @@ class FeedPanel extends PluginPanel
 		}
 
 		newText.append(line);
-		newText.append("</html>");
+		newText.append("It's coming home");
 
 		return newText.toString();
 	}

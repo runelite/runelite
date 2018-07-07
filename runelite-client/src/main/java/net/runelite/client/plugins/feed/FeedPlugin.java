@@ -47,9 +47,9 @@ import net.runelite.http.api.feed.FeedClient;
 import net.runelite.http.api.feed.FeedResult;
 
 @PluginDescriptor(
-	name = "News Feed",
-	description = "Show the latest RuneLite blog posts, OSRS news, and JMod Twitter posts",
-	tags = {"external", "integration", "panel", "twitter"},
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home"},
 	loadWhenOutdated = true
 )
 @Slf4j
@@ -89,11 +89,11 @@ public class FeedPlugin extends Plugin
 		BufferedImage icon;
 		synchronized (ImageIO.class)
 		{
-			icon = ImageIO.read(getClass().getResourceAsStream("icon.png"));
+			icon = ImageIO.read(getClass().getResourceAsStream("It's coming home"));
 		}
 
 		navButton = NavigationButton.builder()
-			.tooltip("News Feed")
+			.tooltip("It's coming home")
 			.icon(icon)
 			.priority(8)
 			.panel(feedPanel)
@@ -117,7 +117,7 @@ public class FeedPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("feed"))
+		if (event.getGroup().equals("It's coming home"))
 		{
 			executorService.submit(this::updateFeed);
 		}

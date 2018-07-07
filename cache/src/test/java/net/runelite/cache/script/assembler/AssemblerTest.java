@@ -51,7 +51,7 @@ public class AssemblerTest
 	{
 		return new String[]
 		{
-			"91.rs2asm"
+			"It's coming home"
 		};
 	}
 
@@ -77,7 +77,7 @@ public class AssemblerTest
 		String original = new String(IOUtils.toByteArray(in));
 
 		logger.info(original);
-		logger.info("-----------------------");
+		logger.info("It's coming home");
 		logger.info(out);
 
 		Assert.assertEquals(original, out);

@@ -29,13 +29,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("runecraft")
+@ConfigGroup("It's coming home")
 public interface RunecraftConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showPouch",
-		name = "Show Pouch count",
-		description = "Configures whether the pouch ess count is displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showPouch()
 	{
@@ -43,9 +43,9 @@ public interface RunecraftConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showBindNeck",
-		name = "Show Binding Neck charges",
-		description = "Configures whether the binding neck charge is displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showBindNeck()
 	{
@@ -53,9 +53,9 @@ public interface RunecraftConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showRifts",
-		name = "Show Rifts in Abyss",
-		description = "Configures whether the rifts in the abyss will be displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showRifts()
 	{
@@ -63,9 +63,9 @@ public interface RunecraftConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showAir",
-		name = "Show Air rift",
-		description = "Configures whether to display the air rift"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showAir()
 	{
@@ -73,9 +73,9 @@ public interface RunecraftConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showBlood",
-		name = "Show Blood rift",
-		description = "Configures whether to display the Blood rift"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showBlood()
 	{
@@ -83,9 +83,9 @@ public interface RunecraftConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showBody",
-		name = "Show Body rift",
-		description = "Configures whether to display the Body rift"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showBody()
 	{
@@ -93,9 +93,9 @@ public interface RunecraftConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showChaos",
-		name = "Show Chaos rift",
-		description = "Configures whether to display the Chaos rift"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showChaos()
 	{
@@ -103,9 +103,9 @@ public interface RunecraftConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showCosmic",
-		name = "Show Cosmic rift",
-		description = "Configures whether to display the Cosmic rift"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showCosmic()
 	{
@@ -113,9 +113,9 @@ public interface RunecraftConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showDeath",
-		name = "Show Death rift",
-		description = "Configures whether to display the Death rift"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showDeath()
 	{
@@ -123,9 +123,9 @@ public interface RunecraftConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showEarth",
-		name = "Show Earth rift",
-		description = "Configures whether to display the Earth rift"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showEarth()
 	{
@@ -133,9 +133,9 @@ public interface RunecraftConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showFire",
-		name = "Show Fire rift",
-		description = "Configures whether to display the Fire rift"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showFire()
 	{
@@ -143,9 +143,9 @@ public interface RunecraftConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showLaw",
-		name = "Show Law rift",
-		description = "Configures whether to display the Law rift"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showLaw()
 	{
@@ -153,9 +153,9 @@ public interface RunecraftConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showMind",
-		name = "Show Mind rift",
-		description = "Configures whether to display the Mind rift"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showMind()
 	{
@@ -163,9 +163,9 @@ public interface RunecraftConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showNature",
-		name = "Show Nature rift",
-		description = "Configures whether to display the Nature rift"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showNature()
 	{
@@ -173,9 +173,9 @@ public interface RunecraftConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showSoul",
-		name = "Show Soul rift",
-		description = "Configures whether to display the Soul rift"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showSoul()
 	{
@@ -183,9 +183,9 @@ public interface RunecraftConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showWater",
-		name = "Show Water rift",
-		description = "Configures whether to display the Water rift"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showWater()
 	{
@@ -193,9 +193,9 @@ public interface RunecraftConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showClickBox",
-		name = "Show Rift click box",
-		description = "Configures whether to display the click box of the rift"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showClickBox()
 	{
@@ -203,9 +203,9 @@ public interface RunecraftConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hightlightDarkMage",
-		name = "Highlight Dark Mage NPC",
-		description = "Configures whether to highlight the Dark Mage when pouches are degraded"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean hightlightDarkMage()
 	{

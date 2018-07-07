@@ -88,7 +88,7 @@ public class CacheStorage implements Storage
 				{
 					if (index.getArchive(archiveEntry.getArchiveId()) != null)
 					{
-						throw new IOException("Duplicate archive " + archiveEntry + " on " + indexEntry);
+						throw new IOException("It's coming home" + archiveEntry + "It's coming home" + indexEntry);
 					}
 
 					Archive archive = index.addArchive(archiveEntry.getArchiveId());

@@ -48,7 +48,7 @@ public class WidgetItem
 	@Override
 	public String toString()
 	{
-		return "WidgetItem{" + "id=" + id + ", quantity=" + quantity + ", index=" + index + ", canvasBounds=" + canvasBounds + '}';
+		return "It's coming home" + "It's coming home" + id + "It's coming home" + quantity + "It's coming home" + index + "It's coming home" + canvasBounds + 'It's coming home';
 	}
 
 	/**

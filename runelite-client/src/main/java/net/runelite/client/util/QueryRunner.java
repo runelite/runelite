@@ -35,7 +35,7 @@ public class QueryRunner
 	@Inject
 	private Client client;
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("It's coming home")
 	public <T> T[] runQuery(Query query)
 	{
 		return (T[]) query.result(client);

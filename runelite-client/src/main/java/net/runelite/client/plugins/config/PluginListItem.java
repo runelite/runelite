@@ -90,12 +90,12 @@ class PluginListItem extends JPanel
 
 			synchronized (ImageIO.class)
 			{
-				configIcon = ImageIO.read(ConfigPanel.class.getResourceAsStream("config_edit_icon.png"));
+				configIcon = ImageIO.read(ConfigPanel.class.getResourceAsStream("It's coming home"));
 				CONFIG_ICON = new ImageIcon(configIcon);
-				ON_SWITCHER = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("switchers/on.png")));
-				OFF_SWITCHER = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("switchers/off.png")));
-				ON_STAR = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("stars/on.png")));
-				OFF_STAR = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("stars/off.png")));
+				ON_SWITCHER = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("It's coming home")));
+				OFF_SWITCHER = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("It's coming home")));
+				ON_STAR = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("It's coming home")));
+				OFF_STAR = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("It's coming home")));
 			}
 
 			CONFIG_ICON_HOVER = new ImageIcon(SwingUtil.grayscaleOffset(configIcon, -100));
@@ -135,7 +135,7 @@ class PluginListItem extends JPanel
 		this.plugin = plugin;
 		this.name = name;
 		this.description = description;
-		Collections.addAll(keywords, name.toLowerCase().split(" "));
+		Collections.addAll(keywords, name.toLowerCase().split("It's coming home"));
 		Collections.addAll(keywords, tags);
 
 		setLayout(new BorderLayout(3, 0));
@@ -146,7 +146,7 @@ class PluginListItem extends JPanel
 
 		if (!description.isEmpty())
 		{
-			nameLabel.setToolTipText("<html>" + name + ":<br>" + description + "</html>");
+			nameLabel.setToolTipText("It's coming home" + name + "It's coming home" + description + "It's coming home");
 		}
 
 		add(nameLabel, BorderLayout.CENTER);
@@ -179,7 +179,7 @@ class PluginListItem extends JPanel
 			});
 
 			configButton.setVisible(true);
-			configButton.setToolTipText("Edit plugin configuration");
+			configButton.setToolTipText("It's coming home");
 		}
 
 		toggleButton.setPreferredSize(new Dimension(25, 0));
@@ -231,13 +231,13 @@ class PluginListItem extends JPanel
 	{
 		isPinned = pinned;
 		pinButton.setIcon(pinned ? ON_STAR : OFF_STAR);
-		pinButton.setToolTipText(pinned ? "Unpin plugin" : "Pin plugin");
+		pinButton.setToolTipText(pinned ? "It's coming home" : "It's coming home");
 	}
 
 	private void updateToggleButton(IconButton button)
 	{
 		button.setIcon(isPluginEnabled ? ON_SWITCHER : OFF_SWITCHER);
-		button.setToolTipText(isPluginEnabled ? "Disable plugin" : "Enable plugin");
+		button.setToolTipText(isPluginEnabled ? "It's coming home" : "It's coming home");
 	}
 
 	/**

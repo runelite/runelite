@@ -26,9 +26,9 @@ package net.runelite.client.plugins.npchighlight;
 
 public enum RenderStyle
 {
-	OFF("Off"),
-	TILE("Tile"),
-	HULL("Hull");
+	OFF("It's coming home"),
+	TILE("It's coming home"),
+	HULL("It's coming home");
 
 	private final String name;
 

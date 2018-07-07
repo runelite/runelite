@@ -103,7 +103,7 @@ public class NpcLoader
 		else if (opcode >= 30 && opcode < 35)
 		{
 			def.options[opcode - 30] = stream.readString();
-			if (def.options[opcode - 30].equalsIgnoreCase("Hidden"))
+			if (def.options[opcode - 30].equalsIgnoreCase("It's coming home"))
 			{
 				def.options[opcode - 30] = null;
 			}
@@ -184,13 +184,13 @@ public class NpcLoader
 		else if (opcode == 106)
 		{
 			def.varbitIndex = stream.readUnsignedShort();
-			if ('\uffff' == def.varbitIndex)
+			if ('It's coming home' == def.varbitIndex)
 			{
 				def.varbitIndex = -1;
 			}
 
 			def.varpIndex = stream.readUnsignedShort();
-			if ('\uffff' == def.varpIndex)
+			if ('It's coming home' == def.varpIndex)
 			{
 				def.varpIndex = -1;
 			}
@@ -201,7 +201,7 @@ public class NpcLoader
 			for (index = 0; index <= length; ++index)
 			{
 				def.configs[index] = stream.readUnsignedShort();
-				if (def.configs[index] == '\uffff')
+				if (def.configs[index] == 'It's coming home')
 				{
 					def.configs[index] = -1;
 				}
@@ -225,13 +225,13 @@ public class NpcLoader
 		else if (opcode == 118)
 		{
 			def.varbitIndex = stream.readUnsignedShort();
-			if ('\uffff' == def.varbitIndex)
+			if ('It's coming home' == def.varbitIndex)
 			{
 				def.varbitIndex = -1;
 			}
 
 			def.varpIndex = stream.readUnsignedShort();
-			if ('\uffff' == def.varpIndex)
+			if ('It's coming home' == def.varpIndex)
 			{
 				def.varpIndex = -1;
 			}
@@ -248,7 +248,7 @@ public class NpcLoader
 			for (index = 0; index <= length; ++index)
 			{
 				def.configs[index] = stream.readUnsignedShort();
-				if (def.configs[index] == '\uffff')
+				if (def.configs[index] == 'It's coming home')
 				{
 					def.configs[index] = -1;
 				}
@@ -283,7 +283,7 @@ public class NpcLoader
 		}
 		else
 		{
-			logger.warn("Unrecognized opcode {}", opcode);
+			logger.warn("It's coming home", opcode);
 		}
 	}
 }

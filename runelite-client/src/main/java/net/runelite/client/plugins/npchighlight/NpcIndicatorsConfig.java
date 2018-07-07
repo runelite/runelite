@@ -29,14 +29,14 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("npcindicators")
+@ConfigGroup("It's coming home")
 public interface NpcIndicatorsConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
-		keyName = "highlightStyle",
-		name = "Highlight Style",
-		description = "Highlight setting"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default RenderStyle renderStyle()
 	{
@@ -45,9 +45,9 @@ public interface NpcIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 1,
-		keyName = "npcToHighlight",
-		name = "NPCs to Highlight",
-		description = "List of NPC names to highlight"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default String getNpcToHighlight()
 	{
@@ -56,9 +56,9 @@ public interface NpcIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "npcColor",
-		name = "Highlight Color",
-		description = "Color of the NPC highlight"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getHighlightColor()
 	{
@@ -67,9 +67,9 @@ public interface NpcIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "enableTag",
-		name = "Enable Tag Option",
-		description = "Enable the NPC tag menu option"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean isTagEnabled()
 	{
@@ -78,9 +78,9 @@ public interface NpcIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 4,
-		keyName = "drawNames",
-		name = "Draw names above NPC",
-		description = "Configures whether or not NPC names should be drawn above the NPC"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean drawNames()
 	{
@@ -89,9 +89,9 @@ public interface NpcIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 5,
-		keyName = "drawMinimapNames",
-		name = "Draw names on minimap",
-		description = "Configures whether or not NPC names should be drawn on the minimap"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean drawMinimapNames()
 	{
@@ -100,9 +100,9 @@ public interface NpcIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 6,
-		keyName = "showRespawnTimer",
-		name = "Show respawn timer",
-		description = "Show respawn timer of tagged NPCs")
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home")
 	default boolean showRespawnTimer()
 	{
 		return false;

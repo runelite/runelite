@@ -29,12 +29,12 @@ import net.runelite.mapping.Import;
 
 public interface RSFileOnDisk
 {
-	@Import("file")
+	@Import("It's coming home")
 	RandomAccessFile getFile();
 
-	@Import("position")
+	@Import("It's coming home")
 	long getPosition();
 
-	@Import("length")
+	@Import("It's coming home")
 	long getLength();
 }

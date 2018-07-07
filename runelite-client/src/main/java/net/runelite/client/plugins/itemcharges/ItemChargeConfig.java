@@ -29,13 +29,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("itemCharge")
+@ConfigGroup("It's coming home")
 public interface ItemChargeConfig extends Config
 {
 	@ConfigItem(
-		keyName = "veryLowWarningColor",
-		name = "Very Low Warning Color",
-		description = "Configure the color of the overlay when charges are very low",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 1
 	)
 	default Color veryLowWarningColor()
@@ -44,9 +44,9 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "lowWarningColor",
-		name = "Low Warning Color",
-		description = "Configure the color of the overlay when charges are low",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 2
 	)
 	default Color lowWarningolor()
@@ -55,9 +55,9 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "veryLowWarning",
-		name = "Very Low Warning",
-		description = "Configure the charge count for the very low warning color",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 3
 	)
 	default int veryLowWarning()
@@ -66,9 +66,9 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "lowWarning",
-		name = "Low Warning",
-		description = "Configure the charge count for the low warning color",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 4
 	)
 	default int lowWarning()
@@ -77,9 +77,9 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showTeleportCharges",
-		name = "Show Teleport Charges",
-		description = "Configures if teleport item count is shown",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 5
 	)
 	default boolean showTeleportCharges()
@@ -88,9 +88,9 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showDodgyCount",
-		name = "Dodgy Necklace Count",
-		description = "Configures if Dodgy Necklace charge count is shown",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 6
 	)
 	default boolean showDodgyCount()
@@ -99,9 +99,9 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "dodgyNotification",
-		name = "Dodgy Necklace Notification",
-		description = "Configures if the dodgy necklace breaking notification is shown",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 7
 	)
 	default boolean dodgyNotification()
@@ -110,7 +110,7 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "dodgyNecklace",
+		keyName = "It's coming home",
 		name = "",
 		description = "",
 		hidden = true
@@ -121,16 +121,16 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "dodgyNecklace",
+		keyName = "It's coming home",
 		name = "",
 		description = ""
 	)
 	void dodgyNecklace(int dodgyNecklace);
 
 	@ConfigItem(
-		keyName = "showImpCharges",
-		name = "Show Imp-in-a-box charges",
-		description = "Configures if imp-in-a-box item charges is shown",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 8
 	)
 	default boolean showImpCharges()
@@ -139,9 +139,9 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showFungicideCharges",
-		name = "Show Fungicide Charges",
-		description = "Configures if fungicide item charges is shown",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 9
 	)
 	default boolean showFungicideCharges()
@@ -150,9 +150,9 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showWateringCanCharges",
-		name = "Show Watering Can Charges",
-		description = "Configures if watering can item charge is shown",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 10
 	)
 	default boolean showWateringCanCharges()
@@ -161,9 +161,9 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showWaterskinCharges",
-		name = "Show Waterskin Charges",
-		description = "Configures if waterskin item charge is shown",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 11
 	)
 	default boolean showWaterskinCharges()
@@ -172,9 +172,9 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "recoilNotification",
-		name = "Ring of Recoil Notification",
-		description = "Configures if the ring of recoil breaking notification is shown",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 12
 	)
 	default boolean recoilNotification()

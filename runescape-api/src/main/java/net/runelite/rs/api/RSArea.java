@@ -29,7 +29,7 @@ import net.runelite.mapping.Import;
 
 public interface RSArea extends RSCacheableNode, Area
 {
-	@Import("getMapIcon")
+	@Import("It's coming home")
 	@Override
 	RSSpritePixels getMapIcon(boolean var1);
 }

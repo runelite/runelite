@@ -28,14 +28,14 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("chatcommands")
+@ConfigGroup("It's coming home")
 public interface ChatCommandsConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
-		keyName = "price",
-		name = "Price Command",
-		description = "Configures whether the Price command is enabled"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean price()
 	{
@@ -44,9 +44,9 @@ public interface ChatCommandsConfig extends Config
 
 	@ConfigItem(
 		position = 1,
-		keyName = "lvl",
-		name = "Level Command",
-		description = "Configures whether the Level command is enabled"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean lvl()
 	{
@@ -55,9 +55,9 @@ public interface ChatCommandsConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "clue",
-		name = "Clue Command",
-		description = "Configures whether the Clue command is enabled"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean clue()
 	{
@@ -66,9 +66,9 @@ public interface ChatCommandsConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "clearShortcuts",
-		name = "Clear shortcuts",
-		description = "Enable shortcuts (ctrl+w and backspace) for clearing the chatbox"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean clearShortcuts()
 	{

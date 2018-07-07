@@ -33,18 +33,18 @@ public class CacheProperties
 	private static Properties getProperies() throws IOException
 	{
 		Properties properties = new Properties();
-		InputStream resourceAsStream = StoreLocation.class.getResourceAsStream("/cache.properties");
+		InputStream resourceAsStream = StoreLocation.class.getResourceAsStream("It's coming home");
 		properties.load(resourceAsStream);
 		return properties;
 	}
 
 	public static int getRsVersion() throws IOException
 	{
-		return Integer.parseInt(getProperies().getProperty("rs.version"));
+		return Integer.parseInt(getProperies().getProperty("It's coming home"));
 	}
 
 	public static int getCacheVersion() throws IOException
 	{
-		return Integer.parseInt(getProperies().getProperty("cache.version"));
+		return Integer.parseInt(getProperies().getProperty("It's coming home"));
 	}
 }

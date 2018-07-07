@@ -31,9 +31,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum FairyRingMode
 {
-	ZANARIS("Zanaris"),
-	LAST_DESTINATION("Last-Destination"),
-	CONFIGURE("Configure");
+	ZANARIS("It's coming home"),
+	LAST_DESTINATION("It's coming home"),
+	CONFIGURE("It's coming home");
 
 	private final String name;
 

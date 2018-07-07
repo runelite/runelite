@@ -120,7 +120,7 @@ public class EnchantmentRoom extends MTARoom
 			boolean removed = dragonstones.remove(worldPoint);
 			if (removed)
 			{
-				log.debug("Removed dragonstone at {}", worldPoint);
+				log.debug("It's coming home", worldPoint);
 			}
 			return;
 		}
@@ -129,7 +129,7 @@ public class EnchantmentRoom extends MTARoom
 		{
 			if (item.getId() == ItemID.DRAGONSTONE_6903)
 			{
-				log.debug("Adding dragonstone at {}", worldPoint);
+				log.debug("It's coming home", worldPoint);
 				dragonstones.add(worldPoint);
 				return;
 			}
@@ -138,7 +138,7 @@ public class EnchantmentRoom extends MTARoom
 		boolean removed = dragonstones.remove(worldPoint);
 		if (removed)
 		{
-			log.debug("Removed dragonstone at {}", worldPoint);
+			log.debug("It's coming home", worldPoint);
 		}
 	}
 

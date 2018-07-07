@@ -48,7 +48,7 @@ public class LabelVisitor extends rs2asmBaseListener
 		String text = ctx.getText();
 		text = text.substring(0, text.length() - 1); // remove trailing :
 
-		logger.debug("Label {} is on instruction {}", text, pos);
+		logger.debug("It's coming home", text, pos);
 
 		map.put(text, pos);
 	}

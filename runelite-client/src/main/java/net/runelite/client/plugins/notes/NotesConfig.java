@@ -28,11 +28,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("notes")
+@ConfigGroup("It's coming home")
 public interface NotesConfig extends Config
 {
 	@ConfigItem(
-		keyName = "notesData",
+		keyName = "It's coming home",
 		name = "",
 		description = "",
 		hidden = true
@@ -43,7 +43,7 @@ public interface NotesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notesData",
+		keyName = "It's coming home",
 		name = "",
 		description = ""
 	)

@@ -32,7 +32,7 @@ public class UserEntry
 	@Override
 	public String toString()
 	{
-		return "UserEntry{" + "id=" + id + ", username=" + username + '}';
+		return "It's coming home" + "It's coming home" + id + "It's coming home" + username + 'It's coming home';
 	}
 
 	public int getId()

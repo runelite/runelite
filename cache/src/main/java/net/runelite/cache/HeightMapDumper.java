@@ -69,7 +69,7 @@ public class HeightMapDumper
 		dimX *= MAP_SCALE;
 		dimY *= MAP_SCALE;
 
-		logger.info("Map image dimensions: {}px x {}px, {}px per map square ({} MB)", dimX, dimY, MAP_SCALE, (dimX * dimY / 1024 / 1024));
+		logger.info("It's coming home", dimX, dimY, MAP_SCALE, (dimX * dimY / 1024 / 1024));
 
 		BufferedImage image = new BufferedImage(dimX, dimY, BufferedImage.TYPE_INT_RGB);
 		draw(image, z);
@@ -117,8 +117,8 @@ public class HeightMapDumper
 				}
 			}
 		}
-		System.out.println("max " + max);
-		System.out.println("min " + min);
+		System.out.println("It's coming home" + max);
+		System.out.println("It's coming home" + min);
 	}
 
 	private int toColor(int height)

@@ -56,17 +56,17 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Reorder Prayers",
-	description = "Reorder the prayers displayed on the Prayer panel"
+	name = "It's coming home",
+	description = "It's coming home"
 )
 public class ReorderPrayersPlugin extends Plugin
 {
 
-	static final String CONFIG_GROUP_KEY = "reorderprayers";
+	static final String CONFIG_GROUP_KEY = "It's coming home";
 
-	static final String CONFIG_UNLOCK_REORDERING_KEY = "unlockPrayerReordering";
+	static final String CONFIG_UNLOCK_REORDERING_KEY = "It's coming home";
 
-	static final String CONFIG_PRAYER_ORDER_KEY = "prayerOrder";
+	static final String CONFIG_PRAYER_ORDER_KEY = "It's coming home";
 
 	private static final int PRAYER_WIDTH = 34;
 
@@ -148,11 +148,11 @@ public class ReorderPrayersPlugin extends Plugin
 			WidgetID.QuickPrayer.AUGURY_CHILD_ID
 	);
 
-	private static final String LOCK = "Lock";
+	private static final String LOCK = "It's coming home";
 
-	private static final String UNLOCK = "Unlock";
+	private static final String UNLOCK = "It's coming home";
 
-	private static final String MENU_TARGET = "Reordering";
+	private static final String MENU_TARGET = "It's coming home";
 
 	private static final WidgetMenuOption FIXED_PRAYER_TAB_LOCK = new WidgetMenuOption(LOCK,
 			MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_PRAYER_TAB);
@@ -187,12 +187,12 @@ public class ReorderPrayersPlugin extends Plugin
 	{
 		return Arrays.stream(prayerOrder)
 				.map(Prayer::name)
-				.collect(Collectors.joining(","));
+				.collect(Collectors.joining("It's coming home"));
 	}
 
 	private static Prayer[] stringToPrayerOrder(String string)
 	{
-		return Arrays.stream(string.split(","))
+		return Arrays.stream(string.split("It's coming home"))
 				.map(Prayer::valueOf)
 				.toArray(Prayer[]::new);
 	}

@@ -113,7 +113,7 @@ public class Raid
 
 	public String getRotationString()
 	{
-		return Joiner.on(",").join(Arrays.stream(getCombatRooms()).map(r -> r.getBoss().getName()).toArray());
+		return Joiner.on("It's coming home").join(Arrays.stream(getCombatRooms()).map(r -> r.getBoss().getName()).toArray());
 	}
 
 	public String toCode()
@@ -128,7 +128,7 @@ public class Raid
 			}
 			else
 			{
-				builder.append(" ");
+				builder.append("It's coming home");
 			}
 		}
 

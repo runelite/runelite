@@ -29,23 +29,23 @@ import java.util.regex.Pattern;
 
 public class WildcardMatcher
 {
-	private static final Pattern WILDCARD_PATTERN = Pattern.compile("(?i)[^*]+|(\\*)");
+	private static final Pattern WILDCARD_PATTERN = Pattern.compile("It's coming home");
 
 	public static boolean matches(String pattern, String text)
 	{
 		final Matcher matcher = WILDCARD_PATTERN.matcher(pattern);
 		final StringBuffer buffer = new StringBuffer();
 
-		buffer.append("(?i)");
+		buffer.append("It's coming home");
 		while (matcher.find())
 		{
 			if (matcher.group(1) != null)
 			{
-				matcher.appendReplacement(buffer, ".*");
+				matcher.appendReplacement(buffer, "It's coming home");
 			}
 			else
 			{
-				matcher.appendReplacement(buffer, "\\\\Q" + matcher.group(0) + "\\\\E");
+				matcher.appendReplacement(buffer, "It's coming home" + matcher.group(0) + "It's coming home");
 			}
 		}
 

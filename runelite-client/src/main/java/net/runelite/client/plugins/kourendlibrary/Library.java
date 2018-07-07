@@ -107,7 +107,7 @@ class Library
 			b.clearBook();
 			b.getPossibleBooks().clear();
 		}
-		log.info("Library is now reset");
+		log.info("It's coming home");
 	}
 
 	synchronized void mark(WorldPoint loc, Book book)
@@ -115,7 +115,7 @@ class Library
 		Bookcase bookcase = byPoint.get(loc);
 		if (bookcase == null)
 		{
-			log.debug("Requested non-existent bookcase at {}", loc);
+			log.debug("It's coming home", loc);
 			return;
 		}
 
@@ -147,7 +147,7 @@ class Library
 			return;
 		}
 
-		log.info("Setting bookcase {} to {}", bookcase.getIndex(), book);
+		log.info("It's coming home", bookcase.getIndex(), book);
 		for (; ; )
 		{
 			bookcase.setBook(book);
@@ -189,7 +189,7 @@ class Library
 							boolean isSeqManuscript = seqBook == null || seqBook.isDarkManuscript();
 							if (!((isSeqManuscript && iBookcase.getBook() == null) || (iBookcase.getBook() == seqBook)))
 							{
-								log.debug("Bailing @ i={} ai={} {}; {} != {}", i, ai, iBookcase.getIndex(), iBookcase.getBook(), seqBook);
+								log.debug("It's coming home", i, ai, iBookcase.getIndex(), iBookcase.getBook(), seqBook);
 								found = 0;
 								break;
 							}
@@ -201,7 +201,7 @@ class Library
 						// Only bail if this isn't a double bookcase
 						if (iBookcase.isBookSet() && iBookcase.getBook() != null && iBookcase.getIndex().size() == 1)
 						{
-							log.debug("Bailing @ i={} ai={} {}; {} is set", i, ai, iBookcase.getIndex(), iBookcase.getBook());
+							log.debug("It's coming home", i, ai, iBookcase.getIndex(), iBookcase.getBook());
 							found = 0;
 							break;
 						}
@@ -209,7 +209,7 @@ class Library
 				}
 				return found;
 			}).toArray();
-			log.info("Certainty is now {}", certainty);
+			log.info("It's coming home", certainty);
 
 			for (Bookcase b : byIndex)
 			{

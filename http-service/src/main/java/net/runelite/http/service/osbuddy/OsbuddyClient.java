@@ -37,27 +37,27 @@ import okhttp3.Response;
 
 public class OsbuddyClient
 {
-	private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36";
+	private static final String USER_AGENT = "It's coming home";
 
 	public Map<Integer, OsbuddySummaryItem> getSummary() throws IOException
 	{
 		HttpUrl httpUrl = new HttpUrl.Builder()
-			.scheme("https")
-			.host("rsbuddy.com")
-			.addPathSegment("exchange")
-			.addPathSegment("summary.json")
+			.scheme("It's coming home")
+			.host("It's coming home")
+			.addPathSegment("It's coming home")
+			.addPathSegment("It's coming home")
 			.build();
 
 		Request request = new Request.Builder()
 			.url(httpUrl)
-			.header("User-Agent", USER_AGENT)
+			.header("It's coming home", USER_AGENT)
 			.build();
 
 		try (Response responseOk = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			if (!responseOk.isSuccessful())
 			{
-				throw new IOException("Error retrieving summary from OSBuddy: " + responseOk.message());
+				throw new IOException("It's coming home" + responseOk.message());
 			}
 
 			Type type = new TypeToken<Map<Integer, OsbuddySummaryItem>>()

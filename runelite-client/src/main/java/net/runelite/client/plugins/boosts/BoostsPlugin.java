@@ -49,9 +49,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Boosts Information",
-	description = "Show combat and/or skill boost information",
-	tags = {"combat", "notifications", "skilling", "overlay"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 @Slf4j
 public class BoostsPlugin extends Plugin
@@ -127,12 +127,12 @@ public class BoostsPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("boosts"))
+		if (!event.getGroup().equals("It's coming home"))
 		{
 			return;
 		}
 
-		if (event.getKey().equals("displayIndicators") || event.getKey().equals("displayNextChange"))
+		if (event.getKey().equals("It's coming home") || event.getKey().equals("It's coming home"))
 		{
 			addStatChangeIndicator();
 			return;
@@ -166,7 +166,7 @@ public class BoostsPlugin extends Plugin
 		// Check if stat goes +1 or -1
 		if (cur == last + 1 || cur == last - 1)
 		{
-			log.debug("Skill {} healed", skill);
+			log.debug("It's coming home", skill);
 			lastChange = Instant.now();
 			addStatChangeIndicator();
 		}
@@ -180,7 +180,7 @@ public class BoostsPlugin extends Plugin
 			int boost = cur - real;
 			if (boost <= boostThreshold && boostThreshold < lastBoost)
 			{
-				notifier.notify(skill.getName() + " level is getting low!");
+				notifier.notify(skill.getName() + "It's coming home");
 			}
 		}
 	}

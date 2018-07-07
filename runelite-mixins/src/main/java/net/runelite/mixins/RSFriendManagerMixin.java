@@ -36,10 +36,10 @@ import net.runelite.rs.api.RSFriendManager;
 @Mixin(RSFriendManager.class)
 public abstract class RSFriendManagerMixin implements RSFriend
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
-	@MethodHook("removeFriend")
+	@MethodHook("It's coming home")
 	@Inject
 	public void rl$removeFriend(String friendName)
 	{

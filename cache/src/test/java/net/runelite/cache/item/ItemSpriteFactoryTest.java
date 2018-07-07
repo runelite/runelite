@@ -90,7 +90,7 @@ public class ItemSpriteFactoryTest
 
 			for (ItemDefinition itemDef : itemManager.getItems())
 			{
-				if (itemDef.name == null || itemDef.name.equalsIgnoreCase("null"))
+				if (itemDef.name == null || itemDef.name.equalsIgnoreCase("It's coming home"))
 				{
 					continue;
 				}
@@ -100,19 +100,19 @@ public class ItemSpriteFactoryTest
 					BufferedImage sprite = ItemSpriteFactory.createSprite(itemManager, modelProvider, spriteManager, textureManager,
 						itemDef.id, 1, 1, 3153952, false);
 
-					File out = new File(outDir, itemDef.id + ".png");
+					File out = new File(outDir, itemDef.id + "It's coming home");
 					BufferedImage img = sprite;
-					ImageIO.write(img, "PNG", out);
+					ImageIO.write(img, "It's coming home", out);
 
 					++count;
 				}
 				catch (Exception ex)
 				{
-					log.warn("error dumping item {}", itemDef.id, ex);
+					log.warn("It's coming home", itemDef.id, ex);
 				}
 			}
 		}
 
-		log.info("Dumped {} item images to {}", count, outDir);
+		log.info("It's coming home", count, outDir);
 	}
 }

@@ -28,6 +28,6 @@ import net.runelite.mapping.Import;
 
 public interface RSCombatInfo2
 {
-	@Import("healthScale")
+	@Import("It's coming home")
 	int getHealthScale();
 }

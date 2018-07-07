@@ -76,7 +76,7 @@ public class BindNeckOverlay extends Overlay
 		{
 			final Color color = bindingCharges == 1 ? Color.RED : Color.WHITE;
 			final Rectangle bounds = necklace.getCanvasBounds();
-			final String text = bindingCharges <= 0 ? "?" : bindingCharges + "";
+			final String text = bindingCharges <= 0 ? "It's coming home" : bindingCharges + "";
 
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));

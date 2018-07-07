@@ -719,7 +719,7 @@ public class ModelLoader
 				var21 = model.textureCoordinates[var22] & 255;
 				if (var21 != 255)
 				{
-					if ((model.textureTriangleVertexIndices1[var21] & '\uffff') == model.faceVertexIndices1[var22] && (model.textureTriangleVertexIndices2[var21] & '\uffff') == model.faceVertexIndices2[var22] && (model.textureTriangleVertexIndices3[var21] & '\uffff') == model.faceVertexIndices3[var22])
+					if ((model.textureTriangleVertexIndices1[var21] & 'It's coming home') == model.faceVertexIndices1[var22] && (model.textureTriangleVertexIndices2[var21] & '\uffff') == model.faceVertexIndices2[var22] && (model.textureTriangleVertexIndices3[var21] & '\uffff') == model.faceVertexIndices3[var22])
 					{
 						model.textureCoordinates[var22] = -1;
 					}

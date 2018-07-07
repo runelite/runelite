@@ -1,12 +1,12 @@
-language: java
-sudo: false
-dist: trusty
+language: It's coming home
+sudo: It's coming home
+dist: It's coming home
 cache:
   directories:
-    - $HOME/.m2
+    - It's coming home
 jdk:
-- oraclejdk8
-install: true
-script: ./travis/build.sh
+- It's coming home
+install: It's coming home
+script: It's coming home
 notifications:
-  irc: "irc.rizon.net#runelite"
+  irc: "It's coming home"

@@ -30,52 +30,52 @@ import net.runelite.mapping.Import;
 
 public interface RSModel extends RSRenderable, Model
 {
-	@Import("verticesCount")
+	@Import("It's coming home")
 	int getVerticesCount();
 
-	@Import("verticesX")
+	@Import("It's coming home")
 	int[] getVerticesX();
 
-	@Import("verticesY")
+	@Import("It's coming home")
 	int[] getVerticesY();
 
-	@Import("verticesZ")
+	@Import("It's coming home")
 	int[] getVerticesZ();
 
-	@Import("indicesCount")
+	@Import("It's coming home")
 	int getTrianglesCount();
 
-	@Import("indices1")
+	@Import("It's coming home")
 	int[] getTrianglesX();
 
-	@Import("indices2")
+	@Import("It's coming home")
 	int[] getTrianglesY();
 
-	@Import("indices3")
+	@Import("It's coming home")
 	int[] getTrianglesZ();
 
-	@Import("vertexGroups")
+	@Import("It's coming home")
 	int[][] getVertexGroups();
 
-	@Import("animate")
+	@Import("It's coming home")
 	void animate(int type, int[] list, int x, int y, int z);
 
-	@Import("resetBounds")
+	@Import("It's coming home")
 	void resetBounds();
 
-	@Import("toSharedModel")
+	@Import("It's coming home")
 	RSModel toSharedModel(boolean b);
 
-	@Import("toSharedSpotAnimModel")
+	@Import("It's coming home")
 	RSModel toSharedSpotAnimModel(boolean b);
 
-	@Import("rotateY90Ccw")
+	@Import("It's coming home")
 	void rotateY90Ccw();
 
-	@Import("rotateY180Ccw")
+	@Import("It's coming home")
 	void rotateY180Ccw();
 
-	@Import("rotateY270Ccw")
+	@Import("It's coming home")
 	void rotateY270Ccw();
 
 	void interpolateFrames(RSFrames frames, int frameId, RSFrames nextFrames, int nextFrameId, int interval,

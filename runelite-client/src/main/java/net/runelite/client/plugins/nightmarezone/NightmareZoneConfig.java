@@ -29,13 +29,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("nightmareZone")
+@ConfigGroup("It's coming home")
 public interface NightmareZoneConfig extends Config
 {
 	@ConfigItem(
-		keyName = "moveoverlay",
-		name = "Override NMZ overlay",
-		description = "Overrides the overlay so it doesn't conflict with other RuneLite plugins",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 1
 	)
 	default boolean moveOverlay()
@@ -44,9 +44,9 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "powersurgenotification",
-		name = "Power surge notification",
-		description = "Toggles notifications when a power surge power-up appears",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 2
 	)
 	default boolean powerSurgeNotification()
@@ -55,9 +55,9 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "recurrentdamagenotification",
-		name = "Recurrent damage notification",
-		description = "Toggles notifications when a recurrent damage power-up appears",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 3
 	)
 	default boolean recurrentDamageNotification()
@@ -66,9 +66,9 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "zappernotification",
-		name = "Zapper notification",
-		description = "Toggles notifications when a zapper power-up appears",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 4
 	)
 	default boolean zapperNotification()
@@ -77,9 +77,9 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "overloadnotification",
-		name = "Overload notification",
-		description = "Toggles notifications when your overload runs out",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 5
 	)
 	default boolean overloadNotification()
@@ -88,9 +88,9 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "absorptionnotification",
-		name = "Absorption notification",
-		description = "Toggles notifications when your absorption points gets below your threshold",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 6
 	)
 	default boolean absorptionNotification()
@@ -99,9 +99,9 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "absorptionthreshold",
-		name = "Absorption Threshold",
-		description = "The amount of absorption points to send a notification at",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 7
 	)
 	default int absorptionThreshold()
@@ -110,9 +110,9 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "absorptioncoloroverthreshold",
-		name = "Color above threshold",
-		description = "Configures the color for the absorption widget when above the threshold",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 8
 	)
 	default Color absorptionColorAboveThreshold()
@@ -121,9 +121,9 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "absorptioncolorbelowthreshold",
-		name = "Color below threshold",
-		description = "Configures the color for the absorption widget when below the threshold",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 9
 	)
 	default Color absorptionColorBelowThreshold()

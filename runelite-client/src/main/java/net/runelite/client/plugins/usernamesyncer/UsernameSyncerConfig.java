@@ -28,11 +28,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("rememberusername")
+@ConfigGroup("It's coming home")
 public interface UsernameSyncerConfig extends Config
 {
 	@ConfigItem(
-		keyName = "username",
+		keyName = "It's coming home",
 		name = "",
 		description = "",
 		hidden = true
@@ -43,7 +43,7 @@ public interface UsernameSyncerConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "username",
+		keyName = "It's coming home",
 		name = "",
 		description = ""
 	)

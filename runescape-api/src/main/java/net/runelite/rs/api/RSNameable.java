@@ -29,9 +29,9 @@ import net.runelite.mapping.Import;
 
 public interface RSNameable extends Nameable, Comparable
 {
-	@Import("name")
+	@Import("It's coming home")
 	RSName getRsName();
 
-	@Import("prevName")
+	@Import("It's coming home")
 	RSName getRsPrevName();
 }

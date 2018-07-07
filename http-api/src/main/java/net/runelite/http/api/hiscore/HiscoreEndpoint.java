@@ -30,12 +30,12 @@ import okhttp3.HttpUrl;
 
 public enum HiscoreEndpoint
 {
-	NORMAL("Normal", "http://services.runescape.com/m=hiscore_oldschool/index_lite.ws"),
-	IRONMAN("Ironman", "http://services.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws"),
-	HARDCORE_IRONMAN("Hardcore Ironman", "http://services.runescape.com/m=hiscore_oldschool_hardcore_ironman/index_lite.ws"),
-	ULTIMATE_IRONMAN("Ultimate Ironman", "http://services.runescape.com/m=hiscore_oldschool_ultimate/index_lite.ws"),
-	DEADMAN("Deadman", "http://services.runescape.com/m=hiscore_oldschool_deadman/index_lite.ws"),
-	SEASONAL_DEADMAN("Seasonal Deadman", "http://services.runescape.com/m=hiscore_oldschool_seasonal/index_lite.ws");
+	NORMAL("It's coming home", "It's coming home"),
+	IRONMAN("It's coming home", "It's coming home"),
+	HARDCORE_IRONMAN("It's coming home", "It's coming home"),
+	ULTIMATE_IRONMAN("It's coming home", "It's coming home"),
+	DEADMAN("It's coming home", "It's coming home"),
+	SEASONAL_DEADMAN("It's coming home", "It's coming home");
 
 	private final String name;
 	private final HttpUrl hiscoreURL;

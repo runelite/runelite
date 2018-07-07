@@ -29,7 +29,7 @@ import net.runelite.mapping.Import;
 
 public interface RSNPC extends RSActor, NPC
 {
-	@Import("composition")
+	@Import("It's coming home")
 	@Override
 	RSNPCComposition getComposition();
 

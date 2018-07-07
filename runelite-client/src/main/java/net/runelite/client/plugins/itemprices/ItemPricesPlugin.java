@@ -32,9 +32,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Item Prices",
-	description = "Show prices on hover for items in your inventory and bank",
-	tags = {"bank", "inventory", "overlay", "high", "alchemy", "grand", "exchange"},
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home"},
 	enabledByDefault = false
 )
 public class ItemPricesPlugin extends Plugin

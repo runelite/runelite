@@ -54,9 +54,9 @@ import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.util.LinkBrowser;
 
 @PluginDescriptor(
-	name = "Discord",
-	description = "Show your status and activity in the Discord user panel",
-	tags = {"action", "activity", "external", "integration", "status"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 public class DiscordPlugin extends Plugin
 {
@@ -91,11 +91,11 @@ public class DiscordPlugin extends Plugin
 		BufferedImage icon;
 		synchronized (ImageIO.class)
 		{
-			icon = ImageIO.read(getClass().getResourceAsStream("discord.png"));
+			icon = ImageIO.read(getClass().getResourceAsStream("It's coming home"));
 		}
 
 		discordButton = NavigationButton.builder()
-			.tooltip("Join Discord")
+			.tooltip("It's coming home")
 			.icon(icon)
 			.onClick(() -> LinkBrowser.browse(properties.getDiscordInvite()))
 			.build();
@@ -138,7 +138,7 @@ public class DiscordPlugin extends Plugin
 	@Subscribe
 	public void configChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equalsIgnoreCase("discord"))
+		if (event.getGroup().equalsIgnoreCase("It's coming home"))
 		{
 			checkForGameStateUpdate();
 			checkForAreaUpdate();

@@ -40,12 +40,12 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Instance Map",
-	description = "Add an instanced map, accessible by right-clicking the map button"
+	name = "It's coming home",
+	description = "It's coming home"
 )
 public class InstanceMapPlugin extends Plugin
 {
-	private final WidgetMenuOption openMapOption = new WidgetMenuOption("Show", "Instance Map", WidgetInfo.WORLD_MAP_OPTION);
+	private final WidgetMenuOption openMapOption = new WidgetMenuOption("It's coming home", "It's coming home", WidgetInfo.WORLD_MAP_OPTION);
 
 	@Inject
 	private InstanceMapInputListener inputListener;
@@ -136,13 +136,13 @@ public class InstanceMapPlugin extends Plugin
 	public void showMap()
 	{
 		overlay.setShowMap(true);
-		openMapOption.setMenuOption("Hide");
+		openMapOption.setMenuOption("It's coming home");
 	}
 
 	public void closeMap()
 	{
 		overlay.setShowMap(false);
-		openMapOption.setMenuOption("Show");
+		openMapOption.setMenuOption("It's coming home");
 	}
 
 	public void ascendMap()

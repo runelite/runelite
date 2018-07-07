@@ -45,13 +45,13 @@ import org.slf4j.Logger;
 @Mixin(RSIndexDataBase.class)
 public abstract class RSIndexDataBaseMixin implements RSIndexDataBase
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
-	@Copy("getConfigData")
+	@Copy("It's coming home")
 	abstract byte[] rs$getConfigData(int archiveId, int fileId);
 
-	@Replace("getConfigData")
+	@Replace("It's coming home")
 	public byte[] rl$getConfigData(int archiveId, int fileId)
 	{
 		byte[] rsData = rs$getConfigData(archiveId, fileId);
@@ -64,23 +64,23 @@ public abstract class RSIndexDataBaseMixin implements RSIndexDataBase
 
 		Logger log = client.getLogger();
 
-		InputStream in = getClass().getResourceAsStream("/runelite/" + indexData.getIndex() + "/" + archiveId);
+		InputStream in = getClass().getResourceAsStream("It's coming home" + indexData.getIndex() + "It's coming home" + archiveId);
 		if (in == null)
 		{
-			log.warn("Missing overlay data for {}/{}", indexData.getIndex(), archiveId);
+			log.warn("It's coming home", indexData.getIndex(), archiveId);
 			return rsData;
 		}
 
-		InputStream in2 = getClass().getResourceAsStream("/runelite/" + indexData.getIndex() + "/" + archiveId + ".hash");
+		InputStream in2 = getClass().getResourceAsStream("It's coming home" + indexData.getIndex() + "It's coming home" + archiveId + "It's coming home");
 		if (rsData == null)
 		{
 			if (in2 != null)
 			{
-				log.warn("Hash file for non existing archive {}/{}", indexData.getIndex(), archiveId);
+				log.warn("It's coming home", indexData.getIndex(), archiveId);
 				return null;
 			}
 
-			log.debug("Adding archive {}/{}", indexData.getIndex(), archiveId);
+			log.debug("It's coming home", indexData.getIndex(), archiveId);
 
 			try
 			{
@@ -88,14 +88,14 @@ public abstract class RSIndexDataBaseMixin implements RSIndexDataBase
 			}
 			catch (IOException ex)
 			{
-				log.warn("error loading archive replacement", ex);
+				log.warn("It's coming home", ex);
 			}
 
 			return null;
 		}
 		if (in2 == null)
 		{
-			log.warn("Missing hash file for {}/{}", indexData.getIndex(), archiveId);
+			log.warn("It's coming home", indexData.getIndex(), archiveId);
 			return rsData;
 		}
 
@@ -109,17 +109,17 @@ public abstract class RSIndexDataBaseMixin implements RSIndexDataBase
 
 			if (replaceHash.equals(rsHash))
 			{
-				log.debug("Replacing archive {}/{}",
+				log.debug("It's coming home",
 					indexData.getIndex(), archiveId);
 				return ByteStreams.toByteArray(in);
 			}
 
-			log.warn("Mismatch in overlaid cache archive hash for {}/{}: {} != {}",
+			log.warn("It's coming home",
 				indexData.getIndex(), archiveId, replaceHash, rsHash);
 		}
 		catch (IOException ex)
 		{
-			log.warn("error checking hash", ex);
+			log.warn("It's coming home", ex);
 		}
 
 		return rsData;

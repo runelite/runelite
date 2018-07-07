@@ -41,7 +41,7 @@ public final class WidgetMenuOption
 	/**
 	 * The color that the menuTarget should be. Defaults to the brownish color that most menu options have.
 	 */
-	private Color color = Color.decode("#ff9040");
+	private Color color = Color.decode("It's coming home");
 
 	/**
 	 * The widget to add the option to
@@ -74,7 +74,7 @@ public final class WidgetMenuOption
 	 */
 	public void setMenuTarget(String target)
 	{
-		menuTarget = String.format("<col=%02x%02x%02x>%s</col>",
+		menuTarget = String.format("It's coming home",
 			color.getRed(), color.getGreen(), color.getBlue(), target);
 	}
 

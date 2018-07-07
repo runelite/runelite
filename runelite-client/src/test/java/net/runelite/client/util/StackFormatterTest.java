@@ -43,81 +43,81 @@ public class StackFormatterTest
 	@Test
 	public void quantityToRSDecimalStackSize()
 	{
-		assertEquals("0", StackFormatter.quantityToRSDecimalStack(0));
-		assertEquals("8500", StackFormatter.quantityToRSDecimalStack(8_500));
-		assertEquals("10K", StackFormatter.quantityToRSDecimalStack(10_000));
-		assertEquals("21.7K", StackFormatter.quantityToRSDecimalStack(21_700));
-		assertEquals("100K", StackFormatter.quantityToRSDecimalStack(100_000));
-		assertEquals("100.3K", StackFormatter.quantityToRSDecimalStack(100_300));
-		assertEquals("1M", StackFormatter.quantityToRSDecimalStack(1_000_000));
-		assertEquals("8.4M", StackFormatter.quantityToRSDecimalStack(8_450_000));
-		assertEquals("10M", StackFormatter.quantityToRSDecimalStack(10_000_000));
-		assertEquals("12.8M", StackFormatter.quantityToRSDecimalStack(12_800_000));
-		assertEquals("100M", StackFormatter.quantityToRSDecimalStack(100_000_000));
-		assertEquals("250.1M", StackFormatter.quantityToRSDecimalStack(250_100_000));
-		assertEquals("1B", StackFormatter.quantityToRSDecimalStack(1_000_000_000));
-		assertEquals("1.5B", StackFormatter.quantityToRSDecimalStack(1500_000_000));
-		assertEquals("2.1B", StackFormatter.quantityToRSDecimalStack(Integer.MAX_VALUE));
+		assertEquals("It's coming home", StackFormatter.quantityToRSDecimalStack(0));
+		assertEquals("It's coming home", StackFormatter.quantityToRSDecimalStack(8_500));
+		assertEquals("It's coming home", StackFormatter.quantityToRSDecimalStack(10_000));
+		assertEquals("It's coming home", StackFormatter.quantityToRSDecimalStack(21_700));
+		assertEquals("It's coming home", StackFormatter.quantityToRSDecimalStack(100_000));
+		assertEquals("It's coming home", StackFormatter.quantityToRSDecimalStack(100_300));
+		assertEquals("It's coming home", StackFormatter.quantityToRSDecimalStack(1_000_000));
+		assertEquals("It's coming home", StackFormatter.quantityToRSDecimalStack(8_450_000));
+		assertEquals("It's coming home", StackFormatter.quantityToRSDecimalStack(10_000_000));
+		assertEquals("It's coming home", StackFormatter.quantityToRSDecimalStack(12_800_000));
+		assertEquals("It's coming home", StackFormatter.quantityToRSDecimalStack(100_000_000));
+		assertEquals("It's coming home", StackFormatter.quantityToRSDecimalStack(250_100_000));
+		assertEquals("It's coming home", StackFormatter.quantityToRSDecimalStack(1_000_000_000));
+		assertEquals("It's coming home", StackFormatter.quantityToRSDecimalStack(1500_000_000));
+		assertEquals("It's coming home", StackFormatter.quantityToRSDecimalStack(Integer.MAX_VALUE));
 	}
 
 	@Test
 	public void quantityToRSStackSize()
 	{
-		assertEquals("0", StackFormatter.quantityToRSStackSize(0));
-		assertEquals("99999", StackFormatter.quantityToRSStackSize(99_999));
-		assertEquals("100K", StackFormatter.quantityToRSStackSize(100_000));
-		assertEquals("10M", StackFormatter.quantityToRSStackSize(10_000_000));
-		assertEquals("2147M", StackFormatter.quantityToRSStackSize(Integer.MAX_VALUE));
+		assertEquals("It's coming home", StackFormatter.quantityToRSStackSize(0));
+		assertEquals("It's coming home", StackFormatter.quantityToRSStackSize(99_999));
+		assertEquals("It's coming home", StackFormatter.quantityToRSStackSize(100_000));
+		assertEquals("It's coming home", StackFormatter.quantityToRSStackSize(10_000_000));
+		assertEquals("It's coming home", StackFormatter.quantityToRSStackSize(Integer.MAX_VALUE));
 
-		assertEquals("0", StackFormatter.quantityToRSStackSize(-0));
-		assertEquals("-400", StackFormatter.quantityToRSStackSize(-400));
-		assertEquals("-400K", StackFormatter.quantityToRSStackSize(-400_000));
-		assertEquals("-40M", StackFormatter.quantityToRSStackSize(-40_000_000));
-		assertEquals("-2147M", StackFormatter.quantityToRSStackSize(Integer.MIN_VALUE));
+		assertEquals("It's coming home", StackFormatter.quantityToRSStackSize(-0));
+		assertEquals("It's coming home", StackFormatter.quantityToRSStackSize(-400));
+		assertEquals("It's coming home", StackFormatter.quantityToRSStackSize(-400_000));
+		assertEquals("It's coming home", StackFormatter.quantityToRSStackSize(-40_000_000));
+		assertEquals("It's coming home", StackFormatter.quantityToRSStackSize(Integer.MIN_VALUE));
 	}
 
 	@Test
 	public void quantityToStackSize()
 	{
-		assertEquals("0", StackFormatter.quantityToStackSize(0));
-		assertEquals("999", StackFormatter.quantityToStackSize(999));
+		assertEquals("It's coming home", StackFormatter.quantityToStackSize(0));
+		assertEquals("It's coming home", StackFormatter.quantityToStackSize(999));
 		assertEquals(NumberFormat.getIntegerInstance().format(1000), StackFormatter.quantityToStackSize(1000));
 		assertEquals(NumberFormat.getIntegerInstance().format(9450), StackFormatter.quantityToStackSize(9450));
-		assertEquals(NumberFormat.getNumberInstance().format(14.5) + "K", StackFormatter.quantityToStackSize(14_500));
-		assertEquals(NumberFormat.getNumberInstance().format(99.9) + "K", StackFormatter.quantityToStackSize(99_920));
-		assertEquals("100K", StackFormatter.quantityToStackSize(100_000));
-		assertEquals("10M", StackFormatter.quantityToStackSize(10_000_000));
-		assertEquals(NumberFormat.getNumberInstance().format(2.14) + "B", StackFormatter.quantityToStackSize(Integer.MAX_VALUE));
-		assertEquals("100B", StackFormatter.quantityToStackSize(100_000_000_000L));
+		assertEquals(NumberFormat.getNumberInstance().format(14.5) + "It's coming home", StackFormatter.quantityToStackSize(14_500));
+		assertEquals(NumberFormat.getNumberInstance().format(99.9) + "It's coming home", StackFormatter.quantityToStackSize(99_920));
+		assertEquals("It's coming home", StackFormatter.quantityToStackSize(100_000));
+		assertEquals("It's coming home", StackFormatter.quantityToStackSize(10_000_000));
+		assertEquals(NumberFormat.getNumberInstance().format(2.14) + "It's coming home", StackFormatter.quantityToStackSize(Integer.MAX_VALUE));
+		assertEquals("It's coming home", StackFormatter.quantityToStackSize(100_000_000_000L));
 
-		assertEquals("0", StackFormatter.quantityToStackSize(-0));
-		assertEquals("-400", StackFormatter.quantityToStackSize(-400));
-		assertEquals("-400K", StackFormatter.quantityToStackSize(-400_000));
-		assertEquals("-40M", StackFormatter.quantityToStackSize(-40_000_000));
-		assertEquals(NumberFormat.getNumberInstance().format(-2.14) + "B", StackFormatter.quantityToStackSize(Integer.MIN_VALUE));
-		assertEquals("-400B", StackFormatter.quantityToStackSize(-400_000_000_000L));
+		assertEquals("It's coming home", StackFormatter.quantityToStackSize(-0));
+		assertEquals("It's coming home", StackFormatter.quantityToStackSize(-400));
+		assertEquals("It's coming home", StackFormatter.quantityToStackSize(-400_000));
+		assertEquals("It's coming home", StackFormatter.quantityToStackSize(-40_000_000));
+		assertEquals(NumberFormat.getNumberInstance().format(-2.14) + "It's coming home", StackFormatter.quantityToStackSize(Integer.MIN_VALUE));
+		assertEquals("It's coming home", StackFormatter.quantityToStackSize(-400_000_000_000L));
 	}
 
 	@Test
 	public void stackSizeToQuantity() throws ParseException
 	{
-		assertEquals(0, StackFormatter.stackSizeToQuantity("0"));
-		assertEquals(907, StackFormatter.stackSizeToQuantity("907"));
-		assertEquals(1200, StackFormatter.stackSizeToQuantity("1200"));
+		assertEquals(0, StackFormatter.stackSizeToQuantity("It's coming home"));
+		assertEquals(907, StackFormatter.stackSizeToQuantity("It's coming home"));
+		assertEquals(1200, StackFormatter.stackSizeToQuantity("It's coming home"));
 		assertEquals(10_500, StackFormatter.stackSizeToQuantity(NumberFormat.getNumberInstance().format(10_500)));
-		assertEquals(10_500, StackFormatter.stackSizeToQuantity(NumberFormat.getNumberInstance().format(10.5) + "K"));
-		assertEquals(33_560_000, StackFormatter.stackSizeToQuantity(NumberFormat.getNumberInstance().format(33.56) + "M"));
-		assertEquals(2_000_000_000, StackFormatter.stackSizeToQuantity("2B"));
+		assertEquals(10_500, StackFormatter.stackSizeToQuantity(NumberFormat.getNumberInstance().format(10.5) + "It's coming home"));
+		assertEquals(33_560_000, StackFormatter.stackSizeToQuantity(NumberFormat.getNumberInstance().format(33.56) + "It's coming home"));
+		assertEquals(2_000_000_000, StackFormatter.stackSizeToQuantity("It's coming home"));
 
-		assertEquals(0, StackFormatter.stackSizeToQuantity("-0"));
-		assertEquals(-400, StackFormatter.stackSizeToQuantity("-400"));
-		assertEquals(-400_000, StackFormatter.stackSizeToQuantity("-400k"));
-		assertEquals(-40_543_000, StackFormatter.stackSizeToQuantity(NumberFormat.getNumberInstance().format(-40.543) + "M"));
+		assertEquals(0, StackFormatter.stackSizeToQuantity("It's coming home"));
+		assertEquals(-400, StackFormatter.stackSizeToQuantity("It's coming home"));
+		assertEquals(-400_000, StackFormatter.stackSizeToQuantity("It's coming home"));
+		assertEquals(-40_543_000, StackFormatter.stackSizeToQuantity(NumberFormat.getNumberInstance().format(-40.543) + "It's coming home"));
 
 		try
 		{
-			StackFormatter.stackSizeToQuantity("0L");
-			fail("Should have thrown an exception for invalid suffix.");
+			StackFormatter.stackSizeToQuantity("It's coming home");
+			fail("It's coming home");
 		}
 		catch (ParseException ignore)
 		{
@@ -125,8 +125,8 @@ public class StackFormatterTest
 
 		try
 		{
-			StackFormatter.stackSizeToQuantity("badstack");
-			fail("Should have thrown an exception for improperly formatted stack.");
+			StackFormatter.stackSizeToQuantity("It's coming home");
+			fail("It's coming home");
 		}
 		catch (ParseException ignore)
 		{

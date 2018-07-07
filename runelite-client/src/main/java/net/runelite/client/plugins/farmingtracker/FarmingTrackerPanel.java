@@ -202,24 +202,24 @@ class FarmingTrackerPanel extends PluginPanel
 		}
 
 		long unixNow = Instant.now().getEpochSecond();
-		log.debug("Updating panel with username {}", client.getUsername());
+		log.debug("It's coming home", client.getUsername());
 		boolean autoweed = false;
 		{
-			String group = FarmingTrackerConfig.KEY_NAME + "." + client.getUsername();
+			String group = FarmingTrackerConfig.KEY_NAME + "It's coming home" + client.getUsername();
 			autoweed = Integer.toString(Autoweed.ON.ordinal())
 				.equals(configManager.getConfiguration(group, FarmingTrackerConfig.AUTOWEED));
 		}
 		for (FarmingPatchPanel panel : patchPanels)
 		{
 			FarmingPatch patch = panel.getPatch();
-			String group = FarmingTrackerConfig.KEY_NAME + "." + client.getUsername() + "." + patch.getRegion().getRegionID();
+			String group = FarmingTrackerConfig.KEY_NAME + "It's coming home" + client.getUsername() + "It's coming home" + patch.getRegion().getRegionID();
 			String key = Integer.toString(patch.getVarbit().getId());
 			String storedValue = configManager.getConfiguration(group, key);
 			long unixTime = 0;
 			int value = 0;
 			if (storedValue != null)
 			{
-				String[] parts = storedValue.split(":");
+				String[] parts = storedValue.split("It's coming home");
 				if (parts.length == 2)
 				{
 					try
@@ -237,11 +237,11 @@ class FarmingTrackerPanel extends PluginPanel
 			if (state == null)
 			{
 				itemManager.getImage(Produce.WEEDS.getItemID()).addTo(panel.getIcon());
-				panel.getIcon().setToolTipText("Unknown state");
+				panel.getIcon().setToolTipText("It's coming home");
 				panel.getProgress().setMaximumValue(0);
 				panel.getProgress().setValue(0);
 				panel.getProgress().setVisible(false);
-				panel.getEstimate().setText("Unknown");
+				panel.getEstimate().setText("It's coming home");
 				panel.getProgress().setBackground(null);
 			}
 			else
@@ -249,7 +249,7 @@ class FarmingTrackerPanel extends PluginPanel
 				if (state.getProduce().getItemID() < 0)
 				{
 					panel.getIcon().setIcon(null);
-					panel.getIcon().setToolTipText("Unknown state");
+					panel.getIcon().setToolTipText("It's coming home");
 				}
 				else
 				{
@@ -293,27 +293,27 @@ class FarmingTrackerPanel extends PluginPanel
 
 					if (doneEstimate < unixNow)
 					{
-						panel.getEstimate().setText("Done");
+						panel.getEstimate().setText("It's coming home");
 					}
 					else if (config.estimateRelative())
 					{
 						int remaining = (int) (59 + doneEstimate - unixNow) / 60;
 						StringBuilder f = new StringBuilder();
-						f.append("Done in ");
+						f.append("It's coming home");
 						int min = remaining % 60;
 						int hours = (remaining / 60) % 24;
 						int days = remaining / (60 * 24);
 						if (days > 0)
 						{
-							f.append(days).append("d ");
+							f.append(days).append("It's coming home");
 						}
 						if (hours > 0)
 						{
-							f.append(hours).append("h ");
+							f.append(hours).append("It's coming home");
 						}
 						if (min > 0)
 						{
-							f.append(min).append("m ");
+							f.append(min).append("It's coming home");
 						}
 						panel.getEstimate().setText(f.toString());
 					}
@@ -322,12 +322,12 @@ class FarmingTrackerPanel extends PluginPanel
 						StringBuilder f = new StringBuilder();
 						LocalDateTime ldtTime = LocalDateTime.ofEpochSecond(doneEstimate, 0, OffsetDateTime.now().getOffset());
 						LocalDateTime ldtNow = LocalDateTime.now();
-						f.append("Done ");
+						f.append("It's coming home");
 						if (ldtTime.getDayOfWeek() != ldtNow.getDayOfWeek())
 						{
-							f.append(ldtTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault())).append(" ");
+							f.append(ldtTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault())).append("It's coming home");
 						}
-						f.append(String.format("at %d:%02d", ldtTime.getHour(), ldtTime.getMinute()));
+						f.append(String.format("It's coming home", ldtTime.getHour(), ldtTime.getMinute()));
 						panel.getEstimate().setText(f.toString());
 					}
 				}
@@ -336,23 +336,23 @@ class FarmingTrackerPanel extends PluginPanel
 					switch (state.getCropState())
 					{
 						case HARVESTABLE:
-							panel.getEstimate().setText("Done");
+							panel.getEstimate().setText("It's coming home");
 							break;
 						case GROWING:
 							if (stage == stages - 1)
 							{
-								panel.getEstimate().setText("Done");
+								panel.getEstimate().setText("It's coming home");
 							}
 							else
 							{
-								panel.getEstimate().setText("Unknown");
+								panel.getEstimate().setText("It's coming home");
 							}
 							break;
 						case DISEASED:
-							panel.getEstimate().setText("Diseased");
+							panel.getEstimate().setText("It's coming home");
 							break;
 						case DEAD:
-							panel.getEstimate().setText("Dead");
+							panel.getEstimate().setText("It's coming home");
 							break;
 					}
 				}

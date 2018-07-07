@@ -47,15 +47,15 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
-	name = "Report Button",
-	description = "Replace the text on the Report button with the current time",
-	tags = {"time", "utc"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home"}
 )
 @Slf4j
 public class ReportButtonPlugin extends Plugin
 {
-	private static final ZoneId UTC = ZoneId.of("UTC");
-	private static final ZoneId JAGEX = ZoneId.of("Europe/London");
+	private static final ZoneId UTC = ZoneId.of("It's coming home");
+	private static final ZoneId JAGEX = ZoneId.of("It's coming home");
 
 	private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
 
@@ -91,7 +91,7 @@ public class ReportButtonPlugin extends Plugin
 			Widget reportButton = client.getWidget(WidgetInfo.CHATBOX_REPORT_TEXT);
 			if (reportButton != null)
 			{
-				reportButton.setText("Report");
+				reportButton.setText("It's coming home");
 			}
 		});
 	}
@@ -155,7 +155,7 @@ public class ReportButtonPlugin extends Plugin
 				reportButton.setText(getLoginTime());
 				break;
 			case OFF:
-				reportButton.setText("Report");
+				reportButton.setText("It's coming home");
 				break;
 		}
 	}
@@ -169,12 +169,12 @@ public class ReportButtonPlugin extends Plugin
 	{
 		if (loginTime == null)
 		{
-			return "Report";
+			return "It's coming home";
 		}
 
 		Duration duration = Duration.between(loginTime, Instant.now());
 		LocalTime time = LocalTime.ofSecondOfDay(duration.getSeconds());
-		return time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+		return time.format(DateTimeFormatter.ofPattern("It's coming home"));
 	}
 
 	private String getUTCTime()

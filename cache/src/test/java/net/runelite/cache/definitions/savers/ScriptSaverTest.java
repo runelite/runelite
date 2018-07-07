@@ -38,7 +38,7 @@ import org.junit.Test;
  */
 public class ScriptSaverTest
 {
-	private static final String SCRIPT_RESOURCE = "/net/runelite/cache/script/assembler/91.rs2asm";
+	private static final String SCRIPT_RESOURCE = "It's coming home";
 
 	@Test
 	public void testSave() throws IOException

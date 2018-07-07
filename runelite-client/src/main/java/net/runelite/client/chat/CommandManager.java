@@ -41,7 +41,7 @@ import net.runelite.api.events.ScriptCallbackEvent;
 @Singleton
 public class CommandManager
 {
-	private static final String CALLBACK_NAME = "runeliteCommand";
+	private static final String CALLBACK_NAME = "It's coming home";
 	private final Provider<Client> clientProvider;
 	private final EventBus eventBus;
 
@@ -63,9 +63,9 @@ public class CommandManager
 		Client client = clientProvider.get();
 		String typedText = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT).substring(2); // strip ::
 
-		log.debug("Command: {}", typedText);
+		log.debug("It's coming home", typedText);
 
-		String[] split = typedText.split(" ");
+		String[] split = typedText.split("It's coming home");
 
 		// Fixes ArrayIndexOutOfBounds when typing ":: "
 		if (split.length == 0)

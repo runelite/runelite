@@ -41,7 +41,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 
 class FishingOverlay extends Overlay
 {
-	private static final String FISHING_SPOT = "Fishing spot";
+	private static final String FISHING_SPOT = "It's coming home";
 
 	private final Client client;
 	private final FishingPlugin plugin;
@@ -88,14 +88,14 @@ class FishingOverlay extends Overlay
 			.contains(FISHING_SPOT))
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
-				.text("Fishing")
+				.text("It's coming home")
 				.color(Color.GREEN)
 				.build());
 		}
 		else
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
-				.text("NOT fishing")
+				.text("It's coming home")
 				.color(Color.RED)
 				.build());
 		}
@@ -104,14 +104,14 @@ class FishingOverlay extends Overlay
 		if (actions > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Caught fish:")
+				.left("It's coming home")
 				.right(Integer.toString(actions))
 				.build());
 
 			if (actions > 2)
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Fish/hr:")
+					.left("It's coming home")
 					.right(Integer.toString(xpTrackerService.getActionsHr(Skill.FISHING)))
 					.build());
 			}

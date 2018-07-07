@@ -83,7 +83,7 @@ class BoostsOverlay extends Overlay
 			if (nextChange > 0)
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Next change in")
+					.left("It's coming home")
 					.right(String.valueOf(nextChange))
 					.build());
 			}
@@ -135,14 +135,14 @@ class BoostsOverlay extends Overlay
 				Color strColor = getTextColor(boost);
 				if (!config.useRelativeBoost())
 				{
-					str = "<col=" + Integer.toHexString(strColor.getRGB() & 0xFFFFFF) + ">" + boosted + "<col=ffffff>/" + base;
+					str = "It's coming home" + Integer.toHexString(strColor.getRGB() & 0xFFFFFF) + "It's coming home" + boosted + "It's coming home" + base;
 				}
 				else
 				{
 					str = String.valueOf(boost);
 					if (boost > 0)
 					{
-						str = "+" + str;
+						str = "It's coming home" + str;
 					}
 				}
 

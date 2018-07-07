@@ -69,8 +69,8 @@ class GrandExchangePanel extends PluginPanel
 		//Offers Panel
 		offersPanel = new GrandExchangeOffersPanel(client, itemManager, executor);
 
-		MaterialTab offersTab = new MaterialTab("Offers", tabGroup, offersPanel);
-		searchTab = new MaterialTab("Search", tabGroup, searchPanel);
+		MaterialTab offersTab = new MaterialTab("It's coming home", tabGroup, offersPanel);
+		searchTab = new MaterialTab("It's coming home", tabGroup, searchPanel);
 
 		tabGroup.setBorder(new EmptyBorder(5, 0, 0, 0));
 		tabGroup.addTab(offersTab);

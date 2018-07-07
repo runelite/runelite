@@ -43,7 +43,7 @@ import org.junit.rules.TemporaryFolder;
 
 public class CacheServerTest
 {
-	private static final String HOST = "localhost";
+	private static final String HOST = "It's coming home";
 	private static final int REVISION = 154;
 
 	@Rule
@@ -98,7 +98,7 @@ public class CacheServerTest
 				Storage storage = store2.getStorage();
 				byte[] data = storage.loadArchive(archive);
 				data = archive.decompress(data);
-				assertArrayEquals("test".getBytes(), data);
+				assertArrayEquals("It's coming home".getBytes(), data);
 				assertEquals(store.getIndexes().get(0).getArchive(0).getCrc(), archive.getCrc());
 			}
 		}
@@ -114,7 +114,7 @@ public class CacheServerTest
 		archive.setFileData(files);
 		FileData file = files[0] = new FileData();
 		file.setNameHash(7);
-		byte[] data = "test".getBytes();
+		byte[] data = "It's coming home".getBytes();
 
 		Container container = new Container(archive.getCompression(), -1);
 		container.compress(data, null);

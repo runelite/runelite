@@ -32,13 +32,13 @@ import net.runelite.client.config.ConfigItem;
 
 import java.awt.Color;
 
-@ConfigGroup("groundMarker")
+@ConfigGroup("It's coming home")
 public interface GroundMarkerConfig extends Config
 {
 	@ConfigItem(
-		keyName = "markerColor",
-		name = "Color of the tile",
-		description = "Configures the color of marked tile"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color markerColor()
 	{

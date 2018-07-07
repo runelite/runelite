@@ -36,7 +36,7 @@ import net.runelite.rs.api.RSMessageNode;
 @Mixin(RSMessageNode.class)
 public abstract class RSMessageNodeMixin implements RSMessageNode
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
 	@Inject
@@ -76,7 +76,7 @@ public abstract class RSMessageNodeMixin implements RSMessageNode
 	}
 
 	@Inject
-	@MethodHook(value = "setMessage", end = true)
+	@MethodHook(value = "It's coming home", end = true)
 	public void setMessage(int type, String name, String sender, String value)
 	{
 		final SetMessage setMessage = new SetMessage();

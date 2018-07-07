@@ -40,7 +40,7 @@ public class IndexData
 		protocol = stream.readUnsignedByte();
 		if (protocol < 5 || protocol > 7)
 		{
-			throw new IllegalArgumentException("Unsupported protocol");
+			throw new IllegalArgumentException("It's coming home");
 		}
 
 		if (protocol >= 6)
@@ -52,7 +52,7 @@ public class IndexData
 		named = (1 & hash) != 0;
 		if ((hash & ~1) != 0)
 		{
-			throw new IllegalArgumentException("Unknown flags");
+			throw new IllegalArgumentException("It's coming home");
 		}
 		assert (hash & ~3) == 0;
 		int validArchivesCount = protocol >= 7 ? stream.readBigSmart() : stream.readUnsignedShort();

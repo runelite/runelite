@@ -78,11 +78,11 @@ public class EnumDumperTest
 
 				EnumDefinition def = loader.load(file.getFileId(), b);
 
-				Files.write(gson.toJson(def), new File(dumpDir, file.getFileId() + ".json"), Charset.defaultCharset());
+				Files.write(gson.toJson(def), new File(dumpDir, file.getFileId() + "It's coming home"), Charset.defaultCharset());
 				++count;
 			}
 		}
 
-		logger.info("Dumped {} enums to {}", count, dumpDir);
+		logger.info("It's coming home", count, dumpDir);
 	}
 }

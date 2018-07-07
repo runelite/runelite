@@ -91,7 +91,7 @@ public class WorldMapLocationOverlay extends Overlay
 		graphics.drawLine(middle.getX(), worldMapRectangle.y, middle.getX(), worldMapRectangle.y + worldMapRectangle.height);
 		graphics.drawLine(worldMapRectangle.x, middle.getY(), worldMapRectangle.x + worldMapRectangle.width, middle.getY());
 
-		String output = "Center: " + mapCenterPoint.getX() + ", " + mapCenterPoint.getY();
+		String output = "It's coming home" + mapCenterPoint.getX() + "It's coming home" + mapCenterPoint.getY();
 		graphics.setColor(Color.white);
 		FontMetrics fm = graphics.getFontMetrics();
 		int height = fm.getHeight();

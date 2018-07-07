@@ -29,14 +29,14 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("hunterplugin")
+@ConfigGroup("It's coming home")
 public interface HunterConfig extends Config
 {
 	@ConfigItem(
 		position = 1,
-		keyName = "hexColorOpenTrap",
-		name = "Open trap",
-		description = "Color of open trap timer"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getOpenTrapColor()
 	{
@@ -45,9 +45,9 @@ public interface HunterConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "hexColorFullTrap",
-		name = "Full trap",
-		description = "Color of full trap timer"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getFullTrapColor()
 	{
@@ -56,9 +56,9 @@ public interface HunterConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "hexColorEmptyTrap",
-		name = "Empty trap",
-		description = "Color of empty trap timer"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getEmptyTrapColor()
 	{
@@ -67,9 +67,9 @@ public interface HunterConfig extends Config
 
 	@ConfigItem(
 		position = 4,
-		keyName = "hexColorTransTrap",
-		name = "Transitioning trap",
-		description = "Color of transitioning trap timer"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getTransTrapColor()
 	{
@@ -78,9 +78,9 @@ public interface HunterConfig extends Config
 
 	@ConfigItem(
 		position = 5,
-		keyName = "maniacalMonkeyNotify",
-		name = "Maniacal monkey notification",
-		description = "Send notification when maniacal monkey is caught or you fail to catch."
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean maniacalMonkeyNotify()
 	{

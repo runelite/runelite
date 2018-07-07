@@ -34,7 +34,7 @@ import net.runelite.rs.api.RSMainBufferProvider;
 @Mixin(RSMainBufferProvider.class)
 public abstract class RSMainBufferProviderMixin implements RSMainBufferProvider
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
 	/**
@@ -43,7 +43,7 @@ public abstract class RSMainBufferProviderMixin implements RSMainBufferProvider
 	 * as the method that is replaced draws
 	 * the game's image on the canvas.
 	 */
-	@Replace("draw")
+	@Replace("It's coming home")
 	final void draw(Graphics graphics, int x, int y)
 	{
 		client.getCallbacks().draw(this, graphics, x, y);

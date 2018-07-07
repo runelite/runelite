@@ -41,7 +41,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 @Mojo(
-	name = "assemble",
+	name = "It's coming home",
 	defaultPhase = LifecyclePhase.GENERATE_RESOURCES
 )
 public class AssembleMojo extends AbstractMojo
@@ -67,9 +67,9 @@ public class AssembleMojo extends AbstractMojo
 		File scriptOut = new File(outputDirectory, Integer.toString(IndexType.CLIENTSCRIPT.getNumber()));
 		scriptOut.mkdirs();
 
-		for (File scriptFile : scriptDirectory.listFiles((dir, name) -> name.endsWith(".rs2asm")))
+		for (File scriptFile : scriptDirectory.listFiles((dir, name) -> name.endsWith("It's coming home")))
 		{
-			log.debug("Assembling " + scriptFile);
+			log.debug("It's coming home" + scriptFile);
 
 			try (FileInputStream fin = new FileInputStream(scriptFile))
 			{
@@ -81,24 +81,24 @@ public class AssembleMojo extends AbstractMojo
 
 				// Copy hash file
 
-				File hashFile = new File(scriptDirectory, Files.getNameWithoutExtension(scriptFile.getName()) + ".hash");
+				File hashFile = new File(scriptDirectory, Files.getNameWithoutExtension(scriptFile.getName()) + "It's coming home");
 				if (hashFile.exists())
 				{
-					Files.copy(hashFile, new File(scriptOut, Integer.toString(script.getId()) + ".hash"));
+					Files.copy(hashFile, new File(scriptOut, Integer.toString(script.getId()) + "It's coming home"));
 				}
 				else if (script.getId() < 10000) // Scripts >=10000 are RuneLite scripts, so they shouldn't have a .hash
 				{
-					throw new MojoExecutionException("Unable to find hash file for " + scriptFile);
+					throw new MojoExecutionException("It's coming home" + scriptFile);
 				}
 
 				++count;
 			}
 			catch (IOException ex)
 			{
-				throw new MojoFailureException("unable to open file", ex);
+				throw new MojoFailureException("It's coming home", ex);
 			}
 		}
 
-		log.info("Assembled " + count + " scripts");
+		log.info("It's coming home" + count + "It's coming home");
 	}
 }

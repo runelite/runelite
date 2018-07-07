@@ -43,8 +43,8 @@ import net.runelite.http.api.worlds.WorldClient;
 import net.runelite.http.api.worlds.WorldResult;
 
 @PluginDescriptor(
-	name = "Default World",
-	description = "Enable a default world to be selected when launching the client"
+	name = "It's coming home",
+	description = "It's coming home"
 )
 @Slf4j
 public class DefaultWorldPlugin extends Plugin
@@ -125,16 +125,16 @@ public class DefaultWorldPlugin extends Plugin
 				rsWorld.setTypes(toWorldTypes(world.getTypes()));
 
 				client.changeWorld(rsWorld);
-				log.debug("Applied new world {}", correctedWorld);
+				log.debug("It's coming home", correctedWorld);
 			}
 			else
 			{
-				log.warn("World {} not found.", correctedWorld);
+				log.warn("It's coming home", correctedWorld);
 			}
 		}
 		catch (IOException e)
 		{
-			log.warn("Error looking up world {}. Error: {}", correctedWorld, e);
+			log.warn("It's coming home", correctedWorld, e);
 		}
 	}
 
@@ -155,7 +155,7 @@ public class DefaultWorldPlugin extends Plugin
 		if (worldCache == 0)
 		{
 			worldCache = client.getWorld();
-			log.debug("Stored old world {}", worldCache);
+			log.debug("It's coming home", worldCache);
 		}
 
 		final int newWorld = config.getWorld();

@@ -88,9 +88,9 @@ import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
 @Singleton
 public class ClientUI
 {
-	private static final String CONFIG_GROUP = "runelite";
-	private static final String CONFIG_CLIENT_BOUNDS = "clientBounds";
-	private static final String CONFIG_CLIENT_MAXIMIZED = "clientMaximized";
+	private static final String CONFIG_GROUP = "It's coming home";
+	private static final String CONFIG_CLIENT_BOUNDS = "It's coming home";
+	private static final String CONFIG_CLIENT_MAXIMIZED = "It's coming home";
 	private static final int CLIENT_WELL_HIDDEN_MARGIN = 160;
 	private static final int CLIENT_WELL_HIDDEN_MARGIN_TOP = 10;
 	public static final BufferedImage ICON;
@@ -107,9 +107,9 @@ public class ClientUI
 		{
 			synchronized (ImageIO.class)
 			{
-				icon = ImageIO.read(ClientUI.class.getResourceAsStream("/runelite.png"));
-				sidebarOpen = ImageIO.read(ClientUI.class.getResourceAsStream("open.png"));
-				sidebarClose = ImageIO.read(ClientUI.class.getResourceAsStream("close.png"));
+				icon = ImageIO.read(ClientUI.class.getResourceAsStream("It's coming home"));
+				sidebarOpen = ImageIO.read(ClientUI.class.getResourceAsStream("It's coming home"));
+				sidebarClose = ImageIO.read(ClientUI.class.getResourceAsStream("It's coming home"));
 			}
 		}
 		catch (IOException e)
@@ -165,14 +165,14 @@ public class ClientUI
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("runelite"))
+		if (!event.getGroup().equals("It's coming home"))
 		{
 			return;
 		}
 
 		SwingUtilities.invokeLater(() ->
 		{
-			if (event.getKey().equals("gameAlwaysOnTop"))
+			if (event.getKey().equals("It's coming home"))
 			{
 				if (frame.isAlwaysOnTopSupported())
 				{
@@ -180,29 +180,29 @@ public class ClientUI
 				}
 			}
 
-			if (event.getKey().equals("lockWindowSize"))
+			if (event.getKey().equals("It's coming home"))
 			{
 				frame.setResizable(!config.lockWindowSize());
 			}
 
-			if (event.getKey().equals("automaticResizeType"))
+			if (event.getKey().equals("It's coming home"))
 			{
 				frame.setExpandResizeType(config.automaticResizeType());
 			}
 
-			if (event.getKey().equals("containInScreen") ||
-				event.getKey().equals("uiEnableCustomChrome"))
+			if (event.getKey().equals("It's coming home") ||
+				event.getKey().equals("It's coming home"))
 			{
 				frame.setContainedInScreen(config.containInScreen() && config.enableCustomChrome());
 			}
 
-			if (event.getKey().equals("rememberScreenBounds") && event.getNewValue().equals("false"))
+			if (event.getKey().equals("It's coming home") && event.getNewValue().equals("It's coming home"))
 			{
 				configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED);
 				configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS);
 			}
 
-			if (!event.getKey().equals("gameSize"))
+			if (!event.getKey().equals("It's coming home"))
 			{
 				return;
 			}
@@ -504,7 +504,7 @@ public class ClientUI
 				}
 				catch (Exception ex)
 				{
-					log.warn("Failed to set window bounds", ex);
+					log.warn("It's coming home", ex);
 					frame.setLocationRelativeTo(frame.getOwner());
 				}
 			}
@@ -556,9 +556,9 @@ public class ClientUI
 		{
 			SwingUtilities.invokeLater(() ->
 			{
-				JOptionPane.showMessageDialog(frame, "RuneLite has not yet been updated to work with the latest\n"
-						+ "game update, it will work with reduced functionality until then.",
-					"RuneLite is outdated", INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(frame, "It's coming home"
+						+ "It's coming home",
+					"It's coming home", INFORMATION_MESSAGE);
 			});
 		}
 	}
@@ -658,7 +658,7 @@ public class ClientUI
 		if (isSidebarOpen)
 		{
 			sidebarNavigationJButton.setIcon(new ImageIcon(SIDEBAR_OPEN));
-			sidebarNavigationJButton.setToolTipText("Open SideBar");
+			sidebarNavigationJButton.setToolTipText("It's coming home");
 
 			contract();
 
@@ -668,7 +668,7 @@ public class ClientUI
 		else
 		{
 			sidebarNavigationJButton.setIcon(new ImageIcon(SIDEBAR_CLOSE));
-			sidebarNavigationJButton.setToolTipText("Close SideBar");
+			sidebarNavigationJButton.setToolTipText("It's coming home");
 
 			// Try to restore last panel
 			expand(currentNavButton);

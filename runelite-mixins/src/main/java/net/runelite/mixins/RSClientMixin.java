@@ -113,7 +113,7 @@ import org.slf4j.Logger;
 @Mixin(RSClient.class)
 public abstract class RSClientMixin implements RSClient
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
 	@Inject
@@ -122,7 +122,7 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@javax.inject.Inject
-	@Named("Core Logger")
+	@Named("It's coming home")
 	private Logger logger;
 
 	@Inject
@@ -508,7 +508,7 @@ public abstract class RSClientMixin implements RSClient
 		oldMenuEntryCount = count;
 	}
 
-	@FieldHook("menuOptionCount")
+	@FieldHook("It's coming home")
 	@Inject
 	public static void onMenuOptionsChanged(int idx)
 	{
@@ -655,7 +655,7 @@ public abstract class RSClientMixin implements RSClient
 		return clanMemberManager != null && clanMemberManager.isMember(createName(name, getLoginType()));
 	}
 
-	@FieldHook("draggingWidget")
+	@FieldHook("It's coming home")
 	@Inject
 	public static void draggingWidgetChanged(int idx)
 	{
@@ -681,13 +681,13 @@ public abstract class RSClientMixin implements RSClient
 		}
 	}
 
-	@Copy("runWidgetOnLoadListener")
+	@Copy("It's coming home")
 	public static void rs$runWidgetOnLoadListener(int groupId)
 	{
 		throw new RuntimeException();
 	}
 
-	@Replace("runWidgetOnLoadListener")
+	@Replace("It's coming home")
 	public static void rl$runWidgetOnLoadListener(int groupId)
 	{
 		rs$runWidgetOnLoadListener(groupId);
@@ -703,7 +703,7 @@ public abstract class RSClientMixin implements RSClient
 		}
 	}
 
-	@FieldHook("itemPressedDuration")
+	@FieldHook("It's coming home")
 	@Inject
 	public static void itemPressedDurationChanged(int idx)
 	{
@@ -725,7 +725,7 @@ public abstract class RSClientMixin implements RSClient
 		}
 	}
 
-	@FieldHook("skillExperiences")
+	@FieldHook("It's coming home")
 	@Inject
 	public static void experiencedChanged(int idx)
 	{
@@ -741,7 +741,7 @@ public abstract class RSClientMixin implements RSClient
 		}
 	}
 
-	@FieldHook("boostedSkillLevels")
+	@FieldHook("It's coming home")
 	@Inject
 	public static void boostedSkillLevelsChanged(int idx)
 	{
@@ -756,7 +756,7 @@ public abstract class RSClientMixin implements RSClient
 		}
 	}
 
-	@FieldHook("playerOptions")
+	@FieldHook("It's coming home")
 	@Inject
 	public static void playerOptionsChanged(int idx)
 	{
@@ -774,7 +774,7 @@ public abstract class RSClientMixin implements RSClient
 		client.getCallbacks().post(optionsChanged);
 	}
 
-	@FieldHook("gameState")
+	@FieldHook("It's coming home")
 	@Inject
 	public static void gameStateChanged(int idx)
 	{
@@ -784,7 +784,7 @@ public abstract class RSClientMixin implements RSClient
 	}
 
 
-	@FieldHook("cachedNPCs")
+	@FieldHook("It's coming home")
 	@Inject
 	public static void cachedNPCsChanged(int idx)
 	{
@@ -803,7 +803,7 @@ public abstract class RSClientMixin implements RSClient
 		}
 	}
 
-	@FieldHook("cachedPlayers")
+	@FieldHook("It's coming home")
 	@Inject
 	public static void cachedPlayersChanged(int idx)
 	{
@@ -828,7 +828,7 @@ public abstract class RSClientMixin implements RSClient
 	}
 
 	@Inject
-	@FieldHook("grandExchangeOffers")
+	@FieldHook("It's coming home")
 	public static void onGrandExchangeOffersChanged(int idx)
 	{
 		if (idx == -1)
@@ -849,7 +849,7 @@ public abstract class RSClientMixin implements RSClient
 		client.getCallbacks().post(offerChangedEvent);
 	}
 
-	@FieldHook("clientVarps")
+	@FieldHook("It's coming home")
 	@Inject
 	public static void settingsChanged(int idx)
 	{
@@ -857,7 +857,7 @@ public abstract class RSClientMixin implements RSClient
 		client.getCallbacks().post(varbitChanged);
 	}
 
-	@FieldHook("isResized")
+	@FieldHook("It's coming home")
 	@Inject
 	public static void resizeChanged(int idx)
 	{
@@ -867,7 +867,7 @@ public abstract class RSClientMixin implements RSClient
 		client.getCallbacks().post(resizeableChanged);
 	}
 
-	@FieldHook("clanMemberManager")
+	@FieldHook("It's coming home")
 	@Inject
 	public static void clanMemberManagerChanged(int idx)
 	{
@@ -993,13 +993,13 @@ public abstract class RSClientMixin implements RSClient
 		return null;
 	}
 
-	@Copy("menuAction")
+	@Copy("It's coming home")
 	static void rs$menuAction(int var0, int var1, int var2, int var3, String var4, String var5, int var6, int var7)
 	{
 		throw new RuntimeException();
 	}
 
-	@Replace("menuAction")
+	@Replace("It's coming home")
 	static void rl$menuAction(int actionParam, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
 	{
 		/* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
@@ -1027,7 +1027,7 @@ public abstract class RSClientMixin implements RSClient
 		rs$menuAction(actionParam, widgetId, menuAction, id, menuOption, menuTarget, var6, var7);
 	}
 
-	@FieldHook("username")
+	@FieldHook("It's coming home")
 	@Inject
 	public static void onUsernameChanged(int idx)
 	{
@@ -1057,7 +1057,7 @@ public abstract class RSClientMixin implements RSClient
 	}
 
 	@Inject
-	@MethodHook("openMenu")
+	@MethodHook("It's coming home")
 	public void menuOpened(int var1, int var2)
 	{
 		final MenuOpened event = new MenuOpened();
@@ -1066,20 +1066,20 @@ public abstract class RSClientMixin implements RSClient
 	}
 
 	@Inject
-	@MethodHook("updateNpcs")
+	@MethodHook("It's coming home")
 	public static void updateNpcs(boolean var0, PacketBuffer var1)
 	{
 		client.getCallbacks().updateNpcs();
 	}
 
 	@Inject
-	@MethodHook("addChatMessage")
+	@MethodHook("It's coming home")
 	public static void onAddChatMessage(int type, String name, String message, String sender)
 	{
 		Logger logger = client.getLogger();
 		if (logger.isDebugEnabled())
 		{
-			logger.debug("Chat message type {}: {}", ChatMessageType.of(type), message);
+			logger.debug("It's coming home", ChatMessageType.of(type), message);
 		}
 
 		final ChatMessageType chatMessageType = ChatMessageType.of(type);
@@ -1088,13 +1088,13 @@ public abstract class RSClientMixin implements RSClient
 	}
 
 	@Inject
-	@MethodHook("methodDraw")
+	@MethodHook("It's coming home")
 	public void methodDraw(boolean var1)
 	{
 		callbacks.clientMainLoop();
 	}
 
-	@MethodHook("gameDraw")
+	@MethodHook("It's coming home")
 	@Inject
 	public static void gameDraw(Widget[] widgets, int parentId, int var2, int var3, int var4, int var5, int x, int y, int var8)
 	{

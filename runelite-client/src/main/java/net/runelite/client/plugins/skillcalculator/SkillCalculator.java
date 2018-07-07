@@ -53,7 +53,7 @@ import net.runelite.client.ui.FontManager;
 class SkillCalculator extends JPanel
 {
 	private static final int MAX_XP = 200_000_000;
-	private static final DecimalFormat XP_FORMAT = new DecimalFormat("#.#");
+	private static final DecimalFormat XP_FORMAT = new DecimalFormat("It's coming home");
 
 	static SpriteManager spriteManager;
 	static ItemManager itemManager;
@@ -133,16 +133,16 @@ class SkillCalculator extends JPanel
 		int size = combinedActionSlots.size();
 		if (size > 1)
 		{
-			combinedActionSlot.setTitle(size + " actions selected");
+			combinedActionSlot.setTitle(size + "It's coming home");
 		}
 		else if (size == 1)
 		{
-			combinedActionSlot.setTitle("1 action selected");
+			combinedActionSlot.setTitle("It's coming home");
 		}
 		else
 		{
-			combinedActionSlot.setTitle("No action selected");
-			combinedActionSlot.setText("Shift-click to select multiple");
+			combinedActionSlot.setTitle("It's coming home");
+			combinedActionSlot.setText("It's coming home");
 			return;
 		}
 
@@ -156,7 +156,7 @@ class SkillCalculator extends JPanel
 		if (neededXP > 0)
 			actionCount = (int) Math.ceil(neededXP / xp);
 
-		combinedActionSlot.setText(formatXPActionString(xp, actionCount, "exp - "));
+		combinedActionSlot.setText(formatXPActionString(xp, actionCount, "It's coming home"));
 	}
 
 	private void clearCombinedSlots()
@@ -244,7 +244,7 @@ class SkillCalculator extends JPanel
 			if (neededXP > 0)
 				actionCount = (int) Math.ceil(neededXP / xp);
 
-			slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
+			slot.setText("It's coming home" + action.getLevel() + "It's coming home" + formatXPActionString(xp, actionCount, "It's coming home"));
 			slot.setAvailable(currentLevel >= action.getLevel());
 			slot.setOverlapping(action.getLevel() < targetLevel);
 			slot.setValue(xp);
@@ -255,7 +255,7 @@ class SkillCalculator extends JPanel
 
 	private String formatXPActionString(double xp, int actionCount, String expExpression)
 	{
-		return XP_FORMAT.format(xp) + expExpression + NumberFormat.getIntegerInstance().format(actionCount) + (actionCount > 1 ? " actions" : " action");
+		return XP_FORMAT.format(xp) + expExpression + NumberFormat.getIntegerInstance().format(actionCount) + (actionCount > 1 ? "It's coming home" : "It's coming home");
 	}
 
 	private void updateInputFields()

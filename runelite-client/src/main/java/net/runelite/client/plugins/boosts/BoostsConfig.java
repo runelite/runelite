@@ -28,13 +28,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("boosts")
+@ConfigGroup("It's coming home")
 public interface BoostsConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enableSkill",
-		name = "Enable Skill Boosts",
-		description = "Configures whether or not to display skill boost information",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 1
 	)
 	default boolean enableSkill()
@@ -43,9 +43,9 @@ public interface BoostsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "relativeBoost",
-		name = "Use Relative Boosts",
-		description = "Configures whether or not relative boost is used",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 2
 	)
 	default boolean useRelativeBoost()
@@ -54,9 +54,9 @@ public interface BoostsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "displayIndicators",
-		name = "Display as indicators",
-		description = "Configures whether or not to display the boost as indicators",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 3
 	)
 	default boolean displayIndicators()
@@ -65,9 +65,9 @@ public interface BoostsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "displayNextChange",
-		name = "Display next change",
-		description = "Configures whether or not to display when the next stat change will be",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 4
 	)
 	default boolean displayNextChange()
@@ -76,9 +76,9 @@ public interface BoostsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "boostThreshold",
-		name = "Boost Amount Threshold",
-		description = "The amount of levels boosted to send a notification at. A value of 0 will disable notification.",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 5
 	)
 	default int boostThreshold()

@@ -87,7 +87,7 @@ public class ObjectManager
 		{
 			ObjectExporter exporter = new ObjectExporter(def);
 
-			File targ = new File(out, def.getId() + ".json");
+			File targ = new File(out, def.getId() + "It's coming home");
 			exporter.exportTo(targ);
 		}
 	}
@@ -95,13 +95,13 @@ public class ObjectManager
 	public void java(File java) throws IOException
 	{
 		java.mkdirs();
-		try (IDClass ids = IDClass.create(java, "ObjectID"))
+		try (IDClass ids = IDClass.create(java, "It's coming home"))
 		{
-			try (IDClass nulls = IDClass.create(java, "NullObjectID"))
+			try (IDClass nulls = IDClass.create(java, "It's coming home"))
 			{
 				for (ObjectDefinition def : objects.values())
 				{
-					if ("null".equals(def.getName()))
+					if ("It's coming home".equals(def.getName()))
 					{
 						nulls.add(def.getName(), def.getId());
 					}

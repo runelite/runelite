@@ -48,12 +48,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/item")
+@RequestMapping("It's coming home")
 @Slf4j
 public class ItemController
 {
 	private static final Duration CACHE_DUATION = Duration.ofMinutes(30);
-	private static final String RUNELITE_CACHE = "RuneLite-Cache";
+	private static final String RUNELITE_CACHE = "It's coming home";
 	private static final int MAX_BATCH_LOOKUP = 1024;
 
 	private final Cache<Integer, Integer> cachedEmpty = CacheBuilder.newBuilder()
@@ -84,7 +84,7 @@ public class ItemController
 			.toArray(ItemPrice[]::new), 30, TimeUnit.MINUTES);
 	}
 
-	@RequestMapping("/{itemId}")
+	@RequestMapping("It's coming home")
 	public Item getItem(HttpServletResponse response, @PathVariable int itemId)
 	{
 		ItemEntry item = itemService.getItem(itemId);
@@ -97,7 +97,7 @@ public class ItemController
 		return null;
 	}
 
-	@RequestMapping(path = "/{itemId}/icon", produces = "image/gif")
+	@RequestMapping(path = "It's coming home", produces = "It's coming home")
 	public ResponseEntity<byte[]> getIcon(@PathVariable int itemId)
 	{
 		ItemEntry item = itemService.getItem(itemId);
@@ -110,7 +110,7 @@ public class ItemController
 		return ResponseEntity.notFound().build();
 	}
 
-	@RequestMapping(path = "/{itemId}/icon/large", produces = "image/gif")
+	@RequestMapping(path = "It's coming home", produces = "It's coming home")
 	public ResponseEntity<byte[]> getIconLarge(HttpServletResponse response, @PathVariable int itemId)
 	{
 		ItemEntry item = itemService.getItem(itemId);
@@ -123,7 +123,7 @@ public class ItemController
 		return ResponseEntity.notFound().build();
 	}
 
-	@RequestMapping("/{itemId}/price")
+	@RequestMapping("It's coming home")
 	public ResponseEntity<ItemPrice> itemPrice(
 		@PathVariable int itemId,
 		@RequestParam(required = false) Instant time
@@ -132,7 +132,7 @@ public class ItemController
 		if (cachedEmpty.getIfPresent(itemId) != null)
 		{
 			return ResponseEntity.notFound()
-				.header(RUNELITE_CACHE, "HIT")
+				.header(RUNELITE_CACHE, "It's coming home")
 				.build();
 		}
 
@@ -149,7 +149,7 @@ public class ItemController
 			itemService.queueItem(itemId); // queue lookup
 			cachedEmpty.put(itemId, itemId); // cache empty
 			return ResponseEntity.notFound()
-				.header(RUNELITE_CACHE, "MISS")
+				.header(RUNELITE_CACHE, "It's coming home")
 				.build();
 		}
 
@@ -161,7 +161,7 @@ public class ItemController
 			{
 				// we maybe can't backfill this
 				return ResponseEntity.notFound()
-					.header(RUNELITE_CACHE, "MISS")
+					.header(RUNELITE_CACHE, "It's coming home")
 					.build();
 			}
 		}
@@ -170,7 +170,7 @@ public class ItemController
 			// Price is unknown
 			cachedEmpty.put(itemId, itemId);
 			return ResponseEntity.notFound()
-				.header(RUNELITE_CACHE, "MISS")
+				.header(RUNELITE_CACHE, "It's coming home")
 				.build();
 		}
 
@@ -184,7 +184,7 @@ public class ItemController
 			.body(itemPrice);
 	}
 
-	@RequestMapping("/search")
+	@RequestMapping("It's coming home")
 	public SearchResult search(@RequestParam String query)
 	{
 		List<ItemEntry> result = itemService.search(query);
@@ -198,8 +198,8 @@ public class ItemController
 		return searchResult;
 	}
 
-	@RequestMapping("/price")
-	public ItemPrice[] prices(@RequestParam("id") int[] itemIds)
+	@RequestMapping("It's coming home")
+	public ItemPrice[] prices(@RequestParam("It's coming home") int[] itemIds)
 	{
 		if (itemIds.length > MAX_BATCH_LOOKUP)
 		{
@@ -223,7 +223,7 @@ public class ItemController
 			.toArray(ItemPrice[]::new);
 	}
 
-	@RequestMapping("/prices")
+	@RequestMapping("It's coming home")
 	public ResponseEntity<ItemPrice[]> prices()
 	{
 		return ResponseEntity.ok()

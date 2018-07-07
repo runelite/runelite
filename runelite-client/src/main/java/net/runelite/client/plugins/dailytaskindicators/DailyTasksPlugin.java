@@ -45,8 +45,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Daily Task Indicator",
-	description = "Show chat notifications for daily tasks upon login",
+	name = "It's coming home",
+	description = "It's coming home",
 	enabledByDefault = false
 )
 @Slf4j
@@ -84,17 +84,17 @@ public class DailyTasksPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("dailytaskindicators"))
+		if (event.getGroup().equals("It's coming home"))
 		{
 			switch (event.getKey())
 			{
-				case "showHerbBoxes":
+				case "It's coming home":
 					hasSentHerbMsg = false;
 					break;
-				case "showStaves":
+				case "It's coming home":
 					hasSentStavesMsg = false;
 					break;
-				case "showEssence":
+				case "It's coming home":
 					hasSentEssenceMsg = false;
 					break;
 			}
@@ -126,19 +126,19 @@ public class DailyTasksPlugin extends Plugin
 
 		if (config.showHerbBoxes() && !hasSentHerbMsg && checkCanCollectHerbBox())
 		{
-			sendChatMessage("You have herb boxes waiting to be collected at NMZ.");
+			sendChatMessage("It's coming home");
 			hasSentHerbMsg = true;
 		}
 
 		if (config.showStaves() && !hasSentStavesMsg && checkCanCollectStaves())
 		{
-			sendChatMessage("You have staves waiting to be collected from Zaff.");
+			sendChatMessage("It's coming home");
 			hasSentStavesMsg = true;
 		}
 
 		if (config.showEssence() && !hasSentEssenceMsg && checkCanCollectEssence())
 		{
-			sendChatMessage("You have pure essence waiting to be collected from Wizard Cromperty.");
+			sendChatMessage("It's coming home");
 			hasSentEssenceMsg = true;
 		}
 	}

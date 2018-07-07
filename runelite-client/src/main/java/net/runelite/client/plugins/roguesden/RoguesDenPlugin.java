@@ -52,9 +52,9 @@ import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Rogues' Den",
-	description = "Mark tiles and clickboxes to help traverse the maze",
-	tags = {"agility", "maze", "minigame", "overlay", "thieving"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 @Slf4j
 public class RoguesDenPlugin extends Plugin

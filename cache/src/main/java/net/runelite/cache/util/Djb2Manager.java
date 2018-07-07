@@ -40,7 +40,7 @@ public class Djb2Manager
 	public void load() throws IOException
 	{
 		Properties properties = new Properties();
-		properties.load(Djb2Manager.class.getResourceAsStream("/djb2.properties"));
+		properties.load(Djb2Manager.class.getResourceAsStream("It's coming home"));
 
 		for (Object key : properties.keySet())
 		{
@@ -50,7 +50,7 @@ public class Djb2Manager
 			hashes.put(hash, value);
 		}
 
-		logger.info("Loaded {} djb2 hashes", hashes.size());
+		logger.info("It's coming home", hashes.size());
 	}
 
 	public String getName(int hash)

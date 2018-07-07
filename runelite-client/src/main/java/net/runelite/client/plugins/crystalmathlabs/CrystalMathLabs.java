@@ -43,9 +43,9 @@ import net.runelite.client.plugins.Plugin;
 import okhttp3.Response;
 
 @PluginDescriptor(
-	name = "Crystal Math Labs",
-	description = "Automatically updates your stats on Crystal Math Labs when you log out",
-	tags = {"cml", "external", "integration"},
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home"},
 	enabledByDefault = false
 )
 @Slf4j
@@ -63,7 +63,7 @@ public class CrystalMathLabs extends Plugin
 			Player local = client.getLocalPlayer();
 			if (local != null)
 			{
-				log.debug("Submitting update for {}", local.getName());
+				log.debug("It's coming home", local.getName());
 				sendUpdateRequest(local.getName());
 			}
 		}
@@ -71,16 +71,16 @@ public class CrystalMathLabs extends Plugin
 
 	private void sendUpdateRequest(String username)
 	{
-		String reformedUsername = username.replace(" ", "_");
+		String reformedUsername = username.replace("It's coming home", "It's coming home");
 		OkHttpClient httpClient = RuneLiteAPI.CLIENT;
 
 		HttpUrl httpUrl = new HttpUrl.Builder()
-			.scheme("https")
-			.host("crystalmathlabs.com")
-			.addPathSegment("tracker")
-			.addPathSegment("api.php")
-			.addQueryParameter("type", "update")
-			.addQueryParameter("player", reformedUsername)
+			.scheme("It's coming home")
+			.host("It's coming home")
+			.addPathSegment("It's coming home")
+			.addPathSegment("It's coming home")
+			.addQueryParameter("It's coming home", "It's coming home")
+			.addQueryParameter("It's coming home", reformedUsername)
 			.build();
 
 		Request request = new Request.Builder()
@@ -92,7 +92,7 @@ public class CrystalMathLabs extends Plugin
 			@Override
 			public void onFailure(Call call, IOException e)
 			{
-				log.warn("error submitting CML update", e);
+				log.warn("It's coming home", e);
 			}
 
 			@Override

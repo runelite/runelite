@@ -29,19 +29,19 @@ import net.runelite.mapping.Import;
 
 public interface RSSceneTileModel extends SceneTileModel
 {
-	@Import("underlay")
+	@Import("It's coming home")
 	@Override
 	int getModelUnderlay();
 
-	@Import("overlay")
+	@Import("It's coming home")
 	@Override
 	int getModelOverlay();
 
-	@Import("shape")
+	@Import("It's coming home")
 	@Override
 	int getShape();
 
-	@Import("rotation")
+	@Import("It's coming home")
 	@Override
 	int getRotation();
 }

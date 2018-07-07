@@ -41,7 +41,7 @@ import net.runelite.rs.api.RSNPCComposition;
 @Mixin(RSNPC.class)
 public abstract class RSNPCMixin implements RSNPC
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
 	@Inject
@@ -71,7 +71,7 @@ public abstract class RSNPCMixin implements RSNPC
 		{
 			composition = composition.transform();
 		}
-		return composition == null ? null : composition.getName().replace('\u00A0', ' ');
+		return composition == null ? null : composition.getName().replace('It's coming home', ' ');
 	}
 
 	@Inject
@@ -100,7 +100,7 @@ public abstract class RSNPCMixin implements RSNPC
 		npcIndex = id;
 	}
 
-	@FieldHook(value = "composition", before = true)
+	@FieldHook(value = "It's coming home", before = true)
 	@Inject
 	public void onCompositionChanged(RSNPCComposition composition)
 	{
@@ -110,10 +110,10 @@ public abstract class RSNPCMixin implements RSNPC
 		}
 	}
 
-	@Copy("getModel")
+	@Copy("It's coming home")
 	public abstract RSModel rs$getModel();
 
-	@Replace("getModel")
+	@Replace("It's coming home")
 	public RSModel rl$getModel()
 	{
 		if (!client.isInterpolateNpcAnimations()

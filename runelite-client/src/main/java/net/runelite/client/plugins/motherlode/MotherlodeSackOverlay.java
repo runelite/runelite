@@ -83,7 +83,7 @@ class MotherlodeSackOverlay extends Overlay
 				}
 
 				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Pay-dirt in sack:")
+					.left("It's coming home")
 					.right(String.valueOf(client.getVar(Varbits.SACK_NUMBER)))
 					.build());
 			}
@@ -106,9 +106,9 @@ class MotherlodeSackOverlay extends Overlay
 				}
 
 				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Deposits left:")
+					.left("It's coming home")
 					.leftColor(color)
-					.right(depositsLeft == null ? "N/A" : String.valueOf(depositsLeft))
+					.right(depositsLeft == null ? "It's coming home" : String.valueOf(depositsLeft))
 					.rightColor(color)
 					.build());
 			}

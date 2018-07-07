@@ -29,28 +29,28 @@ import net.runelite.mapping.Import;
 
 public interface RSItemLayer extends ItemLayer
 {
-	@Import("x")
+	@Import("It's coming home")
 	int getX();
 
-	@Import("y")
+	@Import("It's coming home")
 	int getY();
 
-	@Import("hash")
+	@Import("It's coming home")
 	@Override
 	long getHash();
 
-	@Import("height")
+	@Import("It's coming home")
 	int getHeight();
 
-	@Import("bottom")
+	@Import("It's coming home")
 	@Override
 	RSRenderable getBottom();
 
-	@Import("middle")
+	@Import("It's coming home")
 	@Override
 	RSRenderable getMiddle();
 
-	@Import("top")
+	@Import("It's coming home")
 	@Override
 	RSRenderable getTop();
 

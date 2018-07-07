@@ -65,7 +65,7 @@ public class TeamCapesOverlay extends Overlay
 			if (team.getValue() >= config.getMinimumCapeCount())
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Team-" + Integer.toString(team.getKey()))
+					.left("It's coming home" + Integer.toString(team.getKey()))
 					.right(Integer.toString(team.getValue()))
 					.build());
 			}

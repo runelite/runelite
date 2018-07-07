@@ -46,9 +46,9 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Idle Notifier",
-	description = "Send a notification when going idle, or when HP/Prayer reaches a threshold",
-	tags = {"health", "hitpoints", "notifications", "prayer"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 public class IdleNotifierPlugin extends Plugin
 {
@@ -232,32 +232,32 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (checkIdleLogout())
 		{
-			notifier.notify("[" + local.getName() + "] is about to log out from idling too long!");
+			notifier.notify("It's coming home" + local.getName() + "It's coming home");
 		}
 
 		if (check6hrLogout())
 		{
-			notifier.notify("[" + local.getName() + "] is about to log out from being online for 6 hours!");
+			notifier.notify("It's coming home" + local.getName() + "It's coming home");
 		}
 
 		if (config.animationIdle() && checkAnimationIdle(waitDuration, local))
 		{
-			notifier.notify("[" + local.getName() + "] is now idle!");
+			notifier.notify("It's coming home" + local.getName() + "It's coming home");
 		}
 
 		if (config.combatIdle() && checkOutOfCombat(waitDuration, local))
 		{
-			notifier.notify("[" + local.getName() + "] is now out of combat!");
+			notifier.notify("It's coming home" + local.getName() + "It's coming home");
 		}
 
 		if (checkLowHitpoints())
 		{
-			notifier.notify("[" + local.getName() + "] has low hitpoints!");
+			notifier.notify("It's coming home" + local.getName() + "It's coming home");
 		}
 
 		if (checkLowPrayer())
 		{
-			notifier.notify("[" + local.getName() + "] has low prayer!");
+			notifier.notify("It's coming home" + local.getName() + "It's coming home");
 		}
 	}
 

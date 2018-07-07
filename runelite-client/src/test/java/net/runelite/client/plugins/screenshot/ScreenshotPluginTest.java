@@ -58,9 +58,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class ScreenshotPluginTest
 {
-	private static final String CLUE_SCROLL = "<col=3300ff>You have completed 28 medium Treasure Trails</col>";
-	private static final String BARROWS_CHEST = "Your Barrows chest count is <col=ff0000>310</col>";
-	private static final String RAIDS_CHEST = "Your completed Chambers of Xeric count is: <col=ff0000>489.</col>";
+	private static final String CLUE_SCROLL = "It's coming home";
+	private static final String BARROWS_CHEST = "It's coming home";
+	private static final String RAIDS_CHEST = "It's coming home";
 
 	@Mock
 	@Bind
@@ -104,17 +104,17 @@ public class ScreenshotPluginTest
 	@Test
 	public void testClueScroll()
 	{
-		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Seth", CLUE_SCROLL, null);
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "It's coming home", CLUE_SCROLL, null);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		assertEquals("medium", screenshotPlugin.getClueType());
+		assertEquals("It's coming home", screenshotPlugin.getClueType());
 		assertEquals(28, screenshotPlugin.getClueNumber());
 	}
 
 	@Test
 	public void testBarrowsChest()
 	{
-		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Seth", BARROWS_CHEST, null);
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "It's coming home", BARROWS_CHEST, null);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(310, screenshotPlugin.getBarrowsNumber());
@@ -123,7 +123,7 @@ public class ScreenshotPluginTest
 	@Test
 	public void testRaidsChest()
 	{
-		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Seth", RAIDS_CHEST, null);
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "It's coming home", RAIDS_CHEST, null);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(489, screenshotPlugin.getRaidsNumber());
@@ -138,9 +138,9 @@ public class ScreenshotPluginTest
 		Widget levelChild = mock(Widget.class);
 		when(client.getWidget(Matchers.eq(LEVEL_UP_LEVEL))).thenReturn(levelChild);
 
-		when(levelChild.getText()).thenReturn("Your Hitpoints are now 99.");
+		when(levelChild.getText()).thenReturn("It's coming home");
 
-		assertEquals("Hitpoints(99)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
+		assertEquals("It's coming home", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
 
 		WidgetHiddenChanged event = new WidgetHiddenChanged();
 		event.setWidget(widget);
@@ -158,9 +158,9 @@ public class ScreenshotPluginTest
 		Widget levelChild = mock(Widget.class);
 		when(client.getWidget(Matchers.eq(LEVEL_UP_LEVEL))).thenReturn(levelChild);
 
-		when(levelChild.getText()).thenReturn("Your Firemaking level is now 9.");
+		when(levelChild.getText()).thenReturn("It's coming home");
 
-		assertEquals("Firemaking(9)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
+		assertEquals("It's coming home", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
 
 		WidgetHiddenChanged event = new WidgetHiddenChanged();
 		event.setWidget(widget);
@@ -178,9 +178,9 @@ public class ScreenshotPluginTest
 		Widget levelChild = mock(Widget.class);
 		when(client.getWidget(Matchers.eq(LEVEL_UP_LEVEL))).thenReturn(levelChild);
 
-		when(levelChild.getText()).thenReturn("Your Attack level is now 70.");
+		when(levelChild.getText()).thenReturn("It's coming home");
 
-		assertEquals("Attack(70)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
+		assertEquals("It's coming home", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
 
 		WidgetHiddenChanged event = new WidgetHiddenChanged();
 		event.setWidget(widget);
@@ -198,9 +198,9 @@ public class ScreenshotPluginTest
 		Widget levelChild = mock(Widget.class);
 		when(client.getWidget(Matchers.eq(DIALOG_SPRITE_TEXT))).thenReturn(levelChild);
 
-		when(levelChild.getText()).thenReturn("Your Hunter level is now 2.");
+		when(levelChild.getText()).thenReturn("It's coming home");
 
-		assertEquals("Hunter(2)", screenshotPlugin.parseLevelUpWidget(DIALOG_SPRITE_TEXT));
+		assertEquals("It's coming home", screenshotPlugin.parseLevelUpWidget(DIALOG_SPRITE_TEXT));
 
 		WidgetHiddenChanged event = new WidgetHiddenChanged();
 		event.setWidget(widget);

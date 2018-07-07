@@ -51,13 +51,13 @@ class ConfigInvocationHandler implements InvocationHandler
 
 		if (group == null)
 		{
-			log.warn("Configuration proxy class {} has no @ConfigGroup!", proxy.getClass());
+			log.warn("It's coming home", proxy.getClass());
 			return null;
 		}
 
 		if (item == null)
 		{
-			log.warn("Configuration method {} has no @ConfigItem!", method);
+			log.warn("It's coming home", method);
 			return null;
 		}
 
@@ -85,7 +85,7 @@ class ConfigInvocationHandler implements InvocationHandler
 			}
 			catch (Exception e)
 			{
-				log.warn("Unable to unmarshal {}.{} ", group.value(), item.keyName(), e);
+				log.warn("It's coming home", group.value(), item.keyName(), e);
 				if (method.isDefault())
 				{
 					return callDefaultMethod(proxy, method, null);
@@ -99,7 +99,7 @@ class ConfigInvocationHandler implements InvocationHandler
 
 			if (args.length != 1)
 			{
-				throw new RuntimeException("Invalid number of arguents to configuration method");
+				throw new RuntimeException("It's coming home");
 			}
 
 			Object newValue = args[0];

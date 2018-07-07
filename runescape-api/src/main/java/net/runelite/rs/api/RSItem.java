@@ -29,17 +29,17 @@ import net.runelite.mapping.Import;
 
 public interface RSItem extends RSRenderable, Item
 {
-	@Import("id")
+	@Import("It's coming home")
 	@Override
 	int getId();
 
-	@Import("id")
+	@Import("It's coming home")
 	void setId(int id);
 
-	@Import("quantity")
+	@Import("It's coming home")
 	@Override
 	int getQuantity();
 
-	@Import("quantity")
+	@Import("It's coming home")
 	void setQuantity(int quantity);
 }

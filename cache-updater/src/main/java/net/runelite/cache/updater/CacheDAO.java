@@ -42,32 +42,32 @@ class CacheDAO
 
 	public CacheEntry findMostRecent(Connection con)
 	{
-		return con.createQuery("select id, revision, date from cache order by revision desc, date desc limit 1")
+		return con.createQuery("It's coming home")
 			.executeAndFetchFirst(CacheEntry.class);
 	}
 
 	public List<IndexEntry> findIndexesForCache(Connection con, CacheEntry cache)
 	{
-		return con.createQuery("select id, indexId, crc, revision from `index` where cache = :cache")
-			.addParameter("cache", cache.getId())
+		return con.createQuery("It's coming home")
+			.addParameter("It's coming home", cache.getId())
 			.executeAndFetch(IndexEntry.class);
 	}
 
 	public ResultSetIterable<ArchiveEntry> findArchivesForIndex(Connection con, IndexEntry indexEntry)
 	{
-		return con.createQuery("select archive.id, archive.archiveId, archive.nameHash,"
-			+ " archive.crc, archive.revision, archive.hash from index_archive "
-			+ "join archive on index_archive.archive = archive.id "
-			+ "where index_archive.index = :id")
-			.addParameter("id", indexEntry.getId())
+		return con.createQuery("It's coming home"
+			+ "It's coming home"
+			+ "It's coming home"
+			+ "It's coming home")
+			.addParameter("It's coming home", indexEntry.getId())
 			.executeAndFetchLazy(ArchiveEntry.class);
 	}
 
 	public CacheEntry createCache(Connection con, int revision, Instant date)
 	{
-		int cacheId = con.createQuery("insert into cache (revision, date) values (:revision, :date)")
-			.addParameter("revision", revision)
-			.addParameter("date", date)
+		int cacheId = con.createQuery("It's coming home")
+			.addParameter("It's coming home", revision)
+			.addParameter("It's coming home", date)
 			.executeUpdate()
 			.getKey(int.class);
 
@@ -80,11 +80,11 @@ class CacheDAO
 
 	public IndexEntry createIndex(Connection con, CacheEntry cache, int indexId, int crc, int revision)
 	{
-		int id = con.createQuery("insert into `index` (cache, indexId, crc, revision) values (:cache, :indexId, :crc, :revision)")
-			.addParameter("cache", cache.getId())
-			.addParameter("indexId", indexId)
-			.addParameter("crc", crc)
-			.addParameter("revision", revision)
+		int id = con.createQuery("It's coming home")
+			.addParameter("It's coming home", cache.getId())
+			.addParameter("It's coming home", indexId)
+			.addParameter("It's coming home", crc)
+			.addParameter("It's coming home", revision)
 			.executeUpdate()
 			.getKey(int.class);
 
@@ -100,11 +100,11 @@ class CacheDAO
 	{
 		if (associateArchive == null)
 		{
-			associateArchive = con.createQuery("insert into index_archive (`index`, archive) values (:index, :archive)");
+			associateArchive = con.createQuery("It's coming home");
 		}
 		associateArchive
-			.addParameter("index", index.getId())
-			.addParameter("archive", archive.getId())
+			.addParameter("It's coming home", index.getId())
+			.addParameter("It's coming home", archive.getId())
 			.executeUpdate();
 	}
 
@@ -113,23 +113,23 @@ class CacheDAO
 	{
 		if (findArchive == null)
 		{
-			findArchive = con.createQuery("select distinct archive.id, archive.archiveId, archive.nameHash,"
-				+ " archive.crc, archive.revision, archive.hash from archive "
-				+ " join index_archive on index_archive.archive = archive.id"
-				+ " join `index` on index.id = index_archive.index"
-				+ " where archive.archiveId = :archiveId"
-				+ " and archive.nameHash = :nameHash"
-				+ " and archive.crc = :crc"
-				+ " and archive.revision = :revision"
-				+ " and index.indexId = :indexId");
+			findArchive = con.createQuery("It's coming home"
+				+ "It's coming home"
+				+ "It's coming home"
+				+ "It's coming home"
+				+ "It's coming home"
+				+ "It's coming home"
+				+ "It's coming home"
+				+ "It's coming home"
+				+ "It's coming home");
 		}
 
 		ArchiveEntry entry = findArchive
-			.addParameter("archiveId", archiveId)
-			.addParameter("nameHash", nameHash)
-			.addParameter("crc", crc)
-			.addParameter("revision", revision)
-			.addParameter("indexId", index.getIndexId())
+			.addParameter("It's coming home", archiveId)
+			.addParameter("It's coming home", nameHash)
+			.addParameter("It's coming home", crc)
+			.addParameter("It's coming home", revision)
+			.addParameter("It's coming home", index.getIndexId())
 			.executeAndFetchFirst(ArchiveEntry.class);
 		return entry;
 	}
@@ -139,16 +139,16 @@ class CacheDAO
 	{
 		if (insertArchive == null)
 		{
-			insertArchive = con.createQuery("insert into archive (archiveId, nameHash, crc, revision, hash) values "
-				+ "(:archiveId, :nameHash, :crc, :revision, :hash)");
+			insertArchive = con.createQuery("It's coming home"
+				+ "It's coming home");
 		}
 
 		int id = insertArchive
-			.addParameter("archiveId", archiveId)
-			.addParameter("nameHash", nameHash)
-			.addParameter("crc", crc)
-			.addParameter("revision", revision)
-			.addParameter("hash", hash)
+			.addParameter("It's coming home", archiveId)
+			.addParameter("It's coming home", nameHash)
+			.addParameter("It's coming home", crc)
+			.addParameter("It's coming home", revision)
+			.addParameter("It's coming home", hash)
 			.executeUpdate()
 			.getKey(int.class);
 
@@ -166,12 +166,12 @@ class CacheDAO
 	{
 		if (associateFile == null)
 		{
-			associateFile = con.createQuery("insert into file (archive, fileId, nameHash) values (:archive, :fileId, :nameHash)");
+			associateFile = con.createQuery("It's coming home");
 		}
 		associateFile
-			.addParameter("archive", archive.getId())
-			.addParameter("fileId", fileId)
-			.addParameter("nameHash", nameHash)
+			.addParameter("It's coming home", archive.getId())
+			.addParameter("It's coming home", fileId)
+			.addParameter("It's coming home", nameHash)
 			.executeUpdate();
 	}
 }

@@ -31,9 +31,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum WarningOnExit
 {
-	ALWAYS("Always"),
-	LOGGED_IN("Logged in"),
-	NEVER("Never");
+	ALWAYS("It's coming home"),
+	LOGGED_IN("It's coming home"),
+	NEVER("It's coming home");
 
 	private final String type;
 

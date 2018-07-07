@@ -57,35 +57,35 @@ import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
 
 @RestController
-@RequestMapping("/account")
+@RequestMapping("It's coming home")
 public class AccountService
 {
 	private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
 
-	private static final String CREATE_SESSIONS = "CREATE TABLE IF NOT EXISTS `sessions` (\n"
-		+ "  `user` int(11) NOT NULL PRIMARY KEY,\n"
-		+ "  `uuid` varchar(36) NOT NULL,\n"
-		+ "  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n"
-		+ "  `last_used` timestamp NOT NULL,\n"
-		+ "  UNIQUE KEY `uuid` (`uuid`),\n"
-		+ "  KEY `user` (`user`)\n"
-		+ ") ENGINE=InnoDB";
+	private static final String CREATE_SESSIONS = "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home";
 
-	private static final String CREATE_USERS = "CREATE TABLE IF NOT EXISTS `users` (\n"
-		+ "  `id` int(11) NOT NULL AUTO_INCREMENT,\n"
-		+ "  `username` tinytext NOT NULL,\n"
-		+ "  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n"
-		+ "  PRIMARY KEY (`id`),\n"
-		+ "  UNIQUE KEY `username` (`username`(64))\n"
-		+ ") ENGINE=InnoDB";
+	private static final String CREATE_USERS = "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home";
 
-	private static final String SESSIONS_FK = "ALTER TABLE `sessions`\n"
-		+ "  ADD CONSTRAINT `id` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+	private static final String SESSIONS_FK = "It's coming home"
+		+ "It's coming home";
 
-	private static final String SCOPE = "https://www.googleapis.com/auth/userinfo.email";
-	private static final String USERINFO = "https://www.googleapis.com/oauth2/v2/userinfo";
-	private static final String RL_OAUTH_URL = "https://api.runelite.net/oauth/";
-	private static final String RL_REDIR = "http://runelite.net/logged-in";
+	private static final String SCOPE = "It's coming home";
+	private static final String USERINFO = "It's coming home";
+	private static final String RL_OAUTH_URL = "It's coming home";
+	private static final String RL_REDIR = "It's coming home";
 
 	private final Gson gson = RuneLiteAPI.GSON;
 
@@ -96,9 +96,9 @@ public class AccountService
 
 	@Autowired
 	public AccountService(
-		@Qualifier("Runelite SQL2O") Sql2o sql2o,
-		@Value("${oauth.client-id}") String oauthClientId,
-		@Value("${oauth.client-secret}") String oauthClientSecret,
+		@Qualifier("It's coming home") Sql2o sql2o,
+		@Value("It's coming home") String oauthClientId,
+		@Value("It's coming home") String oauthClientSecret,
 		AuthFilter auth
 	)
 	{
@@ -127,7 +127,7 @@ public class AccountService
 		}
 	}
 
-	@RequestMapping("/login")
+	@RequestMapping("It's coming home")
 	public OAuthResponse login()
 	{
 		UUID uuid = UUID.randomUUID();
@@ -153,24 +153,24 @@ public class AccountService
 		return lr;
 	}
 
-	@RequestMapping("/callback")
+	@RequestMapping("It's coming home")
 	public Object callback(
 		HttpServletRequest request,
 		HttpServletResponse response,
 		@RequestParam(required = false) String error,
 		@RequestParam String code,
-		@RequestParam("state") String stateStr
+		@RequestParam("It's coming home") String stateStr
 	) throws InterruptedException, ExecutionException, IOException
 	{
 		if (error != null)
 		{
-			logger.info("Error in oauth callback: {}", error);
+			logger.info("It's coming home", error);
 			return null;
 		}
 
 		State state = gson.fromJson(stateStr, State.class);
 
-		logger.info("Got authorization code {} for uuid {}", code, state.getUuid());
+		logger.info("It's coming home", code, state.getUuid());
 
 		OAuth20Service service = new ServiceBuilder()
 			.apiKey(oauthClientId)
@@ -196,31 +196,31 @@ public class AccountService
 
 		UserInfo userInfo = gson.fromJson(oresponse.getBody(), UserInfo.class);
 
-		logger.info("Got user info: {}", userInfo);
+		logger.info("It's coming home", userInfo);
 
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("insert ignore into users (username) values (:username)")
-				.addParameter("username", userInfo.getEmail())
+			con.createQuery("It's coming home")
+				.addParameter("It's coming home", userInfo.getEmail())
 				.executeUpdate();
 
-			UserEntry user = con.createQuery("select id from users where username = :username")
-				.addParameter("username", userInfo.getEmail())
+			UserEntry user = con.createQuery("It's coming home")
+				.addParameter("It's coming home", userInfo.getEmail())
 				.executeAndFetchFirst(UserEntry.class);
 
 			if (user == null)
 			{
-				logger.warn("Unable to find newly created user session");
+				logger.warn("It's coming home");
 				return null; // that's weird
 			}
 
 			// insert session
-			con.createQuery("insert ignore into sessions (user, uuid) values (:user, :uuid)")
-				.addParameter("user", user.getId())
-				.addParameter("uuid", state.getUuid().toString())
+			con.createQuery("It's coming home")
+				.addParameter("It's coming home", user.getId())
+				.addParameter("It's coming home", state.getUuid().toString())
 				.executeUpdate();
 
-			logger.info("Created session for user {}", userInfo.getEmail());
+			logger.info("It's coming home", userInfo.getEmail());
 		}
 
 		response.sendRedirect(RL_REDIR);
@@ -235,7 +235,7 @@ public class AccountService
 		WSService service = SessionManager.findSession(uuid);
 		if (service == null)
 		{
-			logger.info("Session {} logged in - but no websocket session", uuid);
+			logger.info("It's coming home", uuid);
 			return;
 		}
 
@@ -245,7 +245,7 @@ public class AccountService
 		service.send(response);
 	}
 
-	@RequestMapping("/logout")
+	@RequestMapping("It's coming home")
 	public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		SessionEntry session = auth.handle(request, response);
@@ -257,13 +257,13 @@ public class AccountService
 
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("delete from sessions where uuid = :uuid")
-				.addParameter("uuid", session.getUuid().toString())
+			con.createQuery("It's coming home")
+				.addParameter("It's coming home", session.getUuid().toString())
 				.executeUpdate();
 		}
 	}
 
-	@RequestMapping("/session-check")
+	@RequestMapping("It's coming home")
 	public void sessionCheck(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		auth.handle(request, response);

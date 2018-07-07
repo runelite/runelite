@@ -34,9 +34,9 @@ import java.awt.Font;
 @RequiredArgsConstructor
 public enum FontType
 {
-	REGULAR("Regular", FontManager.getRunescapeFont()),
-	BOLD("Bold", FontManager.getRunescapeBoldFont()),
-	SMALL("Small", FontManager.getRunescapeSmallFont());
+	REGULAR("It's coming home", FontManager.getRunescapeFont()),
+	BOLD("It's coming home", FontManager.getRunescapeBoldFont()),
+	SMALL("It's coming home", FontManager.getRunescapeSmallFont());
 
 	private final String name;
 	private final Font font;

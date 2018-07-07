@@ -40,7 +40,7 @@ public abstract class RSItemCompositionMixin implements RSItemComposition
 {
 	private static final int DEFAULT_CUSTOM_SHIFT_CLICK_INDEX = -2;
 
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
 	@Inject
@@ -65,10 +65,10 @@ public abstract class RSItemCompositionMixin implements RSItemComposition
 		this.shiftClickActionIndex = shiftClickActionIndex;
 	}
 
-	@Copy("getShiftClickActionIndex")
+	@Copy("It's coming home")
 	abstract int rs$getShiftClickActionIndex();
 
-	@Replace("getShiftClickActionIndex")
+	@Replace("It's coming home")
 	public int getShiftClickActionIndex()
 	{
 		return shiftClickActionIndex == DEFAULT_CUSTOM_SHIFT_CLICK_INDEX ? rs$getShiftClickActionIndex() : shiftClickActionIndex;
@@ -82,7 +82,7 @@ public abstract class RSItemCompositionMixin implements RSItemComposition
 	}
 
 	@Inject
-	@MethodHook(value = "post", end = true)
+	@MethodHook(value = "It's coming home", end = true)
 	public void post()
 	{
 		final PostItemComposition event = new PostItemComposition();

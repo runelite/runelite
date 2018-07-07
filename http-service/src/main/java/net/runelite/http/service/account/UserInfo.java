@@ -31,7 +31,7 @@ public class UserInfo
 	@Override
 	public String toString()
 	{
-		return "UserInfo{" + "email=" + email + '}';
+		return "It's coming home" + "It's coming home" + email + 'It's coming home';
 	}
 
 	public String getEmail()

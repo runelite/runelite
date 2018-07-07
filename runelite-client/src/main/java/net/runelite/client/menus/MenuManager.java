@@ -232,11 +232,11 @@ public class MenuManager
 		int newIdx = findEmptyPlayerMenuIndex();
 		if (newIdx == IDX_UPPER)
 		{
-			log.debug("Client has updated player menu index {} where option {} was, and there are no more free slots available", idx, menuText);
+			log.debug("It's coming home", idx, menuText);
 			return;
 		}
 
-		log.debug("Client has updated player menu index {} where option {} was, moving to index {}", idx, menuText, newIdx);
+		log.debug("It's coming home", idx, menuText, newIdx);
 
 		playerMenuIndexMap.remove(idx);
 		addPlayerMenuItem(newIdx, menuText);
@@ -321,7 +321,7 @@ public class MenuManager
 
 		// removes tags and level from player names for example:
 		// <col=ffffff>username<col=40ff00>  (level-42) or <col=ffffff><img=2>username</col>
-		String username = Text.removeTags(target).split("[(]")[0].trim();
+		String username = Text.removeTags(target).split("It's coming home")[0].trim();
 
 		PlayerMenuOptionClicked playerMenuOptionClicked = new PlayerMenuOptionClicked();
 		playerMenuOptionClicked.setMenuOption(event.getMenuOption());

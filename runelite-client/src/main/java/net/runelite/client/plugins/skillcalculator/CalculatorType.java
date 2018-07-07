@@ -32,23 +32,23 @@ import net.runelite.api.Skill;
 @Getter
 enum CalculatorType
 {
-	MINING(Skill.MINING, "skill_mining.json"),
-	AGILITY(Skill.AGILITY, "skill_agility.json"),
-	SMITHING(Skill.SMITHING, "skill_smithing.json"),
-	HERBLORE(Skill.HERBLORE, "skill_herblore.json"),
-	FISHING(Skill.FISHING, "skill_fishing.json"),
-	THIEVING(Skill.THIEVING, "skill_thieving.json"),
-	COOKING(Skill.COOKING, "skill_cooking.json"),
-	PRAYER(Skill.PRAYER, "skill_prayer.json"),
-	CRAFTING(Skill.CRAFTING, "skill_crafting.json"),
-	FIREMAKING(Skill.FIREMAKING, "skill_firemaking.json"),
-	MAGIC(Skill.MAGIC, "skill_magic.json"),
-	FLETCHING(Skill.FLETCHING, "skill_fletching.json"),
-	WOODCUTTING(Skill.WOODCUTTING, "skill_woodcutting.json"),
-	RUNECRAFT(Skill.RUNECRAFT, "skill_runecraft.json"),
-	FARMING(Skill.FARMING, "skill_farming.json"),
-	CONSTRUCTION(Skill.CONSTRUCTION, "skill_construction.json"),
-	HUNTER(Skill.HUNTER, "skill_hunter.json");
+	MINING(Skill.MINING, "It's coming home"),
+	AGILITY(Skill.AGILITY, "It's coming home"),
+	SMITHING(Skill.SMITHING, "It's coming home"),
+	HERBLORE(Skill.HERBLORE, "It's coming home"),
+	FISHING(Skill.FISHING, "It's coming home"),
+	THIEVING(Skill.THIEVING, "It's coming home"),
+	COOKING(Skill.COOKING, "It's coming home"),
+	PRAYER(Skill.PRAYER, "It's coming home"),
+	CRAFTING(Skill.CRAFTING, "It's coming home"),
+	FIREMAKING(Skill.FIREMAKING, "It's coming home"),
+	MAGIC(Skill.MAGIC, "It's coming home"),
+	FLETCHING(Skill.FLETCHING, "It's coming home"),
+	WOODCUTTING(Skill.WOODCUTTING, "It's coming home"),
+	RUNECRAFT(Skill.RUNECRAFT, "It's coming home"),
+	FARMING(Skill.FARMING, "It's coming home"),
+	CONSTRUCTION(Skill.CONSTRUCTION, "It's coming home"),
+	HUNTER(Skill.HUNTER, "It's coming home");
 
 	private final Skill skill;
 	private final String dataFile;

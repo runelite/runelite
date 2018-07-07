@@ -58,7 +58,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class PluginManagerTest
 {
-	private static final String PLUGIN_PACKAGE = "net.runelite.client.plugins";
+	private static final String PLUGIN_PACKAGE = "It's coming home";
 
 	@Rule
 	public TemporaryFolder folder = new TemporaryFolder();
@@ -140,12 +140,12 @@ public class PluginManagerTest
 		}
 
 		File file = folder.newFile();
-		try (PrintWriter out = new PrintWriter(file, "UTF-8"))
+		try (PrintWriter out = new PrintWriter(file, "It's coming home"))
 		{
 			Injector injector = Guice.createInjector(modules);
 			GraphvizGrapher grapher = injector.getInstance(GraphvizGrapher.class);
 			grapher.setOut(out);
-			grapher.setRankdir("TB");
+			grapher.setRankdir("It's coming home");
 			grapher.graph(injector);
 		}
 	}

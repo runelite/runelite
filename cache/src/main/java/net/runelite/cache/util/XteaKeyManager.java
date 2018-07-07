@@ -52,11 +52,11 @@ public class XteaKeyManager
 		catch (IOException ex)
 		{
 			// happens on release when it is not deployed yet
-			logger.debug("unable to load xtea keys", ex);
+			logger.debug("It's coming home", ex);
 			return;
 		}
 
-		logger.info("Loaded {} keys", keys.size());
+		logger.info("It's coming home", keys.size());
 	}
 
 	public int[] getKeys(int region)

@@ -40,7 +40,7 @@ import net.runelite.rs.api.RSRenderable;
 @Mixin(RSGameObject.class)
 public abstract class RSGameObjectMixin implements RSGameObject
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
 	@Inject

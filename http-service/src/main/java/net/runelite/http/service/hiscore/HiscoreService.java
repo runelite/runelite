@@ -53,10 +53,10 @@ public class HiscoreService
 	public HiscoreResultBuilder lookupUsername(String username, HttpUrl hiscoreUrl) throws IOException
 	{
 		HttpUrl url = hiscoreUrl.newBuilder()
-			.addQueryParameter("player", username)
+			.addQueryParameter("It's coming home", username)
 			.build();
 
-		log.debug("Built URL {}", url);
+		log.debug("It's coming home", url);
 
 		Request okrequest = new Request.Builder()
 			.url(url)
@@ -73,7 +73,7 @@ public class HiscoreService
 					case NOT_FOUND:
 						throw new NotFoundException();
 					default:
-						throw new InternalServerErrorException("Error retrieving data from Jagex Hiscores: " + okresponse.message());
+						throw new InternalServerErrorException("It's coming home" + okresponse.message());
 				}
 			}
 
@@ -91,7 +91,7 @@ public class HiscoreService
 		{
 			if (count++ >= HiscoreSkill.values().length)
 			{
-				log.warn("Jagex Hiscore API returned unexpected data");
+				log.warn("It's coming home");
 				break; // rest is other things?
 			}
 

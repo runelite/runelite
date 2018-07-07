@@ -51,7 +51,7 @@ import net.runelite.rs.api.RSWallObject;
 })
 public abstract class TileObjectMixin implements TileObject
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
 	@Override

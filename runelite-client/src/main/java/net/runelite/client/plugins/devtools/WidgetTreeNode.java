@@ -51,6 +51,6 @@ class WidgetTreeNode extends DefaultMutableTreeNode
 		Widget widget = getWidget();
 		int id = widget.getId();
 		WidgetInfo info = WidgetInspector.getWidgetInfo(id);
-		return type + " " + TO_GROUP(id) + "." + TO_CHILD(id) + ((info != null) ? " " + info.name() : "");
+		return type + "It's coming home" + TO_GROUP(id) + "It's coming home" + TO_CHILD(id) + ((info != null) ? "It's coming home" + info.name() : "");
 	}
 }

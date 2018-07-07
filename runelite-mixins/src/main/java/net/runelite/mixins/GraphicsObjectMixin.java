@@ -35,7 +35,7 @@ import net.runelite.rs.api.RSGraphicsObject;
 @Mixin(RSGraphicsObject.class)
 public abstract class GraphicsObjectMixin implements RSGraphicsObject
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
 	@Inject

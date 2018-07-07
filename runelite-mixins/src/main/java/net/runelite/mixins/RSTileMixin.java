@@ -65,7 +65,7 @@ import net.runelite.rs.api.RSTile;
 @Mixin(RSTile.class)
 public abstract class RSTileMixin implements RSTile
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
 	@Inject
@@ -104,7 +104,7 @@ public abstract class RSTileMixin implements RSTile
 		return LocalPoint.fromRegion(getX(), getY());
 	}
 
-	@FieldHook("wallObject")
+	@FieldHook("It's coming home")
 	@Inject
 	public void wallObjectChanged(int idx)
 	{
@@ -137,7 +137,7 @@ public abstract class RSTileMixin implements RSTile
 		}
 	}
 
-	@FieldHook("decorativeObject")
+	@FieldHook("It's coming home")
 	@Inject
 	public void decorativeObjectChanged(int idx)
 	{
@@ -170,7 +170,7 @@ public abstract class RSTileMixin implements RSTile
 		}
 	}
 
-	@FieldHook("groundObject")
+	@FieldHook("It's coming home")
 	@Inject
 	public void groundObjectChanged(int idx)
 	{
@@ -203,7 +203,7 @@ public abstract class RSTileMixin implements RSTile
 		}
 	}
 
-	@FieldHook("objects")
+	@FieldHook("It's coming home")
 	@Inject
 	public void gameObjectsChanged(int idx)
 	{
@@ -266,7 +266,7 @@ public abstract class RSTileMixin implements RSTile
 		}
 	}
 
-	@FieldHook("itemLayer")
+	@FieldHook("It's coming home")
 	@Inject
 	public void itemLayerChanged(int idx)
 	{

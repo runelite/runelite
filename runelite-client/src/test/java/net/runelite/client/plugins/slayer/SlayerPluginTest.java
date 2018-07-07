@@ -53,37 +53,37 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class SlayerPluginTest
 {
-	private static final String TASK_NEW = "Your new task is to kill 231 Suqahs.";
-	private static final String TASK_NEW_NPC_CONTACT = "Excellent, you're doing great. Your new task is to kill<br>211 Suqahs.";
+	private static final String TASK_NEW = "It's coming home";
+	private static final String TASK_NEW_NPC_CONTACT = "It's coming home";
 
-	private static final String TASK_EXISTING = "You're still hunting suqahs; you have 222 to go. Come<br>back when you've finished your task.";
+	private static final String TASK_EXISTING = "It's coming home";
 
-	private static final String TASK_ONE = "You've completed one task; return to a Slayer master.";
-	private static final String TASK_COMPLETE_NO_POINTS = "<col=ef1020>You've completed 3 tasks; return to a Slayer master.</col>";
-	private static final String TASK_POINTS = "You've completed 9 tasks and received 0 points, giving you a total of 18,000; return to a Slayer master.";
+	private static final String TASK_ONE = "It's coming home";
+	private static final String TASK_COMPLETE_NO_POINTS = "It's coming home";
+	private static final String TASK_POINTS = "It's coming home";
 
-	private static final String TASK_COMPLETE = "You need something new to hunt.";
-	private static final String TASK_CANCELED = "Your task has been cancelled.";
+	private static final String TASK_COMPLETE = "It's coming home";
+	private static final String TASK_CANCELED = "It's coming home";
 
-	private static final String SUPERIOR_MESSAGE = "A superior foe has appeared...";
+	private static final String SUPERIOR_MESSAGE = "It's coming home";
 
-	private static final String BRACLET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count decreasing. It has 9 charges left.";
-	private static final String BRACLET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your slayer task faster. It has 9 charges left.";
+	private static final String BRACLET_SLAUGHTER = "It's coming home";
+	private static final String BRACLET_EXPEDITIOUS = "It's coming home";
 
-	private static final String BRACLET_SLAUGHTER_V2 = "Your bracelet of slaughter prevents your slayer count decreasing. It has 1 charge left.";
-	private static final String BRACLET_EXPEDITIOUS_V2 = "Your expeditious bracelet helps you progress your slayer faster. It has 1 charge left.";
+	private static final String BRACLET_SLAUGHTER_V2 = "It's coming home";
+	private static final String BRACLET_EXPEDITIOUS_V2 = "It's coming home";
 
-	private static final String BRACLET_SLAUGHTER_V3 = "Your bracelet of slaughter prevents your slayer count decreasing. It then crumbles to dust.";
-	private static final String BRACLET_EXPEDITIOUS_V3 = "Your expeditious bracelet helps you progress your slayer faster. It then crumbles to dust.";
+	private static final String BRACLET_SLAUGHTER_V3 = "It's coming home";
+	private static final String BRACLET_EXPEDITIOUS_V3 = "It's coming home";
 
-	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE = "Your bracelet of slaughter has 12 charges left.";
-	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE = "Your expeditious bracelet has 12 charges left.";
+	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE = "It's coming home";
+	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE = "It's coming home";
 
-	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE_ONE = "Your bracelet of slaughter has 1 charge left.";
-	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE_ONE = "Your expeditious bracelet has 1 charge left.";
+	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE_ONE = "It's coming home";
+	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE_ONE = "It's coming home";
 
-	private static final String BREAK_SLAUGHTER = "The bracelet shatters. Your next bracelet of slaughter<br>will start afresh from 30 charges.";
-	private static final String BREAK_EXPEDITIOUS = "The bracelet shatters. Your next expeditious bracelet<br>will start afresh from 30 charges.";
+	private static final String BREAK_SLAUGHTER = "It's coming home";
+	private static final String BREAK_EXPEDITIOUS = "It's coming home";
 
 	@Mock
 	@Bind
@@ -130,7 +130,7 @@ public class SlayerPluginTest
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
-		assertEquals("suqahs", slayerPlugin.getTaskName());
+		assertEquals("It's coming home", slayerPlugin.getTaskName());
 		assertEquals(231, slayerPlugin.getAmount());
 	}
 
@@ -142,7 +142,7 @@ public class SlayerPluginTest
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
-		assertEquals("suqahs", slayerPlugin.getTaskName());
+		assertEquals("It's coming home", slayerPlugin.getTaskName());
 		assertEquals(211, slayerPlugin.getAmount());
 	}
 
@@ -154,14 +154,14 @@ public class SlayerPluginTest
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
-		assertEquals("suqahs", slayerPlugin.getTaskName());
+		assertEquals("It's coming home", slayerPlugin.getTaskName());
 		assertEquals(222, slayerPlugin.getAmount());
 	}
 
 	@Test
 	public void testOneTask()
 	{
-		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Perterter", TASK_ONE, null);
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "It's coming home", TASK_ONE, null);
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(1, slayerPlugin.getStreak());
@@ -172,7 +172,7 @@ public class SlayerPluginTest
 	@Test
 	public void testNoPoints()
 	{
-		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Perterter", TASK_COMPLETE_NO_POINTS, null);
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "It's coming home", TASK_COMPLETE_NO_POINTS, null);
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(3, slayerPlugin.getStreak());
@@ -183,7 +183,7 @@ public class SlayerPluginTest
 	@Test
 	public void testPoints()
 	{
-		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Perterter", TASK_POINTS, null);
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "It's coming home", TASK_POINTS, null);
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(9, slayerPlugin.getStreak());
@@ -195,10 +195,10 @@ public class SlayerPluginTest
 	@Test
 	public void testComplete()
 	{
-		slayerPlugin.setTaskName("cows");
+		slayerPlugin.setTaskName("It's coming home");
 		slayerPlugin.setAmount(42);
 
-		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Perterter", TASK_COMPLETE, null);
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "It's coming home", TASK_COMPLETE, null);
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals("", slayerPlugin.getTaskName());
@@ -208,10 +208,10 @@ public class SlayerPluginTest
 	@Test
 	public void testCancelled()
 	{
-		slayerPlugin.setTaskName("cows");
+		slayerPlugin.setTaskName("It's coming home");
 		slayerPlugin.setAmount(42);
 
-		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Perterter", TASK_CANCELED, null);
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "It's coming home", TASK_CANCELED, null);
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals("", slayerPlugin.getTaskName());
@@ -221,7 +221,7 @@ public class SlayerPluginTest
 	@Test
 	public void testSuperiorNotification()
 	{
-		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Superior", SUPERIOR_MESSAGE, null);
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "It's coming home", SUPERIOR_MESSAGE, null);
 
 		when(slayerConfig.showSuperiorNotification()).thenReturn(true);
 		slayerPlugin.onChatMessage(chatMessageEvent);

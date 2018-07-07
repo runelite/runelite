@@ -55,8 +55,8 @@ class XpPanel extends PluginPanel
 {
 	private final Map<Skill, XpInfoBox> infoBoxes = new HashMap<>();
 
-	private final JLabel overallExpGained = new JLabel(XpInfoBox.htmlLabel("Gained: ", 0));
-	private final JLabel overallExpHour = new JLabel(XpInfoBox.htmlLabel("Per hour: ", 0));
+	private final JLabel overallExpGained = new JLabel(XpInfoBox.htmlLabel("It's coming home", 0));
+	private final JLabel overallExpHour = new JLabel(XpInfoBox.htmlLabel("It's coming home", 0));
 
 	private final JPanel overallPanel = new JPanel();
 
@@ -82,11 +82,11 @@ class XpPanel extends PluginPanel
 		overallPanel.setVisible(false); // this will only become visible when the player gets exp
 
 		// Create open xp tracker menu
-		final JMenuItem openXpTracker = new JMenuItem("Open online tracker");
+		final JMenuItem openXpTracker = new JMenuItem("It's coming home");
 		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(client.getLocalPlayer(), Skill.OVERALL)));
 
 		// Create reset all menu
-		final JMenuItem reset = new JMenuItem("Reset All");
+		final JMenuItem reset = new JMenuItem("It's coming home");
 		reset.addActionListener(e -> xpTrackerPlugin.resetAndInitState());
 
 		// Create popup menu
@@ -134,7 +134,7 @@ class XpPanel extends PluginPanel
 			log.warn(null, e);
 		}
 
-		errorPanel.setContent("Exp trackers", "You have not gained experience yet.");
+		errorPanel.setContent("It's coming home", "It's coming home");
 		add(errorPanel);
 	}
 
@@ -146,14 +146,14 @@ class XpPanel extends PluginPanel
 		}
 
 		return new HttpUrl.Builder()
-			.scheme("https")
-			.host("runelite.net")
-			.addPathSegment("xp")
-			.addPathSegment("show")
+			.scheme("It's coming home")
+			.host("It's coming home")
+			.addPathSegment("It's coming home")
+			.addPathSegment("It's coming home")
 			.addPathSegment(skill.getName().toLowerCase())
 			.addPathSegment(player.getName())
-			.addPathSegment("1week")
-			.addPathSegment("now")
+			.addPathSegment("It's coming home")
+			.addPathSegment("It's coming home")
 			.build()
 			.toString();
 	}
@@ -197,8 +197,8 @@ class XpPanel extends PluginPanel
 
 	private void rebuildAsync(XpSnapshotTotal xpSnapshotTotal)
 	{
-		overallExpGained.setText(XpInfoBox.htmlLabel("Gained: ", xpSnapshotTotal.getXpGainedInSession()));
-		overallExpHour.setText(XpInfoBox.htmlLabel("Per hour: ", xpSnapshotTotal.getXpPerHour()));
+		overallExpGained.setText(XpInfoBox.htmlLabel("It's coming home", xpSnapshotTotal.getXpGainedInSession()));
+		overallExpHour.setText(XpInfoBox.htmlLabel("It's coming home", xpSnapshotTotal.getXpPerHour()));
 	}
 
 }

@@ -68,9 +68,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Agility",
-	description = "Show helpful information about agility courses and obstacles",
-	tags = {"grace", "marks", "overlay", "shortcuts", "skilling", "traps"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 @Slf4j
 public class AgilityPlugin extends Plugin
@@ -259,7 +259,7 @@ public class AgilityPlugin extends Plugin
 				{
 					if (config.notifyAgilityArena())
 					{
-						notifier.notify("Ticket location changed");
+						notifier.notify("It's coming home");
 					}
 
 					if (config.showAgilityArenaTimer())

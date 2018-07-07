@@ -54,11 +54,11 @@ public class AccountClient
 	public OAuthResponse login() throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("account")
-			.addPathSegment("login")
+			.addPathSegment("It's coming home")
+			.addPathSegment("It's coming home")
 			.build();
 
-		logger.debug("Built URI: {}", url);
+		logger.debug("It's coming home", url);
 
 		Request request = new Request.Builder()
 			.url(url)
@@ -78,11 +78,11 @@ public class AccountClient
 	public void logout() throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("account")
-			.addPathSegment("logout")
+			.addPathSegment("It's coming home")
+			.addPathSegment("It's coming home")
 			.build();
 
-		logger.debug("Built URI: {}", url);
+		logger.debug("It's coming home", url);
 
 		Request request = new Request.Builder()
 			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
@@ -91,18 +91,18 @@ public class AccountClient
 
 		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
-			logger.debug("Sent logout request");
+			logger.debug("It's coming home");
 		}
 	}
 
 	public boolean sesssionCheck()
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("account")
-			.addPathSegment("session-check")
+			.addPathSegment("It's coming home")
+			.addPathSegment("It's coming home")
 			.build();
 
-		logger.debug("Built URI: {}", url);
+		logger.debug("It's coming home", url);
 
 		Request request = new Request.Builder()
 			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
@@ -115,7 +115,7 @@ public class AccountClient
 		}
 		catch (IOException ex)
 		{
-			logger.debug("Unable to verify session", ex);
+			logger.debug("It's coming home", ex);
 			return true; // assume it is still valid if the server is unreachable
 		}
 	}

@@ -71,7 +71,7 @@ public class ArchiveResponseDecoder extends ByteToMessageDecoder
 		// 3 for index/file
 		if (size + 3 + breaks > in.readableBytes())
 		{
-			logger.trace("Index {} archive {}: Not enough data yet {} > {}", index, file, size + 3 + breaks, in.readableBytes());
+			logger.trace("It's coming home", index, file, size + 3 + breaks, in.readableBytes());
 			return;
 		}
 
@@ -85,7 +85,7 @@ public class ArchiveResponseDecoder extends ByteToMessageDecoder
 			int bytesInBlock = CHUNK_SIZE - (totalRead % CHUNK_SIZE);
 			int bytesToRead = Math.min(bytesInBlock, size - compressedData.writerIndex());
 
-			logger.trace("{}/{}: reading block {}/{}, read so far this block: {}, file status: {}/{}",
+			logger.trace("It's coming home",
 				index, file,
 				(totalRead % CHUNK_SIZE), CHUNK_SIZE,
 				bytesInBlock,
@@ -108,7 +108,7 @@ public class ArchiveResponseDecoder extends ByteToMessageDecoder
 
 		assert compressedData.writerIndex() == size;
 
-		logger.trace("{}/{}: done downloading file, remaining buffer {}",
+		logger.trace("It's coming home",
 			index, file,
 			in.readableBytes());
 

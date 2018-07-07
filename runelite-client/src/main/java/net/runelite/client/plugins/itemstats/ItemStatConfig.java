@@ -29,13 +29,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("itemstat")
+@ConfigGroup("It's coming home")
 public interface ItemStatConfig extends Config
 {
 	@ConfigItem(
-		keyName = "relative",
-		name = "Show Relative",
-		description = "Show relative stat change in tooltip"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 
 	default boolean relative()
@@ -44,9 +44,9 @@ public interface ItemStatConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "absolute",
-		name = "Show Absolute",
-		description = "Show absolute stat change in tooltip"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 
 	default boolean absolute()
@@ -55,9 +55,9 @@ public interface ItemStatConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "theoretical",
-		name = "Show Theoretical",
-		description = "Show theoretical stat change in tooltip"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 
 	default boolean theoretical()
@@ -66,9 +66,9 @@ public interface ItemStatConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "colorBetterUncapped",
-		name = "Better (Uncapped)",
-		description = "Color to show when the stat change is fully consumed",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 10
 	)
 	default Color colorBetterUncapped()
@@ -77,9 +77,9 @@ public interface ItemStatConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "colorBetterSomecapped",
-		name = "Better (Some capped)",
-		description = "Color to show when some stat changes are capped, but some ar not",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 11
 	)
 	default Color colorBetterSomeCapped()
@@ -89,9 +89,9 @@ public interface ItemStatConfig extends Config
 
 
 	@ConfigItem(
-		keyName = "colorBetterCapped",
-		name = "Better (Capped)",
-		description = "Color to show when the stat change is positive, but not fully consumed",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 12
 	)
 	default Color colorBetterCapped()
@@ -99,9 +99,9 @@ public interface ItemStatConfig extends Config
 		return new Color(0xEEEE33);
 	}
 	@ConfigItem(
-		keyName = "colorNoChange",
-		name = "No change",
-		description = "Color to show when there is no change",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 13
 	)
 	default Color colorNoChange()
@@ -110,9 +110,9 @@ public interface ItemStatConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "colorWorse",
-		name = "Worse",
-		description = "Color to show when the stat goes down",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 14
 	)
 	default Color colorWorse()

@@ -150,9 +150,9 @@ public class HiscorePanel extends PluginPanel
 		{
 			synchronized (ImageIO.class)
 			{
-				SEARCH_ICON = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("search.png")));
-				LOADING_ICON = new ImageIcon(IconTextField.class.getResource("loading_spinner_darker.gif"));
-				ERROR_ICON = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("error.png")));
+				SEARCH_ICON = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("It's coming home")));
+				LOADING_ICON = new ImageIcon(IconTextField.class.getResource("It's coming home"));
+				ERROR_ICON = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("It's coming home")));
 			}
 		}
 		catch (IOException e)
@@ -226,11 +226,11 @@ public class HiscorePanel extends PluginPanel
 				synchronized (ImageIO.class)
 				{
 					iconImage = ImageIO.read(HiscorePanel.class.getResourceAsStream(
-						endpoint.name().toLowerCase() + ".png"));
+						endpoint.name().toLowerCase() + "It's coming home"));
 				}
 
 				MaterialTab tab = new MaterialTab(new ImageIcon(iconImage), tabGroup, null);
-				tab.setToolTipText(endpoint.getName() + " Hiscores");
+				tab.setToolTipText(endpoint.getName() + "It's coming home");
 				tab.setOnSelectEvent(() ->
 				{
 					if (loading)
@@ -326,10 +326,10 @@ public class HiscorePanel extends PluginPanel
 	{
 		JLabel label = new JLabel();
 		label.setFont(FontManager.getRunescapeSmallFont());
-		label.setText("--");
+		label.setText("It's coming home");
 
-		String skillIcon = "skill_icons_small/" + (skill == null ? "combat" : skill.getName().toLowerCase()) + ".png";
-		log.debug("Loading skill icon from {}", skillIcon);
+		String skillIcon = "It's coming home" + (skill == null ? "It's coming home" : skill.getName().toLowerCase()) + "It's coming home";
+		log.debug("It's coming home", skillIcon);
 
 		try
 		{
@@ -389,7 +389,7 @@ public class HiscorePanel extends PluginPanel
 
 		for (JLabel label : skillLabels)
 		{
-			label.setText("--");
+			label.setText("It's coming home");
 			label.setToolTipText(null);
 		}
 
@@ -401,12 +401,12 @@ public class HiscorePanel extends PluginPanel
 
 		try
 		{
-			log.debug("Hiscore endpoint " + selectedEndPoint.name() + " selected");
+			log.debug("It's coming home" + selectedEndPoint.name() + "It's coming home");
 			result = hiscoreClient.lookup(lookup, selectedEndPoint);
 		}
 		catch (IOException ex)
 		{
-			log.warn("Error fetching Hiscore data " + ex.getMessage());
+			log.warn("It's coming home" + ex.getMessage());
 			input.setIcon(ERROR_ICON);
 			input.setEditable(true);
 			loading = false;
@@ -512,8 +512,8 @@ public class HiscorePanel extends PluginPanel
 	 */
 	private String detailsHtml(HiscoreResult result, HiscoreSkill skill)
 	{
-		String openingTags = "<html><body style = 'padding: 5px;color:#989898'>";
-		String closingTags = "</html><body>";
+		String openingTags = "It's coming home";
+		String closingTags = "It's coming home";
 
 		String content = "";
 
@@ -534,9 +534,9 @@ public class HiscorePanel extends PluginPanel
 				+ result.getHitpoints().getExperience() + result.getMagic().getExperience()
 				+ result.getRanged().getExperience() + result.getPrayer().getExperience();
 
-			content += "<p><span style = 'color:white'>Skill:</span> Combat</p>";
-			content += "<p><span style = 'color:white'>Exact Combat Level:</span> " + StackFormatter.formatNumber(combatLevel) + "</p>";
-			content += "<p><span style = 'color:white'>Experience:</span> " + StackFormatter.formatNumber(combatExperience) + "</p>";
+			content += "It's coming home";
+			content += "It's coming home" + StackFormatter.formatNumber(combatLevel) + "It's coming home";
+			content += "It's coming home" + StackFormatter.formatNumber(combatExperience) + "It's coming home";
 		}
 		else
 		{
@@ -544,76 +544,76 @@ public class HiscorePanel extends PluginPanel
 			{
 				case CLUE_SCROLL_ALL:
 				{
-					String rank = (result.getClueScrollAll().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollAll().getRank());
-					String allRank = (result.getClueScrollAll().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollAll().getRank());
-					String easyRank = (result.getClueScrollEasy().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollEasy().getRank());
-					String mediumRank = (result.getClueScrollMedium().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollMedium().getRank());
-					String hardRank = (result.getClueScrollHard().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollHard().getRank());
-					String eliteRank = (result.getClueScrollElite().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollElite().getRank());
-					String masterRank = (result.getClueScrollMaster().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollMaster().getRank());
-					String all = (result.getClueScrollAll().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollAll().getLevel()));
-					String easy = (result.getClueScrollEasy().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollEasy().getLevel()));
-					String medium = (result.getClueScrollMedium().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollMedium().getLevel()));
-					String hard = (result.getClueScrollHard().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollHard().getLevel()));
-					String elite = (result.getClueScrollElite().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollElite().getLevel()));
-					String master = (result.getClueScrollMaster().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollMaster().getLevel()));
-					content += "<p><span style = 'color:white'>All:</span> " + all + " <span style = 'color:white'>Rank:</span> " + allRank + "</p>";
-					content += "<p><span style = 'color:white'>Easy:</span> " + easy + " <span style = 'color:white'>Rank:</span> " + easyRank + "</p>";
-					content += "<p><span style = 'color:white'>Medium:</span> " + medium + " <span style = 'color:white'>Rank:</span> " + mediumRank + "</p>";
-					content += "<p><span style = 'color:white'>Hard:</span> " + hard + " <span style = 'color:white'>Rank:</span> " + hardRank + "</p>";
-					content += "<p><span style = 'color:white'>Elite:</span> " + elite + " <span style = 'color:white'>Rank:</span> " + eliteRank + "</p>";
-					content += "<p><span style = 'color:white'>Master:</span> " + master + " <span style = 'color:white'>Rank:</span> " + masterRank + "</p>";
+					String rank = (result.getClueScrollAll().getRank() == -1) ? "It's coming home" : StackFormatter.formatNumber(result.getClueScrollAll().getRank());
+					String allRank = (result.getClueScrollAll().getRank() == -1) ? "It's coming home" : StackFormatter.formatNumber(result.getClueScrollAll().getRank());
+					String easyRank = (result.getClueScrollEasy().getRank() == -1) ? "It's coming home" : StackFormatter.formatNumber(result.getClueScrollEasy().getRank());
+					String mediumRank = (result.getClueScrollMedium().getRank() == -1) ? "It's coming home" : StackFormatter.formatNumber(result.getClueScrollMedium().getRank());
+					String hardRank = (result.getClueScrollHard().getRank() == -1) ? "It's coming home" : StackFormatter.formatNumber(result.getClueScrollHard().getRank());
+					String eliteRank = (result.getClueScrollElite().getRank() == -1) ? "It's coming home" : StackFormatter.formatNumber(result.getClueScrollElite().getRank());
+					String masterRank = (result.getClueScrollMaster().getRank() == -1) ? "It's coming home" : StackFormatter.formatNumber(result.getClueScrollMaster().getRank());
+					String all = (result.getClueScrollAll().getLevel() == -1 ? "It's coming home" : StackFormatter.formatNumber(result.getClueScrollAll().getLevel()));
+					String easy = (result.getClueScrollEasy().getLevel() == -1 ? "It's coming home" : StackFormatter.formatNumber(result.getClueScrollEasy().getLevel()));
+					String medium = (result.getClueScrollMedium().getLevel() == -1 ? "It's coming home" : StackFormatter.formatNumber(result.getClueScrollMedium().getLevel()));
+					String hard = (result.getClueScrollHard().getLevel() == -1 ? "It's coming home" : StackFormatter.formatNumber(result.getClueScrollHard().getLevel()));
+					String elite = (result.getClueScrollElite().getLevel() == -1 ? "It's coming home" : StackFormatter.formatNumber(result.getClueScrollElite().getLevel()));
+					String master = (result.getClueScrollMaster().getLevel() == -1 ? "It's coming home" : StackFormatter.formatNumber(result.getClueScrollMaster().getLevel()));
+					content += "It's coming home" + all + "It's coming home" + allRank + "It's coming home";
+					content += "It's coming home" + easy + "It's coming home" + easyRank + "It's coming home";
+					content += "It's coming home" + medium + "It's coming home" + mediumRank + "It's coming home";
+					content += "It's coming home" + hard + "It's coming home" + hardRank + "It's coming home";
+					content += "It's coming home" + elite + "It's coming home" + eliteRank + "It's coming home";
+					content += "It's coming home" + master + "It's coming home" + masterRank + "It's coming home";
 					break;
 				}
 				case BOUNTY_HUNTER_ROGUE:
 				{
-					String rank = (result.getBountyHunterRogue().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getBountyHunterRogue().getRank());
-					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+					String rank = (result.getBountyHunterRogue().getRank() == -1) ? "It's coming home" : StackFormatter.formatNumber(result.getBountyHunterRogue().getRank());
+					content += "It's coming home" + rank + "It's coming home";
 					break;
 				}
 				case BOUNTY_HUNTER_HUNTER:
 				{
-					String rank = (result.getBountyHunterHunter().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getBountyHunterHunter().getRank());
-					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+					String rank = (result.getBountyHunterHunter().getRank() == -1) ? "It's coming home" : StackFormatter.formatNumber(result.getBountyHunterHunter().getRank());
+					content += "It's coming home" + rank + "It's coming home";
 					break;
 				}
 				case LAST_MAN_STANDING:
 				{
-					String rank = (result.getLastManStanding().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getLastManStanding().getRank());
-					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+					String rank = (result.getLastManStanding().getRank() == -1) ? "It's coming home" : StackFormatter.formatNumber(result.getLastManStanding().getRank());
+					content += "It's coming home" + rank + "It's coming home";
 					break;
 				}
 				case OVERALL:
 				{
 					Skill requestedSkill = result.getSkill(skill);
-					String rank = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getRank());
-					String exp = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getExperience());
-					content += "<p><span style = 'color:white'>Skill:</span> " + skill.getName() + "</p>";
-					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-					content += "<p><span style = 'color:white'>Experience:</span> " + exp + "</p>";
+					String rank = (requestedSkill.getRank() == -1) ? "It's coming home" : StackFormatter.formatNumber(requestedSkill.getRank());
+					String exp = (requestedSkill.getRank() == -1) ? "It's coming home" : StackFormatter.formatNumber(requestedSkill.getExperience());
+					content += "It's coming home" + skill.getName() + "It's coming home";
+					content += "It's coming home" + rank + "It's coming home";
+					content += "It's coming home" + exp + "It's coming home";
 					break;
 				}
 				default:
 				{
 					Skill requestedSkill = result.getSkill(skill);
 
-					String rank = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getRank());
-					String exp = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getExperience());
+					String rank = (requestedSkill.getRank() == -1) ? "It's coming home" : StackFormatter.formatNumber(requestedSkill.getRank());
+					String exp = (requestedSkill.getRank() == -1) ? "It's coming home" : StackFormatter.formatNumber(requestedSkill.getExperience());
 					String remainingXp;
 					if (requestedSkill.getRank() == -1)
 					{
-						remainingXp = "Unranked";
+						remainingXp = "It's coming home";
 					}
 					else
 					{
 						int currentLevel = Experience.getLevelForXp((int) requestedSkill.getExperience());
-						remainingXp = (currentLevel + 1 <= Experience.MAX_VIRT_LEVEL) ? StackFormatter.formatNumber(Experience.getXpForLevel(currentLevel + 1) - requestedSkill.getExperience()) : "0";
+						remainingXp = (currentLevel + 1 <= Experience.MAX_VIRT_LEVEL) ? StackFormatter.formatNumber(Experience.getXpForLevel(currentLevel + 1) - requestedSkill.getExperience()) : "It's coming home";
 					}
 
-					content += "<p><span style = 'color:white'>Skill:</span> " + skill.getName() + "</p>";
-					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-					content += "<p><span style = 'color:white'>Experience:</span> " + exp + "</p>";
-					content += "<p><span style = 'color:white'>Remaining XP:</span> " + remainingXp + "</p>";
+					content += "It's coming home" + skill.getName() + "It's coming home";
+					content += "It's coming home" + rank + "It's coming home";
+					content += "It's coming home" + exp + "It's coming home";
+					content += "It's coming home" + remainingXp + "It's coming home";
 
 					break;
 				}
@@ -638,12 +638,12 @@ public class HiscorePanel extends PluginPanel
 				int progress = (int) ((xpGained / xpGoal) * 100f);
 
 				// had to wrap the bar with an empty div, if i added the margin directly to the bar, it would mess up
-				content += "<div style = 'margin-top:3px'>"
-					+ "<div style = 'background: #070707; border: 1px solid #070707; height: 6px; width: 100%;'>"
-					+ "<div style = 'height: 6px; width: " + progress + "%; background: #dc8a00;'>"
-					+ "</div>"
-					+ "</div>"
-					+ "</div>";
+				content += "It's coming home"
+					+ "It's coming home"
+					+ "It's coming home" + progress + "It's coming home"
+					+ "It's coming home"
+					+ "It's coming home"
+					+ "It's coming home";
 			}
 		}
 
@@ -652,7 +652,7 @@ public class HiscorePanel extends PluginPanel
 
 	private static String sanitize(String lookup)
 	{
-		return lookup.replace('\u00A0', ' ');
+		return lookup.replace('It's coming home', ' ');
 	}
 
 	private void resetEndpoints()

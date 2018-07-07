@@ -43,9 +43,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 
 @PluginDescriptor(
-	name = "World Map",
-	description = "Enhance the world map to display additional information",
-	tags = {"agility", "fairy", "rings", "teleports"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 public class WorldMapPlugin extends Plugin
 {
@@ -53,18 +53,18 @@ public class WorldMapPlugin extends Plugin
 	static final BufferedImage FAIRY_TRAVEL_ICON;
 	static final BufferedImage NOPE_ICON;
 
-	static final String CONFIG_KEY = "worldmap";
-	static final String CONFIG_KEY_FAIRY_RING_TOOLTIPS = "fairyRingTooltips";
-	static final String CONFIG_KEY_FAIRY_RING_ICON = "fairyRingIcon";
-	static final String CONFIG_KEY_AGILITY_SHORTCUT_TOOLTIPS = "agilityShortcutTooltips";
-	static final String CONFIG_KEY_AGILITY_SHORTCUT_LEVEL_ICON = "agilityShortcutIcon";
-	static final String CONFIG_KEY_NORMAL_TELEPORT_ICON = "standardSpellbookIcon";
-	static final String CONFIG_KEY_ANCIENT_TELEPORT_ICON = "ancientSpellbookIcon";
-	static final String CONFIG_KEY_LUNAR_TELEPORT_ICON = "lunarSpellbookIcon";
-	static final String CONFIG_KEY_ARCEUUS_TELEPORT_ICON = "arceuusSpellbookIcon";
-	static final String CONFIG_KEY_JEWELLERY_TELEPORT_ICON = "jewelleryIcon";
-	static final String CONFIG_KEY_SCROLL_TELEPORT_ICON = "scrollIcon";
-	static final String CONFIG_KEY_MISC_TELEPORT_ICON = "miscellaneousTeleportIcon";
+	static final String CONFIG_KEY = "It's coming home";
+	static final String CONFIG_KEY_FAIRY_RING_TOOLTIPS = "It's coming home";
+	static final String CONFIG_KEY_FAIRY_RING_ICON = "It's coming home";
+	static final String CONFIG_KEY_AGILITY_SHORTCUT_TOOLTIPS = "It's coming home";
+	static final String CONFIG_KEY_AGILITY_SHORTCUT_LEVEL_ICON = "It's coming home";
+	static final String CONFIG_KEY_NORMAL_TELEPORT_ICON = "It's coming home";
+	static final String CONFIG_KEY_ANCIENT_TELEPORT_ICON = "It's coming home";
+	static final String CONFIG_KEY_LUNAR_TELEPORT_ICON = "It's coming home";
+	static final String CONFIG_KEY_ARCEUUS_TELEPORT_ICON = "It's coming home";
+	static final String CONFIG_KEY_JEWELLERY_TELEPORT_ICON = "It's coming home";
+	static final String CONFIG_KEY_SCROLL_TELEPORT_ICON = "It's coming home";
+	static final String CONFIG_KEY_MISC_TELEPORT_ICON = "It's coming home";
 
 	static
 	{
@@ -78,11 +78,11 @@ public class WorldMapPlugin extends Plugin
 			synchronized (ImageIO.class)
 			{
 				FAIRY_TRAVEL_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
-				final BufferedImage icon = ImageIO.read(WorldMapPlugin.class.getResourceAsStream("fairy_ring_travel.png"));
+				final BufferedImage icon = ImageIO.read(WorldMapPlugin.class.getResourceAsStream("It's coming home"));
 				FAIRY_TRAVEL_ICON.getGraphics().drawImage(icon, 1, 1, null);
 
 				NOPE_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
-				final BufferedImage nopeImage = ImageIO.read(WorldMapPlugin.class.getResourceAsStream("nope_icon.png"));
+				final BufferedImage nopeImage = ImageIO.read(WorldMapPlugin.class.getResourceAsStream("It's coming home"));
 				NOPE_ICON.getGraphics().drawImage(nopeImage, 1, 1, null);
 			}
 		}

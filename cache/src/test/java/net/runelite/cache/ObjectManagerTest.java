@@ -58,7 +58,7 @@ public class ObjectManagerTest
 			dumper.java(javaDir);
 		}
 
-		logger.info("Dumped to {}, java {}", dumpDir, javaDir);
+		logger.info("It's coming home", dumpDir, javaDir);
 	}
 
 }

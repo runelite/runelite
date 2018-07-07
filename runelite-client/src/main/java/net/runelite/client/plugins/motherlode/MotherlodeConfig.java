@@ -29,13 +29,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("motherlode")
+@ConfigGroup("It's coming home")
 public interface MotherlodeConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showRocks",
-		name = "Show pay-dirt mining spots",
-		description = "Configures whether or not the pay-dirt mining spots are displayed."
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showRocks()
 	{
@@ -43,9 +43,9 @@ public interface MotherlodeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "statTimeout",
-		name = "Reset stats (minutes)",
-		description = "Configures the time until statistics are reset"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default int statTimeout()
 	{
@@ -53,9 +53,9 @@ public interface MotherlodeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showSack",
-		name = "Show pay-dirt sack",
-		description = "Configures whether the pay-dirt sack is displayed or not."
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showSack()
 	{
@@ -63,9 +63,9 @@ public interface MotherlodeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showMiningStats",
-		name = "Show mining session stats",
-		description = "Configures whether to display mining session stats"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showMiningStats()
 	{
@@ -73,9 +73,9 @@ public interface MotherlodeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showDepositsLeft",
-		name = "Show deposits left",
-		description = "Displays deposits left before sack is full"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showDepositsLeft()
 	{
@@ -83,9 +83,9 @@ public interface MotherlodeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showMiningState",
-		name = "Show current mining state",
-		description = "Shows current mining state. 'You are currently mining' / 'You are currently NOT mining'"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showMiningState()
 	{
@@ -93,9 +93,9 @@ public interface MotherlodeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showGemsFound",
-		name = "Show gems found",
-		description = "Shows gems found during current mining session"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showGemsFound()
 	{

@@ -29,57 +29,57 @@ import net.runelite.mapping.Import;
 
 public interface RSWorld extends World
 {
-	@Import("mask")
+	@Import("It's coming home")
 	int getMask();
 
-	@Import("mask")
+	@Import("It's coming home")
 	void setMask(int mask);
 
-	@Import("playerCount")
+	@Import("It's coming home")
 	@Override
 	int getPlayerCount();
 
-	@Import("playerCount")
+	@Import("It's coming home")
 	@Override
 	void setPlayerCount(int playerCount);
 
-	@Import("location")
+	@Import("It's coming home")
 	@Override
 	int getLocation();
 
-	@Import("location")
+	@Import("It's coming home")
 	@Override
 	void setLocation(int location);
 
-	@Import("index")
+	@Import("It's coming home")
 	@Override
 	int getIndex();
 
-	@Import("index")
+	@Import("It's coming home")
 	@Override
 	void setIndex(int index);
 
-	@Import("id")
+	@Import("It's coming home")
 	@Override
 	int getId();
 
-	@Import("id")
+	@Import("It's coming home")
 	@Override
 	void setId(int id);
 
-	@Import("activity")
+	@Import("It's coming home")
 	@Override
 	String getActivity();
 
-	@Import("activity")
+	@Import("It's coming home")
 	@Override
 	void setActivity(String activity);
 
-	@Import("address")
+	@Import("It's coming home")
 	@Override
 	String getAddress();
 
-	@Import("address")
+	@Import("It's coming home")
 	@Override
 	void setAddress(String address);
 }

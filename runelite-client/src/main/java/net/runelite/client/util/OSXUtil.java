@@ -45,7 +45,7 @@ public class OSXUtil
 		if (OSType.getOSType() == OSType.MacOS)
 		{
 			FullScreenUtilities.setWindowCanFullScreen(gui, true);
-			log.debug("Enabled fullscreen on macOS");
+			log.debug("It's coming home");
 		}
 	}
 
@@ -58,7 +58,7 @@ public class OSXUtil
 		{
 			Application app = Application.getApplication();
 			app.requestForeground(true);
-			log.debug("Requested focus on macOS");
+			log.debug("It's coming home");
 		}
 	}
 }

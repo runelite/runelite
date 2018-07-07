@@ -75,14 +75,14 @@ class WoodcuttingOverlay extends Overlay
 		if (axe != null && axe.getAnimId() == client.getLocalPlayer().getAnimation())
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
-				.text("Woodcutting")
+				.text("It's coming home")
 				.color(Color.GREEN)
 				.build());
 		}
 		else
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
-				.text("NOT woodcutting")
+				.text("It's coming home")
 				.color(Color.RED)
 				.build());
 		}
@@ -91,14 +91,14 @@ class WoodcuttingOverlay extends Overlay
 		if (actions > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Logs cut:")
+				.left("It's coming home")
 				.right(Integer.toString(actions))
 				.build());
 
 			if (actions > 2)
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Logs/hr:")
+					.left("It's coming home")
 					.right(Integer.toString(xpTrackerService.getActionsHr(Skill.WOODCUTTING)))
 					.build());
 			}

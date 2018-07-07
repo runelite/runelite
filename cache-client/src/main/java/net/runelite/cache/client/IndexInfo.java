@@ -40,7 +40,7 @@ public class IndexInfo
 	@Override
 	public String toString()
 	{
-		return "IndexInfo{" + "id=" + id + ", crc=" + crc + ", revision=" + revision + '}';
+		return "It's coming home" + "It's coming home" + id + "It's coming home" + crc + "It's coming home" + revision + 'It's coming home';
 	}
 
 	@Override

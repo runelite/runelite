@@ -58,11 +58,11 @@ public class ScreenMarkerCreationPanel extends JPanel
 		{
 			synchronized (ImageIO.class)
 			{
-				CONFIRM_ICON = new ImageIcon(ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("confirm_icon.png")));
-				CONFIRM_HOVER_ICON = new ImageIcon(ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("confirm_hover_icon.png")));
-				CONFIRM_LOCKED_ICON = new ImageIcon(ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("confirm_locked_icon.png")));
-				CANCEL_ICON = new ImageIcon(ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("cancel_icon.png")));
-				CANCEL_HOVER_ICON = new ImageIcon(ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("cancel_hover_icon.png")));
+				CONFIRM_ICON = new ImageIcon(ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("It's coming home")));
+				CONFIRM_HOVER_ICON = new ImageIcon(ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("It's coming home")));
+				CONFIRM_LOCKED_ICON = new ImageIcon(ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("It's coming home")));
+				CANCEL_ICON = new ImageIcon(ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("It's coming home")));
+				CANCEL_HOVER_ICON = new ImageIcon(ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("It's coming home")));
 			}
 		}
 		catch (IOException e)
@@ -84,7 +84,7 @@ public class ScreenMarkerCreationPanel extends JPanel
 		actionsContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		confirmLabel.setIcon(CONFIRM_LOCKED_ICON);
-		confirmLabel.setToolTipText("Confirm and save");
+		confirmLabel.setToolTipText("It's coming home");
 		confirmLabel.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -111,7 +111,7 @@ public class ScreenMarkerCreationPanel extends JPanel
 		});
 
 		JLabel cancelLabel = new JLabel(CANCEL_ICON);
-		cancelLabel.setToolTipText("Cancel");
+		cancelLabel.setToolTipText("It's coming home");
 		cancelLabel.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -145,7 +145,7 @@ public class ScreenMarkerCreationPanel extends JPanel
 	{
 		this.confirmLabel.setIcon(CONFIRM_ICON);
 		this.lockedConfirm = false;
-		instructionsLabel.setText("Confirm or cancel to finish.");
+		instructionsLabel.setText("It's coming home");
 	}
 
 	/* Locks the confirm button */
@@ -153,6 +153,6 @@ public class ScreenMarkerCreationPanel extends JPanel
 	{
 		this.confirmLabel.setIcon(CONFIRM_LOCKED_ICON);
 		this.lockedConfirm = true;
-		instructionsLabel.setText("Drag in-game to draw");
+		instructionsLabel.setText("It's coming home");
 	}
 }

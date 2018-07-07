@@ -29,14 +29,14 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("entityhider")
+@ConfigGroup("It's coming home")
 public interface EntityHiderConfig extends Config
 {
 	@ConfigItem(
 		position = 1,
-		keyName = "hidePlayers",
-		name = "Hide Players",
-		description = "Configures whether or not players are hidden"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean hidePlayers()
 	{
@@ -45,9 +45,9 @@ public interface EntityHiderConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "hidePlayers2D",
-		name = "Hide Players 2D",
-		description = "Configures whether or not players 2D elements are hidden"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean hidePlayers2D()
 	{
@@ -56,9 +56,9 @@ public interface EntityHiderConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "hideFriends",
-		name = "Hide Friends",
-		description = "Configures whether or not friends are hidden"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean hideFriends()
 	{
@@ -67,9 +67,9 @@ public interface EntityHiderConfig extends Config
 
 	@ConfigItem(
 		position = 4,
-		keyName = "hideClanMates",
-		name = "Hide Clan Mates",
-		description = "Configures whether or not clan mates are hidden"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean hideClanMates()
 	{
@@ -78,9 +78,9 @@ public interface EntityHiderConfig extends Config
 
 	@ConfigItem(
 		position = 5,
-		keyName = "hideLocalPlayer",
-		name = "Hide Local Player",
-		description = "Configures whether or not the local player is hidden"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean hideLocalPlayer()
 	{
@@ -89,9 +89,9 @@ public interface EntityHiderConfig extends Config
 
 	@ConfigItem(
 		position = 6,
-		keyName = "hideLocalPlayer2D",
-		name = "Hide Local Player 2D",
-		description = "Configures whether or not the local player's 2D elements are hidden"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean hideLocalPlayer2D()
 	{
@@ -100,9 +100,9 @@ public interface EntityHiderConfig extends Config
 
 	@ConfigItem(
 		position = 7,
-		keyName = "hideNPCs",
-		name = "Hide NPCs",
-		description = "Configures whether or not NPCs are hidden"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean hideNPCs()
 	{
@@ -111,9 +111,9 @@ public interface EntityHiderConfig extends Config
 
 	@ConfigItem(
 		position = 8,
-		keyName = "hideNPCs2D",
-		name = "Hide NPCs 2D",
-		description = "Configures whether or not NPCs 2D elements are hidden"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean hideNPCs2D()
 	{
@@ -122,9 +122,9 @@ public interface EntityHiderConfig extends Config
 
 	@ConfigItem(
 		position = 9,
-		keyName = "hideAttackers",
-		name = "Hide Attackers",
-		description = "Configures whether or not NPCs/players attacking you are hidden"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean hideAttackers()
 	{
@@ -133,9 +133,9 @@ public interface EntityHiderConfig extends Config
 
 	@ConfigItem(
 		position = 10,
-		keyName = "hideProjectiles",
-		name = "Hide Projectiles",
-		description = "Configures whether or not projectiles are hidden"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean hideProjectiles()
 	{

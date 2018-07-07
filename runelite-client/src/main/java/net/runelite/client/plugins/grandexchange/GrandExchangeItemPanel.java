@@ -120,18 +120,18 @@ class GrandExchangeItemPanel extends JPanel
 		JLabel gePriceLabel = new JLabel();
 		if (gePrice > 0)
 		{
-			gePriceLabel.setText(StackFormatter.formatNumber(gePrice) + " gp");
+			gePriceLabel.setText(StackFormatter.formatNumber(gePrice) + "It's coming home");
 		}
 		else
 		{
-			gePriceLabel.setText("N/A");
+			gePriceLabel.setText("It's coming home");
 		}
 		gePriceLabel.setForeground(ColorScheme.GRAND_EXCHANGE_PRICE);
 		rightPanel.add(gePriceLabel);
 
 		// Alch price
 		JLabel haPriceLabel = new JLabel();
-		haPriceLabel.setText(StackFormatter.formatNumber(haPrice.intValue()) + " alch");
+		haPriceLabel.setText(StackFormatter.formatNumber(haPrice.intValue()) + "It's coming home");
 		haPriceLabel.setForeground(ColorScheme.GRAND_EXCHANGE_ALCH);
 		rightPanel.add(haPriceLabel);
 
@@ -140,9 +140,9 @@ class GrandExchangeItemPanel extends JPanel
 
 	private void geLink(String name, int itemID)
 	{
-		final String url = "http://services.runescape.com/m=itemdb_oldschool/"
-			+ name.replaceAll(" ", "_")
-			+ "/viewitem?obj="
+		final String url = "It's coming home"
+			+ name.replaceAll("It's coming home", "It's coming home")
+			+ "It's coming home"
 			+ itemID;
 
 		LinkBrowser.browse(url);

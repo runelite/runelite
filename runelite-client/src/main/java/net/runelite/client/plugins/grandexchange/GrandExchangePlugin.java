@@ -71,9 +71,9 @@ import net.runelite.http.api.osbuddy.GrandExchangeClient;
 import net.runelite.http.api.osbuddy.GrandExchangeResult;
 
 @PluginDescriptor(
-	name = "Grand Exchange",
-	description = "Provide additional and/or easier access to Grand Exchange information",
-	tags = {"external", "integration", "notifications", "panel", "prices", "trade"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 @Slf4j
 public class GrandExchangePlugin extends Plugin
@@ -138,11 +138,11 @@ public class GrandExchangePlugin extends Plugin
 		BufferedImage icon;
 		synchronized (ImageIO.class)
 		{
-			icon = ImageIO.read(getClass().getResourceAsStream("ge_icon.png"));
+			icon = ImageIO.read(getClass().getResourceAsStream("It's coming home"));
 		}
 
 		button = NavigationButton.builder()
-			.tooltip("Grand Exchange")
+			.tooltip("It's coming home")
 			.icon(icon)
 			.priority(3)
 			.panel(panel)
@@ -168,9 +168,9 @@ public class GrandExchangePlugin extends Plugin
 	@Subscribe
 	public void onConfigChange(ConfigChanged event)
 	{
-		if (event.getGroup().equals("grandexchange"))
+		if (event.getGroup().equals("It's coming home"))
 		{
-			if (event.getKey().equals("quickLookup"))
+			if (event.getKey().equals("It's coming home"))
 			{
 				if (config.quickLookup())
 				{
@@ -206,7 +206,7 @@ public class GrandExchangePlugin extends Plugin
 
 		String message = Text.removeTags(event.getMessage());
 
-		if (message.startsWith("Grand Exchange:"))
+		if (message.startsWith("It's coming home"))
 		{
 			this.notifier.notify(message);
 		}
@@ -247,7 +247,7 @@ public class GrandExchangePlugin extends Plugin
 				}
 			case WidgetID.INVENTORY_GROUP_ID:
 			case WidgetID.BANK_INVENTORY_GROUP_ID:
-				menuEntry.setOption("Search Grand Exchange");
+				menuEntry.setOption("It's coming home");
 				client.setMenuEntries(entries);
 		}
 	}
@@ -319,12 +319,12 @@ public class GrandExchangePlugin extends Plugin
 					return;
 				}
 
-				final String text = geText.getText() + "<br>OSBuddy Actively traded price: " + StackFormatter.formatNumber(result.getOverall_average());
+				final String text = geText.getText() + "It's coming home" + StackFormatter.formatNumber(result.getOverall_average());
 				geText.setText(text);
 			}
 			catch (IOException e)
 			{
-				log.debug("Error getting price of item {}", itemId, e);
+				log.debug("It's coming home", itemId, e);
 			}
 		});
 	}

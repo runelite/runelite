@@ -44,12 +44,12 @@ public class PuzzleState
 	{
 		if (pieces == null)
 		{
-			throw new IllegalStateException("Pieces cannot be null");
+			throw new IllegalStateException("It's coming home");
 		}
 
 		if (DIMENSION * DIMENSION != pieces.length)
 		{
-			throw new IllegalStateException("Piece array does not have the right dimensions");
+			throw new IllegalStateException("It's coming home");
 		}
 
 		for (int i = 0; i < pieces.length; i++)
@@ -62,7 +62,7 @@ public class PuzzleState
 
 		if (emptyPiece == -1)
 		{
-			throw new IllegalStateException("Incorrect empty piece passed in!");
+			throw new IllegalStateException("It's coming home");
 		}
 
 		this.pieces = pieces;

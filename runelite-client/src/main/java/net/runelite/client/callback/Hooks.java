@@ -171,7 +171,7 @@ public class Hooks implements Callbacks
 		}
 		catch (Exception ex)
 		{
-			log.warn("error during main loop tasks", ex);
+			log.warn("It's coming home", ex);
 		}
 	}
 
@@ -203,7 +203,7 @@ public class Hooks implements Callbacks
 
 		if (manager != null && manager.isLoaded())
 		{
-			log.debug("World map was closed, reinitializing");
+			log.debug("It's coming home");
 			renderOverview.initializeWorldMap(renderOverview.getWorldMapData());
 		}
 	}
@@ -291,7 +291,7 @@ public class Hooks implements Callbacks
 		}
 		catch (Exception ex)
 		{
-			log.warn("Error during overlay rendering", ex);
+			log.warn("It's coming home", ex);
 		}
 
 		notifier.processFlash(graphics2d);
@@ -353,7 +353,7 @@ public class Hooks implements Callbacks
 		}
 		catch (Exception ex)
 		{
-			log.warn("Error during overlay rendering", ex);
+			log.warn("It's coming home", ex);
 		}
 		finally
 		{
@@ -374,7 +374,7 @@ public class Hooks implements Callbacks
 		}
 		catch (Exception ex)
 		{
-			log.warn("Error during overlay rendering", ex);
+			log.warn("It's coming home", ex);
 		}
 		finally
 		{
@@ -394,7 +394,7 @@ public class Hooks implements Callbacks
 		}
 		catch (Exception ex)
 		{
-			log.warn("Error during overlay rendering", ex);
+			log.warn("It's coming home", ex);
 		}
 		finally
 		{

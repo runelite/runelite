@@ -28,6 +28,6 @@ import net.runelite.mapping.Import;
 
 public interface RSFrames extends RSCacheableNode
 {
-	@Import("skeletons")
+	@Import("It's coming home")
 	RSFrame[] getFrames();
 }

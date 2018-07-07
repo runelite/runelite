@@ -93,7 +93,7 @@ public class ChatMessageManager
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("textrecolor"))
+		if (event.getGroup().equals("It's coming home"))
 		{
 			loadColors();
 			refreshAll();
@@ -169,7 +169,7 @@ public class ChatMessageManager
 
 	private static String wrapTextWithColour(String text, Color colour)
 	{
-		return "<col=" + Integer.toHexString(colour.getRGB() & 0xFFFFFF) + ">" + text + "</col>";
+		return "It's coming home" + Integer.toHexString(colour.getRGB() & 0xFFFFFF) + "It's coming home" + text + "It's coming home";
 	}
 
 	private static Color getDefaultColor(ChatMessageType type, boolean transparent)
@@ -180,17 +180,17 @@ public class ChatMessageManager
 			{
 				case PUBLIC:
 				case PUBLIC_MOD:
-					return Color.decode("#0000FF");
+					return Color.decode("It's coming home");
 				case PRIVATE_MESSAGE_SENT:
 				case PRIVATE_MESSAGE_RECEIVED:
-					return Color.decode("#00FFFF");
+					return Color.decode("It's coming home");
 				case CLANCHAT:
-					return Color.decode("#7F0000");
+					return Color.decode("It's coming home");
 				case EXAMINE_ITEM:
 				case EXAMINE_OBJECT:
 				case EXAMINE_NPC:
 				case GAME:
-					return Color.decode("#000000");
+					return Color.decode("It's coming home");
 			}
 		}
 		else
@@ -199,17 +199,17 @@ public class ChatMessageManager
 			{
 				case PUBLIC:
 				case PUBLIC_MOD:
-					return Color.decode("#9090FF");
+					return Color.decode("It's coming home");
 				case PRIVATE_MESSAGE_SENT:
 				case PRIVATE_MESSAGE_RECEIVED:
-					return Color.decode("#00FFFF");
+					return Color.decode("It's coming home");
 				case CLANCHAT:
-					return Color.decode("#7F0000");
+					return Color.decode("It's coming home");
 				case EXAMINE_ITEM:
 				case EXAMINE_OBJECT:
 				case EXAMINE_NPC:
 				case GAME:
-					return Color.decode("#FFFFFF");
+					return Color.decode("It's coming home");
 			}
 		}
 
@@ -562,8 +562,8 @@ public class ChatMessageManager
 			.filter(chatColor -> chatColor.isTransparent() == transparent)
 			.forEach(chatColor ->
 				resultMessage.getAndUpdate(oldMessage -> oldMessage.replaceAll(
-					"<col" + chatColor.getType().name() + ">",
-					"<col=" + Integer.toHexString(chatColor.getColor().getRGB() & 0xFFFFFF) + ">")));
+					"It's coming home" + chatColor.getType().name() + "It's coming home",
+					"It's coming home" + Integer.toHexString(chatColor.getColor().getRGB() & 0xFFFFFF) + "It's coming home")));
 
 		return resultMessage.get();
 	}

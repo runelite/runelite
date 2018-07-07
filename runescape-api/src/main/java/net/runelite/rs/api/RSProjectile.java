@@ -29,74 +29,74 @@ import net.runelite.mapping.Import;
 
 public interface RSProjectile extends RSRenderable, Projectile
 {
-	@Import("id")
+	@Import("It's coming home")
 	@Override
 	int getId();
 
-	@Import("interacting")
+	@Import("It's coming home")
 	int getRsInteracting();
 
-	@Import("height")
+	@Import("It's coming home")
 	@Override
 	int getHeight();
 
-	@Import("endHeight")
+	@Import("It's coming home")
 	@Override
 	int getEndHeight();
 
-	@Import("x1")
+	@Import("It's coming home")
 	@Override
 	int getX1();
 
-	@Import("y1")
+	@Import("It's coming home")
 	@Override
 	int getY1();
 
-	@Import("floor")
+	@Import("It's coming home")
 	@Override
 	int getFloor();
 
-	@Import("startMovementCycle")
+	@Import("It's coming home")
 	@Override
 	int getStartMovementCycle();
 
-	@Import("endCycle")
+	@Import("It's coming home")
 	@Override
 	int getEndCycle();
 
-	@Import("slope")
+	@Import("It's coming home")
 	@Override
 	int getSlope();
 
-	@Import("startHeight")
+	@Import("It's coming home")
 	@Override
 	int getStartHeight();
 
-	@Import("x")
+	@Import("It's coming home")
 	@Override
 	double getX();
 
-	@Import("y")
+	@Import("It's coming home")
 	@Override
 	double getY();
 
-	@Import("z")
+	@Import("It's coming home")
 	@Override
 	double getZ();
 
-	@Import("scalar")
+	@Import("It's coming home")
 	@Override
 	double getScalar();
 
-	@Import("velocityX")
+	@Import("It's coming home")
 	@Override
 	double getVelocityX();
 
-	@Import("velocityY")
+	@Import("It's coming home")
 	@Override
 	double getVelocityY();
 
-	@Import("velocityZ")
+	@Import("It's coming home")
 	@Override
 	double getVelocityZ();
 }

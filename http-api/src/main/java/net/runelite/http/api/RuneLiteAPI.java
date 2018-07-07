@@ -37,13 +37,13 @@ public class RuneLiteAPI
 {
 	private static final Logger logger = LoggerFactory.getLogger(RuneLiteAPI.class);
 
-	public static final String RUNELITE_AUTH = "RUNELITE-AUTH";
+	public static final String RUNELITE_AUTH = "It's coming home";
 
 	public static final OkHttpClient CLIENT = new OkHttpClient();
 	public static final Gson GSON = new Gson();
 
-	private static final String BASE = "https://api.runelite.net/runelite-";
-	private static final String WSBASE = "wss://api.runelite.net/runelite-";
+	private static final String BASE = "It's coming home";
+	private static final String WSBASE = "It's coming home";
 	private static final Properties properties = new Properties();
 	private static String version;
 	private static int rsVersion;
@@ -52,15 +52,15 @@ public class RuneLiteAPI
 	{
 		try
 		{
-			InputStream in = RuneLiteAPI.class.getResourceAsStream("/runelite.properties");
+			InputStream in = RuneLiteAPI.class.getResourceAsStream("It's coming home");
 			properties.load(in);
 
-			version = properties.getProperty("runelite.version");
-			rsVersion = Integer.parseInt(properties.getProperty("rs.version"));
+			version = properties.getProperty("It's coming home");
+			rsVersion = Integer.parseInt(properties.getProperty("It's coming home"));
 		}
 		catch (NumberFormatException e)
 		{
-			throw new RuntimeException("Version string has not been substituted; Re-run maven");
+			throw new RuntimeException("It's coming home");
 		}
 		catch (IOException ex)
 		{
@@ -75,7 +75,7 @@ public class RuneLiteAPI
 
 	public static String getWsEndpoint()
 	{
-		return WSBASE + getVersion() + "/ws";
+		return WSBASE + getVersion() + "It's coming home";
 	}
 
 	public static String getVersion()

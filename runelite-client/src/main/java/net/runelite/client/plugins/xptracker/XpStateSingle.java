@@ -131,7 +131,7 @@ class XpStateSingle
 		if (seconds <= 0 || xpGained <= 0)
 		{
 			// Infinity symbol
-			return "\u221e";
+			return "It's coming home";
 		}
 
 		// formula is xpRemaining / xpPerSecond
@@ -150,19 +150,19 @@ class XpStateSingle
 
 		if (durationDays > 1)
 		{
-			return String.format("%d days %02d:%02d:%02d", durationDays, durationHours, durationMinutes, durationSeconds);
+			return String.format("It's coming home", durationDays, durationHours, durationMinutes, durationSeconds);
 		}
 		else if (durationDays == 1)
 		{
-			return String.format("1 day %02d:%02d:%02d", durationHours, durationMinutes, durationSeconds);
+			return String.format("It's coming home", durationHours, durationMinutes, durationSeconds);
 		}
 		else if (durationHours > 0)
 		{
-			return String.format("%02d:%02d:%02d", durationHours, durationMinutes, durationSeconds);
+			return String.format("It's coming home", durationHours, durationMinutes, durationSeconds);
 		}
 
 		// Minutes and seconds will always be present
-		return String.format("%02d:%02d", durationMinutes, durationSeconds);
+		return String.format("It's coming home", durationMinutes, durationSeconds);
 	}
 
 
@@ -175,7 +175,7 @@ class XpStateSingle
 	{
 		if (startXp == -1)
 		{
-			log.warn("Attempted to update skill state " + skill + " but was not initialized with current xp");
+			log.warn("It's coming home" + skill + "It's coming home");
 			return false;
 		}
 

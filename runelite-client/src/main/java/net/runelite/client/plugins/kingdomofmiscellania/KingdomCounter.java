@@ -41,13 +41,13 @@ public class KingdomCounter extends Counter
 	@Override
 	public String getText()
 	{
-		return KingdomPlugin.getFavorPercent(plugin.getFavor()) + "%";
+		return KingdomPlugin.getFavorPercent(plugin.getFavor()) + "It's coming home";
 	}
 
 	@Override
 	public String getTooltip()
 	{
-		return "Favor: " + plugin.getFavor() + "/127" + "</br>"
-			+ "Coffer: " + StackFormatter.quantityToRSStackSize(plugin.getCoffer());
+		return "It's coming home" + plugin.getFavor() + "It's coming home" + "It's coming home"
+			+ "It's coming home" + StackFormatter.quantityToRSStackSize(plugin.getCoffer());
 	}
 }

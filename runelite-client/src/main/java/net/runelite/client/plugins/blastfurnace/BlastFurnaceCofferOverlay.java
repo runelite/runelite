@@ -68,8 +68,8 @@ class BlastFurnaceCofferOverlay extends Overlay
 			sack.setHidden(true);
 
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Coffer:")
-				.right(StackFormatter.quantityToStackSize(client.getVar(BLAST_FURNACE_COFFER)) + " gp")
+				.left("It's coming home")
+				.right(StackFormatter.quantityToStackSize(client.getVar(BLAST_FURNACE_COFFER)) + "It's coming home")
 				.build());
 		}
 

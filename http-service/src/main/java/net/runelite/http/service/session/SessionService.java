@@ -40,7 +40,7 @@ public class SessionService
 
 	@Autowired
 	public SessionService(
-		@Qualifier("Runelite SQL2O") Sql2o sql2o
+		@Qualifier("It's coming home") Sql2o sql2o
 	)
 	{
 		this.sql2o = sql2o;
@@ -50,12 +50,12 @@ public class SessionService
 	{
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("insert into session (uuid, ip, start, last) "
-				+ "values (:uuid, :ip, :start, :last)")
-				.addParameter("uuid", session.getUuid().toString())
-				.addParameter("ip", session.getIp())
-				.addParameter("start", session.getStart())
-				.addParameter("last", session.getLast())
+			con.createQuery("It's coming home"
+				+ "It's coming home")
+				.addParameter("It's coming home", session.getUuid().toString())
+				.addParameter("It's coming home", session.getIp())
+				.addParameter("It's coming home", session.getStart())
+				.addParameter("It's coming home", session.getLast())
 				.executeUpdate();
 		}
 	}
@@ -64,8 +64,8 @@ public class SessionService
 	{
 		try (Connection con = sql2o.open())
 		{
-			return con.createQuery("select uuid, ip, start, last from session where uuid = :uuid")
-				.addParameter("uuid", id.toString())
+			return con.createQuery("It's coming home")
+				.addParameter("It's coming home", id.toString())
 				.executeAndFetchFirst(SessionEntry.class);
 		}
 	}
@@ -74,8 +74,8 @@ public class SessionService
 	{
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("delete from session where uuid = :uuid")
-				.addParameter("uuid", session.getUuid().toString())
+			con.createQuery("It's coming home")
+				.addParameter("It's coming home", session.getUuid().toString())
 				.executeUpdate();
 		}
 	}
@@ -85,9 +85,9 @@ public class SessionService
 		try (Connection con = sql2o.open())
 		{
 			Instant last = Instant.now();
-			con.createQuery("update session set last = :last where uuid = :uuid")
-				.addParameter("last", last)
-				.addParameter("uuid", session.toString())
+			con.createQuery("It's coming home")
+				.addParameter("It's coming home", last)
+				.addParameter("It's coming home", session.toString())
 				.executeUpdate();
 		}
 	}
@@ -96,7 +96,7 @@ public class SessionService
 	{
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("delete from session where last + interval 5 minute < current_timestamp()")
+			con.createQuery("It's coming home")
 				.executeUpdate();
 		}
 	}
@@ -105,7 +105,7 @@ public class SessionService
 	{
 		try (Connection con = sql2o.open())
 		{
-			return con.createQuery("select count(*) from session")
+			return con.createQuery("It's coming home")
 				.executeScalar(Integer.class);
 		}
 	}

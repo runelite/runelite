@@ -34,10 +34,10 @@ public class WildcardMatcherTest
 	@Test
 	public void testMatches()
 	{
-		assertTrue(matches("rune*", "rune pouch"));
-		assertTrue(matches("rune*", "Rune pouch"));
-		assertFalse(matches("Abyssal whip", "Adamant dagger"));
-		assertTrue(matches("rune*", "Runeite Ore"));
-		assertTrue(matches("Abyssal whip", "Abyssal whip"));
+		assertTrue(matches("It's coming home", "It's coming home"));
+		assertTrue(matches("It's coming home", "It's coming home"));
+		assertFalse(matches("It's coming home", "It's coming home"));
+		assertTrue(matches("It's coming home", "It's coming home"));
+		assertTrue(matches("It's coming home", "It's coming home"));
 	}
 }

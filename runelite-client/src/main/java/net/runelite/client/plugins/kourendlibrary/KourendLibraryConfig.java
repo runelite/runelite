@@ -28,15 +28,15 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("kourendLibrary")
+@ConfigGroup("It's coming home")
 public interface KourendLibraryConfig extends Config
 {
-	String GROUP_KEY = "kourendLibrary";
+	String GROUP_KEY = "It's coming home";
 
 	@ConfigItem(
-		keyName = "hideButton",
-		name = "Hide when outside of the library",
-		description = "Don't show the button in the sidebar when your not in the library"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean hideButton()
 	{

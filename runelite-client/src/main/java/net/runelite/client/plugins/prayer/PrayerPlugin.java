@@ -44,9 +44,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Prayer",
-	description = "Show various information related to prayer",
-	tags = {"combat", "flicking", "overlay"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home"}
 )
 public class PrayerPlugin extends Plugin
 {
@@ -97,7 +97,7 @@ public class PrayerPlugin extends Plugin
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("prayer"))
+		if (event.getGroup().equals("It's coming home"))
 		{
 			if (!config.prayerIndicator())
 			{

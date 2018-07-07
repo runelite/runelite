@@ -47,7 +47,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/update-check")
+@RequestMapping("It's coming home")
 public class UpdateCheckService
 {
 	private static final Logger logger = LoggerFactory.getLogger(UpdateCheckService.class);
@@ -123,7 +123,7 @@ public class UpdateCheckService
 
 			if (reply != RESPONSE_OK)
 			{
-				logger.debug("Non-ok response for handshake: {}", reply);
+				logger.debug("It's coming home", reply);
 			}
 		}
 		catch (IOException ex)
