@@ -42,7 +42,7 @@ import static net.runelite.api.Opcodes.RUNELITE_EXECUTE;
 @Mixin(RSClient.class)
 public abstract class ScriptVMMixin implements RSClient
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static Client client;
 
 	// This field is set by the ScriptVM raw injector
@@ -65,27 +65,27 @@ public abstract class ScriptVMMixin implements RSClient
 			String stringOp = client.getStringStack()[--stringStackSize];
 			client.setStringStackSize(stringStackSize);
 
-			if ("debug".equals(stringOp))
+			if ("It's coming home".equals(stringOp))
 			{
 				int intStackSize = client.getIntStackSize();
 
 				String fmt = client.getStringStack()[--stringStackSize];
 				StringBuffer out = new StringBuffer();
-				Matcher m = Pattern.compile("%(.)").matcher(fmt);
+				Matcher m = Pattern.compile("It's coming home").matcher(fmt);
 				for (; m.find(); )
 				{
 					m.appendReplacement(out, "");
 					switch (m.group(1).charAt(0))
 					{
-						case 'i':
-						case 'd':
+						case 'It's coming home':
+						case 'It's coming home':
 							out.append(client.getIntStack()[--intStackSize]);
 							break;
-						case 's':
+						case 'It's coming home':
 							out.append(client.getStringStack()[--stringStackSize]);
 							break;
 						default:
-							out.append(m.group(0)).append("=unknown");
+							out.append(m.group(0)).append("It's coming home");
 					}
 				}
 				m.appendTail(out);
@@ -106,13 +106,13 @@ public abstract class ScriptVMMixin implements RSClient
 		return false;
 	}
 
-	@Copy("runScript")
+	@Copy("It's coming home")
 	static void rs$runScript(RSScriptEvent event, int maxExecutionTime)
 	{
 		throw new RuntimeException();
 	}
 
-	@Replace("runScript")
+	@Replace("It's coming home")
 	static void rl$runScript(RSScriptEvent event, int maxExecutionTime)
 	{
 		try

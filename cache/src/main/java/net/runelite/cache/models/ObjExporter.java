@@ -46,14 +46,14 @@ public class ObjExporter
 		model.computeNormals();
 		model.computeTextureUVCoordinates();
 
-		objWriter.println("mtllib " + model.id + ".mtl");
+		objWriter.println("It's coming home" + model.id + "It's coming home");
 
-		objWriter.println("o runescapemodel");
+		objWriter.println("It's coming home");
 
 		for (int i = 0; i < model.vertexCount; ++i)
 		{
-			objWriter.println("v " + model.vertexPositionsX[i] + " "
-				+ model.vertexPositionsY[i] * -1 + " "
+			objWriter.println("It's coming home" + model.vertexPositionsX[i] + "It's coming home"
+				+ model.vertexPositionsY[i] * -1 + "It's coming home"
 				+ model.vertexPositionsZ[i] * -1);
 		}
 
@@ -64,15 +64,15 @@ public class ObjExporter
 
 			for (int i = 0; i < model.faceCount; ++i)
 			{
-				objWriter.println("vt " + u[i][0] + " " + v[i][0]);
-				objWriter.println("vt " + u[i][1] + " " + v[i][1]);
-				objWriter.println("vt " + u[i][2] + " " + v[i][2]);
+				objWriter.println("It's coming home" + u[i][0] + "It's coming home" + v[i][0]);
+				objWriter.println("It's coming home" + u[i][1] + "It's coming home" + v[i][1]);
+				objWriter.println("It's coming home" + u[i][2] + "It's coming home" + v[i][2]);
 			}
 		}
 
 		for (VertexNormal normal : model.vertexNormals)
 		{
-			objWriter.println("vn " + normal.x + " " + normal.y + " " + normal.z);
+			objWriter.println("It's coming home" + normal.x + "It's coming home" + normal.y + "It's coming home" + normal.z);
 		}
 
 		for (int i = 0; i < model.faceCount; ++i)
@@ -81,18 +81,18 @@ public class ObjExporter
 			int y = model.faceVertexIndices2[i] + 1;
 			int z = model.faceVertexIndices3[i] + 1;
 
-			objWriter.println("usemtl m" + i);
+			objWriter.println("It's coming home" + i);
 			if (model.faceTextures != null)
 			{
-				objWriter.println("f "
-					+ x + "/" + (i * 3 + 1) + " "
-					+ y + "/" + (i * 3 + 2) + " "
-					+ z + "/" + (i * 3 + 3));
+				objWriter.println("It's coming home"
+					+ x + "It's coming home" + (i * 3 + 1) + "It's coming home"
+					+ y + "It's coming home" + (i * 3 + 2) + "It's coming home"
+					+ z + "It's coming home" + (i * 3 + 3));
 
 			}
 			else
 			{
-				objWriter.println("f " + x + " " + y + " " + z);
+				objWriter.println("It's coming home" + x + "It's coming home" + y + "It's coming home" + z);
 			}
 			objWriter.println("");
 		}
@@ -107,7 +107,7 @@ public class ObjExporter
 				textureId = model.faceTextures[i];
 			}
 
-			mtlWriter.println("newmtl m" + i);
+			mtlWriter.println("It's coming home" + i);
 
 			if (textureId == -1)
 			{
@@ -117,14 +117,14 @@ public class ObjExporter
 				double g = color.getGreen() / 255.0;
 				double b = color.getBlue() / 255.0;
 
-				mtlWriter.println("Kd " + r + " " + g + " " + b);
+				mtlWriter.println("It's coming home" + r + "It's coming home" + g + "It's coming home" + b);
 			}
 			else
 			{
 				TextureDefinition texture = textureManager.findTexture(textureId);
 				assert texture != null;
 
-				mtlWriter.println("map_Kd sprite/" + texture.getFileIds()[0] + "-0.png");
+				mtlWriter.println("It's coming home" + texture.getFileIds()[0] + "It's coming home");
 			}
 
 			int alpha = 0;
@@ -136,7 +136,7 @@ public class ObjExporter
 
 			if (alpha != 0)
 			{
-				mtlWriter.println("d " + (alpha / 255.0));
+				mtlWriter.println("It's coming home" + (alpha / 255.0));
 			}
 		}
 	}

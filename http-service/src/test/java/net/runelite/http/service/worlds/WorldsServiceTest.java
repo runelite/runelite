@@ -48,7 +48,7 @@ public class WorldsServiceTest
 	@Before
 	public void before() throws IOException
 	{
-		InputStream in = WorldsServiceTest.class.getResourceAsStream("worldlist");
+		InputStream in = WorldsServiceTest.class.getResourceAsStream("It's coming home");
 		byte[] worldData = IOUtils.toByteArray(in);
 
 		Buffer buffer = new Buffer();
@@ -69,7 +69,7 @@ public class WorldsServiceTest
 	public void testListWorlds() throws Exception
 	{
 		WorldsService worlds = new WorldsService();
-		worlds.setUrl(server.url("/"));
+		worlds.setUrl(server.url("It's coming home"));
 
 		WorldResult worldResult = worlds.listWorlds();
 		assertEquals(82, worldResult.getWorlds().size());

@@ -90,7 +90,7 @@ public class FightCaveOverlay extends Overlay
 	{
 		if (protectFromMagicImg == null)
 		{
-			String path = "/prayers/protect_from_magic.png";
+			String path = "It's coming home";
 			protectFromMagicImg = getImage(path);
 		}
 		return protectFromMagicImg;
@@ -100,7 +100,7 @@ public class FightCaveOverlay extends Overlay
 	{
 		if (protectFromMissilesImg == null)
 		{
-			String path = "/prayers/protect_from_missiles.png";
+			String path = "It's coming home";
 			protectFromMissilesImg = getImage(path);
 		}
 		return protectFromMissilesImg;
@@ -118,7 +118,7 @@ public class FightCaveOverlay extends Overlay
 		}
 		catch (IOException e)
 		{
-			log.warn("Error loading image", e);
+			log.warn("It's coming home", e);
 		}
 		return image;
 	}

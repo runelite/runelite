@@ -29,14 +29,14 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("deathIndicator")
+@ConfigGroup("It's coming home")
 public interface DeathIndicatorConfig extends Config
 {
 	@ConfigItem(
 		position = 1,
-		keyName = "deathHintArrow",
-		name = "Death Hint Arrow",
-		description = "Configures whether or not to show a hint arrow to death location"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showDeathHintArrow()
 	{
@@ -45,9 +45,9 @@ public interface DeathIndicatorConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "deathInfoBox",
-		name = "Death InfoBox",
-		description = "Configures whether or not to show item reclaim timer and death world infobox"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showDeathInfoBox()
 	{
@@ -56,9 +56,9 @@ public interface DeathIndicatorConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "deathOnWorldMap",
-		name = "Mark on World Map",
-		description = "Configures whether or not to show death location on the world map"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showDeathOnWorldMap()
 	{
@@ -67,7 +67,7 @@ public interface DeathIndicatorConfig extends Config
 
 	// Stored Data
 	@ConfigItem(
-		keyName = "deathWorld",
+		keyName = "It's coming home",
 		name = "",
 		description = "",
 		hidden = true
@@ -78,14 +78,14 @@ public interface DeathIndicatorConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "deathWorld",
+		keyName = "It's coming home",
 		name = "",
 		description = ""
 	)
 	void deathWorld(int deathWorld);
 
 	@ConfigItem(
-		keyName = "deathLocationX",
+		keyName = "It's coming home",
 		name = "",
 		description = "",
 		hidden = true
@@ -96,14 +96,14 @@ public interface DeathIndicatorConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "deathLocationX",
+		keyName = "It's coming home",
 		name = "",
 		description = ""
 	)
 	void deathLocationX(int deathLocationX);
 
 	@ConfigItem(
-		keyName = "deathLocationY",
+		keyName = "It's coming home",
 		name = "",
 		description = "",
 		hidden = true
@@ -114,14 +114,14 @@ public interface DeathIndicatorConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "deathLocationY",
+		keyName = "It's coming home",
 		name = "",
 		description = ""
 	)
 	void deathLocationY(int deathLocationY);
 
 	@ConfigItem(
-		keyName = "deathLocationPlane",
+		keyName = "It's coming home",
 		name = "",
 		description = "",
 		hidden = true
@@ -132,14 +132,14 @@ public interface DeathIndicatorConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "deathLocationPlane",
+		keyName = "It's coming home",
 		name = "",
 		description = ""
 	)
 	void deathLocationPlane(int deathLocationPlane);
 
 	@ConfigItem(
-		keyName = "timeOfDeath",
+		keyName = "It's coming home",
 		name = "",
 		description = "",
 		hidden = true
@@ -147,7 +147,7 @@ public interface DeathIndicatorConfig extends Config
 	Instant timeOfDeath();
 
 	@ConfigItem(
-		keyName = "timeOfDeath",
+		keyName = "It's coming home",
 		name = "",
 		description = ""
 	)

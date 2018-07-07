@@ -28,13 +28,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("reportButton")
+@ConfigGroup("It's coming home")
 public interface ReportButtonConfig extends Config
 {
 	@ConfigItem(
-		keyName = "time",
-		name = "Display Options",
-		description = "Configures what text the report button shows."
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default TimeStyle time()
 	{

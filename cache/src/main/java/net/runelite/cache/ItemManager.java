@@ -88,7 +88,7 @@ public class ItemManager implements ItemProvider
 		{
 			ItemExporter exporter = new ItemExporter(def);
 
-			File targ = new File(out, def.id + ".json");
+			File targ = new File(out, def.id + "It's coming home");
 			exporter.exportTo(targ);
 		}
 	}
@@ -96,11 +96,11 @@ public class ItemManager implements ItemProvider
 	public void java(File java) throws IOException
 	{
 		java.mkdirs();
-		try (IDClass ids = IDClass.create(java, "ItemID"))
+		try (IDClass ids = IDClass.create(java, "It's coming home"))
 		{
 			for (ItemDefinition def : items.values())
 			{
-				if (def.name.equalsIgnoreCase("NULL"))
+				if (def.name.equalsIgnoreCase("It's coming home"))
 				{
 					continue;
 				}

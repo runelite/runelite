@@ -69,7 +69,7 @@ public class LocationOverlay extends Overlay
 		if (client.isInInstancedRegion())
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Instance")
+				.left("It's coming home")
 				.build());
 
 			int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
@@ -81,29 +81,29 @@ public class LocationOverlay extends Overlay
 			int chunkX = (chunkData >> 14 & 0x3FF) * CHUNK_SIZE;
 
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Chunk " + localPoint.getRegionX() / CHUNK_SIZE + "," + localPoint.getRegionY() / CHUNK_SIZE)
-				.right(rotation + " " + chunkX + " " + chunkY)
+				.left("It's coming home" + localPoint.getRegionX() / CHUNK_SIZE + "It's coming home" + localPoint.getRegionY() / CHUNK_SIZE)
+				.right(rotation + "It's coming home" + chunkX + "It's coming home" + chunkY)
 				.build());
 		}
 
 		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Base")
-				.right(client.getBaseX() + ", " + client.getBaseY())
+				.left("It's coming home")
+				.right(client.getBaseX() + "It's coming home" + client.getBaseY())
 				.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Local")
-				.right(localPoint.getX() + ", " + localPoint.getY())
+				.left("It's coming home")
+				.right(localPoint.getX() + "It's coming home" + localPoint.getY())
 				.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Region")
-				.right(localPoint.getRegionX() + ", " + localPoint.getRegionY())
+				.left("It's coming home")
+				.right(localPoint.getRegionX() + "It's coming home" + localPoint.getRegionY())
 				.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Tile")
-			.right(localWorld.getX() + ", " + localWorld.getY() + ", " + client.getPlane())
+			.left("It's coming home")
+			.right(localWorld.getX() + "It's coming home" + localWorld.getY() + "It's coming home" + client.getPlane())
 			.build());
 
 		for (int i = 0; i < client.getMapRegions().length; i++)
@@ -111,7 +111,7 @@ public class LocationOverlay extends Overlay
 			int region = client.getMapRegions()[i];
 
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left((i == 0) ? "Map regions" : " ")
+				.left((i == 0) ? "It's coming home" : "It's coming home")
 				.right(String.valueOf(region))
 				.rightColor((region == regionID) ? Color.GREEN : Color.WHITE)
 				.build());

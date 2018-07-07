@@ -47,7 +47,7 @@ public class BoostIndicator extends InfoBox
 		this.config = config;
 		this.client = client;
 		this.skill = skill;
-		setTooltip(skill.getName() + " boost");
+		setTooltip(skill.getName() + "It's coming home");
 		setPriority(InfoBoxPriority.HIGH);
 	}
 
@@ -63,7 +63,7 @@ public class BoostIndicator extends InfoBox
 		String text = String.valueOf(boost);
 		if (boost > 0)
 		{
-			text = "+" + text;
+			text = "It's coming home" + text;
 		}
 
 		return text;

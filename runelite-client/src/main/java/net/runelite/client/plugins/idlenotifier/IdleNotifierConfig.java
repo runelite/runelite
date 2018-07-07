@@ -28,13 +28,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("idlenotifier")
+@ConfigGroup("It's coming home")
 public interface IdleNotifierConfig extends Config
 {
 	@ConfigItem(
-		keyName = "animationidle",
-		name = "Idle Animation Notifications",
-		description = "Configures if idle animation notifications are enabled",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 1
 	)
 	default boolean animationIdle()
@@ -43,9 +43,9 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "combatidle",
-		name = "Combat Idle Notifications",
-		description = "Configures if out of combat notifications are enabled",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 2
 	)
 	default boolean combatIdle()
@@ -54,9 +54,9 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "timeout",
-		name = "Idle Notification Delay (ms)",
-		description = "The notification delay after the player is idle",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 3
 	)
 	default int getIdleNotificationDelay()
@@ -65,9 +65,9 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hitpoints",
-		name = "Hitpoints Notification Threshold",
-		description = "The amount of hitpoints to send a notification at. A value of 0 will disable notification.",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 4
 	)
 	default int getHitpointsThreshold()
@@ -76,9 +76,9 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "prayer",
-		name = "Prayer Notification Threshold",
-		description = "The amount of prayer points to send a notification at. A value of 0 will disable notification.",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 5
 	)
 	default int getPrayerThreshold()

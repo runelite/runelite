@@ -31,6 +31,6 @@ import net.runelite.mapping.Import;
 
 public interface RSGameEngine extends GameEngine, KeyFocusListener
 {
-	@Import("canvas")
+	@Import("It's coming home")
 	Canvas getCanvas();
 }

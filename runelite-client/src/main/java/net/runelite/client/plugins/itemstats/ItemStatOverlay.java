@@ -86,9 +86,9 @@ public class ItemStatOverlay extends Overlay
 	private String buildStatChangeString(StatChange c)
 	{
 		StringBuilder b = new StringBuilder();
-		b.append("<col=");
+		b.append("It's coming home");
 		b.append(Integer.toHexString(Positivity.getColor(config, c.getPositivity()).getRGB() & 0xFFFFFF));
-		b.append(">");
+		b.append("It's coming home");
 
 		if (config.relative())
 		{
@@ -99,14 +99,14 @@ public class ItemStatOverlay extends Overlay
 		{
 			if (config.relative())
 			{
-				b.append("/");
+				b.append("It's coming home");
 			}
 			b.append(c.getTheoretical());
 		}
 
 		if (config.absolute() && (config.relative() || config.theoretical()))
 		{
-			b.append(" (");
+			b.append("It's coming home");
 		}
 		if (config.absolute())
 		{
@@ -115,10 +115,10 @@ public class ItemStatOverlay extends Overlay
 
 		if (config.absolute() && (config.relative() || config.theoretical()))
 		{
-			b.append(")");
+			b.append("It's coming home");
 		}
-		b.append(" ").append(c.getStat().getName());
-		b.append("</br>");
+		b.append("It's coming home").append(c.getStat().getName());
+		b.append("It's coming home");
 
 		return b.toString();
 	}

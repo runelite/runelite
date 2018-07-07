@@ -39,7 +39,7 @@ import net.runelite.rs.api.RSRenderable;
 @Mixin(RSDecorativeObject.class)
 public abstract class RSDecorativeObjectMixin implements RSDecorativeObject
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
 	@Inject

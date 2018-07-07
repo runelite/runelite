@@ -33,14 +33,14 @@ import net.runelite.client.config.ConfigItem;
  *
  * @author robin
  */
-@ConfigGroup("implings")
+@ConfigGroup("It's coming home")
 public interface ImplingsConfig extends Config
 {
 	@ConfigItem(
 		position = 1,
-		keyName = "showbaby",
-		name = "Show Baby implings",
-		description = "Configures whether or not Baby impling tags are displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showBaby()
 	{
@@ -49,9 +49,9 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "babyColor",
-		name = "Baby impling color",
-		description = "Text color for Baby implings"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getBabyColor()
 	{
@@ -60,9 +60,9 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "showyoung",
-		name = "Show Young implings",
-		description = "Configures whether or not Young impling tags are displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showYoung()
 	{
@@ -71,9 +71,9 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 4,
-		keyName = "youngColor",
-		name = "Young impling color",
-		description = "Text color for Young implings"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getYoungColor()
 	{
@@ -82,9 +82,9 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 5,
-		keyName = "showgourmet",
-		name = "Show Gourmet implings",
-		description = "Configures whether or not Gourmet impling tags are displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showGourmet()
 	{
@@ -93,9 +93,9 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 6,
-		keyName = "gourmetColor",
-		name = "Gourmet impling color",
-		description = "Text color for Gourmet implings"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getGourmetColor()
 	{
@@ -104,9 +104,9 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 7,
-		keyName = "showearth",
-		name = "Show Earth implings",
-		description = "Configures whether or not Earth impling tags are displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showEarth()
 	{
@@ -115,9 +115,9 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 8,
-		keyName = "earthColor",
-		name = "Earth impling color",
-		description = "Text color for Earth implings"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getEarthColor()
 	{
@@ -126,9 +126,9 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 9,
-		keyName = "showessence",
-		name = "Show Essence implings",
-		description = "Configures whether or not Essence impling tags are displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showEssence()
 	{
@@ -137,9 +137,9 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 10,
-		keyName = "essenceColor",
-		name = "Essence impling color",
-		description = "Text color for Essence implings"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getEssenceColor()
 	{
@@ -148,9 +148,9 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 11,
-		keyName = "showeclectic",
-		name = "Show Eclectic implings",
-		description = "Configures whether or not Eclectic impling tags are displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showEclectic()
 	{
@@ -159,9 +159,9 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 12,
-		keyName = "eclecticColor",
-		name = "Eclectic impling color",
-		description = "Text color for Eclectic implings"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getEclecticColor()
 	{
@@ -170,9 +170,9 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 13,
-		keyName = "shownature",
-		name = "Show Nature implings",
-		description = "Configures whether or not Nature impling tags are displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showNature()
 	{
@@ -181,9 +181,9 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 14,
-		keyName = "natureColor",
-		name = "Nature impling color",
-		description = "Text color for Nature implings"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getNatureColor()
 	{
@@ -192,9 +192,9 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 15,
-		keyName = "showmagpie",
-		name = "Show Magpie implings",
-		description = "Configures whether or not Magpie impling tags are displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showMagpie()
 	{
@@ -203,9 +203,9 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 16,
-		keyName = "magpieColor",
-		name = "Magpie impling color",
-		description = "Text color for Magpie implings"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getMagpieColor()
 	{
@@ -214,9 +214,9 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 17,
-		keyName = "showninja",
-		name = "Show Ninja implings",
-		description = "Configures whether or not Ninja impling tags are displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showNinja()
 	{
@@ -225,9 +225,9 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 18,
-		keyName = "ninjaColor",
-		name = "Ninja impling color",
-		description = "Text color for Ninja implings"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getNinjaColor()
 	{
@@ -236,9 +236,9 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 19,
-		keyName = "showdragon",
-		name = "Show Dragon implings",
-		description = "Configures whether or not Dragon impling tags are displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showDragon()
 	{
@@ -247,9 +247,9 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 20,
-		keyName = "dragonColor",
-		name = "Dragon impling color",
-		description = "Text color for Dragon implings"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getDragonColor()
 	{
@@ -258,9 +258,9 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 21,
-		keyName = "showlucky",
-		name = "Show Lucky implings",
-		description = "Configures whether or not Lucky impling tags are displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showLucky()
 	{
@@ -269,9 +269,9 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 22,
-		keyName = "luckyColor",
-		name = "Lucky impling color",
-		description = "Text color for Lucky implings"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getLuckyColor()
 	{
@@ -280,9 +280,9 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 23,
-		keyName = "showspawn",
-		name = "Show Spawn locations",
-		description = "Configures whether or not spawn locations are displayed in Puro Puro"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showSpawn()
 	{
@@ -291,9 +291,9 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 24,
-		keyName = "spawnColor",
-		name = "Impling spawn color",
-		description = "Text color for impling spawns in Puro Puro"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getSpawnColor()
 	{
@@ -302,9 +302,9 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 25,
-		keyName = "showname",
-		name = "Show name on minimap",
-		description = "Configures whether or not impling names are displayed on minimap"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showName()
 	{

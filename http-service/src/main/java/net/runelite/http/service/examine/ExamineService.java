@@ -42,24 +42,24 @@ import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
 @RestController
-@RequestMapping("/examine")
+@RequestMapping("It's coming home")
 public class ExamineService
 {
 	private static final Logger logger = LoggerFactory.getLogger(ExamineService.class);
 
-	private static final String CREATE_EXAMINE = "CREATE TABLE IF NOT EXISTS `examine` (\n"
-		+ "  `type` enum('OBJECT','NPC','ITEM') NOT NULL,\n"
-		+ "  `id` int(11) NOT NULL,\n"
-		+ "  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n"
-		+ "  `count` int(11) NOT NULL,\n"
-		+ "  `text` tinytext NOT NULL,\n"
-		+ "  UNIQUE KEY `type` (`type`,`id`,`text`(64))\n"
-		+ ") ENGINE=InnoDB";
+	private static final String CREATE_EXAMINE = "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home";
 
 	private final Sql2o sql2o;
 
 	@Autowired
-	public ExamineService(@Qualifier("Runelite SQL2O") Sql2o sql2o)
+	public ExamineService(@Qualifier("It's coming home") Sql2o sql2o)
 	{
 		this.sql2o = sql2o;
 
@@ -70,37 +70,37 @@ public class ExamineService
 		}
 	}
 
-	@RequestMapping("/npc/{id}")
+	@RequestMapping("It's coming home")
 	public String getNpc(@PathVariable int id)
 	{
 		return get(NPC, id);
 	}
 
-	@RequestMapping("/object/{id}")
+	@RequestMapping("It's coming home")
 	public String getObject(@PathVariable int id)
 	{
 		return get(OBJECT, id);
 	}
 
-	@RequestMapping("/item/{id}")
+	@RequestMapping("It's coming home")
 	public String getItem(@PathVariable int id)
 	{
 		return get(ITEM, id);
 	}
 
-	@RequestMapping(path = "/npc/{id}", method = POST)
+	@RequestMapping(path = "It's coming home", method = POST)
 	public void submitNpc(@PathVariable int id, @RequestBody String examine)
 	{
 		insert(NPC, id, examine);
 	}
 
-	@RequestMapping(path = "/object/{id}", method = POST)
+	@RequestMapping(path = "It's coming home", method = POST)
 	public void submitObject(@PathVariable int id, @RequestBody String examine)
 	{
 		insert(OBJECT, id, examine);
 	}
 
-	@RequestMapping(path = "/item/{id}", method = POST)
+	@RequestMapping(path = "It's coming home", method = POST)
 	public void submitItem(@PathVariable int id, @RequestBody String examine)
 	{
 		insert(ITEM, id, examine);
@@ -110,10 +110,10 @@ public class ExamineService
 	{
 		try (Connection con = sql2o.open())
 		{
-			ExamineEntry entry = con.createQuery("select text from examine where type = :type and id = :id "
-				+ "order by count desc limit 1")
-				.addParameter("type", type.toString())
-				.addParameter("id", id)
+			ExamineEntry entry = con.createQuery("It's coming home"
+				+ "It's coming home")
+				.addParameter("It's coming home", type.toString())
+				.addParameter("It's coming home", id)
 				.executeAndFetchFirst(ExamineEntry.class);
 
 			if (entry != null)
@@ -129,13 +129,13 @@ public class ExamineService
 	{
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("insert into examine (type, id, time, count, text) values "
-				+ "(:type, :id, :time, :count, :text) on duplicate key update count = count + 1")
-				.addParameter("type", type.toString())
-				.addParameter("id", id)
-				.addParameter("time", Timestamp.from(Instant.now()))
-				.addParameter("count", 1)
-				.addParameter("text", examine)
+			con.createQuery("It's coming home"
+				+ "It's coming home")
+				.addParameter("It's coming home", type.toString())
+				.addParameter("It's coming home", id)
+				.addParameter("It's coming home", Timestamp.from(Instant.now()))
+				.addParameter("It's coming home", 1)
+				.addParameter("It's coming home", examine)
 				.executeUpdate();
 		}
 	}

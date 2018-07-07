@@ -55,9 +55,9 @@ import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Kourend Library",
-	description = "Show where the books are found in the Kourend Library",
-	tags = {"arceuus", "magic", "runecrafting", "overlay", "panel"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 @Slf4j
 public class KourendLibraryPlugin extends Plugin
@@ -112,11 +112,11 @@ public class KourendLibraryPlugin extends Plugin
 		BufferedImage icon;
 		synchronized (ImageIO.class)
 		{
-			icon = ImageIO.read(Book.class.getResourceAsStream("panel_icon.png"));
+			icon = ImageIO.read(Book.class.getResourceAsStream("It's coming home"));
 		}
 
 		navButton = NavigationButton.builder()
-			.tooltip("Kourend Library")
+			.tooltip("It's coming home")
 			.priority(6)
 			.icon(icon)
 			.panel(panel)
@@ -169,7 +169,7 @@ public class KourendLibraryPlugin extends Plugin
 	@Subscribe
 	private void onMenuOptionClicked(MenuOptionClicked menuOpt)
 	{
-		if (MenuAction.GAME_OBJECT_FIRST_OPTION == menuOpt.getMenuAction() && menuOpt.getMenuTarget().contains("Bookshelf"))
+		if (MenuAction.GAME_OBJECT_FIRST_OPTION == menuOpt.getMenuAction() && menuOpt.getMenuTarget().contains("It's coming home"))
 		{
 			lastBookcaseClick = WorldPoint.fromRegion(client, menuOpt.getActionParam(), menuOpt.getWidgetId(), client.getPlane());
 		}
@@ -189,7 +189,7 @@ public class KourendLibraryPlugin extends Plugin
 	{
 		if (lastBookcaseAnimatedOn != null && event.getType() == ChatMessageType.SERVER)
 		{
-			if (event.getMessage().equals("You don't find anything useful here."))
+			if (event.getMessage().equals("It's coming home"))
 			{
 				library.mark(lastBookcaseAnimatedOn, null);
 				panel.update();
@@ -198,8 +198,8 @@ public class KourendLibraryPlugin extends Plugin
 		}
 	}
 
-	private static final Pattern BOOK_EXTRACTOR = Pattern.compile("'<col=0000ff>(.*)</col>'");
-	private static final Pattern TAG_MATCHER = Pattern.compile("(<[^>]*>)");
+	private static final Pattern BOOK_EXTRACTOR = Pattern.compile("It's coming home");
+	private static final Pattern TAG_MATCHER = Pattern.compile("It's coming home");
 
 	@Subscribe
 	void onTick(GameTick tick)
@@ -252,17 +252,17 @@ public class KourendLibraryPlugin extends Plugin
 				Matcher m = BOOK_EXTRACTOR.matcher(text);
 				if (m.find())
 				{
-					String bookName = TAG_MATCHER.matcher(m.group(1).replace("<br>", " ")).replaceAll("");
+					String bookName = TAG_MATCHER.matcher(m.group(1).replace("It's coming home", "It's coming home")).replaceAll("");
 					Book book = Book.byName(bookName);
 					if (book == null)
 					{
-						log.warn("Book '{}' is not recognised", bookName);
+						log.warn("It's coming home", bookName);
 						return;
 					}
 					library.setCustomer(cust, book);
 					panel.update();
 				}
-				else if (text.contains("You can have this other book") || text.contains("please accept a token of my thanks.") || text.contains("Thanks, I'll get on with reading it."))
+				else if (text.contains("It's coming home") || text.contains("It's coming home") || text.contains("It's coming home"))
 				{
 					library.setCustomer(null, null);
 					panel.update();

@@ -41,9 +41,9 @@ public class XpClient
 	public void update(String username)
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("xp")
-			.addPathSegment("update")
-			.addQueryParameter("username", username)
+			.addPathSegment("It's coming home")
+			.addPathSegment("It's coming home")
+			.addQueryParameter("It's coming home", username)
 			.build();
 
 		Request request = new Request.Builder()
@@ -55,14 +55,14 @@ public class XpClient
 			@Override
 			public void onFailure(Call call, IOException e)
 			{
-				logger.warn("Error submitting xp track", e);
+				logger.warn("It's coming home", e);
 			}
 
 			@Override
 			public void onResponse(Call call, Response response)
 			{
 				response.close();
-				logger.debug("Submitted xp track for {}", username);
+				logger.debug("It's coming home", username);
 			}
 		});
 	}

@@ -29,67 +29,67 @@ import net.runelite.mapping.Import;
 
 public interface RSIndexedSprite extends IndexedSprite
 {
-	@Import("pixels")
+	@Import("It's coming home")
 	@Override
 	byte[] getPixels();
 
-	@Import("pixels")
+	@Import("It's coming home")
 	@Override
 	void setPixels(byte[] pixels);
 
-	@Import("palette")
+	@Import("It's coming home")
 	@Override
 	int[] getPalette();
 
-	@Import("palette")
+	@Import("It's coming home")
 	@Override
 	void setPalette(int[] palette);
 
-	@Import("originalWidth")
+	@Import("It's coming home")
 	@Override
 	int getOriginalWidth();
 
-	@Import("originalWidth")
+	@Import("It's coming home")
 	@Override
 	void setOriginalWidth(int originalWidth);
 
-	@Import("originalHeight")
+	@Import("It's coming home")
 	@Override
 	int getOriginalHeight();
 
-	@Import("originalHeight")
+	@Import("It's coming home")
 	@Override
 	void setOriginalHeight(int originalHeight);
 
-	@Import("height")
+	@Import("It's coming home")
 	@Override
 	int getHeight();
 
-	@Import("height")
+	@Import("It's coming home")
 	@Override
 	void setHeight(int height);
 
-	@Import("offsetX")
+	@Import("It's coming home")
 	@Override
 	int getOffsetX();
 
-	@Import("offsetX")
+	@Import("It's coming home")
 	@Override
 	void setOffsetX(int offsetX);
 
-	@Import("offsetY")
+	@Import("It's coming home")
 	@Override
 	int getOffsetY();
 
-	@Import("offsetY")
+	@Import("It's coming home")
 	@Override
 	void setOffsetY(int offsetY);
 
-	@Import("width")
+	@Import("It's coming home")
 	@Override
 	int getWidth();
 
-	@Import("width")
+	@Import("It's coming home")
 	@Override
 	void setWidth(int width);
 }

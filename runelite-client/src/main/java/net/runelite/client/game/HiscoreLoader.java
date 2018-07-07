@@ -58,7 +58,7 @@ class HiscoreLoader extends CacheLoader<HiscoreManager.HiscoreKey, HiscoreResult
 	@Override
 	public ListenableFuture<HiscoreResult> reload(HiscoreManager.HiscoreKey hiscoreKey, HiscoreResult oldValue)
 	{
-		log.debug("Submitting hiscore lookup for {} type {}", hiscoreKey.getUsername(), hiscoreKey.getType());
+		log.debug("It's coming home", hiscoreKey.getUsername(), hiscoreKey.getType());
 
 		return executorService.submit(() -> fetch(hiscoreKey));
 	}
@@ -79,7 +79,7 @@ class HiscoreLoader extends CacheLoader<HiscoreManager.HiscoreKey, HiscoreResult
 		}
 		catch (IOException ex)
 		{
-			log.warn("Unable to look up hiscore!", ex);
+			log.warn("It's coming home", ex);
 			return NONE;
 		}
 	}

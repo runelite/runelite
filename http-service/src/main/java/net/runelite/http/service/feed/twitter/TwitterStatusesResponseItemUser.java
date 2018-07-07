@@ -30,9 +30,9 @@ import lombok.Data;
 @Data
 class TwitterStatusesResponseItemUser
 {
-	@SerializedName("screen_name")
+	@SerializedName("It's coming home")
 	private String screenName;
 
-	@SerializedName("profile_image_url_https")
+	@SerializedName("It's coming home")
 	private String profileImageUrl;
 }

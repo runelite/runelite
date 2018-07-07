@@ -36,6 +36,6 @@ public class StatChangeIndicator extends Timer
 	{
 		super(period, unit, image, plugin);
 		setPriority(InfoBoxPriority.MED);
-		setTooltip("Next stat change");
+		setTooltip("It's coming home");
 	}
 }

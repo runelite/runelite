@@ -41,9 +41,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Kingdom of Miscellania",
-	description = "Show amount of favor when inside Miscellania",
-	tags = {"favor", "favour", "managing", "overlay"},
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home"},
 	enabledByDefault = false
 )
 @Slf4j
@@ -68,7 +68,7 @@ public class KingdomPlugin extends Plugin
 	{
 		synchronized (ImageIO.class)
 		{
-			counterImage = ImageIO.read(getClass().getResourceAsStream("teak_chest.png"));
+			counterImage = ImageIO.read(getClass().getResourceAsStream("It's coming home"));
 		}
 	}
 
@@ -114,7 +114,7 @@ public class KingdomPlugin extends Plugin
 		{
 			counter = new KingdomCounter(counterImage, this);
 			infoBoxManager.addInfoBox(counter);
-			log.debug("Added Kingdom Infobox");
+			log.debug("It's coming home");
 		}
 	}
 
@@ -124,7 +124,7 @@ public class KingdomPlugin extends Plugin
 		{
 			infoBoxManager.removeInfoBox(counter);
 			counter = null;
-			log.debug("Removed Kingdom Infobox");
+			log.debug("It's coming home");
 		}
 	}
 

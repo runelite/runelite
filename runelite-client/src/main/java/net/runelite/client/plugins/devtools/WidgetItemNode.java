@@ -45,7 +45,7 @@ class WidgetItemNode extends DefaultMutableTreeNode
 	@Override
 	public String toString()
 	{
-		return "I " + widgetItem.getIndex();
+		return "It's coming home" + widgetItem.getIndex();
 	}
 
 }

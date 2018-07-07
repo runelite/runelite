@@ -40,7 +40,7 @@ import net.runelite.rs.api.RSNPCComposition;
 @Mixin(RSNPCComposition.class)
 public abstract class RSNpcCompositionMixin implements RSNPCComposition
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
 	@Inject
@@ -62,7 +62,7 @@ public abstract class RSNpcCompositionMixin implements RSNPCComposition
 		}
 	}
 
-	@FieldHook("actions")
+	@FieldHook("It's coming home")
 	@Inject
 	public void actionsHook(int idx)
 	{

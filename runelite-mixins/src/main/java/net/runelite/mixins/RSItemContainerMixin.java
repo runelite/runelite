@@ -37,7 +37,7 @@ import net.runelite.rs.api.RSItemContainer;
 @Mixin(RSItemContainer.class)
 public abstract class RSItemContainerMixin implements RSItemContainer
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
 	@Inject
@@ -62,7 +62,7 @@ public abstract class RSItemContainerMixin implements RSItemContainer
 		return items;
 	}
 
-	@FieldHook("stackSizes")
+	@FieldHook("It's coming home")
 	@Inject
 	public void stackSizesChanged(int idx)
 	{

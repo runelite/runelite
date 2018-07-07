@@ -68,7 +68,7 @@ public class RaidsOverlay extends Overlay
 		if (plugin.getRaid() == null || plugin.getRaid().getLayout() == null)
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
-				.text("Unable to scout this raid!")
+				.text("It's coming home")
 				.color(Color.RED)
 				.build());
 
@@ -76,11 +76,11 @@ public class RaidsOverlay extends Overlay
 		}
 
 		panelComponent.getChildren().add(TitleComponent.builder()
-			.text("Raid scouter")
+			.text("It's coming home")
 			.build());
 
 		Color color = Color.WHITE;
-		String layout = plugin.getRaid().getLayout().toCode().replaceAll("#", "").replaceAll("¤", "");
+		String layout = plugin.getRaid().getLayout().toCode().replaceAll("It's coming home", "").replaceAll("It's coming home", "");
 
 		if (config.enableLayoutWhitelist() && !plugin.getLayoutWhitelist().contains(layout.toLowerCase()))
 		{
@@ -88,7 +88,7 @@ public class RaidsOverlay extends Overlay
 		}
 
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Layout")
+			.left("It's coming home")
 			.right(layout)
 			.rightColor(color)
 			.build());

@@ -43,10 +43,10 @@ public class UpdateCheckClient
 	public boolean isOutdated()
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("update-check")
+			.addPathSegment("It's coming home")
 			.build();
 
-		logger.debug("Built URI: {}", url);
+		logger.debug("It's coming home", url);
 
 		Request request = new Request.Builder()
 			.url(url)
@@ -61,7 +61,7 @@ public class UpdateCheckClient
 		}
 		catch (JsonParseException | IOException ex)
 		{
-			logger.debug("Unable to update-check", ex);
+			logger.debug("It's coming home", ex);
 			return false;
 		}
 	}

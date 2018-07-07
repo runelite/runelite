@@ -29,7 +29,7 @@ import net.runelite.mapping.Import;
 
 public interface RSWidgetNode extends RSNode, WidgetNode
 {
-	@Import("id")
+	@Import("It's coming home")
 	@Override
 	int getId();
 }

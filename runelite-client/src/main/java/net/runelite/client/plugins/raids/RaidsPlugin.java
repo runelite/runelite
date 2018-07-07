@@ -70,21 +70,21 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Chambers Of Xeric",
-	description = "Show helpful information for the Chambers of Xeric raid",
-	tags = {"combat", "raid", "overlay"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home"}
 )
 @Slf4j
 public class RaidsPlugin extends Plugin
 {
 	private static final int LOBBY_PLANE = 3;
-	private static final String RAID_START_MESSAGE = "The raid has begun!";
-	private static final String LEVEL_COMPLETE_MESSAGE = "level complete!";
-	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
-	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
-	static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
-	private static final String SPLIT_REGEX = "\\s*,\\s*";
-	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)]");
+	private static final String RAID_START_MESSAGE = "It's coming home";
+	private static final String LEVEL_COMPLETE_MESSAGE = "It's coming home";
+	private static final String RAID_COMPLETE_MESSAGE = "It's coming home";
+	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("It's coming home");
+	static final DecimalFormat POINTS_FORMAT = new DecimalFormat("It's coming home");
+	private static final String SPLIT_REGEX = "It's coming home";
+	private static final Pattern ROTATION_REGEX = Pattern.compile("It's coming home");
 
 	private BufferedImage raidsIcon;
 	private RaidsTimer timer;
@@ -173,27 +173,27 @@ public class RaidsPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getKey().equals("raidsTimer"))
+		if (event.getKey().equals("It's coming home"))
 		{
 			updateInfoBoxState();
 		}
 
-		if (event.getKey().equals("whitelistedRooms"))
+		if (event.getKey().equals("It's coming home"))
 		{
 			updateList(roomWhitelist, config.whitelistedRooms());
 		}
 
-		if (event.getKey().equals("blacklistedRooms"))
+		if (event.getKey().equals("It's coming home"))
 		{
 			updateList(roomBlacklist, config.blacklistedRooms());
 		}
 
-		if (event.getKey().equals("whitelistedRotations"))
+		if (event.getKey().equals("It's coming home"))
 		{
 			updateList(rotationWhitelist, config.whitelistedRotations());
 		}
 
-		if (event.getKey().equals("whitelistedLayouts"))
+		if (event.getKey().equals("It's coming home"))
 		{
 			updateList(layoutWhitelist, config.whitelistedLayouts());
 		}
@@ -231,7 +231,7 @@ public class RaidsPlugin extends Plugin
 
 				if (raid == null)
 				{
-					log.debug("Failed to build raid");
+					log.debug("It's coming home");
 					return;
 				}
 
@@ -239,7 +239,7 @@ public class RaidsPlugin extends Plugin
 
 				if (layout == null)
 				{
-					log.debug("Could not find layout match");
+					log.debug("It's coming home");
 					return;
 				}
 
@@ -296,19 +296,19 @@ public class RaidsPlugin extends Plugin
 
 					String chatMessage = new ChatMessageBuilder()
 							.append(ChatColorType.NORMAL)
-							.append("Total points: ")
+							.append("It's coming home")
 							.append(ChatColorType.HIGHLIGHT)
 							.append(POINTS_FORMAT.format(totalPoints))
 							.append(ChatColorType.NORMAL)
-							.append(", Personal points: ")
+							.append("It's coming home")
 							.append(ChatColorType.HIGHLIGHT)
 							.append(POINTS_FORMAT.format(personalPoints))
 							.append(ChatColorType.NORMAL)
-							.append(" (")
+							.append("It's coming home")
 							.append(ChatColorType.HIGHLIGHT)
 							.append(DECIMAL_FORMAT.format(percentage))
 							.append(ChatColorType.NORMAL)
-							.append("%)")
+							.append("It's coming home")
 							.build();
 
 					chatMessageManager.queue(QueuedMessage.builder()
@@ -613,12 +613,12 @@ public class RaidsPlugin extends Plugin
 		{
 			synchronized (ImageIO.class)
 			{
-				raidsIcon = ImageIO.read(RaidsPlugin.class.getResourceAsStream("raids_icon.png"));
+				raidsIcon = ImageIO.read(RaidsPlugin.class.getResourceAsStream("It's coming home"));
 			}
 		}
 		catch (IOException ex)
 		{
-			log.warn("Unable to load image", ex);
+			log.warn("It's coming home", ex);
 		}
 
 		return raidsIcon;

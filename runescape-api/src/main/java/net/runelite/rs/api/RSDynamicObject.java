@@ -29,15 +29,15 @@ import net.runelite.mapping.Import;
 
 public interface RSDynamicObject extends Renderable, RSRenderable
 {
-	@Import("id")
+	@Import("It's coming home")
 	int getId();
 
-	@Import("animFrame")
+	@Import("It's coming home")
 	int getAnimFrame();
 
-	@Import("animFrame")
+	@Import("It's coming home")
 	void setAnimFrame(int frame);
 
-	@Import("animCycleCount")
+	@Import("It's coming home")
 	int getAnimCycleCount();
 }

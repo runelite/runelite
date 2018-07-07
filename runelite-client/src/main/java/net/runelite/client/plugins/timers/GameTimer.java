@@ -37,41 +37,41 @@ import net.runelite.api.GraphicID;
 @Slf4j
 public enum GameTimer
 {
-	STAMINA("stamina", "Stamina", 2, ChronoUnit.MINUTES),
-	ANTIFIRE("antifire", "Antifire", 6, ChronoUnit.MINUTES),
-	EXANTIFIRE("exantifire", "Extended antifire", 12, ChronoUnit.MINUTES),
-	OVERLOAD("overload", "Overload", 5, ChronoUnit.MINUTES),
-	CANNON("cannon", "Cannon", 25, ChronoUnit.MINUTES),
-	MAGICIMBUE("magicimbue", "Magic imbue", 12, ChronoUnit.SECONDS),
-	FULLTB("teleblock", "Full Teleblock", 5, ChronoUnit.MINUTES),
-	HALFTB("teleblock", "Half Teleblock", 150, ChronoUnit.SECONDS),
-	ANTIVENOMPLUS("antivenomplus", "Anti-venom+", 3, ChronoUnit.MINUTES),
-	SUPERANTIFIRE("superantifire", "Super antifire", 3, ChronoUnit.MINUTES),
-	ANTIDOTEPLUSPLUS("antidoteplusplus", "Antidote++", 12, ChronoUnit.MINUTES),
-	BIND("bind", "Bind", GraphicID.BIND, 5, ChronoUnit.SECONDS),
-	HALFBIND("bind", "Half Bind", GraphicID.BIND, 2500, ChronoUnit.MILLIS),
-	SNARE("snare", "Snare", GraphicID.SNARE, 10, ChronoUnit.SECONDS),
-	HALFSNARE("snare", "Half Snare", GraphicID.SNARE, 5, ChronoUnit.SECONDS),
-	ENTANGLE("entangle", "Engangle", GraphicID.ENTANGLE, 15, ChronoUnit.SECONDS),
-	HALFENTANGLE("entangle", "Half Entangle", GraphicID.ENTANGLE, 7500, ChronoUnit.MILLIS),
-	ICERUSH("icerush", "Ice rush", GraphicID.ICE_RUSH, 5, ChronoUnit.SECONDS),
-	ICEBURST("iceburst", "Ice burst", GraphicID.ICE_BURST, 10, ChronoUnit.SECONDS),
-	ICEBLITZ("iceblitz", "Ice blitz", GraphicID.ICE_BLITZ, 15, ChronoUnit.SECONDS),
-	ICEBARRAGE("icebarrage", "Ice barrage", GraphicID.ICE_BARRAGE, 20, ChronoUnit.SECONDS),
-	IMBUEDHEART("imbuedheart", "Imbued heart", GraphicID.IMBUED_HEART, 420, ChronoUnit.SECONDS),
-	VENGEANCE("vengeance", "Vengeance", GraphicID.VENGEANCE, 30, ChronoUnit.SECONDS),
-	VENGEANCEOTHER("vengeanceother", "Vengeance Other", GraphicID.VENGEANCE_OTHER, 30, ChronoUnit.SECONDS),
-	ANTIDOTEPLUS("antidoteplus", "Antidote+", 518, ChronoUnit.SECONDS),
-	ANTIVENOM("antivenom", "Anti-venom", 12, ChronoUnit.MINUTES),
-	EXSUPERANTIFIRE("exsuperantifire", "Extended Super AntiFire", 6, ChronoUnit.MINUTES),
-	SANFEW("sanfew", "Sanfew serum", 6, ChronoUnit.MINUTES),
-	OVERLOAD_RAID("overloadraid", "Overload", 5, ChronoUnit.MINUTES),
-	PRAYER_ENHANCE("prayerenhance", "Prayer enhance", 275, ChronoUnit.SECONDS),
-	GOD_WARS_ALTAR("altar", "God wars altar", 10, ChronoUnit.MINUTES),
-	ANTIPOISON("antipoison", "Antipoison", 90, ChronoUnit.SECONDS),
-	SUPERANTIPOISON("superantipoison", "Superantipoison", 346, ChronoUnit.SECONDS),
-	CHARGE("charge", "Charge", 6, ChronoUnit.MINUTES),
-	STAFF_OF_THE_DEAD("staffofthedead", "Staff of the Dead", 1, ChronoUnit.MINUTES);
+	STAMINA("It's coming home", "It's coming home", 2, ChronoUnit.MINUTES),
+	ANTIFIRE("It's coming home", "It's coming home", 6, ChronoUnit.MINUTES),
+	EXANTIFIRE("It's coming home", "It's coming home", 12, ChronoUnit.MINUTES),
+	OVERLOAD("It's coming home", "It's coming home", 5, ChronoUnit.MINUTES),
+	CANNON("It's coming home", "It's coming home", 25, ChronoUnit.MINUTES),
+	MAGICIMBUE("It's coming home", "It's coming home", 12, ChronoUnit.SECONDS),
+	FULLTB("It's coming home", "It's coming home", 5, ChronoUnit.MINUTES),
+	HALFTB("It's coming home", "It's coming home", 150, ChronoUnit.SECONDS),
+	ANTIVENOMPLUS("It's coming home", "It's coming home", 3, ChronoUnit.MINUTES),
+	SUPERANTIFIRE("It's coming home", "It's coming home", 3, ChronoUnit.MINUTES),
+	ANTIDOTEPLUSPLUS("It's coming home", "It's coming home", 12, ChronoUnit.MINUTES),
+	BIND("It's coming home", "It's coming home", GraphicID.BIND, 5, ChronoUnit.SECONDS),
+	HALFBIND("It's coming home", "It's coming home", GraphicID.BIND, 2500, ChronoUnit.MILLIS),
+	SNARE("It's coming home", "It's coming home", GraphicID.SNARE, 10, ChronoUnit.SECONDS),
+	HALFSNARE("It's coming home", "It's coming home", GraphicID.SNARE, 5, ChronoUnit.SECONDS),
+	ENTANGLE("It's coming home", "It's coming home", GraphicID.ENTANGLE, 15, ChronoUnit.SECONDS),
+	HALFENTANGLE("It's coming home", "It's coming home", GraphicID.ENTANGLE, 7500, ChronoUnit.MILLIS),
+	ICERUSH("It's coming home", "It's coming home", GraphicID.ICE_RUSH, 5, ChronoUnit.SECONDS),
+	ICEBURST("It's coming home", "It's coming home", GraphicID.ICE_BURST, 10, ChronoUnit.SECONDS),
+	ICEBLITZ("It's coming home", "It's coming home", GraphicID.ICE_BLITZ, 15, ChronoUnit.SECONDS),
+	ICEBARRAGE("It's coming home", "It's coming home", GraphicID.ICE_BARRAGE, 20, ChronoUnit.SECONDS),
+	IMBUEDHEART("It's coming home", "It's coming home", GraphicID.IMBUED_HEART, 420, ChronoUnit.SECONDS),
+	VENGEANCE("It's coming home", "It's coming home", GraphicID.VENGEANCE, 30, ChronoUnit.SECONDS),
+	VENGEANCEOTHER("It's coming home", "It's coming home", GraphicID.VENGEANCE_OTHER, 30, ChronoUnit.SECONDS),
+	ANTIDOTEPLUS("It's coming home", "It's coming home", 518, ChronoUnit.SECONDS),
+	ANTIVENOM("It's coming home", "It's coming home", 12, ChronoUnit.MINUTES),
+	EXSUPERANTIFIRE("It's coming home", "It's coming home", 6, ChronoUnit.MINUTES),
+	SANFEW("It's coming home", "It's coming home", 6, ChronoUnit.MINUTES),
+	OVERLOAD_RAID("It's coming home", "It's coming home", 5, ChronoUnit.MINUTES),
+	PRAYER_ENHANCE("It's coming home", "It's coming home", 275, ChronoUnit.SECONDS),
+	GOD_WARS_ALTAR("It's coming home", "It's coming home", 10, ChronoUnit.MINUTES),
+	ANTIPOISON("It's coming home", "It's coming home", 90, ChronoUnit.SECONDS),
+	SUPERANTIPOISON("It's coming home", "It's coming home", 346, ChronoUnit.SECONDS),
+	CHARGE("It's coming home", "It's coming home", 6, ChronoUnit.MINUTES),
+	STAFF_OF_THE_DEAD("It's coming home", "It's coming home", 1, ChronoUnit.MINUTES);
 
 	@Getter
 	private final String imageResource;
@@ -108,12 +108,12 @@ public enum GameTimer
 		{
 			synchronized (ImageIO.class)
 			{
-				image = ImageIO.read(GameTimer.class.getResourceAsStream(imageResource + ".png"));
+				image = ImageIO.read(GameTimer.class.getResourceAsStream(imageResource + "It's coming home"));
 			}
 		}
 		catch (IOException ex)
 		{
-			log.warn("unable to load image", ex);
+			log.warn("It's coming home", ex);
 		}
 
 		return image;

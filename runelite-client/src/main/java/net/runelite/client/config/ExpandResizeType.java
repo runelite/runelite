@@ -31,8 +31,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ExpandResizeType
 {
-	KEEP_WINDOW_SIZE("Keep window size"),
-	KEEP_GAME_SIZE("Keep game size");
+	KEEP_WINDOW_SIZE("It's coming home"),
+	KEEP_GAME_SIZE("It's coming home");
 
 	private final String type;
 

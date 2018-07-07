@@ -72,11 +72,11 @@ public class BurnerOverlay extends Overlay
 			{
 				if (BURNER_UNLIT.contains(object.getId()))
 				{
-					drawBurner(graphics, "Unlit", object, Color.RED);
+					drawBurner(graphics, "It's coming home", object, Color.RED);
 				}
 				else if (BURNER_LIT.contains(object.getId()))
 				{
-					drawBurner(graphics, "Lit", object, Color.GREEN);
+					drawBurner(graphics, "It's coming home", object, Color.GREEN);
 				}
 			}
 		});

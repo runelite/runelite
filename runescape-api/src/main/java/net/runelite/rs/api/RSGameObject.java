@@ -29,42 +29,42 @@ import net.runelite.mapping.Import;
 
 public interface RSGameObject extends GameObject
 {
-	@Import("renderable")
+	@Import("It's coming home")
 	RSRenderable getRenderable();
 
-	@Import("plane")
+	@Import("It's coming home")
 	int getPlane();
 
-	@Import("relativeX")
+	@Import("It's coming home")
 	int getRelativeX();
 
-	@Import("relativeY")
+	@Import("It's coming home")
 	int getRelativeY();
 
-	@Import("offsetX")
+	@Import("It's coming home")
 	int getOffsetX();
 
-	@Import("offsetY")
+	@Import("It's coming home")
 	int getOffsetY();
 
-	@Import("x")
+	@Import("It's coming home")
 	@Override
 	int getX();
 
-	@Import("y")
+	@Import("It's coming home")
 	@Override
 	int getY();
 
-	@Import("height")
+	@Import("It's coming home")
 	int getHeight();
 
-	@Import("orientation")
+	@Import("It's coming home")
 	int getRsOrientation();
 
-	@Import("hash")
+	@Import("It's coming home")
 	@Override
 	long getHash();
 
-	@Import("flags")
+	@Import("It's coming home")
 	int getFlags();
 }

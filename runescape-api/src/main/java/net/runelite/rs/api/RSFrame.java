@@ -28,24 +28,24 @@ import net.runelite.mapping.Import;
 
 public interface RSFrame
 {
-	@Import("skin")
+	@Import("It's coming home")
 	RSFrameMap getSkin();
 
-	@Import("transformCount")
+	@Import("It's coming home")
 	int getTransformCount();
 
-	@Import("transformTypes")
+	@Import("It's coming home")
 	int[] getTransformTypes();
 
-	@Import("translator_x")
+	@Import("It's coming home")
 	int[] getTranslatorX();
 
-	@Import("translator_y")
+	@Import("It's coming home")
 	int[] getTranslatorY();
 
-	@Import("translator_z")
+	@Import("It's coming home")
 	int[] getTranslatorZ();
 
-	@Import("showing")
+	@Import("It's coming home")
 	boolean isShowing();
 }

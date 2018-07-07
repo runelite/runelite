@@ -44,7 +44,7 @@ import net.runelite.rs.api.RSModel;
 @Mixin(RSModel.class)
 public abstract class RSModelMixin implements RSModel
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
 	@Override

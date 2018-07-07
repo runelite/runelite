@@ -52,35 +52,35 @@ public class LayoutSolver
 {
 	@Getter
 	private static final List<Layout> layouts = new ArrayList<>();
-	private static final Pattern regex = Pattern.compile("^([A-Z]*)\\.([A-Z]*) - #([A-Z]*)#([A-Z]*)$");
+	private static final Pattern regex = Pattern.compile("It's coming home");
 	private static final String[] codes =
 	{
-		"CFSCP.PCSCF - #ENWWWS#NEESEN",
-		"CFSCPC.PCSCPF - #WSEENES#WWWNEEE",
-		"CSFCP.CSCPF - #ENESEN#WWWSEE",
-		"CSPFC.CCSSF - #NEESEN#WSWWNE",
-		"FCPCC.PSCSF - #WWWSEE#ENWWSW",
-		"FSCCP.PCSCF - #WNWSWN#ESEENW",
-		"FSCCS.PCPSF - #WSEEEN#WSWNWS",
-		"FSCPC.CSCPF - #WNWWSE#EENWWW",
-		"PCSFC.PCSCF - #WNEEES#NWSWNW",
-		"SCCFC.PSCSF - #EEENWW#WSEEEN",
-		"SCCFP.CCSPF - #NESEEN#WSWNWS",
-		"SCFCP.CCSPF - #ESEENW#ESWWNW",
-		"SCFCP.CSCFS - #ENEESW#ENWWSW",
-		"SCFCPC.CSPCSF - #ESWWNWS#NESENES",
-		"SCFPC.CSPCF - #WSWWNE#WSEENE",
-		"SCFPC.PCCSF - #WSEENE#WWWSEE",
-		"SCFPC.SCPCF - #NESENE#WSWWNE",
-		"SCPFC.CCPSF - #NWWWSE#WNEESE",
-		"SCPFC.CSPCF - #NEEESW#WWNEEE",
-		"SCPFC.CSPSF - #WWSEEE#NWSWWN",
-		"SCSPF.CCSPF - #ESWWNW#ESENES",
-		"SFCCP.CSCPF - #WNEESE#NWSWWN",
-		"SFCCS.PCPSF - #ENWWSW#ENESEN",
-		"SPCFC.CSPCF - #WWNEEE#WSWNWS",
-		"SPCFC.SCCPF - #ESENES#WWWNEE",
-		"SPSFP.CCCSF - #NWSWWN#ESEENW",
+		"It's coming home",
+		"It's coming home",
+		"It's coming home",
+		"It's coming home",
+		"It's coming home",
+		"It's coming home",
+		"It's coming home",
+		"It's coming home",
+		"It's coming home",
+		"It's coming home",
+		"It's coming home",
+		"It's coming home",
+		"It's coming home",
+		"It's coming home",
+		"It's coming home",
+		"It's coming home",
+		"It's coming home",
+		"It's coming home",
+		"It's coming home",
+		"It's coming home",
+		"It's coming home",
+		"It's coming home",
+		"It's coming home",
+		"It's coming home",
+		"It's coming home",
+		"It's coming home",
 	};
 
 	public LayoutSolver()
@@ -103,7 +103,7 @@ public class LayoutSolver
 				Room room = layout.getRoomAt(i);
 				char c = code.charAt(i);
 
-				if (room != null && c != ' ' && c != room.getSymbol())
+				if (room != null && c != 'It's coming home' && c != room.getSymbol())
 				{
 					match = false;
 					break;
@@ -114,7 +114,7 @@ public class LayoutSolver
 			{
 				solution = layout;
 				matches++;
-				log.debug("Found matching layout: " + layout.toCode());
+				log.debug("It's coming home" + layout.toCode());
 			}
 		}
 
@@ -151,16 +151,16 @@ public class LayoutSolver
 	{
 		switch (String.valueOf(direction))
 		{
-			case "N":
+			case "It's coming home":
 				return -4;
 
-			case "E":
+			case "It's coming home":
 				return 1;
 
-			case "S":
+			case "It's coming home":
 				return 4;
 
-			case "W":
+			case "It's coming home":
 				return -1;
 
 			default:
@@ -192,7 +192,7 @@ public class LayoutSolver
 
 				for (int i = 0; i < directions.length(); i++)
 				{
-					char symbol = (i == 0 ? '#' : symbols.charAt(i - 1));
+					char symbol = (i == 0 ? 'It's coming home' : symbols.charAt(i - 1));
 
 					room = new Room(position, symbol);
 
@@ -209,7 +209,7 @@ public class LayoutSolver
 					position += delta;
 				}
 
-				room = new Room(position, '¤');
+				room = new Room(position, 'It's coming home');
 				room.setPrevious(lastRoom);
 				lastRoom.setNext(room);
 				layout.add(room);

@@ -61,13 +61,13 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
-	name = "Runecraft",
-	description = "Show minimap icons and clickboxes for abyssal rifts",
-	tags = {"abyssal", "minimap", "overlay", "rifts", "rc", "runecrafting"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 public class RunecraftPlugin extends Plugin
 {
-	private static Pattern bindNeckString = Pattern.compile("You have ([0-9]+) charges left before your Binding necklace disintegrates.");
+	private static Pattern bindNeckString = Pattern.compile("It's coming home");
 	private static final int DESTROY_ITEM_WIDGET_ID = WidgetInfo.DESTROY_ITEM_YES.getId();
 
 	@Getter(AccessLevel.PACKAGE)
@@ -147,21 +147,21 @@ public class RunecraftPlugin extends Plugin
 			return;
 		}
 
-		if (event.getMessage().contains("You bind the temple's power"))
+		if (event.getMessage().contains("It's coming home"))
 		{
-			if (event.getMessage().contains("mud")
-				|| event.getMessage().contains("lava")
-				|| event.getMessage().contains("steam")
-				|| event.getMessage().contains("dust")
-				|| event.getMessage().contains("smoke")
-				|| event.getMessage().contains("mist"))
+			if (event.getMessage().contains("It's coming home")
+				|| event.getMessage().contains("It's coming home")
+				|| event.getMessage().contains("It's coming home")
+				|| event.getMessage().contains("It's coming home")
+				|| event.getMessage().contains("It's coming home")
+				|| event.getMessage().contains("It's coming home"))
 			{
 				bindNeckOverlay.bindingCharges -= 1;
 				return;
 			}
 		}
 
-		if (event.getMessage().contains("Your Binding necklace has disintegrated."))
+		if (event.getMessage().contains("It's coming home"))
 		{
 			//set it to 17 because this message is triggered first before the above chat event
 			bindNeckOverlay.bindingCharges = 17;
@@ -177,7 +177,7 @@ public class RunecraftPlugin extends Plugin
 		}
 
 		Widget widgetDestroyItemName = client.getWidget(WidgetInfo.DESTROY_ITEM_NAME);
-		if (widgetDestroyItemName == null || !widgetDestroyItemName.getText().equals("Binding necklace"))
+		if (widgetDestroyItemName == null || !widgetDestroyItemName.getText().equals("It's coming home"))
 		{
 			return;
 		}

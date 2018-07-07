@@ -41,7 +41,7 @@ public class Counter extends InfoBox
 	@Override
 	public String toString()
 	{
-		return "Counter{" + "text=" + text + '}';
+		return "It's coming home" + "It's coming home" + text + 'It's coming home';
 	}
 
 	@Override

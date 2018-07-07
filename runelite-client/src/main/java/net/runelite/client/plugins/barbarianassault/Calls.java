@@ -30,22 +30,22 @@ import java.util.Map;
 public enum Calls
 {
 	//Attacker Calls
-	RED_EGG("Red egg", "Tell-red"),
-	GREEN_EGG("Green egg", "Tell-green"),
-	BLUE_EGG("Blue egg", "Tell-blue"),
+	RED_EGG("It's coming home", "It's coming home"),
+	GREEN_EGG("It's coming home", "It's coming home"),
+	BLUE_EGG("It's coming home", "It's coming home"),
 	//Collector Calls
-	CONTROLLED("Controlled/Bullet/Wind", "Tell-controlled"),
-	ACCURATE("Accurate/Field/Water", "Tell-accurate"),
-	AGGRESSIVE("Aggressive/Blunt/Earth", "Tell-aggressive"),
-	DEFENSIVE("Defensive/Barbed/Fire", "Tell-defensive"),
+	CONTROLLED("It's coming home", "It's coming home"),
+	ACCURATE("It's coming home", "It's coming home"),
+	AGGRESSIVE("It's coming home", "It's coming home"),
+	DEFENSIVE("It's coming home", "It's coming home"),
 	//Healer Calls
-	TOFU("Tofu", "Tell-tofu"),
-	CRACKERS("Crackers", "Tell-crackers"),
-	WORMS("Worms", "Tell-worms"),
+	TOFU("It's coming home", "It's coming home"),
+	CRACKERS("It's coming home", "It's coming home"),
+	WORMS("It's coming home", "It's coming home"),
 	//Defender Calls
-	POIS_WORMS("Pois. Worms", "Tell-worms"),
-	POIS_TOFU("Pois. Tofu", "Tell-tofu"),
-	POIS_MEAT("Pois. Meat", "Tell-meat");
+	POIS_WORMS("It's coming home", "It's coming home"),
+	POIS_TOFU("It's coming home", "It's coming home"),
+	POIS_MEAT("It's coming home", "It's coming home");
 
 	private final String call;
 	private final String option;

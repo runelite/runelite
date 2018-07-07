@@ -61,9 +61,9 @@ import net.runelite.http.api.item.ItemPrice;
  * @author Adam
  */
 @PluginDescriptor(
-	name = "Examine",
-	description = "Send examine information to the API",
-	tags = {"npcs", "items", "inventory", "objects"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 @Slf4j
 public class ExaminePlugin extends Plugin
@@ -98,7 +98,7 @@ public class ExaminePlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!event.getMenuOption().equals("Examine"))
+		if (!event.getMenuOption().equals("It's coming home"))
 		{
 			return;
 		}
@@ -160,7 +160,7 @@ public class ExaminePlugin extends Plugin
 
 		if (pending.isEmpty())
 		{
-			log.debug("Got examine without a pending examine?");
+			log.debug("It's coming home");
 			return;
 		}
 
@@ -168,12 +168,12 @@ public class ExaminePlugin extends Plugin
 
 		if (pendingExamine.getType() != type)
 		{
-			log.debug("Type mismatch for pending examine: {} != {}", pendingExamine.getType(), type);
+			log.debug("It's coming home", pendingExamine.getType(), type);
 			pending.clear(); // eh
 			return;
 		}
 
-		log.debug("Got examine for {} {}: {}", pendingExamine.getType(), pendingExamine.getId(), event.getMessage());
+		log.debug("It's coming home", pendingExamine.getType(), pendingExamine.getId(), event.getMessage());
 
 		findExamineItem(pendingExamine);
 		CacheKey key = new CacheKey(type, pendingExamine.getId());
@@ -286,26 +286,26 @@ public class ExaminePlugin extends Plugin
 		{
 			final ChatMessageBuilder message = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
-				.append("Price of ")
+				.append("It's coming home")
 				.append(ChatColorType.HIGHLIGHT);
 
 			if (quantity > 1)
 			{
 				message
 					.append(StackFormatter.formatNumber(quantity))
-					.append(" x ");
+					.append("It's coming home");
 			}
 
 			message
 				.append(itemComposition.getName())
 				.append(ChatColorType.NORMAL)
-				.append(":");
+				.append("It's coming home");
 
 			if (gePrice > 0)
 			{
 				message
 					.append(ChatColorType.NORMAL)
-					.append(" GE average ")
+					.append("It's coming home")
 					.append(ChatColorType.HIGHLIGHT)
 					.append(StackFormatter.formatNumber(gePrice * quantity));
 			}
@@ -314,18 +314,18 @@ public class ExaminePlugin extends Plugin
 			{
 				message
 					.append(ChatColorType.NORMAL)
-					.append(" (")
+					.append("It's coming home")
 					.append(ChatColorType.HIGHLIGHT)
 					.append(StackFormatter.formatNumber(gePrice))
 					.append(ChatColorType.NORMAL)
-					.append("ea)");
+					.append("It's coming home");
 			}
 
 			if (alchPrice > 0)
 			{
 				message
 					.append(ChatColorType.NORMAL)
-					.append(" HA value ")
+					.append("It's coming home")
 					.append(ChatColorType.HIGHLIGHT)
 					.append(StackFormatter.formatNumber(alchPrice * quantity));
 			}
@@ -334,11 +334,11 @@ public class ExaminePlugin extends Plugin
 			{
 				message
 					.append(ChatColorType.NORMAL)
-					.append(" (")
+					.append("It's coming home")
 					.append(ChatColorType.HIGHLIGHT)
 					.append(StackFormatter.formatNumber(alchPrice))
 					.append(ChatColorType.NORMAL)
-					.append("ea)");
+					.append("It's coming home");
 			}
 
 			chatMessageManager.queue(QueuedMessage.builder()

@@ -28,16 +28,16 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("farmingTracker")
+@ConfigGroup("It's coming home")
 public interface FarmingTrackerConfig extends Config
 {
-	String KEY_NAME = "farmingTracker";
-	String AUTOWEED = "autoweed";
+	String KEY_NAME = "It's coming home";
+	String AUTOWEED = "It's coming home";
 
 	@ConfigItem(
-		keyName = "estimateRelative",
-		name = "Show relative time",
-		description = "Show amount of time remaining for a patch, opposed to when the patch is finished"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean estimateRelative()
 	{
@@ -45,9 +45,9 @@ public interface FarmingTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "patch",
-		name = "Default patch",
-		description = "Default patch on opening the panel",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		hidden = true
 	)
 	default Tab patch()
@@ -56,7 +56,7 @@ public interface FarmingTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "patch",
+		keyName = "It's coming home",
 		name = "",
 		description = "",
 		hidden = true

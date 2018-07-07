@@ -29,14 +29,14 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("chatnotification")
+@ConfigGroup("It's coming home")
 public interface ChatNotificationsConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
-		keyName = "highlightOwnName",
-		name = "Highlight own name",
-		description = "Highlights any instance of your username in chat"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean highlightOwnName()
 	{
@@ -45,9 +45,9 @@ public interface ChatNotificationsConfig extends Config
 
 	@ConfigItem(
 		position = 1,
-		keyName = "highlightWordsString",
-		name = "Highlight words",
-		description = "Highlights the following words in chat"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default String highlightWordsString()
 	{
@@ -56,9 +56,9 @@ public interface ChatNotificationsConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "notifyOnOwnName",
-		name = "Notify on own name",
-		description = "Notifies you whenever your name is mentioned"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean notifyOnOwnName()
 	{
@@ -67,9 +67,9 @@ public interface ChatNotificationsConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "notifyOnHighlight",
-		name = "Notify on highlight",
-		description = "Notifies you whenever a highlighted word is matched"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean notifyOnHighlight()
 	{
@@ -78,9 +78,9 @@ public interface ChatNotificationsConfig extends Config
 
 	@ConfigItem(
 		position = 4,
-		keyName = "notifyOnTrade",
-		name = "Notify on trade",
-		description = "Notifies you whenever you are traded"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean notifyOnTrade()
 	{
@@ -89,9 +89,9 @@ public interface ChatNotificationsConfig extends Config
 
 	@ConfigItem(
 		position = 5,
-		keyName = "notifyOnDuel",
-		name = "Notify on duel",
-		description = "Notifies you whenever you are challenged to a duel"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean notifyOnDuel()
 	{

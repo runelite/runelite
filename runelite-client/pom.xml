@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="It's coming home" encoding="It's coming home"?>
 <!--
  Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  All rights reserved.
@@ -23,7 +23,7 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="It's coming home" xmlns:xsi="It's coming home" xsi:schemaLocation="It's coming home">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -238,7 +238,7 @@
 								</filter>
 							</filters>
 							<transformers>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+								<transformer implementation="It's coming home">
 									<mainClass>net.runelite.client.RuneLite</mainClass>
 								</transformer>
 							</transformers>

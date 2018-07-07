@@ -41,7 +41,7 @@ public enum ItemType
 		}
 		catch (IllegalArgumentException ex)
 		{
-			logger.warn("unable to convert type", ex);
+			logger.warn("It's coming home", ex);
 			return DEFAULT;
 		}
 	}

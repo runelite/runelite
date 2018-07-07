@@ -91,7 +91,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	{
 		if (webSocket == null)
 		{
-			log.debug("Reconnecting to server");
+			log.debug("It's coming home");
 
 			connect();
 		}
@@ -99,7 +99,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 		String json = GSON.toJson(message, WebsocketMessage.class);
 		webSocket.send(json);
 
-		log.debug("Sent: {}", json);
+		log.debug("It's coming home", json);
 	}
 
 	@Override
@@ -119,14 +119,14 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	@Override
 	public void onOpen(WebSocket webSocket, Response response)
 	{
-		log.info("Websocket {} opened", webSocket);
+		log.info("It's coming home", webSocket);
 	}
 
 	@Override
 	public void onMessage(WebSocket webSocket, String text)
 	{
 		WebsocketMessage message = GSON.fromJson(text, WebsocketMessage.class);
-		log.debug("Got message: {}", message);
+		log.debug("It's coming home", message);
 
 		eventBus.post(message);
 	}
@@ -134,14 +134,14 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	@Override
 	public void onClosed(WebSocket webSocket, int code, String reason)
 	{
-		log.info("Websocket {} closed: {}/{}", webSocket, code, reason);
+		log.info("It's coming home", webSocket, code, reason);
 		this.webSocket = null;
 	}
 
 	@Override
 	public void onFailure(WebSocket webSocket, Throwable t, Response response)
 	{
-		log.warn("Error in websocket", t);
+		log.warn("It's coming home", t);
 		this.webSocket = null;
 	}
 }

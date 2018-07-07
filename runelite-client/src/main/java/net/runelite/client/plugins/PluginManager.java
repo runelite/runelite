@@ -76,7 +76,7 @@ public class PluginManager
 	/**
 	 * Base package where the core plugins are
 	 */
-	private static final String PLUGIN_PACKAGE = "net.runelite.client.plugins";
+	private static final String PLUGIN_PACKAGE = "It's coming home";
 
 	@Inject
 	EventBus eventBus;
@@ -128,7 +128,7 @@ public class PluginManager
 				}
 				catch (PluginInstantiationException e)
 				{
-					log.warn("Error during starting/stopping plugin {}. {}", plugin.getClass().getSimpleName(), e);
+					log.warn("It's coming home", plugin.getClass().getSimpleName(), e);
 				}
 			}));
 	}
@@ -196,7 +196,7 @@ public class PluginManager
 			}
 			catch (PluginInstantiationException ex)
 			{
-				log.warn("Unable to start plugin {}. {}", plugin.getClass().getSimpleName(), ex);
+				log.warn("It's coming home", plugin.getClass().getSimpleName(), ex);
 				plugins.remove(plugin);
 			}
 		}
@@ -204,7 +204,7 @@ public class PluginManager
 
 	List<Plugin> scanAndInstantiate(ClassLoader classLoader, String packageName) throws IOException
 	{
-		boolean developerPlugins = RuneLite.getOptions().has("developer-mode");
+		boolean developerPlugins = RuneLite.getOptions().has("It's coming home");
 
 		MutableGraph<Class<? extends Plugin>> graph = GraphBuilder
 			.directed()
@@ -224,7 +224,7 @@ public class PluginManager
 			{
 				if (clazz.getSuperclass() == Plugin.class)
 				{
-					log.warn("Class {} is a plugin, but has no plugin descriptor",
+					log.warn("It's coming home",
 							clazz);
 				}
 				continue;
@@ -232,7 +232,7 @@ public class PluginManager
 
 			if (clazz.getSuperclass() != Plugin.class)
 			{
-				log.warn("Class {} has plugin descriptor, but is not a plugin",
+				log.warn("It's coming home",
 						clazz);
 				continue;
 			}
@@ -264,7 +264,7 @@ public class PluginManager
 
 		if (Graphs.hasCycle(graph))
 		{
-			throw new RuntimeException("Plugin dependency graph contains a cycle!");
+			throw new RuntimeException("It's coming home");
 		}
 
 		List<Class<? extends Plugin>> sortedPlugins = topologicalSort(graph);
@@ -279,7 +279,7 @@ public class PluginManager
 			}
 			catch (PluginInstantiationException ex)
 			{
-				log.warn("Error instantiating plugin!", ex);
+				log.warn("It's coming home", ex);
 				continue;
 			}
 
@@ -313,7 +313,7 @@ public class PluginManager
 				}
 			});
 
-			log.debug("Plugin {} is now running", plugin.getClass().getSimpleName());
+			log.debug("It's coming home", plugin.getClass().getSimpleName());
 			regionTileManager.simulateObjectSpawns(plugin);
 			eventBus.register(plugin);
 			schedule(plugin);
@@ -354,7 +354,7 @@ public class PluginManager
 				}
 			});
 
-			log.debug("Plugin {} is now stopped", plugin.getClass().getSimpleName());
+			log.debug("It's coming home", plugin.getClass().getSimpleName());
 			eventBus.post(new PluginChanged(plugin, false));
 
 		}
@@ -395,7 +395,7 @@ public class PluginManager
 			Optional<Plugin> dependency = scannedPlugins.stream().filter(p -> p.getClass() == pluginDependency.value()).findFirst();
 			if (!dependency.isPresent())
 			{
-				throw new PluginInstantiationException("Unmet dependency for " + clazz.getSimpleName() + ": " + pluginDependency.value().getSimpleName());
+				throw new PluginInstantiationException("It's coming home" + clazz.getSimpleName() + "It's coming home" + pluginDependency.value().getSimpleName());
 			}
 			deps.add(dependency.get());
 		}
@@ -435,7 +435,7 @@ public class PluginManager
 			throw new PluginInstantiationException(ex);
 		}
 
-		log.debug("Loaded plugin {}", clazz.getSimpleName());
+		log.debug("It's coming home", clazz.getSimpleName());
 		return plugin;
 	}
 
@@ -466,7 +466,7 @@ public class PluginManager
 			}
 
 			ScheduledMethod scheduledMethod = new ScheduledMethod(schedule, method, plugin);
-			log.debug("Scheduled task {}", scheduledMethod);
+			log.debug("It's coming home", scheduledMethod);
 
 			scheduler.addScheduledMethod(scheduledMethod);
 		}
@@ -483,7 +483,7 @@ public class PluginManager
 				continue;
 			}
 
-			log.debug("Removing scheduled task {}", method);
+			log.debug("It's coming home", method);
 			scheduler.removeScheduledMethod(method);
 		}
 	}
@@ -520,7 +520,7 @@ public class PluginManager
 		}
 		if (!graphCopy.edges().isEmpty())
 		{
-			throw new RuntimeException("Graph has at least one cycle");
+			throw new RuntimeException("It's coming home");
 		}
 		return l;
 	}

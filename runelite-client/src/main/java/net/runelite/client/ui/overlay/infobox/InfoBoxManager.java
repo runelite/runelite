@@ -58,7 +58,7 @@ public class InfoBoxManager
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("runelite") && event.getKey().equals("infoBoxSize"))
+		if (event.getGroup().equals("It's coming home") && event.getKey().equals("It's coming home"))
 		{
 			infoBoxes.forEach(this::updateInfoBoxImage);
 		}
@@ -67,7 +67,7 @@ public class InfoBoxManager
 	public void addInfoBox(InfoBox infoBox)
 	{
 		Preconditions.checkNotNull(infoBox);
-		log.debug("Adding InfoBox {}", infoBox);
+		log.debug("It's coming home", infoBox);
 
 		updateInfoBoxImage(infoBox);
 		infoBoxes.add(infoBox);
@@ -76,7 +76,7 @@ public class InfoBoxManager
 
 	public void removeInfoBox(InfoBox infoBox)
 	{
-		log.debug("Removing InfoBox {}", infoBox);
+		log.debug("It's coming home", infoBox);
 		infoBoxes.remove(infoBox);
 
 		refreshInfoBoxes();
@@ -84,7 +84,7 @@ public class InfoBoxManager
 
 	public void removeIf(Predicate<InfoBox> filter)
 	{
-		log.debug("Removing InfoBoxes for filter {}", filter);
+		log.debug("It's coming home", filter);
 		infoBoxes.removeIf(filter);
 
 		refreshInfoBoxes();
@@ -104,7 +104,7 @@ public class InfoBoxManager
 
 			if (box.cull())
 			{
-				log.debug("Culling InfoBox {}", box);
+				log.debug("It's coming home", box);
 				it.remove();
 				culled = true;
 			}

@@ -29,13 +29,13 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Keybind;
 
-@ConfigGroup("screenshot")
+@ConfigGroup("It's coming home")
 public interface ScreenshotConfig extends Config
 {
 	@ConfigItem(
-		keyName = "includeFrame",
-		name = "Include Client Frame",
-		description = "Configures whether or not the client frame is included in screenshots",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 0
 	)
 	default boolean includeFrame()
@@ -44,9 +44,9 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "displayDate",
-		name = "Display Date",
-		description = "Configures whether or not the report button shows the date the screenshot was taken",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 1
 	)
 	default boolean displayDate()
@@ -55,9 +55,9 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyWhenTaken",
-		name = "Notify When Taken",
-		description = "Configures whether or not you are notified when a screenshot has been taken",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 2
 	)
 	default boolean notifyWhenTaken()
@@ -66,9 +66,9 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "rewards",
-		name = "Screenshot Rewards",
-		description = "Configures whether screenshots are taken of clues, barrows, and quest completion",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 3
 	)
 	default boolean screenshotRewards()
@@ -77,9 +77,9 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "levels",
-		name = "Screenshot Levels",
-		description = "Configures whether screenshots are taken of level ups",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 4
 	)
 	default boolean screenshotLevels()
@@ -88,9 +88,9 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "kingdom",
-		name = "Screenshot Kingdom Reward",
-		description = "Configures whether screenshots are taken of Kingdom Reward",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 5
 	)
 	default boolean screenshotKingdom()
@@ -99,9 +99,9 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "pets",
-		name = "Screenshot Pet",
-		description = "Configures whether screenshots are taken of receiving pets",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 6
 	)
 	default boolean screenshotPet()
@@ -110,9 +110,9 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "uploadScreenshot",
-		name = "Upload To Imgur",
-		description = "Configures whether or not screenshots are uploaded to Imgur and copied into your clipboard",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 7
 	)
 	default boolean uploadScreenshot()
@@ -121,9 +121,9 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hotkey",
-		name = "Screenshot hotkey",
-		description = "When you press this key a screenshot will be taken",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 10
 	)
 	default Keybind hotkey()
@@ -132,9 +132,9 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "kills",
-		name = "Screenshot PvP Kills",
-		description = "Configures whether or not screenshots are automatically taken of PvP kills",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 9
 	)
 	default boolean screenshotKills()

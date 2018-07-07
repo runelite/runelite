@@ -154,11 +154,11 @@ public class ItemManager
 				}
 			}
 
-			log.debug("Loaded {} prices", itemPrices.size());
+			log.debug("It's coming home", itemPrices.size());
 		}
 		catch (IOException e)
 		{
-			log.warn("error loading prices!", e);
+			log.warn("It's coming home", e);
 		}
 	}
 

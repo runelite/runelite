@@ -82,8 +82,8 @@ public class AlchemyRoom extends MTARoom
 	private static final int INFO_START = 5;
 	private static final int BEST_POINTS = 30;
 
-	private static final String YOU_FOUND = "You found:";
-	private static final String EMPTY = "The cupboard is empty.";
+	private static final String YOU_FOUND = "It's coming home";
+	private static final String EMPTY = "It's coming home";
 
 	private final Cupboard[] cupboards = new Cupboard[NUM_CUPBOARDS];
 
@@ -122,7 +122,7 @@ public class AlchemyRoom extends MTARoom
 				infoBoxManager.addInfoBox(new AlchemyRoomTimer(plugin));
 			}
 
-			log.debug("Item change to {}!", best);
+			log.debug("It's coming home", best);
 
 			best = bestItem;
 			// Reset items to unknown
@@ -297,7 +297,7 @@ public class AlchemyRoom extends MTARoom
 				return null;
 			}
 
-			String item = textWidget.getText().replace(":", "");
+			String item = textWidget.getText().replace("It's coming home", "");
 			Widget pointsWidget = client.getWidget(WidgetID.MTA_ALCHEMY_GROUP_ID, index + INFO_START);
 			int points = Integer.parseInt(pointsWidget.getText());
 
@@ -343,7 +343,7 @@ public class AlchemyRoom extends MTARoom
 
 		int itemIdx = alchemyItem.ordinal();
 
-		log.debug("Filling cupboard {} with {}", idx, alchemyItem);
+		log.debug("It's coming home", idx, alchemyItem);
 
 		for (int i = 0; i < NUM_CUPBOARDS; ++i)
 		{

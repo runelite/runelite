@@ -28,14 +28,14 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("grandexchange")
+@ConfigGroup("It's coming home")
 public interface GrandExchangeConfig extends Config
 {
 	@ConfigItem(
 		position = 1,
-		keyName = "quickLookup",
-		name = "Hotkey lookup (Alt + Left click)",
-		description = "Configures whether to enable the hotkey lookup for ge searches"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean quickLookup()
 	{
@@ -44,9 +44,9 @@ public interface GrandExchangeConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "enableNotifications",
-		name = "Enable Notifications",
-		description = "Configures whether to enable notifications when an offer updates"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean enableNotifications()
 	{
@@ -55,9 +55,9 @@ public interface GrandExchangeConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "enableOsbPrices",
-		name = "Enable OSB actively traded prices",
-		description = "Shows the OSBuddy actively traded price at the GE"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean enableOsbPrices()
 	{

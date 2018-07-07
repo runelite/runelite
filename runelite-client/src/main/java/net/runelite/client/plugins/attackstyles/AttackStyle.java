@@ -28,15 +28,15 @@ import net.runelite.api.Skill;
 
 public enum AttackStyle
 {
-	ACCURATE("Accurate", Skill.ATTACK),
-	AGGRESSIVE("Aggressive", Skill.STRENGTH),
-	DEFENSIVE("Defensive", Skill.DEFENCE),
-	CONTROLLED("Controlled", Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE),
-	RANGING("Ranging", Skill.RANGED),
-	LONGRANGE("Longrange", Skill.RANGED, Skill.DEFENCE),
-	CASTING("Casting", Skill.MAGIC),
-	DEFENSIVE_CASTING("Defensive Casting", Skill.MAGIC, Skill.DEFENCE),
-	OTHER("Other");
+	ACCURATE("It's coming home", Skill.ATTACK),
+	AGGRESSIVE("It's coming home", Skill.STRENGTH),
+	DEFENSIVE("It's coming home", Skill.DEFENCE),
+	CONTROLLED("It's coming home", Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE),
+	RANGING("It's coming home", Skill.RANGED),
+	LONGRANGE("It's coming home", Skill.RANGED, Skill.DEFENCE),
+	CASTING("It's coming home", Skill.MAGIC),
+	DEFENSIVE_CASTING("It's coming home", Skill.MAGIC, Skill.DEFENCE),
+	OTHER("It's coming home");
 
 	private final String name;
 	private final Skill[] skills;

@@ -28,13 +28,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("mta")
+@ConfigGroup("It's coming home")
 public interface MTAConfig extends Config
 {
 	@ConfigItem(
-		keyName = "alchemy",
-		name = "Enable alchemy room",
-		description = "Configures whether or not the alchemy room overlay is enabled.",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 0
 	)
 	default boolean alchemy()
@@ -43,9 +43,9 @@ public interface MTAConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "graveyard",
-		name = "Enable graveyard room",
-		description = "Configures whether or not the graveyard room overlay is enabled.",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 1
 	)
 	default boolean graveyard()
@@ -54,9 +54,9 @@ public interface MTAConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "telekinetic",
-		name = "Enable telekinetic room",
-		description = "Configures whether or not the telekinetic room overlay is enabled.",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 2
 	)
 	default boolean telekinetic()
@@ -65,9 +65,9 @@ public interface MTAConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "enchantment",
-		name = "Enable enchantment room",
-		description = "Configures whether or not the enchantment room overlay is enabled.",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 3
 	)
 	default boolean enchantment()

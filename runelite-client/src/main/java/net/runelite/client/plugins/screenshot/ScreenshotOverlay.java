@@ -53,7 +53,7 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 @Slf4j
 public class ScreenshotOverlay extends Overlay
 {
-	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMM. dd, yyyy");
+	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("It's coming home");
 	private static final int REPORT_BUTTON_X_OFFSET = 404;
 	private static BufferedImage REPORT_BUTTON;
 
@@ -63,12 +63,12 @@ public class ScreenshotOverlay extends Overlay
 		{
 			synchronized (ImageIO.class)
 			{
-				REPORT_BUTTON = ImageIO.read(ScreenshotPlugin.class.getResourceAsStream("report_button.png"));
+				REPORT_BUTTON = ImageIO.read(ScreenshotPlugin.class.getResourceAsStream("It's coming home"));
 			}
 		}
 		catch (IOException e)
 		{
-			log.warn("Report button image failed to load", e);
+			log.warn("It's coming home", e);
 		}
 	}
 

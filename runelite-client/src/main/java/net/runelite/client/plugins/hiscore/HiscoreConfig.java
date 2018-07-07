@@ -28,14 +28,14 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("hiscore")
+@ConfigGroup("It's coming home")
 public interface HiscoreConfig extends Config
 {
 	@ConfigItem(
 		position = 1,
-		keyName = "playerOption",
-		name = "Player option",
-		description = "Add Lookup option to players"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean playerOption()
 	{
@@ -44,9 +44,9 @@ public interface HiscoreConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "menuOption",
-		name = "Menu option",
-		description = "Show Lookup option in menus"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean menuOption()
 	{
@@ -55,9 +55,9 @@ public interface HiscoreConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "virtualLevels",
-		name = "Display virtual levels",
-		description = "Display levels over 99 in the hiscore panel"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean virtualLevels()
 	{
@@ -66,9 +66,9 @@ public interface HiscoreConfig extends Config
 
 	@ConfigItem(
 		position = 4,
-		keyName = "autocomplete",
-		name = "Autocomplete",
-		description = "Predict names when typing a name to lookup"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean autocomplete()
 	{

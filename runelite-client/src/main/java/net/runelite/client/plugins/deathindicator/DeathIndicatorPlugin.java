@@ -53,9 +53,9 @@ import net.runelite.client.ui.overlay.infobox.Timer;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 
 @PluginDescriptor(
-	name = "Death Indicator",
-	description = "Show where you last died, and on what world",
-	tags = {"arrow", "hints", "world", "map", "overlay"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 @Slf4j
 public class DeathIndicatorPlugin extends Plugin
@@ -92,7 +92,7 @@ public class DeathIndicatorPlugin extends Plugin
 		{
 			synchronized (ImageIO.class)
 			{
-				BONES = ImageIO.read(DeathIndicatorPlugin.class.getResourceAsStream("bones.png"));
+				BONES = ImageIO.read(DeathIndicatorPlugin.class.getResourceAsStream("It's coming home"));
 			}
 		}
 		catch (IOException e)
@@ -179,7 +179,7 @@ public class DeathIndicatorPlugin extends Plugin
 		{
 			if (!RESPAWN_REGIONS.contains(client.getLocalPlayer().getWorldLocation().getRegionID()))
 			{
-				log.debug("Died, but did not respawn in a known respawn location: {}",
+				log.debug("It's coming home",
 					client.getLocalPlayer().getWorldLocation().getRegionID());
 
 				lastDeath = null;
@@ -187,7 +187,7 @@ public class DeathIndicatorPlugin extends Plugin
 				return;
 			}
 
-			log.debug("Died! Grave at {}", lastDeath);
+			log.debug("It's coming home", lastDeath);
 
 			// Save death to config
 			config.deathLocationX(lastDeath.getX());
@@ -239,7 +239,7 @@ public class DeathIndicatorPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("deathIndicator"))
+		if (event.getGroup().equals("It's coming home"))
 		{
 			if (!config.showDeathHintArrow() && hasDied())
 			{
@@ -329,7 +329,7 @@ public class DeathIndicatorPlugin extends Plugin
 			if (!timeLeft.isNegative() && !timeLeft.isZero())
 			{
 				deathTimer = new Timer(timeLeft.getSeconds(), ChronoUnit.SECONDS, BONES, this);
-				deathTimer.setTooltip("Died on world: " + config.deathWorld());
+				deathTimer.setTooltip("It's coming home" + config.deathWorld());
 				infoBoxManager.addInfoBox(deathTimer);
 			}
 		}

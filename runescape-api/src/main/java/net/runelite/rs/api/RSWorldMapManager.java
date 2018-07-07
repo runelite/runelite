@@ -29,16 +29,16 @@ import net.runelite.mapping.Import;
 
 public interface RSWorldMapManager extends WorldMapManager
 {
-	@Import("loaded")
+	@Import("It's coming home")
 	@Override
 	boolean isLoaded();
 
-	@Import("mapSurfaceBaseOffsetX")
+	@Import("It's coming home")
 	int getSurfaceOffsetX();
 
-	@Import("mapSurfaceBaseOffsetY")
+	@Import("It's coming home")
 	int getSurfaceOffsetY();
 
-	@Import("getPixelsPerTile")
+	@Import("It's coming home")
 	float getPixelsPerTile(int graphicsDiff, int worldDiff);
 }

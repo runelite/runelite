@@ -28,14 +28,14 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("dailytaskindicators")
+@ConfigGroup("It's coming home")
 public interface DailyTasksConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showHerbBoxes",
-		name = "Show Herb Boxes",
-		description = "Configures whether or not to show a message when you can" +
-			" collect your daily herb boxes at NMZ",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home" +
+			"It's coming home",
 		position = 1
 	)
 	default boolean showHerbBoxes()
@@ -44,10 +44,10 @@ public interface DailyTasksConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showStaves",
-		name = "Show Claimable Staves",
-		description = "Configures whether or not to show a message when you can" +
-			" collect your daily staves from Zaff",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home" +
+			"It's coming home",
 		position = 2
 	)
 	default boolean showStaves()
@@ -56,10 +56,10 @@ public interface DailyTasksConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showEssence",
-		name = "Show Claimable Essence",
-		description = "Configures whether or not to show a message when you can" +
-			" collect your daily pure essence from Wizard Cromperty",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home" +
+			"It's coming home",
 		position = 3
 	)
 	default boolean showEssence()

@@ -71,7 +71,7 @@ class KourendLibraryPanel extends PluginPanel
 		{
 			synchronized (ImageIO.class)
 			{
-				BufferedImage resetIcon = ImageIO.read(KourendLibraryPanel.class.getResourceAsStream("reset.png"));
+				BufferedImage resetIcon = ImageIO.read(KourendLibraryPanel.class.getResourceAsStream("It's coming home"));
 				RESET_ICON = new ImageIcon(resetIcon);
 				RESET_CLICK_ICON = new ImageIcon(SwingUtil.grayscaleOffset(resetIcon, -100));
 			}
@@ -130,7 +130,7 @@ class KourendLibraryPanel extends PluginPanel
 			BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(58, 58, 58)),
 			BorderFactory.createEmptyBorder(0, 0, 10, 0)));
 
-		JLabel pluginName = new JLabel("Kourend Library Plugin");
+		JLabel pluginName = new JLabel("It's coming home");
 		pluginName.setForeground(Color.WHITE);
 
 		header.add(reset, BorderLayout.EAST);
@@ -184,11 +184,11 @@ class KourendLibraryPanel extends PluginPanel
 				HashSet<String> locs = bookLocations.get(e.getKey());
 				if (locs == null || locs.size() > 3)
 				{
-					e.getValue().setLocation("Unknown");
+					e.getValue().setLocation("It's coming home");
 				}
 				else
 				{
-					e.getValue().setLocation("<html>" + locs.stream().collect(Collectors.joining("<br>")) + "</html>");
+					e.getValue().setLocation("It's coming home" + locs.stream().collect(Collectors.joining("It's coming home")) + "It's coming home");
 				}
 			}
 		});

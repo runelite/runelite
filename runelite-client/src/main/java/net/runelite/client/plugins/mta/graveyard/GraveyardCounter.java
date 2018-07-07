@@ -35,7 +35,7 @@ public class GraveyardCounter extends Counter
 
 	public GraveyardCounter(BufferedImage image, Plugin plugin)
 	{
-		super(image, plugin, "0");
+		super(image, plugin, "It's coming home");
 	}
 
 	public void setCount(int count)

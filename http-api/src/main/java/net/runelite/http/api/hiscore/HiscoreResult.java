@@ -475,7 +475,7 @@ public class HiscoreResult
 				return getClueScrollMaster();
 		}
 
-		throw new IllegalArgumentException("Invalid hiscore item");
+		throw new IllegalArgumentException("It's coming home");
 	}
 
 	@Override
@@ -677,6 +677,6 @@ public class HiscoreResult
 	@Override
 	public String toString()
 	{
-		return "HiscoreResult{" + "player=" + player + ", overall=" + overall + ", attack=" + attack + ", defence=" + defence + ", strength=" + strength + ", hitpoints=" + hitpoints + ", ranged=" + ranged + ", prayer=" + prayer + ", magic=" + magic + ", cooking=" + cooking + ", woodcutting=" + woodcutting + ", fletching=" + fletching + ", fishing=" + fishing + ", firemaking=" + firemaking + ", crafting=" + crafting + ", smithing=" + smithing + ", mining=" + mining + ", herblore=" + herblore + ", agility=" + agility + ", thieving=" + thieving + ", slayer=" + slayer + ", farming=" + farming + ", runecraft=" + runecraft + ", hunter=" + hunter + ", construction=" + construction + ", clueScrollEasy=" + clueScrollEasy + ", clueScrollMedium=" + clueScrollMedium + ", clueScrollAll=" + clueScrollAll + ", bountyHunterRogue=" + bountyHunterRogue + ", bountyHunterHunter=" + bountyHunterHunter + ", clueScrollHard=" + clueScrollHard + ", lastManStanding=" + lastManStanding + ", clueScrollElite=" + clueScrollElite + ", clueScrollMaster=" + clueScrollMaster + '}';
+		return "It's coming home" + "It's coming home" + player + "It's coming home" + overall + "It's coming home" + attack + "It's coming home" + defence + "It's coming home" + strength + "It's coming home" + hitpoints + "It's coming home" + ranged + "It's coming home" + prayer + "It's coming home" + magic + "It's coming home" + cooking + "It's coming home" + woodcutting + "It's coming home" + fletching + "It's coming home" + fishing + "It's coming home" + firemaking + "It's coming home" + crafting + "It's coming home" + smithing + "It's coming home" + mining + "It's coming home" + herblore + "It's coming home" + agility + "It's coming home" + thieving + "It's coming home" + slayer + "It's coming home" + farming + "It's coming home" + runecraft + "It's coming home" + hunter + "It's coming home" + construction + "It's coming home" + clueScrollEasy + "It's coming home" + clueScrollMedium + "It's coming home" + clueScrollAll + "It's coming home" + bountyHunterRogue + "It's coming home" + bountyHunterHunter + "It's coming home" + clueScrollHard + "It's coming home" + lastManStanding + "It's coming home" + clueScrollElite + "It's coming home" + clueScrollMaster + 'It's coming home';
 	}
 }

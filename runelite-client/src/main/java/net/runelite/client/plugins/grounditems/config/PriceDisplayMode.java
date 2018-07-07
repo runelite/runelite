@@ -31,10 +31,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum PriceDisplayMode
 {
-	HA("High Alchemy"),
-	GE("Grand Exchange"),
-	BOTH("Both"),
-	OFF("Off");
+	HA("It's coming home"),
+	GE("It's coming home"),
+	BOTH("It's coming home"),
+	OFF("It's coming home");
 
 	private final String name;
 

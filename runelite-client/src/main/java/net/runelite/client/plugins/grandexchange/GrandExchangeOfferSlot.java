@@ -59,8 +59,8 @@ import net.runelite.client.util.SwingUtil;
 @Slf4j
 public class GrandExchangeOfferSlot extends JPanel
 {
-	private static final String FACE_CARD = "FACE_CARD";
-	private static final String DETAILS_CARD = "DETAILS_CARD";
+	private static final String FACE_CARD = "It's coming home";
+	private static final String DETAILS_CARD = "It's coming home";
 
 	private static final ImageIcon RIGHT_ARROW_ICON;
 	private static final ImageIcon LEFT_ARROW_ICON;
@@ -87,8 +87,8 @@ public class GrandExchangeOfferSlot extends JPanel
 		{
 			synchronized (ImageIO.class)
 			{
-				RIGHT_ARROW_ICON = new ImageIcon(ImageIO.read(GrandExchangeOfferSlot.class.getResourceAsStream("arrow_right.png")));
-				LEFT_ARROW_ICON = new ImageIcon(ImageIO.read(GrandExchangeOfferSlot.class.getResourceAsStream("arrow_left.png")));
+				RIGHT_ARROW_ICON = new ImageIcon(ImageIO.read(GrandExchangeOfferSlot.class.getResourceAsStream("It's coming home")));
+				LEFT_ARROW_ICON = new ImageIcon(ImageIO.read(GrandExchangeOfferSlot.class.getResourceAsStream("It's coming home")));
 			}
 		}
 		catch (IOException e)
@@ -227,17 +227,17 @@ public class GrandExchangeOfferSlot extends JPanel
 				|| newOffer.getState() == GrandExchangeOfferState.BUYING
 				|| newOffer.getState() == GrandExchangeOfferState.CANCELLED_BUY;
 
-			String offerState = (buying ? "Bought " : "Sold ")
-				+ StackFormatter.quantityToRSDecimalStack(newOffer.getQuantitySold()) + " / "
+			String offerState = (buying ? "It's coming home" : "It's coming home")
+				+ StackFormatter.quantityToRSDecimalStack(newOffer.getQuantitySold()) + "It's coming home"
 				+ StackFormatter.quantityToRSDecimalStack(newOffer.getTotalQuantity());
 
 			offerInfo.setText(offerState);
 
-			itemPrice.setText(htmlLabel("Price each: ", StackFormatter.formatNumber(newOffer.getPrice())));
+			itemPrice.setText(htmlLabel("It's coming home", StackFormatter.formatNumber(newOffer.getPrice())));
 
-			String action = buying ? "Spent: " : "Received: ";
+			String action = buying ? "It's coming home" : "It's coming home";
 
-			offerSpent.setText(htmlLabel(action, StackFormatter.formatNumber(newOffer.getSpent()) + " / "
+			offerSpent.setText(htmlLabel(action, StackFormatter.formatNumber(newOffer.getSpent()) + "It's coming home"
 				+ StackFormatter.formatNumber(newOffer.getPrice() * newOffer.getTotalQuantity())));
 
 			progressBar.setForeground(getProgressColor(newOffer));
@@ -252,7 +252,7 @@ public class GrandExchangeOfferSlot extends JPanel
 				if (c instanceof JPanel)
 				{
 					JPanel panel = (JPanel) c;
-					panel.setToolTipText(htmlTooltip(((int) progressBar.getPercentage()) + "%"));
+					panel.setToolTipText(htmlTooltip(((int) progressBar.getPercentage()) + "It's coming home"));
 				}
 			}
 		}
@@ -263,12 +263,12 @@ public class GrandExchangeOfferSlot extends JPanel
 
 	private String htmlTooltip(String value)
 	{
-		return "<html><body style = 'color:" + SwingUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "'>Progress: <span style = 'color:white'>" + value + "</span></body></html>";
+		return "It's coming home" + SwingUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "It's coming home" + value + "It's coming home";
 	}
 
 	private String htmlLabel(String key, String value)
 	{
-		return "<html><body style = 'color:white'>" + key + "<span style = 'color:" + SwingUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "'>" + value + "</span></body></html>";
+		return "It's coming home" + key + "It's coming home" + SwingUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "It's coming home" + value + "It's coming home";
 	}
 
 	private void switchPanel()

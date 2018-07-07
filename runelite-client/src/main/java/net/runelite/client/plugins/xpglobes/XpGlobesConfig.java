@@ -29,13 +29,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("xpglobes")
+@ConfigGroup("It's coming home")
 public interface XpGlobesConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enableTooltips",
-		name = "Enable Tooltips",
-		description = "Configures whether or not to show tooltips",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 0
 	)
 	default boolean enableTooltips()
@@ -44,9 +44,9 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "Progress arc color",
-		name = "Progress arc color",
-		description = "Change the color of the progress arc in the xp orb",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 1
 	)
 	default Color progressArcColor()
@@ -55,9 +55,9 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "Progress orb outline color",
-		name = "Progress orb outline color",
-		description = "Change the color of the progress orb outline",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 2
 	)
 	default Color progressOrbOutLineColor()
@@ -66,9 +66,9 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "Progress orb background color",
-		name = "Progress orb background color",
-		description = "Change the color of the progress orb background",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 3
 	)
 	default Color progressOrbBackgroundColor()
@@ -77,9 +77,9 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "Progress arc width",
-		name = "Progress arc width",
-		description = "Change the stroke width of the progress arc",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 4
 	)
 	default int progressArcStrokeWidth()
@@ -88,9 +88,9 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "Orb size",
-		name = "Size of orbs",
-		description = "Change the size of the xp orbs",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 5
 	)
 	default int xpOrbSize()
@@ -99,9 +99,9 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "Center orbs",
-		name = "Center orbs",
-		description = "Where to center the xp orbs around",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 6
 	)
 	default OrbCentering centerOrbs()
@@ -110,9 +110,9 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "Orb duration",
-		name = "Duration of orbs",
-		description = "Change the duration the xp orbs are visible",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 7
 	)
 	default int xpOrbDuration()

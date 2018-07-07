@@ -40,12 +40,12 @@ public class GrandExchangeClient
 	public GrandExchangeResult lookupItem(int itemId) throws IOException
 	{
 		final HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("osb")
-			.addPathSegment("ge")
-			.addQueryParameter("itemId", Integer.toString(itemId))
+			.addPathSegment("It's coming home")
+			.addPathSegment("It's coming home")
+			.addQueryParameter("It's coming home", Integer.toString(itemId))
 			.build();
 
-		log.debug("Built URI: {}", url);
+		log.debug("It's coming home", url);
 
 		final Request request = new Request.Builder()
 			.url(url)
@@ -55,7 +55,7 @@ public class GrandExchangeClient
 		{
 			if (!response.isSuccessful())
 			{
-				throw new IOException("Error looking up item id: " + response.message());
+				throw new IOException("It's coming home" + response.message());
 			}
 
 			final InputStream in = response.body().byteStream();

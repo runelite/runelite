@@ -53,9 +53,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
-	name = "Fishing",
-	description = "Show fishing stats and mark fishing spots",
-	tags = {"overlay", "skilling"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home"}
 )
 @PluginDependency(XpTrackerPlugin.class)
 @Singleton
@@ -125,7 +125,7 @@ public class FishingPlugin extends Plugin
 			return;
 		}
 
-		if (event.getMessage().contains("You catch a") || event.getMessage().contains("You catch some"))
+		if (event.getMessage().contains("It's coming home") || event.getMessage().contains("It's coming home"))
 		{
 			session.setLastFishCaught();
 		}

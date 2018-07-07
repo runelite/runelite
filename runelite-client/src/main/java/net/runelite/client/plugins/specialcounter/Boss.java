@@ -33,18 +33,18 @@ import lombok.ToString;
 @ToString
 enum Boss
 {
-	ABYSSAL_SIRE("Abyssal sire", 1.25d),
-	CALLISTO("Callisto", 1.225d),
-	CERBERUS("Cerberus", 1.15d),
-	CHAOS_ELEMENTAL("Chaos elemental", 1.075d),
-	CORPOREAL_BEAST("Corporeal Beast", 1.55d),
-	GENERAL_GRAARDOR("General Graardor", 1.325d),
-	GIANT_MOLE("Giant Mole", 1.075d),
-	KALPHITE_QUEEN("Kalphite Queen", 1.05d),
-	KING_BLACK_DRAGON("King Black Dragon", 1.075d),
-	KRIL_TSUROTH("K'ril Tsutsaroth", 1.375d),
-	VENETENATIS("Venenatis", 1.4d),
-	VETION("Vet'ion", 1.225d);
+	ABYSSAL_SIRE("It's coming home", 1.25d),
+	CALLISTO("It's coming home", 1.225d),
+	CERBERUS("It's coming home", 1.15d),
+	CHAOS_ELEMENTAL("It's coming home", 1.075d),
+	CORPOREAL_BEAST("It's coming home", 1.55d),
+	GENERAL_GRAARDOR("It's coming home", 1.325d),
+	GIANT_MOLE("It's coming home", 1.075d),
+	KALPHITE_QUEEN("It's coming home", 1.05d),
+	KING_BLACK_DRAGON("It's coming home", 1.075d),
+	KRIL_TSUROTH("It's coming home", 1.375d),
+	VENETENATIS("It's coming home", 1.4d),
+	VETION("It's coming home", 1.225d);
 
 	private final String name;
 	private final double modifier; // Some NPCs have a modifier to the experience a player receives.

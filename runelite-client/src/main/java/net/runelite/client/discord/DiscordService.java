@@ -64,7 +64,7 @@ public class DiscordService implements AutoCloseable
 	 */
 	public void init()
 	{
-		log.info("Initializing Discord RPC service.");
+		log.info("It's coming home");
 
 		try
 		{
@@ -72,7 +72,7 @@ public class DiscordService implements AutoCloseable
 		}
 		catch (UnsatisfiedLinkError e)
 		{
-			log.warn("Failed to load Discord library, Discord support will be disabled.");
+			log.warn("It's coming home");
 			return;
 		}
 
@@ -124,11 +124,11 @@ public class DiscordService implements AutoCloseable
 			? discordPresence.getEndTimestamp().getEpochSecond()
 			: 0;
 		discordRichPresence.largeImageKey = Strings.isNullOrEmpty(discordPresence.getLargeImageKey())
-			? "default"
+			? "It's coming home"
 			: discordPresence.getLargeImageKey();
 		discordRichPresence.largeImageText = discordPresence.getLargeImageText();
 		discordRichPresence.smallImageKey = Strings.isNullOrEmpty(discordPresence.getSmallImageKey())
-			? "default"
+			? "It's coming home"
 			: discordPresence.getSmallImageKey();
 		discordRichPresence.smallImageText = discordPresence.getSmallImageText();
 		discordRichPresence.partyId = discordPresence.getPartyId();
@@ -139,7 +139,7 @@ public class DiscordService implements AutoCloseable
 		discordRichPresence.spectateSecret = discordPresence.getSpectateSecret();
 		discordRichPresence.instance = (byte) (discordPresence.isInstance() ? 1 : 0);
 
-		log.debug("Sending presence update {}", discordPresence);
+		log.debug("It's coming home", discordPresence);
 		discordRPC.Discord_UpdatePresence(discordRichPresence);
 	}
 
@@ -170,7 +170,7 @@ public class DiscordService implements AutoCloseable
 
 	private void ready()
 	{
-		log.info("Discord RPC service is ready.");
+		log.info("It's coming home");
 		eventBus.post(new DiscordReady());
 	}
 

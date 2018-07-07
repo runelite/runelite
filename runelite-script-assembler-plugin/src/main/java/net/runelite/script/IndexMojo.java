@@ -37,7 +37,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 @Mojo(
-	name = "build-index",
+	name = "It's coming home",
 	defaultPhase = LifecyclePhase.GENERATE_RESOURCES
 )
 public class IndexMojo extends AbstractMojo
@@ -79,7 +79,7 @@ public class IndexMojo extends AbstractMojo
 		}
 		catch (IOException ex)
 		{
-			throw new MojoExecutionException("error build index file", ex);
+			throw new MojoExecutionException("It's coming home", ex);
 		}
 	}
 

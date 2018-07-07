@@ -51,7 +51,7 @@ public class ObsidianSkin extends SubstanceSkin
 	/**
 	 * Display name for <code>this</code> skin.
 	 */
-	private static final String NAME = "RuneLite";
+	private static final String NAME = "It's coming home";
 
 	/**
 	 * Creates a new <code>RuneLite</code> skin.
@@ -59,9 +59,9 @@ public class ObsidianSkin extends SubstanceSkin
 	ObsidianSkin()
 	{
 		final SubstanceSkin.ColorSchemes schemes = SubstanceSkin
-			.getColorSchemes(getClass().getResource(NAME + ".colorschemes"));
-		final SubstanceColorScheme activeScheme = schemes.get("RuneLite Active");
-		final SubstanceColorScheme enabledScheme = schemes.get("RuneLite Enabled");
+			.getColorSchemes(getClass().getResource(NAME + "It's coming home"));
+		final SubstanceColorScheme activeScheme = schemes.get("It's coming home");
+		final SubstanceColorScheme enabledScheme = schemes.get("It's coming home");
 
 		final SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(
 			activeScheme, enabledScheme, enabledScheme);
@@ -72,14 +72,14 @@ public class ObsidianSkin extends SubstanceSkin
 
 		// borders
 		final SubstanceColorScheme borderDisabledSelectedScheme = schemes
-			.get("RuneLite Selected Disabled Border");
-		final SubstanceColorScheme borderScheme = schemes.get("RuneLite Border");
+			.get("It's coming home");
+		final SubstanceColorScheme borderScheme = schemes.get("It's coming home");
 		defaultSchemeBundle.registerColorScheme(borderDisabledSelectedScheme,
 			ColorSchemeAssociationKind.BORDER, ComponentState.DISABLED_SELECTED);
 		defaultSchemeBundle.registerColorScheme(borderScheme, ColorSchemeAssociationKind.BORDER);
 
 		// marks
-		final SubstanceColorScheme markActiveScheme = schemes.get("RuneLite Mark Active");
+		final SubstanceColorScheme markActiveScheme = schemes.get("It's coming home");
 		defaultSchemeBundle.registerColorScheme(markActiveScheme, ColorSchemeAssociationKind.MARK,
 			ComponentState.getActiveStates());
 		defaultSchemeBundle.registerColorScheme(markActiveScheme, 0.6f,
@@ -87,15 +87,15 @@ public class ObsidianSkin extends SubstanceSkin
 			ComponentState.DISABLED_UNSELECTED);
 
 		// separators
-		final SubstanceColorScheme separatorScheme = schemes.get("RuneLite Separator");
+		final SubstanceColorScheme separatorScheme = schemes.get("It's coming home");
 		defaultSchemeBundle.registerColorScheme(separatorScheme,
 			ColorSchemeAssociationKind.SEPARATOR);
 
 		// tab borders
-		defaultSchemeBundle.registerColorScheme(schemes.get("RuneLite Tab Border"),
+		defaultSchemeBundle.registerColorScheme(schemes.get("It's coming home"),
 			ColorSchemeAssociationKind.TAB_BORDER, ComponentState.getActiveStates());
 
-		final SubstanceColorScheme watermarkScheme = schemes.get("RuneLite Watermark");
+		final SubstanceColorScheme watermarkScheme = schemes.get("It's coming home");
 
 		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle, watermarkScheme,
 			DecorationAreaType.NONE);
@@ -117,12 +117,12 @@ public class ObsidianSkin extends SubstanceSkin
 
 		// separators
 		final SubstanceColorScheme separatorDecorationsScheme = schemes
-			.get("RuneLite Decorations Separator");
+			.get("It's coming home");
 		decorationsSchemeBundle.registerColorScheme(separatorDecorationsScheme,
 			ColorSchemeAssociationKind.SEPARATOR);
 
 		final SubstanceColorScheme decorationsWatermarkScheme = schemes
-			.get("RuneLite Decorations Watermark");
+			.get("It's coming home");
 
 		this.registerDecorationAreaSchemeBundle(decorationsSchemeBundle, decorationsWatermarkScheme,
 			DecorationAreaType.TOOLBAR, DecorationAreaType.GENERAL, DecorationAreaType.FOOTER);
@@ -133,7 +133,7 @@ public class ObsidianSkin extends SubstanceSkin
 			ComponentState.DISABLED_UNSELECTED);
 
 		// borders
-		final SubstanceColorScheme headerBorderScheme = schemes.get("RuneLite Header Border");
+		final SubstanceColorScheme headerBorderScheme = schemes.get("It's coming home");
 		headerSchemeBundle.registerColorScheme(borderDisabledSelectedScheme,
 			ColorSchemeAssociationKind.BORDER, ComponentState.DISABLED_SELECTED);
 		headerSchemeBundle.registerColorScheme(headerBorderScheme,
@@ -150,7 +150,7 @@ public class ObsidianSkin extends SubstanceSkin
 		headerSchemeBundle.registerHighlightColorScheme(activeScheme, 1.0f,
 			ComponentState.ROLLOVER_SELECTED);
 
-		final SubstanceColorScheme headerWatermarkScheme = schemes.get("RuneLite Header Watermark");
+		final SubstanceColorScheme headerWatermarkScheme = schemes.get("It's coming home");
 
 		this.registerDecorationAreaSchemeBundle(headerSchemeBundle, headerWatermarkScheme,
 			DecorationAreaType.PRIMARY_TITLE_PANE, DecorationAreaType.SECONDARY_TITLE_PANE,
@@ -200,14 +200,14 @@ public class ObsidianSkin extends SubstanceSkin
 		};
 
 		this.watermark = null;
-		this.fillPainter = new FractionBasedFillPainter("RuneLite",
+		this.fillPainter = new FractionBasedFillPainter("It's coming home",
 			new float[]{0.0f, 0.5f, 1.0f},
 			new ColorSchemeSingleColorQuery[]{ColorSchemeSingleColorQuery.ULTRALIGHT,
 				ColorSchemeSingleColorQuery.LIGHT, ColorSchemeSingleColorQuery.LIGHT});
 		this.decorationPainter = new MatteDecorationPainter();
 		this.highlightPainter = new ClassicHighlightPainter();
-		this.borderPainter = new CompositeBorderPainter("RuneLite", new ClassicBorderPainter(),
-			new DelegateBorderPainter("RuneLite Inner", new ClassicBorderPainter(), 0x40FFFFFF,
+		this.borderPainter = new CompositeBorderPainter("It's coming home", new ClassicBorderPainter(),
+			new DelegateBorderPainter("It's coming home", new ClassicBorderPainter(), 0x40FFFFFF,
 				0x20FFFFFF, 0x00FFFFFF,
 				(SubstanceColorScheme scheme) -> scheme.tint(0.2f)));
 	}

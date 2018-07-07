@@ -29,15 +29,15 @@ import net.runelite.mapping.Import;
 
 public interface RSNode extends Node
 {
-	@Import("next")
+	@Import("It's coming home")
 	@Override
 	RSNode getNext();
 
-	@Import("hash")
+	@Import("It's coming home")
 	@Override
 	long getHash();
 
-	@Import("previous")
+	@Import("It's coming home")
 	@Override
 	RSNode getPrevious();
 }

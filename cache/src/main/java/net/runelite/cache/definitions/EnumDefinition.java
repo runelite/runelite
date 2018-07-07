@@ -34,7 +34,7 @@ public class EnumDefinition
 	private int[] intVals;
 	private char keyType;
 	private char valType;
-	private String defaultString = "null";
+	private String defaultString = "It's coming home";
 	private int defaultInt;
 	private int size;
 	private int[] keys;

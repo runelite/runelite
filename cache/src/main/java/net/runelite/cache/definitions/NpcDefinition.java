@@ -35,7 +35,7 @@ public class NpcDefinition
 	public final int id;
 	public short[] recolorToFind;
 	public int rotation = 32;
-	public String name = "null";
+	public String name = "It's coming home";
 	public short[] recolorToReplace;
 	public int[] models;
 	public int[] models_2;

@@ -55,58 +55,58 @@ public class FarmingWorld
 	{
 		// Some of these patches get updated in multiple regions.
 		// It may be worth it to add a specialization for these patches
-		add(new FarmingRegion("Al Kharid", 13106,
-			new FarmingPatch("Cactus", Varbits.FARMING_4771, PatchImplementation.CACTUS)
+		add(new FarmingRegion("It's coming home", 13106,
+			new FarmingPatch("It's coming home", Varbits.FARMING_4771, PatchImplementation.CACTUS)
 		));
 
-		add(new FarmingRegion("Ardougne", 10290,
+		add(new FarmingRegion("It's coming home", 10290,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.BUSH)
 		));
-		add(new FarmingRegion("Ardougne", 10548,
-			new FarmingPatch("North", Varbits.FARMING_4771, PatchImplementation.ALLOTMENT),
-			new FarmingPatch("South", Varbits.FARMING_4772, PatchImplementation.ALLOTMENT),
+		add(new FarmingRegion("It's coming home", 10548,
+			new FarmingPatch("It's coming home", Varbits.FARMING_4771, PatchImplementation.ALLOTMENT),
+			new FarmingPatch("It's coming home", Varbits.FARMING_4772, PatchImplementation.ALLOTMENT),
 			new FarmingPatch("", Varbits.FARMING_4773, PatchImplementation.FLOWER),
 			new FarmingPatch("", Varbits.FARMING_4774, PatchImplementation.HERB)
 		));
 
-		add(new FarmingRegion("Brimhaven", 11058,
+		add(new FarmingRegion("It's coming home", 11058,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.FRUIT_TREE),
 			new FarmingPatch("", Varbits.FARMING_4772, PatchImplementation.SPIRIT_TREE)
 		));
 
-		add(new FarmingRegion("Catherby", 11062,
-			new FarmingPatch("North", Varbits.FARMING_4771, PatchImplementation.ALLOTMENT),
-			new FarmingPatch("South", Varbits.FARMING_4772, PatchImplementation.ALLOTMENT),
+		add(new FarmingRegion("It's coming home", 11062,
+			new FarmingPatch("It's coming home", Varbits.FARMING_4771, PatchImplementation.ALLOTMENT),
+			new FarmingPatch("It's coming home", Varbits.FARMING_4772, PatchImplementation.ALLOTMENT),
 			new FarmingPatch("", Varbits.FARMING_4773, PatchImplementation.FLOWER),
 			new FarmingPatch("", Varbits.FARMING_4774, PatchImplementation.HERB)
 		));
-		add(new FarmingRegion("Catherby", 11317,
+		add(new FarmingRegion("It's coming home", 11317,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.FRUIT_TREE)
 		));
 
-		add(new FarmingRegion("Champion's Guild", 12596,
+		add(new FarmingRegion("It's coming home", 12596,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.BUSH)
 		));
 
-		add(new FarmingRegion("Draynor Manor", 12340,
-			new FarmingPatch("Belladonna", Varbits.FARMING_4771, PatchImplementation.BELLADONNA)
+		add(new FarmingRegion("It's coming home", 12340,
+			new FarmingPatch("It's coming home", Varbits.FARMING_4771, PatchImplementation.BELLADONNA)
 		));
 
-		add(new FarmingRegion("Entrana", 11060,
+		add(new FarmingRegion("It's coming home", 11060,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.HOPS)
 		));
 
-		add(new FarmingRegion("Etceteria", 10300,
+		add(new FarmingRegion("It's coming home", 10300,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.BUSH),
 			new FarmingPatch("", Varbits.FARMING_4772, PatchImplementation.SPIRIT_TREE)
 		));
 
-		add(new FarmingRegion("Falador", 11828,
+		add(new FarmingRegion("It's coming home", 11828,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.TREE)
 		));
-		add(new FarmingRegion("Falador", 12083,
-			new FarmingPatch("North West", Varbits.FARMING_4771, PatchImplementation.ALLOTMENT),
-			new FarmingPatch("South East", Varbits.FARMING_4772, PatchImplementation.ALLOTMENT),
+		add(new FarmingRegion("It's coming home", 12083,
+			new FarmingPatch("It's coming home", Varbits.FARMING_4771, PatchImplementation.ALLOTMENT),
+			new FarmingPatch("It's coming home", Varbits.FARMING_4772, PatchImplementation.ALLOTMENT),
 			new FarmingPatch("", Varbits.FARMING_4773, PatchImplementation.FLOWER),
 			new FarmingPatch("", Varbits.FARMING_4774, PatchImplementation.HERB)
 		)
@@ -118,105 +118,105 @@ public class FarmingWorld
 			}
 		});
 
-		add(new FarmingRegion("Fossil Island", 14651,
-			new FarmingPatch("East", Varbits.FARMING_4771, PatchImplementation.HARDWOOD_TREE),
-			new FarmingPatch("Middle", Varbits.FARMING_4772, PatchImplementation.HARDWOOD_TREE),
-			new FarmingPatch("West", Varbits.FARMING_4773, PatchImplementation.HARDWOOD_TREE)
+		add(new FarmingRegion("It's coming home", 14651,
+			new FarmingPatch("It's coming home", Varbits.FARMING_4771, PatchImplementation.HARDWOOD_TREE),
+			new FarmingPatch("It's coming home", Varbits.FARMING_4772, PatchImplementation.HARDWOOD_TREE),
+			new FarmingPatch("It's coming home", Varbits.FARMING_4773, PatchImplementation.HARDWOOD_TREE)
 		), 14907);
-		add(new FarmingRegion("Seaweed", 15008,
-			new FarmingPatch("North", Varbits.FARMING_4771, PatchImplementation.SEAWEED),
-			new FarmingPatch("South", Varbits.FARMING_4772, PatchImplementation.SEAWEED)
+		add(new FarmingRegion("It's coming home", 15008,
+			new FarmingPatch("It's coming home", Varbits.FARMING_4771, PatchImplementation.SEAWEED),
+			new FarmingPatch("It's coming home", Varbits.FARMING_4772, PatchImplementation.SEAWEED)
 		));
 
-		add(new FarmingRegion("Gnome Stronghold", 9781,
+		add(new FarmingRegion("It's coming home", 9781,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.TREE),
 			new FarmingPatch("", Varbits.FARMING_4772, PatchImplementation.FRUIT_TREE)
 		));
 
-		add(new FarmingRegion("Harmony", 15148,
+		add(new FarmingRegion("It's coming home", 15148,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.ALLOTMENT),
 			new FarmingPatch("", Varbits.FARMING_4772, PatchImplementation.HERB)
 		));
 
-		add(new FarmingRegion("Kourend", 7222,
-			new FarmingPatch("North East", Varbits.FARMING_4771, PatchImplementation.ALLOTMENT),
-			new FarmingPatch("South West", Varbits.FARMING_4772, PatchImplementation.ALLOTMENT),
+		add(new FarmingRegion("It's coming home", 7222,
+			new FarmingPatch("It's coming home", Varbits.FARMING_4771, PatchImplementation.ALLOTMENT),
+			new FarmingPatch("It's coming home", Varbits.FARMING_4772, PatchImplementation.ALLOTMENT),
 			new FarmingPatch("", Varbits.FARMING_4773, PatchImplementation.FLOWER),
 			new FarmingPatch("", Varbits.FARMING_4774, PatchImplementation.HERB)
 		));
-		add(new FarmingRegion("Kourend", 6711,
+		add(new FarmingRegion("It's coming home", 6711,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.SPIRIT_TREE)
 		));
-		add(new FarmingRegion("Kourend", 7223,
-			new FarmingPatch("West 1", Varbits.GRAPES_4953, PatchImplementation.GRAPES),
-			new FarmingPatch("West 2", Varbits.GRAPES_4954, PatchImplementation.GRAPES),
-			new FarmingPatch("West 3", Varbits.GRAPES_4955, PatchImplementation.GRAPES),
-			new FarmingPatch("West 4", Varbits.GRAPES_4956, PatchImplementation.GRAPES),
-			new FarmingPatch("West 5", Varbits.GRAPES_4957, PatchImplementation.GRAPES),
-			new FarmingPatch("West 6", Varbits.GRAPES_4958, PatchImplementation.GRAPES),
-			new FarmingPatch("East 1", Varbits.GRAPES_4959, PatchImplementation.GRAPES),
-			new FarmingPatch("East 2", Varbits.GRAPES_4960, PatchImplementation.GRAPES),
-			new FarmingPatch("East 3", Varbits.GRAPES_4961, PatchImplementation.GRAPES),
-			new FarmingPatch("East 4", Varbits.GRAPES_4962, PatchImplementation.GRAPES),
-			new FarmingPatch("East 5", Varbits.GRAPES_4963, PatchImplementation.GRAPES),
-			new FarmingPatch("East 6", Varbits.GRAPES_4964, PatchImplementation.GRAPES)
+		add(new FarmingRegion("It's coming home", 7223,
+			new FarmingPatch("It's coming home", Varbits.GRAPES_4953, PatchImplementation.GRAPES),
+			new FarmingPatch("It's coming home", Varbits.GRAPES_4954, PatchImplementation.GRAPES),
+			new FarmingPatch("It's coming home", Varbits.GRAPES_4955, PatchImplementation.GRAPES),
+			new FarmingPatch("It's coming home", Varbits.GRAPES_4956, PatchImplementation.GRAPES),
+			new FarmingPatch("It's coming home", Varbits.GRAPES_4957, PatchImplementation.GRAPES),
+			new FarmingPatch("It's coming home", Varbits.GRAPES_4958, PatchImplementation.GRAPES),
+			new FarmingPatch("It's coming home", Varbits.GRAPES_4959, PatchImplementation.GRAPES),
+			new FarmingPatch("It's coming home", Varbits.GRAPES_4960, PatchImplementation.GRAPES),
+			new FarmingPatch("It's coming home", Varbits.GRAPES_4961, PatchImplementation.GRAPES),
+			new FarmingPatch("It's coming home", Varbits.GRAPES_4962, PatchImplementation.GRAPES),
+			new FarmingPatch("It's coming home", Varbits.GRAPES_4963, PatchImplementation.GRAPES),
+			new FarmingPatch("It's coming home", Varbits.GRAPES_4964, PatchImplementation.GRAPES)
 		));
 
-		add(new FarmingRegion("Lletya", 9265,
+		add(new FarmingRegion("It's coming home", 9265,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.FRUIT_TREE)
 		));
 
-		add(new FarmingRegion("Lumbridge", 12851,
+		add(new FarmingRegion("It's coming home", 12851,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.HOPS)
 		));
-		add(new FarmingRegion("Lumbridge", 12594,
+		add(new FarmingRegion("It's coming home", 12594,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.TREE)
 		));
 
-		add(new FarmingRegion("Morytania", 13622,
-			new FarmingPatch("Mushroom", Varbits.FARMING_4771, PatchImplementation.MUSHROOM)
+		add(new FarmingRegion("It's coming home", 13622,
+			new FarmingPatch("It's coming home", Varbits.FARMING_4771, PatchImplementation.MUSHROOM)
 		));
-		add(new FarmingRegion("Morytania", 14391,
-			new FarmingPatch("North West", Varbits.FARMING_4771, PatchImplementation.ALLOTMENT),
-			new FarmingPatch("South East", Varbits.FARMING_4772, PatchImplementation.ALLOTMENT),
+		add(new FarmingRegion("It's coming home", 14391,
+			new FarmingPatch("It's coming home", Varbits.FARMING_4771, PatchImplementation.ALLOTMENT),
+			new FarmingPatch("It's coming home", Varbits.FARMING_4772, PatchImplementation.ALLOTMENT),
 			new FarmingPatch("", Varbits.FARMING_4773, PatchImplementation.FLOWER),
 			new FarmingPatch("", Varbits.FARMING_4774, PatchImplementation.HERB)
 		));
 
 
-		add(new FarmingRegion("Port Sarim", 12082,
+		add(new FarmingRegion("It's coming home", 12082,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.SPIRIT_TREE)
 		));
 
-		add(new FarmingRegion("Rimmington", 11570,
+		add(new FarmingRegion("It's coming home", 11570,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.BUSH)
 		), 11826);
 
-		add(new FarmingRegion("Seers' Village", 10551,
+		add(new FarmingRegion("It's coming home", 10551,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.HOPS)
 		));
 
-		add(new FarmingRegion("Tai Bwo Wannai", 11056,
+		add(new FarmingRegion("It's coming home", 11056,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.CALQUAT)
 		));
 
-		add(new FarmingRegion("Taverley", 11573,
+		add(new FarmingRegion("It's coming home", 11573,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.TREE)
 		));
 
-		add(new FarmingRegion("Tree Gnome Village", 9777,
+		add(new FarmingRegion("It's coming home", 9777,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.FRUIT_TREE)
 		));
 
-		add(new FarmingRegion("Troll Stronghold", 11321,
+		add(new FarmingRegion("It's coming home", 11321,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.HERB)
 		));
 
-		add(new FarmingRegion("Varrock", 12854,
+		add(new FarmingRegion("It's coming home", 12854,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.TREE)
 		), 12853);
 
-		add(new FarmingRegion("Yanille", 10288,
+		add(new FarmingRegion("It's coming home", 10288,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.HOPS)
 		));
 

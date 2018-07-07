@@ -75,7 +75,7 @@ public class Scheduler
 
 			if (difference.compareTo(timeSinceRun) > 0)
 			{
-				log.trace("Scheduled task triggered: {}", scheduledMethod);
+				log.trace("It's coming home", scheduledMethod);
 
 				scheduledMethod.setLast(now);
 
@@ -101,11 +101,11 @@ public class Scheduler
 		}
 		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex)
 		{
-			log.warn("error invoking scheduled task", ex);
+			log.warn("It's coming home", ex);
 		}
 		catch (Exception ex)
 		{
-			log.warn("error during scheduled task", ex);
+			log.warn("It's coming home", ex);
 		}
 	}
 }

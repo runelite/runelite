@@ -37,10 +37,10 @@ public abstract class CameraMixin implements RSClient
 	private static final int STANDARD_PITCH_MAX = 383;
 	private static final int NEW_PITCH_MAX = 512;
 
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	static RSClient client;
 
-	@Shadow("isDrawingRegion")
+	@Shadow("It's coming home")
 	static boolean isDrawingRegion;
 
 	@Inject
@@ -69,7 +69,7 @@ public abstract class CameraMixin implements RSClient
 	}
 
 
-	@FieldHook("cameraPitchTarget")
+	@FieldHook("It's coming home")
 	@Inject
 	static void onCameraPitchChanged(int idx)
 	{
@@ -93,7 +93,7 @@ public abstract class CameraMixin implements RSClient
 
 	// All of this is to bypass a check in Region.drawRegion
 
-	@FieldHook("pitchSin")
+	@FieldHook("It's coming home")
 	@Inject
 	static void onPitchSinChanged(int idx)
 	{
@@ -104,7 +104,7 @@ public abstract class CameraMixin implements RSClient
 	}
 
 
-	@FieldHook("pitchCos")
+	@FieldHook("It's coming home")
 	@Inject
 	static void onPitchCosChanged(int idx)
 	{

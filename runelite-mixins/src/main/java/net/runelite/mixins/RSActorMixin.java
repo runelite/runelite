@@ -61,7 +61,7 @@ import net.runelite.rs.api.RSNode;
 @Mixin(RSActor.class)
 public abstract class RSActorMixin implements RSActor
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
 	@Inject
@@ -182,7 +182,7 @@ public abstract class RSActorMixin implements RSActor
 		return Perspective.worldToMiniMap(client, getX(), getY());
 	}
 
-	@FieldHook("animation")
+	@FieldHook("It's coming home")
 	@Inject
 	public void animationChanged(int idx)
 	{
@@ -191,7 +191,7 @@ public abstract class RSActorMixin implements RSActor
 		client.getCallbacks().post(animationChange);
 	}
 
-	@FieldHook("graphic")
+	@FieldHook("It's coming home")
 	@Inject
 	public void graphicChanged(int idx)
 	{
@@ -200,7 +200,7 @@ public abstract class RSActorMixin implements RSActor
 		client.getCallbacks().post(graphicChanged);
 	}
 
-	@FieldHook("interacting")
+	@FieldHook("It's coming home")
 	@Inject
 	public void interactingChanged(int idx)
 	{
@@ -242,14 +242,14 @@ public abstract class RSActorMixin implements RSActor
 	}
 
 	@Inject
-	@MethodHook("setCombatInfo")
+	@MethodHook("It's coming home")
 	public void setCombatInfo(int combatInfoId, int gameCycle, int var3, int var4, int healthRatio, int health)
 	{
 		if (healthRatio == 0)
 		{
 			if (this == client.getLocalPlayer())
 			{
-				client.getLogger().debug("You died!");
+				client.getLogger().debug("It's coming home");
 
 				LocalPlayerDeath event = new LocalPlayerDeath();
 				client.getCallbacks().post(event);
@@ -274,7 +274,7 @@ public abstract class RSActorMixin implements RSActor
 	 * @param duration The amount of gamecycles the hitsplat will last for
 	 */
 	@Inject
-	@MethodHook(value = "applyActorHitsplat", end = true)
+	@MethodHook(value = "It's coming home", end = true)
 	public void applyActorHitsplat(int type, int value, int var3, int var4, int gameCycle, int duration)
 	{
 		final Hitsplat hitsplat = new Hitsplat(Hitsplat.HitsplatType.fromInteger(type), value, gameCycle + duration);

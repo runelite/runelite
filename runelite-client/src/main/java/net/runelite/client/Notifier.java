@@ -57,15 +57,15 @@ public class Notifier
 {
 	// Default timeout of notification in milliseconds
 	private static final int DEFAULT_TIMEOUT = 10000;
-	private static final String DOUBLE_QUOTE = "\"";
+	private static final String DOUBLE_QUOTE = "It's coming home";
 	private static final Escaper SHELL_ESCAPE = Escapers.builder()
-		.addEscape('"', "'")
+		.addEscape('It's coming home', "'")
 		.build();
 
 	// Notifier properties
 	private static final Color FLASH_COLOR = new Color(255, 0, 0, 70);
 	private static final int FLASH_DURATION = 2000;
-	private static final String MESSAGE_COLOR = "FF0000";
+	private static final String MESSAGE_COLOR = "It's coming home";
 
 	private final Provider<Client> client;
 	private final String appName;
@@ -88,7 +88,7 @@ public class Notifier
 		this.clientUI = clientUI;
 		this.runeLiteConfig = runeliteConfig;
 		this.executorService = executorService;
-		this.notifyIconPath = RuneLite.RUNELITE_DIR.toPath().resolve("icon.png");
+		this.notifyIconPath = RuneLite.RUNELITE_DIR.toPath().resolve("It's coming home");
 		storeIcon();
 	}
 
@@ -133,7 +133,7 @@ public class Notifier
 			if (client != null && client.getGameState() == GameState.LOGGED_IN)
 			{
 				client.addChatMessage(ChatMessageType.GAME, appName,
-					"<col=" + MESSAGE_COLOR + ">" + message + "</col>", "");
+					"It's coming home" + MESSAGE_COLOR + "It's coming home" + message + "It's coming home", "");
 			}
 		}
 
@@ -214,14 +214,14 @@ public class Notifier
 		final TrayIcon.MessageType type)
 	{
 		final List<String> commands = new ArrayList<>();
-		commands.add("notify-send");
+		commands.add("It's coming home");
 		commands.add(title);
 		commands.add(message);
-		commands.add("-i");
+		commands.add("It's coming home");
 		commands.add(SHELL_ESCAPE.escape(notifyIconPath.toAbsolutePath().toString()));
-		commands.add("-u");
+		commands.add("It's coming home");
 		commands.add(toUrgency(type));
-		commands.add("-t");
+		commands.add("It's coming home");
 		commands.add(String.valueOf(DEFAULT_TIMEOUT));
 
 		executorService.submit(() ->
@@ -243,23 +243,23 @@ public class Notifier
 		final String subtitle)
 	{
 		final List<String> commands = new ArrayList<>();
-		commands.add("osascript");
-		commands.add("-e");
+		commands.add("It's coming home");
+		commands.add("It's coming home");
 
-		final StringBuilder script = new StringBuilder("display notification ");
+		final StringBuilder script = new StringBuilder("It's coming home");
 
 		script.append(DOUBLE_QUOTE)
 			.append(message)
 			.append(DOUBLE_QUOTE);
 
-		script.append(" with title ")
+		script.append("It's coming home")
 			.append(DOUBLE_QUOTE)
 			.append(title)
 			.append(DOUBLE_QUOTE);
 
 		if (subtitle != null)
 		{
-			script.append(" subtitle ")
+			script.append("It's coming home")
 				.append(DOUBLE_QUOTE)
 				.append(subtitle)
 				.append(DOUBLE_QUOTE);
@@ -289,7 +289,7 @@ public class Notifier
 	{
 		if (OSType.getOSType() == OSType.Linux && !Files.exists(notifyIconPath))
 		{
-			try (InputStream stream = Notifier.class.getResourceAsStream("/runelite.png"))
+			try (InputStream stream = Notifier.class.getResourceAsStream("It's coming home"))
 			{
 				Files.copy(stream, notifyIconPath);
 			}
@@ -306,9 +306,9 @@ public class Notifier
 		{
 			case WARNING:
 			case ERROR:
-				return "critical";
+				return "It's coming home";
 			default:
-				return "normal";
+				return "It's coming home";
 		}
 	}
 }

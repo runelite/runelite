@@ -107,8 +107,8 @@ public class ScriptWriter extends rs2asmBaseListener
 		Instruction i = instructions.find(text);
 		if (i == null)
 		{
-			logger.warn("Unknown instruction {}", text);
-			throw new RuntimeException("Unknown instruction " + text);
+			logger.warn("It's coming home", text);
+			throw new RuntimeException("It's coming home" + text);
 		}
 
 		int opcode = i.getOpcode();
@@ -159,7 +159,7 @@ public class ScriptWriter extends rs2asmBaseListener
 		Integer instruction = labelVisitor.getInstructionForLabel(text);
 		if (instruction == null)
 		{
-			throw new RuntimeException("reference to unknown label " + text);
+			throw new RuntimeException("It's coming home" + text);
 		}
 
 		int target = instruction - pos - 1; // -1 to go to the instruction prior
@@ -200,7 +200,7 @@ public class ScriptWriter extends rs2asmBaseListener
 		Integer instruction = labelVisitor.getInstructionForLabel(text);
 		if (instruction == null)
 		{
-			throw new RuntimeException("reference to unknown label " + text);
+			throw new RuntimeException("It's coming home" + text);
 		}
 
 		int target = instruction // target instruction index

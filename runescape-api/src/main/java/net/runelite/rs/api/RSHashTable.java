@@ -29,13 +29,13 @@ import net.runelite.mapping.Import;
 
 public interface RSHashTable extends HashTable
 {
-	@Import("get")
+	@Import("It's coming home")
 	@Override
 	RSNode get(long value);
 
-	@Import("size")
+	@Import("It's coming home")
 	int getSize();
 
-	@Import("buckets")
+	@Import("It's coming home")
 	RSNode[] getBuckets();
 }

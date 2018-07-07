@@ -12,17 +12,17 @@ import net.runelite.rs.api.RSVarcs;
 @Mixin(RSVarcs.class)
 public abstract class RSVarcsMixin implements RSVarcs
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
-	@FieldHook("varCInts")
+	@FieldHook("It's coming home")
 	@Inject
 	public void onVarCIntChanged(int idx)
 	{
 		client.getCallbacks().post(new VarClientIntChanged(idx));
 	}
 
-	@FieldHook("varCStrings")
+	@FieldHook("It's coming home")
 	@Inject
 	public void onVarCStrChanged(int idx)
 	{

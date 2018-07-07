@@ -33,13 +33,13 @@ import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
 
-@ConfigGroup("grounditems")
+@ConfigGroup("It's coming home")
 public interface GroundItemsConfig extends Config
 {
 	@ConfigItem(
-		keyName = "highlightedItems",
-		name = "Highlighted Items",
-		description = "Configures specifically highlighted ground items. Format: (item), (item)",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 0
 	)
 	default String getHighlightItems()
@@ -48,16 +48,16 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "highlightedItems",
+		keyName = "It's coming home",
 		name = "",
 		description = ""
 	)
 	void setHighlightedItem(String key);
 
 	@ConfigItem(
-		keyName = "hiddenItems",
-		name = "Hidden Items",
-		description = "Configures hidden ground items. Format: (item), (item)",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 1
 	)
 	default String getHiddenItems()
@@ -66,16 +66,16 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hiddenItems",
+		keyName = "It's coming home",
 		name = "",
 		description = ""
 	)
 	void setHiddenItems(String key);
 
 	@ConfigItem(
-		keyName = "showHighlightedOnly",
-		name = "Show Highlighted items only",
-		description = "Configures whether or not to draw items only on your highlighted list",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 2
 	)
 	default boolean showHighlightedOnly()
@@ -84,9 +84,9 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "dontHideUntradeables",
-		name = "Do not hide untradeables",
-		description = "Configures whether or not untradeable items ignore hiding under settings",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 3
 	)
 	default boolean dontHideUntradeables()
@@ -95,9 +95,9 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showMenuItemQuantities",
-		name = "Show Menu Item Quantities",
-		description = "Configures whether or not to show the item quantities in the menu",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 4
 	)
 	default boolean showMenuItemQuantities()
@@ -106,9 +106,9 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "recolorMenuHiddenItems",
-		name = "Recolor Menu Hidden Items",
-		description = "Configures whether or not hidden items in right click menu will be recolored",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 5
 	)
 	default boolean recolorMenuHiddenItems()
@@ -117,9 +117,9 @@ public interface GroundItemsConfig extends Config
 	}
 	
 	@ConfigItem(
-		keyName = "highlightTiles",
-		name = "Highlight Tiles",
-		description = "Configures whether or not to highlight tiles containing ground items",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 6
 	)
 	default boolean highlightTiles() 
@@ -128,9 +128,9 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "priceDisplayMode",
-		name = "Price Display Mode",
-		description = "Configures what price types are shown alongside of ground item name",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 7
 	)
 	default PriceDisplayMode priceDisplayMode()
@@ -139,9 +139,9 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "itemHighlightMode",
-		name = "Item Highlight Mode",
-		description = "Configures how ground items will be highlighted",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 8
 	)
 	default ItemHighlightMode itemHighlightMode()
@@ -150,9 +150,9 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "menuHighlightMode",
-		name = "Menu Highlight Mode",
-		description = "Configures what to highlight in right-click menu",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 9
 	)
 	default MenuHighlightMode menuHighlightMode()
@@ -161,9 +161,9 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "highlightOverValue2",
-		name = "Highlight > Value",
-		description = "Configures highlighted ground items over either GE or HA value",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 10
 	)
 	default int getHighlightOverValue()
@@ -172,9 +172,9 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hideUnderValue",
-		name = "Hide < Value",
-		description = "Configures hidden ground items under both GE and HA value",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 11
 	)
 	default int getHideUnderValue()
@@ -183,9 +183,9 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "defaultColor",
-		name = "Default items color",
-		description = "Configures the color for default, non-highlighted items",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 12
 	)
 	default Color defaultColor()
@@ -194,20 +194,20 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "highlightedColor",
-		name = "Highlighted items color",
-		description = "Configures the color for highlighted items",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 13
 	)
 	default Color highlightedColor()
 	{
-		return Color.decode("#AA00FF");
+		return Color.decode("It's coming home");
 	}
 
 	@ConfigItem(
-		keyName = "hiddenColor",
-		name = "Hidden items color",
-		description = "Configures the color for hidden items in right-click menu and when holding ALT",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 14
 	)
 	default Color hiddenColor()
@@ -216,20 +216,20 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "lowValueColor",
-		name = "Low value items color",
-		description = "Configures the color for low value items",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 15
 	)
 	default Color lowValueColor()
 	{
-		return Color.decode("#66B2FF");
+		return Color.decode("It's coming home");
 	}
 
 	@ConfigItem(
-		keyName = "lowValuePrice",
-		name = "Low value price",
-		description = "Configures the start price for low value items",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 16
 	)
 	default int lowValuePrice()
@@ -238,20 +238,20 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "mediumValueColor",
-		name = "Medium value items color",
-		description = "Configures the color for medium value items",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 17
 	)
 	default Color mediumValueColor()
 	{
-		return Color.decode("#99FF99");
+		return Color.decode("It's coming home");
 	}
 
 	@ConfigItem(
-		keyName = "mediumValuePrice",
-		name = "Medium value price",
-		description = "Configures the start price for medium value items",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 18
 	)
 	default int mediumValuePrice()
@@ -260,20 +260,20 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "highValueColor",
-		name = "High value items color",
-		description = "Configures the color for high value items",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 19
 	)
 	default Color highValueColor()
 	{
-		return Color.decode("#FF9600");
+		return Color.decode("It's coming home");
 	}
 
 	@ConfigItem(
-		keyName = "highValuePrice",
-		name = "High value price",
-		description = "Configures the start price for high value items",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 20
 	)
 	default int highValuePrice()
@@ -282,20 +282,20 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "insaneValueColor",
-		name = "Insane value items color",
-		description = "Configures the color for insane value items",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 21
 	)
 	default Color insaneValueColor()
 	{
-		return Color.decode("#FF66B2");
+		return Color.decode("It's coming home");
 	}
 
 	@ConfigItem(
-		keyName = "insaneValuePrice",
-		name = "Insane value price",
-		description = "Configures the start price for insane value items",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 22
 	)
 	default int insaneValuePrice()

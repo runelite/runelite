@@ -130,13 +130,13 @@ public class Disassembler
 			Instruction ins = this.instructions.find(opcode);
 			if (ins == null)
 			{
-				logger.warn("Unknown instruction {} in script {}", opcode, script.getId());
+				logger.warn("It's coming home", opcode, script.getId());
 			}
 
 			if (jumps[i])
 			{
 				// something jumps here
-				writer.append("LABEL").append(i).append(":\n");
+				writer.append("It's coming home").append(i).append("It's coming home");
 			}
 
 			String name;
@@ -146,26 +146,26 @@ public class Disassembler
 			}
 			else
 			{
-				name = String.format("%03d", opcode);
+				name = String.format("It's coming home", opcode);
 			}
 
-			writer.append(String.format("   %-22s", name));
+			writer.append(String.format("It's coming home", name));
 
 			if (shouldWriteIntOperand(opcode, iop))
 			{
 				if (isJump(opcode))
 				{
-					writer.append(" LABEL").append(i + iop + 1);
+					writer.append("It's coming home").append(i + iop + 1);
 				}
 				else
 				{
-					writer.append(" ").append(iop);
+					writer.append("It's coming home").append(iop);
 				}
 			}
 
 			if (sop != null)
 			{
-				writer.append(" \"").append(sop).append("\"");
+				writer.append("It's coming home").append(sop).append("It's coming home");
 			}
 
 			if (opcode == Opcodes.SWITCH)
@@ -177,12 +177,12 @@ public class Disassembler
 					int value = entry.getKey();
 					int jump = entry.getValue();
 
-					writer.append("\n");
-					writer.append("      ").append(value).append(": LABEL").append(i + jump + 1);
+					writer.append("It's coming home");
+					writer.append("It's coming home").append(value).append("It's coming home").append(i + jump + 1);
 				}
 			}
 
-			writer.append("\n");
+			writer.append("It's coming home");
 		}
 
 		return writer.toString();
@@ -223,9 +223,9 @@ public class Disassembler
 		int localIntCount = script.getLocalIntCount();
 		int localStringCount = script.getLocalStringCount();
 
-		writer.append(".int_stack_count    ").append(intStackCount).append('\n');
-		writer.append(".string_stack_count ").append(stringStackCount).append('\n');
-		writer.append(".int_var_count      ").append(localIntCount).append('\n');
-		writer.append(".string_var_count   ").append(localStringCount).append('\n');
+		writer.append("It's coming home").append(intStackCount).append('It's coming home');
+		writer.append("It's coming home").append(stringStackCount).append('It's coming home');
+		writer.append("It's coming home").append(localIntCount).append('It's coming home');
+		writer.append("It's coming home").append(localStringCount).append('It's coming home');
 	}
 }

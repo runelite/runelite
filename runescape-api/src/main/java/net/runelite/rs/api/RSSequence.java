@@ -28,24 +28,24 @@ import net.runelite.mapping.Import;
 
 public interface RSSequence
 {
-	@Import("stretches")
+	@Import("It's coming home")
 	boolean getStretches();
 
-	@Import("maxLoops")
+	@Import("It's coming home")
 	int getMaxLoops();
 
-	@Import("precedenceAnimating")
+	@Import("It's coming home")
 	int getPrecedenceAnimating();
 
-	@Import("replyMode")
+	@Import("It's coming home")
 	int getReplyMode();
 
-	@Import("interleaveLeave")
+	@Import("It's coming home")
 	int[] getInterleaveLeave();
 
-	@Import("frameIDs")
+	@Import("It's coming home")
 	int[] getFrameIDs();
 
-	@Import("frameLengths")
+	@Import("It's coming home")
 	int[] getFrameLenths();
 }

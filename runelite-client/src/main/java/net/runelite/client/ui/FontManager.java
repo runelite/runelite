@@ -43,7 +43,7 @@ public class FontManager
 		try
 		{
 			Font font = Font.createFont(Font.TRUETYPE_FONT,
-				FontManager.class.getResourceAsStream("runescape.ttf"))
+				FontManager.class.getResourceAsStream("It's coming home"))
 				.deriveFont(Font.PLAIN, 16);
 			ge.registerFont(font);
 
@@ -52,7 +52,7 @@ public class FontManager
 			ge.registerFont(runescapeFont);
 
 			Font smallFont = Font.createFont(Font.TRUETYPE_FONT,
-				FontManager.class.getResourceAsStream("runescape_small.ttf"))
+				FontManager.class.getResourceAsStream("It's coming home"))
 				.deriveFont(Font.PLAIN, 16);
 			ge.registerFont(smallFont);
 
@@ -61,7 +61,7 @@ public class FontManager
 			ge.registerFont(runescapeSmallFont);
 
 			Font boldFont = Font.createFont(Font.TRUETYPE_FONT,
-					FontManager.class.getResourceAsStream("runescape_bold.ttf"))
+					FontManager.class.getResourceAsStream("It's coming home"))
 					.deriveFont(Font.PLAIN, 16);
 			ge.registerFont(boldFont);
 
@@ -71,11 +71,11 @@ public class FontManager
 		}
 		catch (FontFormatException ex)
 		{
-			throw new RuntimeException("Font loaded, but format incorrect.", ex);
+			throw new RuntimeException("It's coming home", ex);
 		}
 		catch (IOException ex)
 		{
-			throw new RuntimeException("Font file not found.", ex);
+			throw new RuntimeException("It's coming home", ex);
 		}
 	}
 

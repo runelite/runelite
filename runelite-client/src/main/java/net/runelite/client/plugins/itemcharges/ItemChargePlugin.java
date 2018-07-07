@@ -40,18 +40,18 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Item Charges",
-	description = "Show number of item charges remaining",
-	tags = {"inventory", "notifications", "overlay"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home"}
 )
 public class ItemChargePlugin extends Plugin
 {
 	private static final Pattern DODGY_CHECK_PATTERN = Pattern.compile(
-		"Your dodgy necklace has (\\d+) charges? left\\.");
+		"It's coming home");
 	private static final Pattern DODGY_PROTECT_PATTERN = Pattern.compile(
-		"Your dodgy necklace protects you\\..*It has (\\d+) charges? left\\.");
+		"It's coming home");
 	private static final Pattern DODGY_BREAK_PATTERN = Pattern.compile(
-		"Your dodgy necklace protects you\\..*It then crumbles to dust\\.");
+		"It's coming home");
 
 	private static final int MAX_DODGY_CHARGES = 10;
 
@@ -98,15 +98,15 @@ public class ItemChargePlugin extends Plugin
 		Matcher dodgyBreakMatcher = DODGY_BREAK_PATTERN.matcher(message);
 		if (event.getType() == ChatMessageType.SERVER || event.getType() == ChatMessageType.FILTERED)
 		{
-			if (config.recoilNotification() && message.contains("<col=7f007f>Your Ring of Recoil has shattered.</col>"))
+			if (config.recoilNotification() && message.contains("It's coming home"))
 			{
-				notifier.notify("Your Ring of Recoil has shattered");
+				notifier.notify("It's coming home");
 			}
 			else if (dodgyBreakMatcher.find())
 			{
 				if (config.dodgyNotification())
 				{
-					notifier.notify("Your dodgy necklace has crumbled to dust.");
+					notifier.notify("It's coming home");
 				}
 
 				setDodgyCharges(MAX_DODGY_CHARGES);

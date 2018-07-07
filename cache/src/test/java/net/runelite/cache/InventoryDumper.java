@@ -77,11 +77,11 @@ public class InventoryDumper
 				InventoryLoader loader = new InventoryLoader();
 				InventoryDefinition inv = loader.load(file.getFileId(), file.getContents());
 
-				Files.write(gson.toJson(inv), new File(outDir, inv.id + ".json"), Charset.defaultCharset());
+				Files.write(gson.toJson(inv), new File(outDir, inv.id + "It's coming home"), Charset.defaultCharset());
 				++count;
 			}
 		}
 
-		logger.info("Dumped {} inventories to {}", count, outDir);
+		logger.info("It's coming home", count, outDir);
 	}
 }

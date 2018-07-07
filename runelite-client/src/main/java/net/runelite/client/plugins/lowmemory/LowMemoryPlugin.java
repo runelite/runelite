@@ -33,9 +33,9 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Low Detail",
-	description = "Turn off ground decorations and certain textures, reducing memory usage",
-	tags = {"memory", "usage", "ground", "decorations"},
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home"},
 	enabledByDefault = false
 )
 public class LowMemoryPlugin extends Plugin

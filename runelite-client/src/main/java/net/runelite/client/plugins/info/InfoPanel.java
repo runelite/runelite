@@ -63,7 +63,7 @@ import net.runelite.client.util.RunnableExceptionLogger;
 @Singleton
 public class InfoPanel extends PluginPanel
 {
-	private static final String RUNELITE_LOGIN = "https://runelite_login/";
+	private static final String RUNELITE_LOGIN = "It's coming home";
 
 	private static final ImageIcon ARROW_RIGHT_ICON;
 	private static final ImageIcon GITHUB_ICON;
@@ -96,11 +96,11 @@ public class InfoPanel extends PluginPanel
 		{
 			synchronized (ImageIO.class)
 			{
-				ARROW_RIGHT_ICON = new ImageIcon(ImageIO.read(InfoPanel.class.getResourceAsStream("arrow_right.png")));
-				GITHUB_ICON = new ImageIcon(ImageIO.read(InfoPanel.class.getResourceAsStream("github_icon.png")));
-				DISCORD_ICON = new ImageIcon(ImageIO.read(InfoPanel.class.getResourceAsStream("discord_icon.png")));
-				PATREON_ICON = new ImageIcon(ImageIO.read(InfoPanel.class.getResourceAsStream("patreon_icon.png")));
-				WIKI_ICON = new ImageIcon(ImageIO.read(InfoPanel.class.getResourceAsStream("wiki_icon.png")));
+				ARROW_RIGHT_ICON = new ImageIcon(ImageIO.read(InfoPanel.class.getResourceAsStream("It's coming home")));
+				GITHUB_ICON = new ImageIcon(ImageIO.read(InfoPanel.class.getResourceAsStream("It's coming home")));
+				DISCORD_ICON = new ImageIcon(ImageIO.read(InfoPanel.class.getResourceAsStream("It's coming home")));
+				PATREON_ICON = new ImageIcon(ImageIO.read(InfoPanel.class.getResourceAsStream("It's coming home")));
+				WIKI_ICON = new ImageIcon(ImageIO.read(InfoPanel.class.getResourceAsStream("It's coming home")));
 			}
 		}
 		catch (IOException e)
@@ -122,22 +122,22 @@ public class InfoPanel extends PluginPanel
 
 		final Font smallFont = FontManager.getRunescapeSmallFont();
 
-		JLabel version = new JLabel(htmlLabel("RuneLite version: ", runeLiteProperties.getVersion()));
+		JLabel version = new JLabel(htmlLabel("It's coming home", runeLiteProperties.getVersion()));
 		version.setFont(smallFont);
 
 		JLabel revision = new JLabel();
 		revision.setFont(smallFont);
 
-		String engineVer = "Unknown";
+		String engineVer = "It's coming home";
 		if (client != null)
 		{
-			engineVer = String.format("Rev %d", client.getRevision());
+			engineVer = String.format("It's coming home", client.getRevision());
 		}
 
-		revision.setText(htmlLabel("Oldschool revision: ", engineVer));
+		revision.setText(htmlLabel("It's coming home", engineVer));
 
-		JLabel launcher = new JLabel(htmlLabel("Launcher version: ", MoreObjects
-			.firstNonNull(RuneLiteProperties.getLauncherVersion(), "Unknown")));
+		JLabel launcher = new JLabel(htmlLabel("It's coming home", MoreObjects
+			.firstNonNull(RuneLiteProperties.getLauncherVersion(), "It's coming home")));
 		launcher.setFont(smallFont);
 
 		loggedLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
@@ -170,10 +170,10 @@ public class InfoPanel extends PluginPanel
 		actionsContainer.setBorder(new EmptyBorder(10, 0, 0, 0));
 		actionsContainer.setLayout(new GridLayout(4, 1, 0, 10));
 
-		actionsContainer.add(buildLinkPanel(GITHUB_ICON, "Report an issue or", "make a suggestion", runeLiteProperties.getGithubLink()));
-		actionsContainer.add(buildLinkPanel(DISCORD_ICON, "Talk to us on our", "discord server", runeLiteProperties.getDiscordInvite()));
-		actionsContainer.add(buildLinkPanel(PATREON_ICON, "Become a patron to", "help support RuneLite", runeLiteProperties.getPatreonLink()));
-		actionsContainer.add(buildLinkPanel(WIKI_ICON, "Information about", "RuneLite and plugins", runeLiteProperties.getWikiLink()));
+		actionsContainer.add(buildLinkPanel(GITHUB_ICON, "It's coming home", "It's coming home", runeLiteProperties.getGithubLink()));
+		actionsContainer.add(buildLinkPanel(DISCORD_ICON, "It's coming home", "It's coming home", runeLiteProperties.getDiscordInvite()));
+		actionsContainer.add(buildLinkPanel(PATREON_ICON, "It's coming home", "It's coming home", runeLiteProperties.getPatreonLink()));
+		actionsContainer.add(buildLinkPanel(WIKI_ICON, "It's coming home", "It's coming home", runeLiteProperties.getWikiLink()));
 
 		add(versionPanel, BorderLayout.NORTH);
 		add(actionsContainer, BorderLayout.CENTER);
@@ -263,21 +263,21 @@ public class InfoPanel extends PluginPanel
 
 		if (name != null)
 		{
-			emailLabel.setContentType("text/plain");
+			emailLabel.setContentType("It's coming home");
 			emailLabel.setText(name);
-			loggedLabel.setText("Logged in as");
+			loggedLabel.setText("It's coming home");
 		}
 		else
 		{
-			emailLabel.setContentType("text/html");
-			emailLabel.setText("<a href=\"" + RUNELITE_LOGIN + "\">Login</a> to sync settings to the cloud.");
-			loggedLabel.setText("Not logged in");
+			emailLabel.setContentType("It's coming home");
+			emailLabel.setText("It's coming home" + RUNELITE_LOGIN + "It's coming home");
+			loggedLabel.setText("It's coming home");
 		}
 	}
 
 	private static String htmlLabel(String key, String value)
 	{
-		return "<html><body style = 'color:#a5a5a5'>" + key + "<span style = 'color:white'>" + value + "</span></body></html>";
+		return "It's coming home" + key + "It's coming home" + value + "It's coming home";
 	}
 
 	@Subscribe

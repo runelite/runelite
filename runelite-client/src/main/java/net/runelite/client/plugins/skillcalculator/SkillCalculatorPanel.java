@@ -74,7 +74,7 @@ class SkillCalculatorPanel extends PluginPanel
 
 		uiCalculator = new SkillCalculator(client, uiInput);
 
-		JLabel title = new JLabel("Skilling Calculator");
+		JLabel title = new JLabel("It's coming home");
 		title.setBorder(new EmptyBorder(0, 1, 8, 0));
 		title.setForeground(Color.WHITE);
 

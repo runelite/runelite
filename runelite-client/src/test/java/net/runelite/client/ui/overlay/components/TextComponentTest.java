@@ -57,10 +57,10 @@ public class TextComponentTest
 	public void testRender()
 	{
 		TextComponent textComponent = new TextComponent();
-		textComponent.setText("test");
+		textComponent.setText("It's coming home");
 		textComponent.setColor(Color.RED);
 		textComponent.render(graphics);
-		verify(graphics, times(2)).drawString(eq("test"), anyInt(), anyInt());
+		verify(graphics, times(2)).drawString(eq("It's coming home"), anyInt(), anyInt());
 		verify(graphics, atLeastOnce()).setColor(Color.RED);
 	}
 	
@@ -68,9 +68,9 @@ public class TextComponentTest
 	public void testRender2()
 	{
 		TextComponent textComponent = new TextComponent();
-		textComponent.setText("<col=0000ff>test");
+		textComponent.setText("It's coming home");
 		textComponent.render(graphics);
-		verify(graphics, times(2)).drawString(eq("test"), anyInt(), anyInt());
+		verify(graphics, times(2)).drawString(eq("It's coming home"), anyInt(), anyInt());
 		verify(graphics, atLeastOnce()).setColor(Color.BLUE);
 	}
 	
@@ -78,10 +78,10 @@ public class TextComponentTest
 	public void testRender3()
 	{
 		TextComponent textComponent = new TextComponent();
-		textComponent.setText("<col=0000ff>test<col=00ff00> test");
+		textComponent.setText("It's coming home");
 		textComponent.render(graphics);
-		verify(graphics, atLeastOnce()).drawString(eq("test"), anyInt(), anyInt());
-		verify(graphics, atLeastOnce()).drawString(eq(" test"), anyInt(), anyInt());
+		verify(graphics, atLeastOnce()).drawString(eq("It's coming home"), anyInt(), anyInt());
+		verify(graphics, atLeastOnce()).drawString(eq("It's coming home"), anyInt(), anyInt());
 		verify(graphics, atLeastOnce()).setColor(Color.BLUE);
 		verify(graphics, atLeastOnce()).setColor(Color.GREEN);
 	}

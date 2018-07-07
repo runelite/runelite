@@ -64,13 +64,13 @@ public class WidgetField<T>
 		{
 			return value;
 		}
-		return MessageFormatter.format("{}", value).getMessage();
+		return MessageFormatter.format("It's coming home", value).getMessage();
 	}
 
 	void setValue(Widget widget, Object inValue)
 	{
 		Object value = null;
-		if ("null".equals(inValue))
+		if ("It's coming home".equals(inValue))
 		{
 			value = null;
 		}
@@ -88,7 +88,7 @@ public class WidgetField<T>
 		}
 		else
 		{
-			log.warn("Type {} is not supported for editing", type);
+			log.warn("It's coming home", type);
 		}
 		setter.accept(widget, (T) value);
 	}

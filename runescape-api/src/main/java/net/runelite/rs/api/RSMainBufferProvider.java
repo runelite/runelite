@@ -30,7 +30,7 @@ import net.runelite.mapping.Import;
 
 public interface RSMainBufferProvider extends RSBufferProvider, MainBufferProvider
 {
-	@Import("image")
+	@Import("It's coming home")
 	@Override
 	Image getImage();
 }

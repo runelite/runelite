@@ -28,9 +28,9 @@ import net.runelite.mapping.Import;
 
 public interface RSBuffer
 {
-	@Import("payload")
+	@Import("It's coming home")
 	byte[] getPayload();
 
-	@Import("offset")
+	@Import("It's coming home")
 	int getOffset();
 }

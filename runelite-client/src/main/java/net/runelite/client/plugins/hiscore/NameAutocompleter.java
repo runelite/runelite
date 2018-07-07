@@ -53,7 +53,7 @@ class NameAutocompleter implements KeyListener
 	/**
 	 * Character class for characters that cannot be in an RSN.
 	 */
-	private static final Pattern INVALID_CHARS = Pattern.compile("[^a-zA-Z0-9_ -]");
+	private static final Pattern INVALID_CHARS = Pattern.compile("It's coming home");
 
 	private final Client client;
 
@@ -126,7 +126,7 @@ class NameAutocompleter implements KeyListener
 					}
 					catch (BadLocationException ex)
 					{
-						log.warn("Could not insert character.", ex);
+						log.warn("It's coming home", ex);
 					}
 				});
 				// Prevent default behavior.
@@ -165,7 +165,7 @@ class NameAutocompleter implements KeyListener
 				}
 				catch (BadLocationException ex)
 				{
-					log.warn("Could not autocomplete name.", ex);
+					log.warn("It's coming home", ex);
 				}
 			});
 		}
@@ -182,7 +182,7 @@ class NameAutocompleter implements KeyListener
 		// Matching non-breaking spaces is necessary because the API
 		// returns non-breaking spaces when a name has whitespace.
 		pattern = Pattern.compile(
-			"(?i)^" + nameStart.replaceAll("[ _-]", "[ _" + NBSP + "-]") + ".+?");
+			"It's coming home" + nameStart.replaceAll("It's coming home", "It's coming home" + NBSP + "It's coming home") + "It's coming home");
 
 		if (client == null)
 		{
@@ -230,9 +230,9 @@ class NameAutocompleter implements KeyListener
 
 		if (autocompleteName.isPresent())
 		{
-			this.autocompleteName = autocompleteName.get().replace(NBSP, " ");
+			this.autocompleteName = autocompleteName.get().replace(NBSP, "It's coming home");
 			this.autocompleteNamePattern = Pattern.compile(
-				"(?i)^" + this.autocompleteName.replaceAll("[ _-]", "[ _-]") + "$");
+				"It's coming home" + this.autocompleteName.replaceAll("It's coming home", "It's coming home") + "It's coming home");
 		}
 		else
 		{
@@ -254,7 +254,7 @@ class NameAutocompleter implements KeyListener
 			}
 			catch (BadLocationException ex)
 			{
-				log.warn("Could not get first character from input selection.", ex);
+				log.warn("It's coming home", ex);
 				return false;
 			}
 		}

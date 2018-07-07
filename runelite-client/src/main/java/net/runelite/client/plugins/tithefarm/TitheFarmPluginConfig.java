@@ -29,14 +29,14 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("tithefarmplugin")
+@ConfigGroup("It's coming home")
 public interface TitheFarmPluginConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
-		keyName = "showSack",
-		name = "Show fruit sack",
-		description = "Configures whether or not the fruit sack is displayed"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showSack()
 	{
@@ -45,9 +45,9 @@ public interface TitheFarmPluginConfig extends Config
 
 	@ConfigItem(
 		position = 1,
-		keyName = "hexColorUnwatered",
-		name = "Unwatered plant",
-		description = "Color of unwatered plant timer"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getColorUnwatered()
 	{
@@ -56,9 +56,9 @@ public interface TitheFarmPluginConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "hexColorWatered",
-		name = "Watered plant",
-		description = "Color of watered plant timer"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getColorWatered()
 	{
@@ -67,9 +67,9 @@ public interface TitheFarmPluginConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "hexColorGrown",
-		name = "Grown plant",
-		description = "Color of grown plant timer"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getColorGrown()
 	{

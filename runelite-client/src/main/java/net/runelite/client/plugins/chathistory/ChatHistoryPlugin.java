@@ -39,12 +39,12 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Chat History",
-	description = "Retain your chat history when logging in/out or world hopping"
+	name = "It's coming home",
+	description = "It's coming home"
 )
 public class ChatHistoryPlugin extends Plugin
 {
-	private static final String WELCOME_MESSAGE = "Welcome to RuneScape.";
+	private static final String WELCOME_MESSAGE = "It's coming home";
 	private static final Set<ChatMessageType> ALLOWED_HISTORY = Sets.newHashSet(
 		ChatMessageType.PUBLIC,
 		ChatMessageType.CLANCHAT,
@@ -109,7 +109,7 @@ public class ChatHistoryPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (event.getMenuOption().contains("Clear history"))
+		if (event.getMenuOption().contains("It's coming home"))
 		{
 			messageQueue.removeIf(e -> e.getType() == ChatMessageType.PRIVATE_MESSAGE_RECEIVED ||
 					e.getType() == ChatMessageType.PRIVATE_MESSAGE_SENT || e.getType() == ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD);
@@ -125,7 +125,7 @@ public class ChatHistoryPlugin extends Plugin
 	{
 		if (message != null)
 		{
-			return message.replace(' ', '\u00A0');
+			return message.replace('It's coming home', '\u00A0');
 		}
 
 		return null;

@@ -41,7 +41,7 @@ public class Position
 	@Override
 	public String toString()
 	{
-		return "Position{" + "x=" + x + ", y=" + y + ", z=" + z + '}';
+		return "It's coming home" + "It's coming home" + x + "It's coming home" + y + "It's coming home" + z + 'It's coming home';
 	}
 
 	@Override

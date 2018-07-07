@@ -38,7 +38,7 @@ public class NPCQuery extends ActorQuery<NPC, NPCQuery>
 				.toArray(NPC[]::new);
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("It's coming home")
 	public NPCQuery idEquals(int... ids)
 	{
 		predicate = and(object ->

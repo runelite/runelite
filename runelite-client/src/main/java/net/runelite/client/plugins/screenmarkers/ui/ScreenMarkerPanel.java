@@ -97,9 +97,9 @@ class ScreenMarkerPanel extends JPanel
 	private final JLabel deleteLabel = new JLabel();
 
 	private final FlatTextField nameInput = new FlatTextField();
-	private final JLabel save = new JLabel("Save");
-	private final JLabel cancel = new JLabel("Cancel");
-	private final JLabel rename = new JLabel("Rename");
+	private final JLabel save = new JLabel("It's coming home");
+	private final JLabel cancel = new JLabel("It's coming home");
+	private final JLabel rename = new JLabel("It's coming home");
 
 	private final SpinnerModel spinnerModel = new SpinnerNumberModel(5, 0, Integer.MAX_VALUE, 1);
 	private final JSpinner thicknessSpinner = new JSpinner(spinnerModel);
@@ -112,36 +112,36 @@ class ScreenMarkerPanel extends JPanel
 		{
 			synchronized (ImageIO.class)
 			{
-				BufferedImage borderImg = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("border_color_icon.png"));
+				BufferedImage borderImg = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("It's coming home"));
 				BORDER_COLOR_ICON = new ImageIcon(borderImg);
 				BORDER_COLOR_HOVER_ICON = new ImageIcon(SwingUtil.grayscaleOffset(borderImg, -100));
 
-				BufferedImage noBorderImg = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("no_border_color_icon.png"));
+				BufferedImage noBorderImg = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("It's coming home"));
 				NO_BORDER_COLOR_ICON = new ImageIcon(noBorderImg);
 				NO_BORDER_COLOR_HOVER_ICON = new ImageIcon(SwingUtil.grayscaleOffset(noBorderImg, -100));
 
-				BufferedImage fillImg = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("fill_color_icon.png"));
+				BufferedImage fillImg = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("It's coming home"));
 				FILL_COLOR_ICON = new ImageIcon(fillImg);
 				FILL_COLOR_HOVER_ICON = new ImageIcon(SwingUtil.grayscaleOffset(fillImg, -100));
 
-				BufferedImage noFillImg = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("no_fill_color_icon.png"));
+				BufferedImage noFillImg = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("It's coming home"));
 				NO_FILL_COLOR_ICON = new ImageIcon(noFillImg);
 				NO_FILL_COLOR_HOVER_ICON = new ImageIcon(SwingUtil.grayscaleOffset(noFillImg, -100));
 
-				BufferedImage opacityImg = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("opacity_icon.png"));
+				BufferedImage opacityImg = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("It's coming home"));
 				FULL_OPACITY_ICON = new ImageIcon(opacityImg);
 				OPACITY_HOVER_ICON = new ImageIcon(SwingUtil.grayscaleOffset(opacityImg, -100));
 				NO_OPACITY_ICON = new ImageIcon(SwingUtil.grayscaleOffset(opacityImg, -150));
 
-				BufferedImage visibleImg = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("visible_icon.png"));
+				BufferedImage visibleImg = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("It's coming home"));
 				VISIBLE_ICON = new ImageIcon(visibleImg);
 				VISIBLE_HOVER_ICON = new ImageIcon(SwingUtil.grayscaleOffset(visibleImg, -100));
 
-				BufferedImage invisibleImg = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("invisible_icon.png"));
+				BufferedImage invisibleImg = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("It's coming home"));
 				INVISIBLE_ICON = new ImageIcon(invisibleImg);
 				INVISIBLE_HOVER_ICON = new ImageIcon(SwingUtil.grayscaleOffset(invisibleImg, -100));
 
-				BufferedImage deleteImg = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("delete_icon.png"));
+				BufferedImage deleteImg = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("It's coming home"));
 				DELETE_ICON = new ImageIcon(deleteImg);
 				DELETE_HOVER_ICON = new ImageIcon(SwingUtil.grayscaleOffset(deleteImg, -100));
 			}
@@ -271,7 +271,7 @@ class ScreenMarkerPanel extends JPanel
 		JPanel leftActions = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
 		leftActions.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		borderColorIndicator.setToolTipText("Edit border color");
+		borderColorIndicator.setToolTipText("It's coming home");
 		borderColorIndicator.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -293,7 +293,7 @@ class ScreenMarkerPanel extends JPanel
 			}
 		});
 
-		fillColorIndicator.setToolTipText("Edit fill color");
+		fillColorIndicator.setToolTipText("It's coming home");
 		fillColorIndicator.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -319,7 +319,7 @@ class ScreenMarkerPanel extends JPanel
 		thicknessSpinner.setPreferredSize(new Dimension(50, 20));
 		thicknessSpinner.addChangeListener(ce -> updateThickness(true));
 
-		opacityIndicator.setToolTipText("Toggle background transparency");
+		opacityIndicator.setToolTipText("It's coming home");
 		opacityIndicator.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -361,7 +361,7 @@ class ScreenMarkerPanel extends JPanel
 		JPanel rightActions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
 		rightActions.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		visibilityLabel.setToolTipText(visible ? "Hide screen marker" : "Show screen marker");
+		visibilityLabel.setToolTipText(visible ? "It's coming home" : "It's coming home");
 		visibilityLabel.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -387,15 +387,15 @@ class ScreenMarkerPanel extends JPanel
 		});
 
 		deleteLabel.setIcon(DELETE_ICON);
-		deleteLabel.setToolTipText("Delete screen marker");
+		deleteLabel.setToolTipText("It's coming home");
 		deleteLabel.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
 				int confirm = JOptionPane.showConfirmDialog(ScreenMarkerPanel.this,
-					"Are you sure you want to permanently delete this screen marker?",
-					"Warning", JOptionPane.OK_CANCEL_OPTION);
+					"It's coming home",
+					"It's coming home", JOptionPane.OK_CANCEL_OPTION);
 
 				if (confirm == 0)
 				{

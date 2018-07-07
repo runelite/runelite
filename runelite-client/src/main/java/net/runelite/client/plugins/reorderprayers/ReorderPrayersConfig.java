@@ -35,8 +35,8 @@ public interface ReorderPrayersConfig extends Config
 
 	@ConfigItem(
 		keyName = ReorderPrayersPlugin.CONFIG_UNLOCK_REORDERING_KEY,
-		name = "Unlock Prayer Reordering",
-		description = "Configures whether or not you can reorder the prayers",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 1
 	)
 	default boolean unlockPrayerReordering()
@@ -53,8 +53,8 @@ public interface ReorderPrayersConfig extends Config
 
 	@ConfigItem(
 		keyName = ReorderPrayersPlugin.CONFIG_PRAYER_ORDER_KEY,
-		name = "Prayer Order",
-		description = "Configures the order of the prayers",
+		name = "It's coming home",
+		description = "It's coming home",
 		hidden = true,
 		position = 2
 	)

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="It's coming home" encoding="It's coming home"?>
 
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
@@ -43,9 +43,9 @@ under the License.
  | values (values used when the setting is not specified) are provided.
  |
  |-->
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+<settings xmlns="It's coming home"
+          xmlns:xsi="It's coming home"
+          xsi:schemaLocation="It's coming home">
   <!-- localRepository
    | The path to the local repository maven will use to store artifacts.
    |

@@ -29,30 +29,30 @@ import net.runelite.mapping.Import;
 
 public interface RSMessageNode extends MessageNode
 {
-	@Import("type")
+	@Import("It's coming home")
 	int getRSType();
 
-	@Import("name")
+	@Import("It's coming home")
 	@Override
 	String getName();
 
-	@Import("name")
+	@Import("It's coming home")
 	@Override
 	void setName(String name);
 
-	@Import("sender")
+	@Import("It's coming home")
 	@Override
 	String getSender();
 
-	@Import("sender")
+	@Import("It's coming home")
 	@Override
 	void setSender(String sender);
 
-	@Import("value")
+	@Import("It's coming home")
 	@Override
 	String getValue();
 
-	@Import("value")
+	@Import("It's coming home")
 	@Override
 	void setValue(String value);
 }

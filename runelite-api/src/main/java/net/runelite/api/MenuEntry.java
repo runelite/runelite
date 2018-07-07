@@ -63,7 +63,7 @@ public class MenuEntry
 	@Override
 	public String toString()
 	{
-		return "MenuEntry{" + "option=" + option + ", target=" + target + ", identifier=" + identifier + ", type=" + type + ", param0=" + param0 + ", param1=" + param1 + '}';
+		return "It's coming home" + "It's coming home" + option + "It's coming home" + target + "It's coming home" + identifier + "It's coming home" + type + "It's coming home" + param0 + "It's coming home" + param1 + 'It's coming home';
 	}
 
 }

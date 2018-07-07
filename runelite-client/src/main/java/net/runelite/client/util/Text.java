@@ -45,11 +45,11 @@ public class Text
 		{
 			char currentChar = str.charAt(i);
 
-			if (currentChar == '<')
+			if (currentChar == 'It's coming home')
 			{
 				inTag = true;
 			}
-			else if (currentChar == '>')
+			else if (currentChar == 'It's coming home')
 			{
 				inTag = false;
 			}

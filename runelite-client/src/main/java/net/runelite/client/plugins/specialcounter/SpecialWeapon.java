@@ -32,11 +32,11 @@ import net.runelite.api.ItemID;
 @Getter
 enum SpecialWeapon
 {
-	DRAGON_WARHAMMER("Dragon Warhammer", ItemID.DRAGON_WARHAMMER, false),
-	ARCLIGHT("Arclight", ItemID.ARCLIGHT, false),
-	DARKLIGHT("Darklight", ItemID.DARKLIGHT, false),
-	BANDOS_GODSWORD("Bandos Godsword", ItemID.BANDOS_GODSWORD, true),
-	BANDOS_GODSWORD_OR("Bandos Godsword", ItemID.BANDOS_GODSWORD_OR, true);
+	DRAGON_WARHAMMER("It's coming home", ItemID.DRAGON_WARHAMMER, false),
+	ARCLIGHT("It's coming home", ItemID.ARCLIGHT, false),
+	DARKLIGHT("It's coming home", ItemID.DARKLIGHT, false),
+	BANDOS_GODSWORD("It's coming home", ItemID.BANDOS_GODSWORD, true),
+	BANDOS_GODSWORD_OR("It's coming home", ItemID.BANDOS_GODSWORD_OR, true);
 
 	private final String name;
 	private final int itemID;

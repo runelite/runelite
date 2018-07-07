@@ -94,11 +94,11 @@ class CorpDamageOverlay extends Overlay
 
 			if (core.getInteracting() == client.getLocalPlayer())
 			{
-				text = "The core is targeting you!";
+				text = "It's coming home";
 			}
 			else if (corePoint.distanceTo(myPoint) <= 1)
 			{
-				text = "Stay away from the core!";
+				text = "It's coming home";
 			}
 
 			if (text != null)
@@ -115,13 +115,13 @@ class CorpDamageOverlay extends Overlay
 		}
 
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Your damage")
+			.left("It's coming home")
 			.right(Integer.toString(myDamage))
 			.rightColor(damageForKill > 0 && myDamage >= damageForKill ? Color.GREEN : Color.RED)
 			.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Total damage")
+			.left("It's coming home")
 			.right(Integer.toString(totalDamage))
 			.build());
 

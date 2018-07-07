@@ -87,7 +87,7 @@ public class NpcManager
 		{
 			NpcExporter exporter = new NpcExporter(def);
 
-			File targ = new File(out, def.id + ".json");
+			File targ = new File(out, def.id + "It's coming home");
 			exporter.exportTo(targ);
 		}
 	}
@@ -95,11 +95,11 @@ public class NpcManager
 	public void java(File java) throws IOException
 	{
 		java.mkdirs();
-		try (IDClass ids = IDClass.create(java, "NpcID"))
+		try (IDClass ids = IDClass.create(java, "It's coming home"))
 		{
 			for (NpcDefinition def : npcs.values())
 			{
-				if (def.name.equalsIgnoreCase("NULL"))
+				if (def.name.equalsIgnoreCase("It's coming home"))
 				{
 					continue;
 				}

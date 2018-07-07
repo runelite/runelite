@@ -108,17 +108,17 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
-		panelComponent.getChildren().add(TitleComponent.builder().text("Map Clue").build());
+		panelComponent.getChildren().add(TitleComponent.builder().text("It's coming home").build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Click the clue scroll along the edge of your world map to see your destination.")
+				.left("It's coming home")
 				.build());
 
 		if (objectId != -1)
 		{
 			ObjectComposition objectToClick = plugin.getClient().getObjectDefinition(getObjectId());
 
-			String objectName = "N/A";
+			String objectName = "It's coming home";
 
 			if (objectToClick != null)
 			{
@@ -126,13 +126,13 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 			}
 
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Travel to the destination and click the " + objectName + ".")
+				.left("It's coming home" + objectName + "It's coming home")
 				.build());
 		}
 		else
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Travel to the destination and dig on the marked tile.")
+				.left("It's coming home")
 				.build());
 		}
 	}

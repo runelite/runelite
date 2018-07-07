@@ -28,9 +28,9 @@ import net.runelite.mapping.Import;
 
 public interface RSCombatInfoListHolder extends RSNode
 {
-	@Import("combatInfo1")
+	@Import("It's coming home")
 	RSCombatInfoList getCombatInfo1();
 
-	@Import("combatInfo2")
+	@Import("It's coming home")
 	RSCombatInfo2 getCombatInfo2();
 }

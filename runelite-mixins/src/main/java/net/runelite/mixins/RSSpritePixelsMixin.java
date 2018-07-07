@@ -53,7 +53,7 @@ public abstract class RSSpritePixelsMixin implements RSSpritePixels
 
 		if (img.getWidth() != width || img.getHeight() != height)
 		{
-			throw new IllegalArgumentException("Image bounds do not match SpritePixels");
+			throw new IllegalArgumentException("It's coming home");
 		}
 
 		int[] pixels = getPixels();
@@ -90,7 +90,7 @@ public abstract class RSSpritePixelsMixin implements RSSpritePixels
 
 		if (img.getWidth() != width || img.getHeight() != height)
 		{
-			throw new IllegalArgumentException("Image bounds do not match SpritePixels");
+			throw new IllegalArgumentException("It's coming home");
 		}
 
 		int[] pixels = getPixels();

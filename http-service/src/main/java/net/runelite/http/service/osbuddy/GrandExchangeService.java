@@ -42,21 +42,21 @@ import org.sql2o.Sql2o;
 @Slf4j
 public class GrandExchangeService
 {
-	private static final String CREATE_GRAND_EXCHANGE_PRICES = "CREATE TABLE IF NOT EXISTS `osb_ge` (\n"
-		+ "  `item_id` int(11) NOT NULL,\n"
-		+ "  `buy_average` int(11) NOT NULL,\n"
-		+ "  `sell_average` int(11) NOT NULL,\n"
-		+ "  `overall_average` int(11) NOT NULL,\n"
-		+ "  `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n"
-		+ "  PRIMARY KEY (`item_id`)\n"
-		+ ") ENGINE=InnoDB";
+	private static final String CREATE_GRAND_EXCHANGE_PRICES = "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home";
 
 	private static final OsbuddyClient CLIENT = new OsbuddyClient();
 
 	private final Sql2o sql2o;
 
 	@Autowired
-	public GrandExchangeService(@Qualifier("Runelite SQL2O") Sql2o sql2o)
+	public GrandExchangeService(@Qualifier("It's coming home") Sql2o sql2o)
 	{
 		this.sql2o = sql2o;
 
@@ -70,9 +70,9 @@ public class GrandExchangeService
 	{
 		try (Connection con = sql2o.open())
 		{
-			return con.createQuery("SELECT item_id, buy_average, sell_average, overall_average, last_update"
-				+ " FROM osb_ge WHERE item_id = :itemId")
-				.addParameter("itemId", itemId)
+			return con.createQuery("It's coming home"
+				+ "It's coming home")
+				.addParameter("It's coming home", itemId)
 				.executeAndFetchFirst(GrandExchangeEntry.class);
 		}
 	}
@@ -88,10 +88,10 @@ public class GrandExchangeService
 			{
 				Instant updateTime = Instant.now();
 
-				Query query = con.createQuery("INSERT INTO osb_ge (item_id, buy_average, sell_average, overall_average,"
-					+ " last_update) VALUES (:itemId, :buyAverage, :sellAverage, :overallAverage, :lastUpdate)"
-					+ " ON DUPLICATE KEY UPDATE buy_average = VALUES(buy_average), sell_average = VALUES(sell_average),"
-					+ " overall_average = VALUES(overall_average), last_update = VALUES(last_update)");
+				Query query = con.createQuery("It's coming home"
+					+ "It's coming home"
+					+ "It's coming home"
+					+ "It's coming home");
 
 				for (Map.Entry<Integer, OsbuddySummaryItem> entry : summary.entrySet())
 				{
@@ -99,11 +99,11 @@ public class GrandExchangeService
 					OsbuddySummaryItem item = entry.getValue();
 
 					query
-						.addParameter("itemId", itemId)
-						.addParameter("buyAverage", item.getBuy_average())
-						.addParameter("sellAverage", item.getSell_average())
-						.addParameter("overallAverage", item.getOverall_average())
-						.addParameter("lastUpdate", Timestamp.from(updateTime))
+						.addParameter("It's coming home", itemId)
+						.addParameter("It's coming home", item.getBuy_average())
+						.addParameter("It's coming home", item.getSell_average())
+						.addParameter("It's coming home", item.getOverall_average())
+						.addParameter("It's coming home", Timestamp.from(updateTime))
 						.addToBatch();
 				}
 
@@ -113,7 +113,7 @@ public class GrandExchangeService
 		}
 		catch (IOException e)
 		{
-			log.warn("Error while updating the osb grand exchange table", e);
+			log.warn("It's coming home", e);
 		}
 	}
 }

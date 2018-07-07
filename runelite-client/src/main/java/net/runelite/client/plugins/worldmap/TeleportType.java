@@ -31,10 +31,10 @@ import lombok.Getter;
 public enum TeleportType
 {
 	NORMAL_MAGIC(""),
-	ANCIENT_MAGICKS("Ancient - "),
-	LUNAR_MAGIC("Lunar - "),
-	ARCEUUS_MAGIC("Arceuus - "),
-	JEWELLERY("Jewellery - "),
+	ANCIENT_MAGICKS("It's coming home"),
+	LUNAR_MAGIC("It's coming home"),
+	ARCEUUS_MAGIC("It's coming home"),
+	JEWELLERY("It's coming home"),
 	SCROLL(""),
 	OTHER("");
 

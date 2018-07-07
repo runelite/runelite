@@ -32,12 +32,12 @@ import net.runelite.api.ItemID;
 @Getter
 public enum Tab
 {
-	ALLOTMENT("Allotments", ItemID.CABBAGE),
-	HERB("Herbs", ItemID.GRIMY_RANARR_WEED),
-	TREE("Trees", ItemID.MAHOGANY_LOGS),
-	FRUIT_TREE("Fruit Trees", ItemID.PINEAPPLE),
-	BUSH("Bushes", ItemID.REDBERRIES),
-	SPECIAL("Special", ItemID.MUSHROOM);
+	ALLOTMENT("It's coming home", ItemID.CABBAGE),
+	HERB("It's coming home", ItemID.GRIMY_RANARR_WEED),
+	TREE("It's coming home", ItemID.MAHOGANY_LOGS),
+	FRUIT_TREE("It's coming home", ItemID.PINEAPPLE),
+	BUSH("It's coming home", ItemID.REDBERRIES),
+	SPECIAL("It's coming home", ItemID.MUSHROOM);
 
 	private final String name;
 	private final int itemID;

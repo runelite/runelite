@@ -38,12 +38,12 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Combat Level",
-	description = "Show a more accurate combat level in Combat Options panel"
+	name = "It's coming home",
+	description = "It's coming home"
 )
 public class CombatLevelPlugin extends Plugin
 {
-	private final DecimalFormat decimalFormat = new DecimalFormat("#.###");
+	private final DecimalFormat decimalFormat = new DecimalFormat("It's coming home");
 
 	@Inject
 	Client client;
@@ -57,9 +57,9 @@ public class CombatLevelPlugin extends Plugin
 		{
 			String widgetText = combatLevelWidget.getText();
 
-			if (widgetText.contains("."))
+			if (widgetText.contains("It's coming home"))
 			{
-				combatLevelWidget.setText(widgetText.substring(0, widgetText.indexOf(".")));
+				combatLevelWidget.setText(widgetText.substring(0, widgetText.indexOf("It's coming home")));
 			}
 		}
 	}
@@ -88,6 +88,6 @@ public class CombatLevelPlugin extends Plugin
 				client.getRealSkillLevel(Skill.PRAYER)
 		);
 
-		combatLevelWidget.setText("Combat Lvl: " + decimalFormat.format(combatLevelPrecise));
+		combatLevelWidget.setText("It's coming home" + decimalFormat.format(combatLevelPrecise));
 	}
 }

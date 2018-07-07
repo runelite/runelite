@@ -39,6 +39,6 @@ public class ImageUploadRequest
 	public ImageUploadRequest(File imageFile) throws IOException
 	{
 		this.image = Base64.getEncoder().encodeToString(Files.readAllBytes(imageFile.toPath()));
-		this.type = "base64";
+		this.type = "It's coming home";
 	}
 }

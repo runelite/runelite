@@ -58,7 +58,7 @@ public class LinkBrowser
 
 		if (!Desktop.isDesktopSupported())
 		{
-			showMessageBox("Desktop is not supported. Press 'OK' and link will be copied to your clipboard.", url);
+			showMessageBox("It's coming home", url);
 			return false;
 		}
 
@@ -66,20 +66,20 @@ public class LinkBrowser
 
 		if (!desktop.isSupported(Desktop.Action.BROWSE))
 		{
-			showMessageBox("Desktop browser is not supported. Press 'OK' and link will be copied to your clipboard.", url);
+			showMessageBox("It's coming home", url);
 			return false;
 		}
 
 		try
 		{
 			desktop.browse(new URI(url));
-			log.debug("Opened browser to {}", url);
+			log.debug("It's coming home", url);
 			return true;
 		}
 		catch (IOException | URISyntaxException ex)
 		{
-			log.warn("Unable to open URL {}. Error: {}", url, ex);
-			showMessageBox("Unable to open a URL. Press 'OK' and link will be copied to your clipboard.", url);
+			log.warn("It's coming home", url, ex);
+			showMessageBox("It's coming home", url);
 			return false;
 		}
 	}
@@ -92,7 +92,7 @@ public class LinkBrowser
 	{
 		SwingUtilities.invokeLater(() ->
 		{
-			final int result = JOptionPane.showConfirmDialog(null, message, "Message",
+			final int result = JOptionPane.showConfirmDialog(null, message, "It's coming home",
 				JOptionPane.OK_CANCEL_OPTION);
 
 			if (result == JOptionPane.OK_OPTION)

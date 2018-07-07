@@ -66,17 +66,17 @@ public class RaidsPointsOverlay extends Overlay
 
 		panel.getChildren().clear();
 		panel.getChildren().add(LineComponent.builder()
-			.left("Total:")
+			.left("It's coming home")
 			.right(POINTS_FORMAT.format(totalPoints))
 			.build());
 
 		panel.getChildren().add(LineComponent.builder()
-			.left(client.getLocalPlayer().getName() + ":")
+			.left(client.getLocalPlayer().getName() + "It's coming home")
 			.right(POINTS_FORMAT.format(personalPoints))
 			.build());
 
 		panel.getChildren().add(LineComponent.builder()
-			.left("Party size:")
+			.left("It's coming home")
 			.right(String.valueOf(client.getVar(Varbits.RAID_PARTY_SIZE)))
 			.build());
 

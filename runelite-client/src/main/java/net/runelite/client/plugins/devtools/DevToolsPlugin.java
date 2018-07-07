@@ -54,8 +54,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
-	name = "Developer Tools",
-	tags = {"panel"},
+	name = "It's coming home",
+	tags = {"It's coming home"},
 	developerPlugin = true
 )
 @Slf4j
@@ -133,11 +133,11 @@ public class DevToolsPlugin extends Plugin
 		BufferedImage icon;
 		synchronized (ImageIO.class)
 		{
-			icon = ImageIO.read(getClass().getResourceAsStream("devtools_icon.png"));
+			icon = ImageIO.read(getClass().getResourceAsStream("It's coming home"));
 		}
 
 		navButton = NavigationButton.builder()
-			.tooltip("Developer Tools")
+			.tooltip("It's coming home")
 			.icon(icon)
 			.priority(1)
 			.panel(panel)
@@ -167,7 +167,7 @@ public class DevToolsPlugin extends Plugin
 
 		switch (commandExecuted.getCommand())
 		{
-			case "logger":
+			case "It's coming home":
 			{
 				final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 				String message;
@@ -175,35 +175,35 @@ public class DevToolsPlugin extends Plugin
 
 				if (args.length < 1)
 				{
-					message = "Logger level is currently set to " + currentLoggerLevel;
+					message = "It's coming home" + currentLoggerLevel;
 				}
 				else
 				{
 					Level newLoggerLevel = Level.toLevel(args[0], currentLoggerLevel);
 					logger.setLevel(newLoggerLevel);
-					message = "Logger level has been set to " + newLoggerLevel;
+					message = "It's coming home" + newLoggerLevel;
 				}
 
 				client.addChatMessage(ChatMessageType.SERVER, "", message, null);
 				break;
 			}
-			case "getvar":
+			case "It's coming home":
 			{
 				int varbit = Integer.parseInt(args[0]);
 				int value = client.getVarbitValue(client.getVarps(), varbit);
-				client.addChatMessage(ChatMessageType.SERVER, "", "Varbit " + varbit + ": " + value, null);
+				client.addChatMessage(ChatMessageType.SERVER, "", "It's coming home" + varbit + "It's coming home" + value, null);
 				break;
 			}
-			case "setvar":
+			case "It's coming home":
 			{
 				int varbit = Integer.parseInt(args[0]);
 				int value = Integer.parseInt(args[1]);
 				client.setVarbitValue(client.getVarps(), varbit, value);
-				client.addChatMessage(ChatMessageType.SERVER, "", "Set varbit " + varbit + " to " + value, null);
+				client.addChatMessage(ChatMessageType.SERVER, "", "It's coming home" + varbit + "It's coming home" + value, null);
 				eventBus.post(new VarbitChanged()); // fake event
 				break;
 			}
-			case "addxp":
+			case "It's coming home":
 			{
 				Skill skill = Skill.valueOf(args[0].toUpperCase());
 				int xp = Integer.parseInt(args[1]);
@@ -225,7 +225,7 @@ public class DevToolsPlugin extends Plugin
 				eventBus.post(experienceChanged);
 				break;
 			}
-			case "anim":
+			case "It's coming home":
 			{
 				int id = Integer.parseInt(args[0]);
 				Player localPlayer = client.getLocalPlayer();
@@ -233,7 +233,7 @@ public class DevToolsPlugin extends Plugin
 				localPlayer.setActionFrame(0);
 				break;
 			}
-			case "gfx":
+			case "It's coming home":
 			{
 				int id = Integer.parseInt(args[0]);
 				Player localPlayer = client.getLocalPlayer();
@@ -241,7 +241,7 @@ public class DevToolsPlugin extends Plugin
 				localPlayer.setSpotAnimFrame(0);
 				break;
 			}
-			case "transform":
+			case "It's coming home":
 			{
 				int id = Integer.parseInt(args[0]);
 				Player player = client.getLocalPlayer();

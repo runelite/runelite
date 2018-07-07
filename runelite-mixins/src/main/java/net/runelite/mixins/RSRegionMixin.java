@@ -42,16 +42,16 @@ import net.runelite.rs.api.RSWallObject;
 @Mixin(RSRegion.class)
 public abstract class RSRegionMixin implements RSRegion
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
 	@Inject
 	static boolean isDrawingRegion;
 
-	@Copy("drawRegion")
+	@Copy("It's coming home")
 	abstract void rs$drawRegion(int cameraX, int cameraY, int cameraZ, int cameraPitch, int cameraYaw, int plane);
 
-	@Replace("drawRegion")
+	@Replace("It's coming home")
 	void rl$drawRegion(int cameraX, int cameraY, int cameraZ, int cameraPitch, int cameraYaw, int plane)
 	{
 		try
@@ -66,10 +66,10 @@ public abstract class RSRegionMixin implements RSRegion
 		}
 	}
 
-	@Copy("addBoundaryDecoration")
+	@Copy("It's coming home")
 	abstract public void rs$addBoundaryDecoration(int plane, int x, int y, int floor, Renderable var5, Renderable var6, int var7, int var8, int var9, int var10, long hash, int var12);
 
-	@Replace("addBoundaryDecoration")
+	@Replace("It's coming home")
 	public void rl$addBoundaryDecoration(int plane, int x, int y, int floor, Renderable var5, Renderable var6, int var7, int var8, int var9, int var10, long hash, int var12)
 	{
 		rs$addBoundaryDecoration(plane, x, y, floor, var5, var6, var7, var8, var9, var10, hash, var12);
@@ -84,10 +84,10 @@ public abstract class RSRegionMixin implements RSRegion
 		}
 	}
 
-	@Copy("addItemPile")
+	@Copy("It's coming home")
 	abstract public void rs$addItemPile(int plane, int x, int y, int hash, Renderable var5, long var6, Renderable var7, Renderable var8);
 
-	@Replace("addItemPile")
+	@Replace("It's coming home")
 	public void rl$addItemPile(int plane, int x, int y, int hash, Renderable var5, long var6, Renderable var7, Renderable var8)
 	{
 		rs$addItemPile(plane, x, y, hash, var5, var6, var7, var8);
@@ -102,10 +102,10 @@ public abstract class RSRegionMixin implements RSRegion
 		}
 	}
 
-	@Copy("groundObjectSpawned")
+	@Copy("It's coming home")
 	abstract public void rs$groundObjectSpawned(int plane, int x, int y, int floor, Renderable var5, long hash, int var7);
 
-	@Replace("groundObjectSpawned")
+	@Replace("It's coming home")
 	public void rl$groundObjectSpawned(int plane, int x, int y, int floor, Renderable var5, long hash, int var7)
 	{
 		rs$groundObjectSpawned(plane, x, y, floor, var5, hash, var7);
@@ -120,10 +120,10 @@ public abstract class RSRegionMixin implements RSRegion
 		}
 	}
 
-	@Copy("addBoundary")
+	@Copy("It's coming home")
 	abstract public void rs$addBoundary(int plane, int x, int y, int floor, Renderable var5, Renderable var6, int var7, int var8, long hash, int var10);
 
-	@Replace("addBoundary")
+	@Replace("It's coming home")
 	public void rl$addBoundary(int plane, int x, int y, int floor, Renderable var5, Renderable var6, int var7, int var8, long hash, int var10)
 	{
 		rs$addBoundary(plane, x, y, floor, var5, var6, var7, var8, hash, var10);
@@ -138,10 +138,10 @@ public abstract class RSRegionMixin implements RSRegion
 		}
 	}
 
-	@Copy("drawTileUnderlay")
+	@Copy("It's coming home")
 	abstract public void rs$drawTileUnderlay(SceneTilePaint tile, int z, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y);
 
-	@Replace("drawTileUnderlay")
+	@Replace("It's coming home")
 	public void rl$drawTileUnderlay(SceneTilePaint tile, int z, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y)
 	{
 		try
@@ -150,7 +150,7 @@ public abstract class RSRegionMixin implements RSRegion
 		}
 		catch (Exception ex)
 		{
-			client.getLogger().warn("error during tile underlay rendering", ex);
+			client.getLogger().warn("It's coming home", ex);
 		}
 	}
 }

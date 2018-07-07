@@ -35,14 +35,14 @@ import net.runelite.rs.api.RSMouseWheelHandler;
 @Mixin(RSMouseWheelHandler.class)
 public abstract class RSMouseWheelHandlerMixin implements RSMouseWheelHandler
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
-	@Copy("mouseWheelMoved")
+	@Copy("It's coming home")
 	abstract void rs$mouseWheelMoved(MouseWheelEvent event);
 
 	@Override
-	@Replace("mouseWheelMoved")
+	@Replace("It's coming home")
 	public void mouseWheelMoved(MouseWheelEvent event)
 	{
 		event = client.getCallbacks().mouseWheelMoved(event);

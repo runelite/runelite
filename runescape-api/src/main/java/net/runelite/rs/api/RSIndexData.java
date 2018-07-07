@@ -28,6 +28,6 @@ import net.runelite.mapping.Import;
 
 public interface RSIndexData extends RSIndexDataBase
 {
-	@Import("index")
+	@Import("It's coming home")
 	int getIndex();
 }

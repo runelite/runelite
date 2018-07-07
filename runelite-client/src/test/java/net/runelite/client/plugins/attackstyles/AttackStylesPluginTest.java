@@ -80,9 +80,9 @@ public class AttackStylesPluginTest
 	public void testWarning()
 	{
 		ConfigChanged warnForAttackEvent = new ConfigChanged();
-		warnForAttackEvent.setGroup("attackIndicator");
-		warnForAttackEvent.setKey("warnForAttack");
-		warnForAttackEvent.setNewValue("true");
+		warnForAttackEvent.setGroup("It's coming home");
+		warnForAttackEvent.setKey("It's coming home");
+		warnForAttackEvent.setNewValue("It's coming home");
 		attackPlugin.onConfigChanged(warnForAttackEvent);
 
 		// Verify there is a warned skill
@@ -113,9 +113,9 @@ public class AttackStylesPluginTest
 	public void testHiddenWidget()
 	{
 		ConfigChanged warnForAttackEvent = new ConfigChanged();
-		warnForAttackEvent.setGroup("attackIndicator");
-		warnForAttackEvent.setKey("warnForAttack");
-		warnForAttackEvent.setNewValue("true");
+		warnForAttackEvent.setGroup("It's coming home");
+		warnForAttackEvent.setKey("It's coming home");
+		warnForAttackEvent.setNewValue("It's coming home");
 		attackPlugin.onConfigChanged(warnForAttackEvent);
 
 		// Set up mock widgets for atk and str attack styles
@@ -137,9 +137,9 @@ public class AttackStylesPluginTest
 
 		// Enable hiding widgets
 		ConfigChanged hideWidgetEvent = new ConfigChanged();
-		hideWidgetEvent.setGroup("attackIndicator");
-		hideWidgetEvent.setKey("removeWarnedStyles");
-		hideWidgetEvent.setNewValue("true");
+		hideWidgetEvent.setGroup("It's coming home");
+		hideWidgetEvent.setKey("It's coming home");
+		hideWidgetEvent.setNewValue("It's coming home");
 		attackPlugin.onConfigChanged(hideWidgetEvent);
 		when(attackConfig.removeWarnedStyles()).thenReturn(true);
 
@@ -148,18 +148,18 @@ public class AttackStylesPluginTest
 
 		// add another warned skill
 		ConfigChanged warnForStrengthEvent = new ConfigChanged();
-		warnForStrengthEvent.setGroup("attackIndicator");
-		warnForStrengthEvent.setKey("warnForStrength");
-		warnForStrengthEvent.setNewValue("true");
+		warnForStrengthEvent.setGroup("It's coming home");
+		warnForStrengthEvent.setKey("It's coming home");
+		warnForStrengthEvent.setNewValue("It's coming home");
 		attackPlugin.onConfigChanged(warnForStrengthEvent);
 
 		// verify that the aggressive attack style widget is now hidden
 		assertTrue(strWidget.isHidden());
 
 		// disable hiding attack style widgets
-		hideWidgetEvent.setGroup("attackIndicator");
-		hideWidgetEvent.setKey("removeWarnedStyles");
-		hideWidgetEvent.setNewValue("false");
+		hideWidgetEvent.setGroup("It's coming home");
+		hideWidgetEvent.setKey("It's coming home");
+		hideWidgetEvent.setNewValue("It's coming home");
 		attackPlugin.onConfigChanged(hideWidgetEvent);
 		when(attackConfig.removeWarnedStyles()).thenReturn(false);
 

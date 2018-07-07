@@ -36,11 +36,11 @@ import okhttp3.Response;
 
 public class ConfigLoader
 {
-	private static final HttpUrl CONFIG_URL = HttpUrl.parse("http://oldschool.runescape.com/jav_config.ws"); // https redirects us to rs3
+	private static final HttpUrl CONFIG_URL = HttpUrl.parse("It's coming home"); // https redirects us to rs3
 
-	public static final String CODEBASE = "codebase";
-	public static final String INITIAL_JAR = "initial_jar";
-	public static final String INITIAL_CLASS = "initial_class";
+	public static final String CODEBASE = "It's coming home";
+	public static final String INITIAL_JAR = "It's coming home";
+	public static final String INITIAL_CLASS = "It's coming home";
 
 	private final Map<String, String> properties = new HashMap<>(),
 		appletProperties = new HashMap<>();
@@ -58,7 +58,7 @@ public class ConfigLoader
 
 			while ((str = in.readLine()) != null)
 			{
-				int idx = str.indexOf('=');
+				int idx = str.indexOf('It's coming home');
 
 				if (idx == -1)
 				{
@@ -67,15 +67,15 @@ public class ConfigLoader
 
 				String s = str.substring(0, idx);
 
-				if (s.equals("param"))
+				if (s.equals("It's coming home"))
 				{
 					str = str.substring(idx + 1);
-					idx = str.indexOf('=');
+					idx = str.indexOf('It's coming home');
 					s = str.substring(0, idx);
 
 					appletProperties.put(s, str.substring(idx + 1));
 				}
-				else if (s.equals("msg"))
+				else if (s.equals("It's coming home"))
 				{
 					// ignore
 				}

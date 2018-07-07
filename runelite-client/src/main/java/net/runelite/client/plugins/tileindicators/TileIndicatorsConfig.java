@@ -29,13 +29,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("tileindicators")
+@ConfigGroup("It's coming home")
 public interface TileIndicatorsConfig extends Config
 {
 	@ConfigItem(
-		keyName = "highlightDestinationColor",
-		name = "Color of current destination highlighting",
-		description = "Configures the highlight color of current destination"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color highlightDestinationColor()
 	{

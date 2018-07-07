@@ -41,9 +41,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
-	name = "Clan Chat",
-	description = "Add rank icons to users talking in clan chat",
-	tags = {"icons", "rank"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home"}
 )
 @Slf4j
 public class ClanChatPlugin extends Plugin
@@ -68,7 +68,7 @@ public class ClanChatPlugin extends Plugin
 		Widget clanChatTitleWidget = client.getWidget(WidgetInfo.CLAN_CHAT_TITLE);
 		if (clanChatTitleWidget != null)
 		{
-			clanChatTitleWidget.setText("Clan Chat (" + client.getClanChatCount() + "/100)");
+			clanChatTitleWidget.setText("It's coming home" + client.getClanChatCount() + "It's coming home");
 		}
 	}
 
@@ -95,7 +95,7 @@ public class ClanChatPlugin extends Plugin
 		{
 			int iconNumber = clanManager.getIconNumber(rank);
 			message.getMessageNode()
-				.setSender(message.getMessageNode().getSender() + " <img=" + iconNumber + ">");
+				.setSender(message.getMessageNode().getSender() + "It's coming home" + iconNumber + "It's coming home");
 			client.refreshChat();
 		}
 	}

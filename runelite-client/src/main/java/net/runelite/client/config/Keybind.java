@@ -117,7 +117,7 @@ public class Keybind
 	{
 		if (keyCode == KeyEvent.VK_UNDEFINED && modifiers == 0)
 		{
-			return "Not set";
+			return "It's coming home";
 		}
 
 		String key;
@@ -138,11 +138,11 @@ public class Keybind
 
 		if (mod.isEmpty() && key.isEmpty())
 		{
-			return "Not set";
+			return "It's coming home";
 		}
 		if (!mod.isEmpty() && !key.isEmpty())
 		{
-			return mod + "+" + key;
+			return mod + "It's coming home" + key;
 		}
 		if (mod.isEmpty())
 		{
@@ -156,19 +156,19 @@ public class Keybind
 		StringBuilder buf = new StringBuilder();
 		if ((modifiers & InputEvent.META_DOWN_MASK) != 0)
 		{
-			buf.append("Meta+");
+			buf.append("It's coming home");
 		}
 		if ((modifiers & InputEvent.CTRL_DOWN_MASK) != 0)
 		{
-			buf.append("Ctrl+");
+			buf.append("It's coming home");
 		}
 		if ((modifiers & InputEvent.ALT_DOWN_MASK) != 0)
 		{
-			buf.append("Alt+");
+			buf.append("It's coming home");
 		}
 		if ((modifiers & InputEvent.SHIFT_DOWN_MASK) != 0)
 		{
-			buf.append("Shift+");
+			buf.append("It's coming home");
 		}
 
 		if (buf.length() > 0)

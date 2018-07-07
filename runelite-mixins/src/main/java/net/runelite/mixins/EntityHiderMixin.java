@@ -40,58 +40,58 @@ import net.runelite.rs.api.RSRenderable;
 @Mixin(RSRegion.class)
 public abstract class EntityHiderMixin implements RSRegion
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
-	@Shadow("isHidingEntities")
+	@Shadow("It's coming home")
 	private static boolean isHidingEntities;
 
-	@Shadow("hidePlayers")
+	@Shadow("It's coming home")
 	private static boolean hidePlayers;
 
-	@Shadow("hidePlayers2D")
+	@Shadow("It's coming home")
 	private static boolean hidePlayers2D;
 
-	@Shadow("hideFriends")
+	@Shadow("It's coming home")
 	private static boolean hideFriends;
 
-	@Shadow("hideClanMates")
+	@Shadow("It's coming home")
 	private static boolean hideClanMates;
 
-	@Shadow("hideLocalPlayer")
+	@Shadow("It's coming home")
 	private static boolean hideLocalPlayer;
 
-	@Shadow("hideLocalPlayer2D")
+	@Shadow("It's coming home")
 	private static boolean hideLocalPlayer2D;
 
-	@Shadow("hideNPCs")
+	@Shadow("It's coming home")
 	private static boolean hideNPCs;
 
-	@Shadow("hideNPCs2D")
+	@Shadow("It's coming home")
 	private static boolean hideNPCs2D;
 
-	@Shadow("hideAttackers")
+	@Shadow("It's coming home")
 	private static boolean hideAttackers;
 
-	@Shadow("hideProjectiles")
+	@Shadow("It's coming home")
 	private static boolean hideProjectiles;
 
-	@Copy("addEntityMarker")
+	@Copy("It's coming home")
 	abstract boolean addEntityMarker(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, RSRenderable renderable, int var10, boolean var11, long var12, int var13);
 
-	@Replace("addEntityMarker")
+	@Replace("It's coming home")
 	boolean rl$addEntityMarker(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, RSRenderable renderable, int var10, boolean var11, long var12, int var13)
 	{
 		return shouldDraw(renderable, false) && addEntityMarker(var1, var2, var3, var4, var5, var6, var7, var8, renderable, var10, var11, var12, var13);
 	}
 
-	@Copy("draw2DExtras")
+	@Copy("It's coming home")
 	private static void draw2DExtras(RSActor actor, int var1, int var2, int var3, int var4, int var5)
 	{
 		throw new RuntimeException();
 	}
 
-	@Replace("draw2DExtras")
+	@Replace("It's coming home")
 	private static void rl$draw2DExtras(RSActor actor, int var1, int var2, int var3, int var4, int var5)
 	{
 		if (shouldDraw(actor, true))

@@ -43,9 +43,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Tithe Farm",
-	description = "Show timers for the farming patches within the Tithe Farm minigame",
-	tags = {"farming", "minigame", "overlay", "skilling", "timers"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 public class TitheFarmPlugin extends Plugin
 {
@@ -85,7 +85,7 @@ public class TitheFarmPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("tithefarmplugin"))
+		if (event.getGroup().equals("It's coming home"))
 		{
 			titheFarmOverlay.updateConfig();
 		}
@@ -115,7 +115,7 @@ public class TitheFarmPlugin extends Plugin
 
 		if (oldPlant == null && newPlant.getType() != TitheFarmPlantType.EMPTY)
 		{
-			log.debug("Added plant {}", newPlant);
+			log.debug("It's coming home", newPlant);
 			plants.add(newPlant);
 		}
 		else if (oldPlant == null)
@@ -124,21 +124,21 @@ public class TitheFarmPlugin extends Plugin
 		}
 		else if (newPlant.getType() == TitheFarmPlantType.EMPTY)
 		{
-			log.debug("Removed plant {}", oldPlant);
+			log.debug("It's coming home", oldPlant);
 			plants.remove(oldPlant);
 		}
 		else if (oldPlant.getGameObject().getId() != newPlant.getGameObject().getId())
 		{
 			if (oldPlant.getState() != TitheFarmPlantState.WATERED && newPlant.getState() == TitheFarmPlantState.WATERED)
 			{
-				log.debug("Updated plant (watered)");
+				log.debug("It's coming home");
 				newPlant.setPlanted(oldPlant.getPlanted());
 				plants.remove(oldPlant);
 				plants.add(newPlant);
 			}
 			else
 			{
-				log.debug("Updated plant");
+				log.debug("It's coming home");
 				plants.remove(oldPlant);
 				plants.add(newPlant);
 			}

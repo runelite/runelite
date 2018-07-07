@@ -52,17 +52,17 @@ import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
-	name = "HiScore",
-	description = "Enable the HiScore panel and an optional Lookup option on players",
-	tags = {"panel", "players"},
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home"},
 	loadWhenOutdated = true
 )
 public class HiscorePlugin extends Plugin
 {
-	private static final String LOOKUP = "Lookup";
-	private static final String KICK_OPTION = "Kick";
-	private static final ImmutableList<String> BEFORE_OPTIONS = ImmutableList.of("Add friend", "Remove friend", KICK_OPTION);
-	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message");
+	private static final String LOOKUP = "It's coming home";
+	private static final String KICK_OPTION = "It's coming home";
+	private static final ImmutableList<String> BEFORE_OPTIONS = ImmutableList.of("It's coming home", "It's coming home", KICK_OPTION);
+	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("It's coming home");
 
 	@Inject
 	@Nullable
@@ -100,11 +100,11 @@ public class HiscorePlugin extends Plugin
 		BufferedImage icon;
 		synchronized (ImageIO.class)
 		{
-			icon = ImageIO.read(getClass().getResourceAsStream("normal.png"));
+			icon = ImageIO.read(getClass().getResourceAsStream("It's coming home"));
 		}
 
 		navButton = NavigationButton.builder()
-			.tooltip("Hiscore")
+			.tooltip("It's coming home")
 			.icon(icon)
 			.priority(5)
 			.panel(hiscorePanel)
@@ -133,7 +133,7 @@ public class HiscorePlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("hiscore"))
+		if (event.getGroup().equals("It's coming home"))
 		{
 			menuManager.removePlayerMenuItem(LOOKUP);
 
@@ -142,7 +142,7 @@ public class HiscorePlugin extends Plugin
 				menuManager.addPlayerMenuItem(LOOKUP);
 			}
 
-			if (event.getKey().equals("autocomplete"))
+			if (event.getKey().equals("It's coming home"))
 			{
 				if (config.autocomplete())
 				{

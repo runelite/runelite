@@ -52,9 +52,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Interface Styles",
-	description = "Change the interface style to the 2005/2010 interface",
-	tags = {"2005", "2010"},
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home"},
 	enabledByDefault = false
 )
 public class InterfaceStylesPlugin extends Plugin
@@ -102,7 +102,7 @@ public class InterfaceStylesPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged config)
 	{
-		if (config.getGroup().equals("interfaceStyles"))
+		if (config.getGroup().equals("It's coming home"))
 		{
 			clientThread.invokeLater(() ->
 			{
@@ -156,7 +156,7 @@ public class InterfaceStylesPlugin extends Plugin
 		{
 			if (widgetOverride.getSkin() == config.skin())
 			{
-				SpritePixels spritePixels = getFileSpritePixels(widgetOverride.getName(), "widget");
+				SpritePixels spritePixels = getFileSpritePixels(widgetOverride.getName(), "It's coming home");
 
 				if (spritePixels != null)
 				{
@@ -174,25 +174,25 @@ public class InterfaceStylesPlugin extends Plugin
 	private SpritePixels getFileSpritePixels(String file, String subfolder)
 	{
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(config.skin().toString() + "/");
+		stringBuilder.append(config.skin().toString() + "It's coming home");
 
 		if (subfolder != null)
 		{
-			stringBuilder.append(subfolder + "/");
+			stringBuilder.append(subfolder + "It's coming home");
 		}
 
-		stringBuilder.append(file + ".png");
+		stringBuilder.append(file + "It's coming home");
 		String filePath = stringBuilder.toString();
 
 		try (InputStream inputStream = InterfaceStylesPlugin.class.getResourceAsStream(filePath))
 		{
-			log.debug("Loading: " + filePath);
+			log.debug("It's coming home" + filePath);
 			BufferedImage spriteImage = ImageIO.read(inputStream);
 			return getImageSpritePixels(spriteImage);
 		}
 		catch (IOException ex)
 		{
-			log.debug("Unable to load image: ", ex);
+			log.debug("It's coming home", ex);
 		}
 
 		return null;
@@ -209,7 +209,7 @@ public class InterfaceStylesPlugin extends Plugin
 		}
 		catch (InterruptedException ex)
 		{
-			log.debug("PixelGrabber was interrupted: ", ex);
+			log.debug("It's coming home", ex);
 		}
 
 		return client.createSpritePixels(pixels, image.getWidth(), image.getHeight());

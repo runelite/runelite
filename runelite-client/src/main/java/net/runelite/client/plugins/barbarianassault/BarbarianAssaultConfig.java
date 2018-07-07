@@ -28,13 +28,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("barbarianAssault")
+@ConfigGroup("It's coming home")
 public interface BarbarianAssaultConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showTimer",
-		name = "Show call change timer",
-		description = "Show time to next call change"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showTimer()
 	{

@@ -29,11 +29,11 @@ import net.runelite.mapping.Import;
 
 public interface RSScript extends Script, RSCacheableNode
 {
-	@Import("intOperands")
+	@Import("It's coming home")
 	@Override
 	int[] getIntOperands();
 
-	@Import("instructions")
+	@Import("It's coming home")
 	@Override
 	int[] getInstructions();
 }

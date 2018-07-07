@@ -81,7 +81,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 			return;
 		}
 
-		String name = actor.getName().replace('\u00A0', ' ');
+		String name = actor.getName().replace('It's coming home', ' ');
 		int offset = actor.getLogicalHeight() + 40;
 		Point textLocation = actor.getCanvasTextLocation(graphics, name, offset);
 

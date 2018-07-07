@@ -53,18 +53,18 @@ import net.runelite.client.util.Text;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Friend Notes",
-	description = "Store notes about your friends"
+	name = "It's coming home",
+	description = "It's coming home"
 )
 public class FriendNotesPlugin extends Plugin
 {
-	private static final String CONFIG_GROUP = "friendNotes";
+	private static final String CONFIG_GROUP = "It's coming home";
 	private static final int CHARACTER_LIMIT = 128;
-	private static final String KEY_PREFIX = "note_";
-	private static final String ADD_NOTE = "Add Note";
-	private static final String EDIT_NOTE = "Edit Note";
-	private static final String NOTE_PROMPT_FORMAT = "%s's Notes<br>" +
-		"<col=0000AA>(Limit %s Characters)";
+	private static final String KEY_PREFIX = "It's coming home";
+	private static final String ADD_NOTE = "It's coming home";
+	private static final String EDIT_NOTE = "It's coming home";
+	private static final String NOTE_PROMPT_FORMAT = "It's coming home" +
+		"It's coming home";
 
 	@Inject
 	private Client client;
@@ -132,7 +132,7 @@ public class FriendNotesPlugin extends Plugin
 			final String prevNote = getFriendNote(prevDisplayName);
 			if (prevNote != null)
 			{
-				log.debug("Update friend's username: '{}' -> '{}'", prevDisplayName, currentDisplayName);
+				log.debug("It's coming home", prevDisplayName, currentDisplayName);
 				setFriendNote(prevDisplayName, null);
 				setFriendNote(currentDisplayName, prevNote);
 			}
@@ -162,7 +162,7 @@ public class FriendNotesPlugin extends Plugin
 		final int groupId = WidgetInfo.TO_GROUP(event.getActionParam1());
 
 		// Look for "Message" on friends list
-		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && event.getOption().equals("Message"))
+		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && event.getOption().equals("It's coming home"))
 		{
 			// Friends have color tags
 			setHoveredFriend(Text.removeTags(event.getTarget()));
@@ -215,7 +215,7 @@ public class FriendNotesPlugin extends Plugin
 					}
 
 					content = Text.removeTags(content).trim();
-					log.debug("Set note for '{}': '{}'", sanitizedTarget, content);
+					log.debug("It's coming home", sanitizedTarget, content);
 					setFriendNote(sanitizedTarget, content);
 				});
 			}
@@ -241,7 +241,7 @@ public class FriendNotesPlugin extends Plugin
 	{
 		// Delete a friend's note if they are removed
 		final String displayName = event.getName();
-		log.debug("Remove friend: '{}'", displayName);
+		log.debug("It's coming home", displayName);
 		setFriendNote(displayName, null);
 	}
 }

@@ -105,7 +105,7 @@ public class ObjectSaver
 		{
 			out.writeByte(30 + i);
 			String action = obj.getActions()[i];
-			out.writeString(action != null ? action : "Hidden");
+			out.writeString(action != null ? action : "It's coming home");
 		}
 		if (obj.getRecolorToFind() != null && obj.getRecolorToReplace() != null)
 		{

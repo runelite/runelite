@@ -53,9 +53,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 
 @PluginDescriptor(
-	name = "Opponent Information",
-	description = "Show name and hitpoints information about the NPC you are fighting",
-	tags = {"combat", "health", "hitpoints", "npcs", "overlay"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 public class OpponentInfoPlugin extends Plugin
 {
@@ -170,7 +170,7 @@ public class OpponentInfoPlugin extends Plugin
 		{
 		}.getType();
 
-		InputStream healthFile = OpponentInfoPlugin.class.getResourceAsStream("/npc_health.json");
+		InputStream healthFile = OpponentInfoPlugin.class.getResourceAsStream("It's coming home");
 		return gson.fromJson(new InputStreamReader(healthFile), type);
 	}
 }

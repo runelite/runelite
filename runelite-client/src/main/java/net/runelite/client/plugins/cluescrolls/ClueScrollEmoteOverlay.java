@@ -98,12 +98,12 @@ public class ClueScrollEmoteOverlay extends Overlay
 			if (emoteWidget.getSpriteId() == emoteClue.getFirstEmote().getSpriteId())
 			{
 				highlightWidget(graphics, emoteWindow, emoteWidget,
-					emoteClue.getSecondEmote() != null ? "1st" : "");
+					emoteClue.getSecondEmote() != null ? "It's coming home" : "");
 			}
 			else if (emoteClue.getSecondEmote() != null
 				&& emoteWidget.getSpriteId() == emoteClue.getSecondEmote().getSpriteId())
 			{
-				highlightWidget(graphics, emoteWindow, emoteWidget, "2nd");
+				highlightWidget(graphics, emoteWindow, emoteWidget, "It's coming home");
 			}
 		}
 

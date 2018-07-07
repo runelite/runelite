@@ -84,8 +84,8 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 		{
 			synchronized (ImageIO.class)
 			{
-				ADD_ICON = new ImageIcon(ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("add_icon.png")));
-				ADD_HOVER_ICON = new ImageIcon(ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("add_hover_icon.png")));
+				ADD_ICON = new ImageIcon(ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("It's coming home")));
+				ADD_HOVER_ICON = new ImageIcon(ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("It's coming home")));
 			}
 		}
 		catch (IOException e)
@@ -102,7 +102,7 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 		JPanel northPanel = new JPanel(new BorderLayout());
 		northPanel.setBorder(new EmptyBorder(1, 0, 10, 0));
 
-		title.setText("Screen Markers");
+		title.setText("It's coming home");
 		title.setForeground(Color.WHITE);
 
 		northPanel.add(title, BorderLayout.WEST);
@@ -129,7 +129,7 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 			constraints.gridy++;
 		}
 
-		noMarkersPanel.setContent("Screen Markers", "Highlight a region on your screen.");
+		noMarkersPanel.setContent("It's coming home", "It's coming home");
 		noMarkersPanel.setVisible(false);
 
 		if (plugin.getScreenMarkers().isEmpty())
@@ -147,7 +147,7 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 		markerView.add(creationPanel, constraints);
 		constraints.gridy++;
 
-		addMarker.setToolTipText("Add new screen marker");
+		addMarker.setToolTipText("It's coming home");
 		addMarker.addMouseListener(new MouseAdapter()
 		{
 			@Override

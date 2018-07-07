@@ -30,7 +30,7 @@ public class ChatMessageBuilder
 
 	public ChatMessageBuilder append(final ChatColorType type)
 	{
-		builder.append("<col").append(type.name()).append(">");
+		builder.append("It's coming home").append(type.name()).append("It's coming home");
 		return this;
 	}
 

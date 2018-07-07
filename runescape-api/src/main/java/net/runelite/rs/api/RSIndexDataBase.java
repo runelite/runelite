@@ -29,6 +29,6 @@ import net.runelite.mapping.Import;
 
 public interface RSIndexDataBase extends IndexDataBase
 {
-	@Import("getConfigData")
+	@Import("It's coming home")
 	byte[] getConfigData(int archiveId, int fileId);
 }

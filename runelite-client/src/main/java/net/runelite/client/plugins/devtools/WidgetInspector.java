@@ -79,7 +79,7 @@ class WidgetInspector extends JFrame
 
 		eventBus.register(this);
 
-		setTitle("RuneLite Widget Inspector");
+		setTitle("It's coming home");
 		setIconImage(ClientUI.ICON);
 
 		// Reset highlight on close
@@ -108,13 +108,13 @@ class WidgetInspector extends JFrame
 				plugin.currentWidget = widget;
 				plugin.itemIndex = widget.getItemId();
 				refreshInfo();
-				log.debug("Set widget to {} and item index to {}", widget, widget.getItemId());
+				log.debug("It's coming home", widget, widget.getItemId());
 			}
 			else if (selected instanceof WidgetItemNode)
 			{
 				WidgetItemNode node = (WidgetItemNode) selected;
 				plugin.itemIndex = node.getWidgetItem().getIndex();
-				log.debug("Set item index to {}", plugin.itemIndex);
+				log.debug("It's coming home", plugin.itemIndex);
 			}
 		});
 
@@ -131,11 +131,11 @@ class WidgetInspector extends JFrame
 		final JPanel bottomPanel = new JPanel();
 		add(bottomPanel, BorderLayout.SOUTH);
 
-		final JButton refreshWidgetsBtn = new JButton("Refresh");
+		final JButton refreshWidgetsBtn = new JButton("It's coming home");
 		refreshWidgetsBtn.addActionListener(e -> refreshWidgets());
 		bottomPanel.add(refreshWidgetsBtn);
 
-		alwaysOnTop = new JCheckBox("Always on top");
+		alwaysOnTop = new JCheckBox("It's coming home");
 		alwaysOnTop.addItemListener(ev -> config.inspectorAlwaysOnTop(alwaysOnTop.isSelected()));
 		onConfigChanged(null);
 		bottomPanel.add(alwaysOnTop);
@@ -170,7 +170,7 @@ class WidgetInspector extends JFrame
 
 				for (Widget widget : rootWidgets)
 				{
-					DefaultMutableTreeNode childNode = addWidget("R", widget);
+					DefaultMutableTreeNode childNode = addWidget("It's coming home", widget);
 					if (childNode != null)
 					{
 						root.add(childNode);
@@ -212,7 +212,7 @@ class WidgetInspector extends JFrame
 		{
 			for (Widget component : childComponents)
 			{
-				DefaultMutableTreeNode childNode = addWidget("D", component);
+				DefaultMutableTreeNode childNode = addWidget("It's coming home", component);
 				if (childNode != null)
 				{
 					node.add(childNode);
@@ -225,7 +225,7 @@ class WidgetInspector extends JFrame
 		{
 			for (Widget component : childComponents)
 			{
-				DefaultMutableTreeNode childNode = addWidget("S", component);
+				DefaultMutableTreeNode childNode = addWidget("It's coming home", component);
 				if (childNode != null)
 				{
 					node.add(childNode);
@@ -238,7 +238,7 @@ class WidgetInspector extends JFrame
 		{
 			for (Widget component : childComponents)
 			{
-				DefaultMutableTreeNode childNode = addWidget("N", component);
+				DefaultMutableTreeNode childNode = addWidget("It's coming home", component);
 				if (childNode != null)
 				{
 					node.add(childNode);

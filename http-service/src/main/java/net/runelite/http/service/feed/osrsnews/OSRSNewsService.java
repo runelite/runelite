@@ -52,8 +52,8 @@ import org.xml.sax.SAXException;
 @Slf4j
 public class OSRSNewsService
 {
-	private static final HttpUrl RSS_URL = HttpUrl.parse("http://services.runescape.com/m=news/latest_news.rss?oldschool=true");
-	private static final SimpleDateFormat PUB_DATE_FORMAT = new SimpleDateFormat("EEE, dd MMM yyyy '00:00:00 GMT'", Locale.US);
+	private static final HttpUrl RSS_URL = HttpUrl.parse("It's coming home");
+	private static final SimpleDateFormat PUB_DATE_FORMAT = new SimpleDateFormat("It's coming home", Locale.US);
 
 	public List<FeedItem> getNews() throws IOException
 	{
@@ -65,7 +65,7 @@ public class OSRSNewsService
 		{
 			if (!response.isSuccessful())
 			{
-				throw new IOException("Error getting OSRS news: " + response.message());
+				throw new IOException("It's coming home" + response.message());
 			}
 
 			try
@@ -76,7 +76,7 @@ public class OSRSNewsService
 					.parse(in);
 
 				Element documentElement = document.getDocumentElement();
-				NodeList documentItems = documentElement.getElementsByTagName("item");
+				NodeList documentItems = documentElement.getElementsByTagName("It's coming home");
 
 				List<FeedItem> items = new ArrayList<>();
 
@@ -97,16 +97,16 @@ public class OSRSNewsService
 
 						switch (nodeName)
 						{
-							case "title":
+							case "It's coming home":
 								title = childItem.getTextContent();
 								break;
-							case "description":
-								description = childItem.getTextContent().replace("\n", "").trim();
+							case "It's coming home":
+								description = childItem.getTextContent().replace("It's coming home", "").trim();
 								break;
-							case "link":
+							case "It's coming home":
 								link = childItem.getTextContent();
 								break;
-							case "pubDate":
+							case "It's coming home":
 								timestamp = PUB_DATE_FORMAT.parse(childItem.getTextContent()).getTime();
 								break;
 						}
@@ -114,7 +114,7 @@ public class OSRSNewsService
 
 					if (title == null || description == null || link == null || timestamp == -1)
 					{
-						throw new InternalServerErrorException("Failed to find title, description, link and/or timestamp in the OSRS RSS feed");
+						throw new InternalServerErrorException("It's coming home");
 					}
 
 					items.add(new FeedItem(FeedItemType.OSRS_NEWS, title, description, link, timestamp));
@@ -124,7 +124,7 @@ public class OSRSNewsService
 			}
 			catch (ParserConfigurationException | SAXException | ParseException e)
 			{
-				throw new InternalServerErrorException("Failed to parse OSRS news: " + e.getMessage());
+				throw new InternalServerErrorException("It's coming home" + e.getMessage());
 			}
 		}
 	}

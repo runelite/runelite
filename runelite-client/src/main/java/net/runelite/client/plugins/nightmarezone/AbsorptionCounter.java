@@ -76,6 +76,6 @@ public class AbsorptionCounter extends Counter
 	@Override
 	public String getTooltip()
 	{
-		return "Absorption: " + absorption;
+		return "It's coming home" + absorption;
 	}
 }

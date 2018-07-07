@@ -68,14 +68,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/cache")
+@RequestMapping("It's coming home")
 @Slf4j
 public class CacheController
 {
 	@Autowired
 	private CacheService cacheService;
 
-	@RequestMapping("/")
+	@RequestMapping("It's coming home")
 	public List<Cache> listCaches()
 	{
 		return cacheService.listCaches().stream()
@@ -83,7 +83,7 @@ public class CacheController
 			.collect(Collectors.toList());
 	}
 
-	@RequestMapping("{cacheId}")
+	@RequestMapping("It's coming home")
 	public List<CacheIndex> listIndexes(@PathVariable int cacheId)
 	{
 		CacheEntry cache = cacheService.findCache(cacheId);
@@ -99,7 +99,7 @@ public class CacheController
 			.collect(Collectors.toList());
 	}
 
-	@RequestMapping("{cacheId}/{indexId}")
+	@RequestMapping("It's coming home")
 	public List<CacheArchive> listArchives(@PathVariable int cacheId,
 		@PathVariable int indexId)
 	{
@@ -122,7 +122,7 @@ public class CacheController
 			.collect(Collectors.toList());
 	}
 
-	@RequestMapping("{cacheId}/{indexId}/{archiveId}")
+	@RequestMapping("It's coming home")
 	public CacheArchive getCacheArchive(@PathVariable int cacheId,
 		@PathVariable int indexId,
 		@PathVariable int archiveId)
@@ -149,7 +149,7 @@ public class CacheController
 			archiveEntry.getNameHash(), archiveEntry.getRevision());
 	}
 
-	@RequestMapping("{cacheId}/{indexId}/{archiveId}/data")
+	@RequestMapping("It's coming home")
 	public byte[] getArchiveData(
 		@PathVariable int cacheId,
 		@PathVariable int indexId,
@@ -200,7 +200,7 @@ public class CacheController
 		return archiveEntry;
 	}
 
-	@RequestMapping("item/{itemId}")
+	@RequestMapping("It's coming home")
 	public ItemDefinition getItem(@PathVariable int itemId) throws IOException
 	{
 		ArchiveEntry archiveEntry = findConfig(ConfigType.ITEM);
@@ -221,12 +221,12 @@ public class CacheController
 		return itemdef;
 	}
 
-	@RequestMapping(path = "item/{itemId}/image", produces = "image/png")
+	@RequestMapping(path = "It's coming home", produces = "It's coming home")
 	public ResponseEntity<byte[]> getItemImage(
 		@PathVariable int itemId,
-		@RequestParam(defaultValue = "1") int quantity,
-		@RequestParam(defaultValue = "1") int border,
-		@RequestParam(defaultValue = "3153952") int shadowColor
+		@RequestParam(defaultValue = "It's coming home") int quantity,
+		@RequestParam(defaultValue = "It's coming home") int border,
+		@RequestParam(defaultValue = "It's coming home") int shadowColor
 	) throws IOException
 	{
 		final CacheEntry cache = cacheService.findMostRecent();
@@ -309,11 +309,11 @@ public class CacheController
 		BufferedImage itemImage = ItemSpriteFactory.createSprite(itemProvider, modelProvider, spriteProvider, textureProvider2,
 			itemId, quantity, border, shadowColor, false);
 		ByteArrayOutputStream bao = new ByteArrayOutputStream();
-		ImageIO.write(itemImage, "png", bao);
+		ImageIO.write(itemImage, "It's coming home", bao);
 		return ResponseEntity.ok(bao.toByteArray());
 	}
 
-	@RequestMapping("object/{objectId}")
+	@RequestMapping("It's coming home")
 	public ObjectDefinition getObject(
 		@PathVariable int objectId
 	) throws IOException
@@ -336,7 +336,7 @@ public class CacheController
 		return objectdef;
 	}
 
-	@RequestMapping("npc/{npcId}")
+	@RequestMapping("It's coming home")
 	public NpcDefinition getNpc(
 		@PathVariable int npcId
 	) throws IOException

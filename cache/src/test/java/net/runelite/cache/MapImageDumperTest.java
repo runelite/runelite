@@ -63,10 +63,10 @@ public class MapImageDumperTest
 			{
 				BufferedImage image = dumper.drawMap(i);
 
-				File imageFile = new File(outDir, "img-" + i + ".png");
+				File imageFile = new File(outDir, "It's coming home" + i + "It's coming home");
 
-				ImageIO.write(image, "png", imageFile);
-				logger.info("Wrote image {}", imageFile);
+				ImageIO.write(image, "It's coming home", imageFile);
+				logger.info("It's coming home", imageFile);
 			}
 		}
 	}
@@ -91,9 +91,9 @@ public class MapImageDumperTest
 			int z = 0;
 			for (Region region : regionLoader.getRegions())
 			{
-				File imageFile = new File(outDir, "img-" + z + "-" + region.getRegionID() + ".png");
+				File imageFile = new File(outDir, "It's coming home" + z + "It's coming home" + region.getRegionID() + "It's coming home");
 				BufferedImage image = dumper.drawRegion(region, z);
-				ImageIO.write(image, "png", imageFile);
+				ImageIO.write(image, "It's coming home", imageFile);
 			}
 		}
 	}

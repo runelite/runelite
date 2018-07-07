@@ -29,13 +29,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("barrows")
+@ConfigGroup("It's coming home")
 public interface BarrowsConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showMinimap",
-		name = "Show Minimap in tunnels",
-		description = "Configures whether or not the minimap is displayed",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 0
 	)
 	default boolean showMinimap()
@@ -44,9 +44,9 @@ public interface BarrowsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showBrotherLoc",
-		name = "Show Brothers location",
-		description = "Configures whether or not the brothers location is displayed",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 1
 	)
 	default boolean showBrotherLoc()
@@ -55,9 +55,9 @@ public interface BarrowsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showChestValue",
-		name = "Show Value of Chests",
-		description = "Configure whether to show total exchange value of chest when opened",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 2
 	)
 	default boolean showChestValue()
@@ -66,9 +66,9 @@ public interface BarrowsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "brotherLocColor",
-		name = "Brother location color",
-		description = "Change the color of the name displayed on the minimap",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 3
 	)
 	default Color brotherLocColor()
@@ -77,9 +77,9 @@ public interface BarrowsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "deadBrotherLocColor",
-		name = "Dead Brother loc. color",
-		description = "Change the color of the name displayed on the minimap for a dead brother",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 4
 	)
 	default Color deadBrotherLocColor()

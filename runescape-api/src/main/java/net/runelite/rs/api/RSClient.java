@@ -35,125 +35,125 @@ import net.runelite.mapping.Import;
 
 public interface RSClient extends RSGameEngine, Client
 {
-	@Import("cameraX")
+	@Import("It's coming home")
 	@Override
 	int getCameraX();
 
-	@Import("cameraY")
+	@Import("It's coming home")
 	@Override
 	int getCameraY();
 
-	@Import("cameraZ")
+	@Import("It's coming home")
 	@Override
 	int getCameraZ();
 
-	@Import("plane")
+	@Import("It's coming home")
 	@Override
 	int getPlane();
 
-	@Import("cameraPitch")
+	@Import("It's coming home")
 	@Override
 	int getCameraPitch();
 
-	@Import("cameraYaw")
+	@Import("It's coming home")
 	@Override
 	int getCameraYaw();
 
-	@Import("world")
+	@Import("It's coming home")
 	int getWorld();
 
-	@Import("FPS")
+	@Import("It's coming home")
 	@Override
 	int getFPS();
 
-	@Import("mapAngle")
+	@Import("It's coming home")
 	@Override
 	int getMapAngle();
 
-	@Import("tileHeights")
+	@Import("It's coming home")
 	@Override
 	int[][][] getTileHeights();
 
-	@Import("tileSettings")
+	@Import("It's coming home")
 	@Override
 	byte[][][] getTileSettings();
 
-	@Import("clientVarps")
+	@Import("It's coming home")
 	@Override
 	int[] getVarps();
 
-	@Import("varcs")
+	@Import("It's coming home")
 	RSVarcs getVarcs();
 
-	@Import("energy")
+	@Import("It's coming home")
 	@Override
 	int getEnergy();
 
-	@Import("weight")
+	@Import("It's coming home")
 	int getWeight();
 
-	@Import("baseX")
+	@Import("It's coming home")
 	@Override
 	int getBaseX();
 
-	@Import("baseY")
+	@Import("It's coming home")
 	@Override
 	int getBaseY();
 
-	@Import("boostedSkillLevels")
+	@Import("It's coming home")
 	@Override
 	int[] getBoostedSkillLevels();
 
-	@Import("realSkillLevels")
+	@Import("It's coming home")
 	@Override
 	int[] getRealSkillLevels();
 
-	@Import("skillExperiences")
+	@Import("It's coming home")
 	@Override
 	int[] getSkillExperiences();
 
-	@Import("changedSkills")
+	@Import("It's coming home")
 	@Override
 	int[] getChangedSkills();
 
-	@Import("changedSkillsCount")
+	@Import("It's coming home")
 	@Override
 	int getChangedSkillsCount();
 
-	@Import("changedSkillsCount")
+	@Import("It's coming home")
 	@Override
 	void setChangedSkillsCount(int i);
 
-	@Import("gameState")
+	@Import("It's coming home")
 	int getRSGameState();
 
-	@Import("mouseCurrentButton")
+	@Import("It's coming home")
 	@Override
 	int getMouseCurrentButton();
 
-	@Import("selectedRegionTileX")
+	@Import("It's coming home")
 	int getSelectedRegionTileX();
 
-	@Import("selectedRegionTileY")
+	@Import("It's coming home")
 	int getSelectedRegionTileY();
 
-	@Import("draggingWidget")
+	@Import("It's coming home")
 	@Override
 	boolean isDraggingWidget();
 
-	@Import("draggedWidget")
+	@Import("It's coming home")
 	@Override
 	RSWidget getDraggedWidget();
 
-	@Import("draggedOnWidget")
+	@Import("It's coming home")
 	@Override
 	RSWidget getDraggedOnWidget();
 
-	@Import("draggedOnWidget")
+	@Import("It's coming home")
 	@Override
 	void setDraggedOnWidget(Widget widget);
 
-	@Import("widgets")
+	@Import("It's coming home")
 	RSWidget[][] getWidgets();
 
 	/**
@@ -165,218 +165,218 @@ public interface RSClient extends RSGameEngine, Client
 	 */
 	RSWidget[] getGroup(int groupId);
 
-	@Import("region")
+	@Import("It's coming home")
 	@Override
 	RSRegion getRegion();
 
-	@Import("localPlayer")
+	@Import("It's coming home")
 	@Override
 	RSPlayer getLocalPlayer();
 
-	@Import("npcIndexesCount")
+	@Import("It's coming home")
 	int getNpcIndexesCount();
 
-	@Import("npcIndices")
+	@Import("It's coming home")
 	int[] getNpcIndices();
 
-	@Import("cachedNPCs")
+	@Import("It's coming home")
 	@Override
 	RSNPC[] getCachedNPCs();
 
-	@Import("collisionMaps")
+	@Import("It's coming home")
 	RSCollisionData[] getCollisionMaps();
 
-	@Import("playerIndexesCount")
+	@Import("It's coming home")
 	int getPlayerIndexesCount();
 
-	@Import("playerIndices")
+	@Import("It's coming home")
 	int[] getPlayerIndices();
 
-	@Import("cachedPlayers")
+	@Import("It's coming home")
 	@Override
 	RSPlayer[] getCachedPlayers();
 
-	@Import("localInteractingIndex")
+	@Import("It's coming home")
 	int getLocalInteractingIndex();
 
-	@Import("groundItemDeque")
+	@Import("It's coming home")
 	RSDeque[][][] getGroundItemDeque();
 
-	@Import("projectiles")
+	@Import("It's coming home")
 	RSDeque getProjectilesDeque();
 
-	@Import("graphicsObjectDeque")
+	@Import("It's coming home")
 	RSDeque getGraphicsObjectDeque();
 
-	@Import("username")
+	@Import("It's coming home")
 	@Override
 	String getUsername();
 
-	@Import("username")
+	@Import("It's coming home")
 	@Override
 	void setUsername(String username);
 
-	@Import("playerOptions")
+	@Import("It's coming home")
 	@Override
 	String[] getPlayerOptions();
 
-	@Import("playerOptionsPriorities")
+	@Import("It's coming home")
 	@Override
 	boolean[] getPlayerOptionsPriorities();
 
-	@Import("playerMenuTypes")
+	@Import("It's coming home")
 	@Override
 	int[] getPlayerMenuTypes();
 
-	@Import("mouseX")
+	@Import("It's coming home")
 	int getMouseX();
 
-	@Import("mouseY")
+	@Import("It's coming home")
 	int getMouseY();
 
-	@Import("menuOptionCount")
+	@Import("It's coming home")
 	int getMenuOptionCount();
 
-	@Import("menuOptionCount")
+	@Import("It's coming home")
 	void setMenuOptionCount(int menuOptionCount);
 
-	@Import("menuOptions")
+	@Import("It's coming home")
 	String[] getMenuOptions();
 
-	@Import("menuTargets")
+	@Import("It's coming home")
 	String[] getMenuTargets();
 
-	@Import("menuIdentifiers")
+	@Import("It's coming home")
 	int[] getMenuIdentifiers();
 
-	@Import("menuTypes")
+	@Import("It's coming home")
 	int[] getMenuTypes();
 
-	@Import("menuActionParams0")
+	@Import("It's coming home")
 	int[] getMenuActionParams0();
 
-	@Import("menuActionParams1")
+	@Import("It's coming home")
 	int[] getMenuActionParams1();
 
-	@Import("worldList")
+	@Import("It's coming home")
 	@Override
 	RSWorld[] getWorldList();
 
-	@Import("addChatMessage")
+	@Import("It's coming home")
 	void addChatMessage(int type, String name, String message, String sender);
 
 	@Override
-	@Import("getObjectDefinition")
+	@Import("It's coming home")
 	RSObjectComposition getObjectDefinition(int objectId);
 
 	@Override
-	@Import("getNpcDefinition")
+	@Import("It's coming home")
 	RSNPCComposition getNpcDefinition(int npcId);
 
-	@Import("scale")
+	@Import("It's coming home")
 	@Override
 	int getScale();
 
-	@Import("viewportHeight")
+	@Import("It's coming home")
 	@Override
 	int getViewportHeight();
 
-	@Import("viewportWidth")
+	@Import("It's coming home")
 	@Override
 	int getViewportWidth();
 
-	@Import("Viewport_xOffset")
+	@Import("It's coming home")
 	@Override
 	int getViewportXOffset();
 
-	@Import("Viewport_yOffset")
+	@Import("It's coming home")
 	@Override
 	int getViewportYOffset();
 
-	@Import("isResized")
+	@Import("It's coming home")
 	@Override
 	boolean isResized();
 
-	@Import("widgetPositionX")
+	@Import("It's coming home")
 	@Override
 	int[] getWidgetPositionsX();
 
-	@Import("widgetPositionY")
+	@Import("It's coming home")
 	@Override
 	int[] getWidgetPositionsY();
 
-	@Import("itemContainers")
+	@Import("It's coming home")
 	RSHashTable getItemContainers();
 
-	@Import("getItemDefinition")
+	@Import("It's coming home")
 	@Override
 	RSItemComposition getItemDefinition(int itemId);
 
-	@Import("createSprite")
+	@Import("It's coming home")
 	RSSpritePixels createItemSprite(int itemId, int quantity, int thickness, int borderColor, int stackable, boolean noted);
 
-	@Import("getSpriteAsSpritePixels")
+	@Import("It's coming home")
 	@Override
 	RSSpritePixels getSprite(IndexDataBase source, int archiveId, int fileId);
 
-	@Import("indexSprites")
+	@Import("It's coming home")
 	@Override
 	RSIndexDataBase getIndexSprites();
 
-	@Import("widgetFlags")
+	@Import("It's coming home")
 	@Override
 	RSHashTable getWidgetFlags();
 
-	@Import("componentTable")
+	@Import("It's coming home")
 	@Override
 	RSHashTable getComponentTable();
 
-	@Import("grandExchangeOffers")
+	@Import("It's coming home")
 	RSGrandExchangeOffer[] getGrandExchangeOffers();
 
-	@Import("isMenuOpen")
+	@Import("It's coming home")
 	@Override
 	boolean isMenuOpen();
 
-	@Import("gameCycle")
+	@Import("It's coming home")
 	@Override
 	int getGameCycle();
 
-	@Import("packetHandler")
+	@Import("It's coming home")
 	void packetHandler();
 
-	@Import("chatLineMap")
+	@Import("It's coming home")
 	@Override
 	Map getChatLineMap();
 
-	@Import("revision")
+	@Import("It's coming home")
 	@Override
 	int getRevision();
 
-	@Import("mapRegions")
+	@Import("It's coming home")
 	@Override
 	int[] getMapRegions();
 
-	@Import("instanceTemplateChunks")
+	@Import("It's coming home")
 	@Override
 	int[][][] getInstanceTemplateChunks();
 
-	@Import("xteaKeys")
+	@Import("It's coming home")
 	@Override
 	int[][] getXteaKeys();
 
-	@Import("gameDrawingMode")
+	@Import("It's coming home")
 	@Override
 	int getGameDrawingMode();
 
-	@Import("gameDrawingMode")
+	@Import("It's coming home")
 	@Override
 	void setGameDrawingMode(int gameDrawingMode);
 
-	@Import("cycleCntr")
+	@Import("It's coming home")
 	int getCycleCntr();
 
-	@Import("chatCycle")
+	@Import("It's coming home")
 	void setChatCycle(int value);
 
 	/**
@@ -385,29 +385,29 @@ public interface RSClient extends RSGameEngine, Client
 	 *
 	 * @return
 	 */
-	@Import("widgetRoot")
+	@Import("It's coming home")
 	int getWidgetRoot();
 
-	@Import("mapAreaType")
+	@Import("It's coming home")
 	@Override
 	RSArea[] getMapAreas();
 
-	@Import("mapscene")
+	@Import("It's coming home")
 	@Override
 	RSIndexedSprite[] getMapScene();
 
-	@Import("mapIcons")
+	@Import("It's coming home")
 	@Override
 	RSSpritePixels[] getMapIcons();
 
-	@Import("mapDots")
+	@Import("It's coming home")
 	RSSpritePixels[] getMapDots();
 
-	@Import("modIcons")
+	@Import("It's coming home")
 	@Override
 	RSIndexedSprite[] getModIcons();
 
-	@Import("modIcons")
+	@Import("It's coming home")
 	void setRSModIcons(RSIndexedSprite[] modIcons);
 
 	@Construct
@@ -418,103 +418,103 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	RSSpritePixels createSpritePixels(int[] pixels, int width, int height);
 
-	@Import("destinationX")
+	@Import("It's coming home")
 	int getDestinationX();
 
-	@Import("destinationY")
+	@Import("It's coming home")
 	int getDestinationY();
 
-	@Import("audioEffects")
+	@Import("It's coming home")
 	RSSoundEffect[] getAudioEffects();
 
-	@Import("queuedSoundEffectIDs")
+	@Import("It's coming home")
 	int[] getQueuedSoundEffectIDs();
 
-	@Import("soundLocations")
+	@Import("It's coming home")
 	int[] getSoundLocations();
 
-	@Import("unknownSoundValues1")
+	@Import("It's coming home")
 	int[] getUnknownSoundValues1();
 
-	@Import("unknownSoundValues2")
+	@Import("It's coming home")
 	int[] getUnknownSoundValues2();
 
-	@Import("queuedSoundEffectCount")
+	@Import("It's coming home")
 	int getQueuedSoundEffectCount();
 
-	@Import("queuedSoundEffectCount")
+	@Import("It's coming home")
 	void setQueuedSoundEffectCount(int queuedSoundEffectCount);
 
-	@Import("rasterProvider")
+	@Import("It's coming home")
 	@Override
 	RSBufferProvider getBufferProvider();
 
-	@Import("mouseIdleTicks")
+	@Import("It's coming home")
 	@Override
 	int getMouseIdleTicks();
 
-	@Import("keyboardIdleTicks")
+	@Import("It's coming home")
 	@Override
 	int getKeyboardIdleTicks();
 
-	@Import("lowMemory")
+	@Import("It's coming home")
 	void setLowMemory(boolean lowMemory);
 
-	@Import("regionLowMemory")
+	@Import("It's coming home")
 	void setRegionLowMemory(boolean lowMemory);
 
-	@Import("audioHighMemory")
+	@Import("It's coming home")
 	void setAudioHighMemory(boolean highMemory);
 
-	@Import("objectCompositionLowDetail")
+	@Import("It's coming home")
 	void setObjectCompositionLowDetail(boolean lowDetail);
 
 	@Construct
 	RSItem createItem();
 
-	@Import("intStackSize")
+	@Import("It's coming home")
 	@Override
 	int getIntStackSize();
 
-	@Import("intStackSize")
+	@Import("It's coming home")
 	@Override
 	void setIntStackSize(int stackSize);
 
-	@Import("intStack")
+	@Import("It's coming home")
 	@Override
 	int[] getIntStack();
 
-	@Import("scriptStringStackSize")
+	@Import("It's coming home")
 	@Override
 	int getStringStackSize();
 
-	@Import("scriptStringStackSize")
+	@Import("It's coming home")
 	@Override
 	void setStringStackSize(int stackSize);
 
-	@Import("scriptStringStack")
+	@Import("It's coming home")
 	@Override
 	String[] getStringStack();
 
-	@Import("friendManager")
+	@Import("It's coming home")
 	RSFriendManager getFriendManager();
 
-	@Import("clanMemberManager")
+	@Import("It's coming home")
 	RSClanMemberManager getClanMemberManager();
 
-	@Import("loginType")
+	@Import("It's coming home")
 	RSJagexLoginType getLoginType();
 
 	@Construct
 	RSName createName(String name, RSJagexLoginType type);
 
-	@Import("getVarbit")
+	@Import("It's coming home")
 	int getVarbit(int varbitId);
 
-	@Import("varbits")
+	@Import("It's coming home")
 	RSNodeCache getVarbitCache();
 
-	@Import("preferences")
+	@Import("It's coming home")
 	@Override
 	RSPreferences getPreferences();
 
@@ -526,28 +526,28 @@ public interface RSClient extends RSGameEngine, Client
 	 *
 	 * (1) JAU - Jagex Angle Unit; 1/1024 of a revolution
 	 */
-	@Import("cameraPitchTarget")
+	@Import("It's coming home")
 	int getCameraPitchTarget();
 
-	@Import("cameraPitchTarget")
+	@Import("It's coming home")
 	void setCameraPitchTarget(int pitch);
 
-	@Import("pitchSin")
+	@Import("It's coming home")
 	void setPitchSin(int v);
 
-	@Import("pitchCos")
+	@Import("It's coming home")
 	void setPitchCos(int v);
 
-	@Import("Rasterizer3D_zoom")
+	@Import("It's coming home")
 	int get3dZoom();
 
-	@Import("Rasterizer3D_zoom")
+	@Import("It's coming home")
 	void set3dZoom(int zoom);
 
-	@Import("renderOverview")
+	@Import("It's coming home")
 	RSRenderOverview getRenderOverview();
 
-	@Import("changeWorld")
+	@Import("It's coming home")
 	@Override
 	void changeWorld(World world);
 
@@ -555,89 +555,89 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	RSWorld createWorld();
 
-	@Import("animOffsetX")
+	@Import("It's coming home")
 	void setAnimOffsetX(int animOffsetX);
 
-	@Import("animOffsetY")
+	@Import("It's coming home")
 	void setAnimOffsetY(int animOffsetY);
 
-	@Import("animOffsetZ")
+	@Import("It's coming home")
 	void setAnimOffsetZ(int animOffsetZ);
 
-	@Import("getFrames")
+	@Import("It's coming home")
 	RSFrames getFrames(int frameId);
 
-	@Import("minimapSprite")
+	@Import("It's coming home")
 	RSSpritePixels getMinimapSprite();
 
-	@Import("minimapSprite")
+	@Import("It's coming home")
 	void setMinimapSprite(SpritePixels spritePixels);
 
-	@Import("drawObject")
+	@Import("It's coming home")
 	void drawObject(int z, int x, int y, int randomColor1, int randomColor2);
 
 	@Construct
 	RSScriptEvent createScriptEvent();
 
-	@Import("runScript")
+	@Import("It's coming home")
 	void runScript(RSScriptEvent ev, int ex);
 
-	@Import("hintArrowTargetType")
+	@Import("It's coming home")
 	void setHintArrowTargetType(int value);
 
-	@Import("hintArrowTargetType")
+	@Import("It's coming home")
 	int getHintArrowTargetType();
 
-	@Import("hintArrowX")
+	@Import("It's coming home")
 	void setHintArrowX(int value);
 
-	@Import("hintArrowX")
+	@Import("It's coming home")
 	int getHintArrowX();
 
-	@Import("hintArrowY")
+	@Import("It's coming home")
 	void setHintArrowY(int value);
 
-	@Import("hintArrowY")
+	@Import("It's coming home")
 	int getHintArrowY();
 
-	@Import("hintArrowOffsetX")
+	@Import("It's coming home")
 	void setHintArrowOffsetX(int value);
 
-	@Import("hintArrowOffsetY")
+	@Import("It's coming home")
 	void setHintArrowOffsetY(int value);
 
-	@Import("hintArrowNpcTargetIdx")
+	@Import("It's coming home")
 	void setHintArrowNpcTargetIdx(int value);
 
-	@Import("hintArrowNpcTargetIdx")
+	@Import("It's coming home")
 	int getHintArrowNpcTargetIdx();
 
-	@Import("hintArrowPlayerTargetIdx")
+	@Import("It's coming home")
 	void setHintArrowPlayerTargetIdx(int value);
 
-	@Import("hintArrowPlayerTargetIdx")
+	@Import("It's coming home")
 	int getHintArrowPlayerTargetIdx();
 
-	@Import("isDynamicRegion")
+	@Import("It's coming home")
 	@Override
 	boolean isInInstancedRegion();
 
-	@Import("itemPressedDuration")
+	@Import("It's coming home")
 	int getItemPressedDuration();
 
-	@Import("itemPressedDuration")
+	@Import("It's coming home")
 	void setItemPressedDuration(int duration);
 
-	@Import("flags")
+	@Import("It's coming home")
 	int getFlags();
 
-	@Import("compass")
+	@Import("It's coming home")
 	void setCompass(SpritePixels spritePixels);
 
-	@Import("widgetSpriteCache")
+	@Import("It's coming home")
 	RSNodeCache getWidgetSpriteCache();
 
-	@Import("oculusOrbState")
+	@Import("It's coming home")
 	@Override
 	void setOculusOrbState(int state);
 }

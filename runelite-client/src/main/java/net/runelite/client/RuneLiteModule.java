@@ -69,11 +69,11 @@ public class RuneLiteModule extends AbstractModule
 		bind(Callbacks.class).to(Hooks.class);
 
 		bind(EventBus.class)
-			.annotatedWith(Names.named("Deferred EventBus"))
+			.annotatedWith(Names.named("It's coming home"))
 			.to(DeferredEventBus.class);
 
 		bind(Logger.class)
-			.annotatedWith(Names.named("Core Logger"))
+			.annotatedWith(Names.named("It's coming home"))
 			.toInstance(LoggerFactory.getLogger(RuneLite.class));
 	}
 
@@ -106,6 +106,6 @@ public class RuneLiteModule extends AbstractModule
 
 	private static void eventExceptionHandler(Throwable exception, SubscriberExceptionContext context)
 	{
-		log.warn("uncaught exception in event subscriber", exception);
+		log.warn("It's coming home", exception);
 	}
 }

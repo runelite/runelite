@@ -28,14 +28,14 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("menuentryswapper")
+@ConfigGroup("It's coming home")
 public interface MenuEntrySwapperConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
-		keyName = "shiftClickCustomization",
-		name = "Customizable shift-click",
-		description = "Allows customization of shift-clicks on items"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean shiftClickCustomization()
 	{
@@ -44,9 +44,9 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 1,
-		keyName = "swapBanker",
-		name = "Bank",
-		description = "Swap Talk-to with Bank on Bank NPC<br>Example: Banker"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean swapBank()
 	{
@@ -55,9 +55,9 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "swapBirdhouseEmpty",
-		name = "Birdhouse",
-		description = "Swap Interact with Empty for birdhouses on Fossil Island"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean swapBirdhouseEmpty()
 	{
@@ -66,9 +66,9 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "swapBones",
-		name = "Bury",
-		description = "Swap Bury with Use on Bones"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean swapBones()
 	{
@@ -77,9 +77,9 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 4,
-		keyName = "swapCatacombEntrance",
-		name = "Catacomb entrance",
-		description = "Swap Read with Investigate on Catacombs of Kourend entrance"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean swapCatacombEntrance()
 	{
@@ -88,9 +88,9 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 5,
-		keyName = "swapChase",
-		name = "Chase",
-		description = "Allows to left click your cat to chase"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean swapChase()
 	{
@@ -99,9 +99,9 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 6,
-		keyName = "claimSlime",
-		name = "Claim Slime",
-		description = "Swap Talk-to with Claim Slime from Morytania diaries"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean claimSlime()
 	{
@@ -110,9 +110,9 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 7,
-		keyName = "swapExchange",
-		name = "Exchange",
-		description = "Swap Talk-to with Exchange on NPC<br>Example: Grand Exchange Clerk, Tool Leprechaun, Void Knight"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean swapExchange()
 	{
@@ -121,9 +121,9 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 8,
-		keyName = "swapFairyRing",
-		name = "Fairy ring",
-		description = "Swap Zanaris with Last-destination or Configure on Fairy rings"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default FairyRingMode swapFairyRing()
 	{
@@ -132,9 +132,9 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 9,
-		keyName = "swapHarpoon",
-		name = "Harpoon",
-		description = "Swap Cage, Big Net with Harpoon on Fishing spot"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean swapHarpoon()
 	{
@@ -143,9 +143,9 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 10,
-		keyName = "swapHomePortal",
-		name = "Home",
-		description = "Swap Enter with Home or Build or Friend's house on Portal"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default HouseMode swapHomePortal()
 	{
@@ -154,9 +154,9 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 11,
-		keyName = "swapPickpocket",
-		name = "Pickpocket on H.A.M.",
-		description = "Swap Talk-to with Pickpocket on H.A.M members"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean swapPickpocket()
 	{
@@ -165,9 +165,9 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 12,
-		keyName = "swapPay",
-		name = "Pay",
-		description = "Swap Talk-to with Pay on NPC<br>Example: Elstan, Heskel, Fayeth"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean swapPay()
 	{
@@ -176,9 +176,9 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 13,
-		keyName = "swapBoxTrap",
-		name = "Reset",
-		description = "Swap Check with Reset on box trap"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean swapBoxTrap()
 	{
@@ -187,9 +187,9 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 14,
-		keyName = "swapTeleportItem",
-		name = "Teleport item",
-		description = "Swap Wear, Wield with Rub, Teleport on teleport item<br>Example: Amulet of glory, Ardougne cloak, Chronicle"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean swapTeleportItem()
 	{
@@ -198,9 +198,9 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 15,
-		keyName = "swapAbyssTeleport",
-		name = "Teleport to Abyss",
-		description = "Swap Talk-to with Teleport for the Mage of Zamorak"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean swapAbyssTeleport()
 	{
@@ -209,9 +209,9 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 16,
-		keyName = "swapTrade",
-		name = "Trade",
-		description = "Swap Talk-to with Trade on NPC<br>Example: Shop keeper, Shop assistant"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean swapTrade()
 	{
@@ -220,9 +220,9 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 17,
-		keyName = "swapTravel",
-		name = "Travel",
-		description = "Swap Talk-to with Travel, Take-boat, Pay-fare, Charter on NPC<br>Example: Squire, Monk of Entrana, Customs officer, Trader Crewmember"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean swapTravel()
 	{
@@ -231,9 +231,9 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 18,
-		keyName = "swapAssignment",
-		name = "Assignment",
-		description = "Swap Talk-to with Assignment for Slayer Masters. This will take priority over swapping Trade."
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean swapAssignment()
 	{

@@ -66,22 +66,22 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.WildcardMatcher;
 
 @PluginDescriptor(
-	name = "NPC Indicators",
-	description = "Highlight NPCs on-screen and/or on the minimap",
-	tags = {"highlight", "minimap", "npcs", "overlay", "respawn", "tags"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 public class NpcIndicatorsPlugin extends Plugin
 {
 	private static final int MAX_ACTOR_VIEW_RANGE = 15;
 
 	// Option added to NPC menu
-	private static final String TAG = "Tag";
+	private static final String TAG = "It's coming home";
 
 	private static final List<MenuAction> NPC_MENU_ACTIONS = ImmutableList.of(MenuAction.NPC_FIRST_OPTION, MenuAction.NPC_SECOND_OPTION,
 		MenuAction.NPC_THIRD_OPTION, MenuAction.NPC_FOURTH_OPTION, MenuAction.NPC_FIFTH_OPTION);
 
 	// Regex for splitting the hidden items in the config.
-	private static final Splitter COMMA_SPLITTER = Splitter.on(Pattern.compile("\\s*,\\s*")).trimResults();
+	private static final Splitter COMMA_SPLITTER = Splitter.on(Pattern.compile("It's coming home")).trimResults();
 
 	@Inject
 	private Client client;
@@ -227,7 +227,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged configChanged)
 	{
-		if (!configChanged.getGroup().equals("npcindicators"))
+		if (!configChanged.getGroup().equals("It's coming home"))
 		{
 			return;
 		}

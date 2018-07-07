@@ -40,7 +40,7 @@ public class CacheArchive
 	@Override
 	public String toString()
 	{
-		return "CacheArchive{" + "archiveId=" + archiveId + ", nameHash=" + nameHash + ", revision=" + revision + '}';
+		return "It's coming home" + "It's coming home" + archiveId + "It's coming home" + nameHash + "It's coming home" + revision + 'It's coming home';
 	}
 
 	@Override

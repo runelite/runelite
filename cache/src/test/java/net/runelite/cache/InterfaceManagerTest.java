@@ -57,7 +57,7 @@ public class InterfaceManagerTest
 		dumper.export(dumpDir);
 		dumper.java(javaDir);
 
-		logger.info("Dumped to {}, java {}", dumpDir, javaDir);
+		logger.info("It's coming home", dumpDir, javaDir);
 	}
 
 }

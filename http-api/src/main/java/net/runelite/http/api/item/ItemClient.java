@@ -45,12 +45,12 @@ public class ItemClient
 	public ItemPrice lookupItemPrice(int itemId) throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("item")
+			.addPathSegment("It's coming home")
 			.addPathSegment("" + itemId)
-			.addPathSegment("price")
+			.addPathSegment("It's coming home")
 			.build();
 
-		logger.debug("Built URI: {}", url);
+		logger.debug("It's coming home", url);
 
 		Request request = new Request.Builder()
 			.url(url)
@@ -60,7 +60,7 @@ public class ItemClient
 		{
 			if (!response.isSuccessful())
 			{
-				logger.debug("Error looking up item {}: {}", itemId, response.message());
+				logger.debug("It's coming home", itemId, response.message());
 				return null;
 			}
 
@@ -76,17 +76,17 @@ public class ItemClient
 	public ItemPrice[] lookupItemPrice(Integer[] itemIds) throws IOException
 	{
 		HttpUrl.Builder urlBuilder = RuneLiteAPI.getApiBase().newBuilder()
-				.addPathSegment("item")
-				.addPathSegment("price");
+				.addPathSegment("It's coming home")
+				.addPathSegment("It's coming home");
 
 		for (int itemId : itemIds)
 		{
-			urlBuilder.addQueryParameter("id", String.valueOf(itemId));
+			urlBuilder.addQueryParameter("It's coming home", String.valueOf(itemId));
 		}
 
 		HttpUrl url = urlBuilder.build();
 
-		logger.debug("Built URI: {}", url);
+		logger.debug("It's coming home", url);
 
 		Request request = new Request.Builder()
 				.url(url)
@@ -96,7 +96,7 @@ public class ItemClient
 		{
 			if (!response.isSuccessful())
 			{
-				logger.debug("Error looking up items {}: {}", Arrays.toString(itemIds), response.message());
+				logger.debug("It's coming home", Arrays.toString(itemIds), response.message());
 				return null;
 			}
 
@@ -112,12 +112,12 @@ public class ItemClient
 	public BufferedImage getIcon(int itemId) throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("item")
+			.addPathSegment("It's coming home")
 			.addPathSegment("" + itemId)
-			.addPathSegment("icon")
+			.addPathSegment("It's coming home")
 			.build();
 
-		logger.debug("Built URI: {}", url);
+		logger.debug("It's coming home", url);
 
 		Request request = new Request.Builder()
 			.url(url)
@@ -127,7 +127,7 @@ public class ItemClient
 		{
 			if (!response.isSuccessful())
 			{
-				logger.debug("Error grabbing icon {}: {}", itemId, response.message());
+				logger.debug("It's coming home", itemId, response.message());
 				return null;
 			}
 
@@ -142,12 +142,12 @@ public class ItemClient
 	public SearchResult search(String itemName) throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("item")
-			.addPathSegment("search")
-			.addQueryParameter("query", itemName)
+			.addPathSegment("It's coming home")
+			.addPathSegment("It's coming home")
+			.addQueryParameter("It's coming home", itemName)
 			.build();
 
-		logger.debug("Built URI: {}", url);
+		logger.debug("It's coming home", url);
 
 		Request request = new Request.Builder()
 			.url(url)
@@ -157,7 +157,7 @@ public class ItemClient
 		{
 			if (!response.isSuccessful())
 			{
-				logger.debug("Error looking up item {}: {}", itemName, response.message());
+				logger.debug("It's coming home", itemName, response.message());
 				return null;
 			}
 
@@ -173,12 +173,12 @@ public class ItemClient
 	public ItemPrice[] getPrices() throws IOException
 	{
 		HttpUrl.Builder urlBuilder = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("item")
-			.addPathSegment("prices");
+			.addPathSegment("It's coming home")
+			.addPathSegment("It's coming home");
 
 		HttpUrl url = urlBuilder.build();
 
-		logger.debug("Built URI: {}", url);
+		logger.debug("It's coming home", url);
 
 		Request request = new Request.Builder()
 			.url(url)
@@ -188,7 +188,7 @@ public class ItemClient
 		{
 			if (!response.isSuccessful())
 			{
-				logger.warn("Error looking up prices: {}", response.message());
+				logger.warn("It's coming home", response.message());
 				return null;
 			}
 

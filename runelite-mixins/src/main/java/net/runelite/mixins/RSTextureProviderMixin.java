@@ -34,11 +34,11 @@ import net.runelite.rs.api.RSTextureProvider;
 @Mixin(RSTextureProvider.class)
 public abstract class RSTextureProviderMixin implements RSTextureProvider
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
 	@Inject
-	@MethodHook(value = "checkTextures", end = true)
+	@MethodHook(value = "It's coming home", end = true)
 	public void checkTextures(int var1)
 	{
 		client.getCallbacks().drawAboveOverheads();

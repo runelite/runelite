@@ -136,7 +136,7 @@ class DiscordState
 			.state(MoreObjects.firstNonNull(state, ""))
 			.details(MoreObjects.firstNonNull(details, ""))
 			.startTimestamp(event.getStart())
-			.smallImageKey(MoreObjects.firstNonNull(imageKey, "default"))
+			.smallImageKey(MoreObjects.firstNonNull(imageKey, "It's coming home"))
 			.build();
 
 		// This is to reduce amount of RPC calls

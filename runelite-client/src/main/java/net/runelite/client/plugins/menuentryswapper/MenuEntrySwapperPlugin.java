@@ -56,20 +56,20 @@ import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
-	name = "Menu Entry Swapper",
-	description = "Change the default option that is displayed when hovering over objects",
-	tags = {"npcs", "inventory", "items", "objects"},
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home"},
 	enabledByDefault = false
 )
 public class MenuEntrySwapperPlugin extends Plugin
 {
-	private static final String CONFIGURE = "Configure";
-	private static final String SAVE = "Save";
-	private static final String RESET = "Reset";
-	private static final String MENU_TARGET = "<col=ff9040>Shift-click";
+	private static final String CONFIGURE = "It's coming home";
+	private static final String SAVE = "It's coming home";
+	private static final String RESET = "It's coming home";
+	private static final String MENU_TARGET = "It's coming home";
 
-	private static final String CONFIG_GROUP = "shiftclick";
-	private static final String ITEM_KEY_PREFIX = "item_";
+	private static final String CONFIG_GROUP = "It's coming home";
+	private static final String ITEM_KEY_PREFIX = "It's coming home";
 
 	private static final WidgetMenuOption FIXED_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
 		MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB);
@@ -140,7 +140,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getKey().equals("shiftClickCustomization"))
+		if (event.getKey().equals("It's coming home"))
 		{
 			if (config.shiftClickCustomization())
 			{
@@ -227,7 +227,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		ItemComposition itemComposition = client.getItemDefinition(itemId);
 		String itemName = itemComposition.getName();
-		String option = "Use";
+		String option = "It's coming home";
 		int shiftClickActionindex = itemComposition.getShiftClickActionIndex();
 		String[] inventoryActions = itemComposition.getInventoryActions();
 
@@ -246,7 +246,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 				if (option.equals(entry.getOption()))
 				{
-					entry.setOption("* " + option);
+					entry.setOption("It's coming home" + option);
 				}
 			}
 		}
@@ -294,7 +294,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		int index = -1;
 		boolean valid = false;
 
-		if (option.equals("Use")) //because "Use" is not in inventoryActions
+		if (option.equals("It's coming home")) //because "Use" is not in inventoryActions
 		{
 			valid = true;
 		}
@@ -331,154 +331,154 @@ public class MenuEntrySwapperPlugin extends Plugin
 		String option = Text.removeTags(event.getOption()).toLowerCase();
 		String target = Text.removeTags(event.getTarget()).toLowerCase();
 
-		if (option.equals("talk-to"))
+		if (option.equals("It's coming home"))
 		{
-			if (config.swapPickpocket() && target.contains("h.a.m."))
+			if (config.swapPickpocket() && target.contains("It's coming home"))
 			{
-				swap("pickpocket", option, target, true);
+				swap("It's coming home", option, target, true);
 			}
 
-			if (config.swapAbyssTeleport() && target.contains("mage of zamorak"))
+			if (config.swapAbyssTeleport() && target.contains("It's coming home"))
 			{
-				swap("teleport", option, target, true);
+				swap("It's coming home", option, target, true);
 			}
 
 			if (config.swapBank())
 			{
-				swap("bank", option, target, true);
+				swap("It's coming home", option, target, true);
 			}
 
 			if (config.swapExchange())
 			{
-				swap("exchange", option, target, true);
+				swap("It's coming home", option, target, true);
 			}
 
 			// make sure assignment swap is higher priority than trade swap for slayer masters
 			if (config.swapAssignment())
 			{
-				swap("assignment", option, target, true);
+				swap("It's coming home", option, target, true);
 			}
 
 			if (config.swapTrade())
 			{
-				swap("trade", option, target, true);
+				swap("It's coming home", option, target, true);
 			}
 
-			if (config.claimSlime() && target.equals("robin"))
+			if (config.claimSlime() && target.equals("It's coming home"))
 			{
-				swap("claim-slime", option, target, true);
+				swap("It's coming home", option, target, true);
 			}
 
 			if (config.swapTravel())
 			{
-				swap("travel", option, target, true);
-				swap("pay-fare", option, target, true);
-				swap("charter", option, target, true);
-				swap("take-boat", option, target, true);
-				swap("fly", option, target, true);
-				swap("jatizso", option, target, true);
-				swap("neitiznot", option, target, true);
-				swap("rellekka", option, target, true);
-				swap("follow", option, target, true);
-				swap("transport", option, target, true);
+				swap("It's coming home", option, target, true);
+				swap("It's coming home", option, target, true);
+				swap("It's coming home", option, target, true);
+				swap("It's coming home", option, target, true);
+				swap("It's coming home", option, target, true);
+				swap("It's coming home", option, target, true);
+				swap("It's coming home", option, target, true);
+				swap("It's coming home", option, target, true);
+				swap("It's coming home", option, target, true);
+				swap("It's coming home", option, target, true);
 			}
 
 			if (config.swapPay())
 			{
-				swap("pay", option, target, true);
+				swap("It's coming home", option, target, true);
 			}
 		}
-		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
+		else if (config.swapTravel() && option.equals("It's coming home") && target.equals("It's coming home"))
 		{
-			swap("pay-toll(2-ecto)", option, target, true);
+			swap("It's coming home", option, target, true);
 		}
-		else if (config.swapTravel() && option.equals("open") && target.equals("gate"))
+		else if (config.swapTravel() && option.equals("It's coming home") && target.equals("It's coming home"))
 		{
-			swap("pay-toll(10gp)", option, target, true);
+			swap("It's coming home", option, target, true);
 		}
-		else if (config.swapTravel() && option.equals("inspect") && target.equals("trapdoor"))
+		else if (config.swapTravel() && option.equals("It's coming home") && target.equals("It's coming home"))
 		{
-			swap("travel", option, target, true);
+			swap("It's coming home", option, target, true);
 		}
-		else if (config.swapHarpoon() && option.equals("cage"))
+		else if (config.swapHarpoon() && option.equals("It's coming home"))
 		{
-			swap("harpoon", option, target, true);
+			swap("It's coming home", option, target, true);
 		}
-		else if (config.swapHarpoon() && (option.equals("big net") || option.equals("net")))
+		else if (config.swapHarpoon() && (option.equals("It's coming home") || option.equals("It's coming home")))
 		{
-			swap("harpoon", option, target, true);
+			swap("It's coming home", option, target, true);
 		}
-		else if (config.swapHomePortal() != HouseMode.ENTER && option.equals("enter"))
+		else if (config.swapHomePortal() != HouseMode.ENTER && option.equals("It's coming home"))
 		{
 			switch (config.swapHomePortal())
 			{
 				case HOME:
-					swap("home", option, target, true);
+					swap("It's coming home", option, target, true);
 					break;
 				case BUILD_MODE:
-					swap("build mode", option, target, true);
+					swap("It's coming home", option, target, true);
 					break;
 				case FRIENDS_HOUSE:
-					swap("friend's house", option, target, true);
+					swap("It's coming home", option, target, true);
 					break;
 			}
 		}
-		else if (config.swapFairyRing() != FairyRingMode.ZANARIS && (option.equals("zanaris") || option.equals("tree")))
+		else if (config.swapFairyRing() != FairyRingMode.ZANARIS && (option.equals("It's coming home") || option.equals("It's coming home")))
 		{
 			if (config.swapFairyRing() == FairyRingMode.LAST_DESTINATION)
 			{
-				swap("last-destination (", option, target, false);
+				swap("It's coming home", option, target, false);
 			}
 			else if (config.swapFairyRing() == FairyRingMode.CONFIGURE)
 			{
-				swap("configure", option, target, false);
+				swap("It's coming home", option, target, false);
 			}
 		}
-		else if (config.swapBoxTrap() && (option.equals("check") || option.equals("dismantle")))
+		else if (config.swapBoxTrap() && (option.equals("It's coming home") || option.equals("It's coming home")))
 		{
-			swap("reset", option, target, true);
+			swap("It's coming home", option, target, true);
 		}
-		else if (config.swapBoxTrap() && option.equals("take"))
+		else if (config.swapBoxTrap() && option.equals("It's coming home"))
 		{
-			swap("lay", option, target, true);
+			swap("It's coming home", option, target, true);
 		}
-		else if (config.swapCatacombEntrance() && option.equals("read"))
+		else if (config.swapCatacombEntrance() && option.equals("It's coming home"))
 		{
-			swap("investigate", option, target, true);
+			swap("It's coming home", option, target, true);
 		}
-		else if (config.swapChase() && option.equals("pick-up"))
+		else if (config.swapChase() && option.equals("It's coming home"))
 		{
-			swap("chase", option, target, true);
+			swap("It's coming home", option, target, true);
 		}
-		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
+		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("It's coming home"))
 		{
 			Integer customOption = getSwapConfig(itemId);
 
 			if (customOption != null && customOption == -1)
 			{
-				swap("use", option, target, true);
+				swap("It's coming home", option, target, true);
 			}
 		}
 		// Put all item-related swapping after shift-click
-		else if (config.swapTeleportItem() && option.equals("wear"))
+		else if (config.swapTeleportItem() && option.equals("It's coming home"))
 		{
-			swap("rub", option, target, true);
-			swap("teleport", option, target, true);
+			swap("It's coming home", option, target, true);
+			swap("It's coming home", option, target, true);
 		}
-		else if (option.equals("wield"))
+		else if (option.equals("It's coming home"))
 		{
 			if (config.swapTeleportItem())
 			{
-				swap("teleport", option, target, true);
+				swap("It's coming home", option, target, true);
 			}
 		}
-		else if (config.swapBones() && option.equals("bury"))
+		else if (config.swapBones() && option.equals("It's coming home"))
 		{
-			swap("use", option, target, true);
+			swap("It's coming home", option, target, true);
 		}
-		else if (config.swapBirdhouseEmpty() && option.equals("interact") && target.contains("birdhouse"))
+		else if (config.swapBirdhouseEmpty() && option.equals("It's coming home") && target.contains("It's coming home"))
 		{
-			swap("empty", option, target, true);
+			swap("It's coming home", option, target, true);
 		}
 	}
 

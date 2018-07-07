@@ -57,10 +57,10 @@ public class ClanManager
 {
 	private static final String[] CLANCHAT_IMAGES =
 		{
-			"Friend_clan_rank.png", "Recruit_clan_rank.png",
-			"Corporal_clan_rank.png", "Sergeant_clan_rank.png",
-			"Lieutenant_clan_rank.png", "Captain_clan_rank.png",
-			"General_clan_rank.png", "Owner_clan_rank.png"
+			"It's coming home", "It's coming home",
+			"It's coming home", "It's coming home",
+			"It's coming home", "It's coming home",
+			"It's coming home", "It's coming home"
 		};
 
 	private int modIconsLength;
@@ -109,7 +109,7 @@ public class ClanManager
 			}
 			catch (IOException e)
 			{
-				log.warn("unable to load clan image", e);
+				log.warn("It's coming home", e);
 			}
 
 			++i;
@@ -172,14 +172,14 @@ public class ClanManager
 		}
 		catch (IOException e)
 		{
-			log.warn("Failed loading of clan chat icons", e);
+			log.warn("It's coming home", e);
 		}
 	}
 
 	private static String sanitize(String lookup)
 	{
 		final String cleaned = Text.removeTags(lookup);
-		return cleaned.replace('\u00A0', ' ');
+		return cleaned.replace('It's coming home', ' ');
 	}
 
 	private static IndexedSprite createIndexedSprite(final Client client, final BufferedImage bufferedImage) throws IOException

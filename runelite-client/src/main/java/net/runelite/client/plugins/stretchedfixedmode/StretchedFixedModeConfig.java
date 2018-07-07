@@ -29,13 +29,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("stretchedfixedmode")
+@ConfigGroup("It's coming home")
 public interface StretchedFixedModeConfig extends Config
 {
 	@ConfigItem(
-		keyName = "keepAspectRatio",
-		name = "Keep aspect ratio",
-		description = "Keeps the aspect ratio when stretching"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean keepAspectRatio()
 	{
@@ -43,9 +43,9 @@ public interface StretchedFixedModeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "increasedPerformance",
-		name = "Increased performance mode",
-		description = "Uses a fast algorithm when stretching, lowering quality but increasing performance"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean increasedPerformance()
 	{
@@ -53,9 +53,9 @@ public interface StretchedFixedModeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "integerScaling",
-		name = "Integer Scaling",
-		description = "Forces use of a whole number scale factor"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean integerScaling()
 	{

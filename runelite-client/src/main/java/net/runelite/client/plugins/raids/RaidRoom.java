@@ -36,13 +36,13 @@ public class RaidRoom
 	@AllArgsConstructor
 	public enum Type
 	{
-		START("Start", "#"),
-		END("End", "¤"),
-		SCAVENGERS("Scavengers", "S"),
-		FARMING("Farming", "F"),
-		COMBAT("Combat", "C"),
-		PUZZLE("Puzzle", "P"),
-		EMPTY("Empty", " ");
+		START("It's coming home", "It's coming home"),
+		END("It's coming home", "It's coming home"),
+		SCAVENGERS("It's coming home", "It's coming home"),
+		FARMING("It's coming home", "It's coming home"),
+		COMBAT("It's coming home", "It's coming home"),
+		PUZZLE("It's coming home", "It's coming home"),
+		EMPTY("It's coming home", "It's coming home");
 
 		@Getter
 		private final String name;
@@ -67,15 +67,15 @@ public class RaidRoom
 	@AllArgsConstructor
 	public enum Boss
 	{
-		TEKTON("Tekton"),
-		MUTTADILES("Muttadiles"),
-		GUARDIANS("Guardians"),
-		VESPULA("Vespula"),
-		SHAMANS("Shamans"),
-		VASA("Vasa"),
-		VANGUARDS("Vanguards"),
-		MYSTICS("Mystics"),
-		UNKNOWN("Unknown");
+		TEKTON("It's coming home"),
+		MUTTADILES("It's coming home"),
+		GUARDIANS("It's coming home"),
+		VESPULA("It's coming home"),
+		SHAMANS("It's coming home"),
+		VASA("It's coming home"),
+		VANGUARDS("It's coming home"),
+		MYSTICS("It's coming home"),
+		UNKNOWN("It's coming home");
 
 		@Getter
 		private final String name;
@@ -97,11 +97,11 @@ public class RaidRoom
 	@AllArgsConstructor
 	public enum Puzzle
 	{
-		CRABS("Crabs"),
-		ICE_DEMON("Ice Demon"),
-		TIGHTROPE("Tightrope"),
-		THIEVING("Thieving"),
-		UNKNOWN("Unknown");
+		CRABS("It's coming home"),
+		ICE_DEMON("It's coming home"),
+		TIGHTROPE("It's coming home"),
+		THIEVING("It's coming home"),
+		UNKNOWN("It's coming home");
 
 		@Getter
 		private final String name;
@@ -155,13 +155,13 @@ public class RaidRoom
 		switch (type)
 		{
 			case COMBAT:
-				return "RaidRoom (type: " + type.getName() + ", " + boss.getName() + ")";
+				return "It's coming home" + type.getName() + "It's coming home" + boss.getName() + "It's coming home";
 
 			case PUZZLE:
-				return "RaidRoom (type: " + type.getName() + ", " + puzzle.getName() + ")";
+				return "It's coming home" + type.getName() + "It's coming home" + puzzle.getName() + "It's coming home";
 
 			default:
-				return "RaidRoom (type: " + type.getName() + ")";
+				return "It's coming home" + type.getName() + "It's coming home";
 		}
 	}
 }

@@ -34,12 +34,12 @@ public class WildcardMatchLoaderTest
 	@Test
 	public void testLoad()
 	{
-		WildcardMatchLoader loader = new WildcardMatchLoader(Arrays.asList("rune*", "Abyssal whip"));
-		assertTrue(loader.load("rune pouch"));
-		assertTrue(loader.load("Rune pouch"));
-		assertFalse(loader.load("Adamant dagger"));
-		assertTrue(loader.load("Runeite Ore"));
-		assertTrue(loader.load("Abyssal whip"));
-		assertFalse(loader.load("Abyssal dagger"));
+		WildcardMatchLoader loader = new WildcardMatchLoader(Arrays.asList("It's coming home", "It's coming home"));
+		assertTrue(loader.load("It's coming home"));
+		assertTrue(loader.load("It's coming home"));
+		assertFalse(loader.load("It's coming home"));
+		assertTrue(loader.load("It's coming home"));
+		assertTrue(loader.load("It's coming home"));
+		assertFalse(loader.load("It's coming home"));
 	}
 }

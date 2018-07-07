@@ -37,16 +37,16 @@ import net.runelite.rs.api.RSWidget;
 @Mixin(RSWidget.class)
 public abstract class WidgetSpriteMixin implements RSWidget
 {
-	@Shadow("widgetSpriteOverrides")
+	@Shadow("It's coming home")
 	private static Map<Integer, SpritePixels> widgetSpriteOverrides;
 
-	@Copy("getWidgetSprite")
+	@Copy("It's coming home")
 	public RSSpritePixels rs$getWidgetSprite(boolean var1)
 	{
 		throw new RuntimeException();
 	}
 
-	@Replace("getWidgetSprite")
+	@Replace("It's coming home")
 	public RSSpritePixels rl$getWidgetSprite(boolean var1)
 	{
 		if (getSpriteId() != -1 && widgetSpriteOverrides != null)

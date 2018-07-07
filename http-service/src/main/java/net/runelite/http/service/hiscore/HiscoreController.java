@@ -41,7 +41,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/hiscore")
+@RequestMapping("It's coming home")
 public class HiscoreController
 {
 	@Autowired
@@ -50,7 +50,7 @@ public class HiscoreController
 	@Autowired
 	private XpTrackerService xpTrackerService;
 
-	@RequestMapping("/{endpoint}")
+	@RequestMapping("It's coming home")
 	public HiscoreResult lookup(@PathVariable HiscoreEndpoint endpoint, @RequestParam String username) throws IOException
 	{
 		HiscoreResultBuilder resultBuilder = hiscoreService.lookupUsername(username, endpoint);
@@ -69,7 +69,7 @@ public class HiscoreController
 		return result;
 	}
 
-	@RequestMapping("/{endpoint}/{skillName}")
+	@RequestMapping("It's coming home")
 	public SingleHiscoreSkillResult singleSkillLookup(@PathVariable HiscoreEndpoint endpoint, @PathVariable String skillName, @RequestParam String username) throws IOException
 	{
 		HiscoreSkill skill = HiscoreSkill.valueOf(skillName.toUpperCase());

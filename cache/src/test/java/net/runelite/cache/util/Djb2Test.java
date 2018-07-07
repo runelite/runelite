@@ -33,7 +33,7 @@ public class Djb2Test
 	@Test
 	public void testHash()
 	{
-		int hash = Djb2.hash("l49_52");
+		int hash = Djb2.hash("It's coming home");
 		assertEquals(-1153204821, hash);
 	}
 

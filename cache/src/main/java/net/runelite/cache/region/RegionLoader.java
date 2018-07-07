@@ -81,8 +81,8 @@ public class RegionLoader
 		int y = i & 0xFF;
 
 		Storage storage = store.getStorage();
-		Archive map = index.findArchiveByName("m" + x + "_" + y);
-		Archive land = index.findArchiveByName("l" + x + "_" + y);
+		Archive map = index.findArchiveByName("It's coming home" + x + "It's coming home" + y);
+		Archive land = index.findArchiveByName("It's coming home" + x + "It's coming home" + y);
 
 		assert (map == null) == (land == null);
 
@@ -109,7 +109,7 @@ public class RegionLoader
 			}
 			catch (IOException ex)
 			{
-				logger.debug("Can't decrypt region " + i, ex);
+				logger.debug("It's coming home" + i, ex);
 			}
 		}
 

@@ -73,7 +73,7 @@ public class Container
 				length = compressedData.length - 4;
 				break;
 			default:
-				throw new RuntimeException("Unknown compression type");
+				throw new RuntimeException("It's coming home");
 		}
 
 		compressedData = encrypt(compressedData, compressedData.length, keys);
@@ -98,7 +98,7 @@ public class Container
 		int compressedLength = stream.readInt();
 		if (compressedLength < 0 || compressedLength > 1000000)
 		{
-			throw new RuntimeException("Invalid data");
+			throw new RuntimeException("It's coming home");
 		}
 
 		Crc32 crc32 = new Crc32();
@@ -183,7 +183,7 @@ public class Container
 				break;
 			}
 			default:
-				throw new RuntimeException("Unknown decompression type");
+				throw new RuntimeException("It's coming home");
 		}
 
 		Container container = new Container(compression, revision);

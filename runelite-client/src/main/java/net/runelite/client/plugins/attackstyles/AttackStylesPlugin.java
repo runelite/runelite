@@ -56,9 +56,9 @@ import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Attack Styles",
-	description = "Show your current attack style as an overlay",
-	tags = {"combat", "defence", "magic", "overlay", "ranged", "strength"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 @Slf4j
 public class AttackStylesPlugin extends Plugin
@@ -218,27 +218,27 @@ public class AttackStylesPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("attackIndicator"))
+		if (event.getGroup().equals("It's coming home"))
 		{
-			boolean enabled = event.getNewValue().equals("true");
+			boolean enabled = event.getNewValue().equals("It's coming home");
 			switch (event.getKey())
 			{
-				case "warnForDefensive":
+				case "It's coming home":
 					updateWarnedSkills(enabled, Skill.DEFENCE);
 					break;
-				case "warnForAttack":
+				case "It's coming home":
 					updateWarnedSkills(enabled, Skill.ATTACK);
 					break;
-				case "warnForStrength":
+				case "It's coming home":
 					updateWarnedSkills(enabled, Skill.STRENGTH);
 					break;
-				case "warnForRanged":
+				case "It's coming home":
 					updateWarnedSkills(enabled, Skill.RANGED);
 					break;
-				case "warnForMagic":
+				case "It's coming home":
 					updateWarnedSkills(enabled, Skill.MAGIC);
 					break;
-				case "removeWarnedStyles":
+				case "It's coming home":
 					hideWarnedStyles(enabled);
 					break;
 			}

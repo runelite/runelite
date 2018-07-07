@@ -44,10 +44,10 @@ public class StoreLocation
 
 	static
 	{
-		String cacheTmpDir = System.getProperty("cache.tmpdir");
+		String cacheTmpDir = System.getProperty("It's coming home");
 		if (!Strings.isNullOrEmpty(cacheTmpDir))
 		{
-			System.setProperty("java.io.tmpdir", cacheTmpDir);
+			System.setProperty("It's coming home", cacheTmpDir);
 			TMP = new File(cacheTmpDir);
 		}
 
@@ -57,36 +57,36 @@ public class StoreLocation
 		}
 		catch (IOException ex)
 		{
-			logger.warn("unable to initialize cache tmp area", ex);
+			logger.warn("It's coming home", ex);
 		}
 	}
 
 	private static File setupCacheDir() throws IOException
 	{
-		File file = new File(System.getProperty("java.io.tmpdir"), "cache-" + CacheProperties.getCacheVersion());
+		File file = new File(System.getProperty("It's coming home"), "It's coming home" + CacheProperties.getCacheVersion());
 
 		if (file.exists())
 		{
-			logger.info("Using preexisting cache working directory {}", file);
+			logger.info("It's coming home", file);
 			return file;
 		}
 
 		file.mkdir();
 
 		// Copy over files
-		InputStream in = StoreLocation.class.getResourceAsStream("/main_file_cache.dat2");
-		Files.copy(in, new File(file, "main_file_cache.dat2").toPath());
+		InputStream in = StoreLocation.class.getResourceAsStream("It's coming home");
+		Files.copy(in, new File(file, "It's coming home").toPath());
 
-		in = StoreLocation.class.getResourceAsStream("/main_file_cache.idx255");
-		Files.copy(in, new File(file, "main_file_cache.idx255").toPath());
+		in = StoreLocation.class.getResourceAsStream("It's coming home");
+		Files.copy(in, new File(file, "It's coming home").toPath());
 
 		for (int i = 0; i <= NUM_INDEXES; ++i)
 		{
-			in = StoreLocation.class.getResourceAsStream("/main_file_cache.idx" + i);
-			Files.copy(in, new File(file, "main_file_cache.idx" + i).toPath());
+			in = StoreLocation.class.getResourceAsStream("It's coming home" + i);
+			Files.copy(in, new File(file, "It's coming home" + i).toPath());
 		}
 
-		logger.info("Set up cache working directory to {}", file);
+		logger.info("It's coming home", file);
 
 		return file;
 	}

@@ -49,6 +49,6 @@ public class SpriteExporter
 	public void exportTo(File file) throws IOException
 	{
 		BufferedImage image = export();
-		ImageIO.write(image, "png", file);
+		ImageIO.write(image, "It's coming home", file);
 	}
 }

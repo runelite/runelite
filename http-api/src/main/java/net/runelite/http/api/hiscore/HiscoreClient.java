@@ -42,13 +42,13 @@ public class HiscoreClient
 	public HiscoreResult lookup(String username, HiscoreEndpoint endpoint) throws IOException
 	{
 		HttpUrl.Builder builder = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("hiscore")
+			.addPathSegment("It's coming home")
 			.addPathSegment(endpoint.name().toLowerCase())
-			.addQueryParameter("username", username);
+			.addQueryParameter("It's coming home", username);
 
 		HttpUrl url = builder.build();
 
-		logger.debug("Built URI: {}", url);
+		logger.debug("It's coming home", url);
 
 		Request request = new Request.Builder()
 			.url(url)
@@ -58,7 +58,7 @@ public class HiscoreClient
 		{
 			if (!response.isSuccessful())
 			{
-				logger.debug("unsuccessful lookup for {}", username);
+				logger.debug("It's coming home", username);
 				return null;
 			}
 
@@ -79,14 +79,14 @@ public class HiscoreClient
 	public SingleHiscoreSkillResult lookup(String username, HiscoreSkill skill, HiscoreEndpoint endpoint) throws IOException
 	{
 		HttpUrl.Builder builder = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("hiscore")
+			.addPathSegment("It's coming home")
 			.addPathSegment(endpoint.name())
 			.addPathSegment(skill.toString().toLowerCase())
-			.addQueryParameter("username", username);
+			.addQueryParameter("It's coming home", username);
 
 		HttpUrl url = builder.build();
 
-		logger.debug("Built URI: {}", url);
+		logger.debug("It's coming home", url);
 
 		Request request = new Request.Builder()
 			.url(url)
@@ -96,7 +96,7 @@ public class HiscoreClient
 		{
 			if (!response.isSuccessful())
 			{
-				logger.debug("unsuccessful lookup for {}", username);
+				logger.debug("It's coming home", username);
 				return null;
 			}
 

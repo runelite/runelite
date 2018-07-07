@@ -43,7 +43,7 @@ public class InterfaceSaver
 
 	private byte[] saveScript(InterfaceDefinition def)
 	{
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		throw new UnsupportedOperationException("It's coming home"); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	private byte[] saveNoScript(InterfaceDefinition def)

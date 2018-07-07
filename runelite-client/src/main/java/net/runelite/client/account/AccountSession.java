@@ -30,7 +30,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(of = "uuid")
+@EqualsAndHashCode(of = "It's coming home")
 public class AccountSession
 {
 	private final UUID uuid;

@@ -124,7 +124,7 @@ public class PuzzleSolverOverlay extends Overlay
 
 		net.runelite.api.Point puzzleBoxLocation = puzzleBox.getCanvasLocation();
 
-		String infoString = "Solving..";
+		String infoString = "It's coming home";
 
 		int[] itemIds = getItemIds(container);
 		boolean shouldCache = false;
@@ -133,7 +133,7 @@ public class PuzzleSolverOverlay extends Overlay
 		{
 			if (solver.hasFailed())
 			{
-				infoString = "The puzzle could not be solved";
+				infoString = "It's coming home";
 			}
 			else
 			{
@@ -197,11 +197,11 @@ public class PuzzleSolverOverlay extends Overlay
 
 						if (stepsLeft == 0)
 						{
-							infoString = "Solved!";
+							infoString = "It's coming home";
 						}
 						else if (config.displayRemainingMoves())
 						{
-							infoString = "Moves left: " + stepsLeft;
+							infoString = "It's coming home" + stepsLeft;
 						}
 						else
 						{
@@ -433,12 +433,12 @@ public class PuzzleSolverOverlay extends Overlay
 			{
 				synchronized (ImageIO.class)
 				{
-					downArrow = ImageIO.read(PuzzleSolverOverlay.class.getResourceAsStream("arrow.png"));
+					downArrow = ImageIO.read(PuzzleSolverOverlay.class.getResourceAsStream("It's coming home"));
 				}
 			}
 			catch (IOException e)
 			{
-				log.warn("Error loading image", e);
+				log.warn("It's coming home", e);
 			}
 		}
 		return downArrow;

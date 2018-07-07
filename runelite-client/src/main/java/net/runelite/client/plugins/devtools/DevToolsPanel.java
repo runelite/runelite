@@ -64,7 +64,7 @@ public class DevToolsPanel extends PluginPanel
 		container.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		container.setLayout(new GridLayout(0, 2, 3, 3));
 
-		final JButton renderPlayersBtn = new JButton("Players");
+		final JButton renderPlayersBtn = new JButton("It's coming home");
 		renderPlayersBtn.addActionListener(e ->
 		{
 			highlightButton(renderPlayersBtn);
@@ -72,7 +72,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderPlayersBtn);
 
-		final JButton renderNpcsBtn = new JButton("NPCs");
+		final JButton renderNpcsBtn = new JButton("It's coming home");
 		renderNpcsBtn.addActionListener(e ->
 		{
 			highlightButton(renderNpcsBtn);
@@ -80,7 +80,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderNpcsBtn);
 
-		final JButton renderGroundItemsBtn = new JButton("Ground Items");
+		final JButton renderGroundItemsBtn = new JButton("It's coming home");
 		renderGroundItemsBtn.addActionListener(e ->
 		{
 			highlightButton(renderGroundItemsBtn);
@@ -88,7 +88,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderGroundItemsBtn);
 
-		final JButton renderGroundObjectsBtn = new JButton("Ground Objects");
+		final JButton renderGroundObjectsBtn = new JButton("It's coming home");
 		renderGroundObjectsBtn.addActionListener(e ->
 		{
 			highlightButton(renderGroundObjectsBtn);
@@ -96,7 +96,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderGroundObjectsBtn);
 
-		final JButton renderGameObjectsBtn = new JButton("Game Objects");
+		final JButton renderGameObjectsBtn = new JButton("It's coming home");
 		renderGameObjectsBtn.addActionListener(e ->
 		{
 			highlightButton(renderGameObjectsBtn);
@@ -104,7 +104,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderGameObjectsBtn);
 
-		final JButton renderWallsBtn = new JButton("Walls");
+		final JButton renderWallsBtn = new JButton("It's coming home");
 		renderWallsBtn.addActionListener(e ->
 		{
 			highlightButton(renderWallsBtn);
@@ -112,7 +112,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderWallsBtn);
 
-		final JButton renderDecorBtn = new JButton("Decorations");
+		final JButton renderDecorBtn = new JButton("It's coming home");
 		renderDecorBtn.addActionListener(e ->
 		{
 			highlightButton(renderDecorBtn);
@@ -120,7 +120,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderDecorBtn);
 
-		final JButton renderInventoryBtn = new JButton("Inventory");
+		final JButton renderInventoryBtn = new JButton("It's coming home");
 		renderInventoryBtn.addActionListener(e ->
 		{
 			highlightButton(renderInventoryBtn);
@@ -128,7 +128,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderInventoryBtn);
 
-		final JButton renderProjectilesBtn = new JButton("Projectiles");
+		final JButton renderProjectilesBtn = new JButton("It's coming home");
 		renderProjectilesBtn.addActionListener(e ->
 		{
 			highlightButton(renderProjectilesBtn);
@@ -136,7 +136,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderProjectilesBtn);
 
-		final JButton renderLocationBtn = new JButton("Location");
+		final JButton renderLocationBtn = new JButton("It's coming home");
 		renderLocationBtn.addActionListener(e ->
 		{
 			highlightButton(renderLocationBtn);
@@ -144,7 +144,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderLocationBtn);
 
-		final JButton widgetInspectorBtn = new JButton("Widget Tools");
+		final JButton widgetInspectorBtn = new JButton("It's coming home");
 		widgetInspectorBtn.addActionListener(e ->
 		{
 			widgetInspector.setVisible(true);
@@ -153,14 +153,14 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(widgetInspectorBtn);
 
-		final JButton varInspectorBtn = new JButton("Var Tools");
+		final JButton varInspectorBtn = new JButton("It's coming home");
 		varInspectorBtn.addActionListener(e ->
 		{
 			varInspector.open();
 		});
 		container.add(varInspectorBtn);
 
-		final JButton chunkBordersBtn = new JButton("Chunk borders");
+		final JButton chunkBordersBtn = new JButton("It's coming home");
 		chunkBordersBtn.addActionListener(e ->
 		{
 			highlightButton(chunkBordersBtn);
@@ -168,7 +168,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(chunkBordersBtn);
 
-		final JButton mapSquaresBtn = new JButton("Map squares");
+		final JButton mapSquaresBtn = new JButton("It's coming home");
 		mapSquaresBtn.addActionListener(e ->
 		{
 			highlightButton(mapSquaresBtn);
@@ -176,7 +176,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(mapSquaresBtn);
 
-		final JButton validMovementBtn = new JButton("Valid Moves");
+		final JButton validMovementBtn = new JButton("It's coming home");
 		validMovementBtn.addActionListener(e ->
 		{
 			highlightButton(validMovementBtn);
@@ -184,7 +184,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(validMovementBtn);
 
-		final JButton lineOfSightBtn = new JButton("Line of Sight");
+		final JButton lineOfSightBtn = new JButton("It's coming home");
 		lineOfSightBtn.addActionListener(e ->
 		{
 			highlightButton(lineOfSightBtn);
@@ -192,7 +192,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(lineOfSightBtn);
 
-		final JButton graphicsObjectsBtn = new JButton("Graphics objects");
+		final JButton graphicsObjectsBtn = new JButton("It's coming home");
 		graphicsObjectsBtn.addActionListener(e ->
 		{
 			highlightButton(graphicsObjectsBtn);
@@ -200,7 +200,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(graphicsObjectsBtn);
 
-		final JButton cameraPositionBtn = new JButton("Camera Position");
+		final JButton cameraPositionBtn = new JButton("It's coming home");
 		cameraPositionBtn.addActionListener(e ->
 		{
 			highlightButton(cameraPositionBtn);
@@ -208,7 +208,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(cameraPositionBtn);
 
-		final JButton worldMapBtn = new JButton("World Map Location");
+		final JButton worldMapBtn = new JButton("It's coming home");
 		worldMapBtn.addActionListener(e ->
 		{
 			highlightButton(worldMapBtn);
@@ -216,7 +216,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(worldMapBtn);
 
-		final JButton tileLocationBtn = new JButton("Tile Location Tooltip");
+		final JButton tileLocationBtn = new JButton("It's coming home");
 		tileLocationBtn.addActionListener(e ->
 		{
 			highlightButton(tileLocationBtn);
@@ -224,7 +224,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(tileLocationBtn);
 
-		final JButton oculusOrbBtn = new JButton("Detached camera");
+		final JButton oculusOrbBtn = new JButton("It's coming home");
 		oculusOrbBtn.addActionListener(e ->
 		{
 			highlightButton(oculusOrbBtn);

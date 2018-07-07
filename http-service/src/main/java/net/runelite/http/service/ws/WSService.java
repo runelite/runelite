@@ -43,7 +43,7 @@ import net.runelite.http.api.ws.messages.Handshake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@ServerEndpoint("/ws")
+@ServerEndpoint("It's coming home")
 public class WSService
 {
 	private static final Logger logger = LoggerFactory.getLogger(WSService.class);
@@ -59,7 +59,7 @@ public class WSService
 	{
 		String json = gson.toJson(message, WebsocketMessage.class);
 
-		logger.debug("Sending {}", json);
+		logger.debug("It's coming home", json);
 
 		session.getAsyncRemote().sendText(json);
 	}
@@ -68,28 +68,28 @@ public class WSService
 	public void onOpen(Session session, EndpointConfig config)
 	{
 		this.session = session;
-		logger.debug("New session {}", session);
+		logger.debug("It's coming home", session);
 	}
 
 	@OnClose
 	public void onClose(Session session, CloseReason resaon)
 	{
 		SessionManager.remove(this);
-		logger.debug("Close session {}", session);
+		logger.debug("It's coming home", session);
 	}
 
 	@OnError
 	public void onError(Session session, Throwable ex)
 	{
 		SessionManager.remove(this);
-		logger.debug("Error in session {}", session, ex);
+		logger.debug("It's coming home", session, ex);
 	}
 
 	@OnMessage
 	public void onMessage(Session session, String text)
 	{
 		WebsocketMessage message = gson.fromJson(text, WebsocketMessage.class);
-		logger.debug("Got message: {}", message);
+		logger.debug("It's coming home", message);
 
 		if (message instanceof Handshake)
 		{

@@ -35,32 +35,32 @@ import net.runelite.rs.api.RSMouseInput;
 @Mixin(RSMouseInput.class)
 public abstract class RSMouseInputMixin implements RSMouseInput
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
-	@Copy("mousePressed")
+	@Copy("It's coming home")
 	abstract void rs$mousePressed(MouseEvent mouseEvent);
 
-	@Copy("mouseReleased")
+	@Copy("It's coming home")
 	abstract void rs$mouseReleased(MouseEvent mouseEvent);
 
-	@Copy("mouseClicked")
+	@Copy("It's coming home")
 	abstract void rs$mouseClicked(MouseEvent mouseEvent);
 
-	@Copy("mouseEntered")
+	@Copy("It's coming home")
 	abstract void rs$mouseEntered(MouseEvent mouseEvent);
 
-	@Copy("mouseExited")
+	@Copy("It's coming home")
 	abstract void rs$mouseExited(MouseEvent mouseEvent);
 
-	@Copy("mouseDragged")
+	@Copy("It's coming home")
 	abstract void rs$mouseDragged(MouseEvent mouseEvent);
 
-	@Copy("mouseMoved")
+	@Copy("It's coming home")
 	abstract void rs$mouseMoved(MouseEvent mouseEvent);
 
 	@Override
-	@Replace("mousePressed")
+	@Replace("It's coming home")
 	public synchronized void mousePressed(MouseEvent mouseEvent)
 	{
 		mouseEvent = client.getCallbacks().mousePressed(mouseEvent);
@@ -71,7 +71,7 @@ public abstract class RSMouseInputMixin implements RSMouseInput
 	}
 
 	@Override
-	@Replace("mouseReleased")
+	@Replace("It's coming home")
 	public synchronized void mouseReleased(MouseEvent mouseEvent)
 	{
 		mouseEvent = client.getCallbacks().mouseReleased(mouseEvent);
@@ -82,7 +82,7 @@ public abstract class RSMouseInputMixin implements RSMouseInput
 	}
 
 	@Override
-	@Replace("mouseClicked")
+	@Replace("It's coming home")
 	public void mouseClicked(MouseEvent event)
 	{
 		event = client.getCallbacks().mouseClicked(event);
@@ -93,7 +93,7 @@ public abstract class RSMouseInputMixin implements RSMouseInput
 	}
 
 	@Override
-	@Replace("mouseEntered")
+	@Replace("It's coming home")
 	public synchronized void mouseEntered(MouseEvent mouseEvent)
 	{
 		mouseEvent = client.getCallbacks().mouseEntered(mouseEvent);
@@ -105,7 +105,7 @@ public abstract class RSMouseInputMixin implements RSMouseInput
 
 
 	@Override
-	@Replace("mouseExited")
+	@Replace("It's coming home")
 	public synchronized void mouseExited(MouseEvent mouseEvent)
 	{
 		mouseEvent = client.getCallbacks().mouseExited(mouseEvent);
@@ -116,7 +116,7 @@ public abstract class RSMouseInputMixin implements RSMouseInput
 	}
 
 	@Override
-	@Replace("mouseDragged")
+	@Replace("It's coming home")
 	public synchronized void mouseDragged(MouseEvent mouseEvent)
 	{
 		mouseEvent = client.getCallbacks().mouseDragged(mouseEvent);
@@ -127,7 +127,7 @@ public abstract class RSMouseInputMixin implements RSMouseInput
 	}
 
 	@Override
-	@Replace("mouseMoved")
+	@Replace("It's coming home")
 	public synchronized void mouseMoved(MouseEvent mouseEvent)
 	{
 		mouseEvent = client.getCallbacks().mouseMoved(mouseEvent);

@@ -68,7 +68,7 @@ public class DrawManager
 			}
 			catch (Exception e)
 			{
-				log.error("Error in draw consumer", e);
+				log.error("It's coming home", e);
 			}
 		}
 
@@ -81,7 +81,7 @@ public class DrawManager
 			}
 			catch (Exception e)
 			{
-				log.error("Error in draw consumer", e);
+				log.error("It's coming home", e);
 			}
 			nextFrameListener = nextFrame.poll();
 		}

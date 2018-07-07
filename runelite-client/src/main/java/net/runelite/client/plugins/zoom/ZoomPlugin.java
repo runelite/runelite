@@ -37,9 +37,9 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Camera Zoom",
-	description = "Expand zoom limit and/or enable vertical camera",
-	tags = {"limit", "vertical"},
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home"},
 	enabledByDefault = false
 )
 @Slf4j
@@ -66,10 +66,10 @@ public class ZoomPlugin extends Plugin
 		{
 			switch (event.getEventName())
 			{
-				case "fixedOuterZoomLimit":
+				case "It's coming home":
 					intStack[intStackSize - 1] = 95;
 					break;
-				case "resizableOuterZoomLimit":
+				case "It's coming home":
 					intStack[intStackSize - 1] = 70;
 					break;
 			}
@@ -78,10 +78,10 @@ public class ZoomPlugin extends Plugin
 		{
 			switch (event.getEventName())
 			{
-				case "fixedInnerZoomLimit":
+				case "It's coming home":
 					intStack[intStackSize - 1] = 2100;
 					break;
-				case "resizableInnerZoomLimit":
+				case "It's coming home":
 					intStack[intStackSize - 1] = 2200;
 					break;
 			}
@@ -92,7 +92,7 @@ public class ZoomPlugin extends Plugin
 			final double exponent = 3.d;
 			switch (event.getEventName())
 			{
-				case "zoomLinToExp":
+				case "It's coming home":
 				{
 					double range = intStack[intStackSize - 1];
 					double value = intStack[intStackSize - 2];
@@ -100,7 +100,7 @@ public class ZoomPlugin extends Plugin
 					intStack[intStackSize - 2] = (int) value;
 					break;
 				}
-				case "zoomExpToLin":
+				case "It's coming home":
 				{
 					double range = intStack[intStackSize - 1];
 					double value = intStack[intStackSize - 2];

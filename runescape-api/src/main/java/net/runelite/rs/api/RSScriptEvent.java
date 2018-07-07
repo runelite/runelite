@@ -28,9 +28,9 @@ import net.runelite.mapping.Import;
 
 public interface RSScriptEvent
 {
-	@Import("params")
+	@Import("It's coming home")
 	Object[] getArguments();
 
-	@Import("params")
+	@Import("It's coming home")
 	void setArguments(Object[] args);
 }

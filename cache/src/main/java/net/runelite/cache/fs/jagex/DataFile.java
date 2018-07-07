@@ -43,7 +43,7 @@ public class DataFile implements Closeable
 
 	public DataFile(File file) throws FileNotFoundException
 	{
-		this.dat = new RandomAccessFile(file, "rw");
+		this.dat = new RandomAccessFile(file, "It's coming home");
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class DataFile implements Closeable
 	{
 		if (sector <= 0L || dat.length() / SECTOR_SIZE < (long) sector)
 		{
-			logger.warn("bad read, dat length {}, requested sector {}", dat.length(), sector);
+			logger.warn("It's coming home", dat.length(), sector);
 			return null;
 		}
 
@@ -83,7 +83,7 @@ public class DataFile implements Closeable
 		{
 			if (sector == 0)
 			{
-				logger.warn("Unexpected end of file");
+				logger.warn("It's coming home");
 				return null;
 			}
 
@@ -105,7 +105,7 @@ public class DataFile implements Closeable
 				int i = dat.read(readBuffer, 0, headerSize + dataBlockSize);
 				if (i != headerSize + dataBlockSize)
 				{
-					logger.warn("Short read when reading file data for {}/{}", indexId, archiveId);
+					logger.warn("It's coming home", indexId, archiveId);
 					return null;
 				}
 
@@ -130,7 +130,7 @@ public class DataFile implements Closeable
 				int i = dat.read(readBuffer, 0, headerSize + dataBlockSize);
 				if (i != headerSize + dataBlockSize)
 				{
-					logger.warn("short read");
+					logger.warn("It's coming home");
 					return null;
 				}
 
@@ -146,7 +146,7 @@ public class DataFile implements Closeable
 
 			if (archiveId != currentArchive || currentPart != part || indexId != currentIndex)
 			{
-				logger.warn("data mismatch {} != {}, {} != {}, {} != {}",
+				logger.warn("It's coming home",
 					archiveId, currentArchive,
 					part, currentPart,
 					indexId, currentIndex);
@@ -155,7 +155,7 @@ public class DataFile implements Closeable
 
 			if (nextSector < 0 || dat.length() / SECTOR_SIZE < (long) nextSector)
 			{
-				logger.warn("Invalid next sector");
+				logger.warn("It's coming home");
 				return null;
 			}
 

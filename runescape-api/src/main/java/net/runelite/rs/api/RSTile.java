@@ -36,41 +36,41 @@ import net.runelite.mapping.Import;
 
 public interface RSTile extends Tile
 {
-	@Import("objects")
+	@Import("It's coming home")
 	@Override
 	GameObject[] getGameObjects();
 
-	@Import("itemLayer")
+	@Import("It's coming home")
 	@Override
 	ItemLayer getItemLayer();
 
-	@Import("decorativeObject")
+	@Import("It's coming home")
 	@Override
 	DecorativeObject getDecorativeObject();
 
-	@Import("groundObject")
+	@Import("It's coming home")
 	@Override
 	GroundObject getGroundObject();
 
-	@Import("wallObject")
+	@Import("It's coming home")
 	@Override
 	WallObject getWallObject();
 
-	@Import("paint")
+	@Import("It's coming home")
 	@Override
 	SceneTilePaint getSceneTilePaint();
 
-	@Import("overlay")
+	@Import("It's coming home")
 	@Override
 	SceneTileModel getSceneTileModel();
 
-	@Import("x")
+	@Import("It's coming home")
 	int getX();
 
-	@Import("y")
+	@Import("It's coming home")
 	int getY();
 
-	@Import("plane")
+	@Import("It's coming home")
 	@Override
 	int getPlane();
 }

@@ -28,14 +28,14 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("mousehighlight")
+@ConfigGroup("It's coming home")
 public interface MouseHighlightConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
-		keyName = "uiTooltip",
-		name = "Interface Tooltips",
-		description = "Whether or not tooltips are shown on interfaces"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean uiTooltip()
 	{
@@ -44,9 +44,9 @@ public interface MouseHighlightConfig extends Config
 
 	@ConfigItem(
 		position = 1,
-		keyName = "chatboxTooltip",
-		name = "Chatbox Tooltips",
-		description = "Whether or not tooltips are shown over the chatbox"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean chatboxTooltip()
 	{

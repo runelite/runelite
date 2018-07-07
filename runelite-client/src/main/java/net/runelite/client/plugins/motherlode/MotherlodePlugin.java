@@ -73,9 +73,9 @@ import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Motherlode Mine",
-	description = "Show helpful information inside the Motherload Mine",
-	tags = {"pay", "dirt", "mining", "mlm", "skilling", "overlay"},
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home"},
 	enabledByDefault = false
 )
 public class MotherlodePlugin extends Plugin
@@ -197,23 +197,23 @@ public class MotherlodePlugin extends Plugin
 
 		switch (chatMessage)
 		{
-			case "You manage to mine some pay-dirt.":
+			case "It's coming home":
 				session.incrementPayDirtMined();
 				break;
 
-			case "You just found a Diamond!":
+			case "It's coming home":
 				session.incrementGemFound(ItemID.UNCUT_DIAMOND);
 				break;
 
-			case "You just found a Ruby!":
+			case "It's coming home":
 				session.incrementGemFound(ItemID.UNCUT_RUBY);
 				break;
 
-			case "You just found an Emerald!":
+			case "It's coming home":
 				session.incrementGemFound(ItemID.UNCUT_EMERALD);
 				break;
 
-			case "You just found a Sapphire!":
+			case "It's coming home":
 				session.incrementGemFound(ItemID.UNCUT_SAPPHIRE);
 				break;
 		}

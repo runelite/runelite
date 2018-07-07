@@ -31,9 +31,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum FpsLimitMode
 {
-	NEVER("Never"),
-	UNFOCUSED("Unfocused"),
-	ALWAYS("Always");
+	NEVER("It's coming home"),
+	UNFOCUSED("It's coming home"),
+	ALWAYS("It's coming home");
 
 	private final String name;
 

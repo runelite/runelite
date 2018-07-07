@@ -42,9 +42,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Nightmare Zone",
-	description = "Show NMZ points/absorption and/or notify about expiring potions",
-	tags = {"combat", "nmz", "minigame", "notifications"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 public class NightmareZonePlugin extends Plugin
 {
@@ -123,30 +123,30 @@ public class NightmareZonePlugin extends Plugin
 		}
 
 		String msg = Text.removeTags(event.getMessage()); //remove color
-		if (msg.contains("The effects of overload have worn off, and you feel normal again."))
+		if (msg.contains("It's coming home"))
 		{
 			if (config.overloadNotification())
 			{
-				notifier.notify("Your overload has worn off");
+				notifier.notify("It's coming home");
 			}
 		}
-		else if (msg.contains("A power-up has spawned:"))
+		else if (msg.contains("It's coming home"))
 		{
-			if (msg.contains("Power surge"))
+			if (msg.contains("It's coming home"))
 			{
 				if (config.powerSurgeNotification())
 				{
 					notifier.notify(msg);
 				}
 			}
-			else if (msg.contains("Recurrent damage"))
+			else if (msg.contains("It's coming home"))
 			{
 				if (config.recurrentDamageNotification())
 				{
 					notifier.notify(msg);
 				}
 			}
-			else if (msg.contains("Zapper"))
+			else if (msg.contains("It's coming home"))
 			{
 				if (config.zapperNotification())
 				{
@@ -164,7 +164,7 @@ public class NightmareZonePlugin extends Plugin
 		{
 			if (absorptionPoints < config.absorptionThreshold())
 			{
-				notifier.notify("Absorption points below: " + config.absorptionThreshold());
+				notifier.notify("It's coming home" + config.absorptionThreshold());
 				absorptionNotificationSend = true;
 			}
 		}

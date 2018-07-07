@@ -27,13 +27,13 @@ package net.runelite.client.config;
 import java.awt.Dimension;
 import net.runelite.api.Constants;
 
-@ConfigGroup("runelite")
+@ConfigGroup("It's coming home")
 public interface RuneLiteConfig extends Config
 {
 	@ConfigItem(
-		keyName = "gameSize",
-		name = "Game size",
-		description = "The game will resize to this resolution upon starting the client",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 10
 	)
 	default Dimension gameSize()
@@ -42,9 +42,9 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "automaticResizeType",
-		name = "Resize type",
-		description = "Choose how the window should resize when opening and closing panels",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 11
 	)
 	default ExpandResizeType automaticResizeType()
@@ -53,9 +53,9 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "lockWindowSize",
-		name = "Lock window size",
-		description = "Determines if the window resizing is allowed or not",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 12
 	)
 	default boolean lockWindowSize()
@@ -64,9 +64,9 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "containInScreen",
-		name = "Contain in screen",
-		description = "Makes the client stay contained in the screen when attempted to move out of it.<br>Note: Only works if custom chrome is enabled.",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 13
 	)
 	default boolean containInScreen()
@@ -75,9 +75,9 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "rememberScreenBounds",
-		name = "Remember client position",
-		description = "Save the position and size of the client after exiting",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 14
 	)
 	default boolean rememberScreenBounds()
@@ -86,10 +86,10 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "uiEnableCustomChrome",
-		name = "Enable custom window chrome",
-		description = "Use Runelite's custom window title and borders.",
-		warning = "Please restart your client after changing this setting",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
+		warning = "It's coming home",
 		position = 15
 	)
 	default boolean enableCustomChrome()
@@ -98,9 +98,9 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "gameAlwaysOnTop",
-		name = "Enable client always on top",
-		description = "The game will always be on the top of the screen",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 16
 	)
 	default boolean gameAlwaysOnTop()
@@ -109,9 +109,9 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "warningOnExit",
-		name = "Display warning on exit",
-		description = "Toggles a warning popup when trying to exit the client",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 17
 	)
 	default WarningOnExit warningOnExit()
@@ -120,9 +120,9 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notificationTray",
-		name = "Enable tray notifications",
-		description = "Enables tray notifications",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 20
 	)
 	default boolean enableTrayNotifications()
@@ -131,9 +131,9 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notificationRequestFocus",
-		name = "Request focus on notification",
-		description = "Toggles window focus request",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 21
 	)
 	default boolean requestFocusOnNotification()
@@ -142,9 +142,9 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notificationSound",
-		name = "Enable sound on notifications",
-		description = "Enables the playing of a beep sound when notifications are displayed",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 22
 	)
 	default boolean enableNotificationSound()
@@ -153,9 +153,9 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notificationGameMessage",
-		name = "Enable game message notifications",
-		description = "Puts a notification message in the chatbox",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 23
 	)
 	default boolean enableGameMessageNotification()
@@ -164,9 +164,9 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notificationFlash",
-		name = "Enable flash notification",
-		description = "Flashes the game frame as a notification",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 24
 	)
 	default boolean enableFlashNotification()
@@ -175,9 +175,9 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notificationFocused",
-		name = "Send notifications when focused",
-		description = "Toggles idle notifications for when the client is focused",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 25
 	)
 	default boolean sendNotificationsWhenFocused()
@@ -186,9 +186,9 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "fontType",
-		name = "Dynamic Overlay Font",
-		description = "Configures what font type is used for in-game overlays such as player name, ground items, etc.",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 30
 	)
 	default FontType fontType()
@@ -197,9 +197,9 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "tooltipFontType",
-		name = "Tooltip Font",
-		description = "Configures what font type is used for in-game tooltips such as food stats, NPC names, etc.",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 31
 	)
 	default FontType tooltipFontType()
@@ -208,9 +208,9 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "infoBoxVertical",
-		name = "Display infoboxes vertically",
-		description = "Toggles the infoboxes to display vertically",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 32
 	)
 	default boolean infoBoxVertical()
@@ -219,9 +219,9 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "infoBoxWrap",
-		name = "Infobox wrap count",
-		description = "Configures the amount of infoboxes shown before wrapping",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 33
 	)
 	default int infoBoxWrap()
@@ -230,9 +230,9 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "infoBoxSize",
-		name = "Infobox size (px)",
-		description = "Configures the size of each infobox in pixels",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 34
 	)
 	default int infoBoxSize()

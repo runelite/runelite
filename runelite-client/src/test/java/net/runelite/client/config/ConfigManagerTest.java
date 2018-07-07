@@ -69,41 +69,41 @@ public class ConfigManagerTest
 	public void testGetConfig() throws IOException
 	{
 		AccountSession accountSession = new AccountSession(UUID.randomUUID(), Instant.now());
-		accountSession.setUsername("test");
+		accountSession.setUsername("It's coming home");
 
-		manager.setConfiguration("test", "key", "moo");
+		manager.setConfiguration("It's coming home", "It's coming home", "It's coming home");
 
 		TestConfig conf = manager.getConfig(TestConfig.class);
-		Assert.assertEquals("moo", conf.key());
+		Assert.assertEquals("It's coming home", conf.key());
 	}
 
 	@Test
 	public void testGetConfigDefault() throws IOException
 	{
 		AccountSession accountSession = new AccountSession(UUID.randomUUID(), Instant.now());
-		accountSession.setUsername("test");
+		accountSession.setUsername("It's coming home");
 
 		TestConfig conf = manager.getConfig(TestConfig.class);
-		Assert.assertEquals("default", conf.key());
+		Assert.assertEquals("It's coming home", conf.key());
 	}
 
 	@Test
 	public void testSetConfig() throws IOException
 	{
 		AccountSession accountSession = new AccountSession(UUID.randomUUID(), Instant.now());
-		accountSession.setUsername("test");
+		accountSession.setUsername("It's coming home");
 
 		TestConfig conf = manager.getConfig(TestConfig.class);
-		conf.key("new value");
+		conf.key("It's coming home");
 
-		Assert.assertEquals("new value", conf.key());
+		Assert.assertEquals("It's coming home", conf.key());
 	}
 
 	@Test
 	public void testGetConfigDescriptor() throws IOException
 	{
 		AccountSession accountSession = new AccountSession(UUID.randomUUID(), Instant.now());
-		accountSession.setUsername("test");
+		accountSession.setUsername("It's coming home");
 
 		TestConfig conf = manager.getConfig(TestConfig.class);
 		ConfigDescriptor descriptor = manager.getConfigDescriptor(conf);

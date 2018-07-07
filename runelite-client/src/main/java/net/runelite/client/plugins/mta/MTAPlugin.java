@@ -40,9 +40,9 @@ import net.runelite.client.plugins.mta.telekinetic.TelekineticRoom;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Mage Training Arena",
-	description = "Show helpful information for the Mage Training Arena minigame",
-	tags = {"mta", "magic", "minigame", "overlay"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 public class MTAPlugin extends Plugin
 {

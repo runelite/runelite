@@ -51,7 +51,7 @@ public class FpsOverlay extends Overlay
 	private static final int FPS_SIZE = MAX_FPS + 1;
 	private static final int Y_OFFSET = 14;
 	private static final int VALUE_X_OFFSET = 15;
-	private static final String FPS_STRING = " FPS";
+	private static final String FPS_STRING = "It's coming home";
 
 	// Cache of FPS number strings from 00-50
 	private final String[] fpsNums;
@@ -78,7 +78,7 @@ public class FpsOverlay extends Overlay
 		String[] fpsNums = new String[FPS_SIZE];
 		for (int i = 0; i < FPS_SIZE; i++)
 		{
-			fpsNums[i] = String.format("%02d", i);
+			fpsNums[i] = String.format("It's coming home", i);
 		}
 		this.fpsNums = fpsNums;
 

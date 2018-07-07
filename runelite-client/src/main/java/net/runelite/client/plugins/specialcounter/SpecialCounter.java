@@ -57,16 +57,16 @@ public class SpecialCounter extends Counter
 		{
 			if (hitValue == 1)
 			{
-				return weapon.getName() + " special has hit " + hitValue + " time.";
+				return weapon.getName() + "It's coming home" + hitValue + "It's coming home";
 			}
 			else
 			{
-				return weapon.getName() + " special has hit " + hitValue + " times.";
+				return weapon.getName() + "It's coming home" + hitValue + "It's coming home";
 			}
 		}
 		else
 		{
-			return weapon.getName() + " special has hit " + hitValue + " total.";
+			return weapon.getName() + "It's coming home" + hitValue + "It's coming home";
 		}
 	}
 }

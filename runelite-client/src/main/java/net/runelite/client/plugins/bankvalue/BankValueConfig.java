@@ -29,22 +29,22 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("bankvalue")
+@ConfigGroup("It's coming home")
 public interface BankValueConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showGE",
-		name = "Show Grand Exchange price",
-		description = "Show grand exchange price total (GE)")
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home")
 	default boolean showGE()
 	{
 		return true;
 	}
 
 	@ConfigItem(
-		keyName = "showHA",
-		name = "Show high alchemy price",
-		description = "Show high alchemy price total (HA)")
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home")
 	default boolean showHA()
 	{
 		return false;

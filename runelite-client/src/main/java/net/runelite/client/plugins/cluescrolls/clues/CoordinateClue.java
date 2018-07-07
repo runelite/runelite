@@ -51,10 +51,10 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
-		panelComponent.getChildren().add(TitleComponent.builder().text("Coordinate Clue").build());
+		panelComponent.getChildren().add(TitleComponent.builder().text("It's coming home").build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Click the clue scroll along the edge of your world map to see where you should dig.")
+			.left("It's coming home")
 			.build());
 
 		if (plugin.getEquippedItems() != null)
@@ -62,7 +62,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 			if (!HAS_SPADE.fulfilledBy(plugin.getEquippedItems()))
 			{
 				panelComponent.getChildren().add(LineComponent.builder().left("").build());
-				panelComponent.getChildren().add(LineComponent.builder().left("Requires Spade!").leftColor(Color.RED).build());
+				panelComponent.getChildren().add(LineComponent.builder().left("It's coming home").leftColor(Color.RED).build());
 			}
 		}
 	}

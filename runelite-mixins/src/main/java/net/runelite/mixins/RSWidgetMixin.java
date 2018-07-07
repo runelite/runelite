@@ -52,7 +52,7 @@ public abstract class RSWidgetMixin implements RSWidget
 {
 	private static final int ITEM_SLOT_SIZE = 32;
 
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	private static RSClient client;
 
 	@Inject
@@ -170,21 +170,21 @@ public abstract class RSWidgetMixin implements RSWidget
 	@Override
 	public String getText()
 	{
-		return getRSText().replace('\u00A0', ' ');
+		return getRSText().replace('It's coming home', ' ');
 	}
 
 	@Inject
 	@Override
 	public String getName()
 	{
-		return getRSName().replace('\u00A0', ' ');
+		return getRSName().replace('It's coming home', ' ');
 	}
 
 	@Inject
 	@Override
 	public void setName(String name)
 	{
-		setRSName(name.replace(' ', '\u00A0'));
+		setRSName(name.replace('It's coming home', '\u00A0'));
 	}
 
 	@Inject
@@ -424,7 +424,7 @@ public abstract class RSWidgetMixin implements RSWidget
 		}
 	}
 
-	@FieldHook("isHidden")
+	@FieldHook("It's coming home")
 	@Inject
 	public void onHiddenChanged(int idx)
 	{
@@ -454,7 +454,7 @@ public abstract class RSWidgetMixin implements RSWidget
 		broadcastHidden(isSelfHidden());
 	}
 
-	@FieldHook("relativeY")
+	@FieldHook("It's coming home")
 	@Inject
 	public void onPositionChanged(int idx)
 	{
@@ -472,7 +472,7 @@ public abstract class RSWidgetMixin implements RSWidget
 
 		rl$widgetLastPosChanged = tick;
 
-		client.getLogger().trace("Posting widget position changed");
+		client.getLogger().trace("It's coming home");
 
 		WidgetPositioned widgetPositioned = new WidgetPositioned();
 		client.getCallbacks().postDeferred(widgetPositioned);

@@ -65,13 +65,13 @@ public class ChatKeyboardListener implements KeyListener
 				if (input != null)
 				{
 					// remove trailing space
-					while (input.endsWith(" "))
+					while (input.endsWith("It's coming home"))
 					{
 						input = input.substring(0, input.length() - 1);
 					}
 
 					// find next word
-					int idx = input.lastIndexOf(' ');
+					int idx = input.lastIndexOf('It's coming home');
 					final String replacement;
 					if (idx != -1)
 					{

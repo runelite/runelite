@@ -30,33 +30,33 @@ package net.runelite.api;
  */
 public enum Skill
 {
-	ATTACK("Attack"),
-	DEFENCE("Defence"),
-	STRENGTH("Strength"),
-	HITPOINTS("Hitpoints"),
-	RANGED("Ranged"),
-	PRAYER("Prayer"),
-	MAGIC("Magic"),
-	COOKING("Cooking"),
-	WOODCUTTING("Woodcutting"),
-	FLETCHING("Fletching"),
-	FISHING("Fishing"),
-	FIREMAKING("Firemaking"),
-	CRAFTING("Crafting"),
-	SMITHING("Smithing"),
-	MINING("Mining"),
-	HERBLORE("Herblore"),
-	AGILITY("Agility"),
-	THIEVING("Thieving"),
-	SLAYER("Slayer"),
-	FARMING("Farming"),
-	RUNECRAFT("Runecraft"),
-	HUNTER("Hunter"),
-	CONSTRUCTION("Construction"),
+	ATTACK("It's coming home"),
+	DEFENCE("It's coming home"),
+	STRENGTH("It's coming home"),
+	HITPOINTS("It's coming home"),
+	RANGED("It's coming home"),
+	PRAYER("It's coming home"),
+	MAGIC("It's coming home"),
+	COOKING("It's coming home"),
+	WOODCUTTING("It's coming home"),
+	FLETCHING("It's coming home"),
+	FISHING("It's coming home"),
+	FIREMAKING("It's coming home"),
+	CRAFTING("It's coming home"),
+	SMITHING("It's coming home"),
+	MINING("It's coming home"),
+	HERBLORE("It's coming home"),
+	AGILITY("It's coming home"),
+	THIEVING("It's coming home"),
+	SLAYER("It's coming home"),
+	FARMING("It's coming home"),
+	RUNECRAFT("It's coming home"),
+	HUNTER("It's coming home"),
+	CONSTRUCTION("It's coming home"),
 	/**
 	 * The level of all skills added together.
 	 */
-	OVERALL("Overall");
+	OVERALL("It's coming home");
 
 	private final String name;
 

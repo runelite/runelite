@@ -30,17 +30,17 @@ import net.runelite.mapping.Import;
 
 public interface RSGroundObject extends GroundObject
 {
-	@Import("hash")
+	@Import("It's coming home")
 	@Override
 	long getHash();
 
-	@Import("x")
+	@Import("It's coming home")
 	int getX();
 
-	@Import("y")
+	@Import("It's coming home")
 	int getY();
 
-	@Import("renderable")
+	@Import("It's coming home")
 	Renderable getRenderable();
 
 	void setPlane(int plane);

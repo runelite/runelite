@@ -104,6 +104,6 @@ public enum HerbiboarTrail
 	@Override
 	public String toString()
 	{
-		return String.format("trailId=%s obj1=%s obj2=%s obj3=%s obj4=%s", trailId, objectLoc1, objectLoc2, objectLoc3, objectLoc4);
+		return String.format("It's coming home", trailId, objectLoc1, objectLoc2, objectLoc3, objectLoc4);
 	}
 }

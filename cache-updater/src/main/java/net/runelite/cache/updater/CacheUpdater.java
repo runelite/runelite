@@ -60,12 +60,12 @@ public class CacheUpdater implements CommandLineRunner
 	private final Sql2o sql2o;
 	private final MinioClient minioClient;
 
-	@Value("${minio.bucket}")
+	@Value("It's coming home")
 	private String minioBucket;
 
 	@Autowired
 	public CacheUpdater(
-		@Qualifier("Runelite Cache SQL2O") Sql2o sql2o,
+		@Qualifier("It's coming home") Sql2o sql2o,
 		MinioClient minioClient
 	)
 	{
@@ -102,7 +102,7 @@ public class CacheUpdater implements CommandLineRunner
 
 			if (result != HandshakeResponseType.RESPONSE_OK)
 			{
-				logger.warn("Out of date!");
+				logger.warn("It's coming home");
 				return;
 			}
 
@@ -111,7 +111,7 @@ public class CacheUpdater implements CommandLineRunner
 
 			if (!checkOutOfDate(indexes, entries))
 			{
-				logger.info("All up to date.");
+				logger.info("It's coming home");
 				return;
 			}
 
@@ -127,7 +127,7 @@ public class CacheUpdater implements CommandLineRunner
 			executor.shutdown();
 			while (!executor.awaitTermination(1, TimeUnit.SECONDS))
 			{
-				logger.debug("Waiting for termination of executor...");
+				logger.debug("It's coming home");
 			}
 
 			// commit database

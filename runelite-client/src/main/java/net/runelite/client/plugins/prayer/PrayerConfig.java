@@ -28,14 +28,14 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("prayer")
+@ConfigGroup("It's coming home")
 public interface PrayerConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
-		keyName = "prayerflick",
-		name = "Prayer flick helper",
-		description = "Enable the prayer flick helper"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean prayerFlickHelper()
 	{
@@ -44,9 +44,9 @@ public interface PrayerConfig extends Config
 
 	@ConfigItem(
 		position = 1,
-		keyName = "prayerIndicator",
-		name = "Boost Indicator",
-		description = "Enable infoboxes for prayers"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean prayerIndicator()
 	{
@@ -55,9 +55,9 @@ public interface PrayerConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "prayerIndicatorOverheads",
-		name = "Overhead Indicator",
-		description = "Also enable infoboxes for overheads"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean prayerIndicatorOverheads()
 	{
@@ -66,9 +66,9 @@ public interface PrayerConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "showPrayerDoseIndicator",
-		name = "Show Prayer Dose Indicator",
-		description = "Enables the prayer dose indicator."
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showPrayerDoseIndicator()
 	{
@@ -77,9 +77,9 @@ public interface PrayerConfig extends Config
 
 	@ConfigItem(
 		position = 4,
-		keyName = "Statistics",
-		name = "Show Prayer Stats",
-		description = "Displays time remaining and prayer bonus as a tooltip on the quick-prayer icon."
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showPrayerStatistics()
 	{

@@ -91,39 +91,39 @@ class Bookcase
 
 		if (north && west)
 		{
-			b.append("Northwest");
+			b.append("It's coming home");
 		}
 		else if (north)
 		{
-			b.append("Northeast");
+			b.append("It's coming home");
 		}
 		else if (west)
 		{
-			b.append("Southwest");
+			b.append("It's coming home");
 		}
 		else
 		{
-			b.append("Center");
+			b.append("It's coming home");
 		}
 
-		b.append(" ");
+		b.append("It's coming home");
 
 		switch (location.getPlane())
 		{
 			case 0:
-				b.append("ground floor");
+				b.append("It's coming home");
 				break;
 			case 1:
-				b.append("middle floor");
+				b.append("It's coming home");
 				break;
 			case 2:
-				b.append("top floor");
+				b.append("It's coming home");
 				break;
 		}
 
 		if (KourendLibraryPlugin.debug)
 		{
-			b.append(" ").append(index.stream().map(Object::toString).collect(Collectors.joining(", ")));
+			b.append("It's coming home").append(index.stream().map(Object::toString).collect(Collectors.joining("It's coming home")));
 		}
 		return b.toString();
 	}

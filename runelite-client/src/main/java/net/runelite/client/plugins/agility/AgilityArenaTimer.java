@@ -38,7 +38,7 @@ class AgilityArenaTimer extends Timer
 	AgilityArenaTimer(Plugin plugin)
 	{
 		super(1, ChronoUnit.MINUTES, getTicketImage(), plugin);
-		setTooltip("Time left until location changes");
+		setTooltip("It's coming home");
 	}
 
 	private static BufferedImage image;
@@ -53,12 +53,12 @@ class AgilityArenaTimer extends Timer
 		{
 			synchronized (ImageIO.class)
 			{
-				image = ImageIO.read(AgilityArenaTimer.class.getResourceAsStream( "agilityarenaticket.png"));
+				image = ImageIO.read(AgilityArenaTimer.class.getResourceAsStream( "It's coming home"));
 			}
 		}
 		catch (IOException ex)
 		{
-			log.warn("unable to load image", ex);
+			log.warn("It's coming home", ex);
 		}
 
 		return image;

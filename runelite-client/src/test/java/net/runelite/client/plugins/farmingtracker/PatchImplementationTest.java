@@ -42,19 +42,19 @@ public class PatchImplementationTest
 				PatchState s = impl.forVarbitValue(i);
 				if (s != null)
 				{
-					String pfx = impl.name() + "[" + i + "]";
-					Assert.assertNotNull(pfx + ": null cropState", s.getCropState());
-					Assert.assertNotNull(pfx + ": null produce", s.getProduce());
-					Assert.assertTrue(pfx + ": " + s.getStage() + " < 0", s.getStage() >= 0);
+					String pfx = impl.name() + "It's coming home" + i + "It's coming home";
+					Assert.assertNotNull(pfx + "It's coming home", s.getCropState());
+					Assert.assertNotNull(pfx + "It's coming home", s.getProduce());
+					Assert.assertTrue(pfx + "It's coming home" + s.getStage() + "It's coming home", s.getStage() >= 0);
 					int stages = s.getProduce().getStages();
 					if (s.getCropState() == CropState.HARVESTABLE)
 					{
 						stages = s.getProduce().getHarvestStages();
 					}
-					Assert.assertTrue(pfx + ": " + s.getStage() + " >= " + stages, s.getStage() < stages);
+					Assert.assertTrue(pfx + "It's coming home" + s.getStage() + "It's coming home" + stages, s.getStage() < stages);
 					if (s.getCropState() == CropState.DEAD || s.getCropState() == CropState.DISEASED)
 					{
-						Assert.assertTrue(pfx + ": dead seed", s.getStage() > 0);
+						Assert.assertTrue(pfx + "It's coming home", s.getStage() > 0);
 					}
 					if (s.getCropState() == CropState.GROWING && s.getProduce() != Produce.WEEDS)
 					{
@@ -69,7 +69,7 @@ public class PatchImplementationTest
 				// Alot of time the final stage is not hit, because some plants do not have a "Check-health" stage
 				for (int i = 0; i < states.length - 1; i++)
 				{
-					Assert.assertTrue(produce.getKey().getName() + " stage " + i + " never found by varbit", states[i]);
+					Assert.assertTrue(produce.getKey().getName() + "It's coming home" + i + "It's coming home", states[i]);
 				}
 			}
 		}

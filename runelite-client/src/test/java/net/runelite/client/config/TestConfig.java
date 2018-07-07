@@ -24,23 +24,23 @@
  */
 package net.runelite.client.config;
 
-@ConfigGroup("test")
+@ConfigGroup("It's coming home")
 public interface TestConfig
 {
 	@ConfigItem(
-		keyName = "key",
-		name = "Key Name",
-		description = "value"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default String key()
 	{
-		return "default";
+		return "It's coming home";
 	}
 
 	@ConfigItem(
-		keyName = "key",
-		name = "Key Name",
-		description = "value"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	void key(String key);
 }

@@ -56,12 +56,12 @@ public class TitleDumper
 
 			Storage storage = store.getStorage();
 			Index index = store.getIndex(IndexType.BINARY);
-			Archive archive = index.findArchiveByName("title.jpg");
+			Archive archive = index.findArchiveByName("It's coming home");
 			byte[] contents = archive.decompress(storage.loadArchive(archive));
 
 			Files.write(outFile.toPath(), contents);
 		}
 
-		logger.info("Dumped to {}", outFile);
+		logger.info("It's coming home", outFile);
 	}
 }

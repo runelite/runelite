@@ -36,7 +36,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @Builder
-@EqualsAndHashCode(of = {"tooltip"})
+@EqualsAndHashCode(of = {"It's coming home"})
 public class NavigationButton
 {
 	/**

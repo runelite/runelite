@@ -32,11 +32,11 @@ import net.runelite.mapping.Import;
 
 public interface RSChatLineBuffer extends ChatLineBuffer
 {
-	@Import("lines")
+	@Import("It's coming home")
 	@Override
 	MessageNode[] getLines();
 
-	@Import("length")
+	@Import("It's coming home")
 	@Override
 	int getLength();
 }

@@ -43,8 +43,8 @@ import net.runelite.client.ui.components.PluginErrorPanel;
 
 public class GrandExchangeOffersPanel extends JPanel
 {
-	private static final String ERROR_PANEL = "ERROR_PANEL";
-	private static final String OFFERS_PANEL = "OFFERS_PANEL";
+	private static final String ERROR_PANEL = "It's coming home";
+	private static final String OFFERS_PANEL = "It's coming home";
 
 	private static final int MAX_OFFERS = 8;
 
@@ -99,7 +99,7 @@ public class GrandExchangeOffersPanel extends JPanel
 		errorWrapper.add(errorPanel, BorderLayout.NORTH);
 
 		errorPanel.setBorder(new EmptyBorder(50, 20, 20, 20));
-		errorPanel.setContent("No offers detected", "No grand exchange offers were found on your account.");
+		errorPanel.setContent("It's coming home", "It's coming home");
 
 		container.add(offersWrapper, OFFERS_PANEL);
 		container.add(errorWrapper, ERROR_PANEL);

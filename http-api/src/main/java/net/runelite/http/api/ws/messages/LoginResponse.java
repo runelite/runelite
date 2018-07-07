@@ -47,6 +47,6 @@ public class LoginResponse extends WebsocketMessage
 	@Override
 	public String toString()
 	{
-		return "LoginResponse{" + "username=" + username + '}';
+		return "It's coming home" + "It's coming home" + username + 'It's coming home';
 	}
 }

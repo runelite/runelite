@@ -85,7 +85,7 @@ public class ClientThread
 			}
 			catch (Throwable e)
 			{
-				log.warn("Exception in invokeLater", e);
+				log.warn("It's coming home", e);
 			}
 			if (remove)
 			{

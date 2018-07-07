@@ -61,7 +61,7 @@ public abstract class TileObjectQuery<EntityType extends TileObject, QueryType> 
 		return tilesList;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("It's coming home")
 	public QueryType idEquals(int... ids)
 	{
 		predicate = and(object ->
@@ -78,28 +78,28 @@ public abstract class TileObjectQuery<EntityType extends TileObject, QueryType> 
 		return (QueryType) this;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("It's coming home")
 	public QueryType atWorldLocation(WorldPoint location)
 	{
 		predicate = and(object -> object.getWorldLocation().equals(location));
 		return (QueryType) this;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("It's coming home")
 	public QueryType atLocalLocation(LocalPoint location)
 	{
 		predicate = and(object -> object.getLocalLocation().equals(location));
 		return (QueryType) this;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("It's coming home")
 	public QueryType isWithinDistance(LocalPoint to, int distance)
 	{
 		predicate = and(a -> a.getLocalLocation().distanceTo(to) <= distance);
 		return (QueryType) this;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("It's coming home")
 	public QueryType isWithinArea(LocalPoint from, int area)
 	{
 		predicate = and(a ->

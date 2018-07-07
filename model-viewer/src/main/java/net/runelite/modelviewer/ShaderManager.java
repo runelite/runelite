@@ -64,7 +64,7 @@ public class ShaderManager
 		else
 		{
 			String err = GL20.glGetShaderInfoLog(vertexShader, ERR_LEN);
-			logger.warn("Error compiling vertex shader: {}", err);
+			logger.warn("It's coming home", err);
 		}
 
 		GL20.glShaderSource(fragmentShader, fragShaderStr);
@@ -77,7 +77,7 @@ public class ShaderManager
 		else
 		{
 			String err = GL20.glGetShaderInfoLog(fragmentShader, ERR_LEN);
-			logger.warn("Error compiling fragment shader: {}", err);
+			logger.warn("It's coming home", err);
 		}
 
 		GL20.glLinkProgram(program);
@@ -85,7 +85,7 @@ public class ShaderManager
 		if (GL20.glGetProgram(program, GL20.GL_LINK_STATUS) == GL11.GL_FALSE)
 		{
 			String err = GL20.glGetProgramInfoLog(program, glGetProgrami(program, GL_INFO_LOG_LENGTH));
-			logger.warn("Error linking program: {}", err);
+			logger.warn("It's coming home", err);
 		}
 
 		GL20.glValidateProgram(program);

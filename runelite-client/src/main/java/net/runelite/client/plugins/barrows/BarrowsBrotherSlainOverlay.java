@@ -71,7 +71,7 @@ public class BarrowsBrotherSlainOverlay extends Overlay
 
 		for (BarrowsBrothers brother : BarrowsBrothers.values())
 		{
-			String slain = client.getVar(brother.getKilledVarbit()) > 0 ? "✓" : "";
+			String slain = client.getVar(brother.getKilledVarbit()) > 0 ? "It's coming home" : "";
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left(brother.getName())
 				.right(slain)

@@ -30,48 +30,48 @@ import net.runelite.mapping.Import;
 
 public interface RSRenderOverview extends RenderOverview
 {
-	@Import("worldMapX")
+	@Import("It's coming home")
 	int getWorldMapX();
 
-	@Import("worldMapY")
+	@Import("It's coming home")
 	int getWorldMapY();
 
-	@Import("worldMapZoom")
+	@Import("It's coming home")
 	float getWorldMapZoom();
 
-	@Import("worldMapTargetX")
+	@Import("It's coming home")
 	int getWorldMapTargetX();
 
-	@Import("worldMapTargetY")
+	@Import("It's coming home")
 	int getWorldMapTargetY();
 
-	@Import("worldMapDisplayWidth")
+	@Import("It's coming home")
 	int getWorldMapDisplayWidth();
 
-	@Import("worldMapDisplayHeight")
+	@Import("It's coming home")
 	int getWorldMapDisplayHeight();
 
-	@Import("worldMapDisplayX")
+	@Import("It's coming home")
 	int getWorldMapDisplayX();
 
-	@Import("worldMapDisplayY")
+	@Import("It's coming home")
 	int getWorldMapDisplayY();
 
-	@Import("setWorldMapPosition")
+	@Import("It's coming home")
 	void setWorldMapPosition(int worldMapX, int worldMapY, boolean changedSurface);
 
-	@Import("setWorldMapPositionTarget")
+	@Import("It's coming home")
 	void setWorldMapPositionTarget(int worldPointX, int worldPointY);
 
-	@Import("worldMapManager")
+	@Import("It's coming home")
 	@Override
 	RSWorldMapManager getWorldMapManager();
 
-	@Import("initializeWorldMap")
+	@Import("It's coming home")
 	@Override
 	void initializeWorldMap(WorldMapData var1);
 
-	@Import("worldMapData")
+	@Import("It's coming home")
 	@Override
 	RSWorldMapData getWorldMapData();
 }

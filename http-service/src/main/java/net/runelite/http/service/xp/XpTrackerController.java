@@ -34,19 +34,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/xp")
+@RequestMapping("It's coming home")
 public class XpTrackerController
 {
 	@Autowired
 	private XpTrackerService xpTrackerService;
 
-	@RequestMapping("/update")
+	@RequestMapping("It's coming home")
 	public void update(@RequestParam String username) throws IOException
 	{
 		xpTrackerService.update(username);
 	}
 
-	@RequestMapping("/get")
+	@RequestMapping("It's coming home")
 	public XpData get(@RequestParam String username, @RequestParam(required = false) Instant time) throws IOException
 	{
 		if (time == null)

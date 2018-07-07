@@ -28,13 +28,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("zoom")
+@ConfigGroup("It's coming home")
 public interface ZoomConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Expand outer zoom limit",
-		description = "Configures whether or not the outer zoom limit is reduced"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean outerLimit()
 	{
@@ -42,9 +42,9 @@ public interface ZoomConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "inner",
-		name = "Expand inner zoom limit",
-		description = "Configures whether or not the inner zoom limit is reduced"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean innerLimit()
 	{
@@ -52,9 +52,9 @@ public interface ZoomConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "relaxCameraPitch",
-		name = "Vertical camera",
-		description = "Relax the camera's upper pitch limit"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean relaxCameraPitch()
 	{

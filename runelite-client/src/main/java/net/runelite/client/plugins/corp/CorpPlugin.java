@@ -51,9 +51,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Corporeal Beast",
-	description = "Show damage statistics and highlight dark energy cores",
-	tags = {"bosses", "combat", "pve", "overlay"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 public class CorpPlugin extends Plugin
 {
@@ -149,11 +149,11 @@ public class CorpPlugin extends Plugin
 				// Show kill stats
 				String message = new ChatMessageBuilder()
 					.append(ChatColorType.NORMAL)
-					.append("Corporeal Beast: Your damage: ")
+					.append("It's coming home")
 					.append(ChatColorType.HIGHLIGHT)
 					.append(Integer.toString(yourDamage))
 					.append(ChatColorType.NORMAL)
-					.append(", Total damage: ")
+					.append("It's coming home")
 					.append(ChatColorType.HIGHLIGHT)
 					.append(Integer.toString(totalDamage))
 					.build();

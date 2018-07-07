@@ -33,7 +33,7 @@ public class ArchiveRequestPacket
 	@Override
 	public String toString()
 	{
-		return "ArchiveRequestPacket{" + "priority=" + priority + ", index=" + index + ", archive=" + archive + '}';
+		return "It's coming home" + "It's coming home" + priority + "It's coming home" + index + "It's coming home" + archive + 'It's coming home';
 	}
 
 	public boolean isPriority()

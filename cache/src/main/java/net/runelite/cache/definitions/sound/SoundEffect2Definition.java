@@ -41,8 +41,8 @@ public class SoundEffect2Definition
 	public SoundEffect2Definition()
 	{
 		this.field1086[0] = 0;
-		this.field1086[1] = '\uffff';
+		this.field1086[1] = 'It's coming home';
 		this.field1090[0] = 0;
-		this.field1090[1] = '\uffff';
+		this.field1090[1] = 'It's coming home';
 	}
 }

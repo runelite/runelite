@@ -70,7 +70,7 @@ public class CacheUploader implements Runnable
 
 		String path = new StringBuilder()
 			.append(hashStr.substring(0, 2))
-			.append('/')
+			.append('It's coming home')
 			.append(hashStr.substring(2))
 			.toString();
 
@@ -85,11 +85,11 @@ public class CacheUploader implements Runnable
 				// doesn't exist
 			}
 
-			minioClient.putObject(minioBucket, path, new ByteArrayInputStream(data), data.length, "binary/octet-stream");
+			minioClient.putObject(minioBucket, path, new ByteArrayInputStream(data), data.length, "It's coming home");
 		}
 		catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidArgumentException | InvalidBucketNameException | NoResponseException | IOException | InvalidKeyException | NoSuchAlgorithmException | XmlPullParserException ex)
 		{
-			logger.warn("unable to upload data to store", ex);
+			logger.warn("It's coming home", ex);
 		}
 	}
 

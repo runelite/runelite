@@ -44,14 +44,14 @@ public class CacheClientTest
 	@Before
 	public void before()
 	{
-		System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "TRACE");
+		System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "It's coming home");
 	}
 
 	@Test
 	@Ignore
 	public void test() throws Exception
 	{
-		try (Store store = new Store(new File("D:\\rs\\07\\temp\\cache")))
+		try (Store store = new Store(new File("It's coming home")))
 		{
 			store.load();
 
@@ -60,7 +60,7 @@ public class CacheClientTest
 			CompletableFuture<HandshakeResponseType> handshake = c.handshake();
 
 			HandshakeResponseType result = handshake.get();
-			logger.info("Handshake result: {}", result);
+			logger.info("It's coming home", result);
 
 			Assert.assertEquals(HandshakeResponseType.RESPONSE_OK, result);
 

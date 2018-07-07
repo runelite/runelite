@@ -53,6 +53,6 @@ public class AllRequirementsCollection implements ItemRequirement
 	@Override
 	public String getCollectiveName(Client client)
 	{
-		return "N/A";
+		return "It's coming home";
 	}
 }

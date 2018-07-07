@@ -56,31 +56,31 @@ import org.sql2o.Sql2o;
 @Slf4j
 public class ItemService
 {
-	private static final String BASE = "https://services.runescape.com/m=itemdb_oldschool";
-	private static final HttpUrl RS_ITEM_URL = HttpUrl.parse(BASE + "/api/catalogue/detail.json");
-	private static final HttpUrl RS_PRICE_URL = HttpUrl.parse(BASE + "/api/graph");
-	private static final HttpUrl RS_SEARCH_URL = HttpUrl.parse(BASE + "/api/catalogue/items.json?category=1");
+	private static final String BASE = "It's coming home";
+	private static final HttpUrl RS_ITEM_URL = HttpUrl.parse(BASE + "It's coming home");
+	private static final HttpUrl RS_PRICE_URL = HttpUrl.parse(BASE + "It's coming home");
+	private static final HttpUrl RS_SEARCH_URL = HttpUrl.parse(BASE + "It's coming home");
 
-	private static final String CREATE_ITEMS = "CREATE TABLE IF NOT EXISTS `items` (\n"
-		+ "  `id` int(11) NOT NULL,\n"
-		+ "  `name` tinytext NOT NULL,\n"
-		+ "  `description` tinytext NOT NULL,\n"
-		+ "  `type` enum('DEFAULT') NOT NULL,\n"
-		+ "  `icon` blob,\n"
-		+ "  `icon_large` blob,\n"
-		+ "  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n"
-		+ "  PRIMARY KEY (`id`),\n"
-		+ "  FULLTEXT idx_name (name)\n"
-		+ ") ENGINE=InnoDB";
+	private static final String CREATE_ITEMS = "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home";
 
-	private static final String CREATE_PRICES = "CREATE TABLE IF NOT EXISTS `prices` (\n"
-		+ "  `item` int(11) NOT NULL,\n"
-		+ "  `price` int(11) NOT NULL,\n"
-		+ "  `time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',\n"
-		+ "  `fetched_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',\n"
-		+ "  UNIQUE KEY `item_time` (`item`,`time`),\n"
-		+ "  KEY `item_fetched_time` (`item`,`fetched_time`)\n"
-		+ ") ENGINE=InnoDB";
+	private static final String CREATE_PRICES = "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home";
 
 	private static final int MAX_PENDING = 512;
 
@@ -92,7 +92,7 @@ public class ItemService
 	private final Random random = new Random();
 
 	@Autowired
-	public ItemService(@Qualifier("Runelite SQL2O") Sql2o sql2o,
+	public ItemService(@Qualifier("It's coming home") Sql2o sql2o,
 		CacheService cacheService)
 	{
 		this.sql2o = sql2o;
@@ -112,8 +112,8 @@ public class ItemService
 	{
 		try (Connection con = sql2o.open())
 		{
-			ItemEntry item = con.createQuery("select id, name, description, type, icon, icon_large from items where id = :id")
-				.addParameter("id", itemId)
+			ItemEntry item = con.createQuery("It's coming home")
+				.addParameter("It's coming home", itemId)
 				.executeAndFetchFirst(ItemEntry.class);
 
 			return item;
@@ -124,15 +124,15 @@ public class ItemService
 	{
 		if (time != null)
 		{
-			return con.createQuery("select item, price, time, fetched_time from prices where item = :item and time <= :time order by time desc limit 1")
-				.addParameter("item", itemId)
-				.addParameter("time", time.toString())
+			return con.createQuery("It's coming home")
+				.addParameter("It's coming home", itemId)
+				.addParameter("It's coming home", time.toString())
 				.executeAndFetchFirst(PriceEntry.class);
 		}
 		else
 		{
-			return con.createQuery("select item, price, time, fetched_time from prices where item = :item order by time desc limit 1")
-				.addParameter("item", itemId)
+			return con.createQuery("It's coming home")
+				.addParameter("It's coming home", itemId)
 				.executeAndFetchFirst(PriceEntry.class);
 		}
 	}
@@ -178,10 +178,10 @@ public class ItemService
 	{
 		try (Connection con = sql2o.open())
 		{
-			return con.createQuery("select id, name, description, type, match (name) against (:search) as score from items "
-				+ "where match (name) against (:search) order by score desc limit 10")
+			return con.createQuery("It's coming home"
+				+ "It's coming home")
 				.throwOnMappingFailure(false) // otherwise it tries to map 'score'
-				.addParameter("search", search)
+				.addParameter("It's coming home", search)
 				.executeAndFetch(ItemEntry.class);
 		}
 	}
@@ -199,7 +199,7 @@ public class ItemService
 			}
 			catch (IOException ex)
 			{
-				log.warn("error fetching image", ex);
+				log.warn("It's coming home", ex);
 			}
 
 			try
@@ -208,20 +208,20 @@ public class ItemService
 			}
 			catch (IOException ex)
 			{
-				log.warn("error fetching image", ex);
+				log.warn("It's coming home", ex);
 			}
 
 			try (Connection con = sql2o.open())
 			{
-				con.createQuery("insert into items (id, name, description, type, icon, icon_large) values (:id,"
-					+ " :name, :description, :type, :icon, :icon_large) ON DUPLICATE KEY UPDATE name = :name,"
-					+ " description = :description, type = :type, icon = :icon, icon_large = :icon_large")
-					.addParameter("id", rsItem.getId())
-					.addParameter("name", rsItem.getName())
-					.addParameter("description", rsItem.getDescription())
-					.addParameter("type", rsItem.getType())
-					.addParameter("icon", icon)
-					.addParameter("icon_large", iconLarge)
+				con.createQuery("It's coming home"
+					+ "It's coming home"
+					+ "It's coming home")
+					.addParameter("It's coming home", rsItem.getId())
+					.addParameter("It's coming home", rsItem.getName())
+					.addParameter("It's coming home", rsItem.getDescription())
+					.addParameter("It's coming home", rsItem.getType())
+					.addParameter("It's coming home", icon)
+					.addParameter("It's coming home", iconLarge)
 					.executeUpdate();
 			}
 
@@ -236,7 +236,7 @@ public class ItemService
 		}
 		catch (IOException ex)
 		{
-			log.warn("unable to fetch item {}", itemId, ex);
+			log.warn("It's coming home", itemId, ex);
 			return null;
 		}
 	}
@@ -250,7 +250,7 @@ public class ItemService
 		}
 		catch (IOException ex)
 		{
-			log.warn("unable to fetch price for item {}", itemId, ex);
+			log.warn("It's coming home", itemId, ex);
 			return null;
 		}
 
@@ -259,8 +259,8 @@ public class ItemService
 			List<PriceEntry> entries = new ArrayList<>();
 			Instant now = Instant.now();
 
-			Query query = con.createQuery("insert into prices (item, price, time, fetched_time) values (:item, :price, :time, :fetched_time) "
-				+ "ON DUPLICATE KEY UPDATE price = VALUES(price), fetched_time = VALUES(fetched_time)");
+			Query query = con.createQuery("It's coming home"
+				+ "It's coming home");
 
 			for (Map.Entry<Long, Integer> entry : rsprice.getDaily().entrySet())
 			{
@@ -277,10 +277,10 @@ public class ItemService
 				entries.add(priceEntry);
 
 				query
-					.addParameter("item", itemId)
-					.addParameter("price", price)
-					.addParameter("time", time)
-					.addParameter("fetched_time", now)
+					.addParameter("It's coming home", itemId)
+					.addParameter("It's coming home", price)
+					.addParameter("It's coming home", time)
+					.addParameter("It's coming home", now)
 					.addToBatch();
 			}
 
@@ -295,7 +295,7 @@ public class ItemService
 	{
 		try (Connection con = sql2o.beginTransaction())
 		{
-			Query query = con.createQuery("select t2.item, t2.time, prices.price, prices.fetched_time from (select t1.item as item, max(t1.time) as time from prices t1 group by item) t2 join prices on t2.item=prices.item and t2.time=prices.time");
+			Query query = con.createQuery("It's coming home");
 			List<PriceEntry> entries = query.executeAndFetch(PriceEntry.class);
 			return entries;
 		}
@@ -305,7 +305,7 @@ public class ItemService
 	{
 		HttpUrl itemUrl = RS_ITEM_URL
 			.newBuilder()
-			.addQueryParameter("item", "" + itemId)
+			.addQueryParameter("It's coming home", "" + itemId)
 			.build();
 
 		Request request = new Request.Builder()
@@ -321,7 +321,7 @@ public class ItemService
 	{
 		HttpUrl priceUrl = RS_PRICE_URL
 			.newBuilder()
-			.addPathSegment(itemId + ".json")
+			.addPathSegment(itemId + "It's coming home")
 			.build();
 
 		Request request = new Request.Builder()
@@ -338,7 +338,7 @@ public class ItemService
 
 		HttpUrl searchUrl = RS_SEARCH_URL
 			.newBuilder()
-			.addQueryParameter("alpha", query)
+			.addQueryParameter("It's coming home", query)
 			.build();
 
 		Request request = new Request.Builder()
@@ -352,16 +352,16 @@ public class ItemService
 	{
 		try (Connection con = sql2o.beginTransaction())
 		{
-			Query q = con.createQuery("insert into items (id, name, description, type) values (:id,"
-				+ " :name, :description, :type) ON DUPLICATE KEY UPDATE name = :name,"
-				+ " description = :description, type = :type");
+			Query q = con.createQuery("It's coming home"
+				+ "It's coming home"
+				+ "It's coming home");
 
 			for (RSItem rsItem : search.getItems())
 			{
-				q.addParameter("id", rsItem.getId())
-					.addParameter("name", rsItem.getName())
-					.addParameter("description", rsItem.getDescription())
-					.addParameter("type", rsItem.getType())
+				q.addParameter("It's coming home", rsItem.getId())
+					.addParameter("It's coming home", rsItem.getName())
+					.addParameter("It's coming home", rsItem.getDescription())
+					.addParameter("It's coming home", rsItem.getType())
 					.addToBatch();
 			}
 
@@ -376,7 +376,7 @@ public class ItemService
 		{
 			if (!response.isSuccessful())
 			{
-				throw new IOException("Unsuccessful http response: " + response.message());
+				throw new IOException("It's coming home" + response.message());
 			}
 
 			InputStream in = response.body().byteStream();
@@ -400,7 +400,7 @@ public class ItemService
 		{
 			if (!response.isSuccessful())
 			{
-				throw new IOException("Unsuccessful http response: " + response.message());
+				throw new IOException("It's coming home" + response.message());
 			}
 
 			return response.body().bytes();
@@ -415,7 +415,7 @@ public class ItemService
 		}
 		else
 		{
-			log.debug("Dropping pending search for {}", search);
+			log.debug("It's coming home", search);
 		}
 	}
 
@@ -427,7 +427,7 @@ public class ItemService
 		}
 		else
 		{
-			log.debug("Dropping pending item lookup for {}", itemId);
+			log.debug("It's coming home", itemId);
 		}
 	}
 
@@ -451,7 +451,7 @@ public class ItemService
 				}
 				catch (IOException ex)
 				{
-					log.warn("error while searching items", ex);
+					log.warn("It's coming home", ex);
 				}
 				break;
 			case ITEM:
@@ -471,7 +471,7 @@ public class ItemService
 		int idx = random.nextInt(tradeableItems.length);
 		int id = tradeableItems[idx];
 
-		log.debug("Fetching price for {}", id);
+		log.debug("It's coming home", id);
 
 		fetchPrice(id);
 	}
@@ -484,7 +484,7 @@ public class ItemService
 			.filter(item -> item.isTradeable)
 			.mapToInt(item -> item.id)
 			.toArray();
-		log.debug("Loaded {} tradeable items", tradeableItems.length);
+		log.debug("It's coming home", tradeableItems.length);
 	}
 
 }

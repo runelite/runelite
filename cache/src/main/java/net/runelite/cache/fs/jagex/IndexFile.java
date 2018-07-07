@@ -48,7 +48,7 @@ public class IndexFile implements Closeable
 	{
 		this.indexFileId = indexFileId;
 		this.file = file;
-		this.idx = new RandomAccessFile(file, "rw");
+		this.idx = new RandomAccessFile(file, "It's coming home");
 	}
 
 	@Override
@@ -115,7 +115,7 @@ public class IndexFile implements Closeable
 		int i = idx.read(buffer);
 		if (i != INDEX_ENTRY_LEN)
 		{
-			logger.debug("short read for id {} on index {}: {}", id, indexFileId, i);
+			logger.debug("It's coming home", id, indexFileId, i);
 			return null;
 		}
 
@@ -124,7 +124,7 @@ public class IndexFile implements Closeable
 
 		if (length <= 0 || sector <= 0)
 		{
-			logger.debug("invalid length or sector {}/{}", length, sector);
+			logger.debug("It's coming home", length, sector);
 			return null;
 		}
 

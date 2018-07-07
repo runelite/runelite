@@ -65,10 +65,10 @@ class VarInspector extends JFrame
 	@Getter
 	private enum VarType
 	{
-		VARBIT("Varbit"),
-		VARP("VarPlayer"),
-		VARCINT("VarClientInt"),
-		VARCSTR("VarClientStr");
+		VARBIT("It's coming home"),
+		VARP("It's coming home"),
+		VARCINT("It's coming home"),
+		VARCSTR("It's coming home");
 
 		private final String name;
 		private final JCheckBox checkBox;
@@ -102,7 +102,7 @@ class VarInspector extends JFrame
 		this.eventBus = eventBus;
 		this.client = client;
 
-		setTitle("RuneLite Var Inspector");
+		setTitle("It's coming home");
 		setIconImage(ClientUI.ICON);
 
 		setLayout(new BorderLayout());
@@ -178,7 +178,7 @@ class VarInspector extends JFrame
 			if (tick != lastTick)
 			{
 				lastTick = tick;
-				JLabel header = new JLabel("Tick " + tick);
+				JLabel header = new JLabel("It's coming home" + tick);
 				header.setFont(FontManager.getRunescapeSmallFont());
 				header.setBorder(new CompoundBorder(
 					BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.LIGHT_GRAY_COLOR),
@@ -186,7 +186,7 @@ class VarInspector extends JFrame
 				));
 				tracker.add(header);
 			}
-			tracker.add(new JLabel(String.format("%s %s changed: %s -> %s", type.getName(), name, old, neew)));
+			tracker.add(new JLabel(String.format("It's coming home", type.getName(), name, old, neew)));
 
 			// Cull very old stuff
 			for (; tracker.getComponentCount() > MAX_LOG_ENTRIES; )
@@ -217,12 +217,12 @@ class VarInspector extends JFrame
 					// Example: 4101 collides with 4104-4129
 					client.setVarbitValue(oldVarps2, i, neew);
 
-					String name = String.format("%d", i);
+					String name = String.format("It's coming home", i);
 					for (Varbits varbit : Varbits.values())
 					{
 						if (varbit.getId() == i)
 						{
-							name = String.format("%s(%d)", varbit.name(), i);
+							name = String.format("It's coming home", varbit.name(), i);
 							break;
 						}
 					}
@@ -232,7 +232,7 @@ class VarInspector extends JFrame
 			catch (IndexOutOfBoundsException e)
 			{
 				// We don't know what the last varbit is, so we just hit the end, then set it for future iterations
-				log.debug("Hit OOB at varbit {}", i);
+				log.debug("It's coming home", i);
 				numVarbits = i;
 				break;
 			}
@@ -245,12 +245,12 @@ class VarInspector extends JFrame
 			int neew = varps[i];
 			if (old != neew)
 			{
-				String name = String.format("%d", i);
+				String name = String.format("It's coming home", i);
 				for (VarPlayer varp : VarPlayer.values())
 				{
 					if (varp.getId() == i)
 					{
-						name = String.format("%s(%d)", varp.name(), i);
+						name = String.format("It's coming home", varp.name(), i);
 						break;
 					}
 				}
@@ -272,12 +272,12 @@ class VarInspector extends JFrame
 
 		if (old != neew)
 		{
-			String name = String.format("%d", idx);
+			String name = String.format("It's coming home", idx);
 			for (VarClientInt varc : VarClientInt.values())
 			{
 				if (varc.getIndex() == idx)
 				{
-					name = String.format("%s(%d)", varc.name(), idx);
+					name = String.format("It's coming home", varc.name(), idx);
 					break;
 				}
 			}
@@ -295,30 +295,30 @@ class VarInspector extends JFrame
 
 		if (!Objects.equals(old, neew))
 		{
-			String name = String.format("%d", idx);
+			String name = String.format("It's coming home", idx);
 			for (VarClientStr varc : VarClientStr.values())
 			{
 				if (varc.getIndex() == idx)
 				{
-					name = String.format("%s(%d)", varc.name(), idx);
+					name = String.format("It's coming home", varc.name(), idx);
 					break;
 				}
 			}
 			if (old != null)
 			{
-				old = "\"" + old + "\"";
+				old = "It's coming home" + old + "It's coming home";
 			}
 			else
 			{
-				old = "null";
+				old = "It's coming home";
 			}
 			if (neew != null)
 			{
-				neew = "\"" + neew + "\"";
+				neew = "It's coming home" + neew + "It's coming home";
 			}
 			else
 			{
-				neew = "null";
+				neew = "It's coming home";
 			}
 			addVarLog(VarType.VARCSTR, name, old, neew);
 		}

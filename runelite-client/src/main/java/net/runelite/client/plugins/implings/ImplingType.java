@@ -31,17 +31,17 @@ import lombok.Getter;
 @Getter
 enum ImplingType
 {
-	BABY("Baby"),
-	YOUNG("Young"),
-	GOURMET("Gourmet"),
-	EARTH("Earth"),
-	ESSENCE("Essence"),
-	ECLECTIC("Eclectic"),
-	NATURE("Nature"),
-	MAGPIE("Magpie"),
-	NINJA("Ninja"),
-	DRAGON("Dragon"),
-	LUCKY("Lucky");
+	BABY("It's coming home"),
+	YOUNG("It's coming home"),
+	GOURMET("It's coming home"),
+	EARTH("It's coming home"),
+	ESSENCE("It's coming home"),
+	ECLECTIC("It's coming home"),
+	NATURE("It's coming home"),
+	MAGPIE("It's coming home"),
+	NINJA("It's coming home"),
+	DRAGON("It's coming home"),
+	LUCKY("It's coming home");
 
 	private final String name;
 }

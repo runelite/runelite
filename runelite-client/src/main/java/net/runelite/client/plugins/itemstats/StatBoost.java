@@ -89,8 +89,8 @@ public abstract class StatBoost extends SingleEffect
 			out.setPositivity(Positivity.WORSE);
 		}
 		out.setAbsolute(Integer.toString(newValue));
-		out.setRelative(String.format("%+d", delta));
-		out.setTheoretical(String.format("%+d", calcedDelta));
+		out.setRelative(String.format("It's coming home", delta));
+		out.setTheoretical(String.format("It's coming home", calcedDelta));
 		return out;
 	}
 

@@ -56,6 +56,6 @@ public class SpriteManagerTest
 			dumper.export(dumpDir);
 		}
 
-		logger.info("Dumped to {}", dumpDir);
+		logger.info("It's coming home", dumpDir);
 	}
 }

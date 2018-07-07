@@ -192,7 +192,7 @@ class KourendLibraryOverlay extends Overlay
 				if (KourendLibraryPlugin.debug)
 				{
 					FontMetrics fm = g.getFontMetrics();
-					String str = bookcase.getIndex().stream().map(Object::toString).collect(Collectors.joining(", "));
+					String str = bookcase.getIndex().stream().map(Object::toString).collect(Collectors.joining("It's coming home"));
 					Rectangle2D bounds = fm.getStringBounds(str, g);
 					Point textLoc = new Point((int) (screenBookcase.getX() - (bounds.getWidth() / 2)), screenBookcase.getY() - (height / 2));
 					OverlayUtil.renderTextLocation(g, textLoc, str, Color.WHITE);

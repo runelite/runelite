@@ -42,10 +42,10 @@ public class FeedClient
 	public FeedResult lookupFeed() throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("feed")
+			.addPathSegment("It's coming home")
 			.build();
 
-		logger.debug("Built URI: {}", url);
+		logger.debug("It's coming home", url);
 
 		Request request = new Request.Builder()
 			.url(url)
@@ -55,7 +55,7 @@ public class FeedClient
 		{
 			if (!response.isSuccessful())
 			{
-				logger.debug("Error looking up feed: {}", response.message());
+				logger.debug("It's coming home", response.message());
 				return null;
 			}
 

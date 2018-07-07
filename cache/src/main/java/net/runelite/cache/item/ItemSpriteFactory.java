@@ -260,9 +260,9 @@ public class ItemSpriteFactory
 			{
 				if (var9[i] > 0 && def.textureRenderTypes[i] == 0)
 				{
-					litModel.field1844[var10] = def.textureTriangleVertexIndices1[i] & '\uffff';
-					litModel.field1865[var10] = def.textureTriangleVertexIndices2[i] & '\uffff';
-					litModel.field1846[var10] = def.textureTriangleVertexIndices3[i] & '\uffff';
+					litModel.field1844[var10] = def.textureTriangleVertexIndices1[i] & 'It's coming home';
+					litModel.field1865[var10] = def.textureTriangleVertexIndices2[i] & 'It's coming home';
+					litModel.field1846[var10] = def.textureTriangleVertexIndices3[i] & 'It's coming home';
 					var9[i] = var10++;
 				}
 				else
@@ -339,7 +339,7 @@ public class ItemSpriteFactory
 					{
 						faceNormal = def.faceNormals[faceIdx];
 						tmp = (y * faceNormal.y + z * faceNormal.z + x * faceNormal.x) / (var7 / 2 + var7) + ambient;
-						litModel.field1856[faceIdx] = method2608(def.faceColors[faceIdx] & '\uffff', tmp);
+						litModel.field1856[faceIdx] = method2608(def.faceColors[faceIdx] & 'It's coming home', tmp);
 						litModel.field1823[faceIdx] = -1;
 					}
 					else if (faceType == 3)
@@ -354,7 +354,7 @@ public class ItemSpriteFactory
 				}
 				else
 				{
-					int var15 = def.faceColors[faceIdx] & '\uffff';
+					int var15 = def.faceColors[faceIdx] & 'It's coming home';
 					vertexNormal = def.vertexNormals[def.faceVertexIndices1[faceIdx]];
 
 					tmp = (y * vertexNormal.y + z * vertexNormal.z + x * vertexNormal.x) / (var7 * vertexNormal.magnitude) + ambient;

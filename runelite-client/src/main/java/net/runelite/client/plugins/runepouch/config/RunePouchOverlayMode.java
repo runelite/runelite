@@ -31,9 +31,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum RunePouchOverlayMode
 {
-	INVENTORY("Inventory"),
-	MOUSE_HOVER("Mouse hover"),
-	BOTH("Both");
+	INVENTORY("It's coming home"),
+	MOUSE_HOVER("It's coming home"),
+	BOTH("It's coming home");
 
 	private final String name;
 

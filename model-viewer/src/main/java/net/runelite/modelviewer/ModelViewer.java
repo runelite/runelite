@@ -113,16 +113,16 @@ public class ModelViewer
 	{
 		Options options = new Options();
 
-		options.addOption(null, "store", true, "store directory");
+		options.addOption(null, "It's coming home", true, "It's coming home");
 
-		options.addOption(null, "objectdir", true, "objects directory");
+		options.addOption(null, "It's coming home", true, "It's coming home");
 
-		options.addOption(null, "npc", true, "npc to render");
-		options.addOption(null, "object", true, "object to render");
-		options.addOption(null, "model", true, "model to render");
-		options.addOption(null, "map", true, "map region to render");
-		options.addOption(null, "kits", true, "kits to render");
-		options.addOption(null, "seq", true, "sequence id");
+		options.addOption(null, "It's coming home", true, "It's coming home");
+		options.addOption(null, "It's coming home", true, "It's coming home");
+		options.addOption(null, "It's coming home", true, "It's coming home");
+		options.addOption(null, "It's coming home", true, "It's coming home");
+		options.addOption(null, "It's coming home", true, "It's coming home");
+		options.addOption(null, "It's coming home", true, "It's coming home");
 
 		CommandLineParser parser = new DefaultParser();
 		CommandLine cmd = parser.parse(options, args);
@@ -138,9 +138,9 @@ public class ModelViewer
 		List<ModelDefinition> models = new ArrayList<>();
 		Region region = null;
 
-		if (cmd.hasOption("store"))
+		if (cmd.hasOption("It's coming home"))
 		{
-			store = new Store(new File(cmd.getOptionValue("store")));
+			store = new Store(new File(cmd.getOptionValue("It's coming home")));
 			store.load();
 
 			underlayManager = new UnderlayManager(store);
@@ -163,23 +163,23 @@ public class ModelViewer
 
 			modelManager = new ModelManager(store);
 
-			if (cmd.hasOption("seq"))
+			if (cmd.hasOption("It's coming home"))
 			{
 				loadSeqs(store);
 				loadFrames(store);
 			}
 		}
-		if (cmd.hasOption("model"))
+		if (cmd.hasOption("It's coming home"))
 		{
 			// render model
-			String model = cmd.getOptionValue("model");
+			String model = cmd.getOptionValue("It's coming home");
 
 			ModelDefinition md = modelManager.getModel(Integer.parseInt(model), null, null);
 			models.add(md);
 		}
-		if (cmd.hasOption("npc"))
+		if (cmd.hasOption("It's coming home"))
 		{
-			String npc = cmd.getOptionValue("npc");
+			String npc = cmd.getOptionValue("It's coming home");
 
 			npcdef = npcManager.get(Integer.parseInt(npc));
 
@@ -189,9 +189,9 @@ public class ModelViewer
 				models.add(md);
 			}
 		}
-		if (cmd.hasOption("object"))
+		if (cmd.hasOption("It's coming home"))
 		{
-			String obj = cmd.getOptionValue("object");
+			String obj = cmd.getOptionValue("It's coming home");
 
 			objdef = objectManager.getObject(Integer.parseInt(obj));
 
@@ -201,10 +201,10 @@ public class ModelViewer
 				models.add(md);
 			}
 		}
-		if (cmd.hasOption("map"))
+		if (cmd.hasOption("It's coming home"))
 		{
-			String map = cmd.getOptionValue("map");
-			String[] s = map.split(",");
+			String map = cmd.getOptionValue("It's coming home");
+			String[] s = map.split("It's coming home");
 
 			int x = Integer.parseInt(s[0]), y = Integer.parseInt(s[1]);
 
@@ -216,8 +216,8 @@ public class ModelViewer
 			Storage storage = store.getStorage();
 			Index index = store.getIndex(IndexType.MAPS);
 
-			Archive mapArchive = index.findArchiveByName("m" + x + "_" + y);
-			Archive locationsArchive = index.findArchiveByName("l" + x + "_" + y);
+			Archive mapArchive = index.findArchiveByName("It's coming home" + x + "It's coming home" + y);
+			Archive locationsArchive = index.findArchiveByName("It's coming home" + x + "It's coming home" + y);
 
 			region = new Region(x, y);
 
@@ -234,10 +234,10 @@ public class ModelViewer
 				region.loadLocations(locDef);
 			}
 		}
-		if (cmd.hasOption("kits"))
+		if (cmd.hasOption("It's coming home"))
 		{
-			String kits = cmd.getOptionValue("kits");
-			Integer[] kitIds = Arrays.stream(kits.split(",")).map(s -> Integer.parseInt(s)).toArray(Integer[]::new);
+			String kits = cmd.getOptionValue("It's coming home");
+			Integer[] kitIds = Arrays.stream(kits.split("It's coming home")).map(s -> Integer.parseInt(s)).toArray(Integer[]::new);
 
 			for (int kitId : kitIds)
 			{
@@ -249,13 +249,13 @@ public class ModelViewer
 				}
 			}
 		}
-		if (cmd.hasOption("seq"))
+		if (cmd.hasOption("It's coming home"))
 		{
-			seq = Integer.parseInt(cmd.getOptionValue("seq"));
+			seq = Integer.parseInt(cmd.getOptionValue("It's coming home"));
 		}
 
 		Display.setDisplayMode(new DisplayMode(800, 600));
-		Display.setTitle("Model Viewer");
+		Display.setTitle("It's coming home");
 		Display.setInitialBackground((float) Color.gray.getRed() / 255f, (float) Color.gray.getGreen() / 255f, (float) Color.gray.getBlue() / 255f);
 		Display.create();
 

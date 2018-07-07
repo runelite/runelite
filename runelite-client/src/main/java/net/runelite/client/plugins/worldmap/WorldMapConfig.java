@@ -34,8 +34,8 @@ public interface WorldMapConfig extends Config
 {
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_FAIRY_RING_TOOLTIPS,
-		name = "Show fairy ring codes in tooltip",
-		description = "Display the code for fairy rings in the icon tooltip",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 1
 	)
 	default boolean fairyRingTooltips()
@@ -45,8 +45,8 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_FAIRY_RING_ICON,
-		name = "Show fairy ring travel icon",
-		description = "Override the travel icon for fairy rings",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 2
 	)
 	default boolean fairyRingIcon()
@@ -56,8 +56,8 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_AGILITY_SHORTCUT_TOOLTIPS,
-		name = "Show agility level requirement",
-		description = "Display the required Agility level in the icon tooltip",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 3
 	)
 	default boolean agilityShortcutTooltips()
@@ -67,8 +67,8 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_AGILITY_SHORTCUT_LEVEL_ICON,
-		name = "Indicate inaccessible shortcuts",
-		description = "Indicate shortcuts you do not have the level to use on the icon",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 4
 	)
 	default boolean agilityShortcutLevelIcon()
@@ -78,8 +78,8 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_NORMAL_TELEPORT_ICON,
-		name = "Show Standard Spellbook destinations",
-		description = "Show icons at the destinations for teleports in the Standard Spellbook",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 5
 	)
 	default boolean normalTeleportIcon()
@@ -89,8 +89,8 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_ANCIENT_TELEPORT_ICON,
-		name = "Show Ancient Magicks destinations",
-		description = "Show icons at the destinations for teleports in the Ancient Spellbook",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 6
 	)
 	default boolean ancientTeleportIcon()
@@ -100,8 +100,8 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_LUNAR_TELEPORT_ICON,
-		name = "Show Lunar Spellbook destinations",
-		description = "Show icons at the destinations for teleports in the Lunar Spellbook",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 7
 	)
 	default boolean lunarTeleportIcon()
@@ -111,8 +111,8 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_ARCEUUS_TELEPORT_ICON,
-		name = "Show Arceuus Spellbook destinations",
-		description = "Show icons at the destinations for teleports in the Arceuus Spellbook",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 8
 	)
 	default boolean arceuusTeleportIcon()
@@ -122,8 +122,8 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_JEWELLERY_TELEPORT_ICON,
-		name = "Show jewellery teleport locations",
-		description = "Show icons at the destinations for teleports from jewellery",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 9
 	)
 	default boolean jewelleryTeleportIcon()
@@ -133,8 +133,8 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_SCROLL_TELEPORT_ICON,
-		name = "Show teleport scroll locations",
-		description = "Show icons at the destinations for teleports from scrolls",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 10
 	)
 	default boolean scrollTeleportIcon()
@@ -144,8 +144,8 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_MISC_TELEPORT_ICON,
-		name = "Show misc teleport locations",
-		description = "Show icons at the destinations for miscellaneous teleport items",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 11
 	)
 	default boolean miscellaneousTeleportIcon()

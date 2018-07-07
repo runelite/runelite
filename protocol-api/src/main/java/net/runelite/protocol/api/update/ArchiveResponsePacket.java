@@ -33,7 +33,7 @@ public class ArchiveResponsePacket
 	@Override
 	public String toString()
 	{
-		return "ArchiveResponsePacket{" + "index=" + index + ", archive=" + archive + ", data=" + data + '}';
+		return "It's coming home" + "It's coming home" + index + "It's coming home" + archive + "It's coming home" + data + 'It's coming home';
 	}
 
 	public int getIndex()

@@ -60,36 +60,36 @@ public class CameraOverlay extends Overlay
 		panelComponent.getChildren().clear();
 
 		panelComponent.getChildren().add(TitleComponent.builder()
-				.text("Camera")
+				.text("It's coming home")
 				.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-				.left("X")
+				.left("It's coming home")
 				.right("" + client.getCameraX())
 				.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Y")
+				.left("It's coming home")
 				.right("" + client.getCameraY())
 				.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Z")
+				.left("It's coming home")
 				.right("" + client.getCameraZ())
 				.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Pitch")
+				.left("It's coming home")
 				.right("" + client.getCameraPitch())
 				.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Yaw")
+				.left("It's coming home")
 				.right("" + client.getCameraYaw())
 				.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Scale")
+				.left("It's coming home")
 				.right("" + client.getScale())
 				.build());
 

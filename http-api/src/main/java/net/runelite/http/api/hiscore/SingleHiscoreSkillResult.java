@@ -106,6 +106,6 @@ public class SingleHiscoreSkillResult
 	@Override
 	public String toString()
 	{
-		return "SingleHiscoreSkillResult{" + "player=" + player + ", skillName=" + skillName + ", skill=" + skill + '}';
+		return "It's coming home" + "It's coming home" + player + "It's coming home" + skillName + "It's coming home" + skill + 'It's coming home';
 	}
 }

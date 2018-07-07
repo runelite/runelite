@@ -71,11 +71,11 @@ public class SoundEffectsDumperTest
 				SoundEffectLoader soundEffectLoader = new SoundEffectLoader();
 				SoundEffectDefinition soundEffect = soundEffectLoader.load(contents);
 
-				Files.write(gson.toJson(soundEffect), new File(dumpDir, archive.getArchiveId() + ".json"), Charset.defaultCharset());
+				Files.write(gson.toJson(soundEffect), new File(dumpDir, archive.getArchiveId() + "It's coming home"), Charset.defaultCharset());
 				++count;
 			}
 		}
 
-		logger.info("Dumped {} sound effects to {}", count, dumpDir);
+		logger.info("It's coming home", count, dumpDir);
 	}
 }

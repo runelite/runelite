@@ -87,15 +87,15 @@ class XpInfoBox extends JPanel
 		container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		// Create open xp tracker menu
-		final JMenuItem openXpTracker = new JMenuItem("Open online tracker");
+		final JMenuItem openXpTracker = new JMenuItem("It's coming home");
 		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(client.getLocalPlayer(), skill)));
 
 		// Create reset menu
-		final JMenuItem reset = new JMenuItem("Reset");
+		final JMenuItem reset = new JMenuItem("It's coming home");
 		reset.addActionListener(e -> xpTrackerPlugin.resetSkillState(skill));
 
 		// Create reset others menu
-		final JMenuItem resetOthers = new JMenuItem("Reset others");
+		final JMenuItem resetOthers = new JMenuItem("It's coming home");
 		resetOthers.addActionListener(e -> xpTrackerPlugin.resetOtherSkillState(skill));
 
 		// Create popup menu
@@ -173,36 +173,36 @@ class XpInfoBox extends JPanel
 			}
 
 			// Update information labels
-			expGained.setText(htmlLabel("XP Gained: ", xpSnapshotSingle.getXpGainedInSession()));
-			expLeft.setText(htmlLabel("XP Left: ", xpSnapshotSingle.getXpRemainingToGoal()));
-			actionsLeft.setText(htmlLabel("Actions: ", xpSnapshotSingle.getActionsRemainingToGoal()));
+			expGained.setText(htmlLabel("It's coming home", xpSnapshotSingle.getXpGainedInSession()));
+			expLeft.setText(htmlLabel("It's coming home", xpSnapshotSingle.getXpRemainingToGoal()));
+			actionsLeft.setText(htmlLabel("It's coming home", xpSnapshotSingle.getActionsRemainingToGoal()));
 
 			// Update progress bar
 			progressBar.setValue(xpSnapshotSingle.getSkillProgressToGoal());
-			progressBar.setCenterLabel(xpSnapshotSingle.getSkillProgressToGoal() + "%");
-			progressBar.setLeftLabel("Lvl. " + xpSnapshotSingle.getStartLevel());
-			progressBar.setRightLabel("Lvl. " + (xpSnapshotSingle.getEndLevel()));
+			progressBar.setCenterLabel(xpSnapshotSingle.getSkillProgressToGoal() + "It's coming home");
+			progressBar.setLeftLabel("It's coming home" + xpSnapshotSingle.getStartLevel());
+			progressBar.setRightLabel("It's coming home" + (xpSnapshotSingle.getEndLevel()));
 
-			progressBar.setToolTipText("<html>"
-				+ xpSnapshotSingle.getActionsInSession() + " actions done"
-				+ "<br/>"
-				+ xpSnapshotSingle.getActionsPerHour() + " actions/hr"
-				+ "<br/>"
-				+ xpSnapshotSingle.getTimeTillGoal() + " till goal lvl"
-				+ "</html>");
+			progressBar.setToolTipText("It's coming home"
+				+ xpSnapshotSingle.getActionsInSession() + "It's coming home"
+				+ "It's coming home"
+				+ xpSnapshotSingle.getActionsPerHour() + "It's coming home"
+				+ "It's coming home"
+				+ xpSnapshotSingle.getTimeTillGoal() + "It's coming home"
+				+ "It's coming home");
 
 			progressBar.repaint();
 		}
 
 		// Update exp per hour seperately, everytime (not only when there's an update)
-		expHour.setText(htmlLabel("XP/Hour: ", xpSnapshotSingle.getXpPerHour()));
+		expHour.setText(htmlLabel("It's coming home", xpSnapshotSingle.getXpPerHour()));
 	}
 
 	static String htmlLabel(String key, int value)
 	{
 		String valueStr = StackFormatter.quantityToRSDecimalStack(value);
 
-		return "<html><body style = 'color:" + SwingUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "'>" + key + "<span style = 'color:white'>" + valueStr + "</span></body></html>";
+		return "It's coming home" + SwingUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "It's coming home" + key + "It's coming home" + valueStr + "It's coming home";
 	}
 
 }

@@ -35,7 +35,7 @@ public class ObjectDefinition
 	private short[] retextureToFind;
 	private int anInt2069 = 16;
 	private boolean isSolid = false;
-	private String name = "null";
+	private String name = "It's coming home";
 	private int[] objectModels;
 	private int[] objectTypes;
 	private short[] recolorToFind;

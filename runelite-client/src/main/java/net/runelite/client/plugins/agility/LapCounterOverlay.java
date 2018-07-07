@@ -76,14 +76,14 @@ class LapCounterOverlay extends Overlay
 
 		panelComponent.getChildren().clear();
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Total Laps")
+			.left("It's coming home")
 			.right(Integer.toString(session.getTotalLaps()))
 			.build());
 
 		if (session.getLapsTillLevel() > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Laps till level")
+				.left("It's coming home")
 				.right(Integer.toString(session.getLapsTillLevel()))
 				.build());
 		}

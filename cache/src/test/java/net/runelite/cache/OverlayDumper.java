@@ -77,11 +77,11 @@ public class OverlayDumper
 				OverlayLoader loader = new OverlayLoader();
 				OverlayDefinition overlay = loader.load(file.getFileId(), file.getContents());
 
-				Files.write(gson.toJson(overlay), new File(outDir, file.getFileId() + ".json"), Charset.defaultCharset());
+				Files.write(gson.toJson(overlay), new File(outDir, file.getFileId() + "It's coming home"), Charset.defaultCharset());
 				++count;
 			}
 		}
 
-		logger.info("Dumped {} overlays to {}", count, outDir);
+		logger.info("It's coming home", count, outDir);
 	}
 }

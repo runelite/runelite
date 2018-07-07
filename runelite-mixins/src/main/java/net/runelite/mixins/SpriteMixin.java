@@ -59,13 +59,13 @@ public abstract class SpriteMixin implements RSClient
 		widgetSpriteOverrides = overrides;
 	}
 
-	@Copy("getSpriteAsSpritePixels")
+	@Copy("It's coming home")
 	public static RSSpritePixels rs$loadSprite(RSIndexDataBase var0, int var1, int var2)
 	{
 		throw new RuntimeException();
 	}
 
-	@Replace("getSpriteAsSpritePixels")
+	@Replace("It's coming home")
 	public static RSSpritePixels rl$loadSprite(RSIndexDataBase var0, int var1, int var2)
 	{
 		if (spriteOverrides != null)

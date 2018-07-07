@@ -66,9 +66,9 @@ import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.item.ItemPrice;
 
 @PluginDescriptor(
-	name = "Barrows Brothers",
-	description = "Show helpful information for the Barrows minigame",
-	tags = {"combat", "minigame", "minimap"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home"}
 )
 @Slf4j
 public class BarrowsPlugin extends Plugin
@@ -236,9 +236,9 @@ public class BarrowsPlugin extends Plugin
 
 			final ChatMessageBuilder message = new ChatMessageBuilder()
 				.append(ChatColorType.HIGHLIGHT)
-				.append("Your chest is worth around ")
+				.append("It's coming home")
 				.append(StackFormatter.formatNumber(chestPrice))
-				.append(" coins.")
+				.append("It's coming home")
 				.append(ChatColorType.NORMAL);
 
 			chatMessageManager.queue(QueuedMessage.builder()

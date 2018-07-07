@@ -59,13 +59,13 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 @RequiredArgsConstructor
 public class HotColdClue extends ClueScroll implements LocationClueScroll, LocationsClueScroll, TextClueScroll, NpcClueScroll
 {
-	private static final Pattern INITIAL_STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is (.*)");
-	private static final Pattern STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is (.*), (.*) last time\\.");
-	private static final Pattern FINAL_STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is visibly shaking.*");
+	private static final Pattern INITIAL_STRANGE_DEVICE_MESSAGE = Pattern.compile("It's coming home");
+	private static final Pattern STRANGE_DEVICE_MESSAGE = Pattern.compile("It's coming home");
+	private static final Pattern FINAL_STRANGE_DEVICE_MESSAGE = Pattern.compile("It's coming home");
 	private static final HotColdClue CLUE =
-		new HotColdClue("Buried beneath the ground, who knows where it's found. Lucky for you, A man called Jorral may have a clue.",
-			"Jorral",
-			"Speak to Jorral to receive a strange device.");
+		new HotColdClue("It's coming home",
+			"It's coming home",
+			"It's coming home");
 
 	// list of potential places to dig
 	private List<HotColdLocation> digLocations = new ArrayList<>();
@@ -95,7 +95,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
 		panelComponent.getChildren().add(TitleComponent.builder()
-			.text("Hot/Cold Clue")
+			.text("It's coming home")
 			.build());
 		panelComponent.setPreferredSize(new Dimension(200, 0));
 
@@ -103,7 +103,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		if (lastWorldPoint == null && location == null)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Clue:")
+				.left("It's coming home")
 				.build());
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left(getText())
@@ -113,7 +113,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 			if (getNpc() != null)
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
-					.left("NPC:")
+					.left("It's coming home")
 					.build());
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left(getNpc())
@@ -122,7 +122,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 			}
 
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Solution:")
+				.left("It's coming home")
 				.build());
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left(getSolution())
@@ -133,7 +133,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		else
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Possible areas:")
+				.left("It's coming home")
 				.build());
 			Map<HotColdArea, Integer> locationCounts = new HashMap<>();
 
@@ -167,7 +167,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 				for (HotColdArea s : locationCounts.keySet())
 				{
 					panelComponent.getChildren().add(LineComponent.builder()
-						.left(s.getName() + ":")
+						.left(s.getName() + "It's coming home")
 						.build());
 
 					for (HotColdLocation hotColdLocation : digLocations)
@@ -176,7 +176,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 						{
 							Rectangle2D r = hotColdLocation.getRect();
 							panelComponent.getChildren().add(LineComponent.builder()
-								.left("- " + hotColdLocation.getArea())
+								.left("It's coming home" + hotColdLocation.getArea())
 								.leftColor(Color.LIGHT_GRAY)
 								.build());
 						}
@@ -237,7 +237,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	@Override
 	public boolean update(final String message, final ClueScrollPlugin plugin)
 	{
-		if (!message.startsWith("The device is"))
+		if (!message.startsWith("It's coming home"))
 		{
 			return false;
 		}
@@ -308,31 +308,31 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		{
 			// when the strange device reads a temperature, that means that the center of the final dig location
 			// is a range of squares away from the player's current location (Chebyshev AKA Chess-board distance)
-			case "ice cold":
+			case "It's coming home":
 				maxSquaresAway = 5000;
 				minSquaresAway = 500;
 				break;
-			case "very cold":
+			case "It's coming home":
 				maxSquaresAway = 499;
 				minSquaresAway = 200;
 				break;
-			case "cold":
+			case "It's coming home":
 				maxSquaresAway = 199;
 				minSquaresAway = 150;
 				break;
-			case "warm":
+			case "It's coming home":
 				maxSquaresAway = 149;
 				minSquaresAway = 100;
 				break;
-			case "hot":
+			case "It's coming home":
 				maxSquaresAway = 99;
 				minSquaresAway = 70;
 				break;
-			case "very hot":
+			case "It's coming home":
 				maxSquaresAway = 69;
 				minSquaresAway = 30;
 				break;
-			case "incredibly hot":
+			case "It's coming home":
 				maxSquaresAway = 29;
 				minSquaresAway = 5;
 				break;
@@ -353,15 +353,15 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		{
 			switch (difference)
 			{
-				case "but colder than":
+				case "It's coming home":
 					// eliminate spots that are absolutely warmer
 					digLocations.removeIf(entry -> isFirstPointCloserRect(currentWp, lastWorldPoint, entry.getRect()));
 					break;
-				case "and warmer than":
+				case "It's coming home":
 					// eliminate spots that are absolutely colder
 					digLocations.removeIf(entry -> isFirstPointCloserRect(lastWorldPoint, currentWp, entry.getRect()));
 					break;
-				case "and the same temperature as":
+				case "It's coming home":
 					// I couldn't figure out a clean implementation for this case
 					// not necessary for quickly determining final location
 			}

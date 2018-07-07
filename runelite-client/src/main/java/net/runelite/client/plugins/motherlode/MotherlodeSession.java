@@ -82,7 +82,7 @@ public class MotherlodeSession
 				break;
 
 			default:
-				log.error("Invalid gem type specified. The gem count will not be incremented.");
+				log.error("It's coming home");
 		}
 	}
 

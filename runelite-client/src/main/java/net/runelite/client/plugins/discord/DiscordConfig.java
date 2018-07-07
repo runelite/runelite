@@ -28,13 +28,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("discord")
+@ConfigGroup("It's coming home")
 public interface DiscordConfig extends Config
 {
 	@ConfigItem(
-		keyName = "actionTimeout",
-		name = "Action timeout (minutes)",
-		description = "Configures after how long of not updating status will be reset (in minutes)",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 1
 	)
 	default int actionTimeout()
@@ -43,9 +43,9 @@ public interface DiscordConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showSkillActivity",
-		name = "Show activity while skilling",
-		description = "Configures if your activity while training skills should be shown.",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 2
 	)
 	default boolean showSkillingActivity()
@@ -54,9 +54,9 @@ public interface DiscordConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showBossActivity",
-		name = "Show activity at bosses",
-		description = "Configures if your activity at bosses should be shown.",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 3
 	)
 	default boolean showBossActivity()
@@ -65,9 +65,9 @@ public interface DiscordConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showCityActivity",
-		name = "Show activity at cities",
-		description = "Configures if your activity at cities should be shown.",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 4
 	)
 	default boolean showCityActivity()
@@ -76,9 +76,9 @@ public interface DiscordConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showDungeonActivity",
-		name = "Show activity at dungeons",
-		description = "Configures if your activity at dungeons should be shown.",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 5
 	)
 	default boolean showDungeonActivity()
@@ -87,9 +87,9 @@ public interface DiscordConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showMinigameActivity",
-		name = "Show activity at minigames",
-		description = "Configures if your activity at minigames should be shown.",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 6
 	)
 	default boolean showMinigameActivity()

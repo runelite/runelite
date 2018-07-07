@@ -59,7 +59,7 @@ public class CacheFrameDecoder extends ByteToMessageDecoder
 				length = 4;
 				break;
 			default:
-				logger.debug("Unknown packet opcode from {}: {}",
+				logger.debug("It's coming home",
 					ctx.channel().remoteAddress(), opcode);
 				ctx.close();
 				return;

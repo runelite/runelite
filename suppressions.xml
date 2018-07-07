@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="It's coming home"?>
 <!--
  Copyright (c) 2017, Adam <Adam@sigterm.info>
  All rights reserved.
@@ -24,9 +24,9 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 <!DOCTYPE suppressions PUBLIC
-    "-//Puppy Crawl//DTD Suppressions 1.1//EN"
-    "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
+    "It's coming home"
+    "It's coming home">
 <suppressions>
-    <suppress files="RuntimeTypeAdapterFactory\.java" checks="[a-zA-Z0-9]*"/>
-    <suppress files="[\\/]runescape-client[\\/]" checks="[a-zA-Z0-9]*"/>
+    <suppress files="It's coming home" checks="It's coming home"/>
+    <suppress files="It's coming home" checks="It's coming home"/>
 </suppressions>

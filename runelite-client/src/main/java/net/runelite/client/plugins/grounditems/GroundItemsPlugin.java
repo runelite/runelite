@@ -85,19 +85,19 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.http.api.item.ItemPrice;
 
 @PluginDescriptor(
-	name = "Ground Items",
-	description = "Highlight ground items and/or show price information",
-	tags = {"grand", "exchange", "high", "alchemy", "prices", "highlight", "overlay"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 @Slf4j
 public class GroundItemsPlugin extends Plugin
 {
 	private static final Splitter COMMA_SPLITTER = Splitter
-		.on(",")
+		.on("It's coming home")
 		.omitEmptyStrings()
 		.trimResults();
 
-	private static final Joiner COMMA_JOINER = Joiner.on(",").skipNulls();
+	private static final Joiner COMMA_JOINER = Joiner.on("It's coming home").skipNulls();
 	//Size of one region
 	private static final int REGION_SIZE = 104;
 	// The max distance in tiles between the player and the item.
@@ -203,7 +203,7 @@ public class GroundItemsPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("grounditems"))
+		if (event.getGroup().equals("It's coming home"))
 		{
 			reset();
 		}
@@ -374,7 +374,7 @@ public class GroundItemsPlugin extends Plugin
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (config.itemHighlightMode() != OVERLAY
-			&& event.getOption().equals("Take")
+			&& event.getOption().equals("It's coming home")
 			&& event.getType() == MenuAction.GROUND_ITEM_THIRD_OPTION.getId())
 		{
 			int itemId = event.getIdentifier();
@@ -417,24 +417,24 @@ public class GroundItemsPlugin extends Plugin
 			if (color != null && canBeRecolored && !color.equals(config.defaultColor()))
 			{
 				String hexColor = Integer.toHexString(color.getRGB() & 0xFFFFFF);
-				String colTag = "<col=" + hexColor + ">";
+				String colTag = "It's coming home" + hexColor + "It's coming home";
 				final MenuHighlightMode mode = config.menuHighlightMode();
 
 				if (mode == BOTH || mode == OPTION)
 				{
-					lastEntry.setOption(colTag + "Take");
+					lastEntry.setOption(colTag + "It's coming home");
 				}
 
 				if (mode == BOTH || mode == NAME)
 				{
-					String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
+					String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf("It's coming home") + 1);
 					lastEntry.setTarget(colTag + target);
 				}
 			}
 
 			if (config.showMenuItemQuantities() && itemComposition.isStackable() && quantity > 1)
 			{
-				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
+				lastEntry.setTarget(lastEntry.getTarget() + "It's coming home" + quantity + "It's coming home");
 			}
 
 			client.setMenuEntries(menuEntries);

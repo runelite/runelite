@@ -52,9 +52,9 @@ import net.runelite.client.ui.PluginToolbar;
 import net.runelite.http.api.xp.XpClient;
 
 @PluginDescriptor(
-	name = "XP Tracker",
-	description = "Enable the XP Tracker panel",
-	tags = {"experience", "levels", "panel"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home"}
 )
 @Slf4j
 public class XpTrackerPlugin extends Plugin
@@ -92,11 +92,11 @@ public class XpTrackerPlugin extends Plugin
 		BufferedImage icon;
 		synchronized (ImageIO.class)
 		{
-			icon = ImageIO.read(getClass().getResourceAsStream("xp.png"));
+			icon = ImageIO.read(getClass().getResourceAsStream("It's coming home"));
 		}
 
 		navButton = NavigationButton.builder()
-			.tooltip("XP Tracker")
+			.tooltip("It's coming home")
 			.icon(icon)
 			.priority(2)
 			.panel(xpPanel)
@@ -124,10 +124,10 @@ public class XpTrackerPlugin extends Plugin
 			if (!Objects.equals(client.getUsername(), lastUsername) || lastWorldType != type)
 			{
 				// Reset
-				log.debug("World change: {} -> {}, {} -> {}",
+				log.debug("It's coming home",
 					lastUsername, client.getUsername(),
-					firstNonNull(lastWorldType, "<unknown>"),
-					firstNonNull(type, "<unknown>"));
+					firstNonNull(lastWorldType, "It's coming home"),
+					firstNonNull(type, "It's coming home"));
 
 				lastUsername = client.getUsername();
 				lastWorldType = type;

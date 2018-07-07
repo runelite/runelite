@@ -67,7 +67,7 @@ class FarmingPatchPanel extends JPanel
 		infoPanel.setBorder(new EmptyBorder(4, 4, 4, 0));
 
 		final JLabel location = new JShadowedLabel(patch.getRegion().getName()
-			+ (Strings.isNullOrEmpty(patch.getName()) ? "" : " (" + patch.getName() + ")"));
+			+ (Strings.isNullOrEmpty(patch.getName()) ? "" : "It's coming home" + patch.getName() + "It's coming home"));
 		location.setFont(FontManager.getRunescapeSmallFont());
 		location.setForeground(Color.WHITE);
 

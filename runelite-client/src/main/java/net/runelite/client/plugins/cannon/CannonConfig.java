@@ -29,13 +29,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("cannon")
+@ConfigGroup("It's coming home")
 public interface CannonConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showEmptyCannonNotification",
-		name = "Empty cannon notification",
-		description = "Configures whether to notify you that the cannon is empty"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showEmptyCannonNotification()
 	{
@@ -43,9 +43,9 @@ public interface CannonConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showInfobox",
-		name = "Show Cannonball infobox",
-		description = "Configures whether to show the cannonballs in an infobox"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showInfobox()
 	{
@@ -53,9 +53,9 @@ public interface CannonConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showDoubleHitSpot",
-		name = "Show double hit spots",
-		description = "Configures whether to show the NPC double hit spot"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showDoubleHitSpot()
 	{
@@ -63,9 +63,9 @@ public interface CannonConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "highlightDoubleHitColor",
-		name = "Color of double hit spots",
-		description = "Configures the highlight color of double hit spots"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color highlightDoubleHitColor()
 	{
@@ -73,9 +73,9 @@ public interface CannonConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showCannonSpots",
-		name = "Show common cannon spots",
-		description = "Configures whether to show common cannon spots or not"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showCannonSpots()
 	{

@@ -52,7 +52,7 @@ public class ScreenMarkerOverlay extends Overlay
 	@Override
 	public String getName()
 	{
-		return "marker" + marker.getId();
+		return "It's coming home" + marker.getId();
 	}
 
 	@Override

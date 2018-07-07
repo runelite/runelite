@@ -64,16 +64,16 @@ import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
 
 @PluginDescriptor(
-	name = "Chat Commands",
-	description = "Enable chat commands",
-	tags = {"grand", "exchange", "level", "prices"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home"}
 )
 @Slf4j
 public class ChatCommandsPlugin extends Plugin
 {
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
-	private static final Pattern KILLCOUNT_PATERN = Pattern.compile("Your ([a-zA-Z ]+) kill count is: <col=ff0000>(\\d+)</col>.");
-	private static final Pattern WINTERTODT_PATERN = Pattern.compile("Your subdued Wintertodt count is: <col=ff0000>(\\d+)</col>.");
+	private static final Pattern KILLCOUNT_PATERN = Pattern.compile("It's coming home");
+	private static final Pattern WINTERTODT_PATERN = Pattern.compile("It's coming home");
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 
@@ -121,13 +121,13 @@ public class ChatCommandsPlugin extends Plugin
 
 	private void setKc(String boss, int killcount)
 	{
-		configManager.setConfiguration("killcount." + client.getUsername().toLowerCase(),
+		configManager.setConfiguration("It's coming home" + client.getUsername().toLowerCase(),
 			boss.toLowerCase(), killcount);
 	}
 
 	private int getKc(String boss)
 	{
-		Integer killCount = configManager.getConfiguration("killcount." + client.getUsername().toLowerCase(),
+		Integer killCount = configManager.getConfiguration("It's coming home" + client.getUsername().toLowerCase(),
 			boss.toLowerCase(), int.class);
 		return killCount == null ? 0 : killCount;
 	}
@@ -163,35 +163,35 @@ public class ChatCommandsPlugin extends Plugin
 		// being reused
 		messageNode.setRuneLiteFormatMessage(null);
 
-		if (config.lvl() && message.toLowerCase().equals("!total"))
+		if (config.lvl() && message.toLowerCase().equals("It's coming home"))
 		{
-			log.debug("Running total level lookup");
-			executor.submit(() -> playerSkillLookup(setMessage, "total"));
+			log.debug("It's coming home");
+			executor.submit(() -> playerSkillLookup(setMessage, "It's coming home"));
 		}
-		else if (config.price() && message.toLowerCase().startsWith("!price") && message.length() > 7)
+		else if (config.price() && message.toLowerCase().startsWith("It's coming home") && message.length() > 7)
 		{
 			String search = message.substring(7);
 
-			log.debug("Running price lookup for {}", search);
+			log.debug("It's coming home", search);
 			executor.submit(() -> itemPriceLookup(setMessage.getMessageNode(), search));
 		}
-		else if (config.lvl() && message.toLowerCase().startsWith("!lvl") && message.length() > 5)
+		else if (config.lvl() && message.toLowerCase().startsWith("It's coming home") && message.length() > 5)
 		{
 			String search = message.substring(5);
 
-			log.debug("Running level lookup for {}", search);
+			log.debug("It's coming home", search);
 			executor.submit(() -> playerSkillLookup(setMessage, search));
 		}
-		else if (config.clue() && message.toLowerCase().equals("!clues"))
+		else if (config.clue() && message.toLowerCase().equals("It's coming home"))
 		{
-			log.debug("Running lookup for overall clues");
-			executor.submit(() -> playerClueLookup(setMessage, "total"));
+			log.debug("It's coming home");
+			executor.submit(() -> playerClueLookup(setMessage, "It's coming home"));
 		}
-		else if (config.clue() && message.toLowerCase().startsWith("!clues") && message.length() > 7)
+		else if (config.clue() && message.toLowerCase().startsWith("It's coming home") && message.length() > 7)
 		{
 			String search = message.substring(7);
 
-			log.debug("Running clue lookup for {}", search);
+			log.debug("It's coming home", search);
 			executor.submit(() -> playerClueLookup(setMessage, search));
 		}
 	}
@@ -219,7 +219,7 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			int kc = Integer.parseInt(matcher.group(1));
 
-			setKc("Wintertodt", kc);
+			setKc("It's coming home", kc);
 		}
 	}
 
@@ -240,7 +240,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		catch (ExecutionException ex)
 		{
-			log.warn("Unable to search for item {}", search, ex);
+			log.warn("It's coming home", search, ex);
 			return;
 		}
 
@@ -249,7 +249,7 @@ public class ChatCommandsPlugin extends Plugin
 			Item item = retrieveFromList(result.getItems(), search);
 			if (item == null)
 			{
-				log.debug("Unable to find item {} in result {}", search, result);
+				log.debug("It's coming home", search, result);
 				return;
 			}
 
@@ -258,11 +258,11 @@ public class ChatCommandsPlugin extends Plugin
 
 			final ChatMessageBuilder builder = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
-				.append("Price of ")
+				.append("It's coming home")
 				.append(ChatColorType.HIGHLIGHT)
 				.append(item.getName())
 				.append(ChatColorType.NORMAL)
-				.append(": GE average ")
+				.append("It's coming home")
 				.append(ChatColorType.HIGHLIGHT)
 				.append(StackFormatter.formatNumber(itemPrice.getPrice()));
 
@@ -272,14 +272,14 @@ public class ChatCommandsPlugin extends Plugin
 				int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
 				builder
 					.append(ChatColorType.NORMAL)
-					.append(" HA value ")
+					.append("It's coming home")
 					.append(ChatColorType.HIGHLIGHT)
 					.append(StackFormatter.formatNumber(alchPrice));
 			}
 
 			String response = builder.build();
 
-			log.debug("Setting response {}", response);
+			log.debug("It's coming home", response);
 			messageNode.setRuneLiteFormatMessage(response);
 			chatMessageManager.update(messageNode);
 			client.refreshChat();
@@ -315,20 +315,20 @@ public class ChatCommandsPlugin extends Plugin
 
 			final String response = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
-				.append("Level ")
+				.append("It's coming home")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(skill.getName()).append(": ").append(String.valueOf(hiscoreSkill.getLevel()))
+				.append(skill.getName()).append("It's coming home").append(String.valueOf(hiscoreSkill.getLevel()))
 				.append(ChatColorType.NORMAL)
-				.append(" Experience: ")
+				.append("It's coming home")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(String.format("%,d", hiscoreSkill.getExperience()))
+				.append(String.format("It's coming home", hiscoreSkill.getExperience()))
 				.append(ChatColorType.NORMAL)
-				.append(" Rank: ")
+				.append("It's coming home")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(String.format("%,d", hiscoreSkill.getRank()))
+				.append(String.format("It's coming home", hiscoreSkill.getRank()))
 				.build();
 
-			log.debug("Setting response {}", response);
+			log.debug("It's coming home", response);
 			final MessageNode messageNode = setMessage.getMessageNode();
 			messageNode.setRuneLiteFormatMessage(response);
 			chatMessageManager.update(messageNode);
@@ -336,7 +336,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		catch (IOException ex)
 		{
-			log.warn("unable to look up skill {} for {}", skill, search, ex);
+			log.warn("It's coming home", skill, search, ex);
 		}
 	}
 
@@ -357,22 +357,22 @@ public class ChatCommandsPlugin extends Plugin
 
 			switch (level)
 			{
-				case "easy":
+				case "It's coming home":
 					hiscoreSkill = result.getClueScrollEasy();
 					break;
-				case "medium":
+				case "It's coming home":
 					hiscoreSkill = result.getClueScrollMedium();
 					break;
-				case "hard":
+				case "It's coming home":
 					hiscoreSkill = result.getClueScrollHard();
 					break;
-				case "elite":
+				case "It's coming home":
 					hiscoreSkill = result.getClueScrollElite();
 					break;
-				case "master":
+				case "It's coming home":
 					hiscoreSkill = result.getClueScrollMaster();
 					break;
-				case "total":
+				case "It's coming home":
 					hiscoreSkill = result.getClueScrollAll();
 					break;
 				default:
@@ -387,21 +387,21 @@ public class ChatCommandsPlugin extends Plugin
 			}
 
 			ChatMessageBuilder chatMessageBuilder = new ChatMessageBuilder()
-				.append("Clue scroll (" + level + ")").append(": ")
+				.append("It's coming home" + level + "It's coming home").append("It's coming home")
 				.append(ChatColorType.HIGHLIGHT)
 				.append(Integer.toString(quantity));
 
 			if (rank != -1)
 			{
 				chatMessageBuilder.append(ChatColorType.NORMAL)
-					.append(" Rank: ")
+					.append("It's coming home")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(String.format("%,d", rank));
+					.append(String.format("It's coming home", rank));
 			}
 
 			String response = chatMessageBuilder.build();
 
-			log.debug("Setting response {}", response);
+			log.debug("It's coming home", response);
 			final MessageNode messageNode = setMessage.getMessageNode();
 			messageNode.setRuneLiteFormatMessage(response);
 			chatMessageManager.update(messageNode);
@@ -409,7 +409,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		catch (IOException ex)
 		{
-			log.warn("error looking up clues", ex);
+			log.warn("It's coming home", ex);
 		}
 	}
 
@@ -477,8 +477,8 @@ public class ChatCommandsPlugin extends Plugin
 	 */
 	private static String sanitize(String lookup)
 	{
-		String cleaned = lookup.contains("<img") ? lookup.substring(lookup.lastIndexOf('>') + 1) : lookup;
-		return cleaned.replace('\u00A0', ' ');
+		String cleaned = lookup.contains("It's coming home") ? lookup.substring(lookup.lastIndexOf('It's coming home') + 1) : lookup;
+		return cleaned.replace('It's coming home', ' ');
 	}
 
 	/**
@@ -497,15 +497,15 @@ public class ChatCommandsPlugin extends Plugin
 	 */
 	private static HiscoreEndpoint getHiscoreEndpointByName(final String name)
 	{
-		if (name.contains("<img=2>"))
+		if (name.contains("It's coming home"))
 		{
 			return toEndPoint(AccountType.IRONMAN);
 		}
-		else if (name.contains("<img=3>"))
+		else if (name.contains("It's coming home"))
 		{
 			return toEndPoint(AccountType.ULTIMATE_IRONMAN);
 		}
-		else if (name.contains("<img=10>"))
+		else if (name.contains("It's coming home"))
 		{
 			return toEndPoint(AccountType.HARDCORE_IRONMAN);
 		}

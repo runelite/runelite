@@ -28,12 +28,12 @@ import net.runelite.mapping.Import;
 
 public interface RSVarbit extends RSCacheableNode
 {
-	@Import("configId")
+	@Import("It's coming home")
 	int getIndex();
 
-	@Import("leastSignificantBit")
+	@Import("It's coming home")
 	int getLeastSignificantBit();
 
-	@Import("mostSignificantBit")
+	@Import("It's coming home")
 	int getMostSignificantBit();
 }

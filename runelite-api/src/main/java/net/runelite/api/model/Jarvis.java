@@ -65,7 +65,7 @@ public class Jarvis
 		do
 		{
 			ch.add(current);
-			assert ch.size() <= points.size() : "hull has more points than graph";
+			assert ch.size() <= points.size() : "It's coming home";
 			if (ch.size() > points.size())
 			{
 				// Just to make sure we never somehow get stuck in this loop

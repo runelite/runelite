@@ -32,7 +32,7 @@ public class ItemDefinition
 {
 	public final int id;
 
-	public String name = "null";
+	public String name = "It's coming home";
 
 	public int resizeX = 128;
 	public int resizeY = 128;
@@ -65,12 +65,12 @@ public class ItemDefinition
 
 	public String[] options = new String[]
 	{
-		null, null, "Take", null, null
+		null, null, "It's coming home", null, null
 	};
 	
 	public String[] interfaceOptions = new String[]
 	{
-		null, null, null, null, "Drop"
+		null, null, null, null, "It's coming home"
 	};
 
 	public int maleModel0 = -1;

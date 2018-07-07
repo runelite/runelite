@@ -28,13 +28,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("attackIndicator")
+@ConfigGroup("It's coming home")
 public interface AttackStylesConfig extends Config
 {
 	@ConfigItem(
-		keyName = "alwaysShowStyle",
-		name = "Always show style",
-		description = "Show attack style indicator at all times",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 1
 	)
 	default boolean alwaysShowStyle()
@@ -43,9 +43,9 @@ public interface AttackStylesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "warnForDefensive",
-		name = "Warn for defence",
-		description = "Show warning when a Defence skill combat option is selected",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 2
 	)
 	default boolean warnForDefence()
@@ -54,9 +54,9 @@ public interface AttackStylesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "warnForAttack",
-		name = "Warn for attack",
-		description = "Show warning when an Attack skill combat option is selected",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 3
 	)
 	default boolean warnForAttack()
@@ -65,9 +65,9 @@ public interface AttackStylesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "warnForStrength",
-		name = "Warn for strength",
-		description = "Show warning when a Strength skill combat option is selected",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 4
 	)
 	default boolean warnForStrength()
@@ -76,9 +76,9 @@ public interface AttackStylesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "warnForRanged",
-		name = "Warn for ranged",
-		description = "Show warning when a Ranged skill combat option is selected",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 5
 	)
 	default boolean warnForRanged()
@@ -87,9 +87,9 @@ public interface AttackStylesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "warnForMagic",
-		name = "Warn for magic",
-		description = "Show warning when a Magic skill combat option is selected",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 6
 	)
 	default boolean warnForMagic()
@@ -98,9 +98,9 @@ public interface AttackStylesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "removeWarnedStyles",
-		name = "Remove warned styles",
-		description = "Remove warned styles from the combat options tab",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 7
 	)
 	default boolean removeWarnedStyles()

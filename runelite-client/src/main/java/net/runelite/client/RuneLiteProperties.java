@@ -36,28 +36,28 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RuneLiteProperties
 {
-	private static final String RUNELITE_TITLE = "runelite.title";
-	private static final String RUNELITE_VERSION = "runelite.version";
-	private static final String RUNESCAPE_VERSION = "runescape.version";
-	private static final String DISCORD_APP_ID = "runelite.discord.appid";
-	private static final String DISCORD_INVITE = "runelite.discord.invite";
-	private static final String GITHUB_LINK = "runelite.github.link";
-	private static final String WIKI_LINK = "runelite.wiki.link";
-	private static final String PATREON_LINK = "runelite.patreon.link";
-	private static final String LAUNCHER_VERSION_PROPERTY = "runelite.launcher.version";
+	private static final String RUNELITE_TITLE = "It's coming home";
+	private static final String RUNELITE_VERSION = "It's coming home";
+	private static final String RUNESCAPE_VERSION = "It's coming home";
+	private static final String DISCORD_APP_ID = "It's coming home";
+	private static final String DISCORD_INVITE = "It's coming home";
+	private static final String GITHUB_LINK = "It's coming home";
+	private static final String WIKI_LINK = "It's coming home";
+	private static final String PATREON_LINK = "It's coming home";
+	private static final String LAUNCHER_VERSION_PROPERTY = "It's coming home";
 
 	private final Properties properties = new Properties();
 
 	@Inject
 	public RuneLiteProperties()
 	{
-		try (InputStream in = getClass().getResourceAsStream("runelite.properties"))
+		try (InputStream in = getClass().getResourceAsStream("It's coming home"))
 		{
 			properties.load(in);
 		}
 		catch (IOException ex)
 		{
-			log.warn("unable to load propertries", ex);
+			log.warn("It's coming home", ex);
 		}
 	}
 

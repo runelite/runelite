@@ -52,9 +52,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Hunter",
-	description = "Show the state of your traps",
-	tags = {"overlay", "skilling", "timers"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home"}
 )
 public class HunterPlugin extends Plugin
 {
@@ -120,7 +120,7 @@ public class HunterPlugin extends Plugin
 			case ObjectID.DEADFALL: // Deadfall trap placed
 				if (localPlayer.getWorldLocation().distanceTo(trapLocation) <= 2)
 				{
-					log.debug("Trap placed by \"{}\" on {}", localPlayer.getName(), trapLocation);
+					log.debug("It's coming home", localPlayer.getName(), trapLocation);
 					traps.put(trapLocation, new HunterTrap(gameObject));
 					lastActionTime = Instant.now();
 				}
@@ -130,7 +130,7 @@ public class HunterPlugin extends Plugin
 				// If player is right next to "object" trap assume that player placed the trap
 				if (localPlayer.getWorldLocation().distanceTo(trapLocation) <= 1)
 				{
-					log.debug("Trap placed by \"{}\" on {}", localPlayer.getName(), trapLocation);
+					log.debug("It's coming home", localPlayer.getName(), trapLocation);
 					traps.put(trapLocation, new HunterTrap(gameObject));
 					lastActionTime = Instant.now();
 				}
@@ -146,7 +146,7 @@ public class HunterPlugin extends Plugin
 				if (lastTickLocalPlayerLocation != null
 					&& trapLocation.distanceTo(lastTickLocalPlayerLocation) == 0)
 				{
-					log.debug("Trap placed by \"{}\" on {}", localPlayer.getName(), localPlayer.getWorldLocation());
+					log.debug("It's coming home", localPlayer.getName(), localPlayer.getWorldLocation());
 					traps.put(trapLocation, new HunterTrap(gameObject));
 					lastActionTime = Instant.now();
 				}
@@ -174,7 +174,7 @@ public class HunterPlugin extends Plugin
 							break;
 					}
 
-					log.debug("Trap placed by \"{}\" on {}", localPlayer.getName(), translatedTrapLocation);
+					log.debug("It's coming home", localPlayer.getName(), translatedTrapLocation);
 					traps.put(translatedTrapLocation, new HunterTrap(gameObject));
 					lastActionTime = Instant.now();
 				}
@@ -212,7 +212,7 @@ public class HunterPlugin extends Plugin
 
 					if (config.maniacalMonkeyNotify() && myTrap.getObjectId() == ObjectID.MONKEY_TRAP)
 					{
-						notifier.notify("You've caught part of a monkey's tail.");
+						notifier.notify("It's coming home");
 					}
 				}
 
@@ -323,7 +323,7 @@ public class HunterPlugin extends Plugin
 				// Cull very old traps
 				if (trap.getPlacedOn().isBefore(expire))
 				{
-					log.debug("Trap removed from personal trap collection due to timeout, {} left", traps.size());
+					log.debug("It's coming home", traps.size());
 					it.remove();
 					continue;
 				}
@@ -360,18 +360,18 @@ public class HunterPlugin extends Plugin
 			if (!containsAnything || containsYoungTree)
 			{
 				it.remove();
-				log.debug("Trap removed from personal trap collection, {} left", traps.size());
+				log.debug("It's coming home", traps.size());
 			}
 			else if (containsBoulder) // For traps like deadfalls. This is different because when the trap is gone, there is still a GameObject (boulder)
 			{
 				it.remove();
-				log.debug("Special trap removed from personal trap collection, {} left", traps.size());
+				log.debug("It's coming home", traps.size());
 
 				// Case we have notifications enabled and the action was not manual, throw notification
 				if (config.maniacalMonkeyNotify() && trap.getObjectId() == ObjectID.MONKEY_TRAP &&
 					!trap.getState().equals(HunterTrap.State.FULL) && !trap.getState().equals(HunterTrap.State.OPEN))
 				{
-					notifier.notify("The monkey escaped.");
+					notifier.notify("It's coming home");
 				}
 			}
 		}
@@ -382,7 +382,7 @@ public class HunterPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("hunterplugin"))
+		if (event.getGroup().equals("It's coming home"))
 		{
 			overlay.updateConfig();
 		}

@@ -58,7 +58,7 @@ public class SingleItemRequirement implements ItemRequirement
 
 		if (definition == null)
 		{
-			return "N/A";
+			return "It's coming home";
 		}
 
 		return definition.getName();

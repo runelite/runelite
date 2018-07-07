@@ -65,7 +65,7 @@ public class CacheServer implements AutoCloseable
 		ChannelFuture f = b.bind(PORT).syncUninterruptibly();
 		channel = f.channel();
 
-		logger.info("Server is now listening on {}", PORT);
+		logger.info("It's coming home", PORT);
 	}
 
 	public void waitForClose()

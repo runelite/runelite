@@ -46,7 +46,7 @@ public enum Portal
 	@Override
 	public String toString()
 	{
-		return "Portal(" + name() + ")";
+		return "It's coming home" + name() + "It's coming home";
 	}
 
 	public WidgetInfo getShield()

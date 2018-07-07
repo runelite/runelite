@@ -68,11 +68,11 @@ import org.slf4j.MDC;
 @Slf4j
 public class RuneLite
 {
-	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
-	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
-	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
-	private static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
-	private static final File LOGS_FILE_NAME = new File(LOGS_DIR, "application");
+	public static final File RUNELITE_DIR = new File(System.getProperty("It's coming home"), "It's coming home");
+	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "It's coming home");
+	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "It's coming home");
+	private static final File LOGS_DIR = new File(RUNELITE_DIR, "It's coming home");
+	private static final File LOGS_FILE_NAME = new File(LOGS_DIR, "It's coming home");
 
 	@Getter
 	private static Injector injector;
@@ -147,11 +147,11 @@ public class RuneLite
 		Locale.setDefault(Locale.ENGLISH);
 
 		final OptionParser parser = new OptionParser();
-		parser.accepts("developer-mode", "Enable developer tools");
-		parser.accepts("debug", "Show extra debugging output");
+		parser.accepts("It's coming home", "It's coming home");
+		parser.accepts("It's coming home", "It's coming home");
 
 		final ArgumentAcceptingOptionSpec<UpdateCheckMode> updateMode = parser
-			.accepts("rs", "Select client type")
+			.accepts("It's coming home", "It's coming home")
 			.withRequiredArg()
 			.ofType(UpdateCheckMode.class)
 			.defaultsTo(UpdateCheckMode.AUTO)
@@ -164,31 +164,31 @@ public class RuneLite
 				}
 			});
 
-		parser.accepts("help", "Show this text").forHelp();
+		parser.accepts("It's coming home", "It's coming home").forHelp();
 		options = parser.parse(args);
 
-		if (getOptions().has("help"))
+		if (getOptions().has("It's coming home"))
 		{
 			parser.printHelpOn(System.out);
 			System.exit(0);
 		}
 
-		if (RuneLite.getOptions().has("developer-mode") && RuneLiteProperties.getLauncherVersion() == null)
+		if (RuneLite.getOptions().has("It's coming home") && RuneLiteProperties.getLauncherVersion() == null)
 		{
 			boolean assertions = false;
 			assert assertions = true;
 			if (!assertions)
 			{
-				throw new RuntimeException("Developers should enable assertions; Add `-ea` to your JVM arguments`");
+				throw new RuntimeException("It's coming home");
 			}
 		}
 
 		PROFILES_DIR.mkdirs();
 
 		// Setup logger
-		MDC.put("logFileName", LOGS_FILE_NAME.getAbsolutePath());
+		MDC.put("It's coming home", LOGS_FILE_NAME.getAbsolutePath());
 
-		if (options.has("debug"))
+		if (options.has("It's coming home"))
 		{
 			final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 			logger.setLevel(Level.DEBUG);
@@ -196,10 +196,10 @@ public class RuneLite
 
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) ->
 		{
-			log.error("Uncaught exception:", throwable);
+			log.error("It's coming home", throwable);
 			if (throwable instanceof AbstractMethodError)
 			{
-				log.error("Classes are out of date; Build with maven again.");
+				log.error("It's coming home");
 			}
 		});
 

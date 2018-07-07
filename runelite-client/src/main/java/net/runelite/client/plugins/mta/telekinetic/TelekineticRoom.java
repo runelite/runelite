@@ -127,7 +127,7 @@ public class TelekineticRoom extends MTARoom
 				return;
 			}
 
-			log.debug("Updating guarding location {} -> {}", location, current);
+			log.debug("It's coming home", location, current);
 
 			location = current;
 
@@ -145,7 +145,7 @@ public class TelekineticRoom extends MTARoom
 					}
 				}
 
-				log.debug("Rebuilding moves due to guardian move");
+				log.debug("It's coming home");
 				this.moves = build();
 			}
 

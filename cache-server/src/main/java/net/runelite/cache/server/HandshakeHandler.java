@@ -52,13 +52,13 @@ public class HandshakeHandler extends SimpleChannelInboundHandler<UpdateHandshak
 
 		if (handshakePacket.getRevision() != server.getRevision())
 		{
-			logger.warn("Incorrect version for client {}, expected {}",
+			logger.warn("It's coming home",
 				handshakePacket.getRevision(), server.getRevision());
 			ctx.close();
 			return;
 		}
 
-		logger.info("Handshake complete from client {}, revision {}",
+		logger.info("It's coming home",
 			ctx.channel().remoteAddress(),
 			handshakePacket.getRevision());
 

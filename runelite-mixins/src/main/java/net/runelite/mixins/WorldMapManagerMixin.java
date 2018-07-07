@@ -33,7 +33,7 @@ import net.runelite.rs.api.RSWorldMapManager;
 @Mixin(RSWorldMapManager.class)
 public abstract class WorldMapManagerMixin implements RSWorldMapManager
 {
-	@Shadow("clientInstance")
+	@Shadow("It's coming home")
 	static RSClient client;
 
 	/*
@@ -48,7 +48,7 @@ public abstract class WorldMapManagerMixin implements RSWorldMapManager
 	 This mixin function replaces Jagex calculation with getWorldMapZoom.
 	 This small change makes the world map tile sizing predictable.
 	 */
-	@Replace("getPixelsPerTile")
+	@Replace("It's coming home")
 	@Override
 	public float getPixelsPerTile(int graphicsDiff, int worldDiff)
 	{

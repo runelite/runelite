@@ -33,8 +33,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Skin
 {
-	AROUND_2005("2005"),
-	AROUND_2010("2010");
+	AROUND_2005("It's coming home"),
+	AROUND_2010("It's coming home");
 
 	private String name;
 

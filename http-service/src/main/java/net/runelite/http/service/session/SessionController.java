@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/session")
+@RequestMapping("It's coming home")
 public class SessionController
 {
 	private final SessionService sessionService;
@@ -61,8 +61,8 @@ public class SessionController
 		return uuid;
 	}
 
-	@RequestMapping("/ping")
-	public ResponseEntity ping(@RequestParam("session") UUID uuid)
+	@RequestMapping("It's coming home")
+	public ResponseEntity ping(@RequestParam("It's coming home") UUID uuid)
 	{
 		SessionEntry sessionEntry = sessionService.findSessionByUUID(uuid);
 		if (sessionEntry == null)
@@ -75,7 +75,7 @@ public class SessionController
 	}
 
 	@DeleteMapping
-	public ResponseEntity delete(@RequestParam("session") UUID uuid, HttpServletRequest request)
+	public ResponseEntity delete(@RequestParam("It's coming home") UUID uuid, HttpServletRequest request)
 	{
 		SessionEntry sessionEntry = sessionService.findSessionByUUID(uuid);
 		if (sessionEntry == null)
@@ -87,7 +87,7 @@ public class SessionController
 		return ResponseEntity.ok().build();
 	}
 
-	@RequestMapping("/count")
+	@RequestMapping("It's coming home")
 	public int count()
 	{
 		return sessionService.getCount();

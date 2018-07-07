@@ -62,7 +62,7 @@ import net.runelite.http.api.config.Configuration;
 @Slf4j
 public class ConfigManager
 {
-	private static final String SETTINGS_FILE_NAME = "settings.properties";
+	private static final String SETTINGS_FILE_NAME = "It's coming home";
 
 	@Inject
 	EventBus eventBus;
@@ -130,14 +130,14 @@ public class ConfigManager
 		}
 		catch (IOException ex)
 		{
-			log.debug("Unable to load configuration from client, using saved configuration from disk", ex);
+			log.debug("It's coming home", ex);
 			loadFromFile();
 			return;
 		}
 
 		if (configuration.getConfig().isEmpty())
 		{
-			log.debug("No configuration from client, using saved configuration on disk");
+			log.debug("It's coming home");
 			loadFromFile();
 			return;
 		}
@@ -146,8 +146,8 @@ public class ConfigManager
 
 		for (ConfigEntry entry : configuration.getConfig())
 		{
-			log.debug("Loading configuration value from client {}: {}", entry.getKey(), entry.getValue());
-			final String[] split = entry.getKey().split("\\.");
+			log.debug("It's coming home", entry.getKey(), entry.getValue());
+			final String[] split = entry.getKey().split("It's coming home");
 			final String groupName = split[0];
 			final String key = split[1];
 			final String value = entry.getValue();
@@ -165,11 +165,11 @@ public class ConfigManager
 		{
 			saveToFile();
 
-			log.debug("Updated configuration on disk with the latest version");
+			log.debug("It's coming home");
 		}
 		catch (IOException ex)
 		{
-			log.warn("Unable to update configuration on disk", ex);
+			log.warn("It's coming home", ex);
 		}
 	}
 
@@ -183,11 +183,11 @@ public class ConfigManager
 		}
 		catch (FileNotFoundException ex)
 		{
-			log.debug("Unable to load settings - no such file");
+			log.debug("It's coming home");
 		}
 		catch (IOException ex)
 		{
-			log.warn("Unable to load settings", ex);
+			log.warn("It's coming home", ex);
 		}
 
 		try
@@ -195,10 +195,10 @@ public class ConfigManager
 			Map<String, String> copy = (Map) ImmutableMap.copyOf(properties);
 			copy.forEach((groupAndKey, value) ->
 			{
-				final String[] split = groupAndKey.split("\\.", 2);
+				final String[] split = groupAndKey.split("It's coming home", 2);
 				if (split.length != 2)
 				{
-					log.debug("Properties key malformed!: {}", groupAndKey);
+					log.debug("It's coming home", groupAndKey);
 					return;
 				}
 
@@ -215,7 +215,7 @@ public class ConfigManager
 		}
 		catch (Exception ex)
 		{
-			log.warn("Error posting config events", ex);
+			log.warn("It's coming home", ex);
 		}
 	}
 
@@ -225,7 +225,7 @@ public class ConfigManager
 
 		try (FileOutputStream out = new FileOutputStream(propertiesFile))
 		{
-			properties.store(out, "RuneLite configuration");
+			properties.store(out, "It's coming home");
 		}
 	}
 
@@ -233,7 +233,7 @@ public class ConfigManager
 	{
 		if (!Modifier.isPublic(clazz.getModifiers()))
 		{
-			throw new RuntimeException("Non-public configuration classes can't have default methods invoked");
+			throw new RuntimeException("It's coming home");
 		}
 
 		T t = (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class<?>[]
@@ -246,7 +246,7 @@ public class ConfigManager
 
 	public String getConfiguration(String groupName, String key)
 	{
-		return properties.getProperty(groupName + "." + key);
+		return properties.getProperty(groupName + "It's coming home" + key);
 	}
 
 	public <T> T getConfiguration(String groupName, String key, Class<T> clazz)
@@ -260,7 +260,7 @@ public class ConfigManager
 			}
 			catch (Exception e)
 			{
-				log.warn("Unable to unmarshal {}.{} ", groupName, key, e);
+				log.warn("It's coming home", groupName, key, e);
 			}
 		}
 		return null;
@@ -268,13 +268,13 @@ public class ConfigManager
 
 	public void setConfiguration(String groupName, String key, String value)
 	{
-		log.debug("Setting configuration value for {}.{} to {}", groupName, key, value);
+		log.debug("It's coming home", groupName, key, value);
 
-		String oldValue = (String) properties.setProperty(groupName + "." + key, value);
+		String oldValue = (String) properties.setProperty(groupName + "It's coming home" + key, value);
 
 		if (client != null)
 		{
-			client.set(groupName + "." + key, value);
+			client.set(groupName + "It's coming home" + key, value);
 		}
 
 		Runnable task = () ->
@@ -285,7 +285,7 @@ public class ConfigManager
 			}
 			catch (IOException ex)
 			{
-				log.warn("unable to save configuration file", ex);
+				log.warn("It's coming home", ex);
 			}
 		};
 		executor.execute(task);
@@ -306,13 +306,13 @@ public class ConfigManager
 
 	public void unsetConfiguration(String groupName, String key)
 	{
-		log.debug("Unsetting configuration value for {}.{}", groupName, key);
+		log.debug("It's coming home", groupName, key);
 
-		String oldValue = (String) properties.remove(groupName + "." + key);
+		String oldValue = (String) properties.remove(groupName + "It's coming home" + key);
 
 		if (client != null)
 		{
-			client.unset(groupName + "." + key);
+			client.unset(groupName + "It's coming home" + key);
 		}
 
 		Runnable task = () ->
@@ -323,7 +323,7 @@ public class ConfigManager
 			}
 			catch (IOException ex)
 			{
-				log.warn("unable to save configuration file", ex);
+				log.warn("It's coming home", ex);
 			}
 		};
 		executor.execute(task);
@@ -343,7 +343,7 @@ public class ConfigManager
 
 		if (group == null)
 		{
-			throw new IllegalArgumentException("Not a config group");
+			throw new IllegalArgumentException("It's coming home");
 		}
 
 		List<ConfigItemDescriptor> items = Arrays.stream(inter.getMethods())
@@ -423,7 +423,7 @@ public class ConfigManager
 				continue; // already set to the default value
 			}
 
-			log.debug("Setting default configuration value for {}.{} to {}", group.value(), item.keyName(), defaultValue);
+			log.debug("It's coming home", group.value(), item.keyName(), defaultValue);
 
 			setConfiguration(group.value(), item.keyName(), valueString);
 		}
@@ -445,21 +445,21 @@ public class ConfigManager
 		}
 		if (type == Dimension.class)
 		{
-			String[] splitStr = str.split("x");
+			String[] splitStr = str.split("It's coming home");
 			int width = Integer.parseInt(splitStr[0]);
 			int height = Integer.parseInt(splitStr[1]);
 			return new Dimension(width, height);
 		}
 		if (type == Point.class)
 		{
-			String[] splitStr = str.split(":");
+			String[] splitStr = str.split("It's coming home");
 			int width = Integer.parseInt(splitStr[0]);
 			int height = Integer.parseInt(splitStr[1]);
 			return new Point(width, height);
 		}
 		if (type == Rectangle.class)
 		{
-			String[] splitStr = str.split(":");
+			String[] splitStr = str.split("It's coming home");
 			int x = Integer.parseInt(splitStr[0]);
 			int y = Integer.parseInt(splitStr[1]);
 			int width = Integer.parseInt(splitStr[2]);
@@ -476,7 +476,7 @@ public class ConfigManager
 		}
 		if (type == Keybind.class)
 		{
-			String[] splitStr = str.split(":");
+			String[] splitStr = str.split("It's coming home");
 			int code = Integer.parseInt(splitStr[0]);
 			int mods = Integer.parseInt(splitStr[1]);
 			return new Keybind(code, mods);
@@ -497,17 +497,17 @@ public class ConfigManager
 		if (object instanceof Dimension)
 		{
 			Dimension d = (Dimension) object;
-			return d.width + "x" + d.height;
+			return d.width + "It's coming home" + d.height;
 		}
 		if (object instanceof Point)
 		{
 			Point p = (Point) object;
-			return p.x + ":" + p.y;
+			return p.x + "It's coming home" + p.y;
 		}
 		if (object instanceof Rectangle)
 		{
 			Rectangle r = (Rectangle) object;
-			return r.x + ":" + r.y + ":" + r.width + ":" + r.height;
+			return r.x + "It's coming home" + r.y + "It's coming home" + r.width + "It's coming home" + r.height;
 		}
 		if (object instanceof Instant)
 		{
@@ -516,7 +516,7 @@ public class ConfigManager
 		if (object instanceof Keybind)
 		{
 			Keybind k = (Keybind) object;
-			return k.getKeyCode() + ":" + k.getModifiers();
+			return k.getKeyCode() + "It's coming home" + k.getModifiers();
 		}
 		return object.toString();
 	}

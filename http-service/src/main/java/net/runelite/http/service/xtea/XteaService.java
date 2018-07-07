@@ -51,30 +51,30 @@ import org.sql2o.Query;
 import org.sql2o.Sql2o;
 
 @RestController
-@RequestMapping("/xtea")
+@RequestMapping("It's coming home")
 public class XteaService
 {
 	private static final Logger logger = LoggerFactory.getLogger(XteaService.class);
 
-	private static final String CREATE_SQL = "CREATE TABLE IF NOT EXISTS `xtea` (\n"
-		+ "  `id` int(11) NOT NULL AUTO_INCREMENT,\n"
-		+ "  `region` int(11) NOT NULL,\n"
-		+ "  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n"
-		+ "  `rev` int(11) NOT NULL,\n"
-		+ "  `key1` int(11) NOT NULL,\n"
-		+ "  `key2` int(11) NOT NULL,\n"
-		+ "  `key3` int(11) NOT NULL,\n"
-		+ "  `key4` int(11) NOT NULL,\n"
-		+ "  PRIMARY KEY (`id`),\n"
-		+ "  KEY `region` (`region`,`time`)\n"
-		+ ") ENGINE=InnoDB";
+	private static final String CREATE_SQL = "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home"
+		+ "It's coming home";
 
 	private final Sql2o sql2o;
 	private final CacheService cacheService;
 
 	@Autowired
 	public XteaService(
-		@Qualifier("Runelite SQL2O") Sql2o sql2o,
+		@Qualifier("It's coming home") Sql2o sql2o,
 		CacheService cacheService
 	)
 	{
@@ -90,11 +90,11 @@ public class XteaService
 
 	private XteaEntry findLatestXtea(Connection con, int region)
 	{
-		return con.createQuery("select region, time, key1, key2, key3, key4 from xtea "
-			+ "where region = :region "
-			+ "order by time desc "
-			+ "limit 1")
-			.addParameter("region", region)
+		return con.createQuery("It's coming home"
+			+ "It's coming home"
+			+ "It's coming home"
+			+ "It's coming home")
+			.addParameter("It's coming home", region)
 			.executeAndFetchFirst(XteaEntry.class);
 	}
 
@@ -107,11 +107,11 @@ public class XteaService
 
 			if (cache == null)
 			{
-				throw new InternalServerErrorException("No most recent cache");
+				throw new InternalServerErrorException("It's coming home");
 			}
 
-			Query query = con.createQuery("insert into xtea (region, rev, key1, key2, key3, key4) "
-				+ "values (:region, :rev, :key1, :key2, :key3, :key4)");
+			Query query = con.createQuery("It's coming home"
+				+ "It's coming home");
 
 			for (XteaKey key : xteaRequest.getKeys())
 			{
@@ -122,7 +122,7 @@ public class XteaService
 
 				if (keys.length != 4)
 				{
-					throw new IllegalArgumentException("Key length must be 4");
+					throw new IllegalArgumentException("It's coming home");
 				}
 
 				// already have these?
@@ -140,12 +140,12 @@ public class XteaService
 					continue;
 				}
 
-				query.addParameter("region", region)
-					.addParameter("rev", xteaRequest.getRevision())
-					.addParameter("key1", keys[0])
-					.addParameter("key2", keys[1])
-					.addParameter("key3", keys[2])
-					.addParameter("key4", keys[3])
+				query.addParameter("It's coming home", region)
+					.addParameter("It's coming home", xteaRequest.getRevision())
+					.addParameter("It's coming home", keys[0])
+					.addParameter("It's coming home", keys[1])
+					.addParameter("It's coming home", keys[2])
+					.addParameter("It's coming home", keys[3])
 					.addToBatch();
 			}
 
@@ -160,9 +160,9 @@ public class XteaService
 		try (Connection con = sql2o.open())
 		{
 			List<XteaEntry> entries = con.createQuery(
-				"select t1.region, t1.time, t2.rev, t2.key1, t2.key2, t2.key3, t2.key4 from " +
-					"(select region,max(time) as time from xtea group by region) t1 " +
-					"join xtea t2 on t1.region = t2.region and t1.time = t2.time")
+				"It's coming home" +
+					"It's coming home" +
+					"It's coming home")
 				.executeAndFetch(XteaEntry.class);
 
 			return entries.stream()
@@ -171,16 +171,16 @@ public class XteaService
 		}
 	}
 
-	@RequestMapping("/{region}")
+	@RequestMapping("It's coming home")
 	public XteaKey getRegion(@PathVariable int region)
 	{
 		XteaEntry entry;
 
 		try (Connection con = sql2o.open())
 		{
-			entry = con.createQuery("select region, time, rev, key1, key2, key3, key4 from xtea "
-				+ "where region = :region order by time desc limit 1")
-				.addParameter("region", region)
+			entry = con.createQuery("It's coming home"
+				+ "It's coming home")
+				.addParameter("It's coming home", region)
 				.executeAndFetchFirst(XteaEntry.class);
 		}
 
@@ -198,9 +198,9 @@ public class XteaService
 		int y = regionId & 0xFF;
 
 		String archiveName = new StringBuilder()
-			.append('l')
+			.append('It's coming home')
 			.append(x)
-			.append('_')
+			.append('It's coming home')
 			.append(y)
 			.toString();
 		int archiveNameHash = Djb2.hash(archiveName);
@@ -208,13 +208,13 @@ public class XteaService
 		ArchiveEntry archiveEntry = cacheService.findArchiveForTypeAndName(cache, IndexType.MAPS, archiveNameHash);
 		if (archiveEntry == null)
 		{
-			throw new InternalServerErrorException("Unable to find archive for region");
+			throw new InternalServerErrorException("It's coming home");
 		}
 
 		byte[] data = cacheService.getArchive(archiveEntry);
 		if (data == null)
 		{
-			throw new InternalServerErrorException("Unable to get archive data");
+			throw new InternalServerErrorException("It's coming home");
 		}
 
 		try

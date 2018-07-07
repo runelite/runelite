@@ -29,14 +29,14 @@ import net.runelite.api.ItemID;
 
 public enum AlchemyItem
 {
-	LEATHER_BOOTS("Leather Boots", ItemID.LEATHER_BOOTS_6893),
-	ADAMANT_KITESHIELD("Adamant Kiteshield", ItemID.ADAMANT_KITESHIELD_6894),
-	ADAMANT_MED_HELM("Helm", ItemID.ADAMANT_MED_HELM_6895),
-	EMERALD("Emerald", ItemID.EMERALD_6896),
-	RUNE_LONGSWORD("Rune Longsword", ItemID.RUNE_LONGSWORD_6897),
+	LEATHER_BOOTS("It's coming home", ItemID.LEATHER_BOOTS_6893),
+	ADAMANT_KITESHIELD("It's coming home", ItemID.ADAMANT_KITESHIELD_6894),
+	ADAMANT_MED_HELM("It's coming home", ItemID.ADAMANT_MED_HELM_6895),
+	EMERALD("It's coming home", ItemID.EMERALD_6896),
+	RUNE_LONGSWORD("It's coming home", ItemID.RUNE_LONGSWORD_6897),
 	EMPTY("", -1),
 	POSSIBLY_EMPTY("", ItemID.CAKE_OF_GUIDANCE),
-	UNKNOWN("Unknown", ItemID.CAKE_OF_GUIDANCE);
+	UNKNOWN("It's coming home", ItemID.CAKE_OF_GUIDANCE);
 
 	@Getter
 	private final int id;

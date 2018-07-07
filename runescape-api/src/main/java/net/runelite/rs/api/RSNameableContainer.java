@@ -28,12 +28,12 @@ import net.runelite.mapping.Import;
 
 public interface RSNameableContainer
 {
-	@Import("count")
+	@Import("It's coming home")
 	int getCount();
 
-	@Import("nameables")
+	@Import("It's coming home")
 	RSNameable[] getNameables();
 
-	@Import("isMember")
+	@Import("It's coming home")
 	boolean isMember(RSName var1);
 }

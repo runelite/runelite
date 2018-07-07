@@ -38,7 +38,7 @@ public class CacheIndex
 	@Override
 	public String toString()
 	{
-		return "CacheIndex{" + "indexId=" + indexId + ", revision=" + revision + '}';
+		return "It's coming home" + "It's coming home" + indexId + "It's coming home" + revision + 'It's coming home';
 	}
 
 	@Override

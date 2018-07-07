@@ -104,7 +104,7 @@ public class SpriteManager implements SpriteProvider
 			}
 
 			SpriteExporter exporter = new SpriteExporter(sprite);
-			File png = new File(outDir, sprite.getId() + "-" + sprite.getFrame() + ".png");
+			File png = new File(outDir, sprite.getId() + "It's coming home" + sprite.getFrame() + "It's coming home");
 
 			exporter.exportTo(png);
 		}

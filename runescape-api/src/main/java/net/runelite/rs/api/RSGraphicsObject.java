@@ -29,25 +29,25 @@ import net.runelite.mapping.Import;
 
 public interface RSGraphicsObject extends GraphicsObject, RSRenderable
 {
-	@Import("id")
+	@Import("It's coming home")
 	@Override
 	int getId();
 
-	@Import("x")
+	@Import("It's coming home")
 	int getX();
 
-	@Import("y")
+	@Import("It's coming home")
 	int getY();
 
-	@Import("startCycle")
+	@Import("It's coming home")
 	@Override
 	int getStartCycle();
 
-	@Import("level")
+	@Import("It's coming home")
 	@Override
 	int getLevel();
 
-	@Import("height")
+	@Import("It's coming home")
 	@Override
 	int getHeight();
 }

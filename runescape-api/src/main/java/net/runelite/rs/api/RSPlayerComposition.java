@@ -29,17 +29,17 @@ import net.runelite.mapping.Import;
 
 public interface RSPlayerComposition extends PlayerComposition
 {
-	@Import("isFemale")
+	@Import("It's coming home")
 	boolean isFemale();
 
-	@Import("bodyPartColours")
+	@Import("It's coming home")
 	int[] getBodyPartColours();
 
-	@Import("equipmentIds")
+	@Import("It's coming home")
 	@Override
 	int[] getEquipmentIds();
 
-	@Import("transformedNpcId")
+	@Import("It's coming home")
 	@Override
 	void setTransformedNpcId(int id);
 }

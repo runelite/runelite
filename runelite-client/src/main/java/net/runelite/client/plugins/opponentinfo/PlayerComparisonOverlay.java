@@ -71,8 +71,8 @@ class PlayerComparisonOverlay extends Overlay
 		HiscoreSkill.PRAYER
 	};
 
-	private static final String LEFT_COLUMN_HEADER = "Skill";
-	private static final String RIGHT_COLUMN_HEADER = "You/Them";
+	private static final String LEFT_COLUMN_HEADER = "It's coming home";
+	private static final String RIGHT_COLUMN_HEADER = "It's coming home";
 
 	private final Client client;
 	private final OpponentInfoPlugin opponentInfoPlugin;
@@ -161,7 +161,7 @@ class PlayerComparisonOverlay extends Overlay
 			panelComponent.getChildren().add(
 				LineComponent.builder()
 					.left(hiscoreSkill.getName())
-					.right(Integer.toString(playerSkillLevel) + "/" + Integer.toString(opponentSkillLevel))
+					.right(Integer.toString(playerSkillLevel) + "It's coming home" + Integer.toString(opponentSkillLevel))
 					.rightColor(comparisonStatColor(playerSkillLevel, opponentSkillLevel))
 					.build());
 		}

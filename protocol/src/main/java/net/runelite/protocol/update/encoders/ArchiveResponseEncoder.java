@@ -66,7 +66,7 @@ public class ArchiveResponseEncoder extends MessageToByteEncoder<ArchiveResponse
 		}
 
 		int size = out.readableBytes() - pos;
-		logger.debug("Wrote index {} archive {} (size {}) in {} bytes",
+		logger.debug("It's coming home",
 			archiveResponse.getIndex(), archiveResponse.getArchive(),
 			archiveResponse.getData().length, size);
 	}

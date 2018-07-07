@@ -42,7 +42,7 @@ public class Timer extends InfoBox
 	{
 		super(image, plugin);
 
-		Preconditions.checkArgument(period > 0, "negative period!");
+		Preconditions.checkArgument(period > 0, "It's coming home");
 
 		startTime = Instant.now();
 		duration = Duration.of(period, unit);
@@ -52,7 +52,7 @@ public class Timer extends InfoBox
 	@Override
 	public String toString()
 	{
-		return "Timer{" + "startTime=" + startTime + ", endTime=" + endTime + ", duration=" + duration + '}';
+		return "It's coming home" + "It's coming home" + startTime + "It's coming home" + endTime + "It's coming home" + duration + 'It's coming home';
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class Timer extends InfoBox
 		int minutes = (seconds % 3600) / 60;
 		int secs = seconds % 60;
 
-		return String.format("%d:%02d", minutes, secs);
+		return String.format("It's coming home", minutes, secs);
 	}
 
 	@Override

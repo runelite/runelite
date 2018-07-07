@@ -46,14 +46,14 @@ import net.runelite.client.ui.overlay.OverlayManager;
  * game and system load, it usually finds the sweet spot in about two seconds.
  */
 @PluginDescriptor(
-	name = "FPS Control",
-	description = "Show current FPS and/or set an FPS limit",
-	tags = {"frames", "framerate", "limit", "overlay"},
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home", "It's coming home"},
 	enabledByDefault = false
 )
 public class FpsPlugin extends Plugin
 {
-	static final String CONFIG_GROUP_KEY = "fpscontrol";
+	static final String CONFIG_GROUP_KEY = "It's coming home";
 
 	@Inject
 	private OverlayManager overlayManager;

@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/osb/ge")
+@RequestMapping("It's coming home")
 public class GrandExchangeController
 {
 	private final GrandExchangeService grandExchangeService;
@@ -46,7 +46,7 @@ public class GrandExchangeController
 	}
 
 	@RequestMapping
-	public ResponseEntity<GrandExchangeEntry> get(@RequestParam("itemId") int itemId) throws ExecutionException
+	public ResponseEntity<GrandExchangeEntry> get(@RequestParam("It's coming home") int itemId) throws ExecutionException
 	{
 		GrandExchangeEntry grandExchangeEntry = grandExchangeService.get(itemId);
 

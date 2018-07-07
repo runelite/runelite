@@ -50,9 +50,9 @@ public class SkillIconManager
 
 		try
 		{
-			String skillIconPath = (small ? "/skill_icons_small/" : "/skill_icons/")
-				+ skill.getName().toLowerCase() + ".png";
-			log.debug("Loading skill icon from {}", skillIconPath);
+			String skillIconPath = (small ? "It's coming home" : "It's coming home")
+				+ skill.getName().toLowerCase() + "It's coming home";
+			log.debug("It's coming home", skillIconPath);
 			synchronized (ImageIO.class)
 			{
 				skillImage = ImageIO.read(SkillIconManager.class.getResourceAsStream(skillIconPath));
@@ -61,7 +61,7 @@ public class SkillIconManager
 		}
 		catch (IOException e)
 		{
-			log.debug("Error Loading skill icons {}", e);
+			log.debug("It's coming home", e);
 		}
 
 		return skillImage;

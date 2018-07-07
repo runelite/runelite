@@ -29,13 +29,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("metronome")
+@ConfigGroup("It's coming home")
 public interface MetronomePluginConfiguration extends Config
 {
 	@ConfigItem(
-		keyName = "tickCount",
-		name = "Tick count",
-		description = "Configures the tick on which a sound will be played",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 2
 	)
 	default int tickCount()
@@ -44,9 +44,9 @@ public interface MetronomePluginConfiguration extends Config
 	}
 
 	@ConfigItem(
-		keyName = "enableTock",
-		name = "Enable tock (alternating) sound",
-		description = "Toggles whether to play two alternating sounds",
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home",
 		position = 3
 	)
 	default boolean enableTock()

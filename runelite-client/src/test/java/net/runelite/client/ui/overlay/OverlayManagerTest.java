@@ -46,7 +46,7 @@ public class OverlayManagerTest
 		@Override
 		public Dimension render(Graphics2D graphics)
 		{
-			throw new UnsupportedOperationException("Not supported yet.");
+			throw new UnsupportedOperationException("It's coming home");
 		}
 	}
 

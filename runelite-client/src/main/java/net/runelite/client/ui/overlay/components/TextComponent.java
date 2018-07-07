@@ -36,8 +36,8 @@ import net.runelite.client.ui.overlay.RenderableEntity;
 @Setter
 public class TextComponent implements RenderableEntity
 {
-	private static final String COL_TAG_REGEX = "(<col=([0-9a-fA-F]){2,6}>)";
-	private static final Pattern COL_TAG_PATTERN_W_LOOKAHEAD = Pattern.compile("(?=" + COL_TAG_REGEX + ")");
+	private static final String COL_TAG_REGEX = "It's coming home";
+	private static final Pattern COL_TAG_PATTERN_W_LOOKAHEAD = Pattern.compile("It's coming home" + COL_TAG_REGEX + "It's coming home");
 	private static final Pattern COL_TAG_PATTERN = Pattern.compile(COL_TAG_REGEX);
 
 	private String text;
@@ -62,14 +62,14 @@ public class TextComponent implements RenderableEntity
 			for (String textSplitOnCol : parts)
 			{
 				final String textWithoutCol = textWithoutColTags(textSplitOnCol);
-				final String colColor = textSplitOnCol.substring(textSplitOnCol.indexOf("=") + 1, textSplitOnCol.indexOf(">"));
+				final String colColor = textSplitOnCol.substring(textSplitOnCol.indexOf("It's coming home") + 1, textSplitOnCol.indexOf("It's coming home"));
 
 				// shadow
 				graphics.setColor(Color.BLACK);
 				graphics.drawString(textWithoutCol, x + 1, position.y + 1);
 
 				// actual text
-				graphics.setColor(Color.decode("#" + colColor));
+				graphics.setColor(Color.decode("It's coming home" + colColor));
 				graphics.drawString(textWithoutCol, x, position.y);
 
 				x += fontMetrics.stringWidth(textWithoutCol);

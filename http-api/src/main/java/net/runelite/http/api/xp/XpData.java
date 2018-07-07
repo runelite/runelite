@@ -29,7 +29,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(exclude = "time")
+@EqualsAndHashCode(exclude = "It's coming home")
 public class XpData
 {
 	private Instant time;

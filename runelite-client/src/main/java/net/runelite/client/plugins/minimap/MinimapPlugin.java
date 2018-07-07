@@ -42,9 +42,9 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Minimap",
-	description = "Customize the color of minimap dots",
-	tags = {"items", "npcs", "players"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home", "It's coming home"}
 )
 public class MinimapPlugin extends Plugin
 {
@@ -140,12 +140,12 @@ public class MinimapPlugin extends Plugin
 	@Subscribe
 	public void configChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("minimap"))
+		if (!event.getGroup().equals("It's coming home"))
 		{
 			return;
 		}
 
-		if (event.getKey().equals("hideMinimap"))
+		if (event.getKey().equals("It's coming home"))
 		{
 			Widget minimapWidget = client.getWidget(WidgetInfo.MINIMAP_WIDGET);
 

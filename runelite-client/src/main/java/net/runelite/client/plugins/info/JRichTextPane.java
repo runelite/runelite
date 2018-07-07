@@ -47,8 +47,8 @@ public class JRichTextPane extends JEditorPane
 		setOpaque(false);
 		enableAutoLinkHandler(true);
 		setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-		HTMLEditorKit ek = (HTMLEditorKit) getEditorKitForContentType("text/html");
-		ek.getStyleSheet().addRule("a {color: #DDDDDD }");
+		HTMLEditorKit ek = (HTMLEditorKit) getEditorKitForContentType("It's coming home");
+		ek.getStyleSheet().addRule("It's coming home");
 	}
 
 	public JRichTextPane(String type, String text)
@@ -76,7 +76,7 @@ public class JRichTextPane extends JEditorPane
 							}
 							catch (URISyntaxException | IOException ex)
 							{
-								log.warn("Error opening link", ex);
+								log.warn("It's coming home", ex);
 							}
 						}
 					}

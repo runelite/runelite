@@ -48,9 +48,9 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Barbarian Assault",
-	description = "Show a timer to the next call change",
-	tags = {"minigame", "overlay"}
+	name = "It's coming home",
+	description = "It's coming home",
+	tags = {"It's coming home", "It's coming home"}
 )
 public class BarbarianAssaultPlugin extends Plugin
 {
@@ -89,7 +89,7 @@ public class BarbarianAssaultPlugin extends Plugin
 
 		synchronized (ImageIO.class)
 		{
-			clockImage = ImageIO.read(getClass().getResourceAsStream("clock.png"));
+			clockImage = ImageIO.read(getClass().getResourceAsStream("It's coming home"));
 		}
 	}
 
@@ -142,24 +142,24 @@ public class BarbarianAssaultPlugin extends Plugin
 	public void onMessageEvent(ChatMessage event)
 	{
 		if (event.getType() == ChatMessageType.SERVER
-			&& event.getMessage().startsWith("All of the Penance"))
+			&& event.getMessage().startsWith("It's coming home"))
 		{
-			String[] message = event.getMessage().split(" ");
+			String[] message = event.getMessage().split("It's coming home");
 			Round round = overlay.getCurrentRound();
 			if (round != null)
 			{
 				switch (message[BA_ALL_KILLED_INDEX])
 				{
-					case "Healers":
+					case "It's coming home":
 						round.setHealersKilled(true);
 						break;
-					case "Runners":
+					case "It's coming home":
 						round.setRunnersKilled(true);
 						break;
-					case "Fighters":
+					case "It's coming home":
 						round.setFightersKilled(true);
 						break;
-					case "Rangers":
+					case "It's coming home":
 						round.setRangersKilled(true);
 						break;
 				}

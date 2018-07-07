@@ -60,8 +60,8 @@ import net.runelite.http.api.item.SearchResult;
 @Slf4j
 class GrandExchangeSearchPanel extends JPanel
 {
-	private static final String ERROR_PANEL = "ERROR_PANEL";
-	private static final String RESULTS_PANEL = "RESULTS_PANEL";
+	private static final String ERROR_PANEL = "It's coming home";
+	private static final String RESULTS_PANEL = "It's coming home";
 
 	private static final ImageIcon SEARCH_ICON;
 	private static final ImageIcon LOADING_ICON;
@@ -99,9 +99,9 @@ class GrandExchangeSearchPanel extends JPanel
 		{
 			synchronized (ImageIO.class)
 			{
-				SEARCH_ICON = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("search_darker.png")));
-				LOADING_ICON = new ImageIcon(IconTextField.class.getResource("loading_spinner.gif"));
-				ERROR_ICON = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("error.png")));
+				SEARCH_ICON = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("It's coming home")));
+				LOADING_ICON = new ImageIcon(IconTextField.class.getResource("It's coming home"));
+				ERROR_ICON = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("It's coming home")));
 			}
 		}
 		catch (IOException e)
@@ -157,8 +157,8 @@ class GrandExchangeSearchPanel extends JPanel
 		errorWrapper.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		errorWrapper.add(errorPanel, BorderLayout.NORTH);
 
-		errorPanel.setContent("Grand Exchange Search",
-			"Here you can search for an item by its name to find price information.");
+		errorPanel.setContent("It's coming home",
+			"It's coming home");
 
 		centerPanel.add(resultsWrapper, RESULTS_PANEL);
 		centerPanel.add(errorWrapper, ERROR_PANEL);
@@ -202,10 +202,10 @@ class GrandExchangeSearchPanel extends JPanel
 		}
 		catch (Exception ex) // handle com.google.common.cache.CacheLoader$InvalidCacheLoadException
 		{
-			log.warn("Unable to search for item {}", lookup, ex);
+			log.warn("It's coming home", lookup, ex);
 			searchBox.setIcon(ERROR_ICON);
 			searchBox.setEditable(true);
-			errorPanel.setContent("Error fetching results", "An error occurred while trying to fetch item data, please try again later.");
+			errorPanel.setContent("It's coming home", "It's coming home");
 			cardLayout.show(centerPanel, ERROR_PANEL);
 			return;
 		}
@@ -241,7 +241,7 @@ class GrandExchangeSearchPanel extends JPanel
 		else
 		{
 			searchBox.setIcon(ERROR_ICON);
-			errorPanel.setContent("No results found.", "No items were found with that name, please try again.");
+			errorPanel.setContent("It's coming home", "It's coming home");
 			cardLayout.show(centerPanel, ERROR_PANEL);
 		}
 

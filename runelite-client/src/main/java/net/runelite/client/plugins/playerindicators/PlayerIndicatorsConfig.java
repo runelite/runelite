@@ -29,14 +29,14 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("playerindicators")
+@ConfigGroup("It's coming home")
 public interface PlayerIndicatorsConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
-		keyName = "drawOwnName",
-		name = "Highlight own player",
-		description = "Configures whether or not your own player should be highlighted"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean highlightOwnPlayer()
 	{
@@ -45,9 +45,9 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 1,
-		keyName = "ownNameColor",
-		name = "Own player color",
-		description = "Color of your own player"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getOwnPlayerColor()
 	{
@@ -56,9 +56,9 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "drawFriendNames",
-		name = "Highlight friends",
-		description = "Configures whether or not friends should be highlighted"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean highlightFriends()
 	{
@@ -67,9 +67,9 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "friendNameColor",
-		name = "Friend color",
-		description = "Color of friend names"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getFriendColor()
 	{
@@ -78,9 +78,9 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 4,
-		keyName = "drawClanMemberNames",
-		name = "Highlight clan members",
-		description = "Configures whether or clan members should be highlighted"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean drawClanMemberNames()
 	{
@@ -89,9 +89,9 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 5,
-		keyName = "clanMemberColor",
-		name = "Clan member color",
-		description = "Color of clan members"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getClanMemberColor()
 	{
@@ -100,9 +100,9 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 6,
-		keyName = "drawTeamMemberNames",
-		name = "Highlight team members",
-		description = "Configures whether or not team members should be highlighted"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean highlightTeamMembers()
 	{
@@ -111,9 +111,9 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 7,
-		keyName = "teamMemberColor",
-		name = "Team member color",
-		description = "Color of team members"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getTeamMemberColor()
 	{
@@ -122,9 +122,9 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 8,
-		keyName = "drawNonClanMemberNames",
-		name = "Highlight non-clan members",
-		description = "Configures whether or not non-clan members should be highlighted"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean highlightNonClanMembers()
 	{
@@ -133,9 +133,9 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 9,
-		keyName = "nonClanMemberColor",
-		name = "Non-clan member color",
-		description = "Color of non-clan member names"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default Color getNonClanMemberColor()
 	{
@@ -144,9 +144,9 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 10,
-		keyName = "drawPlayerTiles",
-		name = "Draw tiles under players",
-		description = "Configures whether or not tiles under highlighted players should be drawn"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean drawTiles()
 	{
@@ -155,9 +155,9 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 11,
-		keyName = "drawOverheadPlayerNames",
-		name = "Draw names above players",
-		description = "Configures whether or not player names should be drawn above players"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean drawOverheadPlayerNames()
 	{
@@ -166,9 +166,9 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 12,
-		keyName = "drawMinimapNames",
-		name = "Draw names on minimap",
-		description = "Configures whether or not minimap names for players with rendered names should be drawn"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean drawMinimapNames()
 	{
@@ -177,9 +177,9 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 13,
-		keyName = "colorPlayerMenu",
-		name = "Colorize player menu",
-		description = "Color right click menu for players"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean colorPlayerMenu()
 	{
@@ -188,9 +188,9 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 14,
-		keyName = "clanMenuIcons",
-		name = "Show clan ranks",
-		description = "Add clan rank to right click menu and next to player names"
+		keyName = "It's coming home",
+		name = "It's coming home",
+		description = "It's coming home"
 	)
 	default boolean showClanRanks()
 	{

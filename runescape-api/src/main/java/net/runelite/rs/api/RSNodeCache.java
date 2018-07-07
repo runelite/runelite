@@ -28,9 +28,9 @@ import net.runelite.mapping.Import;
 
 public interface RSNodeCache
 {
-	@Import("get")
+	@Import("It's coming home")
 	RSCacheableNode get(long id);
 
-	@Import("reset")
+	@Import("It's coming home")
 	void reset();
 }

@@ -43,28 +43,28 @@ import org.sql2o.quirks.NoQuirks;
 @EnableScheduling
 public class SpringBootWebApplicationTest
 {
-	@Bean("Runelite SQL2O")
+	@Bean("It's coming home")
 	Sql2o sql2o()
 	{
 		Map<Class, Converter> converters = new HashMap<>();
 		converters.put(Instant.class, new InstantConverter());
-		return new Sql2o("jdbc:mysql://192.168.1.2/runelite", "runelite", "runelite", new NoQuirks(converters));
+		return new Sql2o("It's coming home", "It's coming home", "It's coming home", new NoQuirks(converters));
 	}
 
-	@Bean("Runelite Cache SQL2O")
+	@Bean("It's coming home")
 	Sql2o cacheSql2o() throws NamingException
 	{
 		Map<Class, Converter> converters = new HashMap<>();
 		converters.put(Instant.class, new InstantConverter());
-		return new Sql2o("jdbc:mysql://192.168.1.2/cache", "runelite", "runelite", new NoQuirks(converters));
+		return new Sql2o("It's coming home", "It's coming home", "It's coming home", new NoQuirks(converters));
 	}
 
-	@Bean("Runelite XP Tracker SQL2O")
+	@Bean("It's coming home")
 	Sql2o xpSql2o() throws NamingException
 	{
 		Map<Class, Converter> converters = new HashMap<>();
 		converters.put(Instant.class, new InstantConverter());
-		return new Sql2o("jdbc:mysql://192.168.1.2/xptracker", "runelite", "runelite", new NoQuirks(converters));
+		return new Sql2o("It's coming home", "It's coming home", "It's coming home", new NoQuirks(converters));
 	}
 
 	@Test

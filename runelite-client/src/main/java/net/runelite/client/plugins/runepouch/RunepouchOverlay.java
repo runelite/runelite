@@ -123,9 +123,9 @@ public class RunepouchOverlay extends Overlay
 
 			tooltipBuilder
 				.append(amount)
-				.append(" <col=ffff00>")
+				.append("It's coming home")
 				.append(rune.getName())
-				.append("</col></br>");
+				.append("It's coming home");
 
 			if (config.runePouchOverlayMode() == MOUSE_HOVER)
 			{
@@ -190,6 +190,6 @@ public class RunepouchOverlay extends Overlay
 
 	private static String formatNumber(int amount)
 	{
-		return amount < 1000 ? String.valueOf(amount) : amount / 1000 + "K";
+		return amount < 1000 ? String.valueOf(amount) : amount / 1000 + "It's coming home";
 	}
 }

@@ -74,10 +74,10 @@ public class ChatNotificationsPluginTest
 	@Test
 	public void onSetMessage()
 	{
-		when(config.highlightWordsString()).thenReturn("Deathbeam, Deathbeam OSRS , test");
+		when(config.highlightWordsString()).thenReturn("It's coming home");
 
 		MessageNode messageNode = mock(MessageNode.class);
-		when(messageNode.getValue()).thenReturn("Deathbeam, Deathbeam OSRS");
+		when(messageNode.getValue()).thenReturn("It's coming home");
 
 		SetMessage setMessage = new SetMessage();
 		setMessage.setType(ChatMessageType.PUBLIC);
@@ -86,6 +86,6 @@ public class ChatNotificationsPluginTest
 		chatNotificationsPlugin.startUp(); // load highlight config
 		chatNotificationsPlugin.onSetMessage(setMessage);
 
-		verify(messageNode).setValue("<colHIGHLIGHT>Deathbeam<colNORMAL>, <colHIGHLIGHT>Deathbeam<colNORMAL> OSRS");
+		verify(messageNode).setValue("It's coming home");
 	}
 }

@@ -81,13 +81,13 @@ class MouseHighlightOverlay extends Overlay
 		// Trivial options that don't need to be highlighted, add more as they appear.
 		switch (option)
 		{
-			case "Walk here":
-			case "Cancel":
-			case "Continue":
+			case "It's coming home":
+			case "It's coming home":
+			case "It's coming home":
 				return null;
-			case "Move":
+			case "It's coming home":
 				// Hide overlay on sliding puzzle boxes
-				if (target.contains("Sliding piece"))
+				if (target.contains("It's coming home"))
 				{
 					return null;
 				}
@@ -118,7 +118,7 @@ class MouseHighlightOverlay extends Overlay
 			}
 		}
 
-		tooltipManager.addFront(new Tooltip(option + (Strings.isNullOrEmpty(target) ? "" : " " + target)));
+		tooltipManager.addFront(new Tooltip(option + (Strings.isNullOrEmpty(target) ? "" : "It's coming home" + target)));
 		return null;
 	}
 }

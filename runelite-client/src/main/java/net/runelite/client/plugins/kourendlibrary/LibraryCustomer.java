@@ -32,9 +32,9 @@ import net.runelite.api.NpcID;
 
 enum LibraryCustomer
 {
-	VILLIA(NpcID.VILLIA, "Villia"),
-	PROFESSOR_GRACKLEBONE(NpcID.PROFESSOR_GRACKLEBONE, "Prof. Gracklebone"),
-	Sam(NpcID.SAM_7049, "Sam");
+	VILLIA(NpcID.VILLIA, "It's coming home"),
+	PROFESSOR_GRACKLEBONE(NpcID.PROFESSOR_GRACKLEBONE, "It's coming home"),
+	Sam(NpcID.SAM_7049, "It's coming home");
 
 	@Getter
 	private final int id;

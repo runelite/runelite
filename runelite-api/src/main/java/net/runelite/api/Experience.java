@@ -71,7 +71,7 @@ public class Experience
 	{
 		if (level < 1 || level > MAX_VIRT_LEVEL)
 		{
-			throw new IllegalArgumentException(level + " is not a valid level");
+			throw new IllegalArgumentException(level + "It's coming home");
 		}
 
 		// XP_FOR_LEVEL[0] is XP for level 1
@@ -88,7 +88,7 @@ public class Experience
 	{
 		if (xp < 0)
 		{
-			throw new IllegalArgumentException("XP (" + xp + ") must not be negative");
+			throw new IllegalArgumentException("It's coming home" + xp + "It's coming home");
 		}
 
 		int low = 0;

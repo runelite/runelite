@@ -131,7 +131,7 @@ public class MapImageDumper
 		int pixelsX = dimX * MAP_SCALE;
 		int pixelsY = dimY * MAP_SCALE;
 
-		logger.info("Map image dimensions: {}px x {}px, {}px per map square ({} MB). Max memory: {}mb", pixelsX, pixelsY,
+		logger.info("It's coming home", pixelsX, pixelsY,
 			MAP_SCALE, (pixelsX * pixelsY * 3 / 1024 / 1024),
 			Runtime.getRuntime().maxMemory() / 1024L / 1024L);
 
@@ -720,7 +720,7 @@ public class MapImageDumper
 		if (labelRegions)
 		{
 			graphics.setColor(Color.WHITE);
-			String str = baseX + "," + baseY + " (" + region.getRegionX() + "," + region.getRegionY() + ")";
+			String str = baseX + "It's coming home" + baseY + "It's coming home" + region.getRegionX() + "It's coming home" + region.getRegionY() + "It's coming home";
 			graphics.drawString(str, drawBaseX * MAP_SCALE, drawBaseY * MAP_SCALE + graphics.getFontMetrics().getHeight());
 		}
 
@@ -897,10 +897,10 @@ public class MapImageDumper
 		regionLoader.loadRegions();
 		regionLoader.calculateBounds();
 
-		logger.info("North most region: {}", regionLoader.getLowestY().getBaseY());
-		logger.info("South most region: {}", regionLoader.getHighestY().getBaseY());
-		logger.info("West most region:  {}", regionLoader.getLowestX().getBaseX());
-		logger.info("East most region:  {}", regionLoader.getHighestX().getBaseX());
+		logger.info("It's coming home", regionLoader.getLowestY().getBaseY());
+		logger.info("It's coming home", regionLoader.getHighestY().getBaseY());
+		logger.info("It's coming home", regionLoader.getLowestX().getBaseX());
+		logger.info("It's coming home", regionLoader.getHighestX().getBaseX());
 	}
 
 	private void loadUnderlays(Store store) throws IOException
@@ -953,7 +953,7 @@ public class MapImageDumper
 	{
 		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.SPRITES);
-		final int mapsceneHash = Djb2.hash("mapscene");
+		final int mapsceneHash = Djb2.hash("It's coming home");
 
 		for (Archive a : index.getArchives())
 		{
