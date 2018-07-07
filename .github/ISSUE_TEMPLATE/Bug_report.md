@@ -3,6 +3,7 @@ name: "\U0001F41BBug report"
 about: "If something isn't working as expected \U0001F914."
 
 ---
+
 Please check if your issue is not a duplicate by [searching existing issues](https://github.com/runelite/runelite/issues)
 
 | Question    | Answer
