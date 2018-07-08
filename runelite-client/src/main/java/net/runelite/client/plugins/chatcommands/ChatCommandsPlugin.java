@@ -720,7 +720,7 @@ public class ChatCommandsPlugin extends Plugin
 			case "raids":
 				return "Chambers of Xeric";
 
-			case "verxik":
+			case "verzik":
 			case "raids 2":
 				return "Theatre of Blood";
 
