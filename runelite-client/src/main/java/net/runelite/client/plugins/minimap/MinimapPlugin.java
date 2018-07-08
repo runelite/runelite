@@ -50,6 +50,9 @@ public class MinimapPlugin extends Plugin
 {
 	private static final int NUM_MAPDOTS = 6;
 
+	private static final int BOTTOM_LINE_MINIMAP = WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP_WIDGET.getId();
+	private static final int BOX_MINIMAP = WidgetInfo.RESIZABLE_VIEWPORT_MINIMAP_WIDGET.getId();
+
 	@Inject
 	private Client client;
 
@@ -67,13 +70,7 @@ public class MinimapPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		Widget minimapWidget = client.getWidget(WidgetInfo.MINIMAP_WIDGET);
-
-		if (minimapWidget != null)
-		{
-			minimapWidget.setHidden(config.hideMinimap());
-		}
-
+		setMinimapHidden(config.hideMinimap());
 		storeOriginalDots();
 		replaceMapDots();
 	}
@@ -81,13 +78,7 @@ public class MinimapPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		Widget minimapWidget = client.getWidget(WidgetInfo.MINIMAP_WIDGET);
-
-		if (minimapWidget != null)
-		{
-			minimapWidget.setHidden(false);
-		}
-
+		setMinimapHidden(false);
 		restoreOriginalDots();
 	}
 
@@ -147,12 +138,7 @@ public class MinimapPlugin extends Plugin
 
 		if (event.getKey().equals("hideMinimap"))
 		{
-			Widget minimapWidget = client.getWidget(WidgetInfo.MINIMAP_WIDGET);
-
-			if (minimapWidget != null)
-			{
-				minimapWidget.setHidden(config.hideMinimap());
-			}
+			setMinimapHidden(config.hideMinimap());
 			return;
 		}
 
@@ -162,11 +148,11 @@ public class MinimapPlugin extends Plugin
 	@Subscribe
 	public void onWidgetHiddenChange(WidgetHiddenChanged event)
 	{
-		Widget minimapWidget = client.getWidget(WidgetInfo.MINIMAP_WIDGET);
-
-		if (event.getWidget() == minimapWidget)
+		Widget widget = event.getWidget();
+		int widgetId = widget.getId();
+		if (widgetId == BOTTOM_LINE_MINIMAP || widgetId == BOX_MINIMAP)
 		{
-			minimapWidget.setHidden(config.hideMinimap());
+			widget.setHidden(config.hideMinimap());
 		}
 	}
 
@@ -186,4 +172,29 @@ public class MinimapPlugin extends Plugin
 		}
 	}
 
+	private void setMinimapHidden(boolean option)
+	{
+		Widget minimapWidget = client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP_WIDGET);
+
+		if (minimapWidget != null)
+		{
+			Widget logoutClickbox = client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP_LOGOUT_BUTTON_OVERLAY);
+			Widget logoutIcon = client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP_LOGOUT_BUTTON);
+			// don't hide the log out button
+			for (Widget widget : minimapWidget.getStaticChildren())
+			{
+				if (widget != logoutClickbox && widget != logoutIcon)
+				{
+					widget.setHidden(option);
+				}
+			}
+		}
+
+		minimapWidget = client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_MINIMAP_WIDGET);
+
+		if (minimapWidget != null)
+		{
+			minimapWidget.setHidden(option);
+		}
+	}
 }
