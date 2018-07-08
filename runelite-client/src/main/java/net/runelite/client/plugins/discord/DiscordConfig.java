@@ -65,23 +65,12 @@ public interface DiscordConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showCityActivity",
-		name = "Show activity at cities",
-		description = "Configures if your activity at cities should be shown.",
+		keyName = "showLocationActivity",
+		name = "Show activity at various locations",
+		description = "Configures if your activity at various locations should be shown.",
 		position = 4
 	)
-	default boolean showCityActivity()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showDungeonActivity",
-		name = "Show activity at dungeons",
-		description = "Configures if your activity at dungeons should be shown.",
-		position = 5
-	)
-	default boolean showDungeonActivity()
+	default boolean showLocationActivity()
 	{
 		return true;
 	}
@@ -90,7 +79,7 @@ public interface DiscordConfig extends Config
 		keyName = "showMinigameActivity",
 		name = "Show activity at minigames",
 		description = "Configures if your activity at minigames should be shown.",
-		position = 6
+		position = 5
 	)
 	default boolean showMinigameActivity()
 	{
