@@ -130,7 +130,7 @@ public class SlayerPluginTest
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
-		assertEquals("suqahs", slayerPlugin.getTaskName());
+		assertEquals("Suqahs", slayerPlugin.getTaskName());
 		assertEquals(231, slayerPlugin.getAmount());
 	}
 
@@ -142,7 +142,7 @@ public class SlayerPluginTest
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
-		assertEquals("suqahs", slayerPlugin.getTaskName());
+		assertEquals("Suqahs", slayerPlugin.getTaskName());
 		assertEquals(211, slayerPlugin.getAmount());
 	}
 
