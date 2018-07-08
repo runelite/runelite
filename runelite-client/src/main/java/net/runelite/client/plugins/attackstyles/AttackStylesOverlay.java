@@ -51,7 +51,7 @@ public class AttackStylesOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		panelComponent.getChildren().clear();
-		boolean warnedSkillSelected = plugin.isWarnedSkillSelected();
+		boolean warnedSkillSelected = plugin.isWarnedSkillSelected() || plugin.isWarnedRetaliateSelected();
 
 		if (warnedSkillSelected || config.alwaysShowStyle())
 		{

@@ -45,6 +45,9 @@ import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.COMBAT_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
+
+import static net.runelite.api.widgets.WidgetInfo.COMBAT_AUTO_RETALIATE_BOX;
+import static net.runelite.api.widgets.WidgetInfo.COMBAT_AUTO_RETALIATE_TEXT;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -58,7 +61,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
 	name = "Attack Styles",
 	description = "Show your current attack style as an overlay",
-	tags = {"combat", "defence", "magic", "overlay", "ranged", "strength"}
+	tags = {"combat", "defence", "magic", "overlay", "ranged", "strength", "retaliate", "auto"}
 )
 @Slf4j
 public class AttackStylesPlugin extends Plugin
@@ -66,9 +69,13 @@ public class AttackStylesPlugin extends Plugin
 	private int attackStyleVarbit = -1;
 	private int equippedWeaponTypeVarbit = -1;
 	private int castingModeVarbit = -1;
+	private int autoRetaliateVarbit = -1;
 	private AttackStyle attackStyle;
 	private final Set<Skill> warnedSkills = new HashSet<>();
 	private boolean warnedSkillSelected = false;
+	private boolean hideAutoRetaliate = false;
+	private boolean warnedRetaliateSelected = false;
+
 	private final Table<WeaponType, WidgetInfo, Boolean> widgetsToHide = HashBasedTable.create();
 
 	@Inject
@@ -110,13 +117,18 @@ public class AttackStylesPlugin extends Plugin
 		updateWarnedSkills(config.warnForDefence(), Skill.DEFENCE);
 		updateWarnedSkills(config.warnForRanged(), Skill.RANGED);
 		updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
+
 		attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
 		equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
 		castingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
+        autoRetaliateVarbit = client.getVar(VarPlayer.AUTO_RETALIATE);
+
 		updateAttackStyle(
 			equippedWeaponTypeVarbit,
 			attackStyleVarbit,
-			castingModeVarbit);
+			castingModeVarbit
+        );
+
 		updateWarning(false);
 		processWidgets();
 	}
@@ -138,6 +150,8 @@ public class AttackStylesPlugin extends Plugin
 	{
 		return warnedSkillSelected;
 	}
+
+	public boolean isWarnedRetaliateSelected() { return warnedRetaliateSelected; } /// TODO: Possible overlay for autoRet
 
 	@Subscribe
 	public void hideWidgets(WidgetHiddenChanged event)
@@ -164,7 +178,18 @@ public class AttackStylesPlugin extends Plugin
 				hideWidget(client.getWidget(widgetKey), widgetsToHide.get(equippedWeaponType, widgetKey));
 			}
 		}
-	}
+
+		equippedWeaponType = WeaponType.TYPE_NULL;
+
+		if (widgetsToHide.containsRow(equippedWeaponType))
+		{
+			for (WidgetInfo widgetKey : widgetsToHide.row(equippedWeaponType).keySet())
+			{
+				hideWidget(client.getWidget(widgetKey), widgetsToHide.get(equippedWeaponType, widgetKey));
+			}
+		}
+
+    }
 
 	@Subscribe
 	public void onGameStateChange(GameStateChanged event)
@@ -176,6 +201,7 @@ public class AttackStylesPlugin extends Plugin
 			updateWarnedSkills(config.warnForDefence(), Skill.DEFENCE);
 			updateWarnedSkills(config.warnForRanged(), Skill.RANGED);
 			updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
+			updateAutoRetaliate(config.warnForAutoRetaliate());
 		}
 	}
 
@@ -192,6 +218,15 @@ public class AttackStylesPlugin extends Plugin
 	}
 
 	@Subscribe
+    public void onAutoRetaliateChange(VarbitChanged event){
+	    if (autoRetaliateVarbit == - 1 || autoRetaliateVarbit != client.getVar(VarPlayer.AUTO_RETALIATE)){
+	        autoRetaliateVarbit = client.getVar(VarPlayer.AUTO_RETALIATE);
+	        updateAutoRetaliate(config.warnForAutoRetaliate());
+	        updateWarning(false);
+        }
+    }
+
+	@Subscribe
 	public void onEquippedWeaponTypeChange(VarbitChanged event)
 	{
 		if (equippedWeaponTypeVarbit == -1 || equippedWeaponTypeVarbit != client.getVar(Varbits.EQUIPPED_WEAPON_TYPE))
@@ -202,6 +237,8 @@ public class AttackStylesPlugin extends Plugin
 			updateWarning(true);
 		}
 	}
+
+
 
 	@Subscribe
 	public void onCastingModeChange(VarbitChanged event)
@@ -218,6 +255,7 @@ public class AttackStylesPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
+
 		if (event.getGroup().equals("attackIndicator"))
 		{
 			boolean enabled = event.getNewValue().equals("true");
@@ -238,6 +276,9 @@ public class AttackStylesPlugin extends Plugin
 				case "warnForMagic":
 					updateWarnedSkills(enabled, Skill.MAGIC);
 					break;
+                case "warnForAutoRetaliate":
+                    updateAutoRetaliate(enabled);
+                    break;
 				case "removeWarnedStyles":
 					hideWarnedStyles(enabled);
 					break;
@@ -263,6 +304,20 @@ public class AttackStylesPlugin extends Plugin
 		}
 	}
 
+	public void updateAutoRetaliate(Boolean enabled){
+	    autoRetaliateVarbit = client.getVar(VarPlayer.AUTO_RETALIATE);
+
+	    if (enabled){
+	        hideAutoRetaliate = true;
+            warnedRetaliateSelected = (autoRetaliateVarbit == 0) ? true : false;
+        }
+        else{
+            hideAutoRetaliate = false;
+            warnedRetaliateSelected = false;
+        }
+        updateWarning(false);
+    }
+
 	private void updateWarnedSkills(boolean enabled, Skill skill)
 	{
 		if (enabled)
@@ -279,6 +334,7 @@ public class AttackStylesPlugin extends Plugin
 	private void updateWarning(boolean weaponSwitch)
 	{
 		warnedSkillSelected = false;
+
 		if (attackStyle != null)
 		{
 			for (Skill skill : attackStyle.getSkills())
@@ -294,11 +350,19 @@ public class AttackStylesPlugin extends Plugin
 				}
 			}
 		}
+
 		hideWarnedStyles(config.removeWarnedStyles());
+
+
 	}
 
 	private void hideWarnedStyles(boolean enabled)
 	{
+
+        //auto retaliate (null weapon type)
+        widgetsToHide.put(WeaponType.TYPE_NULL, WidgetInfo.COMBAT_AUTO_RETALIATE_TEXT, enabled && hideAutoRetaliate);
+        widgetsToHide.put(WeaponType.TYPE_NULL, WidgetInfo.COMBAT_AUTO_RETALIATE_BOX,  enabled && hideAutoRetaliate);
+
 		WeaponType equippedWeaponType = WeaponType.getWeaponType(equippedWeaponTypeVarbit);
 		if (equippedWeaponType == null)
 		{
@@ -306,6 +370,7 @@ public class AttackStylesPlugin extends Plugin
 		}
 
 		AttackStyle[] attackStyles = equippedWeaponType.getAttackStyles();
+
 
 		// Iterate over attack styles
 		for (int i = 0; i < attackStyles.length; i++)
@@ -325,6 +390,8 @@ public class AttackStylesPlugin extends Plugin
 					break;
 				}
 			}
+
+
 
 			// Magic staves defensive casting mode
 			if (attackStyle == AttackStyle.DEFENSIVE_CASTING || !enabled)
@@ -357,6 +424,8 @@ public class AttackStylesPlugin extends Plugin
 					// 5 can be defensive casting
 			}
 		}
+
+
 	}
 
 	private void hideWidget(Widget widget, boolean hidden)

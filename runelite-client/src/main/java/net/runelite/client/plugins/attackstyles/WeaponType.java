@@ -57,7 +57,8 @@ public enum WeaponType
 	TYPE_24(ACCURATE, AGGRESSIVE, CONTROLLED, DEFENSIVE),
 	TYPE_25(CONTROLLED, AGGRESSIVE, null, DEFENSIVE),
 	TYPE_26(AGGRESSIVE, AGGRESSIVE, null, AGGRESSIVE),
-	TYPE_27(ACCURATE, null, null, OTHER);
+	TYPE_27(ACCURATE, null, null, OTHER),
+	TYPE_NULL(null, null, null, null);
 
 	private static final Map<Integer, WeaponType> weaponTypes = new HashMap<>();
 
