@@ -476,7 +476,7 @@ public class SlayerPlugin extends Plugin
 
 	private void setTask(String name, int amt)
 	{
-		taskName = name.toLowerCase();
+		taskName = name;
 		amount = amt;
 		save();
 		removeCounter();
