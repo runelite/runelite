@@ -187,14 +187,30 @@ public class DevToolsPlugin extends Plugin
 				client.addChatMessage(ChatMessageType.SERVER, "", message, null);
 				break;
 			}
-			case "getvar":
+			case "getvarp":
+			{
+				int varp = Integer.parseInt(args[0]);
+				int value = client.getVarpValue(client.getVarps(), varp);
+				client.addChatMessage(ChatMessageType.SERVER, "", "VarPlayer " + varp + ": " + value, null);
+				break;
+			}
+			case "setvarp":
+			{
+				int varp = Integer.parseInt(args[0]);
+				int value = Integer.parseInt(args[1]);
+				client.setVarpValue(client.getVarps(), varp, value);
+				client.addChatMessage(ChatMessageType.SERVER, "", "Set VarPlayer " + varp + " to " + value, null);
+				eventBus.post(new VarbitChanged()); // fake event
+				break;
+			}
+			case "getvarb":
 			{
 				int varbit = Integer.parseInt(args[0]);
 				int value = client.getVarbitValue(client.getVarps(), varbit);
 				client.addChatMessage(ChatMessageType.SERVER, "", "Varbit " + varbit + ": " + value, null);
 				break;
 			}
-			case "setvar":
+			case "setvarb":
 			{
 				int varbit = Integer.parseInt(args[0]);
 				int value = Integer.parseInt(args[1]);
