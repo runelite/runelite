@@ -47,7 +47,9 @@ import net.runelite.api.vars.AccountType;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.CommandManager;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.events.ChatboxInput;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -62,6 +64,7 @@ import net.runelite.http.api.hiscore.Skill;
 import net.runelite.http.api.item.Item;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
+import net.runelite.http.api.kc.KillCountClient;
 
 @PluginDescriptor(
 	name = "Chat Commands",
@@ -76,6 +79,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Pattern WINTERTODT_PATERN = Pattern.compile("Your subdued Wintertodt count is: <col=ff0000>(\\d+)</col>.");
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
+	private final KillCountClient killCountClient = new KillCountClient();
 
 	@Inject
 	private Client client;
@@ -100,6 +104,9 @@ public class ChatCommandsPlugin extends Plugin
 
 	@Inject
 	private ChatKeyboardListener chatKeyboardListener;
+
+	@Inject
+	private CommandManager commandManager;
 
 	@Override
 	public void startUp()
@@ -194,6 +201,13 @@ public class ChatCommandsPlugin extends Plugin
 			log.debug("Running clue lookup for {}", search);
 			executor.submit(() -> playerClueLookup(setMessage, search));
 		}
+		else if (message.toLowerCase().startsWith("!kc "))
+		{
+			String search = message.substring(4);
+
+			log.debug("Running killcount lookup for {}", search);
+			executor.submit(() -> killCountLookup(setMessage.getType(), setMessage, search));
+		}
 	}
 
 	@Subscribe
@@ -223,12 +237,90 @@ public class ChatCommandsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onChatboxInput(ChatboxInput chatboxInput)
+	{
+		final String value = chatboxInput.getValue();
+		if (!value.startsWith("!kc "))
+		{
+			return;
+		}
+
+		final String boss = longBossName(value.substring(4));
+
+		final int kc = getKc(boss);
+		if (kc <= 0)
+		{
+			return;
+		}
+
+		chatboxInput.setStop(true);
+		final String playerName = client.getLocalPlayer().getName();
+
+		executor.execute(() ->
+		{
+			try
+			{
+				killCountClient.submit(playerName, boss, kc);
+			}
+			catch (Exception ex)
+			{
+				log.warn("unable to submit killcount", ex);
+			}
+			finally
+			{
+				chatboxInput.resume();
+			}
+		});
+	}
+
+	private void killCountLookup(ChatMessageType type, SetMessage setMessage, String search)
+	{
+		final String player;
+		if (type.equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
+		{
+			player = client.getLocalPlayer().getName();
+		}
+		else
+		{
+			player = sanitize(setMessage.getName());
+		}
+
+		search = longBossName(search);
+
+		final int kc;
+		try
+		{
+			kc = killCountClient.get(player, search);
+		}
+		catch (IOException ex)
+		{
+			log.debug("unable to lookup killcount", ex);
+			return;
+		}
+
+		String response = new ChatMessageBuilder()
+			.append(ChatColorType.HIGHLIGHT)
+			.append(search)
+			.append(ChatColorType.NORMAL)
+			.append(" kill count: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(Integer.toString(kc))
+			.build();
+
+		log.debug("Setting response {}", response);
+		final MessageNode messageNode = setMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
+		client.refreshChat();
+	}
+
 	/**
 	 * Looks up the item price and changes the original message to the
 	 * response.
 	 *
 	 * @param messageNode The chat message containing the command.
-	 * @param search The item given with the command.
+	 * @param search      The item given with the command.
 	 */
 	private void itemPriceLookup(MessageNode messageNode, String search)
 	{
@@ -291,7 +383,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param setMessage The chat message containing the command.
-	 * @param search The item given with the command.
+	 * @param search     The item given with the command.
 	 */
 	private void playerSkillLookup(SetMessage setMessage, String search)
 	{
@@ -415,6 +507,7 @@ public class ChatCommandsPlugin extends Plugin
 
 	/**
 	 * Gets correct lookup data for message
+	 *
 	 * @param setMessage chat message
 	 * @return hiscore lookup data
 	 */
@@ -452,7 +545,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * Returns the item if its name is equal to the original input or null
 	 * if it can't find the item.
 	 *
-	 * @param items List of items.
+	 * @param items         List of items.
 	 * @param originalInput String with the original input.
 	 * @return Item which has a name equal to the original input.
 	 */
@@ -483,6 +576,7 @@ public class ChatCommandsPlugin extends Plugin
 
 	/**
 	 * Looks up the ironman status of the local player. Does NOT work on other players.
+	 *
 	 * @return hiscore endpoint
 	 */
 	private HiscoreEndpoint getHiscoreEndpointType()
@@ -492,6 +586,7 @@ public class ChatCommandsPlugin extends Plugin
 
 	/**
 	 * Returns the ironman status based on the symbol in the name of the player.
+	 *
 	 * @param name player name
 	 * @return hiscore endpoint
 	 */
@@ -517,6 +612,7 @@ public class ChatCommandsPlugin extends Plugin
 
 	/**
 	 * Converts account type to hiscore endpoint
+	 *
 	 * @param accountType account type
 	 * @return hiscore endpoint
 	 */
@@ -540,5 +636,96 @@ public class ChatCommandsPlugin extends Plugin
 	{
 		private final String name;
 		private final HiscoreEndpoint endpoint;
+	}
+
+	private static String longBossName(String boss)
+	{
+		switch (boss.toLowerCase())
+		{
+			case "corp":
+				return "Corporeal Beast";
+
+			case "jad":
+				return "TzTok-Jad";
+
+			case "kq":
+				return "Kalphite Queen";
+
+			case "chaos ele":
+				return "Chaos Elemental";
+
+			case "dusk":
+			case "dawn":
+			case "gargs":
+				return "Grotesque Guardians";
+
+			case "archaeologist":
+				return "Crazy Archaeologist";
+
+			case "mole":
+				return "Giant Mole";
+
+			case "vetion":
+				return "Vet'ion";
+
+			case "kbd":
+				return "King Black Dragon";
+
+			case "sire":
+				return "Abyssal Sire";
+
+			case "smoke devil":
+			case "thermy":
+				return "Thermonuclear Smoke Devil";
+
+			case "zuk":
+			case "inferno":
+				return "TzKal-Zuk";
+
+			// gwd
+			case "sara":
+			case "saradomin":
+			case "zilyana":
+				return "Commander Zilyana";
+			case "zammy":
+			case "zamorak":
+			case "kril":
+			case "kril trutsaroth":
+				return "K'ril Tsutsaroth";
+			case "arma":
+			case "kree":
+			case "kreearra":
+			case "armadyl":
+				return "Kree'arra";
+			case "bando":
+			case "bandos":
+			case "graardor":
+				return "General Graardor";
+
+			// dks
+			case "supreme":
+				return "Dagannoth Supreme";
+			case "rex":
+				return "Dagannoth Rex";
+			case "prime":
+				return "Dagannoth Prime";
+
+			case "wt":
+				return "Wintertodt";
+			case "barrows":
+				return "Barrows Chests";
+
+			case "xeric":
+			case "olm":
+			case "raids":
+				return "Chambers of Xeric";
+
+			case "verxik":
+			case "raids 2":
+				return "Theatre of Blood";
+
+			default:
+				return boss;
+		}
 	}
 }

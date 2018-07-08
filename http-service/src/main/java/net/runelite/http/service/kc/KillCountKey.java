@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,10 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.http.service.kc;
 
-public final class ScriptID
+import lombok.Value;
+
+@Value
+class KillCountKey
 {
-	public static final int CHATBOX_INPUT = 96;
-	public static final int RUNELITE_CHATBOX_INPUT_INIT = 10001;
+	private String username;
+	private String boss;
 }
