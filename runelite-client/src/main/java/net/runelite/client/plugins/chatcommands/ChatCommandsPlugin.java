@@ -659,8 +659,11 @@ public class ChatCommandsPlugin extends Plugin
 			case "gargs":
 				return "Grotesque Guardians";
 
-			case "archaeologist":
+			case "crazy arch":
 				return "Crazy Archaeologist";
+
+			case "deranged arch":
+				return "Deranged Archaeologist";
 
 			case "mole":
 				return "Giant Mole";
@@ -715,12 +718,17 @@ public class ChatCommandsPlugin extends Plugin
 			case "barrows":
 				return "Barrows Chests";
 
+			case "cox":
 			case "xeric":
+			case "chambers":
 			case "olm":
 			case "raids":
 				return "Chambers of Xeric";
 
-			case "verxik":
+			case "tob":
+			case "theatre":
+			case "verzik":
+			case "verzik vitur":
 			case "raids 2":
 				return "Theatre of Blood";
 
