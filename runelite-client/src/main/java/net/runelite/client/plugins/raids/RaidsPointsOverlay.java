@@ -77,7 +77,7 @@ public class RaidsPointsOverlay extends Overlay
 			double percentagePoints = (((double) personalPoints) / totalPoints) * 100;
 			panel.getChildren().add(LineComponent.builder()
 					.left(client.getLocalPlayer().getName() + ":")
-					.right(POINTS_FORMAT.format(personalPoints) + " (" + percentagePoints + "%)" )
+					.right(POINTS_FORMAT.format(personalPoints) + " (" + String.format("%.1f", percentagePoints) + "%)" )
 					.build());
 		}
 		else
