@@ -71,6 +71,9 @@ public class PrayerPlugin extends Plugin
 	private PrayerDoseOverlay doseOverlay;
 
 	@Inject
+	private PrayerBarOverlay barOverlay;
+
+	@Inject
 	private PrayerConfig config;
 
 	@Provides
@@ -84,6 +87,7 @@ public class PrayerPlugin extends Plugin
 	{
 		overlayManager.add(flickOverlay);
 		overlayManager.add(doseOverlay);
+		overlayManager.add(barOverlay);
 	}
 
 	@Override
@@ -91,6 +95,7 @@ public class PrayerPlugin extends Plugin
 	{
 		overlayManager.remove(flickOverlay);
 		overlayManager.remove(doseOverlay);
+		overlayManager.remove(barOverlay);
 		removeIndicators();
 	}
 
@@ -147,6 +152,11 @@ public class PrayerPlugin extends Plugin
 		if (config.showPrayerDoseIndicator())
 		{
 			doseOverlay.onTick();
+		}
+
+		if (config.showPrayerBar())
+		{
+			barOverlay.onTick();
 		}
 
 		if (!config.prayerIndicator())
