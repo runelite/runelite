@@ -72,14 +72,16 @@ public class RaidsPointsOverlay extends Overlay
 			.right(POINTS_FORMAT.format(totalPoints))
 			.build());
 
-		if(config.pointsPercentage() && totalPoints > 0)
+		if (config.pointsPercentage() && totalPoints > 0)
 		{
 			double percentagePoints = (((double) personalPoints) / totalPoints) * 100;
 			panel.getChildren().add(LineComponent.builder()
 					.left(client.getLocalPlayer().getName() + ":")
 					.right(POINTS_FORMAT.format(personalPoints) + " (" + percentagePoints + "%)" )
 					.build());
-		}else{
+		}
+		else
+		{
 			panel.getChildren().add(LineComponent.builder()
 					.left(client.getLocalPlayer().getName() + ":")
 					.right(POINTS_FORMAT.format(personalPoints))
