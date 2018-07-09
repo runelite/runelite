@@ -74,9 +74,15 @@ public class LineComponent implements LayoutableRenderableEntity
 
 			if (!Strings.isNullOrEmpty(right))
 			{
-				rightSmallWidth = preferredSize.width - leftFullWidth;
+				rightSmallWidth = preferredSize.width / 3;
 				leftSmallWidth -= rightSmallWidth;
 			}
+
+			System.out.println("leftFullWidth: " + leftFullWidth);
+			System.out.println("rightFullWidth: " + rightFullWidth);
+			System.out.println("leftSmallWidth: " + leftSmallWidth);
+			System.out.println("rightSmallWidth: " + rightSmallWidth);
+			System.out.println("preferredSize: " + preferredSize.width);
 
 			final String[] leftSplitLines = lineBreakText(left, leftSmallWidth, metrics);
 			final String[] rightSplitLines = lineBreakText(right, rightSmallWidth, metrics);
