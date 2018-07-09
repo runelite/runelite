@@ -74,7 +74,7 @@ public class LineComponent implements LayoutableRenderableEntity
 
 			if (!Strings.isNullOrEmpty(right))
 			{
-				rightSmallWidth = preferredSize.width / 3;
+				rightSmallWidth = (preferredSize.width / 3);
 				leftSmallWidth -= rightSmallWidth;
 			}
 
