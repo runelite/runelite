@@ -171,3 +171,4 @@ public class LineComponent implements LayoutableRenderableEntity
 		return wrapped.toString().split("\n");
 	}
 }
+
