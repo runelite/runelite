@@ -44,6 +44,8 @@ public class RaidsPointsOverlay extends Overlay
 	@Inject
 	private RaidsPlugin plugin;
 
+	@Inject RaidsConfig config;
+
 	private final PanelComponent panel = new PanelComponent();
 
 	@Inject
@@ -74,6 +76,15 @@ public class RaidsPointsOverlay extends Overlay
 			.left(client.getLocalPlayer().getName() + ":")
 			.right(POINTS_FORMAT.format(personalPoints))
 			.build());
+
+		if(config.pointsPercentage() && totalPoints > 0)
+		{
+			double percentagePoints = (((double) personalPoints) / totalPoints) * 100;
+			panel.getChildren().add(LineComponent.builder()
+					.left("Percentage: ")
+					.right(String.format("%.1f", percentagePoints) + "%")
+					.build());
+		}
 
 		panel.getChildren().add(LineComponent.builder()
 			.left("Party size:")
