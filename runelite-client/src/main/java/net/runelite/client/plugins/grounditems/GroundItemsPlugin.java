@@ -163,8 +163,6 @@ public class GroundItemsPlugin extends Plugin
 		.toMap
 			((item) -> new GroundItem.GroundItemKey(item.getItemId(), item.getLocation()), Function.identity(), (a, b) ->
 				{
-					b.setHaPrice(a.getHaPrice() + b.getHaPrice());
-					b.setGePrice(a.getGePrice() + b.getGePrice());
 					b.setQuantity(a.getQuantity() + b.getQuantity());
 					return b;
 				},
@@ -306,10 +304,10 @@ public class GroundItemsPlugin extends Plugin
 			.itemId(realItemId)
 			.quantity(item.getQuantity())
 			.name(itemComposition.getName())
-			.haPrice(alchPrice * item.getQuantity())
+			.haPrice(alchPrice)
 			.tradeable(itemComposition.isTradeable())
+			.stackable(itemComposition.isStackable())
 			.build();
-
 
 		// Update item price in case it is coins
 		if (realItemId == COINS)

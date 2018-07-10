@@ -182,11 +182,16 @@ public class GroundItemsOverlay extends Overlay
 
 			if (itemPrice != null && itemPrice.getPrice() > 0)
 			{
-				item.setGePrice(itemPrice.getPrice() * item.getQuantity());
+				item.setGePrice(itemPrice.getPrice());
 			}
 
-			final Color highlighted = plugin.getHighlighted(item.getName(), item.getGePrice(), item.getHaPrice());
-			final Color hidden = plugin.getHidden(item.getName(), item.getGePrice(), item.getHaPrice(), item.isTradeable());
+			boolean groupItems = item.isStackable() || config.groupUnstackables();
+
+			int gePrice = item.getGePrice() * (groupItems ? item.getQuantity() : 1);
+			int haPrice = item.getHaPrice() * (groupItems ? item.getQuantity() : 1);
+
+			final Color highlighted = plugin.getHighlighted(item.getName(), gePrice, haPrice);
+			final Color hidden = plugin.getHidden(item.getName(), gePrice, haPrice, item.isTradeable());
 
 			if (highlighted == null && !plugin.isHotKeyPressed())
 			{
@@ -241,29 +246,32 @@ public class GroundItemsOverlay extends Overlay
 				if (item.getGePrice() > 0)
 				{
 					itemStringBuilder.append(" (EX: ")
-						.append(StackFormatter.quantityToStackSize(item.getGePrice()))
-						.append(" gp)");
+						.append(StackFormatter.quantityToStackSize(gePrice))
+						.append(" gp")
+						.append(groupItems ? "" : " ea")
+						.append(")");
 				}
 
 				if (item.getHaPrice() > 0)
 				{
 					itemStringBuilder.append(" (HA: ")
-						.append(StackFormatter.quantityToStackSize(item.getHaPrice()))
-						.append(" gp)");
+						.append(StackFormatter.quantityToStackSize(haPrice))
+						.append(" gp")
+						.append(groupItems ? "" : " ea")
+						.append(")");
 				}
 			}
 			else if (config.priceDisplayMode() != PriceDisplayMode.OFF)
 			{
-				final int price = config.priceDisplayMode() == PriceDisplayMode.GE
-					? item.getGePrice()
-					: item.getHaPrice();
-
+				final int price = (config.priceDisplayMode() == PriceDisplayMode.GE ? gePrice : haPrice);
 				if (price > 0)
 				{
 					itemStringBuilder
 						.append(" (")
 						.append(StackFormatter.quantityToStackSize(price))
-						.append(" gp)");
+						.append(" gp")
+						.append(groupItems ? "" : " ea")
+						.append(")");
 				}
 			}
 
