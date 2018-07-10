@@ -54,6 +54,7 @@ import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -68,6 +69,8 @@ import net.runelite.client.util.QueryRunner;
 public class RunecraftPlugin extends Plugin
 {
 	private static Pattern bindNeckString = Pattern.compile("You have ([0-9]+) charges left before your Binding necklace disintegrates.");
+	private static final String POUCH_DECAYED_NOTIFICATION_MESSAGE = "Your rune pouch has decayed.";
+	private static final String POUCH_DECAYED_MESSAGE = "Your pouch has decayed through use.";
 	private static final int DESTROY_ITEM_WIDGET_ID = WidgetInfo.DESTROY_ITEM_YES.getId();
 
 	@Getter(AccessLevel.PACKAGE)
@@ -99,6 +102,9 @@ public class RunecraftPlugin extends Plugin
 
 	@Inject
 	private RunecraftConfig config;
+
+	@Inject
+	private Notifier notifier;
 
 	@Provides
 	RunecraftConfig getConfig(ConfigManager configManager)
@@ -135,36 +141,48 @@ public class RunecraftPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SERVER || !config.showBindNeck())
+		if (event.getType() != ChatMessageType.SERVER)
 		{
 			return;
 		}
 
-		Matcher match = bindNeckString.matcher(event.getMessage());
-		if (match.find())
+		if (config.showBindNeck())
 		{
-			bindNeckOverlay.bindingCharges = Integer.parseInt(match.group(1));
-			return;
-		}
-
-		if (event.getMessage().contains("You bind the temple's power"))
-		{
-			if (event.getMessage().contains("mud")
-				|| event.getMessage().contains("lava")
-				|| event.getMessage().contains("steam")
-				|| event.getMessage().contains("dust")
-				|| event.getMessage().contains("smoke")
-				|| event.getMessage().contains("mist"))
+			Matcher match = bindNeckString.matcher(event.getMessage());
+			if (match.find())
 			{
-				bindNeckOverlay.bindingCharges -= 1;
+				bindNeckOverlay.bindingCharges = Integer.parseInt(match.group(1));
+				return;
+			}
+
+			if (event.getMessage().contains("You bind the temple's power"))
+			{
+				if (event.getMessage().contains("mud")
+					|| event.getMessage().contains("lava")
+					|| event.getMessage().contains("steam")
+					|| event.getMessage().contains("dust")
+					|| event.getMessage().contains("smoke")
+					|| event.getMessage().contains("mist"))
+				{
+					bindNeckOverlay.bindingCharges -= 1;
+					return;
+				}
+			}
+
+			if (event.getMessage().contains("Your Binding necklace has disintegrated."))
+			{
+				//set it to 17 because this message is triggered first before the above chat event
+				bindNeckOverlay.bindingCharges = 17;
 				return;
 			}
 		}
-
-		if (event.getMessage().contains("Your Binding necklace has disintegrated."))
+		if (config.degradingNotification())
 		{
-			//set it to 17 because this message is triggered first before the above chat event
-			bindNeckOverlay.bindingCharges = 17;
+			if (event.getMessage().contains(POUCH_DECAYED_MESSAGE))
+			{
+				notifier.notify(POUCH_DECAYED_NOTIFICATION_MESSAGE);
+				return;
+			}
 		}
 	}
 
