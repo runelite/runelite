@@ -185,7 +185,7 @@ public class ConfigManager
 		{
 			log.debug("Unable to load settings - no such file");
 		}
-		catch (IOException ex)
+		catch (IllegalArgumentException | IOException ex)
 		{
 			log.warn("Unable to load settings", ex);
 		}
