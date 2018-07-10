@@ -38,7 +38,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 
 @Slf4j
-public enum GameTimer
+enum GameTimer
 {
 	STAMINA(ItemID.STAMINA_POTION4, GameTimerImageType.ITEM, "Stamina", 2, ChronoUnit.MINUTES),
 	ANTIFIRE(ItemID.ANTIFIRE_POTION4, GameTimerImageType.ITEM, "Antifire", 6, ChronoUnit.MINUTES),
@@ -101,7 +101,7 @@ public enum GameTimer
 		this(imageId, idType, description, null, time, unit);
 	}
 
-	public BufferedImage getImage(ItemManager itemManager, SpriteManager spriteManager)
+	BufferedImage getImage(ItemManager itemManager, SpriteManager spriteManager)
 	{
 		if (image != null)
 		{
