@@ -29,6 +29,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import java.util.Arrays;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -53,7 +54,7 @@ public class CommandManager
 	private boolean sending;
 
 	@Inject
-	public CommandManager(Provider<Client> clientProvider, EventBus eventBus, Provider<ClientThread> clientThreadProvider)
+	public CommandManager(Provider<Client> clientProvider, @Named("Immediate EventBus") EventBus eventBus, Provider<ClientThread> clientThreadProvider)
 	{
 		this.clientProvider = clientProvider;
 		this.eventBus = eventBus;
