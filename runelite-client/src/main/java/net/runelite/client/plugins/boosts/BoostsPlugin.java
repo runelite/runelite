@@ -328,7 +328,9 @@ public class BoostsPlugin extends Plugin
 	 */
 	int getChangeDownTicks()
 	{
-		if (lastChangeDown == -1 || (config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.BOOSTED && !isChangedUp))
+		if (lastChangeDown == -1 ||
+				config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.NEVER ||
+				(config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.BOOSTED && !isChangedUp))
 		{
 			return -1;
 		}
@@ -354,7 +356,9 @@ public class BoostsPlugin extends Plugin
 	 */
 	int getChangeUpTicks()
 	{
-		if (lastChangeUp == -1 || (config.displayNextDebuffChange() == BoostsConfig.DisplayChangeMode.BOOSTED && !isChangedDown))
+		if (lastChangeUp == -1 ||
+				config.displayNextDebuffChange() == BoostsConfig.DisplayChangeMode.NEVER ||
+				(config.displayNextDebuffChange() == BoostsConfig.DisplayChangeMode.BOOSTED && !isChangedDown))
 		{
 			return -1;
 		}
