@@ -9,7 +9,7 @@
    runelite_callback                     ; invoke callback
    pop_int                               ; pop chat type
    string_length                         ; get string length of chat message
-   iload                  0              ; load 0
+   load_int               0              ; load 0
    if_icmpne              LABEL100       ; if length is not 0, continue
    return
 LABEL100:
