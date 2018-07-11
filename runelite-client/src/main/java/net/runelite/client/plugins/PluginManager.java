@@ -52,6 +52,7 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import lombok.Setter;
@@ -80,6 +81,10 @@ public class PluginManager
 
 	@Inject
 	EventBus eventBus;
+
+	@Inject
+	@Named("Immediate EventBus")
+	EventBus immediateEventBus;
 
 	@Inject
 	Scheduler scheduler;
@@ -316,6 +321,7 @@ public class PluginManager
 			log.debug("Plugin {} is now running", plugin.getClass().getSimpleName());
 			regionTileManager.simulateObjectSpawns(plugin);
 			eventBus.register(plugin);
+			immediateEventBus.register(plugin);
 			schedule(plugin);
 			eventBus.post(new PluginChanged(plugin, true));
 		}
@@ -340,6 +346,7 @@ public class PluginManager
 		{
 			unschedule(plugin);
 			eventBus.unregister(plugin);
+			immediateEventBus.unregister(plugin);
 
 			// plugins always stop in the event thread
 			SwingUtilities.invokeAndWait(() ->
