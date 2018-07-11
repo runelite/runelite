@@ -109,6 +109,8 @@ public class ScreenshotPlugin extends Plugin
 
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile("Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
+	private static final Pattern LEVEL_UP_PATTERN_HUNTER = Pattern.compile(
+		"<col=000080>Congratulations, you've just advanced a Hunter level.<col=000000><br><br>Your Hunter level is now (\\d+)\\.");
 
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
 		"You feel something weird sneaking into your backpack",
@@ -420,6 +422,18 @@ public class ScreenshotPlugin extends Plugin
 		if (levelChild == null)
 		{
 			return null;
+		}
+
+		if (levelChild.getText().startsWith("<col=000080>Congratulations, you've just advanced a Hunter level.<col=000000>"))
+		{
+			Matcher m = LEVEL_UP_PATTERN_HUNTER.matcher(levelChild.getText());
+			if (!m.matches())
+			{
+				return null;
+			}
+
+			String hunterLevel = m.group(1);
+			return "Hunter(" + hunterLevel + ")";
 		}
 
 		Matcher m = LEVEL_UP_PATTERN.matcher(levelChild.getText());
