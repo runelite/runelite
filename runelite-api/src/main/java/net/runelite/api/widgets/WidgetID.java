@@ -526,8 +526,8 @@ public class WidgetID
 
 	static class Barrows
 	{
-		static final int BARROWS_BROTHERS = 8;
-		static final int BARROWS_POTENTIAL = 9;
+		static final int BARROWS_BROTHERS = 9;
+		static final int BARROWS_POTENTIAL = 10;
 		static final int BARROWS_REWARD_INVENTORY = 3;
 	}
 
