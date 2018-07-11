@@ -1,5 +1,7 @@
 /*
- * Copyright (c) 2018, Kamiel, Matsyir, Jasper-ketelaar
+ * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2018, Matsyir
+ * Copyright (c) 2018, Jasper-ketelaar
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
