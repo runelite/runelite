@@ -1175,7 +1175,14 @@ public class LootLogger
 		else if (event.getGroupId() == WidgetID.CLUE_SCROLL_REWARD_GROUP_ID)
 		{
 			// Not 100% sure this will work, needs testing. May need to convert to chat message.
-			Set<InventoryItem> itemDiff = Sets.difference(prevTickInventoryItems, thisTickInventoryItems);
+			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+			if (inventory == null)
+			{
+				log.debug("Unable to find Inventory Item Container.");
+				return;
+			}
+			List<Item> itemsNow = Arrays.asList(inventory.getItems());
+			Set<InventoryItem> itemDiff = Sets.difference(prevTickInventoryItems, itemListToInventoryItemSet(itemsNow));
 			LootEventType clueScrollType = LootEventType.UNKNOWN_EVENT;
 			for (InventoryItem item : itemDiff)
 			{
@@ -1264,14 +1271,29 @@ public class LootLogger
 	public void onActorDespawned(ActorDespawned event)
 	{
 		MemorizedActor ma = interactedActors.get(event.getActor());
-		if (ma != null && (event.getActor().getHealthRatio() == 0))
+		if (ma != null)
 		{
 			interactedActors.remove(event.getActor());
+			double deathHealth = 0;
 
-			// This event runs before the ItemLayerChanged event,
-			// so we have to wait until the end of the game tick
-			// before we know what items were dropped
-			deadActorsThisTick.add(ma);
+			if (event.getActor() instanceof NPC)
+			{
+				NPC n = (NPC) event.getActor();
+				Double ratio = NpcHpDeath.npcDeathHealthPercent(n.getId());
+				if (ratio > 0.00)
+				{
+					deathHealth = Math.ceil(ratio * event.getActor().getHealth());
+				}
+			}
+
+			if (event.getActor().getHealthRatio() <= deathHealth)
+			{
+
+				// This event runs before the ItemLayerChanged event,
+				// so we have to wait until the end of the game tick
+				// before we know what items were dropped
+				deadActorsThisTick.add(ma);
+			}
 		}
 	}
 
