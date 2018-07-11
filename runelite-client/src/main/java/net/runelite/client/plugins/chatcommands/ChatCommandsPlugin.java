@@ -241,12 +241,13 @@ public class ChatCommandsPlugin extends Plugin
 	public void onChatboxInput(ChatboxInput chatboxInput)
 	{
 		final String value = chatboxInput.getValue();
-		if (!value.startsWith("!kc "))
+		if (!value.startsWith("!kc ") && !value.startsWith("/!kc "))
 		{
 			return;
 		}
 
-		final String boss = longBossName(value.substring(4));
+		int idx = value.indexOf(' ');
+		final String boss = longBossName(value.substring(idx + 1));
 
 		final int kc = getKc(boss);
 		if (kc <= 0)
