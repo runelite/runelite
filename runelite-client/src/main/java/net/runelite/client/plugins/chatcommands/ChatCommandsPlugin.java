@@ -47,6 +47,7 @@ import net.runelite.api.vars.AccountType;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.ChatboxInputListener;
 import net.runelite.client.chat.CommandManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.ChatboxInput;
@@ -72,7 +73,7 @@ import net.runelite.http.api.kc.KillCountClient;
 	tags = {"grand", "exchange", "level", "prices"}
 )
 @Slf4j
-public class ChatCommandsPlugin extends Plugin
+public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 {
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 	private static final Pattern KILLCOUNT_PATERN = Pattern.compile("Your ([a-zA-Z ]+) kill count is: <col=ff0000>(\\d+)</col>.");
@@ -112,12 +113,14 @@ public class ChatCommandsPlugin extends Plugin
 	public void startUp()
 	{
 		keyManager.registerKeyListener(chatKeyboardListener);
+		commandManager.register(this);
 	}
 
 	@Override
 	public void shutDown()
 	{
 		keyManager.unregisterKeyListener(chatKeyboardListener);
+		commandManager.unregister(this);
 	}
 
 	@Provides
@@ -237,13 +240,13 @@ public class ChatCommandsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onChatboxInput(ChatboxInput chatboxInput)
+	@Override
+	public boolean onChatboxInput(ChatboxInput chatboxInput)
 	{
 		final String value = chatboxInput.getValue();
 		if (!value.startsWith("!kc ") && !value.startsWith("/!kc "))
 		{
-			return;
+			return false;
 		}
 
 		int idx = value.indexOf(' ');
@@ -252,10 +255,9 @@ public class ChatCommandsPlugin extends Plugin
 		final int kc = getKc(boss);
 		if (kc <= 0)
 		{
-			return;
+			return false;
 		}
 
-		chatboxInput.setStop(true);
 		final String playerName = client.getLocalPlayer().getName();
 
 		executor.execute(() ->
@@ -273,6 +275,8 @@ public class ChatCommandsPlugin extends Plugin
 				chatboxInput.resume();
 			}
 		});
+
+		return true;
 	}
 
 	private void killCountLookup(ChatMessageType type, SetMessage setMessage, String search)

@@ -31,7 +31,6 @@ public abstract class ChatboxInput
 {
 	private final String value;
 	private final int chatType;
-	private boolean stop;
 
 	public abstract void resume();
 }

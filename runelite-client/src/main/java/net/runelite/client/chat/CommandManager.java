@@ -27,7 +27,9 @@ package net.runelite.client.chat;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -52,12 +54,24 @@ public class CommandManager
 	private final Provider<ClientThread> clientThreadProvider;
 	private boolean sending;
 
+	private final List<ChatboxInputListener> chatboxInputListenerList = new ArrayList<>();
+
 	@Inject
 	public CommandManager(Provider<Client> clientProvider, EventBus eventBus, Provider<ClientThread> clientThreadProvider)
 	{
 		this.clientProvider = clientProvider;
 		this.eventBus = eventBus;
 		this.clientThreadProvider = clientThreadProvider;
+	}
+
+	public void register(ChatboxInputListener chatboxInputListener)
+	{
+		chatboxInputListenerList.add(chatboxInputListener);
+	}
+
+	public void unregister(ChatboxInputListener chatboxInputListener)
+	{
+		chatboxInputListenerList.remove(chatboxInputListener);
 	}
 
 	@Subscribe
@@ -129,9 +143,13 @@ public class CommandManager
 				clientThread.invokeLater(() -> sendChatboxInput(chatType, typedText));
 			}
 		};
-		eventBus.post(chatboxInput);
+		boolean stop = false;
+		for (ChatboxInputListener chatboxInputListener : chatboxInputListenerList)
+		{
+			stop |= chatboxInputListener.onChatboxInput(chatboxInput);
+		}
 
-		if (chatboxInput.isStop())
+		if (stop)
 		{
 			// input was blocked.
 			stringStack[stringStackCount - 1] = ""; // prevent script from sending
