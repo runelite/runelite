@@ -25,14 +25,12 @@
 package net.runelite.client;
 
 import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.ImmediateEventBus;
 import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.name.Names;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -104,14 +102,6 @@ public class RuneLiteModule extends AbstractModule
 	EventBus provideEventBus()
 	{
 		return new EventBus(RuneLiteModule::eventExceptionHandler);
-	}
-
-	@Provides
-	@Singleton
-	@Named("Immediate EventBus")
-	EventBus provideImmediateEventBus()
-	{
-		return new ImmediateEventBus(RuneLiteModule::eventExceptionHandler);
 	}
 
 	private static void eventExceptionHandler(Throwable exception, SubscriberExceptionContext context)
