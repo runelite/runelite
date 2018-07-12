@@ -45,6 +45,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
@@ -56,6 +57,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Point;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.events.WidgetLoaded;
@@ -119,7 +121,7 @@ public class ScreenshotPlugin extends Plugin
 		"Can anyone defeat you? Certainly", "was no match for you", "You were clearly a better fighter than", "RIP",
 		"You have defeated", "What an embarrassing performance by", "was no match for your awesomeness");
 
-	static String format(Date date)
+	private static String format(Date date)
 	{
 		synchronized (TIME_FORMAT)
 		{
@@ -403,6 +405,11 @@ public class ScreenshotPlugin extends Plugin
 			return;
 		}
 
+		if (config.enableDateInFilename())
+		{
+			fileName = TIME_FORMAT.format(new Date() + "-" + fileName);
+		}
+
 		takeScreenshot(fileName);
 	}
 
@@ -439,7 +446,7 @@ public class ScreenshotPlugin extends Plugin
 	 *
 	 * @param fileName    Filename to use, without file extension.
 	 */
-	void takeScreenshot(String fileName)
+	private void takeScreenshot(String fileName)
 	{
 		if (client.getGameState() == GameState.LOGIN_SCREEN)
 		{
@@ -476,7 +483,17 @@ public class ScreenshotPlugin extends Plugin
 			File playerFolder;
 			if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
 			{
-				playerFolder = new File(SCREENSHOT_DIR, client.getLocalPlayer().getName());
+				final EnumSet<WorldType> worldTypes = client.getWorldType();
+				final boolean dmm = worldTypes.contains(WorldType.DEADMAN);
+				final boolean sdmm = worldTypes.contains(WorldType.SEASONAL_DEADMAN);
+				final boolean isDmmWorld = dmm || sdmm;
+
+				String playerDir = client.getLocalPlayer().getName();
+				if (isDmmWorld)
+				{
+					playerDir += "-Deadman";
+				}
+				playerFolder = new File(SCREENSHOT_DIR, playerDir);
 			}
 			else
 			{
