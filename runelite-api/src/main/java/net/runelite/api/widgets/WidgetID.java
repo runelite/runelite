@@ -498,8 +498,8 @@ public class WidgetID
 
 	static class DialogSprite
 	{
-		static final int SPRITE = 0;
-		static final int TEXT = 1;
+		static final int SPRITE = 1;
+		static final int TEXT = 2;
 	}
 
 	static class ExperienceTracker
