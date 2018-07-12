@@ -104,6 +104,7 @@ public class WidgetID
 	public static final int CORP_DAMAGE = 13;
 	public static final int DESTROY_ITEM_GROUP_ID = 584;
 	public static final int VARROCK_MUSEUM_QUIZ_GROUP_ID = 533;
+	public static final int KILL_LOGS_GROUP_ID = 549;
 
 	static class WorldMap
 	{
@@ -550,5 +551,13 @@ public class WidgetID
 		static final int VARROCK_MUSEUM_FIRST_ANSWER = 29;
 		static final int VARROCK_MUSEUM_SECOND_ANSWER = 30;
 		static final int VARROCK_MUSEUM_THIRD_ANSWER = 31;
+	}
+
+	static class KillLog
+	{
+		static final int TITLE = 3;
+		static final int MONSTER = 13;
+		static final int KILLS = 14;
+		static final int STREAK = 15;
 	}
 }
