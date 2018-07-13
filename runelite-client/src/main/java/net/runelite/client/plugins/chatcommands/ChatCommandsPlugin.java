@@ -77,6 +77,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 {
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 	private static final Pattern KILLCOUNT_PATERN = Pattern.compile("Your ([a-zA-Z ]+) kill count is: <col=ff0000>(\\d+)</col>.");
+	private static final Pattern RAIDS_PATTERN = Pattern.compile("Your completed ([a-zA-Z ]+) count is: <col=ff0000>(\\d+)</col>.");
 	private static final Pattern WINTERTODT_PATERN = Pattern.compile("Your subdued Wintertodt count is: <col=ff0000>(\\d+)</col>.");
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
@@ -237,6 +238,15 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			int kc = Integer.parseInt(matcher.group(1));
 
 			setKc("Wintertodt", kc);
+		}
+
+		matcher = RAIDS_PATTERN.matcher(message);
+		if (matcher.find())
+		{
+			String boss = matcher.group(1);
+			int kc = Integer.parseInt(matcher.group(2));
+
+			setKc(boss, kc);
 		}
 	}
 
