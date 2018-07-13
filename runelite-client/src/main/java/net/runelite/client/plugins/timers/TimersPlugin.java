@@ -46,6 +46,8 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUS;
@@ -93,6 +95,12 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 public class TimersPlugin extends Plugin
 {
 	private int lastRaidVarb;
+
+	@Inject
+	private ItemManager itemManager;
+
+	@Inject
+	private SpriteManager spriteManager;
 
 	@Inject
 	private Client client;
@@ -591,7 +599,7 @@ public class TimersPlugin extends Plugin
 	{
 		removeGameTimer(timer);
 
-		TimerTimer t = new TimerTimer(timer, this);
+		TimerTimer t = new TimerTimer(timer, this, itemManager, spriteManager);
 		t.setTooltip(timer.getDescription());
 		infoBoxManager.addInfoBox(t);
 	}
