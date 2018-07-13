@@ -535,22 +535,22 @@ public class TimersPlugin extends Plugin
 
 			if (actor.getGraphic() == ICERUSH.getGraphicId())
 			{
-				createGameTimer(ICERUSH);
+				createGameTimer(ICERUSH, false);
 			}
 
 			if (actor.getGraphic() == ICEBURST.getGraphicId())
 			{
-				createGameTimer(ICEBURST);
+				createGameTimer(ICEBURST, false);
 			}
 
 			if (actor.getGraphic() == ICEBLITZ.getGraphicId())
 			{
-				createGameTimer(ICEBLITZ);
+				createGameTimer(ICEBLITZ, false);
 			}
 
 			if (actor.getGraphic() == ICEBARRAGE.getGraphicId())
 			{
-				createGameTimer(ICEBARRAGE);
+				createGameTimer(ICEBARRAGE, false);
 			}
 		}
 	}
@@ -596,14 +596,34 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	private void createGameTimer(GameTimer timer)
+	/**
+	 * Adds a game timer to the infobox manager to render. Accepts a `replaceExisting` option to
+	 * preserve existing timers of the same type instead of replacing them with the new passed
+	 * timer.
+	 *
+	 * @param timer           The timer to be added to the infobox manager.
+	 * @param replaceExisting Whether to remove existing timer of the same type. `true` to replace
+	 *                        it, `false` to preserve it if present.
+	 */
+	private void createGameTimer(final GameTimer timer, final boolean replaceExisting)
 	{
+		if (!replaceExisting
+			&& infoBoxManager.getInfoBoxes().stream().anyMatch(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer))
+		{
+			return;
+		}
+
 		removeGameTimer(timer);
 
 		BufferedImage image = timer.getImage(itemManager, spriteManager);
 		TimerTimer t = new TimerTimer(timer, this, image);
 		t.setTooltip(timer.getDescription());
 		infoBoxManager.addInfoBox(t);
+	}
+
+	private void createGameTimer(GameTimer timer)
+	{
+		createGameTimer(timer, true);
 	}
 
 	private void removeGameTimer(GameTimer timer)
