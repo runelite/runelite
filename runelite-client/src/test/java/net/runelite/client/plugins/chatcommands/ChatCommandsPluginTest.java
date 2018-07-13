@@ -117,4 +117,15 @@ public class ChatCommandsPluginTest
 
 		verify(configManager).setConfiguration("killcount.adam", "kree'arra", 4);
 	}
+
+	@Test
+	public void testBarrows()
+	{
+		when(client.getUsername()).thenReturn("Adam");
+
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", "Your Barrows chest count is: <col=ff0000>277</col>.", null);
+		chatCommandsPlugin.onChatMessage(chatMessageEvent);
+
+		verify(configManager).setConfiguration("killcount.adam", "barrows", 277);
+	}
 }
