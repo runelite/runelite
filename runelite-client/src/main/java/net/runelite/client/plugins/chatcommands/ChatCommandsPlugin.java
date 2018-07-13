@@ -79,6 +79,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	private static final Pattern KILLCOUNT_PATERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
 	private static final Pattern RAIDS_PATTERN = Pattern.compile("Your completed (.+) count is: <col=ff0000>(\\d+)</col>.");
 	private static final Pattern WINTERTODT_PATERN = Pattern.compile("Your subdued Wintertodt count is: <col=ff0000>(\\d+)</col>.");
+	private static final Pattern BARROWS_PATERN = Pattern.compile("Your Barrows chest count is: <col=ff0000>(\\d+)</col>.");
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private final KillCountClient killCountClient = new KillCountClient();
@@ -247,6 +248,14 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			int kc = Integer.parseInt(matcher.group(2));
 
 			setKc(boss, kc);
+		}
+
+		matcher = BARROWS_PATERN.matcher(message);
+		if (matcher.find())
+		{
+			int kc = Integer.parseInt(matcher.group(1));
+
+			setKc("Barrows", kc);
 		}
 	}
 
