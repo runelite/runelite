@@ -119,10 +119,10 @@ public class WidgetID
 
 	static class DialogNPC
 	{
-		static final int HEAD_MODEL = 0;
-		static final int NAME = 1;
-		static final int CONTINUE = 2;
-		static final int TEXT = 3;
+		static final int HEAD_MODEL = 1;
+		static final int NAME = 2;
+		static final int CONTINUE = 3;
+		static final int TEXT = 4;
 	}
 
 	static class LogoutPanel
@@ -451,8 +451,8 @@ public class WidgetID
 
 	static class LevelUp
 	{
-		static final int SKILL = 0;
-		static final int LEVEL = 1;
+		static final int SKILL = 1;
+		static final int LEVEL = 2;
 	}
 
 	static class QuestCompleted
@@ -498,8 +498,8 @@ public class WidgetID
 
 	static class DialogSprite
 	{
-		static final int SPRITE = 0;
-		static final int TEXT = 1;
+		static final int SPRITE = 1;
+		static final int TEXT = 2;
 	}
 
 	static class ExperienceTracker
