@@ -63,6 +63,10 @@ public class BankTagsPlugin extends Plugin
 		"Show items whose names or tags contain the following text:<br>" +
 		"(To show only tagged items, start your search with 'tag:')";
 
+	private static final String SEARCH_BANK_INPUT_TEXT_FOUND =
+		"Show items whose names or tags contain the following text: (%d found)<br>" +
+			"(To show only tagged items, start your search with 'tag:')";
+
 	private static final String TAG_SEARCH = "tag:";
 
 	private static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
@@ -132,6 +136,12 @@ public class BankTagsPlugin extends Plugin
 			case "setSearchBankInputText":
 				stringStack[stringStackSize - 1] = SEARCH_BANK_INPUT_TEXT;
 				break;
+			case "setSearchBankInputTextFound":
+			{
+				int matches = intStack[intStackSize - 1];
+				stringStack[stringStackSize - 1] = String.format(SEARCH_BANK_INPUT_TEXT_FOUND, matches);
+				break;
+			}
 			case "setBankItemMenu":
 			{
 				// set menu action index so the edit tags option will not be overridden
