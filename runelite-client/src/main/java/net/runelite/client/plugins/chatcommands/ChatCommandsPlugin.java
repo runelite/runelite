@@ -76,8 +76,8 @@ import net.runelite.http.api.kc.KillCountClient;
 public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 {
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
-	private static final Pattern KILLCOUNT_PATERN = Pattern.compile("Your ([a-zA-Z ]+) kill count is: <col=ff0000>(\\d+)</col>.");
-	private static final Pattern RAIDS_PATTERN = Pattern.compile("Your completed ([a-zA-Z ]+) count is: <col=ff0000>(\\d+)</col>.");
+	private static final Pattern KILLCOUNT_PATERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
+	private static final Pattern RAIDS_PATTERN = Pattern.compile("Your completed (.+) count is: <col=ff0000>(\\d+)</col>.");
 	private static final Pattern WINTERTODT_PATERN = Pattern.compile("Your subdued Wintertodt count is: <col=ff0000>(\\d+)</col>.");
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();

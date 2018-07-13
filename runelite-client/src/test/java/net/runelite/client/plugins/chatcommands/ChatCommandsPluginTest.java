@@ -106,4 +106,15 @@ public class ChatCommandsPluginTest
 
 		verify(configManager).setConfiguration("killcount.adam", "wintertodt", 4);
 	}
+
+	@Test
+	public void testKreearra()
+	{
+		when(client.getUsername()).thenReturn("Adam");
+
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", "Your Kree'arra kill count is: <col=ff0000>4</col>.", null);
+		chatCommandsPlugin.onChatMessage(chatMessageEvent);
+
+		verify(configManager).setConfiguration("killcount.adam", "kree'arra", 4);
+	}
 }
