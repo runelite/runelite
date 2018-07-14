@@ -31,16 +31,21 @@ import java.util.Set;
 import lombok.Getter;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+
+import static net.runelite.api.ItemID.SPADE;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.SPADE_IMAGE;
+
+import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
+import net.runelite.client.plugins.cluescrolls.clues.emote.SingleItemRequirement;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
-public class FairyRingClue extends ClueScroll implements TextClueScroll, LocationClueScroll
+public class FairyRingClue extends SpadeClueScroll implements TextClueScroll, LocationClueScroll
 {
 	private static final Set<FairyRingClue> CLUES = ImmutableSet.of(
 		new FairyRingClue("A I R 2 3 3 1", new WorldPoint(2702, 3246, 0)),
@@ -55,6 +60,7 @@ public class FairyRingClue extends ClueScroll implements TextClueScroll, Locatio
 		new FairyRingClue("D K S 2 3 1 0", new WorldPoint(2747, 3720, 0))
 	);
 
+	private static final ItemRequirement requiredItem = new SingleItemRequirement(SPADE);
 	private String text;
 	private WorldPoint location;
 
@@ -77,6 +83,8 @@ public class FairyRingClue extends ClueScroll implements TextClueScroll, Locatio
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Travel to the fairy ring to see where to dig.")
 			.build());
+
+		panelComponent.getChildren().add(hasSpadeOverlayLine(plugin));
 	}
 
 	@Override

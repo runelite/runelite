@@ -42,7 +42,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
 @AllArgsConstructor
-public class CoordinateClue extends ClueScroll implements TextClueScroll, LocationClueScroll
+public class CoordinateClue extends SpadeClueScroll implements TextClueScroll, LocationClueScroll
 {
 	private String text;
 	private WorldPoint location;
@@ -57,14 +57,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 			.left("Click the clue scroll along the edge of your world map to see where you should dig.")
 			.build());
 
-		if (plugin.getEquippedItems() != null)
-		{
-			if (!HAS_SPADE.fulfilledBy(plugin.getEquippedItems()))
-			{
-				panelComponent.getChildren().add(LineComponent.builder().left("").build());
-				panelComponent.getChildren().add(LineComponent.builder().left("Requires Spade!").leftColor(Color.RED).build());
-			}
-		}
+		panelComponent.getChildren().add(hasSpadeOverlayLine(plugin));
 	}
 
 	@Override
