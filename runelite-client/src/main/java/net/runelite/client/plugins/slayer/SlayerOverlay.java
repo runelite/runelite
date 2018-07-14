@@ -64,7 +64,7 @@ class SlayerOverlay extends Overlay
 		ItemID.SLAYER_RING_8
 	);
 
-	private final ImmutableIntArray allSlayerItems = ImmutableIntArray.of(
+	private final static ImmutableIntArray ALL_SLAYER_ITEMS = ImmutableIntArray.of(
 		ItemID.SLAYER_HELMET,
 		ItemID.SLAYER_HELMET_I,
 		ItemID.BLACK_SLAYER_HELMET,
@@ -104,7 +104,7 @@ class SlayerOverlay extends Overlay
 
 	private ImmutableList<WidgetItem> getSlayerItems()
 	{
-		int[] slayerItems = allSlayerItems.toArray();
+		int[] slayerItems = ALL_SLAYER_ITEMS.toArray();
 		Query inventoryQuery = new InventoryWidgetItemQuery().idEquals(slayerItems);
 		WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(inventoryQuery);
 
