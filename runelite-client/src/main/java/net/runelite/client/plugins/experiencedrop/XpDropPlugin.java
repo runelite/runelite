@@ -48,6 +48,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class XpDropPlugin extends Plugin
 {
 	private static final int EXPERIENCE_DROP_SPRITE_WIDTH = 16;
+	private static final int EXPERIENCE_DROP_SPRITE_PADDING = 2;
 
 	@Inject
 	private Client client;
@@ -88,8 +89,11 @@ public class XpDropPlugin extends Plugin
 			else if (!widget.getText().isEmpty())
 			{
 				// Align text left accordingly to take up hidden skill icon space
+				final int numSprites = (int) Arrays.stream(widget.getParent().getDynamicChildren()).filter(w -> w.getSpriteId() > 0).count();
+				final int spriteWidth = EXPERIENCE_DROP_SPRITE_WIDTH * numSprites;
+				final int spritePadding = Math.max(0, EXPERIENCE_DROP_SPRITE_PADDING * (numSprites - 1));
 				final int xpDropPosition = client.getVar(Varbits.EXPERIENCE_TRACKER_POSITION);
-				widget.setRelativeX(EXPERIENCE_DROP_SPRITE_WIDTH * xpDropPosition * -1 / 2);
+				widget.setRelativeX((spriteWidth + spritePadding) * xpDropPosition * -1 / 2);
 			}
 		}
 
