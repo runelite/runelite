@@ -58,6 +58,11 @@ class NameAutocompleter implements KeyListener
 	private final Client client;
 
 	/**
+	 * Used to dispatch to the AWT event dispatching thread.
+	 */
+	private final MySwingDispatcher swingDispatcher;
+
+	/**
 	 * The name currently being autocompleted.
 	 */
 	private String autocompleteName;
@@ -71,6 +76,7 @@ class NameAutocompleter implements KeyListener
 	private NameAutocompleter(@Nullable Client client)
 	{
 		this.client = client;
+		this.swingDispatcher = new MySwingDispatcher();
 	}
 
 	@Override
@@ -107,14 +113,13 @@ class NameAutocompleter implements KeyListener
 		{
 			return;
 		}
-
 		// Check if we are already autocompleting.
 		if (autocompleteName != null && autocompleteNamePattern.matcher(inputText).matches())
 		{
 			if (isExpectedNext(input, charToInsert))
 			{
 				final int insertIndex = input.getSelectionStart();
-				SwingUtilities.invokeLater(() ->
+				this.swingDispatcher.cancelCurrentAndInvokeLater(() ->
 				{
 					try
 					{
@@ -153,7 +158,8 @@ class NameAutocompleter implements KeyListener
 		{
 			// Assert this.autocompleteName != null
 			final String name = this.autocompleteName;
-			SwingUtilities.invokeLater(() ->
+
+			this.swingDispatcher.cancelCurrentAndInvokeLater(() ->
 			{
 				try
 				{
@@ -168,6 +174,10 @@ class NameAutocompleter implements KeyListener
 					log.warn("Could not autocomplete name.", ex);
 				}
 			});
+		}
+		else
+		{
+			this.swingDispatcher.cancelCurrent();
 		}
 	}
 
@@ -263,5 +273,51 @@ class NameAutocompleter implements KeyListener
 			expected = "";
 		}
 		return nextChar.equalsIgnoreCase(expected);
+	}
+
+	/**
+	 * A dispatcher to make calls to SwingUtilities#invokeLater, but only allow
+	 * the most recent Runnable to be invoked. The current runnable can
+	 * also manually be canceled. Used to handle race conditions when two
+	 * keys are typed in quick succession.
+	 */
+	private static class MySwingDispatcher
+	{
+		private CancelationToken currentCancelToken = new CancelationToken();
+
+		public void cancelCurrentAndInvokeLater(final Runnable runnable)
+		{
+			final CancelationToken localCancelToken;
+			currentCancelToken.requestCancel();
+			currentCancelToken = new CancelationToken();
+			localCancelToken = currentCancelToken;
+			SwingUtilities.invokeLater(() ->
+			{
+				if (!localCancelToken.isCancelRequested())
+				{
+					runnable.run();
+				}
+			});
+		}
+
+		public void cancelCurrent()
+		{
+			currentCancelToken.requestCancel();
+		}
+
+		private static class CancelationToken
+		{
+			private boolean isCancelRequested = false;
+
+			private void requestCancel()
+			{
+				isCancelRequested = true;
+			}
+
+			private boolean isCancelRequested()
+			{
+				return isCancelRequested;
+			}
+		}
 	}
 }
