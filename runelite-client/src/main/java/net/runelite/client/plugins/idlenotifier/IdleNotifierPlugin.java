@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2016-2017, Abel Briggs
  * Copyright (c) 2017, Kronos <https://github.com/KronosDesign>
+ * Copyright (c) 2018, Magic fTail
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,15 +32,17 @@ import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
-import static net.runelite.api.AnimationID.*;
+import static net.runelite.api.AnimationID.IDLE;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Hitsplat;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.HitsplatApplied;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -52,7 +55,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class IdleNotifierPlugin extends Plugin
 {
-	private static final int LOGOUT_WARNING_AFTER_TICKS = 14000; // 4 minutes and 40 seconds
+	private static final int LOGOUT_WARNING_AFTER_TICKS = 280 * 50; // 4 minutes and 40 seconds
+	private static final int LOGOUT_WARNING_AFTER_TICKS_IN_COMBAT = 1140 * 50; //19 minutes
+	private static final int HIGHEST_MONSTER_ATTACK_SPEED = 8; //Except Scarab Mage, but they are with other monsters
 	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
 
 	@Inject
@@ -72,14 +77,51 @@ public class IdleNotifierPlugin extends Plugin
 	private boolean notifyPrayer = true;
 	private boolean notifyIdleLogout = true;
 	private boolean notify6HourLogout = true;
+	private boolean inCombat = false;
 
 	private Instant sixHourWarningTime;
 	private boolean ready;
+	private SkillingAnimations currentActivity;
+	private int countdown = 0;
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(IdleNotifierConfig.class);
+	}
+
+	private boolean getSkillEnabled()
+	{
+		if (currentActivity == null)
+		{
+			return false;
+		}
+
+		switch (currentActivity)
+		{
+			case WOODCUTTING:
+				return config.woodcuttingIdle();
+			case COOKING:
+				return config.cookingIdle();
+			case CRAFTING:
+				return config.craftingIdle();
+			case FLETCHING:
+				return config.fletchingIdle();
+			case SMITHING:
+				return config.smithingIdle();
+			case FISHING:
+				return config.fishingIdle();
+			case MINING:
+				return config.miningIdle();
+			case HERBLORE:
+				return config.herbloreIdle();
+			case PRAYER:
+				return config.prayerIdle();
+			case MAGIC:
+				return config.magicIdle();
+			default:
+				return false;
+		}
 	}
 
 	@Subscribe
@@ -97,101 +139,34 @@ public class IdleNotifierPlugin extends Plugin
 		}
 
 		int animation = localPlayer.getAnimation();
-		switch (animation)
+
+		final SkillingAnimations currentSkillAnimation = SkillingAnimations.getSkillingAnimations(animation);
+
+		if (currentSkillAnimation == null)
 		{
-			/* Woodcutting */
-			case WOODCUTTING_BRONZE:
-			case WOODCUTTING_IRON:
-			case WOODCUTTING_STEEL:
-			case WOODCUTTING_BLACK:
-			case WOODCUTTING_MITHRIL:
-			case WOODCUTTING_ADAMANT:
-			case WOODCUTTING_RUNE:
-			case WOODCUTTING_DRAGON:
-			case WOODCUTTING_INFERNAL:
-			case WOODCUTTING_3A_AXE:
-			/* Cooking(Fire, Range) */
-			case COOKING_FIRE:
-			case COOKING_RANGE:
-			case COOKING_WINE:
-			/* Crafting(Gem Cutting, Glassblowing, Spinning, Battlestaves) */
-			case GEM_CUTTING_OPAL:
-			case GEM_CUTTING_JADE:
-			case GEM_CUTTING_REDTOPAZ:
-			case GEM_CUTTING_SAPPHIRE:
-			case GEM_CUTTING_EMERALD:
-			case GEM_CUTTING_RUBY:
-			case GEM_CUTTING_DIAMOND:
-			case CRAFTING_GLASSBLOWING:
-			case CRAFTING_SPINNING:
-			case CRAFTING_BATTLESTAVES:
-			/* Fletching(Cutting, Stringing) */
-			case FLETCHING_BOW_CUTTING:
-			case FLETCHING_STRING_NORMAL_SHORTBOW:
-			case FLETCHING_STRING_OAK_SHORTBOW:
-			case FLETCHING_STRING_WILLOW_SHORTBOW:
-			case FLETCHING_STRING_MAPLE_SHORTBOW:
-			case FLETCHING_STRING_YEW_SHORTBOW:
-			case FLETCHING_STRING_MAGIC_SHORTBOW:
-			case FLETCHING_STRING_NORMAL_LONGBOW:
-			case FLETCHING_STRING_OAK_LONGBOW:
-			case FLETCHING_STRING_WILLOW_LONGBOW:
-			case FLETCHING_STRING_MAPLE_LONGBOW:
-			case FLETCHING_STRING_YEW_LONGBOW:
-			case FLETCHING_STRING_MAGIC_LONGBOW:
-			/* Smithing(Anvil, Furnace, Cannonballs */
-			case SMITHING_ANVIL:
-			case SMITHING_SMELTING:
-			case SMITHING_CANNONBALL:
-			/* Fishing */
-			case FISHING_NET:
-			case FISHING_BIG_NET:
-			case FISHING_HARPOON:
-			case FISHING_BARBTAIL_HARPOON:
-			case FISHING_DRAGON_HARPOON:
-			case FISHING_CAGE:
-			case FISHING_POLE_CAST:
-			case FISHING_INFERNAL_HARPOON:
-			case FISHING_OILY_ROD:
-			case FISHING_KARAMBWAN:
-			case FISHING_CRUSHING_INFERNAL_EELS:
-			case FISHING_BAREHAND:
-			/* Mining(Normal) */
-			case MINING_BRONZE_PICKAXE:
-			case MINING_IRON_PICKAXE:
-			case MINING_STEEL_PICKAXE:
-			case MINING_BLACK_PICKAXE:
-			case MINING_MITHRIL_PICKAXE:
-			case MINING_ADAMANT_PICKAXE:
-			case MINING_RUNE_PICKAXE:
-			case MINING_DRAGON_PICKAXE:
-			case MINING_DRAGON_PICKAXE_ORN:
-			case MINING_INFERNAL_PICKAXE:
-			case MINING_3A_PICKAXE:
-			/* Mining(Motherlode) */
-			case MINING_MOTHERLODE_BRONZE:
-			case MINING_MOTHERLODE_IRON:
-			case MINING_MOTHERLODE_STEEL:
-			case MINING_MOTHERLODE_BLACK:
-			case MINING_MOTHERLODE_MITHRIL:
-			case MINING_MOTHERLODE_ADAMANT:
-			case MINING_MOTHERLODE_RUNE:
-			case MINING_MOTHERLODE_DRAGON:
-			case MINING_MOTHERLODE_DRAGON_ORN:
-			case MINING_MOTHERLODE_INFERNAL:
-			case MINING_MOTHERLODE_3A:
-			/* Herblore */
-			case HERBLORE_POTIONMAKING:
-			case HERBLORE_MAKE_TAR:
-			/* Magic */
-			case MAGIC_CHARGING_ORBS:
-			case MAGIC_LUNAR_STRING_JEWELRY:
-			case MAGIC_LUNAR_BAKE_PIE:
-			/* Prayer */
-			case USING_GILDED_ALTAR:
-				resetTimers();
-				notifyIdle = true;
-				break;
+			return;
+		}
+
+		resetTimers();
+		currentActivity = currentSkillAnimation;
+		notifyIdle = true;
+	}
+
+	@Subscribe
+	public void onHitsplat(HitsplatApplied event)
+	{
+		final Hitsplat hitsplat = event.getHitsplat();
+
+		if (event.getActor() != client.getLocalPlayer())
+		{
+			return;
+		}
+
+		if (hitsplat.getHitsplatType() == Hitsplat.HitsplatType.DAMAGE
+			|| hitsplat.getHitsplatType() == Hitsplat.HitsplatType.BLOCK)
+		{
+			inCombat = true;
+			countdown = HIGHEST_MONSTER_ATTACK_SPEED;
 		}
 	}
 
@@ -225,12 +200,21 @@ public class IdleNotifierPlugin extends Plugin
 		final Player local = client.getLocalPlayer();
 		final Duration waitDuration = Duration.ofMillis(config.getIdleNotificationDelay());
 
+		if (countdown > 0)
+		{
+			countdown = countdown - 1;
+		}
+		else
+		{
+			inCombat = false;
+		}
+
 		if (client.getGameState() != GameState.LOGGED_IN || local == null)
 		{
 			return;
 		}
 
-		if (checkIdleLogout())
+		if (config.idleLogout() && checkIdleLogout())
 		{
 			notifier.notify("[" + local.getName() + "] is about to log out from idling too long!");
 		}
@@ -240,9 +224,9 @@ public class IdleNotifierPlugin extends Plugin
 			notifier.notify("[" + local.getName() + "] is about to log out from being online for 6 hours!");
 		}
 
-		if (config.animationIdle() && checkAnimationIdle(waitDuration, local))
+		if (checkAnimationIdle(waitDuration, local) && getSkillEnabled())
 		{
-			notifier.notify("[" + local.getName() + "] is now idle!");
+			notifier.notify("[" + local.getName() + "] is no longer " + currentActivity.getActivity());
 		}
 
 		if (config.combatIdle() && checkOutOfCombat(waitDuration, local))
@@ -347,7 +331,16 @@ public class IdleNotifierPlugin extends Plugin
 		if (client.getMouseIdleTicks() > LOGOUT_WARNING_AFTER_TICKS
 			&& client.getKeyboardIdleTicks() > LOGOUT_WARNING_AFTER_TICKS)
 		{
-			if (notifyIdleLogout)
+			if (inCombat)
+			{
+				if (client.getMouseIdleTicks() > LOGOUT_WARNING_AFTER_TICKS_IN_COMBAT
+					&& client.getKeyboardIdleTicks() > LOGOUT_WARNING_AFTER_TICKS_IN_COMBAT && notifyIdleLogout)
+				{
+					notifyIdleLogout = false;
+					return true;
+				}
+			}
+			else if (notifyIdleLogout)
 			{
 				notifyIdleLogout = false;
 				return true;
