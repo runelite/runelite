@@ -30,9 +30,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-
 import javax.inject.Inject;
-
 import java.awt.*;
 
 public class TearsOfGuthixExperienceOverlay extends Overlay
