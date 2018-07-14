@@ -33,6 +33,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Set;
 import javax.inject.Inject;
+import com.google.common.primitives.ImmutableIntArray;
 import net.runelite.api.ItemID;
 import net.runelite.api.Query;
 import net.runelite.api.queries.EquipmentItemQuery;
@@ -50,9 +51,7 @@ class SlayerOverlay extends Overlay
 {
 	private final SlayerConfig config;
 	private final SlayerPlugin plugin;
-
-	@Inject
-	private QueryRunner queryRunner;
+	private final QueryRunner queryRunner;
 
 	private final Set<Integer> slayerJewelry = ImmutableSet.of(
 		ItemID.SLAYER_RING_1,
@@ -65,7 +64,7 @@ class SlayerOverlay extends Overlay
 		ItemID.SLAYER_RING_8
 	);
 
-	private final Set<Integer> slayerEquipment = ImmutableSet.of(
+	private final ImmutableIntArray allSlayerItems = ImmutableIntArray.of(
 		ItemID.SLAYER_HELMET,
 		ItemID.SLAYER_HELMET_I,
 		ItemID.BLACK_SLAYER_HELMET,
@@ -82,28 +81,38 @@ class SlayerOverlay extends Overlay
 		ItemID.ENCHANTED_GEM,
 		ItemID.ETERNAL_GEM,
 		ItemID.BRACELET_OF_SLAUGHTER,
-		ItemID.EXPEDITIOUS_BRACELET
+		ItemID.EXPEDITIOUS_BRACELET,
+		ItemID.SLAYER_RING_1,
+		ItemID.SLAYER_RING_2,
+		ItemID.SLAYER_RING_3,
+		ItemID.SLAYER_RING_4,
+		ItemID.SLAYER_RING_5,
+		ItemID.SLAYER_RING_6,
+		ItemID.SLAYER_RING_7,
+		ItemID.SLAYER_RING_8
 	);
 
-	private ImmutableList<WidgetItem> checkInventory()
-	{
-		Query inventoryQuery = new InventoryWidgetItemQuery();
-		WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(inventoryQuery);
-
-		Query equipmentQuery = new EquipmentItemQuery().slotEquals(WidgetInfo.EQUIPMENT_HELMET, WidgetInfo.EQUIPMENT_RING, WidgetInfo.EQUIPMENT_GLOVES);
-		WidgetItem[] equipmentWidgetItems = queryRunner.runQuery(equipmentQuery);
-
-		WidgetItem[] items = concat(inventoryWidgetItems, equipmentWidgetItems, WidgetItem.class);
-		return ImmutableList.copyOf(items);
-	}
-
 	@Inject
-	private SlayerOverlay(SlayerPlugin plugin, SlayerConfig config)
+	private SlayerOverlay(SlayerPlugin plugin, SlayerConfig config, QueryRunner queryRunner)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.plugin = plugin;
 		this.config = config;
+		this.queryRunner = queryRunner;
+	}
+
+	private ImmutableList<WidgetItem> getSlayerItems()
+	{
+		int[] slayerItems = allSlayerItems.toArray();
+		Query inventoryQuery = new InventoryWidgetItemQuery().idEquals(slayerItems);
+		WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(inventoryQuery);
+
+		Query equipmentQuery = new EquipmentItemQuery().slotEquals(WidgetInfo.EQUIPMENT_HELMET, WidgetInfo.EQUIPMENT_RING, WidgetInfo.EQUIPMENT_GLOVES).idEquals(slayerItems);
+		WidgetItem[] equipmentWidgetItems = queryRunner.runQuery(equipmentQuery);
+
+		WidgetItem[] items = concat(inventoryWidgetItems, equipmentWidgetItems, WidgetItem.class);
+		return ImmutableList.copyOf(items);
 	}
 
 	@Override
@@ -125,14 +134,9 @@ class SlayerOverlay extends Overlay
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
-		for (WidgetItem item : checkInventory())
+		for (WidgetItem item : getSlayerItems())
 		{
 			int itemId = item.getId();
-
-			if (!slayerEquipment.contains(itemId) && !slayerJewelry.contains(itemId))
-			{
-				continue;
-			}
 
 			final Rectangle bounds = item.getCanvasBounds();
 			final TextComponent textComponent = new TextComponent();
