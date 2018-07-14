@@ -103,7 +103,10 @@ public interface AttackStylesConfig extends Config
 			description = "Show warning when Auto Retaliate combat option is selected",
 			position = 7
 	)
-	default boolean warnForAutoRetaliate() { return false; }
+	default boolean warnForAutoRetaliate()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "removeWarnedStyles",

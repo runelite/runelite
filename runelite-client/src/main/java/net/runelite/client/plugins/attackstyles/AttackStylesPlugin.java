@@ -46,8 +46,6 @@ import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.COMBAT_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 
-import static net.runelite.api.widgets.WidgetInfo.COMBAT_AUTO_RETALIATE_BOX;
-import static net.runelite.api.widgets.WidgetInfo.COMBAT_AUTO_RETALIATE_TEXT;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -57,13 +55,13 @@ import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE_CASTING;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
 import net.runelite.client.ui.overlay.OverlayManager;
-import sun.awt.Symbol;
 
 @PluginDescriptor(
-	name = "Attack Styles",
-	description = "Show your current attack style as an overlay",
-	tags = {"combat", "defence", "magic", "overlay", "ranged", "strength", "retaliate", "auto"}
-)
+		name = "Attack Styles",
+		description = "Show your current attack style as an overlay",
+		tags = {"combat", "defence", "magic", "overlay", "ranged", "strength", "retaliate", "auto"}
+		)
+
 @Slf4j
 public class AttackStylesPlugin extends Plugin
 {
@@ -125,13 +123,13 @@ public class AttackStylesPlugin extends Plugin
 		attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
 		equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
 		castingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
-        autoRetaliateVarbit = client.getVar(VarPlayer.AUTO_RETALIATE);
+		autoRetaliateVarbit = client.getVar(VarPlayer.AUTO_RETALIATE);
 
 		updateAttackStyle(
 			equippedWeaponTypeVarbit,
 			attackStyleVarbit,
 			castingModeVarbit
-        );
+		);
 
 
 		updateWarning(false);
@@ -157,7 +155,10 @@ public class AttackStylesPlugin extends Plugin
 		return warnedSkillSelected;
 	}
 
-	public boolean isWarnedRetaliateSelected() { return warnedRetaliateSelected; } /// TODO: Possible overlay for autoRet
+	public boolean isWarnedRetaliateSelected()
+	{
+		return warnedRetaliateSelected;
+	}
 
 	@Subscribe
 	public void hideWidgets(WidgetHiddenChanged event)
@@ -196,8 +197,7 @@ public class AttackStylesPlugin extends Plugin
 			}
 
 		}
-
-    }
+	}
 
 	@Subscribe
 	public void onGameStateChange(GameStateChanged event)
@@ -226,13 +226,14 @@ public class AttackStylesPlugin extends Plugin
 	}
 
 	@Subscribe
-    public void onAutoRetaliateChange(VarbitChanged event){
-	    if (autoRetaliateVarbit == - 1 || autoRetaliateVarbit != client.getVar(VarPlayer.AUTO_RETALIATE)){
-	        autoRetaliateVarbit = client.getVar(VarPlayer.AUTO_RETALIATE);
-	        updateAutoRetaliate(config.warnForAutoRetaliate());
-	        updateWarning(false);
-        }
-    }
+	public void onAutoRetaliateChange(VarbitChanged event) {
+		if (autoRetaliateVarbit == - 1 || autoRetaliateVarbit != client.getVar(VarPlayer.AUTO_RETALIATE))
+		{
+			autoRetaliateVarbit = client.getVar(VarPlayer.AUTO_RETALIATE);
+			updateAutoRetaliate(config.warnForAutoRetaliate());
+			updateWarning(false);
+		}
+	}
 
 	@Subscribe
 	public void onEquippedWeaponTypeChange(VarbitChanged event)
@@ -284,12 +285,14 @@ public class AttackStylesPlugin extends Plugin
 				case "warnForMagic":
 					updateWarnedSkills(enabled, Skill.MAGIC);
 					break;
-                case "warnForAutoRetaliate":
-                    updateAutoRetaliate(enabled);
-                    break;
-				case "removeWarnedStyles":
-					hideWarnedStyles(enabled);
-					break;
+
+
+					case "warnForAutoRetaliate":
+						updateAutoRetaliate(enabled);
+						break;
+						case "removeWarnedStyles":
+							hideWarnedStyles(enabled);
+							break;
 			}
 			processWidgets();
 		}
@@ -312,19 +315,22 @@ public class AttackStylesPlugin extends Plugin
 		}
 	}
 
-	public void updateAutoRetaliate(Boolean enabled){
-	    autoRetaliateVarbit = client.getVar(VarPlayer.AUTO_RETALIATE);
+	public void updateAutoRetaliate(Boolean enabled)
+	{
+		autoRetaliateVarbit = client.getVar(VarPlayer.AUTO_RETALIATE);
 		prevAutoRetaliateText = (autoRetaliateVarbit == 0) ? "Auto Retaliate<br>(On)" : "Auto Retaliate<br>(Off)";
-		if (enabled){
-	        hideAutoRetaliate = true;
-            warnedRetaliateSelected = (autoRetaliateVarbit == 0) ? true : false;
-        }
-        else{
-            hideAutoRetaliate = false;
-            warnedRetaliateSelected = false;
-        }
-        updateWarning(false);
-    }
+		if (enabled)
+		{
+			hideAutoRetaliate = true;
+			warnedRetaliateSelected = (autoRetaliateVarbit == 0) ? true : false;
+		}
+		else
+			{
+				hideAutoRetaliate = false;
+			warnedRetaliateSelected = false;
+			}
+		updateWarning(false);
+	}
 
 	private void updateWarnedSkills(boolean enabled, Skill skill)
 	{
@@ -439,13 +445,16 @@ public class AttackStylesPlugin extends Plugin
 		}
 	}
 
-	private void hideAutoRetaliateText(Boolean enabled){
+	private void hideAutoRetaliateText(Boolean enabled)
+	{
 		Widget autoRetaliateTextWidget = client.getWidget(WidgetInfo.COMBAT_AUTO_RETALIATE_TEXT);
 
-		if (enabled && hideAutoRetaliate){
+		if (enabled && hideAutoRetaliate)
+		{
 			autoRetaliateTextWidget.setText("");
 		}
-		else{
+		else
+			{
 			autoRetaliateTextWidget.setText(prevAutoRetaliateText);
 		}
 	}
