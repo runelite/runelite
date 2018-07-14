@@ -30,12 +30,11 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
 import lombok.Getter;
-import net.runelite.api.Client;
-import net.runelite.api.DecorativeObject;
-import net.runelite.api.ObjectID;
+import net.runelite.api.*;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -58,19 +57,30 @@ public class TearsOfGuthixPlugin extends Plugin
 	@Inject
 	private TearsOfGuthixOverlay overlay;
 
+	@Inject
+	private TearsOfGuthixExperienceOverlay experienceOverlay;
+
 	@Getter
 	private final Map<DecorativeObject, Instant> streams = new HashMap<>();
+
+	@Getter
+	private boolean overlayActivated = false;
+
+	@Getter
+	private Skill playerLowestSkill;
 
 	@Override
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
+		overlayManager.add(experienceOverlay);
 	}
 
 	@Override
 	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
+		overlayManager.remove(experienceOverlay);
 		streams.clear();
 	}
 
@@ -112,4 +122,68 @@ public class TearsOfGuthixPlugin extends Plugin
 		DecorativeObject object = event.getDecorativeObject();
 		streams.remove(object);
 	}
+
+	//Shows the player's lowest experience skill
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+		if (client.getLocalPlayer().getWorldLocation().getRegionID() == TOG_REGION)
+		{
+			activateTearsOverlay();
+		}
+		else
+		{
+			disableTearsOverlay();
+		}
+	}
+
+	private void activateTearsOverlay()
+	{
+		if (!overlayActivated)
+		{
+			//Check to make sure player experience is loaded
+			if (client.getSkillExperience(Skill.HITPOINTS) > 0)
+			{
+				playerLowestSkill = getLowestPlayerSkill();
+				overlayActivated = true;
+			}
+		}
+	}
+
+	private void disableTearsOverlay()
+	{
+		if (overlayActivated)
+		{
+			overlayActivated = false;
+		}
+	}
+
+	private Skill getLowestPlayerSkill()
+	{
+		Skill[] playerSkills = Skill.values();
+
+		Skill lowestExperienceSkill = null;
+		int lowestExperienceAmount = Integer.MAX_VALUE;
+
+		for (Skill skill : playerSkills)
+		{
+			int currentSkillExp = client.getSkillExperience(skill);
+			if (currentSkillExp < lowestExperienceAmount)
+			{
+				lowestExperienceAmount = currentSkillExp;
+				lowestExperienceSkill = skill;
+			}
+		}
+		return lowestExperienceSkill;
+	}
+
+	public int getLowestPlayerSkillLevel()
+	{
+		return client.getRealSkillLevel(playerLowestSkill);
+	}
+
 }
