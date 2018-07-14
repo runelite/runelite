@@ -98,10 +98,10 @@ public interface AttackStylesConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "warnForAutoRetaliate",
-			name = "Warn for auto retaliate",
-			description = "Show warning when Auto Retaliate combat option is selected",
-			position = 7
+		keyName = "warnForAutoRetaliate",
+		name = "Warn for auto retaliate",
+		description = "Show warning when Auto Retaliate combat option is selected",
+		position = 7
 	)
 	default boolean warnForAutoRetaliate()
 	{
