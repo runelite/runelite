@@ -31,16 +31,16 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import javax.inject.Inject;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 
-public class TearsOfGuthixExperienceOverlay extends Overlay
+class TearsOfGuthixExperienceOverlay extends Overlay
 {
 	private final TearsOfGuthixPlugin plugin;
-
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	TearsOfGuthixExperienceOverlay(TearsOfGuthixPlugin plugin)
+	private TearsOfGuthixExperienceOverlay(TearsOfGuthixPlugin plugin)
 	{
 		setPosition(OverlayPosition.BOTTOM_LEFT);
 		setPriority(OverlayPriority.LOW);
@@ -50,7 +50,7 @@ public class TearsOfGuthixExperienceOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isOverlayActivated())
+		if (plugin.getPlayerLowestSkill() == null)
 		{
 			return null;
 		}
@@ -62,5 +62,4 @@ public class TearsOfGuthixExperienceOverlay extends Overlay
 
 		return panelComponent.render(graphics);
 	}
-
 }

@@ -30,7 +30,11 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
 import lombok.Getter;
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.DecorativeObject;
+import net.runelite.api.GameState;
+import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
@@ -64,10 +68,7 @@ public class TearsOfGuthixPlugin extends Plugin
 	private final Map<DecorativeObject, Instant> streams = new HashMap<>();
 
 	@Getter
-	private boolean overlayActivated = false;
-
-	@Getter
-	private Skill playerLowestSkill;
+	private Skill playerLowestSkill = null;
 
 	@Override
 	protected void startUp()
@@ -82,6 +83,7 @@ public class TearsOfGuthixPlugin extends Plugin
 		overlayManager.remove(overlay);
 		overlayManager.remove(experienceOverlay);
 		streams.clear();
+		playerLowestSkill = null;
 	}
 
 	@Subscribe
@@ -123,7 +125,6 @@ public class TearsOfGuthixPlugin extends Plugin
 		streams.remove(object);
 	}
 
-	//Shows the player's lowest experience skill
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
@@ -133,32 +134,18 @@ public class TearsOfGuthixPlugin extends Plugin
 		}
 		if (client.getLocalPlayer().getWorldLocation().getRegionID() == TOG_REGION)
 		{
-			activateTearsOverlay();
-		}
-		else
-		{
-			disableTearsOverlay();
-		}
-	}
-
-	private void activateTearsOverlay()
-	{
-		if (!overlayActivated)
-		{
-			//Check to make sure player experience is loaded
+			if (playerLowestSkill != null)
+			{
+				return;
+			}
 			if (client.getSkillExperience(Skill.HITPOINTS) > 0)
 			{
 				playerLowestSkill = getLowestPlayerSkill();
-				overlayActivated = true;
 			}
 		}
-	}
-
-	private void disableTearsOverlay()
-	{
-		if (overlayActivated)
+		else
 		{
-			overlayActivated = false;
+			playerLowestSkill = null;
 		}
 	}
 
@@ -185,5 +172,4 @@ public class TearsOfGuthixPlugin extends Plugin
 	{
 		return client.getRealSkillLevel(playerLowestSkill);
 	}
-
 }
