@@ -39,8 +39,6 @@ import net.runelite.client.ui.PluginToolbar;
 
 @PluginDescriptor(
 	name = "Notes",
-	description = "Enable the Notes panel",
-	tags = {"panel"},
 	loadWhenOutdated = true
 )
 @Slf4j

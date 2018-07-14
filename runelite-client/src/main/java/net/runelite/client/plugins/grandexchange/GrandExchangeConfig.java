@@ -28,7 +28,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("grandexchange")
+@ConfigGroup(
+	keyName = "grandexchange",
+	name = "Grand Exchange",
+	description = "Configuration for the Grand Exchange"
+)
 public interface GrandExchangeConfig extends Config
 {
 	@ConfigItem(

@@ -28,7 +28,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("poh")
+@ConfigGroup(
+	keyName = "poh",
+	name = "Player-owned House",
+	description = "Configuration for the POH plugin"
+)
 public interface PohConfig extends Config
 {
 	@ConfigItem(

@@ -38,11 +38,7 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
 
-@PluginDescriptor(
-	name = "Skill Calculator",
-	description = "Enable the Skill Calculator panel",
-	tags = {"panel", "skilling"}
-)
+@PluginDescriptor(name = "Skill Calculator")
 public class SkillCalculatorPlugin extends Plugin
 {
 	@Inject

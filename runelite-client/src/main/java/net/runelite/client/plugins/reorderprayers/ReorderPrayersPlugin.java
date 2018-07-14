@@ -55,10 +55,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @Slf4j
-@PluginDescriptor(
-	name = "Reorder Prayers",
-	description = "Reorder the prayers displayed on the Prayer panel"
-)
+@PluginDescriptor(name = "Reorder Prayers")
 public class ReorderPrayersPlugin extends Plugin
 {
 

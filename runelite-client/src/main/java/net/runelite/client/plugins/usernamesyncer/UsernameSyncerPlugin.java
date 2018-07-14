@@ -38,8 +38,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Username Syncer",
-	description = "Save your username to the config, allowing it to be synced"
+	name = "Username Syncer"
 )
 @Slf4j
 public class UsernameSyncerPlugin extends Plugin

@@ -39,9 +39,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Fairy Ring Helper",
-	description = "Show the location of the fairy ring teleport",
-	tags = {"teleportation"}
+	name = "Fairy Ring Helper"
 )
 public class FairyRingPlugin extends Plugin
 {

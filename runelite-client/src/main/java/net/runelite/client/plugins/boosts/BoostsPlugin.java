@@ -24,15 +24,15 @@
  */
 package net.runelite.client.plugins.boosts;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ObjectArrays;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.image.BufferedImage;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -40,8 +40,6 @@ import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.events.BoostedLevelChanged;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SkillIconManager;
@@ -51,25 +49,26 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Boosts Information",
-	description = "Show combat and/or skill boost information",
-	tags = {"combat", "notifications", "skilling", "overlay"}
+	name = "Boosts Information"
 )
 @Slf4j
-@Singleton
 public class BoostsPlugin extends Plugin
 {
-	private static final Set<Skill> BOOSTABLE_COMBAT_SKILLS = ImmutableSet.of(
-		Skill.ATTACK,
-		Skill.STRENGTH,
-		Skill.DEFENCE,
-		Skill.RANGED,
-		Skill.MAGIC);
-
-	private static final Set<Skill> BOOSTABLE_NON_COMBAT_SKILLS = ImmutableSet.of(
+	private static final Skill[] COMBAT = new Skill[]
+	{
+		Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.MAGIC
+	};
+	private static final Skill[] SKILLING = new Skill[]
+	{
 		Skill.MINING, Skill.AGILITY, Skill.SMITHING, Skill.HERBLORE, Skill.FISHING, Skill.THIEVING,
 		Skill.COOKING, Skill.CRAFTING, Skill.FIREMAKING, Skill.FLETCHING, Skill.WOODCUTTING, Skill.RUNECRAFT,
-		Skill.SLAYER, Skill.FARMING, Skill.CONSTRUCTION, Skill.HUNTER);
+		Skill.SLAYER, Skill.FARMING, Skill.CONSTRUCTION, Skill.HUNTER
+	};
+
+	private final int[] lastSkillLevels = new int[Skill.values().length - 1];
+
+	@Getter
+	private Instant lastChange;
 
 	@Inject
 	private Notifier notifier;
@@ -93,15 +92,13 @@ public class BoostsPlugin extends Plugin
 	private SkillIconManager skillIconManager;
 
 	@Getter
-	private final Set<Skill> shownSkills = new HashSet<>();
+	private Skill[] shownSkills;
 
-	private boolean isChangedDown = false;
-	private boolean isChangedUp = false;
-	private final int[] lastSkillLevels = new int[Skill.values().length - 1];
-	private int lastChangeDown = -1;
-	private int lastChangeUp = -1;
+	private StatChangeIndicator statChangeIndicator;
+
+	private BufferedImage overallIcon;
+
 	private boolean preserveBeenActive = false;
-	private long lastTickMillis;
 
 	@Provides
 	BoostsConfig provideConfig(ConfigManager configManager)
@@ -110,27 +107,12 @@ public class BoostsPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		overlayManager.add(boostsOverlay);
-		updateShownSkills();
-		updateBoostedStats();
+		updateShownSkills(config.enableSkill());
 		Arrays.fill(lastSkillLevels, -1);
-
-		// Add infoboxes for everything at startup and then determine inside if it will be rendered
-		synchronized (ImageIO.class)
-		{
-			infoBoxManager.addInfoBox(new StatChangeIndicator(true, ImageIO.read(getClass().getResourceAsStream("debuffed.png")), this, config));
-			infoBoxManager.addInfoBox(new StatChangeIndicator(false, ImageIO.read(getClass().getResourceAsStream("buffed.png")), this, config));
-		}
-
-		for (final Skill skill : Skill.values())
-		{
-			if (skill != Skill.OVERALL)
-			{
-				infoBoxManager.addInfoBox(new BoostIndicator(skill, skillIconManager.getSkillImage(skill), this, client, config));
-			}
-		}
+		overallIcon = skillIconManager.getSkillImage(Skill.OVERALL);
 	}
 
 	@Override
@@ -138,24 +120,6 @@ public class BoostsPlugin extends Plugin
 	{
 		overlayManager.remove(boostsOverlay);
 		infoBoxManager.removeIf(t -> t instanceof BoostIndicator || t instanceof StatChangeIndicator);
-		preserveBeenActive = false;
-		lastChangeDown = -1;
-		lastChangeUp = -1;
-		isChangedUp = false;
-		isChangedDown = false;
-	}
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
-	{
-		switch (event.getGameState())
-		{
-			case LOGIN_SCREEN:
-			case HOPPING:
-				// After world hop and log out timers are in undefined state so just reset
-				lastChangeDown = -1;
-				lastChangeUp = -1;
-		}
 	}
 
 	@Subscribe
@@ -166,25 +130,29 @@ public class BoostsPlugin extends Plugin
 			return;
 		}
 
-		updateShownSkills();
-
-		if (config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.NEVER)
+		if (event.getKey().equals("displayIndicators") || event.getKey().equals("displayNextChange"))
 		{
-			lastChangeDown = -1;
+			addStatChangeIndicator();
+			return;
 		}
 
-		if (config.displayNextDebuffChange() == BoostsConfig.DisplayChangeMode.NEVER)
+		Skill[] old = shownSkills;
+		updateShownSkills(config.enableSkill());
+
+		if (!Arrays.equals(old, shownSkills))
 		{
-			lastChangeUp = -1;
+			infoBoxManager.removeIf(t -> t instanceof BoostIndicator
+				&& !Arrays.asList(shownSkills).contains(((BoostIndicator) t).getSkill()));
 		}
 	}
 
 	@Subscribe
-	public void onBoostedLevelChange(BoostedLevelChanged boostedLevelChanged)
+	void onBoostedLevelChange(BoostedLevelChanged boostedLevelChanged)
 	{
 		Skill skill = boostedLevelChanged.getSkill();
 
-		if (!BOOSTABLE_COMBAT_SKILLS.contains(skill) && !BOOSTABLE_NON_COMBAT_SKILLS.contains(skill))
+		// Ignore changes to hitpoints or prayer
+		if (skill == Skill.HITPOINTS || skill == Skill.PRAYER)
 		{
 			return;
 		}
@@ -193,23 +161,16 @@ public class BoostsPlugin extends Plugin
 		int last = lastSkillLevels[skillIdx];
 		int cur = client.getBoostedSkillLevel(skill);
 
-		if (cur == last - 1)
+		// Check if stat goes +1 or -1
+		if (cur == last + 1 || cur == last - 1)
 		{
-			// Stat was restored down (from buff)
-			lastChangeDown = client.getTickCount();
+			log.debug("Skill {} healed", skill);
+			lastChange = Instant.now();
+			addStatChangeIndicator();
 		}
-
-		if (cur == last + 1)
-		{
-			// Stat was restored up (from debuff)
-			lastChangeUp = client.getTickCount();
-		}
-
 		lastSkillLevels[skillIdx] = cur;
-		updateBoostedStats();
 
 		int boostThreshold = config.boostThreshold();
-
 		if (boostThreshold != 0)
 		{
 			int real = client.getRealSkillLevel(skill);
@@ -222,93 +183,30 @@ public class BoostsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void updateShownSkills(boolean showSkillingSkills)
 	{
-		lastTickMillis = System.currentTimeMillis();
-
-		if (getChangeUpTicks() <= 0)
+		if (showSkillingSkills)
 		{
-			switch (config.displayNextDebuffChange())
-			{
-				case ALWAYS:
-					if (lastChangeUp != -1)
-					{
-						lastChangeUp = client.getTickCount();
-					}
-
-					break;
-				case BOOSTED:
-				case NEVER:
-					lastChangeUp = -1;
-					break;
-			}
-		}
-
-		if (getChangeDownTicks() <= 0)
-		{
-			switch (config.displayNextBuffChange())
-			{
-				case ALWAYS:
-					if (lastChangeDown != -1)
-					{
-						lastChangeDown = client.getTickCount();
-					}
-
-					break;
-				case BOOSTED:
-				case NEVER:
-					lastChangeDown = -1;
-					break;
-			}
-		}
-	}
-
-	private void updateShownSkills()
-	{
-		if (config.enableSkill())
-		{
-			shownSkills.addAll(BOOSTABLE_NON_COMBAT_SKILLS);
+			shownSkills = ObjectArrays.concat(COMBAT, SKILLING, Skill.class);
 		}
 		else
 		{
-			shownSkills.removeAll(BOOSTABLE_NON_COMBAT_SKILLS);
+			shownSkills = COMBAT;
 		}
-
-		shownSkills.addAll(BOOSTABLE_COMBAT_SKILLS);
 	}
 
-	private void updateBoostedStats()
+	public void addStatChangeIndicator()
 	{
-		// Reset is boosted
-		isChangedDown = false;
-		isChangedUp = false;
+		infoBoxManager.removeInfoBox(statChangeIndicator);
+		statChangeIndicator = null;
 
-		// Check if we are still boosted
-		for (final Skill skill : Skill.values())
+		if (lastChange != null
+			&& config.displayIndicators()
+			&& config.displayNextChange())
 		{
-			if (!BOOSTABLE_COMBAT_SKILLS.contains(skill) && !BOOSTABLE_NON_COMBAT_SKILLS.contains(skill))
-			{
-				continue;
-			}
-
-			final int boosted = client.getBoostedSkillLevel(skill);
-			final int base = client.getRealSkillLevel(skill);
-
-			if (boosted > base)
-			{
-				isChangedUp = true;
-			}
-			else if (boosted < base)
-			{
-				isChangedDown = true;
-			}
+			statChangeIndicator = new StatChangeIndicator(getChangeTime(), ChronoUnit.SECONDS, overallIcon, this);
+			infoBoxManager.addInfoBox(statChangeIndicator);
 		}
-	}
-
-	boolean canShowBoosts()
-	{
-		return isChangedDown || isChangedUp;
 	}
 
 	/**
@@ -324,58 +222,26 @@ public class BoostsPlugin extends Plugin
 	 * Preserve is only required to be on for the 4th and 5th sections of the boost timer
 	 * to gain full effect (seconds 45-75).
 	 *
-	 * @return integer value in ticks until next boost change
+	 * @return integer value in seconds until next boost change
 	 */
-	int getChangeDownTicks()
+	public int getChangeTime()
 	{
-		if (lastChangeDown == -1 ||
-				config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.NEVER ||
-				(config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.BOOSTED && !isChangedUp))
-		{
-			return -1;
-		}
-
-		int ticksSinceChange = client.getTickCount() - lastChangeDown;
+		int timeSinceChange = timeSinceLastChange();
 		boolean isPreserveActive = client.isPrayerActive(Prayer.PRESERVE);
 
-		if ((isPreserveActive && (ticksSinceChange < 75 || preserveBeenActive)) || ticksSinceChange > 125)
+		if ((isPreserveActive && (timeSinceChange < 45 || preserveBeenActive)) || timeSinceChange > 75)
 		{
 			preserveBeenActive = true;
-			return 150 - ticksSinceChange;
+			return 90 - timeSinceChange;
 		}
 
 		preserveBeenActive = false;
-		return (ticksSinceChange > 100) ? 125 - ticksSinceChange : 100 - ticksSinceChange;
+		return (timeSinceChange > 60) ? 75 - timeSinceChange : 60 - timeSinceChange;
 	}
 
-	/**
-	 * Restoration from debuff is separate timer as restoration from buff because of preserve messing up the buff timer.
-	 * Restoration timer is always in 100 tick cycles.
-	 *
-	 * @return integer value in ticks until next stat restoration up
-	 */
-	int getChangeUpTicks()
+	private int timeSinceLastChange()
 	{
-		if (lastChangeUp == -1 ||
-				config.displayNextDebuffChange() == BoostsConfig.DisplayChangeMode.NEVER ||
-				(config.displayNextDebuffChange() == BoostsConfig.DisplayChangeMode.BOOSTED && !isChangedDown))
-		{
-			return -1;
-		}
-
-		int ticksSinceChange = client.getTickCount() - lastChangeUp;
-		return 100 - ticksSinceChange;
+		return (int) Duration.between(lastChange, Instant.now()).getSeconds();
 	}
 
-
-	/**
-	 * Converts tick-based time to accurate second time
-	 * @param time tick-based time
-	 * @return second-based time
-	 */
-	int getChangeTime(final int time)
-	{
-		final long diff = System.currentTimeMillis() - lastTickMillis;
-		return time != -1 ? (int)(time * 0.6 - (diff / 1000d)) : time;
-	}
 }

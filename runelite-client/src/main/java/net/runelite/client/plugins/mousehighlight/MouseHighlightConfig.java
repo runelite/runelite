@@ -28,7 +28,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("mousehighlight")
+@ConfigGroup(
+	keyName = "mousehighlight",
+	name = "Mouse Tooltips",
+	description = "Configures the Mouse Tooltips plugin"
+)
 public interface MouseHighlightConfig extends Config
 {
 	@ConfigItem(

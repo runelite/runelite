@@ -48,8 +48,6 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Special Attack Counter",
-	description = "Track DWH, Arclight, Darklight, and BGS special attacks used on NPCs",
-	tags = {"combat", "npcs", "overlay"},
 	enabledByDefault = false
 )
 public class SpecialCounterPlugin extends Plugin

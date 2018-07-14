@@ -28,7 +28,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("prayer")
+@ConfigGroup(
+	keyName = "prayer",
+	name = "Prayer",
+	description = "Various tools related to prayer"
+)
 public interface PrayerConfig extends Config
 {
 	@ConfigItem(
@@ -45,7 +49,7 @@ public interface PrayerConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "prayerIndicator",
-		name = "Boost indicator",
+		name = "Boost Indicator",
 		description = "Enable infoboxes for prayers"
 	)
 	default boolean prayerIndicator()
@@ -56,7 +60,7 @@ public interface PrayerConfig extends Config
 	@ConfigItem(
 		position = 2,
 		keyName = "prayerIndicatorOverheads",
-		name = "Overhead indicator",
+		name = "Overhead Indicator",
 		description = "Also enable infoboxes for overheads"
 	)
 	default boolean prayerIndicatorOverheads()
@@ -67,7 +71,7 @@ public interface PrayerConfig extends Config
 	@ConfigItem(
 		position = 3,
 		keyName = "showPrayerDoseIndicator",
-		name = "Show prayer dose indicator",
+		name = "Show Prayer Dose Indicator",
 		description = "Enables the prayer dose indicator."
 	)
 	default boolean showPrayerDoseIndicator()
@@ -77,45 +81,12 @@ public interface PrayerConfig extends Config
 
 	@ConfigItem(
 		position = 4,
-		keyName = "showPrayerTooltip",
-		name = "Show prayer orb tooltip",
+		keyName = "Statistics",
+		name = "Show Prayer Stats",
 		description = "Displays time remaining and prayer bonus as a tooltip on the quick-prayer icon."
 	)
 	default boolean showPrayerStatistics()
 	{
 		return true;
-	}
-
-	@ConfigItem(
-		position = 5,
-		keyName = "showPrayerBar",
-		name = "Show prayer bar",
-		description = "Displays prayer bar under HP bar when praying."
-	)
-	default boolean showPrayerBar()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "prayerBarHideIfNotPraying",
-		name = "Hide bar while prayer is inactive",
-		description = "Prayer bar will be hidden while prayers are inactivate.",
-		position = 6
-	)
-	default boolean hideIfNotPraying()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "prayerBarHideIfNonCombat",
-		name = "Hide bar while out-of-combat",
-		description = "Prayer bar will be hidden while out-of-combat.",
-		position = 7
-	)
-	default boolean hideIfOutOfCombat()
-	{
-		return false;
 	}
 }

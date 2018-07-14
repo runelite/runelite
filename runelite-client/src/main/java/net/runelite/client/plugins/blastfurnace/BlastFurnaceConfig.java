@@ -28,7 +28,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("blastfurnace")
+@ConfigGroup(
+	keyName = "blastfurnace",
+	name = "Blast Furnace",
+	description = "Configuration for the Blast furnace plugin"
+)
 public interface BlastFurnaceConfig extends Config
 {
 	@ConfigItem(

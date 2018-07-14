@@ -28,7 +28,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("cluescroll")
+@ConfigGroup(
+	name = "Clue Scroll",
+	keyName = "cluescroll",
+	description = "Configuration for the clue scroll plugin"
+)
 public interface ClueScrollConfig extends Config
 {
 	@ConfigItem(

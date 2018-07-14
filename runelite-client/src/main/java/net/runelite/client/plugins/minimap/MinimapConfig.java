@@ -29,7 +29,10 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("minimap")
+@ConfigGroup(
+	keyName = "minimap",
+	name = "Minimap",
+	description = "Configuration for the minimap")
 public interface MinimapConfig extends Config
 {
 	@ConfigItem(

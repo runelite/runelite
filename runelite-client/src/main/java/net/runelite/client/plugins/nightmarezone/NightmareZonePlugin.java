@@ -42,9 +42,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Nightmare Zone",
-	description = "Show NMZ points/absorption and/or notify about expiring potions",
-	tags = {"combat", "nmz", "minigame", "notifications"}
+	name = "Nightmare Zone"
 )
 public class NightmareZonePlugin extends Plugin
 {

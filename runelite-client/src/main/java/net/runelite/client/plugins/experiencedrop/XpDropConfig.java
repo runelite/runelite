@@ -29,7 +29,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("xpdrop")
+@ConfigGroup(
+	keyName = "xpdrop",
+	name = "XP Drop",
+	description = "Configuration for XP drop customization"
+)
 public interface XpDropConfig extends Config
 {
 	@ConfigItem(

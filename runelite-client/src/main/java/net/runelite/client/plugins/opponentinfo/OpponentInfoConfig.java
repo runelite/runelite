@@ -28,7 +28,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("opponentinfo")
+@ConfigGroup(
+	keyName = "opponentinfo",
+	name = "Opponent Info",
+	description = "Configuration for the Opponent info plugin"
+)
 public interface OpponentInfoConfig extends Config
 {
 	@ConfigItem(

@@ -60,9 +60,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Ground Markers",
-	description = "Enable marking of tiles using the Shift key",
-	tags = {"overlay", "tiles"}
+	name = "Ground Markers"
 )
 public class GroundMarkerPlugin extends Plugin
 {

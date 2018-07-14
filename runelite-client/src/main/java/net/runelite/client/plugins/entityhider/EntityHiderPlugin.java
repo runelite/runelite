@@ -36,8 +36,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Entity Hider",
-	description = "Hide players, NPCs, and/or projectiles",
-	tags = {"npcs", "players", "projectiles"},
 	enabledByDefault = false
 )
 public class EntityHiderPlugin extends Plugin

@@ -29,7 +29,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("tithefarmplugin")
+@ConfigGroup(
+	keyName = "tithefarmplugin",
+	name = "Tithe Farm",
+	description = "Configuration for the Tithe Farm plugin"
+)
 public interface TitheFarmPluginConfig extends Config
 {
 	@ConfigItem(

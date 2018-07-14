@@ -29,7 +29,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("stretchedfixedmode")
+@ConfigGroup(
+	keyName = "stretchedfixedmode",
+	name = "Stretched Fixed Mode",
+	description = "Resizes the game while in fixed mode"
+)
 public interface StretchedFixedModeConfig extends Config
 {
 	@ConfigItem(

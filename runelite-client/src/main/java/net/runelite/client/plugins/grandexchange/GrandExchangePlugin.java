@@ -71,9 +71,7 @@ import net.runelite.http.api.osbuddy.GrandExchangeClient;
 import net.runelite.http.api.osbuddy.GrandExchangeResult;
 
 @PluginDescriptor(
-	name = "Grand Exchange",
-	description = "Provide additional and/or easier access to Grand Exchange information",
-	tags = {"external", "integration", "notifications", "panel", "prices", "trade"}
+	name = "Grand Exchange"
 )
 @Slf4j
 public class GrandExchangePlugin extends Plugin

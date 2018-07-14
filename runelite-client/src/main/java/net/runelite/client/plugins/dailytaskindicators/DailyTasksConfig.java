@@ -28,7 +28,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("dailytaskindicators")
+@ConfigGroup(
+	keyName = "dailytaskindicators",
+	name = "Daily Task Indicators",
+	description = "Configuration for Daily Task Indicators plugin"
+)
 public interface DailyTasksConfig extends Config
 {
 	@ConfigItem(

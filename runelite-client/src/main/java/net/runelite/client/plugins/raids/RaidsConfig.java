@@ -28,7 +28,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("raids")
+@ConfigGroup(
+	keyName = "raids",
+	name = "Chambers Of Xeric",
+	description = "Configuration for the raids plugin"
+)
 public interface RaidsConfig extends Config
 {
 	@ConfigItem(

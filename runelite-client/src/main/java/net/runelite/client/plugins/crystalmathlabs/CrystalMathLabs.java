@@ -44,8 +44,6 @@ import okhttp3.Response;
 
 @PluginDescriptor(
 	name = "Crystal Math Labs",
-	description = "Automatically updates your stats on Crystal Math Labs when you log out",
-	tags = {"cml", "external", "integration"},
 	enabledByDefault = false
 )
 @Slf4j

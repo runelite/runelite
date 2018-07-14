@@ -28,7 +28,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("regenmeter")
+@ConfigGroup(
+	keyName = "regenmeter",
+	name = "Regeneration Meter",
+	description = "Configuration for the data orb regeneration meters"
+)
 public interface RegenMeterConfig extends Config
 {
 	@ConfigItem(

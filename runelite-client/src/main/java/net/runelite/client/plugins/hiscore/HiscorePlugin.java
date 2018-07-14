@@ -53,8 +53,6 @@ import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "HiScore",
-	description = "Enable the HiScore panel and an optional Lookup option on players",
-	tags = {"panel", "players"},
 	loadWhenOutdated = true
 )
 public class HiscorePlugin extends Plugin

@@ -183,7 +183,7 @@ class XpPanel extends PluginPanel
 	}
 
 
-	void updateTotal(XpSnapshotTotal xpSnapshotTotal)
+	public void updateTotal(XpSnapshotTotal xpSnapshotTotal)
 	{
 		// if player has gained exp and hasn't switched displays yet, hide error panel and show overall info
 		if (xpSnapshotTotal.getXpGainedInSession() > 0 && !overallPanel.isVisible())

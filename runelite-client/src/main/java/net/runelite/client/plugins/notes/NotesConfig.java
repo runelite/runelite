@@ -28,7 +28,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("notes")
+@ConfigGroup(
+	keyName = "notes",
+	name = "Notes",
+	description = "Configuration for the Notes plugin"
+)
 public interface NotesConfig extends Config
 {
 	@ConfigItem(

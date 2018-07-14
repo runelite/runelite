@@ -640,8 +640,4 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("oculusOrbState")
 	@Override
 	void setOculusOrbState(int state);
-
-	@Import("oculusOrbNormalSpeed")
-	@Override
-	void setOculusOrbNormalSpeed(int state);
 }

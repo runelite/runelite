@@ -29,7 +29,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("tileindicators")
+@ConfigGroup(
+	keyName = "tileindicators",
+	name = "Tile Indicators",
+	description = "Configuration for the tile indicators plugin"
+)
 public interface TileIndicatorsConfig extends Config
 {
 	@ConfigItem(

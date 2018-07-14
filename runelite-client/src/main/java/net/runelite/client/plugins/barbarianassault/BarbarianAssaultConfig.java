@@ -28,7 +28,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("barbarianAssault")
+@ConfigGroup(
+	keyName = "barbarianAssault",
+	name = "Barbarian Assault",
+	description = "Configuration for the barbarian assault plugin"
+)
 public interface BarbarianAssaultConfig extends Config
 {
 	@ConfigItem(

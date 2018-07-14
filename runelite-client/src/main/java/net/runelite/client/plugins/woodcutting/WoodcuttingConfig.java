@@ -28,7 +28,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("woodcutting")
+@ConfigGroup(
+	keyName = "woodcutting",
+	name = "Woodcutting",
+	description = "Configuration for the woodcutting plugin"
+)
 public interface WoodcuttingConfig extends Config
 {
 	@ConfigItem(

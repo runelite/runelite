@@ -29,7 +29,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("agility")
+@ConfigGroup(
+	keyName = "agility",
+	name = "Agility",
+	description = "Configuration for the Agility plugin"
+)
 public interface AgilityConfig extends Config
 {
 	@ConfigItem(
