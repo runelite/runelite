@@ -43,6 +43,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import net.runelite.api.events.GameTick;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.concurrent.ScheduledExecutorService;
@@ -57,18 +58,16 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Point;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetID.BARROWS_REWARD_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.CLUE_SCROLL_REWARD_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.KINGDOM_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.QUEST_COMPLETED_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.RAIDS_REWARD_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
@@ -108,7 +107,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
-	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile("Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
+	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
 
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
 		"You feel something weird sneaking into your backpack",
@@ -132,7 +131,9 @@ public class ScreenshotPlugin extends Plugin
 
 	private Integer barrowsNumber;
 
-	private Integer raidsNumber;
+	private Integer chambersOfXericNumber;
+
+	private boolean shouldTakeScreenshot;
 
 	@Inject
 	private ScreenshotConfig config;
@@ -234,6 +235,38 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (!shouldTakeScreenshot)
+		{
+			return;
+		}
+
+		shouldTakeScreenshot = false;
+
+		String fileName = null;
+		if (client.getWidget(WidgetInfo.LEVEL_UP_LEVEL) != null)
+		{
+			fileName = parseLevelUpWidget(WidgetInfo.LEVEL_UP_LEVEL);
+		}
+		else if (client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT) != null)
+		{
+			fileName = parseLevelUpWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
+		}
+		else if (client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT) != null)
+		{
+			// "You have completed The Corsair Curse!"
+			String text = client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT).getText();
+			fileName = text.substring(19, text.length() - 1);
+		}
+
+		if (fileName != null)
+		{
+			takeScreenshot(fileName);
+		}
+	}
+
+	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
@@ -269,7 +302,7 @@ public class ScreenshotPlugin extends Plugin
 			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
 			if (m.find())
 			{
-				raidsNumber = Integer.valueOf(m.group());
+				chambersOfXericNumber = Integer.valueOf(m.group());
 				return;
 			}
 		}
@@ -290,29 +323,20 @@ public class ScreenshotPlugin extends Plugin
 	@Subscribe
 	public void loadWidgets(WidgetLoaded event)
 	{
-		if (!config.screenshotKingdom())
-		{
-			return;
-		}
-		if (event.getGroupId() == WidgetID.KINGDOM_GROUP_ID)
-		{
-			String fileName = "Kingdom " + LocalDate.now();
-			takeScreenshot(fileName);
-		}
-	}
+		String fileName;
+		int groupId = event.getGroupId();
 
-	@Subscribe
-	public void hideWidgets(WidgetHiddenChanged event)
-	{
-		Widget widget = event.getWidget();
-
-		if (widget.isHidden())
+		switch (groupId)
 		{
-			return;
-		}
-
-		switch (TO_GROUP(widget.getId()))
-		{
+			case QUEST_COMPLETED_GROUP_ID:
+			case CLUE_SCROLL_REWARD_GROUP_ID:
+			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
+			case BARROWS_REWARD_GROUP_ID:
+				if (!config.screenshotRewards())
+				{
+					return;
+				}
+				break;
 			case LEVEL_UP_GROUP_ID:
 			case DIALOG_SPRITE_GROUP_ID:
 				if (!config.screenshotLevels())
@@ -320,56 +344,31 @@ public class ScreenshotPlugin extends Plugin
 					return;
 				}
 				break;
-			case QUEST_COMPLETED_GROUP_ID:
-			case CLUE_SCROLL_REWARD_GROUP_ID:
-			case BARROWS_REWARD_GROUP_ID:
-			case RAIDS_REWARD_GROUP_ID:
-				if (!config.screenshotRewards())
+			case KINGDOM_GROUP_ID:
+				if (!config.screenshotKingdom())
 				{
 					return;
 				}
 				break;
 		}
 
-		String fileName;
-
-		switch (TO_GROUP(widget.getId()))
+		switch (groupId)
 		{
-			case LEVEL_UP_GROUP_ID:
+			case KINGDOM_GROUP_ID:
 			{
-				fileName = parseLevelUpWidget(WidgetInfo.LEVEL_UP_LEVEL);
+				fileName = "Kingdom " + LocalDate.now();
+				takeScreenshot(fileName);
 				break;
 			}
-			case DIALOG_SPRITE_GROUP_ID:
+			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
 			{
-				fileName = parseLevelUpWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
-				break;
-			}
-			case QUEST_COMPLETED_GROUP_ID:
-			{
-				Widget textChild = client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT);
-
-				if (textChild == null)
+				if (chambersOfXericNumber == null)
 				{
 					return;
 				}
 
-				// "You have completed The Corsair Curse!"
-				String text = textChild.getText();
-
-				fileName = text.substring(19, text.length() - 1);
-				break;
-			}
-			case CLUE_SCROLL_REWARD_GROUP_ID:
-			{
-				if (clueType == null || clueNumber == null)
-				{
-					return;
-				}
-
-				fileName = Character.toUpperCase(clueType.charAt(0)) + clueType.substring(1) + "(" + clueNumber + ")";
-				clueType = null;
-				clueNumber = null;
+				fileName = "Chambers of Xeric(" + chambersOfXericNumber + ")";
+				chambersOfXericNumber = null;
 				break;
 			}
 			case BARROWS_REWARD_GROUP_ID:
@@ -383,24 +382,28 @@ public class ScreenshotPlugin extends Plugin
 				barrowsNumber = null;
 				break;
 			}
-			case RAIDS_REWARD_GROUP_ID:
+			case LEVEL_UP_GROUP_ID:
+			case DIALOG_SPRITE_GROUP_ID:
+			case QUEST_COMPLETED_GROUP_ID:
 			{
-				if (raidsNumber == null)
+				// level up widget gets loaded prior to the text being set, so wait until the next tick
+				shouldTakeScreenshot = true;
+				return;
+			}
+			case CLUE_SCROLL_REWARD_GROUP_ID:
+			{
+				if (clueType == null || clueNumber == null)
 				{
 					return;
 				}
 
-				fileName = "Raids(" + raidsNumber + ")";
-				raidsNumber = null;
+				fileName = Character.toUpperCase(clueType.charAt(0)) + clueType.substring(1) + "(" + clueNumber + ")";
+				clueType = null;
+				clueNumber = null;
 				break;
 			}
 			default:
 				return;
-		}
-
-		if (fileName == null)
-		{
-			return;
 		}
 
 		takeScreenshot(fileName);
@@ -589,8 +592,8 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@VisibleForTesting
-	int getRaidsNumber()
+	int getChambersOfXericNumber()
 	{
-		return raidsNumber;
+		return chambersOfXericNumber;
 	}
 }
