@@ -36,6 +36,8 @@ public enum VarPlayer
 {
 	ATTACK_STYLE(43),
 
+	AUTO_RETALIATE(172),
+
 	BANK_TAB(115),
 
 	SPECIAL_ATTACK_PERCENT(300),
