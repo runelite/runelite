@@ -51,15 +51,11 @@ public enum PatchImplementation
 					// Cactus[,Inspect,,Guide,] 7747,7748,7749,7750,7751,7752,7753
 					return new PatchState(Produce.CACTUS, CropState.GROWING, value - 8);
 				}
-				if (value == 15)
+				if (value >= 15 && value <= 18)
 				{
 					// Cactus[Clear,Inspect,,Guide,] 7754
-					return new PatchState(Produce.CACTUS, CropState.GROWING, 0);
-				}
-				if (value >= 16 && value <= 18)
-				{
 					// Cactus[Pick-spine,Inspect,,Guide,] 7755,7756,7757
-					return new PatchState(Produce.CACTUS, CropState.HARVESTABLE, value - 16);
+					return new PatchState(Produce.CACTUS, CropState.HARVESTABLE, value - 15);
 				}
 				if (value >= 19 && value <= 24)
 				{
