@@ -89,20 +89,15 @@ public class InfoBoxOverlay extends Overlay
 			: PanelComponent.Orientation.HORIZONTAL);
 		panelComponent.setPreferredSize(new Dimension(config.infoBoxSize(), config.infoBoxSize()));
 
-		for (InfoBox box : infoBoxes)
+		infoBoxes.forEach(box ->
 		{
-			if (!box.render())
-			{
-				continue;
-			}
-
 			final InfoBoxComponent infoBoxComponent = new InfoBoxComponent();
 			infoBoxComponent.setColor(box.getTextColor());
 			infoBoxComponent.setImage(box.getScaledImage());
 			infoBoxComponent.setText(box.getText());
 			infoBoxComponent.setTooltip(box.getTooltip());
 			panelComponent.getChildren().add(infoBoxComponent);
-		}
+		});
 
 		final Dimension dimension = panelComponent.render(graphics);
 		final Client client = clientProvider.get();

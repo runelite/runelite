@@ -52,9 +52,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Hunter",
-	description = "Show the state of your traps",
-	tags = {"overlay", "skilling", "timers"}
+	name = "Hunter"
 )
 public class HunterPlugin extends Plugin
 {

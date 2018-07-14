@@ -27,7 +27,11 @@ package net.runelite.client.config;
 import java.awt.Dimension;
 import net.runelite.api.Constants;
 
-@ConfigGroup("runelite")
+@ConfigGroup(
+	keyName = "runelite",
+	name = "RuneLite",
+	description = "Configuration for RuneLite client options"
+)
 public interface RuneLiteConfig extends Config
 {
 	@ConfigItem(

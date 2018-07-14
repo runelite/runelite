@@ -24,7 +24,11 @@
  */
 package net.runelite.client.config;
 
-@ConfigGroup("test")
+@ConfigGroup(
+	keyName = "test",
+	name = "test",
+	description = "test"
+)
 public interface TestConfig
 {
 	@ConfigItem(

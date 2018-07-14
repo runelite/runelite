@@ -48,9 +48,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Barbarian Assault",
-	description = "Show a timer to the next call change",
-	tags = {"minigame", "overlay"}
+	name = "Barbarian Assault"
 )
 public class BarbarianAssaultPlugin extends Plugin
 {

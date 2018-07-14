@@ -28,7 +28,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("fishing")
+@ConfigGroup(
+	keyName = "fishing",
+	name = "Fishing",
+	description = "Configuration for the fishing plugin"
+)
 public interface FishingConfig extends Config
 {
 	@ConfigItem(

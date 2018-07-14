@@ -28,7 +28,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("attackIndicator")
+@ConfigGroup(
+	keyName = "attackIndicator",
+	name = "Attack Styles",
+	description = "Configuration for the attack styles plugin"
+)
 public interface AttackStylesConfig extends Config
 {
 	@ConfigItem(

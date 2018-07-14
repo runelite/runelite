@@ -39,9 +39,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Fight Cave",
-	description = "Show what to pray against Jad",
-	tags = {"bosses", "combat", "minigame", "overlay", "prayer", "pve"}
+	name = "Fight Cave"
 )
 public class FightCavePlugin extends Plugin
 {

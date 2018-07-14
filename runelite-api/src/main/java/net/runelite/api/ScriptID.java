@@ -26,6 +26,5 @@ package net.runelite.api;
 
 public final class ScriptID
 {
-	public static final int CHATBOX_INPUT = 96;
 	public static final int RUNELITE_CHATBOX_INPUT_INIT = 10001;
 }

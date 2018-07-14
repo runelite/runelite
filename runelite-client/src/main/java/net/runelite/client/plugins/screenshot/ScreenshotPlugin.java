@@ -94,9 +94,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 @PluginDescriptor(
-	name = "Screenshot",
-	description = "Enable the manual and automatic taking of screenshots",
-	tags = {"external", "images", "imgur", "integration", "notifications"}
+	name = "Screenshot"
 )
 @Slf4j
 public class ScreenshotPlugin extends Plugin

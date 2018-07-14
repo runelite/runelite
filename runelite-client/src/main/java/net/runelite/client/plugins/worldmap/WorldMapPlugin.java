@@ -43,9 +43,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 
 @PluginDescriptor(
-	name = "World Map",
-	description = "Enhance the world map to display additional information",
-	tags = {"agility", "fairy", "rings", "teleports"}
+	name = "World Map"
 )
 public class WorldMapPlugin extends Plugin
 {

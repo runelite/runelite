@@ -61,9 +61,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Cannon",
-	description = "Show information about cannon placement and/or amount of cannonballs",
-	tags = {"combat", "notifications", "ranged", "overlay"}
+	name = "Cannon"
 )
 public class CannonPlugin extends Plugin
 {

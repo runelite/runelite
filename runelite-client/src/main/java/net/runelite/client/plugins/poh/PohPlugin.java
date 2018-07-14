@@ -56,9 +56,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Player-owned House",
-	description = "Show minimap icons and mark unlit/lit burners",
-	tags = {"construction", "poh", "minimap", "overlay"}
+	name = "Player-owned House"
 )
 public class PohPlugin extends Plugin
 {

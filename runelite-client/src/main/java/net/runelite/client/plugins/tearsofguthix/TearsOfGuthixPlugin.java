@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Infinitay <https://github.com/Infinitay>
+ * Copyright (c) 2018, Johanna Jennekvist <https://github.com/aquivers>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,30 +25,24 @@
 package net.runelite.client.plugins.tearsofguthix;
 
 import com.google.common.eventbus.Subscribe;
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
+
 import javax.inject.Inject;
-import lombok.Getter;
-import net.runelite.api.Client;
-import net.runelite.api.DecorativeObject;
-import net.runelite.api.ObjectID;
-import net.runelite.api.events.DecorativeObjectDespawned;
-import net.runelite.api.events.DecorativeObjectSpawned;
-import net.runelite.api.events.GameStateChanged;
+
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.*;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Tears Of Guthix",
-	description = "Show timers for the Tears Of Guthix streams",
-	tags = {"minigame", "overlay", "skilling", "timers", "tog"}
+		name = "Tears of Guthix",
+		enabledByDefault = true
 )
+
+@Slf4j
 public class TearsOfGuthixPlugin extends Plugin
 {
-	private static final int TOG_REGION = 12948;
-
 	@Inject
 	private Client client;
 
@@ -58,58 +52,85 @@ public class TearsOfGuthixPlugin extends Plugin
 	@Inject
 	private TearsOfGuthixOverlay overlay;
 
-	@Getter
-	private final Map<DecorativeObject, Instant> streams = new HashMap<>();
+	private int tearsOfGuthixRegionID = 12948;
+
+	public Skill playerLowestSkill;
+
+	public boolean overlayActivated = false;
 
 	@Override
-	protected void startUp()
+	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
 	}
 
 	@Override
-	protected void shutDown()
+	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
-		streams.clear();
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	public void onGameTick(GameTick gameTick)
 	{
-		switch (event.getGameState())
-		{
-			case LOADING:
-			case LOGIN_SCREEN:
-			case HOPPING:
-				streams.clear();
-		}
-	}
-
-	@Subscribe
-	public void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
-	{
-		DecorativeObject object = event.getDecorativeObject();
-
-		if (event.getDecorativeObject().getId() == ObjectID.BLUE_TEARS ||
-			event.getDecorativeObject().getId() == ObjectID.BLUE_TEARS_6665)
-		{
-			if (client.getLocalPlayer().getWorldLocation().getRegionID() == TOG_REGION)
-			{
-				streams.put(event.getDecorativeObject(), Instant.now());
-			}
-		}
-	}
-
-	@Subscribe
-	public void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
-	{
-		if (streams.isEmpty())
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
 
-		DecorativeObject object = event.getDecorativeObject();
-		streams.remove(object);
+		if (client.getLocalPlayer().getWorldLocation().getRegionID() == tearsOfGuthixRegionID)
+		{
+			activateTearsOverlay();
+		}
+		else
+		{
+			disableTearsOverlay();
+		}
 	}
+
+	private void activateTearsOverlay()
+	{
+		if (!overlayActivated)
+		{
+			//Check to make sure player experience is loaded
+			if (client.getSkillExperience(Skill.HITPOINTS) > 0)
+			{
+				playerLowestSkill = getLowestPlayerSkill();
+				overlayActivated = true;
+			}
+		}
+	}
+
+	private void disableTearsOverlay()
+	{
+		if (overlayActivated)
+		{
+			overlayActivated = false;
+		}
+	}
+
+	private Skill getLowestPlayerSkill()
+	{
+		Skill[] playerSkills = Skill.values();
+
+		Skill lowestExperienceSkill = null;
+		int lowestExperienceAmount = Integer.MAX_VALUE;
+
+		for (Skill skill : playerSkills)
+		{
+			int currentSkillExp = client.getSkillExperience(skill);
+			if (currentSkillExp < lowestExperienceAmount)
+			{
+				lowestExperienceAmount = currentSkillExp;
+				lowestExperienceSkill = skill;
+			}
+		}
+		return lowestExperienceSkill;
+	}
+
+	public Client getClient()
+	{
+		return client;
+	}
+
 }

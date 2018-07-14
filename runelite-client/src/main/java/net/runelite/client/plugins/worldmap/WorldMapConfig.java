@@ -29,7 +29,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(WorldMapPlugin.CONFIG_KEY)
+@ConfigGroup(
+	keyName = WorldMapPlugin.CONFIG_KEY,
+	name = "World Map",
+	description = "Various World Map enhancements"
+)
 public interface WorldMapConfig extends Config
 {
 	@ConfigItem(

@@ -32,7 +32,7 @@ class XpSnapshotTotal
 	private final int xpGainedInSession;
 	private final int xpPerHour;
 
-	static XpSnapshotTotal zero()
+	public static XpSnapshotTotal zero()
 	{
 		return new XpSnapshotTotal(0, 0);
 	}

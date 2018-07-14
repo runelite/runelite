@@ -28,7 +28,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("itemprices")
+@ConfigGroup(
+	keyName = "itemprices",
+	name = "Item Prices",
+	description = "Configuration for the Item Prices plugin"
+)
 public interface ItemPricesConfig extends Config
 {
 	@ConfigItem(

@@ -40,9 +40,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Item Charges",
-	description = "Show number of item charges remaining",
-	tags = {"inventory", "notifications", "overlay"}
+	name = "Item Charges"
 )
 public class ItemChargePlugin extends Plugin
 {

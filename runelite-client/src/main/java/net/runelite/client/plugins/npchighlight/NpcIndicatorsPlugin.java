@@ -65,11 +65,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.WildcardMatcher;
 
-@PluginDescriptor(
-	name = "NPC Indicators",
-	description = "Highlight NPCs on-screen and/or on the minimap",
-	tags = {"highlight", "minimap", "npcs", "overlay", "respawn", "tags"}
-)
+@PluginDescriptor(name = "NPC Indicators")
 public class NpcIndicatorsPlugin extends Plugin
 {
 	private static final int MAX_ACTOR_VIEW_RANGE = 15;

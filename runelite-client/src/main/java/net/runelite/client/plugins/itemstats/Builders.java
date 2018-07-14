@@ -79,9 +79,4 @@ public class Builders
 	{
 		return new DeltaPercentage(perc, delta);
 	}
-
-	public static RangeStatBoost range(StatBoost a, StatBoost b)
-	{
-		return new RangeStatBoost(a, b);
-	}
 }

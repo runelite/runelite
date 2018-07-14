@@ -40,8 +40,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Instance Map",
-	description = "Add an instanced map, accessible by right-clicking the map button"
+	name = "Instance Map"
 )
 public class InstanceMapPlugin extends Plugin
 {

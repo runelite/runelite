@@ -87,9 +87,7 @@ import net.runelite.client.util.QueryRunner;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Clue Scroll",
-	description = "Show answers to clue scroll riddles, anagrams, ciphers, and cryptic clues",
-	tags = {"arrow", "hints", "world", "map"}
+	name = "Clue Scroll"
 )
 @Slf4j
 public class ClueScrollPlugin extends Plugin

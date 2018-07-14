@@ -74,8 +74,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Motherlode Mine",
-	description = "Show helpful information inside the Motherload Mine",
-	tags = {"pay", "dirt", "mining", "mlm", "skilling", "overlay"},
 	enabledByDefault = false
 )
 public class MotherlodePlugin extends Plugin

@@ -28,14 +28,17 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("discord")
+@ConfigGroup(
+	keyName = "discord",
+	name = "Discord",
+	description = "Configuration for Discord plugin"
+)
 public interface DiscordConfig extends Config
 {
 	@ConfigItem(
 		keyName = "actionTimeout",
 		name = "Action timeout (minutes)",
-		description = "Configures after how long of not updating status will be reset (in minutes)",
-		position = 1
+		description = "Configures after how long of not updating status will be reset (in minutes)"
 	)
 	default int actionTimeout()
 	{
@@ -43,57 +46,12 @@ public interface DiscordConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showSkillActivity",
-		name = "Show activity while skilling",
-		description = "Configures if your activity while training skills should be shown.",
-		position = 2
+		keyName = "actionDelay",
+		name = "New action delay (seconds)",
+		description = "Configures the delay before new action will be considered as valid"
 	)
-	default boolean showSkillingActivity()
+	default int actionDelay()
 	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showBossActivity",
-		name = "Show activity at bosses",
-		description = "Configures if your activity at bosses should be shown.",
-		position = 3
-	)
-	default boolean showBossActivity()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showCityActivity",
-		name = "Show activity at cities",
-		description = "Configures if your activity at cities should be shown.",
-		position = 4
-	)
-	default boolean showCityActivity()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showDungeonActivity",
-		name = "Show activity at dungeons",
-		description = "Configures if your activity at dungeons should be shown.",
-		position = 5
-	)
-	default boolean showDungeonActivity()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showMinigameActivity",
-		name = "Show activity at minigames",
-		description = "Configures if your activity at minigames should be shown.",
-		position = 6
-	)
-	default boolean showMinigameActivity()
-	{
-		return true;
+		return 10;
 	}
 }

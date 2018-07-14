@@ -37,8 +37,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Stretched Fixed Mode",
-	description = "Resize the game while in fixed mode",
-	tags = {"resize"},
 	enabledByDefault = false
 )
 public class StretchedFixedModePlugin extends Plugin

@@ -38,8 +38,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Combat Level",
-	description = "Show a more accurate combat level in Combat Options panel"
+	name = "Combat Level"
 )
 public class CombatLevelPlugin extends Plugin
 {
