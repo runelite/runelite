@@ -155,10 +155,13 @@ class NameAutocompleter implements KeyListener
 			{
 				try
 				{
-					input.getDocument().insertString(
-						nameStart.length(),
-						name.substring(nameStart.length()),
-						null);
+					Document document = input.getDocument();
+					document.remove(nameStart.length(), document.getLength() - nameStart.length());
+					document.insertString(
+							nameStart.length(),
+							name.substring(nameStart.length()),
+							null
+					);
 					input.select(nameStart.length(), name.length());
 				}
 				catch (BadLocationException ex)
