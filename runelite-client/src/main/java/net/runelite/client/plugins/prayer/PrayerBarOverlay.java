@@ -28,6 +28,8 @@ package net.runelite.client.plugins.prayer;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.time.Duration;
+import java.time.Instant;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
@@ -52,6 +54,8 @@ class PrayerBarOverlay extends Overlay
 	private final Client client;
 	private final PrayerConfig config;
 	private boolean showingPrayerBar;
+	private boolean anyPrayerActive;
+	private Instant startOfLastTick = Instant.now();
 
 	@Inject
 	private PrayerBarOverlay(final Client client, final PrayerConfig config)
@@ -86,18 +90,41 @@ class PrayerBarOverlay extends Overlay
 		// Restricted by the width to prevent the bar from being too long while you are boosted above your real prayer level.
 		final int progressFill = (int) Math.ceil(Math.min((barWidth * ratio), barWidth));
 
-		graphics.setColor(BAR_BG_COLOR);
-		graphics.fillRect(barX, barY, barWidth, barHeight);
-		graphics.setColor(BAR_FILL_COLOR);
-		graphics.fillRect(barX, barY, progressFill, barHeight);
+		if (config.prayerFlickHelper() && anyPrayerActive && !config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_ORB))
+		{
+			long timeSinceLastTick = Duration.between(startOfLastTick, Instant.now()).toMillis();
+
+			float tickProgress = timeSinceLastTick / 600f;
+			tickProgress = Math.min(tickProgress, 1); //Cap to 1
+
+			double t = tickProgress * Math.PI;
+
+			int xOffset = (int) (-Math.cos(t) * barWidth / 2) + barWidth / 2;
+
+			graphics.setColor(BAR_BG_COLOR);
+			graphics.fillRect(barX, barY, barWidth, barHeight);
+			graphics.setColor(BAR_FILL_COLOR);
+			graphics.fillRect(barX, barY, progressFill, barHeight);
+			graphics.setColor(Color.black);
+			graphics.fillRect(barX + xOffset, barY, 1, barHeight);
+		}
+		else
+		{
+			graphics.setColor(BAR_BG_COLOR);
+			graphics.fillRect(barX, barY, barWidth, barHeight);
+			graphics.setColor(BAR_FILL_COLOR);
+			graphics.fillRect(barX, barY, progressFill, barHeight);
+		}
+
 		return new Dimension(barWidth, barHeight);
 	}
 
 	void onTick()
 	{
-		final boolean anyPrayerActive = checkIfAnyPrayerIsActive();
+		anyPrayerActive = checkIfAnyPrayerIsActive();
 		final Player localPlayer = client.getLocalPlayer();
 		showingPrayerBar = true;
+		startOfLastTick = Instant.now();
 
 		if (localPlayer == null)
 		{
