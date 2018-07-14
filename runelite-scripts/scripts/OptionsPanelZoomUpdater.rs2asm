@@ -23,9 +23,9 @@
    runelite_callback
    isub                  
    istore                 1
-   load_int               17104904
+   load_int               17104905
    widget_get_width_widget
-   load_int               17104909
+   load_int               17104910
    widget_get_width_widget
    isub                  
    istore                 2
@@ -47,7 +47,7 @@ LABEL27:
    load_int               175
    load_string            "resizableOuterZoomLimit"
    runelite_callback
-   isub
+   isub                  
    iload                  0
    load_string            "zoomExpToLin"
    runelite_callback
@@ -63,7 +63,7 @@ LABEL36:
    load_int               195
    load_string            "fixedOuterZoomLimit"
    runelite_callback
-   isub
+   isub                  
    iload                  1
    load_string            "zoomExpToLin"
    runelite_callback
@@ -78,6 +78,6 @@ LABEL44:
    load_int               0
    load_int               0
    load_int               0
-   load_int               17104909
+   load_int               17104910
    widget_put_position_widget
    return                

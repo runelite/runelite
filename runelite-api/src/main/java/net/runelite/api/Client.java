@@ -660,6 +660,28 @@ public interface Client extends GameEngine
 	int getVarbitValue(int[] varps, int varbitId);
 
 	/**
+	 * Gets the value of a given VarPlayer.
+	 *
+	 * @param varps passed varps
+	 * @param varpId the VarpPlayer id
+	 * @return the value
+	 * @see VarPlayer#id
+	 */
+	@VisibleForDevtools
+	int getVarpValue(int[] varps, int varpId);
+
+	/**
+	 * Sets the value of a given VarPlayer.
+	 *
+	 * @param varps passed varps
+	 * @param varpId the VarpPlayer id
+	 * @param value the value
+	 * @see VarPlayer#id
+	 */
+	@VisibleForDevtools
+	void setVarpValue(int[] varps, int varpId, int value);
+
+	/**
 	 * Sets the value of a given variable.
 	 *
 	 * @param varps passed varbits
@@ -1395,4 +1417,11 @@ public interface Client extends GameEngine
 	 * @param state boolean enabled value
 	 */
 	void setOculusOrbState(int state);
+
+	/**
+	 * Sets the normal moving speed when using oculus orb (default value is 12)
+	 *
+	 * @param speed speed
+	 */
+	void setOculusOrbNormalSpeed(int speed);
 }

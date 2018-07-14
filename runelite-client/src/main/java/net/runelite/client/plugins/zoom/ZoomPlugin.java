@@ -38,6 +38,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Camera Zoom",
+	description = "Expand zoom limit and/or enable vertical camera",
+	tags = {"limit", "vertical"},
 	enabledByDefault = false
 )
 @Slf4j

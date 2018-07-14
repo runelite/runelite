@@ -103,6 +103,7 @@ public class WidgetID
 	public static final int MTA_TELEKINETIC_GROUP_ID = 198;
 	public static final int CORP_DAMAGE = 13;
 	public static final int DESTROY_ITEM_GROUP_ID = 584;
+	public static final int VARROCK_MUSEUM_QUIZ_GROUP_ID = 533;
 
 	static class WorldMap
 	{
@@ -118,10 +119,10 @@ public class WidgetID
 
 	static class DialogNPC
 	{
-		static final int HEAD_MODEL = 0;
-		static final int NAME = 1;
-		static final int CONTINUE = 2;
-		static final int TEXT = 3;
+		static final int HEAD_MODEL = 1;
+		static final int NAME = 2;
+		static final int CONTINUE = 3;
+		static final int TEXT = 4;
 	}
 
 	static class LogoutPanel
@@ -450,8 +451,8 @@ public class WidgetID
 
 	static class LevelUp
 	{
-		static final int SKILL = 0;
-		static final int LEVEL = 1;
+		static final int SKILL = 1;
+		static final int LEVEL = 2;
 	}
 
 	static class QuestCompleted
@@ -497,8 +498,8 @@ public class WidgetID
 
 	static class DialogSprite
 	{
-		static final int SPRITE = 0;
-		static final int TEXT = 1;
+		static final int SPRITE = 1;
+		static final int TEXT = 2;
 	}
 
 	static class ExperienceTracker
@@ -525,8 +526,8 @@ public class WidgetID
 
 	static class Barrows
 	{
-		static final int BARROWS_BROTHERS = 8;
-		static final int BARROWS_POTENTIAL = 9;
+		static final int BARROWS_BROTHERS = 9;
+		static final int BARROWS_POTENTIAL = 10;
 		static final int BARROWS_REWARD_INVENTORY = 3;
 	}
 
@@ -541,5 +542,13 @@ public class WidgetID
 		static final int DESTROY_ITEM_NAME = 6;
 		static final int DESTROY_ITEM_YES = 1;
 		static final int DESTROY_ITEM_NO = 3;
+	}
+
+	static class VarrockMuseum
+	{
+		static final int VARROCK_MUSEUM_QUESTION = 28;
+		static final int VARROCK_MUSEUM_FIRST_ANSWER = 29;
+		static final int VARROCK_MUSEUM_SECOND_ANSWER = 30;
+		static final int VARROCK_MUSEUM_THIRD_ANSWER = 31;
 	}
 }

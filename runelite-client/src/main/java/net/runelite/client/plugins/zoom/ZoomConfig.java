@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "zoom",
-	name = "Camera Zoom",
-	description = "Configuration for the camera zoom limit"
-)
+@ConfigGroup("zoom")
 public interface ZoomConfig extends Config
 {
 	@ConfigItem(

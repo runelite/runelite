@@ -228,7 +228,9 @@ public class DevToolsPanel extends PluginPanel
 		oculusOrbBtn.addActionListener(e ->
 		{
 			highlightButton(oculusOrbBtn);
-			client.setOculusOrbState(oculusOrbBtn.getBackground().equals(Color.GREEN) ? 1 : 0);
+			boolean enabled = oculusOrbBtn.getBackground().equals(Color.GREEN);
+			client.setOculusOrbState(enabled ? 1 : 0);
+			client.setOculusOrbNormalSpeed(enabled ? 36 : 12);
 		});
 		container.add(oculusOrbBtn);
 

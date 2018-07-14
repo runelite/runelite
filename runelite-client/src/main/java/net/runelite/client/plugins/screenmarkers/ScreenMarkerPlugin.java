@@ -55,7 +55,9 @@ import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Screen Markers"
+	name = "Screen Markers",
+	description = "Enable drawing of screen markers on top of the client",
+	tags = {"boxes", "overlay", "panel"}
 )
 @Slf4j
 public class ScreenMarkerPlugin extends Plugin

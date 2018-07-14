@@ -85,7 +85,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.http.api.item.ItemPrice;
 
 @PluginDescriptor(
-	name = "Ground Items"
+	name = "Ground Items",
+	description = "Highlight ground items and/or show price information",
+	tags = {"grand", "exchange", "high", "alchemy", "prices", "highlight", "overlay"}
 )
 @Slf4j
 public class GroundItemsPlugin extends Plugin

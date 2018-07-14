@@ -53,7 +53,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
-	name = "Fishing"
+	name = "Fishing",
+	description = "Show fishing stats and mark fishing spots",
+	tags = {"overlay", "skilling"}
 )
 @PluginDependency(XpTrackerPlugin.class)
 @Singleton

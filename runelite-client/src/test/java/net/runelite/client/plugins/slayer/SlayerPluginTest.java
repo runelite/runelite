@@ -58,9 +58,12 @@ public class SlayerPluginTest
 
 	private static final String TASK_EXISTING = "You're still hunting suqahs; you have 222 to go. Come<br>back when you've finished your task.";
 
+	private static final String REWARD_POINTS = "Reward points: 17,566";
+
 	private static final String TASK_ONE = "You've completed one task; return to a Slayer master.";
 	private static final String TASK_COMPLETE_NO_POINTS = "<col=ef1020>You've completed 3 tasks; return to a Slayer master.</col>";
 	private static final String TASK_POINTS = "You've completed 9 tasks and received 0 points, giving you a total of 18,000; return to a Slayer master.";
+	private static final String TASK_LARGE_STREAK = "You've completed 2,465 tasks and received 15 points, giving you a total of 17,566,000; return to a Slayer master.";
 
 	private static final String TASK_COMPLETE = "You need something new to hunt.";
 	private static final String TASK_CANCELED = "Your task has been cancelled.";
@@ -130,7 +133,7 @@ public class SlayerPluginTest
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
-		assertEquals("suqahs", slayerPlugin.getTaskName());
+		assertEquals("Suqahs", slayerPlugin.getTaskName());
 		assertEquals(231, slayerPlugin.getAmount());
 	}
 
@@ -142,7 +145,7 @@ public class SlayerPluginTest
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
-		assertEquals("suqahs", slayerPlugin.getTaskName());
+		assertEquals("Suqahs", slayerPlugin.getTaskName());
 		assertEquals(211, slayerPlugin.getAmount());
 	}
 
@@ -156,6 +159,21 @@ public class SlayerPluginTest
 
 		assertEquals("suqahs", slayerPlugin.getTaskName());
 		assertEquals(222, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testRewardPointsWidget()
+	{
+		Widget rewardBar = mock(Widget.class);
+		Widget rewardBarText = mock(Widget.class);
+		Widget[] rewardBarChildren = new Widget[]{rewardBarText};
+
+		when(rewardBar.getDynamicChildren()).thenReturn(rewardBarChildren);
+		when(rewardBarText.getText()).thenReturn(REWARD_POINTS);
+		when(client.getWidget(WidgetInfo.SLAYER_REWARDS_TOPBAR)).thenReturn(rewardBar);
+		slayerPlugin.onGameTick(new GameTick());
+
+		assertEquals(17566, slayerPlugin.getPoints());
 	}
 
 	@Test
@@ -190,6 +208,18 @@ public class SlayerPluginTest
 		assertEquals("", slayerPlugin.getTaskName());
 		assertEquals(0, slayerPlugin.getAmount());
 		assertEquals(18_000, slayerPlugin.getPoints());
+	}
+
+	@Test
+	public void testLargeStreak()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Perterter", TASK_LARGE_STREAK, null);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals(2465, slayerPlugin.getStreak());
+		assertEquals("", slayerPlugin.getTaskName());
+		assertEquals(0, slayerPlugin.getAmount());
+		assertEquals(17_566_000, slayerPlugin.getPoints());
 	}
 
 	@Test

@@ -53,7 +53,9 @@ import net.runelite.client.ui.overlay.infobox.Timer;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 
 @PluginDescriptor(
-	name = "Death Indicator"
+	name = "Death Indicator",
+	description = "Show where you last died, and on what world",
+	tags = {"arrow", "hints", "world", "map", "overlay"}
 )
 @Slf4j
 public class DeathIndicatorPlugin extends Plugin

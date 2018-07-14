@@ -98,6 +98,6 @@ public class ConfigPlugin extends Plugin
 	@Subscribe
 	public void onPluginChanged(PluginChanged event)
 	{
-		SwingUtilities.invokeLater(configPanel::rebuildPluginList);
+		SwingUtilities.invokeLater(configPanel::refreshPluginList);
 	}
 }

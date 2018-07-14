@@ -29,11 +29,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "npcindicators",
-	name = "NPC Indicators",
-	description = "Configuration for the NPC indicators plugin"
-)
+@ConfigGroup("npcindicators")
 public interface NpcIndicatorsConfig extends Config
 {
 	@ConfigItem(

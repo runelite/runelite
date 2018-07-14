@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, PandahRS <https://github.com/PandahRS>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,17 +30,22 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.temporal.ChronoUnit;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import net.runelite.api.Client;
+import static net.runelite.api.Constants.CHUNK_SIZE;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
+import net.runelite.api.WorldType;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.discord.DiscordService;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
@@ -48,7 +54,9 @@ import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.util.LinkBrowser;
 
 @PluginDescriptor(
-	name = "Discord"
+	name = "Discord",
+	description = "Show your status and activity in the Discord user panel",
+	tags = {"action", "activity", "external", "integration", "status"}
 )
 public class DiscordPlugin extends Plugin
 {
@@ -59,18 +67,17 @@ public class DiscordPlugin extends Plugin
 	private DiscordConfig config;
 
 	@Inject
-	private DiscordService discordService;
-
-	@Inject
 	private TitleToolbar titleToolbar;
 
 	@Inject
 	private RuneLiteProperties properties;
 
-	private final DiscordState discordState = new DiscordState();
+	@Inject
+	private DiscordState discordState;
+
 	private Map<Skill, Integer> skillExp = new HashMap<>();
-	private boolean loggedIn = false;
 	private NavigationButton discordButton;
+	private boolean loginFlag;
 
 	@Provides
 	private DiscordConfig provideConfig(ConfigManager configManager)
@@ -94,21 +101,48 @@ public class DiscordPlugin extends Plugin
 			.build();
 
 		titleToolbar.addNavigation(discordButton);
-		updateGameStatus(client.getGameState(), true);
+		checkForGameStateUpdate();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		titleToolbar.removeNavigation(discordButton);
-		discordService.clearPresence();
 		discordState.reset();
 	}
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		updateGameStatus(event.getGameState(), false);
+		switch (event.getGameState())
+		{
+			case LOGIN_SCREEN:
+				checkForGameStateUpdate();
+				return;
+			case LOGGING_IN:
+				loginFlag = true;
+				break;
+			case LOGGED_IN:
+				if (loginFlag)
+				{
+					loginFlag = false;
+					checkForGameStateUpdate();
+				}
+
+				break;
+		}
+
+		checkForAreaUpdate();
+	}
+
+	@Subscribe
+	public void configChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equalsIgnoreCase("discord"))
+		{
+			checkForGameStateUpdate();
+			checkForAreaUpdate();
+		}
 	}
 
 	@Subscribe
@@ -124,9 +158,9 @@ public class DiscordPlugin extends Plugin
 
 		final DiscordGameEventType discordGameEventType = DiscordGameEventType.fromSkill(event.getSkill());
 
-		if (discordGameEventType != null)
+		if (discordGameEventType != null && config.showSkillingActivity())
 		{
-			discordState.triggerEvent(discordGameEventType, config.actionDelay());
+			discordState.triggerEvent(discordGameEventType);
 		}
 	}
 
@@ -136,33 +170,97 @@ public class DiscordPlugin extends Plugin
 	)
 	public void checkForValidStatus()
 	{
-		if (discordState.checkForTimeout(config.actionTimeout()))
-		{
-			updateGameStatus(client.getGameState(), true);
-		}
+		discordState.checkForTimeout();
 	}
 
-	@Schedule(
-		period = 1,
-		unit = ChronoUnit.SECONDS
-	)
-	public void flushDiscordStatus()
+	private void checkForGameStateUpdate()
 	{
-		discordState.flushEvent(discordService);
+		// Game state update does also full reset of discord state
+		discordState.reset();
+		discordState.triggerEvent(client.getGameState() == GameState.LOGGED_IN
+			? DiscordGameEventType.IN_GAME
+			: DiscordGameEventType.IN_MENU);
 	}
 
-	private void updateGameStatus(GameState gameState, boolean force)
+	private void checkForAreaUpdate()
 	{
-		if (gameState == GameState.LOGIN_SCREEN)
+		if (client.getLocalPlayer() == null)
 		{
-			skillExp.clear();
-			loggedIn = false;
-			discordState.triggerEvent(DiscordGameEventType.IN_MENU, config.actionDelay());
+			return;
 		}
-		else if (client.getGameState() == GameState.LOGGED_IN && (force || !loggedIn))
+
+		final int playerRegionID = getCurrentRegion();
+
+		if (playerRegionID == 0)
 		{
-			loggedIn = true;
-			discordState.triggerEvent(DiscordGameEventType.IN_GAME, config.actionDelay());
+			return;
 		}
+
+		final DiscordGameEventType discordGameEventType = DiscordGameEventType.fromRegion(playerRegionID);
+
+		if (discordGameEventType == null)
+		{
+			// Unknown region, reset to default in-game
+			discordState.triggerEvent(DiscordGameEventType.IN_GAME);
+			return;
+		}
+
+		if (!showArea(discordGameEventType))
+		{
+			return;
+		}
+
+		discordState.triggerEvent(discordGameEventType);
 	}
+
+	private boolean showArea(final DiscordGameEventType event)
+	{
+		if (event == null)
+		{
+			return false;
+		}
+
+		final EnumSet<WorldType> worldType = client.getWorldType();
+
+		// Do not show location in PVP activities
+		if (worldType.contains(WorldType.SEASONAL_DEADMAN) ||
+			worldType.contains(WorldType.DEADMAN) ||
+			worldType.contains(WorldType.PVP) ||
+			worldType.contains(WorldType.PVP_HIGH_RISK))
+		{
+			return false;
+		}
+
+		switch (event.getDiscordAreaType())
+		{
+			case BOSSES: return config.showBossActivity();
+			case CITIES: return config.showCityActivity();
+			case DUNGEONS: return config.showDungeonActivity();
+			case MINIGAMES: return config.showMinigameActivity();
+		}
+
+		return false;
+	}
+
+	private int getCurrentRegion()
+	{
+		if (!client.isInInstancedRegion())
+		{
+			return client.getLocalPlayer().getWorldLocation().getRegionID();
+		}
+
+		// get chunk data of current chunk
+		final LocalPoint localPoint = client.getLocalPlayer().getLocalLocation();
+		final int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
+		final int z = client.getPlane();
+		final int chunkData = instanceTemplateChunks[z][localPoint.getRegionX() / CHUNK_SIZE][localPoint.getRegionY() / CHUNK_SIZE];
+
+		// extract world point from chunk data
+		final int chunkY = (chunkData >> 3 & 0x7FF) * CHUNK_SIZE;
+		final int chunkX = (chunkData >> 14 & 0x3FF) * CHUNK_SIZE;
+
+		final WorldPoint worldPoint = new WorldPoint(chunkX, chunkY, z);
+		return worldPoint.getRegionID();
+	}
+
 }

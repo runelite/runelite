@@ -42,7 +42,9 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Minimap"
+	name = "Minimap",
+	description = "Customize the color of minimap dots",
+	tags = {"items", "npcs", "players"}
 )
 public class MinimapPlugin extends Plugin
 {
