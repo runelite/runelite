@@ -61,7 +61,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.BARROWS_REWARD_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.RAIDS_REWARD_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.CLUE_SCROLL_REWARD_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.KINGDOM_GROUP_ID;
@@ -131,7 +131,7 @@ public class ScreenshotPlugin extends Plugin
 
 	private Integer barrowsNumber;
 
-	private Integer raidsNumber;
+	private Integer chambersOfXericNumber;
 
 	private boolean shouldTakeScreenshot;
 
@@ -302,7 +302,7 @@ public class ScreenshotPlugin extends Plugin
 			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
 			if (m.find())
 			{
-				raidsNumber = Integer.valueOf(m.group());
+				chambersOfXericNumber = Integer.valueOf(m.group());
 				return;
 			}
 		}
@@ -330,7 +330,7 @@ public class ScreenshotPlugin extends Plugin
 		{
 			case QUEST_COMPLETED_GROUP_ID:
 			case CLUE_SCROLL_REWARD_GROUP_ID:
-			case RAIDS_REWARD_GROUP_ID:
+			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
 			case BARROWS_REWARD_GROUP_ID:
 				if (!config.screenshotRewards())
 				{
@@ -360,15 +360,15 @@ public class ScreenshotPlugin extends Plugin
 				takeScreenshot(fileName);
 				break;
 			}
-			case RAIDS_REWARD_GROUP_ID:
+			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
 			{
-				if (raidsNumber == null)
+				if (chambersOfXericNumber == null)
 				{
 					return;
 				}
 
-				fileName = "Chambers of Xeric(" + raidsNumber + ")";
-				raidsNumber = null;
+				fileName = "Chambers of Xeric(" + chambersOfXericNumber + ")";
+				chambersOfXericNumber = null;
 				break;
 			}
 			case BARROWS_REWARD_GROUP_ID:
@@ -592,8 +592,8 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@VisibleForTesting
-	int getRaidsNumber()
+	int getChambersOfXericNumber()
 	{
-		return raidsNumber;
+		return chambersOfXericNumber;
 	}
 }
