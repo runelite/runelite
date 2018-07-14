@@ -208,7 +208,7 @@ public class ScreenshotPluginTest
 		Widget levelChild = mock(Widget.class);
 		when(client.getWidget(Matchers.eq(DIALOG_SPRITE_TEXT))).thenReturn(levelChild);
 
-		when(levelChild.getText()).thenReturn("Your Hunter level is now 2.");
+		when(levelChild.getText()).thenReturn("<col=000080>Congratulations, you've just advanced a Hunter level.<col=000000><br><br>Your Hunter level is now 2.");
 
 		assertEquals("Hunter(2)", screenshotPlugin.parseLevelUpWidget(DIALOG_SPRITE_TEXT));
 
