@@ -188,6 +188,7 @@ public class SlayerPlugin extends Plugin
 		overlayManager.remove(targetClickboxOverlay);
 		overlayManager.remove(targetMinimapOverlay);
 		removeCounter();
+		highlightedTargets.clear();
 	}
 
 	@Provides
@@ -207,6 +208,7 @@ public class SlayerPlugin extends Plugin
 				taskName = "";
 				amount = 0;
 				loginFlag = true;
+				highlightedTargets.clear();
 				break;
 			case LOGGED_IN:
 				if (config.amount() != -1
