@@ -84,8 +84,7 @@ public class GrotesqueGuardiansOverlay extends Overlay
 						}
 					}
 				}
-
-				// If a relevant graphic object is detected and color is set, display the tile and text.
+				
 				if (color != null)
 				{
 					OverlayUtil.renderPolygon(graphics, poly, color);
