@@ -234,7 +234,6 @@ public class AttackStylesPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-
 		if (event.getGroup().equals("attackIndicator"))
 		{
 			boolean enabled = event.getNewValue().equals("true");
