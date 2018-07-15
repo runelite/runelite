@@ -264,6 +264,12 @@
       "name": "Ruby Necklace",
       "xp": 75
     },
+	{
+      "level": 41,
+      "icon": 22269,
+      "name": "Hard leather shield",
+      "xp": 70
+    },
     {
       "level": 42,
       "icon": 11085,
@@ -329,6 +335,12 @@
       "icon": 1662,
       "name": "Diamond Necklace",
       "xp": 90
+    },
+	{
+      "level": 56,
+      "icon": 22272,
+      "name": "Snakeskin shield",
+      "xp": 100
     },
     {
       "level": 57,
