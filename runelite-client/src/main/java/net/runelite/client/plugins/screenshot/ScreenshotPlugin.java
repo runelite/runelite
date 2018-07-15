@@ -323,7 +323,7 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void loadWidgets(WidgetLoaded event)
+	public void onWidgetLoaded(WidgetLoaded event)
 	{
 		String fileName;
 		int groupId = event.getGroupId();
