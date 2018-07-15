@@ -145,7 +145,7 @@ public class ScreenshotPluginTest
 
 		WidgetLoaded event = new WidgetLoaded();
 		event.setGroupId(LEVEL_UP_GROUP_ID);
-		screenshotPlugin.loadWidgets(event);
+		screenshotPlugin.onWidgetLoaded(event);
 
 		GameTick tick = new GameTick();
 		screenshotPlugin.onGameTick(tick);
@@ -168,7 +168,7 @@ public class ScreenshotPluginTest
 
 		WidgetLoaded event = new WidgetLoaded();
 		event.setGroupId(LEVEL_UP_GROUP_ID);
-		screenshotPlugin.loadWidgets(event);
+		screenshotPlugin.onWidgetLoaded(event);
 
 		GameTick tick = new GameTick();
 		screenshotPlugin.onGameTick(tick);
@@ -191,7 +191,7 @@ public class ScreenshotPluginTest
 
 		WidgetLoaded event = new WidgetLoaded();
 		event.setGroupId(LEVEL_UP_GROUP_ID);
-		screenshotPlugin.loadWidgets(event);
+		screenshotPlugin.onWidgetLoaded(event);
 
 		GameTick tick = new GameTick();
 		screenshotPlugin.onGameTick(tick);
@@ -214,7 +214,7 @@ public class ScreenshotPluginTest
 
 		WidgetLoaded event = new WidgetLoaded();
 		event.setGroupId(DIALOG_SPRITE_GROUP_ID);
-		screenshotPlugin.loadWidgets(event);
+		screenshotPlugin.onWidgetLoaded(event);
 
 		GameTick tick = new GameTick();
 		screenshotPlugin.onGameTick(tick);
