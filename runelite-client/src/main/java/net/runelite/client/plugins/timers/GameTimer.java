@@ -27,14 +27,12 @@
 package net.runelite.client.plugins.timers;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import javax.imageio.ImageIO;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ItemID;
 import net.runelite.api.GraphicID;
+import net.runelite.api.ItemID;
 import net.runelite.api.SpriteID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
@@ -79,37 +77,23 @@ public enum GameTimer
 	STAFF_OF_THE_DEAD(ItemID.STAFF_OF_THE_DEAD, GameTimerImageType.ITEM, "Staff of the Dead", 1, ChronoUnit.MINUTES);
 
 	@Getter
-	private final String imageResource;
-	@Getter
 	private final Duration duration;
 	@Getter
 	private final Integer graphicId;
 	@Getter
 	private final String description;
-
-	private GameTimerImageType imageType;
 	private int imageId = -1;
+	private GameTimerImageType imageType;
 
 	private BufferedImage image;
 
-	GameTimer(String imageResource, String description, Integer graphicId, long time, ChronoUnit unit)
+	GameTimer(int imageId, GameTimerImageType idType, String description, Integer graphicId, long time, ChronoUnit unit)
 	{
-		this.imageResource = imageResource;
 		this.description = description;
 		this.graphicId = graphicId;
 		this.duration = Duration.of(time, unit);
-	}
-
-	GameTimer(int imageId, GameTimerImageType idType, String description, Integer graphicId, long time, ChronoUnit unit)
-	{
-		this("", description, graphicId, time, unit);
 		this.imageId = imageId;
 		this.imageType = idType;
-	}
-
-	GameTimer(String imageResource, String description, long time, ChronoUnit unit)
-	{
-		this(imageResource, description, null, time, unit);
 	}
 
 	GameTimer(int imageId, GameTimerImageType idType, String description, long time, ChronoUnit unit)
@@ -124,30 +108,14 @@ public enum GameTimer
 			return image;
 		}
 
-		if (imageId != -1)
+		switch (imageType)
 		{
-			if (imageType == GameTimerImageType.ITEM)
-			{
+			case ITEM:
 				image = itemManager.getImage(imageId);
-			}
-			else if (imageType == GameTimerImageType.SPRITE)
-			{
+				break;
+			case SPRITE:
 				image = spriteManager.getSprite(imageId, 0);
-			}
-		}
-		else
-		{
-			try
-			{
-				synchronized (ImageIO.class)
-				{
-					image = ImageIO.read(GameTimer.class.getResourceAsStream(imageResource + ".png"));
-				}
-			}
-			catch (IOException ex)
-			{
-				log.warn("unable to load image", ex);
-			}
+				break;
 		}
 
 		return image;
