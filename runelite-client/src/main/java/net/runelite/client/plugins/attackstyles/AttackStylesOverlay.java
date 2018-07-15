@@ -42,6 +42,9 @@ public class AttackStylesOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
+	private Client client;
+
+	@Inject
 	public AttackStylesOverlay(AttackStylesPlugin plugin, AttackStylesConfig config)
 	{
 		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
