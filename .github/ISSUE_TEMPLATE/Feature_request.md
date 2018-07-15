@@ -1,17 +1,21 @@
 ---
-name: "\U0001F680 Feature Request or RFC"
-about: "I have a suggestion (and may want to implement it \U0001F642)!"
+name: "✨ Feature Request"
+about: "Suggest a feature for RuneLite."
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+<!-- PLEASE READ BELOW!
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+Lots of feature requests reported are duplicates. Please help us by searching for past issues before creating a feature request:
+  * Search: https://github.com/runelite/runelite/search?type=Issues
+  * FAQ: https://github.com/runelite/runelite/wiki/FAQ
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+Please fill in the *entire* template below. -->
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+## What is your feature request?
+
+
+## Why is it useful?
+
+
+## Is there anything else about the feature request you'd like to add? Do you have any examples, such as a concept screenshot?
