@@ -71,7 +71,6 @@ public class AttackStylesPlugin extends Plugin
 	private final Set<Skill> warnedSkills = new HashSet<>();
 	private boolean warnedSkillSelected = false;
 	private boolean hideAutoRetaliate = false;
-	private boolean warnedRetaliateSelected = false;
 
 	private final Table<WeaponType, WidgetInfo, Boolean> widgetsToHide = HashBasedTable.create();
 
@@ -150,11 +149,6 @@ public class AttackStylesPlugin extends Plugin
 		return warnedSkillSelected;
 	}
 
-	public boolean isWarnedRetaliateSelected()
-	{
-		return warnedRetaliateSelected;
-	}
-
 	@Subscribe
 	public void hideWidgets(WidgetHiddenChanged event)
 	{
@@ -213,17 +207,6 @@ public class AttackStylesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onAutoRetaliateChange(VarbitChanged event)
-	{
-		if (autoRetaliateVarbit == - 1 || autoRetaliateVarbit != client.getVar(VarPlayer.AUTO_RETALIATE))
-		{
-			autoRetaliateVarbit = client.getVar(VarPlayer.AUTO_RETALIATE);
-			updateAutoRetaliate(config.warnForAutoRetaliate());
-			updateWarning(false);
-		}
-	}
-
-	@Subscribe
 	public void onEquippedWeaponTypeChange(VarbitChanged event)
 	{
 		if (equippedWeaponTypeVarbit == -1 || equippedWeaponTypeVarbit != client.getVar(Varbits.EQUIPPED_WEAPON_TYPE))
@@ -248,6 +231,7 @@ public class AttackStylesPlugin extends Plugin
 			updateWarning(false);
 		}
 	}
+
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
