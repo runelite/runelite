@@ -48,6 +48,12 @@
       "name": "Serum 207 (3)",
       "xp": 50
     },
+	{
+      "level": 19,
+      "icon": 10142,
+      "name": "Guam tar",
+      "xp": 30
+    },
     {
       "level": 20,
       "icon": 255,
@@ -84,6 +90,12 @@
       "name": "Defence Potion (3)",
       "xp": 75
     },
+	{
+      "level": 31,
+      "icon": 10143,
+      "name": "Marrentill tar",
+      "xp": 42.5
+    },
     {
       "level": 34,
       "icon": 3034,
@@ -102,11 +114,23 @@
       "name": "Prayer Potion (3)",
       "xp": 87.5
     },
+	{
+      "level": 39,
+      "icon": 10144,
+      "name": "Tarromin tar",
+      "xp": 55
+    },
     {
       "level": 40,
       "icon": 259,
       "name": "Irit Leaf",
       "xp": 8.8
+    },
+	{
+      "level": 44,
+      "icon": 10145,
+      "name": "Harralander tar",
+      "xp": 72.5
     },
     {
       "level": 45,
