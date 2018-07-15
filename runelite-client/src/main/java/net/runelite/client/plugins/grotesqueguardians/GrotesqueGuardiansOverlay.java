@@ -42,57 +42,59 @@ public class GrotesqueGuardiansOverlay extends Overlay
 			Color color = null;
 			String text = "";
 
-			if (poly != null)
+			if (poly == null)
 			{
-				if (config.displayLightning())
-				{
-					if (graphicsObject.getId() >= 1416 && graphicsObject.getId() <= 1431)
-					{
-						color = config.lightningColor();
+				return null;
+			}
 
-						if (config.displayTextOverlays())
-						{
-							text = "Lightning";
-						}
+			if (config.displayLightning())
+			{
+				if (graphicsObject.getId() >= 1416 && graphicsObject.getId() <= 1431)
+				{
+					color = config.lightningColor();
+
+					if (config.displayTextOverlays())
+					{
+						text = "Lightning";
 					}
 				}
+			}
 
-				if (config.displayStoneOrb())
+			if (config.displayStoneOrb())
+			{
+				if (graphicsObject.getId() == 160)
 				{
-					if (graphicsObject.getId() == 160)
-					{
-						color = config.stoneOrbColor();
+					color = config.stoneOrbColor();
 
-						if (config.displayTextOverlays())
-						{
-							text = "Stone Orb";
-						}
+					if (config.displayTextOverlays())
+					{
+						text = "Stone Orb";
 					}
 				}
+			}
 
-				if (config.displayFallingRocks())
+			if (config.displayFallingRocks())
+			{
+				if (graphicsObject.getId() == 1436)
 				{
-					if (graphicsObject.getId() == 1436)
-					{
-						color = config.fallingRocksColor();
+					color = config.fallingRocksColor();
 
-						if (config.displayTextOverlays())
-						{
-							text = "Falling Rocks";
-						}
+					if (config.displayTextOverlays())
+					{
+						text = "Falling Rocks";
 					}
 				}
+			}
 
-				if (color != null)
+			if (color != null)
+			{
+				OverlayUtil.renderPolygon(graphics, poly, color);
+
+				Point textLocation = Perspective.getCanvasTextLocation(client, graphics, lp, text, 0);
+
+				if (textLocation != null)
 				{
-					OverlayUtil.renderPolygon(graphics, poly, color);
-
-					Point textLocation = Perspective.getCanvasTextLocation(client, graphics, lp, text, 0);
-
-					if (textLocation != null)
-					{
-						OverlayUtil.renderTextLocation(graphics, textLocation, text, color);
-					}
+					OverlayUtil.renderTextLocation(graphics, textLocation, text, color);
 				}
 			}
 		}
