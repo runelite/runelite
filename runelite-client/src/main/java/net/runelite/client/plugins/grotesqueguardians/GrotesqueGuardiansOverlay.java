@@ -35,9 +35,7 @@ public class GrotesqueGuardiansOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		List<GraphicsObject> graphicsObjects = client.getGraphicsObjects();
-
-		for (GraphicsObject graphicsObject : graphicsObjects)
+		for (GraphicsObject graphicsObject : client.getGraphicsObjects())
 		{
 			LocalPoint lp = graphicsObject.getLocation();
 			Polygon poly = Perspective.getCanvasTilePoly(client, lp);
@@ -84,7 +82,7 @@ public class GrotesqueGuardiansOverlay extends Overlay
 						}
 					}
 				}
-				
+
 				if (color != null)
 				{
 					OverlayUtil.renderPolygon(graphics, poly, color);
