@@ -53,6 +53,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import static net.runelite.api.Constants.REGION_SIZE;
 import net.runelite.api.GameState;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
@@ -98,10 +99,6 @@ public class GroundItemsPlugin extends Plugin
 		.trimResults();
 
 	private static final Joiner COMMA_JOINER = Joiner.on(",").skipNulls();
-	//Size of one region
-	private static final int REGION_SIZE = 104;
-	// The max distance in tiles between the player and the item.
-	private static final int MAX_RANGE = 18;
 	// Used when getting High Alchemy value - multiplied by general store price.
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 	// ItemID for coins
@@ -240,17 +237,11 @@ public class GroundItemsPlugin extends Plugin
 		final int z = client.getPlane();
 		final LocalPoint from = player.getLocalLocation();
 
-		final int lowerX = Math.max(0, from.getRegionX() - MAX_RANGE);
-		final int lowerY = Math.max(0, from.getRegionY() - MAX_RANGE);
-
-		final int upperX = Math.min(from.getRegionX() + MAX_RANGE, REGION_SIZE - 1);
-		final int upperY = Math.min(from.getRegionY() + MAX_RANGE, REGION_SIZE - 1);
-
 		groundItems.clear();
 
-		for (int x = lowerX; x <= upperX; ++x)
+		for (int x = 0; x < REGION_SIZE; ++x)
 		{
-			for (int y = lowerY; y <= upperY; ++y)
+			for (int y = 0; y < REGION_SIZE; ++y)
 			{
 				Tile tile = tiles[z][x][y];
 				if (tile == null)
