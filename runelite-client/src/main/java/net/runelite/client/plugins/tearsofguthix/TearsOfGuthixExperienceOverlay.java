@@ -25,6 +25,7 @@
 
 package net.runelite.client.plugins.tearsofguthix;
 
+import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -40,7 +41,10 @@ class TearsOfGuthixExperienceOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private TearsOfGuthixExperienceOverlay(TearsOfGuthixPlugin plugin)
+	private Client client;
+
+	@Inject
+	private TearsOfGuthixExperienceOverlay(final TearsOfGuthixPlugin plugin)
 	{
 		setPosition(OverlayPosition.BOTTOM_LEFT);
 		setPriority(OverlayPriority.LOW);
@@ -56,9 +60,10 @@ class TearsOfGuthixExperienceOverlay extends Overlay
 		}
 
 		panelComponent.getChildren().clear();
-
-		panelComponent.getChildren().add(LineComponent.builder().left(plugin.getPlayerLowestSkill().getName())
-				.right("Lvl - " + plugin.getLowestPlayerSkillLevel() + "").build());
+		panelComponent.getChildren().add(LineComponent.builder()
+				.left(plugin.getPlayerLowestSkill().getName())
+				.right("Lvl - " + client.getRealSkillLevel(plugin.getPlayerLowestSkill()) + "")
+				.build());
 
 		return panelComponent.render(graphics);
 	}

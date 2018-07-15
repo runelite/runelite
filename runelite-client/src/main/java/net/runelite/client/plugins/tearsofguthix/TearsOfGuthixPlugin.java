@@ -29,6 +29,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
@@ -38,7 +39,6 @@ import net.runelite.api.Skill;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -64,10 +64,10 @@ public class TearsOfGuthixPlugin extends Plugin
 	@Inject
 	private TearsOfGuthixExperienceOverlay experienceOverlay;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Map<DecorativeObject, Instant> streams = new HashMap<>();
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private Skill playerLowestSkill = null;
 
 	@Override
@@ -95,6 +95,26 @@ public class TearsOfGuthixPlugin extends Plugin
 			case LOGIN_SCREEN:
 			case HOPPING:
 				streams.clear();
+		}
+
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			if (client.getLocalPlayer().getWorldLocation().getRegionID() == TOG_REGION)
+			{
+				if (playerLowestSkill != null)
+				{
+					return;
+				}
+
+				if (client.getSkillExperience(Skill.HITPOINTS) > 0)
+				{
+					playerLowestSkill = getLowestPlayerSkill();
+				}
+			}
+			else
+			{
+				playerLowestSkill = null;
+			}
 		}
 	}
 
@@ -125,51 +145,23 @@ public class TearsOfGuthixPlugin extends Plugin
 		streams.remove(object);
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick gameTick)
-	{
-		if (client.getGameState() != GameState.LOGGED_IN)
-		{
-			return;
-		}
-		if (client.getLocalPlayer().getWorldLocation().getRegionID() == TOG_REGION)
-		{
-			if (playerLowestSkill != null)
-			{
-				return;
-			}
-			if (client.getSkillExperience(Skill.HITPOINTS) > 0)
-			{
-				playerLowestSkill = getLowestPlayerSkill();
-			}
-		}
-		else
-		{
-			playerLowestSkill = null;
-		}
-	}
-
 	private Skill getLowestPlayerSkill()
 	{
-		Skill[] playerSkills = Skill.values();
-
+		final Skill[] playerSkills = Skill.values();
 		Skill lowestExperienceSkill = null;
 		int lowestExperienceAmount = Integer.MAX_VALUE;
 
 		for (Skill skill : playerSkills)
 		{
 			int currentSkillExp = client.getSkillExperience(skill);
+
 			if (currentSkillExp < lowestExperienceAmount)
 			{
 				lowestExperienceAmount = currentSkillExp;
 				lowestExperienceSkill = skill;
 			}
 		}
-		return lowestExperienceSkill;
-	}
 
-	public int getLowestPlayerSkillLevel()
-	{
-		return client.getRealSkillLevel(playerLowestSkill);
+		return lowestExperienceSkill;
 	}
 }
