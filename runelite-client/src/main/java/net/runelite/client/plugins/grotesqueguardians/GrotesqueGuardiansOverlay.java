@@ -35,12 +35,6 @@ public class GrotesqueGuardiansOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		// If `Display Tile Indicators` is turned off, return.
-		if (!config.displayTileIndicators())
-		{
-			return null;
-		}
-
 		List<GraphicsObject> graphicsObjects = client.getGraphicsObjects();
 
 		for (GraphicsObject graphicsObject : graphicsObjects)

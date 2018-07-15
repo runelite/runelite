@@ -9,21 +9,10 @@ import net.runelite.client.config.ConfigItem;
 public interface GrotesqueGuardiansConfig extends Config
 {
 	@ConfigItem(
-		keyName = "displayTileIndiciators",
-		name = "Display Tile Indicators",
-		description = "Configures the display of tile indicators",
-		position = 1
-	)
-	default boolean displayTileIndicators()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "displayTextOverlays",
 		name = "Display Text Overlays",
 		description = "Configures the display of text overlays",
-		position = 2
+		position = 1
 	)
 	default boolean displayTextOverlays()
 	{
@@ -34,7 +23,7 @@ public interface GrotesqueGuardiansConfig extends Config
 		keyName = "displayLightning",
 		name = "Display Lightning Tiles",
 		description = "Configures the display of lightning special attack tiles",
-		position = 3
+		position = 2
 	)
 	default boolean displayLightning()
 	{
@@ -45,7 +34,7 @@ public interface GrotesqueGuardiansConfig extends Config
 		keyName = "lightningColor",
 		name = "Lightning Tile Color",
 		description = "Configures the color of the lightning special attack tiles",
-		position = 4
+		position = 3
 	)
 	default Color lightningColor()
 	{
@@ -56,7 +45,7 @@ public interface GrotesqueGuardiansConfig extends Config
 		keyName = "displayStoneOrb",
 		name = "Display Stone Orb Tile",
 		description = "Configures the display of stone orb projectile tiles",
-		position = 5
+		position = 4
 	)
 	default boolean displayStoneOrb()
 	{
@@ -67,7 +56,7 @@ public interface GrotesqueGuardiansConfig extends Config
 		keyName = "stoneOrbColor",
 		name = "Stone Orb Tile Color",
 		description = "Configures the color of the stone orb projectile tiles",
-		position = 6
+		position = 5
 	)
 	default Color stoneOrbColor()
 	{
@@ -78,7 +67,7 @@ public interface GrotesqueGuardiansConfig extends Config
 		keyName = "displayFallingRocks",
 		name = "Display Falling Rock Tiles",
 		description = "Configures the display of falling rock tiles",
-		position = 7
+		position = 6
 	)
 	default boolean displayFallingRocks()
 	{
@@ -89,7 +78,7 @@ public interface GrotesqueGuardiansConfig extends Config
 		keyName = "fallingRocksColor",
 		name = "Falling Rocks Tile Color",
 		description = "Configures the color of the falling rock tiles",
-		position = 8
+		position = 7
 	)
 	default Color fallingRocksColor()
 	{
