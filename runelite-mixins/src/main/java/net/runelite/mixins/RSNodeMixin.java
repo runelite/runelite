@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.mixins;
 
-import net.runelite.api.Item;
-import net.runelite.api.Tile;
-import net.runelite.mapping.Import;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.MethodHook;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.rs.api.RSNode;
 
-public interface RSItem extends RSRenderable, Item
+@Mixin(RSNode.class)
+public abstract class RSNodeMixin implements RSNode
 {
-	@Import("id")
-	@Override
-	int getId();
+	@Inject
+	public void onUnlink()
+	{
+	}
 
-	@Import("id")
-	void setId(int id);
-
-	@Import("quantity")
-	@Override
-	int getQuantity();
-
-	@Import("quantity")
-	void setQuantity(int quantity);
-
-	int getX();
-
-	void setX(int x);
-
-	int getY();
-
-	void setY(int y);
-
-	/**
-	 * Get the tile this item is on
-	 * @return
-	 */
-	Tile getTile();
+	@Inject
+	@MethodHook("unlink")
+	public void rl$unlink()
+	{
+		onUnlink();
+	}
 }

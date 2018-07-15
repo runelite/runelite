@@ -30,11 +30,11 @@ import net.runelite.api.Actor;
 import net.runelite.api.CollisionDataFlag;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
-import net.runelite.api.GameState;
 import net.runelite.api.GroundObject;
 import net.runelite.api.Item;
 import net.runelite.api.ItemLayer;
 import net.runelite.api.Node;
+import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
@@ -49,7 +49,9 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GroundObjectChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
+import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemLayerChanged;
+import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
@@ -59,7 +61,11 @@ import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSCollisionData;
+import net.runelite.rs.api.RSDeque;
 import net.runelite.rs.api.RSGameObject;
+import net.runelite.rs.api.RSItem;
+import net.runelite.rs.api.RSItemLayer;
+import net.runelite.rs.api.RSNode;
 import net.runelite.rs.api.RSTile;
 
 @Mixin(RSTile.class)
@@ -270,11 +276,94 @@ public abstract class RSTileMixin implements RSTile
 	@Inject
 	public void itemLayerChanged(int idx)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
+		RSItem lastUnlink = client.getLastItemDespawn();
+		if (lastUnlink != null)
 		{
-			// during loading this gets set to null 104x104 times
+			client.setLastItemDespawn(null);
+		}
+
+		RSItemLayer itemLayer = (RSItemLayer) getItemLayer();
+		if (itemLayer == null)
+		{
+			if (lastUnlink != null)
+			{
+				client.getLogger().debug("Item despawn: {} ({})", lastUnlink.getId(), lastUnlink.getQuantity());
+				ItemDespawned itemDespawned = new ItemDespawned(this, lastUnlink);
+				client.getCallbacks().post(itemDespawned);
+			}
 			return;
 		}
+
+		int x = itemLayer.getX() / Perspective.LOCAL_TILE_SIZE;
+		int y = itemLayer.getY() / Perspective.LOCAL_TILE_SIZE;
+		int z = client.getPlane();
+
+		RSDeque[][][] groundItemDeque = client.getGroundItemDeque();
+		RSDeque itemDeque = groundItemDeque[z][x][y];
+
+		if (itemDeque == null)
+		{
+			if (lastUnlink != null)
+			{
+				client.getLogger().debug("Item despawn: {} ({})", lastUnlink.getId(), lastUnlink.getQuantity());
+				ItemDespawned itemDespawned = new ItemDespawned(this, lastUnlink);
+				client.getCallbacks().post(itemDespawned);
+			}
+			return;
+		}
+
+		// The new item gets added to either the head, or the tail, depending on its price
+		RSNode head = itemDeque.getHead();
+		RSNode current = null;
+		RSNode previous = head.getPrevious();
+		boolean forward = false;
+		if (head != previous)
+		{
+			RSItem prev = (RSItem) previous;
+			if (x != prev.getX() || y != prev.getY())
+			{
+				current = prev;
+			}
+		}
+
+		RSNode next = head.getNext();
+		if (current == null && head != next)
+		{
+			RSItem n = (RSItem) next;
+			if (x != n.getX() || y != n.getY())
+			{
+				current = n;
+				forward = true;
+			}
+		}
+
+		if (lastUnlink != null && lastUnlink != previous && lastUnlink != next)
+		{
+			client.getLogger().debug("Item despawn: {} ({})", lastUnlink.getId(), lastUnlink.getQuantity());
+			ItemDespawned itemDespawned = new ItemDespawned(this, lastUnlink);
+			client.getCallbacks().post(itemDespawned);
+		}
+
+		if (current == null)
+		{
+			return; // already seen this spawn, or no new item
+		}
+
+		do
+		{
+			RSItem item = (RSItem) current;
+			client.getLogger().debug("Item spawn: {} ({})", item.getId(), item.getQuantity());
+			item.setX(x);
+			item.setY(y);
+
+			ItemSpawned itemSpawned = new ItemSpawned(this, item);
+			client.getCallbacks().post(itemSpawned);
+
+			current = forward ? current.getNext() : current.getPrevious();
+
+			// Send spawn events for anything on this tile which is at the wrong location, which happens
+			// when the scene base changes
+		} while (current != head && (((RSItem) current).getX() != x || ((RSItem) current).getY() != y));
 
 		ItemLayerChanged itemLayerChanged = new ItemLayerChanged(this);
 		client.getCallbacks().post(itemLayerChanged);
@@ -405,7 +494,7 @@ public abstract class RSTileMixin implements RSTile
 		Node node = layer.getBottom();
 		while (node instanceof Item)
 		{
-			result.add((Item)node);
+			result.add((Item) node);
 			node = node.getNext();
 		}
 		return result;
