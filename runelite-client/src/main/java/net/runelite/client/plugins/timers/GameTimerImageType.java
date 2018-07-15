@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,26 +24,8 @@
  */
 package net.runelite.client.plugins.timers;
 
-import java.awt.image.BufferedImage;
-import java.time.temporal.ChronoUnit;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
-import net.runelite.client.ui.overlay.infobox.Timer;
-
-public class TimerTimer extends Timer
+enum GameTimerImageType
 {
-	private final GameTimer timer;
-
-	public TimerTimer(GameTimer timer, Plugin plugin, BufferedImage image)
-	{
-		super(timer.getDuration().toMillis(), ChronoUnit.MILLIS, image, plugin);
-		this.timer = timer;
-		setPriority(InfoBoxPriority.MED);
-	}
-
-	public GameTimer getTimer()
-	{
-		return timer;
-	}
-
+	ITEM,
+	SPRITE
 }
