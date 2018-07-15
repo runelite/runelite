@@ -69,6 +69,7 @@ import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.KINGDOM_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.QUEST_COMPLETED_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
@@ -134,6 +135,8 @@ public class ScreenshotPlugin extends Plugin
 	private Integer barrowsNumber;
 
 	private Integer chambersOfXericNumber;
+
+	private Integer theatreOfBloodNumber;
 
 	private boolean shouldTakeScreenshot;
 
@@ -309,6 +312,16 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
+		if (chatMessage.startsWith("Your completed Theatre of Blood count is:"))
+		{
+			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
+			if (m.find())
+			{
+				theatreOfBloodNumber = Integer.valueOf(m.group());
+				return;
+			}
+		}
+
 		if (config.screenshotPet() && PET_MESSAGES.stream().anyMatch(chatMessage::contains))
 		{
 			String fileName = "Pet " + format(new Date());
@@ -333,6 +346,7 @@ public class ScreenshotPlugin extends Plugin
 			case QUEST_COMPLETED_GROUP_ID:
 			case CLUE_SCROLL_REWARD_GROUP_ID:
 			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
+			case THEATRE_OF_BLOOD_REWARD_GROUP_ID:
 			case BARROWS_REWARD_GROUP_ID:
 				if (!config.screenshotRewards())
 				{
@@ -371,6 +385,17 @@ public class ScreenshotPlugin extends Plugin
 
 				fileName = "Chambers of Xeric(" + chambersOfXericNumber + ")";
 				chambersOfXericNumber = null;
+				break;
+			}
+			case THEATRE_OF_BLOOD_REWARD_GROUP_ID:
+			{
+				if (theatreOfBloodNumber == null)
+				{
+					return;
+				}
+
+				fileName = "Theatre of Blood(" + theatreOfBloodNumber + ")";
+				theatreOfBloodNumber = null;
 				break;
 			}
 			case BARROWS_REWARD_GROUP_ID:
@@ -607,5 +632,11 @@ public class ScreenshotPlugin extends Plugin
 	int getChambersOfXericNumber()
 	{
 		return chambersOfXericNumber;
+	}
+
+	@VisibleForTesting
+	int gettheatreOfBloodNumber()
+	{
+		return theatreOfBloodNumber;
 	}
 }

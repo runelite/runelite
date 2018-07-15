@@ -62,6 +62,7 @@ public class ScreenshotPluginTest
 	private static final String CLUE_SCROLL = "<col=3300ff>You have completed 28 medium Treasure Trails</col>";
 	private static final String BARROWS_CHEST = "Your Barrows chest count is <col=ff0000>310</col>";
 	private static final String CHAMBERS_OF_XERIC_CHEST = "Your completed Chambers of Xeric count is: <col=ff0000>489</col>.";
+	private static final String THEATRE_OF_BLOOD_CHEST = "Your completed Theatre of Blood count is: <col=ff0000>73</col>.";
 
 	@Mock
 	@Bind
@@ -128,6 +129,15 @@ public class ScreenshotPluginTest
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(489, screenshotPlugin.getChambersOfXericNumber());
+	}
+
+	@Test
+	public void testTheatreOfBloodChest()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Magic fTail", THEATRE_OF_BLOOD_CHEST, null);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals(73, screenshotPlugin.gettheatreOfBloodNumber());
 	}
 
 	@Test
