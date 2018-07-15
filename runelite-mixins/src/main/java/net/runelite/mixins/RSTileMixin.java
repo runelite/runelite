@@ -50,7 +50,6 @@ import net.runelite.api.events.GroundObjectChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.ItemDespawned;
-import net.runelite.api.events.ItemLayerChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
@@ -364,9 +363,6 @@ public abstract class RSTileMixin implements RSTile
 			// Send spawn events for anything on this tile which is at the wrong location, which happens
 			// when the scene base changes
 		} while (current != head && (((RSItem) current).getX() != x || ((RSItem) current).getY() != y));
-
-		ItemLayerChanged itemLayerChanged = new ItemLayerChanged(this);
-		client.getCallbacks().post(itemLayerChanged);
 	}
 
 	@Inject
