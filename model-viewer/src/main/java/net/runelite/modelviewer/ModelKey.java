@@ -27,9 +27,10 @@ package net.runelite.modelviewer;
 import lombok.Value;
 
 @Value
-public class LocationKey
+public class ModelKey
 {
-	private final int id;
+	private final int modelId;
+	private final int defId;
 	private final int type;
 	private final int orientation;
 }

@@ -26,11 +26,14 @@ package net.runelite.modelviewer;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.runelite.cache.ObjectManager;
+import net.runelite.cache.definitions.ObjectDefinition;
 import net.runelite.cache.definitions.OverlayDefinition;
 import net.runelite.cache.definitions.UnderlayDefinition;
 import net.runelite.cache.definitions.providers.OverlayProvider;
 import net.runelite.cache.definitions.providers.UnderlayProvider;
 import net.runelite.cache.item.ColorPalette;
+import net.runelite.cache.region.Location;
 import net.runelite.cache.region.Region;
 
 @AllArgsConstructor
@@ -61,8 +64,102 @@ public class Scene
 	@Getter
 	private final SceneTilePaint[][][] sceneTilePaint = new SceneTilePaint[Region.Z][Region.X][Region.Y];
 
-	public void loadRegion(Region region)
+	private byte[][] createShadows(Region region, ObjectManager manager)
 	{
+		byte[][] shadow = new byte[Region.X + 8][Region.Y + 8];
+		for (Location location : region.getLocations())
+		{
+			int id = location.getId();
+			ObjectDefinition object = manager.getObject(id);
+
+			if (object == null || object.getObjectModels() == null)
+			{
+				continue;
+			}
+			if (!object.isABool2097())
+			{
+				continue;
+			}
+			int regionX = location.getPosition().getX() - region.getBaseX();
+			int regionY = location.getPosition().getY() - region.getBaseY();
+			if (location.getType() == 0)
+			{
+				if (location.getOrientation() == 0)
+				{
+					shadow[regionX][regionY] = 50;
+					shadow[regionX][regionY + 1] = 50;
+				}
+				else if (location.getOrientation() == 1)
+				{
+					shadow[regionX][regionY + 1] = 50;
+					shadow[regionX + 1][regionY + 1] = 50;
+				}
+				else if (location.getOrientation() == 2)
+				{
+					shadow[regionX + 1][regionY] = 50;
+					shadow[regionX + 1][regionY + 1] = 50;
+				}
+				else if (location.getOrientation() == 3)
+				{
+					shadow[regionX][regionY] = 50;
+					shadow[regionX + 1][regionY] = 50;
+				}
+			}
+			else if (location.getType() == 1 || location.getType() == 3)
+			{
+				if (location.getOrientation() == 0)
+				{
+					shadow[regionX][regionY + 1] = 50;
+				}
+				else if (location.getOrientation() == 1)
+				{
+					shadow[regionX + 1][regionY + 1] = 50;
+				}
+				else if (location.getOrientation() == 2)
+				{
+					shadow[regionX + 1][regionY] = 50;
+				}
+				else if (location.getOrientation() == 3)
+				{
+					shadow[regionX][regionY] = 50;
+				}
+			}
+			else if (location.getType() == 10 || location.getType() == 11)
+			{
+				int width;
+				int length;
+				if (location.getOrientation() != 1 && location.getOrientation() != 3)
+				{
+					width = object.getSizeX();
+					length = object.getSizeY();
+				}
+				else
+				{
+					width = object.getSizeY();
+					length = object.getSizeX();
+				}
+				int var23 = 15;
+				for (int x = 0; x <= width; x++)
+				{
+					int xOff = x + regionX;
+					for (int y = 0; y <= length; y++)
+					{
+						int yOff = y + regionY;
+						if (var23 > shadow[xOff][yOff])
+						{
+							shadow[xOff][yOff] = (byte) var23;
+						}
+					}
+				}
+			}
+		}
+		return shadow;
+	}
+
+	public void loadRegion(Region region, ObjectManager manager)
+	{
+		byte[][] shadow = createShadows(region, manager);
+
 		int[][] field3834 = new int[Region.X][Region.Y];
 		int var11 = (int) Math.sqrt(5100.0D);
 		int var63 = var11 * 768 >> 8;
@@ -80,8 +177,7 @@ public class Scene
 					int var50 = 65536 / var17;
 					int var20 = (dy << 8) / var17;
 					int var21 = (var20 * -50 + var18 * -50 + var50 * -10) / var63 + 96;
-//					int var22 = (var68[y - 1][x] >> 2) + (var68[y][x - 1] >> 2) + (var68[y + 1][x] >> 3) + (var68[y][x + 1] >> 3) + (var68[y][x] >> 1);
-					int var22 = 0;
+					int var22 = (shadow[y - 1][x] >> 2) + (shadow[y][x - 1] >> 2) + (shadow[y + 1][x] >> 3) + (shadow[y][x + 1] >> 3) + (shadow[y][x] >> 1);
 					field3834[y][x] = var21 - var22;
 				}
 			}
@@ -263,12 +359,12 @@ public class Scene
 	{
 		if (shape == 0)
 		{
-			SceneTilePaint sceneTilePaint = new SceneTilePaint(underlayColor, texture);
+			SceneTilePaint sceneTilePaint = new SceneTilePaint(underlayColor, underlayColorX1, underlayColorX1Y1, underlayColorY1, -1, underlayColorRgb, false);
 			this.sceneTilePaint[z][x][y] = sceneTilePaint;
 		}
 		else if (shape == 1)
 		{
-			SceneTilePaint sceneTilePaint = new SceneTilePaint(overlayColor, texture);
+			SceneTilePaint sceneTilePaint = new SceneTilePaint(overlayColor, overlayColorX1, overlayColorX1Y1, overlayColorY1, texture, underlayColorRgb, tileHeightX1 == tileHeight && tileHeight == tileHeightX1Y1 && tileHeightY1 == tileHeight);
 			this.sceneTilePaint[z][x][y] = sceneTilePaint;
 		}
 		else
