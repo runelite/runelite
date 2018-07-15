@@ -218,8 +218,6 @@ public class AttackStylesPlugin extends Plugin
 		}
 	}
 
-
-
 	@Subscribe
 	public void onCastingModeChange(VarbitChanged event)
 	{
