@@ -361,6 +361,12 @@
       "xp": 125
     },
     {
+      "level": 62,
+      "icon": 22275,
+      "name": "Green D'hide Shield",
+      "xp": 124
+    },
+    {
       "level": 63,
       "icon": 1135,
       "name": "Green D'hide Body",
@@ -394,6 +400,12 @@
       "level": 68,
       "icon": 2493,
       "name": "Blue D'hide Chaps",
+      "xp": 140
+    },
+    {
+      "level": 69,
+      "icon": 22278,
+      "name": "Blue D'hide Shield",
       "xp": 140
     },
     {
@@ -433,6 +445,12 @@
       "xp": 156
     },
     {
+      "level": 76,
+      "icon": 22281,
+      "name": "Red D'hide Shield",
+      "xp": 156
+    },
+    {
       "level": 77,
       "icon": 2501,
       "name": "Red D'hide Body",
@@ -467,6 +485,12 @@
       "icon": 21338,
       "name": "Amethyst Bolt Tips",
       "xp": 60
+    },
+    {
+      "level": 83,
+      "icon": 22284,
+      "name": "Black D'hide Shield",
+      "xp": 172
     },
     {
       "level": 84,
