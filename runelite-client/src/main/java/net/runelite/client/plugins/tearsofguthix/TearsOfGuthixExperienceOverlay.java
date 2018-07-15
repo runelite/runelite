@@ -46,7 +46,7 @@ class TearsOfGuthixExperienceOverlay extends Overlay
 	@Inject
 	private TearsOfGuthixExperienceOverlay(final TearsOfGuthixPlugin plugin)
 	{
-		setPosition(OverlayPosition.BOTTOM_LEFT);
+		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
 		setPriority(OverlayPriority.LOW);
 		this.plugin = plugin;
 	}
