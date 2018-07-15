@@ -33,13 +33,13 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
-import net.runelite.api.ItemLayer;
 import net.runelite.api.Player;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.ItemLayerChanged;
+import net.runelite.api.events.ItemDespawned;
+import net.runelite.api.events.ItemSpawned;
 import net.runelite.client.plugins.mta.MTAConfig;
 import net.runelite.client.plugins.mta.MTARoom;
 
@@ -61,12 +61,9 @@ public class EnchantmentRoom extends MTARoom
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
+		if (gameStateChanged.getGameState() == GameState.LOADING)
 		{
-			if (!inside())
-			{
-				dragonstones.clear();
-			}
+			dragonstones.clear();
 		}
 	}
 
@@ -103,42 +100,30 @@ public class EnchantmentRoom extends MTARoom
 	}
 
 	@Subscribe
-	public void onItemLayerChanged(ItemLayerChanged event)
+	public void onItemSpawned(ItemSpawned itemSpawned)
 	{
-		if (!inside())
+		final Item item = itemSpawned.getItem();
+		final Tile tile = itemSpawned.getTile();
+
+		if (item.getId() == ItemID.DRAGONSTONE_6903)
 		{
-			return;
+			WorldPoint location = tile.getWorldLocation();
+			log.debug("Adding dragonstone at {}", location);
+			dragonstones.add(location);
 		}
+	}
 
-		Tile changed = event.getTile();
-		ItemLayer itemLayer = changed.getItemLayer();
-		WorldPoint worldPoint = changed.getWorldLocation();
+	@Subscribe
+	public void onItemDespawned(ItemDespawned itemDespawned)
+	{
+		final Item item = itemDespawned.getItem();
+		final Tile tile = itemDespawned.getTile();
 
-		List<Item> groundItems = changed.getGroundItems();
-		if (groundItems == null)
+		if (item.getId() == ItemID.DRAGONSTONE_6903)
 		{
-			boolean removed = dragonstones.remove(worldPoint);
-			if (removed)
-			{
-				log.debug("Removed dragonstone at {}", worldPoint);
-			}
-			return;
-		}
-
-		for (Item item : changed.getGroundItems())
-		{
-			if (item.getId() == ItemID.DRAGONSTONE_6903)
-			{
-				log.debug("Adding dragonstone at {}", worldPoint);
-				dragonstones.add(worldPoint);
-				return;
-			}
-		}
-
-		boolean removed = dragonstones.remove(worldPoint);
-		if (removed)
-		{
-			log.debug("Removed dragonstone at {}", worldPoint);
+			WorldPoint location = tile.getWorldLocation();
+			log.debug("Removed dragonstone at {}", location);
+			dragonstones.remove(location);
 		}
 	}
 
