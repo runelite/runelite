@@ -291,12 +291,10 @@ public class AttackStylesPlugin extends Plugin
 		if (enabled)
 		{
 			hideAutoRetaliate = true;
-			warnedRetaliateSelected = (autoRetaliateVarbit == 0) ? true : false;
 		}
 		else
 		{
 			hideAutoRetaliate = false;
-			warnedRetaliateSelected = false;
 		}
 		updateWarning(false);
 	}
