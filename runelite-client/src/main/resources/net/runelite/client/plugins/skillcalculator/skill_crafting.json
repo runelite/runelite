@@ -409,6 +409,30 @@
       "xp": 210
     },
     {
+      "level": 62,
+      "icon": 22275,
+      "name": "Green D'hide Shield",
+      "xp": 124
+    },
+    {
+      "level": 69,
+      "icon": 22278,
+      "name": "Blue D'hide Shield",
+      "xp": 140
+    },
+    {
+      "level": 76,
+      "icon": 22281,
+      "name": "Red D'hide Shield",
+      "xp": 156
+    },
+	{
+	"level": 83,
+      "icon": 22284,
+      "name": "Black D'hide Shield",
+      "xp": 172
+    },
+    {
       "level": 72,
       "icon": 1664,
       "name": "Dragon Necklace",
