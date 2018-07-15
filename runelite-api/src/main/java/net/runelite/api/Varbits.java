@@ -260,6 +260,11 @@ public enum Varbits
 	RAID_PARTY_SIZE(5424),
 
 	/**
+	 * Theatre of Blood
+	 */
+	THEATRE_OF_BLOOD(6440), // 1=In Party, 2=Inside, 3=Dead Spectating
+
+	/**
 	 * Nightmare Zone
 	 */
 	NMZ_ABSORPTION(3956),

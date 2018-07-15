@@ -50,6 +50,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.loot.LootLogger;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
@@ -71,6 +72,7 @@ public class RuneLite
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
+	public static final File LOOTS_DIR = new File(RUNELITE_DIR, "loots");
 	private static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
 	private static final File LOGS_FILE_NAME = new File(LOGS_DIR, "application");
 
@@ -106,6 +108,9 @@ public class RuneLite
 
 	@Inject
 	private SessionManager sessionManager;
+
+	@Inject
+	private Provider<LootLogger> lootLogger;
 
 	@Inject
 	private DiscordService discordService;
@@ -243,6 +248,7 @@ public class RuneLite
 		if (this.client != null)
 		{
 			eventBus.register(itemManager.get());
+			eventBus.register(lootLogger.get());
 		}
 
 		// Load user configuration

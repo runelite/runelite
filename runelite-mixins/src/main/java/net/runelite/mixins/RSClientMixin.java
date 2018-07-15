@@ -102,6 +102,7 @@ import net.runelite.rs.api.RSFriendContainer;
 import net.runelite.rs.api.RSFriendManager;
 import net.runelite.rs.api.RSHashTable;
 import net.runelite.rs.api.RSIndexedSprite;
+import net.runelite.rs.api.RSItem;
 import net.runelite.rs.api.RSItemContainer;
 import net.runelite.rs.api.RSNPC;
 import net.runelite.rs.api.RSName;
@@ -1147,5 +1148,15 @@ public abstract class RSClientMixin implements RSClient
 				}
 			}
 		}
+	}
+
+	@Inject
+	@Override
+	public RSItem createItem(int id, int quantity)
+	{
+		RSItem r = createItem();
+		r.setId(id);
+		r.setQuantity(quantity);
+		return r;
 	}
 }
