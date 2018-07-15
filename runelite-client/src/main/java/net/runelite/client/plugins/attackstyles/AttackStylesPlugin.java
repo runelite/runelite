@@ -71,7 +71,6 @@ public class AttackStylesPlugin extends Plugin
 	private final Set<Skill> warnedSkills = new HashSet<>();
 	private boolean warnedSkillSelected = false;
 	private boolean hideAutoRetaliate = false;
-
 	private final Table<WeaponType, WidgetInfo, Boolean> widgetsToHide = HashBasedTable.create();
 
 	@Inject
@@ -113,21 +112,16 @@ public class AttackStylesPlugin extends Plugin
 		updateWarnedSkills(config.warnForDefence(), Skill.DEFENCE);
 		updateWarnedSkills(config.warnForRanged(), Skill.RANGED);
 		updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
-
 		updateAutoRetaliate(config.warnForAutoRetaliate());
-
 		attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
 		equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
 		castingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
 		autoRetaliateVarbit = client.getVar(VarPlayer.AUTO_RETALIATE);
-
 		updateAttackStyle(
 			equippedWeaponTypeVarbit,
 			attackStyleVarbit,
 			castingModeVarbit);
-
 		updateWarning(false);
-
 		processWidgets();
 	}
 
@@ -174,7 +168,6 @@ public class AttackStylesPlugin extends Plugin
 				hideWidget(client.getWidget(widgetKey), widgetsToHide.get(equippedWeaponType, widgetKey));
 			}
 		}
-
 		Boolean shouldHideAR = config.removeWarnedStyles() && hideAutoRetaliate;
 		hideWidget(client.getWidget(WidgetInfo.COMBAT_AUTO_RETALIATE_BOX), shouldHideAR);
 		hideAutoRetaliateTextWidget(shouldHideAR);
@@ -229,7 +222,6 @@ public class AttackStylesPlugin extends Plugin
 			updateWarning(false);
 		}
 	}
-
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
@@ -312,7 +304,6 @@ public class AttackStylesPlugin extends Plugin
 	private void updateWarning(boolean weaponSwitch)
 	{
 		warnedSkillSelected = false;
-
 		if (attackStyle != null)
 		{
 			for (Skill skill : attackStyle.getSkills())
@@ -328,7 +319,6 @@ public class AttackStylesPlugin extends Plugin
 				}
 			}
 		}
-
 		hideWarnedStyles(config.removeWarnedStyles());
 	}
 
