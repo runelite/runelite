@@ -308,6 +308,16 @@ public class GroundItemsPlugin extends Plugin
 			groundItem.setHaPrice(groundItem.getQuantity());
 			groundItem.setGePrice(groundItem.getQuantity());
 		}
+		// Update GE price for item
+		else
+		{
+			final ItemPrice itemPrice = itemManager.getItemPrice(realItemId);
+
+			if (itemPrice != null && itemPrice.getPrice() > 0)
+			{
+				groundItem.setGePrice(itemPrice.getPrice() * item.getQuantity());
+			}
+		}
 
 		return groundItem;
 	}
@@ -364,72 +374,75 @@ public class GroundItemsPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (config.itemHighlightMode() != OVERLAY
-			&& event.getOption().equals("Take")
-			&& event.getType() == MenuAction.GROUND_ITEM_THIRD_OPTION.getId())
+		if (config.itemHighlightMode() == OVERLAY
+			|| !event.getOption().equals("Take")
+			|| event.getType() != MenuAction.GROUND_ITEM_THIRD_OPTION.getId())
 		{
-			int itemId = event.getIdentifier();
-			Region region = client.getRegion();
-			Tile tile = region.getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
-			ItemLayer itemLayer = tile.getItemLayer();
-
-			if (itemLayer == null)
-			{
-				return;
-			}
-
-			MenuEntry[] menuEntries = client.getMenuEntries();
-			MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
-
-			int quantity = 1;
-			Node current = itemLayer.getBottom();
-
-			while (current instanceof Item)
-			{
-				Item item = (Item) current;
-				if (item.getId() == itemId)
-				{
-					quantity = item.getQuantity();
-				}
-				current = current.getNext();
-			}
-
-			final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemComposition.getId();
-			final ItemPrice itemPrice = itemManager.getItemPrice(realItemId);
-			final int price = itemPrice == null ? itemComposition.getPrice() : itemPrice.getPrice();
-			final int haPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity;
-			final int gePrice = quantity * price;
-			final Color hidden = getHidden(itemComposition.getName(), gePrice, haPrice, itemComposition.isTradeable());
-			final Color highlighted = getHighlighted(itemComposition.getName(), gePrice, haPrice);
-			final Color color = getItemColor(highlighted, hidden);
-			final boolean canBeRecolored = highlighted != null || (hidden != null && config.recolorMenuHiddenItems());
-
-			if (color != null && canBeRecolored && !color.equals(config.defaultColor()))
-			{
-				String hexColor = Integer.toHexString(color.getRGB() & 0xFFFFFF);
-				String colTag = "<col=" + hexColor + ">";
-				final MenuHighlightMode mode = config.menuHighlightMode();
-
-				if (mode == BOTH || mode == OPTION)
-				{
-					lastEntry.setOption(colTag + "Take");
-				}
-
-				if (mode == BOTH || mode == NAME)
-				{
-					String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
-					lastEntry.setTarget(colTag + target);
-				}
-			}
-
-			if (config.showMenuItemQuantities() && itemComposition.isStackable() && quantity > 1)
-			{
-				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
-			}
-
-			client.setMenuEntries(menuEntries);
+			return;
 		}
+
+		final int itemId = event.getIdentifier();
+		final Region region = client.getRegion();
+		final Tile tile = region.getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
+		final ItemLayer itemLayer = tile.getItemLayer();
+
+		if (itemLayer == null)
+		{
+			return;
+		}
+
+		final MenuEntry[] menuEntries = client.getMenuEntries();
+		final MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
+		GroundItem groundItem = null;
+		Node current = itemLayer.getBottom();
+
+		while (current instanceof Item)
+		{
+			final Item item = (Item) current;
+
+			if (item.getId() == itemId)
+			{
+				groundItem = buildGroundItem(tile, item);
+				break;
+			}
+
+			current = current.getNext();
+		}
+
+		if (groundItem == null)
+		{
+			return;
+		}
+
+		final Color hidden = getHidden(groundItem);
+		final Color highlighted = getHighlighted(groundItem);
+		final Color color = getItemColor(highlighted, hidden);
+		final boolean canBeRecolored = highlighted != null || (hidden != null && config.recolorMenuHiddenItems());
+
+		if (color != null && canBeRecolored && !color.equals(config.defaultColor()))
+		{
+			final String hexColor = Integer.toHexString(color.getRGB() & 0xFFFFFF);
+			final String colTag = "<col=" + hexColor + ">";
+			final MenuHighlightMode mode = config.menuHighlightMode();
+
+			if (mode == BOTH || mode == OPTION)
+			{
+				lastEntry.setOption(colTag + "Take");
+			}
+
+			if (mode == BOTH || mode == NAME)
+			{
+				final String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
+				lastEntry.setTarget(colTag + target);
+			}
+		}
+
+		if (config.showMenuItemQuantities() && groundItem.getQuantity() > 1)
+		{
+			lastEntry.setTarget(lastEntry.getTarget() + " (" + groundItem.getQuantity() + ")");
+		}
+
+		client.setMenuEntries(menuEntries);
 	}
 
 	void updateList(String item, boolean hiddenList)
@@ -457,22 +470,22 @@ public class GroundItemsPlugin extends Plugin
 		config.setHighlightedItem(COMMA_JOINER.join(highlightedItemSet));
 	}
 
-	Color getHighlighted(String item, int gePrice, int haPrice)
+	Color getHighlighted(final GroundItem groundItem)
 	{
-		if (TRUE.equals(highlightedItems.getUnchecked(item)))
+		if (TRUE.equals(highlightedItems.getUnchecked(groundItem.getName())))
 		{
 			return config.highlightedColor();
 		}
 
 		// Explicit hide takes priority over implicit highlight
-		if (TRUE.equals(hiddenItems.getUnchecked(item)))
+		if (TRUE.equals(hiddenItems.getUnchecked(groundItem.getName())))
 		{
 			return null;
 		}
 
 		for (Map.Entry<Integer, Color> entry : priceChecks.entrySet())
 		{
-			if (gePrice > entry.getKey() || haPrice > entry.getKey())
+			if (groundItem.getGePrice() > entry.getKey() || groundItem.getHaPrice() > entry.getKey())
 			{
 				return entry.getValue();
 			}
@@ -481,13 +494,13 @@ public class GroundItemsPlugin extends Plugin
 		return null;
 	}
 
-	Color getHidden(String item, int gePrice, int haPrice, boolean isTradeable)
+	Color getHidden(final GroundItem groundItem)
 	{
-		final boolean isExplicitHidden = TRUE.equals(hiddenItems.getUnchecked(item));
-		final boolean isExplicitHighlight = TRUE.equals(highlightedItems.getUnchecked(item));
-		final boolean canBeHidden = gePrice > 0 || isTradeable || !config.dontHideUntradeables();
-		final boolean underGe = gePrice < config.getHideUnderValue();
-		final boolean underHa = haPrice < config.getHideUnderValue();
+		final boolean isExplicitHidden = TRUE.equals(hiddenItems.getUnchecked(groundItem.getName()));
+		final boolean isExplicitHighlight = TRUE.equals(highlightedItems.getUnchecked(groundItem.getName()));
+		final boolean canBeHidden = groundItem.getGePrice() > 0 || groundItem.isTradeable() || !config.dontHideUntradeables();
+		final boolean underGe = groundItem.getGePrice() < config.getHideUnderValue();
+		final boolean underHa = groundItem.getHaPrice() < config.getHideUnderValue();
 
 		// Explicit highlight takes priority over implicit hide
 		return isExplicitHidden || (!isExplicitHighlight && canBeHidden && underGe && underHa)
