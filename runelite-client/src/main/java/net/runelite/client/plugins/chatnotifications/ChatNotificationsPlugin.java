@@ -188,7 +188,6 @@ public class ChatNotificationsPlugin extends Plugin
 			{
 				matcher.appendTail(buffer);
 				messageNode.setValue(buffer.toString());
-				chatMessageManager.update(messageNode);
 
 				if (config.notifyOnHighlight())
 				{
