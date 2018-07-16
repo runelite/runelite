@@ -110,6 +110,11 @@ public class Keybind
 			keyCode = KeyEvent.VK_UNDEFINED;
 		}
 
+		if (e.getID() == KeyEvent.KEY_RELEASED && keyCode != KeyEvent.VK_UNDEFINED)
+		{
+			return this.keyCode == keyCode;
+		}
+
 		return this.keyCode == keyCode && this.modifiers == modifiers;
 	}
 
