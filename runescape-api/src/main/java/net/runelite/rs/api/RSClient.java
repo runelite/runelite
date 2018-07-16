@@ -131,11 +131,11 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	int getMouseCurrentButton();
 
-	@Import("selectedRegionTileX")
-	int getSelectedRegionTileX();
+	@Import("selectedSceneTileX")
+	int getSelectedSceneTileX();
 
-	@Import("selectedRegionTileY")
-	int getSelectedRegionTileY();
+	@Import("selectedSceneTileY")
+	int getSelectedSceneTileY();
 
 	@Import("draggingWidget")
 	@Override
@@ -165,9 +165,9 @@ public interface RSClient extends RSGameEngine, Client
 	 */
 	RSWidget[] getGroup(int groupId);
 
-	@Import("region")
+	@Import("scene")
 	@Override
-	RSRegion getRegion();
+	RSScene getScene();
 
 	@Import("localPlayer")
 	@Override
@@ -460,8 +460,8 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("lowMemory")
 	void setLowMemory(boolean lowMemory);
 
-	@Import("regionLowMemory")
-	void setRegionLowMemory(boolean lowMemory);
+	@Import("sceneLowMemory")
+	void setSceneLowMemory(boolean lowMemory);
 
 	@Import("audioHighMemory")
 	void setAudioHighMemory(boolean highMemory);

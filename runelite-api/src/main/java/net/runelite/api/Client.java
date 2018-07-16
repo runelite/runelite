@@ -276,11 +276,9 @@ public interface Client extends GameEngine
 	int getPlane();
 
 	/**
-	 * Gets the current region the local player is in.
-	 *
-	 * @return the region
+	 * Gets the current scene
 	 */
-	Region getRegion();
+	Scene getScene();
 
 	/**
 	 * Gets the logged in player instance.
@@ -333,8 +331,7 @@ public interface Client extends GameEngine
 	 * Returns the x-axis base coordinate.
 	 * <p>
 	 * This value is the x-axis world coordinate of tile (0, 0) in
-	 * the current scene (ie. the bottom-left most coordinates in
-	 * the rendered region).
+	 * the current scene (ie. the bottom-left most coordinates in the scene).
 	 *
 	 * @return the base x-axis coordinate
 	 */
@@ -344,8 +341,7 @@ public interface Client extends GameEngine
 	 * Returns the y-axis base coordinate.
 	 * <p>
 	 * This value is the y-axis world coordinate of tile (0, 0) in
-	 * the current scene (ie. the bottom-left most coordinates in
-	 * the rendered region).
+	 * the current scene (ie. the bottom-left most coordinates in the scene).
 	 *
 	 * @return the base y-axis coordinate
 	 */
@@ -359,12 +355,11 @@ public interface Client extends GameEngine
 	int getMouseCurrentButton();
 
 	/**
-	 * Gets the currently selected region tile (ie. last right clicked
-	 * tile).
+	 * Gets the currently selected tile (ie. last right clicked tile).
 	 *
-	 * @return the selected region tile
+	 * @return the selected tile
 	 */
-	Tile getSelectedRegionTile();
+	Tile getSelectedSceneTile();
 
 	/**
 	 * Checks whether a widget is currently being dragged.
