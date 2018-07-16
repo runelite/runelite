@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Joshua Filby <joshua@filby.me>
+ * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,11 +25,14 @@
  */
 package net.runelite.client.util;
 
+import java.util.regex.Pattern;
+
 /**
  * A set of utilities to use when dealing with text.
  */
 public class Text
 {
+	private static final Pattern TAG_REGEXP = Pattern.compile("<[^>]*>");
 
 	/**
 	 * Removes all tags from the given `str`.
@@ -38,28 +42,7 @@ public class Text
 	 */
 	public static String removeTags(String str)
 	{
-		StringBuilder builder = new StringBuilder(str.length());
-		boolean inTag = false;
-
-		for (int i = 0; i < str.length(); i++)
-		{
-			char currentChar = str.charAt(i);
-
-			if (currentChar == '<')
-			{
-				inTag = true;
-			}
-			else if (currentChar == '>')
-			{
-				inTag = false;
-			}
-			else if (!inTag)
-			{
-				builder.append(currentChar);
-			}
-		}
-
-		return builder.toString();
+		return TAG_REGEXP.matcher(str).replaceAll("");
 	}
 
 }
