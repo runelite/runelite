@@ -30,6 +30,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.GraphicID;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
@@ -43,13 +44,11 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 public class GrotesqueGuardiansOverlay extends Overlay
 {
 	private final Client client;
-	private final GrotesqueGuardiansConfig config;
 
 	@Inject
-	private GrotesqueGuardiansOverlay(Client client, GrotesqueGuardiansConfig config)
+	private GrotesqueGuardiansOverlay(Client client)
 	{
 		this.client = client;
-		this.config = config;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		setPriority(OverlayPriority.LOW);
@@ -60,6 +59,8 @@ public class GrotesqueGuardiansOverlay extends Overlay
 	{
 		if (!client.isInInstancedRegion())
 		{
+			return null;
+		} else {
 			if (client.getMapRegions()[0] != 6727)
 			{
 				return null;
@@ -79,19 +80,19 @@ public class GrotesqueGuardiansOverlay extends Overlay
 				return null;
 			}
 
-			if (graphicsObject.getId() >= 1416 && graphicsObject.getId() <= 1431)
+			if (graphicsObject.getId() >= GraphicID.GROTESQUE_GUARDIANS_LIGHTNING_BEG && graphicsObject.getId() <= GraphicID.GROTESQUE_GUARDIANS_LIGHTNING_END)
 			{
 				color = Color.ORANGE;
 				text = "Lightning";
 			}
 
-			if (graphicsObject.getId() == 160)
+			if (graphicsObject.getId() == GraphicID.GROTESQUE_GUARDIANS_STONE_ORB)
 			{
 				color = Color.GRAY;
 				text = "Stone Orb";
 			}
 
-			if (graphicsObject.getId() == 1436)
+			if (graphicsObject.getId() == GraphicID.GROTESQUE_GUARDIANS_FALLING_ROCKS)
 			{
 				color = Color.YELLOW;
 				text = "Falling Rocks";
