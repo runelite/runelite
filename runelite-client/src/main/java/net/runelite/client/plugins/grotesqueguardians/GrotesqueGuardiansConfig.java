@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Jeremy Plsek <https://github.com/jplsek>
+ * Copyright (c) 2018, Damen <https://github.com/basicDamen>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
