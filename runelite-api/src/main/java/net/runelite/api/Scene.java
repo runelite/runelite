@@ -25,16 +25,14 @@
 package net.runelite.api;
 
 /**
- * Represents a region of chunks.
- * <p>
- * A region is an area that contains 8x8 chunks on the map.
+ * Represents the entire 3D scene
  */
-public interface Region
+public interface Scene
 {
 	/**
-	 * Gets the tiles in this region.
+	 * Gets the tiles in the scene
 	 *
-	 * @return the regions tile
+	 * @return the tiles in [plane][x][y]
 	 */
 	Tile[][][] getTiles();
 }

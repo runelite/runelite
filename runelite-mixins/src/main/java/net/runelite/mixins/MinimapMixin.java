@@ -28,7 +28,7 @@ import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.rs.api.RSClient;
-import net.runelite.rs.api.RSRegion;
+import net.runelite.rs.api.RSScene;
 import net.runelite.rs.api.RSSpritePixels;
 
 @Mixin(RSClient.class)
@@ -41,7 +41,7 @@ public abstract class MinimapMixin implements RSClient
 		RSSpritePixels ourSprite = createSpritePixels(new int[512 * 512], 512, 512);
 		RSSpritePixels theirSprite = getMinimapSprite();
 
-		RSRegion region = getRegion();
+		RSScene scene = getScene();
 		int[] pixels = ourSprite.getPixels();
 		byte[][][] tileSettings = getTileSettings();
 
@@ -58,12 +58,12 @@ public abstract class MinimapMixin implements RSClient
 				{
 					if ((tileSettings[z][y][x] & 24) == 0)
 					{
-						region.drawTile(pixels, var4, 512, z, y, x);
+						scene.drawTile(pixels, var4, 512, z, y, x);
 					}
 
 					if (z < 3 && (tileSettings[z + 1][y][x] & 8) != 0)
 					{
-						region.drawTile(pixels, var4, 512, z + 1, y, x);
+						scene.drawTile(pixels, var4, 512, z + 1, y, x);
 					}
 
 					var4 += 4;

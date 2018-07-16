@@ -253,7 +253,7 @@ public class DiscordPlugin extends Plugin
 		final LocalPoint localPoint = client.getLocalPlayer().getLocalLocation();
 		final int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
 		final int z = client.getPlane();
-		final int chunkData = instanceTemplateChunks[z][localPoint.getRegionX() / CHUNK_SIZE][localPoint.getRegionY() / CHUNK_SIZE];
+		final int chunkData = instanceTemplateChunks[z][localPoint.getSceneX() / CHUNK_SIZE][localPoint.getSceneY() / CHUNK_SIZE];
 
 		// extract world point from chunk data
 		final int chunkY = (chunkData >> 3 & 0x7FF) * CHUNK_SIZE;
