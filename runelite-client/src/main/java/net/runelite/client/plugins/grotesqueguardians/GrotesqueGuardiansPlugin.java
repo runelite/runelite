@@ -45,12 +45,6 @@ public class GrotesqueGuardiansPlugin extends Plugin
 	@Inject
 	private GrotesqueGuardiansOverlay overlay;
 
-	@Provides
-	GrotesqueGuardiansConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(GrotesqueGuardiansConfig.class);
-	}
-
 	@Override
 	protected void startUp() throws Exception
 	{
