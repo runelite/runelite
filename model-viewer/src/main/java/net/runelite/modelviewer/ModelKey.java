@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,16 +24,13 @@
  */
 package net.runelite.modelviewer;
 
-import lombok.AllArgsConstructor;
+import lombok.Value;
 
-@AllArgsConstructor
-public class SceneTilePaint
+@Value
+public class ModelKey
 {
-	final int swColor;
-	final int seColor;
-	final int neColor;
-	final int nwColor;
-	final int texture;
-	final int rgb;
-	final boolean flatShade;
+	private final int modelId;
+	private final int defId;
+	private final int type;
+	private final int orientation;
 }

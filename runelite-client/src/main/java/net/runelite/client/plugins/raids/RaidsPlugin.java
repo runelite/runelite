@@ -410,7 +410,7 @@ public class RaidsPlugin extends Plugin
 
 	private Point findLobbyBase()
 	{
-		Tile[][] tiles = client.getRegion().getTiles()[LOBBY_PLANE];
+		Tile[][] tiles = client.getScene().getTiles()[LOBBY_PLANE];
 
 		for (int x = 0; x < SCENE_SIZE; x++)
 		{
@@ -423,7 +423,7 @@ public class RaidsPlugin extends Plugin
 
 				if (tiles[x][y].getWallObject().getId() == NullObjectID.NULL_12231)
 				{
-					return tiles[x][y].getRegionLocation();
+					return tiles[x][y].getSceneLocation();
 				}
 			}
 		}
@@ -447,7 +447,7 @@ public class RaidsPlugin extends Plugin
 
 		for (int plane = 3; plane > 1; plane--)
 		{
-			tiles = client.getRegion().getTiles()[plane];
+			tiles = client.getScene().getTiles()[plane];
 
 			if (tiles[gridBase.getX() + RaidRoom.ROOM_MAX_SIZE][gridBase.getY()] == null)
 			{
@@ -510,7 +510,7 @@ public class RaidsPlugin extends Plugin
 	private RaidRoom determineRoom(Tile base)
 	{
 		RaidRoom room = new RaidRoom(base, RaidRoom.Type.EMPTY);
-		int chunkData = client.getInstanceTemplateChunks()[base.getPlane()][(base.getRegionLocation().getX()) / 8][base.getRegionLocation().getY() / 8];
+		int chunkData = client.getInstanceTemplateChunks()[base.getPlane()][(base.getSceneLocation().getX()) / 8][base.getSceneLocation().getY() / 8];
 		InstanceTemplates template = InstanceTemplates.findMatch(chunkData);
 
 		if (template == null)

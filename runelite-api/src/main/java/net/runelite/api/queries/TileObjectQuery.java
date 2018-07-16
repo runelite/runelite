@@ -26,8 +26,9 @@ package net.runelite.api.queries;
 
 import static java.lang.Math.abs;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.Query;
-import net.runelite.api.Region;
+import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 
@@ -38,17 +39,15 @@ import net.runelite.api.coords.WorldPoint;
 
 public abstract class TileObjectQuery<EntityType extends TileObject, QueryType> extends Query<EntityType, QueryType>
 {
-	private static final int REGION_SIZE = 104;
-
 	protected List<Tile> getTiles(Client client)
 	{
 		List<Tile> tilesList = new ArrayList<>();
-		Region region = client.getRegion();
-		Tile[][][] tiles = region.getTiles();
+		Scene scene = client.getScene();
+		Tile[][][] tiles = scene.getTiles();
 		int z = client.getPlane();
-		for (int x = 0; x < REGION_SIZE; ++x)
+		for (int x = 0; x < Constants.SCENE_SIZE; ++x)
 		{
-			for (int y = 0; y < REGION_SIZE; ++y)
+			for (int y = 0; y < Constants.SCENE_SIZE; ++y)
 			{
 				Tile tile = tiles[z][x][y];
 				if (tile == null)

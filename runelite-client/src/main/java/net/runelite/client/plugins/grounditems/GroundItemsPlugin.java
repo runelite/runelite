@@ -53,6 +53,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import static net.runelite.api.Constants.SCENE_SIZE;
 import net.runelite.api.GameState;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
@@ -62,7 +63,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Node;
 import net.runelite.api.Player;
-import net.runelite.api.Region;
+import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ConfigChanged;
@@ -98,10 +99,6 @@ public class GroundItemsPlugin extends Plugin
 		.trimResults();
 
 	private static final Joiner COMMA_JOINER = Joiner.on(",").skipNulls();
-	//Size of one region
-	private static final int REGION_SIZE = 104;
-	// The max distance in tiles between the player and the item.
-	private static final int MAX_RANGE = 18;
 	// Used when getting High Alchemy value - multiplied by general store price.
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 	// ItemID for coins
@@ -235,22 +232,16 @@ public class GroundItemsPlugin extends Plugin
 
 		dirty = false;
 
-		final Region region = client.getRegion();
-		final Tile[][][] tiles = region.getTiles();
+		final Scene scene = client.getScene();
+		final Tile[][][] tiles = scene.getTiles();
 		final int z = client.getPlane();
 		final LocalPoint from = player.getLocalLocation();
 
-		final int lowerX = Math.max(0, from.getRegionX() - MAX_RANGE);
-		final int lowerY = Math.max(0, from.getRegionY() - MAX_RANGE);
-
-		final int upperX = Math.min(from.getRegionX() + MAX_RANGE, REGION_SIZE - 1);
-		final int upperY = Math.min(from.getRegionY() + MAX_RANGE, REGION_SIZE - 1);
-
 		groundItems.clear();
 
-		for (int x = lowerX; x <= upperX; ++x)
+		for (int x = 0; x < SCENE_SIZE; ++x)
 		{
-			for (int y = lowerY; y <= upperY; ++y)
+			for (int y = 0; y < SCENE_SIZE; ++y)
 			{
 				Tile tile = tiles[z][x][y];
 				if (tile == null)
@@ -378,8 +369,8 @@ public class GroundItemsPlugin extends Plugin
 			&& event.getType() == MenuAction.GROUND_ITEM_THIRD_OPTION.getId())
 		{
 			int itemId = event.getIdentifier();
-			Region region = client.getRegion();
-			Tile tile = region.getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
+			Scene scene = client.getScene();
+			Tile tile = scene.getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
 			ItemLayer itemLayer = tile.getItemLayer();
 
 			if (itemLayer == null)

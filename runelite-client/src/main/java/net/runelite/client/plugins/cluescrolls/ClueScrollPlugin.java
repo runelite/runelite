@@ -49,7 +49,7 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
 import net.runelite.api.Query;
-import net.runelite.api.Region;
+import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -339,9 +339,9 @@ public class ClueScrollPlugin extends Plugin
 
 					if (localLocation != null)
 					{
-						final Region region = client.getRegion();
-						final Tile[][][] tiles = region.getTiles();
-						final Tile tile = tiles[client.getPlane()][localLocation.getRegionX()][localLocation.getRegionY()];
+						final Scene scene = client.getScene();
+						final Tile[][][] tiles = scene.getTiles();
+						final Tile tile = tiles[client.getPlane()][localLocation.getSceneX()][localLocation.getSceneY()];
 
 						objectsToMark = Arrays.stream(tile.getGameObjects())
 							.filter(object -> object != null && object.getId() == objectId)
