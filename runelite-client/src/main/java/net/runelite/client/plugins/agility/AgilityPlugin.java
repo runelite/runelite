@@ -35,8 +35,6 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
-import net.runelite.api.ItemLayer;
-import net.runelite.api.Node;
 import net.runelite.api.Player;
 import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
@@ -55,7 +53,8 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GroundObjectChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
-import net.runelite.api.events.ItemLayerChanged;
+import net.runelite.api.events.ItemDespawned;
+import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
@@ -182,8 +181,8 @@ public class AgilityPlugin extends Plugin
 		Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
 		if (course == null
 			|| (course.getCourseEndWorldPoints().length == 0
-				? Math.abs(course.getLastObstacleXp() - skillGained) > 1
-				: Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation()))))
+			? Math.abs(course.getLastObstacleXp() - skillGained) > 1
+			: Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation()))))
 		{
 			return;
 		}
@@ -202,47 +201,31 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onItemLayerChanged(ItemLayerChanged event)
+	public void onItemSpawned(ItemSpawned itemSpawned)
 	{
 		if (obstacles.isEmpty())
 		{
 			return;
 		}
 
-		final Tile tile = event.getTile();
-		final ItemLayer itemLayer = tile.getItemLayer();
-		final boolean hasMark = tileHasMark(itemLayer);
+		final Item item = itemSpawned.getItem();
+		final Tile tile = itemSpawned.getTile();
 
-		if (markOfGrace != null && tile.getWorldLocation().equals(markOfGrace.getWorldLocation()) && !hasMark)
-		{
-			markOfGrace = null;
-		}
-		else if (hasMark)
+		if (item.getId() == ItemID.MARK_OF_GRACE)
 		{
 			markOfGrace = tile;
 		}
 	}
 
-	private boolean tileHasMark(ItemLayer itemLayer)
+	@Subscribe
+	public void onItemDespawned(ItemDespawned itemDespawned)
 	{
-		if (itemLayer != null)
+		final Item item = itemDespawned.getItem();
+
+		if (item.getId() == ItemID.MARK_OF_GRACE)
 		{
-			Node currentItem = itemLayer.getBottom();
-
-			while (currentItem instanceof Item)
-			{
-				final Item item = (Item) currentItem;
-
-				currentItem = currentItem.getNext();
-
-				if (item.getId() == ItemID.MARK_OF_GRACE)
-				{
-					return true;
-				}
-			}
+			markOfGrace = null;
 		}
-
-		return false;
 	}
 
 	@Subscribe
@@ -377,9 +360,9 @@ public class AgilityPlugin extends Plugin
 		}
 
 		if (Obstacles.COURSE_OBSTACLE_IDS.contains(newObject.getId()) ||
-				Obstacles.SHORTCUT_OBSTACLE_IDS.contains(newObject.getId()) ||
-				(Obstacles.TRAP_OBSTACLE_IDS.contains(newObject.getId())
-					&& Obstacles.TRAP_OBSTACLE_REGIONS.contains(newObject.getWorldLocation().getRegionID())))
+			Obstacles.SHORTCUT_OBSTACLE_IDS.contains(newObject.getId()) ||
+			(Obstacles.TRAP_OBSTACLE_IDS.contains(newObject.getId())
+				&& Obstacles.TRAP_OBSTACLE_REGIONS.contains(newObject.getWorldLocation().getRegionID())))
 		{
 			obstacles.put(newObject, tile);
 		}

@@ -35,11 +35,14 @@ import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
+import net.runelite.api.Item;
+import net.runelite.api.Node;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GroundObjectSpawned;
+import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.WallObjectSpawned;
 
 @Singleton
@@ -56,6 +59,7 @@ public class SceneTileManager
 
 	/**
 	 * Iterates over each tile in the scene if player is logged in
+	 *
 	 * @param consumer consumer accepting tile as parameter
 	 */
 	public void forEachTile(Consumer<Tile> consumer)
@@ -91,6 +95,7 @@ public class SceneTileManager
 
 	/**
 	 * Simulate object spawns for EventBus subscriber
+	 *
 	 * @param subscriber EventBus subscriber
 	 */
 	public void simulateObjectSpawns(Object subscriber)
@@ -132,6 +137,21 @@ public class SceneTileManager
 					objectSpawned.setGameObject(object);
 					eventBus.post(objectSpawned);
 				});
+
+			Optional.ofNullable(tile.getItemLayer()).ifPresent(itemLayer ->
+			{
+				Node current = itemLayer.getBottom();
+
+				while (current instanceof Item)
+				{
+					final Item item = (Item) current;
+
+					current = current.getNext();
+
+					final ItemSpawned itemSpawned = new ItemSpawned(tile, item);
+					eventBus.post(itemSpawned);
+				}
+			});
 		});
 
 		eventBus.unregister(subscriber);

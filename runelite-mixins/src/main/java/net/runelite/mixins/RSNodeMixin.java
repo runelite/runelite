@@ -22,27 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.mixins;
 
-import lombok.Value;
-import net.runelite.api.Tile;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.MethodHook;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.rs.api.RSNode;
 
-/**
- * An event called when an item pile on a {@link Tile} is modified.
- * <p>
- * Examples of when this event may trigger include:
- * <ul>
- *     <li>Dropping an item</li>
- *     <li>Picking up an item</li>
- *     <li>A dropped item spawning</li>
- *     <li>Loading a region with dropped items</li>
- * </ul>
- */
-@Value
-public class ItemLayerChanged
+@Mixin(RSNode.class)
+public abstract class RSNodeMixin implements RSNode
 {
-	/**
-	 * The affected tile.
-	 */
-	private Tile tile;
+	@Inject
+	public void onUnlink()
+	{
+	}
+
+	@Inject
+	@MethodHook("unlink")
+	public void rl$unlink()
+	{
+		onUnlink();
+	}
 }
