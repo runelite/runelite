@@ -60,7 +60,9 @@ public class GrotesqueGuardiansOverlay extends Overlay
 		if (!client.isInInstancedRegion())
 		{
 			return null;
-		} else {
+		}
+		else
+		{
 			if (client.getMapRegions()[0] != 6727)
 			{
 				return null;
