@@ -241,13 +241,16 @@ public class WidgetID
 	static class Viewport
 	{
 		static final int MINIMAP_WIDGET = 17;
-		static final int FIXED_VIEWPORT = 17;
 		static final int RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX = 12;
 		static final int RESIZABLE_VIEWPORT_BOTTOM_LINE = 12;
 	}
 
 	static class FixedViewport
 	{
+		static final int FIXED_MAIN = 12;
+		static final int FIXED_CANVAS = 13;
+		static final int FIXED_VIEWPORT = 17;
+		static final int BANK_POPUP_CONTAINER = 21;
 		static final int CLAN_CHAT_TAB = 31;
 		static final int FRIENDS_TAB = 32;
 		static final int IGNORES_TAB = 33;
@@ -329,6 +332,8 @@ public class WidgetID
 		static final int CHATBOX_REPORT_TEXT = 29;
 		static final int CHATBOX_FRAME = 1;
 		static final int CHATBOX_BUTTONS = 2;
+		static final int CHATBOX_MESSAGES_POPUP = 33;
+		static final int CHATBOX_MESSAGES_MAKEALL = 550;
 	}
 
 	static class Prayer
@@ -530,6 +535,12 @@ public class WidgetID
 		static final int BARROWS_BROTHERS = 9;
 		static final int BARROWS_POTENTIAL = 10;
 		static final int BARROWS_REWARD_INVENTORY = 3;
+	}
+
+	static class TheatreOfBlood
+	{
+		static final int DARK_OVERLAY = 28;
+		static final int DARK_OVERLAY_BODY = 1;
 	}
 
 	static class MTA
