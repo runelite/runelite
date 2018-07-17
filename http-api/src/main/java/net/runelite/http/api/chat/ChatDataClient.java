@@ -34,12 +34,12 @@ import okhttp3.Response;
 
 public class ChatDataClient
 {
-	public boolean submit(final String username, final String type, final String subtype, final String data) throws IOException
+	public boolean submit(final String username, final ChatDataType type, final String subtype, final String data) throws IOException
 	{
 		final HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("chat")
 			.addQueryParameter("name", username)
-			.addQueryParameter("type", type)
+			.addQueryParameter("type", type.getType())
 			.addQueryParameter("subtype", subtype)
 			.addQueryParameter("data", data)
 			.build();
@@ -55,12 +55,12 @@ public class ChatDataClient
 		}
 	}
 
-	public String get(final String username, final String type, final String subtype) throws IOException
+	public String get(final String username, final ChatDataType type, final String subtype) throws IOException
 	{
 		final HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("chat")
 			.addQueryParameter("name", username)
-			.addQueryParameter("type", type)
+			.addQueryParameter("type", type.getType())
 			.addQueryParameter("subtype", subtype)
 			.build();
 
