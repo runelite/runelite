@@ -40,4 +40,8 @@ public class GraphicID
 	public static final int STAFF_OF_THE_DEAD = 1228;
 	public static final int IMBUED_HEART = 1316;
 	public static final int FLYING_FISH = 1387;
+	public static final int GROTESQUE_GUARDIANS_LIGHTNING_BEG = 1416;
+	public static final int GROTESQUE_GUARDIANS_LIGHTNING_END = 1431;
+	public static final int GROTESQUE_GUARDIANS_STONE_ORB = 160;
+	public static final int GROTESQUE_GUARDIANS_FALLING_ROCKS = 1436;
 }
