@@ -26,8 +26,9 @@ package net.runelite.client.plugins.wasdcamera;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("wasdcamera")
 public interface WASDCameraConfig extends Config
-{}
+{
+
+}

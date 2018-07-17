@@ -132,12 +132,15 @@ public class WASDCameraPlugin extends Plugin
 						// On key press
 						case KeyEvent.KEY_PRESSED:
 							// If chatbox is enabled or at login screen, don't handle camera movement
-							if (canType || robot == null) { break; }
+							if (canType || robot == null)
+							{
+								break;
+							}
 
 							// Delete the last key press from chatbox if alphabet, numeric or whitespace
 							if (Character.isAlphabetic(event.getKeyCode()) ||
 									(Character.isDigit(event.getKeyCode()) ||
-									 Character.isWhitespace(event.getKeyCode())))
+											Character.isWhitespace(event.getKeyCode())))
 							{
 								robot.keyPress(KeyEvent.VK_BACK_SPACE);
 							}
@@ -168,7 +171,9 @@ public class WASDCameraPlugin extends Plugin
 							}
 
 							// If chatbox is enabled or at login screen, don't handle camera movement
-							if (canType || robot == null) { break; }
+							if (canType || robot == null) {
+								break;
+							}
 							if (event.getKeyCode() == KeyEvent.VK_W)
 							{
 								robot.keyRelease(KeyEvent.VK_UP);
