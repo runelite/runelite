@@ -136,7 +136,9 @@ public class WASDCameraPlugin extends Plugin
 							if (canType || robot == null) { break; }
 
 							// Delete the last key press from chatbox if alphanumeric
-							if (Character.isAlphabetic(event.getKeyCode()) || (Character.isDigit(event.getKeyCode())))
+							if (Character.isAlphabetic(event.getKeyCode()) ||
+									(Character.isDigit(event.getKeyCode()) ||
+									 Character.isWhitespace(event.getKeyCode())))
 							{
 								robot.keyPress(KeyEvent.VK_BACK_SPACE);
 							}
