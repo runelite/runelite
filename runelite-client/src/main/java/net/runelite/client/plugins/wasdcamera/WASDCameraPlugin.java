@@ -32,6 +32,7 @@ import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.ConfigManager;
@@ -63,6 +64,7 @@ public class WASDCameraPlugin extends Plugin
 	private Robot robot;
 
 	public boolean canType;
+	public boolean inClient;
 
 	@Provides
 	WASDCameraConfig getConfig(ConfigManager configManager)
@@ -105,6 +107,12 @@ public class WASDCameraPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onFocusChanged(FocusChanged focusChanged)
+	{
+		inClient = focusChanged.isFocused();
+	}
+
 	/**
 	 * Initialize plugin
 	 */
@@ -132,8 +140,8 @@ public class WASDCameraPlugin extends Plugin
 					{
 						// On key press
 						case KeyEvent.KEY_PRESSED:
-							// If chatbox is enabled or at login screen, don't handle camera movement
-							if (canType || robot == null)
+							// If chatbox is enabled, at login screen or game isn't focused, don't handle camera movement
+							if (canType || robot == null || !inClient)
 							{
 								break;
 							}
@@ -165,6 +173,12 @@ public class WASDCameraPlugin extends Plugin
 
 						// On key release
 						case KeyEvent.KEY_RELEASED:
+							// If game isn't focused don't do anything
+							if (!inClient)
+							{
+								break;
+							}
+
 							// If enter was pressed, toggle chatbox state
 							if (event.getKeyCode() == KeyEvent.VK_ENTER || event.getKeyCode() == KeyEvent.VK_TAB)
 							{
