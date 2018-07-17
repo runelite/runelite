@@ -29,13 +29,11 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
-import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Rectangle;
 import static java.lang.Boolean.TRUE;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -43,17 +41,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import static net.runelite.api.Constants.SCENE_SIZE;
 import net.runelite.api.GameState;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
@@ -62,14 +55,14 @@ import net.runelite.api.ItemLayer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Node;
-import net.runelite.api.Player;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.ItemLayerChanged;
+import net.runelite.api.events.ItemDespawned;
+import net.runelite.api.events.ItemQuantityChanged;
+import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -122,7 +115,6 @@ public class GroundItemsPlugin extends Plugin
 
 	private List<String> hiddenItemList = new CopyOnWriteArrayList<>();
 	private List<String> highlightedItemsList = new CopyOnWriteArrayList<>();
-	private boolean dirty;
 
 	@Inject
 	private GroundItemInputListener inputListener;
@@ -150,22 +142,9 @@ public class GroundItemsPlugin extends Plugin
 
 	@Getter
 	private final Map<GroundItem.GroundItemKey, GroundItem> collectedGroundItems = new LinkedHashMap<>();
-	private final List<GroundItem> groundItems = new ArrayList<>();
 	private final Map<Integer, Color> priceChecks = new LinkedHashMap<>();
 	private LoadingCache<String, Boolean> highlightedItems;
 	private LoadingCache<String, Boolean> hiddenItems;
-
-	// Collects similar ground items
-	private final Collector<GroundItem, ?, Map<GroundItem.GroundItemKey, GroundItem>> groundItemMapCollector = Collectors
-		.toMap
-			((item) -> new GroundItem.GroundItemKey(item.getItemId(), item.getLocation()), Function.identity(), (a, b) ->
-				{
-					b.setHaPrice(a.getHaPrice() + b.getHaPrice());
-					b.setGePrice(a.getGePrice() + b.getGePrice());
-					b.setQuantity(a.getQuantity() + b.getQuantity());
-					return b;
-				},
-				() -> collectedGroundItems);
 
 	@Provides
 	GroundItemsConfig provideConfig(ConfigManager configManager)
@@ -188,13 +167,13 @@ public class GroundItemsPlugin extends Plugin
 		overlayManager.remove(overlay);
 		mouseManager.unregisterMouseListener(inputListener);
 		keyManager.unregisterKeyListener(inputListener);
-		groundItems.clear();
 		highlightedItems.invalidateAll();
 		highlightedItems = null;
 		hiddenItems.invalidateAll();
 		hiddenItems = null;
 		hiddenItemList = null;
 		highlightedItemsList = null;
+		collectedGroundItems.clear();
 	}
 
 	@Subscribe
@@ -209,80 +188,68 @@ public class GroundItemsPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(final GameStateChanged event)
 	{
-		if (event.getGameState() == GameState.LOGGED_IN)
+		if (event.getGameState() == GameState.LOADING)
 		{
-			dirty = true;
+			collectedGroundItems.clear();
 		}
 	}
 
 	@Subscribe
-	public void onItemLayerChanged(ItemLayerChanged event)
+	public void onItemSpawned(ItemSpawned itemSpawned)
 	{
-		dirty = true;
+		Item item = itemSpawned.getItem();
+		Tile tile = itemSpawned.getTile();
+
+		GroundItem groundItem = buildGroundItem(tile, item);
+
+		GroundItem.GroundItemKey groundItemKey = new GroundItem.GroundItemKey(item.getId(), tile.getWorldLocation());
+		GroundItem existing = collectedGroundItems.putIfAbsent(groundItemKey, groundItem);
+		if (existing != null)
+		{
+			existing.setQuantity(existing.getQuantity() + groundItem.getQuantity());
+		}
 	}
 
-	void checkItems()
+	@Subscribe
+	public void onItemDespawned(ItemDespawned itemDespawned)
 	{
-		final Player player = client.getLocalPlayer();
+		Item item = itemDespawned.getItem();
+		Tile tile = itemDespawned.getTile();
 
-		if (!dirty || player == null || client.getViewportWidget() == null)
+		GroundItem.GroundItemKey groundItemKey = new GroundItem.GroundItemKey(item.getId(), tile.getWorldLocation());
+		GroundItem groundItem = collectedGroundItems.get(groundItemKey);
+		if (groundItem == null)
 		{
 			return;
 		}
 
-		dirty = false;
-
-		final Scene scene = client.getScene();
-		final Tile[][][] tiles = scene.getTiles();
-		final int z = client.getPlane();
-		final LocalPoint from = player.getLocalLocation();
-
-		groundItems.clear();
-
-		for (int x = 0; x < SCENE_SIZE; ++x)
+		if (groundItem.getQuantity() <= item.getQuantity())
 		{
-			for (int y = 0; y < SCENE_SIZE; ++y)
-			{
-				Tile tile = tiles[z][x][y];
-				if (tile == null)
-				{
-					continue;
-				}
-
-				ItemLayer itemLayer = tile.getItemLayer();
-				if (itemLayer == null)
-				{
-					continue;
-				}
-
-				Node current = itemLayer.getBottom();
-
-				// adds the items on the ground to the ArrayList to be drawn
-				while (current instanceof Item)
-				{
-					final Item item = (Item) current;
-
-					// Continue iteration
-					current = current.getNext();
-
-					// Build ground item
-					final GroundItem groundItem = buildGroundItem(tile, item);
-
-					if (groundItem != null)
-					{
-						groundItem.setHeight(itemLayer.getHeight());
-						groundItems.add(groundItem);
-					}
-				}
-			}
+			collectedGroundItems.remove(groundItemKey);
 		}
-
-		// Group ground items together and sort them properly
-		collectedGroundItems.clear();
-		Lists.reverse(groundItems).stream().collect(groundItemMapCollector);
+		else
+		{
+			groundItem.setQuantity(groundItem.getQuantity() - item.getQuantity());
+		}
 	}
 
-	@Nullable
+	@Subscribe
+	public void onItemQuantityChanged(ItemQuantityChanged itemQuantityChanged)
+	{
+		Item item = itemQuantityChanged.getItem();
+		Tile tile = itemQuantityChanged.getTile();
+		int oldQuantity = itemQuantityChanged.getOldQuantity();
+		int newQuantity = itemQuantityChanged.getNewQuantity();
+
+		int diff = newQuantity - oldQuantity;
+		GroundItem.GroundItemKey groundItemKey = new GroundItem.GroundItemKey(item.getId(), tile.getWorldLocation());
+		GroundItem groundItem = collectedGroundItems.get(groundItemKey);
+		if (groundItem != null)
+		{
+			groundItem.setQuantity(groundItem.getQuantity() + diff);
+		}
+	}
+
 	private GroundItem buildGroundItem(final Tile tile, final Item item)
 	{
 		// Collect the data for the item
@@ -297,7 +264,7 @@ public class GroundItemsPlugin extends Plugin
 			.itemId(realItemId)
 			.quantity(item.getQuantity())
 			.name(itemComposition.getName())
-			.haPrice(alchPrice * item.getQuantity())
+			.haPrice(alchPrice)
 			.tradeable(itemComposition.isTradeable())
 			.build();
 
@@ -305,8 +272,16 @@ public class GroundItemsPlugin extends Plugin
 		// Update item price in case it is coins
 		if (realItemId == COINS)
 		{
-			groundItem.setHaPrice(groundItem.getQuantity());
-			groundItem.setGePrice(groundItem.getQuantity());
+			groundItem.setHaPrice(1);
+			groundItem.setGePrice(1);
+		}
+		else
+		{
+			final ItemPrice itemPrice = itemManager.getItemPrice(realItemId);
+			if (itemPrice != null)
+			{
+				groundItem.setGePrice(itemPrice.getPrice());
+			}
 		}
 
 		return groundItem;
@@ -329,8 +304,6 @@ public class GroundItemsPlugin extends Plugin
 			.maximumSize(512L)
 			.expireAfterAccess(10, TimeUnit.MINUTES)
 			.build(new WildcardMatchLoader(hiddenItemList));
-
-		dirty = true;
 
 		// Cache colors
 		priceChecks.clear();

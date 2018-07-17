@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api.events;
 
+import lombok.Value;
 import net.runelite.api.Item;
 import net.runelite.api.Tile;
-import net.runelite.mapping.Import;
 
-public interface RSItem extends RSRenderable, Item
+/**
+ * Called when the quantity of an item pile changes.
+ */
+@Value
+public class ItemQuantityChanged
 {
-	@Import("id")
-	@Override
-	int getId();
-
-	@Import("id")
-	void setId(int id);
-
-	@Import("quantity")
-	@Override
-	int getQuantity();
-
-	@Import("quantity")
-	void setQuantity(int quantity);
-
-	int getX();
-
-	void setX(int x);
-
-	int getY();
-
-	void setY(int y);
-
-	/**
-	 * Get the tile this item is on
-	 * @return
-	 */
-	Tile getTile();
+	private final Item item;
+	private final Tile tile;
+	private final int oldQuantity;
+	private final int newQuantity;
 }
