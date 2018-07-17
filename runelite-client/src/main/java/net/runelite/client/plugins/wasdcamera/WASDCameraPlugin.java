@@ -61,6 +61,7 @@ public class WASDCameraPlugin extends Plugin
 	private WASDCameraConfig config;
 
 	private Robot robot;
+
 	public boolean canType;
 
 	@Provides
