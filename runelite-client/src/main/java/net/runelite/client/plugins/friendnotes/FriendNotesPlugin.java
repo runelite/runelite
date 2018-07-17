@@ -30,6 +30,7 @@ package net.runelite.client.plugins.friendnotes;
 import com.google.common.base.Strings;
 import com.google.common.collect.ObjectArrays;
 import com.google.common.eventbus.Subscribe;
+import java.awt.Color;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -49,6 +50,7 @@ import net.runelite.client.game.ChatboxInputManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
 @Slf4j
@@ -64,7 +66,7 @@ public class FriendNotesPlugin extends Plugin
 	private static final String ADD_NOTE = "Add Note";
 	private static final String EDIT_NOTE = "Edit Note";
 	private static final String NOTE_PROMPT_FORMAT = "%s's Notes<br>" +
-		"<col=0000AA>(Limit %s Characters)";
+		ColorUtil.prependColorTag("(Limit %s Characters)", new Color(0, 0, 170));
 
 	@Inject
 	private Client client;
