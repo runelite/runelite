@@ -65,6 +65,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.chat.ChatDataClient;
 import net.runelite.http.api.chat.ChatDataType;
+import net.runelite.client.util.Text;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
@@ -417,7 +418,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		}
 		else
 		{
-			player = sanitize(setMessage.getName());
+			player = Text.sanitize(setMessage.getName());
 		}
 
 		search = longBossName(search);
@@ -729,7 +730,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		}
 		else
 		{
-			player = sanitize(setMessage.getName());
+			player = Text.sanitize(setMessage.getName());
 
 			if (player.equals(client.getLocalPlayer().getName()))
 			{
@@ -765,19 +766,6 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			}
 		}
 		return null;
-	}
-
-	/**
-	 * Cleans the ironman status icon from playername string if present and
-	 * corrects spaces.
-	 *
-	 * @param lookup Playername to lookup.
-	 * @return Cleaned playername.
-	 */
-	private static String sanitize(String lookup)
-	{
-		String cleaned = lookup.contains("<img") ? lookup.substring(lookup.lastIndexOf('>') + 1) : lookup;
-		return cleaned.replace('\u00A0', ' ');
 	}
 
 	/**
