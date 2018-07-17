@@ -106,7 +106,8 @@
 			<groupId>net.runelite</groupId>
 			<artifactId>injected-client</artifactId>
 			<version>${project.version}</version>
-			<scope>runtime</scope>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/injected-client-1.4.8-SNAPSHOT.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>
