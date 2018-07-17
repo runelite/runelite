@@ -68,7 +68,9 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.ItemLayerChanged;
+import net.runelite.api.events.ItemDespawned;
+import net.runelite.api.events.ItemSpawned;
+import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
@@ -440,13 +442,13 @@ public class LootLogger
 	{
 		int regionX = location.getX() - client.getBaseX();
 		int regionY = location.getY() - client.getBaseY();
-		if (regionX < 0 || regionX >= Constants.REGION_SIZE ||
-				regionY < 0 || regionY >= Constants.REGION_SIZE)
+		if (regionX < 0 || regionX >= Constants.SCENE_SIZE ||
+				regionY < 0 || regionY >= Constants.SCENE_SIZE)
 		{
 			return null;
 		}
 
-		Tile tile = client.getRegion().getTiles()[location.getPlane()][regionX][regionY];
+		Tile tile = client.getScene().getTiles()[location.getPlane()][regionX][regionY];
 		if (!changedItemLayerTiles.contains(tile))
 		{
 			// No items on the tile changed
@@ -668,13 +670,13 @@ public class LootLogger
 
 		int regionX = playerLocationLastTick.getX() - client.getBaseX();
 		int regionY = playerLocationLastTick.getY() - client.getBaseY();
-		if (regionX < 0 || regionX >= Constants.REGION_SIZE || regionY < 0 || regionY >= Constants.REGION_SIZE)
+		if (regionX < 0 || regionX >= Constants.SCENE_SIZE || regionY < 0 || regionY >= Constants.SCENE_SIZE)
 		{
 			// Player teleported
 			return;
 		}
 
-		Tile tile = client.getRegion().getTiles()[plane][regionX][regionY];
+		Tile tile = client.getScene().getTiles()[plane][regionX][regionY];
 		if (tile == null)
 		{
 			// Not sure when this would happen, but just in case
@@ -1140,7 +1142,7 @@ public class LootLogger
 			}
 		}
 		// Chambers of Xeric / Raids 1
-		else if (event.getGroupId() == WidgetID.RAIDS_REWARD_GROUP_ID && !hasOpenedRaidsRewardChest)
+		else if (event.getGroupId() == WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID && !hasOpenedRaidsRewardChest)
 		{
 			hasOpenedRaidsRewardChest = true;
 
@@ -1298,15 +1300,23 @@ public class LootLogger
 	}
 
 	/**
-	 * Track tiles where an item layer changed (for each tick)
+	 * Track tiles where an item spawned, despawned, or its quantity changed each tick.
 	 */
 	@Subscribe
-	public void onItemLayerChanged(ItemLayerChanged event)
+	public void onItemDespawned(ItemDespawned event)
 	{
-		// Note: This event runs 10816 (104*104) times after
-		// a new loading screen. Perhaps there is a way to
-		// reduce the amount of times it runs?
+		this.changedItemLayerTiles.add(event.getTile());
+	}
 
+	@Subscribe
+	public void onItemSpawned(ItemSpawned event)
+	{
+		this.changedItemLayerTiles.add(event.getTile());
+	}
+
+	@Subscribe
+	public void onItemQuantityChanged(ItemQuantityChanged event)
+	{
 		this.changedItemLayerTiles.add(event.getTile());
 	}
 
