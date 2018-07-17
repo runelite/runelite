@@ -35,12 +35,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.InventoryID;
@@ -56,6 +58,7 @@ import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDespawned;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemSpawned;
@@ -70,6 +73,7 @@ import net.runelite.client.game.loot.data.MemorizedPlayer;
 import net.runelite.client.game.loot.events.EventLootReceived;
 import net.runelite.client.game.loot.events.NpcLootReceived;
 import net.runelite.client.game.loot.events.PlayerLootReceived;
+import net.runelite.client.util.Text;
 
 @Slf4j
 @Singleton
@@ -107,6 +111,10 @@ public class LootLogger
 	private boolean hasOpenedTheatreOfBloodRewardChest = false;
 
 	private WorldPoint playerLocationLastTick = null;
+
+	// Clue Scroll helpers
+	private static final Pattern CLUE_SCROLL_PATTERN = Pattern.compile("You have completed [0-9]+ ([a-z]+) Treasure Trails.");
+	private LootEventType clueType = LootEventType.UNKNOWN_EVENT;
 
 	@Inject
 	private LootLogger(EventBus eventBus)
@@ -700,19 +708,56 @@ public class LootLogger
 		// Clue Scrolls
 		else if (event.getGroupId() == WidgetID.CLUE_SCROLL_REWARD_GROUP_ID)
 		{
-			// TODO: Figure out how to determine clue scroll type
-			LootEventType clueType = LootEventType.UNKNOWN_EVENT;
-
 			// Clue Scrolls use same InventoryID as Barrows
 			ItemContainer container = client.getItemContainer(InventoryID.BARROWS_REWARD);
 			if (container != null)
 			{
 				List<Item> items = Arrays.asList(container.getItems());
 				onNewEventLogCreated(clueType, items);
+				// Reset clueType
+				clueType = LootEventType.UNKNOWN_EVENT;
 			}
 			else
 			{
 				log.debug("Error finding clue scroll Item Container");
+			}
+		}
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
+		{
+			return;
+		}
+
+		String chatMessage = event.getMessage();
+
+		// Check if message is for a clue scroll reward
+		Matcher m = CLUE_SCROLL_PATTERN.matcher(Text.removeTags(chatMessage));
+		if (m.find())
+		{
+			String type = m.group(1).toLowerCase();
+			switch (type)
+			{
+				case "easy":
+					clueType = LootEventType.CLUE_SCROLL_EASY;
+					break;
+				case "medium":
+					clueType = LootEventType.CLUE_SCROLL_MEDIUM;
+					break;
+				case "hard":
+					clueType = LootEventType.CLUE_SCROLL_HARD;
+					break;
+				case "elite":
+					clueType = LootEventType.CLUE_SCROLL_ELITE;
+					break;
+				case "master":
+					clueType = LootEventType.CLUE_SCROLL_MASTER;
+					break;
+				default:
+					clueType = LootEventType.UNKNOWN_EVENT;
 			}
 		}
 	}
