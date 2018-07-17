@@ -63,6 +63,9 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.loot.data.MemorizedActor;
+import net.runelite.client.game.loot.data.MemorizedNpc;
+import net.runelite.client.game.loot.data.MemorizedPlayer;
 import net.runelite.client.game.loot.events.EventLootReceived;
 import net.runelite.client.game.loot.events.NpcLootReceived;
 import net.runelite.client.game.loot.events.PlayerLootReceived;
@@ -93,7 +96,7 @@ public class LootLogger
 	// posting new events
 	private final EventBus eventBus;
 
-	private final List<Actor> deadActorsThisTick = new ArrayList<>();
+	private final List<MemorizedActor> deadActorsThisTick = new ArrayList<>();
 	private final Map<Tile, List<Item>> newItemsThisTick = new HashMap<>();
 
 	// Based on varbit, used to ignore PvP kills in Raids 1
@@ -242,7 +245,7 @@ public class LootLogger
 			}
 			else
 			{
-				deadActorsThisTick.add(a);
+				deadActorsThisTick.add(new MemorizedNpc(npc));
 			}
 		}
 	}
@@ -256,22 +259,36 @@ public class LootLogger
 		// This event runs before the ItemLayerChanged event,
 		// so we have to wait until the end of the game tick
 		// before we know what items were dropped
-		double deathHealth = 0;
+		MemorizedActor mem;
 		Actor deadActor = event.getActor();
+
 		if (deadActor instanceof NPC)
 		{
 			NPC n = (NPC) deadActor;
+			mem = new MemorizedNpc(n);
+
+			// Some NPCS can die with health bars remaining.
 			Double ratio = NpcHpDeath.npcDeathHealthPercent(n.getId());
+			double deathHealth = 0;
 			if (ratio > 0.00)
 			{
 				deathHealth = Math.ceil(ratio * deadActor.getHealth());
 			}
-		}
 
-		// Some NPCS can die with health bars remaining.
-		if (deadActor.getHealthRatio() <= deathHealth)
+			// Ensure NPC is dead
+			if (deadActor.getHealthRatio() <= deathHealth)
+			{
+				deadActorsThisTick.add(mem);
+			}
+		}
+		else if (deadActor instanceof Player)
 		{
-			deadActorsThisTick.add(deadActor);
+			// Ensure player is dead
+			if (deadActor.getHealthRatio() == 0)
+			{
+				mem = new MemorizedPlayer((Player) deadActor);
+				deadActorsThisTick.add(mem);
+			}
 		}
 	}
 
@@ -315,12 +332,12 @@ public class LootLogger
 	 */
 	private void checkActorDeaths()
 	{
-		for (Actor pad : deadActorsThisTick)
+		for (MemorizedActor pad : deadActorsThisTick)
 		{
 			// Pvp kills can happen in Chambers of Xeric when someone
 			// dies and their raid potions drop, but we don't want to
 			// trigger events for these.
-			if (pad instanceof Player && insideChambersOfXeric)
+			if (pad instanceof MemorizedPlayer && insideChambersOfXeric)
 			{
 				continue;
 			}
@@ -378,9 +395,9 @@ public class LootLogger
 				int index = 0;
 				int killsAtWP = 0;
 				// Support for multiple NPCs dying on the same tick at the same time
-				for (Actor pad2 : deadActorsThisTick)
+				for (MemorizedActor pad2 : deadActorsThisTick)
 				{
-					if (pad2.getWorldLocation().distanceTo(pad.getWorldLocation()) == 0)
+					if (pad2.getActor().getWorldLocation().distanceTo(pad.getActor().getWorldLocation()) == 0)
 					{
 						killsAtWP++;
 						if (!foundIndex)
@@ -434,9 +451,9 @@ public class LootLogger
 			// Actor type, Calls the wrapper for triggering the proper LootReceived event
 			if (pad instanceof NPC)
 			{
-				NPC n = (NPC) pad;
-				NPCComposition c = n.getComposition();
-				onNewNpcLogCreated(c.getId(), c, n.getWorldLocation(), dropList);
+				MemorizedNpc n = (MemorizedNpc) pad;
+				NPCComposition c = n.getNpcComposition();
+				onNewNpcLogCreated(c.getId(), c, n.getActor().getWorldLocation(), dropList);
 			}
 			else if (pad instanceof Player)
 			{
@@ -459,14 +476,17 @@ public class LootLogger
 	 * @param pad The MemorizedActor that we are checking
 	 * @return A List of WorldPoint's where the NPC might spawn loot
 	 */
-	private WorldPoint[] getExpectedDropLocations(Actor pad)
+	private WorldPoint[] getExpectedDropLocations(MemorizedActor pad)
 	{
-		WorldPoint defaultLocation = pad.getWorldLocation();
-		if (pad instanceof NPC)
+		Actor a = pad.getActor();
+		WorldPoint defaultLocation = a.getWorldLocation();
+		if (pad instanceof MemorizedNpc)
 		{
+			MemorizedNpc npc = (MemorizedNpc) pad;
+			NPCComposition comp = npc.getNpcComposition();
+
 			// Some bosses drop their loot in specific locations
-			NPC npc = (NPC) pad;
-			switch (npc.getComposition().getId())
+			switch (comp.getId())
 			{
 				case NpcID.KRAKEN:
 				case NpcID.KRAKEN_6640:
@@ -591,14 +611,14 @@ public class LootLogger
 					return new WorldPoint[]
 							{
 									new WorldPoint(
-											pad.getWorldLocation().getX() + 2,
-											pad.getWorldLocation().getY() + 2,
-											pad.getWorldLocation().getPlane())
+											a.getWorldLocation().getX() + 2,
+											a.getWorldLocation().getY() + 2,
+											a.getWorldLocation().getPlane())
 							};
 				}
 			}
 
-			int size = ((NPC) pad).getComposition().getSize();
+			int size = comp.getSize();
 			if (size >= 3)
 			{
 				// Some large NPCs (mostly bosses) drop their loot in the middle
