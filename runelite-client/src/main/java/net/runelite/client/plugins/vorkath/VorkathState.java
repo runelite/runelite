@@ -1,0 +1,14 @@
+package net.runelite.client.plugins.vorkath;
+
+public enum VorkathState
+{
+	IDLE,
+	DRAGON_BREATH_ATTACK,
+	RANGED_ATTACK,
+	MAGIC_ATTACK,
+	VENOM_ATTACK,
+	FIRE_BOMB_ATTACK,
+	PRAYER_DISABLE_ATTACK,
+	FREEZE_SPECIAL_ATTACK,
+	POISON_FIRE_SPECIAL_ATTACK
+}
