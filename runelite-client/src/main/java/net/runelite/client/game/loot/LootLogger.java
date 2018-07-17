@@ -33,10 +33,8 @@ import com.google.common.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +42,6 @@ import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
-import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -60,17 +57,12 @@ import net.runelite.api.events.ActorDespawned;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.loot.data.MemorizedActor;
-import net.runelite.client.game.loot.data.MemorizedNpc;
-import net.runelite.client.game.loot.data.MemorizedNpcAndLocation;
-import net.runelite.client.game.loot.data.MemorizedPlayer;
 import net.runelite.client.game.loot.events.EventLootReceived;
 import net.runelite.client.game.loot.events.NpcLootReceived;
 import net.runelite.client.game.loot.events.PlayerLootReceived;
@@ -101,22 +93,58 @@ public class LootLogger
 	// posting new events
 	private final EventBus eventBus;
 
-	private final Map<Actor, MemorizedActor> interactedActors = new HashMap<>();
-	private final List<MemorizedActor> deadActorsThisTick = new ArrayList<>();
+	private final List<Actor> deadActorsThisTick = new ArrayList<>();
+	private final Map<Tile, List<Item>> newItemsThisTick = new HashMap<>();
 
-	private final Map<WorldPoint, List<Item>> groundItemsLastTick = new HashMap<>();
-	private final Set<Tile> changedItemLayerTiles = new HashSet<>();
-
-	private WorldPoint playerLocationLastTick = null;
-
+	// Based on varbit, used to ignore PvP kills in Raids 1
 	private boolean insideChambersOfXeric = false;
+	// Only grab loot on initial open of chests
 	private boolean hasOpenedRaidsRewardChest = false;
 	private boolean hasOpenedTheatreOfBloodRewardChest = false;
+
+	private WorldPoint playerLocationLastTick = null;
 
 	@Inject
 	private LootLogger(EventBus eventBus)
 	{
 		this.eventBus = eventBus;
+	}
+
+	/**
+	 * Clear data on region change, World Change and Logout.
+	 */
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged e)
+	{
+		switch (e.getGameState())
+		{
+			case LOGGED_IN:
+			case LOGIN_SCREEN:
+			case HOPPING:
+				newItemsThisTick.clear();
+				deadActorsThisTick.clear();
+				break;
+			// We don't care about any other cases.
+		}
+	}
+
+	/**
+	 * Reset Variables based on location varbits
+	 */
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		insideChambersOfXeric = (client.getVar(Varbits.IN_RAID) != 0);
+		if (!insideChambersOfXeric)
+		{
+			this.hasOpenedRaidsRewardChest = false;
+		}
+
+		int theatreState = client.getVar(Varbits.THEATRE_OF_BLOOD);
+		if (theatreState == 0 || theatreState == 1)
+		{
+			this.hasOpenedTheatreOfBloodRewardChest = false;
+		}
 	}
 
 	/**
@@ -183,113 +211,262 @@ public class LootLogger
 	}
 
 	/**
-	 * Compare the two lists and return any new items.
-	 * @param prevItems Previous Ground Items
-	 * @param currItems Current Ground Items
-	 * @return List of new items
+	 * Certain NPCs determine loot tile on death animation and not on de-spawn
 	 */
-	private List<Item> getNewGroundItems(Iterable<Item> prevItems, Iterable<Item> currItems)
+	@Subscribe
+	public void onAnimationChanged(AnimationChanged event)
 	{
-		Map<Integer, Integer> diffMap = new HashMap<>();
-
-		if (prevItems != null)
+		if (!(event.getActor() instanceof NPC))
 		{
-			for (Item item : prevItems)
+			return;
+		}
+
+		Actor a = event.getActor();
+		NPC npc = (NPC) a;
+		int npcId = npc.getId();
+		if (!NPC_DEATH_ANIMATIONS.containsKey(npcId))
+		{
+			return;
+		}
+
+		if (NPC_DEATH_ANIMATIONS.get(npcId) == npc.getAnimation())
+		{
+			if (npcId == NpcID.CAVE_KRAKEN)
 			{
-				int count = diffMap.getOrDefault(item.getId(), 0);
-				diffMap.put(item.getId(), count - item.getQuantity());
+				// Cave kraken decides where to drop the loot right when they
+				// start the death animation, but it doesn't appear until
+				// the death animation has finished
+				// TODO: Figure out how to wait until the NPCs death animation has finished
+				// TODO: Once animation has finished add to deadActorsThisTick
+				log.debug("Killed Kraken, loot should spawn at: {}", playerLocationLastTick);
 			}
-		}
-		if (currItems != null)
-		{
-			for (Item item : currItems)
+			else
 			{
-				int count = diffMap.getOrDefault(item.getId(), 0);
-				diffMap.put(item.getId(), count + item.getQuantity());
-			}
-		}
-
-		List<Item> diff = new ArrayList<>();
-		for (Map.Entry<Integer, Integer> e : diffMap.entrySet())
-		{
-			// Ignore anything that didn't change or was removed.
-			// We only care about new items.
-			if (e.getValue() > 0)
-			{
-				diff.add(client.createItem(e.getKey(), e.getValue()));
-			}
-		}
-
-		return diff;
-	}
-
-	/**
-	 * Grabs loot for specific WorldPoint and Returns new items (Loot)
-	 *
-	 * @param location WorldPoint to check for new items
-	 * @return Item id and quantity Map (Integer,Integer) for new items
-	 */
-	private List<Item> getItemDifferencesAt(WorldPoint location)
-	{
-		int regionX = location.getX() - client.getBaseX();
-		int regionY = location.getY() - client.getBaseY();
-		if (regionX < 0 || regionX >= Constants.SCENE_SIZE ||
-				regionY < 0 || regionY >= Constants.SCENE_SIZE)
-		{
-			return null;
-		}
-
-		Tile tile = client.getScene().getTiles()[location.getPlane()][regionX][regionY];
-		if (!changedItemLayerTiles.contains(tile))
-		{
-			// No items on the tile changed
-			return null;
-		}
-
-		// The tile might previously have contained items so we need to compare.
-		List<Item> prevItems = groundItemsLastTick.get(location) != null ? groundItemsLastTick.get(location) : new ArrayList<>();
-		List<Item> currItems = tile.getGroundItems();
-
-		return getNewGroundItems(prevItems, currItems);
-	}
-
-	/**
-	 * Memorizes any NPCs the local player is interacting with (Including AOE/Cannon)
-	 */
-	private void checkInteracting()
-	{
-		// We should memorize which actors the player has interacted with
-		// Other players might be killing some monsters nearby and in some
-		// rare cases loot appears on the same tick as their monster dies
-
-		Player player = client.getLocalPlayer();
-		Actor interacting = player.getInteracting();
-		if (interacting != null)
-		{
-			if (interacting instanceof NPC)
-			{
-				interactedActors.put(interacting, new MemorizedNpc((NPC)interacting));
-			}
-			else if (interacting instanceof Player)
-			{
-				interactedActors.put(interacting, new MemorizedPlayer((Player)interacting));
+				deadActorsThisTick.add(a);
 			}
 		}
 	}
 
 	/**
-	 * Determine where the NPCs loot will spawn
+	 * Remember dead actors until end of game tick
+	 */
+	@Subscribe
+	public void onActorDespawned(ActorDespawned event)
+	{
+		// This event runs before the ItemLayerChanged event,
+		// so we have to wait until the end of the game tick
+		// before we know what items were dropped
+		double deathHealth = 0;
+		Actor deadActor = event.getActor();
+		if (deadActor instanceof NPC)
+		{
+			NPC n = (NPC) deadActor;
+			Double ratio = NpcHpDeath.npcDeathHealthPercent(n.getId());
+			if (ratio > 0.00)
+			{
+				deathHealth = Math.ceil(ratio * deadActor.getHealth());
+			}
+		}
+
+		// Some NPCS can die with health bars remaining.
+		if (deadActor.getHealthRatio() <= deathHealth)
+		{
+			deadActorsThisTick.add(deadActor);
+		}
+	}
+
+	/**
+	 * Store new items for each tile
+	 */
+	@Subscribe
+	public void onItemSpawned(ItemSpawned event)
+	{
+		newItemsThisTick.computeIfAbsent(event.getTile(), k -> new ArrayList<Item>()).add(event.getItem());
+	}
+
+	/**
+	 * Create a new item if the quantity was increased based on the increase amount
+	 */
+	@Subscribe
+	public void onItemQuantityChanged(ItemQuantityChanged event)
+	{
+		Item i = event.getItem();
+		int quantity = event.getNewQuantity() - event.getOldQuantity();
+		if (quantity > 0)
+		{
+			newItemsThisTick.computeIfAbsent(event.getTile(), k -> new ArrayList<Item>()).add(client.createItem(i.getId(), quantity));
+		}
+	}
+
+	/**
+	 * Every game tick we Loop over all dead actor and determine what loot they dropped
+	 * We must do this on game tick to ensure the Actor Despawn and Item Spawned events finish firing
+	 */
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		checkActorDeaths();
+		newItemsThisTick.clear();
+		playerLocationLastTick = client.getLocalPlayer().getWorldLocation();
+	}
+
+	/**
+	 * Loops over deadActorsThisTick and determines what loot the Actor(s) dropped
+	 */
+	private void checkActorDeaths()
+	{
+		for (Actor pad : deadActorsThisTick)
+		{
+			// Pvp kills can happen in Chambers of Xeric when someone
+			// dies and their raid potions drop, but we don't want to
+			// trigger events for these.
+			if (pad instanceof Player && insideChambersOfXeric)
+			{
+				continue;
+			}
+
+			// Stores new items for each new world point. Some NPCs can drop loot on multiple tiles.
+			WorldPoint[] locations = getExpectedDropLocations(pad);
+			Multimap<WorldPoint, Item> worldDrops = ArrayListMultimap.create();
+			for (WorldPoint location : locations)
+			{
+				int regionX = location.getX() - client.getBaseX();
+				int regionY = location.getY() - client.getBaseY();
+				if (regionX < 0 || regionX >= Constants.SCENE_SIZE ||
+						regionY < 0 || regionY >= Constants.SCENE_SIZE)
+				{
+					continue;
+				}
+
+				Tile tile = client.getScene().getTiles()[location.getPlane()][regionX][regionY];
+
+				// Grab new items for this tile.
+				List<Item> drops = this.newItemsThisTick.get(tile);
+				if (drops == null || drops.size() == 0)
+				{
+					continue;
+				}
+
+				worldDrops.putAll(location, drops);
+			}
+
+			// Didn't find any loot for this Actor
+			if (worldDrops.size() == 0)
+			{
+				log.debug("No Loot found for Actor: {}", pad);
+				log.debug("Locations Checked: {}", Arrays.asList(locations));
+				continue;
+			}
+
+			List<Item> dropList = new ArrayList<>();
+
+			// If we only killed 1 NPC we don't have to worry about splitting loot.
+			if (deadActorsThisTick.size() == 1)
+			{
+				// Add drops for all tiles since NPCs can drop to multiple tiles.
+				for (Map.Entry<WorldPoint, Item> entry : worldDrops.entries())
+				{
+					Item i = entry.getValue();
+					dropList.add(i);
+				}
+			}
+			// If multiple interacted NPCs died on the same tick we need to calculate
+			// how many npcs died on the same tile to evenly split the loot
+			else
+			{
+				boolean foundIndex = false;
+				int index = 0;
+				int killsAtWP = 0;
+				// Support for multiple NPCs dying on the same tick at the same time
+				for (Actor pad2 : deadActorsThisTick)
+				{
+					if (pad2.getWorldLocation().distanceTo(pad.getWorldLocation()) == 0)
+					{
+						killsAtWP++;
+						if (!foundIndex)
+						{
+							index++;
+							if (pad == pad2)
+							{
+								foundIndex = true;
+							}
+						}
+					}
+				}
+
+				if (killsAtWP == 1)
+				{
+					// Add drops for all tiles since NPCs can drop to multiple tiles.
+					for (Map.Entry<WorldPoint, Item> entry : worldDrops.entries())
+					{
+						Item i = entry.getValue();
+						dropList.add(i);
+					}
+				}
+				else
+				{
+					// Multiple NPCs died on the same WorldPoint in the same tick
+					// We handle this by splitting all the drops equally.
+					// i.e. if 2 kills dropped 3 items of the same type, 1 item would be
+					// accounted for the first kill and 2 for the second.
+					Map<Integer, Integer> drops = new HashMap<>();
+					for (Map.Entry<WorldPoint, Item> entry : worldDrops.entries())
+					{
+						Item i = entry.getValue();
+						int nextCount = (i.getQuantity() * index / killsAtWP) -
+								(i.getQuantity() * (index - 1) / killsAtWP);
+						if (nextCount == 0)
+						{
+							continue;
+						}
+						int count = drops.getOrDefault(i.getId(), 0);
+						drops.put(i.getId(), nextCount + count);
+					}
+
+					// Convert Map to List of Items to return
+					for (Map.Entry<Integer, Integer> e : drops.entrySet())
+					{
+						dropList.add(client.createItem(e.getKey(), e.getValue()));
+					}
+				}
+			}
+
+			// Actor type, Calls the wrapper for triggering the proper LootReceived event
+			if (pad instanceof NPC)
+			{
+				NPC n = (NPC) pad;
+				NPCComposition c = n.getComposition();
+				onNewNpcLogCreated(c.getId(), c, n.getWorldLocation(), dropList);
+			}
+			else if (pad instanceof Player)
+			{
+				Player p = (Player) pad;
+				onNewPlayerLogCreated(p, p.getWorldLocation(), dropList);
+			}
+			else
+			{
+				log.error("Unrecognized actor death");
+			}
+		}
+
+		deadActorsThisTick.clear();
+	}
+
+
+	/**
+	 * Determine where the Actors loot will spawn
 	 *
 	 * @param pad The MemorizedActor that we are checking
 	 * @return A List of WorldPoint's where the NPC might spawn loot
 	 */
-	private WorldPoint[] getExpectedDropLocations(MemorizedActor pad)
+	private WorldPoint[] getExpectedDropLocations(Actor pad)
 	{
-		WorldPoint defaultLocation = pad.getActor().getWorldLocation();
-		if (pad instanceof MemorizedNpc)
+		WorldPoint defaultLocation = pad.getWorldLocation();
+		if (pad instanceof NPC)
 		{
 			// Some bosses drop their loot in specific locations
-			switch (((MemorizedNpc) pad).getNpcComposition().getId())
+			NPC npc = (NPC) pad;
+			switch (npc.getComposition().getId())
 			{
 				case NpcID.KRAKEN:
 				case NpcID.KRAKEN_6640:
@@ -300,14 +477,12 @@ public class LootLogger
 							};
 
 				case NpcID.CAVE_KRAKEN:
-					if (pad instanceof MemorizedNpcAndLocation)
-					{
-						return new WorldPoint[]
-								{
-										((MemorizedNpcAndLocation) pad).getExpectedDropLocation()
-								};
-					}
-					break;
+					// TODO: Figure out how grab location of player when Kraken death animation started.
+					log.debug("Tried finding loot location for CAVE_KRAKEN, defaulting to players last location");
+					return new WorldPoint[]
+						{
+								playerLocationLastTick
+						};
 
 				case NpcID.DUSK:
 				case NpcID.DUSK_7851:
@@ -334,25 +509,33 @@ public class LootLogger
 				case NpcID.ZULRAH_2044: // Blue
 				{
 					// The drop appears on whatever tile where zulrah scales appeared
-					WorldPoint location = changedItemLayerTiles.stream()
+					Map.Entry<Tile, List<Item>> entry = newItemsThisTick.entrySet().stream()
+							// Filter new items for tile with zulrah scales
 							.filter(x ->
 							{
-								List<Item> groundItems = x.getGroundItems();
+								List<Item> groundItems = x.getValue();
 								if (groundItems != null)
 								{
 									return groundItems.stream().anyMatch(y -> y.getId() == ItemID.ZULRAHS_SCALES);
 								}
 								return false;
 							})
-							.map(Tile::getWorldLocation)
 							// If player drops some zulrah scales themselves on the same tick,
 							// the ones that appeared further away will be chosen instead.
-							.sorted((x, y) -> y.distanceTo(playerLocationLastTick) - x.distanceTo(playerLocationLastTick))
+							.sorted((x, y) ->
+							{
+								WorldPoint xTile = x.getKey().getWorldLocation();
+								WorldPoint yTile = y.getKey().getWorldLocation();
+								return yTile.distanceTo(playerLocationLastTick) - xTile.distanceTo(playerLocationLastTick);
+							})
 							.findFirst().orElse(null);
-					if (location == null)
+					// Couldn't find any zulrah scales?
+					if (entry == null)
 					{
 						return new WorldPoint[] {};
 					}
+					// Found zulrah scales for this tile
+					WorldPoint location = entry.getKey().getWorldLocation();
 					return new WorldPoint[] { location };
 				}
 
@@ -408,14 +591,14 @@ public class LootLogger
 					return new WorldPoint[]
 							{
 									new WorldPoint(
-											pad.getActor().getWorldLocation().getX() + 2,
-											pad.getActor().getWorldLocation().getY() + 2,
-											pad.getActor().getWorldLocation().getPlane())
+											pad.getWorldLocation().getX() + 2,
+											pad.getWorldLocation().getY() + 2,
+											pad.getWorldLocation().getPlane())
 							};
 				}
 			}
 
-			int size = ((MemorizedNpc) pad).getNpcComposition().getSize();
+			int size = ((NPC) pad).getComposition().getSize();
 			if (size >= 3)
 			{
 				// Some large NPCs (mostly bosses) drop their loot in the middle
@@ -433,198 +616,6 @@ public class LootLogger
 		}
 
 		return new WorldPoint[] { defaultLocation };
-	}
-
-	/**
-	 * Loops over deadActorsThisTick and determines what loot the Actor(s) dropped
-	 */
-	private void checkActorDeaths()
-	{
-		for (MemorizedActor pad : deadActorsThisTick)
-		{
-			// Pvp kills can happen in Chambers of Xeric when someone
-			// dies and their raid potions drop, but we don't want to
-			// log those.
-			if (pad instanceof MemorizedPlayer && insideChambersOfXeric)
-			{
-				continue;
-			}
-
-			// Stores new items for each new world point. Some NPCs can drop loot on multiple tiles.
-			WorldPoint[] locations = getExpectedDropLocations(pad);
-			Multimap<WorldPoint, Item> worldDrops = ArrayListMultimap.create();
-			for (WorldPoint location : locations)
-			{
-				List<Item> drops = getItemDifferencesAt(location);
-				if (drops == null || drops.size() == 0)
-				{
-					continue;
-				}
-
-				worldDrops.putAll(location, drops);
-			}
-
-			// Didn't find any loot for this Actor
-			if (worldDrops.size() == 0)
-			{
-				log.debug("No Loot found for Actor: {}", pad);
-				log.debug("Locations: {}", Arrays.asList(locations));
-				continue;
-			}
-
-			List<Item> dropList;
-
-			// If multiple interacted NPCs died on the same tick we need to calculate
-			// how many npcs died on the same tile to evenly split the loot
-			if (deadActorsThisTick.size() > 1)
-			{
-				boolean foundIndex = false;
-				int index = 0;
-				int killsAtWP = 0;
-				// Support for multiple NPCs dying on the same tick at the same time
-				for (MemorizedActor pad2 : deadActorsThisTick)
-				{
-					if (pad2.getActor().getWorldLocation().distanceTo(pad.getActor().getWorldLocation()) == 0)
-					{
-						killsAtWP++;
-						if (!foundIndex)
-						{
-							index++;
-							if (pad == pad2)
-							{
-								foundIndex = true;
-							}
-						}
-					}
-				}
-
-				// Creating a map in case the quantity needs to be updated for certain items
-				Map<Integer, Integer> drops = new HashMap<>();
-				for (Map.Entry<WorldPoint, Item> entry : worldDrops.entries())
-				{
-					// The way we handle multiple kills on the same WorldPoint in the same tick
-					// is by splitting up all the drops equally, i.e. if 2 kills happened at the
-					// same time and they dropped 3 items of the same type, 1 item would be
-					// accounted for the first kill and 2 for the second.
-					Item i = entry.getValue();
-					int nextCount = (i.getQuantity() * index / killsAtWP) -
-							(i.getQuantity() * (index - 1) / killsAtWP);
-					if (nextCount == 0)
-					{
-						continue;
-					}
-					int count = drops.getOrDefault(i.getId(), 0);
-					drops.put(i.getId(), nextCount + count);
-				}
-
-				// Convert Map to List of Items to return
-				dropList = new ArrayList<>();
-				for (Map.Entry<Integer, Integer> e : drops.entrySet())
-				{
-					dropList.add(client.createItem(e.getKey(), e.getValue()));
-				}
-			}
-			else
-			{
-				// Creating a map in case the quantity needs to be updated for certain items
-				Map<Integer, Integer> drops = new HashMap<>();
-				for (Map.Entry<WorldPoint, Item> entry : worldDrops.entries())
-				{
-					Item i = entry.getValue();
-					int count = drops.getOrDefault(i.getId(), 0);
-					drops.put(i.getId(), i.getQuantity() + count);
-				}
-
-				// Convert Map to List of Items to return
-				dropList = new ArrayList<>();
-				for (Map.Entry<Integer, Integer> e : drops.entrySet())
-				{
-					dropList.add(client.createItem(e.getKey(), e.getValue()));
-				}
-			}
-
-			// Actor type, Calls the wrapper for triggering the proper LootReceived event
-			if (pad instanceof MemorizedNpc)
-			{
-				NPCComposition c = ((MemorizedNpc) pad).getNpcComposition();
-				onNewNpcLogCreated(c.getId(), c, pad.getActor().getWorldLocation(), dropList);
-			}
-			else if (pad instanceof MemorizedPlayer)
-			{
-				Player p = (Player) pad.getActor();
-				onNewPlayerLogCreated(p, p.getWorldLocation(), dropList);
-			}
-			else
-			{
-				log.error("Unrecognized actor death");
-			}
-		}
-
-		deadActorsThisTick.clear();
-	}
-
-	/**
-	 * Stores all Items still on the floor to the previous tick variable
-	 */
-	private void updateGroundItemLayers()
-	{
-		for (Tile tile : this.changedItemLayerTiles)
-		{
-			WorldPoint wp = tile.getWorldLocation();
-			List<Item> groundItems = tile.getGroundItems();
-			if (groundItems == null)
-			{
-				groundItemsLastTick.remove(wp);
-			}
-			else
-			{
-				groundItemsLastTick.put(wp, groundItems);
-			}
-		}
-
-		this.changedItemLayerTiles.clear();
-	}
-
-	/*
-	 * Subscribe events which do some basics checks and information updating
-	 */
-
-	/**
-	 * Clear ground items map on region change
-	 */
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged e)
-	{
-		if (e.getGameState() == GameState.LOGGED_IN)
-		{
-			groundItemsLastTick.clear();
-		}
-
-		// Clear interacted map when player logs out
-		if (e.getGameState() == GameState.LOGIN_SCREEN)
-		{
-			groundItemsLastTick.clear();
-			interactedActors.clear();
-		}
-	}
-
-	/**
-	 * Location Checks
-	 */
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
-	{
-		insideChambersOfXeric = !(client.getVar(Varbits.IN_RAID) == 0);
-		if (!insideChambersOfXeric)
-		{
-			this.hasOpenedRaidsRewardChest = false;
-		}
-
-		int theatreState = client.getVar(Varbits.THEATRE_OF_BLOOD);
-		if (theatreState == 0 || theatreState == 1)
-		{
-			this.hasOpenedTheatreOfBloodRewardChest = false;
-		}
 	}
 
 	/**
@@ -697,120 +688,5 @@ public class LootLogger
 				log.debug("Error finding clue scroll Item Container");
 			}
 		}
-	}
-
-	/**
-	 * Certain NPCs determine loot tile on death animation and not on de-spawn
-	 */
-	@Subscribe
-	public void onAnimationChanged(AnimationChanged event)
-	{
-		if (!(event.getActor() instanceof NPC))
-		{
-			return;
-		}
-
-		NPC npc = (NPC)event.getActor();
-		int npcId = npc.getId();
-		if (!NPC_DEATH_ANIMATIONS.containsKey(npcId))
-		{
-			return;
-		}
-
-		if (NPC_DEATH_ANIMATIONS.get(npcId) == npc.getAnimation())
-		{
-			MemorizedActor memorizedActor = interactedActors.get(npc);
-			if (memorizedActor != null)
-			{
-				if (npcId == NpcID.CAVE_KRAKEN)
-				{
-					if (memorizedActor instanceof MemorizedNpcAndLocation)
-					{
-						// Cave kraken decide where to drop the loot right when they
-						// start the death animation, but it doesn't appear until
-						// the death animation has finished
-						((MemorizedNpcAndLocation) memorizedActor).setExpectedDropLocation(playerLocationLastTick);
-					}
-				}
-				else
-				{
-					deadActorsThisTick.add(memorizedActor);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Remember dead actors until next tick if we interacted with them
-	 */
-	@Subscribe
-	public void onActorDespawned(ActorDespawned event)
-	{
-		// This event runs before the ItemLayerChanged event,
-		// so we have to wait until the end of the game tick
-		// before we know what items were dropped
-
-		MemorizedActor ma = interactedActors.get(event.getActor());
-		if (ma != null)
-		{
-			interactedActors.remove(event.getActor());
-			double deathHealth = 0;
-
-			if (event.getActor() instanceof NPC)
-			{
-				NPC n = (NPC) event.getActor();
-				Double ratio = NpcHpDeath.npcDeathHealthPercent(n.getId());
-				if (ratio > 0.00)
-				{
-					deathHealth = Math.ceil(ratio * event.getActor().getHealth());
-				}
-			}
-
-			if (event.getActor().getHealthRatio() <= deathHealth)
-			{
-				deadActorsThisTick.add(ma);
-			}
-		}
-	}
-
-	/**
-	 * Track tiles where an item spawned, despawned, or quantity changed each tick
-	 */
-	@Subscribe
-	public void onItemDespawned(ItemDespawned event)
-	{
-		this.changedItemLayerTiles.add(event.getTile());
-	}
-
-	@Subscribe
-	public void onItemSpawned(ItemSpawned event)
-	{
-		this.changedItemLayerTiles.add(event.getTile());
-	}
-
-	@Subscribe
-	public void onItemQuantityChanged(ItemQuantityChanged event)
-	{
-		this.changedItemLayerTiles.add(event.getTile());
-	}
-
-	/**
-	 * Every game tick we call all necessary functions to calculate Received Loot
-	 *
-	 * <p><strong>We must do the following to correctly determine dropped NPC loot</strong></p>
-	 * <p>1) Memorize which actors we have interacted with</p>
-	 * <p>2) Check for any item changes (Disappearing from floor, Added/Removed from inventory)</p>
-	 * <p>3) Loop over all dead actor and determine what loot they dropped</p>
-	 * <p><strong>Now that we are done determining loot we need to prepare for the next tick.</strong></p>
-	 * <p>1) Move all data to lastTick variables (Ground Items/Inventory Items)</p>
-	 * <p>2) Store current player world point</p>
-	 */
-	@Subscribe
-	public void onGameTick(GameTick event)
-	{
-		checkInteracting();
-		checkActorDeaths();
-		updateGroundItemLayers();
-		playerLocationLastTick = client.getLocalPlayer().getWorldLocation();
 	}
 }
