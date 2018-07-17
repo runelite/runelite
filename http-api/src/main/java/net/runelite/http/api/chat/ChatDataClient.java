@@ -34,6 +34,11 @@ import okhttp3.Response;
 
 public class ChatDataClient
 {
+	public boolean submit(final String username, final ChatDataType type, final String data) throws IOException
+	{
+		return submit(username, type, "", data);
+	}
+
 	public boolean submit(final String username, final ChatDataType type, final String subtype, final String data) throws IOException
 	{
 		final HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
@@ -53,6 +58,11 @@ public class ChatDataClient
 		{
 			return response.isSuccessful();
 		}
+	}
+
+	public String get(final String username, final ChatDataType type) throws IOException
+	{
+		return get(username, type, "");
 	}
 
 	public String get(final String username, final ChatDataType type, final String subtype) throws IOException

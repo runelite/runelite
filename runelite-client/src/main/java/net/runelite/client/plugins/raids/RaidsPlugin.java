@@ -27,6 +27,7 @@ package net.runelite.client.plugins.raids;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
@@ -67,6 +69,8 @@ import net.runelite.client.plugins.raids.solver.RotationSolver;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
+import net.runelite.http.api.chat.ChatDataClient;
+import net.runelite.http.api.chat.ChatDataType;
 
 @PluginDescriptor(
 	name = "Chambers Of Xeric",
@@ -76,12 +80,12 @@ import net.runelite.client.util.Text;
 @Slf4j
 public class RaidsPlugin extends Plugin
 {
+	static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final int LOBBY_PLANE = 3;
 	private static final String RAID_START_MESSAGE = "The raid has begun!";
 	private static final String LEVEL_COMPLETE_MESSAGE = "level complete!";
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
-	static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final String SPLIT_REGEX = "\\s*,\\s*";
 	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)]");
 
@@ -112,6 +116,9 @@ public class RaidsPlugin extends Plugin
 	@Inject
 	private SpriteManager spriteManager;
 
+	@Inject
+	private ChatCommandManager commandManager;
+
 	@Getter
 	private final ArrayList<String> roomWhitelist = new ArrayList<>();
 
@@ -130,6 +137,7 @@ public class RaidsPlugin extends Plugin
 	@Getter
 	private boolean inRaidChambers;
 
+	private final ChatDataClient chatDataClient = new ChatDataClient();
 	private RaidsTimer timer;
 
 	@Provides
@@ -149,6 +157,12 @@ public class RaidsPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		overlayManager.add(pointsOverlay);
+		commandManager.add(ChatCommandManager.Command.builder()
+			.command("!layout")
+			.block((sender, args) -> raidsLayoutBlock(sender))
+			.print((data, args) -> lookupRaid(data))
+			.build());
+
 		updateLists();
 		checkRaidPresence(true);
 	}
@@ -158,6 +172,7 @@ public class RaidsPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(pointsOverlay);
+		commandManager.remove("!layout");
 		infoBoxManager.removeInfoBox(timer);
 		inRaidChambers = false;
 		raid = null;
@@ -238,21 +253,21 @@ public class RaidsPlugin extends Plugin
 					double percentage = personalPoints / (totalPoints / 100.0);
 
 					String chatMessage = new ChatMessageBuilder()
-							.append(ChatColorType.NORMAL)
-							.append("Total points: ")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(POINTS_FORMAT.format(totalPoints))
-							.append(ChatColorType.NORMAL)
-							.append(", Personal points: ")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(POINTS_FORMAT.format(personalPoints))
-							.append(ChatColorType.NORMAL)
-							.append(" (")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(DECIMAL_FORMAT.format(percentage))
-							.append(ChatColorType.NORMAL)
-							.append("%)")
-							.build();
+						.append(ChatColorType.NORMAL)
+						.append("Total points: ")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(POINTS_FORMAT.format(totalPoints))
+						.append(ChatColorType.NORMAL)
+						.append(", Personal points: ")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(POINTS_FORMAT.format(personalPoints))
+						.append(ChatColorType.NORMAL)
+						.append(" (")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(DECIMAL_FORMAT.format(percentage))
+						.append(ChatColorType.NORMAL)
+						.append("%)")
+						.build();
 
 					chatMessageManager.queue(QueuedMessage.builder()
 						.type(ChatMessageType.CLANCHAT_INFO)
@@ -260,6 +275,49 @@ public class RaidsPlugin extends Plugin
 						.build());
 				}
 			}
+		}
+	}
+
+	private void lookupRaid(final ChatCommandManager.CommandData data)
+	{
+		final String layout;
+		try
+		{
+			layout = chatDataClient.get(data.getName(), ChatDataType.RAIDS_LAYOUT);
+		}
+		catch (IOException ex)
+		{
+			log.debug("unable to lookup raids layout", ex);
+			return;
+		}
+
+		data.getMessage().setRuneLiteFormatMessage(new ChatMessageBuilder()
+			.append(ChatColorType.HIGHLIGHT)
+			.append("Layout: ")
+			.append(ChatColorType.NORMAL)
+			.append(layout)
+			.build());
+	}
+
+	private void raidsLayoutBlock(final String sender)
+	{
+		if (!inRaidChambers)
+		{
+			return;
+		}
+
+		final String layout = getRaid().getLayout().toCodeString();
+		final String rooms = getRaid().toRoomString();
+		final String raidData = "[" + layout + "]: " + rooms;
+		log.debug("Submitting raids layout {} for {}", raidData, sender);
+
+		try
+		{
+			chatDataClient.submit(sender, ChatDataType.RAIDS_LAYOUT, raidData);
+		}
+		catch (IOException e)
+		{
+			log.warn("unable to submit raids layout", e);
 		}
 	}
 

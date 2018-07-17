@@ -31,7 +31,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ChatDataType
 {
-	KILL_COUNT("kc");
+	KILL_COUNT("kc"),
+	RAIDS_LAYOUT("layout");
 
 	private final String type;
 }
