@@ -87,12 +87,12 @@ public abstract class RSTileMixin implements RSTile
 	@Override
 	public WorldPoint getWorldLocation()
 	{
-		return WorldPoint.fromScene(client, getX(), getY(), getPlane());
+		return WorldPoint.fromRegion(client, getX(), getY(), getPlane());
 	}
 
 	@Inject
 	@Override
-	public Point getSceneLocation()
+	public Point getRegionLocation()
 	{
 		return new Point(getX(), getY());
 	}
@@ -101,7 +101,7 @@ public abstract class RSTileMixin implements RSTile
 	@Override
 	public LocalPoint getLocalLocation()
 	{
-		return LocalPoint.fromScene(getX(), getY());
+		return LocalPoint.fromRegion(getX(), getY());
 	}
 
 	@FieldHook("wallObject")
@@ -272,7 +272,7 @@ public abstract class RSTileMixin implements RSTile
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
-			// during loading this gets set to null 104x104 times
+			// during region loading this gets set to null 104x104 times
 			return;
 		}
 
@@ -295,8 +295,8 @@ public abstract class RSTileMixin implements RSTile
 		int z = this.getPlane();
 		int[][] collisionDataFlags = collisionData[z].getFlags();
 
-		Point p1 = this.getSceneLocation();
-		Point p2 = other.getSceneLocation();
+		Point p1 = this.getRegionLocation();
+		Point p2 = other.getRegionLocation();
 		if (p1.getX() == p2.getX() && p1.getY() == p2.getY())
 		{
 			return true;

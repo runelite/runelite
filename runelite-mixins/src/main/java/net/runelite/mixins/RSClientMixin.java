@@ -233,17 +233,17 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public Tile getSelectedSceneTile()
+	public Tile getSelectedRegionTile()
 	{
-		int tileX = getSelectedSceneTileX();
-		int tileY = getSelectedSceneTileY();
+		int tileX = getSelectedRegionTileX();
+		int tileY = getSelectedRegionTileY();
 
 		if (tileX == -1 || tileY == -1)
 		{
 			return null;
 		}
 
-		return getScene().getTiles()[getPlane()][tileX][tileY];
+		return getRegion().getTiles()[getPlane()][tileX][tileY];
 	}
 
 	@Inject
@@ -590,11 +590,11 @@ public abstract class RSClientMixin implements RSClient
 	@Nullable
 	public LocalPoint getLocalDestinationLocation()
 	{
-		int sceneX = getDestinationX();
-		int sceneY = getDestinationY();
-		if (sceneX != 0 && sceneY != 0)
+		int regionX = getDestinationX();
+		int regionY = getDestinationY();
+		if (regionX != 0 && regionY != 0)
 		{
-			return LocalPoint.fromScene(sceneX, sceneY);
+			return LocalPoint.fromRegion(regionX, regionY);
 		}
 		return null;
 	}
@@ -604,7 +604,7 @@ public abstract class RSClientMixin implements RSClient
 	public void changeMemoryMode(boolean lowMemory)
 	{
 		setLowMemory(lowMemory);
-		setSceneLowMemory(lowMemory);
+		setRegionLowMemory(lowMemory);
 		setAudioHighMemory(true);
 		setObjectCompositionLowDetail(lowMemory);
 	}

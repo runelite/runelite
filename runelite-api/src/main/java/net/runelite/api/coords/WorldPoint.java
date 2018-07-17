@@ -195,9 +195,15 @@ public class WorldPoint
 	}
 
 	/**
-	 * Converts the passed scene coordinates to a world space
+	 * Gets the coordinate of the tile that contains the passed local point.
+	 *
+	 * @param client the client
+	 * @param x the local x-axis coordinate
+	 * @param y the local x-axis coordinate
+	 * @param plane the plane
+	 * @return the tile coordinate containing the local point
 	 */
-	public static WorldPoint fromScene(Client client, int x, int y, int plane)
+	public static WorldPoint fromRegion(Client client, int x, int y, int plane)
 	{
 		return new WorldPoint(
 			x + client.getBaseX(),

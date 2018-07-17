@@ -27,7 +27,6 @@ package net.runelite.modelviewer;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
 import net.runelite.cache.IndexType;
 import net.runelite.cache.definitions.ModelDefinition;
 import net.runelite.cache.definitions.ObjectDefinition;
@@ -45,100 +44,29 @@ public class ModelManager
 	private static final Logger logger = LoggerFactory.getLogger(ModelManager.class);
 
 	private final Store store;
-	private final Map<ModelKey, ModelDefinition> models = new HashMap<>();
-	private final ModelLoader loader = new ModelLoader();
+	private final Map<LocationKey, ModelDefinition> models = new HashMap<>();
 
 	public ModelManager(Store store)
 	{
 		this.store = store;
 	}
 
-	public ModelDefinition getModel(int id)
-	{
-		return this.getModel(new ModelKey(id, -1, -1, -1), null);
-	}
-
 	public ModelDefinition getModel(int id, ObjectDefinition object, Location location)
 	{
-		int type = location.getType();
-		int rot = location.getOrientation();
-		return this.getModel(new ModelKey(id, object.getId(), type, rot), md ->
+		LocationKey key;
+
+		Integer rot = null;
+
+		if (location != null)
 		{
-			// this logic is from method3697 in 140
-			if (object.getObjectTypes() == null)
-			{
-				boolean isRotate = object.isRotated();
+			rot = location.getOrientation();
+			key = new LocationKey(id, location.getType(), rot);
+		}
+		else
+		{
+			key = new LocationKey(id, -1, -1);
+		}
 
-				if (type == 2 && rot > 3)
-				{
-					isRotate = !isRotate;
-				}
-
-				if (isRotate)
-				{
-					md.method1493();
-				}
-			}
-			else
-			{
-				boolean isRotate = object.isRotated() ^ rot > 3;
-
-				if (isRotate)
-				{
-					md.method1493();
-				}
-			}
-
-			if (type == 4 && rot > 3)
-			{
-				md.rotate(256);
-				md.move(45, 0, -45);
-			}
-			switch (rot & 3)
-			{
-				case 1:
-					md.rotate1();
-					break;
-				case 2:
-					md.rotate2();
-					break;
-				case 3:
-					md.rotate3();
-					break;
-			}
-			short[] recolorToFind = object.getRecolorToFind();
-			if (recolorToFind != null)
-			{
-				short[] recolorToReplace = object.getRecolorToReplace();
-				for (int i = 0; i < recolorToFind.length; ++i)
-				{
-					md.recolor(recolorToFind[i], recolorToReplace[i]);
-				}
-			}
-			short[] retextureToFind = object.getRetextureToFind();
-			if (retextureToFind != null)
-			{
-				short[] textureToReplace = object.getTextureToReplace();
-				for (int i = 0; i < retextureToFind.length; ++i)
-				{
-					md.retexture(retextureToFind[i], textureToReplace[i]);
-				}
-			}
-
-			if (object.getModelSizeX() != 128 || object.getModelSizeHeight() != 128 || object.getModelSizeY() != 128)
-			{
-				md.resize(object.getModelSizeX(), object.getModelSizeHeight(), object.getModelSizeY());
-			}
-
-			if (object.getOffsetX() != 0 || object.getOffsetHeight() != 0 || object.getOffsetY() != 0)
-			{
-				md.move((short) object.getOffsetX(), (short) object.getOffsetHeight(), (short) object.getOffsetY());
-			}
-		});
-	}
-
-	private ModelDefinition getModel(ModelKey key, Consumer<ModelDefinition> loadConsumer)
-	{
 		ModelDefinition md = models.get(key);
 		if (md != null)
 		{
@@ -148,7 +76,7 @@ public class ModelManager
 		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.MODELS);
 
-		Archive modelArchive = index.getArchive(key.getModelId());
+		Archive modelArchive = index.getArchive(id);
 		byte[] contents;
 		try
 		{
@@ -159,14 +87,57 @@ public class ModelManager
 			throw new RuntimeException(e);
 		}
 
+		ModelLoader loader = new ModelLoader();
 		md = loader.load(modelArchive.getArchiveId(), contents);
 
-		if (loadConsumer != null)
+			if (object != null && location != null)
+			{
+				rotate(md, object, location, rot);
+				md.computeNormals();
+			}
+
+			models.put(key, md);
+			return md;
+	}
+
+	// this logic is from method3697 in 140
+	private static void rotate(ModelDefinition md, ObjectDefinition object, Location location, int rot)
+	{
+		if (object.getObjectTypes() == null)
 		{
-			loadConsumer.accept(md);
+			boolean isRotate = object.isRotated();
+
+			if (location.getType() == 2 && rot > 3)
+			{
+				isRotate = !isRotate;
+			}
+
+			if (isRotate)
+			{
+				md.method1493();
+			}
 		}
-		md.computeNormals();
-		models.put(key, md);
-		return md;
+		else
+		{
+			boolean isRotate = object.isRotated() ^ rot > 3;
+
+			if (isRotate)
+			{
+				md.method1493();
+			}
+		}
+
+		switch (rot & 3)
+		{
+			case 1:
+				md.rotate1();
+				break;
+			case 2:
+				md.rotate2();
+				break;
+			case 3:
+				md.rotate3();
+				break;
+		}
 	}
 }

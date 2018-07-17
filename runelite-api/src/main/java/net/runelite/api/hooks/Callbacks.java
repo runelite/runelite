@@ -60,9 +60,9 @@ public interface Callbacks
 	void updateNpcs();
 
 	/**
-	 * Called after the scene is drawn.
+	 * Called after region is drawn.
 	 */
-	void drawScene();
+	void drawRegion();
 
 	/**
 	 * Called after logic that is drawing 2D objects is processed.

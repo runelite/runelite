@@ -285,7 +285,7 @@ public class GroundMarkerPlugin extends Plugin
 			return;
 		}
 
-		Tile target = client.getSelectedSceneTile();
+		Tile target = client.getSelectedRegionTile();
 		markTile(target.getLocalLocation());
 	}
 
@@ -316,8 +316,8 @@ public class GroundMarkerPlugin extends Plugin
 		if (client.isInInstancedRegion())
 		{
 			// get position in the scene
-			int sceneX = localPoint.getSceneX();
-			int sceneY = localPoint.getSceneY();
+			int sceneX = localPoint.getRegionX();
+			int sceneY = localPoint.getRegionY();
 
 			// get chunk from scene
 			int chunkX = sceneX / CHUNK_SIZE;
