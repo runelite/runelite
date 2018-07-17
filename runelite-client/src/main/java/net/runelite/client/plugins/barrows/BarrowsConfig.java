@@ -46,7 +46,7 @@ public interface BarrowsConfig extends Config
 	@ConfigItem(
 		keyName = "showBrotherLoc",
 		name = "Show Brothers location",
-		description = "Configures whether or not the brothers location is displayed",
+		description = "Configure whether to show the brothers location",
 		position = 1
 	)
 	default boolean showBrotherLoc()
@@ -66,10 +66,21 @@ public interface BarrowsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showBrotherOverlay",
+		name = "Show Brothers overlay",
+		description = "Configure whether to show slain brothers overlay on screen",
+		position = 3
+	)
+	default boolean showBrotherOverlay()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "brotherLocColor",
 		name = "Brother location color",
 		description = "Change the color of the name displayed on the minimap",
-		position = 3
+		position = 4
 	)
 	default Color brotherLocColor()
 	{
@@ -80,7 +91,7 @@ public interface BarrowsConfig extends Config
 		keyName = "deadBrotherLocColor",
 		name = "Dead Brother loc. color",
 		description = "Change the color of the name displayed on the minimap for a dead brother",
-		position = 4
+		position = 5
 	)
 	default Color deadBrotherLocColor()
 	{
