@@ -644,8 +644,4 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("oculusOrbNormalSpeed")
 	@Override
 	void setOculusOrbNormalSpeed(int state);
-
-	RSItem getLastItemDespawn();
-
-	void setLastItemDespawn(RSItem lastItemDespawn);
 }

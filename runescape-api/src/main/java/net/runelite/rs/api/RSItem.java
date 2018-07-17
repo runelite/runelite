@@ -25,7 +25,6 @@
 package net.runelite.rs.api;
 
 import net.runelite.api.Item;
-import net.runelite.api.Tile;
 import net.runelite.mapping.Import;
 
 public interface RSItem extends RSRenderable, Item
@@ -43,18 +42,4 @@ public interface RSItem extends RSRenderable, Item
 
 	@Import("quantity")
 	void setQuantity(int quantity);
-
-	int getX();
-
-	void setX(int x);
-
-	int getY();
-
-	void setY(int y);
-
-	/**
-	 * Get the tile this item is on
-	 * @return
-	 */
-	Tile getTile();
 }
