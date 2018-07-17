@@ -31,6 +31,7 @@ import net.runelite.api.Client;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ItemContainerChanged;
@@ -53,11 +54,14 @@ public class PickpocketPlugin extends Plugin
 
 	private static final int MAX_NUM_COIN_POUCHES = 28;
 
-	// TODO: Replace these int literals with fields from ItemID whenever it's updated.
 	private static final int[] coinPouchIds = new int[]
 	{
-		22521, 22522, 22523, 22524, 22525, 22526, 22527, 22528, 22529,
-		22530, 22531, 22532, 22533, 22534, 22535, 22536, 22537, 22538
+		ItemID.COIN_POUCH_22522, ItemID.COIN_POUCH_22523, ItemID.COIN_POUCH_22524,
+		ItemID.COIN_POUCH_22525, ItemID.COIN_POUCH_22526, ItemID.COIN_POUCH_22527,
+		ItemID.COIN_POUCH_22528, ItemID.COIN_POUCH_22529, ItemID.COIN_POUCH_22530,
+		ItemID.COIN_POUCH_22531, ItemID.COIN_POUCH_22532, ItemID.COIN_POUCH_22533,
+		ItemID.COIN_POUCH_22534, ItemID.COIN_POUCH_22535, ItemID.COIN_POUCH_22536,
+		ItemID.COIN_POUCH_22537, ItemID.COIN_POUCH_22538, ItemID.COIN_POUCH
 	};
 
 	@Inject
