@@ -60,7 +60,9 @@ import net.runelite.api.events.ActorDespawned;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.ItemLayerChanged;
+import net.runelite.api.events.ItemDespawned;
+import net.runelite.api.events.ItemSpawned;
+import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
@@ -117,10 +119,6 @@ public class LootLogger
 		this.eventBus = eventBus;
 	}
 
-	/*
-	 * Wrappers for posting new events
-	 */
-
 	/**
 	 * Called when loot was received by killing an NPC. Triggers the NpcLootReceived event.
 	 *
@@ -132,6 +130,8 @@ public class LootLogger
 	private void onNewNpcLogCreated(int npc, NPCComposition comp, WorldPoint location, List<Item> drops)
 	{
 		eventBus.post(new NpcLootReceived(npc, comp, location, drops));
+		log.debug("NPC Loot Received. ID {} | Name: {} | Location: {}", npc, comp.getName(), location);
+		log.debug("Drops: {}", tostring(drops));
 	}
 
 	/**
@@ -144,6 +144,8 @@ public class LootLogger
 	private void onNewPlayerLogCreated(Player player, WorldPoint location, List<Item> drops)
 	{
 		eventBus.post(new PlayerLootReceived(player, location, drops));
+		log.debug("Player Loot Received. Player {} | Name: {} | Location: {}", player, player.getName(), location);
+		log.debug("Drops: {}", tostring(drops));
 	}
 
 	/**
@@ -156,8 +158,29 @@ public class LootLogger
 	private void onNewEventLogCreated(LootEventType event, List<Item> drops)
 	{
 		eventBus.post(new EventLootReceived(event, drops));
+		log.debug("Event Loot Received. Event Name {}", event);
+		log.debug("Drops: {}", tostring(drops));
 	}
 
+	/**
+	 * Used to convert a List of Items to String representation.
+	 * @param drops List of Item
+	 * @return String representation
+	 */
+	private String tostring(List<Item> drops)
+	{
+		StringBuilder s = new StringBuilder("Item[");
+		int count = 0;
+		for (Item i : drops)
+		{
+			count++;
+			s.append("Item(id=").append(i.getId()).append(",quantity=").append(i.getQuantity()).append(")");
+			if (count < drops.size())
+				s.append(",");
+		}
+		s.append("]");
+		return s.toString();
+	}
 
 	/**
 	 * Compare the two lists and return any new items.
@@ -200,7 +223,6 @@ public class LootLogger
 		return diff;
 	}
 
-
 	/**
 	 * Grabs loot for specific WorldPoint and Returns new items (Loot)
 	 *
@@ -211,13 +233,13 @@ public class LootLogger
 	{
 		int regionX = location.getX() - client.getBaseX();
 		int regionY = location.getY() - client.getBaseY();
-		if (regionX < 0 || regionX >= Constants.REGION_SIZE ||
-				regionY < 0 || regionY >= Constants.REGION_SIZE)
+		if (regionX < 0 || regionX >= Constants.SCENE_SIZE ||
+				regionY < 0 || regionY >= Constants.SCENE_SIZE)
 		{
 			return null;
 		}
 
-		Tile tile = client.getRegion().getTiles()[location.getPlane()][regionX][regionY];
+		Tile tile = client.getScene().getTiles()[location.getPlane()][regionX][regionY];
 		if (!changedItemLayerTiles.contains(tile))
 		{
 			// No items on the tile changed
@@ -230,8 +252,6 @@ public class LootLogger
 
 		return getNewGroundItems(prevItems, currItems);
 	}
-
-
 
 	/**
 	 * Memorizes any NPCs the local player is interacting with (Including AOE/Cannon)
@@ -754,15 +774,23 @@ public class LootLogger
 	}
 
 	/**
-	 * Track tiles where an item layer changed (for each tick)
+	 * Track tiles where an item spawned, despawned, or quantity changed each tick
 	 */
 	@Subscribe
-	public void onItemLayerChanged(ItemLayerChanged event)
+	public void onItemDespawned(ItemDespawned event)
 	{
-		// Note: This event runs 10816 (104*104) times after
-		// a new loading screen. Perhaps there is a way to
-		// reduce the amount of times it runs?
+		this.changedItemLayerTiles.add(event.getTile());
+	}
 
+	@Subscribe
+	public void onItemSpawned(ItemSpawned event)
+	{
+		this.changedItemLayerTiles.add(event.getTile());
+	}
+
+	@Subscribe
+	public void onItemQuantityChanged(ItemQuantityChanged event)
+	{
 		this.changedItemLayerTiles.add(event.getTile());
 	}
 
