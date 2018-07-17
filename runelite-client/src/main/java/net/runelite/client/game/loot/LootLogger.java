@@ -682,7 +682,7 @@ public class LootLogger
 			if (container != null)
 			{
 				List<Item> items = Arrays.asList(container.getItems());
-				onNewEventLogCreated(LootEventType.RAIDS, items);
+				onNewEventLogCreated(LootEventType.CHAMBERS_OF_XERIC, items);
 			}
 			else
 			{
@@ -698,7 +698,7 @@ public class LootLogger
 			if (container != null)
 			{
 				List<Item> items = Arrays.asList(container.getItems());
-				onNewEventLogCreated(LootEventType.RAIDS, items);
+				onNewEventLogCreated(LootEventType.THEATRE_OF_BLOOD, items);
 			}
 			else
 			{
