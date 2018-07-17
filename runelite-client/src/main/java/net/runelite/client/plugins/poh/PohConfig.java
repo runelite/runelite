@@ -114,7 +114,7 @@ public interface PohConfig extends Config
 	@ConfigItem(
 		keyName = "showJewelleryBox",
 		name = "Show Jewellery Box",
-		description = "Configures whether or not the Jewllery box is displayed"
+		description = "Configures whether or not the Jewellery box is displayed"
 	)
 	default boolean showJewelleryBox()
 	{
@@ -127,6 +127,16 @@ public interface PohConfig extends Config
 		description = "Configures whether or not the Fairy ring, Spirit tree or Obelisk is displayed"
 	)
 	default boolean showMagicTravel()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showLectern",
+		name = "Show Lectern",
+		description = "Configures whether or not the Lectern is displayed"
+	)
+	default boolean showLectern()
 	{
 		return true;
 	}
