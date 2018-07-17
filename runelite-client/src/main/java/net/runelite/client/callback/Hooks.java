@@ -341,7 +341,7 @@ public class Hooks implements Callbacks
 	}
 
 	@Override
-	public void drawScene()
+	public void drawRegion()
 	{
 		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
 		BufferedImage image = (BufferedImage) bufferProvider.getImage();

@@ -131,11 +131,11 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	int getMouseCurrentButton();
 
-	@Import("selectedSceneTileX")
-	int getSelectedSceneTileX();
+	@Import("selectedRegionTileX")
+	int getSelectedRegionTileX();
 
-	@Import("selectedSceneTileY")
-	int getSelectedSceneTileY();
+	@Import("selectedRegionTileY")
+	int getSelectedRegionTileY();
 
 	@Import("draggingWidget")
 	@Override
@@ -165,9 +165,9 @@ public interface RSClient extends RSGameEngine, Client
 	 */
 	RSWidget[] getGroup(int groupId);
 
-	@Import("scene")
+	@Import("region")
 	@Override
-	RSScene getScene();
+	RSRegion getRegion();
 
 	@Import("localPlayer")
 	@Override
@@ -460,8 +460,8 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("lowMemory")
 	void setLowMemory(boolean lowMemory);
 
-	@Import("sceneLowMemory")
-	void setSceneLowMemory(boolean lowMemory);
+	@Import("regionLowMemory")
+	void setRegionLowMemory(boolean lowMemory);
 
 	@Import("audioHighMemory")
 	void setAudioHighMemory(boolean highMemory);
@@ -644,8 +644,4 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("oculusOrbNormalSpeed")
 	@Override
 	void setOculusOrbNormalSpeed(int state);
-
-	RSItem getLastItemDespawn();
-
-	void setLastItemDespawn(RSItem lastItemDespawn);
 }

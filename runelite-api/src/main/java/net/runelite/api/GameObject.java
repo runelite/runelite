@@ -37,21 +37,21 @@ public interface GameObject extends TileObject
 {
 
 	/**
-	 * Gets the minimum x and y scene coordinate pair for this game object.
+	 * Gets the minimum x and y region coordinate pair for this game object.
 	 *
-	 * @return the minimum scene coordinate
+	 * @return the minimum region coordinate
 	 */
-	Point getSceneMinLocation();
+	Point getRegionMinLocation();
 
 	/**
-	 * Gets the maximum x and y scene coordinate pair for this game object.
+	 * Gets the maximum x and y region coordinate pair for this game object.
 	 * <p>
-	 * This value differs from {@link #getSceneMinLocation()} when the size
+	 * This value differs from {@link #getRegionMinLocation()} when the size
 	 * of the object is more than 1 tile.
 	 *
-	 * @return the maximum scene coordinate
+	 * @return the minimum region coordinate
 	 */
-	Point getSceneMaxLocation();
+	Point getRegionMaxLocation();
 
 	/**
 	 * Gets the convex hull of the actors model.

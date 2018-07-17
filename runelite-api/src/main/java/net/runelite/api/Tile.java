@@ -90,11 +90,12 @@ public interface Tile
 	WorldPoint getWorldLocation();
 
 	/**
-	 * Gets the location coordinate of the tile in scene coords
+	 * Gets the location coordinate of the tile relative to the current
+	 * region start point.
 	 *
-	 * @return the scene location
+	 * @return the region location
 	 */
-	Point getSceneLocation();
+	Point getRegionLocation();
 
 	/**
 	 * Gets the local coordinate of the tile.

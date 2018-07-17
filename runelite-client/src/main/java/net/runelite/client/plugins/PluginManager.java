@@ -67,7 +67,7 @@ import net.runelite.client.events.PluginChanged;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.task.ScheduledMethod;
 import net.runelite.client.task.Scheduler;
-import net.runelite.client.util.SceneTileManager;
+import net.runelite.client.util.RegionTileManager;
 
 @Singleton
 @Slf4j
@@ -91,7 +91,7 @@ public class PluginManager
 	ScheduledExecutorService executor;
 
 	@Inject
-	SceneTileManager sceneTileManager;
+	RegionTileManager regionTileManager;
 
 	@Setter
 	boolean isOutdated;
@@ -314,7 +314,7 @@ public class PluginManager
 			});
 
 			log.debug("Plugin {} is now running", plugin.getClass().getSimpleName());
-			sceneTileManager.simulateObjectSpawns(plugin);
+			regionTileManager.simulateObjectSpawns(plugin);
 			eventBus.register(plugin);
 			schedule(plugin);
 			eventBus.post(new PluginChanged(plugin, true));

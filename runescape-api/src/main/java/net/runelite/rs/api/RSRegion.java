@@ -24,11 +24,11 @@
  */
 package net.runelite.rs.api;
 
-import net.runelite.api.Scene;
+import net.runelite.api.Region;
 import net.runelite.api.Tile;
 import net.runelite.mapping.Import;
 
-public interface RSScene extends Scene
+public interface RSRegion extends Region
 {
 	@Import("objects")
 	RSGameObject[] getObjects();

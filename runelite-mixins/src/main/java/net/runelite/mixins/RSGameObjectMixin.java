@@ -45,14 +45,14 @@ public abstract class RSGameObjectMixin implements RSGameObject
 
 	@Inject
 	@Override
-	public Point getSceneMinLocation()
+	public Point getRegionMinLocation()
 	{
 		return new Point(getRelativeX(), getRelativeY());
 	}
 
 	@Inject
 	@Override
-	public Point getSceneMaxLocation()
+	public Point getRegionMaxLocation()
 	{
 		return new Point(getOffsetX(), getOffsetY());
 	}

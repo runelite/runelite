@@ -67,7 +67,6 @@ import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
-import net.runelite.cache.item.ColorPalette;
 import net.runelite.cache.models.Vector3f;
 import net.runelite.cache.models.VertexNormal;
 import net.runelite.cache.region.Location;
@@ -100,11 +99,12 @@ public class ModelViewer
 	 * size of a tile in local coordinates
 	 */
 	private static final int TILE_SCALE = 128;
-	private static final int[] palette = new ColorPalette(0.6, 0, 512).getColorPalette();//0.6, 0.7, 0.8, 0.9
+
 	private static ObjectManager objectManager;
 	private static TextureManager textureManager;
 	private static SpriteManager spriteManager;
 	private static ModelManager modelManager;
+
 	private static Map<Integer, Texture> textures = new HashMap<>();
 	private static Map<Integer, SequenceDefinition> seqs = new HashMap<>();
 	private static Multimap<Integer, FrameDefinition> frames = HashMultimap.create();
@@ -174,7 +174,7 @@ public class ModelViewer
 			// render model
 			String model = cmd.getOptionValue("model");
 
-			ModelDefinition md = modelManager.getModel(Integer.parseInt(model));
+			ModelDefinition md = modelManager.getModel(Integer.parseInt(model), null, null);
 			models.add(md);
 		}
 		if (cmd.hasOption("npc"))
@@ -185,11 +185,7 @@ public class ModelViewer
 
 			for (int model : npcdef.models)
 			{
-				ModelDefinition md = modelManager.getModel(model);
-				for (int i = 0; i < npcdef.recolorToFind.length; i++)
-				{
-					md.recolor(npcdef.recolorToFind[i], npcdef.recolorToReplace[i]);
-				}
+				ModelDefinition md = modelManager.getModel(model, null, null);
 				models.add(md);
 			}
 		}
@@ -201,25 +197,16 @@ public class ModelViewer
 
 			for (int model : objdef.getObjectModels())
 			{
-				models.add(modelManager.getModel(model, objdef, null));
+				ModelDefinition md = modelManager.getModel(model, null, null);
+				models.add(md);
 			}
 		}
 		if (cmd.hasOption("map"))
 		{
 			String map = cmd.getOptionValue("map");
 			String[] s = map.split(",");
-			int x, y;
-			if (s.length == 1)
-			{
-				int regionId = Integer.parseInt(s[0]);
-				x = regionId >> 8;
-				y = regionId & 0xFF;
-			}
-			else
-			{
-				x = Integer.parseInt(s[0]);
-				y = Integer.parseInt(s[1]);
-			}
+
+			int x = Integer.parseInt(s[0]), y = Integer.parseInt(s[1]);
 
 			XteaKeyManager keyManager = new XteaKeyManager();
 			keyManager.loadKeys();
@@ -257,7 +244,7 @@ public class ModelViewer
 				KitDefinition kit = KitManager.getKit(kitId);
 				for (int model : kit.modelIds)
 				{
-					ModelDefinition md = modelManager.getModel(model);
+					ModelDefinition md = modelManager.getModel(model, null, null);
 					models.add(md);
 				}
 			}
@@ -296,7 +283,7 @@ public class ModelViewer
 		if (region != null)
 		{
 			scene = new Scene(underlayManager, overlayManager);
-			scene.loadRegion(region, objectManager);
+			scene.loadRegion(region);
 		}
 
 		SequenceDefinition sequenceDefinition = null;
@@ -354,7 +341,19 @@ public class ModelViewer
 
 			for (ModelDefinition def : models)
 			{
-				drawModel(def);
+				short[] recolourToFind = null, recolourToReplace = null;
+				if (npcdef != null)
+				{
+					recolourToFind = npcdef.recolorToFind;
+					recolourToReplace = npcdef.recolorToReplace;
+				}
+				if (objdef != null)
+				{
+					recolourToFind = objdef.getRecolorToFind();
+					recolourToReplace = objdef.getRecolorToReplace();
+				}
+
+				drawModel(def, recolourToFind, recolourToReplace);
 			}
 
 			if (region != null)
@@ -375,7 +374,7 @@ public class ModelViewer
 		Display.destroy();
 	}
 
-	private static void drawModel(ModelDefinition md)
+	private static void drawModel(ModelDefinition md, short[] recolourToFind, short[] recolourToReplace)
 	{
 		for (int i = 0; i < md.faceCount; ++i)
 		{
@@ -457,7 +456,22 @@ public class ModelViewer
 			}
 			else
 			{
-				color = new Color(getPaletteColor(md.faceColors[i]));
+				short hsb = md.faceColors[i];
+
+				// Check recolor
+				if (recolourToFind != null)
+				{
+					for (int j = 0; j < recolourToFind.length; ++j)
+					{
+						if (recolourToFind[j] == hsb)
+						{
+							hsb = recolourToReplace[j];
+						}
+					}
+				}
+
+				int rgb = RS2HSB_to_RGB(hsb);
+				color = new Color(rgb);
 			}
 
 			// convert to range of 0-1
@@ -511,15 +525,8 @@ public class ModelViewer
 			{
 				for (int y = 0; y < Region.Y; ++y)
 				{
-					SceneTilePaint paint = sceneTilePaint[x][y];
-					if (paint != null)
-					{
-						drawSceneTilePaint(region, x, y, z, paint);
-					}
-					else
-					{
-						drawSceneTileModel(region, x, y, z, sceneTileModels[x][y]);
-					}
+					drawSceneTileModel(region, x, y, z, sceneTileModels[x][y]);
+					drawSceneTilePaint(region, x, y, z, sceneTilePaint[x][y]);
 				}
 			}
 		}
@@ -536,14 +543,11 @@ public class ModelViewer
 
 		int glTexture = -1;
 
-		Color swColor;
-		Color seColor;
-		Color neColor;
-		Color nwColor;
+		Color color;
 
 		if (sceneTilePaint.texture > -1)
 		{
-			swColor = seColor = neColor = nwColor = Color.WHITE;
+			color = Color.WHITE;
 
 			Texture texture = getTexture(sceneTilePaint.texture);
 			glTexture = texture.getOpenglId();
@@ -554,14 +558,7 @@ public class ModelViewer
 		}
 		else
 		{
-			if (sceneTilePaint.swColor == 12345678)
-			{
-				return;
-			}
-			swColor = new Color(getPaletteColor(sceneTilePaint.swColor));
-			seColor = new Color(getPaletteColor(sceneTilePaint.seColor));
-			neColor = new Color(getPaletteColor(sceneTilePaint.neColor));
-			nwColor = new Color(getPaletteColor(sceneTilePaint.nwColor));
+			color = new Color(RS2HSB_to_RGB(sceneTilePaint.color));
 		}
 
 
@@ -570,31 +567,28 @@ public class ModelViewer
 		int x = regionX * TILE_SCALE;
 		int y = regionY * TILE_SCALE;
 
+		GL11.glColor3f((float) color.getRed() / 255f, (float) color.getGreen() / 255f, (float) color.getBlue() / 255f);
 		int z1 = -region.getTileHeight(z, regionX, regionY);
 		int z2 = regionX + 1 < Region.X ? -region.getTileHeight(z, regionX + 1, regionY) : z1;
 		int z3 = regionY + 1 < Region.Y ? -region.getTileHeight(z, regionX, regionY + 1) : z1;
 		int z4 = regionX + 1 < Region.X && regionY + 1 < Region.Y ? -region.getTileHeight(z, regionX + 1, regionY + 1) : z1;
 
 		// triangle 1
-		glColor3f(swColor);
 		if (glTexture > -1)
 		{
 			GL11.glTexCoord2f(0, 0);
 		}
 		GL11.glVertex3i(x, z1, -y);
-		glColor3f(seColor);
 		if (glTexture > -1)
 		{
 			GL11.glTexCoord2f(1, 0);
 		}
 		GL11.glVertex3i(x + TILE_SCALE, z2, -y);
-		glColor3f(nwColor);
 		if (glTexture > -1)
 		{
 			GL11.glTexCoord2f(0, 1);
 		}
 		GL11.glVertex3i(x, z3, -(y + TILE_SCALE));
-
 
 		// triangle 2
 		if (glTexture > -1)
@@ -602,13 +596,11 @@ public class ModelViewer
 			GL11.glTexCoord2f(0, 1);
 		}
 		GL11.glVertex3i(x, z3, -(y + TILE_SCALE));
-		glColor3f(seColor);
 		if (glTexture > -1)
 		{
 			GL11.glTexCoord2f(1, 0);
 		}
 		GL11.glVertex3i(x + TILE_SCALE, z2, -y);
-		glColor3f(neColor);
 		if (glTexture > -1)
 		{
 			GL11.glTexCoord2f(1, 1);
@@ -651,51 +643,21 @@ public class ModelViewer
 			int colorA = sceneTileModel.triangleColorA[i];
 			int colorB = sceneTileModel.triangleColorB[i];
 			int colorC = sceneTileModel.triangleColorC[i];
-			int textureId = sceneTileModel.triangleTextureId == null ? -1 : sceneTileModel.triangleTextureId[i];
 
-			Color colorAc, colorBc, colorCc;
+			Color color = null;
 			int glTexture = -1;
-			if (textureId != -1)
-			{
-				colorAc = colorBc = colorCc = Color.WHITE;
-				Texture texture = getTexture(textureId);
-				glTexture = texture.getOpenglId();
-				assert glTexture > -1;
 
-				GL11.glEnable(GL11.GL_TEXTURE_2D);
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, glTexture);
-			}
-			else
-			{
-				if (colorA == 12345678)
-				{
-					return;
-				}
-				colorAc = new Color(getPaletteColor(colorA));
-				colorBc = new Color(getPaletteColor(colorB));
-				colorCc = new Color(getPaletteColor(colorC));
-			}
+			color = new Color(RS2HSB_to_RGB(colorA));
 
 			GL11.glBegin(GL11.GL_TRIANGLES);
 
-			glColor3f(colorAc);
-			if (glTexture > -1)
+			if (color != null)
 			{
-				GL11.glTexCoord2f(0, 0);
+				GL11.glColor3f((float) color.getRed() / 255f, (float) color.getGreen() / 255f, (float) color.getBlue() / 255f);
 			}
 
 			GL11.glVertex3i(vertexAx, -vertexAy, -vertexAz);
-			glColor3f(colorBc);
-			if (glTexture > -1)
-			{
-				GL11.glTexCoord2f(1, 0);
-			}
 			GL11.glVertex3i(vertexBx, -vertexBy, -vertexBz);
-			glColor3f(colorCc);
-			if (glTexture > -1)
-			{
-				GL11.glTexCoord2f(0, 1);
-			}
 			GL11.glVertex3i(vertexCx, -vertexCy, -vertexCz);
 
 			GL11.glEnd();
@@ -705,11 +667,6 @@ public class ModelViewer
 				GL11.glDisable(GL11.GL_TEXTURE_2D);
 			}
 		}
-	}
-
-	private static void glColor3f(Color color)
-	{
-		GL11.glColor3f((float) color.getRed() / 255f, (float) color.getGreen() / 255f, (float) color.getBlue() / 255f);
 	}
 
 	private static void drawLocations(Region region)
@@ -725,41 +682,14 @@ public class ModelViewer
 			}
 
 			Position objectPos = location.getPosition();
-			int width;
-			int length;
-			if (location.getOrientation() != 1 && location.getOrientation() != 3)
-			{
-				width = object.getSizeX();
-				length = object.getSizeY();
-			}
-			else
-			{
-				width = object.getSizeY();
-				length = object.getSizeX();
-			}
 
 			int regionX = objectPos.getX() - region.getBaseX();
 			int regionY = objectPos.getY() - region.getBaseY();
-
-			int height = Integer.MIN_VALUE;
-			for (int xOff = 0; xOff < width; xOff++)
-			{
-				for (int yOff = 0; yOff < length; yOff++)
-				{
-					if (regionX + xOff < Region.X && regionY + yOff < Region.Y)
-					{
-						height = Math.max(height, -region.getTileHeight(objectPos.getZ(), regionX + xOff, regionY + yOff));
-					}
-				}
-			}
+			int height = -region.getTileHeight(objectPos.getZ(), regionX, regionY);
 
 			GL11.glMatrixMode(GL11.GL_MODELVIEW);
 			// TILE_SCALE/2 to draw the object from the center of the tile it is on
-			GL11.glTranslatef(
-				(regionX * TILE_SCALE) + ((width * TILE_SCALE) / 2),
-				height,
-				(-regionY * TILE_SCALE) - ((length * TILE_SCALE) / 2)
-			);
+			GL11.glTranslatef(regionX * TILE_SCALE + (TILE_SCALE / 2), height + (location.getPosition().getZ() * 0), -regionY * TILE_SCALE - (TILE_SCALE / 2));
 
 			for (int i = 0; i < object.getObjectModels().length; ++i)
 			{
@@ -775,14 +705,10 @@ public class ModelViewer
 					continue;
 				}
 
-				drawModel(md);
+				drawModel(md, object.getRecolorToFind(), object.getRecolorToReplace());
 			}
 
-			GL11.glTranslatef(
-				(-regionX * TILE_SCALE) - ((width * TILE_SCALE) / 2),
-				-height,
-				(regionY * TILE_SCALE) + ((length * TILE_SCALE) / 2)
-			);
+			GL11.glTranslatef(-regionX * TILE_SCALE - (TILE_SCALE / 2), -(height + (location.getPosition().getZ() * 0)), regionY * TILE_SCALE + (TILE_SCALE / 2));
 			GL11.glPopMatrix();
 		}
 	}
@@ -899,11 +825,6 @@ public class ModelViewer
 		}
 	}
 
-	public static int getPaletteColor(int hsb)
-	{
-		return palette[hsb & 0xFFFF];
-	}
-
 	// found these two functions here https://www.rune-server.org/runescape-development/rs2-client/tools/589900-rs2-hsb-color-picker.html
 	public static int RGB_to_RS2HSB(int red, int green, int blue)
 	{
@@ -922,21 +843,6 @@ public class ModelViewer
 		int decode_hue = (RS2HSB >> 10) & 0x3f;
 		int decode_saturation = (RS2HSB >> 7) & 0x07;
 		int decode_brightness = (RS2HSB & 0x7f);
-		int rgb = Color.HSBtoRGB((float) decode_hue / 63, (float) decode_saturation / 7, (float) decode_brightness / 127);
-		return adjustRGB(rgb & 0xFFFFFF, 0.6);
-	}
-
-	private static int adjustRGB(int rgb, double brightness)
-	{
-		double rp = (double) (rgb >> 16) / 256.0D;
-		double gp = (double) (rgb >> 8 & 255) / 256.0D;
-		double bp = (double) (rgb & 255) / 256.0D;
-		rp = Math.pow(rp, brightness);
-		gp = Math.pow(gp, brightness);
-		bp = Math.pow(bp, brightness);
-		int r = (int) (rp * 256.0D);
-		int g = (int) (gp * 256.0D);
-		int b = (int) (bp * 256.0D);
-		return b + (g << 8) + (r << 16);
+		return Color.HSBtoRGB((float) decode_hue / 63, (float) decode_saturation / 7, (float) decode_brightness / 127);
 	}
 }

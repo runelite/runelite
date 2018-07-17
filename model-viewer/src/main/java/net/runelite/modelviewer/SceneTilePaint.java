@@ -29,11 +29,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class SceneTilePaint
 {
-	final int swColor;
-	final int seColor;
-	final int neColor;
-	final int nwColor;
+	final int color;
 	final int texture;
-	final int rgb;
-	final boolean flatShade;
 }

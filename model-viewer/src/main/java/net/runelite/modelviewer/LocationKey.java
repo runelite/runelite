@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,25 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.mixins;
+package net.runelite.modelviewer;
 
-import net.runelite.api.mixins.Inject;
-import net.runelite.api.mixins.MethodHook;
-import net.runelite.api.mixins.Mixin;
-import net.runelite.rs.api.RSNode;
+import lombok.Value;
 
-@Mixin(RSNode.class)
-public abstract class RSNodeMixin implements RSNode
+@Value
+public class LocationKey
 {
-	@Inject
-	public void onUnlink()
-	{
-	}
-
-	@Inject
-	@MethodHook("unlink")
-	public void rl$unlink()
-	{
-		onUnlink();
-	}
+	private final int id;
+	private final int type;
+	private final int orientation;
 }

@@ -37,7 +37,6 @@ import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
-import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GraphicsObject;
@@ -51,7 +50,7 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Projectile;
-import net.runelite.api.Scene;
+import net.runelite.api.Region;
 import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
@@ -80,6 +79,7 @@ public class DevToolsOverlay extends Overlay
 	private static final Color PURPLE = new Color(170, 0, 255);
 	private static final Color GRAY = new Color(158, 158, 158);
 
+	private static final int REGION_SIZE = 104;
 	private static final int MAX_DISTANCE = 2400;
 
 	private final Client client;
@@ -191,14 +191,14 @@ public class DevToolsOverlay extends Overlay
 
 	private void renderTileObjects(Graphics2D graphics)
 	{
-		Scene scene = client.getScene();
-		Tile[][][] tiles = scene.getTiles();
+		Region region = client.getRegion();
+		Tile[][][] tiles = region.getTiles();
 
 		int z = client.getPlane();
 
-		for (int x = 0; x < Constants.SCENE_SIZE; ++x)
+		for (int x = 0; x < REGION_SIZE; ++x)
 		{
-			for (int y = 0; y < Constants.SCENE_SIZE; ++y)
+			for (int y = 0; y < REGION_SIZE; ++y)
 			{
 				Tile tile = tiles[z][x][y];
 
