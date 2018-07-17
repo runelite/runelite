@@ -120,7 +120,6 @@ public class WASDCameraPlugin extends Plugin
 	 */
 	private void handleCamera()
 	{
-		System.out.println("Initializing Key Listener");
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher()
 		{
 			@Override
@@ -135,7 +134,7 @@ public class WASDCameraPlugin extends Plugin
 							// If chatbox is enabled or at login screen, don't handle camera movement
 							if (canType || robot == null) { break; }
 
-							// Delete the last key press from chatbox if alphanumeric
+							// Delete the last key press from chatbox if alphabet, numeric or whitespace
 							if (Character.isAlphabetic(event.getKeyCode()) ||
 									(Character.isDigit(event.getKeyCode()) ||
 									 Character.isWhitespace(event.getKeyCode())))
