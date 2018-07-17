@@ -35,6 +35,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -265,6 +266,12 @@ public class LootLogger
 		if (deadActor instanceof NPC)
 		{
 			NPC n = (NPC) deadActor;
+			// Seems like sometimes this is called with an invalid NPC, ignore these cases.
+			// Also ignore any NPC we don't know the health ratio of.
+			if (n.getId() == -1 || deadActor.getHealthRatio() == -1)
+			{
+				return;
+			}
 			mem = new MemorizedNpc(n);
 
 			// Some NPCS can die with health bars remaining.
@@ -449,13 +456,13 @@ public class LootLogger
 			}
 
 			// Actor type, Calls the wrapper for triggering the proper LootReceived event
-			if (pad instanceof NPC)
+			if (pad instanceof MemorizedNpc)
 			{
 				MemorizedNpc n = (MemorizedNpc) pad;
 				NPCComposition c = n.getNpcComposition();
 				onNewNpcLogCreated(c.getId(), c, n.getActor().getWorldLocation(), dropList);
 			}
-			else if (pad instanceof Player)
+			else if (pad instanceof MemorizedPlayer)
 			{
 				Player p = (Player) pad;
 				onNewPlayerLogCreated(p, p.getWorldLocation(), dropList);
