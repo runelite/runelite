@@ -75,6 +75,8 @@ public class PickpocketPlugin extends Plugin
 
 	private HashMap<Integer, Integer> prevNumCoinPouches;
 
+	private long lastCoinPouchNotifyTime;
+
 	@Provides
 	PickpocketConfig provideConfig(ConfigManager configManager)
 	{
@@ -170,8 +172,16 @@ public class PickpocketPlugin extends Plugin
 
 	private void notifyMaxPouches()
 	{
-		notifier.notify(String.format(
-			"%s cannot hold anymore coin pouches.",
-			client.getLocalPlayer().getName()));
+		final long wait = 5000L;
+		long currentTime = System.currentTimeMillis();
+
+		// Don't spam the user with notifications.
+		if (currentTime - lastCoinPouchNotifyTime >= wait)
+		{
+			notifier.notify(String.format(
+				"%s cannot hold anymore coin pouches.",
+				client.getLocalPlayer().getName()));
+			lastCoinPouchNotifyTime = currentTime;
+		}
 	}
 }
