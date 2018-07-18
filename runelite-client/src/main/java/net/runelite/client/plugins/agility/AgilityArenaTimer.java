@@ -25,9 +25,7 @@
 package net.runelite.client.plugins.agility;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.time.temporal.ChronoUnit;
-import javax.imageio.ImageIO;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.Timer;
@@ -35,32 +33,9 @@ import net.runelite.client.ui.overlay.infobox.Timer;
 @Slf4j
 class AgilityArenaTimer extends Timer
 {
-	AgilityArenaTimer(Plugin plugin)
+	AgilityArenaTimer(Plugin plugin, BufferedImage image)
 	{
-		super(1, ChronoUnit.MINUTES, getTicketImage(), plugin);
+		super(1, ChronoUnit.MINUTES, image, plugin);
 		setTooltip("Time left until location changes");
-	}
-
-	private static BufferedImage image;
-	private static BufferedImage getTicketImage()
-	{
-		if (image != null)
-		{
-			return image;
-		}
-
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				image = ImageIO.read(AgilityArenaTimer.class.getResourceAsStream( "agilityarenaticket.png"));
-			}
-		}
-		catch (IOException ex)
-		{
-			log.warn("unable to load image", ex);
-		}
-
-		return image;
 	}
 }
