@@ -26,6 +26,7 @@ package net.runelite.client.plugins.agility;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +36,7 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
+import static net.runelite.api.ItemID.AGILITY_ARENA_TICKET;
 import net.runelite.api.Player;
 import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
@@ -60,6 +62,7 @@ import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -73,6 +76,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 public class AgilityPlugin extends Plugin
 {
 	private static final int AGILITY_ARENA_REGION_ID = 11157;
+	private static BufferedImage agilityTicketImage;
 
 	@Getter
 	private final Map<TileObject, Tile> obstacles = new HashMap<>();
@@ -100,6 +104,9 @@ public class AgilityPlugin extends Plugin
 
 	@Inject
 	private AgilityConfig config;
+
+	@Inject
+	private ItemManager itemManager;
 
 	@Getter
 	private AgilitySession session;
@@ -275,7 +282,8 @@ public class AgilityPlugin extends Plugin
 	private void showNewAgilityArenaTimer()
 	{
 		removeAgilityArenaTimer();
-		infoBoxManager.addInfoBox(new AgilityArenaTimer(this));
+		final BufferedImage image = getAgilityTicketImage(itemManager);
+		infoBoxManager.addInfoBox(new AgilityArenaTimer(this, image));
 	}
 
 	@Subscribe
@@ -366,5 +374,17 @@ public class AgilityPlugin extends Plugin
 		{
 			obstacles.put(newObject, tile);
 		}
+	}
+
+	private static BufferedImage getAgilityTicketImage(final ItemManager itemManager)
+	{
+		if (agilityTicketImage != null)
+		{
+			return agilityTicketImage;
+		}
+
+		agilityTicketImage = itemManager.getImage(AGILITY_ARENA_TICKET);
+
+		return agilityTicketImage;
 	}
 }
