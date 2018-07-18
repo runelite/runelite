@@ -26,16 +26,17 @@ package net.runelite.client.plugins.wasdcamera;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.awt.KeyEventDispatcher;
-import java.awt.KeyboardFocusManager;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.events.FocusChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.input.KeyManager;
+import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -48,6 +49,17 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 public class WASDCameraPlugin extends Plugin
 {
+	private static final int W_KEY = KeyEvent.VK_W;
+	private static final int A_KEY = KeyEvent.VK_A;
+	private static final int S_KEY = KeyEvent.VK_S;
+	private static final int D_KEY = KeyEvent.VK_D;
+
+	private static final int ENTER_KEY = KeyEvent.VK_ENTER;
+	private static final int SLASH_KEY = KeyEvent.VK_SLASH;
+	private static final int TAB_KEY = KeyEvent.VK_TAB;
+
+	private static final int CHAT_BOX = 10616876;
+	private static final int GE_INPUT_BOX = 30605313;
 
 	@Inject
 	private Client client;
@@ -56,15 +68,25 @@ public class WASDCameraPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
+	private MouseManager mouseManager;
+
+	@Inject
+	private KeyManager keyManager;
+
+	@Inject
 	private WASDCameraOverlay overlay;
 
 	@Inject
 	private WASDCameraConfig config;
 
+	@Inject
+	private WASDCameraListener inputListener;
+
 	private Robot robot;
 
 	public boolean canType;
-	public boolean inClient;
+	public boolean inFocus;
+	public boolean loggedIn;
 
 	@Provides
 	WASDCameraConfig getConfig(ConfigManager configManager)
@@ -75,166 +97,123 @@ public class WASDCameraPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		//overlayManager.add(overlay);
-		canType = true;
+		robot = new Robot();
+		mouseManager.registerMouseListener(inputListener);
+		keyManager.registerKeyListener(inputListener);
+		overlayManager.add(overlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		robot = null;
+		mouseManager.unregisterMouseListener(inputListener);
+		keyManager.unregisterKeyListener(inputListener);
 		overlayManager.remove(overlay);
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick gameTick) throws Exception
+	public void onGameStateChanged(final GameStateChanged e)
 	{
-		if (robot == null)
+		if (e.getGameState() == GameState.HOPPING || e.getGameState() == GameState.LOGIN_SCREEN)
 		{
-			initializeCamera();
+			loggedIn = false;
+		}
+		else
+		{
+			loggedIn = true;
 		}
 	}
 
 	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	public void onWidgetHiddenChange(WidgetHiddenChanged e)
 	{
-		int widgetId = event.getWidgetId();
+		boolean chatboxDisabled = (e.getWidget().getId() == CHAT_BOX && e.getWidget().isHidden());
+		boolean inGeSearch = (e.getWidget().getId() == GE_INPUT_BOX && e.getWidget().isHidden());
 
-		// If clicking on friend for private messaging, set canType to true
-		if (widgetId == 28114953)
+		if (!canType)
+		{
+			if (chatboxDisabled || inGeSearch)
+			{
+				canType = true;
+			}
+		}
+		//System.out.println("This widget: " + (e.getWidget().getId()) + " " + e.getWidget().isHidden());
+	}
+
+	@Subscribe
+	public void onFocusChanged(FocusChanged f)
+	{
+		inFocus = f.isFocused();
+	}
+
+	public void handleKeyPress(KeyEvent e)
+	{
+		// If enter was pressed, toggle canType
+		if (e.getKeyCode() == ENTER_KEY)
+		{
+			canType = !canType;
+		}
+
+		// If tab or slash, set canType to true
+		if (e.getKeyCode() == TAB_KEY ||
+				e.getKeyCode() == SLASH_KEY)
 		{
 			canType = true;
 		}
-	}
 
-	@Subscribe
-	public void onFocusChanged(FocusChanged focusChanged)
-	{
-		inClient = focusChanged.isFocused();
-	}
-
-	/**
-	 * Initialize plugin
-	 */
-	private void initializeCamera() throws Exception
-	{
-		robot = new Robot();
-		canType = false;
-		handleCamera();
-		overlayManager.add(overlay);
-	}
-
-	/**
-	 * Handles key listener events
-	 */
-	private void handleCamera()
-	{
-		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher()
+		// Input locked
+		if (!canType)
 		{
-			@Override
-			public boolean dispatchKeyEvent(KeyEvent event)
+			// If key is alphabet, digit or whitespace
+			if (Character.isAlphabetic(e.getKeyCode()) ||
+					(Character.isDigit(e.getKeyCode()) ||
+							Character.isWhitespace(e.getKeyCode())))
 			{
-				synchronized (WASDCameraPlugin.class)
-				{
-					switch (event.getID())
-					{
-						// On key press
-						case KeyEvent.KEY_PRESSED:
-							// If chatbox is enabled, at login screen or game isn't focused, don't handle camera movement
-							if (canType || robot == null || !inClient)
-							{
-								break;
-							}
-
-							// Delete the last key press from chatbox if alphabet, numeric or whitespace
-							if (Character.isAlphabetic(event.getKeyCode()) ||
-									(Character.isDigit(event.getKeyCode()) ||
-											Character.isWhitespace(event.getKeyCode())))
-							{
-								robot.keyPress(KeyEvent.VK_BACK_SPACE);
-							}
-							if (event.getKeyCode() == KeyEvent.VK_W)
-							{
-								robot.keyPress(KeyEvent.VK_UP);
-							}
-							if (event.getKeyCode() == KeyEvent.VK_A)
-							{
-								robot.keyPress(KeyEvent.VK_LEFT);
-							}
-							if (event.getKeyCode() == KeyEvent.VK_S)
-							{
-								robot.keyPress(KeyEvent.VK_DOWN);
-							}
-							if (event.getKeyCode() == KeyEvent.VK_D)
-							{
-								robot.keyPress(KeyEvent.VK_RIGHT);
-							}
-							break;
-
-						// On key release
-						case KeyEvent.KEY_RELEASED:
-							// If game isn't focused don't do anything
-							if (!inClient)
-							{
-								break;
-							}
-
-							// If enter was pressed, toggle chatbox state
-							if (event.getKeyCode() == KeyEvent.VK_ENTER || event.getKeyCode() == KeyEvent.VK_TAB)
-							{
-								handleEnter();
-							}
-
-							// If chatbox is enabled or at login screen, don't handle camera movement
-							if (canType || robot == null)
-							{
-								break;
-							}
-							if (event.getKeyCode() == KeyEvent.VK_W)
-							{
-								robot.keyRelease(KeyEvent.VK_UP);
-							}
-							if (event.getKeyCode() == KeyEvent.VK_A)
-							{
-								robot.keyRelease(KeyEvent.VK_LEFT);
-							}
-							if (event.getKeyCode() == KeyEvent.VK_S)
-							{
-								robot.keyRelease(KeyEvent.VK_DOWN);
-							}
-							if (event.getKeyCode() == KeyEvent.VK_D)
-							{
-								robot.keyRelease(KeyEvent.VK_RIGHT);
-							}
-							break;
-					}
-					return false;
-				}
+				pressCameraKey(e);
 			}
-		});
-	}
-
-	/**
-	 * Handles what happens when hitting enter
-	 */
-	private void handleEnter()
-	{
-		if (robot == null)
-		{
-			return;
 		}
-		releaseAllKeys();
-		canType = !canType;
 	}
 
-	/**
-	 * Release any camera keys still left down upon hitting enter to avoid continuous camera movement
-	 */
-	private void releaseAllKeys()
+	public void pressCameraKey(KeyEvent e)
 	{
-		robot.keyRelease(KeyEvent.VK_UP);
-		robot.keyRelease(KeyEvent.VK_LEFT);
-		robot.keyRelease(KeyEvent.VK_DOWN);
-		robot.keyRelease(KeyEvent.VK_RIGHT);
+		switch (e.getKeyCode())
+		{
+			// Press Camera keys
+			case W_KEY:
+				robot.keyPress(KeyEvent.VK_UP);
+				break;
+			case A_KEY:
+				robot.keyPress(KeyEvent.VK_LEFT);
+				break;
+			case S_KEY:
+				robot.keyPress(KeyEvent.VK_DOWN);
+				break;
+			case D_KEY:
+				robot.keyPress(KeyEvent.VK_RIGHT);
+				break;
+		}
+
+		// Consume all key presses from here
+	}
+
+	public void releaseCameraKey(KeyEvent e)
+	{
+		switch (e.getKeyCode())
+		{
+			// Release Camera keys
+			case W_KEY:
+				robot.keyRelease(KeyEvent.VK_UP);
+				break;
+			case A_KEY:
+				robot.keyRelease(KeyEvent.VK_LEFT);
+				break;
+			case S_KEY:
+				robot.keyRelease(KeyEvent.VK_DOWN);
+				break;
+			case D_KEY:
+				robot.keyRelease(KeyEvent.VK_RIGHT);
+				break;
+		}
 	}
 }
