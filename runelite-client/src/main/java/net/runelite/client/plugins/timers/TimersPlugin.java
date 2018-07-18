@@ -596,7 +596,7 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	public void createGameTimer(GameTimer timer)
+	private void createGameTimer(GameTimer timer)
 	{
 		removeGameTimer(timer);
 
@@ -606,7 +606,7 @@ public class TimersPlugin extends Plugin
 		infoBoxManager.addInfoBox(t);
 	}
 
-	public void removeGameTimer(GameTimer timer)
+	private void removeGameTimer(GameTimer timer)
 	{
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer);
 	}
