@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.Actor;
 import net.runelite.api.CollisionDataFlag;
+import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GroundObject;
@@ -75,6 +76,9 @@ public abstract class RSTileMixin implements RSTile
 
 	@Inject
 	private static GameObject lastGameObject;
+
+	@Inject
+	private static RSDeque[][][] lastGroundItems = new RSDeque[Constants.MAX_Z][Constants.SCENE_SIZE][Constants.SCENE_SIZE];
 
 	@Inject
 	private WallObject previousWallObject;
@@ -275,6 +279,31 @@ public abstract class RSTileMixin implements RSTile
 	@Inject
 	public void itemLayerChanged(int idx)
 	{
+		int x = getX();
+		int y = getY();
+		int z = client.getPlane();
+		RSDeque[][][] groundItemDeque = client.getGroundItemDeque();
+
+		RSDeque oldQueue = lastGroundItems[z][x][y];
+		RSDeque newQueue = groundItemDeque[z][x][y];
+
+		if (oldQueue != newQueue)
+		{
+			if (oldQueue != null)
+			{
+				// despawn everything in old ..
+				RSNode head = oldQueue.getHead();
+				for (RSNode cur = head.getNext(); cur != head; cur = cur.getNext())
+				{
+					RSItem item = (RSItem) cur;
+					client.getLogger().debug("Item despawn (chunk reset): {} ({})", item.getId(), item.getQuantity());
+					ItemDespawned itemDespawned = new ItemDespawned(this, item);
+					client.getCallbacks().post(itemDespawned);
+				}
+			}
+			lastGroundItems[z][x][y] = newQueue;
+		}
+
 		RSItem lastUnlink = client.getLastItemDespawn();
 		if (lastUnlink != null)
 		{
@@ -293,12 +322,7 @@ public abstract class RSTileMixin implements RSTile
 			return;
 		}
 
-		int x = itemLayer.getX() / Perspective.LOCAL_TILE_SIZE;
-		int y = itemLayer.getY() / Perspective.LOCAL_TILE_SIZE;
-		int z = client.getPlane();
-
-		RSDeque[][][] groundItemDeque = client.getGroundItemDeque();
-		RSDeque itemDeque = groundItemDeque[z][x][y];
+		RSDeque itemDeque = newQueue;
 
 		if (itemDeque == null)
 		{
