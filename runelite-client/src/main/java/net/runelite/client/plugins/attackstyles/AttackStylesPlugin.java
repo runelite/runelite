@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, honeyhoney <https://github.com/honeyhoney>
+ * Copyright (c) 2018, Damen <https://github.com/basicDamen> -> Warning Chat Message Rework
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,6 +34,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
@@ -47,6 +49,10 @@ import static net.runelite.api.widgets.WidgetID.COMBAT_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -70,6 +76,7 @@ public class AttackStylesPlugin extends Plugin
 	private final Set<Skill> warnedSkills = new HashSet<>();
 	private boolean warnedSkillSelected = false;
 	private final Table<WeaponType, WidgetInfo, Boolean> widgetsToHide = HashBasedTable.create();
+	private int loginWarningMessageCount = 0;
 
 	@Inject
 	private Client client;
@@ -85,6 +92,9 @@ public class AttackStylesPlugin extends Plugin
 
 	@Inject
 	private AttackStylesOverlay overlay;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
 
 	@Provides
 	AttackStylesConfig provideConfig(ConfigManager configManager)
@@ -117,7 +127,6 @@ public class AttackStylesPlugin extends Plugin
 			equippedWeaponTypeVarbit,
 			attackStyleVarbit,
 			castingModeVarbit);
-		updateWarning(false);
 		processWidgets();
 	}
 
@@ -177,6 +186,13 @@ public class AttackStylesPlugin extends Plugin
 			updateWarnedSkills(config.warnForRanged(), Skill.RANGED);
 			updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
 		}
+
+		if (event.getGameState() == GameState.LOGIN_SCREEN ||
+			event.getGameState() == GameState.HOPPING ||
+			event.getGameState() == GameState.CONNECTION_LOST)
+		{
+			loginWarningMessageCount = 0;
+		}
 	}
 
 	@Subscribe
@@ -187,7 +203,11 @@ public class AttackStylesPlugin extends Plugin
 			attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
 			updateAttackStyle(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), attackStyleVarbit,
 				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
-			updateWarning(false);
+
+			if (loginWarningMessageCount == 4)
+				updateWarning(false);
+			else if (loginWarningMessageCount <= 2)
+				loginWarningMessageCount++;
 		}
 	}
 
@@ -196,10 +216,21 @@ public class AttackStylesPlugin extends Plugin
 	{
 		if (equippedWeaponTypeVarbit == -1 || equippedWeaponTypeVarbit != client.getVar(Varbits.EQUIPPED_WEAPON_TYPE))
 		{
+			if (client.getVar(VarPlayer.ATTACK_STYLE) == 0 && loginWarningMessageCount < 4)
+			{
+				loginWarningMessageCount++;
+			}
+
 			equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
 			updateAttackStyle(equippedWeaponTypeVarbit, client.getVar(VarPlayer.ATTACK_STYLE),
 				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
-			updateWarning(true);
+
+			if (loginWarningMessageCount == 3)
+				updateWarning(true);
+			else if (loginWarningMessageCount == 4 )
+				updateWarning(true);
+			else
+				loginWarningMessageCount++;
 		}
 	}
 
@@ -211,7 +242,9 @@ public class AttackStylesPlugin extends Plugin
 			castingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
 			updateAttackStyle(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), client.getVar(VarPlayer.ATTACK_STYLE),
 				castingModeVarbit);
-			updateWarning(false);
+
+			if (loginWarningMessageCount == 4)
+				updateWarning(false);
 		}
 	}
 
@@ -273,7 +306,6 @@ public class AttackStylesPlugin extends Plugin
 		{
 			warnedSkills.remove(skill);
 		}
-		updateWarning(false);
 	}
 
 	private void updateWarning(boolean weaponSwitch)
@@ -285,14 +317,26 @@ public class AttackStylesPlugin extends Plugin
 			{
 				if (warnedSkills.contains(skill))
 				{
-					if (weaponSwitch)
+					if (loginWarningMessageCount == 3)
 					{
-						// TODO : chat message to warn players that their weapon switch also caused an unwanted attack style change
+						sendChatMessage("<col=871A1A>[ATTACK STYLE]</col> You logged in wielding a weapon that will grant you " + returnAttackColor(skill) + " XP.");
+					}
+					else if (loginWarningMessageCount == 4)
+					{
+						if (weaponSwitch)
+						{
+							sendChatMessage("<col=871A1A>[ATTACK STYLE]</col> This weapon's attack style will grant you " + returnAttackColor(skill) + " XP.");
+						}
+						else
+						{
+							sendChatMessage("<col=871A1A>[ATTACK STYLE]</col> This attack style will grant you " + returnAttackColor(skill) + " XP.");
+						}
 					}
 					warnedSkillSelected = true;
-					break;
 				}
 			}
+			if (loginWarningMessageCount == 3)
+				loginWarningMessageCount++;
 		}
 		hideWarnedStyles(config.removeWarnedStyles());
 	}
@@ -365,6 +409,38 @@ public class AttackStylesPlugin extends Plugin
 		{
 			widget.setHidden(hidden);
 		}
+	}
+
+	private void sendChatMessage(String chatMessage)
+	{
+		final String message = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
+			.append(chatMessage)
+			.build();
+
+		chatMessageManager.queue(
+			QueuedMessage.builder()
+				.type(ChatMessageType.GAME)
+				.runeLiteFormattedMessage(message)
+				.build());
+	}
+
+	private String returnAttackColor(Skill skill)
+	{
+		String color = "<col=ff0000>" + skill + "</col>";
+
+		switch (skill)
+		{
+			case ATTACK:
+			case STRENGTH:
+			case DEFENCE:
+				return color = "<col=D44A4A>" + skill + "</col>";
+			case RANGED:
+				return color = "<col=259443>RANGED</col>";
+			case MAGIC:
+				return color = "<col=369EB3>MAGIC</col>";
+		}
+		return color;
 	}
 
 	@VisibleForTesting
