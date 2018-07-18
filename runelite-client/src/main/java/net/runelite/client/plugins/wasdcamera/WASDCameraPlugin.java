@@ -138,7 +138,6 @@ public class WASDCameraPlugin extends Plugin
 				canType = true;
 			}
 		}
-		//System.out.println("This widget: " + (e.getWidget().getId()) + " " + e.getWidget().isHidden());
 	}
 
 	@Subscribe
