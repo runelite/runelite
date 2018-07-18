@@ -260,21 +260,27 @@ public class AttackStylesPlugin extends Plugin
 			switch (event.getKey())
 			{
 				case "warnForDefensive":
+					sendChatMessage("You have " + (enabled ? "enabled" : "disabled") + " the warning for " + returnAttackColor(Skill.DEFENCE) + " XP." );
 					updateWarnedSkills(enabled, Skill.DEFENCE);
 					break;
 				case "warnForAttack":
+					sendChatMessage("You have " + (enabled ? "enabled" : "disabled") + " the warning for " + returnAttackColor(Skill.ATTACK) + " XP." );
 					updateWarnedSkills(enabled, Skill.ATTACK);
 					break;
 				case "warnForStrength":
+					sendChatMessage("You have " + (enabled ? "enabled" : "disabled") + " the warning for " + returnAttackColor(Skill.STRENGTH) + " XP." );
 					updateWarnedSkills(enabled, Skill.STRENGTH);
 					break;
 				case "warnForRanged":
+					sendChatMessage("You have " + (enabled ? "enabled" : "disabled") + " the warning for " + returnAttackColor(Skill.RANGED) + " XP." );
 					updateWarnedSkills(enabled, Skill.RANGED);
 					break;
 				case "warnForMagic":
+					sendChatMessage("You have " + (enabled ? "enabled" : "disabled") + " the warning for " + returnAttackColor(Skill.MAGIC) + " XP." );
 					updateWarnedSkills(enabled, Skill.MAGIC);
 					break;
 				case "removeWarnedStyles":
+					sendChatMessage("You have decided to " + (enabled ? "hide" : "show") + " the warned styles from the combat styles interface." );
 					hideWarnedStyles(enabled);
 					break;
 			}
@@ -323,17 +329,20 @@ public class AttackStylesPlugin extends Plugin
 				{
 					if (loginWarningMessageCount == 3)
 					{
-						sendChatMessage("<col=871A1A>[ATTACK STYLE]</col> You logged in wielding a weapon that will grant you " + returnAttackColor(skill) + " XP. #" + loginWarningMessageCount);
+						if (config.warningMessages())
+							sendChatMessage("<col=871A1A>[ATTACK STYLE]</col> You logged in wielding a weapon that will grant you " + returnAttackColor(skill) + " XP. #" + loginWarningMessageCount);
 					}
 					else if (loginWarningMessageCount == 4)
 					{
 						if (weaponSwitch)
 						{
-							sendChatMessage("<col=871A1A>[ATTACK STYLE]</col> This weapon's attack style will grant you " + returnAttackColor(skill) + " XP. #" + loginWarningMessageCount);
+							if (config.warningMessages())
+								sendChatMessage("<col=871A1A>[ATTACK STYLE]</col> This weapon's attack style will grant you " + returnAttackColor(skill) + " XP. #" + loginWarningMessageCount);
 						}
 						else
 						{
-							sendChatMessage("<col=871A1A>[ATTACK STYLE]</col> This attack style will grant you " + returnAttackColor(skill) + " XP. #" + loginWarningMessageCount);
+							if (config.warningMessages())
+								sendChatMessage("<col=871A1A>[ATTACK STYLE]</col> This attack style will grant you " + returnAttackColor(skill) + " XP. #" + loginWarningMessageCount);
 						}
 					}
 					warnedSkillSelected = true;
@@ -432,7 +441,7 @@ public class AttackStylesPlugin extends Plugin
 	private String returnAttackColor(Skill skill)
 	{
 		String color = "<col=ff0000>" + skill + "</col>";
-		switch(skill)
+		switch (skill)
 		{
 			case ATTACK:
 			case STRENGTH:
