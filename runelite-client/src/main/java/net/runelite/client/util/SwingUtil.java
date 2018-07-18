@@ -296,7 +296,7 @@ public class SwingUtil
 	 * @param newHeight The height to set the BufferedImage to.
 	 * @return The BufferedImage with the specified dimensions
 	 */
-	private static BufferedImage resizeImage(BufferedImage image, int newWidth, int newHeight)
+	public static BufferedImage resizeImage(BufferedImage image, int newWidth, int newHeight)
 	{
 		final Image tmp = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
 		final BufferedImage dimg = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
