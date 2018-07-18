@@ -105,7 +105,7 @@ public class XpTrackerPlugin extends Plugin
 		BufferedImage icon;
 		synchronized (ImageIO.class)
 		{
-			icon = ImageIO.read(getClass().getResourceAsStream("xp.png"));
+			icon = ImageIO.read(getClass().getResourceAsStream("/skill_icons/overall.png"));
 		}
 
 		navButton = NavigationButton.builder()
