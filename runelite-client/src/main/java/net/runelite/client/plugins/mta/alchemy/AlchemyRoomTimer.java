@@ -55,7 +55,7 @@ public class AlchemyRoomTimer extends Timer
 		{
 			synchronized (ImageIO.class)
 			{
-				image = ImageIO.read(AlchemyRoomTimer.class.getResourceAsStream("reset.png"));
+				image = ImageIO.read(AlchemyRoomTimer.class.getResourceAsStream("/util/reset.png"));
 			}
 		}
 		catch (IOException ex)

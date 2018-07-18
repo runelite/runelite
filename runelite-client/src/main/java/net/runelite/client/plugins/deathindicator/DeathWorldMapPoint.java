@@ -45,7 +45,7 @@ class DeathWorldMapPoint extends WorldMapPoint
 		{
 			synchronized (ImageIO.class)
 			{
-				MAP_ARROW = ImageIO.read(DeathWorldMapPoint.class.getResourceAsStream("clue_arrow.png"));
+				MAP_ARROW = ImageIO.read(DeathWorldMapPoint.class.getResourceAsStream("/util/clue_arrow.png"));
 			}
 		}
 		catch (IOException e)
