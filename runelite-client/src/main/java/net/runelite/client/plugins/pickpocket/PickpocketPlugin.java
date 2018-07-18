@@ -145,7 +145,7 @@ public class PickpocketPlugin extends Plugin
 			{
 				int prevQuantity = prevNumCoinPouches.get(item.getId());
 				int newQuantity = item.getQuantity();
-				return newQuantity == MAX_NUM_COIN_POUCHES && newQuantity > prevQuantity;
+				return newQuantity == MAX_NUM_COIN_POUCHES && newQuantity > prevQuantity && prevQuantity != 0;
 			});
 		if (shouldNotify)
 		{
