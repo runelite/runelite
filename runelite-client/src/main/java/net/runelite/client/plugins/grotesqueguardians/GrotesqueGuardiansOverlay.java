@@ -44,6 +44,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 public class GrotesqueGuardiansOverlay extends Overlay
 {
 	private final Client client;
+	private final int GROTESQUE_GUARDIANS_REGION_ID = 6727;
 
 	@Inject
 	private GrotesqueGuardiansOverlay(Client client)
@@ -63,7 +64,7 @@ public class GrotesqueGuardiansOverlay extends Overlay
 		}
 		else
 		{
-			if (client.getMapRegions()[0] != 6727)
+			if (client.getMapRegions()[0] != GROTESQUE_GUARDIANS_REGION_ID)
 			{
 				return null;
 			}
