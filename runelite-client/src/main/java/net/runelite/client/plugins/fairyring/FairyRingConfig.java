@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,48 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.devtools;
+package net.runelite.client.plugins.fairyring;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-class WidgetTreeNode extends DefaultMutableTreeNode
+@ConfigGroup("fairyrings")
+public interface FairyRingConfig extends Config
 {
-	private final String type;
-
-	public WidgetTreeNode(String type, Widget widget)
+	@ConfigItem(
+		keyName = "autoOpen",
+		name = "Open search automatically",
+		description = "Open the search widget every time you enter a fairy ring"
+	)
+	default boolean autoOpen()
 	{
-		super(widget);
-		this.type = type;
-	}
-
-	public Widget getWidget()
-	{
-		return (Widget) getUserObject();
-	}
-
-	@Override
-	public String toString()
-	{
-		Widget widget = getWidget();
-
-		int id = widget.getId();
-		String str = type + " " + TO_GROUP(id) + "." + TO_CHILD(id);
-
-		if (widget.getIndex() != -1)
-		{
-			str += "[" + widget.getIndex() + "]";
-		}
-
-		WidgetInfo info = WidgetInspector.getWidgetInfo(id);
-		if (info != null)
-		{
-			str += " " + info.name();
-		}
-
-		return str;
+		return true;
 	}
 }

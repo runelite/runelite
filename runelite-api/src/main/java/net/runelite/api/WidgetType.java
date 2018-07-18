@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,48 +22,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.devtools;
+package net.runelite.api;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
-
-class WidgetTreeNode extends DefaultMutableTreeNode
+public final class WidgetType
 {
-	private final String type;
-
-	public WidgetTreeNode(String type, Widget widget)
-	{
-		super(widget);
-		this.type = type;
-	}
-
-	public Widget getWidget()
-	{
-		return (Widget) getUserObject();
-	}
-
-	@Override
-	public String toString()
-	{
-		Widget widget = getWidget();
-
-		int id = widget.getId();
-		String str = type + " " + TO_GROUP(id) + "." + TO_CHILD(id);
-
-		if (widget.getIndex() != -1)
-		{
-			str += "[" + widget.getIndex() + "]";
-		}
-
-		WidgetInfo info = WidgetInspector.getWidgetInfo(id);
-		if (info != null)
-		{
-			str += " " + info.name();
-		}
-
-		return str;
-	}
+	public static final int GRAPHIC = 5;
 }
