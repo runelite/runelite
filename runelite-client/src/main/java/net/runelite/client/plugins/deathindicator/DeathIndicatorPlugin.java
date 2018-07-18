@@ -35,10 +35,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import static net.runelite.api.AnimationID.DEATH;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.ItemID;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
@@ -46,6 +48,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -66,7 +69,11 @@ public class DeathIndicatorPlugin extends Plugin
 		12342, // Edgeville
 		11062 // Camelot
 	);
-	static BufferedImage BONES;
+
+	@Getter
+	private BufferedImage bonesImage;
+	@Getter
+	private BufferedImage mapArrow;
 
 	@Inject
 	private Client client;
@@ -80,26 +87,14 @@ public class DeathIndicatorPlugin extends Plugin
 	@Inject
 	private InfoBoxManager infoBoxManager;
 
+	@Inject
+	private ItemManager itemManager;
+
 	private Timer deathTimer;
 
 	private WorldPoint lastDeath;
 	private Instant lastDeathTime;
 	private int lastDeathWorld;
-
-	static
-	{
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				BONES = ImageIO.read(DeathIndicatorPlugin.class.getResourceAsStream("bones.png"));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
-	}
 
 	@Provides
 	DeathIndicatorConfig deathIndicatorConfig(ConfigManager configManager)
@@ -110,6 +105,8 @@ public class DeathIndicatorPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		setImages();
+
 		if (!hasDied())
 		{
 			return;
@@ -133,7 +130,7 @@ public class DeathIndicatorPlugin extends Plugin
 		if (config.showDeathOnWorldMap())
 		{
 			worldMapPointManager.removeIf(DeathWorldMapPoint.class::isInstance);
-			worldMapPointManager.add(new DeathWorldMapPoint(new WorldPoint(config.deathLocationX(), config.deathLocationY(), config.deathLocationPlane())));
+			worldMapPointManager.add(new DeathWorldMapPoint(new WorldPoint(config.deathLocationX(), config.deathLocationY(), config.deathLocationPlane()), this));
 		}
 	}
 
@@ -204,7 +201,7 @@ public class DeathIndicatorPlugin extends Plugin
 			if (config.showDeathOnWorldMap())
 			{
 				worldMapPointManager.removeIf(DeathWorldMapPoint.class::isInstance);
-				worldMapPointManager.add(new DeathWorldMapPoint(lastDeath));
+				worldMapPointManager.add(new DeathWorldMapPoint(lastDeath, this));
 			}
 
 			resetInfobox();
@@ -290,7 +287,7 @@ public class DeathIndicatorPlugin extends Plugin
 				if (config.showDeathOnWorldMap())
 				{
 					worldMapPointManager.removeIf(DeathWorldMapPoint.class::isInstance);
-					worldMapPointManager.add(new DeathWorldMapPoint(deathPoint));
+					worldMapPointManager.add(new DeathWorldMapPoint(deathPoint, this));
 				}
 			}
 			else
@@ -328,10 +325,26 @@ public class DeathIndicatorPlugin extends Plugin
 			Duration timeLeft = Duration.ofHours(1).minus(Duration.between(config.timeOfDeath(), now));
 			if (!timeLeft.isNegative() && !timeLeft.isZero())
 			{
-				deathTimer = new Timer(timeLeft.getSeconds(), ChronoUnit.SECONDS, BONES, this);
+				deathTimer = new Timer(timeLeft.getSeconds(), ChronoUnit.SECONDS, bonesImage, this);
 				deathTimer.setTooltip("Died on world: " + config.deathWorld());
 				infoBoxManager.addInfoBox(deathTimer);
 			}
+		}
+	}
+
+	private void setImages()
+	{
+		bonesImage = itemManager.getImage(ItemID.BONES);
+		try
+		{
+			synchronized (ImageIO.class)
+			{
+				mapArrow = ImageIO.read(getClass().getResourceAsStream("/util/clue_arrow.png"));
+			}
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
 		}
 	}
 }
