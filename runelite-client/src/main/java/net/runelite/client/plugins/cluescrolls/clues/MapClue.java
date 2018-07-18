@@ -40,8 +40,6 @@ import static net.runelite.api.ObjectID.CRATE_6616;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.CLUE_SCROLL_IMAGE;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.SPADE_IMAGE;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_BORDER_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_FILL_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_HOVER_BORDER_COLOR;
@@ -179,14 +177,14 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 					OverlayUtil.renderHoverableArea(graphics, gameObject.getClickbox(), mousePosition,
 						CLICKBOX_FILL_COLOR, CLICKBOX_BORDER_COLOR, CLICKBOX_HOVER_BORDER_COLOR);
 
-					OverlayUtil.renderImageLocation(plugin.getClient(), graphics, gameObject.getLocalLocation(), CLUE_SCROLL_IMAGE, IMAGE_Z_OFFSET);
+					OverlayUtil.renderImageLocation(plugin.getClient(), graphics, gameObject.getLocalLocation(), plugin.getClueScrollImage(), IMAGE_Z_OFFSET);
 				}
 			}
 		}
 		// Mark tile
 		else
 		{
-			OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, SPADE_IMAGE, Color.ORANGE);
+			OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, plugin.getSpadeImage(), Color.ORANGE);
 		}
 	}
 
