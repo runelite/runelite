@@ -127,6 +127,7 @@ public class AttackStylesPlugin extends Plugin
 			equippedWeaponTypeVarbit,
 			attackStyleVarbit,
 			castingModeVarbit);
+		updateWarning(false);
 		processWidgets();
 	}
 
@@ -136,6 +137,8 @@ public class AttackStylesPlugin extends Plugin
 		overlayManager.remove(overlay);
 		hideWarnedStyles(false);
 		processWidgets();
+
+
 	}
 
 	public AttackStyle getAttackStyle()
@@ -203,11 +206,12 @@ public class AttackStylesPlugin extends Plugin
 			attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
 			updateAttackStyle(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), attackStyleVarbit,
 				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
+			updateWarning(false);
 
-			if (loginWarningMessageCount == 4)
-				updateWarning(false);
-			else if (loginWarningMessageCount <= 2)
+			if (loginWarningMessageCount <= 2)
 				loginWarningMessageCount++;
+
+
 		}
 	}
 
@@ -216,7 +220,7 @@ public class AttackStylesPlugin extends Plugin
 	{
 		if (equippedWeaponTypeVarbit == -1 || equippedWeaponTypeVarbit != client.getVar(Varbits.EQUIPPED_WEAPON_TYPE))
 		{
-			if (client.getVar(VarPlayer.ATTACK_STYLE) == 0 && loginWarningMessageCount < 4)
+			if (client.getVar(VarPlayer.ATTACK_STYLE) == 0 && loginWarningMessageCount < 4 && loginWarningMessageCount != 1)
 			{
 				loginWarningMessageCount++;
 			}
@@ -225,9 +229,7 @@ public class AttackStylesPlugin extends Plugin
 			updateAttackStyle(equippedWeaponTypeVarbit, client.getVar(VarPlayer.ATTACK_STYLE),
 				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
 
-			if (loginWarningMessageCount == 3)
-				updateWarning(true);
-			else if (loginWarningMessageCount == 4 )
+			if (loginWarningMessageCount == 3 || loginWarningMessageCount == 4)
 				updateWarning(true);
 			else
 				loginWarningMessageCount++;
@@ -242,9 +244,10 @@ public class AttackStylesPlugin extends Plugin
 			castingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
 			updateAttackStyle(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), client.getVar(VarPlayer.ATTACK_STYLE),
 				castingModeVarbit);
+			updateWarning(false);
 
-			if (loginWarningMessageCount == 4)
-				updateWarning(false);
+			if (loginWarningMessageCount != 4)
+				loginWarningMessageCount++;
 		}
 	}
 
@@ -306,6 +309,7 @@ public class AttackStylesPlugin extends Plugin
 		{
 			warnedSkills.remove(skill);
 		}
+		updateWarning(false);
 	}
 
 	private void updateWarning(boolean weaponSwitch)
@@ -319,17 +323,17 @@ public class AttackStylesPlugin extends Plugin
 				{
 					if (loginWarningMessageCount == 3)
 					{
-						sendChatMessage("<col=871A1A>[ATTACK STYLE]</col> You logged in wielding a weapon that will grant you " + returnAttackColor(skill) + " XP.");
+						sendChatMessage("<col=871A1A>[ATTACK STYLE]</col> You logged in wielding a weapon that will grant you " + returnAttackColor(skill) + " XP. #" + loginWarningMessageCount);
 					}
 					else if (loginWarningMessageCount == 4)
 					{
 						if (weaponSwitch)
 						{
-							sendChatMessage("<col=871A1A>[ATTACK STYLE]</col> This weapon's attack style will grant you " + returnAttackColor(skill) + " XP.");
+							sendChatMessage("<col=871A1A>[ATTACK STYLE]</col> This weapon's attack style will grant you " + returnAttackColor(skill) + " XP. #" + loginWarningMessageCount);
 						}
 						else
 						{
-							sendChatMessage("<col=871A1A>[ATTACK STYLE]</col> This attack style will grant you " + returnAttackColor(skill) + " XP.");
+							sendChatMessage("<col=871A1A>[ATTACK STYLE]</col> This attack style will grant you " + returnAttackColor(skill) + " XP. #" + loginWarningMessageCount);
 						}
 					}
 					warnedSkillSelected = true;
@@ -428,17 +432,16 @@ public class AttackStylesPlugin extends Plugin
 	private String returnAttackColor(Skill skill)
 	{
 		String color = "<col=ff0000>" + skill + "</col>";
-
-		switch (skill)
+		switch(skill)
 		{
 			case ATTACK:
 			case STRENGTH:
 			case DEFENCE:
 				return color = "<col=D44A4A>" + skill + "</col>";
 			case RANGED:
-				return color = "<col=259443>RANGED</col>";
+				return color = "<col=259443>" + skill + "</col>";
 			case MAGIC:
-				return color = "<col=369EB3>MAGIC</col>";
+				return color = "<col=369EB3>" + skill + "</col>";
 		}
 		return color;
 	}
