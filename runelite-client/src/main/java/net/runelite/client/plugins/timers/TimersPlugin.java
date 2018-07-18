@@ -37,6 +37,8 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import net.runelite.api.Prayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.AnimationChanged;
@@ -45,6 +47,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -593,6 +596,24 @@ public class TimersPlugin extends Plugin
 				default:
 					removeGameTimer(STAFF_OF_THE_DEAD);
 			}
+		}
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned npcDespawned)
+	{
+		NPC npc = npcDespawned.getNpc();
+
+		if (!npc.isDead())
+		{
+			return;
+		}
+
+		int npcId = npc.getId();
+
+		if (npcId == NpcID.ZOMBIFIED_SPAWN || npcId == NpcID.ZOMBIFIED_SPAWN_8063)
+		{
+			removeGameTimer(ICEBARRAGE);
 		}
 	}
 
