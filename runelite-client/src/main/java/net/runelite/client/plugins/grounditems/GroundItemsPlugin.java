@@ -34,6 +34,7 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Rectangle;
 import static java.lang.Boolean.TRUE;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -142,6 +143,10 @@ public class GroundItemsPlugin extends Plugin
 
 	@Getter
 	private final Map<GroundItem.GroundItemKey, GroundItem> collectedGroundItems = new LinkedHashMap<>();
+
+	@Getter
+	private final List<Color> priceCheckIndexes = new ArrayList<>();
+
 	private final Map<Integer, Color> priceChecks = new LinkedHashMap<>();
 	private LoadingCache<String, Boolean> highlightedItems;
 	private LoadingCache<String, Boolean> hiddenItems;
@@ -307,31 +312,40 @@ public class GroundItemsPlugin extends Plugin
 
 		// Cache colors
 		priceChecks.clear();
+		priceCheckIndexes.clear();
 
 		if (config.insaneValuePrice() > 0)
 		{
 			priceChecks.put(config.insaneValuePrice(), config.insaneValueColor());
+			priceCheckIndexes.add(config.insaneValueColor());
 		}
 
 		if (config.highValuePrice() > 0)
 		{
 			priceChecks.put(config.highValuePrice(), config.highValueColor());
+			priceCheckIndexes.add(config.highValueColor());
 		}
 
 		if (config.mediumValuePrice() > 0)
 		{
 			priceChecks.put(config.mediumValuePrice(), config.mediumValueColor());
+			priceCheckIndexes.add(config.mediumValueColor());
 		}
 
 		if (config.lowValuePrice() > 0)
 		{
 			priceChecks.put(config.lowValuePrice(), config.lowValueColor());
+			priceCheckIndexes.add(config.lowValueColor());
 		}
 
 		if (config.getHighlightOverValue() > 0)
 		{
 			priceChecks.put(config.getHighlightOverValue(), config.highlightedColor());
+			priceCheckIndexes.add(config.highlightedColor());
 		}
+
+		priceCheckIndexes.add(config.defaultColor());
+		priceCheckIndexes.add(config.hiddenColor());
 	}
 
 	@Subscribe

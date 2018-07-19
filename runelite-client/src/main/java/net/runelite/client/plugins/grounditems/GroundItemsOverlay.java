@@ -74,6 +74,7 @@ public class GroundItemsOverlay extends Overlay
 	private final BackgroundComponent backgroundComponent = new BackgroundComponent();
 	private final TextComponent textComponent = new TextComponent();
 	private final Map<WorldPoint, Integer> offsetMap = new HashMap<>();
+	private final Map<LocalPoint, Integer> topGroundItemMap = new HashMap<>();
 
 	@Inject
 	private GroundItemsOverlay(Client client, GroundItemsPlugin plugin, GroundItemsConfig config)
@@ -103,6 +104,7 @@ public class GroundItemsOverlay extends Overlay
 			return null;
 		}
 
+		topGroundItemMap.clear();
 		offsetMap.clear();
 		final LocalPoint localLocation = player.getLocalLocation();
 		final Point mousePos = client.getMouseCanvasPosition();
@@ -191,13 +193,14 @@ public class GroundItemsOverlay extends Overlay
 
 			final Color color = plugin.getItemColor(highlighted, hidden);
 
+			// Try to find top most ground item tile
 			if (config.highlightTiles())
 			{
-				final Polygon poly = Perspective.getCanvasTilePoly(client, groundPoint);
+				final int curGroundIndex = plugin.getPriceCheckIndexes().indexOf(color);
 
-				if (poly != null)
+				if (curGroundIndex >= 0)
 				{
-					OverlayUtil.renderPolygon(graphics, poly, color);
+					topGroundItemMap.compute(groundPoint, (k, v) -> v == null || curGroundIndex < v ? curGroundIndex : v);
 				}
 			}
 
@@ -335,6 +338,17 @@ public class GroundItemsOverlay extends Overlay
 			textComponent.setPosition(new java.awt.Point(textX, textY));
 			textComponent.render(graphics);
 		}
+
+		// Draw top most ground item tiles
+		topGroundItemMap.forEach((point, index) ->
+		{
+			final Polygon poly = Perspective.getCanvasTilePoly(client, point);
+
+			if (poly != null && index < plugin.getPriceCheckIndexes().size())
+			{
+				OverlayUtil.renderPolygon(graphics, poly, plugin.getPriceCheckIndexes().get(index));
+			}
+		});
 
 		return null;
 	}
