@@ -43,6 +43,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import lombok.AccessLevel;
+import lombok.Getter;
+import net.runelite.api.SpriteID;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import java.time.LocalDate;
 import java.util.Date;
@@ -73,7 +77,9 @@ import static net.runelite.api.widgets.WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -120,6 +126,9 @@ public class ScreenshotPlugin extends Plugin
 		"falls before your might", "A humiliating defeat for", "With a crushing blow you", "thinking challenging you",
 		"Can anyone defeat you? Certainly", "was no match for you", "You were clearly a better fighter than", "RIP",
 		"You have defeated", "What an embarrassing performance by", "was no match for your awesomeness");
+
+	@Getter(AccessLevel.PACKAGE)
+	private BufferedImage reportButton;
 
 	static String format(Date date)
 	{
@@ -170,6 +179,12 @@ public class ScreenshotPlugin extends Plugin
 	@Inject
 	private KeyManager keyManager;
 
+	@Inject
+	private ClientThread clientThread;
+
+	@Inject
+	private SpriteManager spriteManager;
+
 	private NavigationButton titleBarButton;
 
 	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.hotkey())
@@ -217,7 +232,6 @@ public class ScreenshotPlugin extends Plugin
 						catch (IOException ex)
 						{
 							log.warn("Error opening screenshot dir", ex);
-
 						}
 					})
 					.build())
@@ -237,6 +251,16 @@ public class ScreenshotPlugin extends Plugin
 		overlayManager.remove(screenshotOverlay);
 		titleToolbar.removeNavigation(titleBarButton);
 		keyManager.unregisterKeyListener(hotkeyListener);
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGGED_IN
+			&& reportButton == null)
+		{
+			clientThread.invokeLater(this::setReportButton);
+		}
 	}
 
 	@Subscribe
@@ -608,6 +632,11 @@ public class ScreenshotPlugin extends Plugin
 				}
 			}
 		});
+	}
+
+	private void setReportButton()
+	{
+		reportButton = spriteManager.getSprite(SpriteID.CHATBOX_REPORT_BUTTON, 0);
 	}
 
 	@VisibleForTesting
