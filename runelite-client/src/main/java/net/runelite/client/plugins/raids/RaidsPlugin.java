@@ -305,7 +305,8 @@ public class RaidsPlugin extends Plugin
 			}
 		}
 
-		if (client.getVar(VarPlayer.IN_RAID_PARTY) == -1)
+		// If we left party raid was started or we left raid
+		if (client.getVar(VarPlayer.IN_RAID_PARTY) == -1 && (!inRaidChambers || !config.scoutOverlayInRaid()))
 		{
 			overlay.setScoutOverlayShown(false);
 		}
