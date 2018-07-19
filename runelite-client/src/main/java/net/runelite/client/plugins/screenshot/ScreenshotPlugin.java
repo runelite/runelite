@@ -52,13 +52,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Point;
+import net.runelite.api.SpriteID;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
@@ -74,6 +78,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -170,6 +175,12 @@ public class ScreenshotPlugin extends Plugin
 	@Inject
 	private KeyManager keyManager;
 
+	@Inject
+	private SpriteManager spriteManager;
+
+	@Getter(AccessLevel.PACKAGE)
+	private BufferedImage reportButton;
+
 	private NavigationButton titleBarButton;
 
 	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.hotkey())
@@ -218,7 +229,6 @@ public class ScreenshotPlugin extends Plugin
 						catch (IOException ex)
 						{
 							log.warn("Error opening screenshot dir", ex);
-
 						}
 					})
 					.build())
@@ -238,6 +248,16 @@ public class ScreenshotPlugin extends Plugin
 		overlayManager.remove(screenshotOverlay);
 		clientToolbar.removeNavigation(titleBarButton);
 		keyManager.unregisterKeyListener(hotkeyListener);
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGGED_IN
+			&& reportButton == null)
+		{
+			reportButton = spriteManager.getSprite(SpriteID.CHATBOX_REPORT_BUTTON, 0);
+		}
 	}
 
 	@Subscribe
