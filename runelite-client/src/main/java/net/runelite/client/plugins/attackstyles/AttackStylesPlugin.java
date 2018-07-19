@@ -137,8 +137,6 @@ public class AttackStylesPlugin extends Plugin
 		overlayManager.remove(overlay);
 		hideWarnedStyles(false);
 		processWidgets();
-
-
 	}
 
 	public AttackStyle getAttackStyle()
@@ -206,12 +204,18 @@ public class AttackStylesPlugin extends Plugin
 			attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
 			updateAttackStyle(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), attackStyleVarbit,
 				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
-			updateWarning(false);
 
-			if (loginWarningMessageCount <= 2)
+			// This will be ran twice before it's successfully set for the player, if they have a weapon equipped.
+			// Maximum value this method can set the count to is 3.
+			// If the count hits 3, the `onEquippedWeaponTypeChange` event will run the `updateWarning`, setting the count to 4.
+			if (loginWarningMessageCount <= 3)
 				loginWarningMessageCount++;
-
-
+			if (loginWarningMessageCount == 1 && equippedWeaponTypeVarbit == 0)
+				sendChatMessage("test");
+				// If the value is anything greater than 3, that means the LOGIN message has been sent via the `onEquippedWeaponTypeChange` event.
+				// The LOGIN message queues the count to be set to 4. Anything after 4 is a generic message, which is below.
+			else if (loginWarningMessageCount == 4)
+				updateWarning(false);
 		}
 	}
 
@@ -220,7 +224,15 @@ public class AttackStylesPlugin extends Plugin
 	{
 		if (equippedWeaponTypeVarbit == -1 || equippedWeaponTypeVarbit != client.getVar(Varbits.EQUIPPED_WEAPON_TYPE))
 		{
-			if (client.getVar(VarPlayer.ATTACK_STYLE) == 0 && loginWarningMessageCount < 4 && loginWarningMessageCount != 1)
+			// This check is to accommodate the counter if the player's attackStyleVAR is saved as 0, seeing as upon setting VARS, it will only run one event to set it to 0.
+			// It skips over this check on the FIRST `onEquippedWeaponTypeChange`run and continues the method.
+			// After this method finishes, the count will be set to 2, though, it was setting the `EquippedWeapon` to nothing.
+			// Meaning, whenever there is a weapon loaded from the VARs, it will spring this event again...
+			// Upon the second run, it will run this check to increase the count to 3, to accommodate the missing `OnAttackStyleChange` event.
+			// Once it hits 3, then it can run the `updateWarning` to send the initial LOGIN message.
+			// Once it runs the `updateWarning` and goes past the initial LOGIN message, it will see that the count is at 3, then increase it by 1, equaling 4.
+			// From any point onward, after being LOGGED_IN, the count will always remain 4 and not send another LOGIN message, seeing as the LOGIN message requires a count of 3.
+			if (client.getVar(VarPlayer.ATTACK_STYLE) == 0 && loginWarningMessageCount < 3 && loginWarningMessageCount != 1)
 			{
 				loginWarningMessageCount++;
 			}
@@ -229,8 +241,12 @@ public class AttackStylesPlugin extends Plugin
 			updateAttackStyle(equippedWeaponTypeVarbit, client.getVar(VarPlayer.ATTACK_STYLE),
 				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
 
-			if (loginWarningMessageCount == 3 || loginWarningMessageCount == 4)
+			// It should not send a warningMessage until it hits count 3 for the LOGIN message and then the normal messages are sent afterwards, upon hitting a count of 4.
+			if (loginWarningMessageCount >= 3)
+			{
 				updateWarning(true);
+			}
+			// This increases the count to ensure the event is counted and continues with either the `OnAttackStyle` event or the check above to accommodate it if AttackStyle == 0.
 			else
 				loginWarningMessageCount++;
 		}
@@ -244,10 +260,12 @@ public class AttackStylesPlugin extends Plugin
 			castingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
 			updateAttackStyle(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), client.getVar(VarPlayer.ATTACK_STYLE),
 				castingModeVarbit);
-			updateWarning(false);
 
-			if (loginWarningMessageCount != 4)
-				loginWarningMessageCount++;
+			// This is the third event ran, causing the count to be set to 3. The LOGIN message will be sent and be set to 4, therefore,
+			// no need to be continuing the count.
+			// This is also ran if the player is equipping a magic weapon with the defensive casting mode enabled.
+			if (loginWarningMessageCount == 4)
+				updateWarning(false);
 		}
 	}
 
@@ -260,27 +278,21 @@ public class AttackStylesPlugin extends Plugin
 			switch (event.getKey())
 			{
 				case "warnForDefensive":
-					sendChatMessage("You have " + (enabled ? "enabled" : "disabled") + " the warning for " + returnAttackColor(Skill.DEFENCE) + " XP." );
 					updateWarnedSkills(enabled, Skill.DEFENCE);
 					break;
 				case "warnForAttack":
-					sendChatMessage("You have " + (enabled ? "enabled" : "disabled") + " the warning for " + returnAttackColor(Skill.ATTACK) + " XP." );
 					updateWarnedSkills(enabled, Skill.ATTACK);
 					break;
 				case "warnForStrength":
-					sendChatMessage("You have " + (enabled ? "enabled" : "disabled") + " the warning for " + returnAttackColor(Skill.STRENGTH) + " XP." );
 					updateWarnedSkills(enabled, Skill.STRENGTH);
 					break;
 				case "warnForRanged":
-					sendChatMessage("You have " + (enabled ? "enabled" : "disabled") + " the warning for " + returnAttackColor(Skill.RANGED) + " XP." );
 					updateWarnedSkills(enabled, Skill.RANGED);
 					break;
 				case "warnForMagic":
-					sendChatMessage("You have " + (enabled ? "enabled" : "disabled") + " the warning for " + returnAttackColor(Skill.MAGIC) + " XP." );
 					updateWarnedSkills(enabled, Skill.MAGIC);
 					break;
 				case "removeWarnedStyles":
-					sendChatMessage("You have decided to " + (enabled ? "hide" : "show") + " the warned styles from the combat styles interface." );
 					hideWarnedStyles(enabled);
 					break;
 			}
@@ -315,7 +327,7 @@ public class AttackStylesPlugin extends Plugin
 		{
 			warnedSkills.remove(skill);
 		}
-		updateWarning(false);
+		//updateWarning(false);
 	}
 
 	private void updateWarning(boolean weaponSwitch)
@@ -327,27 +339,30 @@ public class AttackStylesPlugin extends Plugin
 			{
 				if (warnedSkills.contains(skill))
 				{
+					// LOGIN message requirement
 					if (loginWarningMessageCount == 3)
 					{
-						if (config.warningMessages())
-							sendChatMessage("<col=871A1A>[ATTACK STYLE]</col> You logged in wielding a weapon that will grant you " + returnAttackColor(skill) + " XP. #" + loginWarningMessageCount);
+						sendChatMessage("<col=871A1A>[ATTACK STYLE]</col> You logged in wielding a weapon that will grant you " + returnAttackColor(skill) + " XP.");
 					}
+					// Normal Message Requirement
 					else if (loginWarningMessageCount == 4)
 					{
+						// Oriented around actually switching weapons.
 						if (weaponSwitch)
 						{
-							if (config.warningMessages())
-								sendChatMessage("<col=871A1A>[ATTACK STYLE]</col> This weapon's attack style will grant you " + returnAttackColor(skill) + " XP. #" + loginWarningMessageCount);
+							sendChatMessage("<col=871A1A>[ATTACK STYLE]</col> This weapon's attack style will grant you " + returnAttackColor(skill) + " XP.");
 						}
+						// Oriented around clicking a different Combat Styles option from the interface.
 						else
 						{
-							if (config.warningMessages())
-								sendChatMessage("<col=871A1A>[ATTACK STYLE]</col> This attack style will grant you " + returnAttackColor(skill) + " XP. #" + loginWarningMessageCount);
+							sendChatMessage("<col=871A1A>[ATTACK STYLE]</col> This attack style will grant you " + returnAttackColor(skill) + " XP.");
 						}
 					}
 					warnedSkillSelected = true;
 				}
 			}
+			// This count must be checked AFTER it runs the LOGIN message, otherwise the attackStyles that support 2 or more skills only send
+			// the first option within the list from LOGIN, then sends the remaining ones in a 'normal' message.
 			if (loginWarningMessageCount == 3)
 				loginWarningMessageCount++;
 		}
@@ -426,16 +441,19 @@ public class AttackStylesPlugin extends Plugin
 
 	private void sendChatMessage(String chatMessage)
 	{
-		final String message = new ChatMessageBuilder()
-			.append(ChatColorType.NORMAL)
-			.append(chatMessage)
-			.build();
+		if (config.warningMessages())
+		{
+			final String message = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append(chatMessage)
+				.build();
 
-		chatMessageManager.queue(
-			QueuedMessage.builder()
-				.type(ChatMessageType.GAME)
-				.runeLiteFormattedMessage(message)
-				.build());
+			chatMessageManager.queue(
+				QueuedMessage.builder()
+					.type(ChatMessageType.GAME)
+					.runeLiteFormattedMessage(message)
+					.build());
+		}
 	}
 
 	private String returnAttackColor(Skill skill)
