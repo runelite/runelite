@@ -42,6 +42,11 @@ public class StackFormatter
 	private static final String[] SUFFIXES = {"", "K", "M", "B"};
 
 	/**
+	 * A list of suffixes to use when formatting stack sizes.
+	 */
+	private static final int[] SUFFIX_PRECISION = {3, 3, 3, 4};
+
+	/**
 	 * A pattern to match a value suffix (K, M etc) in a string.
 	 */
 	private static final Pattern SUFFIX_PATTERN = Pattern.compile("^-?[0-9,.]+([a-zA-Z]?)$");
@@ -78,6 +83,7 @@ public class StackFormatter
 
 		String suffix = SUFFIXES[0];
 		long divideBy = 1;
+		int suffixIdx = 0;
 
 		// determine correct suffix by iterating backward through the list
 		// of suffixes until the suffix results in a value >= 1
@@ -87,18 +93,37 @@ public class StackFormatter
 			if ((double) quantity / divideBy >= 1)
 			{
 				suffix = SUFFIXES[i];
+				suffixIdx = i;
 				break;
 			}
 		}
 
+		// our calculated display quantity
+		double calculatedDisplay = (double) quantity / divideBy;
+
+		String integerValue = (int) calculatedDisplay + "";
+
+		// modulus of 1000 to find the decimal remainder
+		short decimals = (short) (calculatedDisplay * 1000 % 1000);
+
+		// if no decimals, return integer portion
+		if (decimals == 0) return integerValue + suffix;
+
+		// M & B - higher precision
+		int precision = SUFFIX_PRECISION[suffixIdx] - integerValue.length() +
+			(integerValue.length() == 3 ? 1 : 0); // add extra digit for 100K, 100M, 100B
+		double divisor = Math.pow(10, precision);
+		double formattedValue = (int) (Math.round(calculatedDisplay * divisor)) / divisor;
+
 		// get locale formatted string
-		String formattedString = NUMBER_FORMATTER.format((double) quantity / divideBy);
+		String formattedString = NUMBER_FORMATTER.format(formattedValue);
 
-		// strip down any digits past the 4 first
-		formattedString = (formattedString.length() > 4 ? formattedString.substring(0, 4) : formattedString);
+		// remove trailing zeros
+		formattedString = !formattedString.contains(".") ? formattedString :
+			formattedString.replaceAll("0*$", "").replaceAll("\\.$", "");
 
-		// make sure the last character is not a "."
-		return (formattedString.endsWith(".") ? formattedString.substring(0, 3) : formattedString) + suffix;
+		// add suffix to the result
+		return formattedString + suffix;
 	}
 
 	/**

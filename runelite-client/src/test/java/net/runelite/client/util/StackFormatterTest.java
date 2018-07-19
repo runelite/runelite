@@ -87,14 +87,14 @@ public class StackFormatterTest
 		assertEquals(NumberFormat.getNumberInstance().format(99.9) + "K", StackFormatter.quantityToStackSize(99_920));
 		assertEquals("100K", StackFormatter.quantityToStackSize(100_000));
 		assertEquals("10M", StackFormatter.quantityToStackSize(10_000_000));
-		assertEquals(NumberFormat.getNumberInstance().format(2.14) + "B", StackFormatter.quantityToStackSize(Integer.MAX_VALUE));
+		assertEquals(NumberFormat.getNumberInstance().format(2.147) + "B", StackFormatter.quantityToStackSize(Integer.MAX_VALUE));
 		assertEquals("100B", StackFormatter.quantityToStackSize(100_000_000_000L));
 
 		assertEquals("0", StackFormatter.quantityToStackSize(-0));
 		assertEquals("-400", StackFormatter.quantityToStackSize(-400));
 		assertEquals("-400K", StackFormatter.quantityToStackSize(-400_000));
 		assertEquals("-40M", StackFormatter.quantityToStackSize(-40_000_000));
-		assertEquals(NumberFormat.getNumberInstance().format(-2.14) + "B", StackFormatter.quantityToStackSize(Integer.MIN_VALUE));
+		assertEquals(NumberFormat.getNumberInstance().format(-2.147) + "B", StackFormatter.quantityToStackSize(Integer.MIN_VALUE));
 		assertEquals("-400B", StackFormatter.quantityToStackSize(-400_000_000_000L));
 	}
 

@@ -30,6 +30,7 @@ import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.util.StackFormatter;
+import java.text.NumberFormat;
 
 @Slf4j
 class BankTitle
@@ -38,6 +39,8 @@ class BankTitle
 	private final BankValueConfig config;
 
 	private String bankTitle;
+
+	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
 
 	@Inject
 	BankTitle(Client client, BankValueConfig config)
@@ -65,9 +68,9 @@ class BankTitle
 		// Only save if the title hasn't been modified
 		// Don't update on a search because rs seems to constantly update the title
 		if (widgetBankTitleBar == null ||
-				widgetBankTitleBar.isHidden() ||
-				widgetBankTitleBar.getText().contains("(") ||
-				widgetBankTitleBar.getText().contains("Showing"))
+			widgetBankTitleBar.isHidden() ||
+			widgetBankTitleBar.getText().contains("(") ||
+			widgetBankTitleBar.getText().contains("Showing"))
 		{
 			return;
 		}
@@ -77,13 +80,22 @@ class BankTitle
 
 	void update(long gePrice, long haPrice)
 	{
+		update(gePrice, haPrice, false);
+	}
+
+	void update(long gePrice, long haPrice, boolean force)
+	{
 		Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
 
 		// Don't update on a search because rs seems to constantly update the title
 		if (widgetBankTitleBar == null ||
-				widgetBankTitleBar.isHidden() ||
-				widgetBankTitleBar.getText().contains("Showing") ||
-				widgetBankTitleBar.getText().contains("("))
+			widgetBankTitleBar.isHidden() ||
+			widgetBankTitleBar.getText().contains("Showing"))
+		{
+			return;
+		}
+
+		if (!force && widgetBankTitleBar.getText().contains("("))
 		{
 			return;
 		}
@@ -92,12 +104,14 @@ class BankTitle
 
 		if (config.showGE() && gePrice != 0)
 		{
-			strCurrentTab += " (EX: " + StackFormatter.quantityToStackSize(gePrice) + ")";
+			strCurrentTab += " (EX: " + (config.showExactValue() ? NUMBER_FORMATTER.format(gePrice) :
+				StackFormatter.quantityToStackSize(gePrice)) + ")";
 		}
 
 		if (config.showHA() && haPrice != 0)
 		{
-			strCurrentTab += " (HA: " + StackFormatter.quantityToStackSize(haPrice) + ")";
+			strCurrentTab += " (HA: " + (config.showExactHAValue() ? NUMBER_FORMATTER.format(haPrice) :
+				StackFormatter.quantityToStackSize(haPrice)) + ")";
 		}
 
 		log.debug("Setting bank title: {}", bankTitle + strCurrentTab);

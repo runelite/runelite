@@ -29,6 +29,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -77,6 +78,22 @@ public class BankValuePlugin extends Plugin
 		bankTitle.save();
 		calculate(widgetBankTitleBar);
 		bankTitle.update(bankCalculation.getGePrice(), bankCalculation.getHaPrice());
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (bankCalculation.getGePrice() > 0)
+		{
+			Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+
+			if (widgetBankTitleBar == null || widgetBankTitleBar.isHidden())
+			{
+				return;
+			}
+
+			bankTitle.update(bankCalculation.getGePrice(), bankCalculation.getHaPrice(), true);
+		}
 	}
 
 	private void calculate(Widget bankTitleBar)
