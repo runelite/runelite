@@ -123,7 +123,7 @@ enum VarrockMuseumAnswer
 
 	CAMEL_1("What is produced by feeding chilli to a camel?", "Toxic dung."),
 	CAMEL_2("If an ugthanki has one, how many does a bactrian have?", "Two."),
-	CAMEL_3("Camels:  herbivore, carnivore or omnivore?", "Omnivore."),
+	CAMEL_3("Camels: herbivore, carnivore or omnivore?", "Omnivore."),
 	CAMEL_4("What is the usual mood for a camel?", "Annoyed."),
 	CAMEL_5("Where would you find an ugthanki?", "Al Kharid."),
 	CAMEL_6("Which camel byproduct is known to be very nutritious?", "Milk."),
