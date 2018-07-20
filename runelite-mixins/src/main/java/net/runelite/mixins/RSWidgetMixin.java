@@ -477,4 +477,62 @@ public abstract class RSWidgetMixin implements RSWidget
 		WidgetPositioned widgetPositioned = new WidgetPositioned();
 		client.getCallbacks().postDeferred(widgetPositioned);
 	}
+
+	@Inject
+	@Override
+	public Widget createChild(int index, int type)
+	{
+		RSWidget w = client.createWidget();
+		w.setType(type);
+		w.setParentId(getId());
+		w.setId(getId());
+		w.setIsIf3(true);
+
+		RSWidget[] siblings = getChildren();
+
+		if (index < 0)
+		{
+			if (siblings == null)
+			{
+				index = 0;
+			}
+			else
+			{
+				index = siblings.length;
+			}
+		}
+
+		if (siblings == null)
+		{
+			siblings = new RSWidget[index + 1];
+			setChildren(siblings);
+		}
+		else if (siblings.length <= index)
+		{
+			RSWidget[] newSiblings = new RSWidget[index + 1];
+			System.arraycopy(siblings, 0, newSiblings, 0, siblings.length);
+			siblings = newSiblings;
+			setChildren(siblings);
+		}
+
+		siblings[index] = w;
+		w.setIndex(index);
+
+		return w;
+	}
+
+	@Inject
+	@Override
+	public void revalidate()
+	{
+		client.revalidateWidget(this);
+	}
+
+	@Inject
+	@Override
+	public void revalidateScroll()
+	{
+		client.revalidateWidget(this);
+		client.revalidateWidgetScroll(client.getWidgets()[TO_GROUP(this.getId())], this, false);
+	}
 }

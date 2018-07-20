@@ -447,7 +447,7 @@ public class ClueScrollPlugin extends Plugin
 					.replaceAll("[ ]+", " ")
 					.toLowerCase());
 
-			if (clue != null && clue instanceof TextClueScroll)
+			if (clue instanceof TextClueScroll)
 			{
 				if (((TextClueScroll) clue).getText().equalsIgnoreCase(text))
 				{

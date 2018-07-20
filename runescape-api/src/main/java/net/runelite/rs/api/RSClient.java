@@ -648,4 +648,13 @@ public interface RSClient extends RSGameEngine, Client
 	RSItem getLastItemDespawn();
 
 	void setLastItemDespawn(RSItem lastItemDespawn);
+
+	@Construct
+	RSWidget createWidget();
+
+	@Import("revalidateWidget")
+	void revalidateWidget(Widget w);
+
+	@Import("revalidateWidgetScroll")
+	void revalidateWidgetScroll(Widget[] group, Widget w, boolean postEvent);
 }

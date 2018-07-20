@@ -28,7 +28,9 @@ package net.runelite.client.plugins.xptracker;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
+import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.time.temporal.ChronoUnit;
 import java.util.EnumSet;
 import java.util.Objects;
 import javax.imageio.ImageIO;
@@ -43,10 +45,12 @@ import net.runelite.api.WorldType;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
+import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
 import net.runelite.http.api.xp.XpClient;
@@ -68,15 +72,24 @@ public class XpTrackerPlugin extends Plugin
 	@Inject
 	private SkillIconManager skillIconManager;
 
+	@Inject
+	private XpTrackerConfig xpTrackerConfig;
+
 	private NavigationButton navButton;
 	private XpPanel xpPanel;
-
-	private final XpState xpState = new XpState();
-
 	private XpWorldType lastWorldType;
 	private String lastUsername;
+	private long lastTickMillis = 0;
 
 	private final XpClient xpClient = new XpClient();
+	private final XpState xpState = new XpState();
+	private final XpPauseState xpPauseState = new XpPauseState();
+
+	@Provides
+	XpTrackerConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(XpTrackerConfig.class);
+	}
 
 	@Override
 	public void configure(Binder binder)
@@ -229,7 +242,7 @@ public class XpTrackerPlugin extends Plugin
 		final XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp, startGoalXp, endGoalXp);
 
 		final boolean updated = XpUpdateResult.UPDATED.equals(updateResult);
-		xpPanel.updateSkillExperience(updated, skill, xpState.getSkillSnapshot(skill));
+		xpPanel.updateSkillExperience(updated, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
 		xpState.recalculateTotal();
 		xpPanel.updateTotal(xpState.getTotalSnapshot());
 	}
@@ -237,14 +250,7 @@ public class XpTrackerPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		// Rebuild calculated values like xp/hr in panel
-		for (Skill skill : Skill.values())
-		{
-			xpPanel.updateSkillExperience(false, skill, xpState.getSkillSnapshot(skill));
-		}
-
-		xpState.recalculateTotal();
-		xpPanel.updateTotal(xpState.getTotalSnapshot());
+		rebuildSkills();
 	}
 
 	XpSnapshotSingle getSkillSnapshot(Skill skill)
@@ -359,6 +365,61 @@ public class XpTrackerPlugin extends Plugin
 				return VarPlayer.FLETCHING_GOAL_END;
 			default:
 				return null;
+		}
+	}
+
+	@Schedule(
+		period = 1,
+		unit = ChronoUnit.SECONDS
+	)
+	public void tickSkillTimes()
+	{
+		// Adjust unpause states
+		for (Skill skill : Skill.values())
+		{
+			xpPauseState.tickXp(skill, client.getSkillExperience(skill), xpTrackerConfig.pauseSkillAfter());
+		}
+
+		xpPauseState.tickLogout(xpTrackerConfig.pauseOnLogout(), !GameState.LOGIN_SCREEN.equals(client.getGameState()));
+
+		if (lastTickMillis == 0)
+		{
+			lastTickMillis = System.currentTimeMillis();
+			return;
+		}
+
+		final long nowMillis = System.currentTimeMillis();
+		final long tickDelta = nowMillis - lastTickMillis;
+		lastTickMillis = nowMillis;
+
+		for (Skill skill : Skill.values())
+		{
+			if (!xpPauseState.isPaused(skill))
+			{
+				xpState.tick(skill, tickDelta);
+			}
+		}
+
+		rebuildSkills();
+	}
+
+	private void rebuildSkills()
+	{
+		// Rebuild calculated values like xp/hr in panel
+		for (Skill skill : Skill.values())
+		{
+			xpPanel.updateSkillExperience(false, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
+		}
+
+		xpState.recalculateTotal();
+		xpPanel.updateTotal(xpState.getTotalSnapshot());
+	}
+
+	void pauseSkill(Skill skill, boolean pause)
+	{
+		if (pause ? xpPauseState.pauseSkill(skill) : xpPauseState.unpauseSkill(skill))
+		{
+			xpPanel.updateSkillExperience(false, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
 		}
 	}
 }

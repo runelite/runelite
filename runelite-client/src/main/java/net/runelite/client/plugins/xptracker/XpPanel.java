@@ -172,13 +172,13 @@ class XpPanel extends PluginPanel
 		}
 	}
 
-	void updateSkillExperience(boolean updated, Skill skill, XpSnapshotSingle xpSnapshotSingle)
+	void updateSkillExperience(boolean updated, boolean paused, Skill skill, XpSnapshotSingle xpSnapshotSingle)
 	{
 		final XpInfoBox xpInfoBox = infoBoxes.get(skill);
 
 		if (xpInfoBox != null)
 		{
-			xpInfoBox.update(updated, xpSnapshotSingle);
+			xpInfoBox.update(updated, paused, xpSnapshotSingle);
 		}
 	}
 

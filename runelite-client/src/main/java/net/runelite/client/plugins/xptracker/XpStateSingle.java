@@ -25,8 +25,6 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import java.time.Duration;
-import java.time.Instant;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +43,7 @@ class XpStateSingle
 	@Getter
 	private int xpGained = 0;
 
-	private Instant skillTimeStart = null;
+	private long skillTime = 0;
 	private int actions = 0;
 	private int startLevelExp = 0;
 	private int endLevelExp = 0;
@@ -65,7 +63,7 @@ class XpStateSingle
 
 	private int toHourly(int value)
 	{
-		if (skillTimeStart == null)
+		if (skillTime == 0)
 		{
 			return 0;
 		}
@@ -75,7 +73,7 @@ class XpStateSingle
 
 	private long getTimeElapsedInSeconds()
 	{
-		if (skillTimeStart == null)
+		if (skillTime == 0)
 		{
 			return 0;
 		}
@@ -84,7 +82,7 @@ class XpStateSingle
 		// To prevent that, pretend the skill has been active for a minute (60 seconds)
 		// This will create a lower estimate for the first minute,
 		// but it isn't ridiculous like saying 2 billion XP per hour.
-		return Math.max(60, Duration.between(skillTimeStart, Instant.now()).getSeconds());
+		return Math.max(60, skillTime / 1000);
 	}
 
 	private int getXpRemaining()
@@ -229,13 +227,12 @@ class XpStateSingle
 			endLevelExp = goalEndXp;
 		}
 
-		// If this is first time we are updating, we just started tracking
-		if (skillTimeStart == null)
-		{
-			skillTimeStart = Instant.now();
-		}
-
 		return true;
+	}
+
+	public void tick(long delta)
+	{
+		skillTime += delta;
 	}
 
 	XpSnapshotSingle snapshot()
