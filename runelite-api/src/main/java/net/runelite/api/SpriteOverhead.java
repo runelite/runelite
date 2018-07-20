@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Infinitay <https://github.com/Infinitay>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,66 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package net.runelite.api;
 
 /**
- * An enumeration of prayer icons above the head.
+ * An enumeration of sprites above the head.
  */
-public enum HeadIcon
+public enum SpriteOverhead
 {
 	/**
-	 * Protect from melee.
+	 * White skull from PVP world or wilderness
 	 */
-	MELEE,
+	SKULL,
 	/**
-	 * Protect from ranged.
+	 * Red skull from Tzhaar Fight Pits
 	 */
-	RANGED,
+	SKULL_FIGHT_PIT,
 	/**
-	 * Protect from magic.
+	 * No target bounty hunter sprite
 	 */
-	MAGIC,
+	BOUNTY_HUNTER_NO_TARGET,
 	/**
-	 * Retribution prayer.
+	 * Bounty hunter target has very low wealth
 	 */
-	RETRIBUTION,
+	BOUNTY_HUNTER_VERY_LOW,
 	/**
-	 * Smite prayer.
+	 * Bounty hunter target has low wealth
 	 */
-	SMITE,
+	BOUNTY_HUNTER_LOW,
 	/**
-	 * Redemption prayer.
+	 * Bounty hunter target has medium wealth
 	 */
-	REDEMPTION,
+	BOUNTY_HUNTER_MEDIUM,
 	/**
-	 * Protect from range and mage (ie. used by Kalphite Queen).
+	 * Bounty hunter target has high wealth
 	 */
-	RANGE_MAGE
+	BOUNTY_HUNTER_HIGH,
+	/**
+	 * Bounty hunter target has very high wealth
+	 */
+	BOUNTY_HUNTER_VERY_HIGH,
+	/**
+	 * Deadman mode sprite carrying one key
+	 */
+	DEAD_MAN_ONE,
+	/**
+	 * Deadman mode sprite carrying two keys
+	 */
+	DEAD_MAN_TWO,
+	/**
+	 * Deadman mode sprite carrying three keys
+	 */
+	DEAD_MAN_THREE,
+	/**
+	 * Deadman mode sprite carrying four keys
+	 */
+	DEAD_MAN_FOUR,
+	/**
+	 * Deadman mode sprite carrying five keys
+	 */
+	DEAD_MAN_FIVE,
+
+
 }

@@ -38,7 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.HeadIcon;
+import net.runelite.api.PrayerOverhead;
 import net.runelite.api.Hitsplat;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
@@ -174,12 +174,12 @@ public class DemonicGorillaPlugin extends Plugin
 
 	private DemonicGorilla.AttackStyle getProtectedStyle(Player player)
 	{
-		HeadIcon headIcon = player.getOverheadIcon();
-		if (headIcon == null)
+		PrayerOverhead prayerOverhead = player.getPrayerOverhead();
+		if (prayerOverhead == null)
 		{
 			return null;
 		}
-		switch (headIcon)
+		switch (prayerOverhead)
 		{
 			case MELEE:
 				return DemonicGorilla.AttackStyle.MELEE;
@@ -348,7 +348,7 @@ public class DemonicGorillaPlugin extends Plugin
 					// It also does this animation when it spawns, so
 					// we need the interacting != null check.
 
-					if (gorilla.getOverheadIcon() == gorilla.getLastTickOverheadIcon())
+					if (gorilla.getPrayerOverhead() == gorilla.getLastTickOverheadIcon())
 					{
 						// Confirmed, the gorilla used the AoE attack
 						onGorillaAttack(gorilla, DemonicGorilla.AttackStyle.BOULDER);
@@ -498,7 +498,7 @@ public class DemonicGorillaPlugin extends Plugin
 				gorilla.setInitiatedCombat(true);
 			}
 
-			if (gorilla.getOverheadIcon() != gorilla.getLastTickOverheadIcon())
+			if (gorilla.getPrayerOverhead() != gorilla.getLastTickOverheadIcon())
 			{
 				if (gorilla.isChangedAttackStyleLastTick() ||
 					gorilla.isChangedAttackStyleThisTick())
@@ -523,7 +523,7 @@ public class DemonicGorillaPlugin extends Plugin
 			gorilla.setChangedPrayerThisTick(false);
 			gorilla.setChangedAttackStyleLastTick(gorilla.isChangedAttackStyleThisTick());
 			gorilla.setChangedAttackStyleThisTick(false);
-			gorilla.setLastTickOverheadIcon(gorilla.getOverheadIcon());
+			gorilla.setLastTickOverheadIcon(gorilla.getPrayerOverhead());
 			gorilla.setRecentProjectileId(-1);
 		}
 	}

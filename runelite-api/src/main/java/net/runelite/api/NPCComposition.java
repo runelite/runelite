@@ -109,9 +109,9 @@ public interface NPCComposition
 	int getSize();
 
 	/**
-	 * Gets the displayed overhead icon of the NPC.
+	 * Gets the displayed prayer overhead of the NPC.
 	 *
 	 * @return the overhead icon
 	 */
-	HeadIcon getOverheadIcon();
+	PrayerOverhead getPrayerOverhead();
 }

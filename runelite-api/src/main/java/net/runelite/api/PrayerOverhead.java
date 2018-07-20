@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,63 +24,37 @@
  */
 package net.runelite.api;
 
-import java.awt.Polygon;
-
 /**
- * Represents a player entity in the game.
+ * An enumeration of prayer icons above the head.
  */
-public interface Player extends Actor
+public enum PrayerOverhead
 {
-	@Override
-	int getCombatLevel();
-
 	/**
-	 * Gets the composition of this player.
-	 *
-	 * @return the composition
+	 * Protect from melee.
 	 */
-	PlayerComposition getPlayerComposition();
-
+	MELEE,
 	/**
-	 * Gets the polygons that make up the players model.
-	 *
-	 * @return the model polygons
+	 * Protect from ranged.
 	 */
-	Polygon[] getPolygons();
-
+	RANGED,
 	/**
-	 * Gets the current team cape team number the player is on.
-	 *
-	 * @return team number, or 0 if not on any team
+	 * Protect from magic.
 	 */
-	int getTeam();
-
+	MAGIC,
 	/**
-	 * Checks whether this player is a member of the same clan as
-	 * the local player.
-	 *
-	 * @return true if the player is a clan member, false otherwise
+	 * Retribution prayer.
 	 */
-	boolean isClanMember();
-
+	RETRIBUTION,
 	/**
-	 * Checks whether this player is a friend of the local player.
-	 *
-	 * @return true if the player is a friend, false otherwise
+	 * Smite prayer.
 	 */
-	boolean isFriend();
-
+	SMITE,
 	/**
-	 * Gets the displayed prayer overhead of the player.
-	 *
-	 * @return the overhead icon
+	 * Redemption prayer.
 	 */
-	PrayerOverhead getPrayerOverhead();
-
+	REDEMPTION,
 	/**
-	 * Gets the displayed sprite overhead of the player.
-	 *
-	 * @return the overhead icon
+	 * Protect from range and mage (ie. used by Kalphite Queen).
 	 */
-	SpriteOverhead getSpriteOverhead();
+	RANGE_MAGE
 }
