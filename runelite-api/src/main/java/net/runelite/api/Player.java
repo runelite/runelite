@@ -83,4 +83,11 @@ public interface Player extends Actor
 	 * @return the overhead icon
 	 */
 	SpriteOverhead getSpriteOverhead();
+
+	/**
+	 * Returns whether or not the player is skulled (wilderness/pvp world)
+	 *
+	 * @return true if player is skulled
+	 */
+	boolean isSkulled();
 }

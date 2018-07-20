@@ -131,6 +131,12 @@ public abstract class RSPlayerMixin implements RSPlayer
 
 	@Inject
 	@Override
+	public boolean isSkulled() {
+		return getRsOverheadSprite() == 0;
+	}
+
+	@Inject
+	@Override
 	public Polygon[] getPolygons()
 	{
 		Model model = getModel();
