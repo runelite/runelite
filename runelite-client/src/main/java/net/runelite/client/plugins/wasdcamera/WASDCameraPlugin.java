@@ -31,12 +31,12 @@ import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.VarClientStr;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.events.VarClientStrChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyManager;
-import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -58,17 +58,13 @@ public class WASDCameraPlugin extends Plugin
 	private static final int SLASH_KEY = KeyEvent.VK_SLASH;
 	private static final int TAB_KEY = KeyEvent.VK_TAB;
 
-	private static final int CHAT_BOX = 10616876;
-	private static final int GE_INPUT_BOX = 30605313;
+	private static final int DELETE_KEY = KeyEvent.VK_BACK_SPACE;
 
 	@Inject
 	private Client client;
 
 	@Inject
 	private OverlayManager overlayManager;
-
-	@Inject
-	private MouseManager mouseManager;
 
 	@Inject
 	private KeyManager keyManager;
@@ -87,6 +83,7 @@ public class WASDCameraPlugin extends Plugin
 	public boolean canType;
 	public boolean inFocus;
 	public boolean loggedIn;
+	public boolean typingInChat;
 
 	@Provides
 	WASDCameraConfig getConfig(ConfigManager configManager)
@@ -98,7 +95,6 @@ public class WASDCameraPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		robot = new Robot();
-		mouseManager.registerMouseListener(inputListener);
 		keyManager.registerKeyListener(inputListener);
 		overlayManager.add(overlay);
 	}
@@ -107,7 +103,6 @@ public class WASDCameraPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		robot = null;
-		mouseManager.unregisterMouseListener(inputListener);
 		keyManager.unregisterKeyListener(inputListener);
 		overlayManager.remove(overlay);
 	}
@@ -126,21 +121,6 @@ public class WASDCameraPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetHiddenChange(WidgetHiddenChanged e)
-	{
-		boolean chatboxDisabled = (e.getWidget().getId() == CHAT_BOX && e.getWidget().isHidden());
-		boolean inGeSearch = (e.getWidget().getId() == GE_INPUT_BOX && e.getWidget().isHidden());
-
-		if (!canType)
-		{
-			if (chatboxDisabled || inGeSearch)
-			{
-				canType = true;
-			}
-		}
-	}
-
-	@Subscribe
 	public void onFocusChanged(FocusChanged f)
 	{
 		inFocus = f.isFocused();
@@ -148,6 +128,7 @@ public class WASDCameraPlugin extends Plugin
 
 	public void handleKeyPress(KeyEvent e)
 	{
+
 		// If enter was pressed, toggle canType
 		if (e.getKeyCode() == ENTER_KEY)
 		{
@@ -174,6 +155,37 @@ public class WASDCameraPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onVarClientStrChanged(VarClientStrChanged e)
+	{
+		// If chat string changed
+		if (e.getIndex() == 1)
+		{
+			typingInChat = true;
+
+			// If input was added to chat string but can't type, delete it
+			// NOTE: This only happens after leaving a text entry interface
+			// as onKeyTyped() is called before onVarClientStrChanged()
+			if (client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) != null &&
+					client.getVar(VarClientStr.CHATBOX_TYPED_TEXT).length() > 0 && !canType)
+			{
+				pressDeleteKey();
+			}
+		}
+
+		// If not typing in chat
+		else
+		{
+			typingInChat = false;
+			canType = false;
+		}
+	}
+
+	private void pressDeleteKey()
+	{
+		robot.keyPress(DELETE_KEY);
+	}
+
 	public void pressCameraKey(KeyEvent e)
 	{
 		switch (e.getKeyCode())
@@ -192,8 +204,6 @@ public class WASDCameraPlugin extends Plugin
 				robot.keyPress(KeyEvent.VK_RIGHT);
 				break;
 		}
-
-		// Consume all key presses from here
 	}
 
 	public void releaseCameraKey(KeyEvent e)
