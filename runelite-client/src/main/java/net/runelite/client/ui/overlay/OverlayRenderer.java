@@ -242,11 +242,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 				{
 					if (SwingUtilities.isRightMouseButton(mouseEvent))
 					{
-						// detached overlays have no place to reset back to
-						if (overlay.getPosition() != OverlayPosition.DETACHED)
-						{
-							overlayManager.resetOverlay(overlay);
-						}
+						overlayManager.resetOverlay(overlay);
 					}
 					else
 					{
