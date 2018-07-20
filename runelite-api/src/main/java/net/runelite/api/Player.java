@@ -75,14 +75,14 @@ public interface Player extends Actor
 	 *
 	 * @return the overhead icon
 	 */
-	PrayerOverhead getPrayerOverhead();
+	OverheadPrayer getPrayerOverhead();
 
 	/**
 	 * Gets the displayed sprite overhead of the player.
 	 *
 	 * @return the overhead icon
 	 */
-	SpriteOverhead getSpriteOverhead();
+	OverheadSprite getSpriteOverhead();
 
 	/**
 	 * Returns whether or not the player is skulled (wilderness/pvp world)

@@ -113,5 +113,5 @@ public interface NPCComposition
 	 *
 	 * @return the overhead icon
 	 */
-	PrayerOverhead getPrayerOverhead();
+	OverheadPrayer getPrayerOverhead();
 }

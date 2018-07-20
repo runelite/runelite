@@ -30,21 +30,21 @@ import java.util.List;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
-import net.runelite.api.PrayerOverhead;
-import static net.runelite.api.PrayerOverhead.MAGIC;
-import static net.runelite.api.PrayerOverhead.MELEE;
-import static net.runelite.api.PrayerOverhead.RANGED;
-import static net.runelite.api.PrayerOverhead.REDEMPTION;
-import static net.runelite.api.PrayerOverhead.RETRIBUTION;
-import static net.runelite.api.PrayerOverhead.SMITE;
-import net.runelite.api.SpriteOverhead;
-import static net.runelite.api.SpriteOverhead.DEAD_MAN_FIVE;
-import static net.runelite.api.SpriteOverhead.DEAD_MAN_FOUR;
-import static net.runelite.api.SpriteOverhead.DEAD_MAN_ONE;
-import static net.runelite.api.SpriteOverhead.DEAD_MAN_THREE;
-import static net.runelite.api.SpriteOverhead.DEAD_MAN_TWO;
-import static net.runelite.api.SpriteOverhead.SKULL;
-import static net.runelite.api.SpriteOverhead.SKULL_FIGHT_PIT;
+import net.runelite.api.OverheadPrayer;
+import static net.runelite.api.OverheadPrayer.MAGIC;
+import static net.runelite.api.OverheadPrayer.MELEE;
+import static net.runelite.api.OverheadPrayer.RANGED;
+import static net.runelite.api.OverheadPrayer.REDEMPTION;
+import static net.runelite.api.OverheadPrayer.RETRIBUTION;
+import static net.runelite.api.OverheadPrayer.SMITE;
+import net.runelite.api.OverheadSprite;
+import static net.runelite.api.OverheadSprite.DEAD_MAN_FIVE;
+import static net.runelite.api.OverheadSprite.DEAD_MAN_FOUR;
+import static net.runelite.api.OverheadSprite.DEAD_MAN_ONE;
+import static net.runelite.api.OverheadSprite.DEAD_MAN_THREE;
+import static net.runelite.api.OverheadSprite.DEAD_MAN_TWO;
+import static net.runelite.api.OverheadSprite.SKULL;
+import static net.runelite.api.OverheadSprite.SKULL_FIGHT_PIT;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -89,7 +89,7 @@ public abstract class RSPlayerMixin implements RSPlayer
 
 	@Inject
 	@Override
-	public PrayerOverhead getPrayerOverhead()
+	public OverheadPrayer getPrayerOverhead()
 	{
 		switch (getRsOverheadPrayer())
 		{
@@ -112,7 +112,7 @@ public abstract class RSPlayerMixin implements RSPlayer
 
 	@Inject
 	@Override
-	public SpriteOverhead getSpriteOverhead()
+	public OverheadSprite getSpriteOverhead()
 	{
 		switch (getRsOverheadSprite())
 		{
@@ -137,7 +137,8 @@ public abstract class RSPlayerMixin implements RSPlayer
 
 	@Inject
 	@Override
-	public boolean isSkulled() {
+	public boolean isSkulled()
+	{
 		return getRsOverheadSprite() == 0;
 	}
 

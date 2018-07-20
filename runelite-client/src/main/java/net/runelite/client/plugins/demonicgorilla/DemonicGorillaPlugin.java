@@ -38,7 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.PrayerOverhead;
+import net.runelite.api.OverheadPrayer;
 import net.runelite.api.Hitsplat;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
@@ -174,12 +174,12 @@ public class DemonicGorillaPlugin extends Plugin
 
 	private DemonicGorilla.AttackStyle getProtectedStyle(Player player)
 	{
-		PrayerOverhead prayerOverhead = player.getPrayerOverhead();
-		if (prayerOverhead == null)
+		OverheadPrayer overheadPrayer = player.getPrayerOverhead();
+		if (overheadPrayer == null)
 		{
 			return null;
 		}
-		switch (prayerOverhead)
+		switch (overheadPrayer)
 		{
 			case MELEE:
 				return DemonicGorilla.AttackStyle.MELEE;

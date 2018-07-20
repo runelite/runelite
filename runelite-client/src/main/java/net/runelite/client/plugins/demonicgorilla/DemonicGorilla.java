@@ -29,7 +29,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Actor;
-import net.runelite.api.PrayerOverhead;
+import net.runelite.api.OverheadPrayer;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.coords.WorldArea;
@@ -113,7 +113,7 @@ public class DemonicGorilla
 
 	@Getter
 	@Setter
-	private PrayerOverhead lastTickOverheadIcon;
+	private OverheadPrayer lastTickOverheadIcon;
 
 	@Getter
 	@Setter
@@ -128,7 +128,7 @@ public class DemonicGorilla
 		this.recentProjectileId = -1;
 	}
 
-	public PrayerOverhead getPrayerOverhead()
+	public OverheadPrayer getPrayerOverhead()
 	{
 		NPCComposition composition = this.npc.getComposition();
 		if (composition != null)

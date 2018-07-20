@@ -24,11 +24,11 @@
  */
 package net.runelite.mixins;
 
-import net.runelite.api.PrayerOverhead;
-import static net.runelite.api.PrayerOverhead.MAGIC;
-import static net.runelite.api.PrayerOverhead.MELEE;
-import static net.runelite.api.PrayerOverhead.RANGED;
-import static net.runelite.api.PrayerOverhead.RANGE_MAGE;
+import net.runelite.api.OverheadPrayer;
+import static net.runelite.api.OverheadPrayer.MAGIC;
+import static net.runelite.api.OverheadPrayer.MELEE;
+import static net.runelite.api.OverheadPrayer.RANGED;
+import static net.runelite.api.OverheadPrayer.RANGE_MAGE;
 import net.runelite.api.events.NpcActionChanged;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
@@ -45,7 +45,7 @@ public abstract class RSNpcCompositionMixin implements RSNPCComposition
 
 	@Inject
 	@Override
-	public PrayerOverhead getPrayerOverhead()
+	public OverheadPrayer getPrayerOverhead()
 	{
 		switch (getRsOverheadPrayer())
 		{

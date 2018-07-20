@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Infinitay <https://github.com/Infinitay>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package net.runelite.api;
 
 /**
- * An enumeration of prayer icons above the head.
+ * An enumeration of sprites above the head.
  */
-public enum PrayerOverhead
+public enum OverheadSprite
 {
 	/**
-	 * Protect from melee.
+	 * White skull from PVP world or wilderness
 	 */
-	MELEE,
+	SKULL,
 	/**
-	 * Protect from ranged.
+	 * Red skull from Tzhaar Fight Pits
 	 */
-	RANGED,
+	SKULL_FIGHT_PIT,
 	/**
-	 * Protect from magic.
+	 * Deadman mode sprite carrying one key
 	 */
-	MAGIC,
+	DEAD_MAN_ONE,
 	/**
-	 * Retribution prayer.
+	 * Deadman mode sprite carrying two keys
 	 */
-	RETRIBUTION,
+	DEAD_MAN_TWO,
 	/**
-	 * Smite prayer.
+	 * Deadman mode sprite carrying three keys
 	 */
-	SMITE,
+	DEAD_MAN_THREE,
 	/**
-	 * Redemption prayer.
+	 * Deadman mode sprite carrying four keys
 	 */
-	REDEMPTION,
+	DEAD_MAN_FOUR,
 	/**
-	 * Protect from range and mage (ie. used by Kalphite Queen).
+	 * Deadman mode sprite carrying five keys
 	 */
-	RANGE_MAGE
+	DEAD_MAN_FIVE,
 }
