@@ -58,6 +58,4 @@ public enum SpriteOverhead
 	 * Deadman mode sprite carrying five keys
 	 */
 	DEAD_MAN_FIVE,
-
-
 }

@@ -38,7 +38,13 @@ import static net.runelite.api.PrayerOverhead.REDEMPTION;
 import static net.runelite.api.PrayerOverhead.RETRIBUTION;
 import static net.runelite.api.PrayerOverhead.SMITE;
 import net.runelite.api.SpriteOverhead;
-import static net.runelite.api.SpriteOverhead.*;
+import static net.runelite.api.SpriteOverhead.DEAD_MAN_FIVE;
+import static net.runelite.api.SpriteOverhead.DEAD_MAN_FOUR;
+import static net.runelite.api.SpriteOverhead.DEAD_MAN_ONE;
+import static net.runelite.api.SpriteOverhead.DEAD_MAN_THREE;
+import static net.runelite.api.SpriteOverhead.DEAD_MAN_TWO;
+import static net.runelite.api.SpriteOverhead.SKULL;
+import static net.runelite.api.SpriteOverhead.SKULL_FIGHT_PIT;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -178,13 +184,13 @@ public abstract class RSPlayerMixin implements RSPlayer
 				-vz.getY());
 
 			int xx[] =
-				{
-					x.getX(), y.getX(), z.getX()
-				};
+			{
+				x.getX(), y.getX(), z.getX()
+			};
 			int yy[] =
-				{
-					x.getY(), y.getY(), z.getY()
-				};
+			{
+				x.getY(), y.getY(), z.getY()
+			};
 			polys.add(new Polygon(xx, yy, 3));
 		}
 
