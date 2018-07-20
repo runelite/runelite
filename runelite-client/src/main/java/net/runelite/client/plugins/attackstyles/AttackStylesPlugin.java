@@ -201,10 +201,7 @@ public class AttackStylesPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick e)
 	{
-		// Utilizes GameTicks, seeing as variables are set PRIOR to a GameTick actually being ran.
-		// The messages are guarded by this tick-set, therefore, the messages aren't spammed upon
-		// variable setting and then once all variables are set, this code block runs and sends
-		// the corresponding login message(s).
+		// One tick delay to ensure vars are set
 		if (messageTickGuarded)
 		{
 			messageTickGuarded = false;
@@ -327,16 +324,16 @@ public class AttackStylesPlugin extends Plugin
 						{
 							if (weaponSwitch)
 							{
-								sendChatMessage("This weapon's attack style will grant you " + returnAttackColor(skill) + " XP.");
+								sendChatMessage("This weapon's attack style will grant you " + getAttackColor(skill) + " XP.");
 							}
 							else
 							{
-								sendChatMessage("This attack style will grant you " + returnAttackColor(skill) + " XP.");
+								sendChatMessage("This attack style will grant you " + getAttackColor(skill) + " XP.");
 							}
 						}
 						else
 						{
-							sendChatMessage("You logged in wielding a weapon that will grant you " + returnAttackColor(skill) + " XP.");
+							sendChatMessage("You logged in wielding a weapon that will grant you " + getAttackColor(skill) + " XP.");
 						}
 					}
 					warnedSkillSelected = true;
@@ -434,21 +431,21 @@ public class AttackStylesPlugin extends Plugin
 		}
 	}
 
-	private String returnAttackColor(Skill skill)
+	private String getAttackColor(Skill skill)
 	{
-		String color = "<col=ff0000>" + skill + "</col>";
+		String color = "<col=ff0000>";
 		switch (skill)
 		{
 			case ATTACK:
 			case STRENGTH:
 			case DEFENCE:
-				return color = "<col=D44A4A>" + skill + "</col>";
+				color = "<col=D44A4A>";
 			case RANGED:
-				return color = "<col=259443>" + skill + "</col>";
+				color = "<col=259443>";
 			case MAGIC:
-				return color = "<col=369EB3>" + skill + "</col>";
+				color = "<col=369EB3>";
 		}
-		return color;
+		return color  + skill + "</col>";
 	}
 
 	@VisibleForTesting
