@@ -27,6 +27,7 @@ package net.runelite.client.plugins.timers;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
@@ -100,6 +101,16 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 public class TimersPlugin extends Plugin
 {
 	private static final int ABYSSAL_SIRE_STUNNED_NPC_ID = NpcID.ABYSSAL_SIRE_5887;
+
+	private static final int[] ABYSSAL_SIRE_NOT_STUNNED_NPC_IDS = new int[]
+	{
+		NpcID.ABYSSAL_SIRE,
+		NpcID.ABYSSAL_SIRE_5888,
+		NpcID.ABYSSAL_SIRE_5889,
+		NpcID.ABYSSAL_SIRE_5890,
+		NpcID.ABYSSAL_SIRE_5891,
+		NpcID.ABYSSAL_SIRE_5908
+	};
 
 	private int lastRaidVarb;
 
@@ -468,14 +479,15 @@ public class TimersPlugin extends Plugin
 		Actor actor = event.getActor();
 
 		if (config.showAbyssalSireStun()
-			&& actor instanceof NPC
-			&& "Abyssal Sire".equals(actor.getName()))
+			&& actor instanceof NPC)
 		{
-			if (((NPC)actor).getId() == ABYSSAL_SIRE_STUNNED_NPC_ID)
+			final int npcId = ((NPC)actor).getId();
+
+			if (npcId == ABYSSAL_SIRE_STUNNED_NPC_ID)
 			{
 				createGameTimer(ABYSSAL_SIRE_STUN);
 			}
-			else
+			else if (Arrays.stream(ABYSSAL_SIRE_NOT_STUNNED_NPC_IDS).anyMatch(id -> id == npcId))
 			{
 				removeGameTimer(ABYSSAL_SIRE_STUN);
 			}
