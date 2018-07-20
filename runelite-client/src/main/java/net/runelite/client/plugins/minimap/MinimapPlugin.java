@@ -125,7 +125,14 @@ public class MinimapPlugin extends Plugin
 
 		if (resizableNormalWidget != null && !resizableNormalWidget.isSelfHidden())
 		{
-			resizableNormalWidget.setHidden(enable);
+			for (Widget widget : resizableNormalWidget.getStaticChildren())
+			{
+				if (widget.getId() != WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_LOGOUT_BUTTON.getId() &&
+					widget.getId() != WidgetInfo.RESIZABLE_MINIMAP_LOGOUT_BUTTON.getId())
+				{
+					widget.setHidden(enable);
+				}
+			}
 		}
 	}
 

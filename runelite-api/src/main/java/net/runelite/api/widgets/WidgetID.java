@@ -246,6 +246,7 @@ public class WidgetID
 		static final int MINIMAP_RESIZABLE_DRAW_AREA = 25;
 		static final int MINIMAP_RESIZABLE_DECORATIONS = 27;
 		static final int MINIMAP_RESIZABLE_ORB_HOLDER = 28;
+		static final int MINIMAP_RESIZABLE_LOGOUT_BUTTON = 30;
 		static final int FIXED_VIEWPORT = 17;
 		static final int RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX = 12;
 		static final int RESIZABLE_VIEWPORT_BOTTOM_LINE = 12;
