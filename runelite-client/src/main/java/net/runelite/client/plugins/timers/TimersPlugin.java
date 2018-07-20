@@ -103,8 +103,6 @@ public class TimersPlugin extends Plugin
 
 	private int lastRaidVarb;
 
-	private boolean abyssalSireStunTimerShown;
-
 	@Inject
 	private ItemManager itemManager;
 
@@ -469,31 +467,30 @@ public class TimersPlugin extends Plugin
 	{
 		Actor actor = event.getActor();
 
-		if (config.showVengeanceOther()
-			&& actor == client.getLocalPlayer()
-			&& actor.getAnimation() == AnimationID.ENERGY_TRANSFER_VENGEANCE_OTHER
-			&& actor.getInteracting().getGraphic() == VENGEANCEOTHER.getGraphicId())
-		{
-			createGameTimer(VENGEANCEOTHER);
-		}
-
-		String actorName = actor.getName();
-
 		if (config.showAbyssalSireStun()
 			&& actor instanceof NPC
-			&& actorName != null
-			&& actorName.equals("Abyssal Sire"))
+			&& "Abyssal Sire".equals(actor.getName()))
 		{
 			if (((NPC)actor).getId() == ABYSSAL_SIRE_STUNNED_NPC_ID)
 			{
 				createGameTimer(ABYSSAL_SIRE_STUN);
-				abyssalSireStunTimerShown = true;
 			}
-			else if (abyssalSireStunTimerShown)
+			else
 			{
 				removeGameTimer(ABYSSAL_SIRE_STUN);
-				abyssalSireStunTimerShown = false;
 			}
+		}
+
+		if (actor != client.getLocalPlayer())
+		{
+			return;
+		}
+
+		if (config.showVengeanceOther()
+			&& actor.getAnimation() == AnimationID.ENERGY_TRANSFER_VENGEANCE_OTHER
+			&& actor.getInteracting().getGraphic() == VENGEANCEOTHER.getGraphicId())
+		{
+			createGameTimer(VENGEANCEOTHER);
 		}
 	}
 
