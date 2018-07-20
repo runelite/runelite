@@ -54,6 +54,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.timers.GameTimer.ABYSSAL_SIRE_STUN;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUS;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUSPLUS;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIFIRE;
@@ -94,11 +95,15 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 @PluginDescriptor(
 	name = "Timers",
 	description = "Show various timers in an infobox",
-	tags = {"combat", "items", "magic", "potions", "prayer", "overlay"}
+	tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire"}
 )
 public class TimersPlugin extends Plugin
 {
+	private static final int ABYSSAL_SIRE_STUNNED_NPC_ID = NpcID.ABYSSAL_SIRE_5887;
+
 	private int lastRaidVarb;
+
+	private boolean abyssalSireStunTimerShown;
 
 	@Inject
 	private ItemManager itemManager;
@@ -464,16 +469,31 @@ public class TimersPlugin extends Plugin
 	{
 		Actor actor = event.getActor();
 
-		if (actor != client.getLocalPlayer())
-		{
-			return;
-		}
-
 		if (config.showVengeanceOther()
+			&& actor == client.getLocalPlayer()
 			&& actor.getAnimation() == AnimationID.ENERGY_TRANSFER_VENGEANCE_OTHER
 			&& actor.getInteracting().getGraphic() == VENGEANCEOTHER.getGraphicId())
 		{
 			createGameTimer(VENGEANCEOTHER);
+		}
+
+		String actorName = actor.getName();
+
+		if (config.showAbyssalSireStun()
+			&& actor instanceof NPC
+			&& actorName != null
+			&& actorName.equals("Abyssal Sire"))
+		{
+			if (((NPC)actor).getId() == ABYSSAL_SIRE_STUNNED_NPC_ID)
+			{
+				createGameTimer(ABYSSAL_SIRE_STUN);
+				abyssalSireStunTimerShown = true;
+			}
+			else if (abyssalSireStunTimerShown)
+			{
+				removeGameTimer(ABYSSAL_SIRE_STUN);
+				abyssalSireStunTimerShown = false;
+			}
 		}
 	}
 
