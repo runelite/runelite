@@ -39,30 +39,6 @@ public enum SpriteOverhead
 	 */
 	SKULL_FIGHT_PIT,
 	/**
-	 * No target bounty hunter sprite
-	 */
-	BOUNTY_HUNTER_NO_TARGET,
-	/**
-	 * Bounty hunter target has very low wealth
-	 */
-	BOUNTY_HUNTER_VERY_LOW,
-	/**
-	 * Bounty hunter target has low wealth
-	 */
-	BOUNTY_HUNTER_LOW,
-	/**
-	 * Bounty hunter target has medium wealth
-	 */
-	BOUNTY_HUNTER_MEDIUM,
-	/**
-	 * Bounty hunter target has high wealth
-	 */
-	BOUNTY_HUNTER_HIGH,
-	/**
-	 * Bounty hunter target has very high wealth
-	 */
-	BOUNTY_HUNTER_VERY_HIGH,
-	/**
 	 * Deadman mode sprite carrying one key
 	 */
 	DEAD_MAN_ONE,

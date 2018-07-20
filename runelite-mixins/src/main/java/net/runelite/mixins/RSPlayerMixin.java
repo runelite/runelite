@@ -38,6 +38,7 @@ import static net.runelite.api.PrayerOverhead.REDEMPTION;
 import static net.runelite.api.PrayerOverhead.RETRIBUTION;
 import static net.runelite.api.PrayerOverhead.SMITE;
 import net.runelite.api.SpriteOverhead;
+import static net.runelite.api.SpriteOverhead.*;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -110,31 +111,19 @@ public abstract class RSPlayerMixin implements RSPlayer
 		switch (getRsOverheadSprite())
 		{
 			case 0:
-				return SpriteOverhead.SKULL;
+				return SKULL;
 			case 1:
-				return SpriteOverhead.SKULL_FIGHT_PIT;
-			case 2:
-				return SpriteOverhead.BOUNTY_HUNTER_VERY_HIGH;
-			case 3:
-				return SpriteOverhead.BOUNTY_HUNTER_HIGH;
-			case 4:
-				return SpriteOverhead.BOUNTY_HUNTER_MEDIUM;
-			case 5:
-				return SpriteOverhead.BOUNTY_HUNTER_LOW;
-			case 6:
-				return SpriteOverhead.BOUNTY_HUNTER_NO_TARGET;
-			case 7:
-				return SpriteOverhead.BOUNTY_HUNTER_VERY_LOW;
+				return SKULL_FIGHT_PIT;
 			case 8:
-				return SpriteOverhead.DEAD_MAN_FIVE;
+				return DEAD_MAN_FIVE;
 			case 9:
-				return SpriteOverhead.DEAD_MAN_FOUR;
+				return DEAD_MAN_FOUR;
 			case 10:
-				return SpriteOverhead.DEAD_MAN_THREE;
+				return DEAD_MAN_THREE;
 			case 11:
-				return SpriteOverhead.DEAD_MAN_TWO;
+				return DEAD_MAN_TWO;
 			case 12:
-				return SpriteOverhead.DEAD_MAN_ONE;
+				return DEAD_MAN_ONE;
 			default:
 				return null;
 		}
