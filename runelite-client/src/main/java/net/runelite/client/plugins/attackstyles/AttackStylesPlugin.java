@@ -445,7 +445,7 @@ public class AttackStylesPlugin extends Plugin
 			case MAGIC:
 				color = "<col=369EB3>";
 		}
-		return color  + skill + "</col>";
+		return color + skill + "</col>";
 	}
 
 	@VisibleForTesting
