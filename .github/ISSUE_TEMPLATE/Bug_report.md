@@ -1,37 +1,32 @@
 ---
-name: "\U0001F41BBug report"
-about: "If something isn't working as expected \U0001F914."
+name: "\U0001F41B Bug report"
+about: Create a report to help us improve
 
 ---
-Please check if your issue is not a duplicate by [searching existing issues](https://github.com/runelite/runelite/issues)
 
-| Question    | Answer
-| ------------| ---------------
-| Java Version | x.y.z
-| Operating System | e.g. Ubuntu/Windows/MacOS
+Please check if your issue is not a duplicate by [searching existing issues](https://github.com/runelite/runelite/search?type=Issues)
 
+**Describe the bug**
+A clear and concise description of what the bug is.
 
-<!--
-- Replace this comment with your issue description.
+**To Reproduce**
+Steps to reproduce the behavior:
+1. Go to '...'
+2. Click on '....'
+3. Scroll down to '....'
+4. See error
 
-- Please complete the above table with a correct information.
+**Expected behavior**
+A clear and concise description of what you expected to happen.
 
-- Please include steps to reproduce your issue.
+**Screenshots**
+If applicable, add screenshots to help explain your problem.
 
-- For general support, please use our Discord server: https://discord.gg/mePCs8U
--->
+**Environment (please complete the following information):**
+ - OS: [e.g. Windows, Ubuntu, macOS]
+ - RuneLite version: [e.g 1.4.6]
+ - Launcher version: [e.g 1.5.2]
 
-<!--
-- Please past your full stack trace below, if applicable 
-
-- Your client logs can usually be found in:
-- Windows: C:\Users\<your_user_name>\.runelite\logs
-- Osx/Linux: ~/.runelite/logs
--->
-<details>
- <summary>stack trace</summary>
- 
- ```
-  %paste your stack trace here%
- ```
-</details>
+**Additional context**
+Add any other context about the problem here, e.g. logs. Your client logs can usually be found in
+`C:\Users\<your_user_name>\.runelite\logs` on Windows and `~/.runelite/logs` on Linux and macOS.
