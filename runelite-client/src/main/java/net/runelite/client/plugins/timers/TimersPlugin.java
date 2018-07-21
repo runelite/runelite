@@ -99,15 +99,6 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 )
 public class TimersPlugin extends Plugin
 {
-	private static final int ABYSSAL_SIRE_STUNNED_NPC_ID = NpcID.ABYSSAL_SIRE_5887;
-
-	private static final int ABYSSAL_SIRE_NOT_STUNNED_NPC_ID_1 = NpcID.ABYSSAL_SIRE;
-	private static final int ABYSSAL_SIRE_NOT_STUNNED_NPC_ID_2 = NpcID.ABYSSAL_SIRE_5888;
-	private static final int ABYSSAL_SIRE_NOT_STUNNED_NPC_ID_3 = NpcID.ABYSSAL_SIRE_5889;
-	private static final int ABYSSAL_SIRE_NOT_STUNNED_NPC_ID_4 = NpcID.ABYSSAL_SIRE_5890;
-	private static final int ABYSSAL_SIRE_NOT_STUNNED_NPC_ID_5 = NpcID.ABYSSAL_SIRE_5891;
-	private static final int ABYSSAL_SIRE_NOT_STUNNED_NPC_ID_6 = NpcID.ABYSSAL_SIRE_5908;
-
 	private int lastRaidVarb;
 
 	@Inject
@@ -482,19 +473,19 @@ public class TimersPlugin extends Plugin
 			switch (npcId)
 			{
 				// Show the countdown when the Sire enters the stunned state.
-				case ABYSSAL_SIRE_STUNNED_NPC_ID:
+				case NpcID.ABYSSAL_SIRE_5887:
 					createGameTimer(ABYSSAL_SIRE_STUN);
 					break;
 
 				// Hide the countdown if the Sire isn't in the stunned state.
 				// This is necessary because the Sire leaves the stunned
 				// state early once all all four respiratory systems are killed.
-				case ABYSSAL_SIRE_NOT_STUNNED_NPC_ID_1:
-				case ABYSSAL_SIRE_NOT_STUNNED_NPC_ID_2:
-				case ABYSSAL_SIRE_NOT_STUNNED_NPC_ID_3:
-				case ABYSSAL_SIRE_NOT_STUNNED_NPC_ID_4:
-				case ABYSSAL_SIRE_NOT_STUNNED_NPC_ID_5:
-				case ABYSSAL_SIRE_NOT_STUNNED_NPC_ID_6:
+				case NpcID.ABYSSAL_SIRE:
+				case NpcID.ABYSSAL_SIRE_5888:
+				case NpcID.ABYSSAL_SIRE_5889:
+				case NpcID.ABYSSAL_SIRE_5890:
+				case NpcID.ABYSSAL_SIRE_5891:
+				case NpcID.ABYSSAL_SIRE_5908:
 					removeGameTimer(ABYSSAL_SIRE_STUN);
 					break;
 			}
