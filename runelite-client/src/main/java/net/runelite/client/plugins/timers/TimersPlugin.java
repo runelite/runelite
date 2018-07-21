@@ -27,7 +27,6 @@ package net.runelite.client.plugins.timers;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
@@ -102,15 +101,12 @@ public class TimersPlugin extends Plugin
 {
 	private static final int ABYSSAL_SIRE_STUNNED_NPC_ID = NpcID.ABYSSAL_SIRE_5887;
 
-	private static final int[] ABYSSAL_SIRE_NOT_STUNNED_NPC_IDS = new int[]
-	{
-		NpcID.ABYSSAL_SIRE,
-		NpcID.ABYSSAL_SIRE_5888,
-		NpcID.ABYSSAL_SIRE_5889,
-		NpcID.ABYSSAL_SIRE_5890,
-		NpcID.ABYSSAL_SIRE_5891,
-		NpcID.ABYSSAL_SIRE_5908
-	};
+	private static final int ABYSSAL_SIRE_NOT_STUNNED_NPC_ID_1 = NpcID.ABYSSAL_SIRE;
+	private static final int ABYSSAL_SIRE_NOT_STUNNED_NPC_ID_2 = NpcID.ABYSSAL_SIRE_5888;
+	private static final int ABYSSAL_SIRE_NOT_STUNNED_NPC_ID_3 = NpcID.ABYSSAL_SIRE_5889;
+	private static final int ABYSSAL_SIRE_NOT_STUNNED_NPC_ID_4 = NpcID.ABYSSAL_SIRE_5890;
+	private static final int ABYSSAL_SIRE_NOT_STUNNED_NPC_ID_5 = NpcID.ABYSSAL_SIRE_5891;
+	private static final int ABYSSAL_SIRE_NOT_STUNNED_NPC_ID_6 = NpcID.ABYSSAL_SIRE_5908;
 
 	private int lastRaidVarb;
 
@@ -481,15 +477,26 @@ public class TimersPlugin extends Plugin
 		if (config.showAbyssalSireStun()
 			&& actor instanceof NPC)
 		{
-			final int npcId = ((NPC)actor).getId();
+			int npcId = ((NPC)actor).getId();
 
-			if (npcId == ABYSSAL_SIRE_STUNNED_NPC_ID)
+			switch (npcId)
 			{
-				createGameTimer(ABYSSAL_SIRE_STUN);
-			}
-			else if (Arrays.stream(ABYSSAL_SIRE_NOT_STUNNED_NPC_IDS).anyMatch(id -> id == npcId))
-			{
-				removeGameTimer(ABYSSAL_SIRE_STUN);
+				// Show the countdown when the Sire enters the stunned state.
+				case ABYSSAL_SIRE_STUNNED_NPC_ID:
+					createGameTimer(ABYSSAL_SIRE_STUN);
+					break;
+
+				// Hide the countdown if the Sire isn't in the stunned state.
+				// This is necessary because the Sire leaves the stunned
+				// state early once all all four respiratory systems are killed.
+				case ABYSSAL_SIRE_NOT_STUNNED_NPC_ID_1:
+				case ABYSSAL_SIRE_NOT_STUNNED_NPC_ID_2:
+				case ABYSSAL_SIRE_NOT_STUNNED_NPC_ID_3:
+				case ABYSSAL_SIRE_NOT_STUNNED_NPC_ID_4:
+				case ABYSSAL_SIRE_NOT_STUNNED_NPC_ID_5:
+				case ABYSSAL_SIRE_NOT_STUNNED_NPC_ID_6:
+					removeGameTimer(ABYSSAL_SIRE_STUN);
+					break;
 			}
 		}
 
