@@ -34,7 +34,7 @@ public interface PrayerConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "prayerFlickLocation",
-		name = "Prayer flick location",
+		name = "Pray flick location",
 		description = "Choose where to display the prayer flick helper"
 	)
 	default PrayerFlickLocation prayerFlickLocation()
