@@ -35,27 +35,31 @@ import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
-import net.runelite.api.Region;
+import net.runelite.api.Item;
+import net.runelite.api.Node;
+import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GroundObjectSpawned;
+import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.WallObjectSpawned;
 
 @Singleton
-public class RegionTileManager
+public class SceneTileManager
 {
 	private final EventBus eventBus = new EventBus();
 	private final Provider<Client> clientProvider;
 
 	@Inject
-	public RegionTileManager(Provider<Client> clientProvider)
+	public SceneTileManager(Provider<Client> clientProvider)
 	{
 		this.clientProvider = clientProvider;
 	}
 
 	/**
-	 * Iterates over each tile in current region if player is logged in
+	 * Iterates over each tile in the scene if player is logged in
+	 *
 	 * @param consumer consumer accepting tile as parameter
 	 */
 	public void forEachTile(Consumer<Tile> consumer)
@@ -67,14 +71,14 @@ public class RegionTileManager
 			return;
 		}
 
-		final Region region = client.getRegion();
-		final Tile[][][] tiles = region.getTiles();
+		final Scene scene = client.getScene();
+		final Tile[][][] tiles = scene.getTiles();
 
 		for (int z = 0; z < Constants.MAX_Z; ++z)
 		{
-			for (int x = 0; x < Constants.REGION_SIZE; ++x)
+			for (int x = 0; x < Constants.SCENE_SIZE; ++x)
 			{
-				for (int y = 0; y < Constants.REGION_SIZE; ++y)
+				for (int y = 0; y < Constants.SCENE_SIZE; ++y)
 				{
 					Tile tile = tiles[z][x][y];
 
@@ -91,6 +95,7 @@ public class RegionTileManager
 
 	/**
 	 * Simulate object spawns for EventBus subscriber
+	 *
 	 * @param subscriber EventBus subscriber
 	 */
 	public void simulateObjectSpawns(Object subscriber)
@@ -132,6 +137,21 @@ public class RegionTileManager
 					objectSpawned.setGameObject(object);
 					eventBus.post(objectSpawned);
 				});
+
+			Optional.ofNullable(tile.getItemLayer()).ifPresent(itemLayer ->
+			{
+				Node current = itemLayer.getBottom();
+
+				while (current instanceof Item)
+				{
+					final Item item = (Item) current;
+
+					current = current.getNext();
+
+					final ItemSpawned itemSpawned = new ItemSpawned(tile, item);
+					eventBus.post(itemSpawned);
+				}
+			});
 		});
 
 		eventBus.unregister(subscriber);

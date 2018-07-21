@@ -42,8 +42,13 @@ import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.SetMessage;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.AccountType;
+import net.runelite.api.widgets.Widget;
+import static net.runelite.api.widgets.WidgetID.KILL_LOGS_GROUP_ID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -83,6 +88,8 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private final KillCountClient killCountClient = new KillCountClient();
+
+	private boolean logKills;
 
 	@Inject
 	private Client client;
@@ -160,6 +167,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		switch (setMessage.getType())
 		{
 			case PUBLIC:
+			case PUBLIC_MOD:
 			case CLANCHAT:
 			case PRIVATE_MESSAGE_RECEIVED:
 			case PRIVATE_MESSAGE_SENT:
@@ -257,6 +265,56 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 
 			setKc("Barrows", kc);
 		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (!logKills)
+		{
+			return;
+		}
+
+		logKills = false;
+
+		Widget title = client.getWidget(WidgetInfo.KILL_LOG_TITLE);
+		Widget bossMonster = client.getWidget(WidgetInfo.KILL_LOG_MONSTER);
+		Widget bossKills = client.getWidget(WidgetInfo.KILL_LOG_KILLS);
+
+		if (title == null || bossMonster == null || bossKills == null
+			|| !"Boss Kill Log".equals(title.getText()))
+		{
+			return;
+		}
+
+		Widget[] bossChildren = bossMonster.getChildren();
+		Widget[] killsChildren = bossKills.getChildren();
+
+		for (int i = 0; i < bossChildren.length; ++i)
+		{
+			Widget boss = bossChildren[i];
+			Widget kill = killsChildren[i];
+
+			String bossName = boss.getText();
+			int kc = Integer.parseInt(kill.getText().replace(",", ""));
+			if (kc != getKc(bossName))
+			{
+				setKc(bossName, kc);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded widget)
+	{
+		// don't load kc if in an instance, if the player is in another players poh
+		// and reading their boss log
+		if (widget.getGroupId() != KILL_LOGS_GROUP_ID || client.isInInstancedRegion())
+		{
+			return;
+		}
+
+		logKills = true;
 	}
 
 	@Override
@@ -695,8 +753,14 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			case "vetion":
 				return "Vet'ion";
 
+			case "vene":
+				return "Venenatis";
+
 			case "kbd":
 				return "King Black Dragon";
+
+			case "vork":
+				return "Vorkath";
 
 			case "sire":
 				return "Abyssal Sire";
@@ -704,6 +768,9 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			case "smoke devil":
 			case "thermy":
 				return "Thermonuclear Smoke Devil";
+
+			case "cerb":
+				return "Cerberus";
 
 			case "zuk":
 			case "inferno":
@@ -713,6 +780,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			case "sara":
 			case "saradomin":
 			case "zilyana":
+			case "zily":
 				return "Commander Zilyana";
 			case "zammy":
 			case "zamorak":

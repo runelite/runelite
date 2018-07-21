@@ -62,6 +62,7 @@ public class ScreenshotPluginTest
 	private static final String CLUE_SCROLL = "<col=3300ff>You have completed 28 medium Treasure Trails</col>";
 	private static final String BARROWS_CHEST = "Your Barrows chest count is <col=ff0000>310</col>";
 	private static final String CHAMBERS_OF_XERIC_CHEST = "Your completed Chambers of Xeric count is: <col=ff0000>489</col>.";
+	private static final String THEATRE_OF_BLOOD_CHEST = "Your completed Theatre of Blood count is: <col=ff0000>73</col>.";
 
 	@Mock
 	@Bind
@@ -131,6 +132,15 @@ public class ScreenshotPluginTest
 	}
 
 	@Test
+	public void testTheatreOfBloodChest()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Magic fTail", THEATRE_OF_BLOOD_CHEST, null);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals(73, screenshotPlugin.gettheatreOfBloodNumber());
+	}
+
+	@Test
 	public void testHitpointsLevel99()
 	{
 		Widget widget = mock(Widget.class);
@@ -145,7 +155,7 @@ public class ScreenshotPluginTest
 
 		WidgetLoaded event = new WidgetLoaded();
 		event.setGroupId(LEVEL_UP_GROUP_ID);
-		screenshotPlugin.loadWidgets(event);
+		screenshotPlugin.onWidgetLoaded(event);
 
 		GameTick tick = new GameTick();
 		screenshotPlugin.onGameTick(tick);
@@ -168,7 +178,7 @@ public class ScreenshotPluginTest
 
 		WidgetLoaded event = new WidgetLoaded();
 		event.setGroupId(LEVEL_UP_GROUP_ID);
-		screenshotPlugin.loadWidgets(event);
+		screenshotPlugin.onWidgetLoaded(event);
 
 		GameTick tick = new GameTick();
 		screenshotPlugin.onGameTick(tick);
@@ -191,7 +201,7 @@ public class ScreenshotPluginTest
 
 		WidgetLoaded event = new WidgetLoaded();
 		event.setGroupId(LEVEL_UP_GROUP_ID);
-		screenshotPlugin.loadWidgets(event);
+		screenshotPlugin.onWidgetLoaded(event);
 
 		GameTick tick = new GameTick();
 		screenshotPlugin.onGameTick(tick);
@@ -214,7 +224,7 @@ public class ScreenshotPluginTest
 
 		WidgetLoaded event = new WidgetLoaded();
 		event.setGroupId(DIALOG_SPRITE_GROUP_ID);
-		screenshotPlugin.loadWidgets(event);
+		screenshotPlugin.onWidgetLoaded(event);
 
 		GameTick tick = new GameTick();
 		screenshotPlugin.onGameTick(tick);

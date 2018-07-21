@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,14 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.modelviewer;
+package net.runelite.client.plugins.fairyring;
 
-import lombok.Value;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@Value
-public class LocationKey
+@ConfigGroup("fairyrings")
+public interface FairyRingConfig extends Config
 {
-	private final int id;
-	private final int type;
-	private final int orientation;
+	@ConfigItem(
+		keyName = "autoOpen",
+		name = "Open search automatically",
+		description = "Open the search widget every time you enter a fairy ring"
+	)
+	default boolean autoOpen()
+	{
+		return true;
+	}
 }

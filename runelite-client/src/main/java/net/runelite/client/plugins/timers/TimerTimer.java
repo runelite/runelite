@@ -24,18 +24,19 @@
  */
 package net.runelite.client.plugins.timers;
 
+import java.awt.image.BufferedImage;
 import java.time.temporal.ChronoUnit;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
 import net.runelite.client.ui.overlay.infobox.Timer;
 
-public class TimerTimer extends Timer
+class TimerTimer extends Timer
 {
 	private final GameTimer timer;
 
-	public TimerTimer(GameTimer timer, Plugin plugin)
+	TimerTimer(GameTimer timer, Plugin plugin, BufferedImage image)
 	{
-		super(timer.getDuration().toMillis(), ChronoUnit.MILLIS, timer.getImage(), plugin);
+		super(timer.getDuration().toMillis(), ChronoUnit.MILLIS, image, plugin);
 		this.timer = timer;
 		setPriority(InfoBoxPriority.MED);
 	}

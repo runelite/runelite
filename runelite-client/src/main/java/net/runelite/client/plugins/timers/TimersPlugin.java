@@ -26,6 +26,7 @@ package net.runelite.client.plugins.timers;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
@@ -36,6 +37,8 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import net.runelite.api.Prayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.AnimationChanged;
@@ -44,8 +47,11 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUS;
@@ -93,6 +99,12 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 public class TimersPlugin extends Plugin
 {
 	private int lastRaidVarb;
+
+	@Inject
+	private ItemManager itemManager;
+
+	@Inject
+	private SpriteManager spriteManager;
 
 	@Inject
 	private Client client;
@@ -587,16 +599,35 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	public void createGameTimer(GameTimer timer)
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned npcDespawned)
+	{
+		NPC npc = npcDespawned.getNpc();
+
+		if (!npc.isDead())
+		{
+			return;
+		}
+
+		int npcId = npc.getId();
+
+		if (npcId == NpcID.ZOMBIFIED_SPAWN || npcId == NpcID.ZOMBIFIED_SPAWN_8063)
+		{
+			removeGameTimer(ICEBARRAGE);
+		}
+	}
+
+	private void createGameTimer(GameTimer timer)
 	{
 		removeGameTimer(timer);
 
-		TimerTimer t = new TimerTimer(timer, this);
+		BufferedImage image = timer.getImage(itemManager, spriteManager);
+		TimerTimer t = new TimerTimer(timer, this, image);
 		t.setTooltip(timer.getDescription());
 		infoBoxManager.addInfoBox(t);
 	}
 
-	public void removeGameTimer(GameTimer timer)
+	private void removeGameTimer(GameTimer timer)
 	{
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer);
 	}

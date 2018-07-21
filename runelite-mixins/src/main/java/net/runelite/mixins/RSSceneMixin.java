@@ -36,33 +36,33 @@ import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSDecorativeObject;
 import net.runelite.rs.api.RSGroundObject;
 import net.runelite.rs.api.RSItemLayer;
-import net.runelite.rs.api.RSRegion;
+import net.runelite.rs.api.RSScene;
 import net.runelite.rs.api.RSWallObject;
 
-@Mixin(RSRegion.class)
-public abstract class RSRegionMixin implements RSRegion
+@Mixin(RSScene.class)
+public abstract class RSSceneMixin implements RSScene
 {
 	@Shadow("clientInstance")
 	private static RSClient client;
 
 	@Inject
-	static boolean isDrawingRegion;
+	static boolean isDrawingScene;
 
-	@Copy("drawRegion")
-	abstract void rs$drawRegion(int cameraX, int cameraY, int cameraZ, int cameraPitch, int cameraYaw, int plane);
+	@Copy("drawScene")
+	abstract void rs$drawScene(int cameraX, int cameraY, int cameraZ, int cameraPitch, int cameraYaw, int plane);
 
-	@Replace("drawRegion")
-	void rl$drawRegion(int cameraX, int cameraY, int cameraZ, int cameraPitch, int cameraYaw, int plane)
+	@Replace("drawScene")
+	void rl$drawScene(int cameraX, int cameraY, int cameraZ, int cameraPitch, int cameraYaw, int plane)
 	{
 		try
 		{
-			isDrawingRegion = true;
-			rs$drawRegion(cameraX, cameraY, cameraZ, cameraPitch, cameraYaw, plane);
-			client.getCallbacks().drawRegion();
+			isDrawingScene = true;
+			rs$drawScene(cameraX, cameraY, cameraZ, cameraPitch, cameraYaw, plane);
+			client.getCallbacks().drawScene();
 		}
 		finally
 		{
-			isDrawingRegion = false;
+			isDrawingScene = false;
 		}
 	}
 

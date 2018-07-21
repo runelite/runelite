@@ -57,9 +57,9 @@ public class Constants
 	 */
 	public static final int CHUNK_SIZE = 8;
 	/**
-	 * The width and length of a region (13 chunks x 8 tiles).
+	 * The width and length of the scene (13 chunks x 8 tiles).
 	 */
-	public static final int REGION_SIZE = 104;
+	public static final int SCENE_SIZE = 104;
 	/**
 	 * The max allowed plane by the game.
 	 * <p>
