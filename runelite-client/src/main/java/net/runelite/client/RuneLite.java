@@ -219,26 +219,6 @@ public class RuneLite
 			injector.injectMembers(client);
 		}
 
-		// Initialize Discord service
-		discordService.init();
-
-		// Register event listeners
-		eventBus.register(clientUI);
-		eventBus.register(overlayRenderer);
-		eventBus.register(overlayManager);
-		eventBus.register(drawManager);
-		eventBus.register(menuManager);
-		eventBus.register(chatMessageManager);
-		eventBus.register(commandManager);
-		eventBus.register(pluginManager);
-		eventBus.register(clanManager);
-		eventBus.register(infoBoxManager);
-
-		if (!isOutdated)
-		{
-			eventBus.register(itemManager.get());
-		}
-
 		// Load user configuration
 		configManager.load();
 
@@ -261,6 +241,26 @@ public class RuneLite
 
 		// Initialize UI
 		clientUI.open(this);
+
+		// Initialize Discord service
+		discordService.init();
+
+		// Register event listeners
+		eventBus.register(clientUI);
+		eventBus.register(pluginManager);
+		eventBus.register(overlayRenderer);
+		eventBus.register(overlayManager);
+		eventBus.register(drawManager);
+		eventBus.register(menuManager);
+		eventBus.register(chatMessageManager);
+		eventBus.register(commandManager);
+		eventBus.register(clanManager);
+		eventBus.register(infoBoxManager);
+
+		if (!isOutdated)
+		{
+			eventBus.register(itemManager.get());
+		}
 
 		// Add core overlays after configuration has been loaded so their properties will be
 		// loaded properly
