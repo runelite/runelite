@@ -167,6 +167,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		switch (setMessage.getType())
 		{
 			case PUBLIC:
+			case PUBLIC_MOD:
 			case CLANCHAT:
 			case PRIVATE_MESSAGE_RECEIVED:
 			case PRIVATE_MESSAGE_SENT:
