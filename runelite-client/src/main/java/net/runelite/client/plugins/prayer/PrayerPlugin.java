@@ -144,7 +144,7 @@ public class PrayerPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		if (config.prayerFlickHelper())
+		if (!config.prayerFlickLocation().equals(PrayerFlickLocation.NONE))
 		{
 			flickOverlay.onTick();
 		}

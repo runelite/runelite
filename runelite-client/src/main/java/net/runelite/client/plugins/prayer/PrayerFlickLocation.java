@@ -35,6 +35,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum PrayerFlickLocation
 {
+	NONE("Off"),
 	PRAYER_ORB("Prayer Orb"),
 	PRAYER_BAR("Prayer Bar"),
 	BOTH("Both");
