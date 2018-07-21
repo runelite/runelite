@@ -26,6 +26,7 @@ package net.runelite.client.plugins.inventoryviewer;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -55,6 +56,7 @@ class InventoryViewerOverlay extends Overlay
 	{
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		panelComponent.setWrapping(4);
+		panelComponent.setGap(new Point(6, 4));
 		panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
 		this.itemManager = itemManager;
 		this.client = client;
