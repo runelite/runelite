@@ -32,7 +32,7 @@ import net.runelite.client.config.ConfigItem;
 public interface PrayerConfig extends Config
 {
 	@ConfigItem(
-		position = 1,
+		position = 0,
 		keyName = "prayerFlickLocation",
 		name = "Pray flick location",
 		description = "Choose where to display the prayer flick helper"
@@ -43,7 +43,7 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
+		position = 1,
 		keyName = "prayerIndicator",
 		name = "Boost indicator",
 		description = "Enable infoboxes for prayers"
@@ -54,7 +54,7 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 2,
 		keyName = "prayerIndicatorOverheads",
 		name = "Overhead indicator",
 		description = "Also enable infoboxes for overheads"
@@ -65,7 +65,7 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 3,
 		keyName = "showPrayerDoseIndicator",
 		name = "Show prayer dose indicator",
 		description = "Enables the prayer dose indicator."
@@ -76,7 +76,7 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 4,
 		keyName = "showPrayerTooltip",
 		name = "Show prayer orb tooltip",
 		description = "Displays time remaining and prayer bonus as a tooltip on the quick-prayer icon."
@@ -87,7 +87,7 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 5,
 		keyName = "showPrayerBar",
 		name = "Show prayer bar",
 		description = "Displays prayer bar under HP bar when praying."
@@ -101,7 +101,7 @@ public interface PrayerConfig extends Config
 		keyName = "prayerBarHideIfNotPraying",
 		name = "Hide bar while prayer is inactive",
 		description = "Prayer bar will be hidden while prayers are inactivate.",
-		position = 7
+		position = 6
 	)
 	default boolean hideIfNotPraying()
 	{
@@ -112,7 +112,7 @@ public interface PrayerConfig extends Config
 		keyName = "prayerBarHideIfNonCombat",
 		name = "Hide bar while out-of-combat",
 		description = "Prayer bar will be hidden while out-of-combat.",
-		position = 8
+		position = 7
 	)
 	default boolean hideIfOutOfCombat()
 	{
