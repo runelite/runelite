@@ -128,7 +128,6 @@ public class WASDCameraPlugin extends Plugin
 
 	public void handleKeyPress(KeyEvent e)
 	{
-
 		// If enter was pressed, toggle canType
 		if (e.getKeyCode() == ENTER_KEY)
 		{
@@ -153,6 +152,9 @@ public class WASDCameraPlugin extends Plugin
 				pressCameraKey(e);
 			}
 		}
+
+		// Update text of overlay
+		overlay.updateText();
 	}
 
 	@Subscribe

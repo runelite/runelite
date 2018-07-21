@@ -31,47 +31,73 @@ import java.awt.Point;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.components.TextComponent;
 
 public class WASDCameraOverlay extends Overlay
 {
-	private final PanelComponent panelComponent = new PanelComponent();
+	@Inject
+	private Client client;
+
+	private final TextComponent textComponent = new TextComponent();
+
 	private WASDCameraPlugin plugin;
+
+	private static final int X_OFFSET = 36;
+	private static final int Y = 152;
+
 	private boolean rendered;
 
+	private int nameLength;
+
 	@Inject
-	private WASDCameraOverlay(Client client, WASDCameraPlugin plugin)
+	private WASDCameraOverlay(WASDCameraPlugin plugin)
 	{
 		setPosition(OverlayPosition.BOTTOM_LEFT);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.plugin = plugin;
-		rendered = false;
+		this.rendered = false;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		panelComponent.setPreferredLocation(new Point(0, 145));
-		panelComponent.setPreferredSize(new Dimension(514, 5));
-
-		// If player can type, remove panel
-		if (plugin.canType)
+		if (client.getLocalPlayer() != null)
 		{
-			panelComponent.getChildren().clear();
-			rendered = false;
+			int temp = nameLength;
+			nameLength = client.getLocalPlayer().getName().length();
+
+			if (!rendered || temp != nameLength)
+			{
+				int offset = (nameLength * 5) + X_OFFSET;
+
+				// If player is an ironman, move over more
+				if (client.getAccountType().isIronman())
+				{
+					offset = offset + 12;
+				}
+
+				textComponent.setText("Press Enter to Chat...");
+				textComponent.setPosition(new Point(offset, Y));
+				textComponent.setColor(Color.gray);
+				rendered = true;
+			}
 		}
 
-		// If player can't type, render the panel
-		if (!plugin.canType && !rendered)
-		{
-			panelComponent.getChildren().add(TitleComponent.builder()
-					.text("Press Enter to Chat...")
-					.color(Color.GRAY)
-					.build());
-			rendered = true;
-		}
+		return textComponent.render(graphics);
+	}
 
-		return panelComponent.render(graphics);
+	public void updateText()
+	{
+		// Update text of component based on canType
+		if (!plugin.canType)
+		{
+			textComponent.setText("Press Enter to Chat...");
+		}
+		else
+		{
+			textComponent.setText("");
+		}
 	}
 }
