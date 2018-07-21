@@ -32,17 +32,6 @@ import net.runelite.client.config.ConfigItem;
 public interface PrayerConfig extends Config
 {
 	@ConfigItem(
-		position = 0,
-		keyName = "prayerflick",
-		name = "Prayer flick helper",
-		description = "Enable the prayer flick helper"
-	)
-	default boolean prayerFlickHelper()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		position = 1,
 		keyName = "prayerFlickLocation",
 		name = "Prayer flick location",
@@ -50,7 +39,7 @@ public interface PrayerConfig extends Config
 	)
 	default PrayerFlickLocation prayerFlickLocation()
 	{
-		return PrayerFlickLocation.PRAYER_ORB;
+		return PrayerFlickLocation.NONE;
 	}
 
 	@ConfigItem(
