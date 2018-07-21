@@ -90,27 +90,24 @@ class PrayerBarOverlay extends Overlay
 		// Restricted by the width to prevent the bar from being too long while you are boosted above your real prayer level.
 		final int progressFill = (int) Math.ceil(Math.min((barWidth * ratio), barWidth));
 
-		if (anyPrayerActive)
+		graphics.setColor(BAR_BG_COLOR);
+		graphics.fillRect(barX, barY, barWidth, barHeight);
+		graphics.setColor(BAR_FILL_COLOR);
+		graphics.fillRect(barX, barY, progressFill, barHeight);
+
+		if (anyPrayerActive && (config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR) || config.prayerFlickLocation().equals(PrayerFlickLocation.BOTH)))
 		{
-			if (!config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_ORB) || !config.prayerFlickLocation().equals(PrayerFlickLocation.NONE))
-			{
-				long timeSinceLastTick = Duration.between(startOfLastTick, Instant.now()).toMillis();
+			long timeSinceLastTick = Duration.between(startOfLastTick, Instant.now()).toMillis();
 
-				float tickProgress = timeSinceLastTick / 600f;
-				tickProgress = Math.min(tickProgress, 1); //Cap to 1
+			float tickProgress = timeSinceLastTick / 600f;
+			tickProgress = Math.min(tickProgress, 1); //Cap to 1
 
-				double t = tickProgress * Math.PI;
+			double t = tickProgress * Math.PI;
 
-				int xOffset = (int) (-Math.cos(t) * barWidth / 2) + barWidth / 2;
+			int xOffset = (int) (-Math.cos(t) * barWidth / 2) + barWidth / 2;
 
-				graphics.setColor(Color.black);
-				graphics.fillRect(barX + xOffset, barY, 1, barHeight);
-			}
-
-			graphics.setColor(BAR_BG_COLOR);
-			graphics.fillRect(barX, barY, barWidth, barHeight);
-			graphics.setColor(BAR_FILL_COLOR);
-			graphics.fillRect(barX, barY, progressFill, barHeight);
+			graphics.setColor(Color.black);
+			graphics.fillRect(barX + xOffset, barY, 1, barHeight);
 		}
 
 		return new Dimension(barWidth, barHeight);
