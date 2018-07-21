@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Levi <me@levischuck.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,48 +22,78 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.devtools;
+package net.runelite.client.plugins.xptracker;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
+import java.util.EnumSet;
+import java.util.Set;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import net.runelite.api.Skill;
 
-class WidgetTreeNode extends DefaultMutableTreeNode
+@RequiredArgsConstructor
+class XpPauseStateSingle
 {
-	private final String type;
+	@Getter
+	private final Skill skill;
+	private final Set<XpPauseReason> pauseReasons = EnumSet.noneOf(XpPauseReason.class);
+	@Getter
+	private long lastChangeMillis;
+	@Getter
+	private int xp;
 
-	public WidgetTreeNode(String type, Widget widget)
+	boolean isPaused()
 	{
-		super(widget);
-		this.type = type;
+		return !pauseReasons.isEmpty();
 	}
 
-	public Widget getWidget()
+	boolean login()
 	{
-		return (Widget) getUserObject();
+		return pauseReasons.remove(XpPauseReason.PAUSED_LOGOUT);
 	}
 
-	@Override
-	public String toString()
+	boolean logout()
 	{
-		Widget widget = getWidget();
+		return pauseReasons.add(XpPauseReason.PAUSED_LOGOUT);
+	}
 
-		int id = widget.getId();
-		String str = type + " " + TO_GROUP(id) + "." + TO_CHILD(id);
+	boolean timeout()
+	{
+		return pauseReasons.add(XpPauseReason.PAUSED_TIMEOUT);
+	}
 
-		if (widget.getIndex() != -1)
+	boolean manualPause()
+	{
+		return pauseReasons.add(XpPauseReason.PAUSE_MANUAL);
+	}
+
+	boolean xpChanged(int xp)
+	{
+		this.xp = xp;
+		this.lastChangeMillis = System.currentTimeMillis();
+		return clearAll();
+	}
+
+	boolean unpause()
+	{
+		this.lastChangeMillis = System.currentTimeMillis();
+		return clearAll();
+	}
+
+	private boolean clearAll()
+	{
+		if (pauseReasons.isEmpty())
 		{
-			str += "[" + widget.getIndex() + "]";
+			return false;
 		}
 
-		WidgetInfo info = WidgetInspector.getWidgetInfo(id);
-		if (info != null)
-		{
-			str += " " + info.name();
-		}
+		pauseReasons.clear();
+		return true;
+	}
 
-		return str;
+	private enum XpPauseReason
+	{
+		PAUSE_MANUAL,
+		PAUSED_LOGOUT,
+		PAUSED_TIMEOUT
 	}
 }

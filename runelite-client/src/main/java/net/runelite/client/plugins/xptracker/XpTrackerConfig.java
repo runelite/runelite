@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Levi <me@levischuck.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,48 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.devtools;
+package net.runelite.client.plugins.xptracker;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-class WidgetTreeNode extends DefaultMutableTreeNode
+@ConfigGroup("xpTracker")
+public interface XpTrackerConfig extends Config
 {
-	private final String type;
-
-	public WidgetTreeNode(String type, Widget widget)
+	@ConfigItem(
+		position = 0,
+		keyName = "logoutPausing",
+		name = "Pause on Logout",
+		description = "Configures whether skills should pause on logout"
+	)
+	default boolean pauseOnLogout()
 	{
-		super(widget);
-		this.type = type;
+		return false;
 	}
 
-	public Widget getWidget()
+	@ConfigItem(
+		position = 1,
+		keyName = "pauseSkillAfter",
+		name = "Auto pause after",
+		description = "Configures how many minutes passes before pausing a skill while in game and there's no XP, 0 means disabled"
+	)
+	default int pauseSkillAfter()
 	{
-		return (Widget) getUserObject();
-	}
-
-	@Override
-	public String toString()
-	{
-		Widget widget = getWidget();
-
-		int id = widget.getId();
-		String str = type + " " + TO_GROUP(id) + "." + TO_CHILD(id);
-
-		if (widget.getIndex() != -1)
-		{
-			str += "[" + widget.getIndex() + "]";
-		}
-
-		WidgetInfo info = WidgetInspector.getWidgetInfo(id);
-		if (info != null)
-		{
-			str += " " + info.name();
-		}
-
-		return str;
+		return 0;
 	}
 }

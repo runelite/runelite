@@ -268,6 +268,11 @@ public interface Widget
 	void setHidden(boolean hidden);
 
 	/**
+	 * The index of this widget in it's parent's children array
+	 */
+	int getIndex();
+
+	/**
 	 * Gets the location the widget is being drawn on the canvas.
 	 * <p>
 	 * This method accounts for the relative coordinates and bounds
@@ -354,13 +359,45 @@ public interface Widget
 	 */
 	boolean contains(Point point);
 
+	/**
+	 * Gets the amount of pixels the widget is scrolled in the X axis
+	 */
 	int getScrollX();
 
+	/**
+	 * Sets the amount of pixels the widget is scrolled in the X axis
+	 */
 	void setScrollX(int scrollX);
 
+	/**
+	 * Gets the amount of pixels the widget is scrolled in the Y axis
+	 */
 	int getScrollY();
 
+	/**
+	 * sets the amount of pixels the widget is scrolled in the Y axis
+	 */
 	void setScrollY(int scrollY);
+
+	/**
+	 * Gets the size of the widget's viewport in the X axis
+	 */
+	int getScrollWidth();
+
+	/**
+	 * Sets the size of the widget's viewport in the X axis
+	 */
+	void setScrollWidth(int width);
+
+	/**
+	 * Gets the size of the widget's viewport in the Y axis
+	 */
+	int getScrollHeight();
+
+	/**
+	 * Sets the size of the widget's viewport in the Y axis
+	 */
+	void setScrollHeight(int height);
 
 	/**
 	 * Gets the original x-axis coordinate.
@@ -452,4 +489,53 @@ public interface Widget
 	 * @return the actions
 	 */
 	String[] getActions();
+
+	/**
+	 * Creates a dynamic widget child
+	 *
+	 * @param index the index of the new widget in the children list or -1 to append to the back
+	 * @param type  the type of the widget
+	 */
+	Widget createChild(int index, int type);
+
+	/**
+	 * Creates a menu action on the widget
+	 *
+	 * @param index The index of the menu
+	 * @param action The string to be displayed next to the widget's name in the context menu
+	 */
+	void setAction(int index, String action);
+
+	/**
+	 * Sets a script to be ran when the a menu action is clicked.
+	 * hasListener must be true for this to take effect
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnOpListener(Object ...args);
+
+	/**
+	 * If this widget has any listeners on it
+	 */
+	boolean hasListener();
+
+	/**
+	 * Sets if the widget has any listeners. This should be called whenever a setXListener function is called
+	 */
+	void setHasListener(boolean hasListener);
+
+	/**
+	 * This is true if the widget is from an if3 interface, or is dynamically created
+	 */
+	boolean isIf3();
+
+	/**
+	 * Recomputes this widget's x/y/w/h, excluding scroll
+	 */
+	void revalidate();
+
+	/**
+	 * Recomputes this widget's group's x/y/w/h including scroll
+	 */
+	void revalidateScroll();
 }

@@ -92,12 +92,30 @@ class BankTitle
 
 		if (config.showGE() && gePrice != 0)
 		{
-			strCurrentTab += " (EX: " + StackFormatter.quantityToStackSize(gePrice) + ")";
+			strCurrentTab += " (EX: ";
+
+			if (config.showExact())
+			{
+				strCurrentTab += StackFormatter.formatNumber(gePrice) + ")";
+			}
+			else
+			{
+				strCurrentTab += StackFormatter.quantityToStackSize(gePrice) + ")";
+			}
 		}
 
 		if (config.showHA() && haPrice != 0)
 		{
-			strCurrentTab += " (HA: " + StackFormatter.quantityToStackSize(haPrice) + ")";
+			strCurrentTab += " (HA: ";
+
+			if (config.showExact())
+			{
+				strCurrentTab += StackFormatter.formatNumber(haPrice) + ")";
+			}
+			else
+			{
+				strCurrentTab += StackFormatter.quantityToStackSize(haPrice) + ")";
+			}
 		}
 
 		log.debug("Setting bank title: {}", bankTitle + strCurrentTab);

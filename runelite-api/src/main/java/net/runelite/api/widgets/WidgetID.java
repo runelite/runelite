@@ -36,7 +36,7 @@ package net.runelite.api.widgets;
  */
 public class WidgetID
 {
-	public static final int FAIRY_RING_CODE_GROUP_ID = 381;
+	public static final int FAIRY_RING_PANEL_GROUP_ID = 381;
 	public static final int FAIRY_RING_GROUP_ID = 398;
 	public static final int LOGOUT_PANEL_ID = 182;
 	public static final int BANK_GROUP_ID = 12;
@@ -92,6 +92,7 @@ public class WidgetID
 	public static final int WORLD_MAP_GROUP_ID = 595;
 	public static final int PYRAMID_PLUNDER_GROUP_ID = 428;
 	public static final int CHAMBERS_OF_XERIC_REWARD_GROUP_ID = 539;
+	public static final int THEATRE_OF_BLOOD_REWARD_GROUP_ID = 23;
 	public static final int EXPERIENCE_TRACKER_GROUP_ID = 122;
 	public static final int TITHE_FARM_GROUP_ID = 241;
 	public static final int KINGDOM_GROUP_ID = 392;
@@ -507,6 +508,15 @@ public class WidgetID
 	{
 		static final int WIDGET = 1;
 		static final int BOTTOM_BAR = 14;
+	}
+
+	static class FairyRingPanel
+	{
+		static final int HEADER = 2;
+		static final int LIST = 7;
+		static final int FAVORITES = 8;
+		static final int SEPARATOR = 9;
+		static final int SCROLLBAR = 152;
 	}
 
 	static class FairyRing

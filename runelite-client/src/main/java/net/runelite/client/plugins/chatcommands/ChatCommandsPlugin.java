@@ -752,8 +752,14 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			case "vetion":
 				return "Vet'ion";
 
+			case "vene":
+				return "Venenatis";
+
 			case "kbd":
 				return "King Black Dragon";
+
+			case "vork":
+				return "Vorkath";
 
 			case "sire":
 				return "Abyssal Sire";
@@ -761,6 +767,9 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			case "smoke devil":
 			case "thermy":
 				return "Thermonuclear Smoke Devil";
+
+			case "cerb":
+				return "Cerberus";
 
 			case "zuk":
 			case "inferno":
@@ -770,6 +779,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			case "sara":
 			case "saradomin":
 			case "zilyana":
+			case "zily":
 				return "Commander Zilyana";
 			case "zammy":
 			case "zamorak":
