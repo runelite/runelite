@@ -306,4 +306,22 @@ public class ItemManager
 			return null;
 		}
 	}
+
+	/**
+	 * Look up an item's composition. If the noted variant of the item
+	 * is passed, this will return the composition for the unnoted version.
+	 *
+	 * @param itemId item id
+	 * @return item composition
+	 */
+	public ItemComposition getUnnotedItemComposition(int itemId)
+	{
+		ItemComposition composition = getItemComposition(itemId);
+		if (composition.getNote() == -1)
+		{
+			return composition;
+		}
+
+		return getItemComposition(composition.getLinkedNoteId());
+	}
 }
