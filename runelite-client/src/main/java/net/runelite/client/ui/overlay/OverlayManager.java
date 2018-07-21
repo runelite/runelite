@@ -50,7 +50,7 @@ import net.runelite.client.events.PluginChanged;
 @Singleton
 public class OverlayManager
 {
-	private static final String OVERLAY_CONFIG_PREFERRED_LOCATION = "_preferredLocation";
+	private static final String OVERLAY_CONFIG_PREFERRED_LOCATION = "_preferredLocationRelative";
 	private static final String OVERLAY_CONFIG_PREFERRED_POSITION = "_preferredPosition";
 	private static final String OVERLAY_CONFIG_PREFERRED_SIZE = "_preferredSize";
 	private static final String RUNELITE_CONFIG_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).value();

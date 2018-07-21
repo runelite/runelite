@@ -29,6 +29,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
 
 @Getter
@@ -50,5 +51,34 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	public String getName()
 	{
 		return this.getClass().getSimpleName();
+	}
+
+	/**
+	 * Sets preferred location using absolute location converting it to relative location to client dimensions
+	 * @param client client
+	 * @param preferredLocation preferred absolute location to use
+	 */
+	public void setAbsolutePreferredLocation(final Client client, final Point preferredLocation)
+	{
+		final double x = (preferredLocation.getX() / client.getRealDimensions().getWidth()) * 1000;
+		final double y = (preferredLocation.getY() / client.getRealDimensions().getHeight()) * 1000;
+		this.preferredLocation = new Point((int)x, (int)y);
+	}
+
+	/**
+	 * Gets absolute location from current preferred location
+	 * @param client client
+	 * @return absolute location
+	 */
+	public Point getAbsolutePreferredLocation(final Client client)
+	{
+		if (preferredLocation == null)
+		{
+			return null;
+		}
+
+		final double x = (client.getRealDimensions().getWidth() / 1000) * preferredLocation.getX();
+		final double y = (client.getRealDimensions().getHeight() / 1000) * preferredLocation.getY();
+		return new Point((int)x, (int)y);
 	}
 }

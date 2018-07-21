@@ -187,14 +187,11 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 				}
 				else
 				{
-					final Point preferredLocation = overlay.getPreferredLocation();
+					final Point preferredLocation = overlay.getAbsolutePreferredLocation(client);
 
 					if (preferredLocation != null)
 					{
-						final Dimension realDimensions = client.getRealDimensions();
-						final int x = Math.min(realDimensions.width - 5, preferredLocation.x);
-						final int y = Math.min(realDimensions.height - 5, preferredLocation.y);
-						location.setLocation(x, y);
+						location.setLocation(preferredLocation);
 					}
 				}
 
@@ -252,7 +249,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 						mousePoint.translate(-offset.x, -offset.y);
 						movedOverlay = overlay;
 						movedOverlay.setPreferredPosition(null);
-						movedOverlay.setPreferredLocation(mousePoint);
+						movedOverlay.setAbsolutePreferredLocation(client, mousePoint);
 						overlayManager.saveOverlay(movedOverlay);
 					}
 
@@ -286,7 +283,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		{
 			mousePoint.translate(-overlayOffset.x, -overlayOffset.y);
 			movedOverlay.setPreferredPosition(null);
-			movedOverlay.setPreferredLocation(mousePoint);
+			movedOverlay.setAbsolutePreferredLocation(client, mousePoint);
 			mouseEvent.consume();
 		}
 
