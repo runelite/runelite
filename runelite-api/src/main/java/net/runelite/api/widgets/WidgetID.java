@@ -106,6 +106,7 @@ public class WidgetID
 	public static final int DESTROY_ITEM_GROUP_ID = 584;
 	public static final int VARROCK_MUSEUM_QUIZ_GROUP_ID = 533;
 	public static final int KILL_LOGS_GROUP_ID = 549;
+	public static final int THEATRE_OF_BLOOD_GROUP_ID = 23;
 
 	static class WorldMap
 	{

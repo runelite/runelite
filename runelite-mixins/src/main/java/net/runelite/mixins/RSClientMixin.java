@@ -1166,4 +1166,14 @@ public abstract class RSClientMixin implements RSClient
 	{
 		RSClientMixin.lastItemDespawn = lastItemDespawn;
 	}
+
+	@Inject
+	@Override
+	public RSItem createItem(int id, int quantity)
+	{
+		RSItem r = createItem();
+		r.setId(id);
+		r.setQuantity(quantity);
+		return r;
+	}
 }
