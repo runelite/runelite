@@ -121,7 +121,6 @@
 		<module>runelite-client</module>
 		<module>runelite-mixins</module>
 		<module>runelite-script-assembler-plugin</module>
-		<module>runelite-scripts</module>
 		<module>runescape-api</module>
 		<module>http-api</module>
 		<module>http-service</module>
