@@ -152,12 +152,11 @@ public class PrayerPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		startOfLastTick = Instant.now();
 		prayersActive = isAnyPrayerActive();
 
 		if (!config.prayerFlickLocation().equals(PrayerFlickLocation.NONE))
 		{
-			getTickProgress();
+			startOfLastTick = Instant.now();
 		}
 
 		if (config.showPrayerDoseIndicator())
