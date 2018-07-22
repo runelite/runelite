@@ -44,6 +44,7 @@ public class WASDCameraListener extends MouseListener implements KeyListener
 			e.consume();
 		}
 
+		// Reset typing in chat to false
 		plugin.typingInChat = false;
 	}
 

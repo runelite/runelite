@@ -35,6 +35,7 @@ import net.runelite.api.VarClientStr;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarClientStrChanged;
+import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -49,17 +50,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 public class WASDCameraPlugin extends Plugin
 {
-	private static final int W_KEY = KeyEvent.VK_W;
-	private static final int A_KEY = KeyEvent.VK_A;
-	private static final int S_KEY = KeyEvent.VK_S;
-	private static final int D_KEY = KeyEvent.VK_D;
-
-	private static final int ENTER_KEY = KeyEvent.VK_ENTER;
-	private static final int SLASH_KEY = KeyEvent.VK_SLASH;
-	private static final int TAB_KEY = KeyEvent.VK_TAB;
-
-	private static final int DELETE_KEY = KeyEvent.VK_BACK_SPACE;
-
 	@Inject
 	private Client client;
 
@@ -78,12 +68,26 @@ public class WASDCameraPlugin extends Plugin
 	@Inject
 	private WASDCameraListener inputListener;
 
+	private static final int W_KEY = KeyEvent.VK_W;
+	private static final int A_KEY = KeyEvent.VK_A;
+	private static final int S_KEY = KeyEvent.VK_S;
+	private static final int D_KEY = KeyEvent.VK_D;
+
+	private static final int ENTER_KEY = KeyEvent.VK_ENTER;
+	private static final int SLASH_KEY = KeyEvent.VK_SLASH;
+	private static final int TAB_KEY = KeyEvent.VK_TAB;
+
+	private static final int DELETE_KEY = KeyEvent.VK_BACK_SPACE;
+
+	private static final int DUMMY_KEY = KeyEvent.VK_HOME;
+
 	private Robot robot;
 
 	public boolean canType;
+	public boolean typingInChat;
+	public boolean showOverlay;
 	public boolean inFocus;
 	public boolean loggedIn;
-	public boolean typingInChat;
 
 	@Provides
 	WASDCameraConfig getConfig(ConfigManager configManager)
@@ -129,7 +133,7 @@ public class WASDCameraPlugin extends Plugin
 	public void handleKeyPress(KeyEvent e)
 	{
 		// If enter was pressed, toggle canType
-		if (e.getKeyCode() == ENTER_KEY)
+		if (e.getKeyCode() == ENTER_KEY && typingInChat)
 		{
 			canType = !canType;
 		}
@@ -142,7 +146,7 @@ public class WASDCameraPlugin extends Plugin
 		}
 
 		// Input locked
-		if (!canType)
+		if (!canType && typingInChat)
 		{
 			// If key is alphabet, digit or whitespace
 			if (Character.isAlphabetic(e.getKeyCode()) ||
@@ -153,8 +157,13 @@ public class WASDCameraPlugin extends Plugin
 			}
 		}
 
-		// Update text of overlay
-		overlay.updateText();
+		if (e.getKeyCode() != DUMMY_KEY)
+		{
+			// Press dummy key to sync chat states
+			pressDummyKey();
+		}
+
+		overlay.updateOverlay();
 	}
 
 	@Subscribe
@@ -166,8 +175,7 @@ public class WASDCameraPlugin extends Plugin
 			typingInChat = true;
 
 			// If input was added to chat string but can't type, delete it
-			// NOTE: This only happens after leaving a text entry interface
-			// as onKeyTyped() is called before onVarClientStrChanged()
+			// NOTE: This only happens if pressing keys fast
 			if (client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) != null &&
 					client.getVar(VarClientStr.CHATBOX_TYPED_TEXT).length() > 0 && !canType)
 			{
@@ -176,16 +184,30 @@ public class WASDCameraPlugin extends Plugin
 		}
 
 		// If not typing in chat
-		else
+		else if (e.getIndex() != 0)
 		{
 			typingInChat = false;
-			canType = false;
 		}
 	}
 
-	private void pressDeleteKey()
+	@Subscribe
+	public void onWidgetHiddenChanged(WidgetHiddenChanged e)
+	{
+		// Press dummy key to sync chat states
+		pressDummyKey();
+	}
+
+	public void pressDeleteKey()
 	{
 		robot.keyPress(DELETE_KEY);
+	}
+
+	public void pressDummyKey()
+	{
+		if (inFocus)
+		{
+			robot.keyPress(DUMMY_KEY);
+		}
 	}
 
 	public void pressCameraKey(KeyEvent e)

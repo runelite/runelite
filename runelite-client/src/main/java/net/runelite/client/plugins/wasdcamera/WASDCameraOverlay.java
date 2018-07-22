@@ -51,6 +51,8 @@ public class WASDCameraOverlay extends Overlay
 
 	private int nameLength;
 
+	private String lockedMessage;
+
 	@Inject
 	private WASDCameraOverlay(WASDCameraPlugin plugin)
 	{
@@ -58,6 +60,7 @@ public class WASDCameraOverlay extends Overlay
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.plugin = plugin;
 		this.rendered = false;
+		this.lockedMessage = "Press Enter to Chat...";
 	}
 
 	@Override
@@ -78,22 +81,23 @@ public class WASDCameraOverlay extends Overlay
 					offset = offset + 12;
 				}
 
-				textComponent.setText("Press Enter to Chat...");
+				textComponent.setText(lockedMessage);
 				textComponent.setPosition(new Point(offset, Y));
 				textComponent.setColor(Color.gray);
 				rendered = true;
+				plugin.pressDummyKey();
 			}
 		}
 
 		return textComponent.render(graphics);
 	}
 
-	public void updateText()
+	public void updateOverlay()
 	{
-		// Update text of component based on canType
+		// Update text of component based on lock and typing in chat
 		if (!plugin.canType)
 		{
-			textComponent.setText("Press Enter to Chat...");
+			textComponent.setText(lockedMessage);
 		}
 		else
 		{
