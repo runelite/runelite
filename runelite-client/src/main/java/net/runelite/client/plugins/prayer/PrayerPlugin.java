@@ -243,13 +243,13 @@ public class PrayerPlugin extends Plugin
 		return total;
 	}
 
-	float getTickProgress()
+	double getTickProgress()
 	{
 		long timeSinceLastTick = Duration.between(startOfLastTick, Instant.now()).toMillis();
 
 		float tickProgress = (timeSinceLastTick % 600) / 600f;
 		tickProgress = Math.min(tickProgress, 1);
-		return tickProgress;
+		return tickProgress * Math.PI;
 	}
 
 	private boolean isAnyPrayerActive()

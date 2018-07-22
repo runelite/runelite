@@ -95,9 +95,7 @@ class PrayerBarOverlay extends Overlay
 
 		if (plugin.isPrayersActive() && (config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR) || config.prayerFlickLocation().equals(PrayerFlickLocation.BOTH)))
 		{
-			float tickProgress = plugin.getTickProgress();
-
-			double t = tickProgress * Math.PI;
+			double t = plugin.getTickProgress();
 
 			int xOffset = (int) (-Math.cos(t) * barWidth / 2) + barWidth / 2;
 
