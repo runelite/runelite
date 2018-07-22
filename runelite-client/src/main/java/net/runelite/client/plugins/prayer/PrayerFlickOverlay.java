@@ -28,11 +28,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
-import java.time.Duration;
-import java.time.Instant;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.Prayer;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
@@ -43,28 +40,22 @@ class PrayerFlickOverlay extends Overlay
 {
 	private final Client client;
 	private final PrayerConfig config;
-	private boolean prayersActive = false;
-	private Instant startOfLastTick = Instant.now();
+	private final PrayerPlugin plugin;
 
 	@Inject
-	private PrayerFlickOverlay(Client client, PrayerConfig config)
+	private PrayerFlickOverlay(Client client, PrayerConfig config, PrayerPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
 		this.config = config;
-	}
-
-	void onTick()
-	{
-		startOfLastTick = Instant.now(); //Reset the tick timer
-		prayersActive = isAnyPrayerActive(); //Check if prayers are active
+		this.plugin = plugin;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!prayersActive || config.prayerFlickLocation().equals(PrayerFlickLocation.NONE) || config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR)) //If there are no prayers active or flick location is set to the prayer bar we don't require the flick helper
+		if (!plugin.isPrayersActive() || config.prayerFlickLocation().equals(PrayerFlickLocation.NONE) || config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR)) //If there are no prayers active or flick location is set to the prayer bar we don't require the flick helper
 		{
 			return null;
 		}
@@ -88,10 +79,7 @@ class PrayerFlickOverlay extends Overlay
 		int orbInnerX = (int) (bounds.getX() + 24);//x pos of the inside of the prayer orb
 		int orbInnerY = (int) (bounds.getY() - 1);//y pos of the inside of the prayer orb
 
-		long timeSinceLastTick = Duration.between(startOfLastTick, Instant.now()).toMillis();
-
-		float tickProgress = timeSinceLastTick / 600f;
-		tickProgress = Math.min(tickProgress, 1);//Cap to 1, so if a tick continues past the expected 600 we don't move the indicator off the orb
+		float tickProgress = plugin.getTickProgress();
 
 		double t = tickProgress * Math.PI;//t on interval [0,pi]
 
@@ -104,18 +92,5 @@ class PrayerFlickOverlay extends Overlay
 		graphics.fillRect(orbInnerX + xOffset, orbInnerY + yOffset, 1, indicatorHeight);
 
 		return new Dimension((int) bounds.getWidth(), (int) bounds.getHeight());
-	}
-
-	boolean isAnyPrayerActive()
-	{
-		for (Prayer pray : Prayer.values())//Check if any prayers are active
-		{
-			if (client.isPrayerActive(pray))
-			{
-				return true;
-			}
-		}
-
-		return false;
 	}
 }

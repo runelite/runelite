@@ -28,15 +28,12 @@ package net.runelite.client.plugins.prayer;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.time.Duration;
-import java.time.Instant;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
-import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
@@ -53,15 +50,16 @@ class PrayerBarOverlay extends Overlay
 
 	private final Client client;
 	private final PrayerConfig config;
+	private final PrayerPlugin plugin;
+
 	private boolean showingPrayerBar;
-	private boolean anyPrayerActive;
-	private Instant startOfLastTick = Instant.now();
 
 	@Inject
-	private PrayerBarOverlay(final Client client, final PrayerConfig config)
+	private PrayerBarOverlay(final Client client, final PrayerConfig config, final PrayerPlugin plugin)
 	{
 		this.client = client;
 		this.config = config;
+		this.plugin = plugin;
 
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
@@ -95,12 +93,9 @@ class PrayerBarOverlay extends Overlay
 		graphics.setColor(BAR_FILL_COLOR);
 		graphics.fillRect(barX, barY, progressFill, barHeight);
 
-		if (anyPrayerActive && (config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR) || config.prayerFlickLocation().equals(PrayerFlickLocation.BOTH)))
+		if (plugin.isPrayersActive() && (config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR) || config.prayerFlickLocation().equals(PrayerFlickLocation.BOTH)))
 		{
-			long timeSinceLastTick = Duration.between(startOfLastTick, Instant.now()).toMillis();
-
-			float tickProgress = timeSinceLastTick / 600f;
-			tickProgress = Math.min(tickProgress, 1); //Cap to 1
+			float tickProgress = plugin.getTickProgress();
 
 			double t = tickProgress * Math.PI;
 
@@ -115,10 +110,8 @@ class PrayerBarOverlay extends Overlay
 
 	void onTick()
 	{
-		anyPrayerActive = checkIfAnyPrayerIsActive();
 		final Player localPlayer = client.getLocalPlayer();
 		showingPrayerBar = true;
-		startOfLastTick = Instant.now();
 
 		if (localPlayer == null)
 		{
@@ -126,7 +119,7 @@ class PrayerBarOverlay extends Overlay
 			return;
 		}
 
-		if (config.hideIfNotPraying() && !anyPrayerActive)
+		if (config.hideIfNotPraying() && !plugin.isPrayersActive())
 		{
 			showingPrayerBar = false;
 			return;
@@ -136,18 +129,5 @@ class PrayerBarOverlay extends Overlay
 		{
 			showingPrayerBar = false;
 		}
-	}
-
-	private boolean checkIfAnyPrayerIsActive()
-	{
-		for (Prayer pray : Prayer.values())
-		{
-			if (client.isPrayerActive(pray))
-			{
-				return true;
-			}
-		}
-
-		return false;
 	}
 }
