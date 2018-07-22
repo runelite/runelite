@@ -254,6 +254,8 @@ public class WidgetID
 
 	static class FixedViewport
 	{
+		static final int MINIMAP = 3;
+		static final int MINIMAP_DRAW_AREA = 8;
 		static final int CLAN_CHAT_TAB = 31;
 		static final int FRIENDS_TAB = 32;
 		static final int IGNORES_TAB = 33;
