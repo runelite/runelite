@@ -97,7 +97,7 @@ class PrayerDoseOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final Widget xpOrb = client.getWidget(WidgetInfo.QUICK_PRAYER_ORB);
+		final Widget xpOrb = client.getWidget(WidgetInfo.MINIMAP_QUICK_PRAYER_ORB);
 		if (xpOrb == null)
 		{
 			return null;
