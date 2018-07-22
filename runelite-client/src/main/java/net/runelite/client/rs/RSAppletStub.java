@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,31 +23,58 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.rs;
 
-package net.runelite.client;
+import java.applet.AppletContext;
+import java.applet.AppletStub;
+import java.net.MalformedURLException;
+import java.net.URL;
+import lombok.RequiredArgsConstructor;
 
-import java.io.IOException;
-import org.junit.Test;
-
-/**
- *
- * @author Adam
- */
-public class ConfigLoaderTest
+@RequiredArgsConstructor
+class RSAppletStub implements AppletStub
 {
-	@Test
-	public void test() throws IOException
+	private final RSConfig config;
+
+	@Override
+	public boolean isActive()
 	{
-		ConfigLoader loader = new ConfigLoader();
-		loader.fetch();
-
-		for (String key : loader.getProperties().keySet())
-			System.out.println(key + ": " + loader.getProperty(key));
-
-		System.out.println("Applet properties:");
-
-		for (String key : loader.getAppletProperties().keySet())
-			System.out.println(key + ": " + loader.getAppletProperty(key));
+		return true;
 	}
 
+	@Override
+	public URL getDocumentBase()
+	{
+		return getCodeBase();
+	}
+
+	@Override
+	public URL getCodeBase()
+	{
+		try
+		{
+			return new URL(config.getCodeBase());
+		}
+		catch (MalformedURLException ex)
+		{
+			return null;
+		}
+	}
+
+	@Override
+	public String getParameter(String name)
+	{
+		return config.getAppletProperties().get(name);
+	}
+
+	@Override
+	public AppletContext getAppletContext()
+	{
+		return null;
+	}
+
+	@Override
+	public void appletResize(int width, int height)
+	{
+	}
 }

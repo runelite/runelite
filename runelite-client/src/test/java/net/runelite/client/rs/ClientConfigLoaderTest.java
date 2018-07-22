@@ -23,63 +23,35 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.client;
+package net.runelite.client.rs;
 
-import java.applet.AppletContext;
-import java.applet.AppletStub;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.IOException;
+import okhttp3.OkHttpClient;
+import org.junit.Test;
 
-public class RSStub implements AppletStub
+/**
+ *
+ * @author Adam
+ */
+public class ClientConfigLoaderTest
 {
-	private final ConfigLoader config;
-
-	public RSStub(ConfigLoader config)
+	@Test
+	public void test() throws IOException
 	{
-		this.config = config;
-	}
+		final ClientConfigLoader loader = new ClientConfigLoader(new OkHttpClient());
+		final RSConfig config = loader.fetch();
 
-	@Override
-	public boolean isActive()
-	{
-		return true;
-	}
-
-	@Override
-	public URL getDocumentBase()
-	{
-		return getCodeBase();
-	}
-
-	@Override
-	public URL getCodeBase()
-	{
-		try
+		for (String key : config.getClassLoaderProperties().keySet())
 		{
-			return new URL(config.getProperty(ConfigLoader.CODEBASE));
+			System.out.println(key + ": " + config.getClassLoaderProperties().get(key));
 		}
-		catch (MalformedURLException ex)
+
+		System.out.println("Applet properties:");
+
+		for (String key : config.getAppletProperties().keySet())
 		{
-			return null;
+			System.out.println(key + ": " + config.getAppletProperties().get(key));
 		}
 	}
 
-	@Override
-	public String getParameter(String name)
-	{
-		return config.getAppletProperty(name);
-	}
-
-	@Override
-	public AppletContext getAppletContext()
-	{
-		return null;
-	}
-
-	@Override
-	public void appletResize(int width, int height)
-	{
-
-	}
-	
 }
