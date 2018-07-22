@@ -205,9 +205,9 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 				}
 
 				safeRender(client, overlay, layer, graphics, location);
-				dimension.setSize(overlay.getBounds().getSize());
+				final Rectangle bounds = overlay.getBounds();
 
-				if (dimension.width == 0 && dimension.height == 0)
+				if (bounds.isEmpty())
 				{
 					continue;
 				}
@@ -216,7 +216,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 				{
 					final Color previous = graphics.getColor();
 					graphics.setColor(movedOverlay == overlay ? MOVING_OVERLAY_ACTIVE_COLOR : MOVING_OVERLAY_COLOR);
-					graphics.drawRect(location.x, location.y, dimension.width - 1, dimension.height - 1);
+					graphics.draw(bounds);
 					graphics.setColor(previous);
 				}
 			}
@@ -242,11 +242,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 				{
 					if (SwingUtilities.isRightMouseButton(mouseEvent))
 					{
-						// detached overlays have no place to reset back to
-						if (overlay.getPosition() != OverlayPosition.DETACHED)
-						{
-							overlayManager.resetOverlay(overlay);
-						}
+						overlayManager.resetOverlay(overlay);
 					}
 					else
 					{
@@ -394,7 +390,6 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		{
 			subGraphics.setFont(FontManager.getRunescapeFont());
 		}
-
 
 		subGraphics.translate(point.x, point.y);
 		final Dimension dimension = MoreObjects.firstNonNull(overlay.render(subGraphics), new Dimension());

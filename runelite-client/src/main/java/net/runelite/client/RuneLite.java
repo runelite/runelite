@@ -57,6 +57,7 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.OverlayRenderer;
+import net.runelite.client.ui.overlay.WidgetOverlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
@@ -260,6 +261,7 @@ public class RuneLite
 		if (!isOutdated)
 		{
 			eventBus.register(itemManager.get());
+			WidgetOverlay.createOverlays(client).forEach(overlayManager::add);
 		}
 
 		// Add core overlays after configuration has been loaded so their properties will be
