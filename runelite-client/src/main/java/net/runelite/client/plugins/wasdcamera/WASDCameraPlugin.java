@@ -76,6 +76,7 @@ public class WASDCameraPlugin extends Plugin
 	private static final int ENTER_KEY = KeyEvent.VK_ENTER;
 	private static final int SLASH_KEY = KeyEvent.VK_SLASH;
 	private static final int TAB_KEY = KeyEvent.VK_TAB;
+	private static final int SHIFT_KEY = KeyEvent.VK_SHIFT;
 
 	private static final int DELETE_KEY = KeyEvent.VK_BACK_SPACE;
 
@@ -132,6 +133,12 @@ public class WASDCameraPlugin extends Plugin
 
 	public void handleKeyPress(KeyEvent e)
 	{
+		// Return was pressed, stop here
+		if (e.getKeyCode() == SHIFT_KEY)
+		{
+			return;
+		}
+
 		// If enter was pressed, toggle canType
 		if (e.getKeyCode() == ENTER_KEY && typingInChat)
 		{
