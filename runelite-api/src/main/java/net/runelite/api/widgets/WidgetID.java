@@ -106,6 +106,7 @@ public class WidgetID
 	public static final int DESTROY_ITEM_GROUP_ID = 584;
 	public static final int VARROCK_MUSEUM_QUIZ_GROUP_ID = 533;
 	public static final int KILL_LOGS_GROUP_ID = 549;
+	public static final int DIARY_QUEST_GROUP_ID = 275;
 
 	static class WorldMap
 	{
@@ -547,6 +548,12 @@ public class WidgetID
 		static final int BARROWS_BROTHERS = 9;
 		static final int BARROWS_POTENTIAL = 10;
 		static final int BARROWS_REWARD_INVENTORY = 3;
+	}
+
+	static class Diary
+	{
+		static final int DIARY_TITLE = 2;
+		static final int DIARY_TEXT = 1;
 	}
 
 	static class MTA
