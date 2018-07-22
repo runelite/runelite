@@ -56,6 +56,7 @@ import net.runelite.client.chat.ChatboxInputListener;
 import net.runelite.client.chat.CommandManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.ChatboxInput;
+import net.runelite.client.events.PrivateMessageInput;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -350,6 +351,45 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			finally
 			{
 				chatboxInput.resume();
+			}
+		});
+
+		return true;
+	}
+
+	@Override
+	public boolean onPrivateMessageInput(PrivateMessageInput privateMessageInput)
+	{
+		final String message = privateMessageInput.getMessage();
+		if (!message.startsWith("!kc "))
+		{
+			return false;
+		}
+
+		int idx = message.indexOf(' ');
+		final String boss = longBossName(message.substring(idx + 1));
+
+		final int kc = getKc(boss);
+		if (kc <= 0)
+		{
+			return false;
+		}
+
+		final String playerName = client.getLocalPlayer().getName();
+
+		executor.execute(() ->
+		{
+			try
+			{
+				killCountClient.submit(playerName, boss, kc);
+			}
+			catch (Exception ex)
+			{
+				log.warn("unable to submit killcount", ex);
+			}
+			finally
+			{
+				privateMessageInput.resume();
 			}
 		});
 

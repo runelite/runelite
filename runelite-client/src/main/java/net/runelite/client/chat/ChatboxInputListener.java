@@ -25,8 +25,11 @@
 package net.runelite.client.chat;
 
 import net.runelite.client.events.ChatboxInput;
+import net.runelite.client.events.PrivateMessageInput;
 
 public interface ChatboxInputListener
 {
 	boolean onChatboxInput(ChatboxInput chatboxInput);
+
+	boolean onPrivateMessageInput(PrivateMessageInput privateMessageInput);
 }

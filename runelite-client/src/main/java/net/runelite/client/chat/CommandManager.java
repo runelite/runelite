@@ -41,6 +41,7 @@ import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.events.ChatboxInput;
+import net.runelite.client.events.PrivateMessageInput;
 
 @Slf4j
 @Singleton
@@ -48,6 +49,7 @@ public class CommandManager
 {
 	private static final String RUNELITE_COMMAND = "runeliteCommand";
 	private static final String CHATBOX_INPUT = "chatboxInput";
+	private static final String PRIVMATE_MESSAGE = "privateMessage";
 
 	private final Provider<Client> clientProvider;
 	private final EventBus eventBus;
@@ -89,6 +91,9 @@ public class CommandManager
 				break;
 			case CHATBOX_INPUT:
 				handleInput(event);
+				break;
+			case PRIVMATE_MESSAGE:
+				handlePrivateMessage(event);
 				break;
 		}
 	}
@@ -156,6 +161,48 @@ public class CommandManager
 		}
 	}
 
+	private void handlePrivateMessage(ScriptCallbackEvent event)
+	{
+		Client client = clientProvider.get();
+		final String[] stringStack = client.getStringStack();
+		final int[] intStack = client.getIntStack();
+		int stringStackCount = client.getStringStackSize();
+		int intStackCount = client.getIntStackSize();
+
+		final String target = stringStack[stringStackCount - 2];
+		final String message = stringStack[stringStackCount - 1];
+
+		PrivateMessageInput privateMessageInput = new PrivateMessageInput(target, message)
+		{
+			private boolean resumed;
+
+			@Override
+			public void resume()
+			{
+				if (resumed)
+				{
+					return;
+				}
+				resumed = true;
+
+				ClientThread clientThread = clientThreadProvider.get();
+				clientThread.invokeLater(() -> sendPrivmsg(target, message));
+			}
+		};
+
+		boolean stop = false;
+		for (ChatboxInputListener chatboxInputListener : chatboxInputListenerList)
+		{
+			stop |= chatboxInputListener.onPrivateMessageInput(privateMessageInput);
+		}
+
+		if (stop)
+		{
+			intStack[intStackCount - 1] = 1;
+			client.setStringStackSize(stringStackCount - 2); // remove both target and message
+		}
+	}
+
 	private void sendChatboxInput(int chatType, String input)
 	{
 		Client client = clientProvider.get();
@@ -168,5 +215,11 @@ public class CommandManager
 		{
 			sending = false;
 		}
+	}
+
+	private void sendPrivmsg(String target, String message)
+	{
+		Client client = clientProvider.get();
+		client.runScript(ScriptID.PRIVMSG, target, message);
 	}
 }
