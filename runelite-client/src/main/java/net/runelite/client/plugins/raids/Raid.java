@@ -134,4 +134,40 @@ public class Raid
 
 		return builder.toString();
 	}
+
+	public String toRoomsString()
+	{
+		StringBuilder sb = new StringBuilder();
+		final String UNKNOWN = "Unknown";
+		for (Room r : getLayout().getRooms())
+		{
+			int position = r.getPosition();
+			RaidRoom room = getRoom(position);
+
+			if (room == null) continue;
+			if (!(room.getType() == RaidRoom.Type.COMBAT || room.getType() == RaidRoom.Type.PUZZLE)) continue;
+
+			String name;
+			switch (room.getType())
+			{
+				case PUZZLE:
+					name = room.getPuzzle().getName();
+					sb.append(room.getPuzzle().getName());
+					if (name.equals(UNKNOWN)) sb.append(" (puzzle)");
+					sb.append(", ");
+					break;
+				case COMBAT:
+					name = room.getBoss().getName();
+					sb.append(room.getBoss().getName());
+					if (name.equals(UNKNOWN)) sb.append(" (combat)");
+					sb.append(", ");
+					break;
+			}
+		}
+
+
+		String msg = sb.toString();
+		msg = msg.substring(0, msg.length() - 2);
+		return msg;
+	}
 }
