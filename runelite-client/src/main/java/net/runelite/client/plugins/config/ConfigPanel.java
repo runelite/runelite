@@ -88,7 +88,6 @@ import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.ComboBoxListRenderer;
 import net.runelite.client.ui.components.IconButton;
-import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.util.SwingUtil;
 
 @Slf4j
@@ -99,7 +98,6 @@ public class ConfigPanel extends PluginPanel
 	private static final int OFFSET = 6;
 	private static final ImageIcon BACK_ICON;
 	private static final ImageIcon BACK_ICON_HOVER;
-	private static final ImageIcon SEARCH;
 
 	private static final String RUNELITE_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).value();
 	private static final String PINNED_PLUGINS_CONFIG_KEY = "pinnedPlugins";
@@ -112,7 +110,7 @@ public class ConfigPanel extends PluginPanel
 	private final ScheduledExecutorService executorService;
 	private final RuneLiteConfig runeLiteConfig;
 	private final ChatColorConfig chatColorConfig;
-	private final IconTextField searchBar = new IconTextField();
+	private final ConfigSearchBar searchBar = new ConfigSearchBar();
 	private final List<PluginListItem> pluginList = new ArrayList<>();
 
 	private final JPanel topPanel;
@@ -131,7 +129,6 @@ public class ConfigPanel extends PluginPanel
 				BufferedImage backIcon = ImageIO.read(ConfigPanel.class.getResourceAsStream("config_back_icon.png"));
 				BACK_ICON = new ImageIcon(backIcon);
 				BACK_ICON_HOVER = new ImageIcon(SwingUtil.grayscaleOffset(backIcon, -100));
-				SEARCH = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("search.png")));
 			}
 		}
 		catch (IOException e)
@@ -150,10 +147,6 @@ public class ConfigPanel extends PluginPanel
 		this.runeLiteConfig = runeLiteConfig;
 		this.chatColorConfig = chatColorConfig;
 
-		searchBar.setIcon(SEARCH);
-		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 30));
-		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		searchBar.getDocument().addDocumentListener(new DocumentListener()
 		{
 			@Override
