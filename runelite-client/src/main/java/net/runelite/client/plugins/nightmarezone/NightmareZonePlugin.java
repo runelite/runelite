@@ -29,10 +29,12 @@ import java.util.Arrays;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -68,6 +70,9 @@ public class NightmareZonePlugin extends Plugin
 	// This starts as true since you need to get
 	// above the threshold before sending notifications
 	private boolean absorptionNotificationSend = true;
+
+	private boolean overloadActive = false;
+	private int numOverloadTicksOccured = 0;
 
 	@Override
 	protected void startUp() throws Exception
@@ -110,6 +115,10 @@ public class NightmareZonePlugin extends Plugin
 		if (config.absorptionNotification())
 		{
 			checkAbsorption();
+		}
+		if (overloadActive)
+		{
+			checkOverload();
 		}
 	}
 
@@ -163,6 +172,25 @@ public class NightmareZonePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (drankOverloadDose(event))
+		{
+			numOverloadTicksOccured = 0;
+			overloadActive = true;
+		}
+	}
+	
+	private boolean drankOverloadDose(MenuOptionClicked event)
+	{
+		return event.getMenuOption().contains("Drink")
+			&& (event.getId() == ItemID.OVERLOAD_1
+			|| event.getId() == ItemID.OVERLOAD_2
+			|| event.getId() == ItemID.OVERLOAD_3
+			|| event.getId() == ItemID.OVERLOAD_4);
+	}
+
 	private void checkAbsorption()
 	{
 		int absorptionPoints = client.getVar(Varbits.NMZ_ABSORPTION);
@@ -187,5 +215,23 @@ public class NightmareZonePlugin extends Plugin
 	public boolean isInNightmareZone()
 	{
 		return Arrays.equals(client.getMapRegions(), NMZ_MAP_REGION);
+	}
+
+	private void checkOverload()
+	{
+		numOverloadTicksOccured++;
+		int seconds = config.earlyOverloadWarningSeconds();
+		int ticks = (100/60)*seconds;
+		if(numOverloadTicksOccured == 500 - ticks)
+		{
+			if(config.earlyOverloadWarning())
+			{
+				notifier.notify("The effects of overload will wear off in " + 10 + " seconds");
+			}
+		}
+		if(numOverloadTicksOccured >= 500)
+		{
+			overloadActive = false;
+		}
 	}
 }
