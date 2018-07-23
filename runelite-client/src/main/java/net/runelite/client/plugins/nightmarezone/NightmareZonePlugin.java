@@ -221,16 +221,16 @@ public class NightmareZonePlugin extends Plugin
 	{
 		numOverloadTicksOccured++;
 		int seconds = config.earlyOverloadWarningSeconds();
-		double ticksPerSecond = ((double)100)/60;
+		double ticksPerSecond = ((double)100) / 60;
 		int ticks = (int)(ticksPerSecond * seconds);
-		if(numOverloadTicksOccured == 500 - ticks)
+		if (numOverloadTicksOccured == 500 - ticks)
 		{
-			if(config.earlyOverloadWarning())
+			if (config.earlyOverloadWarning())
 			{
 				notifier.notify("The effects of overload will wear off in " + seconds + " seconds");
 			}
 		}
-		if(numOverloadTicksOccured >= 500)
+		if (numOverloadTicksOccured >= 500)
 		{
 			overloadActive = false;
 		}
