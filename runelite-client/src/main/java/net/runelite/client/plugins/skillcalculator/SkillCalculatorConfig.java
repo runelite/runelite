@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,71 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.skillcalculator;
 
-package net.runelite.api;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-/**
- * An enumeration of skills that a player can level.
- */
-public enum Skill
+@ConfigGroup(
+		keyName = "skillCalculator",
+		name = "Skill Calculators",
+		description = "Skill Calculator Panel configuration")
+
+public interface  SkillCalculatorConfig extends Config
 {
-	ATTACK("Attack"),
-	DEFENCE("Defence"),
-	STRENGTH("Strength"),
-	HITPOINTS("Hitpoints"),
-	RANGED("Ranged"),
-	PRAYER("Prayer"),
-	MAGIC("Magic"),
-	COOKING("Cooking"),
-	WOODCUTTING("Woodcutting"),
-	FLETCHING("Fletching"),
-	FISHING("Fishing"),
-	FIREMAKING("Firemaking"),
-	CRAFTING("Crafting"),
-	SMITHING("Smithing"),
-	MINING("Mining"),
-	HERBLORE("Herblore"),
-	AGILITY("Agility"),
-	THIEVING("Thieving"),
-	SLAYER("Slayer"),
-	FARMING("Farming"),
-	RUNECRAFT("Runecraft"),
-	HUNTER("Hunter"),
-	CONSTRUCTION("Construction"),
-	/**
-	 * The level of all skills added together.
-	 */
-	OVERALL("Overall");
+	@ConfigItem(
+			keyName = "showPlannerTab",
+			name = "Show Planner Tab",
+			description = "Shows the Skill Planner tab inside the Calculator Panel")
 
-	private final String name;
-
-	Skill(String name)
+	default boolean showPlannerTab()
 	{
-		this.name = name;
+		return true;
 	}
 
-	/**
-	 * Gets the name of the skill.
-	 *
-	 * @return the skill name
-	 */
-	public String getName()
-	{
-		return name;
-	}
+	@ConfigItem(
+			keyName = "showBankedXp",
+			name = "Show Banked xp Tab",
+			description = "Shows the Banked xp tab inside the Calculator Panel")
 
-	/**
-	 * Gets the skill by name
-	 *
-	 * @return the requested skill (or null)
-	 */
-	public static Skill getByName(String name)
+	default boolean showBankedXp()
 	{
-		for (Skill s : Skill.values())
-		{
-			if (s.getName().equals(name))
-				return s;
-		}
-		return null;
+		return true;
 	}
 }

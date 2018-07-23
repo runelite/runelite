@@ -61,11 +61,12 @@ class UIActionSlot extends JPanel
 		BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_INPROGRESS_COLOR).darker()),
 		BorderFactory.createEmptyBorder(7, 12, 7, 7));
 
-	private static final Dimension ICON_SIZE = new Dimension(32, 32);
+	private static final Dimension ICON_SIZE = new Dimension(35, 35);
 
 	@Getter(AccessLevel.PACKAGE)
 	private final SkillDataEntry action;
 	private final JShadowedLabel uiLabelActions;
+	private final JLabel uiIcon;
 
 	private final JPanel uiInfo;
 
@@ -113,7 +114,7 @@ class UIActionSlot extends JPanel
 
 		addMouseListener(hoverListener);
 
-		JLabel uiIcon = new JLabel();
+		uiIcon = new JLabel();
 
 		if (action.getIcon() != null)
 			SkillCalculator.itemManager.getImage(action.getIcon()).addTo(uiIcon);
@@ -164,6 +165,12 @@ class UIActionSlot extends JPanel
 	void setText(String text)
 	{
 		uiLabelActions.setText(text);
+	}
+
+	void setIconAmount(int amount)
+	{
+		boolean stackable = amount > 0;
+		SkillCalculator.itemManager.getImage(action.getIcon(), amount, stackable).addTo(uiIcon);
 	}
 
 	private void updateBackground()

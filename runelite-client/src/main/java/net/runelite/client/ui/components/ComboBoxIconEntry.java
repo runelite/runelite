@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, TheStonedTurtle <http://www.github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,71 +22,46 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.ui.components;
 
-package net.runelite.api;
+import javax.swing.Icon;
 
 /**
- * An enumeration of skills that a player can level.
+ * Used with ComboBoxIconRenderer to render drop down entries of a ComboBox
+ * with the icon and text added to it.
  */
-public enum Skill
+public class ComboBoxIconEntry
 {
-	ATTACK("Attack"),
-	DEFENCE("Defence"),
-	STRENGTH("Strength"),
-	HITPOINTS("Hitpoints"),
-	RANGED("Ranged"),
-	PRAYER("Prayer"),
-	MAGIC("Magic"),
-	COOKING("Cooking"),
-	WOODCUTTING("Woodcutting"),
-	FLETCHING("Fletching"),
-	FISHING("Fishing"),
-	FIREMAKING("Firemaking"),
-	CRAFTING("Crafting"),
-	SMITHING("Smithing"),
-	MINING("Mining"),
-	HERBLORE("Herblore"),
-	AGILITY("Agility"),
-	THIEVING("Thieving"),
-	SLAYER("Slayer"),
-	FARMING("Farming"),
-	RUNECRAFT("Runecraft"),
-	HUNTER("Hunter"),
-	CONSTRUCTION("Construction"),
-	/**
-	 * The level of all skills added together.
-	 */
-	OVERALL("Overall");
+	private Icon icon;
+	private String text;
+	private Object object = null;
 
-	private final String name;
-
-	Skill(String name)
+	public ComboBoxIconEntry(Icon icon, String text)
 	{
-		this.name = name;
+		this.icon = icon;
+		this.text = text;
 	}
 
-	/**
-	 * Gets the name of the skill.
-	 *
-	 * @return the skill name
-	 */
-	public String getName()
+	public ComboBoxIconEntry(Icon icon, String text, Object object)
 	{
-		return name;
+		this.icon = icon;
+		this.text = text;
+		this.object = object;
 	}
 
-	/**
-	 * Gets the skill by name
-	 *
-	 * @return the requested skill (or null)
-	 */
-	public static Skill getByName(String name)
+	public Icon getIcon()
 	{
-		for (Skill s : Skill.values())
-		{
-			if (s.getName().equals(name))
-				return s;
-		}
-		return null;
+		return this.icon;
 	}
+
+	public String getText()
+	{
+		return this.text;
+	}
+
+	public Object getObject()
+	{
+		return this.object;
+	}
+
 }
