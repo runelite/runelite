@@ -30,6 +30,7 @@ import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
@@ -57,7 +58,7 @@ public class PrayerPlugin extends Plugin
 
 	private Instant startOfLastTick = Instant.now();
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private boolean prayersActive = false;
 
 	@Inject
@@ -248,7 +249,7 @@ public class PrayerPlugin extends Plugin
 		long timeSinceLastTick = Duration.between(startOfLastTick, Instant.now()).toMillis();
 
 		float tickProgress = (timeSinceLastTick % 600) / 600f;
-		tickProgress = Math.min(tickProgress, 1);
+		//tickProgress = Math.min(tickProgress, 1);
 		return tickProgress * Math.PI;
 	}
 
