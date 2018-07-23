@@ -227,7 +227,7 @@ public class NightmareZonePlugin extends Plugin
 		{
 			if(config.earlyOverloadWarning())
 			{
-				notifier.notify("The effects of overload will wear off in " + 10 + " seconds");
+				notifier.notify("The effects of overload will wear off in " + seconds + " seconds");
 			}
 		}
 		if(numOverloadTicksOccured >= 500)
