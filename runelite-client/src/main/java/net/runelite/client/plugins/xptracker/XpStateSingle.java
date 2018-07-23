@@ -220,7 +220,9 @@ class XpStateSingle
 		if (goalEndXp <= 0 || currentXp > goalEndXp)
 		{
 			int currentLevel = Experience.getLevelForXp(currentXp);
-			endLevelExp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;
+			endLevelExp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL
+				? Experience.getXpForLevel(currentLevel + 1)
+				: Experience.MAX_SKILL_XP;
 		}
 		else
 		{
@@ -248,6 +250,8 @@ class XpStateSingle
 			.actionsRemainingToGoal(getActionsRemaining())
 			.actionsPerHour(getActionsHr())
 			.timeTillGoal(getTimeTillLevel())
+			.startGoalXp(startLevelExp)
+			.endGoalXp(endLevelExp)
 			.build();
 	}
 }

@@ -41,6 +41,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Experience;
 import net.runelite.api.Skill;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.ColorScheme;
@@ -200,7 +201,9 @@ class XpInfoBox extends JPanel
 			progressBar.setValue(xpSnapshotSingle.getSkillProgressToGoal());
 			progressBar.setCenterLabel(xpSnapshotSingle.getSkillProgressToGoal() + "%");
 			progressBar.setLeftLabel("Lvl. " + xpSnapshotSingle.getStartLevel());
-			progressBar.setRightLabel("Lvl. " + xpSnapshotSingle.getEndLevel());
+			progressBar.setRightLabel(xpSnapshotSingle.getEndGoalXp() == Experience.MAX_SKILL_XP
+				? "200M"
+				: "Lvl. " + xpSnapshotSingle.getEndLevel());
 
 			progressBar.setToolTipText(String.format(
 				HTML_TOOL_TIP_TEMPLATE,
