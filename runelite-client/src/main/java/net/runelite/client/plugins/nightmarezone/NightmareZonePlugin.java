@@ -221,7 +221,8 @@ public class NightmareZonePlugin extends Plugin
 	{
 		numOverloadTicksOccured++;
 		int seconds = config.earlyOverloadWarningSeconds();
-		int ticks = (100/60)*seconds;
+		double ticksPerSecond = ((double)100)/60;
+		int ticks = (int)(ticksPerSecond * seconds);
 		if(numOverloadTicksOccured == 500 - ticks)
 		{
 			if(config.earlyOverloadWarning())
