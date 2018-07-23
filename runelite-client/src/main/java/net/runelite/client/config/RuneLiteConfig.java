@@ -120,6 +120,17 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "usernameInTitle",
+		name = "Display username in title",
+		description = "Toggles displaying of username in client title",
+		position = 18
+	)
+	default boolean usernameInTitle()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "notificationTray",
 		name = "Enable tray notifications",
 		description = "Enables tray notifications",
