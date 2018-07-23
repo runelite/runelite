@@ -50,6 +50,8 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 @Singleton
 @Slf4j
@@ -71,6 +73,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 	private final Provider<Client> clientProvider;
 	private final OverlayManager overlayManager;
 	private final RuneLiteConfig runeLiteConfig;
+	private final TooltipManager tooltipManager;
 
 	// Overlay movement variables
 	private final Point overlayOffset = new Point();
@@ -91,11 +94,13 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		final OverlayManager overlayManager,
 		final RuneLiteConfig runeLiteConfig,
 		final MouseManager mouseManager,
-		final KeyManager keyManager)
+		final KeyManager keyManager,
+		final TooltipManager tooltipManager)
 	{
 		this.clientProvider = clientProvider;
 		this.overlayManager = overlayManager;
 		this.runeLiteConfig = runeLiteConfig;
+		this.tooltipManager = tooltipManager;
 		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseListener(this);
 	}
@@ -218,6 +223,13 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 					graphics.setColor(movedOverlay == overlay ? MOVING_OVERLAY_ACTIVE_COLOR : MOVING_OVERLAY_COLOR);
 					graphics.draw(bounds);
 					graphics.setColor(previous);
+
+					final net.runelite.api.Point mouseCanvasPosition = client.getMouseCanvasPosition();
+
+					if (movedOverlay != overlay && bounds.contains(mouseCanvasPosition.getX(), mouseCanvasPosition.getY()))
+					{
+						tooltipManager.add(new Tooltip(overlay.getName()));
+					}
 				}
 			}
 		}
