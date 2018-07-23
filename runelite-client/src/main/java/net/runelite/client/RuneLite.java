@@ -118,7 +118,7 @@ public class RuneLite
 	private Provider<ItemManager> itemManager;
 
 	@Inject
-	private ClanManager clanManager;
+	private Provider<ClanManager> clanManager;
 
 	@Inject
 	private InfoBoxManager infoBoxManager;
@@ -258,12 +258,12 @@ public class RuneLite
 		eventBus.register(menuManager);
 		eventBus.register(chatMessageManager);
 		eventBus.register(commandManager);
-		eventBus.register(clanManager);
 		eventBus.register(infoBoxManager);
 
 		if (!isOutdated)
 		{
 			eventBus.register(itemManager.get());
+			eventBus.register(clanManager.get());
 			WidgetOverlay.createOverlays(client).forEach(overlayManager::add);
 		}
 

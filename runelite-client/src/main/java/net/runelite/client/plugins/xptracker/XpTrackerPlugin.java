@@ -53,7 +53,7 @@ import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
-import static net.runelite.client.util.SwingUtil.resizeImage;
+import static net.runelite.client.util.ImageUtil.resizeImage;
 import net.runelite.http.api.xp.XpClient;
 
 @PluginDescriptor(

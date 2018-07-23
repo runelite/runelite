@@ -28,18 +28,18 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.eventbus.Subscribe;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBufferByte;
 import java.awt.image.IndexColorModel;
 import java.awt.image.WritableRaster;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-import javax.imageio.ImageIO;
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ClanMember;
@@ -47,26 +47,35 @@ import net.runelite.api.ClanMemberRank;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.IndexedSprite;
+import net.runelite.api.SpriteID;
 import net.runelite.api.events.ClanChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
 @Singleton
 @Slf4j
 public class ClanManager
 {
-	private static final String[] CLANCHAT_IMAGES =
+	private static final int[] CLANCHAT_IMAGES =
 		{
-			"Friend_clan_rank.png", "Recruit_clan_rank.png",
-			"Corporal_clan_rank.png", "Sergeant_clan_rank.png",
-			"Lieutenant_clan_rank.png", "Captain_clan_rank.png",
-			"General_clan_rank.png", "Owner_clan_rank.png",
-			"JMod_clan_rank.png"
+			SpriteID.CLAN_CHAT_RANK_SMILEY_FRIEND,
+			SpriteID.CLAN_CHAT_RANK_SINGLE_CHEVRON_RECRUIT,
+			SpriteID.CLAN_CHAT_RANK_DOUBLE_CHEVRON_CORPORAL,
+			SpriteID.CLAN_CHAT_RANK_TRIPLE_CHEVRON_SERGEANT,
+			SpriteID.CLAN_CHAT_RANK_BRONZE_STAR_LIEUTENANT,
+			SpriteID.CLAN_CHAT_RANK_SILVER_STAR_CAPTAIN,
+			SpriteID.CLAN_CHAT_RANK_GOLD_STAR_GENERAL,
+			SpriteID.CLAN_CHAT_RANK_KEY_CHANNEL_OWNER,
+			SpriteID.CLAN_CHAT_RANK_CROWN_JAGEX_MODERATOR,
 		};
+	private static final Dimension CLANCHAT_IMAGE_DIMENSION = new Dimension(11, 11);
+	private static final Color CLANCHAT_IMAGE_OUTLINE_COLOR = new Color(33, 33, 33);
 
-	private int modIconsLength;
-
-	private final Provider<Client> clientProvider;
+	private final Client client;
+	private final ClientThread clientThread;
+	private final SpriteManager spriteManager;
 	private final BufferedImage[] clanChatImages = new BufferedImage[CLANCHAT_IMAGES.length];
 
 	private final LoadingCache<String, ClanMemberRank> clanRanksCache = CacheBuilder.newBuilder()
@@ -75,9 +84,8 @@ public class ClanManager
 		.build(new CacheLoader<String, ClanMemberRank>()
 		{
 			@Override
-			public ClanMemberRank load(String key) throws Exception
+			public ClanMemberRank load(@Nonnull String key)
 			{
-				final Client client = clientProvider.get();
 				final ClanMember[] clanMembersArr = client.getClanMembers();
 
 				if (clanMembersArr == null || clanMembersArr.length == 0)
@@ -94,27 +102,14 @@ public class ClanManager
 			}
 		});
 
+	private int modIconsLength;
+
 	@Inject
-	public ClanManager(Provider<Client> clientProvider)
+	private ClanManager(Client client, ClientThread clientThread, SpriteManager spriteManager)
 	{
-		this.clientProvider = clientProvider;
-
-		int i = 0;
-		for (String resource : CLANCHAT_IMAGES)
-		{
-			try
-			{
-				final BufferedImage bufferedImage = rgbaToIndexedBufferedImage(ImageIO
-					.read(ClanManager.class.getResource(resource)));
-				clanChatImages[i] = bufferedImage;
-			}
-			catch (IOException e)
-			{
-				log.warn("unable to load clan image", e);
-			}
-
-			++i;
-		}
+		this.client = client;
+		this.clientThread = clientThread;
+		this.spriteManager = spriteManager;
 	}
 
 	public ClanMemberRank getRank(String playerName)
@@ -140,11 +135,10 @@ public class ClanManager
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN
+		if (gameStateChanged.getGameState() == GameState.LOGGED_IN
 			&& modIconsLength == 0)
 		{
-			// this is after "Loading sprites" so we can modify modicons now
-			loadClanChatIcons();
+			clientThread.invokeLater(this::setClanChatImages);
 		}
 	}
 
@@ -156,26 +150,18 @@ public class ClanManager
 
 	private void loadClanChatIcons()
 	{
-		try
-		{
-			final Client client = clientProvider.get();
-			final IndexedSprite[] modIcons = client.getModIcons();
-			final IndexedSprite[] newModIcons = Arrays.copyOf(modIcons, modIcons.length + CLANCHAT_IMAGES.length);
-			int curPosition = newModIcons.length - CLANCHAT_IMAGES.length;
+		final IndexedSprite[] modIcons = client.getModIcons();
+		final IndexedSprite[] newModIcons = Arrays.copyOf(modIcons, modIcons.length + CLANCHAT_IMAGES.length);
+		int curPosition = newModIcons.length - CLANCHAT_IMAGES.length;
 
-			for (BufferedImage image : clanChatImages)
-			{
-				IndexedSprite sprite = createIndexedSprite(client, image);
-				newModIcons[curPosition++] = sprite;
-			}
-
-			client.setModIcons(newModIcons);
-			modIconsLength = newModIcons.length;
-		}
-		catch (IOException e)
+		for (BufferedImage image : clanChatImages)
 		{
-			log.warn("Failed loading of clan chat icons", e);
+			IndexedSprite sprite = createIndexedSprite(client, image);
+			newModIcons[curPosition++] = sprite;
 		}
+
+		client.setModIcons(newModIcons);
+		modIconsLength = newModIcons.length;
 	}
 
 	private static String sanitize(String lookup)
@@ -184,7 +170,7 @@ public class ClanManager
 		return cleaned.replace('\u00A0', ' ');
 	}
 
-	private static IndexedSprite createIndexedSprite(final Client client, final BufferedImage bufferedImage) throws IOException
+	private static IndexedSprite createIndexedSprite(final Client client, final BufferedImage bufferedImage)
 	{
 		final IndexColorModel indexedCM = (IndexColorModel) bufferedImage.getColorModel();
 
@@ -230,5 +216,23 @@ public class ClanManager
 		final BufferedImage resultIndexedImage = new BufferedImage(resultIcm, raster, sourceBufferedImage.isAlphaPremultiplied(), null);
 		resultIndexedImage.getGraphics().drawImage(sourceBufferedImage, 0, 0, null);
 		return resultIndexedImage;
+	}
+
+	private void setClanChatImages()
+	{
+		final int clanchatImagesLength = CLANCHAT_IMAGES.length;
+		for (int i = 0; i < clanchatImagesLength; i++)
+		{
+			final int resource = CLANCHAT_IMAGES[i];
+			final BufferedImage clanSprite = spriteManager.getSprite(resource, 0);
+			clanChatImages[i] = rgbaToIndexedBufferedImage(clanChatImageFromSprite(clanSprite));
+		}
+		loadClanChatIcons();
+	}
+
+	private static BufferedImage clanChatImageFromSprite(final BufferedImage clanSprite)
+	{
+		final BufferedImage clanChatCanvas = ImageUtil.resizeCanvas(clanSprite, CLANCHAT_IMAGE_DIMENSION.width, CLANCHAT_IMAGE_DIMENSION.height);
+		return ImageUtil.outlineImage(clanChatCanvas, CLANCHAT_IMAGE_OUTLINE_COLOR, (c -> !Color.BLACK.equals(c)));
 	}
 }

@@ -45,7 +45,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconButton;
-import net.runelite.client.util.SwingUtil;
+import net.runelite.client.util.ImageUtil;
 import org.apache.commons.text.similarity.JaroWinklerDistance;
 
 class PluginListItem extends JPanel
@@ -98,7 +98,7 @@ class PluginListItem extends JPanel
 				OFF_STAR = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("stars/off.png")));
 			}
 
-			CONFIG_ICON_HOVER = new ImageIcon(SwingUtil.grayscaleOffset(configIcon, -100));
+			CONFIG_ICON_HOVER = new ImageIcon(ImageUtil.grayscaleOffset(configIcon, -100));
 		}
 		catch (IOException e)
 		{

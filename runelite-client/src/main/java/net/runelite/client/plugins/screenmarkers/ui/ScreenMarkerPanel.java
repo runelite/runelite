@@ -55,7 +55,7 @@ import net.runelite.client.plugins.screenmarkers.ScreenMarkerPlugin;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.FlatTextField;
-import net.runelite.client.util.SwingUtil;
+import net.runelite.client.util.ImageUtil;
 
 class ScreenMarkerPanel extends JPanel
 {
@@ -114,36 +114,36 @@ class ScreenMarkerPanel extends JPanel
 			{
 				BufferedImage borderImg = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("border_color_icon.png"));
 				BORDER_COLOR_ICON = new ImageIcon(borderImg);
-				BORDER_COLOR_HOVER_ICON = new ImageIcon(SwingUtil.grayscaleOffset(borderImg, -100));
+				BORDER_COLOR_HOVER_ICON = new ImageIcon(ImageUtil.grayscaleOffset(borderImg, -100));
 
 				BufferedImage noBorderImg = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("no_border_color_icon.png"));
 				NO_BORDER_COLOR_ICON = new ImageIcon(noBorderImg);
-				NO_BORDER_COLOR_HOVER_ICON = new ImageIcon(SwingUtil.grayscaleOffset(noBorderImg, -100));
+				NO_BORDER_COLOR_HOVER_ICON = new ImageIcon(ImageUtil.grayscaleOffset(noBorderImg, -100));
 
 				BufferedImage fillImg = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("fill_color_icon.png"));
 				FILL_COLOR_ICON = new ImageIcon(fillImg);
-				FILL_COLOR_HOVER_ICON = new ImageIcon(SwingUtil.grayscaleOffset(fillImg, -100));
+				FILL_COLOR_HOVER_ICON = new ImageIcon(ImageUtil.grayscaleOffset(fillImg, -100));
 
 				BufferedImage noFillImg = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("no_fill_color_icon.png"));
 				NO_FILL_COLOR_ICON = new ImageIcon(noFillImg);
-				NO_FILL_COLOR_HOVER_ICON = new ImageIcon(SwingUtil.grayscaleOffset(noFillImg, -100));
+				NO_FILL_COLOR_HOVER_ICON = new ImageIcon(ImageUtil.grayscaleOffset(noFillImg, -100));
 
 				BufferedImage opacityImg = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("opacity_icon.png"));
 				FULL_OPACITY_ICON = new ImageIcon(opacityImg);
-				OPACITY_HOVER_ICON = new ImageIcon(SwingUtil.grayscaleOffset(opacityImg, -100));
-				NO_OPACITY_ICON = new ImageIcon(SwingUtil.grayscaleOffset(opacityImg, -150));
+				OPACITY_HOVER_ICON = new ImageIcon(ImageUtil.grayscaleOffset(opacityImg, -100));
+				NO_OPACITY_ICON = new ImageIcon(ImageUtil.grayscaleOffset(opacityImg, -150));
 
 				BufferedImage visibleImg = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("visible_icon.png"));
 				VISIBLE_ICON = new ImageIcon(visibleImg);
-				VISIBLE_HOVER_ICON = new ImageIcon(SwingUtil.grayscaleOffset(visibleImg, -100));
+				VISIBLE_HOVER_ICON = new ImageIcon(ImageUtil.grayscaleOffset(visibleImg, -100));
 
 				BufferedImage invisibleImg = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("invisible_icon.png"));
 				INVISIBLE_ICON = new ImageIcon(invisibleImg);
-				INVISIBLE_HOVER_ICON = new ImageIcon(SwingUtil.grayscaleOffset(invisibleImg, -100));
+				INVISIBLE_HOVER_ICON = new ImageIcon(ImageUtil.grayscaleOffset(invisibleImg, -100));
 
 				BufferedImage deleteImg = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("delete_icon.png"));
 				DELETE_ICON = new ImageIcon(deleteImg);
-				DELETE_HOVER_ICON = new ImageIcon(SwingUtil.grayscaleOffset(deleteImg, -100));
+				DELETE_HOVER_ICON = new ImageIcon(ImageUtil.grayscaleOffset(deleteImg, -100));
 			}
 		}
 		catch (IOException e)
