@@ -28,6 +28,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.geom.Arc2D;
@@ -35,7 +36,6 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.time.Instant;
-import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
@@ -52,84 +52,109 @@ import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 
 public class XpGlobesOverlay extends Overlay
 {
+	private static final int MINIMUM_STEP = 10;
+	private static final int PROGRESS_RADIUS_START = 90;
+	private static final int PROGRESS_RADIUS_REMAINDER = 0;
+	private static final int DEFAULT_START_Y = 10;
+	private static final int TOOLTIP_RECT_SIZE_X = 150;
+
 	private final Client client;
 	private final XpGlobesPlugin plugin;
 	private final XpGlobesConfig config;
 	private final XpTrackerService xpTrackerService;
 	private final PanelComponent xpTooltip = new PanelComponent();
+	private final SkillIconManager iconManager;
 
 	@Inject
-	private SkillIconManager iconManager;
-
-	private static final int MINIMUM_STEP = 10;
-
-	private static final int PROGRESS_RADIUS_START = 90;
-	private static final int PROGRESS_RADIUS_REMAINDER = 0;
-
-	private static final int DEFAULT_START_Y = 10;
-
-	private static final int TOOLTIP_RECT_SIZE_X = 150;
-
-	@Inject
-	public XpGlobesOverlay(Client client, XpGlobesPlugin plugin, XpGlobesConfig config, XpTrackerService xpTrackerService)
+	private XpGlobesOverlay(
+		Client client,
+		XpGlobesPlugin plugin,
+		XpGlobesConfig config,
+		XpTrackerService xpTrackerService,
+		SkillIconManager iconManager)
 	{
-		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.HIGH);
+		this.iconManager = iconManager;
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
 		this.xpTrackerService = xpTrackerService;
+		setPosition(OverlayPosition.DETACHED);
+		setPriority(OverlayPriority.HIGH);
+	}
+
+	@Override
+	public Rectangle getBounds()
+	{
+		//if this is null there is no reason to draw e.g. switching between resizable and fixed
+		final Widget viewportWidget = client.getViewportWidget();
+		if (viewportWidget == null)
+		{
+			return new Rectangle();
+		}
+
+		final int queueSize = plugin.getXpGlobesSize();
+		if (queueSize == 0)
+		{
+			return new Rectangle();
+		}
+
+		// Get width of markers
+		final int markersLength = (queueSize * (config.xpOrbSize())) + ((MINIMUM_STEP) * (queueSize - 1));
+
+		final int startDrawX;
+		final int startDrawY;
+		if (getPreferredLocation() == null)
+		{
+			//check the width of the client if we can draw properly
+			final int clientWidth;
+			switch (config.centerOrbs())
+			{
+				case MIDDLE_CANVAS:
+					clientWidth = client.getViewportWidth();
+					break;
+				case MIDDLE_VIEWPORT:
+					clientWidth = viewportWidget.getWidth();
+					break;
+				case DYNAMIC:
+					clientWidth = (viewportWidget.getWidth() + client.getViewportWidth()) / 2;
+					break;
+				default:
+					clientWidth = client.getViewportWidth();
+					break;
+			}
+
+			startDrawX = clientWidth / 2 - markersLength / 2;
+			startDrawY = DEFAULT_START_Y;
+		}
+		else
+		{
+			startDrawX = getPreferredLocation().x;
+			startDrawY = getPreferredLocation().y;
+		}
+
+		return new Rectangle(startDrawX, startDrawY, markersLength, config.xpOrbSize());
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		//if this is null there is no reason to draw e.g. switching between resizable and fixed
-		Widget viewportWidget = client.getViewportWidget();
-		if (viewportWidget == null)
+		final Rectangle bounds = getBounds();
+		if (bounds.isEmpty())
 		{
 			return null;
 		}
 
-		//check the width of the client if we can draw properly
-		int clientWidth;
-		switch (config.centerOrbs())
+		int curDrawX = 0;
+		for (final XpGlobe xpGlobe : plugin.getXpGlobes())
 		{
-			case MIDDLE_CANVAS:
-				clientWidth = client.getViewportWidth();
-				break;
-			case MIDDLE_VIEWPORT:
-				clientWidth = viewportWidget.getWidth();
-				break;
-			case DYNAMIC:
-				clientWidth = (viewportWidget.getWidth() + client.getViewportWidth()) / 2;
-				break;
-			default:
-				clientWidth = client.getViewportWidth();
-				break;
-		}
-		if (clientWidth <= 0)
-		{
-			return null;
-		}
-		
-		int queueSize = plugin.getXpGlobesSize();
-		if (queueSize > 0)
-		{
-			List<XpGlobe> xpChangedQueue = plugin.getXpGlobes();
-			int markersLength = (queueSize * (config.xpOrbSize())) + ((MINIMUM_STEP) * (queueSize - 1));
-			int startDrawX = (clientWidth - markersLength) / 2;
-
-			for (XpGlobe xpGlobe : xpChangedQueue)
-			{
-				renderProgressCircle(graphics, xpGlobe, startDrawX, DEFAULT_START_Y);
-				startDrawX += MINIMUM_STEP + config.xpOrbSize();
-			}
+			renderProgressCircle(graphics, xpGlobe, curDrawX, 0, bounds);
+			curDrawX += MINIMUM_STEP + config.xpOrbSize();
 		}
 
-		return null;
+		return bounds.getSize();
 	}
-	private void renderProgressCircle(Graphics2D graphics, XpGlobe skillToDraw, int x, int y)
+
+	private void renderProgressCircle(Graphics2D graphics, XpGlobe skillToDraw, int x, int y, Rectangle bounds)
 	{
 		double radiusCurrentXp = skillToDraw.getSkillProgressRadius();
 		double radiusToGoalXp = 360; //draw a circle
@@ -161,7 +186,7 @@ public class XpGlobesOverlay extends Overlay
 
 		if (config.enableTooltips())
 		{
-			drawTooltipIfMouseover(graphics, skillToDraw, backgroundCircle);
+			drawTooltipIfMouseover(graphics, skillToDraw, backgroundCircle, bounds);
 		}
 	}
 
@@ -204,11 +229,11 @@ public class XpGlobesOverlay extends Overlay
 		);
 	}
 
-	private void drawTooltipIfMouseover(Graphics2D graphics, XpGlobe mouseOverSkill, Ellipse2D drawnGlobe)
+	private void drawTooltipIfMouseover(Graphics2D graphics, XpGlobe mouseOverSkill, Ellipse2D drawnGlobe, Rectangle bounds)
 	{
 		Point mouse = client.getMouseCanvasPosition();
-		int mouseX = mouse.getX();
-		int mouseY = mouse.getY();
+		int mouseX = mouse.getX() - bounds.x;
+		int mouseY = mouse.getY() - bounds.y;
 
 		if (!drawnGlobe.contains(mouseX, mouseY))
 		{
