@@ -249,7 +249,6 @@ public class PrayerPlugin extends Plugin
 		long timeSinceLastTick = Duration.between(startOfLastTick, Instant.now()).toMillis();
 
 		float tickProgress = (timeSinceLastTick % 600) / 600f;
-		//tickProgress = Math.min(tickProgress, 1);
 		return tickProgress * Math.PI;
 	}
 
