@@ -230,6 +230,6 @@ public class NightmareZonePlugin extends Plugin
 				notifier.notify("The effects of overload will wear off in " + seconds + " seconds");
 			}
 		}
-		overloadActive = numOverloadTicksOccured >= 500;
+		overloadActive = numOverloadTicksOccured < 500;
 	}
 }
