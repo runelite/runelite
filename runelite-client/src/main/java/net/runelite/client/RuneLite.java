@@ -241,7 +241,7 @@ public class RuneLite
 		sessionManager.loadSession();
 
 		// Initialize UI
-		clientUI.open(this);
+		clientUI.init(this);
 
 		// Initialize Discord service
 		discordService.init();
@@ -272,6 +272,9 @@ public class RuneLite
 
 		// Start plugins
 		pluginManager.startCorePlugins();
+
+		// Show the window
+		clientUI.show();
 	}
 
 	public void shutdown()

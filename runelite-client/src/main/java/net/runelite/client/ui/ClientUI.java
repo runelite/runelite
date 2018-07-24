@@ -280,7 +280,7 @@ public class ClientUI
 	 * @param runelite runelite instance that will be shut down on exit
 	 * @throws Exception exception that can occur during creation of the UI
 	 */
-	public void open(final RuneLite runelite) throws Exception
+	public void init(final RuneLite runelite) throws Exception
 	{
 		SwingUtilities.invokeAndWait(() ->
 		{
@@ -391,6 +391,28 @@ public class ClientUI
 				});
 			}
 
+			trayIcon = SwingUtil.createTrayIcon(ICON, properties.getTitle(), frame);
+
+			// Create hide sidebar button
+			sidebarNavigationButton = NavigationButton
+				.builder()
+				.icon(SIDEBAR_CLOSE)
+				.onClick(this::toggleSidebar)
+				.build();
+
+			sidebarNavigationJButton = SwingUtil.createSwingButton(
+				sidebarNavigationButton,
+				0,
+				null);
+
+			titleToolbar.addComponent(sidebarNavigationButton, sidebarNavigationJButton);
+		});
+	}
+
+	public void show()
+	{
+		SwingUtilities.invokeLater(() ->
+		{
 			// Show frame
 			frame.pack();
 			frame.revalidateMinimumSize();
@@ -425,13 +447,7 @@ public class ClientUI
 			{
 				frame.setLocationRelativeTo(frame.getOwner());
 			}
-
-			trayIcon = SwingUtil.createTrayIcon(ICON, properties.getTitle(), frame);
-
-			frame.setVisible(true);
-			frame.toFront();
-			requestFocus();
-			giveClientFocus();
+			toggleSidebar();
 
 			// If the frame is well hidden (e.g. unplugged 2nd screen),
 			// we want to move it back to default position as it can be
@@ -446,32 +462,22 @@ public class ClientUI
 				frame.setLocationRelativeTo(frame.getOwner());
 			}
 
-			// Create hide sidebar button
-			sidebarNavigationButton = NavigationButton
-				.builder()
-				.icon(SIDEBAR_CLOSE)
-				.onClick(this::toggleSidebar)
-				.build();
+			frame.setVisible(true);
+			frame.toFront();
+			requestFocus();
+			giveClientFocus();
 
-			sidebarNavigationJButton = SwingUtil.createSwingButton(
-				sidebarNavigationButton,
-				0,
-				null);
-
-			titleToolbar.addComponent(sidebarNavigationButton, sidebarNavigationJButton);
-			toggleSidebar();
-			log.info("Showing frame {}", frame);
+			// Show out of date dialog if needed, after the main frame is shown so it
+			// gets foregrounded correctly
+			final boolean isOutdated = !(client instanceof Client);
+			if (isOutdated)
+			{
+				JOptionPane.showMessageDialog(frame,
+					"RuneLite has not yet been updated to work with the latest\n"
+						+ "game update, it will work with reduced functionality until then.",
+					"RuneLite is outdated", INFORMATION_MESSAGE);
+			}
 		});
-
-		// Show out of date dialog if needed
-		final boolean isOutdated = !(client instanceof Client);
-		if (isOutdated)
-		{
-			SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame,
-				"RuneLite has not yet been updated to work with the latest\n"
-					+ "game update, it will work with reduced functionality until then.",
-				"RuneLite is outdated", INFORMATION_MESSAGE));
-		}
 	}
 
 	private boolean showWarningOnExit()
