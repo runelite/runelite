@@ -24,11 +24,22 @@
  */
 package net.runelite.client.plugins.wasdcamera;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("wasdcamera")
 public interface WASDCameraConfig extends Config
 {
-
+	@ConfigItem(
+			keyName = "overlayColor",
+			name = "Overlay Color",
+			description = "Color of Text Overlay",
+			position = 1
+	)
+	default Color getOverlayColor()
+	{
+		return Color.gray;
+	}
 }

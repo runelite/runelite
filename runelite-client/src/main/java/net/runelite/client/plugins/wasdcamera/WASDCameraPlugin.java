@@ -26,13 +26,13 @@ package net.runelite.client.plugins.wasdcamera;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
@@ -62,12 +62,10 @@ public class WASDCameraPlugin extends Plugin
 	private WASDCameraOverlay overlay;
 
 	@Inject
-	private WASDCameraConfig config;
+	public WASDCameraConfig config;
 
 	@Inject
 	private WASDCameraListener inputListener;
-
-	private Robot robot;
 
 	private static final int W_KEY = KeyEvent.VK_W;
 	private static final int A_KEY = KeyEvent.VK_A;
@@ -76,15 +74,11 @@ public class WASDCameraPlugin extends Plugin
 
 	private static final int ENTER_KEY = KeyEvent.VK_ENTER;
 	private static final int SLASH_KEY = KeyEvent.VK_SLASH;
-	private static final int TAB_KEY = KeyEvent.VK_TAB;
-	private static final int SHIFT_KEY = KeyEvent.VK_SHIFT;
 
-	private static final int DELETE_KEY = KeyEvent.VK_BACK_SPACE;
-
-	private static final int[] WIDGET_OVERRIDES = {10616876, 10616877};
+	private static final int[] WIDGET_HIDDEN_OVERRIDES = {10616876, 10616877};
+	private static final int[] WIDGET_CLICKED_OVERRIDES = {38993941, 38993954, 36241409, 10616859, 36241417};
 
 	public boolean canType;
-	public boolean widgetOverride;
 	public boolean inFocus;
 	public boolean loggedIn;
 
@@ -99,8 +93,7 @@ public class WASDCameraPlugin extends Plugin
 	{
 		keyManager.registerKeyListener(inputListener);
 		overlayManager.add(overlay);
-		robot = new Robot();
-		setWidgetOverride(false);
+		canType = false;
 	}
 
 	@Override
@@ -108,7 +101,6 @@ public class WASDCameraPlugin extends Plugin
 	{
 		keyManager.unregisterKeyListener(inputListener);
 		overlayManager.remove(overlay);
-		robot = null;
 	}
 
 	@Subscribe
@@ -128,17 +120,41 @@ public class WASDCameraPlugin extends Plugin
 	public void onFocusChanged(FocusChanged f)
 	{
 		inFocus = f.isFocused();
+		overlay.updateOverlay();
 	}
 
 	@Subscribe
 	public void onWidgetHiddenChanged(WidgetHiddenChanged e)
 	{
 		Widget w = e.getWidget();
-		//System.out.println("Widget id: " + w.getId() + " name: " + w.getName()  + " hidden: " + w.isHidden());
 
-		if (isWidgetOverride(w.getId()))
+		//System.out.println("Widget Changed: " + w.getId() + " name: " + w.getName()  + " hidden: " + w.isHidden());
+
+		if (isWidgetHiddenOverride(w.getId()))
 		{
-			setWidgetOverride(w.isHidden());
+			canType = w.isHidden();
+		}
+
+		overlay.updateOverlay();
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked e)
+	{
+		String o = e.getMenuOption();
+
+		//System.out.println("Widget Clicked: " + e.getMenuOption() + " widgetId: " + e.getWidgetId());
+
+		if (isWidgetClickedOverride(e.getWidgetId()))
+		{
+			if (o.startsWith("Search") || o.startsWith("Report"))
+			{
+				canType = true;
+			}
+			else
+			{
+				canType = false;
+			}
 		}
 
 		overlay.updateOverlay();
@@ -149,16 +165,23 @@ public class WASDCameraPlugin extends Plugin
 		return loggedIn && inFocus;
 	}
 
-	private void setWidgetOverride(boolean b)
+	private boolean isWidgetHiddenOverride(int id)
 	{
-		widgetOverride = b;
+		for (int i = 0; i < WIDGET_HIDDEN_OVERRIDES.length; i++)
+		{
+			if (id == WIDGET_HIDDEN_OVERRIDES[i])
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
-	private boolean isWidgetOverride(int id)
+	private boolean isWidgetClickedOverride(int id)
 	{
-		for (int i = 0; i < WIDGET_OVERRIDES.length; i++)
+		for (int i = 0; i < WIDGET_CLICKED_OVERRIDES.length; i++)
 		{
-			if (id == WIDGET_OVERRIDES[i])
+			if (id == WIDGET_CLICKED_OVERRIDES[i])
 			{
 				return true;
 			}
@@ -168,11 +191,10 @@ public class WASDCameraPlugin extends Plugin
 
 	public void handleKeyPress(KeyEvent e)
 	{
-		if (!canType && !widgetOverride)
+		if (!canType)
 		{
 			switch (e.getKeyCode())
 			{
-				// Press Camera keys
 				case W_KEY:
 					e.setKeyCode(KeyEvent.VK_UP);
 					break;
@@ -208,7 +230,6 @@ public class WASDCameraPlugin extends Plugin
 	{
 		switch (e.getKeyCode())
 		{
-			// Release Camera keys
 			case W_KEY:
 				e.setKeyCode(KeyEvent.VK_UP);
 				break;
