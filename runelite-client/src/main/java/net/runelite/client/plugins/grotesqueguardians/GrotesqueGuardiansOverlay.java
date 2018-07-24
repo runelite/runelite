@@ -33,7 +33,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GraphicID;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.Perspective;
-import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -101,13 +100,6 @@ public class GrotesqueGuardiansOverlay extends Overlay
 			if (color != null)
 			{
 				OverlayUtil.renderPolygon(graphics, poly, color);
-
-				Point textLocation = Perspective.getCanvasTextLocation(client, graphics, lp, "", 0);
-
-				if (textLocation != null)
-				{
-					OverlayUtil.renderTextLocation(graphics, textLocation, "", color);
-				}
 			}
 		}
 		return null;
