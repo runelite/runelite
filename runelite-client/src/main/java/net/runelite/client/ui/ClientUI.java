@@ -167,7 +167,7 @@ public class ClientUI
 			return;
 		}
 
-		SwingUtilities.invokeLater(this::updateFrameConfig);
+		SwingUtilities.invokeLater(() -> updateFrameConfig(event.getKey().equals("lockWindowSize")));
 	}
 
 	@Subscribe
@@ -338,7 +338,7 @@ public class ClientUI
 			keyManager.registerKeyListener(uiKeyListener);
 
 			// Update config
-			updateFrameConfig();
+			updateFrameConfig(true);
 
 			// Decorate window with custom chrome and titlebar if needed
 			final boolean withTitleBar = config.enableCustomChrome();
@@ -692,7 +692,7 @@ public class ClientUI
 		}
 	}
 
-	private void updateFrameConfig()
+	private void updateFrameConfig(boolean updateResizable)
 	{
 		if (frame == null)
 		{
@@ -704,7 +704,11 @@ public class ClientUI
 			frame.setAlwaysOnTop(config.gameAlwaysOnTop());
 		}
 
-		frame.setResizable(!config.lockWindowSize());
+		if (updateResizable)
+		{
+			frame.setResizable(!config.lockWindowSize());
+		}
+
 		frame.setExpandResizeType(config.automaticResizeType());
 		frame.setContainedInScreen(config.containInScreen() && config.enableCustomChrome());
 
