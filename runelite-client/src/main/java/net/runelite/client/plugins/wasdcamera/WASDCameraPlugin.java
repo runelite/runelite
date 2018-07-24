@@ -31,11 +31,10 @@ import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.VarClientStr;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.VarClientStrChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -68,6 +67,8 @@ public class WASDCameraPlugin extends Plugin
 	@Inject
 	private WASDCameraListener inputListener;
 
+	private Robot robot;
+
 	private static final int W_KEY = KeyEvent.VK_W;
 	private static final int A_KEY = KeyEvent.VK_A;
 	private static final int S_KEY = KeyEvent.VK_S;
@@ -80,13 +81,10 @@ public class WASDCameraPlugin extends Plugin
 
 	private static final int DELETE_KEY = KeyEvent.VK_BACK_SPACE;
 
-	private static final int DUMMY_KEY = KeyEvent.VK_HOME;
-
-	private Robot robot;
+	private static final int[] WIDGET_OVERRIDES = {10616876, 10616877};
 
 	public boolean canType;
-	public boolean typingInChat;
-	public boolean showOverlay;
+	public boolean widgetOverride;
 	public boolean inFocus;
 	public boolean loggedIn;
 
@@ -99,17 +97,18 @@ public class WASDCameraPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		robot = new Robot();
 		keyManager.registerKeyListener(inputListener);
 		overlayManager.add(overlay);
+		robot = new Robot();
+		setWidgetOverride(false);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		robot = null;
 		keyManager.unregisterKeyListener(inputListener);
 		overlayManager.remove(overlay);
+		robot = null;
 	}
 
 	@Subscribe
@@ -131,122 +130,96 @@ public class WASDCameraPlugin extends Plugin
 		inFocus = f.isFocused();
 	}
 
+	@Subscribe
+	public void onWidgetHiddenChanged(WidgetHiddenChanged e)
+	{
+		Widget w = e.getWidget();
+		//System.out.println("Widget id: " + w.getId() + " name: " + w.getName()  + " hidden: " + w.isHidden());
+
+		if (isWidgetOverride(w.getId()))
+		{
+			setWidgetOverride(w.isHidden());
+		}
+
+		overlay.updateOverlay();
+	}
+
+	public boolean canHandle()
+	{
+		return loggedIn && inFocus;
+	}
+
+	private void setWidgetOverride(boolean b)
+	{
+		widgetOverride = b;
+	}
+
+	private boolean isWidgetOverride(int id)
+	{
+		for (int i = 0; i < WIDGET_OVERRIDES.length; i++)
+		{
+			if (id == WIDGET_OVERRIDES[i])
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void handleKeyPress(KeyEvent e)
 	{
-		// Return was pressed, stop here
-		if (e.getKeyCode() == SHIFT_KEY)
+		if (!canType && !widgetOverride)
 		{
-			return;
-		}
-
-		// If enter was pressed, toggle canType
-		if (e.getKeyCode() == ENTER_KEY && typingInChat)
-		{
-			canType = !canType;
-		}
-
-		// If tab or slash, set canType to true
-		if (e.getKeyCode() == TAB_KEY ||
-				e.getKeyCode() == SLASH_KEY)
-		{
-			canType = true;
-		}
-
-		// Input locked
-		if (!canType && typingInChat)
-		{
-			// If key is alphabet, digit or whitespace
-			if (Character.isAlphabetic(e.getKeyCode()) ||
-					(Character.isDigit(e.getKeyCode()) ||
-							Character.isWhitespace(e.getKeyCode())))
+			switch (e.getKeyCode())
 			{
-				pressCameraKey(e);
+				// Press Camera keys
+				case W_KEY:
+					e.setKeyCode(KeyEvent.VK_UP);
+					break;
+				case A_KEY:
+					e.setKeyCode(KeyEvent.VK_LEFT);
+					break;
+				case S_KEY:
+					e.setKeyCode(KeyEvent.VK_DOWN);
+					break;
+				case D_KEY:
+					e.setKeyCode(KeyEvent.VK_RIGHT);
+					break;
+				case ENTER_KEY:
+				case SLASH_KEY:
+					canType = true;
+					break;
+			}
+		}
+		else
+		{
+			switch (e.getKeyCode())
+			{
+				case ENTER_KEY:
+					canType = false;
+					break;
 			}
 		}
 
 		overlay.updateOverlay();
 	}
 
-	@Subscribe
-	public void onVarClientStrChanged(VarClientStrChanged e)
-	{
-		// If chat string changed
-		if (e.getIndex() == 1)
-		{
-			typingInChat = true;
-
-			// If input was added to chat string but can't type, delete it
-			// NOTE: This only happens if pressing keys fast
-			if (client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) != null &&
-					client.getVar(VarClientStr.CHATBOX_TYPED_TEXT).length() > 0 && !canType)
-			{
-				pressDeleteKey();
-			}
-		}
-
-		// If not typing in chat
-		else if (e.getIndex() != 0)
-		{
-			typingInChat = false;
-		}
-	}
-
-	@Subscribe
-	public void onWidgetHiddenChanged(WidgetHiddenChanged e)
-	{
-		// Press dummy key to sync chat states
-		pressDummyKey();
-	}
-
-	public void pressDeleteKey()
-	{
-		robot.keyPress(DELETE_KEY);
-	}
-
-	public void pressDummyKey()
-	{
-		if (inFocus)
-		{
-			robot.keyPress(DUMMY_KEY);
-		}
-	}
-
-	public void pressCameraKey(KeyEvent e)
-	{
-		switch (e.getKeyCode())
-		{
-			// Press Camera keys
-			case W_KEY:
-				robot.keyPress(KeyEvent.VK_UP);
-				break;
-			case A_KEY:
-				robot.keyPress(KeyEvent.VK_LEFT);
-				break;
-			case S_KEY:
-				robot.keyPress(KeyEvent.VK_DOWN);
-				break;
-			case D_KEY:
-				robot.keyPress(KeyEvent.VK_RIGHT);
-				break;
-		}
-	}
-
-	public void releaseCameraKey(KeyEvent e)
+	public void handleKeyRelease(KeyEvent e)
 	{
 		switch (e.getKeyCode())
 		{
 			// Release Camera keys
 			case W_KEY:
-				robot.keyRelease(KeyEvent.VK_UP);
+				e.setKeyCode(KeyEvent.VK_UP);
 				break;
 			case A_KEY:
-				robot.keyRelease(KeyEvent.VK_LEFT);
+				e.setKeyCode(KeyEvent.VK_LEFT);
 				break;
 			case S_KEY:
-				robot.keyRelease(KeyEvent.VK_DOWN);
+				e.setKeyCode(KeyEvent.VK_DOWN);
 				break;
 			case D_KEY:
-				robot.keyRelease(KeyEvent.VK_RIGHT);
+				e.setKeyCode(KeyEvent.VK_RIGHT);
 				break;
 		}
 	}

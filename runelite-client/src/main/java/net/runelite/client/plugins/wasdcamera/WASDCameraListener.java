@@ -39,21 +39,19 @@ public class WASDCameraListener extends MouseListener implements KeyListener
 	public void keyTyped(KeyEvent e)
 	{
 		// Consume key type if can't type, logged in, in focus and typing in chat
-		if (!plugin.canType && plugin.loggedIn && plugin.inFocus && plugin.typingInChat)
+		if (plugin.canHandle() && !plugin.canType && !plugin.widgetOverride)
 		{
 			e.consume();
 		}
-
-		// Reset typing in chat to false
-		plugin.typingInChat = false;
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
 		// Handle key press if logged in and in focus
-		if (plugin.loggedIn && plugin.inFocus)
+		if (plugin.canHandle())
 		{
+			//plugin.trimChat(e);
 			plugin.handleKeyPress(e);
 		}
 	}
@@ -62,9 +60,9 @@ public class WASDCameraListener extends MouseListener implements KeyListener
 	public void keyReleased(KeyEvent e)
 	{
 		// Release camera keys if can't type, logged in and in focus
-		if (!plugin.canType && plugin.loggedIn && plugin.inFocus)
+		if (plugin.canHandle())
 		{
-			plugin.releaseCameraKey(e);
+			plugin.handleKeyRelease(e);
 		}
 	}
 }

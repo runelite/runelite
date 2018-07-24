@@ -85,7 +85,6 @@ public class WASDCameraOverlay extends Overlay
 				textComponent.setPosition(new Point(offset, Y));
 				textComponent.setColor(Color.gray);
 				rendered = true;
-				plugin.pressDummyKey();
 			}
 		}
 
@@ -95,7 +94,7 @@ public class WASDCameraOverlay extends Overlay
 	public void updateOverlay()
 	{
 		// Update text of component based on lock and typing in chat
-		if (!plugin.canType)
+		if (!plugin.canType && !plugin.widgetOverride)
 		{
 			textComponent.setText(lockedMessage);
 		}
