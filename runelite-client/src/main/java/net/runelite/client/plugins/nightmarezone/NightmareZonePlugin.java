@@ -175,6 +175,10 @@ public class NightmareZonePlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
+		if (!isInNightmareZone())
+		{
+			return;
+		}
 		if (drankOverloadDose(event))
 		{
 			numOverloadTicksOccured = 0;
