@@ -443,7 +443,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("reset", option, target, true);
 		}
-		else if (config.swapBoxTrap() && option.equals("take"))
+		else if (config.layBoxTrap() && option.equals("take"))
 		{
 			swap("lay", option, target, true);
 		}
