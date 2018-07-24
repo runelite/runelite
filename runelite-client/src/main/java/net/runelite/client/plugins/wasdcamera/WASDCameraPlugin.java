@@ -78,9 +78,9 @@ public class WASDCameraPlugin extends Plugin
 	private static final int[] WIDGET_HIDDEN_OVERRIDES = {10616876, 10616877};
 	private static final int[] WIDGET_CLICKED_OVERRIDES = {38993941, 38993954, 36241409, 10616859, 36241417};
 
-	public boolean canType;
-	public boolean inFocus;
-	public boolean loggedIn;
+	public boolean canType = false;
+	public boolean inFocus = true;
+	public boolean loggedIn = false;
 
 	@Provides
 	WASDCameraConfig getConfig(ConfigManager configManager)
@@ -93,7 +93,6 @@ public class WASDCameraPlugin extends Plugin
 	{
 		keyManager.registerKeyListener(inputListener);
 		overlayManager.add(overlay);
-		canType = false;
 	}
 
 	@Override
@@ -128,6 +127,8 @@ public class WASDCameraPlugin extends Plugin
 	{
 		Widget w = e.getWidget();
 
+		//System.out.println("Changed: "+ w.getName() + " ID: " + w.getId());
+
 		if (isWidgetHiddenOverride(w.getId()))
 		{
 			canType = w.isHidden();
@@ -140,6 +141,8 @@ public class WASDCameraPlugin extends Plugin
 	public void onMenuOptionClicked(MenuOptionClicked e)
 	{
 		String o = e.getMenuOption();
+
+		//System.out.println("Clicked: "+ o + " ID: " + e.getWidgetId());
 
 		if (isWidgetClickedOverride(e.getWidgetId()))
 		{
