@@ -106,6 +106,7 @@ public class WidgetID
 	public static final int DESTROY_ITEM_GROUP_ID = 584;
 	public static final int VARROCK_MUSEUM_QUIZ_GROUP_ID = 533;
 	public static final int KILL_LOGS_GROUP_ID = 549;
+	public static final int DIARY_QUEST_GROUP_ID = 275;
 
 	static class WorldMap
 	{
@@ -241,7 +242,12 @@ public class WidgetID
 
 	static class Viewport
 	{
-		static final int MINIMAP_WIDGET = 17;
+		static final int MINIMAP_RESIZABLE_WIDGET = 17;
+		static final int MINIMAP_RESIZABLE_CLICKBOX = 18;
+		static final int MINIMAP_RESIZABLE_DRAW_AREA = 25;
+		static final int MINIMAP_RESIZABLE_DECORATIONS = 27;
+		static final int MINIMAP_RESIZABLE_ORB_HOLDER = 28;
+		static final int MINIMAP_RESIZABLE_LOGOUT_BUTTON = 30;
 		static final int FIXED_VIEWPORT = 17;
 		static final int RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX = 12;
 		static final int RESIZABLE_VIEWPORT_BOTTOM_LINE = 12;
@@ -249,6 +255,8 @@ public class WidgetID
 
 	static class FixedViewport
 	{
+		static final int MINIMAP = 3;
+		static final int MINIMAP_DRAW_AREA = 8;
 		static final int CLAN_CHAT_TAB = 31;
 		static final int FRIENDS_TAB = 32;
 		static final int IGNORES_TAB = 33;
@@ -506,7 +514,7 @@ public class WidgetID
 
 	static class ExperienceTracker
 	{
-		static final int WIDGET = 1;
+		static final int WIDGET = 2;
 		static final int BOTTOM_BAR = 14;
 	}
 
@@ -540,6 +548,12 @@ public class WidgetID
 		static final int BARROWS_BROTHERS = 9;
 		static final int BARROWS_POTENTIAL = 10;
 		static final int BARROWS_REWARD_INVENTORY = 3;
+	}
+
+	static class Diary
+	{
+		static final int DIARY_TITLE = 2;
+		static final int DIARY_TEXT = 1;
 	}
 
 	static class MTA

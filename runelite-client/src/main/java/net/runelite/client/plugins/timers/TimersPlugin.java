@@ -54,6 +54,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.timers.GameTimer.ABYSSAL_SIRE_STUN;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUS;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUSPLUS;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIFIRE;
@@ -94,7 +95,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 @PluginDescriptor(
 	name = "Timers",
 	description = "Show various timers in an infobox",
-	tags = {"combat", "items", "magic", "potions", "prayer", "overlay"}
+	tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire"}
 )
 public class TimersPlugin extends Plugin
 {
@@ -463,6 +464,32 @@ public class TimersPlugin extends Plugin
 	public void onAnimationChanged(AnimationChanged event)
 	{
 		Actor actor = event.getActor();
+
+		if (config.showAbyssalSireStun()
+			&& actor instanceof NPC)
+		{
+			int npcId = ((NPC)actor).getId();
+
+			switch (npcId)
+			{
+				// Show the countdown when the Sire enters the stunned state.
+				case NpcID.ABYSSAL_SIRE_5887:
+					createGameTimer(ABYSSAL_SIRE_STUN);
+					break;
+
+				// Hide the countdown if the Sire isn't in the stunned state.
+				// This is necessary because the Sire leaves the stunned
+				// state early once all all four respiratory systems are killed.
+				case NpcID.ABYSSAL_SIRE:
+				case NpcID.ABYSSAL_SIRE_5888:
+				case NpcID.ABYSSAL_SIRE_5889:
+				case NpcID.ABYSSAL_SIRE_5890:
+				case NpcID.ABYSSAL_SIRE_5891:
+				case NpcID.ABYSSAL_SIRE_5908:
+					removeGameTimer(ABYSSAL_SIRE_STUN);
+					break;
+			}
+		}
 
 		if (actor != client.getLocalPlayer())
 		{

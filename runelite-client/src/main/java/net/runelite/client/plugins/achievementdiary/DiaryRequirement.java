@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Marshall <https://github.com/marshdevs>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,12 +23,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client;
+package net.runelite.client.plugins.achievementdiary;
 
-public enum UpdateCheckMode
+import lombok.Getter;
+
+@Getter
+class DiaryRequirement
 {
-	AUTO,
-	NONE,
-	VANILLA,
-	RUNELITE
+	private final String task;
+	private final Requirement[] skillRequirements;
+
+	DiaryRequirement(String task, Requirement[] skillRequirements)
+	{
+		this.task = task;
+		this.skillRequirements = skillRequirements;
+	}
 }

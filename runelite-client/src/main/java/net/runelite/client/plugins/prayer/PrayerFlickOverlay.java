@@ -67,7 +67,7 @@ class PrayerFlickOverlay extends Overlay
 			return null;
 		}
 
-		Widget xpOrb = client.getWidget(WidgetInfo.QUICK_PRAYER_ORB);
+		Widget xpOrb = client.getWidget(WidgetInfo.MINIMAP_QUICK_PRAYER_ORB);
 		if (xpOrb == null)
 		{
 			return null;

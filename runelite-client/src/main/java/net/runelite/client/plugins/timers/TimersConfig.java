@@ -294,4 +294,15 @@ public interface TimersConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 24,
+		keyName = "showAbyssalSireStun",
+		name = "Abyssal Sire Stun Timer",
+		description = "Configures whether Abyssal Sire stun timer is displayed"
+	)
+	default boolean showAbyssalSireStun()
+	{
+		return true;
+	}
 }

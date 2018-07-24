@@ -119,6 +119,13 @@ public abstract class RSWidgetMixin implements RSWidget
 			return rsParentId;
 		}
 
+		final int id = getId();
+		if (TO_GROUP(id) == client.getWidgetRoot())
+		{
+			// this is a root widget
+			return -1;
+		}
+
 		int parentId = rl$parentId;
 		if (parentId != -1)
 		{
@@ -130,7 +137,7 @@ public abstract class RSWidgetMixin implements RSWidget
 			// check the parent in the component table
 			HashTable<WidgetNode> componentTable = client.getComponentTable();
 			WidgetNode widgetNode = componentTable.get(parentId);
-			if (widgetNode == null || widgetNode.getId() != TO_GROUP(getId()))
+			if (widgetNode == null || widgetNode.getId() != TO_GROUP(id))
 			{
 				// invalidate parent
 				rl$parentId = -1;
@@ -191,6 +198,11 @@ public abstract class RSWidgetMixin implements RSWidget
 	@Override
 	public boolean isHidden()
 	{
+		if (isSelfHidden())
+		{
+			return true;
+		}
+
 		Widget parent = getParent();
 
 		if (parent == null)
@@ -208,7 +220,7 @@ public abstract class RSWidgetMixin implements RSWidget
 			return true;
 		}
 
-		return isSelfHidden();
+		return false;
 	}
 
 	@Inject

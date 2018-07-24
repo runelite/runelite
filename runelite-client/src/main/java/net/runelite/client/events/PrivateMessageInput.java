@@ -27,6 +27,10 @@ package net.runelite.client.events;
 import lombok.Data;
 
 @Data
-public class ClientUILoaded
+public abstract class PrivateMessageInput
 {
+	private final String target;
+	private final String message;
+
+	public abstract void resume();
 }
