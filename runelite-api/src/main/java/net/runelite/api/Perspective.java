@@ -35,10 +35,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.model.Jarvis;
 import net.runelite.api.model.Triangle;
 import net.runelite.api.model.Vertex;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 
 /**
  * A utility class containing methods to help with conversion between
@@ -188,6 +191,7 @@ public class Perspective
 	 * @return a {@link Point} on screen corresponding to the position in
 	 * 3D-space
 	 */
+	@Nullable
 	public static Point worldToMiniMap(@Nonnull Client client, int x, int y)
 	{
 		return worldToMiniMap(client, x, y, 6400);
@@ -204,30 +208,52 @@ public class Perspective
 	 * @return a {@link Point} on screen corresponding to the position in
 	 * 3D-space
 	 */
+	@Nullable
 	public static Point worldToMiniMap(@Nonnull Client client, int x, int y, int distance)
 	{
-		int angle = client.getMapAngle() & 0x7FF;
-
 		LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
-		x = x / 32 - localLocation.getX() / 32;
-		y = y / 32 - localLocation.getY() / 32;
+		final int sceneX = x >>> LOCAL_COORD_BITS;
+		final int sceneY = y >>> LOCAL_COORD_BITS;
+		x = sceneX * 4 + 2 - localLocation.getX() / 32;
+		y = sceneY * 4 + 2 - localLocation.getY() / 32;
 
 		int dist = x * x + y * y;
 		if (dist < distance)
 		{
-			int sin = SINE[angle];
-			int cos = COSINE[angle];
+			Widget minimapDrawWidget;
+			if (client.isResized())
+			{
+				if (client.getVar(Varbits.SIDE_PANELS) == 1)
+				{
+					minimapDrawWidget = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_DRAW_AREA);
+				}
+				else
+				{
+					minimapDrawWidget = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_STONES_DRAW_AREA);
+				}
+			}
+			else
+			{
+				minimapDrawWidget = client.getWidget(WidgetInfo.FIXED_VIEWPORT_MINIMAP_DRAW_AREA);
+			}
 
-			int xx = y * sin + cos * x >> 16;
-			int yy = sin * x - y * cos >> 16;
+			if (minimapDrawWidget == null || minimapDrawWidget.isHidden())
+			{
+				return null;
+			}
 
-			int miniMapX = client.isResized()
-				? client.getCanvas().getWidth() - 167
-				: Constants.GAME_FIXED_WIDTH - 208;
+			final int angle = client.getMapAngle() & 0x7FF;
 
-			x = (miniMapX + 167 / 2) + xx;
-			y = (167 / 2 - 1) + yy;
-			return new Point(x, y);
+			final int sin = SINE[angle];
+			final int cos = COSINE[angle];
+
+			final int xx = y * sin + cos * x >> 16;
+			final int yy = sin * x - y * cos >> 16;
+
+			Point loc = minimapDrawWidget.getCanvasLocation();
+			int miniMapX = loc.getX() + xx + minimapDrawWidget.getWidth() / 2;
+			int miniMapY = minimapDrawWidget.getHeight() / 2 + loc.getY() + yy;
+			return new Point(miniMapX, miniMapY);
 		}
 
 		return null;

@@ -23,30 +23,35 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.client;
+package net.runelite.client.rs;
 
 import java.io.IOException;
+import okhttp3.OkHttpClient;
 import org.junit.Test;
 
 /**
  *
  * @author Adam
  */
-public class ConfigLoaderTest
+public class ClientConfigLoaderTest
 {
 	@Test
 	public void test() throws IOException
 	{
-		ConfigLoader loader = new ConfigLoader();
-		loader.fetch();
+		final ClientConfigLoader loader = new ClientConfigLoader(new OkHttpClient());
+		final RSConfig config = loader.fetch();
 
-		for (String key : loader.getProperties().keySet())
-			System.out.println(key + ": " + loader.getProperty(key));
+		for (String key : config.getClassLoaderProperties().keySet())
+		{
+			System.out.println(key + ": " + config.getClassLoaderProperties().get(key));
+		}
 
 		System.out.println("Applet properties:");
 
-		for (String key : loader.getAppletProperties().keySet())
-			System.out.println(key + ": " + loader.getAppletProperty(key));
+		for (String key : config.getAppletProperties().keySet())
+		{
+			System.out.println(key + ": " + config.getAppletProperties().get(key));
+		}
 	}
 
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,75 +23,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.util;
+package net.runelite.client.rs;
 
-import java.awt.event.KeyEvent;
-import java.util.function.Supplier;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import net.runelite.client.config.Keybind;
-import net.runelite.client.input.KeyListener;
 
-@RequiredArgsConstructor
-public abstract class HotkeyListener implements KeyListener
+@Getter
+class RSConfig
 {
-	private final Supplier<Keybind> keybind;
+	private final Map<String, String> appletProperties = new HashMap<>();
+	private final Map<String, String> classLoaderProperties = new HashMap<>();
 
-	@Getter
-	private boolean isPressed = false;
-
-	private boolean isConsumingTyped = false;
-
-	@Override
-	public void keyTyped(KeyEvent e)
+	String getCodeBase()
 	{
-		if (isConsumingTyped)
-		{
-			e.consume();
-		}
+		return classLoaderProperties.get("codebase");
 	}
 
-	@Override
-	public void keyPressed(KeyEvent e)
+	String getInitialJar()
 	{
-		if (keybind.get().matches(e))
-		{
-			boolean wasPressed = isPressed;
-			isPressed = true;
-			if (!wasPressed)
-			{
-				hotkeyPressed();
-			}
-			if (Keybind.getModifierForKeyCode(e.getKeyCode()) == null)
-			{
-				isConsumingTyped = true;
-				// Only consume non modifier keys
-				e.consume();
-			}
-		}
+		return classLoaderProperties.get("initial_jar");
 	}
 
-	@Override
-	public void keyReleased(KeyEvent e)
+	String getInitialClass()
 	{
-		if (keybind.get().matches(e))
-		{
-			isPressed = false;
-			isConsumingTyped = false;
-			hotkeyReleased();
-			if (Keybind.getModifierForKeyCode(e.getKeyCode()) == null)
-			{
-				// Only consume non modifier keys
-				e.consume();
-			}
-		}
-	}
-
-	public void hotkeyPressed()
-	{
-	}
-
-	public void hotkeyReleased()
-	{
+		return classLoaderProperties.get("initial_class").replace(".class", "");
 	}
 }

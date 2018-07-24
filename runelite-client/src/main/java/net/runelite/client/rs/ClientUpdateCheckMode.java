@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.rs;
 
-package net.runelite.client;
-
-import java.applet.AppletContext;
-import java.applet.AppletStub;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-public class RSStub implements AppletStub
+public enum ClientUpdateCheckMode
 {
-	private final ConfigLoader config;
-
-	public RSStub(ConfigLoader config)
-	{
-		this.config = config;
-	}
-
-	@Override
-	public boolean isActive()
-	{
-		return true;
-	}
-
-	@Override
-	public URL getDocumentBase()
-	{
-		return getCodeBase();
-	}
-
-	@Override
-	public URL getCodeBase()
-	{
-		try
-		{
-			return new URL(config.getProperty(ConfigLoader.CODEBASE));
-		}
-		catch (MalformedURLException ex)
-		{
-			return null;
-		}
-	}
-
-	@Override
-	public String getParameter(String name)
-	{
-		return config.getAppletProperty(name);
-	}
-
-	@Override
-	public AppletContext getAppletContext()
-	{
-		return null;
-	}
-
-	@Override
-	public void appletResize(int width, int height)
-	{
-
-	}
-	
+	AUTO,
+	NONE,
+	VANILLA,
+	RUNELITE
 }
