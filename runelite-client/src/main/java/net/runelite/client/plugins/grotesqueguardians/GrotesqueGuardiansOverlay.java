@@ -57,16 +57,9 @@ class GrotesqueGuardiansOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!client.isInInstancedRegion())
+		if (!client.isInInstancedRegion() || client.getMapRegions()[0] != GROTESQUE_GUARDIANS_REGION_ID)
 		{
 			return null;
-		}
-		else
-		{
-			if (client.getMapRegions()[0] != GROTESQUE_GUARDIANS_REGION_ID)
-			{
-				return null;
-			}
 		}
 
 		// TODO: Awaiting GraphicsObjectDespawn event to be tracked to make this more efficient.
