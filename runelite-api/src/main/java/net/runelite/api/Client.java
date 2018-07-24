@@ -1399,6 +1399,10 @@ public interface Client extends GameEngine
 	 */
 	void setInventoryDragDelay(int delay);
 
+	boolean isHdMinimapEnabled();
+
+	void setHdMinimapEnabled(boolean enabled);
+
 	/**
 	 * Gets a set of current world types that apply to the logged in world.
 	 *

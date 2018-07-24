@@ -154,6 +154,9 @@ public abstract class RSClientMixin implements RSClient
 	private static RSItem lastItemDespawn;
 
 	@Inject
+	private static boolean hdMinimapEnabled;
+
+	@Inject
 	@Override
 	public Callbacks getCallbacks()
 	{
@@ -214,6 +217,20 @@ public abstract class RSClientMixin implements RSClient
 	public void setInventoryDragDelay(int delay)
 	{
 		inventoryDragDelay = delay;
+	}
+
+	@Inject
+	@Override
+	public boolean isHdMinimapEnabled()
+	{
+		return hdMinimapEnabled;
+	}
+
+	@Inject
+	@Override
+	public void setHdMinimapEnabled(boolean enabled)
+	{
+		hdMinimapEnabled = enabled;
 	}
 
 	@Inject
