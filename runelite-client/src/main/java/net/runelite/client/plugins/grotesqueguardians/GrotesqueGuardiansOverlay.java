@@ -76,7 +76,6 @@ public class GrotesqueGuardiansOverlay extends Overlay
 			LocalPoint lp = graphicsObject.getLocation();
 			Polygon poly = Perspective.getCanvasTilePoly(client, lp);
 			Color color = null;
-			String text = "";
 
 			if (poly == null)
 			{
@@ -86,19 +85,16 @@ public class GrotesqueGuardiansOverlay extends Overlay
 			if (graphicsObject.getId() >= GraphicID.GROTESQUE_GUARDIANS_LIGHTNING_BEG && graphicsObject.getId() <= GraphicID.GROTESQUE_GUARDIANS_LIGHTNING_END)
 			{
 				color = Color.ORANGE;
-				text = "Lightning";
 			}
 
 			if (graphicsObject.getId() == GraphicID.GROTESQUE_GUARDIANS_STONE_ORB)
 			{
 				color = Color.GRAY;
-				text = "Stone Orb";
 			}
 
 			if (graphicsObject.getId() == GraphicID.GROTESQUE_GUARDIANS_FALLING_ROCKS)
 			{
 				color = Color.YELLOW;
-				text = "Falling Rocks";
 
 			}
 
@@ -106,11 +102,11 @@ public class GrotesqueGuardiansOverlay extends Overlay
 			{
 				OverlayUtil.renderPolygon(graphics, poly, color);
 
-				Point textLocation = Perspective.getCanvasTextLocation(client, graphics, lp, text, 0);
+				Point textLocation = Perspective.getCanvasTextLocation(client, graphics, lp, "", 0);
 
 				if (textLocation != null)
 				{
-					OverlayUtil.renderTextLocation(graphics, textLocation, text, color);
+					OverlayUtil.renderTextLocation(graphics, textLocation, "", color);
 				}
 			}
 		}
