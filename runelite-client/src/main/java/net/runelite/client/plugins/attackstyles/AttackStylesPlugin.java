@@ -310,9 +310,7 @@ public class AttackStylesPlugin extends Plugin
 	private void updateWarning(boolean weaponSwitch)
 	{
 		warnedSkillSelected = false;
-		String[]styleBuilderArray = new String[4];
-		String styleBuilder = "";
-		int count = 0;
+		StringBuilder builder = new StringBuilder();
 		if (attackStyle != null)
 		{
 			for (Skill skill : attackStyle.getSkills())
@@ -324,8 +322,12 @@ public class AttackStylesPlugin extends Plugin
 						// If all variables have been set, this guard will be set to false, therefore, continuing the code block pertaining to messages.
 						if (!messageTickGuarded)
 						{
-							count++;
-							styleBuilderArray[count] = getAttackColor(skill);
+							if (builder.length() > 0)
+							{
+								builder.append(", ");
+							}
+
+							builder.append(getAttackColor(skill));
 						}
 					}
 					warnedSkillSelected = true;
@@ -336,45 +338,21 @@ public class AttackStylesPlugin extends Plugin
 			{
 				if (!messageTickGuarded)
 				{
-					for (int i = 1; i <= count; i++)
-					{
-						if (i == 1)
-						{
-							styleBuilder = styleBuilderArray[i];
-							continue;
-						}
-						else if (i == 2 && count != 2)
-						{
-							styleBuilder += (", " + styleBuilderArray[i]);
-							continue;
-						}
-						else if (i == 2 && count == 2)
-						{
-							styleBuilder += (" and " + styleBuilderArray[i]);
-							continue;
-						}
-						else if (i == 3)
-						{
-							styleBuilder += (", and " + styleBuilderArray[i]);
-							continue;
-						}
-					}
-
 					// If the login message has been sent, it will run the corresponding messages if it's a weaponSwitch or just a combatStyle change.
 					if (loginMessageSent)
 					{
 						if (weaponSwitch)
 						{
-							sendChatMessage("This weapon's attack style will grant you " + styleBuilder + " XP.");
+							sendChatMessage("This weapon's attack style will grant XP in: " + builder);
 						}
 						else
 						{
-							sendChatMessage("This attack style will grant you " + styleBuilder + " XP.");
+							sendChatMessage("This attack style will grant XP in: " + builder);
 						}
 					}
 					else
 					{
-						sendChatMessage("You logged in wielding a weapon that will grant you " + styleBuilder + " XP.");
+						sendChatMessage("You logged in wielding a weapon that will grant XP in: " + builder);
 					}
 				}
 			}
