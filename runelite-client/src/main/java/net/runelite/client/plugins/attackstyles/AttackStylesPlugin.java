@@ -341,21 +341,23 @@ public class AttackStylesPlugin extends Plugin
 					if (builder.length() > 0)
 					{
 						// If the login message has been sent, it will run the corresponding messages if it's a weaponSwitch or just a combatStyle change.
+						String attackStyleWarningFormat = "";
 						if (loginMessageSent)
 						{
 							if (weaponSwitch)
 							{
-								sendChatMessage("This weapon's attack style will grant XP in: " + builder);
+								attackStyleWarningFormat = "This weapon's attack style will grant XP in: ";
 							}
 							else
 							{
-								sendChatMessage("This attack style will grant XP in: " + builder);
+								attackStyleWarningFormat = "This attack style will grant XP in: ";
 							}
 						}
 						else
 						{
-							sendChatMessage("You logged in wielding a weapon that will grant XP in: " + builder);
+							attackStyleWarningFormat = "You logged in wielding a weapon that will grant XP in: ";
 						}
+						sendChatMessage(attackStyleWarningFormat + builder);
 					}
 				}
 			}
