@@ -1119,20 +1119,17 @@ public abstract class RSClientMixin implements RSClient
 		for (Widget rlWidget : widgets)
 		{
 			RSWidget widget = (RSWidget) rlWidget;
-			if (widget == null)
+			if (widget == null || widget.getRSParentId() != parentId)
 			{
 				continue;
 			}
 
-			if (widget.getRSParentId() == parentId)
+			if (parentId != -1)
 			{
-				if (parentId != -1)
-				{
-					widget.setRenderParentId(parentId);
-				}
-				widget.setRenderX(x + widget.getRelativeX());
-				widget.setRenderY(y + widget.getRelativeY());
+				widget.setRenderParentId(parentId);
 			}
+			widget.setRenderX(x + widget.getRelativeX());
+			widget.setRenderY(y + widget.getRelativeY());
 
 			HashTable<WidgetNode> componentTable = client.getComponentTable();
 			WidgetNode childNode = componentTable.get(widget.getId());

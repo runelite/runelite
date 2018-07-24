@@ -70,4 +70,9 @@ public final class ScriptID
 	 * because you need an op listener attached to it for it to work
 	 */
 	public static final int NULL = 10003;
+
+	/**
+	 * Send a private message.
+	 */
+	public static final int PRIVMSG = 10004;
 }

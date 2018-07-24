@@ -25,6 +25,7 @@
 package net.runelite.client;
 
 import com.google.inject.Guice;
+import net.runelite.client.rs.ClientUpdateCheckMode;
 import org.junit.Test;
 
 public class RuneLiteModuleTest
@@ -32,8 +33,6 @@ public class RuneLiteModuleTest
 	@Test
 	public void testConfigure()
 	{
-		Guice.createInjector(new RuneLiteModule());
+		Guice.createInjector(new RuneLiteModule(ClientUpdateCheckMode.AUTO, true));
 	}
-
-
 }
