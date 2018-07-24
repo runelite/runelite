@@ -44,7 +44,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 @PluginDescriptor(
 	name = "Minimap",
 	description = "Customize the color of minimap dots",
-	tags = {"items", "npcs", "players"}
+	tags = {"items", "npcs", "players", "hd"}
 )
 public class MinimapPlugin extends Plugin
 {
@@ -70,6 +70,8 @@ public class MinimapPlugin extends Plugin
 		updateMinimapWidgetVisibility(config.hideMinimap());
 		storeOriginalDots();
 		replaceMapDots();
+
+		client.setHdMinimapEnabled(config.hdMinimapEnabled());
 	}
 
 	@Override
@@ -77,6 +79,8 @@ public class MinimapPlugin extends Plugin
 	{
 		updateMinimapWidgetVisibility(false);
 		restoreOriginalDots();
+
+		client.setHdMinimapEnabled(false);
 	}
 
 	@Subscribe
@@ -94,6 +98,12 @@ public class MinimapPlugin extends Plugin
 	{
 		if (!event.getGroup().equals("minimap"))
 		{
+			return;
+		}
+
+		if (event.getKey().equals("hdMinimapEnabled"))
+		{
+			client.setHdMinimapEnabled(config.hdMinimapEnabled());
 			return;
 		}
 
