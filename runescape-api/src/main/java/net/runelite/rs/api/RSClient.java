@@ -472,10 +472,6 @@ public interface RSClient extends RSGameShell, Client
 	@Override
 	int getGameCycle();
 
-	// unused
-	//@Import("packetHandler")
-	//void packetHandler();
-
 	@Import("Messages_channels")
 	@Override
 	Map getChatLineMap();
