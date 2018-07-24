@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.prayer;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -98,10 +99,32 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 6,
+		keyName = "prayerBarFillColor",
+		name = "Prayer bar fill color",
+		description = "Color of the prayer bar's fill meter."
+	)
+	default Color getPrayerBarFillColor()
+	{
+		return Color.CYAN;
+	}
+
+	@ConfigItem(
+			position = 7,
+			keyName = "prayerBarBackgroundColor",
+			name = "Prayer bar background color",
+			description = "Color of the prayer bar's background."
+	)
+	default Color getPrayerBarBackgroundColor()
+	{
+		return Color.BLACK;
+	}
+
+	@ConfigItem(
+		position = 8,
 		keyName = "prayerBarHideIfNotPraying",
 		name = "Hide bar while prayer is inactive",
-		description = "Prayer bar will be hidden while prayers are inactivate.",
-		position = 6
+		description = "Prayer bar will be hidden while prayers are inactivate."
 	)
 	default boolean hideIfNotPraying()
 	{
@@ -109,10 +132,10 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 9,
 		keyName = "prayerBarHideIfNonCombat",
 		name = "Hide bar while out-of-combat",
-		description = "Prayer bar will be hidden while out-of-combat.",
-		position = 7
+		description = "Prayer bar will be hidden while out-of-combat."
 	)
 	default boolean hideIfOutOfCombat()
 	{

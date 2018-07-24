@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.prayer;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
@@ -45,8 +44,7 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 @Singleton
 class PrayerBarOverlay extends Overlay
 {
-	private static final Color BAR_FILL_COLOR = Color.cyan;
-	private static final Color BAR_BG_COLOR = Color.white;
+
 	private static final Dimension PRAYER_BAR_SIZE = new Dimension(30, 5);
 
 	private final Client client;
@@ -86,9 +84,9 @@ class PrayerBarOverlay extends Overlay
 		// Restricted by the width to prevent the bar from being too long while you are boosted above your real prayer level.
 		final int progressFill = (int) Math.ceil(Math.min((barWidth * ratio), barWidth));
 
-		graphics.setColor(BAR_BG_COLOR);
+		graphics.setColor(config.getPrayerBarBackgroundColor());
 		graphics.fillRect(barX, barY, barWidth, barHeight);
-		graphics.setColor(BAR_FILL_COLOR);
+		graphics.setColor(config.getPrayerBarFillColor());
 		graphics.fillRect(barX, barY, progressFill, barHeight);
 		return new Dimension(barWidth, barHeight);
 	}
