@@ -330,7 +330,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 		int itemId = event.getIdentifier();
 		String option = Text.removeTags(event.getOption()).toLowerCase();
 		String target = Text.removeTags(event.getTarget()).toLowerCase();
-
+		
+		if (option.equals("attack"))
+		{
+			if (config.swapPickpocket() && target.contains("guard"))
+			{
+				swap("pickpocket", option, target, true);
+			}
+		}
+		
 		if (option.equals("talk-to"))
 		{
 			if (config.swapPickpocket() && target.contains("h.a.m."))
