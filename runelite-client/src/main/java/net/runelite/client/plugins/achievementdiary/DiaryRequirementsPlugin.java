@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.achievementdiary;
 
 import com.google.common.eventbus.Subscribe;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -51,6 +52,7 @@ import net.runelite.client.plugins.achievementdiary.diaries.MorytaniaDiaryRequir
 import net.runelite.client.plugins.achievementdiary.diaries.VarrockDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.WesternDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.WildernessDiaryRequirement;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
 @Slf4j
@@ -256,16 +258,16 @@ public class DiaryRequirementsPlugin extends Plugin
 	private String combine(List<RequirementStringBuilder> list)
 	{
 		StringBuilder requirementsString = new StringBuilder();
-		requirementsString.append("<col=000000> (");
+		requirementsString.append(ColorUtil.prependColorTag(" (", Color.WHITE));
 		for (RequirementStringBuilder req : list)
 		{
-			requirementsString.append("<col=000080>")
+			requirementsString.append(ColorUtil.colorTag(new Color(0x80)))
 				.append(req.getRequirementString())
 				.append(", ");
 		}
 		requirementsString.deleteCharAt(requirementsString.length() - 1);
 		requirementsString.deleteCharAt(requirementsString.length() - 2);
-		requirementsString.append("<col=000000>)");
+		requirementsString.append(ColorUtil.prependColorTag(")", Color.WHITE));
 
 		return requirementsString.toString();
 	}
