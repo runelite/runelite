@@ -310,33 +310,72 @@ public class AttackStylesPlugin extends Plugin
 	private void updateWarning(boolean weaponSwitch)
 	{
 		warnedSkillSelected = false;
+		String[]styleBuilderArray = new String[4];
+		String styleBuilder = "";
+		int count = 0;
 		if (attackStyle != null)
 		{
 			for (Skill skill : attackStyle.getSkills())
 			{
 				if (warnedSkills.contains(skill))
 				{
-					// If all variables have been set, this guard will be set to false, therefore, continuing the code block pertaining to messages.
-					if (!messageTickGuarded)
+					if (config.warningMessages())
 					{
-						// If the login message has been sent, it will run the corresponding messages if it's a weaponSwitch or just a combatStyle change.
-						if (loginMessageSent)
+						// If all variables have been set, this guard will be set to false, therefore, continuing the code block pertaining to messages.
+						if (!messageTickGuarded)
 						{
-							if (weaponSwitch)
-							{
-								sendChatMessage("This weapon's attack style will grant you " + getAttackColor(skill) + " XP.");
-							}
-							else
-							{
-								sendChatMessage("This attack style will grant you " + getAttackColor(skill) + " XP.");
-							}
-						}
-						else
-						{
-							sendChatMessage("You logged in wielding a weapon that will grant you " + getAttackColor(skill) + " XP.");
+							count++;
+							styleBuilderArray[count] = getAttackColor(skill);
 						}
 					}
 					warnedSkillSelected = true;
+				}
+			}
+
+			if (config.warningMessages())
+			{
+				if (!messageTickGuarded)
+				{
+					for (int i = 1; i <= count; i++)
+					{
+						if (i == 1)
+						{
+							styleBuilder = styleBuilderArray[i];
+							continue;
+						}
+						else if (i == 2 && count != 2)
+						{
+							styleBuilder += (", " + styleBuilderArray[i]);
+							continue;
+						}
+						else if (i == 2 && count == 2)
+						{
+							styleBuilder += (" and " + styleBuilderArray[i]);
+							continue;
+						}
+						else if (i == 3)
+						{
+							styleBuilder += (", and " + styleBuilderArray[i]);
+							continue;
+						}
+					}
+
+					// If the login message has been sent, it will run the corresponding messages if it's a weaponSwitch or just a combatStyle change.
+					if (loginMessageSent)
+					{
+						if (weaponSwitch)
+						{
+							sendChatMessage("This weapon's attack style will grant you " + styleBuilder + " XP.");
+						}
+						else
+						{
+							sendChatMessage("This attack style will grant you " + styleBuilder + " XP.");
+						}
+					}
+					else
+					{
+						sendChatMessage("You logged in wielding a weapon that will grant you " + styleBuilder + " XP.");
+					}
 				}
 			}
 		}
@@ -415,20 +454,16 @@ public class AttackStylesPlugin extends Plugin
 
 	private void sendChatMessage(String chatMessage)
 	{
-		if (config.warningMessages())
-		{
-			final String message = new ChatMessageBuilder()
-				.append(ChatColorType.NORMAL)
-				.append("<col=871A1A>[ATTACK STYLE]</col> ")
-				.append(chatMessage)
-				.build();
+		final String message = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
+			.append(chatMessage)
+			.build();
 
-			chatMessageManager.queue(
-				QueuedMessage.builder()
-					.type(ChatMessageType.GAME)
-					.runeLiteFormattedMessage(message)
-					.build());
-		}
+		chatMessageManager.queue(
+			QueuedMessage.builder()
+				.type(ChatMessageType.GAME)
+				.runeLiteFormattedMessage(message)
+				.build());
 	}
 
 	private String getAttackColor(Skill skill)
@@ -439,13 +474,22 @@ public class AttackStylesPlugin extends Plugin
 			case ATTACK:
 			case STRENGTH:
 			case DEFENCE:
+			{
 				color = "<col=D44A4A>";
+				break;
+			}
 			case RANGED:
+			{
 				color = "<col=259443>";
+				break;
+			}
 			case MAGIC:
+			{
 				color = "<col=369EB3>";
+				break;
+			}
 		}
-		return color + skill + "</col>";
+		return color + skill.getName() + "</col>";
 	}
 
 	@VisibleForTesting
