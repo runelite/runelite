@@ -128,8 +128,6 @@ public class WASDCameraPlugin extends Plugin
 	{
 		Widget w = e.getWidget();
 
-		//System.out.println("Widget Changed: " + w.getId() + " name: " + w.getName()  + " hidden: " + w.isHidden());
-
 		if (isWidgetHiddenOverride(w.getId()))
 		{
 			canType = w.isHidden();
@@ -142,8 +140,6 @@ public class WASDCameraPlugin extends Plugin
 	public void onMenuOptionClicked(MenuOptionClicked e)
 	{
 		String o = e.getMenuOption();
-
-		//System.out.println("Widget Clicked: " + e.getMenuOption() + " widgetId: " + e.getWidgetId());
 
 		if (isWidgetClickedOverride(e.getWidgetId()))
 		{
