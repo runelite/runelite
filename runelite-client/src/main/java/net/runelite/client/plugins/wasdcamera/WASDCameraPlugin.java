@@ -62,12 +62,10 @@ public class WASDCameraPlugin extends Plugin
 	private WASDCameraOverlay overlay;
 
 	@Inject
-	private WASDCameraConfig config;
+	public WASDCameraConfig config;
 
 	@Inject
 	private WASDCameraListener inputListener;
-
-	private Robot robot;
 
 	private static final int W_KEY = KeyEvent.VK_W;
 	private static final int A_KEY = KeyEvent.VK_A;
@@ -76,10 +74,6 @@ public class WASDCameraPlugin extends Plugin
 
 	private static final int ENTER_KEY = KeyEvent.VK_ENTER;
 	private static final int SLASH_KEY = KeyEvent.VK_SLASH;
-	private static final int TAB_KEY = KeyEvent.VK_TAB;
-	private static final int SHIFT_KEY = KeyEvent.VK_SHIFT;
-
-	private static final int DELETE_KEY = KeyEvent.VK_BACK_SPACE;
 
 	private static final int[] WIDGET_OVERRIDES = {10616876, 10616877};
 
@@ -99,7 +93,6 @@ public class WASDCameraPlugin extends Plugin
 	{
 		keyManager.registerKeyListener(inputListener);
 		overlayManager.add(overlay);
-		robot = new Robot();
 		setWidgetOverride(false);
 	}
 
@@ -108,7 +101,6 @@ public class WASDCameraPlugin extends Plugin
 	{
 		keyManager.unregisterKeyListener(inputListener);
 		overlayManager.remove(overlay);
-		robot = null;
 	}
 
 	@Subscribe
@@ -128,6 +120,7 @@ public class WASDCameraPlugin extends Plugin
 	public void onFocusChanged(FocusChanged f)
 	{
 		inFocus = f.isFocused();
+		overlay.updateOverlay();
 	}
 
 	@Subscribe

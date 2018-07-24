@@ -83,7 +83,7 @@ public class WASDCameraOverlay extends Overlay
 
 				textComponent.setText(lockedMessage);
 				textComponent.setPosition(new Point(offset, Y));
-				textComponent.setColor(Color.gray);
+				textComponent.setColor(plugin.config.getOverlayColor());
 				rendered = true;
 			}
 		}
@@ -97,6 +97,7 @@ public class WASDCameraOverlay extends Overlay
 		if (!plugin.canType && !plugin.widgetOverride)
 		{
 			textComponent.setText(lockedMessage);
+			textComponent.setColor(plugin.config.getOverlayColor());
 		}
 		else
 		{
