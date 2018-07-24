@@ -40,7 +40,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-public class GrotesqueGuardiansOverlay extends Overlay
+class GrotesqueGuardiansOverlay extends Overlay
 {
 	private final Client client;
 	private final int GROTESQUE_GUARDIANS_REGION_ID = 6727;
@@ -81,7 +81,7 @@ public class GrotesqueGuardiansOverlay extends Overlay
 				return null;
 			}
 
-			if (graphicsObject.getId() >= GraphicID.GROTESQUE_GUARDIANS_LIGHTNING_BEG && graphicsObject.getId() <= GraphicID.GROTESQUE_GUARDIANS_LIGHTNING_END)
+			if (graphicsObject.getId() >= GraphicID.GROTESQUE_GUARDIANS_LIGHTNING_START && graphicsObject.getId() <= GraphicID.GROTESQUE_GUARDIANS_LIGHTNING_END)
 			{
 				color = Color.ORANGE;
 			}
