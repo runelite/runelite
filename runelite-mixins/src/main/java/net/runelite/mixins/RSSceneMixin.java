@@ -25,10 +25,12 @@
 package net.runelite.mixins;
 
 import net.runelite.api.Renderable;
+import net.runelite.api.SceneTileModel;
 import net.runelite.api.SceneTilePaint;
 import net.runelite.api.Tile;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
@@ -151,6 +153,30 @@ public abstract class RSSceneMixin implements RSScene
 		catch (Exception ex)
 		{
 			client.getLogger().warn("error during tile underlay rendering", ex);
+		}
+	}
+
+	@MethodHook(value = "addTile", end = true)
+	@Inject
+	public void rl$addTile(int z, int x, int y, int shape, int rotation, int texture, int heightSw, int heightSe,
+					int heightNe, int heightNw, int underlaySwColor, int underlaySeColor, int underlayNeColor,
+					int underlayNwColor, int overlaySwColor, int overlaySeColor, int overlayNeColor,
+					int overlayNwColor, int underlayRgb, int overlayRgb)
+	{
+		if (shape != 0 && shape != 1)
+		{
+			Tile tile = getTiles()[z][x][y];
+			SceneTileModel sceneTileModel = tile.getSceneTileModel();
+
+			sceneTileModel.setUnderlaySwColor(underlaySwColor);
+			sceneTileModel.setUnderlaySeColor(underlaySeColor);
+			sceneTileModel.setUnderlayNeColor(underlayNeColor);
+			sceneTileModel.setUnderlayNwColor(underlayNwColor);
+
+			sceneTileModel.setOverlaySwColor(overlaySwColor);
+			sceneTileModel.setOverlaySeColor(overlaySeColor);
+			sceneTileModel.setOverlayNeColor(overlayNeColor);
+			sceneTileModel.setOverlayNwColor(overlayNwColor);
 		}
 	}
 }

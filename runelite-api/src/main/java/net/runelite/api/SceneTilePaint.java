@@ -35,4 +35,14 @@ public interface SceneTilePaint
 	 * @return the paint RGB
 	 */
 	int getRBG();
+
+	int getSwColor();
+
+	int getSeColor();
+
+	int getNeColor();
+
+	int getNwColor();
+
+	int getTexture();
 }

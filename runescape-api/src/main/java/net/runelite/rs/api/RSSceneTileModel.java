@@ -44,4 +44,8 @@ public interface RSSceneTileModel extends SceneTileModel
 	@Import("rotation")
 	@Override
 	int getRotation();
+
+	@Import("triangleTextureId")
+	@Override
+	int[] getTriangleTextureId();
 }
