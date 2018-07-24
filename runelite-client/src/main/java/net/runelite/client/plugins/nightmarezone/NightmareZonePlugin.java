@@ -179,6 +179,7 @@ public class NightmareZonePlugin extends Plugin
 		{
 			return;
 		}
+		
 		if (drankOverloadDose(event))
 		{
 			numOverloadTicksOccured = 0;
