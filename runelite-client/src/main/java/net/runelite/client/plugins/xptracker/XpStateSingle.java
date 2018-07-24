@@ -232,6 +232,11 @@ class XpStateSingle
 
 	public void tick(long delta)
 	{
+		// Don't tick skills that have not gained XP or have been reset.
+		if (xpGained <= 0)
+		{
+			return;
+		}
 		skillTime += delta;
 	}
 
