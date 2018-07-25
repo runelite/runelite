@@ -32,10 +32,10 @@ import net.runelite.client.config.ConfigItem;
 public interface PrayerConfig extends Config
 {
 	@ConfigItem(
-			position = 0,
-			keyName = "prayerflick",
-			name = "Prayer flick helper",
-			description = "Enable the prayer flick helper"
+		position = 0,
+		keyName = "prayerflick",
+		name = "Prayer flick helper",
+		description = "Enable the prayer flick helper"
 	)
 	default boolean prayerFlickHelper()
 	{
@@ -43,10 +43,10 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 1,
-			keyName = "prayerIndicator",
-			name = "Boost indicator",
-			description = "Enable infoboxes for prayers"
+		position = 1,
+		keyName = "prayerIndicator",
+		name = "Boost indicator",
+		description = "Enable infoboxes for prayers"
 	)
 	default boolean prayerIndicator()
 	{
@@ -54,10 +54,10 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 2,
-			keyName = "prayerIndicatorOverheads",
-			name = "Overhead indicator",
-			description = "Also enable infoboxes for overheads"
+		position = 2,
+		keyName = "prayerIndicatorOverheads",
+		name = "Overhead indicator",
+		description = "Also enable infoboxes for overheads"
 	)
 	default boolean prayerIndicatorOverheads()
 	{
@@ -65,10 +65,10 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 3,
-			keyName = "showPrayerDoseIndicator",
-			name = "Show prayer dose indicator",
-			description = "Enables the prayer dose indicator."
+		position = 3,
+		keyName = "showPrayerDoseIndicator",
+		name = "Show prayer dose indicator",
+		description = "Enables the prayer dose indicator."
 	)
 	default boolean showPrayerDoseIndicator()
 	{
@@ -76,10 +76,10 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 4,
-			keyName = "showPrayerTooltip",
-			name = "Show prayer orb tooltip",
-			description = "Displays time remaining and prayer bonus as a tooltip on the quick-prayer icon."
+		position = 4,
+		keyName = "showPrayerTooltip",
+		name = "Show prayer orb tooltip",
+		description = "Displays time remaining and prayer bonus as a tooltip on the quick-prayer icon."
 	)
 	default boolean showPrayerStatistics()
 	{
@@ -87,10 +87,10 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 5,
-			keyName = "showPrayerBar",
-			name = "Show prayer bar",
-			description = "Displays prayer bar under HP bar when praying."
+		position = 5,
+		keyName = "showPrayerBar",
+		name = "Show prayer bar",
+		description = "Displays prayer bar under HP bar when praying."
 	)
 	default boolean showPrayerBar()
 	{
@@ -98,10 +98,10 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "prayerBarHideIfNotPraying",
-			name = "Hide bar while prayer is inactive",
-			description = "Prayer bar will be hidden while prayers are inactivate.",
-			position = 6
+		keyName = "prayerBarHideIfNotPraying",
+		name = "Hide bar while prayer is inactive",
+		description = "Prayer bar will be hidden while prayers are inactivate.",
+		position = 6
 	)
 	default boolean hideIfNotPraying()
 	{
@@ -109,10 +109,10 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "prayerBarHideIfNonCombat",
-			name = "Hide bar while out-of-combat",
-			description = "Prayer bar will be hidden while out-of-combat.",
-			position = 7
+		keyName = "prayerBarHideIfNonCombat",
+		name = "Hide bar while out-of-combat",
+		description = "Prayer bar will be hidden while out-of-combat.",
+		position = 7
 	)
 	default boolean hideIfOutOfCombat()
 	{
