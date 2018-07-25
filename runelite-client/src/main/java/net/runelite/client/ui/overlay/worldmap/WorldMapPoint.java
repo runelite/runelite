@@ -70,11 +70,15 @@ public class WorldMapPoint
 		return e;
 	}
 
-	public void onEdgeSnap()
+	public void onEdgeSnap(boolean[] directions)
 	{
 	}
 
 	public void onEdgeUnsnap()
+	{
+	}
+
+	public void edgeSnapImageHandler(boolean north, boolean south, boolean east, boolean west, BufferedImage image)
 	{
 	}
 }

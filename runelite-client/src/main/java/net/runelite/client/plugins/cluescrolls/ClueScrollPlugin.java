@@ -100,6 +100,7 @@ public class ClueScrollPlugin extends Plugin
 	public static final BufferedImage MAP_ARROW;
 	public static final BufferedImage EMOTE_IMAGE;
 	public static final BufferedImage SPADE_IMAGE;
+	public static final BufferedImage MAP_EDGE_BOX;
 
 	@Getter
 	private ClueScroll clue;
@@ -161,6 +162,7 @@ public class ClueScrollPlugin extends Plugin
 				MAP_ARROW = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("clue_arrow.png"));
 				EMOTE_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("emote.png"));
 				SPADE_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("spade.png"));
+				MAP_EDGE_BOX = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("clue_arrow_box.png"));
 			}
 		}
 		catch (IOException e)

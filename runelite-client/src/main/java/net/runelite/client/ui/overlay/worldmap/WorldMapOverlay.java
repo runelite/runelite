@@ -31,6 +31,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -58,9 +59,12 @@ public class WorldMapOverlay extends Overlay
 	private static final int TOOLTIP_OFFSET_WIDTH = 5;
 	private static final int TOOLTIP_PADDING_HEIGHT = 1;
 	private static final int TOOLTIP_PADDING_WIDTH = 2;
+	private static final int CLUE_HINT_OFFSET = 32;
 
 	private final WorldMapPointManager worldMapPointManager;
 	private final Provider<Client> clientProvider;
+
+	private boolean[] directionArray = new boolean[4];
 
 	@Inject
 	private WorldMapOverlay(
@@ -80,6 +84,7 @@ public class WorldMapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+
 		final List<WorldMapPoint> points = worldMapPointManager.getWorldMapPoints();
 
 		if (points.isEmpty())
@@ -112,7 +117,7 @@ public class WorldMapOverlay extends Overlay
 					worldPoint.setClickbox(null);
 					continue;
 				}
-
+				edgeSnapCheck(drawPoint, worldMapRectangle, worldPoint);
 				if (worldPoint.isSnapToEdge())
 				{
 					Canvas canvas = client.getCanvas();
@@ -132,7 +137,6 @@ public class WorldMapOverlay extends Overlay
 						if (!worldPoint.isCurrentlyEdgeSnapped())
 						{
 							worldPoint.setCurrentlyEdgeSnapped(true);
-							worldPoint.onEdgeSnap();
 						}
 					}
 				}
@@ -249,15 +253,19 @@ public class WorldMapOverlay extends Overlay
 
 	private Point clipToRectangle(Point drawPoint, Rectangle mapDisplayRectangle)
 	{
+		Arrays.fill(directionArray, false);
+
 		int clippedX = drawPoint.getX();
 
 		if (drawPoint.getX() < mapDisplayRectangle.getX())
 		{
+			directionArray[3] = true; // West
 			clippedX = (int) mapDisplayRectangle.getX();
 		}
 
 		if (drawPoint.getX() > mapDisplayRectangle.getX() + mapDisplayRectangle.getWidth())
 		{
+			directionArray[2] = true; // East
 			clippedX = (int) (mapDisplayRectangle.getX() + mapDisplayRectangle.getWidth());
 		}
 
@@ -266,13 +274,45 @@ public class WorldMapOverlay extends Overlay
 		if (drawPoint.getY() < mapDisplayRectangle.getY())
 		{
 			clippedY = (int) mapDisplayRectangle.getY();
+			directionArray[1] = true; // South
 		}
 
 		if (drawPoint.getY() > mapDisplayRectangle.getY() + mapDisplayRectangle.getHeight())
 		{
+			directionArray[0] = true; // North
 			clippedY = (int) (mapDisplayRectangle.getY() + mapDisplayRectangle.getHeight());
 		}
 
 		return new Point(clippedX, clippedY);
+	}
+
+	private void edgeSnapCheck(Point drawPoint, Rectangle mapDisplayRectangle, WorldMapPoint worldMapPoint)
+	{
+		Arrays.fill(directionArray, false);
+
+		if (drawPoint.getX() < mapDisplayRectangle.getX())
+		{
+			directionArray[3] = true; // West
+		}
+		if (drawPoint.getX() > mapDisplayRectangle.getX() + mapDisplayRectangle.getWidth() - CLUE_HINT_OFFSET)
+		{
+			directionArray[2] = true; // East
+		}
+		if (drawPoint.getY() < mapDisplayRectangle.getY() + CLUE_HINT_OFFSET)
+		{
+			directionArray[1] = true; // South
+		}
+		if (drawPoint.getY() > mapDisplayRectangle.getY() + mapDisplayRectangle.getHeight() - CLUE_HINT_OFFSET)
+		{
+			directionArray[0] = true; // North
+		}
+		if (directionArray[0] || directionArray[1] || directionArray[2] || directionArray[3])
+		{
+			worldMapPoint.onEdgeSnap(directionArray);
+		}
+		else
+		{
+			worldMapPoint.onEdgeUnsnap();
+		}
 	}
 }
