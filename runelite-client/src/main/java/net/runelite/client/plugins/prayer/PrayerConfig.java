@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.prayer;
 
-import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -33,10 +32,10 @@ import net.runelite.client.config.ConfigItem;
 public interface PrayerConfig extends Config
 {
 	@ConfigItem(
-		position = 0,
-		keyName = "prayerflick",
-		name = "Prayer flick helper",
-		description = "Enable the prayer flick helper"
+			position = 0,
+			keyName = "prayerflick",
+			name = "Prayer flick helper",
+			description = "Enable the prayer flick helper"
 	)
 	default boolean prayerFlickHelper()
 	{
@@ -44,10 +43,10 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 1,
-		keyName = "prayerIndicator",
-		name = "Boost indicator",
-		description = "Enable infoboxes for prayers"
+			position = 1,
+			keyName = "prayerIndicator",
+			name = "Boost indicator",
+			description = "Enable infoboxes for prayers"
 	)
 	default boolean prayerIndicator()
 	{
@@ -55,10 +54,10 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
-		keyName = "prayerIndicatorOverheads",
-		name = "Overhead indicator",
-		description = "Also enable infoboxes for overheads"
+			position = 2,
+			keyName = "prayerIndicatorOverheads",
+			name = "Overhead indicator",
+			description = "Also enable infoboxes for overheads"
 	)
 	default boolean prayerIndicatorOverheads()
 	{
@@ -66,10 +65,10 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
-		keyName = "showPrayerDoseIndicator",
-		name = "Show prayer dose indicator",
-		description = "Enables the prayer dose indicator."
+			position = 3,
+			keyName = "showPrayerDoseIndicator",
+			name = "Show prayer dose indicator",
+			description = "Enables the prayer dose indicator."
 	)
 	default boolean showPrayerDoseIndicator()
 	{
@@ -77,10 +76,10 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
-		keyName = "showPrayerTooltip",
-		name = "Show prayer orb tooltip",
-		description = "Displays time remaining and prayer bonus as a tooltip on the quick-prayer icon."
+			position = 4,
+			keyName = "showPrayerTooltip",
+			name = "Show prayer orb tooltip",
+			description = "Displays time remaining and prayer bonus as a tooltip on the quick-prayer icon."
 	)
 	default boolean showPrayerStatistics()
 	{
@@ -88,10 +87,10 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
-		keyName = "showPrayerBar",
-		name = "Show prayer bar",
-		description = "Displays prayer bar under HP bar when praying."
+			position = 5,
+			keyName = "showPrayerBar",
+			name = "Show prayer bar",
+			description = "Displays prayer bar under HP bar when praying."
 	)
 	default boolean showPrayerBar()
 	{
@@ -99,32 +98,10 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
-		keyName = "prayerBarFillColor",
-		name = "Prayer bar fill color",
-		description = "Color of the prayer bar's fill meter."
-	)
-	default Color getPrayerBarFillColor()
-	{
-		return Color.CYAN;
-	}
-
-	@ConfigItem(
-			position = 7,
-			keyName = "prayerBarBackgroundColor",
-			name = "Prayer bar background color",
-			description = "Color of the prayer bar's background."
-	)
-	default Color getPrayerBarBackgroundColor()
-	{
-		return Color.BLACK;
-	}
-
-	@ConfigItem(
-		position = 8,
-		keyName = "prayerBarHideIfNotPraying",
-		name = "Hide bar while prayer is inactive",
-		description = "Prayer bar will be hidden while prayers are inactivate."
+			keyName = "prayerBarHideIfNotPraying",
+			name = "Hide bar while prayer is inactive",
+			description = "Prayer bar will be hidden while prayers are inactivate.",
+			position = 6
 	)
 	default boolean hideIfNotPraying()
 	{
@@ -132,10 +109,10 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
-		keyName = "prayerBarHideIfNonCombat",
-		name = "Hide bar while out-of-combat",
-		description = "Prayer bar will be hidden while out-of-combat."
+			keyName = "prayerBarHideIfNonCombat",
+			name = "Hide bar while out-of-combat",
+			description = "Prayer bar will be hidden while out-of-combat.",
+			position = 7
 	)
 	default boolean hideIfOutOfCombat()
 	{
