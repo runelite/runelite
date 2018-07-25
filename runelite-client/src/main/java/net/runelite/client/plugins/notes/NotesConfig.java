@@ -48,4 +48,26 @@ public interface NotesConfig extends Config
 		description = ""
 	)
 	void notesData(String str);
+
+	@ConfigItem(
+		position = 0,
+		keyName = "clickableLinks",
+		name = "Double-click to open links",
+		description = "Double-click on links in the Notes panel to open them in the default browser"
+	)
+	default boolean clickableLinks()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "promptBeforeOpeningLinks",
+		name = "Prompt before opening links",
+		description = "User is prompted before a link is opened with the browser"
+	)
+	default boolean promptBeforeOpeningLinks()
+	{
+		return true;
+	}
 }
