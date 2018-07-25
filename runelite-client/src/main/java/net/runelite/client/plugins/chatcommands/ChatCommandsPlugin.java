@@ -215,7 +215,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			log.debug("Running clue lookup for {}", search);
 			executor.submit(() -> playerClueLookup(setMessage, search));
 		}
-		else if (config.killcount() && message.toLowerCase().startsWith("!kc"))
+		else if (config.killcount() && message.toLowerCase().startsWith("!kc") && message.length() > 4)
 		{
 			String search = message.substring(4);
 
