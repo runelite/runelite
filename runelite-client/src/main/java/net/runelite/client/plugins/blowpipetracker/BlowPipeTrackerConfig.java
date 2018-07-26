@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "blowpipetracker",
-	name = "Blowpipe Tracker",
-	description = "Configuration for the blowpipe tracker plugin"
-)
+@ConfigGroup("blowpipetracker")
 public interface BlowPipeTrackerConfig extends Config
 {
 	@ConfigItem(

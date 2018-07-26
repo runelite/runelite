@@ -32,7 +32,6 @@ import net.runelite.api.ItemID;
 @Getter
 enum AttractorDefinition
 {
-
 	ATTRACTOR(ItemID.AVAS_ATTRACTOR, 0.2f, 0.16f, 0.64f),
 	ACCUMULATOR(ItemID.AVAS_ACCUMULATOR, 0.2f, 0.08f, 0.72f),
 	ACCUMULATOR_MAX_CAPE(ItemID.AVAS_ACCUMULATOR, 0.2f, 0.08f, 0.72f),
