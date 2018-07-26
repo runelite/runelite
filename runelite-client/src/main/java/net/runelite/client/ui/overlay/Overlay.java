@@ -49,6 +49,7 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	private OverlayPriority priority = OverlayPriority.NONE;
 	private OverlayLayer layer = OverlayLayer.UNDER_WIDGETS;
 	private final List<OverlayMenuEntry> menuEntries = new ArrayList<>();
+	private boolean resizable;
 
 	protected Overlay()
 	{
