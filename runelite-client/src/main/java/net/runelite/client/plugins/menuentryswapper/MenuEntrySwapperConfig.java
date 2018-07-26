@@ -143,7 +143,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 10,
-		keyName = "swapPickpocket", 
+		keyName = "swapPickpocket",
 		name = "Pickpocket on H.A.M.",
 		description = "Swap Talk-to with Pickpocket on H.A.M members"
 	)
