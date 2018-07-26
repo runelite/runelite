@@ -26,11 +26,15 @@ package net.runelite.client.ui.overlay;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.eventbus.Subscribe;
+import java.applet.Applet;
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Stroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -55,19 +59,24 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 	private static final int BORDER = 5;
 	private static final int BORDER_TOP = BORDER + 15;
 	private static final int PADDING = 2;
+	private static final int MIN_OVERLAY_SIZE = 32;
+	private static final int OVERLAY_RESIZE_TOLERANCE = 10;
 	private static final Dimension SNAP_CORNER_SIZE = new Dimension(80, 80);
 	private static final Color SNAP_CORNER_COLOR = new Color(0, 255, 255, 50);
 	private static final Color SNAP_CORNER_ACTIVE_COLOR = new Color(0, 255, 0, 100);
 	private static final Color MOVING_OVERLAY_COLOR = new Color(255, 255, 0, 100);
 	private static final Color MOVING_OVERLAY_ACTIVE_COLOR = new Color(255, 255, 0, 200);
+	private static final Color MOVING_OVERLAY_RESIZING_COLOR = new Color(255, 0, 255, 200);
 	private final Client client;
 	private final OverlayManager overlayManager;
 	private final RuneLiteConfig runeLiteConfig;
+	private final Applet applet;
 
 	// Overlay movement variables
 	private final Point overlayOffset = new Point();
 	private final Point mousePosition = new Point();
 	private Overlay movedOverlay;
+	private Overlay hoveredOverlay;
 	private boolean inOverlayDraggingMode;
 
 	// Overlay state validation
@@ -84,11 +93,13 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		final OverlayManager overlayManager,
 		final RuneLiteConfig runeLiteConfig,
 		final MouseManager mouseManager,
-		final KeyManager keyManager)
+		final KeyManager keyManager,
+		final Applet applet)
 	{
 		this.client = client;
 		this.overlayManager = overlayManager;
 		this.runeLiteConfig = runeLiteConfig;
+		this.applet = applet;
 		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseListener(this);
 	}
@@ -215,9 +226,21 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 				if (inOverlayDraggingMode)
 				{
 					final Color previous = graphics.getColor();
-					graphics.setColor(movedOverlay == overlay ? MOVING_OVERLAY_ACTIVE_COLOR : MOVING_OVERLAY_COLOR);
+					final Stroke previousStroke = graphics.getStroke();
+
+					if (hoveredOverlay == overlay && applet.getCursor().getType() != Cursor.DEFAULT_CURSOR)
+					{
+						graphics.setColor(MOVING_OVERLAY_RESIZING_COLOR);
+						graphics.setStroke(new BasicStroke(PADDING));
+					}
+					else
+					{
+						graphics.setColor(movedOverlay == overlay ? MOVING_OVERLAY_ACTIVE_COLOR : MOVING_OVERLAY_COLOR);
+					}
+
 					graphics.draw(bounds);
 					graphics.setColor(previous);
+					graphics.setStroke(previousStroke);
 				}
 			}
 		}
@@ -238,7 +261,8 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		{
 			for (Overlay overlay : overlayManager.getOverlays())
 			{
-				if (overlay.getBounds().contains(mousePoint))
+				final Rectangle bounds = overlay.getBounds();
+				if (bounds.contains(mousePoint))
 				{
 					if (SwingUtilities.isRightMouseButton(mouseEvent))
 					{
@@ -249,18 +273,90 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 						final Point offset = new Point(mousePoint.x, mousePoint.y);
 						offset.translate(-overlay.getBounds().x, -overlay.getBounds().y);
 						overlayOffset.setLocation(offset);
-
 						mousePoint.translate(-offset.x, -offset.y);
+						overlay.setPreferredPosition(null);
+						overlay.setPreferredLocation(mousePoint);
+						overlayManager.saveOverlay(overlay);
 						movedOverlay = overlay;
-						movedOverlay.setPreferredPosition(null);
-						movedOverlay.setPreferredLocation(mousePoint);
-						overlayManager.saveOverlay(movedOverlay);
 					}
 
 					mouseEvent.consume();
 					break;
 				}
 			}
+		}
+
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseMoved(MouseEvent mouseEvent)
+	{
+		if (!inOverlayDraggingMode)
+		{
+			applet.setCursor(Cursor.getDefaultCursor());
+			return mouseEvent;
+		}
+
+
+		final Point mousePoint = mouseEvent.getPoint();
+		mousePosition.setLocation(mousePoint);
+		hoveredOverlay = null;
+
+		synchronized (overlayManager)
+		{
+			for (Overlay overlay : overlayManager.getOverlays())
+			{
+				final Rectangle bounds = overlay.getBounds();
+				if (bounds.contains(mousePoint))
+				{
+					hoveredOverlay = overlay;
+					break;
+				}
+			}
+		}
+
+		if (hoveredOverlay == null)
+		{
+			applet.setCursor(Cursor.getDefaultCursor());
+			return mouseEvent;
+		}
+
+		final Rectangle r = hoveredOverlay.getBounds();
+
+		final Rectangle toleranceRect = new Rectangle(r);
+		toleranceRect.grow(-OVERLAY_RESIZE_TOLERANCE, -OVERLAY_RESIZE_TOLERANCE);
+		final int outcode = toleranceRect.outcode(mouseEvent.getPoint());
+
+		switch (outcode)
+		{
+			case Rectangle.OUT_TOP:
+				applet.setCursor(Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR));
+				break;
+			case Rectangle.OUT_TOP + Rectangle.OUT_LEFT:
+				applet.setCursor(Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR));
+				break;
+			case Rectangle.OUT_LEFT:
+				applet.setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
+				break;
+			case Rectangle.OUT_LEFT + Rectangle.OUT_BOTTOM:
+				applet.setCursor(Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR));
+				break;
+			case Rectangle.OUT_BOTTOM:
+				applet.setCursor(Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));
+				break;
+			case Rectangle.OUT_BOTTOM + Rectangle.OUT_RIGHT:
+				applet.setCursor(Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR));
+				break;
+			case Rectangle.OUT_RIGHT:
+				applet.setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
+				break;
+			case Rectangle.OUT_RIGHT + Rectangle.OUT_TOP:
+				applet.setCursor(Cursor.getPredefinedCursor(Cursor.NE_RESIZE_CURSOR));
+				break;
+			default:
+				// center
+				applet.setCursor(Cursor.getDefaultCursor());
 		}
 
 		return mouseEvent;
@@ -274,20 +370,79 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 			return mouseEvent;
 		}
 
-		final Point mousePoint = mouseEvent.getPoint();
-		mousePosition.setLocation(mousePoint);
+		final Point p = mouseEvent.getPoint();
+		mousePosition.setLocation(p);
 		final Rectangle canvasRect = new Rectangle(client.getRealDimensions());
 
-		if (!canvasRect.contains(mousePoint))
+		if (!canvasRect.contains(p))
 		{
 			return mouseEvent;
 		}
 
 		if (movedOverlay != null)
 		{
-			mousePoint.translate(-overlayOffset.x, -overlayOffset.y);
-			movedOverlay.setPreferredPosition(null);
-			movedOverlay.setPreferredLocation(mousePoint);
+			if (applet.getCursor().getType() != Cursor.DEFAULT_CURSOR)
+			{
+				final Rectangle r = movedOverlay.getBounds();
+				if (movedOverlay.getPreferredSize() != null)
+				{
+					r.setSize(movedOverlay.getPreferredSize());
+				}
+
+				final int dx = p.x - r.x;
+				final int dy = p.y - r.y;
+				switch (applet.getCursor().getType())
+				{
+					case Cursor.N_RESIZE_CURSOR:
+						int height = r.height - dy;
+						r.setRect(r.x, r.y + dy, r.width, height);
+						break;
+					case Cursor.NW_RESIZE_CURSOR:
+						int width = r.width - dx;
+						height = r.height - dy;
+						r.setRect(r.x + dx, r.y + dy, width, height);
+						break;
+					case Cursor.W_RESIZE_CURSOR:
+						width = r.width - dx;
+						r.setRect(r.x + dx, r.y, width, r.height);
+						break;
+					case Cursor.SW_RESIZE_CURSOR:
+						width = r.width - dx;
+						height = dy;
+						r.setRect(r.x + dx, r.y, width, height);
+						break;
+					case Cursor.S_RESIZE_CURSOR:
+						height = dy;
+						r.setRect(r.x, r.y, r.width, height);
+						break;
+					case Cursor.SE_RESIZE_CURSOR:
+						width = dx;
+						height = dy;
+						r.setRect(r.x, r.y, width, height);
+						break;
+					case Cursor.E_RESIZE_CURSOR:
+						width = dx;
+						r.setRect(r.x, r.y, width, r.height);
+						break;
+					case Cursor.NE_RESIZE_CURSOR:
+						width = dx;
+						height = r.height - dy;
+						r.setRect(r.x, r.y + dy, width, height);
+						break;
+					default:
+						// center
+				}
+
+				movedOverlay.setPreferredSize(new Dimension(Math.max(MIN_OVERLAY_SIZE, r.width), Math.max(MIN_OVERLAY_SIZE, r.height)));
+				movedOverlay.setPreferredLocation(r.getLocation());
+			}
+			else
+			{
+				p.translate(-overlayOffset.x, -overlayOffset.y);
+				movedOverlay.setPreferredPosition(null);
+				movedOverlay.setPreferredLocation(p);
+			}
+
 			mouseEvent.consume();
 		}
 
