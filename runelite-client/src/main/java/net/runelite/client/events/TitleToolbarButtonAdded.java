@@ -31,5 +31,4 @@ import net.runelite.client.ui.NavigationButton;
 public class TitleToolbarButtonAdded
 {
 	private NavigationButton button;
-	private int index;
 }

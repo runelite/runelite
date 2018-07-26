@@ -222,7 +222,7 @@ public class ClientUI
 				}
 			});
 
-			pluginToolbar.addComponent(event.getIndex(), event.getButton(), button);
+			pluginToolbar.addComponent(event.getButton(), button);
 		});
 	}
 
@@ -255,7 +255,7 @@ public class ClientUI
 				return;
 			}
 
-			pluginToolbar.addComponent(-1, event.getButton(), button);
+			pluginToolbar.addComponent(event.getButton(), button);
 		});
 	}
 
@@ -449,6 +449,7 @@ public class ClientUI
 			// Create hide sidebar button
 			sidebarNavigationButton = NavigationButton
 				.builder()
+				.priority(100)
 				.icon(SIDEBAR_CLOSE)
 				.onClick(this::toggleSidebar)
 				.build();
