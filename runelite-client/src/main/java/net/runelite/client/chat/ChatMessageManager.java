@@ -216,7 +216,10 @@ public class ChatMessageManager
 		return null;
 	}
 
-	private void loadColors()
+	/**
+	 * Load all configured colors
+	 */
+	public void loadColors()
 	{
 		colorCache.clear();
 
