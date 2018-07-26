@@ -114,8 +114,8 @@ public abstract class StretchedFixedModeMixin implements RSClient
 	{
 		Canvas canvas = getCanvas();
 
-		int width = canvas.getWidth();
-		int height = canvas.getHeight();
+		int width = canvas.getParent().getWidth();
+		int height = canvas.getParent().getHeight();
 
 		if (cachedStretchedDimensions == null || width != lastCanvasDimensions.width || height != lastCanvasDimensions.height)
 		{

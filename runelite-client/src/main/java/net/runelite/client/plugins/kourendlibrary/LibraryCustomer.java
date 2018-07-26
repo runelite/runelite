@@ -30,7 +30,7 @@ import lombok.Getter;
 
 import net.runelite.api.NpcID;
 
-public enum LibraryCustomer
+enum LibraryCustomer
 {
 	VILLIA(NpcID.VILLIA, "Villia"),
 	PROFESSOR_GRACKLEBONE(NpcID.PROFESSOR_GRACKLEBONE, "Prof. Gracklebone"),
@@ -50,7 +50,7 @@ public enum LibraryCustomer
 		this.name = name;
 	}
 
-	public static LibraryCustomer getById(int id)
+	static LibraryCustomer getById(int id)
 	{
 		return byId.get(id);
 	}

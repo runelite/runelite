@@ -94,7 +94,7 @@ public class BlowPipeTrackerPlugin extends Plugin
 	private int ticksInAnimation;
 	private int attackStyleVarbit = -1;
 
-	private static final Random random = new Random();
+	private static final Random RANDOM = new Random();
 	private static final Pattern DART_AND_SCALE_PATTERN = Pattern.compile("Darts: (\\S*)(?: dart)? x (\\d*[,]?\\d*). Scales: \\d+[.]?\\d%, (\\d*[,]?\\d*)");
 	private static final String OUT_OF_DARTS = "Your blowpipe has run out of darts";
 	private static final String OUT_OF_SCALES = "Your blowpipe needs to be charged with Zulrah's scales";
@@ -109,10 +109,12 @@ public class BlowPipeTrackerPlugin extends Plugin
 	public void onGameTick(GameTick tick)
 	{
 		Player player = client.getLocalPlayer();
+
 		if (player.getAnimation() == AnimationID.BLOWPIPE_ATTACK_ANIMATION)
 		{
 			ticks++;
 		}
+
 		if (ticks == ticksInAnimation && (player.getAnimation() == AnimationID.BLOWPIPE_ATTACK_ANIMATION))
 		{
 			AttractorDefinition attractorDefinition = getAttractorForPlayer();
@@ -142,6 +144,7 @@ public class BlowPipeTrackerPlugin extends Plugin
 		if (attackStyleVarbit == -1 || attackStyleVarbit != client.getVar(VarPlayer.ATTACK_STYLE))
 		{
 			attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
+
 			if (attackStyleVarbit == 0 || attackStyleVarbit == 3)
 			{
 				ticksInAnimation = client.getLocalPlayer().getInteracting() instanceof Player ? TICKS_NORMAL_PVP : TICKS_NORMAL_PVM;
@@ -162,7 +165,7 @@ public class BlowPipeTrackerPlugin extends Plugin
 
 	private boolean shouldConsumeDart(AttractorDefinition attractorDefinition)
 	{
-		double dartRoll = random.nextDouble();
+		double dartRoll = RANDOM.nextDouble();
 		if (dartRoll <= attractorDefinition.getSavedChance())
 		{
 			return false;
@@ -175,7 +178,7 @@ public class BlowPipeTrackerPlugin extends Plugin
 
 	private boolean shouldConsumeScales()
 	{
-		return random.nextDouble() <= 0.66;
+		return RANDOM.nextDouble() <= 0.66;
 	}
 
 	@Subscribe
@@ -249,6 +252,7 @@ public class BlowPipeTrackerPlugin extends Plugin
 			removeScaleCounter();
 			removeCombinedCounter();
 		}
+
 		if (config.displayStyleMode() == DisplayStyleMode.COMBINED)
 		{
 			removeDartCounter();
@@ -259,6 +263,7 @@ public class BlowPipeTrackerPlugin extends Plugin
 				clientThread.invokeLater(this::modifyCounters);
 			}
 		}
+
 		if (config.displayStyleMode() == DisplayStyleMode.INDIVIDUAL)
 		{
 			removeCombinedCounter();

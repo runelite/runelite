@@ -46,6 +46,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Daily Task Indicator",
+	description = "Show chat notifications for daily tasks upon login",
 	enabledByDefault = false
 )
 @Slf4j
@@ -85,17 +86,17 @@ public class DailyTasksPlugin extends Plugin
 	{
 		if (event.getGroup().equals("dailytaskindicators"))
 		{
-			if (event.getKey().equals("showHerbBoxes"))
+			switch (event.getKey())
 			{
-				hasSentHerbMsg = false;
-			}
-			else if (event.getKey().equals("showStaves"))
-			{
-				hasSentStavesMsg = false;
-			}
-			else if (event.getKey().equals("showEssence"))
-			{
-				hasSentEssenceMsg = false;
+				case "showHerbBoxes":
+					hasSentHerbMsg = false;
+					break;
+				case "showStaves":
+					hasSentStavesMsg = false;
+					break;
+				case "showEssence":
+					hasSentEssenceMsg = false;
+					break;
 			}
 		}
 	}

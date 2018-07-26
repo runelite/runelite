@@ -189,6 +189,7 @@ public class ChatMessageManager
 				case EXAMINE_ITEM:
 				case EXAMINE_OBJECT:
 				case EXAMINE_NPC:
+				case GAME:
 					return Color.decode("#000000");
 			}
 		}
@@ -207,6 +208,7 @@ public class ChatMessageManager
 				case EXAMINE_ITEM:
 				case EXAMINE_OBJECT:
 				case EXAMINE_NPC:
+				case GAME:
 					return Color.decode("#FFFFFF");
 			}
 		}
@@ -214,7 +216,10 @@ public class ChatMessageManager
 		return null;
 	}
 
-	private void loadColors()
+	/**
+	 * Load all configured colors
+	 */
+	public void loadColors()
 	{
 		colorCache.clear();
 

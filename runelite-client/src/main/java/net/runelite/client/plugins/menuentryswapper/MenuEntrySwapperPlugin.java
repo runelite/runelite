@@ -57,6 +57,8 @@ import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Menu Entry Swapper",
+	description = "Change the default option that is displayed when hovering over objects",
+	tags = {"npcs", "inventory", "items", "objects"},
 	enabledByDefault = false
 )
 public class MenuEntrySwapperPlugin extends Plugin
@@ -351,6 +353,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("exchange", option, target, true);
 			}
 
+			// make sure assignment swap is higher priority than trade swap for slayer masters
+			if (config.swapAssignment())
+			{
+				swap("assignment", option, target, true);
+			}
+
 			if (config.swapTrade())
 			{
 				swap("trade", option, target, true);
@@ -378,6 +386,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (config.swapPay())
 			{
 				swap("pay", option, target, true);
+			}
+
+			if (config.swapDecant())
+			{
+				swap("decant", option, target, true);
 			}
 		}
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
@@ -433,10 +446,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapBoxTrap() && option.equals("take"))
 		{
 			swap("lay", option, target, true);
-		}
-		else if (config.swapCatacombEntrance() && option.equals("read"))
-		{
-			swap("investigate", option, target, true);
 		}
 		else if (config.swapChase() && option.equals("pick-up"))
 		{

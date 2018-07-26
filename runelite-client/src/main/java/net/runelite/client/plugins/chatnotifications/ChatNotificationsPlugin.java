@@ -50,6 +50,8 @@ import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Chat Notifications",
+	description = "Highlight and notify you of chat messages",
+	tags = {"duel", "messages", "notifications", "trade", "username"},
 	enabledByDefault = false
 )
 public class ChatNotificationsPlugin extends Plugin

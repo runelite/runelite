@@ -43,7 +43,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 
 @PluginDescriptor(
-	name = "World Map"
+	name = "World Map",
+	description = "Enhance the world map to display additional information",
+	tags = {"agility", "fairy", "rings", "teleports"}
 )
 public class WorldMapPlugin extends Plugin
 {
@@ -140,6 +142,7 @@ public class WorldMapPlugin extends Plugin
 							.map(value -> new AgilityShortcutPoint(value, config.agilityShortcutLevelIcon() && value.getLevelReq() > agilityLevel ? NOPE_ICON : BLANK_ICON))
 							.forEach(worldMapPointManager::add);
 					}
+					break;
 				case CONFIG_KEY_NORMAL_TELEPORT_ICON:
 				case CONFIG_KEY_ANCIENT_TELEPORT_ICON:
 				case CONFIG_KEY_LUNAR_TELEPORT_ICON:

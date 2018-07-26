@@ -120,6 +120,11 @@ class XpState
 		}
 	}
 
+	void tick(Skill skill, long delta)
+	{
+		getSkill(skill).tick(delta);
+	}
+
 	/**
 	 * Forcefully initialize a skill with a known start XP from the current XP.
 	 * This is used in resetAndInitState by the plugin. It should not result in showing the XP in the UI.

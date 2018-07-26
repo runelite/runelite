@@ -35,7 +35,9 @@ public class GraphicID
 	public static final int ICE_BURST = 363;
 	public static final int ICE_BLITZ = 367;
 	public static final int ICE_BARRAGE = 369;
+	public static final int VENGEANCE_OTHER = 725;
 	public static final int VENGEANCE = 726;
+	public static final int STAFF_OF_THE_DEAD = 1228;
 	public static final int IMBUED_HEART = 1316;
 	public static final int FLYING_FISH = 1387;
 }

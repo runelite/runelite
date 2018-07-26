@@ -29,6 +29,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
@@ -42,16 +43,15 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.game.ItemManager;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.MENU;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.BackgroundComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.StackFormatter;
-import net.runelite.http.api.item.ItemPrice;
 
 public class GroundItemsOverlay extends Overlay
 {
@@ -74,23 +74,23 @@ public class GroundItemsOverlay extends Overlay
 	private final BackgroundComponent backgroundComponent = new BackgroundComponent();
 	private final TextComponent textComponent = new TextComponent();
 	private final Map<WorldPoint, Integer> offsetMap = new HashMap<>();
-	private final ItemManager itemManager;
 
 	@Inject
-	public GroundItemsOverlay(Client client, GroundItemsPlugin plugin, GroundItemsConfig config, ItemManager itemManager)
+	private GroundItemsOverlay(Client client, GroundItemsPlugin plugin, GroundItemsConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
-		this.itemManager = itemManager;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isHotKeyPressed() && config.itemHighlightMode() == MENU)
+		final boolean dontShowOverlay = config.itemHighlightMode() == MENU && !plugin.isHotKeyPressed();
+
+		if (dontShowOverlay && !config.highlightTiles())
 		{
 			return null;
 		}
@@ -102,8 +102,6 @@ public class GroundItemsOverlay extends Overlay
 		{
 			return null;
 		}
-
-		plugin.checkItems();
 
 		offsetMap.clear();
 		final LocalPoint localLocation = player.getLocalLocation();
@@ -173,14 +171,6 @@ public class GroundItemsOverlay extends Overlay
 				continue;
 			}
 
-			// Update GE price for item
-			final ItemPrice itemPrice = itemManager.getItemPriceAsync(item.getItemId());
-
-			if (itemPrice != null && itemPrice.getPrice() > 0)
-			{
-				item.setGePrice(itemPrice.getPrice() * item.getQuantity());
-			}
-
 			final Color highlighted = plugin.getHighlighted(item.getName(), item.getGePrice(), item.getHaPrice());
 			final Color hidden = plugin.getHidden(item.getName(), item.getGePrice(), item.getHaPrice(), item.isTradeable());
 
@@ -200,6 +190,22 @@ public class GroundItemsOverlay extends Overlay
 			}
 
 			final Color color = plugin.getItemColor(highlighted, hidden);
+
+			if (config.highlightTiles())
+			{
+				final Polygon poly = Perspective.getCanvasTilePoly(client, groundPoint);
+
+				if (poly != null)
+				{
+					OverlayUtil.renderPolygon(graphics, poly, color);
+				}
+			}
+
+			if (dontShowOverlay)
+			{
+				continue;
+			}
+
 			itemStringBuilder.append(item.getName());
 
 			if (item.getQuantity() > 1)
@@ -211,8 +217,8 @@ public class GroundItemsOverlay extends Overlay
 				else
 				{
 					itemStringBuilder.append(" (")
-							.append(StackFormatter.quantityToStackSize(item.getQuantity()))
-							.append(")");
+						.append(StackFormatter.quantityToStackSize(item.getQuantity()))
+						.append(")");
 				}
 			}
 

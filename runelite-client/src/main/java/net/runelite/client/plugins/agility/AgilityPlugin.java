@@ -26,17 +26,15 @@ package net.runelite.client.plugins.agility;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
-import net.runelite.api.ItemLayer;
-import net.runelite.api.Node;
 import net.runelite.api.Player;
 import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
@@ -55,7 +53,8 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GroundObjectChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
-import net.runelite.api.events.ItemLayerChanged;
+import net.runelite.api.events.ItemDespawned;
+import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
@@ -67,9 +66,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Agility"
+	name = "Agility",
+	description = "Show helpful information about agility courses and obstacles",
+	tags = {"grace", "marks", "overlay", "shortcuts", "skilling", "traps"}
 )
-@Slf4j
 public class AgilityPlugin extends Plugin
 {
 	private static final int AGILITY_ARENA_REGION_ID = 11157;
@@ -179,7 +179,10 @@ public class AgilityPlugin extends Plugin
 
 		// Get course
 		Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
-		if (course == null || Math.abs(course.getLastObstacleXp() - skillGained) > 1)
+		if (course == null
+			|| (course.getCourseEndWorldPoints().length == 0
+			? Math.abs(course.getLastObstacleXp() - skillGained) > 1
+			: Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation()))))
 		{
 			return;
 		}
@@ -198,47 +201,31 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onItemLayerChanged(ItemLayerChanged event)
+	public void onItemSpawned(ItemSpawned itemSpawned)
 	{
 		if (obstacles.isEmpty())
 		{
 			return;
 		}
 
-		final Tile tile = event.getTile();
-		final ItemLayer itemLayer = tile.getItemLayer();
-		final boolean hasMark = tileHasMark(itemLayer);
+		final Item item = itemSpawned.getItem();
+		final Tile tile = itemSpawned.getTile();
 
-		if (markOfGrace != null && tile.getWorldLocation().equals(markOfGrace.getWorldLocation()) && !hasMark)
-		{
-			markOfGrace = null;
-		}
-		else if (hasMark)
+		if (item.getId() == ItemID.MARK_OF_GRACE)
 		{
 			markOfGrace = tile;
 		}
 	}
 
-	private boolean tileHasMark(ItemLayer itemLayer)
+	@Subscribe
+	public void onItemDespawned(ItemDespawned itemDespawned)
 	{
-		if (itemLayer != null)
+		final Item item = itemDespawned.getItem();
+
+		if (item.getId() == ItemID.MARK_OF_GRACE)
 		{
-			Node currentItem = itemLayer.getBottom();
-
-			while (currentItem instanceof Item)
-			{
-				final Item item = (Item) currentItem;
-
-				currentItem = currentItem.getNext();
-
-				if (item.getId() == ItemID.MARK_OF_GRACE)
-				{
-					return true;
-				}
-			}
+			markOfGrace = null;
 		}
-
-		return false;
 	}
 
 	@Subscribe
@@ -250,7 +237,7 @@ public class AgilityPlugin extends Plugin
 			if (!Objects.equals(lastArenaTicketPosition, newTicketPosition))
 			{
 				// We don't want to notify when players first enter the course
-				if (lastArenaTicketPosition != null)
+				if (lastArenaTicketPosition != null && newTicketPosition != null)
 				{
 					if (config.notifyAgilityArena())
 					{
@@ -373,9 +360,9 @@ public class AgilityPlugin extends Plugin
 		}
 
 		if (Obstacles.COURSE_OBSTACLE_IDS.contains(newObject.getId()) ||
-				Obstacles.SHORTCUT_OBSTACLE_IDS.contains(newObject.getId()) ||
-				(Obstacles.TRAP_OBSTACLE_IDS.contains(newObject.getId())
-					&& Obstacles.TRAP_OBSTACLE_REGIONS.contains(newObject.getWorldLocation().getRegionID())))
+			Obstacles.SHORTCUT_OBSTACLE_IDS.contains(newObject.getId()) ||
+			(Obstacles.TRAP_OBSTACLE_IDS.contains(newObject.getId())
+				&& Obstacles.TRAP_OBSTACLE_REGIONS.contains(newObject.getWorldLocation().getRegionID())))
 		{
 			obstacles.put(newObject, tile);
 		}

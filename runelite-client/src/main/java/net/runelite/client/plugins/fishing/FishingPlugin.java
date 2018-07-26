@@ -53,7 +53,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
-	name = "Fishing"
+	name = "Fishing",
+	description = "Show fishing stats and mark fishing spots",
+	tags = {"overlay", "skilling"}
 )
 @PluginDependency(XpTrackerPlugin.class)
 @Singleton
@@ -173,10 +175,18 @@ public class FishingPlugin extends Plugin
 		if (config.showInfernalEel())
 		{
 			spotIds.addAll(Ints.asList(FishingSpot.INFERNAL_EEL.getIds()));
-		}	
+		}
 		if (config.showSacredEel())
 		{
 			spotIds.addAll(Ints.asList(FishingSpot.SACRED_EEL.getIds()));
+		}
+		if (config.showCaveEel())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.CAVE_EEL.getIds()));
+		}
+		if (config.showSlimyEel())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.SLIMY_EEL.getIds()));
 		}
 		if (config.showKarambwanji())
 		{

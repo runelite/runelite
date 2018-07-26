@@ -52,7 +52,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 
 @Slf4j
-@PluginDescriptor(name = "Friend Notes")
+@PluginDescriptor(
+	name = "Friend Notes",
+	description = "Store notes about your friends"
+)
 public class FriendNotesPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "friendNotes";

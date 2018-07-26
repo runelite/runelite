@@ -48,7 +48,9 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
 
 @PluginDescriptor(
-	name = "Farming Tracker"
+	name = "Farming Tracker",
+	description = "Show when your farming plots would be fully grown",
+	tags = {"skilling", "panel", "timers"}
 )
 @Slf4j
 public class FarmingTrackerPlugin extends Plugin

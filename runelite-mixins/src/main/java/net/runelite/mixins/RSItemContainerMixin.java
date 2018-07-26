@@ -30,7 +30,6 @@ import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
-import static net.runelite.client.callback.Hooks.deferredEventBus;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSItem;
 import net.runelite.rs.api.RSItemContainer;
@@ -77,7 +76,7 @@ public abstract class RSItemContainerMixin implements RSItemContainer
 		rl$lastCycle = cycle;
 
 		ItemContainerChanged event = new ItemContainerChanged(this);
-		deferredEventBus.post(event);
+		client.getCallbacks().postDeferred(event);
 	}
 
 }

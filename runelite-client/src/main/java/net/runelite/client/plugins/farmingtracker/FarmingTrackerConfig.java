@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "farmingTracker",
-	name = "Farming Tracker",
-	description = "Configuration for the farming tracker"
-)
+@ConfigGroup("farmingTracker")
 public interface FarmingTrackerConfig extends Config
 {
 	String KEY_NAME = "farmingTracker";

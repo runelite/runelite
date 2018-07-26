@@ -28,7 +28,6 @@ package net.runelite.client.plugins.cerberus;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.eventbus.Subscribe;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -43,7 +42,11 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-@PluginDescriptor(name = "Cerberus")
+@PluginDescriptor(
+	name = "Cerberus",
+	description = "Show what to pray against the summoned souls",
+	tags = {"bosses", "combat", "ghosts", "prayer", "pve", "overlay", "souls"}
+)
 @Singleton
 public class CerberusPlugin extends Plugin
 {
@@ -99,7 +102,7 @@ public class CerberusPlugin extends Plugin
 			return;
 		}
 
-		Collections.sort(ghosts, (a, b) -> ComparisonChain.start()
+		ghosts.sort((a, b) -> ComparisonChain.start()
 			// First, sort by the southernmost ghost (e.g with lowest y)
 			.compare(a.getLocalLocation().getY(), b.getLocalLocation().getY())
 			// Then, sort by the westernmost ghost (e.g with lowest x)

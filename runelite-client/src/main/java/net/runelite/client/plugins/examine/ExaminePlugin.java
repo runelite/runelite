@@ -27,7 +27,6 @@ package net.runelite.client.plugins.examine;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.eventbus.Subscribe;
-import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -62,7 +61,9 @@ import net.runelite.http.api.item.ItemPrice;
  * @author Adam
  */
 @PluginDescriptor(
-	name = "Examine"
+	name = "Examine",
+	description = "Send examine information to the API",
+	tags = {"npcs", "items", "inventory", "objects"}
 )
 @Slf4j
 public class ExaminePlugin extends Plugin
@@ -116,7 +117,7 @@ public class ExaminePlugin extends Plugin
 				break;
 			case EXAMINE_OBJECT:
 				type = ExamineType.OBJECT;
-				id = event.getId() >>> 14;
+				id = event.getId();
 				break;
 			case EXAMINE_NPC:
 				type = ExamineType.NPC;
@@ -271,14 +272,9 @@ public class ExaminePlugin extends Plugin
 		final boolean note = itemComposition.getNote() != -1;
 		final int id = note ? itemComposition.getLinkedNoteId() : itemComposition.getId();
 
-		ItemPrice itemPrice;
-		try
+		ItemPrice itemPrice = itemManager.getItemPrice(id);
+		if (itemPrice == null)
 		{
-			itemPrice = itemManager.getItemPrice(id);
-		}
-		catch (IOException e)
-		{
-			log.warn("Error looking up item price", e);
 			return;
 		}
 
