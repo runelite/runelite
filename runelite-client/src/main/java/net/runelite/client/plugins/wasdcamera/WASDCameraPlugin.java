@@ -129,11 +129,6 @@ public class WASDCameraPlugin extends Plugin
 
 		Widget w = e.getWidget();
 
-		if (w.hasListener())
-		{
-			System.out.println(w.getId() + " has listener");
-		}
-
 		//System.out.println("Changed: "+ w.getName() + " ID: " + w.getId());
 
 		if (isWidgetHiddenOverride(w.getId()))

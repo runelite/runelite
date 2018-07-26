@@ -44,6 +44,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
@@ -81,6 +82,8 @@ public class GrandExchangePlugin extends Plugin
 	private static final int OFFER_CONTAINER_ITEM = 21;
 	private static final int OFFER_DEFAULT_ITEM_ID = 6512;
 	private static final GrandExchangeClient CLIENT = new GrandExchangeClient();
+
+	static final String SEARCH_GRAND_EXCHANGE = "Search Grand Exchange";
 
 	@Getter(AccessLevel.PACKAGE)
 	private NavigationButton button;
@@ -247,7 +250,10 @@ public class GrandExchangePlugin extends Plugin
 				}
 			case WidgetID.INVENTORY_GROUP_ID:
 			case WidgetID.BANK_INVENTORY_GROUP_ID:
-				menuEntry.setOption("Search Grand Exchange");
+			case WidgetID.GRAND_EXCHANGE_INVENTORY_GROUP_ID:
+			case WidgetID.SHOP_INVENTORY_GROUP_ID:
+				menuEntry.setOption(SEARCH_GRAND_EXCHANGE);
+				menuEntry.setType(MenuAction.RUNELITE.getId());
 				client.setMenuEntries(entries);
 		}
 	}
