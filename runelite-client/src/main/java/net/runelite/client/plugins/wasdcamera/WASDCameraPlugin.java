@@ -44,7 +44,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
 		name = "WASD Camera",
 		description = "Allows use of WASD keys for camera movement with 'Press Enter to Chat'",
-		tags = {"wasd", "camera", "chat"}
+		tags = {"wasd", "camera", "chat"},
+		enabledByDefault = false
 )
 
 public class WASDCameraPlugin extends Plugin
@@ -125,7 +126,13 @@ public class WASDCameraPlugin extends Plugin
 	@Subscribe
 	public void onWidgetHiddenChanged(WidgetHiddenChanged e)
 	{
+
 		Widget w = e.getWidget();
+
+		if (w.hasListener())
+		{
+			System.out.println(w.getId() + " has listener");
+		}
 
 		//System.out.println("Changed: "+ w.getName() + " ID: " + w.getId());
 
