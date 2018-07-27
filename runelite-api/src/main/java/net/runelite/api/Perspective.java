@@ -98,7 +98,7 @@ public class Perspective
 	 */
 	public static Point worldToCanvas(@Nonnull Client client, int x, int y, int plane, int zOffset)
 	{
-		return worldToCanvas(client, x, y, plane, x >>> LOCAL_COORD_BITS, y >>> LOCAL_COORD_BITS, zOffset);
+		return worldToCanvas(client, x, y, plane, x, y, zOffset);
 	}
 
 	/**
