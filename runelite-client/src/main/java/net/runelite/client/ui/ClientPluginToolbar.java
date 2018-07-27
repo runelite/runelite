@@ -66,7 +66,6 @@ public class ClientPluginToolbar extends JToolBar
 				add(component, index);
 			}
 
-			revalidate();
 			repaint();
 		}
 	}
@@ -78,7 +77,6 @@ public class ClientPluginToolbar extends JToolBar
 		if (component != null)
 		{
 			remove(component);
-			revalidate();
 			repaint();
 		}
 	}
