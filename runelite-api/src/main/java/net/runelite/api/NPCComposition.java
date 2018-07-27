@@ -63,14 +63,14 @@ public interface NPCComposition
 	 *
 	 * @return the mini-map visible state
 	 */
-	boolean isMinimapVisable();
+	boolean isMinimapVisible();
 
 	/**
 	 * Gets whether the NPC is visible.
 	 *
 	 * @return the visible state
 	 */
-	boolean isVisable();
+	boolean isVisible();
 
 	/**
 	 * Gets the ID of the NPC.
