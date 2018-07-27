@@ -34,7 +34,7 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconButton;
 import net.runelite.client.ui.components.IconTextField;
 
-public class ConfigSearchBar extends IconTextField
+class ConfigSearchBar extends IconTextField
 {
 	private static final int SEARCH_BAR_SIZE = 30;
 
@@ -59,10 +59,8 @@ public class ConfigSearchBar extends IconTextField
 		}
 	}
 
-	public ConfigSearchBar()
+	ConfigSearchBar()
 	{
-		super();
-
 		setIcon(SEARCH);
 		setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, SEARCH_BAR_SIZE));
 		setBackground(ColorScheme.DARKER_GRAY_COLOR);
