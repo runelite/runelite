@@ -30,7 +30,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
@@ -49,12 +48,12 @@ import net.runelite.api.events.WallObjectSpawned;
 public class SceneTileManager
 {
 	private final EventBus eventBus = new EventBus();
-	private final Provider<Client> clientProvider;
+	private final Client client;
 
 	@Inject
-	public SceneTileManager(Provider<Client> clientProvider)
+	private SceneTileManager(Client client)
 	{
-		this.clientProvider = clientProvider;
+		this.client = client;
 	}
 
 	/**
@@ -64,9 +63,7 @@ public class SceneTileManager
 	 */
 	public void forEachTile(Consumer<Tile> consumer)
 	{
-		final Client client = clientProvider.get();
-
-		if (client == null || client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
