@@ -60,9 +60,9 @@ public class OverlayUtil
 	public static void renderMinimapLocation(Graphics2D graphics, Point mini, Color color)
 	{
 		graphics.setColor(Color.BLACK);
-		graphics.fillOval(mini.getX(), mini.getY() + 1, 5, 5);
+		graphics.fillOval(mini.getX() - 2, mini.getY() - 2 + 1, 5, 5);
 		graphics.setColor(color);
-		graphics.fillOval(mini.getX(), mini.getY(), 5, 5);
+		graphics.fillOval(mini.getX() - 2, mini.getY() - 2, 5, 5);
 	}
 
 	public static void renderTextLocation(Graphics2D graphics, Point txtLoc, String text, Color color)
