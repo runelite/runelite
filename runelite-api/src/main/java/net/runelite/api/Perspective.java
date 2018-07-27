@@ -54,7 +54,9 @@ public class Perspective
 	public static final int LOCAL_COORD_BITS = 7;
 	public static final int LOCAL_TILE_SIZE = 1 << LOCAL_COORD_BITS; // 128 - size of a tile in local coordinates
 
-	public static final int SCENE_SIZE = 104; // in tiles
+	public static final int SCENE_SIZE = Constants.SCENE_SIZE; // in tiles
+
+	private static final int TILE_FLAG_BRIDGE = 2;
 
 	public static final int[] SINE = new int[2048]; // sine angles for each of the 2048 units, * 65536 and stored as an int
 	public static final int[] COSINE = new int[2048]; // cosine
@@ -272,22 +274,22 @@ public class Perspective
 	{
 		int sceneX = localX >> LOCAL_COORD_BITS;
 		int sceneY = localY >> LOCAL_COORD_BITS;
-		if (sceneX >= 0 && sceneY >= 0 && sceneX <= 103 && sceneY <= 103)
+		if (sceneX >= 0 && sceneY >= 0 && sceneX < SCENE_SIZE && sceneY < SCENE_SIZE)
 		{
 			byte[][][] tileSettings = client.getTileSettings();
 			int[][][] tileHeights = client.getTileHeights();
 
-			int var5 = plane;
-			if (plane < 3 && (tileSettings[1][sceneX][sceneY] & 2) == 2)
+			int z1 = plane;
+			if (plane < Constants.MAX_Z - 1 && (tileSettings[1][sceneX][sceneY] & TILE_FLAG_BRIDGE) == TILE_FLAG_BRIDGE)
 			{
-				var5 = plane + 1;
+				z1 = plane + 1;
 			}
 
-			int var6 = localX & 127;
-			int var7 = localY & 127;
-			int var8 = var6 * tileHeights[var5][sceneX + 1][sceneY] + (128 - var6) * tileHeights[var5][sceneX][sceneY] >> 7;
-			int var9 = tileHeights[var5][sceneX][sceneY + 1] * (128 - var6) + var6 * tileHeights[var5][sceneX + 1][sceneY + 1] >> 7;
-			return (128 - var7) * var8 + var7 * var9 >> 7;
+			int x = localX & (LOCAL_TILE_SIZE - 1);
+			int y = localY & (LOCAL_TILE_SIZE - 1);
+			int var8 = x * tileHeights[z1][sceneX + 1][sceneY] + (LOCAL_TILE_SIZE - x) * tileHeights[z1][sceneX][sceneY] >> LOCAL_COORD_BITS;
+			int var9 = tileHeights[z1][sceneX][sceneY + 1] * (LOCAL_TILE_SIZE - x) + x * tileHeights[z1][sceneX + 1][sceneY + 1] >> LOCAL_COORD_BITS;
+			return (LOCAL_TILE_SIZE - y) * var8 + y * var9 >> LOCAL_COORD_BITS;
 		}
 
 		return 0;
