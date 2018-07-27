@@ -262,6 +262,33 @@ public class Perspective
 	}
 
 	/**
+	 * Get the height of a location, in local coordinates. Interpolates the height from the adjacent tiles.
+	 * Does not account for bridges.
+	 * @param client
+	 * @param localX
+	 * @param localY
+	 * @param plane
+	 * @return
+	 */
+	private static int getHeight(@Nonnull Client client, int localX, int localY, int plane)
+	{
+		int sceneX = localX >> LOCAL_COORD_BITS;
+		int sceneY = localY >> LOCAL_COORD_BITS;
+		if (sceneX >= 0 && sceneY >= 0 && sceneX < SCENE_SIZE && sceneY < SCENE_SIZE)
+		{
+			int[][][] tileHeights = client.getTileHeights();
+
+			int x = localX & (LOCAL_TILE_SIZE - 1);
+			int y = localY & (LOCAL_TILE_SIZE - 1);
+			int var8 = x * tileHeights[plane][sceneX + 1][sceneY] + (LOCAL_TILE_SIZE - x) * tileHeights[plane][sceneX][sceneY] >> LOCAL_COORD_BITS;
+			int var9 = tileHeights[plane][sceneX][sceneY + 1] * (LOCAL_TILE_SIZE - x) + x * tileHeights[plane][sceneX + 1][sceneY + 1] >> LOCAL_COORD_BITS;
+			return (LOCAL_TILE_SIZE - y) * var8 + y * var9 >> LOCAL_COORD_BITS;
+		}
+
+		return 0;
+	}
+
+	/**
 	 * Calculates a tile polygon from offset worldToScreen() points.
 	 *
 	 * @param client the game client
@@ -284,23 +311,40 @@ public class Perspective
 	 */
 	public static Polygon getCanvasTileAreaPoly(@Nonnull Client client, @Nonnull LocalPoint localLocation, int size)
 	{
-		int plane = client.getPlane();
+		final int plane = client.getPlane();
 
-		// Shift over one half tile as localLocation is the center point of the tile, and then shift the area size
-		Point southWestCorner = new Point(localLocation.getX() - (size * LOCAL_TILE_SIZE / 2),
-			localLocation.getY() - (size * LOCAL_TILE_SIZE / 2));
-		// expand by size
-		Point northEastCorner = new Point(southWestCorner.getX() + size * LOCAL_TILE_SIZE - 1,
-			southWestCorner.getY() + size * LOCAL_TILE_SIZE - 1);
-		// Take the x of top left and the y of bottom right to create bottom left
-		Point bottomRight = new Point(southWestCorner.getX(), northEastCorner.getY());
-		// Similarly for top right
-		Point topLeft = new Point(northEastCorner.getX(), southWestCorner.getY());
+		final int swX = localLocation.getX() - (size * LOCAL_TILE_SIZE / 2);
+		final int swY = localLocation.getY() - (size * LOCAL_TILE_SIZE / 2);
 
-		Point p1 = worldToCanvas(client, southWestCorner.getX(), southWestCorner.getY(), plane);
-		Point p2 = worldToCanvas(client, topLeft.getX(), topLeft.getY(), plane);
-		Point p3 = worldToCanvas(client, northEastCorner.getX(), northEastCorner.getY(), plane);
-		Point p4 = worldToCanvas(client, bottomRight.getX(), bottomRight.getY(), plane);
+		final int neX = localLocation.getX() + (size * LOCAL_TILE_SIZE / 2);
+		final int neY = localLocation.getY() + (size * LOCAL_TILE_SIZE/2);
+
+		final int seX = swX;
+		final int seY = neY;
+
+		final int nwX = neX;
+		final int nwY = swY;
+
+		final byte[][][] tileSettings = client.getTileSettings();
+
+		final int sceneX = localLocation.getSceneX();
+		final int sceneY = localLocation.getSceneY();
+
+		int tilePlane = plane;
+		if (plane < Constants.MAX_Z - 1 && (tileSettings[1][sceneX][sceneY] & TILE_FLAG_BRIDGE) == TILE_FLAG_BRIDGE)
+		{
+			tilePlane = plane + 1;
+		}
+
+		final int swHeight = getHeight(client, swX, swY, tilePlane);
+		final int nwHeight = getHeight(client, nwX, nwY, tilePlane);
+		final int neHeight = getHeight(client, neX, neY, tilePlane);
+		final int seHeight = getHeight(client, seX, seY, tilePlane);
+
+		Point p1 = localToCanvas(client, swX, swY, swHeight);
+		Point p2 = localToCanvas(client, nwX, nwY, nwHeight);
+		Point p3 = localToCanvas(client, neX, neY, neHeight);
+		Point p4 = localToCanvas(client, seX, seY, seHeight);
 
 		if (p1 == null || p2 == null || p3 == null || p4 == null)
 		{
