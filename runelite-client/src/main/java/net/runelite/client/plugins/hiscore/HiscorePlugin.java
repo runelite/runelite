@@ -47,7 +47,7 @@ import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -69,7 +69,7 @@ public class HiscorePlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private PluginToolbar pluginToolbar;
+	private ClientToolbar clientToolbar;
 
 	@Inject
 	private MenuManager menuManager;
@@ -110,7 +110,7 @@ public class HiscorePlugin extends Plugin
 			.panel(hiscorePanel)
 			.build();
 
-		pluginToolbar.addNavigation(navButton);
+		clientToolbar.addNavigation(navButton);
 
 		if (config.playerOption())
 		{
@@ -126,7 +126,7 @@ public class HiscorePlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		hiscorePanel.removeInputKeyListener(autocompleter);
-		pluginToolbar.removeNavigation(navButton);
+		clientToolbar.removeNavigation(navButton);
 		menuManager.removePlayerMenuItem(LOOKUP);
 	}
 

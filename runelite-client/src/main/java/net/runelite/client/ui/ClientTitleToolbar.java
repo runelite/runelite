@@ -38,7 +38,7 @@ import javax.swing.JPanel;
  */
 class ClientTitleToolbar extends JPanel
 {
-	static final int TITLEBAR_SIZE = 23;
+	private static final int TITLEBAR_SIZE = 23;
 	private static final int ITEM_PADDING = 4;
 	private final Map<NavigationButton, Component> componentMap = new TreeMap<>((a, b) ->
 		ComparisonChain
@@ -146,7 +146,7 @@ class ClientTitleToolbar extends JPanel
 	private void update()
 	{
 		removeAll();
-		componentMap.forEach((key, value) -> add(value));
+		componentMap.values().forEach(this::add);
 		repaint();
 	}
 }

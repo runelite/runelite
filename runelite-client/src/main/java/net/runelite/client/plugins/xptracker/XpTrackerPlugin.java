@@ -52,7 +52,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.http.api.xp.XpClient;
 
 @PluginDescriptor(
@@ -64,7 +64,7 @@ import net.runelite.http.api.xp.XpClient;
 public class XpTrackerPlugin extends Plugin
 {
 	@Inject
-	private PluginToolbar pluginToolbar;
+	private ClientToolbar clientToolbar;
 
 	@Inject
 	private Client client;
@@ -115,14 +115,14 @@ public class XpTrackerPlugin extends Plugin
 			.panel(xpPanel)
 			.build();
 
-		pluginToolbar.addNavigation(navButton);
+		clientToolbar.addNavigation(navButton);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		xpState.reset();
-		pluginToolbar.removeNavigation(navButton);
+		clientToolbar.removeNavigation(navButton);
 	}
 
 	@Subscribe

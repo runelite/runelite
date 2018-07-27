@@ -66,10 +66,8 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ExpandResizeType;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.config.WarningOnExit;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
-import net.runelite.client.events.TitleToolbarButtonAdded;
-import net.runelite.client.events.TitleToolbarButtonRemoved;
+import net.runelite.client.events.NavigationButtonAdded;
+import net.runelite.client.events.NavigationButtonRemoved;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.ui.skin.SubstanceRuneLiteLookAndFeel;
 import net.runelite.client.util.OSType;
@@ -171,19 +169,22 @@ public class ClientUI
 	}
 
 	@Subscribe
-	public void onPluginToolbarButtonAdded(final PluginToolbarButtonAdded event)
+	public void onNavigationButtonAdded(final NavigationButtonAdded event)
 	{
 		SwingUtilities.invokeLater(() ->
 		{
 			final NavigationButton navigationButton = event.getButton();
 			final PluginPanel pluginPanel = navigationButton.getPanel();
+			final boolean inTitle = !event.getButton().isTab() &&
+				(config.enableCustomChrome() || SwingUtil.isCustomTitlePanePresent(frame));
+			final int iconSize = 16;
 
 			if (pluginPanel != null)
 			{
 				navContainer.add(pluginPanel.getWrappedPanel(), navigationButton.getTooltip());
 			}
 
-			final JButton button = SwingUtil.createSwingButton(navigationButton, 0, (navButton, jButton) ->
+			final JButton button = SwingUtil.createSwingButton(navigationButton, iconSize, (navButton, jButton) ->
 			{
 				final PluginPanel panel = navButton.getPanel();
 
@@ -222,55 +223,30 @@ public class ClientUI
 				}
 			});
 
-			pluginToolbar.addComponent(event.getButton(), button);
+			if (inTitle)
+			{
+				titleToolbar.addComponent(event.getButton(), button);
+			}
+			else
+			{
+				pluginToolbar.addComponent(event.getButton(), button);
+			}
 		});
 	}
 
 	@Subscribe
-	public void onPluginToolbarButtonRemoved(final PluginToolbarButtonRemoved event)
+	public void onNavigationButtonRemoved(final NavigationButtonRemoved event)
 	{
 		SwingUtilities.invokeLater(() ->
 		{
 			pluginToolbar.removeComponent(event.getButton());
+			titleToolbar.removeComponent(event.getButton());
 			final PluginPanel pluginPanel = event.getButton().getPanel();
 
 			if (pluginPanel != null)
 			{
 				navContainer.remove(pluginPanel.getWrappedPanel());
 			}
-		});
-	}
-
-	@Subscribe
-	public void onTitleToolbarButtonAdded(final TitleToolbarButtonAdded event)
-	{
-		SwingUtilities.invokeLater(() ->
-		{
-			final int iconSize = ClientTitleToolbar.TITLEBAR_SIZE - 6;
-			final JButton button = SwingUtil.createSwingButton(event.getButton(), iconSize, null);
-
-			if (config.enableCustomChrome() || SwingUtil.isCustomTitlePanePresent(frame))
-			{
-				titleToolbar.addComponent(event.getButton(), button);
-				return;
-			}
-
-			pluginToolbar.addComponent(event.getButton(), button);
-		});
-	}
-
-	@Subscribe
-	public void onTitleToolbarButtonRemoved(final TitleToolbarButtonRemoved event)
-	{
-		SwingUtilities.invokeLater(() ->
-		{
-			if (config.enableCustomChrome() || SwingUtil.isCustomTitlePanePresent(frame))
-			{
-				titleToolbar.removeComponent(event.getButton());
-				return;
-			}
-
-			pluginToolbar.removeComponent(event.getButton());
 		});
 	}
 

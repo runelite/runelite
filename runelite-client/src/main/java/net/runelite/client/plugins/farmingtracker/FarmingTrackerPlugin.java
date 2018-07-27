@@ -45,7 +45,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.ui.ClientToolbar;
 
 @PluginDescriptor(
 	name = "Farming Tracker",
@@ -56,7 +56,7 @@ import net.runelite.client.ui.PluginToolbar;
 public class FarmingTrackerPlugin extends Plugin
 {
 	@Inject
-	private PluginToolbar pluginToolbar;
+	private ClientToolbar clientToolbar;
 
 	@Inject
 	private ConfigManager configManager;
@@ -103,7 +103,7 @@ public class FarmingTrackerPlugin extends Plugin
 			.priority(4)
 			.build();
 
-		pluginToolbar.addNavigation(navButton);
+		clientToolbar.addNavigation(navButton);
 
 		updatePanel();
 	}
@@ -117,7 +117,7 @@ public class FarmingTrackerPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		pluginToolbar.removeNavigation(navButton);
+		clientToolbar.removeNavigation(navButton);
 	}
 
 	@Subscribe

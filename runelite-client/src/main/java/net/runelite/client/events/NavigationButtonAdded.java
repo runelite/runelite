@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,59 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
+package net.runelite.client.events;
 
-import com.google.common.eventbus.EventBus;
-import java.util.HashSet;
-import java.util.Set;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+import lombok.Value;
+import net.runelite.client.ui.NavigationButton;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+@Value
+public class NavigationButtonAdded
 {
-	private final EventBus eventBus;
-	private final Set<NavigationButton> buttons = new HashSet<>();
-
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
-	{
-		this.eventBus = eventBus;
-	}
-
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
-	{
-		if (buttons.contains(button))
-		{
-			return;
-		}
-
-		if (buttons.add(button))
-		{
-			eventBus.post(new PluginToolbarButtonAdded(button));
-		}
-	}
-
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
-	{
-		if (buttons.remove(button))
-		{
-			eventBus.post(new PluginToolbarButtonRemoved(button));
-		}
-	}
+	private NavigationButton button;
 }

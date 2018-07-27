@@ -30,7 +30,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.JToolBar;
 
 /**
@@ -42,7 +41,7 @@ public class ClientPluginToolbar extends JToolBar
 	private final Map<NavigationButton, Component> componentMap = new TreeMap<>((a, b) ->
 		ComparisonChain
 			.start()
-			.compare(a.isTab(), b.isTab())
+			.compareTrueFirst(a.isTab(), b.isTab())
 			.compare(a.getPriority(), b.getPriority())
 			.compare(a.getTooltip(), b.getTooltip())
 			.result());
@@ -80,18 +79,18 @@ public class ClientPluginToolbar extends JToolBar
 	private void update()
 	{
 		removeAll();
+		boolean isDelimited = false;
 
-		final AtomicBoolean isDelimited = new AtomicBoolean(false);
-		componentMap.forEach((key, value) ->
+		for (final Map.Entry<NavigationButton, Component> entry : componentMap.entrySet())
 		{
-			if (!key.isTab() && !isDelimited.get())
+			if (!entry.getKey().isTab() && !isDelimited)
 			{
-				isDelimited.set(true);
+				isDelimited = true;
 				addSeparator();
 			}
 
-			add(value);
-		});
+			add(entry.getValue());
+		}
 
 		repaint();
 	}
