@@ -180,10 +180,8 @@ public class Perspective
 	public static Point worldToMiniMap(@Nonnull Client client, int x, int y, int distance)
 	{
 		LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
-		final int sceneX = x >>> LOCAL_COORD_BITS;
-		final int sceneY = y >>> LOCAL_COORD_BITS;
-		x = sceneX * 4 + 2 - localLocation.getX() / 32;
-		y = sceneY * 4 + 2 - localLocation.getY() / 32;
+		x = x / 32 - localLocation.getX() / 32;
+		y = y / 32 - localLocation.getY() / 32;
 
 		int dist = x * x + y * y;
 		if (dist < distance)
