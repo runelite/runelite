@@ -100,62 +100,28 @@ public class Perspective
 	 */
 	public static Point worldToCanvas(@Nonnull Client client, int x, int y, int plane, int zOffset)
 	{
-		return worldToCanvas(client, x, y, plane, x, y, zOffset);
+		final int tileHeight = getTileHeight(client, x, y, plane);
+		return localToCanvas(client, x, y, tileHeight - zOffset);
 	}
 
 	/**
-	 * Translates two-dimensional ground coordinates within the 3D world to
-	 * their corresponding coordinates on the game screen. Calculating heights
-	 * based on the coordinates of the tile provided, rather than the world
-	 * coordinates.
-	 * <p>
-	 * Using the position of each vertex, rather than the location of the
-	 * object, to determine the height of each vertex causes the mesh to be
-	 * vertically warped, based on the terrain below.
+	 * Translates three-dimensional local coordinates within the 3D world to
+	 * their corresponding coordinates on the game screen.
 	 *
 	 * @param client the game client
 	 * @param x ground coordinate on the x axis
 	 * @param y ground coordinate on the y axis
-	 * @param plane ground plane on the z axis
-	 * @param tileX the X coordinate of the tile the object is on
-	 * @param tileY the Y coordinate of the tile the object is on
+	 * @param z
 	 * @return a {@link Point} on screen corresponding to the position in
 	 * 3D-space
 	 */
-	public static Point worldToCanvas(@Nonnull Client client, int x, int y, int plane, int tileX, int tileY)
-	{
-		return worldToCanvas(client, x, y, plane, tileX, tileY, 0);
-	}
-
-	/**
-	 * Translates two-dimensional ground coordinates within the 3D world to
-	 * their corresponding coordinates on the game screen. Calculating heights
-	 * based on the coordinates of the tile provided, rather than the world
-	 * coordinates.
-	 * <p>
-	 * Using the position of each vertex, rather than the location of the
-	 * object, to determine the height of each vertex causes the mesh to be
-	 * vertically warped, based on the terrain below.
-	 *
-	 * @param client the game client
-	 * @param x ground coordinate on the x axis
-	 * @param y ground coordinate on the y axis
-	 * @param plane ground plane on the z axis
-	 * @param tileX the X coordinate of the tile the object is on
-	 * @param tileY the Y coordinate of the tile the object is on
-	 * @param zOffset distance from ground on the z axis
-	 * @return a {@link Point} on screen corresponding to the position in
-	 * 3D-space
-	 */
-	public static Point worldToCanvas(@Nonnull Client client, int x, int y, int plane, int tileX, int tileY, int zOffset)
+	private static Point localToCanvas(@Nonnull Client client, int x, int y, int z)
 	{
 		if (x >= 128 && y >= 128 && x <= 13056 && y <= 13056)
 		{
-			int z = getTileHeight(client, tileX, tileY, client.getPlane()) - plane;
 			x -= client.getCameraX();
 			y -= client.getCameraY();
 			z -= client.getCameraZ();
-			z -= zOffset;
 
 			int cameraPitch = client.getCameraPitch();
 			int cameraYaw = client.getCameraYaw();
@@ -327,14 +293,14 @@ public class Perspective
 		Point northEastCorner = new Point(southWestCorner.getX() + size * LOCAL_TILE_SIZE - 1,
 			southWestCorner.getY() + size * LOCAL_TILE_SIZE - 1);
 		// Take the x of top left and the y of bottom right to create bottom left
-		Point bottomLeft = new Point(southWestCorner.getX(), northEastCorner.getY());
+		Point bottomRight = new Point(southWestCorner.getX(), northEastCorner.getY());
 		// Similarly for top right
-		Point topRight = new Point(northEastCorner.getX(), southWestCorner.getY());
+		Point topLeft = new Point(northEastCorner.getX(), southWestCorner.getY());
 
 		Point p1 = worldToCanvas(client, southWestCorner.getX(), southWestCorner.getY(), plane);
-		Point p2 = worldToCanvas(client, topRight.getX(), topRight.getY(), plane);
+		Point p2 = worldToCanvas(client, topLeft.getX(), topLeft.getY(), plane);
 		Point p3 = worldToCanvas(client, northEastCorner.getX(), northEastCorner.getY(), plane);
-		Point p4 = worldToCanvas(client, bottomLeft.getX(), bottomLeft.getY(), plane);
+		Point p4 = worldToCanvas(client, bottomRight.getX(), bottomRight.getY(), plane);
 
 		if (p1 == null || p2 == null || p3 == null || p4 == null)
 		{
@@ -371,7 +337,7 @@ public class Perspective
 	{
 		int plane = client.getPlane();
 
-		Point p = Perspective.worldToCanvas(client, localLocation.getX(), localLocation.getY(), plane, zOffset);
+		Point p = worldToCanvas(client, localLocation.getX(), localLocation.getY(), plane, zOffset);
 
 		if (p == null)
 		{
@@ -405,7 +371,7 @@ public class Perspective
 	{
 		int plane = client.getPlane();
 
-		Point p = Perspective.worldToCanvas(client, localLocation.getX(), localLocation.getY(), plane, zOffset);
+		Point p = worldToCanvas(client, localLocation.getX(), localLocation.getY(), plane, zOffset);
 
 		if (p == null)
 		{
@@ -464,7 +430,7 @@ public class Perspective
 	{
 		int plane = client.getPlane();
 
-		Point p = Perspective.worldToCanvas(client, localLocation.getX(), localLocation.getY(), plane, zOffset);
+		Point p = worldToCanvas(client, localLocation.getX(), localLocation.getY(), plane, zOffset);
 
 		if (p == null)
 		{
@@ -481,17 +447,17 @@ public class Perspective
 	 * You don't want this. Use {@link TileObject#getClickbox()} instead.
 	 * <p>
 	 * Get the on-screen clickable area of {@code model} as though it's for the
-	 * object on the tile at ({@code tileX}, {@code tileY}) and rotated to
+	 * object on the tile at ({@code localX}, {@code localY}) and rotated to
 	 * angle {@code orientation}.
 	 *
 	 * @param client the game client
 	 * @param model the model to calculate a clickbox for
 	 * @param orientation the orientation of the model (0-2048, where 0 is north)
-	 * @param tileX the x-axis coordinate of the tile
-	 * @param tileY the y-axis coordinate of the tile
+	 * @param localX the x-axis coordinate of the tile
+	 * @param localY the y-axis coordinate of the tile
 	 * @return the clickable area of the model
 	 */
-	public static Area getClickbox(@Nonnull Client client, Model model, int orientation, int tileX, int tileY)
+	public static Area getClickbox(@Nonnull Client client, Model model, int orientation, int localX, int localY)
 	{
 		if (model == null)
 		{
@@ -506,8 +472,8 @@ public class Perspective
 				.map(v -> v.rotate(orientation))
 				.collect(Collectors.toList());
 
-		Area clickBox = get2DGeometry(client, triangles, orientation, tileX, tileY);
-		Area visibleAABB = getAABB(client, vertices, orientation, tileX, tileY);
+		Area clickBox = get2DGeometry(client, triangles, orientation, localX, localY);
+		Area visibleAABB = getAABB(client, vertices, orientation, localX, localY);
 
 		if (visibleAABB == null || clickBox == null)
 		{
@@ -535,40 +501,42 @@ public class Perspective
 		@Nonnull Client client,
 		@Nonnull List<Triangle> triangles,
 		int orientation,
-		int tileX,
-		int tileY
+		int localX,
+		int localY
 	)
 	{
 		int radius = 5;
 		Area geometry = new Area();
 
+		final int tileHeight = getTileHeight(client, localX, localY, client.getPlane());
+
 		for (Triangle triangle : triangles)
 		{
 			Vertex _a = triangle.getA();
-			Point a = worldToCanvas(client,
-				tileX - _a.getX(),
-				tileY - _a.getZ(),
-				-_a.getY(), tileX, tileY);
+			Point a = localToCanvas(client,
+				localX - _a.getX(),
+				localY - _a.getZ(),
+				tileHeight + _a.getY());
 			if (a == null)
 			{
 				continue;
 			}
 
 			Vertex _b = triangle.getB();
-			Point b = worldToCanvas(client,
-				tileX - _b.getX(),
-				tileY - _b.getZ(),
-				-_b.getY(), tileX, tileY);
+			Point b = localToCanvas(client,
+				localX - _b.getX(),
+				localY - _b.getZ(),
+				tileHeight + _b.getY());
 			if (b == null)
 			{
 				continue;
 			}
 
 			Vertex _c = triangle.getC();
-			Point c = worldToCanvas(client,
-				tileX - _c.getX(),
-				tileY - _c.getZ(),
-				-_c.getY(), tileX, tileY);
+			Point c = localToCanvas(client,
+				localX - _c.getX(),
+				localY - _c.getZ(),
+				tileHeight + _c.getY());
 			if (c == null)
 			{
 				continue;
@@ -615,8 +583,8 @@ public class Perspective
 		@Nonnull Client client,
 		@Nonnull List<Vertex> vertices,
 		int orientation,
-		int tileX,
-		int tileY
+		int localX,
+		int localY
 	)
 	{
 		int maxX = 0;
@@ -678,23 +646,25 @@ public class Perspective
 			extremeZ = 32;
 		}
 
-		int x1 = tileX - (centerX - extremeX);
+		int x1 = localX - (centerX - extremeX);
 		int y1 = centerY - extremeY;
-		int z1 = tileY - (centerZ - extremeZ);
+		int z1 = localY - (centerZ - extremeZ);
 
-		int x2 = tileX - (centerX + extremeX);
+		int x2 = localX - (centerX + extremeX);
 		int y2 = centerY + extremeY;
-		int z2 = tileY - (centerZ + extremeZ);
+		int z2 = localY - (centerZ + extremeZ);
 
-		Point p1 = worldToCanvas(client, x1, z1, -y1, tileX, tileY);
-		Point p2 = worldToCanvas(client, x1, z2, -y1, tileX, tileY);
-		Point p3 = worldToCanvas(client, x2, z2, -y1, tileX, tileY);
+		final int tileHeight = getTileHeight(client, localX, localY, client.getPlane());
 
-		Point p4 = worldToCanvas(client, x2, z1, -y1, tileX, tileY);
-		Point p5 = worldToCanvas(client, x1, z1, -y2, tileX, tileY);
-		Point p6 = worldToCanvas(client, x1, z2, -y2, tileX, tileY);
-		Point p7 = worldToCanvas(client, x2, z2, -y2, tileX, tileY);
-		Point p8 = worldToCanvas(client, x2, z1, -y2, tileX, tileY);
+		Point p1 = localToCanvas(client, x1, z1, tileHeight + y1);
+		Point p2 = localToCanvas(client, x1, z2, tileHeight + y1);
+		Point p3 = localToCanvas(client, x2, z2, tileHeight + y1);
+
+		Point p4 = localToCanvas(client, x2, z1, tileHeight + y1);
+		Point p5 = localToCanvas(client, x1, z1, tileHeight + y2);
+		Point p6 = localToCanvas(client, x1, z2, tileHeight + y2);
+		Point p7 = localToCanvas(client, x2, z2, tileHeight + y2);
+		Point p8 = localToCanvas(client, x2, z1, tileHeight + y2);
 
 		List<Point> points = new ArrayList<>(8);
 		points.add(p1);
