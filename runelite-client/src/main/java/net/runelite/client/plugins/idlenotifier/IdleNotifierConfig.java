@@ -85,4 +85,15 @@ public interface IdleNotifierConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+		keyName = "energy",
+		name = "Energy Notification Threshold",
+		description = "The amount of energy points to send a notification at. A value of 0 will disable notification.",
+		position = 6
+	)
+	default int getEnergyThreshold()
+	{
+		return 0;
+	}
 }
