@@ -53,7 +53,7 @@ public enum HotColdLocation
 {
 	ASGARNIA_WARRIORS(new WorldPoint(2854, 3558, 0), ASGARNIA, "North of the Warriors' Guild in Burthorpe."),
 	ASGARNIA_JATIX(new WorldPoint(2914, 3429, 0), ASGARNIA, "East of Jatix's Herblore Shop in Taverley."),
-	ASGARNIA_BARB(new WorldPoint(3043, 3436, 0), ASGARNIA, "West of Barbarian Village."),
+	ASGARNIA_BARB(new WorldPoint(3036, 3439, 0), ASGARNIA, "West of Barbarian Village."),
 	ASGARNIA_MIAZRQA(new WorldPoint(2972, 3489, 0), ASGARNIA, "North of Miazrqa's tower, outside Goblin Village."),
 	ASGARNIA_COW(new WorldPoint(3033, 3308, 0), ASGARNIA, "In the cow pen north of Sarah's Farming Shop."),
 	ASGARNIA_PARTY_ROOM(new WorldPoint(3034, 3368, 0), ASGARNIA, "Outside the Falador Party Room."),
