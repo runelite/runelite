@@ -85,12 +85,14 @@ public class AccountPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		loginButton = NavigationButton.builder()
+			.tab(false)
 			.icon(LOGIN_IMAGE)
 			.tooltip("Login to RuneLite")
 			.onClick(this::loginClick)
 			.build();
 
 		logoutButton = NavigationButton.builder()
+			.tab(false)
 			.icon(LOGOUT_IMAGE)
 			.tooltip("Logout of RuneLite")
 			.onClick(this::logoutClick)

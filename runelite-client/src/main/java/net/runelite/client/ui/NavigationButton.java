@@ -45,6 +45,12 @@ public class NavigationButton
 	private final BufferedImage icon;
 
 	/**
+	 * If the button is tab or not
+	 */
+	@Builder.Default
+	private boolean tab = true;
+
+	/**
 	 * Tooltip to show when hovered.
 	 */
 	@Builder.Default

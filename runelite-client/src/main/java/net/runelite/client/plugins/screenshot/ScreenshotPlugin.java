@@ -203,6 +203,7 @@ public class ScreenshotPlugin extends Plugin
 			}
 
 			titleBarButton = NavigationButton.builder()
+				.tab(false)
 				.tooltip("Take screenshot")
 				.icon(iconImage)
 				.onClick(() -> takeScreenshot(format(new Date())))
