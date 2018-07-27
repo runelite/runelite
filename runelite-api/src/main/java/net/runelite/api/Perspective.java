@@ -317,7 +317,7 @@ public class Perspective
 		final int swY = localLocation.getY() - (size * LOCAL_TILE_SIZE / 2);
 
 		final int neX = localLocation.getX() + (size * LOCAL_TILE_SIZE / 2);
-		final int neY = localLocation.getY() + (size * LOCAL_TILE_SIZE/2);
+		final int neY = localLocation.getY() + (size * LOCAL_TILE_SIZE / 2);
 
 		final int seX = swX;
 		final int seY = neY;
