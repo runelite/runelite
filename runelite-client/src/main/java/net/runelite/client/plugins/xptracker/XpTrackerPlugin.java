@@ -53,6 +53,7 @@ import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
+import static net.runelite.client.util.ImageUtil.resizeImage;
 import net.runelite.http.api.xp.XpClient;
 
 @PluginDescriptor(
@@ -101,11 +102,14 @@ public class XpTrackerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		xpPanel = new XpPanel(this, client, skillIconManager);
+		final int iconWidth = 17;
+		final int iconHeight = 16;
 
 		BufferedImage icon;
 		synchronized (ImageIO.class)
 		{
-			icon = ImageIO.read(getClass().getResourceAsStream("xp.png"));
+			BufferedImage fullSizeImage = ImageIO.read(getClass().getResourceAsStream("/skill_icons/overall.png"));
+			icon = resizeImage(fullSizeImage, iconWidth, iconHeight);
 		}
 
 		navButton = NavigationButton.builder()

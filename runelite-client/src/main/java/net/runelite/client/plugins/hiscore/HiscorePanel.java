@@ -328,7 +328,19 @@ public class HiscorePanel extends PluginPanel
 		label.setFont(FontManager.getRunescapeSmallFont());
 		label.setText("--");
 
-		String skillIcon = "skill_icons_small/" + (skill == null ? "combat" : skill.getName().toLowerCase()) + ".png";
+		String skillName = (skill == null ? "combat" : skill.getName().toLowerCase());
+		String directory = "/skill_icons";
+		if (skillName.equals("combat") || skillName.equals("overall"))
+		{
+			// Cannot use SpriteManager as HiscorePlugin loads before a Client is available
+			directory += "/";
+		}
+		else
+		{
+			directory += "_small/";
+		}
+
+		String skillIcon = directory + skillName + ".png";
 		log.debug("Loading skill icon from {}", skillIcon);
 
 		try

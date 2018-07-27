@@ -28,14 +28,12 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +44,7 @@ import net.runelite.api.InstanceTemplates;
 import net.runelite.api.NullObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.Point;
+import static net.runelite.api.SpriteID.TAB_QUESTS_BROWN_RAIDING_PARTY;
 import net.runelite.api.Tile;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
@@ -60,6 +59,7 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.raids.solver.Layout;
@@ -115,6 +115,9 @@ public class RaidsPlugin extends Plugin
 
 	@Inject
 	private LayoutSolver layoutSolver;
+
+	@Inject
+	private SpriteManager spriteManager;
 
 	@Getter
 	private Raid raid;
@@ -270,7 +273,8 @@ public class RaidsPlugin extends Plugin
 
 			if (config.raidsTimer() && message.startsWith(RAID_START_MESSAGE))
 			{
-				timer = new RaidsTimer(getRaidsIcon(), this, Instant.now());
+				final BufferedImage image = getRaidsIcon(spriteManager);
+				timer = new RaidsTimer(image, this, Instant.now());
 				infoBoxManager.addInfoBox(timer);
 			}
 
@@ -603,23 +607,14 @@ public class RaidsPlugin extends Plugin
 		return room;
 	}
 
-	private BufferedImage getRaidsIcon()
+	private BufferedImage getRaidsIcon(SpriteManager spriteManager)
 	{
 		if (raidsIcon != null)
 		{
 			return raidsIcon;
 		}
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				raidsIcon = ImageIO.read(RaidsPlugin.class.getResourceAsStream("raids_icon.png"));
-			}
-		}
-		catch (IOException ex)
-		{
-			log.warn("Unable to load image", ex);
-		}
+
+		raidsIcon = spriteManager.getSprite(TAB_QUESTS_BROWN_RAIDING_PARTY, 0);
 
 		return raidsIcon;
 	}

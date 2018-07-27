@@ -35,11 +35,9 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -47,8 +45,10 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import static net.runelite.api.SpriteID.MINIMAP_DESTINATION_FLAG;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleState;
 import net.runelite.client.plugins.puzzlesolver.solver.heuristics.ManhattanDistance;
@@ -78,6 +78,7 @@ public class PuzzleSolverOverlay extends Overlay
 	private final Client client;
 	private final PuzzleSolverConfig config;
 	private final ScheduledExecutorService executorService;
+	private final SpriteManager spriteManager;
 
 	private PuzzleSolver solver;
 	private Future<?> solverFuture;
@@ -89,7 +90,7 @@ public class PuzzleSolverOverlay extends Overlay
 	private BufferedImage rightArrow;
 
 	@Inject
-	public PuzzleSolverOverlay(Client client, PuzzleSolverConfig config, ScheduledExecutorService executorService)
+	public PuzzleSolverOverlay(Client client, PuzzleSolverConfig config, ScheduledExecutorService executorService, SpriteManager spriteManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
@@ -97,6 +98,7 @@ public class PuzzleSolverOverlay extends Overlay
 		this.client = client;
 		this.config = config;
 		this.executorService = executorService;
+		this.spriteManager = spriteManager;
 	}
 
 	@Override
@@ -429,17 +431,7 @@ public class PuzzleSolverOverlay extends Overlay
 	{
 		if (downArrow == null)
 		{
-			try
-			{
-				synchronized (ImageIO.class)
-				{
-					downArrow = ImageIO.read(PuzzleSolverOverlay.class.getResourceAsStream("arrow.png"));
-				}
-			}
-			catch (IOException e)
-			{
-				log.warn("Error loading image", e);
-			}
+			downArrow = spriteManager.getSprite(MINIMAP_DESTINATION_FLAG, 1);
 		}
 		return downArrow;
 	}
