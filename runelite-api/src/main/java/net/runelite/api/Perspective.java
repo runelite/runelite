@@ -321,8 +321,8 @@ public class Perspective
 		int plane = client.getPlane();
 
 		// Shift over one half tile as localLocation is the center point of the tile, and then shift the area size
-		Point southWestCorner = new Point(localLocation.getX() - (size * LOCAL_TILE_SIZE / 2) + 1,
-			localLocation.getY() - (size * LOCAL_TILE_SIZE / 2) + 1);
+		Point southWestCorner = new Point(localLocation.getX() - (size * LOCAL_TILE_SIZE / 2),
+			localLocation.getY() - (size * LOCAL_TILE_SIZE / 2));
 		// expand by size
 		Point northEastCorner = new Point(southWestCorner.getX() + size * LOCAL_TILE_SIZE - 1,
 			southWestCorner.getY() + size * LOCAL_TILE_SIZE - 1);
