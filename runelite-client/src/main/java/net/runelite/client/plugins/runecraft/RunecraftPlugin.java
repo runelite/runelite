@@ -35,17 +35,21 @@ import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
+import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
+import net.runelite.api.NullObjectID;
 import net.runelite.api.Query;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
+import net.runelite.api.events.GameObjectDespawned;
+import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
@@ -82,6 +86,12 @@ public class RunecraftPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private NPC darkMage;
 
+	@Getter(AccessLevel.PACKAGE)
+	private GameObject denseRunestoneSouth;
+
+	@Getter(AccessLevel.PACKAGE)
+	private GameObject denseRunestoneNorth;
+
 	@Inject
 	private Client client;
 
@@ -93,6 +103,9 @@ public class RunecraftPlugin extends Plugin
 
 	@Inject
 	private AbyssOverlay abyssOverlay;
+
+	@Inject
+	private ZeahOverlay zeahOverlay;
 
 	@Inject
 	private QueryRunner queryRunner;
@@ -114,6 +127,7 @@ public class RunecraftPlugin extends Plugin
 	{
 		overlayManager.add(bindNeckOverlay);
 		overlayManager.add(abyssOverlay);
+		overlayManager.add(zeahOverlay);
 		abyssOverlay.updateConfig();
 	}
 
@@ -229,6 +243,8 @@ public class RunecraftPlugin extends Plugin
 		if (event.getGameState() == GameState.LOADING)
 		{
 			abyssObjects.clear();
+			denseRunestoneNorth = null;
+			denseRunestoneSouth = null;
 		}
 	}
 
@@ -256,6 +272,37 @@ public class RunecraftPlugin extends Plugin
 			Query darkMageQuery = new NPCQuery().idEquals(NpcID.DARK_MAGE);
 			NPC[] result = queryRunner.runQuery(darkMageQuery);
 			darkMage = result.length >= 1 ? result[0] : null;
+		}
+	}
+
+	@Subscribe
+	public void onGameObjectSpawned(GameObjectSpawned event)
+	{
+		GameObject obj = event.getGameObject();
+		int id = obj.getId();
+
+		if (id == NullObjectID.NULL_10796)
+		{
+			denseRunestoneSouth = obj;
+		}
+		else if (id == NullObjectID.NULL_8981)
+		{
+			denseRunestoneNorth = obj;
+		}
+	}
+
+	@Subscribe
+	public void onGameObjectDeSpawned(GameObjectDespawned event)
+	{
+		int id = event.getGameObject().getId();
+
+		if (id == NullObjectID.NULL_10796)
+		{
+			denseRunestoneSouth = null;
+		}
+		else if (id == NullObjectID.NULL_8981)
+		{
+			denseRunestoneNorth = null;
 		}
 	}
 }
