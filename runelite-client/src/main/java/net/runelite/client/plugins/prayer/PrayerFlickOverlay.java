@@ -55,7 +55,10 @@ class PrayerFlickOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isPrayersActive() || config.prayerFlickLocation().equals(PrayerFlickLocation.NONE) || config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR)) //If there are no prayers active or flick location is set to the prayer bar we don't require the flick helper
+		// If there are no prayers active or flick location is set to the prayer bar we don't require the flick helper
+		if (!plugin.isPrayersActive() ||
+			config.prayerFlickLocation().equals(PrayerFlickLocation.NONE) ||
+			config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR))
 		{
 			return null;
 		}
