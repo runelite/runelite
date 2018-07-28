@@ -31,14 +31,17 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("timetracking")
 public interface TimeTrackingConfig extends Config
 {
-	String KEY_NAME = "timetracking";
+	String CONFIG_GROUP = "timetracking";
 	String AUTOWEED = "autoweed";
 	String BIRD_HOUSE = "birdhouse";
+	String TIMERS = "timers";
+	String STOPWATCHES = "stopwatches";
 
 	@ConfigItem(
 		keyName = "estimateRelative",
 		name = "Show relative time",
-		description = "Show amount of time remaining instead of completion time"
+		description = "Show amount of time remaining instead of completion time",
+		position = 1
 	)
 	default boolean estimateRelative()
 	{
@@ -46,9 +49,21 @@ public interface TimeTrackingConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "timerNotification",
+		name = "Timer notification",
+		description = "Notify you whenever a timer has finished counting down",
+		position = 2
+	)
+	default boolean timerNotification()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "birdHouseNotification",
 		name = "Bird house notification",
-		description = "Notify you when all bird houses are full"
+		description = "Notify you when all bird houses are full",
+		position = 3
 	)
 	default boolean birdHouseNotification()
 	{
@@ -63,7 +78,7 @@ public interface TimeTrackingConfig extends Config
 	)
 	default Tab activeTab()
 	{
-		return Tab.ALLOTMENT;
+		return Tab.CLOCK;
 	}
 
 	@ConfigItem(

@@ -22,25 +22,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.timetracking;
+package net.runelite.client.plugins.timetracking.clocks;
 
-import java.awt.Dimension;
-import javax.swing.JPanel;
+import java.time.Instant;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public abstract class TabContentPanel extends JPanel
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+abstract class Clock
 {
-	/**
-	 * Gets the update interval of this panel, in units of 200 milliseconds
-	 * (the plugin panel checks if its contents should be updated every 200 ms;
-	 * this can be considered its "tick rate").
-	 */
-	public abstract int getUpdateInterval();
+	protected String name;
 
-	public abstract void update();
+	// last updated time (recorded as seconds since epoch)
+	protected long lastUpdate;
 
-	@Override
-	public Dimension getPreferredSize()
+	// whether the clock is currently running
+	protected boolean active;
+
+	Clock(String name)
 	{
-		return super.getPreferredSize();
+		this.name = name;
+		this.lastUpdate = Instant.now().getEpochSecond();
+		this.active = false;
 	}
+
+	abstract long getDisplayTime();
+
+	abstract void setDuration(long duration);
+
+	abstract boolean start();
+
+	abstract boolean pause();
+
+	abstract void reset();
 }

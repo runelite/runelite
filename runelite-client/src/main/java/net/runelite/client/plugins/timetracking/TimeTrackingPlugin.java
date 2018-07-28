@@ -28,13 +28,17 @@ package net.runelite.client.plugins.timetracking;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
-import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.UsernameChanged;
 import net.runelite.api.widgets.Widget;
@@ -43,6 +47,10 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.CONFIG_GROUP;
+import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.STOPWATCHES;
+import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.TIMERS;
+import net.runelite.client.plugins.timetracking.clocks.ClockManager;
 import net.runelite.client.plugins.timetracking.farming.FarmingTracker;
 import net.runelite.client.plugins.timetracking.hunter.BirdHouseTracker;
 import net.runelite.client.task.Schedule;
@@ -52,8 +60,8 @@ import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Time Tracking",
-	description = "Enable the Time Tracking panel, which contains farming and bird house trackers",
-	tags = {"birdhouse", "farming", "hunter", "notifications", "skilling", "panel"}
+	description = "Enable the Time Tracking panel, which contains timers, stopwatches, and farming and bird house trackers",
+	tags = {"birdhouse", "farming", "hunter", "notifications", "skilling", "stopwatches", "timers", "panel"}
 )
 @Slf4j
 public class TimeTrackingPlugin extends Plugin
@@ -71,10 +79,18 @@ public class TimeTrackingPlugin extends Plugin
 	private BirdHouseTracker birdHouseTracker;
 
 	@Inject
+	private ClockManager clockManager;
+
+	@Inject
 	private ItemManager itemManager;
 
 	@Inject
 	private TimeTrackingConfig config;
+
+	@Inject
+	private ScheduledExecutorService executorService;
+
+	private ScheduledFuture panelUpdateFuture;
 
 	private TimeTrackingPanel panel;
 
@@ -92,11 +108,13 @@ public class TimeTrackingPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		clockManager.loadTimers();
+		clockManager.loadStopwatches();
 		birdHouseTracker.loadFromConfig();
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "watch.png");
 
-		panel = new TimeTrackingPanel(itemManager, config, farmingTracker, birdHouseTracker);
+		panel = new TimeTrackingPanel(itemManager, config, farmingTracker, birdHouseTracker, clockManager);
 
 		navButton = NavigationButton.builder()
 			.tooltip("Time Tracking")
@@ -107,7 +125,7 @@ public class TimeTrackingPlugin extends Plugin
 
 		clientToolbar.addNavigation(navButton);
 
-		updatePanel();
+		panelUpdateFuture = executorService.scheduleAtFixedRate(this::updatePanel, 200, 200, TimeUnit.MILLISECONDS);
 	}
 
 	@Override
@@ -115,7 +133,32 @@ public class TimeTrackingPlugin extends Plugin
 	{
 		lastTickLocation = null;
 		lastTickPostLogin = false;
+
+		if (panelUpdateFuture != null)
+		{
+			panelUpdateFuture.cancel(true);
+			panelUpdateFuture = null;
+		}
+
 		clientToolbar.removeNavigation(navButton);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged e)
+	{
+		if (!e.getGroup().equals(CONFIG_GROUP))
+		{
+			return;
+		}
+
+		if (clockManager.getTimers().isEmpty() && e.getKey().equals(TIMERS))
+		{
+			clockManager.loadTimers();
+		}
+		else if (clockManager.getStopwatches().isEmpty() && e.getKey().equals(STOPWATCHES))
+		{
+			clockManager.loadStopwatches();
+		}
 	}
 
 	@Subscribe
@@ -154,7 +197,7 @@ public class TimeTrackingPlugin extends Plugin
 
 		if (birdHouseDataChanged || farmingDataChanged)
 		{
-			updatePanel();
+			panel.update();
 		}
 	}
 
@@ -163,7 +206,7 @@ public class TimeTrackingPlugin extends Plugin
 	{
 		farmingTracker.migrateConfiguration();
 		birdHouseTracker.loadFromConfig();
-		updatePanel();
+		panel.update();
 	}
 
 	@Schedule(period = 10, unit = ChronoUnit.SECONDS)
@@ -173,13 +216,24 @@ public class TimeTrackingPlugin extends Plugin
 
 		if (birdHouseDataChanged)
 		{
-			updatePanel();
+			panel.update();
 		}
 	}
 
-	@Schedule(period = 10, unit = ChronoUnit.SECONDS)
-	public void updatePanel()
+	private void updatePanel()
 	{
-		SwingUtilities.invokeLater(panel::update);
+		long unitTime = Instant.now().toEpochMilli() / 200;
+
+		boolean clockDataChanged = false;
+
+		if (unitTime % 5 == 0)
+		{
+			clockDataChanged = clockManager.checkCompletion();
+		}
+
+		if (unitTime % panel.getUpdateInterval() == 0 || clockDataChanged)
+		{
+			panel.update();
+		}
 	}
 }

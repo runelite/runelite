@@ -72,7 +72,7 @@ public class FarmingTracker
 		boolean changed = false;
 
 		{
-			String group = TimeTrackingConfig.KEY_NAME + "." + client.getUsername();
+			String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername();
 			String autoweed = Integer.toString(client.getVar(Varbits.AUTOWEED));
 			if (!autoweed.equals(configManager.getConfiguration(group, TimeTrackingConfig.AUTOWEED)))
 			{
@@ -86,7 +86,7 @@ public class FarmingTracker
 		{
 			// Write config with new varbits
 			// timetracking.<login-username>.<regionID>.<VarbitID>=<varbitValue>:<unix time>
-			String group = TimeTrackingConfig.KEY_NAME + "." + client.getUsername() + "." + region.getRegionID();
+			String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername() + "." + region.getRegionID();
 			long unixNow = Instant.now().getEpochSecond();
 			for (Varbits varbit : region.getVarbits())
 			{
@@ -137,7 +137,7 @@ public class FarmingTracker
 		// migrate autoweed config
 		{
 			String oldGroup = OLD_KEY_NAME + "." + username;
-			String newGroup = TimeTrackingConfig.KEY_NAME + "." + username;
+			String newGroup = TimeTrackingConfig.CONFIG_GROUP + "." + username;
 			String storedValue = configManager.getConfiguration(oldGroup, TimeTrackingConfig.AUTOWEED);
 
 			if (storedValue != null)
@@ -151,7 +151,7 @@ public class FarmingTracker
 		for (FarmingRegion region : farmingWorld.getRegions().values())
 		{
 			String oldGroup = OLD_KEY_NAME + "." + username + "." + region.getRegionID();
-			String newGroup = TimeTrackingConfig.KEY_NAME + "." + username + "." + region.getRegionID();
+			String newGroup = TimeTrackingConfig.CONFIG_GROUP + "." + username + "." + region.getRegionID();
 
 			for (Varbits varbit : region.getVarbits())
 			{

@@ -79,6 +79,12 @@ public class BirdHouseTabPanel extends TabContentPanel
 	}
 
 	@Override
+	public int getUpdateInterval()
+	{
+		return 50; // 10 seconds
+	}
+
+	@Override
 	public void update()
 	{
 		long unixNow = Instant.now().getEpochSecond();

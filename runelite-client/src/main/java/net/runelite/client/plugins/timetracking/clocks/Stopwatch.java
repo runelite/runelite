@@ -22,25 +22,86 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.timetracking;
+package net.runelite.client.plugins.timetracking.clocks;
 
-import java.awt.Dimension;
-import javax.swing.JPanel;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-public abstract class TabContentPanel extends JPanel
+@Getter
+@Setter
+@AllArgsConstructor
+class Stopwatch extends Clock
 {
-	/**
-	 * Gets the update interval of this panel, in units of 200 milliseconds
-	 * (the plugin panel checks if its contents should be updated every 200 ms;
-	 * this can be considered its "tick rate").
-	 */
-	public abstract int getUpdateInterval();
+	// the number of seconds elapsed, as of last updated time
+	private long elapsed = 0;
 
-	public abstract void update();
+	// a list of lap times (recorded as seconds since epoch)
+	private List<Long> laps = new ArrayList<>();
+
+	Stopwatch(String name)
+	{
+		super(name);
+	}
 
 	@Override
-	public Dimension getPreferredSize()
+	long getDisplayTime()
 	{
-		return super.getPreferredSize();
+		if (!active)
+		{
+			return elapsed;
+		}
+
+		return Math.max(0, elapsed + (Instant.now().getEpochSecond() - lastUpdate));
+	}
+
+	@Override
+	void setDuration(long duration)
+	{
+		elapsed = duration;
+	}
+
+	@Override
+	boolean start()
+	{
+		if (!active)
+		{
+			lastUpdate = Instant.now().getEpochSecond();
+			active = true;
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
+	boolean pause()
+	{
+		if (active)
+		{
+			active = false;
+			elapsed = Math.max(0, elapsed + (Instant.now().getEpochSecond() - lastUpdate));
+			lastUpdate = Instant.now().getEpochSecond();
+			return true;
+		}
+
+		return false;
+	}
+
+	void lap()
+	{
+		laps.add(getDisplayTime());
+	}
+
+	@Override
+	void reset()
+	{
+		active = false;
+		elapsed = 0;
+		laps.clear();
+		lastUpdate = Instant.now().getEpochSecond();
 	}
 }

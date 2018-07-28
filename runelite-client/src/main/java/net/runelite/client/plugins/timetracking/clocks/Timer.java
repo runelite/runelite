@@ -22,25 +22,78 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.timetracking;
+package net.runelite.client.plugins.timetracking.clocks;
 
-import java.awt.Dimension;
-import javax.swing.JPanel;
+import java.time.Instant;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-public abstract class TabContentPanel extends JPanel
+@Getter
+@Setter
+@AllArgsConstructor
+class Timer extends Clock
 {
-	/**
-	 * Gets the update interval of this panel, in units of 200 milliseconds
-	 * (the plugin panel checks if its contents should be updated every 200 ms;
-	 * this can be considered its "tick rate").
-	 */
-	public abstract int getUpdateInterval();
+	// the total number of seconds that the timer should run for
+	private long duration;
 
-	public abstract void update();
+	// the number of seconds remaining on the timer, as of last updated time
+	private long remaining;
+
+	Timer(String name, long duration)
+	{
+		super(name);
+		this.duration = duration;
+		this.remaining = duration;
+	}
 
 	@Override
-	public Dimension getPreferredSize()
+	long getDisplayTime()
 	{
-		return super.getPreferredSize();
+		if (!active)
+		{
+			return remaining;
+		}
+
+		return Math.max(0, remaining - (Instant.now().getEpochSecond() - lastUpdate));
+	}
+
+	@Override
+	boolean start()
+	{
+		if (!active && duration > 0)
+		{
+			if (remaining <= 0)
+			{
+				remaining = duration;
+			}
+			lastUpdate = Instant.now().getEpochSecond();
+			active = true;
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
+	boolean pause()
+	{
+		if (active)
+		{
+			active = false;
+			remaining = Math.max(0, remaining - (Instant.now().getEpochSecond() - lastUpdate));
+			lastUpdate = Instant.now().getEpochSecond();
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
+	void reset()
+	{
+		active = false;
+		remaining = duration;
+		lastUpdate = Instant.now().getEpochSecond();
 	}
 }

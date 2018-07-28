@@ -89,7 +89,7 @@ public class BirdHouseTracker
 	{
 		birdHouseData.clear();
 
-		final String group = TimeTrackingConfig.KEY_NAME + "." + client.getUsername() + "." + TimeTrackingConfig.BIRD_HOUSE;
+		final String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername() + "." + TimeTrackingConfig.BIRD_HOUSE;
 
 		for (BirdHouseSpace space : BirdHouseSpace.values())
 		{
@@ -216,7 +216,7 @@ public class BirdHouseTracker
 
 	private void saveToConfig(Map<BirdHouseSpace, BirdHouseData> updatedData)
 	{
-		final String group = TimeTrackingConfig.KEY_NAME + "." + client.getUsername() + "." + TimeTrackingConfig.BIRD_HOUSE;
+		final String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername() + "." + TimeTrackingConfig.BIRD_HOUSE;
 
 		for (BirdHouseData data : updatedData.values())
 		{

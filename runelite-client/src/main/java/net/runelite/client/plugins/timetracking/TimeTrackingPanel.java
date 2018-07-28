@@ -34,10 +34,12 @@ import javax.annotation.Nullable;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.timetracking.clocks.ClockManager;
 import net.runelite.client.plugins.timetracking.farming.FarmingTracker;
 import net.runelite.client.plugins.timetracking.hunter.BirdHouseTracker;
 import net.runelite.client.ui.ColorScheme;
@@ -61,7 +63,7 @@ class TimeTrackingPanel extends PluginPanel
 	private TabContentPanel activeTabPanel = null;
 
 	TimeTrackingPanel(ItemManager itemManager, TimeTrackingConfig config,
-		FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker)
+		FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker, ClockManager clockManager)
 	{
 		super(false);
 
@@ -79,6 +81,7 @@ class TimeTrackingPanel extends PluginPanel
 		add(tabGroup, BorderLayout.NORTH);
 		add(display, BorderLayout.CENTER);
 
+		addTab(Tab.CLOCK, clockManager.getClockTabPanel());
 		addTab(Tab.BIRD_HOUSE, birdHouseTracker.createBirdHouseTabPanel());
 
 		for (Tab tab : Tab.FARMING_TABS)
@@ -130,6 +133,17 @@ class TimeTrackingPanel extends PluginPanel
 		}
 	}
 
+	/**
+	 * Gets the update interval of the active tab panel, in units of 200 milliseconds.
+	 */
+	int getUpdateInterval()
+	{
+		return activeTabPanel == null ? Integer.MAX_VALUE : activeTabPanel.getUpdateInterval();
+	}
+
+	/**
+	 * Updates the active tab panel, if this plugin panel is displayed.
+	 */
 	void update()
 	{
 		if (!active || activeTabPanel == null)
@@ -137,7 +151,7 @@ class TimeTrackingPanel extends PluginPanel
 			return;
 		}
 
-		activeTabPanel.update();
+		SwingUtilities.invokeLater(activeTabPanel::update);
 	}
 
 	@Override

@@ -22,25 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.timetracking;
+package net.runelite.client.plugins.timetracking.clocks;
 
 import java.awt.Dimension;
-import javax.swing.JPanel;
+import net.runelite.client.ui.components.IconButton;
 
-public abstract class TabContentPanel extends JPanel
+class TimerPanel extends ClockPanel
 {
-	/**
-	 * Gets the update interval of this panel, in units of 200 milliseconds
-	 * (the plugin panel checks if its contents should be updated every 200 ms;
-	 * this can be considered its "tick rate").
-	 */
-	public abstract int getUpdateInterval();
-
-	public abstract void update();
-
-	@Override
-	public Dimension getPreferredSize()
+	TimerPanel(ClockManager clockManager, Timer timer)
 	{
-		return super.getPreferredSize();
+		super(clockManager, timer, "timer", true);
+
+		IconButton deleteButton = new IconButton(ClockTabPanel.DELETE_ICON, ClockTabPanel.DELETE_ICON_HOVER);
+		deleteButton.setPreferredSize(new Dimension(16, 14));
+		deleteButton.setToolTipText("Delete timer");
+		deleteButton.addActionListener(e -> clockManager.removeTimer(timer));
+		rightActions.add(deleteButton);
 	}
 }
