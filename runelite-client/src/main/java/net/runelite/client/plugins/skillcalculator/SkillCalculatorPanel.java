@@ -97,7 +97,12 @@ class SkillCalculatorPanel extends PluginPanel
 		{
 			ImageIcon icon = new ImageIcon(iconManager.getSkillImage(calculatorType.getSkill(), true));
 			MaterialTab tab = new MaterialTab(icon, tabGroup, null);
-			tab.setOnSelectEvent(() -> uiCalculator.openCalculator(calculatorType));
+			tab.setOnSelectEvent(() ->
+			{
+				uiCalculator.openCalculator(calculatorType);
+				return true;
+			});
+
 			tabGroup.addTab(tab);
 		}
 	}

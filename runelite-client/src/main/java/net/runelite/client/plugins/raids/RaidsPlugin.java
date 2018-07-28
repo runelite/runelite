@@ -33,7 +33,6 @@ import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
@@ -44,7 +43,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
-import net.runelite.api.ObjectID;
+import net.runelite.api.NullObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
@@ -66,12 +65,14 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Chambers Of Xeric"
+	name = "Chambers Of Xeric",
+	description = "Show helpful information for the Chambers of Xeric raid",
+	tags = {"combat", "raid", "overlay"}
 )
 @Slf4j
 public class RaidsPlugin extends Plugin
@@ -81,9 +82,9 @@ public class RaidsPlugin extends Plugin
 	private static final String LEVEL_COMPLETE_MESSAGE = "level complete!";
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
-	public static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
+	static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final String SPLIT_REGEX = "\\s*,\\s*";
-	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)\\]");
+	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)]");
 
 	private BufferedImage raidsIcon;
 	private RaidsTimer timer;
@@ -102,6 +103,9 @@ public class RaidsPlugin extends Plugin
 
 	@Inject
 	private RaidsConfig config;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private RaidsOverlay overlay;
@@ -140,14 +144,11 @@ public class RaidsPlugin extends Plugin
 	}
 
 	@Override
-	public List<Overlay> getOverlays()
-	{
-		return Arrays.asList(overlay, pointsOverlay);
-	}
-
-	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
+		overlayManager.add(pointsOverlay);
+
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
 			inRaidChambers = client.getVar(Varbits.IN_RAID) == 1;
@@ -160,6 +161,9 @@ public class RaidsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
+		overlayManager.remove(pointsOverlay);
+
 		if (timer != null)
 		{
 			infoBoxManager.removeInfoBox(timer);
@@ -406,7 +410,7 @@ public class RaidsPlugin extends Plugin
 
 	private Point findLobbyBase()
 	{
-		Tile[][] tiles = client.getRegion().getTiles()[LOBBY_PLANE];
+		Tile[][] tiles = client.getScene().getTiles()[LOBBY_PLANE];
 
 		for (int x = 0; x < SCENE_SIZE; x++)
 		{
@@ -417,9 +421,9 @@ public class RaidsPlugin extends Plugin
 					continue;
 				}
 
-				if (tiles[x][y].getWallObject().getId() == ObjectID.NULL_12231)
+				if (tiles[x][y].getWallObject().getId() == NullObjectID.NULL_12231)
 				{
-					return tiles[x][y].getRegionLocation();
+					return tiles[x][y].getSceneLocation();
 				}
 			}
 		}
@@ -443,7 +447,7 @@ public class RaidsPlugin extends Plugin
 
 		for (int plane = 3; plane > 1; plane--)
 		{
-			tiles = client.getRegion().getTiles()[plane];
+			tiles = client.getScene().getTiles()[plane];
 
 			if (tiles[gridBase.getX() + RaidRoom.ROOM_MAX_SIZE][gridBase.getY()] == null)
 			{
@@ -506,7 +510,7 @@ public class RaidsPlugin extends Plugin
 	private RaidRoom determineRoom(Tile base)
 	{
 		RaidRoom room = new RaidRoom(base, RaidRoom.Type.EMPTY);
-		int chunkData = client.getInstanceTemplateChunks()[base.getPlane()][(base.getRegionLocation().getX()) / 8][base.getRegionLocation().getY() / 8];
+		int chunkData = client.getInstanceTemplateChunks()[base.getPlane()][(base.getSceneLocation().getX()) / 8][base.getSceneLocation().getY() / 8];
 		InstanceTemplates template = InstanceTemplates.findMatch(chunkData);
 
 		if (template == null)

@@ -31,10 +31,10 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.google.inject.Provider;
-import java.applet.Applet;
 import java.io.File;
 import java.util.Locale;
+import javax.annotation.Nullable;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.OptionParser;
@@ -52,10 +52,16 @@ import net.runelite.client.game.ClanManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
-import net.runelite.client.ui.TitleToolbar;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.OverlayRenderer;
+import net.runelite.client.ui.overlay.WidgetOverlay;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
+import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
+import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
@@ -71,9 +77,6 @@ public class RuneLite
 
 	@Getter
 	private static Injector injector;
-
-	@Getter
-	private static OptionSet options;
 
 	@Inject
 	private PluginManager pluginManager;
@@ -112,15 +115,29 @@ public class RuneLite
 	private ClientUI clientUI;
 
 	@Inject
-	private TitleToolbar titleToolbar;
-
-	@Inject
 	private Provider<ItemManager> itemManager;
 
 	@Inject
 	private ClanManager clanManager;
 
-	Client client;
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private InfoBoxOverlay infoBoxOverlay;
+
+	@Inject
+	private TooltipOverlay tooltipOverlay;
+
+	@Inject
+	private WorldMapOverlay worldMapOverlay;
+
+	@Inject
+	@Nullable
+	private Client client;
 
 	public static void main(String[] args) throws Exception
 	{
@@ -130,30 +147,32 @@ public class RuneLite
 		parser.accepts("developer-mode", "Enable developer tools");
 		parser.accepts("debug", "Show extra debugging output");
 
-		final ArgumentAcceptingOptionSpec<UpdateCheckMode> updateMode = parser
+		final ArgumentAcceptingOptionSpec<ClientUpdateCheckMode> updateMode = parser
 			.accepts("rs", "Select client type")
 			.withRequiredArg()
-			.ofType(UpdateCheckMode.class)
-			.defaultsTo(UpdateCheckMode.AUTO)
-			.withValuesConvertedBy(new EnumConverter<UpdateCheckMode>(UpdateCheckMode.class)
+			.ofType(ClientUpdateCheckMode.class)
+			.defaultsTo(ClientUpdateCheckMode.AUTO)
+			.withValuesConvertedBy(new EnumConverter<ClientUpdateCheckMode>(ClientUpdateCheckMode.class)
 			{
 				@Override
-				public UpdateCheckMode convert(String v)
+				public ClientUpdateCheckMode convert(String v)
 				{
 					return super.convert(v.toUpperCase());
 				}
 			});
 
 		parser.accepts("help", "Show this text").forHelp();
-		options = parser.parse(args);
+		OptionSet options = parser.parse(args);
 
-		if (getOptions().has("help"))
+		if (options.has("help"))
 		{
 			parser.printHelpOn(System.out);
 			System.exit(0);
 		}
 
-		if (RuneLite.getOptions().has("developer-mode") && RuneLiteProperties.getLauncherVersion() == null)
+		final boolean developerMode = options.has("developer-mode");
+
+		if (developerMode && RuneLiteProperties.getLauncherVersion() == null)
 		{
 			boolean assertions = false;
 			assert assertions = true;
@@ -183,41 +202,22 @@ public class RuneLite
 			}
 		});
 
-		injector = Guice.createInjector(new RuneLiteModule());
-		injector.getInstance(RuneLite.class).start(getOptions().valueOf(updateMode));
+		injector = Guice.createInjector(new RuneLiteModule(
+			options.valueOf(updateMode),
+			developerMode));
+
+		injector.getInstance(RuneLite.class).start();
 	}
 
-	public void start(UpdateCheckMode updateMode) throws Exception
+	public void start() throws Exception
 	{
 		// Load RuneLite or Vanilla client
-		final Applet client = new ClientLoader().loadRs(updateMode);
-
-		final boolean isOutdated = !(client instanceof Client);
+		final boolean isOutdated = client == null;
 
 		if (!isOutdated)
 		{
-			this.client = (Client) client;
-		}
-
-		// Initialize UI
-		clientUI.init(client);
-
-		// Initialize Discord service
-		discordService.init();
-
-		// Register event listeners
-		eventBus.register(clientUI);
-		eventBus.register(overlayRenderer);
-		eventBus.register(drawManager);
-		eventBus.register(menuManager);
-		eventBus.register(chatMessageManager);
-		eventBus.register(commandManager);
-		eventBus.register(pluginManager);
-		eventBus.register(clanManager);
-
-		if (this.client != null)
-		{
-			eventBus.register(itemManager.get());
+			// Inject members into client
+			injector.injectMembers(client);
 		}
 
 		// Load user configuration
@@ -240,14 +240,41 @@ public class RuneLite
 		// Load the session, including saved configuration
 		sessionManager.loadSession();
 
+		// Initialize UI
+		clientUI.open(this);
+
+		// Initialize chat colors
+		chatMessageManager.loadColors();
+
+		// Initialize Discord service
+		discordService.init();
+
+		// Register event listeners
+		eventBus.register(clientUI);
+		eventBus.register(pluginManager);
+		eventBus.register(overlayRenderer);
+		eventBus.register(overlayManager);
+		eventBus.register(drawManager);
+		eventBus.register(menuManager);
+		eventBus.register(chatMessageManager);
+		eventBus.register(commandManager);
+		eventBus.register(clanManager);
+		eventBus.register(infoBoxManager);
+
+		if (!isOutdated)
+		{
+			eventBus.register(itemManager.get());
+			WidgetOverlay.createOverlays(client).forEach(overlayManager::add);
+		}
+
+		// Add core overlays after configuration has been loaded so their properties will be
+		// loaded properly
+		overlayManager.add(infoBoxOverlay);
+		overlayManager.add(worldMapOverlay);
+		overlayManager.add(tooltipOverlay);
+
 		// Start plugins
 		pluginManager.startCorePlugins();
-
-		// Refresh title toolbar
-		titleToolbar.refresh();
-
-		// Show UI after all plugins are loaded
-		clientUI.show();
 	}
 
 	public void shutdown()
@@ -260,17 +287,5 @@ public class RuneLite
 	public static void setInjector(Injector injector)
 	{
 		RuneLite.injector = injector;
-	}
-
-	@VisibleForTesting
-	public static void setOptions(OptionSet options)
-	{
-		RuneLite.options = options;
-	}
-
-	@VisibleForTesting
-	public void setClient(Client client)
-	{
-		this.client = client;
 	}
 }

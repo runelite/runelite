@@ -184,6 +184,7 @@ class GrandExchangeSearchPanel extends JPanel
 		if (Strings.isNullOrEmpty(lookup))
 		{
 			searchItemsPanel.removeAll();
+			SwingUtilities.invokeLater(searchItemsPanel::updateUI);
 			return;
 		}
 
@@ -204,7 +205,7 @@ class GrandExchangeSearchPanel extends JPanel
 			log.warn("Unable to search for item {}", lookup, ex);
 			searchBox.setIcon(ERROR_ICON);
 			searchBox.setEditable(true);
-			errorPanel.setContent("Error fetching results", "An error occured why trying to fetch item data, please try again later.");
+			errorPanel.setContent("Error fetching results", "An error occurred while trying to fetch item data, please try again later.");
 			cardLayout.show(centerPanel, ERROR_PANEL);
 			return;
 		}
@@ -225,16 +226,7 @@ class GrandExchangeSearchPanel extends JPanel
 					continue;
 				}
 
-				ItemPrice itemPrice = null;
-				try
-				{
-					itemPrice = itemManager.getItemPrice(itemId);
-				}
-				catch (IOException ex)
-				{
-					log.warn("Unable to fetch item price for {}", itemId, ex);
-				}
-
+				ItemPrice itemPrice = itemManager.getItemPrice(itemId);
 				AsyncBufferedImage itemImage = itemManager.getImage(itemId);
 
 				itemsList.add(new GrandExchangeItems(itemImage, item.getName(), itemId, itemPrice != null ? itemPrice.getPrice() : 0, itemComp.getPrice() * 0.6));
@@ -281,8 +273,11 @@ class GrandExchangeSearchPanel extends JPanel
 				constraints.gridy++;
 			}
 
-			// remove focus from the search bar
-			searchItemsPanel.requestFocusInWindow();
+			// if exactMatch was set, then it came from the applet, so don't lose focus
+			if (!exactMatch)
+			{
+				searchItemsPanel.requestFocusInWindow();
+			}
 			searchBox.setEditable(true);
 
 			// Remove searching label after search is complete

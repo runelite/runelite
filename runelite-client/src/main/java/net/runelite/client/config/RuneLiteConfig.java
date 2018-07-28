@@ -27,11 +27,7 @@ package net.runelite.client.config;
 import java.awt.Dimension;
 import net.runelite.api.Constants;
 
-@ConfigGroup(
-	keyName = "runelite",
-	name = "RuneLite",
-	description = "Configuration for RuneLite client options"
-)
+@ConfigGroup("runelite")
 public interface RuneLiteConfig extends Config
 {
 	@ConfigItem(
@@ -110,6 +106,17 @@ public interface RuneLiteConfig extends Config
 	default boolean gameAlwaysOnTop()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "warningOnExit",
+		name = "Display warning on exit",
+		description = "Toggles a warning popup when trying to exit the client",
+		position = 17
+	)
+	default WarningOnExit warningOnExit()
+	{
+		return WarningOnExit.LOGGED_IN;
 	}
 
 	@ConfigItem(
@@ -220,5 +227,16 @@ public interface RuneLiteConfig extends Config
 	default int infoBoxWrap()
 	{
 		return 4;
+	}
+
+	@ConfigItem(
+		keyName = "infoBoxSize",
+		name = "Infobox size (px)",
+		description = "Configures the size of each infobox in pixels",
+		position = 34
+	)
+	default int infoBoxSize()
+	{
+		return 35;
 	}
 }

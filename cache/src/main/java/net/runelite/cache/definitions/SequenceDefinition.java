@@ -32,7 +32,7 @@ public class SequenceDefinition
 {
 	@Getter
 	private final int id;
-	public int[] frameIDs;
+	public int[] frameIDs; // top 16 bits are FrameDefinition ids
 	public int[] field3048;
 	public int[] frameLenghts;
 	public int rightHandItem = -1;

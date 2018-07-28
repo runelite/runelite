@@ -69,6 +69,7 @@ public class InfoPanel extends PluginPanel
 	private static final ImageIcon GITHUB_ICON;
 	private static final ImageIcon DISCORD_ICON;
 	private static final ImageIcon PATREON_ICON;
+	private static final ImageIcon WIKI_ICON;
 
 	private final JLabel loggedLabel = new JLabel();
 	private final JRichTextPane emailLabel = new JRichTextPane();
@@ -99,6 +100,7 @@ public class InfoPanel extends PluginPanel
 				GITHUB_ICON = new ImageIcon(ImageIO.read(InfoPanel.class.getResourceAsStream("github_icon.png")));
 				DISCORD_ICON = new ImageIcon(ImageIO.read(InfoPanel.class.getResourceAsStream("discord_icon.png")));
 				PATREON_ICON = new ImageIcon(ImageIO.read(InfoPanel.class.getResourceAsStream("patreon_icon.png")));
+				WIKI_ICON = new ImageIcon(ImageIO.read(InfoPanel.class.getResourceAsStream("wiki_icon.png")));
 			}
 		}
 		catch (IOException e)
@@ -166,11 +168,12 @@ public class InfoPanel extends PluginPanel
 
 		JPanel actionsContainer = new JPanel();
 		actionsContainer.setBorder(new EmptyBorder(10, 0, 0, 0));
-		actionsContainer.setLayout(new GridLayout(3, 1, 0, 10));
+		actionsContainer.setLayout(new GridLayout(4, 1, 0, 10));
 
 		actionsContainer.add(buildLinkPanel(GITHUB_ICON, "Report an issue or", "make a suggestion", runeLiteProperties.getGithubLink()));
 		actionsContainer.add(buildLinkPanel(DISCORD_ICON, "Talk to us on our", "discord server", runeLiteProperties.getDiscordInvite()));
 		actionsContainer.add(buildLinkPanel(PATREON_ICON, "Become a patron to", "help support RuneLite", runeLiteProperties.getPatreonLink()));
+		actionsContainer.add(buildLinkPanel(WIKI_ICON, "Information about", "RuneLite and plugins", runeLiteProperties.getWikiLink()));
 
 		add(versionPanel, BorderLayout.NORTH);
 		add(actionsContainer, BorderLayout.CENTER);

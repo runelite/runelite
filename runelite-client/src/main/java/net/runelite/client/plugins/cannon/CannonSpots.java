@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.cannon;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
@@ -59,10 +60,7 @@ public enum CannonSpots
 	{
 		for (CannonSpots cannonSpot : values())
 		{
-			for (WorldPoint spot : cannonSpot.spots)
-			{
-				cannonSpots.add(spot);
-			}
+			cannonSpots.addAll(Arrays.asList(cannonSpot.spots));
 		}
 	}
 

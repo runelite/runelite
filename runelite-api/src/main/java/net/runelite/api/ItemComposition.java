@@ -105,6 +105,13 @@ public interface ItemComposition
 	boolean isStackable();
 
 	/**
+	 * Returns whether or not the item can be traded to other players.
+	 *
+	 * @return true if tradeable, false otherwise
+	 */
+	boolean isTradeable();
+
+	/**
 	 * Gets an array of possible right-click menu actions the item
 	 * has in a player inventory.
 	 *

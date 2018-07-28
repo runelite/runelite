@@ -28,6 +28,7 @@ import com.google.common.base.Strings;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.function.BooleanSupplier;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -37,6 +38,7 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
 
 /**
@@ -47,6 +49,7 @@ import net.runelite.client.ui.ColorScheme;
  *
  * @author Psikoi
  */
+@Slf4j
 public class MaterialTab extends JLabel
 {
 	private static final Border SELECTED_BORDER = new CompoundBorder(
@@ -65,7 +68,7 @@ public class MaterialTab extends JLabel
 
 	/* To be execuded when the tab is selected */
 	@Setter
-	private Runnable onSelectEvent;
+	private BooleanSupplier onSelectEvent;
 
 	@Getter
 	private boolean selected;
@@ -147,15 +150,19 @@ public class MaterialTab extends JLabel
 
 	}
 
-	public void select()
+	public boolean select()
 	{
-		setBorder(SELECTED_BORDER);
-		setForeground(Color.WHITE);
-		selected = true;
 		if (onSelectEvent != null)
 		{
-			onSelectEvent.run();
+			if (!onSelectEvent.getAsBoolean())
+			{
+				return false;
+			}
 		}
+
+		setBorder(SELECTED_BORDER);
+		setForeground(Color.WHITE);
+		return selected = true;
 	}
 
 	public void unselect()

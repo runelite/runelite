@@ -26,23 +26,35 @@ package net.runelite.client.plugins.timers;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import net.runelite.api.Prayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GraphicChanged;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.timers.GameTimer.ABYSSAL_SIRE_STUN;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUS;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUSPLUS;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIFIRE;
@@ -72,6 +84,7 @@ import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD_RAID;
 import static net.runelite.client.plugins.timers.GameTimer.PRAYER_ENHANCE;
 import static net.runelite.client.plugins.timers.GameTimer.SANFEW;
 import static net.runelite.client.plugins.timers.GameTimer.SNARE;
+import static net.runelite.client.plugins.timers.GameTimer.STAFF_OF_THE_DEAD;
 import static net.runelite.client.plugins.timers.GameTimer.STAMINA;
 import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIFIRE;
 import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIPOISON;
@@ -80,11 +93,19 @@ import static net.runelite.client.plugins.timers.GameTimer.VENGEANCEOTHER;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Timers"
+	name = "Timers",
+	description = "Show various timers in an infobox",
+	tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire"}
 )
 public class TimersPlugin extends Plugin
 {
 	private int lastRaidVarb;
+
+	@Inject
+	private ItemManager itemManager;
+
+	@Inject
+	private SpriteManager spriteManager;
 
 	@Inject
 	private Client client;
@@ -198,6 +219,11 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(IMBUEDHEART);
 		}
 
+		if (!config.showStaffOfTheDead())
+		{
+			removeGameTimer(STAFF_OF_THE_DEAD);
+		}
+
 		if (!config.showVengeance())
 		{
 			removeGameTimer(VENGEANCE);
@@ -275,6 +301,16 @@ public class TimersPlugin extends Plugin
 			|| event.getId() == ItemID.SUPERANTIPOISON4))
 		{
 			createGameTimer(SUPERANTIPOISON);
+			return;
+		}
+
+		if (config.showStamina()
+			&& event.getMenuOption().contains("Drink")
+			&& (event.getId() == ItemID.STAMINA_MIX1
+			|| event.getId() == ItemID.STAMINA_MIX2))
+		{
+			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
+			createGameTimer(STAMINA);
 			return;
 		}
 	}
@@ -408,9 +444,19 @@ public class TimersPlugin extends Plugin
 			createGameTimer(CHARGE);
 		}
 
-		if (event.getMessage().equals("<col=ef1020>Your magical charge fades away.</col>"))
+		if (config.showCharge() && event.getMessage().equals("<col=ef1020>Your magical charge fades away.</col>"))
 		{
 			removeGameTimer(CHARGE);
+		}
+
+		if (config.showStaffOfTheDead() && event.getMessage().contains("Spirits of deceased evildoers offer you their protection"))
+		{
+			createGameTimer(STAFF_OF_THE_DEAD);
+		}
+
+		if (config.showStaffOfTheDead() && event.getMessage().contains("Your protection fades away"))
+		{
+			removeGameTimer(STAFF_OF_THE_DEAD);
 		}
 	}
 
@@ -419,12 +465,40 @@ public class TimersPlugin extends Plugin
 	{
 		Actor actor = event.getActor();
 
+		if (config.showAbyssalSireStun()
+			&& actor instanceof NPC)
+		{
+			int npcId = ((NPC)actor).getId();
+
+			switch (npcId)
+			{
+				// Show the countdown when the Sire enters the stunned state.
+				case NpcID.ABYSSAL_SIRE_5887:
+					createGameTimer(ABYSSAL_SIRE_STUN);
+					break;
+
+				// Hide the countdown if the Sire isn't in the stunned state.
+				// This is necessary because the Sire leaves the stunned
+				// state early once all all four respiratory systems are killed.
+				case NpcID.ABYSSAL_SIRE:
+				case NpcID.ABYSSAL_SIRE_5888:
+				case NpcID.ABYSSAL_SIRE_5889:
+				case NpcID.ABYSSAL_SIRE_5890:
+				case NpcID.ABYSSAL_SIRE_5891:
+				case NpcID.ABYSSAL_SIRE_5908:
+					removeGameTimer(ABYSSAL_SIRE_STUN);
+					break;
+			}
+		}
+
 		if (actor != client.getLocalPlayer())
 		{
 			return;
 		}
 
-		if (config.showVengeanceOther() && actor.getAnimation() == AnimationID.VENGEANCE_OTHER)
+		if (config.showVengeanceOther()
+			&& actor.getAnimation() == AnimationID.ENERGY_TRANSFER_VENGEANCE_OTHER
+			&& actor.getInteracting().getGraphic() == VENGEANCEOTHER.getGraphicId())
 		{
 			createGameTimer(VENGEANCEOTHER);
 		}
@@ -511,16 +585,76 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	public void createGameTimer(GameTimer timer)
+	/**
+	 * remove SOTD timer when weapon is changed
+	 *
+	 * @param itemContainerChanged
+	 */
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
+	{
+		ItemContainer container = itemContainerChanged.getItemContainer();
+		if (container == client.getItemContainer(InventoryID.EQUIPMENT))
+		{
+			Item[] items = container.getItems();
+			int weaponIdx = EquipmentInventorySlot.WEAPON.getSlotIdx();
+
+			if (items == null || weaponIdx >= items.length)
+			{
+				removeGameTimer(STAFF_OF_THE_DEAD);
+				return;
+			}
+
+			Item weapon = items[weaponIdx];
+			if (weapon == null)
+			{
+				removeGameTimer(STAFF_OF_THE_DEAD);
+				return;
+			}
+
+			switch (weapon.getId())
+			{
+				case ItemID.STAFF_OF_THE_DEAD:
+				case ItemID.TOXIC_STAFF_OF_THE_DEAD:
+				case ItemID.STAFF_OF_LIGHT:
+				case ItemID.TOXIC_STAFF_UNCHARGED:
+					// don't reset timer if still weilding staff
+					return;
+				default:
+					removeGameTimer(STAFF_OF_THE_DEAD);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned npcDespawned)
+	{
+		NPC npc = npcDespawned.getNpc();
+
+		if (!npc.isDead())
+		{
+			return;
+		}
+
+		int npcId = npc.getId();
+
+		if (npcId == NpcID.ZOMBIFIED_SPAWN || npcId == NpcID.ZOMBIFIED_SPAWN_8063)
+		{
+			removeGameTimer(ICEBARRAGE);
+		}
+	}
+
+	private void createGameTimer(GameTimer timer)
 	{
 		removeGameTimer(timer);
 
-		TimerTimer t = new TimerTimer(timer, this);
+		BufferedImage image = timer.getImage(itemManager, spriteManager);
+		TimerTimer t = new TimerTimer(timer, this, image);
 		t.setTooltip(timer.getDescription());
 		infoBoxManager.addInfoBox(t);
 	}
 
-	public void removeGameTimer(GameTimer timer)
+	private void removeGameTimer(GameTimer timer)
 	{
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer);
 	}

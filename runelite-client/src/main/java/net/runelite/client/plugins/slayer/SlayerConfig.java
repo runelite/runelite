@@ -30,11 +30,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "slayer",
-	name = "Slayer",
-	description = "Configuration for the slayer plugin"
-)
+@ConfigGroup("slayer")
 public interface SlayerConfig extends Config
 {
 	@ConfigItem(

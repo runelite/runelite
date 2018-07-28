@@ -27,8 +27,6 @@ package net.runelite.client.plugins.poh;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -55,10 +53,12 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Player-owned House"
+	name = "Player-owned House",
+	description = "Show minimap icons and mark unlit/lit burners",
+	tags = {"construction", "poh", "minimap", "overlay"}
 )
 public class PohPlugin extends Plugin
 {
@@ -67,6 +67,9 @@ public class PohPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<TileObject, Tile> pohObjects = new HashMap<>();
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private PohOverlay overlay;
@@ -81,20 +84,18 @@ public class PohPlugin extends Plugin
 	}
 
 	@Override
-	public Collection<Overlay> getOverlays()
-	{
-		return Arrays.asList(overlay, burnerOverlay);
-	}
-
-	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
+		overlayManager.add(burnerOverlay);
 		overlay.updateConfig();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
+		overlayManager.remove(burnerOverlay);
 		pohObjects.clear();
 	}
 

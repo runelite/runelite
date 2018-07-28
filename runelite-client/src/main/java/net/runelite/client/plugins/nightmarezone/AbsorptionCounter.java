@@ -72,4 +72,10 @@ public class AbsorptionCounter extends Counter
 			return belowThresholdColor;
 		}
 	}
+	
+	@Override
+	public String getTooltip()
+	{
+		return "Absorption: " + absorption;
+	}
 }

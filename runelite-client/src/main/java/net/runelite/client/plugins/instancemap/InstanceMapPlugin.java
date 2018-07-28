@@ -37,10 +37,11 @@ import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Instance Map"
+	name = "Instance Map",
+	description = "Add an instanced map, accessible by right-clicking the map button"
 )
 public class InstanceMapPlugin extends Plugin
 {
@@ -48,6 +49,9 @@ public class InstanceMapPlugin extends Plugin
 
 	@Inject
 	private InstanceMapInputListener inputListener;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private InstanceMapOverlay overlay;
@@ -80,6 +84,7 @@ public class InstanceMapPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
 		addCustomOptions();
 		keyManager.registerKeyListener(inputListener);
 		mouseManager.registerMouseListener(inputListener);
@@ -89,6 +94,7 @@ public class InstanceMapPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
 		removeCustomOptions();
 		keyManager.unregisterKeyListener(inputListener);
 		mouseManager.registerMouseListener(inputListener);
@@ -125,12 +131,6 @@ public class InstanceMapPlugin extends Plugin
 				showMap();
 			}
 		}
-	}
-
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
 	}
 
 	public void showMap()

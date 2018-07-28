@@ -60,7 +60,7 @@ public class JRichTextPane extends JEditorPane
 
 	public void enableAutoLinkHandler(boolean enable)
 	{
-		if (enable != (linkHandler != null))
+		if (enable == (linkHandler == null))
 		{
 			if (enable)
 			{

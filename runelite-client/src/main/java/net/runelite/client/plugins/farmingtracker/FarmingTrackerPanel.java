@@ -180,7 +180,11 @@ class FarmingTrackerPanel extends PluginPanel
 			icon.onChanged(resize);
 			resize.run();
 
-			materialTab.setOnSelectEvent(() -> config.setPatch(tab));
+			materialTab.setOnSelectEvent(() ->
+			{
+				config.setPatch(tab);
+				return true;
+			});
 
 			tabGroup.addTab(materialTab);
 			if (config.patch() == tab)

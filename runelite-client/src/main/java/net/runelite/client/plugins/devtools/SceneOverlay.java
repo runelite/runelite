@@ -252,10 +252,6 @@ public class SceneOverlay extends Overlay
 			lp = new LocalPoint(
 				lp.getX() + dx * Perspective.LOCAL_TILE_SIZE + dx * Perspective.LOCAL_TILE_SIZE * (area.getWidth() - 1) / 2,
 				lp.getY() + dy * Perspective.LOCAL_TILE_SIZE + dy * Perspective.LOCAL_TILE_SIZE * (area.getHeight() - 1) / 2);
-			if (lp == null)
-			{
-				return;
-			}
 
 			Polygon poly = Perspective.getCanvasTilePoly(client, lp);
 			if (poly == null)
@@ -313,10 +309,6 @@ public class SceneOverlay extends Overlay
 	private void renderTileIfHasLineOfSight(Graphics2D graphics, WorldArea start, int targetX, int targetY)
 	{
 		WorldPoint targetLocation = new WorldPoint(targetX, targetY, start.getPlane());
-		if (targetLocation == null)
-		{
-			return;
-		}
 
 		// Running the line of sight algorithm 100 times per frame doesn't
 		// seem to use much CPU time, however rendering 100 tiles does

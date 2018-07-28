@@ -39,21 +39,21 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
-public class PrayerFlickOverlay extends Overlay
+class PrayerFlickOverlay extends Overlay
 {
 	private final Client client;
 	private boolean prayersActive = false;
 	private Instant startOfLastTick = Instant.now();
 
 	@Inject
-	public PrayerFlickOverlay(Client client)
+	private PrayerFlickOverlay(Client client)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
 	}
 
-	public void onTick()
+	void onTick()
 	{
 		startOfLastTick = Instant.now(); //Reset the tick timer
 		prayersActive = isAnyPrayerActive(); //Check if prayers are active
@@ -67,7 +67,7 @@ public class PrayerFlickOverlay extends Overlay
 			return null;
 		}
 
-		Widget xpOrb = client.getWidget(WidgetInfo.QUICK_PRAYER_ORB);
+		Widget xpOrb = client.getWidget(WidgetInfo.MINIMAP_QUICK_PRAYER_ORB);
 		if (xpOrb == null)
 		{
 			return null;

@@ -27,39 +27,79 @@ package net.runelite.client.chat;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.ScriptID;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.events.ChatboxInput;
+import net.runelite.client.events.PrivateMessageInput;
 
 @Slf4j
 @Singleton
 public class CommandManager
 {
-	private static final String CALLBACK_NAME = "runeliteCommand";
+	private static final String RUNELITE_COMMAND = "runeliteCommand";
+	private static final String CHATBOX_INPUT = "chatboxInput";
+	private static final String PRIVMATE_MESSAGE = "privateMessage";
+
 	private final Provider<Client> clientProvider;
 	private final EventBus eventBus;
+	private final Provider<ClientThread> clientThreadProvider;
+	private boolean sending;
+
+	private final List<ChatboxInputListener> chatboxInputListenerList = new ArrayList<>();
 
 	@Inject
-	public CommandManager(Provider<Client> clientProvider, EventBus eventBus)
+	public CommandManager(Provider<Client> clientProvider, EventBus eventBus, Provider<ClientThread> clientThreadProvider)
 	{
 		this.clientProvider = clientProvider;
 		this.eventBus = eventBus;
+		this.clientThreadProvider = clientThreadProvider;
+	}
+
+	public void register(ChatboxInputListener chatboxInputListener)
+	{
+		chatboxInputListenerList.add(chatboxInputListener);
+	}
+
+	public void unregister(ChatboxInputListener chatboxInputListener)
+	{
+		chatboxInputListenerList.remove(chatboxInputListener);
 	}
 
 	@Subscribe
 	private void scriptEvent(ScriptCallbackEvent event)
 	{
-		if (!CALLBACK_NAME.equals(event.getEventName()))
+		if (sending)
 		{
 			return;
 		}
 
+		switch (event.getEventName())
+		{
+			case RUNELITE_COMMAND:
+				runCommand();
+				break;
+			case CHATBOX_INPUT:
+				handleInput(event);
+				break;
+			case PRIVMATE_MESSAGE:
+				handlePrivateMessage(event);
+				break;
+		}
+	}
+
+	private void runCommand()
+	{
 		Client client = clientProvider.get();
 		String typedText = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT).substring(2); // strip ::
 
@@ -78,5 +118,108 @@ public class CommandManager
 
 		CommandExecuted commandExecuted = new CommandExecuted(command, args);
 		eventBus.post(commandExecuted);
+	}
+
+	private void handleInput(ScriptCallbackEvent event)
+	{
+		Client client = clientProvider.get();
+		final String[] stringStack = client.getStringStack();
+		final int[] intStack = client.getIntStack();
+		int stringStackCount = client.getStringStackSize();
+		int intStackCount = client.getIntStackSize();
+
+		final String typedText = stringStack[stringStackCount - 1];
+		final int chatType = intStack[intStackCount - 1];
+
+		ChatboxInput chatboxInput = new ChatboxInput(typedText, chatType)
+		{
+			private boolean resumed;
+
+			@Override
+			public void resume()
+			{
+				if (resumed)
+				{
+					return;
+				}
+				resumed = true;
+
+				ClientThread clientThread = clientThreadProvider.get();
+				clientThread.invokeLater(() -> sendChatboxInput(chatType, typedText));
+			}
+		};
+		boolean stop = false;
+		for (ChatboxInputListener chatboxInputListener : chatboxInputListenerList)
+		{
+			stop |= chatboxInputListener.onChatboxInput(chatboxInput);
+		}
+
+		if (stop)
+		{
+			// input was blocked.
+			stringStack[stringStackCount - 1] = ""; // prevent script from sending
+		}
+	}
+
+	private void handlePrivateMessage(ScriptCallbackEvent event)
+	{
+		Client client = clientProvider.get();
+		final String[] stringStack = client.getStringStack();
+		final int[] intStack = client.getIntStack();
+		int stringStackCount = client.getStringStackSize();
+		int intStackCount = client.getIntStackSize();
+
+		final String target = stringStack[stringStackCount - 2];
+		final String message = stringStack[stringStackCount - 1];
+
+		PrivateMessageInput privateMessageInput = new PrivateMessageInput(target, message)
+		{
+			private boolean resumed;
+
+			@Override
+			public void resume()
+			{
+				if (resumed)
+				{
+					return;
+				}
+				resumed = true;
+
+				ClientThread clientThread = clientThreadProvider.get();
+				clientThread.invokeLater(() -> sendPrivmsg(target, message));
+			}
+		};
+
+		boolean stop = false;
+		for (ChatboxInputListener chatboxInputListener : chatboxInputListenerList)
+		{
+			stop |= chatboxInputListener.onPrivateMessageInput(privateMessageInput);
+		}
+
+		if (stop)
+		{
+			intStack[intStackCount - 1] = 1;
+			client.setStringStackSize(stringStackCount - 2); // remove both target and message
+		}
+	}
+
+	private void sendChatboxInput(int chatType, String input)
+	{
+		Client client = clientProvider.get();
+		sending = true;
+		try
+		{
+			client.runScript(ScriptID.CHATBOX_INPUT, chatType, input);
+		}
+		finally
+		{
+			sending = false;
+		}
+	}
+
+	private void sendPrivmsg(String target, String message)
+	{
+		Client client = clientProvider.get();
+		client.runScript(ScriptID.PRIVMSG, target, message);
 	}
 }

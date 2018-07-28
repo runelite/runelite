@@ -26,12 +26,11 @@
 package net.runelite.client.plugins.npchighlight;
 
 import com.google.common.base.Splitter;
+import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -46,6 +45,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.GraphicID;
 import net.runelite.api.GraphicsObject;
+import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
@@ -62,16 +62,23 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.WildcardMatcher;
 
-@PluginDescriptor(name = "NPC Indicators")
+@PluginDescriptor(
+	name = "NPC Indicators",
+	description = "Highlight NPCs on-screen and/or on the minimap",
+	tags = {"highlight", "minimap", "npcs", "overlay", "respawn", "tags"}
+)
 public class NpcIndicatorsPlugin extends Plugin
 {
 	private static final int MAX_ACTOR_VIEW_RANGE = 15;
 
 	// Option added to NPC menu
 	private static final String TAG = "Tag";
+
+	private static final List<MenuAction> NPC_MENU_ACTIONS = ImmutableList.of(MenuAction.NPC_FIRST_OPTION, MenuAction.NPC_SECOND_OPTION,
+		MenuAction.NPC_THIRD_OPTION, MenuAction.NPC_FOURTH_OPTION, MenuAction.NPC_FIFTH_OPTION);
 
 	// Regex for splitting the hidden items in the config.
 	private static final Splitter COMMA_SPLITTER = Splitter.on(Pattern.compile("\\s*,\\s*")).trimResults();
@@ -84,6 +91,9 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	@Inject
 	private NpcIndicatorsConfig config;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private NpcSceneOverlay npcSceneOverlay;
@@ -174,6 +184,8 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(npcSceneOverlay);
+		overlayManager.add(npcMinimapOverlay);
 		keyManager.registerKeyListener(inputListener);
 		highlights = getHighlights();
 		clientThread.invokeLater(() ->
@@ -186,6 +198,8 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(npcSceneOverlay);
+		overlayManager.remove(npcMinimapOverlay);
 		deadNpcsToDisplay.clear();
 		memorizedNpcs.clear();
 		spawnedNpcsThisTick.clear();
@@ -233,9 +247,14 @@ public class NpcIndicatorsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuObjectClicked(MenuOptionClicked click)
+	public void onMenuOptionClicked(MenuOptionClicked click)
 	{
-		if (click.getMenuOption().equals(TAG))
+		if (!config.isTagEnabled())
+		{
+			return;
+		}
+
+		if (click.getMenuOption().equals(TAG) && NPC_MENU_ACTIONS.contains(click.getMenuAction()))
 		{
 			final int id = click.getId();
 			final boolean removed = npcTags.remove(id);
@@ -255,6 +274,8 @@ public class NpcIndicatorsPlugin extends Plugin
 					npcTags.add(id);
 					highlightedNpcs.add(npc);
 				}
+
+				click.consume();
 			}
 		}
 	}
@@ -319,12 +340,6 @@ public class NpcIndicatorsPlugin extends Plugin
 		validateSpawnedNpcs();
 		lastTickUpdate = Instant.now();
 		lastPlayerLocation = client.getLocalPlayer().getWorldLocation();
-	}
-
-	@Override
-	public Collection<Overlay> getOverlays()
-	{
-		return Arrays.asList(npcSceneOverlay, npcMinimapOverlay);
 	}
 
 	private static boolean isInViewRange(WorldPoint wp1, WorldPoint wp2)

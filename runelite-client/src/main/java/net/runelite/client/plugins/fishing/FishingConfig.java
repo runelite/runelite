@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "fishing",
-	name = "Fishing",
-	description = "Configuration for the fishing plugin"
-)
+@ConfigGroup("fishing")
 public interface FishingConfig extends Config
 {
 	@ConfigItem(
@@ -151,6 +147,26 @@ public interface FishingConfig extends Config
 		description = "Configures whether sacred eel is displayed"
 	)
 	default boolean showSacredEel()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showCaveEel",
+		name = "Show Cave Eel",
+		description = "Configures whether cave eel is displayed"
+	)
+	default boolean showCaveEel()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showSlimyEel",
+		name = "Show Slimy Eel",
+		description = "Configures whether slimy eel is displayed"
+	)
+	default boolean showSlimyEel()
 	{
 		return true;
 	}

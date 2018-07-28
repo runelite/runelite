@@ -33,7 +33,6 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
@@ -50,7 +49,7 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
 import net.runelite.api.Query;
-import net.runelite.api.Region;
+import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -82,13 +81,15 @@ import net.runelite.client.plugins.cluescrolls.clues.MapClue;
 import net.runelite.client.plugins.cluescrolls.clues.NpcClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ObjectClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.TextClueScroll;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.QueryRunner;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Clue Scroll"
+	name = "Clue Scroll",
+	description = "Show answers to clue scroll riddles, anagrams, ciphers, and cryptic clues",
+	tags = {"arrow", "hints", "world", "map"}
 )
 @Slf4j
 public class ClueScrollPlugin extends Plugin
@@ -127,6 +128,9 @@ public class ClueScrollPlugin extends Plugin
 
 	@Inject
 	private QueryRunner queryRunner;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private ClueScrollOverlay clueScrollOverlay;
@@ -172,15 +176,20 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void startUp() throws Exception
 	{
-		resetClue();
+		overlayManager.add(clueScrollOverlay);
+		overlayManager.add(clueScrollEmoteOverlay);
+		overlayManager.add(clueScrollWorldOverlay);
 	}
 
 	@Override
-	public Collection<Overlay> getOverlays()
+	protected void shutDown() throws Exception
 	{
-		return Arrays.asList(clueScrollOverlay, clueScrollEmoteOverlay, clueScrollWorldOverlay);
+		overlayManager.remove(clueScrollOverlay);
+		overlayManager.remove(clueScrollEmoteOverlay);
+		overlayManager.remove(clueScrollWorldOverlay);
+		resetClue();
 	}
 
 	@Subscribe
@@ -330,9 +339,9 @@ public class ClueScrollPlugin extends Plugin
 
 					if (localLocation != null)
 					{
-						final Region region = client.getRegion();
-						final Tile[][][] tiles = region.getTiles();
-						final Tile tile = tiles[client.getPlane()][localLocation.getRegionX()][localLocation.getRegionY()];
+						final Scene scene = client.getScene();
+						final Tile[][][] tiles = scene.getTiles();
+						final Tile tile = tiles[client.getPlane()][localLocation.getSceneX()][localLocation.getSceneY()];
 
 						objectsToMark = Arrays.stream(tile.getGameObjects())
 							.filter(object -> object != null && object.getId() == objectId)
@@ -438,7 +447,7 @@ public class ClueScrollPlugin extends Plugin
 					.replaceAll("[ ]+", " ")
 					.toLowerCase());
 
-			if (clue != null && clue instanceof TextClueScroll)
+			if (clue instanceof TextClueScroll)
 			{
 				if (((TextClueScroll) clue).getText().equalsIgnoreCase(text))
 				{

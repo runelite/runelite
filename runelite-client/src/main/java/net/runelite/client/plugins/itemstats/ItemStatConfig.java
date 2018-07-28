@@ -29,11 +29,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "itemstat",
-	name = "Item Stats",
-	description = "Show stat changes on items"
-)
+@ConfigGroup("itemstat")
 public interface ItemStatConfig extends Config
 {
 	@ConfigItem(

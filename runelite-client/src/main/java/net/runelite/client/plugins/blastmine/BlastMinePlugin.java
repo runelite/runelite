@@ -26,8 +26,6 @@ package net.runelite.client.plugins.blastmine;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
@@ -44,13 +42,20 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
-@PluginDescriptor(name = "Blast Mine")
+@PluginDescriptor(
+	name = "Blast Mine",
+	description = "Show helpful information for the Blast Mine minigame",
+	tags = {"explode", "explosive", "mining", "minigame", "skilling"}
+)
 public class BlastMinePlugin extends Plugin
 {
 	@Getter
 	private final Map<WorldPoint, BlastMineRock> rocks = new HashMap<>();
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private Client client;
@@ -68,14 +73,17 @@ public class BlastMinePlugin extends Plugin
 	}
 
 	@Override
-	public Collection<Overlay> getOverlays()
+	protected void startUp() throws Exception
 	{
-		return Arrays.asList(blastMineRockOverlay, blastMineOreCountOverlay);
+		overlayManager.add(blastMineRockOverlay);
+		overlayManager.add(blastMineOreCountOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(blastMineRockOverlay);
+		overlayManager.remove(blastMineOreCountOverlay);
 		final Widget blastMineWidget = client.getWidget(WidgetInfo.BLAST_MINE);
 
 		if (blastMineWidget != null)

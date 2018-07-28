@@ -63,13 +63,16 @@ public class WorldMapOverlay extends Overlay
 	private final Provider<Client> clientProvider;
 
 	@Inject
-	private WorldMapOverlay(Provider<Client> clientProvider, WorldMapPointManager worldMapPointManager,
-		MouseManager mouseManager, WorldMapOverlayMouseListener worldMapOverlayMouseListener)
+	private WorldMapOverlay(
+		Provider<Client> clientProvider,
+		WorldMapPointManager worldMapPointManager,
+		MouseManager mouseManager,
+		WorldMapOverlayMouseListener worldMapOverlayMouseListener)
 	{
 		this.clientProvider = clientProvider;
 		this.worldMapPointManager = worldMapPointManager;
 		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.HIGH);
+		setPriority(OverlayPriority.HIGHEST);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 		mouseManager.registerMouseListener(worldMapOverlayMouseListener);
 	}
