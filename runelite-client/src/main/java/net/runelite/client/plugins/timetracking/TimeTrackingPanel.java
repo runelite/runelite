@@ -30,6 +30,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.Nullable;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -55,6 +57,7 @@ class TimeTrackingPanel extends PluginPanel
 
 	/* This is the panel the tabs' respective panels will be displayed on. */
 	private final JPanel display = new JPanel();
+	private final Map<Tab, MaterialTab> uiTabs = new HashMap<>();
 	private final MaterialTabGroup tabGroup = new MaterialTabGroup(display);
 
 	private boolean active;
@@ -81,6 +84,7 @@ class TimeTrackingPanel extends PluginPanel
 		add(tabGroup, BorderLayout.NORTH);
 		add(display, BorderLayout.CENTER);
 
+		addTab(Tab.OVERVIEW, new OverviewTabPanel(itemManager, config, this, farmingTracker, birdHouseTracker, clockManager));
 		addTab(Tab.CLOCK, clockManager.getClockTabPanel());
 		addTab(Tab.BIRD_HOUSE, birdHouseTracker.createBirdHouseTabPanel());
 
@@ -126,11 +130,18 @@ class TimeTrackingPanel extends PluginPanel
 			return true;
 		});
 
+		uiTabs.put(tab, materialTab);
 		tabGroup.addTab(materialTab);
+
 		if (config.activeTab() == tab)
 		{
 			tabGroup.select(materialTab);
 		}
+	}
+
+	void switchTab(Tab tab)
+	{
+		tabGroup.select(uiTabs.get(tab));
 	}
 
 	/**

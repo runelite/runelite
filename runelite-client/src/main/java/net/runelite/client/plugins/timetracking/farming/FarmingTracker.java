@@ -27,6 +27,8 @@ package net.runelite.client.plugins.timetracking.farming;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.time.Instant;
+import java.util.EnumMap;
+import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
@@ -59,6 +61,15 @@ public class FarmingTracker
 	}
 
 
+	/**
+	 * The time at which all patches of a particular type will be ready to be harvested,
+	 * or {@code -1} if we have no data about any patch of the given type.
+	 *
+	 * Each value is set to {@code 0} if all patches of that type have already completed
+	 * when updating the value.
+	 */
+	private Map<PatchImplementation, Long> completionTimes = new EnumMap<>(PatchImplementation.class);
+
 	public FarmingTabPanel createTabPanel(Tab tab)
 	{
 		return new FarmingTabPanel(client, itemManager, configManager, config, farmingWorld.getTabs().get(tab));
@@ -88,9 +99,10 @@ public class FarmingTracker
 			// timetracking.<login-username>.<regionID>.<VarbitID>=<varbitValue>:<unix time>
 			String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername() + "." + region.getRegionID();
 			long unixNow = Instant.now().getEpochSecond();
-			for (Varbits varbit : region.getVarbits())
+			for (FarmingPatch patch : region.getPatches())
 			{
 				// Write the config value if it doesn't match what is current, or it is more than 5 minutes old
+				Varbits varbit = patch.getVarbit();
 				String key = Integer.toString(varbit.getId());
 				String strVarbit = Integer.toString(client.getVar(varbit));
 				String storedValue = configManager.getConfiguration(group, key);
@@ -118,11 +130,103 @@ public class FarmingTracker
 
 				String value = strVarbit + ":" + unixNow;
 				configManager.setConfiguration(group, key, value);
+				updateCompletionTime(patch.getImplementation());
 				changed = true;
 			}
 		}
 
 		return changed;
+	}
+
+	public void loadCompletionTimes()
+	{
+		completionTimes.clear();
+
+		for (PatchImplementation patchType : PatchImplementation.values())
+		{
+			updateCompletionTime(patchType);
+		}
+	}
+
+	/**
+	 * Gets the overall completion time for the given patch type.
+	 * @see #completionTimes
+	 */
+	public long getCompletionTime(PatchImplementation patchType)
+	{
+		Long completionTime = completionTimes.get(patchType);
+		return completionTime == null ? -1 : completionTime;
+	}
+
+	/**
+	 * Updates the overall completion time for the given patch type.
+	 * @see #completionTimes
+	 */
+	private void updateCompletionTime(PatchImplementation patchType)
+	{
+		long maxCompletionTime = 0;
+		boolean allUnknown = true;
+
+		for (FarmingPatch patch : farmingWorld.getPatchTypes().get(patchType))
+		{
+			String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername() + "." + patch.getRegion().getRegionID();
+			String key = Integer.toString(patch.getVarbit().getId());
+			String storedValue = configManager.getConfiguration(group, key);
+			long unixTime = 0;
+			int value = 0;
+
+			if (storedValue != null)
+			{
+				String[] parts = storedValue.split(":");
+				if (parts.length == 2)
+				{
+					try
+					{
+						value = Integer.parseInt(parts[0]);
+						unixTime = Long.parseLong(parts[1]);
+					}
+					catch (NumberFormatException e)
+					{
+						// ignored
+					}
+				}
+			}
+
+			PatchState state = unixTime <= 0 ? null : patch.getImplementation().forVarbitValue(value);
+			if (state == null || state.getProduce().getItemID() < 0)
+			{
+				continue; // unknown state
+			}
+
+			int tickrate = state.getTickRate() * 60;
+			int stage = state.getStage();
+			int stages = state.getStages();
+
+			if (state.getProduce() != Produce.WEEDS && state.getProduce() != Produce.SCARECROW)
+			{
+				// update max duration if this patch takes longer to grow
+				if (tickrate > 0)
+				{
+					long tickTime = unixTime / tickrate;
+					long doneEstimate = ((stages - 1 - stage) + tickTime) * tickrate;
+					maxCompletionTime = Math.max(maxCompletionTime, doneEstimate);
+				}
+				else if (state.getCropState() == CropState.GROWING && stage != stages - 1)
+				{
+					continue; // unknown state
+				}
+			}
+
+			allUnknown = false;
+		}
+
+		if (allUnknown)
+		{
+			completionTimes.put(patchType, -1L);
+			return;
+		}
+
+		completionTimes.put(patchType, (maxCompletionTime <= Instant.now().getEpochSecond()) ? 0 : maxCompletionTime);
 	}
 
 	/**

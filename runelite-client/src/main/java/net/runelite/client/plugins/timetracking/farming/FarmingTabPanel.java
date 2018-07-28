@@ -29,12 +29,8 @@ import com.google.common.base.Strings;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
@@ -215,40 +211,9 @@ public class FarmingTabPanel extends TabContentPanel
 					{
 						panel.getEstimate().setText("Done");
 					}
-					else if (config.estimateRelative())
-					{
-						int remaining = (int) (59 + doneEstimate - unixNow) / 60;
-						StringBuilder f = new StringBuilder();
-						f.append("Done in ");
-						int min = remaining % 60;
-						int hours = (remaining / 60) % 24;
-						int days = remaining / (60 * 24);
-						if (days > 0)
-						{
-							f.append(days).append("d ");
-						}
-						if (hours > 0)
-						{
-							f.append(hours).append("h ");
-						}
-						if (min > 0)
-						{
-							f.append(min).append("m ");
-						}
-						panel.getEstimate().setText(f.toString());
-					}
 					else
 					{
-						StringBuilder f = new StringBuilder();
-						LocalDateTime ldtTime = LocalDateTime.ofEpochSecond(doneEstimate, 0, OffsetDateTime.now().getOffset());
-						LocalDateTime ldtNow = LocalDateTime.now();
-						f.append("Done ");
-						if (ldtTime.getDayOfWeek() != ldtNow.getDayOfWeek())
-						{
-							f.append(ldtTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault())).append(" ");
-						}
-						f.append(String.format("at %d:%02d", ldtTime.getHour(), ldtTime.getMinute()));
-						panel.getEstimate().setText(f.toString());
+						panel.getEstimate().setText("Done " + getFormattedEstimate(doneEstimate - unixNow, config.estimateRelative()));
 					}
 				}
 				else

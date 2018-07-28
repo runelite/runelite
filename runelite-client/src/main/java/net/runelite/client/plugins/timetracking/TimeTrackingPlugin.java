@@ -111,6 +111,7 @@ public class TimeTrackingPlugin extends Plugin
 		clockManager.loadTimers();
 		clockManager.loadStopwatches();
 		birdHouseTracker.loadFromConfig();
+		farmingTracker.loadCompletionTimes();
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "watch.png");
 
@@ -205,6 +206,7 @@ public class TimeTrackingPlugin extends Plugin
 	public void onUsernameChanged(UsernameChanged e)
 	{
 		farmingTracker.migrateConfiguration();
+		farmingTracker.loadCompletionTimes();
 		birdHouseTracker.loadFromConfig();
 		panel.update();
 	}

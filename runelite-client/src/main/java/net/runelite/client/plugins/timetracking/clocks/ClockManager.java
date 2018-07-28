@@ -93,6 +93,16 @@ public class ClockManager
 		SwingUtilities.invokeLater(clockTabPanel::rebuild);
 	}
 
+	public long getActiveTimerCount()
+	{
+		return timers.stream().filter(Timer::isActive).count();
+	}
+
+	public long getActiveStopwatchCount()
+	{
+		return stopwatches.stream().filter(Stopwatch::isActive).count();
+	}
+
 	/**
 	 * Checks if any timers have completed, and send notifications if required.
 	 */

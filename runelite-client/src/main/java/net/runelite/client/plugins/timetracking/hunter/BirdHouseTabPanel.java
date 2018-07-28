@@ -28,12 +28,8 @@ package net.runelite.client.plugins.timetracking.hunter;
 
 import java.awt.Color;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.TabContentPanel;
@@ -130,48 +126,17 @@ public class BirdHouseTabPanel extends TabContentPanel
 					panel.getEstimate().setText("Built");
 					break;
 				case SEEDED:
-					long doneEstimate = startTime + BirdHouseTracker.BIRD_HOUSE_DURATION;
-					if (doneEstimate < unixNow)
+					long remainingTime = startTime + BirdHouseTracker.BIRD_HOUSE_DURATION - unixNow;
+					if (remainingTime <= 0)
 					{
 						panel.getProgress().setValue(BirdHouseTracker.BIRD_HOUSE_DURATION);
 						panel.getProgress().setForeground(COMPLETED_COLOR);
 						panel.getEstimate().setText("Done");
 					}
-					else if (config.estimateRelative())
-					{
-						int remainingSeconds = (int) (59 + doneEstimate - unixNow);
-						int remaining = remainingSeconds / 60;
-						panel.getProgress().setValue(BirdHouseTracker.BIRD_HOUSE_DURATION - remainingSeconds);
-						StringBuilder f = new StringBuilder("Done in ");
-						int min = remaining % 60;
-						int hours = (remaining / 60) % 24;
-						int days = remaining / (60 * 24);
-						if (days > 0)
-						{
-							f.append(days).append("d ");
-						}
-						if (hours > 0)
-						{
-							f.append(hours).append("h ");
-						}
-						if (min > 0)
-						{
-							f.append(min).append("m ");
-						}
-						panel.getEstimate().setText(f.toString());
-					}
 					else
 					{
-						StringBuilder f = new StringBuilder();
-						LocalDateTime ldtTime = LocalDateTime.ofEpochSecond(doneEstimate, 0, OffsetDateTime.now().getOffset());
-						LocalDateTime ldtNow = LocalDateTime.now();
-						f.append("Done ");
-						if (ldtTime.getDayOfWeek() != ldtNow.getDayOfWeek())
-						{
-							f.append(ldtTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault())).append(" ");
-						}
-						f.append(String.format("at %d:%02d", ldtTime.getHour(), ldtTime.getMinute()));
-						panel.getEstimate().setText(f.toString());
+						panel.getProgress().setValue((int) (BirdHouseTracker.BIRD_HOUSE_DURATION - remainingTime));
+						panel.getEstimate().setText("Done " + getFormattedEstimate(remainingTime, config.estimateRelative()));
 					}
 					break;
 				default:

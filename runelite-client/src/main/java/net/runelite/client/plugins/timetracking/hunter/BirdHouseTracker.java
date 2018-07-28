@@ -78,6 +78,7 @@ public class BirdHouseTracker
 	 * This is set to {@code 0} if the bird houses have already completed
 	 * when updating it.
 	 */
+	@Getter
 	private long completionTime = -1;
 
 	public BirdHouseTabPanel createBirdHouseTabPanel()
