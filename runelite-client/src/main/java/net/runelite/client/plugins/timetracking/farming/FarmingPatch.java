@@ -22,21 +22,23 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.farmingtracker;
+package net.runelite.client.plugins.timetracking.farming;
 
-import java.awt.Color;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.runelite.client.ui.ColorScheme;
+import lombok.Setter;
+import net.runelite.api.Varbits;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor(
+	access = AccessLevel.PACKAGE
+)
 @Getter
-public enum CropState
+class FarmingPatch
 {
-	HARVESTABLE(ColorScheme.PROGRESS_COMPLETE_COLOR),
-	GROWING(ColorScheme.PROGRESS_COMPLETE_COLOR),
-	DISEASED(ColorScheme.PROGRESS_INPROGRESS_COLOR),
-	DEAD(ColorScheme.PROGRESS_ERROR_COLOR);
-
-	private final Color color;
+	@Setter(AccessLevel.PACKAGE)
+	private FarmingRegion region;
+	private final String name;
+	private final Varbits varbit;
+	private final PatchImplementation implementation;
 }

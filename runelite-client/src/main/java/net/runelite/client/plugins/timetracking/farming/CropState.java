@@ -22,23 +22,21 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.farmingtracker;
+package net.runelite.client.plugins.timetracking.farming;
 
+import java.awt.Color;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.runelite.api.ItemID;
+import net.runelite.client.ui.ColorScheme;
 
 @RequiredArgsConstructor
 @Getter
-public enum Tab
+public enum CropState
 {
-	ALLOTMENT("Allotments", ItemID.CABBAGE),
-	HERB("Herbs", ItemID.GRIMY_RANARR_WEED),
-	TREE("Trees", ItemID.MAHOGANY_LOGS),
-	FRUIT_TREE("Fruit Trees", ItemID.PINEAPPLE),
-	BUSH("Bushes", ItemID.REDBERRIES),
-	SPECIAL("Special", ItemID.MUSHROOM);
+	HARVESTABLE(ColorScheme.PROGRESS_COMPLETE_COLOR),
+	GROWING(ColorScheme.PROGRESS_COMPLETE_COLOR),
+	DISEASED(ColorScheme.PROGRESS_INPROGRESS_COLOR),
+	DEAD(ColorScheme.PROGRESS_ERROR_COLOR);
 
-	private final String name;
-	private final int itemID;
+	private final Color color;
 }

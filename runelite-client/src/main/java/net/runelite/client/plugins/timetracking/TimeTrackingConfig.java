@@ -21,15 +21,45 @@
  *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */package net.runelite.client.plugins.farmingtracker;
+ */
+package net.runelite.client.plugins.timetracking;
 
-import org.junit.Test;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public class FarmingWorldTest
+@ConfigGroup("timetracking")
+public interface TimeTrackingConfig extends Config
 {
-	@Test
-	public void testInit()
+	String KEY_NAME = "timetracking";
+	String AUTOWEED = "autoweed";
+
+	@ConfigItem(
+		keyName = "estimateRelative",
+		name = "Show relative time",
+		description = "Show amount of time remaining instead of completion time"
+	)
+	default boolean estimateRelative()
 	{
-		new FarmingWorld();
+		return false;
 	}
+
+	@ConfigItem(
+		keyName = "activeTab",
+		name = "Active Tab",
+		description = "The currently selected tab",
+		hidden = true
+	)
+	default Tab activeTab()
+	{
+		return Tab.ALLOTMENT;
+	}
+
+	@ConfigItem(
+		keyName = "activeTab",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	void setActiveTab(Tab t);
 }

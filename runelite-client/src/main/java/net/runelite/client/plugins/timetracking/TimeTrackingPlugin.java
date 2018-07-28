@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Daniel Teo <https://github.com/takuyakanbr>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +23,17 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.farmingtracker;
+package net.runelite.client.plugins.timetracking;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.UsernameChanged;
@@ -42,58 +41,56 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.timetracking.farming.FarmingTracker;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-	name = "Farming Tracker",
-	description = "Show when your farming plots would be fully grown",
-	tags = {"skilling", "panel", "timers"}
+	name = "Time Tracking",
+	description = "Enable the Time Tracking panel, which contains farming trackers",
+	tags = {"farming", "skilling", "panel"}
 )
 @Slf4j
-public class FarmingTrackerPlugin extends Plugin
+public class TimeTrackingPlugin extends Plugin
 {
 	@Inject
 	private ClientToolbar clientToolbar;
 
 	@Inject
-	private ConfigManager configManager;
-
-	@Inject
 	private Client client;
 
 	@Inject
-	private FarmingWorld farmingWorld;
+	private FarmingTracker farmingTracker;
 
 	@Inject
 	private ItemManager itemManager;
 
 	@Inject
-	private FarmingTrackerConfig config;
+	private TimeTrackingConfig config;
 
-	private FarmingTrackerPanel panel;
+	private TimeTrackingPanel panel;
 
 	private NavigationButton navButton;
 
-	private WorldPoint lastTickLoc;
+	private WorldPoint lastTickLocation;
 
 	@Provides
-	FarmingTrackerConfig provideConfig(ConfigManager configManager)
+	TimeTrackingConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(FarmingTrackerConfig.class);
+		return configManager.getConfig(TimeTrackingConfig.class);
 	}
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "farming.png");
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "watch.png");
 
-		panel = new FarmingTrackerPanel(client, itemManager, configManager, config, farmingWorld);
+		panel = new TimeTrackingPanel(itemManager, config, farmingTracker);
 
 		navButton = NavigationButton.builder()
-			.tooltip("Farming Tracker")
+			.tooltip("Time Tracking")
 			.icon(icon)
 			.panel(panel)
 			.priority(4)
@@ -104,15 +101,10 @@ public class FarmingTrackerPlugin extends Plugin
 		updatePanel();
 	}
 
-	@Subscribe
-	public void onUsernameChanged(UsernameChanged e)
-	{
-		updatePanel();
-	}
-
 	@Override
 	protected void shutDown() throws Exception
 	{
+		lastTickLocation = null;
 		clientToolbar.removeNavigation(navButton);
 	}
 
@@ -121,71 +113,31 @@ public class FarmingTrackerPlugin extends Plugin
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
-			lastTickLoc = null;
+			lastTickLocation = null;
 			return;
 		}
 
-		WorldPoint loc = lastTickLoc;
-		lastTickLoc = client.getLocalPlayer().getWorldLocation();
-		if (loc == null || loc.getRegionID() != lastTickLoc.getRegionID())
+		WorldPoint loc = lastTickLocation;
+		lastTickLocation = client.getLocalPlayer().getWorldLocation();
+
+		if (loc == null || loc.getRegionID() != lastTickLocation.getRegionID())
 		{
 			return;
 		}
 
-		boolean changed = false;
+		boolean farmingDataChanged = farmingTracker.updateData(loc);
 
-		{
-			String group = FarmingTrackerConfig.KEY_NAME + "." + client.getUsername();
-			String autoweed = Integer.toString(client.getVar(Varbits.AUTOWEED));
-			if (!autoweed.equals(configManager.getConfiguration(group, FarmingTrackerConfig.AUTOWEED)))
-			{
-				configManager.setConfiguration(group, FarmingTrackerConfig.AUTOWEED, autoweed);
-				changed = true;
-			}
-		}
-
-		FarmingRegion region = farmingWorld.getRegions().get(loc.getRegionID());
-		if (region != null && region.isInBounds(loc))
-		{
-			// Write config with new varbits
-			// farmingTracker.<login-username>.<regionID>.<VarbitID>=<varbitValue>:<unix time>
-			String group = FarmingTrackerConfig.KEY_NAME + "." + client.getUsername() + "." + region.getRegionID();
-			long unixNow = Instant.now().getEpochSecond();
-			for (Varbits varbit : region.getVarbits())
-			{
-				// Write the config value if it doesn't match what is current, or it is more than 5 minutes old
-				String key = Integer.toString(varbit.getId());
-				String strVarbit = Integer.toString(client.getVar(varbit));
-				String storedValue = configManager.getConfiguration(group, key);
-				if (storedValue != null)
-				{
-					String[] parts = storedValue.split(":");
-					if (parts.length == 2 && parts[0].equals(strVarbit))
-					{
-						long unixTime = 0;
-						try
-						{
-							unixTime = Long.parseLong(parts[1]);
-						}
-						catch (NumberFormatException e)
-						{
-						}
-						if (unixTime + (5 * 60) > unixNow && unixNow + 30 > unixTime)
-						{
-							continue;
-						}
-					}
-				}
-				String value = strVarbit + ":" + unixNow;
-				configManager.setConfiguration(group, key, value);
-				changed = true;
-			}
-		}
-
-		if (changed)
+		if (farmingDataChanged)
 		{
 			updatePanel();
 		}
+	}
+
+	@Subscribe
+	public void onUsernameChanged(UsernameChanged e)
+	{
+		farmingTracker.migrateConfiguration();
+		updatePanel();
 	}
 
 	@Schedule(period = 10, unit = ChronoUnit.SECONDS)

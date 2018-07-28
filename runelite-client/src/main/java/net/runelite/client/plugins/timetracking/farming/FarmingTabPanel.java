@@ -23,15 +23,11 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.farmingtracker;
+package net.runelite.client.plugins.timetracking.farming;
 
 import com.google.common.base.Strings;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -39,180 +35,106 @@ import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import javax.swing.ImageIcon;
+import java.util.Set;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.vars.Autoweed;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.timetracking.TabContentPanel;
+import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.PluginPanel;
-import net.runelite.client.ui.components.materialtabs.MaterialTab;
-import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 
 @Slf4j
-class FarmingTrackerPanel extends PluginPanel
+public class FarmingTabPanel extends TabContentPanel
 {
 	private final Client client;
 	private final ItemManager itemManager;
 	private final ConfigManager configManager;
-	private final FarmingTrackerConfig config;
+	private final TimeTrackingConfig config;
+	private final List<FarmingPatchPanel> patchPanels;
 
-	private boolean active;
-
-	private List<FarmingPatchPanel> patchPanels = new ArrayList<>();
-
-	/* This is the panel the tabs' respective panels will be displayed on. */
-	private final JPanel display = new JPanel();
-	private final MaterialTabGroup tabGroup = new MaterialTabGroup(display);
-
-	FarmingTrackerPanel(
-		Client client,
-		ItemManager itemManager,
-		ConfigManager configManager,
-		FarmingTrackerConfig config,
-		FarmingWorld farmingWorld
-	)
+	FarmingTabPanel(Client client, ItemManager itemManager, ConfigManager configManager,
+		TimeTrackingConfig config, Set<FarmingPatch> patches)
 	{
-		super(false);
-
 		this.client = client;
 		this.itemManager = itemManager;
 		this.configManager = configManager;
 		this.config = config;
+		this.patchPanels = new ArrayList<>();
 
-		setLayout(new BorderLayout());
+		setLayout(new GridBagLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
-		display.setBorder(new EmptyBorder(10, 10, 8, 10));
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 1;
+		c.gridx = 0;
+		c.gridy = 0;
 
-		tabGroup.setBorder(new EmptyBorder(10, 1, 0, 0));
+		PatchImplementation lastImpl = null;
 
-		add(tabGroup, BorderLayout.NORTH);
-		add(display, BorderLayout.CENTER);
-
-		farmingWorld.getTabs().forEach((tab, patches) ->
+		boolean first = true;
+		for (FarmingPatch patch : patches)
 		{
-			JPanel container = new JPanel(new GridBagLayout())
+			FarmingPatchPanel p = new FarmingPatchPanel(patch);
+
+			/* Show labels to subdivide tabs into sections */
+			if (patch.getImplementation() != lastImpl && !Strings.isNullOrEmpty(patch.getImplementation().getName()))
 			{
-				@Override
-				public Dimension getPreferredSize()
-				{
-					return new Dimension(PluginPanel.PANEL_WIDTH, super.getPreferredSize().height);
-				}
-			};
-			container.setBackground(ColorScheme.DARK_GRAY_COLOR);
+				JLabel groupLabel = new JLabel(patch.getImplementation().getName());
 
-			GridBagConstraints c = new GridBagConstraints();
-			c.fill = GridBagConstraints.HORIZONTAL;
-			c.weightx = 1;
-			c.gridx = 0;
-			c.gridy = 0;
-
-			PatchImplementation lastImpl = null;
-
-			boolean first = true;
-			for (FarmingPatch patch : patches)
-			{
-				FarmingPatchPanel p = new FarmingPatchPanel(patch);
-
-				/* Show labels to subdivide tabs into sections */
-				if (patch.getImplementation() != lastImpl && !Strings.isNullOrEmpty(patch.getImplementation().getName()))
-				{
-					JLabel groupLabel = new JLabel(patch.getImplementation().getName());
-
-					if (first)
-					{
-						first = false;
-						groupLabel.setBorder(new EmptyBorder(4, 0, 0, 0));
-					}
-					else
-					{
-						groupLabel.setBorder(new EmptyBorder(15, 0, 0, 0));
-					}
-
-					groupLabel.setFont(FontManager.getRunescapeSmallFont());
-
-					container.add(groupLabel, c);
-					c.gridy++;
-					lastImpl = patch.getImplementation();
-				}
-
-				patchPanels.add(p);
-				container.add(p, c);
-				c.gridy++;
-
-				/* This is a weird hack to remove the top border on the first tracker of every tab */
 				if (first)
 				{
 					first = false;
-					p.setBorder(null);
+					groupLabel.setBorder(new EmptyBorder(4, 0, 0, 0));
 				}
+				else
+				{
+					groupLabel.setBorder(new EmptyBorder(15, 0, 0, 0));
+				}
+
+				groupLabel.setFont(FontManager.getRunescapeSmallFont());
+
+				add(groupLabel, c);
+				c.gridy++;
+				lastImpl = patch.getImplementation();
 			}
 
-			JPanel wrapped = new JPanel(new BorderLayout());
-			wrapped.add(container, BorderLayout.NORTH);
-			wrapped.setBackground(ColorScheme.DARK_GRAY_COLOR);
+			patchPanels.add(p);
+			add(p, c);
+			c.gridy++;
 
-			JScrollPane scroller = new JScrollPane(wrapped);
-			scroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-			scroller.getVerticalScrollBar().setPreferredSize(new Dimension(16, 0));
-			scroller.getVerticalScrollBar().setBorder(new EmptyBorder(0, 9, 0, 0));
-			scroller.setBackground(ColorScheme.DARK_GRAY_COLOR);
-
-			//Use a placeholder icon until the async image gets loaded
-			MaterialTab materialTab = new MaterialTab(new ImageIcon(), tabGroup, scroller);
-			materialTab.setPreferredSize(new Dimension(30, 27));
-			materialTab.setName(tab.getName());
-
-			AsyncBufferedImage icon = itemManager.getImage(tab.getItemID());
-			Runnable resize = () ->
+			/* This is a weird hack to remove the top border on the first tracker of every tab */
+			if (first)
 			{
-				BufferedImage subIcon = icon.getSubimage(0, 0, 32, 32);
-				materialTab.setIcon(new ImageIcon(subIcon.getScaledInstance(24, 24, Image.SCALE_SMOOTH)));
-			};
-			icon.onChanged(resize);
-			resize.run();
-
-			materialTab.setOnSelectEvent(() ->
-			{
-				config.setPatch(tab);
-				return true;
-			});
-
-			tabGroup.addTab(materialTab);
-			if (config.patch() == tab)
-			{
-				tabGroup.select(materialTab);
+				first = false;
+				p.setBorder(null);
 			}
-		});
+		}
+
 	}
 
-	void update()
+	@Override
+	public void update()
 	{
-		if (!active)
-		{
-			return;
-		}
-
 		long unixNow = Instant.now().getEpochSecond();
 		log.debug("Updating panel with username {}", client.getUsername());
-		boolean autoweed = false;
+
+		boolean autoweed;
 		{
-			String group = FarmingTrackerConfig.KEY_NAME + "." + client.getUsername();
+			String group = TimeTrackingConfig.KEY_NAME + "." + client.getUsername();
 			autoweed = Integer.toString(Autoweed.ON.ordinal())
-				.equals(configManager.getConfiguration(group, FarmingTrackerConfig.AUTOWEED));
+				.equals(configManager.getConfiguration(group, TimeTrackingConfig.AUTOWEED));
 		}
+
 		for (FarmingPatchPanel panel : patchPanels)
 		{
 			FarmingPatch patch = panel.getPatch();
-			String group = FarmingTrackerConfig.KEY_NAME + "." + client.getUsername() + "." + patch.getRegion().getRegionID();
+			String group = TimeTrackingConfig.KEY_NAME + "." + client.getUsername() + "." + patch.getRegion().getRegionID();
 			String key = Integer.toString(patch.getVarbit().getId());
 			String storedValue = configManager.getConfiguration(group, key);
 			long unixTime = 0;
@@ -258,19 +180,9 @@ class FarmingTrackerPanel extends PluginPanel
 				}
 
 				int stage = state.getStage();
-				int stages = state.getCropState() == CropState.HARVESTABLE ?
-					state.getProduce().getHarvestStages() :
-					state.getProduce().getStages();
-				int tickrate = 0;
-				switch (state.getCropState())
-				{
-					case HARVESTABLE:
-						tickrate = state.getProduce().getRegrowTickrate() * 60;
-						break;
-					case GROWING:
-						tickrate = state.getProduce().getTickrate() * 60;
-						break;
-				}
+				int stages = state.getStages();
+				int tickrate = state.getTickRate() * 60;
+
 				if (autoweed && state.getProduce() == Produce.WEEDS)
 				{
 					stage = 0;
@@ -373,18 +285,5 @@ class FarmingTrackerPanel extends PluginPanel
 				}
 			}
 		}
-	}
-
-	@Override
-	public void onActivate()
-	{
-		active = true;
-		update();
-	}
-
-	@Override
-	public void onDeactivate()
-	{
-		active = false;
 	}
 }

@@ -22,14 +22,36 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.farmingtracker;
+package net.runelite.client.plugins.timetracking.farming;
 
-import lombok.Value;
+import lombok.Getter;
+import net.runelite.api.Varbits;
+import net.runelite.api.coords.WorldPoint;
 
-@Value
-public class PatchState
+@Getter
+public class FarmingRegion
 {
-	private final Produce produce;
-	private final CropState cropState;
-	private final int stage;
+	private final String name;
+	private final int regionID;
+	private final FarmingPatch[] patches;
+	private final Varbits[] varbits;
+
+	FarmingRegion(String name, int regionID, FarmingPatch... patches)
+	{
+		this.name = name;
+		this.regionID = regionID;
+		this.patches = patches;
+		this.varbits = new Varbits[patches.length];
+		for (int i = 0; i < patches.length; i++)
+		{
+			FarmingPatch p = patches[i];
+			p.setRegion(this);
+			varbits[i] = p.getVarbit();
+		}
+	}
+
+	public boolean isInBounds(WorldPoint loc)
+	{
+		return true;
+	}
 }
