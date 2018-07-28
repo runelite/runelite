@@ -28,8 +28,7 @@ import lombok.Value;
 import net.runelite.client.ui.NavigationButton;
 
 @Value
-public class PluginToolbarButtonAdded
+public class NavigationButtonRemoved
 {
 	private NavigationButton button;
-	private int index;
 }

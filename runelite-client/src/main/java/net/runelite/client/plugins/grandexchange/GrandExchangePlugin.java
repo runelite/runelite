@@ -65,7 +65,7 @@ import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.osbuddy.GrandExchangeClient;
@@ -111,7 +111,7 @@ public class GrandExchangePlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private PluginToolbar pluginToolbar;
+	private ClientToolbar clientToolbar;
 
 	@Inject
 	private GrandExchangeConfig config;
@@ -151,7 +151,7 @@ public class GrandExchangePlugin extends Plugin
 			.panel(panel)
 			.build();
 
-		pluginToolbar.addNavigation(button);
+		clientToolbar.addNavigation(button);
 
 		if (config.quickLookup())
 		{
@@ -163,7 +163,7 @@ public class GrandExchangePlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		pluginToolbar.removeNavigation(button);
+		clientToolbar.removeNavigation(button);
 		mouseManager.unregisterMouseListener(inputListener);
 		keyManager.unregisterKeyListener(inputListener);
 	}

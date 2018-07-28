@@ -24,29 +24,25 @@
  */
 package net.runelite.client.ui;
 
-import com.google.common.collect.ComparisonChain;
 import com.google.common.eventbus.EventBus;
-import java.util.TreeSet;
+import java.util.HashSet;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+import net.runelite.client.events.NavigationButtonAdded;
+import net.runelite.client.events.NavigationButtonRemoved;
 
 /**
  * Plugin toolbar buttons holder.
  */
 @Singleton
-public class PluginToolbar
+public class ClientToolbar
 {
 	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>((a, b) ->
-		ComparisonChain.start()
-			.compare(a.getPriority(), b.getPriority())
-			.compare(a.getTooltip(), b.getTooltip())
-			.result());
+	private final Set<NavigationButton> buttons = new HashSet<>();
 
 	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	private ClientToolbar(final EventBus eventBus)
 	{
 		this.eventBus = eventBus;
 	}
@@ -65,8 +61,7 @@ public class PluginToolbar
 
 		if (buttons.add(button))
 		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
+			eventBus.post(new NavigationButtonAdded(button));
 		}
 	}
 
@@ -77,11 +72,9 @@ public class PluginToolbar
 	 */
 	public void removeNavigation(final NavigationButton button)
 	{
-		int index = buttons.headSet(button).size();
-
 		if (buttons.remove(button))
 		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
+			eventBus.post(new NavigationButtonRemoved(button));
 		}
 	}
 }

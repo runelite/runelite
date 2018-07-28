@@ -43,7 +43,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import net.runelite.api.events.GameTick;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.EnumSet;
@@ -60,6 +59,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.Point;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.BARROWS_REWARD_GROUP_ID;
@@ -79,10 +79,10 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.screenshot.imgur.ImageUploadRequest;
 import net.runelite.client.plugins.screenshot.imgur.ImageUploadResponse;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.Text;
@@ -159,7 +159,7 @@ public class ScreenshotPlugin extends Plugin
 	private ClientUI clientUi;
 
 	@Inject
-	private TitleToolbar titleToolbar;
+	private ClientToolbar clientToolbar;
 
 	@Inject
 	private DrawManager drawManager;
@@ -203,6 +203,7 @@ public class ScreenshotPlugin extends Plugin
 			}
 
 			titleBarButton = NavigationButton.builder()
+				.tab(false)
 				.tooltip("Take screenshot")
 				.icon(iconImage)
 				.onClick(() -> takeScreenshot(format(new Date())))
@@ -223,7 +224,7 @@ public class ScreenshotPlugin extends Plugin
 					.build())
 				.build();
 
-			titleToolbar.addNavigation(titleBarButton);
+			clientToolbar.addNavigation(titleBarButton);
 		}
 		catch (IOException ex)
 		{
@@ -235,7 +236,7 @@ public class ScreenshotPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(screenshotOverlay);
-		titleToolbar.removeNavigation(titleBarButton);
+		clientToolbar.removeNavigation(titleBarButton);
 		keyManager.unregisterKeyListener(hotkeyListener);
 	}
 
