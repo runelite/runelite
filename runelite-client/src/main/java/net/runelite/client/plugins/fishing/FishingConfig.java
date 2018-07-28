@@ -200,4 +200,14 @@ public interface FishingConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showMinnowOverlay",
+		name = "Show Minnow Movement overlay",
+		description = "Configures whether to display the minnow progress pie overlay"
+	)
+	default boolean showMinnowOverlay()
+	{
+		return true;
+	}
 }
