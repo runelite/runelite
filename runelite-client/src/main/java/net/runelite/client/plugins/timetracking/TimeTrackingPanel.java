@@ -39,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.farming.FarmingTracker;
+import net.runelite.client.plugins.timetracking.hunter.BirdHouseTracker;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.materialtabs.MaterialTab;
@@ -59,7 +60,8 @@ class TimeTrackingPanel extends PluginPanel
 	@Nullable
 	private TabContentPanel activeTabPanel = null;
 
-	TimeTrackingPanel(ItemManager itemManager, TimeTrackingConfig config, FarmingTracker farmingTracker)
+	TimeTrackingPanel(ItemManager itemManager, TimeTrackingConfig config,
+		FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker)
 	{
 		super(false);
 
@@ -76,6 +78,8 @@ class TimeTrackingPanel extends PluginPanel
 
 		add(tabGroup, BorderLayout.NORTH);
 		add(display, BorderLayout.CENTER);
+
+		addTab(Tab.BIRD_HOUSE, birdHouseTracker.createBirdHouseTabPanel());
 
 		for (Tab tab : Tab.FARMING_TABS)
 		{

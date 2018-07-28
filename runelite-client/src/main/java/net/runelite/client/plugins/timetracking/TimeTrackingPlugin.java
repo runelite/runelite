@@ -37,11 +37,14 @@ import net.runelite.api.GameState;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.UsernameChanged;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.timetracking.farming.FarmingTracker;
+import net.runelite.client.plugins.timetracking.hunter.BirdHouseTracker;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.ClientToolbar;
@@ -49,8 +52,8 @@ import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Time Tracking",
-	description = "Enable the Time Tracking panel, which contains farming trackers",
-	tags = {"farming", "skilling", "panel"}
+	description = "Enable the Time Tracking panel, which contains farming and bird house trackers",
+	tags = {"birdhouse", "farming", "hunter", "notifications", "skilling", "panel"}
 )
 @Slf4j
 public class TimeTrackingPlugin extends Plugin
@@ -65,6 +68,9 @@ public class TimeTrackingPlugin extends Plugin
 	private FarmingTracker farmingTracker;
 
 	@Inject
+	private BirdHouseTracker birdHouseTracker;
+
+	@Inject
 	private ItemManager itemManager;
 
 	@Inject
@@ -75,6 +81,7 @@ public class TimeTrackingPlugin extends Plugin
 	private NavigationButton navButton;
 
 	private WorldPoint lastTickLocation;
+	private boolean lastTickPostLogin;
 
 	@Provides
 	TimeTrackingConfig provideConfig(ConfigManager configManager)
@@ -85,9 +92,11 @@ public class TimeTrackingPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		birdHouseTracker.loadFromConfig();
+
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "watch.png");
 
-		panel = new TimeTrackingPanel(itemManager, config, farmingTracker);
+		panel = new TimeTrackingPanel(itemManager, config, farmingTracker, birdHouseTracker);
 
 		navButton = NavigationButton.builder()
 			.tooltip("Time Tracking")
@@ -105,6 +114,7 @@ public class TimeTrackingPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		lastTickLocation = null;
+		lastTickPostLogin = false;
 		clientToolbar.removeNavigation(navButton);
 	}
 
@@ -117,17 +127,32 @@ public class TimeTrackingPlugin extends Plugin
 			return;
 		}
 
+		// bird house data is only sent after exiting the post-login screen
+		Widget motd = client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN_MESSAGE_OF_THE_DAY);
+		if (motd != null && !motd.isHidden())
+		{
+			lastTickPostLogin = true;
+			return;
+		}
+
+		if (lastTickPostLogin)
+		{
+			lastTickPostLogin = false;
+			return;
+		}
+
 		WorldPoint loc = lastTickLocation;
 		lastTickLocation = client.getLocalPlayer().getWorldLocation();
 
-		if (loc == null || loc.getRegionID() != lastTickLocation.getRegionID())
+		if (loc == null || loc.getPlane() != 0 || loc.getRegionID() != lastTickLocation.getRegionID())
 		{
 			return;
 		}
 
+		boolean birdHouseDataChanged = birdHouseTracker.updateData(loc);
 		boolean farmingDataChanged = farmingTracker.updateData(loc);
 
-		if (farmingDataChanged)
+		if (birdHouseDataChanged || farmingDataChanged)
 		{
 			updatePanel();
 		}
@@ -137,7 +162,19 @@ public class TimeTrackingPlugin extends Plugin
 	public void onUsernameChanged(UsernameChanged e)
 	{
 		farmingTracker.migrateConfiguration();
+		birdHouseTracker.loadFromConfig();
 		updatePanel();
+	}
+
+	@Schedule(period = 10, unit = ChronoUnit.SECONDS)
+	public void checkCompletion()
+	{
+		boolean birdHouseDataChanged = birdHouseTracker.checkCompletion();
+
+		if (birdHouseDataChanged)
+		{
+			updatePanel();
+		}
 	}
 
 	@Schedule(period = 10, unit = ChronoUnit.SECONDS)

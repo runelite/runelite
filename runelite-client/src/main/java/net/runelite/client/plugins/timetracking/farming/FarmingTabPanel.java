@@ -45,6 +45,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.TabContentPanel;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
+import net.runelite.client.plugins.timetracking.TimeablePanel;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 
@@ -55,7 +56,7 @@ public class FarmingTabPanel extends TabContentPanel
 	private final ItemManager itemManager;
 	private final ConfigManager configManager;
 	private final TimeTrackingConfig config;
-	private final List<FarmingPatchPanel> patchPanels;
+	private final List<TimeablePanel<FarmingPatch>> patchPanels;
 
 	FarmingTabPanel(Client client, ItemManager itemManager, ConfigManager configManager,
 		TimeTrackingConfig config, Set<FarmingPatch> patches)
@@ -80,7 +81,8 @@ public class FarmingTabPanel extends TabContentPanel
 		boolean first = true;
 		for (FarmingPatch patch : patches)
 		{
-			FarmingPatchPanel p = new FarmingPatchPanel(patch);
+			String title = patch.getRegion().getName() + (Strings.isNullOrEmpty(patch.getName()) ? "" : " (" + patch.getName() + ")");
+			TimeablePanel<FarmingPatch> p = new TimeablePanel<>(patch, title, 1);
 
 			/* Show labels to subdivide tabs into sections */
 			if (patch.getImplementation() != lastImpl && !Strings.isNullOrEmpty(patch.getImplementation().getName()))
@@ -131,9 +133,9 @@ public class FarmingTabPanel extends TabContentPanel
 				.equals(configManager.getConfiguration(group, TimeTrackingConfig.AUTOWEED));
 		}
 
-		for (FarmingPatchPanel panel : patchPanels)
+		for (TimeablePanel<FarmingPatch> panel : patchPanels)
 		{
-			FarmingPatch patch = panel.getPatch();
+			FarmingPatch patch = panel.getTimeable();
 			String group = TimeTrackingConfig.KEY_NAME + "." + client.getUsername() + "." + patch.getRegion().getRegionID();
 			String key = Integer.toString(patch.getVarbit().getId());
 			String storedValue = configManager.getConfiguration(group, key);

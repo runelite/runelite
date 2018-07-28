@@ -33,6 +33,7 @@ public interface TimeTrackingConfig extends Config
 {
 	String KEY_NAME = "timetracking";
 	String AUTOWEED = "autoweed";
+	String BIRD_HOUSE = "birdhouse";
 
 	@ConfigItem(
 		keyName = "estimateRelative",
@@ -40,6 +41,16 @@ public interface TimeTrackingConfig extends Config
 		description = "Show amount of time remaining instead of completion time"
 	)
 	default boolean estimateRelative()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "birdHouseNotification",
+		name = "Bird house notification",
+		description = "Notify you when all bird houses are full"
+	)
+	default boolean birdHouseNotification()
 	{
 		return false;
 	}

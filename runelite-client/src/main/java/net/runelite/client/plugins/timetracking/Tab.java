@@ -32,6 +32,7 @@ import net.runelite.api.ItemID;
 @Getter
 public enum Tab
 {
+	BIRD_HOUSE("Bird Houses", ItemID.OAK_BIRD_HOUSE),
 	ALLOTMENT("Allotment Patches", ItemID.CABBAGE),
 	FLOWER("Flower Patches", ItemID.RED_FLOWERS),
 	HERB("Herb Patches", ItemID.GRIMY_RANARR_WEED),
