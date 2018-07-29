@@ -137,6 +137,12 @@ public class RunecraftPlugin extends Plugin
 		overlayManager.add(abyssOverlay);
 		overlayManager.add(denseRunestoneOverlay);
 		abyssOverlay.updateConfig();
+
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			denseRunestoneSouthMineable = client.getVar(Varbits.DENSE_RUNESTONE_SOUTH_DEPLETED) == 0;
+			denseRunestoneNorthMineable = client.getVar(Varbits.DENSE_RUNESTONE_NORTH_DEPLETED) == 0;
+		}
 	}
 
 	@Override
@@ -144,8 +150,13 @@ public class RunecraftPlugin extends Plugin
 	{
 		overlayManager.remove(bindNeckOverlay);
 		overlayManager.remove(abyssOverlay);
+		overlayManager.remove(denseRunestoneOverlay);
+
 		abyssObjects.clear();
 		darkMage = null;
+		denseRunestoneNorth = null;
+		denseRunestoneSouth = null;
+
 		degradedPouchInInventory = false;
 	}
 
