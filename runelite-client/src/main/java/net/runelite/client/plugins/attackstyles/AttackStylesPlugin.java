@@ -99,7 +99,7 @@ public class AttackStylesPlugin extends Plugin
 
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			clientThread.invokeLater(this::start);
+			clientThread.invoke(this::start);
 		}
 	}
 

@@ -82,7 +82,7 @@ public class ChatboxInputManager
 		this.changed = changed;
 		this.characterLimit = characterLimit;
 		this.open = true;
-		clientThread.invokeLater(() -> client.runScript(
+		clientThread.invoke(() -> client.runScript(
 			ScriptID.RUNELITE_CHATBOX_INPUT_INIT,
 			text,
 			defaul
@@ -99,7 +99,7 @@ public class ChatboxInputManager
 			return;
 		}
 		this.open = false;
-		clientThread.invokeLater(() -> client.runScript(
+		clientThread.invoke(() -> client.runScript(
 			ScriptID.CLOSE_CHATBOX_INPUT,
 			1,
 			1
