@@ -74,14 +74,16 @@ public class miningPlugin extends Plugin {
 
 
 	@Override
-	protected void startUp() {
+	protected void startUp()
+    {
 		overlayManager.add(miningRockOverlay);
 		overlayManager.add(miningOverlay);
 
 	}
 
 	@Override
-	protected void shutDown() {
+	protected void shutDown()
+    {
 		overlayManager.remove(miningRockOverlay);
 		overlayManager.remove(miningOverlay);
 		rockObjects.clear();
@@ -91,64 +93,80 @@ public class miningPlugin extends Plugin {
 	}
 
 
-	public List<GameObject> getRockObjects() {
+	public List<GameObject> getRockObjects()
+    {
 		return rockObjects;
 	}
 
-	public List<GameObject> getDespawnedRockObjects() {
+	public List<GameObject> getDespawnedRockObjects()
+    {
 		return despawnedrockObjects;
 	}
 
-	public HashMap<Point, Long> getDespawnedRockObjectsTimers() {
+	public HashMap<Point, Long> getDespawnedRockObjectsTimers()
+    {
 		return despawnedrockObjectsTimers;
 	}
 
-	public Boolean isMining() {
+	public Boolean isMining()
+    {
 		return isMining;
 	}
 
-	public void setMining(Boolean bool) {
+	public void setMining(Boolean bool)
+    {
 		isMining = bool;
 		setTimeLastMined(System.currentTimeMillis());
 	}
 
-	public Long getTimeLastMined() {
+	public Long getTimeLastMined()
+    {
 		return timeLastMined;
 	}
 
-	public void setTimeLastMined(Long l) {
+	public void setTimeLastMined(Long l)
+    {
 		timeLastMined = l;
 	}
 
-	public int getDisplaySinceLastMined() {
+	public int getDisplaySinceLastMined()
+    {
 		return displaySinceLastMined;
 	}
 
-	public void addOreMined() {
+	public void addOreMined()
+    {
 		oresMined++;
 	}
 
-	public int getOresMined() {
+	public int getOresMined()
+    {
 		return oresMined;
 	}
 
 
 
 	@Subscribe
-	public void onAnimationChanged(final AnimationChanged event) {
-		if (event != null) {
-			if (event.getActor() == client.getLocalPlayer()) {
+	public void onAnimationChanged(final AnimationChanged event)
+    {
+		if (event != null)
+		{
+			if (event.getActor() == client.getLocalPlayer())
+			{
 				int animation = event.getActor().getAnimation();
 				boolean im = false;
-				for (int id : miningAnimations) {
-					if (animation == id) {
+				for (int id : miningAnimations)
+				{
+					if (animation == id)
+					{
 						setMining(true);
 						menuInt = true;
 						im = true;
 						break;
 					}
 				}
-				if (!im) {
+				if (!im)
+				{
 					setMining(false);
 				}
 			}
@@ -156,11 +174,16 @@ public class miningPlugin extends Plugin {
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage) {
-		if (chatMessage != null) {
-			if (chatMessage.getMessage() != null) {
-				if (chatMessage.getType() == ChatMessageType.FILTERED) {
-					if (chatMessage.getMessage().contains("You manage to mine some")) {
+	public void onChatMessage(ChatMessage chatMessage)
+    {
+		if (chatMessage != null)
+		{
+			if (chatMessage.getMessage() != null)
+			{
+				if (chatMessage.getType() == ChatMessageType.FILTERED)
+				{
+					if (chatMessage.getMessage().contains("You manage to mine some"))
+					{
 						addOreMined();
 					}
 				}
@@ -170,27 +193,38 @@ public class miningPlugin extends Plugin {
 
 
 	@Subscribe
-	public void onGameObjectSpawned(final GameObjectSpawned event) {
-		if (event != null) {
+	public void onGameObjectSpawned(final GameObjectSpawned event)
+    {
+		if (event != null)
+		{
 			GameObject gameObject = event.getGameObject();
-			if (gameObject != null) {
-				if (Rock.isRock(gameObject.getId())) {
+			if (gameObject != null)
+			{
+				if (Rock.isRock(gameObject.getId()))
+				{
 					boolean found = false;
-					for (GameObject go : rockObjects) {
-						if (go.getWorldLocation().getX() == gameObject.getWorldLocation().getX() && go.getWorldLocation().getY() == gameObject.getWorldLocation().getY()) {
+					for (GameObject go : rockObjects)
+					{
+						if (go.getWorldLocation().getX() == gameObject.getWorldLocation().getX() && go.getWorldLocation().getY() == gameObject.getWorldLocation().getY())
+						{
 							found = true;
 							break;
 						}
 					}
-					if (!found) {
-						if (gameObject.getWorldLocation() != null) {
+					if (!found)
+					{
+						if (gameObject.getWorldLocation() != null)
+						{
 							rockObjects.add(gameObject);
 						}
 					}
 
-					for (GameObject gameObject1 : despawnedrockObjects) {
-						if (despawnedrockObjects != null) {
-							if (gameObject.getWorldLocation().equals(gameObject1.getWorldLocation())) {
+					for (GameObject gameObject1 : despawnedrockObjects)
+					{
+						if (despawnedrockObjects != null)
+						{
+							if (gameObject.getWorldLocation().equals(gameObject1.getWorldLocation()))
+							{
 								despawnedrockObjects.remove(gameObject1);
 								break;
 							}
@@ -207,11 +241,15 @@ public class miningPlugin extends Plugin {
 		}
 	}
 	@Subscribe
-	public void onGameObjectDespawned(final GameObjectDespawned event) {
-		if (event != null) {
+	public void onGameObjectDespawned(final GameObjectDespawned event)
+    {
+		if (event != null)
+		{
 			GameObject gameObject = event.getGameObject();
-			if (gameObject != null) {
-				if (Rock.isRock(gameObject.getId())) {
+			if (gameObject != null)
+			{
+				if (Rock.isRock(gameObject.getId()))
+				{
 					rockObjects.remove(gameObject);
 						despawnedrockObjects.add(gameObject);
 						despawnedrockObjectsTimers.put(new Point(gameObject.getWorldLocation().getX(), gameObject.getWorldLocation().getY()),System.currentTimeMillis());

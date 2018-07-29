@@ -4,7 +4,8 @@ import lombok.Getter;
 import net.runelite.api.GameObject;
 
 @Getter
-public enum Rock {
+public enum Rock
+{
 	RuneEssence,
 	PureEssence,
 	Clay,
@@ -89,76 +90,100 @@ public enum Rock {
 
 
 	//returns if the gameObject is a mining rock
-	public static boolean isRock(int id) {
+	public static boolean isRock(int id)
+    {
 		return getRockType(id) != null;
 	}
 
 	//return what kind of rock
-	public static Rock getRockType(int i) {
+	public static Rock getRockType(int i)
+    {
 
-		for (int a : runeessenceRock) {
-			if (a == i) {
+		for (int a : runeessenceRock)
+		{
+			if (a == i)
+			{
 				return Rock.RuneEssence;
 			}
 		}
 
 
-		for (int a : clayrockID) {
-			if (a == i) {
+		for (int a : clayrockID)
+		{
+			if (a == i)
+			{
 				return Rock.Clay;
 			}
 		}
 
-		for (int a : copperrockID) {
-			if (a == i) {
+		for (int a : copperrockID)
+		{
+			if (a == i)
+			{
 				return Rock.Copper;
 			}
 		}
 
-		for (int a : tinrockID) {
-			if (a == i) {
+		for (int a : tinrockID)
+		{
+			if (a == i)
+			{
 				return Rock.Tin;
 			}
 		}
 
-		for (int a : silverrockID) {
-			if (a == i) {
+		for (int a : silverrockID)
+		{
+			if (a == i)
+			{
 				return Rock.Silver;
 			}
 		}
 
-		for (int a : coalrockID) {
-			if (a == i) {
+		for (int a : coalrockID)
+		{
+			if (a == i)
+			{
 				return Rock.Coal;
 			}
 		}
 
-		for (int a : ironrockID) {
-			if (a == i) {
+		for (int a : ironrockID)
+		{
+			if (a == i)
+			{
 				return Rock.Iron;
 			}
 		}
 
-		for (int a : goldrockID) {
-			if (a == i) {
+		for (int a : goldrockID)
+		{
+			if (a == i)
+			{
 				return Rock.Gold;
 			}
 		}
 
-		for (int a : mithrilrockID) {
-			if (a == i) {
+		for (int a : mithrilrockID)
+		{
+			if (a == i)
+			{
 				return Rock.Mithril;
 			}
 		}
 
-		for (int a : adamantiterockID) {
-			if (a == i) {
+		for (int a : adamantiterockID)
+		{
+			if (a == i)
+			{
 				return Rock.Adamantite;
 			}
 		}
 
-		for (int a : runiterockID) {
-			if (a == i) {
+		for (int a : runiterockID)
+		{
+			if (a == i)
+			{
 				return Rock.Runite;
 			}
 		}
@@ -169,9 +194,11 @@ public enum Rock {
 
 
 	//returns the respawn time of the rock
-	public static int getRespawnTime(int id) {
+	public static int getRespawnTime(int id)
+    {
 
-		switch (Rock.getRockType(id)) {
+		switch (Rock.getRockType(id))
+        {
 			case RuneEssence:
 				return 0;
 			case Clay:
@@ -201,13 +228,17 @@ public enum Rock {
 		return 0;
 	}
 	//returns rock name
-	public static String getName(Rock rock) {
+	public static String getName(Rock rock)
+    {
 		return rock.name();
 	}
 	//returns rock name
-	public static String getName(GameObject gameObject) {
-		if (gameObject != null) {
-			if (isRock(gameObject.getId())) {
+	public static String getName(GameObject gameObject)
+    {
+		if (gameObject != null)
+		{
+			if (isRock(gameObject.getId()))
+			{
 				return getRockType(gameObject.getId()).name();
 			}
 		}

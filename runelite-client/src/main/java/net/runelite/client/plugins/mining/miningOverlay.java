@@ -10,7 +10,8 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 
 import java.awt.*;
 
-public class miningOverlay extends Overlay {
+public class miningOverlay extends Overlay
+{
 
 	private final Client client;
 	private final miningPlugin plugin;
@@ -34,7 +35,8 @@ public class miningOverlay extends Overlay {
 			return null;
 		}
 		panelComponent.getChildren().clear();
-		if ((System.currentTimeMillis() - plugin.getTimeLastMined()) / 1000 < plugin.getDisplaySinceLastMined()) {
+		if ((System.currentTimeMillis() - plugin.getTimeLastMined()) / 1000 < plugin.getDisplaySinceLastMined())
+		{
 
 			panelComponent.getChildren().add(TitleComponent.builder()
 					.preferredLocation(new Point(40,200))
@@ -49,7 +51,9 @@ public class miningOverlay extends Overlay {
 
 			return panelComponent.render(graphics);
 
-		} else {
+		}
+		else
+			{
 			return null;
 		}
 

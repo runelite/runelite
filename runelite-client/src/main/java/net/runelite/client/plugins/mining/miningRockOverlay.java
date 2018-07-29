@@ -29,7 +29,8 @@ public class miningRockOverlay extends Overlay {
 	ItemManager itemManager;
 
 	@Inject
-	miningRockOverlay(Client client, miningPlugin a) {
+	miningRockOverlay(Client client, miningPlugin a)
+    {
 		this.client = client;
 		this.plugin = a;
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -38,16 +39,22 @@ public class miningRockOverlay extends Overlay {
 
 
 	@Override
-	public Dimension render(Graphics2D graphics) {
+	public Dimension render(Graphics2D graphics)
+    {
 
 
-		if (plugin.getRockObjects() != null && plugin.getRockObjects().size() > 0) {
+		if (plugin.getRockObjects() != null && plugin.getRockObjects().size() > 0)
+		{
 
-			for (GameObject rock : plugin.getRockObjects()) {
-				if (plugin.getRockObjects() != null) {
+			for (GameObject rock : plugin.getRockObjects())
+			{
+				if (plugin.getRockObjects() != null)
+				{
 					if (rock != null) {
-						if (rock.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) < 12) {
-							if (rock.getCanvasLocation() != null && Rock.isRock(rock.getId())) {
+						if (rock.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) < 12)
+						{
+							if (rock.getCanvasLocation() != null && Rock.isRock(rock.getId()))
+							{
 									OverlayUtil.renderTextLocation(graphics, new Point(rock.getCanvasLocation().getX(), rock.getCanvasLocation().getY() - 40), Rock.getName(rock) , Color.green);
 									 OverlayUtil.renderImageLocation(graphics, rock.getCanvasLocation(), itemManager.getImage(1275));
 								}
@@ -59,19 +66,26 @@ public class miningRockOverlay extends Overlay {
 				}
 		}
 
-		if (plugin.getDespawnedRockObjects() != null) {
+		if (plugin.getDespawnedRockObjects() != null)
+		{
 
-			for (GameObject rock : plugin.getDespawnedRockObjects()) {
-				if (plugin.getDespawnedRockObjects() != null && rock != null) {
-					if (rock.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) < 12) {
+			for (GameObject rock : plugin.getDespawnedRockObjects())
+			{
+				if (plugin.getDespawnedRockObjects() != null && rock != null)
+				{
+					if (rock.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) < 12)
+					{
 
-						if (rock.getCanvasLocation() != null) {
+						if (rock.getCanvasLocation() != null)
+						{
 							Long respawnTime = null;
 
 							Point rockLoc = new Point(rock.getWorldLocation().getX(), rock.getWorldLocation().getY());
-							for (Map.Entry<Point, Long> timers : plugin.getDespawnedRockObjectsTimers().entrySet()) {
+							for (Map.Entry<Point, Long> timers : plugin.getDespawnedRockObjectsTimers().entrySet())
+							{
 
-								if (timers.getKey().getX() == rockLoc.getX() && timers.getKey().getY() == rockLoc.getY()) {
+								if (timers.getKey().getX() == rockLoc.getX() && timers.getKey().getY() == rockLoc.getY())
+								{
 
 									 respawnTime =  System.currentTimeMillis() - timers.getValue();
 
@@ -87,7 +101,8 @@ public class miningRockOverlay extends Overlay {
 												" respawning in: " +
 												(editedRespawnTime)
 										, new Color(51,204,255));
-								if (respawnTime >= Rock.getRespawnTime(rock.getId())) {
+								if (respawnTime >= Rock.getRespawnTime(rock.getId()))
+								{
 									plugin.getDespawnedRockObjectsTimers().remove(rockLoc);
 								}
 							}
