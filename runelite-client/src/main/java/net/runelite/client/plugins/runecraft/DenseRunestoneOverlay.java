@@ -32,7 +32,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.Skill;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -67,8 +66,8 @@ public class DenseRunestoneOverlay extends Overlay
 			return null;
 		}
 
-		boolean northStoneMineable = client.getVar(Varbits.DENSE_RUNESTONE_NORTH_DEPLETED) == 0;
-		boolean southStoneMineable = client.getVar(Varbits.DENSE_RUNESTONE_SOUTH_DEPLETED) == 0;
+		boolean northStoneMineable = plugin.isDenseRunestoneNorthMineable();
+		boolean southStoneMineable = plugin.isDenseRunestoneSouthMineable();
 		GameObject northStone = plugin.getDenseRunestoneNorth();
 		GameObject southStone = plugin.getDenseRunestoneSouth();
 
