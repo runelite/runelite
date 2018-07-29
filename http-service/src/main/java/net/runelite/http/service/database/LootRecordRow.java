@@ -25,7 +25,7 @@
 package net.runelite.http.service.database;
 
 import lombok.Getter;
-import net.runelite.http.api.database.DropEntry;
+import net.runelite.http.api.database.ItemStack;
 import net.runelite.http.api.database.LootRecord;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,16 +59,16 @@ public class LootRecordRow
 	 * @param list of LootRecordRow (result from sq2lo query)
 	 * @return Array of LootRecord's
 	 */
-	static List<LootRecord> consildateRows(List<LootRecordRow> list)
+	static List<LootRecord> consolidateRows(List<LootRecordRow> list)
 	{
 		HashMap<Integer, LootRecord> lootMap = new HashMap<>();
 		for (LootRecordRow r : list)
 		{
-			DropEntry drop = new DropEntry(r.itemId, r.itemAmount);
+			ItemStack drop = new ItemStack(r.itemId, r.itemAmount);
 			LootRecord record = lootMap.get(r.id);
 			if (record == null)
 			{
-				List<DropEntry> drops = new ArrayList<>();
+				List<ItemStack> drops = new ArrayList<>();
 				drops.add(drop);
 				lootMap.put(r.id, new LootRecord(r.npcID, r.npcName, r.killCount, drops));
 			}

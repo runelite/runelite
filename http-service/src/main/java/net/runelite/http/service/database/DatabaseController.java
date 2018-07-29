@@ -59,8 +59,8 @@ public class DatabaseController
 	// Storage for DropEntry (Tied to LootRecord)
 	private static final String CREATE_DROPS = "CREATE TABLE IF NOT EXISTS `drops` (\n"
 			+ "  `killId` INT NOT NULL,\n"
-			+ "  `itemId` INT NOT NULL,\n"
-			+ "  `itemAmount` INT NOT NULL,\n"
+			+ "  `id` INT NOT NULL,\n"
+			+ "  `quantity` INT NOT NULL,\n"
 			+ "  FOREIGN KEY (killId) REFERENCES kills(id) ON DELETE CASCADE\n"
 			+ ") ENGINE=InnoDB";
 

@@ -24,23 +24,17 @@
  */
 package net.runelite.http.api.database;
 
-import lombok.Data;
+import lombok.Value;
 
-@Data
-public class DropEntry
+@Value
+public class ItemStack
 {
-	private final int itemId;
-	private final int itemAmount;
-
-	public DropEntry(int itemId, int itemAmount)
-	{
-		this.itemId = itemId;
-		this.itemAmount = itemAmount;
-	}
+	private final int id;
+	private final int quantity;
 
 	@Override
 	public String toString()
 	{
-		return "DropEntry{itemId=" + itemId + ", itemAmount=" + itemAmount + "}";
+		return "ItemStack(id=" + id + ", quantity=" + quantity + ")";
 	}
 }

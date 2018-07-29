@@ -24,7 +24,7 @@
  */
 package net.runelite.http.service.database;
 
-import net.runelite.http.api.database.DropEntry;
+import net.runelite.http.api.database.ItemStack;
 import net.runelite.http.api.database.LootRecord;
 import net.runelite.http.service.account.AuthFilter;
 import net.runelite.http.service.account.beans.SessionEntry;
@@ -85,7 +85,7 @@ public class DatabaseService
 
 			if (records != null)
 			{
-				result = LootRecordRow.consildateRows(records);
+				result = LootRecordRow.consolidateRows(records);
 			}
 
 			return result;
@@ -109,11 +109,11 @@ public class DatabaseService
 					.executeUpdate();
 
 			// Append all queries for inserting drops
-			for (DropEntry drop : record.getDrops())
+			for (ItemStack drop : record.getDrops())
 			{
 				con.createQuery(dropQuery)
-					.addParameter("itemId", drop.getItemId())
-					.addParameter("itemAmount", drop.getItemAmount())
+					.addParameter("id", drop.getId())
+					.addParameter("quantity", drop.getQuantity())
 					.executeUpdate();
 			}
 			con.commit();

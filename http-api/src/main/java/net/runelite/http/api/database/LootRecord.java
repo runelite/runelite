@@ -24,72 +24,18 @@
  */
 package net.runelite.http.api.database;
 
-import lombok.Data;
-import java.util.List;
+import lombok.Value;
+import java.util.Collection;
 
-@Data
+@Value
 public class LootRecord
 {
 	private final int npcID;
 	private final String npcName;
 	private final int killCount;
-	private List<DropEntry> drops;
+	private Collection<ItemStack> drops;
 
-	// Full Kill with Kill Count
-	public LootRecord(int npcId, String npcName, int kc, List<DropEntry> drops)
-	{
-		this.npcID = npcId;
-		this.npcName = npcName;
-		this.killCount = kc;
-		this.drops = drops;
-	}
-
-	// Full Kill without Kill Count
-	public LootRecord(int npcId, String npcName, List<DropEntry> drops)
-	{
-		this.npcID = npcId;
-		this.npcName = npcName;
-		this.killCount = -1;
-		this.drops = drops;
-	}
-
-	// Name Only Kill with Kill Count
-	public LootRecord(String npcName, int kc, List<DropEntry> drops)
-	{
-		this.npcID = -1;
-		this.npcName = npcName;
-		this.killCount = kc;
-		this.drops = drops;
-	}
-
-	// Name Only Kill without Kill Count
-	public LootRecord(String npcName, List<DropEntry> drops)
-	{
-		this.npcID = -1;
-		this.npcName = npcName;
-		this.killCount = -1;
-		this.drops = drops;
-	}
-
-	// Npc ID Only Kill with Kill Count
-	public LootRecord(int npcId, int kc, List<DropEntry> drops)
-	{
-		this.npcID = npcId;
-		this.npcName = null;
-		this.killCount = kc;
-		this.drops = drops;
-	}
-
-	// Npc ID Only Kill without Kill Count
-	public LootRecord(int npcId, List<DropEntry> drops)
-	{
-		this.npcID = npcId;
-		this.npcName = null;
-		this.killCount = -1;
-		this.drops = drops;
-	}
-
-	public void addDrop(DropEntry drop)
+	public void addDrop(ItemStack drop)
 	{
 		drops.add(drop);
 	}
@@ -110,7 +56,7 @@ public class LootRecord
 		{
 			m.append("[");
 			boolean addComma = false;
-			for (DropEntry d : drops)
+			for (ItemStack d : drops)
 			{
 				if (addComma)
 				{
