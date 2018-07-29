@@ -30,13 +30,13 @@ import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.emote.SingleItemRequirement;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import java.awt.Color;
-
 import static net.runelite.api.ItemID.SPADE;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 
 public abstract class SpadeClueScroll extends ClueScroll
 {
 	private static final ItemRequirement SPADE_REQUIRED = new SingleItemRequirement(SPADE);
+
 	private boolean playerHasSpade(ClueScrollPlugin plugin)
 	{
 		Item[] inventory = plugin.getInventoryItems();
@@ -46,6 +46,7 @@ public abstract class SpadeClueScroll extends ClueScroll
 		}
 		return false;
 	}
+
 	LineComponent hasSpadeOverlayLine(ClueScrollPlugin plugin)
 	{
 		boolean hasSpade = playerHasSpade(plugin);

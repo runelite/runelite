@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.SPADE_IMAGE;
 import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -31,14 +33,7 @@ import java.util.Set;
 import lombok.Getter;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-
-import static net.runelite.api.ItemID.SPADE;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.SPADE_IMAGE;
-
-import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.emote.SingleItemRequirement;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -60,7 +55,6 @@ public class FairyRingClue extends SpadeClueScroll implements TextClueScroll, Lo
 		new FairyRingClue("D K S 2 3 1 0", new WorldPoint(2747, 3720, 0))
 	);
 
-	private static final ItemRequirement requiredItem = new SingleItemRequirement(SPADE);
 	private String text;
 	private WorldPoint location;
 

@@ -183,7 +183,6 @@ public class HotColdClue extends SpadeClueScroll implements LocationClueScroll, 
 					}
 				}
 			}
-			// Reminder to bring your spade
 			panelComponent.getChildren().add(hasSpadeOverlayLine(plugin));
 		}
 	}
