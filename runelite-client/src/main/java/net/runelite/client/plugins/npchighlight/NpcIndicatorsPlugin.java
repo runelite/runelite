@@ -75,7 +75,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	private static final int MAX_ACTOR_VIEW_RANGE = 15;
 
 	// Option added to NPC menu
-	private static final String TAG = "Tag";
+	private static final String TAG = "Toggle tag";
 
 	private static final List<MenuAction> NPC_MENU_ACTIONS = ImmutableList.of(MenuAction.NPC_FIRST_OPTION, MenuAction.NPC_SECOND_OPTION,
 		MenuAction.NPC_THIRD_OPTION, MenuAction.NPC_FOURTH_OPTION, MenuAction.NPC_FIFTH_OPTION);
