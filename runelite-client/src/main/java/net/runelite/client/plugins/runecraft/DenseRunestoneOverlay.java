@@ -25,12 +25,15 @@
  */
 package net.runelite.client.plugins.runecraft;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.geom.Area;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.Point;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.game.SkillIconManager;
@@ -45,6 +48,12 @@ public class DenseRunestoneOverlay extends Overlay
 	private static final int MAX_DISTANCE = 2600;
 	private static final int Z_OFFSET = 200;
 	private static final int DENSE_RUNESTONE_REGION = 6972;
+
+	private static final Color CLICKBOX_BORDER_COLOR = Color.GREEN;
+	private static final Color CLICKBOX_FILL_COLOR = new Color(
+		CLICKBOX_BORDER_COLOR.getRed(), CLICKBOX_BORDER_COLOR.getGreen(),
+		CLICKBOX_BORDER_COLOR.getBlue(), 50);
+	private static final Color CLICKBOX_BORDER_HOVER_COLOR = CLICKBOX_BORDER_COLOR.darker();
 
 	private final Client client;
 	private final RunecraftPlugin plugin;
@@ -67,8 +76,7 @@ public class DenseRunestoneOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showDenseRunestoneIndicator() ||
-			client.getLocalPlayer().getWorldLocation().getRegionID() != DENSE_RUNESTONE_REGION)
+		if (client.getLocalPlayer().getWorldLocation().getRegionID() != DENSE_RUNESTONE_REGION)
 		{
 			return null;
 		}
@@ -80,25 +88,36 @@ public class DenseRunestoneOverlay extends Overlay
 
 		if (northStoneMineable && northStone != null)
 		{
-			showPickaxeIndicator(graphics, northStone);
+			renderStone(graphics, northStone);
 		}
 		if (southStoneMineable && southStone != null)
 		{
-			showPickaxeIndicator(graphics, southStone);
+			renderStone(graphics, southStone);
 		}
 
 		return null;
 	}
 
-	private void showPickaxeIndicator(Graphics2D graphics, GameObject gameObject)
+	private void renderStone(Graphics2D graphics, GameObject gameObject)
 	{
 		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
 		LocalPoint gameObjectLocation = gameObject.getLocalLocation();
 		if (gameObjectLocation.distanceTo(playerLocation) < MAX_DISTANCE)
 		{
-			OverlayUtil.renderImageLocation(
-				client, graphics, gameObjectLocation,
-				skillIconManager.getSkillImage(Skill.MINING, false), Z_OFFSET);
+			if (config.showDenseRunestoneClickbox())
+			{
+				Area clickbox = gameObject.getClickbox();
+				Point mousePosition = client.getMouseCanvasPosition();
+				OverlayUtil.renderHoverableArea(
+					graphics, clickbox, mousePosition,
+					CLICKBOX_FILL_COLOR, CLICKBOX_BORDER_COLOR, CLICKBOX_BORDER_HOVER_COLOR);
+			}
+			if (config.showDenseRunestoneIndicator())
+			{
+				OverlayUtil.renderImageLocation(
+					client, graphics, gameObjectLocation,
+					skillIconManager.getSkillImage(Skill.MINING, false), Z_OFFSET);
+			}
 		}
 	}
 }

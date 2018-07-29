@@ -240,4 +240,15 @@ public interface RunecraftConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showDenseRunestoneClickbox",
+		name = "Show dense runestone click box",
+		description = "Configures whether to display a click box when dense runestone is ready to be mined",
+		position = 21
+	)
+	default boolean showDenseRunestoneClickbox()
+	{
+		return true;
+	}
 }
