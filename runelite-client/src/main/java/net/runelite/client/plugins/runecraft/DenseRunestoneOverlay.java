@@ -27,15 +27,14 @@ package net.runelite.client.plugins.runecraft;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
@@ -45,37 +44,19 @@ public class DenseRunestoneOverlay extends Overlay
 	private static final int MAX_DISTANCE = 2600;
 	private static final int Z_OFFSET = 200;
 
-	private static final BufferedImage PICKAXE_IMAGE;
-
 	private final Client client;
 	private final RunecraftPlugin plugin;
 	private final RunecraftConfig config;
-
-	static
-	{
-		synchronized (ImageIO.class)
-		{
-			BufferedImage pickaxeImage;
-			try
-			{
-				pickaxeImage = ImageIO.read(DenseRunestoneOverlay.class.getResourceAsStream("/skill_icons/mining.png"));
-			}
-			catch (IOException e)
-			{
-				log.warn("Error loading mining skill icon", e);
-				pickaxeImage = null;
-			}
-			PICKAXE_IMAGE = pickaxeImage;
-		}
-
-	}
+	private final SkillIconManager skillIconManager;
 
 	@Inject
-	private DenseRunestoneOverlay(Client client, RunecraftPlugin plugin, RunecraftConfig config)
+	private DenseRunestoneOverlay(
+		Client client, RunecraftPlugin plugin, RunecraftConfig config, SkillIconManager skillIconManager)
 	{
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
+		this.skillIconManager = skillIconManager;
 	}
 
 	@Override
@@ -110,7 +91,8 @@ public class DenseRunestoneOverlay extends Overlay
 		if (gameObjectLocation.distanceTo(playerLocation) < MAX_DISTANCE)
 		{
 			OverlayUtil.renderImageLocation(
-				client, graphics, gameObjectLocation, PICKAXE_IMAGE, Z_OFFSET);
+				client, graphics, gameObjectLocation,
+				skillIconManager.getSkillImage(Skill.MINING, false), Z_OFFSET);
 		}
 	}
 }
