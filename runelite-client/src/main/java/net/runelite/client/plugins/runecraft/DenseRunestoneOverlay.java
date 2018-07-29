@@ -35,6 +35,8 @@ import net.runelite.api.Skill;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
 @Slf4j
@@ -57,6 +59,9 @@ public class DenseRunestoneOverlay extends Overlay
 		this.plugin = plugin;
 		this.config = config;
 		this.skillIconManager = skillIconManager;
+
+		setLayer(OverlayLayer.ABOVE_SCENE);
+		setPosition(OverlayPosition.DYNAMIC);
 	}
 
 	@Override
