@@ -1,6 +1,7 @@
 package net.runelite.client.plugins.mining;
 
 import com.google.inject.Inject;
+
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -9,6 +10,7 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 import java.awt.*;
+
 
 public class miningOverlay extends Overlay
 {
@@ -30,7 +32,7 @@ public class miningOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 
-		if(!miningPlugin.menuInt)
+		if (!miningPlugin.menuInt)
 		{
 			return null;
 		}
@@ -39,7 +41,7 @@ public class miningOverlay extends Overlay
 		{
 
 			panelComponent.getChildren().add(TitleComponent.builder()
-					.preferredLocation(new Point(40,200))
+					.preferredLocation(new Point(40, 200))
 					.text("Mining")
 					.build());
 
@@ -51,12 +53,10 @@ public class miningOverlay extends Overlay
 
 			return panelComponent.render(graphics);
 
-		}
-		else
-			{
+		} else
+		{
 			return null;
 		}
-
 
 
 	}

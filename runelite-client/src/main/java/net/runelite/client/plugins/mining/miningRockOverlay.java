@@ -14,7 +14,8 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import java.awt.*;
 import java.util.Map;
 
-public class miningRockOverlay extends Overlay {
+public class miningRockOverlay extends Overlay
+{
 
 
 	private final Client client;
@@ -30,7 +31,7 @@ public class miningRockOverlay extends Overlay {
 
 	@Inject
 	miningRockOverlay(Client client, miningPlugin a)
-    {
+	{
 		this.client = client;
 		this.plugin = a;
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -40,7 +41,7 @@ public class miningRockOverlay extends Overlay {
 
 	@Override
 	public Dimension render(Graphics2D graphics)
-    {
+	{
 
 
 		if (plugin.getRockObjects() != null && plugin.getRockObjects().size() > 0)
@@ -50,20 +51,21 @@ public class miningRockOverlay extends Overlay {
 			{
 				if (plugin.getRockObjects() != null)
 				{
-					if (rock != null) {
+					if (rock != null)
+					{
 						if (rock.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) < 12)
 						{
 							if (rock.getCanvasLocation() != null && Rock.isRock(rock.getId()))
 							{
-									OverlayUtil.renderTextLocation(graphics, new Point(rock.getCanvasLocation().getX(), rock.getCanvasLocation().getY() - 40), Rock.getName(rock) , Color.green);
-									 OverlayUtil.renderImageLocation(graphics, rock.getCanvasLocation(), itemManager.getImage(1275));
-								}
+								OverlayUtil.renderTextLocation(graphics, new Point(rock.getCanvasLocation().getX(), rock.getCanvasLocation().getY() - 40), Rock.getName(rock), Color.green);
+								OverlayUtil.renderImageLocation(graphics, rock.getCanvasLocation(), itemManager.getImage(1275));
 							}
 						}
-
 					}
 
 				}
+
+			}
 		}
 
 		if (plugin.getDespawnedRockObjects() != null)
@@ -87,7 +89,7 @@ public class miningRockOverlay extends Overlay {
 								if (timers.getKey().getX() == rockLoc.getX() && timers.getKey().getY() == rockLoc.getY())
 								{
 
-									 respawnTime =  System.currentTimeMillis() - timers.getValue();
+									respawnTime = System.currentTimeMillis() - timers.getValue();
 
 									break;
 								}
@@ -100,7 +102,7 @@ public class miningRockOverlay extends Overlay {
 										, Rock.getName(rock) +
 												" respawning in: " +
 												(editedRespawnTime)
-										, new Color(51,204,255));
+										, new Color(51, 204, 255));
 								if (respawnTime >= Rock.getRespawnTime(rock.getId()))
 								{
 									plugin.getDespawnedRockObjectsTimers().remove(rockLoc);
@@ -116,11 +118,8 @@ public class miningRockOverlay extends Overlay {
 		}
 
 
-
-
 		return null;
 	}
-
 
 
 }

@@ -22,7 +22,7 @@ public enum Rock
 
 	static int runeessenceRock[] =
 			{
-			7471
+					7471
 			};
 
 
@@ -33,7 +33,7 @@ public enum Rock
 
 	static int copperrockID[] =
 			{
-			7484,
+					7484,
 					7453
 			};
 
@@ -41,14 +41,14 @@ public enum Rock
 	//tin
 	static int tinrockID[] =
 			{
-			7485,
-			7486,
+					7485,
+					7486,
 			};
 
 
 	static int ironrockID[] =
 			{
-			7455,
+					7455,
 					7488
 			};
 
@@ -59,13 +59,13 @@ public enum Rock
 
 	static int coalrockID[] =
 			{
-			7456,
+					7456,
 					7489
 			};
 
 	static int goldrockID[] =
 			{
-			7491,
+					7491,
 					7458
 			};
 
@@ -86,18 +86,15 @@ public enum Rock
 			}; //Need id's
 
 
-
-
-
 	//returns if the gameObject is a mining rock
 	public static boolean isRock(int id)
-    {
+	{
 		return getRockType(id) != null;
 	}
 
 	//return what kind of rock
 	public static Rock getRockType(int i)
-    {
+	{
 
 		for (int a : runeessenceRock)
 		{
@@ -192,13 +189,12 @@ public enum Rock
 	}
 
 
-
 	//returns the respawn time of the rock
 	public static int getRespawnTime(int id)
-    {
+	{
 
 		switch (Rock.getRockType(id))
-        {
+		{
 			case RuneEssence:
 				return 0;
 			case Clay:
@@ -227,14 +223,16 @@ public enum Rock
 
 		return 0;
 	}
+
 	//returns rock name
 	public static String getName(Rock rock)
-    {
+	{
 		return rock.name();
 	}
+
 	//returns rock name
 	public static String getName(GameObject gameObject)
-    {
+	{
 		if (gameObject != null)
 		{
 			if (isRock(gameObject.getId()))
