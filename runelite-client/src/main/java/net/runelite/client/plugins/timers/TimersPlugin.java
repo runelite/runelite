@@ -314,14 +314,6 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-	    log.info("Printing ChatMessageType value: {}", event.getType());
-//		if (event.getType() == ChatMessageType.EXAMINE_ITEM && config.showFreezes())
-//		{
-//			createGameTimer(ICERUSH, false);
-//			createGameTimer(ICEBURST, false);
-//			createGameTimer(ICEBLITZ, false);
-//			createGameTimer(ICEBARRAGE, false);
-//		}
 		if (event.getType() != ChatMessageType.FILTERED && event.getType() != ChatMessageType.SERVER)
 		{
 			return;
@@ -461,7 +453,6 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(STAFF_OF_THE_DEAD);
 		}
 
-        // !freezeExists is redundant b/c frozen msg will not show again, until re-frozen (and behavior repeats)
 		if (config.showFreezes() && event.getMessage().equals("<col=ef1020>You have been frozen!</col>"))
 		{
 			createGameTimer(ICERUSH, false);
@@ -476,11 +467,6 @@ public class TimersPlugin extends Plugin
 	{
 		Player player = client.getLocalPlayer();
 		WorldPoint currentWorldPoint = player.getWorldLocation();
-
-//        log.info("Printing previousWorldPoint X value: {}", lastWorldX);
-//        log.info("Printing previousWorldPoint Y value: {}", lastWorldY);
-//        log.info("Printing currentWorldPoint X value: {}", currentWorldPoint.getX());
-//        log.info("Printing currentWorldPoint Y value: {}", currentWorldPoint.getY());
 
 		if (lastWorldX != currentWorldPoint.getX() || lastWorldY != currentWorldPoint.getY())
 		{
@@ -596,6 +582,7 @@ public class TimersPlugin extends Plugin
 				}
 			}
 
+			// threshold to allow frozen graphic to register and remove redundant timers
 			if (actor.getGraphic() == ICERUSH.getGraphicId())
 			{
 				removeGameTimer(ICEBURST, 1);
