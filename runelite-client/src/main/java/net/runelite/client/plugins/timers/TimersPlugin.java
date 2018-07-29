@@ -29,7 +29,20 @@ import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 
-import net.runelite.api.*;
+import net.runelite.api.Actor;
+import net.runelite.api.AnimationID;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
+import net.runelite.api.Prayer;
+import net.runelite.api.Player;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
@@ -314,10 +327,12 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
+
 		if (event.getType() != ChatMessageType.FILTERED && event.getType() != ChatMessageType.SERVER)
 		{
 			return;
 		}
+
 		if (config.showStamina() && event.getMessage().equals("You drink some of your stamina potion."))
 		{
 			createGameTimer(STAMINA);
@@ -463,7 +478,7 @@ public class TimersPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTickChanged(GameTick event)
+	public void onGameTick(GameTick event)
 	{
 		Player player = client.getLocalPlayer();
 		WorldPoint currentWorldPoint = player.getWorldLocation();
