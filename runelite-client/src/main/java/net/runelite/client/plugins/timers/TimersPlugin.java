@@ -470,9 +470,6 @@ public class TimersPlugin extends Plugin
 
 		if (config.showFreezes() && event.getMessage().equals("<col=ef1020>You have been frozen!</col>"))
 		{
-			createGameTimer(ICERUSH, false);
-			createGameTimer(ICEBURST, false);
-			createGameTimer(ICEBLITZ, false);
 			createGameTimer(ICEBARRAGE, false);
 		}
 	}
@@ -600,30 +597,25 @@ public class TimersPlugin extends Plugin
 			// threshold to allow frozen graphic to register and remove redundant timers
 			if (actor.getGraphic() == ICERUSH.getGraphicId())
 			{
-				removeGameTimer(ICEBURST, 1);
-				removeGameTimer(ICEBLITZ, 1);
-				removeGameTimer(ICEBARRAGE, 1);
+                removeGameTimer(ICEBARRAGE, 1);
+                createGameTimer(ICERUSH, false);
 			}
 
 			if (actor.getGraphic() == ICEBURST.getGraphicId())
 			{
-				removeGameTimer(ICERUSH, 1);
-				removeGameTimer(ICEBLITZ, 1);
-				removeGameTimer(ICEBARRAGE, 1);
+                removeGameTimer(ICEBARRAGE, 1);
+                createGameTimer(ICEBURST, false);
 			}
 
 			if (actor.getGraphic() == ICEBLITZ.getGraphicId())
 			{
-				removeGameTimer(ICERUSH, 1);
-				removeGameTimer(ICEBURST, 1);
-				removeGameTimer(ICEBARRAGE, 1);
+                removeGameTimer(ICEBARRAGE, 1);
+                createGameTimer(ICEBLITZ, false);
 			}
 
 			if (actor.getGraphic() == ICEBARRAGE.getGraphicId())
 			{
-				removeGameTimer(ICERUSH, 1);
-				removeGameTimer(ICEBURST, 1);
-				removeGameTimer(ICEBLITZ, 1);
+				;
 			}
 		}
 	}
