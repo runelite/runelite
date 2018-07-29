@@ -28,7 +28,6 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
-
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
@@ -95,7 +94,6 @@ import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIPOISON;
 import static net.runelite.client.plugins.timers.GameTimer.VENGEANCE;
 import static net.runelite.client.plugins.timers.GameTimer.VENGEANCEOTHER;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import lombok.extern.slf4j.Slf4j;
 
 
 @PluginDescriptor(
@@ -103,7 +101,6 @@ import lombok.extern.slf4j.Slf4j;
 	description = "Show various timers in an infobox",
 	tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire"}
 )
-@Slf4j
 public class TimersPlugin extends Plugin
 {
 	private int lastRaidVarb;
@@ -597,26 +594,22 @@ public class TimersPlugin extends Plugin
 			// threshold to allow frozen graphic to register and remove redundant timers
 			if (actor.getGraphic() == ICERUSH.getGraphicId())
 			{
-                removeGameTimer(ICEBARRAGE, 1);
-                createGameTimer(ICERUSH, false);
+				removeGameTimer(ICEBARRAGE, 1);
+				createGameTimer(ICERUSH, false);
 			}
 
 			if (actor.getGraphic() == ICEBURST.getGraphicId())
 			{
-                removeGameTimer(ICEBARRAGE, 1);
-                createGameTimer(ICEBURST, false);
+				removeGameTimer(ICEBARRAGE, 1);
+				createGameTimer(ICEBURST, false);
 			}
 
 			if (actor.getGraphic() == ICEBLITZ.getGraphicId())
 			{
-                removeGameTimer(ICEBARRAGE, 1);
-                createGameTimer(ICEBLITZ, false);
+				removeGameTimer(ICEBARRAGE, 1);
+				createGameTimer(ICEBLITZ, false);
 			}
 
-			if (actor.getGraphic() == ICEBARRAGE.getGraphicId())
-			{
-				;
-			}
 		}
 	}
 
