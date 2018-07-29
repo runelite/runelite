@@ -34,7 +34,7 @@ public class miningOverlay extends Overlay {
             return null;
         }
         panelComponent.getChildren().clear();
-        if((System.currentTimeMillis() - plugin.getTimeLastMined())/1000 < plugin.getDisplaySinceLastMined()) {
+        if ((System.currentTimeMillis() - plugin.getTimeLastMined()) / 1000 < plugin.getDisplaySinceLastMined()) {
 
             panelComponent.getChildren().add(TitleComponent.builder()
                     .preferredLocation(new Point(40,200))

@@ -48,7 +48,9 @@ public class miningPlugin extends Plugin {
 
     public static boolean menuInt = false;
 
-    private int miningAnimations[] = {AnimationID.MINING_BRONZE_PICKAXE,
+    private int miningAnimations[] =
+            {
+                    AnimationID.MINING_BRONZE_PICKAXE,
     AnimationID.MINING_IRON_PICKAXE,
     AnimationID.MINING_STEEL_PICKAXE,
     AnimationID.MINING_BLACK_PICKAXE,
@@ -58,7 +60,8 @@ public class miningPlugin extends Plugin {
     AnimationID.MINING_DRAGON_PICKAXE,
     AnimationID.MINING_DRAGON_PICKAXE_ORN,
     AnimationID.MINING_3A_PICKAXE,
-    AnimationID.MINING_INFERNAL_PICKAXE};
+                    AnimationID.MINING_INFERNAL_PICKAXE
+            };
 
    // @Getter(AccessLevel.PACKAGE)
     private List<GameObject> rockObjects = new ArrayList<>();
@@ -78,7 +81,7 @@ public class miningPlugin extends Plugin {
     }
 
     @Override
-    protected void shutDown(){
+    protected void shutDown() {
         overlayManager.remove(miningRockOverlay);
         overlayManager.remove(miningOverlay);
         rockObjects.clear();
@@ -96,7 +99,7 @@ public class miningPlugin extends Plugin {
         return despawnedrockObjects;
     }
 
-    public HashMap<Point,Long> getDespawnedRockObjectsTimers() {
+    public HashMap<Point, Long> getDespawnedRockObjectsTimers() {
         return despawnedrockObjectsTimers;
     }
 
@@ -109,12 +112,12 @@ public class miningPlugin extends Plugin {
         setTimeLastMined(System.currentTimeMillis());
     }
 
-    public void setTimeLastMined(Long l) {
-        timeLastMined = l;
-    }
-
     public Long getTimeLastMined() {
         return timeLastMined;
+    }
+
+    public void setTimeLastMined(Long l) {
+        timeLastMined = l;
     }
 
     public int getDisplaySinceLastMined() {
@@ -133,8 +136,8 @@ public class miningPlugin extends Plugin {
 
     @Subscribe
     public void onAnimationChanged(final AnimationChanged event) {
-        if(event!=null) {
-            if(event.getActor() == client.getLocalPlayer()) {
+        if (event != null) {
+            if (event.getActor() == client.getLocalPlayer()) {
                 int animation = event.getActor().getAnimation();
                 boolean im = false;
                 for (int id : miningAnimations) {
@@ -154,10 +157,10 @@ public class miningPlugin extends Plugin {
 
     @Subscribe
     public void onChatMessage(ChatMessage chatMessage) {
-        if(chatMessage != null) {
-            if(chatMessage.getMessage()!= null) {
-                if(chatMessage.getType() == ChatMessageType.FILTERED) {
-                    if(chatMessage.getMessage().contains("You manage to mine some")) {
+        if (chatMessage != null) {
+            if (chatMessage.getMessage() != null) {
+                if (chatMessage.getType() == ChatMessageType.FILTERED) {
+                    if (chatMessage.getMessage().contains("You manage to mine some")) {
                         addOreMined();
                     }
                 }
@@ -167,12 +170,11 @@ public class miningPlugin extends Plugin {
 
 
     @Subscribe
-        public void onGameObjectSpawned(final GameObjectSpawned event){
-        if(event != null) {
+    public void onGameObjectSpawned(final GameObjectSpawned event) {
+        if (event != null) {
             GameObject gameObject = event.getGameObject();
-            if(gameObject != null) {
+            if (gameObject != null) {
                 if (Rock.isRock(gameObject.getId())) {
-                    //  System.out.println("found rock type " + gameObject.getId() + ":" + Rock.getRockType(gameObject.getId()).name() + " loc:" + gameObject.getWorldLocation().getX() + "," + gameObject.getWorldLocation().getY() + " distance to " + gameObject.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()));
                     boolean found = false;
                     for (GameObject go : rockObjects) {
                         if (go.getWorldLocation().getX() == gameObject.getWorldLocation().getX() && go.getWorldLocation().getY() == gameObject.getWorldLocation().getY()) {
@@ -206,10 +208,10 @@ public class miningPlugin extends Plugin {
     }
     @Subscribe
     public void onGameObjectDespawned(final GameObjectDespawned event) {
-        if(event != null) {
+        if (event != null) {
             GameObject gameObject = event.getGameObject();
-            if(gameObject != null){
-                if(Rock.isRock(gameObject.getId())) {
+            if (gameObject != null) {
+                if (Rock.isRock(gameObject.getId())) {
                     rockObjects.remove(gameObject);
                         despawnedrockObjects.add(gameObject);
                         despawnedrockObjectsTimers.put(new Point(gameObject.getWorldLocation().getX(), gameObject.getWorldLocation().getY()),System.currentTimeMillis());

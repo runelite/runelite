@@ -43,11 +43,11 @@ public class miningRockOverlay extends Overlay {
 
         if (plugin.getRockObjects() != null && plugin.getRockObjects().size() > 0) {
 
-                for (GameObject rock : plugin.getRockObjects()) {
-                    if (plugin.getRockObjects() != null) {
-                        if (rock != null) {
+            for (GameObject rock : plugin.getRockObjects()) {
+                if (plugin.getRockObjects() != null) {
+                    if (rock != null) {
                         if (rock.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) < 12) {
-                             if (rock.getCanvasLocation() != null && Rock.isRock(rock.getId())) {
+                            if (rock.getCanvasLocation() != null && Rock.isRock(rock.getId())) {
                                     OverlayUtil.renderTextLocation(graphics, new Point(rock.getCanvasLocation().getX(), rock.getCanvasLocation().getY() - 40), Rock.getName(rock) , Color.green);
                                      OverlayUtil.renderImageLocation(graphics, rock.getCanvasLocation(), itemManager.getImage(1275));
                                 }
@@ -78,9 +78,11 @@ public class miningRockOverlay extends Overlay {
                                     break;
                                 }
                             }
-                            if (respawnTime!=null) {
-                                String editedRespawnTime = (((Rock.getRespawnTime(rock.getId())-respawnTime)/1000)+ "");
-                                OverlayUtil.renderTextLocation(graphics, rock.getCanvasLocation(), Rock.getName(rock) +
+                            if (respawnTime != null) {
+                                Long editedRespawnTime = ((Rock.getRespawnTime(rock.getId()) - respawnTime) / 1000);
+                                OverlayUtil.renderTextLocation(graphics
+                                        , rock.getCanvasLocation()
+                                        , Rock.getName(rock) +
                                                 " respawning in: " +
                                                 (editedRespawnTime)
                                         , new Color(51,204,255));

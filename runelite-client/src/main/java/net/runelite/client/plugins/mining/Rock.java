@@ -19,47 +19,70 @@ public enum Rock {
     Runite;
 
 
-    static int runeessenceRock[] = {
+    static int runeessenceRock[] =
+            {
             7471
-    };
+            };
 
 
+    static int clayrockID[] =
+            {
+                    7487
+            };
 
-    static int clayrockID[] = {
-            7487};
-
-    static int copperrockID[] = {
+    static int copperrockID[] =
+            {
             7484,
-            7453};
+                    7453
+            };
 
 
     //tin
-    static int tinrockID[] = {
+    static int tinrockID[] =
+            {
             7485,
             7486,
-    };
+            };
 
 
-    static int ironrockID[] = {
+    static int ironrockID[] =
+            {
             7455,
-            7488};
+                    7488
+            };
 
-    static int silverrockID[] = {};
+    static int silverrockID[] =
+            {
 
-    static int coalrockID[] = {
+            };
+
+    static int coalrockID[] =
+            {
             7456,
-            7489};
+                    7489
+            };
 
-    static int goldrockID[] = {
+    static int goldrockID[] =
+            {
             7491,
-            7458};
+                    7458
+            };
 
-    static int mithrilrockID[] = {7459,
-            7492};
+    static int mithrilrockID[] =
+            {
+                    7459,
+                    7492
+            };
 
-    static int adamantiterockID[] = {7460};
+    static int adamantiterockID[] =
+            {
+                    7460
+            };
 
-    static int runiterockID[] = {}; //Need id's
+    static int runiterockID[] =
+            {
+
+            }; //Need id's
 
 
 
@@ -73,69 +96,69 @@ public enum Rock {
     //return what kind of rock
     public static Rock getRockType(int i) {
 
-        for(int a : runeessenceRock) {
-            if(a==i){
+        for (int a : runeessenceRock) {
+            if (a == i) {
                 return Rock.RuneEssence;
             }
         }
 
 
-        for(int a : clayrockID) {
-            if(a==i){
+        for (int a : clayrockID) {
+            if (a == i) {
                 return Rock.Clay;
             }
         }
 
-        for(int a : copperrockID) {
-            if(a==i){
+        for (int a : copperrockID) {
+            if (a == i) {
                 return Rock.Copper;
             }
         }
 
-        for(int a : tinrockID) {
-            if(a==i){
+        for (int a : tinrockID) {
+            if (a == i) {
                 return Rock.Tin;
             }
         }
 
-        for(int a : silverrockID) {
-            if(a==i){
+        for (int a : silverrockID) {
+            if (a == i) {
                 return Rock.Silver;
             }
         }
 
-        for(int a : coalrockID) {
-            if(a==i){
+        for (int a : coalrockID) {
+            if (a == i) {
                 return Rock.Coal;
             }
         }
 
-        for(int a : ironrockID) {
-            if(a==i){
+        for (int a : ironrockID) {
+            if (a == i) {
                 return Rock.Iron;
             }
         }
 
-        for(int a : goldrockID) {
-            if(a==i){
+        for (int a : goldrockID) {
+            if (a == i) {
                 return Rock.Gold;
             }
         }
 
-        for(int a : mithrilrockID) {
-            if(a==i){
+        for (int a : mithrilrockID) {
+            if (a == i) {
                 return Rock.Mithril;
             }
         }
 
-        for(int a : adamantiterockID) {
-            if(a==i){
+        for (int a : adamantiterockID) {
+            if (a == i) {
                 return Rock.Adamantite;
             }
         }
 
-        for(int a : runiterockID) {
-            if(a==i){
+        for (int a : runiterockID) {
+            if (a == i) {
                 return Rock.Runite;
             }
         }
@@ -183,7 +206,7 @@ public enum Rock {
     }
     //returns rock name
     public static String getName(GameObject gameObject) {
-        if(gameObject != null) {
+        if (gameObject != null) {
             if (isRock(gameObject.getId())) {
                 return getRockType(gameObject.getId()).name();
             }
