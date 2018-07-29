@@ -107,8 +107,8 @@ import lombok.extern.slf4j.Slf4j;
 public class TimersPlugin extends Plugin
 {
 	private int lastRaidVarb;
-    private int lastWorldX;
-    private int lastWorldY;
+	private int lastWorldX;
+	private int lastWorldY;
 
 	@Inject
 	private ItemManager itemManager;
@@ -489,8 +489,8 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(ICEBURST);
 			removeGameTimer(ICEBLITZ);
 			removeGameTimer(ICEBARRAGE);
-            lastWorldX = currentWorldPoint.getX();
-            lastWorldY = currentWorldPoint.getY();
+			lastWorldX = currentWorldPoint.getX();
+			lastWorldY = currentWorldPoint.getY();
 		}
 	}
 
@@ -719,18 +719,18 @@ public class TimersPlugin extends Plugin
 
 	private void removeGameTimer(GameTimer timer)
 	{
-        removeGameTimer(timer, -1);
-    }
+		removeGameTimer(timer, -1);
+	}
 
-    private void removeGameTimer(GameTimer timer, long timePassedThreshold)
-    {
-        if (timePassedThreshold >= 0)
-        {
-            infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer && ((TimerTimer) t).secondsPassed() <= timePassedThreshold);
-        }
-        else
-        {
-            infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer);
-        }
-    }
+	private void removeGameTimer(GameTimer timer, long timePassedThreshold)
+	{
+		if (timePassedThreshold >= 0)
+		{
+			infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer && ((TimerTimer) t).secondsPassed() <= timePassedThreshold);
+		}
+		else
+		{
+			infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer);
+		}
+	}
 }
