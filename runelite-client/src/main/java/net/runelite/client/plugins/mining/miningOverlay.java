@@ -53,7 +53,8 @@ public class miningOverlay extends Overlay
 
 			return panelComponent.render(graphics);
 
-		} else
+		}
+		else
 		{
 			return null;
 		}
