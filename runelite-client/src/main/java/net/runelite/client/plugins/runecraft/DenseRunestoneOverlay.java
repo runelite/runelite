@@ -42,6 +42,7 @@ public class DenseRunestoneOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2600;
 	private static final int Z_OFFSET = 200;
+	private static final int DENSE_RUNESTONE_REGION = 6972;
 
 	private final Client client;
 	private final RunecraftPlugin plugin;
@@ -61,7 +62,8 @@ public class DenseRunestoneOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showDenseRunestoneIndicator())
+		if (!config.showDenseRunestoneIndicator() ||
+			client.getLocalPlayer().getWorldLocation().getRegionID() != DENSE_RUNESTONE_REGION)
 		{
 			return null;
 		}
