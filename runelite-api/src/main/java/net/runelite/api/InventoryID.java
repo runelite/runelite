@@ -48,7 +48,15 @@ public enum InventoryID
 	/**
 	 * Barrows reward chest inventory.
 	 */
-	BARROWS_REWARD(141);
+	BARROWS_REWARD(141),
+	/**
+	 * Chambers of Xeric chest inventory.
+	 */
+	CHAMBERS_OF_XERIC_CHEST(581),
+	/**
+	 * Theater of Blood reward chest inventory (Raids 2)
+	 */
+	THEATRE_OF_BLOOD_CHEST(10);
 
 	private final int id;
 
