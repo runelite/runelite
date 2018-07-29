@@ -38,7 +38,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatLineBuffer;
@@ -57,17 +56,17 @@ import net.runelite.client.config.ChatColorConfig;
 public class ChatMessageManager
 {
 	private final Multimap<ChatMessageType, ChatColor> colorCache = HashMultimap.create();
-	private final Provider<Client> clientProvider;
+	private final Client client;
 	private final ScheduledExecutorService executor;
 	private final ChatColorConfig chatColorConfig;
 	private int transparencyVarbit = -1;
 	private final Queue<QueuedMessage> queuedMessages = new ConcurrentLinkedQueue<>();
 
 	@Inject
-	private ChatMessageManager(Provider<Client> clientProvider, ScheduledExecutorService executor,
+	private ChatMessageManager(Client client, ScheduledExecutorService executor,
 		ChatColorConfig chatColorConfig)
 	{
-		this.clientProvider = clientProvider;
+		this.client = client;
 		this.executor = executor;
 		this.chatColorConfig = chatColorConfig;
 	}
@@ -75,7 +74,7 @@ public class ChatMessageManager
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		int setting = clientProvider.get().getVar(Varbits.TRANSPARENT_CHATBOX);
+		int setting = client.getVar(Varbits.TRANSPARENT_CHATBOX);
 
 		if (transparencyVarbit != setting)
 		{
@@ -103,7 +102,6 @@ public class ChatMessageManager
 	@Subscribe
 	public void onSetMessage(SetMessage setMessage)
 	{
-		final Client client = clientProvider.get();
 		MessageNode messageNode = setMessage.getMessageNode();
 		ChatMessageType chatMessageType = setMessage.getType();
 
@@ -487,7 +485,7 @@ public class ChatMessageManager
 		}
 	}
 
-	private ChatMessageManager cacheColor(final ChatColor chatColor, final ChatMessageType... types)
+	private void cacheColor(final ChatColor chatColor, final ChatMessageType... types)
 	{
 		for (ChatMessageType chatMessageType : types)
 		{
@@ -495,8 +493,6 @@ public class ChatMessageManager
 			colorCache.remove(chatMessageType, chatColor);
 			colorCache.put(chatMessageType, chatColor);
 		}
-
-		return this;
 	}
 
 	public void queue(QueuedMessage message)
@@ -515,8 +511,6 @@ public class ChatMessageManager
 
 	private void add(QueuedMessage message)
 	{
-		final Client client = clientProvider.get();
-
 		// this updates chat cycle
 		client.addChatMessage(
 			message.getType(),
@@ -541,7 +535,6 @@ public class ChatMessageManager
 			return;
 		}
 
-		final Client client = clientProvider.get();
 		final boolean transparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) != 0;
 		final Collection<ChatColor> chatColors = colorCache.get(target.getType());
 
@@ -571,10 +564,8 @@ public class ChatMessageManager
 		return resultMessage.get();
 	}
 
-	public void refreshAll()
+	private void refreshAll()
 	{
-		final Client client = clientProvider.get();
-
 		executor.submit(() ->
 		{
 			client.getChatLineMap().values().stream()

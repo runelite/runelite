@@ -39,7 +39,6 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ClanMember;
@@ -66,7 +65,7 @@ public class ClanManager
 
 	private int modIconsLength;
 
-	private final Provider<Client> clientProvider;
+	private final Client client;
 	private final BufferedImage[] clanChatImages = new BufferedImage[CLANCHAT_IMAGES.length];
 
 	private final LoadingCache<String, ClanMemberRank> clanRanksCache = CacheBuilder.newBuilder()
@@ -77,7 +76,6 @@ public class ClanManager
 			@Override
 			public ClanMemberRank load(String key) throws Exception
 			{
-				final Client client = clientProvider.get();
 				final ClanMember[] clanMembersArr = client.getClanMembers();
 
 				if (clanMembersArr == null || clanMembersArr.length == 0)
@@ -95,9 +93,9 @@ public class ClanManager
 		});
 
 	@Inject
-	public ClanManager(Provider<Client> clientProvider)
+	private ClanManager(Client client)
 	{
-		this.clientProvider = clientProvider;
+		this.client = client;
 
 		int i = 0;
 		for (String resource : CLANCHAT_IMAGES)
@@ -158,7 +156,6 @@ public class ClanManager
 	{
 		try
 		{
-			final Client client = clientProvider.get();
 			final IndexedSprite[] modIcons = client.getModIcons();
 			final IndexedSprite[] newModIcons = Arrays.copyOf(modIcons, modIcons.length + CLANCHAT_IMAGES.length);
 			int curPosition = newModIcons.length - CLANCHAT_IMAGES.length;

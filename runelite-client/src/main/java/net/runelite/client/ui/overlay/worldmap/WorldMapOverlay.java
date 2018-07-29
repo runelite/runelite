@@ -33,7 +33,6 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -60,16 +59,16 @@ public class WorldMapOverlay extends Overlay
 	private static final int TOOLTIP_PADDING_WIDTH = 2;
 
 	private final WorldMapPointManager worldMapPointManager;
-	private final Provider<Client> clientProvider;
+	private final Client client;
 
 	@Inject
 	private WorldMapOverlay(
-		Provider<Client> clientProvider,
+		Client client,
 		WorldMapPointManager worldMapPointManager,
 		MouseManager mouseManager,
 		WorldMapOverlayMouseListener worldMapOverlayMouseListener)
 	{
-		this.clientProvider = clientProvider;
+		this.client = client;
 		this.worldMapPointManager = worldMapPointManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGHEST);
@@ -86,8 +85,6 @@ public class WorldMapOverlay extends Overlay
 		{
 			return null;
 		}
-
-		final Client client = clientProvider.get();
 
 		Widget widget = client.getWidget(WidgetInfo.WORLD_MAP_VIEW);
 		if (widget == null)
@@ -181,7 +178,7 @@ public class WorldMapOverlay extends Overlay
 	 */
 	public Point mapWorldPointToGraphicsPoint(WorldPoint worldPoint)
 	{
-		RenderOverview ro = clientProvider.get().getRenderOverview();
+		RenderOverview ro = client.getRenderOverview();
 
 		if (!ro.getWorldMapData().surfaceContainsPosition(worldPoint.getX(), worldPoint.getY()))
 		{
@@ -190,7 +187,7 @@ public class WorldMapOverlay extends Overlay
 
 		Float pixelsPerTile = ro.getWorldMapZoom();
 
-		Widget map = clientProvider.get().getWidget(WidgetInfo.WORLD_MAP_VIEW);
+		Widget map = client.getWidget(WidgetInfo.WORLD_MAP_VIEW);
 		if (map != null)
 		{
 			Rectangle worldMapRect = map.getBounds();
@@ -232,7 +229,7 @@ public class WorldMapOverlay extends Overlay
 
 		drawPoint = new Point(drawPoint.getX() + TOOLTIP_OFFSET_WIDTH, drawPoint.getY() + TOOLTIP_OFFSET_HEIGHT);
 
-		graphics.setClip(0, 0, clientProvider.get().getCanvas().getWidth(), clientProvider.get().getCanvas().getHeight());
+		graphics.setClip(0, 0, client.getCanvas().getWidth(), client.getCanvas().getHeight());
 		graphics.setColor(TOOLTIP_BACKGROUND);
 		graphics.setFont(FontManager.getRunescapeFont());
 		FontMetrics fm = graphics.getFontMetrics();

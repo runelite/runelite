@@ -82,22 +82,10 @@ public class RuneLite
 	private PluginManager pluginManager;
 
 	@Inject
-	private MenuManager menuManager;
-
-	@Inject
 	private EventBus eventBus;
 
 	@Inject
 	private ConfigManager configManager;
-
-	@Inject
-	private ChatMessageManager chatMessageManager;
-
-	@Inject
-	private CommandManager commandManager;
-
-	@Inject
-	private OverlayRenderer overlayRenderer;
 
 	@Inject
 	private DrawManager drawManager;
@@ -115,25 +103,37 @@ public class RuneLite
 	private ClientUI clientUI;
 
 	@Inject
-	private Provider<ItemManager> itemManager;
-
-	@Inject
-	private ClanManager clanManager;
-
-	@Inject
 	private InfoBoxManager infoBoxManager;
 
 	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
-	private InfoBoxOverlay infoBoxOverlay;
+	private Provider<ItemManager> itemManager;
 
 	@Inject
-	private TooltipOverlay tooltipOverlay;
+	private Provider<OverlayRenderer> overlayRenderer;
 
 	@Inject
-	private WorldMapOverlay worldMapOverlay;
+	private Provider<ClanManager> clanManager;
+
+	@Inject
+	private Provider<ChatMessageManager> chatMessageManager;
+
+	@Inject
+	private Provider<MenuManager> menuManager;
+
+	@Inject
+	private Provider<CommandManager> commandManager;
+
+	@Inject
+	private Provider<InfoBoxOverlay> infoBoxOverlay;
+
+	@Inject
+	private Provider<TooltipOverlay> tooltipOverlay;
+
+	@Inject
+	private Provider<WorldMapOverlay> worldMapOverlay;
 
 	@Inject
 	@Nullable
@@ -243,35 +243,34 @@ public class RuneLite
 		// Initialize UI
 		clientUI.open(this);
 
-		// Initialize chat colors
-		chatMessageManager.loadColors();
-
 		// Initialize Discord service
 		discordService.init();
 
 		// Register event listeners
 		eventBus.register(clientUI);
 		eventBus.register(pluginManager);
-		eventBus.register(overlayRenderer);
 		eventBus.register(overlayManager);
 		eventBus.register(drawManager);
-		eventBus.register(menuManager);
-		eventBus.register(chatMessageManager);
-		eventBus.register(commandManager);
-		eventBus.register(clanManager);
 		eventBus.register(infoBoxManager);
 
 		if (!isOutdated)
 		{
-			eventBus.register(itemManager.get());
-			WidgetOverlay.createOverlays(client).forEach(overlayManager::add);
-		}
+			// Initialize chat colors
+			chatMessageManager.get().loadColors();
 
-		// Add core overlays after configuration has been loaded so their properties will be
-		// loaded properly
-		overlayManager.add(infoBoxOverlay);
-		overlayManager.add(worldMapOverlay);
-		overlayManager.add(tooltipOverlay);
+			eventBus.register(overlayRenderer.get());
+			eventBus.register(clanManager.get());
+			eventBus.register(itemManager.get());
+			eventBus.register(menuManager.get());
+			eventBus.register(chatMessageManager.get());
+			eventBus.register(commandManager.get());
+
+			// Add core overlays
+			WidgetOverlay.createOverlays(client).forEach(overlayManager::add);
+			overlayManager.add(infoBoxOverlay.get());
+			overlayManager.add(worldMapOverlay.get());
+			overlayManager.add(tooltipOverlay.get());
+		}
 
 		// Start plugins
 		pluginManager.startCorePlugins();
