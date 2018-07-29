@@ -157,4 +157,13 @@ public final class AnimationID
 
 	// Battlestaff Crafting
 	public static final int CRAFTING_BATTLESTAVES = 7531;
+
+	// Death Animations
+	public static final int CAVE_KRAKEN_DEATH = 3993;
+	public static final int WIZARD_DEATH = 2553;
+	public static final int GARGOYLE_DEATH = 1520;
+	public static final int MARBLE_GARGOYLE_DEATH = 7813;
+	public static final int LIZARD_DEATH = 2778;
+	public static final int ROCKSLUG_DEATH = 1568;
+	public static final int ZYGOMITE_DEATH = 3327;
 }
