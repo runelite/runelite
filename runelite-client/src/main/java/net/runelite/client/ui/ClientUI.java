@@ -313,9 +313,6 @@ public class ClientUI
 			frame.addKeyListener(uiKeyListener);
 			keyManager.registerKeyListener(uiKeyListener);
 
-			// Update config
-			updateFrameConfig(true);
-
 			// Decorate window with custom chrome and titlebar if needed
 			final boolean withTitleBar = config.enableCustomChrome();
 			frame.setUndecorated(withTitleBar);
@@ -367,10 +364,33 @@ public class ClientUI
 				});
 			}
 
-			// Show frame
+			// Update config
+			updateFrameConfig(true);
+
+			// Create hide sidebar button
+			sidebarNavigationButton = NavigationButton
+				.builder()
+				.priority(100)
+				.icon(SIDEBAR_CLOSE)
+				.onClick(this::toggleSidebar)
+				.build();
+
+			sidebarNavigationJButton = SwingUtil.createSwingButton(
+				sidebarNavigationButton,
+				0,
+				null);
+
+			titleToolbar.addComponent(sidebarNavigationButton, sidebarNavigationJButton);
+			toggleSidebar();
+
+			// Layout frame
 			frame.pack();
 			frame.revalidateMinimumSize();
 
+			// Create tray icon (needs to be created after frame is packed)
+			trayIcon = SwingUtil.createTrayIcon(ICON, properties.getTitle(), frame);
+
+			// Move frame around (needs to be done after frame is packed)
 			if (config.rememberScreenBounds())
 			{
 				try
@@ -380,6 +400,7 @@ public class ClientUI
 					if (clientBounds != null)
 					{
 						frame.setBounds(clientBounds);
+						frame.revalidateMinimumSize();
 					}
 					else
 					{
@@ -402,13 +423,6 @@ public class ClientUI
 				frame.setLocationRelativeTo(frame.getOwner());
 			}
 
-			trayIcon = SwingUtil.createTrayIcon(ICON, properties.getTitle(), frame);
-
-			frame.setVisible(true);
-			frame.toFront();
-			requestFocus();
-			giveClientFocus();
-
 			// If the frame is well hidden (e.g. unplugged 2nd screen),
 			// we want to move it back to default position as it can be
 			// hard for the user to reposition it themselves otherwise.
@@ -422,21 +436,11 @@ public class ClientUI
 				frame.setLocationRelativeTo(frame.getOwner());
 			}
 
-			// Create hide sidebar button
-			sidebarNavigationButton = NavigationButton
-				.builder()
-				.priority(100)
-				.icon(SIDEBAR_CLOSE)
-				.onClick(this::toggleSidebar)
-				.build();
-
-			sidebarNavigationJButton = SwingUtil.createSwingButton(
-				sidebarNavigationButton,
-				0,
-				null);
-
-			titleToolbar.addComponent(sidebarNavigationButton, sidebarNavigationJButton);
-			toggleSidebar();
+			// Show frame
+			frame.setVisible(true);
+			frame.toFront();
+			requestFocus();
+			giveClientFocus();
 			log.info("Showing frame {}", frame);
 		});
 
