@@ -105,7 +105,7 @@ public class RunecraftPlugin extends Plugin
 	private AbyssOverlay abyssOverlay;
 
 	@Inject
-	private ZeahOverlay zeahOverlay;
+	private DenseRunestoneOverlay denseRunestoneOverlay;
 
 	@Inject
 	private QueryRunner queryRunner;
@@ -127,7 +127,7 @@ public class RunecraftPlugin extends Plugin
 	{
 		overlayManager.add(bindNeckOverlay);
 		overlayManager.add(abyssOverlay);
-		overlayManager.add(zeahOverlay);
+		overlayManager.add(denseRunestoneOverlay);
 		abyssOverlay.updateConfig();
 	}
 

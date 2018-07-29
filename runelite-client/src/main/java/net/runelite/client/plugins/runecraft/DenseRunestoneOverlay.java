@@ -40,7 +40,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
 @Slf4j
-public class ZeahOverlay extends Overlay
+public class DenseRunestoneOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2600;
 	private static final int Z_OFFSET = 200;
@@ -58,7 +58,7 @@ public class ZeahOverlay extends Overlay
 			BufferedImage pickaxeImage;
 			try
 			{
-				pickaxeImage = ImageIO.read(ZeahOverlay.class.getResourceAsStream("/skill_icons/mining.png"));
+				pickaxeImage = ImageIO.read(DenseRunestoneOverlay.class.getResourceAsStream("/skill_icons/mining.png"));
 			}
 			catch (IOException e)
 			{
@@ -71,7 +71,7 @@ public class ZeahOverlay extends Overlay
 	}
 
 	@Inject
-	private ZeahOverlay(Client client, RunecraftPlugin plugin, RunecraftConfig config)
+	private DenseRunestoneOverlay(Client client, RunecraftPlugin plugin, RunecraftConfig config)
 	{
 		this.client = client;
 		this.plugin = plugin;
