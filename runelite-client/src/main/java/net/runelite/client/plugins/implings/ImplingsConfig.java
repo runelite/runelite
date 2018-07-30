@@ -37,6 +37,17 @@ import net.runelite.client.config.ConfigItem;
 public interface ImplingsConfig extends Config
 {
 	@ConfigItem(
+			position = 0,
+			keyName = "whiteOnly",
+			name = "Only White Minimap Labeling",
+			description = "Configures minimap impling tags to be displayed in white only"
+	)
+	default boolean minimapWhiteOnly()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		position = 1,
 		keyName = "showbaby",
 		name = "Show Baby implings",
