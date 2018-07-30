@@ -38,8 +38,10 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import javax.annotation.Nullable;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GrandExchangeOfferState;
@@ -96,23 +98,23 @@ public class GrandExchangeOfferSlot extends JPanel
 		final MouseListener ml = new MouseAdapter()
 		{
 			@Override
-			public void mousePressed(MouseEvent mouseEvent)
+			public void mouseReleased(MouseEvent mouseEvent)
 			{
-				super.mousePressed(mouseEvent);
-				switchPanel();
+				if (mouseEvent.getButton() == MouseEvent.BUTTON1)
+				{
+					switchPanel();
+				}
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent mouseEvent)
 			{
-				super.mouseEntered(mouseEvent);
 				container.setBackground(ColorScheme.DARKER_GRAY_HOVER_COLOR);
 			}
 
 			@Override
 			public void mouseExited(MouseEvent mouseEvent)
 			{
-				super.mouseExited(mouseEvent);
 				container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 			}
 		};
@@ -193,7 +195,7 @@ public class GrandExchangeOfferSlot extends JPanel
 		add(progressBar, BorderLayout.SOUTH);
 	}
 
-	void updateOffer(ItemComposition offerItem, BufferedImage itemImage, @Nullable GrandExchangeOffer newOffer)
+	void updateOffer(ItemComposition offerItem, BufferedImage itemImage, @Nullable GrandExchangeOffer newOffer, boolean enableOsbPrices)
 	{
 		if (newOffer == null || newOffer.getState() == EMPTY)
 		{
@@ -227,6 +229,7 @@ public class GrandExchangeOfferSlot extends JPanel
 			progressBar.setMaximumValue(newOffer.getTotalQuantity());
 			progressBar.setValue(newOffer.getQuantitySold());
 
+			GrandExchangePricesPopupMenu popupMenu = new GrandExchangePricesPopupMenu(offerItem.getName(), offerItem.getId(), enableOsbPrices);
 			/* Couldn't set the tooltip for the container panel as the children override it, so I'm setting
 			 * the tooltips on the children instead. */
 			for (Component c : container.getComponents())
@@ -235,6 +238,7 @@ public class GrandExchangeOfferSlot extends JPanel
 				{
 					JPanel panel = (JPanel) c;
 					panel.setToolTipText(htmlTooltip(((int) progressBar.getPercentage()) + "%"));
+					panel.setComponentPopupMenu(popupMenu);
 				}
 			}
 		}
@@ -272,6 +276,18 @@ public class GrandExchangeOfferSlot extends JPanel
 		}
 
 		return ColorScheme.PROGRESS_INPROGRESS_COLOR;
+	}
+
+	void onEnableOsbPricesChanged(boolean enableOsbPrices)
+	{
+		for (Component component : container.getComponents())
+		{
+			JPopupMenu popupMenu = ((JComponent) component).getComponentPopupMenu();
+			if (popupMenu instanceof GrandExchangePricesPopupMenu)
+			{
+				((GrandExchangePricesPopupMenu) popupMenu).recalculateMenuItems(enableOsbPrices);
+			}
+		}
 	}
 }
 

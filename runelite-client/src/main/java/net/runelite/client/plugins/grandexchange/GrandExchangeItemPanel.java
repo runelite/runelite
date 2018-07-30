@@ -41,7 +41,6 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.QuantityFormatter;
 
 /**
@@ -51,10 +50,17 @@ import net.runelite.client.util.QuantityFormatter;
 class GrandExchangeItemPanel extends JPanel
 {
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
+	private final String name;
+	private final int itemId;
+	private boolean enableOsbPrices;
 
-	GrandExchangeItemPanel(AsyncBufferedImage icon, String name, int itemID, int gePrice, Double
-		haPrice, int geItemLimit)
+	GrandExchangeItemPanel(AsyncBufferedImage icon, String name, int itemId, int gePrice,
+		Double haPrice, int geItemLimit, boolean enableOsbPrices)
 	{
+		this.name = name;
+		this.itemId = itemId;
+		this.enableOsbPrices = enableOsbPrices;
+
 		BorderLayout layout = new BorderLayout();
 		layout.setHgap(5);
 		setLayout(layout);
@@ -90,11 +96,26 @@ class GrandExchangeItemPanel extends JPanel
 			@Override
 			public void mouseReleased(MouseEvent e)
 			{
-				geLink(name, itemID);
+				if (e.getButton() == MouseEvent.BUTTON1)
+				{
+					if (GrandExchangeItemPanel.this.enableOsbPrices)
+					{
+						GrandExchangeLinks.openOsbuddyGeLink(itemId);
+					}
+					else
+					{
+						GrandExchangeLinks.openGeLink(name, itemId);
+					}
+				}
 			}
 		};
 
 		addMouseListener(itemPanelMouseListener);
+
+		if (enableOsbPrices)
+		{
+			setComponentPopupMenu(new GrandExchangePricesPopupMenu(name, itemId, true));
+		}
 
 		setBorder(new EmptyBorder(5, 5, 5, 0));
 
@@ -165,13 +186,16 @@ class GrandExchangeItemPanel extends JPanel
 		}
 	}
 
-	private static void geLink(String name, int itemID)
+	void onEnableOsbPricesChanged(boolean enableOsbPrices)
 	{
-		final String url = "http://services.runescape.com/m=itemdb_oldschool/"
-			+ name.replaceAll(" ", "_")
-			+ "/viewitem?obj="
-			+ itemID;
-
-		LinkBrowser.browse(url);
+		if (enableOsbPrices)
+		{
+			setComponentPopupMenu(new GrandExchangePricesPopupMenu(name, itemId, true));
+		}
+		else
+		{
+			setComponentPopupMenu(null);
+		}
+		this.enableOsbPrices = enableOsbPrices;
 	}
 }

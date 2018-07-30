@@ -103,7 +103,7 @@ public class GrandExchangeOffersPanel extends JPanel
 		updateEmptyOffersPanel();
 	}
 
-	void updateOffer(ItemComposition item, BufferedImage itemImage, GrandExchangeOffer newOffer, int slot)
+	void updateOffer(ItemComposition item, BufferedImage itemImage, GrandExchangeOffer newOffer, int slot, boolean enableOsbPrices)
 	{
 		/* If slot was previously filled, and is now empty, remove it from the list */
 		if (newOffer == null || newOffer.getState() == GrandExchangeOfferState.EMPTY)
@@ -130,7 +130,7 @@ public class GrandExchangeOffersPanel extends JPanel
 			constraints.gridy++;
 		}
 
-		offerSlotPanels[slot].updateOffer(item, itemImage, newOffer);
+		offerSlotPanels[slot].updateOffer(item, itemImage, newOffer, enableOsbPrices);
 
 		removeTopMargin();
 
@@ -180,5 +180,16 @@ public class GrandExchangeOffersPanel extends JPanel
 			cardLayout.show(container, OFFERS_PANEL);
 		}
 
+	}
+
+	void onEnableOsbPricesChanged(boolean enableOsbPrices)
+	{
+		for (GrandExchangeOfferSlot slot : offerSlotPanels)
+		{
+			if (slot != null)
+			{
+				slot.onEnableOsbPricesChanged(enableOsbPrices);
+			}
+		}
 	}
 }

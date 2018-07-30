@@ -54,7 +54,7 @@ class GrandExchangePanel extends PluginPanel
 	private GrandExchangeOffersPanel offersPanel;
 
 	@Inject
-	private GrandExchangePanel(ClientThread clientThread, ItemManager itemManager, ScheduledExecutorService executor)
+	private GrandExchangePanel(ClientThread clientThread, ItemManager itemManager, ScheduledExecutorService executor, GrandExchangeConfig config)
 	{
 		super(false);
 
@@ -62,7 +62,7 @@ class GrandExchangePanel extends PluginPanel
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		// Search Panel
-		searchPanel = new GrandExchangeSearchPanel(clientThread, itemManager, executor);
+		searchPanel = new GrandExchangeSearchPanel(clientThread, itemManager, executor, config);
 
 		//Offers Panel
 		offersPanel = new GrandExchangeOffersPanel();

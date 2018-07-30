@@ -28,6 +28,7 @@ package net.runelite.client.plugins.grandexchange;
 import com.google.common.base.Strings;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -64,6 +65,7 @@ class GrandExchangeSearchPanel extends JPanel
 	private final ClientThread clientThread;
 	private final ItemManager itemManager;
 	private final ScheduledExecutorService executor;
+	private final GrandExchangeConfig config;
 
 	private final IconTextField searchBar = new IconTextField();
 
@@ -78,11 +80,12 @@ class GrandExchangeSearchPanel extends JPanel
 
 	private final List<GrandExchangeItems> itemsList = new ArrayList<>();
 
-	GrandExchangeSearchPanel(ClientThread clientThread, ItemManager itemManager, ScheduledExecutorService executor)
+	GrandExchangeSearchPanel(ClientThread clientThread, ItemManager itemManager, ScheduledExecutorService executor, GrandExchangeConfig config)
 	{
 		this.clientThread = clientThread;
 		this.itemManager = itemManager;
 		this.executor = executor;
+		this.config = config;
 
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -225,7 +228,7 @@ class GrandExchangeSearchPanel extends JPanel
 			for (GrandExchangeItems item : itemsList)
 			{
 				GrandExchangeItemPanel panel = new GrandExchangeItemPanel(item.getIcon(), item.getName(),
-					item.getItemId(), item.getGePrice(), item.getHaPrice(), item.getGeItemLimit());
+					item.getItemId(), item.getGePrice(), item.getHaPrice(), item.getGeItemLimit(), config.enableOsbPrices());
 
 				/*
 				Add the first item directly, wrap the rest with margin. This margin hack is because
@@ -262,4 +265,22 @@ class GrandExchangeSearchPanel extends JPanel
 		});
 	}
 
+	void onEnableOsbPricesChanged(boolean enableOsbPrices)
+	{
+		for (Component component : searchItemsPanel.getComponents())
+		{
+			if (component instanceof JPanel)
+			{
+				if (!(component instanceof GrandExchangeItemPanel))
+				{
+					// work around margin wrapper
+					component = ((JPanel) component).getComponent(0);
+				}
+				if (component instanceof GrandExchangeItemPanel)
+				{
+					((GrandExchangeItemPanel) component).onEnableOsbPricesChanged(enableOsbPrices);
+				}
+			}
+		}
+	}
 }

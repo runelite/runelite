@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, SomeoneWithAnInternetConnection
+ * Copyright (c) 2018, Shingyx <https://github.com/Shingyx>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,33 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.grandexchange;
 
-import net.runelite.api.GrandExchangeOffer;
-import net.runelite.api.GrandExchangeOfferState;
-import net.runelite.api.ItemComposition;
-import net.runelite.client.util.AsyncBufferedImage;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import org.mockito.junit.MockitoJUnitRunner;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.border.EmptyBorder;
 
-@RunWith(MockitoJUnitRunner.class)
-public class GrandExchangeOfferSlotTest
+class GrandExchangePricesPopupMenu extends JPopupMenu
 {
-	@Mock
-	private GrandExchangeOffer offer;
+	private final String name;
+	private final int itemId;
 
-	@Test
-	public void testUpdateOffer()
+	GrandExchangePricesPopupMenu(String name, int itemId, boolean enableOsbPrices)
 	{
-		when(offer.getState()).thenReturn(GrandExchangeOfferState.CANCELLED_BUY);
-
-		GrandExchangeOfferSlot offerSlot = new GrandExchangeOfferSlot();
-		offerSlot.updateOffer(mock(ItemComposition.class), mock(AsyncBufferedImage.class), offer, false);
+		this.name = name;
+		this.itemId = itemId;
+		setBorder(new EmptyBorder(5, 5, 5, 5));
+		recalculateMenuItems(enableOsbPrices);
 	}
 
+	void recalculateMenuItems(boolean enableOsbPrices)
+	{
+		removeAll();
+
+		if (enableOsbPrices)
+		{
+			final JMenuItem openOsbuddyGeLink = new JMenuItem("Lookup OSBuddy GE price");
+			openOsbuddyGeLink.addActionListener(e -> GrandExchangeLinks.openOsbuddyGeLink(itemId));
+			add(openOsbuddyGeLink);
+		}
+
+		final JMenuItem openGeLink = new JMenuItem("Lookup GE price");
+		openGeLink.addActionListener(e -> GrandExchangeLinks.openGeLink(name, itemId));
+		add(openGeLink);
+	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, SomeoneWithAnInternetConnection
+ * Copyright (c) 2018, Shingyx <https://github.com/Shingyx>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,33 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.grandexchange;
 
-import net.runelite.api.GrandExchangeOffer;
-import net.runelite.api.GrandExchangeOfferState;
-import net.runelite.api.ItemComposition;
-import net.runelite.client.util.AsyncBufferedImage;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import org.mockito.junit.MockitoJUnitRunner;
+import net.runelite.client.util.LinkBrowser;
 
-@RunWith(MockitoJUnitRunner.class)
-public class GrandExchangeOfferSlotTest
+class GrandExchangeLinks
 {
-	@Mock
-	private GrandExchangeOffer offer;
-
-	@Test
-	public void testUpdateOffer()
+	static void openGeLink(String name, int itemId)
 	{
-		when(offer.getState()).thenReturn(GrandExchangeOfferState.CANCELLED_BUY);
-
-		GrandExchangeOfferSlot offerSlot = new GrandExchangeOfferSlot();
-		offerSlot.updateOffer(mock(ItemComposition.class), mock(AsyncBufferedImage.class), offer, false);
+		final String url = "http://services.runescape.com/m=itemdb_oldschool/"
+				+ name.replaceAll(" ", "_")
+				+ "/viewitem?obj="
+				+ itemId;
+		LinkBrowser.browse(url);
 	}
 
+	static void openOsbuddyGeLink(int itemId)
+	{
+		final String url = "https://rsbuddy.com/exchange?id=" + itemId;
+		LinkBrowser.browse(url);
+	}
 }

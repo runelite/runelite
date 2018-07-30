@@ -356,18 +356,28 @@ public class GrandExchangePlugin extends Plugin
 	{
 		if (event.getGroup().equals(GrandExchangeConfig.CONFIG_GROUP))
 		{
-			if (event.getKey().equals("quickLookup"))
+			final boolean enabled = event.getNewValue().equals("true");
+			switch (event.getKey())
 			{
-				if (config.quickLookup())
-				{
-					mouseManager.registerMouseListener(inputListener);
-					keyManager.registerKeyListener(inputListener);
-				}
-				else
-				{
-					mouseManager.unregisterMouseListener(inputListener);
-					keyManager.unregisterKeyListener(inputListener);
-				}
+				case "quickLookup":
+					if (enabled)
+					{
+						mouseManager.registerMouseListener(inputListener);
+						keyManager.registerKeyListener(inputListener);
+					}
+					else
+					{
+						mouseManager.unregisterMouseListener(inputListener);
+						keyManager.unregisterKeyListener(inputListener);
+					}
+					break;
+				case "enableOsbPrices":
+					SwingUtilities.invokeLater(() ->
+					{
+						panel.getOffersPanel().onEnableOsbPricesChanged(enabled);
+						panel.getSearchPanel().onEnableOsbPricesChanged(enabled);
+					});
+					break;
 			}
 		}
 	}
@@ -391,7 +401,7 @@ public class GrandExchangePlugin extends Plugin
 		ItemComposition offerItem = itemManager.getItemComposition(offer.getItemId());
 		boolean shouldStack = offerItem.isStackable() || offer.getTotalQuantity() > 1;
 		BufferedImage itemImage = itemManager.getImage(offer.getItemId(), offer.getTotalQuantity(), shouldStack);
-		SwingUtilities.invokeLater(() -> panel.getOffersPanel().updateOffer(offerItem, itemImage, offer, slot));
+		SwingUtilities.invokeLater(() -> panel.getOffersPanel().updateOffer(offerItem, itemImage, offer, slot, config.enableOsbPrices()));
 
 		submitTrade(slot, offer);
 
