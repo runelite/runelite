@@ -34,6 +34,7 @@ import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.QueryRunner;
 
 public class ItemStatOverlay extends Overlay
@@ -86,9 +87,7 @@ public class ItemStatOverlay extends Overlay
 	private String buildStatChangeString(StatChange c)
 	{
 		StringBuilder b = new StringBuilder();
-		b.append("<col=");
-		b.append(Integer.toHexString(Positivity.getColor(config, c.getPositivity()).getRGB() & 0xFFFFFF));
-		b.append(">");
+		b.append(ColorUtil.colorTag(Positivity.getColor(config, c.getPositivity())));
 
 		if (config.relative())
 		{

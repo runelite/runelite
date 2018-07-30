@@ -373,10 +373,14 @@ public class Perspective
 		@Nonnull Client client,
 		@Nonnull Graphics2D graphics,
 		@Nonnull LocalPoint localLocation,
-		@Nonnull String text,
-		int zOffset
-	)
+		@Nullable String text,
+		int zOffset)
 	{
+		if (text == null || "".equals(text))
+		{
+			return null;
+		}
+
 		int plane = client.getPlane();
 
 		Point p = worldToCanvas(client, localLocation.getX(), localLocation.getY(), plane, zOffset);

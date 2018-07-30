@@ -27,6 +27,7 @@ package net.runelite.client.plugins.slayer;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
@@ -65,6 +66,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -569,9 +571,13 @@ public class SlayerPlugin extends Plugin
 		}
 
 		BufferedImage taskImg = itemManager.getImage(itemSpriteId);
+		final String taskTooltip = ColorUtil.prependColorTag("%s</br>", new Color(255, 119, 0))
+			+ ColorUtil.wrapWithColorTag("Pts:", Color.YELLOW)
+			+ " %s</br>"
+			+ ColorUtil.wrapWithColorTag("Streak:", Color.YELLOW)
+			+ " %s";
 		counter = new TaskCounter(taskImg, this, amount);
-		counter.setTooltip(String.format("<col=ff7700>%s</br><col=ffff00>Pts:</col> %s</br><col=ffff00>Streak:</col> %s",
-			capsString(taskName), points, streak));
+		counter.setTooltip(String.format(taskTooltip, capsString(taskName), points, streak));
 
 		infoBoxManager.addInfoBox(counter);
 	}

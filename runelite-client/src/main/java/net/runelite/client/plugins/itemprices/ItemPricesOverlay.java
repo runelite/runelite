@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.itemprices;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
@@ -42,6 +43,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.item.ItemPrice;
 
@@ -117,7 +119,7 @@ class ItemPricesOverlay extends Overlay
 						final String text = makeValueTooltip(menuEntry);
 						if (text != null)
 						{
-							tooltipManager.add(new Tooltip("<col=eeeeee>" + text));
+							tooltipManager.add(new Tooltip(ColorUtil.prependColorTag(text, new Color(238, 238, 238))));
 						}
 						break;
 				}

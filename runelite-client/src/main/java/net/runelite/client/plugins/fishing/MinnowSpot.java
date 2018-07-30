@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,67 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.chatcommands;
+package net.runelite.client.plugins.fishing;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.time.Instant;
+import lombok.AllArgsConstructor;
+import lombok.Value;
+import net.runelite.api.coords.WorldPoint;
 
-@ConfigGroup("chatcommands")
-public interface ChatCommandsConfig extends Config
+@AllArgsConstructor
+@Value
+class MinnowSpot
 {
-	@ConfigItem(
-		position = 0,
-		keyName = "price",
-		name = "Price Command",
-		description = "Configures whether the Price command is enabled"
-	)
-	default boolean price()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 1,
-		keyName = "lvl",
-		name = "Level Command",
-		description = "Configures whether the Level command is enabled"
-	)
-	default boolean lvl()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 2,
-		keyName = "clue",
-		name = "Clue Command",
-		description = "Configures whether the Clue command is enabled"
-	)
-	default boolean clue()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 3,
-		keyName = "killcount",
-		name = "Killcount Command",
-		description = "Configures whether the Killcount command is enabled"
-	)
-	default boolean killcount()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 4,
-		keyName = "clearShortcuts",
-		name = "Clear shortcuts",
-		description = "Enable shortcuts (ctrl+w and backspace) for clearing the chatbox"
-	)
-	default boolean clearShortcuts()
-	{
-		return true;
-	}
+	private final WorldPoint loc;
+	private final Instant time;
 }

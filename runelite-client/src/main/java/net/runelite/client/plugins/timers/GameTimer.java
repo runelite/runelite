@@ -69,7 +69,7 @@ enum GameTimer
 	EXSUPERANTIFIRE(ItemID.EXTENDED_SUPER_ANTIFIRE4, GameTimerImageType.ITEM, "Extended Super AntiFire", 6, ChronoUnit.MINUTES),
 	SANFEW(ItemID.SANFEW_SERUM4, GameTimerImageType.ITEM, "Sanfew serum", 6, ChronoUnit.MINUTES),
 	OVERLOAD_RAID(ItemID.OVERLOAD_4_20996, GameTimerImageType.ITEM, "Overload", 5, ChronoUnit.MINUTES),
-	PRAYER_ENHANCE(ItemID.PRAYER_ENHANCE_4, GameTimerImageType.ITEM, "Prayer enhance", 275, ChronoUnit.SECONDS),
+	PRAYER_ENHANCE(ItemID.PRAYER_ENHANCE_4, GameTimerImageType.ITEM, "Prayer enhance", 290, ChronoUnit.SECONDS),
 	GOD_WARS_ALTAR(SpriteID.SKILL_PRAYER, GameTimerImageType.SPRITE, "God wars altar", 10, ChronoUnit.MINUTES),
 	ANTIPOISON(ItemID.ANTIPOISON4, GameTimerImageType.ITEM, "Antipoison", 90, ChronoUnit.SECONDS),
 	SUPERANTIPOISON(ItemID.SUPERANTIPOISON4, GameTimerImageType.ITEM, "Superantipoison", 346, ChronoUnit.SECONDS),
