@@ -43,6 +43,7 @@ import net.runelite.api.Experience;
 import net.runelite.api.Point;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.SkillIconManager;
+import net.runelite.client.plugins.xptracker.SkillColor;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -50,6 +51,7 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
+
 
 @Slf4j
 public class XpGlobesOverlay extends Overlay
@@ -149,13 +151,16 @@ public class XpGlobesOverlay extends Overlay
 			5,
 			config.progressOrbOutLineColor()
 		);
+
 		drawProgressArc(
-			graphics,
-			x, y,
-			config.xpOrbSize(), config.xpOrbSize(),
-			PROGRESS_RADIUS_START, radiusCurrentXp,
-			config.progressArcStrokeWidth(),
-			config.progressArcColor());
+				graphics,
+				x, y,
+				config.xpOrbSize(), config.xpOrbSize(),
+				PROGRESS_RADIUS_START, radiusCurrentXp,
+				config.progressArcStrokeWidth(),
+				config.colourBySkill() ? SkillColor.values()[skillToDraw.getSkill().ordinal()].getColor() : config.progressArcColor()
+		);
+
 
 		graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, renderHint);
 
