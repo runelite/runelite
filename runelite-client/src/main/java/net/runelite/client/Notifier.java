@@ -48,6 +48,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ClientUI;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.OSType;
 
 @Singleton
@@ -64,7 +65,7 @@ public class Notifier
 	// Notifier properties
 	private static final Color FLASH_COLOR = new Color(255, 0, 0, 70);
 	private static final int FLASH_DURATION = 2000;
-	private static final String MESSAGE_COLOR = "FF0000";
+	private static final Color MESSAGE_COLOR = Color.RED;
 
 	private final Client client;
 	private final String appName;
@@ -123,7 +124,7 @@ public class Notifier
 			if (client.getGameState() == GameState.LOGGED_IN)
 			{
 				client.addChatMessage(ChatMessageType.GAME, appName,
-					"<col=" + MESSAGE_COLOR + ">" + message + "</col>", "");
+					ColorUtil.wrapWithColorTag(message, MESSAGE_COLOR), "");
 			}
 		}
 

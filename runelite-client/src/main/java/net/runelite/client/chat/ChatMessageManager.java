@@ -50,6 +50,7 @@ import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.SetMessage;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ChatColorConfig;
+import net.runelite.client.util.ColorUtil;
 
 @Slf4j
 @Singleton
@@ -143,13 +144,13 @@ public class ChatMessageManager
 
 		if (usernameColor != null)
 		{
-			messageNode.setName(wrapTextWithColour(messageNode.getName(), usernameColor));
+			messageNode.setName(ColorUtil.wrapWithColorTag(messageNode.getName(), usernameColor));
 		}
 
 		String sender = setMessage.getSender();
 		if (senderColor != null && !Strings.isNullOrEmpty(sender))
 		{
-			messageNode.setSender(wrapTextWithColour(sender, senderColor));
+			messageNode.setSender(ColorUtil.wrapWithColorTag(sender, senderColor));
 		}
 
 		final Collection<ChatColor> chatColors = colorCache.get(chatMessageType);
@@ -160,14 +161,9 @@ public class ChatMessageManager
 				continue;
 			}
 
-			messageNode.setValue(wrapTextWithColour(messageNode.getValue(), chatColor.getColor()));
+			messageNode.setValue(ColorUtil.wrapWithColorTag(messageNode.getValue(), chatColor.getColor()));
 			break;
 		}
-	}
-
-	private static String wrapTextWithColour(String text, Color colour)
-	{
-		return "<col=" + Integer.toHexString(colour.getRGB() & 0xFFFFFF) + ">" + text + "</col>";
 	}
 
 	private static Color getDefaultColor(ChatMessageType type, boolean transparent)
@@ -559,7 +555,7 @@ public class ChatMessageManager
 			.forEach(chatColor ->
 				resultMessage.getAndUpdate(oldMessage -> oldMessage.replaceAll(
 					"<col" + chatColor.getType().name() + ">",
-					"<col=" + Integer.toHexString(chatColor.getColor().getRGB() & 0xFFFFFF) + ">")));
+					ColorUtil.colorTag(chatColor.getColor()))));
 
 		return resultMessage.get();
 	}
