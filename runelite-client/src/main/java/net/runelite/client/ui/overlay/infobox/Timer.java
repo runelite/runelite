@@ -96,9 +96,9 @@ public class Timer extends InfoBox
 		return timeLeft.isZero() || timeLeft.isNegative();
 	}
 
-	public long secondsPassed()
+	public Instant getEndTime()
 	{
-		return duration.getSeconds() - Duration.between(Instant.now(), endTime).getSeconds();
+		return endTime;
 	}
 
 }

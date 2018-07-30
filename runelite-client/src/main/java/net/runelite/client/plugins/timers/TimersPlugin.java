@@ -27,6 +27,9 @@ package net.runelite.client.plugins.timers;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.HashSet;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
@@ -106,6 +109,7 @@ public class TimersPlugin extends Plugin
 	private int lastRaidVarb;
 	private int lastWorldX;
 	private int lastWorldY;
+	private HashSet<GameTimer> freezeTimers;
 
 	@Inject
 	private ItemManager itemManager;
@@ -126,6 +130,16 @@ public class TimersPlugin extends Plugin
 	TimersConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(TimersConfig.class);
+	}
+
+	@Override
+	protected void startUp()
+	{
+		freezeTimers = new HashSet<GameTimer>();
+		freezeTimers.add(ICERUSH);
+		freezeTimers.add(ICEBURST);
+		freezeTimers.add(ICEBLITZ);
+		freezeTimers.add(ICEBARRAGE);
 	}
 
 	@Override
@@ -467,7 +481,7 @@ public class TimersPlugin extends Plugin
 
 		if (config.showFreezes() && event.getMessage().equals("<col=ef1020>You have been frozen!</col>"))
 		{
-			createGameTimer(ICEBARRAGE, false);
+			createGameTimer(ICEBARRAGE, false, true);
 		}
 	}
 
@@ -595,19 +609,19 @@ public class TimersPlugin extends Plugin
 			if (actor.getGraphic() == ICERUSH.getGraphicId())
 			{
 				removeGameTimer(ICEBARRAGE, 1);
-				createGameTimer(ICERUSH, false);
+				createGameTimer(ICERUSH, false, true);
 			}
 
 			if (actor.getGraphic() == ICEBURST.getGraphicId())
 			{
 				removeGameTimer(ICEBARRAGE, 1);
-				createGameTimer(ICEBURST, false);
+				createGameTimer(ICEBURST, false, true);
 			}
 
 			if (actor.getGraphic() == ICEBLITZ.getGraphicId())
 			{
 				removeGameTimer(ICEBARRAGE, 1);
-				createGameTimer(ICEBLITZ, false);
+				createGameTimer(ICEBLITZ, false, true);
 			}
 
 		}
@@ -681,10 +695,17 @@ public class TimersPlugin extends Plugin
 	 * @param replaceExisting Whether to remove existing timer of the same type. `true` to replace
 	 *                        it, `false` to preserve it if present.
 	 */
-	private void createGameTimer(final GameTimer timer, final boolean replaceExisting)
+
+	private void createGameTimer(final GameTimer timer, final boolean replaceExisting, final boolean checkActiveFreezeTimers)
 	{
+		if(checkActiveFreezeTimers
+			&& infoBoxManager.getInfoBoxes().stream().anyMatch(t -> t instanceof TimerTimer && freezeTimers.contains(((TimerTimer) t).getTimer())))
+		{
+			return;
+		}
+
 		if (!replaceExisting
-				&& infoBoxManager.getInfoBoxes().stream().anyMatch(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer))
+			&& infoBoxManager.getInfoBoxes().stream().anyMatch(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer))
 		{
 			return;
 		}
@@ -695,6 +716,11 @@ public class TimersPlugin extends Plugin
 		TimerTimer t = new TimerTimer(timer, this, image);
 		t.setTooltip(timer.getDescription());
 		infoBoxManager.addInfoBox(t);
+	}
+
+	private void createGameTimer(final GameTimer timer, final boolean replaceExisting)
+	{
+		createGameTimer(timer, replaceExisting, false);
 	}
 
 	private void createGameTimer(GameTimer timer)
@@ -709,9 +735,14 @@ public class TimersPlugin extends Plugin
 
 	private void removeGameTimer(GameTimer timer, long timePassedThreshold)
 	{
+		long totalTimerSeconds = timer.getDuration().getSeconds();
 		if (timePassedThreshold >= 0)
 		{
-			infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer && ((TimerTimer) t).secondsPassed() <= timePassedThreshold);
+			infoBoxManager.removeIf(
+				t -> t instanceof TimerTimer
+				&& ((TimerTimer) t).getTimer() == timer
+				&& (totalTimerSeconds - Duration.between(Instant.now(), ((TimerTimer) t).getEndTime()).getSeconds()) <= timePassedThreshold
+			);
 		}
 		else
 		{
