@@ -215,7 +215,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			log.debug("Running clue lookup for {}", search);
 			executor.submit(() -> playerClueLookup(setMessage, search));
 		}
-		else if (message.toLowerCase().startsWith("!kc "))
+		else if (config.killcount() && message.toLowerCase().startsWith("!kc "))
 		{
 			String search = message.substring(4);
 
@@ -322,7 +322,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	public boolean onChatboxInput(ChatboxInput chatboxInput)
 	{
 		final String value = chatboxInput.getValue();
-		if (!value.startsWith("!kc ") && !value.startsWith("/!kc "))
+		if (!config.killcount() || !value.startsWith("!kc ") && !value.startsWith("/!kc "))
 		{
 			return false;
 		}
@@ -361,7 +361,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	public boolean onPrivateMessageInput(PrivateMessageInput privateMessageInput)
 	{
 		final String message = privateMessageInput.getMessage();
-		if (!message.startsWith("!kc "))
+		if (!config.killcount() || !message.startsWith("!kc "))
 		{
 			return false;
 		}

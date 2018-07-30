@@ -66,6 +66,17 @@ public interface ChatCommandsConfig extends Config
 
 	@ConfigItem(
 		position = 3,
+		keyName = "killcount",
+		name = "Killcount Command",
+		description = "Configures whether the Killcount command is enabled"
+	)
+	default boolean killcount()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 4,
 		keyName = "clearShortcuts",
 		name = "Clear shortcuts",
 		description = "Enable shortcuts (ctrl+w and backspace) for clearing the chatbox"
