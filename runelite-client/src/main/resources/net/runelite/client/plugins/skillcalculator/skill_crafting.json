@@ -265,6 +265,12 @@
       "xp": 75
     },
     {
+      "level": 41,
+      "icon": 22269,
+      "name": "Hard Leather Shield",
+      "xp": 70
+    },
+    {
       "level": 42,
       "icon": 11085,
       "name": "Ruby Bracelet",
@@ -324,6 +330,12 @@
       "name": "Dragonstone",
       "xp": 137.5
     },
+    {
+       "level": 56,
+       "icon": 22272,
+       "name": "Snakeskin Shield",
+       "xp": 100
+     },
     {
       "level": 56,
       "icon": 1662,
