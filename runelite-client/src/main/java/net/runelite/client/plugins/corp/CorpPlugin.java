@@ -30,25 +30,20 @@ import java.util.Set;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.Actor;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
-import net.runelite.api.Varbits;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.HitsplatApplied;
-import net.runelite.api.events.InteractingChanged;
-import net.runelite.api.events.NpcDespawned;
-import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.*;
+import net.runelite.api.events.*;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.menuentryswapper.MenuEntrySwapperConfig;
+import net.runelite.client.plugins.menuentryswapper.MenuEntrySwapperPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
+import com.google.inject.Provides;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Corporeal Beast",
@@ -57,6 +52,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class CorpPlugin extends Plugin
 {
+	static final String CONFIG_GROUP = "corpPlugin";
+
 	@Getter(AccessLevel.PACKAGE)
 	private NPC corp;
 
@@ -85,6 +82,15 @@ public class CorpPlugin extends Plugin
 
 	@Inject
 	private CoreOverlay coreOverlay;
+
+	@Inject
+	private CorpConfig config;
+
+	@Provides
+	CorpConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(CorpConfig.class);
+	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -202,4 +208,48 @@ public class CorpPlugin extends Plugin
 
 		players.add(source);
 	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+		String option = Text.removeTags(event.getOption()).toLowerCase();
+		String target = Text.removeTags(event.getTarget()).toLowerCase();
+		if (option.equals("attack"))
+		{
+			if (config.leftClickableCore() && target.contains("dark energy core"))
+			{
+				MenuEntry[] entries = client.getMenuEntries();
+				int idxA = searchIndexCorp(entries, "Attack", target);
+				int idxB = searchIndexCorp(entries, "Walk here", "");
+				if (idxA >= 0 && idxB > 0)
+				{
+					MenuEntry entry = entries[idxA];
+					entries[idxA] = entries[idxB];
+					entries[idxB] = entry;
+					client.setMenuEntries(entries);
+				}
+			}
+		}
+	}
+
+	private int searchIndexCorp(MenuEntry[] entries, String option, String target)
+	{
+		for (int i = entries.length - 1; i >= 0; i--)
+		{
+			MenuEntry entry = entries[i];
+			String entryOption = Text.removeTags(entry.getOption()).toLowerCase();
+			String entryTarget = Text.removeTags(entry.getTarget()).toLowerCase();
+
+			if (entryOption.contains(option.toLowerCase()) && entryTarget.equals(target))
+			{
+					return i;
+			}
+		}
+		return -1;
+	}
+
 }
