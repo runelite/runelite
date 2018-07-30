@@ -38,8 +38,6 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.menuentryswapper.MenuEntrySwapperConfig;
-import net.runelite.client.plugins.menuentryswapper.MenuEntrySwapperPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
 import com.google.inject.Provides;
 import net.runelite.client.config.ConfigManager;
