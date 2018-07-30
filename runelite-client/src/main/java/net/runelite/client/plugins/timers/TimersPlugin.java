@@ -131,7 +131,7 @@ public class TimersPlugin extends Plugin
 	private static final String SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your super antifire potion";
 	private static final String SUPER_ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your super antifire potion has expired.</col>";
 	private static final String SUPER_ANTIVENOM_DRINK_MESSAGE = "You drink some of your super antivenom potion";
-	private static final Set<GameTimer> freezeTimers = ImmutableSet.of(ICERUSH, ICEBURST, ICEBLITZ, ICEBARRAGE);
+	private static final Set<GameTimer> FREEZE_TIMERS = ImmutableSet.of(ICERUSH, ICEBURST, ICEBLITZ, ICEBARRAGE);
 
 	private int lastRaidVarb;
 	private int lastWorldX;
@@ -717,7 +717,7 @@ public class TimersPlugin extends Plugin
 	private void createGameTimer(final GameTimer timer, final boolean replaceExisting, final boolean checkActiveFreezeTimers)
 	{
 		if (checkActiveFreezeTimers
-			&& infoBoxManager.getInfoBoxes().stream().anyMatch(t -> t instanceof TimerTimer && freezeTimers.contains(((TimerTimer) t).getTimer())))
+			&& infoBoxManager.getInfoBoxes().stream().anyMatch(t -> t instanceof TimerTimer && FREEZE_TIMERS.contains(((TimerTimer) t).getTimer())))
 		{
 			return;
 		}
