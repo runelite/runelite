@@ -40,7 +40,7 @@ public interface CorpConfig extends Config
 	)
 	default boolean leftClickableCore()
 	{
-		return true;
+		return false;
 	}
 
 
