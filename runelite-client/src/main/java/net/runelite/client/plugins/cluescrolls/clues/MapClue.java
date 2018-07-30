@@ -52,7 +52,7 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
-public class MapClue extends ClueScroll implements ObjectClueScroll
+public class MapClue extends SpadeClueScroll implements ObjectClueScroll
 {
 	private static final Set<MapClue> CLUES = ImmutableSet.of(
 		new MapClue(CLUE_SCROLL_EASY_12179, new WorldPoint(3300, 3291, 0)),
@@ -146,6 +146,8 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Travel to the destination and dig on the marked tile.")
 				.build());
+
+			panelComponent.getChildren().add(hasSpadeOverlayLine(plugin));
 		}
 
 		if (description != null)

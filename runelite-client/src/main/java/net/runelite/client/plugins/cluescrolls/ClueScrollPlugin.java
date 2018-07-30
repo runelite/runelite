@@ -67,20 +67,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.cluescrolls.clues.AnagramClue;
-import net.runelite.client.plugins.cluescrolls.clues.CipherClue;
-import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
-import net.runelite.client.plugins.cluescrolls.clues.CoordinateClue;
-import net.runelite.client.plugins.cluescrolls.clues.CrypticClue;
-import net.runelite.client.plugins.cluescrolls.clues.EmoteClue;
-import net.runelite.client.plugins.cluescrolls.clues.FairyRingClue;
-import net.runelite.client.plugins.cluescrolls.clues.HotColdClue;
-import net.runelite.client.plugins.cluescrolls.clues.LocationClueScroll;
-import net.runelite.client.plugins.cluescrolls.clues.LocationsClueScroll;
-import net.runelite.client.plugins.cluescrolls.clues.MapClue;
-import net.runelite.client.plugins.cluescrolls.clues.NpcClueScroll;
-import net.runelite.client.plugins.cluescrolls.clues.ObjectClueScroll;
-import net.runelite.client.plugins.cluescrolls.clues.TextClueScroll;
+import net.runelite.client.plugins.cluescrolls.clues.*;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.QueryRunner;
@@ -374,13 +361,13 @@ public class ClueScrollPlugin extends Plugin
 			}
 		}
 
-		if (clue instanceof CoordinateClue)
+		if (clue instanceof SpadeClueScroll)
 		{
 			ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
 
 			if (container != null)
 			{
-				equippedItems = container.getItems();
+				inventoryItems = container.getItems();
 			}
 		}
 

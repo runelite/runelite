@@ -57,7 +57,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
 @RequiredArgsConstructor
-public class HotColdClue extends ClueScroll implements LocationClueScroll, LocationsClueScroll, TextClueScroll, NpcClueScroll
+public class HotColdClue extends SpadeClueScroll implements LocationClueScroll, LocationsClueScroll, TextClueScroll, NpcClueScroll
 {
 	private static final Pattern INITIAL_STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is (.*)");
 	private static final Pattern STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is (.*), (.*) last time\\.");
@@ -183,6 +183,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 					}
 				}
 			}
+			panelComponent.getChildren().add(hasSpadeOverlayLine(plugin));
 		}
 	}
 

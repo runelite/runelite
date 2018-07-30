@@ -24,52 +24,37 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import net.runelite.api.ItemID;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.Item;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.SPADE_IMAGE;
 import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.emote.SingleItemRequirement;
-import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.ui.overlay.components.TitleComponent;
+import java.awt.Color;
+import static net.runelite.api.ItemID.SPADE;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 
-@Getter
-@AllArgsConstructor
-public class CoordinateClue extends SpadeClueScroll implements TextClueScroll, LocationClueScroll
+public abstract class SpadeClueScroll extends ClueScroll
 {
-	private String text;
-	private WorldPoint location;
-	private static final ItemRequirement HAS_SPADE = new SingleItemRequirement(ItemID.SPADE);
+	private static final ItemRequirement SPADE_REQUIRED = new SingleItemRequirement(SPADE);
 
-	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
+	private boolean playerHasSpade(ClueScrollPlugin plugin)
 	{
-		panelComponent.getChildren().add(TitleComponent.builder().text("Coordinate Clue").build());
-
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Click the clue scroll along the edge of your world map to see where you should dig.")
-			.build());
-
-		panelComponent.getChildren().add(hasSpadeOverlayLine(plugin));
+		Item[] inventory = plugin.getInventoryItems();
+		if (inventory != null)
+		{
+			return SPADE_REQUIRED.fulfilledBy(inventory);
+		}
+		return false;
 	}
 
-	@Override
-	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
+	LineComponent hasSpadeOverlayLine(ClueScrollPlugin plugin)
 	{
-		LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), getLocation());
-
-		if (localLocation == null)
-		{
-			return;
-		}
-
-		OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, SPADE_IMAGE, Color.ORANGE);
+		boolean hasSpade = playerHasSpade(plugin);
+		return LineComponent.builder()
+				.left(SPADE_REQUIRED.getCollectiveName(plugin.getClient()))
+				.leftColor(TITLED_CONTENT_COLOR)
+				.right(hasSpade ? "\u2713" : "\u2717")
+				.rightColor(hasSpade ? Color.GREEN : Color.RED)
+				.build();
 	}
 }
