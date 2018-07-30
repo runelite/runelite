@@ -384,6 +384,16 @@ public class ClueScrollPlugin extends Plugin
 			}
 		}
 
+		if (clue instanceof FairyRingClue)
+		{
+			ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
+
+			if (container != null)
+			{
+				inventoryItems = container.getItems();
+			}
+		}
+
 		ClueScroll clue = findClueScroll();
 
 		if (clue == null && this.clue != null)
