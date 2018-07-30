@@ -384,7 +384,7 @@ public class AlchemyRoom extends MTARoom
 			}
 
 			BufferedImage image = itemManager.getImage(alchemyItem.getId());
-			Point canvasLoc = Perspective.getCanvasImageLocation(client, graphics, object.getLocalLocation(), image, IMAGE_Z_OFFSET);
+			Point canvasLoc = Perspective.getCanvasImageLocation(client, object.getLocalLocation(), image, IMAGE_Z_OFFSET);
 
 			if (canvasLoc != null)
 			{
