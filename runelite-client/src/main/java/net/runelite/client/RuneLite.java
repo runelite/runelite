@@ -32,6 +32,8 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import java.io.File;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 import java.util.Locale;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
@@ -202,11 +204,18 @@ public class RuneLite
 			}
 		});
 
+		final long start = System.currentTimeMillis();
+
 		injector = Guice.createInjector(new RuneLiteModule(
 			options.valueOf(updateMode),
 			developerMode));
 
 		injector.getInstance(RuneLite.class).start();
+
+		final long end = System.currentTimeMillis();
+		final RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
+		final long uptime = rb.getUptime();
+		log.info("Client initialization took {}ms. Uptime: {}ms", end - start, uptime);
 	}
 
 	public void start() throws Exception
