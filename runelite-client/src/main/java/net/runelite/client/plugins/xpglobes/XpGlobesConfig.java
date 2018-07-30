@@ -119,4 +119,15 @@ public interface XpGlobesConfig extends Config
 	{
 		return 10;
 	}
+
+	@ConfigItem(
+			keyName = "enableColourBySkill",
+			name = "Enable Colour by Skill",
+			description = "Configures whether or not to colour skill orbs by skill colour.",
+			position = 8
+	)
+	default boolean colourBySkill()
+	{
+		return true;
+	}
 }
