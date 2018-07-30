@@ -106,6 +106,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 )
 public class TimersPlugin extends Plugin
 {
+	private static final String FROZEN_MESSAGE = "You drink some of your super antivenom potion";
 	private int lastRaidVarb;
 	private int lastWorldX;
 	private int lastWorldY;
@@ -479,7 +480,7 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(STAFF_OF_THE_DEAD);
 		}
 
-		if (config.showFreezes() && event.getMessage().equals("<col=ef1020>You have been frozen!</col>"))
+		if (config.showFreezes() && event.getMessage().equals(FROZEN_MESSAGE))
 		{
 			createGameTimer(ICEBARRAGE, false, true);
 		}
