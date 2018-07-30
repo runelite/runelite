@@ -726,7 +726,7 @@ public class TimersPlugin extends Plugin
 
 	private void createGameTimer(final GameTimer timer, final boolean replaceExisting, final boolean checkActiveFreezeTimers)
 	{
-		if(checkActiveFreezeTimers
+		if (checkActiveFreezeTimers
 			&& infoBoxManager.getInfoBoxes().stream().anyMatch(t -> t instanceof TimerTimer && freezeTimers.contains(((TimerTimer) t).getTimer())))
 		{
 			return;
