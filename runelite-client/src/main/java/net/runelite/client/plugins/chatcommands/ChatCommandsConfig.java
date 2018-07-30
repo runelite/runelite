@@ -78,8 +78,8 @@ public interface ChatCommandsConfig extends Config
 	@ConfigItem(
 		position = 4,
 		keyName = "combatinfo",
-		name = "Combat Info Command",
-		description = "Configures whether the Combat Info command is enabled"
+		name = "Combat Command",
+		description = "Configures whether the Combat command is enabled"
 	)
 	default boolean combatinfo()
 	{
