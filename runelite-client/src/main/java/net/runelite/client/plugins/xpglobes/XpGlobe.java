@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.xpglobes;
 
+import java.awt.*;
 import java.time.Instant;
 import net.runelite.api.Skill;
 
@@ -31,6 +32,7 @@ public class XpGlobe
 {
 
 	private Skill skill;
+	private Color skillColor;
 	private int currentXp;
 	private int currentLevel;
 	private int goalXp;
@@ -40,9 +42,15 @@ public class XpGlobe
 	public XpGlobe(Skill skill, int currentXp, int currentLevel, int goalXp)
 	{
 		this.skill = skill;
+		this.skillColor = getColorFromSkill(skill);
 		this.currentXp = currentXp;
 		this.currentLevel = currentLevel;
 		this.goalXp = goalXp;
+	}
+
+	private Color getColorFromSkill(Skill skill)
+	{
+		return SkillColor.values()[skill.ordinal()].getColor();
 	}
 
 	public Skill getSkill()
@@ -53,6 +61,16 @@ public class XpGlobe
 	public void setSkill(Skill skill)
 	{
 		this.skill = skill;
+	}
+
+	public Color getSkillColor()
+	{
+		return skillColor;
+	}
+
+	public void setSkillColor(Color color)
+	{
+		this.skillColor = color;
 	}
 
 	public int getCurrentXp()
