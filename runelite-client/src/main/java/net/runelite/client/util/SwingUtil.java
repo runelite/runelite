@@ -32,7 +32,6 @@ import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
@@ -42,8 +41,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.awt.image.LookupOp;
-import java.awt.image.LookupTable;
+import java.awt.image.RescaleOp;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
@@ -111,33 +110,20 @@ public class SwingUtil
 	 */
 	public static BufferedImage grayscaleOffset(BufferedImage image, int offset)
 	{
-		int numComponents = image.getColorModel().getNumComponents();
-		int index = numComponents - 1;
+		final float offsetFloat = (float) offset;
+		final int numComponents = image.getColorModel().getNumComponents();
+		final float[] scales = new float[numComponents];
+		final float[] offsets = new float[numComponents];
 
-		LookupTable lookup = new LookupTable(0, numComponents)
+		Arrays.fill(scales, 1f);
+		for (int i = 0; i < numComponents; i++)
 		{
-			@Override
-			public int[] lookupPixel(int[] src, int[] dest)
-			{
-				if (dest[index] != 0)
-				{
-					dest[index] = dest[index] + offset;
-					if (dest[index] < 0)
-					{
-						dest[index] = 0;
-					}
-					else if (dest[index] > 255)
-					{
-						dest[index] = 255;
-					}
-				}
+			offsets[i] = offsetFloat;
+		}
+		// Set alpha to not offset
+		offsets[numComponents - 1] = 0f;
 
-				return dest;
-			}
-		};
-
-		LookupOp op = new LookupOp(lookup, new RenderingHints(null));
-		return op.filter(image, null);
+		return offset(image, scales, offsets);
 	}
 
 	/**
@@ -365,4 +351,16 @@ public class SwingUtil
 		return SubstanceCoreUtilities.getTitlePaneComponent(frame) != null;
 	}
 
+	/**
+	 * Performs a rescale operation on the image's color components.
+	 *
+	 * @param image   The image to be adjusted.
+	 * @param scales  An array of scale operations to be performed on the image's color components.
+	 * @param offsets An array of offset operations to be performed on the image's color components.
+	 * @return        The modified image after applying the given adjustments.
+	 */
+	private static BufferedImage offset(final BufferedImage image, final float[] scales, final float[] offsets)
+	{
+		return new RescaleOp(scales, offsets, null).filter(image, null);
+	}
 }
