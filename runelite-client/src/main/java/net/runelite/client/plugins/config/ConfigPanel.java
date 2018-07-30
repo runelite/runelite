@@ -89,7 +89,7 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.ComboBoxListRenderer;
 import net.runelite.client.ui.components.IconButton;
 import net.runelite.client.ui.components.IconTextField;
-import net.runelite.client.util.SwingUtil;
+import net.runelite.client.util.ImageUtil;
 
 @Slf4j
 public class ConfigPanel extends PluginPanel
@@ -130,7 +130,7 @@ public class ConfigPanel extends PluginPanel
 			{
 				BufferedImage backIcon = ImageIO.read(ConfigPanel.class.getResourceAsStream("config_back_icon.png"));
 				BACK_ICON = new ImageIcon(backIcon);
-				BACK_ICON_HOVER = new ImageIcon(SwingUtil.grayscaleOffset(backIcon, -100));
+				BACK_ICON_HOVER = new ImageIcon(ImageUtil.grayscaleOffset(backIcon, -100));
 				SEARCH = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("search.png")));
 			}
 		}

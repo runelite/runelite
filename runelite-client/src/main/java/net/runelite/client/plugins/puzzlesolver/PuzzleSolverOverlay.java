@@ -32,8 +32,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
@@ -60,6 +58,7 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.BackgroundComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
+import net.runelite.client.util.ImageUtil;
 
 @Slf4j
 public class PuzzleSolverOverlay extends Overlay
@@ -448,7 +447,7 @@ public class PuzzleSolverOverlay extends Overlay
 	{
 		if (upArrow == null)
 		{
-			upArrow = getRotatedImage(getDownArrow(), Math.PI);
+			upArrow = ImageUtil.rotateImage(getDownArrow(), Math.PI);
 		}
 		return upArrow;
 	}
@@ -457,7 +456,7 @@ public class PuzzleSolverOverlay extends Overlay
 	{
 		if (leftArrow == null)
 		{
-			leftArrow = getRotatedImage(getDownArrow(), Math.PI / 2);
+			leftArrow = ImageUtil.rotateImage(getDownArrow(), Math.PI / 2);
 		}
 		return leftArrow;
 	}
@@ -466,16 +465,8 @@ public class PuzzleSolverOverlay extends Overlay
 	{
 		if (rightArrow == null)
 		{
-			rightArrow = getRotatedImage(getDownArrow(), 3 * Math.PI / 2);
+			rightArrow = ImageUtil.rotateImage(getDownArrow(), 3 * Math.PI / 2);
 		}
 		return rightArrow;
-	}
-
-	private BufferedImage getRotatedImage(BufferedImage image, double theta)
-	{
-		AffineTransform transform = new AffineTransform();
-		transform.rotate(theta, image.getWidth() / 2, image.getHeight() / 2);
-		AffineTransformOp transformOp = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
-		return transformOp.filter(image, null);
 	}
 }
