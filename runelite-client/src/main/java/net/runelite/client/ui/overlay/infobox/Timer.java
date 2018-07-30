@@ -30,11 +30,13 @@ import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import lombok.Getter;
 import net.runelite.client.plugins.Plugin;
 
 public class Timer extends InfoBox
 {
 	private final Instant startTime;
+	@Getter
 	private final Instant endTime;
 	private final Duration duration;
 
@@ -94,11 +96,6 @@ public class Timer extends InfoBox
 	{
 		Duration timeLeft = Duration.between(Instant.now(), endTime);
 		return timeLeft.isZero() || timeLeft.isNegative();
-	}
-
-	public Instant getEndTime()
-	{
-		return endTime;
 	}
 
 }
