@@ -24,12 +24,13 @@
  */
 package net.runelite.client.plugins.timers;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.HashSet;
+import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
@@ -98,7 +99,6 @@ import static net.runelite.client.plugins.timers.GameTimer.VENGEANCE;
 import static net.runelite.client.plugins.timers.GameTimer.VENGEANCEOTHER;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
-
 @PluginDescriptor(
 	name = "Timers",
 	description = "Show various timers in an infobox",
@@ -116,7 +116,7 @@ public class TimersPlugin extends Plugin
 	private static final String CHARGE_MESSAGE = "<col=ef1020>You feel charged with magic power.</col>";
 	private static final String EXTENDED_ANTIFIRE_DRINK_MESSAGE = "You drink some of your extended antifire potion.";
 	private static final String EXTENDED_SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your extended super antifire potion.";
-	private static final String FROZEN_MESSAGE = "You drink some of your super antivenom potion";
+	private static final String FROZEN_MESSAGE = "<col=ef1020>You have been frozen!</col>";
 	private static final String FULL_TELEBLOCK_MESSAGE = "<col=4f006f>A teleblock spell has been cast on you. It will expire in 5 minutes, 0 seconds.</col>";
 	private static final String GOD_WARS_ALTAR_MESSAGE = "you recharge your prayer.";
 	private static final String HALF_TELEBLOCK_MESSAGE = "<col=4f006f>A teleblock spell has been cast on you. It will expire in 2 minutes, 30 seconds.</col>";
@@ -131,11 +131,11 @@ public class TimersPlugin extends Plugin
 	private static final String SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your super antifire potion";
 	private static final String SUPER_ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your super antifire potion has expired.</col>";
 	private static final String SUPER_ANTIVENOM_DRINK_MESSAGE = "You drink some of your super antivenom potion";
+	private static final Set<GameTimer> freezeTimers = ImmutableSet.of(ICERUSH, ICEBURST, ICEBLITZ, ICEBARRAGE);
 
 	private int lastRaidVarb;
 	private int lastWorldX;
 	private int lastWorldY;
-	private HashSet<GameTimer> freezeTimers;
 
 	@Inject
 	private ItemManager itemManager;
@@ -156,16 +156,6 @@ public class TimersPlugin extends Plugin
 	TimersConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(TimersConfig.class);
-	}
-
-	@Override
-	protected void startUp()
-	{
-		freezeTimers = new HashSet<GameTimer>();
-		freezeTimers.add(ICERUSH);
-		freezeTimers.add(ICEBURST);
-		freezeTimers.add(ICEBLITZ);
-		freezeTimers.add(ICEBARRAGE);
 	}
 
 	@Override
