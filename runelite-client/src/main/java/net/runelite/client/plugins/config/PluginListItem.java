@@ -92,13 +92,21 @@ class PluginListItem extends JPanel
 			{
 				configIcon = ImageIO.read(ConfigPanel.class.getResourceAsStream("config_edit_icon.png"));
 				CONFIG_ICON = new ImageIcon(configIcon);
-				ON_SWITCHER = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("switchers/on.png")));
-				OFF_SWITCHER = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("switchers/off.png")));
-				ON_STAR = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("stars/on.png")));
-				OFF_STAR = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("stars/off.png")));
+				ON_SWITCHER = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("switcher_on.png")));
+				ON_STAR = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("star_on.png")));
 			}
 
-			CONFIG_ICON_HOVER = new ImageIcon(ImageUtil.grayscaleOffset(configIcon, -100));
+			BufferedImage offSwitcherImage = ImageUtil.bufferedImageFromImage(ON_SWITCHER.getImage());
+			offSwitcherImage = ImageUtil.grayscaleImage(offSwitcherImage);
+			offSwitcherImage = ImageUtil.grayscaleOffset(offSwitcherImage, 0.61f);
+			offSwitcherImage = ImageUtil.flipImage(offSwitcherImage, true, false);
+			OFF_SWITCHER = new ImageIcon(offSwitcherImage);
+			BufferedImage offStarImage = ImageUtil.bufferedImageFromImage(ON_STAR.getImage());
+			offStarImage = ImageUtil.grayscaleImage(offStarImage);
+			offStarImage = ImageUtil.grayscaleOffset(offStarImage, 0.77f);
+			OFF_STAR = new ImageIcon(offStarImage);
+
+			CONFIG_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(configIcon, -100));
 		}
 		catch (IOException e)
 		{

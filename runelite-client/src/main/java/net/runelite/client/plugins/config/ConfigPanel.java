@@ -130,7 +130,7 @@ public class ConfigPanel extends PluginPanel
 			{
 				BufferedImage backIcon = ImageIO.read(ConfigPanel.class.getResourceAsStream("config_back_icon.png"));
 				BACK_ICON = new ImageIcon(backIcon);
-				BACK_ICON_HOVER = new ImageIcon(ImageUtil.grayscaleOffset(backIcon, -100));
+				BACK_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(backIcon, -100));
 				SEARCH = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("search.png")));
 			}
 		}

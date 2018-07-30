@@ -47,6 +47,7 @@ import net.runelite.client.plugins.screenmarkers.ScreenMarkerPlugin;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.PluginErrorPanel;
+import net.runelite.client.util.ImageUtil;
 
 @Singleton
 public class ScreenMarkerPluginPanel extends PluginPanel
@@ -85,13 +86,14 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 			synchronized (ImageIO.class)
 			{
 				ADD_ICON = new ImageIcon(ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("add_icon.png")));
-				ADD_HOVER_ICON = new ImageIcon(ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("add_hover_icon.png")));
 			}
 		}
 		catch (IOException e)
 		{
 			throw new RuntimeException(e);
 		}
+
+		ADD_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(ImageUtil.bufferedImageFromImage(ADD_ICON.getImage()), 0.53f));
 	}
 
 	public void init()

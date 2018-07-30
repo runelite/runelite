@@ -54,6 +54,7 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.ThinProgressBar;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
 
 @Slf4j
@@ -87,8 +88,8 @@ public class GrandExchangeOfferSlot extends JPanel
 		{
 			synchronized (ImageIO.class)
 			{
-				RIGHT_ARROW_ICON = new ImageIcon(ImageIO.read(GrandExchangeOfferSlot.class.getResourceAsStream("arrow_right.png")));
-				LEFT_ARROW_ICON = new ImageIcon(ImageIO.read(GrandExchangeOfferSlot.class.getResourceAsStream("arrow_left.png")));
+				RIGHT_ARROW_ICON = new ImageIcon(ImageUtil.alphaOffset(ImageIO.read(GrandExchangeOfferSlot.class.getResourceAsStream("/util/arrow_right.png")), 0.25f));
+				LEFT_ARROW_ICON = new ImageIcon(ImageUtil.flipImage(ImageUtil.bufferedImageFromImage(RIGHT_ARROW_ICON.getImage()), true, false));
 			}
 		}
 		catch (IOException e)

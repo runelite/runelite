@@ -31,12 +31,33 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
 import java.util.Arrays;
+import javax.swing.GrayFilter;
 
 /**
  * Various Image/BufferedImage utilities.
  */
 public class ImageUtil
 {
+	/**
+	 * Creates a {@link BufferedImage} from an {@link Image}.
+	 *
+	 * @param image An Image to be converted to a BufferedImage.
+	 * @return      A BufferedImage instance of the same given image.
+	 */
+	public static BufferedImage bufferedImageFromImage(final Image image)
+	{
+		if (image instanceof BufferedImage)
+		{
+			return (BufferedImage) image;
+		}
+
+		final BufferedImage out = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+		final Graphics2D g2d = out.createGraphics();
+		g2d.drawImage(image, 0, 0, null);
+		g2d.dispose();
+		return out;
+	}
+
 	/**
 	 * Offsets an image in the grayscale (darkens/brightens) by a given offset.
 	 *
@@ -64,6 +85,86 @@ public class ImageUtil
 	}
 
 	/**
+	 * Offsets an image in the grayscale (darkens/brightens) by a given percentage.
+	 *
+	 * @param image      The image to be darkened or brightened.
+	 * @param percentage The ratio to darken or brighten the given image.
+	 *                   Values above 1 will brighten, and values below 1 will darken.
+	 * @return           The given image with its brightness scaled by the given percentage.
+	 */
+	public static BufferedImage grayscaleOffset(final BufferedImage image, final float percentage)
+	{
+		final int numComponents = image.getColorModel().getNumComponents();
+		final float[] scales = new float[numComponents];
+		final float[] offsets = new float[numComponents];
+
+		Arrays.fill(offsets, 0f);
+		for (int i = 0; i < numComponents; i++)
+		{
+			scales[i] = percentage;
+		}
+		// Set alpha to not scale
+		scales[numComponents - 1] = 1f;
+
+		return offset(image, scales, offsets);
+	}
+
+	/**
+	 * Offsets an image's alpha component by a given offset.
+	 *
+	 * @param image  The image to be made more or less transparent.
+	 * @param offset A signed 8-bit integer value to modify the image's alpha component with.
+	 *               Values above 0 will increase transparency, and values below 0 will decrease
+	 *               transparency.
+	 * @return       The given image with its alpha component adjusted by the given offset.
+	 */
+	public static BufferedImage alphaOffset(final BufferedImage image, final int offset)
+	{
+		final float offsetFloat = (float) offset;
+		final int numComponents = image.getColorModel().getNumComponents();
+		final float[] scales = new float[numComponents];
+		final float[] offsets = new float[numComponents];
+
+		Arrays.fill(scales, 1f);
+		Arrays.fill(offsets, 0f);
+		offsets[numComponents - 1] = offsetFloat;
+		return offset(image, scales, offsets);
+	}
+
+	/**
+	 * Offsets an image's alpha component by a given percentage.
+	 *
+	 * @param image      The image to be made more or less transparent.
+	 * @param percentage The ratio to modify the image's alpha component with.
+	 *                   Values above 1 will increase transparency, and values below 1 will decrease
+	 *                   transparency.
+	 * @return           The given image with its alpha component scaled by the given percentage.
+	 */
+	public static BufferedImage alphaOffset(final BufferedImage image, final float percentage)
+	{
+		final int numComponents = image.getColorModel().getNumComponents();
+		final float[] scales = new float[numComponents];
+		final float[] offsets = new float[numComponents];
+
+		Arrays.fill(scales, 1f);
+		Arrays.fill(offsets, 0f);
+		scales[numComponents - 1] = percentage;
+		return offset(image, scales, offsets);
+	}
+
+	/**
+	 * Creates a grayscale image from the given image.
+	 *
+	 * @param image The source image to be converted.
+	 * @return      A copy of the given imnage, with colors converted to grayscale.
+	 */
+	public static BufferedImage grayscaleImage(final BufferedImage image)
+	{
+		final Image grayImage = GrayFilter.createDisabledImage(image);
+		return ImageUtil.bufferedImageFromImage(grayImage);
+	}
+
+	/**
 	 * Re-size a BufferedImage to the given dimensions.
 	 *
 	 * @param image the BufferedImage.
@@ -73,13 +174,8 @@ public class ImageUtil
 	 */
 	public static BufferedImage resizeImage(final BufferedImage image, final int newWidth, final int newHeight)
 	{
-		final Image tmp = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
-		final BufferedImage dimg = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
-
-		final Graphics2D g2d = dimg.createGraphics();
-		g2d.drawImage(tmp, 0, 0, null);
-		g2d.dispose();
-		return dimg;
+		final Image resized = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+		return ImageUtil.bufferedImageFromImage(resized);
 	}
 
 	/**
@@ -95,6 +191,42 @@ public class ImageUtil
 		transform.rotate(theta, image.getWidth() / 2.0, image.getHeight() / 2.0);
 		AffineTransformOp transformOp = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
 		return transformOp.filter(image, null);
+	}
+
+	/**
+	 * Flips an image horizontally and/or vertically.
+	 *
+	 * @param image      The image to be flipped.
+	 * @param horizontal Whether the image should be flipped horizontally.
+	 * @param vertical   Whether the image should be flipped vertically.
+	 * @return           The given image, flipped horizontally and/or vertically.
+	 */
+	public static BufferedImage flipImage(final BufferedImage image, final boolean horizontal, final boolean vertical)
+	{
+		int x = 0;
+		int y = 0;
+		int w = image.getWidth();
+		int h = image.getHeight();
+
+		final BufferedImage out = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		final Graphics2D g2d = out.createGraphics();
+
+		if (horizontal)
+		{
+			x = w;
+			w *= -1;
+		}
+
+		if (vertical)
+		{
+			y = h;
+			h *= -1;
+		}
+
+		g2d.drawImage(image, x, y, w, h, null);
+		g2d.dispose();
+
+		return out;
 	}
 
 	/**

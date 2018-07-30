@@ -36,6 +36,7 @@ import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferInt;
 import java.util.Arrays;
 import javax.annotation.Nonnull;
+import org.apache.commons.lang3.ArrayUtils;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
@@ -67,8 +68,16 @@ public class ImageUtilTest
 	}
 
 	@Test
+	public void bufferedImageFromImage()
+	{
+		final BufferedImage buffered = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+		assertEquals(buffered, ImageUtil.bufferedImageFromImage(buffered));
+	}
+
+	@Test
 	public void grayscaleOffset()
 	{
+		// grayscaleOffset(BufferedImage image, int offset)
 		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.grayscaleOffset(oneByOne(BLACK), -255)));
 		assert(bufferedImagesEqual(oneByOne(new Color(50, 50, 50)), ImageUtil.grayscaleOffset(oneByOne(BLACK), 50)));
 		assert(bufferedImagesEqual(oneByOne(GRAY), ImageUtil.grayscaleOffset(oneByOne(BLACK), 128)));
@@ -76,6 +85,73 @@ public class ImageUtilTest
 		assert(bufferedImagesEqual(oneByOne(WHITE), ImageUtil.grayscaleOffset(oneByOne(BLACK), 255)));
 		assert(bufferedImagesEqual(oneByOne(new Color(200, 200, 200)), ImageUtil.grayscaleOffset(oneByOne(WHITE), -55)));
 		assert(bufferedImagesEqual(oneByOne(WHITE), ImageUtil.grayscaleOffset(oneByOne(WHITE), 55)));
+
+		// grayscaleOffset(BufferedImage image, float percentage)
+		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.grayscaleOffset(oneByOne(BLACK), 0f)));
+		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.grayscaleOffset(oneByOne(BLACK), 1f)));
+		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.grayscaleOffset(oneByOne(BLACK), 2f)));
+		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.grayscaleOffset(oneByOne(GRAY), 0f)));
+		assert(bufferedImagesEqual(oneByOne(GRAY), ImageUtil.grayscaleOffset(oneByOne(GRAY), 1f)));
+		assert(bufferedImagesEqual(oneByOne(WHITE), ImageUtil.grayscaleOffset(oneByOne(GRAY), 2f)));
+		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.grayscaleOffset(oneByOne(WHITE), 0f)));
+		assert(bufferedImagesEqual(oneByOne(GRAY), ImageUtil.grayscaleOffset(oneByOne(WHITE), 0.503f))); // grayscaleOffset does Math.floor
+		assert(bufferedImagesEqual(oneByOne(WHITE), ImageUtil.grayscaleOffset(oneByOne(WHITE), 1f)));
+		assert(bufferedImagesEqual(oneByOne(WHITE), ImageUtil.grayscaleOffset(oneByOne(WHITE), 2f)));
+	}
+
+	@Test
+	public void alphaOffset()
+	{
+		// alphaOffset(BufferedImage image, int offset)
+		assert(bufferedImagesEqual(oneByOne(BLACK_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK_TRANSPARENT), -255)));
+		assert(bufferedImagesEqual(oneByOne(new Color(0, 0, 0, 50)), ImageUtil.alphaOffset(oneByOne(BLACK_TRANSPARENT), 50)));
+		assert(bufferedImagesEqual(oneByOne(BLACK_HALF_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK_TRANSPARENT), 128)));
+		assert(bufferedImagesEqual(oneByOne(BLACK_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK_HALF_TRANSPARENT), -255)));
+		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.alphaOffset(oneByOne(BLACK_TRANSPARENT), 255)));
+		assert(bufferedImagesEqual(oneByOne(new Color(0, 0, 0, 200)), ImageUtil.alphaOffset(oneByOne(BLACK), -55)));
+		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.alphaOffset(oneByOne(BLACK), 255)));
+
+		// alphaOffset(BufferedImage image, float offset)
+		assert(bufferedImagesEqual(oneByOne(BLACK_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK_TRANSPARENT), 0f)));
+		assert(bufferedImagesEqual(oneByOne(BLACK_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK_TRANSPARENT), 1f)));
+		assert(bufferedImagesEqual(oneByOne(BLACK_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK_TRANSPARENT), 2f)));
+		assert(bufferedImagesEqual(oneByOne(BLACK_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK_HALF_TRANSPARENT), 0f)));
+		assert(bufferedImagesEqual(oneByOne(BLACK_HALF_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK_HALF_TRANSPARENT), 1f)));
+		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.alphaOffset(oneByOne(BLACK_HALF_TRANSPARENT), 2f)));
+		assert(bufferedImagesEqual(oneByOne(BLACK_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK), 0f)));
+		assert(bufferedImagesEqual(oneByOne(BLACK_HALF_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK), 0.503f))); // opacityOffset does Math.floor
+		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.alphaOffset(oneByOne(BLACK), 1f)));
+		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.alphaOffset(oneByOne(BLACK), 2f)));
+	}
+
+	@Test
+	public void grayscaleImage()
+	{
+		final BufferedImage[] grayscaleColors = new BufferedImage[] {
+			oneByOne(WHITE),
+			oneByOne(GRAY),
+			oneByOne(BLACK),
+			oneByOne(BLACK_HALF_TRANSPARENT),
+			oneByOne(BLACK_TRANSPARENT),
+		};
+		final BufferedImage[] nonGrayscaleColors = new BufferedImage[] {
+			oneByOne(RED),
+			oneByOne(GREEN),
+			oneByOne(BLUE),
+		};
+
+		for (BufferedImage image : grayscaleColors)
+		{
+			assert(isGrayscale(image));
+		}
+		for (BufferedImage image : nonGrayscaleColors)
+		{
+			assert(!isGrayscale(image));
+		}
+		for (BufferedImage image : ArrayUtils.addAll(grayscaleColors, nonGrayscaleColors))
+		{
+			assert(isGrayscale(ImageUtil.grayscaleImage(image)));
+		}
 	}
 
 	@Test
@@ -145,6 +221,15 @@ public class ImageUtilTest
 		assert(bufferedImagesEqual(twoByOneLeft, ImageUtil.rotateImage(twoByOneLeft, Math.PI * 2)));
 	}
 
+	@Test
+	public void flipImage()
+	{
+		assert(bufferedImagesEqual(BLACK_PIXEL_TOP_LEFT, ImageUtil.flipImage(BLACK_PIXEL_TOP_LEFT, false, false)));
+		assert(bufferedImagesEqual(BLACK_PIXEL_TOP_RIGHT, ImageUtil.flipImage(BLACK_PIXEL_TOP_LEFT, true, false)));
+		assert(bufferedImagesEqual(BLACK_PIXEL_BOTTOM_LEFT, ImageUtil.flipImage(BLACK_PIXEL_TOP_LEFT, false, true)));
+		assert(bufferedImagesEqual(BLACK_PIXEL_BOTTOM_RIGHT, ImageUtil.flipImage(BLACK_PIXEL_TOP_LEFT, true, true)));
+	}
+
 	/**
 	 * Compares whether two {@link BufferedImage}s are equal in data.
 	 *
@@ -184,6 +269,32 @@ public class ImageUtilTest
 			}
 		}
 
+		return true;
+	}
+
+	/**
+	 * Returns whether a {@link BufferedImage} contains only grayscale pixel data.
+	 *
+	 * @param image The image to be checked.
+	 * @return      A boolean indicating whether all of the given image's pixels are grayscale.
+	 */
+	private boolean isGrayscale(final @Nonnull BufferedImage image)
+	{
+		for (int x = 0; x < image.getWidth(); x++)
+		{
+			for (int y = 0; y < image.getHeight(); y++)
+			{
+				final int color = image.getRGB(x, y);
+				final int red = (color & 0xff0000) >> 16;
+				final int green = (color & 0xff00) >> 8;
+				final int blue = color & 0xff;
+				if (red != green
+					|| green != blue)
+				{
+					return false;
+				}
+			}
+		}
 		return true;
 	}
 

@@ -49,6 +49,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.PluginErrorPanel;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.http.api.item.Item;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
@@ -99,7 +100,7 @@ class GrandExchangeSearchPanel extends JPanel
 		{
 			synchronized (ImageIO.class)
 			{
-				SEARCH_ICON = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("search_darker.png")));
+				SEARCH_ICON = new ImageIcon(ImageUtil.alphaOffset(ImageUtil.grayscaleOffset(ImageIO.read(IconTextField.class.getResourceAsStream("search.png")), 0f), 1.75f));
 				LOADING_ICON = new ImageIcon(IconTextField.class.getResource("loading_spinner.gif"));
 				ERROR_ICON = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("error.png")));
 			}

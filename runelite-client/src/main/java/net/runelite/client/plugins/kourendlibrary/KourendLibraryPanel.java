@@ -73,7 +73,7 @@ class KourendLibraryPanel extends PluginPanel
 			{
 				BufferedImage resetIcon = ImageIO.read(KourendLibraryPanel.class.getResourceAsStream("reset.png"));
 				RESET_ICON = new ImageIcon(resetIcon);
-				RESET_CLICK_ICON = new ImageIcon(ImageUtil.grayscaleOffset(resetIcon, -100));
+				RESET_CLICK_ICON = new ImageIcon(ImageUtil.alphaOffset(resetIcon, -100));
 			}
 		}
 		catch (IOException e)

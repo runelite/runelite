@@ -70,6 +70,7 @@ import net.runelite.client.events.NavigationButtonAdded;
 import net.runelite.client.events.NavigationButtonRemoved;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.ui.skin.SubstanceRuneLiteLookAndFeel;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
 import net.runelite.client.util.SwingUtil;
@@ -97,7 +98,6 @@ public class ClientUI
 	{
 		BufferedImage icon;
 		BufferedImage sidebarOpen;
-		BufferedImage sidebarClose;
 
 		try
 		{
@@ -105,7 +105,6 @@ public class ClientUI
 			{
 				icon = ImageIO.read(ClientUI.class.getResourceAsStream("/runelite.png"));
 				sidebarOpen = ImageIO.read(ClientUI.class.getResourceAsStream("open.png"));
-				sidebarClose = ImageIO.read(ClientUI.class.getResourceAsStream("close.png"));
 			}
 		}
 		catch (IOException e)
@@ -115,7 +114,7 @@ public class ClientUI
 
 		ICON = icon;
 		SIDEBAR_OPEN = sidebarOpen;
-		SIDEBAR_CLOSE = sidebarClose;
+		SIDEBAR_CLOSE = ImageUtil.flipImage(SIDEBAR_OPEN, true, false);
 	}
 
 	@Getter
