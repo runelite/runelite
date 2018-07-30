@@ -296,6 +296,7 @@ public class RuneLite
 
 	public void shutdown()
 	{
+		pluginManager.stopCorePlugins();
 		clientSessionManager.shutdown();
 		discordService.close();
 		executorService.shutdown();
