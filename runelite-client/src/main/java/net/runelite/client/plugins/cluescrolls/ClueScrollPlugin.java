@@ -374,17 +374,7 @@ public class ClueScrollPlugin extends Plugin
 			}
 		}
 
-		if (clue instanceof CoordinateClue)
-		{
-			ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
-
-			if (container != null)
-			{
-				equippedItems = container.getItems();
-			}
-		}
-
-		if (clue instanceof FairyRingClue)
+		if (clue instanceof CoordinateClue || clue instanceof FairyRingClue)
 		{
 			ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
 
