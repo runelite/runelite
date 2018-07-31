@@ -175,7 +175,7 @@ public class ScreenshotPlugin extends Plugin
 	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.hotkey())
 	{
 		@Override
-		public void hotkeyReleased()
+		public void hotkeyPressed()
 		{
 			takeScreenshot(format(new Date()));
 		}
