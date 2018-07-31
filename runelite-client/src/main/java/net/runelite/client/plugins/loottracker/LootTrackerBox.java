@@ -95,6 +95,7 @@ class LootTrackerBox extends JPanel
 			{
 				final ItemStack item = items[i];
 				final JLabel imageLabel = new JLabel();
+				imageLabel.setToolTipText(buildToolTip(itemManager, item));
 				imageLabel.setVerticalAlignment(SwingConstants.CENTER);
 				imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 				itemManager.getImage(item.getId(), item.getQuantity(), item.getQuantity() > 1).addTo(imageLabel);
@@ -106,6 +107,15 @@ class LootTrackerBox extends JPanel
 
 		add(logTitle, BorderLayout.NORTH);
 		add(itemContainer, BorderLayout.CENTER);
+	}
+
+	private String buildToolTip(ItemManager itemManager, ItemStack item)
+	{
+		final String name = itemManager.getItemComposition(item.getId()).getName();
+		final int quantity = item.getQuantity();
+		final long price = calculatePrice(itemManager, new ItemStack[]{item});
+
+		return name + " x " + quantity + " (" + price + ")";
 	}
 
 	private static long calculatePrice(final ItemManager itemManager, final ItemStack[] itemStacks)
