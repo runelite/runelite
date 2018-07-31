@@ -22,9 +22,8 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.ui;
+package net.runelite.client.ui;
 
-import net.runelite.client.ui.FontManager;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
