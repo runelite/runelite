@@ -76,7 +76,7 @@ class LootTrackerBox extends JPanel
 
 		if (totalPrice > 0)
 		{
-			final JLabel priceLabel = new JLabel(StackFormatter.quantityToStackSize(totalPrice));
+			final JLabel priceLabel = new JLabel(StackFormatter.quantityToStackSize(totalPrice) + " gp");
 			priceLabel.setFont(FontManager.getRunescapeSmallFont());
 			priceLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 			logTitle.add(priceLabel, BorderLayout.EAST);
