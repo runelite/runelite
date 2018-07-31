@@ -119,7 +119,7 @@ class LootTrackerPanel extends PluginPanel
 		layoutPanel.add(logsContainer);
 
 		// Add error pane
-		errorPanel.setContent("Loot trackers", "You have not killed anything yet.");
+		errorPanel.setContent("Loot trackers", "You have not received any loot yet.");
 		add(errorPanel);
 	}
 
