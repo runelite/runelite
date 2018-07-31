@@ -69,7 +69,7 @@ class LootTrackerPanel extends PluginPanel
 	LootTrackerPanel(final ItemManager itemManager)
 	{
 		this.itemManager = itemManager;
-		setBorder(new EmptyBorder(10, 6, 10, 6));
+		setBorder(new EmptyBorder(6, 6, 6, 6));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new BorderLayout());
 
