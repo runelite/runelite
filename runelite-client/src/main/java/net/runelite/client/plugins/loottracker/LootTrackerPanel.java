@@ -27,6 +27,7 @@ package net.runelite.client.plugins.loottracker;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.image.BufferedImage;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -35,10 +36,8 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Skill;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStack;
-import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
@@ -62,11 +61,12 @@ class LootTrackerPanel extends PluginPanel
 	private final JPanel overallPanel = new JPanel();
 	private final JLabel overallKillsLabel = new JLabel();
 	private final JLabel overallGpLabel = new JLabel();
+	private final JLabel overallIcon = new JLabel();
 	private final ItemManager itemManager;
 	private int overallKills;
 	private int overallGp;
 
-	LootTrackerPanel(final ItemManager itemManager, final SkillIconManager iconManager)
+	LootTrackerPanel(final ItemManager itemManager)
 	{
 		this.itemManager = itemManager;
 		setBorder(new EmptyBorder(10, 6, 10, 6));
@@ -85,7 +85,6 @@ class LootTrackerPanel extends PluginPanel
 		overallPanel.setVisible(false);
 
 		// Add icon and contents
-		final JLabel overallIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(Skill.OVERALL)));
 		final JPanel overallInfo = new JPanel();
 		overallInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		overallInfo.setLayout(new GridLayout(2, 1));
@@ -122,6 +121,11 @@ class LootTrackerPanel extends PluginPanel
 		// Add error pane
 		errorPanel.setContent("Loot trackers", "You have not killed anything yet.");
 		add(errorPanel);
+	}
+
+	void loadHeaderIcon(BufferedImage img)
+	{
+		overallIcon.setIcon(new ImageIcon(img));
 	}
 
 	private static String htmlLabel(String key, long value)

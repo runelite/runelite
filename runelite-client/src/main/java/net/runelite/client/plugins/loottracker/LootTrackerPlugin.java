@@ -43,6 +43,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
+import net.runelite.api.SpriteID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
@@ -50,7 +51,7 @@ import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStack;
-import net.runelite.client.game.SkillIconManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
@@ -76,7 +77,7 @@ public class LootTrackerPlugin extends Plugin
 	private ItemManager itemManager;
 
 	@Inject
-	private SkillIconManager iconManager;
+	private SpriteManager spriteManager;
 
 	@Inject
 	private Client client;
@@ -117,7 +118,8 @@ public class LootTrackerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		panel = new LootTrackerPanel(itemManager, iconManager);
+		panel = new LootTrackerPanel(itemManager);
+		spriteManager.getSpriteAsync(SpriteID.UNUSED_TAB_INVENTORY, 0, panel::loadHeaderIcon);
 
 		final BufferedImage icon;
 		synchronized (ImageIO.class)
