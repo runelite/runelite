@@ -248,6 +248,6 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	default MountedGloryMode swapMountedGlory()
 	{
-	    return MountedGloryMode.EDGEVILLE;
+		return MountedGloryMode.EDGEVILLE;
 	}
 }
