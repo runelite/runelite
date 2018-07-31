@@ -25,9 +25,11 @@
  */
 package net.runelite.client.plugins.achievementdiary;
 
+import java.awt.Color;
 import java.util.List;
 import lombok.Getter;
 import net.runelite.api.Skill;
+import net.runelite.client.util.ColorUtil;
 
 class RequirementStringBuilder
 {
@@ -64,7 +66,7 @@ class RequirementStringBuilder
 
 	void colorRedRequirement()
 	{
-		this.requirementString = "<col=800000>" + this.requirementString + "</col>";
+		this.requirementString = ColorUtil.wrapWithColorTag(this.requirementString, new Color(0x800000));
 	}
 
 	boolean hasLevelRequirement(int realSkillLevel, List<Integer> altRealSkillLevels)

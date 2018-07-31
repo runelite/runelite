@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Forsco <https://github.com/forsco>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -7,6 +7,7 @@
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
  *    list of conditions and the following disclaimer.
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
@@ -22,67 +23,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.chatcommands;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+package net.runelite.client.plugins.prayer;
 
-@ConfigGroup("chatcommands")
-public interface ChatCommandsConfig extends Config
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
+public enum PrayerFlickLocation
 {
-	@ConfigItem(
-		position = 0,
-		keyName = "price",
-		name = "Price Command",
-		description = "Configures whether the Price command is enabled"
-	)
-	default boolean price()
-	{
-		return true;
-	}
+	NONE("Off"),
+	PRAYER_ORB("Prayer Orb"),
+	PRAYER_BAR("Prayer Bar"),
+	BOTH("Both");
 
-	@ConfigItem(
-		position = 1,
-		keyName = "lvl",
-		name = "Level Command",
-		description = "Configures whether the Level command is enabled"
-	)
-	default boolean lvl()
-	{
-		return true;
-	}
+	private final String name;
 
-	@ConfigItem(
-		position = 2,
-		keyName = "clue",
-		name = "Clue Command",
-		description = "Configures whether the Clue command is enabled"
-	)
-	default boolean clue()
+	@Override
+	public String toString()
 	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 3,
-		keyName = "killcount",
-		name = "Killcount Command",
-		description = "Configures whether the Killcount command is enabled"
-	)
-	default boolean killcount()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 4,
-		keyName = "clearShortcuts",
-		name = "Clear shortcuts",
-		description = "Enable shortcuts (ctrl+w and backspace) for clearing the chatbox"
-	)
-	default boolean clearShortcuts()
-	{
-		return true;
+		return name;
 	}
 }

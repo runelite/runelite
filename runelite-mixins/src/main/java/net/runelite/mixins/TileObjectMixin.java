@@ -87,7 +87,7 @@ public abstract class TileObjectMixin implements TileObject
 	@Inject
 	public Point getCanvasLocation(int zOffset)
 	{
-		return Perspective.worldToCanvas(client, getX(), getY(), 0, zOffset);
+		return Perspective.worldToCanvas(client, getX(), getY(), getPlane(), zOffset);
 	}
 
 	@Override

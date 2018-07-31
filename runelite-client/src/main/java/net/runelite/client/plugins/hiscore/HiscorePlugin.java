@@ -34,6 +34,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
@@ -69,10 +70,10 @@ public class HiscorePlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private ClientToolbar clientToolbar;
+	private Provider<MenuManager> menuManager;
 
 	@Inject
-	private MenuManager menuManager;
+	private ClientToolbar clientToolbar;
 
 	@Inject
 	private ScheduledExecutorService executor;
@@ -112,9 +113,9 @@ public class HiscorePlugin extends Plugin
 
 		clientToolbar.addNavigation(navButton);
 
-		if (config.playerOption())
+		if (config.playerOption() && client != null)
 		{
-			menuManager.addPlayerMenuItem(LOOKUP);
+			menuManager.get().addPlayerMenuItem(LOOKUP);
 		}
 		if (config.autocomplete())
 		{
@@ -127,7 +128,11 @@ public class HiscorePlugin extends Plugin
 	{
 		hiscorePanel.removeInputKeyListener(autocompleter);
 		clientToolbar.removeNavigation(navButton);
-		menuManager.removePlayerMenuItem(LOOKUP);
+
+		if (client != null)
+		{
+			menuManager.get().removePlayerMenuItem(LOOKUP);
+		}
 	}
 
 	@Subscribe
@@ -135,11 +140,14 @@ public class HiscorePlugin extends Plugin
 	{
 		if (event.getGroup().equals("hiscore"))
 		{
-			menuManager.removePlayerMenuItem(LOOKUP);
-
-			if (config.playerOption())
+			if (client != null)
 			{
-				menuManager.addPlayerMenuItem(LOOKUP);
+				menuManager.get().removePlayerMenuItem(LOOKUP);
+
+				if (config.playerOption())
+				{
+					menuManager.get().addPlayerMenuItem(LOOKUP);
+				}
 			}
 
 			if (event.getKey().equals("autocomplete"))

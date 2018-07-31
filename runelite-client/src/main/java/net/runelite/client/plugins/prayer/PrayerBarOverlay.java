@@ -34,7 +34,6 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
-import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
@@ -51,13 +50,16 @@ class PrayerBarOverlay extends Overlay
 
 	private final Client client;
 	private final PrayerConfig config;
+	private final PrayerPlugin plugin;
+
 	private boolean showingPrayerBar;
 
 	@Inject
-	private PrayerBarOverlay(final Client client, final PrayerConfig config)
+	private PrayerBarOverlay(final Client client, final PrayerConfig config, final PrayerPlugin plugin)
 	{
 		this.client = client;
 		this.config = config;
+		this.plugin = plugin;
 
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
@@ -90,12 +92,22 @@ class PrayerBarOverlay extends Overlay
 		graphics.fillRect(barX, barY, barWidth, barHeight);
 		graphics.setColor(BAR_FILL_COLOR);
 		graphics.fillRect(barX, barY, progressFill, barHeight);
+
+		if (plugin.isPrayersActive() && (config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR) || config.prayerFlickLocation().equals(PrayerFlickLocation.BOTH)))
+		{
+			double t = plugin.getTickProgress();
+
+			int xOffset = (int) (-Math.cos(t) * barWidth / 2) + barWidth / 2;
+
+			graphics.setColor(Color.black);
+			graphics.fillRect(barX + xOffset, barY, 1, barHeight);
+		}
+
 		return new Dimension(barWidth, barHeight);
 	}
 
 	void onTick()
 	{
-		final boolean anyPrayerActive = checkIfAnyPrayerIsActive();
 		final Player localPlayer = client.getLocalPlayer();
 		showingPrayerBar = true;
 
@@ -105,7 +117,7 @@ class PrayerBarOverlay extends Overlay
 			return;
 		}
 
-		if (config.hideIfNotPraying() && !anyPrayerActive)
+		if (config.hideIfNotPraying() && !plugin.isPrayersActive())
 		{
 			showingPrayerBar = false;
 			return;
@@ -115,18 +127,5 @@ class PrayerBarOverlay extends Overlay
 		{
 			showingPrayerBar = false;
 		}
-	}
-
-	private boolean checkIfAnyPrayerIsActive()
-	{
-		for (Prayer pray : Prayer.values())
-		{
-			if (client.isPrayerActive(pray))
-			{
-				return true;
-			}
-		}
-
-		return false;
 	}
 }

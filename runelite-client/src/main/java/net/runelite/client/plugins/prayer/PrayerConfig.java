@@ -33,13 +33,13 @@ public interface PrayerConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
-		keyName = "prayerflick",
-		name = "Prayer flick helper",
-		description = "Enable the prayer flick helper"
+		keyName = "prayerFlickLocation",
+		name = "Pray flick location",
+		description = "Choose where to display the prayer flick helper"
 	)
-	default boolean prayerFlickHelper()
+	default PrayerFlickLocation prayerFlickLocation()
 	{
-		return true;
+		return PrayerFlickLocation.NONE;
 	}
 
 	@ConfigItem(
