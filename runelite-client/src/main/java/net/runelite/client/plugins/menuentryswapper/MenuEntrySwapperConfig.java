@@ -241,10 +241,10 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 19,
-			keyName = "swapMountedGlory",
-			name = "Mounted Glory",
-			description = "Swap Edgeville with other teleports for the mounted glory in POH."
+		position = 19,
+		keyName = "swapMountedGlory",
+		name = "Mounted Glory",
+		description = "Swap Edgeville with other teleports for the mounted glory in POH."
 	)
 	default MountedGloryMode swapMountedGlory()
 	{
