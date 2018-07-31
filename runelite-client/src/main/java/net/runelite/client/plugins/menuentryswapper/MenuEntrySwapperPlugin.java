@@ -27,6 +27,7 @@ package net.runelite.client.plugins.menuentryswapper;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.util.Collection;
 import java.util.Collections;
 import javax.inject.Inject;
@@ -52,11 +53,14 @@ import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Menu Entry Swapper",
+	description = "Change the default option that is displayed when hovering over objects",
+	tags = {"npcs", "inventory", "items", "objects"},
 	enabledByDefault = false
 )
 public class MenuEntrySwapperPlugin extends Plugin
@@ -64,7 +68,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static final String CONFIGURE = "Configure";
 	private static final String SAVE = "Save";
 	private static final String RESET = "Reset";
-	private static final String MENU_TARGET = "<col=ff9040>Shift-click";
+	private static final String MENU_TARGET = ColorUtil.prependColorTag("Shift-click", new Color(255, 144, 64));
 
 	private static final String CONFIG_GROUP = "shiftclick";
 	private static final String ITEM_KEY_PREFIX = "item_";
@@ -386,9 +390,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("pay", option, target, true);
 			}
 
-			if (config.swapAge())
+			if (config.swapDecant())
 			{
-				swap("age", option, target, true);
+				swap("decant", option, target, true);
 			}
 		}
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
@@ -444,10 +448,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapBoxTrap() && option.equals("take"))
 		{
 			swap("lay", option, target, true);
-		}
-		else if (config.swapCatacombEntrance() && option.equals("read"))
-		{
-			swap("investigate", option, target, true);
 		}
 		else if (config.swapChase() && option.equals("pick-up"))
 		{

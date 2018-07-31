@@ -51,11 +51,13 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Kourend Library"
+	name = "Kourend Library",
+	description = "Show where the books are found in the Kourend Library",
+	tags = {"arceuus", "magic", "runecrafting", "overlay", "panel"}
 )
 @Slf4j
 public class KourendLibraryPlugin extends Plugin
@@ -65,7 +67,7 @@ public class KourendLibraryPlugin extends Plugin
 	final static boolean debug = false;
 
 	@Inject
-	private PluginToolbar pluginToolbar;
+	private ClientToolbar clientToolbar;
 
 	@Inject
 	private Client client;
@@ -122,7 +124,7 @@ public class KourendLibraryPlugin extends Plugin
 
 		if (!config.hideButton())
 		{
-			pluginToolbar.addNavigation(navButton);
+			clientToolbar.addNavigation(navButton);
 		}
 	}
 
@@ -138,7 +140,7 @@ public class KourendLibraryPlugin extends Plugin
 		{
 			if (!config.hideButton())
 			{
-				pluginToolbar.addNavigation(navButton);
+				clientToolbar.addNavigation(navButton);
 			}
 			else
 			{
@@ -146,11 +148,11 @@ public class KourendLibraryPlugin extends Plugin
 				boolean inRegion = lp != null && lp.getWorldLocation().getRegionID() == REGION;
 				if (inRegion)
 				{
-					pluginToolbar.addNavigation(navButton);
+					clientToolbar.addNavigation(navButton);
 				}
 				else
 				{
-					pluginToolbar.removeNavigation(navButton);
+					clientToolbar.removeNavigation(navButton);
 				}
 			}
 		});
@@ -161,7 +163,7 @@ public class KourendLibraryPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 
-		pluginToolbar.removeNavigation(navButton);
+		clientToolbar.removeNavigation(navButton);
 	}
 
 	@Subscribe
@@ -169,7 +171,7 @@ public class KourendLibraryPlugin extends Plugin
 	{
 		if (MenuAction.GAME_OBJECT_FIRST_OPTION == menuOpt.getMenuAction() && menuOpt.getMenuTarget().contains("Bookshelf"))
 		{
-			lastBookcaseClick = WorldPoint.fromRegion(client, menuOpt.getActionParam(), menuOpt.getWidgetId(), client.getPlane());
+			lastBookcaseClick = WorldPoint.fromScene(client, menuOpt.getActionParam(), menuOpt.getWidgetId(), client.getPlane());
 		}
 	}
 
@@ -209,11 +211,11 @@ public class KourendLibraryPlugin extends Plugin
 			{
 				if (inRegion)
 				{
-					pluginToolbar.addNavigation(navButton);
+					clientToolbar.addNavigation(navButton);
 				}
 				else
 				{
-					pluginToolbar.removeNavigation(navButton);
+					clientToolbar.removeNavigation(navButton);
 				}
 			});
 			buttonAttached = inRegion;

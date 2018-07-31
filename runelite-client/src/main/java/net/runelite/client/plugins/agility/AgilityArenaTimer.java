@@ -33,9 +33,9 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.Timer;
 
 @Slf4j
-public class AgilityArenaTimer extends Timer
+class AgilityArenaTimer extends Timer
 {
-	public AgilityArenaTimer(Plugin plugin)
+	AgilityArenaTimer(Plugin plugin)
 	{
 		super(1, ChronoUnit.MINUTES, getTicketImage(), plugin);
 		setTooltip("Time left until location changes");

@@ -49,7 +49,7 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
 import net.runelite.api.Query;
-import net.runelite.api.Region;
+import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -87,7 +87,9 @@ import net.runelite.client.util.QueryRunner;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Clue Scroll"
+	name = "Clue Scroll",
+	description = "Show answers to clue scroll riddles, anagrams, ciphers, and cryptic clues",
+	tags = {"arrow", "hints", "world", "map"}
 )
 @Slf4j
 public class ClueScrollPlugin extends Plugin
@@ -337,9 +339,9 @@ public class ClueScrollPlugin extends Plugin
 
 					if (localLocation != null)
 					{
-						final Region region = client.getRegion();
-						final Tile[][][] tiles = region.getTiles();
-						final Tile tile = tiles[client.getPlane()][localLocation.getRegionX()][localLocation.getRegionY()];
+						final Scene scene = client.getScene();
+						final Tile[][][] tiles = scene.getTiles();
+						final Tile tile = tiles[client.getPlane()][localLocation.getSceneX()][localLocation.getSceneY()];
 
 						objectsToMark = Arrays.stream(tile.getGameObjects())
 							.filter(object -> object != null && object.getId() == objectId)
@@ -372,13 +374,13 @@ public class ClueScrollPlugin extends Plugin
 			}
 		}
 
-		if (clue instanceof CoordinateClue)
+		if (clue instanceof CoordinateClue || clue instanceof FairyRingClue)
 		{
 			ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
 
 			if (container != null)
 			{
-				equippedItems = container.getItems();
+				inventoryItems = container.getItems();
 			}
 		}
 
@@ -445,7 +447,7 @@ public class ClueScrollPlugin extends Plugin
 					.replaceAll("[ ]+", " ")
 					.toLowerCase());
 
-			if (clue != null && clue instanceof TextClueScroll)
+			if (clue instanceof TextClueScroll)
 			{
 				if (((TextClueScroll) clue).getText().equalsIgnoreCase(text))
 				{

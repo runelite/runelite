@@ -45,10 +45,10 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
-import net.runelite.client.util.SwingUtil;
+import net.runelite.client.util.ColorUtil;
 import org.apache.commons.lang3.StringUtils;
 
-public class PrayerDoseOverlay extends Overlay
+class PrayerDoseOverlay extends Overlay
 {
 	private static final float PULSE_TIME = 1200f;
 
@@ -97,7 +97,7 @@ public class PrayerDoseOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final Widget xpOrb = client.getWidget(WidgetInfo.QUICK_PRAYER_ORB);
+		final Widget xpOrb = client.getWidget(WidgetInfo.MINIMAP_QUICK_PRAYER_ORB);
 		if (xpOrb == null)
 		{
 			return null;
@@ -160,7 +160,7 @@ public class PrayerDoseOverlay extends Overlay
 		final float tickProgress = Math.min(timeSinceLastTick / PULSE_TIME, 1); // Cap between 0 and 1
 		final double t = tickProgress * Math.PI; // Convert to 0 - pi
 
-		graphics.setColor(SwingUtil.colorLerp(START_COLOR, END_COLOR, Math.sin(t)));
+		graphics.setColor(ColorUtil.colorLerp(START_COLOR, END_COLOR, Math.sin(t)));
 		graphics.setStroke(new BasicStroke(2));
 		graphics.drawOval(orbInnerX, orbInnerY, orbInnerSize, orbInnerSize);
 

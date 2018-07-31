@@ -56,7 +56,9 @@ import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Attack Styles"
+	name = "Attack Styles",
+	description = "Show your current attack style as an overlay",
+	tags = {"combat", "defence", "magic", "overlay", "ranged", "strength"}
 )
 @Slf4j
 public class AttackStylesPlugin extends Plugin

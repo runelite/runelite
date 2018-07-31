@@ -49,12 +49,13 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
 import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
 	name = "Developer Tools",
+	tags = {"panel"},
 	developerPlugin = true
 )
 @Slf4j
@@ -64,7 +65,7 @@ public class DevToolsPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private PluginToolbar pluginToolbar;
+	private ClientToolbar clientToolbar;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -142,7 +143,7 @@ public class DevToolsPlugin extends Plugin
 			.panel(panel)
 			.build();
 
-		pluginToolbar.addNavigation(navButton);
+		clientToolbar.addNavigation(navButton);
 
 		font = FontManager.getRunescapeFont()
 			.deriveFont(Font.BOLD, 16);
@@ -156,7 +157,7 @@ public class DevToolsPlugin extends Plugin
 		overlayManager.remove(sceneOverlay);
 		overlayManager.remove(cameraOverlay);
 		overlayManager.remove(worldMapLocationOverlay);
-		pluginToolbar.removeNavigation(navButton);
+		clientToolbar.removeNavigation(navButton);
 	}
 
 	@Subscribe
@@ -186,14 +187,30 @@ public class DevToolsPlugin extends Plugin
 				client.addChatMessage(ChatMessageType.SERVER, "", message, null);
 				break;
 			}
-			case "getvar":
+			case "getvarp":
+			{
+				int varp = Integer.parseInt(args[0]);
+				int value = client.getVarpValue(client.getVarps(), varp);
+				client.addChatMessage(ChatMessageType.SERVER, "", "VarPlayer " + varp + ": " + value, null);
+				break;
+			}
+			case "setvarp":
+			{
+				int varp = Integer.parseInt(args[0]);
+				int value = Integer.parseInt(args[1]);
+				client.setVarpValue(client.getVarps(), varp, value);
+				client.addChatMessage(ChatMessageType.SERVER, "", "Set VarPlayer " + varp + " to " + value, null);
+				eventBus.post(new VarbitChanged()); // fake event
+				break;
+			}
+			case "getvarb":
 			{
 				int varbit = Integer.parseInt(args[0]);
 				int value = client.getVarbitValue(client.getVarps(), varbit);
 				client.addChatMessage(ChatMessageType.SERVER, "", "Varbit " + varbit + ": " + value, null);
 				break;
 			}
-			case "setvar":
+			case "setvarb":
 			{
 				int varbit = Integer.parseInt(args[0]);
 				int value = Integer.parseInt(args[1]);
@@ -238,6 +255,15 @@ public class DevToolsPlugin extends Plugin
 				Player localPlayer = client.getLocalPlayer();
 				localPlayer.setGraphic(id);
 				localPlayer.setSpotAnimFrame(0);
+				break;
+			}
+			case "transform":
+			{
+				int id = Integer.parseInt(args[0]);
+				Player player = client.getLocalPlayer();
+				player.getPlayerComposition().setTransformedNpcId(id);
+				player.setIdlePoseAnimation(-1);
+				player.setPoseAnimation(-1);
 				break;
 			}
 		}

@@ -51,11 +51,13 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.screenmarkers.ui.ScreenMarkerPluginPanel;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Screen Markers"
+	name = "Screen Markers",
+	description = "Enable drawing of screen markers on top of the client",
+	tags = {"boxes", "overlay", "panel"}
 )
 @Slf4j
 public class ScreenMarkerPlugin extends Plugin
@@ -77,7 +79,7 @@ public class ScreenMarkerPlugin extends Plugin
 	private MouseManager mouseManager;
 
 	@Inject
-	private PluginToolbar pluginToolbar;
+	private ClientToolbar clientToolbar;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -104,7 +106,7 @@ public class ScreenMarkerPlugin extends Plugin
 		screenMarkers.forEach(overlayManager::add);
 
 		pluginPanel = injector.getInstance(ScreenMarkerPluginPanel.class);
-		pluginPanel.init();
+		pluginPanel.rebuild();
 
 		BufferedImage icon;
 		synchronized (ImageIO.class)
@@ -119,7 +121,7 @@ public class ScreenMarkerPlugin extends Plugin
 			.panel(pluginPanel)
 			.build();
 
-		pluginToolbar.addNavigation(navigationButton);
+		clientToolbar.addNavigation(navigationButton);
 
 		mouseListener = new ScreenMarkerMouseListener(this);
 	}
@@ -130,7 +132,7 @@ public class ScreenMarkerPlugin extends Plugin
 		overlayManager.remove(overlay);
 		overlayManager.removeIf(ScreenMarkerOverlay.class::isInstance);
 		screenMarkers.clear();
-		pluginToolbar.removeNavigation(navigationButton);
+		clientToolbar.removeNavigation(navigationButton);
 		setMouseListenerEnabled(false);
 		creatingScreenMarker = false;
 

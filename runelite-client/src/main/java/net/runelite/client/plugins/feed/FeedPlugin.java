@@ -42,19 +42,21 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.http.api.feed.FeedClient;
 import net.runelite.http.api.feed.FeedResult;
 
 @PluginDescriptor(
 	name = "News Feed",
+	description = "Show the latest RuneLite blog posts, OSRS news, and JMod Twitter posts",
+	tags = {"external", "integration", "panel", "twitter"},
 	loadWhenOutdated = true
 )
 @Slf4j
 public class FeedPlugin extends Plugin
 {
 	@Inject
-	private PluginToolbar pluginToolbar;
+	private ClientToolbar clientToolbar;
 
 	@Inject
 	private FeedConfig config;
@@ -97,14 +99,14 @@ public class FeedPlugin extends Plugin
 			.panel(feedPanel)
 			.build();
 
-		pluginToolbar.addNavigation(navButton);
+		clientToolbar.addNavigation(navButton);
 		executorService.submit(this::updateFeed);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		pluginToolbar.removeNavigation(navButton);
+		clientToolbar.removeNavigation(navButton);
 	}
 
 	private void updateFeed()

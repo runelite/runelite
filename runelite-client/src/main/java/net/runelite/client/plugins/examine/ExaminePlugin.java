@@ -61,7 +61,9 @@ import net.runelite.http.api.item.ItemPrice;
  * @author Adam
  */
 @PluginDescriptor(
-	name = "Examine"
+	name = "Examine",
+	description = "Send examine information to the API",
+	tags = {"npcs", "items", "inventory", "objects"}
 )
 @Slf4j
 public class ExaminePlugin extends Plugin

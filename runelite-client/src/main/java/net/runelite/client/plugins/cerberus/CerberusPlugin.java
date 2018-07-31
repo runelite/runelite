@@ -42,7 +42,11 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-@PluginDescriptor(name = "Cerberus")
+@PluginDescriptor(
+	name = "Cerberus",
+	description = "Show what to pray against the summoned souls",
+	tags = {"bosses", "combat", "ghosts", "prayer", "pve", "overlay", "souls"}
+)
 @Singleton
 public class CerberusPlugin extends Plugin
 {

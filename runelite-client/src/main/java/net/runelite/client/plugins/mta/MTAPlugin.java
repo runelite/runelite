@@ -39,7 +39,11 @@ import net.runelite.client.plugins.mta.graveyard.GraveyardRoom;
 import net.runelite.client.plugins.mta.telekinetic.TelekineticRoom;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-@PluginDescriptor(name = "Mage Training Arena")
+@PluginDescriptor(
+	name = "Mage Training Arena",
+	description = "Show helpful information for the Mage Training Arena minigame",
+	tags = {"mta", "magic", "minigame", "overlay"}
+)
 public class MTAPlugin extends Plugin
 {
 	@Inject

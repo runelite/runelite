@@ -29,6 +29,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.util.function.Consumer;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
@@ -39,12 +40,16 @@ import net.runelite.client.callback.ClientThread;
 @Slf4j
 public class ChatboxInputManager
 {
-	private static final int NO_LIMIT = Integer.MAX_VALUE;
+	public static final int NO_LIMIT = Integer.MAX_VALUE;
 	private final Client client;
 	private final ClientThread clientThread;
 
 	private Consumer<String> done;
+	private Consumer<String> changed;
 	private int characterLimit = NO_LIMIT;
+
+	@Getter
+	private boolean open = false;
 
 	@Inject
 	public ChatboxInputManager(Client client, ClientThread clientThread, EventBus eventBus)
@@ -68,12 +73,36 @@ public class ChatboxInputManager
 
 	public void openInputWindow(String text, String defaul, int characterLimit, Consumer<String> done)
 	{
+		openInputWindow(text, defaul, characterLimit, null, done);
+	}
+
+	public void openInputWindow(String text, String defaul, int characterLimit, Consumer<String> changed, Consumer<String> done)
+	{
 		this.done = done;
+		this.changed = changed;
 		this.characterLimit = characterLimit;
+		this.open = true;
 		clientThread.invokeLater(() -> client.runScript(
 			ScriptID.RUNELITE_CHATBOX_INPUT_INIT,
 			text,
 			defaul
+		));
+	}
+
+	/**
+	 * Closes the RuneScape-style chatbox input
+	 */
+	public void closeInputWindow()
+	{
+		if (!this.open)
+		{
+			return;
+		}
+		this.open = false;
+		clientThread.invokeLater(() -> client.runScript(
+			ScriptID.CLOSE_CHATBOX_INPUT,
+			1,
+			1
 		));
 	}
 
@@ -93,9 +122,17 @@ public class ChatboxInputManager
 			{
 				case 27: // Escape
 					str = "";
+					if (changed != null)
+					{
+						changed.accept(str);
+					}
 					// fallthrough
 				case '\n':
-					done.accept(str);
+					if (done != null)
+					{
+						done.accept(str);
+					}
+					this.open = false;
 					retval = 1;
 					break;
 				case '\b':
@@ -109,6 +146,11 @@ public class ChatboxInputManager
 					{
 						str += Character.toString((char) typedKey);
 					}
+			}
+
+			if (changed != null)
+			{
+				changed.accept(str);
 			}
 
 			client.getStringStack()[stringStackSize++] = str;

@@ -42,7 +42,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Blast Furnace"
+	name = "Blast Furnace",
+	description = "Show helpful information for the Blast Furnace minigame",
+	tags = {"minigame", "overlay", "skilling", "smithing"}
 )
 public class BlastFurnacePlugin extends Plugin
 {

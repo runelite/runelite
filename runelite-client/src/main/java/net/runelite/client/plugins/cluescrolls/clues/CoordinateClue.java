@@ -57,9 +57,9 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 			.left("Click the clue scroll along the edge of your world map to see where you should dig.")
 			.build());
 
-		if (plugin.getEquippedItems() != null)
+		if (plugin.getInventoryItems() != null)
 		{
-			if (!HAS_SPADE.fulfilledBy(plugin.getEquippedItems()))
+			if (!HAS_SPADE.fulfilledBy(plugin.getInventoryItems()))
 			{
 				panelComponent.getChildren().add(LineComponent.builder().left("").build());
 				panelComponent.getChildren().add(LineComponent.builder().left("Requires Spade!").leftColor(Color.RED).build());

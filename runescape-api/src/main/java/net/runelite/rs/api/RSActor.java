@@ -75,6 +75,14 @@ public interface RSActor extends RSRenderable, Actor
 	@Override
 	int getLogicalHeight();
 
+	@Import("idlePoseAnimation")
+	@Override
+	void setIdlePoseAnimation(int animation);
+
+	@Import("poseAnimation")
+	@Override
+	void setPoseAnimation(int animation);
+
 	@Import("actionFrame")
 	int getActionFrame();
 

@@ -35,7 +35,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
@@ -68,7 +67,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 	private static final Color SNAP_CORNER_ACTIVE_COLOR = new Color(0, 255, 0, 100);
 	private static final Color MOVING_OVERLAY_COLOR = new Color(255, 255, 0, 100);
 	private static final Color MOVING_OVERLAY_ACTIVE_COLOR = new Color(255, 255, 0, 200);
-	private final Provider<Client> clientProvider;
+	private final Client client;
 	private final OverlayManager overlayManager;
 	private final RuneLiteConfig runeLiteConfig;
 
@@ -87,13 +86,13 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 	@Inject
 	private OverlayRenderer(
-		final Provider<Client> clientProvider,
+		final Client client,
 		final OverlayManager overlayManager,
 		final RuneLiteConfig runeLiteConfig,
 		final MouseManager mouseManager,
 		final KeyManager keyManager)
 	{
-		this.clientProvider = clientProvider;
+		this.client = client;
 		this.overlayManager = overlayManager;
 		this.runeLiteConfig = runeLiteConfig;
 		keyManager.registerKeyListener(this);
@@ -111,11 +110,9 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 	public void render(Graphics2D graphics, final OverlayLayer layer)
 	{
-		final Client client = clientProvider.get();
 		final List<Overlay> overlays = overlayManager.getLayer(layer);
 
-		if (client == null
-			|| overlays == null
+		if (overlays == null
 			|| overlays.isEmpty()
 			|| client.getGameState() != GameState.LOGGED_IN
 			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null
@@ -205,9 +202,9 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 				}
 
 				safeRender(client, overlay, layer, graphics, location);
-				dimension.setSize(overlay.getBounds().getSize());
+				final Rectangle bounds = overlay.getBounds();
 
-				if (dimension.width == 0 && dimension.height == 0)
+				if (bounds.isEmpty())
 				{
 					continue;
 				}
@@ -216,7 +213,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 				{
 					final Color previous = graphics.getColor();
 					graphics.setColor(movedOverlay == overlay ? MOVING_OVERLAY_ACTIVE_COLOR : MOVING_OVERLAY_COLOR);
-					graphics.drawRect(location.x, location.y, dimension.width - 1, dimension.height - 1);
+					graphics.draw(bounds);
 					graphics.setColor(previous);
 				}
 			}
@@ -242,11 +239,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 				{
 					if (SwingUtilities.isRightMouseButton(mouseEvent))
 					{
-						// detached overlays have no place to reset back to
-						if (overlay.getPosition() != OverlayPosition.DETACHED)
-						{
-							overlayManager.resetOverlay(overlay);
-						}
+						overlayManager.resetOverlay(overlay);
 					}
 					else
 					{
@@ -274,13 +267,6 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 	public MouseEvent mouseDragged(MouseEvent mouseEvent)
 	{
 		if (!inOverlayDraggingMode)
-		{
-			return mouseEvent;
-		}
-
-		final Client client = clientProvider.get();
-
-		if (client == null)
 		{
 			return mouseEvent;
 		}
@@ -395,7 +381,6 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 			subGraphics.setFont(FontManager.getRunescapeFont());
 		}
 
-
 		subGraphics.translate(point.x, point.y);
 		final Dimension dimension = MoreObjects.firstNonNull(overlay.render(subGraphics), new Dimension());
 		subGraphics.dispose();
@@ -404,7 +389,6 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 	private boolean shouldInvalidateBounds()
 	{
-		final Client client = clientProvider.get();
 		final Widget chatbox = client.getWidget(WidgetInfo.CHATBOX_MESSAGES);
 		final boolean resizeableChanged = isResizeable != client.isResized();
 		boolean changed = false;

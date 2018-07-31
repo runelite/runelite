@@ -29,15 +29,13 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.4.5-SNAPSHOT</version>
+		<version>1.4.10-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
 	<name>RuneLite Client</name>
 
 	<properties>
-		<slf4j.version>1.7.12</slf4j.version>
-		<logback.version>1.2.3</logback.version>
 		<guice.version>4.1.0</guice.version>
 
 		<jarsigner.skip>true</jarsigner.skip>
@@ -47,12 +45,10 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>${logback.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.jopt-simple</groupId>
@@ -109,12 +105,6 @@
 		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>injected-client</artifactId>
-			<version>${project.version}</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.runelite</groupId>
-			<artifactId>scripts</artifactId>
 			<version>${project.version}</version>
 			<scope>runtime</scope>
 		</dependency>
@@ -280,6 +270,33 @@
 					<repositoryId>runelite/runelite</repositoryId>
 					<artifact>${project.build.directory}/${project.artifactId}-${project.version}-shaded.${project.packaging}</artifact>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>net.runelite</groupId>
+				<artifactId>script-assembler-plugin</artifactId>
+				<version>${project.version}</version>
+				<executions>
+					<execution>
+						<id>assemble</id>
+						<goals>
+							<goal>assemble</goal>
+						</goals>
+						<configuration>
+							<scriptDirectory>src/main/scripts</scriptDirectory>
+							<outputDirectory>${project.build.outputDirectory}/runelite</outputDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>build-index</id>
+						<goals>
+							<goal>build-index</goal>
+						</goals>
+						<configuration>
+							<archiveOverlayDirectory>${project.build.outputDirectory}/runelite</archiveOverlayDirectory>
+							<indexFile>${project.build.outputDirectory}/runelite/index</indexFile>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

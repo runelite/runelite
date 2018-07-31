@@ -28,6 +28,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.eventbus.Subscribe;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
@@ -62,6 +63,14 @@ public class ItemManager
 		private final boolean stackable;
 	}
 
+	@Value
+	private static class OutlineKey
+	{
+		private final int itemId;
+		private final int itemQuantity;
+		private final Color outlineColor;
+	}
+
 	private final Client client;
 	private final ScheduledExecutorService scheduledExecutorService;
 	private final ClientThread clientThread;
@@ -71,6 +80,7 @@ public class ItemManager
 	private final ConcurrentMap<Integer, ItemPrice> itemPrices = new ConcurrentHashMap<>();
 	private final LoadingCache<ImageKey, AsyncBufferedImage> itemImages;
 	private final LoadingCache<Integer, ItemComposition> itemCompositions;
+	private final LoadingCache<OutlineKey, BufferedImage> itemOutlines;
 
 	@Inject
 	public ItemManager(Client client, ScheduledExecutorService executor, ClientThread clientThread)
@@ -114,6 +124,18 @@ public class ItemManager
 				public ItemComposition load(Integer key) throws Exception
 				{
 					return client.getItemDefinition(key);
+				}
+			});
+
+		itemOutlines = CacheBuilder.newBuilder()
+			.maximumSize(128L)
+			.expireAfterAccess(1, TimeUnit.HOURS)
+			.build(new CacheLoader<OutlineKey, BufferedImage>()
+			{
+				@Override
+				public BufferedImage load(OutlineKey key) throws Exception
+				{
+					return loadItemOutline(key.itemId, key.itemQuantity, key.outlineColor);
 				}
 			});
 	}
@@ -246,6 +268,40 @@ public class ItemManager
 			return itemImages.get(new ImageKey(itemId, quantity, stackable));
 		}
 		catch (ExecutionException ex)
+		{
+			return null;
+		}
+	}
+
+	/**
+	 * Create item sprite and applies an outline.
+	 *
+	 * @param itemId item id
+	 * @param itemQuantity item quantity
+	 * @param outlineColor outline color
+	 * @return image
+	 */
+	private BufferedImage loadItemOutline(final int itemId, final int itemQuantity, final Color outlineColor)
+	{
+		final SpritePixels itemSprite = client.createItemSprite(itemId, itemQuantity, 1, 0, 0, true, 710);
+		return itemSprite.toBufferedOutline(outlineColor);
+	}
+
+	/**
+	 * Get item outline with a specific color.
+	 *
+	 * @param itemId item id
+	 * @param itemQuantity item quantity
+	 * @param outlineColor outline color
+	 * @return image
+	 */
+	public BufferedImage getItemOutline(final int itemId, final int itemQuantity, final Color outlineColor)
+	{
+		try
+		{
+			return itemOutlines.get(new OutlineKey(itemId, itemQuantity, outlineColor));
+		}
+		catch (ExecutionException e)
 		{
 			return null;
 		}
