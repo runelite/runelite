@@ -32,9 +32,21 @@ import net.runelite.client.config.ConfigItem;
 public interface OpponentInfoConfig extends Config
 {
 	@ConfigItem(
+		keyName = "showTarget",
+		name = "Show opponents target in overlay",
+		description = "Toggles whether to show your opponents target in the hitpoints overlay",
+		position = 1
+	)
+	default boolean showTarget()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "lookupOnInteraction",
 		name = "Lookup players on interaction",
-		description = "Display a combat stat comparison panel on player interaction. (follow, trade, challenge, attack, etc.)"
+		description = "Display a combat stat comparison panel on player interaction. (follow, trade, challenge, attack, etc.)",
+		position = 2
 	)
 	default boolean lookupOnInteraction()
 	{

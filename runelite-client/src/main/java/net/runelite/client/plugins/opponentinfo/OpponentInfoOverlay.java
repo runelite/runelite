@@ -78,6 +78,9 @@ class OpponentInfoOverlay extends Overlay
 		panelComponent.setGap(new Point(0, 2));
 	}
 
+	@Inject
+	private OpponentInfoConfig config;
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
@@ -113,8 +116,9 @@ class OpponentInfoOverlay extends Overlay
 			}
 
 			final Actor opponentsOpponent = opponent.getInteracting();
-			if (opponentsOpponent != null
-					&& (opponentsOpponent != client.getLocalPlayer() || client.getVar(Varbits.MULTICOMBAT_AREA) == 1))
+			if (config.showTarget()
+				&& opponentsOpponent != null
+				&& (opponentsOpponent != client.getLocalPlayer() || client.getVar(Varbits.MULTICOMBAT_AREA) == 1))
 			{
 				opponentsOpponentName = Text.removeTags(opponentsOpponent.getName());
 			}
