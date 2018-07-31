@@ -415,6 +415,21 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("harpoon", option, target, true);
 		}
+		else if (config.swapMountedGlory() != MountedGloryMode.EDGEVILLE && option.equals("edgeville"))
+		{
+			switch (config.swapMountedGlory())
+			{
+				case KARAMJA:
+					swap("karamja", option, target, true);
+					break;
+				case DRAYNOR_VILLAGE:
+					swap("draynor village", option, target, true);
+					break;
+				case AL_KHARID:
+					swap("al kharid", option, target, true);
+					break;
+			}
+		}
 		else if (config.swapHomePortal() != HouseMode.ENTER && option.equals("enter"))
 		{
 			switch (config.swapHomePortal())
