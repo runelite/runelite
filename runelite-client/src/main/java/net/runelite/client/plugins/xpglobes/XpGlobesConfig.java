@@ -108,4 +108,15 @@ public interface XpGlobesConfig extends Config
 	{
 		return 10;
 	}
+
+	@ConfigItem(
+		keyName = "enableColorBasedSkillOrbs",
+		name = "Choose colors based on skill",
+		description = "Change the color of the progress arc in the xp orb based on skill being trained.",
+		position = 8
+	)
+	default boolean enableColorBasedSkillOrbs()
+	{
+		return true;
+	}
 }
