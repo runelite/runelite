@@ -28,7 +28,8 @@ public enum Rock
 
 	static int clayrockID[] =
 			{
-					7487
+					7487,
+					7454
 			};
 
 	static int copperrockID[] =
@@ -54,7 +55,8 @@ public enum Rock
 
 	static int silverrockID[] =
 			{
-
+					7457,
+					7490
 			};
 
 	static int coalrockID[] =
@@ -77,12 +79,14 @@ public enum Rock
 
 	static int adamantiterockID[] =
 			{
-					7460
+					7460,
+					7493
 			};
 
 	static int runiterockID[] =
 			{
-
+					7461,
+					7494
 			}; //Need id's
 
 
@@ -204,7 +208,7 @@ public enum Rock
 			case Tin:
 				return 2000;
 			case Iron:
-				return 10000;
+				return 5400;
 			case Silver:
 				return 60000;
 			case Coal:
