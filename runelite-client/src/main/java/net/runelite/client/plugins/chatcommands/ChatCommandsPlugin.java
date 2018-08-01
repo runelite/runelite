@@ -421,7 +421,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		double rang = 0.325 * ((ranged / 2) + ranged);
 		double mag = 0.325 * ((mage / 2) + mage);
 		double finalCMB = Math.max(melee, Math.max(rang, mag));
-
+		
 		return (finalCMB+nextBase);
 	}
 
@@ -484,9 +484,9 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			int[] combatStats = {attackLevel, strengthLevel, defenseLevel, hitpointsLevel, magicLevel, rangedLevel, prayLevel};
 			final double combatLevel = calculateCombatLevel(combatStats);
 			final String response = new ChatMessageBuilder()
-                .append(ChatColorType.NORMAL)
-                .append("Cmb Lvl: ")
-                .append(ChatColorType.HIGHLIGHT)
+				.append(ChatColorType.NORMAL)
+				.append("Cmb Lvl: ")
+				.append(ChatColorType.HIGHLIGHT)
 				.append(String.format("%.2f", combatLevel))
 				.append(ChatColorType.NORMAL)
 				.append("  Att: ")
@@ -505,14 +505,14 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 				.append(ChatColorType.HIGHLIGHT)
 				.append(String.format("%,d", hitpointsLevel))
 				.append(ChatColorType.NORMAL)
-                .append("  Mage: ")
+				.append("  Mage: ")
 				.append(ChatColorType.HIGHLIGHT)
 				.append(String.format("%,d", magicLevel))
 				.append(ChatColorType.NORMAL)
 				.append("  Range: ")
 				.append(ChatColorType.HIGHLIGHT)
 				.append(String.format("%,d", rangedLevel))
-                .append(ChatColorType.NORMAL)
+				.append(ChatColorType.NORMAL)
 				.append("  Pray: ")
 				.append(ChatColorType.HIGHLIGHT)
 				.append(String.format("%,d", prayLevel))
@@ -643,7 +643,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	 */
 	private void playerSkillLookup(SetMessage setMessage, String search)
 	{
-	    search = SkillAbbreviations.getFullName(search);
+		search = SkillAbbreviations.getFullName(search);
 		final HiscoreSkill skill;
 		try
 		{
