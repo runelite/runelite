@@ -305,4 +305,15 @@ public interface TimersConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 25,
+		keyName = "logoutTimer",
+		name = "Logout Delay Timer",
+		description = "Configures whether a timer showing time until you can logout is shown"
+	)
+	default boolean showLogoutDelay()
+	{
+		return false;
+	}
 }

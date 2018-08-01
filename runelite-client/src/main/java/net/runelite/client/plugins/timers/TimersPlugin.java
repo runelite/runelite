@@ -33,6 +33,7 @@ import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.Hitsplat;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -45,6 +46,7 @@ import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GraphicChanged;
+import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
@@ -78,6 +80,7 @@ import static net.runelite.client.plugins.timers.GameTimer.ICEBLITZ;
 import static net.runelite.client.plugins.timers.GameTimer.ICEBURST;
 import static net.runelite.client.plugins.timers.GameTimer.ICERUSH;
 import static net.runelite.client.plugins.timers.GameTimer.IMBUEDHEART;
+import static net.runelite.client.plugins.timers.GameTimer.LOGOUT_DELAY;
 import static net.runelite.client.plugins.timers.GameTimer.MAGICIMBUE;
 import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD;
 import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD_RAID;
@@ -162,6 +165,22 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(OVERLOAD_RAID);
 			removeGameTimer(PRAYER_ENHANCE);
 			lastRaidVarb = raidVarb;
+		}
+	}
+
+	@Subscribe
+	public void onHitsplatApplied(HitsplatApplied event)
+	{
+		if (event.getActor() != client.getLocalPlayer())
+		{
+			return;
+		}
+
+		if (config.showLogoutDelay()
+			&& (event.getHitsplat().getHitsplatType() == Hitsplat.HitsplatType.DAMAGE
+			|| event.getHitsplat().getHitsplatType() == Hitsplat.HitsplatType.BLOCK))
+		{
+			createGameTimer(LOGOUT_DELAY);
 		}
 	}
 
@@ -277,6 +296,11 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(ICEBURST);
 			removeGameTimer(ICEBLITZ);
 			removeGameTimer(ICEBARRAGE);
+		}
+
+		if (!config.showLogoutDelay())
+		{
+			removeGameTimer(LOGOUT_DELAY);
 		}
 	}
 
