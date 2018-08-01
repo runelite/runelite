@@ -32,7 +32,6 @@ import com.google.inject.Provides;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -51,6 +50,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ImageUtil;
 import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
@@ -130,11 +130,7 @@ public class DevToolsPlugin extends Plugin
 
 		final DevToolsPanel panel = injector.getInstance(DevToolsPanel.class);
 
-		BufferedImage icon;
-		synchronized (ImageIO.class)
-		{
-			icon = ImageIO.read(getClass().getResourceAsStream("devtools_icon.png"));
-		}
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "devtools_icon.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Developer Tools")

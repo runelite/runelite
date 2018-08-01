@@ -30,8 +30,6 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -56,18 +54,8 @@ public class ScreenMarkerCreationPanel extends JPanel
 
 	static
 	{
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				CONFIRM_ICON = new ImageIcon(ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("confirm_icon.png")));
-				CANCEL_ICON = new ImageIcon(ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("cancel_icon.png")));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+		CONFIRM_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "confirm_icon.png"));
+		CANCEL_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "cancel_icon.png"));
 
 		final BufferedImage confirmIcon = ImageUtil.bufferedImageFromImage(CONFIRM_ICON.getImage());
 		CONFIRM_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(confirmIcon, 0.54f));

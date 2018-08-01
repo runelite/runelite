@@ -25,12 +25,12 @@
 package net.runelite.client.plugins.info;
 
 import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Info Panel",
@@ -50,11 +50,7 @@ public class InfoPlugin extends Plugin
 		final InfoPanel panel = injector.getInstance(InfoPanel.class);
 		panel.init();
 
-		BufferedImage icon;
-		synchronized (ImageIO.class)
-		{
-			icon = ImageIO.read(getClass().getResourceAsStream("info_icon.png"));
-		}
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "info_icon.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Info")

@@ -31,7 +31,9 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
+import java.io.IOException;
 import java.util.Arrays;
+import javax.imageio.ImageIO;
 import javax.swing.GrayFilter;
 import java.util.function.Predicate;
 
@@ -326,6 +328,30 @@ public class ImageUtil
 		g2d.dispose();
 
 		return outlinedImage;
+	}
+
+	/**
+	 * Reads an image resource from a given path relative to a given class.
+	 * This method is primarily shorthand for the synchronization and error handling required for
+	 * loading image resources from classes.
+	 *
+	 * @param c    The class to be referenced for resource path.
+	 * @param path The path, relative to the given class.
+	 * @return     A {@link BufferedImage} of the loaded image resource from the given path.
+	 */
+	public static BufferedImage getResourceStreamFromClass(final Class c, final String path)
+	{
+		try
+		{
+			synchronized (ImageIO.class)
+			{
+				return ImageIO.read(c.getResourceAsStream(path));
+			}
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**

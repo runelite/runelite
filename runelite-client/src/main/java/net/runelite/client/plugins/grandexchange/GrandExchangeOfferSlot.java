@@ -36,9 +36,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -84,18 +82,9 @@ public class GrandExchangeOfferSlot extends JPanel
 
 	static
 	{
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				RIGHT_ARROW_ICON = new ImageIcon(ImageUtil.alphaOffset(ImageIO.read(GrandExchangeOfferSlot.class.getResourceAsStream("/util/arrow_right.png")), 0.25f));
-				LEFT_ARROW_ICON = new ImageIcon(ImageUtil.flipImage(ImageUtil.bufferedImageFromImage(RIGHT_ARROW_ICON.getImage()), true, false));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+		final BufferedImage rightArrow = ImageUtil.alphaOffset(ImageUtil.getResourceStreamFromClass(GrandExchangeOfferSlot.class, "/util/arrow_right.png"), 0.25f);
+		RIGHT_ARROW_ICON = new ImageIcon(rightArrow);
+		LEFT_ARROW_ICON	= new ImageIcon(ImageUtil.flipImage(rightArrow, true, false));
 	}
 
 	/**

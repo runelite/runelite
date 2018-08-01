@@ -29,13 +29,11 @@ package net.runelite.client.plugins.cluescrolls;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -84,6 +82,7 @@ import net.runelite.client.plugins.cluescrolls.clues.ObjectClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.TextClueScroll;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QueryRunner;
 import net.runelite.client.util.Text;
 
@@ -403,17 +402,7 @@ public class ClueScrollPlugin extends Plugin
 			return emoteImage;
 		}
 
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				emoteImage = ImageIO.read(getClass().getResourceAsStream("emote.png"));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+		emoteImage = ImageUtil.getResourceStreamFromClass(getClass(), "emote.png");
 
 		return emoteImage;
 	}
@@ -430,17 +419,7 @@ public class ClueScrollPlugin extends Plugin
 			return mapArrow;
 		}
 
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				mapArrow = ImageIO.read(getClass().getResourceAsStream("/util/clue_arrow.png"));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+		mapArrow = ImageUtil.getResourceStreamFromClass(getClass(), "/util/clue_arrow.png");
 
 		return mapArrow;
 	}

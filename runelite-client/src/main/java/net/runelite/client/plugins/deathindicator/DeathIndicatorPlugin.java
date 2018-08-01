@@ -28,12 +28,10 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Set;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import static net.runelite.api.AnimationID.DEATH;
@@ -53,6 +51,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ui.overlay.infobox.Timer;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
+import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Death Indicator",
@@ -333,17 +332,7 @@ public class DeathIndicatorPlugin extends Plugin
 			return mapArrow;
 		}
 
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				mapArrow = ImageIO.read(getClass().getResourceAsStream("/util/clue_arrow.png"));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+		mapArrow = ImageUtil.getResourceStreamFromClass(getClass(), "/util/clue_arrow.png");
 
 		return mapArrow;
 	}

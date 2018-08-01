@@ -34,8 +34,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
-import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -81,19 +80,9 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 
 	static
 	{
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				ADD_ICON = new ImageIcon(ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("add_icon.png")));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
-
-		ADD_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(ImageUtil.bufferedImageFromImage(ADD_ICON.getImage()), 0.53f));
+		final BufferedImage addIcon = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "add_icon.png");
+		ADD_ICON = new ImageIcon(addIcon);
+		ADD_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(addIcon, 0.53f));
 	}
 
 	public void init()

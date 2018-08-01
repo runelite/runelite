@@ -90,6 +90,7 @@ import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.HotkeyListener;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
@@ -205,41 +206,30 @@ public class ScreenshotPlugin extends Plugin
 		SCREENSHOT_DIR.mkdirs();
 		keyManager.registerKeyListener(hotkeyListener);
 
-		try
-		{
-			BufferedImage iconImage;
-			synchronized (ImageIO.class)
-			{
-				iconImage = ImageIO.read(ScreenshotPlugin.class.getResourceAsStream("screenshot.png"));
-			}
+		final BufferedImage iconImage = ImageUtil.getResourceStreamFromClass(getClass(), "screenshot.png");
 
-			titleBarButton = NavigationButton.builder()
-				.tab(false)
-				.tooltip("Take screenshot")
-				.icon(iconImage)
-				.onClick(() -> takeScreenshot(format(new Date())))
-				.popup(ImmutableMap
-					.<String, Runnable>builder()
-					.put("Open screenshot folder...", () ->
+		titleBarButton = NavigationButton.builder()
+			.tab(false)
+			.tooltip("Take screenshot")
+			.icon(iconImage)
+			.onClick(() -> takeScreenshot(format(new Date())))
+			.popup(ImmutableMap
+				.<String, Runnable>builder()
+				.put("Open screenshot folder...", () ->
+				{
+					try
 					{
-						try
-						{
-							Desktop.getDesktop().open(SCREENSHOT_DIR);
-						}
-						catch (IOException ex)
-						{
-							log.warn("Error opening screenshot dir", ex);
-						}
-					})
-					.build())
-				.build();
+						Desktop.getDesktop().open(SCREENSHOT_DIR);
+					}
+					catch (IOException ex)
+					{
+						log.warn("Error opening screenshot dir", ex);
+					}
+				})
+				.build())
+			.build();
 
-			clientToolbar.addNavigation(titleBarButton);
-		}
-		catch (IOException ex)
-		{
-			log.warn("Error adding screenshot button to titlebar", ex);
-		}
+		clientToolbar.addNavigation(titleBarButton);
 	}
 
 	@Override

@@ -33,14 +33,12 @@ import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.imageio.ImageIO;
 import javax.inject.Singleton;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
@@ -67,19 +65,9 @@ class KourendLibraryPanel extends PluginPanel
 
 	static
 	{
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				BufferedImage resetIcon = ImageIO.read(KourendLibraryPanel.class.getResourceAsStream("/util/reset.png"));
-				RESET_ICON = new ImageIcon(resetIcon);
-				RESET_CLICK_ICON = new ImageIcon(ImageUtil.alphaOffset(resetIcon, -100));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+		final BufferedImage resetIcon = ImageUtil.getResourceStreamFromClass(KourendLibraryPanel.class, "/util/reset.png");
+		RESET_ICON = new ImageIcon(resetIcon);
+		RESET_CLICK_ICON = new ImageIcon(ImageUtil.alphaOffset(resetIcon, -100));
 	}
 
 	void init()
