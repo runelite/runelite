@@ -434,7 +434,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			if (config.swapFairyRing() == FairyRingMode.LAST_DESTINATION)
 			{
-				swap("last-destination (", option, target, false);
+				swap("last-destination", option, target, false);
 			}
 			else if (config.swapFairyRing() == FairyRingMode.CONFIGURE)
 			{
