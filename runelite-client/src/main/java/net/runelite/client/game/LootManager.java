@@ -253,7 +253,7 @@ public class LootManager
 			case NpcID.CAVE_KRAKEN:
 				worldLocation = krakenPlayerLocation;
 				break;
-			case NpcID.ZULRAH:        // Green
+			case NpcID.ZULRAH:      // Green
 			case NpcID.ZULRAH_2043: // Red
 			case NpcID.ZULRAH_2044: // Blue
 				for (Map.Entry<Integer, ItemStack> entry : itemSpawns.entries())
@@ -263,7 +263,7 @@ public class LootManager
 						int packed = entry.getKey();
 						int unpackedX = packed >> 8;
 						int unpackedY = packed & 0xFF;
-						worldLocation = new WorldPoint(unpackedX, unpackedY, worldLocation.getPlane());
+						worldLocation = WorldPoint.fromScene(client, unpackedX, unpackedY, worldLocation.getPlane());
 						break;
 					}
 				}
