@@ -33,6 +33,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
@@ -40,7 +41,9 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
+import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
@@ -57,6 +60,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.Text;
+import net.runelite.http.api.item.ItemPrice;
 
 @PluginDescriptor(
 	name = "Loot Tracker",
@@ -150,8 +154,8 @@ public class LootTrackerPlugin extends Plugin
 		final Collection<ItemStack> items = npcLootReceived.getItems();
 		final String name = npc.getName();
 		final int combat = npc.getCombatLevel();
-		final Collection<ItemStack> stackedItems = stack(items);
-		SwingUtilities.invokeLater(() -> panel.addLog(name, combat, stackedItems.toArray(new ItemStack[0])));
+		final LootTrackerItemEntry[] entries = buildEntries(stack(items));
+		SwingUtilities.invokeLater(() -> panel.addLog(name, combat, entries));
 	}
 
 	@Subscribe
@@ -161,8 +165,8 @@ public class LootTrackerPlugin extends Plugin
 		final Collection<ItemStack> items = playerLootReceived.getItems();
 		final String name = player.getName();
 		final int combat = player.getCombatLevel();
-		final Collection<ItemStack> stackedItems = stack(items);
-		SwingUtilities.invokeLater(() -> panel.addLog(name, combat, stackedItems.toArray(new ItemStack[0])));
+		final LootTrackerItemEntry[] entries = buildEntries(stack(items));
+		SwingUtilities.invokeLater(() -> panel.addLog(name, combat, entries));
 	}
 
 	@Subscribe
@@ -198,18 +202,14 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		// Convert container items to array of ItemStack
-		final ItemStack[] items = Arrays.stream(container.getItems())
+		final Collection<ItemStack> items = Arrays.stream(container.getItems())
 			.map(item -> new ItemStack(item.getId(), item.getQuantity()))
-			.toArray(ItemStack[]::new);
+			.collect(Collectors.toList());
 
-		if (items.length > 0)
+		if (!items.isEmpty())
 		{
-			log.debug("Loot Received from Event: {}", eventType);
-			for (ItemStack item : items)
-			{
-				log.debug("Item Received: {}x {}", item.getQuantity(), item.getId());
-			}
-			SwingUtilities.invokeLater(() -> panel.addLog(eventType, -1, items));
+			final LootTrackerItemEntry[] entries = buildEntries(stack(items));
+			SwingUtilities.invokeLater(() -> panel.addLog(eventType, -1, entries));
 		}
 		else
 		{
@@ -249,5 +249,34 @@ public class LootTrackerPlugin extends Plugin
 					break;
 			}
 		}
+	}
+
+	private LootTrackerItemEntry[] buildEntries(final Collection<ItemStack> itemStacks)
+	{
+		return itemStacks.stream().map(itemStack ->
+		{
+			final ItemComposition itemComposition = itemManager.getItemComposition(itemStack.getId());
+			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemStack.getId();
+			final ItemPrice itemPrice = itemManager.getItemPrice(realItemId);
+			final long price;
+			if (itemPrice != null)
+			{
+				price = (long) itemPrice.getPrice() * itemStack.getQuantity();
+			}
+			else if (realItemId == ItemID.COINS_995)
+			{
+				price = itemStack.getQuantity();
+			}
+			else
+			{
+				price = 0;
+			}
+
+			return new LootTrackerItemEntry(
+				itemStack.getId(),
+				itemComposition.getName(),
+				itemStack.getQuantity(),
+				price);
+		}).toArray(LootTrackerItemEntry[]::new);
 	}
 }
