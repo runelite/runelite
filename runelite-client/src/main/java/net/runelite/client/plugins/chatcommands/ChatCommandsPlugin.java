@@ -422,7 +422,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		double mag = 0.325 * ((mage / 2) + mage);
 		double finalCMB = Math.max(melee, Math.max(rang, mag));
 		
-		return (finalCMB+nextBase);
+		return (finalCMB + nextBase);
 	}
 
 	/**
