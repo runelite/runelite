@@ -30,8 +30,8 @@ import java.util.Collection;
 @Value
 public class LootRecord
 {
-	private final int npcID;
-	private final String npcName;
+	private final int eventId;
+	private final String eventType;
 	private final int killCount;
 	private Collection<ItemStack> drops;
 
@@ -44,13 +44,13 @@ public class LootRecord
 	public String toString()
 	{
 		StringBuilder m = new StringBuilder();
-		m.append("LootRecord{npcID=")
-				.append(npcID)
-				.append(", npcName=")
-				.append(npcName)
-				.append(", killCount=")
+		m.append("LootRecord{eventId=")
+				.append(eventId)
+				.append(",eventType=")
+				.append(eventType)
+				.append(",killCount=")
 				.append(killCount)
-				.append(", drops=");
+				.append(",drops=");
 
 		if (drops != null)
 		{

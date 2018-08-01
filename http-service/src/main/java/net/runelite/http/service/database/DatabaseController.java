@@ -44,23 +44,23 @@ import java.util.List;
 @RequestMapping("/database")
 public class DatabaseController
 {
-	// Storage for LootRecord's
+	// Storage for LootRecord
 	private static final String CREATE_KILLS = "CREATE TABLE IF NOT EXISTS `kills` (\n"
 			+ "  `id` INT AUTO_INCREMENT UNIQUE,\n"
 			+ "  `accountId` INT NOT NULL,\n"
 			+ "  `username` VARCHAR(255) NOT NULL,\n"
-			+ "  `npcName` VARCHAR(255),\n"
-			+ "  `npcID` INT NOT NULL,\n"
+			+ "  `eventType` VARCHAR(255),\n"
+			+ "  `eventId` INT NOT NULL,\n"
 			+ "  `killCount` INT NOT NULL,\n"
 			+ "  PRIMARY KEY (id),\n"
 			+ "  FOREIGN KEY (accountId) REFERENCES sessions(user) ON DELETE CASCADE\n"
 			+ ") ENGINE=InnoDB";
 
-	// Storage for DropEntry (Tied to LootRecord)
+	// Storage for ItemStack (Tied to LootRecord)
 	private static final String CREATE_DROPS = "CREATE TABLE IF NOT EXISTS `drops` (\n"
 			+ "  `killId` INT NOT NULL,\n"
-			+ "  `id` INT NOT NULL,\n"
-			+ "  `quantity` INT NOT NULL,\n"
+			+ "  `itemId` INT NOT NULL,\n"
+			+ "  `itemQuantity` INT NOT NULL,\n"
 			+ "  FOREIGN KEY (killId) REFERENCES kills(id) ON DELETE CASCADE\n"
 			+ ") ENGINE=InnoDB";
 
@@ -79,7 +79,7 @@ public class DatabaseController
 	private DatabaseService service;
 
 	@RequestMapping(value = "/loot", method = RequestMethod.GET)
-	public List<LootRecord> getLootRecordsByNpcName(HttpServletRequest request, HttpServletResponse response, @RequestParam String username, @RequestParam String id)
+	public List<LootRecord> getAllLootRecords(HttpServletRequest request, HttpServletResponse response, @RequestParam String username)
 	{
 		// Auth Check and grab user id
 		SessionEntry entry = service.authCheck(request, response);
@@ -87,7 +87,43 @@ public class DatabaseController
 		{
 			return null;
 		}
-		return service.getLootRecordsByNpcName(username, id, entry.getUser());
+		return service.getAllLootRecords(username, entry.getUser());
+	}
+
+	@RequestMapping(value = "/loot/eventType", method = RequestMethod.GET)
+	public List<LootRecord> getLootRecordsByEventType(HttpServletRequest request, HttpServletResponse response, @RequestParam String username, @RequestParam String id)
+	{
+		// Auth Check and grab user id
+		SessionEntry entry = service.authCheck(request, response);
+		if (entry == null)
+		{
+			return null;
+		}
+		return service.getLootRecordsByEventType(username, id, entry.getUser());
+	}
+
+	@RequestMapping(value = "/loot/eventId", method = RequestMethod.GET)
+	public List<LootRecord> getLootRecordsByEventId(HttpServletRequest request, HttpServletResponse response, @RequestParam String username, @RequestParam int id)
+	{
+		// Auth Check and grab user id
+		SessionEntry entry = service.authCheck(request, response);
+		if (entry == null)
+		{
+			return null;
+		}
+		return service.getLootRecordsByEventId(username, id, entry.getUser());
+	}
+
+	@RequestMapping(value = "/loot/id", method = RequestMethod.GET)
+	public List<LootRecord> getLootRecordsByEventIdOrType(HttpServletRequest request, HttpServletResponse response, @RequestParam String username, @RequestParam String id)
+	{
+		// Auth Check and grab user id
+		SessionEntry entry = service.authCheck(request, response);
+		if (entry == null)
+		{
+			return null;
+		}
+		return service.getLootRecordsByEventIdOrType(username, id, entry.getUser());
 	}
 
 	@RequestMapping(value = "/loot", method = RequestMethod.POST)

@@ -42,17 +42,29 @@ import java.util.List;
 @Service
 public class DatabaseService
 {
+	// MySql queries
+	private static final String insertKillQuery = "INSERT INTO kills (accountId, username, eventType, eventId, killCount) VALUES (:accountId, :username, :eventType, :eventId, :killCount)";
+	private static final String insertDropQuery = "INSERT INTO drops (killId, id, quantity) VALUES (LAST_INSERT_ID(), :id, :quantity)";
+	private static final String getAllRecordsQuery = "SELECT * FROM kills JOIN drops ON kills.id = drops.killId " +
+			"WHERE (kills.accountId = :accountId AND kills.username = :username)";
+	private static final String getRecordsByEventIdQuery = getAllRecordsQuery + " AND (kills.eventID = :eventId)";
+	private static final String getRecordsByEventTypeQuery = getAllRecordsQuery + " AND (kills.eventType = :eventType)";
+	private static final String getRecordsByEventIdOrTypeQuery = getAllRecordsQuery + " AND (kills.eventID = :id OR kills.eventType = :id)";
+
 	private final Sql2o sql2o;
 
 	@Autowired
-	public DatabaseService(
-		@Qualifier("Runelite SQL2O") Sql2o sql2o
-	)
+	public DatabaseService(@Qualifier("Runelite SQL2O") Sql2o sql2o)
 	{
 		this.sql2o = sql2o;
 	}
 
-	// Check header for RUNELITE-AUTH and validate the session
+	/**
+	 * Check header for RUNELITE-AUTH and validate the session via AuthFilter
+	 * @param request HttpServletRequest to pass to AuthFilter
+	 * @param response HttpServletResponse to pass to AuthFilter
+	 * @return SessionEntry if validated, null if not
+	 */
 	public SessionEntry authCheck(HttpServletRequest request, HttpServletResponse response)
 	{
 		// User Authentication
@@ -67,19 +79,20 @@ public class DatabaseService
 		}
 	}
 
-	public List<LootRecord> getLootRecordsByNpcName(String username, String npcName, int accountId)
+	/**
+	 * Retrieve all loot records from the MySql database
+	 * @param username in-game username
+	 * @param accountId runelite account id
+	 */
+	public List<LootRecord> getAllLootRecords(String username, int accountId)
 	{
-		String queryText = "SELECT * FROM kills JOIN drops ON kills.id = drops.killId " +
-				"WHERE (kills.accountId = :accountId AND kills.username = :username) AND (kills.npcID = :id OR kills.npcName = :id) ";
-
 		try (Connection con = sql2o.open())
 		{
 			List<LootRecord> result = new ArrayList<>();
 
-			List<LootRecordRow> records = con.createQuery(queryText)
+			List<LootRecordRow> records = con.createQuery(getAllRecordsQuery)
 					.addParameter("accountId", accountId)
 					.addParameter("username", username)
-					.addParameter("id", npcName)
 					.throwOnMappingFailure(false)
 					.executeAndFetch(LootRecordRow.class);
 
@@ -92,28 +105,115 @@ public class DatabaseService
 		}
 	}
 
-	// Insert loot record into mysql database
+	/**
+	 * Retrieve LootRecords in MySql database with matching EventId or EventType
+	 * @param username in-game username
+	 * @param id eventId or eventType to match
+	 * @param accountId runelite account id
+	 */
+	public List<LootRecord> getLootRecordsByEventIdOrType(String username, String id, int accountId)
+	{
+		try (Connection con = sql2o.open())
+		{
+			List<LootRecord> result = new ArrayList<>();
+
+			List<LootRecordRow> records = con.createQuery(getRecordsByEventIdOrTypeQuery)
+					.addParameter("accountId", accountId)
+					.addParameter("username", username)
+					.addParameter("id", id)
+					.throwOnMappingFailure(false)
+					.executeAndFetch(LootRecordRow.class);
+
+			if (records != null)
+			{
+				result = LootRecordRow.consolidateRows(records);
+			}
+
+			return result;
+		}
+	}
+
+	/**
+	 * Retrieve LootRecords in MySql database with matching EventId
+	 * @param username in-game username
+	 * @param id eventId value to match
+	 * @param accountId runelite account id
+	 */
+	public List<LootRecord> getLootRecordsByEventId(String username, int id, int accountId)
+	{
+		try (Connection con = sql2o.open())
+		{
+			List<LootRecord> result = new ArrayList<>();
+
+			List<LootRecordRow> records = con.createQuery(getRecordsByEventIdQuery)
+					.addParameter("accountId", accountId)
+					.addParameter("username", username)
+					.addParameter("eventId", id)
+					.throwOnMappingFailure(false)
+					.executeAndFetch(LootRecordRow.class);
+
+			if (records != null)
+			{
+				result = LootRecordRow.consolidateRows(records);
+			}
+
+			return result;
+		}
+	}
+
+	/**
+	 * Retrieve LootRecords in MySql database with matching EventType
+	 * @param username in-game username
+	 * @param type eventType value to match
+	 * @param accountId runelite account id
+	 */
+	public List<LootRecord> getLootRecordsByEventType(String username, String type, int accountId)
+	{
+		try (Connection con = sql2o.open())
+		{
+			List<LootRecord> result = new ArrayList<>();
+
+			List<LootRecordRow> records = con.createQuery(getRecordsByEventTypeQuery)
+					.addParameter("accountId", accountId)
+					.addParameter("username", username)
+					.addParameter("eventType", type)
+					.throwOnMappingFailure(false)
+					.executeAndFetch(LootRecordRow.class);
+
+			if (records != null)
+			{
+				result = LootRecordRow.consolidateRows(records);
+			}
+
+			return result;
+		}
+	}
+
+	/**
+	 * Store LootRecord in MySql database
+	 * @param record LootRecord to store
+	 * @param username in-game username to tie data too
+	 * @param accountId runelite account id to tie data too
+	 */
 	public void storeLootRecord(LootRecord record, String username, int accountId)
 	{
-		String killQuery = "INSERT INTO kills (accountId, username, npcName, npcID, killCount) VALUES (:accountId, :username, :npcName, :npcID, :killCount)";
-		String dropQuery = "INSERT INTO drops (killId, itemId, itemAmount) VALUES (LAST_INSERT_ID(), :itemId, :itemAmount)";
 		try (Connection con = sql2o.beginTransaction())
 		{
 			// Kill Entry Query
-			con.createQuery(killQuery)
+			con.createQuery(insertKillQuery)
 					.addParameter("accountId", accountId)
 					.addParameter("username", username)
-					.addParameter("npcName", record.getNpcName())
-					.addParameter("npcID", record.getNpcID())
+					.addParameter("eventType", record.getEventType())
+					.addParameter("eventId", record.getEventId())
 					.addParameter("killCount", record.getKillCount())
 					.executeUpdate();
 
 			// Append all queries for inserting drops
 			for (ItemStack drop : record.getDrops())
 			{
-				con.createQuery(dropQuery)
-					.addParameter("id", drop.getId())
-					.addParameter("quantity", drop.getQuantity())
+				con.createQuery(insertDropQuery)
+					.addParameter("itemId", drop.getId())
+					.addParameter("itemQuantity", drop.getQuantity())
 					.executeUpdate();
 			}
 			con.commit();

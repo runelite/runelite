@@ -24,7 +24,7 @@
  */
 package net.runelite.http.service.database;
 
-import lombok.Getter;
+import lombok.Value;
 import net.runelite.http.api.database.ItemStack;
 import net.runelite.http.api.database.LootRecord;
 import java.util.ArrayList;
@@ -32,25 +32,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Getter
+@Value
 public class LootRecordRow
 {
 	private final int id;
-	private final int npcID;
-	private final String npcName;
+	private final int eventId;
+	private final String eventType;
 	private final int killCount;
 	private final int itemId;
-	private final int itemAmount;
-
-	public LootRecordRow(int id, int npcId, String npcName, int kc, int itemId, int itemAmount)
-	{
-		this.id = id;
-		this.npcID = npcId;
-		this.npcName = npcName;
-		this.killCount = kc;
-		this.itemId = itemId;
-		this.itemAmount = itemAmount;
-	}
+	private final int itemQuantity;
 
 	/**
 	 * Consolidates all rows from query and makes unique LootRecords
@@ -64,13 +54,13 @@ public class LootRecordRow
 		HashMap<Integer, LootRecord> lootMap = new HashMap<>();
 		for (LootRecordRow r : list)
 		{
-			ItemStack drop = new ItemStack(r.itemId, r.itemAmount);
+			ItemStack drop = new ItemStack(r.itemId, r.itemQuantity);
 			LootRecord record = lootMap.get(r.id);
 			if (record == null)
 			{
 				List<ItemStack> drops = new ArrayList<>();
 				drops.add(drop);
-				lootMap.put(r.id, new LootRecord(r.npcID, r.npcName, r.killCount, drops));
+				lootMap.put(r.id, new LootRecord(r.eventId, r.eventType, r.killCount, drops));
 			}
 			else
 			{

@@ -44,6 +44,7 @@ public class DatabaseClient
 
 	private UUID uuid;
 
+	// Requires Session UUID for verification
 	public DatabaseClient(UUID uuid)
 	{
 		this.uuid = uuid;
@@ -51,40 +52,18 @@ public class DatabaseClient
 	}
 
 	/**
-	 * Wrapper for looking up by NPC Name (API can find records by NPC Name or NPC ID)
-	 *
-	 * @param username in-game username as String
-	 * @param id npc ID to filter for
-	 * @return List of requested LootRecords or null if an error querying database.
+	 * Calls the requested API URI and returns the requested data
+	 * @param url HttpUrl to make a get request for
+	 * @return List of LootRecords
 	 */
-	public List<LootRecord> getLootRecordsByNpcId(String username, int id)
+	private List<LootRecord> makeGetRequest(HttpUrl url)
 	{
+		// Don't make a request if the user isn't logged in
 		if (uuid == null)
+		{
+			log.debug("Attempted to get LootRecord data with null uuid, url: {}", url);
 			return null;
-
-		return getLootRecordsByNpcName(username, String.valueOf(id));
-	}
-
-	/**
-	 * Returns a List of LootRecords for this username filtered by npcName.
-	 *
-	 * @param username in-game username as String
-	 * @param npcName npc name as String
-	 * @return List of LootRecords from RuneLite Database
-	 */
-	public List<LootRecord> getLootRecordsByNpcName(String username, String npcName)
-	{
-		if (uuid == null)
-			return null;
-
-		DatabaseEndpoint bossEndpoint = DatabaseEndpoint.LOOT;
-		HttpUrl.Builder builder = bossEndpoint.getDatabaseURL().newBuilder()
-				.addQueryParameter("username", username)
-				.addQueryParameter("id", npcName);
-
-		HttpUrl url = builder.build();
-
-		log.debug("Built Database URI: {}", url);
+		}
 
 		Request request = new Request.Builder()
 				.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
@@ -119,6 +98,94 @@ public class DatabaseClient
 	}
 
 	/**
+	 * Wrapper for looking up LootRecords by eventId
+	 *
+	 * @param username in-game username as String
+	 * @param id eventID to filter for
+	 * @return List of requested LootRecords or null if an error querying database.
+	 */
+	public List<LootRecord> getLootRecordsByEventId(String username, int id)
+	{
+		DatabaseEndpoint endpoint = DatabaseEndpoint.LOOT_RECORDS_BY_ID;
+		HttpUrl.Builder builder = endpoint.getDatabaseURL().newBuilder()
+				.addQueryParameter("username", username)
+				.addQueryParameter("id", String.valueOf(id));
+
+		HttpUrl url = builder.build();
+		log.debug("Built Database URI: {}", url);
+
+		return makeGetRequest(url);
+	}
+
+	/**
+	 * Wrapper for looking up LootRecords by eventType
+	 *
+	 * @param username in-game username as String
+	 * @param type eventType to filter for
+	 * @return List of requested LootRecords or null if an error querying database.
+	 */
+	public List<LootRecord> getLootRecordsByEventType(String username, String type)
+	{
+		DatabaseEndpoint endpoint = DatabaseEndpoint.LOOT_RECORDS_BY_TYPE;
+		HttpUrl.Builder builder = endpoint.getDatabaseURL().newBuilder()
+				.addQueryParameter("username", username)
+				.addQueryParameter("id", type);
+
+		HttpUrl url = builder.build();
+		log.debug("Built Database URI: {}", url);
+
+		return makeGetRequest(url);
+	}
+
+	/**
+	 * Returns a List of LootRecords for this username filtered by eventType or eventId.
+	 *
+	 * @param username in-game username as String
+	 * @param id eventType or eventId to search for
+	 * @return List of LootRecords from RuneLite Database
+	 */
+	public List<LootRecord> getLootRecordsByEventIdOrType(String username, String id)
+	{
+		if (uuid == null)
+		{
+			return null;
+		}
+
+		DatabaseEndpoint endpoint = DatabaseEndpoint.LOOT_RECORDS_BY_EITHER;
+		HttpUrl.Builder builder = endpoint.getDatabaseURL().newBuilder()
+				.addQueryParameter("username", username)
+				.addQueryParameter("id", id);
+
+		HttpUrl url = builder.build();
+		log.debug("Built Database URI: {}", url);
+
+		return makeGetRequest(url);
+	}
+
+	/**
+	 * Returns a List of LootRecords for this username
+	 *
+	 * @param username in-game username as String
+	 * @return List of LootRecords from RuneLite Database
+	 */
+	public List<LootRecord> getLootRecords(String username)
+	{
+		if (uuid == null)
+		{
+			return null;
+		}
+
+		DatabaseEndpoint endpoint = DatabaseEndpoint.LOOT_RECORDS;
+		HttpUrl.Builder builder = endpoint.getDatabaseURL().newBuilder()
+				.addQueryParameter("username", username);
+
+		HttpUrl url = builder.build();
+		log.debug("Built Database URI: {}", url);
+
+		return makeGetRequest(url);
+	}
+
+	/**
 	 * Stores the Loot Record via a post request to the API and returns a success boolean
 	 *
 	 * @param record Loot Record to Store
@@ -129,10 +196,11 @@ public class DatabaseClient
 	{
 		if (uuid == null)
 		{
+			log.debug("Attempted to store LootRecord with null uuid, record: {}", record);
 			return false;
 		}
 
-		DatabaseEndpoint bossEndpoint = DatabaseEndpoint.LOOT;
+		DatabaseEndpoint bossEndpoint = DatabaseEndpoint.LOOT_RECORDS;
 		HttpUrl.Builder builder = bossEndpoint.getDatabaseURL().newBuilder()
 				.addQueryParameter("username", username);
 

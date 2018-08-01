@@ -35,6 +35,6 @@ public class ItemStack
 	@Override
 	public String toString()
 	{
-		return "ItemStack(id=" + id + ", quantity=" + quantity + ")";
+		return "ItemStack(id=" + id + ",quantity=" + quantity + ")";
 	}
 }

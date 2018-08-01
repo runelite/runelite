@@ -29,25 +29,28 @@ import okhttp3.HttpUrl;
 
 public enum DatabaseEndpoint
 {
-	LOOT("Loot", Constants.BASE_URL + "/loot");
+	LOOT_RECORDS("All Loot Records for logged in user", Constants.BASE_URL + "/loot"),
+	LOOT_RECORDS_BY_TYPE("Loot Records with matching eventType", Constants.BASE_URL + "/loot/eventType"),
+	LOOT_RECORDS_BY_ID("Loot Records with matching eventId", Constants.BASE_URL + "/loot/eventId"),
+	LOOT_RECORDS_BY_EITHER(" Loot Records with match eventId or eventType", Constants.BASE_URL + "/loot/id");
 
 	private static class Constants
 	{
 		private static final String BASE_URL = RuneLiteAPI.getApiBase() + "/database";
 	}
 
-	private final String name;
+	private final String description;
 	private final HttpUrl databaseURL;
 
 	DatabaseEndpoint(String name, String url)
 	{
-		this.name = name;
+		this.description = name;
 		this.databaseURL = HttpUrl.parse(url);
 	}
 
-	public String getName()
+	public String getDescription()
 	{
-		return this.name;
+		return this.description;
 	}
 
 	public HttpUrl getDatabaseURL()
