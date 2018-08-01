@@ -179,7 +179,7 @@ public class SlayerPlugin extends Plugin
 			streak = config.streak();
 			setExpeditiousChargeCount(config.expeditious());
 			setSlaughterChargeCount(config.slaughter());
-			clientThread.invokeLater(() -> setTask(config.taskName(), config.amount()));
+			clientThread.invoke(() -> setTask(config.taskName(), config.amount()));
 		}
 	}
 
@@ -459,7 +459,7 @@ public class SlayerPlugin extends Plugin
 
 		if (config.showInfobox())
 		{
-			clientThread.invokeLater(this::addCounter);
+			clientThread.invoke(this::addCounter);
 		}
 		else
 		{
