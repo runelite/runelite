@@ -405,23 +405,28 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	 * Calculates the players combat level
 	 * @param combatStats array containing combat skills
 	 */
-	private String calculateCombatLevel(double[] combatStats) {
-		double att = combatStats[0];
-		double str = combatStats[1];
-		double def = combatStats[2];
-		double hp = combatStats[3];
-		double mage = combatStats[4];
-		double ranged = combatStats[5];
-		double pray = combatStats[6];
+	private double calculateCombatLevel(int[] combatStats) {
+		int att = combatStats[0];
+		int str = combatStats[1];
+		int def = combatStats[2];
+		int hp = combatStats[3];
+		int mage = combatStats[4];
+		int ranged = combatStats[5];
+		int pray = combatStats[6];
 
 		int base = (int) (pray/2);
+		System.out.println(base);
 		double nextBase = (base+hp+def)/4.0;
+		System.out.println(nextBase);
 		double melee = 0.325*(att+str);
+		System.out.println(melee);
 		double rang = 0.325*((ranged/2)+ranged);
+        System.out.println(rang);
 		double mag = 0.325*((mage/2)+mage);
+        System.out.println(mag);
 		double finalCMB = Math.max(melee, Math.max(rang, mag));
 
-		return Double.toString(finalCMB+nextBase);
+		return (finalCMB+nextBase);
 	}
 
 	/**
@@ -438,8 +443,8 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		String hitpoints = SkillAbbreviations.getFullName("HP");
 		String mage = SkillAbbreviations.getFullName("MAGE");
 		String ranged = SkillAbbreviations.getFullName("RANGE");
-		String pray = SkillAbbreviations.getFullName("RANGE");
-		
+		String pray = SkillAbbreviations.getFullName("PRAY");
+
 		final HiscoreSkill attackSkill;
 		final HiscoreSkill strengthSkill;
 		final HiscoreSkill defenseSkill;
@@ -461,7 +466,6 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		{
 			return;
 		}
-
 		final HiscoreLookup lookup = getCorrectLookupFor(setMessage);
 
 		try
@@ -481,42 +485,42 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			final SingleHiscoreSkillResult prayResult = hiscoreClient.lookup(lookup.getName(), praySkill, lookup.getEndpoint());
 			final int prayLevel = prayResult.getSkill().getLevel();
 
-			double[] combatStats = {attackLevel, strengthLevel, defenseLevel, hitpointsLevel, magicLevel, rangedLevel, prayLevel};
-			final String combatLevel = calculateCombatLevel(combatStats);
-
-			String response = new ChatMessageBuilder()
+			int[] combatStats = {attackLevel, strengthLevel, defenseLevel, hitpointsLevel, magicLevel, rangedLevel, prayLevel};
+			final double combatLevel = calculateCombatLevel(combatStats);
+			//System.out.println("b");
+			final String response = new ChatMessageBuilder()
+                .append(ChatColorType.NORMAL)
+                .append("Cmb Lvl: ")
+                .append(ChatColorType.HIGHLIGHT)
+				.append(String.format("%.2f", combatLevel))
 				.append(ChatColorType.NORMAL)
-				.append("Cmb Level: ")
+				.append("  Att: ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(String.format("%,d", String.valueOf(combatLevel)))
+				.append(String.format("%,d", attackLevel))
 				.append(ChatColorType.NORMAL)
-				.append(" Att: ")
+				.append("  Str: ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(String.format("%,d", String.valueOf(attackLevel)))
+				.append(String.format("%,d", strengthLevel))
 				.append(ChatColorType.NORMAL)
-				.append(" Str: ")
+				.append("  Def: ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(String.format("%,d", String.valueOf(strengthLevel)))
+				.append(String.format("%,d", defenseLevel))
 				.append(ChatColorType.NORMAL)
-				.append(" Def: ")
+				.append("  Hp: ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(String.format("%,d", String.valueOf(defenseLevel)))
+				.append(String.format("%,d", hitpointsLevel))
 				.append(ChatColorType.NORMAL)
-				.append(" Hp: ")
+                .append("  Mage: ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(String.format("%,d", String.valueOf(hitpointsLevel)))
+				.append(String.format("%,d", magicLevel))
 				.append(ChatColorType.NORMAL)
-				.append(" Mag: ")
+				.append("  Range: ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(String.format("%,d", String.valueOf(magicLevel)))
-				.append(ChatColorType.NORMAL)
-				.append(" Rang: ")
+				.append(String.format("%,d", rangedLevel))
+                .append(ChatColorType.NORMAL)
+				.append("  Pray: ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(String.format("%,d", String.valueOf(rangedLevel)))
-					.append(ChatColorType.NORMAL)
-					.append(" Pray: ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(String.format("%,d", String.valueOf(prayLevel)))
+				.append(String.format("%,d", prayLevel))
 				.build();
 
 			log.debug("Setting response {}", response);
@@ -644,6 +648,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	 */
 	private void playerSkillLookup(SetMessage setMessage, String search)
 	{
+	    search = SkillAbbreviations.getFullName(search);
 		final HiscoreSkill skill;
 		try
 		{
