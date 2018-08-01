@@ -405,7 +405,8 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	 * Calculates the players combat level
 	 * @param combatStats array containing combat skills
 	 */
-	private double calculateCombatLevel(int[] combatStats) {
+	private double calculateCombatLevel(int[] combatStats) 
+	{
 		int att = combatStats[0];
 		int str = combatStats[1];
 		int def = combatStats[2];
@@ -414,16 +415,11 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		int ranged = combatStats[5];
 		int pray = combatStats[6];
 
-		int base = (int) (pray/2);
-		System.out.println(base);
-		double nextBase = (base+hp+def)/4.0;
-		System.out.println(nextBase);
-		double melee = 0.325*(att+str);
-		System.out.println(melee);
-		double rang = 0.325*((ranged/2)+ranged);
-        System.out.println(rang);
-		double mag = 0.325*((mage/2)+mage);
-        System.out.println(mag);
+		int base = (int) (pray / 2);
+		double nextBase = (base + hp + def) / 4.0;
+		double melee = 0.325 * (att + str);
+		double rang = 0.325 * ((ranged / 2) + ranged);
+		double mag = 0.325 * ((mage / 2) + mage);
 		double finalCMB = Math.max(melee, Math.max(rang, mag));
 
 		return (finalCMB+nextBase);
@@ -487,7 +483,6 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 
 			int[] combatStats = {attackLevel, strengthLevel, defenseLevel, hitpointsLevel, magicLevel, rangedLevel, prayLevel};
 			final double combatLevel = calculateCombatLevel(combatStats);
-			//System.out.println("b");
 			final String response = new ChatMessageBuilder()
                 .append(ChatColorType.NORMAL)
                 .append("Cmb Lvl: ")
