@@ -451,7 +451,7 @@ public interface ChatColorConfig extends Config
 	)
 	default Color transparentExamineHighlight()
 	{
-		return Color.decode("#0000FF");
+		return Color.GREEN;
 	}
 
 	@ConfigItem(
