@@ -40,7 +40,6 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Point;
-import net.runelite.client.util.SkillColor;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.Overlay;
@@ -48,6 +47,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
+import net.runelite.client.util.SkillColor;
 
 public class XpGlobesOverlay extends Overlay
 {
