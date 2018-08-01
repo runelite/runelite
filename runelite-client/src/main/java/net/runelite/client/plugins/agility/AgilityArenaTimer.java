@@ -26,11 +26,9 @@ package net.runelite.client.plugins.agility;
 
 import java.awt.image.BufferedImage;
 import java.time.temporal.ChronoUnit;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.Timer;
 
-@Slf4j
 class AgilityArenaTimer extends Timer
 {
 	AgilityArenaTimer(Plugin plugin, BufferedImage image)

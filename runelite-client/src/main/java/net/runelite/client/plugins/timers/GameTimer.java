@@ -30,14 +30,12 @@ import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.GraphicID;
 import net.runelite.api.ItemID;
 import net.runelite.api.SpriteID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 
-@Slf4j
 enum GameTimer
 {
 	STAMINA(ItemID.STAMINA_POTION4, GameTimerImageType.ITEM, "Stamina", 2, ChronoUnit.MINUTES),

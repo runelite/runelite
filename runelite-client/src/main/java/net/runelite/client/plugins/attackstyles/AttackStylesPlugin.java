@@ -32,7 +32,6 @@ import com.google.inject.Provides;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
@@ -60,7 +59,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	description = "Show your current attack style as an overlay",
 	tags = {"combat", "defence", "magic", "overlay", "ranged", "strength"}
 )
-@Slf4j
 public class AttackStylesPlugin extends Plugin
 {
 	private int attackStyleVarbit = -1;

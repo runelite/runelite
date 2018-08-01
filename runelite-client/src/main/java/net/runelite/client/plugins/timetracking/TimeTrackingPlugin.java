@@ -34,7 +34,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.coords.WorldPoint;
@@ -63,7 +62,6 @@ import net.runelite.client.util.ImageUtil;
 	description = "Enable the Time Tracking panel, which contains timers, stopwatches, and farming and bird house trackers",
 	tags = {"birdhouse", "farming", "hunter", "notifications", "skilling", "stopwatches", "timers", "panel"}
 )
-@Slf4j
 public class TimeTrackingPlugin extends Plugin
 {
 	@Inject

@@ -45,7 +45,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.SessionClose;
 import net.runelite.api.events.SessionOpen;
@@ -58,7 +57,6 @@ import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.RunnableExceptionLogger;
 
-@Slf4j
 @Singleton
 public class InfoPanel extends PluginPanel
 {

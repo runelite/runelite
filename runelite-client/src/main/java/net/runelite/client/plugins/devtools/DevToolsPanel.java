@@ -30,12 +30,10 @@ import java.awt.GridLayout;
 import javax.inject.Inject;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 
-@Slf4j
 public class DevToolsPanel extends PluginPanel
 {
 	private final Client client;

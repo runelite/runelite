@@ -38,7 +38,6 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
 
 /**
@@ -49,7 +48,6 @@ import net.runelite.client.ui.ColorScheme;
  *
  * @author Psikoi
  */
-@Slf4j
 public class MaterialTab extends JLabel
 {
 	private static final Border SELECTED_BORDER = new CompoundBorder(

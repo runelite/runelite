@@ -31,7 +31,6 @@ import java.awt.Rectangle;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -40,7 +39,6 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.TooltipComponent;
 
 @Singleton
-@Slf4j
 public class TooltipOverlay extends Overlay
 {
 	private static final int OFFSET = 24;
