@@ -34,6 +34,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
@@ -47,7 +48,7 @@ import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -69,10 +70,10 @@ public class HiscorePlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private PluginToolbar pluginToolbar;
+	private Provider<MenuManager> menuManager;
 
 	@Inject
-	private MenuManager menuManager;
+	private ClientToolbar clientToolbar;
 
 	@Inject
 	private ScheduledExecutorService executor;
@@ -110,11 +111,11 @@ public class HiscorePlugin extends Plugin
 			.panel(hiscorePanel)
 			.build();
 
-		pluginToolbar.addNavigation(navButton);
+		clientToolbar.addNavigation(navButton);
 
-		if (config.playerOption())
+		if (config.playerOption() && client != null)
 		{
-			menuManager.addPlayerMenuItem(LOOKUP);
+			menuManager.get().addPlayerMenuItem(LOOKUP);
 		}
 		if (config.autocomplete())
 		{
@@ -126,8 +127,12 @@ public class HiscorePlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		hiscorePanel.removeInputKeyListener(autocompleter);
-		pluginToolbar.removeNavigation(navButton);
-		menuManager.removePlayerMenuItem(LOOKUP);
+		clientToolbar.removeNavigation(navButton);
+
+		if (client != null)
+		{
+			menuManager.get().removePlayerMenuItem(LOOKUP);
+		}
 	}
 
 	@Subscribe
@@ -135,11 +140,14 @@ public class HiscorePlugin extends Plugin
 	{
 		if (event.getGroup().equals("hiscore"))
 		{
-			menuManager.removePlayerMenuItem(LOOKUP);
-
-			if (config.playerOption())
+			if (client != null)
 			{
-				menuManager.addPlayerMenuItem(LOOKUP);
+				menuManager.get().removePlayerMenuItem(LOOKUP);
+
+				if (config.playerOption())
+				{
+					menuManager.get().addPlayerMenuItem(LOOKUP);
+				}
 			}
 
 			if (event.getKey().equals("autocomplete"))

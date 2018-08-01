@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2017-2018, Adam <Adam@sigterm.info>
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,60 +24,21 @@
  */
 package net.runelite.client.ui;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.TitleToolbarButtonAdded;
-import net.runelite.client.events.TitleToolbarButtonRemoved;
+import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
 
-/**
- * Title toolbar buttons holder.
- */
-@Singleton
-public class TitleToolbar
+public class FontManagerTest
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getTooltip));
-
-	@Inject
-	private TitleToolbar(final EventBus eventBus)
+	@Test
+	public void getRunescapeFont()
 	{
-		this.eventBus = eventBus;
+		assertNotNull(FontManager.getRunescapeFont());
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	@Test
+	public void getRunescapeSmallFont()
 	{
-		if (buttons.contains(button))
-		{
-			return;
-		}
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new TitleToolbarButtonAdded(button, index));
-		}
+		assertNotNull(FontManager.getRunescapeSmallFont());
 	}
 
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
-	{
-		int index = buttons.headSet(button).size();
-
-		if (buttons.remove(button))
-		{
-			eventBus.post(new TitleToolbarButtonRemoved(button, index));
-		}
-	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,14 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.client.plugins.fishing;
 
+import java.time.Instant;
+import lombok.AllArgsConstructor;
 import lombok.Value;
-import net.runelite.client.ui.NavigationButton;
+import net.runelite.api.coords.WorldPoint;
 
+@AllArgsConstructor
 @Value
-public class TitleToolbarButtonRemoved
+class MinnowSpot
 {
-	private NavigationButton button;
-	private int index;
+	private final WorldPoint loc;
+	private final Instant time;
 }

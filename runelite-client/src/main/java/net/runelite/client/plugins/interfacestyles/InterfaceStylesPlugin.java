@@ -80,7 +80,7 @@ public class InterfaceStylesPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		clientThread.invokeLater(() ->
+		clientThread.invoke(() ->
 		{
 			overrideSprites();
 			overrideWidgetSprites();
@@ -92,7 +92,7 @@ public class InterfaceStylesPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		clientThread.invokeLater(() ->
+		clientThread.invoke(() ->
 		{
 			restoreWidgetDimensions();
 			removeGameframe();
@@ -104,7 +104,7 @@ public class InterfaceStylesPlugin extends Plugin
 	{
 		if (config.getGroup().equals("interfaceStyles"))
 		{
-			clientThread.invokeLater(() ->
+			clientThread.invoke(() ->
 			{
 				removeGameframe();
 				overrideSprites();

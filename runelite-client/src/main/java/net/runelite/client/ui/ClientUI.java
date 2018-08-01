@@ -66,10 +66,8 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ExpandResizeType;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.config.WarningOnExit;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
-import net.runelite.client.events.TitleToolbarButtonAdded;
-import net.runelite.client.events.TitleToolbarButtonRemoved;
+import net.runelite.client.events.NavigationButtonAdded;
+import net.runelite.client.events.NavigationButtonRemoved;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.ui.skin.SubstanceRuneLiteLookAndFeel;
 import net.runelite.client.util.OSType;
@@ -171,19 +169,22 @@ public class ClientUI
 	}
 
 	@Subscribe
-	public void onPluginToolbarButtonAdded(final PluginToolbarButtonAdded event)
+	public void onNavigationButtonAdded(final NavigationButtonAdded event)
 	{
 		SwingUtilities.invokeLater(() ->
 		{
 			final NavigationButton navigationButton = event.getButton();
 			final PluginPanel pluginPanel = navigationButton.getPanel();
+			final boolean inTitle = !event.getButton().isTab() &&
+				(config.enableCustomChrome() || SwingUtil.isCustomTitlePanePresent(frame));
+			final int iconSize = 16;
 
 			if (pluginPanel != null)
 			{
 				navContainer.add(pluginPanel.getWrappedPanel(), navigationButton.getTooltip());
 			}
 
-			final JButton button = SwingUtil.createSwingButton(navigationButton, 0, (navButton, jButton) ->
+			final JButton button = SwingUtil.createSwingButton(navigationButton, iconSize, (navButton, jButton) ->
 			{
 				final PluginPanel panel = navButton.getPanel();
 
@@ -222,55 +223,30 @@ public class ClientUI
 				}
 			});
 
-			pluginToolbar.addComponent(event.getIndex(), event.getButton(), button);
+			if (inTitle)
+			{
+				titleToolbar.addComponent(event.getButton(), button);
+			}
+			else
+			{
+				pluginToolbar.addComponent(event.getButton(), button);
+			}
 		});
 	}
 
 	@Subscribe
-	public void onPluginToolbarButtonRemoved(final PluginToolbarButtonRemoved event)
+	public void onNavigationButtonRemoved(final NavigationButtonRemoved event)
 	{
 		SwingUtilities.invokeLater(() ->
 		{
 			pluginToolbar.removeComponent(event.getButton());
+			titleToolbar.removeComponent(event.getButton());
 			final PluginPanel pluginPanel = event.getButton().getPanel();
 
 			if (pluginPanel != null)
 			{
 				navContainer.remove(pluginPanel.getWrappedPanel());
 			}
-		});
-	}
-
-	@Subscribe
-	public void onTitleToolbarButtonAdded(final TitleToolbarButtonAdded event)
-	{
-		SwingUtilities.invokeLater(() ->
-		{
-			final int iconSize = ClientTitleToolbar.TITLEBAR_SIZE - 6;
-			final JButton button = SwingUtil.createSwingButton(event.getButton(), iconSize, null);
-
-			if (config.enableCustomChrome() || SwingUtil.isCustomTitlePanePresent(frame))
-			{
-				titleToolbar.addComponent(event.getButton(), button);
-				return;
-			}
-
-			pluginToolbar.addComponent(-1, event.getButton(), button);
-		});
-	}
-
-	@Subscribe
-	public void onTitleToolbarButtonRemoved(final TitleToolbarButtonRemoved event)
-	{
-		SwingUtilities.invokeLater(() ->
-		{
-			if (config.enableCustomChrome() || SwingUtil.isCustomTitlePanePresent(frame))
-			{
-				titleToolbar.removeComponent(event.getButton());
-				return;
-			}
-
-			pluginToolbar.removeComponent(event.getButton());
 		});
 	}
 
@@ -337,9 +313,6 @@ public class ClientUI
 			frame.addKeyListener(uiKeyListener);
 			keyManager.registerKeyListener(uiKeyListener);
 
-			// Update config
-			updateFrameConfig(true);
-
 			// Decorate window with custom chrome and titlebar if needed
 			final boolean withTitleBar = config.enableCustomChrome();
 			frame.setUndecorated(withTitleBar);
@@ -391,10 +364,33 @@ public class ClientUI
 				});
 			}
 
-			// Show frame
+			// Update config
+			updateFrameConfig(true);
+
+			// Create hide sidebar button
+			sidebarNavigationButton = NavigationButton
+				.builder()
+				.priority(100)
+				.icon(SIDEBAR_CLOSE)
+				.onClick(this::toggleSidebar)
+				.build();
+
+			sidebarNavigationJButton = SwingUtil.createSwingButton(
+				sidebarNavigationButton,
+				0,
+				null);
+
+			titleToolbar.addComponent(sidebarNavigationButton, sidebarNavigationJButton);
+			toggleSidebar();
+
+			// Layout frame
 			frame.pack();
 			frame.revalidateMinimumSize();
 
+			// Create tray icon (needs to be created after frame is packed)
+			trayIcon = SwingUtil.createTrayIcon(ICON, properties.getTitle(), frame);
+
+			// Move frame around (needs to be done after frame is packed)
 			if (config.rememberScreenBounds())
 			{
 				try
@@ -404,6 +400,7 @@ public class ClientUI
 					if (clientBounds != null)
 					{
 						frame.setBounds(clientBounds);
+						frame.revalidateMinimumSize();
 					}
 					else
 					{
@@ -426,13 +423,6 @@ public class ClientUI
 				frame.setLocationRelativeTo(frame.getOwner());
 			}
 
-			trayIcon = SwingUtil.createTrayIcon(ICON, properties.getTitle(), frame);
-
-			frame.setVisible(true);
-			frame.toFront();
-			requestFocus();
-			giveClientFocus();
-
 			// If the frame is well hidden (e.g. unplugged 2nd screen),
 			// we want to move it back to default position as it can be
 			// hard for the user to reposition it themselves otherwise.
@@ -446,20 +436,11 @@ public class ClientUI
 				frame.setLocationRelativeTo(frame.getOwner());
 			}
 
-			// Create hide sidebar button
-			sidebarNavigationButton = NavigationButton
-				.builder()
-				.icon(SIDEBAR_CLOSE)
-				.onClick(this::toggleSidebar)
-				.build();
-
-			sidebarNavigationJButton = SwingUtil.createSwingButton(
-				sidebarNavigationButton,
-				0,
-				null);
-
-			titleToolbar.addComponent(sidebarNavigationButton, sidebarNavigationJButton);
-			toggleSidebar();
+			// Show frame
+			frame.setVisible(true);
+			frame.toFront();
+			requestFocus();
+			giveClientFocus();
 			log.info("Showing frame {}", frame);
 		});
 
