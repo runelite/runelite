@@ -197,7 +197,9 @@ class Obstacles
 		// Morytania Pirate Ship
 		ROCK_16115,
 		// Agility Pyramid Entrance
-		CLIMBING_ROCKS_11948, CLIMBING_ROCKS_11949
+		CLIMBING_ROCKS_11948, CLIMBING_ROCKS_11949,
+		// Ungael and Vorkath crater
+		NULL_25337, NULL_29868, NULL_29869, NULL_29870, ICE_CHUNKS_31822, NULL_31823, ICE_CHUNKS_31990
 	);
 
 	static final Set<Integer> TRAP_OBSTACLE_IDS = ImmutableSet.of(
