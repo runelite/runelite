@@ -39,13 +39,11 @@ public enum Rock
 			};
 
 
-	//tin
 	static int tinrockID[] =
 			{
 					7485,
 					7486,
 			};
-
 
 	static int ironrockID[] =
 			{
@@ -87,7 +85,7 @@ public enum Rock
 			{
 					7461,
 					7494
-			}; //Need id's
+			};
 
 
 	//returns if the gameObject is a mining rock
