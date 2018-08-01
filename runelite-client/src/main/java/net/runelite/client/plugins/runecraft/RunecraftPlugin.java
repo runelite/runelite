@@ -315,7 +315,7 @@ public class RunecraftPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameObjectDeSpawned(GameObjectDespawned event)
+	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		switch (event.getGameObject().getId())
 		{
