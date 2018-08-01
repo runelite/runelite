@@ -33,10 +33,10 @@ import net.runelite.client.config.ConfigItem;
 public interface XpGlobesConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enableTooltips",
-		name = "Enable Tooltips",
-		description = "Configures whether or not to show tooltips",
-		position = 0
+			keyName = "enableTooltips",
+			name = "Enable Tooltips",
+			description = "Configures whether or not to show tooltips",
+			position = 0
 	)
 	default boolean enableTooltips()
 	{
@@ -44,10 +44,22 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "Progress arc color",
-		name = "Progress arc color",
-		description = "Change the color of the progress arc in the xp orb",
-		position = 1
+			keyName = "enableColorBasedSkillOrbs",
+			name = "Progress arc color based on skill",
+			description = "Change the color of the progress arc in the xp orb based on skill being trained" +
+					"<br>This overrides the \"Progress arc color\" option",
+			position = 1
+	)
+	default boolean enableColorBasedSkillOrbs()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "Progress arc color",
+			name = "Progress arc color",
+			description = "Change the color of the progress arc in the xp orb",
+			position = 2
 	)
 	default Color progressArcColor()
 	{
@@ -55,10 +67,10 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "Progress orb outline color",
-		name = "Progress orb outline color",
-		description = "Change the color of the progress orb outline",
-		position = 2
+			keyName = "Progress orb outline color",
+			name = "Progress orb outline color",
+			description = "Change the color of the progress orb outline",
+			position = 3
 	)
 	default Color progressOrbOutLineColor()
 	{
@@ -66,10 +78,10 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "Progress orb background color",
-		name = "Progress orb background color",
-		description = "Change the color of the progress orb background",
-		position = 3
+			keyName = "Progress orb background color",
+			name = "Progress orb background color",
+			description = "Change the color of the progress orb background",
+			position = 4
 	)
 	default Color progressOrbBackgroundColor()
 	{
@@ -77,10 +89,10 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "Progress arc width",
-		name = "Progress arc width",
-		description = "Change the stroke width of the progress arc",
-		position = 4
+			keyName = "Progress arc width",
+			name = "Progress arc width",
+			description = "Change the stroke width of the progress arc",
+			position = 5
 	)
 	default int progressArcStrokeWidth()
 	{
@@ -88,10 +100,10 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "Orb size",
-		name = "Size of orbs",
-		description = "Change the size of the xp orbs",
-		position = 5
+			keyName = "Orb size",
+			name = "Size of orbs",
+			description = "Change the size of the xp orbs",
+			position = 6
 	)
 	default int xpOrbSize()
 	{
@@ -99,24 +111,13 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "Orb duration",
-		name = "Duration of orbs",
-		description = "Change the duration the xp orbs are visible",
-		position = 6
+			keyName = "Orb duration",
+			name = "Duration of orbs",
+			description = "Change the duration the xp orbs are visible",
+			position = 7
 	)
 	default int xpOrbDuration()
 	{
 		return 10;
-	}
-
-	@ConfigItem(
-		keyName = "enableColorBasedSkillOrbs",
-		name = "Choose colors based on skill",
-		description = "Change the color of the progress arc in the xp orb based on skill being trained.",
-		position = 8
-	)
-	default boolean enableColorBasedSkillOrbs()
-	{
-		return true;
 	}
 }
