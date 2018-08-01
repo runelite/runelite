@@ -79,6 +79,9 @@ public class RunecraftPlugin extends Plugin
 	private static final String POUCH_DECAYED_MESSAGE = "Your pouch has decayed through use.";
 	private static final int DESTROY_ITEM_WIDGET_ID = WidgetInfo.DESTROY_ITEM_YES.getId();
 
+	private static final int DENSE_RUNESTONE_SOUTH_ID = NullObjectID.NULL_10796;
+	private static final int DENSE_RUNESTONE_NORTH_ID = NullObjectID.NULL_8981;
+
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<DecorativeObject> abyssObjects = new HashSet<>();
 
@@ -300,28 +303,28 @@ public class RunecraftPlugin extends Plugin
 		GameObject obj = event.getGameObject();
 		int id = obj.getId();
 
-		if (id == NullObjectID.NULL_10796)
+		switch (id)
 		{
-			denseRunestoneSouth = obj;
-		}
-		else if (id == NullObjectID.NULL_8981)
-		{
-			denseRunestoneNorth = obj;
+			case DENSE_RUNESTONE_SOUTH_ID:
+				denseRunestoneSouth = obj;
+				break;
+			case DENSE_RUNESTONE_NORTH_ID:
+				denseRunestoneNorth = obj;
+				break;
 		}
 	}
 
 	@Subscribe
 	public void onGameObjectDeSpawned(GameObjectDespawned event)
 	{
-		int id = event.getGameObject().getId();
-
-		if (id == NullObjectID.NULL_10796)
+		switch (event.getGameObject().getId())
 		{
-			denseRunestoneSouth = null;
-		}
-		else if (id == NullObjectID.NULL_8981)
-		{
-			denseRunestoneNorth = null;
+			case DENSE_RUNESTONE_SOUTH_ID:
+				denseRunestoneSouth = null;
+				break;
+			case DENSE_RUNESTONE_NORTH_ID:
+				denseRunestoneNorth = null;
+				break;
 		}
 	}
 
