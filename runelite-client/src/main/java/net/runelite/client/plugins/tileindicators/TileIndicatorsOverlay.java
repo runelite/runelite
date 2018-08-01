@@ -27,6 +27,7 @@ package net.runelite.client.plugins.tileindicators;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Color;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
@@ -66,9 +67,14 @@ public class TileIndicatorsOverlay extends Overlay
 		{
 			return null;
 		}
-		
-		OverlayUtil.renderPolygon(graphics, poly, config.highlightDestinationColor());
 
+		if(config.colorize()){
+			OverlayUtil.renderPolygon(graphics, poly, Color.YELLOW);
+
+		}
+		else {
+			OverlayUtil.renderPolygon(graphics, poly, config.highlightDestinationColor());
+		}
 		return null;
 	}
 }
