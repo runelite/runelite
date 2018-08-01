@@ -76,6 +76,7 @@ import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.B
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.NAME;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.OPTION;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.http.api.item.ItemPrice;
 
 @PluginDescriptor(
@@ -381,19 +382,17 @@ public class GroundItemsPlugin extends Plugin
 
 			if (color != null && canBeRecolored && !color.equals(config.defaultColor()))
 			{
-				String hexColor = Integer.toHexString(color.getRGB() & 0xFFFFFF);
-				String colTag = "<col=" + hexColor + ">";
 				final MenuHighlightMode mode = config.menuHighlightMode();
 
 				if (mode == BOTH || mode == OPTION)
 				{
-					lastEntry.setOption(colTag + "Take");
+					lastEntry.setOption(ColorUtil.prependColorTag("Take", color));
 				}
 
 				if (mode == BOTH || mode == NAME)
 				{
 					String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
-					lastEntry.setTarget(colTag + target);
+					lastEntry.setTarget(ColorUtil.prependColorTag(target, color));
 				}
 			}
 

@@ -76,7 +76,7 @@ public final class AnimationID
 	public static final int GEM_CUTTING_EMERALD = 889;
 	public static final int GEM_CUTTING_RUBY = 887;
 	public static final int GEM_CUTTING_DIAMOND = 886;
-	public static final int CRAFTING_LEATHER = 1249; // unknown if the anim is the same for all leathers
+	public static final int CRAFTING_LEATHER = 1249;
 	public static final int CRAFTING_GLASSBLOWING = 884;
 	public static final int CRAFTING_SPINNING = 894;
 	public static final int SMITHING_SMELTING = 899;
@@ -157,4 +157,13 @@ public final class AnimationID
 
 	// Battlestaff Crafting
 	public static final int CRAFTING_BATTLESTAVES = 7531;
+
+	// Death Animations
+	public static final int CAVE_KRAKEN_DEATH = 3993;
+	public static final int WIZARD_DEATH = 2553;
+	public static final int GARGOYLE_DEATH = 1520;
+	public static final int MARBLE_GARGOYLE_DEATH = 7813;
+	public static final int LIZARD_DEATH = 2778;
+	public static final int ROCKSLUG_DEATH = 1568;
+	public static final int ZYGOMITE_DEATH = 3327;
 }

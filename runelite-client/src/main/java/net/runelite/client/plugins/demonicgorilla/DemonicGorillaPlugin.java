@@ -97,7 +97,7 @@ public class DemonicGorillaPlugin extends Plugin
 		recentBoulders = new ArrayList<>();
 		pendingAttacks = new ArrayList<>();
 		memorizedPlayers = new HashMap<>();
-		clientThread.invokeLater(this::reset); // Updates the list of gorillas and players
+		clientThread.invoke(this::reset); // Updates the list of gorillas and players
 	}
 
 	@Override

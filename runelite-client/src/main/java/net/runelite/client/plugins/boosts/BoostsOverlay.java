@@ -35,6 +35,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.util.ColorUtil;
 
 class BoostsOverlay extends Overlay
 {
@@ -109,7 +110,8 @@ class BoostsOverlay extends Overlay
 				}
 				else
 				{
-					str = "<col=" + Integer.toHexString(strColor.getRGB() & 0xFFFFFF) + ">" + boosted + "<col=ffffff>/" + base;
+					str = ColorUtil.prependColorTag(Integer.toString(boosted), strColor)
+						+ ColorUtil.prependColorTag("/" + base, Color.WHITE);
 				}
 
 				panelComponent.getChildren().add(LineComponent.builder()

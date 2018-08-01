@@ -132,16 +132,19 @@ public abstract class RSPlayerMixin implements RSPlayer
 			Point x = Perspective.worldToCanvas(client,
 				localX - vx.getX(),
 				localY - vx.getZ(),
+				client.getPlane(),
 				-vx.getY());
 
 			Point y = Perspective.worldToCanvas(client,
 				localX - vy.getX(),
 				localY - vy.getZ(),
+				client.getPlane(),
 				-vy.getY());
 
 			Point z = Perspective.worldToCanvas(client,
 				localX - vz.getX(),
 				localY - vz.getZ(),
+				client.getPlane(),
 				-vz.getY());
 
 			int xx[] =

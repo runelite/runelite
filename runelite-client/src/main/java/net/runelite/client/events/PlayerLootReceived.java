@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.ui;
+package net.runelite.client.events;
 
-import net.runelite.client.ui.FontManager;
-import static org.junit.Assert.assertNotNull;
-import org.junit.Test;
+import java.util.Collection;
+import lombok.Value;
+import net.runelite.api.Player;
+import net.runelite.client.game.ItemStack;
 
-public class FontManagerTest
+@Value
+public class PlayerLootReceived
 {
-	@Test
-	public void getRunescapeFont()
-	{
-		assertNotNull(FontManager.getRunescapeFont());
-	}
-
-	@Test
-	public void getRunescapeSmallFont()
-	{
-		assertNotNull(FontManager.getRunescapeSmallFont());
-	}
-
+	private final Player player;
+	private final Collection<ItemStack> items;
 }

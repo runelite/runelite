@@ -152,7 +152,7 @@ public class CannonPlugin extends Plugin
 			{
 				if (cannonPlaced)
 				{
-					clientThread.invokeLater(this::addCounter);
+					clientThread.invoke(this::addCounter);
 				}
 			}
 		}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Forsco <https://github.com/forsco>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -7,6 +7,7 @@
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
  *    list of conditions and the following disclaimer.
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
@@ -22,14 +23,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
 
-import lombok.Value;
-import net.runelite.client.ui.NavigationButton;
+package net.runelite.client.plugins.prayer;
 
-@Value
-public class TitleToolbarButtonAdded
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
+public enum PrayerFlickLocation
 {
-	private NavigationButton button;
-	private int index;
+	NONE("Off"),
+	PRAYER_ORB("Prayer Orb"),
+	PRAYER_BAR("Prayer Bar"),
+	BOTH("Both");
+
+	private final String name;
+
+	@Override
+	public String toString()
+	{
+		return name;
+	}
 }

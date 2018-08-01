@@ -54,6 +54,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import lombok.Setter;
@@ -85,7 +86,7 @@ public class PluginManager
 	private final Scheduler scheduler;
 	private final ConfigManager configManager;
 	private final ScheduledExecutorService executor;
-	private final SceneTileManager sceneTileManager;
+	private final Provider<SceneTileManager> sceneTileManager;
 	private final List<Plugin> plugins = new CopyOnWriteArrayList<>();
 	private final List<Plugin> activePlugins = new CopyOnWriteArrayList<>();
 	private final String runeliteGroupName = RuneLiteConfig.class
@@ -102,7 +103,7 @@ public class PluginManager
 		final Scheduler scheduler,
 		final ConfigManager configManager,
 		final ScheduledExecutorService executor,
-		final SceneTileManager sceneTileManager)
+		final Provider<SceneTileManager> sceneTileManager)
 	{
 		this.developerMode = developerMode;
 		this.eventBus = eventBus;
@@ -323,7 +324,15 @@ public class PluginManager
 			});
 
 			log.debug("Plugin {} is now running", plugin.getClass().getSimpleName());
-			sceneTileManager.simulateObjectSpawns(plugin);
+			if (!isOutdated && sceneTileManager != null)
+			{
+				final SceneTileManager sceneTileManager = this.sceneTileManager.get();
+				if (sceneTileManager != null)
+				{
+					sceneTileManager.simulateObjectSpawns(plugin);
+				}
+			}
+
 			eventBus.register(plugin);
 			schedule(plugin);
 			eventBus.post(new PluginChanged(plugin, true));

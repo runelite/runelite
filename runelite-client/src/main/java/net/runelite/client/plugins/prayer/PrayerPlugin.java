@@ -27,7 +27,11 @@ package net.runelite.client.plugins.prayer;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.time.Duration;
+import java.time.Instant;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -51,6 +55,11 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 public class PrayerPlugin extends Plugin
 {
 	private final PrayerCounter[] prayerCounter = new PrayerCounter[PrayerType.values().length];
+
+	private Instant startOfLastTick = Instant.now();
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean prayersActive = false;
 
 	@Inject
 	private Client client;
@@ -144,9 +153,11 @@ public class PrayerPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		if (config.prayerFlickHelper())
+		prayersActive = isAnyPrayerActive();
+
+		if (!config.prayerFlickLocation().equals(PrayerFlickLocation.NONE))
 		{
-			flickOverlay.onTick();
+			startOfLastTick = Instant.now();
 		}
 
 		if (config.showPrayerDoseIndicator())
@@ -231,6 +242,27 @@ public class PrayerPlugin extends Plugin
 		}
 
 		return total;
+	}
+
+	double getTickProgress()
+	{
+		long timeSinceLastTick = Duration.between(startOfLastTick, Instant.now()).toMillis();
+
+		float tickProgress = (timeSinceLastTick % 600) / 600f;
+		return tickProgress * Math.PI;
+	}
+
+	private boolean isAnyPrayerActive()
+	{
+		for (Prayer pray : Prayer.values())//Check if any prayers are active
+		{
+			if (client.isPrayerActive(pray))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private void removeIndicators()
