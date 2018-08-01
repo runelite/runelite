@@ -189,14 +189,14 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			log.debug("Running total level lookup");
 			executor.submit(() -> playerSkillLookup(setMessage, "total"));
 		}
-		else if (config.price() && message.toLowerCase().startsWith("!price") && message.length() > 7)
+		else if (config.price() && message.toLowerCase().startsWith("!price "))
 		{
 			String search = message.substring(7);
 
 			log.debug("Running price lookup for {}", search);
 			executor.submit(() -> itemPriceLookup(setMessage.getMessageNode(), search));
 		}
-		else if (config.lvl() && message.toLowerCase().startsWith("!lvl") && message.length() > 5)
+		else if (config.lvl() && message.toLowerCase().startsWith("!lvl "))
 		{
 			String search = message.substring(5);
 
@@ -221,6 +221,11 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 
 			log.debug("Running killcount lookup for {}", search);
 			executor.submit(() -> killCountLookup(setMessage.getType(), setMessage, search));
+		}
+		else if (config.combat() && message.toLowerCase().equals("!cmb"))
+		{
+			log.debug("Running combat lookup for combat levels");
+			executor.submit(() -> playerCombatLookup(setMessage));
 		}
 	}
 
@@ -394,6 +399,135 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		});
 
 		return true;
+	}
+
+	/**
+	 * Calculates the players combat level
+	 * @param combatStats array containing combat skills
+	 */
+	private double calculateCombatLevel(int[] combatStats) 
+	{
+		int att = combatStats[0];
+		int str = combatStats[1];
+		int def = combatStats[2];
+		int hp = combatStats[3];
+		int mage = combatStats[4];
+		int ranged = combatStats[5];
+		int pray = combatStats[6];
+
+		int base = (int) (pray / 2);
+		double nextBase = (base + hp + def) / 4.0;
+		double melee = 0.325 * (att + str);
+		double rang = 0.325 * ((ranged / 2) + ranged);
+		double mag = 0.325 * ((mage / 2) + mage);
+		double finalCMB = Math.max(melee, Math.max(rang, mag));
+		
+		return (finalCMB + nextBase);
+	}
+
+	/**
+	 * Looks up the player combat skills and changes the original message to the
+	 * response.
+	 *
+	 * @param setMessage The chat message containing the command.
+	 */
+	private void playerCombatLookup(SetMessage setMessage)
+	{
+		String attack = SkillAbbreviations.getFullName("ATK");
+		String strength = SkillAbbreviations.getFullName("STR");
+		String defense = SkillAbbreviations.getFullName("DEF");
+		String hitpoints = SkillAbbreviations.getFullName("HP");
+		String mage = SkillAbbreviations.getFullName("MAGE");
+		String ranged = SkillAbbreviations.getFullName("RANGE");
+		String pray = SkillAbbreviations.getFullName("PRAY");
+
+		final HiscoreSkill attackSkill;
+		final HiscoreSkill strengthSkill;
+		final HiscoreSkill defenseSkill;
+		final HiscoreSkill hitpointsSkill;
+		final HiscoreSkill mageSkill;
+		final HiscoreSkill rangedSkill;
+		final HiscoreSkill praySkill;
+		try
+		{
+			attackSkill = HiscoreSkill.valueOf(attack.toUpperCase());
+			strengthSkill = HiscoreSkill.valueOf(strength.toUpperCase());
+			defenseSkill = HiscoreSkill.valueOf(defense.toUpperCase());
+			hitpointsSkill = HiscoreSkill.valueOf(hitpoints.toUpperCase());
+			mageSkill = HiscoreSkill.valueOf(mage.toUpperCase());
+			rangedSkill = HiscoreSkill.valueOf(ranged.toUpperCase());
+			praySkill = HiscoreSkill.valueOf(pray.toUpperCase());
+		}
+		catch (IllegalArgumentException i)
+		{
+			return;
+		}
+		final HiscoreLookup lookup = getCorrectLookupFor(setMessage);
+
+		try
+		{
+			final SingleHiscoreSkillResult attackResult = hiscoreClient.lookup(lookup.getName(), attackSkill, lookup.getEndpoint());
+			final int attackLevel = attackResult.getSkill().getLevel();
+			final SingleHiscoreSkillResult strengthResult = hiscoreClient.lookup(lookup.getName(), strengthSkill, lookup.getEndpoint());
+			final int strengthLevel = strengthResult.getSkill().getLevel();
+			final SingleHiscoreSkillResult defenseResult = hiscoreClient.lookup(lookup.getName(), defenseSkill, lookup.getEndpoint());
+			final int defenseLevel = defenseResult.getSkill().getLevel();
+			final SingleHiscoreSkillResult hitpointsResult = hiscoreClient.lookup(lookup.getName(), hitpointsSkill, lookup.getEndpoint());
+			final int hitpointsLevel = hitpointsResult.getSkill().getLevel();
+			final SingleHiscoreSkillResult magicResult = hiscoreClient.lookup(lookup.getName(), mageSkill, lookup.getEndpoint());
+			final int magicLevel = magicResult.getSkill().getLevel();
+			final SingleHiscoreSkillResult rangedResult = hiscoreClient.lookup(lookup.getName(), rangedSkill, lookup.getEndpoint());
+			final int rangedLevel = rangedResult.getSkill().getLevel();
+			final SingleHiscoreSkillResult prayResult = hiscoreClient.lookup(lookup.getName(), praySkill, lookup.getEndpoint());
+			final int prayLevel = prayResult.getSkill().getLevel();
+
+			int[] combatStats = {attackLevel, strengthLevel, defenseLevel, hitpointsLevel, magicLevel, rangedLevel, prayLevel};
+			final double combatLevel = calculateCombatLevel(combatStats);
+			final String response = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("Cmb Lvl: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.format("%.2f", combatLevel))
+				.append(ChatColorType.NORMAL)
+				.append("  Att: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.format("%,d", attackLevel))
+				.append(ChatColorType.NORMAL)
+				.append("  Str: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.format("%,d", strengthLevel))
+				.append(ChatColorType.NORMAL)
+				.append("  Def: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.format("%,d", defenseLevel))
+				.append(ChatColorType.NORMAL)
+				.append("  Hp: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.format("%,d", hitpointsLevel))
+				.append(ChatColorType.NORMAL)
+				.append("  Mage: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.format("%,d", magicLevel))
+				.append(ChatColorType.NORMAL)
+				.append("  Range: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.format("%,d", rangedLevel))
+				.append(ChatColorType.NORMAL)
+				.append("  Pray: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.format("%,d", prayLevel))
+				.build();
+
+			log.debug("Setting response {}", response);
+			final MessageNode messageNode = setMessage.getMessageNode();
+			messageNode.setRuneLiteFormatMessage(response);
+			chatMessageManager.update(messageNode);
+			client.refreshChat();
+		}
+		catch (IOException ex)
+		{
+			log.warn("error looking up combat skills", ex);
+		}
 	}
 
 	private void killCountLookup(ChatMessageType type, SetMessage setMessage, String search)

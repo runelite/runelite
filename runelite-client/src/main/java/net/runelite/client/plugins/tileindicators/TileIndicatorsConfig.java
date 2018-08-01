@@ -33,12 +33,19 @@ import net.runelite.client.config.ConfigItem;
 public interface TileIndicatorsConfig extends Config
 {
 	@ConfigItem(
-		keyName = "highlightDestinationColor",
-		name = "Color of current destination highlighting",
-		description = "Configures the highlight color of current destination"
+			keyName = "highlightDestinationColor",
+			name = "Color of current destination highlighting",
+			description = "Configures the highlight color of current destination"
 	)
 	default Color highlightDestinationColor()
 	{
 		return Color.GRAY;
 	}
+
+	@ConfigItem(
+			keyName = "colorizeTiles",
+			name = "Color tiles based on click type",
+			description = "Colors action click tiles red and normal click tiles yellow"
+	)
+	default boolean colorize() {return true;}
 }
