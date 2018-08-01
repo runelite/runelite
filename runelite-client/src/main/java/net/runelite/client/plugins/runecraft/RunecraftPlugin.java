@@ -143,8 +143,7 @@ public class RunecraftPlugin extends Plugin
 
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			denseRunestoneSouthMineable = client.getVar(Varbits.DENSE_RUNESTONE_SOUTH_DEPLETED) == 0;
-			denseRunestoneNorthMineable = client.getVar(Varbits.DENSE_RUNESTONE_NORTH_DEPLETED) == 0;
+			updateDenseRunestoneState();
 		}
 	}
 
@@ -330,6 +329,11 @@ public class RunecraftPlugin extends Plugin
 
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
+	{
+		updateDenseRunestoneState();
+	}
+
+	private void updateDenseRunestoneState()
 	{
 		denseRunestoneSouthMineable = client.getVar(Varbits.DENSE_RUNESTONE_SOUTH_DEPLETED) == 0;
 		denseRunestoneNorthMineable = client.getVar(Varbits.DENSE_RUNESTONE_NORTH_DEPLETED) == 0;
