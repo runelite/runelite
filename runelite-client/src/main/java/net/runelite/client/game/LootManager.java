@@ -54,6 +54,7 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
+import net.runelite.http.api.database.ItemStack;
 
 @Singleton
 @Slf4j

@@ -36,11 +36,11 @@ import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.ItemStack;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.item.ItemPrice;
+import net.runelite.http.api.database.ItemStack;
 
 @Getter
 class LootTrackerBox extends JPanel
