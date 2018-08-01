@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
+ * Copyright (c) 2018 Jeff LaJoie
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,20 +23,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.huntertracker;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import java.time.Duration;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-/**
- * An enumeration of integer local variables.
- */
-@AllArgsConstructor
-@Getter
-public enum VarClientInt
+@ConfigGroup(
+	keyName = "huntertracker",
+	name = "Hunter Tracker",
+	description = "Configuration for the Hunter Tracker plugin"
+)
+public interface HunterTrackerConfig extends Config
 {
-	TOOLTIP_TIMEOUT(1),
-	INVENTORY_TAB(171);
+	String KEY_NAME = "huntertracker";
+	Duration DURATION = Duration.ofMinutes(50); // constant for how long in minutes it takes to harvest 10 birds
 
-	private final int index;
+	@ConfigItem(
+			keyName = "region",
+			name = "Default Region",
+			description = "Default huntertracker region tab on opening the panel",
+			hidden = true
+	)
+	default Tab region()
+	{
+		return Tab.FOSSIL_ISLAND;
+	}
+
+	@ConfigItem(
+			keyName = "region",
+			name = "Default Region",
+			description = "Default region of birdhouses (in case Jagex adds more in the future)",
+			hidden = true
+	)
+	void setRegion(Tab t);
 }
