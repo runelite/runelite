@@ -509,7 +509,9 @@ public class TimersPlugin extends Plugin
 		Player player = client.getLocalPlayer();
 		WorldPoint currentWorldPoint = player.getWorldLocation();
 
-		if (lastWorldX != currentWorldPoint.getX() || lastWorldY != currentWorldPoint.getY())
+		if (lastWorldX != currentWorldPoint.getX()
+			|| lastWorldY != currentWorldPoint.getY()
+			&& infoBoxManager.getInfoBoxes().stream().anyMatch(t -> t instanceof TimerTimer && FREEZE_TIMERS.contains(((TimerTimer) t).getTimer())))
 		{
 			removeGameTimer(ICERUSH);
 			removeGameTimer(ICEBURST);
@@ -767,10 +769,11 @@ public class TimersPlugin extends Plugin
 	/**
 	 * Adds a game timer to the infobox manager to render. Accepts a `replaceExisting` option to
 	 * preserve existing timers of the same type instead of replacing them with the new passed
-	 * timer.
+	 * timer. Accepts a `secondsPassedThreshold` which defines the limit of seconds in which
+	 * to allow the removal of a timer.
 	 *
 	 * @param timer           			The timer to be added to the infobox manager.
-	 * @param secondsPassedThreshold 		Seconds allowed to be elapsed since start of timer in
+	 * @param secondsPassedThreshold 	Seconds allowed to be elapsed since start of timer in
 	 *                                  order to be removed. Mainly used to allow graphics to
 	 *                                  filter freeze timers on first interaction between various
 	 *                                  events.
