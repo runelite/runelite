@@ -113,9 +113,12 @@ class LootTrackerBox extends JPanel
 	{
 		final String name = itemManager.getItemComposition(item.getId()).getName();
 		final int quantity = item.getQuantity();
-		final long price = calculatePrice(itemManager, new ItemStack[]{item});
+		ItemPrice p = itemManager.getItemPrice(itemManager.getUnnotedItemComposition(item.getId()).getId());
+		final int price = item.getId() == ItemID.COINS_995 ? 1 : (p == null ? 0 : p.getPrice());
 
-		return name + " x " + quantity + " (" + price + ")";
+		return "<html>" + name + " x " + quantity + "<br/>"
+				+ "Price: " + StackFormatter.formatNumber(price) + "<br/>"
+				+ "Total: " + StackFormatter.formatNumber(price * quantity) + "</html>";
 	}
 
 	private static long calculatePrice(final ItemManager itemManager, final ItemStack[] itemStacks)
@@ -123,7 +126,7 @@ class LootTrackerBox extends JPanel
 		long total = 0;
 		for (ItemStack itemStack : itemStacks)
 		{
-			ItemPrice itemPrice = itemManager.getItemPrice(itemStack.getId());
+			ItemPrice itemPrice = itemManager.getItemPrice(itemManager.getUnnotedItemComposition(itemStack.getId()).getId());
 			if (itemPrice != null)
 			{
 				total += (long) itemPrice.getPrice() * itemStack.getQuantity();
