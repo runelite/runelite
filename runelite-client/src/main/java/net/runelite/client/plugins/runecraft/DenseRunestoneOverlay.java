@@ -47,7 +47,6 @@ public class DenseRunestoneOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2600;
 	private static final int Z_OFFSET = 200;
-	private static final int DENSE_RUNESTONE_REGION = 6972;
 
 	private static final Color CLICKBOX_BORDER_COLOR = Color.GREEN;
 	private static final Color CLICKBOX_FILL_COLOR = new Color(
