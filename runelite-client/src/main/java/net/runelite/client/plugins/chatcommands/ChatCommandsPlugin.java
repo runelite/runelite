@@ -70,7 +70,6 @@ import net.runelite.http.api.hiscore.HiscoreSkill;
 import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
 import net.runelite.http.api.hiscore.Skill;
 import net.runelite.http.api.item.Item;
-import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
 import net.runelite.http.api.kc.KillCountClient;
 
@@ -480,7 +479,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			}
 
 			int itemId = item.getId();
-			ItemPrice itemPrice = itemManager.getItemPrice(itemId);
+			int itemPrice = itemManager.getItemPrice(itemId);
 
 			final ChatMessageBuilder builder = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
@@ -490,7 +489,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 				.append(ChatColorType.NORMAL)
 				.append(": GE average ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(StackFormatter.formatNumber(itemPrice.getPrice()));
+				.append(StackFormatter.formatNumber(itemPrice));
 
 			ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 			if (itemComposition != null)

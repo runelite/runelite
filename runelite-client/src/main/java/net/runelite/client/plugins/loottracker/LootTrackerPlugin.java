@@ -42,7 +42,6 @@ import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
@@ -60,7 +59,6 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
-import net.runelite.http.api.item.ItemPrice;
 
 @PluginDescriptor(
 	name = "Loot Tracker",
@@ -253,20 +251,7 @@ public class LootTrackerPlugin extends Plugin
 		{
 			final ItemComposition itemComposition = itemManager.getItemComposition(itemStack.getId());
 			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemStack.getId();
-			final ItemPrice itemPrice = itemManager.getItemPrice(realItemId);
-			final long price;
-			if (itemPrice != null)
-			{
-				price = (long) itemPrice.getPrice() * itemStack.getQuantity();
-			}
-			else if (realItemId == ItemID.COINS_995)
-			{
-				price = itemStack.getQuantity();
-			}
-			else
-			{
-				price = 0;
-			}
+			final long price = (long)itemManager.getItemPrice(realItemId) * (long)itemStack.getQuantity();
 
 			return new LootTrackerItemEntry(
 				itemStack.getId(),
