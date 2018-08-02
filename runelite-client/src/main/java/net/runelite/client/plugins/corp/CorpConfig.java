@@ -34,8 +34,8 @@ public interface CorpConfig extends Config
 
 	@ConfigItem(
 		keyName = "leftClickableCore",
-		name = "Left Clickable Core",
-		description = "Allows you to left click core when core running",
+		name = "Left clickable core",
+		description = "Sets walk here option as the default left click option for core running",
 		position = 1
 	)
 	default boolean leftClickableCore()
