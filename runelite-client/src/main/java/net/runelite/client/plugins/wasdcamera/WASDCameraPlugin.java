@@ -30,11 +30,11 @@ import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.VarClientStr;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.WidgetHiddenChanged;
-import net.runelite.api.widgets.Widget;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.VarClientStrChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -68,18 +68,8 @@ public class WASDCameraPlugin extends Plugin
 	@Inject
 	private WASDCameraListener inputListener;
 
-	private static final int W_KEY = KeyEvent.VK_W;
-	private static final int A_KEY = KeyEvent.VK_A;
-	private static final int S_KEY = KeyEvent.VK_S;
-	private static final int D_KEY = KeyEvent.VK_D;
-
-	private static final int ENTER_KEY = KeyEvent.VK_ENTER;
-	private static final int SLASH_KEY = KeyEvent.VK_SLASH;
-
-	private static final int[] WIDGET_HIDDEN_OVERRIDES = {10616876, 10616877};
-	private static final int[] WIDGET_CLICKED_OVERRIDES = {38993941, 38993954, 36241409, 10616859, 36241417};
-
-	public boolean canType = false;
+	public boolean handleCam = true;
+	public boolean inChat = true;
 	public boolean inFocus = true;
 	public boolean loggedIn = false;
 
@@ -110,10 +100,13 @@ public class WASDCameraPlugin extends Plugin
 		{
 			loggedIn = false;
 		}
-		else
-		{
-			loggedIn = true;
-		}
+	}
+
+	@Subscribe
+	private void onGameTick(GameTick t)
+	{
+		loggedIn = true;
+		overlay.updateOverlay();
 	}
 
 	@Subscribe
@@ -124,41 +117,20 @@ public class WASDCameraPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetHiddenChanged(WidgetHiddenChanged e)
+	public void onVarClientStrChanged(VarClientStrChanged e)
 	{
-
-		Widget w = e.getWidget();
-
-		//System.out.println("Changed: "+ w.getName() + " ID: " + w.getId());
-
-		if (isWidgetHiddenOverride(w.getId()))
+		if (canHandle())
 		{
-			canType = w.isHidden();
-		}
-
-		overlay.updateOverlay();
-	}
-
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked e)
-	{
-		String o = e.getMenuOption();
-
-		//System.out.println("Clicked: "+ o + " ID: " + e.getWidgetId());
-
-		if (isWidgetClickedOverride(e.getWidgetId()))
-		{
-			if (o.startsWith("Search") || o.startsWith("Report"))
+			if (e.getIndex() == VarClientStr.CHATBOX_TYPED_TEXT.getIndex() && handleCam)
 			{
-				canType = true;
+				inChat = true;
+				client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
 			}
 			else
 			{
-				canType = false;
+				inChat = false;
 			}
 		}
-
-		overlay.updateOverlay();
 	}
 
 	public boolean canHandle()
@@ -166,51 +138,27 @@ public class WASDCameraPlugin extends Plugin
 		return loggedIn && inFocus;
 	}
 
-	private boolean isWidgetHiddenOverride(int id)
-	{
-		for (int i = 0; i < WIDGET_HIDDEN_OVERRIDES.length; i++)
-		{
-			if (id == WIDGET_HIDDEN_OVERRIDES[i])
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private boolean isWidgetClickedOverride(int id)
-	{
-		for (int i = 0; i < WIDGET_CLICKED_OVERRIDES.length; i++)
-		{
-			if (id == WIDGET_CLICKED_OVERRIDES[i])
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
 	public void handleKeyPress(KeyEvent e)
 	{
-		if (!canType)
+		if (handleCam && inChat)
 		{
 			switch (e.getKeyCode())
 			{
-				case W_KEY:
+				case KeyEvent.VK_W:
 					e.setKeyCode(KeyEvent.VK_UP);
 					break;
-				case A_KEY:
+				case KeyEvent.VK_A:
 					e.setKeyCode(KeyEvent.VK_LEFT);
 					break;
-				case S_KEY:
+				case KeyEvent.VK_S:
 					e.setKeyCode(KeyEvent.VK_DOWN);
 					break;
-				case D_KEY:
+				case KeyEvent.VK_D:
 					e.setKeyCode(KeyEvent.VK_RIGHT);
 					break;
-				case ENTER_KEY:
-				case SLASH_KEY:
-					canType = true;
+				case KeyEvent.VK_ENTER:
+				case KeyEvent.VK_SLASH:
+					handleCam = false;
 					break;
 			}
 		}
@@ -218,8 +166,8 @@ public class WASDCameraPlugin extends Plugin
 		{
 			switch (e.getKeyCode())
 			{
-				case ENTER_KEY:
-					canType = false;
+				case KeyEvent.VK_ENTER:
+					handleCam = true;
 					break;
 			}
 		}
@@ -231,18 +179,20 @@ public class WASDCameraPlugin extends Plugin
 	{
 		switch (e.getKeyCode())
 		{
-			case W_KEY:
+			case KeyEvent.VK_W:
 				e.setKeyCode(KeyEvent.VK_UP);
 				break;
-			case A_KEY:
+			case KeyEvent.VK_A:
 				e.setKeyCode(KeyEvent.VK_LEFT);
 				break;
-			case S_KEY:
+			case KeyEvent.VK_S:
 				e.setKeyCode(KeyEvent.VK_DOWN);
 				break;
-			case D_KEY:
+			case KeyEvent.VK_D:
 				e.setKeyCode(KeyEvent.VK_RIGHT);
 				break;
 		}
+
+		overlay.updateOverlay();
 	}
 }

@@ -27,8 +27,11 @@ package net.runelite.client.plugins.wasdcamera;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -43,10 +46,8 @@ public class WASDCameraOverlay extends Overlay
 
 	private WASDCameraPlugin plugin;
 
-	private static final int X_OFFSET = 36;
-	private static final int Y = 152;
-
-	private boolean rendered;
+	private static final int X_OFFSET = 40;
+	private static final int Y_OFFSET = 134;
 
 	private int nameLength;
 
@@ -55,48 +56,43 @@ public class WASDCameraOverlay extends Overlay
 	@Inject
 	private WASDCameraOverlay(WASDCameraPlugin plugin)
 	{
-		setPosition(OverlayPosition.BOTTOM_LEFT);
+		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.plugin = plugin;
-		this.rendered = false;
 		this.lockedMessage = "Press Enter to Chat...";
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getLocalPlayer() != null)
-		{
-			int temp = nameLength;
-			nameLength = client.getLocalPlayer().getName().length();
-
-			if (!rendered || temp != nameLength)
-			{
-				int offset = (nameLength * 5) + X_OFFSET;
-
-				// If player is an ironman, move over more
-				if (client.getAccountType().isIronman())
-				{
-					offset = offset + 12;
-				}
-
-				textComponent.setText(lockedMessage);
-				textComponent.setPosition(new Point(offset, Y));
-				textComponent.setColor(plugin.config.getOverlayColor());
-				rendered = true;
-			}
-		}
-
 		return textComponent.render(graphics);
 	}
 
 	public void updateOverlay()
 	{
 		// Update text of component based on lock and typing in chat
-		if (!plugin.canType)
+		if (plugin.handleCam && plugin.canHandle())
 		{
+			Widget widget = client.getWidget(WidgetInfo.CHATBOX);
+			Rectangle bounds = widget.getBounds();
+
+			int temp = nameLength;
+			nameLength = client.getLocalPlayer().getName().length();
+
+			int offset = (nameLength * 5) + X_OFFSET;
+
+			if (temp != nameLength)
+			{
+				// If player is an ironman, move over more
+				if (client.getAccountType().isIronman())
+				{
+					offset = offset + 12;
+				}
+			}
+
 			textComponent.setText(lockedMessage);
 			textComponent.setColor(plugin.config.getOverlayColor());
+			textComponent.setPosition(new Point(bounds.x + offset, bounds.y + Y_OFFSET));
 		}
 		else
 		{

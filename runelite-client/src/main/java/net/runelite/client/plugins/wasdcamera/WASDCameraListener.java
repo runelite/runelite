@@ -38,10 +38,6 @@ public class WASDCameraListener extends MouseListener implements KeyListener
 	@Override
 	public void keyTyped(KeyEvent e)
 	{
-		if (plugin.canHandle() && !plugin.canType)
-		{
-			e.consume();
-		}
 	}
 
 	@Override
