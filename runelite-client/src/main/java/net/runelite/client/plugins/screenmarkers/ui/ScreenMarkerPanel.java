@@ -207,7 +207,7 @@ class ScreenMarkerPanel extends JPanel
 			public void mousePressed(MouseEvent mouseEvent)
 			{
 				nameInput.setEditable(false);
-				nameInput.setText(marker.getName());
+				nameInput.setText(marker.getMarker().getName());
 				updateNameActions(false);
 				requestFocusInWindow();
 			}
