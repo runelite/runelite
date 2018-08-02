@@ -735,13 +735,14 @@ public class ClientUI
 		{
 			final Rectangle bounds = frame.getBounds();
 
+			// Try to expand sidebar
+			if (!sidebarOpen)
+			{
+				bounds.width += pluginToolbar.getWidth();
+			}
+
 			if (config.automaticResizeType() == ExpandResizeType.KEEP_GAME_SIZE)
 			{
-				// Try to contract sidebar
-				if (sidebarOpen)
-				{
-					bounds.width -= pluginToolbar.getWidth();
-				}
 
 				// Try to contract plugin panel
 				if (pluginPanel != null)
