@@ -64,7 +64,7 @@ public class KandarinDiaryRequirement extends GenericDiaryRequirement
 		add("Steal from the chest in Hemenster.",
 			new Requirement(Skill.THIEVING, 47));
 		add("Mine some coal near the coal trucks.",
-			new Requirement(Skill.MINING, 53));
+			new Requirement(Skill.MINING, 30));
 
 		// HARD
 		add("Catch a Leaping Sturgeon.",
