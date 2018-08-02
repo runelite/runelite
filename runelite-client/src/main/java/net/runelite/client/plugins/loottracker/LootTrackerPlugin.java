@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.loottracker;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,12 +42,14 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.game.ItemManager;
@@ -57,6 +60,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.Text;
+import net.runelite.http.api.item.ItemPrice;
 
 @PluginDescriptor(
 	name = "Loot Tracker",
@@ -81,6 +85,15 @@ public class LootTrackerPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private LootTrackerConfig config;
+
+	@Provides
+	LootTrackerConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(LootTrackerConfig.class);
+	}
 
 	private LootTrackerPanel panel;
 	private NavigationButton navButton;
@@ -151,7 +164,7 @@ public class LootTrackerPlugin extends Plugin
 		final String name = npc.getName();
 		final int combat = npc.getCombatLevel();
 		final Collection<ItemStack> stackedItems = stack(items);
-		SwingUtilities.invokeLater(() -> panel.addLog(name, combat, stackedItems.toArray(new ItemStack[0])));
+		addLog(name, combat, stackedItems.toArray(new ItemStack[0]));
 	}
 
 	@Subscribe
@@ -162,7 +175,7 @@ public class LootTrackerPlugin extends Plugin
 		final String name = player.getName();
 		final int combat = player.getCombatLevel();
 		final Collection<ItemStack> stackedItems = stack(items);
-		SwingUtilities.invokeLater(() -> panel.addLog(name, combat, stackedItems.toArray(new ItemStack[0])));
+		addLog(name, combat, stackedItems.toArray(new ItemStack[0]));
 	}
 
 	@Subscribe
@@ -209,7 +222,7 @@ public class LootTrackerPlugin extends Plugin
 			{
 				log.debug("Item Received: {}x {}", item.getQuantity(), item.getId());
 			}
-			SwingUtilities.invokeLater(() -> panel.addLog(eventType, -1, items));
+			addLog(eventType, -1, items);
 		}
 		else
 		{
@@ -250,4 +263,41 @@ public class LootTrackerPlugin extends Plugin
 			}
 		}
 	}
+
+	private void addLog(String eventName, int actorLevel, ItemStack[] items)
+	{
+		int threshold = config.getIgnoreUnderValue();
+
+		if (threshold == 0 || areItemsWorthMoreThan(items, threshold))
+		{
+			SwingUtilities.invokeLater(() -> panel.addLog(eventName, actorLevel, items));
+		}
+	}
+
+	private boolean areItemsWorthMoreThan(ItemStack[] items, int threshold)
+	{
+		int total = 0;
+
+		for (ItemStack itemStack : items)
+		{
+			ItemPrice itemPrice = itemManager.getItemPrice(itemStack.getId());
+			if (itemPrice != null)
+			{
+				total += (long) itemPrice.getPrice() * itemStack.getQuantity();
+			}
+			else if (itemStack.getId() == ItemID.COINS_995)
+			{
+				total += itemStack.getQuantity();
+			}
+
+			// Stop once we've hit the threshold, no point looking at prices afterwards
+			if (total >= threshold)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 }
