@@ -27,12 +27,13 @@ package net.runelite.client.game;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.Subscribe;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -77,7 +78,7 @@ public class ItemManager
 
 	private final ItemClient itemClient = new ItemClient();
 	private final LoadingCache<String, SearchResult> itemSearches;
-	private final ConcurrentMap<Integer, ItemPrice> itemPrices = new ConcurrentHashMap<>();
+	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
 	private final LoadingCache<ImageKey, AsyncBufferedImage> itemImages;
 	private final LoadingCache<Integer, ItemComposition> itemCompositions;
 	private final LoadingCache<OutlineKey, BufferedImage> itemOutlines;
@@ -147,11 +148,12 @@ public class ItemManager
 			ItemPrice[] prices = itemClient.getPrices();
 			if (prices != null)
 			{
-				itemPrices.clear();
+				ImmutableMap.Builder<Integer, ItemPrice> map = ImmutableMap.builderWithExpectedSize(prices.length);
 				for (ItemPrice price : prices)
 				{
-					itemPrices.put(price.getItem().getId(), price);
+					map.put(price.getItem().getId(), price);
 				}
+				itemPrices = map.build();
 			}
 
 			log.debug("Loaded {} prices", itemPrices.size());
