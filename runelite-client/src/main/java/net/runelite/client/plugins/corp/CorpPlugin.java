@@ -210,7 +210,7 @@ public class CorpPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN || !config.leftClickableCore())
 		{
 			return;
 		}
@@ -218,7 +218,7 @@ public class CorpPlugin extends Plugin
 		String target = Text.removeTags(event.getTarget()).toLowerCase();
 		if (option.equals("attack"))
 		{
-			if (config.leftClickableCore() && target.contains("dark energy core"))
+			if (target.contains("dark energy core"))
 			{
 				MenuEntry[] entries = client.getMenuEntries();
 				int idxA = searchIndexCorp(entries, "Attack", target);
