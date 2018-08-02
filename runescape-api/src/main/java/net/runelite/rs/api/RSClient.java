@@ -55,6 +55,9 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	int getCameraPitch();
 
+	@Import("cameraPitch")
+	void setCameraPitch(int cameraPitch);
+
 	@Import("cameraYaw")
 	@Override
 	int getCameraYaw();
