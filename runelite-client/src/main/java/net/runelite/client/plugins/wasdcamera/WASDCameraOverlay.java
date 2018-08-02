@@ -42,61 +42,58 @@ public class WASDCameraOverlay extends Overlay
 	@Inject
 	private Client client;
 
-	private final TextComponent textComponent = new TextComponent();
+	private TextComponent textComponent = new TextComponent();
 
 	private WASDCameraPlugin plugin;
 
-	private static final int X_OFFSET = 40;
-	private static final int Y_OFFSET = 134;
-
 	private int nameLength;
 
-	private String lockedMessage;
+	private final int X_OFFSET = 40;
+	private final int Y_OFFSET = 134;
+
+	private final String lockedMessage = "Press Enter to Chat...";
 
 	@Inject
-	private WASDCameraOverlay(WASDCameraPlugin plugin)
+	private WASDCameraOverlay(WASDCameraPlugin p)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
-		this.plugin = plugin;
-		this.lockedMessage = "Press Enter to Chat...";
+		plugin = p;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
-	{
-		return textComponent.render(graphics);
-	}
-
-	public void updateOverlay()
+	public Dimension render(Graphics2D g)
 	{
 		// Update text of component based on lock and typing in chat
 		if (plugin.handleCam && plugin.canHandle())
 		{
-			Widget widget = client.getWidget(WidgetInfo.CHATBOX);
-			Rectangle bounds = widget.getBounds();
+			// Get chatbox rectangle
+			Widget w = client.getWidget(WidgetInfo.CHATBOX);
+			Rectangle b = w.getBounds();
 
-			int temp = nameLength;
 			nameLength = client.getLocalPlayer().getName().length();
 
+			// Move overlay over depending on name length
 			int offset = (nameLength * 5) + X_OFFSET;
 
-			if (temp != nameLength)
+			// If player is an ironman, move overlay over more to not appear over name
+			if (client.getAccountType().isIronman())
 			{
-				// If player is an ironman, move over more
-				if (client.getAccountType().isIronman())
-				{
-					offset = offset + 12;
-				}
+				offset = offset + 12;
 			}
 
+			// Finally set text, color and position of overlay
 			textComponent.setText(lockedMessage);
 			textComponent.setColor(plugin.config.getOverlayColor());
-			textComponent.setPosition(new Point(bounds.x + offset, bounds.y + Y_OFFSET));
+			textComponent.setPosition(new Point(b.x + offset, b.y + Y_OFFSET));
 		}
+
+		// Empty text if can type in chat
 		else
 		{
 			textComponent.setText("");
 		}
+
+		return textComponent.render(g);
 	}
 }

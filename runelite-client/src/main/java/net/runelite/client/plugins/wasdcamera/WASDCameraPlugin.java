@@ -26,14 +26,12 @@ package net.runelite.client.plugins.wasdcamera;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarClientStrChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyManager;
@@ -60,7 +58,7 @@ public class WASDCameraPlugin extends Plugin
 	private KeyManager keyManager;
 
 	@Inject
-	private WASDCameraOverlay overlay;
+	public WASDCameraOverlay overlay;
 
 	@Inject
 	public WASDCameraConfig config;
@@ -93,106 +91,51 @@ public class WASDCameraPlugin extends Plugin
 		overlayManager.remove(overlay);
 	}
 
+	/**
+	 * Returns true if logged in and in focus.
+	 * @return
+	 */
+	public boolean canHandle()
+	{
+		return loggedIn && inFocus;
+	}
+
 	@Subscribe
 	public void onGameStateChanged(final GameStateChanged e)
 	{
-		if (e.getGameState() == GameState.HOPPING || e.getGameState() == GameState.LOGIN_SCREEN)
+		if (e.getGameState() == GameState.LOGGED_IN)
+		{
+			loggedIn = true;
+		}
+		else
 		{
 			loggedIn = false;
 		}
 	}
 
 	@Subscribe
-	private void onGameTick(GameTick t)
-	{
-		loggedIn = true;
-		overlay.updateOverlay();
-	}
-
-	@Subscribe
 	public void onFocusChanged(FocusChanged f)
 	{
 		inFocus = f.isFocused();
-		overlay.updateOverlay();
 	}
 
 	@Subscribe
 	public void onVarClientStrChanged(VarClientStrChanged e)
 	{
-		if (canHandle())
+		if (!canHandle())
 		{
-			if (e.getIndex() == VarClientStr.CHATBOX_TYPED_TEXT.getIndex() && handleCam)
-			{
-				inChat = true;
-				client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
-			}
-			else
-			{
-				inChat = false;
-			}
+			return;
 		}
-	}
 
-	public boolean canHandle()
-	{
-		return loggedIn && inFocus;
-	}
-
-	public void handleKeyPress(KeyEvent e)
-	{
-		if (handleCam && inChat)
+		// If the chatbox input var string has changed and we want to handle the cam, set inChat to true and empty chat
+		if (e.getIndex() == VarClientStr.CHATBOX_TYPED_TEXT.getIndex() && handleCam)
 		{
-			switch (e.getKeyCode())
-			{
-				case KeyEvent.VK_W:
-					e.setKeyCode(KeyEvent.VK_UP);
-					break;
-				case KeyEvent.VK_A:
-					e.setKeyCode(KeyEvent.VK_LEFT);
-					break;
-				case KeyEvent.VK_S:
-					e.setKeyCode(KeyEvent.VK_DOWN);
-					break;
-				case KeyEvent.VK_D:
-					e.setKeyCode(KeyEvent.VK_RIGHT);
-					break;
-				case KeyEvent.VK_ENTER:
-				case KeyEvent.VK_SLASH:
-					handleCam = false;
-					break;
-			}
+			inChat = true;
+			client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
 		}
 		else
 		{
-			switch (e.getKeyCode())
-			{
-				case KeyEvent.VK_ENTER:
-					handleCam = true;
-					break;
-			}
+			inChat = false;
 		}
-
-		overlay.updateOverlay();
-	}
-
-	public void handleKeyRelease(KeyEvent e)
-	{
-		switch (e.getKeyCode())
-		{
-			case KeyEvent.VK_W:
-				e.setKeyCode(KeyEvent.VK_UP);
-				break;
-			case KeyEvent.VK_A:
-				e.setKeyCode(KeyEvent.VK_LEFT);
-				break;
-			case KeyEvent.VK_S:
-				e.setKeyCode(KeyEvent.VK_DOWN);
-				break;
-			case KeyEvent.VK_D:
-				e.setKeyCode(KeyEvent.VK_RIGHT);
-				break;
-		}
-
-		overlay.updateOverlay();
 	}
 }

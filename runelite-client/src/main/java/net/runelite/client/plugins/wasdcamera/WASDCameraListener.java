@@ -45,7 +45,7 @@ public class WASDCameraListener extends MouseListener implements KeyListener
 	{
 		if (plugin.canHandle())
 		{
-			plugin.handleKeyPress(e);
+			handleKeyPress(e);
 		}
 	}
 
@@ -54,7 +54,71 @@ public class WASDCameraListener extends MouseListener implements KeyListener
 	{
 		if (plugin.canHandle())
 		{
-			plugin.handleKeyRelease(e);
+			handleKeyRelease(e);
+		}
+	}
+
+	/**
+	 * Listens and remaps WASD key events
+	 * Locks/unlocks input if enter is pressed
+	 * Unlocks input if slash is pressed
+	 * @param e
+	 */
+	public void handleKeyPress(KeyEvent e)
+	{
+		if (plugin.handleCam && plugin.inChat)
+		{
+			switch (e.getKeyCode())
+			{
+				case KeyEvent.VK_W:
+					e.setKeyCode(KeyEvent.VK_UP);
+					break;
+				case KeyEvent.VK_A:
+					e.setKeyCode(KeyEvent.VK_LEFT);
+					break;
+				case KeyEvent.VK_S:
+					e.setKeyCode(KeyEvent.VK_DOWN);
+					break;
+				case KeyEvent.VK_D:
+					e.setKeyCode(KeyEvent.VK_RIGHT);
+					break;
+				case KeyEvent.VK_ENTER:
+				case KeyEvent.VK_SLASH:
+					plugin.handleCam = false;
+					break;
+			}
+		}
+		else
+		{
+			switch (e.getKeyCode())
+			{
+				case KeyEvent.VK_ENTER:
+					plugin.handleCam = true;
+					break;
+			}
+		}
+	}
+
+	/**
+	 * Listens for key WASD key releases and remaps them to arrows to stop movement
+	 * @param e
+	 */
+	public void handleKeyRelease(KeyEvent e)
+	{
+		switch (e.getKeyCode())
+		{
+			case KeyEvent.VK_W:
+				e.setKeyCode(KeyEvent.VK_UP);
+				break;
+			case KeyEvent.VK_A:
+				e.setKeyCode(KeyEvent.VK_LEFT);
+				break;
+			case KeyEvent.VK_S:
+				e.setKeyCode(KeyEvent.VK_DOWN);
+				break;
+			case KeyEvent.VK_D:
+				e.setKeyCode(KeyEvent.VK_RIGHT);
+				break;
 		}
 	}
 }
