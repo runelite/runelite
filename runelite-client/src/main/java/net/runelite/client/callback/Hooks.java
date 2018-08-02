@@ -42,6 +42,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.IndexDataBase;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.RenderOverview;
 import net.runelite.api.WorldMapManager;
@@ -272,6 +273,13 @@ public class Hooks implements Callbacks
 	public void keyTyped(KeyEvent keyEvent)
 	{
 		keyManager.processKeyTyped(keyEvent);
+	}
+
+	@Override
+	public void overlayLoadFailed(IndexDataBase indexDataBase, int archiveId, int fileId)
+	{
+		RuneLite runeLite = injector.getInstance(RuneLite.class);
+		runeLite.setOverlayOutdated(true);
 	}
 
 	@Override

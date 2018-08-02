@@ -32,6 +32,7 @@ import com.google.common.io.CharStreams;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import net.runelite.api.hooks.Callbacks;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
@@ -116,6 +117,9 @@ public abstract class RSIndexDataBaseMixin implements RSIndexDataBase
 
 			log.warn("Mismatch in overlaid cache archive hash for {}/{}: {} != {}",
 				indexData.getIndex(), archiveId, replaceHash, rsHash);
+
+			Callbacks callbacks = client.getCallbacks();
+			callbacks.overlayLoadFailed(this, archiveId, fileId);
 		}
 		catch (IOException ex)
 		{
