@@ -76,11 +76,6 @@ public class DenseRunestoneOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getLocalPlayer().getWorldLocation().getRegionID() != DENSE_RUNESTONE_REGION)
-		{
-			return null;
-		}
-
 		boolean northStoneMineable = plugin.isDenseRunestoneNorthMineable();
 		boolean southStoneMineable = plugin.isDenseRunestoneSouthMineable();
 		GameObject northStone = plugin.getDenseRunestoneNorth();
