@@ -511,7 +511,7 @@ public class TimersPlugin extends Plugin
 
 		if (lastWorldX != currentWorldPoint.getX()
 			|| lastWorldY != currentWorldPoint.getY()
-			&& infoBoxManager.getInfoBoxes().stream().anyMatch(t -> t instanceof TimerTimer && FREEZE_TIMERS.contains(((TimerTimer) t).getTimer())))
+			&& infoBoxManager.has(t -> t instanceof TimerTimer && FREEZE_TIMERS.contains(((TimerTimer) t).getTimer())))
 		{
 			removeGameTimer(ICERUSH);
 			removeGameTimer(ICEBURST);
@@ -722,7 +722,7 @@ public class TimersPlugin extends Plugin
 	private void createGameTimer(final GameTimer timer, final boolean replaceExisting, final Set<GameTimer> mutuallyExclusiveGameTimers)
 	{
 		if (!mutuallyExclusiveGameTimers.isEmpty()
-			&& infoBoxManager.getInfoBoxes().stream().anyMatch(t -> t instanceof TimerTimer && mutuallyExclusiveGameTimers.contains(((TimerTimer) t).getTimer())))
+			&& infoBoxManager.has(t -> t instanceof TimerTimer && mutuallyExclusiveGameTimers.contains(((TimerTimer) t).getTimer())))
 		{
 			return;
 		}
@@ -743,7 +743,7 @@ public class TimersPlugin extends Plugin
 	private void createGameTimer(final GameTimer timer, final boolean replaceExisting)
 	{
 		if (!replaceExisting
-			&& infoBoxManager.getInfoBoxes().stream().anyMatch(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer))
+			&& infoBoxManager.has(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer))
 		{
 			return;
 		}

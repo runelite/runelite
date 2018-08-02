@@ -90,6 +90,11 @@ public class InfoBoxManager
 		refreshInfoBoxes();
 	}
 
+	public boolean has(Predicate<InfoBox> filter)
+	{
+		return infoBoxes.stream().anyMatch(filter);
+	}
+
 	public List<InfoBox> getInfoBoxes()
 	{
 		return Collections.unmodifiableList(infoBoxes);
