@@ -45,6 +45,7 @@ import net.runelite.api.Client;
 import static net.runelite.api.Constants.CLIENT_DEFAULT_ZOOM;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemID;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.callback.ClientThread;
@@ -176,13 +177,31 @@ public class ItemManager
 	/**
 	 * Look up an item's price
 	 *
-	 * @param itemId item id
+	 * @param itemID item id
 	 * @return item price
 	 */
-	public ItemPrice getItemPrice(int itemId)
+	public int getItemPrice(int itemID)
 	{
-		itemId = ItemMapping.mapFirst(itemId);
-		return itemPrices.get(itemId);
+		if (itemID == ItemID.COINS_995)
+		{
+			return 1;
+		}
+		if (itemID == ItemID.PLATINUM_TOKEN)
+		{
+			return 1000;
+		}
+
+		int price = 0;
+		for (int mappedID : ItemMapping.map(itemID))
+		{
+			ItemPrice ip = itemPrices.get(mappedID);
+			if (ip != null)
+			{
+				price += ip.getPrice();
+			}
+		}
+
+		return price;
 	}
 
 	/**
