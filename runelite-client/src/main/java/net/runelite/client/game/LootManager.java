@@ -60,11 +60,7 @@ import net.runelite.client.events.PlayerLootReceived;
 public class LootManager
 {
 	private static final Map<Integer, Integer> NPC_DEATH_ANIMATIONS = ImmutableMap.of(
-		NpcID.CAVE_KRAKEN, AnimationID.CAVE_KRAKEN_DEATH,
-		NpcID.AIR_WIZARD, AnimationID.WIZARD_DEATH,
-		NpcID.WATER_WIZARD, AnimationID.WIZARD_DEATH,
-		NpcID.EARTH_WIZARD, AnimationID.WIZARD_DEATH,
-		NpcID.FIRE_WIZARD, AnimationID.WIZARD_DEATH
+		NpcID.CAVE_KRAKEN, AnimationID.CAVE_KRAKEN_DEATH
 	);
 
 	private final EventBus eventBus;
@@ -253,7 +249,7 @@ public class LootManager
 			case NpcID.CAVE_KRAKEN:
 				worldLocation = krakenPlayerLocation;
 				break;
-			case NpcID.ZULRAH:        // Green
+			case NpcID.ZULRAH:      // Green
 			case NpcID.ZULRAH_2043: // Red
 			case NpcID.ZULRAH_2044: // Blue
 				for (Map.Entry<Integer, ItemStack> entry : itemSpawns.entries())
@@ -263,7 +259,7 @@ public class LootManager
 						int packed = entry.getKey();
 						int unpackedX = packed >> 8;
 						int unpackedY = packed & 0xFF;
-						worldLocation = new WorldPoint(unpackedX, unpackedY, worldLocation.getPlane());
+						worldLocation = WorldPoint.fromScene(client, unpackedX, unpackedY, worldLocation.getPlane());
 						break;
 					}
 				}
