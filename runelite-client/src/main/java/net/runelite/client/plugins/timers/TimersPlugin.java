@@ -509,8 +509,8 @@ public class TimersPlugin extends Plugin
 		Player player = client.getLocalPlayer();
 		WorldPoint currentWorldPoint = player.getWorldLocation();
 
-		if (lastWorldX != currentWorldPoint.getX()
-			|| lastWorldY != currentWorldPoint.getY()
+		if ((lastWorldX != currentWorldPoint.getX()
+			|| lastWorldY != currentWorldPoint.getY())
 			&& infoBoxManager.has(t -> t instanceof TimerTimer && FREEZE_TIMERS.contains(((TimerTimer) t).getTimer())))
 		{
 			removeGameTimer(ICERUSH);
