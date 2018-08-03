@@ -43,7 +43,6 @@ import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import joptsimple.util.EnumConverter;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.account.SessionManager;
@@ -145,10 +144,6 @@ public class RuneLite
 	@Inject
 	@Nullable
 	private Client client;
-
-	@Getter
-	@Setter
-	private boolean overlayOutdated;
 
 	public static void main(String[] args) throws Exception
 	{
