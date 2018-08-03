@@ -241,6 +241,9 @@ public class RuneLite
 		// Load user configuration
 		configManager.load();
 
+		// Load the session, including saved configuration
+		sessionManager.loadSession();
+
 		// Tell the plugin manager if client is outdated or not
 		pluginManager.setOutdated(isOutdated);
 
@@ -254,9 +257,6 @@ public class RuneLite
 
 		// Start client session
 		clientSessionManager.start();
-
-		// Load the session, including saved configuration
-		sessionManager.loadSession();
 
 		// Initialize UI
 		clientUI.open(this);
