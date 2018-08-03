@@ -44,6 +44,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
@@ -64,14 +65,16 @@ import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.osbuddy.GrandExchangeClient;
 import net.runelite.http.api.osbuddy.GrandExchangeResult;
 
 @PluginDescriptor(
-	name = "Grand Exchange"
+	name = "Grand Exchange",
+	description = "Provide additional and/or easier access to Grand Exchange information",
+	tags = {"external", "integration", "notifications", "panel", "prices", "trade"}
 )
 @Slf4j
 public class GrandExchangePlugin extends Plugin
@@ -79,6 +82,8 @@ public class GrandExchangePlugin extends Plugin
 	private static final int OFFER_CONTAINER_ITEM = 21;
 	private static final int OFFER_DEFAULT_ITEM_ID = 6512;
 	private static final GrandExchangeClient CLIENT = new GrandExchangeClient();
+
+	static final String SEARCH_GRAND_EXCHANGE = "Search Grand Exchange";
 
 	@Getter(AccessLevel.PACKAGE)
 	private NavigationButton button;
@@ -106,7 +111,7 @@ public class GrandExchangePlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private PluginToolbar pluginToolbar;
+	private ClientToolbar clientToolbar;
 
 	@Inject
 	private GrandExchangeConfig config;
@@ -146,7 +151,7 @@ public class GrandExchangePlugin extends Plugin
 			.panel(panel)
 			.build();
 
-		pluginToolbar.addNavigation(button);
+		clientToolbar.addNavigation(button);
 
 		if (config.quickLookup())
 		{
@@ -158,7 +163,7 @@ public class GrandExchangePlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		pluginToolbar.removeNavigation(button);
+		clientToolbar.removeNavigation(button);
 		mouseManager.unregisterMouseListener(inputListener);
 		keyManager.unregisterKeyListener(inputListener);
 	}
@@ -245,7 +250,10 @@ public class GrandExchangePlugin extends Plugin
 				}
 			case WidgetID.INVENTORY_GROUP_ID:
 			case WidgetID.BANK_INVENTORY_GROUP_ID:
-				menuEntry.setOption("Search Grand Exchange");
+			case WidgetID.GRAND_EXCHANGE_INVENTORY_GROUP_ID:
+			case WidgetID.SHOP_INVENTORY_GROUP_ID:
+				menuEntry.setOption(SEARCH_GRAND_EXCHANGE);
+				menuEntry.setType(MenuAction.RUNELITE.getId());
 				client.setMenuEntries(entries);
 		}
 	}

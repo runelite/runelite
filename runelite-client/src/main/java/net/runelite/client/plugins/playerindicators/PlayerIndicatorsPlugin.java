@@ -40,9 +40,13 @@ import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Player Indicators"
+	name = "Player Indicators",
+	description = "Highlight players on-screen and/or on the minimap",
+	tags = {"highlight", "minimap", "overlay", "players"}
 )
 public class PlayerIndicatorsPlugin extends Plugin
 {
@@ -54,6 +58,9 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 	@Inject
 	private PlayerIndicatorsOverlay playerIndicatorsOverlay;
+
+	@Inject
+	private PlayerIndicatorsTileOverlay playerIndicatorsTileOverlay;
 
 	@Inject
 	private PlayerIndicatorsMinimapOverlay playerIndicatorsMinimapOverlay;
@@ -74,6 +81,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(playerIndicatorsOverlay);
+		overlayManager.add(playerIndicatorsTileOverlay);
 		overlayManager.add(playerIndicatorsMinimapOverlay);
 	}
 
@@ -81,6 +89,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(playerIndicatorsOverlay);
+		overlayManager.remove(playerIndicatorsTileOverlay);
 		overlayManager.remove(playerIndicatorsMinimapOverlay);
 	}
 
@@ -153,15 +162,9 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 				if (color != null && config.colorPlayerMenu())
 				{
-					// strip out existing <col...
-					String target = lastEntry.getTarget();
-					int idx = target.indexOf('>');
-					if (idx != -1)
-					{
-						target = target.substring(idx + 1);
-					}
-
-					lastEntry.setTarget("<col=" + Integer.toHexString(color.getRGB() & 0xFFFFFF) + ">" + target);
+					// strip out existing tags (color, etc.)
+					String target = Text.removeTags(lastEntry.getTarget());
+					lastEntry.setTarget(ColorUtil.prependColorTag(target, color));
 				}
 
 				if (image != -1 && config.showClanRanks())

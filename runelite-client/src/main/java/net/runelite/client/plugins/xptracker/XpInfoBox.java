@@ -45,19 +45,29 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
+import net.runelite.api.Experience;
 import net.runelite.api.Skill;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.ProgressBar;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.StackFormatter;
-import net.runelite.client.util.SwingUtil;
 
 @Slf4j
 class XpInfoBox extends JPanel
 {
+	// Templates
+	private static final String HTML_TOOL_TIP_TEMPLATE =
+		"<html>%s actions done<br/>"
+			+ "%s actions/hr<br/>"
+			+ "%s till goal lvl</html>";
+	private static final String HTML_LABEL_TEMPLATE =
+		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
+
+	// Instance members
 	private final JPanel panel;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -78,6 +88,9 @@ class XpInfoBox extends JPanel
 	private final JLabel expHour = new JLabel();
 	private final JLabel expLeft = new JLabel();
 	private final JLabel actionsLeft = new JLabel();
+	private final JMenuItem pauseSkill = new JMenuItem("Pause");
+
+	private boolean paused = false;
 
 	private Actor lastOpponent;
 	private Instant lastInteracting;
@@ -107,12 +120,16 @@ class XpInfoBox extends JPanel
 		final JMenuItem resetOthers = new JMenuItem("Reset others");
 		resetOthers.addActionListener(e -> xpTrackerPlugin.resetOtherSkillState(skill));
 
+		// Create reset others menu
+		pauseSkill.addActionListener(e -> xpTrackerPlugin.pauseSkill(skill, !paused));
+
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		popupMenu.add(openXpTracker);
 		popupMenu.add(reset);
 		popupMenu.add(resetOthers);
+		popupMenu.add(pauseSkill);
 
 		JLabel skillIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(skill)));
 		skillIcon.setHorizontalAlignment(SwingConstants.CENTER);
@@ -147,6 +164,7 @@ class XpInfoBox extends JPanel
 		progressBar.setMaximumValue(100);
 		progressBar.setBackground(new Color(61, 56, 49));
 		progressBar.setForeground(SkillColor.values()[skill.ordinal()].getColor());
+		progressBar.setDimmedText("Paused");
 
 		progressWrapper.add(progressBar, BorderLayout.NORTH);
 
@@ -166,12 +184,12 @@ class XpInfoBox extends JPanel
 		panel.revalidate();
 	}
 
-	void update(boolean updated, XpSnapshotSingle xpSnapshotSingle)
+	void update(boolean updated, boolean paused, XpSnapshotSingle xpSnapshotSingle)
 	{
-		SwingUtilities.invokeLater(() -> rebuildAsync(updated, xpSnapshotSingle));
+		SwingUtilities.invokeLater(() -> rebuildAsync(updated, paused, xpSnapshotSingle));
 	}
 
-	private void rebuildAsync(boolean updated, XpSnapshotSingle xpSnapshotSingle)
+	private void rebuildAsync(boolean updated, boolean skillPaused, XpSnapshotSingle xpSnapshotSingle)
 	{
 		if (updated)
 		{
@@ -180,6 +198,8 @@ class XpInfoBox extends JPanel
 				panel.add(this);
 				panel.revalidate();
 			}
+
+			paused = skillPaused;
 
 			// Update information labels
 			expGained.setText(htmlLabel("XP Gained: ", xpSnapshotSingle.getXpGainedInSession()));
@@ -190,20 +210,38 @@ class XpInfoBox extends JPanel
 			progressBar.setValue(xpSnapshotSingle.getSkillProgressToGoal());
 			progressBar.setCenterLabel(xpSnapshotSingle.getSkillProgressToGoal() + "%");
 			progressBar.setLeftLabel("Lvl. " + xpSnapshotSingle.getStartLevel());
-			progressBar.setRightLabel("Lvl. " + (xpSnapshotSingle.getEndLevel()));
+			progressBar.setRightLabel(xpSnapshotSingle.getEndGoalXp() == Experience.MAX_SKILL_XP
+				? "200M"
+				: "Lvl. " + xpSnapshotSingle.getEndLevel());
 
-			progressBar.setToolTipText("<html>"
-				+ xpSnapshotSingle.getActionsInSession() + " actions done"
-				+ "<br/>"
-				+ xpSnapshotSingle.getActionsPerHour() + " actions/hr"
-				+ "<br/>"
-				+ xpSnapshotSingle.getTimeTillGoal() + " till goal lvl"
-				+ "</html>");
+			progressBar.setToolTipText(String.format(
+				HTML_TOOL_TIP_TEMPLATE,
+				xpSnapshotSingle.getActionsInSession(),
+				xpSnapshotSingle.getActionsPerHour(),
+				xpSnapshotSingle.getTimeTillGoal()));
+
+			progressBar.setDimmed(skillPaused);
 
 			progressBar.repaint();
 		}
+		else if (!paused && skillPaused)
+		{
+			// React to the skill state now being paused
+			progressBar.setDimmed(true);
+			progressBar.repaint();
+			paused = true;
+			pauseSkill.setText("Unpause");
+		}
+		else if (paused && !skillPaused)
+		{
+			// React to the skill being unpaused (without update)
+			progressBar.setDimmed(false);
+			progressBar.repaint();
+			paused = false;
+			pauseSkill.setText("Pause");
+		}
 
-		// Update exp per hour seperately, everytime (not only when there's an update)
+		// Update exp per hour separately, every time (not only when there's an update)
 		expHour.setText(htmlLabel("XP/Hour: ", xpSnapshotSingle.getXpPerHour()));
 	}
 
@@ -240,11 +278,9 @@ class XpInfoBox extends JPanel
 		return label;
 	}
 
-	public static String htmlLabel(String key, int value)
+	static String htmlLabel(String key, int value)
 	{
 		String valueStr = StackFormatter.quantityToRSDecimalStack(value);
-
-		return "<html><body style = 'color:" + SwingUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "'>" + key + "<span style = 'color:white'>" + valueStr + "</span></body></html>";
+		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
-
 }

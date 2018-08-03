@@ -130,6 +130,7 @@ public abstract class ScriptVMMixin implements RSClient
 	public void runScript(int id, Object... args)
 	{
 		assert isClientThread();
+		assert currentScript == null;
 		Object[] cargs = new Object[args.length + 1];
 		cargs[0] = id;
 		System.arraycopy(args, 0, cargs, 1, args.length);

@@ -76,7 +76,7 @@ public final class AnimationID
 	public static final int GEM_CUTTING_EMERALD = 889;
 	public static final int GEM_CUTTING_RUBY = 887;
 	public static final int GEM_CUTTING_DIAMOND = 886;
-	public static final int CRAFTING_LEATHER = 1249; // unknown if the anim is the same for all leathers
+	public static final int CRAFTING_LEATHER = 1249;
 	public static final int CRAFTING_GLASSBLOWING = 884;
 	public static final int CRAFTING_SPINNING = 894;
 	public static final int SMITHING_SMELTING = 899;
@@ -124,7 +124,6 @@ public final class AnimationID
 	public static final int USING_GILDED_ALTAR = 3705;
 	public static final int LOOKING_INTO = 832;
 	public static final int DIG = 830;
-	public static final int VENGEANCE_OTHER = 4411;
 	public static final int DEMONIC_GORILLA_MAGIC_ATTACK = 7225;
 	public static final int DEMONIC_GORILLA_MELEE_ATTACK = 7226;
 	public static final int DEMONIC_GORILLA_RANGED_ATTACK = 7227;
@@ -148,6 +147,7 @@ public final class AnimationID
 	public static final int FARMING_HARVEST_FLOWER = 2292;
 
 	// Lunar spellbook
+	public static final int ENERGY_TRANSFER_VENGEANCE_OTHER = 4411;
 	public static final int MAGIC_LUNAR_FERTILE_SOIL = 4413;
 	public static final int MAGIC_LUNAR_CURE_PLANT = 4432;
 	public static final int MAGIC_LUNAR_GEOMANCY = 7118;
@@ -157,4 +157,13 @@ public final class AnimationID
 
 	// Battlestaff Crafting
 	public static final int CRAFTING_BATTLESTAVES = 7531;
+
+	// Death Animations
+	public static final int CAVE_KRAKEN_DEATH = 3993;
+	public static final int WIZARD_DEATH = 2553;
+	public static final int GARGOYLE_DEATH = 1520;
+	public static final int MARBLE_GARGOYLE_DEATH = 7813;
+	public static final int LIZARD_DEATH = 2778;
+	public static final int ROCKSLUG_DEATH = 1568;
+	public static final int ZYGOMITE_DEATH = 3327;
 }

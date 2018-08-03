@@ -27,6 +27,7 @@ package net.runelite.client.menus;
 import net.runelite.api.widgets.WidgetInfo;
 
 import java.awt.Color;
+import net.runelite.client.util.ColorUtil;
 
 public final class WidgetMenuOption
 {
@@ -74,8 +75,7 @@ public final class WidgetMenuOption
 	 */
 	public void setMenuTarget(String target)
 	{
-		menuTarget = String.format("<col=%02x%02x%02x>%s</col>",
-			color.getRed(), color.getGreen(), color.getBlue(), target);
+		menuTarget = ColorUtil.wrapWithColorTag(target, color);
 	}
 
 	public String getMenuOption()

@@ -61,7 +61,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Herbiboar"
+	name = "Herbiboar",
+	description = "Highlight starting rocks, trails, and the objects to search at the end of each trail",
+	tags = {"herblore", "hunter", "skilling", "overlay"}
 )
 public class HerbiboarPlugin extends Plugin
 {

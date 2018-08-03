@@ -28,14 +28,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
 import javax.inject.Inject;
-import net.runelite.api.Client;
 import net.runelite.api.Query;
-import net.runelite.api.SpritePixels;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -44,19 +41,18 @@ import net.runelite.client.util.QueryRunner;
 
 public class InventoryTagsOverlay extends Overlay
 {
-	private final Map<String, BufferedImage> storedOutlines = new HashMap<>();
 	private final QueryRunner queryRunner;
-	private final Client client;
+	private final ItemManager itemManager;
 	private final InventoryTagsPlugin plugin;
 
 	@Inject
-	private InventoryTagsOverlay(QueryRunner queryRunner, Client client, InventoryTagsPlugin plugin)
+	private InventoryTagsOverlay(QueryRunner queryRunner, ItemManager itemManager, InventoryTagsPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.LOW);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.queryRunner = queryRunner;
-		this.client = client;
+		this.itemManager = itemManager;
 		this.plugin = plugin;
 	}
 
@@ -82,37 +78,12 @@ public class InventoryTagsOverlay extends Overlay
 				final Color color = plugin.getGroupNameColor(group);
 				if (color != null)
 				{
-					final BufferedImage outline = getOutline(item.getId(), color);
+					final BufferedImage outline = itemManager.getItemOutline(item.getId(), item.getQuantity(), color);
 					graphics.drawImage(outline, item.getCanvasLocation().getX() + 1, item.getCanvasLocation().getY() + 1, null);
 				}
 			}
 		}
 
 		return null;
-	}
-
-	void clearStoredOutlines()
-	{
-		storedOutlines.clear();
-	}
-
-	private BufferedImage getOutline(final int id, final Color color)
-	{
-		final String key = getStringGeneratedId(id, color);
-		BufferedImage stored = storedOutlines.get(key);
-		if (stored != null)
-		{
-			return stored;
-		}
-
-		final SpritePixels itemSprite = client.createItemSprite(id, 1, 1, 0, 0, true, 710);
-		final BufferedImage generatedPicture = itemSprite.toBufferedOutline(color);
-		storedOutlines.put(key, generatedPicture);
-		return generatedPicture;
-	}
-
-	private String getStringGeneratedId(final int id, final Color color)
-	{
-		return id + "." + color.getRGB();
 	}
 }

@@ -61,7 +61,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Cannon"
+	name = "Cannon",
+	description = "Show information about cannon placement and/or amount of cannonballs",
+	tags = {"combat", "notifications", "ranged", "overlay"}
 )
 public class CannonPlugin extends Plugin
 {
@@ -150,7 +152,7 @@ public class CannonPlugin extends Plugin
 			{
 				if (cannonPlaced)
 				{
-					clientThread.invokeLater(this::addCounter);
+					clientThread.invoke(this::addCounter);
 				}
 			}
 		}

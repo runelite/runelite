@@ -60,7 +60,7 @@ class XpStateSingle
 	@Getter
 	private int xpGained = 0;
 
-	private Instant skillTimeStart = null;
+	private long skillTime = 0;
 	private int actions = 0;
 	private int startLevelExp = 0;
 	private int endLevelExp = 0;
@@ -85,7 +85,7 @@ class XpStateSingle
 
 	private int toHourly(int value)
 	{
-		if (skillTimeStart == null)
+		if (skillTime == 0)
 		{
 			return 0;
 		}
@@ -95,7 +95,7 @@ class XpStateSingle
 
 	private long getTimeElapsedInSeconds()
 	{
-		if (skillTimeStart == null)
+		if (skillTime == 0)
 		{
 			return 0;
 		}
@@ -104,7 +104,7 @@ class XpStateSingle
 		// To prevent that, pretend the skill has been active for a minute (60 seconds)
 		// This will create a lower estimate for the first minute,
 		// but it isn't ridiculous like saying 2 billion XP per hour.
-		return Math.max(60, Duration.between(skillTimeStart, Instant.now()).getSeconds());
+		return Math.max(60, skillTime / 1000);
 	}
 
 	private int getXpRemaining()
@@ -309,7 +309,7 @@ class XpStateSingle
 		xpGained = currentXp - startXp;
 
 		// Determine XP goals
-		if (goalStartXp <= 0)
+		if (goalStartXp <= 0 || currentXp > goalEndXp)
 		{
 			startLevelExp = Experience.getXpForLevel(Experience.getLevelForXp(currentXp));
 		}
@@ -321,20 +321,26 @@ class XpStateSingle
 		if (goalEndXp <= 0 || currentXp > goalEndXp)
 		{
 			int currentLevel = Experience.getLevelForXp(currentXp);
-			endLevelExp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;
+			endLevelExp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL
+				? Experience.getXpForLevel(currentLevel + 1)
+				: Experience.MAX_SKILL_XP;
 		}
 		else
 		{
 			endLevelExp = goalEndXp;
 		}
 
-		// If this is first time we are updating, we just started tracking
-		if (skillTimeStart == null)
-		{
-			skillTimeStart = Instant.now();
-		}
-
 		return true;
+	}
+
+	public void tick(long delta)
+	{
+		// Don't tick skills that have not gained XP or have been reset.
+		if (xpGained <= 0)
+		{
+			return;
+		}
+		skillTime += delta;
 	}
 
 	XpSnapshotSingle snapshot(Client client)
@@ -351,6 +357,8 @@ class XpStateSingle
 			.actionsPerHour(getActionsHr())
 			.killsRemainingToGoal(getKillsRemaining(client))
 			.timeTillGoal(getTimeTillLevel())
+			.startGoalXp(startLevelExp)
+			.endGoalXp(endLevelExp)
 			.build();
 	}
 }

@@ -601,4 +601,15 @@ public class ModelDefinition
 
 		}
 	}
+
+	public void move(int xOffset, int yOffset, int zOffset)
+	{
+		for (int i = 0; i < this.vertexCount; i++)
+		{
+			this.vertexPositionsX[i] += xOffset;
+			this.vertexPositionsY[i] += yOffset;
+			this.vertexPositionsZ[i] += zOffset;
+		}
+		this.reset();
+	}
 }

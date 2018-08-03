@@ -253,6 +253,7 @@ public abstract class RSModelMixin implements RSModel
 			Point p = Perspective.worldToCanvas(client,
 				localX - v.getX(),
 				localY - v.getZ(),
+				client.getPlane(),
 				-v.getY());
 			if (p != null)
 			{

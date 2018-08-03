@@ -46,7 +46,9 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Idle Notifier"
+	name = "Idle Notifier",
+	description = "Send a notification when going idle, or when HP/Prayer reaches a threshold",
+	tags = {"health", "hitpoints", "notifications", "prayer"}
 )
 public class IdleNotifierPlugin extends Plugin
 {
@@ -123,6 +125,7 @@ public class IdleNotifierPlugin extends Plugin
 			case CRAFTING_GLASSBLOWING:
 			case CRAFTING_SPINNING:
 			case CRAFTING_BATTLESTAVES:
+			case CRAFTING_LEATHER:
 			/* Fletching(Cutting, Stringing) */
 			case FLETCHING_BOW_CUTTING:
 			case FLETCHING_STRING_NORMAL_SHORTBOW:

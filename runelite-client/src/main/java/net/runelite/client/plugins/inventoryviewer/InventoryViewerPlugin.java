@@ -31,6 +31,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Inventory Viewer",
+	description = "Add an overlay showing the contents of your inventory",
+	tags = {"alternate", "items", "overlay", "second"},
 	enabledByDefault = false
 )
 public class InventoryViewerPlugin extends Plugin

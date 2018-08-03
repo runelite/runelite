@@ -105,7 +105,7 @@ public class LineComponent implements LayoutableRenderableEntity
 				leftLineComponent.render(graphics);
 
 				final TextComponent rightLineComponent = new TextComponent();
-				rightLineComponent.setPosition(new Point(x + leftSmallWidth + rightFullWidth - getLineWidth(rightText, metrics), y));
+				rightLineComponent.setPosition(new Point(x + leftSmallWidth + rightSmallWidth - getLineWidth(rightText, metrics), y));
 				rightLineComponent.setText(rightText);
 				rightLineComponent.setColor(rightColor);
 				rightLineComponent.render(graphics);
