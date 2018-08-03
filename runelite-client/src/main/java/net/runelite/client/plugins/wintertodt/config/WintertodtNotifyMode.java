@@ -7,15 +7,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum WintertodtNotifyMode
 {
-    WHEN_DAMAGED("Damage Taken"),
-    ONLY_WHEN_INTERRUPTED("Action Interrupted"),
-    EITHER("Either");
+	WHEN_DAMAGED("Damage Taken"),
+	ONLY_WHEN_INTERRUPTED("Action Interrupted"),
+	EITHER("Either");
 
-    private final String name;
+	private final String name;
 
-    @Override
-    public String toString()
-    {
-        return name;
-    }
+	@Override
+	public String toString()
+	{
+		return name;
+	}
 }

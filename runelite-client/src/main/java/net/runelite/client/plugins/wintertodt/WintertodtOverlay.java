@@ -40,79 +40,79 @@ import static net.runelite.client.plugins.wintertodt.WintertodtPlugin.WINTERTODT
 
 class WintertodtOverlay extends Overlay
 {
-    private final Client client;
-    private final WintertodtPlugin plugin;
-    private final WintertodtConfig config;
-    private final XpTrackerService xpTrackerService;
-    private final PanelComponent panelComponent = new PanelComponent();
+	private final Client client;
+	private final WintertodtPlugin plugin;
+	private final WintertodtConfig config;
+	private final XpTrackerService xpTrackerService;
+	private final PanelComponent panelComponent = new PanelComponent();
 
-    @Inject
-    private WintertodtOverlay(Client client, WintertodtPlugin plugin, WintertodtConfig config, XpTrackerService xpTrackerService)
-    {
-        setPosition(OverlayPosition.BOTTOM_LEFT);
-        this.client = client;
-        this.plugin = plugin;
-        this.config = config;
-        this.xpTrackerService = xpTrackerService;
-    }
+	@Inject
+	private WintertodtOverlay(Client client, WintertodtPlugin plugin, WintertodtConfig config, XpTrackerService xpTrackerService)
+	{
+		setPosition(OverlayPosition.BOTTOM_LEFT);
+		this.client = client;
+		this.plugin = plugin;
+		this.config = config;
+		this.xpTrackerService = xpTrackerService;
+	}
 
-    private boolean isInWintertodt()
-    {
-        return client.getLocalPlayer().getWorldLocation().getRegionID() == WINTERTODT_REGION;
-    }
+	private boolean isInWintertodt()
+	{
+		return client.getLocalPlayer().getWorldLocation().getRegionID() == WINTERTODT_REGION;
+	}
 
-    @Override
-    public Dimension render(Graphics2D graphics)
-    {
-        if(!isInWintertodt())
-        {
-            return null;
-        }
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		if (!isInWintertodt())
+		{
+			return null;
+		}
 
-        panelComponent.getChildren().clear();
-        panelComponent.setPreferredSize(new Dimension(150,0));
+		panelComponent.getChildren().clear();
+		panelComponent.setPreferredSize(new Dimension(150, 0));
 
-        panelComponent.getChildren().add(TitleComponent.builder()
-            .text("Wintertodt")
-            .color(Color.CYAN)
-            .build());
+		panelComponent.getChildren().add(TitleComponent.builder()
+			.text("Wintertodt")
+			.color(Color.CYAN)
+			.build());
 
-        if(plugin.getCurrentActivity() == WintertodtActivity.IDLE)
-        {
-            panelComponent.getChildren().add(LineComponent.builder()
-                    .left("Activity:")
-                    .leftColor(Color.WHITE)
-                    .right("IDLE")
-                    .rightColor(Color.RED)
-                    .build());
-        }
-        else
-        {
-            panelComponent.getChildren().add(LineComponent.builder()
-                    .left("Activity:")
-                    .leftColor(Color.WHITE)
-                    .right(plugin.getCurrentActivity().getActionString())
-                    .rightColor(Color.GREEN)
-                    .build());
-        }
+		if (plugin.getCurrentActivity() == WintertodtActivity.IDLE)
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+					.left("Activity:")
+					.leftColor(Color.WHITE)
+					.right("IDLE")
+					.rightColor(Color.RED)
+					.build());
+		}
+		else
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+					.left("Activity:")
+					.leftColor(Color.WHITE)
+					.right(plugin.getCurrentActivity().getActionString())
+					.rightColor(Color.GREEN)
+					.build());
+		}
 
-        String inventoryString = plugin.getNumLogs() > 0 ? plugin.getInventoryScore() + " (" + plugin.getTotalPotentialinventoryScore() + ") pts" : plugin.getInventoryScore() + " pts";
+		String inventoryString = plugin.getNumLogs() > 0 ? plugin.getInventoryScore() + " (" + plugin.getTotalPotentialinventoryScore() + ") pts" : plugin.getInventoryScore() + " pts";
 
-        panelComponent.getChildren().add(LineComponent.builder()
-                .left("Inventory:")
-                .leftColor(Color.WHITE)
-                .right(inventoryString)
-                .rightColor(plugin.getInventoryScore() > 0 ? Color.GREEN : Color.RED)
-                .build());
+		panelComponent.getChildren().add(LineComponent.builder()
+				.left("Inventory:")
+				.leftColor(Color.WHITE)
+				.right(inventoryString)
+				.rightColor(plugin.getInventoryScore() > 0 ? Color.GREEN : Color.RED)
+				.build());
 
-        String kindlingString = plugin.getNumLogs() > 0 ? plugin.getNumKindling() + " (" + (plugin.getNumLogs() + plugin.getNumKindling()) + ")" : Integer.toString(plugin.getNumKindling());
-        panelComponent.getChildren().add(LineComponent.builder()
-                .left("Kindling:")
-                .leftColor(Color.WHITE)
-                .right(kindlingString)
-                .rightColor(plugin.getNumKindling() + plugin.getNumLogs() > 0 ? Color.GREEN : Color.RED)
-                .build());
+		String kindlingString = plugin.getNumLogs() > 0 ? plugin.getNumKindling() + " (" + (plugin.getNumLogs() + plugin.getNumKindling()) + ")" : Integer.toString(plugin.getNumKindling());
+		panelComponent.getChildren().add(LineComponent.builder()
+				.left("Kindling:")
+				.leftColor(Color.WHITE)
+				.right(kindlingString)
+				.rightColor(plugin.getNumKindling() + plugin.getNumLogs() > 0 ? Color.GREEN : Color.RED)
+				.build());
 
-        return panelComponent.render(graphics);
-    }
+		return panelComponent.render(graphics);
+	}
 }

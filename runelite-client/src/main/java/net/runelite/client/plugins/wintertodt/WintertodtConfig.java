@@ -33,20 +33,26 @@ import net.runelite.client.plugins.wintertodt.config.WintertodtNotifyMode;
 @ConfigGroup("wintertodt")
 public interface WintertodtConfig extends Config
 {
-    @ConfigItem(
-            position = 1,
-            keyName = "notifyCondition",
-            name = "Notify When",
-            description = "Configures when to send notifications"
-    )
-    default WintertodtNotifyMode notifyCondition() { return WintertodtNotifyMode.ONLY_WHEN_INTERRUPTED; }
+	@ConfigItem(
+			position = 1,
+			keyName = "notifyCondition",
+			name = "Notify When",
+			description = "Configures when to send notifications"
+	)
+	default WintertodtNotifyMode notifyCondition()
+	{
+		return WintertodtNotifyMode.ONLY_WHEN_INTERRUPTED;
+	}
 
-    @ConfigItem(
-            position = 2,
-            keyName = "damageNotificationColor",
-            name = "Damage Notification Color",
-            description = "Color of damage notification text in chat"
-    )
-    default Color damageNotificationColor() { return Color.CYAN; }
+	@ConfigItem(
+			position = 2,
+			keyName = "damageNotificationColor",
+			name = "Damage Notification Color",
+			description = "Color of damage notification text in chat"
+	)
+	default Color damageNotificationColor()
+	{
+		return Color.CYAN;
+	}
 
 }
