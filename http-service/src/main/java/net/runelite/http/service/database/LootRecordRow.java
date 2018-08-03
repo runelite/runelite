@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, TheStonedTurtle <http://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,58 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.http.service.database;
 
-import java.util.Collection;
 import lombok.Value;
-import net.runelite.api.Player;
 import net.runelite.http.api.database.ItemStack;
+import net.runelite.http.api.database.LootRecord;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Value
-public class PlayerLootReceived
+public class LootRecordRow
 {
-	private final Player player;
-	private final Collection<ItemStack> items;
+	private final int id;
+	private final int eventId;
+	private final String eventType;
+	private final int killCount;
+	private final int itemId;
+	private final int itemQuantity;
+
+	/**
+	 * Consolidates all rows from query and makes unique LootRecords
+	 * Converts itemId and itemAmount into DropEntry
+	 *
+	 * @param list of LootRecordRow (result from sq2lo query)
+	 * @return Array of LootRecord's
+	 */
+	static List<LootRecord> consolidateRows(List<LootRecordRow> list)
+	{
+		HashMap<Integer, LootRecord> lootMap = new HashMap<>();
+		for (LootRecordRow r : list)
+		{
+			ItemStack drop = new ItemStack(r.itemId, r.itemQuantity);
+			LootRecord record = lootMap.get(r.id);
+			if (record == null)
+			{
+				List<ItemStack> drops = new ArrayList<>();
+				drops.add(drop);
+				lootMap.put(r.id, new LootRecord(r.eventId, r.eventType, r.killCount, drops));
+			}
+			else
+			{
+				record.addDrop(drop);
+			}
+		}
+
+		List<LootRecord> result = new ArrayList<>();
+		for (Map.Entry<Integer, LootRecord> e : lootMap.entrySet())
+		{
+			result.add(e.getValue());
+		}
+
+		return result;
+	}
 }

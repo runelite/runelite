@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, TheStonedTurtle <http://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +22,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.game;
+package net.runelite.http.api.database;
 
-import lombok.Value;
+import net.runelite.http.api.RuneLiteAPI;
+import okhttp3.HttpUrl;
 
-@Value
-public class ItemStack
+public enum DatabaseEndpoint
 {
-	private final int id;
-	private final int quantity;
+	LOOT_RECORDS("All Loot Records for logged in user", Constants.BASE_URL + "/loot"),
+	LOOT_RECORDS_BY_TYPE("Loot Records with matching eventType", Constants.BASE_URL + "/loot/eventType"),
+	LOOT_RECORDS_BY_ID("Loot Records with matching eventId", Constants.BASE_URL + "/loot/eventId"),
+	LOOT_RECORDS_BY_EITHER(" Loot Records with match eventId or eventType", Constants.BASE_URL + "/loot/id");
+
+	private static class Constants
+	{
+		private static final String BASE_URL = RuneLiteAPI.getApiBase() + "/database";
+	}
+
+	private final String description;
+	private final HttpUrl databaseURL;
+
+	DatabaseEndpoint(String name, String url)
+	{
+		this.description = name;
+		this.databaseURL = HttpUrl.parse(url);
+	}
+
+	public String getDescription()
+	{
+		return this.description;
+	}
+
+	public HttpUrl getDatabaseURL()
+	{
+		return this.databaseURL;
+	}
 }

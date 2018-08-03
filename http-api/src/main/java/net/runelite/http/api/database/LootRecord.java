@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, TheStonedTurtle <http://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,58 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.http.api.database;
 
-import java.util.Collection;
 import lombok.Value;
-import net.runelite.api.Player;
-import net.runelite.http.api.database.ItemStack;
+import java.util.Collection;
 
 @Value
-public class PlayerLootReceived
+public class LootRecord
 {
-	private final Player player;
-	private final Collection<ItemStack> items;
+	private final int eventId;
+	private final String eventType;
+	private final int killCount;
+	private Collection<ItemStack> drops;
+
+	public void addDrop(ItemStack drop)
+	{
+		drops.add(drop);
+	}
+
+	@Override
+	public String toString()
+	{
+		StringBuilder m = new StringBuilder();
+		m.append("LootRecord{eventId=")
+				.append(eventId)
+				.append(",eventType=")
+				.append(eventType)
+				.append(",killCount=")
+				.append(killCount)
+				.append(",drops=");
+
+		if (drops != null)
+		{
+			m.append("[");
+			boolean addComma = false;
+			for (ItemStack d : drops)
+			{
+				if (addComma)
+				{
+					m.append(", ");
+				}
+
+				m.append(d.toString());
+				addComma = true;
+			}
+			m.append("]");
+		}
+		else
+		{
+			m.append("null");
+		}
+		m.append("}");
+
+		return m.toString();
+	}
 }

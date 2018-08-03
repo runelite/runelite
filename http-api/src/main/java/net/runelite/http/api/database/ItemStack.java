@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, TheStonedTurtle <http://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.http.api.database;
 
-import java.util.Collection;
 import lombok.Value;
-import net.runelite.api.Player;
-import net.runelite.http.api.database.ItemStack;
 
 @Value
-public class PlayerLootReceived
+public class ItemStack
 {
-	private final Player player;
-	private final Collection<ItemStack> items;
+	private final int id;
+	private final int quantity;
+
+	@Override
+	public String toString()
+	{
+		return "ItemStack(id=" + id + ",quantity=" + quantity + ")";
+	}
 }
