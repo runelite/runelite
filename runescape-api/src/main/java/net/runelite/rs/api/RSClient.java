@@ -323,6 +323,10 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	RSIndexDataBase getIndexSprites();
 
+	@Import("indexScripts")
+	@Override
+	RSIndexDataBase getIndexScripts();
+
 	@Import("widgetFlags")
 	@Override
 	RSHashTable getWidgetFlags();
