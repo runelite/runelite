@@ -38,6 +38,7 @@ import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Experience;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
@@ -640,16 +641,24 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		{
 			final HiscoreResult highscores = hiscoreClient.lookup(lookup.getName(), lookup.getEndpoint());
 			
-			final String[] lvls = {"" + highscores.getAttack().getLevel(), 
-				"" + highscores.getStrength().getLevel(), 
-				"" + highscores.getDefence().getLevel(), 
-				"" + highscores.getHitpoints().getLevel(), 
-				"" + highscores.getRanged().getLevel(), 
-				"" + highscores.getPrayer().getLevel(), 
-				"" + highscores.getMagic().getLevel()};
+			int a = highscores.getAttack().getLevel();
+			int s = highscores.getStrength().getLevel();
+			int d = highscores.getDefence().getLevel();
+			int h = highscores.getHitpoints().getLevel();
+			int r = highscores.getRanged().getLevel();
+			int p = highscores.getPrayer().getLevel();
+			int m = highscores.getMagic().getLevel();
+			
+			final String[] lvls = {"" + a, 
+				"" + s, 
+				"" + d, 
+				"" + h, 
+				"" + r, 
+				"" + p, 
+				"" + m};
 			final String lvlsString = String.join(" ", lvls);
 			
-			final int comblvl = client.getLocalPlayer().getCombatLevel();
+			final int comblvl = Experience.getCombatLevel(a,s,d,h,m,r,p);
 			final String cmblvlString = "" + comblvl;
 			
 			final String response = new ChatMessageBuilder()
