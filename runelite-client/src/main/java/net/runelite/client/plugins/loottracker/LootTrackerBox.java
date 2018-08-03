@@ -34,18 +34,21 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
+import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStack;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.StackFormatter;
+import net.runelite.http.api.item.Item;
 import net.runelite.http.api.item.ItemPrice;
 
 @Getter
 class LootTrackerBox extends JPanel
 {
 	private static final int ITEMS_PER_ROW = 5;
+	private static ItemComposition itemComposition;
 	private final long totalPrice;
 
 	LootTrackerBox(final ItemManager itemManager, final String title, final String subTitle, final ItemStack[] items)
@@ -123,7 +126,11 @@ class LootTrackerBox extends JPanel
 		long total = 0;
 		for (ItemStack itemStack : itemStacks)
 		{
-			ItemPrice itemPrice = itemManager.getItemPrice(itemStack.getId());
+			ItemComposition composition = itemManager.getItemComposition(itemStack.getId());
+			final boolean note = composition.getNote() != -1;
+			final int id = note ? composition.getLinkedNoteId() : composition.getId();
+
+			ItemPrice itemPrice = itemManager.getItemPrice(id);
 			if (itemPrice != null)
 			{
 				total += (long) itemPrice.getPrice() * itemStack.getQuantity();
