@@ -34,11 +34,11 @@ public interface DeathIndicatorConfig extends Config
 {
 	@ConfigItem(
 		position = 1,
-		keyName = "deathHintArrow",
-		name = "Death Hint Arrow",
-		description = "Configures whether or not to show a hint arrow to death location"
+		keyName = "deathTileHighlight",
+		name = "Highlight Death Tile",
+		description = "Configures whether or not to highlight the death location"
 	)
-	default boolean showDeathHintArrow()
+	default boolean showDeathTileHighlight()
 	{
 		return true;
 	}
@@ -46,7 +46,7 @@ public interface DeathIndicatorConfig extends Config
 	@ConfigItem(
 		position = 2,
 		keyName = "deathInfoBox",
-		name = "Death InfoBox",
+		name = "Show Death InfoBox",
 		description = "Configures whether or not to show item reclaim timer and death world infobox"
 	)
 	default boolean showDeathInfoBox()
@@ -65,6 +65,17 @@ public interface DeathIndicatorConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+		position = 4,
+		keyName = "deathChatMessage",
+		name = "Show Chat Message",
+		description = "Configures whether or not to show a chatbox message on login (Beware: includes login name if on a different account)"
+	)
+	default boolean showDeathChatMessage()
+	{
+		return false;
+	}
+
 	// Stored Data
 	@ConfigItem(
 		keyName = "deathWorld",
@@ -72,10 +83,7 @@ public interface DeathIndicatorConfig extends Config
 		description = "",
 		hidden = true
 	)
-	default int deathWorld()
-	{
-		return -1;
-	}
+	int deathWorld();
 
 	@ConfigItem(
 		keyName = "deathWorld",
@@ -90,10 +98,7 @@ public interface DeathIndicatorConfig extends Config
 		description = "",
 		hidden = true
 	)
-	default int deathLocationX()
-	{
-		return -1;
-	}
+	int deathLocationX();
 
 	@ConfigItem(
 		keyName = "deathLocationX",
@@ -108,10 +113,7 @@ public interface DeathIndicatorConfig extends Config
 		description = "",
 		hidden = true
 	)
-	default int deathLocationY()
-	{
-		return -1;
-	}
+	int deathLocationY();
 
 	@ConfigItem(
 		keyName = "deathLocationY",
@@ -126,10 +128,7 @@ public interface DeathIndicatorConfig extends Config
 		description = "",
 		hidden = true
 	)
-	default int deathLocationPlane()
-	{
-		return -1;
-	}
+	int deathLocationPlane();
 
 	@ConfigItem(
 		keyName = "deathLocationPlane",
@@ -152,4 +151,19 @@ public interface DeathIndicatorConfig extends Config
 		description = ""
 	)
 	void timeOfDeath(Instant timeOfDeath);
+
+	@ConfigItem(
+		keyName = "deadPlayerName",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	String deadPlayerName();
+
+	@ConfigItem(
+		keyName = "deadPlayerName",
+		name = "",
+		description = ""
+	)
+	void deadPlayerName(String deadPlayerName);
 }

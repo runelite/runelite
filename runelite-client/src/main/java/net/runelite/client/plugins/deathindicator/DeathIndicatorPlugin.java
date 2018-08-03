@@ -37,6 +37,7 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import static net.runelite.api.AnimationID.DEATH;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
@@ -45,9 +46,14 @@ import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ui.overlay.infobox.Timer;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
@@ -80,11 +86,25 @@ public class DeathIndicatorPlugin extends Plugin
 	@Inject
 	private InfoBoxManager infoBoxManager;
 
+	@Inject
+	private DeathIndicatorOverlay deathIndicatorOverlay;
+
+	@Inject
+	private DeathMiniMapOverlay deathMiniMapOverlay;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
+
 	private Timer deathTimer;
 
 	private WorldPoint lastDeath;
 	private Instant lastDeathTime;
 	private int lastDeathWorld;
+
+	private boolean hasSentMessage = false;
 
 	static
 	{
@@ -110,24 +130,19 @@ public class DeathIndicatorPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		if (!hasDied())
+		overlayManager.add(deathIndicatorOverlay);
+		overlayManager.add(deathMiniMapOverlay);
+
+		if (!hasDied() || !isDeadPlayer())
 		{
 			return;
 		}
 
 		resetInfobox();
 
-		if (client.getWorld() != config.deathWorld())
+		if (!onDeathWorld())
 		{
 			return;
-		}
-
-		if (config.showDeathHintArrow())
-		{
-			if (!client.hasHintArrow())
-			{
-				client.setHintArrow(new WorldPoint(config.deathLocationX(), config.deathLocationY(), config.deathLocationPlane()));
-			}
 		}
 
 		if (config.showDeathOnWorldMap())
@@ -140,10 +155,8 @@ public class DeathIndicatorPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		if (client.hasHintArrow())
-		{
-			client.clearHintArrow();
-		}
+		overlayManager.removeIf(DeathIndicatorOverlay.class::isInstance);
+		overlayManager.removeIf(DeathMiniMapOverlay.class::isInstance);
 
 		if (deathTimer != null)
 		{
@@ -195,11 +208,7 @@ public class DeathIndicatorPlugin extends Plugin
 			config.deathLocationPlane(lastDeath.getPlane());
 			config.timeOfDeath(lastDeathTime);
 			config.deathWorld(lastDeathWorld);
-
-			if (config.showDeathHintArrow())
-			{
-				client.setHintArrow(lastDeath);
-			}
+			config.deadPlayerName(client.getUsername().replaceAll(" ", "_"));
 
 			if (config.showDeathOnWorldMap())
 			{
@@ -211,19 +220,20 @@ public class DeathIndicatorPlugin extends Plugin
 
 			lastDeath = null;
 			lastDeathTime = null;
+			hasSentMessage = false;
 		}
 
-		if (!hasDied() || client.getWorld() != config.deathWorld())
+		if (!hasDied() || !isDeadPlayer() || !onDeathWorld())
 		{
 			return;
 		}
 
-		// Check if the player is at their death location, or timer has passed
+		// Check if the player is at their death location, if it's been over an hour since death, or timer has passed
 		WorldPoint deathPoint = new WorldPoint(config.deathLocationX(), config.deathLocationY(), config.deathLocationPlane());
-		if (deathPoint.equals(client.getLocalPlayer().getWorldLocation()) || (deathTimer != null && deathTimer.cull()))
+		if (deathPoint.equals(client.getLocalPlayer().getWorldLocation())
+			|| Instant.now().isAfter(config.timeOfDeath().plusSeconds(3600))
+			|| (deathTimer != null && deathTimer.cull()))
 		{
-			client.clearHintArrow();
-
 			if (deathTimer != null)
 			{
 				infoBoxManager.removeInfoBox(deathTimer);
@@ -233,6 +243,8 @@ public class DeathIndicatorPlugin extends Plugin
 			worldMapPointManager.removeIf(DeathWorldMapPoint.class::isInstance);
 
 			resetDeath();
+
+			hasSentMessage = false;
 		}
 	}
 
@@ -241,11 +253,6 @@ public class DeathIndicatorPlugin extends Plugin
 	{
 		if (event.getGroup().equals("deathIndicator"))
 		{
-			if (!config.showDeathHintArrow() && hasDied())
-			{
-				client.clearHintArrow();
-			}
-
 			if (!config.showDeathInfoBox() && deathTimer != null)
 			{
 				infoBoxManager.removeInfoBox(deathTimer);
@@ -259,10 +266,7 @@ public class DeathIndicatorPlugin extends Plugin
 
 			if (!hasDied())
 			{
-				client.clearHintArrow();
-
 				resetInfobox();
-
 				worldMapPointManager.removeIf(DeathWorldMapPoint.class::isInstance);
 			}
 		}
@@ -278,31 +282,60 @@ public class DeathIndicatorPlugin extends Plugin
 
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
-			if (client.getWorld() == config.deathWorld())
+			if (onDeathWorld() && isDeadPlayer())
 			{
 				WorldPoint deathPoint = new WorldPoint(config.deathLocationX(), config.deathLocationY(), config.deathLocationPlane());
-
-				if (config.showDeathHintArrow())
-				{
-					client.setHintArrow(deathPoint);
-				}
 
 				if (config.showDeathOnWorldMap())
 				{
 					worldMapPointManager.removeIf(DeathWorldMapPoint.class::isInstance);
 					worldMapPointManager.add(new DeathWorldMapPoint(deathPoint));
 				}
+
+				resetInfobox();
 			}
 			else
 			{
 				worldMapPointManager.removeIf(DeathWorldMapPoint.class::isInstance);
+				resetInfobox();
+			}
+
+			// Check if the player wants the message and has not received it yet and if it has been less than one hour since death
+			if (config.showDeathChatMessage() && !hasSentMessage && Instant.now().isBefore(config.timeOfDeath().plusSeconds(3600)))
+			{
+				String deadPlayersName = config.deadPlayerName();
+				Duration timeSinceDeath = Duration.between(config.timeOfDeath(), Instant.now());
+				long minutes = timeSinceDeath.toMinutes();
+				int world = config.deathWorld();
+
+				// Check if the current player is the dead player
+				if (deadPlayersName.equalsIgnoreCase(client.getUsername().replaceAll(" ", "_")))
+				{
+					sendChatMessage("You died " + minutes + " minutes ago on world " + world + ".");
+					hasSentMessage = true;
+				}
+				else
+				{
+					sendChatMessage("You died on account '" + deadPlayersName + "' " + minutes + " minutes ago on world " + world + ".");
+					hasSentMessage = true;
+				}
 			}
 		}
 	}
 
-	private boolean hasDied()
+	boolean hasDied()
 	{
 		return config.timeOfDeath() != null;
+	}
+
+	boolean onDeathWorld()
+	{
+		return client.getWorld() == config.deathWorld();
+	}
+
+	boolean isDeadPlayer()
+	{
+		return config.deadPlayerName().equalsIgnoreCase(client.getUsername().replaceAll(" ", "_"));
 	}
 
 	private void resetDeath()
@@ -312,6 +345,7 @@ public class DeathIndicatorPlugin extends Plugin
 		config.deathLocationPlane(0);
 		config.deathWorld(0);
 		config.timeOfDeath(null);
+		config.deadPlayerName("");
 	}
 
 	private void resetInfobox()
@@ -322,7 +356,7 @@ public class DeathIndicatorPlugin extends Plugin
 			deathTimer = null;
 		}
 
-		if (hasDied() && config.showDeathInfoBox())
+		if (hasDied() && isDeadPlayer() && config.showDeathInfoBox())
 		{
 			Instant now = Instant.now();
 			Duration timeLeft = Duration.ofHours(1).minus(Duration.between(config.timeOfDeath(), now));
@@ -333,5 +367,20 @@ public class DeathIndicatorPlugin extends Plugin
 				infoBoxManager.addInfoBox(deathTimer);
 			}
 		}
+	}
+
+	private void sendChatMessage(String chatMessage)
+	{
+		final String message = new ChatMessageBuilder()
+				.append(ChatColorType.HIGHLIGHT)
+				.append(chatMessage)
+				.build();
+
+		chatMessageManager.queue(
+				QueuedMessage.builder()
+				.type(ChatMessageType.GAME)
+				.runeLiteFormattedMessage(message)
+				.build()
+		);
 	}
 }
