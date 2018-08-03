@@ -48,7 +48,6 @@ import net.runelite.http.api.item.ItemPrice;
 class LootTrackerBox extends JPanel
 {
 	private static final int ITEMS_PER_ROW = 5;
-	private static ItemComposition itemComposition;
 	private final long totalPrice;
 
 	LootTrackerBox(final ItemManager itemManager, final String title, final String subTitle, final ItemStack[] items)
