@@ -239,4 +239,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 19,
+		keyName = "swapBALadder",
+		name = "BA Ladder",
+		description = "Swap Climb-down with Quick-start at the Barbarian Assault wave lobbies."
+	)
+	default boolean swapBALadder()
+	{
+		return true;
+	}
 }

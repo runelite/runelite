@@ -484,6 +484,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("empty", option, target, true);
 		}
+		else if (config.swapBALadder() && option.equals("climb-down") && target.equals("ladder"))
+		{
+			swap("quick-start", option, target,true);
+		}
 	}
 
 	@Subscribe
