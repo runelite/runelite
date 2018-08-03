@@ -643,7 +643,6 @@ public class TimersPlugin extends Plugin
 				removeGameTimer(ICEBARRAGE, FREEZE_TIME_PASSED_THRESHOLD);
 				createGameTimer(ICEBLITZ, false, FREEZE_TIMERS);
 			}
-
 		}
 	}
 
@@ -707,10 +706,11 @@ public class TimersPlugin extends Plugin
 	}
 
 	/**
-	 * Adds a FREEZE game timer to the infobox manager to render. Accepts a `replaceExisting` option to
-	 * preserve existing timers of the same type instead of replacing them with the new passed
-	 * timer. Accepts a `checkActiveFreezeTimers` option to preserve existing FREEZE timers of a certain
-	 * freeze spell instead of replacing or adding additional freeze timers of a different freeze spell.
+	 * Adds a GameTimer to the infobox manager to render such that it is not mutually exclusive with a
+	 * given set of timers. Accepts a `replaceExisting` option to preserve existing timers of the same
+	 * type instead of replacing them with the new passed timer. Accepts a `checkActiveFreezeTimers`
+	 * option to preserve existing mutually exclusive timers instead of replacing or
+	 * adding additional timers within such set.
 	 *
 	 * @param timer           				The timer to be added to the infobox manager.
 	 * @param replaceExisting 				Whether to remove existing timer of the same type. `true`
@@ -718,7 +718,6 @@ public class TimersPlugin extends Plugin
 	 * @param mutuallyExclusiveGameTimers	Mutually exclusive set of timers to be checked. If the timer
 	 *                                      at hand is in the set. It will not be created.
 	 */
-
 	private void createGameTimer(final GameTimer timer, final boolean replaceExisting, final Set<GameTimer> mutuallyExclusiveGameTimers)
 	{
 		if (!mutuallyExclusiveGameTimers.isEmpty()
@@ -739,7 +738,6 @@ public class TimersPlugin extends Plugin
 	 * @param replaceExisting 			Whether to remove existing timer of the same type. `true` to replace
 	 *                        			it, `false` to preserve it if present.
 	 */
-
 	private void createGameTimer(final GameTimer timer, final boolean replaceExisting)
 	{
 		if (!replaceExisting
@@ -767,10 +765,8 @@ public class TimersPlugin extends Plugin
 	}
 
 	/**
-	 * Adds a game timer to the infobox manager to render. Accepts a `replaceExisting` option to
-	 * preserve existing timers of the same type instead of replacing them with the new passed
-	 * timer. Accepts a `secondsPassedThreshold` which defines the limit of seconds in which
-	 * to allow the removal of a timer.
+	 * Removes a rendered GameTimer from the infobox manager. Accepts a `secondsPassedThreshold`
+	 * defining the limit of seconds in which to allow the removal of a timer.
 	 *
 	 * @param timer           			The timer to be added to the infobox manager.
 	 * @param secondsPassedThreshold 	Seconds allowed to be elapsed since start of timer in
@@ -785,7 +781,6 @@ public class TimersPlugin extends Plugin
 	 *                                  be greater than this threshold and should not allow the
 	 *                                  current freeze timer to be removed, as it is in effect.
 	 */
-
 	private void removeGameTimer(GameTimer timer, long secondsPassedThreshold)
 	{
 		long totalTimerSeconds = timer.getDuration().getSeconds();
