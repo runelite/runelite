@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Kamiel <https://github.com/Kamielvf>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,37 +22,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package net.runelite.client.plugins.playerindicators;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
+import java.awt.Polygon;
 import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.api.ClanMemberRank;
-import net.runelite.api.Player;
-import net.runelite.api.Point;
-import net.runelite.client.game.ClanManager;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-@Singleton
-public class PlayerIndicatorsOverlay extends Overlay
+public class PlayerIndicatorsTileOverlay extends Overlay
 {
 	private final PlayerIndicatorsService playerIndicatorsService;
 	private final PlayerIndicatorsConfig config;
-	private final ClanManager clanManager;
 
 	@Inject
-	private PlayerIndicatorsOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService,
-		ClanManager clanManager)
+	private PlayerIndicatorsTileOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService)
 	{
 		this.config = config;
 		this.playerIndicatorsService = playerIndicatorsService;
-		this.clanManager = clanManager;
+		setLayer(OverlayLayer.ABOVE_SCENE);
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.MED);
 	}
@@ -60,45 +53,21 @@ public class PlayerIndicatorsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		playerIndicatorsService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
-		return null;
-	}
-
-	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
-	{
-		if (!config.drawOverheadPlayerNames())
+		if (!config.drawTiles())
 		{
-			return;
+			return null;
 		}
 
-		String name = actor.getName().replace('\u00A0', ' ');
-		int offset = actor.getLogicalHeight() + 40;
-		Point textLocation = actor.getCanvasTextLocation(graphics, name, offset);
-
-		if (textLocation != null)
+		playerIndicatorsService.forEachPlayer((player, color) ->
 		{
-			if (config.showClanRanks() && actor.isClanMember())
+			final Polygon poly = player.getCanvasTilePoly();
+
+			if (poly != null)
 			{
-				ClanMemberRank rank = clanManager.getRank(name);
-
-				if (rank != ClanMemberRank.UNRANKED)
-				{
-					BufferedImage clanchatImage = clanManager.getClanImage(rank);
-
-					if (clanchatImage != null)
-					{
-						int width = clanchatImage.getWidth();
-						int textHeight = graphics.getFontMetrics().getHeight() - graphics.getFontMetrics().getMaxDescent();
-						Point imageLocation = new Point(textLocation.getX() - width / 2 - 1, textLocation.getY() - textHeight / 2 - clanchatImage.getHeight() / 2);
-						OverlayUtil.renderImageLocation(graphics, imageLocation, clanchatImage);
-
-						// move text
-						textLocation = new Point(textLocation.getX() + width / 2, textLocation.getY());
-					}
-				}
+				OverlayUtil.renderPolygon(graphics, poly, color);
 			}
+		});
 
-			OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
-		}
+		return null;
 	}
 }
