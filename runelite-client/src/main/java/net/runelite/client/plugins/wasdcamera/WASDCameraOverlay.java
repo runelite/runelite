@@ -46,8 +46,6 @@ public class WASDCameraOverlay extends Overlay
 
 	private WASDCameraPlugin plugin;
 
-	private int nameLength;
-
 	private final int X_OFFSET = 40;
 	private final int Y_OFFSET = 134;
 
@@ -65,13 +63,13 @@ public class WASDCameraOverlay extends Overlay
 	public Dimension render(Graphics2D g)
 	{
 		// Update text of component based on lock and typing in chat
-		if (plugin.handleCam && plugin.canHandle())
+		if (plugin.handleCam && plugin.loggedIn)
 		{
 			// Get chatbox rectangle
 			Widget w = client.getWidget(WidgetInfo.CHATBOX);
 			Rectangle b = w.getBounds();
 
-			nameLength = client.getLocalPlayer().getName().length();
+			int nameLength = client.getLocalPlayer().getName().length();
 
 			// Move overlay over depending on name length
 			int offset = (nameLength * 5) + X_OFFSET;

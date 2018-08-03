@@ -66,10 +66,14 @@ public class WASDCameraPlugin extends Plugin
 	@Inject
 	private WASDCameraListener inputListener;
 
-	public boolean handleCam = true;
-	public boolean inChat = true;
-	public boolean inFocus = true;
-	public boolean loggedIn = false;
+	// Whether or not we should be remapping input
+	public boolean handleCam;
+
+	// Whether or not our last input was in the chat var string
+	public boolean inChat;
+
+	public boolean inFocus;
+	public boolean loggedIn;
 
 	@Provides
 	WASDCameraConfig getConfig(ConfigManager configManager)
@@ -82,6 +86,10 @@ public class WASDCameraPlugin extends Plugin
 	{
 		keyManager.registerKeyListener(inputListener);
 		overlayManager.add(overlay);
+		handleCam = true;
+		inChat = true;
+		inFocus = true;
+		loggedIn = false;
 	}
 
 	@Override
