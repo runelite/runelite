@@ -34,13 +34,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
-import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.ItemStack;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.StackFormatter;
-import net.runelite.http.api.item.ItemPrice;
 
 @Getter
 class LootTrackerBox extends JPanel
@@ -48,7 +45,7 @@ class LootTrackerBox extends JPanel
 	private static final int ITEMS_PER_ROW = 5;
 	private final long totalPrice;
 
-	LootTrackerBox(final ItemManager itemManager, final String title, final String subTitle, final ItemStack[] items)
+	LootTrackerBox(final ItemManager itemManager, final String title, final String subTitle, final LootTrackerItemEntry[] items)
 	{
 		setLayout(new BorderLayout(0, 1));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
@@ -72,7 +69,7 @@ class LootTrackerBox extends JPanel
 			logTitle.add(subTitleLabel, BorderLayout.CENTER);
 		}
 
-		totalPrice = calculatePrice(itemManager, items);
+		totalPrice = calculatePrice(items);
 
 		if (totalPrice > 0)
 		{
@@ -93,9 +90,9 @@ class LootTrackerBox extends JPanel
 
 			if (i < items.length)
 			{
-				final ItemStack item = items[i];
+				final LootTrackerItemEntry item = items[i];
 				final JLabel imageLabel = new JLabel();
-				imageLabel.setToolTipText(buildToolTip(itemManager, item));
+				imageLabel.setToolTipText(buildToolTip(item));
 				imageLabel.setVerticalAlignment(SwingConstants.CENTER);
 				imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 				itemManager.getImage(item.getId(), item.getQuantity(), item.getQuantity() > 1).addTo(imageLabel);
@@ -109,29 +106,21 @@ class LootTrackerBox extends JPanel
 		add(itemContainer, BorderLayout.CENTER);
 	}
 
-	private String buildToolTip(ItemManager itemManager, ItemStack item)
+	private String buildToolTip(LootTrackerItemEntry item)
 	{
-		final String name = itemManager.getItemComposition(item.getId()).getName();
+		final String name = item.getName();
 		final int quantity = item.getQuantity();
-		final long price = calculatePrice(itemManager, new ItemStack[]{item});
+		final long price = item.getPrice();
 
-		return name + " x " + quantity + " (" + price + ")";
+		return name + " x " + quantity + " (" + StackFormatter.quantityToStackSize(price) + ")";
 	}
 
-	private static long calculatePrice(final ItemManager itemManager, final ItemStack[] itemStacks)
+	private static long calculatePrice(final LootTrackerItemEntry[] itemStacks)
 	{
 		long total = 0;
-		for (ItemStack itemStack : itemStacks)
+		for (LootTrackerItemEntry itemStack : itemStacks)
 		{
-			ItemPrice itemPrice = itemManager.getItemPrice(itemStack.getId());
-			if (itemPrice != null)
-			{
-				total += (long) itemPrice.getPrice() * itemStack.getQuantity();
-			}
-			else if (itemStack.getId() == ItemID.COINS_995)
-			{
-				total += itemStack.getQuantity();
-			}
+			total += itemStack.getPrice();
 		}
 		return total;
 	}
