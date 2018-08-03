@@ -51,7 +51,7 @@ import static net.runelite.api.ItemID._3RD_AGE_AXE;
 
 @AllArgsConstructor
 @Getter
-enum Axe
+public enum Axe
 {
 	BRONZE(WOODCUTTING_BRONZE, BRONZE_AXE),
 	IRON(WOODCUTTING_IRON, IRON_AXE),
@@ -77,7 +77,7 @@ enum Axe
 		}
 	}
 
-	static Axe findAxeByAnimId(int animId)
+	public static Axe findAxeByAnimId(int animId)
 	{
 		return AXE_ANIM_IDS.get(animId);
 	}
