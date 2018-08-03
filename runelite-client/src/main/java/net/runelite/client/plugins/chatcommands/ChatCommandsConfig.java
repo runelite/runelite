@@ -32,10 +32,10 @@ import net.runelite.client.config.ConfigItem;
 public interface ChatCommandsConfig extends Config
 {
 	@ConfigItem(
-		position = 0,
-		keyName = "price",
-		name = "Price Command",
-		description = "Configures whether the Price command is enabled"
+			position = 0,
+			keyName = "price",
+			name = "Price Command",
+			description = "Configures whether the Price command is enabled"
 	)
 	default boolean price()
 	{
@@ -43,10 +43,10 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 1,
-		keyName = "lvl",
-		name = "Level Command",
-		description = "Configures whether the Level command is enabled"
+			position = 1,
+			keyName = "lvl",
+			name = "Level Command",
+			description = "Configures whether the Level command is enabled"
 	)
 	default boolean lvl()
 	{
@@ -54,10 +54,10 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
-		keyName = "clue",
-		name = "Clue Command",
-		description = "Configures whether the Clue command is enabled"
+			position = 2,
+			keyName = "clue",
+			name = "Clue Command",
+			description = "Configures whether the Clue command is enabled"
 	)
 	default boolean clue()
 	{
@@ -65,10 +65,10 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
-		keyName = "killcount",
-		name = "Killcount Command",
-		description = "Configures whether the Killcount command is enabled"
+			position = 3,
+			keyName = "killcount",
+			name = "Killcount Command",
+			description = "Configures whether the Killcount command is enabled"
 	)
 	default boolean killcount()
 	{
@@ -76,10 +76,21 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
-		keyName = "clearShortcuts",
-		name = "Clear shortcuts",
-		description = "Enable shortcuts (ctrl+w and backspace) for clearing the chatbox"
+			position = 4,
+			keyName = "combat",
+			name = "Combat Command",
+			description = "Configures whether the Combat command is enabled"
+	)
+	default boolean combat()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			position = 5,
+			keyName = "clearShortcuts",
+			name = "Clear shortcuts",
+			description = "Enable shortcuts (ctrl+w and backspace) for clearing the chatbox"
 	)
 	default boolean clearShortcuts()
 	{
