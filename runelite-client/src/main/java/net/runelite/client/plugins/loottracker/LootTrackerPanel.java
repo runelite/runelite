@@ -46,7 +46,8 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.StackFormatter;
 
 @Slf4j
-class LootTrackerPanel extends PluginPanel {
+class LootTrackerPanel extends PluginPanel
+{
 	private static final String HTML_LABEL_TEMPLATE =
 			"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
 
@@ -65,7 +66,8 @@ class LootTrackerPanel extends PluginPanel {
 	private int overallKills;
 	private int overallGp;
 
-	LootTrackerPanel(final ItemManager itemManager) {
+	LootTrackerPanel(final ItemManager itemManager)
+	{
 		this.itemManager = itemManager;
 		setBorder(new EmptyBorder(6, 6, 6, 6));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -125,7 +127,8 @@ class LootTrackerPanel extends PluginPanel {
 		overallIcon.setIcon(new ImageIcon(img));
 	}
 
-	private static String htmlLabel(String key, long value) {
+	private static String htmlLabel(String key, long value)
+	{
 		final String valueStr = StackFormatter.quantityToStackSize(value);
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
@@ -135,7 +138,8 @@ class LootTrackerPanel extends PluginPanel {
 		remove(errorPanel);
 		overallPanel.setVisible(true);
 // Create box if there are items
-		if (items.length > 0) {
+		if (items.length > 0)
+		{
 			final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
 			final LootTrackerBox box = new LootTrackerBox(itemManager, eventName, subTitle, items, highlightValue);
 			logsContainer.add(box, 0);
@@ -165,7 +169,8 @@ class LootTrackerPanel extends PluginPanel {
 		updateOverall();
 	}
 
-	private void updateOverall() {
+	private void updateOverall()
+	{
 		overallKillsLabel.setText(htmlLabel("Total count: ", overallKills));
 		overallGpLabel.setText(htmlLabel("Total value: ", overallGp));
 	}
