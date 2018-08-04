@@ -89,6 +89,9 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_S;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
+import static org.lwjgl.opengl.GL43.GL_DEBUG_OUTPUT;
+import static org.lwjgl.opengl.GL43.glDebugMessageCallback;
+import org.lwjgl.opengl.KHRDebugCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -279,7 +282,9 @@ public class ModelViewer
 		double far = 10000;
 		double fov = 1; // 1 gives you a 90° field of view. It's tan(fov_angle)/2.
 		GL11.glFrustum(-aspect * near * fov, aspect * near * fov, -fov, fov, near, far);
-		GL11.glPopMatrix();
+
+		GL11.glEnable(GL_DEBUG_OUTPUT);
+		glDebugMessageCallback(new KHRDebugCallback());
 
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 
@@ -783,7 +788,6 @@ public class ModelViewer
 				-height,
 				(regionY * TILE_SCALE) + ((length * TILE_SCALE) / 2)
 			);
-			GL11.glPopMatrix();
 		}
 	}
 
