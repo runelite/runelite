@@ -33,7 +33,6 @@ import java.awt.image.BufferedImage;
 import java.time.temporal.ChronoUnit;
 import java.util.EnumSet;
 import java.util.Objects;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -53,6 +52,7 @@ import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.http.api.xp.XpClient;
 
 @PluginDescriptor(
@@ -102,11 +102,7 @@ public class XpTrackerPlugin extends Plugin
 	{
 		xpPanel = new XpPanel(this, client, skillIconManager);
 
-		BufferedImage icon;
-		synchronized (ImageIO.class)
-		{
-			icon = ImageIO.read(getClass().getResourceAsStream("xp.png"));
-		}
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "/skill_icons/overall.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("XP Tracker")

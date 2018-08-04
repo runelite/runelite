@@ -28,17 +28,16 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Set;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import static net.runelite.api.AnimationID.DEATH;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.ItemID;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
@@ -46,11 +45,13 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ui.overlay.infobox.Timer;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
+import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Death Indicator",
@@ -66,7 +67,6 @@ public class DeathIndicatorPlugin extends Plugin
 		12342, // Edgeville
 		11062 // Camelot
 	);
-	static BufferedImage BONES;
 
 	@Inject
 	private Client client;
@@ -80,26 +80,16 @@ public class DeathIndicatorPlugin extends Plugin
 	@Inject
 	private InfoBoxManager infoBoxManager;
 
+	@Inject
+	private ItemManager itemManager;
+
+	private BufferedImage mapArrow;
+
 	private Timer deathTimer;
 
 	private WorldPoint lastDeath;
 	private Instant lastDeathTime;
 	private int lastDeathWorld;
-
-	static
-	{
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				BONES = ImageIO.read(DeathIndicatorPlugin.class.getResourceAsStream("bones.png"));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
-	}
 
 	@Provides
 	DeathIndicatorConfig deathIndicatorConfig(ConfigManager configManager)
@@ -133,7 +123,7 @@ public class DeathIndicatorPlugin extends Plugin
 		if (config.showDeathOnWorldMap())
 		{
 			worldMapPointManager.removeIf(DeathWorldMapPoint.class::isInstance);
-			worldMapPointManager.add(new DeathWorldMapPoint(new WorldPoint(config.deathLocationX(), config.deathLocationY(), config.deathLocationPlane())));
+			worldMapPointManager.add(new DeathWorldMapPoint(new WorldPoint(config.deathLocationX(), config.deathLocationY(), config.deathLocationPlane()), this));
 		}
 	}
 
@@ -204,7 +194,7 @@ public class DeathIndicatorPlugin extends Plugin
 			if (config.showDeathOnWorldMap())
 			{
 				worldMapPointManager.removeIf(DeathWorldMapPoint.class::isInstance);
-				worldMapPointManager.add(new DeathWorldMapPoint(lastDeath));
+				worldMapPointManager.add(new DeathWorldMapPoint(lastDeath, this));
 			}
 
 			resetInfobox();
@@ -290,7 +280,7 @@ public class DeathIndicatorPlugin extends Plugin
 				if (config.showDeathOnWorldMap())
 				{
 					worldMapPointManager.removeIf(DeathWorldMapPoint.class::isInstance);
-					worldMapPointManager.add(new DeathWorldMapPoint(deathPoint));
+					worldMapPointManager.add(new DeathWorldMapPoint(deathPoint, this));
 				}
 			}
 			else
@@ -328,10 +318,27 @@ public class DeathIndicatorPlugin extends Plugin
 			Duration timeLeft = Duration.ofHours(1).minus(Duration.between(config.timeOfDeath(), now));
 			if (!timeLeft.isNegative() && !timeLeft.isZero())
 			{
-				deathTimer = new Timer(timeLeft.getSeconds(), ChronoUnit.SECONDS, BONES, this);
+				deathTimer = new Timer(timeLeft.getSeconds(), ChronoUnit.SECONDS, getBonesImage(), this);
 				deathTimer.setTooltip("Died on world: " + config.deathWorld());
 				infoBoxManager.addInfoBox(deathTimer);
 			}
 		}
+	}
+
+	BufferedImage getMapArrow()
+	{
+		if (mapArrow != null)
+		{
+			return mapArrow;
+		}
+
+		mapArrow = ImageUtil.getResourceStreamFromClass(getClass(), "/util/clue_arrow.png");
+
+		return mapArrow;
+	}
+
+	BufferedImage getBonesImage()
+	{
+		return itemManager.getImage(ItemID.BONES);
 	}
 }

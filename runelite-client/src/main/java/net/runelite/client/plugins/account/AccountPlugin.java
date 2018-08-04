@@ -26,9 +26,7 @@ package net.runelite.client.plugins.account;
 
 import com.google.common.eventbus.Subscribe;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.JOptionPane;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +38,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.RunnableExceptionLogger;
 
 @PluginDescriptor(
@@ -67,18 +66,8 @@ public class AccountPlugin extends Plugin
 
 	static
 	{
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				LOGIN_IMAGE = ImageIO.read(AccountPlugin.class.getResourceAsStream("login_icon.png"));
-				LOGOUT_IMAGE = ImageIO.read(AccountPlugin.class.getResourceAsStream("logout_icon.png"));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+		LOGIN_IMAGE = ImageUtil.getResourceStreamFromClass(AccountPlugin.class, "login_icon.png");
+		LOGOUT_IMAGE = ImageUtil.getResourceStreamFromClass(AccountPlugin.class, "logout_icon.png");
 	}
 
 	@Override

@@ -32,7 +32,6 @@ import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.swing.SwingUtilities;
@@ -49,6 +48,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -98,11 +98,7 @@ public class HiscorePlugin extends Plugin
 	{
 		hiscorePanel = injector.getInstance(HiscorePanel.class);
 
-		BufferedImage icon;
-		synchronized (ImageIO.class)
-		{
-			icon = ImageIO.read(getClass().getResourceAsStream("normal.png"));
-		}
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "normal.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Hiscore")

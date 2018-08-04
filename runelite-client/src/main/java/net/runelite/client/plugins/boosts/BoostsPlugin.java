@@ -30,7 +30,6 @@ import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
@@ -49,6 +48,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Boosts Information",
@@ -118,11 +118,8 @@ public class BoostsPlugin extends Plugin
 		Arrays.fill(lastSkillLevels, -1);
 
 		// Add infoboxes for everything at startup and then determine inside if it will be rendered
-		synchronized (ImageIO.class)
-		{
-			infoBoxManager.addInfoBox(new StatChangeIndicator(true, ImageIO.read(getClass().getResourceAsStream("debuffed.png")), this, config));
-			infoBoxManager.addInfoBox(new StatChangeIndicator(false, ImageIO.read(getClass().getResourceAsStream("buffed.png")), this, config));
-		}
+		infoBoxManager.addInfoBox(new StatChangeIndicator(true, ImageUtil.getResourceStreamFromClass(getClass(), "debuffed.png"), this, config));
+		infoBoxManager.addInfoBox(new StatChangeIndicator(false, ImageUtil.getResourceStreamFromClass(getClass(), "buffed.png"), this, config));
 
 		for (final Skill skill : Skill.values())
 		{
