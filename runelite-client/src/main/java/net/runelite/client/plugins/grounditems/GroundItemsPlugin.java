@@ -109,9 +109,6 @@ public class GroundItemsPlugin extends Plugin
 	private static final int DEATH_DURATION_MILLIS = 60 * 60 * 1000;
 	private static final int NORMAL_DURATION_MILLIS = 60 * 1000;
 
-	@Getter
-	private final Map<GroundItem.GroundItemKey, GroundItem> collectedGroundItems = new LinkedHashMap<>();
-	private final Map<Integer, Color> priceChecks = new LinkedHashMap<>();
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private Map.Entry<Rectangle, GroundItem> textBoxBounds;
