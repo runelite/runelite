@@ -72,6 +72,11 @@ public class GroundItemsOverlay extends Overlay
 	private static final int RECTANGLE_SIZE = 8;
 	private static final int TIMER_OVERLAY_DIAMETER = 10;
 	private static final int PUBLIC_ITEM_DURATION_MILLIS = 60000;
+	private static final float WARNING_THRESHOLD = 0.25f;
+	private static final Color PUBLIC_TIMER_COLOR = Color.YELLOW;
+	private static final Color PRIVATE_TIMER_COLOR = Color.GREEN;
+	private static final Color PUBLIC_WARNING_TIMER_COLOR = Color.RED;
+	private static final Color PRIVATE_WARNING_TIMER_COLOR = Color.ORANGE;
 	private final Client client;
 	private final GroundItemsPlugin plugin;
 	private final GroundItemsConfig config;
@@ -334,14 +339,10 @@ public class GroundItemsOverlay extends Overlay
 
 				// Draw highlight box
 				drawRectangle(graphics, itemHighlightBox, topItem && mouseInHighlightBox ? Color.GREEN : color, highlighted != null, false);
-
-				if (config.showGroundItemDuration() == TimerDisplayMode.HOTKEY_PRESSED)
-				{
-					drawTimerOverlay(graphics, new java.awt.Point(textX, textY), item);
-				}
 			}
 
-			if (config.showGroundItemDuration() == TimerDisplayMode.ALWAYS)
+			if (config.showGroundItemDuration() == TimerDisplayMode.ALWAYS
+				|| (config.showGroundItemDuration() == TimerDisplayMode.HOTKEY_PRESSED && plugin.isHotKeyPressed()))
 			{
 				drawTimerOverlay(graphics, new java.awt.Point(textX, textY), item);
 			}
@@ -398,7 +399,7 @@ public class GroundItemsOverlay extends Overlay
 		progressPieComponent.setDiameter(TIMER_OVERLAY_DIAMETER);
 
 		int x = (int) location.getX() - TIMER_OVERLAY_DIAMETER;
-		int y = (int) location.getY() - TIMER_OVERLAY_DIAMETER / 2;
+		int y = (int) location.getY() - TIMER_OVERLAY_DIAMETER;
 
 		progressPieComponent.setPosition(new Point(x, y));
 
@@ -412,18 +413,27 @@ public class GroundItemsOverlay extends Overlay
 			if (item.isOwnedByPlayer())
 			{
 				timeLeftRelative = getTimeLeftRelative(millisOnGround - PUBLIC_ITEM_DURATION_MILLIS, PUBLIC_ITEM_DURATION_MILLIS);
+
 			}
 			else
 			{
 				timeLeftRelative = getTimeLeftRelative(millisOnGround, PUBLIC_ITEM_DURATION_MILLIS);
 			}
 
-			fillColor = config.publicDurationColor();
+			if(timeLeftRelative < WARNING_THRESHOLD){
+			 	fillColor = PUBLIC_WARNING_TIMER_COLOR;
+			} else{
+				fillColor = PUBLIC_TIMER_COLOR;
+			}
 		}
 		else
 		{
 			timeLeftRelative = getTimeLeftRelative(millisOnGround, item.getDurationMillis());
-			fillColor = config.privateDurationColor();
+			if(timeLeftRelative < WARNING_THRESHOLD){
+				fillColor = PRIVATE_WARNING_TIMER_COLOR;
+			} else{
+				fillColor = PRIVATE_TIMER_COLOR;
+			}
 		}
 
 		// don't draw timer for any permanently spawned items or broken edge cases

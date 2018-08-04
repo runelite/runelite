@@ -49,26 +49,6 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "privateDurationColor",
-		name = "Private timer color",
-		description = "Configures the color for the private duration timer"
-	)
-	default Color privateDurationColor()
-	{
-		return Color.GREEN;
-	}
-
-	@ConfigItem(
-		keyName = "publicDurationColor",
-		name = "Public timer color",
-		description = "Configures the color for the public duration timer"
-	)
-	default Color publicDurationColor()
-	{
-		return Color.YELLOW;
-	}
-
-	@ConfigItem(
 		keyName = "highlightedItems",
 		name = "Highlighted Items",
 		description = "Configures specifically highlighted ground items. Format: (item), (item)",

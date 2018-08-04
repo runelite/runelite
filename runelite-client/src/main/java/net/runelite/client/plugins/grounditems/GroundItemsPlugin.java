@@ -270,15 +270,20 @@ public class GroundItemsPlugin extends Plugin
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
 		final int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
-		int durationMillis = NORMAL_DURATION_MILLIS;
+		int durationMillis;
 		if (client.isInInstancedRegion())
 		{
 			durationMillis = INSTANCE_DURATION_MILLIS;
 		}
-		if (!itemComposition.isTradeable())
+		else if (!itemComposition.isTradeable() && realItemId != COINS)
 		{
 			durationMillis = UNTRADEABLE_DURATION_MILLIS;
 		}
+		else
+		{
+			durationMillis = NORMAL_DURATION_MILLIS;
+		}
+
 
 		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 
@@ -293,7 +298,7 @@ public class GroundItemsPlugin extends Plugin
 			.tradeable(itemComposition.isTradeable())
 			.droppedInstant(Instant.now())
 			.durationMillis(durationMillis)
-			.isAlwaysPrivate(client.isInInstancedRegion() || !itemComposition.isTradeable())
+			.isAlwaysPrivate(client.isInInstancedRegion() || (!itemComposition.isTradeable() && realItemId != COINS))
 			.isOwnedByPlayer(tile.getWorldLocation().equals(playerLocation))
 			.build();
 
@@ -302,8 +307,6 @@ public class GroundItemsPlugin extends Plugin
 		{
 			groundItem.setHaPrice(1);
 			groundItem.setGePrice(1);
-			groundItem.setAlwaysPrivate(false);
-			groundItem.setDurationMillis(NORMAL_DURATION_MILLIS);
 		}
 		else
 		{
