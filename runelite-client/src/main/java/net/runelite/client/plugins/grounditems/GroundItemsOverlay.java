@@ -335,12 +335,14 @@ public class GroundItemsOverlay extends Overlay
 				// Draw highlight box
 				drawRectangle(graphics, itemHighlightBox, topItem && mouseInHighlightBox ? Color.GREEN : color, highlighted != null, false);
 
-				if(config.showGroundItemDuration() == TimerDisplayMode.HOTKEY_PRESSED){
-					drawTimerOverlay(graphics,  new java.awt.Point(textX, textY), item);
+				if (config.showGroundItemDuration() == TimerDisplayMode.HOTKEY_PRESSED)
+				{
+					drawTimerOverlay(graphics, new java.awt.Point(textX, textY), item);
 				}
 			}
 
-			if(config.showGroundItemDuration() == TimerDisplayMode.ALWAYS){
+			if (config.showGroundItemDuration() == TimerDisplayMode.ALWAYS)
+			{
 				drawTimerOverlay(graphics, new java.awt.Point(textX, textY), item);
 			}
 
@@ -425,7 +427,8 @@ public class GroundItemsOverlay extends Overlay
 		}
 
 		// don't draw timer for any permanently spawned items or broken edge cases
-		if(timeLeftRelative > 1 || timeLeftRelative < 0){
+		if (timeLeftRelative > 1 || timeLeftRelative < 0)
+		{
 			return;
 		}
 
