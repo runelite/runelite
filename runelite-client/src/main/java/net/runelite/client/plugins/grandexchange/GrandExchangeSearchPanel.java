@@ -40,14 +40,15 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.RunnableExceptionLogger;
 import net.runelite.http.api.item.Item;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
@@ -69,7 +70,7 @@ class GrandExchangeSearchPanel extends JPanel
 	private final GridBagConstraints constraints = new GridBagConstraints();
 	private final CardLayout cardLayout = new CardLayout();
 
-	private final Client client;
+	private final ClientThread clientThread;
 	private final ItemManager itemManager;
 	private final ScheduledExecutorService executor;
 
@@ -99,9 +100,9 @@ class GrandExchangeSearchPanel extends JPanel
 		ERROR_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(IconTextField.class, "error.png"));
 	}
 
-	GrandExchangeSearchPanel(Client client, ItemManager itemManager, ScheduledExecutorService executor)
+	GrandExchangeSearchPanel(ClientThread clientThread, ItemManager itemManager, ScheduledExecutorService executor)
 	{
-		this.client = client;
+		this.clientThread = clientThread;
 		this.itemManager = itemManager;
 		this.executor = executor;
 		init();
@@ -120,7 +121,7 @@ class GrandExchangeSearchPanel extends JPanel
 		searchBox.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
 		searchBox.setHoverBackgroundColor(ColorScheme.MEDIUM_GRAY_COLOR.brighter());
 		searchBox.setIcon(SEARCH_ICON);
-		searchBox.addActionListener(e -> executor.execute(() -> priceLookup(false)));
+		searchBox.addActionListener(e -> executor.execute(RunnableExceptionLogger.wrap(() -> priceLookup(false))));
 
 		searchItemsPanel.setLayout(new GridBagLayout());
 		searchItemsPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -163,7 +164,7 @@ class GrandExchangeSearchPanel extends JPanel
 	void priceLookup(String item)
 	{
 		searchBox.setText(item);
-		executor.execute(() -> priceLookup(true));
+		executor.execute(RunnableExceptionLogger.wrap(() -> priceLookup(true)));
 	}
 
 	private void priceLookup(boolean exactMatch)
@@ -199,6 +200,12 @@ class GrandExchangeSearchPanel extends JPanel
 			return;
 		}
 
+		// move to client thread to lookup item composition
+		clientThread.invokeLater(() -> processResult(result, lookup, exactMatch));
+	}
+
+	private void processResult(SearchResult result, String lookup, boolean exactMatch)
+	{
 		itemsList.clear();
 
 		if (result != null && !result.getItems().isEmpty())
@@ -209,7 +216,7 @@ class GrandExchangeSearchPanel extends JPanel
 			{
 				int itemId = item.getId();
 
-				ItemComposition itemComp = client.getItemDefinition(itemId);
+				ItemComposition itemComp = itemManager.getItemComposition(itemId);
 				if (itemComp == null)
 				{
 					continue;
