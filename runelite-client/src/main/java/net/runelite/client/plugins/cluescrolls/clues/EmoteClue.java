@@ -38,7 +38,6 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.EMOTE_IMAGE;
 import net.runelite.client.plugins.cluescrolls.clues.emote.AllRequirementsCollection;
 import net.runelite.client.plugins.cluescrolls.clues.emote.AnyRequirementCollection;
 import net.runelite.client.plugins.cluescrolls.clues.emote.Emote;
@@ -285,7 +284,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 			return;
 		}
 
-		OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, EMOTE_IMAGE, Color.ORANGE);
+		OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, plugin.getEmoteImage(), Color.ORANGE);
 	}
 
 	public static EmoteClue forText(String text)

@@ -28,6 +28,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import net.runelite.api.IndexDataBase;
 import net.runelite.api.MainBufferProvider;
 
 /**
@@ -163,4 +164,12 @@ public interface Callbacks
 	 * @param keyEvent the key event
 	 */
 	void keyTyped(KeyEvent keyEvent);
+
+	/**
+	 * Called whenever a cache overlay fails to load due to a hash mismatch
+	 * @param indexDataBase
+	 * @param archiveId
+	 * @param fileId
+	 */
+	void overlayLoadFailed(IndexDataBase indexDataBase, int archiveId, int fileId);
 }

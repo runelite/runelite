@@ -43,6 +43,7 @@ import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import joptsimple.util.EnumConverter;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.account.SessionManager;
@@ -145,6 +146,10 @@ public class RuneLite
 	@Nullable
 	private Client client;
 
+	@Getter
+	@Setter
+	private boolean overlayOutdated;
+
 	public static void main(String[] args) throws Exception
 	{
 		Locale.setDefault(Locale.ENGLISH);
@@ -236,6 +241,9 @@ public class RuneLite
 		// Load user configuration
 		configManager.load();
 
+		// Load the session, including saved configuration
+		sessionManager.loadSession();
+
 		// Tell the plugin manager if client is outdated or not
 		pluginManager.setOutdated(isOutdated);
 
@@ -249,9 +257,6 @@ public class RuneLite
 
 		// Start client session
 		clientSessionManager.start();
-
-		// Load the session, including saved configuration
-		sessionManager.loadSession();
 
 		// Initialize UI
 		clientUI.open(this);

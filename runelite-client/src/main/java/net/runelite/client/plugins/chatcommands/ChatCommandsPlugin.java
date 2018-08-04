@@ -86,6 +86,11 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	private static final Pattern RAIDS_PATTERN = Pattern.compile("Your completed (.+) count is: <col=ff0000>(\\d+)</col>.");
 	private static final Pattern WINTERTODT_PATERN = Pattern.compile("Your subdued Wintertodt count is: <col=ff0000>(\\d+)</col>.");
 	private static final Pattern BARROWS_PATERN = Pattern.compile("Your Barrows chest count is: <col=ff0000>(\\d+)</col>.");
+	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
+	private static final String PRICE_COMMAND_STRING = "!price";
+	private static final String LEVEL_COMMAND_STRING = "!lvl";
+	private static final String CLUES_COMMAND_STRING = "!clues";
+	private static final String KILLCOUNT_COMMAND_STRING = "!kc";
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private final KillCountClient killCountClient = new KillCountClient();
@@ -184,40 +189,40 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		// being reused
 		messageNode.setRuneLiteFormatMessage(null);
 
-		if (config.lvl() && message.toLowerCase().equals("!total"))
+		if (config.lvl() && message.toLowerCase().equals(TOTAL_LEVEL_COMMAND_STRING))
 		{
 			log.debug("Running total level lookup");
 			executor.submit(() -> playerSkillLookup(setMessage, "total"));
 		}
-		else if (config.price() && message.toLowerCase().startsWith("!price") && message.length() > 7)
+		else if (config.price() && message.toLowerCase().startsWith(PRICE_COMMAND_STRING + " "))
 		{
-			String search = message.substring(7);
+			String search = message.substring(PRICE_COMMAND_STRING.length() + 1);
 
 			log.debug("Running price lookup for {}", search);
 			executor.submit(() -> itemPriceLookup(setMessage.getMessageNode(), search));
 		}
-		else if (config.lvl() && message.toLowerCase().startsWith("!lvl") && message.length() > 5)
+		else if (config.lvl() && message.toLowerCase().startsWith(LEVEL_COMMAND_STRING + " "))
 		{
-			String search = message.substring(5);
+			String search = message.substring(LEVEL_COMMAND_STRING.length() + 1);
 
 			log.debug("Running level lookup for {}", search);
 			executor.submit(() -> playerSkillLookup(setMessage, search));
 		}
-		else if (config.clue() && message.toLowerCase().equals("!clues"))
+		else if (config.clue() && message.toLowerCase().equals(CLUES_COMMAND_STRING))
 		{
 			log.debug("Running lookup for overall clues");
 			executor.submit(() -> playerClueLookup(setMessage, "total"));
 		}
-		else if (config.clue() && message.toLowerCase().startsWith("!clues") && message.length() > 7)
+		else if (config.clue() && message.toLowerCase().startsWith(CLUES_COMMAND_STRING + " "))
 		{
-			String search = message.substring(7);
+			String search = message.substring(CLUES_COMMAND_STRING.length() + 1);
 
 			log.debug("Running clue lookup for {}", search);
 			executor.submit(() -> playerClueLookup(setMessage, search));
 		}
-		else if (config.killcount() && message.toLowerCase().startsWith("!kc "))
+		else if (config.killcount() && message.toLowerCase().startsWith(KILLCOUNT_COMMAND_STRING + " "))
 		{
-			String search = message.substring(4);
+			String search = message.substring(KILLCOUNT_COMMAND_STRING.length() + 1);
 
 			log.debug("Running killcount lookup for {}", search);
 			executor.submit(() -> killCountLookup(setMessage.getType(), setMessage, search));

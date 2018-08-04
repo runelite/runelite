@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Kamiel <https://github.com/Kamielvf>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,43 +22,52 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.game;
 
-import java.awt.image.BufferedImage;
-import javax.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Skill;
-import net.runelite.client.util.ImageUtil;
+package net.runelite.client.plugins.playerindicators;
 
-@Singleton
-@Slf4j
-public class SkillIconManager
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import javax.inject.Inject;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.OverlayUtil;
+
+public class PlayerIndicatorsTileOverlay extends Overlay
 {
-	// * 2 to account for the small version of each icon
-	private final BufferedImage[] imgCache = new BufferedImage[Skill.values().length * 2];
+	private final PlayerIndicatorsService playerIndicatorsService;
+	private final PlayerIndicatorsConfig config;
 
-	public BufferedImage getSkillImage(Skill skill, boolean small)
+	@Inject
+	private PlayerIndicatorsTileOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService)
 	{
-		int skillIdx = skill.ordinal() + (small ? Skill.values().length : 0);
-		BufferedImage skillImage = null;
+		this.config = config;
+		this.playerIndicatorsService = playerIndicatorsService;
+		setLayer(OverlayLayer.ABOVE_SCENE);
+		setPosition(OverlayPosition.DYNAMIC);
+		setPriority(OverlayPriority.MED);
+	}
 
-		if (imgCache[skillIdx] != null)
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		if (!config.drawTiles())
 		{
-			return imgCache[skillIdx];
+			return null;
 		}
 
-		String skillIconPath = (small ? "/skill_icons_small/" : "/skill_icons/")
-			+ skill.getName().toLowerCase() + ".png";
-		log.debug("Loading skill icon from {}", skillIconPath);
-		skillImage = ImageUtil.getResourceStreamFromClass(getClass(), skillIconPath);
-		imgCache[skillIdx] = skillImage;
+		playerIndicatorsService.forEachPlayer((player, color) ->
+		{
+			final Polygon poly = player.getCanvasTilePoly();
 
-		return skillImage;
+			if (poly != null)
+			{
+				OverlayUtil.renderPolygon(graphics, poly, color);
+			}
+		});
+
+		return null;
 	}
-
-	public BufferedImage getSkillImage(Skill skill)
-	{
-		return getSkillImage(skill, false);
-	}
-
 }

@@ -112,4 +112,14 @@ public class ColorUtil
 	{
 		return String.format("%06x", color.getRGB() & 0xFFFFFF);
 	}
+
+	static boolean isFullyTransparent(final Color color)
+	{
+		return color.getAlpha() == 0;
+	}
+
+	static boolean isNotFullyTransparent(final Color color)
+	{
+		return !isFullyTransparent(color);
+	}
 }
