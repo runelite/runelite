@@ -76,7 +76,6 @@ public class GroundItemsOverlay extends Overlay
 	private static final Color PUBLIC_TIMER_COLOR = Color.YELLOW;
 	private static final Color PRIVATE_TIMER_COLOR = Color.GREEN;
 	private static final Color PUBLIC_WARNING_TIMER_COLOR = Color.RED;
-	private static final Color PRIVATE_WARNING_TIMER_COLOR = Color.ORANGE;
 	private final Client client;
 	private final GroundItemsPlugin plugin;
 	private final GroundItemsConfig config;
@@ -399,7 +398,7 @@ public class GroundItemsOverlay extends Overlay
 		progressPieComponent.setDiameter(TIMER_OVERLAY_DIAMETER);
 
 		int x = (int) location.getX() - TIMER_OVERLAY_DIAMETER;
-		int y = (int) location.getY() - TIMER_OVERLAY_DIAMETER;
+		int y = (int) location.getY() - TIMER_OVERLAY_DIAMETER / 2;
 
 		progressPieComponent.setPosition(new Point(x, y));
 
@@ -420,20 +419,20 @@ public class GroundItemsOverlay extends Overlay
 				timeLeftRelative = getTimeLeftRelative(millisOnGround, PUBLIC_ITEM_DURATION_MILLIS);
 			}
 
-			if(timeLeftRelative < WARNING_THRESHOLD){
-			 	fillColor = PUBLIC_WARNING_TIMER_COLOR;
-			} else{
+			if (timeLeftRelative < WARNING_THRESHOLD)
+			{
+				fillColor = PUBLIC_WARNING_TIMER_COLOR;
+			}
+			else
+			{
 				fillColor = PUBLIC_TIMER_COLOR;
 			}
 		}
 		else
 		{
 			timeLeftRelative = getTimeLeftRelative(millisOnGround, item.getDurationMillis());
-			if(timeLeftRelative < WARNING_THRESHOLD){
-				fillColor = PRIVATE_WARNING_TIMER_COLOR;
-			} else{
-				fillColor = PRIVATE_TIMER_COLOR;
-			}
+			fillColor = PRIVATE_TIMER_COLOR;
+
 		}
 
 		// don't draw timer for any permanently spawned items or broken edge cases
