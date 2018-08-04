@@ -141,7 +141,9 @@ public class WASDCameraPlugin extends Plugin
 			inChat = true;
 			client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
 		}
-		else
+
+		// index 0 seems to be tied to PM chat updating, we don't need to change inChat for it
+		else if (e.getIndex() != 0)
 		{
 			inChat = false;
 		}
