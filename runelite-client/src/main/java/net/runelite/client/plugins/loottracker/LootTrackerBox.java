@@ -48,7 +48,7 @@ class LootTrackerBox extends JPanel
 	private long totalPrice = 0;
 
 	LootTrackerBox(final ItemManager itemManager, final String title, final String subTitle, final LootTrackerItemEntry[] items, final int highlightValue)
-    {
+	{
 		if (items.length > 0)
 		{
 			setLayout(new BorderLayout(0, 1));
