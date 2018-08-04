@@ -28,7 +28,6 @@ package net.runelite.client.plugins.loottracker;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -262,14 +261,15 @@ public class LootTrackerPlugin extends Plugin
 		Collection<ItemStack> my_items = new HashSet<>();
 		Iterator<ItemStack> it = itemStacks.iterator();
 
-		while(it.hasNext()){
+		while (it.hasNext())
+		{
 			ItemStack i = it.next();
 			int ignore = config.getIgnoreUnderValue();
 			itemManager.getItemPrice(0);
 			i.getId();
-			if(i.getId() == ItemID.COINS_995)
+			if (i.getId() == ItemID.COINS_995)
 			{
-				if(i.getQuantity() > ignore )
+				if (i.getQuantity() > ignore )
 				{
 					my_items.add(i);
 				}

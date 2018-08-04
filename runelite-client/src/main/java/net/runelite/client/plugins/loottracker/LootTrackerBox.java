@@ -42,12 +42,14 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.StackFormatter;
 
 @Getter
-class LootTrackerBox extends JPanel {
+class LootTrackerBox extends JPanel
+{
 	private static final int ITEMS_PER_ROW = 5;
 	private long totalPrice = 0;
 
 	LootTrackerBox(final ItemManager itemManager, final String title, final String subTitle, final LootTrackerItemEntry[] items, final int highlightValue) {
-		if (items.length > 0) {
+		if (items.length > 0)
+		{
 			setLayout(new BorderLayout(0, 1));
 			setBorder(new EmptyBorder(5, 0, 0, 0));
 
@@ -62,7 +64,8 @@ class LootTrackerBox extends JPanel {
 			logTitle.add(titleLabel, BorderLayout.WEST);
 
 // If we have subtitle, add it
-			if (!Strings.isNullOrEmpty(subTitle)) {
+			if (!Strings.isNullOrEmpty(subTitle))
+			{
 				final JLabel subTitleLabel = new JLabel(subTitle);
 				subTitleLabel.setFont(FontManager.getRunescapeSmallFont());
 				subTitleLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
@@ -71,7 +74,8 @@ class LootTrackerBox extends JPanel {
 
 			totalPrice = calculatePrice(items);
 
-			if (totalPrice > 0) {
+			if (totalPrice > 0)
+			{
 				final JLabel priceLabel = new JLabel(StackFormatter.quantityToStackSize(totalPrice) + " gp");
 				priceLabel.setFont(FontManager.getRunescapeSmallFont());
 				priceLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
@@ -82,18 +86,21 @@ class LootTrackerBox extends JPanel {
 			final int rowSize = ((items.length % ITEMS_PER_ROW == 0) ? 0 : 1) + items.length / ITEMS_PER_ROW;
 			final JPanel itemContainer = new JPanel(new GridLayout(rowSize, ITEMS_PER_ROW, 1, 1));
 
-			for (int i = 0; i < rowSize * ITEMS_PER_ROW; i++) {
+			for (int i = 0; i < rowSize * ITEMS_PER_ROW; i++)
+			{
 				final JPanel slotContainer = new JPanel();
 				slotContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-				if (i < items.length) {
+				if (i < items.length)
+				{
 					final LootTrackerItemEntry item = items[i];
 					final JLabel imageLabel = new JLabel();
 					imageLabel.setToolTipText(buildToolTip(item));
 					imageLabel.setVerticalAlignment(SwingConstants.CENTER);
 					imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 					itemManager.getImage(item.getId(), item.getQuantity(), item.getQuantity() > 1).addTo(imageLabel);
-					if (item.getPrice() > highlightValue) {
+					if (item.getPrice() > highlightValue)
+					{
 						slotContainer.setBackground(ColorScheme.BRAND_ORANGE);
 
 					}
@@ -108,7 +115,8 @@ class LootTrackerBox extends JPanel {
 		}
 	}
 
-	private String buildToolTip(LootTrackerItemEntry item) {
+	private String buildToolTip(LootTrackerItemEntry item)
+    {
 		final String name = item.getName();
 		final int quantity = item.getQuantity();
 		final long price = item.getPrice();
@@ -116,10 +124,13 @@ class LootTrackerBox extends JPanel {
 		return name + " x " + quantity + " (" + StackFormatter.quantityToStackSize(price) + ")";
 	}
 
-	private static long calculatePrice(final LootTrackerItemEntry[] itemStacks) {
+	private static long calculatePrice(final LootTrackerItemEntry[] itemStacks)
+    {
 		long total = 0;
-		for (LootTrackerItemEntry itemStack : itemStacks) {
-			if (itemStack != null) {
+		for (LootTrackerItemEntry itemStack : itemStacks)
+		{
+			if (itemStack != null)
+			{
 				total += itemStack.getPrice();
 			}
 		}
