@@ -26,19 +26,24 @@ package net.runelite.client.plugins.itemcharges;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.inject.Inject;
-import lombok.AccessLevel;
-import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.Hitsplat;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.client.Notifier;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.HitsplatApplied;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.itemcharges.recoil.RecoilManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 
+@Slf4j
 @PluginDescriptor(
 	name = "Item Charges",
 	description = "Show number of item charges remaining",
@@ -46,15 +51,14 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class ItemChargePlugin extends Plugin
 {
-	private static final Pattern DODGY_CHECK_PATTERN = Pattern.compile(
-		"Your dodgy necklace has (\\d+) charges? left\\.");
-	private static final Pattern DODGY_PROTECT_PATTERN = Pattern.compile(
-		"Your dodgy necklace protects you\\..*It has (\\d+) charges? left\\.");
-	private static final Pattern DODGY_BREAK_PATTERN = Pattern.compile(
-		"Your dodgy necklace protects you\\..*It then crumbles to dust\\.");
-	private static final String RING_OF_RECOIL_BREAK_MESSAGE = "<col=7f007f>Your Ring of Recoil has shattered.</col>";
 
-	private static final int MAX_DODGY_CHARGES = 10;
+	private static final String DODGY_CRUMBLE = "Your dodgy necklace protects you. <col=ff0000>It then crumbles to dust.</col>";
+	private static final String DODGY_BREAK = "The necklace shatters. Your next dodgy necklace will<br>start afresh from 10 charges.";
+	private static final String RECOIL_SHATTER = "<col=7f007f>Your Ring of Recoil has shattered.</col>";
+	private static final String RECOIL_BREAK = "The ring shatters. Your next ring of recoil will start<br>afresh from 40 damage points.";
+
+	@Inject
+	private Client client;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -63,13 +67,18 @@ public class ItemChargePlugin extends Plugin
 	private ItemChargeOverlay overlay;
 
 	@Inject
-	private Notifier notifier;
+	private ItemConfigRegistry registry;
 
 	@Inject
-	private ItemChargeConfig config;
+	private RecoilManager recoilManager;
 
-	@Getter(AccessLevel.PACKAGE)
-	private int dodgyCharges;
+	/**
+	 * Charge reduction is about 90% accurate, a shatter chat message is 100% accurate.
+	 * Therefore, recoil shatter is checked by chat message instead of regular charge reduction.
+	 * In the 90% we do calculate it correctly when it breaks, we want to ignore it.
+	 * Which is why a guard flag is used which doesn't update the charges.
+	 */
+	private boolean recoilShattered;
 
 	@Provides
 	ItemChargeConfig getConfig(ConfigManager configManager)
@@ -81,7 +90,6 @@ public class ItemChargePlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
-		dodgyCharges = config.dodgyNecklace();
 	}
 
 	@Override
@@ -91,41 +99,110 @@ public class ItemChargePlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onHitsplatApplied(HitsplatApplied event)
+	{
+		final Hitsplat eventHitsplat = event.getHitsplat();
+		final Actor eventActor = event.getActor();
+
+		updateRingOfRecoilCharges(eventHitsplat, eventActor);
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		final Widget breakText = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
+		if (breakText == null || breakText.getText() == null)
+		{
+			return;
+		}
+
+		updateItemOnBreak(breakText.getText());
+	}
+
+	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		String message = event.getMessage();
-		Matcher dodgyCheckMatcher = DODGY_CHECK_PATTERN.matcher(message);
-		Matcher dodgyProtectMatcher = DODGY_PROTECT_PATTERN.matcher(message);
-		Matcher dodgyBreakMatcher = DODGY_BREAK_PATTERN.matcher(message);
-		if (event.getType() == ChatMessageType.SERVER || event.getType() == ChatMessageType.FILTERED)
+		final String message = event.getMessage();
+		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
 		{
-			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
-			{
-				notifier.notify("Your Ring of Recoil has shattered");
-			}
-			else if (dodgyBreakMatcher.find())
-			{
-				if (config.dodgyNotification())
-				{
-					notifier.notify("Your dodgy necklace has crumbled to dust.");
-				}
+			return;
+		}
 
-				setDodgyCharges(MAX_DODGY_CHARGES);
-			}
-			else if (dodgyCheckMatcher.find())
+		ItemWithVarCharge.forOnCheckMessage(message)
+			.ifPresent(item ->
 			{
-				setDodgyCharges(Integer.parseInt(dodgyCheckMatcher.group(1)));
-			}
-			else if (dodgyProtectMatcher.find())
-			{
-				setDodgyCharges(Integer.parseInt(dodgyProtectMatcher.group(1)));
-			}
+				final int charges = item.getCharges(message);
+				registry.setCharges(item, charges);
+			});
+
+		updateItemOnDepletion(message);
+	}
+
+	private void updateRingOfRecoilCharges(Hitsplat eventHitsplat, Actor eventActor)
+	{
+		if (eventActor == null)
+		{
+			return;
+		}
+
+		if (eventActor.equals(client.getLocalPlayer()))
+		{
+			recoilManager.addPlayerHitsplat(eventHitsplat);
+		}
+		else
+		{
+			recoilManager.reduceChargesForOpponentHitsplat(eventActor, eventHitsplat)
+				.ifPresent(chargeReduction ->
+				{
+					final ItemWithVarCharge ringOfRecoil = ItemWithVarCharge.RING_OF_RECOIL;
+					final int currentCharges = registry.getCharges(ringOfRecoil);
+					final int finalCharges = (currentCharges - chargeReduction);
+
+					log.debug("Reducing [{}] charges after actor [{}] was hit for [{}].",
+						chargeReduction, eventActor.getName(), eventHitsplat.getAmount());
+
+					// 1. Player receives hitsplat
+					// 2. Ring shatter notification happens
+					// 3. Hitsplat applied on enemy
+					// We use a guard flag to consume the reduction which was handled by the chat message.
+					// This is so we don't reduce the charges of a full ring.
+					if (!recoilShattered || currentCharges != ringOfRecoil.getChargesOnDepletion())
+					{
+						registry.setCharges(ringOfRecoil, finalCharges);
+					}
+					recoilShattered = false;
+				});
 		}
 	}
 
-	private void setDodgyCharges(int dodgyCharges)
+	private void updateItemOnBreak(String breakText)
 	{
-		this.dodgyCharges = dodgyCharges;
-		config.dodgyNecklace(dodgyCharges);
+		if (RECOIL_BREAK.equals(breakText))
+		{
+			registry.setCharges(ItemWithVarCharge.RING_OF_RECOIL, ItemWithVarCharge.RING_OF_RECOIL.getChargesOnDepletion());
+		}
+		else if (DODGY_BREAK.equals(breakText))
+		{
+			registry.setCharges(ItemWithVarCharge.DODGY_NECKLACE, ItemWithVarCharge.DODGY_NECKLACE.getChargesOnDepletion());
+		}
+	}
+
+	private void updateItemOnDepletion(String depletionMessage)
+	{
+		if (DODGY_CRUMBLE.equals(depletionMessage))
+		{
+			notifyDepletion(ItemWithVarCharge.DODGY_NECKLACE, "Your Dodgy Necklace has crumbled to dust.");
+		}
+		else if (RECOIL_SHATTER.equals(depletionMessage))
+		{
+			recoilShattered = true;
+			notifyDepletion(ItemWithVarCharge.RING_OF_RECOIL, "Your Ring of Recoil has shattered.");
+		}
+	}
+
+	private void notifyDepletion(ItemWithVarCharge item, String notifyMessage)
+	{
+		registry.setCharges(item, item.getChargesOnDepletion());
+		registry.sendNotificationIfEnabled(item, notifyMessage);
 	}
 }

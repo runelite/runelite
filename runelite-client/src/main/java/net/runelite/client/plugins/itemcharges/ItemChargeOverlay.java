@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import javax.inject.Inject;
-import net.runelite.api.ItemID;
 import net.runelite.api.Query;
 import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
@@ -54,17 +53,17 @@ import net.runelite.client.util.QueryRunner;
 class ItemChargeOverlay extends Overlay
 {
 	private final QueryRunner queryRunner;
-	private final ItemChargePlugin itemChargePlugin;
 	private final ItemChargeConfig config;
+	private final ItemConfigRegistry registry;
 
 	@Inject
-	ItemChargeOverlay(QueryRunner queryRunner, ItemChargePlugin itemChargePlugin, ItemChargeConfig config)
+	ItemChargeOverlay(QueryRunner queryRunner, ItemChargeConfig config, ItemConfigRegistry itemConfigRegistry)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.queryRunner = queryRunner;
-		this.itemChargePlugin = itemChargePlugin;
 		this.config = config;
+		this.registry = itemConfigRegistry;
 	}
 
 	@Override
@@ -77,47 +76,46 @@ class ItemChargeOverlay extends Overlay
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
-		for (WidgetItem item : getChargeWidgetItems())
+		for (WidgetItem widgetItem : getChargeWidgetItems())
 		{
-			int charges;
-			if (item.getId() == ItemID.DODGY_NECKLACE)
+			ItemWithVarCharge.forId(widgetItem.getId())
+				.filter(registry::mayRender)
+				.ifPresent(item ->
+				{
+					final int itemCharges = registry.getCharges(item);
+					renderOverlay(graphics, widgetItem, itemCharges);
+				});
+
+			final ItemWithCharge chargeItem = ItemWithCharge.findItem(widgetItem.getId());
+			if (chargeItem == null)
 			{
-				if (!config.showDodgyCount())
-				{
-					continue;
-				}
-
-				charges = itemChargePlugin.getDodgyCharges();
-			}
-			else
-			{
-				ItemWithCharge chargeItem = ItemWithCharge.findItem(item.getId());
-				if (chargeItem == null)
-				{
-					continue;
-				}
-
-				ItemChargeType type = chargeItem.getType();
-				if ((type == TELEPORT && !config.showTeleportCharges())
-					|| (type == FUNGICIDE_SPRAY && !config.showFungicideCharges())
-					|| (type == IMPBOX && !config.showImpCharges())
-					|| (type == WATERCAN && !config.showWateringCanCharges())
-					|| (type == WATERSKIN && !config.showWaterskinCharges()))
-				{
-					continue;
-				}
-
-				charges = chargeItem.getCharges();
+				continue;
 			}
 
-			final Rectangle bounds = item.getCanvasBounds();
-			final TextComponent textComponent = new TextComponent();
-			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
-			textComponent.setText(charges < 0 ? "?" : String.valueOf(charges));
-			textComponent.setColor(getColor(charges));
-			textComponent.render(graphics);
+			final ItemChargeType type = chargeItem.getType();
+			if ((type == TELEPORT && !config.showTeleportCharges())
+				|| (type == FUNGICIDE_SPRAY && !config.showFungicideCharges())
+				|| (type == IMPBOX && !config.showImpCharges())
+				|| (type == WATERCAN && !config.showWateringCanCharges())
+				|| (type == WATERSKIN && !config.showWaterskinCharges()))
+			{
+				continue;
+			}
+
+			final int charges = chargeItem.getCharges();
+			renderOverlay(graphics, widgetItem, charges);
 		}
 		return null;
+	}
+
+	private void renderOverlay(Graphics2D graphics, WidgetItem item, int charges)
+	{
+		final Rectangle bounds = item.getCanvasBounds();
+		final TextComponent textComponent = new TextComponent();
+		textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
+		textComponent.setText(charges < 0 ? "?" : String.valueOf(charges));
+		textComponent.setColor(getColor(charges));
+		textComponent.render(graphics);
 	}
 
 	private Collection<WidgetItem> getChargeWidgetItems()
@@ -155,7 +153,7 @@ class ItemChargeOverlay extends Overlay
 
 	private boolean displayOverlay()
 	{
-		return config.showTeleportCharges() || config.showDodgyCount() || config.showFungicideCharges()
+		return config.showTeleportCharges() || config.showDodgyCount() || config.showFungicideCharges() || config.showRecoilCount()
 			|| config.showImpCharges() || config.showWateringCanCharges() || config.showWaterskinCharges();
 	}
 }
