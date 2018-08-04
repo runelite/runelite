@@ -72,18 +72,18 @@ class LootTrackerPanel extends PluginPanel
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new BorderLayout());
 
-// Create layout panel for wrapping
+        // Create layout panel for wrapping
 		final JPanel layoutPanel = new JPanel();
 		layoutPanel.setLayout(new BoxLayout(layoutPanel, BoxLayout.Y_AXIS));
 		add(layoutPanel, BorderLayout.NORTH);
 
-// Create panel that will contain overall data
+        // Create panel that will contain overall data
 		overallPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		overallPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		overallPanel.setLayout(new BorderLayout());
 		overallPanel.setVisible(false);
 
-// Add icon and contents
+        // Add icon and contents
 		final JPanel overallInfo = new JPanel();
 		overallInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		overallInfo.setLayout(new GridLayout(2, 1));
@@ -95,7 +95,7 @@ class LootTrackerPanel extends PluginPanel
 		overallPanel.add(overallIcon, BorderLayout.WEST);
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
 
-// Create reset all menu
+        // Create reset all menu
 		final JMenuItem reset = new JMenuItem("Reset All");
 		reset.addActionListener(e ->
 		{
@@ -106,18 +106,18 @@ class LootTrackerPanel extends PluginPanel
 			logsContainer.repaint();
 		});
 
-// Create popup menu
+        // Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		popupMenu.add(reset);
 		overallPanel.setComponentPopupMenu(popupMenu);
 
-// Create loot logs wrapper
+        // Create loot logs wrapper
 		logsContainer.setLayout(new BoxLayout(logsContainer, BoxLayout.Y_AXIS));
 		layoutPanel.add(overallPanel);
 		layoutPanel.add(logsContainer);
 
-// Add error pane
+        // Add error pane
 		errorPanel.setContent("Loot trackers", "You have not received any loot yet.");
 		add(errorPanel);
 	}
@@ -135,38 +135,40 @@ class LootTrackerPanel extends PluginPanel
 
 	void addLog(final String eventName, final int actorLevel, LootTrackerItemEntry[] items, final int highlightValue)
 	{
-// Remove error and show overall
+        // Remove error and show overall
 		remove(errorPanel);
 		overallPanel.setVisible(true);
+        // Create box if there are items
+        if(items.length > 0)
+        {
+            final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
+            final LootTrackerBox box = new LootTrackerBox(itemManager, eventName, subTitle, items, highlightValue);
+            logsContainer.add(box, 0);
+            logsContainer.repaint();
 
-// Create box
-		final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
-		final LootTrackerBox box = new LootTrackerBox(itemManager, eventName, subTitle, items, highlightValue);
-		logsContainer.add(box, 0);
-		logsContainer.repaint();
+            // Update overall
+            overallGp += box.getTotalPrice();
 
-// Update overall
-		overallGp += box.getTotalPrice();
-		overallKills += 1;
-		updateOverall();
+            // Create reset menu
+            final JMenuItem reset = new JMenuItem("Reset");
+            reset.addActionListener(e ->
+            {
+                overallGp -= box.getTotalPrice();
+                overallKills -= 1;
+                updateOverall();
+                logsContainer.remove(box);
+                logsContainer.repaint();
+            });
 
-// Create reset menu
-		final JMenuItem reset = new JMenuItem("Reset");
-		reset.addActionListener(e ->
-		{
-			overallGp -= box.getTotalPrice();
-			overallKills -= 1;
-			updateOverall();
-			logsContainer.remove(box);
-			logsContainer.repaint();
-		});
-
-// Create popup menu
-		final JPopupMenu popupMenu = new JPopupMenu();
-		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
-		popupMenu.add(reset);
-		box.setComponentPopupMenu(popupMenu);
-	}
+            // Create popup menu
+            final JPopupMenu popupMenu = new JPopupMenu();
+            popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+            popupMenu.add(reset);
+            box.setComponentPopupMenu(popupMenu);
+        }
+        overallKills += 1;
+        updateOverall();
+}
 
 	private void updateOverall()
 	{

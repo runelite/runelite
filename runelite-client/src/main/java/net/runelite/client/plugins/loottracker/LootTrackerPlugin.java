@@ -189,8 +189,8 @@ public class LootTrackerPlugin extends Plugin
 				container = client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST);
 				break;
 			case (WidgetID.CLUE_SCROLL_REWARD_GROUP_ID):
-// event type should be set via ChatMessage for clue scrolls.
-// Clue Scrolls use same InventoryID as Barrows
+				// event type should be set via ChatMessage for clue scrolls.
+				// Clue Scrolls use same InventoryID as Barrows
 				container = client.getItemContainer(InventoryID.BARROWS_REWARD);
 				break;
 			default:
@@ -202,12 +202,10 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-// Convert container items to array of ItemStack
-
+		// Convert container items to array of ItemStack
 		final Collection<ItemStack> items = Arrays.stream(container.getItems())
 				.map(item -> new ItemStack(item.getId(), item.getQuantity()))
 				.collect(Collectors.toList());
-
 
 		if (!items.isEmpty())
 		{
@@ -301,7 +299,6 @@ public class LootTrackerPlugin extends Plugin
 				price = 0;
 			}
 			int ignoreValue = config.getIgnoreUnderValue();
-			System.out.println("Found new item" + itemStack.getId() + " " +  itemComposition.getId() + " " + itemStack.getQuantity() + " " + price);
 			return new LootTrackerItemEntry(
 					itemStack.getId(),
 					itemComposition.getName(),

@@ -64,7 +64,7 @@ class LootTrackerBox extends JPanel
 
 			logTitle.add(titleLabel, BorderLayout.WEST);
 
-// If we have subtitle, add it
+			// If we have subtitle, add it
 			if (!Strings.isNullOrEmpty(subTitle))
 			{
 				final JLabel subTitleLabel = new JLabel(subTitle);
@@ -83,7 +83,7 @@ class LootTrackerBox extends JPanel
 				logTitle.add(priceLabel, BorderLayout.EAST);
 			}
 
-// Calculates how many rows need to be display to fit all items
+			// Calculates how many rows need to be display to fit all items
 			final int rowSize = ((items.length % ITEMS_PER_ROW == 0) ? 0 : 1) + items.length / ITEMS_PER_ROW;
 			final JPanel itemContainer = new JPanel(new GridLayout(rowSize, ITEMS_PER_ROW, 1, 1));
 
