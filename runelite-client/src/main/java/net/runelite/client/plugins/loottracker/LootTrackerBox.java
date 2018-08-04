@@ -47,7 +47,8 @@ class LootTrackerBox extends JPanel
 	private static final int ITEMS_PER_ROW = 5;
 	private long totalPrice = 0;
 
-	LootTrackerBox(final ItemManager itemManager, final String title, final String subTitle, final LootTrackerItemEntry[] items, final int highlightValue) {
+	LootTrackerBox(final ItemManager itemManager, final String title, final String subTitle, final LootTrackerItemEntry[] items, final int highlightValue)
+    {
 		if (items.length > 0)
 		{
 			setLayout(new BorderLayout(0, 1));
@@ -116,7 +117,7 @@ class LootTrackerBox extends JPanel
 	}
 
 	private String buildToolTip(LootTrackerItemEntry item)
-    {
+	{
 		final String name = item.getName();
 		final int quantity = item.getQuantity();
 		final long price = item.getPrice();
@@ -125,7 +126,7 @@ class LootTrackerBox extends JPanel
 	}
 
 	private static long calculatePrice(final LootTrackerItemEntry[] itemStacks)
-    {
+	{
 		long total = 0;
 		for (LootTrackerItemEntry itemStack : itemStacks)
 		{
