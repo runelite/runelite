@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.skillcalculator;
 
-import com.google.common.collect.Lists;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
