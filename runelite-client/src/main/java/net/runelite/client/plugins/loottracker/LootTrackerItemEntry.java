@@ -29,8 +29,8 @@ import lombok.Value;
 @Value
 class LootTrackerItemEntry
 {
-    private final int id;
-    private final String name;
-    private final int quantity;
-    private final long price;
+	private final int id;
+	private final String name;
+	private final int quantity;
+	private final long price;
 }

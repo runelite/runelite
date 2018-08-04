@@ -55,258 +55,258 @@ import net.runelite.client.util.Text;
 import net.runelite.http.api.item.ItemPrice;
 
 @PluginDescriptor(
-        name = "Loot Tracker",
-        description = "Tracks loot from monsters and minigames",
-        tags = {"drops"},
-        enabledByDefault = false
+		name = "Loot Tracker",
+		description = "Tracks loot from monsters and minigames",
+		tags = {"drops"},
+		enabledByDefault = false
 )
 @Slf4j
 public class LootTrackerPlugin extends Plugin
 {
-    // Activity/Event loot handling
-    private static final Pattern CLUE_SCROLL_PATTERN = Pattern.compile("You have completed [0-9]+ ([a-z]+) Treasure Trails.");
+	// Activity/Event loot handling
+	private static final Pattern CLUE_SCROLL_PATTERN = Pattern.compile("You have completed [0-9]+ ([a-z]+) Treasure Trails.");
 
-    @Inject
-    private ClientToolbar clientToolbar;
+	@Inject
+	private ClientToolbar clientToolbar;
 
-    @Inject
-    private ItemManager itemManager;
+	@Inject
+	private ItemManager itemManager;
 
-    @Inject
-    private SpriteManager spriteManager;
+	@Inject
+	private SpriteManager spriteManager;
 
-    @Inject
-    private Client client;
+	@Inject
+	private Client client;
 
-    @Inject
-    private LootTrackerConfig config;
+	@Inject
+	private LootTrackerConfig config;
 
-    @Provides
-    LootTrackerConfig getConfig(ConfigManager configManager)
-    {
-        return configManager.getConfig(LootTrackerConfig.class);
-    }
+	@Provides
+	LootTrackerConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(LootTrackerConfig.class);
+	}
 
-    private LootTrackerPanel panel;
-    private NavigationButton navButton;
-    private String eventType;
-    private static Collection<ItemStack> stack(Collection<ItemStack> items)
-    {
-        final List<ItemStack> list = new ArrayList<>();
-        for (final ItemStack item : items)
-        {
-            int quantity = 0;
-            for (final ItemStack i : list)
-            {
-                if (i.getId() == item.getId())
-                {
-                    quantity = i.getQuantity();
-                    list.remove(i);
-                    break;
-                }
-            }
-            if (quantity > 0)
-            {
-                list.add(new ItemStack(item.getId(), item.getQuantity() + quantity));
-            }
-            else
-            {
-                list.add(item);
-            }
-        }
+	private LootTrackerPanel panel;
+	private NavigationButton navButton;
+	private String eventType;
+	private static Collection<ItemStack> stack(Collection<ItemStack> items)
+	{
+		final List<ItemStack> list = new ArrayList<>();
+		for (final ItemStack item : items)
+		{
+			int quantity = 0;
+			for (final ItemStack i : list)
+			{
+				if (i.getId() == item.getId())
+				{
+					quantity = i.getQuantity();
+					list.remove(i);
+					break;
+				}
+			}
+			if (quantity > 0)
+			{
+				list.add(new ItemStack(item.getId(), item.getQuantity() + quantity));
+			}
+			else
+			{
+				list.add(item);
+			}
+		}
 
-        return list;
-    }
+		return list;
+	}
 
-    @Override
-    protected void startUp() throws Exception
-    {
-        panel = new LootTrackerPanel(itemManager);
-        spriteManager.getSpriteAsync(SpriteID.UNUSED_TAB_INVENTORY, 0, panel::loadHeaderIcon);
+	@Override
+	protected void startUp() throws Exception
+	{
+		panel = new LootTrackerPanel(itemManager);
+		spriteManager.getSpriteAsync(SpriteID.UNUSED_TAB_INVENTORY, 0, panel::loadHeaderIcon);
 
-        final BufferedImage icon;
-        synchronized (ImageIO.class)
-        {
-            icon = ImageIO.read(LootTrackerPanel.class.getResourceAsStream("panel_icon.png"));
-        }
+		final BufferedImage icon;
+		synchronized (ImageIO.class)
+		{
+			icon = ImageIO.read(LootTrackerPanel.class.getResourceAsStream("panel_icon.png"));
+		}
 
-        navButton = NavigationButton.builder()
-                .tooltip("Loot Tracker")
-                .icon(icon)
-                .priority(5)
-                .panel(panel)
-                .build();
+		navButton = NavigationButton.builder()
+				.tooltip("Loot Tracker")
+				.icon(icon)
+				.priority(5)
+				.panel(panel)
+				.build();
 
-        clientToolbar.addNavigation(navButton);
-    }
+		clientToolbar.addNavigation(navButton);
+	}
 
-    @Override
-    protected void shutDown()
-    {
-        clientToolbar.removeNavigation(navButton);
-    }
+	@Override
+	protected void shutDown()
+	{
+		clientToolbar.removeNavigation(navButton);
+	}
 
-    @Subscribe
-    public void onNpcLootReceived(final NpcLootReceived npcLootReceived)
-    {
-        final NPC npc = npcLootReceived.getNpc();
-        final Collection<ItemStack> items = npcLootReceived.getItems();
-        final String name = npc.getName();
-        final int combat = npc.getCombatLevel();
-        final int highlight = config.highlightValue();
-        final LootTrackerItemEntry[] entries = buildEntries(stack(items));
-        SwingUtilities.invokeLater(() -> panel.addLog(name, combat, entries, highlight));
-    }
+	@Subscribe
+	public void onNpcLootReceived(final NpcLootReceived npcLootReceived)
+	{
+		final NPC npc = npcLootReceived.getNpc();
+		final Collection<ItemStack> items = npcLootReceived.getItems();
+		final String name = npc.getName();
+		final int combat = npc.getCombatLevel();
+		final int highlight = config.highlightValue();
+		final LootTrackerItemEntry[] entries = buildEntries(stack(items));
+		SwingUtilities.invokeLater(() -> panel.addLog(name, combat, entries, highlight));
+	}
 
-    @Subscribe
-    public void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
-    {
-        final Player player = playerLootReceived.getPlayer();
-        final Collection<ItemStack> items = playerLootReceived.getItems();
-        System.out.println("Printing the array" + Arrays.toString(items.toArray()));
-        final String name = player.getName();
-        final int combat = player.getCombatLevel();
-        final int highlight = config.highlightValue();
-        final LootTrackerItemEntry[] entries = buildEntries(stack(items));
-        SwingUtilities.invokeLater(() -> panel.addLog(name, combat, entries, highlight));
-    }
+	@Subscribe
+	public void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
+	{
+		final Player player = playerLootReceived.getPlayer();
+		final Collection<ItemStack> items = playerLootReceived.getItems();
+		System.out.println("Printing the array" + Arrays.toString(items.toArray()));
+		final String name = player.getName();
+		final int combat = player.getCombatLevel();
+		final int highlight = config.highlightValue();
+		final LootTrackerItemEntry[] entries = buildEntries(stack(items));
+		SwingUtilities.invokeLater(() -> panel.addLog(name, combat, entries, highlight));
+	}
 
-    @Subscribe
-    public void onWidgetLoaded(WidgetLoaded event)
-    {
-        final ItemContainer container;
-        switch (event.getGroupId())
-        {
-            case (WidgetID.BARROWS_REWARD_GROUP_ID):
-                eventType = "Barrows";
-                container = client.getItemContainer(InventoryID.BARROWS_REWARD);
-                break;
-            case (WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID):
-                eventType = "Chambers of Xeric";
-                container = client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST);
-                break;
-            case (WidgetID.THEATRE_OF_BLOOD_GROUP_ID):
-                eventType = "Theatre of Blood";
-                container = client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST);
-                break;
-            case (WidgetID.CLUE_SCROLL_REWARD_GROUP_ID):
-                // event type should be set via ChatMessage for clue scrolls.
-                // Clue Scrolls use same InventoryID as Barrows
-                container = client.getItemContainer(InventoryID.BARROWS_REWARD);
-                break;
-            default:
-                return;
-        }
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event)
+	{
+		final ItemContainer container;
+		switch (event.getGroupId())
+		{
+			case (WidgetID.BARROWS_REWARD_GROUP_ID):
+				eventType = "Barrows";
+				container = client.getItemContainer(InventoryID.BARROWS_REWARD);
+				break;
+			case (WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID):
+				eventType = "Chambers of Xeric";
+				container = client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST);
+				break;
+			case (WidgetID.THEATRE_OF_BLOOD_GROUP_ID):
+				eventType = "Theatre of Blood";
+				container = client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST);
+				break;
+			case (WidgetID.CLUE_SCROLL_REWARD_GROUP_ID):
+// event type should be set via ChatMessage for clue scrolls.
+// Clue Scrolls use same InventoryID as Barrows
+				container = client.getItemContainer(InventoryID.BARROWS_REWARD);
+				break;
+			default:
+				return;
+		}
 
-        if (container == null)
-        {
-            return;
-        }
+		if (container == null)
+		{
+			return;
+		}
 
-        // Convert container items to array of ItemStack
+// Convert container items to array of ItemStack
 
-        final Collection<ItemStack> items = Arrays.stream(container.getItems())
-                .map(item -> new ItemStack(item.getId(), item.getQuantity()))
-                .collect(Collectors.toList());
+		final Collection<ItemStack> items = Arrays.stream(container.getItems())
+				.map(item -> new ItemStack(item.getId(), item.getQuantity()))
+				.collect(Collectors.toList());
 
 
-        if (!items.isEmpty())
-        {
-            final LootTrackerItemEntry[] entries = buildEntries(stack(items));
-            final int highlight = config.highlightValue();
-            SwingUtilities.invokeLater(() -> panel.addLog(eventType, -1, entries, highlight));
-        }
-        else
-        {
-            log.debug("No items to find for Event: {} | Container: {}", eventType, container);
-        }
-    }
+		if (!items.isEmpty())
+		{
+			final LootTrackerItemEntry[] entries = buildEntries(stack(items));
+			final int highlight = config.highlightValue();
+			SwingUtilities.invokeLater(() -> panel.addLog(eventType, -1, entries, highlight));
+		}
+		else
+		{
+			log.debug("No items to find for Event: {} | Container: {}", eventType, container);
+		}
+	}
 
-    @Subscribe
-    public void onChatMessage(ChatMessage event)
-    {
-        if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
-        {
-            return;
-        }
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
+		{
+			return;
+		}
 
-        // Check if message is for a clue scroll reward
-        final Matcher m = CLUE_SCROLL_PATTERN.matcher(Text.removeTags(event.getMessage()));
-        if (m.find())
-        {
-            final String type = m.group(1).toLowerCase();
-            switch (type)
-            {
-                case "easy":
-                    eventType = "Clue Scroll (Easy)";
-                    break;
-                case "medium":
-                    eventType = "Clue Scroll (Medium)";
-                    break;
-                case "hard":
-                    eventType = "Clue Scroll (Hard)";
-                    break;
-                case "elite":
-                    eventType = "Clue Scroll (Elite)";
-                    break;
-                case "master":
-                    eventType = "Clue Scroll (Master)";
-                    break;
-            }
-        }
-    }
+// Check if message is for a clue scroll reward
+		final Matcher m = CLUE_SCROLL_PATTERN.matcher(Text.removeTags(event.getMessage()));
+		if (m.find())
+		{
+			final String type = m.group(1).toLowerCase();
+			switch (type)
+			{
+				case "easy":
+					eventType = "Clue Scroll (Easy)";
+					break;
+				case "medium":
+					eventType = "Clue Scroll (Medium)";
+					break;
+				case "hard":
+					eventType = "Clue Scroll (Hard)";
+					break;
+				case "elite":
+					eventType = "Clue Scroll (Elite)";
+					break;
+				case "master":
+					eventType = "Clue Scroll (Master)";
+					break;
+			}
+		}
+	}
 
-    private LootTrackerItemEntry[] buildEntries(final Collection<ItemStack> itemStacks)
-    {
+	private LootTrackerItemEntry[] buildEntries(final Collection<ItemStack> itemStacks)
+	{
 
-        Collection<ItemStack> my_items = new HashSet<>();
-        Iterator<ItemStack> it = itemStacks.iterator();
+		Collection<ItemStack> my_items = new HashSet<>();
+		Iterator<ItemStack> it = itemStacks.iterator();
 
-        while(it.hasNext()){
-            ItemStack i = it.next();
-            int ignore = config.getIgnoreUnderValue();
-            itemManager.getItemPrice(0);
-            i.getId();
-            if(i.getId() == ItemID.COINS_995)
-            {
-                if(i.getQuantity() > ignore )
-                {
-                    my_items.add(i);
-                }
-            }
-            else
-            {
-                if (itemManager.getItemPrice(i.getId()).getPrice() > ignore )
-                    my_items.add(i);
-            }
+		while(it.hasNext()){
+			ItemStack i = it.next();
+			int ignore = config.getIgnoreUnderValue();
+			itemManager.getItemPrice(0);
+			i.getId();
+			if(i.getId() == ItemID.COINS_995)
+			{
+				if(i.getQuantity() > ignore )
+				{
+					my_items.add(i);
+				}
+			}
+			else
+			{
+				if (itemManager.getItemPrice(i.getId()).getPrice() > ignore )
+					my_items.add(i);
+			}
 
-        }
+		}
 
-        return my_items.stream().map(itemStack ->
-        {
-            final ItemComposition itemComposition = itemManager.getItemComposition(itemStack.getId());
-            final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemStack.getId();
-            final ItemPrice itemPrice = itemManager.getItemPrice(realItemId);
-            final long price;
-            if (itemPrice != null)
-            {
-                price = (long) itemPrice.getPrice() * itemStack.getQuantity();
-            }
-            else if (realItemId == ItemID.COINS_995)
-            {
-                price = itemStack.getQuantity();
-            }
-            else
-            {
-                price = 0;
-            }
-            int ignoreValue = config.getIgnoreUnderValue();
-            System.out.println("Found new item" + itemStack.getId() + " " +  itemComposition.getId() + " " + itemStack.getQuantity() + " " + price);
-            return new LootTrackerItemEntry(
-                    itemStack.getId(),
-                    itemComposition.getName(),
-                    itemStack.getQuantity(),
-                    price);
-        }).toArray(LootTrackerItemEntry[]::new);
-    }
+		return my_items.stream().map(itemStack ->
+		{
+			final ItemComposition itemComposition = itemManager.getItemComposition(itemStack.getId());
+			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemStack.getId();
+			final ItemPrice itemPrice = itemManager.getItemPrice(realItemId);
+			final long price;
+			if (itemPrice != null)
+			{
+				price = (long) itemPrice.getPrice() * itemStack.getQuantity();
+			}
+			else if (realItemId == ItemID.COINS_995)
+			{
+				price = itemStack.getQuantity();
+			}
+			else
+			{
+				price = 0;
+			}
+			int ignoreValue = config.getIgnoreUnderValue();
+			System.out.println("Found new item" + itemStack.getId() + " " +  itemComposition.getId() + " " + itemStack.getQuantity() + " " + price);
+			return new LootTrackerItemEntry(
+					itemStack.getId(),
+					itemComposition.getName(),
+					itemStack.getQuantity(),
+					price);
+		}).toArray(LootTrackerItemEntry[]::new);
+	}
 }
