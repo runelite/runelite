@@ -64,13 +64,26 @@ public interface BarrowsConfig extends Config
 	{
 		return true;
 	}
+	@ConfigItem(
+		keyName = "showDigTiles",
+		name = "Show What tiles to dig on",
+		description = "Configure whether to show times to dig on to enter crypt",
+		position = 3
+	)
+
+
+	default boolean showDigTiles()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		keyName = "brotherLocColor",
 		name = "Brother location color",
 		description = "Change the color of the name displayed on the minimap",
-		position = 3
+		position = 4
 	)
+
 	default Color brotherLocColor()
 	{
 		return Color.CYAN;
@@ -80,7 +93,7 @@ public interface BarrowsConfig extends Config
 		keyName = "deadBrotherLocColor",
 		name = "Dead Brother loc. color",
 		description = "Change the color of the name displayed on the minimap for a dead brother",
-		position = 4
+		position = 5
 	)
 	default Color deadBrotherLocColor()
 	{
