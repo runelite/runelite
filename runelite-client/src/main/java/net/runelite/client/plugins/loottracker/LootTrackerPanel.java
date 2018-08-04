@@ -123,7 +123,8 @@ class LootTrackerPanel extends PluginPanel
 		add(errorPanel);
 	}
 
-	void loadHeaderIcon(BufferedImage img) {
+	void loadHeaderIcon(BufferedImage img)
+	{
 		overallIcon.setIcon(new ImageIcon(img));
 	}
 
@@ -133,7 +134,8 @@ class LootTrackerPanel extends PluginPanel
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
 
-	void addLog(final String eventName, final int actorLevel, LootTrackerItemEntry[] items, final int highlightValue) {
+	void addLog(final String eventName, final int actorLevel, LootTrackerItemEntry[] items, final int highlightValue)
+	{
 // Remove error and show overall
 		remove(errorPanel);
 		overallPanel.setVisible(true);
