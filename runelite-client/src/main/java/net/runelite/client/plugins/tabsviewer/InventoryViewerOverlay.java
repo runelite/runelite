@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.inventoryviewer;
+package net.runelite.client.plugins.tabsviewer;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -34,6 +34,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.tabsviewer.config.ViewerMode;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ImageComponent;
@@ -46,25 +47,31 @@ class InventoryViewerOverlay extends Overlay
 	private static final int PLACEHOLDER_HEIGHT = 32;
 	private static final ImageComponent PLACEHOLDER_IMAGE = new ImageComponent(new BufferedImage(PLACEHOLDER_WIDTH, PLACEHOLDER_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR));
 
-	private final Client client;
 	private final ItemManager itemManager;
+	private final TabsViewerConfig config;
+	private final Client client;
 
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private InventoryViewerOverlay(Client client, ItemManager itemManager)
+	private InventoryViewerOverlay(Client client, ItemManager itemManager, TabsViewerConfig config)
 	{
+		this.itemManager = itemManager;
+		this.config = config;
+		this.client = client;
+
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		panelComponent.setWrapping(4);
 		panelComponent.setGap(new Point(6, 4));
 		panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
-		this.itemManager = itemManager;
-		this.client = client;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if(config.tabsViewMode() == ViewerMode.EQP)
+			return null;
+
 		final ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
 
 		if (itemContainer == null)
@@ -103,4 +110,6 @@ class InventoryViewerOverlay extends Overlay
 	{
 		return itemManager.getImage(item.getId(), item.getQuantity(), item.getQuantity() > 1);
 	}
+
+
 }
