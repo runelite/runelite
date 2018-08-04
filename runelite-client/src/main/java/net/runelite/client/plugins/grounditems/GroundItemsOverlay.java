@@ -31,6 +31,8 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,11 +47,13 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.MENU;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
+import net.runelite.client.plugins.grounditems.config.TimerDisplayMode;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.BackgroundComponent;
+import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.StackFormatter;
 
@@ -66,13 +70,15 @@ public class GroundItemsOverlay extends Overlay
 	private static final int STRING_GAP = 15;
 	// Size of the hidden/highlight boxes
 	private static final int RECTANGLE_SIZE = 8;
-
+	private static final int TIMER_OVERLAY_DIAMETER = 10;
+	private static final int PUBLIC_ITEM_DURATION_MILLIS = 60000;
 	private final Client client;
 	private final GroundItemsPlugin plugin;
 	private final GroundItemsConfig config;
 	private final StringBuilder itemStringBuilder = new StringBuilder();
 	private final BackgroundComponent backgroundComponent = new BackgroundComponent();
 	private final TextComponent textComponent = new TextComponent();
+	private final ProgressPieComponent progressPieComponent = new ProgressPieComponent();
 	private final Map<WorldPoint, Integer> offsetMap = new HashMap<>();
 
 	@Inject
@@ -328,6 +334,14 @@ public class GroundItemsOverlay extends Overlay
 
 				// Draw highlight box
 				drawRectangle(graphics, itemHighlightBox, topItem && mouseInHighlightBox ? Color.GREEN : color, highlighted != null, false);
+
+				if(config.showGroundItemDuration() == TimerDisplayMode.HOTKEY_PRESSED){
+					drawTimerOverlay(graphics,  new java.awt.Point(textX, textY), item);
+				}
+			}
+
+			if(config.showGroundItemDuration() == TimerDisplayMode.ALWAYS){
+				drawTimerOverlay(graphics, new java.awt.Point(textX, textY), item);
 			}
 
 			textComponent.setText(itemString);
@@ -376,4 +390,53 @@ public class GroundItemsOverlay extends Overlay
 
 	}
 
+	private void drawTimerOverlay(Graphics2D graphics, java.awt.Point location, GroundItem item)
+	{
+
+		progressPieComponent.setDiameter(TIMER_OVERLAY_DIAMETER);
+
+		int x = (int) location.getX() - TIMER_OVERLAY_DIAMETER;
+		int y = (int) location.getY() - TIMER_OVERLAY_DIAMETER / 2;
+
+		progressPieComponent.setPosition(new Point(x, y));
+
+		double millisOnGround = Duration.between(item.getDroppedInstant(), Instant.now()).toMillis();
+		boolean isPubliclyVisible = !item.isAlwaysPrivate() && millisOnGround > item.getDurationMillis();
+		double timeLeftRelative;
+		Color fillColor;
+
+		if (isPubliclyVisible || !item.isOwnedByPlayer())
+		{
+			if (item.isOwnedByPlayer())
+			{
+				timeLeftRelative = getTimeLeftRelative(millisOnGround - PUBLIC_ITEM_DURATION_MILLIS, PUBLIC_ITEM_DURATION_MILLIS);
+			}
+			else
+			{
+				timeLeftRelative = getTimeLeftRelative(millisOnGround, PUBLIC_ITEM_DURATION_MILLIS);
+			}
+
+			fillColor = config.publicDurationColor();
+		}
+		else
+		{
+			timeLeftRelative = getTimeLeftRelative(millisOnGround, item.getDurationMillis());
+			fillColor = config.privateDurationColor();
+		}
+
+		// don't draw timer for any permanently spawned items or broken edge cases
+		if(timeLeftRelative > 1 || timeLeftRelative < 0){
+			return;
+		}
+
+		progressPieComponent.setFill(fillColor);
+		progressPieComponent.setBorderColor(fillColor);
+		progressPieComponent.setProgress(timeLeftRelative);
+		progressPieComponent.render(graphics);
+	}
+
+	private double getTimeLeftRelative(double millisOnGround, int duration)
+	{
+		return (duration - millisOnGround) / duration;
+	}
 }

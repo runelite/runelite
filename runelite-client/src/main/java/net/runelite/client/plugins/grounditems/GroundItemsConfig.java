@@ -32,10 +32,42 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
+import net.runelite.client.plugins.grounditems.config.TimerDisplayMode;
 
 @ConfigGroup("grounditems")
 public interface GroundItemsConfig extends Config
 {
+
+	@ConfigItem(
+		keyName = "showGroundItemDuration",
+		name = "Show time remaining",
+		description = "Turn on a countdown timer to show how long an item will remain on the ground"
+	)
+	default TimerDisplayMode showGroundItemDuration()
+	{
+		return TimerDisplayMode.HOTKEY_PRESSED;
+	}
+
+	@ConfigItem(
+		keyName = "privateDurationColor",
+		name = "Private timer color",
+		description = "Configures the color for the private duration timer"
+	)
+	default Color privateDurationColor()
+	{
+		return Color.GREEN;
+	}
+
+	@ConfigItem(
+		keyName = "publicDurationColor",
+		name = "Public timer color",
+		description = "Configures the color for the public duration timer"
+	)
+	default Color publicDurationColor()
+	{
+		return Color.YELLOW;
+	}
+
 	@ConfigItem(
 		keyName = "highlightedItems",
 		name = "Highlighted Items",
@@ -115,16 +147,16 @@ public interface GroundItemsConfig extends Config
 	{
 		return false;
 	}
-	
+
 	@ConfigItem(
 		keyName = "highlightTiles",
 		name = "Highlight Tiles",
 		description = "Configures whether or not to highlight tiles containing ground items",
 		position = 6
 	)
-	default boolean highlightTiles() 
-	{ 
-		return false; 
+	default boolean highlightTiles()
+	{
+		return false;
 	}
 
 	@ConfigItem(

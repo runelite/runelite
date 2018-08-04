@@ -34,6 +34,7 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Rectangle;
 import static java.lang.Boolean.TRUE;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -57,6 +58,7 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.Node;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
@@ -65,6 +67,7 @@ import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
@@ -98,6 +101,17 @@ public class GroundItemsPlugin extends Plugin
 	// ItemID for coins
 	private static final int COINS = ItemID.COINS_995;
 
+	// items stay on the ground for 30 mins in an instance
+	private static final int INSTANCE_DURATION_MILLIS = 45 * 60 * 1000;
+	//untradeables stay on the ground for 150 seconds (http://oldschoolrunescape.wikia.com/wiki/Item#Dropping_and_Destroying)
+	private static final int UNTRADEABLE_DURATION_MILLIS = 150 * 1000;
+	//items stay on the ground for 1 hour after death
+	private static final int DEATH_DURATION_MILLIS = 60 * 60 * 1000;
+	private static final int NORMAL_DURATION_MILLIS = 60 * 1000;
+
+	@Getter
+	private final Map<GroundItem.GroundItemKey, GroundItem> collectedGroundItems = new LinkedHashMap<>();
+	private final Map<Integer, Color> priceChecks = new LinkedHashMap<>();
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private Map.Entry<Rectangle, GroundItem> textBoxBounds;
@@ -198,6 +212,7 @@ public class GroundItemsPlugin extends Plugin
 	@Subscribe
 	public void onItemSpawned(ItemSpawned itemSpawned)
 	{
+
 		Item item = itemSpawned.getItem();
 		Tile tile = itemSpawned.getTile();
 
@@ -258,6 +273,17 @@ public class GroundItemsPlugin extends Plugin
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
 		final int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
+		int durationMillis = NORMAL_DURATION_MILLIS;
+		if (client.isInInstancedRegion())
+		{
+			durationMillis = INSTANCE_DURATION_MILLIS;
+		}
+		if (!itemComposition.isTradeable())
+		{
+			durationMillis = UNTRADEABLE_DURATION_MILLIS;
+		}
+
+		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 
 		final GroundItem groundItem = GroundItem.builder()
 			.id(itemId)
@@ -268,14 +294,19 @@ public class GroundItemsPlugin extends Plugin
 			.haPrice(alchPrice)
 			.height(tile.getItemLayer().getHeight())
 			.tradeable(itemComposition.isTradeable())
+			.droppedInstant(Instant.now())
+			.durationMillis(durationMillis)
+			.isAlwaysPrivate(client.isInInstancedRegion() || !itemComposition.isTradeable())
+			.isOwnedByPlayer(tile.getWorldLocation().equals(playerLocation))
 			.build();
 
-
-		// Update item price in case it is coins
+		// Update item price in case it is coins & pretend they are a regular tradable item
 		if (realItemId == COINS)
 		{
 			groundItem.setHaPrice(1);
 			groundItem.setGePrice(1);
+			groundItem.setAlwaysPrivate(false);
+			groundItem.setDurationMillis(NORMAL_DURATION_MILLIS);
 		}
 		else
 		{
@@ -490,5 +521,19 @@ public class GroundItemsPlugin extends Plugin
 		{
 			setHotKeyPressed(false);
 		}
+	}
+
+	@Subscribe
+	public void onNpcLootReceived(NpcLootReceived event)
+	{
+		event.getItems().forEach(item ->
+			{
+				GroundItem.GroundItemKey groundItemKey = new GroundItem.GroundItemKey(item.getId(), event.getNpc().getWorldLocation());
+				if (collectedGroundItems.containsKey(groundItemKey))
+				{
+					collectedGroundItems.get(groundItemKey).setOwnedByPlayer(true);
+				}
+			}
+		);
 	}
 }
