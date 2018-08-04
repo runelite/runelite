@@ -47,7 +47,7 @@ class LootTrackerBox extends JPanel
 
 	LootTrackerBox(final ItemManager itemManager, final String title, final String subTitle, final LootTrackerItemEntry[] items, final int hightlightValue)
 	{
-		if(items.length > 0)
+		if (items.length > 0)
 		{
 			setLayout(new BorderLayout(0, 1));
 			setBorder(new EmptyBorder(5, 0, 0, 0));
@@ -128,7 +128,7 @@ class LootTrackerBox extends JPanel
 		long total = 0;
 		for (LootTrackerItemEntry itemStack : itemStacks)
 		{
-			if(itemStack != null)
+			if (itemStack != null)
 			{
 				total += itemStack.getPrice();
 			}
