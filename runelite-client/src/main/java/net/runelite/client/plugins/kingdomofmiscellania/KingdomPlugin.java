@@ -26,16 +26,16 @@ package net.runelite.client.plugins.kingdomofmiscellania;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.Subscribe;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import static net.runelite.api.ItemID.TEAK_CHEST;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -57,20 +57,13 @@ public class KingdomPlugin extends Plugin
 	@Inject
 	private InfoBoxManager infoBoxManager;
 
+	@Inject
+	private ItemManager itemManager;
+
 	@Getter
 	private int favor = 0, coffer = 0;
 
 	private KingdomCounter counter;
-	private BufferedImage counterImage;
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		synchronized (ImageIO.class)
-		{
-			counterImage = ImageIO.read(getClass().getResourceAsStream("teak_chest.png"));
-		}
-	}
 
 	@Override
 	protected void shutDown() throws Exception
@@ -112,7 +105,7 @@ public class KingdomPlugin extends Plugin
 	{
 		if (counter == null)
 		{
-			counter = new KingdomCounter(counterImage, this);
+			counter = new KingdomCounter(itemManager.getImage(TEAK_CHEST), this);
 			infoBoxManager.addInfoBox(counter);
 			log.debug("Added Kingdom Infobox");
 		}

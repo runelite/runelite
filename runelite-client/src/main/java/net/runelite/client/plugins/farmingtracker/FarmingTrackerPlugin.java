@@ -29,7 +29,6 @@ import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +45,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Farming Tracker",
@@ -88,11 +88,7 @@ public class FarmingTrackerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		BufferedImage icon;
-		synchronized (ImageIO.class)
-		{
-			icon = ImageIO.read(getClass().getResourceAsStream("farming.png"));
-		}
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "farming.png");
 
 		panel = new FarmingTrackerPanel(client, itemManager, configManager, config, farmingWorld);
 

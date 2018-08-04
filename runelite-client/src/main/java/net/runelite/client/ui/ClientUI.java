@@ -38,9 +38,7 @@ import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.TrayIcon;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.BoxLayout;
@@ -70,6 +68,7 @@ import net.runelite.client.events.NavigationButtonAdded;
 import net.runelite.client.events.NavigationButtonRemoved;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.ui.skin.SubstanceRuneLiteLookAndFeel;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
 import net.runelite.client.util.SwingUtil;
@@ -95,27 +94,9 @@ public class ClientUI
 
 	static
 	{
-		BufferedImage icon;
-		BufferedImage sidebarOpen;
-		BufferedImage sidebarClose;
-
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				icon = ImageIO.read(ClientUI.class.getResourceAsStream("/runelite.png"));
-				sidebarOpen = ImageIO.read(ClientUI.class.getResourceAsStream("open.png"));
-				sidebarClose = ImageIO.read(ClientUI.class.getResourceAsStream("close.png"));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
-
-		ICON = icon;
-		SIDEBAR_OPEN = sidebarOpen;
-		SIDEBAR_CLOSE = sidebarClose;
+		ICON = ImageUtil.getResourceStreamFromClass(ClientUI.class, "/runelite.png");
+		SIDEBAR_OPEN = ImageUtil.getResourceStreamFromClass(ClientUI.class, "open.png");
+		SIDEBAR_CLOSE = ImageUtil.flipImage(SIDEBAR_OPEN, true, false);
 	}
 
 	@Getter

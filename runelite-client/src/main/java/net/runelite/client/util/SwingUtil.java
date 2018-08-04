@@ -29,10 +29,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
@@ -42,8 +40,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.awt.image.LookupOp;
-import java.awt.image.LookupTable;
 import java.util.Enumeration;
 import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
@@ -104,40 +100,6 @@ public class SwingUtil
 		// Do not fill in background on repaint. Reduces flickering when
 		// the applet is resized.
 		System.setProperty("sun.awt.noerasebackground", "true");
-	}
-
-	/**
-	 * Offsets an image in the grayscale (darkens/brightens) by an offset
-	 */
-	public static BufferedImage grayscaleOffset(BufferedImage image, int offset)
-	{
-		int numComponents = image.getColorModel().getNumComponents();
-		int index = numComponents - 1;
-
-		LookupTable lookup = new LookupTable(0, numComponents)
-		{
-			@Override
-			public int[] lookupPixel(int[] src, int[] dest)
-			{
-				if (dest[index] != 0)
-				{
-					dest[index] = dest[index] + offset;
-					if (dest[index] < 0)
-					{
-						dest[index] = 0;
-					}
-					else if (dest[index] > 255)
-					{
-						dest[index] = 255;
-					}
-				}
-
-				return dest;
-			}
-		};
-
-		LookupOp op = new LookupOp(lookup, new RenderingHints(null));
-		return op.filter(image, null);
 	}
 
 	/**
@@ -281,25 +243,6 @@ public class SwingUtil
 	}
 
 	/**
-	 * Re-size a BufferedImage to the given dimensions.
-	 *
-	 * @param image the BufferedImage.
-	 * @param newWidth The width to set the BufferedImage to.
-	 * @param newHeight The height to set the BufferedImage to.
-	 * @return The BufferedImage with the specified dimensions
-	 */
-	private static BufferedImage resizeImage(BufferedImage image, int newWidth, int newHeight)
-	{
-		final Image tmp = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
-		final BufferedImage dimg = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
-
-		final Graphics2D g2d = dimg.createGraphics();
-		g2d.drawImage(tmp, 0, 0, null);
-		g2d.dispose();
-		return dimg;
-	}
-
-	/**
 	 * Create swing button from navigation button.
 	 *
 	 * @param navigationButton the navigation button
@@ -314,7 +257,7 @@ public class SwingUtil
 	{
 
 		final BufferedImage scaledImage = iconSize > 0
-			? resizeImage(navigationButton.getIcon(), iconSize, iconSize)
+			? ImageUtil.resizeImage(navigationButton.getIcon(), iconSize, iconSize)
 			: navigationButton.getIcon();
 
 		final JButton button = new JButton();
@@ -364,5 +307,4 @@ public class SwingUtil
 	{
 		return SubstanceCoreUtilities.getTitlePaneComponent(frame) != null;
 	}
-
 }

@@ -29,12 +29,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -45,7 +43,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconButton;
-import net.runelite.client.util.SwingUtil;
+import net.runelite.client.util.ImageUtil;
 import org.apache.commons.text.similarity.JaroWinklerDistance;
 
 class PluginListItem extends JPanel
@@ -84,26 +82,27 @@ class PluginListItem extends JPanel
 
 	static
 	{
-		try
-		{
-			BufferedImage configIcon;
-
-			synchronized (ImageIO.class)
-			{
-				configIcon = ImageIO.read(ConfigPanel.class.getResourceAsStream("config_edit_icon.png"));
-				CONFIG_ICON = new ImageIcon(configIcon);
-				ON_SWITCHER = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("switchers/on.png")));
-				OFF_SWITCHER = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("switchers/off.png")));
-				ON_STAR = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("stars/on.png")));
-				OFF_STAR = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("stars/off.png")));
-			}
-
-			CONFIG_ICON_HOVER = new ImageIcon(SwingUtil.grayscaleOffset(configIcon, -100));
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+		BufferedImage configIcon = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "config_edit_icon.png");
+		BufferedImage onSwitcher = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "switcher_on.png");
+		BufferedImage onStar = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "star_on.png");
+		CONFIG_ICON = new ImageIcon(configIcon);
+		ON_SWITCHER = new ImageIcon(onSwitcher);
+		ON_STAR = new ImageIcon(onStar);
+		CONFIG_ICON_HOVER = new ImageIcon(ImageUtil.grayscaleOffset(configIcon, -100));
+		BufferedImage offSwitcherImage = ImageUtil.flipImage(
+			ImageUtil.grayscaleOffset(
+				ImageUtil.grayscaleImage(onSwitcher),
+				0.61f
+			),
+			true,
+			false
+		);
+		OFF_SWITCHER = new ImageIcon(offSwitcherImage);
+		BufferedImage offStar = ImageUtil.grayscaleOffset(
+			ImageUtil.grayscaleImage(onStar),
+			0.77f
+		);
+		OFF_STAR = new ImageIcon(offStar);
 	}
 
 	/**
