@@ -68,7 +68,7 @@ class SkillCalculator extends JPanel
 
 	private UICombinedActionSlot combinedActionSlot = new UICombinedActionSlot();
 	private ArrayList<UIActionSlot> combinedActionSlots = new ArrayList<>();
-	private List<BonusCheckBox> bonusCheckBoxes = Lists.newArrayList();
+	private final List<BonusCheckBox> bonusCheckBoxes = new ArrayList<>();
 
 	private int currentLevel = 1;
 	private int currentXP = Experience.getXpForLevel(currentLevel);
