@@ -48,7 +48,7 @@ import net.runelite.client.util.StackFormatter;
 class LootTrackerPanel extends PluginPanel
 {
 	private static final String HTML_LABEL_TEMPLATE =
-		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
+			"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
 
 	// When there is no loot, display this
 	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
@@ -133,7 +133,7 @@ class LootTrackerPanel extends PluginPanel
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
 
-	void addLog(final String eventName, final int actorLevel, LootTrackerItemEntry[] items)
+	void addLog(final String eventName, final int actorLevel, LootTrackerItemEntry[] items, final int highlightValue)
 	{
 		// Remove error and show overall
 		remove(errorPanel);
@@ -141,7 +141,7 @@ class LootTrackerPanel extends PluginPanel
 
 		// Create box
 		final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
-		final LootTrackerBox box = new LootTrackerBox(itemManager, eventName, subTitle, items);
+		final LootTrackerBox box = new LootTrackerBox(itemManager, eventName, subTitle, items, highlightValue);
 		logsContainer.add(box, 0);
 		logsContainer.repaint();
 
