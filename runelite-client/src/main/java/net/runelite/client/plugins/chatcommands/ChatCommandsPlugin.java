@@ -51,7 +51,6 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageBuilder;
-import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
@@ -106,9 +105,6 @@ public class ChatCommandsPlugin extends Plugin
 
 	@Inject
 	private ItemManager itemManager;
-
-	@Inject
-	private ChatMessageManager chatMessageManager;
 
 	@Inject
 	private KeyManager keyManager;
@@ -369,8 +365,6 @@ public class ChatCommandsPlugin extends Plugin
 
 		log.debug("Setting response {}", response);
 		data.getMessage().setRuneLiteFormatMessage(response);
-		chatMessageManager.update(data.getMessage());
-		client.refreshChat();
 	}
 
 	/**
@@ -433,8 +427,6 @@ public class ChatCommandsPlugin extends Plugin
 
 			log.debug("Setting response {}", response);
 			data.getMessage().setRuneLiteFormatMessage(response);
-			chatMessageManager.update(data.getMessage());
-			client.refreshChat();
 		}
 	}
 
@@ -483,8 +475,6 @@ public class ChatCommandsPlugin extends Plugin
 
 			log.debug("Setting response {}", response);
 			data.getMessage().setRuneLiteFormatMessage(response);
-			chatMessageManager.update(data.getMessage());
-			client.refreshChat();
 		}
 		catch (IOException ex)
 		{
@@ -547,8 +537,6 @@ public class ChatCommandsPlugin extends Plugin
 
 			log.debug("Setting response {}", response);
 			data.getMessage().setRuneLiteFormatMessage(response);
-			chatMessageManager.update(data.getMessage());
-			client.refreshChat();
 		}
 		catch (IOException ex)
 		{
@@ -622,8 +610,6 @@ public class ChatCommandsPlugin extends Plugin
 
 			log.debug("Setting response {}", response);
 			data.getMessage().setRuneLiteFormatMessage(response);
-			chatMessageManager.update(data.getMessage());
-			client.refreshChat();
 		}
 		catch (IOException ex)
 		{

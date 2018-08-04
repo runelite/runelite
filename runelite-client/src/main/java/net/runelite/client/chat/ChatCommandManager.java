@@ -25,6 +25,7 @@
 package net.runelite.client.chat;
 
 import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 import com.google.common.eventbus.Subscribe;
 import java.util.Collections;
 import java.util.HashMap;
@@ -44,6 +45,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.MessageNode;
 import net.runelite.api.events.SetMessage;
 import net.runelite.api.vars.AccountType;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.events.ChatboxInput;
 import net.runelite.client.events.PrivateMessageInput;
 import net.runelite.client.util.Text;
@@ -59,12 +61,20 @@ public class ChatCommandManager implements ChatboxInputListener
 
 	private final Client client;
 	private final ScheduledExecutorService executorService;
+	private final ChatMessageManager chatManager;
+	private final ClientThread clientThread;
 
 	@Inject
-	private ChatCommandManager(final Client client, final ScheduledExecutorService executorService)
+	private ChatCommandManager(
+		final Client client,
+		final ScheduledExecutorService executorService,
+		final ChatMessageManager chatManager,
+		final ClientThread clientThread)
 	{
 		this.client = client;
 		this.executorService = executorService;
+		this.chatManager = chatManager;
+		this.clientThread = clientThread;
 	}
 
 	public Command add(final Command command)
@@ -142,7 +152,16 @@ public class ChatCommandManager implements ChatboxInputListener
 		log.debug("Running command {} for player {} with args {} for search {}",
 			command.getCommand(), playerName, args, search);
 
-		executorService.submit(() -> command.print.accept(new CommandData(playerName, accountType, setMessage.getMessageNode()), args));
+		executorService.submit(() ->
+		{
+			command.print.accept(new CommandData(playerName, accountType, setMessage.getMessageNode()), args);
+
+			if (!Strings.isNullOrEmpty(setMessage.getMessageNode().getRuneLiteFormatMessage()))
+			{
+				chatManager.update(setMessage.getMessageNode());
+				clientThread.invokeLater(client::refreshChat);
+			}
+		});
 	}
 
 	@Override
