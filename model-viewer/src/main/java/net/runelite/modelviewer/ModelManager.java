@@ -174,6 +174,7 @@ public class ModelManager
 			loadConsumer.accept(md);
 		}
 		md.computeNormals();
+		md.computeMaxPriority();
 		models.put(key, md);
 		return md;
 	}

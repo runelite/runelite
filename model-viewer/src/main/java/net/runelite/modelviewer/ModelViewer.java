@@ -87,11 +87,13 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_S;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
+import static org.lwjgl.opengl.GL11.glStencilMask;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 import static org.lwjgl.opengl.GL43.GL_DEBUG_OUTPUT;
 import static org.lwjgl.opengl.GL43.glDebugMessageCallback;
 import org.lwjgl.opengl.KHRDebugCallback;
+import org.lwjgl.opengl.PixelFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -273,7 +275,7 @@ public class ModelViewer
 		Display.setDisplayMode(new DisplayMode(800, 600));
 		Display.setTitle("Model Viewer");
 		Display.setInitialBackground((float) Color.gray.getRed() / 255f, (float) Color.gray.getGreen() / 255f, (float) Color.gray.getBlue() / 255f);
-		Display.create();
+		Display.create(new PixelFormat(0, 8, 8));
 
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
@@ -357,9 +359,13 @@ public class ModelViewer
 				}
 			}
 
-			for (ModelDefinition def : models)
+			GL11.glClear(GL11.GL_STENCIL_BUFFER_BIT);
+			for (int prio = 255; prio >= 0; --prio)
 			{
-				drawModel(def);
+				for (ModelDefinition def : models)
+				{
+					drawModel(def, prio, prio == 255);
+				}
 			}
 
 			if (region != null)
@@ -380,8 +386,15 @@ public class ModelViewer
 		Display.destroy();
 	}
 
-	private static void drawModel(ModelDefinition md)
+	private static void drawModel(ModelDefinition md, int prio, boolean first)
 	{
+		GL11.glEnable(GL11.GL_STENCIL_TEST);
+
+		glStencilMask(0xff);
+		GL11.glStencilOp(GL11.GL_KEEP, GL11.GL_REPLACE, GL11.GL_REPLACE);
+
+		GL11.glStencilFunc(GL11.GL_GEQUAL, prio, 0xff);
+
 		for (int i = 0; i < md.faceCount; ++i)
 		{
 			if (md.faceRenderTypes != null)
@@ -397,6 +410,22 @@ public class ModelViewer
 			int vertexA = md.faceVertexIndices1[i];
 			int vertexB = md.faceVertexIndices2[i];
 			int vertexC = md.faceVertexIndices3[i];
+
+			if (md.faceRenderPriorities != null)
+			{
+				int priority = md.faceRenderPriorities[i] & 0xFF;
+				if (priority != prio)
+				{
+					continue;
+				}
+			}
+			else
+			{
+				if (!first)
+				{
+					continue;
+				}
+			}
 
 			VertexNormal normalVertexA = md.vertexNormals[vertexA];
 			VertexNormal normalVertexB = md.vertexNormals[vertexB];
@@ -503,6 +532,8 @@ public class ModelViewer
 				GL11.glDisable(GL11.GL_TEXTURE_2D);
 			}
 		}
+
+		GL11.glDisable(GL11.GL_STENCIL_TEST);
 	}
 
 	private static void drawScene(Region region, Scene scene)
@@ -766,6 +797,8 @@ public class ModelViewer
 				(-regionY * TILE_SCALE) - ((length * TILE_SCALE) / 2)
 			);
 
+			GL11.glClear(GL11.GL_STENCIL_BUFFER_BIT);
+			int max = -1;
 			for (int i = 0; i < object.getObjectModels().length; ++i)
 			{
 				if (object.getObjectTypes() != null && object.getObjectTypes()[i] != location.getType())
@@ -774,13 +807,33 @@ public class ModelViewer
 				}
 
 				ModelDefinition md = modelManager.getModel(object.getObjectModels()[i], object, location);
-
-				if (md == null)
+				if (md != null)
 				{
-					continue;
+					if (md.maxPriority > max)
+					{
+						max = md.maxPriority;
+					}
 				}
+			}
 
-				drawModel(md);
+			for (int prio = max; prio >= 0; --prio)
+			{
+				for (int i = 0; i < object.getObjectModels().length; ++i)
+				{
+					if (object.getObjectTypes() != null && object.getObjectTypes()[i] != location.getType())
+					{
+						continue;
+					}
+
+					ModelDefinition md = modelManager.getModel(object.getObjectModels()[i], object, location);
+
+					if (md == null)
+					{
+						continue;
+					}
+
+					drawModel(md, prio, prio == max);
+				}
 			}
 
 			GL11.glTranslatef(
