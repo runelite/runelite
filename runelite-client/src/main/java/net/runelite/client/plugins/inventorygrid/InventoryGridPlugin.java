@@ -39,10 +39,10 @@ import javax.inject.Inject;
 
 @Slf4j
 @PluginDescriptor(
-		name = "Inventory Grid",
-		description = "Shows a grid in your inventory",
-		tags = {"Qol"},
-		enabledByDefault = false
+	name = "Inventory Grid",
+	description = "Shows a grid in your inventory",
+	tags = {"Qol"},
+	enabledByDefault = false
 )
 public class InventoryGridPlugin extends Plugin
 {

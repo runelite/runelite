@@ -35,11 +35,12 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 
 import javax.inject.Inject;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 
 public class InventoryOverlay extends Overlay
 {
-
 	private final Client client;
 	private final InventoryGridPlugin plugin;
 	private final InventoryGridConfig config;
@@ -47,6 +48,7 @@ public class InventoryOverlay extends Overlay
 	private static final int ITEM_HEIGHT = 32;
 	private static final int ITEM_MARGIN_X = 10;
 	private static final int ITEM_MARGIN_Y = 4;
+
 	@Inject
 	InventoryOverlay(Client client, InventoryGridPlugin plugin, InventoryGridConfig config)
 	{
@@ -62,13 +64,17 @@ public class InventoryOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		final Widget inventory = client.getWidget(WidgetInfo.INVENTORY);
+
 		if (client.getGameState() != GameState.LOGGED_IN || inventory == null || inventory.isHidden())
 		{
 			return null;
 		}
+
 		final int inventoryX = inventory.getCanvasLocation().getX();
 		final int inventoryY = inventory.getCanvasLocation().getY();
+
 		graphics.setColor(config.getGridColor());
+
 		for (int i = 0; i < 4; i++)
 		{
 			for (int j = 0; j < 7; j++)
