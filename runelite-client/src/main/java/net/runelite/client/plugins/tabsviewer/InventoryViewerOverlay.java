@@ -69,7 +69,7 @@ class InventoryViewerOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if(config.tabsViewMode() == ViewerMode.EQP)
+		if (config.tabsViewMode() == ViewerMode.EQP)
 			return null;
 
 		final ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
