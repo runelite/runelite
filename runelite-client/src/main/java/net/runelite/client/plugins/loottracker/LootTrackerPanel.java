@@ -96,7 +96,7 @@ class LootTrackerPanel extends PluginPanel
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
 
 		// Create reset all menu
-		final JMenuItem reset = new JMenuItem("Reset All");
+		final JMenuItem reset = new JMenuItem("Remove All");
 		reset.addActionListener(e ->
 		{
 			overallKills = 0;
@@ -151,7 +151,7 @@ class LootTrackerPanel extends PluginPanel
 		updateOverall();
 
 		// Create reset menu
-		final JMenuItem reset = new JMenuItem("Reset");
+		final JMenuItem reset = new JMenuItem("Remove");
 		reset.addActionListener(e ->
 		{
 			overallGp -= box.getTotalPrice();
