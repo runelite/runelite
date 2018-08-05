@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.barrows;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -34,18 +33,13 @@ import net.runelite.api.NPC;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
-import net.runelite.api.Point;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.plugins.barrows.CryptLocations;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayUtil;
 
-import static net.runelite.api.ItemID.CANNONBALL;
 
 class BarrowsOverlay extends Overlay
 {
@@ -122,25 +116,6 @@ class BarrowsOverlay extends Overlay
 			{
 				renderLadders(graphics, ladder);
 			}
-		}
-	}
-
-	private void renderCryptSpot(Graphics2D graphics, Client client, LocalPoint point, BufferedImage image, Color color)
-	{
-		//Render tile
-		Polygon poly = Perspective.getCanvasTilePoly(client, point);
-
-		if (poly != null)
-		{
-			OverlayUtil.renderPolygon(graphics, poly, color);
-		}
-
-		//Render icon
-		Point imageLoc = Perspective.getCanvasImageLocation(client, graphics, point, image, 0);
-
-		if (imageLoc != null)
-		{
-			OverlayUtil.renderImageLocation(graphics, imageLoc, image);
 		}
 	}
 

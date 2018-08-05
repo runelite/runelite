@@ -33,7 +33,6 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import static net.runelite.api.ItemID.SPADE;
 import net.runelite.api.Perspective;
-import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.ItemManager;
@@ -76,11 +75,11 @@ public class CryptOverlay extends Overlay
             }
 
             LocalPoint spotPoint = LocalPoint.fromWorld(client, spot);
-            //LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
+            LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
 
-            if (spotPoint != null) //&& localLocation.distanceTo(spotPoint) <= MAX_DISTANCE)
+            if (spotPoint != null && localLocation.distanceTo(spotPoint) <= MAX_DISTANCE)
             {
-                renderCryptSpot(graphics, client, spotPoint, itemManager.getImage(SPADE), Color.RED);
+                renderCryptSpot(graphics, client, spotPoint, itemManager.getImage(SPADE), config.digTileColor());
             }
         }
 
@@ -97,12 +96,5 @@ public class CryptOverlay extends Overlay
             OverlayUtil.renderPolygon(graphics, poly, color);
         }
 
-        //Render icon
-        Point imageLoc = Perspective.getCanvasImageLocation(client, graphics, point, image, 0);
-
-        if (imageLoc != null)
-        {
-            OverlayUtil.renderImageLocation(graphics, imageLoc, image);
-        }
     }
 }

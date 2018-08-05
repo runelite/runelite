@@ -71,7 +71,6 @@ public interface BarrowsConfig extends Config
 		position = 3
 	)
 
-
 	default boolean showDigTiles()
 	{
 		return true;
@@ -98,5 +97,17 @@ public interface BarrowsConfig extends Config
 	default Color deadBrotherLocColor()
 	{
 		return Color.RED;
+	}
+
+	@ConfigItem(
+		keyName = "digTileColor",
+		name = "Dig tile color",
+		description = "Change the color of the dig tiles",
+		position = 6
+	)
+
+	default Color digTileColor()
+	{
+		return Color.YELLOW;
 	}
 }
