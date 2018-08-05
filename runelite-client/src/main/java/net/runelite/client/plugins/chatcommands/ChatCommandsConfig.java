@@ -77,6 +77,17 @@ public interface ChatCommandsConfig extends Config
 
 	@ConfigItem(
 		position = 4,
+		keyName = "combatinfo",
+		name = "Combat Command",
+		description = "Configures whether the Combat command is enabled"
+	)
+	default boolean combatinfo()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 5,
 		keyName = "clearShortcuts",
 		name = "Clear shortcuts",
 		description = "Enable shortcuts (ctrl+w and backspace) for clearing the chatbox"

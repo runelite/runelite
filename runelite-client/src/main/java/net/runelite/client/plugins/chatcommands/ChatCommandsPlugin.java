@@ -234,6 +234,11 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			log.debug("Running killcount lookup for {}", search);
 			executor.submit(() -> killCountLookup(setMessage.getType(), setMessage, search));
 		}
+		else if (config.combatinfo() && message.toLowerCase().startsWith("!cmb"))
+		{
+			log.debug("Running combat info lookup");
+			executor.submit(() -> playerCombatLookup(setMessage));
+		}
 	}
 
 	@Subscribe
@@ -708,6 +713,57 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		catch (IOException ex)
 		{
 			log.warn("error looking up clues", ex);
+		}
+	}
+	
+	private void playerCombatLookup(SetMessage setMessage)
+	{
+		final HiscoreLookup lookup = getCorrectLookupFor(setMessage);
+		
+		try
+		{
+			final HiscoreResult highscores = hiscoreClient.lookup(lookup.getName(), lookup.getEndpoint());
+			
+			int a = highscores.getAttack().getLevel();
+			int s = highscores.getStrength().getLevel();
+			int d = highscores.getDefence().getLevel();
+			int h = highscores.getHitpoints().getLevel();
+			int r = highscores.getRanged().getLevel();
+			int p = highscores.getPrayer().getLevel();
+			int m = highscores.getMagic().getLevel();
+			
+			final String[] lvls = {"" + a, 
+				"" + s, 
+				"" + d, 
+				"" + h, 
+				"" + r, 
+				"" + p, 
+				"" + m};
+			final String lvlsString = String.join(" ", lvls);
+			
+			final int comblvl = Experience.getCombatLevel(a,s,d,h,m,r,p);
+			final String cmblvlString = "" + comblvl;
+			
+			final String response = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("Combat Level: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(cmblvlString)
+				.append(ChatColorType.NORMAL)
+				.append(" ASDHRPM: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(lvlsString)
+				.build();
+
+			log.debug("Setting response {}", response);
+			final MessageNode messageNode = setMessage.getMessageNode();
+			messageNode.setRuneLiteFormatMessage(response);
+			chatMessageManager.update(messageNode);
+			client.refreshChat();
+		}
+		catch (IOException ex)
+		{
+			log.warn("unable to look up skills during combat info lookup", ex);
 		}
 	}
 
