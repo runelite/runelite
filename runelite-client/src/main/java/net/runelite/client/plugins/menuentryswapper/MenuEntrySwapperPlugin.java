@@ -431,19 +431,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 					break;
 			}
 		}
-		else if (config.swapTeleportToDestination() != ObeliskMode.ACTIVATE && option.equals("activate") && target.equals("obelisk"))
+		else if (config.swapTeleportToDestination() != ObeliskMode.ACTIVATE && target.equals("obelisk"))
 		{
-			if (config.swapTeleportToDestination() == ObeliskMode.TELEPORT_TO_DESTINATION)
+			switch (config.swapTeleportToDestination())
 			{
-				swap("teleport to destination", option, target, true);
-			}
-			else if (config.swapTeleportToDestination() == ObeliskMode.SET_DESTINATION)
-			{
-				swap("set destination", option, target, true);
-			}
-			else if (config.swapTeleportToDestination() == ObeliskMode.ACTIVATE)
-			{
-				swap("activate", option, target, true);
+				case SET_DESTINATION:
+					swap ("set destination", option, target, true);
+					break;
+				case TELEPORT_TO_DESTINATION:
+					swap ("teleport to destination", option, target, true);
+					break;
 			}
 		}
 		else if (config.swapFairyRing() != FairyRingMode.OFF && config.swapFairyRing() != FairyRingMode.ZANARIS
