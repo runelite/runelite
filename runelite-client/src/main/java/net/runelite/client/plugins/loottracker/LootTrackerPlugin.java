@@ -277,15 +277,15 @@ public class LootTrackerPlugin extends Plugin
 			}
 			else
 			{
-			    //Create new itemStack and apply the ignoreValue filter.
+				//Create new itemStack and apply the ignoreValue filter.
 				int itemID = i.getId();
-                final ItemComposition itemComposition = itemManager.getItemComposition(i.getId());
-                final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : i.getId();
-                final ItemPrice itemPrice = itemManager.getItemPrice(realItemId);
-                final long price;
-				if(itemPrice != null)
+				final ItemComposition itemComposition = itemManager.getItemComposition(i.getId());
+				final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : i.getId();
+				final ItemPrice itemPrice = itemManager.getItemPrice(realItemId);
+				final long price;
+				if (itemPrice != null)
 				{
-                    price = (long) itemPrice.getPrice() * i.getQuantity();
+					price = (long) itemPrice.getPrice() * i.getQuantity();
 					if (price > ignore )
 						my_items.add(i);
 				}
