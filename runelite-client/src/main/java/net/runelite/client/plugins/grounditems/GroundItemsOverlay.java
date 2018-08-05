@@ -45,6 +45,7 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.MENU;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
+import net.runelite.client.plugins.grounditems.config.QuantityDisplayMode;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -214,11 +215,16 @@ public class GroundItemsOverlay extends Overlay
 				{
 					itemStringBuilder.append(" (Lots!)");
 				}
-				else
+				if (config.quantityDisplayMode() == QuantityDisplayMode.PARENTHESES)
 				{
 					itemStringBuilder.append(" (")
 						.append(StackFormatter.quantityToStackSize(item.getQuantity()))
 						.append(")");
+				}
+				else
+				{
+					itemStringBuilder.append(" x ")
+							.append(StackFormatter.quantityToStackSize(item.getQuantity()));
 				}
 			}
 
