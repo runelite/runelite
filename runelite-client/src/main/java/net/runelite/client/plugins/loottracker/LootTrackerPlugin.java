@@ -166,7 +166,6 @@ public class LootTrackerPlugin extends Plugin
 	{
 		final Player player = playerLootReceived.getPlayer();
 		final Collection<ItemStack> items = playerLootReceived.getItems();
-		System.out.println("Printing the array" + Arrays.toString(items.toArray()));
 		final String name = player.getName();
 		final int combat = player.getCombatLevel();
 		final int highlight = config.highlightValue();
@@ -269,8 +268,6 @@ public class LootTrackerPlugin extends Plugin
 		{
 			ItemStack i = it.next();
 			int ignore = config.getIgnoreUnderValue();
-			itemManager.getItemPrice(0);
-			i.getId();
 			if (i.getId() == ItemID.COINS_995)
 			{
 				if (i.getQuantity() > ignore )
@@ -280,10 +277,19 @@ public class LootTrackerPlugin extends Plugin
 			}
 			else
 			{
-				if (itemManager.getItemPrice(i.getId()).getPrice() > ignore )
-					my_items.add(i);
+			    //Create new itemStack and apply the ignoreValue filter.
+				int itemID = i.getId();
+                final ItemComposition itemComposition = itemManager.getItemComposition(i.getId());
+                final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : i.getId();
+                final ItemPrice itemPrice = itemManager.getItemPrice(realItemId);
+                final long price;
+				if(itemPrice != null)
+				{
+                    price = (long) itemPrice.getPrice() * i.getQuantity();
+					if (price > ignore )
+						my_items.add(i);
+				}
 			}
-
 		}
 
 		return my_items.stream().map(itemStack ->
