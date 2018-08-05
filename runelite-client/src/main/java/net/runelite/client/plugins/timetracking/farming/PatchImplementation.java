@@ -22,10 +22,11 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.farmingtracker;
+package net.runelite.client.plugins.timetracking.farming;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.runelite.client.plugins.timetracking.Tab;
 
 @RequiredArgsConstructor
 @Getter
@@ -733,7 +734,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	FLOWER(Tab.HERB, "Flowers")
+	FLOWER(Tab.FLOWER, "")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -1205,7 +1206,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	FRUIT_TREE(Tab.FRUIT_TREE, "Fruit trees")
+	FRUIT_TREE(Tab.FRUIT_TREE, "")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -1454,7 +1455,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	HOPS(Tab.SPECIAL, "Hops")
+	HOPS(Tab.HOPS, "")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -2267,7 +2268,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	GRAPES(Tab.BUSH, "Grapes")
+	GRAPES(Tab.GRAPE, "")
 		{
 			@Override
 			PatchState forVarbitValue(int value)

@@ -23,7 +23,7 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.farmingtracker;
+package net.runelite.client.plugins.timetracking.farming;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -127,7 +127,7 @@ public enum Produce
 	 */
 	private final int tickrate;
 	/**
-	 * How many states this crop has during groth. Typically tickcount+1
+	 * How many states this crop has during growth. Typically tickcount+1
 	 */
 	private final int stages;
 	/**

@@ -22,44 +22,32 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.farmingtracker;
+package net.runelite.client.plugins.timetracking.farming;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.Value;
 
-@ConfigGroup("farmingTracker")
-public interface FarmingTrackerConfig extends Config
+@Value
+class PatchState
 {
-	String KEY_NAME = "farmingTracker";
-	String AUTOWEED = "autoweed";
+	private final Produce produce;
+	private final CropState cropState;
+	private final int stage;
 
-	@ConfigItem(
-		keyName = "estimateRelative",
-		name = "Show relative time",
-		description = "Show amount of time remaining for a patch, opposed to when the patch is finished"
-	)
-	default boolean estimateRelative()
+	int getStages()
 	{
-		return false;
+		return cropState == CropState.HARVESTABLE ? produce.getHarvestStages() : produce.getStages();
 	}
 
-	@ConfigItem(
-		keyName = "patch",
-		name = "Default patch",
-		description = "Default patch on opening the panel",
-		hidden = true
-	)
-	default Tab patch()
+	int getTickRate()
 	{
-		return Tab.ALLOTMENT;
+		switch (cropState)
+		{
+			case HARVESTABLE:
+				return produce.getRegrowTickrate();
+			case GROWING:
+				return produce.getTickrate();
+			default:
+				return 0;
+		}
 	}
-
-	@ConfigItem(
-		keyName = "patch",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	void setPatch(Tab t);
 }
