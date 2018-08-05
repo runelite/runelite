@@ -2,6 +2,9 @@ package net.runelite.client.plugins.loottracker;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+
+import java.awt.*;
+
 @ConfigGroup("lootTracker")
 public interface LootTrackerConfig extends Config
 {
@@ -25,5 +28,16 @@ public interface LootTrackerConfig extends Config
 	default int getIgnoreUnderValue()
 	{
 		return 0;
+	}
+
+	@ConfigItem(
+			position = 3,
+			keyName = "hexColorHighlight",
+			name = "HighlightColor",
+			description = "Color of highlighted item"
+	)
+	default Color getHighlightColor()
+	{
+		return Color.ORANGE;
 	}
 }

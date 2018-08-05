@@ -25,8 +25,7 @@
  */
 package net.runelite.client.plugins.loottracker;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -134,7 +133,7 @@ class LootTrackerPanel extends PluginPanel
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
 
-	void addLog(final String eventName, final int actorLevel, LootTrackerItemEntry[] items, final int highlightValue)
+	void addLog(final String eventName, final int actorLevel, LootTrackerItemEntry[] items, final int highlightValue, final Color highlightColor)
 	{
 // Remove error and show overall
 		remove(errorPanel);
@@ -143,7 +142,7 @@ class LootTrackerPanel extends PluginPanel
 		if (items.length > 0)
 		{
 			final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
-			final LootTrackerBox box = new LootTrackerBox(itemManager, eventName, subTitle, items, highlightValue);
+			final LootTrackerBox box = new LootTrackerBox(itemManager, eventName, subTitle, items, highlightValue, highlightColor);
 			logsContainer.add(box, 0);
 			logsContainer.repaint();
 

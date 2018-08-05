@@ -27,8 +27,11 @@ package net.runelite.client.plugins.loottracker;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -153,8 +156,9 @@ public class LootTrackerPlugin extends Plugin
 		final String name = npc.getName();
 		final int combat = npc.getCombatLevel();
 		final int highlight = config.highlightValue();
+		final Color highlightColor = config.getHighlightColor();
 		final LootTrackerItemEntry[] entries = buildEntries(stack(items));
-		SwingUtilities.invokeLater(() -> panel.addLog(name, combat, entries, highlight));
+		SwingUtilities.invokeLater(() -> panel.addLog(name, combat, entries, highlight, highlightColor));
 	}
 
 	@Subscribe
@@ -166,8 +170,9 @@ public class LootTrackerPlugin extends Plugin
 		final String name = player.getName();
 		final int combat = player.getCombatLevel();
 		final int highlight = config.highlightValue();
+		final Color highlightColor = config.getHighlightColor();
 		final LootTrackerItemEntry[] entries = buildEntries(stack(items));
-		SwingUtilities.invokeLater(() -> panel.addLog(name, combat, entries, highlight));
+		SwingUtilities.invokeLater(() -> panel.addLog(name, combat, entries, highlight, highlightColor));
 	}
 
 	@Subscribe
@@ -211,7 +216,8 @@ public class LootTrackerPlugin extends Plugin
 		{
 			final LootTrackerItemEntry[] entries = buildEntries(stack(items));
 			final int highlight = config.highlightValue();
-			SwingUtilities.invokeLater(() -> panel.addLog(eventType, -1, entries, highlight));
+			final Color highlightColor = config.getHighlightColor();
+			SwingUtilities.invokeLater(() -> panel.addLog(eventType, -1, entries, highlight, highlightColor));
 		}
 		else
 		{

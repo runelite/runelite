@@ -46,8 +46,7 @@ class LootTrackerBox extends JPanel
 {
 	private static final int ITEMS_PER_ROW = 5;
 	private long totalPrice = 0;
-
-	LootTrackerBox(final ItemManager itemManager, final String title, final String subTitle, final LootTrackerItemEntry[] items, final int highlightValue)
+	LootTrackerBox(final ItemManager itemManager, final String title, final String subTitle, final LootTrackerItemEntry[] items, final int highlightValue, final Color highlightColor)
 	{
 		if (items.length > 0)
 		{
@@ -102,7 +101,7 @@ class LootTrackerBox extends JPanel
 					itemManager.getImage(item.getId(), item.getQuantity(), item.getQuantity() > 1).addTo(imageLabel);
 					if (item.getPrice() > highlightValue)
 					{
-						slotContainer.setBackground(ColorScheme.BRAND_ORANGE);
+						slotContainer.setBackground(highlightColor);
 
 					}
 					slotContainer.add(imageLabel);
