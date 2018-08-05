@@ -113,8 +113,13 @@ class ItemPricesOverlay extends Overlay
 							return null;
 						}
 						// intentional fallthrough
-					case WidgetID.BANK_GROUP_ID:
 					case WidgetID.BANK_INVENTORY_GROUP_ID:
+						if (config.hideInventory())
+						{
+							return null;
+						}
+						// intentional fallthrough
+					case WidgetID.BANK_GROUP_ID:
 						// Make tooltip
 						final String text = makeValueTooltip(menuEntry);
 						if (text != null)
