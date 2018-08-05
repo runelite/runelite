@@ -32,15 +32,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ObeliskMode
 {
-    ACTIVATE ("Activate"),
-    TELEPORT_TO_DESTINATION ("Teleport to destination"),
-    SET_DESTINATION ("Set destination");
+	ACTIVATE("Activate"),
+	TELEPORT_TO_DESTINATION("Teleport to destination"),
+	SET_DESTINATION("Set destination");
 
-    private final String name;
+	private final String name;
 
-    @Override
-    public String toString ()
-    {
-        return name;
-    }
+	@Override
+	public String toString()
+	{
+		return name;
+	}
 }
