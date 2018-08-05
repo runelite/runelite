@@ -431,6 +431,21 @@ public class MenuEntrySwapperPlugin extends Plugin
 					break;
 			}
 		}
+		else if (config.swapTeleportToDestination() != ObeliskMode.ACTIVATE && option.equals("activate") && target.equals("obelisk"))
+		{
+			if (config.swapTeleportToDestination() == ObeliskMode.TELEPORT_TO_DESTINATION)
+			{
+				swap("teleport to destination", option, target, true);
+			}
+			else if (config.swapTeleportToDestination() == ObeliskMode.SET_DESTINATION)
+			{
+				swap("set destination", option, target, true);
+			}
+			else if (config.swapTeleportToDestination() == ObeliskMode.ACTIVATE)
+			{
+				swap("activate", option, target, true);
+			}
+		}
 		else if (config.swapFairyRing() != FairyRingMode.OFF && config.swapFairyRing() != FairyRingMode.ZANARIS
 			&& (option.equals("zanaris") || option.equals("configure") || option.equals("tree")))
 		{

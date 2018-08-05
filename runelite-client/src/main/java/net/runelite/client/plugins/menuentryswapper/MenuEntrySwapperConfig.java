@@ -239,4 +239,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			position = 19,
+			keyName = "swapTeleportToDestination",
+			name = "Obelisk",
+			description = "Swap Activate with Teleport to Destination or Set Destination"
+	)
+	default ObeliskMode swapTeleportToDestination()
+	{
+		return ObeliskMode.ACTIVATE;
+	}
 }
