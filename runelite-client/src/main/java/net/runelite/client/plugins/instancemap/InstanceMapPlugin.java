@@ -94,10 +94,11 @@ public class InstanceMapPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlay.setShowMap(false);
 		overlayManager.remove(overlay);
 		removeCustomOptions();
 		keyManager.unregisterKeyListener(inputListener);
-		mouseManager.registerMouseListener(inputListener);
+		mouseManager.unregisterMouseListener(inputListener);
 		mouseManager.unregisterMouseWheelListener(inputListener);
 	}
 

@@ -141,7 +141,7 @@ public class CommandManager
 				}
 				resumed = true;
 
-				clientThread.invokeLater(() -> sendChatboxInput(chatType, typedText));
+				clientThread.invoke(() -> sendChatboxInput(chatType, typedText));
 			}
 		};
 		boolean stop = false;
@@ -180,7 +180,7 @@ public class CommandManager
 				}
 				resumed = true;
 
-				clientThread.invokeLater(() -> sendPrivmsg(target, message));
+				clientThread.invoke(() -> sendPrivmsg(target, message));
 			}
 		};
 

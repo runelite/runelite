@@ -204,6 +204,7 @@ public class ItemManager
 	 */
 	public ItemComposition getItemComposition(int itemId)
 	{
+		assert client.isClientThread() : "getItemComposition must be called on client thread";
 		return itemCompositions.getUnchecked(itemId);
 	}
 
@@ -216,7 +217,7 @@ public class ItemManager
 	private AsyncBufferedImage loadImage(int itemId, int quantity, boolean stackable)
 	{
 		AsyncBufferedImage img = new AsyncBufferedImage(36, 32, BufferedImage.TYPE_INT_ARGB);
-		clientThread.invokeLater(() ->
+		clientThread.invoke(() ->
 		{
 			if (client.getGameState().ordinal() < GameState.LOGIN_SCREEN.ordinal())
 			{

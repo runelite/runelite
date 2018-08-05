@@ -39,6 +39,7 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
@@ -430,16 +431,21 @@ public class MenuEntrySwapperPlugin extends Plugin
 					break;
 			}
 		}
-		else if (config.swapFairyRing() != FairyRingMode.ZANARIS && (option.equals("zanaris") || option.equals("tree")))
+		else if (config.swapFairyRing() != FairyRingMode.OFF && config.swapFairyRing() != FairyRingMode.ZANARIS
+			&& (option.equals("zanaris") || option.equals("configure") || option.equals("tree")))
 		{
 			if (config.swapFairyRing() == FairyRingMode.LAST_DESTINATION)
 			{
-				swap("last-destination (", option, target, false);
+				swap("last-destination", option, target, false);
 			}
 			else if (config.swapFairyRing() == FairyRingMode.CONFIGURE)
 			{
 				swap("configure", option, target, false);
 			}
+		}
+		else if (config.swapFairyRing() == FairyRingMode.ZANARIS && option.equals("tree"))
+		{
+			swap("zanaris", option, target, false);
 		}
 		else if (config.swapBoxTrap() && (option.equals("check") || option.equals("dismantle")))
 		{
@@ -498,6 +504,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 			// Update our cached item composition too
 			ItemComposition ourItemComposition = itemManager.getItemComposition(itemComposition.getId());
 			ourItemComposition.setShiftClickActionIndex(option);
+		}
+	}
+
+	@Subscribe
+	public void onFocusChanged(FocusChanged event)
+	{
+		if (!event.isFocused())
+		{
+			shiftModifier = false;
 		}
 	}
 

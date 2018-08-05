@@ -111,7 +111,7 @@ public class WidgetID
 
 	static class WorldMap
 	{
-		static final int OPTION = 36;
+		static final int OPTION = 41;
 		static final int TOOLTIP = 35;
 		static final int MAPVIEW = 3;
 	}
@@ -239,6 +239,11 @@ public class WidgetID
 		static final int QUICK_PRAYER_ORB = 14; // Has the "Quick-prayers" name
 		static final int RUN_ORB = 20;
 		static final int SPEC_ORB = 28;
+	}
+
+	static class LoginClickToPlayScreen
+	{
+		static final int MESSAGE_OF_THE_DAY = 3;
 	}
 
 	static class Viewport

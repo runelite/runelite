@@ -76,7 +76,7 @@ public final class AnimationID
 	public static final int GEM_CUTTING_EMERALD = 889;
 	public static final int GEM_CUTTING_RUBY = 887;
 	public static final int GEM_CUTTING_DIAMOND = 886;
-	public static final int CRAFTING_LEATHER = 1249; // unknown if the anim is the same for all leathers
+	public static final int CRAFTING_LEATHER = 1249;
 	public static final int CRAFTING_GLASSBLOWING = 884;
 	public static final int CRAFTING_SPINNING = 894;
 	public static final int SMITHING_SMELTING = 899;
@@ -120,6 +120,7 @@ public final class AnimationID
 	public static final int MAGIC_CHARGING_ORBS = 726;
 	public static final int MAGIC_LUNAR_STRING_JEWELRY = 4412;
 	public static final int MAGIC_LUNAR_BAKE_PIE = 4413;
+	public static final int MAGIC_MAKE_TABLET = 4068;
 	public static final int BURYING_BONES = 827;
 	public static final int USING_GILDED_ALTAR = 3705;
 	public static final int LOOKING_INTO = 832;

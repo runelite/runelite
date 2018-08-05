@@ -80,13 +80,13 @@ public class ReportButtonPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-		clientThread.invokeLater(this::updateReportButtonTime);
+		clientThread.invoke(this::updateReportButtonTime);
 	}
 
 	@Override
 	public void shutDown()
 	{
-		clientThread.invokeLater(() ->
+		clientThread.invoke(() ->
 		{
 			Widget reportButton = client.getWidget(WidgetInfo.CHATBOX_REPORT_TEXT);
 			if (reportButton != null)

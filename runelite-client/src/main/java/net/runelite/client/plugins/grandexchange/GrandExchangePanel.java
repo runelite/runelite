@@ -34,6 +34,7 @@ import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
@@ -56,7 +57,7 @@ class GrandExchangePanel extends PluginPanel
 	private GrandExchangeOffersPanel offersPanel;
 
 	@Inject
-	GrandExchangePanel(Client client, ItemManager itemManager, ScheduledExecutorService executor)
+	GrandExchangePanel(Client client, ClientThread clientThread, ItemManager itemManager, ScheduledExecutorService executor)
 	{
 		super(false);
 
@@ -64,7 +65,7 @@ class GrandExchangePanel extends PluginPanel
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		// Search Panel
-		searchPanel = new GrandExchangeSearchPanel(client, itemManager, executor);
+		searchPanel = new GrandExchangeSearchPanel(clientThread, itemManager, executor);
 
 		//Offers Panel
 		offersPanel = new GrandExchangeOffersPanel(client, itemManager, executor);

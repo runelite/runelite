@@ -25,12 +25,11 @@
 package net.runelite.client.plugins.mta.alchemy;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.time.temporal.ChronoUnit;
-import javax.imageio.ImageIO;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.Timer;
+import net.runelite.client.util.ImageUtil;
 
 @Slf4j
 public class AlchemyRoomTimer extends Timer
@@ -51,17 +50,7 @@ public class AlchemyRoomTimer extends Timer
 			return image;
 		}
 
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				image = ImageIO.read(AlchemyRoomTimer.class.getResourceAsStream("reset.png"));
-			}
-		}
-		catch (IOException ex)
-		{
-			log.warn(null, ex);
-		}
+		image = ImageUtil.getResourceStreamFromClass(AlchemyRoomTimer.class, "/util/reset.png");
 
 		return image;
 	}

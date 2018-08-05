@@ -25,14 +25,13 @@
 package net.runelite.client.plugins.poh;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import javax.imageio.ImageIO;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import static net.runelite.api.ObjectID.*;
 import static net.runelite.api.NullObjectID.*;
+import net.runelite.client.util.ImageUtil;
 
 @Slf4j
 public enum PohIcons
@@ -105,17 +104,7 @@ public enum PohIcons
 			return image;
 		}
 
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				image = ImageIO.read(PohIcons.class.getResourceAsStream(getImageResource() + ".png"));
-			}
-		}
-		catch (IOException ex)
-		{
-			log.warn("unable to load image", ex);
-		}
+		image = ImageUtil.getResourceStreamFromClass(getClass(), getImageResource() + ".png");
 
 		return image;
 	}
