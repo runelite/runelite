@@ -42,59 +42,59 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class CryptOverlay extends Overlay
 {
-    private static final int MAX_DISTANCE = 2350;
+	private static final int MAX_DISTANCE = 2350;
 
-    private final Client client;
-    private final BarrowsPlugin plugin;
-    private final BarrowsConfig config;
+	private final Client client;
+	private final BarrowsPlugin plugin;
+	private final BarrowsConfig config;
 
-    @Inject
-    private ItemManager itemManager;
+	@Inject
+	private ItemManager itemManager;
 
-    @Inject
-    CryptOverlay(Client client, BarrowsPlugin plugin, BarrowsConfig config)
-    {
-        setPosition(OverlayPosition.DYNAMIC);
-        this.client = client;
-        this.plugin = plugin;
-        this.config = config;
-    }
+	@Inject
+	CryptOverlay(Client client, BarrowsPlugin plugin, BarrowsConfig config)
+	{
+		setPosition(OverlayPosition.DYNAMIC);
+		this.client = client;
+		this.plugin = plugin;
+		this.config = config;
+	}
 
-    @Override
-    public Dimension render(Graphics2D graphics)
-    {
-        if (!config.showDigTiles())
-        {
-            return null;
-        }
-        for (WorldPoint spot : plugin.getSpotPoints())
-        {
-            if (spot.getPlane() != client.getPlane())
-            {
-                continue;
-            }
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		if (!config.showDigTiles())
+		{
+			return null;
+		}
+		for (WorldPoint spot : plugin.getSpotPoints())
+		{
+			if (spot.getPlane() != client.getPlane())
+			{
+				continue;
+			}
 
-            LocalPoint spotPoint = LocalPoint.fromWorld(client, spot);
-            LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
+			LocalPoint spotPoint = LocalPoint.fromWorld(client, spot);
+			LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
 
-            if (spotPoint != null && localLocation.distanceTo(spotPoint) <= MAX_DISTANCE)
-            {
-                renderCryptSpot(graphics, client, spotPoint, itemManager.getImage(SPADE), config.digTileColor());
-            }
-        }
+			if (spotPoint != null && localLocation.distanceTo(spotPoint) <= MAX_DISTANCE)
+			{
+				renderCryptSpot(graphics, client, spotPoint, itemManager.getImage(SPADE), config.digTileColor());
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    private void renderCryptSpot(Graphics2D graphics, Client client, LocalPoint point, BufferedImage image, Color color)
-    {
-        //Render tile
-        Polygon poly = Perspective.getCanvasTilePoly(client, point);
+	private void renderCryptSpot(Graphics2D graphics, Client client, LocalPoint point, BufferedImage image, Color color)
+	{
+		//Render tile
+		Polygon poly = Perspective.getCanvasTilePoly(client, point);
 
-        if (poly != null)
-        {
-            OverlayUtil.renderPolygon(graphics, poly, color);
-        }
+		if (poly != null)
+		{
+			OverlayUtil.renderPolygon(graphics, poly, color);
+		}
 
-    }
+	}
 }

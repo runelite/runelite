@@ -260,27 +260,26 @@ public class BarrowsPlugin extends Plugin
 				.build());
 		}
 	}
+	@Schedule(
+			period = 1,
+			unit = ChronoUnit.SECONDS
+	)
+	public void checkSpots()
+	{
+		if (!config.showDigTiles())
+		{
+			return;
+		}
 
-    @Schedule(
-            period = 1,
-            unit = ChronoUnit.SECONDS
-    )
-    public void checkSpots()
-    {
-        if (!config.showDigTiles())
-        {
-            return;
-        }
+		spotPoints.clear();
+		for (WorldPoint spot : CryptLocations.getCryptLocations())
+		{
+			if (spot.getPlane() != client.getPlane() || !spot.isInScene(client))
+			{
+				continue;
+			}
 
-        spotPoints.clear();
-        for (WorldPoint spot : CryptLocations.getCryptLocations())
-        {
-            if (spot.getPlane() != client.getPlane() || !spot.isInScene(client))
-            {
-                continue;
-            }
-
-            spotPoints.add(spot);
-        }
-    }
+			spotPoints.add(spot);
+		}
+	}
 }
