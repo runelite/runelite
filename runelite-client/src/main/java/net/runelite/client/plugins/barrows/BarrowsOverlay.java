@@ -35,7 +35,6 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -48,9 +47,6 @@ class BarrowsOverlay extends Overlay
 	private final Client client;
 	private final BarrowsPlugin plugin;
 	private final BarrowsConfig config;
-
-	@Inject
-	private ItemManager itemManager;
 
 	@Inject
 	BarrowsOverlay(Client client, BarrowsPlugin plugin, BarrowsConfig config)
