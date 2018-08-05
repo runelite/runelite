@@ -107,13 +107,8 @@ class ItemPricesOverlay extends Overlay
 				// Item tooltip values
 				switch (groupId)
 				{
-					case WidgetID.INVENTORY_GROUP_ID:
-						if (config.hideInventory())
-						{
-							return null;
-						}
-						// intentional fallthrough
 					case WidgetID.BANK_INVENTORY_GROUP_ID:
+					case WidgetID.INVENTORY_GROUP_ID:
 						if (config.hideInventory())
 						{
 							return null;
