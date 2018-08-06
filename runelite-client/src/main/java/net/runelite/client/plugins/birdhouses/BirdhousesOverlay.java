@@ -54,7 +54,7 @@ class BirdhousesOverlay extends Overlay
 	
 	private final BirdhousesPlugin plugin;
 	
-	private Client client;
+	private final Client client;
 	
 	@Inject
 	private BirdhousesOverlay(BirdhousesPlugin plugin, Client client)
