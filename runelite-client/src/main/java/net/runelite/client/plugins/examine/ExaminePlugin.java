@@ -270,7 +270,21 @@ public class ExaminePlugin extends Plugin
 	{
 		// convert to unnoted id
 		final boolean note = itemComposition.getNote() != -1;
-		final int id = note ? itemComposition.getLinkedNoteId() : itemComposition.getId();
+		final boolean placeholder = itemComposition.getPlaceholderTemplateId() != -1;
+		final int id;
+		if (note)
+		{
+			id = itemComposition.getLinkedNoteId();
+		}
+		else if (placeholder)
+		{
+			id = itemComposition.getPlaceholderId();
+			quantity = 1;
+		}
+		else
+		{
+			id = itemComposition.getId();
+		}
 
 		ItemPrice itemPrice = itemManager.getItemPrice(id);
 		if (itemPrice == null)
