@@ -68,7 +68,7 @@ class BirdhousesOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if(!plugin.isNearBirdhouses())
+		if (!plugin.isNearBirdhouses())
 		{
 			return null;
 		}
@@ -77,7 +77,7 @@ class BirdhousesOverlay extends Overlay
 		{
 			VarPlayer var = BirdhousesPlugin.ID_TO_VAR.get(birdhouse.getId());
 			int state = client.getVar(var);
-			if(EMPTY_STATES.contains(state))
+			if (EMPTY_STATES.contains(state))
 			{
 				OverlayUtil.renderTileOverlay(graphics, birdhouse, "", Color.RED);
 			}

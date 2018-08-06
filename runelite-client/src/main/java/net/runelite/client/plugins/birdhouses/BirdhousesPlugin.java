@@ -59,9 +59,9 @@ public class BirdhousesPlugin extends Plugin
 	
 	public static final Map<Integer, VarPlayer> ID_TO_VAR = createIdMap();
 	
-	private static Map<Integer,VarPlayer> createIdMap()
+	private static Map<Integer, VarPlayer> createIdMap()
 	{
-		HashMap<Integer,VarPlayer> map = new HashMap<>();
+		HashMap<Integer, VarPlayer> map = new HashMap<>();
 		map.put(30565, VarPlayer.BIRDHOUSE_1);
 		map.put(30566, VarPlayer.BIRDHOUSE_2);
 		map.put(30567, VarPlayer.BIRDHOUSE_3);
@@ -149,7 +149,7 @@ public class BirdhousesPlugin extends Plugin
 			return;
 		}
 		
-		if(ID_TO_VAR.keySet().contains(newObject.getId()))
+		if (ID_TO_VAR.keySet().contains(newObject.getId()))
 		{
 			birdhouses.add(newObject);
 		}
