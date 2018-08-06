@@ -50,7 +50,6 @@ import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.RunnableExceptionLogger;
 import net.runelite.http.api.item.Item;
-import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
 
 /**
@@ -222,10 +221,10 @@ class GrandExchangeSearchPanel extends JPanel
 					continue;
 				}
 
-				ItemPrice itemPrice = itemManager.getItemPrice(itemId);
+				int itemPrice = itemManager.getItemPrice(itemId);
 				AsyncBufferedImage itemImage = itemManager.getImage(itemId);
 
-				itemsList.add(new GrandExchangeItems(itemImage, item.getName(), itemId, itemPrice != null ? itemPrice.getPrice() : 0, itemComp.getPrice() * 0.6));
+				itemsList.add(new GrandExchangeItems(itemImage, item.getName(), itemId, itemPrice, itemComp.getPrice() * 0.6));
 
 				// If using hotkey to lookup item, stop after finding match.
 				if (exactMatch && item.getName().equalsIgnoreCase(lookup))

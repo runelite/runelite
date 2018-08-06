@@ -62,7 +62,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.StackFormatter;
-import net.runelite.http.api.item.ItemPrice;
 
 @PluginDescriptor(
 	name = "Barrows Brothers",
@@ -222,13 +221,7 @@ public class BarrowsPlugin extends Plugin
 
 			for (Item item : items)
 			{
-				ItemPrice cachedItemPrice = itemManager.getItemPrice(item.getId());
-				if (cachedItemPrice == null)
-				{
-					continue;
-				}
-
-				long itemStack = (long) cachedItemPrice.getPrice() * (long) item.getQuantity();
+				long itemStack = (long) itemManager.getItemPrice(item.getId()) * (long) item.getQuantity();
 				chestPrice += itemStack;
 			}
 
