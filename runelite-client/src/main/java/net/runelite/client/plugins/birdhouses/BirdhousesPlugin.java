@@ -27,12 +27,14 @@ package net.runelite.client.plugins.birdhouses;
 import com.google.common.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
-import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
@@ -55,18 +57,23 @@ public class BirdhousesPlugin extends Plugin
 		14651
 	};
 	
-	private static final List<Integer> BIRDHOUSE_IDS = Arrays.asList(
-		30565,
-		30566,
-		30567,
-		30568
-	);
+	public static final Map<Integer, VarPlayer> ID_TO_VAR = createIdMap();
+	
+	private static Map<Integer,VarPlayer> createIdMap()
+	{
+		HashMap<Integer,VarPlayer> map = new HashMap<>();
+		map.put(30565, VarPlayer.BIRDHOUSE_1);
+		map.put(30566, VarPlayer.BIRDHOUSE_2);
+		map.put(30567, VarPlayer.BIRDHOUSE_3);
+		map.put(30568, VarPlayer.BIRDHOUSE_4);
+		return map;
+	}
 	
 	@Getter
-	private List<TileObject> emptyBirdhouses;
+	private List<TileObject> birdhouses;
 	
 	@Getter
-	private boolean nearBirdhouses;
+	public boolean nearBirdhouses;
 	
 	@Inject
 	private Client client;
@@ -82,6 +89,7 @@ public class BirdhousesPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		overlay.setLayer(OverlayLayer.ABOVE_SCENE);
+		nearBirdhouses = inBirdhouseArea();
 	}
 
 	@Override
@@ -90,8 +98,7 @@ public class BirdhousesPlugin extends Plugin
 		overlayManager.remove(overlay);
 	}
 	
-	// may be worthwhile to only calculate this when it could change and cache result
-	public boolean isNearBirdhouses()
+	private boolean inBirdhouseArea()
 	{
 		return client.getMapRegions() != null && Arrays.stream(client.getMapRegions())
 				.filter(x -> Arrays.stream(BIRDHOUSE_REGIONS).anyMatch(y -> y == x))
@@ -105,10 +112,11 @@ public class BirdhousesPlugin extends Plugin
 		{
 			case HOPPING:
 			case LOGGING_IN:
-				emptyBirdhouses = new ArrayList<>();
+				birdhouses = new ArrayList<>();
 				break;
 			case LOADING:
-				emptyBirdhouses.clear();
+				nearBirdhouses = inBirdhouseArea();
+				birdhouses.clear();
 				break;
 			default:
 				break;
@@ -118,54 +126,32 @@ public class BirdhousesPlugin extends Plugin
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
-		if(BIRDHOUSE_IDS.contains(event.getGameObject().getId()))
-		{
-			System.out.println("--- birdhouse spawned");
-		}
-		onGameObject(event.getTile(), null, event.getGameObject());
+		onGameObject(null, event.getGameObject());
 	}
 
 	@Subscribe
 	public void onGameObjectChanged(GameObjectChanged event)
 	{
-		if(BIRDHOUSE_IDS.contains(event.getGameObject().getId()))
-		{
-			System.out.println("--- birdhouse changed");
-		}
-		onGameObject(event.getTile(), event.getPrevious(), event.getGameObject());
+		onGameObject(event.getPrevious(), event.getGameObject());
 	}
 
 	@Subscribe
 	public void onGameObjectDeSpawned(GameObjectDespawned event)
 	{
-		if(BIRDHOUSE_IDS.contains(event.getGameObject().getId()))
-		{
-			System.out.println("--- birdhouse despawned");
-		}
-		onGameObject(event.getTile(), event.getGameObject(), null);
+		onGameObject(event.getGameObject(), null);
 	}
 
-	private void onGameObject(Tile tile, TileObject oldObject, TileObject newObject)
+	private void onGameObject(TileObject oldObject, TileObject newObject)
 	{
-		if(oldObject != null && emptyBirdhouses.contains(oldObject))
-		{
-			System.out.println("--- birdhouse removed");
-			emptyBirdhouses.remove(oldObject);
-		}
-		
+		birdhouses.remove(oldObject);
 		if (newObject == null)
 		{
 			return;
 		}
 		
-		if(BIRDHOUSE_IDS.contains(newObject.getId()))
+		if(ID_TO_VAR.keySet().contains(newObject.getId()))
 		{
-			if(true)//is empty
-			{
-				System.out.println("--- birdhouse added");
-				System.out.println(newObject.getId());
-				emptyBirdhouses.add(newObject);
-			}
+			birdhouses.add(newObject);
 		}
 	}
 }

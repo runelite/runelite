@@ -28,8 +28,11 @@ import com.google.inject.Inject;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.util.Arrays;
+import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.TileObject;
+import net.runelite.api.VarPlayer;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -37,6 +40,18 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 class BirdhousesOverlay extends Overlay
 {
+	private static final List<Integer> EMPTY_STATES = Arrays.asList(
+		1,
+		4,
+		7,
+		10,
+		13,
+		16,
+		19,
+		22,
+		25
+	);
+	
 	private final BirdhousesPlugin plugin;
 	
 	@javax.inject.Inject
@@ -58,9 +73,14 @@ class BirdhousesOverlay extends Overlay
 			return null;
 		}
 		
-		for (TileObject birdhouse : plugin.getEmptyBirdhouses())
+		for (TileObject birdhouse : plugin.getBirdhouses())
 		{
-			OverlayUtil.renderTileOverlay(graphics, birdhouse, "", Color.RED);
+			VarPlayer var = BirdhousesPlugin.ID_TO_VAR.get(birdhouse.getId());
+			int state = client.getVar(var);
+			if(EMPTY_STATES.contains(state))
+			{
+				OverlayUtil.renderTileOverlay(graphics, birdhouse, "", Color.RED);
+			}
 		}		
 		return null;
 	}
