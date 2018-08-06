@@ -32,7 +32,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.Client;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.TileObject;
 import net.runelite.api.VarPlayer;
@@ -61,9 +60,6 @@ public class BirdhousesPlugin extends Plugin
 	
 	@Getter(AccessLevel.PACKAGE)
 	private List<TileObject> birdhouses = new ArrayList<TileObject>();
-	
-	@Inject
-	private Client client;
 
 	@Inject
 	private OverlayManager overlayManager;
