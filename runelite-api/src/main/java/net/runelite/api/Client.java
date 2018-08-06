@@ -328,6 +328,13 @@ public interface Client extends GameEngine
 	IndexDataBase getIndexSprites();
 
 	/**
+	 * Gets the script index database.
+	 *
+	 * @return the script database
+	 */
+	IndexDataBase getIndexScripts();
+
+	/**
 	 * Returns the x-axis base coordinate.
 	 * <p>
 	 * This value is the x-axis world coordinate of tile (0, 0) in
