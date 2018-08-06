@@ -431,7 +431,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 					break;
 			}
 		}
-		else if (config.swapTeleportToDestination() != ObeliskMode.ACTIVATE && target.equals("obelisk"))
+		else if (config.swapTeleportToDestination() != ObeliskMode.ACTIVATE)
 		{
 			switch (config.swapTeleportToDestination())
 			{
