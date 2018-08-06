@@ -41,7 +41,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GrandExchangeOfferState;
 import static net.runelite.api.GrandExchangeOfferState.CANCELLED_BUY;
@@ -55,7 +54,6 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
 
-@Slf4j
 public class GrandExchangeOfferSlot extends JPanel
 {
 	private static final String FACE_CARD = "FACE_CARD";

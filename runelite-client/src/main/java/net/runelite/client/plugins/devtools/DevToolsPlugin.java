@@ -33,7 +33,6 @@ import java.awt.Font;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
@@ -58,7 +57,6 @@ import org.slf4j.LoggerFactory;
 	tags = {"panel"},
 	developerPlugin = true
 )
-@Slf4j
 public class DevToolsPlugin extends Plugin
 {
 	@Inject

@@ -25,25 +25,21 @@
  */
 package net.runelite.client.plugins.notes;
 
-import java.awt.Color;
+import java.awt.BorderLayout;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import javax.swing.BorderFactory;
-import javax.swing.JTextArea;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 
-import java.awt.BorderLayout;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-
 @Slf4j
-public class NotesPanel extends PluginPanel
+class NotesPanel extends PluginPanel
 {
 	private final JTextArea notesEditor = new JTextArea();
 
@@ -57,12 +53,6 @@ public class NotesPanel extends PluginPanel
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
-
-		final JLabel notesHeader = new JLabel("Notes");
-		notesHeader.setForeground(Color.WHITE);
-		notesHeader.setBorder(new EmptyBorder(1, 0, 10, 0));
-
-		add(notesHeader, BorderLayout.NORTH);
 
 		notesEditor.setLineWrap(true);
 		notesEditor.setWrapStyleWord(true);

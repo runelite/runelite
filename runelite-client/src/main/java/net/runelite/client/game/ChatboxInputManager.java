@@ -30,14 +30,12 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.util.function.Consumer;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.callback.ClientThread;
 
 @Singleton
-@Slf4j
 public class ChatboxInputManager
 {
 	public static final int NO_LIMIT = Integer.MAX_VALUE;

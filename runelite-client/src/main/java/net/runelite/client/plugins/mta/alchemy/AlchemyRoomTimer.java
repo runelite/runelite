@@ -26,12 +26,10 @@ package net.runelite.client.plugins.mta.alchemy;
 
 import java.awt.image.BufferedImage;
 import java.time.temporal.ChronoUnit;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.Timer;
 import net.runelite.client.util.ImageUtil;
 
-@Slf4j
 public class AlchemyRoomTimer extends Timer
 {
 	private static final int RESET_PERIOD = 42;

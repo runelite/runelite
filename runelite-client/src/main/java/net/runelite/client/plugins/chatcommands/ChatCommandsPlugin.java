@@ -38,6 +38,7 @@ import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Experience;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
@@ -91,6 +92,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	private static final String LEVEL_COMMAND_STRING = "!lvl";
 	private static final String CLUES_COMMAND_STRING = "!clues";
 	private static final String KILLCOUNT_COMMAND_STRING = "!kc";
+	private static final String CMB_COMMAND_STRING = "!cmb";
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private final KillCountClient killCountClient = new KillCountClient();
@@ -193,6 +195,11 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		{
 			log.debug("Running total level lookup");
 			executor.submit(() -> playerSkillLookup(setMessage, "total"));
+		}
+		else if (config.lvl() && message.toLowerCase().equals(CMB_COMMAND_STRING))
+		{
+			log.debug("Running combat level lookup");
+			executor.submit(() -> combatLevelLookup(setMessage.getType(), setMessage));
 		}
 		else if (config.price() && message.toLowerCase().startsWith(PRICE_COMMAND_STRING + " "))
 		{
@@ -556,6 +563,78 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		catch (IOException ex)
 		{
 			log.warn("unable to look up skill {} for {}", skill, search, ex);
+		}
+	}
+
+	private void combatLevelLookup(ChatMessageType type, SetMessage setMessage)
+	{
+		String player;
+		if (type == ChatMessageType.PRIVATE_MESSAGE_SENT)
+		{
+			player = client.getLocalPlayer().getName();
+		}
+		else
+		{
+			player = sanitize(setMessage.getName());
+		}
+
+		try
+		{
+			HiscoreResult playerStats = hiscoreClient.lookup(player);
+
+			int attack = playerStats.getAttack().getLevel();
+			int strength = playerStats.getStrength().getLevel();
+			int defence = playerStats.getDefence().getLevel();
+			int hitpoints = playerStats.getHitpoints().getLevel();
+			int ranged = playerStats.getRanged().getLevel();
+			int prayer = playerStats.getPrayer().getLevel();
+			int magic = playerStats.getMagic().getLevel();
+			int combatLevel = Experience.getCombatLevel(attack, strength, defence, hitpoints, magic, ranged, prayer);
+
+			String response = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("Combat Level: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.valueOf(combatLevel))
+				.append(ChatColorType.NORMAL)
+				.append(" A: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.valueOf(attack))
+				.append(ChatColorType.NORMAL)
+				.append(" S: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.valueOf(strength))
+				.append(ChatColorType.NORMAL)
+				.append(" D: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.valueOf(defence))
+				.append(ChatColorType.NORMAL)
+				.append(" H: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.valueOf(hitpoints))
+				.append(ChatColorType.NORMAL)
+				.append(" R: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.valueOf(ranged))
+				.append(ChatColorType.NORMAL)
+				.append(" P: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.valueOf(prayer))
+				.append(ChatColorType.NORMAL)
+				.append(" M: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.valueOf(magic))
+				.build();
+
+			log.debug("Setting response {}", response);
+			final MessageNode messageNode = setMessage.getMessageNode();
+			messageNode.setRuneLiteFormatMessage(response);
+			chatMessageManager.update(messageNode);
+			client.refreshChat();
+		}
+		catch (IOException ex)
+		{
+			log.warn("Error fetching hiscore data", ex);
 		}
 	}
 

@@ -514,8 +514,12 @@ public class ClientUI
 	{
 		if (client instanceof Client)
 		{
-			final java.awt.Point point = SwingUtilities.convertPoint(((Client) client).getCanvas(), 0, 0, frame);
-			return new Point(point.x, point.y);
+			final Canvas canvas = ((Client) client).getCanvas();
+			if (canvas != null)
+			{
+				final java.awt.Point point = SwingUtilities.convertPoint(canvas, 0, 0, frame);
+				return new Point(point.x, point.y);
+			}
 		}
 
 		return new Point(0, 0);
@@ -646,7 +650,10 @@ public class ClientUI
 		if (client instanceof Client)
 		{
 			final Canvas c = ((Client) client).getCanvas();
-			c.requestFocusInWindow();
+			if (c != null)
+			{
+				c.requestFocusInWindow();
+			}
 		}
 		else if (client != null)
 		{

@@ -241,6 +241,11 @@ public class WidgetID
 		static final int SPEC_ORB = 28;
 	}
 
+	static class LoginClickToPlayScreen
+	{
+		static final int MESSAGE_OF_THE_DAY = 3;
+	}
+
 	static class Viewport
 	{
 		static final int MINIMAP_RESIZABLE_WIDGET = 17;

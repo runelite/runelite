@@ -120,6 +120,7 @@ public final class AnimationID
 	public static final int MAGIC_CHARGING_ORBS = 726;
 	public static final int MAGIC_LUNAR_STRING_JEWELRY = 4412;
 	public static final int MAGIC_LUNAR_BAKE_PIE = 4413;
+	public static final int MAGIC_MAKE_TABLET = 4068;
 	public static final int BURYING_BONES = 827;
 	public static final int USING_GILDED_ALTAR = 3705;
 	public static final int LOOKING_INTO = 832;
