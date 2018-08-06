@@ -47,7 +47,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
 	name = "Birdhouses",
 	description = "highlights the positions of empty birdhouses",
-	tags = {"birdhouse", "fosil island", "highlight"}
+	tags = {"birdhouse", "fossil island", "highlight"}
 )
 public class BirdhousesPlugin extends Plugin
 {
