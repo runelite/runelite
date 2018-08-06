@@ -47,7 +47,7 @@ public class WASDCameraOverlay extends Overlay
 	private WASDCameraPlugin plugin;
 
 	private final int X_OFFSET = 40;
-	private final int Y_OFFSET = 134;
+	private final int Y_OFFSET = -8;
 
 	private final String lockedMessage = "Press Enter to Chat...";
 
