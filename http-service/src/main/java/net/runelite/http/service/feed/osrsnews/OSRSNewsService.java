@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Locale;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.feed.FeedItem;
 import net.runelite.http.api.feed.FeedItemType;
@@ -49,7 +48,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 @Service
-@Slf4j
 public class OSRSNewsService
 {
 	private static final HttpUrl RSS_URL = HttpUrl.parse("http://services.runescape.com/m=news/latest_news.rss?oldschool=true");

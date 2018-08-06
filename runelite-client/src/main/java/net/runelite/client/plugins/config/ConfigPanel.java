@@ -62,7 +62,6 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
@@ -251,11 +250,6 @@ public class ConfigPanel extends PluginPanel
 
 		topPanel.removeAll();
 		mainPanel.removeAll();
-
-		JLabel title = new JLabel("Configuration", SwingConstants.LEFT);
-		title.setForeground(Color.WHITE);
-
-		topPanel.add(title, BorderLayout.NORTH);
 		topPanel.add(searchBar, BorderLayout.CENTER);
 
 		onSearchBarChanged();

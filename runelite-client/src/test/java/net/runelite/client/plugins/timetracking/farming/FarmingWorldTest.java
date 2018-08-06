@@ -21,37 +21,15 @@
  *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-package net.runelite.client.plugins.farmingtracker;
+ */package net.runelite.client.plugins.timetracking.farming;
 
-import lombok.Getter;
-import net.runelite.api.Varbits;
-import net.runelite.api.coords.WorldPoint;
+import org.junit.Test;
 
-@Getter
-public class FarmingRegion
+public class FarmingWorldTest
 {
-	private final String name;
-	private final int regionID;
-	private final FarmingPatch[] patches;
-	private final Varbits[] varbits;
-
-	FarmingRegion(String name, int regionID, FarmingPatch... patches)
+	@Test
+	public void testInit()
 	{
-		this.name = name;
-		this.regionID = regionID;
-		this.patches = patches;
-		this.varbits = new Varbits[patches.length];
-		for (int i = 0; i < patches.length; i++)
-		{
-			FarmingPatch p = patches[i];
-			p.setRegion(this);
-			varbits[i] = p.getVarbit();
-		}
-	}
-
-	public boolean isInBounds(WorldPoint loc)
-	{
-		return true;
+		new FarmingWorld();
 	}
 }

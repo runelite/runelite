@@ -23,12 +23,15 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.farmingtracker;
+package net.runelite.client.plugins.timetracking.farming;
 
 import com.google.inject.Singleton;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -36,9 +39,10 @@ import java.util.TreeSet;
 import lombok.Getter;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.timetracking.Tab;
 
 @Singleton
-public class FarmingWorld
+class FarmingWorld
 {
 	@Getter
 	private Map<Integer, FarmingRegion> regions = new HashMap<>();
@@ -46,12 +50,15 @@ public class FarmingWorld
 	@Getter
 	private Map<Tab, Set<FarmingPatch>> tabs = new HashMap<>();
 
+	@Getter
+	private Map<PatchImplementation, List<FarmingPatch>> patchTypes = new EnumMap<>(PatchImplementation.class);
+
 	private final Comparator<FarmingPatch> tabSorter = Comparator
 		.comparing(FarmingPatch::getImplementation)
 		.thenComparing((FarmingPatch p) -> p.getRegion().getName())
 		.thenComparing(FarmingPatch::getName);
 
-	public FarmingWorld()
+	FarmingWorld()
 	{
 		// Some of these patches get updated in multiple regions.
 		// It may be worth it to add a specialization for these patches
@@ -241,6 +248,10 @@ public class FarmingWorld
 		{
 			tabs
 				.computeIfAbsent(p.getImplementation().getTab(), k -> new TreeSet<>(tabSorter))
+				.add(p);
+
+			patchTypes
+				.computeIfAbsent(p.getImplementation(), k -> new ArrayList<>())
 				.add(p);
 		}
 	}

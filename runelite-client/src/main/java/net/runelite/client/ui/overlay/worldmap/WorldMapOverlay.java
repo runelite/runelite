@@ -34,7 +34,6 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.api.RenderOverview;
@@ -49,7 +48,6 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 
 @Singleton
-@Slf4j
 public class WorldMapOverlay extends Overlay
 {
 	private static final Color TOOLTIP_BACKGROUND = new Color(255, 255, 160);
