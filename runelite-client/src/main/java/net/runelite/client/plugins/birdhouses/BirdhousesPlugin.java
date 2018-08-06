@@ -27,7 +27,6 @@ package net.runelite.client.plugins.birdhouses;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.Subscribe;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
