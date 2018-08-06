@@ -33,6 +33,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.NullObjectID;
 import net.runelite.api.TileObject;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.events.GameObjectChanged;
@@ -58,10 +59,10 @@ public class BirdhousesPlugin extends Plugin
 	};
 	
 	public static final Map<Integer, VarPlayer> ID_TO_VAR = ImmutableMap.of(
-		30565, VarPlayer.BIRDHOUSE_1,
-		30566, VarPlayer.BIRDHOUSE_2,
-		30567, VarPlayer.BIRDHOUSE_3,
-		30568, VarPlayer.BIRDHOUSE_4
+		NullObjectID.NULL_30565, VarPlayer.BIRDHOUSE_1,
+		NullObjectID.NULL_30566, VarPlayer.BIRDHOUSE_2,
+		NullObjectID.NULL_30567, VarPlayer.BIRDHOUSE_3,
+		NullObjectID.NULL_30568, VarPlayer.BIRDHOUSE_4
 	);
 	
 	@Getter
