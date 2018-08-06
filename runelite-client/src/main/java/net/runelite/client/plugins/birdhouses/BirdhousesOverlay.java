@@ -24,11 +24,11 @@
  */
 package net.runelite.client.plugins.birdhouses;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.util.Arrays;
 import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.TileObject;
@@ -40,7 +40,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 class BirdhousesOverlay extends Overlay
 {
-	private static final List<Integer> EMPTY_STATES = Arrays.asList(
+	private static final List<Integer> EMPTY_STATES = ImmutableList.of(
 		1,
 		4,
 		7,
