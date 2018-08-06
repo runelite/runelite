@@ -33,4 +33,7 @@ public interface RSGameEngine extends GameEngine, KeyFocusListener
 {
 	@Import("canvas")
 	Canvas getCanvas();
+
+	@Import("shutDown")
+	void shutDown();
 }

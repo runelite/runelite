@@ -51,4 +51,9 @@ public interface GameEngine
 	 * @return true if on the main thread, false otherwise
 	 */
 	boolean isClientThread();
+
+	/**
+	 * Shut downs all open connections and files in client and serializes not serialized data.
+	 */
+	void shutDown();
 }
