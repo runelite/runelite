@@ -126,21 +126,18 @@ public class FarmingTabPanel extends TabContentPanel
 	public void update()
 	{
 		long unixNow = Instant.now().getEpochSecond();
-		log.debug("Updating panel with username {}", client.getUsername());
 
 		boolean autoweed;
 		{
-			String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername();
 			autoweed = Integer.toString(Autoweed.ON.ordinal())
-				.equals(configManager.getConfiguration(group, TimeTrackingConfig.AUTOWEED));
+				.equals(configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.AUTOWEED));
 		}
 
 		for (TimeablePanel<FarmingPatch> panel : patchPanels)
 		{
 			FarmingPatch patch = panel.getTimeable();
-			String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername() + "." + patch.getRegion().getRegionID();
-			String key = Integer.toString(patch.getVarbit().getId());
-			String storedValue = configManager.getConfiguration(group, key);
+			String key = patch.getRegion().getRegionID() + "." + Integer.toString(patch.getVarbit().getId());
+			String storedValue = configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, key);
 			long unixTime = 0;
 			int value = 0;
 			if (storedValue != null)

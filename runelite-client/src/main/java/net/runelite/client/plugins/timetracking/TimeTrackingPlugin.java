@@ -39,7 +39,6 @@ import net.runelite.api.GameState;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.UsernameChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
@@ -53,8 +52,8 @@ import net.runelite.client.plugins.timetracking.clocks.ClockManager;
 import net.runelite.client.plugins.timetracking.farming.FarmingTracker;
 import net.runelite.client.plugins.timetracking.hunter.BirdHouseTracker;
 import net.runelite.client.task.Schedule;
-import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
@@ -158,6 +157,12 @@ public class TimeTrackingPlugin extends Plugin
 		{
 			clockManager.loadStopwatches();
 		}
+		else
+		{
+			farmingTracker.loadCompletionTimes();
+			birdHouseTracker.loadFromConfig();
+			panel.update();
+		}
 	}
 
 	@Subscribe
@@ -198,15 +203,6 @@ public class TimeTrackingPlugin extends Plugin
 		{
 			panel.update();
 		}
-	}
-
-	@Subscribe
-	public void onUsernameChanged(UsernameChanged e)
-	{
-		farmingTracker.migrateConfiguration();
-		farmingTracker.loadCompletionTimes();
-		birdHouseTracker.loadFromConfig();
-		panel.update();
 	}
 
 	@Schedule(period = 10, unit = ChronoUnit.SECONDS)

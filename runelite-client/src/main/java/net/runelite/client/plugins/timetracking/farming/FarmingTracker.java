@@ -40,9 +40,6 @@ import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
 @Singleton
 public class FarmingTracker
 {
-	@Deprecated
-	private static final String OLD_KEY_NAME = "farmingTracker";
-
 	private final Client client;
 	private final ItemManager itemManager;
 	private final ConfigManager configManager;
@@ -83,11 +80,10 @@ public class FarmingTracker
 		boolean changed = false;
 
 		{
-			String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername();
 			String autoweed = Integer.toString(client.getVar(Varbits.AUTOWEED));
-			if (!autoweed.equals(configManager.getConfiguration(group, TimeTrackingConfig.AUTOWEED)))
+			if (!autoweed.equals(configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.AUTOWEED)))
 			{
-				configManager.setConfiguration(group, TimeTrackingConfig.AUTOWEED, autoweed);
+				configManager.setConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.AUTOWEED, autoweed);
 				changed = true;
 			}
 		}
@@ -97,15 +93,14 @@ public class FarmingTracker
 		{
 			// Write config with new varbits
 			// timetracking.<login-username>.<regionID>.<VarbitID>=<varbitValue>:<unix time>
-			String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername() + "." + region.getRegionID();
 			long unixNow = Instant.now().getEpochSecond();
 			for (FarmingPatch patch : region.getPatches())
 			{
 				// Write the config value if it doesn't match what is current, or it is more than 5 minutes old
 				Varbits varbit = patch.getVarbit();
-				String key = Integer.toString(varbit.getId());
+				String key = region.getRegionID() + "." + Integer.toString(varbit.getId());
 				String strVarbit = Integer.toString(client.getVar(varbit));
-				String storedValue = configManager.getConfiguration(group, key);
+				String storedValue = configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, key);
 
 				if (storedValue != null)
 				{
@@ -129,7 +124,7 @@ public class FarmingTracker
 				}
 
 				String value = strVarbit + ":" + unixNow;
-				configManager.setConfiguration(group, key, value);
+				configManager.setConfiguration(TimeTrackingConfig.CONFIG_GROUP, key, value);
 				updateCompletionTime(patch.getImplementation());
 				changed = true;
 			}
@@ -169,9 +164,8 @@ public class FarmingTracker
 
 		for (FarmingPatch patch : farmingWorld.getPatchTypes().get(patchType))
 		{
-			String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername() + "." + patch.getRegion().getRegionID();
-			String key = Integer.toString(patch.getVarbit().getId());
-			String storedValue = configManager.getConfiguration(group, key);
+			String key = patch.getRegion().getRegionID() + "." + Integer.toString(patch.getVarbit().getId());
+			String storedValue = configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, key);
 			long unixTime = 0;
 			int value = 0;
 
@@ -227,47 +221,5 @@ public class FarmingTracker
 		}
 
 		completionTimes.put(patchType, (maxCompletionTime <= Instant.now().getEpochSecond()) ? 0 : maxCompletionTime);
-	}
-
-	/**
-	 * Migrates configuration data from {@code "farmingTracker"} key to {@code "timetracking"} key.
-	 * This method should be removed after a reasonable amount of time.
-	 */
-	@Deprecated
-	public void migrateConfiguration()
-	{
-		String username = client.getUsername();
-
-		// migrate autoweed config
-		{
-			String oldGroup = OLD_KEY_NAME + "." + username;
-			String newGroup = TimeTrackingConfig.CONFIG_GROUP + "." + username;
-			String storedValue = configManager.getConfiguration(oldGroup, TimeTrackingConfig.AUTOWEED);
-
-			if (storedValue != null)
-			{
-				configManager.setConfiguration(newGroup, TimeTrackingConfig.AUTOWEED, storedValue);
-				configManager.unsetConfiguration(oldGroup, TimeTrackingConfig.AUTOWEED);
-			}
-		}
-
-		// migrate all saved data in all regions
-		for (FarmingRegion region : farmingWorld.getRegions().values())
-		{
-			String oldGroup = OLD_KEY_NAME + "." + username + "." + region.getRegionID();
-			String newGroup = TimeTrackingConfig.CONFIG_GROUP + "." + username + "." + region.getRegionID();
-
-			for (Varbits varbit : region.getVarbits())
-			{
-				String key = Integer.toString(varbit.getId());
-				String storedValue = configManager.getConfiguration(oldGroup, key);
-
-				if (storedValue != null)
-				{
-					configManager.setConfiguration(newGroup, key, storedValue);
-					configManager.unsetConfiguration(oldGroup, key);
-				}
-			}
-		}
 	}
 }
