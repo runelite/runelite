@@ -30,7 +30,10 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("slayer")
+@ConfigGroup(
+	value = "slayer",
+	accountSpecific = true
+)
 public interface SlayerConfig extends Config
 {
 	@ConfigItem(
