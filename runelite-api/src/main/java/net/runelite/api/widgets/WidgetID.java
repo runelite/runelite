@@ -340,10 +340,10 @@ public class WidgetID
 
 	static class Chatbox
 	{
-		static final int CHATBOX_MESSAGES = 30;
-		static final int CHATBOX_REPORT_TEXT = 29;
-		static final int CHATBOX_FRAME = 1;
-		static final int CHATBOX_BUTTONS = 2;
+		static final int CHATBOX_BUTTONS = 1;
+		static final int CHATBOX_REPORT_TEXT = 28;
+		static final int CHATBOX_FRAME = 29;
+		static final int CHATBOX_MESSAGES = 47;
 	}
 
 	static class Prayer
