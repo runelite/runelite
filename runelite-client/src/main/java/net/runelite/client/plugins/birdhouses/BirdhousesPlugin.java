@@ -31,6 +31,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.NullObjectID;
@@ -58,17 +59,17 @@ public class BirdhousesPlugin extends Plugin
 		14651
 	};
 	
-	public static final Map<Integer, VarPlayer> ID_TO_VAR = ImmutableMap.of(
+	static final Map<Integer, VarPlayer> ID_TO_VAR = ImmutableMap.of(
 		NullObjectID.NULL_30565, VarPlayer.BIRDHOUSE_1,
 		NullObjectID.NULL_30566, VarPlayer.BIRDHOUSE_2,
 		NullObjectID.NULL_30567, VarPlayer.BIRDHOUSE_3,
 		NullObjectID.NULL_30568, VarPlayer.BIRDHOUSE_4
 	);
 	
-	@Getter
-	private List<TileObject> birdhouses;
+	@Getter(AccessLevel.PACKAGE)
+	private List<TileObject> birdhouses = new ArrayList<TileObject>();
 	
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	public boolean nearBirdhouses;
 	
 	@Inject
@@ -92,6 +93,7 @@ public class BirdhousesPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+		birdhouses.clear();
 	}
 	
 	private boolean inBirdhouseArea()

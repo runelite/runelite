@@ -54,30 +54,24 @@ class BirdhousesOverlay extends Overlay
 	
 	private final BirdhousesPlugin plugin;
 	
-	@javax.inject.Inject
 	private Client client;
 	
 	@Inject
-	public BirdhousesOverlay(BirdhousesPlugin plugin)
+	private BirdhousesOverlay(BirdhousesPlugin plugin, Client client)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.plugin = plugin;
+		this.client = client;
 	}
 	
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isNearBirdhouses())
-		{
-			return null;
-		}
-		
 		for (TileObject birdhouse : plugin.getBirdhouses())
 		{
 			VarPlayer var = BirdhousesPlugin.ID_TO_VAR.get(birdhouse.getId());
-			int state = client.getVar(var);
-			if (EMPTY_STATES.contains(state))
+			if (EMPTY_STATES.contains(client.getVar(var)))
 			{
 				OverlayUtil.renderTileOverlay(graphics, birdhouse, "", Color.RED);
 			}
