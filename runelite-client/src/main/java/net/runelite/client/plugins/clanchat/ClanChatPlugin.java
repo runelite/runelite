@@ -27,7 +27,6 @@ package net.runelite.client.plugins.clanchat;
 import com.google.common.eventbus.Subscribe;
 import java.time.temporal.ChronoUnit;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMemberRank;
 import net.runelite.api.Client;
@@ -45,7 +44,6 @@ import net.runelite.client.task.Schedule;
 	description = "Add rank icons to users talking in clan chat",
 	tags = {"icons", "rank"}
 )
-@Slf4j
 public class ClanChatPlugin extends Plugin
 {
 	@Inject

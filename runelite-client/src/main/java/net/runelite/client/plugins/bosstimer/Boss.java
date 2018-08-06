@@ -29,11 +29,9 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 
-@Slf4j
 enum Boss
 {
 	GENERAL_GRAARDOR(NpcID.GENERAL_GRAARDOR, 90, ChronoUnit.SECONDS, ItemID.PET_GENERAL_GRAARDOR),

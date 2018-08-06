@@ -34,7 +34,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -65,7 +64,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	description = "Count demonic gorilla attacks and display their next possible attack styles",
 	tags = {"combat", "overlay"}
 )
-@Slf4j
 public class DemonicGorillaPlugin extends Plugin
 {
 	@Inject

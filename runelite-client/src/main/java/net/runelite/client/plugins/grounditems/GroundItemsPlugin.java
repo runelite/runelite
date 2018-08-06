@@ -45,7 +45,6 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Item;
@@ -84,7 +83,6 @@ import net.runelite.http.api.item.ItemPrice;
 	description = "Highlight ground items and/or show price information",
 	tags = {"grand", "exchange", "high", "alchemy", "prices", "highlight", "overlay"}
 )
-@Slf4j
 public class GroundItemsPlugin extends Plugin
 {
 	private static final Splitter COMMA_SPLITTER = Splitter

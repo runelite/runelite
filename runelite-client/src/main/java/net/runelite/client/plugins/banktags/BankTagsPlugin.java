@@ -28,7 +28,6 @@ import com.google.common.eventbus.Subscribe;
 import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.IntegerNode;
 import net.runelite.api.InventoryID;
@@ -52,7 +51,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 	description = "Enable tagging of bank items and searching of bank tags",
 	tags = {"searching", "tagging"}
 )
-@Slf4j
 public class BankTagsPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "banktags";

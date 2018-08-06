@@ -35,7 +35,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -44,7 +43,6 @@ import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.StackFormatter;
 
-@Slf4j
 class LootTrackerPanel extends PluginPanel
 {
 	private static final String HTML_LABEL_TEMPLATE =

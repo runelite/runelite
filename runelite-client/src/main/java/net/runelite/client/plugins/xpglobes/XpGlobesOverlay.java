@@ -37,7 +37,6 @@ import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.List;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Point;
@@ -51,7 +50,6 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 
-@Slf4j
 public class XpGlobesOverlay extends Overlay
 {
 	private final Client client;

@@ -32,7 +32,6 @@ import java.util.Set;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
@@ -70,7 +69,6 @@ import net.runelite.http.api.item.ItemPrice;
 	description = "Show helpful information for the Barrows minigame",
 	tags = {"combat", "minigame", "minimap"}
 )
-@Slf4j
 public class BarrowsPlugin extends Plugin
 {
 	@Getter(AccessLevel.PACKAGE)

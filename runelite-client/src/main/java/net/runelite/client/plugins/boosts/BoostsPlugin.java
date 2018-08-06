@@ -33,7 +33,6 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
@@ -55,7 +54,6 @@ import net.runelite.client.util.ImageUtil;
 	description = "Show combat and/or skill boost information",
 	tags = {"combat", "notifications", "skilling", "overlay"}
 )
-@Slf4j
 @Singleton
 public class BoostsPlugin extends Plugin
 {
