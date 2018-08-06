@@ -24,10 +24,10 @@
  */
 package net.runelite.client.plugins.birdhouses;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
@@ -57,13 +57,12 @@ public class BirdhousesPlugin extends Plugin
 		14651
 	};
 	
-	public static final Map<Integer, VarPlayer> ID_TO_VAR = new HashMap<Integer, VarPlayer>()
-	{{
-		put(30565, VarPlayer.BIRDHOUSE_1);
-		put(30566, VarPlayer.BIRDHOUSE_2);
-		put(30567, VarPlayer.BIRDHOUSE_3);
-		put(30568, VarPlayer.BIRDHOUSE_4);
-	}};
+	public static final Map<Integer, VarPlayer> ID_TO_VAR = ImmutableMap.of(
+		30565, VarPlayer.BIRDHOUSE_1,
+		30566, VarPlayer.BIRDHOUSE_2,
+		30567, VarPlayer.BIRDHOUSE_3,
+		30568, VarPlayer.BIRDHOUSE_4
+	);
 	
 	@Getter
 	private List<TileObject> birdhouses;
