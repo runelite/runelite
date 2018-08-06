@@ -44,8 +44,10 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 @Singleton
 class PrayerBarOverlay extends Overlay
 {
-	private static final Color BAR_FILL_COLOR = Color.yellow;
-	private static final Color BAR_BG_COLOR = Color.white;
+	
+	private static final Color BAR_FILL_COLOR = Color.white;
+	private static final Color BAR_BG_COLOR = Color.red;
+
 	private static final Dimension PRAYER_BAR_SIZE = new Dimension(30, 5);
 
 	private final Client client;
