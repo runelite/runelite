@@ -53,12 +53,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class BirdhousesPlugin extends Plugin
 {
-	private static final int[] BIRDHOUSE_REGIONS = {
-		14906,
-		14652,
-		14651
-	};
-	
 	static final Map<Integer, VarPlayer> ID_TO_VAR = ImmutableMap.of(
 		NullObjectID.NULL_30565, VarPlayer.BIRDHOUSE_1,
 		NullObjectID.NULL_30566, VarPlayer.BIRDHOUSE_2,
@@ -68,9 +62,6 @@ public class BirdhousesPlugin extends Plugin
 	
 	@Getter(AccessLevel.PACKAGE)
 	private List<TileObject> birdhouses = new ArrayList<TileObject>();
-	
-	@Getter(AccessLevel.PACKAGE)
-	public boolean nearBirdhouses;
 	
 	@Inject
 	private Client client;
@@ -86,7 +77,6 @@ public class BirdhousesPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		overlay.setLayer(OverlayLayer.ABOVE_SCENE);
-		nearBirdhouses = inBirdhouseArea();
 	}
 
 	@Override
@@ -96,13 +86,6 @@ public class BirdhousesPlugin extends Plugin
 		birdhouses.clear();
 	}
 	
-	private boolean inBirdhouseArea()
-	{
-		return client.getMapRegions() != null && Arrays.stream(client.getMapRegions())
-				.filter(x -> Arrays.stream(BIRDHOUSE_REGIONS).anyMatch(y -> y == x))
-				.toArray().length > 0;
-	}
-
 	@Subscribe
 	public void onGameStateChange(GameStateChanged event)
 	{
@@ -113,7 +96,6 @@ public class BirdhousesPlugin extends Plugin
 				birdhouses = new ArrayList<>();
 				break;
 			case LOADING:
-				nearBirdhouses = inBirdhouseArea();
 				birdhouses.clear();
 				break;
 			default:
