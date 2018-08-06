@@ -40,4 +40,6 @@ public @interface ConfigGroup
 	 * For example, the {@code Grand Exchange} plugin uses the key name {@code grandexchange}.
 	 */
 	String value();
+
+	boolean accountSpecific() default false;
 }

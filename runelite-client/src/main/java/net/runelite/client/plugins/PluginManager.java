@@ -161,7 +161,7 @@ public class PluginManager
 		return null;
 	}
 
-	public List<Config> getPluginConfigProxies()
+	private List<Config> getPluginConfigProxies()
 	{
 		List<Injector> injectors = new ArrayList<>();
 		injectors.add(RuneLite.getInjector());
@@ -214,7 +214,7 @@ public class PluginManager
 		}
 	}
 
-	List<Plugin> scanAndInstantiate(ClassLoader classLoader, String packageName) throws IOException
+	private List<Plugin> scanAndInstantiate(ClassLoader classLoader, String packageName) throws IOException
 	{
 		MutableGraph<Class<? extends Plugin>> graph = GraphBuilder
 			.directed()
