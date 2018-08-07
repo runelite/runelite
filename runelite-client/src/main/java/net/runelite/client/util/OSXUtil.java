@@ -24,8 +24,11 @@
  */
 package net.runelite.client.util;
 
+import com.apple.eawt.AppEvent;
 import com.apple.eawt.Application;
+import com.apple.eawt.FullScreenAdapter;
 import com.apple.eawt.FullScreenUtilities;
+import java.util.function.Consumer;
 import javax.swing.JFrame;
 import lombok.extern.slf4j.Slf4j;
 
@@ -59,6 +62,33 @@ public class OSXUtil
 			Application app = Application.getApplication();
 			app.requestForeground(true);
 			log.debug("Requested focus on macOS");
+		}
+	}
+
+	/**
+	 * Adds listener for OSX window changing between fullscreen and windowed
+	 *
+	 * @param gui The gui to add listener to
+	 * @param fullscreenCallback listener that listens for fullscreen changes
+	 */
+	public static void addFullscreenListener(JFrame gui, Consumer<Boolean> fullscreenCallback)
+	{
+		if (OSType.getOSType() == OSType.MacOS)
+		{
+			FullScreenUtilities.addFullScreenListenerTo(gui, new FullScreenAdapter()
+			{
+				@Override
+				public void windowEnteredFullScreen(AppEvent.FullScreenEvent paramFullScreenEvent)
+				{
+					fullscreenCallback.accept(true);
+				}
+
+				@Override
+				public void windowExitedFullScreen(AppEvent.FullScreenEvent paramFullScreenEvent)
+				{
+					fullscreenCallback.accept(false);
+				}
+			});
 		}
 	}
 }

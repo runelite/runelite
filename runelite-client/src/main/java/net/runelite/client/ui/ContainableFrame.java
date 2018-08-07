@@ -29,6 +29,7 @@ import java.awt.Rectangle;
 import javax.swing.JFrame;
 import lombok.Setter;
 import net.runelite.client.config.ExpandResizeType;
+import net.runelite.client.util.OSXUtil;
 
 public class ContainableFrame extends JFrame
 {
@@ -36,10 +37,17 @@ public class ContainableFrame extends JFrame
 
 	@Setter
 	private ExpandResizeType expandResizeType;
+	private boolean osxFullscreen;
 	private boolean containedInScreen;
 	private boolean expandedClientOppositeDirection;
 
-	public void setContainedInScreen(boolean value)
+	ContainableFrame()
+	{
+		super();
+		OSXUtil.addFullscreenListener(this, (fullscreen) -> osxFullscreen = fullscreen);
+	}
+
+	void setContainedInScreen(boolean value)
 	{
 		this.containedInScreen = value;
 
@@ -88,7 +96,7 @@ public class ContainableFrame extends JFrame
 	 * the side.
 	 * @param value size to expand frame by
 	 */
-	public void expandBy(final int value)
+	void expandBy(final int value)
 	{
 		if (isFullScreen())
 		{
@@ -143,7 +151,7 @@ public class ContainableFrame extends JFrame
 	 * If the frame was pushed from side before, restore it's original position.
 	 * @param value value to contract frame by
 	 */
-	public void contractBy(final int value)
+	void contractBy(final int value)
 	{
 		if (isFullScreen())
 		{
@@ -176,14 +184,14 @@ public class ContainableFrame extends JFrame
 	/**
 	 * Force minimum size of frame to be it's layout manager's minimum size
 	 */
-	public void revalidateMinimumSize()
+	void revalidateMinimumSize()
 	{
 		setMinimumSize(getLayout().minimumLayoutSize(this));
 	}
 
 	private boolean isFullScreen()
 	{
-		return (getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
+		return (getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH || osxFullscreen;
 	}
 
 	private boolean isFrameCloseToLeftEdge()
