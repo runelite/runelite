@@ -42,9 +42,9 @@ public class RuneLiteAPI
 	public static final OkHttpClient CLIENT = new OkHttpClient();
 	public static final Gson GSON = new Gson();
 
-	private static final String BASE = "https://api.runelite.net/runelite-";
-	private static final String WSBASE = "wss://api.runelite.net/runelite-";
 	private static final Properties properties = new Properties();
+	private static String base;
+	private static String wsbase;
 	private static String version;
 	private static int rsVersion;
 
@@ -57,6 +57,8 @@ public class RuneLiteAPI
 
 			version = properties.getProperty("runelite.version");
 			rsVersion = Integer.parseInt(properties.getProperty("rs.version"));
+			base = properties.getProperty("runelite.api.url") + "/runelite-";
+			wsbase = properties.getProperty("runelite.api.ws") + "/runelite-";
 		}
 		catch (NumberFormatException e)
 		{
@@ -70,12 +72,12 @@ public class RuneLiteAPI
 
 	public static HttpUrl getApiBase()
 	{
-		return HttpUrl.parse(BASE + getVersion());
+		return HttpUrl.parse(base + getVersion());
 	}
 
 	public static String getWsEndpoint()
 	{
-		return WSBASE + getVersion() + "/ws";
+		return wsbase + getVersion() + "/ws";
 	}
 
 	public static String getVersion()

@@ -33,6 +33,10 @@
 
 	<name>Web API</name>
 	<artifactId>http-api</artifactId>
+	<properties>
+		<runelite.api.url>https://api.runelite.net</runelite.api.url>
+		<runelite.api.ws>wss://api.runelite.net</runelite.api.ws>
+	</properties>
 
 	<dependencies>
 		<dependency>
