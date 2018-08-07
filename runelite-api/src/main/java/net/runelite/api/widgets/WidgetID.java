@@ -136,23 +136,23 @@ public class WidgetID
 
 	static class PestControl
 	{
-		static final int PURPLE_SHIELD = 21;
-		static final int BLUE_SHIELD = 23;
-		static final int YELLOW_SHIELD = 25;
-		static final int RED_SHIELD = 27;
+		static final int ACTIVITY_BAR = 9;
+		static final int ACTIVITY_PROGRESS = 11;
 
-		static final int PURPLE_HEALTH = 17;
-		static final int BLUE_HEALTH = 18;
-		static final int YELLOW_HEALTH = 19;
-		static final int RED_HEALTH = 20;
+		static final int PURPLE_SHIELD = 12;
+		static final int BLUE_SHIELD = 13;
+		static final int YELLOW_SHIELD = 14;
+		static final int RED_SHIELD = 15;
 
-		static final int PURPLE_ICON = 13;
-		static final int BLUE_ICON = 14;
-		static final int YELLOW_ICON = 15;
-		static final int RED_ICON = 16;
+		static final int PURPLE_ICON = 16;
+		static final int BLUE_ICON = 17;
+		static final int YELLOW_ICON = 18;
+		static final int RED_ICON = 19;
 
-		static final int ACTIVITY_BAR = 6;
-		static final int ACTIVITY_PROGRESS = 8;
+		static final int PURPLE_HEALTH = 20;
+		static final int BLUE_HEALTH = 21;
+		static final int YELLOW_HEALTH = 22;
+		static final int RED_HEALTH = 23;
 	}
 
 	static class ClanChat
