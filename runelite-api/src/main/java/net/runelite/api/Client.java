@@ -1434,7 +1434,14 @@ public interface Client extends GameEngine
 	 */
 	void setOculusOrbNormalSpeed(int speed);
 
+	/**
+	 * Opens in-game world hopper interface
+	 */
 	void openWorldHopper();
 
-	void hopToWorld(int world);
+	/**
+	 * Hops using in-game world hopper widget to another world
+	 * @param world target world to hop to
+	 */
+	void hopToWorld(World world);
 }
