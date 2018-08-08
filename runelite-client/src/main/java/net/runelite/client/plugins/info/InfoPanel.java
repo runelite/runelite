@@ -128,7 +128,7 @@ public class InfoPanel extends PluginPanel
 			.firstNonNull(RuneLiteProperties.getLauncherVersion(), "Unknown")));
 		launcher.setFont(smallFont);
 
-		loggedLabel.setForeground(ColorScheme.TEXT_COLOR);
+		loggedLabel.setForeground(ColorScheme.TEXT_COLOR.darker());
 		loggedLabel.setFont(smallFont);
 
 		emailLabel.setForeground(ColorScheme.TEXT_COLOR);

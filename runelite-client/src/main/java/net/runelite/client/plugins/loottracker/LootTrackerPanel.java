@@ -128,7 +128,7 @@ class LootTrackerPanel extends PluginPanel
 	private static String htmlLabel(String key, long value)
 	{
 		final String valueStr = StackFormatter.quantityToStackSize(value);
-		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.TEXT_COLOR), key, valueStr);
+		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.TEXT_COLOR.darker()), key, valueStr);
 	}
 
 	void addLog(final String eventName, final int actorLevel, LootTrackerItemEntry[] items)

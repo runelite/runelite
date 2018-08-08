@@ -134,7 +134,7 @@ class UIActionSlot extends JPanel
 
 		uiLabelActions = new JShadowedLabel("Unknown");
 		uiLabelActions.setFont(FontManager.getRunescapeSmallFont());
-		uiLabelActions.setForeground(ColorScheme.TEXT_COLOR);
+		uiLabelActions.setForeground(ColorScheme.TEXT_COLOR.darker());
 
 		uiInfo.add(uiLabelName);
 		uiInfo.add(uiLabelActions);
