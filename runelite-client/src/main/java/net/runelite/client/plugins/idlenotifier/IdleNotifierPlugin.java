@@ -37,6 +37,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -52,6 +53,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class IdleNotifierPlugin extends Plugin
 {
+	private static final int WARRIOR_GUILD_REGION_ID = 11319;
 	private static final int LOGOUT_WARNING_AFTER_TICKS = 14000; // 4 minutes and 40 seconds
 	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
 
@@ -140,10 +142,19 @@ public class IdleNotifierPlugin extends Plugin
 			case FLETCHING_STRING_MAPLE_LONGBOW:
 			case FLETCHING_STRING_YEW_LONGBOW:
 			case FLETCHING_STRING_MAGIC_LONGBOW:
-			/* Smithing(Anvil, Furnace, Cannonballs */
+			/* Smithing(Anvil, Furnace, Cannonballs) */
 			case SMITHING_ANVIL:
 			case SMITHING_SMELTING:
 			case SMITHING_CANNONBALL:
+
+				WorldPoint location = localPlayer.getWorldLocation();
+				if (location.getRegionID() == WARRIOR_GUILD_REGION_ID)
+				{
+					resetTimers();
+					notifyIdle = false;
+					break;
+				}
+
 			/* Fishing */
 			case FISHING_NET:
 			case FISHING_BIG_NET:
