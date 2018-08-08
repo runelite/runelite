@@ -161,10 +161,10 @@ class LootTrackerPanel extends PluginPanel
 			overallGp -= box.getTotalPrice();
 			overallKills -= 1;
 			if (overallKills > 0) {
-                overallAverageGp = overallGp/overallKills;
-            }else {
-			    overallAverageGp = 0;
-            }
+                		overallAverageGp = overallGp/overallKills;
+            		}else {
+				overallAverageGp = 0;
+            		}
 			updateOverall();
 			logsContainer.remove(box);
 			logsContainer.repaint();
