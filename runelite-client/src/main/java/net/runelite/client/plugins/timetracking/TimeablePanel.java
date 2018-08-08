@@ -26,7 +26,6 @@
 package net.runelite.client.plugins.timetracking;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
@@ -67,10 +66,10 @@ public class TimeablePanel<T> extends JPanel
 
 		final JLabel location = new JShadowedLabel(title);
 		location.setFont(FontManager.getRunescapeSmallFont());
-		location.setForeground(Color.WHITE);
+		location.setForeground(ColorScheme.TEXT_COLOR.getColor());
 
 		estimate.setFont(FontManager.getRunescapeSmallFont());
-		estimate.setForeground(Color.GRAY);
+		estimate.setForeground(ColorScheme.TEXT_COLOR.getColor().darker());
 
 		infoPanel.add(location);
 		infoPanel.add(estimate);

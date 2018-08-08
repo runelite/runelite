@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.timetracking;
 
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.time.Instant;
 import java.util.LinkedHashMap;
@@ -98,7 +97,7 @@ class OverviewTabPanel extends TabContentPanel
 
 		if (timers == 0)
 		{
-			timerOverview.updateStatus("No active timers", Color.GRAY);
+			timerOverview.updateStatus("No active timers", ColorScheme.TEXT_COLOR.getColor().darker());
 		}
 		else
 		{
@@ -107,7 +106,7 @@ class OverviewTabPanel extends TabContentPanel
 
 		if (stopwatches == 0)
 		{
-			stopwatchOverview.updateStatus("No active stopwatches", Color.GRAY);
+			stopwatchOverview.updateStatus("No active stopwatches", ColorScheme.TEXT_COLOR.getColor().darker());
 		}
 		else
 		{
@@ -124,7 +123,7 @@ class OverviewTabPanel extends TabContentPanel
 
 		if (completionTime < 0)
 		{
-			panel.updateStatus("Unknown", Color.GRAY);
+			panel.updateStatus("Unknown", ColorScheme.TEXT_COLOR.getColor().darker());
 		}
 		else if (duration <= 0)
 		{
@@ -132,7 +131,7 @@ class OverviewTabPanel extends TabContentPanel
 		}
 		else
 		{
-			panel.updateStatus("Ready " + getFormattedEstimate(duration, config.estimateRelative()), Color.GRAY);
+			panel.updateStatus("Ready " + getFormattedEstimate(duration, config.estimateRelative()), ColorScheme.TEXT_COLOR.getColor().darker());
 		}
 	}
 }

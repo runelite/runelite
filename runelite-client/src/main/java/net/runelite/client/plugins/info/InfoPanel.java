@@ -127,10 +127,10 @@ public class InfoPanel extends PluginPanel
 			.firstNonNull(RuneLiteProperties.getLauncherVersion(), "Unknown")));
 		launcher.setFont(smallFont);
 
-		loggedLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+		loggedLabel.setForeground(ColorScheme.TEXT_COLOR.getColor());
 		loggedLabel.setFont(smallFont);
 
-		emailLabel.setForeground(Color.WHITE);
+		emailLabel.setForeground(ColorScheme.TEXT_COLOR.getColor());
 		emailLabel.setFont(smallFont);
 		emailLabel.enableAutoLinkHandler(false);
 		emailLabel.addHyperlinkListener(e ->
@@ -224,11 +224,11 @@ public class InfoPanel extends PluginPanel
 		});
 
 		JLabel topLine = new JLabel(topText);
-		topLine.setForeground(Color.WHITE);
+		topLine.setForeground(ColorScheme.TEXT_COLOR.getColor());
 		topLine.setFont(FontManager.getRunescapeSmallFont());
 
 		JLabel bottomLine = new JLabel(bottomText);
-		bottomLine.setForeground(Color.WHITE);
+		bottomLine.setForeground(ColorScheme.TEXT_COLOR.getColor());
 		bottomLine.setFont(FontManager.getRunescapeSmallFont());
 
 		textContainer.add(topLine);
@@ -257,14 +257,15 @@ public class InfoPanel extends PluginPanel
 		else
 		{
 			emailLabel.setContentType("text/html");
-			emailLabel.setText("<a href=\"" + RUNELITE_LOGIN + "\">Login</a> to sync settings to the cloud.");
+			emailLabel.setText("<a href=\"" + RUNELITE_LOGIN + "\"><font color=\"" + ColorScheme.TEXT_COLOR.getHtmlName() + "\">Login</font></a> to sync settings to the cloud.");
 			loggedLabel.setText("Not logged in");
 		}
 	}
 
 	private static String htmlLabel(String key, String value)
 	{
-		return "<html><body style = 'color:#a5a5a5'>" + key + "<span style = 'color:white'>" + value + "</span></body></html>";
+		return "<html><body style = 'color:" + ColorScheme.TEXT_COLOR.getHexCode() + "'>" + key + "<span style = 'color:"
+			+ ColorScheme.TEXT_COLOR.getHtmlName() + "'>" + value + "</span></body></html>";
 	}
 
 	@Subscribe

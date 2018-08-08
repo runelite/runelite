@@ -26,11 +26,11 @@
 package net.runelite.client.ui.components;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
@@ -49,11 +49,11 @@ public class PluginErrorPanel extends JPanel
 		setBorder(new EmptyBorder(50, 10, 0, 10));
 		setLayout(new BorderLayout());
 
-		noResultsTitle.setForeground(Color.WHITE);
+		noResultsTitle.setForeground(ColorScheme.TEXT_COLOR.getColor());
 		noResultsTitle.setHorizontalAlignment(SwingConstants.CENTER);
 
 		noResultsDescription.setFont(FontManager.getRunescapeSmallFont());
-		noResultsDescription.setForeground(Color.GRAY);
+		noResultsDescription.setForeground(ColorScheme.TEXT_COLOR.getColor().darker());
 		noResultsDescription.setHorizontalAlignment(SwingConstants.CENTER);
 
 		add(noResultsTitle, BorderLayout.NORTH);

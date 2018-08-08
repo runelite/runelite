@@ -25,7 +25,6 @@
 package net.runelite.client.ui.components.materialtabs;
 
 import com.google.common.base.Strings;
-import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.function.BooleanSupplier;
@@ -104,7 +103,7 @@ public class MaterialTab extends JLabel
 				public void mouseEntered(MouseEvent e)
 				{
 					MaterialTab tab = (MaterialTab) e.getSource();
-					tab.setForeground(Color.WHITE);
+					tab.setForeground(ColorScheme.TEXT_COLOR.getColor());
 				}
 
 				@Override
@@ -113,7 +112,7 @@ public class MaterialTab extends JLabel
 					MaterialTab tab = (MaterialTab) e.getSource();
 					if (!tab.isSelected())
 					{
-						tab.setForeground(Color.GRAY);
+						tab.setForeground(ColorScheme.TEXT_COLOR.getColor().darker());
 					}
 				}
 			});
@@ -159,14 +158,14 @@ public class MaterialTab extends JLabel
 		}
 
 		setBorder(SELECTED_BORDER);
-		setForeground(Color.WHITE);
+		setForeground(ColorScheme.TEXT_COLOR.getColor());
 		return selected = true;
 	}
 
 	public void unselect()
 	{
 		setBorder(UNSELECTED_BORDER);
-		setForeground(Color.GRAY);
+		setForeground(ColorScheme.TEXT_COLOR.getColor().darker());
 		selected = false;
 	}
 }

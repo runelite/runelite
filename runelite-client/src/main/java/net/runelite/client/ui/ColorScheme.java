@@ -42,7 +42,7 @@ public class ColorScheme
 	public static final Color MEDIUM_GRAY_COLOR = new Color(77, 77, 77);
 	public static final Color LIGHT_GRAY_COLOR = new Color(165, 165, 165);
 
-	public static final Color DARKER_GRAY_HOVER_COLOR = new Color(60,  60 , 60);
+	public static final Color DARKER_GRAY_HOVER_COLOR = new Color(60, 60, 60);
 	public static final Color DARK_GRAY_HOVER_COLOR = new Color(35, 35, 35);
 
 	/* The color for the green progress bar (used in ge offers, farming tracker, etc)*/
@@ -62,4 +62,11 @@ public class ColorScheme
 
 	/* The background color of the scrollbar's track */
 	public static final Color SCROLL_TRACK_COLOR = new Color(25, 25, 25);
+
+	/* The color of most text found throughout the client UI */
+	public static final ThemeColor TEXT_COLOR = new ThemeColor("gray", new Color(255, 255, 255));
+
+	/* The color of the shadow of most text found throughout the client UI */
+	public static final ThemeColor TEXT_SHADOW_COLOR = new ThemeColor("black", new Color(0, 0, 0));
+
 }

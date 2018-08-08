@@ -214,7 +214,7 @@ class ScreenMarkerPanel extends JPanel
 		});
 
 		rename.setFont(FontManager.getRunescapeSmallFont());
-		rename.setForeground(ColorScheme.LIGHT_GRAY_COLOR.darker());
+		rename.setForeground(ColorScheme.TEXT_COLOR.getColor().darker());
 		rename.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -246,7 +246,7 @@ class ScreenMarkerPanel extends JPanel
 		nameInput.setEditable(false);
 		nameInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		nameInput.setPreferredSize(new Dimension(0, 24));
-		nameInput.getTextField().setForeground(Color.WHITE);
+		nameInput.getTextField().setForeground(ColorScheme.TEXT_COLOR.getColor());
 		nameInput.getTextField().setBorder(new EmptyBorder(0, 8, 0, 0));
 
 		nameWrapper.add(nameInput, BorderLayout.CENTER);

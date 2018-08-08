@@ -71,8 +71,13 @@ class FeedPanel extends PluginPanel
 	private static final ImageIcon RUNELITE_ICON;
 	private static final ImageIcon OSRS_ICON;
 
+	/* The background color of tweets in the Feed Panel */
 	private static final Color TWEET_BACKGROUND = new Color(15, 15, 15);
+
+	/* The background color of OSRS news posts in the Feed Panel */
 	private static final Color OSRS_NEWS_BACKGROUND = new Color(36, 30, 19);
+
+	/* The background color of blog posts in the Feed Panel */
 	private static final Color BLOG_POST_BACKGROUND = new Color(11, 30, 41);
 
 	private static final int MAX_CONTENT_LINES = 3;

@@ -57,7 +57,7 @@ class GrandExchangeItemPanel extends JPanel
 		setLayout(layout);
 		setToolTipText(name);
 		setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
-		
+
 		Color background = getBackground();
 
 		addMouseListener(new MouseAdapter()
@@ -108,7 +108,7 @@ class GrandExchangeItemPanel extends JPanel
 
 		// Item name
 		JLabel itemName = new JLabel();
-		itemName.setForeground(Color.WHITE);
+		itemName.setForeground(ColorScheme.TEXT_COLOR.getColor());
 		itemName.setMaximumSize(new Dimension(0, 0));        // to limit the label's size for
 		itemName.setPreferredSize(new Dimension(0, 0));    // items with longer names
 		itemName.setText(name);
