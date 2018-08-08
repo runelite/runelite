@@ -108,6 +108,7 @@ public class WidgetID
 	public static final int KILL_LOGS_GROUP_ID = 549;
 	public static final int DIARY_QUEST_GROUP_ID = 275;
 	public static final int THEATRE_OF_BLOOD_GROUP_ID = 23;
+	public static final int WILDERNESS_GROUP_ID = 90;
 
 	static class WorldMap
 	{
@@ -263,6 +264,7 @@ public class WidgetID
 	{
 		static final int MINIMAP = 3;
 		static final int MINIMAP_DRAW_AREA = 8;
+		static final int MULTI_INDICATOR = 20;
 		static final int CLAN_CHAT_TAB = 31;
 		static final int FRIENDS_TAB = 32;
 		static final int IGNORES_TAB = 33;
@@ -298,6 +300,7 @@ public class WidgetID
 
 	static class ResizableViewport
 	{
+		static final int RESIZABLE_MULTI_INDICATOR = 16;
 		static final int CLAN_CHAT_TAB = 35;
 		static final int FRIENDS_TAB = 36;
 		static final int IGNORES_TAB = 37;
@@ -589,5 +592,13 @@ public class WidgetID
 		static final int MONSTER = 13;
 		static final int KILLS = 14;
 		static final int STREAK = 15;
+	}
+
+	static class Wilderness
+	{
+		static final int WILDERNESS_CONTAINER = 41;
+		static final int WILDERNESS_DISABLED = 43;
+		static final int WILDERNESS_LEVEL_RANGE = 45;
+		static final int WILDERNESS_LEVEL = 46;
 	}
 }
