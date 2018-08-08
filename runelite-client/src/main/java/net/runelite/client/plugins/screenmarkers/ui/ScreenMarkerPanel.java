@@ -214,7 +214,7 @@ class ScreenMarkerPanel extends JPanel
 		});
 
 		rename.setFont(FontManager.getRunescapeSmallFont());
-		rename.setForeground(ColorScheme.TEXT_COLOR.darker());
+		rename.setForeground(ColorScheme.TEXT_COLOR.darker().darker());
 		rename.addMouseListener(new MouseAdapter()
 		{
 			@Override
