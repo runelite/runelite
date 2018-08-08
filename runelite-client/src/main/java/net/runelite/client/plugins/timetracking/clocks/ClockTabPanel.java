@@ -164,7 +164,7 @@ public class ClockTabPanel extends TabContentPanel
 		panel.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		JLabel infoLabel = new JShadowedLabel(text);
-		infoLabel.setForeground(ColorScheme.TEXT_COLOR.getColor());
+		infoLabel.setForeground(ColorScheme.TEXT_COLOR);
 		infoLabel.setFont(FontManager.getRunescapeSmallFont());
 		panel.add(infoLabel);
 

@@ -97,7 +97,7 @@ class OverviewTabPanel extends TabContentPanel
 
 		if (timers == 0)
 		{
-			timerOverview.updateStatus("No active timers", ColorScheme.TEXT_COLOR.getColor().darker());
+			timerOverview.updateStatus("No active timers", ColorScheme.TEXT_COLOR.darker());
 		}
 		else
 		{
@@ -106,7 +106,7 @@ class OverviewTabPanel extends TabContentPanel
 
 		if (stopwatches == 0)
 		{
-			stopwatchOverview.updateStatus("No active stopwatches", ColorScheme.TEXT_COLOR.getColor().darker());
+			stopwatchOverview.updateStatus("No active stopwatches", ColorScheme.TEXT_COLOR.darker());
 		}
 		else
 		{
@@ -123,7 +123,7 @@ class OverviewTabPanel extends TabContentPanel
 
 		if (completionTime < 0)
 		{
-			panel.updateStatus("Unknown", ColorScheme.TEXT_COLOR.getColor().darker());
+			panel.updateStatus("Unknown", ColorScheme.TEXT_COLOR.darker());
 		}
 		else if (duration <= 0)
 		{
@@ -131,7 +131,7 @@ class OverviewTabPanel extends TabContentPanel
 		}
 		else
 		{
-			panel.updateStatus("Ready " + getFormattedEstimate(duration, config.estimateRelative()), ColorScheme.TEXT_COLOR.getColor().darker());
+			panel.updateStatus("Ready " + getFormattedEstimate(duration, config.estimateRelative()), ColorScheme.TEXT_COLOR.darker());
 		}
 	}
 }

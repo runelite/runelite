@@ -48,7 +48,7 @@ class SkillCalculatorPanel extends PluginPanel
 	SkillCalculatorPanel(SkillIconManager iconManager, Client client)
 	{
 		super();
-		getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
 		this.iconManager = iconManager;
 

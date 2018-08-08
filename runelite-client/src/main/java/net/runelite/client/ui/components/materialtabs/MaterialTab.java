@@ -103,7 +103,7 @@ public class MaterialTab extends JLabel
 				public void mouseEntered(MouseEvent e)
 				{
 					MaterialTab tab = (MaterialTab) e.getSource();
-					tab.setForeground(ColorScheme.TEXT_COLOR.getColor());
+					tab.setForeground(ColorScheme.TEXT_COLOR);
 				}
 
 				@Override
@@ -112,7 +112,7 @@ public class MaterialTab extends JLabel
 					MaterialTab tab = (MaterialTab) e.getSource();
 					if (!tab.isSelected())
 					{
-						tab.setForeground(ColorScheme.TEXT_COLOR.getColor().darker());
+						tab.setForeground(ColorScheme.TEXT_COLOR.darker());
 					}
 				}
 			});
@@ -158,14 +158,14 @@ public class MaterialTab extends JLabel
 		}
 
 		setBorder(SELECTED_BORDER);
-		setForeground(ColorScheme.TEXT_COLOR.getColor());
+		setForeground(ColorScheme.TEXT_COLOR);
 		return selected = true;
 	}
 
 	public void unselect()
 	{
 		setBorder(UNSELECTED_BORDER);
-		setForeground(ColorScheme.TEXT_COLOR.getColor().darker());
+		setForeground(ColorScheme.TEXT_COLOR.darker());
 		selected = false;
 	}
 }

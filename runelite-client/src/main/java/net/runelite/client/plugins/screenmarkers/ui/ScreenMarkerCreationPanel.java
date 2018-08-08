@@ -69,7 +69,7 @@ public class ScreenMarkerCreationPanel extends JPanel
 		setLayout(new BorderLayout());
 
 		instructionsLabel.setFont(FontManager.getRunescapeSmallFont());
-		instructionsLabel.setForeground(ColorScheme.TEXT_COLOR.getColor());
+		instructionsLabel.setForeground(ColorScheme.TEXT_COLOR);
 
 		JPanel actionsContainer = new JPanel(new GridLayout(1, 2, 8, 0));
 		actionsContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);

@@ -55,7 +55,7 @@ class LootTrackerBox extends JPanel
 
 		final JLabel titleLabel = new JLabel(title);
 		titleLabel.setFont(FontManager.getRunescapeSmallFont());
-		titleLabel.setForeground(ColorScheme.TEXT_COLOR.getColor());
+		titleLabel.setForeground(ColorScheme.TEXT_COLOR);
 
 		logTitle.add(titleLabel, BorderLayout.WEST);
 
@@ -64,7 +64,7 @@ class LootTrackerBox extends JPanel
 		{
 			final JLabel subTitleLabel = new JLabel(subTitle);
 			subTitleLabel.setFont(FontManager.getRunescapeSmallFont());
-			subTitleLabel.setForeground(ColorScheme.TEXT_COLOR.getColor().darker());
+			subTitleLabel.setForeground(ColorScheme.TEXT_COLOR.darker());
 			logTitle.add(subTitleLabel, BorderLayout.CENTER);
 		}
 
@@ -74,7 +74,7 @@ class LootTrackerBox extends JPanel
 		{
 			final JLabel priceLabel = new JLabel(StackFormatter.quantityToStackSize(totalPrice) + " gp");
 			priceLabel.setFont(FontManager.getRunescapeSmallFont());
-			priceLabel.setForeground(ColorScheme.TEXT_COLOR.getColor());
+			priceLabel.setForeground(ColorScheme.TEXT_COLOR);
 			logTitle.add(priceLabel, BorderLayout.EAST);
 		}
 

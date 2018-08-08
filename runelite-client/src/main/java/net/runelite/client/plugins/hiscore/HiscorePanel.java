@@ -56,6 +56,7 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.RunnableExceptionLogger;
 import net.runelite.client.util.StackFormatter;
@@ -512,9 +513,9 @@ public class HiscorePanel extends PluginPanel
 				+ result.getHitpoints().getExperience() + result.getMagic().getExperience()
 				+ result.getRanged().getExperience() + result.getPrayer().getExperience();
 
-			content += "<p><span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>Skill:</span> Combat</p>";
-			content += "<p><span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>Exact Combat Level:</span> " + StackFormatter.formatNumber(combatLevel) + "</p>";
-			content += "<p><span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>Experience:</span> " + StackFormatter.formatNumber(combatExperience) + "</p>";
+			content += "<p><span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>Skill:</span> Combat</p>";
+			content += "<p><span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>Exact Combat Level:</span> " + StackFormatter.formatNumber(combatLevel) + "</p>";
+			content += "<p><span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>Experience:</span> " + StackFormatter.formatNumber(combatExperience) + "</p>";
 		}
 		else
 		{
@@ -535,30 +536,30 @@ public class HiscorePanel extends PluginPanel
 					String hard = (result.getClueScrollHard().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollHard().getLevel()));
 					String elite = (result.getClueScrollElite().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollElite().getLevel()));
 					String master = (result.getClueScrollMaster().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollMaster().getLevel()));
-					content += "<p><span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>All:</span> " + all + " <span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>Rank:</span> " + allRank + "</p>";
-					content += "<p><span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>Easy:</span> " + easy + " <span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>Rank:</span> " + easyRank + "</p>";
-					content += "<p><span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>Medium:</span> " + medium + " <span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>Rank:</span> " + mediumRank + "</p>";
-					content += "<p><span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>Hard:</span> " + hard + " <span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>Rank:</span> " + hardRank + "</p>";
-					content += "<p><span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>Elite:</span> " + elite + " <span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>Rank:</span> " + eliteRank + "</p>";
-					content += "<p><span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>Master:</span> " + master + " <span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>Rank:</span> " + masterRank + "</p>";
+					content += "<p><span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>All:</span> " + all + " <span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>Rank:</span> " + allRank + "</p>";
+					content += "<p><span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>Easy:</span> " + easy + " <span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>Rank:</span> " + easyRank + "</p>";
+					content += "<p><span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>Medium:</span> " + medium + " <span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>Rank:</span> " + mediumRank + "</p>";
+					content += "<p><span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>Hard:</span> " + hard + " <span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>Rank:</span> " + hardRank + "</p>";
+					content += "<p><span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>Elite:</span> " + elite + " <span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>Rank:</span> " + eliteRank + "</p>";
+					content += "<p><span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>Master:</span> " + master + " <span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>Rank:</span> " + masterRank + "</p>";
 					break;
 				}
 				case BOUNTY_HUNTER_ROGUE:
 				{
 					String rank = (result.getBountyHunterRogue().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getBountyHunterRogue().getRank());
-					content += "<p><span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>Rank:</span> " + rank + "</p>";
+					content += "<p><span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>Rank:</span> " + rank + "</p>";
 					break;
 				}
 				case BOUNTY_HUNTER_HUNTER:
 				{
 					String rank = (result.getBountyHunterHunter().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getBountyHunterHunter().getRank());
-					content += "<p><span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>Rank:</span> " + rank + "</p>";
+					content += "<p><span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>Rank:</span> " + rank + "</p>";
 					break;
 				}
 				case LAST_MAN_STANDING:
 				{
 					String rank = (result.getLastManStanding().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getLastManStanding().getRank());
-					content += "<p><span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>Rank:</span> " + rank + "</p>";
+					content += "<p><span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>Rank:</span> " + rank + "</p>";
 					break;
 				}
 				case OVERALL:
@@ -566,9 +567,9 @@ public class HiscorePanel extends PluginPanel
 					Skill requestedSkill = result.getSkill(skill);
 					String rank = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getRank());
 					String exp = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getExperience());
-					content += "<p><span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>Skill:</span> " + skill.getName() + "</p>";
-					content += "<p><span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>Rank:</span> " + rank + "</p>";
-					content += "<p><span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>Experience:</span> " + exp + "</p>";
+					content += "<p><span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>Skill:</span> " + skill.getName() + "</p>";
+					content += "<p><span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>Rank:</span> " + rank + "</p>";
+					content += "<p><span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>Experience:</span> " + exp + "</p>";
 					break;
 				}
 				default:
@@ -588,10 +589,10 @@ public class HiscorePanel extends PluginPanel
 						remainingXp = (currentLevel + 1 <= Experience.MAX_VIRT_LEVEL) ? StackFormatter.formatNumber(Experience.getXpForLevel(currentLevel + 1) - requestedSkill.getExperience()) : "0";
 					}
 
-					content += "<p><span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>Skill:</span> " + skill.getName() + "</p>";
-					content += "<p><span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>Rank:</span> " + rank + "</p>";
-					content += "<p><span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>Experience:</span> " + exp + "</p>";
-					content += "<p><span style = 'color:" + ColorScheme.TEXT_COLOR.getHtmlName() + "'>Remaining XP:</span> " + remainingXp + "</p>";
+					content += "<p><span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>Skill:</span> " + skill.getName() + "</p>";
+					content += "<p><span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>Rank:</span> " + rank + "</p>";
+					content += "<p><span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>Experience:</span> " + exp + "</p>";
+					content += "<p><span style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>Remaining XP:</span> " + remainingXp + "</p>";
 
 					break;
 				}

@@ -122,7 +122,7 @@ class UICalculatorInputArea extends JPanel
 
 		uiLabel.setFont(FontManager.getRunescapeSmallFont());
 		uiLabel.setBorder(new EmptyBorder(0, 0, 4, 0));
-		uiLabel.setForeground(ColorScheme.TEXT_COLOR.getColor());
+		uiLabel.setForeground(ColorScheme.TEXT_COLOR);
 
 		container.add(uiLabel, BorderLayout.NORTH);
 		container.add(uiInput, BorderLayout.CENTER);

@@ -45,7 +45,7 @@ public class JShadowedLabel extends JLabel
 	}
 
 	@Getter
-	private Color shadow = ColorScheme.TEXT_SHADOW_COLOR.getColor();
+	private Color shadow = ColorScheme.TEXT_SHADOW_COLOR;
 
 	public void setShadow(Color shadow)
 	{

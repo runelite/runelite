@@ -53,6 +53,7 @@ import net.runelite.client.account.SessionManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.RunnableExceptionLogger;
@@ -127,10 +128,10 @@ public class InfoPanel extends PluginPanel
 			.firstNonNull(RuneLiteProperties.getLauncherVersion(), "Unknown")));
 		launcher.setFont(smallFont);
 
-		loggedLabel.setForeground(ColorScheme.TEXT_COLOR.getColor());
+		loggedLabel.setForeground(ColorScheme.TEXT_COLOR);
 		loggedLabel.setFont(smallFont);
 
-		emailLabel.setForeground(ColorScheme.TEXT_COLOR.getColor());
+		emailLabel.setForeground(ColorScheme.TEXT_COLOR);
 		emailLabel.setFont(smallFont);
 		emailLabel.enableAutoLinkHandler(false);
 		emailLabel.addHyperlinkListener(e ->
@@ -224,11 +225,11 @@ public class InfoPanel extends PluginPanel
 		});
 
 		JLabel topLine = new JLabel(topText);
-		topLine.setForeground(ColorScheme.TEXT_COLOR.getColor());
+		topLine.setForeground(ColorScheme.TEXT_COLOR);
 		topLine.setFont(FontManager.getRunescapeSmallFont());
 
 		JLabel bottomLine = new JLabel(bottomText);
-		bottomLine.setForeground(ColorScheme.TEXT_COLOR.getColor());
+		bottomLine.setForeground(ColorScheme.TEXT_COLOR);
 		bottomLine.setFont(FontManager.getRunescapeSmallFont());
 
 		textContainer.add(topLine);
@@ -257,15 +258,15 @@ public class InfoPanel extends PluginPanel
 		else
 		{
 			emailLabel.setContentType("text/html");
-			emailLabel.setText("<a href=\"" + RUNELITE_LOGIN + "\"><font color=\"" + ColorScheme.TEXT_COLOR.getHtmlName() + "\">Login</font></a> to sync settings to the cloud.");
+			emailLabel.setText("<a href=\"" + RUNELITE_LOGIN + "\"><font color=\"" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "\">Login</font></a> to sync settings to the cloud.");
 			loggedLabel.setText("Not logged in");
 		}
 	}
 
 	private static String htmlLabel(String key, String value)
 	{
-		return "<html><body style = 'color:" + ColorScheme.TEXT_COLOR.getHexCode() + "'>" + key + "<span style = 'color:"
-			+ ColorScheme.TEXT_COLOR.getHtmlName() + "'>" + value + "</span></body></html>";
+		return "<html><body style = 'color:" + ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>" + key + "<span style = 'color:"
+			+ ColorUtil.toHexColor(ColorScheme.TEXT_COLOR) + "'>" + value + "</span></body></html>";
 	}
 
 	@Subscribe

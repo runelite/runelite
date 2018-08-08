@@ -49,11 +49,11 @@ public class PluginErrorPanel extends JPanel
 		setBorder(new EmptyBorder(50, 10, 0, 10));
 		setLayout(new BorderLayout());
 
-		noResultsTitle.setForeground(ColorScheme.TEXT_COLOR.getColor());
+		noResultsTitle.setForeground(ColorScheme.TEXT_COLOR);
 		noResultsTitle.setHorizontalAlignment(SwingConstants.CENTER);
 
 		noResultsDescription.setFont(FontManager.getRunescapeSmallFont());
-		noResultsDescription.setForeground(ColorScheme.TEXT_COLOR.getColor().darker());
+		noResultsDescription.setForeground(ColorScheme.TEXT_COLOR.darker());
 		noResultsDescription.setHorizontalAlignment(SwingConstants.CENTER);
 
 		add(noResultsTitle, BorderLayout.NORTH);

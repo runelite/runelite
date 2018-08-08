@@ -64,9 +64,8 @@ public class ColorScheme
 	public static final Color SCROLL_TRACK_COLOR = new Color(25, 25, 25);
 
 	/* The color of most text found throughout the client UI */
-	public static final ThemeColor TEXT_COLOR = new ThemeColor("gray", new Color(255, 255, 255));
+	public static final Color TEXT_COLOR = new Color(255, 255, 255);
 
 	/* The color of the shadow of most text found throughout the client UI */
-	public static final ThemeColor TEXT_SHADOW_COLOR = new ThemeColor("black", new Color(0, 0, 0));
-
+	public static final Color TEXT_SHADOW_COLOR = new Color(0, 0, 0);
 }

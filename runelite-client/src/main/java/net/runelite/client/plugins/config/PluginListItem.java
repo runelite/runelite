@@ -112,7 +112,7 @@ class PluginListItem extends JPanel
 	 * if there is no configuration associated with the plugin.
 	 */
 	PluginListItem(ConfigPanel configPanel, Plugin plugin, PluginDescriptor descriptor,
-		@Nullable Config config, @Nullable ConfigDescriptor configDescriptor)
+				   @Nullable Config config, @Nullable ConfigDescriptor configDescriptor)
 	{
 		this(configPanel, plugin, config, configDescriptor,
 			descriptor.name(), descriptor.description(), descriptor.tags());
@@ -122,13 +122,13 @@ class PluginListItem extends JPanel
 	 * Creates a new {@code PluginListItem} for a core configuration.
 	 */
 	PluginListItem(ConfigPanel configPanel, Config config, ConfigDescriptor configDescriptor,
-		String name, String description, String... tags)
+				   String name, String description, String... tags)
 	{
 		this(configPanel, null, config, configDescriptor, name, description, tags);
 	}
 
 	private PluginListItem(ConfigPanel configPanel, @Nullable Plugin plugin, @Nullable Config config,
-		@Nullable ConfigDescriptor configDescriptor, String name, String description, String... tags)
+						   @Nullable ConfigDescriptor configDescriptor, String name, String description, String... tags)
 	{
 		this.configPanel = configPanel;
 		this.plugin = plugin;
@@ -141,7 +141,7 @@ class PluginListItem extends JPanel
 		setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, 20));
 
 		JLabel nameLabel = new JLabel(name);
-		nameLabel.setForeground(ColorScheme.TEXT_COLOR.getColor());
+		nameLabel.setForeground(ColorScheme.TEXT_COLOR);
 
 		if (!description.isEmpty())
 		{
@@ -241,6 +241,7 @@ class PluginListItem extends JPanel
 
 	/**
 	 * Checks if all the search terms in the given list matches at least one keyword.
+	 *
 	 * @return true if all search terms matches at least one keyword, or false if otherwise.
 	 */
 	boolean matchesSearchTerms(String[] searchTerms)
