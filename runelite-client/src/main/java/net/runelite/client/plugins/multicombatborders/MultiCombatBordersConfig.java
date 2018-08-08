@@ -29,11 +29,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	name = "Multicombat borders",
-	keyName = "multiCombatBorders",
-	description = "Configuration for the multicombat borders plugin"
-)
+@ConfigGroup("multicombatborders")
 public interface MultiCombatBordersConfig extends Config
 {
 

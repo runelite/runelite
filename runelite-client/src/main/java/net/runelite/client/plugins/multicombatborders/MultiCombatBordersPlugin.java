@@ -43,7 +43,8 @@ import net.runelite.client.plugins.opponentinfo.OpponentInfoPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Multicombat borders"
+	name = "Multicombat borders",
+	description = "Show borders between mutli and single combat areas"
 )
 public class MultiCombatBordersPlugin extends Plugin
 {
