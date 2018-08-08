@@ -58,10 +58,12 @@ class LootTrackerPanel extends PluginPanel
 	private final JPanel overallPanel = new JPanel();
 	private final JLabel overallKillsLabel = new JLabel();
 	private final JLabel overallGpLabel = new JLabel();
+	private final JLabel overallAverageGpLabel = new JLabel();
 	private final JLabel overallIcon = new JLabel();
 	private final ItemManager itemManager;
 	private int overallKills;
 	private int overallGp;
+	private int overallAverageGp;
 
 	LootTrackerPanel(final ItemManager itemManager)
 	{
@@ -84,12 +86,14 @@ class LootTrackerPanel extends PluginPanel
 		// Add icon and contents
 		final JPanel overallInfo = new JPanel();
 		overallInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		overallInfo.setLayout(new GridLayout(2, 1));
+		overallInfo.setLayout(new GridLayout(3, 1));
 		overallInfo.setBorder(new EmptyBorder(0, 10, 0, 0));
 		overallKillsLabel.setFont(FontManager.getRunescapeSmallFont());
 		overallGpLabel.setFont(FontManager.getRunescapeSmallFont());
+		overallAverageGpLabel.setFont(FontManager.getRunescapeSmallFont());
 		overallInfo.add(overallKillsLabel);
 		overallInfo.add(overallGpLabel);
+		overallInfo.add(overallAverageGpLabel);
 		overallPanel.add(overallIcon, BorderLayout.WEST);
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
 
@@ -99,6 +103,7 @@ class LootTrackerPanel extends PluginPanel
 		{
 			overallKills = 0;
 			overallGp = 0;
+			overallAverageGp = 0;
 			updateOverall();
 			logsContainer.removeAll();
 			logsContainer.repaint();
@@ -146,6 +151,7 @@ class LootTrackerPanel extends PluginPanel
 		// Update overall
 		overallGp += box.getTotalPrice();
 		overallKills += 1;
+		overallAverageGp = overallGp/overallKills;
 		updateOverall();
 
 		// Create reset menu
@@ -154,6 +160,11 @@ class LootTrackerPanel extends PluginPanel
 		{
 			overallGp -= box.getTotalPrice();
 			overallKills -= 1;
+			if (overallKills > 0) {
+                overallAverageGp = overallGp/overallKills;
+            }else {
+			    overallAverageGp = 0;
+            }
 			updateOverall();
 			logsContainer.remove(box);
 			logsContainer.repaint();
@@ -170,5 +181,6 @@ class LootTrackerPanel extends PluginPanel
 	{
 		overallKillsLabel.setText(htmlLabel("Total count: ", overallKills));
 		overallGpLabel.setText(htmlLabel("Total value: ", overallGp));
+		overallAverageGpLabel.setText(htmlLabel("Average value: ", overallAverageGp));
 	}
 }
