@@ -164,7 +164,7 @@ class LootTrackerPanel extends PluginPanel
                 overallAverageGp = overallGp/overallKills;
             }else {
 			    overallAverageGp = 0;
-            }
+			}
 			updateOverall();
 			logsContainer.remove(box);
 			logsContainer.repaint();
