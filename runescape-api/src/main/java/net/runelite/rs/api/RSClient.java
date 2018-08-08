@@ -32,6 +32,7 @@ import net.runelite.api.World;
 import net.runelite.api.widgets.Widget;
 import net.runelite.mapping.Construct;
 import net.runelite.mapping.Import;
+import net.runelite.mapping.Protect;
 
 public interface RSClient extends RSGameEngine, Client
 {
@@ -664,4 +665,8 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("revalidateWidgetScroll")
 	void revalidateWidgetScroll(Widget[] group, Widget w, boolean postEvent);
+
+	@Import("menuAction")
+	@Protect
+	void menuAction(int var0, int var1, int var2, int var3, String var4, String var5, int var6, int var7);
 }

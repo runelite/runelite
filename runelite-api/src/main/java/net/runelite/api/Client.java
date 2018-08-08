@@ -1426,4 +1426,8 @@ public interface Client extends GameEngine
 	 * @param speed speed
 	 */
 	void setOculusOrbNormalSpeed(int speed);
+
+	void openWorldHopper();
+
+	void hopToWorld(int world);
 }
