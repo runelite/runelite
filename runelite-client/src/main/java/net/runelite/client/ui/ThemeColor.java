@@ -1,6 +1,7 @@
 package net.runelite.client.ui;
 
 import java.awt.Color;
+import net.runelite.client.util.ColorUtil;
 
 public class ThemeColor
 {
@@ -12,7 +13,7 @@ public class ThemeColor
 	{
 		this.htmlName = htmlName;
 		this.color = color;
-		this.hexCode = "#" + Integer.toHexString(color.getRGB()).substring(2);
+		this.hexCode = ColorUtil.toHexColor(color);
 	}
 
 	public String getHtmlName()
