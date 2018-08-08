@@ -29,11 +29,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "herbiboar",
-	name = "Herbiboar",
-	description = "Configuration for the herbiboar plugin"
-)
+@ConfigGroup("herbiboar")
 public interface HerbiboarConfig extends Config
 {
 	@ConfigItem(

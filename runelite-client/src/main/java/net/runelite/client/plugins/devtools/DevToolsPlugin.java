@@ -32,9 +32,7 @@ import com.google.inject.Provides;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
@@ -49,22 +47,23 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ImageUtil;
 import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
 	name = "Developer Tools",
+	tags = {"panel"},
 	developerPlugin = true
 )
-@Slf4j
 public class DevToolsPlugin extends Plugin
 {
 	@Inject
 	private Client client;
 
 	@Inject
-	private PluginToolbar pluginToolbar;
+	private ClientToolbar clientToolbar;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -129,11 +128,7 @@ public class DevToolsPlugin extends Plugin
 
 		final DevToolsPanel panel = injector.getInstance(DevToolsPanel.class);
 
-		BufferedImage icon;
-		synchronized (ImageIO.class)
-		{
-			icon = ImageIO.read(getClass().getResourceAsStream("devtools_icon.png"));
-		}
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "devtools_icon.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Developer Tools")
@@ -142,7 +137,7 @@ public class DevToolsPlugin extends Plugin
 			.panel(panel)
 			.build();
 
-		pluginToolbar.addNavigation(navButton);
+		clientToolbar.addNavigation(navButton);
 
 		font = FontManager.getRunescapeFont()
 			.deriveFont(Font.BOLD, 16);
@@ -156,7 +151,7 @@ public class DevToolsPlugin extends Plugin
 		overlayManager.remove(sceneOverlay);
 		overlayManager.remove(cameraOverlay);
 		overlayManager.remove(worldMapLocationOverlay);
-		pluginToolbar.removeNavigation(navButton);
+		clientToolbar.removeNavigation(navButton);
 	}
 
 	@Subscribe
@@ -186,14 +181,30 @@ public class DevToolsPlugin extends Plugin
 				client.addChatMessage(ChatMessageType.SERVER, "", message, null);
 				break;
 			}
-			case "getvar":
+			case "getvarp":
+			{
+				int varp = Integer.parseInt(args[0]);
+				int value = client.getVarpValue(client.getVarps(), varp);
+				client.addChatMessage(ChatMessageType.SERVER, "", "VarPlayer " + varp + ": " + value, null);
+				break;
+			}
+			case "setvarp":
+			{
+				int varp = Integer.parseInt(args[0]);
+				int value = Integer.parseInt(args[1]);
+				client.setVarpValue(client.getVarps(), varp, value);
+				client.addChatMessage(ChatMessageType.SERVER, "", "Set VarPlayer " + varp + " to " + value, null);
+				eventBus.post(new VarbitChanged()); // fake event
+				break;
+			}
+			case "getvarb":
 			{
 				int varbit = Integer.parseInt(args[0]);
 				int value = client.getVarbitValue(client.getVarps(), varbit);
 				client.addChatMessage(ChatMessageType.SERVER, "", "Varbit " + varbit + ": " + value, null);
 				break;
 			}
-			case "setvar":
+			case "setvarb":
 			{
 				int varbit = Integer.parseInt(args[0]);
 				int value = Integer.parseInt(args[1]);

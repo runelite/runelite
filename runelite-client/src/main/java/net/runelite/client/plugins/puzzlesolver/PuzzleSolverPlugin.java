@@ -27,12 +27,14 @@ package net.runelite.client.plugins.puzzlesolver;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.util.Arrays;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -54,13 +56,19 @@ import net.runelite.client.plugins.puzzlesolver.lightbox.LightboxSolution;
 import net.runelite.client.plugins.puzzlesolver.lightbox.LightboxSolver;
 import net.runelite.client.plugins.puzzlesolver.lightbox.LightboxState;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Puzzle Solver"
+	name = "Puzzle Solver",
+	description = "Show you where to click to solve puzzle boxes",
+	tags = {"clues", "scrolls", "overlay"}
 )
 @Slf4j
 public class PuzzleSolverPlugin extends Plugin
 {
+	private static final Color CORRECT_MUSEUM_PUZZLE_ANSWER_COLOR = new Color(0, 248, 128);
+
 	@Inject
 	private OverlayManager overlayManager;
 
@@ -91,6 +99,40 @@ public class PuzzleSolverPlugin extends Plugin
 	PuzzleSolverConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(PuzzleSolverConfig.class);
+	}
+
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded widget)
+	{
+		if (widget.getGroupId() != WidgetID.VARROCK_MUSEUM_QUIZ_GROUP_ID)
+		{
+			return;
+		}
+
+		final Widget questionWidget = client.getWidget(WidgetInfo.VARROCK_MUSEUM_QUESTION);
+
+		if (questionWidget == null)
+		{
+			return;
+		}
+
+		final Widget answerWidget = VarrockMuseumAnswer.findCorrect(
+			client,
+			questionWidget.getText(),
+			WidgetInfo.VARROCK_MUSEUM_FIRST_ANSWER,
+			WidgetInfo.VARROCK_MUSEUM_SECOND_ANSWER,
+			WidgetInfo.VARROCK_MUSEUM_THIRD_ANSWER);
+
+		if (answerWidget == null)
+		{
+			return;
+		}
+
+		final String answerText = answerWidget.getText();
+		if (answerText.equals(Text.removeTags(answerText)))
+		{
+			answerWidget.setText(ColorUtil.wrapWithColorTag(answerText, CORRECT_MUSEUM_PUZZLE_ANSWER_COLOR));
+		}
 	}
 
 	@Subscribe

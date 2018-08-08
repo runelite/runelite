@@ -44,7 +44,11 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-@PluginDescriptor(name = "Blast Mine")
+@PluginDescriptor(
+	name = "Blast Mine",
+	description = "Show helpful information for the Blast Mine minigame",
+	tags = {"explode", "explosive", "mining", "minigame", "skilling"}
+)
 public class BlastMinePlugin extends Plugin
 {
 	@Getter

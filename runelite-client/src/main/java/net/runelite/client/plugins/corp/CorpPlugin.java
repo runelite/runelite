@@ -51,7 +51,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Corporeal Beast"
+	name = "Corporeal Beast",
+	description = "Show damage statistics and highlight dark energy cores",
+	tags = {"bosses", "combat", "pve", "overlay"}
 )
 public class CorpPlugin extends Plugin
 {

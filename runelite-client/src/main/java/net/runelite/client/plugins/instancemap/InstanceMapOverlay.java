@@ -72,7 +72,7 @@ class InstanceMapOverlay extends Overlay
 	private final Client client;
 
 	/**
-	 * Saved image of the region, no reason to draw the whole thing every
+	 * Saved image of the scene, no reason to draw the whole thing every
 	 * frame.
 	 */
 	private volatile BufferedImage mapImage;
@@ -182,8 +182,8 @@ class InstanceMapOverlay extends Overlay
 	 */
 	private Tile[][] getTiles()
 	{
-		Tile[][][] regionTiles = client.getRegion().getTiles();
-		return regionTiles[viewedPlane];
+		Tile[][][] sceneTiles = client.getScene().getTiles();
+		return sceneTiles[viewedPlane];
 	}
 
 	/**
@@ -197,8 +197,8 @@ class InstanceMapOverlay extends Overlay
 		LocalPoint playerLoc = player.getLocalLocation();
 
 		Tile[][] tiles = getTiles();
-		int tileX = playerLoc.getRegionX();
-		int tileY = (tiles[0].length - 1) - playerLoc.getRegionY(); // flip the y value
+		int tileX = playerLoc.getSceneX();
+		int tileY = (tiles[0].length - 1) - playerLoc.getSceneY(); // flip the y value
 
 		int x = tileX * TILE_SIZE;
 		int y = tileY * TILE_SIZE;

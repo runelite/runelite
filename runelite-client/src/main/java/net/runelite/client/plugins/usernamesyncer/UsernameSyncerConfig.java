@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "rememberusername",
-	name = "Username Syncer",
-	description = "Syncs the username that is currently remembered between computers"
-)
+@ConfigGroup("rememberusername")
 public interface UsernameSyncerConfig extends Config
 {
 	@ConfigItem(

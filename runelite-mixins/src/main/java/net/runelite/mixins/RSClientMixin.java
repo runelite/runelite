@@ -102,6 +102,7 @@ import net.runelite.rs.api.RSFriendContainer;
 import net.runelite.rs.api.RSFriendManager;
 import net.runelite.rs.api.RSHashTable;
 import net.runelite.rs.api.RSIndexedSprite;
+import net.runelite.rs.api.RSItem;
 import net.runelite.rs.api.RSItemContainer;
 import net.runelite.rs.api.RSNPC;
 import net.runelite.rs.api.RSName;
@@ -148,6 +149,9 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	private static int oldMenuEntryCount;
+
+	@Inject
+	private static RSItem lastItemDespawn;
 
 	@Inject
 	@Override
@@ -233,17 +237,17 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public Tile getSelectedRegionTile()
+	public Tile getSelectedSceneTile()
 	{
-		int tileX = getSelectedRegionTileX();
-		int tileY = getSelectedRegionTileY();
+		int tileX = getSelectedSceneTileX();
+		int tileY = getSelectedSceneTileY();
 
 		if (tileX == -1 || tileY == -1)
 		{
 			return null;
 		}
 
-		return getRegion().getTiles()[getPlane()][tileX][tileY];
+		return getScene().getTiles()[getPlane()][tileX][tileY];
 	}
 
 	@Inject
@@ -383,6 +387,20 @@ public abstract class RSClientMixin implements RSClient
 	{
 		int[] varps = getVarps();
 		return varps[varPlayer.getId()];
+	}
+
+	@Inject
+	@Override
+	public int getVarpValue(int[] varps, int varpId)
+	{
+		return varps[varpId];
+	}
+
+	@Inject
+	@Override
+	public void setVarpValue(int[] varps, int varpId, int value)
+	{
+		varps[varpId] = value;
 	}
 
 	@Inject
@@ -576,11 +594,11 @@ public abstract class RSClientMixin implements RSClient
 	@Nullable
 	public LocalPoint getLocalDestinationLocation()
 	{
-		int regionX = getDestinationX();
-		int regionY = getDestinationY();
-		if (regionX != 0 && regionY != 0)
+		int sceneX = getDestinationX();
+		int sceneY = getDestinationY();
+		if (sceneX != 0 && sceneY != 0)
 		{
-			return LocalPoint.fromRegion(regionX, regionY);
+			return LocalPoint.fromScene(sceneX, sceneY);
 		}
 		return null;
 	}
@@ -590,7 +608,7 @@ public abstract class RSClientMixin implements RSClient
 	public void changeMemoryMode(boolean lowMemory)
 	{
 		setLowMemory(lowMemory);
-		setRegionLowMemory(lowMemory);
+		setSceneLowMemory(lowMemory);
 		setAudioHighMemory(true);
 		setObjectCompositionLowDetail(lowMemory);
 	}
@@ -1101,20 +1119,17 @@ public abstract class RSClientMixin implements RSClient
 		for (Widget rlWidget : widgets)
 		{
 			RSWidget widget = (RSWidget) rlWidget;
-			if (widget == null)
+			if (widget == null || widget.getRSParentId() != parentId)
 			{
 				continue;
 			}
 
-			if (widget.getRSParentId() == parentId)
+			if (parentId != -1)
 			{
-				if (parentId != -1)
-				{
-					widget.setRenderParentId(parentId);
-				}
-				widget.setRenderX(x + widget.getRelativeX());
-				widget.setRenderY(y + widget.getRelativeY());
+				widget.setRenderParentId(parentId);
 			}
+			widget.setRenderX(x + widget.getRelativeX());
+			widget.setRenderY(y + widget.getRelativeY());
 
 			HashTable<WidgetNode> componentTable = client.getComponentTable();
 			WidgetNode childNode = componentTable.get(widget.getId());
@@ -1133,5 +1148,19 @@ public abstract class RSClientMixin implements RSClient
 				}
 			}
 		}
+	}
+
+	@Inject
+	@Override
+	public RSItem getLastItemDespawn()
+	{
+		return lastItemDespawn;
+	}
+
+	@Inject
+	@Override
+	public void setLastItemDespawn(RSItem lastItemDespawn)
+	{
+		RSClientMixin.lastItemDespawn = lastItemDespawn;
 	}
 }

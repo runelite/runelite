@@ -36,7 +36,6 @@ import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.util.LinkBrowser;
@@ -46,7 +45,6 @@ import net.runelite.client.util.StackFormatter;
  * This panel displays an individual item result in the
  * Grand Exchange search plugin.
  */
-@Slf4j
 class GrandExchangeItemPanel extends JPanel
 {
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);

@@ -27,7 +27,6 @@ package net.runelite.client.plugins.config;
 import com.google.common.eventbus.Subscribe;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ScheduledExecutorService;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import net.runelite.client.config.ChatColorConfig;
@@ -38,7 +37,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Configuration",
@@ -48,7 +48,7 @@ import net.runelite.client.ui.PluginToolbar;
 public class ConfigPlugin extends Plugin
 {
 	@Inject
-	private PluginToolbar pluginToolbar;
+	private ClientToolbar clientToolbar;
 
 	@Inject
 	private ConfigManager configManager;
@@ -73,11 +73,7 @@ public class ConfigPlugin extends Plugin
 	{
 		configPanel = new ConfigPanel(pluginManager, configManager, executorService, runeLiteConfig, chatColorConfig);
 
-		BufferedImage icon;
-		synchronized (ImageIO.class)
-		{
-			icon = ImageIO.read(getClass().getResourceAsStream("config_icon.png"));
-		}
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "config_icon.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Configuration")
@@ -86,18 +82,18 @@ public class ConfigPlugin extends Plugin
 			.panel(configPanel)
 			.build();
 
-		pluginToolbar.addNavigation(navButton);
+		clientToolbar.addNavigation(navButton);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		pluginToolbar.removeNavigation(navButton);
+		clientToolbar.removeNavigation(navButton);
 	}
 
 	@Subscribe
 	public void onPluginChanged(PluginChanged event)
 	{
-		SwingUtilities.invokeLater(configPanel::rebuildPluginList);
+		SwingUtilities.invokeLater(configPanel::refreshPluginList);
 	}
 }

@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import net.runelite.api.HashTable;
+import net.runelite.api.Node;
 import net.runelite.api.Point;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.events.WidgetHiddenChanged;
@@ -42,6 +43,8 @@ import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.rs.api.RSClient;
+import net.runelite.rs.api.RSHashTable;
+import net.runelite.rs.api.RSNode;
 import net.runelite.rs.api.RSWidget;
 
 @Mixin(RSWidget.class)
@@ -110,9 +113,21 @@ public abstract class RSWidgetMixin implements RSWidget
 	@Override
 	public int getParentId()
 	{
-		int parentId = rl$parentId;
+		int rsParentId = getRSParentId();
+		if (rsParentId != -1)
+		{
+			return rsParentId;
+		}
 
-		if (parentId != -1 && getRSParentId() == -1)
+		final int id = getId();
+		if (TO_GROUP(id) == client.getWidgetRoot())
+		{
+			// this is a root widget
+			return -1;
+		}
+
+		int parentId = rl$parentId;
+		if (parentId != -1)
 		{
 			// if this happens, the widget is or was nested.
 			// rl$parentId is updated when drawing, but will not be updated when
@@ -122,15 +137,40 @@ public abstract class RSWidgetMixin implements RSWidget
 			// check the parent in the component table
 			HashTable<WidgetNode> componentTable = client.getComponentTable();
 			WidgetNode widgetNode = componentTable.get(parentId);
-			if (widgetNode == null || widgetNode.getId() != TO_GROUP(getId()))
+			if (widgetNode == null || widgetNode.getId() != TO_GROUP(id))
 			{
 				// invalidate parent
 				rl$parentId = -1;
-				return -1;
+			}
+			else
+			{
+				return parentId;
 			}
 		}
 
-		return parentId;
+		// also the widget may not have been drawn, yet
+		int groupId = TO_GROUP(getId());
+		RSHashTable componentTable = client.getComponentTable();
+		RSNode[] buckets = componentTable.getBuckets();
+		for (RSNode node : buckets)
+		{
+			// It looks like the first node in the bucket is always
+			// a sentinel
+			Node cur = node.getNext();
+			while (cur != node)
+			{
+				WidgetNode wn = (WidgetNode) cur;
+
+				if (groupId == wn.getId())
+				{
+					return (int) wn.getHash();
+				}
+
+				cur = cur.getNext();
+			}
+		}
+
+		return -1;
 	}
 
 	@Inject
@@ -158,6 +198,11 @@ public abstract class RSWidgetMixin implements RSWidget
 	@Override
 	public boolean isHidden()
 	{
+		if (isSelfHidden())
+		{
+			return true;
+		}
+
 		Widget parent = getParent();
 
 		if (parent == null)
@@ -175,7 +220,7 @@ public abstract class RSWidgetMixin implements RSWidget
 			return true;
 		}
 
-		return isSelfHidden();
+		return false;
 	}
 
 	@Inject
@@ -443,5 +488,63 @@ public abstract class RSWidgetMixin implements RSWidget
 
 		WidgetPositioned widgetPositioned = new WidgetPositioned();
 		client.getCallbacks().postDeferred(widgetPositioned);
+	}
+
+	@Inject
+	@Override
+	public Widget createChild(int index, int type)
+	{
+		RSWidget w = client.createWidget();
+		w.setType(type);
+		w.setParentId(getId());
+		w.setId(getId());
+		w.setIsIf3(true);
+
+		RSWidget[] siblings = getChildren();
+
+		if (index < 0)
+		{
+			if (siblings == null)
+			{
+				index = 0;
+			}
+			else
+			{
+				index = siblings.length;
+			}
+		}
+
+		if (siblings == null)
+		{
+			siblings = new RSWidget[index + 1];
+			setChildren(siblings);
+		}
+		else if (siblings.length <= index)
+		{
+			RSWidget[] newSiblings = new RSWidget[index + 1];
+			System.arraycopy(siblings, 0, newSiblings, 0, siblings.length);
+			siblings = newSiblings;
+			setChildren(siblings);
+		}
+
+		siblings[index] = w;
+		w.setIndex(index);
+
+		return w;
+	}
+
+	@Inject
+	@Override
+	public void revalidate()
+	{
+		client.revalidateWidget(this);
+	}
+
+	@Inject
+	@Override
+	public void revalidateScroll()
+	{
+		client.revalidateWidget(this);
+		client.revalidateWidgetScroll(client.getWidgets()[TO_GROUP(this.getId())], this, false);
 	}
 }

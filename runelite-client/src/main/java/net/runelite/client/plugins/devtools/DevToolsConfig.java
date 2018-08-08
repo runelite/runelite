@@ -27,11 +27,7 @@ package net.runelite.client.plugins.devtools;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "devtools",
-	name = "Dev Tools",
-	description = "Configuration for developer tools"
-)
+@ConfigGroup("devtools")
 public interface DevToolsConfig
 {
 	@ConfigItem(

@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "timers",
-	name = "Timers",
-	description = "Configuration for the timers plugin"
-)
+@ConfigGroup("timers")
 public interface TimersConfig extends Config
 {
 	@ConfigItem(
@@ -295,6 +291,17 @@ public interface TimersConfig extends Config
 		description = "Configures whether staff of the dead timer is displayed"
 	)
 	default boolean showStaffOfTheDead()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 24,
+		keyName = "showAbyssalSireStun",
+		name = "Abyssal Sire Stun Timer",
+		description = "Configures whether Abyssal Sire stun timer is displayed"
+	)
+	default boolean showAbyssalSireStun()
 	{
 		return true;
 	}
