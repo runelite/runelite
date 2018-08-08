@@ -43,23 +43,23 @@ import net.runelite.client.plugins.opponentinfo.OpponentInfoPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Multi lines"
+	name = "Multicombat borders"
 )
-public class MultiLinesPlugin extends Plugin
+public class MultiCombatBordersPlugin extends Plugin
 {
 
 	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
-	private MultiLinesOverlay multiLinesOverlay;
+	private MultiCombatBordersOverlay multiLinesOverlay;
 
-	List<MultiLineBorder> multiLineBorders = loadMultiLineBorders();
+	List<MultiCombatBorder> multiCombatBorders = loadMultiCombatBorders();
 
 	@Provides
-	MultiLinesConfig getConfig(ConfigManager configManager)
+	MultiCombatBordersConfig getConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(MultiLinesConfig.class);
+		return configManager.getConfig(MultiCombatBordersConfig.class);
 	}
 
 	@Override
@@ -74,13 +74,13 @@ public class MultiLinesPlugin extends Plugin
 		overlayManager.remove(multiLinesOverlay);
 	}
 
-	private List<MultiLineBorder> loadMultiLineBorders()
+	private List<MultiCombatBorder> loadMultiCombatBorders()
 	{
 		Gson gson = new Gson();
 		InputStream multiBordersFile = OpponentInfoPlugin.class.getResourceAsStream("/multi_borders.json");
 		JsonArray items = gson.fromJson(new InputStreamReader(multiBordersFile), JsonArray.class);
 
-		List<MultiLineBorder> output = new ArrayList<>(items.size());
+		List<MultiCombatBorder> output = new ArrayList<>(items.size());
 
 		for (JsonElement element : items)
 		{
@@ -89,7 +89,7 @@ public class MultiLinesPlugin extends Plugin
 			{
 				JsonObject nested = item.getAsJsonObject(key);
 				output.add(
-					new MultiLineBorder(
+					new MultiCombatBorder(
 						key,
 						fromJsonObject(nested.getAsJsonObject("single")),
 						fromJsonObject(nested.getAsJsonObject("multi"))));

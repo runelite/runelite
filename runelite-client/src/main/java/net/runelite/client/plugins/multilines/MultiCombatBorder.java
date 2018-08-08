@@ -24,37 +24,41 @@
  */
 package net.runelite.client.plugins.multilines;
 
-import java.awt.Color;
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.Value;
+import net.runelite.api.coords.WorldPoint;
 
-@ConfigGroup(
-	name = "Multi lines",
-	keyName = "multilines",
-	description = "Configuration for the multi lines plugin"
-)
-public interface MultiLinesConfig extends Config
+@Value
+public class MultiCombatBorder
 {
 
-	@ConfigItem(
-		keyName = "singleColor",
-		name = "Single color",
-		description = "Color of single combat side of border"
-	)
-	default Color singleColor()
-	{
-		return Color.GREEN;
-	}
+	public static final int NORTH = 0;
+	public static final int SOUTH = 1;
+	public static final int EAST = 2;
+	public static final int WEST = 3;
 
-	@ConfigItem(
-		keyName = "multiColor",
-		name = "Multi color",
-		description = "Color of multi combat side of border"
-	)
-	default Color multiColor()
+	private final String id;
+	private final WorldPoint single;
+	private final WorldPoint multi;
+
+	int getEdge()
 	{
-		return Color.RED;
+		if (single.getX() > multi.getX())
+		{
+			return EAST;
+		}
+		else if (single.getX() < multi.getX())
+		{
+			return WEST;
+		}
+		else if (single.getY() > multi.getY())
+		{
+			return NORTH;
+		}
+		else if (single.getY() < multi.getY())
+		{
+			return SOUTH;
+		}
+		throw new IllegalStateException("Entry is not representing a border.");
 	}
 
 }

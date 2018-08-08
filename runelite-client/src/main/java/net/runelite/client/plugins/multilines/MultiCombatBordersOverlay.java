@@ -40,15 +40,15 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-public class MultiLinesOverlay extends Overlay
+public class MultiCombatBordersOverlay extends Overlay
 {
 
 	private final Client client;
-	private final MultiLinesConfig config;
-	private final MultiLinesPlugin plugin;
+	private final MultiCombatBordersConfig config;
+	private final MultiCombatBordersPlugin plugin;
 
 	@Inject
-	MultiLinesOverlay(Client client, MultiLinesConfig config, MultiLinesPlugin plugin)
+	MultiCombatBordersOverlay(Client client, MultiCombatBordersConfig config, MultiCombatBordersPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.MED);
@@ -62,7 +62,7 @@ public class MultiLinesOverlay extends Overlay
 	{
 		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 
-		for (MultiLineBorder border : plugin.multiLineBorders)
+		for (MultiCombatBorder border : plugin.multiCombatBorders)
 		{
 			if (playerLocation.distanceTo(border.getMulti()) > 18)
 			{
@@ -75,20 +75,20 @@ public class MultiLinesOverlay extends Overlay
 
 			switch (border.getEdge())
 			{
-				case MultiLineBorder.NORTH:
+				case MultiCombatBorder.NORTH:
 					start = border.getMulti();
 					end = new WorldPoint(start.getX() + 1, start.getY(), start.getPlane());
 					break;
-				case MultiLineBorder.SOUTH:
+				case MultiCombatBorder.SOUTH:
 					start = border.getSingle();
 					end = new WorldPoint(start.getX() + 1, start.getY(), start.getPlane());
 					sign = -1;
 					break;
-				case MultiLineBorder.EAST:
+				case MultiCombatBorder.EAST:
 					start = border.getSingle();
 					end = new WorldPoint(start.getX(), start.getY() - 1, start.getPlane());
 					break;
-				case MultiLineBorder.WEST:
+				case MultiCombatBorder.WEST:
 					start = border.getMulti();
 					end = new WorldPoint(start.getX(), start.getY() - 1, start.getPlane());
 					sign = -1;
