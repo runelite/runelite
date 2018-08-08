@@ -102,6 +102,13 @@ public interface Client extends GameEngine
 	int getRealSkillLevel(Skill skill);
 
 	/**
+	 * Calculates the total level from real skill levels.
+	 *
+	 * @return the total level
+	 */
+	int getTotalLevel();
+
+	/**
 	 * Adds a new chat message to the chatbox.
 	 *
 	 * @param type the type of message
