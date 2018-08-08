@@ -34,6 +34,7 @@ import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.timetracking.SummaryState;
 import net.runelite.client.plugins.timetracking.Tab;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
 
@@ -49,6 +50,14 @@ public class FarmingTracker
 	private final TimeTrackingConfig config;
 	private final FarmingWorld farmingWorld;
 
+	private final Map<PatchImplementation, SummaryState> summaries = new EnumMap<>(PatchImplementation.class);
+
+	/**
+	 * The time at which all patches of a particular type will be ready to be harvested,
+	 * or {@code -1} if we have no data about any patch of the given type.
+	 */
+	private final Map<PatchImplementation, Long> completionTimes = new EnumMap<>(PatchImplementation.class);
+
 	@Inject
 	private FarmingTracker(Client client, ItemManager itemManager, ConfigManager configManager,
 		TimeTrackingConfig config, FarmingWorld farmingWorld)
@@ -60,15 +69,6 @@ public class FarmingTracker
 		this.farmingWorld = farmingWorld;
 	}
 
-
-	/**
-	 * The time at which all patches of a particular type will be ready to be harvested,
-	 * or {@code -1} if we have no data about any patch of the given type.
-	 *
-	 * Each value is set to {@code 0} if all patches of that type have already completed
-	 * when updating the value.
-	 */
-	private Map<PatchImplementation, Long> completionTimes = new EnumMap<>(PatchImplementation.class);
 
 	public FarmingTabPanel createTabPanel(Tab tab)
 	{
@@ -140,12 +140,19 @@ public class FarmingTracker
 
 	public void loadCompletionTimes()
 	{
+		summaries.clear();
 		completionTimes.clear();
 
 		for (PatchImplementation patchType : PatchImplementation.values())
 		{
 			updateCompletionTime(patchType);
 		}
+	}
+
+	public SummaryState getSummary(PatchImplementation patchType)
+	{
+		SummaryState summary = summaries.get(patchType);
+		return summary == null ? SummaryState.UNKNOWN : summary;
 	}
 
 	/**
@@ -166,6 +173,7 @@ public class FarmingTracker
 	{
 		long maxCompletionTime = 0;
 		boolean allUnknown = true;
+		boolean allEmpty = true;
 
 		for (FarmingPatch patch : farmingWorld.getPatchTypes().get(patchType))
 		{
@@ -204,6 +212,8 @@ public class FarmingTracker
 
 			if (state.getProduce() != Produce.WEEDS && state.getProduce() != Produce.SCARECROW)
 			{
+				allEmpty = false;
+
 				// update max duration if this patch takes longer to grow
 				if (tickrate > 0)
 				{
@@ -222,11 +232,24 @@ public class FarmingTracker
 
 		if (allUnknown)
 		{
+			summaries.put(patchType, SummaryState.UNKNOWN);
 			completionTimes.put(patchType, -1L);
-			return;
 		}
-
-		completionTimes.put(patchType, (maxCompletionTime <= Instant.now().getEpochSecond()) ? 0 : maxCompletionTime);
+		else if (allEmpty)
+		{
+			summaries.put(patchType, SummaryState.EMPTY);
+			completionTimes.put(patchType, -1L);
+		}
+		else if (maxCompletionTime <= Instant.now().getEpochSecond())
+		{
+			summaries.put(patchType, SummaryState.COMPLETED);
+			completionTimes.put(patchType, 0L);
+		}
+		else
+		{
+			summaries.put(patchType, SummaryState.IN_PROGRESS);
+			completionTimes.put(patchType, maxCompletionTime);
+		}
 	}
 
 	/**
