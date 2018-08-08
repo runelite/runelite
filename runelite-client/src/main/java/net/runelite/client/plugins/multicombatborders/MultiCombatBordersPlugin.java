@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.multilines;
+package net.runelite.client.plugins.multicombatborders;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -52,7 +52,7 @@ public class MultiCombatBordersPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
-	private MultiCombatBordersOverlay multiLinesOverlay;
+	private MultiCombatBordersOverlay multiCombatBordersOverlay;
 
 	List<MultiCombatBorder> multiCombatBorders = loadMultiCombatBorders();
 
@@ -65,13 +65,13 @@ public class MultiCombatBordersPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(multiLinesOverlay);
+		overlayManager.add(multiCombatBordersOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(multiLinesOverlay);
+		overlayManager.remove(multiCombatBordersOverlay);
 	}
 
 	private List<MultiCombatBorder> loadMultiCombatBorders()
