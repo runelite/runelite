@@ -47,7 +47,7 @@ import java.util.concurrent.ExecutionException;
 	name = "Supplies Used Tracker",
 	description = "Tracks supplies used during the session",
 	tags = {"cost"},
-	enabledByDefault = true
+	enabledByDefault = false
 )
 @Slf4j
 public class SuppliesTrackerPlugin extends Plugin
