@@ -38,6 +38,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.ObjectID;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.MenuEntryAdded;
@@ -431,21 +432,27 @@ public class MenuEntrySwapperPlugin extends Plugin
 					break;
 			}
 		}
-		else if (config.swapFairyRing() != FairyRingMode.OFF && config.swapFairyRing() != FairyRingMode.ZANARIS
-			&& (option.equals("zanaris") || option.equals("configure") || option.equals("tree")))
+		else if ((config.swapFairyRing() != FairyRingMode.OFF || config.swapZanarisFairyRing() != FairyRingMode.OFF) &&
+				(option.equals("zanaris") || option.equals("configure") || option.equals("tree")))
 		{
-			if (config.swapFairyRing() == FairyRingMode.LAST_DESTINATION)
+			boolean inZanaris = itemId == ObjectID.FAIRY_RING_29560;
+			final FairyRingMode mode = inZanaris ? config.swapZanarisFairyRing() : config.swapFairyRing();
+
+			if (mode != FairyRingMode.OFF && mode != FairyRingMode.ZANARIS)
 			{
-				swap("last-destination", option, target, false);
+				if (mode == FairyRingMode.LAST_DESTINATION)
+				{
+					swap("last-destination", option, target, false);
+				}
+				else if (mode == FairyRingMode.CONFIGURE)
+				{
+					swap("configure", option, target, false);
+				}
 			}
-			else if (config.swapFairyRing() == FairyRingMode.CONFIGURE)
+			else if (mode == FairyRingMode.ZANARIS && option.equals("tree"))
 			{
-				swap("configure", option, target, false);
+				swap("zanaris", option, target, false);
 			}
-		}
-		else if (config.swapFairyRing() == FairyRingMode.ZANARIS && option.equals("tree"))
-		{
-			swap("zanaris", option, target, false);
 		}
 		else if (config.swapBoxTrap() && (option.equals("check") || option.equals("dismantle")))
 		{
