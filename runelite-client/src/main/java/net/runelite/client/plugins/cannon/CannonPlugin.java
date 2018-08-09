@@ -61,17 +61,21 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Cannon",
-	description = "Show information about cannon placement and/or amount of cannonballs",
-	tags = {"combat", "notifications", "ranged", "overlay"}
+		name = "Cannon",
+		description = "Show information about cannon placement and/or amount of cannonballs",
+		tags = {"combat", "notifications", "ranged", "overlay"}
 )
 public class CannonPlugin extends Plugin
 {
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final int MAX_CBALLS = 30;
 
+	private CannonBallsCounter counter1;
 	private CannonCounter counter;
 	private boolean skipProjectileCheckThisTick;
+
+	@Getter
+	private int TotalCannonballs;
 
 	@Getter
 	private int cballsLeft;
@@ -160,8 +164,8 @@ public class CannonPlugin extends Plugin
 	}
 
 	@Schedule(
-		period = 1,
-		unit = ChronoUnit.SECONDS
+			period = 1,
+			unit = ChronoUnit.SECONDS
 	)
 	public void checkSpots()
 	{
@@ -191,7 +195,7 @@ public class CannonPlugin extends Plugin
 		if (gameObject.getId() == CANNON_BASE && !cannonPlaced)
 		{
 			if (localPlayer.getWorldLocation().distanceTo(gameObject.getWorldLocation()) <= 2
-				&& localPlayer.getAnimation() == AnimationID.BURYING_BONES)
+					&& localPlayer.getAnimation() == AnimationID.BURYING_BONES)
 			{
 				cannonPosition = gameObject.getWorldLocation();
 				cannon = gameObject;
@@ -211,13 +215,9 @@ public class CannonPlugin extends Plugin
 			//Check to see if projectile x,y is 0 else it will continuously decrease while ball is flying.
 			if (projectileLoc.equals(cannonPosition) && projectile.getX() == 0 && projectile.getY() == 0)
 			{
-				// When there's a chat message about cannon reloaded/unloaded/out of ammo,
-				// the message event runs before the projectile event. However they run
-				// in the opposite order on the server. So if both fires in the same tick,
-				// we don't want to update the cannonball counter if it was set to a specific
-				// amount.
 				if (!skipProjectileCheckThisTick)
 				{
+					cannonAmmoWarning();
 					cballsLeft--;
 				}
 			}
@@ -242,6 +242,7 @@ public class CannonPlugin extends Plugin
 		if (event.getMessage().contains("You pick up the cannon"))
 		{
 			cannonPlaced = false;
+			TotalCannonballs = TotalCannonballs - cballsLeft;
 			cballsLeft = 0;
 			removeCounter();
 		}
@@ -251,22 +252,17 @@ public class CannonPlugin extends Plugin
 			Matcher m = NUMBER_PATTERN.matcher(event.getMessage());
 			if (m.find())
 			{
-				// The cannon will usually refill to MAX_CBALLS, but if the
-				// player didn't have enough cannonballs in their inventory,
-				// it could fill up less than that. Filling the cannon to
-				// cballsLeft + amt is not always accurate though because our
-				// counter doesn't decrease if the player has been too far away
-				// from the cannon due to the projectiels not being in memory,
-				// so our counter can be higher than it is supposed to be.
 				int amt = Integer.valueOf(m.group());
 				if (cballsLeft + amt >= MAX_CBALLS)
 				{
 					skipProjectileCheckThisTick = true;
 					cballsLeft = MAX_CBALLS;
+					TotalCannonballs += amt;
 				}
 				else
 				{
 					cballsLeft += amt;
+					TotalCannonballs += amt;
 				}
 			}
 			else if (event.getMessage().equals("You load the cannon with one cannonball."))
@@ -275,10 +271,12 @@ public class CannonPlugin extends Plugin
 				{
 					skipProjectileCheckThisTick = true;
 					cballsLeft = MAX_CBALLS;
+					TotalCannonballs++;
 				}
 				else
 				{
 					cballsLeft++;
+					TotalCannonballs++;
 				}
 			}
 		}
@@ -299,8 +297,16 @@ public class CannonPlugin extends Plugin
 		}
 
 		if (event.getMessage().startsWith("You unload your cannon and receive Cannonball")
-			|| event.getMessage().startsWith("You unload your cannon and receive Granite cannonball"))
+				|| event.getMessage().startsWith("You unload your cannon and receive Granite cannonball"))
 		{
+			Matcher m = NUMBER_PATTERN.matcher(event.getMessage());
+
+			if (m.find())
+			{
+				int amt = Integer.valueOf(m.group());
+				TotalCannonballs -= amt;
+
+			}
 			skipProjectileCheckThisTick = true;
 
 			cballsLeft = 0;
@@ -329,7 +335,7 @@ public class CannonPlugin extends Plugin
 
 	private void addCounter()
 	{
-		if (!config.showInfobox() || counter != null)
+		if (!config.showInfobox() || counter != null|| counter1 != null)
 		{
 			return;
 		}
@@ -338,6 +344,11 @@ public class CannonPlugin extends Plugin
 		counter.setTooltip("Cannonballs");
 
 		infoBoxManager.addInfoBox(counter);
+
+		counter1 = new CannonBallsCounter(itemManager.getImage(ItemID.STEEL_BAR), this);
+		counter1.setTooltip("Total used cannonballs");
+
+		infoBoxManager.addInfoBox(counter1);
 	}
 
 	private void removeCounter()
@@ -346,8 +357,19 @@ public class CannonPlugin extends Plugin
 		{
 			return;
 		}
-
+		if (counter1 == null)
+		{
+			return;
+		}
 		infoBoxManager.removeInfoBox(counter);
 		counter = null;
+
+		infoBoxManager.removeInfoBox(counter1);
+		counter1 = null;
+	}
+	private void cannonAmmoWarning() {
+		if (cballsLeft == 5) {
+			notifier.notify("Your cannon is nearly out of ammo!");
+		}
 	}
 }
