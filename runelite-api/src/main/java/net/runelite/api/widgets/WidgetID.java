@@ -111,7 +111,7 @@ public class WidgetID
 
 	static class WorldMap
 	{
-		static final int OPTION = 41;
+		static final int OPTION = 42;
 		static final int TOOLTIP = 35;
 		static final int MAPVIEW = 3;
 	}
