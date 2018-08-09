@@ -186,7 +186,7 @@ public class TimeTrackingPlugin extends Plugin
 		WorldPoint loc = lastTickLocation;
 		lastTickLocation = client.getLocalPlayer().getWorldLocation();
 
-		if (loc == null || loc.getPlane() != 0 || loc.getRegionID() != lastTickLocation.getRegionID())
+		if (loc == null || loc.getRegionID() != lastTickLocation.getRegionID())
 		{
 			return;
 		}
