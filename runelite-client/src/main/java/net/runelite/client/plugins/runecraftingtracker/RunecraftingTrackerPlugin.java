@@ -71,15 +71,18 @@ public class RunecraftingTrackerPlugin extends Plugin {
 
     @Getter
     private int DeathRuneEXP = 10;
+
     @Getter
     private int carriedRunes = 0;
+
     @Getter
     private int carriedEssence = 0;
+
     @Getter
     private int craftedRunes = 0;
+
     @Getter
     private Map<Integer, Rune> RUNES = new HashMap<>();
-
 
     @Provides
     RunecraftingTrackerConfig getConfig(ConfigManager configManager) {
@@ -132,10 +135,8 @@ public class RunecraftingTrackerPlugin extends Plugin {
                 if (session == null) {
                     session = new RunecraftingTrackerSession();
                 }
-
                 session.setLastRuneCraft();
             }
-
         }
     }
 
@@ -150,9 +151,9 @@ public class RunecraftingTrackerPlugin extends Plugin {
     }
 
     private void checkForItems(ItemContainer itemContainer) {
-
         int essence = 0;
         int totalRunes = 0;
+
         for (Rune rune : RUNES.values()) {
             rune.setCount(0);
         }
@@ -179,7 +180,6 @@ public class RunecraftingTrackerPlugin extends Plugin {
                     this.RUNES.put(item.getId(), runeItem);
                     totalRunes += item.getQuantity();
                 }
-
             }
         }
         if (essence == 0 && carriedEssence != 0){
@@ -193,11 +193,7 @@ public class RunecraftingTrackerPlugin extends Plugin {
         for (Rune rune : this.RUNES.values()) {
             rune.setCarried(rune.getCount());
         }
-
         this.carriedEssence = essence;
         this.carriedRunes = totalRunes;
     }
-
-
-
 }

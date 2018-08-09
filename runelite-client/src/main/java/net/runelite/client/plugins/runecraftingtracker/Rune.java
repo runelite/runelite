@@ -29,16 +29,22 @@ import lombok.Setter;
 public class Rune{
     @Getter
     double exp;
+
     @Getter @Setter
     int count;
+
     @Getter @Setter
     int carried;
+
     @Getter @Setter
     int crafted;
+
     @Getter
     String name;
+
     @Getter
     int id;
+
     public Rune(double exp, String name, int id) {
         this.exp = exp;
         this.count = 0;

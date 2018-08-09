@@ -74,7 +74,6 @@ class RunecraftingTrackerOverlay extends Overlay {
             return null;
         }
 
-
         RunecraftingTrackerSession session = plugin.getSession();
         if (session == null) {
             return null;
@@ -89,7 +88,6 @@ class RunecraftingTrackerOverlay extends Overlay {
                 .text("Runecrafting stats")
                 .color(Color.GREEN)
                 .build());
-
 
         int actions = xpTrackerService.getActions(Skill.RUNECRAFT);
         if (actions > 0) {
@@ -114,8 +112,6 @@ class RunecraftingTrackerOverlay extends Overlay {
                     .right(Integer.toString((this.profitMade()) / 1000) + "k")
                     .rightColor(Color.YELLOW)
                     .build());
-
-
         }
 
         return panelComponent.render(graphics);

@@ -42,7 +42,6 @@ public interface RunecraftingTrackerConfig extends Config
 		return 5;
 	}
 
-
 	@ConfigItem(
 		position = 3,
 		keyName = "showRunecraftingStats",
