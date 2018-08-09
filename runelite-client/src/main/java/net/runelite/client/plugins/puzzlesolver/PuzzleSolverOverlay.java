@@ -428,7 +428,7 @@ public class PuzzleSolverOverlay extends Overlay
 	{
 		if (downArrow == null)
 		{
-			downArrow = ImageUtil.resizeImage(spriteManager.getSprite(SpriteID.MINIMAP_GUIDE_ARROW_YELLOW, 0), 16, 16);
+			downArrow = ImageUtil.resizeImage(spriteManager.getSprite(SpriteID.MINIMAP_GUIDE_ARROW_YELLOW, 0), 15, 15);
 		}
 		return downArrow;
 	}
