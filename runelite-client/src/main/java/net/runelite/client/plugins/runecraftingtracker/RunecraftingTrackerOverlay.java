@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Henning Berge <henning@henning.tech>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
