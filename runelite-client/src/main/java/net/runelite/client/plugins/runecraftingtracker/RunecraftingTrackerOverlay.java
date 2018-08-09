@@ -37,7 +37,8 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 import javax.inject.Inject;
 import java.awt.*;
 
-class RunecraftingTrackerOverlay extends Overlay {
+class RunecraftingTrackerOverlay extends Overlay
+{
     private final Client client;
     private final RunecraftingTrackerPlugin plugin;
     private final RunecraftingTrackerConfig config;
@@ -45,7 +46,11 @@ class RunecraftingTrackerOverlay extends Overlay {
     private final PanelComponent panelComponent = new PanelComponent();
 
     @Inject
-    private RunecraftingTrackerOverlay(Client client, RunecraftingTrackerPlugin plugin, RunecraftingTrackerConfig config, XpTrackerService xpTrackerService) {
+    private RunecraftingTrackerOverlay(Client client,
+                                       RunecraftingTrackerPlugin plugin,
+                                       RunecraftingTrackerConfig config,
+                                       XpTrackerService xpTrackerService)
+    {
         setPosition(OverlayPosition.TOP_LEFT);
         this.client = client;
         this.plugin = plugin;
@@ -56,10 +61,13 @@ class RunecraftingTrackerOverlay extends Overlay {
     @Inject
     ItemManager itemManager;
 
-    private int profitMade() {
+    private int profitMade()
+    {
         int totalprofit = 0;
-        for (Rune rune : this.plugin.getRUNES().values()) {
-            if(rune.getCrafted() > 0) {
+        for (Rune rune : this.plugin.getRUNES().values())
+        {
+            if(rune.getCrafted() > 0)
+            {
                 int gePrice = itemManager.getItemPrice(rune.getId());
                 totalprofit += gePrice * rune.getCrafted();
 
@@ -69,13 +77,16 @@ class RunecraftingTrackerOverlay extends Overlay {
     }
 
     @Override
-    public Dimension render(Graphics2D graphics) {
-        if (!config.showRunecraftingStats()) {
+    public Dimension render(Graphics2D graphics)
+    {
+        if (!config.showRunecraftingStats())
+        {
             return null;
         }
 
         RunecraftingTrackerSession session = plugin.getSession();
-        if (session == null) {
+        if (session == null)
+        {
             return null;
         }
 
@@ -90,9 +101,12 @@ class RunecraftingTrackerOverlay extends Overlay {
                 .build());
 
         int actions = xpTrackerService.getActions(Skill.RUNECRAFT);
-        if (actions > 0) {
-            for (Rune rune : this.plugin.getRUNES().values()) {
-                if(rune.getCrafted() > 0) {
+        if (actions > 0)
+        {
+            for (Rune rune : this.plugin.getRUNES().values())
+            {
+                if(rune.getCrafted() > 0)
+                {
                     panelComponent.getChildren().add(LineComponent.builder()
                             .left(rune.getName() + ":")
                             .right(Integer.toString(rune.getCrafted()))

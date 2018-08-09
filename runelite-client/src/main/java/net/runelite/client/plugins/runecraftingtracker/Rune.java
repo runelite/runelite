@@ -26,7 +26,8 @@ package net.runelite.client.plugins.runecraftingtracker;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Rune{
+public class Rune
+{
     @Getter
     double exp;
 
@@ -45,7 +46,8 @@ public class Rune{
     @Getter
     int id;
 
-    public Rune(double exp, String name, int id) {
+    public Rune(double exp, String name, int id)
+    {
         this.exp = exp;
         this.count = 0;
         this.carried = 0;
