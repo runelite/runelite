@@ -46,6 +46,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.client.config.FlashingType;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.util.ColorUtil;
@@ -128,7 +129,7 @@ public class Notifier
 			}
 		}
 
-		if (runeLiteConfig.enableFlashNotification())
+		if (runeLiteConfig.enableFlashNotification() != FlashingType.OFF)
 		{
 			flashStart = Instant.now();
 		}
@@ -141,6 +142,15 @@ public class Notifier
 			return;
 		}
 
+		if (runeLiteConfig.enableFlashNotification() == FlashingType.PERSISTANT)
+		{
+			if (client.getMouseCurrentButton() == 1 || client.getGameState() != GameState.LOGGED_IN)
+			{
+				flashStart = null;
+				return;
+			}
+		}
+
 		if (client.getGameCycle() % 40 >= 20)
 		{
 			return;
@@ -151,7 +161,7 @@ public class Notifier
 		graphics.fill(new Rectangle(client.getCanvas().getSize()));
 		graphics.setColor(color);
 
-		if (Instant.now().minusMillis(FLASH_DURATION).isAfter(flashStart))
+		if (runeLiteConfig.enableFlashNotification() == FlashingType.DEFAULT && Instant.now().minusMillis(FLASH_DURATION).isAfter(flashStart))
 		{
 			flashStart = null;
 		}

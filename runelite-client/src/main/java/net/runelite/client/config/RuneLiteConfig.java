@@ -169,9 +169,9 @@ public interface RuneLiteConfig extends Config
 		description = "Flashes the game frame as a notification",
 		position = 24
 	)
-	default boolean enableFlashNotification()
+	default FlashingType enableFlashNotification()
 	{
-		return false;
+		return FlashingType.OFF;
 	}
 
 	@ConfigItem(
