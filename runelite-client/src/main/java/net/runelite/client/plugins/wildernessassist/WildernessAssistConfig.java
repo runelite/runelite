@@ -33,10 +33,10 @@ import net.runelite.client.config.ConfigItem;
 public interface WildernessAssistConfig extends Config
 {
 	@ConfigItem(
-		keyName = "tileBrightness",
-		name = "Tile Brightness",
-		description = "How bright the tile under a player should be",
-		position = 1
+			keyName = "tileBrightness",
+			name = "Tile Brightness",
+			description = "How bright the tile under a player should be",
+			position = 1
 	)
 	default TileBrightness getTileBrightness()
 	{
@@ -44,10 +44,10 @@ public interface WildernessAssistConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "ignoreFriends",
-		name = "Ignore Friends",
-		description = "Don't mark friends",
-		position = 2
+			keyName = "ignoreFriends",
+			name = "Ignore Friends",
+			description = "Don't mark friends",
+			position = 2
 	)
 	default boolean shouldIgnoreFriends()
 	{
@@ -55,10 +55,10 @@ public interface WildernessAssistConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "ignoreTeamMembers",
-		name = "Ignore Team Members",
-		description = "Don't mark people wearing the same team cape",
-		position = 3
+			keyName = "ignoreTeamMembers",
+			name = "Ignore Team Members",
+			description = "Don't mark people wearing the same team cape",
+			position = 3
 	)
 	default boolean shouldIgnoreTeamMembers()
 	{
@@ -66,10 +66,10 @@ public interface WildernessAssistConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "ignoreClanMembers",
-		name = "Ignore Clan Members",
-		description = "Don't mark clan members",
-		position = 4
+			keyName = "ignoreClanMembers",
+			name = "Ignore Clan Members",
+			description = "Don't mark clan members",
+			position = 4
 	)
 	default boolean shouldIgnoreClanMembers()
 	{
@@ -77,10 +77,10 @@ public interface WildernessAssistConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "ignoreSafeZones",
-		name = "Ignore Safe Zones",
-		description = "In PvP range areas (such as PvP worlds), continue to show overlays in safe zones",
-		position = 5
+			keyName = "ignoreSafeZones",
+			name = "Ignore Safe Zones",
+			description = "In PvP range areas (such as PvP worlds), continue to show overlays in safe zones",
+			position = 5
 	)
 	default boolean shouldIgnoreSafeZones()
 	{

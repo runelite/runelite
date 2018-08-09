@@ -38,103 +38,110 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-        name = "Wilderness Assist",
-        description = "Gain assistance when in the wilderness"
+		name = "Wilderness Assist",
+		description = "Gain assistance when in the wilderness"
 )
 @Slf4j
 public class WildernessAssistPlugin extends Plugin
 {
-    @Inject
-    private OverlayManager overlayManager;
+	@Inject
+	private OverlayManager overlayManager;
 
-    @Inject
-    private PlayerSceneOverlay playerSceneOverlay;
+	@Inject
+	private PlayerSceneOverlay playerSceneOverlay;
 
-    @Inject
-    private Client client;
+	@Inject
+	private Client client;
 
-    @Inject
-    private WildernessAssistConfig config;
+	@Inject
+	private WildernessAssistConfig config;
 
-    @Provides
-    WildernessAssistConfig provideConfig(ConfigManager configManager)
-    {
-        return configManager.getConfig(WildernessAssistConfig.class);
-    }
+	@Provides
+	WildernessAssistConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(WildernessAssistConfig.class);
+	}
 
-    @Override
-    protected void startUp() throws Exception
-    {
-        overlayManager.add(playerSceneOverlay);
-    }
+	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(playerSceneOverlay);
+	}
 
-    @Override
-    protected void shutDown() throws Exception
-    {
-        overlayManager.remove(playerSceneOverlay);
-    }
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(playerSceneOverlay);
+	}
 
-    public int getWildernessLevel()
-    {
-        Widget container = client.getWidget(WidgetInfo.WILDERNESS_CONTAINER);
+	public int getWildernessLevel()
+	{
+		Widget container = client.getWidget(WidgetInfo.WILDERNESS_CONTAINER);
 
-        if (container == null || container.isHidden()) {
-            return 0;
-        }
+		if (container == null || container.isHidden())
+		{
+			return 0;
+		}
 
-        if (! config.shouldIgnoreSafeZones()) {
-            Widget disabled = client.getWidget(WidgetInfo.WILDERNESS_DISABLED);
+		if (!config.shouldIgnoreSafeZones())
+		{
+			Widget disabled = client.getWidget(WidgetInfo.WILDERNESS_DISABLED);
 
-            if (disabled != null && !disabled.isHidden()) {
-                return 0;
-            }
-        }
+			if (disabled != null && !disabled.isHidden())
+			{
+				return 0;
+			}
+		}
 
-        Widget wildernessLevel = client.getWidget(WidgetInfo.WILDERNESS_LEVEL);
+		Widget wildernessLevel = client.getWidget(WidgetInfo.WILDERNESS_LEVEL);
 
-        if (wildernessLevel != null && ! wildernessLevel.isHidden()) {
-            String text = wildernessLevel.getText();
+		if (wildernessLevel != null && !wildernessLevel.isHidden())
+		{
+			String text = wildernessLevel.getText();
 
-            if (text == null || text.isEmpty()) {
-                return 0;
-            }
+			if (text == null || text.isEmpty())
+			{
+				return 0;
+			}
 
-            text = text.replace("Level:", "").trim();
+			text = text.replace("Level:", "").trim();
 
-            return Integer.valueOf(text);
-        }
+			return Integer.valueOf(text);
+		}
 
-        return getPvPWorldWildernessLevel();
-    }
+		return getPvPWorldWildernessLevel();
+	}
 
-    private int getPvPWorldWildernessLevel()
-    {
-        Widget wildernessLevelRange = client.getWidget(WidgetInfo.WILDERNESS_LEVEL_RANGE);
+	private int getPvPWorldWildernessLevel()
+	{
+		Widget wildernessLevelRange = client.getWidget(WidgetInfo.WILDERNESS_LEVEL_RANGE);
 
-        if (wildernessLevelRange == null && wildernessLevelRange.isHidden()) {
-            return 0;
-        }
+		if (wildernessLevelRange == null && wildernessLevelRange.isHidden())
+		{
+			return 0;
+		}
 
-        String text = wildernessLevelRange.getText();
+		String text = wildernessLevelRange.getText();
 
-        if (text == null || text.isEmpty()) {
-            return 0;
-        }
+		if (text == null || text.isEmpty())
+		{
+			return 0;
+		}
 
-        String[] levels = text.split("-");
+		String[] levels = text.split("-");
 
-        return (Integer.valueOf(levels[1]) - Integer.valueOf(levels[0])) / 2;
-    }
+		return (Integer.valueOf(levels[1]) - Integer.valueOf(levels[0])) / 2;
+	}
 
-    public boolean withinCombatLevelRange(Player p1, Player p2, int range)
-    {
-        return Math.abs(p1.getCombatLevel() - p2.getCombatLevel()) <= range;
-    }
+	public boolean withinCombatLevelRange(Player p1, Player p2, int range)
+	{
+		return Math.abs(p1.getCombatLevel() - p2.getCombatLevel()) <= range;
+	}
 
-    public int getScaledDifficulty(Player p1, Player p2, int range)
-    {
-        int difference = p1.getCombatLevel() - p2.getCombatLevel();
+	public int getScaledDifficulty(Player p1, Player p2, int range)
+	{
+		int difference = p1.getCombatLevel() - p2.getCombatLevel();
 
-        return Math.min(Math.max(-10, difference), 10);
-    }
+		return Math.min(Math.max(-10, difference), 10);
+	}
 }

@@ -44,83 +44,90 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 @Singleton
 public class PlayerSceneOverlay extends Overlay
 {
-    private final float HUE_YELLOW = 0.1666667f;
-    private final float HUE_TENTH_STEP = 0.01666667f;
+	private final float HUE_YELLOW = 0.1666667f;
+	private final float HUE_TENTH_STEP = 0.01666667f;
 
-    private final Client client;
-    private final WildernessAssistConfig config;
-    private final WildernessAssistPlugin plugin;
+	private final Client client;
+	private final WildernessAssistConfig config;
+	private final WildernessAssistPlugin plugin;
 
-    @Inject
-    private PlayerSceneOverlay(Client client, WildernessAssistConfig config, WildernessAssistPlugin plugin)
-    {
-        this.client = client;
-        this.config = config;
-        this.plugin = plugin;
-        setPosition(OverlayPosition.DYNAMIC);
-        setPriority(OverlayPriority.HIGH);
-        setLayer(OverlayLayer.ABOVE_SCENE);
-    }
+	@Inject
+	private PlayerSceneOverlay(Client client, WildernessAssistConfig config, WildernessAssistPlugin plugin)
+	{
+		this.client = client;
+		this.config = config;
+		this.plugin = plugin;
+		setPosition(OverlayPosition.DYNAMIC);
+		setPriority(OverlayPriority.HIGH);
+		setLayer(OverlayLayer.ABOVE_SCENE);
+	}
 
-    @Override
-    public Dimension render(Graphics2D graphics)
-    {
-        final Player localPlayer = client.getLocalPlayer();
-        final int localTeam = localPlayer.getTeam();
-        final int wildernessLevel = plugin.getWildernessLevel();
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		final Player localPlayer = client.getLocalPlayer();
+		final int localTeam = localPlayer.getTeam();
+		final int wildernessLevel = plugin.getWildernessLevel();
 
-        if (wildernessLevel == 0) {
-            return null;
-        }
+		if (wildernessLevel == 0)
+		{
+			return null;
+		}
 
-        for (Player player : client.getCachedPlayers())
-        {
-            if (player == null || player.getName() == null || player == localPlayer) {
-                continue;
-            }
+		for (Player player : client.getCachedPlayers())
+		{
+			if (player == null || player.getName() == null || player == localPlayer)
+			{
+				continue;
+			}
 
-            if (player.isFriend() && config.shouldIgnoreFriends()) {
-                continue;
-            }
+			if (player.isFriend() && config.shouldIgnoreFriends())
+			{
+				continue;
+			}
 
-            if (player.isClanMember() && config.shouldIgnoreClanMembers()) {
-                continue;
-            }
+			if (player.isClanMember() && config.shouldIgnoreClanMembers())
+			{
+				continue;
+			}
 
-            if (localTeam != 0 && localTeam == player.getTeam() && config.shouldIgnoreTeamMembers()) {
-                continue;
-            }
+			if (localTeam != 0 && localTeam == player.getTeam() && config.shouldIgnoreTeamMembers())
+			{
+				continue;
+			}
 
-            if (! plugin.withinCombatLevelRange(localPlayer, player, wildernessLevel)) {
-                continue;
-            }
+			if (!plugin.withinCombatLevelRange(localPlayer, player, wildernessLevel))
+			{
+				continue;
+			}
 
-            int difficulty = plugin.getScaledDifficulty(localPlayer, player, wildernessLevel);
+			int difficulty = plugin.getScaledDifficulty(localPlayer, player, wildernessLevel);
 
-            renderPlayerOverlay(graphics, player, difficulty);
-        }
+			renderPlayerOverlay(graphics, player, difficulty);
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    private void renderPlayerOverlay(Graphics2D graphics, Player player, int difficulty)
-    {
-        LocalPoint lp = player.getLocalLocation();
-        Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, 1);
+	private void renderPlayerOverlay(Graphics2D graphics, Player player, int difficulty)
+	{
+		LocalPoint lp = player.getLocalLocation();
+		Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, 1);
 
-        if (tilePoly == null) {
-            return;
-        }
+		if (tilePoly == null)
+		{
+			return;
+		}
 
-        final Color color = Color.getHSBColor(HUE_YELLOW + (HUE_TENTH_STEP * difficulty),1f,1f);
+		final Color color = Color.getHSBColor(HUE_YELLOW + (HUE_TENTH_STEP * difficulty), 1f, 1f);
 
-        final TileBrightness brightness = config.getTileBrightness();
+		final TileBrightness brightness = config.getTileBrightness();
 
-        graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), brightness.getStroke()));
-        graphics.setStroke(new BasicStroke(1));
-        graphics.draw(tilePoly);
+		graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), brightness.getStroke()));
+		graphics.setStroke(new BasicStroke(1));
+		graphics.draw(tilePoly);
 
-        graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), brightness.getFill()));
-        graphics.fill(tilePoly);
-    }
+		graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), brightness.getFill()));
+		graphics.fill(tilePoly);
+	}
 }
