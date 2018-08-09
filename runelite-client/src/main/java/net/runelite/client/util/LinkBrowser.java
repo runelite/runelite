@@ -97,8 +97,7 @@ public class LinkBrowser
 
 			if (result == JOptionPane.OK_OPTION)
 			{
-				final StringSelection stringSelection = new StringSelection(data);
-				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+				Clipboard.store(data);
 			}
 		});
 	}
