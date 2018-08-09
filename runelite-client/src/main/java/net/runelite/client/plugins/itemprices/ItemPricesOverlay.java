@@ -111,20 +111,34 @@ class ItemPricesOverlay extends Overlay
 						{
 							return null;
 						}
-						// intentional fallthrough
+
+						addValueTooltip(menuEntry);
+						break;
 					case WidgetID.BANK_GROUP_ID:
 					case WidgetID.BANK_INVENTORY_GROUP_ID:
-						// Make tooltip
-						final String text = makeValueTooltip(menuEntry);
-						if (text != null)
+						if (config.hideBank())
 						{
-							tooltipManager.add(new Tooltip(ColorUtil.prependColorTag(text, new Color(238, 238, 238))));
+							return null;
 						}
+
+						addValueTooltip(menuEntry);
 						break;
 				}
 				break;
 		}
 		return null;
+	}
+
+	private void addValueTooltip(MenuEntry menuEntry)
+	{
+		final String text = makeValueTooltip(menuEntry);
+
+		if (text == null || text.isEmpty())
+		{
+			return;
+		}
+
+		tooltipManager.add(new Tooltip(ColorUtil.prependColorTag(text, new Color(238, 238, 238))));
 	}
 
 	private String makeValueTooltip(MenuEntry menuEntry)
