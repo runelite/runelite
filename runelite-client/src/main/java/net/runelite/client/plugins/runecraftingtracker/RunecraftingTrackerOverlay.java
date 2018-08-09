@@ -46,10 +46,7 @@ class RunecraftingTrackerOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private RunecraftingTrackerOverlay(Client client,
-									   RunecraftingTrackerPlugin plugin,
-									   RunecraftingTrackerConfig config,
-									   XpTrackerService xpTrackerService)
+	private RunecraftingTrackerOverlay(Client client, RunecraftingTrackerPlugin plugin, RunecraftingTrackerConfig config, XpTrackerService xpTrackerService)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
