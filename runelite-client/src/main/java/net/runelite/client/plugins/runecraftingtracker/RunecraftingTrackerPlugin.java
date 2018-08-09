@@ -37,7 +37,6 @@ import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.api.events.ItemContainerChanged;
 
-
 import javax.inject.Inject;
 import java.time.Duration;
 import java.time.Instant;
