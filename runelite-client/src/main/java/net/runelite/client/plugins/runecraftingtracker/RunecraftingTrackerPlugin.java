@@ -1,27 +1,3 @@
-/*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
 package net.runelite.client.plugins.runecraftingtracker;
 
 import com.google.common.eventbus.Subscribe;
@@ -29,7 +5,6 @@ import com.google.inject.Provides;
 import lombok.Getter;
 import net.runelite.api.*;
 import net.runelite.api.events.*;
-import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
@@ -43,9 +18,7 @@ import javax.inject.Inject;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import static net.runelite.api.ItemID.*;
 
@@ -56,8 +29,6 @@ import static net.runelite.api.ItemID.*;
 )
 @PluginDependency(XpTrackerPlugin.class)
 public class RunecraftingTrackerPlugin extends Plugin {
-    @Inject
-    private Notifier notifier;
 
     @Inject
     private Client client;
@@ -73,12 +44,6 @@ public class RunecraftingTrackerPlugin extends Plugin {
 
     @Getter
     private RunecraftingTrackerSession session;
-
-    @Getter
-    private RunecraftingTrackerSession alltime;
-
-    @Getter
-    private final Set<GameObject> treeObjects = new HashSet<>();
 
     @Getter
     private int DeathRuneEXP = 10;
@@ -105,15 +70,12 @@ public class RunecraftingTrackerPlugin extends Plugin {
     @Override
     protected void shutDown() throws Exception {
         overlayManager.remove(overlay);
-        treeObjects.clear();
         session = null;
-        alltime = null;
     }
 
     @Subscribe
     public void onGameTick(GameTick gameTick) {
         if(this.RUNES.isEmpty()) {
-            System.out.println("Setting Null");
             this.RUNES.put(AIR_RUNE, new Rune(5, "Air", AIR_RUNE));
             this.RUNES.put(MIND_RUNE, new Rune(5.5, "Mind", MIND_RUNE));
             this.RUNES.put(WATER_RUNE, new Rune(6, "Water", WATER_RUNE));
@@ -127,12 +89,12 @@ public class RunecraftingTrackerPlugin extends Plugin {
             this.RUNES.put(LAW_RUNE, new Rune(9.5, "Law", LAW_RUNE));
             this.RUNES.put(DEATH_RUNE, new Rune(10, "Death", DEATH_RUNE));
         }
-        if (session == null || session.getLastLogCut() == null) {
+        if (session == null || session.getLastRuneCraft() == null) {
             return;
         }
 
         Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-        Duration sinceCut = Duration.between(session.getLastLogCut(), Instant.now());
+        Duration sinceCut = Duration.between(session.getLastRuneCraft(), Instant.now());
 
         if (sinceCut.compareTo(statTimeout) >= 0) {
             session = null;
@@ -146,17 +108,10 @@ public class RunecraftingTrackerPlugin extends Plugin {
                 if (session == null) {
                     session = new RunecraftingTrackerSession();
                 }
-                if (alltime == null) {
-                    alltime = new RunecraftingTrackerSession();
-                    this.alltime.setStarted();
-                }
 
-                session.setLastLogCut();
+                session.setLastRuneCraft();
             }
 
-            if (event.getMessage().contains("A bird's nest falls out of the tree") && config.showNestNotification()) {
-                notifier.notify("A bird nest has spawned!");
-            }
         }
     }
 
@@ -203,12 +158,9 @@ public class RunecraftingTrackerPlugin extends Plugin {
 
             }
         }
-        //System.out.println(essence);
-        //System.out.println(runes);
         if (essence == 0 && carriedEssence != 0){
             for (Rune rune : this.RUNES.values()) {
                 if(rune.getCount() > rune.getCarried()){
-                    System.out.printf("you crafted %d %s runes\n", (rune.getCount() - rune.getCarried()), rune.getName());
                     this.craftedRunes += rune.getCount() - rune.getCarried();
                     rune.setCrafted(rune.getCrafted() + (rune.getCount() - rune.getCarried()));
                 }
@@ -218,26 +170,10 @@ public class RunecraftingTrackerPlugin extends Plugin {
             rune.setCarried(rune.getCount());
         }
 
-        System.out.printf("total crafted %d runes\n", (this.craftedRunes));
         this.carriedEssence = essence;
         this.carriedRunes = totalRunes;
     }
 
-    @Subscribe
-    public void onGameObjectDespawned(final GameObjectDespawned event) {
-        treeObjects.remove(event.getGameObject());
-    }
 
-    @Subscribe
-    public void onGameObjectChanged(final GameObjectChanged event) {
-        treeObjects.remove(event.getGameObject());
-    }
-
-    @Subscribe
-    public void onGameStateChanged(final GameStateChanged event) {
-        if (event.getGameState() != GameState.LOGGED_IN) {
-            treeObjects.clear();
-        }
-    }
 
 }

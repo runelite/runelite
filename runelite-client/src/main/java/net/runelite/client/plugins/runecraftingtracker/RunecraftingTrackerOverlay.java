@@ -36,10 +36,6 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 
 import javax.inject.Inject;
 import java.awt.*;
-import java.time.Duration;
-import java.time.Instant;
-
-import static net.runelite.api.ItemID.DEATH_RUNE;
 
 class RunecraftingTrackerOverlay extends Overlay {
     private final Client client;
@@ -63,9 +59,10 @@ class RunecraftingTrackerOverlay extends Overlay {
     private int profitMade() {
         int totalprofit = 0;
         for (Rune rune : this.plugin.getRUNES().values()) {
-            if(rune.crafted > 0) {
+            if(rune.getCrafted() > 0) {
                 int gePrice = itemManager.getItemPrice(rune.getId());
                 totalprofit += gePrice * rune.getCrafted();
+
             }
         }
         return totalprofit;
@@ -73,7 +70,7 @@ class RunecraftingTrackerOverlay extends Overlay {
 
     @Override
     public Dimension render(Graphics2D graphics) {
-        if (!config.showWoodcuttingStats()) {
+        if (!config.showRunecraftingStats()) {
             return null;
         }
 
@@ -82,7 +79,6 @@ class RunecraftingTrackerOverlay extends Overlay {
         if (session == null) {
             return null;
         }
-        Duration sinceStarted = Duration.between(plugin.getAlltime().getStarted(), Instant.now());
 
         panelComponent.setPreferredSize(new Dimension(180, 0));
 
@@ -96,7 +92,6 @@ class RunecraftingTrackerOverlay extends Overlay {
 
 
         int actions = xpTrackerService.getActions(Skill.RUNECRAFT);
-        int gePrice = itemManager.getItemPrice(DEATH_RUNE);
         if (actions > 0) {
             for (Rune rune : this.plugin.getRUNES().values()) {
                 if(rune.getCrafted() > 0) {
@@ -114,30 +109,12 @@ class RunecraftingTrackerOverlay extends Overlay {
                     .right(Integer.toString(this.plugin.getCraftedRunes()))
                     .build());
 
-            if (actions > 2) {
-                panelComponent.getChildren().add(LineComponent.builder()
-                        .left("Per hour:")
-                        .right(Long.toString((3600 / sinceStarted.getSeconds()) * this.plugin.getCraftedRunes()))
-                        .build());
-            }
-            panelComponent.getChildren().add(LineComponent.builder()
-                    .left("")
-                    .build());
             panelComponent.getChildren().add(LineComponent.builder()
                     .left("Profit made:")
                     .right(Integer.toString((this.profitMade()) / 1000) + "k")
                     .rightColor(Color.YELLOW)
                     .build());
-            if (actions > 2) {
-                panelComponent.getChildren().add(LineComponent.builder()
-                        .left("Per hour:")
-                        .right(Long.toString(
-                                ((3600 / sinceStarted.getSeconds()) * this.profitMade()) / 1000
-                                ) + "k"
-                        )
-                        .rightColor(Color.CYAN)
-                        .build());
-            }
+
 
         }
 

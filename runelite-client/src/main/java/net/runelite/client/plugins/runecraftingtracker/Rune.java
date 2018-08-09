@@ -1,17 +1,9 @@
 package net.runelite.client.plugins.runecraftingtracker;
-
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static net.runelite.api.AnimationID.*;
-import static net.runelite.api.ItemID.*;
-
 public class Rune{
-    @Getter @Setter
+    @Getter
     double exp;
     @Getter @Setter
     int count;
@@ -19,9 +11,9 @@ public class Rune{
     int carried;
     @Getter @Setter
     int crafted;
-    @Getter @Setter
+    @Getter
     String name;
-    @Getter @Setter
+    @Getter
     int id;
     public Rune(double exp, String name, int id) {
         this.exp = exp;
