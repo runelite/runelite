@@ -39,96 +39,96 @@ import java.awt.*;
 
 class RunecraftingTrackerOverlay extends Overlay
 {
-    private final Client client;
-    private final RunecraftingTrackerPlugin plugin;
-    private final RunecraftingTrackerConfig config;
-    private final XpTrackerService xpTrackerService;
-    private final PanelComponent panelComponent = new PanelComponent();
+	private final Client client;
+	private final RunecraftingTrackerPlugin plugin;
+	private final RunecraftingTrackerConfig config;
+	private final XpTrackerService xpTrackerService;
+	private final PanelComponent panelComponent = new PanelComponent();
 
-    @Inject
-    private RunecraftingTrackerOverlay(Client client,
-                                       RunecraftingTrackerPlugin plugin,
-                                       RunecraftingTrackerConfig config,
-                                       XpTrackerService xpTrackerService)
-    {
-        setPosition(OverlayPosition.TOP_LEFT);
-        this.client = client;
-        this.plugin = plugin;
-        this.config = config;
-        this.xpTrackerService = xpTrackerService;
-    }
+	@Inject
+	private RunecraftingTrackerOverlay(Client client,
+									   RunecraftingTrackerPlugin plugin,
+									   RunecraftingTrackerConfig config,
+									   XpTrackerService xpTrackerService)
+	{
+		setPosition(OverlayPosition.TOP_LEFT);
+		this.client = client;
+		this.plugin = plugin;
+		this.config = config;
+		this.xpTrackerService = xpTrackerService;
+	}
 
-    @Inject
-    ItemManager itemManager;
+	@Inject
+	ItemManager itemManager;
 
-    private int profitMade()
-    {
-        int totalprofit = 0;
-        for (Rune rune : this.plugin.getRUNES().values())
-        {
-            if(rune.getCrafted() > 0)
-            {
-                int gePrice = itemManager.getItemPrice(rune.getId());
-                totalprofit += gePrice * rune.getCrafted();
+	private int profitMade()
+	{
+		int totalprofit = 0;
+		for (Rune rune : this.plugin.getRUNES().values())
+		{
+			if (rune.getCrafted() > 0)
+			{
+				int gePrice = itemManager.getItemPrice(rune.getId());
+				totalprofit += gePrice * rune.getCrafted();
 
-            }
-        }
-        return totalprofit;
-    }
+			}
+		}
+		return totalprofit;
+	}
 
-    @Override
-    public Dimension render(Graphics2D graphics)
-    {
-        if (!config.showRunecraftingStats())
-        {
-            return null;
-        }
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		if (!config.showRunecraftingStats())
+		{
+			return null;
+		}
 
-        RunecraftingTrackerSession session = plugin.getSession();
-        if (session == null)
-        {
-            return null;
-        }
+		RunecraftingTrackerSession session = plugin.getSession();
+		if (session == null)
+		{
+			return null;
+		}
 
-        panelComponent.setPreferredSize(new Dimension(180, 0));
+		panelComponent.setPreferredSize(new Dimension(180, 0));
 
-        panelComponent.getChildren().clear();
+		panelComponent.getChildren().clear();
 
 
-        panelComponent.getChildren().add(TitleComponent.builder()
-                .text("Runecrafting stats")
-                .color(Color.GREEN)
-                .build());
+		panelComponent.getChildren().add(TitleComponent.builder()
+				.text("Runecrafting stats")
+				.color(Color.GREEN)
+				.build());
 
-        int actions = xpTrackerService.getActions(Skill.RUNECRAFT);
-        if (actions > 0)
-        {
-            for (Rune rune : this.plugin.getRUNES().values())
-            {
-                if(rune.getCrafted() > 0)
-                {
-                    panelComponent.getChildren().add(LineComponent.builder()
-                            .left(rune.getName() + ":")
-                            .right(Integer.toString(rune.getCrafted()))
-                            .build());
-                }
-            }
-            panelComponent.getChildren().add(LineComponent.builder()
-                    .left("")
-                    .build());
-            panelComponent.getChildren().add(LineComponent.builder()
-                    .left("Total Crafted:")
-                    .right(Integer.toString(this.plugin.getCraftedRunes()))
-                    .build());
+		int actions = xpTrackerService.getActions(Skill.RUNECRAFT);
+		if (actions > 0)
+		{
+			for (Rune rune : this.plugin.getRUNES().values())
+			{
+				if (rune.getCrafted() > 0)
+				{
+					panelComponent.getChildren().add(LineComponent.builder()
+							.left(rune.getName() + ":")
+							.right(Integer.toString(rune.getCrafted()))
+							.build());
+				}
+			}
+			panelComponent.getChildren().add(LineComponent.builder()
+					.left("")
+					.build());
+			panelComponent.getChildren().add(LineComponent.builder()
+					.left("Total Crafted:")
+					.right(Integer.toString(this.plugin.getCraftedRunes()))
+					.build());
 
-            panelComponent.getChildren().add(LineComponent.builder()
-                    .left("Profit made:")
-                    .right(Integer.toString((this.profitMade()) / 1000) + "k")
-                    .rightColor(Color.YELLOW)
-                    .build());
-        }
+			panelComponent.getChildren().add(LineComponent.builder()
+					.left("Profit made:")
+					.right(Integer.toString((this.profitMade()) / 1000) + "k")
+					.rightColor(Color.YELLOW)
+					.build());
+		}
 
-        return panelComponent.render(graphics);
-    }
+		return panelComponent.render(graphics);
+	}
 
 }

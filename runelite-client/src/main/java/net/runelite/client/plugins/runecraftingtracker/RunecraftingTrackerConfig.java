@@ -32,10 +32,10 @@ import net.runelite.client.config.ConfigItem;
 public interface RunecraftingTrackerConfig extends Config
 {
 	@ConfigItem(
-		position = 1,
-		keyName = "statTimeout",
-		name = "Hide stats (minutes)",
-		description = "Configures the time until indicator is hidden."
+			position = 1,
+			keyName = "statTimeout",
+			name = "Hide stats (minutes)",
+			description = "Configures the time until indicator is hidden."
 	)
 	default int statTimeout()
 	{
@@ -43,10 +43,10 @@ public interface RunecraftingTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
-		keyName = "showRunecraftingStats",
-		name = "Show session stats",
-		description = "Configures whether to display runecrafting session stats"
+			position = 3,
+			keyName = "showRunecraftingStats",
+			name = "Show session stats",
+			description = "Configures whether to display runecrafting session stats"
 	)
 	default boolean showRunecraftingStats()
 	{
