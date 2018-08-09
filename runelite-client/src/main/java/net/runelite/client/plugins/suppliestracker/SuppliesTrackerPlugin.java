@@ -1216,8 +1216,6 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	}
 
-
-
 	private void buildEntries(int itemId, int quantity)
 	{
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
