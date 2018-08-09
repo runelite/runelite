@@ -212,6 +212,7 @@ enum DiscordGameEventType
 	DUNGEON_WHITE_WOLF_MOUNTAIN_CAVES("White Wolf Mountain Caves", DiscordAreaType.DUNGEONS, 11418, 11419, 11675),
 	DUNGEON_WITCHAVEN_SHRINE("Witchhaven Shrine Dungeon", DiscordAreaType.DUNGEONS, 10903),
 	DUNGEON_YANILLE_AGILITY("Yanile Agility Dungeon", DiscordAreaType.DUNGEONS, 10388),
+	DUNGEON_MOTHERLODE_MINE("Motherlode Mine", DiscordAreaType.DUNGEONS, 14679, 14680, 14681, 14935, 14936, 14937, 15191, 15192, 15193),
 
 	// Minigames
 	MG_BARBARIAN_ASSAULT("Barbarian Assault", DiscordAreaType.MINIGAMES, 10332),
