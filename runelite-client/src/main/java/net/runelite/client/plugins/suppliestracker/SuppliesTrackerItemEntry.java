@@ -33,6 +33,4 @@ class SuppliesTrackerItemEntry
 	private String name;
 	private int quantity;
 	private long price;
-
-
 }

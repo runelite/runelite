@@ -32,7 +32,6 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.StackFormatter;
-
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -118,9 +117,6 @@ class SuppliesTrackerPanel extends PluginPanel
 		popupMenu.add(reset);
 		overallPanel.setComponentPopupMenu(popupMenu);
 
-
-
-
 		// Create loot logs wrapper
 		logsContainer.setLayout(new BoxLayout(logsContainer, BoxLayout.Y_AXIS));
 		layoutPanel.add(overallPanel);
@@ -182,7 +178,8 @@ class SuppliesTrackerPanel extends PluginPanel
 			logsContainer.add(row, 0);
 			overallSuppliesUsed += quantity;
 			overallCost += cost;
-			/* Create reset menu */
+
+			//Create reset menu
 			final JMenuItem reset = new JMenuItem("Reset");
 			reset.addActionListener((ActionEvent e) ->
 			{
