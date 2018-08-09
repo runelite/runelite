@@ -254,6 +254,8 @@ public class WidgetID
 		static final int PRAYER_ORB = 12;
 		static final int QUICK_PRAYER_ORB = 14; // Has the "Quick-prayers" name
 		static final int RUN_ORB = 20;
+		static final int TOGGLE_RUN_ORB = 22; // Has the "Toggle run" name
+		static final int RUN_ORB_TEXT = 23;
 		static final int SPEC_ORB = 28;
 	}
 

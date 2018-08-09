@@ -457,6 +457,13 @@ public interface Client extends GameEngine
 	int getEnergy();
 
 	/**
+	 * Gets the current weight of the logged in player.
+	 *
+	 * @return the weight
+	 */
+	int getWeight();
+
+	/**
 	 * Gets an array of options that can currently be used on other players.
 	 * <p>
 	 * For example, if the player is in a PVP area the "Attack" option
