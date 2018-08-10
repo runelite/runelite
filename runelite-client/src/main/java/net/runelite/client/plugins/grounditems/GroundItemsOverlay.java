@@ -211,11 +211,7 @@ public class GroundItemsOverlay extends Overlay
 
 			if (item.getQuantity() > 1)
 			{
-				String amount = "Lots!";
-				if (item.getQuantity() < MAX_QUANTITY)
-				{
-					amount = StackFormatter.quantityToStackSize(item.getQuantity());
-				}
+				final String amount = item.getQuantity() < GroundItemsOverlay.MAX_QUANTITY ? StackFormatter.quantityToStackSize(item.getQuantity()) : "Lots!";
 
 				if (config.itemQuantityMode() == ItemQuantityMode.PARENTHESIS)
 				{

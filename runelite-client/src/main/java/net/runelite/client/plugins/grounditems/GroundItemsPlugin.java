@@ -393,11 +393,7 @@ public class GroundItemsPlugin extends Plugin
 
 			if (config.showMenuItemQuantities() && itemComposition.isStackable() && quantity > 1)
 			{
-				String amount = "Lots!";
-				if (quantity < GroundItemsOverlay.MAX_QUANTITY)
-				{
-					amount = StackFormatter.quantityToStackSize(quantity);
-				}
+				final String amount = quantity < GroundItemsOverlay.MAX_QUANTITY ? StackFormatter.quantityToStackSize(quantity) : "Lots!";
 
 				StringBuilder itemStringBuilder = new StringBuilder(lastEntry.getTarget());
 				if (config.itemQuantityMode() == ItemQuantityMode.PARENTHESIS)
