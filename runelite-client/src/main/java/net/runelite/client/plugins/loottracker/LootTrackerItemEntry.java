@@ -24,13 +24,59 @@
  */
 package net.runelite.client.plugins.loottracker;
 
-import lombok.Value;
 
-@Value
+
 class LootTrackerItemEntry
 {
-	private final int id;
-	private final String name;
-	private final int quantity;
-	private final long price;
+
+	long price;
+	int id;
+	String name;
+	int quantity;
+	LootTrackerItemEntry(int itemid, String iName, int quant, long iPrice)
+	{
+		this.id = itemid;
+		this.name = iName;
+		this.price = iPrice;
+		this.quantity = quant;
+	}
+
+	public long getPrice()
+	{
+		return price;
+	}
+
+	public void setPrice(long price)
+	{
+		this.price = price;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+
+	void setQuantity(int quantity1)
+	{
+		quantity = quantity1;
+	}
+	int getQuantity()
+	{
+		return quantity;
+	}
+
+	public int getId()
+	{
+		return id;
+	}
+
+	public void setId(int id)
+	{
+		this.id = id;
+	}
 }

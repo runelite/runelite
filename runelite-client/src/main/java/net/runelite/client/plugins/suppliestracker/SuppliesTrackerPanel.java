@@ -220,7 +220,7 @@ class SuppliesTrackerPanel extends PluginPanel
 		return itemId;
 	}
 
-	private int getHalf(int itemId) throws ExecutionException
+	private int getHalf(int itemId)
 	{
 		switch (itemId)
 		{
