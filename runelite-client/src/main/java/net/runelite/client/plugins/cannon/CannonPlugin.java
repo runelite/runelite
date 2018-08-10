@@ -33,15 +33,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.AnimationID;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GameObject;
-import net.runelite.api.ItemID;
+import lombok.Setter;
+import net.runelite.api.*;
+
+import static com.sun.deploy.util.SessionState.save;
+import static net.runelite.api.ChatMessageType.SERVER;
 import static net.runelite.api.ObjectID.CANNON_BASE;
-import net.runelite.api.Player;
-import net.runelite.api.Projectile;
 import static net.runelite.api.ProjectileID.CANNONBALL;
 import static net.runelite.api.ProjectileID.GRANITE_CANNONBALL;
 import net.runelite.api.coords.WorldPoint;
@@ -50,21 +49,32 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ProjectileMoved;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.slayer.SlayerConfig;
+import net.runelite.client.plugins.slayer.SlayerPlugin;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.Text;
+import net.runelite.api.GameState;
+import net.runelite.api.events.GameStateChanged;
 
 @PluginDescriptor(
 		name = "Cannon",
 		description = "Show information about cannon placement and/or amount of cannonballs",
 		tags = {"combat", "notifications", "ranged", "overlay"}
 )
+
+@PluginDependency(SlayerPlugin.class)
+
 public class CannonPlugin extends Plugin
 {
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
@@ -73,6 +83,13 @@ public class CannonPlugin extends Plugin
 	private CannonBallsCounter counter1;
 	private CannonCounter counter;
 	private boolean skipProjectileCheckThisTick;
+
+	private static final Pattern NPC_ASSIGN_MESSAGE = Pattern.compile(".*Your new task is to kill\\s*(\\d*) (.*)\\.");
+	private static final Pattern NPC_CURRENT_MESSAGE = Pattern.compile("You're still hunting (.*); you have (\\d*) to go\\..*");
+	private static final String CHAT_CANCEL_MESSAGE = "Your task has been cancelled.";
+	private static final String CHAT_CANCEL_MESSAGE_JAD = "You no longer have a slayer task as you left the fight cave.";
+	private static final String CHAT_GEM_COMPLETE_MESSAGE = "You need something new to hunt.";
+	private static final Pattern CHAT_GEM_PROGRESS_MESSAGE = Pattern.compile("You're assigned to kill (.*); only (\\d*) more to go\\.");
 
 	@Getter
 	private int TotalCannonballs;
@@ -91,6 +108,16 @@ public class CannonPlugin extends Plugin
 
 	@Getter
 	private List<WorldPoint> spotPoints = new ArrayList<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private String taskName;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private int TotalCannonballamount;
+
+	private boolean loginFlag;
 
 	@Inject
 	private ItemManager itemManager;
@@ -119,6 +146,9 @@ public class CannonPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
+	@Inject
+	private SlayerConfig Slayerconfig;
+
 	@Provides
 	CannonConfig provideConfig(ConfigManager configManager)
 	{
@@ -130,6 +160,13 @@ public class CannonPlugin extends Plugin
 	{
 		overlayManager.add(cannonOverlay);
 		overlayManager.add(cannonSpotOverlay);
+
+		if (client.getGameState() == GameState.LOGGED_IN
+				&& config.TotalCannonballamount() != -1
+				&& !Slayerconfig.taskName().isEmpty())
+		{
+			clientThread.invoke(() -> setTask(config.TotalCannonballamount()));
+		}
 	}
 
 	@Override
@@ -141,6 +178,28 @@ public class CannonPlugin extends Plugin
 		cannonPosition = null;
 		cballsLeft = 0;
 		removeCounter();
+	}
+
+	@Subscribe
+	public void onGameStateChange(GameStateChanged event)
+	{
+		switch (event.getGameState())
+		{
+			case HOPPING:
+			case LOGGING_IN:
+				taskName = "";
+				loginFlag = true;
+				break;
+			case LOGGED_IN:
+				if (config.TotalCannonballamount() != -1
+						&& !Slayerconfig.taskName().isEmpty()
+						&& loginFlag)
+				{
+					setTask(config.TotalCannonballamount());
+					loginFlag = false;
+				}
+				break;
+		}
 	}
 
 	@Subscribe
@@ -231,6 +290,30 @@ public class CannonPlugin extends Plugin
 		{
 			return;
 		}
+		String chatMsg = Text.removeTags(event.getMessage()); //remove color and linebreaks
+
+		if (chatMsg.endsWith("; return to a Slayer master.")) {
+			System.out.println("Cannonballs used in task: " + config.TotalCannonballamount());
+			TotalCannonballs = 0;
+			setTask(TotalCannonballs);
+			save();
+		}
+
+		if (chatMsg.equals(CHAT_GEM_COMPLETE_MESSAGE) || chatMsg.equals(CHAT_CANCEL_MESSAGE) || chatMsg.equals(CHAT_CANCEL_MESSAGE_JAD))
+		{
+			TotalCannonballs = 0;
+			setTask(TotalCannonballs);
+			save();
+			System.out.println("Task is gecanceld");
+		}
+
+		if (chatMsg.contains("You're assigned to kill (.*);")) {
+			TotalCannonballs = 0;
+			setTask(TotalCannonballs);
+			save();
+			System.out.println("Task monster: " + Slayerconfig.taskName());
+			System.out.println("Cannonballs used: " + config.TotalCannonballamount());
+		}
 
 		if (event.getMessage().equals("You add the furnace."))
 		{
@@ -243,7 +326,9 @@ public class CannonPlugin extends Plugin
 		{
 			cannonPlaced = false;
 			TotalCannonballs = TotalCannonballs - cballsLeft;
+			System.out.println("Cannonballs tot nu toe gebruikt tijdens task:" + TotalCannonballs);
 			cballsLeft = 0;
+			save();
 			removeCounter();
 		}
 
@@ -258,11 +343,13 @@ public class CannonPlugin extends Plugin
 					skipProjectileCheckThisTick = true;
 					cballsLeft = MAX_CBALLS;
 					TotalCannonballs += amt;
+					save();
 				}
 				else
 				{
 					cballsLeft += amt;
 					TotalCannonballs += amt;
+					save();
 				}
 			}
 			else if (event.getMessage().equals("You load the cannon with one cannonball."))
@@ -272,11 +359,13 @@ public class CannonPlugin extends Plugin
 					skipProjectileCheckThisTick = true;
 					cballsLeft = MAX_CBALLS;
 					TotalCannonballs++;
+					save();
 				}
 				else
 				{
 					cballsLeft++;
 					TotalCannonballs++;
+					save();
 				}
 			}
 		}
@@ -313,10 +402,37 @@ public class CannonPlugin extends Plugin
 		}
 	}
 
+	private void save()
+	{
+		config.TotalCannonballamount(TotalCannonballs);
+	}
+
+	private void setTask(int amt)
+	{
+		TotalCannonballs = amt;
+	}
+
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		skipProjectileCheckThisTick = false;
+
+		Widget NPCDialog = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
+		if (NPCDialog != null)
+		{
+			String NPCText = Text.removeTags(NPCDialog.getText()); //remove color and linebreaks
+			Matcher mAssign = NPC_ASSIGN_MESSAGE.matcher(NPCText); //number, name
+			Matcher mCurrent = NPC_CURRENT_MESSAGE.matcher(NPCText); //name, number
+			boolean found1 = mAssign.find();
+			boolean found2 = mCurrent.find();
+			if (!found1 && !found2)
+			{
+				return;
+			} else {
+				TotalCannonballs = 0;
+				setTask(TotalCannonballs);
+			}
+		}
 	}
 
 	Color getStateColor()

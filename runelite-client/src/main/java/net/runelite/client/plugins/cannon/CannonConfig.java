@@ -81,4 +81,22 @@ public interface CannonConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "TotalCannonballamount",
+			name = "",
+			description = "",
+			hidden = true
+	)
+	default int TotalCannonballamount()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+			keyName = "TotalCannonballamount",
+			name = "",
+			description = ""
+	)
+	void TotalCannonballamount(int amt);
 }
