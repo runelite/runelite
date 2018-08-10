@@ -65,10 +65,10 @@ public interface ItemPricesConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "hideInventory",
-			name = "Hide Tooltips on Inventory Items",
-			description = "Tooltips should be hidden on items in the inventory",
-			position = 4
+		keyName = "hideInventory",
+		name = "Hide Tooltips on Inventory Items",
+		description = "Tooltips should be hidden on items in the inventory",
+		position = 4
 	)
 	default boolean hideInventory()
 	{
@@ -76,10 +76,10 @@ public interface ItemPricesConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "hideBank",
-			name = "Hide Tooltips on Bank Items",
-			description = "Tooltips should be hidden on items in the bank",
-			position = 5
+		keyName = "hideBank",
+		name = "Hide Tooltips on Bank Items",
+		description = "Tooltips should be hidden on items in the bank",
+		position = 5
 	)
 	default boolean hideBank()
 	{
