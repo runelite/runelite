@@ -29,6 +29,7 @@ import com.google.common.base.Strings;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -44,6 +45,9 @@ class LootTrackerBox extends JPanel
 {
 	private static final int ITEMS_PER_ROW = 5;
 	private final long totalPrice;
+	public String itemsTest = "";
+	public ArrayList<Integer> removedKeys = new ArrayList<>();
+	public ArrayList<Integer> removedQuant = new ArrayList<>();
 
 	LootTrackerBox(final ItemManager itemManager, final String title, final String subTitle, final LootTrackerItemEntry[] items)
 	{
@@ -111,6 +115,8 @@ class LootTrackerBox extends JPanel
 		final String name = item.getName();
 		final int quantity = item.getQuantity();
 		final long price = item.getPrice();
+		removedKeys.add(item.getId());
+		removedQuant.add(item.getQuantity());
 
 		return name + " x " + quantity + " (" + StackFormatter.quantityToStackSize(price) + ")";
 	}
@@ -123,5 +129,14 @@ class LootTrackerBox extends JPanel
 			total += itemStack.getPrice();
 		}
 		return total;
+	}
+	public String getItems()
+	{
+		return itemsTest;
+	}
+
+	public ArrayList<Integer> getRemovedKeys()
+	{
+		return removedKeys;
 	}
 }

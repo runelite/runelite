@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
@@ -22,61 +23,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.loottracker;
+package net.runelite.client.plugins.suppliestracker;
 
 
+import net.runelite.client.game.AsyncBufferedImage;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
 
-class LootTrackerItemEntry
+
+class SuppliesTrackRow extends JPanel
 {
-
-	long price;
-	int id;
-	String name;
 	int quantity;
-	LootTrackerItemEntry(int itemid, String iName, int quant, long iPrice)
+	long totalCost;
+	int itemId;
+
+	SuppliesTrackRow(AsyncBufferedImage icon, String name, int quant, long cost, int id)
 	{
-		this.id = itemid;
-		this.name = iName;
-		this.price = iPrice;
-		this.quantity = quant;
+		//Set variables
+		quantity = quant;
+		totalCost = cost;
+		itemId = id;
+
+		//build components
+		setLayout(new BorderLayout());
+		JLabel iconLabel = new JLabel();
+		icon.addTo(iconLabel);
+		String rowText = "  x " + quant + "   (" + String.format("%,d", cost) + "gp)";
+		JLabel label = new JLabel(rowText);
+		iconLabel.setToolTipText(buildToolTip(name, quant, cost));
+
+		//add components
+		add(label, BorderLayout.CENTER);
+		add(iconLabel, BorderLayout.LINE_START);
 	}
 
-	public long getPrice()
+	private String buildToolTip(String name, int quantity, long cost)
 	{
-		return price;
+		return name + " x " + quantity + " (" + String.format("%,d", cost) + "gp)";
 	}
 
-	public void setPrice(long price)
-	{
-		this.price = price;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-
-	void setQuantity(int quantity1)
-	{
-		quantity = quantity1;
-	}
-	int getQuantity()
-	{
-		return quantity;
-	}
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
 }

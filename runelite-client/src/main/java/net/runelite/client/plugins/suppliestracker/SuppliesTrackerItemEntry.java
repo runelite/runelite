@@ -22,61 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.loottracker;
+package net.runelite.client.plugins.suppliestracker;
 
+import lombok.Value;
 
-
-class LootTrackerItemEntry
+@Value
+class SuppliesTrackerItemEntry
 {
-
-	long price;
-	int id;
-	String name;
-	int quantity;
-	LootTrackerItemEntry(int itemid, String iName, int quant, long iPrice)
-	{
-		this.id = itemid;
-		this.name = iName;
-		this.price = iPrice;
-		this.quantity = quant;
-	}
-
-	public long getPrice()
-	{
-		return price;
-	}
-
-	public void setPrice(long price)
-	{
-		this.price = price;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-
-	void setQuantity(int quantity1)
-	{
-		quantity = quantity1;
-	}
-	int getQuantity()
-	{
-		return quantity;
-	}
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
+	private int id;
+	private String name;
+	private int quantity;
+	private long price;
 }
