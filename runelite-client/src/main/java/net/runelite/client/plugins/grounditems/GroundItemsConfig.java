@@ -95,10 +95,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "highlightUntradables",
-			name = "Highlight untradables",
-			description = "Configures whether or not untradeable items should always be highlighted",
-			position = 4
+		keyName = "highlightUntradables",
+		name = "Highlight untradables",
+		description = "Configures whether or not untradeable items should always be highlighted",
+		position = 4
 	)
 	default boolean highlightUntradables()
 	{
