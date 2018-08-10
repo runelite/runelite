@@ -126,7 +126,7 @@ public class ConfigService
 
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("insert into config (user, `key`, value) values (:user, :key, :value) on duplicate key update value = :value")
+			con.createQuery("insert into config (user, `key`, value) values (:user, :key, :value) on duplicate key update `key` = :key, value = :value")
 				.addParameter("user", session.getUser())
 				.addParameter("key", key)
 				.addParameter("value", value != null ? value : "")

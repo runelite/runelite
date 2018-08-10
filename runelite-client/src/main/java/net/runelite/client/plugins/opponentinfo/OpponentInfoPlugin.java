@@ -53,7 +53,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 
 @PluginDescriptor(
-	name = "Opponent Information"
+	name = "Opponent Information",
+	description = "Show name and hitpoints information about the NPC you are fighting",
+	tags = {"combat", "health", "hitpoints", "npcs", "overlay"}
 )
 public class OpponentInfoPlugin extends Plugin
 {
@@ -116,13 +118,13 @@ public class OpponentInfoPlugin extends Plugin
 		}
 
 		EnumSet<WorldType> worldType = client.getWorldType();
-		if (worldType.contains(WorldType.DEADMAN))
-		{
-			hiscoreEndpoint = HiscoreEndpoint.DEADMAN;
-		}
-		else if (worldType.contains(WorldType.SEASONAL_DEADMAN))
+		if (worldType.contains(WorldType.SEASONAL_DEADMAN))
 		{
 			hiscoreEndpoint = HiscoreEndpoint.SEASONAL_DEADMAN;
+		}
+		else if (worldType.contains(WorldType.DEADMAN))
+		{
+			hiscoreEndpoint = HiscoreEndpoint.DEADMAN;
 		}
 		else
 		{

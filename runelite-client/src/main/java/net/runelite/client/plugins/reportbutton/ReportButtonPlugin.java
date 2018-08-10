@@ -34,7 +34,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.time.temporal.ChronoUnit;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
@@ -47,9 +46,10 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
-	name = "Report Button"
+	name = "Report Button",
+	description = "Replace the text on the Report button with the current time",
+	tags = {"time", "utc"}
 )
-@Slf4j
 public class ReportButtonPlugin extends Plugin
 {
 	private static final ZoneId UTC = ZoneId.of("UTC");
@@ -78,13 +78,13 @@ public class ReportButtonPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-		clientThread.invokeLater(this::updateReportButtonTime);
+		clientThread.invoke(this::updateReportButtonTime);
 	}
 
 	@Override
 	public void shutDown()
 	{
-		clientThread.invokeLater(() ->
+		clientThread.invoke(() ->
 		{
 			Widget reportButton = client.getWidget(WidgetInfo.CHATBOX_REPORT_TEXT);
 			if (reportButton != null)

@@ -643,6 +643,12 @@
       "xp": 120
     },
     {
+      "level": 47,
+      "icon": 21913,
+      "name": "Mounted Mythical Cape",
+      "xp": 370
+    },
+    {
       "level": 48,
       "icon": 5755,
       "name": "Chef's Delight",
@@ -687,7 +693,7 @@
     {
       "level": 52,
       "icon": 8118,
-      "name": "Teak Table",
+      "name": "Teak Kitchen Table",
       "xp": 270
     },
     {

@@ -113,22 +113,20 @@ class NameAutocompleter implements KeyListener
 		{
 			if (isExpectedNext(input, charToInsert))
 			{
-				final int insertIndex = input.getSelectionStart();
-				SwingUtilities.invokeLater(() ->
+				try
 				{
-					try
-					{
-						// Insert the character and move the selection.
-						Document doc = input.getDocument();
-						doc.remove(insertIndex, 1);
-						doc.insertString(insertIndex, charToInsert, null);
-						input.select(insertIndex + 1, input.getSelectionEnd());
-					}
-					catch (BadLocationException ex)
-					{
-						log.warn("Could not insert character.", ex);
-					}
-				});
+					// Insert the character and move the selection.
+					final int insertIndex = input.getSelectionStart();
+					Document doc = input.getDocument();
+					doc.remove(insertIndex, 1);
+					doc.insertString(insertIndex, charToInsert, null);
+					input.select(insertIndex + 1, input.getSelectionEnd());
+				}
+				catch (BadLocationException ex)
+				{
+					log.warn("Could not insert character.", ex);
+				}
+
 				// Prevent default behavior.
 				e.consume();
 			}

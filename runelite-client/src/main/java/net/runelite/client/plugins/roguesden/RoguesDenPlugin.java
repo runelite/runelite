@@ -30,7 +30,6 @@ import java.util.HashMap;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
@@ -52,9 +51,10 @@ import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Rogues' Den"
+	name = "Rogues' Den",
+	description = "Mark tiles and clickboxes to help traverse the maze",
+	tags = {"agility", "maze", "minigame", "overlay", "thieving"}
 )
-@Slf4j
 public class RoguesDenPlugin extends Plugin
 {
 	@Getter(AccessLevel.PACKAGE)

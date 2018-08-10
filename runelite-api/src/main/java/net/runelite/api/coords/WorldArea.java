@@ -230,8 +230,8 @@ public class WorldArea
 
 		LocalPoint lp = LocalPoint.fromWorld(client, x, y);
 
-		int startX = lp.getRegionX() + dx;
-		int startY = lp.getRegionY() + dy;
+		int startX = lp.getSceneX() + dx;
+		int startY = lp.getSceneY() + dy;
 		int checkX = startX + (dx > 0 ? width - 1 : 0);
 		int checkY = startY + (dy > 0 ? height - 1 : 0);
 		int endX = startX + width - 1;
@@ -303,7 +303,7 @@ public class WorldArea
 			for (int y = startY; y <= endY; y++)
 			{
 				if ((collisionDataFlags[checkX][y] & xFlags) != 0 ||
-					!extraCondition.test(WorldPoint.fromRegion(client, checkX, y, plane)))
+					!extraCondition.test(WorldPoint.fromScene(client, checkX, y, plane)))
 				{
 					// Collision while attempting to travel along the x axis
 					return false;
@@ -334,7 +334,7 @@ public class WorldArea
 			for (int x = startX; x <= endX; x++)
 			{
 				if ((collisionDataFlags[x][checkY] & yFlags) != 0 ||
-					!extraCondition.test(WorldPoint.fromRegion(client, x, checkY, client.getPlane())))
+					!extraCondition.test(WorldPoint.fromScene(client, x, checkY, client.getPlane())))
 				{
 					// Collision while attempting to travel along the y axis
 					return false;
@@ -362,7 +362,7 @@ public class WorldArea
 		if (dx != 0 && dy != 0)
 		{
 			if ((collisionDataFlags[checkX][checkY] & xyFlags) != 0 ||
-				!extraCondition.test(WorldPoint.fromRegion(client, checkX, checkY, client.getPlane())))
+				!extraCondition.test(WorldPoint.fromScene(client, checkX, checkY, client.getPlane())))
 			{
 				// Collision while attempting to travel diagonally
 				return false;
@@ -374,7 +374,7 @@ public class WorldArea
 			if (width == 1)
 			{
 				if ((collisionDataFlags[checkX][checkY - dy] & xFlags) != 0 &&
-					extraCondition.test(WorldPoint.fromRegion(client, checkX, startY, client.getPlane())))
+					extraCondition.test(WorldPoint.fromScene(client, checkX, startY, client.getPlane())))
 				{
 					return false;
 				}
@@ -382,7 +382,7 @@ public class WorldArea
 			if (height == 1)
 			{
 				if ((collisionDataFlags[checkX - dx][checkY] & yFlags) != 0 &&
-					extraCondition.test(WorldPoint.fromRegion(client, startX, checkY, client.getPlane())))
+					extraCondition.test(WorldPoint.fromScene(client, startX, checkY, client.getPlane())))
 				{
 					return false;
 				}
@@ -486,10 +486,10 @@ public class WorldArea
 
 		LocalPoint lp = LocalPoint.fromWorld(client, x, y);
 		if (lp == null ||
-			lp.getRegionX() + dx < 0 || lp.getRegionX() + dy >= Constants.REGION_SIZE ||
-			lp.getRegionY() + dx < 0 || lp.getRegionY() + dy >= Constants.REGION_SIZE)
+			lp.getSceneX() + dx < 0 || lp.getSceneX() + dy >= Constants.SCENE_SIZE ||
+			lp.getSceneY() + dx < 0 || lp.getSceneY() + dy >= Constants.SCENE_SIZE)
 		{
-			// NPC is travelling out of region, so collision data isn't available
+			// NPC is travelling out of the scene, so collision data isn't available
 			return null;
 		}
 
@@ -552,10 +552,10 @@ public class WorldArea
 			return false;
 		}
 
-		int thisX = sourceLp.getRegionX();
-		int thisY = sourceLp.getRegionY();
-		int otherX = targetLp.getRegionX();
-		int otherY = targetLp.getRegionY();
+		int thisX = sourceLp.getSceneX();
+		int thisY = sourceLp.getSceneY();
+		int otherX = targetLp.getSceneX();
+		int otherY = targetLp.getSceneY();
 
 		int cmpThisX, cmpThisY, cmpOtherX, cmpOtherY;
 
@@ -611,7 +611,7 @@ public class WorldArea
 			cmpOtherY = thisY;
 		}
 
-		Tile[][][] tiles = client.getRegion().getTiles();
+		Tile[][][] tiles = client.getScene().getTiles();
 		Tile sourceTile = tiles[plane][cmpThisX][cmpThisY];
 		Tile targetTile = tiles[other.getPlane()][cmpOtherX][cmpOtherY];
 		if (sourceTile == null || targetTile == null)

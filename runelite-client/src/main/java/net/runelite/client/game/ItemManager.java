@@ -27,11 +27,13 @@ package net.runelite.client.game;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.Subscribe;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -43,6 +45,7 @@ import net.runelite.api.Client;
 import static net.runelite.api.Constants.CLIENT_DEFAULT_ZOOM;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemID;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.callback.ClientThread;
@@ -62,15 +65,24 @@ public class ItemManager
 		private final boolean stackable;
 	}
 
+	@Value
+	private static class OutlineKey
+	{
+		private final int itemId;
+		private final int itemQuantity;
+		private final Color outlineColor;
+	}
+
 	private final Client client;
 	private final ScheduledExecutorService scheduledExecutorService;
 	private final ClientThread clientThread;
 
 	private final ItemClient itemClient = new ItemClient();
 	private final LoadingCache<String, SearchResult> itemSearches;
-	private final ConcurrentMap<Integer, ItemPrice> itemPrices = new ConcurrentHashMap<>();
+	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
 	private final LoadingCache<ImageKey, AsyncBufferedImage> itemImages;
 	private final LoadingCache<Integer, ItemComposition> itemCompositions;
+	private final LoadingCache<OutlineKey, BufferedImage> itemOutlines;
 
 	@Inject
 	public ItemManager(Client client, ScheduledExecutorService executor, ClientThread clientThread)
@@ -116,6 +128,18 @@ public class ItemManager
 					return client.getItemDefinition(key);
 				}
 			});
+
+		itemOutlines = CacheBuilder.newBuilder()
+			.maximumSize(128L)
+			.expireAfterAccess(1, TimeUnit.HOURS)
+			.build(new CacheLoader<OutlineKey, BufferedImage>()
+			{
+				@Override
+				public BufferedImage load(OutlineKey key) throws Exception
+				{
+					return loadItemOutline(key.itemId, key.itemQuantity, key.outlineColor);
+				}
+			});
 	}
 
 	private void loadPrices()
@@ -125,11 +149,12 @@ public class ItemManager
 			ItemPrice[] prices = itemClient.getPrices();
 			if (prices != null)
 			{
-				itemPrices.clear();
+				ImmutableMap.Builder<Integer, ItemPrice> map = ImmutableMap.builderWithExpectedSize(prices.length);
 				for (ItemPrice price : prices)
 				{
-					itemPrices.put(price.getItem().getId(), price);
+					map.put(price.getItem().getId(), price);
 				}
+				itemPrices = map.build();
 			}
 
 			log.debug("Loaded {} prices", itemPrices.size());
@@ -152,13 +177,31 @@ public class ItemManager
 	/**
 	 * Look up an item's price
 	 *
-	 * @param itemId item id
+	 * @param itemID item id
 	 * @return item price
 	 */
-	public ItemPrice getItemPrice(int itemId)
+	public int getItemPrice(int itemID)
 	{
-		itemId = ItemMapping.mapFirst(itemId);
-		return itemPrices.get(itemId);
+		if (itemID == ItemID.COINS_995)
+		{
+			return 1;
+		}
+		if (itemID == ItemID.PLATINUM_TOKEN)
+		{
+			return 1000;
+		}
+
+		int price = 0;
+		for (int mappedID : ItemMapping.map(itemID))
+		{
+			ItemPrice ip = itemPrices.get(mappedID);
+			if (ip != null)
+			{
+				price += ip.getPrice();
+			}
+		}
+
+		return price;
 	}
 
 	/**
@@ -182,6 +225,7 @@ public class ItemManager
 	 */
 	public ItemComposition getItemComposition(int itemId)
 	{
+		assert client.isClientThread() : "getItemComposition must be called on client thread";
 		return itemCompositions.getUnchecked(itemId);
 	}
 
@@ -194,7 +238,7 @@ public class ItemManager
 	private AsyncBufferedImage loadImage(int itemId, int quantity, boolean stackable)
 	{
 		AsyncBufferedImage img = new AsyncBufferedImage(36, 32, BufferedImage.TYPE_INT_ARGB);
-		clientThread.invokeLater(() ->
+		clientThread.invoke(() ->
 		{
 			if (client.getGameState().ordinal() < GameState.LOGIN_SCREEN.ordinal())
 			{
@@ -246,6 +290,40 @@ public class ItemManager
 			return itemImages.get(new ImageKey(itemId, quantity, stackable));
 		}
 		catch (ExecutionException ex)
+		{
+			return null;
+		}
+	}
+
+	/**
+	 * Create item sprite and applies an outline.
+	 *
+	 * @param itemId item id
+	 * @param itemQuantity item quantity
+	 * @param outlineColor outline color
+	 * @return image
+	 */
+	private BufferedImage loadItemOutline(final int itemId, final int itemQuantity, final Color outlineColor)
+	{
+		final SpritePixels itemSprite = client.createItemSprite(itemId, itemQuantity, 1, 0, 0, true, 710);
+		return itemSprite.toBufferedOutline(outlineColor);
+	}
+
+	/**
+	 * Get item outline with a specific color.
+	 *
+	 * @param itemId item id
+	 * @param itemQuantity item quantity
+	 * @param outlineColor outline color
+	 * @return image
+	 */
+	public BufferedImage getItemOutline(final int itemId, final int itemQuantity, final Color outlineColor)
+	{
+		try
+		{
+			return itemOutlines.get(new OutlineKey(itemId, itemQuantity, outlineColor));
+		}
+		catch (ExecutionException e)
 		{
 			return null;
 		}

@@ -36,6 +36,9 @@ public interface RSWidget extends Widget
 	@Override
 	RSWidget[] getChildren();
 
+	@Import("children")
+	void setChildren(RSWidget[] children);
+
 	@Import("id")
 	@Override
 	int getId();
@@ -46,8 +49,14 @@ public interface RSWidget extends Widget
 
 	void setRenderY(int y);
 
+	@Import("id")
+	void setId(int id);
+
 	@Import("parentId")
 	int getRSParentId();
+
+	@Import("parentId")
+	void setParentId(int id);
 
 	@Import("clickMask")
 	int getClickMask();
@@ -141,6 +150,9 @@ public interface RSWidget extends Widget
 	@Import("index")
 	int getIndex();
 
+	@Import("index")
+	void setIndex(int index);
+
 	@Import("rotationX")
 	int getRotationX();
 
@@ -181,6 +193,22 @@ public interface RSWidget extends Widget
 	@Import("scrollY")
 	@Override
 	void setScrollY(int scrollY);
+
+	@Import("scrollWidth")
+	@Override
+	int getScrollWidth();
+
+	@Import("scrollWidth")
+	@Override
+	void setScrollWidth(int width);
+
+	@Import("scrollHeight")
+	@Override
+	int getScrollHeight();
+
+	@Import("scrollHeight")
+	@Override
+	void setScrollHeight(int height);
 
 	@Import("spriteId")
 	@Override
@@ -250,4 +278,27 @@ public interface RSWidget extends Widget
 	void setPaddingY(int paddingY);
 
 	void broadcastHidden(boolean hidden);
+
+	@Import("onOpListener")
+	@Override
+	void setOnOpListener(Object ...args);
+
+	@Import("setAction")
+	@Override
+	void setAction(int idx, String action);
+
+	@Import("isIf3")
+	@Override
+	boolean isIf3();
+
+	@Import("isIf3")
+	void setIsIf3(boolean isIf3);
+
+	@Import("hasListener")
+	@Override
+	boolean hasListener();
+
+	@Import("hasListener")
+	@Override
+	void setHasListener(boolean hasListener);
 }

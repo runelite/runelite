@@ -30,11 +30,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "interfaceStyles",
-	name = "Interface Styles",
-	description = "Configuration for the Interface Styles plugin"
-)
+@ConfigGroup("interfaceStyles")
 public interface InterfaceStylesConfig extends Config
 {
 	@ConfigItem(

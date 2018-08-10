@@ -220,6 +220,11 @@ public enum Varbits
 
 	/**
 	 * Experience tracker
+	 *
+	 * EXPERIENCE_TRACKER_POSITION expected values:
+	 *   0 = Right
+	 *   1 = Middle
+	 *   2 = Left
 	 */
 	EXPERIENCE_TRACKER_POSITION(4692),
 	EXPERIENCE_TRACKER_COUNTER(4697),
@@ -253,6 +258,11 @@ public enum Varbits
 	TOTAL_POINTS(5431),
 	PERSONAL_POINTS(5422),
 	RAID_PARTY_SIZE(5424),
+
+	/**
+	 * Theatre of Blood 1=In Party, 2=Inside/Spectator, 3=Dead Spectating
+	 */
+	THEATRE_OF_BLOOD(6440),
 
 	/**
 	 * Nightmare Zone

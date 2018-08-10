@@ -276,11 +276,9 @@ public interface Client extends GameEngine
 	int getPlane();
 
 	/**
-	 * Gets the current region the local player is in.
-	 *
-	 * @return the region
+	 * Gets the current scene
 	 */
-	Region getRegion();
+	Scene getScene();
 
 	/**
 	 * Gets the logged in player instance.
@@ -330,11 +328,17 @@ public interface Client extends GameEngine
 	IndexDataBase getIndexSprites();
 
 	/**
+	 * Gets the script index database.
+	 *
+	 * @return the script database
+	 */
+	IndexDataBase getIndexScripts();
+
+	/**
 	 * Returns the x-axis base coordinate.
 	 * <p>
 	 * This value is the x-axis world coordinate of tile (0, 0) in
-	 * the current scene (ie. the bottom-left most coordinates in
-	 * the rendered region).
+	 * the current scene (ie. the bottom-left most coordinates in the scene).
 	 *
 	 * @return the base x-axis coordinate
 	 */
@@ -344,8 +348,7 @@ public interface Client extends GameEngine
 	 * Returns the y-axis base coordinate.
 	 * <p>
 	 * This value is the y-axis world coordinate of tile (0, 0) in
-	 * the current scene (ie. the bottom-left most coordinates in
-	 * the rendered region).
+	 * the current scene (ie. the bottom-left most coordinates in the scene).
 	 *
 	 * @return the base y-axis coordinate
 	 */
@@ -359,12 +362,11 @@ public interface Client extends GameEngine
 	int getMouseCurrentButton();
 
 	/**
-	 * Gets the currently selected region tile (ie. last right clicked
-	 * tile).
+	 * Gets the currently selected tile (ie. last right clicked tile).
 	 *
-	 * @return the selected region tile
+	 * @return the selected tile
 	 */
-	Tile getSelectedRegionTile();
+	Tile getSelectedSceneTile();
 
 	/**
 	 * Checks whether a widget is currently being dragged.
@@ -658,6 +660,28 @@ public interface Client extends GameEngine
 	 */
 	@VisibleForDevtools
 	int getVarbitValue(int[] varps, int varbitId);
+
+	/**
+	 * Gets the value of a given VarPlayer.
+	 *
+	 * @param varps passed varps
+	 * @param varpId the VarpPlayer id
+	 * @return the value
+	 * @see VarPlayer#id
+	 */
+	@VisibleForDevtools
+	int getVarpValue(int[] varps, int varpId);
+
+	/**
+	 * Sets the value of a given VarPlayer.
+	 *
+	 * @param varps passed varps
+	 * @param varpId the VarpPlayer id
+	 * @param value the value
+	 * @see VarPlayer#id
+	 */
+	@VisibleForDevtools
+	void setVarpValue(int[] varps, int varpId, int value);
 
 	/**
 	 * Sets the value of a given variable.
@@ -1395,4 +1419,11 @@ public interface Client extends GameEngine
 	 * @param state boolean enabled value
 	 */
 	void setOculusOrbState(int state);
+
+	/**
+	 * Sets the normal moving speed when using oculus orb (default value is 12)
+	 *
+	 * @param speed speed
+	 */
+	void setOculusOrbNormalSpeed(int speed);
 }

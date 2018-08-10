@@ -25,11 +25,10 @@
 package net.runelite.client.game;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Skill;
+import net.runelite.client.util.ImageUtil;
 
 @Singleton
 @Slf4j
@@ -48,21 +47,11 @@ public class SkillIconManager
 			return imgCache[skillIdx];
 		}
 
-		try
-		{
-			String skillIconPath = (small ? "/skill_icons_small/" : "/skill_icons/")
-				+ skill.getName().toLowerCase() + ".png";
-			log.debug("Loading skill icon from {}", skillIconPath);
-			synchronized (ImageIO.class)
-			{
-				skillImage = ImageIO.read(SkillIconManager.class.getResourceAsStream(skillIconPath));
-			}
-			imgCache[skillIdx] = skillImage;
-		}
-		catch (IOException e)
-		{
-			log.debug("Error Loading skill icons {}", e);
-		}
+		String skillIconPath = (small ? "/skill_icons_small/" : "/skill_icons/")
+			+ skill.getName().toLowerCase() + ".png";
+		log.debug("Loading skill icon from {}", skillIconPath);
+		skillImage = ImageUtil.getResourceStreamFromClass(getClass(), skillIconPath);
+		imgCache[skillIdx] = skillImage;
 
 		return skillImage;
 	}

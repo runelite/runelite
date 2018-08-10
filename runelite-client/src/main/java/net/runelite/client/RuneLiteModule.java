@@ -29,8 +29,10 @@ import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.name.Names;
+import java.applet.Applet;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import javax.annotation.Nullable;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -44,19 +46,35 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.rs.ClientUpdateCheckMode;
+import net.runelite.client.rs.ClientLoader;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.util.DeferredEventBus;
 import net.runelite.client.util.QueryRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import net.runelite.http.api.RuneLiteAPI;
+import okhttp3.OkHttpClient;
 
 @Slf4j
 public class RuneLiteModule extends AbstractModule
 {
+	private final ClientUpdateCheckMode updateCheckMode;
+	private final boolean developerMode;
+
+	public RuneLiteModule(final ClientUpdateCheckMode updateCheckMode, final boolean developerMode)
+	{
+		this.updateCheckMode = updateCheckMode;
+		this.developerMode = developerMode;
+	}
+
 	@Override
 	protected void configure()
 	{
+		bindConstant().annotatedWith(Names.named("updateCheckMode")).to(updateCheckMode);
+		bindConstant().annotatedWith(Names.named("developerMode")).to(developerMode);
 		bind(ScheduledExecutorService.class).toInstance(Executors.newSingleThreadScheduledExecutor());
+		bind(OkHttpClient.class).toInstance(RuneLiteAPI.CLIENT);
 		bind(QueryRunner.class);
 		bind(MenuManager.class);
 		bind(ChatMessageManager.class);
@@ -78,9 +96,17 @@ public class RuneLiteModule extends AbstractModule
 	}
 
 	@Provides
-	Client provideClient(RuneLite runeLite)
+	@Singleton
+	Applet provideApplet(ClientLoader clientLoader)
 	{
-		return runeLite.client;
+		return clientLoader.load();
+	}
+
+	@Provides
+	@Singleton
+	Client provideClient(@Nullable Applet applet)
+	{
+		return applet instanceof Client ? (Client) applet : null;
 	}
 
 	@Provides
