@@ -41,6 +41,7 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.http.api.item.Item;
+
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import java.awt.image.BufferedImage;
@@ -66,6 +67,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	ItemContainer old;
 	net.runelite.api.Item oldItems[] = new net.runelite.api.Item[]{};
 	Deque<Integer> stack = new ArrayDeque<Integer>();
+	Deque<Integer> slotstack = new ArrayDeque<Integer>();
 	int lastMenuEntryID = 0;
 
 
@@ -109,37 +111,49 @@ public class SuppliesTrackerPlugin extends Plugin
 		clientToolbar.removeNavigation(navButton);
 	}
 
+
 	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged) throws ExecutionException
-	{
+	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged) throws ExecutionException {
 		ItemContainer itemContainer = itemContainerChanged.getItemContainer();
-		if (itemContainer == client.getItemContainer(InventoryID.INVENTORY))
+		if (itemContainer == client.getItemContainer(InventoryID.INVENTORY) && old != null)
 		{
-			if (itemContainer.getItems()[actionParam] != old.getItems()[actionParam])
+			while (!slotstack.isEmpty())
 			{
-				while (!stack.isEmpty())
+				int slot = slotstack.pop();
+				if (itemContainer.getItems()[slot] != old.getItems()[slot])
 				{
-					if (stack.pop() != 7509)
+					while (!stack.isEmpty())
 					{
-						buildEntries(stack.pop());
+						int next = stack.pop();
+						if (next != 229 && next != 7510)
+						{
+							System.out.println("Build entries: " + next + " to slot " + slot);
+							buildEntries(next);
+						}
 					}
 				}
 			}
 		}
-	}
+			}
 
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event) throws ExecutionException
 	{
-		if (event.getMenuTarget().toLowerCase().contains("drink") || (event.getMenuTarget().toLowerCase().contains("eat")))
+		if (event.getMenuTarget().toLowerCase().contains("drink") || (event.getMenuTarget().toLowerCase().contains("eat") && event.getId() != 7510))
 		{
-			lastMenuEntryID = event.getId();
-			old = client.getItemContainer(InventoryID.INVENTORY);
-			net.runelite.api.Item oldItems[] = old.getItems();
-			if (old.getItems() != null)
+			if (!stack.contains(event.getId()))
 			{
-				actionParam = event.getActionParam();
-				stack.push(oldItems[event.getActionParam()].getId());
+				lastMenuEntryID = event.getId();
+				old = client.getItemContainer(InventoryID.INVENTORY);
+				net.runelite.api.Item oldItems[] = old.getItems();
+				if (old.getItems() != null)
+				{
+					actionParam = event.getActionParam();
+					int pushItem = oldItems[event.getActionParam()].getId();
+					stack.push(pushItem);
+					slotstack.push(actionParam);
+					System.out.println("Stack added: " + pushItem + " to slot " + actionParam);
+				}
 			}
 		}
 	}
@@ -192,7 +206,6 @@ public class SuppliesTrackerPlugin extends Plugin
 			if (potion)
 			{
 				price = price / 4;
-				System.out.println(price);
 			}
 			if (pizzapie)
 			{
@@ -208,7 +221,6 @@ public class SuppliesTrackerPlugin extends Plugin
 			//Check for duplicates
 			if (!suppliesEntry.containsKey(itemId))
 			{
-				System.out.println(price);
 				suppliesEntry.put(itemId, new SuppliesTrackerItemEntry(
 					itemId,
 					name,
@@ -217,7 +229,6 @@ public class SuppliesTrackerPlugin extends Plugin
 			}
 			else
 				{
-					System.out.println(price);
 					suppliesEntry.remove(itemId);
 					suppliesEntry.put(itemId, new SuppliesTrackerItemEntry(
 						itemId,
@@ -244,6 +255,7 @@ public class SuppliesTrackerPlugin extends Plugin
 		suppliesEntry.clear();
 		suppliesUsed.clear();
 	}
+
 
 	//Used for reset item row
 	void clearItem(int itemId)
