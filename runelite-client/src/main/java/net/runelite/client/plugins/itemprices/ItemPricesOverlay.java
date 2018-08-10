@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.itemprices;
 
+import com.google.common.base.Strings;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -133,7 +134,7 @@ class ItemPricesOverlay extends Overlay
 	{
 		final String text = makeValueTooltip(menuEntry);
 
-		if (text == null || text.isEmpty())
+		if (Strings.isNullOrEmpty(text))
 		{
 			return;
 		}
