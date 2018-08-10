@@ -77,6 +77,7 @@ enum DiscordGameEventType
 	BOSS_SKOTIZO("Skotizo", DiscordAreaType.BOSSES, 6810),
 	BOSS_SMOKE_DEVIL("Thermonuclear smoke devil", DiscordAreaType.BOSSES, 9363, 9619),
 	BOSS_VORKATH("Vorkath", DiscordAreaType.BOSSES, 9023),
+	BOSS_WINTERTODT("Wintertodt", DiscordAreaType.BOSSES, 6462),
 	BOSS_ZULRAH("Zulrah", DiscordAreaType.BOSSES, 9007),
 
 	// Cities
