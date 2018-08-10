@@ -127,7 +127,6 @@ public class SuppliesTrackerPlugin extends Plugin
 						int next = stack.pop();
 						if (next != 229 && next != 7510)
 						{
-							System.out.println("Build entries: " + next + " to slot " + slot);
 							buildEntries(next);
 						}
 					}
@@ -152,7 +151,6 @@ public class SuppliesTrackerPlugin extends Plugin
 					int pushItem = oldItems[event.getActionParam()].getId();
 					stack.push(pushItem);
 					slotstack.push(actionParam);
-					System.out.println("Stack added: " + pushItem + " to slot " + actionParam);
 				}
 			}
 		}
