@@ -96,6 +96,9 @@ public class GroundItemsPlugin extends Plugin
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 	// ItemID for coins
 	private static final int COINS = ItemID.COINS_995;
+	// The game won't send anything higher than this value to the plugin -
+	// so we replace any item quantity higher with "Lots" instead.
+	protected static final int MAX_QUANTITY = 65535;
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -393,7 +396,7 @@ public class GroundItemsPlugin extends Plugin
 
 			if (config.showMenuItemQuantities() && itemComposition.isStackable() && quantity > 1)
 			{
-				final String amount = quantity < GroundItemsOverlay.MAX_QUANTITY ? StackFormatter.quantityToStackSize(quantity) : "Lots!";
+				final String amount = formatItemQuantity(quantity);
 
 				StringBuilder itemStringBuilder = new StringBuilder(lastEntry.getTarget());
 				if (config.itemQuantityMode() == ItemQuantityMode.PARENTHESIS)
@@ -500,5 +503,15 @@ public class GroundItemsPlugin extends Plugin
 		{
 			setHotKeyPressed(false);
 		}
+	}
+
+	public final String formatItemQuantity(int quantity)
+	{
+		if (quantity >= MAX_QUANTITY)
+		{
+			return "Lots!";
+		}
+
+		return StackFormatter.quantityToStackSize(quantity);
 	}
 }
