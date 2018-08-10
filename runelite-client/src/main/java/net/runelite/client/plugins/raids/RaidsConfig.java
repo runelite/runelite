@@ -32,17 +32,6 @@ import net.runelite.client.config.ConfigItem;
 public interface RaidsConfig extends Config
 {
 	@ConfigItem(
-		position = 0,
-		keyName = "raidsTimer",
-		name = "Display elapsed raid time",
-		description = "Display elapsed raid time"
-	)
-	default boolean raidsTimer()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		position = 1,
 		keyName = "pointsMessage",
 		name = "Display points in chatbox after raid",

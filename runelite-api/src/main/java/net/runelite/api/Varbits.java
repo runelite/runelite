@@ -258,6 +258,7 @@ public enum Varbits
 	TOTAL_POINTS(5431),
 	PERSONAL_POINTS(5422),
 	RAID_PARTY_SIZE(5424),
+	RAID_TIME(6386),
 
 	/**
 	 * Theatre of Blood 1=In Party, 2=Inside/Spectator, 3=Dead Spectating

@@ -28,7 +28,6 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.text.DecimalFormat;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
@@ -43,30 +42,23 @@ import net.runelite.api.InstanceTemplates;
 import net.runelite.api.NullObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.Point;
-import static net.runelite.api.SpriteID.TAB_QUESTS_BROWN_RAIDING_PARTY;
 import net.runelite.api.Tile;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.events.WidgetHiddenChanged;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Chambers Of Xeric",
@@ -77,19 +69,14 @@ import net.runelite.client.util.Text;
 public class RaidsPlugin extends Plugin
 {
 	private static final int LOBBY_PLANE = 3;
-	private static final String RAID_START_MESSAGE = "The raid has begun!";
-	private static final String LEVEL_COMPLETE_MESSAGE = "level complete!";
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
-	static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
+	private static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final String SPLIT_REGEX = "\\s*,\\s*";
 	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)]");
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
-
-	@Inject
-	private InfoBoxManager infoBoxManager;
 
 	@Inject
 	private Client client;
@@ -104,13 +91,7 @@ public class RaidsPlugin extends Plugin
 	private RaidsOverlay overlay;
 
 	@Inject
-	private RaidsPointsOverlay pointsOverlay;
-
-	@Inject
 	private LayoutSolver layoutSolver;
-
-	@Inject
-	private SpriteManager spriteManager;
 
 	@Getter
 	private final ArrayList<String> roomWhitelist = new ArrayList<>();
@@ -130,8 +111,6 @@ public class RaidsPlugin extends Plugin
 	@Getter
 	private boolean inRaidChambers;
 
-	private RaidsTimer timer;
-
 	@Provides
 	RaidsConfig provideConfig(ConfigManager configManager)
 	{
@@ -148,7 +127,6 @@ public class RaidsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
-		overlayManager.add(pointsOverlay);
 		updateLists();
 		checkRaidPresence(true);
 	}
@@ -157,11 +135,8 @@ public class RaidsPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
-		overlayManager.remove(pointsOverlay);
-		infoBoxManager.removeInfoBox(timer);
 		inRaidChambers = false;
 		raid = null;
-		timer = null;
 	}
 
 	@Subscribe
@@ -172,30 +147,8 @@ public class RaidsPlugin extends Plugin
 			return;
 		}
 
-		if (event.getKey().equals("raidsTimer"))
-		{
-			updateInfoBoxState();
-			return;
-		}
-
 		updateLists();
 		checkRaidPresence(true);
-	}
-
-	@Subscribe
-	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
-	{
-		if (!inRaidChambers || event.isHidden())
-		{
-			return;
-		}
-
-		Widget widget = event.getWidget();
-
-		if (widget == client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX))
-		{
-			widget.setHidden(true);
-		}
 	}
 
 	@Subscribe
@@ -207,59 +160,39 @@ public class RaidsPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (inRaidChambers && event.getType() == ChatMessageType.CLANCHAT_INFO)
+		if (!inRaidChambers || event.getType() != ChatMessageType.CLANCHAT_INFO)
 		{
-			String message = Text.removeTags(event.getMessage());
+			return;
+		}
 
-			if (config.raidsTimer() && message.startsWith(RAID_START_MESSAGE))
-			{
-				timer = new RaidsTimer(spriteManager.getSprite(TAB_QUESTS_BROWN_RAIDING_PARTY, 0), this, Instant.now());
-				infoBoxManager.addInfoBox(timer);
-			}
+		if (config.pointsMessage() && event.getMessage().contains(RAID_COMPLETE_MESSAGE))
+		{
+			int totalPoints = client.getVar(Varbits.TOTAL_POINTS);
+			int personalPoints = client.getVar(Varbits.PERSONAL_POINTS);
 
-			if (timer != null && message.contains(LEVEL_COMPLETE_MESSAGE))
-			{
-				timer.timeFloor();
-			}
+			double percentage = personalPoints / (totalPoints / 100.0);
 
-			if (message.startsWith(RAID_COMPLETE_MESSAGE))
-			{
-				if (timer != null)
-				{
-					timer.timeFloor();
-					timer.setStopped(true);
-				}
+			String chatMessage = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("Total points: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(POINTS_FORMAT.format(totalPoints))
+				.append(ChatColorType.NORMAL)
+				.append(", Personal points: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(POINTS_FORMAT.format(personalPoints))
+				.append(ChatColorType.NORMAL)
+				.append(" (")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(DECIMAL_FORMAT.format(percentage))
+				.append(ChatColorType.NORMAL)
+				.append("%)")
+				.build();
 
-				if (config.pointsMessage())
-				{
-					int totalPoints = client.getVar(Varbits.TOTAL_POINTS);
-					int personalPoints = client.getVar(Varbits.PERSONAL_POINTS);
-
-					double percentage = personalPoints / (totalPoints / 100.0);
-
-					String chatMessage = new ChatMessageBuilder()
-							.append(ChatColorType.NORMAL)
-							.append("Total points: ")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(POINTS_FORMAT.format(totalPoints))
-							.append(ChatColorType.NORMAL)
-							.append(", Personal points: ")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(POINTS_FORMAT.format(personalPoints))
-							.append(ChatColorType.NORMAL)
-							.append(" (")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(DECIMAL_FORMAT.format(percentage))
-							.append(ChatColorType.NORMAL)
-							.append("%)")
-							.build();
-
-					chatMessageManager.queue(QueuedMessage.builder()
-						.type(ChatMessageType.CLANCHAT_INFO)
-						.runeLiteFormattedMessage(chatMessage)
-						.build());
-				}
-			}
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.CLANCHAT_INFO)
+				.runeLiteFormattedMessage(chatMessage)
+				.build());
 		}
 	}
 
@@ -275,7 +208,6 @@ public class RaidsPlugin extends Plugin
 		if (force || inRaidChambers != setting)
 		{
 			inRaidChambers = setting;
-			updateInfoBoxState();
 
 			if (inRaidChambers)
 			{
@@ -309,28 +241,6 @@ public class RaidsPlugin extends Plugin
 		if (client.getVar(VarPlayer.IN_RAID_PARTY) == -1 && (!inRaidChambers || !config.scoutOverlayInRaid()))
 		{
 			overlay.setScoutOverlayShown(false);
-		}
-	}
-
-	private void updateInfoBoxState()
-	{
-		if (timer == null)
-		{
-			return;
-		}
-
-		if (inRaidChambers && config.raidsTimer())
-		{
-			infoBoxManager.addInfoBox(timer);
-		}
-		else
-		{
-			infoBoxManager.removeInfoBox(timer);
-		}
-
-		if (!inRaidChambers)
-		{
-			timer = null;
 		}
 	}
 
