@@ -46,7 +46,7 @@ public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScr
 		new CipherClue("The cipher reveals who to speak to next: BMJ UIF LFCBC TFMMFS", "Ali the Kebab seller", new WorldPoint(3354, 2974, 0), "Pollnivneach", "399"),
 		new CipherClue("The cipher reveals who to speak to next: GUHCHO", "Drezel", new WorldPoint(3440, 9895, 0), "Paterdomus", "7"),
 		new CipherClue("The cipher reveals who to speak to next: ZCZL", "Adam", new WorldPoint(3227, 3227, 0), "Outside Lumbridge castle", "666"),
-		new CipherClue("The cipher reveals who to speak to next: ZHLUG ROG PDQ", "Weird Old Man", new WorldPoint(3224, 3112, 0), "Kalphite Lair entrance", "150"),
+		new CipherClue("The cipher reveals who to speak to next: ZHLUG ROG PDQ", "Weird Old Man", new WorldPoint(3224, 3112, 0), "Kalphite Lair entrance. Fairy ring BIQ", "150"),
 		new CipherClue("The cipher reveals who to speak to next: ECRVCKP MJCNGF", "Captain Khaled", new WorldPoint(1845, 3754, 0), "Large eastern building in Piscarilius House", "5"),
 		new CipherClue("The cipher reveals who to speak to next: OVEXON", "Eluned", new WorldPoint(2289, 3144, 0), "Outside Lletya", "53,000"),
 		new CipherClue("The cipher reveals who to speak to next: VTYR APCNTGLW", "King Percival", new WorldPoint(2634, 4682, 1), "Fisher Realm, first floor. Fairy ring BJR", "5"),
