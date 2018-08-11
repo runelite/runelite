@@ -37,15 +37,19 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Prayer;
+import net.runelite.api.Skill;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
 	name = "Prayer",
@@ -60,6 +64,9 @@ public class PrayerPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean prayersActive = false;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int prayerBonus;
 
 	@Inject
 	private Client client;
@@ -106,6 +113,7 @@ public class PrayerPlugin extends Plugin
 		overlayManager.remove(doseOverlay);
 		overlayManager.remove(barOverlay);
 		removeIndicators();
+		resetPrayerOrbText();
 	}
 
 	@Subscribe
@@ -113,6 +121,11 @@ public class PrayerPlugin extends Plugin
 	{
 		if (event.getGroup().equals("prayer"))
 		{
+			if (!config.replaceOrbText())
+			{
+				resetPrayerOrbText();
+			}
+
 			if (!config.prayerIndicator())
 			{
 				removeIndicators();
@@ -144,9 +157,8 @@ public class PrayerPlugin extends Plugin
 
 			if (equipment != null)
 			{
-				doseOverlay.setPrayerBonus(checkContainerForPrayer(equipment.getItems()));
+				prayerBonus = checkContainerForPrayer(equipment.getItems());
 			}
-
 		}
 	}
 
@@ -158,6 +170,20 @@ public class PrayerPlugin extends Plugin
 		if (!config.prayerFlickLocation().equals(PrayerFlickLocation.NONE))
 		{
 			startOfLastTick = Instant.now();
+		}
+
+		if (config.replaceOrbText())
+		{
+			final String secondsLeft = getEstimatedTimeRemaining(true);
+
+			if (secondsLeft.equals("N/A"))
+			{
+				resetPrayerOrbText(); // Just show the percentage if not praying
+			}
+			else
+			{
+				setPrayerOrbText(secondsLeft);
+			}
 		}
 
 		if (config.showPrayerDoseIndicator())
@@ -201,6 +227,21 @@ public class PrayerPlugin extends Plugin
 				prayerCounter[ord] = null;
 			}
 		}
+	}
+
+	private void setPrayerOrbText(String text)
+	{
+		Widget prayerOrbText = client.getWidget(WidgetInfo.MINIMAP_PRAYER_ORB_TEXT);
+
+		if (prayerOrbText != null)
+		{
+			prayerOrbText.setText(text);
+		}
+	}
+
+	private void resetPrayerOrbText()
+	{
+		setPrayerOrbText(Integer.toString(client.getBoostedSkillLevel(Skill.PRAYER)));
 	}
 
 	private int checkContainerForPrayer(Item[] items)
@@ -263,6 +304,53 @@ public class PrayerPlugin extends Plugin
 		}
 
 		return false;
+	}
+
+	double getPrayerDrainRate(Client client)
+	{
+		double drainRate = 0.0;
+
+		for (Prayer prayer : Prayer.values())
+		{
+			if (client.isPrayerActive(prayer))
+			{
+				drainRate += prayer.getDrainRate();
+			}
+		}
+
+		return drainRate;
+	}
+
+	String getEstimatedTimeRemaining(boolean inSeconds)
+	{
+		// Base data
+		final double drainRate = getPrayerDrainRate(client);
+
+		if (drainRate == 0)
+		{
+			return "N/A";
+		}
+
+		final int currentPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
+
+		// Calculate how many seconds each prayer points last so the prayer bonus can be applied
+		final double secondsPerPoint = (60.0 / drainRate) * (1.0 + (prayerBonus / 30.0));
+
+		// Calculate the number of seconds left
+		final double secondsLeft = (currentPrayer * secondsPerPoint);
+
+		// Return the text
+		if (inSeconds)
+		{
+			return Integer.toString((int) Math.floor(secondsLeft)) + "s";
+		}
+		else
+		{
+			final int minutes = (int) Math.floor(secondsLeft / 60.0);
+			final int seconds = (int) Math.floor(secondsLeft - (minutes * 60.0));
+
+			return Integer.toString(minutes) + ":" + StringUtils.leftPad(Integer.toString(seconds), 2, "0");
+		}
 	}
 
 	private void removeIndicators()

@@ -88,6 +88,17 @@ public interface PrayerConfig extends Config
 
 	@ConfigItem(
 		position = 5,
+		keyName = "replaceOrbText",
+		name = "Replace orb text with time left",
+		description = "Displays the remaining prayer time (in seconds) next to the prayer orb when praying."
+	)
+	default boolean replaceOrbText()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 6,
 		keyName = "showPrayerBar",
 		name = "Show prayer bar",
 		description = "Displays prayer bar under HP bar when praying."
@@ -101,7 +112,7 @@ public interface PrayerConfig extends Config
 		keyName = "prayerBarHideIfNotPraying",
 		name = "Hide bar while prayer is inactive",
 		description = "Prayer bar will be hidden while prayers are inactivate.",
-		position = 6
+		position = 7
 	)
 	default boolean hideIfNotPraying()
 	{
@@ -112,7 +123,7 @@ public interface PrayerConfig extends Config
 		keyName = "prayerBarHideIfNonCombat",
 		name = "Hide bar while out-of-combat",
 		description = "Prayer bar will be hidden while out-of-combat.",
-		position = 7
+		position = 8
 	)
 	default boolean hideIfOutOfCombat()
 	{
