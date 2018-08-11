@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Morgan Lewis <https://github.com/MESLewis>
+ * Copyright (c) 2018, Heikki <https://github.com/Justsofun>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -106,19 +107,17 @@ public class WorldMapPlugin extends Plugin
 			switch (event.getKey())
 			{
 				case CONFIG_KEY_FAIRY_RING_TOOLTIPS:
-					if (config.fairyRingTooltips())
+				case CONFIG_KEY_FAIRY_RING_ICON:
+					worldMapPointManager.removeIf(FairyRingPoint.class::isInstance);
+
+					if (config.fairyRingTooltips() || config.fairyRingIcon())
 					{
 						Arrays.stream(FairyRingLocation.values())
 							.map(FairyRingLocation::getFairyRingPoint)
 							.forEach(worldMapPointManager::add);
+						FairyRingLocation.setIcon(config.fairyRingIcon() ? FAIRY_TRAVEL_ICON : BLANK_ICON);
+						FairyRingLocation.setTooltip(config.fairyRingTooltips());
 					}
-					else
-					{
-						worldMapPointManager.removeIf(FairyRingPoint.class::isInstance);
-					}
-					break;
-				case CONFIG_KEY_FAIRY_RING_ICON:
-					FairyRingLocation.setIcon(config.fairyRingIcon() ? FAIRY_TRAVEL_ICON : BLANK_ICON);
 					break;
 				case CONFIG_KEY_AGILITY_SHORTCUT_TOOLTIPS:
 				case CONFIG_KEY_AGILITY_SHORTCUT_LEVEL_ICON:
