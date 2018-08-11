@@ -126,7 +126,7 @@ public class BirdHouseTracker
 	{
 		boolean changed = false;
 
-		if (FOSSIL_ISLAND_REGIONS.contains(location.getRegionID()))
+		if (FOSSIL_ISLAND_REGIONS.contains(location.getRegionID()) && location.getPlane() == 0)
 		{
 			final Map<BirdHouseSpace, BirdHouseData> newData = new HashMap<>();
 			final long currentTime = Instant.now().getEpochSecond();
