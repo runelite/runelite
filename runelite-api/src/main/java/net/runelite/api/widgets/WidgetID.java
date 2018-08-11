@@ -108,7 +108,7 @@ public class WidgetID
 	public static final int KILL_LOGS_GROUP_ID = 549;
 	public static final int DIARY_QUEST_GROUP_ID = 275;
 	public static final int THEATRE_OF_BLOOD_GROUP_ID = 23;
-  public static final int SPELLBOOK_GROUP_ID = 218;
+	public static final int SPELLBOOK_GROUP_ID = 218;
 
 	static class WorldMap
 	{
@@ -592,7 +592,7 @@ public class WidgetID
 		static final int STREAK = 15;
 	}
   
-  static class StandardSpellBook
+	static class StandardSpellBook
 	{
 		static final int STANDARD_SPELLBOOK_CONTAINER = 0;
 		static final int LUMBRIDGE_HOME_TELEPORT = 1;
