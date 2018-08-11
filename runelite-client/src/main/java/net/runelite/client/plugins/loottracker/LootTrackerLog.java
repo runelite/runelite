@@ -31,7 +31,6 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -49,6 +48,7 @@ class LootTrackerLog extends JPanel
 	private static final int ITEMS_PER_ROW = 5;
 
 	private final JLabel priceLabel = new JLabel();
+	private final JLabel subTitleLabel = new JLabel();
 	private final JPanel itemContainer = new JPanel();
 
 	private final ArrayList<LootTrackerItemEntry> entries = new ArrayList<>();
@@ -65,7 +65,7 @@ class LootTrackerLog extends JPanel
 		setLayout(new BorderLayout(0, 1));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
 
-		final JPanel logTitle = new JPanel(new BorderLayout(5, 0));
+		final JPanel logTitle = new JPanel(new BorderLayout(3, 0));
 		logTitle.setBorder(new EmptyBorder(7, 7, 7, 7));
 		logTitle.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
 
@@ -78,7 +78,7 @@ class LootTrackerLog extends JPanel
 		// If we have subtitle, add it
 		if (!Strings.isNullOrEmpty(subTitle))
 		{
-			final JLabel subTitleLabel = new JLabel(subTitle);
+			subTitleLabel.setText(subTitle);
 			subTitleLabel.setFont(FontManager.getRunescapeSmallFont());
 			subTitleLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 			logTitle.add(subTitleLabel, BorderLayout.CENTER);
@@ -167,6 +167,11 @@ class LootTrackerLog extends JPanel
 		if (totalPrice > 0)
 		{
 			priceLabel.setText(StackFormatter.quantityToStackSize(totalPrice) + " gp");
+		}
+
+		if (totalKills > 1)
+		{
+			subTitleLabel.setText(" x " + totalKills);
 		}
 
 		rebuildItemContainer();
