@@ -137,14 +137,14 @@ class LootTrackerPanel extends PluginPanel
 		remove(errorPanel);
 		overallPanel.setVisible(true);
 
-		// Create box
+		// Create log
 		final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
-		final LootTrackerBox box = new LootTrackerBox(itemManager, eventName, subTitle, items);
-		logsContainer.add(box, 0);
+		final LootTrackerLog log = new LootTrackerLog(itemManager, eventName, subTitle, items);
+		logsContainer.add(log, 0);
 		logsContainer.repaint();
 
 		// Update overall
-		overallGp += box.getTotalPrice();
+		overallGp += log.getTotalPrice();
 		overallKills += 1;
 		updateOverall();
 
@@ -152,10 +152,10 @@ class LootTrackerPanel extends PluginPanel
 		final JMenuItem reset = new JMenuItem("Reset");
 		reset.addActionListener(e ->
 		{
-			overallGp -= box.getTotalPrice();
+			overallGp -= log.getTotalPrice();
 			overallKills -= 1;
 			updateOverall();
-			logsContainer.remove(box);
+			logsContainer.remove(log);
 			logsContainer.repaint();
 		});
 
@@ -163,7 +163,7 @@ class LootTrackerPanel extends PluginPanel
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		popupMenu.add(reset);
-		box.setComponentPopupMenu(popupMenu);
+		log.setComponentPopupMenu(popupMenu);
 	}
 
 	private void updateOverall()
