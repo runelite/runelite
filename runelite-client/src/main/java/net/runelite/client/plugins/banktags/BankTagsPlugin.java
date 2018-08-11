@@ -25,9 +25,13 @@
 package net.runelite.client.plugins.banktags;
 
 import com.google.common.eventbus.Subscribe;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.IntegerNode;
 import net.runelite.api.InventoryID;
@@ -35,22 +39,28 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ChatboxInputManager;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Bank Tags",
 	description = "Enable tagging of bank items and searching of bank tags",
 	tags = {"searching", "tagging"}
 )
+@Slf4j
 public class BankTagsPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "banktags";
@@ -71,6 +81,12 @@ public class BankTagsPlugin extends Plugin
 
 	private static final int EDIT_TAGS_MENU_INDEX = 8;
 
+	private final String BEGIN_MASS_EDIT = "Begin Mass Edit";
+
+	private final String END_MASS_EDIT = "End Mass Edit";
+
+	private final String SELECT_ITEM = "Select";
+
 	@Inject
 	private Client client;
 
@@ -82,6 +98,38 @@ public class BankTagsPlugin extends Plugin
 
 	@Inject
 	private ChatboxInputManager chatboxInputManager;
+
+	@Inject
+	private KeyManager keyManager;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private BankTagsKeyListener keyListener;
+
+	@Inject
+	private BankTagsMassEditOverlay massEditOverlay;
+
+	@Setter
+	private boolean shiftHeld = false;
+
+	private boolean massEditing = false;
+
+	@Getter
+	private List<Integer> selectedItemIndices = new ArrayList<>();
+
+	public void startUp()
+	{
+		keyManager.registerKeyListener(keyListener);
+		overlayManager.add(massEditOverlay);
+	}
+
+	public void shutDown()
+	{
+		keyManager.unregisterKeyListener(keyListener);
+		overlayManager.remove(massEditOverlay);
+	}
 
 	private String getTags(int itemId)
 	{
@@ -113,6 +161,32 @@ public class BankTagsPlugin extends Plugin
 			return tags.split(",").length;
 		}
 		return 0;
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		if ((shiftHeld || massEditing) && event.getOption().startsWith(EDIT_TAGS_MENU_OPTION))
+		{
+			MenuEntry[] entries = client.getMenuEntries();
+
+			String option = massEditing ?
+				END_MASS_EDIT :
+				BEGIN_MASS_EDIT;
+
+			entries[entries.length - 1].setOption(option);
+
+			client.setMenuEntries(entries);
+		}
+
+		if (massEditing && event.getOption().equals("Withdraw-1"))
+		{
+			MenuEntry[] entries = client.getMenuEntries();
+
+			entries[entries.length - 1].setOption(SELECT_ITEM);
+
+			client.setMenuEntries(entries);
+		}
 	}
 
 	@Subscribe
@@ -206,9 +280,123 @@ public class BankTagsPlugin extends Plugin
 		}
 	}
 
+	private String combineTags(String oldTags, String newTags)
+	{
+		List<String> oldTagsList = oldTags.length() == 0 ? new ArrayList<>()
+			: new ArrayList<>(Arrays.asList(oldTags.toLowerCase().split(",")));
+		List<String> newTagsList = new ArrayList<>(Arrays.asList(newTags.toLowerCase().split(",")));
+		newTagsList.removeIf(oldTagsList::contains);
+
+		oldTagsList.addAll(newTagsList);
+
+		StringBuilder sb = new StringBuilder();
+		for (String s : oldTagsList)
+		{
+			if (sb.length() != 0)
+			{
+				sb.append(", ");
+			}
+			sb.append(s);
+		}
+
+		return sb.toString();
+	}
+
+	@Subscribe
+	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
+	{
+		if (event.getWidget().getId() == WidgetInfo.BANK_ITEM_CONTAINER.getId())
+		{
+			resetMassEdit();
+		}
+	}
+
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
+		if (event.getMenuAction() == MenuAction.CANCEL && massEditing)
+		{
+			resetMassEdit();
+		}
+
+		if (event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+			&& event.getMenuOption().startsWith(BEGIN_MASS_EDIT))
+		{
+			event.consume();
+			massEditing = true;
+			selectedItemIndices.add(event.getActionParam());
+		}
+
+		if (event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+			&& event.getMenuOption().startsWith(SELECT_ITEM)
+			&& massEditing)
+		{
+			event.consume();
+
+			if (selectedItemIndices.contains(event.getActionParam()))
+			{
+				selectedItemIndices.remove((Integer) event.getActionParam());
+			}
+			else
+			{
+				selectedItemIndices.add(event.getActionParam());
+			}
+		}
+
+		if (event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+			&& event.getMenuOption().startsWith(END_MASS_EDIT))
+		{
+			event.consume();
+
+			int numSelected = selectedItemIndices.size();
+
+			chatboxInputManager.openInputWindow("Adding to " + numSelected + " items:", "", (newTags) ->
+			{
+				if (newTags == null || newTags.equals(""))
+				{
+					resetMassEdit();
+					return;
+				}
+
+				for (int bankIndex : selectedItemIndices)
+				{
+					Widget bankContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+					if (bankContainer == null)
+					{
+						resetMassEdit();
+						return;
+					}
+
+					Widget bankItem = bankContainer.getChild(bankIndex);
+					if (bankItem == null)
+					{
+						resetMassEdit();
+						return;
+					}
+
+					String oldTags = getTags(bankItem.getItemId());
+					setTags(bankItem.getItemId(), combineTags(oldTags, newTags));
+
+					String[] actions = bankItem.getActions();
+					if (actions == null || EDIT_TAGS_MENU_INDEX - 1 >= actions.length)
+					{
+						resetMassEdit();
+						return;
+					}
+
+					int tagCount = getTagCount(bankItem.getItemId());
+					actions[EDIT_TAGS_MENU_INDEX - 1] = EDIT_TAGS_MENU_OPTION;
+					if (tagCount > 0)
+					{
+						actions[EDIT_TAGS_MENU_INDEX - 1] += " (" + tagCount + ")";
+					}
+				}
+
+				resetMassEdit();
+			});
+
+		}
+
 		if (event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
 			&& event.getMenuAction() == MenuAction.EXAMINE_ITEM_BANK_EQ
 			&& event.getId() == EDIT_TAGS_MENU_INDEX
@@ -279,6 +467,12 @@ public class BankTagsPlugin extends Plugin
 				}
 			});
 		}
+	}
+
+	private void resetMassEdit()
+	{
+		massEditing = false;
+		selectedItemIndices.clear();
 	}
 
 }
