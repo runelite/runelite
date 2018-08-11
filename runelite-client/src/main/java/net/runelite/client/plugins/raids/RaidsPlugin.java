@@ -321,7 +321,10 @@ public class RaidsPlugin extends Plugin
 
 		if (inRaidChambers && config.raidsTimer())
 		{
-			infoBoxManager.addInfoBox(timer);
+			if (!infoBoxManager.getInfoBoxes().contains(timer))
+			{
+				infoBoxManager.addInfoBox(timer);
+			}
 		}
 		else
 		{
