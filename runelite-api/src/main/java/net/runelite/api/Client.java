@@ -311,14 +311,14 @@ public interface Client extends GameEngine
 	SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted, int scale);
 
 	/**
-	 * Loads and creates the sprite image of the passed archive and file IDs.
+	 * Loads and creates the sprite images of the passed archive and file IDs.
 	 *
 	 * @param source the sprite database
 	 * @param archiveId the sprites archive ID
 	 * @param fileId the sprites file ID
 	 * @return the sprite image of the file
 	 */
-	SpritePixels getSprite(IndexDataBase source, int archiveId, int fileId);
+	SpritePixels[] getSprites(IndexDataBase source, int archiveId, int fileId);
 
 	/**
 	 * Gets the sprite index database.

@@ -318,9 +318,9 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("createSprite")
 	RSSpritePixels createItemSprite(int itemId, int quantity, int thickness, int borderColor, int stackable, boolean noted);
 
-	@Import("getSpriteAsSpritePixels")
+	@Import("getSpritesAsSpritePixels")
 	@Override
-	RSSpritePixels getSprite(IndexDataBase source, int archiveId, int fileId);
+	RSSpritePixels[] getSprites(IndexDataBase source, int archiveId, int fileId);
 
 	@Import("indexSprites")
 	@Override
