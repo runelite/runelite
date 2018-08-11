@@ -113,6 +113,7 @@ public class WidgetID
 	public static final int DIALOG_OPTION_GROUP_ID = 219;
 	public static final int DIALOG_PLAYER_GROUP_ID = 217;
 	public static final int FOSSIL_ISLAND_OXYGENBAR_ID = 609;
+	public static final int SPELLBOOK_GROUP_ID = 218;
 
 	static class WorldMap
 	{
@@ -641,5 +642,201 @@ public class WidgetID
 	static class FossilOxygen
 	{
 		static final int FOSSIL_ISLAND_OXYGEN_BAR = 4;
+	}
+
+	static class StandardSpellBook
+	{
+		static final int STANDARD_SPELLBOOK_CONTAINER = 0;
+		static final int LUMBRIDGE_HOME_TELEPORT = 1;
+		static final int WIND_STRIKE = 2;
+		static final int CONFUSE = 3;
+		static final int ENCHANT_CROSSBOW_BOLT = 4;
+		static final int WATER_STRIKE = 5;
+		static final int LVL_1_ENCHANT = 6;
+		static final int EARTH_STRIKE = 7;
+		static final int WEAKEN = 8;
+		static final int FIRE_STRIKE = 9;
+		static final int BONES_TO_BANANAS = 10;
+		static final int WIND_BOLT = 11;
+		static final int CURSE = 12;
+		static final int BIND = 13;
+		static final int LOW_LEVEL_ALCHEMY = 14;
+		static final int WATER_BOLT = 15;
+		static final int VARROCK_TELEPORT = 16;
+		static final int LVL_2_ENCHANT = 17;
+		static final int EARTH_BOLT = 18;
+		static final int LUMBRIDGE_TELEPORT = 19;
+		static final int TELEKENETIC_GRAB = 20;
+		static final int FIRE_BOLT = 21;
+		static final int FALADOR_TELEPORT = 22;
+		static final int CRUMBLE_UNDEAD = 23;
+		static final int TELEPORT_TO_HOUSE = 24;
+		static final int WIND_BLAST = 25;
+		static final int SUPERHEAT_ITEM = 26;
+		static final int CAMELOT_TELEPORT = 27;
+		static final int WATER_BLAST = 28;
+		static final int LVL_3_ENCHANT = 29;
+		static final int IBAN_BLAST = 30;
+		static final int SNARE = 31;
+		static final int MAGIC_DART = 32;
+		static final int ARDOUGNE_TELEPORT = 33;
+		static final int EARTH_BLAST = 34;
+		static final int HIGH_LEVEL_ALCHEMY = 35;
+		static final int CHARGE_WATER_ORB = 36;
+		static final int LVL_4_ENCHANT = 37;
+		static final int WATCHTOWER_TELEPORT = 38;
+		static final int FIRE_BLAST = 39;
+		static final int CHARGE_EARTH_ORB = 40;
+		static final int BONES_TO_PEACHES = 41;
+		static final int SARADOMIN_STRIKE = 42;
+		static final int CLAWS_OF_GUTHIX = 43;
+		static final int FLAMES_OF_ZAMORAK = 44;
+		static final int TROLLHEIM_TELEPORT = 45;
+		static final int WIND_WAVE = 46;
+		static final int CHARGE_FIRE_ORB = 47;
+		static final int TELEPORT_TO_APE_ATOLL = 48;
+		static final int WATER_WAVE = 49;
+		static final int CHARGE_AIR_ORB = 50;
+		static final int VULNERABILITY = 51;
+		static final int LVL_5_ENCHANT = 52;
+		static final int TELEPORT_TO_KOUREND = 53;
+		static final int EARTH_WAVE = 54;
+		static final int ENFEEBLE = 55;
+		static final int TELEOTHER_LUMBRIDGE = 56;
+		static final int FIRE_WAVE = 57;
+		static final int ENTANGLE = 58;
+		static final int STUN = 59;
+		static final int CHARGE = 60;
+		static final int WIND_SURGE = 61;
+		static final int TELEOTHER_FALADOR = 62;
+		static final int WATER_SURGE = 63;
+		static final int TELE_BLOCK = 64;
+		static final int TELEPORT_TO_BOUNTY_TARGET = 65;
+		static final int LVL_6_ENCHANT = 66;
+		static final int TELEOTHER_CAMELOT = 67;
+		static final int EARTH_SURGE = 68;
+		static final int LVL_7_ENCHANT = 69;
+		static final int FIRE_SURGE = 70;
+	}
+
+	static class AncientSpellBook
+	{
+		static final int ANCIENT_SPELLBOOK_CONTAINER = 71;
+		static final int ICE_RUSH = 72;
+		static final int ICE_BLITZ = 73;
+		static final int ICE_BURST = 74;
+		static final int ICE_BARRAGE = 75;
+		static final int BLOOD_RUSH = 76;
+		static final int BLOOD_BLITZ = 77;
+		static final int BLOOD_BURST = 78;
+		static final int BLOOD_BARRAGE = 79;
+		static final int SMOKE_RUSH = 80;
+		static final int SMOKE_BLITZ = 81;
+		static final int SMOKE_BURST = 82;
+		static final int SMOKE_BARRAGE = 83;
+		static final int SHADOW_RUSH = 84;
+		static final int SHADOW_BLITZ = 85;
+		static final int SHADOW_BURST = 86;
+		static final int SHADOW_BARRAGE = 87;
+		static final int PADDEWWA_TELEPORT = 88;
+		static final int SENNTISTEN_TELEPORT = 89;
+		static final int KHARYLL_TELEPORT = 90;
+		static final int LASSAR_TELEPORT = 91;
+		static final int DAREEYAK_TELEPORT = 92;
+		static final int CARRALLANGAR_TELEPORT = 93;
+		static final int ANNAKARL_TELEPORT = 94;
+		static final int GHORROCK_TELEPORT = 95;
+		static final int TELEPORT_TO_BOUNTY_TARGET = 96;
+		static final int EDGEVILLE_HOME_TELEPORT = 97;
+	}
+
+	static class LunarSpellBook
+	{
+		static final int LUNAR_SPELLBOOK_CONTAINER = 98;
+		static final int LUNAR_HOME_TELEPORT = 99;
+		static final int BAKE_PIE = 100;
+		static final int CURE_PLANT = 101;
+		static final int MONSTER_EXAMINE = 102;
+		static final int NPC_CONTACT = 103;
+		static final int CURE_OTHER = 104;
+		static final int HUMIDIFY = 105;
+		static final int MOONCLAN_TELEPORT = 106;
+		static final int TELE_GROUP_MOONCLAN = 107;
+		static final int CURE_ME = 108;
+		static final int HUNTER_KIT = 109;
+		static final int WATERBIRTH_TELEPORT = 110;
+		static final int TELE_GROUP_WATERBIRTH = 111;
+		static final int CURE_GROUP = 112;
+		static final int STAT_SPY = 113;
+		static final int BARBARIAN_TELEPORT = 114;
+		static final int TELE_GROUP_BARBARIAN = 115;
+		static final int SUPERGLASS_MAKE = 116;
+		static final int TAN_LEATHER = 117;
+		static final int KHAZARD_TELEPORT = 118;
+		static final int TELE_GROUP_KHAZARD = 119;
+		static final int DREAM = 120;
+		static final int STRING_JEWELLERY = 121;
+		static final int STAT_RESTORE_POT_SHARE = 122;
+		static final int MAGIC_IMBUE = 123;
+		static final int FERTILE_SOIL = 124;
+		static final int BOOST_POTION_SHARE = 125;
+		static final int FISHING_GUILD_TELEPORT = 126;
+		static final int TELEPORT_TO_BOUNTY_TARGET = 127;
+		static final int TELE_GROUP_FISHING_GUILD = 128;
+		static final int PLANK_MAKE = 129;
+		static final int CATHERBY_TELEPORT = 130;
+		static final int TELE_GROUP_CATHERBY = 131;
+		static final int RECHARGE_DRAGONSTONE = 132;
+		static final int ICE_PLATEAU_TELEPORT = 133;
+		static final int TELE_GROUP_ICE_PLATEAU = 134;
+		static final int ENERGY_TRANSFER = 135;
+		static final int HEAL_OTHER = 136;
+		static final int VENGEANCE_OTHER = 137;
+		static final int VENGEANCE = 138;
+		static final int HEAL_GROUP = 139;
+		static final int SPELLBOOK_SWAP = 140;
+		static final int GEOMANCY = 141;
+		static final int SPIN_FLAX = 142;
+		static final int OURANIA_TELEPORT = 143;
+	}
+
+	static class ArceuusSpellBook
+	{
+		static final int ARCEUUS_SPELL_BOOK_CONTAINER = 144;
+		static final int ARCEUUS_HOME_TELEPORT = 145;
+		static final int REANIMATE_GOBLIN = 146;
+		static final int LUMBRIDGE_GRAVEYARD_TELEPORT = 147;
+		static final int REANIMATE_MONKEY = 148;
+		static final int REANIMATE_IMP = 149;
+		static final int REANIMATE_MINOTAUR = 150;
+		static final int DRAYNOR_MANOR_TELEPORT = 151;
+		static final int REANIMATE_SCORPION = 152;
+		static final int REANIMATE_BEAR = 153;
+		static final int REANIMATE_UNICORN = 154;
+		static final int REANIMATE_DOG = 155;
+		static final int MIND_ALTAR_TELEPORT = 156;
+		static final int REANIMATE_CHAOS_DRUID = 157;
+		static final int RESPAWN_TELEPORT = 158;
+		static final int REANIMATE_GIANT = 159;
+		static final int SALVE_GRAVEYARD_TELEPORT = 160;
+		static final int REANIMATE_OGRE = 161;
+		static final int REANIMATE_ELF = 162;
+		static final int REANIMATE_TROLL = 163;
+		static final int FRANKENSTRAINS_CASTLE_TELEPORT = 164;
+		static final int REANIMATE_HORROR = 165;
+		static final int REANIMATE_KALPHITE = 166;
+		static final int WEST_ARDOUGNE_TELEPORT = 167;
+		static final int REANIMATE_DAGANNOTH = 168;
+		static final int REANIMATE_BLOODVELD = 169;
+		static final int HARMONY_ISLAND_TELEPORT = 170;
+		static final int REANIMATE_TZHAAR = 171;
+		static final int CEMETERY_TELEPORT = 172;
+		static final int REANIMATE_DEMON = 173;
+		static final int REANIMATE_AVIANSIE = 174;
+		static final int RESURRECT_CROPS = 175;
+		static final int BARROWS_TELEPORT = 176;
+		static final int REANIMATE_ABYSSAL_CREATURE = 177;
+		static final int APE_ATOLL_TELEPORT = 178;
+		static final int REANIMATE_DRAGON = 179;
 	}
 }
