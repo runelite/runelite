@@ -29,22 +29,25 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.util.function.Consumer;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.callback.ClientThread;
 
 @Singleton
-@Slf4j
 public class ChatboxInputManager
 {
-	private static final int NO_LIMIT = Integer.MAX_VALUE;
+	public static final int NO_LIMIT = Integer.MAX_VALUE;
 	private final Client client;
 	private final ClientThread clientThread;
 
 	private Consumer<String> done;
+	private Consumer<String> changed;
 	private int characterLimit = NO_LIMIT;
+
+	@Getter
+	private boolean open = false;
 
 	@Inject
 	public ChatboxInputManager(Client client, ClientThread clientThread, EventBus eventBus)
@@ -68,12 +71,36 @@ public class ChatboxInputManager
 
 	public void openInputWindow(String text, String defaul, int characterLimit, Consumer<String> done)
 	{
+		openInputWindow(text, defaul, characterLimit, null, done);
+	}
+
+	public void openInputWindow(String text, String defaul, int characterLimit, Consumer<String> changed, Consumer<String> done)
+	{
 		this.done = done;
+		this.changed = changed;
 		this.characterLimit = characterLimit;
-		clientThread.invokeLater(() -> client.runScript(
+		this.open = true;
+		clientThread.invoke(() -> client.runScript(
 			ScriptID.RUNELITE_CHATBOX_INPUT_INIT,
 			text,
 			defaul
+		));
+	}
+
+	/**
+	 * Closes the RuneScape-style chatbox input
+	 */
+	public void closeInputWindow()
+	{
+		if (!this.open)
+		{
+			return;
+		}
+		this.open = false;
+		clientThread.invoke(() -> client.runScript(
+			ScriptID.CLOSE_CHATBOX_INPUT,
+			1,
+			1
 		));
 	}
 
@@ -87,7 +114,7 @@ public class ChatboxInputManager
 			int stringStackSize = client.getStringStackSize();
 			int typedKey = client.getIntStack()[--intStackSize];
 			String str = client.getStringStack()[--stringStackSize];
-			int retval = 0;
+			boolean isDone = false;
 
 			switch (typedKey)
 			{
@@ -95,14 +122,15 @@ public class ChatboxInputManager
 					str = "";
 					// fallthrough
 				case '\n':
-					done.accept(str);
-					retval = 1;
+					this.open = false;
+					isDone = true;
 					break;
 				case '\b':
 					if (str.length() > 0)
 					{
 						str = str.substring(0, str.length() - 1);
 					}
+					break;
 				default:
 					// If we wanted to do numbers only, we could add a limit here
 					if (typedKey >= 32 && (str.length() < characterLimit))
@@ -111,8 +139,18 @@ public class ChatboxInputManager
 					}
 			}
 
+			if (changed != null)
+			{
+				changed.accept(str);
+			}
+
+			if (isDone && done != null)
+			{
+				done.accept(str);
+			}
+
 			client.getStringStack()[stringStackSize++] = str;
-			client.getIntStack()[intStackSize++] = retval;
+			client.getIntStack()[intStackSize++] = isDone ? 1 : 0;
 			client.setIntStackSize(intStackSize);
 			client.setStringStackSize(stringStackSize);
 		}

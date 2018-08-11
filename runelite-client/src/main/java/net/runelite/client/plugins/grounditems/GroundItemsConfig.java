@@ -33,11 +33,7 @@ import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
 
-@ConfigGroup(
-	keyName = "grounditems",
-	name = "Ground Items",
-	description = "Configuration for the ground items plugin"
-)
+@ConfigGroup("grounditems")
 public interface GroundItemsConfig extends Config
 {
 	@ConfigItem(

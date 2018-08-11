@@ -28,7 +28,6 @@ import com.google.common.eventbus.Subscribe;
 import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.IntegerNode;
 import net.runelite.api.InventoryID;
@@ -48,9 +47,10 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Bank Tags"
+	name = "Bank Tags",
+	description = "Enable tagging of bank items and searching of bank tags",
+	tags = {"searching", "tagging"}
 )
-@Slf4j
 public class BankTagsPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "banktags";
@@ -60,6 +60,10 @@ public class BankTagsPlugin extends Plugin
 	private static final String SEARCH_BANK_INPUT_TEXT =
 		"Show items whose names or tags contain the following text:<br>" +
 		"(To show only tagged items, start your search with 'tag:')";
+
+	private static final String SEARCH_BANK_INPUT_TEXT_FOUND =
+		"Show items whose names or tags contain the following text: (%d found)<br>" +
+			"(To show only tagged items, start your search with 'tag:')";
 
 	private static final String TAG_SEARCH = "tag:";
 
@@ -130,6 +134,12 @@ public class BankTagsPlugin extends Plugin
 			case "setSearchBankInputText":
 				stringStack[stringStackSize - 1] = SEARCH_BANK_INPUT_TEXT;
 				break;
+			case "setSearchBankInputTextFound":
+			{
+				int matches = intStack[intStackSize - 1];
+				stringStack[stringStackSize - 1] = String.format(SEARCH_BANK_INPUT_TEXT_FOUND, matches);
+				break;
+			}
 			case "setBankItemMenu":
 			{
 				// set menu action index so the edit tags option will not be overridden

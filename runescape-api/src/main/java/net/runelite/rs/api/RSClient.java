@@ -55,6 +55,9 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	int getCameraPitch();
 
+	@Import("cameraPitch")
+	void setCameraPitch(int cameraPitch);
+
 	@Import("cameraYaw")
 	@Override
 	int getCameraYaw();
@@ -131,11 +134,11 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	int getMouseCurrentButton();
 
-	@Import("selectedRegionTileX")
-	int getSelectedRegionTileX();
+	@Import("selectedSceneTileX")
+	int getSelectedSceneTileX();
 
-	@Import("selectedRegionTileY")
-	int getSelectedRegionTileY();
+	@Import("selectedSceneTileY")
+	int getSelectedSceneTileY();
 
 	@Import("draggingWidget")
 	@Override
@@ -156,9 +159,18 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("widgets")
 	RSWidget[][] getWidgets();
 
-	@Import("region")
+	/**
+	 * Gets an array of widgets that correspond to the passed group ID.
+	 *
+	 * @param groupId the group ID
+	 * @return the widget group
+	 * @see net.runelite.api.widgets.WidgetID
+	 */
+	RSWidget[] getGroup(int groupId);
+
+	@Import("scene")
 	@Override
-	RSRegion getRegion();
+	RSScene getScene();
 
 	@Import("localPlayer")
 	@Override
@@ -314,6 +326,10 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	RSIndexDataBase getIndexSprites();
 
+	@Import("indexScripts")
+	@Override
+	RSIndexDataBase getIndexScripts();
+
 	@Import("widgetFlags")
 	@Override
 	RSHashTable getWidgetFlags();
@@ -451,8 +467,8 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("lowMemory")
 	void setLowMemory(boolean lowMemory);
 
-	@Import("regionLowMemory")
-	void setRegionLowMemory(boolean lowMemory);
+	@Import("sceneLowMemory")
+	void setSceneLowMemory(boolean lowMemory);
 
 	@Import("audioHighMemory")
 	void setAudioHighMemory(boolean highMemory);
@@ -631,4 +647,21 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("oculusOrbState")
 	@Override
 	void setOculusOrbState(int state);
+
+	@Import("oculusOrbNormalSpeed")
+	@Override
+	void setOculusOrbNormalSpeed(int state);
+
+	RSItem getLastItemDespawn();
+
+	void setLastItemDespawn(RSItem lastItemDespawn);
+
+	@Construct
+	RSWidget createWidget();
+
+	@Import("revalidateWidget")
+	void revalidateWidget(Widget w);
+
+	@Import("revalidateWidgetScroll")
+	void revalidateWidgetScroll(Widget[] group, Widget w, boolean postEvent);
 }

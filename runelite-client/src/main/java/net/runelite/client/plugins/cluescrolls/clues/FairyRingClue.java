@@ -29,11 +29,13 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Set;
 import lombok.Getter;
+import net.runelite.api.ItemID;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.SPADE_IMAGE;
+import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
+import net.runelite.client.plugins.cluescrolls.clues.emote.SingleItemRequirement;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -57,6 +59,7 @@ public class FairyRingClue extends ClueScroll implements TextClueScroll, Locatio
 
 	private String text;
 	private WorldPoint location;
+	private static final ItemRequirement HAS_SPADE = new SingleItemRequirement(ItemID.SPADE);
 
 	private FairyRingClue(String text, WorldPoint location)
 	{
@@ -77,6 +80,15 @@ public class FairyRingClue extends ClueScroll implements TextClueScroll, Locatio
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Travel to the fairy ring to see where to dig.")
 			.build());
+
+		if (plugin.getInventoryItems() != null)
+		{
+			if (!HAS_SPADE.fulfilledBy(plugin.getInventoryItems()))
+			{
+				panelComponent.getChildren().add(LineComponent.builder().left("").build());
+				panelComponent.getChildren().add(LineComponent.builder().left("Requires Spade!").leftColor(Color.RED).build());
+			}
+		}
 	}
 
 	@Override
@@ -89,7 +101,7 @@ public class FairyRingClue extends ClueScroll implements TextClueScroll, Locatio
 			return;
 		}
 
-		OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, SPADE_IMAGE, Color.ORANGE);
+		OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, plugin.getSpadeImage(), Color.ORANGE);
 	}
 
 	public static FairyRingClue forText(String text)

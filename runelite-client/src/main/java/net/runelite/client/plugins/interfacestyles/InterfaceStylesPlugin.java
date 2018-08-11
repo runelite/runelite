@@ -53,6 +53,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 @Slf4j
 @PluginDescriptor(
 	name = "Interface Styles",
+	description = "Change the interface style to the 2005/2010 interface",
+	tags = {"2005", "2010"},
 	enabledByDefault = false
 )
 public class InterfaceStylesPlugin extends Plugin
@@ -78,7 +80,7 @@ public class InterfaceStylesPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		clientThread.invokeLater(() ->
+		clientThread.invoke(() ->
 		{
 			overrideSprites();
 			overrideWidgetSprites();
@@ -90,7 +92,7 @@ public class InterfaceStylesPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		clientThread.invokeLater(() ->
+		clientThread.invoke(() ->
 		{
 			restoreWidgetDimensions();
 			removeGameframe();
@@ -102,7 +104,7 @@ public class InterfaceStylesPlugin extends Plugin
 	{
 		if (config.getGroup().equals("interfaceStyles"))
 		{
-			clientThread.invokeLater(() ->
+			clientThread.invoke(() ->
 			{
 				removeGameframe();
 				overrideSprites();

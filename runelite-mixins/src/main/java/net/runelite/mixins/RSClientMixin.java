@@ -35,6 +35,7 @@ import net.runelite.api.Friend;
 import net.runelite.api.GameState;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GraphicsObject;
+import net.runelite.api.HashTable;
 import net.runelite.api.HintArrowType;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.InventoryID;
@@ -61,6 +62,7 @@ import net.runelite.api.SpritePixels;
 import net.runelite.api.Tile;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.WidgetNode;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -100,6 +102,7 @@ import net.runelite.rs.api.RSFriendContainer;
 import net.runelite.rs.api.RSFriendManager;
 import net.runelite.rs.api.RSHashTable;
 import net.runelite.rs.api.RSIndexedSprite;
+import net.runelite.rs.api.RSItem;
 import net.runelite.rs.api.RSItemContainer;
 import net.runelite.rs.api.RSNPC;
 import net.runelite.rs.api.RSName;
@@ -146,6 +149,9 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	private static int oldMenuEntryCount;
+
+	@Inject
+	private static RSItem lastItemDespawn;
 
 	@Inject
 	@Override
@@ -231,17 +237,17 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public Tile getSelectedRegionTile()
+	public Tile getSelectedSceneTile()
 	{
-		int tileX = getSelectedRegionTileX();
-		int tileY = getSelectedRegionTileY();
+		int tileX = getSelectedSceneTileX();
+		int tileY = getSelectedSceneTileY();
 
 		if (tileX == -1 || tileY == -1)
 		{
 			return null;
 		}
 
-		return getRegion().getTiles()[getPlane()][tileX][tileY];
+		return getScene().getTiles()[getPlane()][tileX][tileY];
 	}
 
 	@Inject
@@ -321,9 +327,9 @@ public abstract class RSClientMixin implements RSClient
 	{
 		int topGroup = getWidgetRoot();
 		List<Widget> widgets = new ArrayList<Widget>();
-		for (Widget widget : getWidgets()[topGroup])
+		for (RSWidget widget : getWidgets()[topGroup])
 		{
-			if (widget != null && widget.getParentId() == -1)
+			if (widget != null && widget.getRSParentId() == -1)
 			{
 				widgets.add(widget);
 			}
@@ -343,7 +349,7 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public Widget[] getGroup(int groupId)
+	public RSWidget[] getGroup(int groupId)
 	{
 		RSWidget[][] widgets = getWidgets();
 
@@ -352,15 +358,7 @@ public abstract class RSClientMixin implements RSClient
 			return null;
 		}
 
-		List<Widget> w = new ArrayList<Widget>();
-		for (Widget widget : widgets[groupId])
-		{
-			if (widget != null)
-			{
-				w.add(widget);
-			}
-		}
-		return w.toArray(new Widget[w.size()]);
+		return widgets[groupId];
 	}
 
 	@Inject
@@ -389,6 +387,20 @@ public abstract class RSClientMixin implements RSClient
 	{
 		int[] varps = getVarps();
 		return varps[varPlayer.getId()];
+	}
+
+	@Inject
+	@Override
+	public int getVarpValue(int[] varps, int varpId)
+	{
+		return varps[varpId];
+	}
+
+	@Inject
+	@Override
+	public void setVarpValue(int[] varps, int varpId, int value)
+	{
+		varps[varpId] = value;
 	}
 
 	@Inject
@@ -564,7 +576,7 @@ public abstract class RSClientMixin implements RSClient
 
 		for (Node node = head.getNext(); node != head; node = node.getNext())
 		{
-			graphicsObjects.add((GraphicsObject)node);
+			graphicsObjects.add((GraphicsObject) node);
 		}
 
 		return graphicsObjects;
@@ -582,11 +594,11 @@ public abstract class RSClientMixin implements RSClient
 	@Nullable
 	public LocalPoint getLocalDestinationLocation()
 	{
-		int regionX = getDestinationX();
-		int regionY = getDestinationY();
-		if (regionX != 0 && regionY != 0)
+		int sceneX = getDestinationX();
+		int sceneY = getDestinationY();
+		if (sceneX != 0 && sceneY != 0)
 		{
-			return LocalPoint.fromRegion(regionX, regionY);
+			return LocalPoint.fromScene(sceneX, sceneY);
 		}
 		return null;
 	}
@@ -596,7 +608,7 @@ public abstract class RSClientMixin implements RSClient
 	public void changeMemoryMode(boolean lowMemory)
 	{
 		setLowMemory(lowMemory);
-		setRegionLowMemory(lowMemory);
+		setSceneLowMemory(lowMemory);
 		setAudioHighMemory(true);
 		setObjectCompositionLowDetail(lowMemory);
 	}
@@ -1098,5 +1110,57 @@ public abstract class RSClientMixin implements RSClient
 	public void methodDraw(boolean var1)
 	{
 		callbacks.clientMainLoop();
+	}
+
+	@MethodHook("gameDraw")
+	@Inject
+	public static void gameDraw(Widget[] widgets, int parentId, int var2, int var3, int var4, int var5, int x, int y, int var8)
+	{
+		for (Widget rlWidget : widgets)
+		{
+			RSWidget widget = (RSWidget) rlWidget;
+			if (widget == null || widget.getRSParentId() != parentId)
+			{
+				continue;
+			}
+
+			if (parentId != -1)
+			{
+				widget.setRenderParentId(parentId);
+			}
+			widget.setRenderX(x + widget.getRelativeX());
+			widget.setRenderY(y + widget.getRelativeY());
+
+			HashTable<WidgetNode> componentTable = client.getComponentTable();
+			WidgetNode childNode = componentTable.get(widget.getId());
+			if (childNode != null)
+			{
+				int widgetId = widget.getId();
+				int groupId = childNode.getId();
+				RSWidget[] children = client.getWidgets()[groupId];
+
+				for (RSWidget child : children)
+				{
+					if (child.getRSParentId() == -1)
+					{
+						child.setRenderParentId(widgetId);
+					}
+				}
+			}
+		}
+	}
+
+	@Inject
+	@Override
+	public RSItem getLastItemDespawn()
+	{
+		return lastItemDespawn;
+	}
+
+	@Inject
+	@Override
+	public void setLastItemDespawn(RSItem lastItemDespawn)
+	{
+		RSClientMixin.lastItemDespawn = lastItemDespawn;
 	}
 }

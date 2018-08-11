@@ -39,7 +39,6 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
@@ -48,11 +47,14 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Inventory Tags",
+	description = "Add the ability to tag items in your inventory",
+	tags = {"highlight", "items", "overlay", "tagging"},
 	enabledByDefault = false
 )
 public class InventoryTagsPlugin extends Plugin
@@ -66,7 +68,7 @@ public class InventoryTagsPlugin extends Plugin
 
 	private static final String CONFIGURE = "Configure";
 	private static final String SAVE = "Save";
-	private static final String MENU_TARGET = "<col=ff9040>Inventory Tags";
+	private static final String MENU_TARGET = ColorUtil.prependColorTag("Inventory Tags", new Color(255, 144, 64));
 	private static final String MENU_SET = "Mark";
 	private static final String MENU_REMOVE = "Remove";
 
@@ -130,17 +132,6 @@ public class InventoryTagsPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		hasTaggedItems = editorMode = false;
-	}
-
-	@Subscribe
-	public void onConfigChanged(ConfigChanged configChanged)
-	{
-		if (!configChanged.getGroup().equals("inventorytags"))
-		{
-			return;
-		}
-
-		overlay.clearStoredOutlines();
 	}
 
 	@Subscribe
@@ -238,7 +229,7 @@ public class InventoryTagsPlugin extends Plugin
 				final MenuEntry newMenu = new MenuEntry();
 				final Color color = getGroupNameColor(groupName);
 				newMenu.setOption(group != null && groupName.equals(group) ? MENU_REMOVE : MENU_SET);
-				newMenu.setTarget("<col=" + getHexColor(MoreObjects.firstNonNull(color, Color.WHITE)) + ">" + groupName);
+				newMenu.setTarget(ColorUtil.prependColorTag(groupName, MoreObjects.firstNonNull(color, Color.WHITE)));
 				newMenu.setIdentifier(itemId);
 				newMenu.setParam1(widgetId);
 				newMenu.setType(MenuAction.RUNELITE.getId());
@@ -288,11 +279,6 @@ public class InventoryTagsPlugin extends Plugin
 				return;
 			}
 		}
-	}
-
-	private String getHexColor(final Color color)
-	{
-		return String.format("%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
 	}
 
 	Color getGroupNameColor(final String name)

@@ -27,6 +27,7 @@ package net.runelite.client.plugins.menuentryswapper;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.util.Collection;
 import java.util.Collections;
 import javax.inject.Inject;
@@ -38,6 +39,7 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
@@ -52,11 +54,14 @@ import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Menu Entry Swapper",
+	description = "Change the default option that is displayed when hovering over objects",
+	tags = {"npcs", "inventory", "items", "objects"},
 	enabledByDefault = false
 )
 public class MenuEntrySwapperPlugin extends Plugin
@@ -64,7 +69,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static final String CONFIGURE = "Configure";
 	private static final String SAVE = "Save";
 	private static final String RESET = "Reset";
-	private static final String MENU_TARGET = "<col=ff9040>Shift-click";
+	private static final String MENU_TARGET = ColorUtil.prependColorTag("Shift-click", new Color(255, 144, 64));
 
 	private static final String CONFIG_GROUP = "shiftclick";
 	private static final String ITEM_KEY_PREFIX = "item_";
@@ -385,6 +390,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("pay", option, target, true);
 			}
+
+			if (config.swapDecant())
+			{
+				swap("decant", option, target, true);
+			}
 		}
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
 		{
@@ -421,16 +431,21 @@ public class MenuEntrySwapperPlugin extends Plugin
 					break;
 			}
 		}
-		else if (config.swapFairyRing() != FairyRingMode.ZANARIS && (option.equals("zanaris") || option.equals("tree")))
+		else if (config.swapFairyRing() != FairyRingMode.OFF && config.swapFairyRing() != FairyRingMode.ZANARIS
+			&& (option.equals("zanaris") || option.equals("configure") || option.equals("tree")))
 		{
 			if (config.swapFairyRing() == FairyRingMode.LAST_DESTINATION)
 			{
-				swap("last-destination (", option, target, false);
+				swap("last-destination", option, target, false);
 			}
 			else if (config.swapFairyRing() == FairyRingMode.CONFIGURE)
 			{
 				swap("configure", option, target, false);
 			}
+		}
+		else if (config.swapFairyRing() == FairyRingMode.ZANARIS && option.equals("tree"))
+		{
+			swap("zanaris", option, target, false);
 		}
 		else if (config.swapBoxTrap() && (option.equals("check") || option.equals("dismantle")))
 		{
@@ -439,10 +454,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapBoxTrap() && option.equals("take"))
 		{
 			swap("lay", option, target, true);
-		}
-		else if (config.swapCatacombEntrance() && option.equals("read"))
-		{
-			swap("investigate", option, target, true);
 		}
 		else if (config.swapChase() && option.equals("pick-up"))
 		{
@@ -493,6 +504,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 			// Update our cached item composition too
 			ItemComposition ourItemComposition = itemManager.getItemComposition(itemComposition.getId());
 			ourItemComposition.setShiftClickActionIndex(option);
+		}
+	}
+
+	@Subscribe
+	public void onFocusChanged(FocusChanged event)
+	{
+		if (!event.isFocused())
+		{
+			shiftModifier = false;
 		}
 	}
 

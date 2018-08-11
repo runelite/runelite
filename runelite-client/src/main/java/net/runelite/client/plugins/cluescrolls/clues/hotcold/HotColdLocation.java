@@ -53,7 +53,7 @@ public enum HotColdLocation
 {
 	ASGARNIA_WARRIORS(new WorldPoint(2854, 3558, 0), ASGARNIA, "North of the Warriors' Guild in Burthorpe."),
 	ASGARNIA_JATIX(new WorldPoint(2914, 3429, 0), ASGARNIA, "East of Jatix's Herblore Shop in Taverley."),
-	ASGARNIA_BARB(new WorldPoint(3043, 3436, 0), ASGARNIA, "West of Barbarian Village."),
+	ASGARNIA_BARB(new WorldPoint(3036, 3439, 0), ASGARNIA, "West of Barbarian Village."),
 	ASGARNIA_MIAZRQA(new WorldPoint(2972, 3489, 0), ASGARNIA, "North of Miazrqa's tower, outside Goblin Village."),
 	ASGARNIA_COW(new WorldPoint(3033, 3308, 0), ASGARNIA, "In the cow pen north of Sarah's Farming Shop."),
 	ASGARNIA_PARTY_ROOM(new WorldPoint(3034, 3368, 0), ASGARNIA, "Outside the Falador Party Room."),
@@ -147,7 +147,7 @@ public enum HotColdLocation
 	WILDERNESS_35(new WorldPoint(3153, 3795, 0), WILDERNESS, "East of the Wilderness canoe exit, level 35 Wilderness."),
 	WILDERNESS_37(new WorldPoint(2975, 3809, 0), WILDERNESS, "South-east of the Chaos Temple, level 37 Wilderness."),
 	WILDERNESS_38(new WorldPoint(3294, 3817, 0), WILDERNESS, "South of Callisto, level 38 Wilderness."),
-	WILDERNESS_49(new WorldPoint(3139, 3909, 0), WILDERNESS, "South-west of the Deserted Keep, level 49 Wilderness."),
+	WILDERNESS_49(new WorldPoint(3140, 3910, 0), WILDERNESS, "South-west of the Deserted Keep, level 49 Wilderness."),
 	WILDERNESS_54(new WorldPoint(2983, 3946, 0), WILDERNESS, "West of the Wilderness Agility Course, level 54 Wilderness."),
 	ZEAH_BLASTMINE_BANK(new WorldPoint(1507, 3856, 0), ZEAH, "Next to the bank in the Lovakengj Houseblast mine."),
 	ZEAH_BLASTMINE_NORTH(new WorldPoint(1490, 3883, 0), ZEAH, "Northern part of the Lovakengj House blast mine."),

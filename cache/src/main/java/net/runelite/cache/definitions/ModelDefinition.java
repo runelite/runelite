@@ -54,6 +54,8 @@ public class ModelDefinition
 	private transient int[] origVY;
 	private transient int[] origVZ;
 
+	public transient int maxPriority;
+
 	public static transient int animOffsetX, animOffsetY, animOffsetZ;
 
 	public void computeNormals()
@@ -599,6 +601,33 @@ public class ModelDefinition
 				}
 			}
 
+		}
+	}
+
+	public void move(int xOffset, int yOffset, int zOffset)
+	{
+		for (int i = 0; i < this.vertexCount; i++)
+		{
+			this.vertexPositionsX[i] += xOffset;
+			this.vertexPositionsY[i] += yOffset;
+			this.vertexPositionsZ[i] += zOffset;
+		}
+		this.reset();
+	}
+
+	public void computeMaxPriority()
+	{
+		if (faceRenderPriorities == null)
+		{
+			return;
+		}
+
+		for (int i = 0; i < faceCount; ++i)
+		{
+			if (faceRenderPriorities[i] > maxPriority)
+			{
+				maxPriority = faceRenderPriorities[i];
+			}
 		}
 	}
 }

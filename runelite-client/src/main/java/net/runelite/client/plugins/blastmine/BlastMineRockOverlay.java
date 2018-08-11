@@ -90,7 +90,7 @@ public class BlastMineRockOverlay extends Overlay
 			return null;
 		}
 
-		final Tile[][][] tiles = client.getRegion().getTiles();
+		final Tile[][][] tiles = client.getScene().getTiles();
 		final Widget viewport = client.getViewportWidget();
 
 		for (final BlastMineRock rock : rocks.values())

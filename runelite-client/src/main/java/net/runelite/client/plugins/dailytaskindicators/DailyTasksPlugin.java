@@ -28,7 +28,6 @@ package net.runelite.client.plugins.dailytaskindicators;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
@@ -46,9 +45,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Daily Task Indicator",
+	description = "Show chat notifications for daily tasks upon login",
 	enabledByDefault = false
 )
-@Slf4j
 public class DailyTasksPlugin extends Plugin
 {
 	@Inject

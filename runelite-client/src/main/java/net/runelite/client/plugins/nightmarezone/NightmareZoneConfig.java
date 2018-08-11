@@ -29,11 +29,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "nightmareZone",
-	name = "Nightmare Zone",
-	description = "Configuration for the nightmare zone plugin"
-)
+@ConfigGroup("nightmareZone")
 public interface NightmareZoneConfig extends Config
 {
 	@ConfigItem(

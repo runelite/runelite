@@ -87,7 +87,7 @@ public class SpriteManager
 			return;
 		}
 
-		clientThread.invokeLater(() ->
+		clientThread.invoke(() ->
 		{
 			BufferedImage img = getSprite(archive, file);
 			if (img == null)

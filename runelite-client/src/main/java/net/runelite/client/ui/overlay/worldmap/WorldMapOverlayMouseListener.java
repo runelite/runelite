@@ -28,7 +28,6 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
@@ -42,14 +41,14 @@ import net.runelite.client.input.MouseListener;
 @Singleton
 public class WorldMapOverlayMouseListener extends MouseListener
 {
-	private final Provider<Client> clientProvider;
+	private final Client client;
 	private final WorldMapPointManager worldMapPointManager;
 	private WorldMapPoint tooltipPoint = null;
 
 	@Inject
-	private WorldMapOverlayMouseListener(Provider<Client> clientProvider, WorldMapPointManager worldMapPointManager)
+	private WorldMapOverlayMouseListener(Client client, WorldMapPointManager worldMapPointManager)
 	{
-		this.clientProvider = clientProvider;
+		this.client = client;
 		this.worldMapPointManager = worldMapPointManager;
 	}
 
@@ -60,7 +59,7 @@ public class WorldMapOverlayMouseListener extends MouseListener
 
 		if (SwingUtilities.isLeftMouseButton(e) && !worldMapPoints.isEmpty())
 		{
-			Point mousePos = clientProvider.get().getMouseCanvasPosition();
+			Point mousePos = client.getMouseCanvasPosition();
 
 			for (WorldMapPoint worldMapPoint : worldMapPoints)
 			{
@@ -71,7 +70,6 @@ public class WorldMapOverlayMouseListener extends MouseListener
 					{
 						// jump map to position of point
 						WorldPoint target = worldMapPoint.getWorldPoint();
-						Client client = clientProvider.get();
 						RenderOverview renderOverview = client.getRenderOverview();
 						renderOverview.setWorldMapPositionTarget(target);
 					}
@@ -92,7 +90,6 @@ public class WorldMapOverlayMouseListener extends MouseListener
 			return mouseEvent;
 		}
 
-		final Client client = clientProvider.get();
 		final Point mousePos = client.getMouseCanvasPosition();
 		final Widget view = client.getWidget(WidgetInfo.WORLD_MAP_VIEW);
 

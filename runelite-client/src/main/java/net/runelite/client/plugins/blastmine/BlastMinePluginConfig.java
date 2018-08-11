@@ -30,11 +30,7 @@ import net.runelite.client.config.ConfigItem;
 
 import java.awt.Color;
 
-@ConfigGroup(
-	keyName = "blastmine",
-	name = "Blast Mine",
-	description = "Configuration for the Blast Mine plugin"
-)
+@ConfigGroup("blastmine")
 public interface BlastMinePluginConfig extends Config
 {
 	@ConfigItem(
