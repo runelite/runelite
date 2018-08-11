@@ -306,7 +306,7 @@ public class PrayerPlugin extends Plugin
 		return false;
 	}
 
-	double getPrayerDrainRate(Client client)
+	private double getPrayerDrainRate()
 	{
 		double drainRate = 0.0;
 
@@ -324,7 +324,7 @@ public class PrayerPlugin extends Plugin
 	String getEstimatedTimeRemaining(boolean inSeconds)
 	{
 		// Base data
-		final double drainRate = getPrayerDrainRate(client);
+		final double drainRate = getPrayerDrainRate();
 
 		if (drainRate == 0)
 		{
