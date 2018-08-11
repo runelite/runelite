@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.loottracker;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,6 +49,7 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.game.ItemManager;
@@ -84,6 +86,9 @@ public class LootTrackerPlugin extends Plugin
 	@Inject
 	private Client client;
 
+	@Inject
+	private LootTrackerConfig config;
+
 	private LootTrackerPanel panel;
 	private NavigationButton navButton;
 	private String eventType;
@@ -115,6 +120,12 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		return list;
+	}
+
+	@Provides
+	LootTrackerConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(LootTrackerConfig.class);
 	}
 
 	@Override
