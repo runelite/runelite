@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.timetracking.clocks;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -145,6 +146,7 @@ public class ClockTabPanel extends TabContentPanel
 		panel.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		JLabel headerLabel = new JLabel(title);
+		headerLabel.setForeground(Color.WHITE);
 		headerLabel.setFont(FontManager.getRunescapeSmallFont());
 		panel.add(headerLabel, BorderLayout.CENTER);
 
