@@ -40,6 +40,6 @@ public interface LootTrackerConfig extends Config
 	)
 	default boolean groupLoot()
 	{
-		return false;
+		return true;
 	}
 }

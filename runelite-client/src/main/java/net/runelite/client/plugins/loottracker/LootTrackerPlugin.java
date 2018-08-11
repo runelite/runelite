@@ -160,7 +160,7 @@ public class LootTrackerPlugin extends Plugin
 		final String name = npc.getName();
 		final int combat = npc.getCombatLevel();
 		final LootTrackerItemEntry[] entries = buildEntries(stack(items));
-		SwingUtilities.invokeLater(() -> panel.addLog(name, combat, entries));
+		SwingUtilities.invokeLater(() -> panel.addLog(name, combat, entries, config.groupLoot()));
 	}
 
 	@Subscribe
@@ -171,7 +171,7 @@ public class LootTrackerPlugin extends Plugin
 		final String name = player.getName();
 		final int combat = player.getCombatLevel();
 		final LootTrackerItemEntry[] entries = buildEntries(stack(items));
-		SwingUtilities.invokeLater(() -> panel.addLog(name, combat, entries));
+		SwingUtilities.invokeLater(() -> panel.addLog(name, combat, entries, config.groupLoot()));
 	}
 
 	@Subscribe
@@ -214,7 +214,7 @@ public class LootTrackerPlugin extends Plugin
 		if (!items.isEmpty())
 		{
 			final LootTrackerItemEntry[] entries = buildEntries(stack(items));
-			SwingUtilities.invokeLater(() -> panel.addLog(eventType, -1, entries));
+			SwingUtilities.invokeLater(() -> panel.addLog(eventType, -1, entries, config.groupLoot()));
 		}
 		else
 		{

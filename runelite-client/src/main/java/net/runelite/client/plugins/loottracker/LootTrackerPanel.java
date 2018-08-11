@@ -28,6 +28,7 @@ package net.runelite.client.plugins.loottracker;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -59,7 +60,11 @@ class LootTrackerPanel extends PluginPanel
 	private final JLabel overallKillsLabel = new JLabel();
 	private final JLabel overallGpLabel = new JLabel();
 	private final JLabel overallIcon = new JLabel();
+
 	private final ItemManager itemManager;
+
+	private final HashMap<String, LootTrackerLog> lootMap = new HashMap<>();
+
 	private int overallKills;
 	private int overallGp;
 
@@ -97,9 +102,11 @@ class LootTrackerPanel extends PluginPanel
 		final JMenuItem reset = new JMenuItem("Reset All");
 		reset.addActionListener(e ->
 		{
+			lootMap.clear();
 			overallKills = 0;
 			overallGp = 0;
 			updateOverall();
+			
 			logsContainer.removeAll();
 			logsContainer.repaint();
 		});
@@ -131,17 +138,36 @@ class LootTrackerPanel extends PluginPanel
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
 
-	void addLog(final String eventName, final int actorLevel, LootTrackerItemEntry[] items)
+	void addLog(final String eventName, final int actorLevel, LootTrackerItemEntry[] items, final boolean groupLoots)
 	{
 		// Remove error and show overall
 		remove(errorPanel);
 		overallPanel.setVisible(true);
+
+		final String mapKey = eventName;
+
+		if (groupLoots && lootMap.containsKey(mapKey))
+		{
+			LootTrackerLog mappedLog = lootMap.get(mapKey);
+
+			if (mappedLog != null)
+			{
+				mappedLog.addItems(items);
+
+				// Update overall
+				overallGp = (int) mappedLog.getTotalPrice();
+				overallKills += 1;
+				updateOverall();
+				return;
+			}
+		}
 
 		// Create log
 		final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
 		final LootTrackerLog log = new LootTrackerLog(itemManager, eventName, subTitle, items);
 		logsContainer.add(log, 0);
 		logsContainer.repaint();
+		lootMap.put(mapKey, log);
 
 		// Update overall
 		overallGp += log.getTotalPrice();
@@ -153,8 +179,10 @@ class LootTrackerPanel extends PluginPanel
 		reset.addActionListener(e ->
 		{
 			overallGp -= log.getTotalPrice();
-			overallKills -= 1;
+			overallKills -= log.getTotalKills();
 			updateOverall();
+
+			lootMap.remove(mapKey);
 			logsContainer.remove(log);
 			logsContainer.repaint();
 		});
