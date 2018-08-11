@@ -29,8 +29,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -53,6 +55,7 @@ public class SceneOverlay extends Overlay
 	private static final Color LOCAL_VALID_MOVEMENT_COLOR = new Color(141, 220, 26);
 	private static final Color VALID_MOVEMENT_COLOR = new Color(73, 122, 18);
 	private static final Color LINE_OF_SIGHT_COLOR = new Color(204, 42, 219);
+	private static final Color INTERACTING_COLOR = Color.CYAN;
 
 	private static final int LOCAL_TILE_SIZE = Perspective.LOCAL_TILE_SIZE;
 	private static final int CHUNK_SIZE = 8;
@@ -60,6 +63,14 @@ public class SceneOverlay extends Overlay
 	private static final int CULL_CHUNK_BORDERS_RANGE = 16;
 	private static final int STROKE_WIDTH = 4;
 	private static final int CULL_LINE_OF_SIGHT_RANGE = 10;
+	private static final int INTERACTING_SHIFT = -16;
+
+	private static final Polygon ARROW_HEAD = new Polygon(
+		new int[]{0, -3, 3},
+		new int[]{0, -5, -5},
+		3
+	);
+
 
 	private final Client client;
 	private final DevToolsPlugin plugin;
@@ -94,6 +105,11 @@ public class SceneOverlay extends Overlay
 		if (plugin.isToggleValidMovement())
 		{
 			renderValidMovement(graphics);
+		}
+
+		if (plugin.isToggleInteracting())
+		{
+			renderInteracting(graphics);
 		}
 
 		return null;
@@ -346,4 +362,49 @@ public class SceneOverlay extends Overlay
 		}
 	}
 
+	private void renderInteracting(Graphics2D graphics)
+	{
+		Stream.concat(
+			client.getPlayers().stream(),
+			client.getNpcs().stream()
+		).forEach(fa ->
+		{
+			Actor ta = fa.getInteracting();
+			if (ta == null)
+			{
+				return;
+			}
+
+			LocalPoint fl = fa.getLocalLocation();
+			Point fs = Perspective.worldToCanvas(client, fl.getX(), fl.getY(), client.getPlane(), fa.getLogicalHeight() / 2);
+			if (fs == null)
+			{
+				return;
+			}
+			int fsx = fs.getX();
+			int fsy = fs.getY() - INTERACTING_SHIFT;
+
+			LocalPoint tl = ta.getLocalLocation();
+			Point ts = Perspective.worldToCanvas(client, tl.getX(), tl.getY(), client.getPlane(), ta.getLogicalHeight() / 2);
+			if (ts == null)
+			{
+				return;
+			}
+			int tsx = ts.getX();
+			int tsy = ts.getY() - INTERACTING_SHIFT;
+
+			graphics.setColor(INTERACTING_COLOR);
+			graphics.drawLine(fsx, fsy, tsx, tsy);
+
+			AffineTransform t = new AffineTransform();
+			t.translate(tsx, tsy);
+			t.rotate(tsx - fsx, tsy - fsy);
+			t.rotate(Math.PI / -2);
+			AffineTransform ot = graphics.getTransform();
+			graphics.setTransform(t);
+			graphics.fill(ARROW_HEAD);
+			graphics.setTransform(ot);
+
+		});
+	}
 }
