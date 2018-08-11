@@ -33,11 +33,67 @@ import net.runelite.client.config.ConfigItem;
 public interface TileIndicatorsConfig extends Config
 {
 	@ConfigItem(
+		keyName = "highlightCurrentLocation",
+		name = "Highlight current tile",
+		description = "Enable/disable current location highlighting",
+		position = 1
+	)
+	default boolean highlightCurrentLocation()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "highlightCurrentLocationColor",
+		name = "Color of current tile highlighting",
+		description = "Configures the highlight color of current location",
+		position = 2
+	)
+	default Color highlightCurrentLocationColor()
+	{
+		return Color.GRAY;
+	}
+
+	@ConfigItem(
+		keyName = "highlightDestination",
+		name = "Highlight destination tile",
+		description = "Enable/disable destination highlighting",
+		position = 3
+	)
+	default boolean highlightDestination()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "highlightDestinationColor",
 		name = "Color of current destination highlighting",
-		description = "Configures the highlight color of current destination"
+		description = "Configures the highlight color of current destination",
+		position = 4
 	)
 	default Color highlightDestinationColor()
+	{
+		return Color.GRAY;
+	}
+
+	@ConfigItem(
+		keyName = "highlightMousePosition",
+		name = "Highlight tile under mouse cursor",
+		description = "Enable/disable highlighting destination highlighting",
+		position = 5
+	)
+	default boolean highlightMousePosition()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "highlightMousePositionColor",
+		name = "Color of mouse cursor tile highlighting",
+		description = "Configures the highlight color of tile under mouse cursor",
+		position = 6
+	)
+	default Color highlightMousePositionColor()
 	{
 		return Color.GRAY;
 	}
