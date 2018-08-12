@@ -40,6 +40,7 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -72,6 +73,7 @@ public class IdleNotifierPlugin extends Plugin
 	private boolean notifyPrayer = true;
 	private boolean notifyIdleLogout = true;
 	private boolean notify6HourLogout = true;
+	private boolean wasFishing = false;
 
 	private Instant sixHourWarningTime;
 	private boolean ready;
@@ -110,11 +112,11 @@ public class IdleNotifierPlugin extends Plugin
 			case WOODCUTTING_DRAGON:
 			case WOODCUTTING_INFERNAL:
 			case WOODCUTTING_3A_AXE:
-			/* Cooking(Fire, Range) */
+				/* Cooking(Fire, Range) */
 			case COOKING_FIRE:
 			case COOKING_RANGE:
 			case COOKING_WINE:
-			/* Crafting(Gem Cutting, Glassblowing, Spinning, Battlestaves) */
+				/* Crafting(Gem Cutting, Glassblowing, Spinning, Battlestaves) */
 			case GEM_CUTTING_OPAL:
 			case GEM_CUTTING_JADE:
 			case GEM_CUTTING_REDTOPAZ:
@@ -126,7 +128,7 @@ public class IdleNotifierPlugin extends Plugin
 			case CRAFTING_SPINNING:
 			case CRAFTING_BATTLESTAVES:
 			case CRAFTING_LEATHER:
-			/* Fletching(Cutting, Stringing) */
+				/* Fletching(Cutting, Stringing) */
 			case FLETCHING_BOW_CUTTING:
 			case FLETCHING_STRING_NORMAL_SHORTBOW:
 			case FLETCHING_STRING_OAK_SHORTBOW:
@@ -140,24 +142,11 @@ public class IdleNotifierPlugin extends Plugin
 			case FLETCHING_STRING_MAPLE_LONGBOW:
 			case FLETCHING_STRING_YEW_LONGBOW:
 			case FLETCHING_STRING_MAGIC_LONGBOW:
-			/* Smithing(Anvil, Furnace, Cannonballs */
+				/* Smithing(Anvil, Furnace, Cannonballs */
 			case SMITHING_ANVIL:
 			case SMITHING_SMELTING:
 			case SMITHING_CANNONBALL:
-			/* Fishing */
-			case FISHING_NET:
-			case FISHING_BIG_NET:
-			case FISHING_HARPOON:
-			case FISHING_BARBTAIL_HARPOON:
-			case FISHING_DRAGON_HARPOON:
-			case FISHING_CAGE:
-			case FISHING_POLE_CAST:
-			case FISHING_INFERNAL_HARPOON:
-			case FISHING_OILY_ROD:
-			case FISHING_KARAMBWAN:
-			case FISHING_CRUSHING_INFERNAL_EELS:
-			case FISHING_BAREHAND:
-			/* Mining(Normal) */
+				/* Mining(Normal) */
 			case MINING_BRONZE_PICKAXE:
 			case MINING_IRON_PICKAXE:
 			case MINING_STEEL_PICKAXE:
@@ -169,7 +158,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_DRAGON_PICKAXE_ORN:
 			case MINING_INFERNAL_PICKAXE:
 			case MINING_3A_PICKAXE:
-			/* Mining(Motherlode) */
+				/* Mining(Motherlode) */
 			case MINING_MOTHERLODE_BRONZE:
 			case MINING_MOTHERLODE_IRON:
 			case MINING_MOTHERLODE_STEEL:
@@ -181,15 +170,15 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_MOTHERLODE_DRAGON_ORN:
 			case MINING_MOTHERLODE_INFERNAL:
 			case MINING_MOTHERLODE_3A:
-			/* Herblore */
+				/* Herblore */
 			case HERBLORE_POTIONMAKING:
 			case HERBLORE_MAKE_TAR:
-			/* Magic */
+				/* Magic */
 			case MAGIC_CHARGING_ORBS:
 			case MAGIC_LUNAR_STRING_JEWELRY:
 			case MAGIC_LUNAR_BAKE_PIE:
 			case MAGIC_MAKE_TABLET:
-			/* Prayer */
+				/* Prayer */
 			case USING_GILDED_ALTAR:
 				resetTimers();
 				notifyIdle = true;
@@ -261,6 +250,30 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			notifier.notify("[" + local.getName() + "] has low prayer!");
 		}
+	}
+
+	@Subscribe
+	public void onInteractingChanged(InteractingChanged ev)
+	{
+		if (!config.fishingIdle())
+		{
+			return;
+		}
+		
+		Actor source = ev.getSource();
+		if (source != client.getLocalPlayer())
+		{
+			return;
+		}
+
+		Actor target = ev.getTarget();
+		boolean isFishing = target != null && target.getName().contains("Fishing spot");
+
+		if (wasFishing && !isFishing)
+		{
+			notifier.notify("[" + source.getName() + "] has stopped fishing!");
+		}
+		wasFishing = isFishing;
 	}
 
 	private boolean checkLowHitpoints()
