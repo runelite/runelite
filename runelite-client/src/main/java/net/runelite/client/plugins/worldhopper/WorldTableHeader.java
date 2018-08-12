@@ -33,7 +33,9 @@ import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import net.runelite.client.ui.ColorScheme;
@@ -61,7 +63,7 @@ class WorldTableHeader extends JPanel
 	// Determines if this header column is being used to order the list
 	private boolean ordering = false;
 
-	WorldTableHeader(String title, boolean ordered, boolean ascending)
+	WorldTableHeader(String title, boolean ordered, boolean ascending, Runnable onRefresh)
 	{
 		setLayout(new BorderLayout(5, 0));
 		setBorder(new CompoundBorder(
@@ -92,6 +94,22 @@ class WorldTableHeader extends JPanel
 
 		textLabel.setText(title);
 		textLabel.setFont(FontManager.getRunescapeSmallFont());
+
+		final JMenuItem refresh = new JMenuItem("Refresh worlds");
+		refresh.addActionListener(e ->
+		{
+			if (onRefresh != null)
+			{
+				onRefresh.run();
+			}
+		});
+
+		final JPopupMenu popupMenu = new JPopupMenu();
+		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+		popupMenu.add(refresh);
+
+		textLabel.setComponentPopupMenu(popupMenu);
+		setComponentPopupMenu(popupMenu);
 
 		highlight(ordered, ascending);
 
