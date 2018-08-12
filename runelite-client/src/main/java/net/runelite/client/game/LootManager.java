@@ -90,6 +90,7 @@ public class LootManager
 				case NpcID.GARGOYLE_1543:
 				case NpcID.MARBLE_GARGOYLE:
 				case NpcID.MARBLE_GARGOYLE_7408:
+				case NpcID.DUSK_7888:
 
 				case NpcID.ROCKSLUG:
 				case NpcID.ROCKSLUG_422:
