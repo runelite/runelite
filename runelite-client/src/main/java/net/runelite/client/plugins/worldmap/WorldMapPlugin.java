@@ -107,17 +107,10 @@ public class WorldMapPlugin extends Plugin
 			switch (event.getKey())
 			{
 				case CONFIG_KEY_FAIRY_RING_TOOLTIPS:
+					FairyRingLocation.setTooltip(config.fairyRingTooltips());
+					break;
 				case CONFIG_KEY_FAIRY_RING_ICON:
-					worldMapPointManager.removeIf(FairyRingPoint.class::isInstance);
-
-					if (config.fairyRingTooltips() || config.fairyRingIcon())
-					{
-						Arrays.stream(FairyRingLocation.values())
-							.map(FairyRingLocation::getFairyRingPoint)
-							.forEach(worldMapPointManager::add);
-						FairyRingLocation.setIcon(config.fairyRingIcon() ? FAIRY_TRAVEL_ICON : BLANK_ICON);
-						FairyRingLocation.setTooltip(config.fairyRingTooltips());
-					}
+					FairyRingLocation.setIcon(config.fairyRingIcon() ? FAIRY_TRAVEL_ICON : BLANK_ICON);
 					break;
 				case CONFIG_KEY_AGILITY_SHORTCUT_TOOLTIPS:
 				case CONFIG_KEY_AGILITY_SHORTCUT_LEVEL_ICON:
@@ -148,13 +141,13 @@ public class WorldMapPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		FairyRingLocation.setIcon(config.fairyRingIcon() ? FAIRY_TRAVEL_ICON : BLANK_ICON);
-
-		if (config.fairyRingTooltips())
+		if (config.fairyRingTooltips() || config.fairyRingIcon())
 		{
 			Arrays.stream(FairyRingLocation.values())
 				.map(FairyRingLocation::getFairyRingPoint)
 				.forEach(worldMapPointManager::add);
+			FairyRingLocation.setIcon(config.fairyRingIcon() ? FAIRY_TRAVEL_ICON : BLANK_ICON);
+			FairyRingLocation.setTooltip(config.fairyRingTooltips());
 		}
 		if (config.agilityShortcutTooltips())
 		{
