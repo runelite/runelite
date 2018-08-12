@@ -242,16 +242,21 @@ public class AgilityPlugin extends Plugin
 			if (!Objects.equals(lastArenaTicketPosition, newTicketPosition))
 			{
 				// We don't want to notify when players first enter the course
-				if (lastArenaTicketPosition != null && newTicketPosition != null)
+				if (lastArenaTicketPosition != null)
 				{
-					if (config.notifyAgilityArena())
+					// We want to ignore the plane so that the timer won't reset when falling and climbing back up
+					if (!(lastArenaTicketPosition.getX() == newTicketPosition.getX()
+						&& lastArenaTicketPosition.getY() == newTicketPosition.getY()))
 					{
-						notifier.notify("Ticket location changed");
-					}
+						if (config.notifyAgilityArena())
+						{
+							notifier.notify("Ticket location changed");
+						}
 
-					if (config.showAgilityArenaTimer())
-					{
-						showNewAgilityArenaTimer();
+						if (config.showAgilityArenaTimer())
+						{
+							showNewAgilityArenaTimer();
+						}
 					}
 				}
 
