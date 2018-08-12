@@ -138,7 +138,7 @@ public class UpdateCheckService
 	{
 		try
 		{
-			WorldResult worldResult = worldsService.listWorlds();
+			WorldResult worldResult = worldsService.getWorlds();
 			List<World> worlds = worldResult.getWorlds();
 			Random rand = new Random();
 			return worlds.get(rand.nextInt(worlds.size()));

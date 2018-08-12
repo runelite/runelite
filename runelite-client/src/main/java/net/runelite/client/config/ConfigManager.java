@@ -431,7 +431,7 @@ public class ConfigManager
 
 	static Object stringToObject(String str, Class<?> type)
 	{
-		if (type == boolean.class)
+		if (type == boolean.class || type == Boolean.class)
 		{
 			return Boolean.parseBoolean(str);
 		}

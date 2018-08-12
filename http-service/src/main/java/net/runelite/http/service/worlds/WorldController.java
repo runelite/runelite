@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,59 +24,44 @@
  */
 package net.runelite.http.service.worlds;
 
+import com.google.common.base.Suppliers;
 import java.io.IOException;
-import java.io.InputStream;
-import net.runelite.http.api.worlds.World;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.worlds.WorldResult;
-import net.runelite.http.api.worlds.WorldType;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.MockWebServer;
-import okio.Buffer;
-import org.junit.After;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import org.junit.Before;
-import org.junit.Test;
-import org.sql2o.tools.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-public class WorldsServiceTest
+@RestController
+@RequestMapping("/worlds")
+@Slf4j
+public class WorldController
 {
+	@Autowired
+	private WorldsService worldsService;
 
-	private final MockWebServer server = new MockWebServer();
-
-	@Before
-	public void before() throws IOException
+	private final Supplier<WorldResult> worlds = Suppliers.memoizeWithExpiration(() ->
 	{
-		InputStream in = WorldsServiceTest.class.getResourceAsStream("worldlist");
-		byte[] worldData = IOUtils.toByteArray(in);
+		try
+		{
+			return worldsService.getWorlds();
+		}
+		catch (IOException ex)
+		{
+			log.warn(null, ex);
+			throw new RuntimeException(ex);
+		}
+	}, 10, TimeUnit.MINUTES);
 
-		Buffer buffer = new Buffer();
-		buffer.write(worldData);
-
-		server.enqueue(new MockResponse().setBody(buffer));
-
-		server.start();
-	}
-
-	@After
-	public void after() throws IOException
+	@RequestMapping
+	public ResponseEntity<WorldResult> listWorlds() throws IOException
 	{
-		server.shutdown();
+		return ResponseEntity.ok()
+			.cacheControl(CacheControl.maxAge(10, TimeUnit.MINUTES).cachePublic())
+			.body(worldsService.getWorlds());
 	}
-
-	@Test
-	public void testListWorlds() throws Exception
-	{
-		WorldsService worlds = new WorldsService();
-		worlds.setUrl(server.url("/"));
-
-		WorldResult worldResult = worlds.getWorlds();
-		assertEquals(82, worldResult.getWorlds().size());
-
-		World world = worldResult.findWorld(385);
-		assertNotNull(world);
-		assertTrue(world.getTypes().contains(WorldType.SKILL_TOTAL));
-	}
-
 }

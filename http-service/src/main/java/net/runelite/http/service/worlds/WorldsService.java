@@ -36,19 +36,16 @@ import net.runelite.http.api.worlds.WorldType;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
-@RestController
-@RequestMapping("/worlds")
+@Service
 public class WorldsService
 {
 	private static final HttpUrl WORLD_URL = HttpUrl.parse("http://www.runescape.com/g=oldscape/slr.ws?order=LPWM");
 
 	private HttpUrl url = WORLD_URL;
 
-	@RequestMapping
-	public WorldResult listWorlds() throws IOException
+	public WorldResult getWorlds() throws IOException
 	{
 		Request okrequest = new Request.Builder()
 			.url(url)
