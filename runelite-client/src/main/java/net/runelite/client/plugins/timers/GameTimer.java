@@ -30,14 +30,12 @@ import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.GraphicID;
 import net.runelite.api.ItemID;
 import net.runelite.api.SpriteID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 
-@Slf4j
 enum GameTimer
 {
 	STAMINA(ItemID.STAMINA_POTION4, GameTimerImageType.ITEM, "Stamina", 2, ChronoUnit.MINUTES),
@@ -55,7 +53,7 @@ enum GameTimer
 	HALFBIND(SpriteID.SPELL_BIND, GameTimerImageType.SPRITE, "Half Bind", GraphicID.BIND, 2500, ChronoUnit.MILLIS),
 	SNARE(SpriteID.SPELL_SNARE, GameTimerImageType.SPRITE, "Snare", GraphicID.SNARE, 10, ChronoUnit.SECONDS),
 	HALFSNARE(SpriteID.SPELL_SNARE, GameTimerImageType.SPRITE, "Half Snare", GraphicID.SNARE, 5, ChronoUnit.SECONDS),
-	ENTANGLE(SpriteID.SPELL_ENTANGLE, GameTimerImageType.SPRITE, "Engangle", GraphicID.ENTANGLE, 15, ChronoUnit.SECONDS),
+	ENTANGLE(SpriteID.SPELL_ENTANGLE, GameTimerImageType.SPRITE, "Entangle", GraphicID.ENTANGLE, 15, ChronoUnit.SECONDS),
 	HALFENTANGLE(SpriteID.SPELL_ENTANGLE, GameTimerImageType.SPRITE, "Half Entangle", GraphicID.ENTANGLE, 7500, ChronoUnit.MILLIS),
 	ICERUSH(SpriteID.SPELL_ICE_RUSH, GameTimerImageType.SPRITE, "Ice rush", GraphicID.ICE_RUSH, 5, ChronoUnit.SECONDS),
 	ICEBURST(SpriteID.SPELL_ICE_BURST, GameTimerImageType.SPRITE, "Ice burst", GraphicID.ICE_BURST, 10, ChronoUnit.SECONDS),

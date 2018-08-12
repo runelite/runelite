@@ -71,7 +71,7 @@ public class WorldsServiceTest
 		WorldsService worlds = new WorldsService();
 		worlds.setUrl(server.url("/"));
 
-		WorldResult worldResult = worlds.listWorlds();
+		WorldResult worldResult = worlds.getWorlds();
 		assertEquals(82, worldResult.getWorlds().size());
 
 		World world = worldResult.findWorld(385);

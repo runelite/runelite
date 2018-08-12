@@ -108,10 +108,11 @@ public class WidgetID
 	public static final int KILL_LOGS_GROUP_ID = 549;
 	public static final int DIARY_QUEST_GROUP_ID = 275;
 	public static final int THEATRE_OF_BLOOD_GROUP_ID = 23;
+	public static final int WORLD_SWITCHER_GROUP_ID = 69;
 
 	static class WorldMap
 	{
-		static final int OPTION = 41;
+		static final int OPTION = 42;
 		static final int TOOLTIP = 35;
 		static final int MAPVIEW = 3;
 	}
@@ -131,28 +132,29 @@ public class WidgetID
 
 	static class LogoutPanel
 	{
+		static final int WORLD_SWITCHER_BUTTON = 3;
 		static final int LOGOUT_BUTTON = 6;
 	}
 
 	static class PestControl
 	{
-		static final int PURPLE_SHIELD = 21;
-		static final int BLUE_SHIELD = 23;
-		static final int YELLOW_SHIELD = 25;
-		static final int RED_SHIELD = 27;
+		static final int ACTIVITY_BAR = 9;
+		static final int ACTIVITY_PROGRESS = 11;
 
-		static final int PURPLE_HEALTH = 17;
-		static final int BLUE_HEALTH = 18;
-		static final int YELLOW_HEALTH = 19;
-		static final int RED_HEALTH = 20;
+		static final int PURPLE_SHIELD = 12;
+		static final int BLUE_SHIELD = 13;
+		static final int YELLOW_SHIELD = 14;
+		static final int RED_SHIELD = 15;
 
-		static final int PURPLE_ICON = 13;
-		static final int BLUE_ICON = 14;
-		static final int YELLOW_ICON = 15;
-		static final int RED_ICON = 16;
+		static final int PURPLE_ICON = 16;
+		static final int BLUE_ICON = 17;
+		static final int YELLOW_ICON = 18;
+		static final int RED_ICON = 19;
 
-		static final int ACTIVITY_BAR = 6;
-		static final int ACTIVITY_PROGRESS = 8;
+		static final int PURPLE_HEALTH = 20;
+		static final int BLUE_HEALTH = 21;
+		static final int YELLOW_HEALTH = 22;
+		static final int RED_HEALTH = 23;
 	}
 
 	static class ClanChat
@@ -340,10 +342,10 @@ public class WidgetID
 
 	static class Chatbox
 	{
-		static final int CHATBOX_MESSAGES = 30;
-		static final int CHATBOX_REPORT_TEXT = 29;
-		static final int CHATBOX_FRAME = 1;
-		static final int CHATBOX_BUTTONS = 2;
+		static final int CHATBOX_BUTTONS = 1;
+		static final int CHATBOX_REPORT_TEXT = 28;
+		static final int CHATBOX_FRAME = 29;
+		static final int CHATBOX_MESSAGES = 47;
 	}
 
 	static class Prayer
@@ -589,5 +591,10 @@ public class WidgetID
 		static final int MONSTER = 13;
 		static final int KILLS = 14;
 		static final int STREAK = 15;
+	}
+
+	static class WorldSwitcher
+	{
+		static final int WORLD_LIST = 14;
 	}
 }

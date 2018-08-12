@@ -37,7 +37,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.FocusChanged;
@@ -51,7 +50,6 @@ import net.runelite.client.input.MouseManager;
 import net.runelite.client.ui.FontManager;
 
 @Singleton
-@Slf4j
 public class OverlayRenderer extends MouseListener implements KeyListener
 {
 	private static final int BORDER_LEFT_RESIZABLE = 5;

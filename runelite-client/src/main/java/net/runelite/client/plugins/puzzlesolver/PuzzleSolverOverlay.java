@@ -37,7 +37,6 @@ import java.util.Arrays;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
@@ -60,7 +59,6 @@ import net.runelite.client.ui.overlay.components.BackgroundComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.ImageUtil;
 
-@Slf4j
 public class PuzzleSolverOverlay extends Overlay
 {
 	private static final int INFO_BOX_WIDTH = 100;

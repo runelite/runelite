@@ -27,12 +27,13 @@ package net.runelite.client.game;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.Subscribe;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -44,6 +45,7 @@ import net.runelite.api.Client;
 import static net.runelite.api.Constants.CLIENT_DEFAULT_ZOOM;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemID;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.callback.ClientThread;
@@ -77,7 +79,7 @@ public class ItemManager
 
 	private final ItemClient itemClient = new ItemClient();
 	private final LoadingCache<String, SearchResult> itemSearches;
-	private final ConcurrentMap<Integer, ItemPrice> itemPrices = new ConcurrentHashMap<>();
+	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
 	private final LoadingCache<ImageKey, AsyncBufferedImage> itemImages;
 	private final LoadingCache<Integer, ItemComposition> itemCompositions;
 	private final LoadingCache<OutlineKey, BufferedImage> itemOutlines;
@@ -147,11 +149,12 @@ public class ItemManager
 			ItemPrice[] prices = itemClient.getPrices();
 			if (prices != null)
 			{
-				itemPrices.clear();
+				ImmutableMap.Builder<Integer, ItemPrice> map = ImmutableMap.builderWithExpectedSize(prices.length);
 				for (ItemPrice price : prices)
 				{
-					itemPrices.put(price.getItem().getId(), price);
+					map.put(price.getItem().getId(), price);
 				}
+				itemPrices = map.build();
 			}
 
 			log.debug("Loaded {} prices", itemPrices.size());
@@ -174,13 +177,31 @@ public class ItemManager
 	/**
 	 * Look up an item's price
 	 *
-	 * @param itemId item id
+	 * @param itemID item id
 	 * @return item price
 	 */
-	public ItemPrice getItemPrice(int itemId)
+	public int getItemPrice(int itemID)
 	{
-		itemId = ItemMapping.mapFirst(itemId);
-		return itemPrices.get(itemId);
+		if (itemID == ItemID.COINS_995)
+		{
+			return 1;
+		}
+		if (itemID == ItemID.PLATINUM_TOKEN)
+		{
+			return 1000;
+		}
+
+		int price = 0;
+		for (int mappedID : ItemMapping.map(itemID))
+		{
+			ItemPrice ip = itemPrices.get(mappedID);
+			if (ip != null)
+			{
+				price += ip.getPrice();
+			}
+		}
+
+		return price;
 	}
 
 	/**

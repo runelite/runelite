@@ -53,7 +53,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.examine.ExamineClient;
-import net.runelite.http.api.item.ItemPrice;
 
 /**
  * Submits exammine info to the api
@@ -272,14 +271,9 @@ public class ExaminePlugin extends Plugin
 		final boolean note = itemComposition.getNote() != -1;
 		final int id = note ? itemComposition.getLinkedNoteId() : itemComposition.getId();
 
-		ItemPrice itemPrice = itemManager.getItemPrice(id);
-		if (itemPrice == null)
-		{
-			return;
-		}
 
 		int itemCompositionPrice = itemComposition.getPrice();
-		final int gePrice = itemPrice == null ? 0 : itemPrice.getPrice();
+		final int gePrice = itemManager.getItemPrice(id);
 		final int alchPrice = itemCompositionPrice <= 0 ? 0 : Math.round(itemCompositionPrice * HIGH_ALCHEMY_CONSTANT);
 
 		if (gePrice > 0 || alchPrice > 0)

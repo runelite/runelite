@@ -45,7 +45,6 @@ import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.StackFormatter;
-import net.runelite.http.api.item.ItemPrice;
 
 class ItemPricesOverlay extends Overlay
 {
@@ -200,11 +199,7 @@ class ItemPricesOverlay extends Overlay
 
 		if (config.showGEPrice())
 		{
-			final ItemPrice price = itemManager.getItemPrice(id);
-			if (price != null)
-			{
-				gePrice = price.getPrice();
-			}
+			gePrice = itemManager.getItemPrice(id);
 		}
 		if (config.showHAValue())
 		{

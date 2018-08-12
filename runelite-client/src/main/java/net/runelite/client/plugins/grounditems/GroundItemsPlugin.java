@@ -45,7 +45,6 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Item;
@@ -77,14 +76,12 @@ import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.N
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.OPTION;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
-import net.runelite.http.api.item.ItemPrice;
 
 @PluginDescriptor(
 	name = "Ground Items",
 	description = "Highlight ground items and/or show price information",
 	tags = {"grand", "exchange", "high", "alchemy", "prices", "highlight", "overlay"}
 )
-@Slf4j
 public class GroundItemsPlugin extends Plugin
 {
 	private static final Splitter COMMA_SPLITTER = Splitter
@@ -279,11 +276,7 @@ public class GroundItemsPlugin extends Plugin
 		}
 		else
 		{
-			final ItemPrice itemPrice = itemManager.getItemPrice(realItemId);
-			if (itemPrice != null)
-			{
-				groundItem.setGePrice(itemPrice.getPrice());
-			}
+			groundItem.setGePrice(itemManager.getItemPrice(realItemId));
 		}
 
 		return groundItem;
@@ -371,8 +364,8 @@ public class GroundItemsPlugin extends Plugin
 
 			final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemComposition.getId();
-			final ItemPrice itemPrice = itemManager.getItemPrice(realItemId);
-			final int price = itemPrice == null ? itemComposition.getPrice() : itemPrice.getPrice();
+			final int itemPrice = itemManager.getItemPrice(realItemId);
+			final int price = itemPrice <= 0 ? itemComposition.getPrice() : itemPrice;
 			final int haPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity;
 			final int gePrice = quantity * price;
 			final Color hidden = getHidden(itemComposition.getName(), gePrice, haPrice, itemComposition.isTradeable());

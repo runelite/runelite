@@ -28,11 +28,9 @@ package net.runelite.client.plugins.zoom;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
-import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -43,12 +41,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 	tags = {"limit", "vertical"},
 	enabledByDefault = false
 )
-@Slf4j
 public class ZoomPlugin extends Plugin
 {
-	@Inject
-	private RuneLite runeLite;
-
 	@Inject
 	private Client client;
 
@@ -64,7 +58,7 @@ public class ZoomPlugin extends Plugin
 	@Subscribe
 	public void onScriptEvent(ScriptCallbackEvent event)
 	{
-		if (runeLite.isOverlayOutdated())
+		if (client.getIndexScripts().isOverlayOutdated())
 		{
 			// if any cache overlay fails to load then assume at least one of the zoom scripts is outdated
 			// and prevent zoom extending entirely.

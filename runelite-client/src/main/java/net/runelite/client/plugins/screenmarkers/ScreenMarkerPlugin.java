@@ -42,7 +42,6 @@ import java.util.stream.Stream;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.MouseManager;
@@ -59,7 +58,6 @@ import net.runelite.client.util.ImageUtil;
 	description = "Enable drawing of screen markers on top of the client",
 	tags = {"boxes", "overlay", "panel"}
 )
-@Slf4j
 public class ScreenMarkerPlugin extends Plugin
 {
 	private static final String PLUGIN_NAME = "Screen Markers";

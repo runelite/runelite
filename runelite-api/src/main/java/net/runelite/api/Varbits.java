@@ -382,7 +382,10 @@ public enum Varbits
 	/**
 	 * Corp beast damage
 	 */
-	CORP_DAMAGE(999);
+	CORP_DAMAGE(999),
+
+	WORLDHOPPER_FAVROITE_1(4597),
+	WORLDHOPPER_FAVROITE_2(4598);
 
 	/**
 	 * The raw varbit ID.

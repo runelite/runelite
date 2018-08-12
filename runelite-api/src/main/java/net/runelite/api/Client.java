@@ -102,6 +102,13 @@ public interface Client extends GameEngine
 	int getRealSkillLevel(Skill skill);
 
 	/**
+	 * Calculates the total level from real skill levels.
+	 *
+	 * @return the total level
+	 */
+	int getTotalLevel();
+
+	/**
 	 * Adds a new chat message to the chatbox.
 	 *
 	 * @param type the type of message
@@ -326,6 +333,13 @@ public interface Client extends GameEngine
 	 * @return the sprite database
 	 */
 	IndexDataBase getIndexSprites();
+
+	/**
+	 * Gets the script index database.
+	 *
+	 * @return the script database
+	 */
+	IndexDataBase getIndexScripts();
 
 	/**
 	 * Returns the x-axis base coordinate.
@@ -1419,4 +1433,15 @@ public interface Client extends GameEngine
 	 * @param speed speed
 	 */
 	void setOculusOrbNormalSpeed(int speed);
+
+	/**
+	 * Opens in-game world hopper interface
+	 */
+	void openWorldHopper();
+
+	/**
+	 * Hops using in-game world hopper widget to another world
+	 * @param world target world to hop to
+	 */
+	void hopToWorld(World world);
 }
