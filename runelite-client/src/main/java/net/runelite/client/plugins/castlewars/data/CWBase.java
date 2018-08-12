@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, cw-dev
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,27 +22,46 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.castlewars.data;
 
-public class GraphicID
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import net.runelite.api.coords.WorldPoint;
+
+@AllArgsConstructor
+@Getter
+public enum CWBase
 {
-	public static final int TELEPORT = 111;
-	public static final int GREY_BUBBLE_TELEPORT = 86;
-	public static final int ENTANGLE = 179;
-	public static final int SNARE = 180;
-	public static final int BIND = 181;
-	public static final int ICE_RUSH = 361;
-	public static final int ICE_BURST = 363;
-	public static final int ICE_BLITZ = 367;
-	public static final int ICE_BARRAGE = 369;
-	public static final int VENGEANCE_OTHER = 725;
-	public static final int VENGEANCE = 726;
-	public static final int BOOK_HOME_TELEPORT_1 = 800;
-	public static final int BOOK_HOME_TELEPORT_2 = 802;
-	public static final int BOOK_HOME_TELEPORT_3 = 803;
-	public static final int BOOK_HOME_TELEPORT_4 = 804;
-	public static final int STAFF_OF_THE_DEAD = 1228;
-	public static final int IMBUED_HEART = 1316;
-	public static final int FLYING_FISH = 1387;
-	public static final int SPLASH = 85;
+	ZAM_BASE(CWArea.ZAM_4TH, CWArea.ZAM_3RD, CWArea.ZAM_SPAWN, CWArea.ZAM_GROUND),
+	SARA_BASE(CWArea.SARA_4TH, CWArea.SARA_3RD, CWArea.SARA_SPAWN, CWArea.SARA_GROUND);
+
+	private final CWArea fourth;
+	private final CWArea third;
+	private final CWArea spawn;
+	private final CWArea ground;
+
+	public static CWBase match(WorldPoint point)
+	{
+		CWArea area = CWArea.match(point);
+
+		if (ZAM_BASE.getFourth().equals(area) ||
+			ZAM_BASE.getThird().equals(area) ||
+			ZAM_BASE.getSpawn().equals(area) ||
+			ZAM_BASE.getGround().equals(area))
+		{
+			return ZAM_BASE;
+		}
+
+		if (SARA_BASE.getFourth().equals(area) ||
+			SARA_BASE.getThird().equals(area) ||
+			SARA_BASE.getSpawn().equals(area) ||
+			SARA_BASE.getGround().equals(area))
+		{
+			return SARA_BASE;
+		}
+
+		return null;
+	}
+
+
 }

@@ -146,6 +146,8 @@ public final class AnimationID
 	public static final int COW_HOME_TELEPORT_6 = 1701;
 	public static final int CONSTRUCTION = 3676;
 	public static final int SAND_COLLECTION = 895;
+	public static final int DRAGON_SPEAR_SPEC = 1064;
+	public static final int ZAM_HASTA_SPEC = 5057;
 
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
@@ -169,6 +171,12 @@ public final class AnimationID
 
 	// Arceuus spellbook
 	public static final int MAGIC_ARCEUUS_RESURRECT_CROPS = 7118;
+
+	// Ancient spellbook
+	public static final int MAGIC_ANCIENT_BARRAGE = 1979;
+
+	// Standard spellbook
+	public static final int MAGIC_STANDARD_TELEPORT = 714;
 
 	// Battlestaff Crafting
 	public static final int CRAFTING_BATTLESTAVES = 7531;

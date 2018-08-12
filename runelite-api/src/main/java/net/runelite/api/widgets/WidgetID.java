@@ -119,6 +119,8 @@ public class WidgetID
 	public static final int MINIGAME_TAB_ID = 76;
 	public static final int SPELLBOOK_GROUP_ID = 218;
 	public static final int PVP_GROUP_ID = 90;
+	public static final int CW_SARA_GROUP_ID = 58;
+	public static final int CW_ZAM_GROUP_ID = 59;
 
 	static class WorldMap
 	{
@@ -547,7 +549,7 @@ public class WidgetID
 	{
 		static final int POINTS_INFOBOX = 3;
 	}
-	
+
 	static class ExperienceDrop
 	{
 		static final int DROP_1 = 15;
@@ -696,5 +698,10 @@ public class WidgetID
 		static final int ATTACK_RANGE = 55;
 		static final int WILDERNESS_LEVEL = 56; // this can also be the Deadman Mode "Protection" text
 		static final int DEADMAN_PROTECTION_TIME = 57;
+	}
+
+	static class CastleWars
+	{
+		static final int TIME_REMAINING = 25;
 	}
 }

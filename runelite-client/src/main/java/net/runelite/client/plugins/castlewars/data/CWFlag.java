@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, cw-dev
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,27 +22,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.castlewars.data;
 
-public class GraphicID
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import net.runelite.api.ItemID;
+import net.runelite.api.ObjectID;
+
+@AllArgsConstructor
+@Getter
+public enum CWFlag
 {
-	public static final int TELEPORT = 111;
-	public static final int GREY_BUBBLE_TELEPORT = 86;
-	public static final int ENTANGLE = 179;
-	public static final int SNARE = 180;
-	public static final int BIND = 181;
-	public static final int ICE_RUSH = 361;
-	public static final int ICE_BURST = 363;
-	public static final int ICE_BLITZ = 367;
-	public static final int ICE_BARRAGE = 369;
-	public static final int VENGEANCE_OTHER = 725;
-	public static final int VENGEANCE = 726;
-	public static final int BOOK_HOME_TELEPORT_1 = 800;
-	public static final int BOOK_HOME_TELEPORT_2 = 802;
-	public static final int BOOK_HOME_TELEPORT_3 = 803;
-	public static final int BOOK_HOME_TELEPORT_4 = 804;
-	public static final int STAFF_OF_THE_DEAD = 1228;
-	public static final int IMBUED_HEART = 1316;
-	public static final int FLYING_FISH = 1387;
-	public static final int SPLASH = 85;
+	ZAM(ItemID.ZAMORAK_BANNER, ObjectID.ZAMORAK_STANDARD, "Zamorak Standard"),
+	SARA(ItemID.SARADOMIN_BANNER, ObjectID.SARADOMIN_STANDARD, "Saradomin Standard");
+
+	private final Integer equipmentId;
+	private final Integer droppedObjectId;
+	private final String menuName;
+
+	public static CWFlag fromEquipment(int equipmentId)
+	{
+		if (equipmentId == CWFlag.ZAM.getEquipmentId())
+		{
+			return ZAM;
+		}
+
+		if (equipmentId == CWFlag.SARA.getEquipmentId())
+		{
+			return SARA;
+		}
+
+		return null;
+	}
+
+	public static CWFlag fromDroppedObjectID(int gameObjectID)
+	{
+		if (gameObjectID == CWFlag.ZAM.getDroppedObjectId())
+		{
+			return ZAM;
+		}
+
+		if (gameObjectID == CWFlag.SARA.getDroppedObjectId())
+		{
+			return SARA;
+		}
+
+		return null;
+	}
 }
