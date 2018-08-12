@@ -26,8 +26,6 @@
  */
 package net.runelite.client.ui.components;
 
-import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.FontManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -41,9 +39,12 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
+import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.FontManager;
 
 /**
  * This component is a FlatTextField with an icon on its left side, and a clear button (×) on its right side.
@@ -139,18 +140,18 @@ public class IconTextField extends JPanel
 		});
 
 		// Show the clear button when text is present, and hide again when empty
-		getDocument().addDocumentListener(new DocumentListener()
+		textField.getTextField().getDocument().addDocumentListener(new DocumentListener()
 		{
 			@Override
 			public void insertUpdate(DocumentEvent e)
 			{
-				clearButton.setVisible(true);
+				SwingUtilities.invokeLater(() -> clearButton.setVisible(true));
 			}
 
 			@Override
 			public void removeUpdate(DocumentEvent e)
 			{
-				clearButton.setVisible(!getText().isEmpty());
+				SwingUtilities.invokeLater(() -> clearButton.setVisible(!getText().isEmpty()));
 			}
 
 			@Override
