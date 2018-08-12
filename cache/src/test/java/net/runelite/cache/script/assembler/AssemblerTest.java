@@ -52,7 +52,8 @@ public class AssemblerTest
 		return new String[]
 		{
 			"91.rs2asm",
-			"681.rs2asm"
+			"681.rs2asm",
+			"Unicode.rs2asm"
 		};
 	}
 
