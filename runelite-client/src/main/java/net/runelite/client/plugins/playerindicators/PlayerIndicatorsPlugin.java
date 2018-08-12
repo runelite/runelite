@@ -162,8 +162,9 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 				if (color != null && config.colorPlayerMenu())
 				{
-					// strip out existing tags (color, etc.)
-					String target = Text.removeTags(lastEntry.getTarget());
+					// strip out existing player color tag
+					// menu targets are formatted: "<col=ffffff>Zezima<col=ff0000>  (level-126)"
+					String target = Text.removeTagsOfType(lastEntry.getTarget(), "col", 1);
 					lastEntry.setTarget(ColorUtil.prependColorTag(target, color));
 				}
 
