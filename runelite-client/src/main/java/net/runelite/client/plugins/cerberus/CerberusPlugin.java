@@ -28,20 +28,25 @@ package net.runelite.client.plugins.cerberus;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.eventbus.Subscribe;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
+import net.runelite.api.GameState;
 import net.runelite.api.NPC;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
-@PluginDescriptor(name = "Cerberus")
+@PluginDescriptor(
+	name = "Cerberus",
+	description = "Show what to pray against the summoned souls",
+	tags = {"bosses", "combat", "ghosts", "prayer", "pve", "overlay", "souls"}
+)
 @Singleton
 public class CerberusPlugin extends Plugin
 {
@@ -49,18 +54,31 @@ public class CerberusPlugin extends Plugin
 	private final List<NPC> ghosts = new ArrayList<>();
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private CerberusOverlay overlay;
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(overlay);
+	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
 		ghosts.clear();
 	}
 
-	@Override
-	public Overlay getOverlay()
+	@Subscribe
+	public void onGameStateChange(GameStateChanged event)
 	{
-		return overlay;
+		if (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.HOPPING)
+		{
+			ghosts.clear();
+		}
 	}
 
 	@Subscribe
@@ -84,7 +102,7 @@ public class CerberusPlugin extends Plugin
 			return;
 		}
 
-		Collections.sort(ghosts, (a, b) -> ComparisonChain.start()
+		ghosts.sort((a, b) -> ComparisonChain.start()
 			// First, sort by the southernmost ghost (e.g with lowest y)
 			.compare(a.getLocalLocation().getY(), b.getLocalLocation().getY())
 			// Then, sort by the westernmost ghost (e.g with lowest x)

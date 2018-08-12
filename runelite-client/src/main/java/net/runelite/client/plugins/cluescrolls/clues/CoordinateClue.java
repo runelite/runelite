@@ -32,7 +32,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.SPADE_IMAGE;
 import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.emote.SingleItemRequirement;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -54,12 +53,12 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		panelComponent.getChildren().add(TitleComponent.builder().text("Coordinate Clue").build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Travel to the marked out destination to see a marker for where you should dig.")
+			.left("Click the clue scroll along the edge of your world map to see where you should dig.")
 			.build());
 
-		if (plugin.getEquippedItems() != null)
+		if (plugin.getInventoryItems() != null)
 		{
-			if (!HAS_SPADE.fulfilledBy(plugin.getEquippedItems()))
+			if (!HAS_SPADE.fulfilledBy(plugin.getInventoryItems()))
 			{
 				panelComponent.getChildren().add(LineComponent.builder().left("").build());
 				panelComponent.getChildren().add(LineComponent.builder().left("Requires Spade!").leftColor(Color.RED).build());
@@ -77,6 +76,6 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 			return;
 		}
 
-		OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, SPADE_IMAGE, Color.ORANGE);
+		OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, plugin.getSpadeImage(), Color.ORANGE);
 	}
 }

@@ -36,11 +36,10 @@ import static net.runelite.api.ObjectID.CRATE_18506;
 import static net.runelite.api.ObjectID.CRATE_2620;
 import static net.runelite.api.ObjectID.CRATE_354;
 import static net.runelite.api.ObjectID.CRATE_357;
+import static net.runelite.api.ObjectID.CRATE_6616;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.CLUE_SCROLL_IMAGE;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.SPADE_IMAGE;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_BORDER_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_FILL_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_HOVER_BORDER_COLOR;
@@ -74,22 +73,24 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 		new MapClue(CLUE_SCROLL_MEDIUM_7294, new WorldPoint(2666, 3562, 0)),
 		new MapClue(CLUE_SCROLL_HARD, new WorldPoint(3309, 3503, 0), CRATE_2620),
 		new MapClue(CLUE_SCROLL_HARD_2729, new WorldPoint(3190, 3963, 0)),
-		new MapClue(CLUE_SCROLL_HARD_3520, new WorldPoint(2616, 3077, 0)),
+		new MapClue(CLUE_SCROLL_HARD_3520, new WorldPoint(2615, 3078, 0)),
 		new MapClue(CLUE_SCROLL_HARD_3522, new WorldPoint(2488, 3308, 0)),
 		new MapClue(CLUE_SCROLL_HARD_3524, new WorldPoint(2457, 3182, 0), CRATE_18506),
-		new MapClue(CLUE_SCROLL_HARD_3525, new WorldPoint(3026, 3629, 0), CRATE_354),
+		new MapClue(CLUE_SCROLL_HARD_3525, new WorldPoint(3026, 3628, 0), CRATE_354),
 		new MapClue(CLUE_SCROLL_HARD_7239, new WorldPoint(3021, 3912, 0)),
 		new MapClue(CLUE_SCROLL_HARD_7241, new WorldPoint(2722, 3338, 0)),
 		new MapClue(CLUE_SCROLL_ELITE_12130, new WorldPoint(2449, 3130, 0)),
-		new MapClue(CLUE_SCROLL_ELITE_19782, new WorldPoint(2953, 9523, 1)),
+		new MapClue(CLUE_SCROLL_ELITE_19782, new WorldPoint(2953, 9523, 1), "In the Mogre Camp, near Port Khazard. You require a Diving Apparatus and a Fishbowl Helmet"),
 		new MapClue(CLUE_SCROLL_ELITE_19783, new WorldPoint(2202, 3062, 0)),
 		new MapClue(CLUE_SCROLL_ELITE_19784, new WorldPoint(1815, 3852, 0)),
-		new MapClue(CLUE_SCROLL_ELITE_19785, new WorldPoint(3538, 3208, 0))
+		new MapClue(CLUE_SCROLL_ELITE_19785, new WorldPoint(3538, 3208, 0)),
+		new MapClue(CLUE_SCROLL_ELITE_19786, new WorldPoint(2703, 2716, 0), CRATE_6616)
 	);
 
-	private int itemId;
-	private WorldPoint location;
-	private int objectId;
+	private final int itemId;
+	private final WorldPoint location;
+	private final int objectId;
+	private final String description;
 
 	private MapClue(int itemId, WorldPoint location)
 	{
@@ -98,15 +99,30 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 
 	private MapClue(int itemId, WorldPoint location, int objectId)
 	{
+		this(itemId, location, objectId, null);
+	}
+
+	private MapClue(int itemId, WorldPoint location, String description)
+	{
+		this(itemId, location, -1, description);
+	}
+
+	private MapClue(int itemId, WorldPoint location, int objectId, String description)
+	{
 		this.itemId = itemId;
 		this.location = location;
 		this.objectId = objectId;
+		this.description = description;
 	}
 
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
 		panelComponent.getChildren().add(TitleComponent.builder().text("Map Clue").build());
+
+		panelComponent.getChildren().add(LineComponent.builder()
+				.left("Click the clue scroll along the edge of your world map to see your destination.")
+				.build());
 
 		if (objectId != -1)
 		{
@@ -127,6 +143,14 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Travel to the destination and dig on the marked tile.")
+				.build());
+		}
+
+		if (description != null)
+		{
+			panelComponent.getChildren().add(LineComponent.builder().build());
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(description)
 				.build());
 		}
 	}
@@ -153,14 +177,14 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 					OverlayUtil.renderHoverableArea(graphics, gameObject.getClickbox(), mousePosition,
 						CLICKBOX_FILL_COLOR, CLICKBOX_BORDER_COLOR, CLICKBOX_HOVER_BORDER_COLOR);
 
-					OverlayUtil.renderImageLocation(plugin.getClient(), graphics, gameObject.getLocalLocation(), CLUE_SCROLL_IMAGE, IMAGE_Z_OFFSET);
+					OverlayUtil.renderImageLocation(plugin.getClient(), graphics, gameObject.getLocalLocation(), plugin.getClueScrollImage(), IMAGE_Z_OFFSET);
 				}
 			}
 		}
 		// Mark tile
 		else
 		{
-			OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, SPADE_IMAGE, Color.ORANGE);
+			OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, plugin.getSpadeImage(), Color.ORANGE);
 		}
 	}
 

@@ -19,6 +19,12 @@
       "xp": 20
     },
     {
+      "level": 5,
+      "icon": 3150,
+      "name": "Raw Karambwanji",
+      "xp": 5
+    },
+    {
       "level": 10,
       "icon": 345,
       "name": "Raw Herring",
@@ -145,6 +151,12 @@
       "xp": 38
     },
     {
+      "level": 80,
+      "icon": 21293,
+      "name": "Infernal Eel",
+      "xp": 95
+    },
+    {
       "level": 81,
       "icon": 389,
       "name": "Raw Manta Ray",
@@ -157,10 +169,22 @@
       "xp": 120
     },
     {
+      "level": 82,
+      "icon": 21356,
+      "name": "Minnow",
+      "xp": 26.5
+    },
+    {
       "level": 85,
       "icon": 11934,
       "name": "Raw Dark Crab",
       "xp": 130
+    },
+    {
+      "level": 87,
+      "icon": 13339,
+      "name": "Sacred Eel",
+      "xp": 105
     }
   ]
 }

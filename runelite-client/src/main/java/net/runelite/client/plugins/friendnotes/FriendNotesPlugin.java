@@ -30,6 +30,7 @@ package net.runelite.client.plugins.friendnotes;
 import com.google.common.base.Strings;
 import com.google.common.collect.ObjectArrays;
 import com.google.common.eventbus.Subscribe;
+import java.awt.Color;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -48,28 +49,33 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ChatboxInputManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
 @Slf4j
-@PluginDescriptor(name = "Friend Notes")
+@PluginDescriptor(
+	name = "Friend Notes",
+	description = "Store notes about your friends"
+)
 public class FriendNotesPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "friendNotes";
-
 	private static final int CHARACTER_LIMIT = 128;
-
 	private static final String KEY_PREFIX = "note_";
 	private static final String ADD_NOTE = "Add Note";
 	private static final String EDIT_NOTE = "Edit Note";
 	private static final String NOTE_PROMPT_FORMAT = "%s's Notes<br>" +
-		"<col=0000AA>(Limit %s Characters)";
+		ColorUtil.prependColorTag("(Limit %s Characters)", new Color(0, 0, 170));
 
 	@Inject
 	private Client client;
 
 	@Inject
 	private ConfigManager configManager;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private FriendNoteOverlay overlay;
@@ -81,9 +87,15 @@ public class FriendNotesPlugin extends Plugin
 	private HoveredFriend hoveredFriend = null;
 
 	@Override
-	public Overlay getOverlay()
+	protected void startUp() throws Exception
 	{
-		return overlay;
+		overlayManager.add(overlay);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
 	}
 
 	/**
@@ -154,14 +166,14 @@ public class FriendNotesPlugin extends Plugin
 		// Look for "Message" on friends list
 		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && event.getOption().equals("Message"))
 		{
-			// Assume the display name text is untagged
-			setHoveredFriend(event.getTarget());
+			// Friends have color tags
+			setHoveredFriend(Text.removeTags(event.getTarget()));
 
 			// Build "Add Note" or "Edit Note" menu entry
 			final MenuEntry addNote = new MenuEntry();
 			addNote.setOption(hoveredFriend == null || hoveredFriend.getNote() == null ? ADD_NOTE : EDIT_NOTE);
 			addNote.setType(MenuAction.RUNELITE.getId());
-			addNote.setTarget(event.getTarget());
+			addNote.setTarget(event.getTarget()); //Preserve color codes here
 			addNote.setParam0(event.getActionParam0());
 			addNote.setParam1(event.getActionParam1());
 
@@ -185,6 +197,7 @@ public class FriendNotesPlugin extends Plugin
 				return;
 			}
 
+			//Friends have color tags
 			final String sanitizedTarget = Text.removeTags(event.getMenuTarget());
 
 			// Handle clicks on "Add Note" or "Edit Note"

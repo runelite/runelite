@@ -29,14 +29,11 @@ package net.runelite.client.plugins.cluescrolls;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -48,9 +45,10 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Query;
-import net.runelite.api.Region;
+import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -82,23 +80,21 @@ import net.runelite.client.plugins.cluescrolls.clues.MapClue;
 import net.runelite.client.plugins.cluescrolls.clues.NpcClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ObjectClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.TextClueScroll;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QueryRunner;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Clue Scroll"
+	name = "Clue Scroll",
+	description = "Show answers to clue scroll riddles, anagrams, ciphers, and cryptic clues",
+	tags = {"arrow", "hints", "world", "map"}
 )
 @Slf4j
 public class ClueScrollPlugin extends Plugin
 {
 	private static final Duration WAIT_DURATION = Duration.ofMinutes(4);
-
-	public static final BufferedImage CLUE_SCROLL_IMAGE;
-	public static final BufferedImage MAP_ARROW;
-	public static final BufferedImage EMOTE_IMAGE;
-	public static final BufferedImage SPADE_IMAGE;
 
 	@Getter
 	private ClueScroll clue;
@@ -113,6 +109,9 @@ public class ClueScrollPlugin extends Plugin
 	private Item[] equippedItems;
 
 	@Getter
+	private Item[] inventoryItems;
+
+	@Getter
 	private Instant clueTimeout;
 
 	@Inject
@@ -124,6 +123,9 @@ public class ClueScrollPlugin extends Plugin
 
 	@Inject
 	private QueryRunner queryRunner;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private ClueScrollOverlay clueScrollOverlay;
@@ -140,27 +142,11 @@ public class ClueScrollPlugin extends Plugin
 	@Inject
 	private WorldMapPointManager worldMapPointManager;
 
+	private BufferedImage emoteImage;
+	private BufferedImage mapArrow;
 	private Integer clueItemId;
 	private boolean clueItemChanged = false;
 	private boolean worldMapPointsSet = false;
-
-	static
-	{
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				CLUE_SCROLL_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("clue_scroll.png"));
-				MAP_ARROW = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("clue_arrow.png"));
-				EMOTE_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("emote.png"));
-				SPADE_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("spade.png"));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
-	}
 
 	@Provides
 	ClueScrollConfig getConfig(ConfigManager configManager)
@@ -169,15 +155,20 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void startUp() throws Exception
 	{
-		resetClue();
+		overlayManager.add(clueScrollOverlay);
+		overlayManager.add(clueScrollEmoteOverlay);
+		overlayManager.add(clueScrollWorldOverlay);
 	}
 
 	@Override
-	public Collection<Overlay> getOverlays()
+	protected void shutDown() throws Exception
 	{
-		return Arrays.asList(clueScrollOverlay, clueScrollEmoteOverlay, clueScrollWorldOverlay);
+		overlayManager.remove(clueScrollOverlay);
+		overlayManager.remove(clueScrollEmoteOverlay);
+		overlayManager.remove(clueScrollWorldOverlay);
+		resetClue();
 	}
 
 	@Subscribe
@@ -260,6 +251,7 @@ public class ClueScrollPlugin extends Plugin
 		npcsToMark = null;
 		objectsToMark = null;
 		equippedItems = null;
+		inventoryItems = null;
 
 		if (clue instanceof LocationsClueScroll)
 		{
@@ -326,9 +318,9 @@ public class ClueScrollPlugin extends Plugin
 
 					if (localLocation != null)
 					{
-						final Region region = client.getRegion();
-						final Tile[][][] tiles = region.getTiles();
-						final Tile tile = tiles[client.getPlane()][localLocation.getRegionX()][localLocation.getRegionY()];
+						final Scene scene = client.getScene();
+						final Tile[][][] tiles = scene.getTiles();
+						final Tile tile = tiles[client.getPlane()][localLocation.getSceneX()][localLocation.getSceneY()];
 
 						objectsToMark = Arrays.stream(tile.getGameObjects())
 							.filter(object -> object != null && object.getId() == objectId)
@@ -346,21 +338,28 @@ public class ClueScrollPlugin extends Plugin
 
 		if (clue instanceof EmoteClue)
 		{
-			ItemContainer container = client.getItemContainer(InventoryID.EQUIPMENT);
+			ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
 			
-			if (container != null)
+			if (equipment != null)
 			{
-				equippedItems = container.getItems();
+				equippedItems = equipment.getItems();
+			}
+
+			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+
+			if (inventory != null)
+			{
+				inventoryItems = inventory.getItems();
 			}
 		}
 
-		if (clue instanceof CoordinateClue)
+		if (clue instanceof CoordinateClue || clue instanceof FairyRingClue)
 		{
 			ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
 
 			if (container != null)
 			{
-				equippedItems = container.getItems();
+				inventoryItems = container.getItems();
 			}
 		}
 
@@ -389,6 +388,40 @@ public class ClueScrollPlugin extends Plugin
 			this.clue = clue;
 			this.clueTimeout = Instant.now();
 		}
+	}
+
+	public BufferedImage getClueScrollImage()
+	{
+		return itemManager.getImage(ItemID.CLUE_SCROLL_MASTER);
+	}
+
+	public BufferedImage getEmoteImage()
+	{
+		if (emoteImage != null)
+		{
+			return emoteImage;
+		}
+
+		emoteImage = ImageUtil.getResourceStreamFromClass(getClass(), "emote.png");
+
+		return emoteImage;
+	}
+
+	public BufferedImage getSpadeImage()
+	{
+		return itemManager.getImage(ItemID.SPADE);
+	}
+
+	BufferedImage getMapArrow()
+	{
+		if (mapArrow != null)
+		{
+			return mapArrow;
+		}
+
+		mapArrow = ImageUtil.getResourceStreamFromClass(getClass(), "/util/clue_arrow.png");
+
+		return mapArrow;
 	}
 
 	private void resetClue()
@@ -427,7 +460,7 @@ public class ClueScrollPlugin extends Plugin
 					.replaceAll("[ ]+", " ")
 					.toLowerCase());
 
-			if (clue != null && clue instanceof TextClueScroll)
+			if (clue instanceof TextClueScroll)
 			{
 				if (((TextClueScroll) clue).getText().equalsIgnoreCase(text))
 				{
@@ -574,7 +607,7 @@ public class ClueScrollPlugin extends Plugin
 
 		for (final WorldPoint point : points)
 		{
-			worldMapPointManager.add(new ClueScrollWorldMapPoint(point));
+			worldMapPointManager.add(new ClueScrollWorldMapPoint(point, this));
 		}
 	}
 }

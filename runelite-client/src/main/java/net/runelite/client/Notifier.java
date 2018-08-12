@@ -41,7 +41,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
-import javax.inject.Provider;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -49,6 +48,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ClientUI;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.OSType;
 
 @Singleton
@@ -65,20 +65,20 @@ public class Notifier
 	// Notifier properties
 	private static final Color FLASH_COLOR = new Color(255, 0, 0, 70);
 	private static final int FLASH_DURATION = 2000;
-	private static final String MESSAGE_COLOR = "FF0000";
+	private static final Color MESSAGE_COLOR = Color.RED;
 
-	private final Provider<Client> client;
+	private final Client client;
 	private final String appName;
 	private final RuneLiteConfig runeLiteConfig;
-	private final Provider<ClientUI> clientUI;
+	private final ClientUI clientUI;
 	private final ScheduledExecutorService executorService;
 	private final Path notifyIconPath;
 	private Instant flashStart;
 
 	@Inject
 	private Notifier(
-			final Provider<ClientUI> clientUI,
-			final Provider<Client> client,
+			final ClientUI clientUI,
+			final Client client,
 			final RuneLiteConfig runeliteConfig,
 			final RuneLiteProperties runeLiteProperties,
 			final ScheduledExecutorService executorService)
@@ -99,13 +99,6 @@ public class Notifier
 
 	public void notify(String message, TrayIcon.MessageType type)
 	{
-		final ClientUI clientUI = this.clientUI.get();
-
-		if (clientUI == null)
-		{
-			return;
-		}
-
 		if (!runeLiteConfig.sendNotificationsWhenFocused() && clientUI.isFocused())
 		{
 			return;
@@ -128,12 +121,10 @@ public class Notifier
 
 		if (runeLiteConfig.enableGameMessageNotification())
 		{
-			final Client client = this.client.get();
-
-			if (client != null && client.getGameState() == GameState.LOGGED_IN)
+			if (client.getGameState() == GameState.LOGGED_IN)
 			{
 				client.addChatMessage(ChatMessageType.GAME, appName,
-					"<col=" + MESSAGE_COLOR + ">" + message + "</col>", "");
+					ColorUtil.wrapWithColorTag(message, MESSAGE_COLOR), "");
 			}
 		}
 
@@ -150,9 +141,7 @@ public class Notifier
 			return;
 		}
 
-		final Client client = this.client.get();
-
-		if (client == null || client.getGameCycle() % 40 >= 20)
+		if (client.getGameCycle() % 40 >= 20)
 		{
 			return;
 		}
@@ -195,13 +184,6 @@ public class Notifier
 		final String message,
 		final TrayIcon.MessageType type)
 	{
-		final ClientUI clientUI = this.clientUI.get();
-
-		if (clientUI == null)
-		{
-			return;
-		}
-
 		if (clientUI.getTrayIcon() != null)
 		{
 			clientUI.getTrayIcon().displayMessage(title, message, type);

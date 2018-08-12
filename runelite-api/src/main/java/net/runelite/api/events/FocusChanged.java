@@ -26,8 +26,21 @@ package net.runelite.api.events;
 
 import lombok.Data;
 
+/**
+ * An event where the focus state of the client changes.
+ * <p>
+ * Examples of when this event may trigger include:
+ * <ul>
+ *     <li>Alt-tabbing to a different window</li>
+ *     <li>Clicking outside the client window</li>
+ *     <li>Clicking the client window from a different focused window</li>
+ * </ul>
+ */
 @Data
 public class FocusChanged
 {
+	/**
+	 * The new focus state.
+	 */
 	private boolean focused;
 }

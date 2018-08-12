@@ -29,10 +29,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
@@ -42,8 +40,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.awt.image.LookupOp;
-import java.awt.image.LookupTable;
 import java.util.Enumeration;
 import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
@@ -62,6 +58,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.plaf.FontUIResource;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.components.CustomScrollBarUI;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
@@ -87,7 +84,14 @@ public class SwingUtil
 
 		UIManager.put("Button.foreground", Color.WHITE);
 		UIManager.put("MenuItem.foreground", Color.WHITE);
+		UIManager.put("Panel.background", ColorScheme.DARK_GRAY_COLOR);
 		UIManager.put("ScrollBarUI", CustomScrollBarUI.class.getName());
+		UIManager.put("TextField.selectionBackground", ColorScheme.BRAND_ORANGE_TRANSPARENT);
+		UIManager.put("TextField.selectionForeground", Color.WHITE);
+		UIManager.put("FormattedTextField.selectionBackground", ColorScheme.BRAND_ORANGE_TRANSPARENT);
+		UIManager.put("FormattedTextField.selectionForeground", Color.WHITE);
+		UIManager.put("TextArea.selectionBackground", ColorScheme.BRAND_ORANGE_TRANSPARENT);
+		UIManager.put("TextArea.selectionForeground", Color.WHITE);
 
 		// Do not render shadows under popups/tooltips.
 		// Fixes black boxes under popups that are above the game applet.
@@ -96,48 +100,6 @@ public class SwingUtil
 		// Do not fill in background on repaint. Reduces flickering when
 		// the applet is resized.
 		System.setProperty("sun.awt.noerasebackground", "true");
-	}
-
-	/**
-	 * Offsets an image in the grayscale (darkens/brightens) by an offset
-	 */
-	public static BufferedImage grayscaleOffset(BufferedImage image, int offset)
-	{
-		int numComponents = image.getColorModel().getNumComponents();
-		int index = numComponents - 1;
-
-		LookupTable lookup = new LookupTable(0, numComponents)
-		{
-			@Override
-			public int[] lookupPixel(int[] src, int[] dest)
-			{
-				if (dest[index] != 0)
-				{
-					dest[index] = dest[index] + offset;
-					if (dest[index] < 0)
-					{
-						dest[index] = 0;
-					}
-					else if (dest[index] > 255)
-					{
-						dest[index] = 255;
-					}
-				}
-
-				return dest;
-			}
-		};
-
-		LookupOp op = new LookupOp(lookup, new RenderingHints(null));
-		return op.filter(image, null);
-	}
-
-	/**
-	 * Converts a given color to it's hexidecimal equivalent.
-	 */
-	public static String toHexColor(Color color)
-	{
-		return "#" + Integer.toHexString(color.getRGB()).substring(2);
 	}
 
 	/**
@@ -280,17 +242,6 @@ public class SwingUtil
 		});
 	}
 
-	private static BufferedImage resizeImage(BufferedImage image, int newWidth, int newHeight)
-	{
-		final Image tmp = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
-		final BufferedImage dimg = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
-
-		final Graphics2D g2d = dimg.createGraphics();
-		g2d.drawImage(tmp, 0, 0, null);
-		g2d.dispose();
-		return dimg;
-	}
-
 	/**
 	 * Create swing button from navigation button.
 	 *
@@ -306,7 +257,7 @@ public class SwingUtil
 	{
 
 		final BufferedImage scaledImage = iconSize > 0
-			? resizeImage(navigationButton.getIcon(), iconSize, iconSize)
+			? ImageUtil.resizeImage(navigationButton.getIcon(), iconSize, iconSize)
 			: navigationButton.getIcon();
 
 		final JButton button = new JButton();

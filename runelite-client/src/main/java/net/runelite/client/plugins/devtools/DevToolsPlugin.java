@@ -32,11 +32,7 @@ import com.google.inject.Provides;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
-import java.util.Arrays;
-import java.util.Collection;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
@@ -51,22 +47,26 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ImageUtil;
 import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
 	name = "Developer Tools",
+	tags = {"panel"},
 	developerPlugin = true
 )
-@Slf4j
 public class DevToolsPlugin extends Plugin
 {
 	@Inject
 	private Client client;
 
 	@Inject
-	private PluginToolbar pluginToolbar;
+	private ClientToolbar clientToolbar;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private DevToolsOverlay overlay;
@@ -76,6 +76,12 @@ public class DevToolsPlugin extends Plugin
 
 	@Inject
 	private SceneOverlay sceneOverlay;
+
+	@Inject
+	private CameraOverlay cameraOverlay;
+
+	@Inject
+	private WorldMapLocationOverlay worldMapLocationOverlay;
 
 	@Inject
 	private EventBus eventBus;
@@ -95,6 +101,9 @@ public class DevToolsPlugin extends Plugin
 	private boolean toggleValidMovement;
 	private boolean toggleLineOfSight;
 	private boolean toggleGraphicsObjects;
+	private boolean toggleCamera;
+	private boolean toggleWorldMapLocation;
+	private boolean toggleTileLocation;
 
 	Widget currentWidget;
 	int itemIndex = -1;
@@ -111,13 +120,15 @@ public class DevToolsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
+		overlayManager.add(locationOverlay);
+		overlayManager.add(sceneOverlay);
+		overlayManager.add(cameraOverlay);
+		overlayManager.add(worldMapLocationOverlay);
+
 		final DevToolsPanel panel = injector.getInstance(DevToolsPanel.class);
 
-		BufferedImage icon;
-		synchronized (ImageIO.class)
-		{
-			icon = ImageIO.read(getClass().getResourceAsStream("devtools_icon.png"));
-		}
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "devtools_icon.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Developer Tools")
@@ -126,7 +137,7 @@ public class DevToolsPlugin extends Plugin
 			.panel(panel)
 			.build();
 
-		pluginToolbar.addNavigation(navButton);
+		clientToolbar.addNavigation(navButton);
 
 		font = FontManager.getRunescapeFont()
 			.deriveFont(Font.BOLD, 16);
@@ -135,13 +146,12 @@ public class DevToolsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		pluginToolbar.removeNavigation(navButton);
-	}
-
-	@Override
-	public Collection<Overlay> getOverlays()
-	{
-		return Arrays.asList(overlay, locationOverlay, sceneOverlay);
+		overlayManager.remove(overlay);
+		overlayManager.remove(locationOverlay);
+		overlayManager.remove(sceneOverlay);
+		overlayManager.remove(cameraOverlay);
+		overlayManager.remove(worldMapLocationOverlay);
+		clientToolbar.removeNavigation(navButton);
 	}
 
 	@Subscribe
@@ -171,18 +181,34 @@ public class DevToolsPlugin extends Plugin
 				client.addChatMessage(ChatMessageType.SERVER, "", message, null);
 				break;
 			}
-			case "getvar":
+			case "getvarp":
+			{
+				int varp = Integer.parseInt(args[0]);
+				int value = client.getVarpValue(client.getVarps(), varp);
+				client.addChatMessage(ChatMessageType.SERVER, "", "VarPlayer " + varp + ": " + value, null);
+				break;
+			}
+			case "setvarp":
+			{
+				int varp = Integer.parseInt(args[0]);
+				int value = Integer.parseInt(args[1]);
+				client.setVarpValue(client.getVarps(), varp, value);
+				client.addChatMessage(ChatMessageType.SERVER, "", "Set VarPlayer " + varp + " to " + value, null);
+				eventBus.post(new VarbitChanged()); // fake event
+				break;
+			}
+			case "getvarb":
 			{
 				int varbit = Integer.parseInt(args[0]);
-				int value = client.getVarbitValue(varbit);
+				int value = client.getVarbitValue(client.getVarps(), varbit);
 				client.addChatMessage(ChatMessageType.SERVER, "", "Varbit " + varbit + ": " + value, null);
 				break;
 			}
-			case "setvar":
+			case "setvarb":
 			{
 				int varbit = Integer.parseInt(args[0]);
 				int value = Integer.parseInt(args[1]);
-				client.setVarbitValue(varbit, value);
+				client.setVarbitValue(client.getVarps(), varbit, value);
 				client.addChatMessage(ChatMessageType.SERVER, "", "Set varbit " + varbit + " to " + value, null);
 				eventBus.post(new VarbitChanged()); // fake event
 				break;
@@ -223,6 +249,15 @@ public class DevToolsPlugin extends Plugin
 				Player localPlayer = client.getLocalPlayer();
 				localPlayer.setGraphic(id);
 				localPlayer.setSpotAnimFrame(0);
+				break;
+			}
+			case "transform":
+			{
+				int id = Integer.parseInt(args[0]);
+				Player player = client.getLocalPlayer();
+				player.getPlayerComposition().setTransformedNpcId(id);
+				player.setIdlePoseAnimation(-1);
+				player.setPoseAnimation(-1);
 				break;
 			}
 		}
@@ -308,6 +343,21 @@ public class DevToolsPlugin extends Plugin
 		toggleGraphicsObjects = !toggleGraphicsObjects;
 	}
 
+	void toggleCamera()
+	{
+		toggleCamera = !toggleCamera;
+	}
+
+	void toggleWorldMapLocation()
+	{
+		toggleWorldMapLocation = !toggleWorldMapLocation;
+	}
+
+	void toggleTileLocation()
+	{
+		toggleTileLocation = !toggleTileLocation;
+	}
+
 	boolean isTogglePlayers()
 	{
 		return togglePlayers;
@@ -381,5 +431,20 @@ public class DevToolsPlugin extends Plugin
 	boolean isToggleGraphicsObjects()
 	{
 		return toggleGraphicsObjects;
+	}
+
+	boolean isToggleCamera()
+	{
+		return toggleCamera;
+	}
+
+	boolean isToggleWorldMapLocation()
+	{
+		return toggleWorldMapLocation;
+	}
+
+	boolean isToggleTileLocation()
+	{
+		return toggleTileLocation;
 	}
 }

@@ -82,9 +82,11 @@ class XpState
 	 * and also first-login when the skills are not initialized (the start XP will be -1 in this case).
 	 * @param skill Skill to update
 	 * @param currentXp Current known XP for this skill
+	 * @param goalStartXp Possible XP start goal
+	 * @param goalEndXp Possible XP end goal
 	 * @return Whether or not the skill has been initialized, there was no change, or it has been updated
 	 */
-	XpUpdateResult updateSkill(Skill skill, int currentXp)
+	XpUpdateResult updateSkill(Skill skill, int currentXp, int goalStartXp, int goalEndXp)
 	{
 		XpStateSingle state = getSkill(skill);
 
@@ -113,9 +115,14 @@ class XpState
 			}
 			else
 			{
-				return state.update(currentXp) ? XpUpdateResult.UPDATED : XpUpdateResult.NO_CHANGE;
+				return state.update(currentXp, goalStartXp, goalEndXp) ? XpUpdateResult.UPDATED : XpUpdateResult.NO_CHANGE;
 			}
 		}
+	}
+
+	void tick(Skill skill, long delta)
+	{
+		getSkill(skill).tick(delta);
 	}
 
 	/**

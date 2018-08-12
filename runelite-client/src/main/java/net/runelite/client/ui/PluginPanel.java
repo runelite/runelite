@@ -26,7 +26,6 @@ package net.runelite.client.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -59,7 +58,7 @@ public abstract class PluginPanel extends JPanel
 		if (wrap)
 		{
 			setBorder(BORDER_PADDING);
-			setLayout(new GridLayout(0, 1, 0, 3));
+			setLayout(new DynamicGridLayout(0, 1, 0, 3));
 			setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 			final JPanel northPanel = new JPanel();

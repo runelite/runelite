@@ -24,9 +24,22 @@
  */
 package net.runelite.api;
 
+/**
+ * Represents a player in the friends list.
+ */
 public interface Friend extends ChatPlayer
 {
+	/**
+	 * The name of the player.
+	 *
+	 * @return the name
+	 */
 	String getName();
 
+	/**
+	 * The previous name the player had.
+	 *
+	 * @return the previous name
+	 */
 	String getPrevName();
 }

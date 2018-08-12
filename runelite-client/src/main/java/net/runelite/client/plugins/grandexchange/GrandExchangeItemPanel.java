@@ -27,6 +27,8 @@ package net.runelite.client.plugins.grandexchange;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
@@ -34,7 +36,6 @@ import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.util.LinkBrowser;
@@ -44,7 +45,6 @@ import net.runelite.client.util.StackFormatter;
  * This panel displays an individual item result in the
  * Grand Exchange search plugin.
  */
-@Slf4j
 class GrandExchangeItemPanel extends JPanel
 {
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
@@ -65,13 +65,23 @@ class GrandExchangeItemPanel extends JPanel
 			@Override
 			public void mouseEntered(MouseEvent e)
 			{
-				setBackground(getBackground().brighter());
+				setBackground(background.brighter());
+				for (Component component : getComponents())
+				{
+					component.setBackground(component.getBackground().brighter());
+				}
+				setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e)
 			{
 				setBackground(background);
+				for (Component component : getComponents())
+				{
+					component.setBackground(background);
+				}
+				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 
 			@Override
@@ -94,7 +104,7 @@ class GrandExchangeItemPanel extends JPanel
 
 		// Item details panel
 		JPanel rightPanel = new JPanel(new GridLayout(3, 1));
-		rightPanel.setOpaque(false);
+		rightPanel.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
 
 		// Item name
 		JLabel itemName = new JLabel();

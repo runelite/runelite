@@ -1395,7 +1395,7 @@ public final class SpriteID
 	public static final int MINIMAP_ORB_WORLD_MAP_FRAME = 1438;
 	public static final int MINIMAP_ORB_WORLD_MAP_PLANET = 1439;
 	public static final int MINIMAP_ORB_WORLD_MAP_PLANET_HOVERED = 1440;
-	public static final int UNKNOWN_1441 = 1441;
+	public static final int FIXED_MODE_TOP_RIGHT_CORNER = 1441;
 	/* Unmapped: 1442~1447 */
 	public static final int MAP_ICON_GENERAL_STORE = 1448;
 	public static final int MAP_ICON_SWORD_SHOP = 1449;

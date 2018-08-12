@@ -25,24 +25,22 @@
 package net.runelite.client.plugins.poh;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import javax.imageio.ImageIO;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import static net.runelite.api.ObjectID.*;
+import static net.runelite.api.NullObjectID.*;
+import net.runelite.client.util.ImageUtil;
 
-@Slf4j
 public enum PohIcons
 {
 	EXITPORTAL("exitportal", PORTAL_4525),
-	VARROCK("varrock", VARROCK_PORTAL, VARROCK_PORTAL_13622, VARROCK_PORTAL_13629),
+	VARROCK("varrock", NULL_13615, NULL_13622, NULL_13629),
 	FALADOR("falador", FALADOR_PORTAL, FALADOR_PORTAL_13624, FALADOR_PORTAL_13631),
 	LUMBRIDGE("lumbridge", LUMBRIDGE_PORTAL, LUMBRIDGE_PORTAL_13623, LUMBRIDGE_PORTAL_13630),
 	ARDOUGNE("ardougne", ARDOUGNE_PORTAL, ARDOUGNE_PORTAL_13626, ARDOUGNE_PORTAL_13633),
-	YANILLE("yanille", YANILLE_PORTAL, YANILLE_PORTAL_13627, YANILLE_PORTAL_13634),
-	CAMELOT("camelot", CAMELOT_PORTAL, CAMELOT_PORTAL_13625, CAMELOT_PORTAL_13632),
+	YANILLE("yanille", NULL_13620, NULL_13627, NULL_13634),
+	CAMELOT("camelot", NULL_13618, NULL_13625, NULL_13632),
 	LUNARISLE("lunarisle", LUNAR_ISLE_PORTAL, LUNAR_ISLE_PORTAL_29347, LUNAR_ISLE_PORTAL_29355),
 	WATERBIRTH("waterbirth", WATERBIRTH_ISLAND_PORTAL, WATERBIRTH_ISLAND_PORTAL_29350, WATERBIRTH_ISLAND_PORTAL_29358),
 	FISHINGGUILD("fishingguild", FISHING_GUILD_PORTAL, FISHING_GUILD_PORTAL_29351, FISHING_GUILD_PORTAL_29359),
@@ -104,17 +102,7 @@ public enum PohIcons
 			return image;
 		}
 
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				image = ImageIO.read(PohIcons.class.getResourceAsStream(getImageResource() + ".png"));
-			}
-		}
-		catch (IOException ex)
-		{
-			log.warn("unable to load image", ex);
-		}
+		image = ImageUtil.getResourceStreamFromClass(getClass(), getImageResource() + ".png");
 
 		return image;
 	}

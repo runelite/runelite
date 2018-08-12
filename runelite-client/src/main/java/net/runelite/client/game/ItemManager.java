@@ -27,14 +27,13 @@ package net.runelite.client.game;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.Subscribe;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
+import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -46,6 +45,7 @@ import net.runelite.api.Client;
 import static net.runelite.api.Constants.CLIENT_DEFAULT_ZOOM;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemID;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.callback.ClientThread;
@@ -65,15 +65,13 @@ public class ItemManager
 		private final boolean stackable;
 	}
 
-	/**
-	 * not yet looked up
-	 */
-	static final ItemPrice EMPTY = new ItemPrice();
-
-	/**
-	 * has no price
-	 */
-	static final ItemPrice NONE = new ItemPrice();
+	@Value
+	private static class OutlineKey
+	{
+		private final int itemId;
+		private final int itemQuantity;
+		private final Color outlineColor;
+	}
 
 	private final Client client;
 	private final ScheduledExecutorService scheduledExecutorService;
@@ -81,9 +79,10 @@ public class ItemManager
 
 	private final ItemClient itemClient = new ItemClient();
 	private final LoadingCache<String, SearchResult> itemSearches;
-	private final LoadingCache<Integer, ItemPrice> itemPriceCache;
+	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
 	private final LoadingCache<ImageKey, AsyncBufferedImage> itemImages;
 	private final LoadingCache<Integer, ItemComposition> itemCompositions;
+	private final LoadingCache<OutlineKey, BufferedImage> itemOutlines;
 
 	@Inject
 	public ItemManager(Client client, ScheduledExecutorService executor, ClientThread clientThread)
@@ -92,10 +91,7 @@ public class ItemManager
 		this.scheduledExecutorService = executor;
 		this.clientThread = clientThread;
 
-		itemPriceCache = CacheBuilder.newBuilder()
-			.maximumSize(1024L)
-			.expireAfterAccess(1, TimeUnit.HOURS)
-			.build(new ItemPriceLoader(executor, itemClient));
+		scheduledExecutorService.scheduleWithFixedDelay(this::loadPrices, 0, 30, TimeUnit.MINUTES);
 
 		itemSearches = CacheBuilder.newBuilder()
 			.maximumSize(512L)
@@ -132,6 +128,41 @@ public class ItemManager
 					return client.getItemDefinition(key);
 				}
 			});
+
+		itemOutlines = CacheBuilder.newBuilder()
+			.maximumSize(128L)
+			.expireAfterAccess(1, TimeUnit.HOURS)
+			.build(new CacheLoader<OutlineKey, BufferedImage>()
+			{
+				@Override
+				public BufferedImage load(OutlineKey key) throws Exception
+				{
+					return loadItemOutline(key.itemId, key.itemQuantity, key.outlineColor);
+				}
+			});
+	}
+
+	private void loadPrices()
+	{
+		try
+		{
+			ItemPrice[] prices = itemClient.getPrices();
+			if (prices != null)
+			{
+				ImmutableMap.Builder<Integer, ItemPrice> map = ImmutableMap.builderWithExpectedSize(prices.length);
+				for (ItemPrice price : prices)
+				{
+					map.put(price.getItem().getId(), price);
+				}
+				itemPrices = map.build();
+			}
+
+			log.debug("Loaded {} prices", itemPrices.size());
+		}
+		catch (IOException e)
+		{
+			log.warn("error loading prices!", e);
+		}
 	}
 
 	@Subscribe
@@ -144,111 +175,33 @@ public class ItemManager
 	}
 
 	/**
-	 * Look up an item's price asynchronously.
+	 * Look up an item's price
 	 *
-	 * @param itemId item id
-	 * @return the price, or null if the price is not yet loaded
-	 */
-	public ItemPrice getItemPriceAsync(int itemId)
-	{
-		ItemPrice itemPrice = itemPriceCache.getIfPresent(itemId);
-		if (itemPrice != null && itemPrice != EMPTY)
-		{
-			return itemPrice == NONE ? null : itemPrice;
-		}
-
-		itemPriceCache.refresh(itemId);
-		return null;
-	}
-
-	/**
-	 * Look up bulk item prices asynchronously
-	 *
-	 * @param itemIds array of item Ids
-	 * @return a future called with the looked up prices
-	 */
-	public CompletableFuture<ItemPrice[]> getItemPriceBatch(Collection<Integer> itemIds)
-	{
-		final List<Integer> lookup = new ArrayList<>();
-		final List<ItemPrice> existing = new ArrayList<>();
-		for (int itemId : itemIds)
-		{
-			ItemPrice itemPrice = itemPriceCache.getIfPresent(itemId);
-			if (itemPrice != null)
-			{
-				existing.add(itemPrice);
-			}
-			else
-			{
-				lookup.add(itemId);
-			}
-		}
-		// All cached?
-		if (lookup.isEmpty())
-		{
-			return CompletableFuture.completedFuture(existing.toArray(new ItemPrice[existing.size()]));
-		}
-
-		final CompletableFuture<ItemPrice[]> future = new CompletableFuture<>();
-		scheduledExecutorService.execute(() ->
-		{
-			try
-			{
-				// Do a query for the items not in the cache
-				ItemPrice[] itemPrices = itemClient.lookupItemPrice(lookup.toArray(new Integer[lookup.size()]));
-				if (itemPrices != null)
-				{
-					for (int itemId : lookup)
-					{
-						itemPriceCache.put(itemId, NONE);
-					}
-					for (ItemPrice itemPrice : itemPrices)
-					{
-						itemPriceCache.put(itemPrice.getItem().getId(), itemPrice);
-					}
-					// Append these to the already cached items
-					Arrays.stream(itemPrices).forEach(existing::add);
-				}
-				future.complete(existing.toArray(new ItemPrice[existing.size()]));
-			}
-			catch (Exception ex)
-			{
-				// cache unable to lookup
-				for (int itemId : lookup)
-				{
-					itemPriceCache.put(itemId, NONE);
-				}
-
-				future.completeExceptionally(ex);
-			}
-		});
-		return future;
-	}
-
-	/**
-	 * Look up an item's price synchronously
-	 *
-	 * @param itemId item id
+	 * @param itemID item id
 	 * @return item price
-	 * @throws IOException
 	 */
-	public ItemPrice getItemPrice(int itemId) throws IOException
+	public int getItemPrice(int itemID)
 	{
-		ItemPrice itemPrice = itemPriceCache.getIfPresent(itemId);
-		if (itemPrice != null && itemPrice != EMPTY)
+		if (itemID == ItemID.COINS_995)
 		{
-			return itemPrice == NONE ? null : itemPrice;
+			return 1;
+		}
+		if (itemID == ItemID.PLATINUM_TOKEN)
+		{
+			return 1000;
 		}
 
-		itemPrice = itemClient.lookupItemPrice(itemId);
-		if (itemPrice == null)
+		int price = 0;
+		for (int mappedID : ItemMapping.map(itemID))
 		{
-			itemPriceCache.put(itemId, NONE);
-			return null;
+			ItemPrice ip = itemPrices.get(mappedID);
+			if (ip != null)
+			{
+				price += ip.getPrice();
+			}
 		}
 
-		itemPriceCache.put(itemId, itemPrice);
-		return itemPrice;
+		return price;
 	}
 
 	/**
@@ -272,6 +225,7 @@ public class ItemManager
 	 */
 	public ItemComposition getItemComposition(int itemId)
 	{
+		assert client.isClientThread() : "getItemComposition must be called on client thread";
 		return itemCompositions.getUnchecked(itemId);
 	}
 
@@ -284,7 +238,7 @@ public class ItemManager
 	private AsyncBufferedImage loadImage(int itemId, int quantity, boolean stackable)
 	{
 		AsyncBufferedImage img = new AsyncBufferedImage(36, 32, BufferedImage.TYPE_INT_ARGB);
-		clientThread.invokeLater(() ->
+		clientThread.invoke(() ->
 		{
 			if (client.getGameState().ordinal() < GameState.LOGIN_SCREEN.ordinal())
 			{
@@ -336,6 +290,40 @@ public class ItemManager
 			return itemImages.get(new ImageKey(itemId, quantity, stackable));
 		}
 		catch (ExecutionException ex)
+		{
+			return null;
+		}
+	}
+
+	/**
+	 * Create item sprite and applies an outline.
+	 *
+	 * @param itemId item id
+	 * @param itemQuantity item quantity
+	 * @param outlineColor outline color
+	 * @return image
+	 */
+	private BufferedImage loadItemOutline(final int itemId, final int itemQuantity, final Color outlineColor)
+	{
+		final SpritePixels itemSprite = client.createItemSprite(itemId, itemQuantity, 1, 0, 0, true, 710);
+		return itemSprite.toBufferedOutline(outlineColor);
+	}
+
+	/**
+	 * Get item outline with a specific color.
+	 *
+	 * @param itemId item id
+	 * @param itemQuantity item quantity
+	 * @param outlineColor outline color
+	 * @return image
+	 */
+	public BufferedImage getItemOutline(final int itemId, final int itemQuantity, final Color outlineColor)
+	{
+		try
+		{
+			return itemOutlines.get(new OutlineKey(itemId, itemQuantity, outlineColor));
+		}
+		catch (ExecutionException e)
 		{
 			return null;
 		}

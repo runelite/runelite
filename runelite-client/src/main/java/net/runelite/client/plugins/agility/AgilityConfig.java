@@ -29,11 +29,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "agility",
-	name = "Agility",
-	description = "Configuration for the Agility plugin"
-)
+@ConfigGroup("agility")
 public interface AgilityConfig extends Config
 {
 	@ConfigItem(
@@ -122,5 +118,27 @@ public interface AgilityConfig extends Config
 	default Color getTrapColor()
 	{
 		return Color.RED;
+	}
+
+	@ConfigItem(
+		keyName = "agilityArenaNotifier",
+		name = "Agility Arena notifier",
+		description = "Notify on ticket location change in Agility Arena",
+		position = 9
+	)
+	default boolean notifyAgilityArena()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "agilityArenaTimer",
+		name = "Agility Arena timer",
+		description = "Configures whether Agility Arena timer is displayed",
+		position = 10
+	)
+	default boolean showAgilityArenaTimer()
+	{
+		return true;
 	}
 }

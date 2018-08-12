@@ -28,41 +28,43 @@ package net.runelite.client.plugins.xptracker;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
+import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.time.temporal.ChronoUnit;
 import java.util.EnumSet;
 import java.util.Objects;
-import java.util.concurrent.ScheduledExecutorService;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
+import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
-import net.runelite.http.api.worlds.World;
-import net.runelite.http.api.worlds.WorldClient;
-import net.runelite.http.api.worlds.WorldResult;
-import net.runelite.http.api.worlds.WorldType;
+import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.http.api.xp.XpClient;
 
 @PluginDescriptor(
-	name = "XP Tracker"
+	name = "XP Tracker",
+	description = "Enable the XP Tracker panel",
+	tags = {"experience", "levels", "panel"}
 )
 @Slf4j
 public class XpTrackerPlugin extends Plugin
 {
 	@Inject
-	private PluginToolbar pluginToolbar;
+	private ClientToolbar clientToolbar;
 
 	@Inject
 	private Client client;
@@ -71,18 +73,23 @@ public class XpTrackerPlugin extends Plugin
 	private SkillIconManager skillIconManager;
 
 	@Inject
-	private ScheduledExecutorService executor;
+	private XpTrackerConfig xpTrackerConfig;
 
 	private NavigationButton navButton;
 	private XpPanel xpPanel;
-
-	private final XpState xpState = new XpState();
-
-	private WorldResult worlds;
 	private XpWorldType lastWorldType;
 	private String lastUsername;
+	private long lastTickMillis = 0;
 
 	private final XpClient xpClient = new XpClient();
+	private final XpState xpState = new XpState();
+	private final XpPauseState xpPauseState = new XpPauseState();
+
+	@Provides
+	XpTrackerConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(XpTrackerConfig.class);
+	}
 
 	@Override
 	public void configure(Binder binder)
@@ -93,31 +100,9 @@ public class XpTrackerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		WorldClient worldClient = new WorldClient();
-		try
-		{
-			worlds = worldClient.lookupWorlds();
-			if (worlds != null)
-			{
-				log.debug("Worlds list contains {} worlds", worlds.getWorlds().size());
-			}
-			else
-			{
-				log.warn("Unable to look up worlds");
-			}
-		}
-		catch (IOException e)
-		{
-			log.warn("Error looking up worlds list", e);
-		}
-
 		xpPanel = new XpPanel(this, client, skillIconManager);
 
-		BufferedImage icon;
-		synchronized (ImageIO.class)
-		{
-			icon = ImageIO.read(getClass().getResourceAsStream("xp.png"));
-		}
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "/skill_icons/overall.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("XP Tracker")
@@ -126,13 +111,14 @@ public class XpTrackerPlugin extends Plugin
 			.panel(xpPanel)
 			.build();
 
-		pluginToolbar.addNavigation(navButton);
+		clientToolbar.addNavigation(navButton);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		pluginToolbar.removeNavigation(navButton);
+		xpState.reset();
+		clientToolbar.removeNavigation(navButton);
 	}
 
 	@Subscribe
@@ -142,7 +128,7 @@ public class XpTrackerPlugin extends Plugin
 		{
 			// LOGGED_IN is triggered between region changes too.
 			// Check that the username changed or the world type changed.
-			XpWorldType type = getWorldType(client.getWorld());
+			XpWorldType type = worldSetToType(client.getWorldType());
 
 			if (!Objects.equals(client.getUsername(), lastUsername) || lastWorldType != type)
 			{
@@ -163,40 +149,9 @@ public class XpTrackerPlugin extends Plugin
 			String username = local != null ? local.getName() : null;
 			if (username != null)
 			{
-				log.debug("Submitting xp track for {}", username);
-
-				executor.submit(() ->
-				{
-					try
-					{
-						xpClient.update(username);
-					}
-					catch (IOException ex)
-					{
-						log.warn("error submitting xp track", ex);
-					}
-				});
+				xpClient.update(username);
 			}
 		}
-	}
-
-	private XpWorldType getWorldType(int worldNum)
-	{
-		if (worlds == null)
-		{
-			return null;
-		}
-
-		World world = worlds.findWorld(worldNum);
-
-		if (world == null)
-		{
-			log.warn("Logged into nonexistent world {}?", client.getWorld());
-			return null;
-		}
-
-		XpWorldType type = worldSetToType(world.getTypes());
-		return type;
 	}
 
 	private XpWorldType worldSetToType(EnumSet<WorldType> types)
@@ -218,7 +173,7 @@ public class XpTrackerPlugin extends Plugin
 	 * This is called by the user manually clicking resetSkillState in the UI.
 	 * It reloads the current skills from the client after resetting internal state.
 	 */
-	public void resetAndInitState()
+	void resetAndInitState()
 	{
 		resetState();
 
@@ -233,7 +188,7 @@ public class XpTrackerPlugin extends Plugin
 	 * Throw out everything, the user has chosen a different account or world type.
 	 * This resets both the internal state and UI elements
 	 */
-	public void resetState()
+	private void resetState()
 	{
 		xpState.reset();
 		xpPanel.resetAllInfoBoxes();
@@ -245,7 +200,7 @@ public class XpTrackerPlugin extends Plugin
 	 * Will also clear the skill from the UI.
 	 * @param skill Skill to reset
 	 */
-	public void resetSkillState(Skill skill)
+	void resetSkillState(Skill skill)
 	{
 		int currentXp = client.getSkillExperience(skill);
 		xpState.resetSkill(skill, currentXp);
@@ -254,18 +209,36 @@ public class XpTrackerPlugin extends Plugin
 		xpPanel.updateTotal(xpState.getTotalSnapshot());
 	}
 
+	/**
+	 * Reset all skills except for the one provided
+	 * @param skill Skill to ignore during reset
+	 */
+	void resetOtherSkillState(Skill skill)
+	{
+		for (Skill s : Skill.values())
+		{
+			if (skill != s)
+			{
+				resetSkillState(s);
+			}
+		}
+	}
+
 
 	@Subscribe
 	public void onXpChanged(ExperienceChanged event)
 	{
 		final Skill skill = event.getSkill();
-		int currentXp = client.getSkillExperience(skill);
+		final int currentXp = client.getSkillExperience(skill);
+		final VarPlayer startGoal = startGoalVarpForSkill(skill);
+		final VarPlayer endGoal = endGoalVarpForSkill(skill);
+		final int startGoalXp = startGoal != null ? client.getVar(startGoal) : -1;
+		final int endGoalXp = endGoal != null ? client.getVar(endGoal) : -1;
 
-		XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp);
+		final XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp, startGoalXp, endGoalXp);
 
-		boolean updated = XpUpdateResult.UPDATED.equals(updateResult);
-
-		xpPanel.updateSkillExperience(updated, skill, xpState.getSkillSnapshot(skill));
+		final boolean updated = XpUpdateResult.UPDATED.equals(updateResult);
+		xpPanel.updateSkillExperience(updated, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
 		xpState.recalculateTotal();
 		xpPanel.updateTotal(xpState.getTotalSnapshot());
 	}
@@ -273,18 +246,176 @@ public class XpTrackerPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		rebuildSkills();
+	}
+
+	XpSnapshotSingle getSkillSnapshot(Skill skill)
+	{
+		return xpState.getSkillSnapshot(skill);
+	}
+
+	private static VarPlayer startGoalVarpForSkill(final Skill skill)
+	{
+		switch (skill)
+		{
+			case ATTACK:
+				return VarPlayer.ATTACK_GOAL_START;
+			case MINING:
+				return VarPlayer.MINING_GOAL_START;
+			case WOODCUTTING:
+				return VarPlayer.WOODCUTTING_GOAL_START;
+			case DEFENCE:
+				return VarPlayer.DEFENCE_GOAL_START;
+			case MAGIC:
+				return VarPlayer.MAGIC_GOAL_START;
+			case RANGED:
+				return VarPlayer.RANGED_GOAL_START;
+			case HITPOINTS:
+				return VarPlayer.HITPOINTS_GOAL_START;
+			case AGILITY:
+				return VarPlayer.AGILITY_GOAL_START;
+			case STRENGTH:
+				return VarPlayer.STRENGTH_GOAL_START;
+			case PRAYER:
+				return VarPlayer.PRAYER_GOAL_START;
+			case SLAYER:
+				return VarPlayer.SLAYER_GOAL_START;
+			case FISHING:
+				return VarPlayer.FISHING_GOAL_START;
+			case RUNECRAFT:
+				return VarPlayer.RUNECRAFT_GOAL_START;
+			case HERBLORE:
+				return VarPlayer.HERBLORE_GOAL_START;
+			case FIREMAKING:
+				return VarPlayer.FIREMAKING_GOAL_START;
+			case CONSTRUCTION:
+				return VarPlayer.CONSTRUCTION_GOAL_START;
+			case HUNTER:
+				return VarPlayer.HUNTER_GOAL_START;
+			case COOKING:
+				return VarPlayer.COOKING_GOAL_START;
+			case FARMING:
+				return VarPlayer.FARMING_GOAL_START;
+			case CRAFTING:
+				return VarPlayer.CRAFTING_GOAL_START;
+			case SMITHING:
+				return VarPlayer.SMITHING_GOAL_START;
+			case THIEVING:
+				return VarPlayer.THIEVING_GOAL_START;
+			case FLETCHING:
+				return VarPlayer.FLETCHING_GOAL_START;
+			default:
+				return null;
+		}
+	}
+
+	private static VarPlayer endGoalVarpForSkill(final Skill skill)
+	{
+		switch (skill)
+		{
+			case ATTACK:
+				return VarPlayer.ATTACK_GOAL_END;
+			case MINING:
+				return VarPlayer.MINING_GOAL_END;
+			case WOODCUTTING:
+				return VarPlayer.WOODCUTTING_GOAL_END;
+			case DEFENCE:
+				return VarPlayer.DEFENCE_GOAL_END;
+			case MAGIC:
+				return VarPlayer.MAGIC_GOAL_END;
+			case RANGED:
+				return VarPlayer.RANGED_GOAL_END;
+			case HITPOINTS:
+				return VarPlayer.HITPOINTS_GOAL_END;
+			case AGILITY:
+				return VarPlayer.AGILITY_GOAL_END;
+			case STRENGTH:
+				return VarPlayer.STRENGTH_GOAL_END;
+			case PRAYER:
+				return VarPlayer.PRAYER_GOAL_END;
+			case SLAYER:
+				return VarPlayer.SLAYER_GOAL_END;
+			case FISHING:
+				return VarPlayer.FISHING_GOAL_END;
+			case RUNECRAFT:
+				return VarPlayer.RUNECRAFT_GOAL_END;
+			case HERBLORE:
+				return VarPlayer.HERBLORE_GOAL_END;
+			case FIREMAKING:
+				return VarPlayer.FIREMAKING_GOAL_END;
+			case CONSTRUCTION:
+				return VarPlayer.CONSTRUCTION_GOAL_END;
+			case HUNTER:
+				return VarPlayer.HUNTER_GOAL_END;
+			case COOKING:
+				return VarPlayer.COOKING_GOAL_END;
+			case FARMING:
+				return VarPlayer.FARMING_GOAL_END;
+			case CRAFTING:
+				return VarPlayer.CRAFTING_GOAL_END;
+			case SMITHING:
+				return VarPlayer.SMITHING_GOAL_END;
+			case THIEVING:
+				return VarPlayer.THIEVING_GOAL_END;
+			case FLETCHING:
+				return VarPlayer.FLETCHING_GOAL_END;
+			default:
+				return null;
+		}
+	}
+
+	@Schedule(
+		period = 1,
+		unit = ChronoUnit.SECONDS
+	)
+	public void tickSkillTimes()
+	{
+		// Adjust unpause states
+		for (Skill skill : Skill.values())
+		{
+			xpPauseState.tickXp(skill, client.getSkillExperience(skill), xpTrackerConfig.pauseSkillAfter());
+		}
+
+		xpPauseState.tickLogout(xpTrackerConfig.pauseOnLogout(), !GameState.LOGIN_SCREEN.equals(client.getGameState()));
+
+		if (lastTickMillis == 0)
+		{
+			lastTickMillis = System.currentTimeMillis();
+			return;
+		}
+
+		final long nowMillis = System.currentTimeMillis();
+		final long tickDelta = nowMillis - lastTickMillis;
+		lastTickMillis = nowMillis;
+
+		for (Skill skill : Skill.values())
+		{
+			if (!xpPauseState.isPaused(skill))
+			{
+				xpState.tick(skill, tickDelta);
+			}
+		}
+
+		rebuildSkills();
+	}
+
+	private void rebuildSkills()
+	{
 		// Rebuild calculated values like xp/hr in panel
 		for (Skill skill : Skill.values())
 		{
-			xpPanel.updateSkillExperience(false, skill, xpState.getSkillSnapshot(skill));
+			xpPanel.updateSkillExperience(false, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
 		}
 
 		xpState.recalculateTotal();
 		xpPanel.updateTotal(xpState.getTotalSnapshot());
 	}
 
-	public XpSnapshotSingle getSkillSnapshot(Skill skill)
+	void pauseSkill(Skill skill, boolean pause)
 	{
-		return xpState.getSkillSnapshot(skill);
+		if (pause ? xpPauseState.pauseSkill(skill) : xpPauseState.unpauseSkill(skill))
+		{
+			xpPanel.updateSkillExperience(false, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
+		}
 	}
 }

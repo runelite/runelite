@@ -293,6 +293,18 @@
       "icon": 12915,
       "name": "Anti-venom+(3)",
       "xp": 125
+    },
+    {
+      "level": 98,
+      "icon": 21981,
+      "name": "Extended Super Antifire (3)",
+      "xp": 120
+    },
+    {
+      "level": 98,
+      "icon": 21978,
+      "name": "Extended Super Antifire (4)",
+      "xp": 160
     }
   ]
 }

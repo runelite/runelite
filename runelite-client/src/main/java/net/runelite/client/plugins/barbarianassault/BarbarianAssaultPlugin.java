@@ -30,7 +30,6 @@ import java.awt.Font;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -45,10 +44,13 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-	name = "Barbarian Assault"
+	name = "Barbarian Assault",
+	description = "Show a timer to the next call change",
+	tags = {"minigame", "overlay"}
 )
 public class BarbarianAssaultPlugin extends Plugin
 {
@@ -62,6 +64,9 @@ public class BarbarianAssaultPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private BarbarianAssaultConfig config;
@@ -78,13 +83,17 @@ public class BarbarianAssaultPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
 		font = FontManager.getRunescapeFont()
 			.deriveFont(Font.BOLD, 24);
 
-		synchronized (ImageIO.class)
-		{
-			clockImage = ImageIO.read(getClass().getResourceAsStream("clock.png"));
-		}
+		clockImage = ImageUtil.getResourceStreamFromClass(getClass(), "clock.png");
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
 	}
 
 	@Subscribe
@@ -153,12 +162,6 @@ public class BarbarianAssaultPlugin extends Plugin
 				}
 			}
 		}
-	}
-
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
 	}
 
 	public Font getFont()

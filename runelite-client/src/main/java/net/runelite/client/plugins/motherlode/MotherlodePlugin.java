@@ -32,8 +32,6 @@ import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
@@ -62,19 +60,22 @@ import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Motherlode Mine",
+	description = "Show helpful information inside the Motherload Mine",
+	tags = {"pay", "dirt", "mining", "mlm", "skilling", "overlay"},
 	enabledByDefault = false
 )
 public class MotherlodePlugin extends Plugin
@@ -89,6 +90,9 @@ public class MotherlodePlugin extends Plugin
 	private static final int SACK_SIZE = 81;
 
 	private static final int UPPER_FLOOR_HEIGHT = -500;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private MotherlodeOverlay overlay;
@@ -118,7 +122,7 @@ public class MotherlodePlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Integer depositsLeft;
 
-	private final MotherlodeSession session = new MotherlodeSession();
+	private MotherlodeSession session;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<WallObject> veins = new HashSet<>();
@@ -132,22 +136,39 @@ public class MotherlodePlugin extends Plugin
 	}
 
 	@Override
-	public Collection<Overlay> getOverlays()
-	{
-		return Arrays.asList(overlay, rocksOverlay, motherlodeSackOverlay, motherlodeGemOverlay);
-	}
-
-	@Override
 	protected void startUp()
 	{
+		overlayManager.add(overlay);
+		overlayManager.add(rocksOverlay);
+		overlayManager.add(motherlodeGemOverlay);
+		overlayManager.add(motherlodeSackOverlay);
+
+		session = new MotherlodeSession();
 		inMlm = checkInMlm();
+
+		if (inMlm)
+		{
+			refreshSackValues();
+		}
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
+		overlayManager.remove(rocksOverlay);
+		overlayManager.remove(motherlodeGemOverlay);
+		overlayManager.remove(motherlodeSackOverlay);
+		session = null;
 		veins.clear();
 		rocks.clear();
+
+		Widget sack = client.getWidget(WidgetInfo.MOTHERLODE_MINE);
+
+		if (sack != null && sack.isHidden())
+		{
+			sack.setHidden(false);
+		}
 	}
 
 	public MotherlodeSession getSession()
@@ -160,9 +181,7 @@ public class MotherlodePlugin extends Plugin
 	{
 		if (inMlm)
 		{
-			curSackSize = client.getVar(Varbits.SACK_NUMBER);
-			boolean sackUpgraded = client.getVar(Varbits.SACK_UPGRADED) == 1;
-			maxSackSize = sackUpgraded ? SACK_LARGE_SIZE : SACK_SIZE;
+			refreshSackValues();
 		}
 	}
 
@@ -321,12 +340,6 @@ public class MotherlodePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onRegionChanged(MapRegionChanged event)
-	{
-		inMlm = checkInMlm();
-	}
-
-	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOADING)
@@ -408,6 +421,13 @@ public class MotherlodePlugin extends Plugin
 		}
 
 		return true;
+	}
+
+	private void refreshSackValues()
+	{
+		curSackSize = client.getVar(Varbits.SACK_NUMBER);
+		boolean sackUpgraded = client.getVar(Varbits.SACK_UPGRADED) == 1;
+		maxSackSize = sackUpgraded ? SACK_LARGE_SIZE : SACK_SIZE;
 	}
 
 	/**

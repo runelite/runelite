@@ -30,18 +30,34 @@ import static net.runelite.api.coords.Direction.NORTH;
 import static net.runelite.api.coords.Direction.SOUTH;
 import static net.runelite.api.coords.Direction.WEST;
 
+/**
+ * Represents an in-game orientation that uses fixed point arithmetic.
+ * <p>
+ * Angles are represented as an int value ranging from 0-2047, where the
+ * following is true:
+ * <ul>
+ *     <li>0 is true South</li>
+ *     <li>512 is true West</li>
+ *     <li>1024 is true North</li>
+ *     <li>1536 is true East</li>
+ * </ul>
+ */
 @Value
 public class Angle
 {
 	/**
-	 * angle, 0-2047.
-	 * 0 is south, west is 512, south is 1024, east is 1536s
+	 * The raw angle value.
 	 */
 	private final int angle;
 
 	/**
-	 * Get the nearest N/S/E/W direction for this angle
-	 * @return
+	 * Converts the angle value to the nearest cardinal direction.
+	 * <p>
+	 * Each cardinal direction contains 512 angles, ranging between
+	 * -256 and +256 of it's true value. Negative values and values
+	 * above 2047 are wrapped accordingly.
+	 *
+	 * @return Nearest cardinal direction to the angle
 	 */
 	public Direction getNearestDirection()
 	{

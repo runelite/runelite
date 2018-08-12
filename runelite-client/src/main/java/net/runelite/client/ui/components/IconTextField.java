@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
- * Copyright (c) 2018, Psikoi <Adam@sigterm.info>
+ * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,6 +26,8 @@
  */
 package net.runelite.client.ui.components;
 
+import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.FontManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -33,71 +35,133 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
-import net.runelite.client.ui.ColorScheme;
 
 /**
- * This component is a JTextField with an icon on its left side.
+ * This component is a FlatTextField with an icon on its left side, and a clear button (×) on its right side.
  */
 public class IconTextField extends JPanel
 {
-	private final JTextField textField;
-
-	//to support gifs, the icon needs to be wrapped in a JLabel
+	// To support gifs, the icon needs to be wrapped in a JLabel
 	private final JLabel iconWrapperLabel;
 
-	//the default background color, this needs to be stored for hover effects
-	private Color backgroundColor = ColorScheme.DARKER_GRAY_COLOR;
-	//the default hover background color, this needs to be stored for hover effects
-	private Color hoverBackgroundColor;
+	private final FlatTextField textField;
 
-	// the input can be blocked (no clicking, no editing, no hover effects)
-	private boolean blocked;
+	private final JButton clearButton;
 
 	public IconTextField()
 	{
 		setLayout(new BorderLayout());
 
-		this.iconWrapperLabel = new JLabel();
-		this.iconWrapperLabel.setPreferredSize(new Dimension(30, 0));
-		this.iconWrapperLabel.setVerticalAlignment(JLabel.CENTER);
-		this.iconWrapperLabel.setHorizontalAlignment(JLabel.CENTER);
+		iconWrapperLabel = new JLabel();
+		iconWrapperLabel.setPreferredSize(new Dimension(30, 0));
+		iconWrapperLabel.setVerticalAlignment(JLabel.CENTER);
+		iconWrapperLabel.setHorizontalAlignment(JLabel.CENTER);
 
-		this.textField = new JTextField();
-		this.textField.setBorder(null);
-		this.textField.setOpaque(false);
-		this.textField.setSelectedTextColor(Color.WHITE);
-		this.textField.setSelectionColor(ColorScheme.BRAND_ORANGE_TRANSPARENT);
+		textField = new FlatTextField();
+		textField.setBorder(null);
 
-		add(iconWrapperLabel, BorderLayout.WEST);
-		add(textField, BorderLayout.CENTER);
+		final JTextField innerTxt = textField.getTextField();
+		innerTxt.removeMouseListener(innerTxt.getMouseListeners()[innerTxt.getMouseListeners().length - 1]);
 
-		textField.addMouseListener(new MouseAdapter()
+		final MouseListener hoverEffect = new MouseAdapter()
 		{
 			@Override
 			public void mouseEntered(MouseEvent mouseEvent)
 			{
-				if (blocked)
+				if (textField.isBlocked())
 				{
 					return;
 				}
 
-				if (hoverBackgroundColor != null)
+				final Color hoverColor = textField.getHoverBackgroundColor();
+
+				if (hoverColor != null)
 				{
-					IconTextField.super.setBackground(hoverBackgroundColor);
+					IconTextField.super.setBackground(hoverColor);
+					textField.setBackground(hoverColor, false);
 				}
+
 			}
 
 			@Override
 			public void mouseExited(MouseEvent mouseEvent)
 			{
-				IconTextField.super.setBackground(backgroundColor);
+				setBackground(textField.getBackgroundColor());
+			}
+		};
+
+		textField.addMouseListener(hoverEffect);
+		innerTxt.addMouseListener(hoverEffect);
+
+		clearButton = new JButton("×");
+		clearButton.setPreferredSize(new Dimension(30, 0));
+		clearButton.setFont(FontManager.getRunescapeBoldFont());
+		clearButton.setForeground(ColorScheme.PROGRESS_ERROR_COLOR);
+		clearButton.setBorder(null);
+		clearButton.setBorderPainted(false);
+		clearButton.setContentAreaFilled(false);
+		clearButton.setVisible(false);
+
+		// ActionListener for keyboard use (via Tab -> Space)
+		clearButton.addActionListener((l) -> setText(null));
+
+		// MouseListener for hover and click events
+		clearButton.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				setText(null);
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				clearButton.setForeground(Color.PINK);
+				textField.dispatchEvent(mouseEvent);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				clearButton.setForeground(ColorScheme.PROGRESS_ERROR_COLOR);
+				textField.dispatchEvent(mouseEvent);
 			}
 		});
+
+		// Show the clear button when text is present, and hide again when empty
+		getDocument().addDocumentListener(new DocumentListener()
+		{
+			@Override
+			public void insertUpdate(DocumentEvent e)
+			{
+				clearButton.setVisible(true);
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e)
+			{
+				clearButton.setVisible(!getText().isEmpty());
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e)
+			{
+			}
+		});
+
+		add(iconWrapperLabel, BorderLayout.WEST);
+		add(textField, BorderLayout.CENTER);
+		add(clearButton, BorderLayout.EAST);
 	}
 
 	public void addActionListener(ActionListener actionListener)
@@ -127,18 +191,13 @@ public class IconTextField extends JPanel
 		{
 			return;
 		}
+
 		super.setBackground(color);
-		this.backgroundColor = color;
-	}
 
-	public void addInputKeyListener(KeyListener l)
-	{
-		textField.addKeyListener(l);
-	}
-
-	public void removeInputKeyListener(KeyListener l)
-	{
-		textField.removeKeyListener(l);
+		if (textField != null)
+		{
+			textField.setBackground(color);
+		}
 	}
 
 	public void setHoverBackgroundColor(Color hoverBackgroundColor)
@@ -147,18 +206,36 @@ public class IconTextField extends JPanel
 		{
 			return;
 		}
-		this.hoverBackgroundColor = hoverBackgroundColor;
+
+		this.textField.setHoverBackgroundColor(hoverBackgroundColor);
+	}
+
+	@Override
+	public void addKeyListener(KeyListener keyListener)
+	{
+		textField.addKeyListener(keyListener);
+	}
+
+	@Override
+	public void removeKeyListener(KeyListener keyListener)
+	{
+		textField.removeKeyListener(keyListener);
 	}
 
 	public void setEditable(boolean editable)
 	{
-		this.blocked = !editable;
 		textField.setEditable(editable);
-		textField.setFocusable(editable);
 		if (!editable)
 		{
-			super.setBackground(backgroundColor);
+			super.setBackground(textField.getBackgroundColor());
 		}
+	}
+
+	@Override
+	public boolean requestFocusInWindow()
+	{
+		super.requestFocusInWindow();
+		return textField.requestFocusInWindow();
 	}
 
 	public Document getDocument()

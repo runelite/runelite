@@ -37,9 +37,9 @@ import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
-import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -48,6 +48,8 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Special Attack Counter",
+	description = "Track DWH, Arclight, Darklight, and BGS special attacks used on NPCs",
+	tags = {"combat", "npcs", "overlay"},
 	enabledByDefault = false
 )
 public class SpecialCounterPlugin extends Plugin
@@ -162,11 +164,11 @@ public class SpecialCounterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onActorDeath(ActorDeath death)
+	public void onNpcDespawn(NpcDespawned npcDespawned)
 	{
-		Actor actor = death.getActor();
+		NPC actor = npcDespawned.getNpc();
 
-		if (actor instanceof NPC && ((NPC) actor).getId() == interactedNpcId)
+		if (actor.isDead() && actor.getId() == interactedNpcId)
 		{
 			removeCounters();
 		}

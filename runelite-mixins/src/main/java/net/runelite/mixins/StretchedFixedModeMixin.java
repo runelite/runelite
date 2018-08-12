@@ -41,6 +41,9 @@ public abstract class StretchedFixedModeMixin implements RSClient
 	private static boolean stretchedFast;
 
 	@Inject
+	private static boolean stretchedIntegerScaling;
+
+	@Inject
 	private static boolean stretchedKeepAspectRatio;
 
 	@Inject
@@ -79,6 +82,14 @@ public abstract class StretchedFixedModeMixin implements RSClient
 
 	@Inject
 	@Override
+	public void setStretchedIntegerScaling(boolean state)
+	{
+		stretchedIntegerScaling = state;
+		cachedStretchedDimensions = null;
+	}
+
+	@Inject
+	@Override
 	public void setStretchedKeepAspectRatio(boolean state)
 	{
 		stretchedKeepAspectRatio = state;
@@ -103,8 +114,8 @@ public abstract class StretchedFixedModeMixin implements RSClient
 	{
 		Canvas canvas = getCanvas();
 
-		int width = canvas.getWidth();
-		int height = canvas.getHeight();
+		int width = canvas.getParent().getWidth();
+		int height = canvas.getParent().getHeight();
 
 		if (cachedStretchedDimensions == null || width != lastCanvasDimensions.width || height != lastCanvasDimensions.height)
 		{
@@ -119,6 +130,18 @@ public abstract class StretchedFixedModeMixin implements RSClient
 				else
 				{
 					width = tempNewWidth;
+				}
+			}
+
+			if (stretchedIntegerScaling)
+			{
+				if (width > Constants.GAME_FIXED_WIDTH)
+				{
+					width = width - (width % Constants.GAME_FIXED_WIDTH);
+				}
+				if (height > Constants.GAME_FIXED_HEIGHT)
+				{
+					height = height - (height % Constants.GAME_FIXED_HEIGHT);
 				}
 			}
 

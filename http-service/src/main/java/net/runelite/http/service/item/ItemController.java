@@ -24,6 +24,8 @@
  */
 package net.runelite.http.service.item;
 
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import java.time.Duration;
@@ -33,7 +35,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.item.Item;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
@@ -47,7 +48,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/item")
-@Slf4j
 public class ItemController
 {
 	private static final Duration CACHE_DUATION = Duration.ofMinutes(30);
@@ -60,10 +60,26 @@ public class ItemController
 
 	private final ItemService itemService;
 
+	private final Supplier<ItemPrice[]> memorizedPrices;
+
 	@Autowired
 	public ItemController(ItemService itemService)
 	{
 		this.itemService = itemService;
+
+		memorizedPrices = Suppliers.memoizeWithExpiration(() -> itemService.fetchPrices().stream()
+			.map(priceEntry ->
+			{
+				Item item = new Item();
+				item.setId(priceEntry.getItem()); // fake item
+
+				ItemPrice itemPrice = new ItemPrice();
+				itemPrice.setItem(item);
+				itemPrice.setPrice(priceEntry.getPrice());
+				itemPrice.setTime(priceEntry.getTime());
+				return itemPrice;
+			})
+			.toArray(ItemPrice[]::new), 30, TimeUnit.MINUTES);
 	}
 
 	@RequestMapping("/{itemId}")
@@ -150,18 +166,10 @@ public class ItemController
 		else if (priceEntry == null)
 		{
 			// Price is unknown
-			itemService.queuePriceLookup(itemId); // queue lookup
 			cachedEmpty.put(itemId, itemId);
 			return ResponseEntity.notFound()
 				.header(RUNELITE_CACHE, "MISS")
 				.build();
-		}
-
-		Instant cacheTime = now.minus(CACHE_DUATION);
-		if (priceEntry.getFetched_time().isBefore(cacheTime))
-		{
-			// Queue a check for the price
-			itemService.queuePriceLookup(itemId);
 		}
 
 		ItemPrice itemPrice = new ItemPrice();
@@ -211,5 +219,13 @@ public class ItemController
 				return itemPrice;
 			})
 			.toArray(ItemPrice[]::new);
+	}
+
+	@RequestMapping("/prices")
+	public ResponseEntity<ItemPrice[]> prices()
+	{
+		return ResponseEntity.ok()
+			.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
+			.body(memorizedPrices.get());
 	}
 }

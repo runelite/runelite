@@ -37,6 +37,7 @@ import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GraphicsObject;
@@ -50,7 +51,7 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Projectile;
-import net.runelite.api.Region;
+import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
@@ -61,6 +62,8 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 public class DevToolsOverlay extends Overlay
 {
@@ -77,19 +80,20 @@ public class DevToolsOverlay extends Overlay
 	private static final Color PURPLE = new Color(170, 0, 255);
 	private static final Color GRAY = new Color(158, 158, 158);
 
-	private static final int REGION_SIZE = 104;
 	private static final int MAX_DISTANCE = 2400;
 
 	private final Client client;
 	private final DevToolsPlugin plugin;
+	private final TooltipManager toolTipManager;
 
 	@Inject
-	public DevToolsOverlay(Client client, DevToolsPlugin plugin)
+	public DevToolsOverlay(Client client, DevToolsPlugin plugin, TooltipManager toolTipManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 		this.client = client;
 		this.plugin = plugin;
+		this.toolTipManager = toolTipManager;
 	}
 
 	@Override
@@ -111,7 +115,7 @@ public class DevToolsOverlay extends Overlay
 			renderNpcs(graphics);
 		}
 
-		if (plugin.isToggleGroundItems() || plugin.isToggleGroundObjects() || plugin.isToggleGameObjects() || plugin.isToggleWalls() || plugin.isToggleDecor())
+		if (plugin.isToggleGroundItems() || plugin.isToggleGroundObjects() || plugin.isToggleGameObjects() || plugin.isToggleWalls() || plugin.isToggleDecor() || plugin.isToggleTileLocation())
 		{
 			renderTileObjects(graphics);
 		}
@@ -187,14 +191,14 @@ public class DevToolsOverlay extends Overlay
 
 	private void renderTileObjects(Graphics2D graphics)
 	{
-		Region region = client.getRegion();
-		Tile[][][] tiles = region.getTiles();
+		Scene scene = client.getScene();
+		Tile[][][] tiles = scene.getTiles();
 
 		int z = client.getPlane();
 
-		for (int x = 0; x < REGION_SIZE; ++x)
+		for (int x = 0; x < Constants.SCENE_SIZE; ++x)
 		{
-			for (int y = 0; y < REGION_SIZE; ++y)
+			for (int y = 0; y < Constants.SCENE_SIZE; ++y)
 			{
 				Tile tile = tiles[z][x][y];
 
@@ -233,7 +237,22 @@ public class DevToolsOverlay extends Overlay
 				{
 					renderDecorObject(graphics, tile, player);
 				}
+
+				if (plugin.isToggleTileLocation())
+				{
+					renderTileTooltip(graphics, tile);
+				}
 			}
+		}
+	}
+
+	private void renderTileTooltip(Graphics2D graphics, Tile tile)
+	{
+		Polygon poly = Perspective.getCanvasTilePoly(client, tile.getLocalLocation());
+		if (poly != null && poly.contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
+		{
+			toolTipManager.add(new Tooltip("World Location: " + tile.getWorldLocation().getX() + ", " + tile.getWorldLocation().getY() + ", " + client.getPlane()));
+			OverlayUtil.renderPolygon(graphics, poly, GREEN);
 		}
 	}
 

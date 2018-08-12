@@ -29,13 +29,25 @@ package net.runelite.api.vars;
  */
 public enum AccountType
 {
+	/**
+	 * Normal account type.
+	 */
 	NORMAL,
+	/**
+	 * Ironman account type.
+	 */
 	IRONMAN,
+	/**
+	 * Ultimate ironman account type.
+	 */
 	ULTIMATE_IRONMAN,
+	/**
+	 * Hardcore ironman account type.
+	 */
 	HARDCORE_IRONMAN;
 
 	/**
-	 * Check if the {@code AccountType} is any of the possible ironman types.
+	 * Checks whether this type is an ironman.
 	 *
 	 * @return {@code true} if the type is any of the ironman types.
 	 */

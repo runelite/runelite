@@ -34,7 +34,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -55,21 +54,29 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.ProjectileMoved;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Demonic Gorillas"
+	name = "Demonic Gorillas",
+	description = "Count demonic gorilla attacks and display their next possible attack styles",
+	tags = {"combat", "overlay"}
 )
-@Slf4j
 public class DemonicGorillaPlugin extends Plugin
 {
 	@Inject
 	private Client client;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private DemonicGorillaOverlay overlay;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Getter
 	private Map<NPC, DemonicGorilla> gorillas;
@@ -83,33 +90,50 @@ public class DemonicGorillaPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
 		gorillas = new HashMap<>();
 		recentBoulders = new ArrayList<>();
 		pendingAttacks = new ArrayList<>();
 		memorizedPlayers = new HashMap<>();
+		clientThread.invoke(this::reset); // Updates the list of gorillas and players
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
 		gorillas = null;
 		recentBoulders = null;
 		pendingAttacks = null;
 		memorizedPlayers = null;
 	}
 
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
-	}
-
 	private void clear()
 	{
 		recentBoulders.clear();
 		pendingAttacks.clear();
-		gorillas.clear();
 		memorizedPlayers.clear();
+		gorillas.clear();
+	}
+
+	private void reset()
+	{
+		recentBoulders.clear();
+		pendingAttacks.clear();
+		resetGorillas();
+		resetPlayers();
+	}
+
+	private void resetGorillas()
+	{
+		gorillas.clear();
+		for (NPC npc : client.getNpcs())
+		{
+			if (isNpcGorilla(npc.getId()))
+			{
+				gorillas.put(npc, new DemonicGorilla(npc));
+			}
+		}
 	}
 
 	private void resetPlayers()
@@ -628,7 +652,7 @@ public class DemonicGorillaPlugin extends Plugin
 			gs == GameState.CONNECTION_LOST ||
 			gs == GameState.HOPPING)
 		{
-			clear();
+			reset();
 		}
 	}
 

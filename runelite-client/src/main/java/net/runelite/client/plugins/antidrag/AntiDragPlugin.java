@@ -26,25 +26,24 @@ package net.runelite.client.plugins.antidrag;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.event.KeyEvent;
+import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import javax.inject.Inject;
-import java.awt.event.KeyEvent;
 
 @PluginDescriptor(
-	name = "Anti Drag",
-	enabledByDefault = false
+	name = "Shift Anti Drag",
+	description = "Prevent dragging an item for a specified delay",
+	tags = {"antidrag", "delay", "inventory", "items"}
 )
 public class AntiDragPlugin extends Plugin implements KeyListener
 {
-	static final String CONFIG_GROUP = "antiDrag";
-
-	static final int DEFAULT_DELAY = 5;
+	private static final int DEFAULT_DELAY = 5;
 
 	@Inject
 	private Client client;
@@ -64,10 +63,6 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Override
 	protected void startUp() throws Exception
 	{
-		if (!config.onShiftOnly())
-		{
-			client.setInventoryDragDelay(config.dragDelay());
-		}
 		keyManager.registerKeyListener(this);
 	}
 
@@ -87,7 +82,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (config.onShiftOnly() && e.getKeyCode() == KeyEvent.VK_SHIFT)
+		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
 		{
 			client.setInventoryDragDelay(config.dragDelay());
 		}
@@ -96,25 +91,18 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		if (config.onShiftOnly() && e.getKeyCode() == KeyEvent.VK_SHIFT)
+		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
 		{
 			client.setInventoryDragDelay(DEFAULT_DELAY);
 		}
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	public void onFocusChanged(FocusChanged focusChanged)
 	{
-		if (event.getGroup().equals(CONFIG_GROUP))
+		if (!focusChanged.isFocused())
 		{
-			if (config.onShiftOnly())
-			{
-				client.setInventoryDragDelay(DEFAULT_DELAY);
-			}
-			else
-			{
-				client.setInventoryDragDelay(config.dragDelay());
-			}
+			client.setInventoryDragDelay(DEFAULT_DELAY);
 		}
 	}
 }

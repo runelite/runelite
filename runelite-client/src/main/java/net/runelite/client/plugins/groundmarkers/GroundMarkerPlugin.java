@@ -56,10 +56,13 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Ground Markers"
+	name = "Ground Markers",
+	description = "Enable marking of tiles using the Shift key",
+	tags = {"overlay", "tiles"}
 )
 public class GroundMarkerPlugin extends Plugin
 {
@@ -84,6 +87,9 @@ public class GroundMarkerPlugin extends Plugin
 
 	@Inject
 	private ConfigManager configManager;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private GroundMarkerOverlay overlay;
@@ -279,27 +285,24 @@ public class GroundMarkerPlugin extends Plugin
 			return;
 		}
 
-		Tile target = client.getSelectedRegionTile();
+		Tile target = client.getSelectedSceneTile();
 		markTile(target.getLocalLocation());
 	}
 
 	@Override
 	protected void startUp()
 	{
+		overlayManager.add(overlay);
 		keyManager.registerKeyListener(inputListener);
 	}
 
 	@Override
 	protected void shutDown()
 	{
+		overlayManager.remove(overlay);
 		keyManager.unregisterKeyListener(inputListener);
 	}
 
-	@Override
-	public GroundMarkerOverlay getOverlay()
-	{
-		return overlay;
-	}
 
 	protected void markTile(LocalPoint localPoint)
 	{
@@ -313,8 +316,8 @@ public class GroundMarkerPlugin extends Plugin
 		if (client.isInInstancedRegion())
 		{
 			// get position in the scene
-			int sceneX = localPoint.getRegionX();
-			int sceneY = localPoint.getRegionY();
+			int sceneX = localPoint.getSceneX();
+			int sceneY = localPoint.getSceneY();
 
 			// get chunk from scene
 			int chunkX = sceneX / CHUNK_SIZE;

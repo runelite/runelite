@@ -33,7 +33,6 @@ import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.CLUE_SCROLL_IMAGE;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -49,7 +48,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: A HEART", "Aretha", new WorldPoint(1814, 3851, 0), "Soul altar", "2"),
 		new AnagramClue("This anagram reveals who to speak to next: A ZEN SHE", "Zenesha", new WorldPoint(2652, 3295, 0), "Platebody Southern Ardougne centre square"),
 		new AnagramClue("This anagram reveals who to speak to next: ACE MATCH ELM", "Cam The Camel", new WorldPoint(3300, 3231, 0), "North of the glider in Al Kharid"),
-		new AnagramClue("This anagram reveals who to speak to next: AHA JAR", "Jaraah", new WorldPoint(3359, 3276, 0), "Duel Arena hosptial"),
+		new AnagramClue("This anagram reveals who to speak to next: AHA JAR", "Jaraah", new WorldPoint(3359, 3276, 0), "Duel Arena hospital"),
 		new AnagramClue("This anagram reveals who to speak to next: AN PAINT TONIC", "Captain Ninto", new WorldPoint(2865, 9877, 0), "Bar under White Wolf Mountain"),
 		new AnagramClue("This anagram reveals who to speak to next: ARC O LINE", "Caroline", new WorldPoint(2715, 3302, 0), "North Witchaven next to the row boat", "11"),
 		new AnagramClue("This anagram reveals who to speak to next: ARE COL", "Oracle", new WorldPoint(3013, 3501, 0), "Ice Mountain West of Edgeville", "48"),
@@ -68,12 +67,12 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: COOL NERD", "Old crone", new WorldPoint(3462, 3557, 0), "East of the Slayer Tower", "619"),
 		new AnagramClue("This anagram reveals who to speak to next: COPPER ORE CRYPTS", "Prospector Percy", new WorldPoint(3061, 3377, 0), "Motherlode Mine", "12"),
 		new AnagramClue("This anagram reveals who to speak to next: DED WAR", "Edward", new WorldPoint(3284, 3943, 0), "Inside Rogue's Castle"),
-		new AnagramClue("This anagram reveals who to speak to next: DEKAGRAM", "Dark Mage", new WorldPoint(3039, 4835, 0), "Centre of the Abyss", "13"),
+		new AnagramClue("This anagram reveals who to speak to next: DEKAGRAM", "Dark mage", new WorldPoint(3039, 4835, 0), "Centre of the Abyss", "13"),
 		new AnagramClue("This anagram reveals who to speak to next: DO SAY MORE", "Doomsayer", new WorldPoint(3230, 3230, 0), "East of Lumbridge Castle", "95"),
 		new AnagramClue("This anagram reveals who to speak to next: DIM THARN", "Mandrith", new WorldPoint(3182, 3946, 0), "Wilderness Resource Area", "28 or Puzzle box"),
 		new AnagramClue("This anagram reveals who to speak to next: DR HITMAN", "Mandrith", new WorldPoint(3182, 3946, 0), "Wilderness Resource Area", "28, Light box or Puzzle box"),
-		new AnagramClue("This anagram reveals who to speak to next: DR WARDEN FUNK", "Drunken Dwarf", new WorldPoint(2913, 10221, 0), "East Side of Keldagrim"),
-		new AnagramClue("This anagram reveals who to speak to next: DRAGONS LAMENT", "Strange old Man", new WorldPoint(3564, 3288, 0), "Barrows", "40"),
+		new AnagramClue("This anagram reveals who to speak to next: DR WARDEN FUNK", "Drunken Dwarf", new WorldPoint(2913, 10221, 0), "East Side of Keldagrim", "Puzzle box"),
+		new AnagramClue("This anagram reveals who to speak to next: DRAGONS LAMENT", "Strange Old Man", new WorldPoint(3564, 3288, 0), "Barrows", "40"),
 		new AnagramClue("This anagram reveals who to speak to next: DT RUN B", "Brundt the Chieftain", new WorldPoint(2658, 3670, 0), "Rellekka, main hall", "4"),
 		new AnagramClue("This anagram reveals who to speak to next: DUO PLUG", "Dugopul", new WorldPoint(2803, 2744, 0), "Graveyard on Ape Atoll"),
 		new AnagramClue("This anagram reveals who to speak to next: EEK ZERO OP", "Zoo keeper", new WorldPoint(2613, 3269, 0), "Ardougne Zoo", "40"),
@@ -100,7 +99,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: LAND DOOMD", "Odd Old Man", new WorldPoint(3359, 3506, 0), "Limestone mine northeast of Varrock"),
 		new AnagramClue("This anagram reveals who to speak to next: LARK IN DOG", "King Roald", new WorldPoint(3220, 3476, 0), "Ground floor of Varrock castle", "24"),
 		new AnagramClue("This anagram reveals who to speak to next: LOW LAG", "Gallow", new WorldPoint(1805, 3566, 0), "Vinery in the Great Kourend", "12"),
-		new AnagramClue("This anagram reveals who to speak to next: LADDER MEMO GUV", "Guard Vemmeldo", new WorldPoint(2447, 3418, 0), "Gnome Stronghold Bank", "3"),
+		new AnagramClue("This anagram reveals who to speak to next: LADDER MEMO GUV", "Guard Vemmeldo", new WorldPoint(2447, 3418, 1), "Gnome Stronghold Bank", "3"),
 		new AnagramClue("This anagram reveals who to speak to next: MAL IN TAU", "Luminata", new WorldPoint(3508, 3237, 0), "Near Burgh de Rott entrance"),
 		new AnagramClue("This anagram reveals who to speak to next: ME AM THE CALC", "Cam the Camel", new WorldPoint(3300, 3231, 0), "Outside Duel Arena"),
 		new AnagramClue("This anagram reveals who to speak to next: MACHETE CLAM", "Cam the Camel", new WorldPoint(3300, 3231, 0), "Outside Duel Arena", "6"),
@@ -111,7 +110,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: MY MANGLE LAL", "Lammy Langle", new WorldPoint(1688, 3540, 0), "Hosidius House spirit tree patch"),
 		new AnagramClue("This anagram reveals who to speak to next: NO OWNER", "Oronwen", new WorldPoint(1162, 3178, 0), "Lletya Seamstress shop in Lletya", "20"),
 		new AnagramClue("This anagram reveals who to speak to next: NOD MED", "Edmond", new WorldPoint(2566, 3332, 0), "Behind the most NW house in East Ardougne", "3"),
-		new AnagramClue("This anagram reveals who to speak to next: O BIRDZ A ZANY EN PC", "Cap'n Izzy no Beard", new WorldPoint(2807, 3191, 0), "Brimhaven Agility Arena", "33"),
+		new AnagramClue("This anagram reveals who to speak to next: O BIRDZ A ZANY EN PC", "Cap'n Izzy No-Beard", new WorldPoint(2807, 3191, 0), "Brimhaven Agility Arena", "33"),
 		new AnagramClue("This anagram reveals who to speak to next: OK CO", "Cook", new WorldPoint(3207, 3214, 0), "Ground floor of Lumbridge Castle", "9"),
 		new AnagramClue("This anagram reveals who to speak to next: OR ZINC FUMES WARD", "Wizard Frumscone", new WorldPoint(2594, 3086, 0), "Downstairs in the Wizards' Guild"),
 		new AnagramClue("This anagram reveals who to speak to next: OUR OWN NEEDS", "Nurse Wooned", new WorldPoint(1575, 3590, 0), "Shayzien House Infirmary", "19"),
@@ -203,7 +202,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		{
 			for (NPC npc : plugin.getNpcsToMark())
 			{
-				OverlayUtil.renderActorOverlayImage(graphics, npc, CLUE_SCROLL_IMAGE, Color.ORANGE, IMAGE_Z_OFFSET);
+				OverlayUtil.renderActorOverlayImage(graphics, npc, plugin.getClueScrollImage(), Color.ORANGE, IMAGE_Z_OFFSET);
 			}
 		}
 	}

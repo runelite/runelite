@@ -27,12 +27,9 @@ package net.runelite.client.plugins.screenshot;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
 
-@ConfigGroup(
-	keyName = "screenshot",
-	name = "Screenshot",
-	description = "Configuration for the Screenshot plugin"
-)
+@ConfigGroup("screenshot")
 public interface ScreenshotConfig extends Config
 {
 	@ConfigItem(
@@ -102,10 +99,21 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "pets",
+		name = "Screenshot Pet",
+		description = "Configures whether screenshots are taken of receiving pets",
+		position = 6
+	)
+	default boolean screenshotPet()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "uploadScreenshot",
 		name = "Upload To Imgur",
 		description = "Configures whether or not screenshots are uploaded to Imgur and copied into your clipboard",
-		position = 6
+		position = 7
 	)
 	default boolean uploadScreenshot()
 	{
@@ -113,12 +121,23 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "enableShortcut",
-		name = "Screenshot with [Insert]",
-		description = "Configures whether or not screenshots can be taken with the Insert key",
-		position = 7
+		keyName = "hotkey",
+		name = "Screenshot hotkey",
+		description = "When you press this key a screenshot will be taken",
+		position = 10
 	)
-	default boolean isScreenshotEnabled()
+	default Keybind hotkey()
+	{
+		return Keybind.NOT_SET;
+	}
+
+	@ConfigItem(
+		keyName = "kills",
+		name = "Screenshot PvP Kills",
+		description = "Configures whether or not screenshots are automatically taken of PvP kills",
+		position = 9
+	)
+	default boolean screenshotKills()
 	{
 		return false;
 	}

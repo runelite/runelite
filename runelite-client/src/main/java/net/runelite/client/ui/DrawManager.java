@@ -24,7 +24,7 @@
  */
 package net.runelite.client.ui;
 
-import java.awt.image.BufferedImage;
+import java.awt.Image;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -37,10 +37,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DrawManager
 {
-	private final List<Consumer<BufferedImage>> everyFrame = new CopyOnWriteArrayList<>();
-	private final Queue<Consumer<BufferedImage>> nextFrame = new ConcurrentLinkedQueue<>();
+	private final List<Consumer<Image>> everyFrame = new CopyOnWriteArrayList<>();
+	private final Queue<Consumer<Image>> nextFrame = new ConcurrentLinkedQueue<>();
 
-	public void registerEveryFrameListener(Consumer<BufferedImage> everyFrameListener)
+	public void registerEveryFrameListener(Consumer<Image> everyFrameListener)
 	{
 		if (!everyFrame.contains(everyFrameListener))
 		{
@@ -48,19 +48,19 @@ public class DrawManager
 		}
 	}
 
-	public void unregisterEveryFrameListener(Consumer<BufferedImage> everyFrameListener)
+	public void unregisterEveryFrameListener(Consumer<Image> everyFrameListener)
 	{
 		everyFrame.remove(everyFrameListener);
 	}
 
-	public void requestNextFrameListener(Consumer<BufferedImage> nextFrameListener)
+	public void requestNextFrameListener(Consumer<Image> nextFrameListener)
 	{
 		nextFrame.add(nextFrameListener);
 	}
 
-	public void processDrawComplete(BufferedImage image)
+	public void processDrawComplete(Image image)
 	{
-		for (Consumer<BufferedImage> everyFrameListener : everyFrame)
+		for (Consumer<Image> everyFrameListener : everyFrame)
 		{
 			try
 			{
@@ -72,7 +72,7 @@ public class DrawManager
 			}
 		}
 
-		Consumer<BufferedImage> nextFrameListener = nextFrame.poll();
+		Consumer<Image> nextFrameListener = nextFrame.poll();
 		while (nextFrameListener != null)
 		{
 			try

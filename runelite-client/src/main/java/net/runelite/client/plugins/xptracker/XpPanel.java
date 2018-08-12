@@ -67,13 +67,14 @@ class XpPanel extends PluginPanel
 	{
 		super();
 
-		setBorder(new EmptyBorder(10, 10, 10, 10));
+		setBorder(new EmptyBorder(10, 6, 10, 6));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
+		setLayout(new BorderLayout());
 
 		final JPanel layoutPanel = new JPanel();
-		layoutPanel.setOpaque(false);
-		layoutPanel.setLayout(new BorderLayout());
-		add(layoutPanel);
+		BoxLayout boxLayout = new BoxLayout(layoutPanel, BoxLayout.Y_AXIS);
+		layoutPanel.setLayout(boxLayout);
+		add(layoutPanel, BorderLayout.NORTH);
 
 		overallPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		overallPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -98,7 +99,7 @@ class XpPanel extends PluginPanel
 		final JLabel overallIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(Skill.OVERALL)));
 
 		final JPanel overallInfo = new JPanel();
-		overallInfo.setOpaque(false);
+		overallInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		overallInfo.setLayout(new GridLayout(2, 1));
 		overallInfo.setBorder(new EmptyBorder(0, 10, 0, 0));
 
@@ -113,10 +114,9 @@ class XpPanel extends PluginPanel
 
 
 		final JPanel infoBoxPanel = new JPanel();
-		infoBoxPanel.setOpaque(false);
 		infoBoxPanel.setLayout(new BoxLayout(infoBoxPanel, BoxLayout.Y_AXIS));
-		layoutPanel.add(infoBoxPanel, BorderLayout.CENTER);
-		layoutPanel.add(overallPanel, BorderLayout.NORTH);
+		layoutPanel.add(overallPanel);
+		layoutPanel.add(infoBoxPanel);
 
 		try
 		{
@@ -135,7 +135,6 @@ class XpPanel extends PluginPanel
 		}
 
 		errorPanel.setContent("Exp trackers", "You have not gained experience yet.");
-		errorPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		add(errorPanel);
 	}
 
@@ -173,18 +172,18 @@ class XpPanel extends PluginPanel
 		}
 	}
 
-	void updateSkillExperience(boolean updated, Skill skill, XpSnapshotSingle xpSnapshotSingle)
+	void updateSkillExperience(boolean updated, boolean paused, Skill skill, XpSnapshotSingle xpSnapshotSingle)
 	{
 		final XpInfoBox xpInfoBox = infoBoxes.get(skill);
 
 		if (xpInfoBox != null)
 		{
-			xpInfoBox.update(updated, xpSnapshotSingle);
+			xpInfoBox.update(updated, paused, xpSnapshotSingle);
 		}
 	}
 
 
-	public void updateTotal(XpSnapshotTotal xpSnapshotTotal)
+	void updateTotal(XpSnapshotTotal xpSnapshotTotal)
 	{
 		// if player has gained exp and hasn't switched displays yet, hide error panel and show overall info
 		if (xpSnapshotTotal.getXpGainedInSession() > 0 && !overallPanel.isVisible())

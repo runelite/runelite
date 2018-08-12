@@ -30,12 +30,13 @@ import net.runelite.cache.io.InputStream;
 
 public class FrameLoader
 {
-	public FrameDefinition load(FramemapDefinition framemap, byte[] b)
+	public FrameDefinition load(FramemapDefinition framemap, int id, byte[] b)
 	{
 		FrameDefinition def = new FrameDefinition();
 		InputStream in = new InputStream(b);
 		InputStream data = new InputStream(b);
 
+		def.id = id;
 		def.framemap = framemap;
 
 		int framemapArchiveIndex = in.readUnsignedShort();
@@ -59,11 +60,11 @@ public class FrameLoader
 				continue;
 			}
 
-			if (def.framemap.field1456[i] != 0)
+			if (def.framemap.types[i] != 0)
 			{
 				for (int var10 = i - 1; var10 > lastI; --var10)
 				{
-					if (def.framemap.field1456[var10] == 0)
+					if (def.framemap.types[var10] == 0)
 					{
 						indexFrameIds[index] = var10;
 						scratchTranslatorX[index] = 0;
@@ -77,7 +78,7 @@ public class FrameLoader
 
 			indexFrameIds[index] = i;
 			short var11 = 0;
-			if (def.framemap.field1456[i] == 3)
+			if (def.framemap.types[i] == 3)
 			{
 				var11 = 128;
 			}
@@ -111,9 +112,9 @@ public class FrameLoader
 
 			lastI = i;
 			++index;
-			if (def.framemap.field1456[i] == 5)
+			if (def.framemap.types[i] == 5)
 			{
-				def.field1315 = true;
+				def.showing = true;
 			}
 		}
 
@@ -122,7 +123,7 @@ public class FrameLoader
 			throw new RuntimeException();
 		}
 
-		def.field1310 = index;
+		def.translatorCount = index;
 		def.indexFrameIds = new int[index];
 		def.translator_x = new int[index];
 		def.translator_y = new int[index];

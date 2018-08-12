@@ -39,10 +39,12 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
@@ -183,7 +185,7 @@ public class ConfigManager
 		{
 			log.debug("Unable to load settings - no such file");
 		}
-		catch (IOException ex)
+		catch (IllegalArgumentException | IOException ex)
 		{
 			log.warn("Unable to load settings", ex);
 		}
@@ -193,7 +195,7 @@ public class ConfigManager
 			Map<String, String> copy = (Map) ImmutableMap.copyOf(properties);
 			copy.forEach((groupAndKey, value) ->
 			{
-				final String[] split = ((String) groupAndKey).split("\\.", 2);
+				final String[] split = groupAndKey.split("\\.", 2);
 				if (split.length != 2)
 				{
 					log.debug("Properties key malformed!: {}", groupAndKey);
@@ -207,7 +209,7 @@ public class ConfigManager
 				configChanged.setGroup(groupName);
 				configChanged.setKey(key);
 				configChanged.setOldValue(null);
-				configChanged.setNewValue((String) value);
+				configChanged.setNewValue(value);
 				eventBus.post(configChanged);
 			});
 		}
@@ -252,7 +254,14 @@ public class ConfigManager
 		String value = getConfiguration(groupName, key);
 		if (!Strings.isNullOrEmpty(value))
 		{
-			return (T) stringToObject(value, clazz);
+			try
+			{
+				return (T) stringToObject(value, clazz);
+			}
+			catch (Exception e)
+			{
+				log.warn("Unable to unmarshal {}.{} ", groupName, key, e);
+			}
 		}
 		return null;
 	}
@@ -265,19 +274,7 @@ public class ConfigManager
 
 		if (client != null)
 		{
-			Runnable task = () ->
-			{
-				try
-				{
-					client.set(groupName + "." + key, value);
-				}
-				catch (IOException ex)
-				{
-					log.warn("unable to set configuration item", ex);
-				}
-			};
-			executor.execute(task);
-
+			client.set(groupName + "." + key, value);
 		}
 
 		Runnable task = () ->
@@ -315,19 +312,7 @@ public class ConfigManager
 
 		if (client != null)
 		{
-			final Runnable task = () ->
-			{
-				try
-				{
-					client.unset(groupName + "." + key);
-				}
-				catch (IOException ex)
-				{
-					log.warn("unable to set configuration item", ex);
-				}
-			};
-
-			executor.execute(task);
+			client.unset(groupName + "." + key);
 		}
 
 		Runnable task = () ->
@@ -374,6 +359,7 @@ public class ConfigManager
 
 	/**
 	 * Initialize the configuration from the default settings
+	 *
 	 * @param proxy
 	 */
 	public void setDefaultConfiguration(Object proxy, boolean override)
@@ -390,14 +376,29 @@ public class ConfigManager
 		{
 			ConfigItem item = method.getAnnotation(ConfigItem.class);
 
-			if (item == null || !method.isDefault())
+			// only apply default configuration for methods which read configuration (0 args)
+			if (item == null || method.getParameterCount() != 0)
 			{
+				continue;
+			}
+
+			if (!method.isDefault())
+			{
+				if (override)
+				{
+					String current = getConfiguration(group.value(), item.keyName());
+					// only unset if already set
+					if (current != null)
+					{
+						unsetConfiguration(group.value(), item.keyName());
+					}
+				}
 				continue;
 			}
 
 			if (!override)
 			{
-				String current = getConfiguration(group.keyName(), item.keyName());
+				String current = getConfiguration(group.value(), item.keyName());
 				if (current != null)
 				{
 					continue; // something else is already set
@@ -415,10 +416,16 @@ public class ConfigManager
 				continue;
 			}
 
-			log.debug("Setting default configuration value for {}.{} to {}", group.keyName(), item.keyName(), defaultValue);
-
+			String current = getConfiguration(group.value(), item.keyName());
 			String valueString = objectToString(defaultValue);
-			setConfiguration(group.keyName(), item.keyName(), valueString);
+			if (Objects.equals(current, valueString))
+			{
+				continue; // already set to the default value
+			}
+
+			log.debug("Setting default configuration value for {}.{} to {}", group.value(), item.keyName(), defaultValue);
+
+			setConfiguration(group.value(), item.keyName(), valueString);
 		}
 	}
 
@@ -453,7 +460,7 @@ public class ConfigManager
 		if (type == Rectangle.class)
 		{
 			String[] splitStr = str.split(":");
-			int x  = Integer.parseInt(splitStr[0]);
+			int x = Integer.parseInt(splitStr[0]);
 			int y = Integer.parseInt(splitStr[1]);
 			int width = Integer.parseInt(splitStr[2]);
 			int height = Integer.parseInt(splitStr[3]);
@@ -462,6 +469,17 @@ public class ConfigManager
 		if (type.isEnum())
 		{
 			return Enum.valueOf((Class<? extends Enum>) type, str);
+		}
+		if (type == Instant.class)
+		{
+			return Instant.parse(str);
+		}
+		if (type == Keybind.class)
+		{
+			String[] splitStr = str.split(":");
+			int code = Integer.parseInt(splitStr[0]);
+			int mods = Integer.parseInt(splitStr[1]);
+			return new Keybind(code, mods);
 		}
 		return str;
 	}
@@ -488,8 +506,17 @@ public class ConfigManager
 		}
 		if (object instanceof Rectangle)
 		{
-			Rectangle r = (Rectangle)object;
+			Rectangle r = (Rectangle) object;
 			return r.x + ":" + r.y + ":" + r.width + ":" + r.height;
+		}
+		if (object instanceof Instant)
+		{
+			return ((Instant) object).toString();
+		}
+		if (object instanceof Keybind)
+		{
+			Keybind k = (Keybind) object;
+			return k.getKeyCode() + ":" + k.getModifiers();
 		}
 		return object.toString();
 	}

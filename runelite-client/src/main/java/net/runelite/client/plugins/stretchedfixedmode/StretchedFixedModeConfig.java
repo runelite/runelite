@@ -29,11 +29,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "stretchedfixedmode",
-	name = "Stretched Fixed Mode",
-	description = "Resizes the game while in fixed mode"
-)
+@ConfigGroup("stretchedfixedmode")
 public interface StretchedFixedModeConfig extends Config
 {
 	@ConfigItem(
@@ -52,6 +48,16 @@ public interface StretchedFixedModeConfig extends Config
 		description = "Uses a fast algorithm when stretching, lowering quality but increasing performance"
 	)
 	default boolean increasedPerformance()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "integerScaling",
+		name = "Integer Scaling",
+		description = "Forces use of a whole number scale factor"
+	)
+	default boolean integerScaling()
 	{
 		return false;
 	}

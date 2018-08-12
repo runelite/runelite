@@ -46,7 +46,9 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Idle Notifier"
+	name = "Idle Notifier",
+	description = "Send a notification when going idle, or when HP/Prayer reaches a threshold",
+	tags = {"health", "hitpoints", "notifications", "prayer"}
 )
 public class IdleNotifierPlugin extends Plugin
 {
@@ -111,7 +113,8 @@ public class IdleNotifierPlugin extends Plugin
 			/* Cooking(Fire, Range) */
 			case COOKING_FIRE:
 			case COOKING_RANGE:
-			/* Crafting(Gem Cutting, Glassblowing, Spinning) */
+			case COOKING_WINE:
+			/* Crafting(Gem Cutting, Glassblowing, Spinning, Battlestaves) */
 			case GEM_CUTTING_OPAL:
 			case GEM_CUTTING_JADE:
 			case GEM_CUTTING_REDTOPAZ:
@@ -121,6 +124,8 @@ public class IdleNotifierPlugin extends Plugin
 			case GEM_CUTTING_DIAMOND:
 			case CRAFTING_GLASSBLOWING:
 			case CRAFTING_SPINNING:
+			case CRAFTING_BATTLESTAVES:
+			case CRAFTING_LEATHER:
 			/* Fletching(Cutting, Stringing) */
 			case FLETCHING_BOW_CUTTING:
 			case FLETCHING_STRING_NORMAL_SHORTBOW:
@@ -181,6 +186,11 @@ public class IdleNotifierPlugin extends Plugin
 			case HERBLORE_MAKE_TAR:
 			/* Magic */
 			case MAGIC_CHARGING_ORBS:
+			case MAGIC_LUNAR_STRING_JEWELRY:
+			case MAGIC_LUNAR_BAKE_PIE:
+			case MAGIC_MAKE_TABLET:
+			/* Prayer */
+			case USING_GILDED_ALTAR:
 				resetTimers();
 				notifyIdle = true;
 				break;

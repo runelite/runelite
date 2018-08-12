@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "timers",
-	name = "Timers",
-	description = "Configuration for the timers plugin"
-)
+@ConfigGroup("timers")
 public interface TimersConfig extends Config
 {
 	@ConfigItem(
@@ -115,7 +111,7 @@ public interface TimersConfig extends Config
 	@ConfigItem(
 		position = 7,
 		keyName = "showAntiFire",
-		name = "AntiFire timer",
+		name = "Antifire timer",
 		description = "Configures whether antifire timer is displayed"
 	)
 	default boolean showAntiFire()
@@ -213,6 +209,17 @@ public interface TimersConfig extends Config
 
 	@ConfigItem(
 		position = 16,
+		keyName = "showCharge",
+		name = "Charge timer",
+		description = "Configures whether to show a timer for the Charge spell"
+	)
+	default boolean showCharge()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 17,
 		keyName = "showImbuedHeart",
 		name = "Imbued heart timer",
 		description = "Configures whether imbued heart timer is displayed"
@@ -223,7 +230,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 17,
+		position = 18,
 		keyName = "showVengeance",
 		name = "Vengeance timer",
 		description = "Configures whether vengeance timer is displayed"
@@ -234,7 +241,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 18,
+		position = 19,
 		keyName = "showVengeanceOther",
 		name = "Vengeance Other timer",
 		description = "Configures whether vengeance other timer is displayed"
@@ -245,7 +252,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 19,
+		position = 20,
 		keyName = "showTeleblock",
 		name = "Teleblock timer",
 		description = "Configures whether teleblock timer is displayed"
@@ -256,7 +263,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 20,
+		position = 21,
 		keyName = "showFreezes",
 		name = "Freeze timer",
 		description = "Configures whether freeze timer is displayed"
@@ -267,12 +274,34 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 21,
+		position = 22,
 		keyName = "showGodWarsAltar",
 		name = "God wars altar timer",
 		description = "Configures whether god wars altar timer is displayed"
 	)
 	default boolean showGodWarsAltar()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 23,
+		keyName = "showStaffOfTheDead",
+		name = "Staff of the Dead timer",
+		description = "Configures whether staff of the dead timer is displayed"
+	)
+	default boolean showStaffOfTheDead()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 24,
+		keyName = "showAbyssalSireStun",
+		name = "Abyssal Sire Stun Timer",
+		description = "Configures whether Abyssal Sire stun timer is displayed"
+	)
+	default boolean showAbyssalSireStun()
 	{
 		return true;
 	}
