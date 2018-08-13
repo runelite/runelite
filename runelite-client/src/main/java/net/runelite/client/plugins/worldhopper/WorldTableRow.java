@@ -39,6 +39,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldType;
@@ -67,7 +68,7 @@ class WorldTableRow extends JPanel
 		FLAG_UK = new ImageIcon(ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "flag_uk.png"));
 		FLAG_US = new ImageIcon(ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "flag_us.png"));
 		FLAG_GER = new ImageIcon(ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "flag_ger.png"));
-		ICON_FAVORITE = new ImageIcon(ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "favorite.png"));
+		ICON_FAVORITE = new ImageIcon(ImageUtil.getResourceStreamFromClass(IconTextField.class, "star.png"));
 	}
 
 	private Color lastBackground;

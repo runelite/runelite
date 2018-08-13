@@ -43,6 +43,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconButton;
+import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.util.ImageUtil;
 import org.apache.commons.text.similarity.JaroWinklerDistance;
 
@@ -84,7 +85,7 @@ class PluginListItem extends JPanel
 	{
 		BufferedImage configIcon = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "config_edit_icon.png");
 		BufferedImage onSwitcher = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "switcher_on.png");
-		BufferedImage onStar = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "star_on.png");
+		BufferedImage onStar = ImageUtil.getResourceStreamFromClass(IconTextField.class, "star.png");
 		CONFIG_ICON = new ImageIcon(configIcon);
 		ON_SWITCHER = new ImageIcon(onSwitcher);
 		ON_STAR = new ImageIcon(onStar);
