@@ -24,9 +24,13 @@
  */
 package net.runelite.client.plugins.timers;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
@@ -40,7 +44,9 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Prayer;
+import net.runelite.api.Player;
 import net.runelite.api.Varbits;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
@@ -49,6 +55,7 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
@@ -109,6 +116,7 @@ public class TimersPlugin extends Plugin
 	private static final String CHARGE_MESSAGE = "<col=ef1020>You feel charged with magic power.</col>";
 	private static final String EXTENDED_ANTIFIRE_DRINK_MESSAGE = "You drink some of your extended antifire potion.";
 	private static final String EXTENDED_SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your extended super antifire potion.";
+	private static final String FROZEN_MESSAGE = "<col=ef1020>You have been frozen!</col>";
 	private static final String FULL_TELEBLOCK_MESSAGE = "<col=4f006f>A teleblock spell has been cast on you. It will expire in 5 minutes, 0 seconds.</col>";
 	private static final String GOD_WARS_ALTAR_MESSAGE = "you recharge your prayer.";
 	private static final String HALF_TELEBLOCK_MESSAGE = "<col=4f006f>A teleblock spell has been cast on you. It will expire in 2 minutes, 30 seconds.</col>";
@@ -123,8 +131,13 @@ public class TimersPlugin extends Plugin
 	private static final String SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your super antifire potion";
 	private static final String SUPER_ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your super antifire potion has expired.</col>";
 	private static final String SUPER_ANTIVENOM_DRINK_MESSAGE = "You drink some of your super antivenom potion";
+	private static final Set<GameTimer> FREEZE_TIMERS = ImmutableSet.of(ICERUSH, ICEBURST, ICEBLITZ, ICEBARRAGE);
+	private static final long FREEZE_TIME_PASSED_THRESHOLD = 1;
+	private static final long NO_TIME_PASSED_THRESHOLD = -1;
 
 	private int lastRaidVarb;
+	private int lastWorldX;
+	private int lastWorldY;
 
 	@Inject
 	private ItemManager itemManager;
@@ -483,6 +496,30 @@ public class TimersPlugin extends Plugin
 		{
 			removeGameTimer(STAFF_OF_THE_DEAD);
 		}
+
+		if (config.showFreezes() && event.getMessage().equals(FROZEN_MESSAGE))
+		{
+			createGameTimer(ICEBARRAGE, false, FREEZE_TIMERS);
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		Player player = client.getLocalPlayer();
+		WorldPoint currentWorldPoint = player.getWorldLocation();
+
+		if ((lastWorldX != currentWorldPoint.getX()
+			|| lastWorldY != currentWorldPoint.getY())
+			&& infoBoxManager.has(t -> t instanceof TimerTimer && FREEZE_TIMERS.contains(((TimerTimer) t).getTimer())))
+		{
+			removeGameTimer(ICERUSH);
+			removeGameTimer(ICEBURST);
+			removeGameTimer(ICEBLITZ);
+			removeGameTimer(ICEBARRAGE);
+			lastWorldX = currentWorldPoint.getX();
+			lastWorldY = currentWorldPoint.getY();
+		}
 	}
 
 	@Subscribe
@@ -588,24 +625,23 @@ public class TimersPlugin extends Plugin
 				}
 			}
 
+			// threshold to allow frozen graphic to register and remove redundant timers
 			if (actor.getGraphic() == ICERUSH.getGraphicId())
 			{
-				createGameTimer(ICERUSH);
+				removeGameTimer(ICEBARRAGE, FREEZE_TIME_PASSED_THRESHOLD);
+				createGameTimer(ICERUSH, false, FREEZE_TIMERS);
 			}
 
 			if (actor.getGraphic() == ICEBURST.getGraphicId())
 			{
-				createGameTimer(ICEBURST);
+				removeGameTimer(ICEBARRAGE, FREEZE_TIME_PASSED_THRESHOLD);
+				createGameTimer(ICEBURST, false, FREEZE_TIMERS);
 			}
 
 			if (actor.getGraphic() == ICEBLITZ.getGraphicId())
 			{
-				createGameTimer(ICEBLITZ);
-			}
-
-			if (actor.getGraphic() == ICEBARRAGE.getGraphicId())
-			{
-				createGameTimer(ICEBARRAGE);
+				removeGameTimer(ICEBARRAGE, FREEZE_TIME_PASSED_THRESHOLD);
+				createGameTimer(ICEBLITZ, false, FREEZE_TIMERS);
 			}
 		}
 	}
@@ -669,8 +705,47 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	private void createGameTimer(GameTimer timer)
+	/**
+	 * Adds a GameTimer to the infobox manager to render such that it is not mutually exclusive with a
+	 * given set of timers. Accepts a `replaceExisting` option to preserve existing timers of the same
+	 * type instead of replacing them with the new passed timer. Accepts a `checkActiveFreezeTimers`
+	 * option to preserve existing mutually exclusive timers instead of replacing or
+	 * adding additional timers within such set.
+	 *
+	 * @param timer           				The timer to be added to the infobox manager.
+	 * @param replaceExisting 				Whether to remove existing timer of the same type. `true`
+	 *                                      to replace it, `false` to preserve it if present.
+	 * @param mutuallyExclusiveGameTimers	Mutually exclusive set of timers to be checked. If the timer
+	 *                                      at hand is in the set. It will not be created.
+	 */
+	private void createGameTimer(final GameTimer timer, final boolean replaceExisting, final Set<GameTimer> mutuallyExclusiveGameTimers)
 	{
+		if (!mutuallyExclusiveGameTimers.isEmpty()
+			&& infoBoxManager.has(t -> t instanceof TimerTimer && mutuallyExclusiveGameTimers.contains(((TimerTimer) t).getTimer())))
+		{
+			return;
+		}
+
+		createGameTimer(timer, replaceExisting);
+	}
+
+	/**
+	 * Adds a game timer to the infobox manager to render. Accepts a `replaceExisting` option to
+	 * preserve existing timers of the same type instead of replacing them with the new passed
+	 * timer.
+	 *
+	 * @param timer           			The timer to be added to the infobox manager.
+	 * @param replaceExisting 			Whether to remove existing timer of the same type. `true` to replace
+	 *                        			it, `false` to preserve it if present.
+	 */
+	private void createGameTimer(final GameTimer timer, final boolean replaceExisting)
+	{
+		if (!replaceExisting
+			&& infoBoxManager.has(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer))
+		{
+			return;
+		}
+
 		removeGameTimer(timer);
 
 		BufferedImage image = timer.getImage(itemManager, spriteManager);
@@ -679,8 +754,41 @@ public class TimersPlugin extends Plugin
 		infoBoxManager.addInfoBox(t);
 	}
 
+	private void createGameTimer(GameTimer timer)
+	{
+		createGameTimer(timer, true);
+	}
+
 	private void removeGameTimer(GameTimer timer)
 	{
-		infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer);
+		removeGameTimer(timer, NO_TIME_PASSED_THRESHOLD);
+	}
+
+	/**
+	 * Removes a rendered GameTimer from the infobox manager. Accepts a `secondsPassedThreshold`
+	 * defining the limit of seconds in which to allow the removal of a timer.
+	 *
+	 * @param timer           			The timer to be added to the infobox manager.
+	 * @param secondsPassedThreshold 	Seconds allowed to be elapsed since start of timer in
+	 *                                  order to be removed. Mainly used to allow graphics to
+	 *                                  filter freeze timers on first interaction between various
+	 *                                  events.
+	 *
+	 *                                  i.e.: default freeze timer is BARRAGE upon
+	 *                                  frozen message, but graphic indicates BLITZ. This
+	 *                                  threshold allows for the removal of BARRAGE. On subsequent
+	 *                                  freeze spell casts the number of seconds passed should
+	 *                                  be greater than this threshold and should not allow the
+	 *                                  current freeze timer to be removed, as it is in effect.
+	 */
+	private void removeGameTimer(GameTimer timer, long secondsPassedThreshold)
+	{
+		long totalTimerSeconds = timer.getDuration().getSeconds();
+		infoBoxManager.removeIf(
+			t -> t instanceof TimerTimer
+			&& ((TimerTimer) t).getTimer() == timer
+			&& (secondsPassedThreshold < 0
+			|| (totalTimerSeconds - Duration.between(Instant.now(), ((TimerTimer) t).getEndTime()).getSeconds()) <= secondsPassedThreshold)
+		);
 	}
 }
