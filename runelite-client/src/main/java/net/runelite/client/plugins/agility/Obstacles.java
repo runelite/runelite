@@ -201,6 +201,8 @@ class Obstacles
 		ROCK_16115,
 		// Agility Pyramid Entrance
 		CLIMBING_ROCKS_11948, CLIMBING_ROCKS_11949,
+		//Lumber Yard
+		BROKEN_FENCE_2618,
 		// Ungael and Vorkath crater
 		NULL_25337, NULL_29868, NULL_29869, NULL_29870, ICE_CHUNKS_31822, NULL_31823, ICE_CHUNKS_31990
 	);
