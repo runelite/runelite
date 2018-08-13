@@ -31,6 +31,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -48,6 +49,7 @@ class WorldTableRow extends JPanel
 	private static final ImageIcon FLAG_UK;
 	private static final ImageIcon FLAG_US;
 	private static final ImageIcon FLAG_GER;
+	private static final ImageIcon ICON_FAVORITE;
 
 	private static final int WORLD_COLUMN_WIDTH = 60;
 	private static final int PLAYERS_COLUMN_WIDTH = 40;
@@ -65,14 +67,17 @@ class WorldTableRow extends JPanel
 		FLAG_UK = new ImageIcon(ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "flag_uk.png"));
 		FLAG_US = new ImageIcon(ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "flag_us.png"));
 		FLAG_GER = new ImageIcon(ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "flag_ger.png"));
+		ICON_FAVORITE = new ImageIcon(ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "favorite.png"));
 	}
 
 	private Color lastBackground;
 	private boolean current;
+	private boolean favorite;
 
 	WorldTableRow(World world, boolean current, boolean favorite, Consumer<World> onSelect, BiConsumer<World, Boolean> onFavorite)
 	{
 		this.current = current;
+		this.favorite = favorite;
 
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(2, 0, 2, 0));
@@ -206,6 +211,11 @@ class WorldTableRow extends JPanel
 		}
 
 		column.add(label, BorderLayout.WEST);
+
+		if (favorite)
+		{
+			column.add(new JLabel(ICON_FAVORITE), BorderLayout.EAST);
+		}
 
 		return column;
 	}
