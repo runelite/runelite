@@ -47,6 +47,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.config.ConfigManager;
@@ -120,6 +121,19 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		return list;
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged ev)
+	{
+		if (!LootTrackerConfig.GROUP_KEY.equals(ev.getGroup()))
+		{
+			return;
+		}
+
+		if(ev.getKey().equals("groupView")){
+			panel.reconstruct(Boolean.parseBoolean(ev.getNewValue()));
+		}
 	}
 
 	@Provides
@@ -262,7 +276,7 @@ public class LootTrackerPlugin extends Plugin
 		{
 			final ItemComposition itemComposition = itemManager.getItemComposition(itemStack.getId());
 			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemStack.getId();
-			final long price = (long)itemManager.getItemPrice(realItemId) * (long)itemStack.getQuantity();
+			final long price = (long) itemManager.getItemPrice(realItemId) * (long) itemStack.getQuantity();
 
 			return new LootTrackerItemEntry(
 				itemStack.getId(),

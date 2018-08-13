@@ -28,6 +28,7 @@ package net.runelite.client.plugins.loottracker;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -102,13 +103,7 @@ class LootTrackerPanel extends PluginPanel
 		final JMenuItem reset = new JMenuItem("Reset All");
 		reset.addActionListener(e ->
 		{
-			lootMap.clear();
-			overallKills = 0;
-			overallGp = 0;
-			updateOverall();
-			
-			logsContainer.removeAll();
-			logsContainer.repaint();
+			clearLogs();
 		});
 
 		// Create popup menu
@@ -138,6 +133,35 @@ class LootTrackerPanel extends PluginPanel
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
 
+	void clearLogs()
+	{
+		lootMap.clear();
+		overallKills = 0;
+		overallGp = 0;
+		updateOverall();
+
+		logsContainer.removeAll();
+		logsContainer.repaint();
+	}
+
+	void reconstruct(boolean group)
+	{
+		ArrayList<LootTrackerLog> logs = new ArrayList<>(lootMap.values());
+		clearLogs();
+
+		for (LootTrackerLog log : logs)
+		{
+			for(LootTrackerEntry entry : log.getEntries())
+				addLog(entry);
+		}
+	}
+
+	void addLog(LootTrackerEntry entry)
+	{
+		logsContainer.add(new LootTrackerLog(itemManager, entry), 0);
+		logsContainer.repaint();
+	}
+
 	void addLog(final String eventName, final int actorLevel, LootTrackerItemEntry[] items, final boolean groupLoots)
 	{
 		// Remove error and show overall
@@ -145,6 +169,7 @@ class LootTrackerPanel extends PluginPanel
 		overallPanel.setVisible(true);
 
 		final String mapKey = eventName;
+		final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
 
 		if (groupLoots && lootMap.containsKey(mapKey))
 		{
@@ -152,7 +177,7 @@ class LootTrackerPanel extends PluginPanel
 
 			if (mappedLog != null)
 			{
-				mappedLog.addItems(items);
+				mappedLog.addEntry(new LootTrackerEntry(eventName, subTitle, System.currentTimeMillis(), items));
 
 				// Update overall
 				overallGp = (int) mappedLog.getTotalPrice();
@@ -163,8 +188,7 @@ class LootTrackerPanel extends PluginPanel
 		}
 
 		// Create log
-		final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
-		final LootTrackerLog log = new LootTrackerLog(itemManager, eventName, subTitle, items);
+		final LootTrackerLog log = new LootTrackerLog(itemManager, new LootTrackerEntry(eventName, subTitle, System.currentTimeMillis(), items));
 		logsContainer.add(log, 0);
 		logsContainer.repaint();
 		lootMap.put(mapKey, log);

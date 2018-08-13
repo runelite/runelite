@@ -51,14 +51,14 @@ class LootTrackerLog extends JPanel
 	private final JLabel subTitleLabel = new JLabel();
 	private final JPanel itemContainer = new JPanel();
 
-	private final ArrayList<LootTrackerItemEntry> entries = new ArrayList<>();
+	private final ArrayList<LootTrackerEntry> entries = new ArrayList<>();
 
 	private ItemManager itemManager;
 
 	private long totalPrice;
 	private int totalKills;
 
-	LootTrackerLog(final ItemManager itemManager, final String title, final String subTitle, final LootTrackerItemEntry[] items)
+	LootTrackerLog(final ItemManager itemManager, LootTrackerEntry entry)
 	{
 		this.itemManager = itemManager;
 
@@ -69,16 +69,16 @@ class LootTrackerLog extends JPanel
 		logTitle.setBorder(new EmptyBorder(7, 7, 7, 7));
 		logTitle.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
 
-		final JLabel titleLabel = new JLabel(title);
+		final JLabel titleLabel = new JLabel(entry.getTitle());
 		titleLabel.setFont(FontManager.getRunescapeSmallFont());
 		titleLabel.setForeground(Color.WHITE);
 
 		logTitle.add(titleLabel, BorderLayout.WEST);
 
 		// If we have subtitle, add it
-		if (!Strings.isNullOrEmpty(subTitle))
+		if (!Strings.isNullOrEmpty(entry.getSubTitle()))
 		{
-			subTitleLabel.setText(subTitle);
+			subTitleLabel.setText(entry.getSubTitle());
 			subTitleLabel.setFont(FontManager.getRunescapeSmallFont());
 			subTitleLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 			logTitle.add(subTitleLabel, BorderLayout.CENTER);
@@ -88,16 +88,16 @@ class LootTrackerLog extends JPanel
 		priceLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		logTitle.add(priceLabel, BorderLayout.EAST);
 
-		addItems(items);
+		addEntry(entry);
 
 		add(logTitle, BorderLayout.NORTH);
 		add(itemContainer, BorderLayout.CENTER);
 	}
 
-	private void rebuildItemContainer()
+	private void rebuildItemContainer(LootTrackerEntry entry)
 	{
 		// Calculates how many rows need to be display to fit all items
-		final int rowSize = ((entries.size() % ITEMS_PER_ROW == 0) ? 0 : 1) + entries.size() / ITEMS_PER_ROW;
+		final int rowSize = ((entry.getItems().length % ITEMS_PER_ROW == 0) ? 0 : 1) + entry.getItems().length / ITEMS_PER_ROW;
 		itemContainer.removeAll();
 		itemContainer.setLayout(new GridLayout(rowSize, ITEMS_PER_ROW, 1, 1));
 
@@ -106,9 +106,9 @@ class LootTrackerLog extends JPanel
 			final JPanel slotContainer = new JPanel();
 			slotContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-			if (i < entries.size())
+			if (i < entry.getItems().length)
 			{
-				final LootTrackerItemEntry item = entries.get(i);
+				final LootTrackerItemEntry item = entry.getItems()[i];
 				final JLabel imageLabel = new JLabel();
 				imageLabel.setToolTipText(buildToolTip(item));
 				imageLabel.setVerticalAlignment(SwingConstants.CENTER);
@@ -121,45 +121,50 @@ class LootTrackerLog extends JPanel
 		}
 	}
 
-	private void combineItems()
+	public LootTrackerEntry createCombinedEntry()
 	{
 		final List<LootTrackerItemEntry> list = new ArrayList<>();
 
-		for (final LootTrackerItemEntry entry : entries)
+		for (LootTrackerEntry entry : entries)
 		{
-			int quantity = 0;
-			for (final LootTrackerItemEntry i : list)
+			for (final LootTrackerItemEntry item : entry.getItems())
 			{
-				if (i.getId() == entry.getId())
+				int quantity = 0;
+				for (final LootTrackerItemEntry i : list)
 				{
-					quantity = i.getQuantity();
-					list.remove(i);
-					break;
+					if (i.getId() == item.getId())
+					{
+						quantity = i.getQuantity();
+						list.remove(i);
+						break;
+					}
 				}
-			}
-			if (quantity > 0)
-			{
-				int newQuantity = entry.getQuantity() + quantity;
-				long pricePerItem = entry.getPrice() == 0 ? 0 : (entry.getPrice() / entry.getQuantity());
+				if (quantity > 0)
+				{
+					int newQuantity = item.getQuantity() + quantity;
+					long pricePerItem = item.getPrice() == 0 ? 0 : (item.getPrice() / item.getQuantity());
 
-				list.add(new LootTrackerItemEntry(entry.getId(), entry.getName(), newQuantity, pricePerItem * newQuantity));
-			}
-			else
-			{
-				list.add(entry);
+					list.add(new LootTrackerItemEntry(item.getId(), item.getName(), newQuantity, pricePerItem * newQuantity));
+				}
+				else
+				{
+					list.add(item);
+				}
 			}
 		}
 
 		list.sort((i1, i2) -> i1.getPrice() < i2.getPrice() ? 1 : -1);
 
-		entries.clear();
-		entries.addAll(list);
+		String title = entries.get(0).getTitle();
+		String subTitle = entries.get(0).getSubTitle();
+		LootTrackerItemEntry[] items = list.toArray(new LootTrackerItemEntry[list.size()]);
+
+		return new LootTrackerEntry(title, subTitle, System.currentTimeMillis(), items);
 	}
 
-	public void addItems(LootTrackerItemEntry[] items)
+	public void addEntry(LootTrackerEntry entry)
 	{
-		entries.addAll(Arrays.asList(items));
-		combineItems();
+		entries.add(entry);
 
 		totalPrice = calculatePrice();
 		totalKills++;
@@ -174,7 +179,7 @@ class LootTrackerLog extends JPanel
 			subTitleLabel.setText(" x " + totalKills);
 		}
 
-		rebuildItemContainer();
+		rebuildItemContainer(createCombinedEntry());
 	}
 
 	private String buildToolTip(LootTrackerItemEntry item)
@@ -189,9 +194,12 @@ class LootTrackerLog extends JPanel
 	private long calculatePrice()
 	{
 		long total = 0;
-		for (LootTrackerItemEntry itemStack : entries)
+		for (LootTrackerEntry entry : entries)
 		{
-			total += itemStack.getPrice();
+			for (LootTrackerItemEntry itemStack : entry.getItems())
+			{
+				total += itemStack.getPrice();
+			}
 		}
 		return total;
 	}
