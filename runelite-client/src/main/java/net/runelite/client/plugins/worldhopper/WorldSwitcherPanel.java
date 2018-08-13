@@ -45,11 +45,13 @@ class WorldSwitcherPanel extends PluginPanel
 {
 	private static final Color ODD_ROW = new Color(44, 44, 44);
 
+	private static final int FAVORITE_COLUMN_WIDTH = 28;
 	private static final int WORLD_COLUMN_WIDTH = 60;
 	private static final int PLAYERS_COLUMN_WIDTH = 40;
 
 	private final JPanel listContainer = new JPanel();
 
+	private WorldTableHeader favoriteHeader;
 	private WorldTableHeader worldHeader;
 	private WorldTableHeader playersHeader;
 	private WorldTableHeader activityHeader;
@@ -120,6 +122,7 @@ class WorldSwitcherPanel extends PluginPanel
 
 	private void orderBy(WorldOrder order)
 	{
+		favoriteHeader.highlight(false, ascendingOrder);
 		worldHeader.highlight(false, ascendingOrder);
 		playersHeader.highlight(false, ascendingOrder);
 		activityHeader.highlight(false, ascendingOrder);
@@ -148,6 +151,9 @@ class WorldSwitcherPanel extends PluginPanel
 	{
 		JPanel header = new JPanel(new BorderLayout());
 		JPanel leftSide = new JPanel(new BorderLayout());
+
+		favoriteHeader = new WorldTableHeader();
+		favoriteHeader.setPreferredSize(new Dimension(FAVORITE_COLUMN_WIDTH, 0));
 
 		worldHeader = new WorldTableHeader("World", orderIndex == WorldOrder.WORLD, ascendingOrder);
 		worldHeader.setPreferredSize(new Dimension(WORLD_COLUMN_WIDTH, 0));
@@ -186,7 +192,8 @@ class WorldSwitcherPanel extends PluginPanel
 			}
 		});
 
-		leftSide.add(worldHeader, BorderLayout.WEST);
+		leftSide.add(favoriteHeader, BorderLayout.WEST);
+		leftSide.add(worldHeader, BorderLayout.CENTER);
 		leftSide.add(playersHeader, BorderLayout.EAST);
 
 		header.add(leftSide, BorderLayout.WEST);

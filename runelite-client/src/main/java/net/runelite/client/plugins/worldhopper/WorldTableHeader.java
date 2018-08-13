@@ -61,13 +61,18 @@ class WorldTableHeader extends JPanel
 	// Determines if this header column is being used to order the list
 	private boolean ordering = false;
 
-	WorldTableHeader(String title, boolean ordered, boolean ascending)
+	WorldTableHeader()
 	{
 		setLayout(new BorderLayout(5, 0));
 		setBorder(new CompoundBorder(
-			BorderFactory.createMatteBorder(0, 0, 0, 1, ColorScheme.MEDIUM_GRAY_COLOR),
-			new EmptyBorder(0, 5, 0, 5)));
+				BorderFactory.createMatteBorder(0, 0, 0, 1, ColorScheme.MEDIUM_GRAY_COLOR),
+				new EmptyBorder(0, 5, 0, 5)));
 		setBackground(ColorScheme.SCROLL_TRACK_COLOR);
+	}
+
+	WorldTableHeader(String title, boolean ordered, boolean ascending)
+	{
+		this();
 
 		addMouseListener(new MouseAdapter()
 		{
