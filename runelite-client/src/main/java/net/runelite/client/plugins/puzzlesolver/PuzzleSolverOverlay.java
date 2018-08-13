@@ -42,7 +42,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import static net.runelite.api.SpriteID.MINIMAP_DESTINATION_FLAG;
+import net.runelite.api.SpriteID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.SpriteManager;
@@ -81,6 +81,7 @@ public class PuzzleSolverOverlay extends Overlay
 	private Future<?> solverFuture;
 	private int[] cachedItems;
 
+	private BufferedImage downArrow;
 	private BufferedImage upArrow;
 	private BufferedImage leftArrow;
 	private BufferedImage rightArrow;
@@ -425,7 +426,11 @@ public class PuzzleSolverOverlay extends Overlay
 
 	private BufferedImage getDownArrow()
 	{
-		return spriteManager.getSprite(MINIMAP_DESTINATION_FLAG, 1);
+		if (downArrow == null)
+		{
+			downArrow = ImageUtil.resizeImage(spriteManager.getSprite(SpriteID.MINIMAP_GUIDE_ARROW_YELLOW, 0), 15, 15);
+		}
+		return downArrow;
 	}
 
 	private BufferedImage getUpArrow()
