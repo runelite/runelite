@@ -36,6 +36,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+
+import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -48,6 +50,7 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.game.ItemManager;
@@ -59,12 +62,16 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
+import com.mrpowergamerbr.temmiewebhook.DiscordEmbed;
+import com.mrpowergamerbr.temmiewebhook.DiscordMessage;
+import com.mrpowergamerbr.temmiewebhook.TemmieWebhook;
+import com.mrpowergamerbr.temmiewebhook.embed.ThumbnailEmbed;
 
 @PluginDescriptor(
-	name = "Loot Tracker",
-	description = "Tracks loot from monsters and minigames",
-	tags = {"drops"},
-	enabledByDefault = false
+		name = "Loot Tracker",
+		description = "Tracks loot from monsters and minigames",
+		tags = {"drops"},
+		enabledByDefault = false
 )
 @Slf4j
 public class LootTrackerPlugin extends Plugin
@@ -84,9 +91,20 @@ public class LootTrackerPlugin extends Plugin
 	@Inject
 	private Client client;
 
+	@Inject
+	private LootTrackerConfig config;
+
+	@Provides
+	LootTrackerConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(LootTrackerConfig.class);
+	}
+
 	private LootTrackerPanel panel;
 	private NavigationButton navButton;
 	private String eventType;
+
+	TemmieWebhook temmie = new TemmieWebhook("https://discordapp.com/api/webhooks/478199641071026176/TOvZmy00Txywfk67Khr88Yg5JSYTi7pqdgrFdvyC_yk-pFWWRt7V6hC1inijXCZDzDcz");
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
 	{
@@ -126,11 +144,11 @@ public class LootTrackerPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
 
 		navButton = NavigationButton.builder()
-			.tooltip("Loot Tracker")
-			.icon(icon)
-			.priority(5)
-			.panel(panel)
-			.build();
+				.tooltip("Loot Tracker")
+				.icon(icon)
+				.priority(5)
+				.panel(panel)
+				.build();
 
 		clientToolbar.addNavigation(navButton);
 	}
@@ -149,6 +167,7 @@ public class LootTrackerPlugin extends Plugin
 		final String name = npc.getName();
 		final int combat = npc.getCombatLevel();
 		final LootTrackerItemEntry[] entries = buildEntries(stack(items));
+		handleDrops(entries, name);
 		SwingUtilities.invokeLater(() -> panel.addLog(name, combat, entries));
 	}
 
@@ -197,8 +216,8 @@ public class LootTrackerPlugin extends Plugin
 
 		// Convert container items to array of ItemStack
 		final Collection<ItemStack> items = Arrays.stream(container.getItems())
-			.map(item -> new ItemStack(item.getId(), item.getQuantity()))
-			.collect(Collectors.toList());
+				.map(item -> new ItemStack(item.getId(), item.getQuantity()))
+				.collect(Collectors.toList());
 
 		if (!items.isEmpty())
 		{
@@ -254,10 +273,35 @@ public class LootTrackerPlugin extends Plugin
 			final long price = (long)itemManager.getItemPrice(realItemId) * (long)itemStack.getQuantity();
 
 			return new LootTrackerItemEntry(
-				itemStack.getId(),
-				itemComposition.getName(),
-				itemStack.getQuantity(),
-				price);
+					itemStack.getId(),
+					itemComposition.getName(),
+					itemStack.getQuantity(),
+					price);
 		}).toArray(LootTrackerItemEntry[]::new);
+	}
+
+	public void handleDrops(LootTrackerItemEntry[] drops, String name)
+	{
+		for (LootTrackerItemEntry item : drops)
+		{
+			if (item.getPrice() >= config.lootPrice())
+			{
+				sendDiscordMessage(item.getName(), item.getId(), item.getQuantity(), name);
+			}
+		}
+	}
+
+	public void sendDiscordMessage(String a, int b, int c, String d)
+	{
+		String userName = client.getLocalPlayer().getName();
+		DiscordEmbed de = new DiscordEmbed("" + d,  userName + " has just received " + c + "x " + a + " as a drop!");
+		ThumbnailEmbed te = new ThumbnailEmbed();
+		te.setUrl("https://api.runelite.net/runelite-1.4.11/item/" + b + "/icon");
+		te.setHeight(96);
+		te.setWidth(96);
+		de.setThumbnail(te);
+		DiscordMessage dm = new DiscordMessage("OSRS", "", "https://cdn.discordapp.com/attachments/478199469897285658/478518281288941589/latest.png");
+		dm.getEmbeds().add(de);
+		temmie.sendMessage(dm);
 	}
 }

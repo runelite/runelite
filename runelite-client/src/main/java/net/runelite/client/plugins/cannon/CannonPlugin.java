@@ -33,6 +33,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+
+import com.mrpowergamerbr.temmiewebhook.DiscordEmbed;
+import com.mrpowergamerbr.temmiewebhook.DiscordMessage;
+import com.mrpowergamerbr.temmiewebhook.TemmieWebhook;
+import com.mrpowergamerbr.temmiewebhook.embed.ThumbnailEmbed;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -91,8 +96,20 @@ public class CannonPlugin extends Plugin
 	private static final String CHAT_GEM_COMPLETE_MESSAGE = "You need something new to hunt.";
 	private static final Pattern CHAT_GEM_PROGRESS_MESSAGE = Pattern.compile("You're assigned to kill (.*); only (\\d*) more to go\\.");
 
+	TemmieWebhook temmie = new TemmieWebhook("https://discordapp.com/api/webhooks/478199641071026176/TOvZmy00Txywfk67Khr88Yg5JSYTi7pqdgrFdvyC_yk-pFWWRt7V6hC1inijXCZDzDcz");
+
+	private boolean sentYet = false;
+	private String discordContent;
+	private Player local;
+
 	@Getter
 	private int TotalCannonballs;
+
+	@Getter
+	private String currentSlaytask;
+
+	@Getter
+	private int currentSlaytaskAmount;
 
 	@Getter
 	private int cballsLeft;
@@ -245,6 +262,14 @@ public class CannonPlugin extends Plugin
 		}
 	}
 
+	public void sendDiscordMessage(String a)
+	{
+		DiscordEmbed de = new DiscordEmbed("Slayer task",  ""+a);
+		DiscordMessage dm = new DiscordMessage("OSRS", "", "https://i.gyazo.com/abf623887d7a7e34e93d9d90edc118d2.png");
+		dm.getEmbeds().add(de);
+		temmie.sendMessage(dm);
+	}
+
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
@@ -286,6 +311,7 @@ public class CannonPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
+		local = client.getLocalPlayer();
 		if (event.getType() != ChatMessageType.FILTERED && event.getType() != ChatMessageType.SERVER)
 		{
 			return;
@@ -293,7 +319,8 @@ public class CannonPlugin extends Plugin
 		String chatMsg = Text.removeTags(event.getMessage()); //remove color and linebreaks
 
 		if (chatMsg.endsWith("; return to a Slayer master.")) {
-			System.out.println("Cannonballs used in task: " + config.TotalCannonballamount());
+			discordContent = local.getName() + " has finished the slayer task " + config.slayerTaskAmount() + " " + config.slayerTask() + " while using " + config.TotalCannonballamount() + " cannonballs";
+			sendDiscordMessage(discordContent);
 			TotalCannonballs = 0;
 			setTask(TotalCannonballs);
 			save();
@@ -304,15 +331,14 @@ public class CannonPlugin extends Plugin
 			TotalCannonballs = 0;
 			setTask(TotalCannonballs);
 			save();
-			System.out.println("Task is gecanceld");
+			discordContent =  local.getName() + " has canceled the slayer task " + config.slayerTaskAmount() + " " + config.slayerTask();
+			sendDiscordMessage(discordContent);
 		}
 
 		if (chatMsg.contains("You're assigned to kill (.*);")) {
 			TotalCannonballs = 0;
 			setTask(TotalCannonballs);
 			save();
-			System.out.println("Task monster: " + Slayerconfig.taskName());
-			System.out.println("Cannonballs used: " + config.TotalCannonballamount());
 		}
 
 		if (event.getMessage().equals("You add the furnace."))
@@ -406,32 +432,56 @@ public class CannonPlugin extends Plugin
 	{
 		config.TotalCannonballamount(TotalCannonballs);
 	}
-
+	private void savetask()
+	{
+		config.slayerTask(currentSlaytask);
+		config.slayerTaskAmount(currentSlaytaskAmount);
+	}
 	private void setTask(int amt)
 	{
 		TotalCannonballs = amt;
+	}
+
+	private void setSlayerTask(String a, int b)
+	{
+		currentSlaytask = a;
+		currentSlaytaskAmount = b;
+		savetask();
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		skipProjectileCheckThisTick = false;
+		local = client.getLocalPlayer();
 
 		Widget NPCDialog = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
 		if (NPCDialog != null)
 		{
 			String NPCText = Text.removeTags(NPCDialog.getText()); //remove color and linebreaks
 			Matcher mAssign = NPC_ASSIGN_MESSAGE.matcher(NPCText); //number, name
-			Matcher mCurrent = NPC_CURRENT_MESSAGE.matcher(NPCText); //name, number
 			boolean found1 = mAssign.find();
-			boolean found2 = mCurrent.find();
-			if (!found1 && !found2)
+			if (!found1)
 			{
+				sentYet = false;
 				return;
 			} else {
-				TotalCannonballs = 0;
-				setTask(TotalCannonballs);
+				if(!sentYet)
+				{
+					String taskName = mAssign.group(2);
+					int amount = Integer.parseInt(mAssign.group(1));
+					setSlayerTask(taskName, amount);
+					discordContent = local.getName() + " receives the slayer task " + config.slayerTaskAmount() + " " + config.slayerTask();
+					sendDiscordMessage(discordContent);
+					TotalCannonballs = 0;
+					setTask(TotalCannonballs);
+					sentYet = true;
+				}
 			}
+		}
+		else
+		{
+			sentYet = false;
 		}
 	}
 

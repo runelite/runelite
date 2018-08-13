@@ -52,6 +52,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+
+import com.mrpowergamerbr.temmiewebhook.DiscordEmbed;
+import com.mrpowergamerbr.temmiewebhook.DiscordMessage;
+import com.mrpowergamerbr.temmiewebhook.TemmieWebhook;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -184,6 +188,9 @@ public class ScreenshotPlugin extends Plugin
 
 	private NavigationButton titleBarButton;
 
+	TemmieWebhook temmie = new TemmieWebhook("https://discordapp.com/api/webhooks/478199641071026176/TOvZmy00Txywfk67Khr88Yg5JSYTi7pqdgrFdvyC_yk-pFWWRt7V6hC1inijXCZDzDcz");
+	private String discordContent;
+
 	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.hotkey())
 	{
 		@Override
@@ -271,9 +278,12 @@ public class ScreenshotPlugin extends Plugin
 		}
 		else if (client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT) != null)
 		{
+			String userName = client.getLocalPlayer().getName();
 			// "You have completed The Corsair Curse!"
 			String text = client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT).getText();
 			fileName = text.substring(19, text.length() - 1);
+			discordContent = userName + " has just completed " + text;
+			sendDiscordMessage(discordContent);
 		}
 
 		if (fileName != null)
@@ -345,7 +355,13 @@ public class ScreenshotPlugin extends Plugin
 			takeScreenshot(fileName);
 		}
 	}
-
+	public void sendDiscordMessage(String a)
+	{
+		DiscordEmbed de = new DiscordEmbed("Level up",  ""+a);
+		DiscordMessage dm = new DiscordMessage("OSRS", "", "https://cdn.discordapp.com/attachments/478199469897285658/478518061675315210/latest.png");
+		dm.getEmbeds().add(de);
+		temmie.sendMessage(dm);
+	}
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
@@ -457,6 +473,7 @@ public class ScreenshotPlugin extends Plugin
 	 */
 	String parseLevelUpWidget(WidgetInfo levelUpLevel)
 	{
+		String userName = client.getLocalPlayer().getName();
 		Widget levelChild = client.getWidget(levelUpLevel);
 		if (levelChild == null)
 		{
@@ -471,6 +488,9 @@ public class ScreenshotPlugin extends Plugin
 
 		String skillName = m.group(1);
 		String skillLevel = m.group(2);
+
+		discordContent = userName + " has just reached level " + skillLevel + " in " + skillName;
+		sendDiscordMessage(discordContent);
 		return skillName + "(" + skillLevel + ")";
 	}
 

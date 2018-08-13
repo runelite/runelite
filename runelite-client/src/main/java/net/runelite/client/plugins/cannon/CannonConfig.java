@@ -99,4 +99,40 @@ public interface CannonConfig extends Config
 			description = ""
 	)
 	void TotalCannonballamount(int amt);
+
+	@ConfigItem(
+			keyName = "slayerTask",
+			name = "",
+			description = "",
+			hidden = true
+	)
+	default String slayerTask()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+			keyName = "slayerTask",
+			name = "",
+			description = ""
+	)
+	void slayerTask(String amt);
+
+	@ConfigItem(
+			keyName = "slayerTaskAmount",
+			name = "",
+			description = "",
+			hidden = true
+	)
+	default int slayerTaskAmount()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+			keyName = "slayerTaskAmount",
+			name = "",
+			description = ""
+	)
+	void slayerTaskAmount(int amt);
 }

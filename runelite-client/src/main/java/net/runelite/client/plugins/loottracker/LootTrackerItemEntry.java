@@ -33,4 +33,5 @@ class LootTrackerItemEntry
 	private final String name;
 	private final int quantity;
 	private final long price;
+
 }
