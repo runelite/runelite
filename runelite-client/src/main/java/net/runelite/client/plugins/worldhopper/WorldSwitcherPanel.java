@@ -150,10 +150,7 @@ class WorldSwitcherPanel extends PluginPanel
 		JPanel header = new JPanel(new BorderLayout());
 		JPanel leftSide = new JPanel(new BorderLayout());
 
-		worldHeader = new WorldTableHeader("World", orderIndex == WorldOrder.WORLD, ascendingOrder, () ->
-		{
-			plugin.fetchWorlds();
-		});
+		worldHeader = new WorldTableHeader("World", orderIndex == WorldOrder.WORLD, ascendingOrder, plugin::refresh);
 		worldHeader.setPreferredSize(new Dimension(WORLD_COLUMN_WIDTH, 0));
 		worldHeader.addMouseListener(new MouseAdapter()
 		{
@@ -169,10 +166,7 @@ class WorldSwitcherPanel extends PluginPanel
 			}
 		});
 
-		playersHeader = new WorldTableHeader("#", orderIndex == WorldOrder.PLAYERS, ascendingOrder, () ->
-		{
-			plugin.fetchWorlds();
-		});
+		playersHeader = new WorldTableHeader("#", orderIndex == WorldOrder.PLAYERS, ascendingOrder, plugin::refresh);
 		playersHeader.setPreferredSize(new Dimension(PLAYERS_COLUMN_WIDTH, 0));
 		playersHeader.addMouseListener(new MouseAdapter()
 		{
@@ -188,10 +182,7 @@ class WorldSwitcherPanel extends PluginPanel
 			}
 		});
 
-		activityHeader = new WorldTableHeader("Activity", orderIndex == WorldOrder.ACTIVITY, ascendingOrder, () ->
-		{
-			plugin.fetchWorlds();
-		});
+		activityHeader = new WorldTableHeader("Activity", orderIndex == WorldOrder.ACTIVITY, ascendingOrder, plugin::refresh);
 		activityHeader.setBorder(new EmptyBorder(3, 5, 3, 5));
 		activityHeader.addMouseListener(new MouseAdapter()
 		{

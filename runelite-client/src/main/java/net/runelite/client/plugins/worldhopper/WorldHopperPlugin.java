@@ -36,6 +36,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
@@ -82,6 +83,8 @@ import org.apache.commons.lang3.ArrayUtils;
 @Slf4j
 public class WorldHopperPlugin extends Plugin
 {
+	private static final int WORLD_FETCH_TIMER = 10;
+
 	private static final String HOP_TO = "Hop-to";
 	private static final String KICK_OPTION = "Kick";
 	private static final ImmutableList<String> BEFORE_OPTIONS = ImmutableList.of("Add friend", "Remove friend", KICK_OPTION);
@@ -148,7 +151,7 @@ public class WorldHopperPlugin extends Plugin
 		keyManager.registerKeyListener(previousKeyListener);
 		keyManager.registerKeyListener(nextKeyListener);
 
-		fetchWorlds();
+		refresh();
 
 		panel = new WorldSwitcherPanel(this);
 
@@ -346,26 +349,45 @@ public class WorldHopperPlugin extends Plugin
 		}
 	}
 
-	void fetchWorlds()
+	/**
+	 * This method resets the scheduled timer, this will also fire the fetch worlds method that updates the list with
+	 * updated data.
+	 */
+	void refresh()
 	{
-		worldResultFuture = executorService.submit(() ->
+		if (!config.showSidebar())
 		{
-			try
-			{
-				WorldResult worldResult = new WorldClient().lookupWorlds();
+			return;
+		}
 
-				if (worldResult != null)
-				{
-					worldResult.getWorlds().sort(Comparator.comparingInt(World::getId));
-					this.worldResult = worldResult;
-					updateList();
-				}
-			}
-			catch (IOException ex)
+		if (worldResultFuture != null)
+		{
+			worldResultFuture.cancel(true);
+		}
+
+		worldResultFuture = executorService.scheduleAtFixedRate(() ->
+		{
+			fetchWorlds();
+		}, 0, WORLD_FETCH_TIMER, TimeUnit.MINUTES);
+	}
+
+	private void fetchWorlds()
+	{
+		try
+		{
+			WorldResult worldResult = new WorldClient().lookupWorlds();
+
+			if (worldResult != null)
 			{
-				log.warn("Error looking up worlds", ex);
+				worldResult.getWorlds().sort(Comparator.comparingInt(World::getId));
+				this.worldResult = worldResult;
+				updateList();
 			}
-		});
+		}
+		catch (IOException ex)
+		{
+			log.warn("Error looking up worlds", ex);
+		}
 	}
 
 	/**
