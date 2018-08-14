@@ -59,6 +59,8 @@ class WorldTableRow extends JPanel
 	private static final Color MEMBERS_WORLD = new Color(210, 193, 53);
 	private static final Color FREE_WORLD = new Color(200, 200, 200);
 
+	private JLabel playerCountField;
+
 	static
 	{
 		FLAG_AUS = new ImageIcon(ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "flag_aus.png"));
@@ -161,6 +163,11 @@ class WorldTableRow extends JPanel
 		add(activityField, BorderLayout.CENTER);
 	}
 
+	void updatePlayerCount(int playerCount)
+	{
+		playerCountField.setText(String.valueOf(playerCount));
+	}
+
 	/**
 	 * Builds the players list field (containing the amount of players logged in that world).
 	 */
@@ -169,11 +176,11 @@ class WorldTableRow extends JPanel
 		JPanel column = new JPanel(new BorderLayout());
 		column.setBorder(new EmptyBorder(0, 5, 0, 5));
 
-		JLabel label = new JLabel(world.getPlayers() + "");
-		label.setFont(FontManager.getRunescapeSmallFont());
-		label.setForeground(current ? CURRENT_WORLD : Color.WHITE);
+		playerCountField = new JLabel(world.getPlayers() + "");
+		playerCountField.setFont(FontManager.getRunescapeSmallFont());
+		playerCountField.setForeground(current ? CURRENT_WORLD : Color.WHITE);
 
-		column.add(label, BorderLayout.WEST);
+		column.add(playerCountField, BorderLayout.WEST);
 
 		return column;
 	}

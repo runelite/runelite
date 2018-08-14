@@ -31,7 +31,9 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
@@ -58,7 +60,7 @@ class WorldSwitcherPanel extends PluginPanel
 	private WorldOrder orderIndex = WorldOrder.WORLD;
 	private boolean ascendingOrder = true;
 
-	private List<World> worlds;
+	private HashMap<World, WorldTableRow> rows = new HashMap<>();
 	private WorldHopperPlugin plugin;
 
 	WorldSwitcherPanel(WorldHopperPlugin plugin)
@@ -76,8 +78,25 @@ class WorldSwitcherPanel extends PluginPanel
 		add(listContainer);
 	}
 
+	void updateListData(HashMap<Integer, Integer> worldData)
+	{
+		for (Map.Entry<World, WorldTableRow> entry : rows.entrySet())
+		{
+			entry.getValue().updatePlayerCount(worldData.get(entry.getKey().getId()));
+		}
+
+		// If the list is being ordered by player count, then it has to be re-painted
+		// to properly display the new data
+		if (orderIndex == WorldOrder.PLAYERS)
+		{
+			updateList();
+		}
+	}
+
 	void updateList()
 	{
+		List<World> worlds = new ArrayList<>(rows.keySet());
+
 		worlds.sort((w1, w2) ->
 		{
 			switch (orderIndex)
@@ -105,8 +124,9 @@ class WorldSwitcherPanel extends PluginPanel
 
 		for (int i = 0; i < worlds.size(); i++)
 		{
-			World world = worlds.get(i);
-			listContainer.add(buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld(), plugin.isFavorite(world)));
+			WorldTableRow row = rows.get(worlds.get(i));
+			row.setBackground(i % 2 == 0 ? ODD_ROW : ColorScheme.DARK_GRAY_COLOR);
+			listContainer.add(row);
 		}
 
 		listContainer.revalidate();
@@ -115,7 +135,11 @@ class WorldSwitcherPanel extends PluginPanel
 
 	void populate(List<World> worlds)
 	{
-		this.worlds = new ArrayList<>(worlds);
+		for (int i = 0; i < worlds.size(); i++)
+		{
+			World world = worlds.get(i);
+			rows.put(world, buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld(), plugin.isFavorite(world)));
+		}
 		updateList();
 	}
 
@@ -210,9 +234,9 @@ class WorldSwitcherPanel extends PluginPanel
 	/**
 	 * Builds a table row, that displays the world's information.
 	 */
-	private JPanel buildRow(World world, boolean stripe, boolean current, boolean favorite)
+	private WorldTableRow buildRow(World world, boolean stripe, boolean current, boolean favorite)
 	{
-		JPanel row = new WorldTableRow(world, current, favorite,
+		WorldTableRow row = new WorldTableRow(world, current, favorite,
 			world1 ->
 			{
 				plugin.hopTo(world1);

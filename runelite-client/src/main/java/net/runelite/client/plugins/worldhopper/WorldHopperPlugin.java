@@ -33,6 +33,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
@@ -52,6 +53,7 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.WorldListLoad;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
@@ -347,6 +349,24 @@ public class WorldHopperPlugin extends Plugin
 				lastWorld = client.getWorld();
 			}
 		}
+	}
+
+	@Subscribe
+	public void onWorldListLoad(WorldListLoad worldListLoad)
+	{
+		if (!config.showSidebar())
+		{
+			return;
+		}
+
+		HashMap<Integer, Integer> worldData = new HashMap<>();
+
+		for (net.runelite.api.World w : worldListLoad.getWorlds())
+		{
+			worldData.put(w.getId(), w.getPlayerCount());
+		}
+
+		panel.updateListData(worldData);
 	}
 
 	/**
