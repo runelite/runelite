@@ -346,7 +346,7 @@ public class WorldHopperPlugin extends Plugin
 		}
 	}
 
-	private void fetchWorlds()
+	void fetchWorlds()
 	{
 		worldResultFuture = executorService.submit(() ->
 		{

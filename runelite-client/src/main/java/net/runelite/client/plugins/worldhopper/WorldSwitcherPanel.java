@@ -33,6 +33,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
@@ -149,38 +150,58 @@ class WorldSwitcherPanel extends PluginPanel
 		JPanel header = new JPanel(new BorderLayout());
 		JPanel leftSide = new JPanel(new BorderLayout());
 
-		worldHeader = new WorldTableHeader("World", orderIndex == WorldOrder.WORLD, ascendingOrder);
+		worldHeader = new WorldTableHeader("World", orderIndex == WorldOrder.WORLD, ascendingOrder, () ->
+		{
+			plugin.fetchWorlds();
+		});
 		worldHeader.setPreferredSize(new Dimension(WORLD_COLUMN_WIDTH, 0));
 		worldHeader.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
+				if (SwingUtilities.isRightMouseButton(mouseEvent))
+				{
+					return;
+				}
 				ascendingOrder = orderIndex != WorldOrder.WORLD || !ascendingOrder;
 				orderBy(WorldOrder.WORLD);
 			}
 		});
 
-		playersHeader = new WorldTableHeader("#", orderIndex == WorldOrder.PLAYERS, ascendingOrder);
+		playersHeader = new WorldTableHeader("#", orderIndex == WorldOrder.PLAYERS, ascendingOrder, () ->
+		{
+			plugin.fetchWorlds();
+		});
 		playersHeader.setPreferredSize(new Dimension(PLAYERS_COLUMN_WIDTH, 0));
 		playersHeader.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
-
+				if (SwingUtilities.isRightMouseButton(mouseEvent))
+				{
+					return;
+				}
 				ascendingOrder = orderIndex != WorldOrder.PLAYERS || !ascendingOrder;
 				orderBy(WorldOrder.PLAYERS);
 			}
 		});
 
-		activityHeader = new WorldTableHeader("Activity", orderIndex == WorldOrder.ACTIVITY, ascendingOrder);
+		activityHeader = new WorldTableHeader("Activity", orderIndex == WorldOrder.ACTIVITY, ascendingOrder, () ->
+		{
+			plugin.fetchWorlds();
+		});
 		activityHeader.setBorder(new EmptyBorder(3, 5, 3, 5));
 		activityHeader.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
+				if (SwingUtilities.isRightMouseButton(mouseEvent))
+				{
+					return;
+				}
 				ascendingOrder = orderIndex != WorldOrder.ACTIVITY || !ascendingOrder;
 				orderBy(WorldOrder.ACTIVITY);
 			}
