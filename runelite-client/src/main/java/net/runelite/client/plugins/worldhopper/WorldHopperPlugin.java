@@ -50,6 +50,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
@@ -113,6 +114,8 @@ public class WorldHopperPlugin extends Plugin
 	private NavigationButton navButton;
 	private WorldSwitcherPanel panel;
 
+	private int lastWorld;
+
 	private int favoriteWorld1, favoriteWorld2;
 	private Future<?> worldResultFuture;
 	private WorldResult worldResult;
@@ -145,25 +148,7 @@ public class WorldHopperPlugin extends Plugin
 		keyManager.registerKeyListener(previousKeyListener);
 		keyManager.registerKeyListener(nextKeyListener);
 
-		worldResultFuture = executorService.submit(() ->
-		{
-			try
-			{
-				WorldResult worldResult = new WorldClient().lookupWorlds();
-
-				if (worldResult != null)
-				{
-					worldResult.getWorlds().sort(Comparator.comparingInt(World::getId));
-					this.worldResult = worldResult;
-
-					SwingUtilities.invokeLater(() -> panel.populate(worldResult.getWorlds()));
-				}
-			}
-			catch (IOException ex)
-			{
-				log.warn("Error looking up worlds", ex);
-			}
-		});
+		fetchWorlds();
 
 		panel = new WorldSwitcherPanel(this);
 
@@ -345,6 +330,50 @@ public class WorldHopperPlugin extends Plugin
 		{
 			hop(player.getWorld());
 		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		// If the player has disabled the side bar plugin panel, do not update the UI
+		if (config.showSidebar() && gameStateChanged.getGameState() == GameState.LOGGED_IN)
+		{
+			if (lastWorld != client.getWorld())
+			{
+				updateList();
+				lastWorld = client.getWorld();
+			}
+		}
+	}
+
+	private void fetchWorlds()
+	{
+		worldResultFuture = executorService.submit(() ->
+		{
+			try
+			{
+				WorldResult worldResult = new WorldClient().lookupWorlds();
+
+				if (worldResult != null)
+				{
+					worldResult.getWorlds().sort(Comparator.comparingInt(World::getId));
+					this.worldResult = worldResult;
+					updateList();
+				}
+			}
+			catch (IOException ex)
+			{
+				log.warn("Error looking up worlds", ex);
+			}
+		});
+	}
+
+	/**
+	 * This method ONLY updates the list's UI, not the actual world list and data it displays.
+	 */
+	private void updateList()
+	{
+		SwingUtilities.invokeLater(() -> panel.populate(worldResult.getWorlds()));
 	}
 
 	private void hop(boolean previous)
