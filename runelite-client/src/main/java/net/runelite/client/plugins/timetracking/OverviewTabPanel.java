@@ -114,25 +114,39 @@ class OverviewTabPanel extends TabContentPanel
 			stopwatchOverview.updateStatus(stopwatches + " active stopwatch" + (stopwatches == 1 ? "" : "es"), ColorScheme.PROGRESS_COMPLETE_COLOR);
 		}
 
-		farmingOverviews.forEach((patchType, panel) -> updateItemPanel(panel, farmingTracker.getCompletionTime(patchType)));
-		updateItemPanel(birdHouseOverview, birdHouseTracker.getCompletionTime());
+		farmingOverviews.forEach((patchType, panel) ->
+			updateItemPanel(panel, farmingTracker.getSummary(patchType), farmingTracker.getCompletionTime(patchType)));
+
+		updateItemPanel(birdHouseOverview, birdHouseTracker.getSummary(), birdHouseTracker.getCompletionTime());
 	}
 
-	private void updateItemPanel(OverviewItemPanel panel, long completionTime)
+	private void updateItemPanel(OverviewItemPanel panel, SummaryState summary, long completionTime)
 	{
-		long duration = completionTime - Instant.now().getEpochSecond();
+		switch (summary)
+		{
+			case COMPLETED:
+			case IN_PROGRESS:
+			{
+				long duration = completionTime - Instant.now().getEpochSecond();
 
-		if (completionTime < 0)
-		{
-			panel.updateStatus("Unknown", Color.GRAY);
-		}
-		else if (duration <= 0)
-		{
-			panel.updateStatus("Ready", ColorScheme.PROGRESS_COMPLETE_COLOR);
-		}
-		else
-		{
-			panel.updateStatus("Ready " + getFormattedEstimate(duration, config.estimateRelative()), Color.GRAY);
+				if (duration <= 0)
+				{
+					panel.updateStatus("Ready", ColorScheme.PROGRESS_COMPLETE_COLOR);
+				}
+				else
+				{
+					panel.updateStatus("Ready " + getFormattedEstimate(duration, config.estimateRelative()), Color.GRAY);
+				}
+
+				break;
+			}
+			case EMPTY:
+				panel.updateStatus("Empty", Color.GRAY);
+				break;
+			case UNKNOWN:
+			default:
+				panel.updateStatus("Unknown", Color.GRAY);
+				break;
 		}
 	}
 }
