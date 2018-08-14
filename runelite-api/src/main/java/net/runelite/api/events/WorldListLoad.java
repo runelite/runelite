@@ -28,10 +28,10 @@ import lombok.Value;
 import net.runelite.api.World;
 
 /**
- * Event when a world is loaded for the world switcher
+ * Event when the world list is loaded for the world switcher
  */
 @Value
-public class WorldLoad
+public class WorldListLoad
 {
-	private final World world;
+	private final World[] worlds;
 }
