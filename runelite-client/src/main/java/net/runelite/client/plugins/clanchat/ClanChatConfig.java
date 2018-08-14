@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Ron <https://github.com/raiyni>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.client.plugins.clanchat;
 
-import lombok.Data;
-import lombok.AllArgsConstructor;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@Data
-@AllArgsConstructor
-public abstract class ChatboxInput
+@ConfigGroup("clanchat")
+public interface ClanChatConfig extends Config
 {
-	private String value;
-	private int chatType;
+	@ConfigItem(
+		keyName = "mobileChat",
+		name = "Mobile Chat",
+		description = "Swap default chat while clan chat tab is open. <br> Disable for default chat behaviour.",
+		position = 1
+	)
+	default boolean mobileChat()
+	{
+		return false;
+	}
 
-	public abstract void resume();
+	@ConfigItem(
+		keyName = "swapChat",
+		name = "Swap Chat",
+		description = "Swap default chat to always be clan chat. <br> Disable for default chat behaviour.",
+		position = 2
+	)
+	default boolean swapChat()
+	{
+		return false;
+	}
 }

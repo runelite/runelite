@@ -25,7 +25,9 @@
 package net.runelite.client.plugins.clanchat;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import java.time.temporal.ChronoUnit;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMemberRank;
@@ -34,6 +36,11 @@ import net.runelite.api.GameState;
 import net.runelite.api.events.SetMessage;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.chat.ChatboxInputListener;
+import net.runelite.client.chat.CommandManager;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.events.ChatboxInput;
+import net.runelite.client.events.PrivateMessageInput;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -44,7 +51,7 @@ import net.runelite.client.task.Schedule;
 	description = "Add rank icons to users talking in clan chat",
 	tags = {"icons", "rank"}
 )
-public class ClanChatPlugin extends Plugin
+public class ClanChatPlugin extends Plugin implements ChatboxInputListener
 {
 	@Inject
 	private Client client;
@@ -52,10 +59,39 @@ public class ClanChatPlugin extends Plugin
 	@Inject
 	private ClanManager clanManager;
 
+	@Inject
+	private CommandManager commandManager;
+
+	@Inject
+	private ScheduledExecutorService executor;
+
+	@Inject
+	private ClanChatConfig config;
+
 	@Schedule(
 		period = 600,
 		unit = ChronoUnit.MILLIS
 	)
+
+	@Provides
+	ClanChatConfig getConfig(ConfigManager configManager)
+	{
+
+		return configManager.getConfig(ClanChatConfig.class);
+	}
+
+	@Override
+	public void startUp()
+	{
+		commandManager.register(this);
+	}
+
+	@Override
+	public void shutDown()
+	{
+		commandManager.unregister(this);
+	}
+
 	public void updateClanChatTitle()
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
@@ -68,6 +104,50 @@ public class ClanChatPlugin extends Plugin
 		{
 			clanChatTitleWidget.setText("Clan Chat (" + client.getClanChatCount() + "/100)");
 		}
+	}
+
+	private boolean isClanChatClosed()
+	{
+		Widget widget = client.getWidget(WidgetInfo.CLAN_CHAT);
+
+		return widget == null || widget.isHidden();
+	}
+
+	@Override
+	public boolean onChatboxInput(ChatboxInput chatboxInput)
+	{
+		if (!config.swapChat() && (!config.mobileChat() || isClanChatClosed()))
+		{
+			return false;
+		}
+
+		String msg = chatboxInput.getValue();
+
+		if (msg.startsWith("/"))
+		{
+			msg = msg.substring(1);
+			chatboxInput.setChatType(ChatMessageType.PUBLIC_MODE.getType());
+		}
+		else
+		{
+			msg = "/" + msg;
+			chatboxInput.setChatType(ChatMessageType.CLANCHAT_MODE.getType());
+		}
+
+		chatboxInput.setValue(msg);
+
+		executor.execute(() ->
+		{
+			chatboxInput.resume();
+		});
+
+		return true;
+	}
+
+	@Override
+	public boolean onPrivateMessageInput(PrivateMessageInput privateMessageInput)
+	{
+		return false;
 	}
 
 	@Subscribe
