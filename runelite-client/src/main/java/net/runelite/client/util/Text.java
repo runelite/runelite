@@ -32,6 +32,8 @@ import java.util.regex.Pattern;
  */
 public class Text
 {
+	private static final String TAG_START = "</?";
+	private static final String TAG_END = "([ =].*?)?>";
 	private static final Pattern TAG_REGEXP = Pattern.compile("<[^>]*>");
 
 	/**
@@ -45,4 +47,34 @@ public class Text
 		return TAG_REGEXP.matcher(str).replaceAll("");
 	}
 
+	/**
+	 * Removes all tags of a given name from the given str.
+	 *
+	 * @param str The string to remove tags from.
+	 * @param tag The tag type to be removed from the given string.
+	 * @return    The given string, with any tags matching the given tag name removed.
+	 */
+	public static String removeTagsOfType(String str, String tag)
+	{
+		return removeTagsOfType(str, tag, Integer.MAX_VALUE);
+	}
+
+	/**
+	 * Removes a limited number of tags of a given name from the given str.
+	 *
+	 * @param str   The string to remove tags from.
+	 * @param tag   The tag type to be removed from the given string.
+	 * @param limit The maximum number of the given tag to be removed.
+	 * @return      The given string, with at most `limit` tags matching the given tag name removed.
+	 */
+	public static String removeTagsOfType(String str, String tag, int limit)
+	{
+		final Pattern tagRegexp = Pattern.compile(TAG_START + tag + TAG_END);
+		String out = str;
+		for (int i = 0; i < limit && tagRegexp.matcher(out).find(); i++)
+		{
+			out = tagRegexp.matcher(out).replaceFirst("");
+		}
+		return out;
+	}
 }

@@ -42,4 +42,27 @@ public class TextTest
 		assertEquals("Remove no tags", Text.removeTags("Remove no tags"));
 	}
 
+	@Test
+	public void removeTagsOfType()
+	{
+		// removeTagsOfType(String str, String tag)
+		assertEquals("Test", Text.removeTagsOfType("<col=FFFFFF>Test</col>", "col"));
+		assertEquals("Test", Text.removeTagsOfType("<col=FFFFFF>Test", "col"));
+		assertEquals("Test", Text.removeTagsOfType("Test</col>", "col"));
+		assertEquals("<img=1>Test", Text.removeTagsOfType("<img=1><s>Test</s>", "s"));
+		assertEquals("<s>Test</s>", Text.removeTagsOfType("<img=1><s>Test</s>", "img"));
+		assertEquals("<img=2>Zezima  (level-126)", Text.removeTagsOfType("<col=ffffff><img=2>Zezima<col=00ffff>  (level-126)", "col"));
+		assertEquals("<colrandomtext test>", Text.removeTagsOfType("<colrandomtext test>", "col"));
+		assertEquals("", Text.removeTagsOfType("<col randomtext test>", "col"));
+		assertEquals("Not so much.", Text.removeTagsOfType("<col=FFFFFF This is a very special message.</col>Not so much.", "col"));
+		assertEquals("Use Item -> Man", Text.removeTagsOfType("Use Item -> Man", "col"));
+		assertEquals("a < b", Text.removeTagsOfType("a < b", "col"));
+		assertEquals("Remove no tags", Text.removeTagsOfType("Remove no tags", "col"));
+
+		// removeTagsOfType(String str, String tag, int limit)
+		assertEquals("Test</col>", Text.removeTagsOfType("<col=FFFFFF>Test</col>", "col", 1));
+		assertEquals("Test", Text.removeTagsOfType("<col=FFFFFF>Test</col>", "col", 2));
+		assertEquals("Test", Text.removeTagsOfType("<col=FFFFFF>Test</col>", "col", 3));
+		assertEquals("<img=2>Zezima<col=00ffff>  (level-126)", Text.removeTagsOfType("<col=ffffff><img=2>Zezima<col=00ffff>  (level-126)", "col", 1));
+	}
 }
