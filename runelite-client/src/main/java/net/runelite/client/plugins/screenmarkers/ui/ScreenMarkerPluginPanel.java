@@ -94,7 +94,7 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 		northPanel.setBorder(new EmptyBorder(1, 0, 10, 0));
 
 		title.setText("Screen Markers");
-		title.setForeground(Color.WHITE);
+		title.setForeground(ColorScheme.TEXT_COLOR);
 
 		northPanel.add(title, BorderLayout.WEST);
 		northPanel.add(addMarker, BorderLayout.EAST);

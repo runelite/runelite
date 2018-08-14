@@ -160,7 +160,7 @@ public class ImageUtil
 	 * Creates a grayscale image from the given image.
 	 *
 	 * @param image The source image to be converted.
-	 * @return      A copy of the given imnage, with colors converted to grayscale.
+	 * @return A copy of the given imnage, with colors converted to grayscale.
 	 */
 	public static BufferedImage grayscaleImage(final BufferedImage image)
 	{
@@ -171,10 +171,10 @@ public class ImageUtil
 	/**
 	 * Re-size a BufferedImage to the given dimensions.
 	 *
-	 * @param image the BufferedImage.
-	 * @param newWidth The width to set the BufferedImage to.
+	 * @param image     the BufferedImage.
+	 * @param newWidth  The width to set the BufferedImage to.
 	 * @param newHeight The height to set the BufferedImage to.
-	 * @return The BufferedImage with the specified dimensions
+	 * @return          The BufferedImage with the specified dimensions
 	 */
 	public static BufferedImage resizeImage(final BufferedImage image, final int newWidth, final int newHeight)
 	{
@@ -303,7 +303,7 @@ public class ImageUtil
 	 * @param fillCondition  The predicate to be consumed by {@link #fillImage(BufferedImage, Color, Predicate) fillImage(BufferedImage, Color, Predicate)}
 	 * @param outlineCorners Whether to draw an outline around corners, or only around edges.
 	 * @return               The BufferedImage with its edges--and optionally, corners--outlined
-	 * 	                     with the given color.
+	 *                           with the given color.
 	 */
 	public static BufferedImage outlineImage(final BufferedImage image, final Color color, final Predicate<Color> fillCondition, final Boolean outlineCorners)
 	{

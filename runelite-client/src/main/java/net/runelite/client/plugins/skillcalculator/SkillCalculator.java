@@ -26,7 +26,6 @@
 package net.runelite.client.plugins.skillcalculator;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -177,7 +176,7 @@ class SkillCalculator extends JPanel
 				JLabel uiLabel = new JLabel(bonus.getName());
 				JCheckBox uiCheckbox = new JCheckBox();
 
-				uiLabel.setForeground(Color.WHITE);
+				uiLabel.setForeground(ColorScheme.TEXT_COLOR);
 				uiLabel.setFont(FontManager.getRunescapeSmallFont());
 
 				uiOption.setBorder(BorderFactory.createEmptyBorder(3, 7, 3, 0));

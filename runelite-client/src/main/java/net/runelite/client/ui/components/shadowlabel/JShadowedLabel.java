@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Point;
 import javax.swing.JLabel;
 import lombok.Getter;
+import net.runelite.client.ui.ColorScheme;
 
 public class JShadowedLabel extends JLabel
 {
@@ -44,7 +45,7 @@ public class JShadowedLabel extends JLabel
 	}
 
 	@Getter
-	private Color shadow = Color.BLACK;
+	private Color shadow = ColorScheme.TEXT_SHADOW_COLOR;
 
 	public void setShadow(Color shadow)
 	{

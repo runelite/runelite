@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.config;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
@@ -41,6 +40,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconButton;
 import net.runelite.client.util.ImageUtil;
@@ -141,7 +141,7 @@ class PluginListItem extends JPanel
 		setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, 20));
 
 		JLabel nameLabel = new JLabel(name);
-		nameLabel.setForeground(Color.WHITE);
+		nameLabel.setForeground(ColorScheme.TEXT_COLOR);
 
 		if (!description.isEmpty())
 		{
@@ -241,6 +241,7 @@ class PluginListItem extends JPanel
 
 	/**
 	 * Checks if all the search terms in the given list matches at least one keyword.
+	 *
 	 * @return true if all search terms matches at least one keyword, or false if otherwise.
 	 */
 	boolean matchesSearchTerms(String[] searchTerms)

@@ -307,7 +307,7 @@ public class ConfigPanel extends PluginPanel
 
 		String name = listItem.getName();
 		JLabel title = new JLabel(name);
-		title.setForeground(Color.WHITE);
+		title.setForeground(ColorScheme.TEXT_COLOR);
 		title.setToolTipText("<html>" + name + ":<br>" + listItem.getDescription() + "</html>");
 		topPanel.add(title);
 
@@ -323,7 +323,7 @@ public class ConfigPanel extends PluginPanel
 			item.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
 			name = cid.getItem().name();
 			JLabel configEntryName = new JLabel(name);
-			configEntryName.setForeground(Color.WHITE);
+			configEntryName.setForeground(ColorScheme.TEXT_COLOR);
 			configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
 			item.add(configEntryName, BorderLayout.CENTER);
 
@@ -506,6 +506,7 @@ public class ConfigPanel extends PluginPanel
 		}
 
 		JButton resetButton = new JButton("Reset");
+		resetButton.setForeground(ColorScheme.TEXT_COLOR);
 		resetButton.addActionListener((e) ->
 		{
 			configManager.setDefaultConfiguration(config, true);
@@ -516,6 +517,7 @@ public class ConfigPanel extends PluginPanel
 		mainPanel.add(resetButton);
 
 		JButton backButton = new JButton("Back");
+		backButton.setForeground(ColorScheme.TEXT_COLOR);
 		backButton.addActionListener(e -> openConfigList());
 		mainPanel.add(backButton);
 

@@ -26,7 +26,6 @@
 package net.runelite.client.plugins.skillcalculator;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -123,7 +122,7 @@ class UICalculatorInputArea extends JPanel
 
 		uiLabel.setFont(FontManager.getRunescapeSmallFont());
 		uiLabel.setBorder(new EmptyBorder(0, 0, 4, 0));
-		uiLabel.setForeground(Color.WHITE);
+		uiLabel.setForeground(ColorScheme.TEXT_COLOR);
 
 		container.add(uiLabel, BorderLayout.NORTH);
 		container.add(uiInput, BorderLayout.CENTER);

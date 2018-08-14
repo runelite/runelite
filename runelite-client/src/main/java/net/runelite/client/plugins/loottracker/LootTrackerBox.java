@@ -27,7 +27,6 @@ package net.runelite.client.plugins.loottracker;
 
 import com.google.common.base.Strings;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -56,7 +55,7 @@ class LootTrackerBox extends JPanel
 
 		final JLabel titleLabel = new JLabel(title);
 		titleLabel.setFont(FontManager.getRunescapeSmallFont());
-		titleLabel.setForeground(Color.WHITE);
+		titleLabel.setForeground(ColorScheme.TEXT_COLOR);
 
 		logTitle.add(titleLabel, BorderLayout.WEST);
 
@@ -65,7 +64,7 @@ class LootTrackerBox extends JPanel
 		{
 			final JLabel subTitleLabel = new JLabel(subTitle);
 			subTitleLabel.setFont(FontManager.getRunescapeSmallFont());
-			subTitleLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+			subTitleLabel.setForeground(ColorScheme.TEXT_COLOR.darker());
 			logTitle.add(subTitleLabel, BorderLayout.CENTER);
 		}
 
@@ -75,7 +74,7 @@ class LootTrackerBox extends JPanel
 		{
 			final JLabel priceLabel = new JLabel(StackFormatter.quantityToStackSize(totalPrice) + " gp");
 			priceLabel.setFont(FontManager.getRunescapeSmallFont());
-			priceLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+			priceLabel.setForeground(ColorScheme.TEXT_COLOR.darker());
 			logTitle.add(priceLabel, BorderLayout.EAST);
 		}
 

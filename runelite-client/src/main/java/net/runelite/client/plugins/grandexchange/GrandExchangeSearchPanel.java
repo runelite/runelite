@@ -264,7 +264,7 @@ class GrandExchangeSearchPanel extends JPanel
 				{
 					searchItemsPanel.add(panel, constraints);
 				}
-				
+
 				constraints.gridy++;
 			}
 

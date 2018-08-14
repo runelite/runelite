@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.screenmarkers.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -70,7 +69,7 @@ public class ScreenMarkerCreationPanel extends JPanel
 		setLayout(new BorderLayout());
 
 		instructionsLabel.setFont(FontManager.getRunescapeSmallFont());
-		instructionsLabel.setForeground(Color.WHITE);
+		instructionsLabel.setForeground(ColorScheme.TEXT_COLOR);
 
 		JPanel actionsContainer = new JPanel(new GridLayout(1, 2, 8, 0));
 		actionsContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);

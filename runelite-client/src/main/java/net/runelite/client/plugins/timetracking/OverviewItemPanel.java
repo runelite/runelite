@@ -104,11 +104,11 @@ class OverviewItemPanel extends JPanel
 		});
 
 		JLabel titleLabel = new JLabel(title);
-		titleLabel.setForeground(Color.WHITE);
+		titleLabel.setForeground(ColorScheme.TEXT_COLOR);
 		titleLabel.setFont(FontManager.getRunescapeSmallFont());
 
 		statusLabel = new JLabel();
-		statusLabel.setForeground(Color.GRAY);
+		statusLabel.setForeground(ColorScheme.TEXT_COLOR.darker());
 		statusLabel.setFont(FontManager.getRunescapeSmallFont());
 
 		textContainer.add(titleLabel);

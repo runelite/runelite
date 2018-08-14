@@ -27,7 +27,6 @@
 package net.runelite.client.plugins.skillcalculator;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
@@ -65,11 +64,11 @@ class UICombinedActionSlot extends JPanel
 		uiInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		uiLabelTitle = new JShadowedLabel("No Action Selected");
-		uiLabelTitle.setForeground(Color.WHITE);
+		uiLabelTitle.setForeground(ColorScheme.TEXT_COLOR);
 
 		uiLabelActions = new JShadowedLabel("Shift-click to select multiple");
 		uiLabelActions.setFont(FontManager.getRunescapeSmallFont());
-		uiLabelActions.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+		uiLabelActions.setForeground(ColorScheme.TEXT_COLOR.darker());
 
 		uiInfo.add(uiLabelTitle);
 		uiInfo.add(uiLabelActions);
