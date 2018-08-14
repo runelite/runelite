@@ -24,15 +24,14 @@
  */
 package net.runelite.http.service.worlds;
 
-import com.google.common.base.Suppliers;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.worlds.WorldResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,24 +43,19 @@ public class WorldController
 	@Autowired
 	private WorldsService worldsService;
 
-	private final Supplier<WorldResult> worlds = Suppliers.memoizeWithExpiration(() ->
-	{
-		try
-		{
-			return worldsService.getWorlds();
-		}
-		catch (IOException ex)
-		{
-			log.warn(null, ex);
-			throw new RuntimeException(ex);
-		}
-	}, 10, TimeUnit.MINUTES);
+	private WorldResult worldResult;
 
 	@RequestMapping
 	public ResponseEntity<WorldResult> listWorlds() throws IOException
 	{
 		return ResponseEntity.ok()
 			.cacheControl(CacheControl.maxAge(10, TimeUnit.MINUTES).cachePublic())
-			.body(worldsService.getWorlds());
+			.body(worldResult);
+	}
+
+	@Scheduled(fixedDelay = 60_000L)
+	public void refreshWorlds() throws IOException
+	{
+		worldResult = worldsService.getWorlds();
 	}
 }
