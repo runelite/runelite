@@ -63,4 +63,15 @@ public interface GrandExchangeConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "enableGeLimits",
+		name = "Enable GE Limits on GE",
+		description = "Shows the GE Limits on the GE"
+	)
+	default boolean enableGELimits()
+	{
+		return true;
+	}
 }

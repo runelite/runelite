@@ -24,10 +24,10 @@
  */
 package net.runelite.client.plugins.grandexchange;
 
-import lombok.Data;
+import lombok.Value;
 import net.runelite.client.game.AsyncBufferedImage;
 
-@Data
+@Value
 public class GrandExchangeItems
 {
 	private final AsyncBufferedImage icon;
@@ -35,13 +35,5 @@ public class GrandExchangeItems
 	private final int itemId;
 	private final int gePrice;
 	private final double haPrice;
-
-	GrandExchangeItems(AsyncBufferedImage icon, String name, int itemId, int gePrice, double haPrice)
-	{
-		this.icon = icon;
-		this.name = name;
-		this.itemId = itemId;
-		this.gePrice = gePrice;
-		this.haPrice = haPrice;
-	}
+	private final int geItemLimit;
 }

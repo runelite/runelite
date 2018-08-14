@@ -32,13 +32,16 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemComposition;
 import net.runelite.client.callback.ClientThread;
@@ -91,6 +94,9 @@ class GrandExchangeSearchPanel extends JPanel
 	private JScrollPane resultsWrapper;
 
 	private List<GrandExchangeItems> itemsList = new ArrayList<>();
+
+	@Setter
+	private Map<Integer, Integer> itemGELimits = Collections.emptyMap();
 
 	static
 	{
@@ -222,9 +228,10 @@ class GrandExchangeSearchPanel extends JPanel
 				}
 
 				int itemPrice = itemManager.getItemPrice(itemId);
+				int itemLimit = itemGELimits.getOrDefault(itemId, 0);
 				AsyncBufferedImage itemImage = itemManager.getImage(itemId);
 
-				itemsList.add(new GrandExchangeItems(itemImage, item.getName(), itemId, itemPrice, itemComp.getPrice() * 0.6));
+				itemsList.add(new GrandExchangeItems(itemImage, item.getName(), itemId, itemPrice, itemComp.getPrice() * 0.6, itemLimit));
 
 				// If using hotkey to lookup item, stop after finding match.
 				if (exactMatch && item.getName().equalsIgnoreCase(lookup))
@@ -246,7 +253,7 @@ class GrandExchangeSearchPanel extends JPanel
 			for (GrandExchangeItems item : itemsList)
 			{
 				GrandExchangeItemPanel panel = new GrandExchangeItemPanel(item.getIcon(), item.getName(),
-					item.getItemId(), item.getGePrice(), item.getHaPrice());
+					item.getItemId(), item.getGePrice(), item.getHaPrice(), item.getGeItemLimit());
 
 				/*
 				Add the first item directly, wrap the rest with margin. This margin hack is because
