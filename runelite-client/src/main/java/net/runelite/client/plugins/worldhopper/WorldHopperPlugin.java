@@ -351,8 +351,9 @@ public class WorldHopperPlugin extends Plugin
 		{
 			if (lastWorld != client.getWorld())
 			{
-				updateList();
-				lastWorld = client.getWorld();
+				int newWorld = client.getWorld();
+				panel.switchCurrentHighlight(newWorld, lastWorld);
+				lastWorld = newWorld;
 			}
 		}
 	}

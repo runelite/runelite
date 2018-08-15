@@ -69,7 +69,9 @@ class WorldTableRow extends JPanel
 		FLAG_GER = new ImageIcon(ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "flag_ger.png"));
 	}
 
+	private JLabel worldField;
 	private JLabel playerCountField;
+	private JLabel activityField;
 
 	@Getter
 	private final World world;
@@ -154,17 +156,19 @@ class WorldTableRow extends JPanel
 		JPanel leftSide = new JPanel(new BorderLayout());
 		leftSide.setOpaque(false);
 
-		JPanel worldField = buildWorldField(world);
+		JPanel worldField = buildWorldField();
 		worldField.setPreferredSize(new Dimension(WORLD_COLUMN_WIDTH, 0));
 		worldField.setOpaque(false);
 
-		JPanel playersField = buildPlayersField(world);
+		JPanel playersField = buildPlayersField();
 		playersField.setPreferredSize(new Dimension(PLAYERS_COLUMN_WIDTH, 0));
 		playersField.setOpaque(false);
 
-		JPanel activityField = buildActivityField(world);
+		JPanel activityField = buildActivityField();
 		activityField.setBorder(new EmptyBorder(5, 5, 5, 5));
 		activityField.setOpaque(false);
+
+		recolour(current);
 
 		leftSide.add(worldField, BorderLayout.WEST);
 		leftSide.add(playersField, BorderLayout.EAST);
@@ -179,17 +183,41 @@ class WorldTableRow extends JPanel
 		playerCountField.setText(String.valueOf(playerCount));
 	}
 
+	public void recolour(boolean current)
+	{
+		playerCountField.setForeground(current ? CURRENT_WORLD : Color.WHITE);
+
+		if (current)
+		{
+			activityField.setForeground(CURRENT_WORLD);
+			worldField.setForeground(CURRENT_WORLD);
+			return;
+		}
+		else if (world.getTypes().contains(WorldType.PVP)
+			|| world.getTypes().contains(WorldType.PVP_HIGH_RISK)
+			|| world.getTypes().contains(WorldType.DEADMAN)
+			|| world.getTypes().contains(WorldType.SEASONAL_DEADMAN))
+		{
+			activityField.setForeground(DANGEROUS_WORLD);
+		}
+		else if (world.getTypes().contains(WorldType.TOURNAMENT))
+		{
+			activityField.setForeground(TOURNAMENT_WORLD);
+		}
+
+		worldField.setForeground(world.getTypes().contains(WorldType.MEMBERS) ? MEMBERS_WORLD : FREE_WORLD);
+	}
+
 	/**
 	 * Builds the players list field (containing the amount of players logged in that world).
 	 */
-	private JPanel buildPlayersField(World world)
+	private JPanel buildPlayersField()
 	{
 		JPanel column = new JPanel(new BorderLayout());
 		column.setBorder(new EmptyBorder(0, 5, 0, 5));
 
 		playerCountField = new JLabel(world.getPlayers() + "");
 		playerCountField.setFont(FontManager.getRunescapeSmallFont());
-		playerCountField.setForeground(current ? CURRENT_WORLD : Color.WHITE);
 
 		column.add(playerCountField, BorderLayout.WEST);
 
@@ -199,31 +227,15 @@ class WorldTableRow extends JPanel
 	/**
 	 * Builds the activity list field (containing that world's activity/theme).
 	 */
-	private JPanel buildActivityField(World world)
+	private JPanel buildActivityField()
 	{
 		JPanel column = new JPanel(new BorderLayout());
 		column.setBorder(new EmptyBorder(0, 5, 0, 5));
 
-		JLabel label = new JLabel(world.getActivity());
-		label.setFont(FontManager.getRunescapeSmallFont());
+		activityField = new JLabel(world.getActivity());
+		activityField.setFont(FontManager.getRunescapeSmallFont());
 
-		if (current)
-		{
-			label.setForeground(CURRENT_WORLD);
-		}
-		else if (world.getTypes().contains(WorldType.PVP)
-			|| world.getTypes().contains(WorldType.PVP_HIGH_RISK)
-			|| world.getTypes().contains(WorldType.DEADMAN)
-			|| world.getTypes().contains(WorldType.SEASONAL_DEADMAN))
-		{
-			label.setForeground(DANGEROUS_WORLD);
-		}
-		else if (world.getTypes().contains(WorldType.TOURNAMENT))
-		{
-			label.setForeground(TOURNAMENT_WORLD);
-		}
-
-		column.add(label, BorderLayout.WEST);
+		column.add(activityField, BorderLayout.WEST);
 
 		return column;
 	}
@@ -231,26 +243,17 @@ class WorldTableRow extends JPanel
 	/**
 	 * Builds the world list field (containing the country's flag and the world index).
 	 */
-	private JPanel buildWorldField(World world)
+	private JPanel buildWorldField()
 	{
 		JPanel column = new JPanel(new BorderLayout(7, 0));
 		column.setBorder(new EmptyBorder(0, 5, 0, 5));
 
-		JLabel label = new JLabel(world.getId() + "");
-
-		if (current)
-		{
-			label.setForeground(CURRENT_WORLD);
-		}
-		else
-		{
-			label.setForeground(world.getTypes().contains(WorldType.MEMBERS) ? MEMBERS_WORLD : FREE_WORLD);
-		}
+		worldField = new JLabel(world.getId() + "");
 
 		JLabel flag = new JLabel(getFlag(world.getLocation()));
 
 		column.add(flag, BorderLayout.WEST);
-		column.add(label, BorderLayout.CENTER);
+		column.add(worldField, BorderLayout.CENTER);
 
 		return column;
 	}
