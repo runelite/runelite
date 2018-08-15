@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2017, Ron <https://github.com/raiyni>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,18 +24,48 @@
  */
 package net.runelite.api;
 
+import java.util.HashMap;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * An enumeration of string local variables.
+ * Enumeration of chat mode types for sending messages.
  */
 @AllArgsConstructor
 @Getter
-public enum VarClientStr
+public enum ChatModeType
 {
-	CHATBOX_TYPED_TEXT(1),
-	MOST_RECENT_CLAN_CHAT(129);
+	/**
+	 * Message mode type for sending public chat.
+	 */
+	PUBLIC(0),
+	/**
+	 * Message mode type for sending clan chat.
+	 */
+	CLAN(2);
 
-	private final int index;
+	private final int type;
+
+	private static final Map<Integer, ChatModeType> CHAT_MODE_TYPES = new HashMap<>();
+
+	static
+	{
+		for (ChatModeType chatModeType : values())
+		{
+			CHAT_MODE_TYPES.put(chatModeType.type, chatModeType);
+		}
+	}
+
+	/**
+	 * Utility method that maps the type value to its respective
+	 * {@link ChatModeType} value.
+	 *
+	 * @param type the raw type
+	 * @return appropriate chat mode type, or {@link #PUBLIC}
+	 */
+	public static ChatModeType of(int type)
+	{
+		return CHAT_MODE_TYPES.getOrDefault(type, PUBLIC);
+	}
 }

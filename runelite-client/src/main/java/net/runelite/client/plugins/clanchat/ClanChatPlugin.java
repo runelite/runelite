@@ -26,14 +26,21 @@ package net.runelite.client.plugins.clanchat;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
+import joptsimple.internal.Strings;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.ChatModeType;
 import net.runelite.api.ClanMemberRank;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.VarClientStr;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.SetMessage;
+import net.runelite.api.events.VarClientStrChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatboxInputListener;
@@ -44,15 +51,17 @@ import net.runelite.client.events.PrivateMessageInput;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.task.Schedule;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Clan Chat",
-	description = "Add rank icons to users talking in clan chat",
-	tags = {"icons", "rank"}
+	description = "Configuration for Clan Chat plugin.",
+	tags = {"icons", "rank", "chat", "history"}
 )
 public class ClanChatPlugin extends Plugin implements ChatboxInputListener
 {
+	private static final int MAX_RECENT_CHATS = 10;
+
 	@Inject
 	private Client client;
 
@@ -68,49 +77,37 @@ public class ClanChatPlugin extends Plugin implements ChatboxInputListener
 	@Inject
 	private ClanChatConfig config;
 
-	@Schedule(
-		period = 600,
-		unit = ChronoUnit.MILLIS
-	)
+	@Inject
+	private ClanChatOverlay overlay;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	private List<String> chats = new ArrayList<>();
 
 	@Provides
 	ClanChatConfig getConfig(ConfigManager configManager)
 	{
-
 		return configManager.getConfig(ClanChatConfig.class);
 	}
 
 	@Override
 	public void startUp()
 	{
+		overlayManager.add(overlay);
 		commandManager.register(this);
+		if (!config.chatsData().isEmpty())
+		{
+			chats = new ArrayList<>(Arrays.asList(config.chatsData().split(",")));
+		}
+		overlay.setChats(chats);
 	}
 
 	@Override
 	public void shutDown()
 	{
 		commandManager.unregister(this);
-	}
-
-	public void updateClanChatTitle()
-	{
-		if (client.getGameState() != GameState.LOGGED_IN)
-		{
-			return;
-		}
-
-		Widget clanChatTitleWidget = client.getWidget(WidgetInfo.CLAN_CHAT_TITLE);
-		if (clanChatTitleWidget != null)
-		{
-			clanChatTitleWidget.setText("Clan Chat (" + client.getClanChatCount() + "/100)");
-		}
-	}
-
-	private boolean isClanChatClosed()
-	{
-		Widget widget = client.getWidget(WidgetInfo.CLAN_CHAT);
-
-		return widget == null || widget.isHidden();
+		overlayManager.remove(overlay);
 	}
 
 	@Override
@@ -126,22 +123,41 @@ public class ClanChatPlugin extends Plugin implements ChatboxInputListener
 		if (msg.startsWith("/"))
 		{
 			msg = msg.substring(1);
-			chatboxInput.setChatType(ChatMessageType.PUBLIC_MODE.getType());
+			chatboxInput.setChatType(ChatModeType.PUBLIC.getType());
 		}
 		else
 		{
 			msg = "/" + msg;
-			chatboxInput.setChatType(ChatMessageType.CLANCHAT_MODE.getType());
+			chatboxInput.setChatType(ChatModeType.CLAN.getType());
 		}
 
 		chatboxInput.setValue(msg);
 
-		executor.execute(() ->
-		{
-			chatboxInput.resume();
-		});
+		executor.execute(chatboxInput::resume);
 
 		return true;
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
+		Widget clanChatTitleWidget = client.getWidget(WidgetInfo.CLAN_CHAT_TITLE);
+		if (clanChatTitleWidget != null)
+		{
+			if (client.getClanChatCount() == 0 && config.recentChats())
+			{
+				clanChatTitleWidget.setText("Clan Chat - Last Joined");
+			}
+			else
+			{
+				clanChatTitleWidget.setText("Clan Chat (" + client.getClanChatCount() + "/100)");
+			}
+		}
 	}
 
 	@Override
@@ -158,12 +174,38 @@ public class ClanChatPlugin extends Plugin implements ChatboxInputListener
 			return;
 		}
 
-		if (setMessage.getType() == ChatMessageType.CLANCHAT && client.getClanChatCount() > 0)
+		if (config.rankIcons() && setMessage.getType() == ChatMessageType.CLANCHAT && client.getClanChatCount() > 0)
 		{
 			insertClanRankIcon(setMessage);
 		}
 	}
 
+	@Subscribe
+	public void onVarClientstrChanged(VarClientStrChanged strChanged)
+	{
+		if (strChanged.getIndex() == VarClientStr.MOST_RECENT_CLAN_CHAT.getIndex() && config.recentChats())
+		{
+			fixedAdd(client.getStrVarcs()[VarClientStr.MOST_RECENT_CLAN_CHAT.getIndex()]);
+		}
+	}
+
+	private void fixedAdd(String s)
+	{
+		if (Strings.isNullOrEmpty(s))
+		{
+			return;
+		}
+
+		chats.removeIf(s::equalsIgnoreCase);
+		chats.add(s);
+
+		while (chats.size() > MAX_RECENT_CHATS)
+		{
+			chats.remove(0);
+		}
+
+		config.chatsData(String.join(",", chats));
+	}
 
 	private void insertClanRankIcon(final SetMessage message)
 	{
@@ -178,5 +220,10 @@ public class ClanChatPlugin extends Plugin implements ChatboxInputListener
 		}
 	}
 
+	private boolean isClanChatClosed()
+	{
+		Widget widget = client.getWidget(WidgetInfo.CLAN_CHAT);
 
+		return widget == null || widget.isHidden();
+	}
 }

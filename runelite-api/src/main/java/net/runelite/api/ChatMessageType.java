@@ -49,10 +49,6 @@ public enum ChatMessageType
 	 */
 	PUBLIC(2),
 	/**
-	 * Message mode type for sending public chat.
-	 */
-	PUBLIC_MODE(0),
-	/**
 	 * A private message from another player.
 	 */
 	PRIVATE_MESSAGE_RECEIVED(3),
@@ -80,10 +76,6 @@ public enum ChatMessageType
 	 * A message received with information about the current clan chat.
 	 */
 	CLANCHAT_INFO(11),
-	/**
-	 * Message mode type for sending clan chat.
-	 */
-	CLANCHAT_MODE(2),
 	/**
 	 * A trade request being sent.
 	 */

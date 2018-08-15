@@ -32,10 +32,21 @@ import net.runelite.client.config.ConfigItem;
 public interface ClanChatConfig extends Config
 {
 	@ConfigItem(
+		keyName = "rankIcons",
+		name = "Rank Icons",
+		description = "Add rank icons to users talking in clan chat.",
+		position = 1
+	)
+	default boolean rankIcons()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "mobileChat",
 		name = "Mobile Chat",
 		description = "Swap default chat while clan chat tab is open. <br> Disable for default chat behaviour.",
-		position = 1
+		position = 2
 	)
 	default boolean mobileChat()
 	{
@@ -46,10 +57,39 @@ public interface ClanChatConfig extends Config
 		keyName = "swapChat",
 		name = "Swap Chat",
 		description = "Swap default chat to always be clan chat. <br> Disable for default chat behaviour.",
-		position = 2
+		position = 3
 	)
 	default boolean swapChat()
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "recentChats",
+		name = "Recent Chats",
+		description = "Show recent clan chats.",
+		position = 4
+	)
+	default boolean recentChats()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "chatsData",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default String chatsData()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "chatsData",
+		name = "",
+		description = ""
+	)
+	void chatsData(String str);
 }
