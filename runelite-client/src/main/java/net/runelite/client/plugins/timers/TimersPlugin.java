@@ -42,6 +42,7 @@ import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import net.runelite.api.Prayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
@@ -589,7 +590,8 @@ public class TimersPlugin extends Plugin
 		{
 			if (actor.getGraphic() == BIND.getGraphicId())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC))
+				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
+					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
 				{
 					createGameTimer(HALFBIND);
 				}
@@ -601,7 +603,8 @@ public class TimersPlugin extends Plugin
 
 			if (actor.getGraphic() == SNARE.getGraphicId())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC))
+				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
+					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
 				{
 					createGameTimer(HALFSNARE);
 				}
@@ -613,7 +616,8 @@ public class TimersPlugin extends Plugin
 
 			if (actor.getGraphic() == ENTANGLE.getGraphicId())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC))
+				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
+					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
 				{
 					createGameTimer(HALFENTANGLE);
 				}
