@@ -39,6 +39,7 @@ import static net.runelite.api.ObjectID.CRATE_357;
 import static net.runelite.api.ObjectID.CRATE_6616;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.cluescrolls.ClueScrollConfig;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_BORDER_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_FILL_COLOR;
@@ -116,13 +117,19 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 	}
 
 	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
+	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin, ClueScrollConfig config)
 	{
-		panelComponent.getChildren().add(TitleComponent.builder().text("Map Clue").build());
+		if (config.displayTitle())
+		{
+			panelComponent.getChildren().add(TitleComponent.builder().text("Map Clue").build());
+		}
 
-		panelComponent.getChildren().add(LineComponent.builder()
+		if (config.displayHintText())
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Click the clue scroll along the edge of your world map to see your destination.")
 				.build());
+		}
 
 		if (objectId != -1)
 		{

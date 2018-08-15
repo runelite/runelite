@@ -181,7 +181,7 @@ public class ClueScrollPlugin extends Plugin
 
 		if (clue instanceof LocationsClueScroll)
 		{
-			if (((LocationsClueScroll)clue).update(event.getMessage(), this))
+			if (((LocationsClueScroll) clue).update(event.getMessage(), this))
 			{
 				worldMapPointsSet = false;
 			}
@@ -339,7 +339,7 @@ public class ClueScrollPlugin extends Plugin
 		if (clue instanceof EmoteClue)
 		{
 			ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
-			
+
 			if (equipment != null)
 			{
 				equippedItems = equipment.getItems();
@@ -455,10 +455,10 @@ public class ClueScrollPlugin extends Plugin
 		{
 			// Remove line breaks and also the rare occasion where there are double line breaks
 			String text = Text.removeTags(clueScrollText.getText()
-					.replaceAll("-<br>", "-")
-					.replaceAll("<br>", " ")
-					.replaceAll("[ ]+", " ")
-					.toLowerCase());
+				.replaceAll("-<br>", "-")
+				.replaceAll("<br>", " ")
+				.replaceAll("[ ]+", " ")
+				.toLowerCase());
 
 			if (clue instanceof TextClueScroll)
 			{

@@ -31,6 +31,7 @@ import java.util.Set;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.cluescrolls.ClueScrollConfig;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
@@ -74,20 +75,30 @@ public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScr
 	}
 
 	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
+	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin, ClueScrollConfig config)
 	{
-		panelComponent.getChildren().add(TitleComponent.builder().text("Cipher Clue").build());
-		panelComponent.getChildren().add(LineComponent.builder().left("NPC:").build());
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left(getNpc())
-			.leftColor(TITLED_CONTENT_COLOR)
-			.build());
+		if (config.displayTitle())
+		{
+			panelComponent.getChildren().add(TitleComponent.builder().text("Cipher Clue").build());
+		}
 
-		panelComponent.getChildren().add(LineComponent.builder().left("Area:").build());
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left(getArea())
-			.leftColor(TITLED_CONTENT_COLOR)
-			.build());
+		if (config.displayNpc())
+		{
+			panelComponent.getChildren().add(LineComponent.builder().left("NPC:").build());
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(getNpc())
+				.leftColor(TITLED_CONTENT_COLOR)
+				.build());
+		}
+
+		if (config.displayArea())
+		{
+			panelComponent.getChildren().add(LineComponent.builder().left("Area:").build());
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(getArea())
+				.leftColor(TITLED_CONTENT_COLOR)
+				.build());
+		}
 
 		if (getAnswer() != null)
 		{

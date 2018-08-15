@@ -31,6 +31,7 @@ import lombok.Getter;
 import net.runelite.api.ItemID;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.cluescrolls.ClueScrollConfig;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.emote.SingleItemRequirement;
@@ -48,13 +49,19 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 	private static final ItemRequirement HAS_SPADE = new SingleItemRequirement(ItemID.SPADE);
 
 	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
+	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin, ClueScrollConfig config)
 	{
-		panelComponent.getChildren().add(TitleComponent.builder().text("Coordinate Clue").build());
+		if (config.displayTitle())
+		{
+			panelComponent.getChildren().add(TitleComponent.builder().text("Coordinate Clue").build());
+		}
 
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Click the clue scroll along the edge of your world map to see where you should dig.")
-			.build());
+		if (config.displayHintText())
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Click the clue scroll along the edge of your world map to see where you should dig.")
+				.build());
+		}
 
 		if (plugin.getInventoryItems() != null)
 		{

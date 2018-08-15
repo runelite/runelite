@@ -43,6 +43,7 @@ import lombok.RequiredArgsConstructor;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.cluescrolls.ClueScrollConfig;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
@@ -90,25 +91,32 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	}
 
 	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
+	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin, ClueScrollConfig config)
 	{
-		panelComponent.getChildren().add(TitleComponent.builder()
-			.text("Hot/Cold Clue")
-			.build());
+		if (config.displayTitle())
+		{
+			panelComponent.getChildren().add(TitleComponent.builder()
+				.text("Hot/Cold Clue")
+				.build());
+		}
 		panelComponent.setPreferredSize(new Dimension(200, 0));
 
 		// strange device has not been tested yet, show how to get it
 		if (lastWorldPoint == null && location == null)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Clue:")
-				.build());
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left(getText())
-				.leftColor(TITLED_CONTENT_COLOR)
-				.build());
+			if (config.displayClue())
+			{
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("Clue:")
+					.build());
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left(getText())
+					.leftColor(TITLED_CONTENT_COLOR)
+					.build());
+			}
 
-			if (getNpc() != null)
+
+			if (getNpc() != null && config.displayNpc())
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left("NPC:")
@@ -384,7 +392,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 			return false;
 		}
 
-		WorldPoint p3 = new WorldPoint((int) r.getMinX(), (int)r.getMaxY(), 0);
+		WorldPoint p3 = new WorldPoint((int) r.getMinX(), (int) r.getMaxY(), 0);
 
 		if (!isFirstPointCloser(firstWp, secondWp, p3))
 		{
