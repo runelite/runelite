@@ -145,25 +145,7 @@ public class WorldHopperPlugin extends Plugin
 		keyManager.registerKeyListener(previousKeyListener);
 		keyManager.registerKeyListener(nextKeyListener);
 
-		worldResultFuture = executorService.submit(() ->
-		{
-			try
-			{
-				WorldResult worldResult = new WorldClient().lookupWorlds();
-
-				if (worldResult != null)
-				{
-					worldResult.getWorlds().sort(Comparator.comparingInt(World::getId));
-					this.worldResult = worldResult;
-
-					SwingUtilities.invokeLater(() -> panel.populate(worldResult.getWorlds()));
-				}
-			}
-			catch (IOException ex)
-			{
-				log.warn("Error looking up worlds", ex);
-			}
-		});
+		refreshWorlds();
 
 		panel = new WorldSwitcherPanel(this);
 
@@ -184,6 +166,29 @@ public class WorldHopperPlugin extends Plugin
 		{
 			clientToolbar.addNavigation(navButton);
 		}
+	}
+
+	void refreshWorlds()
+	{
+		worldResultFuture = executorService.submit(() ->
+		{
+			try
+			{
+				WorldResult worldResult = new WorldClient().lookupWorlds();
+
+				if (worldResult != null)
+				{
+					worldResult.getWorlds().sort(Comparator.comparingInt(World::getId));
+					this.worldResult = worldResult;
+
+					SwingUtilities.invokeLater(() -> panel.populate(worldResult.getWorlds()));
+				}
+			}
+			catch (IOException ex)
+			{
+				log.warn("Error looking up worlds", ex);
+			}
+		});
 	}
 
 	@Override
