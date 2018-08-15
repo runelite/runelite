@@ -33,7 +33,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
@@ -60,7 +59,7 @@ class WorldSwitcherPanel extends PluginPanel
 	private WorldOrder orderIndex = WorldOrder.WORLD;
 	private boolean ascendingOrder = true;
 
-	private HashMap<World, WorldTableRow> rows = new HashMap<>();
+	private ArrayList<WorldTableRow> rows = new ArrayList<>();
 	private WorldHopperPlugin plugin;
 
 	WorldSwitcherPanel(WorldHopperPlugin plugin)
@@ -80,9 +79,9 @@ class WorldSwitcherPanel extends PluginPanel
 
 	void updateListData(HashMap<Integer, Integer> worldData)
 	{
-		for (Map.Entry<World, WorldTableRow> entry : rows.entrySet())
+		for (WorldTableRow row : rows)
 		{
-			entry.getValue().updatePlayerCount(worldData.get(entry.getKey().getId()));
+			row.updatePlayerCount(worldData.get(row.getWorld().getId()));
 		}
 
 		// If the list is being ordered by player count, then it has to be re-painted
@@ -95,36 +94,34 @@ class WorldSwitcherPanel extends PluginPanel
 
 	void updateList()
 	{
-		List<World> worlds = new ArrayList<>(rows.keySet());
-
-		worlds.sort((w1, w2) ->
+		rows.sort((r1, r2) ->
 		{
 			switch (orderIndex)
 			{
 				case WORLD:
-					return Integer.compare(w1.getId(), w2.getId()) * (ascendingOrder ? 1 : -1);
+					return Integer.compare(r1.getWorld().getId(), r2.getWorld().getId()) * (ascendingOrder ? 1 : -1);
 				case PLAYERS:
-					return Integer.compare(w1.getPlayers(), w2.getPlayers()) * (ascendingOrder ? 1 : -1);
+					return Integer.compare(r1.getUpdatedPlayerCount(), r2.getUpdatedPlayerCount()) * (ascendingOrder ? 1 : -1);
 				case ACTIVITY:
-					return w1.getActivity().compareTo(w2.getActivity()) * (ascendingOrder ? 1 : -1);
+					return r1.getWorld().getActivity().compareTo(r2.getWorld().getActivity()) * (ascendingOrder ? 1 : -1);
 				default:
 					return 0;
 
 			}
 		});
 
-		worlds.sort((w1, w2) ->
+		rows.sort((r1, r2) ->
 		{
-			boolean b1 = plugin.isFavorite(w1);
-			boolean b2 = plugin.isFavorite(w2);
+			boolean b1 = plugin.isFavorite(r1.getWorld());
+			boolean b2 = plugin.isFavorite(r2.getWorld());
 			return Boolean.compare(b2, b1);
 		});
 
 		listContainer.removeAll();
 
-		for (int i = 0; i < worlds.size(); i++)
+		for (int i = 0; i < rows.size(); i++)
 		{
-			WorldTableRow row = rows.get(worlds.get(i));
+			WorldTableRow row = rows.get(i);
 			row.setBackground(i % 2 == 0 ? ODD_ROW : ColorScheme.DARK_GRAY_COLOR);
 			listContainer.add(row);
 		}
@@ -135,11 +132,14 @@ class WorldSwitcherPanel extends PluginPanel
 
 	void populate(List<World> worlds)
 	{
+		rows.clear();
+
 		for (int i = 0; i < worlds.size(); i++)
 		{
 			World world = worlds.get(i);
-			rows.put(world, buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld(), plugin.isFavorite(world)));
+			rows.add(buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld(), plugin.isFavorite(world)));
 		}
+
 		updateList();
 	}
 

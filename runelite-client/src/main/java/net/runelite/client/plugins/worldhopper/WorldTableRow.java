@@ -37,6 +37,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
+import lombok.Getter;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.http.api.worlds.World;
@@ -61,6 +62,12 @@ class WorldTableRow extends JPanel
 
 	private JLabel playerCountField;
 
+	@Getter
+	private World world;
+
+	@Getter
+	private int updatedPlayerCount;
+
 	static
 	{
 		FLAG_AUS = new ImageIcon(ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "flag_aus.png"));
@@ -75,6 +82,8 @@ class WorldTableRow extends JPanel
 	WorldTableRow(World world, boolean current, boolean favorite, Consumer<World> onSelect, BiConsumer<World, Boolean> onFavorite)
 	{
 		this.current = current;
+		this.world = world;
+		this.updatedPlayerCount = world.getPlayers();
 
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(2, 0, 2, 0));
@@ -165,6 +174,7 @@ class WorldTableRow extends JPanel
 
 	void updatePlayerCount(int playerCount)
 	{
+		this.updatedPlayerCount = playerCount;
 		playerCountField.setText(String.valueOf(playerCount));
 	}
 
