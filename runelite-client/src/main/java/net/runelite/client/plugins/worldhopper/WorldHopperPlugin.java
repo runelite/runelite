@@ -31,6 +31,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -87,6 +88,7 @@ import org.apache.commons.lang3.ArrayUtils;
 public class WorldHopperPlugin extends Plugin
 {
 	private static final int WORLD_FETCH_TIMER = 10;
+	private static final int REFRESH_THROTTLE = 60_000;  // ms
 
 	private static final String HOP_TO = "Hop-to";
 	private static final String KICK_OPTION = "Kick";
@@ -123,8 +125,11 @@ public class WorldHopperPlugin extends Plugin
 	private int lastWorld;
 
 	private int favoriteWorld1, favoriteWorld2;
+
 	private Future<?> worldResultFuture;
 	private WorldResult worldResult;
+	private Instant lastFetch;
+
 	private final HotkeyListener previousKeyListener = new HotkeyListener(() -> config.previousKey())
 	{
 		@Override
@@ -154,7 +159,7 @@ public class WorldHopperPlugin extends Plugin
 		keyManager.registerKeyListener(previousKeyListener);
 		keyManager.registerKeyListener(nextKeyListener);
 
-		refresh();
+		worldResultFuture = executorService.scheduleAtFixedRate(this::refresh, 0, WORLD_FETCH_TIMER, TimeUnit.MINUTES);
 
 		panel = new WorldSwitcherPanel(this);
 
@@ -368,32 +373,25 @@ public class WorldHopperPlugin extends Plugin
 		}
 
 		panel.updateListData(worldData);
+		this.lastFetch = Instant.now(); // This counts as a fetch as it updates populations
 	}
 
-	/**
-	 * This method resets the scheduled timer, this will also fire the fetch worlds method that updates the list with
-	 * updated data.
-	 */
 	void refresh()
 	{
-		if (!config.showSidebar())
+		Instant now = Instant.now();
+		if (lastFetch != null && now.toEpochMilli() - lastFetch.toEpochMilli() < REFRESH_THROTTLE)
 		{
+			log.debug("Throttling world refresh");
 			return;
 		}
 
-		if (worldResultFuture != null)
-		{
-			worldResultFuture.cancel(true);
-		}
-
-		worldResultFuture = executorService.scheduleAtFixedRate(() ->
-		{
-			fetchWorlds();
-		}, 0, WORLD_FETCH_TIMER, TimeUnit.MINUTES);
+		fetchWorlds();
 	}
 
 	private void fetchWorlds()
 	{
+		log.debug("Fetching worlds");
+
 		try
 		{
 			WorldResult worldResult = new WorldClient().lookupWorlds();
@@ -402,6 +400,7 @@ public class WorldHopperPlugin extends Plugin
 			{
 				worldResult.getWorlds().sort(Comparator.comparingInt(World::getId));
 				this.worldResult = worldResult;
+				this.lastFetch = Instant.now();
 				updateList();
 			}
 		}
