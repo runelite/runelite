@@ -27,6 +27,10 @@ package net.runelite.client.plugins.raids;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
+
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -63,6 +67,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
+import net.runelite.client.plugins.raids.solver.Room;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -296,6 +301,13 @@ public class RaidsPlugin extends Plugin
 				}
 
 				raid.updateLayout(layout);
+
+				if (config.copyLayoutToClipboard())
+				{
+					Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+					clipboard.setContents(new StringSelection(getRaidLayoutString(layout)), null);
+				}
+
 				RotationSolver.solve(raid.getCombatRooms());
 				overlay.setScoutOverlayShown(true);
 			}
@@ -598,5 +610,25 @@ public class RaidsPlugin extends Plugin
 		}
 
 		return room;
+	}
+
+	public String getRaidLayoutString(Layout layout)
+	{
+		StringBuilder raidDescription = new StringBuilder();
+		raidDescription.append("Layout:\t" + layout.toCode());
+		for (Room findStartRoom : raid.getLayout().getRooms())
+		{
+			RaidRoom rroom = raid.getRoom(findStartRoom.getPosition());
+			switch (rroom.getType())
+			{
+				case COMBAT:
+					raidDescription.append("\nCombat:\t" + rroom.getBoss().getName());
+					break;
+				case PUZZLE:
+					raidDescription.append("\nPuzzle:\t" + rroom.getPuzzle().getName());
+					break;
+			}
+		}
+		return raidDescription.toString();
 	}
 }
