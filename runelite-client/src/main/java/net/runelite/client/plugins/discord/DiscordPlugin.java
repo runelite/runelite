@@ -157,6 +157,7 @@ public class DiscordPlugin extends Plugin
 
 		if (discordGameEventType != null && config.showSkillingActivity())
 		{
+			discordGameEventType.setXp(exp - previous);
 			discordState.triggerEvent(discordGameEventType);
 		}
 	}

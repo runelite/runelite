@@ -41,8 +41,8 @@ enum DiscordGameEventType
 	TRAINING_ATTACK(Skill.ATTACK),
 	TRAINING_DEFENCE(Skill.DEFENCE),
 	TRAINING_STRENGTH(Skill.STRENGTH),
-	TRAINING_HITPOINTS(Skill.HITPOINTS, -1),
-	TRAINING_SLAYER(Skill.SLAYER, 1),
+	TRAINING_HITPOINTS(Skill.HITPOINTS, -1, 0),
+	TRAINING_SLAYER(Skill.SLAYER, 1, 200000000),
 	TRAINING_RANGED(Skill.RANGED),
 	TRAINING_MAGIC(Skill.MAGIC),
 	TRAINING_PRAYER(Skill.PRAYER),
@@ -263,21 +263,22 @@ enum DiscordGameEventType
 	private int priority;
 	private boolean shouldClear;
 	private boolean shouldTimeout;
-
+	private int xp;
 	private DiscordAreaType discordAreaType;
 	private int[] regionIds;
 
 	DiscordGameEventType(Skill skill)
 	{
-		this(skill, 0);
+		this(skill, 0, 0);
 	}
 
-	DiscordGameEventType(Skill skill, int priority)
+	DiscordGameEventType(Skill skill, int priority, int xp)
 	{
 		this.state = training(skill);
 		this.priority = priority;
 		this.imageKey = imageKeyOf(skill);
 		this.priority = priority;
+		this.xp = xp;
 		this.shouldTimeout = true;
 	}
 
@@ -336,6 +337,7 @@ enum DiscordGameEventType
 
 	public static DiscordGameEventType fromSkill(final Skill skill)
 	{
+
 		switch (skill)
 		{
 			case ATTACK: return TRAINING_ATTACK;
@@ -367,5 +369,18 @@ enum DiscordGameEventType
 	public static DiscordGameEventType fromRegion(final int regionId)
 	{
 		return FROM_REGION.get(regionId);
+	}
+
+	public void setXp(int xp)
+	{
+		//Can't reset xp for slayer to keep priority.
+		if (xp == 0 && !(this.getState().contains("Slayer")))
+		{
+			this.xp = 0;
+		}
+		else
+		{
+			this.xp += xp;
+		}
 	}
 }

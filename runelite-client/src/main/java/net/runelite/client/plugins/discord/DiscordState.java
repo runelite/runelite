@@ -31,6 +31,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Iterator;
 import javax.inject.Inject;
 import lombok.Data;
 import net.runelite.client.discord.DiscordPresence;
@@ -99,12 +100,11 @@ class DiscordState
 		}
 
 		events.sort((a, b) -> ComparisonChain.start()
+			.compare(b.getType().getXp(), a.getType().getXp())
 			.compare(b.getType().getPriority(), a.getType().getPriority())
 			.compare(b.getUpdated(), a.getUpdated())
 			.result());
-
 		event = events.get(0);
-
 		String imageKey = null;
 		String state = null;
 		String details = null;
@@ -128,6 +128,25 @@ class DiscordState
 
 			if (imageKey != null && details != null && state != null)
 			{
+				if (events.size() > 2)
+				{
+					//Checks if you're training two skills at once.
+					if (events.get(1).getType().getState() != null)
+					{
+						state += events.get(1).getType().getState();
+					}
+					//Checks if you're training three skills at once.
+					if (events.get(2).getType().getState() != null)
+					{
+						state += events.get(2).getType().getState();
+					}
+					if (state.contains("Training"))
+					{
+						state = state.replaceAll("Training:", ",");
+						state = state.replaceFirst(",", "Training: ");
+					}
+
+				}
 				break;
 			}
 		}
@@ -154,6 +173,23 @@ class DiscordState
 	{
 		final Duration actionTimeout = Duration.ofMinutes(config.actionTimeout());
 		final Instant now = Instant.now();
-		events.removeIf(event -> event.getType().isShouldTimeout() && now.isAfter(event.getUpdated().plus(actionTimeout)));
+		//Go through list of events.
+		Iterator it = events.listIterator();
+		while (it.hasNext())
+		{
+			//Find the event we're looking at.
+			Object its = it.next();
+			int itsIndex = events.indexOf(its);
+			if (itsIndex != -1)
+			{
+				EventWithTime eventWithTime = events.get(itsIndex);
+				//Check if it should timeout.
+				if (eventWithTime.getType().isShouldTimeout() && now.isAfter(eventWithTime.getUpdated().plus(actionTimeout)))
+				{
+					eventWithTime.getType().setXp(0);
+					it.remove();
+				}
+			}
+		}
 	}
 }
