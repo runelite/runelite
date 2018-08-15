@@ -77,6 +77,21 @@ class WorldSwitcherPanel extends PluginPanel
 		add(listContainer);
 	}
 
+	void switchCurrentHighlight(int newWorld, int lastWorld)
+	{
+		for (WorldTableRow row : rows)
+		{
+			if (row.getWorld().getId() == newWorld)
+			{
+				row.recolour(true);
+			}
+			else if (row.getWorld().getId() == lastWorld)
+			{
+				row.recolour(false);
+			}
+		}
+	}
+
 	void updateListData(HashMap<Integer, Integer> worldData)
 	{
 		for (WorldTableRow row : rows)
