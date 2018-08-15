@@ -31,8 +31,8 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
@@ -77,11 +77,16 @@ class WorldSwitcherPanel extends PluginPanel
 		add(listContainer);
 	}
 
-	void updateListData(HashMap<Integer, Integer> worldData)
+	void updateListData(Map<Integer, Integer> worldData)
 	{
-		for (WorldTableRow row : rows)
+		for (WorldTableRow worldTableRow : rows)
 		{
-			row.updatePlayerCount(worldData.get(row.getWorld().getId()));
+			World world = worldTableRow.getWorld();
+			Integer playerCount = worldData.get(world.getId());
+			if (playerCount != null)
+			{
+				worldTableRow.updatePlayerCount(playerCount);
+			}
 		}
 
 		// If the list is being ordered by player count, then it has to be re-painted

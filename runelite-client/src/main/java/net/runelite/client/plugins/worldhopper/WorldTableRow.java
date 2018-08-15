@@ -37,6 +37,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.ImageUtil;
@@ -60,14 +61,6 @@ class WorldTableRow extends JPanel
 	private static final Color MEMBERS_WORLD = new Color(210, 193, 53);
 	private static final Color FREE_WORLD = new Color(200, 200, 200);
 
-	private JLabel playerCountField;
-
-	@Getter
-	private World world;
-
-	@Getter
-	private int updatedPlayerCount;
-
 	static
 	{
 		FLAG_AUS = new ImageIcon(ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "flag_aus.png"));
@@ -75,6 +68,14 @@ class WorldTableRow extends JPanel
 		FLAG_US = new ImageIcon(ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "flag_us.png"));
 		FLAG_GER = new ImageIcon(ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "flag_ger.png"));
 	}
+
+	private JLabel playerCountField;
+
+	@Getter
+	private final World world;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int updatedPlayerCount;
 
 	private Color lastBackground;
 	private boolean current;

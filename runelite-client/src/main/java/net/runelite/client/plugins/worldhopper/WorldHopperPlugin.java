@@ -35,6 +35,7 @@ import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -53,10 +54,10 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.WorldListLoad;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.WorldListLoad;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
@@ -359,7 +360,7 @@ public class WorldHopperPlugin extends Plugin
 			return;
 		}
 
-		HashMap<Integer, Integer> worldData = new HashMap<>();
+		Map<Integer, Integer> worldData = new HashMap<>();
 
 		for (net.runelite.api.World w : worldListLoad.getWorlds())
 		{
