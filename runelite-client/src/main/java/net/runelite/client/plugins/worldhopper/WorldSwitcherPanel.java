@@ -32,7 +32,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
@@ -57,7 +59,7 @@ class WorldSwitcherPanel extends PluginPanel
 	private WorldOrder orderIndex = WorldOrder.WORLD;
 	private boolean ascendingOrder = true;
 
-	private List<World> worlds;
+	private ArrayList<WorldTableRow> rows = new ArrayList<>();
 	private WorldHopperPlugin plugin;
 
 	WorldSwitcherPanel(WorldHopperPlugin plugin)
@@ -75,37 +77,73 @@ class WorldSwitcherPanel extends PluginPanel
 		add(listContainer);
 	}
 
+	void switchCurrentHighlight(int newWorld, int lastWorld)
+	{
+		for (WorldTableRow row : rows)
+		{
+			if (row.getWorld().getId() == newWorld)
+			{
+				row.recolour(true);
+			}
+			else if (row.getWorld().getId() == lastWorld)
+			{
+				row.recolour(false);
+			}
+		}
+	}
+
+	void updateListData(Map<Integer, Integer> worldData)
+	{
+		for (WorldTableRow worldTableRow : rows)
+		{
+			World world = worldTableRow.getWorld();
+			Integer playerCount = worldData.get(world.getId());
+			if (playerCount != null)
+			{
+				worldTableRow.updatePlayerCount(playerCount);
+			}
+		}
+
+		// If the list is being ordered by player count, then it has to be re-painted
+		// to properly display the new data
+		if (orderIndex == WorldOrder.PLAYERS)
+		{
+			updateList();
+		}
+	}
+
 	void updateList()
 	{
-		worlds.sort((w1, w2) ->
+		rows.sort((r1, r2) ->
 		{
 			switch (orderIndex)
 			{
 				case WORLD:
-					return Integer.compare(w1.getId(), w2.getId()) * (ascendingOrder ? 1 : -1);
+					return Integer.compare(r1.getWorld().getId(), r2.getWorld().getId()) * (ascendingOrder ? 1 : -1);
 				case PLAYERS:
-					return Integer.compare(w1.getPlayers(), w2.getPlayers()) * (ascendingOrder ? 1 : -1);
+					return Integer.compare(r1.getUpdatedPlayerCount(), r2.getUpdatedPlayerCount()) * (ascendingOrder ? 1 : -1);
 				case ACTIVITY:
-					return w1.getActivity().compareTo(w2.getActivity()) * (ascendingOrder ? 1 : -1);
+					return r1.getWorld().getActivity().compareTo(r2.getWorld().getActivity()) * (ascendingOrder ? 1 : -1);
 				default:
 					return 0;
 
 			}
 		});
 
-		worlds.sort((w1, w2) ->
+		rows.sort((r1, r2) ->
 		{
-			boolean b1 = plugin.isFavorite(w1);
-			boolean b2 = plugin.isFavorite(w2);
+			boolean b1 = plugin.isFavorite(r1.getWorld());
+			boolean b2 = plugin.isFavorite(r2.getWorld());
 			return Boolean.compare(b2, b1);
 		});
 
 		listContainer.removeAll();
 
-		for (int i = 0; i < worlds.size(); i++)
+		for (int i = 0; i < rows.size(); i++)
 		{
-			World world = worlds.get(i);
-			listContainer.add(buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld(), plugin.isFavorite(world)));
+			WorldTableRow row = rows.get(i);
+			row.setBackground(i % 2 == 0 ? ODD_ROW : ColorScheme.DARK_GRAY_COLOR);
+			listContainer.add(row);
 		}
 
 		listContainer.revalidate();
@@ -114,7 +152,14 @@ class WorldSwitcherPanel extends PluginPanel
 
 	void populate(List<World> worlds)
 	{
-		this.worlds = new ArrayList<>(worlds);
+		rows.clear();
+
+		for (int i = 0; i < worlds.size(); i++)
+		{
+			World world = worlds.get(i);
+			rows.add(buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld(), plugin.isFavorite(world)));
+		}
+
 		updateList();
 	}
 
@@ -149,38 +194,49 @@ class WorldSwitcherPanel extends PluginPanel
 		JPanel header = new JPanel(new BorderLayout());
 		JPanel leftSide = new JPanel(new BorderLayout());
 
-		worldHeader = new WorldTableHeader("World", orderIndex == WorldOrder.WORLD, ascendingOrder);
+		worldHeader = new WorldTableHeader("World", orderIndex == WorldOrder.WORLD, ascendingOrder, plugin::refresh);
 		worldHeader.setPreferredSize(new Dimension(WORLD_COLUMN_WIDTH, 0));
 		worldHeader.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
+				if (SwingUtilities.isRightMouseButton(mouseEvent))
+				{
+					return;
+				}
 				ascendingOrder = orderIndex != WorldOrder.WORLD || !ascendingOrder;
 				orderBy(WorldOrder.WORLD);
 			}
 		});
 
-		playersHeader = new WorldTableHeader("#", orderIndex == WorldOrder.PLAYERS, ascendingOrder);
+		playersHeader = new WorldTableHeader("#", orderIndex == WorldOrder.PLAYERS, ascendingOrder, plugin::refresh);
 		playersHeader.setPreferredSize(new Dimension(PLAYERS_COLUMN_WIDTH, 0));
 		playersHeader.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
-
+				if (SwingUtilities.isRightMouseButton(mouseEvent))
+				{
+					return;
+				}
 				ascendingOrder = orderIndex != WorldOrder.PLAYERS || !ascendingOrder;
 				orderBy(WorldOrder.PLAYERS);
 			}
 		});
 
-		activityHeader = new WorldTableHeader("Activity", orderIndex == WorldOrder.ACTIVITY, ascendingOrder);
+		activityHeader = new WorldTableHeader("Activity", orderIndex == WorldOrder.ACTIVITY, ascendingOrder, plugin::refresh);
 		activityHeader.setBorder(new EmptyBorder(3, 5, 3, 5));
 		activityHeader.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
+				if (SwingUtilities.isRightMouseButton(mouseEvent))
+				{
+					return;
+				}
 				ascendingOrder = orderIndex != WorldOrder.ACTIVITY || !ascendingOrder;
 				orderBy(WorldOrder.ACTIVITY);
 			}
@@ -198,9 +254,9 @@ class WorldSwitcherPanel extends PluginPanel
 	/**
 	 * Builds a table row, that displays the world's information.
 	 */
-	private JPanel buildRow(World world, boolean stripe, boolean current, boolean favorite)
+	private WorldTableRow buildRow(World world, boolean stripe, boolean current, boolean favorite)
 	{
-		JPanel row = new WorldTableRow(world, current, favorite,
+		WorldTableRow row = new WorldTableRow(world, current, favorite,
 			world1 ->
 			{
 				plugin.hopTo(world1);

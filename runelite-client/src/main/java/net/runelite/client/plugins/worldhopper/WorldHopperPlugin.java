@@ -31,11 +31,16 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Comparator;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Future;
+import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
@@ -50,9 +55,11 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.WorldListLoad;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
@@ -81,6 +88,10 @@ import org.apache.commons.lang3.ArrayUtils;
 @Slf4j
 public class WorldHopperPlugin extends Plugin
 {
+	private static final int WORLD_FETCH_TIMER = 10;
+	private static final int REFRESH_THROTTLE = 60_000;  // ms
+	private static final int TICK_THROTTLE = (int) Duration.ofMinutes(10).toMillis();
+
 	private static final String HOP_TO = "Hop-to";
 	private static final String KICK_OPTION = "Kick";
 	private static final ImmutableList<String> BEFORE_OPTIONS = ImmutableList.of("Add friend", "Remove friend", KICK_OPTION);
@@ -113,9 +124,14 @@ public class WorldHopperPlugin extends Plugin
 	private NavigationButton navButton;
 	private WorldSwitcherPanel panel;
 
+	private int lastWorld;
+
 	private int favoriteWorld1, favoriteWorld2;
-	private Future<?> worldResultFuture;
+
+	private ScheduledFuture<?> worldResultFuture;
 	private WorldResult worldResult;
+	private Instant lastFetch;
+
 	private final HotkeyListener previousKeyListener = new HotkeyListener(() -> config.previousKey())
 	{
 		@Override
@@ -145,25 +161,7 @@ public class WorldHopperPlugin extends Plugin
 		keyManager.registerKeyListener(previousKeyListener);
 		keyManager.registerKeyListener(nextKeyListener);
 
-		worldResultFuture = executorService.submit(() ->
-		{
-			try
-			{
-				WorldResult worldResult = new WorldClient().lookupWorlds();
-
-				if (worldResult != null)
-				{
-					worldResult.getWorlds().sort(Comparator.comparingInt(World::getId));
-					this.worldResult = worldResult;
-
-					SwingUtilities.invokeLater(() -> panel.populate(worldResult.getWorlds()));
-				}
-			}
-			catch (IOException ex)
-			{
-				log.warn("Error looking up worlds", ex);
-			}
-		});
+		worldResultFuture = executorService.scheduleAtFixedRate(this::tick, 0, WORLD_FETCH_TIMER, TimeUnit.MINUTES);
 
 		panel = new WorldSwitcherPanel(this);
 
@@ -195,6 +193,7 @@ public class WorldHopperPlugin extends Plugin
 		worldResultFuture.cancel(true);
 		worldResultFuture = null;
 		worldResult = null;
+		lastFetch = null;
 
 		clientToolbar.removeNavigation(navButton);
 	}
@@ -345,6 +344,94 @@ public class WorldHopperPlugin extends Plugin
 		{
 			hop(player.getWorld());
 		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		// If the player has disabled the side bar plugin panel, do not update the UI
+		if (config.showSidebar() && gameStateChanged.getGameState() == GameState.LOGGED_IN)
+		{
+			if (lastWorld != client.getWorld())
+			{
+				int newWorld = client.getWorld();
+				panel.switchCurrentHighlight(newWorld, lastWorld);
+				lastWorld = newWorld;
+			}
+		}
+	}
+
+	@Subscribe
+	public void onWorldListLoad(WorldListLoad worldListLoad)
+	{
+		if (!config.showSidebar())
+		{
+			return;
+		}
+
+		Map<Integer, Integer> worldData = new HashMap<>();
+
+		for (net.runelite.api.World w : worldListLoad.getWorlds())
+		{
+			worldData.put(w.getId(), w.getPlayerCount());
+		}
+
+		panel.updateListData(worldData);
+		this.lastFetch = Instant.now(); // This counts as a fetch as it updates populations
+	}
+
+	private void tick()
+	{
+		Instant now = Instant.now();
+		if (lastFetch != null && now.toEpochMilli() - lastFetch.toEpochMilli() < TICK_THROTTLE)
+		{
+			log.debug("Throttling world refresh tick");
+			return;
+		}
+
+		fetchWorlds();
+	}
+
+	void refresh()
+	{
+		Instant now = Instant.now();
+		if (lastFetch != null && now.toEpochMilli() - lastFetch.toEpochMilli() < REFRESH_THROTTLE)
+		{
+			log.debug("Throttling world refresh");
+			return;
+		}
+
+		fetchWorlds();
+	}
+
+	private void fetchWorlds()
+	{
+		log.debug("Fetching worlds");
+
+		try
+		{
+			WorldResult worldResult = new WorldClient().lookupWorlds();
+
+			if (worldResult != null)
+			{
+				worldResult.getWorlds().sort(Comparator.comparingInt(World::getId));
+				this.worldResult = worldResult;
+				this.lastFetch = Instant.now();
+				updateList();
+			}
+		}
+		catch (IOException ex)
+		{
+			log.warn("Error looking up worlds", ex);
+		}
+	}
+
+	/**
+	 * This method ONLY updates the list's UI, not the actual world list and data it displays.
+	 */
+	private void updateList()
+	{
+		SwingUtilities.invokeLater(() -> panel.populate(worldResult.getWorlds()));
 	}
 
 	private void hop(boolean previous)
