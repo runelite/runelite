@@ -29,15 +29,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.components.IconButton;
+import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldType;
@@ -48,7 +49,12 @@ class WorldTableRow extends JPanel
 	private static final ImageIcon FLAG_UK;
 	private static final ImageIcon FLAG_US;
 	private static final ImageIcon FLAG_GER;
+	private static final ImageIcon ICON_FAVORITE_ON;
+	private static final ImageIcon ICON_FAVORITE_ON_HOVER;
+	private static final ImageIcon ICON_FAVORITE_OFF;
+	private static final ImageIcon ICON_FAVORITE_OFF_HOVER;
 
+	private static final int FAVORITE_COLUMN_WIDTH = 28;
 	private static final int WORLD_COLUMN_WIDTH = 60;
 	private static final int PLAYERS_COLUMN_WIDTH = 40;
 
@@ -65,14 +71,24 @@ class WorldTableRow extends JPanel
 		FLAG_UK = new ImageIcon(ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "flag_uk.png"));
 		FLAG_US = new ImageIcon(ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "flag_us.png"));
 		FLAG_GER = new ImageIcon(ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "flag_ger.png"));
+
+		final BufferedImage starOnImage = ImageUtil.getResourceStreamFromClass(IconTextField.class, "star.png");
+
+		ICON_FAVORITE_ON = new ImageIcon(starOnImage);
+		ICON_FAVORITE_ON_HOVER = new ImageIcon(ImageUtil.grayscaleOffset(starOnImage, -100));
+
+		ICON_FAVORITE_OFF = new ImageIcon(ImageUtil.grayscaleOffset(ImageUtil.grayscaleImage(starOnImage), .77f));
+		ICON_FAVORITE_OFF_HOVER = new ImageIcon(ImageUtil.grayscaleImage(starOnImage));
 	}
 
 	private Color lastBackground;
 	private boolean current;
+	private boolean favorite;
 
 	WorldTableRow(World world, boolean current, boolean favorite, Consumer<World> onSelect, BiConsumer<World, Boolean> onFavorite)
 	{
 		this.current = current;
+		this.favorite = favorite;
 
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(2, 0, 2, 0));
@@ -123,24 +139,12 @@ class WorldTableRow extends JPanel
 			}
 		});
 
-		String favoriteAction = favorite ?
-			"Remove " + world.getId() + " from favorites" :
-			"Add " + world.getId() + " to favorites";
-
-		final JMenuItem fav = new JMenuItem(favoriteAction);
-		fav.addActionListener(e ->
-		{
-			onFavorite.accept(world, !favorite);
-		});
-
-		final JPopupMenu popupMenu = new JPopupMenu();
-		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
-		popupMenu.add(fav);
-
-		setComponentPopupMenu(popupMenu);
-
 		JPanel leftSide = new JPanel(new BorderLayout());
 		leftSide.setOpaque(false);
+
+		JPanel favoriteField = buildFavoriteField(world, onFavorite);
+		favoriteField.setPreferredSize(new Dimension(FAVORITE_COLUMN_WIDTH, 0));
+		favoriteField.setOpaque(false);
 
 		JPanel worldField = buildWorldField(world);
 		worldField.setPreferredSize(new Dimension(WORLD_COLUMN_WIDTH, 0));
@@ -154,7 +158,8 @@ class WorldTableRow extends JPanel
 		activityField.setBorder(new EmptyBorder(5, 5, 5, 5));
 		activityField.setOpaque(false);
 
-		leftSide.add(worldField, BorderLayout.WEST);
+		leftSide.add(favoriteField, BorderLayout.WEST);
+		leftSide.add(worldField, BorderLayout.CENTER);
 		leftSide.add(playersField, BorderLayout.EAST);
 
 		add(leftSide, BorderLayout.WEST);
@@ -233,6 +238,26 @@ class WorldTableRow extends JPanel
 
 		column.add(flag, BorderLayout.WEST);
 		column.add(label, BorderLayout.CENTER);
+
+		return column;
+	}
+
+	/**
+	 * Builds the favorite field (containing the favorite star).
+	 */
+	private JPanel buildFavoriteField(World world, BiConsumer<World, Boolean> onFavorite)
+	{
+		JPanel column = new JPanel(new BorderLayout());
+		column.setBorder(new EmptyBorder(0, 5, 0, 5));
+
+		IconButton button = new IconButton(
+			favorite ? ICON_FAVORITE_ON : ICON_FAVORITE_OFF,
+			favorite ? ICON_FAVORITE_ON_HOVER : ICON_FAVORITE_OFF_HOVER
+		);
+
+		button.addActionListener(e -> onFavorite.accept(world, !favorite));
+
+		column.add(button, BorderLayout.CENTER);
 
 		return column;
 	}
