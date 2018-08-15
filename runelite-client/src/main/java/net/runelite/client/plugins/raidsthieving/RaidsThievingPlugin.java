@@ -123,26 +123,19 @@ public class RaidsThievingPlugin extends Plugin
 						event.getTile().getLocalLocation().getX(), event.getTile().getLocalLocation().getY()));
 					chests.put(loc, new ThievingChest(obj));
 				}
+				else
+				{
+					// A chest that had been opened just closed
+					// If there is still a chest marked empty and without poison, it had the bats
+					checkForBats();
+				}
 				break;
 
 			case RaidsThievingConstants.OPEN_EMPTY_CHEST:
 				log.debug(MessageFormat.format("Found empty chest with Bats or Poison at {0}, {1}",
 					event.getTile().getLocalLocation().getX(), event.getTile().getLocalLocation().getY()));
 				chests.get(loc).setEverOpened(true);
-
-				for (Iterator<Map.Entry<WorldPoint, ThievingChest>> it = getChests().entrySet().iterator(); it.hasNext(); )
-				{
-					Map.Entry<WorldPoint, ThievingChest> entry = it.next();
-					ThievingChest chest = entry.getValue();
-					if (chest != null)
-					{
-						if (chest.isEmpty() && !chest.isPoison())
-						{
-							log.debug("Found bats!");
-							batsFound = true;
-						}
-					}
-				}
+				chests.get(loc).setEmpty(true);
 				break;
 			case RaidsThievingConstants.OPEN_FULL_CHEST_1:
 			case RaidsThievingConstants.OPEN_FULL_CHEST_2:
@@ -191,5 +184,22 @@ public class RaidsThievingPlugin extends Plugin
 	{
 		chests.clear();
 		batsFound = false;
+	}
+
+	private void checkForBats()
+	{
+		for (Iterator<Map.Entry<WorldPoint, ThievingChest>> it = getChests().entrySet().iterator(); it.hasNext(); )
+		{
+			Map.Entry<WorldPoint, ThievingChest> entry = it.next();
+			ThievingChest chest = entry.getValue();
+			if (chest != null)
+			{
+				if (chest.isEmpty() && !chest.isPoison())
+				{
+					log.debug("Found bats!");
+					batsFound = true;
+				}
+			}
+		}
 	}
 }

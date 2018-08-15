@@ -93,7 +93,7 @@ public class ChestOverlay extends Overlay
 
 			if (chest != null)
 			{
-				if (!chest.isEverOpened())
+				if (!plugin.isBatsFound() && !chest.isEverOpened())
 				{
 					drawCircleOnTrap(graphics, chest, config.getPotentialBatColor());
 				}
@@ -114,11 +114,6 @@ public class ChestOverlay extends Overlay
 	 */
 	private void drawCircleOnTrap(Graphics2D graphics, ThievingChest chest, Color fill)
 	{
-		if (plugin.isBatsFound())
-		{
-			return;
-		}
-
 		if (chest.getWorldLocation().getPlane() != client.getPlane())
 		{
 			return;
