@@ -37,8 +37,8 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
@@ -126,7 +126,7 @@ public class WorldHopperPlugin extends Plugin
 
 	private int favoriteWorld1, favoriteWorld2;
 
-	private Future<?> worldResultFuture;
+	private ScheduledFuture<?> worldResultFuture;
 	private WorldResult worldResult;
 	private Instant lastFetch;
 
@@ -191,6 +191,7 @@ public class WorldHopperPlugin extends Plugin
 		worldResultFuture.cancel(true);
 		worldResultFuture = null;
 		worldResult = null;
+		lastFetch = null;
 
 		clientToolbar.removeNavigation(navButton);
 	}
