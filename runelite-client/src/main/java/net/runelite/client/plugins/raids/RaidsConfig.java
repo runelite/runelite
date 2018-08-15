@@ -83,7 +83,7 @@ public interface RaidsConfig extends Config
 	)
 	default boolean scoutOverlayInRaid()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
