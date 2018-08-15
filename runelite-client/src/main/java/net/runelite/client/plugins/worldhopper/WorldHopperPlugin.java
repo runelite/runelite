@@ -50,6 +50,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
@@ -113,6 +114,7 @@ public class WorldHopperPlugin extends Plugin
 	private NavigationButton navButton;
 	private WorldSwitcherPanel panel;
 
+	private int lastWorld;
 	private int favoriteWorld1, favoriteWorld2;
 	private Future<?> worldResultFuture;
 	private WorldResult worldResult;
@@ -145,25 +147,7 @@ public class WorldHopperPlugin extends Plugin
 		keyManager.registerKeyListener(previousKeyListener);
 		keyManager.registerKeyListener(nextKeyListener);
 
-		worldResultFuture = executorService.submit(() ->
-		{
-			try
-			{
-				WorldResult worldResult = new WorldClient().lookupWorlds();
-
-				if (worldResult != null)
-				{
-					worldResult.getWorlds().sort(Comparator.comparingInt(World::getId));
-					this.worldResult = worldResult;
-
-					SwingUtilities.invokeLater(() -> panel.populate(worldResult.getWorlds()));
-				}
-			}
-			catch (IOException ex)
-			{
-				log.warn("Error looking up worlds", ex);
-			}
-		});
+		refreshWorlds();
 
 		panel = new WorldSwitcherPanel(this);
 
@@ -184,6 +168,29 @@ public class WorldHopperPlugin extends Plugin
 		{
 			clientToolbar.addNavigation(navButton);
 		}
+	}
+
+	void refreshWorlds()
+	{
+		worldResultFuture = executorService.submit(() ->
+		{
+			try
+			{
+				WorldResult worldResult = new WorldClient().lookupWorlds();
+
+				if (worldResult != null)
+				{
+					worldResult.getWorlds().sort(Comparator.comparingInt(World::getId));
+					this.worldResult = worldResult;
+
+					SwingUtilities.invokeLater(() -> panel.populate(worldResult.getWorlds()));
+				}
+			}
+			catch (IOException ex)
+			{
+				log.warn("Error looking up worlds", ex);
+			}
+		});
 	}
 
 	@Override
@@ -257,6 +264,19 @@ public class WorldHopperPlugin extends Plugin
 	{
 		log.debug("Removing world {} from favorites", world.getId());
 		clearFavoriteConfig(world.getId());
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
+		{
+			if (lastWorld != client.getWorld())
+			{
+				refreshWorlds();
+				lastWorld = client.getWorld();
+			}
+		}
 	}
 
 	@Subscribe
