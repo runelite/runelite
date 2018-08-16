@@ -85,12 +85,21 @@ class WASDCameraListener extends MouseListener implements KeyListener
 				switch (e.getKeyCode())
 				{
 					case KeyEvent.VK_ENTER:
+						clientThread.invoke(() ->
+						{
+							client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
+							plugin.unlockChat(false);
+						});
+						e.consume();
+						break;
 					case KeyEvent.VK_SLASH:
 						// refocus chatbox
 						clientThread.invoke(() ->
 						{
-							plugin.unlockChat();
+							client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "/");
+							plugin.unlockChat(true);
 						});
+						e.consume();
 						break;
 					case KeyEvent.VK_F1:
 					case KeyEvent.VK_F2:
