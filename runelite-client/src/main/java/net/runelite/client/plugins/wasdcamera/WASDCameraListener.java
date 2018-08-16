@@ -26,6 +26,8 @@
 package net.runelite.client.plugins.wasdcamera;
 
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -47,6 +49,8 @@ class WASDCameraListener extends MouseListener implements KeyListener
 
 	@Inject
 	private ClientThread clientThread;
+
+	private final Map<Integer, Integer> modified = new HashMap<>();
 
 	@Override
 	public void keyTyped(KeyEvent e)
@@ -81,18 +85,22 @@ class WASDCameraListener extends MouseListener implements KeyListener
 		{
 			if (config.up().matches(e))
 			{
+				modified.put(e.getKeyCode(), KeyEvent.VK_UP);
 				e.setKeyCode(KeyEvent.VK_UP);
 			}
 			else if (config.down().matches(e))
 			{
+				modified.put(e.getKeyCode(), KeyEvent.VK_DOWN);
 				e.setKeyCode(KeyEvent.VK_DOWN);
 			}
 			else if (config.left().matches(e))
 			{
+				modified.put(e.getKeyCode(), KeyEvent.VK_LEFT);
 				e.setKeyCode(KeyEvent.VK_LEFT);
 			}
 			else if (config.right().matches(e))
 			{
+				modified.put(e.getKeyCode(), KeyEvent.VK_RIGHT);
 				e.setKeyCode(KeyEvent.VK_RIGHT);
 			}
 			else
@@ -199,6 +207,8 @@ class WASDCameraListener extends MouseListener implements KeyListener
 
 		if (!plugin.isTyping())
 		{
+			modified.remove(e.getKeyCode());
+
 			if (config.up().matches(e))
 			{
 				e.setKeyCode(KeyEvent.VK_UP);
@@ -272,6 +282,16 @@ class WASDCameraListener extends MouseListener implements KeyListener
 						e.consume();
 						break;
 				}
+			}
+		}
+		else
+		{
+			// press d + enter + release d - causes the right arrow to never be released
+			Integer m = modified.get(e.getKeyCode());
+			if (m != null)
+			{
+				modified.remove(e.getKeyCode());
+				e.setKeyCode(m);
 			}
 		}
 	}
