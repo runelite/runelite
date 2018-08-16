@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.worldmap;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -32,6 +33,7 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup(WorldMapPlugin.CONFIG_KEY)
 public interface WorldMapConfig extends Config
 {
+
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_FAIRY_RING_TOOLTIPS,
 		name = "Show fairy ring codes in tooltip",
@@ -151,5 +153,38 @@ public interface WorldMapConfig extends Config
 	default boolean miscellaneousTeleportIcon()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_WILDERNESS_LINES,
+		name = "Show wilderness level lines",
+		description = "Show wilderness level lines",
+		position = 12
+	)
+	default boolean wildernessLines()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_WILDERNESS_LINES_LEVELS,
+		name = "Every wilderness level",
+		description = "Every X wilderness level to show",
+		position = 13
+	)
+	default WildernessLevels wildernessLinesLevels()
+	{
+		return WildernessLevels.FIVE;
+	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_WILDERNESS_LINE_COLOR,
+		name = "Wilderness line color",
+		description = "Wilderness line color",
+		position = 14
+	)
+	default Color wildernessLineColor()
+	{
+		return Color.GRAY;
 	}
 }

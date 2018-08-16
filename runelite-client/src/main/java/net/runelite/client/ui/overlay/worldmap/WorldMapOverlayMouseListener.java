@@ -43,13 +43,16 @@ public class WorldMapOverlayMouseListener extends MouseListener
 {
 	private final Client client;
 	private final WorldMapPointManager worldMapPointManager;
+	private final WorldMapLineManager worldMapLineManager;
 	private WorldMapPoint tooltipPoint = null;
+	private WorldMapLine tooltipLine = null;
 
 	@Inject
-	private WorldMapOverlayMouseListener(Client client, WorldMapPointManager worldMapPointManager)
+	private WorldMapOverlayMouseListener(Client client, WorldMapPointManager worldMapPointManager, WorldMapLineManager worldMapLineManager)
 	{
 		this.client = client;
 		this.worldMapPointManager = worldMapPointManager;
+		this.worldMapLineManager = worldMapLineManager;
 	}
 
 	@Override
@@ -112,6 +115,17 @@ public class WorldMapOverlayMouseListener extends MouseListener
 					rsTooltip.setHidden(false);
 				}
 			}
+
+			if (tooltipLine != null)
+			{
+				tooltipLine.setTooltipVisible(false);
+				tooltipLine = null;
+				final Widget rsTooltip = client.getWidget(WidgetInfo.WORLD_MAP_TOOLTIP);
+				if (rsTooltip != null)
+				{
+					rsTooltip.setHidden(false);
+				}
+			}
 			return mouseEvent;
 		}
 
@@ -134,6 +148,25 @@ public class WorldMapOverlayMouseListener extends MouseListener
 			}
 		}
 
+		if (tooltipLine != null)
+		{
+			if (tooltipLine.getClickbox() != null
+				&& tooltipLine.getClickbox().contains(mousePos.getX(), mousePos.getY()))
+			{
+				return mouseEvent;
+			}
+			else
+			{
+				tooltipLine.setTooltipVisible(false);
+				tooltipLine = null;
+				final Widget rsTooltip = client.getWidget(WidgetInfo.WORLD_MAP_TOOLTIP);
+				if (rsTooltip != null)
+				{
+					rsTooltip.setHidden(false);
+				}
+			}
+		}
+
 		for (WorldMapPoint worldMapPoint : worldMapPointManager.getWorldMapPoints())
 		{
 			if (worldMapPoint.getClickbox() != null
@@ -142,6 +175,23 @@ public class WorldMapOverlayMouseListener extends MouseListener
 			{
 				worldMapPoint.setTooltipVisible(true);
 				tooltipPoint = worldMapPoint;
+				final Widget rsTooltip = client.getWidget(WidgetInfo.WORLD_MAP_TOOLTIP);
+				if (rsTooltip != null)
+				{
+					rsTooltip.setHidden(true);
+				}
+				return mouseEvent;
+			}
+		}
+
+		for (WorldMapLine worldMapLine : worldMapLineManager.getWorldMapLines())
+		{
+			if (worldMapLine.getClickbox() != null
+				&& worldMapLine.getClickbox().contains(mousePos.getX(), mousePos.getY())
+				&& worldMapLine.getTooltip() != null)
+			{
+				worldMapLine.setTooltipVisible(true);
+				tooltipLine = worldMapLine;
 				final Widget rsTooltip = client.getWidget(WidgetInfo.WORLD_MAP_TOOLTIP);
 				if (rsTooltip != null)
 				{

@@ -34,9 +34,12 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Line;
 import net.runelite.api.Point;
 import net.runelite.api.RenderOverview;
+import net.runelite.api.coords.WorldLine;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -48,6 +51,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 
 @Singleton
+@Slf4j
 public class WorldMapOverlay extends Overlay
 {
 	private static final Color TOOLTIP_BACKGROUND = new Color(255, 255, 160);
@@ -57,17 +61,21 @@ public class WorldMapOverlay extends Overlay
 	private static final int TOOLTIP_PADDING_WIDTH = 2;
 
 	private final WorldMapPointManager worldMapPointManager;
+	private final WorldMapLineManager worldMapLineManager;
 	private final Client client;
 
 	@Inject
 	private WorldMapOverlay(
 		Client client,
 		WorldMapPointManager worldMapPointManager,
+		WorldMapLineManager worldMaplineManager,
 		MouseManager mouseManager,
 		WorldMapOverlayMouseListener worldMapOverlayMouseListener)
 	{
 		this.client = client;
 		this.worldMapPointManager = worldMapPointManager;
+
+		this.worldMapLineManager = worldMaplineManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGHEST);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
@@ -78,6 +86,7 @@ public class WorldMapOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		final List<WorldMapPoint> points = worldMapPointManager.getWorldMapPoints();
+		final List<WorldMapLine> lines = worldMapLineManager.getWorldMapLines();
 
 		if (points.isEmpty())
 		{
@@ -92,6 +101,28 @@ public class WorldMapOverlay extends Overlay
 
 		final Rectangle worldMapRectangle = widget.getBounds();
 		WorldMapPoint tooltipPoint = null;
+		WorldMapLine tooltipLine = null;
+
+		for (WorldMapLine line : lines)
+		{
+			Line screenLine = mapWorldLineToGraphicsLine(line.getWorldLine());
+			if (screenLine != null)
+			{
+				graphics.setColor(line.getColor());
+				graphics.drawLine(screenLine.getStart().getX(), screenLine.getStart().getY(), screenLine.getEnd().getX(), screenLine.getEnd().getY());
+				Rectangle clickbox = screenLine.getScreenRectangle();
+				line.setClickbox(clickbox);
+			}
+			else
+			{
+				line.setClickbox(null);
+			}
+
+			if (line.isTooltipVisible())
+			{
+				tooltipLine = line;
+			}
+		}
 
 		for (WorldMapPoint worldPoint : points)
 		{
@@ -166,11 +197,17 @@ public class WorldMapOverlay extends Overlay
 			drawTooltip(graphics, tooltipPoint);
 		}
 
+		if (tooltipLine != null && tooltipPoint == null)
+		{
+			drawTooltip(graphics, tooltipLine);
+		}
+
 		return null;
 	}
 
 	/**
 	 * Get the screen coordinates for a WorldPoint on the world map
+	 *
 	 * @param worldPoint WorldPoint to get screen coordinates of
 	 * @return Point of screen coordinates of the center of the world point
 	 */
@@ -216,10 +253,80 @@ public class WorldMapOverlay extends Overlay
 		return null;
 	}
 
+	/**
+	 * Get the screen coordinates for a WorldPoint on the world map
+	 *
+	 * @param worldLine WorldPoint to get screen coordinates of
+	 * @return Line2D containing points of screen coordinates
+	 */
+	private Line mapWorldLineToGraphicsLine(WorldLine worldLine)
+	{
+
+		RenderOverview ro = client.getRenderOverview();
+
+
+		Widget map = client.getWidget(WidgetInfo.WORLD_MAP_VIEW);
+		if (map != null)
+		{
+			Float pixelsPerTile = ro.getWorldMapZoom();
+
+			Rectangle worldMapRect = map.getBounds();
+
+
+			Point worldMapPosition = ro.getWorldMapPosition();
+
+			int y = worldMapPosition.getY();
+			int x = worldMapPosition.getX();
+
+			int widthInTiles = (int) Math.ceil(worldMapRect.getWidth() / pixelsPerTile);
+			int heightInTiles = (int) Math.ceil(worldMapRect.getHeight() / pixelsPerTile);
+
+			int rx1 = x - widthInTiles / 2;
+			int ry1 = y - heightInTiles / 2;
+			int rx2 = rx1 + widthInTiles;
+			int ry2 = ry1 + heightInTiles;
+
+			WorldLine line = worldLine.liangBarsky(rx1, ry1, rx2, ry2);
+			if (line != null)
+			{
+				return line.toMapLine(worldMapPosition, worldMapRect, pixelsPerTile);
+			}
+		}
+
+		return null;
+	}
+
+
 	private void drawTooltip(Graphics2D graphics, WorldMapPoint worldPoint)
 	{
 		String tooltip = worldPoint.getTooltip();
 		Point drawPoint = mapWorldPointToGraphicsPoint(worldPoint.getWorldPoint());
+		if (tooltip == null || tooltip.length() <= 0 || drawPoint == null)
+		{
+			return;
+		}
+
+		drawPoint = new Point(drawPoint.getX() + TOOLTIP_OFFSET_WIDTH, drawPoint.getY() + TOOLTIP_OFFSET_HEIGHT);
+
+		graphics.setClip(0, 0, client.getCanvas().getWidth(), client.getCanvas().getHeight());
+		graphics.setColor(TOOLTIP_BACKGROUND);
+		graphics.setFont(FontManager.getRunescapeFont());
+		FontMetrics fm = graphics.getFontMetrics();
+		int width = fm.stringWidth(tooltip);
+		int height = fm.getHeight();
+
+		Rectangle tooltipRect = new Rectangle(drawPoint.getX() - TOOLTIP_PADDING_WIDTH, drawPoint.getY() - TOOLTIP_PADDING_HEIGHT, width + TOOLTIP_PADDING_WIDTH * 2, height + TOOLTIP_PADDING_HEIGHT * 2);
+		graphics.fillRect((int) tooltipRect.getX(), (int) tooltipRect.getY(), (int) tooltipRect.getWidth(), (int) tooltipRect.getHeight());
+
+		graphics.setColor(Color.black);
+		graphics.drawRect((int) tooltipRect.getX(), (int) tooltipRect.getY(), (int) tooltipRect.getWidth(), (int) tooltipRect.getHeight());
+		graphics.drawString(tooltip, drawPoint.getX(), drawPoint.getY() + height);
+	}
+
+	private void drawTooltip(Graphics2D graphics, WorldMapLine worldLine)
+	{
+		String tooltip = worldLine.getTooltip();
+		Point drawPoint = client.getMouseCanvasPosition();
 		if (tooltip == null || tooltip.length() <= 0 || drawPoint == null)
 		{
 			return;
