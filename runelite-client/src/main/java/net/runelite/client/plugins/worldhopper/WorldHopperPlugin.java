@@ -44,6 +44,7 @@ import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ChatPlayer;
@@ -124,6 +125,7 @@ public class WorldHopperPlugin extends Plugin
 	private NavigationButton navButton;
 	private WorldSwitcherPanel panel;
 
+	@Getter
 	private int lastWorld;
 
 	private int favoriteWorld1, favoriteWorld2;
@@ -228,6 +230,7 @@ public class WorldHopperPlugin extends Plugin
 	private void clearFavoriteConfig(int world)
 	{
 		configManager.unsetConfiguration(WorldHopperConfig.GROUP, "favorite_" + world);
+		panel.resetAllFavoriteMenus();
 	}
 
 	boolean isFavorite(World world)
@@ -250,12 +253,14 @@ public class WorldHopperPlugin extends Plugin
 	{
 		log.debug("Adding world {} to favorites", world.getId());
 		setFavoriteConfig(world.getId());
+		panel.updateFavoriteMenu(world.getId(), true);
 	}
 
 	void removeFromFavorites(World world)
 	{
 		log.debug("Removing world {} from favorites", world.getId());
 		clearFavoriteConfig(world.getId());
+		panel.updateFavoriteMenu(world.getId(), false);
 	}
 
 	@Subscribe

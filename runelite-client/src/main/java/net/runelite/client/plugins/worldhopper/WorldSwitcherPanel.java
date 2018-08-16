@@ -150,6 +150,26 @@ class WorldSwitcherPanel extends PluginPanel
 		listContainer.repaint();
 	}
 
+	void updateFavoriteMenu(int world, boolean favorite)
+	{
+		for (WorldTableRow row : rows)
+		{
+			if (row.getWorld().getId() == world)
+			{
+				row.setFavoriteMenu(favorite);
+			}
+		}
+	}
+
+	void resetAllFavoriteMenus()
+	{
+		for (WorldTableRow row : rows)
+		{
+			row.setFavoriteMenu(false);
+		}
+
+	}
+
 	void populate(List<World> worlds)
 	{
 		rows.clear();
@@ -157,7 +177,7 @@ class WorldSwitcherPanel extends PluginPanel
 		for (int i = 0; i < worlds.size(); i++)
 		{
 			World world = worlds.get(i);
-			rows.add(buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld(), plugin.isFavorite(world)));
+			rows.add(buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0, plugin.isFavorite(world)));
 		}
 
 		updateList();
