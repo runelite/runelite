@@ -28,6 +28,8 @@ package net.runelite.client.plugins.loottracker;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -59,7 +61,12 @@ class LootTrackerPanel extends PluginPanel
 	private final JLabel overallKillsLabel = new JLabel();
 	private final JLabel overallGpLabel = new JLabel();
 	private final JLabel overallIcon = new JLabel();
+
 	private final ItemManager itemManager;
+
+	private final List<LootTrackerEntry> entries = new ArrayList<>();
+	private final List<LootTrackerLog> logs = new ArrayList<>();
+
 	private int overallKills;
 	private int overallGp;
 
@@ -97,9 +104,13 @@ class LootTrackerPanel extends PluginPanel
 		final JMenuItem reset = new JMenuItem("Reset All");
 		reset.addActionListener(e ->
 		{
+			entries.clear();
+			logs.clear();
+
 			overallKills = 0;
 			overallGp = 0;
 			updateOverall();
+
 			logsContainer.removeAll();
 			logsContainer.repaint();
 		});
@@ -131,30 +142,74 @@ class LootTrackerPanel extends PluginPanel
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
 
-	void addLog(final String eventName, final int actorLevel, LootTrackerItemEntry[] items)
+	void addEntry(final String eventName, final int actorLevel, LootTrackerItemEntry[] items, boolean groupLoot)
 	{
-		// Remove error and show overall
+		final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
+
+		LootTrackerEntry entry = new LootTrackerEntry(eventName, subTitle, System.currentTimeMillis(), items);
+		entries.add(entry);
+
+		if (!groupLoot || !stackEntry(entry))
+		{
+			addLog(entry);
+		}
+	}
+
+	private boolean stackEntry(LootTrackerEntry entry)
+	{
+		for (LootTrackerLog log : logs)
+		{
+			if (log.getTitle().equals(entry.getTitle()))
+			{
+				overallGp -= log.getTotalPrice();
+
+				log.addEntry(entry);
+				log.repaint();
+
+				// Update overall
+				overallGp += log.getTotalPrice();
+				overallKills++;
+				updateOverall();
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private void addLog(LootTrackerEntry entry)
+	{
 		remove(errorPanel);
 		overallPanel.setVisible(true);
 
-		// Create log
-		final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
-		final LootTrackerLog log = new LootTrackerLog(itemManager, eventName, subTitle, items);
-		logsContainer.add(log, 0);
-		logsContainer.repaint();
+		LootTrackerLog log = buildLog(entry);
 
 		// Update overall
 		overallGp += log.getTotalPrice();
 		overallKills += 1;
 		updateOverall();
 
+		logs.add(log);
+		logsContainer.add(log);
+	}
+
+	private LootTrackerLog buildLog(LootTrackerEntry entry)
+	{
+		// Create log
+		final LootTrackerLog log = new LootTrackerLog(itemManager, entry);
+
 		// Create reset menu
 		final JMenuItem reset = new JMenuItem("Reset");
 		reset.addActionListener(e ->
 		{
+			entries.removeAll(log.getEntries());
+			logs.remove(log);
+
 			overallGp -= log.getTotalPrice();
-			overallKills -= 1;
+			overallKills -= log.getTotalKills();
 			updateOverall();
+
 			logsContainer.remove(log);
 			logsContainer.repaint();
 		});
@@ -164,6 +219,8 @@ class LootTrackerPanel extends PluginPanel
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		popupMenu.add(reset);
 		log.setComponentPopupMenu(popupMenu);
+
+		return log;
 	}
 
 	private void updateOverall()
