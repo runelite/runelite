@@ -46,6 +46,8 @@ enum GameTimer
 	MAGICIMBUE(SpriteID.SPELL_MAGIC_IMBUE, GameTimerImageType.SPRITE, "Magic imbue", 12, ChronoUnit.SECONDS),
 	FULLTB(SpriteID.SPELL_TELE_BLOCK, GameTimerImageType.SPRITE, "Full Teleblock", 5, ChronoUnit.MINUTES),
 	HALFTB(SpriteID.SPELL_TELE_BLOCK, GameTimerImageType.SPRITE, "Half Teleblock", 150, ChronoUnit.SECONDS),
+	DMM_FULLTB(SpriteID.SPELL_TELE_BLOCK, GameTimerImageType.SPRITE, "Deadman Mode Full Teleblock", 150, ChronoUnit.SECONDS),
+	DMM_HALFTB(SpriteID.SPELL_TELE_BLOCK, GameTimerImageType.SPRITE, "Deadman Mode Half Teleblock", 75, ChronoUnit.SECONDS),
 	ANTIVENOMPLUS(ItemID.ANTIVENOM4_12913, GameTimerImageType.ITEM, "Anti-venom+", 3, ChronoUnit.MINUTES),
 	SUPERANTIFIRE(ItemID.SUPER_ANTIFIRE_POTION4, GameTimerImageType.ITEM, "Super antifire", 3, ChronoUnit.MINUTES),
 	ANTIDOTEPLUSPLUS(ItemID.ANTIDOTE4_5952, GameTimerImageType.ITEM, "Antidote++", 12, ChronoUnit.MINUTES),
