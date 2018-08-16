@@ -107,6 +107,8 @@ class WASDCameraListener extends MouseListener implements KeyListener
 					case KeyEvent.VK_DOWN:
 					case KeyEvent.VK_LEFT:
 					case KeyEvent.VK_RIGHT:
+					case KeyEvent.VK_SHIFT:
+					case KeyEvent.VK_ESCAPE:
 						break;
 					default:
 						e.consume();
@@ -187,6 +189,8 @@ class WASDCameraListener extends MouseListener implements KeyListener
 					case KeyEvent.VK_DOWN:
 					case KeyEvent.VK_LEFT:
 					case KeyEvent.VK_RIGHT:
+					case KeyEvent.VK_SHIFT:
+					case KeyEvent.VK_ESCAPE:
 						break;
 					default:
 						e.consume();
