@@ -220,6 +220,10 @@ class WorldTableRow extends JPanel
 		{
 			activityField.setForeground(TOURNAMENT_WORLD);
 		}
+		else
+		{
+			activityField.setForeground(Color.WHITE);
+		}
 
 		worldField.setForeground(world.getTypes().contains(WorldType.MEMBERS) ? MEMBERS_WORLD : FREE_WORLD);
 	}
