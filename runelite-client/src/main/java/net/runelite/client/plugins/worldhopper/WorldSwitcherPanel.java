@@ -130,6 +130,12 @@ class WorldSwitcherPanel extends PluginPanel
 			}
 		});
 
+		// Leave empty activity worlds on the bottom of the list
+		if (orderIndex == WorldOrder.ACTIVITY)
+		{
+			rows.sort((r1, r2) -> r1.getWorld().getActivity().equals("-") ? 1 : -1);
+		}
+
 		rows.sort((r1, r2) ->
 		{
 			boolean b1 = plugin.isFavorite(r1.getWorld());
