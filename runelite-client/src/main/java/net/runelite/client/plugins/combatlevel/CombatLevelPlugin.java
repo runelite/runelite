@@ -27,6 +27,7 @@ package net.runelite.client.plugins.combatlevel;
 import com.google.common.eventbus.Subscribe;
 import java.text.DecimalFormat;
 import javax.inject.Inject;
+import com.google.inject.Provides;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.GameState;
@@ -34,8 +35,10 @@ import net.runelite.api.Skill;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Combat Level",
@@ -46,11 +49,30 @@ public class CombatLevelPlugin extends Plugin
 	private final DecimalFormat decimalFormat = new DecimalFormat("#.###");
 
 	@Inject
-	Client client;
+	private Client client;
+
+	@Inject
+	private CombatLevelOverlay overlay;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Provides
+	CombatLevelConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(CombatLevelConfig.class);
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(overlay);
+	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
 		Widget combatLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
 
 		if (combatLevelWidget != null)

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Brett Middle <https://github.com/bmiddle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,20 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.combatlevel;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-/**
- * An enumeration of integer local variables.
- */
-@AllArgsConstructor
-@Getter
-public enum VarClientInt
+@ConfigGroup(
+	keyName = "combatLevel",
+	name = "Combat Level",
+	description = "Configure the combat level plugin"
+)
+public interface CombatLevelConfig extends Config
 {
-	TOOLTIP_TIMEOUT(1),
-	CURRENT_TAB(171);
-
-	private final int index;
+	@ConfigItem(
+		keyName = "showLevelsUntil",
+		name = "Calculate next level",
+		description = "Mouse over the combat level when activated to show how many levels until the next combat level"
+	)
+	default boolean showLevelsUntil()
+	{
+		return true;
+	}
 }

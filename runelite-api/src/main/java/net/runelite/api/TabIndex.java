@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Brett Middle <https://github.com/bmiddle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,14 +28,27 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * An enumeration of integer local variables.
+ * An enumeration of values of the opened interface tab
  */
 @AllArgsConstructor
 @Getter
-public enum VarClientInt
+public enum TabIndex
 {
-	TOOLTIP_TIMEOUT(1),
-	CURRENT_TAB(171);
+	CLOSED(-1),
+	ATTACK_STYLES(0),
+	STATS(1),
+	QUEST_LOG(2),
+	INVENTORY(3),
+	WORN_EQUIPMENT(4),
+	PRAYER(5),
+	MAGIC(6),
+	CLAN_CHAT(7),
+	FRIENDS_LIST(8),
+	IGNORE_LIST(9),
+	LOGOUT(10),
+	OPTIONS(11),
+	EMOTES(12),
+	MUSIC_PLAYER(13);
 
-	private final int index;
+	private final int value;
 }
