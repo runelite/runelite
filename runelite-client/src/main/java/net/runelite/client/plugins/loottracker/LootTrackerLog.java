@@ -49,6 +49,7 @@ class LootTrackerLog extends JPanel
 
 	private final JPanel itemContainer = new JPanel();
 	private final JLabel priceLabel = new JLabel();
+	private final JLabel subTitleLabel = new JLabel();
 
 	private final ItemManager itemManager;
 
@@ -81,7 +82,7 @@ class LootTrackerLog extends JPanel
 		// If we have subtitle, add it
 		if (!Strings.isNullOrEmpty(entry.getSubTitle()))
 		{
-			final JLabel subTitleLabel = new JLabel(entry.getSubTitle());
+			subTitleLabel.setText(entry.getSubTitle());
 			subTitleLabel.setFont(FontManager.getRunescapeSmallFont());
 			subTitleLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 			logTitle.add(subTitleLabel, BorderLayout.CENTER);
@@ -108,6 +109,11 @@ class LootTrackerLog extends JPanel
 		if (totalPrice > 0)
 		{
 			priceLabel.setText(StackFormatter.quantityToStackSize(totalPrice) + " gp");
+		}
+
+		if (totalKills > 1)
+		{
+			subTitleLabel.setText("x " + totalKills);
 		}
 	}
 
