@@ -228,6 +228,7 @@ public class WorldHopperPlugin extends Plugin
 	private void clearFavoriteConfig(int world)
 	{
 		configManager.unsetConfiguration(WorldHopperConfig.GROUP, "favorite_" + world);
+		panel.resetAllFavoriteMenus();
 	}
 
 	boolean isFavorite(World world)
@@ -250,12 +251,14 @@ public class WorldHopperPlugin extends Plugin
 	{
 		log.debug("Adding world {} to favorites", world.getId());
 		setFavoriteConfig(world.getId());
+		panel.updateFavoriteMenu(world.getId(), true);
 	}
 
 	void removeFromFavorites(World world)
 	{
 		log.debug("Removing world {} from favorites", world.getId());
 		clearFavoriteConfig(world.getId());
+		panel.updateFavoriteMenu(world.getId(), false);
 	}
 
 	@Subscribe

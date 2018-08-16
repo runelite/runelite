@@ -150,6 +150,26 @@ class WorldSwitcherPanel extends PluginPanel
 		listContainer.repaint();
 	}
 
+	void updateFavoriteMenu(int world, boolean favorite)
+	{
+		for (WorldTableRow row : rows)
+		{
+			if (row.getWorld().getId() == world)
+			{
+				row.setFavoriteMenu(favorite);
+			}
+		}
+	}
+
+	void resetAllFavoriteMenus()
+	{
+		for (WorldTableRow row : rows)
+		{
+			row.setFavoriteMenu(false);
+		}
+
+	}
+
 	void populate(List<World> worlds)
 	{
 		rows.clear();
