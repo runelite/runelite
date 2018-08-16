@@ -109,6 +109,8 @@ public class WidgetID
 	public static final int DIARY_QUEST_GROUP_ID = 275;
 	public static final int THEATRE_OF_BLOOD_GROUP_ID = 23;
 	public static final int WORLD_SWITCHER_GROUP_ID = 69;
+	public static final int DIALOG_OPTION_GROUP_ID = 219;
+	public static final int DIALOG_PLAYER_GROUP_ID = 217;
 
 	static class WorldMap
 	{
