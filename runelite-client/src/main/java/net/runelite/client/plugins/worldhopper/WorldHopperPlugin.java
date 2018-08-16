@@ -44,6 +44,7 @@ import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ChatPlayer;
@@ -124,6 +125,7 @@ public class WorldHopperPlugin extends Plugin
 	private NavigationButton navButton;
 	private WorldSwitcherPanel panel;
 
+	@Getter
 	private int lastWorld;
 
 	private int favoriteWorld1, favoriteWorld2;
