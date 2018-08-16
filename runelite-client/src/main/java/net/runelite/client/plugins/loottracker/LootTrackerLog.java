@@ -103,7 +103,7 @@ class LootTrackerLog extends JPanel
 		totalKills++;
 		totalPrice = calculatePrice();
 
-		redrawItems();
+		rebuildItems();
 
 		if (totalPrice > 0)
 		{
@@ -111,9 +111,9 @@ class LootTrackerLog extends JPanel
 		}
 	}
 
-	private void redrawItems()
+	private void rebuildItems()
 	{
-		List<LootTrackerItemEntry> items = getAllItems();
+		List<LootTrackerItemEntry> items = getCombinedItems();
 
 		// Calculates how many rows need to be display to fit all items
 		final int rowSize = ((items.size() % ITEMS_PER_ROW == 0) ? 0 : 1) + items.size() / ITEMS_PER_ROW;
@@ -141,6 +141,40 @@ class LootTrackerLog extends JPanel
 		}
 
 		itemContainer.repaint();
+	}
+
+	private List<LootTrackerItemEntry> getCombinedItems()
+	{
+		final List<LootTrackerItemEntry> list = new ArrayList<>();
+
+		for (final LootTrackerItemEntry entry : getAllItems())
+		{
+			int quantity = 0;
+			for (final LootTrackerItemEntry i : list)
+			{
+				if (i.getId() == entry.getId())
+				{
+					quantity = i.getQuantity();
+					list.remove(i);
+					break;
+				}
+			}
+			if (quantity > 0)
+			{
+				int newQuantity = entry.getQuantity() + quantity;
+				long pricePerItem = entry.getPrice() == 0 ? 0 : (entry.getPrice() / entry.getQuantity());
+
+				list.add(new LootTrackerItemEntry(entry.getId(), entry.getName(), newQuantity, pricePerItem * newQuantity));
+			}
+			else
+			{
+				list.add(entry);
+			}
+		}
+
+		list.sort((i1, i2) -> i1.getPrice() < i2.getPrice() ? 1 : -1);
+
+		return list;
 	}
 
 	private List<LootTrackerItemEntry> getAllItems()
