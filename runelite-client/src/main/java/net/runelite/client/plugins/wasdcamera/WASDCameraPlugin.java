@@ -30,8 +30,10 @@ import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -65,6 +67,7 @@ public class WASDCameraPlugin extends Plugin
 	private WASDCameraListener inputListener;
 
 	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private boolean typing;
 
 	@Override
@@ -143,8 +146,6 @@ public class WASDCameraPlugin extends Plugin
 		Widget chatboxParent = client.getWidget(WidgetInfo.CHATBOX_PARENT);
 		if (chatboxParent != null && chatboxParent.getOnKeyListener() != null)
 		{
-			typing = false;
-
 			Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
 			if (chatboxInput != null)
 			{
@@ -158,14 +159,12 @@ public class WASDCameraPlugin extends Plugin
 		Widget chatboxParent = client.getWidget(WidgetInfo.CHATBOX_PARENT);
 		if (chatboxParent != null)
 		{
-			typing = true;
-
 			Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
 			if (chatboxInput != null)
 			{
 				if (client.getGameState() == GameState.LOGGED_IN)
 				{
-					chatboxInput.setText(client.getLocalPlayer().getName() + ": <col=0000ff>*</col>");
+					chatboxInput.setText(client.getLocalPlayer().getName() + ": <col=0000ff>" + client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*</col>");
 				}
 			}
 		}
