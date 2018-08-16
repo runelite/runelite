@@ -87,6 +87,7 @@ class WASDCameraListener extends MouseListener implements KeyListener
 					case KeyEvent.VK_ENTER:
 					case KeyEvent.VK_SLASH:
 						// refocus chatbox
+						plugin.setTyping(true);
 						clientThread.invoke(() ->
 						{
 							plugin.unlockChat();
@@ -126,12 +127,14 @@ class WASDCameraListener extends MouseListener implements KeyListener
 			switch (e.getKeyCode())
 			{
 				case KeyEvent.VK_ENTER:
+					plugin.setTyping(false);
 					clientThread.invoke(() ->
 					{
 						plugin.lockChat();
 					});
 					break;
 				case KeyEvent.VK_ESCAPE:
+					plugin.setTyping(false);
 					clientThread.invoke(() ->
 					{
 						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
@@ -177,6 +180,7 @@ class WASDCameraListener extends MouseListener implements KeyListener
 			{
 				switch (e.getKeyCode())
 				{
+					case KeyEvent.VK_SLASH:
 					case KeyEvent.VK_F1:
 					case KeyEvent.VK_F2:
 					case KeyEvent.VK_F3:
