@@ -48,6 +48,7 @@ import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.config.ConfigManager;
@@ -152,6 +153,17 @@ public class LootTrackerPlugin extends Plugin
 	protected void shutDown()
 	{
 		clientToolbar.removeNavigation(navButton);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged ev)
+	{
+		if (!LootTrackerConfig.GROUP_KEY.equals(ev.getGroup()))
+		{
+			return;
+		}
+
+		panel.rebuildLogs(config.groupLoot());
 	}
 
 	@Subscribe

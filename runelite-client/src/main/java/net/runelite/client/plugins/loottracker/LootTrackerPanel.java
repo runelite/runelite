@@ -191,7 +191,27 @@ class LootTrackerPanel extends PluginPanel
 		updateOverall();
 
 		logs.add(log);
-		logsContainer.add(log);
+		logsContainer.add(log, 0);
+	}
+
+	void rebuildLogs(boolean groupLoot)
+	{
+		logsContainer.removeAll();
+		logs.clear();
+
+		overallGp = 0;
+		overallKills = 0;
+		updateOverall();
+
+		for (LootTrackerEntry entry : entries)
+		{
+			if (!groupLoot || !stackEntry(entry))
+			{
+				addLog(entry);
+			}
+		}
+
+		logsContainer.repaint();
 	}
 
 	private LootTrackerLog buildLog(LootTrackerEntry entry)
