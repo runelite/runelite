@@ -28,6 +28,7 @@ package net.runelite.client.plugins.wasdcamera;
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.VarClientStr;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
@@ -56,7 +57,7 @@ class WASDCameraListener extends MouseListener implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (!plugin.chatboxFocused())
+		if (client.getGameState() != GameState.LOGGED_IN || !plugin.chatboxFocused())
 		{
 			return;
 		}
@@ -146,7 +147,7 @@ class WASDCameraListener extends MouseListener implements KeyListener
 
 	private void handleKey(KeyEvent e)
 	{
-		if (!plugin.chatboxFocused())
+		if (client.getGameState() != GameState.LOGGED_IN || !plugin.chatboxFocused())
 		{
 			return;
 		}
