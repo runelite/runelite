@@ -114,10 +114,9 @@ public class WASDCameraPlugin extends Plugin
 		}
 
 		// chat dialogs use the same key listener as chat
-		if (client.getWidget(WidgetInfo.DIALOG_NPC) != null
-			|| client.getWidget(WidgetInfo.DIALOG_SPRITE) != null
-			|| client.getWidget(WidgetInfo.DIALOG_OPTION) != null
-			|| client.getWidget(WidgetInfo.DIALOG_PLAYER) != null)
+		Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
+
+		if (chatboxInput == null || chatboxInput.isHidden())
 		{
 			return false;
 		}
