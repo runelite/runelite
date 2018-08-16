@@ -40,6 +40,11 @@ public enum Varbits
 	TRANSPARENT_CHATBOX(4608),
 
 	/**
+	 * If scrollbar in resizable mode chat is on the left
+	 */
+	CHAT_SCROLLBAR_ON_LEFT(6374),
+
+	/**
 	 * Runecraft pouches
 	 */
 	POUCH_SMALL(603),
