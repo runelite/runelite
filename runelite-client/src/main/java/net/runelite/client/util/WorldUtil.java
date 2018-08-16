@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,12 +22,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.util;
+
+import java.util.EnumSet;
+import net.runelite.api.WorldType;
 
 /**
- * Represents a player in the chat.
+ * Utility class for RuneScape worlds
  */
-public interface ChatPlayer extends Nameable
+public class WorldUtil
 {
-	int getWorld();
+	/**
+	 * Converts http-api world types to runelite-api world types
+	 * TODO: Find a better way to handle these to not have duplicate interfaces
+	 * @param apiTypes http-api world types
+	 * @return runelite-api world types
+	 */
+	public static EnumSet<WorldType> toWorldTypes(final EnumSet<net.runelite.http.api.worlds.WorldType> apiTypes)
+	{
+		final EnumSet<net.runelite.api.WorldType> types = EnumSet.noneOf(net.runelite.api.WorldType.class);
+
+		for (net.runelite.http.api.worlds.WorldType apiType : apiTypes)
+		{
+			types.add(net.runelite.api.WorldType.valueOf(apiType.name()));
+		}
+
+		return types;
+	}
 }

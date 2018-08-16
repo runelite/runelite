@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,63 +22,61 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.util;
+package net.runelite.client.plugins.worldhopper;
 
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.util.function.Supplier;
-import lombok.RequiredArgsConstructor;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Keybind;
-import net.runelite.client.input.KeyListener;
 
-@RequiredArgsConstructor
-public abstract class HotkeyListener implements KeyListener
+@ConfigGroup(WorldHopperConfig.GROUP)
+public interface WorldHopperConfig extends Config
 {
-	private final Supplier<Keybind> keybind;
+	String GROUP = "worldhopper";
 
-	private boolean isPressed = false;
-
-	private boolean isConsumingTyped = false;
-
-	@Override
-	public void keyTyped(KeyEvent e)
+	@ConfigItem(
+		keyName = "previousKey",
+		name = "Quick-hop previous",
+		description = "When you press this key you'll hop to the previous world",
+		position = 0
+	)
+	default Keybind previousKey()
 	{
-		if (isConsumingTyped)
-		{
-			e.consume();
-		}
+		return new Keybind(KeyEvent.VK_LEFT, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK);
 	}
 
-	@Override
-	public void keyPressed(KeyEvent e)
+	@ConfigItem(
+		keyName = "nextKey",
+		name = "Quick-hop next",
+		description = "When you press this key you'll hop to the next world",
+		position = 1
+	)
+	default Keybind nextKey()
 	{
-		if (keybind.get().matches(e))
-		{
-			boolean wasPressed = isPressed;
-			isPressed = true;
-			if (!wasPressed)
-			{
-				hotkeyPressed();
-			}
-			if (Keybind.getModifierForKeyCode(e.getKeyCode()) == null)
-			{
-				isConsumingTyped = true;
-				// Only consume non modifier keys
-				e.consume();
-			}
-		}
+		return new Keybind(KeyEvent.VK_RIGHT, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK);
 	}
 
-	@Override
-	public void keyReleased(KeyEvent e)
+	@ConfigItem(
+		keyName = "quickhopOutOfDanger",
+		name = "Quick-hop out of dangerous worlds",
+		description = "Don't hop to a PVP/high risk world when quick-hopping",
+		position = 2
+	)
+	default boolean quickhopOutOfDanger()
 	{
-		if (keybind.get().matches(e))
-		{
-			isPressed = false;
-			isConsumingTyped = false;
-		}
+		return true;
 	}
 
-	public void hotkeyPressed()
+	@ConfigItem(
+		keyName = "showSidebar",
+		name = "Show world hopper sidebar",
+		description = "Show sidebar containing all worlds that mimics in-game interface",
+		position = 3
+	)
+	default boolean showSidebar()
 	{
+		return true;
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,12 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.mapping;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
- * Represents a player in the chat.
+ * Used to indicate a method can only be called from within mixins.
+ * Calling methods annotated with this annotation outside mixins results in a AbstractMethodError.
+ * Only works in net.runelite.rs.api.*
  */
-public interface ChatPlayer extends Nameable
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Protect
 {
-	int getWorld();
 }

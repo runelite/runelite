@@ -39,11 +39,15 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
+import net.runelite.api.Player;
 import net.runelite.api.Prayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.WorldType;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
@@ -109,6 +113,7 @@ public class TimersPlugin extends Plugin
 	private static final String CHARGE_MESSAGE = "<col=ef1020>You feel charged with magic power.</col>";
 	private static final String EXTENDED_ANTIFIRE_DRINK_MESSAGE = "You drink some of your extended antifire potion.";
 	private static final String EXTENDED_SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your extended super antifire potion.";
+	private static final String FROZEN_MESSAGE = "<col=ef1020>You have been frozen!</col>";
 	private static final String FULL_TELEBLOCK_MESSAGE = "<col=4f006f>A teleblock spell has been cast on you. It will expire in 5 minutes, 0 seconds.</col>";
 	private static final String GOD_WARS_ALTAR_MESSAGE = "you recharge your prayer.";
 	private static final String HALF_TELEBLOCK_MESSAGE = "<col=4f006f>A teleblock spell has been cast on you. It will expire in 2 minutes, 30 seconds.</col>";
@@ -124,7 +129,11 @@ public class TimersPlugin extends Plugin
 	private static final String SUPER_ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your super antifire potion has expired.</col>";
 	private static final String SUPER_ANTIVENOM_DRINK_MESSAGE = "You drink some of your super antivenom potion";
 
+	private TimerTimer freezeTimer;
+	private int freezeTime = -1; // time frozen, in game ticks
+
 	private int lastRaidVarb;
+	private WorldPoint lastPoint;
 
 	@Inject
 	private ItemManager itemManager;
@@ -483,6 +492,33 @@ public class TimersPlugin extends Plugin
 		{
 			removeGameTimer(STAFF_OF_THE_DEAD);
 		}
+
+		if (config.showFreezes() && event.getMessage().equals(FROZEN_MESSAGE))
+		{
+			freezeTimer = createGameTimer(ICEBARRAGE);
+			freezeTime = client.getTickCount();
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		Player player = client.getLocalPlayer();
+		WorldPoint currentWorldPoint = player.getWorldLocation();
+
+		if (freezeTimer == null)
+		{
+			lastPoint = currentWorldPoint;
+			return;
+		}
+
+		// assume movement means unfrozen
+		if (!currentWorldPoint.equals(lastPoint))
+		{
+			removeGameTimer(freezeTimer.getTimer());
+			freezeTimer = null;
+			lastPoint = currentWorldPoint;
+		}
 	}
 
 	@Subscribe
@@ -554,7 +590,8 @@ public class TimersPlugin extends Plugin
 		{
 			if (actor.getGraphic() == BIND.getGraphicId())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC))
+				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
+					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
 				{
 					createGameTimer(HALFBIND);
 				}
@@ -566,7 +603,8 @@ public class TimersPlugin extends Plugin
 
 			if (actor.getGraphic() == SNARE.getGraphicId())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC))
+				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
+					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
 				{
 					createGameTimer(HALFSNARE);
 				}
@@ -578,7 +616,8 @@ public class TimersPlugin extends Plugin
 
 			if (actor.getGraphic() == ENTANGLE.getGraphicId())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC))
+				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
+					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
 				{
 					createGameTimer(HALFENTANGLE);
 				}
@@ -588,24 +627,26 @@ public class TimersPlugin extends Plugin
 				}
 			}
 
-			if (actor.getGraphic() == ICERUSH.getGraphicId())
+			// downgrade freeze based on graphic, if at the same tick as the freeze message
+			if (freezeTime == client.getTickCount())
 			{
-				createGameTimer(ICERUSH);
-			}
+				if (actor.getGraphic() == ICERUSH.getGraphicId())
+				{
+					removeGameTimer(ICEBARRAGE);
+					freezeTimer = createGameTimer(ICERUSH);
+				}
 
-			if (actor.getGraphic() == ICEBURST.getGraphicId())
-			{
-				createGameTimer(ICEBURST);
-			}
+				if (actor.getGraphic() == ICEBURST.getGraphicId())
+				{
+					removeGameTimer(ICEBARRAGE);
+					freezeTimer = createGameTimer(ICEBURST);
+				}
 
-			if (actor.getGraphic() == ICEBLITZ.getGraphicId())
-			{
-				createGameTimer(ICEBLITZ);
-			}
-
-			if (actor.getGraphic() == ICEBARRAGE.getGraphicId())
-			{
-				createGameTimer(ICEBARRAGE);
+				if (actor.getGraphic() == ICEBLITZ.getGraphicId())
+				{
+					removeGameTimer(ICEBARRAGE);
+					freezeTimer = createGameTimer(ICEBLITZ);
+				}
 			}
 		}
 	}
@@ -669,7 +710,7 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	private void createGameTimer(GameTimer timer)
+	private TimerTimer createGameTimer(final GameTimer timer)
 	{
 		removeGameTimer(timer);
 
@@ -677,6 +718,7 @@ public class TimersPlugin extends Plugin
 		TimerTimer t = new TimerTimer(timer, this, image);
 		t.setTooltip(timer.getDescription());
 		infoBoxManager.addInfoBox(t);
+		return t;
 	}
 
 	private void removeGameTimer(GameTimer timer)

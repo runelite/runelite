@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Daniel Teo <https://github.com/takuyakanbr>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,12 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.timetracking;
 
-/**
- * Represents a player in the chat.
- */
-public interface ChatPlayer extends Nameable
+public enum SummaryState
 {
-	int getWorld();
+	COMPLETED,
+	IN_PROGRESS,
+	EMPTY,
+	UNKNOWN
 }

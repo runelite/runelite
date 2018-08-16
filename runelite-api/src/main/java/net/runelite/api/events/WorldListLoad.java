@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api.events;
 
-import net.runelite.api.ChatPlayer;
-import net.runelite.mapping.Import;
+import lombok.Value;
+import net.runelite.api.World;
 
-public interface RSChatPlayer extends ChatPlayer, RSNameable
+/**
+ * Event when the world list is loaded for the world switcher
+ */
+@Value
+public class WorldListLoad
 {
-	@Import("world")
-	@Override
-	int getWorld();
-
-	@Import("rank")
-	int getRSRank();
+	private final World[] worlds;
 }

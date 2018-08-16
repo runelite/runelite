@@ -302,6 +302,26 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
+	public int getTotalLevel()
+	{
+		int totalLevel = 0;
+
+		int[] realLevels = client.getRealSkillLevels();
+		int lastSkillIdx = Skill.CONSTRUCTION.ordinal();
+
+		for (int i = 0; i < realLevels.length; i++)
+		{
+			if (i <= lastSkillIdx)
+			{
+				totalLevel += realLevels[i];
+			}
+		}
+
+		return totalLevel;
+	}
+
+	@Inject
+	@Override
 	public void addChatMessage(ChatMessageType type, String name, String message, String sender)
 	{
 		addChatMessage(type.getType(), name, message, sender);
