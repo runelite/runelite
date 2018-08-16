@@ -55,8 +55,10 @@ import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
@@ -93,6 +95,8 @@ public class WorldHopperPlugin extends Plugin
 	private static final int REFRESH_THROTTLE = 60_000;  // ms
 	private static final int TICK_THROTTLE = (int) Duration.ofMinutes(10).toMillis();
 
+	private static final int DISPLAY_SWITCHER_MAX_ATTEMPTS = 3;
+
 	private static final String HOP_TO = "Hop-to";
 	private static final String KICK_OPTION = "Kick";
 	private static final ImmutableList<String> BEFORE_OPTIONS = ImmutableList.of("Add friend", "Remove friend", KICK_OPTION);
@@ -124,6 +128,9 @@ public class WorldHopperPlugin extends Plugin
 
 	private NavigationButton navButton;
 	private WorldSwitcherPanel panel;
+
+	private net.runelite.api.World quickHopTargetWorld;
+	private int displaySwitcherAttempts = 0;
 
 	@Getter
 	private int lastWorld;
@@ -586,17 +593,67 @@ public class WorldHopperPlugin extends Plugin
 				.runeLiteFormattedMessage(chatMessage)
 				.build());
 
-		clientThread.invokeLater(() ->
-		{
-			if (client.getWidget(WidgetInfo.WORLD_SWITCHER_LIST) == null)
-			{
-				client.openWorldHopper();
-				return false;
-			}
+		quickHopTargetWorld = rsWorld;
+		displaySwitcherAttempts = 0;
+	}
 
-			client.hopToWorld(rsWorld);
-			return true;
-		});
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (quickHopTargetWorld == null)
+		{
+			return;
+		}
+
+		if (client.getWidget(WidgetInfo.WORLD_SWITCHER_LIST) == null)
+		{
+			client.openWorldHopper();
+
+			if (++displaySwitcherAttempts >= DISPLAY_SWITCHER_MAX_ATTEMPTS)
+			{
+				String chatMessage = new ChatMessageBuilder()
+					.append(ChatColorType.NORMAL)
+					.append("Failed to quick-hop after ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(Integer.toString(displaySwitcherAttempts))
+					.append(ChatColorType.NORMAL)
+					.append(" attempts.")
+					.build();
+
+				chatMessageManager
+					.queue(QueuedMessage.builder()
+						.type(ChatMessageType.GAME)
+						.runeLiteFormattedMessage(chatMessage)
+						.build());
+
+				resetQuickHopper();
+			}
+		}
+		else
+		{
+			client.hopToWorld(quickHopTargetWorld);
+			resetQuickHopper();
+		}
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() != ChatMessageType.SERVER)
+		{
+			return;
+		}
+
+		if (event.getMessage().equals("Please finish what you're doing before using the World Switcher."))
+		{
+			resetQuickHopper();
+		}
+	}
+
+	private void resetQuickHopper()
+	{
+		displaySwitcherAttempts = 0;
+		quickHopTargetWorld = null;
 	}
 
 	private ChatPlayer getChatPlayerFromName(String name)
