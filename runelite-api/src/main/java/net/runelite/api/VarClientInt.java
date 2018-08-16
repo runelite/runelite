@@ -34,7 +34,9 @@ import lombok.Getter;
 @Getter
 public enum VarClientInt
 {
-	TOOLTIP_TIMEOUT(1);
+	TOOLTIP_TIMEOUT(1),
+
+	WORLD_MAP_SEARCH_FOCUSED(190);
 
 	private final int index;
 }
