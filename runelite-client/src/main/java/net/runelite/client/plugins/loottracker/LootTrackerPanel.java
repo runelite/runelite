@@ -83,7 +83,7 @@ class LootTrackerPanel extends PluginPanel
 		add(layoutPanel, BorderLayout.NORTH);
 
 		// Create panel that will contain overall data
-		overallPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		overallPanel.setBorder(new EmptyBorder(8, 10, 8, 10));
 		overallPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		overallPanel.setLayout(new BorderLayout());
 		overallPanel.setVisible(false);
@@ -92,7 +92,7 @@ class LootTrackerPanel extends PluginPanel
 		final JPanel overallInfo = new JPanel();
 		overallInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		overallInfo.setLayout(new GridLayout(2, 1));
-		overallInfo.setBorder(new EmptyBorder(0, 10, 0, 0));
+		overallInfo.setBorder(new EmptyBorder(2, 10, 2, 0));
 		overallKillsLabel.setFont(FontManager.getRunescapeSmallFont());
 		overallGpLabel.setFont(FontManager.getRunescapeSmallFont());
 		overallInfo.add(overallKillsLabel);
