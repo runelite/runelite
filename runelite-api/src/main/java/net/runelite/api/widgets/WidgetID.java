@@ -117,6 +117,7 @@ public class WidgetID
 		static final int OPTION = 42;
 		static final int TOOLTIP = 35;
 		static final int MAPVIEW = 3;
+		static final int SEARCH = 21;
 	}
 
 	static class SlayerRewards
