@@ -28,6 +28,8 @@ package net.runelite.client.plugins.loottracker;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -59,7 +61,11 @@ class LootTrackerPanel extends PluginPanel
 	private final JLabel overallKillsLabel = new JLabel();
 	private final JLabel overallGpLabel = new JLabel();
 	private final JLabel overallIcon = new JLabel();
+
 	private final ItemManager itemManager;
+
+	private final HashMap<String, LootTrackerLog> lootMap = new HashMap<>();
+
 	private int overallKills;
 	private int overallGp;
 
@@ -97,11 +103,7 @@ class LootTrackerPanel extends PluginPanel
 		final JMenuItem reset = new JMenuItem("Reset All");
 		reset.addActionListener(e ->
 		{
-			overallKills = 0;
-			overallGp = 0;
-			updateOverall();
-			logsContainer.removeAll();
-			logsContainer.repaint();
+			clearLogs();
 		});
 
 		// Create popup menu
@@ -131,20 +133,68 @@ class LootTrackerPanel extends PluginPanel
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
 
-	void addLog(final String eventName, final int actorLevel, LootTrackerItemEntry[] items)
+	void clearLogs()
+	{
+		lootMap.clear();
+		overallKills = 0;
+		overallGp = 0;
+		updateOverall();
+
+		logsContainer.removeAll();
+		logsContainer.repaint();
+	}
+
+	void reconstruct(boolean group)
+	{
+		ArrayList<LootTrackerLog> logs = new ArrayList<>(lootMap.values());
+		clearLogs();
+
+		for (LootTrackerLog log : logs)
+		{
+			for(LootTrackerEntry entry : log.getEntries())
+				addLog(entry);
+		}
+	}
+
+	void addLog(LootTrackerEntry entry)
+	{
+		logsContainer.add(new LootTrackerLog(itemManager, entry), 0);
+		logsContainer.repaint();
+	}
+
+	void addLog(final String eventName, final int actorLevel, LootTrackerItemEntry[] items, final boolean groupLoots)
 	{
 		// Remove error and show overall
 		remove(errorPanel);
 		overallPanel.setVisible(true);
 
-		// Create box
+		final String mapKey = eventName;
 		final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
-		final LootTrackerBox box = new LootTrackerBox(itemManager, eventName, subTitle, items);
-		logsContainer.add(box, 0);
+
+		if (groupLoots && lootMap.containsKey(mapKey))
+		{
+			LootTrackerLog mappedLog = lootMap.get(mapKey);
+
+			if (mappedLog != null)
+			{
+				mappedLog.addEntry(new LootTrackerEntry(eventName, subTitle, System.currentTimeMillis(), items));
+
+				// Update overall
+				overallGp = (int) mappedLog.getTotalPrice();
+				overallKills += 1;
+				updateOverall();
+				return;
+			}
+		}
+
+		// Create log
+		final LootTrackerLog log = new LootTrackerLog(itemManager, new LootTrackerEntry(eventName, subTitle, System.currentTimeMillis(), items));
+		logsContainer.add(log, 0);
 		logsContainer.repaint();
+		lootMap.put(mapKey, log);
 
 		// Update overall
-		overallGp += box.getTotalPrice();
+		overallGp += log.getTotalPrice();
 		overallKills += 1;
 		updateOverall();
 
@@ -152,10 +202,12 @@ class LootTrackerPanel extends PluginPanel
 		final JMenuItem reset = new JMenuItem("Reset");
 		reset.addActionListener(e ->
 		{
-			overallGp -= box.getTotalPrice();
-			overallKills -= 1;
+			overallGp -= log.getTotalPrice();
+			overallKills -= log.getTotalKills();
 			updateOverall();
-			logsContainer.remove(box);
+
+			lootMap.remove(mapKey);
+			logsContainer.remove(log);
 			logsContainer.repaint();
 		});
 
@@ -163,7 +215,7 @@ class LootTrackerPanel extends PluginPanel
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		popupMenu.add(reset);
-		box.setComponentPopupMenu(popupMenu);
+		log.setComponentPopupMenu(popupMenu);
 	}
 
 	private void updateOverall()

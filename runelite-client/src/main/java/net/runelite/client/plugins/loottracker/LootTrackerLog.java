@@ -29,6 +29,9 @@ import com.google.common.base.Strings;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -40,57 +43,72 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.StackFormatter;
 
 @Getter
-class LootTrackerBox extends JPanel
+class LootTrackerLog extends JPanel
 {
 	private static final int ITEMS_PER_ROW = 5;
-	private final long totalPrice;
 
-	LootTrackerBox(final ItemManager itemManager, final String title, final String subTitle, final LootTrackerItemEntry[] items)
+	private final JLabel priceLabel = new JLabel();
+	private final JLabel subTitleLabel = new JLabel();
+	private final JPanel itemContainer = new JPanel();
+
+	private final ArrayList<LootTrackerEntry> entries = new ArrayList<>();
+
+	private ItemManager itemManager;
+
+	private long totalPrice;
+	private int totalKills;
+
+	LootTrackerLog(final ItemManager itemManager, LootTrackerEntry entry)
 	{
+		this.itemManager = itemManager;
+
 		setLayout(new BorderLayout(0, 1));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
 
-		final JPanel logTitle = new JPanel(new BorderLayout(5, 0));
+		final JPanel logTitle = new JPanel(new BorderLayout(3, 0));
 		logTitle.setBorder(new EmptyBorder(7, 7, 7, 7));
 		logTitle.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
 
-		final JLabel titleLabel = new JLabel(title);
+		final JLabel titleLabel = new JLabel(entry.getTitle());
 		titleLabel.setFont(FontManager.getRunescapeSmallFont());
 		titleLabel.setForeground(Color.WHITE);
 
 		logTitle.add(titleLabel, BorderLayout.WEST);
 
 		// If we have subtitle, add it
-		if (!Strings.isNullOrEmpty(subTitle))
+		if (!Strings.isNullOrEmpty(entry.getSubTitle()))
 		{
-			final JLabel subTitleLabel = new JLabel(subTitle);
+			subTitleLabel.setText(entry.getSubTitle());
 			subTitleLabel.setFont(FontManager.getRunescapeSmallFont());
 			subTitleLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 			logTitle.add(subTitleLabel, BorderLayout.CENTER);
 		}
 
-		totalPrice = calculatePrice(items);
+		priceLabel.setFont(FontManager.getRunescapeSmallFont());
+		priceLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+		logTitle.add(priceLabel, BorderLayout.EAST);
 
-		if (totalPrice > 0)
-		{
-			final JLabel priceLabel = new JLabel(StackFormatter.quantityToStackSize(totalPrice) + " gp");
-			priceLabel.setFont(FontManager.getRunescapeSmallFont());
-			priceLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
-			logTitle.add(priceLabel, BorderLayout.EAST);
-		}
+		addEntry(entry);
 
+		add(logTitle, BorderLayout.NORTH);
+		add(itemContainer, BorderLayout.CENTER);
+	}
+
+	private void rebuildItemContainer(LootTrackerEntry entry)
+	{
 		// Calculates how many rows need to be display to fit all items
-		final int rowSize = ((items.length % ITEMS_PER_ROW == 0) ? 0 : 1) + items.length / ITEMS_PER_ROW;
-		final JPanel itemContainer = new JPanel(new GridLayout(rowSize, ITEMS_PER_ROW, 1, 1));
+		final int rowSize = ((entry.getItems().length % ITEMS_PER_ROW == 0) ? 0 : 1) + entry.getItems().length / ITEMS_PER_ROW;
+		itemContainer.removeAll();
+		itemContainer.setLayout(new GridLayout(rowSize, ITEMS_PER_ROW, 1, 1));
 
 		for (int i = 0; i < rowSize * ITEMS_PER_ROW; i++)
 		{
 			final JPanel slotContainer = new JPanel();
 			slotContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-			if (i < items.length)
+			if (i < entry.getItems().length)
 			{
-				final LootTrackerItemEntry item = items[i];
+				final LootTrackerItemEntry item = entry.getItems()[i];
 				final JLabel imageLabel = new JLabel();
 				imageLabel.setToolTipText(buildToolTip(item));
 				imageLabel.setVerticalAlignment(SwingConstants.CENTER);
@@ -101,9 +119,67 @@ class LootTrackerBox extends JPanel
 
 			itemContainer.add(slotContainer);
 		}
+	}
 
-		add(logTitle, BorderLayout.NORTH);
-		add(itemContainer, BorderLayout.CENTER);
+	public LootTrackerEntry createCombinedEntry()
+	{
+		final List<LootTrackerItemEntry> list = new ArrayList<>();
+
+		for (LootTrackerEntry entry : entries)
+		{
+			for (final LootTrackerItemEntry item : entry.getItems())
+			{
+				int quantity = 0;
+				for (final LootTrackerItemEntry i : list)
+				{
+					if (i.getId() == item.getId())
+					{
+						quantity = i.getQuantity();
+						list.remove(i);
+						break;
+					}
+				}
+				if (quantity > 0)
+				{
+					int newQuantity = item.getQuantity() + quantity;
+					long pricePerItem = item.getPrice() == 0 ? 0 : (item.getPrice() / item.getQuantity());
+
+					list.add(new LootTrackerItemEntry(item.getId(), item.getName(), newQuantity, pricePerItem * newQuantity));
+				}
+				else
+				{
+					list.add(item);
+				}
+			}
+		}
+
+		list.sort((i1, i2) -> i1.getPrice() < i2.getPrice() ? 1 : -1);
+
+		String title = entries.get(0).getTitle();
+		String subTitle = entries.get(0).getSubTitle();
+		LootTrackerItemEntry[] items = list.toArray(new LootTrackerItemEntry[list.size()]);
+
+		return new LootTrackerEntry(title, subTitle, System.currentTimeMillis(), items);
+	}
+
+	public void addEntry(LootTrackerEntry entry)
+	{
+		entries.add(entry);
+
+		totalPrice = calculatePrice();
+		totalKills++;
+
+		if (totalPrice > 0)
+		{
+			priceLabel.setText(StackFormatter.quantityToStackSize(totalPrice) + " gp");
+		}
+
+		if (totalKills > 1)
+		{
+			subTitleLabel.setText(" x " + totalKills);
+		}
+
+		rebuildItemContainer(createCombinedEntry());
 	}
 
 	private String buildToolTip(LootTrackerItemEntry item)
@@ -115,12 +191,15 @@ class LootTrackerBox extends JPanel
 		return name + " x " + quantity + " (" + StackFormatter.quantityToStackSize(price) + ")";
 	}
 
-	private static long calculatePrice(final LootTrackerItemEntry[] itemStacks)
+	private long calculatePrice()
 	{
 		long total = 0;
-		for (LootTrackerItemEntry itemStack : itemStacks)
+		for (LootTrackerEntry entry : entries)
 		{
-			total += itemStack.getPrice();
+			for (LootTrackerItemEntry itemStack : entry.getItems())
+			{
+				total += itemStack.getPrice();
+			}
 		}
 		return total;
 	}
