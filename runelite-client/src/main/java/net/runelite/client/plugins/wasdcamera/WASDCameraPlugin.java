@@ -89,7 +89,7 @@ public class WASDCameraPlugin extends Plugin
 		{
 			if (client.getGameState() == GameState.LOGGED_IN)
 			{
-				unlockChat();
+				unlockChat(false);
 			}
 		});
 
@@ -153,7 +153,7 @@ public class WASDCameraPlugin extends Plugin
 		}
 	}
 
-	void unlockChat()
+	void unlockChat(boolean cc)
 	{
 		Widget chatboxParent = client.getWidget(WidgetInfo.CHATBOX_PARENT);
 		if (chatboxParent != null)
@@ -165,7 +165,7 @@ public class WASDCameraPlugin extends Plugin
 			{
 				if (client.getGameState() == GameState.LOGGED_IN)
 				{
-					chatboxInput.setText(client.getLocalPlayer().getName() + ": <col=0000ff>*</col>");
+					chatboxInput.setText(client.getLocalPlayer().getName() + (cc ? ": /" : ": <col=0000ff>*</col>"));
 				}
 			}
 		}
