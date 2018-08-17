@@ -42,7 +42,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Player Indicators"
+	name = "Player Indicators",
+	description = "Highlight players on-screen and/or on the minimap",
+	tags = {"highlight", "minimap", "overlay", "players"}
 )
 public class PlayerIndicatorsPlugin extends Plugin
 {
@@ -54,6 +56,9 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 	@Inject
 	private PlayerIndicatorsOverlay playerIndicatorsOverlay;
+
+	@Inject
+	private PlayerIndicatorsTileOverlay playerIndicatorsTileOverlay;
 
 	@Inject
 	private PlayerIndicatorsMinimapOverlay playerIndicatorsMinimapOverlay;
@@ -74,6 +79,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(playerIndicatorsOverlay);
+		overlayManager.add(playerIndicatorsTileOverlay);
 		overlayManager.add(playerIndicatorsMinimapOverlay);
 	}
 
@@ -81,6 +87,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(playerIndicatorsOverlay);
+		overlayManager.remove(playerIndicatorsTileOverlay);
 		overlayManager.remove(playerIndicatorsMinimapOverlay);
 	}
 

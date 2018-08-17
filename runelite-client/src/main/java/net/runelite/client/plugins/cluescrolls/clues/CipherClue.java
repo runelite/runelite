@@ -33,7 +33,6 @@ import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.CLUE_SCROLL_IMAGE;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -47,10 +46,10 @@ public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScr
 		new CipherClue("The cipher reveals who to speak to next: BMJ UIF LFCBC TFMMFS", "Ali the Kebab seller", new WorldPoint(3354, 2974, 0), "Pollnivneach", "399"),
 		new CipherClue("The cipher reveals who to speak to next: GUHCHO", "Drezel", new WorldPoint(3440, 9895, 0), "Paterdomus", "7"),
 		new CipherClue("The cipher reveals who to speak to next: ZCZL", "Adam", new WorldPoint(3227, 3227, 0), "Outside Lumbridge castle", "666"),
-		new CipherClue("The cipher reveals who to speak to next: ZHLUG ROG PDQ", "Weird Old Man", new WorldPoint(3224, 3112, 0), "Kalphite Lair entrance", "150"),
+		new CipherClue("The cipher reveals who to speak to next: ZHLUG ROG PDQ", "Weird Old Man", new WorldPoint(3224, 3112, 0), "Kalphite Lair entrance. Fairy ring BIQ", "150"),
 		new CipherClue("The cipher reveals who to speak to next: ECRVCKP MJCNGF", "Captain Khaled", new WorldPoint(1845, 3754, 0), "Large eastern building in Piscarilius House", "5"),
 		new CipherClue("The cipher reveals who to speak to next: OVEXON", "Eluned", new WorldPoint(2289, 3144, 0), "Outside Lletya", "53,000"),
-		new CipherClue("The cipher reveals who to speak to next: VTYR APCNTGLW", "King Percival", new WorldPoint(2634, 4682, 1), "Fisher Realm, first floor", "5"),
+		new CipherClue("The cipher reveals who to speak to next: VTYR APCNTGLW", "King Percival", new WorldPoint(2634, 4682, 1), "Fisher Realm, first floor. Fairy ring BJR", "5"),
 		new CipherClue("The cipher reveals who to speak to next: UZZU MUJHRKYYKJ", "Otto Godblessed", new WorldPoint(2501, 3487, 0), "Otto's Grotto", "3"),
 		new CipherClue("The cipher reveals who to speak to next: USBJCPSO", "Traiborn", new WorldPoint(3112, 3162, 0), "First floor of Wizards Tower", "3150"),
 		new CipherClue("The cipher reveals who to speak to next: HCKTA IQFHCVJGT", "Fairy Godfather", new WorldPoint(2446, 4428, 0), "Zanaris throne room", "64"),
@@ -112,7 +111,7 @@ public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScr
 		{
 			for (NPC npc : plugin.getNpcsToMark())
 			{
-				OverlayUtil.renderActorOverlayImage(graphics, npc, CLUE_SCROLL_IMAGE, Color.ORANGE, IMAGE_Z_OFFSET);
+				OverlayUtil.renderActorOverlayImage(graphics, npc, plugin.getClueScrollImage(), Color.ORANGE, IMAGE_Z_OFFSET);
 			}
 		}
 	}

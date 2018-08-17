@@ -28,11 +28,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.SpriteID;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -40,30 +39,29 @@ import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
-@Slf4j
 public class FightCaveOverlay extends Overlay
 {
 	private static final Color NOT_ACTIVATED_BACKGROUND_COLOR = new Color(150, 0, 0, 150);
 
 	private final Client client;
 	private final FightCavePlugin plugin;
+	private final SpriteManager spriteManager;
 	private final PanelComponent imagePanelComponent = new PanelComponent();
-	private BufferedImage protectFromMagicImg;
-	private BufferedImage protectFromMissilesImg;
 
 	@Inject
-	FightCaveOverlay(Client client, FightCavePlugin plugin)
+	private FightCaveOverlay(Client client, FightCavePlugin plugin, SpriteManager spriteManager)
 	{
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		setPriority(OverlayPriority.HIGH);
 		this.client = client;
 		this.plugin = plugin;
+		this.spriteManager = spriteManager;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		JadAttack attack = plugin.getAttack();
+		final JadAttack attack = plugin.getAttack();
 
 		if (attack == null)
 		{
@@ -83,43 +81,7 @@ public class FightCaveOverlay extends Overlay
 
 	private BufferedImage getPrayerImage(JadAttack attack)
 	{
-		return attack == JadAttack.MAGIC ? getProtectFromMagicImage() : getProtectFromMissilesImage();
-	}
-
-	private BufferedImage getProtectFromMagicImage()
-	{
-		if (protectFromMagicImg == null)
-		{
-			String path = "/prayers/protect_from_magic.png";
-			protectFromMagicImg = getImage(path);
-		}
-		return protectFromMagicImg;
-	}
-
-	private BufferedImage getProtectFromMissilesImage()
-	{
-		if (protectFromMissilesImg == null)
-		{
-			String path = "/prayers/protect_from_missiles.png";
-			protectFromMissilesImg = getImage(path);
-		}
-		return protectFromMissilesImg;
-	}
-
-	private BufferedImage getImage(String path)
-	{
-		BufferedImage image = null;
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				image = ImageIO.read(FightCaveOverlay.class.getResourceAsStream(path));
-			}
-		}
-		catch (IOException e)
-		{
-			log.warn("Error loading image", e);
-		}
-		return image;
+		final int prayerSpriteID = attack == JadAttack.MAGIC ? SpriteID.PRAYER_PROTECT_FROM_MAGIC : SpriteID.PRAYER_PROTECT_FROM_MISSILES;
+		return spriteManager.getSprite(prayerSpriteID, 0);
 	}
 }

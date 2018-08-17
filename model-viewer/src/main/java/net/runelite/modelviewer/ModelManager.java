@@ -24,14 +24,18 @@
  */
 package net.runelite.modelviewer;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
+import net.runelite.cache.IndexType;
 import net.runelite.cache.definitions.ModelDefinition;
 import net.runelite.cache.definitions.ObjectDefinition;
 import net.runelite.cache.definitions.loaders.ModelLoader;
+import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Storage;
+import net.runelite.cache.fs.Store;
 import net.runelite.cache.region.Location;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,90 +44,138 @@ public class ModelManager
 {
 	private static final Logger logger = LoggerFactory.getLogger(ModelManager.class);
 
-	private static Map<LocationKey, ModelDefinition> models = new HashMap<>();
+	private final Store store;
+	private final Map<ModelKey, ModelDefinition> models = new HashMap<>();
+	private final ModelLoader loader = new ModelLoader();
 
-	public static ModelDefinition getModel(int id, ObjectDefinition object, Location location)
+	public ModelManager(Store store)
 	{
-		LocationKey key;
+		this.store = store;
+	}
 
-		int rot = location.getOrientation();
+	public ModelDefinition getModel(int id)
+	{
+		return this.getModel(new ModelKey(id, -1, -1, -1), null);
+	}
 
+	public ModelDefinition getModel(int id, ObjectDefinition object, Location location)
+	{
+		final int type, rot;
 		if (location != null)
 		{
-			key = new LocationKey(id, location.getType(), rot);
+			type = location.getType();
+			rot = location.getOrientation();
 		}
 		else
 		{
-			key = new LocationKey(id, -1, -1);
+			type = rot = 0;
 		}
+		return this.getModel(new ModelKey(id, object.getId(), type, rot), md ->
+		{
+			// this logic is from method3697 in 140
+			if (object.getObjectTypes() == null)
+			{
+				boolean isRotate = object.isRotated();
 
+				if (type == 2 && rot > 3)
+				{
+					isRotate = !isRotate;
+				}
+
+				if (isRotate)
+				{
+					md.method1493();
+				}
+			}
+			else
+			{
+				boolean isRotate = object.isRotated() ^ rot > 3;
+
+				if (isRotate)
+				{
+					md.method1493();
+				}
+			}
+
+			if (type == 4 && rot > 3)
+			{
+				md.rotate(256);
+				md.move(45, 0, -45);
+			}
+			switch (rot & 3)
+			{
+				case 1:
+					md.rotate1();
+					break;
+				case 2:
+					md.rotate2();
+					break;
+				case 3:
+					md.rotate3();
+					break;
+			}
+			short[] recolorToFind = object.getRecolorToFind();
+			if (recolorToFind != null)
+			{
+				short[] recolorToReplace = object.getRecolorToReplace();
+				for (int i = 0; i < recolorToFind.length; ++i)
+				{
+					md.recolor(recolorToFind[i], recolorToReplace[i]);
+				}
+			}
+			short[] retextureToFind = object.getRetextureToFind();
+			if (retextureToFind != null)
+			{
+				short[] textureToReplace = object.getTextureToReplace();
+				for (int i = 0; i < retextureToFind.length; ++i)
+				{
+					md.retexture(retextureToFind[i], textureToReplace[i]);
+				}
+			}
+
+			if (object.getModelSizeX() != 128 || object.getModelSizeHeight() != 128 || object.getModelSizeY() != 128)
+			{
+				md.resize(object.getModelSizeX(), object.getModelSizeHeight(), object.getModelSizeY());
+			}
+
+			if (object.getOffsetX() != 0 || object.getOffsetHeight() != 0 || object.getOffsetY() != 0)
+			{
+				md.move((short) object.getOffsetX(), (short) object.getOffsetHeight(), (short) object.getOffsetY());
+			}
+		});
+	}
+
+	private ModelDefinition getModel(ModelKey key, Consumer<ModelDefinition> loadConsumer)
+	{
 		ModelDefinition md = models.get(key);
 		if (md != null)
 		{
 			return md;
 		}
 
+		Storage storage = store.getStorage();
+		Index index = store.getIndex(IndexType.MODELS);
+
+		Archive modelArchive = index.getArchive(key.getModelId());
+		byte[] contents;
 		try
 		{
-			byte[] b = Files.readAllBytes(new File("models/" + id + ".model").toPath());
-
-			ModelLoader loader = new ModelLoader();
-			md = loader.load(id, b);
-
-			if (object != null && location != null)
-			{
-				rotate(md, object, location, rot);
-				md.computeNormals();
-			}
-
-			models.put(key, md);
-			return md;
+			contents = modelArchive.decompress(storage.loadArchive(modelArchive));
 		}
-		catch (IOException ex)
+		catch (IOException e)
 		{
-			logger.warn(null, ex);
-			return null;
+			throw new RuntimeException(e);
 		}
-	}
 
-	// this logic is from method3697 in 140
-	private static void rotate(ModelDefinition md, ObjectDefinition object, Location location, int rot)
-	{
-		if (object.getObjectTypes() == null)
+		md = loader.load(modelArchive.getArchiveId(), contents);
+
+		if (loadConsumer != null)
 		{
-			boolean isRotate = object.isRotated();
-
-			if (location.getType() == 2 && rot > 3)
-			{
-				isRotate = !isRotate;
-			}
-
-			if (isRotate)
-			{
-				md.method1493();
-			}
+			loadConsumer.accept(md);
 		}
-		else
-		{
-			boolean isRotate = object.isRotated() ^ rot > 3;
-
-			if (isRotate)
-			{
-				md.method1493();
-			}
-		}
-
-		switch (rot & 3)
-		{
-			case 1:
-				md.rotate1();
-				break;
-			case 2:
-				md.rotate2();
-				break;
-			case 3:
-				md.rotate3();
-				break;
-		}
+		md.computeNormals();
+		md.computeMaxPriority();
+		models.put(key, md);
+		return md;
 	}
 }

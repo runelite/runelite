@@ -34,7 +34,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -61,9 +60,10 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Demonic Gorillas"
+	name = "Demonic Gorillas",
+	description = "Count demonic gorilla attacks and display their next possible attack styles",
+	tags = {"combat", "overlay"}
 )
-@Slf4j
 public class DemonicGorillaPlugin extends Plugin
 {
 	@Inject
@@ -95,7 +95,7 @@ public class DemonicGorillaPlugin extends Plugin
 		recentBoulders = new ArrayList<>();
 		pendingAttacks = new ArrayList<>();
 		memorizedPlayers = new HashMap<>();
-		clientThread.invokeLater(this::reset); // Updates the list of gorillas and players
+		clientThread.invoke(this::reset); // Updates the list of gorillas and players
 	}
 
 	@Override

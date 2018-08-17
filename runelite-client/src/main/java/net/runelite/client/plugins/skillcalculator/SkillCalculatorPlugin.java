@@ -26,7 +26,6 @@
 package net.runelite.client.plugins.skillcalculator;
 
 import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.client.game.ItemManager;
@@ -36,9 +35,14 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.util.ImageUtil;
 
-@PluginDescriptor(name = "Skill Calculator")
+@PluginDescriptor(
+	name = "Skill Calculator",
+	description = "Enable the Skill Calculator panel",
+	tags = {"panel", "skilling"}
+)
 public class SkillCalculatorPlugin extends Plugin
 {
 	@Inject
@@ -57,7 +61,7 @@ public class SkillCalculatorPlugin extends Plugin
 	private SpriteManager spriteManager;
 
 	@Inject
-	private PluginToolbar pluginToolbar;
+	private ClientToolbar clientToolbar;
 
 	private NavigationButton uiNavigationButton;
 	private SkillCalculatorPanel uiPanel;
@@ -65,11 +69,7 @@ public class SkillCalculatorPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		BufferedImage icon;
-		synchronized (ImageIO.class)
-		{
-			icon = ImageIO.read(getClass().getResourceAsStream("calc.png"));
-		}
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "calc.png");
 
 		SkillCalculator.spriteManager = spriteManager;
 		SkillCalculator.itemManager = itemManager;
@@ -81,12 +81,12 @@ public class SkillCalculatorPlugin extends Plugin
 			.priority(6)
 			.panel(uiPanel)
 			.build();
-		pluginToolbar.addNavigation(uiNavigationButton);
+		clientToolbar.addNavigation(uiNavigationButton);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		pluginToolbar.removeNavigation(uiNavigationButton);
+		clientToolbar.removeNavigation(uiNavigationButton);
 	}
 }

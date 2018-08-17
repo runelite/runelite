@@ -80,7 +80,7 @@ class UIActionSlot extends JPanel
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
-	private int value = 0;
+	private double value = 0;
 
 	UIActionSlot(SkillDataEntry action)
 	{

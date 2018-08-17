@@ -32,7 +32,7 @@ import lombok.Getter;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import static net.runelite.api.ObjectID.CONVEYOR_BELT;
-import static net.runelite.api.ObjectID.NULL_9092;
+import static net.runelite.api.NullObjectID.NULL_9092;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
@@ -42,7 +42,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Blast Furnace"
+	name = "Blast Furnace",
+	description = "Show helpful information for the Blast Furnace minigame",
+	tags = {"minigame", "overlay", "skilling", "smithing"}
 )
 public class BlastFurnacePlugin extends Plugin
 {

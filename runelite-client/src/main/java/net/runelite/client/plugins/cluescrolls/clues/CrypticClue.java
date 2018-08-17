@@ -33,12 +33,11 @@ import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
 import net.runelite.api.ObjectComposition;
 import static net.runelite.api.ObjectID.*;
+import static net.runelite.api.NullObjectID.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.CLUE_SCROLL_IMAGE;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.SPADE_IMAGE;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_BORDER_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_FILL_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_HOVER_BORDER_COLOR;
@@ -78,7 +77,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("A town with a different sort of night-life is your destination. Search for some crates in one of the houses.", CRATE_24344, new WorldPoint(3498, 3507, 0), "Search the crate inside of the clothes shop in Canifis."),
 		new CrypticClue("Stop crying! Talk to the head.", "Head mourner", new WorldPoint(2042, 4630, 0), "Talk to the Head mourner in the mourner headquarters in West Ardougne"),
 		new CrypticClue("Search the crate near a cart in Port Khazard.", CRATE_366, new WorldPoint(2660, 3149, 0), "Search by the southern Khazard General Store in Port Khazard."),
-		new CrypticClue("Speak to the bartender of the Blue Moon Inn in Varrock.", "Blue Moon Inn", new WorldPoint(3226, 3399, 0), "Talk to the bartender in Blue Moon Inn in Varrock."),
+		new CrypticClue("Speak to the bartender of the Blue Moon Inn in Varrock.", "Bartender", new WorldPoint(3226, 3399, 0), "Talk to the bartender in Blue Moon Inn in Varrock."),
 		new CrypticClue("This aviator is at the peak of his profession.", "Captain Bleemadge", new WorldPoint(2846, 1749, 0), "Captain Bleemadge, the gnome glider pilot, is found at the top of White Wolf Mountain."),
 		new CrypticClue("Search the crates in the shed just north of East Ardougne.", CRATE_355, new WorldPoint(2617, 3347, 0), "The crates in the shed north of the northern Ardougne bank."),
 		new CrypticClue("I wouldn't wear this jean on my legs.", "Father Jean", new WorldPoint(1697, 3574, 0), "Talk to father Jean in the Hosidius church"),
@@ -144,7 +143,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the Coffin in Edgeville.", COFFIN, new WorldPoint(3091, 3477, 0), "Search the coffin located by the Wilderness teleport lever."),
 		new CrypticClue("When no weapons are at hand, then is the time to reflect. In Saradomin's name, redemption draws closer...", DRAWERS_350, new WorldPoint(2818, 3351, 0), "On Entrana, search the southern drawer in the house with the cooking range."),
 		new CrypticClue("Search the crates in a house in Yanille that has a piano.", CRATE_357, new WorldPoint(2598, 3105, 0), "The house is located northwest of the bank."),
-		new CrypticClue("Speak to the staff of Sinclair mansion.", "Louisa", new WorldPoint(2736, 3578, 0), "Speak to Louisa, on the ground floor, found at the Sinclair Mansion."),
+		new CrypticClue("Speak to the staff of Sinclair mansion.", "Louisa", new WorldPoint(2736, 3578, 0), "Speak to Louisa, on the ground floor, found at the Sinclair Mansion. Fairy ring CJR"),
 		new CrypticClue("I am a token of the greatest love. I have no beginning or end. My eye is red, I can fit like a glove. Go to the place where it's money they lend, And dig by the gate to be my friend.", new WorldPoint(3191, 9825, 0), "Dig by the gate in the basement of the West Varrock bank."),
 		new CrypticClue("Speak to Kangai Mau.", "Kangai Mau", new WorldPoint(2791, 3183, 0), "Kangai Mau is found in the Shrimp and Parrot in Brimhaven."),
 		new CrypticClue("Speak to Hajedy.", "Hajedy", new WorldPoint(2779, 3211, 0), "Hajedy is found by the cart, located just south of the Brimhaven docks."),
@@ -390,7 +389,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 
 			if (localLocation != null)
 			{
-				OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, SPADE_IMAGE, Color.ORANGE);
+				OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, plugin.getSpadeImage(), Color.ORANGE);
 			}
 		}
 
@@ -399,7 +398,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		{
 			for (NPC npc : plugin.getNpcsToMark())
 			{
-				OverlayUtil.renderActorOverlayImage(graphics, npc, CLUE_SCROLL_IMAGE, Color.ORANGE, IMAGE_Z_OFFSET);
+				OverlayUtil.renderActorOverlayImage(graphics, npc, plugin.getClueScrollImage(), Color.ORANGE, IMAGE_Z_OFFSET);
 			}
 		}
 
@@ -415,7 +414,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 					OverlayUtil.renderHoverableArea(graphics, gameObject.getClickbox(), mousePosition,
 							CLICKBOX_FILL_COLOR, CLICKBOX_BORDER_COLOR, CLICKBOX_HOVER_BORDER_COLOR);
 
-					OverlayUtil.renderImageLocation(plugin.getClient(), graphics, gameObject.getLocalLocation(), CLUE_SCROLL_IMAGE, IMAGE_Z_OFFSET);
+					OverlayUtil.renderImageLocation(plugin.getClient(), graphics, gameObject.getLocalLocation(), plugin.getClueScrollImage(), IMAGE_Z_OFFSET);
 				}
 			}
 		}

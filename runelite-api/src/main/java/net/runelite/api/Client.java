@@ -33,15 +33,30 @@ import javax.annotation.Nullable;
 import net.runelite.api.annotations.VisibleForDevtools;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.hooks.Callbacks;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import org.slf4j.Logger;
 
 /**
  * Represents the RuneScape client.
  */
 public interface Client extends GameEngine
 {
+	/**
+	 * The client invokes these callbacks to communicate to
+	 * @return
+	 */
+	Callbacks getCallbacks();
+
+	/**
+	 * Retrieve a global logger for the client.
+	 * This is most useful for mixins which can't have their own.
+	 * @return
+	 */
+	Logger getLogger();
+
 	/**
 	 * Gets a list of all valid players from the player cache.
 	 *
@@ -85,6 +100,13 @@ public interface Client extends GameEngine
 	 * @return the skill level
 	 */
 	int getRealSkillLevel(Skill skill);
+
+	/**
+	 * Calculates the total level from real skill levels.
+	 *
+	 * @return the total level
+	 */
+	int getTotalLevel();
 
 	/**
 	 * Adds a new chat message to the chatbox.
@@ -261,11 +283,9 @@ public interface Client extends GameEngine
 	int getPlane();
 
 	/**
-	 * Gets the current region the local player is in.
-	 *
-	 * @return the region
+	 * Gets the current scene
 	 */
-	Region getRegion();
+	Scene getScene();
 
 	/**
 	 * Gets the logged in player instance.
@@ -298,14 +318,14 @@ public interface Client extends GameEngine
 	SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted, int scale);
 
 	/**
-	 * Loads and creates the sprite image of the passed archive and file IDs.
+	 * Loads and creates the sprite images of the passed archive and file IDs.
 	 *
 	 * @param source the sprite database
 	 * @param archiveId the sprites archive ID
 	 * @param fileId the sprites file ID
 	 * @return the sprite image of the file
 	 */
-	SpritePixels getSprite(IndexDataBase source, int archiveId, int fileId);
+	SpritePixels[] getSprites(IndexDataBase source, int archiveId, int fileId);
 
 	/**
 	 * Gets the sprite index database.
@@ -315,11 +335,17 @@ public interface Client extends GameEngine
 	IndexDataBase getIndexSprites();
 
 	/**
+	 * Gets the script index database.
+	 *
+	 * @return the script database
+	 */
+	IndexDataBase getIndexScripts();
+
+	/**
 	 * Returns the x-axis base coordinate.
 	 * <p>
 	 * This value is the x-axis world coordinate of tile (0, 0) in
-	 * the current scene (ie. the bottom-left most coordinates in
-	 * the rendered region).
+	 * the current scene (ie. the bottom-left most coordinates in the scene).
 	 *
 	 * @return the base x-axis coordinate
 	 */
@@ -329,8 +355,7 @@ public interface Client extends GameEngine
 	 * Returns the y-axis base coordinate.
 	 * <p>
 	 * This value is the y-axis world coordinate of tile (0, 0) in
-	 * the current scene (ie. the bottom-left most coordinates in
-	 * the rendered region).
+	 * the current scene (ie. the bottom-left most coordinates in the scene).
 	 *
 	 * @return the base y-axis coordinate
 	 */
@@ -344,12 +369,11 @@ public interface Client extends GameEngine
 	int getMouseCurrentButton();
 
 	/**
-	 * Gets the currently selected region tile (ie. last right clicked
-	 * tile).
+	 * Gets the currently selected tile (ie. last right clicked tile).
 	 *
-	 * @return the selected region tile
+	 * @return the selected tile
 	 */
-	Tile getSelectedRegionTile();
+	Tile getSelectedSceneTile();
 
 	/**
 	 * Checks whether a widget is currently being dragged.
@@ -396,15 +420,6 @@ public interface Client extends GameEngine
 	 * @return the widget
 	 */
 	Widget getWidget(WidgetInfo widget);
-
-	/**
-	 * Gets an array of widgets that correspond to the passed group ID.
-	 *
-	 * @param groupId the group ID
-	 * @return the widget group
-	 * @see net.runelite.api.widgets.WidgetID
-	 */
-	Widget[] getGroup(int groupId);
 
 	/**
 	 * Gets a widget by its raw group ID and child ID.
@@ -654,6 +669,28 @@ public interface Client extends GameEngine
 	int getVarbitValue(int[] varps, int varbitId);
 
 	/**
+	 * Gets the value of a given VarPlayer.
+	 *
+	 * @param varps passed varps
+	 * @param varpId the VarpPlayer id
+	 * @return the value
+	 * @see VarPlayer#id
+	 */
+	@VisibleForDevtools
+	int getVarpValue(int[] varps, int varpId);
+
+	/**
+	 * Sets the value of a given VarPlayer.
+	 *
+	 * @param varps passed varps
+	 * @param varpId the VarpPlayer id
+	 * @param value the value
+	 * @see VarPlayer#id
+	 */
+	@VisibleForDevtools
+	void setVarpValue(int[] varps, int varpId, int value);
+
+	/**
 	 * Sets the value of a given variable.
 	 *
 	 * @param varps passed varbits
@@ -677,7 +714,7 @@ public interface Client extends GameEngine
 	 * @return the widget node component table
 	 * @see WidgetNode
 	 */
-	HashTable getComponentTable();
+	HashTable<WidgetNode> getComponentTable();
 
 	/**
 	 * Gets an array of current grand exchange offers.
@@ -1389,4 +1426,22 @@ public interface Client extends GameEngine
 	 * @param state boolean enabled value
 	 */
 	void setOculusOrbState(int state);
+
+	/**
+	 * Sets the normal moving speed when using oculus orb (default value is 12)
+	 *
+	 * @param speed speed
+	 */
+	void setOculusOrbNormalSpeed(int speed);
+
+	/**
+	 * Opens in-game world hopper interface
+	 */
+	void openWorldHopper();
+
+	/**
+	 * Hops using in-game world hopper widget to another world
+	 * @param world target world to hop to
+	 */
+	void hopToWorld(World world);
 }

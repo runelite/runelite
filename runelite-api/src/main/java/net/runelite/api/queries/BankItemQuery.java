@@ -61,15 +61,16 @@ public class BankItemQuery extends WidgetItemQuery
 			Widget[] children = bank.getDynamicChildren();
 			for (int i = 0; i < children.length; i++)
 			{
-				if (children[i].getItemId() == ITEM_EMPTY || children[i].isHidden())
+				Widget child = children[i];
+				if (child.getItemId() == ITEM_EMPTY || child.isSelfHidden())
 				{
 					continue;
 				}
 				// set bounds to same size as default inventory
-				Rectangle bounds = children[i].getBounds();
+				Rectangle bounds = child.getBounds();
 				bounds.setBounds(bounds.x - 1, bounds.y - 1, 32, 32);
 				// Index is set to 0 because the widget's index does not correlate to the order in the bank
-				widgetItems.add(new WidgetItem(children[i].getItemId(), children[i].getItemQuantity(), 0, bounds));
+				widgetItems.add(new WidgetItem(child.getItemId(), child.getItemQuantity(), 0, bounds));
 			}
 		}
 		return widgetItems;

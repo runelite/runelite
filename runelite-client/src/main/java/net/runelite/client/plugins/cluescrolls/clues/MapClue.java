@@ -40,8 +40,6 @@ import static net.runelite.api.ObjectID.CRATE_6616;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.CLUE_SCROLL_IMAGE;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.SPADE_IMAGE;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_BORDER_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_FILL_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_HOVER_BORDER_COLOR;
@@ -82,16 +80,17 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 		new MapClue(CLUE_SCROLL_HARD_7239, new WorldPoint(3021, 3912, 0)),
 		new MapClue(CLUE_SCROLL_HARD_7241, new WorldPoint(2722, 3338, 0)),
 		new MapClue(CLUE_SCROLL_ELITE_12130, new WorldPoint(2449, 3130, 0)),
-		new MapClue(CLUE_SCROLL_ELITE_19782, new WorldPoint(2953, 9523, 1)),
+		new MapClue(CLUE_SCROLL_ELITE_19782, new WorldPoint(2953, 9523, 1), "In the Mogre Camp, near Port Khazard. You require a Diving Apparatus and a Fishbowl Helmet"),
 		new MapClue(CLUE_SCROLL_ELITE_19783, new WorldPoint(2202, 3062, 0)),
 		new MapClue(CLUE_SCROLL_ELITE_19784, new WorldPoint(1815, 3852, 0)),
 		new MapClue(CLUE_SCROLL_ELITE_19785, new WorldPoint(3538, 3208, 0)),
 		new MapClue(CLUE_SCROLL_ELITE_19786, new WorldPoint(2703, 2716, 0), CRATE_6616)
 	);
 
-	private int itemId;
-	private WorldPoint location;
-	private int objectId;
+	private final int itemId;
+	private final WorldPoint location;
+	private final int objectId;
+	private final String description;
 
 	private MapClue(int itemId, WorldPoint location)
 	{
@@ -100,9 +99,20 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 
 	private MapClue(int itemId, WorldPoint location, int objectId)
 	{
+		this(itemId, location, objectId, null);
+	}
+
+	private MapClue(int itemId, WorldPoint location, String description)
+	{
+		this(itemId, location, -1, description);
+	}
+
+	private MapClue(int itemId, WorldPoint location, int objectId, String description)
+	{
 		this.itemId = itemId;
 		this.location = location;
 		this.objectId = objectId;
+		this.description = description;
 	}
 
 	@Override
@@ -135,6 +145,14 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 				.left("Travel to the destination and dig on the marked tile.")
 				.build());
 		}
+
+		if (description != null)
+		{
+			panelComponent.getChildren().add(LineComponent.builder().build());
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(description)
+				.build());
+		}
 	}
 
 	@Override
@@ -159,14 +177,14 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 					OverlayUtil.renderHoverableArea(graphics, gameObject.getClickbox(), mousePosition,
 						CLICKBOX_FILL_COLOR, CLICKBOX_BORDER_COLOR, CLICKBOX_HOVER_BORDER_COLOR);
 
-					OverlayUtil.renderImageLocation(plugin.getClient(), graphics, gameObject.getLocalLocation(), CLUE_SCROLL_IMAGE, IMAGE_Z_OFFSET);
+					OverlayUtil.renderImageLocation(plugin.getClient(), graphics, gameObject.getLocalLocation(), plugin.getClueScrollImage(), IMAGE_Z_OFFSET);
 				}
 			}
 		}
 		// Mark tile
 		else
 		{
-			OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, SPADE_IMAGE, Color.ORANGE);
+			OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, plugin.getSpadeImage(), Color.ORANGE);
 		}
 	}
 

@@ -192,24 +192,24 @@ public abstract class RSModelMixin implements RSModel
 					int translateZ;
 					if (type == 2)
 					{
-						int deltaX = nextTranslateX - currentTranslateX & 0x3fff;
-						int deltaY = nextTranslateY - currentTranslateY & 0x3fff;
-						int deltaZ = nextTranslateZ - currentTranslateZ & 0x3fff;
-						if (deltaX >= 8192)
+						int deltaX = nextTranslateX - currentTranslateX & 0xFF;
+						int deltaY = nextTranslateY - currentTranslateY & 0xFF;
+						int deltaZ = nextTranslateZ - currentTranslateZ & 0xFF;
+						if (deltaX >= 128)
 						{
-							deltaX -= 16384;
+							deltaX -= 256;
 						}
-						if (deltaY >= 8192)
+						if (deltaY >= 128)
 						{
-							deltaY -= 16384;
+							deltaY -= 256;
 						}
-						if (deltaZ >= 8192)
+						if (deltaZ >= 128)
 						{
-							deltaZ -= 16384;
+							deltaZ -= 256;
 						}
-						translateX = currentTranslateX + deltaX * interval / intervalCount & 0x3fff;
-						translateY = currentTranslateY + deltaY * interval / intervalCount & 0x3fff;
-						translateZ = currentTranslateZ + deltaZ * interval / intervalCount & 0x3fff;
+						translateX = currentTranslateX + deltaX * interval / intervalCount & 0xFF;
+						translateY = currentTranslateY + deltaY * interval / intervalCount & 0xFF;
+						translateZ = currentTranslateZ + deltaZ * interval / intervalCount & 0xFF;
 					}
 					else if (type == 5)
 					{
@@ -253,6 +253,7 @@ public abstract class RSModelMixin implements RSModel
 			Point p = Perspective.worldToCanvas(client,
 				localX - v.getX(),
 				localY - v.getZ(),
+				client.getPlane(),
 				-v.getY());
 			if (p != null)
 			{

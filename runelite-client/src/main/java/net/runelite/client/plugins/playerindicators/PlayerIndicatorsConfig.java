@@ -29,11 +29,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "playerindicators",
-	name = "Player Indicators",
-	description = "Configuration for the player indicators plugin"
-)
+@ConfigGroup("playerindicators")
 public interface PlayerIndicatorsConfig extends Config
 {
 	@ConfigItem(

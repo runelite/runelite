@@ -51,8 +51,6 @@ public class Camera
 		glRotatef(rotation.y, 0, 1, 0);
 		glRotatef(rotation.z, 0, 0, 1);
 		glTranslatef(-pos.x, -pos.y, -pos.z);
-
-		GL11.glPopMatrix();
 	}
 
 	public void acceptInput(float delta)

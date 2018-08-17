@@ -46,7 +46,9 @@ import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "XP Globes"
+	name = "XP Globes",
+	description = "Show XP globes for the respective skill when gaining XP",
+	tags = {"experience", "levels", "overlay"}
 )
 @PluginDependency(XpTrackerPlugin.class)
 public class XpGlobesPlugin extends Plugin
@@ -129,11 +131,8 @@ public class XpGlobesPlugin extends Plugin
 
 	public void addXpGlobe(XpGlobe xpGlobe, int maxLength)
 	{
-		if (xpGlobes.contains(xpGlobe))
-		{
-			//remove the old globe, allowing it to be readded as the most recent (right) side when drawn
-			xpGlobes.remove(xpGlobe);
-		}
+		//remove the old globe, allowing it to be readded as the most recent (right) side when drawn
+		xpGlobes.remove(xpGlobe);
 		if (getXpGlobesSize() >= maxLength)
 		{
 			xpGlobes.remove(0);

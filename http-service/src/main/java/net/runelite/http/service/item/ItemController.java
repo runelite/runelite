@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.item.Item;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
@@ -49,7 +48,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/item")
-@Slf4j
 public class ItemController
 {
 	private static final Duration CACHE_DUATION = Duration.ofMinutes(30);
@@ -168,18 +166,10 @@ public class ItemController
 		else if (priceEntry == null)
 		{
 			// Price is unknown
-			itemService.queuePriceLookup(itemId); // queue lookup
 			cachedEmpty.put(itemId, itemId);
 			return ResponseEntity.notFound()
 				.header(RUNELITE_CACHE, "MISS")
 				.build();
-		}
-
-		Instant cacheTime = now.minus(CACHE_DUATION);
-		if (priceEntry.getFetched_time().isBefore(cacheTime))
-		{
-			// Queue a check for the price
-			itemService.queuePriceLookup(itemId);
 		}
 
 		ItemPrice itemPrice = new ItemPrice();

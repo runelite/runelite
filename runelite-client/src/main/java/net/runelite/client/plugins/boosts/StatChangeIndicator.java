@@ -24,18 +24,43 @@
  */
 package net.runelite.client.plugins.boosts;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.time.temporal.ChronoUnit;
-import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
 import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
-import net.runelite.client.ui.overlay.infobox.Timer;
 
-public class StatChangeIndicator extends Timer
+public class StatChangeIndicator extends InfoBox
 {
-	public StatChangeIndicator(long period, ChronoUnit unit, BufferedImage image, Plugin plugin)
+	private final boolean up;
+	private final BoostsPlugin plugin;
+	private final BoostsConfig config;
+
+	StatChangeIndicator(boolean up, BufferedImage image, BoostsPlugin plugin, BoostsConfig config)
 	{
-		super(period, unit, image, plugin);
+		super(image, plugin);
+		this.up = up;
+		this.plugin = plugin;
+		this.config = config;
 		setPriority(InfoBoxPriority.MED);
-		setTooltip("Next stat change");
+		setTooltip(up ? "Next debuff change" : "Next buff change");
+	}
+
+	@Override
+	public String getText()
+	{
+		return String.format("%02d", plugin.getChangeTime(up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks()));
+	}
+
+	@Override
+	public Color getTextColor()
+	{
+		return (up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks()) < 10 ? Color.RED.brighter() : Color.WHITE;
+	}
+
+	@Override
+	public boolean render()
+	{
+		final int time = up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks();
+		return config.displayIndicators() && time != -1;
 	}
 }

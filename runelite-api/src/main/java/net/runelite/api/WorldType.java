@@ -56,6 +56,10 @@ public enum WorldType
 	 */
 	LAST_MAN_STANDING(1 << 14),
 	/**
+	 * Tournament world type.
+	 */
+	TOURNAMENT(1 << 25),
+	/**
 	 * Deadman world type.
 	 */
 	DEADMAN(1 << 29),

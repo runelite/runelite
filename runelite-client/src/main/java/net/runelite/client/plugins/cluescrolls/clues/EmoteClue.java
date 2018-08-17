@@ -30,391 +30,19 @@ import java.awt.Graphics2D;
 import java.util.Set;
 import lombok.Getter;
 import net.runelite.api.EquipmentInventorySlot;
-import static net.runelite.api.EquipmentInventorySlot.AMULET;
-import static net.runelite.api.EquipmentInventorySlot.BODY;
-import static net.runelite.api.EquipmentInventorySlot.BOOTS;
-import static net.runelite.api.EquipmentInventorySlot.CAPE;
-import static net.runelite.api.EquipmentInventorySlot.GLOVES;
-import static net.runelite.api.EquipmentInventorySlot.HEAD;
+import static net.runelite.api.EquipmentInventorySlot.*;
 import static net.runelite.api.EquipmentInventorySlot.LEGS;
-import static net.runelite.api.EquipmentInventorySlot.RING;
-import static net.runelite.api.EquipmentInventorySlot.SHIELD;
-import static net.runelite.api.EquipmentInventorySlot.WEAPON;
 import net.runelite.api.Item;
-import static net.runelite.api.ItemID.ABYSSAL_WHIP;
-import static net.runelite.api.ItemID.ADAMANT_2H_SWORD;
-import static net.runelite.api.ItemID.ADAMANT_BOOTS;
-import static net.runelite.api.ItemID.ADAMANT_DAGGER;
-import static net.runelite.api.ItemID.ADAMANT_FULL_HELM;
-import static net.runelite.api.ItemID.ADAMANT_HALBERD;
-import static net.runelite.api.ItemID.ADAMANT_MED_HELM;
-import static net.runelite.api.ItemID.ADAMANT_PLATEBODY;
-import static net.runelite.api.ItemID.ADAMANT_PLATELEGS;
-import static net.runelite.api.ItemID.ADAMANT_PLATESKIRT;
-import static net.runelite.api.ItemID.ADAMANT_SQ_SHIELD;
-import static net.runelite.api.ItemID.ADAMANT_SWORD;
-import static net.runelite.api.ItemID.AHRIMS_HOOD_0;
-import static net.runelite.api.ItemID.AHRIMS_HOOD_100;
-import static net.runelite.api.ItemID.AHRIMS_ROBESKIRT_0;
-import static net.runelite.api.ItemID.AHRIMS_ROBESKIRT_100;
-import static net.runelite.api.ItemID.AHRIMS_ROBETOP_0;
-import static net.runelite.api.ItemID.AHRIMS_ROBETOP_100;
-import static net.runelite.api.ItemID.AHRIMS_STAFF_0;
-import static net.runelite.api.ItemID.AHRIMS_STAFF_100;
-import static net.runelite.api.ItemID.AIR_TIARA;
-import static net.runelite.api.ItemID.AMULET_OF_GLORY;
-import static net.runelite.api.ItemID.AMULET_OF_GLORY1;
-import static net.runelite.api.ItemID.AMULET_OF_GLORY2;
-import static net.runelite.api.ItemID.AMULET_OF_GLORY3;
-import static net.runelite.api.ItemID.AMULET_OF_GLORY4;
-import static net.runelite.api.ItemID.AMULET_OF_GLORY5;
-import static net.runelite.api.ItemID.AMULET_OF_GLORY6;
-import static net.runelite.api.ItemID.AMULET_OF_POWER;
-import static net.runelite.api.ItemID.AMULET_OF_STRENGTH;
-import static net.runelite.api.ItemID.AMULET_OF_THE_DAMNED;
-import static net.runelite.api.ItemID.ANCIENT_CROZIER;
-import static net.runelite.api.ItemID.ANCIENT_MITRE;
-import static net.runelite.api.ItemID.ANCIENT_STOLE;
-import static net.runelite.api.ItemID.ARCLIGHT;
-import static net.runelite.api.ItemID.ARMADYL_CROZIER;
-import static net.runelite.api.ItemID.ARMADYL_MITRE;
-import static net.runelite.api.ItemID.ARMADYL_STOLE;
-import static net.runelite.api.ItemID.BANDOS_BOOTS;
-import static net.runelite.api.ItemID.BANDOS_CLOAK;
-import static net.runelite.api.ItemID.BANDOS_CROZIER;
-import static net.runelite.api.ItemID.BANDOS_GODSWORD;
-import static net.runelite.api.ItemID.BANDOS_MITRE;
-import static net.runelite.api.ItemID.BANDOS_PLATEBODY;
-import static net.runelite.api.ItemID.BANDOS_STOLE;
-import static net.runelite.api.ItemID.BARROWS_GLOVES;
-import static net.runelite.api.ItemID.BLACK_AXE;
-import static net.runelite.api.ItemID.BLACK_BOATER;
-import static net.runelite.api.ItemID.BLACK_CAPE;
-import static net.runelite.api.ItemID.BLACK_DHIDE_BODY;
-import static net.runelite.api.ItemID.BLACK_DHIDE_CHAPS;
-import static net.runelite.api.ItemID.BLACK_DHIDE_VAMB;
-import static net.runelite.api.ItemID.BLACK_DRAGON_MASK;
-import static net.runelite.api.ItemID.BLACK_PLATEBODY;
-import static net.runelite.api.ItemID.BLACK_SALAMANDER;
-import static net.runelite.api.ItemID.BLACK_SLAYER_HELMET;
-import static net.runelite.api.ItemID.BLACK_SLAYER_HELMET_I;
-import static net.runelite.api.ItemID.BLUE_BOATER;
-import static net.runelite.api.ItemID.BLUE_BOOTS;
-import static net.runelite.api.ItemID.BLUE_DHIDE_BODY;
-import static net.runelite.api.ItemID.BLUE_DHIDE_CHAPS;
-import static net.runelite.api.ItemID.BLUE_DHIDE_VAMB;
-import static net.runelite.api.ItemID.BLUE_ROBE_TOP;
-import static net.runelite.api.ItemID.BLUE_WIZARD_HAT;
-import static net.runelite.api.ItemID.BLUE_WIZARD_ROBE;
-import static net.runelite.api.ItemID.BOBS_PURPLE_SHIRT;
-import static net.runelite.api.ItemID.BOBS_RED_SHIRT;
-import static net.runelite.api.ItemID.BODY_TIARA;
-import static net.runelite.api.ItemID.BONE_DAGGER;
-import static net.runelite.api.ItemID.BONE_SPEAR;
-import static net.runelite.api.ItemID.BOOK_OF_BALANCE;
-import static net.runelite.api.ItemID.BOOK_OF_DARKNESS;
-import static net.runelite.api.ItemID.BOOK_OF_LAW;
-import static net.runelite.api.ItemID.BOOK_OF_WAR;
-import static net.runelite.api.ItemID.BRINE_SABRE;
-import static net.runelite.api.ItemID.BRONZE_2H_SWORD;
-import static net.runelite.api.ItemID.BRONZE_AXE;
-import static net.runelite.api.ItemID.BRONZE_CHAINBODY;
-import static net.runelite.api.ItemID.BRONZE_DAGGER;
-import static net.runelite.api.ItemID.BRONZE_FULL_HELM;
-import static net.runelite.api.ItemID.BRONZE_PLATELEGS;
-import static net.runelite.api.ItemID.BRONZE_SPEAR;
-import static net.runelite.api.ItemID.BRONZE_SQ_SHIELD;
-import static net.runelite.api.ItemID.BROWN_APRON;
-import static net.runelite.api.ItemID.BROWN_HEADBAND;
-import static net.runelite.api.ItemID.BRUISE_BLUE_SNELM_3343;
-import static net.runelite.api.ItemID.CAPE_OF_LEGENDS;
-import static net.runelite.api.ItemID.CASTLE_WARS_BRACELET3;
-import static net.runelite.api.ItemID.CASTLE_WARS_BRACELET1;
-import static net.runelite.api.ItemID.CLIMBING_BOOTS;
-import static net.runelite.api.ItemID.COIF;
-import static net.runelite.api.ItemID.COMBAT_BRACELET;
-import static net.runelite.api.ItemID.CREAM_ROBE_TOP;
-import static net.runelite.api.ItemID.DEATH_TIARA;
-import static net.runelite.api.ItemID.DESERT_SHIRT;
-import static net.runelite.api.ItemID.DHAROKS_GREATAXE_0;
-import static net.runelite.api.ItemID.DHAROKS_GREATAXE_100;
-import static net.runelite.api.ItemID.DHAROKS_HELM_0;
-import static net.runelite.api.ItemID.DHAROKS_HELM_100;
-import static net.runelite.api.ItemID.DHAROKS_PLATEBODY_0;
-import static net.runelite.api.ItemID.DHAROKS_PLATEBODY_100;
-import static net.runelite.api.ItemID.DHAROKS_PLATELEGS_0;
-import static net.runelite.api.ItemID.DHAROKS_PLATELEGS_100;
-import static net.runelite.api.ItemID.DIAMOND_BRACELET;
-import static net.runelite.api.ItemID.DIAMOND_RING;
-import static net.runelite.api.ItemID.DRAGONSTONE_AMULET;
-import static net.runelite.api.ItemID.DRAGONSTONE_RING;
-import static net.runelite.api.ItemID.DRAGON_2H_SWORD;
-import static net.runelite.api.ItemID.DRAGON_AXE;
-import static net.runelite.api.ItemID.DRAGON_BATTLEAXE;
-import static net.runelite.api.ItemID.DRAGON_BOOTS;
-import static net.runelite.api.ItemID.DRAGON_CHAINBODY_3140;
-import static net.runelite.api.ItemID.DRAGON_DEFENDER;
-import static net.runelite.api.ItemID.DRAGON_MED_HELM;
-import static net.runelite.api.ItemID.DRAGON_NECKLACE;
-import static net.runelite.api.ItemID.DRAGON_PICKAXE;
-import static net.runelite.api.ItemID.DRAGON_PLATESKIRT;
-import static net.runelite.api.ItemID.DRAGON_SPEAR;
-import static net.runelite.api.ItemID.DRAGON_SQ_SHIELD;
-import static net.runelite.api.ItemID.ELEMENTAL_SHIELD;
-import static net.runelite.api.ItemID.EMERALD_AMULET;
-import static net.runelite.api.ItemID.EMERALD_RING;
-import static net.runelite.api.ItemID.FIRE_BATTLESTAFF;
-import static net.runelite.api.ItemID.FIRE_CAPE;
-import static net.runelite.api.ItemID.FIRE_MAX_CAPE;
-import static net.runelite.api.ItemID.FLARED_TROUSERS;
-import static net.runelite.api.ItemID.GOLD_NECKLACE;
-import static net.runelite.api.ItemID.GOLD_RING;
-import static net.runelite.api.ItemID.GRANITE_SHIELD;
-import static net.runelite.api.ItemID.GREEN_BOATER;
-import static net.runelite.api.ItemID.GREEN_BOOTS;
-import static net.runelite.api.ItemID.GREEN_DHIDE_BODY;
-import static net.runelite.api.ItemID.GREEN_DHIDE_CHAPS;
-import static net.runelite.api.ItemID.GREEN_HAT;
-import static net.runelite.api.ItemID.GREEN_HEADBAND;
-import static net.runelite.api.ItemID.GREEN_ROBE_BOTTOMS;
-import static net.runelite.api.ItemID.GREEN_ROBE_TOP;
-import static net.runelite.api.ItemID.GREEN_SLAYER_HELMET;
-import static net.runelite.api.ItemID.GREEN_SLAYER_HELMET_I;
-import static net.runelite.api.ItemID.GUTHANS_CHAINSKIRT_0;
-import static net.runelite.api.ItemID.GUTHANS_CHAINSKIRT_100;
-import static net.runelite.api.ItemID.GUTHANS_HELM_0;
-import static net.runelite.api.ItemID.GUTHANS_HELM_100;
-import static net.runelite.api.ItemID.GUTHANS_PLATEBODY_0;
-import static net.runelite.api.ItemID.GUTHANS_PLATEBODY_100;
-import static net.runelite.api.ItemID.GUTHANS_WARSPEAR_0;
-import static net.runelite.api.ItemID.GUTHANS_WARSPEAR_100;
-import static net.runelite.api.ItemID.GUTHIX_MITRE;
-import static net.runelite.api.ItemID.GUTHIX_STOLE;
-import static net.runelite.api.ItemID.HAM_BOOTS;
-import static net.runelite.api.ItemID.HAM_ROBE;
-import static net.runelite.api.ItemID.HARDLEATHER_BODY;
-import static net.runelite.api.ItemID.HELM_OF_NEITIZNOT;
-import static net.runelite.api.ItemID.HOLY_BOOK;
-import static net.runelite.api.ItemID.IBANS_STAFF;
-import static net.runelite.api.ItemID.IBANS_STAFF_U;
-import static net.runelite.api.ItemID.IRON_2H_SWORD;
-import static net.runelite.api.ItemID.IRON_CHAINBODY;
-import static net.runelite.api.ItemID.IRON_FULL_HELM;
-import static net.runelite.api.ItemID.IRON_KITESHIELD;
-import static net.runelite.api.ItemID.IRON_MED_HELM;
-import static net.runelite.api.ItemID.IRON_PICKAXE;
-import static net.runelite.api.ItemID.IRON_PLATEBODY;
-import static net.runelite.api.ItemID.IRON_PLATELEGS;
-import static net.runelite.api.ItemID.IRON_PLATESKIRT;
-import static net.runelite.api.ItemID.IRON_SCIMITAR;
-import static net.runelite.api.ItemID.IRON_WARHAMMER;
-import static net.runelite.api.ItemID.KARILS_COIF_0;
-import static net.runelite.api.ItemID.KARILS_COIF_100;
-import static net.runelite.api.ItemID.KARILS_CROSSBOW_0;
-import static net.runelite.api.ItemID.KARILS_CROSSBOW_100;
-import static net.runelite.api.ItemID.KARILS_LEATHERSKIRT_0;
-import static net.runelite.api.ItemID.KARILS_LEATHERSKIRT_100;
-import static net.runelite.api.ItemID.KARILS_LEATHERTOP_0;
-import static net.runelite.api.ItemID.KARILS_LEATHERTOP_100;
-import static net.runelite.api.ItemID.LAVA_BATTLESTAFF;
-import static net.runelite.api.ItemID.LEATHER_BOOTS;
-import static net.runelite.api.ItemID.LEATHER_CHAPS;
-import static net.runelite.api.ItemID.LEATHER_COWL;
-import static net.runelite.api.ItemID.LEATHER_GLOVES;
-import static net.runelite.api.ItemID.LONGBOW;
-import static net.runelite.api.ItemID.MAGIC_LONGBOW;
-import static net.runelite.api.ItemID.MAPLE_LONGBOW;
-import static net.runelite.api.ItemID.MAPLE_SHORTBOW;
-import static net.runelite.api.ItemID.MENAPHITE_PURPLE_HAT;
-import static net.runelite.api.ItemID.MENAPHITE_PURPLE_ROBE;
-import static net.runelite.api.ItemID.MENAPHITE_PURPLE_TOP;
-import static net.runelite.api.ItemID.MIND_SHIELD;
-import static net.runelite.api.ItemID.MITHRIL_CHAINBODY;
-import static net.runelite.api.ItemID.MITHRIL_FULL_HELM;
-import static net.runelite.api.ItemID.MITHRIL_MED_HELM;
-import static net.runelite.api.ItemID.MITHRIL_PICKAXE;
-import static net.runelite.api.ItemID.MITHRIL_PLATEBODY;
-import static net.runelite.api.ItemID.MITHRIL_PLATELEGS;
-import static net.runelite.api.ItemID.MITHRIL_PLATESKIRT;
-import static net.runelite.api.ItemID.MITHRIL_SCIMITAR;
-import static net.runelite.api.ItemID.MYSTIC_FIRE_STAFF;
-import static net.runelite.api.ItemID.MYSTIC_GLOVES;
-import static net.runelite.api.ItemID.MYSTIC_HAT;
-import static net.runelite.api.ItemID.MYSTIC_ROBE_BOTTOM;
-import static net.runelite.api.ItemID.MYSTIC_ROBE_BOTTOM_DARK;
-import static net.runelite.api.ItemID.MYSTIC_ROBE_TOP;
-import static net.runelite.api.ItemID.MYSTIC_ROBE_TOP_DARK;
-import static net.runelite.api.ItemID.NEW_CRYSTAL_BOW_I;
-import static net.runelite.api.ItemID.OAK_LONGBOW;
-import static net.runelite.api.ItemID.OAK_SHORTBOW;
-import static net.runelite.api.ItemID.OBSIDIAN_CAPE;
-import static net.runelite.api.ItemID.ORANGE_BOATER;
-import static net.runelite.api.ItemID.PHARAOHS_SCEPTRE_3;
-import static net.runelite.api.ItemID.PINK_BOATER;
-import static net.runelite.api.ItemID.PINK_ROBE_TOP;
-import static net.runelite.api.ItemID.PINK_SKIRT;
-import static net.runelite.api.ItemID.PIRATE_BANDANA;
-import static net.runelite.api.ItemID.PIRATE_BANDANA_7124;
-import static net.runelite.api.ItemID.PIRATE_BANDANA_7130;
-import static net.runelite.api.ItemID.PIRATE_BANDANA_7136;
-import static net.runelite.api.ItemID.PROSELYTE_HAUBERK;
-import static net.runelite.api.ItemID.PURPLE_BOATER;
-import static net.runelite.api.ItemID.PURPLE_GLOVES;
-import static net.runelite.api.ItemID.PURPLE_SLAYER_HELMET;
-import static net.runelite.api.ItemID.PURPLE_SLAYER_HELMET_I;
-import static net.runelite.api.ItemID.RED_BOATER;
-import static net.runelite.api.ItemID.RED_DHIDE_CHAPS;
-import static net.runelite.api.ItemID.RED_HEADBAND;
-import static net.runelite.api.ItemID.RED_SLAYER_HELMET;
-import static net.runelite.api.ItemID.RED_SLAYER_HELMET_I;
-import static net.runelite.api.ItemID.RING_OF_DUELING1;
-import static net.runelite.api.ItemID.RING_OF_DUELING2;
-import static net.runelite.api.ItemID.RING_OF_DUELING3;
-import static net.runelite.api.ItemID.RING_OF_DUELING4;
-import static net.runelite.api.ItemID.RING_OF_DUELING5;
-import static net.runelite.api.ItemID.RING_OF_DUELING6;
-import static net.runelite.api.ItemID.RING_OF_DUELING7;
-import static net.runelite.api.ItemID.RING_OF_DUELING8;
-import static net.runelite.api.ItemID.RING_OF_FORGING;
-import static net.runelite.api.ItemID.RING_OF_LIFE;
-import static net.runelite.api.ItemID.RING_OF_WEALTH;
-import static net.runelite.api.ItemID.RING_OF_WEALTH_1;
-import static net.runelite.api.ItemID.RING_OF_WEALTH_2;
-import static net.runelite.api.ItemID.RING_OF_WEALTH_3;
-import static net.runelite.api.ItemID.RING_OF_WEALTH_4;
-import static net.runelite.api.ItemID.RING_OF_WEALTH_5;
-import static net.runelite.api.ItemID.RING_OF_WEALTH_I;
-import static net.runelite.api.ItemID.RING_OF_WEALTH_I1;
-import static net.runelite.api.ItemID.RING_OF_WEALTH_I2;
-import static net.runelite.api.ItemID.RING_OF_WEALTH_I3;
-import static net.runelite.api.ItemID.RING_OF_WEALTH_I4;
-import static net.runelite.api.ItemID.RING_OF_WEALTH_I5;
-import static net.runelite.api.ItemID.ROLLING_PIN;
-import static net.runelite.api.ItemID.RUBY_AMULET;
-import static net.runelite.api.ItemID.RUBY_RING;
-import static net.runelite.api.ItemID.RUNE_AXE;
-import static net.runelite.api.ItemID.RUNE_BOOTS;
-import static net.runelite.api.ItemID.RUNE_CROSSBOW;
-import static net.runelite.api.ItemID.RUNE_FULL_HELM;
-import static net.runelite.api.ItemID.RUNE_HALBERD;
-import static net.runelite.api.ItemID.RUNE_HELM_H1;
-import static net.runelite.api.ItemID.RUNE_HELM_H5;
-import static net.runelite.api.ItemID.RUNE_KITESHIELD;
-import static net.runelite.api.ItemID.RUNE_LONGSWORD;
-import static net.runelite.api.ItemID.RUNE_PICKAXE;
-import static net.runelite.api.ItemID.RUNE_PLATEBODY;
-import static net.runelite.api.ItemID.RUNE_PLATELEGS;
-import static net.runelite.api.ItemID.RUNE_PLATESKIRT;
-import static net.runelite.api.ItemID.RUNE_SHIELD_H1;
-import static net.runelite.api.ItemID.RUNE_SHIELD_H2;
-import static net.runelite.api.ItemID.RUNE_SHIELD_H3;
-import static net.runelite.api.ItemID.RUNE_SHIELD_H4;
-import static net.runelite.api.ItemID.RUNE_SHIELD_H5;
-import static net.runelite.api.ItemID.RUNE_SPEAR;
-import static net.runelite.api.ItemID.RUNE_WARHAMMER;
-import static net.runelite.api.ItemID.SAPPHIRE_AMULET;
-import static net.runelite.api.ItemID.SAPPHIRE_NECKLACE;
-import static net.runelite.api.ItemID.SAPPHIRE_RING;
-import static net.runelite.api.ItemID.SARADOMIN_CROZIER;
-import static net.runelite.api.ItemID.SARADOMIN_MITRE;
-import static net.runelite.api.ItemID.SARADOMIN_STOLE;
-import static net.runelite.api.ItemID.SEERCULL;
-import static net.runelite.api.ItemID.SHADOW_SWORD;
-import static net.runelite.api.ItemID.SILVER_SICKLE;
-import static net.runelite.api.ItemID.SLAYER_HELMET;
-import static net.runelite.api.ItemID.SLAYER_HELMET_I;
-import static net.runelite.api.ItemID.SLED_4084;
-import static net.runelite.api.ItemID.SNAKESKIN_BOOTS;
-import static net.runelite.api.ItemID.SNAKESKIN_CHAPS;
-import static net.runelite.api.ItemID.SPINED_CHAPS;
-import static net.runelite.api.ItemID.SPLITBARK_BODY;
-import static net.runelite.api.ItemID.SPLITBARK_LEGS;
-import static net.runelite.api.ItemID.SPOTTED_CAPE;
-import static net.runelite.api.ItemID.SPOTTED_CAPE_10073;
-import static net.runelite.api.ItemID.STAFF;
-import static net.runelite.api.ItemID.STAFF_OF_AIR;
-import static net.runelite.api.ItemID.STAFF_OF_WATER;
-import static net.runelite.api.ItemID.STEEL_AXE;
-import static net.runelite.api.ItemID.STEEL_FULL_HELM;
-import static net.runelite.api.ItemID.STEEL_KITESHIELD;
-import static net.runelite.api.ItemID.STEEL_LONGSWORD;
-import static net.runelite.api.ItemID.STEEL_MACE;
-import static net.runelite.api.ItemID.STEEL_MED_HELM;
-import static net.runelite.api.ItemID.STEEL_PICKAXE;
-import static net.runelite.api.ItemID.STEEL_PLATEBODY;
-import static net.runelite.api.ItemID.STEEL_PLATESKIRT;
-import static net.runelite.api.ItemID.STEEL_SQ_SHIELD;
-import static net.runelite.api.ItemID.STUDDED_BODY;
-import static net.runelite.api.ItemID.STUDDED_CHAPS;
-import static net.runelite.api.ItemID.TEAM1_CAPE;
-import static net.runelite.api.ItemID.TEAM50_CAPE;
-import static net.runelite.api.ItemID.TIARA;
-import static net.runelite.api.ItemID.TOKTZKETXIL;
-import static net.runelite.api.ItemID.TOKTZXILUL;
-import static net.runelite.api.ItemID.TORAGS_HAMMERS_0;
-import static net.runelite.api.ItemID.TORAGS_HAMMERS_100;
-import static net.runelite.api.ItemID.TORAGS_HELM_0;
-import static net.runelite.api.ItemID.TORAGS_HELM_100;
-import static net.runelite.api.ItemID.TORAGS_PLATEBODY_0;
-import static net.runelite.api.ItemID.TORAGS_PLATEBODY_100;
-import static net.runelite.api.ItemID.TORAGS_PLATELEGS_0;
-import static net.runelite.api.ItemID.TORAGS_PLATELEGS_100;
-import static net.runelite.api.ItemID.TURQUOISE_ROBE_BOTTOMS;
-import static net.runelite.api.ItemID.TURQUOISE_SLAYER_HELMET;
-import static net.runelite.api.ItemID.TURQUOISE_SLAYER_HELMET_I;
-import static net.runelite.api.ItemID.UNHOLY_BOOK;
-import static net.runelite.api.ItemID.VERACS_BRASSARD_0;
-import static net.runelite.api.ItemID.VERACS_BRASSARD_100;
-import static net.runelite.api.ItemID.VERACS_FLAIL_0;
-import static net.runelite.api.ItemID.VERACS_FLAIL_100;
-import static net.runelite.api.ItemID.VERACS_HELM_0;
-import static net.runelite.api.ItemID.VERACS_HELM_100;
-import static net.runelite.api.ItemID.VERACS_PLATESKIRT_0;
-import static net.runelite.api.ItemID.VERACS_PLATESKIRT_100;
-import static net.runelite.api.ItemID.WHITE_APRON;
-import static net.runelite.api.ItemID.WHITE_BOATER;
-import static net.runelite.api.ItemID.WHITE_HEADBAND;
-import static net.runelite.api.ItemID.ZAMORAK_CROZIER;
-import static net.runelite.api.ItemID.ZAMORAK_FULL_HELM;
-import static net.runelite.api.ItemID.ZAMORAK_GODSWORD;
-import static net.runelite.api.ItemID.ZAMORAK_MITRE;
-import static net.runelite.api.ItemID.ZAMORAK_STOLE;
+import static net.runelite.api.ItemID.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.EMOTE_IMAGE;
 import net.runelite.client.plugins.cluescrolls.clues.emote.AllRequirementsCollection;
 import net.runelite.client.plugins.cluescrolls.clues.emote.AnyRequirementCollection;
 import net.runelite.client.plugins.cluescrolls.clues.emote.Emote;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.ANGRY;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.BECKON;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.BLOW_KISS;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.BOW;
+import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.*;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.BULL_ROARER;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.CHEER;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.CLAP;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.CRY;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.DANCE;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.FLAP;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.GOBLIN_SALUTE;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.HEADBANG;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.JIG;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.JUMP_FOR_JOY;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.LAUGH;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.NO;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.PANIC;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.PUSH_UP;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.RASPBERRY;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.SALUTE;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.SHRUG;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.SLAP_HEAD;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.SPIN;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.STOMP;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.THINK;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.WAVE;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.YAWN;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.YES;
 import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.emote.RangeItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.emote.SingleItemRequirement;
@@ -447,7 +75,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		new EmoteClue("Beckon in the Digsite, near the eastern winch. Bow before you talk to me. Equip a green gnome hat, snakeskin boots and an iron pickaxe.", new WorldPoint(3370, 3425, 0), BECKON, BOW, item(GREEN_HAT), item(SNAKESKIN_BOOTS), item(IRON_PICKAXE)),
 		new EmoteClue("Beckon in Tai Bwo Wannai. Clap before you talk to me. Equip green dragonhide chaps, a ring of dueling and a mithril medium helmet.", new WorldPoint(2784, 3065, 0), BECKON, CLAP, item(GREEN_DHIDE_CHAPS), any("Ring of dueling", item(RING_OF_DUELING1), item(RING_OF_DUELING2), item(RING_OF_DUELING3), item(RING_OF_DUELING4), item(RING_OF_DUELING5), item(RING_OF_DUELING6), item(RING_OF_DUELING7), item(RING_OF_DUELING8)), item(MITHRIL_MED_HELM)),
 		new EmoteClue("Beckon in the combat ring of Shayzien. Show your anger before you talk to me. Equip an adamant platebody, adamant full helm and adamant platelegs.", new WorldPoint(1545, 3594, 0), BECKON, ANGRY, item(ADAMANT_PLATELEGS), item(ADAMANT_PLATEBODY), item(ADAMANT_FULL_HELM)),
-		new EmoteClue("Bow near Lord Iorwerth. Beware of double agents! Equip a new imbued crystal bow.", new WorldPoint(2205, 3252, 0), BOW, item(NEW_CRYSTAL_BOW_I)),
+		new EmoteClue("Bow near Lord Iorwerth. Beware of double agents! Equip a new imbued crystal bow.", new WorldPoint(2205, 3252, 0), BOW, any("Imbued crystal bow", item(NEW_CRYSTAL_BOW_I), item(CRYSTAL_BOW_FULL_I), item(CRYSTAL_BOW_910_I), item(CRYSTAL_BOW_810_I), item(CRYSTAL_BOW_710_I), item(CRYSTAL_BOW_610_I), item(CRYSTAL_BOW_510_I), item(CRYSTAL_BOW_410_I), item(CRYSTAL_BOW_310_I), item(CRYSTAL_BOW_210_I), item(CRYSTAL_BOW_110_I))),
 		new EmoteClue("Bow outside the entrance to the Legends' Guild. Equip iron platelegs, an emerald amulet and an oak longbow.", new WorldPoint(2729, 3349, 0), BOW, item(IRON_PLATELEGS), item(OAK_LONGBOW), item(EMERALD_AMULET)),
 		new EmoteClue("Bow on the ground floor of the Legend's guild. Equip Legend's cape, a dragon battleaxe and an amulet of glory.", new WorldPoint(2728, 3377, 0), BOW, item(CAPE_OF_LEGENDS), item(DRAGON_BATTLEAXE), item(AMULET_OF_GLORY)),
 		new EmoteClue("Bow in the ticket office of the Duel Arena. Equip an iron chain body, leather chaps and coif.", new WorldPoint(3314, 3241, 0), BOW, item(IRON_CHAINBODY), item(LEATHER_CHAPS), item(COIF)),
@@ -473,7 +101,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		new EmoteClue("Dance at the crossroads north of Draynor. Equip an iron chain body, a sapphire ring and a longbow.", new WorldPoint(3109, 3294, 0), DANCE, item(IRON_CHAINBODY), item(SAPPHIRE_RING), item(LONGBOW)),
 		new EmoteClue("Dance in the Party Room. Equip a steel full helmet, steel platebody and an iron plateskirt.", new WorldPoint(3045, 3376, 0), DANCE, item(STEEL_FULL_HELM), item(STEEL_PLATEBODY), item(IRON_PLATESKIRT)),
 		new EmoteClue("Dance in the shack in Lumbridge Swamp. Equip a bronze dagger, iron full helmet and a gold ring.", new WorldPoint(3203, 3169, 0), DANCE, item(BRONZE_DAGGER), item(IRON_FULL_HELM), item(GOLD_RING)),
-		new EmoteClue("Dance in the dark caves beneath Lumbridge Swamp. Blow a kiss before you talk to me. Equip an air staff, Bronze full helm and an amulet of power.", new WorldPoint(3223, 9597, 0), DANCE, BLOW_KISS, item(STAFF_OF_AIR), item(BRONZE_FULL_HELM), item(AMULET_OF_POWER)),
+		new EmoteClue("Dance in the dark caves beneath Lumbridge Swamp. Blow a kiss before you talk to me. Equip an air staff, Bronze full helm and an amulet of power.", new WorldPoint(3168, 9571, 0), DANCE, BLOW_KISS, item(STAFF_OF_AIR), item(BRONZE_FULL_HELM), item(AMULET_OF_POWER)),
 		new EmoteClue("Dance at the cat-doored pyramid in Sophanem. Beware of double agents! Equip a ring of life, an uncharged amulet of glory and an adamant two-handed sword.", new WorldPoint(3294, 2781, 0), DANCE, item(RING_OF_LIFE), item(AMULET_OF_GLORY), item(ADAMANT_2H_SWORD)),
 		new EmoteClue("Dance in the centre of Canifis. Bow before you talk to me. Equip a green gnome robe top, mithril plate legs and an iron two-handed sword.", new WorldPoint(3492, 3488, 0), DANCE, BOW, item(GREEN_ROBE_TOP), item(MITHRIL_PLATELEGS), item(IRON_2H_SWORD)),
 		new EmoteClue("Dance in the King Black Dragon's lair. Beware of double agents! Equip a black dragonhide body, black dragonhide vambs and a black dragon mask.", new WorldPoint(2271, 4680, 0), DANCE, item(BLACK_DHIDE_BODY), item(BLACK_DHIDE_VAMB), item(BLACK_DRAGON_MASK)),
@@ -481,14 +109,14 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		new EmoteClue("Goblin Salute in the Goblin Village. Beware of double agents! Equip a bandos godsword, a bandos cloak and a bandos platebody.", new WorldPoint(2956, 3505, 0), GOBLIN_SALUTE, item(BANDOS_PLATEBODY), item(BANDOS_CLOAK), item(BANDOS_GODSWORD)),
 		new EmoteClue("Headbang in the mine north of Al Kharid. Equip a desert shirt, leather gloves and leather boots.", new WorldPoint(3299, 3289, 0), HEADBANG, item(DESERT_SHIRT), item(LEATHER_GLOVES), item(LEATHER_BOOTS)),
 		new EmoteClue("Headbang at the exam center. Beware of double agents! Equip a mystic fire staff, a diamond bracelet and rune boots.", new WorldPoint(3362, 3340, 0), HEADBANG, item(MYSTIC_FIRE_STAFF), item(DIAMOND_BRACELET), item(RUNE_BOOTS)),
-		new EmoteClue("Headbang at the top of Slayer Tower. Equip a seercull, a combat bracelet and helm of Neitiznot.", new WorldPoint(3115, 3420, 0), HEADBANG, item(SEERCULL), item(COMBAT_BRACELET), item(HELM_OF_NEITIZNOT)),
+		new EmoteClue("Headbang at the top of Slayer Tower. Equip a seercull, a combat bracelet and helm of Neitiznot.", new WorldPoint(3421, 3537, 2), HEADBANG, item(SEERCULL), range("Combat bracelet", COMBAT_BRACELET4, COMBAT_BRACELET), item(HELM_OF_NEITIZNOT)),
 		new EmoteClue("Dance a jig by the entrance to the Fishing Guild. Equip an emerald ring, a sapphire amulet, and a bronze chain body.", new WorldPoint(2610, 3391, 0), JIG, item(EMERALD_RING), item(SAPPHIRE_AMULET), item(BRONZE_CHAINBODY)),
 		new EmoteClue("Dance a jig under Shantay's Awning. Bow before you talk to me. Equip a pointed blue snail helmet, an air staff and a bronze square shield.", new WorldPoint(3304, 3124, 0), JIG, BOW, item(BRUISE_BLUE_SNELM_3343), item(STAFF_OF_AIR), item(BRONZE_SQ_SHIELD)),
 		new EmoteClue("Do a jig in Varrock's rune store. Equip an air tiara and a staff of water.", new WorldPoint(3253, 3401, 0), JIG, item(AIR_TIARA), item(STAFF_OF_WATER)),
 		new EmoteClue("Jump for joy at the beehives. Equip a desert shirt, green gnome robe bottoms and a steel axe.", new WorldPoint(2759, 3445, 0), JUMP_FOR_JOY, item(DESERT_SHIRT), item(GREEN_ROBE_BOTTOMS), item(STEEL_AXE)),
 		new EmoteClue("Jump for joy in Yanille bank. Dance a jig before you talk to me. Equip a brown apron, adamantite medium helmet and snakeskin chaps.", new WorldPoint(2610, 3092, 0), JUMP_FOR_JOY, JIG, item(BROWN_APRON), item(ADAMANT_MED_HELM), item(SNAKESKIN_CHAPS)),
 		new EmoteClue("Jump for joy in the TzHaar sword shop. Shrug before you talk to me. Equip a Steel longsword, Blue D'hide body and blue mystic gloves.", new WorldPoint(2477, 5146, 0), JUMP_FOR_JOY, SHRUG, item(STEEL_LONGSWORD), item(BLUE_DHIDE_BODY), item(MYSTIC_GLOVES)),
-		new EmoteClue("Jump for joy in the Ancient Cavern. Equip a granite shield, splitbark body and any rune heraldic helm.", new WorldPoint(2339, 6787, 0), JUMP_FOR_JOY, item(GRANITE_SHIELD), item(SPLITBARK_BODY), range("Any rune heraldic helm", RUNE_HELM_H1, RUNE_HELM_H5)),
+		new EmoteClue("Jump for joy in the Ancient Cavern. Equip a granite shield, splitbark body and any rune heraldic helm.", new WorldPoint(1768, 5366, 1), JUMP_FOR_JOY, item(GRANITE_SHIELD), item(SPLITBARK_BODY), range("Any rune heraldic helm", RUNE_HELM_H1, RUNE_HELM_H5)),
 		new EmoteClue("Jump for joy at the Neitiznot rune rock. Equip Rune boots, a proselyte hauberk and a dragonstone ring.", new WorldPoint(2375, 3850, 0), JUMP_FOR_JOY, item(RUNE_BOOTS), item(PROSELYTE_HAUBERK), item(DRAGONSTONE_RING)),
 		new EmoteClue("Jump for joy in the centre of Zul-Andra. Beware of double agents! Equip a dragon 2h sword, bandos boots and an obsidian cape.", new WorldPoint(2199, 3056, 0), JUMP_FOR_JOY, item(DRAGON_2H_SWORD), item(BANDOS_BOOTS), item(OBSIDIAN_CAPE)),
 		new EmoteClue("Laugh by the fountain of heroes. Equip splitbark legs, dragon boots and a Rune longsword.", new WorldPoint(2920, 9893, 0), LAUGH, item(SPLITBARK_LEGS), item(DRAGON_BOOTS), item(RUNE_LONGSWORD)),
@@ -506,7 +134,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		new EmoteClue("Blow a raspberry at the monkey cage in Ardougne Zoo. Equip a studded leather body, bronze platelegs and a normal staff with no orb.", new WorldPoint(2607, 3282, 0), RASPBERRY, item(STUDDED_BODY), item(BRONZE_PLATELEGS), item(STAFF)),
 		new EmoteClue("Blow raspberries outside the entrance to Keep Le Faye. Equip a coif, an iron platebody and leather gloves.", new WorldPoint(2757, 3401, 0), RASPBERRY, item(COIF), item(IRON_PLATEBODY), item(LEATHER_GLOVES)),
 		new EmoteClue("Blow a raspberry in the Fishing Guild bank. Beware of double agents! Equip an elemental shield, blue dragonhide chaps and a rune warhammer.", new WorldPoint(2588, 3419, 0), RASPBERRY, item(ELEMENTAL_SHIELD), item(BLUE_DHIDE_CHAPS), item(RUNE_WARHAMMER)),
-		new EmoteClue("Salute in the banana plantation. Beware of double agents! Equip a diamond ring, amulet of power, and nothing on your chest and legs.", new WorldPoint(2918, 3168, 0), SALUTE, item(DIAMOND_RING), item(AMULET_OF_POWER), emptySlot("Nothing on chest & legs", BODY, LEGS)),
+		new EmoteClue("Salute in the banana plantation. Beware of double agents! Equip a diamond ring, amulet of power, and nothing on your chest and legs.", new WorldPoint(2914, 3168, 0), SALUTE, item(DIAMOND_RING), item(AMULET_OF_POWER), emptySlot("Nothing on chest & legs", BODY, LEGS)),
 		new EmoteClue("Salute in the Warriors' guild bank. Equip only a black salamander.", new WorldPoint(2844, 3542, 0), SALUTE, item(BLACK_SALAMANDER), emptySlot("Nothing else", HEAD, CAPE, AMULET, BODY, SHIELD, LEGS, GLOVES, BOOTS, RING)),
 		new EmoteClue("Salute in the centre of the mess hall. Beware of double agents! Equip a rune halberd rune platebody, and an amulet of strength.", new WorldPoint(1646, 3632, 0), SALUTE, item(RUNE_HALBERD), item(RUNE_PLATEBODY), item(AMULET_OF_STRENGTH)),
 		new EmoteClue("Shrug in the mine near Rimmington. Equip a gold necklace, a gold ring and a bronze spear.", new WorldPoint(2976, 3238, 0), SHRUG, item(GOLD_NECKLACE), item(GOLD_RING), item(BRONZE_SPEAR)),
@@ -516,7 +144,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		new EmoteClue("Slap your head in the centre of the Kourend catacombs. Beware of double agents! Equip the arclight and the amulet of the damned.", new WorldPoint(1663, 10045, 0), SLAP_HEAD, item(ARCLIGHT), item(AMULET_OF_THE_DAMNED)),
 		new EmoteClue("Spin at the crossroads north of Rimmington. Equip a green gnome hat, cream gnome top and leather chaps.", new WorldPoint(2981, 3276, 0), SPIN, item(GREEN_HAT), item(CREAM_ROBE_TOP), item(LEATHER_CHAPS)),
 		new EmoteClue("Spin in Draynor Manor by the fountain. Equip an iron platebody, studded leather chaps and a bronze full helmet.", new WorldPoint(3088, 3336, 0), SPIN, item(IRON_PLATEBODY), item(STUDDED_CHAPS), item(BRONZE_FULL_HELM)),
-		new EmoteClue("Spin in front of the Soul altar. Beware of double agents! Equip a dragon pickaxe, helm of neitiznot and a pair of rune boots.", new WorldPoint(1815, 3856, 0), SPIN, item(DRAGON_PICKAXE), item(HELM_OF_NEITIZNOT), item(RUNE_BOOTS)),
+		new EmoteClue("Spin in front of the Soul altar. Beware of double agents! Equip a dragon pickaxe, helm of neitiznot and a pair of rune boots.", new WorldPoint(1815, 3856, 0), SPIN, any("Dragon pickaxe", item(DRAGON_PICKAXE), item(DRAGON_PICKAXE_12797), item(INFERNAL_PICKAXE), item(INFERNAL_PICKAXE_UNCHARGED)), item(HELM_OF_NEITIZNOT), item(RUNE_BOOTS)),
 		new EmoteClue("Spin in the Varrock Castle courtyard. Equip a black axe, a coif and a ruby ring.", new WorldPoint(3213, 3463, 0), SPIN, item(BLACK_AXE), item(COIF), item(RUBY_RING)),
 		new EmoteClue("Spin in West Ardougne Church. Equip a dragon spear and red dragonhide chaps.", new WorldPoint(2530, 3290, 0), SPIN, item(DRAGON_SPEAR), item(RED_DHIDE_CHAPS)),
 		new EmoteClue("Spin on the bridge by the Barbarian Village. Salute before you talk to me. Equip purple gloves, a steel kiteshield and a mithril full helmet.", new WorldPoint(3105, 3420, 0), SPIN, SALUTE, item(PURPLE_GLOVES), item(STEEL_KITESHIELD), item(MITHRIL_FULL_HELM)),
@@ -527,7 +155,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		new EmoteClue("Wave in the Falador gem store. Equip a Mithril pickaxe, Black platebody and an Iron Kiteshield.", new WorldPoint(2945, 3335, 0), WAVE, item(MITHRIL_PICKAXE), item(BLACK_PLATEBODY), item(IRON_KITESHIELD)),
 		new EmoteClue("Wave on Mudskipper Point. Equip a black cape, leather chaps and a steel mace.", new WorldPoint(2989, 3110, 0), WAVE, item(BLACK_CAPE), item(LEATHER_CHAPS), item(STEEL_MACE)),
 		new EmoteClue("Wave on the northern wall of Castle Drakan. Beware of double agents! Wear a dragon sq shield, splitbark body and any boater.", new WorldPoint(3560, 3385, 0), WAVE, item(DRAGON_SQ_SHIELD), item(SPLITBARK_BODY), any("Any boater", item(RED_BOATER), item(ORANGE_BOATER), item(GREEN_BOATER), item(BLUE_BOATER), item(BLACK_BOATER), item(PINK_BOATER), item(PURPLE_BOATER), item(WHITE_BOATER))),
-		new EmoteClue("Yawn in the 7th room of Pyramid Plunder. Beware of double agents! Equip a pharaoh sceptre and a full set of menaphite robes.", new WorldPoint(1944, 4427, 0), YAWN, item(PHARAOHS_SCEPTRE_3), item(MENAPHITE_PURPLE_HAT), item(MENAPHITE_PURPLE_TOP), item(MENAPHITE_PURPLE_ROBE)),
+		new EmoteClue("Yawn in the 7th room of Pyramid Plunder. Beware of double agents! Equip a pharaoh sceptre and a full set of menaphite robes.", new WorldPoint(1944, 4427, 0), YAWN, item(PHARAOHS_SCEPTRE_3), any("Full set of menaphite robes", all(item(MENAPHITE_PURPLE_HAT), item(MENAPHITE_PURPLE_TOP), range(MENAPHITE_PURPLE_ROBE, MENAPHITE_PURPLE_KILT)), all(item(MENAPHITE_RED_HAT), item(MENAPHITE_RED_TOP), range(MENAPHITE_RED_ROBE, MENAPHITE_RED_KILT)))),
 		new EmoteClue("Yawn in the Varrock library. Equip a green gnome robe top, HAM robe bottom and an iron warhammer.", new WorldPoint(3209, 3492, 0), YAWN, item(GREEN_ROBE_TOP), item(HAM_ROBE), item(IRON_WARHAMMER)),
 		new EmoteClue("Yawn in Draynor Marketplace. Equip studded leather chaps, an iron kiteshield and a steel longsword.", new WorldPoint(3083, 3253, 0), YAWN, item(STUDDED_CHAPS), item(IRON_KITESHIELD), item(STEEL_LONGSWORD)),
 		new EmoteClue("Yawn in the Castle Wars lobby. Shrug before you talk to me. Equip a ruby amulet, a mithril scimitar and a Wilderness cape.", new WorldPoint(2440, 3092, 0), YAWN, SHRUG, item(RUBY_AMULET), item(MITHRIL_SCIMITAR), range("Any team cape", TEAM1_CAPE, TEAM50_CAPE)),
@@ -656,7 +284,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 			return;
 		}
 
-		OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, EMOTE_IMAGE, Color.ORANGE);
+		OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, plugin.getEmoteImage(), Color.ORANGE);
 	}
 
 	public static EmoteClue forText(String text)

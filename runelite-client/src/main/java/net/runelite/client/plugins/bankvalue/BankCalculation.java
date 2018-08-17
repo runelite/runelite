@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -39,9 +38,7 @@ import static net.runelite.api.ItemID.PLATINUM_TOKEN;
 import net.runelite.api.queries.BankItemQuery;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.ItemMapping;
 import net.runelite.client.util.QueryRunner;
-import net.runelite.http.api.item.ItemPrice;
 
 @Slf4j
 class BankCalculation
@@ -60,9 +57,6 @@ class BankCalculation
 
 	@Getter
 	private long haPrice;
-
-	@Getter
-	private boolean finished;
 
 	@Inject
 	BankCalculation(QueryRunner queryRunner, ItemManager itemManager, BankValueConfig config)
@@ -87,7 +81,6 @@ class BankCalculation
 		log.debug("Calculating new bank value...");
 
 		gePrice = haPrice = 0;
-		finished = false;
 
 		List<Integer> itemIds = new ArrayList<>();
 
@@ -137,65 +130,19 @@ class BankCalculation
 		// Now do the calculations
 		if (config.showGE() && !itemIds.isEmpty())
 		{
-			CompletableFuture<ItemPrice[]> future = itemManager.getItemPriceBatch(itemIds);
-			future.whenComplete((ItemPrice[] itemPrices, Throwable ex) ->
+			for (WidgetItem widgetItem : widgetItems)
 			{
-				if (ex != null)
+				int itemId = widgetItem.getId();
+				int quantity = widgetItem.getQuantity();
+
+				if (itemId <= 0 || quantity == 0
+					|| itemId == ItemID.COINS_995 || itemId == ItemID.PLATINUM_TOKEN)
 				{
-					log.debug("Error looking up item prices", ex);
-					return;
+					continue;
 				}
 
-				if (itemPrices == null)
-				{
-					log.debug("Error looking up item prices");
-					return;
-				}
-
-				log.debug("Price lookup is complete. {} prices.", itemPrices.length);
-
-				try
-				{
-					for (WidgetItem widgetItem : widgetItems)
-					{
-						int itemId = widgetItem.getId();
-						int quantity = widgetItem.getQuantity();
-
-						if (itemId <= 0 || quantity == 0
-							|| itemId == ItemID.COINS_995 || itemId == ItemID.PLATINUM_TOKEN)
-						{
-							continue;
-						}
-
-						long price = 0;
-						for (int mappedItemId : ItemMapping.map(itemId))
-						{
-							ItemPrice cachedItemPrice = itemManager.getCachedItemPrice(mappedItemId);
-							if (cachedItemPrice == null)
-							{
-								// this happens to items which have no ge price
-								continue;
-							}
-
-							price += cachedItemPrice.getPrice();
-						}
-
-						gePrice += price * quantity;
-					}
-				}
-				catch (Exception ex2)
-				{
-					log.warn("error calculating price", ex2);
-				}
-				finally
-				{
-					finished = true;
-				}
-			});
-		}
-		else
-		{
-			finished = true;
+				gePrice += (long) itemManager.getItemPrice(itemId) * quantity;
+			}
 		}
 	}
 

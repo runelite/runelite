@@ -127,11 +127,8 @@ from the main (upstream) repository:
 
 ## <a name="format"></a> Coding Format
 
-To ensure consistency throughout the source code, keep these rules in mind as you are working:
+To ensure consistency throughout the source code, review our [code conventions](https://github.com/runelite/runelite/wiki/Code-Conventions).
 
-* With the exceptions listed below, we follow the standard Java code conventions:
-    * Tabs, not spaces.
-    * Brace placement is always next line.
 
 [github]: https://github.com/runelite/runelite
 [discord]: https://discord.gg/mePCs8U

@@ -26,23 +26,39 @@ package net.runelite.client.plugins.timers;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
+import net.runelite.api.Player;
 import net.runelite.api.Prayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.WorldType;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.timers.GameTimer.ABYSSAL_SIRE_STUN;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUS;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUSPLUS;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIFIRE;
@@ -72,6 +88,7 @@ import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD_RAID;
 import static net.runelite.client.plugins.timers.GameTimer.PRAYER_ENHANCE;
 import static net.runelite.client.plugins.timers.GameTimer.SANFEW;
 import static net.runelite.client.plugins.timers.GameTimer.SNARE;
+import static net.runelite.client.plugins.timers.GameTimer.STAFF_OF_THE_DEAD;
 import static net.runelite.client.plugins.timers.GameTimer.STAMINA;
 import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIFIRE;
 import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIPOISON;
@@ -82,11 +99,49 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import java.util.function.Function;
 
 @PluginDescriptor(
-	name = "Timers"
+	name = "Timers",
+	description = "Show various timers in an infobox",
+	tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire"}
 )
 public class TimersPlugin extends Plugin
 {
+	private static final String ANTIFIRE_DRINK_MESSAGE = "You drink some of your antifire potion.";
+	private static final String ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your antifire potion has expired.</col>";
+	private static final String ANTIVENOM_DRINK_MESSAGE = "You drink some of your antivenom potion";
+	private static final String CANNON_FURNACE_MESSAGE = "You add the furnace.";
+	private static final String CANNON_PICKUP_MESSAGE = "You pick up the cannon. It's really heavy.";
+	private static final String CANNON_REPAIR_MESSAGE = "You repair your cannon, restoring it to working order.";
+	private static final String CHARGE_EXPIRED_MESSAGE = "<col=ef1020>Your magical charge fades away.</col>";
+	private static final String CHARGE_MESSAGE = "<col=ef1020>You feel charged with magic power.</col>";
+	private static final String EXTENDED_ANTIFIRE_DRINK_MESSAGE = "You drink some of your extended antifire potion.";
+	private static final String EXTENDED_SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your extended super antifire potion.";
+	private static final String FROZEN_MESSAGE = "<col=ef1020>You have been frozen!</col>";
+	private static final String FULL_TELEBLOCK_MESSAGE = "<col=4f006f>A teleblock spell has been cast on you. It will expire in 5 minutes, 0 seconds.</col>";
+	private static final String GOD_WARS_ALTAR_MESSAGE = "you recharge your prayer.";
+	private static final String HALF_TELEBLOCK_MESSAGE = "<col=4f006f>A teleblock spell has been cast on you. It will expire in 2 minutes, 30 seconds.</col>";
+	private static final String IMBUED_HEART_READY_MESSAGE = "<col=ef1020>Your imbued heart has regained its magical power.</col>";
+	private static final String MAGIC_IMBUE_EXPIRED_MESSAGE = "Your Magic Imbue charge has ended.";
+	private static final String MAGIC_IMBUE_MESSAGE = "You are charged to combine runes!";
+	private static final String SANFEW_SERUM_DRINK_MESSAGE = "You drink some of your Sanfew Serum.";
+	private static final String STAFF_OF_THE_DEAD_SPEC_EXPIRED_MESSAGE = "Your protection fades away";
+	private static final String STAFF_OF_THE_DEAD_SPEC_MESSAGE = "Spirits of deceased evildoers offer you their protection";
+	private static final String STAMINA_DRINK_MESSAGE = "You drink some of your stamina potion.";
+	private static final String STAMINA_EXPIRED_MESSAGE = "<col=8f4808>Your stamina potion has expired.</col>";
+	private static final String SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your super antifire potion";
+	private static final String SUPER_ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your super antifire potion has expired.</col>";
+	private static final String SUPER_ANTIVENOM_DRINK_MESSAGE = "You drink some of your super antivenom potion";
+
+	private TimerTimer freezeTimer;
+	private int freezeTime = -1; // time frozen, in game ticks
+
 	private int lastRaidVarb;
+	private WorldPoint lastPoint;
+
+	@Inject
+	private ItemManager itemManager;
+
+	@Inject
+	private SpriteManager spriteManager;
 
 	@Inject
 	private Client client;
@@ -200,6 +255,11 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(IMBUEDHEART);
 		}
 
+		if (!config.showStaffOfTheDead())
+		{
+			removeGameTimer(STAFF_OF_THE_DEAD);
+		}
+
 		if (!config.showVengeance())
 		{
 			removeGameTimer(VENGEANCE);
@@ -279,6 +339,16 @@ public class TimersPlugin extends Plugin
 			createGameTimer(SUPERANTIPOISON);
 			return;
 		}
+
+		if (config.showStamina()
+			&& event.getMenuOption().contains("Drink")
+			&& (event.getId() == ItemID.STAMINA_MIX1
+			|| event.getId() == ItemID.STAMINA_MIX2))
+		{
+			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
+			createGameTimer(STAMINA);
+			return;
+		}
 	}
 
 	@Subscribe
@@ -290,37 +360,37 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (config.showStamina() && event.getMessage().equals("You drink some of your stamina potion."))
+		if (config.showStamina() && event.getMessage().equals(STAMINA_DRINK_MESSAGE))
 		{
 			createGameTimer(STAMINA);
 		}
 
-		if (event.getMessage().equals("<col=8f4808>Your stamina potion has expired.</col>"))
+		if (event.getMessage().equals(STAMINA_EXPIRED_MESSAGE))
 		{
 			removeGameTimer(STAMINA);
 		}
 
-		if (config.showAntiFire() && event.getMessage().equals("You drink some of your antifire potion."))
+		if (config.showAntiFire() && event.getMessage().equals(ANTIFIRE_DRINK_MESSAGE))
 		{
 			createGameTimer(ANTIFIRE);
 		}
 
-		if (config.showExAntiFire() && event.getMessage().equals("You drink some of your extended antifire potion."))
+		if (config.showExAntiFire() && event.getMessage().equals(EXTENDED_ANTIFIRE_DRINK_MESSAGE))
 		{
 			createGameTimer(EXANTIFIRE);
 		}
 
-		if (config.showGodWarsAltar() && event.getMessage().equalsIgnoreCase("you recharge your prayer."))//Normal altars are "You recharge your Prayer points." while gwd is "You recharge your Prayer."
+		if (config.showGodWarsAltar() && event.getMessage().equalsIgnoreCase(GOD_WARS_ALTAR_MESSAGE))//Normal altars are "You recharge your Prayer points." while gwd is "You recharge your Prayer."
 		{
 			createGameTimer(GOD_WARS_ALTAR);
 		}
 
-		if (config.showExSuperAntifire() && event.getMessage().equals("You drink some of your extended super antifire potion."))
+		if (config.showExSuperAntifire() && event.getMessage().equals(EXTENDED_SUPER_ANTIFIRE_DRINK_MESSAGE))
 		{
 			createGameTimer(EXSUPERANTIFIRE);
 		}
 
-		if (event.getMessage().equals("<col=7f007f>Your antifire potion has expired.</col>"))
+		if (event.getMessage().equals(ANTIFIRE_EXPIRED_MESSAGE))
 		{
 			//they have the same expired message
 			removeGameTimer(ANTIFIRE);
@@ -340,62 +410,62 @@ public class TimersPlugin extends Plugin
 
 		}
 
-		if (config.showCannon() && (event.getMessage().equals("You add the furnace.") || event.getMessage().contains("You repair your cannon, restoring it to working order.")))
+		if (config.showCannon() && (event.getMessage().equals(CANNON_FURNACE_MESSAGE) || event.getMessage().contains(CANNON_REPAIR_MESSAGE)))
 		{
 			createGameTimerFunc(CANNON, timer -> timer.getDescription() + " is on world " + client.getWorld());
 		}
 
-		if (event.getMessage().equals("You pick up the cannon. It's really heavy."))
+		if (event.getMessage().equals(CANNON_PICKUP_MESSAGE))
 		{
 			removeGameTimer(CANNON);
 		}
 
-		if (config.showAntiVenomPlus() && event.getMessage().contains("You drink some of your super antivenom potion"))
+		if (config.showAntiVenomPlus() && event.getMessage().contains(SUPER_ANTIVENOM_DRINK_MESSAGE))
 		{
 			createGameTimer(ANTIVENOMPLUS);
 		}
 
-		if (config.showMagicImbue() && event.getMessage().equals("You are charged to combine runes!"))
+		if (config.showMagicImbue() && event.getMessage().equals(MAGIC_IMBUE_MESSAGE))
 		{
 			createGameTimer(MAGICIMBUE);
 		}
 
-		if (event.getMessage().equals("Your Magic Imbue charge has ended."))
+		if (event.getMessage().equals(MAGIC_IMBUE_EXPIRED_MESSAGE))
 		{
 			removeGameTimer(MAGICIMBUE);
 		}
 
-		if (config.showTeleblock() && event.getMessage().equals("<col=4f006f>A teleblock spell has been cast on you. It will expire in 5 minutes, 0 seconds.</col>"))
+		if (config.showTeleblock() && event.getMessage().equals(FULL_TELEBLOCK_MESSAGE))
 		{
 			createGameTimer(FULLTB);
 		}
 
-		if (config.showTeleblock() && event.getMessage().equals("<col=4f006f>A teleblock spell has been cast on you. It will expire in 2 minutes, 30 seconds.</col>"))
+		if (config.showTeleblock() && event.getMessage().equals(HALF_TELEBLOCK_MESSAGE))
 		{
 			createGameTimer(HALFTB);
 		}
 
-		if (config.showSuperAntiFire() && event.getMessage().contains("You drink some of your super antifire potion"))
+		if (config.showSuperAntiFire() && event.getMessage().contains(SUPER_ANTIFIRE_DRINK_MESSAGE))
 		{
 			createGameTimer(SUPERANTIFIRE);
 		}
 
-		if (event.getMessage().equals("<col=7f007f>Your super antifire potion has expired.</col>"))
+		if (event.getMessage().equals(SUPER_ANTIFIRE_EXPIRED_MESSAGE))
 		{
 			removeGameTimer(SUPERANTIFIRE);
 		}
 
-		if (event.getMessage().equals("<col=ef1020>Your imbued heart has regained its magical power.</col>"))
+		if (event.getMessage().equals(IMBUED_HEART_READY_MESSAGE))
 		{
 			removeGameTimer(IMBUEDHEART);
 		}
 
-		if (config.showAntiVenom() && event.getMessage().contains("You drink some of your antivenom potion"))
+		if (config.showAntiVenom() && event.getMessage().contains(ANTIVENOM_DRINK_MESSAGE))
 		{
 			createGameTimer(ANTIVENOM);
 		}
 
-		if (config.showSanfew() && event.getMessage().contains("You drink some of your Sanfew Serum."))
+		if (config.showSanfew() && event.getMessage().contains(SANFEW_SERUM_DRINK_MESSAGE))
 		{
 			createGameTimer(SANFEW);
 		}
@@ -405,14 +475,51 @@ public class TimersPlugin extends Plugin
 			createGameTimer(PRAYER_ENHANCE);
 		}
 
-		if (config.showCharge() && event.getMessage().equals("<col=ef1020>You feel charged with magic power.</col>"))
+		if (config.showCharge() && event.getMessage().equals(CHARGE_MESSAGE))
 		{
 			createGameTimer(CHARGE);
 		}
 
-		if (event.getMessage().equals("<col=ef1020>Your magical charge fades away.</col>"))
+		if (config.showCharge() && event.getMessage().equals(CHARGE_EXPIRED_MESSAGE))
 		{
 			removeGameTimer(CHARGE);
+		}
+
+		if (config.showStaffOfTheDead() && event.getMessage().contains(STAFF_OF_THE_DEAD_SPEC_MESSAGE))
+		{
+			createGameTimer(STAFF_OF_THE_DEAD);
+		}
+
+		if (config.showStaffOfTheDead() && event.getMessage().contains(STAFF_OF_THE_DEAD_SPEC_EXPIRED_MESSAGE))
+		{
+			removeGameTimer(STAFF_OF_THE_DEAD);
+		}
+
+		if (config.showFreezes() && event.getMessage().equals(FROZEN_MESSAGE))
+		{
+			freezeTimer = createGameTimer(ICEBARRAGE);
+			freezeTime = client.getTickCount();
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		Player player = client.getLocalPlayer();
+		WorldPoint currentWorldPoint = player.getWorldLocation();
+
+		if (freezeTimer == null)
+		{
+			lastPoint = currentWorldPoint;
+			return;
+		}
+
+		// assume movement means unfrozen
+		if (!currentWorldPoint.equals(lastPoint))
+		{
+			removeGameTimer(freezeTimer.getTimer());
+			freezeTimer = null;
+			lastPoint = currentWorldPoint;
 		}
 	}
 
@@ -421,12 +528,40 @@ public class TimersPlugin extends Plugin
 	{
 		Actor actor = event.getActor();
 
+		if (config.showAbyssalSireStun()
+			&& actor instanceof NPC)
+		{
+			int npcId = ((NPC)actor).getId();
+
+			switch (npcId)
+			{
+				// Show the countdown when the Sire enters the stunned state.
+				case NpcID.ABYSSAL_SIRE_5887:
+					createGameTimer(ABYSSAL_SIRE_STUN);
+					break;
+
+				// Hide the countdown if the Sire isn't in the stunned state.
+				// This is necessary because the Sire leaves the stunned
+				// state early once all all four respiratory systems are killed.
+				case NpcID.ABYSSAL_SIRE:
+				case NpcID.ABYSSAL_SIRE_5888:
+				case NpcID.ABYSSAL_SIRE_5889:
+				case NpcID.ABYSSAL_SIRE_5890:
+				case NpcID.ABYSSAL_SIRE_5891:
+				case NpcID.ABYSSAL_SIRE_5908:
+					removeGameTimer(ABYSSAL_SIRE_STUN);
+					break;
+			}
+		}
+
 		if (actor != client.getLocalPlayer())
 		{
 			return;
 		}
 
-		if (config.showVengeanceOther() && actor.getAnimation() == AnimationID.VENGEANCE_OTHER)
+		if (config.showVengeanceOther()
+			&& actor.getAnimation() == AnimationID.ENERGY_TRANSFER_VENGEANCE_OTHER
+			&& actor.getInteracting().getGraphic() == VENGEANCEOTHER.getGraphicId())
 		{
 			createGameTimer(VENGEANCEOTHER);
 		}
@@ -456,7 +591,8 @@ public class TimersPlugin extends Plugin
 		{
 			if (actor.getGraphic() == BIND.getGraphicId())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC))
+				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
+					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
 				{
 					createGameTimer(HALFBIND);
 				}
@@ -468,7 +604,8 @@ public class TimersPlugin extends Plugin
 
 			if (actor.getGraphic() == SNARE.getGraphicId())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC))
+				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
+					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
 				{
 					createGameTimer(HALFSNARE);
 				}
@@ -480,7 +617,8 @@ public class TimersPlugin extends Plugin
 
 			if (actor.getGraphic() == ENTANGLE.getGraphicId())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC))
+				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
+					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
 				{
 					createGameTimer(HALFENTANGLE);
 				}
@@ -490,38 +628,101 @@ public class TimersPlugin extends Plugin
 				}
 			}
 
-			if (actor.getGraphic() == ICERUSH.getGraphicId())
+			// downgrade freeze based on graphic, if at the same tick as the freeze message
+			if (freezeTime == client.getTickCount())
 			{
-				createGameTimer(ICERUSH);
-			}
+				if (actor.getGraphic() == ICERUSH.getGraphicId())
+				{
+					removeGameTimer(ICEBARRAGE);
+					freezeTimer = createGameTimer(ICERUSH);
+				}
 
-			if (actor.getGraphic() == ICEBURST.getGraphicId())
-			{
-				createGameTimer(ICEBURST);
-			}
+				if (actor.getGraphic() == ICEBURST.getGraphicId())
+				{
+					removeGameTimer(ICEBARRAGE);
+					freezeTimer = createGameTimer(ICEBURST);
+				}
 
-			if (actor.getGraphic() == ICEBLITZ.getGraphicId())
-			{
-				createGameTimer(ICEBLITZ);
-			}
-
-			if (actor.getGraphic() == ICEBARRAGE.getGraphicId())
-			{
-				createGameTimer(ICEBARRAGE);
+				if (actor.getGraphic() == ICEBLITZ.getGraphicId())
+				{
+					removeGameTimer(ICEBARRAGE);
+					freezeTimer = createGameTimer(ICEBLITZ);
+				}
 			}
 		}
 	}
 
-	public void createGameTimer(GameTimer timer)
+	/**
+	 * remove SOTD timer when weapon is changed
+	 *
+	 * @param itemContainerChanged
+	 */
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
+	{
+		ItemContainer container = itemContainerChanged.getItemContainer();
+		if (container == client.getItemContainer(InventoryID.EQUIPMENT))
+		{
+			Item[] items = container.getItems();
+			int weaponIdx = EquipmentInventorySlot.WEAPON.getSlotIdx();
+
+			if (items == null || weaponIdx >= items.length)
+			{
+				removeGameTimer(STAFF_OF_THE_DEAD);
+				return;
+			}
+
+			Item weapon = items[weaponIdx];
+			if (weapon == null)
+			{
+				removeGameTimer(STAFF_OF_THE_DEAD);
+				return;
+			}
+
+			switch (weapon.getId())
+			{
+				case ItemID.STAFF_OF_THE_DEAD:
+				case ItemID.TOXIC_STAFF_OF_THE_DEAD:
+				case ItemID.STAFF_OF_LIGHT:
+				case ItemID.TOXIC_STAFF_UNCHARGED:
+					// don't reset timer if still wielding staff
+					return;
+				default:
+					removeGameTimer(STAFF_OF_THE_DEAD);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned npcDespawned)
+	{
+		NPC npc = npcDespawned.getNpc();
+
+		if (!npc.isDead())
+		{
+			return;
+		}
+
+		int npcId = npc.getId();
+
+		if (npcId == NpcID.ZOMBIFIED_SPAWN || npcId == NpcID.ZOMBIFIED_SPAWN_8063)
+		{
+			removeGameTimer(ICEBARRAGE);
+		}
+	}
+
+	private TimerTimer createGameTimer(final GameTimer timer)
 	{
 		removeGameTimer(timer);
 
-		TimerTimer t = new TimerTimer(timer, this);
+		BufferedImage image = timer.getImage(itemManager, spriteManager);
+		TimerTimer t = new TimerTimer(timer, this, image);
 		t.setTooltip(timer.getDescription());
 		infoBoxManager.addInfoBox(t);
+		return t;
 	}
 
-	public void createGameTimerFunc(GameTimer timer, Function<GameTimer, String> getDescription)
+	private void createGameTimerFunc(GameTimer timer, Function<GameTimer, String> getDescription)
 	{
 		removeGameTimer(timer);
 
@@ -530,9 +731,8 @@ public class TimersPlugin extends Plugin
 		infoBoxManager.addInfoBox(t);
 	}
 
-	public void removeGameTimer(GameTimer timer)
+	private void removeGameTimer(GameTimer timer)
 	{
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer);
 	}
-
 }

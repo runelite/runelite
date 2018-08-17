@@ -26,7 +26,6 @@ package net.runelite.cache.updater;
 
 import java.io.IOException;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
@@ -38,7 +37,6 @@ import net.runelite.cache.updater.beans.IndexEntry;
 import org.sql2o.Connection;
 import org.sql2o.ResultSetIterable;
 
-@Slf4j
 public class CacheStorage implements Storage
 {
 	private CacheEntry cacheEntry;

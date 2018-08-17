@@ -67,7 +67,7 @@ class XpPanel extends PluginPanel
 	{
 		super();
 
-		setBorder(new EmptyBorder(10, 6, 10, 6));
+		setBorder(new EmptyBorder(6, 6, 6, 6));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new BorderLayout());
 
@@ -172,18 +172,18 @@ class XpPanel extends PluginPanel
 		}
 	}
 
-	void updateSkillExperience(boolean updated, Skill skill, XpSnapshotSingle xpSnapshotSingle)
+	void updateSkillExperience(boolean updated, boolean paused, Skill skill, XpSnapshotSingle xpSnapshotSingle)
 	{
 		final XpInfoBox xpInfoBox = infoBoxes.get(skill);
 
 		if (xpInfoBox != null)
 		{
-			xpInfoBox.update(updated, xpSnapshotSingle);
+			xpInfoBox.update(updated, paused, xpSnapshotSingle);
 		}
 	}
 
 
-	public void updateTotal(XpSnapshotTotal xpSnapshotTotal)
+	void updateTotal(XpSnapshotTotal xpSnapshotTotal)
 	{
 		// if player has gained exp and hasn't switched displays yet, hide error panel and show overall info
 		if (xpSnapshotTotal.getXpGainedInSession() > 0 && !overallPanel.isVisible())

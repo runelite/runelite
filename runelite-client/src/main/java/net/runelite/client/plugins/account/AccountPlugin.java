@@ -26,9 +26,7 @@ package net.runelite.client.plugins.account;
 
 import com.google.common.eventbus.Subscribe;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.JOptionPane;
 import lombok.extern.slf4j.Slf4j;
@@ -38,12 +36,15 @@ import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.TitleToolbar;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.RunnableExceptionLogger;
 
 @PluginDescriptor(
 	name = "Account",
+	description = "Sync RuneLite config settings with your Google account",
+	tags = {"external", "google", "integration"},
 	loadWhenOutdated = true
 )
 @Slf4j
@@ -53,7 +54,7 @@ public class AccountPlugin extends Plugin
 	private SessionManager sessionManager;
 
 	@Inject
-	private TitleToolbar titleToolbar;
+	private ClientToolbar clientToolbar;
 
 	@Inject
 	private ScheduledExecutorService executor;
@@ -65,30 +66,22 @@ public class AccountPlugin extends Plugin
 
 	static
 	{
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				LOGIN_IMAGE = ImageIO.read(AccountPlugin.class.getResourceAsStream("login_icon.png"));
-				LOGOUT_IMAGE = ImageIO.read(AccountPlugin.class.getResourceAsStream("logout_icon.png"));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+		LOGIN_IMAGE = ImageUtil.getResourceStreamFromClass(AccountPlugin.class, "login_icon.png");
+		LOGOUT_IMAGE = ImageUtil.getResourceStreamFromClass(AccountPlugin.class, "logout_icon.png");
 	}
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		loginButton = NavigationButton.builder()
+			.tab(false)
 			.icon(LOGIN_IMAGE)
 			.tooltip("Login to RuneLite")
 			.onClick(this::loginClick)
 			.build();
 
 		logoutButton = NavigationButton.builder()
+			.tab(false)
 			.icon(LOGOUT_IMAGE)
 			.tooltip("Logout of RuneLite")
 			.onClick(this::logoutClick)
@@ -99,9 +92,9 @@ public class AccountPlugin extends Plugin
 
 	private void addAndRemoveButtons()
 	{
-		titleToolbar.removeNavigation(loginButton);
-		titleToolbar.removeNavigation(logoutButton);
-		titleToolbar.addNavigation(sessionManager.getAccountSession() == null
+		clientToolbar.removeNavigation(loginButton);
+		clientToolbar.removeNavigation(logoutButton);
+		clientToolbar.addNavigation(sessionManager.getAccountSession() == null
 			? loginButton
 			: logoutButton);
 	}
@@ -109,8 +102,8 @@ public class AccountPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		titleToolbar.removeNavigation(loginButton);
-		titleToolbar.removeNavigation(logoutButton);
+		clientToolbar.removeNavigation(loginButton);
+		clientToolbar.removeNavigation(logoutButton);
 	}
 
 	private void loginClick()

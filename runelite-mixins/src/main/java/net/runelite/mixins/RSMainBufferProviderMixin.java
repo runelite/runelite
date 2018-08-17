@@ -27,12 +27,16 @@ package net.runelite.mixins;
 import java.awt.Graphics;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
-import net.runelite.client.callback.Hooks;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSMainBufferProvider;
 
 @Mixin(RSMainBufferProvider.class)
 public abstract class RSMainBufferProviderMixin implements RSMainBufferProvider
 {
+	@Shadow("clientInstance")
+	private static RSClient client;
+
 	/**
 	 * Replacing this method makes it so we can completely
 	 * control when/what is drawn on the game's canvas,
@@ -42,6 +46,6 @@ public abstract class RSMainBufferProviderMixin implements RSMainBufferProvider
 	@Replace("draw")
 	final void draw(Graphics graphics, int x, int y)
 	{
-		Hooks.draw(this, graphics, x, y);
+		client.getCallbacks().draw(this, graphics, x, y);
 	}
 }

@@ -40,6 +40,11 @@ public enum Varbits
 	TRANSPARENT_CHATBOX(4608),
 
 	/**
+	 * If scrollbar in resizable mode chat is on the left
+	 */
+	CHAT_SCROLLBAR_ON_LEFT(6374),
+
+	/**
 	 * Runecraft pouches
 	 */
 	POUCH_SMALL(603),
@@ -220,6 +225,11 @@ public enum Varbits
 
 	/**
 	 * Experience tracker
+	 *
+	 * EXPERIENCE_TRACKER_POSITION expected values:
+	 *   0 = Right
+	 *   1 = Middle
+	 *   2 = Left
 	 */
 	EXPERIENCE_TRACKER_POSITION(4692),
 	EXPERIENCE_TRACKER_COUNTER(4697),
@@ -253,6 +263,11 @@ public enum Varbits
 	TOTAL_POINTS(5431),
 	PERSONAL_POINTS(5422),
 	RAID_PARTY_SIZE(5424),
+
+	/**
+	 * Theatre of Blood 1=In Party, 2=Inside/Spectator, 3=Dead Spectating
+	 */
+	THEATRE_OF_BLOOD(6440),
 
 	/**
 	 * Nightmare Zone
@@ -367,7 +382,15 @@ public enum Varbits
 	/**
 	 * The varbit that stores the players {@code AccountType}.
 	 */
-	ACCOUNT_TYPE(1777);
+	ACCOUNT_TYPE(1777),
+
+	/**
+	 * Corp beast damage
+	 */
+	CORP_DAMAGE(999),
+
+	WORLDHOPPER_FAVROITE_1(4597),
+	WORLDHOPPER_FAVROITE_2(4598);
 
 	/**
 	 * The raw varbit ID.

@@ -126,6 +126,12 @@ enum TeleportLocationData
 	WATERBIRTH_ISLAND_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Waterbirth Island", new WorldPoint(2550, 3756, 0), "enchanted_lyre_teleport_icon.png"),
 	NEITIZNOT_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Neitiznot", new WorldPoint(2336, 3801, 0), "enchanted_lyre_teleport_icon.png"),
 	JATIZSO_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Jatizso", new WorldPoint(2409, 3809, 0), "enchanted_lyre_teleport_icon.png"),
+	OBELISK_13(TeleportType.OTHER, "Obelisk", "13", new WorldPoint(3156, 3620, 0), "obelisk_icon.png"),
+	OBELISK_19(TeleportType.OTHER, "Obelisk", "19", new WorldPoint(3227, 3667, 0), "obelisk_icon.png"),
+	OBELISK_27(TeleportType.OTHER, "Obelisk", "27", new WorldPoint(3035, 3732, 0), "obelisk_icon.png"),
+	OBELISK_35(TeleportType.OTHER, "Obelisk", "35", new WorldPoint(3106, 3794, 0), "obelisk_icon.png"),
+	OBELISK_44(TeleportType.OTHER, "Obelisk", "44", new WorldPoint(2980, 3866, 0), "obelisk_icon.png"),
+	OBELISK_50(TeleportType.OTHER, "Obelisk", "50", new WorldPoint(3307, 3916, 0), "obelisk_icon.png"),
 
 	// Scrolls
 	DIGSITE_SCROLL(TeleportType.SCROLL, "Digsite Teleport", new WorldPoint(3324, 3412, 0), "scroll_teleport_icon.png"),

@@ -29,4 +29,8 @@ package net.runelite.api;
  */
 public interface IndexDataBase
 {
+	/**
+	 * Returns true if any cache overlay in this index is outdated due to hash mismatch
+	 */
+	boolean isOverlayOutdated();
 }

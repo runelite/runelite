@@ -43,7 +43,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Tithe Farm"
+	name = "Tithe Farm",
+	description = "Show timers for the farming patches within the Tithe Farm minigame",
+	tags = {"farming", "minigame", "overlay", "skilling", "timers"}
 )
 public class TitheFarmPlugin extends Plugin
 {

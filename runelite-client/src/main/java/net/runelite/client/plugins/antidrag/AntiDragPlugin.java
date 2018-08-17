@@ -36,7 +36,11 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
-@PluginDescriptor(name = "Shift Anti Drag")
+@PluginDescriptor(
+	name = "Shift Anti Drag",
+	description = "Prevent dragging an item for a specified delay",
+	tags = {"antidrag", "delay", "inventory", "items"}
+)
 public class AntiDragPlugin extends Plugin implements KeyListener
 {
 	private static final int DEFAULT_DELAY = 5;
