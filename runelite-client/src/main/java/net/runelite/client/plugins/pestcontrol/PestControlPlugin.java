@@ -24,7 +24,14 @@
  */
 package net.runelite.client.plugins.pestcontrol;
 
+import com.google.common.eventbus.Subscribe;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.events.SetMessage;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -40,7 +47,12 @@ public class PestControlPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
+	private Client client;
+
+	@Inject
 	private PestControlOverlay overlay;
+
+	private Pattern pattern = Pattern.compile("The ([a-z]+), [^ ]+ portal shield has dropped!", Pattern.CASE_INSENSITIVE);
 
 	@Override
 	protected void startUp() throws Exception
@@ -52,5 +64,24 @@ public class PestControlPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+	}
+
+
+	@Subscribe
+	private void onSetMessage(SetMessage setMessage)
+	{
+		if (client.getGameState() != GameState.LOADING && client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
+		if (overlay.getGame() != null && setMessage.getType() == ChatMessageType.SERVER)
+		{
+			Matcher matcher = pattern.matcher(setMessage.getValue());
+			if (matcher.lookingAt())
+			{
+				overlay.getGame().fall(matcher.group(1));
+			}
+		}
 	}
 }

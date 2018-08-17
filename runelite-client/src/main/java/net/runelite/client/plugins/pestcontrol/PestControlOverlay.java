@@ -32,6 +32,8 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
@@ -55,6 +57,7 @@ public class PestControlOverlay extends Overlay
 	private final Client client;
 
 	// Pest control game
+	@Getter(AccessLevel.PACKAGE)
 	private Game game;
 
 	@Inject
@@ -120,24 +123,6 @@ public class PestControlOverlay extends Overlay
 		assert blueShield != null;
 		assert yellowShield != null;
 		assert redShield != null;
-
-		// Check for fallen portals
-		if (purpleShield.isHidden())
-		{
-			game.fall(purple);
-		}
-		if (blueShield.isHidden())
-		{
-			game.fall(blue);
-		}
-		if (yellowShield.isHidden())
-		{
-			game.fall(yellow);
-		}
-		if (redShield.isHidden())
-		{
-			game.fall(red);
-		}
 
 		// Check for dead portals
 		if (isZero(purpleHealth))
