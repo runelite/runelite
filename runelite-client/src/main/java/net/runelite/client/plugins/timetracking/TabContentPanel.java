@@ -86,6 +86,14 @@ public abstract class TabContentPanel extends JPanel
 				{
 					sb.append(String.format("at %d:%02d PM", endTime.getHour() - 12, endTime.getMinute()));
 				}
+				else if (endTime.getHour() == 12)
+				{
+					sb.append(String.format("at %d:%02d PM", endTime.getHour(), endTime.getMinute()));
+				}
+				else if (endTime.getHour() == 0)
+				{
+					sb.append(String.format("at 12:%02d AM", endTime.getMinute()));
+				}
 				else
 				{
 					sb.append(String.format("at %d:%02d AM", endTime.getHour(), endTime.getMinute()));
