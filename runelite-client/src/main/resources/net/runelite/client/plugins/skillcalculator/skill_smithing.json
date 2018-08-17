@@ -320,12 +320,6 @@
     },
     {
       "level": 30,
-      "icon": 2353,
-      "name": "Steel Bar (Blast Furnace)",
-      "xp": 17.5
-    },
-    {
-      "level": 30,
       "icon": 1207,
       "name": "Steel Dagger",
       "xp": 27
@@ -537,12 +531,6 @@
     {
       "level": 50,
       "icon": 2359,
-      "name": "Mithril Bar (Blast Furnace)",
-      "xp": 30
-    },
-    {
-      "level": 50,
-      "icon": 2359,
       "name": "Mithril Bar",
       "xp": 30
     },
@@ -704,12 +692,6 @@
     },
     {
       "level": 70,
-      "icon": 2361,
-      "name": "Adamantite Bar (Blast Furnace)",
-      "xp": 37.5
-    },
-    {
-      "level": 70,
       "icon": 1211,
       "name": "Adamant Dagger",
       "xp": 62.5
@@ -850,12 +832,6 @@
       "level": 85,
       "icon": 2363,
       "name": "Runite Bar",
-      "xp": 50
-    },
-    {
-      "level": 85,
-      "icon": 2363,
-      "name": "Runite Bar (Blast Furnace)",
       "xp": 50
     },
     {
