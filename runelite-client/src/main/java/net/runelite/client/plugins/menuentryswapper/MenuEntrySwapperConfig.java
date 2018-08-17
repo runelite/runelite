@@ -239,4 +239,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+	@ConfigItem(
+		position = 19,
+		keyName = "swapCollect",
+		name = "Collect",
+		description = "Swap Collect with Talk-to for Priestess Zul-Gwenwynig at Zul-Andra."
+	)
+	default boolean swapCollect()
+	{
+		return true;
+	}
 }
