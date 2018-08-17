@@ -80,9 +80,9 @@ public abstract class TabContentPanel extends JPanel
 			{
 				sb.append(endTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault())).append(" ");
 			}
-			if(time12hour)
+			if (time12hour)
 			{
-				if(endTime.getHour() >= 13)
+				if (endTime.getHour() >= 13)
 				{
 					sb.append(String.format("at %d:%02d PM", endTime.getHour() - 12, endTime.getMinute()));
 				}

@@ -76,7 +76,10 @@ public interface TimeTrackingConfig extends Config
 		description = "Changes time to 12 hour clock",
 		position = 4
 	)
-	default boolean time12Hour() { return false; }
+	default boolean time12Hour()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "activeTab",
