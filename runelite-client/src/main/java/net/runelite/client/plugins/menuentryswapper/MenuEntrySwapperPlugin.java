@@ -489,6 +489,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("empty", option, target, true);
 		}
+		else if (config.swapCollect() && target.equals("priestess zul-gwenwynig"))
+		{
+			swap("collect", option, target, true);
+		}
 	}
 
 	@Subscribe
