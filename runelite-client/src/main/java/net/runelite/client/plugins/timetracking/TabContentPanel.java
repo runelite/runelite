@@ -48,7 +48,7 @@ public abstract class TabContentPanel extends JPanel
 		return super.getPreferredSize();
 	}
 
-	protected static String getFormattedEstimate(long remainingSeconds, boolean useRelativeTime)
+	protected static String getFormattedEstimate(long remainingSeconds, boolean useRelativeTime, boolean time12hour)
 	{
 		if (useRelativeTime)
 		{
@@ -80,7 +80,22 @@ public abstract class TabContentPanel extends JPanel
 			{
 				sb.append(endTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault())).append(" ");
 			}
-			sb.append(String.format("at %d:%02d", endTime.getHour(), endTime.getMinute()));
+			if(time12hour)
+			{
+				if(endTime.getHour() >= 13)
+				{
+					sb.append(String.format("at %d:%02d PM", endTime.getHour() - 12, endTime.getMinute()));
+				}
+				else
+				{
+					sb.append(String.format("at %d:%02d AM", endTime.getHour(), endTime.getMinute()));
+				}
+
+			}
+			else
+			{
+				sb.append(String.format("at %d:%02d", endTime.getHour(), endTime.getMinute()));
+			}
 			return sb.toString();
 		}
 	}
