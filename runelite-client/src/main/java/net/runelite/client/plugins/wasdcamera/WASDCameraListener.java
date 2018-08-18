@@ -134,36 +134,10 @@ class WASDCameraListener extends MouseListener implements KeyListener
 			return;
 		}
 
-		if (!plugin.isTyping())
+		Integer m = modified.remove(e.getKeyCode());
+		if (m != null)
 		{
-			modified.remove(e.getKeyCode());
-
-			if (config.up().matches(e))
-			{
-				e.setKeyCode(KeyEvent.VK_UP);
-			}
-			else if (config.down().matches(e))
-			{
-				e.setKeyCode(KeyEvent.VK_DOWN);
-			}
-			else if (config.left().matches(e))
-			{
-				e.setKeyCode(KeyEvent.VK_LEFT);
-			}
-			else if (config.right().matches(e))
-			{
-				e.setKeyCode(KeyEvent.VK_RIGHT);
-			}
-		}
-		else
-		{
-			// press d + enter + release d - causes the right arrow to never be released
-			Integer m = modified.get(e.getKeyCode());
-			if (m != null)
-			{
-				modified.remove(e.getKeyCode());
-				e.setKeyCode(m);
-			}
+			e.setKeyCode(m);
 		}
 	}
 }
