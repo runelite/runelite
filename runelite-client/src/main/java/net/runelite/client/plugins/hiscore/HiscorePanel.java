@@ -91,6 +91,8 @@ import static net.runelite.http.api.hiscore.HiscoreSkill.SMITHING;
 import static net.runelite.http.api.hiscore.HiscoreSkill.STRENGTH;
 import static net.runelite.http.api.hiscore.HiscoreSkill.THIEVING;
 import static net.runelite.http.api.hiscore.HiscoreSkill.WOODCUTTING;
+import static java.lang.Math.floor;
+import static java.lang.Math.max;
 import net.runelite.http.api.hiscore.Skill;
 
 @Slf4j
@@ -512,9 +514,27 @@ public class HiscorePanel extends PluginPanel
 				+ result.getHitpoints().getExperience() + result.getMagic().getExperience()
 				+ result.getRanged().getExperience() + result.getPrayer().getExperience();
 
+			/* Formulas for combat level*/
+			double base = 0.25 * (result.getDefence().getLevel() + result.getHitpoints().getLevel()
+					+ floor(result.getPrayer().getLevel() * 0.5));
+			double melee = 0.325 * (result.getAttack().getLevel() + result.getStrength().getLevel());
+			double rangeLvl = 0.325 * (floor(result.getRanged().getLevel() * 1.5));
+			double magicLvl = 0.325 * (floor(result.getMagic().getLevel() * 1.5));
+			double highestLvl = max(melee, max(rangeLvl, magicLvl));
+			int nextLvl = (int) floor(combatLevel) + 1;
+
+
+
 			content += "<p><span style = 'color:white'>Skill:</span> Combat</p>";
 			content += "<p><span style = 'color:white'>Exact Combat Level:</span> " + StackFormatter.formatNumber(combatLevel) + "</p>";
 			content += "<p><span style = 'color:white'>Experience:</span> " + StackFormatter.formatNumber(combatExperience) + "</p>";
+			content += "<p><span style = 'color:#FFFDD0;font-style:italic'>Levels required before leveling</span></p>";
+			content += "<p><span style = 'color:white'>HP or Defence: </span> " + StackFormatter.formatNumber(numberOfLevels(base + highestLvl, nextLvl, 0.25)) + "</p>";
+			content += "<p><span style = 'color:white'>Attack or Strength: </span> " + StackFormatter.formatNumber(numberOfLevels(base + melee, nextLvl, 0.325)) + "</p>";
+			content += "<p><span style = 'color:white'>Range: </span> " + StackFormatter.formatNumber(numberOfLevelsRangeMagic(result.getRanged().getLevel(), nextLvl, base)) + "</p>";
+			content += "<p><span style = 'color:white'>Magic: </span> " + StackFormatter.formatNumber(numberOfLevelsRangeMagic(result.getMagic().getLevel(), nextLvl, base)) + "</p>";
+			content += "<p><span style = 'color:white'>Prayer: </span> " + StackFormatter.formatNumber(numberOfLevels(base + highestLvl, nextLvl, 0.125)
+					+ prayerRequired(result.getPrayer().getLevel())) + "</p>";
 		}
 		else
 		{
@@ -637,5 +657,47 @@ public class HiscorePanel extends PluginPanel
 	{
 		// Select the first tab (NORMAL hiscores)
 		tabGroup.select(tabGroup.getTab(0));
+	}
+
+
+	/* Used for Combat Levels remaining in Hiscore */
+	private int numberOfLevels(double startLvl, int nextLvl, double multVal)
+	{
+		int reqToLvl = 0;
+
+		while (startLvl < nextLvl)
+		{
+			startLvl += multVal;
+			++reqToLvl;
+		}
+
+		return reqToLvl;
+	}
+
+	private int numberOfLevelsRangeMagic(double startLvl, int nextLvl, double base)
+	{
+		int reqToLvl = 0;
+		double baseStartLvl = startLvl;
+
+		startLvl = 0.325 * (floor(startLvl * 1.5));
+
+		while ((startLvl + base) < nextLvl)
+		{
+			startLvl = 0.325 * (floor((baseStartLvl + (++reqToLvl)) * 1.5));
+		}
+
+		return reqToLvl;
+	}
+
+	private int prayerRequired(int prayer)
+	{
+		if (prayer % 2 == 0)
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
 	}
 }
