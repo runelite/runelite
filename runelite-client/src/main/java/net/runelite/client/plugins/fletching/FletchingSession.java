@@ -22,42 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.fletching;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.time.Instant;
 
-@ConfigGroup("fletching")
-public interface FletchingConfig extends Config
+public class FletchingSession
 {
-    @ConfigItem(
-            keyName = "statTimeout",
-            name = "Reset stats (minutes)",
-            description = "Configures the time until statistic is reset",
-            position = 1
-    )
+    private Instant lastFletchedItem;
 
-    default int statTimeout() { return 5; }
+    public void setLastFletchedItem() { lastFletchedItem = Instant.now(); }
 
-    @ConfigItem(
-            keyName = "enableTotalActions",
-            name = "Enable Total Actions",
-            description = "Enable Total Actions Overlay",
-            position = 2
-    )
+    public Instant getLastFletchedItem() { return lastFletchedItem; }
 
-    default boolean enableTotalActions() { return true; }
-
-    @ConfigItem(
-            keyName = "enableActionsPerHour",
-            name = "Enable Actions Per Hour",
-            description = "Enables Actions Per Hour Overlay",
-            position = 3
-    )
-    default boolean enableActionsPerHour()
-    {
-        return true;
-    }
 }
