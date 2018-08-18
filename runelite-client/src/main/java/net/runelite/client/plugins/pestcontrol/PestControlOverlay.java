@@ -207,9 +207,9 @@ public class PestControlOverlay extends Overlay
 		int y = (int) (bounds.getY() + bounds.getHeight() + textBounds.getHeight() + barBounds.getHeight());
 
 		graphics.setColor(Color.BLACK);
-		graphics.drawString(text, x + 1, y + 1);
+		graphics.drawString(text, x + 1, y + 5);
 		graphics.setColor(color);
-		graphics.drawString(text, x, y);
+		graphics.drawString(text, x, y + 4);
 	}
 
 	private static Rectangle2D union(Rectangle2D src1, Rectangle2D src2)
