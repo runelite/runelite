@@ -1444,4 +1444,39 @@ public interface Client extends GameEngine
 	 * @param world target world to hop to
 	 */
 	void hopToWorld(World world);
+
+	/**
+	 * Sets the x-axis coordinate of the camera.
+	 *
+	 * @param cameraX the new camera x-value.
+	 */
+	void setCameraX(int cameraX);
+
+	/**
+	 * Sets the y-axis coordinate of the camera.
+	 *
+	 * @param cameraY the new camera y-value.
+	 */
+	void setCameraY(int cameraY);
+
+	/**
+	 * Sets the z-axis coordinate of the camera.
+	 *
+	 * @param cameraZ the new camera z-value.
+	 */
+	void setCameraZ(int cameraZ);
+
+	/**
+	 * Sets the pitch of the camera.
+	 *
+	 * @param cameraPitch the new camera pitch.
+	 */
+	void setCameraPitch(int cameraPitch);
+
+	/**
+	 * Sets the yaw of the camera.
+	 *
+	 * @param cameraYaw the new camera yaw.
+	 */
+	void setCameraYaw(int cameraYaw);
 }

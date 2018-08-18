@@ -40,13 +40,25 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	int getCameraX();
 
+	@Import("cameraX")
+	@Override
+	void setCameraX(int cameraX);
+
 	@Import("cameraY")
 	@Override
 	int getCameraY();
 
+	@Import("cameraY")
+	@Override
+	void setCameraY(int cameraY);
+
 	@Import("cameraZ")
 	@Override
 	int getCameraZ();
+
+	@Import("cameraZ")
+	@Override
+	void setCameraZ(int cameraZ);
 
 	@Import("plane")
 	@Override
@@ -57,11 +69,16 @@ public interface RSClient extends RSGameEngine, Client
 	int getCameraPitch();
 
 	@Import("cameraPitch")
+	@Override
 	void setCameraPitch(int cameraPitch);
 
 	@Import("cameraYaw")
 	@Override
 	int getCameraYaw();
+
+	@Import("cameraYaw")
+	@Override
+	void setCameraYaw(int cameraYaw);
 
 	@Import("world")
 	int getWorld();
