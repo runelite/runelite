@@ -156,14 +156,14 @@ enum TeleportLocationData
 	ARDOUGNE_CLOAK_FARM(TeleportType.OTHER, "Ardougne Cloak", "Farm", new WorldPoint(2673, 3375, 0), "ardougne_cloak_icon.png"),
 	DESERT_AMULET(TeleportType.OTHER, "Desert Amulet Teleport", new WorldPoint(3413, 2920, 0), "desert_amulet_icon.png"),
 	KANDARIN_HEADGEAR(TeleportType.OTHER, "Kandarin Headgear Teleport", new WorldPoint(2734, 3419, 0), "kandarin_headgear_icon.png"),
-	MORYTANIA_LEGS_ECTO(TeleportType.OTHER, "Morytania Legs Teleport", "Ectofuntus pit" ,new WorldPoint(3654, 3519, 0), "morytania_legs_icon.png"),
-	MORYTANIA_LEGS_BURGH(TeleportType.OTHER, "Morytania Legs Teleport", "Burgh de Rott" ,new WorldPoint(3484, 3229, 0), "morytania_legs_icon.png"),
-	FREMENNIK_SEA_BOOTS(TeleportType.OTHER, "Fremennik Sea Boots Teleport",new WorldPoint(2648, 3674, 0), "fremennik_sea_boots_icon.png"),
-	EXPLORERS_RING(TeleportType.OTHER, "Explorer's Ring Teleport",new WorldPoint(3052, 3296, 0), "explorers_ring_icon.png"),
-	WESTERN_BANNER(TeleportType.OTHER, "Western Banner Teleport",new WorldPoint(2330, 3679, 0), "western_banner_icon.png"),
-	KARAMJA_GLOVES_GEM(TeleportType.OTHER, "Karamja Gloves Teleport", "Gem Mine" ,new WorldPoint(2826, 2998, 0), "karamja_gloves_icon.png"),
-	KARAMJA_GLOVES_SLAYER(TeleportType.OTHER, "Karamja Gloves Teleport", "Duradel" ,new WorldPoint(2869, 2978, 0), "karamja_gloves_icon.png"),
-	WILDERNESS_SWORD(TeleportType.OTHER, "Wilderness Sword Teleport",new WorldPoint(3376, 3892, 0), "wilderness_sword_icon.png");
+	MORYTANIA_LEGS_ECTO(TeleportType.OTHER, "Morytania Legs Teleport", "Ectofuntus pit" , new WorldPoint(3654, 3519, 0), "morytania_legs_icon.png"),
+	MORYTANIA_LEGS_BURGH(TeleportType.OTHER, "Morytania Legs Teleport", "Burgh de Rott" , new WorldPoint(3484, 3229, 0), "morytania_legs_icon.png"),
+	FREMENNIK_SEA_BOOTS(TeleportType.OTHER, "Fremennik Sea Boots Teleport", new WorldPoint(2648, 3674, 0), "fremennik_sea_boots_icon.png"),
+	EXPLORERS_RING(TeleportType.OTHER, "Explorer's Ring Teleport", new WorldPoint(3052, 3296, 0), "explorers_ring_icon.png"),
+	WESTERN_BANNER(TeleportType.OTHER, "Western Banner Teleport", new WorldPoint(2330, 3679, 0), "western_banner_icon.png"),
+	KARAMJA_GLOVES_GEM(TeleportType.OTHER, "Karamja Gloves Teleport", "Gem Mine" , new WorldPoint(2826, 2998, 0), "karamja_gloves_icon.png"),
+	KARAMJA_GLOVES_SLAYER(TeleportType.OTHER, "Karamja Gloves Teleport", "Duradel" , new WorldPoint(2869, 2978, 0), "karamja_gloves_icon.png"),
+	WILDERNESS_SWORD(TeleportType.OTHER, "Wilderness Sword Teleport", new WorldPoint(3376, 3892, 0), "wilderness_sword_icon.png");
 
 	private final TeleportType type;
 	private final String tooltip;
