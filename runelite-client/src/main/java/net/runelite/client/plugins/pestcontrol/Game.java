@@ -46,6 +46,26 @@ public class Game
 	private final PortalContext yellow = new PortalContext(YELLOW);
 	private final PortalContext red = new PortalContext(RED);
 
+	public void fall(String color)
+	{
+		if (color.equalsIgnoreCase("purple"))
+		{
+			fall(purple);
+		}
+		else if (color.equalsIgnoreCase("red"))
+		{
+			fall(red);
+		}
+		else if (color.equalsIgnoreCase("yellow"))
+		{
+			fall(yellow);
+		}
+		else if (color.equalsIgnoreCase("blue"))
+		{
+			fall(blue);
+		}
+	}
+
 	public void fall(PortalContext portal)
 	{
 		if (!portal.isShielded())
