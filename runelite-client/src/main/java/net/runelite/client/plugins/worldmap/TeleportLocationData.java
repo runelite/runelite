@@ -126,6 +126,8 @@ enum TeleportLocationData
 	WATERBIRTH_ISLAND_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Waterbirth Island", new WorldPoint(2550, 3756, 0), "enchanted_lyre_teleport_icon.png"),
 	NEITIZNOT_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Neitiznot", new WorldPoint(2336, 3801, 0), "enchanted_lyre_teleport_icon.png"),
 	JATIZSO_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Jatizso", new WorldPoint(2409, 3809, 0), "enchanted_lyre_teleport_icon.png"),
+
+	// Wilderness
 	OBELISK_13(TeleportType.OTHER, "Obelisk", "13", new WorldPoint(3156, 3620, 0), "obelisk_icon.png"),
 	OBELISK_19(TeleportType.OTHER, "Obelisk", "19", new WorldPoint(3227, 3667, 0), "obelisk_icon.png"),
 	OBELISK_27(TeleportType.OTHER, "Obelisk", "27", new WorldPoint(3035, 3732, 0), "obelisk_icon.png"),
@@ -147,7 +149,21 @@ enum TeleportLocationData
 	TAI_BWO_WANNAI_SCROLL(TeleportType.SCROLL, "Tai Bwo Wannai Teleport", new WorldPoint(2788, 3066, 0), "scroll_teleport_icon.png"),
 	ZULANDRA_SCROLL(TeleportType.SCROLL, "Zul-Andra Teleport", new WorldPoint(2197, 3056, 0), "scroll_teleport_icon.png"),
 	KEY_MASTER_SCROLL(TeleportType.SCROLL, "Key Master Teleport", new WorldPoint(2686, 9882, 0), "scroll_teleport_icon.png"),
-	REVENANT_CAVE_SCROLL(TeleportType.SCROLL, "Revenant Cave Teleport", new WorldPoint(3127, 3833, 0), "scroll_teleport_icon.png");
+	REVENANT_CAVE_SCROLL(TeleportType.SCROLL, "Revenant Cave Teleport", new WorldPoint(3127, 3833, 0), "scroll_teleport_icon.png"),
+
+	// Diary Teleports
+	ARDOUGNE_CLOAK_MONASTERY(TeleportType.OTHER, "Ardougne Cloak", "Monastery", new WorldPoint(2606, 3222, 0), "ardougne_cloak_icon.png"),
+	ARDOUGNE_CLOAK_FARM(TeleportType.OTHER, "Ardougne Cloak", "Farm", new WorldPoint(2673, 3375, 0), "ardougne_cloak_icon.png"),
+	DESERT_AMULET(TeleportType.OTHER, "Desert Amulet Teleport", new WorldPoint(3413, 2920, 0), "desert_amulet_icon.png"),
+	KANDARIN_HEADGEAR(TeleportType.OTHER, "Kandarin Headgear Teleport", new WorldPoint(2734, 3419, 0), "kandarin_headgear_icon.png"),
+	MORYTANIA_LEGS_ECTO(TeleportType.OTHER, "Morytania Legs Teleport", "Ectofuntus pit" ,new WorldPoint(3654, 3519, 0), "morytania_legs_icon.png"),
+	MORYTANIA_LEGS_BURGH(TeleportType.OTHER, "Morytania Legs Teleport", "Burgh de Rott" ,new WorldPoint(3484, 3229, 0), "morytania_legs_icon.png"),
+	FREMENNIK_SEA_BOOTS(TeleportType.OTHER, "Fremennik Sea Boots Teleport",new WorldPoint(2648, 3674, 0), "fremennik_sea_boots_icon.png"),
+	EXPLORERS_RING(TeleportType.OTHER, "Explorer's Ring Teleport",new WorldPoint(3052, 3296, 0), "explorers_ring_icon.png"),
+	WESTERN_BANNER(TeleportType.OTHER, "Western Banner Teleport",new WorldPoint(2330, 3679, 0), "western_banner_icon.png"),
+	KARAMJA_GLOVES_GEM(TeleportType.OTHER, "Karamja Gloves Teleport", "Gem Mine" ,new WorldPoint(2826, 2998, 0), "karamja_gloves_icon.png"),
+	KARAMJA_GLOVES_SLAYER(TeleportType.OTHER, "Karamja Gloves Teleport", "Duradel" ,new WorldPoint(2869, 2978, 0), "karamja_gloves_icon.png"),
+	WILDERNESS_SWORD(TeleportType.OTHER, "Wilderness Sword Teleport",new WorldPoint(3376, 3892, 0), "wilderness_sword_icon.png");
 
 	private final TeleportType type;
 	private final String tooltip;
