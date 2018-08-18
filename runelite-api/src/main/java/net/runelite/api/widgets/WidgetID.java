@@ -108,12 +108,16 @@ public class WidgetID
 	public static final int KILL_LOGS_GROUP_ID = 549;
 	public static final int DIARY_QUEST_GROUP_ID = 275;
 	public static final int THEATRE_OF_BLOOD_GROUP_ID = 23;
+	public static final int WORLD_SWITCHER_GROUP_ID = 69;
+	public static final int DIALOG_OPTION_GROUP_ID = 219;
+	public static final int DIALOG_PLAYER_GROUP_ID = 217;
 
 	static class WorldMap
 	{
-		static final int OPTION = 41;
+		static final int OPTION = 42;
 		static final int TOOLTIP = 35;
 		static final int MAPVIEW = 3;
+		static final int SEARCH = 21;
 	}
 
 	static class SlayerRewards
@@ -131,6 +135,7 @@ public class WidgetID
 
 	static class LogoutPanel
 	{
+		static final int WORLD_SWITCHER_BUTTON = 3;
 		static final int LOGOUT_BUTTON = 6;
 	}
 
@@ -340,10 +345,12 @@ public class WidgetID
 
 	static class Chatbox
 	{
+		static final int CHATBOX_PARENT = 0;
 		static final int CHATBOX_BUTTONS = 1;
 		static final int CHATBOX_REPORT_TEXT = 28;
 		static final int CHATBOX_FRAME = 29;
 		static final int CHATBOX_MESSAGES = 47;
+		static final int CHATBOX_INPUT = 49;
 	}
 
 	static class Prayer
@@ -589,5 +596,10 @@ public class WidgetID
 		static final int MONSTER = 13;
 		static final int KILLS = 14;
 		static final int STREAK = 15;
+	}
+
+	static class WorldSwitcher
+	{
+		static final int WORLD_LIST = 14;
 	}
 }

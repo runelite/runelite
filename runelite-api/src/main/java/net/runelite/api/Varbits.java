@@ -40,6 +40,11 @@ public enum Varbits
 	TRANSPARENT_CHATBOX(4608),
 
 	/**
+	 * If scrollbar in resizable mode chat is on the left
+	 */
+	CHAT_SCROLLBAR_ON_LEFT(6374),
+
+	/**
 	 * Runecraft pouches
 	 */
 	POUCH_SMALL(603),
@@ -382,7 +387,10 @@ public enum Varbits
 	/**
 	 * Corp beast damage
 	 */
-	CORP_DAMAGE(999);
+	CORP_DAMAGE(999),
+
+	WORLDHOPPER_FAVROITE_1(4597),
+	WORLDHOPPER_FAVROITE_2(4598);
 
 	/**
 	 * The raw varbit ID.

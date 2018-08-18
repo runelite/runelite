@@ -41,6 +41,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.timetracking.SummaryState;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
 
 @Singleton
@@ -60,6 +61,16 @@ public class BirdHouseTracker
 	@Getter(AccessLevel.PACKAGE)
 	private final ConcurrentMap<BirdHouseSpace, BirdHouseData> birdHouseData = new ConcurrentHashMap<>();
 
+	@Getter
+	private SummaryState summary = SummaryState.UNKNOWN;
+
+	/**
+	 * The time at which all the bird houses will be ready to be dismantled,
+	 * or {@code -1} if we have no data about any of the bird house spaces.
+	 */
+	@Getter
+	private long completionTime = -1;
+
 	@Inject
 	private BirdHouseTracker(Client client, ItemManager itemManager, ConfigManager configManager,
 		TimeTrackingConfig config, Notifier notifier)
@@ -70,16 +81,6 @@ public class BirdHouseTracker
 		this.config = config;
 		this.notifier = notifier;
 	}
-
-	/**
-	 * The time at which all the bird houses will be ready to be dismantled,
-	 * or {@code -1} if we have no data about any of the bird house spaces.
-	 *
-	 * This is set to {@code 0} if the bird houses have already completed
-	 * when updating it.
-	 */
-	@Getter
-	private long completionTime = -1;
 
 	public BirdHouseTabPanel createBirdHouseTabPanel()
 	{
@@ -126,7 +127,7 @@ public class BirdHouseTracker
 	{
 		boolean changed = false;
 
-		if (FOSSIL_ISLAND_REGIONS.contains(location.getRegionID()))
+		if (FOSSIL_ISLAND_REGIONS.contains(location.getRegionID()) && location.getPlane() == 0)
 		{
 			final Map<BirdHouseSpace, BirdHouseData> newData = new HashMap<>();
 			final long currentTime = Instant.now().getEpochSecond();
@@ -176,8 +177,9 @@ public class BirdHouseTracker
 	 */
 	public boolean checkCompletion()
 	{
-		if (completionTime > 0 && completionTime < Instant.now().getEpochSecond())
+		if (summary == SummaryState.IN_PROGRESS && completionTime < Instant.now().getEpochSecond())
 		{
+			summary = SummaryState.COMPLETED;
 			completionTime = 0;
 
 			if (config.birdHouseNotification())
@@ -199,20 +201,43 @@ public class BirdHouseTracker
 	{
 		if (birdHouseData.isEmpty())
 		{
+			summary = SummaryState.UNKNOWN;
 			completionTime = -1;
 			return;
 		}
 
+		boolean allEmpty = true;
 		long maxCompletionTime = 0;
 		for (BirdHouseData data : birdHouseData.values())
 		{
-			if (BirdHouseState.fromVarpValue(data.getVarp()) == BirdHouseState.SEEDED)
+			final BirdHouseState state = BirdHouseState.fromVarpValue(data.getVarp());
+
+			if (state != BirdHouseState.EMPTY)
+			{
+				allEmpty = false;
+			}
+
+			if (state == BirdHouseState.SEEDED)
 			{
 				maxCompletionTime = Math.max(maxCompletionTime, data.getTimestamp() + BIRD_HOUSE_DURATION);
 			}
 		}
 
-		completionTime = (maxCompletionTime <= Instant.now().getEpochSecond()) ? 0 : maxCompletionTime;
+		if (allEmpty)
+		{
+			summary = SummaryState.EMPTY;
+			completionTime = 0;
+		}
+		else if (maxCompletionTime <= Instant.now().getEpochSecond())
+		{
+			summary = SummaryState.COMPLETED;
+			completionTime = 0;
+		}
+		else
+		{
+			summary = SummaryState.IN_PROGRESS;
+			completionTime = maxCompletionTime;
+		}
 	}
 
 	private void saveToConfig(Map<BirdHouseSpace, BirdHouseData> updatedData)
