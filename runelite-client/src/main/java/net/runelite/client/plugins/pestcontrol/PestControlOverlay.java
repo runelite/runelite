@@ -109,20 +109,10 @@ public class PestControlOverlay extends Overlay
 		PortalContext yellow = game.getYellow();
 		PortalContext red = game.getRed();
 
-		Widget purpleShield = client.getWidget(PURPLE.getShield());
-		Widget blueShield = client.getWidget(BLUE.getShield());
-		Widget yellowShield = client.getWidget(YELLOW.getShield());
-		Widget redShield = client.getWidget(RED.getShield());
-
 		Widget purpleHealth = client.getWidget(PURPLE.getHitpoints());
 		Widget blueHealth = client.getWidget(BLUE.getHitpoints());
 		Widget yellowHealth = client.getWidget(YELLOW.getHitpoints());
 		Widget redHealth = client.getWidget(RED.getHitpoints());
-
-		assert purpleShield != null;
-		assert blueShield != null;
-		assert yellowShield != null;
-		assert redShield != null;
 
 		// Check for dead portals
 		if (isZero(purpleHealth))
@@ -227,7 +217,7 @@ public class PestControlOverlay extends Overlay
 
 	private void renderAttack(Graphics2D graphics, PortalContext portal)
 	{
-		if (portal.isShielded() || portal.isIsDead())
+		if (portal.isShielded() || portal.isDead())
 		{
 			return;
 		}
