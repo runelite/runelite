@@ -95,11 +95,26 @@ class WASDCameraListener extends MouseListener implements KeyListener
 					case KeyEvent.VK_SLASH:
 						// refocus chatbox
 						plugin.setTyping(true);
-						clientThread.invoke(() ->
-						{
-							plugin.unlockChat();
-						});
+						clientThread.invoke(() -> plugin.unlockChat());
 						break;
+					case KeyEvent.VK_1:
+					case KeyEvent.VK_2:
+					case KeyEvent.VK_3:
+					case KeyEvent.VK_4:
+					case KeyEvent.VK_5:
+					case KeyEvent.VK_6:
+					case KeyEvent.VK_7:
+					case KeyEvent.VK_8:
+					case KeyEvent.VK_9:
+					case KeyEvent.VK_0:
+						if (config.numbers())
+						{
+							final int newKeyCode = e.getKeyCode() == KeyEvent.VK_0
+								? KeyEvent.VK_F10
+								: e.getKeyCode() + 0x40 - 1; // This is the difference between num key
+							modified.put(e.getKeyCode(), newKeyCode);
+							e.setKeyCode(newKeyCode);
+						}
 				}
 			}
 		}

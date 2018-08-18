@@ -76,4 +76,15 @@ public interface WASDCameraConfig extends Config
 	{
 		return new Keybind(KeyEvent.VK_D, 0);
 	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "numbers",
+		name = "F1-F10 keys to numbers",
+		description = "This will map function keys to numbers when in WASD mode (e.g F1 to 1, F10 to 0)."
+	)
+	default boolean numbers()
+	{
+		return true;
+	}
 }
