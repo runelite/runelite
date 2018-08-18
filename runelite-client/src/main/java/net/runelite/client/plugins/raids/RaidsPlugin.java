@@ -300,14 +300,12 @@ public class RaidsPlugin extends Plugin
 				}
 
 				raid.updateLayout(layout);
-
+				RotationSolver.solve(raid.getCombatRooms());
 				if (config.copyLayoutToClipboard())
 				{
 					Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 					clipboard.setContents(new StringSelection(getRaidLayoutString(layout)), null);
 				}
-
-				RotationSolver.solve(raid.getCombatRooms());
 				overlay.setScoutOverlayShown(true);
 			}
 			else if (!config.scoutOverlayAtBank())
