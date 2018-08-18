@@ -123,12 +123,18 @@ class WorldSwitcherPanel extends PluginPanel
 				case PLAYERS:
 					return Integer.compare(r1.getUpdatedPlayerCount(), r2.getUpdatedPlayerCount()) * (ascendingOrder ? 1 : -1);
 				case ACTIVITY:
-					return r1.getWorld().getActivity().compareTo(r2.getWorld().getActivity()) * (ascendingOrder ? 1 : -1);
+					return r1.getWorld().getActivity().compareTo(r2.getWorld().getActivity()) * -1 * (ascendingOrder ? 1 : -1);
 				default:
 					return 0;
 
 			}
 		});
+
+		// Leave empty activity worlds on the bottom of the list
+		if (orderIndex == WorldOrder.ACTIVITY)
+		{
+			rows.sort((r1, r2) -> r1.getWorld().getActivity().equals("-") ? 1 : -1);
+		}
 
 		rows.sort((r1, r2) ->
 		{
