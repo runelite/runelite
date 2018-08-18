@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.wasdcamera;
+package net.runelite.client.plugins.keyredistribution;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
@@ -45,12 +45,12 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "WASD Camera",
-	description = "Allows use of WASD keys for camera movement with 'Press Enter to Chat'",
+	name = "Key redistribution",
+	description = "Allows use of WASD keys for camera movement and redistribution of the hotkey shortcuts with 'Press Enter to Chat'",
 	tags = {"enter", "chat"},
 	enabledByDefault = false
 )
-public class WASDCameraPlugin extends Plugin
+public class KeyRedistributionPlugin extends Plugin
 {
 	private static final String PRESS_ENTER_TO_CHAT = "Press Enter to Chat...";
 	private static final String SCRIPT_EVENT_SET_CHATBOX_INPUT = "setChatboxInput";
@@ -66,7 +66,7 @@ public class WASDCameraPlugin extends Plugin
 	private KeyManager keyManager;
 
 	@Inject
-	private WASDCameraListener inputListener;
+	private KeyRedistributionListener inputListener;
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -102,9 +102,9 @@ public class WASDCameraPlugin extends Plugin
 	}
 
 	@Provides
-	WASDCameraConfig getConfig(ConfigManager configManager)
+	KeyRedistributionConfig getConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(WASDCameraConfig.class);
+		return configManager.getConfig(KeyRedistributionConfig.class);
 	}
 
 	boolean chatboxFocused()
