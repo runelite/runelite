@@ -54,6 +54,7 @@ public class WASDCameraPlugin extends Plugin
 {
 	private static final String PRESS_ENTER_TO_CHAT = "Press Enter to Chat...";
 	private static final String SCRIPT_EVENT_SET_CHATBOX_INPUT = "setChatboxInput";
+	private static final String SCRIPT_EVENT_BLOCK_CHAT_INPUT = "blockChatInput";
 
 	@Inject
 	private Client client;
@@ -125,25 +126,29 @@ public class WASDCameraPlugin extends Plugin
 		return true;
 	}
 
-	boolean chatboxDialog()
-	{
-		Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
-		return chatboxInput == null || chatboxInput.isHidden();
-	}
-
 	@Subscribe
 	public void onScriptEvent(ScriptCallbackEvent scriptCallbackEvent)
 	{
-		if (scriptCallbackEvent.getEventName().equals(SCRIPT_EVENT_SET_CHATBOX_INPUT))
+		switch (scriptCallbackEvent.getEventName())
 		{
-			Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
-			if (chatboxInput != null)
-			{
-				if (chatboxFocused() && !typing)
+			case SCRIPT_EVENT_SET_CHATBOX_INPUT:
+				Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
+				if (chatboxInput != null)
 				{
-					chatboxInput.setText(PRESS_ENTER_TO_CHAT);
+					if (chatboxFocused() && !typing)
+					{
+						chatboxInput.setText(PRESS_ENTER_TO_CHAT);
+					}
 				}
-			}
+				break;
+			case SCRIPT_EVENT_BLOCK_CHAT_INPUT:
+				if (!typing)
+				{
+					int[] intStack = client.getIntStack();
+					int intStackSize = client.getIntStackSize();
+					intStack[intStackSize - 1] = 1;
+				}
+				break;
 		}
 	}
 

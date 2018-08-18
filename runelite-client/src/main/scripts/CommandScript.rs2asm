@@ -317,6 +317,11 @@ LABEL244:
    iload                  0
    iload                  1
    invoke                 74
+   load_int               1                 ; check if we're ignoring input
+   load_int               0                 ;
+   load_string            "blockChatInput"  ;
+   runelite_callback                        ;
+   if_icmpeq              LABEL250          ; don't add to input varcstr
    put_varc_string        1
 LABEL250:
    invoke                 223
