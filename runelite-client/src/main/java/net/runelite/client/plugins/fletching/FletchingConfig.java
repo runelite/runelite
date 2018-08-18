@@ -56,8 +56,5 @@ public interface FletchingConfig extends Config
             description = "Enables Actions Per Hour Overlay",
             position = 3
     )
-    default boolean enableActionsPerHour()
-    {
-        return true;
-    }
+    default boolean enableActionsPerHour() { return true; }
 }
