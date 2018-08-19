@@ -163,14 +163,14 @@ public class RaidsTheivingTest
 	public void testChestChance()
 	{
 		BatSolver solver = new BatSolver(ThievingRoomType.STRAIGHT);
-		assert solver.relativeLikelihoodPoison(1) < 0.05;
-		assert solver.relativeLikelihoodPoison(25) < 0.6;
-		assert solver.relativeLikelihoodPoison(34) > 0.95;
+		assert solver.relativeLikelihoodPoison(1) < 0.20;
+		assert solver.relativeLikelihoodPoison(25) < 0.9;
+		assert solver.relativeLikelihoodPoison(34) > 0.99;
 		solver = new BatSolver(ThievingRoomType.LEFT_TURN);
-		assert solver.relativeLikelihoodPoison(11) < 0.05;
+		assert solver.relativeLikelihoodPoison(11) < 0.10;
 		assert solver.relativeLikelihoodPoison(1) < 0.6;
-		assert solver.relativeLikelihoodPoison(13) < 0.96 && solver.relativeLikelihoodPoison(13) > 0.95;
-		assert solver.relativeLikelihoodPoison(45) > 0.96;
+		assert solver.relativeLikelihoodPoison(13) < 0.99 && solver.relativeLikelihoodPoison(13) > 0.92;
+		assert solver.relativeLikelihoodPoison(45) > 0.99;
 	}
 
 
