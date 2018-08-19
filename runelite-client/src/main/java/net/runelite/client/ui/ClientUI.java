@@ -525,6 +525,11 @@ public class ClientUI
 		return new Point(0, 0);
 	}
 
+	public Point getWindowOffset()
+	{
+		return new Point(frame.getX(), frame.getY());
+	}
+
 	public GraphicsConfiguration getGraphicsConfiguration()
 	{
 		return frame.getGraphicsConfiguration();
