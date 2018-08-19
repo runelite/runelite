@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tim Lehner <Timothy.Lehner.2011@live.rhul.ac.uk>
+ * Copyright (c) 2018, Tim Lehner <Timothy.Lehner.2011@live.rhul.ac.uk>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,14 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.raidsthieving;
+package net.runelite.client.plugins.raidsthieving.BatSolver;
 
-public class RaidsThievingConstants
+// There are three distinct Thieving rooms, distinguished by the position of the entrance relative to the exit
+// e.g. If you enter the room and must turn left to get to the exit and trough, this is a LEFT_TURN
+
+public enum ThievingRoomType
 {
-	public static final int CLOSED_CHEST_ID = 29742;
-	public static final int OPEN_EMPTY_CHEST = 29743;
-	public static final int OPEN_FULL_CHEST_1 = 29744;
-	public static final int OPEN_FULL_CHEST_2 = 29745;
-	public static final int EMPTY_TROUGH = 29746;
-	public static final int[] STORAGE = {29769, 29770, 29771, 29772};
+	LEFT_TURN,
+	RIGHT_TURN,
+	STRAIGHT,
+	UNKNOWN
 }

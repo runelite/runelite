@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tim Lehner <Timothy.Lehner.2011@live.rhul.ac.uk>
+ * Copyright (c) 2018, Tim Lehner <Timothy.Lehner.2011@live.rhul.ac.uk>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,14 +22,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.raidsthieving;
+package net.runelite.client.plugins.raidsthieving.BatSolver;
 
-public class RaidsThievingConstants
+public class Matrix2D
 {
-	public static final int CLOSED_CHEST_ID = 29742;
-	public static final int OPEN_EMPTY_CHEST = 29743;
-	public static final int OPEN_FULL_CHEST_1 = 29744;
-	public static final int OPEN_FULL_CHEST_2 = 29745;
-	public static final int EMPTY_TROUGH = 29746;
-	public static final int[] STORAGE = {29769, 29770, 29771, 29772};
+	public static int[][] MatrixMultiple2D(int[][] matA, int[][] matB)
+		// Performs 2d matrix multiplication on integer arrays
+	{
+		int[][] output = {{0, 0}, {0, 0}};
+		for (int i = 0; i < matA.length; i++)
+		{
+			for (int j = 0; j < matB[0].length; j++)
+			{
+				for (int k = 0; k < matA[0].length; k++)
+				{
+					output[i][j] += matA[i][k] * matB[k][j];
+				}
+			}
+		}
+		return output;
+	}
+
+	public static int[][] Rotate90(int[][] matA)
+	{
+		// helper function to provide easy access to a counter-clockwise 90degree rotation in 2D cartesian coordiantes
+		int[][] rotMat = {{0, -1}, {1, 0}};
+		return MatrixMultiple2D(rotMat, matA);
+	}
+
 }

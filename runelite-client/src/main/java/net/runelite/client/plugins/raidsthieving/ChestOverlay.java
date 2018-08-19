@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tim Lehner <Timothy.Lehner.2011@live.rhul.ac.uk>
+ * Copyright (c) 2018, Tim Lehner <Timothy.Lehner.2011@live.rhul.ac.uk>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,15 +29,17 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.raidsthieving.BatSolver.BatSolver;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
-
 import javax.inject.Inject;
-import java.awt.*;
-import java.util.Iterator;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.util.Map;
+import java.util.TreeSet;
 
 /**
  * Represents the overlay that shows timers on traps that are placed by the
@@ -49,9 +51,6 @@ public class ChestOverlay extends Overlay
 	private final Client client;
 	private final RaidsThievingPlugin plugin;
 	private final RaidsThievingConfig config;
-
-	private Color colorCouldHaveBats;
-	private Color colorPoison;
 
 	@Inject
 	ChestOverlay(Client client, RaidsThievingPlugin plugin, RaidsThievingConfig config)
@@ -86,16 +85,24 @@ public class ChestOverlay extends Overlay
 	private void drawChests(Graphics2D graphics)
 	{
 
-		for (Iterator<Map.Entry<WorldPoint, ThievingChest>> it = plugin.getChests().entrySet().iterator(); it.hasNext(); )
+		for (Map.Entry<WorldPoint, ThievingChest> entry : plugin.getChests().entrySet())
 		{
-			Map.Entry<WorldPoint, ThievingChest> entry = it.next();
 			ThievingChest chest = entry.getValue();
+			WorldPoint pos = entry.getKey();
+
 
 			if (chest != null)
 			{
 				if (!plugin.isBatsFound() && !chest.isEverOpened())
 				{
-					drawCircleOnTrap(graphics, chest, config.getPotentialBatColor());
+					if (shouldDrawChest(pos))
+					{
+						Color drawColor = new Color(config.getPotentialBatColor().getRed(),
+							config.getPotentialBatColor().getGreen(),
+							config.getPotentialBatColor().getBlue(),
+							getChestOpacity(pos));
+						drawCircleOnTrap(graphics, chest, drawColor);
+					}
 				}
 				if (chest.isPoison())
 				{
@@ -103,6 +110,22 @@ public class ChestOverlay extends Overlay
 				}
 			}
 		}
+	}
+
+	private boolean shouldDrawChest(WorldPoint chestPos)
+	{
+		if (plugin.numberOfEmptyChestsFound() == 0)
+		{
+			return true;
+		}
+		int chestId = plugin.getChestId(chestPos);
+		BatSolver solver = plugin.getSolver();
+		if (solver != null)
+		{
+			TreeSet<Integer> matches = solver.matchSolutions();
+			return matches.contains(chestId) || matches.size() == 0;
+		}
+		return true;
 	}
 
 	/**
@@ -134,5 +157,16 @@ public class ChestOverlay extends Overlay
 		{
 			pie.render(graphics);
 		}
+	}
+
+	private int getChestOpacity(WorldPoint chestPos)
+	{
+		int chestId = plugin.getChestId(chestPos);
+		BatSolver solver = plugin.getSolver();
+		if (solver != null && solver.getNumberOfEmptyChests() == 0 && chestId != -1)
+		{
+			return (int) (255 * solver.relativeLikelihoodPoison(chestId));
+		}
+		return 255;
 	}
 }
