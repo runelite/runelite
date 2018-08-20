@@ -29,17 +29,23 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
+import net.runelite.api.AnimationID;
 import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -64,10 +70,10 @@ public class IdleNotifierPlugin extends Plugin
 	@Inject
 	private IdleNotifierConfig config;
 
-	private Actor lastOpponent;
 	private Instant lastAnimating;
 	private int lastAnimation = AnimationID.IDLE;
 	private Instant lastInteracting;
+	private Actor lastInteract;
 	private boolean notifyHitpoints = true;
 	private boolean notifyPrayer = true;
 	private boolean notifyIdleLogout = true;
@@ -203,6 +209,43 @@ public class IdleNotifierPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onInteractingChanged(InteractingChanged event)
+	{
+		final Actor source = event.getSource();
+		if (source != client.getLocalPlayer())
+		{
+			return;
+		}
+
+		final Actor target = event.getTarget();
+
+		// Reset last interact
+		if (target != null)
+		{
+			lastInteract = null;
+		}
+
+		final boolean isNpc = target instanceof NPC;
+
+		// If this is not NPC, do not process as we are not interested in other entities
+		if (!isNpc)
+		{
+			return;
+		}
+
+		final NPC npc = (NPC) target;
+		final NPCComposition npcComposition = npc.getComposition();
+		final List<String> npcMenuActions = Arrays.asList(npcComposition.getActions());
+
+		if (npcMenuActions.contains("Attack"))
+		{
+			// Player is most likely in combat with attack-able NPC
+			resetTimers();
+			lastInteract = target;
+		}
+	}
+
+	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		lastInteracting = null;
@@ -326,30 +369,25 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkOutOfCombat(Duration waitDuration, Player local)
 	{
-		Actor opponent = local.getInteracting();
-		boolean isPlayer = opponent instanceof Player;
-
-		if (opponent != null
-			&& !isPlayer
-			&& opponent.getCombatLevel() > 0)
+		if (lastInteract == null)
 		{
-			resetTimers();
-			lastOpponent = opponent;
-		}
-		else if (opponent == null)
-		{
-			lastOpponent = null;
+			return false;
 		}
 
-		if (lastOpponent != null && opponent == lastOpponent)
+		final Actor interact = local.getInteracting();
+
+		if (interact == null)
+		{
+			if (lastInteracting != null && Instant.now().compareTo(lastInteracting.plus(waitDuration)) >= 0)
+			{
+				lastInteract = null;
+				lastInteracting = null;
+				return true;
+			}
+		}
+		else
 		{
 			lastInteracting = Instant.now();
-		}
-
-		if (lastInteracting != null && Instant.now().compareTo(lastInteracting.plus(waitDuration)) >= 0)
-		{
-			lastInteracting = null;
-			return true;
 		}
 
 		return false;
@@ -435,7 +473,10 @@ public class IdleNotifierPlugin extends Plugin
 		}
 
 		// Reset combat idle timer
-		lastOpponent = null;
 		lastInteracting = null;
+		if (client.getGameState() == GameState.LOGIN_SCREEN || local == null || local.getInteracting() != lastInteract)
+		{
+			lastInteract = null;
+		}
 	}
 }
