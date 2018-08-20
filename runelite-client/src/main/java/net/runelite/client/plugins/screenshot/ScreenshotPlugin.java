@@ -344,6 +344,12 @@ public class ScreenshotPlugin extends Plugin
 			String fileName = "Kill " + format(new Date());
 			takeScreenshot(fileName);
 		}
+
+		if (config.screenshotBossKills() && chatMessage.contains("kill count is:"))
+		{
+			String fileName = "Boss kill " + format(new Date());
+			takeScreenshot(fileName);
+		}
 	}
 
 	@Subscribe

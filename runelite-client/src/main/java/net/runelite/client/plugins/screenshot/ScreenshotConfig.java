@@ -121,14 +121,14 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hotkey",
-		name = "Screenshot hotkey",
-		description = "When you press this key a screenshot will be taken",
-		position = 10
+			keyName = "boss",
+			name = "Screenshot Boss Kills",
+			description = "Configures whether or not screenshots are automatically taken of boss kills",
+			position = 8
 	)
-	default Keybind hotkey()
+	default boolean screenshotBossKills()
 	{
-		return Keybind.NOT_SET;
+		return false;
 	}
 
 	@ConfigItem(
@@ -140,5 +140,17 @@ public interface ScreenshotConfig extends Config
 	default boolean screenshotKills()
 	{
 		return false;
+	}
+
+
+	@ConfigItem(
+			keyName = "hotkey",
+			name = "Screenshot hotkey",
+			description = "When you press this key a screenshot will be taken",
+			position = 10
+	)
+	default Keybind hotkey()
+	{
+		return Keybind.NOT_SET;
 	}
 }
