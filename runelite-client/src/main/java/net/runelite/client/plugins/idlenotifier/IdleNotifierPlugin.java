@@ -66,8 +66,8 @@ public class IdleNotifierPlugin extends Plugin
 
 	private Actor lastOpponent;
 	private Instant lastAnimating;
+	private int lastAnimation = AnimationID.IDLE;
 	private Instant lastInteracting;
-	private boolean notifyIdle = false;
 	private boolean notifyHitpoints = true;
 	private boolean notifyPrayer = true;
 	private boolean notifyIdleLogout = true;
@@ -192,8 +192,13 @@ public class IdleNotifierPlugin extends Plugin
 			/* Prayer */
 			case USING_GILDED_ALTAR:
 				resetTimers();
-				notifyIdle = true;
+				lastAnimation = animation;
 				break;
+			case IDLE:
+				break;
+			default:
+				// On unknown animation simply assume the animation is invalid and dont throw notification
+				lastAnimation = IDLE;
 		}
 	}
 
@@ -394,21 +399,25 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkAnimationIdle(Duration waitDuration, Player local)
 	{
-		if (notifyIdle)
+		if (lastAnimation == IDLE)
 		{
-			if (lastAnimating != null)
+			return false;
+		}
+
+		final int animation = local.getAnimation();
+
+		if (animation == IDLE)
+		{
+			if (lastAnimating != null && Instant.now().compareTo(lastAnimating.plus(waitDuration)) >= 0)
 			{
-				if (Instant.now().compareTo(lastAnimating.plus(waitDuration)) >= 0)
-				{
-					notifyIdle = false;
-					lastAnimating = null;
-					return true;
-				}
+				lastAnimation = IDLE;
+				lastAnimating = null;
+				return true;
 			}
-			else if (local.getAnimation() == IDLE)
-			{
-				lastAnimating = Instant.now();
-			}
+		}
+		else
+		{
+			lastAnimating = Instant.now();
 		}
 
 		return false;
@@ -416,9 +425,14 @@ public class IdleNotifierPlugin extends Plugin
 
 	private void resetTimers()
 	{
+		final Player local = client.getLocalPlayer();
+
 		// Reset animation idle timer
-		notifyIdle = false;
 		lastAnimating = null;
+		if (client.getGameState() == GameState.LOGIN_SCREEN || local == null || local.getAnimation() != lastAnimation)
+		{
+			lastAnimation = IDLE;
+		}
 
 		// Reset combat idle timer
 		lastOpponent = null;
