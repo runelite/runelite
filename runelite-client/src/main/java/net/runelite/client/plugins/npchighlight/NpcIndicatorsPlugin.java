@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.npchighlight;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
@@ -418,7 +419,8 @@ public class NpcIndicatorsPlugin extends Plugin
 		hotKeyPressed = pressed;
 	}
 
-	private List<String> getHighlights()
+	@VisibleForTesting
+	List<String> getHighlights()
 	{
 		final String configNpcs = config.getNpcToHighlight().toLowerCase();
 
