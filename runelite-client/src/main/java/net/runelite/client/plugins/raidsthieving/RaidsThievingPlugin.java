@@ -166,8 +166,6 @@ public class RaidsThievingPlugin extends Plugin
 				chests.get(loc).setEverOpened(true);
 				chests.get(loc).setEmpty(true);
 				solver.addEmptyChest(getChestId(loc));
-				// Updated the chest poison likelihoods
-				solver.calculateChanceOfPoison();
 				break;
 			case RaidsThievingConstants.OPEN_FULL_CHEST_1:
 			case RaidsThievingConstants.OPEN_FULL_CHEST_2:

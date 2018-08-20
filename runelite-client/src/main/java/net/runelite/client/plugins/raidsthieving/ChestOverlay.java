@@ -163,7 +163,7 @@ public class ChestOverlay extends Overlay
 	{
 		int chestId = plugin.getChestId(chestPos);
 		BatSolver solver = plugin.getSolver();
-		if (solver != null && solver.getNumberOfEmptyChests() == 0 && chestId != -1)
+		if (solver != null && chestId != -1)
 		{
 			return (int) (255 * solver.relativeLikelihoodPoison(chestId));
 		}

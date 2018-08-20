@@ -28,6 +28,8 @@ import java.util.Map;
 import java.util.HashSet;
 import java.util.HashMap;
 import java.util.TreeSet;
+import java.util.List;
+import java.util.ArrayList;
 import static net.runelite.client.plugins.raidsthieving.BatSolver.SolutionSet.SOLUTION_SETS;
 
 public class BatSolver
@@ -47,12 +49,14 @@ public class BatSolver
 	{
 		// When a new empty chest is found, add it to the current solution set
 		solution.addEmptyChest(chestId);
+		calculateChanceOfPoison();
 	}
 
 	public void addGrubsChest(int chestId)
 	{
 		// When a chest with grubs is found, keep track of it to invalidate solutions
 		grubsChests.add(chestId);
+		calculateChanceOfPoison();
 	}
 
 	public TreeSet<Integer> matchSolutions()
@@ -111,7 +115,7 @@ public class BatSolver
 		}
 
 		numberOfSolutionsWithPoison = new HashMap<>();
-		for (SolutionSet sol : SOLUTION_SETS)
+		for (SolutionSet sol : getPosssibleSolutions())
 		{
 			if (getType() == sol.getType() && (solution.getEmptyChests().size() == 0 || matchSolution(sol)))
 			{
@@ -128,6 +132,28 @@ public class BatSolver
 				}
 			}
 		}
+	}
+
+	private List<SolutionSet> getPosssibleSolutions()
+	{
+		List<SolutionSet> possibleSolutions = new ArrayList<>();
+		for (SolutionSet soln : SOLUTION_SETS)
+		{
+			// Check if we've found grubs in one of the chests, invalidating it as an solution
+			boolean foundMatch = false;
+			for (int i : grubsChests)
+			{
+				if (soln.containsChest(i))
+				{
+					foundMatch = true;
+				}
+			}
+			if (!foundMatch)
+			{
+				possibleSolutions.add(soln);
+			}
+		}
+		return possibleSolutions;
 	}
 
 	public double relativeLikelihoodPoison(int chestId)
