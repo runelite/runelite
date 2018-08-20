@@ -118,6 +118,8 @@ public class ScreenMarkerPlugin extends Plugin
 		clientToolbar.addNavigation(navigationButton);
 
 		mouseListener = new ScreenMarkerMouseListener(this);
+
+		mouseManager.registerMouseListener(mouseListener);
 	}
 
 	@Override
@@ -127,7 +129,8 @@ public class ScreenMarkerPlugin extends Plugin
 		overlayManager.removeIf(ScreenMarkerOverlay.class::isInstance);
 		screenMarkers.clear();
 		clientToolbar.removeNavigation(navigationButton);
-		setMouseListenerEnabled(false);
+		mouseManager.unregisterMouseListener(mouseListener);
+		setCreationMode(false);
 		creatingScreenMarker = false;
 
 		pluginPanel = null;
@@ -147,16 +150,9 @@ public class ScreenMarkerPlugin extends Plugin
 		}
 	}
 
-	public void setMouseListenerEnabled(boolean enabled)
+	public void setCreationMode(boolean enabled)
 	{
-		if (enabled)
-		{
-			mouseManager.registerMouseListener(mouseListener);
-		}
-		else
-		{
-			mouseManager.unregisterMouseListener(mouseListener);
-		}
+		mouseListener.setCreationMode(enabled);
 	}
 
 	public void startCreation(Point location)
@@ -167,7 +163,8 @@ public class ScreenMarkerPlugin extends Plugin
 			pluginPanel.getSelectedBorderThickness(),
 			pluginPanel.getSelectedColor(),
 			pluginPanel.getSelectedFillColor(),
-			true
+			true,
+			false
 		);
 
 		// Set overlay creator bounds to current position and default size
@@ -195,7 +192,7 @@ public class ScreenMarkerPlugin extends Plugin
 		creatingScreenMarker = false;
 		startLocation = null;
 		currentMarker = null;
-		setMouseListenerEnabled(false);
+		setCreationMode(false);
 
 		pluginPanel.setCreation(false);
 	}
@@ -221,6 +218,18 @@ public class ScreenMarkerPlugin extends Plugin
 		bounds.add(point);
 		overlay.setPreferredLocation(bounds.getLocation());
 		overlay.setPreferredSize(bounds.getSize());
+	}
+
+	public boolean shouldEatClick(Point point)
+	{
+		for (ScreenMarkerOverlay screenMarker : screenMarkers)
+		{
+			if (screenMarker.getMarker().isConsumeClick() && screenMarker.getBounds().contains(point))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void updateConfig()

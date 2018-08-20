@@ -77,6 +77,11 @@ class ScreenMarkerPanel extends JPanel
 	private static final ImageIcon OPACITY_HOVER_ICON;
 	private static final ImageIcon NO_OPACITY_ICON;
 
+	private static final ImageIcon CLICK_THROUGH_ICON;
+	private static final ImageIcon CLICK_THROUGH_HOVER_ICON;
+	private static final ImageIcon CONSUME_CLICK_ICON;
+	private static final ImageIcon CONSUME_CLICK_HOVER_ICON;
+
 	private static final ImageIcon VISIBLE_ICON;
 	private static final ImageIcon VISIBLE_HOVER_ICON;
 	private static final ImageIcon INVISIBLE_ICON;
@@ -91,6 +96,7 @@ class ScreenMarkerPanel extends JPanel
 	private final JLabel borderColorIndicator = new JLabel();
 	private final JLabel fillColorIndicator = new JLabel();
 	private final JLabel opacityIndicator = new JLabel();
+	private final JLabel clickThroughIndicator = new JLabel();
 	private final JLabel visibilityLabel = new JLabel();
 	private final JLabel deleteLabel = new JLabel();
 
@@ -103,6 +109,7 @@ class ScreenMarkerPanel extends JPanel
 	private final JSpinner thicknessSpinner = new JSpinner(spinnerModel);
 
 	private boolean visible;
+	private boolean consumeClick;
 
 	static
 	{
@@ -138,6 +145,14 @@ class ScreenMarkerPanel extends JPanel
 		final BufferedImage deleteImg = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "delete_icon.png");
 		DELETE_ICON = new ImageIcon(deleteImg);
 		DELETE_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(deleteImg, -100));
+
+		final BufferedImage clickThroughImg = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "click_through.png");
+		CLICK_THROUGH_ICON = new ImageIcon(clickThroughImg);
+		CLICK_THROUGH_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(clickThroughImg, -100));
+
+		final BufferedImage consumeClickImg = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "consume_click.png");
+		CONSUME_CLICK_ICON = new ImageIcon(consumeClickImg);
+		CONSUME_CLICK_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(consumeClickImg, -100));
 	}
 
 	ScreenMarkerPanel(ScreenMarkerPlugin plugin, ScreenMarkerOverlay marker)
@@ -145,6 +160,7 @@ class ScreenMarkerPanel extends JPanel
 		this.plugin = plugin;
 		this.marker = marker;
 		this.visible = marker.getMarker().isVisible();
+		this.consumeClick = marker.getMarker().isConsumeClick();
 
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -349,7 +365,30 @@ class ScreenMarkerPanel extends JPanel
 		JPanel rightActions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
 		rightActions.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		visibilityLabel.setToolTipText(visible ? "Hide screen marker" : "Show screen marker");
+		clickThroughIndicator.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				consumeClick = !consumeClick;
+				marker.getMarker().setConsumeClick(consumeClick);
+				plugin.updateConfig();
+				updateClickThrough();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				clickThroughIndicator.setIcon(consumeClick ? CONSUME_CLICK_HOVER_ICON : CLICK_THROUGH_HOVER_ICON);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				updateClickThrough();
+			}
+		});
+
 		visibilityLabel.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -404,6 +443,7 @@ class ScreenMarkerPanel extends JPanel
 			}
 		});
 
+		rightActions.add(clickThroughIndicator);
 		rightActions.add(visibilityLabel);
 		rightActions.add(deleteLabel);
 
@@ -417,7 +457,7 @@ class ScreenMarkerPanel extends JPanel
 		updateFill();
 		updateBorder();
 		updateBorder();
-
+		updateClickThrough();
 	}
 
 	private void updateNameActions(boolean saveAndCancel)
@@ -447,6 +487,13 @@ class ScreenMarkerPanel extends JPanel
 	private void updateVisibility()
 	{
 		visibilityLabel.setIcon(visible ? VISIBLE_ICON : INVISIBLE_ICON);
+		visibilityLabel.setToolTipText(visible ? "Hide screen marker" : "Show screen marker");
+	}
+
+	private void updateClickThrough()
+	{
+		clickThroughIndicator.setIcon(consumeClick ? CONSUME_CLICK_ICON : CLICK_THROUGH_ICON);
+		clickThroughIndicator.setToolTipText(consumeClick ? "Make screen marker click through" : "Make screen marker consume clicks");
 	}
 
 	private void updateFill()
