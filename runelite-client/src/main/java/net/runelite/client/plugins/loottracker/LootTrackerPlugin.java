@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,7 @@ import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
@@ -57,8 +59,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
+import net.runelite.http.api.item.ItemPrice;
 
 @PluginDescriptor(
 	name = "Loot Tracker",
@@ -123,7 +125,11 @@ public class LootTrackerPlugin extends Plugin
 		panel = new LootTrackerPanel(itemManager);
 		spriteManager.getSpriteAsync(SpriteID.UNUSED_TAB_INVENTORY, 0, panel::loadHeaderIcon);
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
+		final BufferedImage icon;
+		synchronized (ImageIO.class)
+		{
+			icon = ImageIO.read(LootTrackerPanel.class.getResourceAsStream("panel_icon.png"));
+		}
 
 		navButton = NavigationButton.builder()
 			.tooltip("Loot Tracker")
@@ -251,7 +257,20 @@ public class LootTrackerPlugin extends Plugin
 		{
 			final ItemComposition itemComposition = itemManager.getItemComposition(itemStack.getId());
 			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemStack.getId();
-			final long price = (long)itemManager.getItemPrice(realItemId) * (long)itemStack.getQuantity();
+			final ItemPrice itemPrice = itemManager.getItemPrice(realItemId);
+			final long price;
+			if (itemPrice != null)
+			{
+				price = (long) itemPrice.getPrice() * itemStack.getQuantity();
+			}
+			else if (realItemId == ItemID.COINS_995)
+			{
+				price = itemStack.getQuantity();
+			}
+			else
+			{
+				price = 0;
+			}
 
 			return new LootTrackerItemEntry(
 				itemStack.getId(),
