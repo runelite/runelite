@@ -54,6 +54,7 @@ class WorldTableRow extends JPanel
 
 	private static final int WORLD_COLUMN_WIDTH = 60;
 	private static final int PLAYERS_COLUMN_WIDTH = 40;
+	private static final int PING_COLUMN_WIDTH = 35;
 
 	private static final Color CURRENT_WORLD = new Color(66, 227, 17);
 	private static final Color UNAVAILABLE_WORLD = Color.GRAY.darker().darker();
@@ -75,6 +76,7 @@ class WorldTableRow extends JPanel
 	private JLabel worldField;
 	private JLabel playerCountField;
 	private JLabel activityField;
+	private JLabel pingField;
 	private BiConsumer<World, Boolean> onFavorite;
 
 	@Getter
@@ -151,11 +153,17 @@ class WorldTableRow extends JPanel
 		setComponentPopupMenu(popupMenu);
 
 		JPanel leftSide = new JPanel(new BorderLayout());
+		JPanel rightSide = new JPanel(new BorderLayout());
 		leftSide.setOpaque(false);
+		rightSide.setOpaque(false);
 
 		JPanel worldField = buildWorldField();
 		worldField.setPreferredSize(new Dimension(WORLD_COLUMN_WIDTH, 0));
 		worldField.setOpaque(false);
+
+		JPanel pingField = buildPingField();
+		pingField.setPreferredSize(new Dimension(PING_COLUMN_WIDTH, 0));
+		pingField.setOpaque(false);
 
 		JPanel playersField = buildPlayersField();
 		playersField.setPreferredSize(new Dimension(PLAYERS_COLUMN_WIDTH, 0));
@@ -168,10 +176,12 @@ class WorldTableRow extends JPanel
 		recolour(current);
 
 		leftSide.add(worldField, BorderLayout.WEST);
-		leftSide.add(playersField, BorderLayout.EAST);
+		leftSide.add(playersField, BorderLayout.CENTER);
+		rightSide.add(activityField, BorderLayout.CENTER);
+		rightSide.add(pingField, BorderLayout.EAST);
 
 		add(leftSide, BorderLayout.WEST);
-		add(activityField, BorderLayout.CENTER);
+		add(rightSide, BorderLayout.CENTER);
 	}
 
 	void setFavoriteMenu(boolean favorite)
@@ -199,9 +209,22 @@ class WorldTableRow extends JPanel
 		playerCountField.setText(String.valueOf(playerCount));
 	}
 
+	void setPing(int ping)
+	{
+		if (ping <= 0)
+		{
+			pingField.setText("-");
+		}
+		else
+		{
+			pingField.setText(Integer.toString(ping));
+		}
+	}
+
 	public void recolour(boolean current)
 	{
 		playerCountField.setForeground(current ? CURRENT_WORLD : Color.WHITE);
+		pingField.setForeground(current ? CURRENT_WORLD : Color.WHITE);
 
 		if (current)
 		{
@@ -240,6 +263,19 @@ class WorldTableRow extends JPanel
 		playerCountField.setFont(FontManager.getRunescapeSmallFont());
 
 		column.add(playerCountField, BorderLayout.WEST);
+
+		return column;
+	}
+
+	private JPanel buildPingField()
+	{
+		JPanel column = new JPanel(new BorderLayout());
+		column.setBorder(new EmptyBorder(0, 5, 0, 5));
+
+		pingField = new JLabel("-");
+		pingField.setFont(FontManager.getRunescapeSmallFont());
+
+		column.add(pingField, BorderLayout.EAST);
 
 		return column;
 	}
