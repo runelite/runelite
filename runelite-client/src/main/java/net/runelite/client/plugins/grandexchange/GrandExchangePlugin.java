@@ -28,9 +28,15 @@
 package net.runelite.client.plugins.grandexchange;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
@@ -42,6 +48,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.GrandExchangeOffer;
+import net.runelite.api.GrandExchangeOfferState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -127,6 +134,10 @@ public class GrandExchangePlugin extends Plugin
 
 	private int lastItem = -1;
 
+	private Gson gson = new Gson();
+	private Map<Integer, GrandExchangePriceHistory> geBuySellHistory = Collections.emptyMap();
+	private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+
 	@Provides
 	GrandExchangeConfig provideConfig(ConfigManager configManager)
 	{
@@ -154,6 +165,9 @@ public class GrandExchangePlugin extends Plugin
 			mouseManager.registerMouseListener(inputListener);
 			keyManager.registerKeyListener(inputListener);
 		}
+		geBuySellHistory = gson.fromJson(config.geBuySellData(), new TypeToken<Map<Integer, GrandExchangePriceHistory>>()
+		{
+		}.getType());
 	}
 
 	@Override
@@ -193,6 +207,24 @@ public class GrandExchangePlugin extends Plugin
 		boolean shouldStack = offerItem.isStackable() || offer.getTotalQuantity() > 1;
 		BufferedImage itemImage = itemManager.getImage(offer.getItemId(), offer.getTotalQuantity(), shouldStack);
 		SwingUtilities.invokeLater(() -> panel.getOffersPanel().updateOffer(offerItem, itemImage, offerEvent.getOffer(), offerEvent.getSlot()));
+		if (!geBuySellHistory.containsKey(offer.getItemId()))
+		{
+			geBuySellHistory.put(offer.getItemId(), new GrandExchangePriceHistory(0, 0, "Unknown"));
+		}
+		GrandExchangePriceHistory newRecord = geBuySellHistory.get(offer.getItemId());
+		newRecord.setTimeStamp(sdf.format(Calendar.getInstance().getTime()));
+		if (offer.getState() == GrandExchangeOfferState.BOUGHT)
+		{
+			newRecord.setBought(offer.getSpent());
+			geBuySellHistory.put(offer.getItemId(), newRecord);
+		}
+		else if (offer.getState() == GrandExchangeOfferState.SOLD)
+		{
+			newRecord.setSold(offer.getSpent());
+			geBuySellHistory.put(offer.getItemId(), newRecord);
+		}
+
+		config.geBuySellData(gson.toJson(geBuySellHistory));
 	}
 
 	@Subscribe
@@ -309,7 +341,7 @@ public class GrandExchangePlugin extends Plugin
 		int itemId = grandExchangeItem.getItemId();
 		if (itemId == OFFER_DEFAULT_ITEM_ID
 			|| itemId == -1
-			|| lastItem == itemId)
+			|| itemId == lastItem)
 		{
 			return;
 		}
@@ -317,6 +349,52 @@ public class GrandExchangePlugin extends Plugin
 		lastItem = itemId;
 
 		log.debug("Looking up item {}", itemId);
+
+		String boughtText = "<br>Bought: ";
+		String soldText = " Sold: ";
+		String unknownText = "Unknown";
+		String timeStamp = " Last Trade: ";
+		if (config.enableGeBuySellHistory() && !geText.getText().contains(boughtText))
+		{
+			GrandExchangePriceHistory geBuySell = geBuySellHistory.get(itemId);
+			StringBuilder build = new StringBuilder();
+			build.append(geText.getText());
+
+			// Handles bought price lookup
+			build.append(boughtText);
+			if (geBuySell != null && !geBuySell.getBought().equals(0))
+			{
+				build.append(StackFormatter.formatNumber(geBuySell.getBought()));
+			}
+			else
+			{
+				build.append(unknownText);
+			}
+
+			// Handles sold price lookup
+			build.append(soldText);
+			if (geBuySell != null && !geBuySell.getSold().equals(0))
+			{
+				build.append(StackFormatter.formatNumber(geBuySell.getSold()));
+			}
+			else
+			{
+				build.append(unknownText);
+			}
+
+			// Handles timestamp
+			build.append(timeStamp);
+			if (geBuySell != null && (!geBuySell.getBought().equals(0) || !geBuySell.getSold().equals(0)))
+			{
+				build.append(geBuySell.getTimeStamp());
+			}
+			else
+			{
+				build.append(unknownText);
+			}
+			geText.setText(build.toString());
+		}
+
 
 		executorService.submit(() ->
 		{
