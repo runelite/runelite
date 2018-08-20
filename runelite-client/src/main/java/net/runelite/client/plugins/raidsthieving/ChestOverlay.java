@@ -120,7 +120,7 @@ public class ChestOverlay extends Overlay
 		}
 		int chestId = plugin.getChestId(chestPos);
 		BatSolver solver = plugin.getSolver();
-		if (solver != null)
+		if (solver != null && chestId != -1)
 		{
 			TreeSet<Integer> matches = solver.matchSolutions();
 			return matches.contains(chestId) || matches.size() == 0;

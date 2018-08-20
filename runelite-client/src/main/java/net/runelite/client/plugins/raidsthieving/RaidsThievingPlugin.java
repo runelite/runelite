@@ -129,7 +129,7 @@ public class RaidsThievingPlugin extends Plugin
 		{
 
 			case RaidsThievingConstants.EMPTY_TROUGH:
-				// Found an empty chest
+				// Found an empty trough
 				if (solver == null || identifier == null)
 				{
 					// Initialise the BatSolver
@@ -174,6 +174,10 @@ public class RaidsThievingPlugin extends Plugin
 				log.debug(MessageFormat.format("Found full chest at {0}, {1}",
 					event.getTile().getLocalLocation().getX(), event.getTile().getLocalLocation().getY()));
 				chests.get(loc).setEverOpened(true);
+				if (solver != null)
+				{
+					solver.addGrubsChest(getChestId(loc));
+				}
 				break;
 		}
 	}
