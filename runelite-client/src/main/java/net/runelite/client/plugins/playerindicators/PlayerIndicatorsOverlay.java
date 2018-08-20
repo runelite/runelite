@@ -74,6 +74,9 @@ public class PlayerIndicatorsOverlay extends Overlay
 		String name = actor.getName().replace('\u00A0', ' ');
 		int offset = actor.getLogicalHeight() + 40;
 		Point textLocation = actor.getCanvasTextLocation(graphics, name, offset);
+		Point minimapLocation = actor.getMinimapLocation();
+
+		graphics.fillOval(minimapLocation.getX() - 1, minimapLocation.getY() - 1, 2, 2);
 
 		if (textLocation != null)
 		{
