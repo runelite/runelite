@@ -41,6 +41,7 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.GraphicID;
@@ -70,6 +71,7 @@ import net.runelite.client.util.WildcardMatcher;
 	description = "Highlight NPCs on-screen and/or on the minimap",
 	tags = {"highlight", "minimap", "npcs", "overlay", "respawn", "tags"}
 )
+@Slf4j
 public class NpcIndicatorsPlugin extends Plugin
 {
 	private static final int MAX_ACTOR_VIEW_RANGE = 15;
@@ -503,6 +505,7 @@ public class NpcIndicatorsPlugin extends Plugin
 
 						if (!mn.getPossibleRespawnLocations().isEmpty())
 						{
+							log.debug("Starting {} tick countdown for {}", mn.getRespawnTime(), mn.getNpcName());
 							deadNpcsToDisplay.put(mn.getNpcIndex(), mn);
 						}
 					}
