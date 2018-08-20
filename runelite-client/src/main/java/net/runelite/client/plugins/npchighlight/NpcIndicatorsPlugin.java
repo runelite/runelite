@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.npchighlight;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
@@ -37,7 +38,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -83,7 +83,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		MenuAction.NPC_THIRD_OPTION, MenuAction.NPC_FOURTH_OPTION, MenuAction.NPC_FIFTH_OPTION);
 
 	// Regex for splitting the hidden items in the config.
-	private static final Splitter COMMA_SPLITTER = Splitter.on(Pattern.compile("\\s*,\\s*")).trimResults();
+	private static final Splitter COMMA_SPLITTER = Splitter.on(",").omitEmptyStrings().trimResults();
 
 	@Inject
 	private Client client;
@@ -421,7 +421,8 @@ public class NpcIndicatorsPlugin extends Plugin
 		hotKeyPressed = pressed;
 	}
 
-	private List<String> getHighlights()
+	@VisibleForTesting
+	List<String> getHighlights()
 	{
 		final String configNpcs = config.getNpcToHighlight().toLowerCase();
 
