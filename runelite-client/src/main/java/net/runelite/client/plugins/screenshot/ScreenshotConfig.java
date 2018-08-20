@@ -120,11 +120,23 @@ public interface ScreenshotConfig extends Config
 		return false;
 	}
 
+
 	@ConfigItem(
-			keyName = "boss",
-			name = "Screenshot Boss Kills",
-			description = "Configures whether or not screenshots are automatically taken of boss kills",
-			position = 8
+		keyName = "kills",
+		name = "Screenshot PvP Kills",
+		description = "Configures whether or not screenshots are automatically taken of PvP kills",
+		position = 8
+	)
+	default boolean screenshotKills()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "boss",
+		name = "Screenshot Boss Kills",
+		description = "Configures whether or not screenshots are automatically taken of boss kills",
+		position = 9
 	)
 	default boolean screenshotBossKills()
 	{
@@ -132,22 +144,10 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "kills",
-		name = "Screenshot PvP Kills",
-		description = "Configures whether or not screenshots are automatically taken of PvP kills",
-		position = 9
-	)
-	default boolean screenshotKills()
-	{
-		return false;
-	}
-
-
-	@ConfigItem(
-			keyName = "hotkey",
-			name = "Screenshot hotkey",
-			description = "When you press this key a screenshot will be taken",
-			position = 10
+		keyName = "hotkey",
+		name = "Screenshot hotkey",
+		description = "When you press this key a screenshot will be taken",
+		position = 10
 	)
 	default Keybind hotkey()
 	{
