@@ -135,7 +135,7 @@ enum TeleportLocationData
 	OBELISK_44(TeleportType.OTHER, "Obelisk", "44", new WorldPoint(2980, 3866, 0), "obelisk_icon.png"),
 	OBELISK_50(TeleportType.OTHER, "Obelisk", "50", new WorldPoint(3307, 3916, 0), "obelisk_icon.png"),
 
-	// Acheivement Diary
+	// Achievement Diary
 	ARDOUGNE_CLOAK_MONASTERY(TeleportType.OTHER, "Ardougne Cloak", "Monastery", new WorldPoint(2606, 3222, 0), "ardougne_cloak_icon.png"),
 	ARDOUGNE_CLOAK_FARM(TeleportType.OTHER, "Ardougne Cloak", "Farm", new WorldPoint(2673, 3375, 0), "ardougne_cloak_icon.png"),
 	EXPLORERS_RING(TeleportType.OTHER, "Explorer's Ring",  new WorldPoint(3052, 3292, 0), "explorers_ring_icon.png"),
