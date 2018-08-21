@@ -48,10 +48,11 @@ import static net.runelite.client.plugins.pestcontrol.Portal.YELLOW;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.util.QueryRunner;
 
 @Slf4j
-public class PestControlOverlay extends Overlay
+public class PestControlShieldOverlay extends Overlay
 {
 	private final QueryRunner queryRunner;
 	private final Client client;
@@ -60,8 +61,11 @@ public class PestControlOverlay extends Overlay
 	@Getter(AccessLevel.PACKAGE)
 	private Game game;
 
+	private final PanelComponent panelComponent = new PanelComponent();
+
+
 	@Inject
-	public PestControlOverlay(QueryRunner queryRunner, Client client)
+	public PestControlShieldOverlay(QueryRunner queryRunner, Client client)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		this.queryRunner = queryRunner;
@@ -71,7 +75,9 @@ public class PestControlOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		// See if we are in a game or not
+		panelComponent.getChildren().clear();
+
+
 		if (client.getWidget(WidgetInfo.PEST_CONTROL_BLUE_SHIELD) == null)
 		{
 			if (game != null)

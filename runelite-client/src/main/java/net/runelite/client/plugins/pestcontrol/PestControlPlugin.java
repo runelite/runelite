@@ -51,30 +51,38 @@ public class PestControlPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private PestControlOverlay overlay;
+	private PestControlShieldOverlay shieldOverlay;
+
+	@Inject PestControlInfoOverlay infoOverlay;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(overlay);
+		overlayManager.add(shieldOverlay);
+		overlayManager.add(infoOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(overlay);
+		overlayManager.remove(shieldOverlay);
+		overlayManager.remove(infoOverlay);
 	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
-		if (overlay.getGame() != null && chatMessage.getType() == ChatMessageType.SERVER)
+		if (shieldOverlay.getGame() != null && chatMessage.getType() == ChatMessageType.SERVER)
 		{
 			Matcher matcher = SHIELD_DROP.matcher(chatMessage.getMessage());
 			if (matcher.lookingAt())
 			{
-				overlay.getGame().fall(matcher.group(1));
+				shieldOverlay.getGame().fall(matcher.group(1));
 			}
 		}
 	}
+
+	/*
+
+	 */
 }
