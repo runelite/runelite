@@ -181,7 +181,7 @@ class Obstacles
 		// Mos Le'Harmless
 		STEPPING_STONE_19042,
 		// North River Salve
-		ROCKS_16998, ROCKS_16999,
+		ROCKS_16998, ROCKS_16999, ORNATE_RAILING, ORNATE_RAILING_17000,
 		// West Zul-Andra
 		STEPPING_STONE_10663,
 		// Yanille Agility Dungeon
