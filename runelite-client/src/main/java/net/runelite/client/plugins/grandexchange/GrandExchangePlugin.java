@@ -308,8 +308,7 @@ public class GrandExchangePlugin extends Plugin
 
 		int itemId = grandExchangeItem.getItemId();
 		if (itemId == OFFER_DEFAULT_ITEM_ID
-			|| itemId == -1
-			|| lastItem == itemId)
+			|| itemId == -1)
 		{
 			return;
 		}
@@ -322,16 +321,19 @@ public class GrandExchangePlugin extends Plugin
 		{
 			try
 			{
-				final GrandExchangeResult result = CLIENT.lookupItem(itemId);
-
-				if (result.getItem_id() != lastItem)
+				String osbText = "<br>OSBuddy Actively traded price: ";
+				if (!geText.getText().contains(osbText))
 				{
-					// something else has since been looked up?
-					return;
-				}
+					final GrandExchangeResult result = CLIENT.lookupItem(itemId);
 
-				final String text = geText.getText() + "<br>OSBuddy Actively traded price: " + StackFormatter.formatNumber(result.getOverall_average());
-				geText.setText(text);
+					if (result.getItem_id() != lastItem)
+					{
+						// something else has since been looked up?
+						return;
+					}
+					final String text = geText.getText() + osbText + StackFormatter.formatNumber(result.getOverall_average());
+					geText.setText(text);
+				}
 			}
 			catch (IOException e)
 			{
