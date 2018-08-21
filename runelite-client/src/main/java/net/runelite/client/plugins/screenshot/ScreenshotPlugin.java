@@ -345,9 +345,10 @@ public class ScreenshotPlugin extends Plugin
 			takeScreenshot(fileName);
 		}
 
-		if (config.screenshotBossKills() && chatMessage.startsWith("Your") && chatMessage.contains("kill count is"))
+		if (config.screenshotBossKills() && BOSSKILL_MESSAGE_PATTERN.matcher(chatMessage).matches() )
 		{
 			String fileName = parseBossKill(chatMessage);
+            log.debug("Taking boss screenshot: " + fileName);
 			takeScreenshot(fileName);
 		}
 	}
