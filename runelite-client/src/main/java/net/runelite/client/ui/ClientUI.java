@@ -37,6 +37,8 @@ import java.awt.GraphicsConfiguration;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.TrayIcon;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -62,12 +64,14 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ExpandResizeType;
+import net.runelite.client.config.Keybind;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.config.WarningOnExit;
 import net.runelite.client.events.NavigationButtonAdded;
 import net.runelite.client.events.NavigationButtonRemoved;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.ui.skin.SubstanceRuneLiteLookAndFeel;
+import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
@@ -290,9 +294,17 @@ public class ClientUI
 			frame.add(container);
 
 			// Add key listener
-			final UiKeyListener uiKeyListener = new UiKeyListener(this);
-			frame.addKeyListener(uiKeyListener);
-			keyManager.registerKeyListener(uiKeyListener);
+			final HotkeyListener sidebarListener = new HotkeyListener(() ->
+				new Keybind(KeyEvent.VK_F11, InputEvent.CTRL_DOWN_MASK))
+			{
+				@Override
+				public void hotkeyPressed()
+				{
+					toggleSidebar();
+				}
+			};
+
+			keyManager.registerKeyListener(sidebarListener);
 
 			// Decorate window with custom chrome and titlebar if needed
 			final boolean withTitleBar = config.enableCustomChrome();

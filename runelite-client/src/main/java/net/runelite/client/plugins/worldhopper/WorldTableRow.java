@@ -27,6 +27,7 @@ package net.runelite.client.plugins.worldhopper;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.function.BiConsumer;
@@ -69,9 +70,12 @@ class WorldTableRow extends JPanel
 		FLAG_GER = new ImageIcon(ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "flag_ger.png"));
 	}
 
+	private final JMenuItem favoriteMenuOption = new JMenuItem();
+
 	private JLabel worldField;
 	private JLabel playerCountField;
 	private JLabel activityField;
+	private BiConsumer<World, Boolean> onFavorite;
 
 	@Getter
 	private final World world;
@@ -86,6 +90,7 @@ class WorldTableRow extends JPanel
 	{
 		this.current = current;
 		this.world = world;
+		this.onFavorite = onFavorite;
 		this.updatedPlayerCount = world.getPlayers();
 
 		setLayout(new BorderLayout());
@@ -137,19 +142,11 @@ class WorldTableRow extends JPanel
 			}
 		});
 
-		String favoriteAction = favorite ?
-			"Remove " + world.getId() + " from favorites" :
-			"Add " + world.getId() + " to favorites";
-
-		final JMenuItem fav = new JMenuItem(favoriteAction);
-		fav.addActionListener(e ->
-		{
-			onFavorite.accept(world, !favorite);
-		});
+		setFavoriteMenu(favorite);
 
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
-		popupMenu.add(fav);
+		popupMenu.add(favoriteMenuOption);
 
 		setComponentPopupMenu(popupMenu);
 
@@ -175,6 +172,25 @@ class WorldTableRow extends JPanel
 
 		add(leftSide, BorderLayout.WEST);
 		add(activityField, BorderLayout.CENTER);
+	}
+
+	void setFavoriteMenu(boolean favorite)
+	{
+		String favoriteAction = favorite ?
+			"Remove " + world.getId() + " from favorites" :
+			"Add " + world.getId() + " to favorites";
+
+		favoriteMenuOption.setText(favoriteAction);
+
+		for (ActionListener listener : favoriteMenuOption.getActionListeners())
+		{
+			favoriteMenuOption.removeActionListener(listener);
+		}
+
+		favoriteMenuOption.addActionListener(e ->
+		{
+			onFavorite.accept(world, !favorite);
+		});
 	}
 
 	void updatePlayerCount(int playerCount)
@@ -203,6 +219,10 @@ class WorldTableRow extends JPanel
 		else if (world.getTypes().contains(WorldType.TOURNAMENT))
 		{
 			activityField.setForeground(TOURNAMENT_WORLD);
+		}
+		else
+		{
+			activityField.setForeground(Color.WHITE);
 		}
 
 		worldField.setForeground(world.getTypes().contains(WorldType.MEMBERS) ? MEMBERS_WORLD : FREE_WORLD);

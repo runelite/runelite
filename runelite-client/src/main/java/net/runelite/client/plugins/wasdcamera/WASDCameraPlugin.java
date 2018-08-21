@@ -30,8 +30,11 @@ import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.VarClientInt;
+import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -51,6 +54,7 @@ public class WASDCameraPlugin extends Plugin
 {
 	private static final String PRESS_ENTER_TO_CHAT = "Press Enter to Chat...";
 	private static final String SCRIPT_EVENT_SET_CHATBOX_INPUT = "setChatboxInput";
+	private static final String SCRIPT_EVENT_BLOCK_CHAT_INPUT = "blockChatInput";
 
 	@Inject
 	private Client client;
@@ -65,6 +69,7 @@ public class WASDCameraPlugin extends Plugin
 	private WASDCameraListener inputListener;
 
 	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private boolean typing;
 
 	@Override
@@ -105,22 +110,45 @@ public class WASDCameraPlugin extends Plugin
 	boolean chatboxFocused()
 	{
 		Widget chatboxParent = client.getWidget(WidgetInfo.CHATBOX_PARENT);
-		return chatboxParent != null && chatboxParent.getOnKeyListener() != null;
+		if (chatboxParent == null || chatboxParent.getOnKeyListener() == null)
+		{
+			return false;
+		}
+
+		// the search box on the world map can be focused, and chat input goes there, even
+		// though the chatbox still has its key listener.
+		Widget worldMapSearch = client.getWidget(WidgetInfo.WORLD_MAP_SEARCH);
+		if (worldMapSearch != null && client.getVar(VarClientInt.WORLD_MAP_SEARCH_FOCUSED) == 1)
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	@Subscribe
 	public void onScriptEvent(ScriptCallbackEvent scriptCallbackEvent)
 	{
-		if (scriptCallbackEvent.getEventName().equals(SCRIPT_EVENT_SET_CHATBOX_INPUT))
+		switch (scriptCallbackEvent.getEventName())
 		{
-			Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
-			if (chatboxInput != null)
-			{
-				if (chatboxFocused() && !typing)
+			case SCRIPT_EVENT_SET_CHATBOX_INPUT:
+				Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
+				if (chatboxInput != null)
 				{
-					chatboxInput.setText(PRESS_ENTER_TO_CHAT);
+					if (chatboxFocused() && !typing)
+					{
+						chatboxInput.setText(PRESS_ENTER_TO_CHAT);
+					}
 				}
-			}
+				break;
+			case SCRIPT_EVENT_BLOCK_CHAT_INPUT:
+				if (!typing)
+				{
+					int[] intStack = client.getIntStack();
+					int intStackSize = client.getIntStackSize();
+					intStack[intStackSize - 1] = 1;
+				}
+				break;
 		}
 	}
 
@@ -129,8 +157,6 @@ public class WASDCameraPlugin extends Plugin
 		Widget chatboxParent = client.getWidget(WidgetInfo.CHATBOX_PARENT);
 		if (chatboxParent != null && chatboxParent.getOnKeyListener() != null)
 		{
-			typing = false;
-
 			Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
 			if (chatboxInput != null)
 			{
@@ -144,14 +170,12 @@ public class WASDCameraPlugin extends Plugin
 		Widget chatboxParent = client.getWidget(WidgetInfo.CHATBOX_PARENT);
 		if (chatboxParent != null)
 		{
-			typing = true;
-
 			Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
 			if (chatboxInput != null)
 			{
 				if (client.getGameState() == GameState.LOGGED_IN)
 				{
-					chatboxInput.setText(client.getLocalPlayer().getName() + ": <col=0000ff>*</col>");
+					chatboxInput.setText(client.getLocalPlayer().getName() + ": <col=0000ff>" + client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*</col>");
 				}
 			}
 		}

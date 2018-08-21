@@ -123,12 +123,18 @@ class WorldSwitcherPanel extends PluginPanel
 				case PLAYERS:
 					return Integer.compare(r1.getUpdatedPlayerCount(), r2.getUpdatedPlayerCount()) * (ascendingOrder ? 1 : -1);
 				case ACTIVITY:
-					return r1.getWorld().getActivity().compareTo(r2.getWorld().getActivity()) * (ascendingOrder ? 1 : -1);
+					return r1.getWorld().getActivity().compareTo(r2.getWorld().getActivity()) * -1 * (ascendingOrder ? 1 : -1);
 				default:
 					return 0;
 
 			}
 		});
+
+		// Leave empty activity worlds on the bottom of the list
+		if (orderIndex == WorldOrder.ACTIVITY)
+		{
+			rows.sort((r1, r2) -> r1.getWorld().getActivity().equals("-") ? 1 : -1);
+		}
 
 		rows.sort((r1, r2) ->
 		{
@@ -150,6 +156,26 @@ class WorldSwitcherPanel extends PluginPanel
 		listContainer.repaint();
 	}
 
+	void updateFavoriteMenu(int world, boolean favorite)
+	{
+		for (WorldTableRow row : rows)
+		{
+			if (row.getWorld().getId() == world)
+			{
+				row.setFavoriteMenu(favorite);
+			}
+		}
+	}
+
+	void resetAllFavoriteMenus()
+	{
+		for (WorldTableRow row : rows)
+		{
+			row.setFavoriteMenu(false);
+		}
+
+	}
+
 	void populate(List<World> worlds)
 	{
 		rows.clear();
@@ -157,7 +183,7 @@ class WorldSwitcherPanel extends PluginPanel
 		for (int i = 0; i < worlds.size(); i++)
 		{
 			World world = worlds.get(i);
-			rows.add(buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld(), plugin.isFavorite(world)));
+			rows.add(buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0, plugin.isFavorite(world)));
 		}
 
 		updateList();

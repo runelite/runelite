@@ -26,8 +26,11 @@
 package net.runelite.client.plugins.wasdcamera;
 
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.VarClientStr;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
@@ -47,16 +50,17 @@ class WASDCameraListener extends MouseListener implements KeyListener
 	@Inject
 	private ClientThread clientThread;
 
+	private final Map<Integer, Integer> modified = new HashMap<>();
+
 	@Override
 	public void keyTyped(KeyEvent e)
 	{
-		handleKey(e);
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (!plugin.chatboxFocused())
+		if (client.getGameState() != GameState.LOGGED_IN || !plugin.chatboxFocused())
 		{
 			return;
 		}
@@ -65,18 +69,22 @@ class WASDCameraListener extends MouseListener implements KeyListener
 		{
 			if (config.up().matches(e))
 			{
+				modified.put(e.getKeyCode(), KeyEvent.VK_UP);
 				e.setKeyCode(KeyEvent.VK_UP);
 			}
 			else if (config.down().matches(e))
 			{
+				modified.put(e.getKeyCode(), KeyEvent.VK_DOWN);
 				e.setKeyCode(KeyEvent.VK_DOWN);
 			}
 			else if (config.left().matches(e))
 			{
+				modified.put(e.getKeyCode(), KeyEvent.VK_LEFT);
 				e.setKeyCode(KeyEvent.VK_LEFT);
 			}
 			else if (config.right().matches(e))
 			{
+				modified.put(e.getKeyCode(), KeyEvent.VK_RIGHT);
 				e.setKeyCode(KeyEvent.VK_RIGHT);
 			}
 			else
@@ -86,32 +94,12 @@ class WASDCameraListener extends MouseListener implements KeyListener
 					case KeyEvent.VK_ENTER:
 					case KeyEvent.VK_SLASH:
 						// refocus chatbox
+						plugin.setTyping(true);
 						clientThread.invoke(() ->
 						{
 							plugin.unlockChat();
 						});
 						break;
-					case KeyEvent.VK_F1:
-					case KeyEvent.VK_F2:
-					case KeyEvent.VK_F3:
-					case KeyEvent.VK_F4:
-					case KeyEvent.VK_F5:
-					case KeyEvent.VK_F6:
-					case KeyEvent.VK_F7:
-					case KeyEvent.VK_F8:
-					case KeyEvent.VK_F9:
-					case KeyEvent.VK_F10:
-					case KeyEvent.VK_F11:
-					case KeyEvent.VK_F12:
-					case KeyEvent.VK_UP:
-					case KeyEvent.VK_DOWN:
-					case KeyEvent.VK_LEFT:
-					case KeyEvent.VK_RIGHT:
-						break;
-					default:
-						e.consume();
-						break;
-
 				}
 			}
 		}
@@ -120,12 +108,14 @@ class WASDCameraListener extends MouseListener implements KeyListener
 			switch (e.getKeyCode())
 			{
 				case KeyEvent.VK_ENTER:
+					plugin.setTyping(false);
 					clientThread.invoke(() ->
 					{
 						plugin.lockChat();
 					});
 					break;
 				case KeyEvent.VK_ESCAPE:
+					plugin.setTyping(false);
 					clientThread.invoke(() ->
 					{
 						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
@@ -139,18 +129,15 @@ class WASDCameraListener extends MouseListener implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		handleKey(e);
-	}
-
-	private void handleKey(KeyEvent e)
-	{
-		if (!plugin.chatboxFocused())
+		if (client.getGameState() != GameState.LOGGED_IN || !plugin.chatboxFocused())
 		{
 			return;
 		}
 
 		if (!plugin.isTyping())
 		{
+			modified.remove(e.getKeyCode());
+
 			if (config.up().matches(e))
 			{
 				e.setKeyCode(KeyEvent.VK_UP);
@@ -167,31 +154,15 @@ class WASDCameraListener extends MouseListener implements KeyListener
 			{
 				e.setKeyCode(KeyEvent.VK_RIGHT);
 			}
-			else
+		}
+		else
+		{
+			// press d + enter + release d - causes the right arrow to never be released
+			Integer m = modified.get(e.getKeyCode());
+			if (m != null)
 			{
-				switch (e.getKeyCode())
-				{
-					case KeyEvent.VK_F1:
-					case KeyEvent.VK_F2:
-					case KeyEvent.VK_F3:
-					case KeyEvent.VK_F4:
-					case KeyEvent.VK_F5:
-					case KeyEvent.VK_F6:
-					case KeyEvent.VK_F7:
-					case KeyEvent.VK_F8:
-					case KeyEvent.VK_F9:
-					case KeyEvent.VK_F10:
-					case KeyEvent.VK_F11:
-					case KeyEvent.VK_F12:
-					case KeyEvent.VK_UP:
-					case KeyEvent.VK_DOWN:
-					case KeyEvent.VK_LEFT:
-					case KeyEvent.VK_RIGHT:
-						break;
-					default:
-						e.consume();
-						break;
-				}
+				modified.remove(e.getKeyCode());
+				e.setKeyCode(m);
 			}
 		}
 	}

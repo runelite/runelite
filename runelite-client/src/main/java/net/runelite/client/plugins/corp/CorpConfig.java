@@ -22,37 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
+package net.runelite.client.plugins.corp;
 
-import java.awt.event.KeyEvent;
-import javax.swing.SwingUtilities;
-import net.runelite.client.input.KeyListener;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-class UiKeyListener implements KeyListener
+@ConfigGroup("corp")
+public interface CorpConfig extends Config
 {
-	private final ClientUI clientUi;
-
-	UiKeyListener(ClientUI clientUi)
+	@ConfigItem(
+		keyName = "leftClickCore",
+		name = "Left click walk on core",
+		description = "Prioritizes Walk here over Attack on the Dark energey core",
+		position = 1
+	)
+	default boolean leftClickCore()
 	{
-		this.clientUi = clientUi;
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e)
-	{
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e)
-	{
-		if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_F11)
-		{
-			SwingUtilities.invokeLater(clientUi::toggleSidebar);
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e)
-	{
+		return true;
 	}
 }
