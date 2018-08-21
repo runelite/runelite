@@ -59,10 +59,7 @@ public class LineImageComponent implements LayoutableRenderableEntity
 	public Dimension render(Graphics2D graphics)
 	{
 		graphics.translate(preferredLocation.x, preferredLocation.y);
-		// Prevent NPEs
-//		final String left = MoreObjects.firstNonNull(this.left, "");
-//		final String right = MoreObjects.firstNonNull(this.right, "");
-//
+
 		final FontMetrics metrics = graphics.getFontMetrics();
 		int x = 0;
 		int y = 0;
@@ -147,7 +144,7 @@ public class LineImageComponent implements LayoutableRenderableEntity
 		if (leftText != null)
 		{
 			final TextComponent leftLineComponent = new TextComponent();
-			leftLineComponent.setPosition(new Point(x, (y > 0 ? y  : fontHeight)));
+			leftLineComponent.setPosition(new Point(x, (y > 0 ? (y / 2) + (fontHeight / 2) : fontHeight)));
 			leftLineComponent.setText(leftText);
 			leftLineComponent.setColor(leftColor);
 			leftLineComponent.render(graphics);
@@ -186,7 +183,7 @@ public class LineImageComponent implements LayoutableRenderableEntity
 				x = preferredSize.width - metrics.stringWidth(TextComponent.textWithoutColTags(rightText));
 			}
 			final TextComponent leftLineComponent = new TextComponent();
-			leftLineComponent.setPosition(new Point(x, (y > 0 ? y  : fontHeight)));
+			leftLineComponent.setPosition(new Point(x, (y > 0 ? (y / 2) + (fontHeight / 2) : fontHeight)));
 			leftLineComponent.setText(rightText);
 			leftLineComponent.setColor(rightColor);
 			leftLineComponent.render(graphics);

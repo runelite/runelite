@@ -195,7 +195,7 @@ public class PestControlShieldOverlay extends Overlay
 		bounds = union(bounds, hp.getBounds().getBounds2D());
 
 		graphics.setColor(color);
-		graphics.draw(new Rectangle2D.Double(bounds.getX(), bounds.getY() - 2, bounds.getWidth(), bounds.getHeight() - 3));
+		graphics.draw(new Rectangle2D.Double(bounds.getX(), bounds.getY() - 2, bounds.getWidth(), bounds.getHeight() + 4));
 
 		FontMetrics fm = graphics.getFontMetrics();
 		Rectangle2D textBounds = fm.getStringBounds(text, graphics);

@@ -132,7 +132,7 @@ public class PestControlInfoOverlay extends Overlay
 			Widget gameWidget = client.getWidget(WidgetInfo.PEST_CONTROL_INFO_CONTAINER);
 			if (gameWidget != null)
 			{
-				panelComponent.setPreferredSize(new Dimension(60, 100));
+				panelComponent.setPreferredSize(new Dimension(65, 100));
 				gameWidget.setHidden(true);
 
 				Widget timeLeft = client.getWidget(WidgetInfo.PEST_CONTROL_TIME_LEFT);
