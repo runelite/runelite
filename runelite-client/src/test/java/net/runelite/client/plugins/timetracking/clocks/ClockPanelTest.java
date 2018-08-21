@@ -88,17 +88,16 @@ public class ClockPanelTest
 		tryFail("20hh10m10s", dateTimeEx);
 	}
 
-	private void tryFail(String input, Class<?> ex)
+	private void tryFail(String input, Class<?> expectedException)
 	{
 		try
 		{
 			ClockPanel.stringToSeconds(input);
-			fail("Should have thrown " + ex.getSimpleName());
+			fail("Should have thrown " + expectedException.getSimpleName());
 		}
 		catch (Exception exception)
 		{
-			assertEquals(exception.getClass(), ex);
+			assertEquals(expectedException, exception.getClass());
 		}
 	}
-
 }
