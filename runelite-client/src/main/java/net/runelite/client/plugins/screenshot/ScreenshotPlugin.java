@@ -117,7 +117,7 @@ public class ScreenshotPlugin extends Plugin
 
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
-	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
+	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
 		"You feel something weird sneaking into your backpack",
 		"You have a funny feeling like you would have been followed");
@@ -480,10 +480,15 @@ public class ScreenshotPlugin extends Plugin
 		return skillName + "(" + skillLevel + ")";
 	}
 
-	String parseBossKill(String killMessage)
+	/**
+	 * Receives a String and parses it into a shortened string for filename usage.
+	 * @param killMessage killMessage String received after killing a boss,
+	 *                     with the format "Your (Boss Name) kill count is: (killcount)."
+	 * @return Shortened string in the format "(Boss Name) kill (killcount)"
+	 */
+	private String parseBossKill(String killMessage)
 	{
-
-		Matcher m = KILLCOUNT_PATTERN.matcher(killMessage);
+		Matcher m = BOSSKILL_MESSAGE_PATTERN.matcher(killMessage);
 		if (!m.matches())
 		{
 			return null;
