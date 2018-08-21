@@ -36,10 +36,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.Skill;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -47,6 +45,7 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.LineImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QueryRunner;
 
 @Slf4j
@@ -68,7 +67,7 @@ public class PestControlInfoOverlay extends Overlay
 	private final BufferedImage damageIcon;
 
 	@Inject
-	public PestControlInfoOverlay(QueryRunner queryRunner, Client client, SkillIconManager skillIconManager)
+	public PestControlInfoOverlay(QueryRunner queryRunner, Client client)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		setLayer(OverlayLayer.UNDER_WIDGETS);
@@ -76,8 +75,8 @@ public class PestControlInfoOverlay extends Overlay
 		this.queryRunner = queryRunner;
 		this.client = client;
 
-		this.hpIcon = skillIconManager.getSkillImage(Skill.HITPOINTS);
-		this.damageIcon = skillIconManager.getSkillImage(Skill.ATTACK);
+		this.hpIcon = ImageUtil.getResourceStreamFromClass(PestControlPlugin.class, "knight_hp_icon.png");
+		this.damageIcon = ImageUtil.getResourceStreamFromClass(PestControlPlugin.class, "damage_icon.png");
 	}
 
 	@Override
@@ -115,6 +114,7 @@ public class PestControlInfoOverlay extends Overlay
 				{
 					panelComponent.getChildren().add(LineComponent.builder()
 						.left(players.getText())
+						.leftColor(Color.GREEN)
 						.build());
 				}
 
