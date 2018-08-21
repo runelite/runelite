@@ -31,6 +31,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -61,6 +62,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	description = "Show damage statistics and highlight dark energy cores",
 	tags = {"bosses", "combat", "pve", "overlay"}
 )
+@Slf4j
 public class CorpPlugin extends Plugin
 {
 	private static final int NPC_SECTION_ACTION = MenuAction.NPC_SECOND_OPTION.getId();
@@ -127,9 +129,8 @@ public class CorpPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
+		if (gameStateChanged.getGameState() == GameState.LOADING)
 		{
-			corp = core = null;
 			players.clear();
 		}
 	}
@@ -142,6 +143,7 @@ public class CorpPlugin extends Plugin
 		switch (npc.getId())
 		{
 			case NpcID.CORPOREAL_BEAST:
+				log.debug("Corporeal beast spawn: {}", npc);
 				corp = npc;
 				yourDamage = 0;
 				totalDamage = 0;
@@ -160,6 +162,7 @@ public class CorpPlugin extends Plugin
 
 		if (npc == corp)
 		{
+			log.debug("Corporeal beast despawn: {}", npc);
 			corp = null;
 			players.clear();
 
