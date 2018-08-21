@@ -97,6 +97,12 @@ public class PestControlInfoOverlay extends Overlay
 				Widget players = client.getWidget(WidgetInfo.PEST_CONTROL_BOAT_PLAYERS_READY);
 				Widget points = client.getWidget(WidgetInfo.PEST_CONTROL_BOAT_PEST_POINTS);
 
+				panelComponent.getChildren().add(LineImageComponent.builder()
+					.right(hpIcon)
+					.right("Text")
+					.right(damageIcon)
+					.build());
+
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left(departure.getText())
 					.build());
@@ -140,14 +146,14 @@ public class PestControlInfoOverlay extends Overlay
 				Widget damage = client.getWidget(WidgetInfo.PEST_CONTROL_DAMAGE);
 
 				panelComponent.getChildren().add(LineImageComponent.builder()
-					.leftImage(hpIcon)
-					.rightText(knightHp.getText())
+					.left(hpIcon)
+					.right(knightHp.getText())
 					.rightColor(new Color(knightHp.getTextColor()))
 					.build());
 
 				panelComponent.getChildren().add(LineImageComponent.builder()
-					.leftImage(damageIcon)
-					.rightText(damage.getText())
+					.left(damageIcon)
+					.right(damage.getText())
 					.build());
 
 				panelComponent.getChildren().add(LineComponent.builder()
