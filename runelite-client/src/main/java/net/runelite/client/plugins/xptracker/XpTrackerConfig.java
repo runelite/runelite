@@ -55,12 +55,12 @@ public interface XpTrackerConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "trackSkillAfter99",
-		name = "Track skill after level 99",
+		keyName = "doNotTrackSkillAfter99",
+		name = "Do not track skill after level 99",
 		description = "Configures whether or not skills will be tracked after level 99"
 	)
-	default boolean trackSkillAfter99()
+	default boolean doNotTrackSkillAfter99()
 	{
-		return true;
+		return false;
 	}
 }

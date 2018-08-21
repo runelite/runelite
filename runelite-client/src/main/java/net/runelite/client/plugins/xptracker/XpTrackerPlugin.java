@@ -236,7 +236,7 @@ public class XpTrackerPlugin extends Plugin
 		final int startGoalXp = startGoal != null ? client.getVar(startGoal) : -1;
 		final int endGoalXp = endGoal != null ? client.getVar(endGoal) : -1;
 
-		if (currentLevel < 99 || xpTrackerConfig.trackSkillAfter99())
+		if (currentLevel < 99 || !xpTrackerConfig.doNotTrackSkillAfter99())
 		{
 			final XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp, startGoalXp, endGoalXp);
 
