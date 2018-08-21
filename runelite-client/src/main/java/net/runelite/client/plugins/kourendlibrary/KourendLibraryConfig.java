@@ -36,9 +36,21 @@ public interface KourendLibraryConfig extends Config
 	@ConfigItem(
 		keyName = "hideButton",
 		name = "Hide when outside of the library",
-		description = "Don't show the button in the sidebar when your not in the library"
+		description = "Don't show the button in the sidebar when your not in the library",
+		position = 1
 	)
 	default boolean hideButton()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "showRequestedBookOverlay",
+			name = "Show overlay for requested book",
+			description = "Configures whether to display the overlay of the requested book",
+			position = 2
+	)
+	default boolean showRequestedBookOverlay()
 	{
 		return true;
 	}

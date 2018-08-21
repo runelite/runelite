@@ -47,20 +47,27 @@ class KourendLibraryCornerOverlay extends Overlay
 
 	private final KourendLibraryPlugin plugin;
 	private final PanelComponent panelComponent = new PanelComponent();
+	private final KourendLibraryConfig config;
 
 
 	@Inject
-	KourendLibraryCornerOverlay(Library library, Client client, KourendLibraryPlugin plugin)
+	KourendLibraryCornerOverlay(Library library, Client client, KourendLibraryPlugin plugin, KourendLibraryConfig config)
 	{
 		this.library = library;
 		this.client = client;
 		this.plugin = plugin;
+		this.config = config;
 		setPosition(OverlayPosition.TOP_LEFT);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (!config.showRequestedBookOverlay())
+		{
+			return null;
+		}
+
 		Player player = client.getLocalPlayer();
 		if (player == null)
 		{

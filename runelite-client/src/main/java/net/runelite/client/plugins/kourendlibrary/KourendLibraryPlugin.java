@@ -81,6 +81,9 @@ public class KourendLibraryPlugin extends Plugin
 	private Library library;
 
 	@Inject
+	private KourendLibraryConfig config;
+
+	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
@@ -88,9 +91,6 @@ public class KourendLibraryPlugin extends Plugin
 
 	@Inject
 	private KourendLibraryCornerOverlay kourendLibraryCornerOverlay;
-
-	@Inject
-	private KourendLibraryConfig config;
 
 	@Inject
 	private ItemManager itemManager;
