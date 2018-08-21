@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, dekvall <github.com/dekvall>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
