@@ -98,6 +98,15 @@ public class PestControlInfoOverlay extends Overlay
 				Widget points = client.getWidget(WidgetInfo.PEST_CONTROL_BOAT_PEST_POINTS);
 
 				panelComponent.getChildren().add(LineImageComponent.builder()
+					.left(hpIcon)
+					.left("FOO")
+					.left("BAR")
+					.left(hpIcon)
+						.left("FOO")
+						.left("BAR")
+					.left(hpIcon)
+						.left("FOO")
+						.left("BAR")
 					.right(hpIcon)
 					.right("Text")
 					.right(damageIcon)

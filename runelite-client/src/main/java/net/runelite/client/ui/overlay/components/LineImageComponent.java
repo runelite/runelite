@@ -30,11 +30,11 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.Builder;
 import lombok.Setter;
 import lombok.Singular;
+import net.runelite.api.VerticalAlign;
 
 @Setter
 @Builder
@@ -58,10 +58,14 @@ public class LineImageComponent implements LayoutableRenderableEntity
 	@Builder.Default
 	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
 
-	public void leftAdd(Object o)
-	{
-		left.add(o);
-	}
+	@Builder.Default
+	private int spacing = 2;
+
+	@Builder.Default
+	private boolean autoExpand = true;
+
+	@Builder.Default
+	private VerticalAlign alignment = VerticalAlign.MIDDLE;
 
 	@Override
 	public Dimension render(Graphics2D graphics)
@@ -73,18 +77,44 @@ public class LineImageComponent implements LayoutableRenderableEntity
 		int y = 0;
 		int fontHeight = metrics.getHeight();
 
+		final int leftFullWidth = getListWidth(left, metrics);
+		final int rightFullWidth = getListWidth(right, metrics);
+
+		final int leftMaxHeight = getListHeight(left, metrics);
+		final int rightMaxHeight = getListHeight(right, metrics);
+
+		final int maxHeight = (leftMaxHeight > rightMaxHeight ? leftMaxHeight : rightMaxHeight);
+
+		if (leftFullWidth + rightFullWidth > preferredSize.width)
+		{
+			preferredSize.width = leftFullWidth + rightFullWidth + 5;
+		}
+
 		for (Object o : left)
 		{
 			if (o instanceof String)
 			{
 				String s = (String) o;
 				TextComponent txt = new TextComponent();
-				txt.setPosition(new Point(x, (y > 0 ? (y / 2) + (fontHeight / 2) : fontHeight)));
+				switch (alignment)
+				{
+					case MIDDLE:
+						y = rightMaxHeight / 2 + fontHeight / 2;
+						break;
+					case TOP:
+						y = fontHeight;
+						break;
+					case BOTTOM:
+						y = leftMaxHeight;
+						break;
+				}
+
+				txt.setPosition(new Point(x, y));
 				txt.setText(s);
 				txt.setColor(leftColor);
 				txt.render(graphics);
 
-				x += getLineWidth(s, metrics) + 2;
+				x += getLineWidth(s, metrics) + spacing;
 			}
 			else if (o instanceof BufferedImage)
 			{
@@ -93,17 +123,11 @@ public class LineImageComponent implements LayoutableRenderableEntity
 				image.setPreferredLocation(new Point(x, 0));
 				image.render(graphics);
 
-				x += bi.getWidth() + 2;
-
-				if (bi.getHeight() > y)
-				{
-					y = bi.getHeight();
-				}
+				x += bi.getWidth() + spacing;
 			}
 		}
 
 		x = preferredSize.width;
-
 		for (int i = right.size() - 1; i >= 0; i--)
 		{
 			Object o = right.get(i);
@@ -111,10 +135,25 @@ public class LineImageComponent implements LayoutableRenderableEntity
 			if (o instanceof String)
 			{
 				String s = (String) o;
-				x -= getLineWidth(s, metrics) + 2;
+				x -= getLineWidth(s, metrics) + spacing;
 
 				TextComponent txt = new TextComponent();
-				txt.setPosition(new Point(x, (y > 0 ? (y / 2) + (fontHeight / 2) : fontHeight)));
+
+				switch (alignment)
+				{
+					case MIDDLE:
+						y = rightMaxHeight / 2 + fontHeight / 2;
+						break;
+					case TOP:
+						y = fontHeight;
+						break;
+					case BOTTOM:
+						y = rightMaxHeight;
+						break;
+				}
+
+				txt.setPosition(new Point(x, y));
+
 				txt.setText(s);
 				txt.setColor(rightColor);
 				txt.render(graphics);
@@ -122,73 +161,63 @@ public class LineImageComponent implements LayoutableRenderableEntity
 			else if (o instanceof BufferedImage)
 			{
 				BufferedImage bi = (BufferedImage) o;
-				x -= bi.getWidth() + 2;
+				x -= bi.getWidth() + spacing;
 
 				ImageComponent image = new ImageComponent(bi);
 				image.setPreferredLocation(new Point(x, 0));
 				image.render(graphics);
+			}
+		}
 
-				if (bi.getHeight() > y)
+		graphics.translate(-preferredLocation.x, -preferredLocation.y);
+		return new Dimension(preferredSize.width, maxHeight );
+	}
+
+	private int getListWidth(List<Object> l, final FontMetrics metrics)
+	{
+		int result = 0;
+		for (Object o : l)
+		{
+			if (o instanceof String)
+			{
+				String s = (String) o;
+				result += getLineWidth(s, metrics) + spacing;
+			}
+			else if (o instanceof BufferedImage)
+			{
+				BufferedImage bi = (BufferedImage) o;
+				result += bi.getWidth() + spacing;
+			}
+		}
+
+		return result;
+	}
+
+	private int getListHeight(List<Object> l, final FontMetrics metrics)
+	{
+		int result = 0;
+		for (Object o : l)
+		{
+			if (o instanceof String)
+			{
+				String s = (String) o;
+				if (metrics.getHeight() > result)
 				{
-					y = bi.getHeight();
+					result = metrics.getHeight();
+				}
+			}
+			else if (o instanceof BufferedImage)
+			{
+				BufferedImage bi = (BufferedImage) o;
+
+				if (bi.getHeight() > result)
+				{
+					result = bi.getHeight();
 				}
 			}
 		}
 
-//		final int leftFullWidth = getLineWidth(left, metrics);
-//		final int rightFullWidth = getLineWidth(right, metrics);
-
-//		if (preferredSize.width < leftFullWidth + rightFullWidth)
-//		{
-//			int leftSmallWidth = preferredSize.width;
-//			int rightSmallWidth = 0;
-//
-//			if (!Strings.isNullOrEmpty(right))
-//			{
-//				rightSmallWidth = (preferredSize.width / 3);
-//				leftSmallWidth -= rightSmallWidth;
-//			}
-//
-//			final String[] leftSplitLines = lineBreakText(left, leftSmallWidth, metrics);
-//			final String[] rightSplitLines = lineBreakText(right, rightSmallWidth, metrics);
-//
-//			int lineCount = Math.max(leftSplitLines.length, rightSplitLines.length);
-//
-//			for (int i = 0; i < lineCount; i++)
-//			{
-//				String leftText = "";
-//				String rightText = "";
-//
-//				if (i < leftSplitLines.length)
-//				{
-//					leftText = leftSplitLines[i];
-//				}
-//
-//				if (i < rightSplitLines.length)
-//				{
-//					rightText = rightSplitLines[i];
-//				}
-//
-//				final TextComponent leftLineComponent = new TextComponent();
-//				leftLineComponent.setPosition(new Point(x, y));
-//				leftLineComponent.setText(leftText);
-//				leftLineComponent.setColor(leftColor);
-//				leftLineComponent.render(graphics);
-//
-//				final TextComponent rightLineComponent = new TextComponent();
-//				rightLineComponent.setPosition(new Point(x + leftSmallWidth + rightSmallWidth - getLineWidth(rightText, metrics), y));
-//				rightLineComponent.setText(rightText);
-//				rightLineComponent.setColor(rightColor);
-//				rightLineComponent.render(graphics);
-//				y += metrics.getHeight();
-//			}
-//
-//			graphics.translate(-preferredLocation.x, -preferredLocation.y);
-//			return new Dimension(preferredSize.width, y - metrics.getHeight());
-//		}
-
-		graphics.translate(-preferredLocation.x, -preferredLocation.y);
-		return new Dimension(preferredSize.width, y);
+		return result;
 	}
 
 	private static int getLineWidth(final String line, final FontMetrics metrics)
@@ -196,37 +225,5 @@ public class LineImageComponent implements LayoutableRenderableEntity
 		return metrics.stringWidth(TextComponent.textWithoutColTags(line));
 	}
 
-	private static String[] lineBreakText(String text, int maxWidth, FontMetrics metrics)
-	{
-		final String[] words = text.split(" ");
-
-		if (words.length == 0)
-		{
-			return new String[0];
-		}
-
-		final StringBuilder wrapped = new StringBuilder(words[0]);
-		int spaceLeft = maxWidth - metrics.stringWidth(wrapped.toString());
-
-		for (int i = 1; i < words.length; i++)
-		{
-			final String word = words[i];
-			final int wordLen = metrics.stringWidth(word);
-			final int spaceWidth = metrics.stringWidth(" ");
-
-			if (wordLen + spaceWidth > spaceLeft)
-			{
-				wrapped.append("\n").append(word);
-				spaceLeft = maxWidth - wordLen;
-			}
-			else
-			{
-				wrapped.append(" ").append(word);
-				spaceLeft -= spaceWidth + wordLen;
-			}
-		}
-
-		return wrapped.toString().split("\n");
-	}
 }
 
