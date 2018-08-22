@@ -43,8 +43,7 @@ public class XorEncoder extends MessageToByteEncoder<ByteBuf>
 	}
 
 	@Override
-	protected void encode(ChannelHandlerContext ctx, ByteBuf msg, ByteBuf out) throws Exception
-	{
+	protected void encode(ChannelHandlerContext ctx, ByteBuf msg, ByteBuf out) {
 		if (key == 0)
 		{
 			out.writeBytes(msg);

@@ -46,8 +46,7 @@ public class HandshakeHandler extends SimpleChannelInboundHandler<UpdateHandshak
 	}
 
 	@Override
-	protected void channelRead0(ChannelHandlerContext ctx, UpdateHandshakePacket handshakePacket) throws Exception
-	{
+	protected void channelRead0(ChannelHandlerContext ctx, UpdateHandshakePacket handshakePacket) {
 		ChannelPipeline pipeline = ctx.pipeline();
 
 		if (handshakePacket.getRevision() != server.getRevision())

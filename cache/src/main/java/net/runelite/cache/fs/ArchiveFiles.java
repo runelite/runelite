@@ -63,12 +63,8 @@ public class ArchiveFiles
 			return false;
 		}
 		final ArchiveFiles other = (ArchiveFiles) obj;
-		if (!Objects.equals(this.files, other.files))
-		{
-			return false;
-		}
-		return true;
-	}
+        return Objects.equals(this.files, other.files);
+    }
 
 	public void addFile(FSFile file)
 	{

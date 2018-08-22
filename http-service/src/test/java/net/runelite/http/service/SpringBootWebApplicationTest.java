@@ -52,16 +52,14 @@ public class SpringBootWebApplicationTest
 	}
 
 	@Bean("Runelite Cache SQL2O")
-	Sql2o cacheSql2o() throws NamingException
-	{
+	Sql2o cacheSql2o() {
 		Map<Class, Converter> converters = new HashMap<>();
 		converters.put(Instant.class, new InstantConverter());
 		return new Sql2o("jdbc:mysql://192.168.1.2/cache", "runelite", "runelite", new NoQuirks(converters));
 	}
 
 	@Bean("Runelite XP Tracker SQL2O")
-	Sql2o xpSql2o() throws NamingException
-	{
+	Sql2o xpSql2o() {
 		Map<Class, Converter> converters = new HashMap<>();
 		converters.put(Instant.class, new InstantConverter());
 		return new Sql2o("jdbc:mysql://192.168.1.2/xptracker", "runelite", "runelite", new NoQuirks(converters));
@@ -71,7 +69,7 @@ public class SpringBootWebApplicationTest
 	@Ignore
 	public void test() throws InterruptedException
 	{
-		SpringApplication.run(SpringBootWebApplicationTest.class, new String[0]);
+		SpringApplication.run(SpringBootWebApplicationTest.class);
 		for (;;)
 		{
 			Thread.sleep(100L);

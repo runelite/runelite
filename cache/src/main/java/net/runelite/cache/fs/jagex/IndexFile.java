@@ -82,12 +82,8 @@ public class IndexFile implements Closeable
 			return false;
 		}
 		final IndexFile other = (IndexFile) obj;
-		if (!Objects.equals(this.file, other.file))
-		{
-			return false;
-		}
-		return true;
-	}
+        return Objects.equals(this.file, other.file);
+    }
 
 	public int getIndexFileId()
 	{

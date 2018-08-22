@@ -57,5 +57,5 @@ public enum GrandExchangeOfferState
 	/**
 	 * A sell offer that has completed.
 	 */
-	SOLD;
+	SOLD
 }

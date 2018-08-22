@@ -96,12 +96,8 @@ public class SingleHiscoreSkillResult
 		{
 			return false;
 		}
-		if (!Objects.equals(this.skill, other.skill))
-		{
-			return false;
-		}
-		return true;
-	}
+        return Objects.equals(this.skill, other.skill);
+    }
 
 	@Override
 	public String toString()

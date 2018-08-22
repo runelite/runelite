@@ -50,8 +50,7 @@ class HiscoreLoader extends CacheLoader<HiscoreManager.HiscoreKey, HiscoreResult
 	}
 
 	@Override
-	public HiscoreResult load(HiscoreManager.HiscoreKey hiscoreKey) throws Exception
-	{
+	public HiscoreResult load(HiscoreManager.HiscoreKey hiscoreKey) {
 		return EMPTY;
 	}
 

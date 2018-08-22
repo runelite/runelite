@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,11 +22,35 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.kourendlibrary;
+package net.runelite.client.plugins.duelnotifier;
 
-enum SolvedState
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+
+import java.awt.*;
+
+@ConfigGroup("duelnotifier")
+public interface DuelNotifierConfig extends Config
 {
-	NO_DATA,
-	INCOMPLETE,
-	COMPLETE
+	@ConfigItem(
+		position = 0,
+		keyName = "enableOverlay",
+		name = "Enable Duel Request Overlay",
+		description = "Flashes screen when a duel request is received"
+	)
+	default boolean overlayEnabled() { return false; }
+
+	@ConfigItem(
+		position = 1,
+		keyName = "overlayColor",
+		name = "Screen Overlay Color",
+		description = "Color of the screen overlay"
+	)
+	default Color getOverlayColor()
+	{
+		return new Color(255, 0, 0, 140);
+	}
+
+
 }

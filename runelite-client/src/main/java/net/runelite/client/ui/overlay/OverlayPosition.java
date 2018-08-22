@@ -57,5 +57,5 @@ public enum OverlayPosition
 	/**
 	 * Tooltip overlay
 	 */
-	TOOLTIP;
+	TOOLTIP
 }

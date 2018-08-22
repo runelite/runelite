@@ -94,8 +94,7 @@ public class FeedController
 	}
 
 	@RequestMapping
-	public FeedResult getFeed() throws IOException
-	{
+	public FeedResult getFeed() {
 		return feed.get();
 	}
 }

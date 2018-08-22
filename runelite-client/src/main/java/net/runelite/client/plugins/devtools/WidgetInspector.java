@@ -160,8 +160,7 @@ class WidgetInspector extends JFrame
 		new SwingWorker<DefaultMutableTreeNode, Void>()
 		{
 			@Override
-			protected DefaultMutableTreeNode doInBackground() throws Exception
-			{
+			protected DefaultMutableTreeNode doInBackground() {
 				Widget[] rootWidgets = client.getWidgetRoots();
 				DefaultMutableTreeNode root = new DefaultMutableTreeNode();
 

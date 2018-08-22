@@ -111,6 +111,7 @@ public class WidgetID
 	public static final int WORLD_SWITCHER_GROUP_ID = 69;
 	public static final int DIALOG_OPTION_GROUP_ID = 219;
 	public static final int DIALOG_PLAYER_GROUP_ID = 217;
+	public static final int DUEL_GROUP_ID = 482;
 
 	static class WorldMap
 	{

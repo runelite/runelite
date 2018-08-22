@@ -220,8 +220,7 @@ public class InputStream extends java.io.InputStream
 	}
 
 	@Override
-	public int read() throws IOException
-	{
+	public int read() {
 		return this.readUnsignedByte();
 	}
 }

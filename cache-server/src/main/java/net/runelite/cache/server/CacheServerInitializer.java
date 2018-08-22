@@ -44,8 +44,7 @@ public class CacheServerInitializer extends ChannelInitializer<SocketChannel>
 	}
 
 	@Override
-	protected void initChannel(SocketChannel ch) throws Exception
-	{
+	protected void initChannel(SocketChannel ch) {
 		ChannelPipeline p = ch.pipeline();
 
 		p.addLast(

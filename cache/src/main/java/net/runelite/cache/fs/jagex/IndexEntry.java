@@ -95,10 +95,6 @@ public class IndexEntry
 		{
 			return false;
 		}
-		if (this.length != other.length)
-		{
-			return false;
-		}
-		return true;
-	}
+        return this.length == other.length;
+    }
 }

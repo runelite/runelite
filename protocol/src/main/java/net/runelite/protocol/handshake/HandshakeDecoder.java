@@ -37,8 +37,7 @@ import net.runelite.protocol.api.handshake.UpdateHandshakePacket;
 public class HandshakeDecoder extends ByteToMessageDecoder
 {
 	@Override
-	protected void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> out) throws Exception
-	{
+	protected void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> out) {
 		buf.markReaderIndex();
 		byte handshakeOpcode = buf.readByte();
 

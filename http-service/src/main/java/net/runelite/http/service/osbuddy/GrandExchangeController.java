@@ -46,8 +46,7 @@ public class GrandExchangeController
 	}
 
 	@RequestMapping
-	public ResponseEntity<GrandExchangeEntry> get(@RequestParam("itemId") int itemId) throws ExecutionException
-	{
+	public ResponseEntity<GrandExchangeEntry> get(@RequestParam("itemId") int itemId) {
 		GrandExchangeEntry grandExchangeEntry = grandExchangeService.get(itemId);
 
 		return ResponseEntity.ok()

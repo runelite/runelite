@@ -32,8 +32,7 @@ import net.runelite.protocol.api.update.ArchiveRequestPacket;
 public class ArchiveRequestEncoder extends MessageToByteEncoder<ArchiveRequestPacket>
 {
 	@Override
-	protected void encode(ChannelHandlerContext ctx, ArchiveRequestPacket archiveRequest, ByteBuf out) throws Exception
-	{
+	protected void encode(ChannelHandlerContext ctx, ArchiveRequestPacket archiveRequest, ByteBuf out) {
 		out.writeByte(archiveRequest.isPriority() ? 1 : 0);
 		out.writeByte(archiveRequest.getIndex());
 		out.writeShort(archiveRequest.getArchive());

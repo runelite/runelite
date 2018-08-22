@@ -109,8 +109,7 @@ public class CacheClient implements AutoCloseable
 			.handler(new ChannelInitializer<SocketChannel>()
 			{
 				@Override
-				public void initChannel(SocketChannel ch) throws Exception
-				{
+				public void initChannel(SocketChannel ch) {
 					ChannelPipeline p = ch.pipeline();
 
 					//p.addFirst(new HttpProxyHandler(new InetSocketAddress("runelite.net", 3128)));

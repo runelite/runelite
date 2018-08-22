@@ -34,8 +34,7 @@ public class CacheClientHandler extends ChannelInboundHandlerAdapter
 	private static final Logger logger = LoggerFactory.getLogger(CacheClientHandler.class);
 
 	@Override
-	public void channelInactive(ChannelHandlerContext ctx) throws Exception
-	{
+	public void channelInactive(ChannelHandlerContext ctx) {
 		logger.warn("Channel has gone inactive");
 	}
 

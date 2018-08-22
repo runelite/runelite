@@ -73,7 +73,7 @@ public class CacheUpdater implements CommandLineRunner
 		this.minioClient = minioClient;
 	}
 
-	public void update() throws IOException, InvalidEndpointException, InvalidPortException, InterruptedException
+	public void update() throws IOException, InterruptedException
 	{
 		int rsVersion = RuneLiteAPI.getRsVersion();
 

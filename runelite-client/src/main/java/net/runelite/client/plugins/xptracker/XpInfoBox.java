@@ -86,8 +86,7 @@ class XpInfoBox extends JPanel
 
 	private boolean paused = false;
 
-	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, JPanel panel, Skill skill, SkillIconManager iconManager) throws IOException
-	{
+	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, JPanel panel, Skill skill, SkillIconManager iconManager) {
 		this.panel = panel;
 		this.skill = skill;
 

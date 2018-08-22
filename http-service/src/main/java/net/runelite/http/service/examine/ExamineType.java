@@ -28,5 +28,5 @@ public enum ExamineType
 {
 	OBJECT,
 	NPC,
-	ITEM;
+	ITEM
 }

@@ -78,12 +78,8 @@ public class Position
 		{
 			return false;
 		}
-		if (this.z != other.z)
-		{
-			return false;
-		}
-		return true;
-	}
+        return this.z == other.z;
+    }
 
 	public int getX()
 	{

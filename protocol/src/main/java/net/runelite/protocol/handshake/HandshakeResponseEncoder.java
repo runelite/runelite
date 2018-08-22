@@ -34,8 +34,7 @@ public class HandshakeResponseEncoder extends MessageToByteEncoder<HandshakeResp
 {
 
 	@Override
-	protected void encode(ChannelHandlerContext ctx, HandshakeResponsePacket handshakeResponse, ByteBuf out) throws Exception
-	{
+	protected void encode(ChannelHandlerContext ctx, HandshakeResponsePacket handshakeResponse, ByteBuf out) {
 		HandshakeResponseType handshakeResponseType = handshakeResponse.getResponse();
 		out.writeByte(handshakeResponseType.getValue());
 	}

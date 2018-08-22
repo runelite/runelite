@@ -29,5 +29,5 @@ enum DiscordAreaType
 	BOSSES,
 	CITIES,
 	DUNGEONS,
-	MINIGAMES;
+	MINIGAMES
 }

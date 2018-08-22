@@ -71,7 +71,7 @@ enum Boss
 		}
 	}
 
-	private Boss(int id, long period, ChronoUnit unit, int itemSpriteId)
+	Boss(int id, long period, ChronoUnit unit, int itemSpriteId)
 	{
 		this.id = id;
 		this.spawnTime = Duration.of(period, unit);

@@ -59,8 +59,7 @@ public class SpriteController
 	public ResponseEntity<byte[]> getSprite(
 		@RequestParam int spriteId,
 		@RequestParam(defaultValue = "0") int frameId
-	) throws IOException
-	{
+	) {
 		byte[] data = spriteCache.getUnchecked(spriteId << 16 | frameId);
 		if (data == null || data.length == 0)
 		{

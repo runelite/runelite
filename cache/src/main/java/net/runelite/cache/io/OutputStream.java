@@ -203,8 +203,7 @@ public final class OutputStream extends java.io.OutputStream
 	}
 
 	@Override
-	public void write(int b) throws IOException
-	{
+	public void write(int b) {
 		buffer.put((byte) b);
 	}
 

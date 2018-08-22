@@ -34,8 +34,7 @@ public class EncryptionEncoder extends MessageToByteEncoder<EncryptionPacket>
 {
 
 	@Override
-	protected void encode(ChannelHandlerContext ctx, EncryptionPacket encryptionPacket, ByteBuf out) throws Exception
-	{
+	protected void encode(ChannelHandlerContext ctx, EncryptionPacket encryptionPacket, ByteBuf out) {
 		out.writeByte(UpdateOpcodes.ENCRYPTION);
 		out.writeByte(encryptionPacket.getKey());
 		out.writeShort(0);

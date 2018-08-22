@@ -29,5 +29,5 @@ public enum ExamineType
 	ITEM,
 	ITEM_BANK_EQ,
 	NPC,
-	OBJECT;
+	OBJECT
 }

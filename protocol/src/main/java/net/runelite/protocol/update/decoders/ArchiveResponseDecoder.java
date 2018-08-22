@@ -41,8 +41,7 @@ public class ArchiveResponseDecoder extends ByteToMessageDecoder
 	private static final int CHUNK_SIZE = 512;
 
 	@Override
-	public void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception
-	{
+	public void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) {
 		if (in.readableBytes() < 8)
 		{
 			return;

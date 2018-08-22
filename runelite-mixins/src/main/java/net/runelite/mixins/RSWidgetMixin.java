@@ -207,21 +207,11 @@ public abstract class RSWidgetMixin implements RSWidget
 
 		if (parent == null)
 		{
-			if (TO_GROUP(getId()) != client.getWidgetRoot())
-			{
-				// Widget has no parent and is not the root widget (which is always visible),
-				// so it's not visible.
-				return true;
-			}
+            return TO_GROUP(getId()) != client.getWidgetRoot();
 		}
-		else if (parent.isHidden())
-		{
-			// If the parent is hidden, this widget is also hidden.
-			return true;
-		}
+		else return parent.isHidden();
 
-		return false;
-	}
+    }
 
 	@Inject
 	@Override

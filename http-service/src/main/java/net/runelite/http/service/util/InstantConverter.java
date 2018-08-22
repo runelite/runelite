@@ -33,8 +33,7 @@ import org.sql2o.converters.ConverterException;
 public class InstantConverter implements Converter<Instant>
 {
 	@Override
-	public Instant convert(Object val) throws ConverterException
-	{
+	public Instant convert(Object val) {
 		Timestamp ts = (Timestamp) val;
 		return ts.toInstant();
 	}

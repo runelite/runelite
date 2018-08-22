@@ -33,8 +33,7 @@ import net.runelite.protocol.api.handshake.UpdateHandshakePacket;
 public class UpdateHandshakeEncoder extends MessageToByteEncoder<UpdateHandshakePacket>
 {
 	@Override
-	protected void encode(ChannelHandlerContext ctx, UpdateHandshakePacket packet, ByteBuf buf) throws Exception
-	{
+	protected void encode(ChannelHandlerContext ctx, UpdateHandshakePacket packet, ByteBuf buf) {
 		buf.writeByte(HandshakeType.UPDATE.getValue());
 		buf.writeInt(packet.getRevision());
 	}

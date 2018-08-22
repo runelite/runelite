@@ -66,8 +66,7 @@ public class ConfigManagerTest
 	}
 
 	@Test
-	public void testGetConfig() throws IOException
-	{
+	public void testGetConfig() {
 		AccountSession accountSession = new AccountSession(UUID.randomUUID(), Instant.now());
 		accountSession.setUsername("test");
 
@@ -78,8 +77,7 @@ public class ConfigManagerTest
 	}
 
 	@Test
-	public void testGetConfigDefault() throws IOException
-	{
+	public void testGetConfigDefault() {
 		AccountSession accountSession = new AccountSession(UUID.randomUUID(), Instant.now());
 		accountSession.setUsername("test");
 
@@ -88,8 +86,7 @@ public class ConfigManagerTest
 	}
 
 	@Test
-	public void testSetConfig() throws IOException
-	{
+	public void testSetConfig() {
 		AccountSession accountSession = new AccountSession(UUID.randomUUID(), Instant.now());
 		accountSession.setUsername("test");
 
@@ -100,8 +97,7 @@ public class ConfigManagerTest
 	}
 
 	@Test
-	public void testGetConfigDescriptor() throws IOException
-	{
+	public void testGetConfigDescriptor() {
 		AccountSession accountSession = new AccountSession(UUID.randomUUID(), Instant.now());
 		accountSession.setUsername("test");
 

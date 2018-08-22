@@ -34,8 +34,7 @@ public class EncryptionHandler extends SimpleChannelInboundHandler<EncryptionPac
 {
 
 	@Override
-	protected void channelRead0(ChannelHandlerContext ctx, EncryptionPacket encryptionPacket) throws Exception
-	{
+	protected void channelRead0(ChannelHandlerContext ctx, EncryptionPacket encryptionPacket) {
 		ChannelPipeline p = ctx.pipeline();
 		XorEncoder xorEncoder = p.get(XorEncoder.class);
 		if (xorEncoder != null)
