@@ -74,8 +74,9 @@ class ScreenMarkerPanel extends JPanel
 	private static final ImageIcon NO_FILL_COLOR_HOVER_ICON;
 
 	private static final ImageIcon FULL_OPACITY_ICON;
-	private static final ImageIcon OPACITY_HOVER_ICON;
+	private static final ImageIcon FULL_OPACITY_HOVER_ICON;
 	private static final ImageIcon NO_OPACITY_ICON;
+	private static final ImageIcon NO_OPACITY_HOVER_ICON;
 
 	private static final ImageIcon VISIBLE_ICON;
 	private static final ImageIcon VISIBLE_HOVER_ICON;
@@ -107,25 +108,28 @@ class ScreenMarkerPanel extends JPanel
 	static
 	{
 		final BufferedImage borderImg = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "border_color_icon.png");
+		final BufferedImage borderImgHover = ImageUtil.grayscaleOffset(borderImg, -150);
 		BORDER_COLOR_ICON = new ImageIcon(borderImg);
-		BORDER_COLOR_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(borderImg, -100));
+		BORDER_COLOR_HOVER_ICON = new ImageIcon(borderImgHover);
 
-		final BufferedImage noBorderImg = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "no_border_color_icon.png");
-		NO_BORDER_COLOR_ICON = new ImageIcon(noBorderImg);
-		NO_BORDER_COLOR_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(noBorderImg, -100));
+		NO_BORDER_COLOR_ICON = new ImageIcon(borderImgHover);
+		NO_BORDER_COLOR_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(borderImgHover, -100));
 
 		final BufferedImage fillImg = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "fill_color_icon.png");
+		final BufferedImage fillImgHover = ImageUtil.grayscaleOffset(fillImg, -150);
 		FILL_COLOR_ICON = new ImageIcon(fillImg);
-		FILL_COLOR_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(fillImg, -100));
+		FILL_COLOR_HOVER_ICON = new ImageIcon(fillImgHover);
 
-		final BufferedImage noFillImg = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "no_fill_color_icon.png");
-		NO_FILL_COLOR_ICON = new ImageIcon(noFillImg);
-		NO_FILL_COLOR_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(noFillImg, -100));
+		NO_FILL_COLOR_ICON = new ImageIcon(fillImgHover);
+		NO_FILL_COLOR_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(fillImgHover, -100));
 
 		final BufferedImage opacityImg = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "opacity_icon.png");
+		final BufferedImage opacityImgHover = ImageUtil.grayscaleOffset(opacityImg, -150);
 		FULL_OPACITY_ICON = new ImageIcon(opacityImg);
-		OPACITY_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(opacityImg, -100));
-		NO_OPACITY_ICON = new ImageIcon(ImageUtil.alphaOffset(opacityImg, -150));
+		FULL_OPACITY_HOVER_ICON = new ImageIcon(opacityImgHover);
+
+		NO_OPACITY_ICON = new ImageIcon(opacityImgHover);
+		NO_OPACITY_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(opacityImgHover, -100));
 
 		final BufferedImage visibleImg = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "visible_icon.png");
 		VISIBLE_ICON = new ImageIcon(visibleImg);
@@ -331,7 +335,7 @@ class ScreenMarkerPanel extends JPanel
 			@Override
 			public void mouseEntered(MouseEvent mouseEvent)
 			{
-				opacityIndicator.setIcon(OPACITY_HOVER_ICON);
+				opacityIndicator.setIcon(marker.getMarker().getFill().getAlpha() == 0 ? NO_OPACITY_HOVER_ICON : FULL_OPACITY_HOVER_ICON);
 			}
 
 			@Override
