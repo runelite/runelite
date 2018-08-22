@@ -352,7 +352,7 @@ public class ScreenshotPlugin extends Plugin
 			{
 				String bossName = m.group(1);
 				String bossKillcount = m.group(2);
-				String fileName = bossName + " kill " + bossKillcount;
+				String fileName = bossName + "(" + bossKillcount + ")";
 				takeScreenshot(fileName);
 			}
 		}
