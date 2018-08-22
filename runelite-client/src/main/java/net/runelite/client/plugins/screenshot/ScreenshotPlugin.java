@@ -345,11 +345,16 @@ public class ScreenshotPlugin extends Plugin
 			takeScreenshot(fileName);
 		}
 
-		if (config.screenshotBossKills() && BOSSKILL_MESSAGE_PATTERN.matcher(chatMessage).matches() )
+		if (config.screenshotBossKills() )
 		{
-			String fileName = parseBossKill(chatMessage);
-			log.debug("Taking boss screenshot: " + fileName);
-			takeScreenshot(fileName);
+			Matcher m = BOSSKILL_MESSAGE_PATTERN.matcher(chatMessage);
+			if (m.matches())
+			{
+				String bossName = m.group(1);
+				String bossKillcount = m.group(2);
+				String fileName = bossName + " kill " + bossKillcount;
+				takeScreenshot(fileName);
+			}
 		}
 	}
 
@@ -479,25 +484,6 @@ public class ScreenshotPlugin extends Plugin
 		String skillName = m.group(1);
 		String skillLevel = m.group(2);
 		return skillName + "(" + skillLevel + ")";
-	}
-
-	/**
-	 * Receives a String and parses it into a shortened string for filename usage.
-	 * @param killMessage killMessage String received after killing a boss,
-	 *                     with the format "Your (Boss Name) kill count is: (killcount)."
-	 * @return Shortened string in the format "(Boss Name) kill (killcount)"
-	 */
-	private String parseBossKill(String killMessage)
-	{
-		Matcher m = BOSSKILL_MESSAGE_PATTERN.matcher(killMessage);
-		if (!m.matches())
-		{
-			return null;
-		}
-
-		String bossName = m.group(1);
-		String bossKillcount = m.group(2);
-		return bossName + " kill " + bossKillcount;
 	}
 
 	/**
