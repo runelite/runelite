@@ -32,6 +32,7 @@ import lombok.Value;
 import static net.runelite.client.ui.overlay.OverlayPosition.ABOVE_CHATBOX_RIGHT;
 import static net.runelite.client.ui.overlay.OverlayPosition.BOTTOM_LEFT;
 import static net.runelite.client.ui.overlay.OverlayPosition.BOTTOM_RIGHT;
+import static net.runelite.client.ui.overlay.OverlayPosition.CANVAS_TOP_RIGHT;
 import static net.runelite.client.ui.overlay.OverlayPosition.TOP_LEFT;
 import static net.runelite.client.ui.overlay.OverlayPosition.TOP_RIGHT;
 
@@ -39,7 +40,7 @@ import static net.runelite.client.ui.overlay.OverlayPosition.TOP_RIGHT;
 @Value
 class OverlayBounds
 {
-	private final Rectangle topLeft, topRight, bottomLeft, bottomRight, aboveChatboxRight;
+	private final Rectangle topLeft, topRight, bottomLeft, bottomRight, aboveChatboxRight, canvasTopRight;
 
 	OverlayBounds(OverlayBounds other)
 	{
@@ -48,6 +49,7 @@ class OverlayBounds
 		bottomLeft = new Rectangle(other.bottomLeft);
 		bottomRight = new Rectangle(other.bottomRight);
 		aboveChatboxRight = new Rectangle(other.aboveChatboxRight);
+		canvasTopRight = new Rectangle(other.canvasTopRight);
 	}
 
 	OverlayBounds translated(final int x, final int y)
@@ -57,6 +59,7 @@ class OverlayBounds
 		translated.getBottomLeft().translate(0, y);
 		translated.getBottomRight().translate(x, y);
 		translated.getAboveChatboxRight().translate(x, y);
+		translated.getCanvasTopRight().translate(x, 0);
 		return translated;
 	}
 
@@ -74,6 +77,8 @@ class OverlayBounds
 				return bottomRight;
 			case ABOVE_CHATBOX_RIGHT:
 				return aboveChatboxRight;
+			case CANVAS_TOP_RIGHT:
+				return canvasTopRight;
 			default:
 				throw new IllegalArgumentException();
 		}
@@ -101,6 +106,10 @@ class OverlayBounds
 		{
 			return ABOVE_CHATBOX_RIGHT;
 		}
+		else if (bounds == canvasTopRight)
+		{
+			return CANVAS_TOP_RIGHT;
+		}
 		else
 		{
 			throw new IllegalArgumentException();
@@ -109,6 +118,6 @@ class OverlayBounds
 
 	Collection<Rectangle> getBounds()
 	{
-		return Arrays.asList(topLeft, topRight, bottomLeft, bottomRight, aboveChatboxRight);
+		return Arrays.asList(topLeft, topRight, bottomLeft, bottomRight, aboveChatboxRight, canvasTopRight);
 	}
 }
