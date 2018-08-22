@@ -139,36 +139,13 @@ abstract class ClockPanel extends JPanel
 			public void focusLost(FocusEvent e)
 			{
 				long duration = 0;
-				String text = displayInput.getText();
 
-				if (text.matches(INPUT_HMS_REGEX))
+				try
 				{
-					String textWithoutWhitespaces = text.replaceAll(WHITESPACE_REGEX, "");
-					try
-					{
-						//parse input using ISO-8601 Duration format (e.g. 'PT1h30m10s')
-						duration = Duration.parse("PT" + textWithoutWhitespaces).toMillis() / 1000;
-					}
-					catch (DateTimeParseException exception)
-					{
-						// ignored
-					}
+					duration = stringToSeconds(displayInput.getText());
 				}
-				else
+				catch (Exception ignored)
 				{
-					String[] parts = text.split(":");
-					// parse from back to front, so as to accept hour:min:sec, min:sec, and sec formats
-					for (int i = parts.length - 1, multiplier = 1; i >= 0 && multiplier <= 3600; i--, multiplier *= 60)
-					{
-						try
-						{
-							duration += Integer.parseInt(parts[i].trim()) * multiplier;
-						}
-						catch (NumberFormatException nfe)
-						{
-							// ignored
-						}
-					}
 				}
 
 				clock.setDuration(Math.max(0, duration));
@@ -287,5 +264,28 @@ abstract class ClockPanel extends JPanel
 		long seconds = duration % 60;
 
 		return String.format("%02d:%02d:%02d", hours, mins, seconds);
+	}
+
+	static long stringToSeconds(String time) throws NumberFormatException, DateTimeParseException
+	{
+		long duration = 0;
+
+		if (time.matches(INPUT_HMS_REGEX))
+		{
+			String textWithoutWhitespaces = time.replaceAll(WHITESPACE_REGEX, "");
+			//parse input using ISO-8601 Duration format (e.g. 'PT1h30m10s')
+			duration = Duration.parse("PT" + textWithoutWhitespaces).toMillis() / 1000;
+		}
+		else
+		{
+			String[] parts = time.split(":");
+			// parse from back to front, so as to accept hour:min:sec, min:sec, and sec formats
+			for (int i = parts.length - 1, multiplier = 1; i >= 0 && multiplier <= 3600; i--, multiplier *= 60)
+			{
+				duration += Integer.parseInt(parts[i].trim()) * multiplier;
+			}
+		}
+
+		return duration;
 	}
 }
