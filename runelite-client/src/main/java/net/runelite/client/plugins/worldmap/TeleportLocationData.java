@@ -126,14 +126,29 @@ enum TeleportLocationData
 	WATERBIRTH_ISLAND_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Waterbirth Island", new WorldPoint(2550, 3756, 0), "enchanted_lyre_teleport_icon.png"),
 	NEITIZNOT_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Neitiznot", new WorldPoint(2336, 3801, 0), "enchanted_lyre_teleport_icon.png"),
 	JATIZSO_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Jatizso", new WorldPoint(2409, 3809, 0), "enchanted_lyre_teleport_icon.png"),
+
+	// Wilderness
 	OBELISK_13(TeleportType.OTHER, "Obelisk", "13", new WorldPoint(3156, 3620, 0), "obelisk_icon.png"),
 	OBELISK_19(TeleportType.OTHER, "Obelisk", "19", new WorldPoint(3227, 3667, 0), "obelisk_icon.png"),
 	OBELISK_27(TeleportType.OTHER, "Obelisk", "27", new WorldPoint(3035, 3732, 0), "obelisk_icon.png"),
 	OBELISK_35(TeleportType.OTHER, "Obelisk", "35", new WorldPoint(3106, 3794, 0), "obelisk_icon.png"),
 	OBELISK_44(TeleportType.OTHER, "Obelisk", "44", new WorldPoint(2980, 3866, 0), "obelisk_icon.png"),
 	OBELISK_50(TeleportType.OTHER, "Obelisk", "50", new WorldPoint(3307, 3916, 0), "obelisk_icon.png"),
+
+	// Achievement Diary
 	ARDOUGNE_CLOAK_MONASTERY(TeleportType.OTHER, "Ardougne Cloak", "Monastery", new WorldPoint(2606, 3222, 0), "ardougne_cloak_icon.png"),
 	ARDOUGNE_CLOAK_FARM(TeleportType.OTHER, "Ardougne Cloak", "Farm", new WorldPoint(2673, 3375, 0), "ardougne_cloak_icon.png"),
+	EXPLORERS_RING(TeleportType.OTHER, "Explorer's Ring",  new WorldPoint(3052, 3292, 0), "explorers_ring_icon.png"),
+	KARAMJA_GLOVES_GEM_MINE(TeleportType.OTHER, "Karamja Gloves", "Gem Mine (Underground)", new WorldPoint(2827, 2997, 0), "karamja_gloves_icon.png"),
+	KARAMJA_GLOVES_DURADEL(TeleportType.OTHER, "Karamja Gloves", "Duradel", new WorldPoint(2870, 2981, 0), "karamja_gloves_icon.png"),
+	DESERT_AMULET_NARDAH(TeleportType.OTHER, "Desert Amulet", "Nardah", new WorldPoint(3432, 2914, 0), "desert_amulet_icon.png"),
+	DESERT_AMULKT_KALPHITE_CAVE(TeleportType.OTHER, "Desert Amulet", "Kalphite Cave", new WorldPoint(3322, 3122, 0), "desert_amulet_icon.png"),
+	MORYTANIA_LEGS_SLIME_PIT(TeleportType.OTHER, "Morytania Legs", "Slime Pit (Underground)", new WorldPoint(3654, 3516, 0), "morytania_legs_icon.png"),
+	MORYTANIA_LEGS_BURGH_DE_ROTT(TeleportType.OTHER, "Morytania Legs", "Burgh de Rott", new WorldPoint(3482, 3231, 0), "morytania_legs_icon.png"),
+	FREMENNIK_SEA_BOOTS(TeleportType.OTHER, "Fremennik Sea Boots",  new WorldPoint(2640, 3675, 0), "fremennik_boots_icon.png"),
+	KANDARIN_HEADGEAR(TeleportType.OTHER, "Kandarin Headgear",  new WorldPoint(2729, 3411, 0), "kandarin_headgear_icon.png"),
+	WILDERNESS_SWORD(TeleportType.OTHER, "Wilderness Sword", new WorldPoint(3377, 3891, 0), "wilderness_sword_icon.png"),
+	WESTERN_BANNER(TeleportType.OTHER, "Western Banner",  new WorldPoint(2329, 3685, 0), "western_banner_icon.png"),
 
 	// Scrolls
 	DIGSITE_SCROLL(TeleportType.SCROLL, "Digsite Teleport", new WorldPoint(3324, 3412, 0), "scroll_teleport_icon.png"),
