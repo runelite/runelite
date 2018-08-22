@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.wasdcamera;
 
+import com.google.common.base.Strings;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
@@ -122,6 +123,12 @@ class WASDCameraListener extends MouseListener implements KeyListener
 						plugin.lockChat();
 					});
 					break;
+				case KeyEvent.VK_BACK_SPACE:
+					if (Strings.isNullOrEmpty(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT)))
+					{
+						plugin.setTyping(false);
+						clientThread.invoke(() -> plugin.lockChat());
+					}
 			}
 		}
 	}
