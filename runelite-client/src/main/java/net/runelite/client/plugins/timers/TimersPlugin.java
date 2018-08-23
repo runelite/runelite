@@ -33,6 +33,7 @@ import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -48,6 +49,7 @@ import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
@@ -62,9 +64,9 @@ import static net.runelite.client.plugins.timers.GameTimer.*;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Timers",
-	description = "Show various timers in an infobox",
-	tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire"}
+		name = "Timers",
+		description = "Show various timers in an infobox",
+		tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire"}
 )
 public class TimersPlugin extends Plugin
 {
@@ -94,7 +96,15 @@ public class TimersPlugin extends Plugin
 	private static final String SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your super antifire potion";
 	private static final String SUPER_ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your super antifire potion has expired.</col>";
 	private static final String SUPER_ANTIVENOM_DRINK_MESSAGE = "You drink some of your super antivenom potion";
-
+	private enum TB_STATES
+	{
+		NO_TB,
+		HALF_TB,
+		FULL_TB,
+		HALF_TB_DMM,
+		FULL_TB_DMM,
+	}
+	private TB_STATES teleblockState = TB_STATES.NO_TB;
 	private TimerTimer freezeTimer;
 	private int freezeTime = -1; // time frozen, in game ticks
 
@@ -261,11 +271,11 @@ public class TimersPlugin extends Plugin
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (config.showAntidotePlusPlus()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.ANTIDOTE1_5958
-			|| event.getId() == ItemID.ANTIDOTE2_5956
-			|| event.getId() == ItemID.ANTIDOTE3_5954
-			|| event.getId() == ItemID.ANTIDOTE4_5952))
+				&& event.getMenuOption().contains("Drink")
+				&& (event.getId() == ItemID.ANTIDOTE1_5958
+				|| event.getId() == ItemID.ANTIDOTE2_5956
+				|| event.getId() == ItemID.ANTIDOTE3_5954
+				|| event.getId() == ItemID.ANTIDOTE4_5952))
 		{
 			// Needs menu option hook because drink message is intercepting with antipoison message
 			createGameTimer(ANTIDOTEPLUSPLUS);
@@ -273,11 +283,11 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showAntidotePlus()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.ANTIDOTE1
-			|| event.getId() == ItemID.ANTIDOTE2
-			|| event.getId() == ItemID.ANTIDOTE3
-			|| event.getId() == ItemID.ANTIDOTE4))
+				&& event.getMenuOption().contains("Drink")
+				&& (event.getId() == ItemID.ANTIDOTE1
+				|| event.getId() == ItemID.ANTIDOTE2
+				|| event.getId() == ItemID.ANTIDOTE3
+				|| event.getId() == ItemID.ANTIDOTE4))
 		{
 			// Needs menu option hook because drink message is intercepting with antipoison message
 			createGameTimer(ANTIDOTEPLUS);
@@ -285,31 +295,31 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showAntiPoison()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.ANTIPOISON1
-			|| event.getId() == ItemID.ANTIPOISON2
-			|| event.getId() == ItemID.ANTIPOISON3
-			|| event.getId() == ItemID.ANTIPOISON4))
+				&& event.getMenuOption().contains("Drink")
+				&& (event.getId() == ItemID.ANTIPOISON1
+				|| event.getId() == ItemID.ANTIPOISON2
+				|| event.getId() == ItemID.ANTIPOISON3
+				|| event.getId() == ItemID.ANTIPOISON4))
 		{
 			createGameTimer(ANTIPOISON);
 			return;
 		}
 
 		if (config.showSuperantipoison()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.SUPERANTIPOISON1
-			|| event.getId() == ItemID.SUPERANTIPOISON2
-			|| event.getId() == ItemID.SUPERANTIPOISON3
-			|| event.getId() == ItemID.SUPERANTIPOISON4))
+				&& event.getMenuOption().contains("Drink")
+				&& (event.getId() == ItemID.SUPERANTIPOISON1
+				|| event.getId() == ItemID.SUPERANTIPOISON2
+				|| event.getId() == ItemID.SUPERANTIPOISON3
+				|| event.getId() == ItemID.SUPERANTIPOISON4))
 		{
 			createGameTimer(SUPERANTIPOISON);
 			return;
 		}
 
 		if (config.showStamina()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.STAMINA_MIX1
-			|| event.getId() == ItemID.STAMINA_MIX2))
+				&& event.getMenuOption().contains("Drink")
+				&& (event.getId() == ItemID.STAMINA_MIX1
+				|| event.getId() == ItemID.STAMINA_MIX2))
 		{
 			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
 			createGameTimer(STAMINA);
@@ -320,12 +330,10 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-
 		if (event.getType() != ChatMessageType.FILTERED && event.getType() != ChatMessageType.SERVER)
 		{
 			return;
 		}
-
 		if (config.showStamina() && event.getMessage().equals(STAMINA_DRINK_MESSAGE))
 		{
 			createGameTimer(STAMINA);
@@ -373,7 +381,6 @@ public class TimersPlugin extends Plugin
 			{
 				createGameTimer(OVERLOAD);
 			}
-
 		}
 
 		if (config.showCannon() && (event.getMessage().equals(CANNON_FURNACE_MESSAGE) || event.getMessage().contains(CANNON_REPAIR_MESSAGE)))
@@ -404,6 +411,7 @@ public class TimersPlugin extends Plugin
 		if (config.showTeleblock() && event.getMessage().equals(FULL_TELEBLOCK_MESSAGE))
 		{
 			createGameTimer(FULLTB);
+			teleblockState = TB_STATES.FULL_TB;
 		}
 
 		if (config.showTeleblock() && event.getMessage().equals(HALF_TELEBLOCK_MESSAGE))
@@ -411,16 +419,19 @@ public class TimersPlugin extends Plugin
 			if (client.getWorldType().contains(WorldType.DEADMAN))
 			{
 				createGameTimer(DMM_FULLTB);
+				teleblockState = TB_STATES.FULL_TB_DMM;
 			}
 			else
 			{
 				createGameTimer(HALFTB);
+				teleblockState = TB_STATES.HALF_TB;
 			}
 		}
 
 		if (config.showTeleblock() && event.getMessage().equals(DEADMAN_HALF_TELEBLOCK_MESSAGE))
 		{
 			createGameTimer(DMM_HALFTB);
+			teleblockState = TB_STATES.HALF_TB_DMM;
 		}
 
 		if (config.showSuperAntiFire() && event.getMessage().contains(SUPER_ANTIFIRE_DRINK_MESSAGE))
@@ -484,8 +495,8 @@ public class TimersPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		Player player = client.getLocalPlayer();
+		int currentWorld = client.getWorld();
 		WorldPoint currentWorldPoint = player.getWorldLocation();
-
 		if (freezeTimer == null)
 		{
 			lastPoint = currentWorldPoint;
@@ -502,12 +513,37 @@ public class TimersPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		// Check for game state changes which removes a teleblock (Hopping, Logging in or Login screen)
+		if (gameStateChanged.getGameState() == GameState.LOGGING_IN || gameStateChanged.getGameState() == GameState.HOPPING || gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			switch (teleblockState)
+			{
+				case NO_TB:
+				case HALF_TB:
+					removeGameTimer(HALFTB);
+					teleblockState = TB_STATES.NO_TB;
+				case HALF_TB_DMM:
+					removeGameTimer(DMM_HALFTB);
+					teleblockState = TB_STATES.NO_TB;
+				case FULL_TB:
+					removeGameTimer(FULLTB);
+					teleblockState = TB_STATES.NO_TB;
+				case FULL_TB_DMM:
+					removeGameTimer(DMM_FULLTB);
+					teleblockState = TB_STATES.NO_TB;
+			}
+		}
+	}
+
+	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)
 	{
 		Actor actor = event.getActor();
 
 		if (config.showAbyssalSireStun()
-			&& actor instanceof NPC)
+				&& actor instanceof NPC)
 		{
 			int npcId = ((NPC)actor).getId();
 
@@ -538,8 +574,8 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showVengeanceOther()
-			&& actor.getAnimation() == AnimationID.ENERGY_TRANSFER_VENGEANCE_OTHER
-			&& actor.getInteracting().getGraphic() == VENGEANCEOTHER.getGraphicId())
+				&& actor.getAnimation() == AnimationID.ENERGY_TRANSFER_VENGEANCE_OTHER
+				&& actor.getInteracting().getGraphic() == VENGEANCEOTHER.getGraphicId())
 		{
 			createGameTimer(VENGEANCEOTHER);
 		}
@@ -571,7 +607,7 @@ public class TimersPlugin extends Plugin
 			if (actor.getGraphic() == BIND.getGraphicId())
 			{
 				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
+						&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
 				{
 					createGameTimer(HALFBIND);
 				}
@@ -584,7 +620,7 @@ public class TimersPlugin extends Plugin
 			if (actor.getGraphic() == SNARE.getGraphicId())
 			{
 				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
+						&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
 				{
 					createGameTimer(HALFSNARE);
 				}
@@ -597,7 +633,7 @@ public class TimersPlugin extends Plugin
 			if (actor.getGraphic() == ENTANGLE.getGraphicId())
 			{
 				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
+						&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
 				{
 					createGameTimer(HALFENTANGLE);
 				}
