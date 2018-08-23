@@ -64,9 +64,9 @@ import static net.runelite.client.plugins.timers.GameTimer.*;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-		name = "Timers",
-		description = "Show various timers in an infobox",
-		tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire"}
+	name = "Timers",
+	description = "Show various timers in an infobox",
+	tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire"}
 )
 public class TimersPlugin extends Plugin
 {
@@ -271,11 +271,11 @@ public class TimersPlugin extends Plugin
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (config.showAntidotePlusPlus()
-				&& event.getMenuOption().contains("Drink")
-				&& (event.getId() == ItemID.ANTIDOTE1_5958
-				|| event.getId() == ItemID.ANTIDOTE2_5956
-				|| event.getId() == ItemID.ANTIDOTE3_5954
-				|| event.getId() == ItemID.ANTIDOTE4_5952))
+			&& event.getMenuOption().contains("Drink")
+			&& (event.getId() == ItemID.ANTIDOTE1_5958
+			|| event.getId() == ItemID.ANTIDOTE2_5956
+			|| event.getId() == ItemID.ANTIDOTE3_5954
+			|| event.getId() == ItemID.ANTIDOTE4_5952))
 		{
 			// Needs menu option hook because drink message is intercepting with antipoison message
 			createGameTimer(ANTIDOTEPLUSPLUS);
@@ -283,11 +283,11 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showAntidotePlus()
-				&& event.getMenuOption().contains("Drink")
-				&& (event.getId() == ItemID.ANTIDOTE1
-				|| event.getId() == ItemID.ANTIDOTE2
-				|| event.getId() == ItemID.ANTIDOTE3
-				|| event.getId() == ItemID.ANTIDOTE4))
+			&& event.getMenuOption().contains("Drink")
+			&& (event.getId() == ItemID.ANTIDOTE1
+			|| event.getId() == ItemID.ANTIDOTE2
+			|| event.getId() == ItemID.ANTIDOTE3
+			|| event.getId() == ItemID.ANTIDOTE4))
 		{
 			// Needs menu option hook because drink message is intercepting with antipoison message
 			createGameTimer(ANTIDOTEPLUS);
@@ -295,31 +295,31 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showAntiPoison()
-				&& event.getMenuOption().contains("Drink")
-				&& (event.getId() == ItemID.ANTIPOISON1
-				|| event.getId() == ItemID.ANTIPOISON2
-				|| event.getId() == ItemID.ANTIPOISON3
-				|| event.getId() == ItemID.ANTIPOISON4))
+			&& event.getMenuOption().contains("Drink")
+			&& (event.getId() == ItemID.ANTIPOISON1
+			|| event.getId() == ItemID.ANTIPOISON2
+			|| event.getId() == ItemID.ANTIPOISON3
+			|| event.getId() == ItemID.ANTIPOISON4))
 		{
 			createGameTimer(ANTIPOISON);
 			return;
 		}
 
 		if (config.showSuperantipoison()
-				&& event.getMenuOption().contains("Drink")
-				&& (event.getId() == ItemID.SUPERANTIPOISON1
-				|| event.getId() == ItemID.SUPERANTIPOISON2
-				|| event.getId() == ItemID.SUPERANTIPOISON3
-				|| event.getId() == ItemID.SUPERANTIPOISON4))
+			&& event.getMenuOption().contains("Drink")
+			&& (event.getId() == ItemID.SUPERANTIPOISON1
+			|| event.getId() == ItemID.SUPERANTIPOISON2
+			|| event.getId() == ItemID.SUPERANTIPOISON3
+			|| event.getId() == ItemID.SUPERANTIPOISON4))
 		{
 			createGameTimer(SUPERANTIPOISON);
 			return;
 		}
 
 		if (config.showStamina()
-				&& event.getMenuOption().contains("Drink")
-				&& (event.getId() == ItemID.STAMINA_MIX1
-				|| event.getId() == ItemID.STAMINA_MIX2))
+			&& event.getMenuOption().contains("Drink")
+			&& (event.getId() == ItemID.STAMINA_MIX1
+			|| event.getId() == ItemID.STAMINA_MIX2))
 		{
 			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
 			createGameTimer(STAMINA);
@@ -543,7 +543,7 @@ public class TimersPlugin extends Plugin
 		Actor actor = event.getActor();
 
 		if (config.showAbyssalSireStun()
-				&& actor instanceof NPC)
+			&& actor instanceof NPC)
 		{
 			int npcId = ((NPC)actor).getId();
 
@@ -574,8 +574,8 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showVengeanceOther()
-				&& actor.getAnimation() == AnimationID.ENERGY_TRANSFER_VENGEANCE_OTHER
-				&& actor.getInteracting().getGraphic() == VENGEANCEOTHER.getGraphicId())
+			&& actor.getAnimation() == AnimationID.ENERGY_TRANSFER_VENGEANCE_OTHER
+			&& actor.getInteracting().getGraphic() == VENGEANCEOTHER.getGraphicId())
 		{
 			createGameTimer(VENGEANCEOTHER);
 		}
@@ -607,7 +607,7 @@ public class TimersPlugin extends Plugin
 			if (actor.getGraphic() == BIND.getGraphicId())
 			{
 				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-						&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
+					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
 				{
 					createGameTimer(HALFBIND);
 				}
@@ -620,7 +620,7 @@ public class TimersPlugin extends Plugin
 			if (actor.getGraphic() == SNARE.getGraphicId())
 			{
 				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-						&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
+					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
 				{
 					createGameTimer(HALFSNARE);
 				}
@@ -633,7 +633,7 @@ public class TimersPlugin extends Plugin
 			if (actor.getGraphic() == ENTANGLE.getGraphicId())
 			{
 				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-						&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
+					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
 				{
 					createGameTimer(HALFENTANGLE);
 				}
