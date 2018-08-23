@@ -96,6 +96,7 @@ public class TimersPlugin extends Plugin
 	private static final String SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your super antifire potion";
 	private static final String SUPER_ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your super antifire potion has expired.</col>";
 	private static final String SUPER_ANTIVENOM_DRINK_MESSAGE = "You drink some of your super antivenom potion";
+
 	private TimerTimer freezeTimer;
 	private int freezeTime = -1; // time frozen, in game ticks
 
@@ -321,10 +322,12 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
+
 		if (event.getType() != ChatMessageType.FILTERED && event.getType() != ChatMessageType.SERVER)
 		{
 			return;
 		}
+
 		if (config.showStamina() && event.getMessage().equals(STAMINA_DRINK_MESSAGE))
 		{
 			createGameTimer(STAMINA);
@@ -372,6 +375,7 @@ public class TimersPlugin extends Plugin
 			{
 				createGameTimer(OVERLOAD);
 			}
+
 		}
 
 		if (config.showCannon() && (event.getMessage().equals(CANNON_FURNACE_MESSAGE) || event.getMessage().contains(CANNON_REPAIR_MESSAGE)))
@@ -482,8 +486,8 @@ public class TimersPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		Player player = client.getLocalPlayer();
-		int currentWorld = client.getWorld();
 		WorldPoint currentWorldPoint = player.getWorldLocation();
+
 		if (freezeTimer == null)
 		{
 			lastPoint = currentWorldPoint;
