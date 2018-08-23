@@ -65,7 +65,7 @@ class LootTrackerPanel extends PluginPanel
 	private final ItemManager itemManager;
 
 	private final List<LootTrackerEntry> entries = new ArrayList<>();
-	private final List<LootTrackerLog> logs = new ArrayList<>();
+	private final List<LootTrackerBox> logs = new ArrayList<>();
 
 	private int overallKills;
 	private int overallGp;
@@ -157,7 +157,7 @@ class LootTrackerPanel extends PluginPanel
 
 	private boolean stackEntry(LootTrackerEntry entry)
 	{
-		for (LootTrackerLog log : logs)
+		for (LootTrackerBox log : logs)
 		{
 			if (log.getTitle().equals(entry.getTitle()))
 			{
@@ -183,7 +183,7 @@ class LootTrackerPanel extends PluginPanel
 		remove(errorPanel);
 		overallPanel.setVisible(true);
 
-		LootTrackerLog log = buildLog(entry);
+		LootTrackerBox log = buildBox(entry);
 
 		// Update overall
 		overallGp += log.getTotalPrice();
@@ -214,23 +214,23 @@ class LootTrackerPanel extends PluginPanel
 		logsContainer.repaint();
 	}
 
-	private LootTrackerLog buildLog(LootTrackerEntry entry)
+	private LootTrackerBox buildBox(LootTrackerEntry entry)
 	{
-		// Create log
-		final LootTrackerLog log = new LootTrackerLog(itemManager, entry);
+		// Create box
+		final LootTrackerBox box = new LootTrackerBox(itemManager, entry);
 
 		// Create reset menu
 		final JMenuItem reset = new JMenuItem("Reset");
 		reset.addActionListener(e ->
 		{
-			entries.removeAll(log.getEntries());
-			logs.remove(log);
+			entries.removeAll(box.getEntries());
+			logs.remove(box);
 
-			overallGp -= log.getTotalPrice();
-			overallKills -= log.getTotalKills();
+			overallGp -= box.getTotalPrice();
+			overallKills -= box.getTotalKills();
 			updateOverall();
 
-			logsContainer.remove(log);
+			logsContainer.remove(box);
 			logsContainer.repaint();
 		});
 
@@ -238,9 +238,9 @@ class LootTrackerPanel extends PluginPanel
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		popupMenu.add(reset);
-		log.setComponentPopupMenu(popupMenu);
+		box.setComponentPopupMenu(popupMenu);
 
-		return log;
+		return box;
 	}
 
 	private void updateOverall()

@@ -43,7 +43,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.StackFormatter;
 
 @Getter
-class LootTrackerLog extends JPanel
+class LootTrackerBox extends JPanel
 {
 	private static final int ITEMS_PER_ROW = 5;
 
@@ -61,7 +61,7 @@ class LootTrackerLog extends JPanel
 
 	private List<LootTrackerEntry> entries = new ArrayList<>();
 
-	LootTrackerLog(final ItemManager itemManager, LootTrackerEntry entry)
+	LootTrackerBox(final ItemManager itemManager, LootTrackerEntry entry)
 	{
 		this.title = entry.getTitle();
 		this.itemManager = itemManager;
