@@ -166,7 +166,7 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		panel.setGroupLoot(config.groupLoot());
-		panel.rebuildLogs();
+		panel.rebuild();
 	}
 
 	@Subscribe

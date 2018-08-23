@@ -198,7 +198,7 @@ class LootTrackerPanel extends PluginPanel
 		logsContainer.add(log, 0);
 	}
 
-	void rebuildLogs()
+	void rebuild()
 	{
 		logsContainer.removeAll();
 		logs.clear();
