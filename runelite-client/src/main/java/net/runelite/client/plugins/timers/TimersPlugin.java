@@ -96,15 +96,6 @@ public class TimersPlugin extends Plugin
 	private static final String SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your super antifire potion";
 	private static final String SUPER_ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your super antifire potion has expired.</col>";
 	private static final String SUPER_ANTIVENOM_DRINK_MESSAGE = "You drink some of your super antivenom potion";
-	private enum TB_STATES
-	{
-		NO_TB,
-		HALF_TB,
-		FULL_TB,
-		HALF_TB_DMM,
-		FULL_TB_DMM,
-	}
-	private TB_STATES teleblockState = TB_STATES.NO_TB;
 	private TimerTimer freezeTimer;
 	private int freezeTime = -1; // time frozen, in game ticks
 
@@ -411,7 +402,6 @@ public class TimersPlugin extends Plugin
 		if (config.showTeleblock() && event.getMessage().equals(FULL_TELEBLOCK_MESSAGE))
 		{
 			createGameTimer(FULLTB);
-			teleblockState = TB_STATES.FULL_TB;
 		}
 
 		if (config.showTeleblock() && event.getMessage().equals(HALF_TELEBLOCK_MESSAGE))
@@ -419,19 +409,16 @@ public class TimersPlugin extends Plugin
 			if (client.getWorldType().contains(WorldType.DEADMAN))
 			{
 				createGameTimer(DMM_FULLTB);
-				teleblockState = TB_STATES.FULL_TB_DMM;
 			}
 			else
 			{
 				createGameTimer(HALFTB);
-				teleblockState = TB_STATES.HALF_TB;
 			}
 		}
 
 		if (config.showTeleblock() && event.getMessage().equals(DEADMAN_HALF_TELEBLOCK_MESSAGE))
 		{
 			createGameTimer(DMM_HALFTB);
-			teleblockState = TB_STATES.HALF_TB_DMM;
 		}
 
 		if (config.showSuperAntiFire() && event.getMessage().contains(SUPER_ANTIFIRE_DRINK_MESSAGE))
@@ -515,25 +502,13 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		// Check for game state changes which removes a teleblock (Hopping, Logging in or Login screen)
-		if (gameStateChanged.getGameState() == GameState.LOGGING_IN || gameStateChanged.getGameState() == GameState.HOPPING || gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
+		// Check for game state changes which removes a teleblock (Hopping or Login screen)
+		if (gameStateChanged.getGameState() == GameState.HOPPING || gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
 		{
-			switch (teleblockState)
-			{
-				case NO_TB:
-				case HALF_TB:
-					removeGameTimer(HALFTB);
-					teleblockState = TB_STATES.NO_TB;
-				case HALF_TB_DMM:
-					removeGameTimer(DMM_HALFTB);
-					teleblockState = TB_STATES.NO_TB;
-				case FULL_TB:
-					removeGameTimer(FULLTB);
-					teleblockState = TB_STATES.NO_TB;
-				case FULL_TB_DMM:
-					removeGameTimer(DMM_FULLTB);
-					teleblockState = TB_STATES.NO_TB;
-			}
+			removeGameTimer(HALFTB);
+			removeGameTimer(DMM_HALFTB);
+			removeGameTimer(FULLTB);
+			removeGameTimer(DMM_FULLTB);
 		}
 	}
 
