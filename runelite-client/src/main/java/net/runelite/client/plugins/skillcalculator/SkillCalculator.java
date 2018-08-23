@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
+ * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,6 +42,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.Skill;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.skillcalculator.beans.SkillData;
@@ -53,12 +55,13 @@ import net.runelite.client.ui.FontManager;
 class SkillCalculator extends JPanel
 {
 	private static final int MAX_XP = 200_000_000;
-	private static final DecimalFormat XP_FORMAT = new DecimalFormat("#.#");
+	private static final DecimalFormat XP_FORMAT = new DecimalFormat("#,###.#");
 
 	static SpriteManager spriteManager;
 	static ItemManager itemManager;
 
 	private Client client;
+	private Skill skill;
 	private SkillData skillData;
 	private List<UIActionSlot> uiActionSlots = new ArrayList<>();
 	private UICalculatorInputArea uiInput;
@@ -73,6 +76,9 @@ class SkillCalculator extends JPanel
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
 	private float xpFactor = 1.0f;
+
+	private double totalPlannerXp = 0.0f;
+	private String currentTab;
 
 	SkillCalculator(Client client, UICalculatorInputArea uiInput)
 	{
@@ -98,22 +104,42 @@ class SkillCalculator extends JPanel
 		uiInput.uiFieldTargetXP.addActionListener(e -> onFieldTargetXPUpdated());
 	}
 
-	void openCalculator(CalculatorType calculatorType)
+	void updateData(CalculatorType calculatorType)
 	{
 		// Load the skill data.
 		skillData = cacheSkillData.getSkillData(calculatorType.getDataFile());
 
+		skill = calculatorType.getSkill();
+
 		// Reset the XP factor, removing bonuses.
 		xpFactor = 1.0f;
+		totalPlannerXp = 0.0f;
 
 		// Update internal skill/XP values.
-		currentXP = client.getSkillExperience(calculatorType.getSkill());
+		currentXP = client.getSkillExperience(skill);
 		currentLevel = Experience.getLevelForXp(currentXP);
 		targetLevel = enforceSkillBounds(currentLevel + 1);
 		targetXP = Experience.getXpForLevel(targetLevel);
 
+		if (currentTab.equals("Planner"))
+		{
+			uiInput.getUiFieldTargetLevel().setEditable(false);
+			uiInput.getUiFieldTargetXP().setEditable(false);
+		}
+		else
+		{
+			uiInput.getUiFieldTargetLevel().setEditable(true);
+			uiInput.getUiFieldTargetXP().setEditable(true);
+		}
+	}
+
+	void openCalculator(CalculatorType calculatorType)
+	{
+		currentTab = "Calculator";
+
 		// Remove all components (action slots) from this panel.
 		removeAll();
+		updateData(calculatorType);
 
 		// Add in checkboxes for available skill bonuses.
 		renderBonusOptions();
@@ -126,6 +152,27 @@ class SkillCalculator extends JPanel
 
 		// Update the input fields.
 		updateInputFields();
+	}
+
+	void openPlanner(CalculatorType calculatorType)
+	{
+		currentTab = "Planner";
+
+		// clean slate for creating the required panel
+		removeAll();
+		updateData(calculatorType);
+
+		// Add in checkboxes for available skill bonuses.
+		renderBonusOptions();
+
+		// Create action slots for the skill actions.
+		renderActionSlots();
+
+		// Initialize Planner
+		calculatePlanner();
+
+		// Update the input fields.
+		syncInputFields();
 	}
 
 	private void updateCombinedAction()
@@ -253,6 +300,33 @@ class SkillCalculator extends JPanel
 		updateCombinedAction();
 	}
 
+
+	private void calculatePlanner()
+	{
+		if (!currentTab.equals("Planner"))
+			return;
+
+		totalPlannerXp = 0.0f;
+
+		for (UIActionSlot slot : uiActionSlots)
+		{
+			SkillDataEntry action = slot.getAction();
+			double xp = (action.isIgnoreBonus()) ? action.getXp() : action.getXp() * xpFactor;
+			// TODO: updatePlannerSlot(slot);
+			totalPlannerXp += slot.getValue() * xp;
+		}
+
+		updatePlannerXP();
+	}
+
+	private void updatePlannerXP()
+	{
+		// Update UI inputs to account for new XP
+		targetXP = (int) (currentXP + totalPlannerXp);
+		targetLevel = Experience.getLevelForXp(targetXP);
+		syncInputFields();
+	}
+
 	private String formatXPActionString(double xp, int actionCount, String expExpression)
 	{
 		return XP_FORMAT.format(xp) + expExpression + NumberFormat.getIntegerInstance().format(actionCount) + (actionCount > 1 ? " actions" : " action");
@@ -266,11 +340,16 @@ class SkillCalculator extends JPanel
 			targetXP = Experience.getXpForLevel(targetLevel);
 		}
 
+		syncInputFields();
+		calculate();
+	}
+
+	private void syncInputFields()
+	{
 		uiInput.setCurrentLevelInput(currentLevel);
 		uiInput.setCurrentXPInput(currentXP);
 		uiInput.setTargetLevelInput(targetLevel);
 		uiInput.setTargetXPInput(targetXP);
-		calculate();
 	}
 
 	private void adjustXPBonus(boolean addBonus, float value)

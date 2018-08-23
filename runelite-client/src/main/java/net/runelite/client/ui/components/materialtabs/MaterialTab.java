@@ -50,11 +50,11 @@ import net.runelite.client.ui.ColorScheme;
  */
 public class MaterialTab extends JLabel
 {
-	private static final Border SELECTED_BORDER = new CompoundBorder(
+	private Border selectedBorder = new CompoundBorder(
 		BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.BRAND_ORANGE),
 		BorderFactory.createEmptyBorder(5, 10, 4, 10));
 
-	private static final Border UNSELECTED_BORDER = BorderFactory
+	private Border unselectedBorder = BorderFactory
 		.createEmptyBorder(5, 10, 5, 10);
 
 	/* The tab's containing group */
@@ -158,15 +158,31 @@ public class MaterialTab extends JLabel
 			}
 		}
 
-		setBorder(SELECTED_BORDER);
+		setBorder(selectedBorder);
 		setForeground(Color.WHITE);
 		return selected = true;
 	}
 
 	public void unselect()
 	{
-		setBorder(UNSELECTED_BORDER);
+		setBorder(unselectedBorder);
 		setForeground(Color.GRAY);
 		selected = false;
+	}
+
+	// Allow custom borders
+	public void setSelectedBorder(Border border)
+	{
+		selectedBorder = border;
+		if (selected)
+			setBorder(selectedBorder);
+	}
+
+	// Allow custom borders
+	public void setUnselectedBorder(Border border)
+	{
+		unselectedBorder = border;
+		if (!selected)
+			setBorder(unselectedBorder);
 	}
 }

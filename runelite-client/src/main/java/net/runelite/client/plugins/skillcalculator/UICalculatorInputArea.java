@@ -32,6 +32,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import lombok.Getter;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.FlatTextField;
@@ -40,7 +41,9 @@ class UICalculatorInputArea extends JPanel
 {
 	JTextField uiFieldCurrentLevel;
 	JTextField uiFieldCurrentXP;
+	@Getter
 	JTextField uiFieldTargetLevel;
+	@Getter
 	JTextField uiFieldTargetXP;
 
 	UICalculatorInputArea()
