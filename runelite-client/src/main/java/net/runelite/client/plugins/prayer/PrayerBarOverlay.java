@@ -93,7 +93,9 @@ class PrayerBarOverlay extends Overlay
 		graphics.setColor(BAR_FILL_COLOR);
 		graphics.fillRect(barX, barY, progressFill, barHeight);
 
-		if (plugin.isPrayersActive() && (config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR) || config.prayerFlickLocation().equals(PrayerFlickLocation.BOTH)))
+		if ((plugin.isPrayersActive() || config.prayerFlickAlwaysOn())
+			&& (config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR)
+			|| config.prayerFlickLocation().equals(PrayerFlickLocation.BOTH)))
 		{
 			double t = plugin.getTickProgress();
 
