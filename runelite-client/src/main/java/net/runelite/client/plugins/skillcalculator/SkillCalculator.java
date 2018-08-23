@@ -34,6 +34,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JCheckBox;
@@ -41,6 +42,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.Skill;
+import net.runelite.http.api.item.Item;
+import net.runelite.http.api.item.SearchResult;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.skillcalculator.beans.SkillData;
@@ -50,10 +54,13 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 
+
 class SkillCalculator extends JPanel
 {
 	private static final int MAX_XP = 200_000_000;
 	private static final DecimalFormat XP_FORMAT = new DecimalFormat("#.#");
+	private static final String[] buyables = {"Smithing", "Herblore", "Cooking", "Prayer", "Crafting", "Firemaking", "Magic",
+                                                  "Fletching", "Farming", "Construction"};
 
 	static SpriteManager spriteManager;
 	static ItemManager itemManager;
@@ -73,6 +80,7 @@ class SkillCalculator extends JPanel
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
 	private float xpFactor = 1.0f;
+	private String skillName = null;
 
 	SkillCalculator(Client client, UICalculatorInputArea uiInput)
 	{
@@ -107,10 +115,14 @@ class SkillCalculator extends JPanel
 		xpFactor = 1.0f;
 
 		// Update internal skill/XP values.
-		currentXP = client.getSkillExperience(calculatorType.getSkill());
+        Skill skill = calculatorType.getSkill();
+		currentXP = client.getSkillExperience(skill);
 		currentLevel = Experience.getLevelForXp(currentXP);
 		targetLevel = enforceSkillBounds(currentLevel + 1);
 		targetXP = Experience.getXpForLevel(targetLevel);
+		skillName = skill.getName();
+		System.out.println(skillName);
+
 
 		// Remove all components (action slots) from this panel.
 		removeAll();
@@ -241,17 +253,67 @@ class SkillCalculator extends JPanel
 			SkillDataEntry action = slot.getAction();
 			double xp = (action.isIgnoreBonus()) ? action.getXp() : action.getXp() * xpFactor;
 
+			boolean buyable = false;
+			for (String skill : buyables)
+			{
+                if (skillName == skill) {
+                    buyable = true;
+                    break;
+                }
+            }
+
 			if (neededXP > 0)
 				actionCount = (int) Math.ceil(neededXP / xp);
 
-			slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
-			slot.setAvailable(currentLevel >= action.getLevel());
-			slot.setOverlapping(action.getLevel() < targetLevel);
-			slot.setValue(xp);
+            slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "), true);
+            slot.setAvailable(currentLevel >= action.getLevel());
+            slot.setOverlapping(action.getLevel() < targetLevel);
+            slot.setValue(xp);
+
+            if(buyable)
+            {
+                SearchResult result;
+                try {
+                    result = itemManager.searchForItem(action.getName());
+                } catch (ExecutionException ex) {
+                    return;
+                }
+
+                if (result != null && !result.getItems().isEmpty())
+                {
+                    Item item = retrieveFromList(result.getItems(), action.getName());
+                    if (item == null)
+                        return;
+                    int itemPrice = itemManager.getItemPrice(item.getId());
+                    double gpPerXp = itemPrice / xp;
+                    slot.setText(String.format("%.2f", gpPerXp) + " gp/exp", false);
+                }
+            }
 		}
 
 		updateCombinedAction();
 	}
+
+    /**
+     * Compares the names of the items in the list with the original input.
+     * Returns the item if its name is equal to the original input or null
+     * if it can't find the item.
+     *
+     * @param items         List of items.
+     * @param originalInput String with the original input.
+     * @return Item which has a name equal to the original input.
+     */
+    private Item retrieveFromList(List<Item> items, String originalInput)
+    {
+        for (Item item : items)
+        {
+            if (item.getName().toLowerCase().equals(originalInput.toLowerCase()))
+            {
+                return item;
+            }
+        }
+        return null;
+    }
 
 	private String formatXPActionString(double xp, int actionCount, String expExpression)
 	{
