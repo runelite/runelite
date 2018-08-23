@@ -37,6 +37,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
+import lombok.Setter;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -69,6 +70,9 @@ class LootTrackerPanel extends PluginPanel
 
 	private int overallKills;
 	private int overallGp;
+
+	@Setter
+	private boolean groupLoot;
 
 	LootTrackerPanel(final ItemManager itemManager)
 	{
@@ -142,7 +146,7 @@ class LootTrackerPanel extends PluginPanel
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
 
-	void addEntry(final String eventName, final int actorLevel, LootTrackerItemEntry[] items, boolean groupLoot)
+	void addEntry(final String eventName, final int actorLevel, LootTrackerItemEntry[] items)
 	{
 		final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
 
@@ -194,7 +198,7 @@ class LootTrackerPanel extends PluginPanel
 		logsContainer.add(log, 0);
 	}
 
-	void rebuildLogs(boolean groupLoot)
+	void rebuildLogs()
 	{
 		logsContainer.removeAll();
 		logs.clear();

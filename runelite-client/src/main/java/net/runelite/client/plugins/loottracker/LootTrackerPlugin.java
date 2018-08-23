@@ -135,6 +135,8 @@ public class LootTrackerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		panel = new LootTrackerPanel(itemManager);
+		panel.setGroupLoot(config.groupLoot());
+
 		spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, panel::loadHeaderIcon);
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
@@ -163,7 +165,8 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		panel.rebuildLogs(config.groupLoot());
+		panel.setGroupLoot(config.groupLoot());
+		panel.rebuildLogs();
 	}
 
 	@Subscribe
@@ -174,7 +177,7 @@ public class LootTrackerPlugin extends Plugin
 		final String name = npc.getName();
 		final int combat = npc.getCombatLevel();
 		final LootTrackerItemEntry[] entries = buildEntries(stack(items));
-		SwingUtilities.invokeLater(() -> panel.addEntry(name, combat, entries, config.groupLoot()));
+		SwingUtilities.invokeLater(() -> panel.addEntry(name, combat, entries));
 	}
 
 	@Subscribe
@@ -185,7 +188,7 @@ public class LootTrackerPlugin extends Plugin
 		final String name = player.getName();
 		final int combat = player.getCombatLevel();
 		final LootTrackerItemEntry[] entries = buildEntries(stack(items));
-		SwingUtilities.invokeLater(() -> panel.addEntry(name, combat, entries, config.groupLoot()));
+		SwingUtilities.invokeLater(() -> panel.addEntry(name, combat, entries));
 	}
 
 	@Subscribe
@@ -233,7 +236,7 @@ public class LootTrackerPlugin extends Plugin
 		if (!items.isEmpty())
 		{
 			final LootTrackerItemEntry[] entries = buildEntries(stack(items));
-			SwingUtilities.invokeLater(() -> panel.addEntry(eventType, -1, entries, config.groupLoot()));
+			SwingUtilities.invokeLater(() -> panel.addEntry(eventType, -1, entries));
 		}
 		else
 		{
