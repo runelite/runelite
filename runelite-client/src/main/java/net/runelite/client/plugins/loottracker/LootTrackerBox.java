@@ -102,9 +102,9 @@ class LootTrackerBox extends JPanel
 	{
 		entries.add(entry);
 		totalKills++;
-		totalPrice = calculatePrice();
+		totalPrice = 0;
 
-		rebuildItems();
+		buildItems();
 
 		if (totalPrice > 0)
 		{
@@ -117,9 +117,44 @@ class LootTrackerBox extends JPanel
 		}
 	}
 
-	private void rebuildItems()
+	private void buildItems()
 	{
-		List<LootTrackerItemEntry> items = getCombinedItems();
+		final List<LootTrackerItemEntry> allItems = new ArrayList<>();
+		final List<LootTrackerItemEntry> items = new ArrayList<>();
+
+		for (LootTrackerEntry entry : entries)
+		{
+			allItems.addAll(Arrays.asList(entry.getItems()));
+		}
+
+		for (final LootTrackerItemEntry entry : allItems)
+		{
+			totalPrice += entry.getPrice();
+
+			int quantity = 0;
+			for (final LootTrackerItemEntry i : items)
+			{
+				if (i.getId() == entry.getId())
+				{
+					quantity = i.getQuantity();
+					items.remove(i);
+					break;
+				}
+			}
+			if (quantity > 0)
+			{
+				int newQuantity = entry.getQuantity() + quantity;
+				long pricePerItem = entry.getPrice() == 0 ? 0 : (entry.getPrice() / entry.getQuantity());
+
+				items.add(new LootTrackerItemEntry(entry.getId(), entry.getName(), newQuantity, pricePerItem * newQuantity));
+			}
+			else
+			{
+				items.add(entry);
+			}
+		}
+
+		items.sort((i1, i2) -> i1.getPrice() < i2.getPrice() ? 1 : -1);
 
 		// Calculates how many rows need to be display to fit all items
 		final int rowSize = ((items.size() % ITEMS_PER_ROW == 0) ? 0 : 1) + items.size() / ITEMS_PER_ROW;
@@ -149,51 +184,6 @@ class LootTrackerBox extends JPanel
 		itemContainer.repaint();
 	}
 
-	private List<LootTrackerItemEntry> getCombinedItems()
-	{
-		final List<LootTrackerItemEntry> list = new ArrayList<>();
-
-		for (final LootTrackerItemEntry entry : getAllItems())
-		{
-			int quantity = 0;
-			for (final LootTrackerItemEntry i : list)
-			{
-				if (i.getId() == entry.getId())
-				{
-					quantity = i.getQuantity();
-					list.remove(i);
-					break;
-				}
-			}
-			if (quantity > 0)
-			{
-				int newQuantity = entry.getQuantity() + quantity;
-				long pricePerItem = entry.getPrice() == 0 ? 0 : (entry.getPrice() / entry.getQuantity());
-
-				list.add(new LootTrackerItemEntry(entry.getId(), entry.getName(), newQuantity, pricePerItem * newQuantity));
-			}
-			else
-			{
-				list.add(entry);
-			}
-		}
-
-		list.sort((i1, i2) -> i1.getPrice() < i2.getPrice() ? 1 : -1);
-
-		return list;
-	}
-
-	private List<LootTrackerItemEntry> getAllItems()
-	{
-		List<LootTrackerItemEntry> list = new ArrayList<>();
-
-		for (LootTrackerEntry entry : entries)
-		{
-			list.addAll(Arrays.asList(entry.getItems()));
-		}
-		return list;
-	}
-
 	private String buildToolTip(LootTrackerItemEntry item)
 	{
 		final String name = item.getName();
@@ -201,15 +191,5 @@ class LootTrackerBox extends JPanel
 		final long price = item.getPrice();
 
 		return name + " x " + quantity + " (" + StackFormatter.quantityToStackSize(price) + ")";
-	}
-
-	private long calculatePrice()
-	{
-		long total = 0;
-		for (LootTrackerItemEntry item : getAllItems())
-		{
-			total += item.getPrice();
-		}
-		return total;
 	}
 }
