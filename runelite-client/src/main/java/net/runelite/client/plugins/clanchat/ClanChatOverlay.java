@@ -72,8 +72,9 @@ class ClanChatOverlay extends Overlay
 		}
 
 		Widget widget = client.getWidget(WidgetInfo.CLAN_CHAT.getGroupId(), 15);
+		Widget newAccount = client.getWidget(WidgetInfo.CLAN_CHAT.getGroupId(), 19);
 
-		if (widget != null && !widget.isHidden() && widget.getChildren() == null)
+		if (widget != null && !widget.isHidden() && widget.getChildren() == null && newAccount.isHidden())
 		{
 			Point location = widget.getCanvasLocation();
 
