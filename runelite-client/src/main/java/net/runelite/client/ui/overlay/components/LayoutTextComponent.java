@@ -36,33 +36,33 @@ import lombok.Setter;
 @Builder
 public class LayoutTextComponent implements LayoutableRenderableEntity
 {
-    private String text;
+	private String text;
 
-    @Builder.Default
-    private Color color = Color.WHITE;
+	@Builder.Default
+	private Color color = Color.WHITE;
 
-    @Builder.Default
-    private Point preferredLocation = new Point();
+	@Builder.Default
+	private Point preferredLocation = new Point();
 
-    public void setPreferredSize(Dimension d)
-    {
-        // Just use text dimensions for now
-    }
+	public void setPreferredSize(Dimension d)
+	{
+		// Just use text dimensions for now
+	}
 
-    @Override
-    public Dimension render(Graphics2D graphics)
-    {
-        graphics.translate(preferredLocation.x, preferredLocation.y);
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		graphics.translate(preferredLocation.x, preferredLocation.y);
 
-        final FontMetrics metrics = graphics.getFontMetrics();
+		final FontMetrics metrics = graphics.getFontMetrics();
 
-        final TextComponent titleComponent = new TextComponent();
-        titleComponent.setText(text);
-        titleComponent.setColor(color);
-        titleComponent.setPosition(new Point(0, metrics.getHeight()));
-        titleComponent.render(graphics);
+		final TextComponent titleComponent = new TextComponent();
+		titleComponent.setText(text);
+		titleComponent.setColor(color);
+		titleComponent.setPosition(new Point(0, metrics.getHeight()));
+		titleComponent.render(graphics);
 
-        graphics.translate(-preferredLocation.x, -preferredLocation.y);
-        return new Dimension(metrics.stringWidth(text), metrics.getHeight());
-    }
+		graphics.translate(-preferredLocation.x, -preferredLocation.y);
+		return new Dimension(metrics.stringWidth(text), metrics.getHeight());
+	}
 }

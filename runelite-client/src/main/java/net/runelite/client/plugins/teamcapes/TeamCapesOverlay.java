@@ -55,7 +55,6 @@ public class TeamCapesOverlay extends Overlay
 		verticalContainer.setOrientation(PanelComponent.Orientation.VERTICAL);
 		horizontalContainer.setOrientation(PanelComponent.Orientation.HORIZONTAL);
 		verticalContainer.setBackgroundColor(null);
-		horizontalContainer.setBackgroundColor(null);
 	}
 
 	@Override
