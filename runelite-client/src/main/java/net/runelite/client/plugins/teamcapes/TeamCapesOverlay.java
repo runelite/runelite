@@ -26,6 +26,7 @@ package net.runelite.client.plugins.teamcapes;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.client.game.ItemManager;
@@ -33,8 +34,9 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ImageComponent;
-import net.runelite.client.ui.overlay.components.LayoutTextComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 public class TeamCapesOverlay extends Overlay
 {
@@ -44,6 +46,12 @@ public class TeamCapesOverlay extends Overlay
 	private PanelComponent horizontalContainer = new PanelComponent();
 	@Inject
 	private ItemManager manager;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private InfoBoxManager infoBoxManager;
 
 	@Inject
 	TeamCapesOverlay(TeamCapesPlugin plugin, TeamCapesConfig config)
@@ -74,12 +82,15 @@ public class TeamCapesOverlay extends Overlay
 			if (team.getValue() >= config.getMinimumCapeCount() && team.getKey() < 51)
 			{
 				//ItemID.TEAM1_CAPE == 4315, ItemID.TEAM2_CAPE == 4317, ItemID.TEAM50_CAPE == 4413
-				horizontalContainer.getChildren().add(new ImageComponent(manager.getImage(( team.getKey() * 2 ) + 4313 ) ) );
-				horizontalContainer.getChildren().add(LayoutTextComponent.builder()
-					.text(Integer.toString(team.getValue()))
-					.build());
+				horizontalContainer.getChildren().add(new ImageComponent(getImage(( team.getKey() * 2 ) + 4313 ,  team.getValue())));
 			}
 		}
 		return verticalContainer.render(graphics);
+	}
+
+	private BufferedImage getImage(int itemID, int amount)
+	{
+		BufferedImage image = manager.getImage(itemID, amount, true);
+		return image;
 	}
 }
