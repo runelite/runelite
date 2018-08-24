@@ -22,37 +22,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.worldhopper.ping;
+package net.runelite.client.plugins.worldhopper;
 
-import com.sun.jna.Pointer;
-import com.sun.jna.Structure;
-import com.sun.jna.platform.win32.WinDef;
-import java.util.Arrays;
-import java.util.List;
+import java.net.UnknownHostException;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.util.OSType;
+import net.runelite.client.util.PingUtil;
 
-public class IcmpEchoReply extends Structure
+@Slf4j
+class Ping implements Runnable
 {
-	public static final int SIZE = 40;
-	public WinDef.ULONG address;
-	public WinDef.ULONG status;
-	public WinDef.ULONG roundTripTime;
-	public WinDef.USHORT dataSize;
-	public WinDef.USHORT reserved;
-	public WinDef.PVOID data;
-	public WinDef.UCHAR ttl;
-	public WinDef.UCHAR tos;
-	public WinDef.UCHAR flags;
-	public WinDef.UCHAR optionsSize;
-	public WinDef.PVOID optionsData;
+	private WorldTableRow row;
 
-	public IcmpEchoReply(Pointer p)
+	Ping (WorldTableRow r)
 	{
-		super(p);
+		row = r;
 	}
 
-	@Override
-	protected List<String> getFieldOrder()
+	public void run()
 	{
-		return Arrays.asList("address", "status", "roundTripTime", "dataSize", "reserved", "data", "ttl", "tos", "flags", "optionsSize", "optionsData");
+		String address = row.getWorld().getAddress();
+
+		try
+		{
+			switch (OSType.getOSType())
+			{
+				case Windows:
+					int p = PingUtil.winPing(address);
+					PingUtil.pingMap.put(address, p);
+					row.setPing(PingUtil.pingMap.get(address));
+					break;
+
+				case MacOS:
+					row.setPing(0);
+					break;
+
+				case Linux:
+					row.setPing(0);
+					break;
+			}
+		}
+		catch (UnknownHostException exception)
+		{
+			log.warn("UnknownHost Exception, Unable to update ping to " + address);
+		}
 	}
 }

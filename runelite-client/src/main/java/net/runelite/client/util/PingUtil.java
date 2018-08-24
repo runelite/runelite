@@ -40,21 +40,18 @@ public class PingUtil extends Thread
 	public static int winPing(String worldAddress) throws UnknownHostException
 	{
 		int rtt;
-
 		IPHlpAPI ipHlpAPI = IPHlpAPI.INSTANCE;
 		long ptr = ipHlpAPI.IcmpCreateFile();
 		InetAddress inetAddress = InetAddress.getByName(worldAddress);
 		byte[] address = inetAddress.getAddress();
 		String dataStr = "RuneLitePing";
-		int datalen = dataStr.length() + 1;
-		Pointer data = new Memory(datalen);
+		int dataLength = dataStr.length() + 1;
+		Pointer data = new Memory(dataLength);
 		data.setString(0L, dataStr);
-		IcmpEchoReply icmpEchoReply = new IcmpEchoReply(new Memory(IcmpEchoReply.SIZE + datalen));
+		IcmpEchoReply icmpEchoReply = new IcmpEchoReply(new Memory(IcmpEchoReply.SIZE + dataLength));
 		int packed = (address[0] & 0xff) | ((address[1] & 0xff) << 8) | ((address[2] & 0xff) << 16) | ((address[3] & 0xff) << 24);
-		int ret = ipHlpAPI.IcmpSendEcho(ptr, packed, data, (short) (datalen), 0L, icmpEchoReply, IcmpEchoReply.SIZE + datalen, 10000);
-
-		rtt = Math.toIntExact(icmpEchoReply.RoundTripTime.longValue());
-
+		int ret = ipHlpAPI.IcmpSendEcho(ptr, packed, data, (short) (dataLength), 0L, icmpEchoReply, IcmpEchoReply.SIZE + dataLength, 10000);
+		rtt = Math.toIntExact(icmpEchoReply.roundTripTime.longValue());
 		ipHlpAPI.IcmpCloseHandle(ptr);
 
 		return rtt;

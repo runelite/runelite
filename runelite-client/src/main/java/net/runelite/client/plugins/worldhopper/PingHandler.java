@@ -24,54 +24,9 @@
  */
 package net.runelite.client.plugins.worldhopper;
 
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
-
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.util.OSType;
-import net.runelite.client.util.PingUtil;
-
-@Slf4j
-class Ping implements Runnable
-{
-	private WorldTableRow row;
-
-	Ping (WorldTableRow r)
-	{
-		row = r;
-	}
-
-	public void run()
-	{
-		String address = row.getWorld().getAddress();
-
-		try
-		{
-			switch (OSType.getOSType())
-			{
-				case Windows:
-					int p = PingUtil.winPing(address);
-					PingUtil.pingMap.put(address, p);
-					row.setPing(PingUtil.pingMap.get(address));
-					break;
-
-				case MacOS:
-					row.setPing(0);
-					break;
-
-				case Linux:
-					row.setPing(0);
-					break;
-			}
-		}
-		catch (UnknownHostException exception)
-		{
-			log.warn("UnknownHost Exception, Unable to update ping to " + address);
-		}
-	}
-}
 
 public class PingHandler
 {
@@ -97,4 +52,3 @@ public class PingHandler
 		pool.shutdown();
 	}
 }
-
