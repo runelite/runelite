@@ -41,4 +41,15 @@ public interface CorpConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showDamage",
+		name = "Show damage overlay",
+		description = "Show total damage overlay",
+		position = 2
+	)
+	default boolean showDamage()
+	{
+		return true;
+	}
 }
