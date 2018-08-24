@@ -49,160 +49,161 @@ import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
 class UIActionSlot extends JPanel
 {
-	private static final Border GREEN_BORDER = new CompoundBorder(
-		BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_COMPLETE_COLOR).darker()),
-		BorderFactory.createEmptyBorder(7, 12, 7, 7));
+    private static final Border GREEN_BORDER = new CompoundBorder(
+        BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_COMPLETE_COLOR).darker()),
+        BorderFactory.createEmptyBorder(7, 12, 7, 7));
 
-	private static final Border RED_BORDER = new CompoundBorder(
-		BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_ERROR_COLOR).darker()),
-		BorderFactory.createEmptyBorder(7, 12, 7, 7));
+    private static final Border RED_BORDER = new CompoundBorder(
+        BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_ERROR_COLOR).darker()),
+        BorderFactory.createEmptyBorder(7, 12, 7, 7));
 
-	private static final Border ORANGE_BORDER = new CompoundBorder(
-		BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_INPROGRESS_COLOR).darker()),
-		BorderFactory.createEmptyBorder(7, 12, 7, 7));
+    private static final Border ORANGE_BORDER = new CompoundBorder(
+        BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_INPROGRESS_COLOR).darker()),
+        BorderFactory.createEmptyBorder(7, 12, 7, 7));
 
-	private static final Dimension ICON_SIZE = new Dimension(32, 32);
+    private static final Dimension ICON_SIZE = new Dimension(32, 32);
 
-	@Getter(AccessLevel.PACKAGE)
-	private final SkillDataEntry action;
-	private final JShadowedLabel uiLabelActions;
-	private final JShadowedLabel uiLabelGpXp;
+    @Getter(AccessLevel.PACKAGE)
+    private final SkillDataEntry action;
+    private final JShadowedLabel uiLabelActions;
+    private final JShadowedLabel uiLabelGpXp;
 
-	private final JPanel uiInfo;
+    private final JPanel uiInfo;
 
-	@Getter(AccessLevel.PACKAGE)
-	private boolean isAvailable;
+    @Getter(AccessLevel.PACKAGE)
+    private boolean isAvailable;
 
-	@Getter(AccessLevel.PACKAGE)
-	private boolean isSelected;
+    @Getter(AccessLevel.PACKAGE)
+    private boolean isSelected;
 
-	@Getter(AccessLevel.PACKAGE)
-	private boolean isOverlapping;
+    @Getter(AccessLevel.PACKAGE)
+    private boolean isOverlapping;
 
-	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
-	private double value = 0;
+    @Getter(AccessLevel.PACKAGE)
+    @Setter(AccessLevel.PACKAGE)
+    private double value = 0;
 
-	UIActionSlot(SkillDataEntry action)
-	{
-		this.action = action;
+    UIActionSlot(SkillDataEntry action)
+    {
+        this.action = action;
 
-		setLayout(new BorderLayout());
-		setBorder(RED_BORDER);
-		setBackground(ColorScheme.DARKER_GRAY_COLOR);
+        setLayout(new BorderLayout());
+        setBorder(RED_BORDER);
+        setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		MouseListener hoverListener = new MouseAdapter()
-		{
-			@Override
-			public void mouseEntered(MouseEvent mouseEvent)
-			{
-				if (!isSelected)
-				{
-					setBackground(ColorScheme.DARKER_GRAY_HOVER_COLOR);
-				}
-			}
+        MouseListener hoverListener = new MouseAdapter()
+        {
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent)
+            {
+                if (!isSelected)
+                {
+                    setBackground(ColorScheme.DARKER_GRAY_HOVER_COLOR);
+                }
+            }
 
-			@Override
-			public void mouseExited(MouseEvent mouseEvent)
-			{
-				if (!isSelected)
-				{
-					updateBackground();
-				}
-			}
-		};
+            @Override
+            public void mouseExited(MouseEvent mouseEvent)
+            {
+                if (!isSelected)
+                {
+                    updateBackground();
+                }
+            }
+        };
 
-		addMouseListener(hoverListener);
+        addMouseListener(hoverListener);
 
-		JLabel uiIcon = new JLabel();
+        JLabel uiIcon = new JLabel();
 
-		if (action.getIcon() != null)
-			SkillCalculator.itemManager.getImage(action.getIcon()).addTo(uiIcon);
-		else if (action.getSprite() != null)
-			SkillCalculator.spriteManager.addSpriteTo(uiIcon, action.getSprite(), 0);
+        if (action.getIcon() != null)
+            SkillCalculator.itemManager.getImage(action.getIcon()).addTo(uiIcon);
+        else if (action.getSprite() != null)
+            SkillCalculator.spriteManager.addSpriteTo(uiIcon, action.getSprite(), 0);
 
-		uiIcon.setMinimumSize(ICON_SIZE);
-		uiIcon.setMaximumSize(ICON_SIZE);
-		uiIcon.setPreferredSize(ICON_SIZE);
-		uiIcon.setHorizontalAlignment(JLabel.CENTER);
+        uiIcon.setMinimumSize(ICON_SIZE);
+        uiIcon.setMaximumSize(ICON_SIZE);
+        uiIcon.setPreferredSize(ICON_SIZE);
+        uiIcon.setHorizontalAlignment(JLabel.CENTER);
 
-		uiInfo = new JPanel(new GridLayout(3, 1));
-		uiInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		uiInfo.setBorder(new EmptyBorder(0, 5, 0, 0));
+        uiInfo = new JPanel(new GridLayout(3, 1));
+        uiInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+        uiInfo.setBorder(new EmptyBorder(0, 5, 0, 0));
 
-		JShadowedLabel uiLabelName = new JShadowedLabel(action.getName());
-		uiLabelName.setForeground(Color.WHITE);
+        JShadowedLabel uiLabelName = new JShadowedLabel(action.getName());
+        uiLabelName.setForeground(Color.WHITE);
 
-		uiLabelActions = new JShadowedLabel("Unknown");
-		uiLabelActions.setFont(FontManager.getRunescapeSmallFont());
-		uiLabelActions.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+        uiLabelActions = new JShadowedLabel("Unknown");
+        uiLabelActions.setFont(FontManager.getRunescapeSmallFont());
+        uiLabelActions.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 
-		uiLabelGpXp = new JShadowedLabel("gp/exp not available");
-		uiLabelGpXp.setFont(FontManager.getRunescapeSmallFont());
-		uiLabelGpXp.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+        uiLabelGpXp = new JShadowedLabel("gp/exp not available");
+        uiLabelGpXp.setFont(FontManager.getRunescapeSmallFont());
+        uiLabelGpXp.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 
-		uiInfo.add(uiLabelName);
-		uiInfo.add(uiLabelActions);
-		uiInfo.add(uiLabelGpXp);
+        uiInfo.add(uiLabelName);
+        uiInfo.add(uiLabelActions);
+        uiInfo.add(uiLabelGpXp);
 
-		add(uiIcon, BorderLayout.LINE_START);
-		add(uiInfo, BorderLayout.CENTER);
-	}
+        add(uiIcon, BorderLayout.LINE_START);
+        add(uiInfo, BorderLayout.CENTER);
+    }
 
-	void setSelected(boolean selected)
-	{
-		isSelected = selected;
-		this.updateBackground();
-	}
+    void setSelected(boolean selected)
+    {
+        isSelected = selected;
+        this.updateBackground();
+    }
 
-	void setAvailable(boolean available)
-	{
-		isAvailable = available;
-		this.updateBackground();
-	}
+    void setAvailable(boolean available)
+    {
+        isAvailable = available;
+        this.updateBackground();
+    }
 
-	void setOverlapping(boolean overlapping)
-	{
-		isOverlapping = overlapping;
-		this.updateBackground();
-	}
+    void setOverlapping(boolean overlapping)
+    {
+        isOverlapping = overlapping;
+        this.updateBackground();
+    }
 
-	void setText(String text, boolean actionsLabel)
-	{
-        if (actionsLabel) {
+    void setText(String text, boolean actionsLabel)
+    {
+        if (actionsLabel)
+        {
             uiLabelActions.setText(text);
         }
         else
         {
             uiLabelGpXp.setText(text);
         }
-	}
+    }
 
-	private void updateBackground()
-	{
-		if (isAvailable)
-		{
-			this.setBorder(GREEN_BORDER);
-		}
-		else if (isOverlapping)
-		{
-			this.setBorder(ORANGE_BORDER);
-		}
-		else
-		{
-			this.setBorder(RED_BORDER);
-		}
+    private void updateBackground()
+    {
+        if (isAvailable)
+        {
+            this.setBorder(GREEN_BORDER);
+        }
+        else if (isOverlapping)
+        {
+            this.setBorder(ORANGE_BORDER);
+        }
+        else
+        {
+            this.setBorder(RED_BORDER);
+        }
 
-		setBackground(this.isSelected() ? ColorScheme.DARKER_GRAY_HOVER_COLOR.brighter() : ColorScheme.DARKER_GRAY_COLOR);
-	}
+        setBackground(this.isSelected() ? ColorScheme.DARKER_GRAY_HOVER_COLOR.brighter() : ColorScheme.DARKER_GRAY_COLOR);
+    }
 
-	@Override
-	public void setBackground(Color color)
-	{
-		super.setBackground(color);
-		if (uiInfo != null)
-		{
-			uiInfo.setBackground(color);
-		}
-	}
+    @Override
+    public void setBackground(Color color)
+    {
+        super.setBackground(color);
+        if (uiInfo != null)
+        {
+            uiInfo.setBackground(color);
+        }
+    }
 }
