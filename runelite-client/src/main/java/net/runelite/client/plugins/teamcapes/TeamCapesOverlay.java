@@ -60,22 +60,18 @@ public class TeamCapesOverlay extends Overlay
 		setPriority(OverlayPriority.LOW);
 		this.plugin = plugin;
 		this.config = config;
-		verticalContainer.setOrientation(PanelComponent.Orientation.VERTICAL);
 		horizontalContainer.setOrientation(PanelComponent.Orientation.HORIZONTAL);
-		verticalContainer.setBackgroundColor(null);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
 		horizontalContainer.getChildren().clear();
-		verticalContainer.getChildren().clear();
 		Map<Integer, Integer> teams = plugin.getTeams();
 		if (teams.isEmpty())
 		{
 			return null;
 		}
-		verticalContainer.getChildren().add(horizontalContainer);
 		for (Map.Entry<Integer, Integer> team : teams.entrySet())
 		{
 			// Only display team capes that have a count greater than the configured minimum AND teamcapes should be relevant to pking ( < 51)
@@ -85,7 +81,7 @@ public class TeamCapesOverlay extends Overlay
 				horizontalContainer.getChildren().add(new ImageComponent(getImage(( team.getKey() * 2 ) + 4313 ,  team.getValue())));
 			}
 		}
-		return verticalContainer.render(graphics);
+		return horizontalContainer.render(graphics);
 	}
 
 	private BufferedImage getImage(int itemID, int amount)
