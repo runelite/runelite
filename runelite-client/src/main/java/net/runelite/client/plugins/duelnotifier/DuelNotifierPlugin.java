@@ -29,6 +29,7 @@ import com.google.inject.Provides;
 import net.runelite.api.*;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
@@ -80,7 +81,6 @@ public class DuelNotifierPlugin extends Plugin
 		{
 			if (event.getMessage().toLowerCase().endsWith("duel with you."))
 			{
-				System.out.println("Gang");
 				duelNotifierOverlay.startTimer();
 			}
 		}
@@ -88,10 +88,15 @@ public class DuelNotifierPlugin extends Plugin
 
 	@Subscribe
 	public void onWidgetHiddenChanged(WidgetHiddenChanged event) {
-
-		if(event.getWidget().equals(client.getWidget(WidgetInfo.DUEL_INTERFACE)) && !event.isHidden()) {
+		if(event.getWidget().equals(client.getWidget(WidgetInfo.DUEL_INTERFACE))) {
 			duelNotifierOverlay.resetTimer();
-			System.out.println("Gang");
+		}
+	}
+
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event) {
+		if(event.getGroupId() == WidgetID.DUEL_GROUP_ID) {
+			duelNotifierOverlay.resetTimer();
 		}
 	}
 
