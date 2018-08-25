@@ -390,9 +390,9 @@ public class PluginManager
 		configManager.setConfiguration(runeliteGroupName, keyName, String.valueOf(enabled));
 	}
 
-	public boolean isPluginEnabled(Plugin plugin)
+	public boolean isPluginEnabled(Class<? extends Plugin> pluginClass)
 	{
-		final String keyName = plugin.getClass().getSimpleName().toLowerCase();
+		final String keyName = pluginClass.getSimpleName().toLowerCase();
 		final String value = configManager.getConfiguration(runeliteGroupName, keyName);
 
 		if (value != null)
@@ -400,8 +400,13 @@ public class PluginManager
 			return Boolean.valueOf(value);
 		}
 
-		final PluginDescriptor pluginDescriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
+		final PluginDescriptor pluginDescriptor = pluginClass.getAnnotation(PluginDescriptor.class);
 		return pluginDescriptor == null || pluginDescriptor.enabledByDefault();
+	}
+
+	public boolean isPluginEnabled(Plugin plugin)
+	{
+		return isPluginEnabled(plugin.getClass());
 	}
 
 	private Plugin instantiate(List<Plugin> scannedPlugins, Class<Plugin> clazz) throws PluginInstantiationException
