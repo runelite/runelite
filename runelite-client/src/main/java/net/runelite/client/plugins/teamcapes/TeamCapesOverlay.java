@@ -28,6 +28,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.Map;
 import javax.inject.Inject;
+import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -57,24 +58,39 @@ public class TeamCapesOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		panelComponent.getChildren().clear();
 		Map<Integer, Integer> teams = plugin.getTeams();
 		if (teams.isEmpty())
 		{
 			return null;
 		}
+
+		panelComponent.getChildren().clear();
+
 		for (Map.Entry<Integer, Integer> team : teams.entrySet())
 		{
 			// Only display team capes that have a count greater than the configured minimum
-			if (team.getValue() >= config.getMinimumCapeCount())
+			if (team.getValue() < config.getMinimumCapeCount())
 			{
-				//ItemID.TEAM1_CAPE == 4315 (1), ItemID.TEAM2_CAPE == 4317 (2), ItemID.TEAM50_CAPE == 4413 (50)
-				//ItemID.TEAM_CAPE_ZERO == 20211 (51), ItemID.TEAM_CAPE_X == 20214 (52), ItemID.TEAM_CAPE_I == 20217 (53)
-				int teamcapeNumber = team.getKey();
-				int ItemID = teamcapeNumber < 51 ? (2 * teamcapeNumber + 4313) : (3 * (teamcapeNumber - 50) + 20208);
-				panelComponent.getChildren().add(new ImageComponent(manager.getImage( ItemID ,  team.getValue(), true)));
+				continue;
 			}
+
+			// Make the number 0 based
+			final int teamcapeNumber = team.getKey() - 1;
+			final int itemID;
+			if (teamcapeNumber < 50)
+			{
+				// The team cape is every 2nd item id based on tc number
+				itemID = 2 * teamcapeNumber + ItemID.TEAM1_CAPE;
+			}
+			else
+			{
+				// The team cape is every 3rd item id based on tc number starting from 0
+				itemID = 3 * (teamcapeNumber - 50) + ItemID.TEAM_CAPE_ZERO;
+			}
+
+			panelComponent.getChildren().add(new ImageComponent(manager.getImage(itemID, team.getValue(), true)));
 		}
+
 		return panelComponent.render(graphics);
 	}
 }
