@@ -102,6 +102,8 @@ public class WorldHopperPlugin extends Plugin
 	private static final ImmutableList<String> BEFORE_OPTIONS = ImmutableList.of("Add friend", "Remove friend", KICK_OPTION);
 	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message");
 
+	private static final ImmutableList<String> BEFORE_OPTIONS_CHAT = ImmutableList.of("Report");
+
 	@Inject
 	private Client client;
 
@@ -325,6 +327,30 @@ public class WorldHopperPlugin extends Plugin
 			hopTo.setParam1(event.getActionParam1());
 
 			insertMenuEntry(hopTo, client.getMenuEntries(), after);
+		}
+		else if (groupId == WidgetInfo.CHATBOX.getGroupId())
+		{
+			if (!BEFORE_OPTIONS_CHAT.contains(option))
+			{
+				return;
+			}
+
+			// Don't add entry if user is offline
+			ChatPlayer player = getChatPlayerFromName(event.getTarget());
+
+			if (player == null || player.getWorld() == 0 || player.getWorld() == client.getWorld())
+			{
+				return;
+			}
+
+			final MenuEntry hopTo = new MenuEntry();
+			hopTo.setOption(HOP_TO);
+			hopTo.setTarget(event.getTarget());
+			hopTo.setType(MenuAction.RUNELITE.getId());
+			hopTo.setParam0(event.getActionParam0());
+			hopTo.setParam1(event.getActionParam1());
+
+			insertMenuEntry(hopTo, client.getMenuEntries(), false);
 		}
 	}
 
