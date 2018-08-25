@@ -22,19 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.mixins;
 
-import net.runelite.api.FriendManager;
-import net.runelite.mapping.Import;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.rs.api.RSIgnore;
+import net.runelite.rs.api.RSName;
 
-public interface RSFriendManager extends FriendManager
+@Mixin(RSIgnore.class)
+public abstract class RSIgnoreMixin implements RSIgnore
 {
-	@Import("friendContainer")
-	RSFriendContainer getFriendContainer();
+	@Override
+	@Inject
+	public String getName()
+	{
+		return getRsName().getName();
+	}
 
-	@Import("ignoreContainer")
-	RSIgnoreContainer getIgnoreContainer();
-
-	@Import("isFriended")
-	boolean isFriended(RSName var1, boolean var2);
+	@Override
+	@Inject
+	public String getPrevName()
+	{
+		RSName prevName = getRsPrevName();
+		return prevName == null ? null : prevName.getName();
+	}
 }

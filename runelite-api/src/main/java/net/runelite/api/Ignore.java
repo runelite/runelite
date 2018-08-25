@@ -22,19 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api;
 
-import net.runelite.api.FriendManager;
-import net.runelite.mapping.Import;
-
-public interface RSFriendManager extends FriendManager
+/**
+ * An entry on the ignore list.
+ */
+public interface Ignore extends Nameable
 {
-	@Import("friendContainer")
-	RSFriendContainer getFriendContainer();
+	/**
+	 * The name of the player.
+	 *
+	 * @return the name
+	 */
+	String getName();
 
-	@Import("ignoreContainer")
-	RSIgnoreContainer getIgnoreContainer();
-
-	@Import("isFriended")
-	boolean isFriended(RSName var1, boolean var2);
+	/**
+	 * The previous name the player had.
+	 *
+	 * @return the previous name
+	 */
+	String getPrevName();
 }

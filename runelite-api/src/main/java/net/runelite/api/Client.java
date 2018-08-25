@@ -1028,6 +1028,20 @@ public interface Client extends GameEngine
 	int getFriendsCount();
 
 	/**
+	 * Gets an array of players on the ignore list.
+	 *
+	 * @return
+	 */
+	Ignore[] getIgnores();
+
+	/**
+	 * Gets the number of ignored players on the ignore list.
+	 *
+	 * @return
+	 */
+	int getIgnoreCount();
+
+	/**
 	 * Checks whether a player is in the same clan chat.
 	 *
 	 * @param name the name of the player

@@ -24,17 +24,8 @@
  */
 package net.runelite.rs.api;
 
-import net.runelite.api.FriendManager;
-import net.runelite.mapping.Import;
+import net.runelite.api.Ignore;
 
-public interface RSFriendManager extends FriendManager
+public interface RSIgnore extends Ignore, RSNameable
 {
-	@Import("friendContainer")
-	RSFriendContainer getFriendContainer();
-
-	@Import("ignoreContainer")
-	RSIgnoreContainer getIgnoreContainer();
-
-	@Import("isFriended")
-	boolean isFriended(RSName var1, boolean var2);
 }
