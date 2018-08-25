@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.multicombatborders;
 
+import com.google.common.eventbus.Subscribe;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -33,9 +34,13 @@ import com.google.inject.Provides;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
+import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -50,12 +55,18 @@ public class MultiCombatBordersPlugin extends Plugin
 {
 
 	@Inject
+	Client client;
+
+	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
 	private MultiCombatBordersOverlay multiCombatBordersOverlay;
 
-	List<MultiCombatBorder> multiCombatBorders = loadMultiCombatBorders();
+	private List<MultiCombatBorder> multiCombatBorders = loadMultiCombatBorders();
+	List<MultiCombatBorder> multiCombatBordersWithinView = Collections.emptyList();
+
+	private WorldPoint prevPlayerLocation;
 
 	@Provides
 	MultiCombatBordersConfig getConfig(ConfigManager configManager)
@@ -105,6 +116,25 @@ public class MultiCombatBordersPlugin extends Plugin
 		JsonPrimitive x = jsonObject.getAsJsonPrimitive("x");
 		JsonPrimitive y = jsonObject.getAsJsonPrimitive("y");
 		return new WorldPoint(x.getAsInt(), y.getAsInt(), 0);
+	}
+
+	@Subscribe
+	void onTick(GameTick tick)
+	{
+		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
+		if (playerLocation != null && !playerLocation.equals(prevPlayerLocation))
+		{
+			prevPlayerLocation = playerLocation;
+			multiCombatBordersWithinView = getBordersWithinView(playerLocation);
+		}
+	}
+
+	private List<MultiCombatBorder> getBordersWithinView(WorldPoint playerLocation)
+	{
+		return multiCombatBorders
+			.stream()
+			.filter(border -> playerLocation.distanceTo(border.getMulti()) <= 18)
+			.collect(Collectors.toList());
 	}
 
 }

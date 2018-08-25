@@ -60,15 +60,8 @@ public class MultiCombatBordersOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
-
-		for (MultiCombatBorder border : plugin.multiCombatBorders)
+		for (MultiCombatBorder border : plugin.multiCombatBordersWithinView)
 		{
-			if (playerLocation.distanceTo(border.getMulti()) > 18)
-			{
-				continue;
-			}
-
 			WorldPoint start;
 			WorldPoint end;
 			int sign = 1;
