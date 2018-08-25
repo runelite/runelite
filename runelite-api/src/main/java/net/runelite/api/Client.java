@@ -210,6 +210,8 @@ public interface Client extends GameEngine
 	 */
 	int getWorld();
 
+	void setWorld(int world);
+
 	/**
 	 * Gets the height of the viewport.
 	 *
@@ -1048,6 +1050,13 @@ public interface Client extends GameEngine
 	 * @return true if the player is in clan chat
 	 */
 	boolean isClanMember(String name);
+
+	/**
+	 * Get the ClanMember for the local player
+	 *
+	 * @return
+	 */
+	ClanMember getClanMember();
 
 	/**
 	 * Gets the clients saved preferences.

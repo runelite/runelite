@@ -73,6 +73,8 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.plugins.streaming.StreamingPlugin;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.HotkeyListener;
@@ -122,6 +124,9 @@ public class WorldHopperPlugin extends Plugin
 
 	@Inject
 	private ScheduledExecutorService executorService;
+
+	@Inject
+	private PluginManager pluginManager;
 
 	@Inject
 	private WorldHopperConfig config;
@@ -363,11 +368,11 @@ public class WorldHopperPlugin extends Plugin
 		// If the player has disabled the side bar plugin panel, do not update the UI
 		if (config.showSidebar() && gameStateChanged.getGameState() == GameState.LOGGED_IN)
 		{
-			if (lastWorld != client.getWorld())
+			final int world = getCurrentWorld();
+			if (lastWorld != world)
 			{
-				int newWorld = client.getWorld();
-				panel.switchCurrentHighlight(newWorld, lastWorld);
-				lastWorld = newWorld;
+				panel.switchCurrentHighlight(world, lastWorld);
+				lastWorld = world;
 			}
 		}
 	}
@@ -578,20 +583,23 @@ public class WorldHopperPlugin extends Plugin
 			return;
 		}
 
-		String chatMessage = new ChatMessageBuilder()
-			.append(ChatColorType.NORMAL)
-			.append("Quick-hopping to World ")
-			.append(ChatColorType.HIGHLIGHT)
-			.append(Integer.toString(world.getId()))
-			.append(ChatColorType.NORMAL)
-			.append("..")
-			.build();
+		if (!pluginManager.isPluginEnabled(StreamingPlugin.class))
+		{
+			String chatMessage = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("Quick-hopping to World ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(Integer.toString(world.getId()))
+				.append(ChatColorType.NORMAL)
+				.append("..")
+				.build();
 
-		chatMessageManager
-			.queue(QueuedMessage.builder()
-				.type(ChatMessageType.GAME)
-				.runeLiteFormattedMessage(chatMessage)
-				.build());
+			chatMessageManager
+				.queue(QueuedMessage.builder()
+					.type(ChatMessageType.GAME)
+					.runeLiteFormattedMessage(chatMessage)
+					.build());
+		}
 
 		quickHopTargetWorld = rsWorld;
 		displaySwitcherAttempts = 0;

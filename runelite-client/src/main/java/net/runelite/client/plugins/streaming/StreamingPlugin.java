@@ -22,14 +22,69 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.streaming;
 
-/**
- * Represents a player in the chat.
- */
-public interface ChatPlayer extends Nameable
+import com.google.common.eventbus.Subscribe;
+import javax.inject.Inject;
+import net.runelite.api.ClanMember;
+import net.runelite.api.Client;
+import net.runelite.api.events.ClanChanged;
+import net.runelite.api.events.WorldChanged;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+
+@PluginDescriptor(
+	name = "Streaming Plugin",
+	description = "Hides your world",
+	enabledByDefault = false
+)
+public class StreamingPlugin extends Plugin
 {
-	int getWorld();
+	private static final int HIDDEN_WORLD = 1;
 
-	void setWorld(int world);
+	@Inject
+	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
+
+	private int oldWorld;
+
+	@Override
+	protected void startUp()
+	{
+		oldWorld = client.getWorld();
+		client.setWorld(HIDDEN_WORLD);
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		client.setWorld(oldWorld);
+	}
+
+	@Subscribe
+	public void onClanChanged(ClanChanged clanChanged)
+	{
+		if (clanChanged.isJoined())
+		{
+			// defer until full clan packet is parsed
+			clientThread.invokeLater(() ->
+			{
+				ClanMember clanMember = client.getClanMember();
+				if (clanMember != null)
+				{
+					clanMember.setWorld(HIDDEN_WORLD);
+				}
+			});
+		}
+	}
+
+	@Subscribe
+	public void onWorldChanged(WorldChanged worldChanged)
+	{
+		oldWorld = client.getWorld();
+		client.setWorld(HIDDEN_WORLD);
+	}
 }

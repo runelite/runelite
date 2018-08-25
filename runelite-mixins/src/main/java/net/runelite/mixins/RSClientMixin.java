@@ -85,6 +85,7 @@ import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.UsernameChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.events.WorldChanged;
 import net.runelite.api.hooks.Callbacks;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.FieldHook;
@@ -753,6 +754,20 @@ public abstract class RSClientMixin implements RSClient
 		return clanMemberManager != null && clanMemberManager.isMember(createName(name, getLoginType()));
 	}
 
+	@Inject
+	@Override
+	public ClanMember getClanMember()
+	{
+		final RSClanMemberManager clanMemberManager = getClanMemberManager();
+		final RSPlayer player = client.getLocalPlayer();
+		if (clanMemberManager == null || player == null)
+		{
+			return null;
+		}
+
+		return (ClanMember) clanMemberManager.findByName(player.getRsName());
+	}
+
 	@FieldHook("draggingWidget")
 	@Inject
 	public static void draggingWidgetChanged(int idx)
@@ -1242,5 +1257,15 @@ public abstract class RSClientMixin implements RSClient
 	public void setLastItemDespawn(RSItem lastItemDespawn)
 	{
 		RSClientMixin.lastItemDespawn = lastItemDespawn;
+	}
+
+	@FieldHook("world")
+	@Inject
+	public static void onWorldChange(int idx)
+	{
+		if (client != null)
+		{
+			client.getCallbacks().post(new WorldChanged());
+		}
 	}
 }

@@ -36,4 +36,7 @@ public interface RSNameableContainer
 
 	@Import("isMember")
 	boolean isMember(RSName var1);
+
+	@Import("findByName")
+	RSNameable findByName(RSName name);
 }

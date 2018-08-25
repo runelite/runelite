@@ -33,6 +33,10 @@ public interface RSChatPlayer extends ChatPlayer, RSNameable
 	@Override
 	int getWorld();
 
+	@Import("world")
+	@Override
+	void setWorld(int world);
+
 	@Import("rank")
 	int getRSRank();
 }
