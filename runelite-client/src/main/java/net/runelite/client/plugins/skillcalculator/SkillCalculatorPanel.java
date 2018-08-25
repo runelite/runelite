@@ -55,7 +55,6 @@ class SkillCalculatorPanel extends PluginPanel
 	private final SkillCalculator uiCalculator;
 	private final SkillIconManager iconManager;
 	private final MaterialTabGroup tabGroup;
-	private final SkillCalculatorConfig config;
 
 	private CalculatorType currentCalc;
 	private String currentTab;
@@ -66,13 +65,12 @@ class SkillCalculatorPanel extends PluginPanel
 			BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.BRAND_ORANGE),
 			BorderFactory.createEmptyBorder(8, 3, 6, 3));
 
-	SkillCalculatorPanel(SkillIconManager iconManager, Client client, SkillCalculatorConfig config)
+	SkillCalculatorPanel(SkillIconManager iconManager, Client client)
 	{
 		super();
 		getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
 		this.iconManager = iconManager;
-		this.config = config;
 
 		setBorder(new EmptyBorder(10, 10, 10, 10));
 		setLayout(new GridBagLayout());
@@ -116,10 +114,7 @@ class SkillCalculatorPanel extends PluginPanel
 
 		List<String> tabs = new ArrayList<>();
 		tabs.add("Calculator");
-		if (config.showPlannerTab())
-		{
-			tabs.add("Planner");
-		}
+		tabs.add("Planner");
 
 		// Tab Size
 		tabGroup.setLayout(new GridLayout(0, tabs.size(), 7, 7));
