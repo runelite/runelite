@@ -40,10 +40,6 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 public class TeamCapesOverlay extends Overlay
 {
-	private final TeamCapesPlugin plugin;
-	private final TeamCapesConfig config;
-	private PanelComponent verticalContainer = new PanelComponent();
-	private PanelComponent horizontalContainer = new PanelComponent();
 	@Inject
 	private ItemManager manager;
 
@@ -60,13 +56,18 @@ public class TeamCapesOverlay extends Overlay
 		setPriority(OverlayPriority.LOW);
 		this.plugin = plugin;
 		this.config = config;
-		horizontalContainer.setOrientation(PanelComponent.Orientation.HORIZONTAL);
+		panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
+		panelComponent.setWrapping(4);
 	}
+
+	private final PanelComponent panelComponent = new PanelComponent();
+	private final TeamCapesPlugin plugin;
+	private final TeamCapesConfig config;
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		horizontalContainer.getChildren().clear();
+		panelComponent.getChildren().clear();
 		Map<Integer, Integer> teams = plugin.getTeams();
 		if (teams.isEmpty())
 		{
@@ -78,15 +79,14 @@ public class TeamCapesOverlay extends Overlay
 			if (team.getValue() >= config.getMinimumCapeCount() && team.getKey() < 51)
 			{
 				//ItemID.TEAM1_CAPE == 4315, ItemID.TEAM2_CAPE == 4317, ItemID.TEAM50_CAPE == 4413
-				horizontalContainer.getChildren().add(new ImageComponent(getImage(( team.getKey() * 2 ) + 4313 ,  team.getValue())));
+				panelComponent.getChildren().add(new ImageComponent(getImage(( team.getKey() * 2 ) + 4313 ,  team.getValue())));
 			}
 		}
-		return horizontalContainer.render(graphics);
+		return panelComponent.render(graphics);
 	}
 
 	private BufferedImage getImage(int itemID, int amount)
 	{
-		BufferedImage image = manager.getImage(itemID, amount, true);
-		return image;
+		return manager.getImage(itemID, amount, true);
 	}
 }
