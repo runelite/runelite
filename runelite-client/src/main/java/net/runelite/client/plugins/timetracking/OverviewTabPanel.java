@@ -77,6 +77,7 @@ class OverviewTabPanel extends TabContentPanel
 		farmingOverviews.put(PatchImplementation.HOPS, new OverviewItemPanel(itemManager, pluginPanel, Tab.HOPS, "Hops Patches"));
 		farmingOverviews.put(PatchImplementation.BUSH, new OverviewItemPanel(itemManager, pluginPanel, Tab.BUSH, "Bush Patches"));
 		farmingOverviews.put(PatchImplementation.GRAPES, new OverviewItemPanel(itemManager, pluginPanel, Tab.GRAPE, "Grape Patches"));
+		farmingOverviews.put(PatchImplementation.SEAWEED, new OverviewItemPanel(itemManager, pluginPanel, Tab.SPECIAL, "Special Patches"));
 
 		for (OverviewItemPanel panel : farmingOverviews.values())
 		{
