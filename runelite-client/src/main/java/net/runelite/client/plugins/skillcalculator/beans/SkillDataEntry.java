@@ -34,5 +34,6 @@ public class SkillDataEntry
 	private double xp;
 	private Integer icon;
 	private Integer sprite;
+	private String [] ingredients;
 	private boolean ignoreBonus;
 }

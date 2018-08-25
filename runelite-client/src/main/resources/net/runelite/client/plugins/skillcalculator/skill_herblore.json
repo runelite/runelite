@@ -5,7 +5,7 @@
       "icon": 121,
       "name": "Attack Potion (3)",
       "xp": 25,
-      "ingredients": ["Guam potion (unf)", "Eye of newt"],
+      "ingredients": ["Guam potion (unf)", "Eye of newt"]
     },
     {
       "level": 3,
@@ -32,7 +32,7 @@
       "level": 8,
       "icon": 4844,
       "name": "Relicym's Balm (3)",
-      "xp": 40,
+      "xp": 40
     },
     {
       "level": 11,
@@ -67,7 +67,7 @@
       "name": "Compost Potion (3)",
       "xp": 60,
       "ingredients": ["Harralander potion (unf)", "Volcanic ash"]
-    }
+    },
     {
       "level": 22,
       "icon": 127,
@@ -219,7 +219,7 @@
       "level": 65,
       "icon": 10927,
       "name": "Sanfew Serum (3)",
-      "xp": 160,
+      "xp": 160
 
     },
     {
@@ -268,7 +268,7 @@
       "level": 73,
       "icon": 5937,
       "name": "Weapon Poison (+)",
-      "xp": 165,
+      "xp": 165
     },
     {
       "level": 75,

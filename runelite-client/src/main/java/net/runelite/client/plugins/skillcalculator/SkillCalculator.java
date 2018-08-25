@@ -59,7 +59,7 @@ class SkillCalculator extends JPanel
 {
 	private static final int MAX_XP = 200_000_000;
 	private static final DecimalFormat XP_FORMAT = new DecimalFormat("#.#");
-	private static final String[] buyables = {"Prayer", "Firemaking", "Construction", "Smithing", "Cooking"}; //, "Herblore", "Crafting", "Magic", "Fletching", "Farming",
+	private static final String[] buyables = {"Prayer", "Firemaking", "Construction", "Smithing", "Cooking", "Herblore"}; //, "Crafting", "Magic", "Fletching", "Farming",
 
 	static SpriteManager spriteManager;
 	static ItemManager itemManager;
@@ -293,7 +293,42 @@ class SkillCalculator extends JPanel
 				int itemPrice = itemManager.getItemPrice(item.getId());
 
 				double gpPerXp;
-				if (skillName.equals("Smithing"))
+				if (skillName.equals("Herblore"))
+				{
+					System.out.println(actionName);
+					String[] ingredients = action.getIngredients();
+					String primary = ingredients[0];
+					int seconPrice = 0;
+					try
+					{
+						result = itemManager.searchForItem(primary);
+					}
+					catch (ExecutionException ex)
+					{
+						return;
+					}
+					if (result == null || result.getItems().isEmpty()) continue;
+					Item primItem = retrieveFromList(result.getItems(), primary);
+					if (primItem == null) continue;
+					int primPrice = itemManager.getItemPrice(primItem.getId());
+
+					if (ingredients.length == 2) {
+						String secondary = ingredients[1];
+						try {
+							result = itemManager.searchForItem(secondary);
+						} catch (ExecutionException ex) {
+							return;
+						}
+						if (result == null || result.getItems().isEmpty()) continue;
+						Item seconItem = retrieveFromList(result.getItems(), secondary);
+						if (seconItem == null) continue;
+						seconPrice = itemManager.getItemPrice(primItem.getId());
+					}
+					gpPerXp = (primPrice + seconPrice - itemPrice) / xp;
+
+
+				}
+				else if (skillName.equals("Smithing"))
 				{
 					String ore = actionName.substring(0, actionName.length() - 3) + "Ore";
 					try
