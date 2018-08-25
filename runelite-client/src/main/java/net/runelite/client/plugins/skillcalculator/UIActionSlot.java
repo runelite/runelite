@@ -61,7 +61,7 @@ class UIActionSlot extends JPanel
 		BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_INPROGRESS_COLOR).darker()),
 		BorderFactory.createEmptyBorder(7, 12, 7, 7));
 
-	private static final Dimension ICON_SIZE = new Dimension(32, 32);
+	private static final Dimension ICON_SIZE = new Dimension(35, 35);
 
 	@Getter(AccessLevel.PACKAGE)
 	private final SkillDataEntry action;

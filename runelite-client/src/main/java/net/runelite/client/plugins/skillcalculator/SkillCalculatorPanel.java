@@ -214,4 +214,13 @@ class SkillCalculatorPanel extends PluginPanel
 
 		return box;
 	}
+
+	// Refresh the current tab
+	public void refreshCurrentCalc()
+	{
+		if (currentCalc == null)
+			return;
+
+		selectedTab(currentTab);
+	}
 }

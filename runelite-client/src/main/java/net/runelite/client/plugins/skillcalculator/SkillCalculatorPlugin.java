@@ -27,8 +27,11 @@ package net.runelite.client.plugins.skillcalculator;
 
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import javax.swing.SwingUtilities;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import net.runelite.api.Client;
+import net.runelite.api.events.UsernameChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SkillIconManager;
@@ -99,5 +102,12 @@ public class SkillCalculatorPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		clientToolbar.removeNavigation(uiNavigationButton);
+	}
+
+
+	@Subscribe
+	public void onUsernameChanged(UsernameChanged e)
+	{
+		SwingUtilities.invokeLater(() -> uiPanel.refreshCurrentCalc());
 	}
 }
