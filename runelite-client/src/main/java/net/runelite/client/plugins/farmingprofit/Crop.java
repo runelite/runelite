@@ -25,57 +25,47 @@
 package net.runelite.client.plugins.farmingprofit;
 
 import lombok.Getter;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.game.ItemManager;
+import net.runelite.api.ItemID;
 
-import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-class FarmingProfitRun {
+public enum Crop {
 
-    @Getter
-    private Crop crop;
-    @Getter
-    private int amount;
-    @Getter
-    private WorldPoint latestHarvestWorldPoint;
-    @Getter
-    private LocalDateTime latestHarvestTime;
+    UNKNOWN(-1,-1, "Unknown"),
 
-    private int profit;
-    private ItemManager itemManager;
+    SNAPDRAGON(ItemID.GRIMY_SNAPDRAGON, ItemID.SNAPDRAGON_SEED, "Snapdragon herb"),
+    RANARR(ItemID.GRIMY_RANARR_WEED, ItemID.RANARR_SEED, "Ranarr herb");
 
-
-    FarmingProfitRun(ItemManager itemManager, Crop crop, int amount, WorldPoint latestHarvest)
+    Crop(int productId, int seedId, String displayName)
     {
-        this.itemManager = itemManager;
-        this.crop = crop;
-        updateAmount(amount, latestHarvest);
+        this.productId = productId;
+        this.seedId = seedId;
+        this.displayName = displayName;
     }
 
-    private void updateAmount(int amount, WorldPoint harvestWorldPoint)
-    {
-        this.amount = amount;
-        latestHarvestWorldPoint = harvestWorldPoint;
-        updateProfit();
-        latestHarvestTime = LocalDateTime.now();
+    @Getter
+    private final int productId;
+    @Getter
+    private final int seedId;
+    @Getter
+    private final String displayName;
+    private static final Map<Integer, Crop> map = Collections.unmodifiableMap(initializeMapping());
+
+    public static Crop fromProductId(int product) {
+        if (map.containsKey(product)) {
+            return map.get(product);
+        }
+        return Crop.UNKNOWN;
     }
 
-    void addAmount(int toAdd, WorldPoint harvestWorldPoint)
-    {
-        updateAmount(amount + toAdd, harvestWorldPoint);
-    }
-
-    int getProfit()
-    {
-        return profit;
-    }
-
-    private void updateProfit()
-    {
-        int seedPrice = itemManager.getItemPrice(crop.getSeedId());
-        int productPrice = itemManager.getItemPrice(crop.getProductId());
-
-        profit = productPrice * amount - seedPrice;
+    private static Map<Integer, Crop> initializeMapping() {
+        Map<Integer, Crop> mMap = new HashMap<>();
+        for (Crop s : Crop.values()) {
+            mMap.put(s.productId, s);
+        }
+        return mMap;
     }
 
 }

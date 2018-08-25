@@ -1,20 +1,42 @@
+/*
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package net.runelite.client.plugins.farmingprofit;
 
 import com.google.common.eventbus.Subscribe;
+import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
-import net.runelite.client.chat.ChatColorType;
-import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.chat.ChatMessageManager;
-import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
@@ -24,12 +46,10 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 
 import javax.inject.Inject;
-import javax.swing.*;
 import java.awt.image.BufferedImage;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @PluginDescriptor(
@@ -37,7 +57,6 @@ import java.util.concurrent.atomic.AtomicInteger;
         description = "Calculates the profit of a farm run",
         tags = {"farm", "farming", "profit"}
 )
-
 @Slf4j
 public class FarmingProfitPlugin extends Plugin
 {
@@ -59,24 +78,20 @@ public class FarmingProfitPlugin extends Plugin
     private FarmingProfitPanel panel;
     private NavigationButton navButton;
 
-    private final Set<Integer> harvestAnimations = new HashSet<>();
-
     private Item[] previousItems;
-    private boolean harvesting;
 
     private FarmingProfitRun latestRun = null;
 
-    private static int MAX_PATCH_DISTANCE = 8;
+    final private static int MAX_PATCH_DISTANCE = 8;
+    final private static int MIN_TELEPORT_DISTANCE = 40;
+    final private static int RUN_TIMEOUT_SECONDS = 60;
+
+
 
     @Override
     protected void startUp()
     {
         log.info("Starting Farming Profit Plugin");
-
-        harvestAnimations.add(AnimationID.FARMING_HARVEST_BUSH);
-        harvestAnimations.add(AnimationID.FARMING_HARVEST_FLOWER);
-        harvestAnimations.add(AnimationID.FARMING_HARVEST_FRUIT_TREE);
-        harvestAnimations.add(AnimationID.FARMING_HARVEST_HERB);
 
         previousItems = new Item[0];
 
@@ -94,7 +109,6 @@ public class FarmingProfitPlugin extends Plugin
                 .build();
 
         clientToolbar.addNavigation(navButton);
-
     }
 
     @Override
@@ -121,66 +135,100 @@ public class FarmingProfitPlugin extends Plugin
             return;
         }
 
-        log.debug("AnimID: " + animationID + " by: " + event.getActor().getName());
-
         // Check whether the player is harvesting
         if (isHarvestAnim(animationID))
         {
             // Player is harvesting, store current inventory
-            previousItems = client.getItemContainer(InventoryID.INVENTORY).getItems();
-
+            ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+            if (itemContainer != null)
+            {
+                previousItems = itemContainer.getItems();
+            }
         } else if (animationID == AnimationID.IDLE) {
             // Player idle, find new items
-            Item[] currentItems = client.getItemContainer(InventoryID.INVENTORY).getItems();
-            Item[] newItems = getItemContainerAddedItems(previousItems,
-                    currentItems);
 
+            // Set currentItems to previousItems by default, will be updated if the inventory container is not null.
+            // This is to ensure no new items will be observed when the inventory is null.
+            Item[] currentItems = previousItems;
+            ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+            if (itemContainer != null)
+            {
+                currentItems = itemContainer.getItems();
+            }
+            Item[] newItems = getItemContainerAddedItems(previousItems, currentItems);
+
+            newItems = removeUnknownCrops(newItems);
+
+            // Stop when no new items were found
             if (newItems.length == 0)
             {
                 return;
             }
 
-            int productId = newItems[0].getId();
-            int seedId = Seeds.seedOf(productId);
+            // Get the crop from the product ID
+            Crop crop = Crop.fromProductId(newItems[0].getId());
             int amount = newItems.length;
             WorldPoint harvestLocation = client.getLocalPlayer().getWorldLocation();
 
             if (latestRun == null)
             {
-                if (seedId != -1)
-                {
-                    latestRun = new FarmingProfitRun(productId, seedId, amount, harvestLocation);
-                    //TODO remove later
-                    SwingUtilities.invokeLater(() -> panel.addRun(latestRun));
-                }
+                log.debug("There is no latest run, create new run");
+                latestRun = new FarmingProfitRun(itemManager, crop, amount, harvestLocation);
             } else {
-                // If harvest is same type
-                if (latestRun.getProductId() == productId)
+                log.debug("There is a latest run");
+                if (latestRun.getCrop() == crop)
                 {
+                    log.debug(" Latest run has same product type");
                     int distance = harvestLocation.distanceTo(latestRun.getLatestHarvestWorldPoint());
                     // Check whether the patch is close to the latest run, check for the same patch
                     if (distance < MAX_PATCH_DISTANCE)
                     {
+                        log.debug("  Latest run is close to current run, most likely the same patch," +
+                                " so add to the latest run");
                         latestRun.addAmount(amount, harvestLocation);
-                        //TODO remove later
-                        SwingUtilities.invokeLater(() -> panel.addRun(latestRun));
-
-                    // Harvesting other patch, add latest run and start new run
                     } else {
-                        SwingUtilities.invokeLater(() -> panel.addRun(latestRun));
-                        latestRun = new FarmingProfitRun(productId, seedId, amount, harvestLocation);
+                        log.debug("  Latest run is too far away, add latest run and start new run");
+                        SwingUtilities.invokeLater(() -> {
+                            panel.addRun(latestRun);
+                            latestRun = new FarmingProfitRun(itemManager, crop, amount, harvestLocation);
+                        });
                     }
-                // Harvesting other patch type, add latest run and start new run
                 } else {
-                    SwingUtilities.invokeLater(() -> panel.addRun(latestRun));
-                    latestRun = new FarmingProfitRun(productId, seedId, amount, harvestLocation);
+                    log.debug(" Harvesting other patch type, add latest run and start new run");
+                    SwingUtilities.invokeLater(() -> {
+                        panel.addRun(latestRun);
+                        latestRun = new FarmingProfitRun(itemManager, crop, amount, harvestLocation);
+                    });
                 }
             }
 
             previousItems = client.getItemContainer(InventoryID.INVENTORY).getItems();
+        }
+    }
 
-            chatItems(newItems);
+    @Subscribe
+    public void onGameTick(GameTick tick)
+    {
+        if (latestRun != null)
+        {
+            // Check the last run was done longer ago than the timeout
+            LocalDateTime offsetTime = LocalDateTime.now();
+            boolean pastTimeout = offsetTime.isAfter(latestRun.getLatestHarvestTime().plusSeconds(RUN_TIMEOUT_SECONDS));
 
+            // Check the distance to latest run in order to see whether the player has teleported away
+            int distance = client.getLocalPlayer().getWorldLocation().distanceTo(latestRun.getLatestHarvestWorldPoint());
+            boolean hasTeleported = (distance > MIN_TELEPORT_DISTANCE);
+
+            // Add run to panel if the run was done longer ago than the timeout or if the player has teleported
+            if (pastTimeout || hasTeleported)
+            {
+                if (pastTimeout) log.debug("Harvest time past timeout");
+                if (hasTeleported) log.debug("Player has teleported");
+                SwingUtilities.invokeLater(() -> {
+                    panel.addRun(latestRun);
+                    latestRun = null;
+                });
+            }
         }
     }
 
@@ -206,56 +254,19 @@ public class FarmingProfitPlugin extends Plugin
         return nextList.toArray(new Item[nextList.size()]);
     }
 
+    private Item[] removeUnknownCrops(Item[] items)
+    {
+        ArrayList<Item> newItemsList = new ArrayList<>(Arrays.asList(items));
+        newItemsList.removeIf(item -> (Crop.fromProductId(item.getId()) == Crop.UNKNOWN));
+        return newItemsList.toArray(new Item[newItemsList.size()]);
+    }
+
     private boolean isHarvestAnim(int animId)
     {
         return (animId == AnimationID.FARMING_HARVEST_BUSH ||
                 animId == AnimationID.FARMING_HARVEST_FLOWER ||
                 animId == AnimationID.FARMING_HARVEST_FRUIT_TREE ||
                 animId == AnimationID.FARMING_HARVEST_HERB);
-    }
-
-    private void chatHighlighted(String msg)
-    {
-        String chatMessage = new ChatMessageBuilder()
-                .append(ChatColorType.HIGHLIGHT)
-                .append(msg)
-                .build();
-
-        chatMessageManager
-                .queue(QueuedMessage.builder()
-                        .type(ChatMessageType.GAME)
-                        .runeLiteFormattedMessage(chatMessage)
-                        .build());
-    }
-
-    private void chatItems(Item[] items)
-    {
-        for (Item item : items)
-        {
-            if (item.getQuantity() > 0)
-            {
-                final ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
-                final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : item.getId();
-                final long price = (long)itemManager.getItemPrice(realItemId) * (long)item.getQuantity();
-
-                String chatMessage = new ChatMessageBuilder()
-                        .append(ChatColorType.HIGHLIGHT)
-                        .append(item.getQuantity() + "x ")
-                        .append(ChatColorType.NORMAL)
-                        .append(itemComposition.getName() + " worth ")
-                        .append(ChatColorType.HIGHLIGHT)
-                        .append(Long.toString(price))
-                        .append(ChatColorType.NORMAL)
-                        .append(" gp")
-                        .build();
-
-                chatMessageManager
-                        .queue(QueuedMessage.builder()
-                                .type(ChatMessageType.GAME)
-                                .runeLiteFormattedMessage(chatMessage)
-                                .build());
-            }
-        }
     }
 
 }
