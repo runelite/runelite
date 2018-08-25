@@ -687,6 +687,25 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
+	public int getFriendsCount()
+	{
+		final RSFriendManager friendManager = getFriendManager();
+		if (friendManager == null)
+		{
+			return -1;
+		}
+
+		final RSFriendContainer friendContainer = friendManager.getFriendContainer();
+		if (friendContainer == null)
+		{
+			return -1;
+		}
+
+		return friendContainer.getCount();
+	}
+
+	@Inject
+	@Override
 	public boolean isClanMember(String name)
 	{
 		final RSClanMemberManager clanMemberManager = getClanMemberManager();

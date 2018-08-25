@@ -1021,6 +1021,13 @@ public interface Client extends GameEngine
 	Friend[] getFriends();
 
 	/**
+	 * Gets the number of friends on the friends list.
+	 *
+	 * @return
+	 */
+	int getFriendsCount();
+
+	/**
 	 * Checks whether a player is in the same clan chat.
 	 *
 	 * @param name the name of the player
