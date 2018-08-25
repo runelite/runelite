@@ -271,7 +271,6 @@ class SkillCalculator extends JPanel
 
 			if (buyable)
 			{
-				//System.out.println(actionName);
 				if (skillName.equals("Construction") && !actionName.contains("Plank")) continue;
 				if (skillName.equals("Prayer") && actionName.contains("Ensouled")) continue;
 				if (skillName.equals("Smithing") && !actionName.contains("Silver") && !actionName.contains("Gold")) continue;
@@ -279,7 +278,6 @@ class SkillCalculator extends JPanel
 				if (actionName.equals("Gold Bar (Goldsmith Gauntlets)")) actionName = "Gold Bar";
 
 				SearchResult result;
-				System.out.println(actionName);
 				try
 				{
 					result = itemManager.searchForItem(actionName);
@@ -311,7 +309,6 @@ class SkillCalculator extends JPanel
 					Item oreItem = retrieveFromList(result.getItems(), ore);
 					if (oreItem == null) continue;
 					int orePrice = itemManager.getItemPrice(oreItem.getId());
-					System.out.println(orePrice);
 					gpPerXp = (orePrice - itemPrice) / xp;
 				}
 				else if (skillName.equals("Cooking"))
