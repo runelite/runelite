@@ -39,68 +39,68 @@ import net.runelite.client.util.StackFormatter;
 class FarmingProfitBox extends JPanel
 {
 
-    private static final String HTML_LABEL_TEMPLATE =
-            "<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
+	private static final String HTML_LABEL_TEMPLATE =
+		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
 
-    FarmingProfitBox(ItemManager itemManager, FarmingProfitRun run)
-    {
-        setLayout(new BorderLayout(0, 0));
-        setBorder(new EmptyBorder(5, 0, 0, 0));
+	FarmingProfitBox(ItemManager itemManager, FarmingProfitRun run)
+	{
+		setLayout(new BorderLayout(0, 0));
+		setBorder(new EmptyBorder(5, 0, 0, 0));
 
-        // Item name
-        String itemName = run.getCrop().getDisplayName();
+		// Item name
+		String itemName = run.getCrop().getDisplayName();
 
-        // Run image
-        final JPanel runImage = new JPanel();
-        runImage.setLayout(new BorderLayout(0,0));
-        runImage.setBorder(new EmptyBorder(7, 7, 7, 0));
-        runImage.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		// Run image
+		final JPanel runImage = new JPanel();
+		runImage.setLayout(new BorderLayout(0, 0));
+		runImage.setBorder(new EmptyBorder(7, 7, 7, 0));
+		runImage.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-        final JLabel runImageLabel = new JLabel();
-        runImageLabel.setToolTipText(itemName);
-        runImageLabel.setVerticalAlignment(SwingConstants.CENTER);
-        runImageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        itemManager.getImage(run.getCrop().getProductId(), run.getAmount(), true).addTo(runImageLabel);
-        runImage.add(runImageLabel);
+		final JLabel runImageLabel = new JLabel();
+		runImageLabel.setToolTipText(itemName);
+		runImageLabel.setVerticalAlignment(SwingConstants.CENTER);
+		runImageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		itemManager.getImage(run.getCrop().getProductId(), run.getAmount(), true).addTo(runImageLabel);
+		runImage.add(runImageLabel);
 
-        // Run information
-        final JPanel runInfo = new JPanel();
-        runInfo.setLayout(new BorderLayout(0,0));
-        runInfo.setBorder(new EmptyBorder(7, 7, 7, 7));
-        runInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		// Run information
+		final JPanel runInfo = new JPanel();
+		runInfo.setLayout(new BorderLayout(0, 0));
+		runInfo.setBorder(new EmptyBorder(7, 7, 7, 7));
+		runInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-        // Run information: Title
-        final JLabel runTitle = new JLabel(itemName);
-        runTitle.setFont(FontManager.getRunescapeSmallFont());
-        runTitle.setForeground(Color.WHITE);
-        runInfo.add(runTitle, BorderLayout.NORTH);
+		// Run information: Title
+		final JLabel runTitle = new JLabel(itemName);
+		runTitle.setFont(FontManager.getRunescapeSmallFont());
+		runTitle.setForeground(Color.WHITE);
+		runInfo.add(runTitle, BorderLayout.NORTH);
 
-        // Run information: Profit
-        final JLabel profitLabel = new JLabel();
-        profitLabel.setText(htmlLabel("Profit: ", run.getProfit()));
-        profitLabel.setFont(FontManager.getRunescapeSmallFont());
-        profitLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
-        runInfo.add(profitLabel, BorderLayout.CENTER);
+		// Run information: Profit
+		final JLabel profitLabel = new JLabel();
+		profitLabel.setText(htmlLabel("Profit: ", run.getProfit()));
+		profitLabel.setFont(FontManager.getRunescapeSmallFont());
+		profitLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+		runInfo.add(profitLabel, BorderLayout.CENTER);
 
-        // Run information: Amount harvested
-        if (run.getAmount() > 0)
-        {
-            final JLabel amountLabel = new JLabel();
-            amountLabel.setText(htmlLabel("Amount: ", run.getAmount()));
-            amountLabel.setFont(FontManager.getRunescapeSmallFont());
-            amountLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
-            runInfo.add(amountLabel, BorderLayout.SOUTH);
-        }
+		// Run information: Amount harvested
+		if (run.getAmount() > 0)
+		{
+			final JLabel amountLabel = new JLabel();
+			amountLabel.setText(htmlLabel("Amount: ", run.getAmount()));
+			amountLabel.setFont(FontManager.getRunescapeSmallFont());
+			amountLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+			runInfo.add(amountLabel, BorderLayout.SOUTH);
+		}
 
-        // Add image and info the panel
-        add(runImage, BorderLayout.WEST);
-        add(runInfo, BorderLayout.CENTER);
-    }
+		// Add image and info the panel
+		add(runImage, BorderLayout.WEST);
+		add(runInfo, BorderLayout.CENTER);
+	}
 
-    private static String htmlLabel(String key, long value)
-    {
-        final String valueStr = StackFormatter.quantityToStackSize(value);
-        return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
-    }
+	private static String htmlLabel(String key, long value)
+	{
+		final String valueStr = StackFormatter.quantityToStackSize(value);
+		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
+	}
 
 }

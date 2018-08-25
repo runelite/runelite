@@ -30,52 +30,53 @@ import net.runelite.client.game.ItemManager;
 
 import java.time.LocalDateTime;
 
-class FarmingProfitRun {
+class FarmingProfitRun
+{
 
-    @Getter
-    private Crop crop;
-    @Getter
-    private int amount;
-    @Getter
-    private WorldPoint latestHarvestWorldPoint;
-    @Getter
-    private LocalDateTime latestHarvestTime;
+	@Getter
+	private Crop crop;
+	@Getter
+	private int amount;
+	@Getter
+	private WorldPoint latestHarvestWorldPoint;
+	@Getter
+	private LocalDateTime latestHarvestTime;
 
-    private int profit;
-    private ItemManager itemManager;
+	private int profit;
+	private ItemManager itemManager;
 
 
-    FarmingProfitRun(ItemManager itemManager, Crop crop, int amount, WorldPoint latestHarvest)
-    {
-        this.itemManager = itemManager;
-        this.crop = crop;
-        updateAmount(amount, latestHarvest);
-    }
+	FarmingProfitRun(ItemManager itemManager, Crop crop, int amount, WorldPoint latestHarvest)
+	{
+		this.itemManager = itemManager;
+		this.crop = crop;
+		updateAmount(amount, latestHarvest);
+	}
 
-    private void updateAmount(int amount, WorldPoint harvestWorldPoint)
-    {
-        this.amount = amount;
-        latestHarvestWorldPoint = harvestWorldPoint;
-        updateProfit();
-        latestHarvestTime = LocalDateTime.now();
-    }
+	private void updateAmount(int amount, WorldPoint harvestWorldPoint)
+	{
+		this.amount = amount;
+		latestHarvestWorldPoint = harvestWorldPoint;
+		updateProfit();
+		latestHarvestTime = LocalDateTime.now();
+	}
 
-    void addAmount(int toAdd, WorldPoint harvestWorldPoint)
-    {
-        updateAmount(amount + toAdd, harvestWorldPoint);
-    }
+	void addAmount(int toAdd, WorldPoint harvestWorldPoint)
+	{
+		updateAmount(amount + toAdd, harvestWorldPoint);
+	}
 
-    int getProfit()
-    {
-        return profit;
-    }
+	int getProfit()
+	{
+		return profit;
+	}
 
-    private void updateProfit()
-    {
-        int seedPrice = itemManager.getItemPrice(crop.getSeedId());
-        int productPrice = itemManager.getItemPrice(crop.getProductId());
+	private void updateProfit()
+	{
+		int seedPrice = itemManager.getItemPrice(crop.getSeedId());
+		int productPrice = itemManager.getItemPrice(crop.getProductId());
 
-        profit = productPrice * amount - seedPrice;
-    }
+		profit = productPrice * amount - seedPrice;
+	}
 
 }

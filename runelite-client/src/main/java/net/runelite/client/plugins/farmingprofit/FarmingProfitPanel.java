@@ -47,152 +47,153 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 @Slf4j
-class FarmingProfitPanel extends PluginPanel {
+class FarmingProfitPanel extends PluginPanel
+{
 
-    private static final String HTML_LABEL_TEMPLATE =
-            "<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
+	private static final String HTML_LABEL_TEMPLATE =
+		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
 
-    // When no runs have been done, display an error panel
-    private final PluginErrorPanel errorPanel = new PluginErrorPanel();
+	// When no runs have been done, display an error panel
+	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
 
-    // Handle farm run logs
-    private final JPanel runsContainer = new JPanel();
+	// Handle farm run logs
+	private final JPanel runsContainer = new JPanel();
 
-    // Handle overall session data
-    private final JPanel overallPanel = new JPanel();
-    private final JLabel overallIcon = new JLabel();
-    private final JLabel overallProfitLabel = new JLabel();
-    private final JLabel overallPatchesLabel = new JLabel();
-    private final JLabel overallProductsLabel = new JLabel();
-    private final ItemManager itemManager;
-    private int overallProfit;
-    private int overallPatches;
-    private int overallProducts;
+	// Handle overall session data
+	private final JPanel overallPanel = new JPanel();
+	private final JLabel overallIcon = new JLabel();
+	private final JLabel overallProfitLabel = new JLabel();
+	private final JLabel overallPatchesLabel = new JLabel();
+	private final JLabel overallProductsLabel = new JLabel();
+	private final ItemManager itemManager;
+	private int overallProfit;
+	private int overallPatches;
+	private int overallProducts;
 
-    private ArrayList<FarmingProfitRun> runs = new ArrayList<>();
+	private ArrayList<FarmingProfitRun> runs = new ArrayList<>();
 
-    FarmingProfitPanel(ItemManager itemManager)
-    {
-        this.itemManager = itemManager;
-        setBorder(new EmptyBorder(6, 6, 6, 6));
-        setBackground(ColorScheme.DARK_GRAY_COLOR);
-        setLayout(new BorderLayout());
+	FarmingProfitPanel(ItemManager itemManager)
+	{
+		this.itemManager = itemManager;
+		setBorder(new EmptyBorder(6, 6, 6, 6));
+		setBackground(ColorScheme.DARK_GRAY_COLOR);
+		setLayout(new BorderLayout());
 
-        // Create layout panel for wrapping
-        final JPanel layoutPanel = new JPanel();
-        layoutPanel.setLayout(new BoxLayout(layoutPanel, BoxLayout.Y_AXIS));
-        add(layoutPanel, BorderLayout.NORTH);
+		// Create layout panel for wrapping
+		final JPanel layoutPanel = new JPanel();
+		layoutPanel.setLayout(new BoxLayout(layoutPanel, BoxLayout.Y_AXIS));
+		add(layoutPanel, BorderLayout.NORTH);
 
-        // Create panel that will contain overall data
-        overallPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        overallPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-        overallPanel.setLayout(new BorderLayout());
+		// Create panel that will contain overall data
+		overallPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		overallPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		overallPanel.setLayout(new BorderLayout());
 
-        // Add icon and contents
-        final JPanel overallInfo = new JPanel();
-        overallInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-        overallInfo.setLayout(new GridLayout(3, 1));
-        overallInfo.setBorder(new EmptyBorder(0, 10, 0, 0));
-        overallProfitLabel.setFont(FontManager.getRunescapeSmallFont());
-        overallPatchesLabel.setFont(FontManager.getRunescapeSmallFont());
-        overallProductsLabel.setFont(FontManager.getRunescapeSmallFont());
-        overallInfo.add(overallProfitLabel,0);
-        overallInfo.add(overallPatchesLabel, 1);
-        overallInfo.add(overallProductsLabel,2);
-        overallPanel.add(overallIcon, BorderLayout.WEST);
-        overallPanel.add(overallInfo, BorderLayout.CENTER);
+		// Add icon and contents
+		final JPanel overallInfo = new JPanel();
+		overallInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		overallInfo.setLayout(new GridLayout(3, 1));
+		overallInfo.setBorder(new EmptyBorder(0, 10, 0, 0));
+		overallProfitLabel.setFont(FontManager.getRunescapeSmallFont());
+		overallPatchesLabel.setFont(FontManager.getRunescapeSmallFont());
+		overallProductsLabel.setFont(FontManager.getRunescapeSmallFont());
+		overallInfo.add(overallProfitLabel, 0);
+		overallInfo.add(overallPatchesLabel, 1);
+		overallInfo.add(overallProductsLabel, 2);
+		overallPanel.add(overallIcon, BorderLayout.WEST);
+		overallPanel.add(overallInfo, BorderLayout.CENTER);
 
-        // Create reset all menu
-        final JMenuItem reset = new JMenuItem("Reset");
-        reset.addActionListener(e ->
-        {
-            overallProducts = 0;
-            overallProfit = 0;
-            overallPatches = 0;
-            updateOverall();
-            runsContainer.removeAll();
-            runsContainer.repaint();
-        });
+		// Create reset all menu
+		final JMenuItem reset = new JMenuItem("Reset");
+		reset.addActionListener(e ->
+		{
+			overallProducts = 0;
+			overallProfit = 0;
+			overallPatches = 0;
+			updateOverall();
+			runsContainer.removeAll();
+			runsContainer.repaint();
+		});
 
-        // TODO remove following two testing buttons
-        final JMenuItem addRanarr = new JMenuItem("Add Run");
-        addRanarr.addActionListener(e ->
-        {
-            addRun(new FarmingProfitRun(itemManager, Crop.RANARR, 13, new WorldPoint(1, 1, 1)));
-        });
-        final JMenuItem addSnapdragon = new JMenuItem("Add Snapdragon");
-        addSnapdragon.addActionListener(e ->
-        {
-            addRun(new FarmingProfitRun(itemManager, Crop.SNAPDRAGON, 5, new WorldPoint(1, 1, 1)));
-        });
-
-        // Create popup menu
-        final JPopupMenu popupMenu = new JPopupMenu();
-        popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
-        popupMenu.add(reset);
 		// TODO remove following two testing buttons
-        popupMenu.add(addRanarr);
-        popupMenu.add(addSnapdragon);
+		final JMenuItem addRanarr = new JMenuItem("Add Run");
+		addRanarr.addActionListener(e ->
+		{
+			addRun(new FarmingProfitRun(itemManager, Crop.RANARR, 13, new WorldPoint(1, 1, 1)));
+		});
+		final JMenuItem addSnapdragon = new JMenuItem("Add Snapdragon");
+		addSnapdragon.addActionListener(e ->
+		{
+			addRun(new FarmingProfitRun(itemManager, Crop.SNAPDRAGON, 5, new WorldPoint(1, 1, 1)));
+		});
 
-        overallPanel.setComponentPopupMenu(popupMenu);
+		// Create popup menu
+		final JPopupMenu popupMenu = new JPopupMenu();
+		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+		popupMenu.add(reset);
+		// TODO remove following two testing buttons
+		popupMenu.add(addRanarr);
+		popupMenu.add(addSnapdragon);
 
-        // Create loot logs wrapper
-        runsContainer.setLayout(new BoxLayout(runsContainer, BoxLayout.Y_AXIS));
-        layoutPanel.add(overallPanel);
-        layoutPanel.add(runsContainer);
+		overallPanel.setComponentPopupMenu(popupMenu);
 
-        updateOverall();
-    }
+		// Create loot logs wrapper
+		runsContainer.setLayout(new BoxLayout(runsContainer, BoxLayout.Y_AXIS));
+		layoutPanel.add(overallPanel);
+		layoutPanel.add(runsContainer);
 
-    void addRun(FarmingProfitRun run)
-    {
-        runs.add(run);
+		updateOverall();
+	}
 
-        final FarmingProfitBox box = new FarmingProfitBox(itemManager, run);
+	void addRun(FarmingProfitRun run)
+	{
+		runs.add(run);
 
-        // Create reset all menu
-        final JMenuItem reset = new JMenuItem("Remove");
-        reset.addActionListener(e ->
-        {
-            overallProfit -= run.getProfit();
-            overallProducts -= run.getAmount();
-            overallPatches -= 1;
-            updateOverall();
-            runsContainer.remove(box);
-            runsContainer.repaint();
-        });
-        // Create popup menu
-        final JPopupMenu popupMenu = new JPopupMenu();
-        popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
-        popupMenu.add(reset);
-        box.setComponentPopupMenu(popupMenu);
+		final FarmingProfitBox box = new FarmingProfitBox(itemManager, run);
 
-        runsContainer.add(box, 0);
-        runsContainer.repaint();
+		// Create reset all menu
+		final JMenuItem reset = new JMenuItem("Remove");
+		reset.addActionListener(e ->
+		{
+			overallProfit -= run.getProfit();
+			overallProducts -= run.getAmount();
+			overallPatches -= 1;
+			updateOverall();
+			runsContainer.remove(box);
+			runsContainer.repaint();
+		});
+		// Create popup menu
+		final JPopupMenu popupMenu = new JPopupMenu();
+		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+		popupMenu.add(reset);
+		box.setComponentPopupMenu(popupMenu);
 
-        overallProfit += run.getProfit();
-        overallProducts += run.getAmount();
-        overallPatches += 1;
+		runsContainer.add(box, 0);
+		runsContainer.repaint();
 
-        updateOverall();
-    }
+		overallProfit += run.getProfit();
+		overallProducts += run.getAmount();
+		overallPatches += 1;
 
-    void loadHeaderIcon(BufferedImage img)
-    {
-        overallIcon.setIcon(new ImageIcon(img));
-    }
+		updateOverall();
+	}
 
-    private static String htmlLabel(String key, long value)
-    {
-        final String valueStr = StackFormatter.quantityToStackSize(value);
-        return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
-    }
+	void loadHeaderIcon(BufferedImage img)
+	{
+		overallIcon.setIcon(new ImageIcon(img));
+	}
 
-    private void updateOverall()
-    {
-        overallProfitLabel.setText(htmlLabel("Total profit: ", overallProfit));
-        overallPatchesLabel.setText(htmlLabel("Total patches: ", overallPatches));
-        overallProductsLabel.setText(htmlLabel("Total products: ", overallProducts));
-    }
+	private static String htmlLabel(String key, long value)
+	{
+		final String valueStr = StackFormatter.quantityToStackSize(value);
+		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
+	}
+
+	private void updateOverall()
+	{
+		overallProfitLabel.setText(htmlLabel("Total profit: ", overallProfit));
+		overallPatchesLabel.setText(htmlLabel("Total patches: ", overallPatches));
+		overallProductsLabel.setText(htmlLabel("Total products: ", overallProducts));
+	}
 
 }
