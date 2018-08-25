@@ -28,37 +28,30 @@ import lombok.Value;
 import net.runelite.api.coords.WorldPoint;
 
 @Value
-public class MultiCombatBorder
+class MultiCombatBorder
 {
-
-	public static final int NORTH = 0;
-	public static final int SOUTH = 1;
-	public static final int EAST = 2;
-	public static final int WEST = 3;
-
 	private final String id;
 	private final WorldPoint single;
 	private final WorldPoint multi;
 
-	int getEdge()
+	Edge getEdge()
 	{
 		if (single.getX() > multi.getX())
 		{
-			return EAST;
+			return Edge.EAST;
 		}
 		else if (single.getX() < multi.getX())
 		{
-			return WEST;
+			return Edge.WEST;
 		}
 		else if (single.getY() > multi.getY())
 		{
-			return NORTH;
+			return Edge.NORTH;
 		}
 		else if (single.getY() < multi.getY())
 		{
-			return SOUTH;
+			return Edge.SOUTH;
 		}
 		throw new IllegalStateException("Entry is not representing a border.");
 	}
-
 }

@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
@@ -48,14 +49,14 @@ import net.runelite.client.plugins.opponentinfo.OpponentInfoPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Multicombat borders",
-	description = "Show borders between mutli and single combat areas"
+	name = "Multi-combat borders",
+	description = "Show borders between mutli and single combat areas",
+	enabledByDefault = false
 )
 public class MultiCombatBordersPlugin extends Plugin
 {
-
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -63,13 +64,12 @@ public class MultiCombatBordersPlugin extends Plugin
 	@Inject
 	private MultiCombatBordersOverlay multiCombatBordersOverlay;
 
-	private List<MultiCombatBorder> multiCombatBorders = loadMultiCombatBorders();
+	private List<MultiCombatBorder> multiCombatBorders = Collections.emptyList();
 	List<MultiCombatBorder> multiCombatBordersWithinView = Collections.emptyList();
-
 	private WorldPoint prevPlayerLocation;
 
 	@Provides
-	MultiCombatBordersConfig getConfig(ConfigManager configManager)
+	private MultiCombatBordersConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(MultiCombatBordersConfig.class);
 	}
@@ -77,6 +77,7 @@ public class MultiCombatBordersPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		multiCombatBorders = loadMultiCombatBorders();
 		overlayManager.add(multiCombatBordersOverlay);
 	}
 
@@ -86,7 +87,7 @@ public class MultiCombatBordersPlugin extends Plugin
 		overlayManager.remove(multiCombatBordersOverlay);
 	}
 
-	private List<MultiCombatBorder> loadMultiCombatBorders()
+	private static List<MultiCombatBorder> loadMultiCombatBorders()
 	{
 		Gson gson = new Gson();
 		InputStream multiBordersFile = OpponentInfoPlugin.class.getResourceAsStream("/multi_borders.json");
@@ -111,7 +112,7 @@ public class MultiCombatBordersPlugin extends Plugin
 		return output;
 	}
 
-	private WorldPoint fromJsonObject(JsonObject jsonObject)
+	private static WorldPoint fromJsonObject(@Nonnull JsonObject jsonObject)
 	{
 		JsonPrimitive x = jsonObject.getAsJsonPrimitive("x");
 		JsonPrimitive y = jsonObject.getAsJsonPrimitive("y");
@@ -129,12 +130,11 @@ public class MultiCombatBordersPlugin extends Plugin
 		}
 	}
 
-	private List<MultiCombatBorder> getBordersWithinView(WorldPoint playerLocation)
+	private List<MultiCombatBorder> getBordersWithinView(@Nonnull WorldPoint playerLocation)
 	{
 		return multiCombatBorders
 			.stream()
 			.filter(border -> playerLocation.distanceTo(border.getMulti()) <= 18)
 			.collect(Collectors.toList());
 	}
-
 }

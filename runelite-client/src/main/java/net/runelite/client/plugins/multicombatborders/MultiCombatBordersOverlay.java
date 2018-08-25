@@ -42,13 +42,12 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class MultiCombatBordersOverlay extends Overlay
 {
-
 	private final Client client;
 	private final MultiCombatBordersConfig config;
 	private final MultiCombatBordersPlugin plugin;
 
 	@Inject
-	MultiCombatBordersOverlay(Client client, MultiCombatBordersConfig config, MultiCombatBordersPlugin plugin)
+	private MultiCombatBordersOverlay(Client client, MultiCombatBordersConfig config, MultiCombatBordersPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.MED);
@@ -68,20 +67,20 @@ public class MultiCombatBordersOverlay extends Overlay
 
 			switch (border.getEdge())
 			{
-				case MultiCombatBorder.NORTH:
+				case NORTH:
 					start = border.getMulti();
 					end = new WorldPoint(start.getX() + 1, start.getY(), start.getPlane());
 					break;
-				case MultiCombatBorder.SOUTH:
+				case SOUTH:
 					start = border.getSingle();
 					end = new WorldPoint(start.getX() + 1, start.getY(), start.getPlane());
 					sign = -1;
 					break;
-				case MultiCombatBorder.EAST:
+				case EAST:
 					start = border.getSingle();
 					end = new WorldPoint(start.getX(), start.getY() - 1, start.getPlane());
 					break;
-				case MultiCombatBorder.WEST:
+				case WEST:
 					start = border.getMulti();
 					end = new WorldPoint(start.getX(), start.getY() - 1, start.getPlane());
 					sign = -1;
@@ -111,7 +110,7 @@ public class MultiCombatBordersOverlay extends Overlay
 	/**
 	 * Returns a polygon representing a line between two points. Top left corners.
 	 */
-	private Polygon linePoly(@Nonnull Client client, @Nonnull LocalPoint startLocation, @Nonnull LocalPoint endLocation, int adjustX, int adjustY)
+	private static Polygon linePoly(@Nonnull Client client, @Nonnull LocalPoint startLocation, @Nonnull LocalPoint endLocation, int adjustX, int adjustY)
 	{
 		int adjustedPointsX = adjustX * (LOCAL_TILE_SIZE / 8);
 		int adjustedPointsY = adjustY * (LOCAL_TILE_SIZE / 8);
@@ -138,5 +137,4 @@ public class MultiCombatBordersOverlay extends Overlay
 
 		return null;
 	}
-
 }

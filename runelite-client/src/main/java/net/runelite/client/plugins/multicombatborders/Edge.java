@@ -24,31 +24,10 @@
  */
 package net.runelite.client.plugins.multicombatborders;
 
-import java.awt.Color;
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-
-@ConfigGroup("multicombatborders")
-public interface MultiCombatBordersConfig extends Config
+enum Edge
 {
-	@ConfigItem(
-		keyName = "singleColor",
-		name = "Single color",
-		description = "Color of single-combat side of border"
-	)
-	default Color singleColor()
-	{
-		return Color.GREEN;
-	}
-
-	@ConfigItem(
-		keyName = "multiColor",
-		name = "Multi color",
-		description = "Color of multi-combat side of border"
-	)
-	default Color multiColor()
-	{
-		return Color.RED;
-	}
+	NORTH,
+	SOUTH,
+	EAST,
+	WEST
 }
