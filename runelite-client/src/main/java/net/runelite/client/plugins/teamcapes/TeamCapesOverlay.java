@@ -37,7 +37,6 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 
 public class TeamCapesOverlay extends Overlay
 {
-
 	private final PanelComponent panelComponent = new PanelComponent();
 	private final TeamCapesPlugin plugin;
 	private final TeamCapesConfig config;
