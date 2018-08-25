@@ -46,6 +46,7 @@ public class WidgetID
 	public static final int DEPOSIT_BOX_GROUP_ID = 192;
 	public static final int INVENTORY_GROUP_ID = 149;
 	public static final int FRIENDS_LIST_GROUP_ID = 429;
+	public static final int IGNORE_LIST_GROUP_ID = 432;
 	public static final int RAIDING_PARTY_GROUP_ID = 500;
 	public static final int EQUIPMENT_GROUP_ID = 387;
 	public static final int EQUIPMENT_INVENTORY_GROUP_ID = 85;
@@ -158,6 +159,16 @@ public class WidgetID
 		static final int BLUE_HEALTH = 21;
 		static final int YELLOW_HEALTH = 22;
 		static final int RED_HEALTH = 23;
+	}
+
+	static class FriendList
+	{
+		static final int TITLE = 3;
+	}
+
+	static class IgnoreList
+	{
+		static final int TITLE = 3;
 	}
 
 	static class ClanChat
