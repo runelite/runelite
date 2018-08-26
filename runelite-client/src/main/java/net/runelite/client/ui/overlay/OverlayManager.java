@@ -58,11 +58,19 @@ public class OverlayManager
 	@VisibleForTesting
 	static final Comparator<Overlay> OVERLAY_COMPARATOR = (a, b) ->
 	{
-		if (a.getPosition() != b.getPosition())
+		final OverlayPosition aPos = a.getPreferredPosition() != null
+			? a.getPreferredPosition()
+			: a.getPosition();
+
+		final OverlayPosition bPos = b.getPreferredPosition() != null
+			? b.getPreferredPosition()
+			: b.getPosition();
+
+		if (aPos != bPos)
 		{
 			// This is so non-dynamic overlays render after dynamic
 			// overlays, which are generally in the scene
-			return a.getPosition().compareTo(b.getPosition());
+			return aPos.compareTo(bPos);
 		}
 
 		// For dynamic overlays, higher priority means to
@@ -70,7 +78,7 @@ public class OverlayManager
 		// For non-dynamic overlays, higher priority means
 		// draw *first* so that they are closer to their
 		// defined position.
-		return a.getPosition() == OverlayPosition.DYNAMIC
+		return aPos == OverlayPosition.DYNAMIC
 			? a.getPriority().compareTo(b.getPriority())
 			: b.getPriority().compareTo(a.getPriority());
 	};
