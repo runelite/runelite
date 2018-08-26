@@ -275,7 +275,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		{
 			int kc = Integer.parseInt(matcher.group(1));
 
-			setKc("Barrows", kc);
+			setKc("Barrows Chests", kc);
 		}
 	}
 
