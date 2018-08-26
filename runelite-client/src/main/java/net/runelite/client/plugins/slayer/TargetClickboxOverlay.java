@@ -33,7 +33,11 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.util.List;
 import javax.inject.Inject;
+import net.runelite.api.Client;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
+import net.runelite.api.Perspective;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -42,12 +46,14 @@ public class TargetClickboxOverlay extends Overlay
 {
 	private final SlayerConfig config;
 	private final SlayerPlugin plugin;
+	private final Client client;
 
 	@Inject
-	TargetClickboxOverlay(SlayerConfig config, SlayerPlugin plugin)
+	TargetClickboxOverlay(SlayerConfig config, SlayerPlugin plugin, Client client)
 	{
 		this.config = config;
 		this.plugin = plugin;
+		this.client = client;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 	}
@@ -55,30 +61,66 @@ public class TargetClickboxOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.highlightTargets())
+		if (config.highlightStyle() == RenderStyle.OFF)
 		{
 			return null;
 		}
 
 		List<NPC> targets = plugin.getHighlightedTargets();
-		for (NPC target : targets)
-		{
-			renderTargetOverlay(graphics, target, config.getTargetColor());
-		}
+		Color color = config.getTargetColor();
 
+		if (config.highlightStyle() == RenderStyle.TILE)
+		{
+			for (NPC target : targets)
+			{
+				renderSlayerTargetTiles(graphics, target, color);
+			}
+		}
+		else
+		{
+			for (NPC target : targets)
+			{
+				renderSlayerTargetHull(graphics, target, color);
+			}
+		}
 		return null;
 	}
-
-	private void renderTargetOverlay(Graphics2D graphics, NPC actor, Color color)
+	private void renderSlayerTargetTiles(Graphics2D graphics, NPC slayerTarget, Color highlightColor)
 	{
-		Polygon objectClickbox = actor.getConvexHull();
-		if (objectClickbox != null)
+		int slayerTargetSize = 1;
+		NPCComposition slayerTargetComposition = slayerTarget.getTransformedComposition();
+
+		if ( slayerTargetComposition != null)
 		{
-			graphics.setColor(color);
+			slayerTargetSize = slayerTargetComposition.getSize();
+		}
+
+		LocalPoint slayerTargetPoint = slayerTarget.getLocalLocation();
+		Polygon tilePolygon = Perspective.getCanvasTileAreaPoly(client, slayerTargetPoint, slayerTargetSize);
+
+		if (tilePolygon != null)
+		{
+			graphics.setColor(highlightColor);
 			graphics.setStroke(new BasicStroke(2));
-			graphics.draw(objectClickbox);
-			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
-			graphics.fill(objectClickbox);
+			graphics.draw(tilePolygon);
+			Color tileFill = new Color(highlightColor.getRed(), highlightColor.getGreen(), highlightColor.getBlue(), 20);
+			graphics.setColor(tileFill);
+			graphics.fill(tilePolygon);
+		}
+	}
+
+	private void renderSlayerTargetHull(Graphics2D graphics, NPC slayerTarget, Color highlightColor)
+	{
+		Polygon slayerTargetClickbox = slayerTarget.getConvexHull();
+
+		if (slayerTargetClickbox != null)
+		{
+			graphics.setColor(highlightColor);
+			graphics.setStroke(new BasicStroke(2));
+			graphics.draw(slayerTargetClickbox);
+			Color hullFill = new Color(highlightColor.getRed(), highlightColor.getGreen(), highlightColor.getBlue(), 20);
+			graphics.setColor(hullFill);
+			graphics.fill(slayerTargetClickbox);
 		}
 	}
 }

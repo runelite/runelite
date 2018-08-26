@@ -79,13 +79,13 @@ public interface SlayerConfig extends Config
 
 	@ConfigItem(
 		position = 5,
-		keyName = "highlightTargets",
-		name = "Highlight Targets",
-		description = "Highlight monsters you can kill for your current slayer assignment"
+		keyName = "highlightStyle",
+		name = "Choose Highlight Style",
+		description = "Choose Highlight Style for monsters which are your current Slayer Assignment"
 	)
-	default boolean highlightTargets()
+	default RenderStyle highlightStyle()
 	{
-		return false;
+		return RenderStyle.HULL;
 	}
 
 	@ConfigItem(
