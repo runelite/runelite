@@ -471,6 +471,8 @@ public class WorldHopperPlugin extends Plugin
 		currentWorldTypes.remove(WorldType.SKILL_TOTAL);
 		// Allow hopping from a high risk world to a non-high risk world
 		currentWorldTypes.remove(WorldType.PVP_HIGH_RISK);
+		// Allow hopping from a LMS world to a non-LMS world
+		currentWorldTypes.remove(WorldType.LAST_MAN_STANDING);
 
 		List<World> worlds = worldResult.getWorlds();
 
@@ -510,6 +512,8 @@ public class WorldHopperPlugin extends Plugin
 			EnumSet<WorldType> types = world.getTypes().clone();
 
 			types.remove(WorldType.BOUNTY);
+			// Treat LMS world like casual world
+			types.remove(WorldType.LAST_MAN_STANDING);
 
 			if (types.contains(WorldType.SKILL_TOTAL))
 			{
