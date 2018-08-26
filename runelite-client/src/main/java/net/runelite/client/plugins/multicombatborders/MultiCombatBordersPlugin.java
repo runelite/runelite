@@ -35,11 +35,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import static net.runelite.api.Constants.CHUNK_SIZE;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
@@ -64,7 +67,8 @@ public class MultiCombatBordersPlugin extends Plugin
 	@Inject
 	private MultiCombatBordersOverlay multiCombatBordersOverlay;
 
-	private List<MultiCombatBorder> multiCombatBorders = Collections.emptyList();
+	private Map<Integer, Map<Integer, List<MultiCombatBorder>>> chunks = new HashMap<>();
+
 	List<MultiCombatBorder> multiCombatBordersWithinView = Collections.emptyList();
 	private WorldPoint prevPlayerLocation;
 
@@ -77,7 +81,7 @@ public class MultiCombatBordersPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		multiCombatBorders = loadMultiCombatBorders();
+		chunks = chunk(loadMultiCombatBorders());
 		overlayManager.add(multiCombatBordersOverlay);
 	}
 
@@ -119,6 +123,20 @@ public class MultiCombatBordersPlugin extends Plugin
 		return new WorldPoint(x.getAsInt(), y.getAsInt(), 0);
 	}
 
+	private static Map<Integer, Map<Integer, List<MultiCombatBorder>>> chunk(List<MultiCombatBorder> borders)
+	{
+		Map<Integer, Map<Integer, List<MultiCombatBorder>>> output = new HashMap<>();
+		for (MultiCombatBorder border : borders)
+		{
+			int chunkX = border.getMulti().getX() / CHUNK_SIZE;
+			int chunkY = border.getMulti().getY() / CHUNK_SIZE;
+			Map<Integer, List<MultiCombatBorder>> xMap = output.computeIfAbsent(chunkX, k -> new HashMap<>());
+			List<MultiCombatBorder> yList = xMap.computeIfAbsent(chunkY, k -> new ArrayList<>());
+			yList.add(border);
+		}
+		return output;
+	}
+
 	@Subscribe
 	void onTick(GameTick tick)
 	{
@@ -130,9 +148,33 @@ public class MultiCombatBordersPlugin extends Plugin
 		}
 	}
 
+	private List<MultiCombatBorder> getAdjacentChunks()
+	{
+		List<MultiCombatBorder> output = new ArrayList<>();
+		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
+		int chunkX = playerLocation.getX() / CHUNK_SIZE;
+		int chunkY = playerLocation.getY() / CHUNK_SIZE;
+		for (int x = chunkX - 3; x < chunkX + 3; x++)
+		{
+			for (int y = chunkY - 3; y < chunkY + 3; y++)
+			{
+				Map<Integer, List<MultiCombatBorder>> xMap = chunks.get(x);
+				if (xMap != null)
+				{
+					List<MultiCombatBorder> yList = xMap.get(y);
+					if (yList != null)
+					{
+						output.addAll(yList);
+					}
+				}
+			}
+		}
+		return output;
+	}
+
 	private List<MultiCombatBorder> getBordersWithinView(@Nonnull WorldPoint playerLocation)
 	{
-		return multiCombatBorders
+		return getAdjacentChunks()
 			.stream()
 			.filter(border -> playerLocation.distanceTo(border.getMulti()) <= 18)
 			.collect(Collectors.toList());
