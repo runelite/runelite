@@ -347,11 +347,32 @@ public class WidgetID
 	static class ResizableViewportBottomLine
 	{
 		static final int LOGOUT_BUTTON_OVERLAY = 29;
-		static final int INVENTORY_TAB = 51;
-		static final int PRAYER_TAB = 53;
-		static final int QUESTS_ICON = 57;
-		static final int INVENTORY_ICON = 58;
-		static final int PRAYER_ICON = 60;
+		static final int CMB_TAB = 50;
+		static final int CMB_ICON = 57;
+		static final int SKILLS_TAB = 51;
+		static final int SKILLS_ICON = 58;
+		static final int QUESTS_TAB = 52;
+		static final int QUESTS_ICON = 59;
+		static final int INVENTORY_TAB = 53;
+		static final int INVENTORY_ICON = 60;
+		static final int EQUIP_TAB = 54;
+		static final int EQUIP_ICON = 61;
+		static final int PRAYER_TAB = 55;
+		static final int PRAYER_ICON = 62;
+		static final int SPELL_TAB = 56;
+		static final int SPELL_ICON = 53;
+		static final int FC_TAB = 35;
+		static final int FC_ICON = 41;
+		static final int IGNORE_TAB = 36;
+		static final int IGNORE_ICON = 42;
+		static final int FRIEND_TAB = 37;
+		static final int FRIEND_ICON = 43;
+		static final int SETTINGS_TAB = 38;
+		static final int SETTINGS_ICON = 44;
+		static final int EMOTE_TAB = 39;
+		static final int EMOTE_ICON = 45;
+		static final int MUSIC_TAB = 40;
+		static final int MUSIC_ICON = 46;
 	}
 
 	static class Chatbox
