@@ -63,8 +63,6 @@ class XpPanel extends PluginPanel
 	/* This displays the "No exp gained" text */
 	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
 
-	private boolean paused = false;
-
 	XpPanel(XpTrackerPlugin xpTrackerPlugin, Client client, SkillIconManager iconManager)
 	{
 		super();
@@ -95,16 +93,16 @@ class XpPanel extends PluginPanel
 		final JMenuItem pauseAll = new JMenuItem("Pause All");
 		pauseAll.addActionListener(e ->
 		{
-			xpTrackerPlugin.pauseAllSkills(!paused);
-			if (paused)
+			if (pauseAll.getText().equals("Pause All"))
 			{
-				pauseAll.setText("Pause All");
+				xpTrackerPlugin.pauseAllSkills(true);
+				pauseAll.setText("Unpause All");
 			}
 			else
 			{
-				pauseAll.setText("Unpause All");
+				xpTrackerPlugin.pauseAllSkills(false);
+				pauseAll.setText("Pause All");
 			}
-			paused = !paused;
 		});
 
 		// Create popup menu
