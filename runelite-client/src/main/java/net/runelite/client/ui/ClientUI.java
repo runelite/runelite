@@ -512,19 +512,13 @@ public class ClientUI
 		{
 			OSXUtil.requestFocus();
 		}
+		else if (OSType.getOSType() == OSType.Windows && System.getProperty("os.name").contains("10"))
+		{
+			frame.toFront();
+		}
 
-		if (System.getProperty("os.name").equals("Windows 10"))
-		{
-			frame.setAlwaysOnTop(true);
-			frame.requestFocus();
-			giveClientFocus();
-			frame.setAlwaysOnTop(config.gameAlwaysOnTop());
-		}
-		else
-		{
-			frame.requestFocus();
-			giveClientFocus();
-		}
+		frame.requestFocus();
+		giveClientFocus();
 	}
 
 	/**
