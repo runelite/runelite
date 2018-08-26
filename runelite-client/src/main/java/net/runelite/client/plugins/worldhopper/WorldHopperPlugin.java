@@ -466,12 +466,9 @@ public class WorldHopperPlugin extends Plugin
 			currentWorldTypes.remove(WorldType.PVP);
 			currentWorldTypes.remove(WorldType.PVP_HIGH_RISK);
 		}
-		// Don't regard skill total and bounty worlds as a type that must be hopped between
+		// Don't regard these worlds as a type that must be hopped between
 		currentWorldTypes.remove(WorldType.BOUNTY);
 		currentWorldTypes.remove(WorldType.SKILL_TOTAL);
-		// Allow hopping from a high risk world to a non-high risk world
-		currentWorldTypes.remove(WorldType.PVP_HIGH_RISK);
-		// Allow hopping from a LMS world to a non-LMS world
 		currentWorldTypes.remove(WorldType.LAST_MAN_STANDING);
 
 		List<World> worlds = worldResult.getWorlds();
