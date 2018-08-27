@@ -37,14 +37,14 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
-
+import net.runelite.client.ui.overlay.OverlayStyle;
 public class TargetMinimapOverlay extends Overlay
 {
 	private final SlayerConfig config;
 	private final SlayerPlugin plugin;
 
 	@Inject
-	TargetMinimapOverlay(SlayerConfig config, SlayerPlugin plugin)
+	private TargetMinimapOverlay(SlayerConfig config, SlayerPlugin plugin)
 	{
 		this.config = config;
 		this.plugin = plugin;
@@ -55,7 +55,7 @@ public class TargetMinimapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.highlightStyle() == HighlightStyle.NONE)
+		if (config.highlightStyle() == OverlayStyle.NONE)
 		{
 			return null;
 		}

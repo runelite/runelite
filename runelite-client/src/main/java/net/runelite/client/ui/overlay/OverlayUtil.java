@@ -34,8 +34,10 @@ import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
+import java.util.List;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.TileObject;
@@ -56,6 +58,49 @@ public class OverlayUtil
 		graphics.setColor(new Color(0, 0, 0, 50));
 		graphics.fillPolygon(poly);
 		graphics.setStroke(originalStroke);
+	}
+
+	public static void renderActorList(Graphics2D graphics, Client client, List<NPC> actorList, Color color, OverlayStyle style, boolean drawNames)
+	{
+		if (actorList != null)
+		{
+			for (NPC actor : actorList)
+			{
+				if (actor != null)
+				{
+					switch (style)
+					{
+						case NONE:
+							break;
+						case HULL:
+							Polygon hPoly = actor.getConvexHull();
+							if (hPoly != null)
+							{
+								OverlayUtil.renderPolygon(graphics, hPoly, color);
+							}
+							break;
+						case TILE:
+							int actorSize = actor.getTransformedComposition().getSize();
+							LocalPoint actorLocation = actor.getLocalLocation();
+							Polygon tPoly = actorSize >= 1 ? Perspective.getCanvasTileAreaPoly(client, actorLocation, actorSize) : null;
+							if (tPoly != null)
+							{
+								OverlayUtil.renderPolygon(graphics, tPoly, color);
+							}
+							break;
+					}
+					if (drawNames)
+					{
+						String name = actor.getName();
+						Point textLocation = actor.getCanvasTextLocation(graphics, name, actor.getLogicalHeight() + 40);
+						if (textLocation != null)
+						{
+							OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
+						}
+					}
+				}
+			}
+		}
 	}
 
 	public static void renderMinimapLocation(Graphics2D graphics, Point mini, Color color)

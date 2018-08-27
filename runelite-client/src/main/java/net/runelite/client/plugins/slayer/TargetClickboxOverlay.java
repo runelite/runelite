@@ -26,20 +26,13 @@
  */
 package net.runelite.client.plugins.slayer;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import net.runelite.api.Perspective;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.*;
 
 public class TargetClickboxOverlay extends Overlay
 {
@@ -47,7 +40,7 @@ public class TargetClickboxOverlay extends Overlay
 	private final SlayerPlugin plugin;
 	private final Client client;
 	@Inject
-	TargetClickboxOverlay(SlayerConfig config, SlayerPlugin plugin, Client client)
+	private TargetClickboxOverlay(SlayerConfig config, SlayerPlugin plugin, Client client)
 	{
 		this.config = config;
 		this.plugin = plugin;
@@ -60,44 +53,11 @@ public class TargetClickboxOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		List<NPC> targets = plugin.getHighlightedTargets();
-		if (config.highlightStyle() == HighlightStyle.NONE)
+		if (config.highlightStyle() == OverlayStyle.NONE)
 		{
 			return null;
 		}
-		renderTargetList(graphics, targets, config.getTargetColor(), config.highlightStyle());
+		OverlayUtil.renderActorList(graphics, client, targets, config.getTargetColor(), config.highlightStyle(),  false);
 		return null;
-	}
-	private void renderTargetList(Graphics2D graphics, List<NPC> targets, Color highlightColor, HighlightStyle style)
-	{
-		if (targets != null)
-		{
-			for (NPC npc : targets)
-			{
-				if (npc != null)
-				{
-					switch (style)
-					{
-						case NONE:
-							break;
-						case CONVEX_HULL:
-							Polygon hPolygon = npc.getConvexHull();
-							if (hPolygon != null)
-							{
-								OverlayUtil.renderPolygon(graphics, hPolygon, highlightColor);
-							}
-							break;
-						case MARK_TILE:
-							int targetSize = npc.getComposition().getSize();
-							LocalPoint npcLocation = npc.getLocalLocation();
-							Polygon tPolygon = targetSize >= 1 ? Perspective.getCanvasTileAreaPoly(client, npcLocation, targetSize) : null;
-							if (tPolygon != null)
-							{
-								OverlayUtil.renderPolygon(graphics, tPolygon, highlightColor);
-							}
-							break;
-					}
-				}
-			}
-		}
 	}
 }

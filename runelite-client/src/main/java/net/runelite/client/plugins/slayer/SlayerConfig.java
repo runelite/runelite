@@ -29,6 +29,7 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.ui.overlay.OverlayStyle;
 
 @ConfigGroup("slayer")
 public interface SlayerConfig extends Config
@@ -83,9 +84,9 @@ public interface SlayerConfig extends Config
 		name = "Choose Highlight Style",
 		description = "Choose Highlight Style for monsters which are your current Slayer Assignment"
 	)
-	default HighlightStyle highlightStyle()
+	default OverlayStyle highlightStyle()
 	{
-		return HighlightStyle.CONVEX_HULL;
+		return OverlayStyle.HULL;
 	}
 
 	@ConfigItem(

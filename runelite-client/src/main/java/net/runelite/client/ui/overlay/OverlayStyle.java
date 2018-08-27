@@ -22,17 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.slayer;
+package net.runelite.client.ui.overlay;
 
-public enum HighlightStyle
+public enum OverlayStyle
 {
 	NONE("Off"),
-	MARK_TILE("Tile"),
-	CONVEX_HULL("Hull");
+	TILE("Tile"),
+	HULL("Hull");
 
 	private final String name;
 
-	HighlightStyle(String name)
+	OverlayStyle(String name)
 	{
 		this.name = name;
 	}
