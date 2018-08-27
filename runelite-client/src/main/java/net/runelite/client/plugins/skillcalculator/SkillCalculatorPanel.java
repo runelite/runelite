@@ -32,6 +32,8 @@ import java.awt.GridLayout;
 import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -175,11 +177,17 @@ class SkillCalculatorPanel extends PluginPanel
 		ComboBoxIconRenderer renderer = new ComboBoxIconRenderer();
 		box.setRenderer(renderer);
 
+		TreeMap<String, ComboBoxIconEntry> m = new TreeMap<>();
 		for (CalculatorType calculatorType : CalculatorType.values())
 		{
 			ImageIcon icon = new ImageIcon(iconManager.getSkillImage(calculatorType.getSkill(), true));
 			ComboBoxIconEntry dropdownEntry = new ComboBoxIconEntry(icon, calculatorType.getSkill().getName());
-			box.addItem(dropdownEntry);
+			m.put(calculatorType.getSkill().getName(), dropdownEntry);
+		}
+
+		for (Map.Entry<String, ComboBoxIconEntry> e : m.entrySet())
+		{
+			box.addItem(e.getValue());
 		}
 
 		box.addItemListener(e ->
