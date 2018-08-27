@@ -27,10 +27,9 @@ package net.runelite.api.coords;
 
 import lombok.Value;
 import net.runelite.api.Client;
+import static net.runelite.api.Constants.CHUNK_SIZE;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
-
-import static net.runelite.api.Constants.CHUNK_SIZE;
 
 /**
  * A three-dimensional point representing the coordinate of a Tile.
