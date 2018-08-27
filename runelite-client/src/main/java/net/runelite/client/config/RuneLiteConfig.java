@@ -208,32 +208,10 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "infoBoxVertical",
-		name = "Display infoboxes vertically",
-		description = "Toggles the infoboxes to display vertically",
-		position = 32
-	)
-	default boolean infoBoxVertical()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "infoBoxWrap",
-		name = "Infobox wrap count",
-		description = "Configures the amount of infoboxes shown before wrapping",
-		position = 33
-	)
-	default int infoBoxWrap()
-	{
-		return 4;
-	}
-
-	@ConfigItem(
 		keyName = "infoBoxSize",
 		name = "Infobox size (px)",
 		description = "Configures the size of each infobox in pixels",
-		position = 34
+		position = 32
 	)
 	default int infoBoxSize()
 	{

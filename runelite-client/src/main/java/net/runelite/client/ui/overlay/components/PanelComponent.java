@@ -60,7 +60,7 @@ public class PanelComponent implements LayoutableRenderableEntity
 	private Orientation orientation = Orientation.VERTICAL;
 
 	@Setter
-	private int wrapping = -1;
+	private boolean wrap = false;
 
 	@Setter
 	private Rectangle border = new Rectangle(
@@ -116,9 +116,8 @@ public class PanelComponent implements LayoutableRenderableEntity
 		int totalWidth = 0;
 
 		// Render all children
-		for (int i = 0; i < children.size(); i ++)
+		for (final LayoutableRenderableEntity child : children)
 		{
-			final LayoutableRenderableEntity child = children.get(i);
 			child.setPreferredLocation(new Point(x, y));
 			child.setPreferredSize(childPreferredSize);
 			final Dimension childDimension = child.render(graphics);
@@ -141,29 +140,27 @@ public class PanelComponent implements LayoutableRenderableEntity
 			totalWidth = Math.max(totalWidth, width);
 			totalHeight = Math.max(totalHeight, height);
 
-			if (wrapping > 0 && i < children.size() - 1 && (i + 1)  % wrapping == 0)
+			if (!wrap)
 			{
-				switch (orientation)
-				{
-					case VERTICAL:
-					{
-						height = 0;
-						y = baseY;
-						int diff = childDimension.width + gap.x;
-						x += diff;
-						width += diff;
-						break;
-					}
-					case HORIZONTAL:
-					{
-						width = 0;
-						x = baseX;
-						int diff = childDimension.height + gap.y;
-						y += diff;
-						height += diff;
-						break;
-					}
-				}
+				continue;
+			}
+
+			if (childPreferredSize.width > 0 && width >= childPreferredSize.width)
+			{
+				width = 0;
+				x = baseX;
+				int diff = childDimension.height + gap.y;
+				y += diff;
+				height += diff;
+			}
+
+			if (childPreferredSize.height > 0 && height >= childPreferredSize.height)
+			{
+				height = 0;
+				y = baseY;
+				int diff = childDimension.width + gap.x;
+				x += diff;
+				width += diff;
 			}
 		}
 

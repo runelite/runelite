@@ -51,8 +51,8 @@ public class TeamCapesOverlay extends Overlay
 		this.plugin = plugin;
 		this.config = config;
 		this.manager = manager;
+		panelComponent.setWrap(true);
 		panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
-		panelComponent.setWrapping(4);
 	}
 
 	@Override

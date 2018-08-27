@@ -66,6 +66,8 @@ public class InfoBoxOverlay extends Overlay
 		this.config = config;
 		setPosition(OverlayPosition.TOP_LEFT);
 
+		panelComponent.setWrap(true);
+		panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
 		panelComponent.setBackgroundColor(null);
 		panelComponent.setBorder(new Rectangle());
 		panelComponent.setGap(new Point(1, 1));
@@ -82,10 +84,6 @@ public class InfoBoxOverlay extends Overlay
 		}
 
 		panelComponent.getChildren().clear();
-		panelComponent.setWrapping(config.infoBoxWrap());
-		panelComponent.setOrientation(config.infoBoxVertical()
-			? PanelComponent.Orientation.VERTICAL
-			: PanelComponent.Orientation.HORIZONTAL);
 		panelComponent.setPreferredSize(new Dimension(config.infoBoxSize(), config.infoBoxSize()));
 
 		for (InfoBox box : infoBoxes)
