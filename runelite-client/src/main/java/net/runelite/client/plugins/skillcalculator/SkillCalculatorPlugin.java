@@ -29,8 +29,11 @@ import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import com.google.common.eventbus.Subscribe;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.events.UsernameChanged;
+import net.runelite.api.GameState;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.game.SpriteManager;
@@ -41,6 +44,7 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.util.ImageUtil;
 
+@Slf4j
 @PluginDescriptor(
 	name = "Skill Calculator",
 	description = "Enable the Skill Calculator panel",
@@ -66,8 +70,12 @@ public class SkillCalculatorPlugin extends Plugin
 	@Inject
 	private ClientToolbar clientToolbar;
 
+	@Inject
+	private ClientThread clientThread;
+
 	private NavigationButton uiNavigationButton;
 	private SkillCalculatorPanel uiPanel;
+	private String gameName;
 
 	@Override
 	protected void startUp() throws Exception
@@ -94,8 +102,31 @@ public class SkillCalculatorPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onUsernameChanged(UsernameChanged e)
+	public void onGameStateChanged(GameStateChanged e)
 	{
-		SwingUtilities.invokeLater(() -> uiPanel.refreshCurrentCalc());
+		if (e.getGameState().equals(GameState.LOGGED_IN))
+		{
+			clientThread.invokeLater(() ->
+			{
+				log.debug("Checking for local player name...");
+				String name = client.getLocalPlayer().getName();
+				if (name != null)
+				{
+					// Username Change?
+					if (!name.equals(gameName))
+					{
+						log.debug("Game name changed to `{}`, refreshing current calculator", name);
+						gameName = name;
+						SwingUtilities.invokeLater(() -> uiPanel.refreshCurrentCalc());
+					}
+
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			});
+		}
 	}
 }
