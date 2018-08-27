@@ -57,8 +57,9 @@ class InventoryViewerOverlay extends Overlay
 	private InventoryViewerOverlay(Client client, ItemManager itemManager)
 	{
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
-		panelComponent.setWrapping(4);
+		panelComponent.setWrap(true);
 		panelComponent.setGap(new Point(6, 4));
+		panelComponent.setPreferredSize(new Dimension(4 * (Constants.ITEM_SPRITE_WIDTH + 6), 0));
 		panelComponent.setOrientation(ComponentOrientation.HORIZONTAL);
 		this.itemManager = itemManager;
 		this.client = client;
