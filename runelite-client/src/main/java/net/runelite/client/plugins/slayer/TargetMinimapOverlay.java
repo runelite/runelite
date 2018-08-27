@@ -55,7 +55,7 @@ public class TargetMinimapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.highlightStyle() == RenderStyle.OFF)
+		if (config.highlightStyle() == HighlightStyle.NONE)
 		{
 			return null;
 		}

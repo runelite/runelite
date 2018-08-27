@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Raqes <j.raqes@gmail.com>
+ * Copyright (c) 2018, ItsSebas
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,15 +24,15 @@
  */
 package net.runelite.client.plugins.slayer;
 
-public enum RenderStyle
+public enum HighlightStyle
 {
-	OFF("Off"),
-	TILE("Tile"),
-	HULL("Hull");
+	NONE("Off"),
+	MARK_TILE("Tile"),
+	CONVEX_HULL("Hull");
 
 	private final String name;
 
-	RenderStyle(String name)
+	HighlightStyle(String name)
 	{
 		this.name = name;
 	}

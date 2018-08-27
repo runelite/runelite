@@ -26,7 +26,6 @@
  */
 package net.runelite.client.plugins.slayer;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -35,19 +34,18 @@ import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class TargetClickboxOverlay extends Overlay
 {
 	private final SlayerConfig config;
 	private final SlayerPlugin plugin;
 	private final Client client;
-
 	@Inject
 	TargetClickboxOverlay(SlayerConfig config, SlayerPlugin plugin, Client client)
 	{
@@ -61,66 +59,45 @@ public class TargetClickboxOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.highlightStyle() == RenderStyle.OFF)
+		List<NPC> targets = plugin.getHighlightedTargets();
+		if (config.highlightStyle() == HighlightStyle.NONE)
 		{
 			return null;
 		}
-
-		List<NPC> targets = plugin.getHighlightedTargets();
-		Color color = config.getTargetColor();
-
-		if (config.highlightStyle() == RenderStyle.TILE)
-		{
-			for (NPC target : targets)
-			{
-				renderSlayerTargetTiles(graphics, target, color);
-			}
-		}
-		else
-		{
-			for (NPC target : targets)
-			{
-				renderSlayerTargetHull(graphics, target, color);
-			}
-		}
+		renderTargetList(graphics, targets, config.getTargetColor(), config.highlightStyle());
 		return null;
 	}
-	private void renderSlayerTargetTiles(Graphics2D graphics, NPC slayerTarget, Color highlightColor)
+	private void renderTargetList(Graphics2D graphics, List<NPC> targets, Color highlightColor, HighlightStyle style)
 	{
-		int slayerTargetSize = 1;
-		NPCComposition slayerTargetComposition = slayerTarget.getTransformedComposition();
-
-		if ( slayerTargetComposition != null)
+		if (targets != null)
 		{
-			slayerTargetSize = slayerTargetComposition.getSize();
-		}
-
-		LocalPoint slayerTargetPoint = slayerTarget.getLocalLocation();
-		Polygon tilePolygon = Perspective.getCanvasTileAreaPoly(client, slayerTargetPoint, slayerTargetSize);
-
-		if (tilePolygon != null)
-		{
-			graphics.setColor(highlightColor);
-			graphics.setStroke(new BasicStroke(2));
-			graphics.draw(tilePolygon);
-			Color tileFill = new Color(highlightColor.getRed(), highlightColor.getGreen(), highlightColor.getBlue(), 20);
-			graphics.setColor(tileFill);
-			graphics.fill(tilePolygon);
-		}
-	}
-
-	private void renderSlayerTargetHull(Graphics2D graphics, NPC slayerTarget, Color highlightColor)
-	{
-		Polygon slayerTargetClickbox = slayerTarget.getConvexHull();
-
-		if (slayerTargetClickbox != null)
-		{
-			graphics.setColor(highlightColor);
-			graphics.setStroke(new BasicStroke(2));
-			graphics.draw(slayerTargetClickbox);
-			Color hullFill = new Color(highlightColor.getRed(), highlightColor.getGreen(), highlightColor.getBlue(), 20);
-			graphics.setColor(hullFill);
-			graphics.fill(slayerTargetClickbox);
+			for (NPC npc : targets)
+			{
+				if (npc != null)
+				{
+					switch (style)
+					{
+						case NONE:
+							break;
+						case CONVEX_HULL:
+							Polygon hPolygon = npc.getConvexHull();
+							if (hPolygon != null)
+							{
+								OverlayUtil.renderPolygon(graphics, hPolygon, highlightColor);
+							}
+							break;
+						case MARK_TILE:
+							int targetSize = npc.getComposition().getSize();
+							LocalPoint npcLocation = npc.getLocalLocation();
+							Polygon tPolygon = targetSize >= 1 ? Perspective.getCanvasTileAreaPoly(client, npcLocation, targetSize) : null;
+							if (tPolygon != null)
+							{
+								OverlayUtil.renderPolygon(graphics, tPolygon, highlightColor);
+							}
+							break;
+					}
+				}
+			}
 		}
 	}
 }

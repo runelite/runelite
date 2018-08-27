@@ -83,16 +83,16 @@ public interface SlayerConfig extends Config
 		name = "Choose Highlight Style",
 		description = "Choose Highlight Style for monsters which are your current Slayer Assignment"
 	)
-	default RenderStyle highlightStyle()
+	default HighlightStyle highlightStyle()
 	{
-		return RenderStyle.HULL;
+		return HighlightStyle.CONVEX_HULL;
 	}
 
 	@ConfigItem(
 		position = 6,
 		keyName = "targetColor",
 		name = "Target Color",
-		description = "Color of the highlighted targets"
+		description = "Color of the line that marks your target"
 	)
 	default Color getTargetColor()
 	{
