@@ -368,7 +368,7 @@ class SkillCalculator extends JPanel
 	private void specifyPlannerSlotAmount(UIActionSlot slot)
 	{
 		// Ask for input if high enough level
-		if (currentLevel < slot.getAction().getLevel())
+		if (targetLevel < slot.getAction().getLevel())
 		{
 			JOptionPane.showMessageDialog(slot, "You don't have a high enough level for this action!");
 			return;
@@ -483,9 +483,34 @@ class SkillCalculator extends JPanel
 	private void updatePlannerXP()
 	{
 		// Update UI inputs to account for new XP
+		int oldTargetLevel = targetLevel;
 		targetXP = (int) (currentXP + totalPlannerXp);
 		targetLevel = Experience.getLevelForXp(targetXP);
 		syncInputFields();
+
+		// Ensure proper slot borders if target level has been changed
+		if (oldTargetLevel != targetLevel)
+		{
+			for (UIActionSlot slot : uiActionSlots)
+			{
+				int rLvl = slot.getAction().getLevel();
+				if (rLvl <= currentLevel)
+				{
+					slot.setAvailable(true);
+					slot.setOverlapping(false);
+				}
+				else if (rLvl <= targetLevel)
+				{
+					slot.setAvailable(false);
+					slot.setOverlapping(true);
+				}
+				else
+				{
+					slot.setAvailable(false);
+					slot.setOverlapping(false);
+				}
+			}
+		}
 	}
 
 	private String formatXPActionString(double xp, int actionCount, String expExpression)
