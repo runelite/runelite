@@ -45,4 +45,17 @@ public class Text
 		return TAG_REGEXP.matcher(str).replaceAll("");
 	}
 
+
+	/**
+	 * Cleans the ironman status icon from player name string if present and
+	 * corrects spaces.
+	 *
+	 * @param lookup player name to lookup.
+	 * @return sanitized player name.
+	 */
+	public static String sanitize(String lookup)
+	{
+		String cleaned = lookup.contains("<img") ? lookup.substring(lookup.lastIndexOf('>') + 1) : lookup;
+		return cleaned.replace('\u00A0', ' ');
+	}
 }
