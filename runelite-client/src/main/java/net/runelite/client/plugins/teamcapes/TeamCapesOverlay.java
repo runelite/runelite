@@ -56,8 +56,8 @@ public class TeamCapesOverlay extends Overlay
 		this.plugin = plugin;
 		this.config = config;
 		this.manager = manager;
+		panelComponent.setWrap(true);
 		panelComponent.setOrientation(ComponentOrientation.HORIZONTAL);
-		panelComponent.setWrapping(4);
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Teamcapes overlay"));
 	}
 
