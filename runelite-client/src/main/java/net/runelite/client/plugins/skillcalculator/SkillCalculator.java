@@ -47,6 +47,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
@@ -64,6 +66,7 @@ class SkillCalculator extends JPanel
 	private static final int MAX_XP = 200_000_000;
 	private static final DecimalFormat XP_FORMAT = new DecimalFormat("#,###.#");
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
+	private static final Border POPUP_MENU_BORDER = new EmptyBorder(5, 5, 5, 5);
 
 	static SpriteManager spriteManager;
 	static ItemManager itemManager;
@@ -290,6 +293,7 @@ class SkillCalculator extends JPanel
 				// Right-Click Menu
 				JPopupMenu menu = new JPopupMenu("");
 				JMenuItem item = new JMenuItem("Input Amount");
+				item.setBorder(POPUP_MENU_BORDER);
 				item.addActionListener(new ActionListener()
 				{
 					@Override
@@ -299,6 +303,7 @@ class SkillCalculator extends JPanel
 					}
 				});
 				JMenuItem clearItem = new JMenuItem("Clear Amount");
+				clearItem.setBorder(POPUP_MENU_BORDER);
 				clearItem.addActionListener(new ActionListener()
 				{
 					@Override
@@ -308,6 +313,7 @@ class SkillCalculator extends JPanel
 					}
 				});
 				JMenuItem clearAllItem = new JMenuItem("Clear All Amounts");
+				clearAllItem.setBorder(POPUP_MENU_BORDER);
 				clearAllItem.addActionListener(new ActionListener()
 				{
 					@Override
