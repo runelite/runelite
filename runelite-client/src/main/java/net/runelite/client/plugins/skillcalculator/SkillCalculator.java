@@ -382,11 +382,23 @@ class SkillCalculator extends JPanel
 		if (result == null)
 			return;
 
+		// Support K/M connotation and commas
+		result = result.toLowerCase().replaceAll("k", "000").replaceAll("m",  "000000").replaceAll(",", "");
+
 		// Parse number from input
 		Matcher m = NUMBER_PATTERN.matcher(result);
 		if (m.find())
 		{
-			slot.setValue(Integer.valueOf(m.group()));
+			Integer v;
+			try
+			{
+				v = Integer.valueOf(m.group());
+			}
+			catch (NumberFormatException e)
+			{
+				v = Integer.MAX_VALUE;
+			}
+			slot.setValue(v);
 		}
 		else
 		{
@@ -470,6 +482,10 @@ class SkillCalculator extends JPanel
 
 		double xp = (action.isIgnoreBonus()) ? action.getXp() : action.getXp() * xpFactor;
 		int actionXP = (int) (actionCount * xp);
+		if (actionXP > MAX_XP)
+		{
+			actionXP = MAX_XP;
+		}
 
 		// Update Icon
 		slot.setIconAmount(actionCount);
@@ -485,6 +501,11 @@ class SkillCalculator extends JPanel
 		// Update UI inputs to account for new XP
 		int oldTargetLevel = targetLevel;
 		targetXP = (int) (currentXP + totalPlannerXp);
+		if (targetXP > MAX_XP)
+		{
+			targetXP = MAX_XP;
+		}
+
 		targetLevel = Experience.getLevelForXp(targetXP);
 		syncInputFields();
 
