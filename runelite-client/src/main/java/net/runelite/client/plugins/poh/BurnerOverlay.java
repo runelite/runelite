@@ -31,13 +31,12 @@ import java.awt.Polygon;
 import java.text.DecimalFormat;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.Perspective;
-import net.runelite.api.Point;
 import net.runelite.api.TileObject;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
 
 import static net.runelite.client.plugins.poh.PohPlugin.*;
@@ -75,12 +74,11 @@ public class BurnerOverlay extends Overlay
 				//If there is a unlit burner, mark it red
 				if (getBURNER_UNLIT().contains(object.getId()))
 				{
-					drawBurner(graphics, "Unlit", object, Color.RED, 200);
+					drawBurner(graphics, object, Color.RED);
 				}
 				//If there is a lit burner
 				else if (getBURNER_LIT().contains(object.getId()))
 				{
-					drawBurner(graphics, "Lit", object, Color.GREEN, 200);
 					if (config.showBurnerTime())
 					{
 						if (plugin.getTimerMap().containsKey(tile))
@@ -89,22 +87,28 @@ public class BurnerOverlay extends Overlay
 							DecimalFormat df = new DecimalFormat("#.##");
 							sec = Double.valueOf(df.format(sec));
 							String timeLeft = Double.toString(sec);
+
+							ProgressPieComponent pieTimer = new ProgressPieComponent();
+							pieTimer.setPosition(object.getCanvasLocation());
+							pieTimer.setProgress(1 - (sec / plugin.getSecondsLeft()));
 							//Change textcolor depening on seconds remaining on burner
 							if (sec > 20)
 							{
-								drawBurner(graphics, timeLeft, object, Color.GREEN, 250);
+								renderPie(graphics, Color.GREEN, Color.GREEN, pieTimer);
 							}
 							else if (sec >= 10 && sec <= 20)
 							{
-								drawBurner(graphics, timeLeft, object, Color.ORANGE, 250);
+								//drawBurner(graphics, timeLeft, object, Color.ORANGE, 200);
+								renderPie(graphics, Color.ORANGE, Color.ORANGE, pieTimer);
 							}
 							else if (sec < 10 && sec != 0)
 							{
-								drawBurner(graphics, timeLeft, object, Color.RED, 250);
+								//drawBurner(graphics, timeLeft, object, Color.RED, 200);
+								renderPie(graphics, Color.RED, Color.RED, pieTimer);
 							}
 							else
 							{
-								drawBurner(graphics, "RELIGHT", object, Color.RED, 250);
+								drawBurner(graphics, object, Color.RED);
 							}
 						}
 					}
@@ -114,25 +118,19 @@ public class BurnerOverlay extends Overlay
 		return null;
 	}
 
-	private void drawBurner(Graphics2D graphics, String text, TileObject tileObject, Color color, int offset)
+	private void drawBurner(Graphics2D graphics, TileObject tileObject, Color color)
 	{
-		Point canvasText = Perspective.getCanvasTextLocation(client, graphics, tileObject.getLocalLocation(), text, offset);
-
-		if (canvasText == null)
-		{
-			return;
-		}
-
-		textComponent.setText(text);
-		textComponent.setPosition(new java.awt.Point(canvasText.getX(), canvasText.getY()));
-		textComponent.setColor(color);
-		textComponent.render(graphics);
-
-		//render tile
 		Polygon poly = tileObject.getCanvasTilePoly();
 		if (poly != null)
 		{
 			OverlayUtil.renderPolygon(graphics, poly, color);
 		}
+	}
+
+	private void renderPie(Graphics2D graphics, Color fillColor, Color borderColor, ProgressPieComponent pieProgress)
+	{
+		pieProgress.setFill(fillColor);
+		pieProgress.setBorderColor(borderColor);
+		pieProgress.render(graphics);
 	}
 }
