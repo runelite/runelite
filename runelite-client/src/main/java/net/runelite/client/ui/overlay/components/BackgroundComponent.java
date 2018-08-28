@@ -43,12 +43,10 @@ public class BackgroundComponent implements RenderableEntity
 	private static final int OUTSIDE_STROKE_RED_OFFSET = 14;
 	private static final int OUTSIDE_STROKE_GREEN_OFFSET = 13;
 	private static final int OUTSIDE_STROKE_BLUE_OFFSET = 15;
-	private static final int OUTSIDE_STROKE_ALPHA = 255;
 
 	private static final int INSIDE_STROKE_RED_OFFSET = 20;
 	private static final int INSIDE_STROKE_GREEN_OFFSET = 21;
 	private static final int INSIDE_STROKE_BLUE_OFFSET = 19;
-	private static final int INSIDE_STROKE_ALPHA = 255;
 
 	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
 	private Rectangle rectangle = new Rectangle();
@@ -61,14 +59,14 @@ public class BackgroundComponent implements RenderableEntity
 			Math.max(0, backgroundColor.getRed() - OUTSIDE_STROKE_RED_OFFSET),
 			Math.max(0, backgroundColor.getGreen() - OUTSIDE_STROKE_GREEN_OFFSET),
 			Math.max(0, backgroundColor.getBlue() - OUTSIDE_STROKE_BLUE_OFFSET),
-			OUTSIDE_STROKE_ALPHA
+			backgroundColor.getAlpha()
 		);
 
 		Color insideStrokeColor = new Color(
 			Math.min(255, backgroundColor.getRed() + INSIDE_STROKE_RED_OFFSET),
 			Math.min(255, backgroundColor.getGreen() + INSIDE_STROKE_GREEN_OFFSET),
 			Math.min(255, backgroundColor.getBlue() + INSIDE_STROKE_BLUE_OFFSET),
-			INSIDE_STROKE_ALPHA
+				backgroundColor.getAlpha()
 		);
 
 		// Render background
