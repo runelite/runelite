@@ -39,6 +39,11 @@ public enum Varbits
 	 */
 	TRANSPARENT_CHATBOX(4608),
 
+	/*
+	 * If the player has an active stamina potion effect or not
+	 */
+	RUN_SLOWED_DEPLETION_ACTIVE(25),
+
 	/**
 	 * If scrollbar in resizable mode chat is on the left
 	 */
