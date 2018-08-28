@@ -118,8 +118,21 @@ public class PanelComponent implements LayoutableRenderableEntity
 		// Render all children
 		for (final LayoutableRenderableEntity child : children)
 		{
+			// Correctly propagate child dimensions based on orientation and wrapping
+			if (!wrap)
+			{
+				switch (orientation)
+				{
+					case VERTICAL:
+						child.setPreferredSize(new Dimension(childPreferredSize.width, 0));
+						break;
+					case HORIZONTAL:
+						child.setPreferredSize(new Dimension(0, childPreferredSize.height));
+						break;
+				}
+			}
+
 			child.setPreferredLocation(new Point(x, y));
-			child.setPreferredSize(childPreferredSize);
 			final Dimension childDimension = child.render(graphics);
 
 			switch (orientation)
@@ -154,7 +167,9 @@ public class PanelComponent implements LayoutableRenderableEntity
 				height += diff;
 			}
 
-			if (childPreferredSize.height > 0 && height >= childPreferredSize.height)
+			final boolean out = totalWidth >= childPreferredSize.width && height >= childPreferredSize.height;
+
+			if (!out && childPreferredSize.height > 0 && height >= childPreferredSize.height)
 			{
 				height = 0;
 				y = baseY;
