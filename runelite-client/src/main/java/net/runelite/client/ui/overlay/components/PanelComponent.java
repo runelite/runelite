@@ -51,6 +51,7 @@ public class PanelComponent implements LayoutableRenderableEntity
 	private Point preferredLocation = new Point();
 
 	@Setter
+	@Getter
 	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
 
 	@Getter
