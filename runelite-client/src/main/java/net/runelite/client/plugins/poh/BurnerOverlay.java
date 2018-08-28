@@ -28,18 +28,19 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.text.DecimalFormat;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.TileObject;
-import static net.runelite.client.plugins.poh.PohPlugin.BURNER_LIT;
-import static net.runelite.client.plugins.poh.PohPlugin.BURNER_UNLIT;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.TextComponent;
+
+import static net.runelite.client.plugins.poh.PohPlugin.*;
 
 public class BurnerOverlay extends Overlay
 {
@@ -65,27 +66,57 @@ public class BurnerOverlay extends Overlay
 		{
 			return null;
 		}
-
+		//Get each object in POH
 		plugin.getPohObjects().forEach((object, tile) ->
 		{
+			//If planes match
 			if (tile.getPlane() == client.getPlane())
 			{
-				if (BURNER_UNLIT.contains(object.getId()))
+				//If there is a unlit burner, mark it red
+				if (getBURNER_UNLIT().contains(object.getId()))
 				{
-					drawBurner(graphics, "Unlit", object, Color.RED);
+					drawBurner(graphics, "Unlit", object, Color.RED, 200);
 				}
-				else if (BURNER_LIT.contains(object.getId()))
+				//If there is a lit burner
+				else if (getBURNER_LIT().contains(object.getId()))
 				{
-					drawBurner(graphics, "Lit", object, Color.GREEN);
+					drawBurner(graphics, "Lit", object, Color.GREEN, 200);
+					if (config.showBurnerTime())
+					{
+						if (plugin.getTimerMap().containsKey(tile))
+						{
+							double sec = plugin.getTimerMap().get(tile);
+							DecimalFormat df = new DecimalFormat("#.##");
+							sec = Double.valueOf(df.format(sec));
+							String timeLeft = Double.toString(sec);
+							//Change textcolor depening on seconds remaining on burner
+							if (sec > 20)
+							{
+								drawBurner(graphics, timeLeft, object, Color.GREEN, 250);
+							}
+							else if (sec >= 10 && sec <= 20)
+							{
+								drawBurner(graphics, timeLeft, object, Color.ORANGE, 250);
+							}
+							else if (sec < 10 && sec != 0)
+							{
+								drawBurner(graphics, timeLeft, object, Color.RED, 250);
+							}
+							else
+							{
+								drawBurner(graphics, "RELIGHT", object, Color.RED, 250);
+							}
+						}
+					}
 				}
 			}
 		});
 		return null;
 	}
 
-	private void drawBurner(Graphics2D graphics, String text, TileObject tileObject, Color color)
+	private void drawBurner(Graphics2D graphics, String text, TileObject tileObject, Color color, int offset)
 	{
-		Point canvasText = Perspective.getCanvasTextLocation(client, graphics, tileObject.getLocalLocation(), text, 200);
+		Point canvasText = Perspective.getCanvasTextLocation(client, graphics, tileObject.getLocalLocation(), text, offset);
 
 		if (canvasText == null)
 		{

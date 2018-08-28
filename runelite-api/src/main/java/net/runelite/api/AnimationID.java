@@ -168,4 +168,6 @@ public final class AnimationID
 	public static final int ROCKSLUG_DEATH = 1568;
 	public static final int ZYGOMITE_DEATH = 3327;
 	public static final int IMP_DEATH = 172;
+	//Incense burners
+	public static final int LIGHT_BURNER = 3687;
 }

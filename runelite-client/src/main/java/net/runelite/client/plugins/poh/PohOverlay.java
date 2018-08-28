@@ -24,8 +24,7 @@
  */
 package net.runelite.client.plugins.poh;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

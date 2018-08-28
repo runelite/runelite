@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.poh;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
@@ -33,23 +35,14 @@ import java.util.Set;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.DecorativeObject;
-import net.runelite.api.GameObject;
-import net.runelite.api.GameState;
+import net.runelite.api.*;
 import static net.runelite.api.ObjectID.INCENSE_BURNER;
 import static net.runelite.api.ObjectID.INCENSE_BURNER_13209;
 import static net.runelite.api.ObjectID.INCENSE_BURNER_13210;
 import static net.runelite.api.ObjectID.INCENSE_BURNER_13211;
 import static net.runelite.api.ObjectID.INCENSE_BURNER_13212;
 import static net.runelite.api.ObjectID.INCENSE_BURNER_13213;
-import net.runelite.api.Tile;
-import net.runelite.api.TileObject;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.DecorativeObjectDespawned;
-import net.runelite.api.events.DecorativeObjectSpawned;
-import net.runelite.api.events.GameObjectDespawned;
-import net.runelite.api.events.GameObjectSpawned;
-import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.*;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -62,17 +55,37 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class PohPlugin extends Plugin
 {
-	static final Set<Integer> BURNER_UNLIT = Sets.newHashSet(INCENSE_BURNER, INCENSE_BURNER_13210, INCENSE_BURNER_13212);
-	static final Set<Integer> BURNER_LIT = Sets.newHashSet(INCENSE_BURNER_13209, INCENSE_BURNER_13211, INCENSE_BURNER_13213);
+	private static final double ESTIMATED_TICK_LENGTH = 0.6;
+
+	@Getter(AccessLevel.PACKAGE)
+	private static final Set<Integer> BURNER_UNLIT = Sets.newHashSet(INCENSE_BURNER, INCENSE_BURNER_13210, INCENSE_BURNER_13212);
+
+	@Getter(AccessLevel.PACKAGE)
+	private static final Set<Integer> BURNER_LIT = Sets.newHashSet(INCENSE_BURNER_13209, INCENSE_BURNER_13211, INCENSE_BURNER_13213);
+
+	@Getter(AccessLevel.PACKAGE)
+	private double secondsLeft = 130.0; //Minimum amount of seconds a burner will light, change depending on firemaking level later
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<TileObject, Tile> pohObjects = new HashMap<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private final Multimap<TileObject, Tile> burnerLocs =  ArrayListMultimap.create();
+
+	@Getter(AccessLevel.PACKAGE)
+	private Multimap<TileObject, Tile> shortestDistance =  ArrayListMultimap.create();
+
+	@Getter(AccessLevel.PACKAGE)
+	private Map<Tile, Double> timerMap = new HashMap<>();
 
 	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
 	private PohOverlay overlay;
+
+	@Inject
+	private Client client;
 
 	@Inject
 	private BurnerOverlay burnerOverlay;
@@ -112,6 +125,30 @@ public class PohPlugin extends Plugin
 		if (BURNER_LIT.contains(gameObject.getId()) || BURNER_UNLIT.contains(gameObject.getId()) || PohIcons.getIcon(gameObject.getId()) != null)
 		{
 			pohObjects.put(gameObject, event.getTile());
+			//Found a new burner in the POH
+			if (BURNER_LIT.contains(gameObject.getId()) ||  BURNER_UNLIT.contains(gameObject.getId()))
+			{
+				//Add burner to burnerLocs if it isn't already in there
+				if (!burnerLocs.containsValue(event.getTile()))
+				{
+					burnerLocs.put(gameObject, event.getTile());
+					//Add the new burner to timeMap and set secondsLeft
+					timerMap.put(event.getTile(), secondsLeft);
+				}
+			}
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		//Countdown for both timers
+		for (Tile t : timerMap.keySet())
+		{
+			double sec = timerMap.get(t);
+			double newSec = sec - ESTIMATED_TICK_LENGTH;
+			newSec = newSec < 0 ? 0 : newSec;
+			timerMap.replace(t, sec, newSec);
 		}
 	}
 
@@ -145,6 +182,44 @@ public class PohPlugin extends Plugin
 		if (event.getGameState() == GameState.LOADING)
 		{
 			pohObjects.clear();
+		}
+	}
+
+	@Subscribe
+	public void onAnimationChanged(AnimationChanged event)
+	{
+		Actor actor = event.getActor();
+		String actorName = actor.getName();
+		//Get actor who is doing light_burner anim
+		if (actor.getAnimation() == AnimationID.LIGHT_BURNER)
+		{
+			//Get closest burner to actor (this is the one the actor has lighted)
+			int distanceToBurner = 10000;
+			for (Tile t : burnerLocs.values())
+			{
+				if (distanceToBurner > actor.getLocalLocation().distanceTo(t.getLocalLocation()))
+				{
+					distanceToBurner = actor.getLocalLocation().distanceTo(t.getLocalLocation());
+					shortestDistance.clear();
+					GameObject[] gameOb = t.getGameObjects();
+					for (GameObject object : gameOb)
+					{
+						if (object != null)
+						{
+							if (BURNER_LIT.contains(object.getId()) || BURNER_UNLIT.contains(object.getId()) || PohIcons.getIcon(object.getId()) != null)
+							{
+								//Put found GameObject and tile in shortestDistance
+								shortestDistance.put(object, t);
+							}
+						}
+					}
+				}
+			}
+			//Reset the timer for the burner that was just re-lighted
+			for (Tile t : shortestDistance.values())
+			{
+				timerMap.replace(t, secondsLeft);
+			}
 		}
 	}
 }

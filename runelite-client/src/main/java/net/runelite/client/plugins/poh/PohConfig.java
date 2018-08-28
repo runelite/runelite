@@ -32,6 +32,7 @@ import net.runelite.client.config.ConfigItem;
 public interface PohConfig extends Config
 {
 	@ConfigItem(
+		position = 0,
 		keyName = "showPortals",
 		name = "Show Portals",
 		description = "Configures whether to display teleport portals"
@@ -42,6 +43,7 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 1,
 		keyName = "showAltar",
 		name = "Show Altar",
 		description = "Configures whether or not the altar is displayed"
@@ -52,6 +54,7 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 2,
 		keyName = "showGlory",
 		name = "Show Glory mount",
 		description = "Configures whether or not the mounted glory is displayed"
@@ -62,6 +65,7 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 3,
 		keyName = "showPools",
 		name = "Show Pools",
 		description = "Configures whether or not the pools are displayed"
@@ -72,6 +76,7 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 4,
 		keyName = "showRepairStand",
 		name = "Show Repair stand",
 		description = "Configures whether or not the repair stand is displayed"
@@ -82,6 +87,7 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 5,
 		keyName = "showExitPortal",
 		name = "Show Exit portal",
 		description = "Configures whether or not the exit portal is displayed"
@@ -92,6 +98,7 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 6,
 		keyName = "showBurner",
 		name = "Show Unlit/Lit burner",
 		description = "Configures whether or not unlit/lit burners are displayed"
@@ -102,6 +109,7 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 7,
 		keyName = "showSpellbook",
 		name = "Show Spellbook altar",
 		description = "Configures whether or not the Spellbook altar is displayed"
@@ -112,6 +120,7 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 8,
 		keyName = "showJewelleryBox",
 		name = "Show Jewellery Box",
 		description = "Configures whether or not the Jewllery box is displayed"
@@ -122,6 +131,7 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 9,
 		keyName = "showMagicTravel",
 		name = "Show Fairy/ Spirit Tree/ Obelisk",
 		description = "Configures whether or not the Fairy ring, Spirit tree or Obelisk is displayed"
@@ -129,5 +139,16 @@ public interface PohConfig extends Config
 	default boolean showMagicTravel()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		position = 10,
+		keyName = "showBurnerTime",
+		name = "Show burner time",
+		description = "Configures whether or not the burner time should be displayed"
+	)
+	default boolean showBurnerTime()
+	{
+		return false;
 	}
 }
