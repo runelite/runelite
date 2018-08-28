@@ -44,28 +44,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JColorChooser;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import com.google.common.primitives.Ints;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.Config;
@@ -340,15 +325,34 @@ public class ConfigPanel extends PluginPanel
 			if (cid.getType() == int.class)
 			{
 				int value = Integer.parseInt(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
+				if (cid.getItem().range().length == 2)
+				{
+					int[] range = cid.getItem().range();
+					value = Ints.constrainToRange(value, range[0], range[1]);
+					JSlider slider = new JSlider(range[0], range[1], value);
+					configEntryName.setText(name.concat(": ").concat(String.valueOf(slider.getValue())));
+					slider.setPreferredSize(new Dimension(topPanel.getPreferredSize().width, slider.getHeight()));
+					String finalName = name;
+					slider.addChangeListener((l) ->
+							{
+								configEntryName.setText(finalName.concat(": ").concat(String.valueOf(slider.getValue())));
+								if (!slider.getValueIsAdjusting())
+									changeConfiguration(listItem, config, slider, cd, cid);
+							}
+							);
+					item.add(slider, BorderLayout.EAST);
+				}
+				else
+				{
+					SpinnerModel model = new SpinnerNumberModel(value, 0, Integer.MAX_VALUE, 1);
+					JSpinner spinner = new JSpinner(model);
+					Component editor = spinner.getEditor();
+					JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
+					spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
+					spinner.addChangeListener(ce -> changeConfiguration(listItem, config, spinner, cd, cid));
 
-				SpinnerModel model = new SpinnerNumberModel(value, 0, Integer.MAX_VALUE, 1);
-				JSpinner spinner = new JSpinner(model);
-				Component editor = spinner.getEditor();
-				JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
-				spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
-				spinner.addChangeListener(ce -> changeConfiguration(listItem, config, spinner, cd, cid));
-
-				item.add(spinner, BorderLayout.EAST);
+					item.add(spinner, BorderLayout.EAST);
+				}
 			}
 
 			if (cid.getType() == String.class)
@@ -569,6 +573,11 @@ public class ConfigPanel extends PluginPanel
 		{
 			HotkeyButton hotkeyButton = (HotkeyButton) component;
 			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), hotkeyButton.getValue());
+		}
+		else if (component instanceof JSlider)
+		{
+			JSlider slider = (JSlider) component;
+			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), slider.getValue());
 		}
 	}
 
