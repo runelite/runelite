@@ -59,7 +59,7 @@ public class BackgroundComponent implements RenderableEntity
 			Math.max(0, backgroundColor.getRed() - OUTSIDE_STROKE_RED_OFFSET),
 			Math.max(0, backgroundColor.getGreen() - OUTSIDE_STROKE_GREEN_OFFSET),
 			Math.max(0, backgroundColor.getBlue() - OUTSIDE_STROKE_BLUE_OFFSET),
-			backgroundColor.getAlpha()
+				backgroundColor.getAlpha()
 		);
 
 		Color insideStrokeColor = new Color(
