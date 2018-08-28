@@ -25,10 +25,12 @@
 package net.runelite.client.plugins.farmingprofit;
 
 import lombok.Getter;
+import net.runelite.api.ItemComposition;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.ItemManager;
 
 import java.time.LocalDateTime;
+import net.runelite.client.util.StackFormatter;
 
 class FarmingProfitRun
 {
@@ -44,6 +46,8 @@ class FarmingProfitRun
 
 	private int profit;
 	private ItemManager itemManager;
+	@Getter
+	private String tooltip;
 
 
 	FarmingProfitRun(ItemManager itemManager, Crop crop, int amount, WorldPoint latestHarvest)
@@ -74,9 +78,30 @@ class FarmingProfitRun
 	private void updateProfit()
 	{
 		int seedPrice = itemManager.getItemPrice(crop.getSeedId());
-		int productPrice = itemManager.getItemPrice(crop.getProductId());
+		int productPrice = itemManager.getItemPrice(crop.getCleanProductId());
 
 		profit = productPrice * amount - seedPrice;
+		updateTooltip();
+	}
+
+	// Created a separate update tooltip and tooltip getter, because retrieving the item compositions has to be done
+	// on the client thread.
+	// So in the user interface the getter is called and when a run is created or the profit is updated, the tooltip
+	// variable is updated.
+	private void updateTooltip()
+	{
+		ItemComposition seed = itemManager.getItemComposition(crop.getSeedId());
+		int seedPrice = itemManager.getItemPrice(crop.getSeedId());
+		ItemComposition product = itemManager.getItemComposition(crop.getCleanProductId());
+		int productPrice = itemManager.getItemPrice(crop.getCleanProductId());
+		tooltip = "<html>Cost: " + seed.getName() + " " + StackFormatter.quantityToStackSize(seedPrice) + "gp<br>" +
+			"Products: " + product.getName() + " " + StackFormatter.quantityToStackSize(productPrice) + "gp<br>" +
+			"Profit: " + StackFormatter.quantityToStackSize(getProfit()) + "gp</html>";
+	}
+
+	public String toString()
+	{
+		return "[ " + this.crop.getDisplayName() + " , amount: " + this.amount + "x ]";
 	}
 
 }

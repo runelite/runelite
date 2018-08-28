@@ -53,21 +53,21 @@ public enum Crop
 	LIMPWURT(ItemID.LIMPWURT_SEED, ItemID.LIMPWURT_ROOT, "Limpwurt roots"),
 
 	// Herbs
-	GUAM(ItemID.GUAM_SEED, ItemID.GRIMY_GUAM_LEAF, "Guam"),
-	MARRENTIL(ItemID.MARRENTILL_SEED, ItemID.MARRENTILL, "Marrentil"),
-	TARROMIN(ItemID.TARROMIN_SEED, ItemID.TARROMIN, "Tarromin"),
-	HARRALANDER(ItemID.HARRALANDER_SEED, ItemID.HARRALANDER, "Harralander"),
-	GOUTWEED(ItemID.GOUT_TUBER, ItemID.GOUTWEED, "Goutweed"),
-	RANARR(ItemID.RANARR_SEED, ItemID.GRIMY_RANARR_WEED, "Ranarr"),
-	TOADFLAX(ItemID.TOADFLAX_SEED, ItemID.TOADFLAX, "Toadflax"),
-	IRIT(ItemID.IRIT_SEED, ItemID.IRIT_LEAF, "Irit"),
-	AVANTOE(ItemID.AVANTOE_SEED, ItemID.AVANTOE, "Avantoe"),
-	KWUARM(ItemID.KWUARM_SEED, ItemID.KWUARM, "Kwuarm"),
-	SNAPDRAGON(ItemID.SNAPDRAGON_SEED, ItemID.GRIMY_SNAPDRAGON, "Snapdragon"),
-	CADANTINE(ItemID.CADANTINE_SEED, ItemID.CADANTINE, "Cadantine"),
-	LANTADYME(ItemID.LANTADYME_SEED, ItemID.LANTADYME, "Lantadyme"),
-	DWARF_WEED(ItemID.DWARF_WEED_SEED, ItemID.DWARF_WEED, "Dwarf weed"),
-	TORSTOL(ItemID.TORSTOL_SEED, ItemID.TORSTOL, "Torstol"),
+	GUAM		(ItemID.GUAM_SEED, 			ItemID.GUAM_LEAF, 	ItemID.GRIMY_GUAM_LEAF, "Guam"),
+	MARRENTIL	(ItemID.MARRENTILL_SEED, 	ItemID.MARRENTILL, 	ItemID.GRIMY_MARRENTILL, "Marrentil"),
+	TARROMIN	(ItemID.TARROMIN_SEED, 		ItemID.TARROMIN, 	ItemID.GRIMY_TARROMIN, "Tarromin"),
+	HARRALANDER	(ItemID.HARRALANDER_SEED, 	ItemID.HARRALANDER, ItemID.GRIMY_HARRALANDER, "Harralander"),
+	GOUTWEED	(ItemID.GOUT_TUBER, 		ItemID.GOUTWEED, 	"Goutweed"),
+	RANARR		(ItemID.RANARR_SEED, 		ItemID.RANARR_WEED, ItemID.GRIMY_RANARR_WEED, "Ranarr"),
+	TOADFLAX	(ItemID.TOADFLAX_SEED, 		ItemID.TOADFLAX, 	ItemID.GRIMY_TOADFLAX, "Toadflax"),
+	IRIT		(ItemID.IRIT_SEED, 			ItemID.IRIT_LEAF, 	ItemID.GRIMY_IRIT_LEAF, "Irit"),
+	AVANTOE		(ItemID.AVANTOE_SEED, 		ItemID.AVANTOE, 	ItemID.GRIMY_AVANTOE, "Avantoe"),
+	KWUARM		(ItemID.KWUARM_SEED, 		ItemID.KWUARM, 		ItemID.GRIMY_KWUARM, "Kwuarm"),
+	SNAPDRAGON	(ItemID.SNAPDRAGON_SEED, 	ItemID.SNAPDRAGON, 	ItemID.GRIMY_SNAPDRAGON, "Snapdragon"),
+	CADANTINE	(ItemID.CADANTINE_SEED, 	ItemID.CADANTINE, 	ItemID.GRIMY_CADANTINE, "Cadantine"),
+	LANTADYME	(ItemID.LANTADYME_SEED, 	ItemID.LANTADYME, 	ItemID.GRIMY_LANTADYME, "Lantadyme"),
+	DWARF_WEED	(ItemID.DWARF_WEED_SEED, 	ItemID.DWARF_WEED, 	ItemID.GRIMY_DWARF_WEED, "Dwarf weed"),
+	TORSTOL		(ItemID.TORSTOL_SEED, 		ItemID.TORSTOL, 	ItemID.GRIMY_TORSTOL, "Torstol"),
 
 	// Hops
 	BARLEY(ItemID.BARLEY_SEED, ItemID.BARLEY, "Barley"),
@@ -87,28 +87,50 @@ public enum Crop
 	POISON_IVY(ItemID.POISON_IVY_SEED, ItemID.POISON_IVY_BERRIES, "Poison ivy berries"),
 
 	// Trees
-	// Not sure what to do for trees yet.
+	// TODO Not sure what to do for trees yet.
 
 	// Fruit trees
-	APPLE(ItemID.APPLE_TREE_SEED, ItemID.COOKING_APPLE, "Cooking apples"),
-	BANANA(ItemID.BANANA_TREE_SEED, ItemID.BANANA, "Bananas"),
-	ORANGE(ItemID.ORANGE_TREE_SEED, ItemID.ORANGE, "Oranges"),
-	CURRY(ItemID.CURRY_TREE_SEED, ItemID.CURRY_LEAF, "Curry leaves"),
-	PINEAPPLE(ItemID.PINEAPPLE_SEED, ItemID.PINEAPPLE, "Pineapples"),
-	PAPAYA(ItemID.PAPAYA_TREE_SEED, ItemID.PAPAYA_FRUIT, "Papayas"),
-	COCONUT(ItemID.PALM_TREE_SEED, ItemID.COCONUT, "Coconut");
+	APPLE(ItemID.APPLE_SAPLING, ItemID.COOKING_APPLE, "Cooking apples"),
+	BANANA(ItemID.BANANA_SAPLING, ItemID.BANANA, "Bananas"),
+	ORANGE(ItemID.ORANGE_SAPLING, ItemID.ORANGE, "Oranges"),
+	CURRY(ItemID.CURRY_SAPLING, ItemID.CURRY_LEAF, "Curry leaves"),
+	PINEAPPLE(ItemID.PINEAPPLE_SAPLING, ItemID.PINEAPPLE, "Pineapples"),
+	PAPAYA(ItemID.PAPAYA_SAPLING, ItemID.PAPAYA_FRUIT, "Papayas"),
+	COCONUT(ItemID.PALM_SAPLING, ItemID.COCONUT, "Coconut"),
 
-	Crop(int seedId, int productId, String displayName)
+	// Special
+	SEEWEED(ItemID.SEAWEED_SPORE, ItemID.GIANT_SEAWEED, "Seaweed"),
+	TEAK(ItemID.TEAK_SAPLING, ItemID.TEAK_LOGS, "Teak Trees"),
+	GRAPE(ItemID.GRAPE_SEED, ItemID.GRAPES, "Grapes"),
+	MUSHROOM(ItemID.MUSHROOM_SPORE, ItemID.MUSHROOM, "Mushrooms"),
+	MAHOGANY(ItemID.MAHOGANY_SAPLING, ItemID.MAHOGANY_LOGS, "Mahogany Trees"),
+	CACTUS(ItemID.CACTUS_SEED, ItemID.CACTUS_SPINE, "Cactus"),
+	BELLADONNA(ItemID.BELLADONNA_SEED, ItemID.CAVE_NIGHTSHADE, "Belladonna"),
+	CALQUAT(ItemID.CALQUAT_SAPLING, ItemID.CALQUAT_FRUIT, "Calquat");
+
+
+	Crop(int seedId, int cleanProductId, String displayName)
 	{
 		this.seedId = seedId;
-		this.productId = productId;
+		this.cleanProductId = cleanProductId;
+		this.grimyProductId = -1;
+		this.displayName = displayName;
+	}
+
+	Crop(int seedId, int cleanProductId, int grimyProductId, String displayName)
+	{
+		this.seedId = seedId;
+		this.cleanProductId = cleanProductId;
+		this.grimyProductId = grimyProductId;
 		this.displayName = displayName;
 	}
 
 	@Getter
 	private final int seedId;
 	@Getter
-	private final int productId;
+	private final int cleanProductId;
+	@Getter
+	private final int grimyProductId;
 	@Getter
 	private final String displayName;
 	private static final Map<Integer, Crop> map = Collections.unmodifiableMap(initializeMapping());
@@ -127,7 +149,11 @@ public enum Crop
 		Map<Integer, Crop> mMap = new HashMap<>();
 		for (Crop s : Crop.values())
 		{
-			mMap.put(s.productId, s);
+			mMap.put(s.cleanProductId, s);
+			if (s.grimyProductId != -1)
+			{
+				mMap.put(s.grimyProductId, s);
+			}
 		}
 		return mMap;
 	}

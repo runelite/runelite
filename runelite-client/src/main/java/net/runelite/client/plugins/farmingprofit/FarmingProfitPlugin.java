@@ -82,6 +82,8 @@ public class FarmingProfitPlugin extends Plugin
 
 	private FarmingProfitRun latestRun = null;
 
+	private boolean wasHarvesting = false;
+
 	final private static int MAX_PATCH_DISTANCE = 8;
 	final private static int MIN_TELEPORT_DISTANCE = 40;
 	final private static int RUN_TIMEOUT_SECONDS = 60;
@@ -119,20 +121,14 @@ public class FarmingProfitPlugin extends Plugin
 	@Subscribe
 	public void onAnimationChanged(final AnimationChanged event)
 	{
-		// Check for null actor
-		if (event.getActor() == null)
+		// Check for null actor and whether the actor is the player
+		if (event.getActor() == null || event.getActor() != client.getLocalPlayer())
 		{
 			return;
 		}
 
 		// Get animation ID
 		int animationID = event.getActor().getAnimation();
-
-		// Check whether the animation corresponds to the player
-		if (event.getActor() != client.getLocalPlayer())
-		{
-			return;
-		}
 
 		// Check whether the player is harvesting
 		if (isHarvestAnim(animationID))
@@ -143,10 +139,14 @@ public class FarmingProfitPlugin extends Plugin
 			{
 				previousItems = itemContainer.getItems();
 			}
+
+			wasHarvesting = true;
 		}
-		else if (animationID == AnimationID.IDLE)
+
+		if (animationID == AnimationID.IDLE && wasHarvesting)
 		{
 			// Player idle, find new items
+			wasHarvesting = false;
 
 			// Set currentItems to previousItems by default, will be updated if the inventory container is not null.
 			// This is to ensure no new items will be observed when the inventory is null.
@@ -163,7 +163,6 @@ public class FarmingProfitPlugin extends Plugin
 			// Stop when no new items were found
 			if (newItems.length == 0)
 			{
-
 				return;
 			}
 
@@ -172,47 +171,44 @@ public class FarmingProfitPlugin extends Plugin
 			int amount = newItems.length;
 			WorldPoint harvestLocation = client.getLocalPlayer().getWorldLocation();
 
-			log.debug("Harvested " + crop.getDisplayName());
+			log.debug("Harvested " + amount + "x of " + crop.getDisplayName());
 
 			if (latestRun == null)
 			{
 				log.debug("There is no latest run, create new run");
+
 				latestRun = new FarmingProfitRun(itemManager, crop, amount, harvestLocation);
+				setPreviousItems();
+
+				log.debug(latestRun.toString());
 			}
 			else
 			{
 				log.debug("There is a latest run");
-				if (latestRun.getCrop() == crop)
+				int distance = harvestLocation.distanceTo(latestRun.getLatestHarvestWorldPoint());
+				if (latestRun.getCrop() == crop && distance < MAX_PATCH_DISTANCE)
 				{
-					log.debug(" Latest run has same product type");
-					int distance = harvestLocation.distanceTo(latestRun.getLatestHarvestWorldPoint());
-					// Check whether the patch is close to the latest run, check for the same patch
-					if (distance < MAX_PATCH_DISTANCE)
-					{
-						log.debug("  Latest run is close to current run, most likely the same patch," +
-							" so add to the latest run");
-						latestRun.addAmount(amount, harvestLocation);
-					}
-					else
-					{
-						log.debug("  Latest run is too far away, add latest run and start new run");
-						SwingUtilities.invokeLater(() -> {
-							panel.addRun(latestRun);
-							latestRun = new FarmingProfitRun(itemManager, crop, amount, harvestLocation);
-						});
-					}
+					log.debug("  Latest run is close to current run with same crop type, most likely the same patch," +
+						" so add to the latest run");
+
+					latestRun.addAmount(amount, harvestLocation);
+					setPreviousItems();
+
+					log.debug(latestRun.toString());
 				}
 				else
 				{
-					log.debug(" Harvesting other patch type, add latest run and start new run");
+					log.debug(" Harvesting other patch type or patch far away, add latest run and start new run");
 					SwingUtilities.invokeLater(() -> {
 						panel.addRun(latestRun);
+
 						latestRun = new FarmingProfitRun(itemManager, crop, amount, harvestLocation);
+						setPreviousItems();
+
+						log.debug(latestRun.toString());
 					});
 				}
 			}
-
-			previousItems = client.getItemContainer(InventoryID.INVENTORY).getItems();
 		}
 	}
 
@@ -285,4 +281,12 @@ public class FarmingProfitPlugin extends Plugin
 			animId == AnimationID.FARMING_HARVEST_HERB);
 	}
 
+	private void setPreviousItems()
+	{
+		ItemContainer currentItemContainer = client.getItemContainer(InventoryID.INVENTORY);
+		if (currentItemContainer != null)
+		{
+			previousItems = currentItemContainer.getItems();
+		}
+	}
 }

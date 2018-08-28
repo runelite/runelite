@@ -46,6 +46,7 @@ class FarmingProfitBox extends JPanel
 	{
 		setLayout(new BorderLayout(0, 0));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
+		setToolTipText(run.getTooltip());
 
 		// Item name
 		String itemName = run.getCrop().getDisplayName();
@@ -57,10 +58,9 @@ class FarmingProfitBox extends JPanel
 		runImage.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		final JLabel runImageLabel = new JLabel();
-		runImageLabel.setToolTipText(itemName);
 		runImageLabel.setVerticalAlignment(SwingConstants.CENTER);
 		runImageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		itemManager.getImage(run.getCrop().getProductId(), run.getAmount(), true).addTo(runImageLabel);
+		itemManager.getImage(run.getCrop().getCleanProductId(), run.getAmount(), true).addTo(runImageLabel);
 		runImage.add(runImageLabel);
 
 		// Run information
