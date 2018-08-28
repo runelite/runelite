@@ -26,7 +26,6 @@ package net.runelite.client.plugins.corp;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -35,21 +34,17 @@ import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
-import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 
-class CorpDamageOverlay extends Overlay
+class CorpDamageOverlay extends OverlayPanel
 {
 	private final Client client;
 	private final CorpPlugin corpPlugin;
 	private final CorpConfig config;
-
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	private CorpDamageOverlay(Client client, CorpPlugin corpPlugin, CorpConfig config)
@@ -84,8 +79,6 @@ class CorpDamageOverlay extends Overlay
 		// estimate how much damage is required for kill based on number of players
 		int damageForKill = players != 0 ? totalDamage / players : 0;
 
-		panelComponent.getChildren().clear();
-
 		NPC core = corpPlugin.getCore();
 		if (core != null)
 		{
@@ -105,11 +98,7 @@ class CorpDamageOverlay extends Overlay
 
 			if (text != null)
 			{
-				final FontMetrics fontMetrics = graphics.getFontMetrics();
-				int textWidth = Math.max(ComponentConstants.STANDARD_WIDTH, fontMetrics.stringWidth(text));
-
-				panelComponent.setPreferredSize(new Dimension(textWidth, 0));
-				panelComponent.getChildren().add(LineComponent.builder()
+				getPanel().getChildren().add(LineComponent.builder()
 					.left(text)
 					.leftColor(Color.RED)
 					.build());
@@ -118,18 +107,18 @@ class CorpDamageOverlay extends Overlay
 
 		if (config.showDamage())
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
+			getPanel().getChildren().add(LineComponent.builder()
 				.left("Your damage")
 				.right(Integer.toString(myDamage))
 				.rightColor(damageForKill > 0 && myDamage >= damageForKill ? Color.GREEN : Color.RED)
 				.build());
 
-			panelComponent.getChildren().add(LineComponent.builder()
+			getPanel().getChildren().add(LineComponent.builder()
 				.left("Total damage")
 				.right(Integer.toString(totalDamage))
 				.build());
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 }

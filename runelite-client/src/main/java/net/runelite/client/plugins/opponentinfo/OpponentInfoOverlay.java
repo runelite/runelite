@@ -38,17 +38,16 @@ import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.client.game.HiscoreManager;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.hiscore.HiscoreResult;
 
-class OpponentInfoOverlay extends Overlay
+class OpponentInfoOverlay extends OverlayPanel
 {
 	private static final Color HP_GREEN = new Color(0, 146, 54, 230);
 	private static final Color HP_RED = new Color(102, 15, 16, 230);
@@ -56,8 +55,6 @@ class OpponentInfoOverlay extends Overlay
 	private final Client client;
 	private final OpponentInfoPlugin opponentInfoPlugin;
 	private final HiscoreManager hiscoreManager;
-
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	private Integer lastMaxHealth;
 	private float lastRatio = 0;
@@ -74,8 +71,8 @@ class OpponentInfoOverlay extends Overlay
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.HIGH);
 
-		panelComponent.setBorder(new Rectangle(2, 2, 2, 2));
-		panelComponent.setGap(new Point(0, 2));
+		getPanel().setBorder(new Rectangle(2, 2, 2, 2));
+		getPanel().setGap(new Point(0, 2));
 	}
 
 	@Override
@@ -131,12 +128,10 @@ class OpponentInfoOverlay extends Overlay
 
 		final FontMetrics fontMetrics = graphics.getFontMetrics();
 
-		panelComponent.getChildren().clear();
-
 		// Opponent name
 		int textWidth = Math.max(ComponentConstants.STANDARD_WIDTH, fontMetrics.stringWidth(opponentName));
-		panelComponent.setPreferredSize(new Dimension(textWidth, 0));
-		panelComponent.getChildren().add(TitleComponent.builder()
+		getPanel().setPreferredSize(new Dimension(textWidth, 0));
+		getPanel().getChildren().add(TitleComponent.builder()
 			.text(opponentName)
 			.build());
 
@@ -158,19 +153,19 @@ class OpponentInfoOverlay extends Overlay
 				progressBarComponent.setValue(lastRatio * 100d);
 			}
 
-			panelComponent.getChildren().add(progressBarComponent);
+			getPanel().getChildren().add(progressBarComponent);
 		}
 
 		// Opponents opponent
 		if (opponentsOpponentName != null)
 		{
 			textWidth = Math.max(textWidth, fontMetrics.stringWidth(opponentsOpponentName));
-			panelComponent.setPreferredSize(new Dimension(textWidth, 0));
-			panelComponent.getChildren().add(TitleComponent.builder()
+			getPanel().setPreferredSize(new Dimension(textWidth, 0));
+			getPanel().getChildren().add(TitleComponent.builder()
 				.text(opponentsOpponentName)
 				.build());
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 }

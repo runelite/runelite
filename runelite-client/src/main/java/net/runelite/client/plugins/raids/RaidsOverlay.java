@@ -30,18 +30,16 @@ import java.awt.Graphics2D;
 import javax.inject.Inject;
 import lombok.Setter;
 import net.runelite.client.plugins.raids.solver.Room;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-public class RaidsOverlay extends Overlay
+public class RaidsOverlay extends OverlayPanel
 {
 	private RaidsPlugin plugin;
 	private RaidsConfig config;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Setter
 	private boolean scoutOverlayShown = false;
@@ -63,19 +61,17 @@ public class RaidsOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.getChildren().clear();
-
 		if (plugin.getRaid() == null || plugin.getRaid().getLayout() == null)
 		{
-			panelComponent.getChildren().add(TitleComponent.builder()
+			getPanel().getChildren().add(TitleComponent.builder()
 				.text("Unable to scout this raid!")
 				.color(Color.RED)
 				.build());
 
-			return panelComponent.render(graphics);
+			return super.render(graphics);
 		}
 
-		panelComponent.getChildren().add(TitleComponent.builder()
+		getPanel().getChildren().add(TitleComponent.builder()
 			.text("Raid scouter")
 			.build());
 
@@ -87,7 +83,7 @@ public class RaidsOverlay extends Overlay
 			color = Color.RED;
 		}
 
-		panelComponent.getChildren().add(LineComponent.builder()
+		getPanel().getChildren().add(LineComponent.builder()
 			.left("Layout")
 			.right(layout)
 			.rightColor(color)
@@ -127,7 +123,7 @@ public class RaidsOverlay extends Overlay
 						color = Color.RED;
 					}
 
-					panelComponent.getChildren().add(LineComponent.builder()
+					getPanel().getChildren().add(LineComponent.builder()
 						.left(room.getType().getName())
 						.right(room.getBoss().getName())
 						.rightColor(color)
@@ -145,7 +141,7 @@ public class RaidsOverlay extends Overlay
 						color = Color.RED;
 					}
 
-					panelComponent.getChildren().add(LineComponent.builder()
+					getPanel().getChildren().add(LineComponent.builder()
 						.left(room.getType().getName())
 						.right(room.getPuzzle().getName())
 						.rightColor(color)
@@ -154,6 +150,6 @@ public class RaidsOverlay extends Overlay
 			}
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 }

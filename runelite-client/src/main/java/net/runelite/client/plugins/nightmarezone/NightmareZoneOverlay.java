@@ -33,15 +33,14 @@ import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.StackFormatter;
 
-class NightmareZoneOverlay extends Overlay
+class NightmareZoneOverlay extends OverlayPanel
 {
 	private final Client client;
 	private final NightmareZoneConfig config;
@@ -50,7 +49,6 @@ class NightmareZoneOverlay extends Overlay
 	private final ItemManager itemManager;
 
 	private AbsorptionCounter absorptionCounter;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	NightmareZoneOverlay(
@@ -96,13 +94,13 @@ class NightmareZoneOverlay extends Overlay
 
 		renderAbsorptionCounter();
 
-		panelComponent.getChildren().clear();
-		panelComponent.getChildren().add(LineComponent.builder()
+		getPanel().getChildren().clear();
+		getPanel().getChildren().add(LineComponent.builder()
 			.left("Points: ")
 			.right(StackFormatter.formatNumber(client.getVar(Varbits.NMZ_POINTS)))
 			.build());
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 
 	private void renderAbsorptionCounter()

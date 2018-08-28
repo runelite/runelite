@@ -30,18 +30,16 @@ import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.util.ColorUtil;
 
-class BoostsOverlay extends Overlay
+class BoostsOverlay extends OverlayPanel
 {
 	private final Client client;
 	private final BoostsConfig config;
-	private final PanelComponent panelComponent = new PanelComponent();
 	private final BoostsPlugin plugin;
 
 	@Inject
@@ -62,13 +60,11 @@ class BoostsOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.getChildren().clear();
-
 		int nextChange = plugin.getChangeDownTicks();
 
 		if (nextChange != -1)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
+			getPanel().getChildren().add(LineComponent.builder()
 				.left("Next + restore in")
 				.right(String.valueOf(plugin.getChangeTime(nextChange)))
 				.build());
@@ -78,7 +74,7 @@ class BoostsOverlay extends Overlay
 
 		if (nextChange != -1)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
+			getPanel().getChildren().add(LineComponent.builder()
 				.left("Next - restore in")
 				.right(String.valueOf(plugin.getChangeTime(nextChange)))
 				.build());
@@ -114,7 +110,7 @@ class BoostsOverlay extends Overlay
 						+ ColorUtil.prependColorTag("/" + base, Color.WHITE);
 				}
 
-				panelComponent.getChildren().add(LineComponent.builder()
+				getPanel().getChildren().add(LineComponent.builder()
 					.left(skill.getName())
 					.right(str)
 					.rightColor(strColor)
@@ -122,7 +118,7 @@ class BoostsOverlay extends Overlay
 			}
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 
 	private Color getTextColor(int boost)

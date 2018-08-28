@@ -34,13 +34,12 @@ import java.util.Set;
 import javax.inject.Inject;
 import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-class MotherlodeOverlay extends Overlay
+class MotherlodeOverlay extends OverlayPanel
 {
 	private static final Set<Integer> MINING_ANIMATION_IDS = ImmutableSet.of(
 		MINING_MOTHERLODE_BRONZE, MINING_MOTHERLODE_IRON, MINING_MOTHERLODE_STEEL,
@@ -52,7 +51,6 @@ class MotherlodeOverlay extends Overlay
 	private final Client client;
 	private final MotherlodePlugin plugin;
 	private final MotherlodeConfig config;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	MotherlodeOverlay(Client client, MotherlodePlugin plugin, MotherlodeConfig config)
@@ -86,36 +84,34 @@ class MotherlodeOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.getChildren().clear();
-
 		if (config.showMiningState())
 		{
 			if (MINING_ANIMATION_IDS.contains(client.getLocalPlayer().getAnimation()))
 			{
-				panelComponent.getChildren().add(TitleComponent.builder()
+				getPanel().getChildren().add(TitleComponent.builder()
 					.text("Mining")
 					.color(Color.GREEN)
 					.build());
 			}
 			else
 			{
-				panelComponent.getChildren().add(TitleComponent.builder()
+				getPanel().getChildren().add(TitleComponent.builder()
 					.text("NOT mining")
 					.color(Color.RED)
 					.build());
 			}
 		}
 
-		panelComponent.getChildren().add(LineComponent.builder()
+		getPanel().getChildren().add(LineComponent.builder()
 			.left("Pay-dirt mined:")
 			.right(Integer.toString(session.getTotalMined()))
 			.build());
 
-		panelComponent.getChildren().add(LineComponent.builder()
+		getPanel().getChildren().add(LineComponent.builder()
 			.left("Pay-dirt/hr:")
 			.right(session.getRecentMined() > 2 ? Integer.toString(session.getPerHour()) : "")
 			.build());
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 }

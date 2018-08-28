@@ -34,12 +34,12 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
-class InventoryViewerOverlay extends Overlay
+class InventoryViewerOverlay extends OverlayPanel
 {
 	private static final int INVENTORY_SIZE = 28;
 	private static final int PLACEHOLDER_WIDTH = 36;
@@ -49,16 +49,14 @@ class InventoryViewerOverlay extends Overlay
 	private final Client client;
 	private final ItemManager itemManager;
 
-	private final PanelComponent panelComponent = new PanelComponent();
-
 	@Inject
 	private InventoryViewerOverlay(Client client, ItemManager itemManager)
 	{
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
-		panelComponent.setWrap(true);
-		panelComponent.setGap(new Point(6, 4));
-		panelComponent.setPreferredSize(new Dimension(4 * PLACEHOLDER_WIDTH, 0));
-		panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
+		getPanel().setWrap(true);
+		getPanel().setGap(new Point(6, 4));
+		getPanel().setPreferredSize(new Dimension(4 * PLACEHOLDER_WIDTH, 0));
+		getPanel().setOrientation(PanelComponent.Orientation.HORIZONTAL);
 		this.itemManager = itemManager;
 		this.client = client;
 	}
@@ -73,8 +71,6 @@ class InventoryViewerOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.getChildren().clear();
-
 		final Item[] items = itemContainer.getItems();
 
 		for (int i = 0; i < INVENTORY_SIZE; i++)
@@ -87,17 +83,17 @@ class InventoryViewerOverlay extends Overlay
 					final BufferedImage image = getImage(item);
 					if (image != null)
 					{
-						panelComponent.getChildren().add(new ImageComponent(image));
+						getPanel().getChildren().add(new ImageComponent(image));
 						continue;
 					}
 				}
 			}
 
 			// put a placeholder image so each item is aligned properly and the panel is not resized
-			panelComponent.getChildren().add(PLACEHOLDER_IMAGE);
+			getPanel().getChildren().add(PLACEHOLDER_IMAGE);
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 
 	private BufferedImage getImage(Item item)

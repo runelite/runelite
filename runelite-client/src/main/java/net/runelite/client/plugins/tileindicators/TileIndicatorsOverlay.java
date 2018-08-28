@@ -66,7 +66,7 @@ public class TileIndicatorsOverlay extends Overlay
 		{
 			return null;
 		}
-		
+
 		OverlayUtil.renderPolygon(graphics, poly, config.highlightDestinationColor());
 
 		return null;

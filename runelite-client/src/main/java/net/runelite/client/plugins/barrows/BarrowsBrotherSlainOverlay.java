@@ -31,16 +31,14 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class BarrowsBrotherSlainOverlay extends Overlay
+public class BarrowsBrotherSlainOverlay extends OverlayPanel
 {
 	private final Client client;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	private BarrowsBrotherSlainOverlay(Client client)
@@ -67,18 +65,16 @@ public class BarrowsBrotherSlainOverlay extends Overlay
 			barrowsBrothers.setHidden(true);
 		}
 
-		panelComponent.getChildren().clear();
-
 		for (BarrowsBrothers brother : BarrowsBrothers.values())
 		{
 			String slain = client.getVar(brother.getKilledVarbit()) > 0 ? "✓" : "";
-			panelComponent.getChildren().add(LineComponent.builder()
+			getPanel().getChildren().add(LineComponent.builder()
 				.left(brother.getName())
 				.right(slain)
 				.rightColor(slain.isEmpty() ? Color.WHITE : Color.GREEN)
 				.build());
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 }

@@ -34,17 +34,16 @@ import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
-class BlastMineOreCountOverlay extends Overlay
+class BlastMineOreCountOverlay extends OverlayPanel
 {
 	private final Client client;
 	private final BlastMinePluginConfig config;
 	private final ItemManager itemManager;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	private BlastMineOreCountOverlay(Client client, BlastMinePluginConfig config, ItemManager itemManager)
@@ -53,7 +52,7 @@ class BlastMineOreCountOverlay extends Overlay
 		this.client = client;
 		this.config = config;
 		this.itemManager = itemManager;
-		panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
+		getPanel().setOrientation(PanelComponent.Orientation.HORIZONTAL);
 	}
 
 	@Override
@@ -65,24 +64,22 @@ class BlastMineOreCountOverlay extends Overlay
 		{
 			return null;
 		}
-		
-		panelComponent.getChildren().clear();
 
 		if (config.showOreOverlay())
 		{
 			blastMineWidget.setHidden(true);
-			panelComponent.getChildren().add(new ImageComponent(getImage(ItemID.COAL, client.getVar(Varbits.BLAST_MINE_COAL))));
-			panelComponent.getChildren().add(new ImageComponent(getImage(ItemID.GOLD_ORE, client.getVar(Varbits.BLAST_MINE_GOLD))));
-			panelComponent.getChildren().add(new ImageComponent(getImage(ItemID.MITHRIL_ORE, client.getVar(Varbits.BLAST_MINE_MITHRIL))));
-			panelComponent.getChildren().add(new ImageComponent(getImage(ItemID.ADAMANTITE_ORE, client.getVar(Varbits.BLAST_MINE_ADAMANTITE))));
-			panelComponent.getChildren().add(new ImageComponent(getImage(ItemID.RUNITE_ORE, client.getVar(Varbits.BLAST_MINE_RUNITE))));
+			getPanel().getChildren().add(new ImageComponent(getImage(ItemID.COAL, client.getVar(Varbits.BLAST_MINE_COAL))));
+			getPanel().getChildren().add(new ImageComponent(getImage(ItemID.GOLD_ORE, client.getVar(Varbits.BLAST_MINE_GOLD))));
+			getPanel().getChildren().add(new ImageComponent(getImage(ItemID.MITHRIL_ORE, client.getVar(Varbits.BLAST_MINE_MITHRIL))));
+			getPanel().getChildren().add(new ImageComponent(getImage(ItemID.ADAMANTITE_ORE, client.getVar(Varbits.BLAST_MINE_ADAMANTITE))));
+			getPanel().getChildren().add(new ImageComponent(getImage(ItemID.RUNITE_ORE, client.getVar(Varbits.BLAST_MINE_RUNITE))));
 		}
 		else
 		{
 			blastMineWidget.setHidden(false);
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 
 	private BufferedImage getImage(int itemID, int amount)

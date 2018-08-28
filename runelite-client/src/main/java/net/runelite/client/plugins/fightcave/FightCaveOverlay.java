@@ -32,21 +32,19 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.SpriteID;
 import net.runelite.client.game.SpriteManager;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.ImageComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class FightCaveOverlay extends Overlay
+public class FightCaveOverlay extends OverlayPanel
 {
 	private static final Color NOT_ACTIVATED_BACKGROUND_COLOR = new Color(150, 0, 0, 150);
 
 	private final Client client;
 	private final FightCavePlugin plugin;
 	private final SpriteManager spriteManager;
-	private final PanelComponent imagePanelComponent = new PanelComponent();
 
 	@Inject
 	private FightCaveOverlay(Client client, FightCavePlugin plugin, SpriteManager spriteManager)
@@ -70,13 +68,13 @@ public class FightCaveOverlay extends Overlay
 
 		final BufferedImage prayerImage = getPrayerImage(attack);
 
-		imagePanelComponent.getChildren().clear();
-		imagePanelComponent.getChildren().add(new ImageComponent(prayerImage));
-		imagePanelComponent.setBackgroundColor(client.isPrayerActive(attack.getPrayer())
+		getPanel().getChildren().clear();
+		getPanel().getChildren().add(new ImageComponent(prayerImage));
+		getPanel().setBackgroundColor(client.isPrayerActive(attack.getPrayer())
 			? ComponentConstants.STANDARD_BACKGROUND_COLOR
 			: NOT_ACTIVATED_BACKGROUND_COLOR);
 
-		return imagePanelComponent.render(graphics);
+		return super.render(graphics);
 	}
 
 	private BufferedImage getPrayerImage(JadAttack attack)

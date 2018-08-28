@@ -26,7 +26,6 @@ package net.runelite.client.plugins.cluescrolls.clues;
 
 import com.google.common.collect.Lists;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -95,7 +94,6 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		panelComponent.getChildren().add(TitleComponent.builder()
 			.text("Hot/Cold Clue")
 			.build());
-		panelComponent.setPreferredSize(new Dimension(200, 0));
 
 		// strange device has not been tested yet, show how to get it
 		if (lastWorldPoint == null && location == null)

@@ -29,17 +29,15 @@ import java.awt.Graphics2D;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-public class MotherlodeGemOverlay extends Overlay
+public class MotherlodeGemOverlay extends OverlayPanel
 {
 	private final MotherlodePlugin plugin;
 	private final MotherlodeConfig config;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	MotherlodeGemOverlay(MotherlodePlugin plugin, MotherlodeConfig config)
@@ -72,12 +70,11 @@ public class MotherlodeGemOverlay extends Overlay
 		int emeraldsFound = session.getEmeraldsFound();
 		int sapphiresFound = session.getSapphiresFound();
 
-		panelComponent.getChildren().clear();
-		panelComponent.getChildren().add(TitleComponent.builder().text("Gems found").build());
+		getPanel().getChildren().add(TitleComponent.builder().text("Gems found").build());
 
 		if (diamondsFound > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
+			getPanel().getChildren().add(LineComponent.builder()
 				.left("Diamonds:")
 				.right(Integer.toString(diamondsFound))
 				.build());
@@ -85,7 +82,7 @@ public class MotherlodeGemOverlay extends Overlay
 
 		if (rubiesFound > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
+			getPanel().getChildren().add(LineComponent.builder()
 				.left("Rubies:")
 				.right(Integer.toString(rubiesFound))
 				.build());
@@ -93,7 +90,7 @@ public class MotherlodeGemOverlay extends Overlay
 
 		if (emeraldsFound > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
+			getPanel().getChildren().add(LineComponent.builder()
 				.left("Emeralds:")
 				.right(Integer.toString(emeraldsFound))
 				.build());
@@ -101,12 +98,12 @@ public class MotherlodeGemOverlay extends Overlay
 
 		if (sapphiresFound > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
+			getPanel().getChildren().add(LineComponent.builder()
 				.left("Sapphires:")
 				.right(Integer.toString(sapphiresFound))
 				.build());
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 }

@@ -34,8 +34,8 @@ import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.client.game.HiscoreManager;
-import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -44,7 +44,7 @@ import net.runelite.client.util.Text;
 import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.HiscoreSkill;
 
-class PlayerComparisonOverlay extends Overlay
+class PlayerComparisonOverlay extends OverlayPanel
 {
 	private static final Color HIGHER_STAT_TEXT_COLOR = Color.GREEN;
 	private static final Color LOWER_STAT_TEXT_COLOR = Color.RED;
@@ -78,7 +78,6 @@ class PlayerComparisonOverlay extends Overlay
 	private final OpponentInfoPlugin opponentInfoPlugin;
 	private final OpponentInfoConfig config;
 	private final HiscoreManager hiscoreManager;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	private PlayerComparisonOverlay(Client client, OpponentInfoPlugin opponentInfoPlugin, OpponentInfoConfig config, HiscoreManager hiscoreManager)
@@ -120,9 +119,8 @@ class PlayerComparisonOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.getChildren().clear();
-		generateComparisonTable(panelComponent, hiscoreResult);
-		return panelComponent.render(graphics);
+		generateComparisonTable(getPanel(), hiscoreResult);
+		return super.render(graphics);
 	}
 
 	private void generateComparisonTable(PanelComponent panelComponent, HiscoreResult opponentSkills)

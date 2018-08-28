@@ -31,17 +31,14 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.ComponentConstants;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class ClueScrollOverlay extends Overlay
+public class ClueScrollOverlay extends OverlayPanel
 {
 	public static final Color TITLED_CONTENT_COLOR = new Color(190, 190, 190);
 
 	private final ClueScrollPlugin plugin;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	public ClueScrollOverlay(ClueScrollPlugin plugin)
@@ -60,11 +57,7 @@ public class ClueScrollOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.getChildren().clear();
-		panelComponent.setPreferredSize(new Dimension(ComponentConstants.STANDARD_WIDTH, 0));
-
-		clue.makeOverlayHint(panelComponent, plugin);
-
-		return panelComponent.render(graphics);
+		clue.makeOverlayHint(getPanel(), plugin);
+		return super.render(graphics);
 	}
 }

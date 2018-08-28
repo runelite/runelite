@@ -35,7 +35,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.InfoBoxComponent;
@@ -45,9 +45,8 @@ import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 @Singleton
-public class InfoBoxOverlay extends Overlay
+public class InfoBoxOverlay extends OverlayPanel
 {
-	private final PanelComponent panelComponent = new PanelComponent();
 	private final InfoBoxManager infoboxManager;
 	private final TooltipManager tooltipManager;
 	private final Client client;
@@ -65,12 +64,13 @@ public class InfoBoxOverlay extends Overlay
 		this.client = client;
 		this.config = config;
 		setPosition(OverlayPosition.TOP_LEFT);
+		setClearChildren(false);
 
-		panelComponent.setWrap(true);
-		panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
-		panelComponent.setBackgroundColor(null);
-		panelComponent.setBorder(new Rectangle());
-		panelComponent.setGap(new Point(1, 1));
+		getPanel().setWrap(true);
+		getPanel().setOrientation(PanelComponent.Orientation.HORIZONTAL);
+		getPanel().setBackgroundColor(null);
+		getPanel().setBorder(new Rectangle());
+		getPanel().setGap(new Point(1, 1));
 	}
 
 	@Override
@@ -83,8 +83,7 @@ public class InfoBoxOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.getChildren().clear();
-		panelComponent.setPreferredSize(new Dimension(config.infoBoxSize(), config.infoBoxSize()));
+		getPanel().setPreferredSize(new Dimension(config.infoBoxSize() * 4, config.infoBoxSize()));
 
 		for (InfoBox box : infoBoxes)
 		{
@@ -94,19 +93,20 @@ public class InfoBoxOverlay extends Overlay
 			}
 
 			final InfoBoxComponent infoBoxComponent = new InfoBoxComponent();
+			infoBoxComponent.setPreferredSize(new Dimension(config.infoBoxSize(), config.infoBoxSize()));
 			infoBoxComponent.setColor(box.getTextColor());
 			infoBoxComponent.setImage(box.getScaledImage());
 			infoBoxComponent.setText(box.getText());
 			infoBoxComponent.setTooltip(box.getTooltip());
-			panelComponent.getChildren().add(infoBoxComponent);
+			getPanel().getChildren().add(infoBoxComponent);
 		}
 
-		final Dimension dimension = panelComponent.render(graphics);
+		final Dimension dimension = super.render(graphics);
 
 		// Handle tooltips
 		final Point mouse = new Point(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY());
 
-		for (final LayoutableRenderableEntity child : panelComponent.getChildren())
+		for (final LayoutableRenderableEntity child : getPanel().getChildren())
 		{
 			if (child instanceof InfoBoxComponent)
 			{
@@ -131,6 +131,7 @@ public class InfoBoxOverlay extends Overlay
 			}
 		}
 
+		getPanel().getChildren().clear();
 		return dimension;
 	}
 }

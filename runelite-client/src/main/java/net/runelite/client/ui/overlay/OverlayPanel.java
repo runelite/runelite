@@ -46,6 +46,7 @@ public abstract class OverlayPanel extends Overlay
 	private OverlayPosition position = OverlayPosition.TOP_LEFT;
 	private OverlayPriority priority = OverlayPriority.NONE;
 	private OverlayLayer layer = OverlayLayer.UNDER_WIDGETS;
+	private boolean clearChildren = true;
 
 	/**
 	 * Overlay name, used for saving the overlay, needs to be unique
@@ -76,7 +77,12 @@ public abstract class OverlayPanel extends Overlay
 		}
 
 		final Dimension dimension = panel.render(graphics);
-		panel.getChildren().clear();
+
+		if (clearChildren)
+		{
+			panel.getChildren().clear();
+		}
+
 		panel.setPreferredSize(oldSize);
 		return dimension;
 	}

@@ -31,19 +31,17 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-class WoodcuttingOverlay extends Overlay
+class WoodcuttingOverlay extends OverlayPanel
 {
 	private final Client client;
 	private final WoodcuttingPlugin plugin;
 	private final WoodcuttingConfig config;
 	private final XpTrackerService xpTrackerService;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	private WoodcuttingOverlay(Client client, WoodcuttingPlugin plugin, WoodcuttingConfig config, XpTrackerService xpTrackerService)
@@ -69,19 +67,17 @@ class WoodcuttingOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.getChildren().clear();
-
 		Axe axe = plugin.getAxe();
 		if (axe != null && axe.getAnimId() == client.getLocalPlayer().getAnimation())
 		{
-			panelComponent.getChildren().add(TitleComponent.builder()
+			getPanel().getChildren().add(TitleComponent.builder()
 				.text("Woodcutting")
 				.color(Color.GREEN)
 				.build());
 		}
 		else
 		{
-			panelComponent.getChildren().add(TitleComponent.builder()
+			getPanel().getChildren().add(TitleComponent.builder()
 				.text("NOT woodcutting")
 				.color(Color.RED)
 				.build());
@@ -90,21 +86,21 @@ class WoodcuttingOverlay extends Overlay
 		int actions = xpTrackerService.getActions(Skill.WOODCUTTING);
 		if (actions > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
+			getPanel().getChildren().add(LineComponent.builder()
 				.left("Logs cut:")
 				.right(Integer.toString(actions))
 				.build());
 
 			if (actions > 2)
 			{
-				panelComponent.getChildren().add(LineComponent.builder()
+				getPanel().getChildren().add(LineComponent.builder()
 					.left("Logs/hr:")
 					.right(Integer.toString(xpTrackerService.getActionsHr(Skill.WOODCUTTING)))
 					.build());
 			}
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 
 }

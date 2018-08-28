@@ -30,15 +30,14 @@ import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class TeamCapesOverlay extends Overlay
+public class TeamCapesOverlay extends OverlayPanel
 {
-	private final PanelComponent panelComponent = new PanelComponent();
 	private final TeamCapesPlugin plugin;
 	private final TeamCapesConfig config;
 	private final ItemManager manager;
@@ -51,8 +50,8 @@ public class TeamCapesOverlay extends Overlay
 		this.plugin = plugin;
 		this.config = config;
 		this.manager = manager;
-		panelComponent.setWrap(true);
-		panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
+		getPanel().setWrap(true);
+		getPanel().setOrientation(PanelComponent.Orientation.HORIZONTAL);
 	}
 
 	@Override
@@ -63,8 +62,6 @@ public class TeamCapesOverlay extends Overlay
 		{
 			return null;
 		}
-
-		panelComponent.getChildren().clear();
 
 		for (Map.Entry<Integer, Integer> team : teams.entrySet())
 		{
@@ -88,9 +85,9 @@ public class TeamCapesOverlay extends Overlay
 				itemID = 3 * (teamcapeNumber - 50) + ItemID.TEAM_CAPE_ZERO;
 			}
 
-			panelComponent.getChildren().add(new ImageComponent(manager.getImage(itemID, team.getValue(), true)));
+			getPanel().getChildren().add(new ImageComponent(manager.getImage(itemID, team.getValue(), true)));
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 }
