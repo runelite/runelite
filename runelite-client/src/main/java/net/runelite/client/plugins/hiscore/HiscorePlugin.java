@@ -37,7 +37,6 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.swing.SwingUtilities;
-
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
@@ -231,7 +230,8 @@ public class HiscorePlugin extends Plugin
 		}
 	}
 
-	private void lookupPlayer(String playerName) {
+	private void lookupPlayer(String playerName)
+	{
 		executor.execute(() ->
 		{
 			try
@@ -262,7 +262,8 @@ public class HiscorePlugin extends Plugin
 			if (message.startsWith("<col=ff0000>You've been assigned a target: "))
 			{
 				Matcher m = bountyPattern.matcher(message);
-				if (m.matches()) {
+				if (m.matches())
+				{
 					lookupPlayer(m.group(1));
 				}
 			}
