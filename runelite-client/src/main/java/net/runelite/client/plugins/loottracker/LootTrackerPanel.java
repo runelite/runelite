@@ -54,7 +54,7 @@ class LootTrackerPanel extends PluginPanel
 	// When there is no loot, display this
 	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
 
-	// Handle loot logs
+	// Handle loot boxes
 	private final JPanel logsContainer = new JPanel();
 
 	// Handle overall session data
@@ -63,13 +63,11 @@ class LootTrackerPanel extends PluginPanel
 	private final JLabel overallGpLabel = new JLabel();
 	private final JLabel overallIcon = new JLabel();
 
+	// Log collection
+	private final List<LootTrackerRecord> records = new ArrayList<>();
+	private final List<LootTrackerBox> boxes = new ArrayList<>();
+
 	private final ItemManager itemManager;
-
-	private final List<LootTrackerEntry> entries = new ArrayList<>();
-	private final List<LootTrackerBox> logs = new ArrayList<>();
-
-	private int overallKills;
-	private int overallGp;
 
 	@Setter
 	private boolean groupLoot;
@@ -108,13 +106,9 @@ class LootTrackerPanel extends PluginPanel
 		final JMenuItem reset = new JMenuItem("Reset All");
 		reset.addActionListener(e ->
 		{
-			entries.clear();
-			logs.clear();
-
-			overallKills = 0;
-			overallGp = 0;
+			records.clear();
+			boxes.clear();
 			updateOverall();
-
 			logsContainer.removeAll();
 			logsContainer.repaint();
 		});
@@ -125,7 +119,7 @@ class LootTrackerPanel extends PluginPanel
 		popupMenu.add(reset);
 		overallPanel.setComponentPopupMenu(popupMenu);
 
-		// Create loot logs wrapper
+		// Create loot boxes wrapper
 		logsContainer.setLayout(new BoxLayout(logsContainer, BoxLayout.Y_AXIS));
 		layoutPanel.add(overallPanel);
 		layoutPanel.add(logsContainer);
@@ -140,114 +134,68 @@ class LootTrackerPanel extends PluginPanel
 		overallIcon.setIcon(new ImageIcon(img));
 	}
 
-	private static String htmlLabel(String key, long value)
-	{
-		final String valueStr = StackFormatter.quantityToStackSize(value);
-		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
-	}
-
-	/**
-	 * This method decides what to do with a new entry, if a similarily named log exists, it will
-	 * add its items to it, updating the log's overall price and kills. If not, a new log will be created
-	 * to hold this entry's information.
-	 */
-	private void handleEntry(LootTrackerEntry entry)
-	{
-		if (groupLoot)
-		{
-			for (LootTrackerBox log : logs)
-			{
-				if (log.getTitle().equals(entry.getTitle()))
-				{
-					overallGp -= log.getTotalPrice();
-
-					log.addEntry(entry);
-					log.repaint();
-
-					// Update overall
-					overallGp += log.getTotalPrice();
-					overallKills++;
-					updateOverall();
-
-					return;
-				}
-			}
-		}
-
-		createLog(entry);
-	}
-
 	/**
 	 * Adds a new entry to the plugin.
 	 * Creates a subtitle, adds a new entry and then passes off to the render methods, that will decide
 	 * how to display this new data.
 	 */
-	void addEntry(final String eventName, final int actorLevel, LootTrackerItemEntry[] items)
+	void add(final String eventName, final int actorLevel, LootTrackerItem[] items)
 	{
 		final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
-
-		LootTrackerEntry entry = new LootTrackerEntry(eventName, subTitle, System.currentTimeMillis(), items);
-		entries.add(entry);
-
-		handleEntry(entry);
+		final LootTrackerRecord record = new LootTrackerRecord(eventName, subTitle, items);
+		records.add(record);
+		buildBox(record);
 	}
 
 	/**
-	 * Creates and adds a new element (LootTrackerBox) to the UI, containing a title, sub-title, price and item grid.
-	 * This method also updates the overall values and UI.
-	 */
-	private void createLog(LootTrackerEntry entry)
-	{
-		remove(errorPanel);
-		overallPanel.setVisible(true);
-
-		LootTrackerBox log = buildBox(entry);
-
-		// Update overall
-		overallGp += log.getTotalPrice();
-		overallKills += 1;
-		updateOverall();
-
-		logs.add(log);
-		logsContainer.add(log, 0);
-	}
-
-	/**
-	 * Rebuilds all the logs from scratch using existing listed entries, depending on the grouping mode.
+	 * Rebuilds all the boxes from scratch using existing listed records, depending on the grouping mode.
 	 */
 	void rebuild()
 	{
 		logsContainer.removeAll();
-		logs.clear();
-
-		overallGp = 0;
-		overallKills = 0;
+		boxes.clear();
 		updateOverall();
-
-		for (LootTrackerEntry entry : entries)
-		{
-			handleEntry(entry);
-		}
-
+		records.forEach(this::buildBox);
 		logsContainer.repaint();
 	}
 
-	private LootTrackerBox buildBox(LootTrackerEntry entry)
+	/**
+	 * This method decides what to do with a new record, if a similar log exists, it will
+	 * add its items to it, updating the log's overall price and kills. If not, a new log will be created
+	 * to hold this entry's information.
+	 */
+	private void buildBox(LootTrackerRecord record)
 	{
+		if (groupLoot)
+		{
+			for (LootTrackerBox box : boxes)
+			{
+				if (!box.matches(record))
+				{
+					continue;
+				}
+
+				box.combine(record);
+				updateOverall();
+				return;
+			}
+		}
+
+		// Show main view
+		remove(errorPanel);
+		overallPanel.setVisible(true);
+
 		// Create box
-		final LootTrackerBox box = new LootTrackerBox(itemManager, entry);
+		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getSubTitle());
+		box.combine(record);
 
 		// Create reset menu
 		final JMenuItem reset = new JMenuItem("Reset");
 		reset.addActionListener(e ->
 		{
-			entries.removeAll(box.getEntries());
-			logs.remove(box);
-
-			overallGp -= box.getTotalPrice();
-			overallKills -= box.getTotalKills();
+			records.removeAll(box.getRecords());
+			boxes.remove(box);
 			updateOverall();
-
 			logsContainer.remove(box);
 			logsContainer.repaint();
 		});
@@ -258,12 +206,25 @@ class LootTrackerPanel extends PluginPanel
 		popupMenu.add(reset);
 		box.setComponentPopupMenu(popupMenu);
 
-		return box;
+		// Add box to panel
+		boxes.add(box);
+		logsContainer.add(box, 0);
+
+		// Update overall
+		updateOverall();
 	}
 
 	private void updateOverall()
 	{
+		final long overallGp = boxes.stream().mapToLong(LootTrackerBox::getTotalPrice).sum();
+		final int overallKills = boxes.stream().mapToInt(LootTrackerBox::getTotalKills).sum();
 		overallKillsLabel.setText(htmlLabel("Total count: ", overallKills));
 		overallGpLabel.setText(htmlLabel("Total value: ", overallGp));
+	}
+
+	private static String htmlLabel(String key, long value)
+	{
+		final String valueStr = StackFormatter.quantityToStackSize(value);
+		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
 }

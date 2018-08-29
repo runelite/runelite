@@ -27,10 +27,9 @@ package net.runelite.client.plugins.loottracker;
 import lombok.Value;
 
 @Value
-class LootTrackerEntry
+class LootTrackerRecord
 {
 	private final String title;
 	private final String subTitle;
-	private final long timestamp;
-	private final LootTrackerItemEntry[] items;
+	private final LootTrackerItem[] items;
 }

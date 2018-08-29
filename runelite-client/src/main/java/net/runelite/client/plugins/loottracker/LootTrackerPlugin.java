@@ -176,8 +176,8 @@ public class LootTrackerPlugin extends Plugin
 		final Collection<ItemStack> items = npcLootReceived.getItems();
 		final String name = npc.getName();
 		final int combat = npc.getCombatLevel();
-		final LootTrackerItemEntry[] entries = buildEntries(stack(items));
-		SwingUtilities.invokeLater(() -> panel.addEntry(name, combat, entries));
+		final LootTrackerItem[] entries = buildEntries(stack(items));
+		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
 	}
 
 	@Subscribe
@@ -187,8 +187,8 @@ public class LootTrackerPlugin extends Plugin
 		final Collection<ItemStack> items = playerLootReceived.getItems();
 		final String name = player.getName();
 		final int combat = player.getCombatLevel();
-		final LootTrackerItemEntry[] entries = buildEntries(stack(items));
-		SwingUtilities.invokeLater(() -> panel.addEntry(name, combat, entries));
+		final LootTrackerItem[] entries = buildEntries(stack(items));
+		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
 	}
 
 	@Subscribe
@@ -235,8 +235,8 @@ public class LootTrackerPlugin extends Plugin
 
 		if (!items.isEmpty())
 		{
-			final LootTrackerItemEntry[] entries = buildEntries(stack(items));
-			SwingUtilities.invokeLater(() -> panel.addEntry(eventType, -1, entries));
+			final LootTrackerItem[] entries = buildEntries(stack(items));
+			SwingUtilities.invokeLater(() -> panel.add(eventType, -1, entries));
 		}
 		else
 		{
@@ -278,7 +278,7 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
-	private LootTrackerItemEntry[] buildEntries(final Collection<ItemStack> itemStacks)
+	private LootTrackerItem[] buildEntries(final Collection<ItemStack> itemStacks)
 	{
 		return itemStacks.stream().map(itemStack ->
 		{
@@ -286,11 +286,11 @@ public class LootTrackerPlugin extends Plugin
 			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemStack.getId();
 			final long price = (long) itemManager.getItemPrice(realItemId) * (long) itemStack.getQuantity();
 
-			return new LootTrackerItemEntry(
+			return new LootTrackerItem(
 				itemStack.getId(),
 				itemComposition.getName(),
 				itemStack.getQuantity(),
 				price);
-		}).toArray(LootTrackerItemEntry[]::new);
+		}).toArray(LootTrackerItem[]::new);
 	}
 }
