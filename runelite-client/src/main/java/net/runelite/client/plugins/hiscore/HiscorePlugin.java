@@ -68,7 +68,8 @@ public class HiscorePlugin extends Plugin
 	private static final String KICK_OPTION = "Kick";
 	private static final ImmutableList<String> BEFORE_OPTIONS = ImmutableList.of("Add friend", "Remove friend", KICK_OPTION);
 	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message");
-
+	private static final Pattern BOUNTY_PATTERN = Pattern.compile("<col=ff0000>You've been assigned a target: (.*)</col>");
+	
 	@Inject
 	@Nullable
 	private Client client;
@@ -87,7 +88,6 @@ public class HiscorePlugin extends Plugin
 
 	private NavigationButton navButton;
 	private HiscorePanel hiscorePanel;
-	private Pattern bountyPattern;
 
 	@Inject
 	private NameAutocompleter autocompleter;
@@ -122,8 +122,6 @@ public class HiscorePlugin extends Plugin
 		{
 			hiscorePanel.addInputKeyListener(autocompleter);
 		}
-
-		bountyPattern = Pattern.compile("<col=ff0000>You've been assigned a target: (.*)</col>");
 	}
 
 	@Override
@@ -208,6 +206,31 @@ public class HiscorePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onLookupMenuClicked(PlayerMenuOptionClicked event)
+	{
+		if (event.getMenuOption().equals(LOOKUP))
+		{
+			lookupPlayer(Text.removeTags(event.getMenuTarget()));
+		}
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (!config.bountylookup() || !event.getType().equals(ChatMessageType.SERVER))
+		{
+			return;
+		}
+
+		String message = event.getMessage();
+		Matcher m = BOUNTY_PATTERN.matcher(message);
+		if (m.matches())
+		{
+			lookupPlayer(m.group(1));
+		}
+	}
+
 	private void insertMenuEntry(MenuEntry newEntry, MenuEntry[] entries, boolean after)
 	{
 		MenuEntry[] newMenu = ObjectArrays.concat(entries, newEntry);
@@ -219,15 +242,6 @@ public class HiscorePlugin extends Plugin
 		}
 
 		client.setMenuEntries(newMenu);
-	}
-
-	@Subscribe
-	public void onLookupMenuClicked(PlayerMenuOptionClicked event)
-	{
-		if (event.getMenuOption().equals(LOOKUP))
-		{
-			lookupPlayer(Text.removeTags(event.getMenuTarget()));
-		}
 	}
 
 	private void lookupPlayer(String playerName)
@@ -251,22 +265,5 @@ public class HiscorePlugin extends Plugin
 
 			hiscorePanel.lookup(playerName);
 		});
-	}
-
-	@Subscribe
-	public void onChatMessageReceived(ChatMessage event)
-	{
-		if (config.bountylookup() && event.getType().equals(ChatMessageType.SERVER))
-		{
-			String message = event.getMessage();
-			if (message.startsWith("<col=ff0000>You've been assigned a target: "))
-			{
-				Matcher m = bountyPattern.matcher(message);
-				if (m.matches())
-				{
-					lookupPlayer(m.group(1));
-				}
-			}
-		}
 	}
 }
