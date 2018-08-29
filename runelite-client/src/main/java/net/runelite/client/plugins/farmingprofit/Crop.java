@@ -31,6 +31,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Enumeration of crops, containing a display name, seed and possible products.
+ */
 public enum Crop
 {
 	UNKNOWN("Unknown", -1, -1),
@@ -85,24 +88,9 @@ public enum Crop
 	WHITEBERRY	("White berries", 		ItemID.WHITEBERRY_SEED, 	ItemID.WHITE_BERRIES),
 	POISON_IVY	("Poison ivy berries", 	ItemID.POISON_IVY_SEED, 	ItemID.POISON_IVY_BERRIES),
 
-	// Fruit trees
-//	APPLE		("Cooking apples", 		ItemID.APPLE_SAPLING, 		ItemID.COOKING_APPLE),
-//	BANANA		("Bananas", 			ItemID.BANANA_SAPLING, 		ItemID.BANANA),
-//	ORANGE		("Oranges", 			ItemID.ORANGE_SAPLING, 		ItemID.ORANGE),
-//	CURRY		("Curry leaves", 		ItemID.CURRY_SAPLING, 		ItemID.CURRY_LEAF),
-//	PINEAPPLE	("Pineapples", 			ItemID.PINEAPPLE_SAPLING, 	ItemID.PINEAPPLE),
-//	PAPAYA		("Papayas", 			ItemID.PAPAYA_SAPLING, 		ItemID.PAPAYA_FRUIT),
-//	COCONUT		("Coconut", 			ItemID.PALM_SAPLING, 		ItemID.COCONUT),
-
 	// Special
 	SEEWEED		("Seaweed", 			ItemID.SEAWEED_SPORE, 		ItemID.GIANT_SEAWEED),
-//	TEAK		("Teak Trees", 			ItemID.TEAK_SAPLING, 		ItemID.TEAK_LOGS),
-//	GRAPE		("Grapes", 				ItemID.GRAPE_SEED, 			ItemID.GRAPES),
-//	MUSHROOM	("Mushrooms", 			ItemID.MUSHROOM_SPORE, 		ItemID.MUSHROOM),
-//	MAHOGANY	("Mahogany Trees", 		ItemID.MAHOGANY_SAPLING, 	ItemID.MAHOGANY_LOGS),
 	CACTUS		("Cactus", 				ItemID.CACTUS_SEED, 		ItemID.CACTUS_SPINE);
-//	BELLADONNA	("Belladonna", 			ItemID.BELLADONNA_SEED, 	ItemID.CAVE_NIGHTSHADE),
-//	CALQUAT		("Calquat", 			ItemID.CALQUAT_SAPLING, 	ItemID.CALQUAT_FRUIT);
 
 
 	Crop(String displayName, int seedId, int... products)

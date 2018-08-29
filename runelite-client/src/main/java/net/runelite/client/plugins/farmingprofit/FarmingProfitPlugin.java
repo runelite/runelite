@@ -56,7 +56,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @PluginDescriptor(
 	name = "Farming Profit",
 	description = "Calculates the profit of a farm run",
-	tags = {"farm", "farming", "profit"}
+	tags = {"farm", "farming", "runs", "run", "profit"}
 )
 @Slf4j
 public class FarmingProfitPlugin extends Plugin
@@ -121,6 +121,15 @@ public class FarmingProfitPlugin extends Plugin
 		log.info("Shut down Farming Profit Plugin");
 	}
 
+	/**
+	 * OnChatMessage event handler:
+	 * - When a chat message is received about a certain patch being harvested this overrides the animation
+	 * harvesting detection system and adds the harvested patches to the latest run.
+	 * - If the chat message displays something about a patch being empty, a flag is set to submit the run. After the
+	 * next harvest update, the run will be submitted and shown in the UI.
+	 *
+	 * @param chatMessage The chat message object passed to the event.
+	 */
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
@@ -139,6 +148,20 @@ public class FarmingProfitPlugin extends Plugin
 		}
 	}
 
+	/**
+	 * OnAnimationChanged event handler:
+	 * If a harvesting animation is observed, store current items.
+	 * If a idle animation is observed, two cases are possible depending on how the harvest was observed:
+	 * If using a chat message;
+	 * The harvested by chat flag is set to false and the event handler is aborted since everything is already
+	 * handled after the chat messages are observed.
+	 * If using a harvesting animation;
+	 * The new items are retrieved, comparing the current inventory and the stored items. These are then
+	 * checked for valid crops followed by calling the handleHarvest method with the respective crop and amount
+	 * harvested.
+	 *
+	 * @param event The AnimationChanged event, used to check what animation is changed
+	 */
 	@Subscribe
 	public void onAnimationChanged(final AnimationChanged event)
 	{
@@ -151,13 +174,11 @@ public class FarmingProfitPlugin extends Plugin
 		// Get animation ID
 		int animationID = event.getActor().getAnimation();
 
-		log.debug("AnimationID: " + animationID);
-
 		// Check whether the player is harvesting
 		if (isHarvestAnim(animationID))
 		{
 			// Player is harvesting, store current inventory
-			setPreviousItems();
+			storeItems();
 			wasHarvesting = true;
 		}
 
@@ -173,7 +194,6 @@ public class FarmingProfitPlugin extends Plugin
 		{
 			wasHarvesting = false;
 
-			// Player idle, find new items
 			// Set currentItems to previousItems by default, will be updated if the inventory container is not null.
 			// This is to ensure no new items will be observed when the inventory is null.
 			Item[] currentItems = previousItems;
@@ -197,24 +217,33 @@ public class FarmingProfitPlugin extends Plugin
 			Crop crop = Crop.fromProductId(newItems[0].getId());
 			int amount = newItems.length;
 
+			// Handle the harvest of the crop with respective amount
 			handleHarvest(crop, amount);
-
-			log.debug("Harvested " + amount + "x of " + crop.getDisplayName());
 		}
 	}
 
+	/**
+	 * Handle the harvest of a crop with a certain amount, basic flow:
+	 * If there is not latest run, create a now farming run
+	 * Else:
+	 * If the current run is most likely the same patch: add amount to the latest run
+	 * Else: add run to UI and start a new run with the harvested crop
+	 *
+	 * @param crop   The crop that has been harvested
+	 * @param amount The amount of the crop that is harvested
+	 */
 	private void handleHarvest(Crop crop, int amount)
 	{
-		log.debug("Handling harvest: " + amount + "x " + crop.getDisplayName());
+		log.debug("Harvested " + amount + "x of " + crop.getDisplayName());
 
 		WorldPoint harvestLocation = client.getLocalPlayer().getWorldLocation();
 
 		if (latestRun == null)
 		{
-			log.debug("There is no latest run, create new run");
+			log.debug(" There is no latest harvest run, create new run:");
 
 			latestRun = new FarmingProfitRun(itemManager, crop, amount, harvestLocation);
-			setPreviousItems();
+			storeItems();
 
 			log.debug(latestRun.toString());
 		}
@@ -223,11 +252,11 @@ public class FarmingProfitPlugin extends Plugin
 			int distance = harvestLocation.distanceTo(latestRun.getLatestHarvestWorldPoint());
 			if (latestRun.getCrop() == crop && distance < MAX_PATCH_DISTANCE)
 			{
-				log.debug("  Latest run is close to current run with same crop type, most likely the same patch," +
-					" so add to the latest run");
+				log.debug(" Latest run is close to current run with same crop type, most likely the same patch," +
+					" so add to the latest run:");
 
 				latestRun.addAmount(amount, harvestLocation);
-				setPreviousItems();
+				storeItems();
 
 				log.debug(latestRun.toString());
 			}
@@ -238,7 +267,7 @@ public class FarmingProfitPlugin extends Plugin
 					panel.addRun(latestRun);
 
 					latestRun = new FarmingProfitRun(itemManager, crop, amount, harvestLocation);
-					setPreviousItems();
+					storeItems();
 
 					log.debug(latestRun.toString());
 				});
@@ -247,23 +276,28 @@ public class FarmingProfitPlugin extends Plugin
 
 		if (readyToSubmitRun)
 		{
-			log.debug("Ready to submit, adding latest run");
+			log.debug(" Submitting latest run");
 			readyToSubmitRun = false;
 			submitLatestRun();
 		}
 	}
 
-	// Backup checks for adding the latest run
+	/**
+	 * Once the run is not added using the chat messages, this event handler makes sure that the run will always be added
+	 * eventually. This is done using a timeout and a distance check to see whether the player has teleported.
+	 *
+	 * @param tick
+	 */
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
 		if (latestRun != null)
 		{
-			// Check the last run was done longer ago than the timeout
+			// Check whether the time of the last run is past the timeout
 			LocalDateTime offsetTime = LocalDateTime.now();
 			boolean pastTimeout = offsetTime.isAfter(latestRun.getLatestHarvestTime().plusSeconds(RUN_TIMEOUT_SECONDS));
 
-			// Check the distance to latest run in order to see whether the player has teleported away
+			// Check the distance to latest run in order to see guess if the player has teleported away
 			int distance = client.getLocalPlayer().getWorldLocation().distanceTo(latestRun.getLatestHarvestWorldPoint());
 			boolean hasTeleported = (distance > MIN_TELEPORT_DISTANCE);
 
@@ -272,17 +306,20 @@ public class FarmingProfitPlugin extends Plugin
 			{
 				if (pastTimeout)
 				{
-					log.debug("Harvest time past timeout");
+					log.debug("Adding harvest run to UI, harvest time past timeout");
 				}
 				if (hasTeleported)
 				{
-					log.debug("Player has teleported");
+					log.debug("Adding harvest run to UI, player has teleported");
 				}
 				submitLatestRun();
 			}
 		}
 	}
 
+	/**
+	 * Submit the latest run to the UI
+	 */
 	private void submitLatestRun()
 	{
 		SwingUtilities.invokeLater(() -> {
@@ -293,6 +330,13 @@ public class FarmingProfitPlugin extends Plugin
 		});
 	}
 
+	/**
+	 * From two arrays of items, previous and next, find the new items in compared to the previous.
+	 *
+	 * @param prev Previous items
+	 * @param next The next array of items, which might contain new items compared to the previous.
+	 * @return An array of items that exist in `next` but not in `prev`
+	 */
 	private Item[] getNewItems(Item[] prev, Item[] next)
 	{
 		if (prev == null || prev.length == 0)
@@ -315,6 +359,12 @@ public class FarmingProfitPlugin extends Plugin
 		return nextList.toArray(new Item[nextList.size()]);
 	}
 
+	/**
+	 * From a lot of items, remove the items that are not crops
+	 *
+	 * @param items Array of items to be checked
+	 * @return Array of items, where all items are valid crops
+	 */
 	private Item[] removeUnknownCrops(Item[] items)
 	{
 		ArrayList<Item> newItemsList = new ArrayList<>(Arrays.asList(items));
@@ -322,6 +372,12 @@ public class FarmingProfitPlugin extends Plugin
 		return newItemsList.toArray(new Item[newItemsList.size()]);
 	}
 
+	/**
+	 * Checks whether an animation ID is a harvest animation id
+	 *
+	 * @param animId Animation ID to be checked
+	 * @return True if the animation ID is a harvest animation, false if not
+	 */
 	private boolean isHarvestAnim(int animId)
 	{
 		return (animId == AnimationID.FARMING_HARVEST_BUSH ||
@@ -331,7 +387,11 @@ public class FarmingProfitPlugin extends Plugin
 			animId == AnimationID.DIG);
 	}
 
-	private void setPreviousItems()
+	/**
+	 * Store the current inventory in a local variable
+	 * This is used to check whether items have been added to the inventory after harvesting
+	 */
+	private void storeItems()
 	{
 		ItemContainer currentItemContainer = client.getItemContainer(InventoryID.INVENTORY);
 		if (currentItemContainer != null)

@@ -25,12 +25,10 @@
 package net.runelite.client.plugins.farmingprofit;
 
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
-import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.StackFormatter;
 
@@ -44,23 +42,16 @@ import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 @Slf4j
 class FarmingProfitPanel extends PluginPanel
 {
-
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
-
-	// When no runs have been done, display an error panel
-	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
 
 	// Handle farm run logs
 	private final JPanel runsContainer = new JPanel();
 
-	// Handle overall session data
-	private final JPanel overallPanel = new JPanel();
 	private final JLabel overallIcon = new JLabel();
 	private final JLabel overallProfitLabel = new JLabel();
 	private final JLabel overallPatchesLabel = new JLabel();
@@ -70,21 +61,22 @@ class FarmingProfitPanel extends PluginPanel
 	private int overallPatches;
 	private int overallProducts;
 
-	private ArrayList<FarmingProfitRun> runs = new ArrayList<>();
-
 	FarmingProfitPanel(ItemManager itemManager)
 	{
 		this.itemManager = itemManager;
+
+		// Set panel properties
 		setBorder(new EmptyBorder(6, 6, 6, 6));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new BorderLayout());
 
-		// Create layout panel for wrapping
+		// Create layout panel
 		final JPanel layoutPanel = new JPanel();
 		layoutPanel.setLayout(new BoxLayout(layoutPanel, BoxLayout.Y_AXIS));
 		add(layoutPanel, BorderLayout.NORTH);
 
 		// Create panel that will contain overall data
+		JPanel overallPanel = new JPanel();
 		overallPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		overallPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		overallPanel.setLayout(new BorderLayout());
@@ -103,7 +95,7 @@ class FarmingProfitPanel extends PluginPanel
 		overallPanel.add(overallIcon, BorderLayout.WEST);
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
 
-		// Create reset all menu
+		// Create reset all popup menu
 		final JMenuItem reset = new JMenuItem("Reset");
 		reset.addActionListener(e ->
 		{
@@ -115,26 +107,9 @@ class FarmingProfitPanel extends PluginPanel
 			runsContainer.repaint();
 		});
 
-		// TODO remove following two testing buttons
-		final JMenuItem addRanarr = new JMenuItem("Add Run");
-		addRanarr.addActionListener(e ->
-		{
-			addRun(new FarmingProfitRun(itemManager, Crop.RANARR, 13, new WorldPoint(1, 1, 1)));
-		});
-		final JMenuItem addSnapdragon = new JMenuItem("Add Snapdragon");
-		addSnapdragon.addActionListener(e ->
-		{
-			addRun(new FarmingProfitRun(itemManager, Crop.SNAPDRAGON, 5, new WorldPoint(1, 1, 1)));
-		});
-
-		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		popupMenu.add(reset);
-		// TODO remove following two testing buttons
-		popupMenu.add(addRanarr);
-		popupMenu.add(addSnapdragon);
-
 		overallPanel.setComponentPopupMenu(popupMenu);
 
 		// Create loot logs wrapper
@@ -142,17 +117,16 @@ class FarmingProfitPanel extends PluginPanel
 		layoutPanel.add(overallPanel);
 		layoutPanel.add(runsContainer);
 
+		// Update overall variables
 		updateOverall();
 	}
 
 	void addRun(FarmingProfitRun run)
 	{
-		runs.add(run);
-
 		final FarmingProfitBox box = new FarmingProfitBox(itemManager, run);
 
-		// Create reset all menu
-		final JMenuItem reset = new JMenuItem("Remove");
+		// Create remove run popup menu
+		final JMenuItem reset = new JMenuItem("Remove run");
 		reset.addActionListener(e ->
 		{
 			overallProfit -= run.getProfit();
@@ -162,19 +136,19 @@ class FarmingProfitPanel extends PluginPanel
 			runsContainer.remove(box);
 			runsContainer.repaint();
 		});
-		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		popupMenu.add(reset);
 		box.setComponentPopupMenu(popupMenu);
 
+		// Add run box to the runs container
 		runsContainer.add(box, 0);
 		runsContainer.repaint();
 
+		// Update overall variables
 		overallProfit += run.getProfit();
 		overallProducts += run.getAmount();
 		overallPatches += 1;
-
 		updateOverall();
 	}
 

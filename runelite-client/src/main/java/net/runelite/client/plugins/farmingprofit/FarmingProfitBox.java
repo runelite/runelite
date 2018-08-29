@@ -44,6 +44,7 @@ class FarmingProfitBox extends JPanel
 
 	FarmingProfitBox(ItemManager itemManager, FarmingProfitRun run)
 	{
+		// Set panel properties
 		setLayout(new BorderLayout(0, 0));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
 		setToolTipText(run.getTooltip());
@@ -56,7 +57,6 @@ class FarmingProfitBox extends JPanel
 		runImage.setLayout(new BorderLayout(0, 0));
 		runImage.setBorder(new EmptyBorder(7, 7, 7, 0));
 		runImage.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-
 		final JLabel runImageLabel = new JLabel();
 		runImageLabel.setVerticalAlignment(SwingConstants.CENTER);
 		runImageLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -92,7 +92,7 @@ class FarmingProfitBox extends JPanel
 			runInfo.add(amountLabel, BorderLayout.SOUTH);
 		}
 
-		// Add image and info the panel
+		// Add image and info to the panel
 		add(runImage, BorderLayout.WEST);
 		add(runInfo, BorderLayout.CENTER);
 	}

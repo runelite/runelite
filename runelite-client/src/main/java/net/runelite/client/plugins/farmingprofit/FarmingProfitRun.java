@@ -35,6 +35,7 @@ import net.runelite.client.util.StackFormatter;
 class FarmingProfitRun
 {
 
+	// Class variables
 	@Getter
 	private Crop crop;
 	@Getter
@@ -44,20 +45,30 @@ class FarmingProfitRun
 	@Getter
 	private LocalDateTime latestHarvestTime;
 
+	// Util variables
+	@Getter
 	private int profit;
-	private ItemManager itemManager;
 	@Getter
 	private String tooltip;
+
+	// Item manager
+	private ItemManager itemManager;
 
 
 	FarmingProfitRun(ItemManager itemManager, Crop crop, int amount, WorldPoint latestHarvest)
 	{
 		this.itemManager = itemManager;
 		this.crop = crop;
-		updateAmount(amount, latestHarvest);
+		updateRun(amount, latestHarvest);
 	}
 
-	private void updateAmount(int amount, WorldPoint harvestWorldPoint)
+	/**
+	 * Update various variables of the farming run which have to be updated after the amount changes
+	 *
+	 * @param amount            The new amount for the farming run
+	 * @param harvestWorldPoint The new location of the farming run
+	 */
+	private void updateRun(int amount, WorldPoint harvestWorldPoint)
 	{
 		this.amount = amount;
 		latestHarvestWorldPoint = harvestWorldPoint;
@@ -65,16 +76,23 @@ class FarmingProfitRun
 		latestHarvestTime = LocalDateTime.now();
 	}
 
+	/**
+	 * Add a certain amount of products to the run, with a new location
+	 *
+	 * @param toAdd             Amount of products to add
+	 * @param harvestWorldPoint The new location
+	 */
 	void addAmount(int toAdd, WorldPoint harvestWorldPoint)
 	{
-		updateAmount(amount + toAdd, harvestWorldPoint);
+		updateRun(amount + toAdd, harvestWorldPoint);
 	}
 
-	int getProfit()
-	{
-		return profit;
-	}
-
+	/**
+	 * Update the profit variable, followed by updating the tooltip string
+	 * <p>
+	 * Created a separate updateRun and getter for the profit because getting the item prices has to be done on
+	 * the client thread, which is not possible when the UI tries to access the profit.
+	 */
 	private void updateProfit()
 	{
 		int seedPrice = itemManager.getItemPrice(crop.getSeedId());
@@ -84,10 +102,12 @@ class FarmingProfitRun
 		updateTooltip();
 	}
 
-	// Created a separate update tooltip and tooltip getter, because retrieving the item compositions has to be done
-	// on the client thread.
-	// So in the user interface the getter is called and when a run is created or the profit is updated, the tooltip
-	// variable is updated.
+	/**
+	 * Update the tooltip variable.
+	 * <p>
+	 * Created a separate updateRun and getter for the tooltip because getting the item compositions has to be done on
+	 * the client thread, which is not possible when the UI tries to access the tooltip.
+	 */
 	private void updateTooltip()
 	{
 		ItemComposition seed = itemManager.getItemComposition(crop.getSeedId());
@@ -95,13 +115,13 @@ class FarmingProfitRun
 		ItemComposition product = itemManager.getItemComposition(crop.getProductId());
 		int productPrice = itemManager.getItemPrice(crop.getProductId());
 		tooltip = "<html>Cost: " + seed.getName() + " " + StackFormatter.quantityToStackSize(seedPrice) + "gp<br>" +
-			"Products: " + product.getName() + " " + StackFormatter.quantityToStackSize(productPrice) + "gp<br>" +
+			"Products: " + product.getName() + " " + StackFormatter.quantityToStackSize(productPrice * amount) + "gp<br>" +
 			"Profit: " + StackFormatter.quantityToStackSize(getProfit()) + "gp</html>";
 	}
 
 	public String toString()
 	{
-		return "[ " + this.crop.getDisplayName() + " , amount: " + this.amount + "x ]";
+		return "[" + this.crop.getDisplayName() + " , amount: " + this.amount + "x]";
 	}
 
 }
