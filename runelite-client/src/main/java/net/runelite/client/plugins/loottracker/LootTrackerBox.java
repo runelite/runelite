@@ -98,6 +98,10 @@ class LootTrackerBox extends JPanel
 		add(itemContainer, BorderLayout.CENTER);
 	}
 
+	/**
+	 * Adds an entry's data into a loot box.
+	 * This will add new items to the list, re-calculating price and kill count.
+	 */
 	void addEntry(LootTrackerEntry entry)
 	{
 		entries.add(entry);
@@ -114,6 +118,10 @@ class LootTrackerBox extends JPanel
 		}
 	}
 
+	/**
+	 * This method creates stacked items from the item list, calculates total price and then
+	 * displays all the items in the UI.
+	 */
 	private void buildItems()
 	{
 		final List<LootTrackerItemEntry> allItems = new ArrayList<>();

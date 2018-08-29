@@ -146,6 +146,42 @@ class LootTrackerPanel extends PluginPanel
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
 
+	/**
+	 * This method decides what to do with a new entry, if a similarily named log exists, it will
+	 * add its items to it, updating the log's overall price and kills. If not, a new log will be created
+	 * to hold this entry's information.
+	 */
+	private void handleEntry(LootTrackerEntry entry)
+	{
+		if (groupLoot)
+		{
+			for (LootTrackerBox log : logs)
+			{
+				if (log.getTitle().equals(entry.getTitle()))
+				{
+					overallGp -= log.getTotalPrice();
+
+					log.addEntry(entry);
+					log.repaint();
+
+					// Update overall
+					overallGp += log.getTotalPrice();
+					overallKills++;
+					updateOverall();
+
+					return;
+				}
+			}
+		}
+
+		createLog(entry);
+	}
+
+	/**
+	 * Adds a new entry to the plugin.
+	 * Creates a subtitle, adds a new entry and then passes off to the render methods, that will decide
+	 * how to display this new data.
+	 */
 	void addEntry(final String eventName, final int actorLevel, LootTrackerItemEntry[] items)
 	{
 		final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
@@ -153,36 +189,14 @@ class LootTrackerPanel extends PluginPanel
 		LootTrackerEntry entry = new LootTrackerEntry(eventName, subTitle, System.currentTimeMillis(), items);
 		entries.add(entry);
 
-		if (!groupLoot || !stackEntry(entry))
-		{
-			addLog(entry);
-		}
+		handleEntry(entry);
 	}
 
-	private boolean stackEntry(LootTrackerEntry entry)
-	{
-		for (LootTrackerBox log : logs)
-		{
-			if (log.getTitle().equals(entry.getTitle()))
-			{
-				overallGp -= log.getTotalPrice();
-
-				log.addEntry(entry);
-				log.repaint();
-
-				// Update overall
-				overallGp += log.getTotalPrice();
-				overallKills++;
-				updateOverall();
-
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	private void addLog(LootTrackerEntry entry)
+	/**
+	 * Creates and adds a new element (LootTrackerBox) to the UI, containing a title, sub-title, price and item grid.
+	 * This method also updates the overall values and UI.
+	 */
+	private void createLog(LootTrackerEntry entry)
 	{
 		remove(errorPanel);
 		overallPanel.setVisible(true);
@@ -198,6 +212,9 @@ class LootTrackerPanel extends PluginPanel
 		logsContainer.add(log, 0);
 	}
 
+	/**
+	 * Rebuilds all the logs from scratch using existing listed entries, depending on the grouping mode.
+	 */
 	void rebuild()
 	{
 		logsContainer.removeAll();
@@ -209,10 +226,7 @@ class LootTrackerPanel extends PluginPanel
 
 		for (LootTrackerEntry entry : entries)
 		{
-			if (!groupLoot || !stackEntry(entry))
-			{
-				addLog(entry);
-			}
+			handleEntry(entry);
 		}
 
 		logsContainer.repaint();
