@@ -214,6 +214,23 @@ public class PluginManager
 		}
 	}
 
+	public void stopCorePlugins()
+	{
+		List<Plugin> scannedPlugins = new ArrayList<>(plugins);
+		for (Plugin plugin : scannedPlugins)
+		{
+			try
+			{
+				stopPlugin(plugin);
+				plugins.remove(plugin);
+			}
+			catch (PluginInstantiationException ex)
+			{
+				log.warn("Unable to stop plugin {}. {}", plugin.getClass().getSimpleName(), ex);
+			}
+		}
+	}
+
 	List<Plugin> scanAndInstantiate(ClassLoader classLoader, String packageName) throws IOException
 	{
 		MutableGraph<Class<? extends Plugin>> graph = GraphBuilder

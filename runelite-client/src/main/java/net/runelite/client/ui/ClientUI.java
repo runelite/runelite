@@ -36,6 +36,7 @@ import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
+import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -271,6 +272,21 @@ public class ClientUI
 				{
 					saveClientBoundsConfig();
 					runelite.shutdown();
+
+					if (SystemTray.isSupported())
+					{
+						SystemTray.getSystemTray().remove(trayIcon);
+					}
+
+					if (client != null)
+					{
+						client.stop();
+					}
+
+					if (client instanceof Client)
+					{
+						((Client)client).shutDown();
+					}
 				},
 				this::showWarningOnExit
 			);
