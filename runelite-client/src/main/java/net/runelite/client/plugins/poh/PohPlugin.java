@@ -36,17 +36,13 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.*;
-import static net.runelite.api.ObjectID.INCENSE_BURNER;
-import static net.runelite.api.ObjectID.INCENSE_BURNER_13209;
-import static net.runelite.api.ObjectID.INCENSE_BURNER_13210;
-import static net.runelite.api.ObjectID.INCENSE_BURNER_13211;
-import static net.runelite.api.ObjectID.INCENSE_BURNER_13212;
-import static net.runelite.api.ObjectID.INCENSE_BURNER_13213;
 import net.runelite.api.events.*;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+
+import static net.runelite.api.ObjectID.*;
 
 @PluginDescriptor(
 	name = "Player-owned House",
@@ -110,6 +106,9 @@ public class PohPlugin extends Plugin
 		overlayManager.remove(overlay);
 		overlayManager.remove(burnerOverlay);
 		pohObjects.clear();
+		burnerLocs.clear();
+		timerMap.clear();
+		shortestDistance.clear();
 	}
 
 	@Subscribe
@@ -125,9 +124,10 @@ public class PohPlugin extends Plugin
 		if (BURNER_LIT.contains(gameObject.getId()) || BURNER_UNLIT.contains(gameObject.getId()) || PohIcons.getIcon(gameObject.getId()) != null)
 		{
 			pohObjects.put(gameObject, event.getTile());
-			//Found a new burner in the POH
+			//Found a new burner in the POH (on load or on relight)
 			if (BURNER_LIT.contains(gameObject.getId()) ||  BURNER_UNLIT.contains(gameObject.getId()))
 			{
+				timerMap.replace(event.getTile(), secondsLeft);
 				//Add burner to burnerLocs if it isn't already in there
 				if (!burnerLocs.containsValue(event.getTile()))
 				{
@@ -193,33 +193,7 @@ public class PohPlugin extends Plugin
 		//Get actor who is doing light_burner anim
 		if (actor.getAnimation() == AnimationID.LIGHT_BURNER)
 		{
-			//Get closest burner to actor (this is the one the actor has lighted)
-			int distanceToBurner = 10000;
-			for (Tile t : burnerLocs.values())
-			{
-				if (distanceToBurner > actor.getLocalLocation().distanceTo(t.getLocalLocation()))
-				{
-					distanceToBurner = actor.getLocalLocation().distanceTo(t.getLocalLocation());
-					shortestDistance.clear();
-					GameObject[] gameOb = t.getGameObjects();
-					for (GameObject object : gameOb)
-					{
-						if (object != null)
-						{
-							if (BURNER_LIT.contains(object.getId()) || BURNER_UNLIT.contains(object.getId()) || PohIcons.getIcon(object.getId()) != null)
-							{
-								//Put found GameObject and tile in shortestDistance
-								shortestDistance.put(object, t);
-							}
-						}
-					}
-				}
-			}
-			//Reset the timer for the burner that was just re-lighted
-			for (Tile t : shortestDistance.values())
-			{
-				timerMap.replace(t, secondsLeft);
-			}
+			//Code for implementing fm level scales (soon tm)
 		}
 	}
 }
