@@ -29,19 +29,23 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.events.*;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.HiscoreManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-
+import net.runelite.http.api.hiscore.*;
+import net.runelite.http.api.hiscore.Skill;
 import static net.runelite.api.ObjectID.*;
 
 @PluginDescriptor(
@@ -49,9 +53,12 @@ import static net.runelite.api.ObjectID.*;
 	description = "Show minimap icons and mark unlit/lit burners",
 	tags = {"construction", "poh", "minimap", "overlay"}
 )
+
+@Slf4j
 public class PohPlugin extends Plugin
 {
 	private static final double ESTIMATED_TICK_LENGTH = 0.6;
+	private final HiscoreClient hiscoreClient = new HiscoreClient();
 
 	@Getter(AccessLevel.PACKAGE)
 	private static final Set<Integer> BURNER_UNLIT = Sets.newHashSet(INCENSE_BURNER, INCENSE_BURNER_13210, INCENSE_BURNER_13212);
@@ -82,6 +89,9 @@ public class PohPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private HiscoreManager hiscoreManager;
 
 	@Inject
 	private BurnerOverlay burnerOverlay;
@@ -193,7 +203,20 @@ public class PohPlugin extends Plugin
 		//Get actor who is doing light_burner anim
 		if (actor.getAnimation() == AnimationID.LIGHT_BURNER)
 		{
-			//Code for implementing fm level scales (soon tm)
+			//Code for implementing fm level scales
+			try
+			{
+				//On initial lookup client will freeze for ~1 tick to generate HiscoreKey,
+				//after that the hiscore lookup is mapped to a HiscoreKey (see HiscoreManager.java)
+				HiscoreResult playerStats = hiscoreManager.lookup(actorName, HiscoreEndpoint.NORMAL);
+				Skill fm = playerStats.getFiremaking();
+				int fmLevel = fm.getLevel();
+				log.debug("Succesfully looked up '{}' with firemaking level '{}'", actorName, fmLevel);
+			}
+			catch (IOException ex)
+			{
+				log.debug("Unable to lookup '{}' : exeption '{}'", actorName, ex);
+			}
 		}
 	}
 }
