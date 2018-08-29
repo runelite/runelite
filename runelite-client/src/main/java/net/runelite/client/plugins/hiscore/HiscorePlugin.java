@@ -69,7 +69,7 @@ public class HiscorePlugin extends Plugin
 	private static final ImmutableList<String> BEFORE_OPTIONS = ImmutableList.of("Add friend", "Remove friend", KICK_OPTION);
 	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message");
 	private static final Pattern BOUNTY_PATTERN = Pattern.compile("<col=ff0000>You've been assigned a target: (.*)</col>");
-	
+
 	@Inject
 	@Nullable
 	private Client client;
@@ -207,7 +207,7 @@ public class HiscorePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onLookupMenuClicked(PlayerMenuOptionClicked event)
+	public void onPlayerMenuOptionClicked(PlayerMenuOptionClicked event)
 	{
 		if (event.getMenuOption().equals(LOOKUP))
 		{
