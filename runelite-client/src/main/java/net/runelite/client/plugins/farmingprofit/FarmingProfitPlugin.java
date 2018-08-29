@@ -263,7 +263,8 @@ public class FarmingProfitPlugin extends Plugin
 			else
 			{
 				log.debug(" Harvesting other patch type or patch far away, add latest run and start new run");
-				SwingUtilities.invokeLater(() -> {
+				SwingUtilities.invokeLater(() ->
+				{
 					panel.addRun(latestRun);
 
 					latestRun = new FarmingProfitRun(itemManager, crop, amount, harvestLocation);
@@ -322,7 +323,8 @@ public class FarmingProfitPlugin extends Plugin
 	 */
 	private void submitLatestRun()
 	{
-		SwingUtilities.invokeLater(() -> {
+		SwingUtilities.invokeLater(() ->
+		{
 			panel.addRun(latestRun);
 			latestRun = null;
 			wasHarvesting = false;
