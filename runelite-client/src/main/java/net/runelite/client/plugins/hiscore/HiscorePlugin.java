@@ -31,13 +31,18 @@ import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.swing.SwingUtilities;
+
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.PlayerMenuOptionClicked;
@@ -83,6 +88,7 @@ public class HiscorePlugin extends Plugin
 
 	private NavigationButton navButton;
 	private HiscorePanel hiscorePanel;
+	private Pattern bountyPattern;
 
 	@Inject
 	private NameAutocompleter autocompleter;
@@ -117,6 +123,8 @@ public class HiscorePlugin extends Plugin
 		{
 			hiscorePanel.addInputKeyListener(autocompleter);
 		}
+
+		bountyPattern = Pattern.compile("<col=ff0000>You've been assigned a target: (.*)</col>");
 	}
 
 	@Override
@@ -219,25 +227,45 @@ public class HiscorePlugin extends Plugin
 	{
 		if (event.getMenuOption().equals(LOOKUP))
 		{
-			executor.execute(() ->
-			{
-				try
-				{
-					SwingUtilities.invokeAndWait(() ->
-					{
-						if (!navButton.isSelected())
-						{
-							navButton.getOnSelect().run();
-						}
-					});
-				}
-				catch (InterruptedException | InvocationTargetException e)
-				{
-					throw new RuntimeException(e);
-				}
+			lookupPlayer(Text.removeTags(event.getMenuTarget()));
+		}
+	}
 
-				hiscorePanel.lookup(Text.removeTags(event.getMenuTarget()));
-			});
+	private void lookupPlayer(String playerName) {
+		executor.execute(() ->
+		{
+			try
+			{
+				SwingUtilities.invokeAndWait(() ->
+				{
+					if (!navButton.isSelected())
+					{
+						navButton.getOnSelect().run();
+					}
+				});
+			}
+			catch (InterruptedException | InvocationTargetException e)
+			{
+				throw new RuntimeException(e);
+			}
+
+			hiscorePanel.lookup(playerName);
+		});
+	}
+
+	@Subscribe
+	public void onChatMessageReceived(ChatMessage event)
+	{
+		if (config.bountylookup() && event.getType().equals(ChatMessageType.SERVER))
+		{
+			String message = event.getMessage();
+			if (message.startsWith("<col=ff0000>You've been assigned a target: "))
+			{
+				Matcher m = bountyPattern.matcher(message);
+				if (m.matches()) {
+					lookupPlayer(m.group(1));
+				}
+			}
 		}
 	}
 }

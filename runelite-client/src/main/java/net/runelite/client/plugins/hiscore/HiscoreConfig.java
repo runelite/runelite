@@ -74,4 +74,15 @@ public interface HiscoreConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			position = 5,
+			keyName = "bountylookup",
+			name = "Bountylookup",
+			description = "Automatically lookup the stats of your bounty hunter target"
+	)
+	default boolean bountylookup()
+	{
+		return true;
+	}
 }
