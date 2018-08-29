@@ -35,6 +35,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.game.ItemManager;
@@ -83,10 +84,12 @@ public class FarmingProfitPlugin extends Plugin
 	private FarmingProfitRun latestRun = null;
 
 	private boolean wasHarvesting = false;
+	private boolean harvestedUsingChat = false;
+	private boolean readyToSubmitRun = false;
 
 	final private static int MAX_PATCH_DISTANCE = 8;
 	final private static int MIN_TELEPORT_DISTANCE = 40;
-	final private static int RUN_TIMEOUT_SECONDS = 60;
+	final private static int RUN_TIMEOUT_SECONDS = 30;
 
 
 	@Override
@@ -119,6 +122,24 @@ public class FarmingProfitPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onChatMessage(ChatMessage chatMessage)
+	{
+		Crop crop = HarvestMessages.cropFromMessage(chatMessage.getMessage());
+		if (crop != Crop.UNKNOWN)
+		{
+			log.debug("Harvesting " + crop.getDisplayName() + " because message: [" + chatMessage.getMessage() + "]");
+			handleHarvest(crop, 1);
+			harvestedUsingChat = true;
+		}
+
+		if (chatMessage.getMessage().endsWith("patch is now empty."))
+		{
+			log.debug("The patch is empty so mark latest run ready to submit");
+			readyToSubmitRun = true;
+		}
+	}
+
+	@Subscribe
 	public void onAnimationChanged(final AnimationChanged event)
 	{
 		// Check for null actor and whether the actor is the player
@@ -130,24 +151,29 @@ public class FarmingProfitPlugin extends Plugin
 		// Get animation ID
 		int animationID = event.getActor().getAnimation();
 
+		log.debug("AnimationID: " + animationID);
+
 		// Check whether the player is harvesting
 		if (isHarvestAnim(animationID))
 		{
 			// Player is harvesting, store current inventory
-			ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
-			if (itemContainer != null)
-			{
-				previousItems = itemContainer.getItems();
-			}
-
+			setPreviousItems();
 			wasHarvesting = true;
 		}
 
+		// Used to prevent deadlock after tracking crop harvest using chat message
+		if (animationID == AnimationID.IDLE && harvestedUsingChat)
+		{
+			harvestedUsingChat = false;
+			return;
+		}
+
+		// If the player is idle and was harvesting
 		if (animationID == AnimationID.IDLE && wasHarvesting)
 		{
-			// Player idle, find new items
 			wasHarvesting = false;
 
+			// Player idle, find new items
 			// Set currentItems to previousItems by default, will be updated if the inventory container is not null.
 			// This is to ensure no new items will be observed when the inventory is null.
 			Item[] currentItems = previousItems;
@@ -156,8 +182,9 @@ public class FarmingProfitPlugin extends Plugin
 			{
 				currentItems = itemContainer.getItems();
 			}
-			Item[] newItems = getItemContainerAddedItems(previousItems, currentItems);
 
+			// Get new items
+			Item[] newItems = getNewItems(previousItems, currentItems);
 			newItems = removeUnknownCrops(newItems);
 
 			// Stop when no new items were found
@@ -169,49 +196,64 @@ public class FarmingProfitPlugin extends Plugin
 			// Get the crop from the product ID
 			Crop crop = Crop.fromProductId(newItems[0].getId());
 			int amount = newItems.length;
-			WorldPoint harvestLocation = client.getLocalPlayer().getWorldLocation();
+
+			handleHarvest(crop, amount);
 
 			log.debug("Harvested " + amount + "x of " + crop.getDisplayName());
+		}
+	}
 
-			if (latestRun == null)
+	private void handleHarvest(Crop crop, int amount)
+	{
+		log.debug("Handling harvest: " + amount + "x " + crop.getDisplayName());
+
+		WorldPoint harvestLocation = client.getLocalPlayer().getWorldLocation();
+
+		if (latestRun == null)
+		{
+			log.debug("There is no latest run, create new run");
+
+			latestRun = new FarmingProfitRun(itemManager, crop, amount, harvestLocation);
+			setPreviousItems();
+
+			log.debug(latestRun.toString());
+		}
+		else
+		{
+			int distance = harvestLocation.distanceTo(latestRun.getLatestHarvestWorldPoint());
+			if (latestRun.getCrop() == crop && distance < MAX_PATCH_DISTANCE)
 			{
-				log.debug("There is no latest run, create new run");
+				log.debug("  Latest run is close to current run with same crop type, most likely the same patch," +
+					" so add to the latest run");
 
-				latestRun = new FarmingProfitRun(itemManager, crop, amount, harvestLocation);
+				latestRun.addAmount(amount, harvestLocation);
 				setPreviousItems();
 
 				log.debug(latestRun.toString());
 			}
 			else
 			{
-				log.debug("There is a latest run");
-				int distance = harvestLocation.distanceTo(latestRun.getLatestHarvestWorldPoint());
-				if (latestRun.getCrop() == crop && distance < MAX_PATCH_DISTANCE)
-				{
-					log.debug("  Latest run is close to current run with same crop type, most likely the same patch," +
-						" so add to the latest run");
+				log.debug(" Harvesting other patch type or patch far away, add latest run and start new run");
+				SwingUtilities.invokeLater(() -> {
+					panel.addRun(latestRun);
 
-					latestRun.addAmount(amount, harvestLocation);
+					latestRun = new FarmingProfitRun(itemManager, crop, amount, harvestLocation);
 					setPreviousItems();
 
 					log.debug(latestRun.toString());
-				}
-				else
-				{
-					log.debug(" Harvesting other patch type or patch far away, add latest run and start new run");
-					SwingUtilities.invokeLater(() -> {
-						panel.addRun(latestRun);
-
-						latestRun = new FarmingProfitRun(itemManager, crop, amount, harvestLocation);
-						setPreviousItems();
-
-						log.debug(latestRun.toString());
-					});
-				}
+				});
 			}
+		}
+
+		if (readyToSubmitRun)
+		{
+			log.debug("Ready to submit, adding latest run");
+			readyToSubmitRun = false;
+			submitLatestRun();
 		}
 	}
 
+	// Backup checks for adding the latest run
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
@@ -236,15 +278,22 @@ public class FarmingProfitPlugin extends Plugin
 				{
 					log.debug("Player has teleported");
 				}
-				SwingUtilities.invokeLater(() -> {
-					panel.addRun(latestRun);
-					latestRun = null;
-				});
+				submitLatestRun();
 			}
 		}
 	}
 
-	private Item[] getItemContainerAddedItems(Item[] prev, Item[] next)
+	private void submitLatestRun()
+	{
+		SwingUtilities.invokeLater(() -> {
+			panel.addRun(latestRun);
+			latestRun = null;
+			wasHarvesting = false;
+			harvestedUsingChat = false;
+		});
+	}
+
+	private Item[] getNewItems(Item[] prev, Item[] next)
 	{
 		if (prev == null || prev.length == 0)
 		{
@@ -278,7 +327,8 @@ public class FarmingProfitPlugin extends Plugin
 		return (animId == AnimationID.FARMING_HARVEST_BUSH ||
 			animId == AnimationID.FARMING_HARVEST_FLOWER ||
 			animId == AnimationID.FARMING_HARVEST_FRUIT_TREE ||
-			animId == AnimationID.FARMING_HARVEST_HERB);
+			animId == AnimationID.FARMING_HARVEST_HERB ||
+			animId == AnimationID.DIG);
 	}
 
 	private void setPreviousItems()

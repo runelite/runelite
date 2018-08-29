@@ -60,7 +60,7 @@ class FarmingProfitBox extends JPanel
 		final JLabel runImageLabel = new JLabel();
 		runImageLabel.setVerticalAlignment(SwingConstants.CENTER);
 		runImageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		itemManager.getImage(run.getCrop().getCleanProductId(), run.getAmount(), true).addTo(runImageLabel);
+		itemManager.getImage(run.getCrop().getProductId(), run.getAmount(), true).addTo(runImageLabel);
 		runImage.add(runImageLabel);
 
 		// Run information

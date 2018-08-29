@@ -78,7 +78,7 @@ class FarmingProfitRun
 	private void updateProfit()
 	{
 		int seedPrice = itemManager.getItemPrice(crop.getSeedId());
-		int productPrice = itemManager.getItemPrice(crop.getCleanProductId());
+		int productPrice = itemManager.getItemPrice(crop.getProductId());
 
 		profit = productPrice * amount - seedPrice;
 		updateTooltip();
@@ -92,8 +92,8 @@ class FarmingProfitRun
 	{
 		ItemComposition seed = itemManager.getItemComposition(crop.getSeedId());
 		int seedPrice = itemManager.getItemPrice(crop.getSeedId());
-		ItemComposition product = itemManager.getItemComposition(crop.getCleanProductId());
-		int productPrice = itemManager.getItemPrice(crop.getCleanProductId());
+		ItemComposition product = itemManager.getItemComposition(crop.getProductId());
+		int productPrice = itemManager.getItemPrice(crop.getProductId());
 		tooltip = "<html>Cost: " + seed.getName() + " " + StackFormatter.quantityToStackSize(seedPrice) + "gp<br>" +
 			"Products: " + product.getName() + " " + StackFormatter.quantityToStackSize(productPrice) + "gp<br>" +
 			"Profit: " + StackFormatter.quantityToStackSize(getProfit()) + "gp</html>";
