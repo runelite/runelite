@@ -142,23 +142,23 @@ public class WidgetID
 
 	static class PestControl
 	{
-		static final int ACTIVITY_BAR = 9;
-		static final int ACTIVITY_PROGRESS = 11;
+		static final int ACTIVITY_BAR = 12;
+		static final int ACTIVITY_PROGRESS = 14;
 
-		static final int PURPLE_SHIELD = 12;
-		static final int BLUE_SHIELD = 13;
-		static final int YELLOW_SHIELD = 14;
-		static final int RED_SHIELD = 15;
+		static final int PURPLE_SHIELD = 15;
+		static final int BLUE_SHIELD = 16;
+		static final int YELLOW_SHIELD = 17;
+		static final int RED_SHIELD = 18;
 
-		static final int PURPLE_ICON = 16;
-		static final int BLUE_ICON = 17;
-		static final int YELLOW_ICON = 18;
-		static final int RED_ICON = 19;
+		static final int PURPLE_ICON = 19;
+		static final int BLUE_ICON = 20;
+		static final int YELLOW_ICON = 21;
+		static final int RED_ICON = 22;
 
-		static final int PURPLE_HEALTH = 20;
-		static final int BLUE_HEALTH = 21;
-		static final int YELLOW_HEALTH = 22;
-		static final int RED_HEALTH = 23;
+		static final int PURPLE_HEALTH = 23;
+		static final int BLUE_HEALTH = 24;
+		static final int YELLOW_HEALTH = 25;
+		static final int RED_HEALTH = 26;
 	}
 
 	static class FriendList
@@ -381,10 +381,10 @@ public class WidgetID
 	{
 		static final int CHATBOX_PARENT = 0;
 		static final int CHATBOX_BUTTONS = 1;
-		static final int CHATBOX_REPORT_TEXT = 28;
-		static final int CHATBOX_FRAME = 29;
-		static final int CHATBOX_MESSAGES = 47;
-		static final int CHATBOX_INPUT = 49;
+		static final int CHATBOX_REPORT_TEXT = 29;
+		static final int CHATBOX_FRAME = 30;
+		static final int CHATBOX_MESSAGES = 48;
+		static final int CHATBOX_INPUT = 50;
 	}
 
 	static class Prayer
@@ -561,8 +561,8 @@ public class WidgetID
 
 	static class ExperienceTracker
 	{
-		static final int WIDGET = 2;
-		static final int BOTTOM_BAR = 14;
+		static final int WIDGET = 3;
+		static final int BOTTOM_BAR = 15;
 	}
 
 	static class FairyRingPanel
