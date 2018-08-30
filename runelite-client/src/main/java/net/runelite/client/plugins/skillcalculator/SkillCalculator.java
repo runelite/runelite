@@ -321,7 +321,8 @@ class SkillCalculator extends JPanel
 						{
 							result = itemManager.searchForItem(secondary);
 						}
-						catch (ExecutionException ex) {
+						catch (ExecutionException ex)
+						{
 							return;
 						}
 						if (result == null || result.getItems().isEmpty()) continue;
