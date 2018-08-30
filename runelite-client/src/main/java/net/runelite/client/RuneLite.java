@@ -34,7 +34,6 @@ import com.google.inject.Injector;
 import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
-import java.util.Locale;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.inject.Singleton;
