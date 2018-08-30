@@ -120,7 +120,7 @@ enum TeleportLocationData
 	STRONGHOLD_OF_SECURITY(TeleportType.OTHER, "Skull Sceptre", "Stronghold of Security", new WorldPoint(3081, 3421, 0), "skull_sceptre_teleport_icon.png"),
 	MYTHS_GUILD(TeleportType.OTHER, "Mythical Cape", "Myth's Guild", new WorldPoint(2458, 2851, 0), "mythical_cape_teleport_icon.png"),
 	ECTOFUNTUS(TeleportType.OTHER, "Ectophial", "Ectofuntus", new WorldPoint(3660, 3522, 0), "ectophial_teleport_icon.png"),
-	CHAMPIONS_GUILD_CHRONICLE(TeleportType.OTHER, "Chronicle", "Champion's Guild", new WorldPoint(3202, 3357, 0), "chronicle_teleport_icon.png"),
+	CHAMPIONS_GUILD_CHRONICLE(TeleportType.OTHER, "Chronicle", "Champions' Guild", new WorldPoint(3202, 3357, 0), "chronicle_teleport_icon.png"),
 	GRAND_TREE(TeleportType.OTHER, "Royal Seed Pod", "Grand Tree", new WorldPoint(2465, 3495, 0), "royal_seed_pod_teleport_icon.png"),
 	RELLEKKKA_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Rellekka", new WorldPoint(2664, 3643, 0), "enchanted_lyre_teleport_icon.png"),
 	WATERBIRTH_ISLAND_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Waterbirth Island", new WorldPoint(2550, 3756, 0), "enchanted_lyre_teleport_icon.png"),
