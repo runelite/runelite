@@ -3,7 +3,7 @@
     {
       "level": 3,
       "icon": 121,
-      "name": "Attack Potion (3)",
+      "name": "Attack Potion(3)",
       "xp": 25,
       "ingredients": ["Guam potion (unf)", "Eye of newt"]
     },
@@ -24,15 +24,9 @@
     {
       "level": 5,
       "icon": 175,
-      "name": "Antipoison (3)",
+      "name": "Antipoison(3)",
       "xp": 37.5,
-      "ingredients": ["Marrentil potion (unf)", "Unicorn horn dust"]
-    },
-    {
-      "level": 8,
-      "icon": 4844,
-      "name": "Relicym's Balm (3)",
-      "xp": 40
+      "ingredients": ["Marrentill potion (unf)", "Unicorn horn dust"]
     },
     {
       "level": 11,
@@ -44,7 +38,7 @@
     {
       "level": 12,
       "icon": 115,
-      "name": "Strength Potion (3)",
+      "name": "Strength Potion(3)",
       "xp": 50,
       "ingredients": ["Tarromin potion (unf)", "Limpwurt root"]
     },
@@ -64,14 +58,14 @@
     },
     {
       "level": 21,
-      "name": "Compost Potion (3)",
+      "name": "Compost Potion(3)",
       "xp": 60,
       "ingredients": ["Harralander potion (unf)", "Volcanic ash"]
     },
     {
       "level": 22,
       "icon": 127,
-      "name": "Restore Potion (3)",
+      "name": "Restore Potion(3)",
       "xp": 62.5,
       "ingredients": ["Harralander potion (unf)", "Red spiders' eggs"]
     },
@@ -85,7 +79,7 @@
     {
       "level": 26,
       "icon": 3010,
-      "name": "Energy Potion (3)",
+      "name": "Energy Potion(3)",
       "xp": 67.5,
       "ingredients": ["Harralander potion (unf)", "Chocolate dust"]
     },
@@ -99,28 +93,28 @@
     {
       "level": 30,
       "icon": 133,
-      "name": "Defence Potion (3)",
+      "name": "Defence Potion(3)",
       "xp": 75,
       "ingredients": ["Ranarr potion (unf)", "White berries"]
     },
     {
       "level": 34,
       "icon": 3034,
-      "name": "Agility Potion (3)",
+      "name": "Agility Potion(3)",
       "xp": 80,
       "ingredients": ["Toadflax potion (unf)", "Toad's legs"]
     },
     {
       "level": 36,
       "icon": 9741,
-      "name": "Combat Potion (3)",
+      "name": "Combat Potion(3)",
       "xp": 84,
       "ingredients": ["Harralander potion (unf)", "Goat horn dust"]
     },
     {
       "level": 38,
       "icon": 139,
-      "name": "Prayer Potion (3)",
+      "name": "Prayer Potion(3)",
       "xp": 87.5,
       "ingredients": ["Ranarr potion (unf)", "Snape grass"]
     },
@@ -134,14 +128,14 @@
     {
       "level": 45,
       "icon": 145,
-      "name": "Super Attack (3)",
+      "name": "Super Attack(3)",
       "xp": 100,
       "ingredients": ["Irit potion (unf)", "Eye of newt"]
     },
     {
       "level": 48,
       "icon": 181,
-      "name": "Superantipoison (3)",
+      "name": "Superantipoison(3)",
       "xp": 106.3,
       "ingredients": ["Irit potion (unf)", "Unicorn horn dust"]
     },
@@ -155,21 +149,21 @@
     {
       "level": 50,
       "icon": 151,
-      "name": "Fishing Potion (3)",
+      "name": "Fishing Potion(3)",
       "xp": 112.5,
       "ingredients": ["Avantoe potion (unf)", "Snape grass"]
     },
     {
       "level": 52,
       "icon": 3018,
-      "name": "Super Energy (3)",
+      "name": "Super Energy(3)",
       "xp": 117.5,
       "ingredients": ["Avantoe potion (unf)", "Mort myre fungus"]
     },
     {
       "level": 53,
       "icon": 10000,
-      "name": "Hunter Potion (3)",
+      "name": "Hunter Potion(3)",
       "xp": 120,
       "ingredients": ["Avantoe potion (unf)", "Kebbit teeth dust"]
     },
@@ -183,7 +177,7 @@
     {
       "level": 55,
       "icon": 157,
-      "name": "Super Strength (3)",
+      "name": "Super Strength(3)",
       "xp": 125,
       "ingredients": ["Kwuarm potion (unf)", "Limpwurt root"]
     },
@@ -204,7 +198,7 @@
     {
       "level": 63,
       "icon": 3026,
-      "name": "Super Restore (3)",
+      "name": "Super Restore(3)",
       "xp": 142.5,
       "ingredients": ["Snapdragon potion (unf)", "Red spiders' eggs"]
     },
@@ -218,14 +212,14 @@
     {
       "level": 65,
       "icon": 10927,
-      "name": "Sanfew Serum (3)",
+      "name": "Sanfew Serum(3)",
       "xp": 160
 
     },
     {
       "level": 66,
       "icon": 163,
-      "name": "Super Defence (3)",
+      "name": "Super Defence(3)",
       "xp": 150,
       "ingredients": ["Cadantine potion (unf)", "White berries"]
     },
@@ -239,14 +233,14 @@
     {
       "level": 68,
       "icon": 5945,
-      "name": "Antidote+ (3)",
+      "name": "Antidote+(3)",
       "xp": 155,
       "ingredients": ["Toadflax potion (unf)", "Yew roots"]
     },
     {
       "level": 69,
       "icon": 2454,
-      "name": "Antifire Potion (3)",
+      "name": "Antifire Potion(3)",
       "xp": 157.5,
       "ingredients": ["Lantadyme potion (unf)", "Dragon scale dust"]
     },
@@ -260,7 +254,7 @@
     {
       "level": 72,
       "icon": 169,
-      "name": "Ranging Potion (3)",
+      "name": "Ranging Potion(3)",
       "xp": 162.5,
       "ingredients": ["Dwarf weed potion (unf)", "Wine of zamorak"]
     },
@@ -280,37 +274,37 @@
     {
       "level": 76,
       "icon": 3042,
-      "name": "Magic Potion (3)",
+      "name": "Magic Potion(3)",
       "xp": 172.5,
       "ingredients": ["Lantadyme potion (unf)", "Potato cactus"]
     },
     {
       "level": 77,
       "icon": 12627,
-      "name": "Stamina Potion (4)",
-      "xp": 76.5,
+      "name": "Stamina Potion(4)",
+      "xp": 102,
       "ingredients": ["Super energy(4)", "Amylase crystal"]
     },
     {
       "level": 78,
       "icon": 189,
-      "name": "Zamorak Brew (3)",
+      "name": "Zamorak Brew(3)",
       "xp": 175,
       "ingredients": ["Torstol potion (unf)", "Jangerberries"]
     },
     {
       "level": 79,
       "icon": 5954,
-      "name": "Antidote++ (3)",
+      "name": "Antidote++(3)",
       "xp": 177.5,
       "ingredients": ["Irit potion (unf)", "Magic roots"]
     },
     {
       "level": 81,
       "icon": 6687,
-      "name": "Saradomin Brew (3)",
+      "name": "Saradomin Brew(3)",
       "xp": 180,
-      "ingredients": ["Toadfalx potion (unf)", "Crushed nest"]
+      "ingredients": ["Toadflax potion (unf)", "Crushed nest"]
     },
     {
       "level": 82,
@@ -321,16 +315,16 @@
     {
       "level": 84,
       "icon": 11953,
-      "name": "Extended Antifire (3)",
-      "xp": 82.5,
-      "ingredients": ["Antifire potion(3) ", "Lava scale shard"]
+      "name": "Extended antifire(4)",
+      "xp": 110,
+      "ingredients": ["Antifire potion(4) ", "Lava scale shard"]
     },
     {
       "level": 87,
       "icon": 12907,
       "name": "Anti-venom(4)",
-      "xp": 90,
-      "ingredients": ["Antidote++ (4)", "Zulrah's scales"]
+      "xp": 120,
+      "ingredients": ["Antidote++(4)", "Zulrah's scales"]
     },
     {
       "level": 90,
@@ -349,7 +343,7 @@
     {
       "level": 98,
       "icon": 21978,
-      "name": "Extended Super Antifire (4)",
+      "name": "Extended Super Antifire(4)",
       "xp": 160,
       "ingredients": ["Super antifire potion(4)", "Lava scale shard"]
     }

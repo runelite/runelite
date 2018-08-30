@@ -287,7 +287,7 @@ class SkillCalculator extends JPanel
 					return;
 				}
 				if (result == null || result.getItems().isEmpty()) continue;
-
+				//System.out.println(result.getItems());
 				Item item = retrieveFromList(result.getItems(), actionName);
 				if (item == null) continue;
 				int itemPrice = itemManager.getItemPrice(item.getId());
@@ -295,8 +295,8 @@ class SkillCalculator extends JPanel
 				double gpPerXp;
 				if (skillName.equals("Herblore"))
 				{
-					System.out.println(actionName);
 					String[] ingredients = action.getIngredients();
+					if (ingredients == null) continue;
 					String primary = ingredients[0];
 					int seconPrice = 0;
 					try
@@ -308,21 +308,29 @@ class SkillCalculator extends JPanel
 						return;
 					}
 					if (result == null || result.getItems().isEmpty()) continue;
+					//System.out.println("a " + result.getItems());
 					Item primItem = retrieveFromList(result.getItems(), primary);
 					if (primItem == null) continue;
 					int primPrice = itemManager.getItemPrice(primItem.getId());
+					//System.out.println("primPrice: "+primPrice);
 
-					if (ingredients.length == 2) {
+					if (ingredients.length == 2)
+					{
 						String secondary = ingredients[1];
-						try {
+						try
+						{
 							result = itemManager.searchForItem(secondary);
-						} catch (ExecutionException ex) {
+						}
+						catch (ExecutionException ex) {
 							return;
 						}
 						if (result == null || result.getItems().isEmpty()) continue;
+						//System.out.println("b "+result.getItems());
 						Item seconItem = retrieveFromList(result.getItems(), secondary);
 						if (seconItem == null) continue;
-						seconPrice = itemManager.getItemPrice(primItem.getId());
+						seconPrice = itemManager.getItemPrice(seconItem.getId());
+						if (secondary.equals("Lava scale shard") || secondary.equals("Amylase crystal")) seconPrice *= 4;
+						if (secondary.equals("Zulrah scales")) seconPrice *= 20;
 					}
 					gpPerXp = (primPrice + seconPrice - itemPrice) / xp;
 
