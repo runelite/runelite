@@ -35,6 +35,7 @@ import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.util.Locale;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -110,6 +111,9 @@ public class RuneLite
 
 	@Inject
 	private OverlayManager overlayManager;
+
+	@Inject
+	private ScheduledExecutorService executorService;
 
 	@Inject
 	private Provider<ItemManager> itemManager;
@@ -292,8 +296,10 @@ public class RuneLite
 
 	public void shutdown()
 	{
+		pluginManager.stopCorePlugins();
 		clientSessionManager.shutdown();
 		discordService.close();
+		executorService.shutdown();
 	}
 
 	@VisibleForTesting
