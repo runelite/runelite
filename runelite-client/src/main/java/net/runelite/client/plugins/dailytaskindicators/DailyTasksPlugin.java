@@ -139,6 +139,10 @@ public class DailyTasksPlugin extends Plugin
 			sendChatMessage("You have pure essence waiting to be collected from Wizard Cromperty.");
 			hasSentEssenceMsg = true;
 		}
+		if (config.showRunes() && canCollectRunes())
+		{
+			sendChatMessage("You have random runes waiting to be collected from Lundail.");
+		}
 	}
 
 	private boolean checkCanCollectHerbBox()
@@ -158,6 +162,12 @@ public class DailyTasksPlugin extends Plugin
 	{
 		int value = client.getVar(Varbits.DAILY_ESSENCE);
 		return value == 0; // 1 = can't claim
+	}
+
+	private boolean canCollectRunes()
+	{
+		return client.getVar(Varbits.DIARY_WILDERNESS_EASY) == 1
+				&& client.getVar(Varbits.DAILY_RUNES) == 0;
 	}
 
 	private void sendChatMessage(String chatMessage)
