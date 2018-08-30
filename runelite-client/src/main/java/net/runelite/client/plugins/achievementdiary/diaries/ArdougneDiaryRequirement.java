@@ -62,7 +62,7 @@ public class ArdougneDiaryRequirement extends GenericDiaryRequirement
 		add("Attempt to steal from King Lathas' chest.",
 			new Requirement(Skill.THIEVING, 72));
 		add("Teleport to the Watchtower.",
-			new Requirement(Skill.ATTACK, 58));
+			new Requirement(Skill.MAGIC, 58));
 		add("Catch a Red Salamander.",
 			new Requirement(Skill.HUNTER, 59));
 		add("Check the health of a Palm tree near tree gnome village.",
