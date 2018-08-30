@@ -561,7 +561,7 @@ public class WidgetID
 
 	static class ExperienceTracker
 	{
-		static final int WIDGET = 2;
+		static final int WIDGET = 3;
 		static final int BOTTOM_BAR = 14;
 	}
 
