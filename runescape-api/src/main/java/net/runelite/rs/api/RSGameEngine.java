@@ -32,7 +32,4 @@ public interface RSGameEngine extends GameEngine
 {
 	@Import("canvas")
 	Canvas getCanvas();
-
-	@Import("shutDown")
-	void shutDown();
 }
