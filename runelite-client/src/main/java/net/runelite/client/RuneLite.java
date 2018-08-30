@@ -147,7 +147,6 @@ public class RuneLite
 
 	public static void main(String[] args) throws Exception
 	{
-		Locale.setDefault(Locale.ENGLISH);
 
 		final OptionParser parser = new OptionParser();
 		parser.accepts("developer-mode", "Enable developer tools");
