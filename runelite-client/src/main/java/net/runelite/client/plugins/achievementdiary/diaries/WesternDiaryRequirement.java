@@ -68,7 +68,7 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 		add("Catch a Dashing Kebbit.",
 			new Requirement(Skill.HUNTER, 69));
 		add("Complete a lap of the Ape Atoll agility course.",
-			new Requirement(Skill.FARMING, 63));
+			new Requirement(Skill.AGILITY, 48));
 		add("Chop and burn some Mahogany logs on Ape Atoll.",
 			new Requirement(Skill.WOODCUTTING, 50),
 			new Requirement(Skill.FIREMAKING, 50));

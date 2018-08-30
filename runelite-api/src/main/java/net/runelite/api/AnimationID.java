@@ -116,6 +116,7 @@ public final class AnimationID
 	public static final int MINING_MOTHERLODE_DRAGON_ORN = 335;
 	public static final int MINING_MOTHERLODE_INFERNAL = 4481;
 	public static final int MINING_MOTHERLODE_3A = 7282;
+	public static final int DENSE_ESSENCE_CHIPPING = 7201;
 	public static final int HERBLORE_POTIONMAKING = 363; //used for both herb and secondary
 	public static final int MAGIC_CHARGING_ORBS = 726;
 	public static final int MAGIC_LUNAR_STRING_JEWELRY = 4412;
@@ -131,7 +132,6 @@ public final class AnimationID
 	public static final int DEMONIC_GORILLA_AOE_ATTACK = 7228;
 	public static final int DEMONIC_GORILLA_PRAYER_SWITCH = 7228;
 	public static final int DEMONIC_GORILLA_DEFEND = 7224;
-	public static final int IMP_DEATH = 172;
 
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
@@ -167,4 +167,5 @@ public final class AnimationID
 	public static final int LIZARD_DEATH = 2778;
 	public static final int ROCKSLUG_DEATH = 1568;
 	public static final int ZYGOMITE_DEATH = 3327;
+	public static final int IMP_DEATH = 172;
 }

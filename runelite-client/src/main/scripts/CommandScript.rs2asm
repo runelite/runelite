@@ -3,11 +3,11 @@
 .string_stack_count 0
 .int_var_count      5
 .string_var_count   0
-   load_int               10616879
+   load_int               10616880
    widget_get_hidden_widget
    load_int               1
    if_icmpeq              LABEL9
-   load_int               10616880
+   load_int               10616881
    widget_get_hidden_widget
    load_int               1
    if_icmpeq              LABEL9
