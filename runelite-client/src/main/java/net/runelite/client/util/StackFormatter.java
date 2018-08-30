@@ -25,8 +25,10 @@
 package net.runelite.client.util;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,12 +51,15 @@ public class StackFormatter
 	/**
 	 * A number formatter
 	 */
-	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
+	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance(Locale.ENGLISH);
 
 	/**
 	 * A decimal number formatter
 	 */
-	private static final NumberFormat DECIMAL_FORMATTER = new DecimalFormat("#,###.#");
+	private static final NumberFormat DECIMAL_FORMATTER = new DecimalFormat(
+		"#,###.#",
+		DecimalFormatSymbols.getInstance(Locale.ENGLISH)
+	);
 
 	/**
 	 * Convert a quantity to a nicely formatted stack size.
