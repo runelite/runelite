@@ -36,6 +36,7 @@ import java.awt.Color;
 public interface GroundMarkerConfig extends Config
 {
 	@ConfigItem(
+		position = 0,
 		keyName = "markerColor",
 		name = "Color of the tile",
 		description = "Configures the color of marked tile"
@@ -43,5 +44,16 @@ public interface GroundMarkerConfig extends Config
 	default Color markerColor()
 	{
 		return Color.YELLOW;
+	}
+
+	@ConfigItem(
+			position = 1,
+			keyName = "clearLocalMarkers",
+			name = "Clear Local Marks",
+			description = "When this option is enabled you get the option to clear your local markers."
+	)
+	default boolean clearLocalMarkers()
+	{
+		return false;
 	}
 }

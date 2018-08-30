@@ -69,6 +69,7 @@ public class GroundMarkerPlugin extends Plugin
 	private static final String CONFIG_GROUP = "groundMarker";
 	private static final String MARK = "Mark tile";
 	private static final String WALK_HERE = "Walk here";
+	private static final String CLEAR_LOCAL = "Clear local marks";
 
 	private static final Gson gson = new Gson();
 
@@ -96,6 +97,9 @@ public class GroundMarkerPlugin extends Plugin
 
 	@Inject
 	private KeyManager keyManager;
+
+	@Inject
+	private GroundMarkerConfig config;
 
 	private void savePoints(int regionId, Collection<GroundMarkerPoint> points)
 	{
@@ -265,28 +269,58 @@ public class GroundMarkerPlugin extends Plugin
 		if (hotKeyPressed && event.getOption().equals(WALK_HERE))
 		{
 			MenuEntry[] menuEntries = client.getMenuEntries();
-			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+			if (!config.clearLocalMarkers())
+			{
+				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
-			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+				//Create 1 new menu entries (one for marking)
+				MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
 
-			menuEntry.setOption(MARK);
-			menuEntry.setTarget(event.getTarget());
-			menuEntry.setType(MenuAction.CANCEL.getId());
+				//Set options for marking
+				menuEntry.setOption(MARK);
+				menuEntry.setTarget(event.getTarget());
+				menuEntry.setType(MenuAction.CANCEL.getId());
 
-			client.setMenuEntries(menuEntries);
+				//Set the new menu
+				client.setMenuEntries(menuEntries);
+			}
+			else
+			{
+				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 2);
+
+				//Create 2 new menu entries (one for marking, one for clearing)
+				MenuEntry clearLocalMenuEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
+				MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+
+				//Set options for clearing
+				clearLocalMenuEntry.setOption(CLEAR_LOCAL);
+				clearLocalMenuEntry.setTarget(event.getTarget());
+				clearLocalMenuEntry.setType(MenuAction.CANCEL.getId());
+
+				//Set options for marking
+				menuEntry.setOption(MARK);
+				menuEntry.setTarget(event.getTarget());
+				menuEntry.setType(MenuAction.CANCEL.getId());
+
+				//Set the new menu
+				client.setMenuEntries(menuEntries);
+			}
 		}
 	}
 
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!event.getMenuOption().equals(MARK))
+		if (event.getMenuOption().equals(MARK))
 		{
-			return;
+			Tile target = client.getSelectedSceneTile();
+			markTile(target.getLocalLocation());
 		}
-
-		Tile target = client.getSelectedSceneTile();
-		markTile(target.getLocalLocation());
+		else if (event.getMenuOption().equals(CLEAR_LOCAL))
+		{
+			log.debug("Pressed clear marks");
+			clearLocalMarkerPoints();
+		}
 	}
 
 	@Override
@@ -361,6 +395,19 @@ public class GroundMarkerPlugin extends Plugin
 
 		savePoints(regionId, points);
 
+		loadPoints();
+	}
+
+	private void clearLocalMarkerPoints()
+	{
+		//Clear all points
+		points.clear();
+		//Get client regionID
+		WorldPoint localWorld = client.getLocalPlayer().getWorldLocation();
+		int localWorldRegionID = localWorld.getRegionID();
+		//Unset the configuration for that specific regionID
+		configManager.unsetConfiguration(CONFIG_GROUP, "region_" + localWorldRegionID);
+		//Reload points from configuration
 		loadPoints();
 	}
 }
