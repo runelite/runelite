@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Infinitay <https://github.com/Infinitay>
+ * Copyright (c) 2018, Shaun Dreclin <https://github.com/ShaunDreclin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,8 +31,10 @@ import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.VarClientInt;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.vars.AccountType;
@@ -45,11 +48,24 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Daily Task Indicator",
-	description = "Show chat notifications for daily tasks upon login",
-	enabledByDefault = false
+	description = "Show chat notifications for daily tasks upon login"
 )
 public class DailyTasksPlugin extends Plugin
 {
+	private static final int ONE_DAY = 86400000;
+
+	private static final String HERB_BOX_MESSAGE = "You have herb boxes waiting to be collected at NMZ.";
+	private static final int HERB_BOX_MAX = 15;
+	private static final int HERB_BOX_COST = 9500;
+
+	private static final String STAVES_MESSAGE = "You have battlestaves waiting to be collected from Zaff.";
+
+	private static final String ESSENCE_MESSAGE = "You have essence waiting to be collected from Wizard Cromperty.";
+
+	private static final String RUNES_MESSAGE = "You have random runes waiting to be collected from Lundail.";
+
+	private static final String RELOG_MESSAGE = " (Requires relog)";
+
 	@Inject
 	private Client client;
 
@@ -59,7 +75,8 @@ public class DailyTasksPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg, hasSentRunesMsg, check;
+	private long lastReset;
+	private boolean loggingIn;
 
 	@Provides
 	DailyTasksConfig provideConfig(ConfigManager configManager)
@@ -68,111 +85,116 @@ public class DailyTasksPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
-	{
-		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = hasSentRunesMsg = false;
-	}
-
-	@Override
 	protected void shutDown() throws Exception
 	{
-		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = hasSentRunesMsg = false;
-	}
-
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
-	{
-		if (event.getGroup().equals("dailytaskindicators"))
-		{
-			switch (event.getKey())
-			{
-				case "showHerbBoxes":
-					hasSentHerbMsg = false;
-					break;
-				case "showStaves":
-					hasSentStavesMsg = false;
-					break;
-				case "showEssence":
-					hasSentEssenceMsg = false;
-					break;
-				case "showRunes":
-					hasSentRunesMsg = false;
-					break;
-			}
-		}
+		lastReset = 0L;
+		loggingIn = false;
 	}
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		switch (event.getGameState())
+		if (event.getGameState() == GameState.LOGGING_IN)
 		{
-			case HOPPING:
-			case LOGGED_IN:
-				//load the varbits on first available tick
-				check = true;
-				break;
+			loggingIn = true;
 		}
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (!check)
-		{
-			return;
-		}
-		
-		check = false;
+		long currentTime = System.currentTimeMillis();
+		boolean dailyReset = !loggingIn && currentTime - lastReset > ONE_DAY;
 
-		if (config.showHerbBoxes() && !hasSentHerbMsg && checkCanCollectHerbBox())
+		if ((dailyReset || loggingIn)
+			&& client.getGameState() == GameState.LOGGED_IN
+			&& client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1)
 		{
-			sendChatMessage("You have herb boxes waiting to be collected at NMZ.");
-			hasSentHerbMsg = true;
-		}
+			// Round down to the nearest day
+			lastReset = (long) Math.floor(currentTime / ONE_DAY) * ONE_DAY;
+			loggingIn = false;
 
-		if (config.showStaves() && !hasSentStavesMsg && checkCanCollectStaves())
-		{
-			sendChatMessage("You have staves waiting to be collected from Zaff.");
-			hasSentStavesMsg = true;
-		}
+			if (config.showHerbBoxes())
+			{
+				checkHerbBoxes(dailyReset);
+			}
 
-		if (config.showEssence() && !hasSentEssenceMsg && checkCanCollectEssence())
-		{
-			sendChatMessage("You have pure essence waiting to be collected from Wizard Cromperty.");
-			hasSentEssenceMsg = true;
-		}
+			if (config.showStaves())
+			{
+				checkStaves(dailyReset);
+			}
 
-		if (config.showRunes() && !hasSentRunesMsg && checkCanCollectRunes())
-		{
-			sendChatMessage("You have random runes waiting to be collected from Lundail.");
-			hasSentRunesMsg = true;
+			if (config.showEssence())
+			{
+				checkEssence(dailyReset);
+			}
+
+			if (config.showRunes())
+			{
+				checkRunes(dailyReset);
+			}
 		}
 	}
 
-	private boolean checkCanCollectHerbBox()
+	private void checkHerbBoxes(boolean dailyReset)
 	{
-		// Exclude ironmen from herb box notifications
-		int value = client.getVar(Varbits.DAILY_HERB_BOX);
-		return client.getAccountType() == AccountType.NORMAL && value < 15; // < 15 can claim
+		if (client.getAccountType() == AccountType.NORMAL
+			&& client.getVar(VarPlayer.NMZ_REWARD_POINTS) >= HERB_BOX_COST)
+		{
+			if (client.getVar(Varbits.DAILY_HERB_BOXES_COLLECTED) < HERB_BOX_MAX)
+			{
+				sendChatMessage(HERB_BOX_MESSAGE);
+			}
+			else if (dailyReset)
+			{
+				sendChatMessage(HERB_BOX_MESSAGE + RELOG_MESSAGE);
+			}
+		}
 	}
 
-	private boolean checkCanCollectStaves()
+	private void checkStaves(boolean dailyReset)
 	{
-		int value = client.getVar(Varbits.DAILY_STAVES);
-		return value == 0; // 1 = can't claim
+		if (client.getVar(Varbits.DIARY_VARROCK_EASY) == 1)
+		{
+			if (client.getVar(Varbits.DAILY_STAVES_COLLECTED) == 0)
+			{
+				sendChatMessage(STAVES_MESSAGE);
+			}
+			else if (dailyReset)
+			{
+				sendChatMessage(STAVES_MESSAGE + RELOG_MESSAGE);
+			}
+		}
 	}
 
-	private boolean checkCanCollectEssence()
+	private void checkEssence(boolean dailyReset)
 	{
-		int value = client.getVar(Varbits.DAILY_ESSENCE);
-		return value == 0; // 1 = can't claim
+		if (client.getVar(Varbits.DIARY_ARDOUGNE_MEDIUM) == 1)
+		{
+			if (client.getVar(Varbits.DAILY_ESSENCE_COLLECTED) == 0)
+			{
+				sendChatMessage(ESSENCE_MESSAGE);
+			}
+			else if (dailyReset)
+			{
+				sendChatMessage(ESSENCE_MESSAGE + RELOG_MESSAGE);
+			}
+		}
 	}
 
-	private boolean checkCanCollectRunes()
+	private void checkRunes(boolean dailyReset)
 	{
-		return client.getVar(Varbits.DIARY_WILDERNESS_EASY) == 1
-				&& client.getVar(Varbits.DAILY_RUNES) == 0;
+		if (client.getVar(Varbits.DIARY_WILDERNESS_EASY) == 1)
+		{
+			if (client.getVar(Varbits.DAILY_RUNES_COLLECTED) == 0)
+			{
+				sendChatMessage(RUNES_MESSAGE);
+			}
+			else if (dailyReset)
+			{
+				sendChatMessage(RUNES_MESSAGE + RELOG_MESSAGE);
+			}
+		}
 	}
 
 	private void sendChatMessage(String chatMessage)
