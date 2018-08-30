@@ -175,6 +175,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_DRAGON_PICKAXE_ORN:
 			case MINING_INFERNAL_PICKAXE:
 			case MINING_3A_PICKAXE:
+			case DENSE_ESSENCE_CHIPPING:
 			/* Mining(Motherlode) */
 			case MINING_MOTHERLODE_BRONZE:
 			case MINING_MOTHERLODE_IRON:
