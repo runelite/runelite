@@ -303,7 +303,7 @@ public class XpGlobesOverlay extends Overlay
 				double hoursToLevel = xpLeft / (double) xpHr;
 				int seconds = (int) (hoursToLevel * SECONDS_PER_HOUR);
 				int ss = seconds % 60;
-				int hh= seconds / 60;
+				int hh = seconds / 60;
 				int mm = hh % 60;
 				hh /= 60;
 				String timeLeftString = String.format("%02d:%02d:%02d", hh, mm, ss);
