@@ -40,7 +40,8 @@ public class WidgetOverlay extends Overlay
 	private static final Set<WidgetInfo> WIDGETS = ImmutableSet.of(
 		WidgetInfo.RESIZABLE_MINIMAP_WIDGET,
 		WidgetInfo.RESIZABLE_MINIMAP_STONES_WIDGET,
-		WidgetInfo.EXPERIENCE_TRACKER_WIDGET
+		WidgetInfo.EXPERIENCE_TRACKER_WIDGET,
+		WidgetInfo.FOSSIL_ISLAND_OXYGENBAR
 	);
 
 	public static Set<WidgetOverlay> createOverlays(final Client client)
