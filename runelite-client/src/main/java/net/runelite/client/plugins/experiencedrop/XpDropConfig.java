@@ -78,8 +78,8 @@ public interface XpDropConfig extends Config
 
 	@ConfigItem(
 			keyName = "default Color",
-			name = "Default color",
-			description = "XP drop color when prayer is inactive",
+			name = "Default Color",
+			description = "XP drop color when combat prayer is inactive",
 			position = 4
 	)
 	default Color getDefaultColor()

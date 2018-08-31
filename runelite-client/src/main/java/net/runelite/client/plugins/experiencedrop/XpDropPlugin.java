@@ -124,7 +124,7 @@ public class XpDropPlugin extends Plugin
 		PrayerType prayer = getActivePrayerType();
 		if (prayer == null)
 		{
-			resetTextColor(widget);
+			widget.setTextColor(config.getDefaultColor().getRGB());
 			return;
 		}
 
