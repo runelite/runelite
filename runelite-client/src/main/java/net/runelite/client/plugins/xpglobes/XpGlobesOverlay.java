@@ -291,7 +291,8 @@ public class XpGlobesOverlay extends Overlay
 				.build());
 
 			int xpHr = xpTrackerService.getXpHr(mouseOverSkill.getSkill());
-			if (xpHr != 0) {
+			if (xpHr != 0)
+			{
 				String xpHrString = decimalFormat.format(xpHr);
 				xpTooltip.getChildren().add(LineComponent.builder()
 						.left("Xp per hour:")
