@@ -291,14 +291,13 @@ public class XpGlobesOverlay extends Overlay
 				.build());
 
 			int xpHr = xpTrackerService.getXpHr(mouseOverSkill.getSkill());
-			if (xpHr != 0)
-			{
+			if (xpHr != 0) {
 				String xpHrString = decimalFormat.format(xpHr);
 				xpTooltip.getChildren().add(LineComponent.builder()
-					.left("Xp per hour:")
-					.leftColor(Color.ORANGE)
-					.right(xpHrString)
-					.build());
+						.left("Xp per hour:")
+						.leftColor(Color.ORANGE)
+						.right(xpHrString)
+						.build());
 
 				double hoursToLevel = xpLeft / (double) xpHr;
 				int seconds = (int) (hoursToLevel * SECONDS_PER_HOUR);
@@ -306,7 +305,20 @@ public class XpGlobesOverlay extends Overlay
 				int hh = seconds / 60;
 				int mm = hh % 60;
 				hh /= 60;
-				String timeLeftString = String.format("%02d:%02d:%02d", hh, mm, ss);
+				String timeLeftString;
+				if (hh == 0 && mm == 0)
+				{
+					timeLeftString = String.format("%02d", ss);
+				}
+				else if (hh == 0)
+				{
+					timeLeftString = String.format("%02d:%02d", mm, ss);
+				}
+				else
+				{
+					timeLeftString = String.format("%02d:%02d:%02d", hh, mm, ss);
+				}
+
 				xpTooltip.getChildren().add(LineComponent.builder()
 						.left("Time to level:")
 						.leftColor(Color.ORANGE)
