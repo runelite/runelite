@@ -36,6 +36,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Objects;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -155,6 +156,15 @@ class VarInspector extends JFrame
 		{
 			trackerOpts.add(cb.getCheckBox());
 		}
+
+		final JButton clearBtn = new JButton("Clear");
+		clearBtn.addActionListener(e ->
+		{
+			tracker.removeAll();
+			tracker.revalidate();
+		});
+		trackerOpts.add(clearBtn);
+
 		add(trackerOpts, BorderLayout.SOUTH);
 
 		pack();
