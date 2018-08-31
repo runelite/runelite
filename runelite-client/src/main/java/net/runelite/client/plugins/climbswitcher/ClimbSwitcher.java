@@ -37,114 +37,114 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-        name = "Climb Switcher",
-        description = "Changes climbable's top option to climb-up, or climb-down when holding shift.",
-        tags = {"objects"},
-        enabledByDefault = false
+		name = "Climb Switcher",
+		description = "Changes climbable's top option to climb-up, or climb-down when holding shift.",
+		tags = {"objects"},
+		enabledByDefault = false
 )
 public class ClimbSwitcher extends Plugin implements KeyListener
 {
 
-    private boolean shiftPressed = false;
+	private boolean shiftPressed = false;
 
-    @Inject
-    private Client client;
+	@Inject
+	private Client client;
 
-    @Inject
-    private KeyManager keyManager;
+	@Inject
+	private KeyManager keyManager;
 
-    @Override
-    public void keyPressed(KeyEvent event)
-    {
-        if (event.getKeyCode() == KeyEvent.VK_SHIFT)
-        {
-            shiftPressed = true;
-        }
-    }
+	@Override
+	public void keyPressed(KeyEvent event)
+	{
+		if (event.getKeyCode() == KeyEvent.VK_SHIFT)
+		{
+			shiftPressed = true;
+		}
+	}
 
-    @Override
-    public void keyReleased(KeyEvent event)
-    {
-        if (event.getKeyCode() == KeyEvent.VK_SHIFT)
-        {
-            shiftPressed = false;
-        }
-    }
+	@Override
+	public void keyReleased(KeyEvent event)
+	{
+		if (event.getKeyCode() == KeyEvent.VK_SHIFT)
+		{
+			shiftPressed = false;
+		}
+	}
 
-    @Override
-    public void keyTyped(KeyEvent e)
-    {
-    }
+	@Override
+	public void keyTyped(KeyEvent e)
+	{
+	}
 
-    @Override
-    public void startUp()
-    {
-        keyManager.registerKeyListener(this);
-    }
+	@Override
+	public void startUp()
+	{
+		keyManager.registerKeyListener(this);
+	}
 
-    @Override
-    public void shutDown()
-    {
-        keyManager.unregisterKeyListener(this);
-    }
+	@Override
+	public void shutDown()
+	{
+		keyManager.unregisterKeyListener(this);
+	}
 
-    @Subscribe
-    public void onMenuEntryAdded(MenuEntryAdded event)
-    {
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
 
-        String option = Text.removeTags(event.getOption()).toLowerCase();
-        String target = Text.removeTags(event.getTarget()).toLowerCase();
+		String option = Text.removeTags(event.getOption()).toLowerCase();
+		String target = Text.removeTags(event.getTarget()).toLowerCase();
 
-        // Check for climb in the options
-        if (option.equals("climb"))
-        {
+		// Check for climb in the options
+		if (option.equals("climb"))
+		{
 
-            MenuEntry[] entries = client.getMenuEntries();
+			MenuEntry[] entries = client.getMenuEntries();
 
-            int indexClimb = -1;
-            int indexTopEntry = -1;
+			int indexClimb = -1;
+			int indexTopEntry = -1;
 
-            // Check for positions of climb-[up|down] and climb 
-            // and switches them
-            for (int i = entries.length - 1; i >= 0; i--)
-            {
-                MenuEntry entry = entries[i];
-                String entryOption
-                        = Text.removeTags(entry.getOption()).toLowerCase();
-                String entryTarget
-                        = Text.removeTags(entry.getTarget()).toLowerCase();
+			// Check for positions of climb-[up|down] and climb 
+			// and switches them
+			for (int i = entries.length - 1; i >= 0; i--)
+			{
+				MenuEntry entry = entries[i];
+				String entryOption
+						= Text.removeTags(entry.getOption()).toLowerCase();
+				String entryTarget
+						= Text.removeTags(entry.getTarget()).toLowerCase();
 
-                String topEntry = "climb-up";
-                if (shiftPressed)
-                {
-                    topEntry = "climb-down";
-                }
+				String topEntry = "climb-up";
+				if (shiftPressed)
+				{
+					topEntry = "climb-down";
+				}
 
-                if (indexClimb < 0 && entryOption.equals("climb")
-                        && target.equals(entryTarget))
-                {
-                    indexClimb = i;
-                }
+				if (indexClimb < 0 && entryOption.equals("climb")
+						&& target.equals(entryTarget))
+				{
+					indexClimb = i;
+				}
 
-                if (indexTopEntry < 0 && entryOption.equals(topEntry)
-                        && target.equals(entryTarget))
-                {
-                    indexTopEntry = i;
-                }
+				if (indexTopEntry < 0 && entryOption.equals(topEntry)
+						&& target.equals(entryTarget))
+				{
+					indexTopEntry = i;
+				}
 
-                if (indexClimb >= 0 && indexTopEntry >= 0)
-                {
-                    MenuEntry temp = entries[indexClimb];
-                    entries[indexClimb] = entries[indexTopEntry];
-                    entries[indexTopEntry] = temp;
+				if (indexClimb >= 0 && indexTopEntry >= 0)
+				{
+					MenuEntry temp = entries[indexClimb];
+					entries[indexClimb] = entries[indexTopEntry];
+					entries[indexTopEntry] = temp;
 
-                    client.setMenuEntries(entries);
+					client.setMenuEntries(entries);
 
-                    break;
-                }
-            }
+					break;
+				}
+			}
 
-        }
-    }
+		}
+	}
 
 }
