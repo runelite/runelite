@@ -34,7 +34,12 @@ import lombok.Getter;
  */
 public enum HarvestMessages
 {
-	SEEWEED(Crop.SEEWEED, "You pick some giant seeweed.");
+	SEAWEED(Crop.SEAWEED, "You pick some giant seaweed."),
+	CADAVABERRY(Crop.CADAVABERRY, "You pick some cadavaberries."),
+	DWELLBERRY(Crop.DWELLBERRY, "You pick some dwellberries."),
+	REDBERRY(Crop.REDBERRY, "You pick some redberries."),
+	JANGERBERRY(Crop.JANGERBERRY, "You pick some jangerberries."),
+	WHITEBERRY(Crop.WHITEBERRY, "You pick some whiteberries.");
 
 
 	HarvestMessages(Crop crop, String harvestMessage)

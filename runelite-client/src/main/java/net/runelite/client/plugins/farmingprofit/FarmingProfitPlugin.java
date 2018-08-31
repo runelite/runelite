@@ -87,9 +87,9 @@ public class FarmingProfitPlugin extends Plugin
 	private boolean harvestedUsingChat = false;
 	private boolean readyToSubmitRun = false;
 
-	final private static int MAX_PATCH_DISTANCE = 8;
+	final private static int MAX_PATCH_DISTANCE = 14;
 	final private static int MIN_TELEPORT_DISTANCE = 40;
-	final private static int RUN_TIMEOUT_SECONDS = 30;
+	final private static int RUN_TIMEOUT_SECONDS = 45;
 
 
 	@Override
@@ -141,7 +141,8 @@ public class FarmingProfitPlugin extends Plugin
 			harvestedUsingChat = true;
 		}
 
-		if (chatMessage.getMessage().endsWith("patch is now empty."))
+		if (chatMessage.getMessage().endsWith("patch is now empty.") ||
+			chatMessage.getMessage().endsWith("allotment is now empty."))
 		{
 			log.debug("The patch is empty so mark latest run ready to submit");
 			readyToSubmitRun = true;
@@ -245,7 +246,7 @@ public class FarmingProfitPlugin extends Plugin
 			latestRun = new FarmingProfitRun(itemManager, crop, amount, harvestLocation);
 			storeItems();
 
-			log.debug(latestRun.toString());
+			log.debug(" " + latestRun.toString());
 		}
 		else
 		{
@@ -258,28 +259,27 @@ public class FarmingProfitPlugin extends Plugin
 				latestRun.addAmount(amount, harvestLocation);
 				storeItems();
 
-				log.debug(latestRun.toString());
+				log.debug(" " + latestRun.toString());
 			}
 			else
 			{
 				log.debug(" Harvesting other patch type or patch far away, add latest run and start new run");
-				SwingUtilities.invokeLater(() ->
-				{
-					panel.addRun(latestRun);
 
-					latestRun = new FarmingProfitRun(itemManager, crop, amount, harvestLocation);
-					storeItems();
+				submitLatestRun(latestRun);
+				latestRun = new FarmingProfitRun(itemManager, crop, amount, harvestLocation);
+				storeItems();
 
-					log.debug(latestRun.toString());
-				});
+				log.debug(" " + latestRun.toString());
 			}
 		}
 
 		if (readyToSubmitRun)
 		{
 			log.debug(" Submitting latest run");
+
 			readyToSubmitRun = false;
-			submitLatestRun();
+			submitLatestRun(latestRun);
+			latestRun = null;
 		}
 	}
 
@@ -313,7 +313,8 @@ public class FarmingProfitPlugin extends Plugin
 				{
 					log.debug("Adding harvest run to UI, player has teleported");
 				}
-				submitLatestRun();
+				submitLatestRun(latestRun);
+				latestRun = null;
 			}
 		}
 	}
@@ -321,12 +322,11 @@ public class FarmingProfitPlugin extends Plugin
 	/**
 	 * Submit the latest run to the UI
 	 */
-	private void submitLatestRun()
+	private void submitLatestRun(FarmingProfitRun run)
 	{
 		SwingUtilities.invokeLater(() ->
 		{
-			panel.addRun(latestRun);
-			latestRun = null;
+			panel.addRun(run);
 			wasHarvesting = false;
 			harvestedUsingChat = false;
 		});
