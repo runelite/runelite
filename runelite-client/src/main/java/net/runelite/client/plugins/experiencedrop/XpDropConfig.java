@@ -71,10 +71,7 @@ public interface XpDropConfig extends Config
 		description = "XP drop color when a mage prayer is active",
 		position = 3
 	)
-	default Color getMagePrayerColor()
-	{
-		return new Color(0x15, 0x80, 0xAD);
-	}
+	default Color getMagePrayerColor() { return new Color(0x15, 0x80, 0xAD); }
 
 	@ConfigItem(
 			keyName = "default Color",
@@ -82,8 +79,5 @@ public interface XpDropConfig extends Config
 			description = "XP drop color when combat prayer is inactive",
 			position = 4
 	)
-	default Color getDefaultColor()
-	{
-		return new Color(0xFF, 0xFF, 0xFF);
-	}
+	default Color getDefaultColor() { return null; }
 }
