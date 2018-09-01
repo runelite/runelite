@@ -1,7 +1,7 @@
 .id                 909
 .int_stack_count    2
 .string_stack_count 0
-.int_var_count      19
+.int_var_count      21
 .string_var_count   0
    load_int               73
    load_int               73
@@ -489,11 +489,15 @@ LABEL437:
    load_int               10551311
    get_enum_value        
    istore                 18
+   load_int               0
+   istore                 19
+   load_int               0
+   istore                 20
    iload                  18
    load_int               -1
-   if_icmpne              LABEL447
-   jump                   LABEL480
-LABEL447:
+   if_icmpne              LABEL451
+   jump                   LABEL495
+LABEL451:
    load_int               73
    load_int               73
    iload                  1
@@ -501,38 +505,96 @@ LABEL447:
    get_enum_value        
    widget_get_index_widget
    load_int               1
-   if_icmpeq              LABEL456
-   jump                   LABEL474
-LABEL456:
+   if_icmpeq              LABEL460
+   jump                   LABEL469
+LABEL460:
    get_varbit             4692
    load_int               0
-   if_icmpne              LABEL460
+   if_icmpne              LABEL464
    jump                   LABEL467
-LABEL460:
+LABEL464:
    load_int               0
-   load_int               0
-   load_int               2
-   load_int               0
-   iload                  18
-   widget_put_position_widget
-   jump                   LABEL473
+   istore                 20
+   jump                   LABEL469
 LABEL467:
-   load_int               0
    load_int               36
-   load_int               2
-   load_int               0
-   iload                  18
-   widget_put_position_widget
+   istore                 20
+LABEL469:
+   invoke                 1972
+   load_int               1
+   if_icmpeq              LABEL473
+   jump                   LABEL487
 LABEL473:
-   jump                   LABEL480
-LABEL474:
+   get_varbit             6254
    load_int               0
+   if_icmpeq              LABEL477
+   jump                   LABEL482
+LABEL477:
+   load_int               176
+   load_int               4
+   iadd                  
+   istore                 19
+   jump                   LABEL486
+LABEL482:
+   load_int               120
+   load_int               4
+   iadd                  
+   istore                 19
+LABEL486:
+   jump                   LABEL489
+LABEL487:
    load_int               0
+   istore                 19
+LABEL489:
+   iload                  19
+   iload                  20
    load_int               2
    load_int               0
    iload                  18
    widget_put_position_widget
-LABEL480:
+LABEL495:
+   load_int               73
+   load_int               73
+   iload                  1
+   load_int               10551303
+   get_enum_value        
+   istore                 18
+   load_int               0
+   istore                 19
+   iload                  18
+   load_int               -1
+   if_icmpne              LABEL507
+   jump                   LABEL529
+LABEL507:
+   invoke                 1972
+   load_int               1
+   if_icmpeq              LABEL511
+   jump                   LABEL521
+LABEL511:
+   get_varbit             6254
+   load_int               0
+   if_icmpeq              LABEL515
+   jump                   LABEL518
+LABEL515:
+   load_int               176
+   istore                 19
+   jump                   LABEL520
+LABEL518:
+   load_int               120
+   istore                 19
+LABEL520:
+   jump                   LABEL523
+LABEL521:
+   load_int               0
+   istore                 19
+LABEL523:
+   iload                  19
+   load_int               0
+   load_int               1
+   load_int               1
+   iload                  18
+   widget_put_size_widget
+LABEL529:
    iload                  0
    iload                  1
    invoke                 920

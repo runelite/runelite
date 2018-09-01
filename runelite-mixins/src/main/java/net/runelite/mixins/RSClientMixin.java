@@ -37,6 +37,7 @@ import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.HashTable;
 import net.runelite.api.HintArrowType;
+import net.runelite.api.Ignore;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.InventoryID;
 import net.runelite.api.MenuAction;
@@ -101,6 +102,7 @@ import net.runelite.rs.api.RSDeque;
 import net.runelite.rs.api.RSFriendContainer;
 import net.runelite.rs.api.RSFriendManager;
 import net.runelite.rs.api.RSHashTable;
+import net.runelite.rs.api.RSIgnoreContainer;
 import net.runelite.rs.api.RSIndexedSprite;
 import net.runelite.rs.api.RSItem;
 import net.runelite.rs.api.RSItemContainer;
@@ -683,6 +685,64 @@ public abstract class RSClientMixin implements RSClient
 
 		RSNameable[] nameables = friendContainer.getNameables();
 		return (Friend[]) nameables;
+	}
+
+	@Inject
+	@Override
+	public int getFriendsCount()
+	{
+		final RSFriendManager friendManager = getFriendManager();
+		if (friendManager == null)
+		{
+			return -1;
+		}
+
+		final RSFriendContainer friendContainer = friendManager.getFriendContainer();
+		if (friendContainer == null)
+		{
+			return -1;
+		}
+
+		return friendContainer.getCount();
+	}
+
+	@Inject
+	@Override
+	public Ignore[] getIgnores()
+	{
+		final RSFriendManager friendManager = getFriendManager();
+		if (friendManager == null)
+		{
+			return null;
+		}
+
+		final RSIgnoreContainer ignoreContainer = friendManager.getIgnoreContainer();
+		if (ignoreContainer == null)
+		{
+			return null;
+		}
+
+		RSNameable[] nameables = ignoreContainer.getNameables();
+		return (Ignore[]) nameables;
+	}
+
+	@Inject
+	@Override
+	public int getIgnoreCount()
+	{
+		final RSFriendManager friendManager = getFriendManager();
+		if (friendManager == null)
+		{
+			return -1;
+		}
+
+		final RSIgnoreContainer ignoreContainer = friendManager.getIgnoreContainer();
+		if (ignoreContainer == null)
+		{
+			return -1;
+		}
+
+		return ignoreContainer.getCount();
 	}
 
 	@Inject

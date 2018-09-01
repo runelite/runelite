@@ -33,6 +33,7 @@ import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -48,6 +49,7 @@ import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
@@ -498,6 +500,19 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(freezeTimer.getTimer());
 			freezeTimer = null;
 			lastPoint = currentWorldPoint;
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		// Check for game state changes which removes a teleblock (Hopping or Login screen)
+		if (gameStateChanged.getGameState() == GameState.HOPPING || gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			removeGameTimer(HALFTB);
+			removeGameTimer(DMM_HALFTB);
+			removeGameTimer(FULLTB);
+			removeGameTimer(DMM_FULLTB);
 		}
 	}
 

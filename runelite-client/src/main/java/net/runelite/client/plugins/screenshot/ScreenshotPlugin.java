@@ -117,7 +117,7 @@ public class ScreenshotPlugin extends Plugin
 
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
-
+	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
 		"You feel something weird sneaking into your backpack",
 		"You have a funny feeling like you would have been followed");
@@ -343,6 +343,18 @@ public class ScreenshotPlugin extends Plugin
 		{
 			String fileName = "Kill " + format(new Date());
 			takeScreenshot(fileName);
+		}
+
+		if (config.screenshotBossKills() )
+		{
+			Matcher m = BOSSKILL_MESSAGE_PATTERN.matcher(chatMessage);
+			if (m.matches())
+			{
+				String bossName = m.group(1);
+				String bossKillcount = m.group(2);
+				String fileName = bossName + "(" + bossKillcount + ")";
+				takeScreenshot(fileName);
+			}
 		}
 	}
 
