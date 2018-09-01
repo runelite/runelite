@@ -31,12 +31,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import java.io.File;
-import java.lang.management.ManagementFactory;
-import java.lang.management.RuntimeMXBean;
-import javax.annotation.Nullable;
-import javax.inject.Provider;
-import javax.inject.Singleton;
 import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -66,6 +60,14 @@ import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+
+import javax.annotation.Nullable;
+import javax.inject.Provider;
+import javax.inject.Singleton;
+import java.io.File;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
+import java.util.Locale;
 
 @Singleton
 @Slf4j
@@ -146,6 +148,7 @@ public class RuneLite
 
 	public static void main(String[] args) throws Exception
 	{
+		Locale.setDefault(Locale.ENGLISH);
 
 		final OptionParser parser = new OptionParser();
 		parser.accepts("developer-mode", "Enable developer tools");
