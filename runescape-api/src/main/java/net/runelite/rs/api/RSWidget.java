@@ -301,4 +301,8 @@ public interface RSWidget extends Widget
 	@Import("hasListener")
 	@Override
 	void setHasListener(boolean hasListener);
+
+	@Import("onKeyListener")
+	@Override
+	Object[] getOnKeyListener();
 }

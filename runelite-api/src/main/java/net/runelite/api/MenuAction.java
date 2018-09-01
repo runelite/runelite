@@ -269,6 +269,8 @@ public enum MenuAction
 	 */
 	UNKNOWN(-1);
 
+	public static final int MENU_ACTION_DEPRIORITIZE_OFFSET = 2000;
+
 	private static final Map<Integer, MenuAction> map = new HashMap<>();
 
 	static

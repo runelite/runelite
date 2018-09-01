@@ -75,11 +75,6 @@ public abstract class HotkeyListener implements KeyListener
 		{
 			isPressed = false;
 			isConsumingTyped = false;
-			if (Keybind.getModifierForKeyCode(e.getKeyCode()) == null)
-			{
-				// Only consume non modifier keys
-				e.consume();
-			}
 		}
 	}
 

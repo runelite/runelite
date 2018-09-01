@@ -538,4 +538,6 @@ public interface Widget
 	 * Recomputes this widget's group's x/y/w/h including scroll
 	 */
 	void revalidateScroll();
+
+	Object[] getOnKeyListener();
 }

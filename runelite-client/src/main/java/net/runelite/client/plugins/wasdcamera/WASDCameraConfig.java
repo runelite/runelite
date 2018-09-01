@@ -22,37 +22,58 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
+package net.runelite.client.plugins.wasdcamera;
 
 import java.awt.event.KeyEvent;
-import javax.swing.SwingUtilities;
-import net.runelite.client.input.KeyListener;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
 
-class UiKeyListener implements KeyListener
+@ConfigGroup("wasdcamera")
+public interface WASDCameraConfig extends Config
 {
-	private final ClientUI clientUi;
-
-	UiKeyListener(ClientUI clientUi)
+	@ConfigItem(
+		position = 1,
+		keyName = "up",
+		name = "Up key",
+		description = "The key which will replace up."
+	)
+	default Keybind up()
 	{
-		this.clientUi = clientUi;
+		return new Keybind(KeyEvent.VK_W, 0);
 	}
 
-	@Override
-	public void keyTyped(KeyEvent e)
+	@ConfigItem(
+		position = 2,
+		keyName = "down",
+		name = "Down key",
+		description = "The key which will replace down."
+	)
+	default Keybind down()
 	{
+		return new Keybind(KeyEvent.VK_S, 0);
 	}
 
-	@Override
-	public void keyPressed(KeyEvent e)
+	@ConfigItem(
+		position = 3,
+		keyName = "left",
+		name = "Left key",
+		description = "The key which will replace left."
+	)
+	default Keybind left()
 	{
-		if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_F11)
-		{
-			SwingUtilities.invokeLater(clientUi::toggleSidebar);
-		}
+		return new Keybind(KeyEvent.VK_A, 0);
 	}
 
-	@Override
-	public void keyReleased(KeyEvent e)
+	@ConfigItem(
+		position = 4,
+		keyName = "right",
+		name = "Right key",
+		description = "The key which will replace right."
+	)
+	default Keybind right()
 	{
+		return new Keybind(KeyEvent.VK_D, 0);
 	}
 }

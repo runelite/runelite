@@ -31,14 +31,20 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Comparator;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Future;
+import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ChatPlayer;
@@ -49,10 +55,14 @@ import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.WorldListLoad;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
@@ -81,10 +91,18 @@ import org.apache.commons.lang3.ArrayUtils;
 @Slf4j
 public class WorldHopperPlugin extends Plugin
 {
+	private static final int WORLD_FETCH_TIMER = 10;
+	private static final int REFRESH_THROTTLE = 60_000;  // ms
+	private static final int TICK_THROTTLE = (int) Duration.ofMinutes(10).toMillis();
+
+	private static final int DISPLAY_SWITCHER_MAX_ATTEMPTS = 3;
+
 	private static final String HOP_TO = "Hop-to";
 	private static final String KICK_OPTION = "Kick";
 	private static final ImmutableList<String> BEFORE_OPTIONS = ImmutableList.of("Add friend", "Remove friend", KICK_OPTION);
 	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message");
+
+	private static final ImmutableList<String> BEFORE_OPTIONS_CHAT = ImmutableList.of("Report");
 
 	@Inject
 	private Client client;
@@ -113,9 +131,18 @@ public class WorldHopperPlugin extends Plugin
 	private NavigationButton navButton;
 	private WorldSwitcherPanel panel;
 
+	private net.runelite.api.World quickHopTargetWorld;
+	private int displaySwitcherAttempts = 0;
+
+	@Getter
+	private int lastWorld;
+
 	private int favoriteWorld1, favoriteWorld2;
-	private Future<?> worldResultFuture;
+
+	private ScheduledFuture<?> worldResultFuture;
 	private WorldResult worldResult;
+	private Instant lastFetch;
+
 	private final HotkeyListener previousKeyListener = new HotkeyListener(() -> config.previousKey())
 	{
 		@Override
@@ -145,25 +172,7 @@ public class WorldHopperPlugin extends Plugin
 		keyManager.registerKeyListener(previousKeyListener);
 		keyManager.registerKeyListener(nextKeyListener);
 
-		worldResultFuture = executorService.submit(() ->
-		{
-			try
-			{
-				WorldResult worldResult = new WorldClient().lookupWorlds();
-
-				if (worldResult != null)
-				{
-					worldResult.getWorlds().sort(Comparator.comparingInt(World::getId));
-					this.worldResult = worldResult;
-
-					SwingUtilities.invokeLater(() -> panel.populate(worldResult.getWorlds()));
-				}
-			}
-			catch (IOException ex)
-			{
-				log.warn("Error looking up worlds", ex);
-			}
-		});
+		worldResultFuture = executorService.scheduleAtFixedRate(this::tick, 0, WORLD_FETCH_TIMER, TimeUnit.MINUTES);
 
 		panel = new WorldSwitcherPanel(this);
 
@@ -195,6 +204,7 @@ public class WorldHopperPlugin extends Plugin
 		worldResultFuture.cancel(true);
 		worldResultFuture = null;
 		worldResult = null;
+		lastFetch = null;
 
 		clientToolbar.removeNavigation(navButton);
 	}
@@ -229,6 +239,7 @@ public class WorldHopperPlugin extends Plugin
 	private void clearFavoriteConfig(int world)
 	{
 		configManager.unsetConfiguration(WorldHopperConfig.GROUP, "favorite_" + world);
+		panel.resetAllFavoriteMenus();
 	}
 
 	boolean isFavorite(World world)
@@ -251,12 +262,14 @@ public class WorldHopperPlugin extends Plugin
 	{
 		log.debug("Adding world {} to favorites", world.getId());
 		setFavoriteConfig(world.getId());
+		panel.updateFavoriteMenu(world.getId(), true);
 	}
 
 	void removeFromFavorites(World world)
 	{
 		log.debug("Removing world {} from favorites", world.getId());
 		clearFavoriteConfig(world.getId());
+		panel.updateFavoriteMenu(world.getId(), false);
 	}
 
 	@Subscribe
@@ -281,8 +294,7 @@ public class WorldHopperPlugin extends Plugin
 		String option = event.getOption();
 
 		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.CLAN_CHAT.getGroupId() ||
-			groupId == WidgetInfo.CHATBOX.getGroupId() && !KICK_OPTION.equals(option) || //prevent from adding for Kick option (interferes with the raiding party one)
-			groupId == WidgetInfo.RAIDING_PARTY.getGroupId() || groupId == WidgetInfo.PRIVATE_CHAT_MESSAGE.getGroupId())
+			groupId == WidgetInfo.PRIVATE_CHAT_MESSAGE.getGroupId())
 		{
 			boolean after;
 
@@ -316,6 +328,30 @@ public class WorldHopperPlugin extends Plugin
 
 			insertMenuEntry(hopTo, client.getMenuEntries(), after);
 		}
+		else if (groupId == WidgetInfo.CHATBOX.getGroupId())
+		{
+			if (!BEFORE_OPTIONS_CHAT.contains(option))
+			{
+				return;
+			}
+
+			// Don't add entry if user is offline
+			ChatPlayer player = getChatPlayerFromName(event.getTarget());
+
+			if (player == null || player.getWorld() == 0 || player.getWorld() == client.getWorld())
+			{
+				return;
+			}
+
+			final MenuEntry hopTo = new MenuEntry();
+			hopTo.setOption(HOP_TO);
+			hopTo.setTarget(event.getTarget());
+			hopTo.setType(MenuAction.RUNELITE.getId());
+			hopTo.setParam0(event.getActionParam0());
+			hopTo.setParam1(event.getActionParam1());
+
+			insertMenuEntry(hopTo, client.getMenuEntries(), false);
+		}
 	}
 
 	private void insertMenuEntry(MenuEntry newEntry, MenuEntry[] entries, boolean after)
@@ -347,6 +383,94 @@ public class WorldHopperPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		// If the player has disabled the side bar plugin panel, do not update the UI
+		if (config.showSidebar() && gameStateChanged.getGameState() == GameState.LOGGED_IN)
+		{
+			if (lastWorld != client.getWorld())
+			{
+				int newWorld = client.getWorld();
+				panel.switchCurrentHighlight(newWorld, lastWorld);
+				lastWorld = newWorld;
+			}
+		}
+	}
+
+	@Subscribe
+	public void onWorldListLoad(WorldListLoad worldListLoad)
+	{
+		if (!config.showSidebar())
+		{
+			return;
+		}
+
+		Map<Integer, Integer> worldData = new HashMap<>();
+
+		for (net.runelite.api.World w : worldListLoad.getWorlds())
+		{
+			worldData.put(w.getId(), w.getPlayerCount());
+		}
+
+		panel.updateListData(worldData);
+		this.lastFetch = Instant.now(); // This counts as a fetch as it updates populations
+	}
+
+	private void tick()
+	{
+		Instant now = Instant.now();
+		if (lastFetch != null && now.toEpochMilli() - lastFetch.toEpochMilli() < TICK_THROTTLE)
+		{
+			log.debug("Throttling world refresh tick");
+			return;
+		}
+
+		fetchWorlds();
+	}
+
+	void refresh()
+	{
+		Instant now = Instant.now();
+		if (lastFetch != null && now.toEpochMilli() - lastFetch.toEpochMilli() < REFRESH_THROTTLE)
+		{
+			log.debug("Throttling world refresh");
+			return;
+		}
+
+		fetchWorlds();
+	}
+
+	private void fetchWorlds()
+	{
+		log.debug("Fetching worlds");
+
+		try
+		{
+			WorldResult worldResult = new WorldClient().lookupWorlds();
+
+			if (worldResult != null)
+			{
+				worldResult.getWorlds().sort(Comparator.comparingInt(World::getId));
+				this.worldResult = worldResult;
+				this.lastFetch = Instant.now();
+				updateList();
+			}
+		}
+		catch (IOException ex)
+		{
+			log.warn("Error looking up worlds", ex);
+		}
+	}
+
+	/**
+	 * This method ONLY updates the list's UI, not the actual world list and data it displays.
+	 */
+	private void updateList()
+	{
+		SwingUtilities.invokeLater(() -> panel.populate(worldResult.getWorlds()));
+	}
+
 	private void hop(boolean previous)
 	{
 		if (worldResult == null || client.getGameState() != GameState.LOGGED_IN)
@@ -368,11 +492,10 @@ public class WorldHopperPlugin extends Plugin
 			currentWorldTypes.remove(WorldType.PVP);
 			currentWorldTypes.remove(WorldType.PVP_HIGH_RISK);
 		}
-		// Don't regard skill total and bounty worlds as a type that must be hopped between
+		// Don't regard these worlds as a type that must be hopped between
 		currentWorldTypes.remove(WorldType.BOUNTY);
 		currentWorldTypes.remove(WorldType.SKILL_TOTAL);
-		// Allow hopping from a high risk world to a non-high risk world
-		currentWorldTypes.remove(WorldType.PVP_HIGH_RISK);
+		currentWorldTypes.remove(WorldType.LAST_MAN_STANDING);
 
 		List<World> worlds = worldResult.getWorlds();
 
@@ -412,6 +535,8 @@ public class WorldHopperPlugin extends Plugin
 			EnumSet<WorldType> types = world.getTypes().clone();
 
 			types.remove(WorldType.BOUNTY);
+			// Treat LMS world like casual world
+			types.remove(WorldType.LAST_MAN_STANDING);
 
 			if (types.contains(WorldType.SKILL_TOTAL))
 			{
@@ -495,17 +620,67 @@ public class WorldHopperPlugin extends Plugin
 				.runeLiteFormattedMessage(chatMessage)
 				.build());
 
-		clientThread.invokeLater(() ->
-		{
-			if (client.getWidget(WidgetInfo.WORLD_SWITCHER_LIST) == null)
-			{
-				client.openWorldHopper();
-				return false;
-			}
+		quickHopTargetWorld = rsWorld;
+		displaySwitcherAttempts = 0;
+	}
 
-			client.hopToWorld(rsWorld);
-			return true;
-		});
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (quickHopTargetWorld == null)
+		{
+			return;
+		}
+
+		if (client.getWidget(WidgetInfo.WORLD_SWITCHER_LIST) == null)
+		{
+			client.openWorldHopper();
+
+			if (++displaySwitcherAttempts >= DISPLAY_SWITCHER_MAX_ATTEMPTS)
+			{
+				String chatMessage = new ChatMessageBuilder()
+					.append(ChatColorType.NORMAL)
+					.append("Failed to quick-hop after ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(Integer.toString(displaySwitcherAttempts))
+					.append(ChatColorType.NORMAL)
+					.append(" attempts.")
+					.build();
+
+				chatMessageManager
+					.queue(QueuedMessage.builder()
+						.type(ChatMessageType.GAME)
+						.runeLiteFormattedMessage(chatMessage)
+						.build());
+
+				resetQuickHopper();
+			}
+		}
+		else
+		{
+			client.hopToWorld(quickHopTargetWorld);
+			resetQuickHopper();
+		}
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() != ChatMessageType.SERVER)
+		{
+			return;
+		}
+
+		if (event.getMessage().equals("Please finish what you're doing before using the World Switcher."))
+		{
+			resetQuickHopper();
+		}
+	}
+
+	private void resetQuickHopper()
+	{
+		displaySwitcherAttempts = 0;
+		quickHopTargetWorld = null;
 	}
 
 	private ChatPlayer getChatPlayerFromName(String name)

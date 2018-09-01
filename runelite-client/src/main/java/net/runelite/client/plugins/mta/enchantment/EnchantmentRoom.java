@@ -80,6 +80,10 @@ public class EnchantmentRoom extends MTARoom
 		{
 			client.setHintArrow(nearest);
 		}
+		else
+		{
+			client.clearHintArrow();
+		}
 	}
 
 	private WorldPoint findNearestStone()

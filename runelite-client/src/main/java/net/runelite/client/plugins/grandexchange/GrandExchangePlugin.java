@@ -63,8 +63,8 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.client.util.Text;
@@ -293,9 +293,17 @@ public class GrandExchangePlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (grandExchangeText == null || grandExchangeItem == null)
+		if (grandExchangeText == null || grandExchangeItem == null || grandExchangeItem.isHidden())
 		{
 			return;
+		}
+
+		final Widget geText = grandExchangeText;
+
+		if (!geText.getText().contains("Actively traded price"))
+		{
+			// searching for the same item twice without closing the search window will cause this.
+			lastItem = -1;
 		}
 
 		int itemId = grandExchangeItem.getItemId();
@@ -307,7 +315,8 @@ public class GrandExchangePlugin extends Plugin
 		}
 
 		lastItem = itemId;
-		final Widget geText = grandExchangeText;
+
+		log.debug("Looking up item {}", itemId);
 
 		executorService.submit(() ->
 		{
