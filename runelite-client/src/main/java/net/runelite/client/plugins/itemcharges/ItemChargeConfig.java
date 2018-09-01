@@ -181,4 +181,63 @@ public interface ItemChargeConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showXericTalismanCharges",
+		name = "Show Xeric's Talisman Charges",
+		description = "Configures if Xeric's Talisman item charge is shown",
+		position = 13
+	)
+	default boolean showXericTalismanCharges()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "xericTalisman",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int xericTalisman()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "xericTalisman",
+		name = "",
+		description = ""
+	)
+	void xericTalisman(int xericTalisman);
+
+	@ConfigItem(
+		keyName = "showSoulBearerCharges",
+		name = "Show Soul Bearer Charges",
+		description = "Configures if Soul Bearer item charge is shown",
+		position = 14
+	)
+	default boolean showSoulBearerCharges()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "soulBearer",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int soulBearer()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "soulBearer",
+		name = "",
+		description = ""
+	)
+	void soulBearer(int soulBearer);
+
 }

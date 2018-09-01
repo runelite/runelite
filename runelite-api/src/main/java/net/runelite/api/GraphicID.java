@@ -40,4 +40,5 @@ public class GraphicID
 	public static final int STAFF_OF_THE_DEAD = 1228;
 	public static final int IMBUED_HEART = 1316;
 	public static final int FLYING_FISH = 1387;
+	public static final int XERIC_TELEPORT = 1612;
 }

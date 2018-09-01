@@ -89,6 +89,22 @@ class ItemChargeOverlay extends Overlay
 
 				charges = itemChargePlugin.getDodgyCharges();
 			}
+			else if (item.getId() == ItemID.XERICS_TALISMAN)
+			{
+				if (!config.showXericTalismanCharges())
+				{
+					continue;
+				}
+				charges = itemChargePlugin.getXericCharges();
+			}
+			else if (item.getId() == ItemID.SOUL_BEARER)
+			{
+				if (!config.showSoulBearerCharges())
+				{
+					continue;
+				}
+				charges = itemChargePlugin.getSoulbearerCharges();
+			}
 			else
 			{
 				ItemWithCharge chargeItem = ItemWithCharge.findItem(item.getId());

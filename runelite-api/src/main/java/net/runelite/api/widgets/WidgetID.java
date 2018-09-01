@@ -113,6 +113,7 @@ public class WidgetID
 	public static final int DIALOG_OPTION_GROUP_ID = 219;
 	public static final int DIALOG_PLAYER_GROUP_ID = 217;
 	public static final int FOSSIL_ISLAND_OXYGENBAR_ID = 609;
+	public static final int DIALOG_SPRITE2_ID = 11;
 
 	static class WorldMap
 	{
@@ -522,7 +523,7 @@ public class WidgetID
 	{
 		static final int POINTS_INFOBOX = 3;
 	}
-	
+
 	static class ExperienceDrop
 	{
 		static final int DROP_1 = 15;
@@ -558,6 +559,14 @@ public class WidgetID
 	{
 		static final int SPRITE = 1;
 		static final int TEXT = 2;
+	}
+
+	static class DialogSprite2
+	{
+		static final int SPRITE1 = 1;
+		static final int TEXT = 2;
+		static final int SPRITE2 = 3;
+		static final int CONTINUE = 4;
 	}
 
 	static class ExperienceTracker
