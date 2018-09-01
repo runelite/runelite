@@ -200,11 +200,13 @@ public class ItemChargePlugin extends Plugin
 	public void onGraphicChanged(GraphicChanged event)
 	{
 		Player localPlayer = client.getLocalPlayer();
-
-		if (localPlayer.getGraphic() == GraphicID.XERIC_TELEPORT)
+		if (localPlayer != null)
 		{
-			xericCharges = Math.max(xericCharges - 1, 0);
-			setXericCharges(xericCharges);
+			if (localPlayer.getGraphic() == GraphicID.XERIC_TELEPORT)
+			{
+				xericCharges = Math.max(xericCharges - 1, 0);
+				setXericCharges(xericCharges);
+			}
 		}
 	}
 

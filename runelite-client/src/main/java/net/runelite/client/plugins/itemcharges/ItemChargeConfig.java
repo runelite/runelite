@@ -239,5 +239,4 @@ public interface ItemChargeConfig extends Config
 		description = ""
 	)
 	void soulBearer(int soulBearer);
-
 }
