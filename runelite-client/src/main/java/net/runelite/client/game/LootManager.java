@@ -125,6 +125,12 @@ public class LootManager
 	public void onPlayerDespawned(PlayerDespawned playerDespawned)
 	{
 		final Player player = playerDespawned.getPlayer();
+		// Only care about dead Players
+		if (player.getHealthRatio() != 0)
+		{
+			return;
+		}
+
 		final LocalPoint location = LocalPoint.fromWorld(client, player.getWorldLocation());
 		if (location == null || killMap.get(location))
 		{
