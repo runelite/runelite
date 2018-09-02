@@ -45,6 +45,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
@@ -71,6 +72,7 @@ public class LootTrackerPlugin extends Plugin
 {
 	// Activity/Event loot handling
 	private static final Pattern CLUE_SCROLL_PATTERN = Pattern.compile("You have completed [0-9]+ ([a-z]+) Treasure Trails.");
+	private static final int THEATRE_OF_BLOOD_REGION = 12867;
 
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -178,6 +180,11 @@ public class LootTrackerPlugin extends Plugin
 				container = client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST);
 				break;
 			case (WidgetID.THEATRE_OF_BLOOD_GROUP_ID):
+				int region = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
+				if (region != THEATRE_OF_BLOOD_REGION)
+				{
+					return;
+				}
 				eventType = "Theatre of Blood";
 				container = client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST);
 				break;
