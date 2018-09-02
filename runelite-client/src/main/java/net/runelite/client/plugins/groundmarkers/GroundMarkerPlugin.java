@@ -311,39 +311,7 @@ public class GroundMarkerPlugin extends Plugin
 			return;
 		}
 
-		WorldPoint worldPoint;
-
-		if (client.isInInstancedRegion())
-		{
-			// get position in the scene
-			int sceneX = localPoint.getSceneX();
-			int sceneY = localPoint.getSceneY();
-
-			// get chunk from scene
-			int chunkX = sceneX / CHUNK_SIZE;
-			int chunkY = sceneY / CHUNK_SIZE;
-
-			// get the template chunk for the chunk
-			int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
-			int templateChunk = instanceTemplateChunks[client.getPlane()][chunkX][chunkY];
-
-			int rotation = templateChunk >> 1 & 0x3;
-			int templateChunkY = (templateChunk >> 3 & 0x7FF) * CHUNK_SIZE;
-			int templateChunkX = (templateChunk >> 14 & 0x3FF) * CHUNK_SIZE;
-			int plane = templateChunk >> 24 & 0x3;
-
-			// calculate world point of the template
-			int x = templateChunkX + (sceneX & (CHUNK_SIZE - 1));
-			int y = templateChunkY + (sceneY & (CHUNK_SIZE - 1));
-
-			worldPoint = new WorldPoint(x, y, plane);
-			// rotate point back to 0, to match with template
-			worldPoint = rotateInverse(worldPoint, rotation);
-		}
-		else
-		{
-			worldPoint = WorldPoint.fromLocal(client, localPoint);
-		}
+		WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
 
 		int regionId = worldPoint.getRegionID();
 		GroundMarkerPoint point = new GroundMarkerPoint(regionId, worldPoint.getX() & 0x3f, worldPoint.getY() & 0x3f, client.getPlane());

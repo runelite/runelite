@@ -27,6 +27,7 @@ package net.runelite.api.coords;
 
 import lombok.Value;
 import net.runelite.api.Client;
+import static net.runelite.api.Constants.CHUNK_SIZE;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 
@@ -147,6 +148,72 @@ public class WorldPoint
 			(y >>> Perspective.LOCAL_COORD_BITS) + client.getBaseY(),
 			plane
 		);
+	}
+
+	/**
+	 * Gets the coordinate of the tile that contains the passed local point.
+	 *
+	 * @param client the client
+	 * @param localPoint the local coordinate
+	 * @return the tile coordinate containing the local point
+	 */
+	public static WorldPoint fromLocalInstance(Client client, LocalPoint localPoint)
+	{
+		if (client.isInInstancedRegion())
+		{
+			// get position in the scene
+			int sceneX = localPoint.getSceneX();
+			int sceneY = localPoint.getSceneY();
+
+			// get chunk from scene
+			int chunkX = sceneX / CHUNK_SIZE;
+			int chunkY = sceneY / CHUNK_SIZE;
+
+			// get the template chunk for the chunk
+			int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
+			int templateChunk = instanceTemplateChunks[client.getPlane()][chunkX][chunkY];
+
+			int rotation = templateChunk >> 1 & 0x3;
+			int templateChunkY = (templateChunk >> 3 & 0x7FF) * CHUNK_SIZE;
+			int templateChunkX = (templateChunk >> 14 & 0x3FF) * CHUNK_SIZE;
+			int plane = templateChunk >> 24 & 0x3;
+
+			// calculate world point of the template
+			int x = templateChunkX + (sceneX & (CHUNK_SIZE - 1));
+			int y = templateChunkY + (sceneY & (CHUNK_SIZE - 1));
+
+			// create and rotate point back to 0, to match with template
+			return rotate(new WorldPoint(x, y, plane), 4 - rotation);
+		}
+		else
+		{
+			return fromLocal(client, localPoint);
+		}
+	}
+
+	/**
+	 * Rotate the coordinates in the chunk according to chunk rotation
+	 *
+	 * @param point point
+	 * @param rotation rotation
+	 * @return world point
+	 */
+	private static WorldPoint rotate(WorldPoint point, int rotation)
+	{
+		int chunkX = point.getX() & ~(CHUNK_SIZE - 1);
+		int chunkY = point.getY() & ~(CHUNK_SIZE - 1);
+		int x = point.getX() & (CHUNK_SIZE - 1);
+		int y = point.getY() & (CHUNK_SIZE - 1);
+		switch (rotation)
+		{
+			case 1:
+				return new WorldPoint(chunkX + y, chunkY + (CHUNK_SIZE - 1 - x), point.getPlane());
+			case 2:
+				return new WorldPoint(chunkX + (CHUNK_SIZE - 1 - x), chunkY + (CHUNK_SIZE - 1 - y), point.getPlane());
+			case 3:
+				return new WorldPoint(chunkX + (CHUNK_SIZE - 1 - y), chunkY + x, point.getPlane());
+		}
+		return point;
 	}
 
 	/**
