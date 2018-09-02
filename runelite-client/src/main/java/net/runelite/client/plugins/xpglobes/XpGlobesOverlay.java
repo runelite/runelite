@@ -57,6 +57,7 @@ public class XpGlobesOverlay extends Overlay
 	private static final int PROGRESS_RADIUS_REMAINDER = 0;
 	private static final int DEFAULT_START_Y = 10;
 	private static final int TOOLTIP_RECT_SIZE_X = 150;
+	private static final int SECONDS_PER_HOUR = 3600;
 
 	private final Client client;
 	private final XpGlobesPlugin plugin;
@@ -294,10 +295,36 @@ public class XpGlobesOverlay extends Overlay
 			{
 				String xpHrString = decimalFormat.format(xpHr);
 				xpTooltip.getChildren().add(LineComponent.builder()
-					.left("Xp per hour:")
-					.leftColor(Color.ORANGE)
-					.right(xpHrString)
-					.build());
+						.left("Xp per hour:")
+						.leftColor(Color.ORANGE)
+						.right(xpHrString)
+						.build());
+
+				double hoursToLevel = xpLeft / (double) xpHr;
+				int seconds = (int) (hoursToLevel * SECONDS_PER_HOUR);
+				int ss = seconds % 60;
+				int hh = seconds / 60;
+				int mm = hh % 60;
+				hh /= 60;
+				String timeLeftString;
+				if (hh == 0 && mm == 0)
+				{
+					timeLeftString = String.format("%02d", ss);
+				}
+				else if (hh == 0)
+				{
+					timeLeftString = String.format("%02d:%02d", mm, ss);
+				}
+				else
+				{
+					timeLeftString = String.format("%02d:%02d:%02d", hh, mm, ss);
+				}
+
+				xpTooltip.getChildren().add(LineComponent.builder()
+						.left("Time to level:")
+						.leftColor(Color.ORANGE)
+						.right(timeLeftString)
+						.build());
 			}
 
 			//Create progress bar for skill.
