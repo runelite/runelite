@@ -130,15 +130,15 @@ public class ItemChargePlugin extends Plugin
 	public void onChatMessage(ChatMessage event)
 	{
 		String message = event.getMessage();
-		Matcher dodgyCheckMatcher = DODGY_CHECK_PATTERN.matcher(message);
-		Matcher dodgyProtectMatcher = DODGY_PROTECT_PATTERN.matcher(message);
-		Matcher dodgyBreakMatcher = DODGY_BREAK_PATTERN.matcher(message);
-		Matcher xericRechargeMatcher = XERIC_CHECK_CHARGE_PATTERN.matcher(message);
-		Matcher xericOutOfChargesMatcher = XERIC_OUT_OF_CHARGES.matcher(message);
-		Matcher soulbearerCheckMatcher = SOULBEARER_CHECK_CHARGE_PATTERN.matcher(message);
-
 		if (event.getType() == ChatMessageType.SERVER || event.getType() == ChatMessageType.FILTERED)
 		{
+			Matcher dodgyCheckMatcher = DODGY_CHECK_PATTERN.matcher(message);
+			Matcher dodgyProtectMatcher = DODGY_PROTECT_PATTERN.matcher(message);
+			Matcher dodgyBreakMatcher = DODGY_BREAK_PATTERN.matcher(message);
+			Matcher xericRechargeMatcher = XERIC_CHECK_CHARGE_PATTERN.matcher(message);
+			Matcher xericOutOfChargesMatcher = XERIC_OUT_OF_CHARGES.matcher(message);
+			Matcher soulbearerCheckMatcher = SOULBEARER_CHECK_CHARGE_PATTERN.matcher(message);
+
 			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
 				notifier.notify("Your Ring of Recoil has shattered");
@@ -199,10 +199,9 @@ public class ItemChargePlugin extends Plugin
 	@Subscribe
 	public void onGraphicChanged(GraphicChanged event)
 	{
-		Player localPlayer = client.getLocalPlayer();
-		if (localPlayer != null)
+		if (event.getActor() == client.getLocalPlayer())
 		{
-			if (localPlayer.getGraphic() == GraphicID.XERIC_TELEPORT)
+			if (client.getLocalPlayer().getGraphic() == GraphicID.XERIC_TELEPORT)
 			{
 				xericCharges = Math.max(xericCharges - 1, 0);
 				setXericCharges(xericCharges);
