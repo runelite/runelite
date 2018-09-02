@@ -68,7 +68,7 @@ import net.runelite.client.util.QueryRunner;
 )
 public class RunecraftPlugin extends Plugin
 {
-	private static Pattern bindNeckString = Pattern.compile("You have ([0-9]+) charges left before your Binding necklace disintegrates.");
+	private static Pattern bindNeckString = Pattern.compile("You have ([0-9]+|one) charges? left before your Binding necklace disintegrates.");
 	private static final String POUCH_DECAYED_NOTIFICATION_MESSAGE = "Your rune pouch has decayed.";
 	private static final String POUCH_DECAYED_MESSAGE = "Your pouch has decayed through use.";
 	private static final int DESTROY_ITEM_WIDGET_ID = WidgetInfo.DESTROY_ITEM_YES.getId();
@@ -151,7 +151,15 @@ public class RunecraftPlugin extends Plugin
 			Matcher match = bindNeckString.matcher(event.getMessage());
 			if (match.find())
 			{
-				bindNeckOverlay.bindingCharges = Integer.parseInt(match.group(1));
+				if (match.group(1).equals("one"))
+				{
+					bindNeckOverlay.bindingCharges = 1;
+				}
+				else
+				{
+					bindNeckOverlay.bindingCharges = Integer.parseInt(match.group(1));
+				}
+
 				return;
 			}
 
