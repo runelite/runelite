@@ -76,4 +76,15 @@ public interface DailyTasksConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "showSand",
+		name = "Show Claimable Sand",
+		description = "Show a message when you can collect your daily sand from Bert."
+	)
+	default boolean showSand()
+	{
+		return true;
+	}
 }

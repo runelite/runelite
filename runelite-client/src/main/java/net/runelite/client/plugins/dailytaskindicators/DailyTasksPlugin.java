@@ -64,6 +64,9 @@ public class DailyTasksPlugin extends Plugin
 
 	private static final String RUNES_MESSAGE = "You have random runes waiting to be collected from Lundail.";
 
+	private static final String SAND_MESSAGE = "You have sand waiting to be collected from Bert.";
+	private static final int SAND_QUEST_COMPLETE = 160;
+
 	private static final String RELOG_MESSAGE = " (Requires relog)";
 
 	@Inject
@@ -133,6 +136,11 @@ public class DailyTasksPlugin extends Plugin
 			{
 				checkRunes(dailyReset);
 			}
+
+			if (config.showSand())
+			{
+				checkSand(dailyReset);
+			}
 		}
 	}
 
@@ -193,6 +201,21 @@ public class DailyTasksPlugin extends Plugin
 			else if (dailyReset)
 			{
 				sendChatMessage(RUNES_MESSAGE + RELOG_MESSAGE);
+			}
+		}
+	}
+
+	private void checkSand(boolean dailyReset)
+	{
+		if (client.getVar(Varbits.QUEST_THE_HAND_IN_THE_SAND) >= SAND_QUEST_COMPLETE)
+		{
+			if (client.getVar(Varbits.DAILY_SAND_COLLECTED) == 0)
+			{
+				sendChatMessage(SAND_MESSAGE);
+			}
+			else if (dailyReset)
+			{
+				sendChatMessage(SAND_MESSAGE + RELOG_MESSAGE);
 			}
 		}
 	}
