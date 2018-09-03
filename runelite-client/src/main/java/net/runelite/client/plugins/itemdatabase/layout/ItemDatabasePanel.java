@@ -23,55 +23,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.itemdatabase;
+package net.runelite.client.plugins.itemdatabase.layout;
 
-import java.awt.image.BufferedImage;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import javax.inject.Inject;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.itemdatabase.layout.ItemDatabasePanel;
-import net.runelite.client.ui.ClientToolbar;
-import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.util.ImageUtil;
+import javax.inject.Singleton;
+import javax.swing.border.EmptyBorder;
+import net.runelite.client.plugins.itemdatabase.layout.search.SearchBar;
+import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.PluginPanel;
 
-@PluginDescriptor(
-		name = "Item Database",
-		description = "Search for items and get all the information about these items.",
-		tags = {"item", "recipe", "info"},
-		enabledByDefault = false
-)
-public class ItemDatabasePlugin extends Plugin
+@Singleton
+public class ItemDatabasePanel extends PluginPanel
 {
 
-	private NavigationButton navButton;
+	private static final int OFFSET = 6;
+	private static final int SCROLLBAR_WIDTH = 17;
+	private static final EmptyBorder BORDER_PADDING
+		= new EmptyBorder(OFFSET, OFFSET, OFFSET, OFFSET);
+	private static final Dimension OUTER_PREFERRED_SIZE
+		= new Dimension(PluginPanel.PANEL_WIDTH + SCROLLBAR_WIDTH, 0);
 
 	@Inject
-	private ItemDatabasePanel itemDatabasePanel;
-
-	@Inject
-	private ClientToolbar clientToolbar;
-
-
-	@Override
-	protected void startUp() throws Exception
+	public ItemDatabasePanel(SearchBar searchBar, DisplayPanelWrapper displayPanelWrapper)
 	{
-		BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "ItemDbIcon.png");
+		super(false);
+		setBorder(BORDER_PADDING);
+		setBackground(ColorScheme.DARK_GRAY_COLOR);
+		setPreferredSize(OUTER_PREFERRED_SIZE);
+		setLayout(new BorderLayout(0, OFFSET * 2));
 
-		navButton = NavigationButton.builder()
-				.tooltip("Item Database")
-				.icon(icon)
-				.panel(itemDatabasePanel)
-				.priority(4)
-				.build();
+		add(searchBar, BorderLayout.NORTH);
+		add(displayPanelWrapper, BorderLayout.CENTER);
 
-		clientToolbar.addNavigation(navButton);
-
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		clientToolbar.removeNavigation(navButton);
 	}
 
 }

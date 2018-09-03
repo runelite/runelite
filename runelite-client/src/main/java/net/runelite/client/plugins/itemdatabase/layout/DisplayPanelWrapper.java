@@ -23,55 +23,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.itemdatabase;
+package net.runelite.client.plugins.itemdatabase.layout;
 
-import java.awt.image.BufferedImage;
 import javax.inject.Inject;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.itemdatabase.layout.ItemDatabasePanel;
-import net.runelite.client.ui.ClientToolbar;
-import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.util.ImageUtil;
+import javax.inject.Singleton;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.border.EmptyBorder;
+import net.runelite.client.ui.ColorScheme;
 
-@PluginDescriptor(
-		name = "Item Database",
-		description = "Search for items and get all the information about these items.",
-		tags = {"item", "recipe", "info"},
-		enabledByDefault = false
-)
-public class ItemDatabasePlugin extends Plugin
+@Singleton
+public class DisplayPanelWrapper extends JScrollPane
 {
 
-	private NavigationButton navButton;
-
 	@Inject
-	private ItemDatabasePanel itemDatabasePanel;
-
-	@Inject
-	private ClientToolbar clientToolbar;
-
-
-	@Override
-	protected void startUp() throws Exception
+	public DisplayPanelWrapper(DisplayPanel displayPanel)
 	{
-		BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "ItemDbIcon.png");
+		super(displayPanel);
 
-		navButton = NavigationButton.builder()
-				.tooltip("Item Database")
-				.icon(icon)
-				.panel(itemDatabasePanel)
-				.priority(4)
-				.build();
-
-		clientToolbar.addNavigation(navButton);
-
+		setBackground(ColorScheme.DARK_GRAY_COLOR);
+		setBorder(new EmptyBorder(0, 0, 0, 0));
+		setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 	}
 
-	@Override
-	protected void shutDown() throws Exception
+	public void setDisplayPanel(DisplayPanel displayPanel)
 	{
-		clientToolbar.removeNavigation(navButton);
+		setViewportView(displayPanel);
 	}
+
 
 }
