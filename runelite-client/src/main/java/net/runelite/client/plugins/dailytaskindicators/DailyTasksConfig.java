@@ -62,10 +62,7 @@ public interface DailyTasksConfig extends Config
 			" collect your daily pure essence from Wizard Cromperty",
 		position = 3
 	)
-	default boolean showEssence()
-	{
-		return true;
-	}
+	default boolean showEssence() { return true; }
 
 	@ConfigItem(
 			keyName = "showRunes",
@@ -74,8 +71,5 @@ public interface DailyTasksConfig extends Config
 					" collect your daily random runes from Lundail",
 			position = 5
 	)
-	default boolean showRunes()
-	{
-		return true;
-	}
+	default boolean showRunes() { return true; }
 }

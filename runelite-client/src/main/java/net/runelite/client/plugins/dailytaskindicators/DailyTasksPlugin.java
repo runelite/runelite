@@ -59,7 +59,7 @@ public class DailyTasksPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg, check;
+	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg, hasSentRunesMsg, check;
 
 	@Provides
 	DailyTasksConfig provideConfig(ConfigManager configManager)
@@ -94,6 +94,9 @@ public class DailyTasksPlugin extends Plugin
 					break;
 				case "showEssence":
 					hasSentEssenceMsg = false;
+					break;
+				case "showRunes":
+					hasSentRunesMsg = false;
 					break;
 			}
 		}
@@ -139,9 +142,10 @@ public class DailyTasksPlugin extends Plugin
 			sendChatMessage("You have pure essence waiting to be collected from Wizard Cromperty.");
 			hasSentEssenceMsg = true;
 		}
-		if (config.showRunes() && canCollectRunes())
+		if (config.showRunes() && !hasSentRunesMsg && checkCanCollectRunes())
 		{
 			sendChatMessage("You have random runes waiting to be collected from Lundail.");
+			hasSentRunesMsg = true;
 		}
 	}
 
@@ -164,7 +168,7 @@ public class DailyTasksPlugin extends Plugin
 		return value == 0; // 1 = can't claim
 	}
 
-	private boolean canCollectRunes()
+	private boolean checkCanCollectRunes()
 	{
 		return client.getVar(Varbits.DIARY_WILDERNESS_EASY) == 1
 				&& client.getVar(Varbits.DAILY_RUNES) == 0;
