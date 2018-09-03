@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Sean Dewar <https://github.com/seandewar>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,57 +22,74 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.woodcutting;
+package net.runelite.client.plugins.runenergy;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameObject;
-import net.runelite.client.game.ItemManager;
+import net.runelite.api.Point;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
+import org.apache.commons.lang3.StringUtils;
 
-class WoodcuttingTreesOverlay extends Overlay
+class RunEnergyOverlay extends Overlay
 {
+	private final RunEnergyPlugin plugin;
 	private final Client client;
-	private final WoodcuttingConfig config;
-	private final ItemManager itemManager;
-	private final WoodcuttingPlugin plugin;
+	private final TooltipManager tooltipManager;
 
 	@Inject
-	private WoodcuttingTreesOverlay(final Client client, final WoodcuttingConfig config, final ItemManager itemManager, final WoodcuttingPlugin plugin)
+	private RunEnergyOverlay(final RunEnergyPlugin plugin, final Client client, final TooltipManager tooltipManager)
 	{
-		this.client = client;
-		this.config = config;
-		this.itemManager = itemManager;
 		this.plugin = plugin;
-		setLayer(OverlayLayer.ABOVE_SCENE);
+		this.client = client;
+		this.tooltipManager = tooltipManager;
 		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (plugin.getSession() == null || !config.showRedwoodTrees())
+		final Widget runOrb = client.getWidget(WidgetInfo.MINIMAP_TOGGLE_RUN_ORB);
+
+		if (runOrb == null)
 		{
 			return null;
 		}
 
-		Axe axe = plugin.getAxe();
-		if (axe == null)
+		final Rectangle bounds = runOrb.getBounds();
+
+		if (bounds.getX() <= 0)
 		{
 			return null;
 		}
 
-		for (GameObject treeObject : plugin.getTreeObjects())
+		final Point mousePosition = client.getMouseCanvasPosition();
+
+		if (bounds.contains(mousePosition.getX(), mousePosition.getY()))
 		{
-			if (treeObject.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) <= 12)
+			StringBuilder sb = new StringBuilder();
+			sb.append("Weight: ").append(client.getWeight()).append(" kg</br>")
+				.append("Run Time Remaining: ").append(plugin.getEstimatedRunTimeRemaining(false));
+
+			int secondsUntil100 = plugin.getEstimatedRecoverTimeRemaining();
+			if (secondsUntil100 > 0)
 			{
-				OverlayUtil.renderImageLocation(client, graphics, treeObject.getLocalLocation(), itemManager.getImage(axe.getItemId()), 120);
+				final int minutes = (int) Math.floor(secondsUntil100 / 60.0);
+				final int seconds = (int) Math.floor(secondsUntil100 - (minutes * 60.0));
+
+				sb.append("</br>").append("100% Energy In: ").append(minutes).append(':').append(StringUtils.leftPad(Integer.toString(seconds), 2, "0"));
 			}
+
+			tooltipManager.add(new Tooltip(sb.toString()));
 		}
 
 		return null;

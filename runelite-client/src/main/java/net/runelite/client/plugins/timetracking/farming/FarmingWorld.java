@@ -91,7 +91,7 @@ class FarmingWorld
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.FRUIT_TREE)
 		));
 
-		add(new FarmingRegion("Champion's Guild", 12596,
+		add(new FarmingRegion("Champions' Guild", 12596,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.BUSH)
 		));
 

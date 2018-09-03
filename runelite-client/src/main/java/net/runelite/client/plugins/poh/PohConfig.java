@@ -98,7 +98,7 @@ public interface PohConfig extends Config
 	)
 	default boolean showBurner()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
