@@ -25,59 +25,19 @@
  */
 package net.runelite.client.plugins.itemdatabase;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
-import net.runelite.client.plugins.itemdatabase.search.SearchBar;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.DynamicGridLayout;
 
-public class ItemDatabasePanel extends PluginPanel
+public abstract class DisplayPanel extends JPanel
 {
 
-	private static final int OFFSET = 6;
-	private static final int SCROLLBAR_WIDTH = 17;
-	private static final EmptyBorder BORDER_PADDING
-			= new EmptyBorder(OFFSET, OFFSET, OFFSET, OFFSET);
-	private static final Dimension OUTER_PREFERRED_SIZE
-			= new Dimension(PluginPanel.PANEL_WIDTH + SCROLLBAR_WIDTH, 0);
-
-	private final JScrollPane displayPanelWrapper;
-	private final JPanel scrollPanel;
-
-	public ItemDatabasePanel()
+	public DisplayPanel()
 	{
-		super(false);
-		setBorder(BORDER_PADDING);
+		setLayout(new DynamicGridLayout(0, 1, 0, 3));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
-
-		scrollPanel = new JPanel();
-		scrollPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		scrollPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
-
-		displayPanelWrapper = new JScrollPane(scrollPanel);
-		displayPanelWrapper.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		displayPanelWrapper.setBorder(new EmptyBorder(0, 0, 0, 0));
-		displayPanelWrapper.setHorizontalScrollBarPolicy(
-				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
-		);
-
-		setPreferredSize(OUTER_PREFERRED_SIZE);
-		setLayout(new BorderLayout(0, OFFSET * 2));
-
-		SearchBar searchBar = new SearchBar(this);
-		add(searchBar, BorderLayout.NORTH);
-		add(displayPanelWrapper, BorderLayout.CENTER);
-
+		setBorder(new EmptyBorder(0, 0, 0, 0));
 	}
-
-	public void setDisplayPanel(DisplayPanel displayPanel)
-	{
-		scrollPanel.removeAll();
-		scrollPanel.add(displayPanel, BorderLayout.CENTER);
-	}
-
+	
 }

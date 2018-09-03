@@ -25,47 +25,51 @@
  */
 package net.runelite.client.plugins.itemdatabase;
 
+import java.awt.image.BufferedImage;
 import javax.inject.Inject;
-import net.runelite.api.ItemID;
-import net.runelite.client.game.AsyncBufferedImage;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-	name = "Item Database",
-	description = "Search for items and get all the information about these items.",
-	tags = {"item", "recipe", "info"},
-	enabledByDefault = false
+		name = "Item Database",
+		description = "Search for items and get all the information about these items.",
+		tags = {"item", "recipe", "info"},
+		enabledByDefault = false
 )
 public class ItemDatabasePlugin extends Plugin
 {
-	
+
+	private NavigationButton navButton;
+
 	@Inject
 	private ClientToolbar clientToolbar;
-	
-	@Inject
-	private ItemManager itemManager;
+
+	private final ItemDatabasePanel itemDatabasePanel = new ItemDatabasePanel();
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		
-		ItemDatabasePanel panel = new ItemDatabasePanel();
-		
-		AsyncBufferedImage icon = itemManager.getImage(ItemID.CLOCKWORK_BOOK);
-		
-		NavigationButton navButton = NavigationButton.builder()
-			.tooltip("Item Database")
-			.icon(icon)
-			.panel(panel)
-			.priority(4)
-			.build();
+
+		BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "ItemDbIcon.png");
+
+		navButton = NavigationButton.builder()
+				.tooltip("Item Database")
+				.icon(icon)
+				.panel(itemDatabasePanel)
+				.priority(4)
+				.build();
 
 		clientToolbar.addNavigation(navButton);
+
 	}
-	
-	
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		clientToolbar.removeNavigation(navButton);
+	}
+
 }
