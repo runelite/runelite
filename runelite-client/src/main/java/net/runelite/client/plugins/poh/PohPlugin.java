@@ -29,7 +29,6 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -45,7 +44,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.http.api.hiscore.*;
-import net.runelite.http.api.hiscore.Skill;
 import static net.runelite.api.ObjectID.*;
 
 @PluginDescriptor(
@@ -194,7 +192,7 @@ public class PohPlugin extends Plugin
 			pohObjects.clear();
 		}
 	}
-
+	/*
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)
 	{
@@ -219,4 +217,5 @@ public class PohPlugin extends Plugin
 			}
 		}
 	}
+	*/
 }
