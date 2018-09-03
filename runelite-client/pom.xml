@@ -149,6 +149,11 @@
 			<version>${guice.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>ru.vyarus</groupId>
+			<artifactId>guice-ext-annotations</artifactId>
+			<version>1.3.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
