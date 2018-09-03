@@ -80,6 +80,7 @@ class FishingOverlay extends Overlay
 
 		if (sinceCaught.compareTo(statTimeout) >= 0)
 		{
+			session.setLastFishCaught(null);
 			return null;
 		}
 
