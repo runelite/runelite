@@ -38,8 +38,7 @@ public interface DailyTasksConfig extends Config
 			" collect your daily herb boxes at NMZ",
 		position = 1
 	)
-	default boolean showHerbBoxes()
-	{
+	default boolean showHerbBoxes() {
 		return true;
 	}
 
@@ -62,14 +61,20 @@ public interface DailyTasksConfig extends Config
 			" collect your daily pure essence from Wizard Cromperty",
 		position = 3
 	)
-	default boolean showEssence() { return true; }
+	default boolean showEssence()
+	{
+		return true;
+	}
 
 	@ConfigItem(
-			keyName = "showRunes",
-			name = "Show Claimable Random Runes",
-			description = "Configures whether or not to show a message when you can" +
-					" collect your daily random runes from Lundail",
-			position = 5
+		keyName = "showRunes",
+		name = "Show Claimable Random Runes",
+		description = "Configures whether or not to show a message when you can" +
+			" collect your daily random runes from Lundail",
+		position = 5
 	)
-	default boolean showRunes() { return true; }
+	default boolean showRunes()
+	{
+		return true;
+	}
 }
