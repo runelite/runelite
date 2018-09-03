@@ -23,55 +23,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.itemdatabase;
+package net.runelite.client.plugins.itemdatabase.layout;
 
-import java.awt.image.BufferedImage;
-import javax.inject.Inject;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.itemdatabase.layout.ItemDatabasePanel;
-import net.runelite.client.ui.ClientToolbar;
-import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.util.ImageUtil;
-
-@PluginDescriptor(
-		name = "Item Database",
-		description = "Search for items and get all the information about these items.",
-		tags = {"item", "recipe", "info"},
-		enabledByDefault = false
-)
-public class ItemDatabasePlugin extends Plugin
+public enum DisplayState
 {
-
-	private NavigationButton navButton;
-
-	@Inject
-	private ItemDatabasePanel itemDatabasePanel;
-
-	@Inject
-	private ClientToolbar clientToolbar;
-
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "ItemDbIcon.png");
-
-		navButton = NavigationButton.builder()
-				.tooltip("Item Database")
-				.icon(icon)
-				.panel(itemDatabasePanel)
-				.priority(4)
-				.build();
-
-		clientToolbar.addNavigation(navButton);
-
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		clientToolbar.removeNavigation(navButton);
-	}
-
+	EMPTY,
+	RESULTS,
+	DETAILS
 }
