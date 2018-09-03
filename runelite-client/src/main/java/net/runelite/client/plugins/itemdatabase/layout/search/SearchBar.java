@@ -39,13 +39,13 @@ import net.runelite.client.util.ImageUtil;
 @Singleton
 public class SearchBar extends IconTextField implements ActionListener
 {
-	
+
 	private static final ImageIcon SEARCH_ICON;
 	private static final ImageIcon LOADING_ICON;
 	private static final ImageIcon ERROR_ICON;
-	
+
 	private final SearchResultPanel searchResultPanel;
-	
+
 	static
 	{
 		SEARCH_ICON = new ImageIcon(ImageUtil.alphaOffset(ImageUtil.grayscaleOffset(ImageUtil.getResourceStreamFromClass(IconTextField.class, "search.png"), 0f), 1.75f));
@@ -59,8 +59,9 @@ public class SearchBar extends IconTextField implements ActionListener
 		this.searchResultPanel = searchResultPanel;
 		initialize();
 	}
-	
-	private void initialize() {
+
+	private void initialize()
+	{
 		setPreferredSize(new Dimension(100, 30));
 		setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
 		setHoverBackgroundColor(ColorScheme.MEDIUM_GRAY_COLOR.brighter());
@@ -76,12 +77,15 @@ public class SearchBar extends IconTextField implements ActionListener
 		CompletableFuture<Integer> search = searchResultPanel.search("test");
 		search.whenComplete((result, action) ->
 		{
-			if (action == null) {
+			if (action == null)
+			{
 				setIcon(SEARCH_ICON);
-			} else {
+			}
+			else
+			{
 				setIcon(ERROR_ICON);
 			}
 		});
-		
+
 	}
 }

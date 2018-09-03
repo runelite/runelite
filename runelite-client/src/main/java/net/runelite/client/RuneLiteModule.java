@@ -33,8 +33,6 @@ import java.applet.Applet;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
-import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Produces;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;

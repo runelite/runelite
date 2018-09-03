@@ -41,9 +41,9 @@ public class ItemDatabasePanel extends PluginPanel
 	private static final int OFFSET = 6;
 	private static final int SCROLLBAR_WIDTH = 17;
 	private static final EmptyBorder BORDER_PADDING
-			= new EmptyBorder(OFFSET, OFFSET, OFFSET, OFFSET);
+		= new EmptyBorder(OFFSET, OFFSET, OFFSET, OFFSET);
 	private static final Dimension OUTER_PREFERRED_SIZE
-			= new Dimension(PluginPanel.PANEL_WIDTH + SCROLLBAR_WIDTH, 0);
+		= new Dimension(PluginPanel.PANEL_WIDTH + SCROLLBAR_WIDTH, 0);
 
 	@Inject
 	public ItemDatabasePanel(SearchBar searchBar, DisplayPanelWrapper displayPanelWrapper)

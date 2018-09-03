@@ -27,5 +27,5 @@ package net.runelite.client.plugins.itemdatabase.layout.search;
 
 public class SearchResultItem
 {
-	
+
 }
