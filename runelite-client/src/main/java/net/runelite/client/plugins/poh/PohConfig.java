@@ -144,7 +144,7 @@ public interface PohConfig extends Config
 	@ConfigItem(
 		position = 10,
 		keyName = "showBurnerTime",
-		name = "Show burner time",
+		name = "Show Burner Time",
 		description = "Configures whether or not the burner time should be displayed"
 	)
 	default boolean showBurnerTime()
