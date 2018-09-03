@@ -1,10 +1,13 @@
 package net.runelite.client.plugins.worldposition;
 
+import com.google.common.eventbus.Subscribe;
+import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.OverlayManager;
-
-import javax.inject.Inject;
 
 @PluginDescriptor(
         name = "World Position",
@@ -14,19 +17,35 @@ import javax.inject.Inject;
 
 public class WorldPositionPlugin extends Plugin {
 
-    @Inject
-    private OverlayManager overlayManager;
+    private Thread serverThread = null;
+    private WorldPoint cachedPosition = null;
+
+
+    private TCPServer tcpServer;
 
     @Inject
-    private WorldPositionOverlay worldPositionOverlay;
+    private Client client;
 
     @Override
     protected void startUp() throws Exception {
-        overlayManager.add(worldPositionOverlay);
+        tcpServer = new TCPServer(this);
+        serverThread = new Thread(tcpServer);
+        serverThread.start();
     }
 
     @Override
     protected void shutDown() throws Exception {
-        overlayManager.remove(worldPositionOverlay);
+        tcpServer.stop();
+        serverThread.join();
+    }
+
+    @Subscribe
+    private void onGameTick(GameTick tick) {
+        if(client.getGameState().equals(GameState.LOGGED_IN)) {
+            if (cachedPosition == null || !cachedPosition.equals(client.getLocalPlayer().getWorldLocation())) {
+                cachedPosition = client.getLocalPlayer().getWorldLocation();
+                tcpServer.addPosition(cachedPosition);
+            }
+        }
     }
 }
