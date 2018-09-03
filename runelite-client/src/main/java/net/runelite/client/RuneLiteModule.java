@@ -46,15 +46,19 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
-import net.runelite.client.rs.ClientUpdateCheckMode;
+import net.runelite.client.plugins.itemdatabase.layout.DisplayPanel;
+import net.runelite.client.plugins.itemdatabase.layout.DisplayStateManager;
+import net.runelite.client.plugins.itemdatabase.layout.EmptyDisplayPanel;
+import net.runelite.client.plugins.itemdatabase.layout.search.SearchResultPanel;
 import net.runelite.client.rs.ClientLoader;
+import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.util.DeferredEventBus;
 import net.runelite.client.util.QueryRunner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.OkHttpClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Slf4j
 public class RuneLiteModule extends AbstractModule
@@ -133,5 +137,19 @@ public class RuneLiteModule extends AbstractModule
 	private static void eventExceptionHandler(Throwable exception, SubscriberExceptionContext context)
 	{
 		log.warn("uncaught exception in event subscriber", exception);
+	}
+
+	@Provides
+	public DisplayPanel provideDisplayPanel(EmptyDisplayPanel emptyDisplayPanel, SearchResultPanel searchResultPanel, DisplayStateManager displayStateManager)
+	{
+		switch (displayStateManager.getDisplayState())
+		{
+			case EMPTY:
+				return emptyDisplayPanel;
+			case RESULTS:
+				return searchResultPanel;
+			default:
+				throw new RuntimeException("Found illegal display state");
+		}
 	}
 }
