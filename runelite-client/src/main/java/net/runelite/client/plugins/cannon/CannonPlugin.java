@@ -38,6 +38,8 @@ import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ObjectID.CANNON_BASE;
 import net.runelite.api.Player;
@@ -49,6 +51,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
@@ -125,7 +128,6 @@ public class CannonPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(cannonOverlay);
-		overlayManager.add(cannonSpotOverlay);
 	}
 
 	@Override
@@ -137,6 +139,65 @@ public class CannonPlugin extends Plugin
 		cannonPosition = null;
 		cballsLeft = 0;
 		removeCounter();
+		skipProjectileCheckThisTick = false;
+		spotPoints.clear();
+	}
+
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
+		{
+			return;
+		}
+
+		boolean hasBase = false;
+		boolean hasStand = false;
+		boolean hasBarrels = false;
+		boolean hasFurnace = false;
+		boolean hasAll = false;
+
+		if (!cannonPlaced)
+		{
+			for (Item item : event.getItemContainer().getItems())
+			{
+				if (item == null)
+				{
+					continue;
+				}
+
+				switch (item.getId())
+				{
+					case ItemID.CANNON_BASE:
+						hasBase = true;
+						break;
+					case ItemID.CANNON_STAND:
+						hasStand = true;
+						break;
+					case ItemID.CANNON_BARRELS:
+						hasBarrels = true;
+						break;
+					case ItemID.CANNON_FURNACE:
+						hasFurnace = true;
+						break;
+				}
+
+				if (hasBase && hasStand && hasBarrels && hasFurnace)
+				{
+					hasAll = true;
+					break;
+				}
+			}
+		}
+
+		if (hasAll)
+		{
+			overlayManager.add(cannonSpotOverlay);
+		}
+		else
+		{
+			overlayManager.remove(cannonSpotOverlay);
+		}
 	}
 
 	@Subscribe
