@@ -154,8 +154,7 @@ public class PohPlugin extends Plugin
 		for (Tile t : timerMap.keySet())
 		{
 			double sec = timerMap.get(t);
-			double newSec = sec - ESTIMATED_TICK_LENGTH;
-			newSec = newSec < 0 ? 0 : newSec;
+			double newSec = Math.max(sec - ESTIMATED_TICK_LENGTH, 0);
 			timerMap.replace(t, sec, newSec);
 		}
 	}
