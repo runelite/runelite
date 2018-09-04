@@ -27,7 +27,7 @@ package net.runelite.client.plugins.chatcommands;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BossAbbreviations
+class BossAbbreviations
 {
 	private static final Map<String, String> MAP = new HashMap<>();
 
