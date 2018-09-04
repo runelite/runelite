@@ -29,13 +29,26 @@ package net.runelite.client.plugins.skillcalculator;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ItemEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.Client;
+import net.runelite.api.Skill;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.ComboBoxIconEntry;
+import net.runelite.client.ui.components.ComboBoxIconRenderer;
 import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 
@@ -44,6 +57,15 @@ class SkillCalculatorPanel extends PluginPanel
 	private final SkillCalculator uiCalculator;
 	private final SkillIconManager iconManager;
 	private final MaterialTabGroup tabGroup;
+
+	private CalculatorType currentCalc;
+	private String currentTab;
+
+	// Mat Tab Custom Borders
+	private final Border UNSELECTED_BORDER = new EmptyBorder(5, 3, 5, 3);
+	private final Border SELECTED_BORDER = new CompoundBorder(
+			BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.BRAND_ORANGE),
+			BorderFactory.createEmptyBorder(8, 3, 6, 3));
 
 	SkillCalculatorPanel(SkillIconManager iconManager, Client client)
 	{
@@ -63,37 +85,145 @@ class SkillCalculatorPanel extends PluginPanel
 
 		tabGroup = new MaterialTabGroup();
 		tabGroup.setLayout(new GridLayout(0, 6, 7, 7));
+		tabGroup.setBorder(new EmptyBorder(0, 0, 10, 0));
 
-		addCalculatorButtons();
+		createTabs();
+
+		final JComboBox<ComboBoxIconEntry> skillSelector = createSkillSelector();
 
 		final UICalculatorInputArea uiInput = new UICalculatorInputArea();
 		uiInput.setBorder(new EmptyBorder(15, 0, 15, 0));
 		uiInput.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		uiCalculator = new SkillCalculator(client, uiInput);
 
-		add(tabGroup, c);
+		add(skillSelector, c);
 		c.gridy++;
 
 		add(uiInput, c);
+		c.gridy++;
+
+		add(tabGroup, c);
 		c.gridy++;
 
 		add(uiCalculator, c);
 		c.gridy++;
 	}
 
-	private void addCalculatorButtons()
+	// Creates all Panel Tabs (Calculator, Planner, Banked)
+	private void createTabs()
 	{
-		for (CalculatorType calculatorType : CalculatorType.values())
+		tabGroup.removeAll();
+
+		List<String> tabs = new ArrayList<>();
+		tabs.add("Calculator");
+		tabs.add("Planner");
+
+		// Tab Size
+		tabGroup.setLayout(new GridLayout(0, tabs.size(), 7, 7));
+
+		for (String s : tabs)
 		{
-			ImageIcon icon = new ImageIcon(iconManager.getSkillImage(calculatorType.getSkill(), true));
-			MaterialTab tab = new MaterialTab(icon, tabGroup, null);
-			tab.setOnSelectEvent(() ->
+			MaterialTab matTab = new MaterialTab(s, tabGroup, null);
+
+			matTab.setHorizontalAlignment(SwingUtilities.CENTER);
+
+			// Ensure Background is applied
+			matTab.setOpaque(true);
+			matTab.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
+			// Change the border for less blank space between elements
+			matTab.setUnselectedBorder(UNSELECTED_BORDER);
+			matTab.setSelectedBorder(SELECTED_BORDER);
+
+			// When Clicked
+			matTab.setOnSelectEvent(() ->
 			{
-				uiCalculator.openCalculator(calculatorType);
+				selectedTab(s);
 				return true;
 			});
 
-			tabGroup.addTab(tab);
+			tabGroup.addTab(matTab);
 		}
+		// Select the first tab
+		tabGroup.select(tabGroup.getTab(0));
+	}
+
+
+	// Handle switching between the tabs
+	private void selectedTab(String s)
+	{
+		currentTab = s;
+
+		// Only open a panel if a skill is selected
+		if (currentCalc == null)
+			return;
+
+		switch (s)
+		{
+			case "Calculator":
+				uiCalculator.openCalculator(currentCalc);
+				break;
+			case "Planner":
+				uiCalculator.openPlanner(currentCalc);
+				break;
+		}
+	}
+
+	// Creates the Skill Selection Drop Down
+	private JComboBox<ComboBoxIconEntry> createSkillSelector()
+	{
+		JComboBox<ComboBoxIconEntry> box = new JComboBox<>();
+
+		ComboBoxIconRenderer renderer = new ComboBoxIconRenderer();
+		box.setRenderer(renderer);
+
+		TreeMap<String, ComboBoxIconEntry> m = new TreeMap<>();
+		for (CalculatorType calculatorType : CalculatorType.values())
+		{
+			ImageIcon icon = new ImageIcon(iconManager.getSkillImage(calculatorType.getSkill(), true));
+			ComboBoxIconEntry dropdownEntry = new ComboBoxIconEntry(icon, calculatorType.getSkill().getName());
+			m.put(calculatorType.getSkill().getName(), dropdownEntry);
+		}
+
+		for (Map.Entry<String, ComboBoxIconEntry> e : m.entrySet())
+		{
+			box.addItem(e.getValue());
+		}
+
+		box.addItemListener(e ->
+		{
+			if (e.getStateChange() == ItemEvent.SELECTED)
+			{
+				// Match Dropdown Skill (text value) to CalculatorType Skill
+				ComboBoxIconEntry entry = (ComboBoxIconEntry) e.getItem();
+				for (Skill s : Skill.values())
+				{
+					if (s.getName().equals(entry.getText()))
+					{
+						for (CalculatorType c : CalculatorType.values())
+						{
+							if (c.getSkill().equals(s))
+							{
+								currentCalc = c;
+								selectedTab(currentTab);
+							}
+						}
+					}
+				}
+			}
+		});
+
+		box.setSelectedItem(null);
+
+		return box;
+	}
+
+	// Refresh the current tab
+	public void refreshCurrentCalc()
+	{
+		if (currentCalc == null)
+			return;
+
+		selectedTab(currentTab);
 	}
 }
