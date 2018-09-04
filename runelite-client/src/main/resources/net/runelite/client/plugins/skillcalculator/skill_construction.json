@@ -14,15 +14,15 @@
     },
     {
       "level": 1,
-      "icon": 8780,
-      "name": "Teak Plank",
-      "xp": 90
+      "icon": 8778,
+      "name": "Oak Plank",
+      "xp": 60
     },
     {
       "level": 1,
-      "icon": 8180,
-      "name": "Plant",
-      "xp": 31
+      "icon": 8780,
+      "name": "Teak Plank",
+      "xp": 90
     },
     {
       "level": 1,
@@ -32,9 +32,9 @@
     },
     {
       "level": 1,
-      "icon": 8778,
-      "name": "Oak Plank",
-      "xp": 60
+      "icon": 8180,
+      "name": "Plant",
+      "xp": 31
     },
     {
       "level": 1,
