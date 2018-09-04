@@ -645,6 +645,7 @@ public interface RSClient extends RSGameEngine, Client
 	void setCompass(SpritePixels spritePixels);
 
 	@Import("widgetSpriteCache")
+	@Override
 	RSNodeCache getWidgetSpriteCache();
 
 	@Import("oculusOrbState")

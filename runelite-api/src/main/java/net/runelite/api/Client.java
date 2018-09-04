@@ -1394,24 +1394,20 @@ public interface Client extends GameEngine
 	void queueChangedSkill(Skill skill);
 
 	/**
-	 * Sets a mapping of sprites to override.
+	 * Gets a mapping of sprites to override.
 	 * <p>
 	 * The key value in the map corresponds to the ID of the sprite,
 	 * and the value the sprite to replace it with.
-	 *
-	 * @param overrides the sprites to override
 	 */
-	void setSpriteOverrides(Map<Integer, SpritePixels> overrides);
+	Map<Integer, SpritePixels> getSpriteOverrides();
 
 	/**
-	 * Sets a mapping of widget sprites to override.
+	 * Gets a mapping of widget sprites to override.
 	 * <p>
 	 * The key value in the map corresponds to the packed widget ID,
 	 * and the value the sprite to replace the widgets sprite with.
-	 *
-	 * @param overrides the sprites to override
 	 */
-	void setWidgetSpriteOverrides(Map<Integer, SpritePixels> overrides);
+	Map<Integer, SpritePixels> getWidgetSpriteOverrides();
 
 	/**
 	 * Sets the compass sprite.
@@ -1419,6 +1415,13 @@ public interface Client extends GameEngine
 	 * @param spritePixels the new sprite
 	 */
 	void setCompass(SpritePixels spritePixels);
+
+	/**
+	 * Returns widget sprite cache, to be used with {@link Client#getSpriteOverrides()}
+	 *
+	 * @return the cache
+	 */
+	NodeCache getWidgetSpriteCache();
 
 	/**
 	 * Gets the current server tick count.

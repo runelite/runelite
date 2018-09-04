@@ -145,7 +145,9 @@ public class InterfaceStylesPlugin extends Plugin
 			}
 		}
 
-		client.setSpriteOverrides(overrides);
+		client.getWidgetSpriteCache().reset();
+		client.getSpriteOverrides().clear();
+		client.getSpriteOverrides().putAll(overrides);
 	}
 
 	private void overrideWidgetSprites()
@@ -168,7 +170,8 @@ public class InterfaceStylesPlugin extends Plugin
 			}
 		}
 
-		client.setWidgetSpriteOverrides(widgetOverrides);
+		client.getWidgetSpriteOverrides().clear();
+		client.getWidgetSpriteOverrides().putAll(widgetOverrides);
 	}
 
 	private SpritePixels getFileSpritePixels(String file, String subfolder)
@@ -292,8 +295,8 @@ public class InterfaceStylesPlugin extends Plugin
 
 	private void removeGameframe()
 	{
-		client.setSpriteOverrides(null);
-		client.setWidgetSpriteOverrides(null);
+		client.getSpriteOverrides().clear();
+		client.getWidgetSpriteOverrides().clear();
 
 		BufferedImage compassImage = spriteManager.getSprite(SpriteID.COMPASS_TEXTURE, 0);
 
