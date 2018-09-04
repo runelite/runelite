@@ -339,7 +339,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		}
 
 		int idx = value.indexOf(' ');
-		final String boss = longBossName(value.substring(idx + 1));
+		final String boss = BossAbbreviations.getFullName(value.substring(idx + 1));
 
 		final int kc = getKc(boss);
 		if (kc <= 0)
@@ -378,7 +378,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		}
 
 		int idx = message.indexOf(' ');
-		final String boss = longBossName(message.substring(idx + 1));
+		final String boss = BossAbbreviations.getFullName(message.substring(idx + 1));
 
 		final int kc = getKc(boss);
 		if (kc <= 0)
@@ -419,7 +419,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			player = sanitize(setMessage.getName());
 		}
 
-		search = longBossName(search);
+		search = BossAbbreviations.getFullName(search);
 
 		final int kc;
 		try
