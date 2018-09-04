@@ -91,7 +91,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	private static final String LEVEL_COMMAND_STRING = "(!lvl |!level ).*";
 	private static final String CLUES_COMMAND_STRING = "!clues";
 	private static final String KILLCOUNT_COMMAND_STRING = "(!kc |!killcount ).*";
-	private static final String CMB_COMMAND_STRING = "(!cmb|!combat|!cb)";
+	private static final String CMB_COMMAND_STRING = "(!cmb|!combat|!cb|!cmbt|!cmbat|!combt)";
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private final KillCountClient killCountClient = new KillCountClient();
