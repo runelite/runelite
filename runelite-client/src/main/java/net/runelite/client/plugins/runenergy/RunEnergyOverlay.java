@@ -60,7 +60,7 @@ class RunEnergyOverlay extends Overlay
 	{
 		final Widget runOrb = client.getWidget(WidgetInfo.MINIMAP_TOGGLE_RUN_ORB);
 
-		if (runOrb == null)
+		if (runOrb == null || runOrb.isHidden())
 		{
 			return null;
 		}
