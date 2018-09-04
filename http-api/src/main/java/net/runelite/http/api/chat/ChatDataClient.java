@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.kc;
+package net.runelite.http.api.chat;
 
 import java.io.IOException;
 import net.runelite.http.api.RuneLiteAPI;
@@ -31,37 +32,39 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class KillCountClient
+public class ChatDataClient
 {
-	public boolean submit(String username, String boss, int kc) throws IOException
+	public boolean submit(final String username, final ChatDataType type, final String subtype, final String data) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("kc")
+		final HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+			.addPathSegment("chat")
 			.addQueryParameter("name", username)
-			.addQueryParameter("boss", boss)
-			.addQueryParameter("kc", Integer.toString(kc))
+			.addQueryParameter("type", type.getType())
+			.addQueryParameter("subtype", subtype)
+			.addQueryParameter("data", data)
 			.build();
 
-		Request request = new Request.Builder()
+		final Request request = new Request.Builder()
 			.post(RequestBody.create(null, new byte[0]))
 			.url(url)
 			.build();
 
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		try (final Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			return response.isSuccessful();
 		}
 	}
 
-	public int get(String username, String boss) throws IOException
+	public String get(final String username, final ChatDataType type, final String subtype) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("kc")
+		final HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+			.addPathSegment("chat")
 			.addQueryParameter("name", username)
-			.addQueryParameter("boss", boss)
+			.addQueryParameter("type", type.getType())
+			.addQueryParameter("subtype", subtype)
 			.build();
 
-		Request request = new Request.Builder()
+		final Request request = new Request.Builder()
 			.url(url)
 			.build();
 
@@ -69,9 +72,10 @@ public class KillCountClient
 		{
 			if (!response.isSuccessful())
 			{
-				throw new IOException("Unable to look up killcount!");
+				throw new IOException("Unable to look up chat data!");
 			}
-			return Integer.parseInt(response.body().string());
+
+			return response.body().string();
 		}
 	}
 }

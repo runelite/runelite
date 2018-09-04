@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2018, Joshua Filby <joshua@filby.me>
- * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,39 +23,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.util;
+package net.runelite.http.service.chat;
 
-import java.util.regex.Pattern;
+import lombok.Value;
 
-/**
- * A set of utilities to use when dealing with text.
- */
-public class Text
+@Value
+class ChatDataKey
 {
-	private static final Pattern TAG_REGEXP = Pattern.compile("<[^>]*>");
-
-	/**
-	 * Removes all tags from the given `str`.
-	 *
-	 * @param str The string to remove tags from.
-	 * @return The given `str` with all tags removed from it.
-	 */
-	public static String removeTags(String str)
-	{
-		return TAG_REGEXP.matcher(str).replaceAll("");
-	}
-
-
-	/**
-	 * Cleans the ironman status icon from player name string if present and
-	 * corrects spaces.
-	 *
-	 * @param lookup player name to lookup.
-	 * @return sanitized player name.
-	 */
-	public static String sanitize(String lookup)
-	{
-		String cleaned = lookup.contains("<img") ? lookup.substring(lookup.lastIndexOf('>') + 1) : lookup;
-		return cleaned.replace('\u00A0', ' ');
-	}
+	private String name;
+	private String type;
+	private String subtype;
 }

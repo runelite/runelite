@@ -46,6 +46,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.account.SessionManager;
+import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.CommandManager;
 import net.runelite.client.config.ConfigManager;
@@ -128,6 +129,9 @@ public class RuneLite
 
 	@Inject
 	private Provider<CommandManager> commandManager;
+
+	@Inject
+	private Provider<ChatCommandManager> chatCommandManager;
 
 	@Inject
 	private Provider<InfoBoxOverlay> infoBoxOverlay;
@@ -271,13 +275,18 @@ public class RuneLite
 			// Initialize chat colors
 			chatMessageManager.get().loadColors();
 
+			// Register client event listeners
 			eventBus.register(overlayRenderer.get());
 			eventBus.register(clanManager.get());
 			eventBus.register(itemManager.get());
 			eventBus.register(menuManager.get());
 			eventBus.register(chatMessageManager.get());
 			eventBus.register(commandManager.get());
+			eventBus.register(chatCommandManager.get());
 			eventBus.register(lootManager.get());
+
+			// Register chat command manager to command manager
+			commandManager.get().register(chatCommandManager.get());
 
 			// Add core overlays
 			WidgetOverlay.createOverlays(client).forEach(overlayManager::add);

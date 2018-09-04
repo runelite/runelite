@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,11 +23,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.kc;
+package net.runelite.http.service.chat;
 
+import com.google.common.base.Strings;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import java.util.concurrent.TimeUnit;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.service.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,46 +39,57 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/kc")
-public class KillCountController
+@RequestMapping("/chat")
+@Slf4j
+public class ChatDataController
 {
-	private final Cache<KillCountKey, Integer> cache = CacheBuilder.newBuilder()
+	private final Cache<ChatDataKey, String> cache = CacheBuilder.newBuilder()
 		.expireAfterWrite(2, TimeUnit.MINUTES)
 		.maximumSize(128L)
 		.build();
 
+	private final ChatDataService chatDataService;
+
 	@Autowired
-	private KillCountService killCountService;
+	public ChatDataController(ChatDataService chatDataService)
+	{
+		this.chatDataService = chatDataService;
+	}
 
 	@PostMapping
-	public void submit(@RequestParam String name, @RequestParam String boss, @RequestParam int kc)
+	public void submit(@RequestParam String name, @RequestParam String type, @RequestParam(required = false) String subtype, @RequestParam String data)
 	{
-		if (kc <= 0)
+		if (Strings.isNullOrEmpty(type))
 		{
 			return;
 		}
 
-		killCountService.setKc(name, boss, kc);
-		cache.put(new KillCountKey(name, boss), kc);
+		final ChatDataKey key = new ChatDataKey(name, type, subtype);
+		chatDataService.setData(name, type, subtype, data);
+		cache.put(key, data);
 	}
 
 	@GetMapping
-	public int get(@RequestParam String name, @RequestParam String boss)
+	public String get(@RequestParam String name, @RequestParam String type, @RequestParam(required = false) String subtype)
 	{
-		Integer kc = cache.getIfPresent(new KillCountKey(name, boss));
-		if (kc == null)
+		final ChatDataKey key = new ChatDataKey(name, type, subtype);
+		String data = cache.getIfPresent(key);
+
+		if (data == null)
 		{
-			kc = killCountService.getKc(name, boss);
-			if (kc != null)
+			data = chatDataService.getData(name, type, subtype);
+
+			if (data != null)
 			{
-				cache.put(new KillCountKey(name, boss), kc);
+				cache.put(key, data);
 			}
 		}
 
-		if (kc == null)
+		if (data == null)
 		{
 			throw new NotFoundException();
 		}
-		return kc;
+
+		return data;
 	}
 }
