@@ -32,10 +32,10 @@ import net.runelite.client.config.ConfigItem;
 public interface FishingConfig extends Config
 {
 	@ConfigItem(
+		position = 1,
 		keyName = "showIcons",
 		name = "Display Fish icons",
-		description = "Configures whether icons or text is displayed",
-		position = 1
+		description = "Display icons instead of text on fishing spots."
 	)
 	default boolean showIcons()
 	{
@@ -43,10 +43,10 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 2,
 		keyName = "statTimeout",
 		name = "Reset stats (minutes)",
-		description = "Configures the time until statistic is reset",
-		position = 2
+		description = "The time until fishing session data is reset in minutes."
 	)
 	default int statTimeout()
 	{
@@ -54,10 +54,10 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 3,
 		keyName = "showFishingStats",
 		name = "Show Fishing session stats",
-		description = "Configures whether to display the fishing session stats",
-		position = 3
+		description = "Display the fishing session stats."
 	)
 	default boolean showFishingStats()
 	{
@@ -65,12 +65,23 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 4,
 		keyName = "showMinnowOverlay",
 		name = "Show Minnow Movement overlay",
-		description = "Configures whether to display the minnow progress pie overlay",
-		position = 4
+		description = "Display the minnow progress pie overlay."
 	)
 	default boolean showMinnowOverlay()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "trawlerNotification",
+		name = "Trawler activity notification",
+		description = "Send a notification when fishing trawler activity drops below 15%."
+	)
+	default boolean trawlerNotification()
 	{
 		return true;
 	}

@@ -212,6 +212,12 @@ public enum Varbits
 	IN_GAME_BA(3923),
 
 	/**
+	 * Fishing Trawler
+	 * FISHING_TRAWLER_ACTIVITY Expected values: 0-255
+	 */
+	FISHING_TRAWLER_ACTIVITY(3377),
+
+	/**
 	 * Blast Furnace Bar Dispenser
 	 *
 	 * These are the expected values:
