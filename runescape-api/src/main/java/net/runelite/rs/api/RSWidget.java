@@ -225,6 +225,10 @@ public interface RSWidget extends Widget
 	@Override
 	int getItemId();
 
+	@Import("itemId")
+	@Override
+	void setItemId(int itemId);
+
 	@Import("itemQuantity")
 	@Override
 	int getItemQuantity();
@@ -281,7 +285,7 @@ public interface RSWidget extends Widget
 
 	@Import("onOpListener")
 	@Override
-	void setOnOpListener(Object ...args);
+	void setOnOpListener(Object... args);
 
 	@Import("setAction")
 	@Override
