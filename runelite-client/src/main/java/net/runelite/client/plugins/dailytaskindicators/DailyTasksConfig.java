@@ -38,7 +38,8 @@ public interface DailyTasksConfig extends Config
 			" collect your daily herb boxes at NMZ",
 		position = 1
 	)
-	default boolean showHerbBoxes() {
+	default boolean showHerbBoxes()
+	{
 		return true;
 	}
 
