@@ -27,6 +27,7 @@ package net.runelite.client.plugins.raids;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
 
 @ConfigGroup("raids")
 public interface RaidsConfig extends Config
@@ -151,4 +152,16 @@ public interface RaidsConfig extends Config
 	{
 		return "";
 	}
+
+	@ConfigItem(
+			keyName = "hotkey",
+			name = "Disable/Enable scout overlay hotkey",
+			description = "When you press this key the scout overlay will be hidden/displayed.",
+			position = 11
+	)
+	default Keybind hotkey()
+	{
+		return Keybind.NOT_SET;
+	}
+
 }
