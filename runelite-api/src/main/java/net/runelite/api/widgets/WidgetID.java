@@ -113,6 +113,7 @@ public class WidgetID
 	public static final int DIALOG_OPTION_GROUP_ID = 219;
 	public static final int DIALOG_PLAYER_GROUP_ID = 217;
 	public static final int FOSSIL_ISLAND_OXYGENBAR_ID = 609;
+	public static final int MINIGAME_TAB_ID = 76;
 
 	static class WorldMap
 	{
@@ -641,5 +642,10 @@ public class WidgetID
 	static class FossilOxygen
 	{
 		static final int FOSSIL_ISLAND_OXYGEN_BAR = 4;
+	}
+
+	static class Minigames
+	{
+		static final int TELEPORT_BUTTON = 29;
 	}
 }
