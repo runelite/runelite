@@ -88,7 +88,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	private static final Pattern BARROWS_PATERN = Pattern.compile("Your Barrows chest count is: <col=ff0000>(\\d+)</col>.");
 	private static final Pattern TOTAL_LEVEL_COMMAND_PATTERN = Pattern.compile("^!(total|overall|totallevel|totallvl)$");
 	private static final Pattern PRICE_COMMAND_PATTERN = Pattern.compile("^!(price|ge|value|cost)\\b");
-	private static final Pattern LEVEL_COMMAND_PATTERN= Pattern.compile("^!(lvl|level|levl|lvel)\\b");
+	private static final Pattern LEVEL_COMMAND_PATTERN = Pattern.compile("^!(lvl|level|levl|lvel)\\b");
 	private static final String CLUES_COMMAND_STRING = "!clues";
 	private static final Pattern KILLCOUNT_COMMAND_PATTERN = Pattern.compile("^!(kc|killcount)\\b");
 	private static final Pattern CMB_COMMAND_PATTERN = Pattern.compile("^!(cmb|combat|cb|cmbt|cmbat|combt)$");
