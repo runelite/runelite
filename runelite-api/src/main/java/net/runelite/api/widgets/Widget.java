@@ -547,4 +547,14 @@ public interface Widget
 	void revalidateScroll();
 
 	Object[] getOnKeyListener();
+
+	/**
+	 * Returns the archive id of the font used
+	 */
+	int getFontId();
+
+	/**
+	 * Sets the archive id of the font
+	 */
+	void setFontId(int id);
 }
