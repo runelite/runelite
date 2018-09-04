@@ -88,10 +88,10 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	private static final Pattern BARROWS_PATERN = Pattern.compile("Your Barrows chest count is: <col=ff0000>(\\d+)</col>.");
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "(!total|!overall|!totallevel|!totallvl)";
 	private static final String PRICE_COMMAND_STRING = "(!price |!ge |!value |!cost ).*";
-	private static final String LEVEL_COMMAND_STRING = "!lvl";
+	private static final String LEVEL_COMMAND_STRING = "(!lvl |!level ).*";
 	private static final String CLUES_COMMAND_STRING = "!clues";
 	private static final String KILLCOUNT_COMMAND_STRING = "!kc";
-	private static final String CMB_COMMAND_STRING = "!cmb";
+	private static final String CMB_COMMAND_STRING = "(!cmb|!combat|!cb)";
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private final KillCountClient killCountClient = new KillCountClient();
@@ -195,7 +195,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			log.debug("Running total level lookup");
 			executor.submit(() -> playerSkillLookup(setMessage, "total"));
 		}
-		else if (config.lvl() && message.toLowerCase().equals(CMB_COMMAND_STRING))
+		else if (config.lvl() && message.toLowerCase().matches(CMB_COMMAND_STRING))
 		{
 			log.debug("Running combat level lookup");
 			executor.submit(() -> combatLevelLookup(setMessage.getType(), setMessage));
@@ -207,9 +207,9 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			log.debug("Running price lookup for {}", search);
 			executor.submit(() -> itemPriceLookup(setMessage.getMessageNode(), search));
 		}
-		else if (config.lvl() && message.toLowerCase().startsWith(LEVEL_COMMAND_STRING + " "))
+		else if (config.lvl() && message.toLowerCase().matches(LEVEL_COMMAND_STRING))
 		{
-			String search = message.substring(LEVEL_COMMAND_STRING.length() + 1);
+			String search = message.substring(message.indexOf(' ') + 1);
 
 			log.debug("Running level lookup for {}", search);
 			executor.submit(() -> playerSkillLookup(setMessage, search));
