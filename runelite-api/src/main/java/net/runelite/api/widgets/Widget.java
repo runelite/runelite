@@ -36,9 +36,9 @@ import net.runelite.api.Point;
  * <p>
  * Examples of Widgets include:
  * <ul>
- *     <li>The fairy ring configuration selector</li>
- *     <li>The mini-map</li>
- *     <li>The bank inventory</li>
+ * <li>The fairy ring configuration selector</li>
+ * <li>The mini-map</li>
+ * <li>The bank inventory</li>
  * </ul>
  * <p>
  * For a more complete idea of what is classified as a widget, see {@link WidgetID}.
@@ -332,7 +332,7 @@ public interface Widget
 	 *
 	 * @param index index of the item
 	 * @return the widget item at index, or null if an item at index
-	 * 		   does not exist
+	 * does not exist
 	 */
 	WidgetItem getWidgetItem(int index);
 
@@ -342,6 +342,13 @@ public interface Widget
 	 * @return the item ID
 	 */
 	int getItemId();
+
+	/**
+	 * Sets the item ID displayed by the widget.
+	 *
+	 * @param itemId the item ID
+	 */
+	void setItemId(int itemId);
 
 	/**
 	 * Gets the quantity of the item displayed by the widget.
@@ -501,7 +508,7 @@ public interface Widget
 	/**
 	 * Creates a menu action on the widget
 	 *
-	 * @param index The index of the menu
+	 * @param index  The index of the menu
 	 * @param action The string to be displayed next to the widget's name in the context menu
 	 */
 	void setAction(int index, String action);
@@ -512,7 +519,7 @@ public interface Widget
 	 *
 	 * @param args A ScriptID, then the args for the script
 	 */
-	void setOnOpListener(Object ...args);
+	void setOnOpListener(Object... args);
 
 	/**
 	 * If this widget has any listeners on it
