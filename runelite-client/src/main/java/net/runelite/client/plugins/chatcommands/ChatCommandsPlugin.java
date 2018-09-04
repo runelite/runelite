@@ -86,12 +86,12 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	private static final Pattern RAIDS_PATTERN = Pattern.compile("Your completed (.+) count is: <col=ff0000>(\\d+)</col>.");
 	private static final Pattern WINTERTODT_PATERN = Pattern.compile("Your subdued Wintertodt count is: <col=ff0000>(\\d+)</col>.");
 	private static final Pattern BARROWS_PATERN = Pattern.compile("Your Barrows chest count is: <col=ff0000>(\\d+)</col>.");
-	private static final String TOTAL_LEVEL_COMMAND_STRING = "(!total|!overall|!totallevel|!totallvl)";
-	private static final String PRICE_COMMAND_STRING = "(!price |!ge |!value |!cost ).*";
-	private static final String LEVEL_COMMAND_STRING = "(!lvl |!level |!levl |!lvel).*";
+	private static final Pattern TOTAL_LEVEL_COMMAND_PATTERN = Pattern.compile("^!(total|overall|totallevel|totallvl)$");
+	private static final Pattern PRICE_COMMAND_PATTERN = Pattern.compile("^!(price|ge|value|cost)\\b");
+	private static final Pattern LEVEL_COMMAND_PATTERN= Pattern.compile("^!(lvl|level|levl|lvel)\\b");
 	private static final String CLUES_COMMAND_STRING = "!clues";
-	private static final String KILLCOUNT_COMMAND_STRING = "(!kc |!killcount ).*";
-	private static final String CMB_COMMAND_STRING = "(!cmb|!combat|!cb|!cmbt|!cmbat|!combt)";
+	private static final Pattern KILLCOUNT_COMMAND_PATTERN = Pattern.compile("^!(kc|killcount)\\b");
+	private static final Pattern CMB_COMMAND_PATTERN = Pattern.compile("^!(cmb|combat|cb|cmbt|cmbat|combt)$");
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private final KillCountClient killCountClient = new KillCountClient();
@@ -183,31 +183,31 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 				return;
 		}
 
-		String message = setMessage.getValue();
+		String message = setMessage.getValue().toLowerCase();
 		MessageNode messageNode = setMessage.getMessageNode();
 
 		// clear RuneLite formatted message as the message node is
 		// being reused
 		messageNode.setRuneLiteFormatMessage(null);
 
-		if (config.lvl() && message.toLowerCase().matches(TOTAL_LEVEL_COMMAND_STRING))
+		if (config.lvl() && TOTAL_LEVEL_COMMAND_PATTERN.matcher(message).find())
 		{
 			log.debug("Running total level lookup");
 			executor.submit(() -> playerSkillLookup(setMessage, "total"));
 		}
-		else if (config.lvl() && message.toLowerCase().matches(CMB_COMMAND_STRING))
+		else if (config.lvl() && CMB_COMMAND_PATTERN.matcher(message).find())
 		{
 			log.debug("Running combat level lookup");
 			executor.submit(() -> combatLevelLookup(setMessage.getType(), setMessage));
 		}
-		else if (config.price() && message.toLowerCase().matches(PRICE_COMMAND_STRING))
+		else if (config.price() && PRICE_COMMAND_PATTERN.matcher(message).find())
 		{
 			String search = message.substring(message.indexOf(' ') + 1);
 
 			log.debug("Running price lookup for {}", search);
 			executor.submit(() -> itemPriceLookup(setMessage.getMessageNode(), search));
 		}
-		else if (config.lvl() && message.toLowerCase().matches(LEVEL_COMMAND_STRING))
+		else if (config.lvl() && LEVEL_COMMAND_PATTERN.matcher(message).find())
 		{
 			String search = message.substring(message.indexOf(' ') + 1);
 
@@ -226,7 +226,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			log.debug("Running clue lookup for {}", search);
 			executor.submit(() -> playerClueLookup(setMessage, search));
 		}
-		else if (config.killcount() && message.toLowerCase().matches(KILLCOUNT_COMMAND_STRING))
+		else if (config.killcount() && KILLCOUNT_COMMAND_PATTERN.matcher(message).find())
 		{
 			String search = message.substring(message.indexOf(' ') + 1);
 
