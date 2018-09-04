@@ -96,4 +96,15 @@ public interface DiscordConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "showActivityTimer",
+			name = "Show time elapsed",
+			description = "Configures if your elapsed time should be shown",
+			position = 7
+	)
+	default boolean showActivityTimer()
+	{
+		return true;
+	}
 }
