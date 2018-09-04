@@ -15,7 +15,7 @@ public class BossAbbreviations {
 		MAP.put("dusk", "Grotesque Guardians");
 		MAP.put("dawn", "Grotesque Guardians");
 		MAP.put("gargs", "Grotesque Guardians");
-		MAP.put("crazy arch", "Crazy Archaeologist";
+		MAP.put("crazy arch", "Crazy Archaeologist");
 		MAP.put("deranged arch", "Deranged Archaeologist");
 		MAP.put("mole", "Giant Mole");
 		MAP.put("vetion", "Vet'ion");
@@ -30,65 +30,54 @@ public class BossAbbreviations {
 		MAP.put("inferno", "TzKal-Zuk");
 
 		// gwd
-		case "sara":
-		case "saradomin":
-		case "zilyana":
-		case "zily":
-			return "Commander Zilyana";
-		case "zammy":
-		case "zamorak":
-		case "kril":
-		case "kril trutsaroth":
-			return "K'ril Tsutsaroth";
-		case "arma":
-		case "kree":
-		case "kreearra":
-		case "armadyl":
-			return "Kree'arra";
-		case "bando":
-		case "bandos":
-		case "graardor":
-			return "General Graardor";
+		MAP.put("sara", "Commander Zilyana");
+		MAP.put("saradomin", "Commander Zilyana");
+		MAP.put("zilyana", "Commander Zilyana");
+		MAP.put("zily", "Commander Zilyana");
+
+		MAP.put("zammy", "K'ril Tsutsaroth");
+		MAP.put("zamorak", "K'ril Tsutsaroth");
+		MAP.put("kril", "K'ril Tsutsaroth");
+		MAP.put("kril trutsaroth", "K'ril Tsutsaroth");
+
+		MAP.put("arma", "Kree'arra");
+		MAP.put("kree", "Kree'arra");
+		MAP.put("kreearra", "Kree'arra");
+		MAP.put("armadyl", "Kree'arra");
+
+		MAP.put("bando", "General Graardor");
+		MAP.put("bandos", "General Graardor");
+		MAP.put("graardor", "General Graardor");
 
 		// dks
-		case "supreme":
-			return "Dagannoth Supreme";
-		case "rex":
-			return "Dagannoth Rex";
-		case "prime":
-			return "Dagannoth Prime";
+		MAP.put("supreme", "Dagannoth Supreme");
+		MAP.put("rex", "Dagannoth Rex");
+		MAP.put("prime", "Dagannoth Prime");
 
-		case "wt":
-			return "Wintertodt";
-		case "barrows":
-			return "Barrows Chests";
+		MAP.put("wt", "Wintertodt");
+		MAP.put("barrows", "Barrows Chests");
 
-		case "cox":
-		case "xeric":
-		case "chambers":
-		case "olm":
-		case "raids":
-			return "Chambers of Xeric";
+		MAP.put("cox", "Chambers of Xeric");
+		MAP.put("xeric", "Chambers of Xeric");
+		MAP.put("chambers", "Chambers of Xeric");
+		MAP.put("olm", "Chambers of Xeric");
+		MAP.put("raids", "Chambers of Xeric");
 
-		case "tob":
-		case "theatre":
-		case "verzik":
-		case "verzik vitur":
-		case "raids 2":
-			return "Theatre of Blood";
-
-		default:
-			return boss;
+		MAP.put("tob", "Theatre of Blood");
+		MAP.put("theatre", "Theatre of Blood");
+		MAP.put("verzik", "Theatre of Blood");
+		MAP.put("verzik vitur", "Theatre of Blood");
+		MAP.put("raids 2", "Theatre of Blood");
 	}
 	/**
 	 * Takes a string representing the name of a boss, and if abbreviated,
 	 * expands it into its full canonical name. Case-insensitive.
 	 *
-	 * @param abbrev Skill name that may be abbreviated.
-	 * @return Full skill name if recognized, else the original string.
+	 * @param abbrev Boss name that may be abbreviated.
+	 * @return Full boss name if recognized, else the original string.
 	 */
 	static String getFullName(String abbrev)
 	{
-		return MAP.getOrDefault(abbrev.toUpperCase(), abbrev);
+		return MAP.getOrDefault(abbrev.toLowerCase(), abbrev);
 	}
 }
