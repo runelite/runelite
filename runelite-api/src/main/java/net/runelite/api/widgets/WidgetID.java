@@ -114,6 +114,7 @@ public class WidgetID
 	public static final int DIALOG_PLAYER_GROUP_ID = 217;
 	public static final int FOSSIL_ISLAND_OXYGENBAR_ID = 609;
 	public static final int MINIGAME_TAB_ID = 76;
+	public static final int SPELLBOOK_GROUP_ID = 218;
 
 	static class WorldMap
 	{
@@ -647,5 +648,25 @@ public class WidgetID
 	static class Minigames
 	{
 		static final int TELEPORT_BUTTON = 29;
+	}
+
+	static class StandardSpellBook
+	{
+		static final int LUMBRIDGE_HOME_TELEPORT = 1;
+	}
+
+	static class AncientSpellBook
+	{
+		static final int EDGEVILLE_HOME_TELEPORT = 97;
+	}
+
+	static class LunarSpellBook
+	{
+		static final int LUNAR_HOME_TELEPORT = 99;
+	}
+
+	static class ArceuusSpellBook
+	{
+		static final int ARCEUUS_HOME_TELEPORT = 145;
 	}
 }
