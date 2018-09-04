@@ -90,7 +90,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	private static final String PRICE_COMMAND_STRING = "(!price |!ge |!value |!cost ).*";
 	private static final String LEVEL_COMMAND_STRING = "(!lvl |!level ).*";
 	private static final String CLUES_COMMAND_STRING = "!clues";
-	private static final String KILLCOUNT_COMMAND_STRING = "!kc";
+	private static final String KILLCOUNT_COMMAND_STRING = "(!kc |!killcount ).*";
 	private static final String CMB_COMMAND_STRING = "(!cmb|!combat|!cb)";
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
@@ -226,9 +226,9 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			log.debug("Running clue lookup for {}", search);
 			executor.submit(() -> playerClueLookup(setMessage, search));
 		}
-		else if (config.killcount() && message.toLowerCase().startsWith(KILLCOUNT_COMMAND_STRING + " "))
+		else if (config.killcount() && message.toLowerCase().matches(KILLCOUNT_COMMAND_STRING))
 		{
-			String search = message.substring(KILLCOUNT_COMMAND_STRING.length() + 1);
+			String search = message.substring(message.indexOf(' ') + 1);
 
 			log.debug("Running killcount lookup for {}", search);
 			executor.submit(() -> killCountLookup(setMessage.getType(), setMessage, search));
