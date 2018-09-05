@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import lombok.Setter;
+import lombok.Getter;
 import net.runelite.client.plugins.raids.solver.Room;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -43,7 +44,7 @@ public class RaidsOverlay extends Overlay
 	private RaidsConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
-	@Setter
+	@Getter @Setter
 	private boolean scoutOverlayShown = false;
 
 	@Inject
