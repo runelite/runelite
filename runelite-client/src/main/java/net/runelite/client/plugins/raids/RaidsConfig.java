@@ -87,8 +87,19 @@ public interface RaidsConfig extends Config
 		return false;
 	}
 
+    @ConfigItem(
+            keyName = "hotkey",
+            name = "Scout overlay hotkey",
+            description = "When pressed the scout overlay will be toggled. Must enable show scout overlay in raid",
+            position = 5
+    )
+    default Keybind hotkey()
+    {
+        return Keybind.NOT_SET;
+    }
+
 	@ConfigItem(
-		position = 5,
+		position = 6,
 		keyName = "whitelistedRooms",
 		name = "Whitelisted rooms",
 		description = "Display whitelisted rooms in green on the overlay. Separate with comma (full name)"
@@ -99,7 +110,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 7,
 		keyName = "blacklistedRooms",
 		name = "Blacklisted rooms",
 		description = "Display blacklisted rooms in red on the overlay. Separate with comma (full name)"
@@ -110,7 +121,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 8,
 		keyName = "enableRotationWhitelist",
 		name = "Enable rotation whitelist",
 		description = "Enable the rotation whitelist"
@@ -121,7 +132,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 9,
 		keyName = "whitelistedRotations",
 		name = "Whitelisted rotations",
 		description = "Warn when boss rotation doesn't match a whitelisted one. Add rotations like [tekton, muttadile, guardians]"
@@ -132,7 +143,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 10,
 		keyName = "enableLayoutWhitelist",
 		name = "Enable layout whitelist",
 		description = "Enable the layout whitelist"
@@ -143,7 +154,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
+		position = 11,
 		keyName = "whitelistedLayouts",
 		name = "Whitelisted layouts",
 		description = "Warn when layout doesn't match a whitelisted one. Add layouts like CFSCPPCSCF separated with comma"
@@ -152,16 +163,4 @@ public interface RaidsConfig extends Config
 	{
 		return "";
 	}
-
-	@ConfigItem(
-			keyName = "hotkey",
-			name = "Disable/Enable scout overlay hotkey",
-			description = "When you press this key the scout overlay will be hidden/displayed.",
-			position = 11
-	)
-	default Keybind hotkey()
-	{
-		return Keybind.NOT_SET;
-	}
-
 }
