@@ -84,7 +84,7 @@ public class OverlayManager
 	};
 
 	/**
-	 * Sorted set of overlays
+	 * Insertion-order sorted set of overlays
 	 * All access to this must be guarded by a lock on this OverlayManager
 	 */
 	@Getter(AccessLevel.PACKAGE)
@@ -108,7 +108,7 @@ public class OverlayManager
 	}
 
 	/**
-	 * Gets all of the overlays on a layer
+	 * Gets all of the overlays on a layer sorted by priority and position
 	 *
 	 * @param layer the layer
 	 * @return An immutable list of all of the overlays on that layer
@@ -211,8 +211,6 @@ public class OverlayManager
 
 	private synchronized void rebuildOverlayLayers()
 	{
-		overlays.sort(OVERLAY_COMPARATOR);
-
 		for (OverlayLayer l : OverlayLayer.values())
 		{
 			overlayLayers.put(l, new ArrayList<>());
@@ -235,7 +233,11 @@ public class OverlayManager
 			overlayLayers.get(layer).add(overlay);
 		}
 
-		overlayLayers.forEach((layer, value) -> overlayLayers.put(layer, Collections.unmodifiableList(value)));
+		overlayLayers.forEach((layer, value) ->
+		{
+			value.sort(OVERLAY_COMPARATOR);
+			overlayLayers.put(layer, Collections.unmodifiableList(value));
+		});
 	}
 
 	private void loadOverlay(final Overlay overlay)

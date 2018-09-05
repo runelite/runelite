@@ -28,9 +28,9 @@ import com.google.common.collect.ImmutableMap;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
@@ -40,17 +40,19 @@ public class WidgetOverlay extends Overlay
 {
 	private static final Map<WidgetInfo, OverlayPosition> WIDGETS = ImmutableMap
 		.<WidgetInfo, OverlayPosition>builder()
-		.put(WidgetInfo.FOSSIL_ISLAND_OXYGENBAR, OverlayPosition.TOP_LEFT)
-		.put(WidgetInfo.EXPERIENCE_TRACKER_WIDGET, OverlayPosition.TOP_RIGHT)
 		.put(WidgetInfo.RESIZABLE_MINIMAP_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT)
 		.put(WidgetInfo.RESIZABLE_MINIMAP_STONES_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT)
+		.put(WidgetInfo.FOSSIL_ISLAND_OXYGENBAR, OverlayPosition.TOP_LEFT)
+		.put(WidgetInfo.EXPERIENCE_TRACKER_WIDGET, OverlayPosition.TOP_RIGHT)
 		.put(WidgetInfo.PEST_CONTROL_BOAT_INFO, OverlayPosition.TOP_LEFT)
 		.put(WidgetInfo.PEST_CONTROL_INFO, OverlayPosition.TOP_LEFT)
 		.build();
 
-	public static Set<WidgetOverlay> createOverlays(final Client client)
+	public static Collection<WidgetOverlay> createOverlays(final Client client)
 	{
-		return WIDGETS.entrySet().stream().map(w -> new WidgetOverlay(client, w.getKey(), w.getValue())).collect(Collectors.toSet());
+		return WIDGETS.entrySet().stream()
+			.map(w -> new WidgetOverlay(client, w.getKey(), w.getValue()))
+			.collect(Collectors.toList());
 	}
 
 	private final Client client;
