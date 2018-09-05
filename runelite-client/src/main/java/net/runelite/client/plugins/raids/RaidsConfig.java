@@ -89,7 +89,7 @@ public interface RaidsConfig extends Config
 
     @ConfigItem(
             keyName = "hotkey",
-            name = "Scout overlay hotkey",
+            name = "Toggle scout overlay",
             description = "When pressed the scout overlay will be toggled. Must enable show scout overlay in raid",
             position = 5
     )
