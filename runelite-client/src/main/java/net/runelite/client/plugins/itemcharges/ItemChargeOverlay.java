@@ -105,6 +105,14 @@ class ItemChargeOverlay extends Overlay
 				}
 				charges = itemChargePlugin.getSoulbearerCharges();
 			}
+			else if (item.getId() == ItemID.CHRONICLE)
+			{
+				if (!config.showChronicleCharges())
+				{
+					continue;
+				}
+				charges = itemChargePlugin.getChronicleCharges();
+			}
 			else
 			{
 				ItemWithCharge chargeItem = ItemWithCharge.findItem(item.getId());

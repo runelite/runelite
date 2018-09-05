@@ -78,6 +78,15 @@ public class ItemChargePlugin extends Plugin
 		"Your soul bearer carries the ensouled heads? to your ?bank\\. It has (\\d+|one) charges? left\\.");
 	private static final Pattern SOULBEARER_OUT_OF_CHARGES = Pattern.compile(
 		"Your soul bearer carries the ensouled heads? to (.+)\\. It has run out of charges\\.");
+	private static final Pattern CHRONICLE_CHECK_CHARGE_PATTERN = Pattern.compile(
+		"Your book has (\\d+) charges left\\.");
+	private static final Pattern CHRONICLE_ADD_CHARGE_PATTERN = Pattern.compile(
+		"You add (\\d+|a single) charges? to your book. It now has (\\d+) charges\\.");
+	private static final Pattern CHRONICLE_LAST_CHARGE_PATTERN = Pattern.compile(
+		"You have one charge left in your book\\.");
+	private static final Pattern CHRONICLE_OUT_OF_CHARGES_PATTERN = Pattern.compile(
+		"Your book has run out of charges\\.");
+
 
 	private static final int MAX_DODGY_CHARGES = 10;
 
@@ -104,6 +113,9 @@ public class ItemChargePlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private int soulbearerCharges;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int chronicleCharges;
 
 	@Provides
 	ItemChargeConfig getConfig(ConfigManager configManager)
@@ -138,6 +150,10 @@ public class ItemChargePlugin extends Plugin
 			Matcher xericRechargeMatcher = XERIC_CHECK_CHARGE_PATTERN.matcher(message);
 			Matcher xericOutOfChargesMatcher = XERIC_OUT_OF_CHARGES.matcher(message);
 			Matcher soulbearerCheckMatcher = SOULBEARER_CHECK_CHARGE_PATTERN.matcher(message);
+			Matcher chronicleCheckMatcher = CHRONICLE_CHECK_CHARGE_PATTERN.matcher(Text.removeTags(message));
+			Matcher chronicleRechargeMatcher = CHRONICLE_ADD_CHARGE_PATTERN.matcher(Text.removeTags(message));
+			Matcher chronicleLastChargeMatcher = CHRONICLE_LAST_CHARGE_PATTERN.matcher(Text.removeTags(message));
+			Matcher chronicleOutOfChargesMatcher = CHRONICLE_OUT_OF_CHARGES_PATTERN.matcher(Text.removeTags(message));
 
 			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
@@ -175,6 +191,26 @@ public class ItemChargePlugin extends Plugin
 				soulbearerCharges = soulbearerCheckMatcher.group(1).equals("one") ? 1 : (Integer.parseInt(soulbearerCheckMatcher.group(1)));
 				setSoulBearerCharges(soulbearerCharges);
 			}
+			else if (chronicleCheckMatcher.find())
+			{
+				chronicleCharges = chronicleCheckMatcher.group(1).equals("one") ? 1 : (Integer.parseInt(chronicleCheckMatcher.group(1)));
+				setChronicleCharges(chronicleCharges);
+			}
+			else if (chronicleRechargeMatcher.find())
+			{
+				chronicleCharges = chronicleRechargeMatcher.group(2).equals("one") ? 1 : (Integer.parseInt(chronicleRechargeMatcher.group(2)));
+				setChronicleCharges(chronicleCharges);
+			}
+			else if (chronicleLastChargeMatcher.find())
+			{
+				chronicleCharges = 1;
+				setChronicleCharges(chronicleCharges);
+			}
+			else if (chronicleOutOfChargesMatcher.find())
+			{
+				chronicleCharges = 0;
+				setChronicleCharges(chronicleCharges);
+			}
 		}
 	}
 
@@ -194,6 +230,12 @@ public class ItemChargePlugin extends Plugin
 	{
 		this.soulbearerCharges = soulBearerCharges;
 		config.soulBearer(soulbearerCharges);
+	}
+
+	private void setChronicleCharges(int chronicleCharges)
+	{
+		this.chronicleCharges = chronicleCharges;
+		config.chronicle(chronicleCharges);
 	}
 
 	@Subscribe

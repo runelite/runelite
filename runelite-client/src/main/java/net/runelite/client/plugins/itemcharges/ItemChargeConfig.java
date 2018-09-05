@@ -239,4 +239,33 @@ public interface ItemChargeConfig extends Config
 		description = ""
 	)
 	void soulBearer(int soulBearer);
+
+	@ConfigItem(
+		keyName = "showChronicleCharges",
+		name = "Show Chronicle Charges",
+		description = "Configures if Chronicle item charge is shown",
+		position = 15
+	)
+	default boolean showChronicleCharges()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "chronicle",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int chronicle()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "chronicle",
+		name = "",
+		description = ""
+	)
+	void chronicle(int chronicle);
 }
