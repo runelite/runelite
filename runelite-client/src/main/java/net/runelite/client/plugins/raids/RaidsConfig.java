@@ -87,16 +87,15 @@ public interface RaidsConfig extends Config
 		return false;
 	}
 
-    @ConfigItem(
-            keyName = "hotkey",
-            name = "Toggle scout overlay",
-            description = "When pressed the scout overlay will be toggled. Must enable show scout overlay in raid",
-            position = 5
-    )
-    default Keybind hotkey()
-    {
-        return Keybind.NOT_SET;
-    }
+	@ConfigItem(
+		keyName = "hotkey", name = "Toggle scout overlay",
+		description = "When pressed the scout overlay will be toggled. Must enable show scout overlay in raid",
+		position = 5
+	)
+	default Keybind hotkey()
+	{
+		return Keybind.NOT_SET;
+	}
 
 	@ConfigItem(
 		position = 6,
