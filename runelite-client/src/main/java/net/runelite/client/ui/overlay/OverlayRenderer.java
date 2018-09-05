@@ -443,9 +443,14 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 			viewportOffset + BORDER,
 			viewportOffset + BORDER_TOP);
 
+		final Point topCenterPoint = new Point(
+			viewportOffset + viewportBounds.width / 2,
+			viewportOffset + BORDER
+		);
+
 		final Point topRightPoint = new Point(
 			viewportOffset + viewportBounds.width - BORDER,
-			viewportOffset + BORDER);
+			topCenterPoint.y);
 
 		final Point bottomLeftPoint = new Point(
 			topLeftPoint.x,
@@ -471,6 +476,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 		return new OverlayBounds(
 			new Rectangle(topLeftPoint, SNAP_CORNER_SIZE),
+			new Rectangle(topCenterPoint, SNAP_CORNER_SIZE),
 			new Rectangle(topRightPoint, SNAP_CORNER_SIZE),
 			new Rectangle(bottomLeftPoint, SNAP_CORNER_SIZE),
 			new Rectangle(bottomRightPoint, SNAP_CORNER_SIZE),
