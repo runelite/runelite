@@ -177,7 +177,10 @@ public interface ItemChargeConfig extends Config
 			description = "Configures if ogre bellow item charge is shown",
 			position = 12
 	)
-	default boolean showBellowCharges() { return true;}
+	default boolean showBellowCharges()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		keyName = "recoilNotification",
