@@ -59,6 +59,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SpriteManager;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.raids.solver.Layout;
@@ -66,6 +67,7 @@ import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -110,6 +112,9 @@ public class RaidsPlugin extends Plugin
 	private LayoutSolver layoutSolver;
 
 	@Inject
+	private KeyManager keyManager;
+
+	@Inject
 	private SpriteManager spriteManager;
 
 	@Getter
@@ -130,6 +135,8 @@ public class RaidsPlugin extends Plugin
 	@Getter
 	private boolean inRaidChambers;
 
+    private boolean raidStarted;
+
 	private RaidsTimer timer;
 
 	@Provides
@@ -149,6 +156,7 @@ public class RaidsPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		overlayManager.add(pointsOverlay);
+		keyManager.registerKeyListener(hotkeyListener);
 		updateLists();
 		checkRaidPresence(true);
 	}
@@ -159,7 +167,9 @@ public class RaidsPlugin extends Plugin
 		overlayManager.remove(overlay);
 		overlayManager.remove(pointsOverlay);
 		infoBoxManager.removeInfoBox(timer);
+		keyManager.unregisterKeyListener(hotkeyListener);
 		inRaidChambers = false;
+		raidStarted = false;
 		raid = null;
 		timer = null;
 	}
@@ -215,6 +225,7 @@ public class RaidsPlugin extends Plugin
 			{
 				timer = new RaidsTimer(spriteManager.getSprite(TAB_QUESTS_BROWN_RAIDING_PARTY, 0), this, Instant.now());
 				infoBoxManager.addInfoBox(timer);
+				raidStarted = true;
 			}
 
 			if (timer != null && message.contains(LEVEL_COMPLETE_MESSAGE))
@@ -309,6 +320,7 @@ public class RaidsPlugin extends Plugin
 		if (client.getVar(VarPlayer.IN_RAID_PARTY) == -1 && (!inRaidChambers || !config.scoutOverlayInRaid()))
 		{
 			overlay.setScoutOverlayShown(false);
+		    raidStarted = false;
 		}
 	}
 
@@ -599,4 +611,24 @@ public class RaidsPlugin extends Plugin
 
 		return room;
 	}
+
+	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.hotkey())
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			if(config.scoutOverlayInRaid() && raidStarted)
+			{
+				if(overlay.isScoutOverlayShown())
+				{
+					overlay.setScoutOverlayShown(false);
+				}
+				else
+				{
+					overlay.setScoutOverlayShown(true);
+				}
+			}
+		}
+	};
+
 }
