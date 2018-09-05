@@ -135,7 +135,7 @@ public class RaidsPlugin extends Plugin
 	@Getter
 	private boolean inRaidChambers;
 
-    private boolean raidStarted;
+	private boolean raidStarted;
 
 	private RaidsTimer timer;
 
@@ -320,7 +320,7 @@ public class RaidsPlugin extends Plugin
 		if (client.getVar(VarPlayer.IN_RAID_PARTY) == -1 && (!inRaidChambers || !config.scoutOverlayInRaid()))
 		{
 			overlay.setScoutOverlayShown(false);
-		    raidStarted = false;
+			raidStarted = false;
 		}
 	}
 
