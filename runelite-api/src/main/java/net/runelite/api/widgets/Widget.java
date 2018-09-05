@@ -125,6 +125,11 @@ public interface Widget
 	Widget[] getChildren();
 
 	/**
+	 * Sets the widget children
+	 */
+	void setChildren(Widget[] children);
+
+	/**
 	 * Gets all dynamic children.
 	 *
 	 * @return the dynamic children
