@@ -617,9 +617,9 @@ public class RaidsPlugin extends Plugin
 		@Override
 		public void hotkeyPressed()
 		{
-			if(config.scoutOverlayInRaid() && raidStarted)
+			if (config.scoutOverlayInRaid() && raidStarted)
 			{
-				if(overlay.isScoutOverlayShown())
+				if (overlay.isScoutOverlayShown())
 				{
 					overlay.setScoutOverlayShown(false);
 				}
