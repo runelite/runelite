@@ -42,6 +42,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.SetMessage;
 import net.runelite.api.events.VarClientStrChanged;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatboxInputListener;
 import net.runelite.client.chat.CommandManager;
@@ -78,9 +79,6 @@ public class ClanChatPlugin extends Plugin implements ChatboxInputListener
 	private ClanChatConfig config;
 
 	@Inject
-	private ClanChatOverlay overlay;
-
-	@Inject
 	private OverlayManager overlayManager;
 
 	private List<String> chats = new ArrayList<>();
@@ -94,20 +92,18 @@ public class ClanChatPlugin extends Plugin implements ChatboxInputListener
 	@Override
 	public void startUp()
 	{
-		overlayManager.add(overlay);
 		commandManager.register(this);
 		if (!config.chatsData().isEmpty())
 		{
 			chats = new ArrayList<>(Arrays.asList(config.chatsData().split(",")));
 		}
-		overlay.setChats(chats);
 	}
 
 	@Override
 	public void shutDown()
 	{
 		commandManager.unregister(this);
-		overlayManager.remove(overlay);
+		cleanupRecent();
 	}
 
 	@Override
@@ -149,11 +145,26 @@ public class ClanChatPlugin extends Plugin implements ChatboxInputListener
 		Widget clanChatTitleWidget = client.getWidget(WidgetInfo.CLAN_CHAT_TITLE);
 		if (clanChatTitleWidget != null)
 		{
-			if (client.getClanChatCount() == 0 && config.recentChats())
+			Widget widget = client.getWidget(WidgetID.CLAN_CHAT_GROUP_ID, 15);
+
+			if (config.recentChats() && (widget.getChildren() == null || )
 			{
 				clanChatTitleWidget.setText("Clan Chat - Last Joined");
+
+				for (int i = 0; i < chats.size(); i++)
+				{
+					Widget name = widget.createChild(-1, 4);
+					name.setFontId(494);
+					name.setText(chats.get(i));
+					name.setTextColor(0xffffff);
+					name.setOriginalWidth(142);
+					name.setOriginalHeight(15);
+					name.setOriginalY(1 + i * 14);
+					name.setOriginalX(11);
+					name.revalidate();
+				}
 			}
-			else
+			else if (client.getClanChatCount() != 0)
 			{
 				clanChatTitleWidget.setText("Clan Chat (" + client.getClanChatCount() + "/100)");
 			}
@@ -186,6 +197,18 @@ public class ClanChatPlugin extends Plugin implements ChatboxInputListener
 		if (strChanged.getIndex() == VarClientStr.MOST_RECENT_CLAN_CHAT.getIndex() && config.recentChats())
 		{
 			fixedAdd(client.getStrVarcs()[VarClientStr.MOST_RECENT_CLAN_CHAT.getIndex()]);
+		}
+	}
+
+	private void cleanupRecent()
+	{
+		Widget widget = client.getWidget(WidgetID.CLAN_CHAT_GROUP_ID, 15);
+		if (widget != null && widget.getDynamicChildren().length > 0)
+		{
+			for (Widget child : widget.getDynamicChildren())
+			{
+				child.setHidden(true);
+			}
 		}
 	}
 
