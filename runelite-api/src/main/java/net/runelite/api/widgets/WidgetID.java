@@ -53,6 +53,7 @@ public class WidgetID
 	public static final int EMOTES_GROUP_ID = 216;
 	public static final int RUNE_POUCH_GROUP_ID = 190;
 	public static final int DIARY_GROUP_ID = 259;
+	public static final int PEST_CONTROL_BOAT_GROUP_ID = 407;
 	public static final int PEST_CONTROL_GROUP_ID = 408;
 	public static final int CLAN_CHAT_GROUP_ID = 7;
 	public static final int MINIMAP_GROUP_ID = 160;
@@ -141,8 +142,15 @@ public class WidgetID
 		static final int LOGOUT_BUTTON = 6;
 	}
 
+	static class PestControlBoat
+	{
+		static final int INFO = 3;
+	}
+
 	static class PestControl
 	{
+		static final int INFO = 3;
+
 		static final int ACTIVITY_BAR = 12;
 		static final int ACTIVITY_PROGRESS = 14;
 
