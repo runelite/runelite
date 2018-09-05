@@ -574,4 +574,14 @@ public interface Widget
 	 * Sets the border thickness of the widget
 	 */
 	void setBorderThickness(int thickness);
+
+	/**
+	 * Returns if text is shadowed
+	 */
+	boolean getTextShadowed();
+
+	/**
+	 * Sets if text should be shadowed
+	 */
+	void setTextShadowed(boolean shadowed);
 }
