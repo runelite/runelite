@@ -233,6 +233,10 @@ public interface RSWidget extends Widget
 	@Override
 	int getItemQuantity();
 
+	@Import("itemQuantity")
+	@Override
+	void setItemQuantity(int quantity);
+
 	@Import("originalX")
 	@Override
 	int getOriginalX();

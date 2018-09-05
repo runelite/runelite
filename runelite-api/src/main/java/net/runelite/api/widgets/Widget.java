@@ -358,6 +358,13 @@ public interface Widget
 	int getItemQuantity();
 
 	/**
+	 * Sets the item quantity displayed by the widget.
+	 *
+	 * @param quantity the quantity of the item
+	 */
+	void setItemQuantity(int quantity);
+
+	/**
 	 * Checks whether or not the drawn area of this widget contains
 	 * a point on the canvas.
 	 *
