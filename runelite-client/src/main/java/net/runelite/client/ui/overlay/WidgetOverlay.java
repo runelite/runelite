@@ -44,6 +44,8 @@ public class WidgetOverlay extends Overlay
 		.put(WidgetInfo.EXPERIENCE_TRACKER_WIDGET, OverlayPosition.TOP_RIGHT)
 		.put(WidgetInfo.RESIZABLE_MINIMAP_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT)
 		.put(WidgetInfo.RESIZABLE_MINIMAP_STONES_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT)
+		.put(WidgetInfo.PEST_CONTROL_BOAT_INFO, OverlayPosition.TOP_LEFT)
+		.put(WidgetInfo.PEST_CONTROL_INFO, OverlayPosition.TOP_LEFT)
 		.build();
 
 	public static Set<WidgetOverlay> createOverlays(final Client client)
