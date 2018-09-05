@@ -204,6 +204,7 @@ public class OverlayUtil
 			case TOP_LEFT:
 				result.y += dimension.height + (dimension.height == 0 ? 0 : padding);
 				break;
+			case CANVAS_TOP_RIGHT:
 			case TOP_RIGHT:
 				result.y += dimension.height + (dimension.height == 0 ? 0 : padding);
 				break;
@@ -232,6 +233,7 @@ public class OverlayUtil
 			case ABOVE_CHATBOX_RIGHT:
 				result.y = result.y - dimension.height;
 				// FALLTHROUGH
+			case CANVAS_TOP_RIGHT:
 			case TOP_RIGHT:
 				result.x = result.x - dimension.width;
 				break;
