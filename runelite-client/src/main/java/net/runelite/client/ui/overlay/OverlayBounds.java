@@ -32,6 +32,8 @@ import lombok.Value;
 import static net.runelite.client.ui.overlay.OverlayPosition.ABOVE_CHATBOX_RIGHT;
 import static net.runelite.client.ui.overlay.OverlayPosition.BOTTOM_LEFT;
 import static net.runelite.client.ui.overlay.OverlayPosition.BOTTOM_RIGHT;
+import static net.runelite.client.ui.overlay.OverlayPosition.CANVAS_TOP_RIGHT;
+import static net.runelite.client.ui.overlay.OverlayPosition.TOP_CENTER;
 import static net.runelite.client.ui.overlay.OverlayPosition.TOP_LEFT;
 import static net.runelite.client.ui.overlay.OverlayPosition.TOP_RIGHT;
 
@@ -39,24 +41,28 @@ import static net.runelite.client.ui.overlay.OverlayPosition.TOP_RIGHT;
 @Value
 class OverlayBounds
 {
-	private final Rectangle topLeft, topRight, bottomLeft, bottomRight, aboveChatboxRight;
+	private final Rectangle topLeft, topCenter, topRight, bottomLeft, bottomRight, aboveChatboxRight, canvasTopRight;
 
 	OverlayBounds(OverlayBounds other)
 	{
 		topLeft = new Rectangle(other.topLeft);
+		topCenter = new Rectangle(other.topCenter);
 		topRight = new Rectangle(other.topRight);
 		bottomLeft = new Rectangle(other.bottomLeft);
 		bottomRight = new Rectangle(other.bottomRight);
 		aboveChatboxRight = new Rectangle(other.aboveChatboxRight);
+		canvasTopRight = new Rectangle(other.canvasTopRight);
 	}
 
 	OverlayBounds translated(final int x, final int y)
 	{
 		final OverlayBounds translated = new OverlayBounds(this);
 		translated.getTopRight().translate(x, 0);
+		translated.getTopCenter().translate(x / 2, 0);
 		translated.getBottomLeft().translate(0, y);
 		translated.getBottomRight().translate(x, y);
 		translated.getAboveChatboxRight().translate(x, y);
+		translated.getCanvasTopRight().translate(x, 0);
 		return translated;
 	}
 
@@ -66,6 +72,8 @@ class OverlayBounds
 		{
 			case TOP_LEFT:
 				return topLeft;
+			case TOP_CENTER:
+				return topCenter;
 			case TOP_RIGHT:
 				return topRight;
 			case BOTTOM_LEFT:
@@ -74,6 +82,8 @@ class OverlayBounds
 				return bottomRight;
 			case ABOVE_CHATBOX_RIGHT:
 				return aboveChatboxRight;
+			case CANVAS_TOP_RIGHT:
+				return canvasTopRight;
 			default:
 				throw new IllegalArgumentException();
 		}
@@ -84,6 +94,10 @@ class OverlayBounds
 		if (bounds == topLeft)
 		{
 			return TOP_LEFT;
+		}
+		else if (bounds == topCenter)
+		{
+			return TOP_CENTER;
 		}
 		else if (bounds == topRight)
 		{
@@ -101,6 +115,10 @@ class OverlayBounds
 		{
 			return ABOVE_CHATBOX_RIGHT;
 		}
+		else if (bounds == canvasTopRight)
+		{
+			return CANVAS_TOP_RIGHT;
+		}
 		else
 		{
 			throw new IllegalArgumentException();
@@ -109,6 +127,6 @@ class OverlayBounds
 
 	Collection<Rectangle> getBounds()
 	{
-		return Arrays.asList(topLeft, topRight, bottomLeft, bottomRight, aboveChatboxRight);
+		return Arrays.asList(topLeft, topCenter, topRight, bottomLeft, bottomRight, aboveChatboxRight, canvasTopRight);
 	}
 }

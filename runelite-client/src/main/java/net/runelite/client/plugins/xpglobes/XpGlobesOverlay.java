@@ -40,12 +40,10 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Point;
-import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
@@ -78,68 +76,14 @@ public class XpGlobesOverlay extends Overlay
 		this.plugin = plugin;
 		this.config = config;
 		this.xpTrackerService = xpTrackerService;
-		setPosition(OverlayPosition.DETACHED);
-		setPriority(OverlayPriority.HIGH);
-	}
-
-	@Override
-	public Rectangle getBounds()
-	{
-		//if this is null there is no reason to draw e.g. switching between resizable and fixed
-		final Widget viewportWidget = client.getViewportWidget();
-		if (viewportWidget == null)
-		{
-			return new Rectangle();
-		}
-
-		final int queueSize = plugin.getXpGlobesSize();
-		if (queueSize == 0)
-		{
-			return new Rectangle();
-		}
-
-		// Get width of markers
-		final int markersLength = (queueSize * (config.xpOrbSize())) + ((MINIMUM_STEP) * (queueSize - 1));
-
-		final int startDrawX;
-		final int startDrawY;
-		if (getPreferredLocation() == null)
-		{
-			//check the width of the client if we can draw properly
-			final int clientWidth;
-			switch (config.centerOrbs())
-			{
-				case MIDDLE_CANVAS:
-					clientWidth = client.getViewportWidth();
-					break;
-				case MIDDLE_VIEWPORT:
-					clientWidth = viewportWidget.getWidth();
-					break;
-				case DYNAMIC:
-					clientWidth = (viewportWidget.getWidth() + client.getViewportWidth()) / 2;
-					break;
-				default:
-					clientWidth = client.getViewportWidth();
-					break;
-			}
-
-			startDrawX = clientWidth / 2 - markersLength / 2;
-			startDrawY = DEFAULT_START_Y;
-		}
-		else
-		{
-			startDrawX = getPreferredLocation().x;
-			startDrawY = getPreferredLocation().y;
-		}
-
-		return new Rectangle(startDrawX, startDrawY, markersLength, config.xpOrbSize());
+		setPosition(OverlayPosition.TOP_CENTER);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final Rectangle bounds = getBounds();
-		if (bounds.isEmpty())
+		final int queueSize = plugin.getXpGlobesSize();
+		if (queueSize == 0)
 		{
 			return null;
 		}
@@ -147,11 +91,13 @@ public class XpGlobesOverlay extends Overlay
 		int curDrawX = 0;
 		for (final XpGlobe xpGlobe : plugin.getXpGlobes())
 		{
-			renderProgressCircle(graphics, xpGlobe, curDrawX, 0, bounds);
+			renderProgressCircle(graphics, xpGlobe, curDrawX, 0, getBounds());
 			curDrawX += MINIMUM_STEP + config.xpOrbSize();
 		}
 
-		return bounds.getSize();
+		// Get width of markers
+		final int markersLength = (queueSize * (config.xpOrbSize())) + ((MINIMUM_STEP) * (queueSize - 1));
+		return new Dimension(markersLength, config.xpOrbSize());
 	}
 
 	private void renderProgressCircle(Graphics2D graphics, XpGlobe skillToDraw, int x, int y, Rectangle bounds)

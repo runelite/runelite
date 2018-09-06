@@ -34,11 +34,9 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.Client;
-import static net.runelite.api.Constants.CHUNK_SIZE;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.api.WorldType;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
@@ -186,7 +184,7 @@ public class DiscordPlugin extends Plugin
 			return;
 		}
 
-		final int playerRegionID = getCurrentRegion();
+		final int playerRegionID = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
 
 		if (playerRegionID == 0)
 		{
@@ -238,26 +236,4 @@ public class DiscordPlugin extends Plugin
 
 		return false;
 	}
-
-	private int getCurrentRegion()
-	{
-		if (!client.isInInstancedRegion())
-		{
-			return client.getLocalPlayer().getWorldLocation().getRegionID();
-		}
-
-		// get chunk data of current chunk
-		final LocalPoint localPoint = client.getLocalPlayer().getLocalLocation();
-		final int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
-		final int z = client.getPlane();
-		final int chunkData = instanceTemplateChunks[z][localPoint.getSceneX() / CHUNK_SIZE][localPoint.getSceneY() / CHUNK_SIZE];
-
-		// extract world point from chunk data
-		final int chunkY = (chunkData >> 3 & 0x7FF) * CHUNK_SIZE;
-		final int chunkX = (chunkData >> 14 & 0x3FF) * CHUNK_SIZE;
-
-		final WorldPoint worldPoint = new WorldPoint(chunkX, chunkY, z);
-		return worldPoint.getRegionID();
-	}
-
 }

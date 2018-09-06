@@ -418,4 +418,12 @@ public class XpTrackerPlugin extends Plugin
 			xpPanel.updateSkillExperience(false, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
 		}
 	}
+
+	void pauseAllSkills(boolean pause)
+	{
+		for (Skill skill : Skill.values())
+		{
+			pauseSkill(skill, pause);
+		}
+	}
 }

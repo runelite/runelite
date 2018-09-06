@@ -89,11 +89,28 @@ class XpPanel extends PluginPanel
 		final JMenuItem reset = new JMenuItem("Reset All");
 		reset.addActionListener(e -> xpTrackerPlugin.resetAndInitState());
 
+		// Create pause all menu
+		final JMenuItem pauseAll = new JMenuItem("Pause All");
+		pauseAll.addActionListener(e ->
+		{
+			if (pauseAll.getText().equals("Pause All"))
+			{
+				xpTrackerPlugin.pauseAllSkills(true);
+				pauseAll.setText("Unpause All");
+			}
+			else
+			{
+				xpTrackerPlugin.pauseAllSkills(false);
+				pauseAll.setText("Pause All");
+			}
+		});
+
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		popupMenu.add(openXpTracker);
 		popupMenu.add(reset);
+		popupMenu.add(pauseAll);
 		overallPanel.setComponentPopupMenu(popupMenu);
 
 		final JLabel overallIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(Skill.OVERALL)));

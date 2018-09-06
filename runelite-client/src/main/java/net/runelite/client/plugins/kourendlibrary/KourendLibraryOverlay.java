@@ -29,7 +29,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-
 import java.awt.Polygon;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
@@ -38,6 +37,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
+import static net.runelite.api.Perspective.getCanvasTilePoly;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
@@ -47,17 +47,14 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-import static net.runelite.api.Perspective.getCanvasTilePoly;
-
 class KourendLibraryOverlay extends Overlay
 {
 	private final static int MAXIMUM_DISTANCE = 24;
-
 	private final Library library;
 	private final Client client;
 
 	@Inject
-	KourendLibraryOverlay(Library library, Client client)
+	private KourendLibraryOverlay(Library library, Client client)
 	{
 		this.library = library;
 		this.client = client;

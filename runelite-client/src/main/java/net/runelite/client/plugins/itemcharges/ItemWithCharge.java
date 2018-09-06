@@ -35,11 +35,16 @@ import static net.runelite.client.plugins.itemcharges.ItemChargeType.IMPBOX;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.TELEPORT;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERCAN;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERSKIN;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.BELLOWS;
 
 @AllArgsConstructor
 @Getter
 enum ItemWithCharge
 {
+	BELLOWS0(BELLOWS, OGRE_BELLOWS, 0),
+	BELLOWS1(BELLOWS, OGRE_BELLOWS_1, 1),
+	BELLOWS2(BELLOWS, OGRE_BELLOWS_2, 2),
+	BELLOWS3(BELLOWS, OGRE_BELLOWS_3, 3),
 	BURNING1(TELEPORT, BURNING_AMULET1, 1),
 	BURNING2(TELEPORT, BURNING_AMULET2, 2),
 	BURNING3(TELEPORT, BURNING_AMULET3, 3),

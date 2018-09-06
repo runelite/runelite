@@ -46,12 +46,14 @@ public class WidgetID
 	public static final int DEPOSIT_BOX_GROUP_ID = 192;
 	public static final int INVENTORY_GROUP_ID = 149;
 	public static final int FRIENDS_LIST_GROUP_ID = 429;
+	public static final int IGNORE_LIST_GROUP_ID = 432;
 	public static final int RAIDING_PARTY_GROUP_ID = 500;
 	public static final int EQUIPMENT_GROUP_ID = 387;
 	public static final int EQUIPMENT_INVENTORY_GROUP_ID = 85;
 	public static final int EMOTES_GROUP_ID = 216;
 	public static final int RUNE_POUCH_GROUP_ID = 190;
 	public static final int DIARY_GROUP_ID = 259;
+	public static final int PEST_CONTROL_BOAT_GROUP_ID = 407;
 	public static final int PEST_CONTROL_GROUP_ID = 408;
 	public static final int CLAN_CHAT_GROUP_ID = 7;
 	public static final int MINIMAP_GROUP_ID = 160;
@@ -106,12 +108,14 @@ public class WidgetID
 	public static final int DESTROY_ITEM_GROUP_ID = 584;
 	public static final int VARROCK_MUSEUM_QUIZ_GROUP_ID = 533;
 	public static final int KILL_LOGS_GROUP_ID = 549;
-	public static final int DIARY_QUEST_GROUP_ID = 275;
+	public static final int DIARY_QUEST_GROUP_ID = 119;
 	public static final int THEATRE_OF_BLOOD_GROUP_ID = 23;
 	public static final int WORLD_SWITCHER_GROUP_ID = 69;
 	public static final int DIALOG_OPTION_GROUP_ID = 219;
 	public static final int DIALOG_PLAYER_GROUP_ID = 217;
+
 	public static final int DUEL_GROUP_ID = 482;
+	public static final int FOSSIL_ISLAND_OXYGENBAR_ID = 609;
 
 	static class WorldMap
 	{
@@ -140,25 +144,42 @@ public class WidgetID
 		static final int LOGOUT_BUTTON = 6;
 	}
 
+	static class PestControlBoat
+	{
+		static final int INFO = 3;
+	}
+
 	static class PestControl
 	{
-		static final int ACTIVITY_BAR = 9;
-		static final int ACTIVITY_PROGRESS = 11;
+		static final int INFO = 3;
 
-		static final int PURPLE_SHIELD = 12;
-		static final int BLUE_SHIELD = 13;
-		static final int YELLOW_SHIELD = 14;
-		static final int RED_SHIELD = 15;
+		static final int ACTIVITY_BAR = 12;
+		static final int ACTIVITY_PROGRESS = 14;
 
-		static final int PURPLE_ICON = 16;
-		static final int BLUE_ICON = 17;
-		static final int YELLOW_ICON = 18;
-		static final int RED_ICON = 19;
+		static final int PURPLE_SHIELD = 15;
+		static final int BLUE_SHIELD = 16;
+		static final int YELLOW_SHIELD = 17;
+		static final int RED_SHIELD = 18;
 
-		static final int PURPLE_HEALTH = 20;
-		static final int BLUE_HEALTH = 21;
-		static final int YELLOW_HEALTH = 22;
-		static final int RED_HEALTH = 23;
+		static final int PURPLE_ICON = 19;
+		static final int BLUE_ICON = 20;
+		static final int YELLOW_ICON = 21;
+		static final int RED_ICON = 22;
+
+		static final int PURPLE_HEALTH = 23;
+		static final int BLUE_HEALTH = 24;
+		static final int YELLOW_HEALTH = 25;
+		static final int RED_HEALTH = 26;
+	}
+
+	static class FriendList
+	{
+		static final int TITLE = 3;
+	}
+
+	static class IgnoreList
+	{
+		static final int TITLE = 3;
 	}
 
 	static class ClanChat
@@ -244,6 +265,8 @@ public class WidgetID
 		static final int PRAYER_ORB = 12;
 		static final int QUICK_PRAYER_ORB = 14; // Has the "Quick-prayers" name
 		static final int RUN_ORB = 20;
+		static final int TOGGLE_RUN_ORB = 22; // Has the "Toggle run" name
+		static final int RUN_ORB_TEXT = 23;
 		static final int SPEC_ORB = 28;
 	}
 
@@ -337,21 +360,42 @@ public class WidgetID
 	static class ResizableViewportBottomLine
 	{
 		static final int LOGOUT_BUTTON_OVERLAY = 29;
-		static final int INVENTORY_TAB = 51;
-		static final int PRAYER_TAB = 53;
-		static final int QUESTS_ICON = 57;
-		static final int INVENTORY_ICON = 58;
-		static final int PRAYER_ICON = 60;
+		static final int CMB_TAB = 50;
+		static final int CMB_ICON = 57;
+		static final int SKILLS_TAB = 51;
+		static final int SKILLS_ICON = 58;
+		static final int QUESTS_TAB = 52;
+		static final int QUESTS_ICON = 59;
+		static final int INVENTORY_TAB = 53;
+		static final int INVENTORY_ICON = 60;
+		static final int EQUIP_TAB = 54;
+		static final int EQUIP_ICON = 61;
+		static final int PRAYER_TAB = 55;
+		static final int PRAYER_ICON = 62;
+		static final int SPELL_TAB = 56;
+		static final int SPELL_ICON = 53;
+		static final int FC_TAB = 35;
+		static final int FC_ICON = 41;
+		static final int IGNORE_TAB = 36;
+		static final int IGNORE_ICON = 42;
+		static final int FRIEND_TAB = 37;
+		static final int FRIEND_ICON = 43;
+		static final int SETTINGS_TAB = 38;
+		static final int SETTINGS_ICON = 44;
+		static final int EMOTE_TAB = 39;
+		static final int EMOTE_ICON = 45;
+		static final int MUSIC_TAB = 40;
+		static final int MUSIC_ICON = 46;
 	}
 
 	static class Chatbox
 	{
 		static final int CHATBOX_PARENT = 0;
 		static final int CHATBOX_BUTTONS = 1;
-		static final int CHATBOX_REPORT_TEXT = 28;
-		static final int CHATBOX_FRAME = 29;
-		static final int CHATBOX_MESSAGES = 47;
-		static final int CHATBOX_INPUT = 49;
+		static final int CHATBOX_REPORT_TEXT = 29;
+		static final int CHATBOX_FRAME = 30;
+		static final int CHATBOX_MESSAGES = 48;
+		static final int CHATBOX_INPUT = 50;
 	}
 
 	static class Prayer
@@ -528,8 +572,8 @@ public class WidgetID
 
 	static class ExperienceTracker
 	{
-		static final int WIDGET = 2;
-		static final int BOTTOM_BAR = 14;
+		static final int WIDGET = 3;
+		static final int BOTTOM_BAR = 15;
 	}
 
 	static class FairyRingPanel
@@ -567,7 +611,7 @@ public class WidgetID
 	static class Diary
 	{
 		static final int DIARY_TITLE = 2;
-		static final int DIARY_TEXT = 1;
+		static final int DIARY_TEXT = 3;
 	}
 
 	static class MTA
@@ -602,5 +646,10 @@ public class WidgetID
 	static class WorldSwitcher
 	{
 		static final int WORLD_LIST = 14;
+	}
+
+	static class FossilOxygen
+	{
+		static final int FOSSIL_ISLAND_OXYGEN_BAR = 4;
 	}
 }

@@ -457,6 +457,13 @@ public interface Client extends GameEngine
 	int getEnergy();
 
 	/**
+	 * Gets the current weight of the logged in player.
+	 *
+	 * @return the weight
+	 */
+	int getWeight();
+
+	/**
 	 * Gets an array of options that can currently be used on other players.
 	 * <p>
 	 * For example, if the player is in a PVP area the "Attack" option
@@ -1021,6 +1028,27 @@ public interface Client extends GameEngine
 	Friend[] getFriends();
 
 	/**
+	 * Gets the number of friends on the friends list.
+	 *
+	 * @return
+	 */
+	int getFriendsCount();
+
+	/**
+	 * Gets an array of players on the ignore list.
+	 *
+	 * @return
+	 */
+	Ignore[] getIgnores();
+
+	/**
+	 * Gets the number of ignored players on the ignore list.
+	 *
+	 * @return
+	 */
+	int getIgnoreCount();
+
+	/**
 	 * Checks whether a player is in the same clan chat.
 	 *
 	 * @param name the name of the player
@@ -1444,4 +1472,39 @@ public interface Client extends GameEngine
 	 * @param world target world to hop to
 	 */
 	void hopToWorld(World world);
+
+	/**
+	 * Sets the x-axis coordinate of the camera.
+	 *
+	 * @param cameraX the new camera x-value.
+	 */
+	void setCameraX(int cameraX);
+
+	/**
+	 * Sets the y-axis coordinate of the camera.
+	 *
+	 * @param cameraY the new camera y-value.
+	 */
+	void setCameraY(int cameraY);
+
+	/**
+	 * Sets the z-axis coordinate of the camera.
+	 *
+	 * @param cameraZ the new camera z-value.
+	 */
+	void setCameraZ(int cameraZ);
+
+	/**
+	 * Sets the pitch of the camera.
+	 *
+	 * @param cameraPitch the new camera pitch.
+	 */
+	void setCameraPitch(int cameraPitch);
+
+	/**
+	 * Sets the yaw of the camera.
+	 *
+	 * @param cameraYaw the new camera yaw.
+	 */
+	void setCameraYaw(int cameraYaw);
 }
