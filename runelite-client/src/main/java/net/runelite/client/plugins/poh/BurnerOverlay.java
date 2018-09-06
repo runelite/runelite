@@ -27,15 +27,12 @@ package net.runelite.client.plugins.poh;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
 import java.text.DecimalFormat;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.TileObject;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
 
@@ -61,7 +58,7 @@ public class BurnerOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showBurner())
+		if (!config.showBurnerTime())
 		{
 			return null;
 		}
@@ -71,44 +68,36 @@ public class BurnerOverlay extends Overlay
 			//If planes match
 			if (tile.getPlane() == client.getPlane())
 			{
-				//If there is a unlit burner, mark it red
-				if (getBURNER_UNLIT().contains(object.getId()))
-				{
-					drawBurner(graphics, object, Color.RED);
-				}
-				//If there is a lit burner
-				else if (getBURNER_LIT().contains(object.getId()))
+				if (getBURNER_LIT().contains(object.getId()))
 				{
 					if (config.showBurnerTime())
 					{
-						if (plugin.getTimerMap().containsKey(tile))
+						if (plugin.getCountdownTimerMap().containsKey(tile))
 						{
-							double sec = plugin.getTimerMap().get(tile);
-							DecimalFormat df = new DecimalFormat("#.##");
-							sec = Double.valueOf(df.format(sec));
-							String timeLeft = Double.toString(sec);
+							double certainSec = plugin.getCountdownTimerMap().get(tile);
+							DecimalFormat dfCertain = new DecimalFormat("#.##");
+							certainSec = Double.valueOf(dfCertain.format(certainSec));
+							ProgressPieComponent certainPieTimer = new ProgressPieComponent();
+							certainPieTimer.setPosition(object.getCanvasLocation());
+							certainPieTimer.setProgress((certainSec / plugin.getCountdownTimer()));
 
-							ProgressPieComponent pieTimer = new ProgressPieComponent();
-							pieTimer.setPosition(object.getCanvasLocation());
-							pieTimer.setProgress(1 - (sec / plugin.getSecondsLeft()));
-							//Change textcolor depening on seconds remaining on burner
-							if (sec > 20)
+							if (certainSec > 0)
 							{
-								renderPie(graphics, Color.GREEN, Color.GREEN, pieTimer);
-							}
-							else if (sec >= 10 && sec <= 20)
-							{
-								//drawBurner(graphics, timeLeft, object, Color.ORANGE, 200);
-								renderPie(graphics, Color.ORANGE, Color.ORANGE, pieTimer);
-							}
-							else if (sec < 10 && sec != 0)
-							{
-								//drawBurner(graphics, timeLeft, object, Color.RED, 200);
-								renderPie(graphics, Color.RED, Color.RED, pieTimer);
+								renderPie(graphics, Color.GREEN, Color.GREEN, certainPieTimer);
 							}
 							else
 							{
-								drawBurner(graphics, object, Color.RED);
+								double randomSec = plugin.getRandomTimerMap().get(tile);
+								DecimalFormat dfRandom = new DecimalFormat("#.##");
+								randomSec = Double.valueOf(dfRandom.format(randomSec));
+								ProgressPieComponent randomPieTimer = new ProgressPieComponent();
+								randomPieTimer.setPosition(object.getCanvasLocation());
+								randomPieTimer.setProgress((randomSec / plugin.getRandomTimer()));
+
+								if (randomSec > 0)
+								{
+									renderPie(graphics, Color.ORANGE, Color.ORANGE, randomPieTimer);
+								}
 							}
 						}
 					}
@@ -116,15 +105,6 @@ public class BurnerOverlay extends Overlay
 			}
 		});
 		return null;
-	}
-
-	private void drawBurner(Graphics2D graphics, TileObject tileObject, Color color)
-	{
-		Polygon poly = tileObject.getCanvasTilePoly();
-		if (poly != null)
-		{
-			OverlayUtil.renderPolygon(graphics, poly, color);
-		}
 	}
 
 	private void renderPie(Graphics2D graphics, Color fillColor, Color borderColor, ProgressPieComponent pieProgress)

@@ -29,6 +29,7 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -44,6 +45,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.http.api.hiscore.*;
+import net.runelite.http.api.hiscore.Skill;
+
 import static net.runelite.api.ObjectID.*;
 
 @PluginDescriptor(
@@ -65,7 +68,10 @@ public class PohPlugin extends Plugin
 	private static final Set<Integer> BURNER_LIT = Sets.newHashSet(INCENSE_BURNER_13209, INCENSE_BURNER_13211, INCENSE_BURNER_13213);
 
 	@Getter(AccessLevel.PACKAGE)
-	private double secondsLeft = 130.0; //Minimum amount of seconds a burner will light, change depending on firemaking level later
+	private double countdownTimer = 130.0; //Minimum amount of seconds a burner will light
+
+	@Getter(AccessLevel.PACKAGE)
+	private double randomTimer = 30.0; //Minimum amount of seconds a burner will light
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<TileObject, Tile> pohObjects = new HashMap<>();
@@ -77,7 +83,12 @@ public class PohPlugin extends Plugin
 	private Multimap<TileObject, Tile> shortestDistance =  ArrayListMultimap.create();
 
 	@Getter(AccessLevel.PACKAGE)
-	private Map<Tile, Double> timerMap = new HashMap<>();
+	//Map for the timers that we know the length of
+	private Map<Tile, Double> countdownTimerMap = new HashMap<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	//Map for the random timers we don't know the length of
+	private Map<Tile, Double> randomTimerMap = new HashMap<>();
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -115,7 +126,8 @@ public class PohPlugin extends Plugin
 		overlayManager.remove(burnerOverlay);
 		pohObjects.clear();
 		burnerLocs.clear();
-		timerMap.clear();
+		countdownTimerMap.clear();
+		randomTimerMap.clear();
 		shortestDistance.clear();
 	}
 
@@ -135,13 +147,16 @@ public class PohPlugin extends Plugin
 			//Found a new burner in the POH (on load or on relight)
 			if (BURNER_LIT.contains(gameObject.getId()) ||  BURNER_UNLIT.contains(gameObject.getId()))
 			{
-				timerMap.replace(event.getTile(), secondsLeft);
+				countdownTimerMap.replace(event.getTile(), countdownTimer);
+				randomTimerMap.replace(event.getTile(), randomTimer);
+				log.debug("Setting burner at tile '{}' to '{}' seconds and '{}' random seconds", event.getTile().getWorldLocation(), countdownTimer, randomTimer);
 				//Add burner to burnerLocs if it isn't already in there
 				if (!burnerLocs.containsValue(event.getTile()))
 				{
 					burnerLocs.put(gameObject, event.getTile());
 					//Add the new burner to timeMap and set secondsLeft
-					timerMap.put(event.getTile(), secondsLeft);
+					countdownTimerMap.put(event.getTile(), countdownTimer);
+					randomTimerMap.put(event.getTile(), randomTimer);
 				}
 			}
 		}
@@ -151,11 +166,17 @@ public class PohPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		//Countdown for both timers
-		for (Tile t : timerMap.keySet())
+		for (Tile t : countdownTimerMap.keySet())
 		{
-			double sec = timerMap.get(t);
-			double newSec = Math.max(sec - ESTIMATED_TICK_LENGTH, 0);
-			timerMap.replace(t, sec, newSec);
+			double certainSec = countdownTimerMap.get(t);
+			double certainNewSec = Math.max(certainSec - ESTIMATED_TICK_LENGTH, 0);
+			countdownTimerMap.replace(t, certainSec, certainNewSec);
+			if (certainNewSec == 0)
+			{
+				double randomSec = randomTimerMap.get(t);
+				double randomNewSec = Math.max(randomSec - ESTIMATED_TICK_LENGTH, 0);
+				randomTimerMap.replace(t, randomSec, randomNewSec);
+			}
 		}
 	}
 
@@ -191,7 +212,7 @@ public class PohPlugin extends Plugin
 			pohObjects.clear();
 		}
 	}
-	/*
+
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)
 	{
@@ -209,6 +230,9 @@ public class PohPlugin extends Plugin
 				Skill fm = playerStats.getFiremaking();
 				int fmLevel = fm.getLevel();
 				log.debug("Succesfully looked up '{}' with firemaking level '{}'", actorName, fmLevel);
+				//Burn time is : 200 + Fm level + (random number between 0 and Fm level) game ticks
+				countdownTimer = (200 + fmLevel) * ESTIMATED_TICK_LENGTH;
+				randomTimer = fmLevel * ESTIMATED_TICK_LENGTH;
 			}
 			catch (IOException ex)
 			{
@@ -216,5 +240,4 @@ public class PohPlugin extends Plugin
 			}
 		}
 	}
-	*/
 }

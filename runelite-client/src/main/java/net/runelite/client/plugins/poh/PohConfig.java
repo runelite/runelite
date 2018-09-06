@@ -99,17 +99,6 @@ public interface PohConfig extends Config
 
 	@ConfigItem(
 		position = 6,
-		keyName = "showBurner",
-		name = "Show Unlit/Lit burner",
-		description = "Configures whether or not unlit/lit burners are displayed"
-	)
-	default boolean showBurner()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 7,
 		keyName = "showSpellbook",
 		name = "Show Spellbook altar",
 		description = "Configures whether or not the Spellbook altar is displayed"
@@ -120,7 +109,7 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 7,
 		keyName = "showJewelleryBox",
 		name = "Show Jewellery Box",
 		description = "Configures whether or not the Jewllery box is displayed"
@@ -131,7 +120,7 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 8,
 		keyName = "showMagicTravel",
 		name = "Show Fairy/ Spirit Tree/ Obelisk",
 		description = "Configures whether or not the Fairy ring, Spirit tree or Obelisk is displayed"
@@ -142,7 +131,7 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
+		position = 9,
 		keyName = "showBurnerTime",
 		name = "Show Burner Time",
 		description = "Configures whether or not the burner time should be displayed"
