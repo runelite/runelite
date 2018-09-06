@@ -166,7 +166,7 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		position = 12,
 		keyName = "swapBoxTrapCheck",
-		name = "Reset trap",
+		name = "Check trap",
 		description = "Swap Check with Reset on box trap"
 	)
 	default boolean swapBoxTrapCheck()
