@@ -32,6 +32,7 @@ import lombok.Getter;
 import net.runelite.api.ItemID;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.cluescrolls.ClueScrollConfig;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
@@ -68,18 +69,24 @@ public class FairyRingClue extends ClueScroll implements TextClueScroll, Locatio
 	}
 
 	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
+	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin, ClueScrollConfig config)
 	{
-		panelComponent.getChildren().add(TitleComponent.builder().text("Fairy Ring Clue").build());
+		if (config.displayTitle())
+		{
+			panelComponent.getChildren().add(TitleComponent.builder().text("Fairy Ring Clue").build());
+		}
 		panelComponent.getChildren().add(LineComponent.builder().left("Code:").build());
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left(getText().substring(0, 5))
 			.leftColor(TITLED_CONTENT_COLOR)
 			.build());
 
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Travel to the fairy ring to see where to dig.")
-			.build());
+		if (config.displayHintText())
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Travel to the fairy ring to see where to dig.")
+				.build());
+		}
 
 		if (plugin.getInventoryItems() != null)
 		{

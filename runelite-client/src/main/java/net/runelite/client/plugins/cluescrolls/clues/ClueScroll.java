@@ -25,12 +25,13 @@
 package net.runelite.client.plugins.cluescrolls.clues;
 
 import java.awt.Graphics2D;
+import net.runelite.client.plugins.cluescrolls.ClueScrollConfig;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 public abstract class ClueScroll
 {
-	public abstract void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin);
+	public abstract void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin, ClueScrollConfig config);
 
 	public abstract void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin);
 }

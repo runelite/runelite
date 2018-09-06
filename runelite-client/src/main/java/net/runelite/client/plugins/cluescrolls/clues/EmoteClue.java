@@ -36,6 +36,7 @@ import net.runelite.api.Item;
 import static net.runelite.api.ItemID.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.cluescrolls.ClueScrollConfig;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.plugins.cluescrolls.clues.emote.AllRequirementsCollection;
@@ -216,9 +217,12 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 	}
 
 	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
+	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin, ClueScrollConfig config)
 	{
-		panelComponent.getChildren().add(TitleComponent.builder().text("Emote Clue").build());
+		if (config.displayTitle())
+		{
+			panelComponent.getChildren().add(TitleComponent.builder().text("Emote Clue").build());
+		}
 		panelComponent.getChildren().add(LineComponent.builder().left("Emotes:").build());
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left(getFirstEmote().getName())

@@ -41,12 +41,14 @@ public class ClueScrollOverlay extends Overlay
 	public static final Color TITLED_CONTENT_COLOR = new Color(190, 190, 190);
 
 	private final ClueScrollPlugin plugin;
+	private final ClueScrollConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	public ClueScrollOverlay(ClueScrollPlugin plugin)
+	public ClueScrollOverlay(ClueScrollPlugin plugin, ClueScrollConfig config)
 	{
 		this.plugin = plugin;
+		this.config = config;
 		setPriority(OverlayPriority.LOW);
 	}
 
@@ -63,7 +65,7 @@ public class ClueScrollOverlay extends Overlay
 		panelComponent.getChildren().clear();
 		panelComponent.setPreferredSize(new Dimension(ComponentConstants.STANDARD_WIDTH, 0));
 
-		clue.makeOverlayHint(panelComponent, plugin);
+		clue.makeOverlayHint(panelComponent, plugin, config);
 
 		return panelComponent.render(graphics);
 	}
