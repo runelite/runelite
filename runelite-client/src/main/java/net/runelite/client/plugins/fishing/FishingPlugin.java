@@ -179,6 +179,7 @@ public class FishingPlugin extends Plugin
 					case ItemID.DRAGON_HARPOON:
 					case ItemID.INFERNAL_HARPOON:
 					case ItemID.INFERNAL_HARPOON_UNCHARGED:
+					case ItemID.BARBTAIL_HARPOON:
 						showOverlays = true;
 						break;
 				}
