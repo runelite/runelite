@@ -165,17 +165,39 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 12,
-		keyName = "swapBoxTrap",
-		name = "Reset",
+		keyName = "swapBoxTrapCheck",
+		name = "Reset trap",
 		description = "Swap Check with Reset on box trap"
 	)
-	default boolean swapBoxTrap()
+	default boolean swapBoxTrapCheck()
 	{
 		return true;
 	}
 
 	@ConfigItem(
-		position = 13,
+			position = 13,
+			keyName = "swapBoxTrapTake",
+			name = "Take trap",
+			description = "Swap Take with Lay on box trap"
+	)
+	default boolean swapBoxTrapTake()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			position = 14,
+			keyName = "swapBoxTrapDismantle",
+			name = "Dismantle trap",
+			description = "Swap Dismantle with Reset on box trap"
+	)
+	default boolean swapBoxTrapDismantle()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 15,
 		keyName = "swapTeleportItem",
 		name = "Teleport item",
 		description = "Swap Wear, Wield with Rub, Teleport on teleport item<br>Example: Amulet of glory, Ardougne cloak, Chronicle"
@@ -186,7 +208,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+		position = 16,
 		keyName = "swapAbyssTeleport",
 		name = "Teleport to Abyss",
 		description = "Swap Talk-to with Teleport for the Mage of Zamorak"
@@ -197,7 +219,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
+		position = 17,
 		keyName = "swapTrade",
 		name = "Trade",
 		description = "Swap Talk-to with Trade on NPC<br>Example: Shop keeper, Shop assistant"
@@ -208,7 +230,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 16,
+		position = 18,
 		keyName = "swapTravel",
 		name = "Travel",
 		description = "Swap Talk-to with Travel, Take-boat, Pay-fare, Charter on NPC<br>Example: Squire, Monk of Entrana, Customs officer, Trader Crewmember"
@@ -219,7 +241,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 17,
+		position = 19,
 		keyName = "swapAssignment",
 		name = "Assignment",
 		description = "Swap Talk-to with Assignment for Slayer Masters. This will take priority over swapping Trade."
@@ -230,7 +252,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 18,
+		position = 20,
 		keyName = "swapDecant",
 		name = "Decant",
 		description = "Swap Talk-to with Decant for Bob Barter and Murky Matt at the Grand Exchange."
