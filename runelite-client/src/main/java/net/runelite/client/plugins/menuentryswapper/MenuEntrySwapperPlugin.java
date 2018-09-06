@@ -460,6 +460,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("chase", option, target, true);
 		}
+		else if (config.swapBirdhouseEmpty() && option.equals("interact") && target.contains("birdhouse"))
+		{
+			swap("empty", option, target, true);
+		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
 			Integer customOption = getSwapConfig(itemId);
@@ -475,20 +479,26 @@ public class MenuEntrySwapperPlugin extends Plugin
 			swap("rub", option, target, true);
 			swap("teleport", option, target, true);
 		}
-		else if (option.equals("wield"))
+		else if (config.swapTeleportItem() && option.equals("wield"))
 		{
-			if (config.swapTeleportItem())
-			{
-				swap("teleport", option, target, true);
-			}
+			swap("teleport", option, target, true);
 		}
 		else if (config.swapBones() && option.equals("bury"))
 		{
 			swap("use", option, target, true);
 		}
-		else if (config.swapBirdhouseEmpty() && option.equals("interact") && target.contains("birdhouse"))
+
+		// Below here goes all menu options that change with the shift modifier key
+		if (config.swapClimb() && option.equals("climb") && target.contains("ladder"))
 		{
-			swap("empty", option, target, true);
+			if (shiftModifier)
+			{
+				swap("climb-down", option, target, true);
+			}
+			else
+			{
+				swap("climb-up", option, target, true);
+			}
 		}
 	}
 

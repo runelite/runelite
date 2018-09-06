@@ -239,4 +239,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 19,
+		keyName = "swapClimb",
+		name = "Climb",
+		description = "Swap Climb with Climb-Up or Climb-Down with Shift held when interacting with ladders"
+	)
+	default boolean swapClimb()
+	{
+		return false;
+	}
 }
