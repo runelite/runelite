@@ -630,15 +630,20 @@ public class ChatCommandsPlugin extends Plugin
 
 		search = longBossName(search);
 
-		final int kc;
+		String kc;
 		try
 		{
-			kc = chatClient.getKc(player, search);
+			kc = String.format("%,d", chatClient.getKc(player, search));
 		}
 		catch (IOException ex)
 		{
 			log.debug("unable to lookup killcount", ex);
-			return;
+
+			kc = "unknown";
+			if (player.equals(client.getLocalPlayer().getName()))
+			{
+				kc += " (get kill or check ring of wealth)";
+			}
 		}
 
 		String response = new ChatMessageBuilder()
@@ -647,7 +652,7 @@ public class ChatCommandsPlugin extends Plugin
 			.append(ChatColorType.NORMAL)
 			.append(" kill count: ")
 			.append(ChatColorType.HIGHLIGHT)
-			.append(String.format("%,d", kc))
+			.append(kc)
 			.build();
 
 		log.debug("Setting response {}", response);
