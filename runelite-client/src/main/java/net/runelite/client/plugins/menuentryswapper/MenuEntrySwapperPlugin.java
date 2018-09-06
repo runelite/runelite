@@ -448,7 +448,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("zanaris", option, target, false);
 		}
-		else if (config.swapBoxTrapCheck() && (option.equals("reset")))
+		else if (config.swapBoxTrapCheck() && (option.equals("check")))
 		{
 			swap("reset", option, target, true);
 		}
