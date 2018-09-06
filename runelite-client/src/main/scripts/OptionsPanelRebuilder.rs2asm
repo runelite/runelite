@@ -291,28 +291,28 @@ LABEL264:
    get_varc               73
    load_int               195
    load_string            "fixedOuterZoomLimit"
-   runelite_callback
+   runelite_callback     
    if_icmpge              LABEL276
    jump                   LABEL292
 LABEL276:
    get_varc               73
    load_int               700
    load_string            "fixedInnerZoomLimit"
-   runelite_callback
+   runelite_callback     
    if_icmple              LABEL280
    jump                   LABEL292
 LABEL280:
    get_varc               74
    load_int               175
    load_string            "resizableOuterZoomLimit"
-   runelite_callback
+   runelite_callback     
    if_icmpge              LABEL284
    jump                   LABEL292
 LABEL284:
    get_varc               74
    load_int               715
    load_string            "resizableInnerZoomLimit"
-   runelite_callback
+   runelite_callback     
    if_icmple              LABEL288
    jump                   LABEL292
 LABEL288:
@@ -517,7 +517,7 @@ LABEL464:
    istore                 20
    jump                   LABEL469
 LABEL467:
-   load_int               36
+   load_int               38
    istore                 20
 LABEL469:
    invoke                 1972
@@ -530,7 +530,7 @@ LABEL473:
    if_icmpeq              LABEL477
    jump                   LABEL482
 LABEL477:
-   load_int               176
+   load_int               182
    load_int               4
    iadd                  
    istore                 19
@@ -576,7 +576,7 @@ LABEL511:
    if_icmpeq              LABEL515
    jump                   LABEL518
 LABEL515:
-   load_int               176
+   load_int               182
    istore                 19
    jump                   LABEL520
 LABEL518:
