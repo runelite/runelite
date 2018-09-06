@@ -46,7 +46,9 @@ public class TextureLoader
 		int[] files = new int[count];
 
 		for (int i = 0; i < count; ++i)
+		{
 			files[i] = is.readUnsignedShort();
+		}
 
 		def.setFileIds(files);
 

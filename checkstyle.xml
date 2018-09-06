@@ -34,6 +34,7 @@
 		<module name="RightCurly">
 			<property name="option" value="alone"/>
 		</module>
+		<module name="NeedBraces"/>
 		<!-- require tabs for indenting - https://stackoverflow.com/a/28550141 -->
 		<module name="RegexpSinglelineJava">
 			<property name="format" value="^\t* "/>
@@ -45,6 +46,9 @@
 			<property name="tokens" value="COMMA"/>
 		</module>
 		<module name="UnusedImports"/>
+		<module name="AvoidStarImport">
+			<property name="allowStaticMemberImports" value="true"/>
+		</module>
 		<module name="SuppressionCommentFilter"/>
 	</module>
 	<module name="RegexpMultiline">

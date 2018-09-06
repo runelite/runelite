@@ -151,10 +151,14 @@ class SkillCalculator extends JPanel
 		double xp = 0;
 
 		for (UIActionSlot slot : combinedActionSlots)
+		{
 			xp += slot.getValue();
+		}
 
 		if (neededXP > 0)
+		{
 			actionCount = (int) Math.ceil(neededXP / xp);
+		}
 
 		combinedActionSlot.setText(formatXPActionString(xp, actionCount, "exp - "));
 	}
@@ -162,7 +166,9 @@ class SkillCalculator extends JPanel
 	private void clearCombinedSlots()
 	{
 		for (UIActionSlot slot : combinedActionSlots)
+		{
 			slot.setSelected(false);
+		}
 
 		combinedActionSlots.clear();
 	}
@@ -214,12 +220,18 @@ class SkillCalculator extends JPanel
 				public void mousePressed(MouseEvent e)
 				{
 					if (!e.isShiftDown())
+					{
 						clearCombinedSlots();
+					}
 
 					if (slot.isSelected())
+					{
 						combinedActionSlots.remove(slot);
+					}
 					else
+					{
 						combinedActionSlots.add(slot);
+					}
 
 					slot.setSelected(!slot.isSelected());
 					updateCombinedAction();
@@ -242,7 +254,9 @@ class SkillCalculator extends JPanel
 			double xp = (action.isIgnoreBonus()) ? action.getXp() : action.getXp() * xpFactor;
 
 			if (neededXP > 0)
+			{
 				actionCount = (int) Math.ceil(neededXP / xp);
+			}
 
 			slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
 			slot.setAvailable(currentLevel >= action.getLevel());
