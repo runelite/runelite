@@ -28,7 +28,7 @@ public class WorldPositionPlugin extends Plugin {
 
     @Override
     protected void startUp() throws Exception {
-        tcpServer = new TCPServer(this);
+        tcpServer = new TCPServer();
         serverThread = new Thread(tcpServer);
         serverThread.start();
     }
@@ -44,7 +44,7 @@ public class WorldPositionPlugin extends Plugin {
         if(client.getGameState().equals(GameState.LOGGED_IN)) {
             if (cachedPosition == null || !cachedPosition.equals(client.getLocalPlayer().getWorldLocation())) {
                 cachedPosition = client.getLocalPlayer().getWorldLocation();
-                tcpServer.addPosition(cachedPosition);
+                tcpServer.setPosition(cachedPosition);
             }
         }
     }
