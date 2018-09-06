@@ -259,16 +259,20 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 				inventory = new Item[0];
 			}
 
+			Item[] combined = new Item[equipment.length + inventory.length];
+			System.arraycopy(equipment, 0, combined, 0, equipment.length);
+			System.arraycopy(inventory, 0, combined, equipment.length, inventory.length);
+
 			for (ItemRequirement requirement : getItemRequirements())
 			{
 				boolean equipmentFulfilled = requirement.fulfilledBy(equipment);
-				boolean inventoryFulfilled = requirement.fulfilledBy(inventory);
+				boolean combinedFulfilled = requirement.fulfilledBy(combined);
 
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left(requirement.getCollectiveName(plugin.getClient()))
 					.leftColor(TITLED_CONTENT_COLOR)
-					.right(equipmentFulfilled || inventoryFulfilled ? "\u2713" : "\u2717")
-					.rightColor(equipmentFulfilled ? Color.GREEN : (inventoryFulfilled ? Color.ORANGE : Color.RED))
+					.right(combinedFulfilled ? "\u2713" : "\u2717")
+					.rightColor(equipmentFulfilled ? Color.GREEN : (combinedFulfilled ? Color.ORANGE : Color.RED))
 					.build());
 			}
 		}
