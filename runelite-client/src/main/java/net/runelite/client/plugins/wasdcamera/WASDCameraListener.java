@@ -94,6 +94,7 @@ class WASDCameraListener extends MouseListener implements KeyListener
 				{
 					case KeyEvent.VK_ENTER:
 					case KeyEvent.VK_SLASH:
+					case KeyEvent.VK_COLON:
 						// refocus chatbox
 						plugin.setTyping(true);
 						clientThread.invoke(() ->
