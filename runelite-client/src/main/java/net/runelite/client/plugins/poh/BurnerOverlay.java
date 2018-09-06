@@ -72,11 +72,11 @@ public class BurnerOverlay extends Overlay
 				{
 					if (config.showBurnerTime())
 					{
+						DecimalFormat df = new DecimalFormat("#.##");
 						if (plugin.getCountdownTimerMap().containsKey(tile))
 						{
 							double certainSec = plugin.getCountdownTimerMap().get(tile);
-							DecimalFormat dfCertain = new DecimalFormat("#.##");
-							certainSec = Double.valueOf(dfCertain.format(certainSec));
+							certainSec = Double.valueOf(df.format(certainSec));
 							ProgressPieComponent certainPieTimer = new ProgressPieComponent();
 							certainPieTimer.setPosition(object.getCanvasLocation());
 							certainPieTimer.setProgress((certainSec / plugin.getCountdownTimer()));
@@ -88,8 +88,7 @@ public class BurnerOverlay extends Overlay
 							else
 							{
 								double randomSec = plugin.getRandomTimerMap().get(tile);
-								DecimalFormat dfRandom = new DecimalFormat("#.##");
-								randomSec = Double.valueOf(dfRandom.format(randomSec));
+								randomSec = Double.valueOf(df.format(randomSec));
 								ProgressPieComponent randomPieTimer = new ProgressPieComponent();
 								randomPieTimer.setPosition(object.getCanvasLocation());
 								randomPieTimer.setProgress((randomSec / plugin.getRandomTimer()));
