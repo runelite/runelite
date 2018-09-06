@@ -44,6 +44,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.LocalPoint;
@@ -128,62 +129,15 @@ public class FishingPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		boolean showOverlays = false;
-
-		if (session.getLastFishCaught() != null)
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY)
+			&& event.getItemContainer() != client.getItemContainer(InventoryID.EQUIPMENT))
 		{
-			showOverlays = true;
+			return;
 		}
-		else if (event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
-		{
-			for (Item item : event.getItemContainer().getItems())
-			{
-				if (item == null)
-				{
-					continue;
-				}
 
-				switch (item.getId())
-				{
-					case ItemID.DRAGON_HARPOON:
-					case ItemID.INFERNAL_HARPOON:
-					case ItemID.INFERNAL_HARPOON_UNCHARGED:
-					case ItemID.HARPOON:
-					case ItemID.BARBTAIL_HARPOON:
-					case ItemID.BIG_FISHING_NET:
-					case ItemID.SMALL_FISHING_NET:
-					case ItemID.SMALL_FISHING_NET_6209:
-					case ItemID.FISHING_ROD:
-					case ItemID.FLY_FISHING_ROD:
-					case ItemID.BARBARIAN_ROD:
-					case ItemID.OILY_FISHING_ROD:
-					case ItemID.LOBSTER_POT:
-					case ItemID.KARAMBWAN_VESSEL:
-					case ItemID.KARAMBWAN_VESSEL_3159:
-						showOverlays = true;
-						break;
-				}
-			}
-		}
-		else if (event.getItemContainer() == client.getItemContainer(InventoryID.EQUIPMENT))
-		{
-			for (Item item : event.getItemContainer().getItems())
-			{
-				if (item == null)
-				{
-					continue;
-				}
-
-				switch (item.getId())
-				{
-					case ItemID.DRAGON_HARPOON:
-					case ItemID.INFERNAL_HARPOON:
-					case ItemID.INFERNAL_HARPOON_UNCHARGED:
-						showOverlays = true;
-						break;
-				}
-			}
-		}
+		final boolean showOverlays = session.getLastFishCaught() != null
+			|| canPlayerFish(client.getItemContainer(InventoryID.INVENTORY))
+			|| canPlayerFish(client.getItemContainer(InventoryID.EQUIPMENT));
 
 		if (showOverlays)
 		{
@@ -217,6 +171,43 @@ public class FishingPlugin extends Plugin
 	public void updateConfig(ConfigChanged event)
 	{
 		updateConfig();
+	}
+
+	private boolean canPlayerFish(final ItemContainer itemContainer)
+	{
+		if (itemContainer == null)
+		{
+			return false;
+		}
+
+		for (Item item : itemContainer.getItems())
+		{
+			if (item == null)
+			{
+				continue;
+			}
+			switch (item.getId())
+			{
+				case ItemID.DRAGON_HARPOON:
+				case ItemID.INFERNAL_HARPOON:
+				case ItemID.INFERNAL_HARPOON_UNCHARGED:
+				case ItemID.HARPOON:
+				case ItemID.BARBTAIL_HARPOON:
+				case ItemID.BIG_FISHING_NET:
+				case ItemID.SMALL_FISHING_NET:
+				case ItemID.SMALL_FISHING_NET_6209:
+				case ItemID.FISHING_ROD:
+				case ItemID.FLY_FISHING_ROD:
+				case ItemID.BARBARIAN_ROD:
+				case ItemID.OILY_FISHING_ROD:
+				case ItemID.LOBSTER_POT:
+				case ItemID.KARAMBWAN_VESSEL:
+				case ItemID.KARAMBWAN_VESSEL_3159:
+					return true;
+			}
+		}
+
+		return false;
 	}
 
 	private void updateConfig()
