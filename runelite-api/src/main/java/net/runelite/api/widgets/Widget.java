@@ -566,14 +566,14 @@ public interface Widget
 	void setFontId(int id);
 
 	/**
-	 * Returns the border thickness of the widget
+	 * Returns the border type of the widget
 	 */
-	int getBorderThickness();
+	int getBorderType();
 
 	/**
-	 * Sets the border thickness of the widget
+	 * Sets the border type of the widget
 	 */
-	void setBorderThickness(int thickness);
+	void setBorderType(int borderType);
 
 	/**
 	 * Returns if text is shadowed

@@ -218,13 +218,13 @@ public interface RSWidget extends Widget
 	@Override
 	void setSpriteId(int spriteId);
 
-	@Import("borderThickness")
+	@Import("borderType")
 	@Override
-	int getBorderThickness();
+	int getBorderType();
 
-	@Import("borderThickness")
+	@Import("borderType")
 	@Override
-	void setBorderThickness(int thickness);
+	void setBorderType(int borderType);
 
 	@Import("itemId")
 	@Override
