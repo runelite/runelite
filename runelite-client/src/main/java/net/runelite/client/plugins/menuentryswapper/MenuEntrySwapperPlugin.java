@@ -448,13 +448,17 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("zanaris", option, target, false);
 		}
-		else if (config.swapBoxTrap() && (option.equals("check") || option.equals("dismantle")))
+		else if (config.swapBoxTrapCheck() && (option.equals("reset")))
 		{
 			swap("reset", option, target, true);
 		}
-		else if (config.swapBoxTrap() && option.equals("take"))
+		else if (config.swapBoxTrapTake() && option.equals("take"))
 		{
 			swap("lay", option, target, true);
+		}
+		else if (config.swapBoxTrapDismantle() && option.equals("dismantle"))
+		{
+			swap("reset", option, target, true);
 		}
 		else if (config.swapChase() && option.equals("pick-up"))
 		{
