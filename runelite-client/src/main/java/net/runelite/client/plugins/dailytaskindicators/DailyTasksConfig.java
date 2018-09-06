@@ -72,7 +72,7 @@ public interface DailyTasksConfig extends Config
 		name = "Show Claimable Random Runes",
 		description = "Configures whether or not to show a message when you can" +
 			" collect your daily random runes from Lundail",
-		position = 5
+		position = 4
 	)
 	default boolean showRunes()
 	{
