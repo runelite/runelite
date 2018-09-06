@@ -87,32 +87,56 @@ public class ManhattanDistance implements Heuristic
 				int targetX = piece % DIMENSION;
 
 				// right
-				if (targetX > x) value++;
-				else value--;
+				if (targetX > x)
+				{
+					value++;
+				}
+				else
+				{
+					value--;
+				}
 			}
 			else if (x2 < x)
 			{
 				int targetX = piece % DIMENSION;
 
 				// left
-				if (targetX < x) value++;
-				else value--;
+				if (targetX < x)
+				{
+					value++;
+				}
+				else
+				{
+					value--;
+				}
 			}
 			else if (y2 > y)
 			{
 				int targetY = piece / DIMENSION;
 
 				// down
-				if (targetY > y) value++;
-				else value--;
+				if (targetY > y)
+				{
+					value++;
+				}
+				else
+				{
+					value--;
+				}
 			}
 			else
 			{
 				int targetY = piece / DIMENSION;
 
 				// up
-				if (targetY < y) value++;
-				else value--;
+				if (targetY < y)
+				{
+					value++;
+				}
+				else
+				{
+					value--;
+				}
 			}
 		}
 

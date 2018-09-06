@@ -116,9 +116,13 @@ class UIActionSlot extends JPanel
 		JLabel uiIcon = new JLabel();
 
 		if (action.getIcon() != null)
+		{
 			SkillCalculator.itemManager.getImage(action.getIcon()).addTo(uiIcon);
+		}
 		else if (action.getSprite() != null)
+		{
 			SkillCalculator.spriteManager.addSpriteTo(uiIcon, action.getSprite(), 0);
+		}
 
 		uiIcon.setMinimumSize(ICON_SIZE);
 		uiIcon.setMaximumSize(ICON_SIZE);
