@@ -506,7 +506,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 				.append(ChatColorType.HIGHLIGHT)
 				.append(": GE average ")
 				.append(ChatColorType.NORMAL)
-				.append(StackFormatter.formatNumber(itemPrice * quantity));
+				.append(StackFormatter.formatNumber((long)itemPrice * quantity));
 			if (quantity != 1)
 				builder.append(ChatColorType.HIGHLIGHT)
 					.append(" (")
@@ -523,7 +523,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 					.append(ChatColorType.HIGHLIGHT)
 					.append(" HA value ")
 					.append(ChatColorType.NORMAL)
-					.append(StackFormatter.formatNumber(alchPrice * quantity));
+					.append(StackFormatter.formatNumber((long)alchPrice * quantity));
 				if (quantity != 1)
 					builder.append(ChatColorType.HIGHLIGHT)
 					.append(" (")
