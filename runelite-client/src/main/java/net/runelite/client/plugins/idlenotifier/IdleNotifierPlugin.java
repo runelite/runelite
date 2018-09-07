@@ -205,12 +205,14 @@ public class IdleNotifierPlugin extends Plugin
 			case USING_GILDED_ALTAR:
 				resetTimers();
 				lastAnimation = animation;
-				break;
+				// Fall through
 			case IDLE:
+				lastAnimating = Instant.now();
 				break;
 			default:
 				// On unknown animation simply assume the animation is invalid and dont throw notification
 				lastAnimation = IDLE;
+				lastAnimating = null;
 		}
 	}
 
@@ -225,9 +227,14 @@ public class IdleNotifierPlugin extends Plugin
 
 		final Actor target = event.getTarget();
 
-		// Reset last interact
-		if (target != null)
+		if (target == null)
 		{
+			// We just ended combat so update last interacted time
+			lastInteracting = Instant.now();
+		}
+		else
+		{
+			// Reset last interact
 			lastInteract = null;
 		}
 
@@ -248,6 +255,7 @@ public class IdleNotifierPlugin extends Plugin
 			// Player is most likely in combat with attack-able NPC
 			resetTimers();
 			lastInteract = target;
+			lastInteracting = Instant.now();
 		}
 	}
 
