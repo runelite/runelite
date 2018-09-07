@@ -202,23 +202,19 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		}
 		else if (config.price() && message.toLowerCase().startsWith(PRICE_COMMAND_STRING + " "))
 		{
-			String params = message.substring(PRICE_COMMAND_STRING.length() + 1);
-			String search;
-			int quantity;
-
-			Pattern pattern = Pattern.compile("\\d+ .+");
-			Matcher matcher = pattern.matcher(params);
-			if (matcher.matches())
+			String input = message.substring(PRICE_COMMAND_STRING.length() + 1);
+			final String search;
+			final int quantity;
+			if (input.matches("\\d+ .+"))
 			{
-				System.out.println("stuff");
-				quantity = Integer.valueOf(params.substring(0, params.indexOf(' ')));
-				search = params.substring(params.indexOf(' ') + 1);
+				String params[] = input.split(" ", 2);
+				quantity = Integer.parseInt(params[0]);
+				search = params[1];
 			}
 			else
 			{
-				System.out.println("stuff2");
 				quantity = 1;
-				search = params;
+				search = input;
 			}
 
 			log.debug("Running price lookup for {}", search);
@@ -527,8 +523,9 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 					.append(ChatColorType.HIGHLIGHT)
 					.append(" HA value ")
 					.append(ChatColorType.NORMAL)
-					.append(StackFormatter.formatNumber(alchPrice * quantity))
-					.append(ChatColorType.HIGHLIGHT)
+					.append(StackFormatter.formatNumber(alchPrice * quantity));
+				if (quantity != 1)
+					builder.append(ChatColorType.HIGHLIGHT)
 					.append(" (")
 					.append(ChatColorType.NORMAL)
 					.append(StackFormatter.formatNumber(alchPrice))
