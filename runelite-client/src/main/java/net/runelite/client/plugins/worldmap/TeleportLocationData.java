@@ -68,7 +68,7 @@ enum TeleportLocationData
 	HARMONY_ISLAND(TeleportType.ARCEUUS_MAGIC, "Harmony Island", 65, new WorldPoint(3797, 2866, 0), "harmony_island_teleport_icon.png"),
 	CEMETERY(TeleportType.ARCEUUS_MAGIC, "Cemetery", 71, new WorldPoint(2978, 3763, 0), "cemetery_teleport_icon.png"),
 	BARROWS(TeleportType.ARCEUUS_MAGIC, "Barrows", 83, new WorldPoint(3565, 3315, 0), "barrows_teleport_icon.png"),
-	APE_ATOLL_ARCEUUS(TeleportType.ARCEUUS_MAGIC, "Ape Atoll", 90, new WorldPoint(2771, 9102, 0), "ape_atoll_teleport_icon_arceuus.png"),
+	APE_ATOLL_ARCEUUS(TeleportType.ARCEUUS_MAGIC, "Ape Atoll", 90, new WorldPoint(2770, 2703, 0), "ape_atoll_teleport_icon_arceuus.png"),
 
 	// Jewellery
 	BARBARIAN_ASSAULT(TeleportType.JEWELLERY, "Games Necklace" , "Barbarian Assault", new WorldPoint(2520, 3571, 0), "games_necklace_teleport_icon.png"),
@@ -125,7 +125,9 @@ enum TeleportLocationData
 	RELLEKKKA_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Rellekka", new WorldPoint(2664, 3643, 0), "enchanted_lyre_teleport_icon.png"),
 	WATERBIRTH_ISLAND_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Waterbirth Island", new WorldPoint(2550, 3756, 0), "enchanted_lyre_teleport_icon.png"),
 	NEITIZNOT_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Neitiznot", new WorldPoint(2336, 3801, 0), "enchanted_lyre_teleport_icon.png"),
-	JATIZSO_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Jatizso", new WorldPoint(2409, 3809, 0), "enchanted_lyre_teleport_icon.png"),
+	JATIZSO_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Jatizso", new WorldPoint(2409,  3809, 0), "enchanted_lyre_teleport_icon.png"),
+	WEISS_ICY_BASALT(TeleportType.OTHER, "Icy Basalt", "Weiss", new WorldPoint(2846, 3940, 0), "icy_basalt_teleport_icon.png"),
+	TROLL_STRONGHOLD_STONY_BASALT(TeleportType.OTHER, "Stony Basalt", "Troll Stronghold", new WorldPoint(2838, 3693, 0), "stony_basalt_teleport_icon.png"),
 
 	// Wilderness
 	OBELISK_13(TeleportType.OTHER, "Obelisk", "13", new WorldPoint(3156, 3620, 0), "obelisk_icon.png"),
