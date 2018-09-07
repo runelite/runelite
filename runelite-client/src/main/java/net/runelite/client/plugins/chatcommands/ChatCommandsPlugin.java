@@ -202,10 +202,27 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		}
 		else if (config.price() && message.toLowerCase().startsWith(PRICE_COMMAND_STRING + " "))
 		{
-			String search = message.substring(PRICE_COMMAND_STRING.length() + 1);
+			String params = message.substring(PRICE_COMMAND_STRING.length() + 1);
+			String search;
+			int quantity;
+
+			Pattern pattern = Pattern.compile("\\d+ .+");
+			Matcher matcher = pattern.matcher(params);
+			if (matcher.matches())
+			{
+				System.out.println("stuff");
+				quantity = Integer.valueOf(params.substring(0, params.indexOf(' ')));
+				search = params.substring(params.indexOf(' ') + 1);
+			}
+			else
+			{
+				System.out.println("stuff2");
+				quantity = 1;
+				search = params;
+			}
 
 			log.debug("Running price lookup for {}", search);
-			executor.submit(() -> itemPriceLookup(setMessage.getMessageNode(), search));
+			executor.submit(() -> itemPriceLookup(setMessage.getMessageNode(), quantity, search));
 		}
 		else if (config.lvl() && message.toLowerCase().startsWith(LEVEL_COMMAND_STRING + " "))
 		{
@@ -453,9 +470,10 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	 * response.
 	 *
 	 * @param messageNode The chat message containing the command.
+	 * @param quantity    The quantity of the item to price check
 	 * @param search      The item given with the command.
 	 */
-	private void itemPriceLookup(MessageNode messageNode, String search)
+	private void itemPriceLookup(MessageNode messageNode, int quantity, String search)
 	{
 		SearchResult result;
 
@@ -482,24 +500,40 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			int itemPrice = itemManager.getItemPrice(itemId);
 
 			final ChatMessageBuilder builder = new ChatMessageBuilder()
-				.append(ChatColorType.NORMAL)
+				.append(ChatColorType.HIGHLIGHT)
 				.append("Price of ")
+				.append(ChatColorType.NORMAL);
+			if (quantity != 1)
+				builder.append(Integer.toString(quantity))
+					.append(" x ");
+			builder.append(item.getName())
 				.append(ChatColorType.HIGHLIGHT)
-				.append(item.getName())
-				.append(ChatColorType.NORMAL)
 				.append(": GE average ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(StackFormatter.formatNumber(itemPrice));
+				.append(ChatColorType.NORMAL)
+				.append(StackFormatter.formatNumber(itemPrice * quantity));
+			if (quantity != 1)
+				builder.append(ChatColorType.HIGHLIGHT)
+					.append(" (")
+					.append(ChatColorType.NORMAL)
+					.append(StackFormatter.formatNumber(itemPrice))
+					.append(ChatColorType.HIGHLIGHT)
+					.append("ea)");
 
 			ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 			if (itemComposition != null)
 			{
 				int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
 				builder
-					.append(ChatColorType.NORMAL)
-					.append(" HA value ")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(StackFormatter.formatNumber(alchPrice));
+					.append(" HA value ")
+					.append(ChatColorType.NORMAL)
+					.append(StackFormatter.formatNumber(alchPrice * quantity))
+					.append(ChatColorType.HIGHLIGHT)
+					.append(" (")
+					.append(ChatColorType.NORMAL)
+					.append(StackFormatter.formatNumber(alchPrice))
+					.append(ChatColorType.HIGHLIGHT)
+					.append("ea)");
 			}
 
 			String response = builder.build();
