@@ -69,15 +69,15 @@ class OverviewTabPanel extends TabContentPanel
 		add(birdHouseOverview);
 
 		farmingOverviews = new LinkedHashMap<>();
-		farmingOverviews.put(PatchImplementation.ALLOTMENT, new OverviewItemPanel(itemManager, pluginPanel, Tab.ALLOTMENT, "Allotment Patches"));
-		farmingOverviews.put(PatchImplementation.FLOWER, new OverviewItemPanel(itemManager, pluginPanel, Tab.FLOWER, "Flower Patches"));
 		farmingOverviews.put(PatchImplementation.HERB, new OverviewItemPanel(itemManager, pluginPanel, Tab.HERB, "Herb Patches"));
 		farmingOverviews.put(PatchImplementation.TREE, new OverviewItemPanel(itemManager, pluginPanel, Tab.TREE, "Tree Patches"));
 		farmingOverviews.put(PatchImplementation.FRUIT_TREE, new OverviewItemPanel(itemManager, pluginPanel, Tab.FRUIT_TREE, "Fruit Tree Patches"));
-		farmingOverviews.put(PatchImplementation.HOPS, new OverviewItemPanel(itemManager, pluginPanel, Tab.HOPS, "Hops Patches"));
+		farmingOverviews.put(PatchImplementation.SEAWEED, new OverviewItemPanel(itemManager, pluginPanel, Tab.SPECIAL, "Special Patches"));
+		farmingOverviews.put(PatchImplementation.FLOWER, new OverviewItemPanel(itemManager, pluginPanel, Tab.FLOWER, "Flower Patches"));
+		farmingOverviews.put(PatchImplementation.ALLOTMENT, new OverviewItemPanel(itemManager, pluginPanel, Tab.ALLOTMENT, "Allotment Patches"));
 		farmingOverviews.put(PatchImplementation.BUSH, new OverviewItemPanel(itemManager, pluginPanel, Tab.BUSH, "Bush Patches"));
 		farmingOverviews.put(PatchImplementation.GRAPES, new OverviewItemPanel(itemManager, pluginPanel, Tab.GRAPE, "Grape Patches"));
-		farmingOverviews.put(PatchImplementation.SEAWEED, new OverviewItemPanel(itemManager, pluginPanel, Tab.SPECIAL, "Special Patches"));
+		farmingOverviews.put(PatchImplementation.HOPS, new OverviewItemPanel(itemManager, pluginPanel, Tab.HOPS, "Hops Patches"));
 
 		for (OverviewItemPanel panel : farmingOverviews.values())
 		{
