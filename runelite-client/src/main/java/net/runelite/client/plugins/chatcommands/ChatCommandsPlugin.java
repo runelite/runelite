@@ -200,25 +200,23 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			log.debug("Running combat level lookup");
 			executor.submit(() -> combatLevelLookup(setMessage.getType(), setMessage));
 		}
-		else if (config.price() && message.toLowerCase().startsWith(PRICE_COMMAND_STRING + " "))
+		else if (config.price() && message.toLowerCase().startsWith(PRICE_COMMAND_STRING + " ") && message.toLowerCase().matches("^![a-z]+ \\d+ .+"))
 		{
+			Pattern quantityPattern = Pattern.compile("^\\d+");
+			Pattern itemPattern = Pattern.compile("(?<=\\d ).+");
 			String input = message.substring(PRICE_COMMAND_STRING.length() + 1);
-			final String search;
-			final int quantity;
-			if (input.matches("\\d+ .+"))
-			{
-				String params[] = input.split(" ", 2);
-				quantity = Integer.parseInt(params[0]);
-				search = params[1];
-			}
-			else
-			{
-				quantity = 1;
-				search = input;
-			}
+			int quantity = Integer.valueOf(quantityPattern.matcher(input).group());
+			String search = itemPattern.matcher(input).group();
 
 			log.debug("Running price lookup for {}", search);
 			executor.submit(() -> itemPriceLookup(setMessage.getMessageNode(), quantity, search));
+		}
+		else if (config.price() && message.toLowerCase().startsWith(PRICE_COMMAND_STRING + " "))
+		{
+			String search = message.substring(PRICE_COMMAND_STRING.length() + 1);
+
+			log.debug("Running price lookup for {}", search);
+			executor.submit(() -> itemPriceLookup(setMessage.getMessageNode(), 1, search));
 		}
 		else if (config.lvl() && message.toLowerCase().startsWith(LEVEL_COMMAND_STRING + " "))
 		{
