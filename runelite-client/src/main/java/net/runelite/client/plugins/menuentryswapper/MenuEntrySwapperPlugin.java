@@ -489,7 +489,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 
 		// Below here goes all menu options that change with the shift modifier key
-		if (config.swapClimb() && option.equals("climb") && target.contains("ladder"))
+		if (config.swapClimb() && option.equals("climb"))
 		{
 			if (shiftModifier)
 			{
