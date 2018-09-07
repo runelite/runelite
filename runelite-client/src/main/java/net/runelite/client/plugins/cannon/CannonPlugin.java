@@ -128,11 +128,13 @@ public class CannonPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(cannonOverlay);
+		overlayManager.add(cannonSpotOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		cannonSpotOverlay.setHidden(true);
 		overlayManager.remove(cannonOverlay);
 		overlayManager.remove(cannonSpotOverlay);
 		cannonPlaced = false;
@@ -190,14 +192,7 @@ public class CannonPlugin extends Plugin
 			}
 		}
 
-		if (hasAll)
-		{
-			overlayManager.add(cannonSpotOverlay);
-		}
-		else
-		{
-			overlayManager.remove(cannonSpotOverlay);
-		}
+		cannonSpotOverlay.setHidden(!hasAll);
 	}
 
 	@Subscribe
