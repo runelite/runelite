@@ -273,7 +273,7 @@ public class ScreenshotPlugin extends Plugin
 		{
 			// "You have completed The Corsair Curse!"
 			String text = client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT).getText();
-			fileName = text.substring(19, text.length() - 1);
+			fileName = "Quest(" + text.substring(19, text.length() - 1) + ")";
 		}
 
 		if (fileName != null)
