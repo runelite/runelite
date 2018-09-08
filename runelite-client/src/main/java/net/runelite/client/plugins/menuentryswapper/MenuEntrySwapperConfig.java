@@ -239,4 +239,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 19,
+		keyName = "swapEscort",
+		name = "Escort",
+		description = "Swap Talk-to with Escort for Temple Trekking Followers."
+	)
+	default boolean swapEscort()
+	{
+		return true;
+	}
 }
