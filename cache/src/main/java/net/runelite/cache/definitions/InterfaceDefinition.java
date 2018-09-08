@@ -107,7 +107,7 @@ public class InterfaceDefinition
 	public int hoveredSiblingId;
 	public int[] alternateOperators;
 	public int[] alternateRhs;
-	public int[][] clientScripts;
+	public ClientScript1Instruction[][] clientScripts;
 	public int[] itemIds;
 	public int[] itemQuantities;
 	public int xPitch;

@@ -24,6 +24,10 @@
  */
 package net.runelite.cache.definitions.loaders;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import net.runelite.cache.definitions.ClientScript1Instruction;
 import net.runelite.cache.definitions.InterfaceDefinition;
 import net.runelite.cache.io.InputStream;
 
@@ -92,20 +96,35 @@ public class InterfaceLoader
 		int var6;
 		if (var3 > 0)
 		{
-			iface.clientScripts = new int[var3][];
+			iface.clientScripts = new ClientScript1Instruction[var3][];
 
 			for (var4 = 0; var4 < var3; ++var4)
 			{
 				var5 = var1.readUnsignedShort();
-				iface.clientScripts[var4] = new int[var5];
+				int[] bytecode = new int[var5];
 
 				for (var6 = 0; var6 < var5; ++var6)
 				{
-					iface.clientScripts[var4][var6] = var1.readUnsignedShort();
-					if (iface.clientScripts[var4][var6] == 0xFFFF)
+					bytecode[var6] = var1.readUnsignedShort();
+					if (bytecode[var6] == 0xFFFF)
 					{
-						iface.clientScripts[var4][var6] = -1;
+						bytecode[var6] = -1;
 					}
+
+					List<ClientScript1Instruction> instructions = new ArrayList<>();
+					for (int i = 0; i < bytecode.length;)
+					{
+						ClientScript1Instruction ins = new ClientScript1Instruction();
+
+						ins.opcode = ClientScript1Instruction.Opcode.values()[bytecode[i++]];
+
+						int ac = ins.opcode.argumentCount;
+						ins.operands = Arrays.copyOfRange(bytecode, i, i + ac);
+
+						instructions.add(ins);
+						i += ac;
+					}
+					iface.clientScripts[var4] = instructions.toArray(new ClientScript1Instruction[0]);
 				}
 			}
 		}

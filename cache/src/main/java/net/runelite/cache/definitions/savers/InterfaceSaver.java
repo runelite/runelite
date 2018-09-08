@@ -24,6 +24,7 @@
  */
 package net.runelite.cache.definitions.savers;
 
+import net.runelite.cache.definitions.ClientScript1Instruction;
 import net.runelite.cache.definitions.InterfaceDefinition;
 import net.runelite.cache.io.OutputStream;
 
@@ -77,10 +78,28 @@ public class InterfaceSaver
 			out.writeByte(def.clientScripts.length);
 			for (int i = 0; i < def.clientScripts.length; ++i)
 			{
-				out.writeShort(def.clientScripts[i].length);
+				int len = 0;
 				for (int j = 0; j < def.clientScripts[i].length; ++j)
 				{
-					out.writeShort(def.clientScripts[i][j]);
+					ClientScript1Instruction ins = def.clientScripts[i][j];
+					len++;
+					if (ins.operands != null)
+					{
+						len += ins.operands.length;
+					}
+				}
+				out.writeShort(len);
+				for (int j = 0; j < def.clientScripts[i].length; ++j)
+				{
+					ClientScript1Instruction ins = def.clientScripts[i][j];
+					out.writeShort(ins.opcode.ordinal());
+					if (ins.operands != null)
+					{
+						for (int op : ins.operands)
+						{
+							out.writeShort(op);
+						}
+					}
 				}
 			}
 		}
