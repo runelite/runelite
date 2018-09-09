@@ -144,7 +144,7 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		position = 10,
 		keyName = "swapPickpocket",
-		name = "Pickpocket on H.A.M.",
+		name = "Pickpocket on all NPCs",
 		description = "Swap Talk-to with Pickpocket on H.A.M members"
 	)
 	default boolean swapPickpocket()
@@ -236,6 +236,28 @@ public interface MenuEntrySwapperConfig extends Config
 		description = "Swap Talk-to with Decant for Bob Barter and Murky Matt at the Grand Exchange."
 	)
 	default boolean swapDecant()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 19,
+			keyName = "shiftSwapKnock",
+			name = "Shift Knock-Out",
+			description = "Moves Knock-out option to the top when shift is held."
+	)
+	default boolean shiftSwapKnock()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 20,
+			keyName = "swapWithdrawX",
+			name = "Withdraw X",
+			description = "Moves withdraw-x to the top."
+	)
+	default boolean swapWithdraw()
 	{
 		return false;
 	}

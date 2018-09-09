@@ -334,13 +334,27 @@ public class MenuEntrySwapperPlugin extends Plugin
 		String option = Text.removeTags(event.getOption()).toLowerCase();
 		String target = Text.removeTags(event.getTarget()).toLowerCase();
 
-		if (option.equals("talk-to"))
-		{
-			if (config.swapPickpocket() && target.contains("h.a.m."))
-			{
+		MenuEntry[] entries = client.getMenuEntries();
+		if(searchIndex(entries, option, target, true) == entries.length - 1) {
+			if(config.swapPickpocket() && !shiftModifier) {
 				swap("pickpocket", option, target, true);
 			}
 
+			if (config.shiftSwapKnock() && shiftModifier)
+			{
+				swap("knock-out", option, target, true);
+			}
+		}
+
+		if(option.equals("withdraw-1")) {
+			if(config.swapWithdraw())
+			{
+				swap( Text.removeTags(entries[entries.length - 5].getOption()).toLowerCase(), option, target, true);
+			}
+		}
+
+		if (option.equals("talk-to"))
+		{
 			if (config.swapAbyssTeleport() && target.contains("mage of zamorak"))
 			{
 				swap("teleport", option, target, true);
