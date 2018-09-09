@@ -37,6 +37,10 @@ import java.util.List;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 
+/**
+ * Used for getting decorative objects in view, deprecated as of existence of Object* spawn events
+ */
+@Deprecated
 public abstract class TileObjectQuery<EntityType extends TileObject, QueryType> extends Query<EntityType, QueryType>
 {
 	protected List<Tile> getTiles(Client client)
