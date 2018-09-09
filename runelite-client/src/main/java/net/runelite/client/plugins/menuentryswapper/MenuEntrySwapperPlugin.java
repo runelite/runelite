@@ -349,7 +349,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		if(option.equals("withdraw-1")) {
 			if(config.swapWithdraw())
 			{
-				swap( Text.removeTags(entries[entries.length - 5].getOption()).toLowerCase(), option, target, true);
+				swap( Text.removeTags(entries[entries.length - 4].getOption()).toLowerCase(), option, target, true);
+
 			}
 		}
 
