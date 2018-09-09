@@ -128,6 +128,8 @@ public class TimersPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer);
+		lastRaidVarb = -1;
+		lastPoint = null;
 	}
 
 	@Subscribe
