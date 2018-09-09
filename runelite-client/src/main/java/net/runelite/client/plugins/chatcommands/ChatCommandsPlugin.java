@@ -86,6 +86,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	private static final Pattern RAIDS_PATTERN = Pattern.compile("Your completed (.+) count is: <col=ff0000>(\\d+)</col>.");
 	private static final Pattern WINTERTODT_PATERN = Pattern.compile("Your subdued Wintertodt count is: <col=ff0000>(\\d+)</col>.");
 	private static final Pattern BARROWS_PATERN = Pattern.compile("Your Barrows chest count is: <col=ff0000>(\\d+)</col>.");
+	private static final Pattern PRICE_PATERN = Pattern.compile("^!price (?:(\\d*) )?(.+)");
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
 	private static final String PRICE_COMMAND_STRING = "!price";
 	private static final String LEVEL_COMMAND_STRING = "!lvl";
@@ -200,23 +201,23 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			log.debug("Running combat level lookup");
 			executor.submit(() -> combatLevelLookup(setMessage.getType(), setMessage));
 		}
-		else if (config.price() && message.toLowerCase().startsWith(PRICE_COMMAND_STRING + " ") && message.toLowerCase().matches("^![a-z]+ \\d+ .+"))
-		{
-			Pattern quantityPattern = Pattern.compile("^\\d+");
-			Pattern itemPattern = Pattern.compile("(?<=\\d ).+");
-			String input = message.substring(PRICE_COMMAND_STRING.length() + 1);
-			int quantity = Integer.valueOf(quantityPattern.matcher(input).group());
-			String search = itemPattern.matcher(input).group();
-
-			log.debug("Running price lookup for {}", search);
-			executor.submit(() -> itemPriceLookup(setMessage.getMessageNode(), quantity, search));
-		}
 		else if (config.price() && message.toLowerCase().startsWith(PRICE_COMMAND_STRING + " "))
 		{
-			String search = message.substring(PRICE_COMMAND_STRING.length() + 1);
-
-			log.debug("Running price lookup for {}", search);
-			executor.submit(() -> itemPriceLookup(setMessage.getMessageNode(), 1, search));
+			Matcher priceMatcher = PRICE_PATERN.matcher(message.toLowerCase());
+			if (priceMatcher.matches())
+			{
+				if (priceMatcher.group(1) != null)
+				{
+					System.out.println(priceMatcher.group(1));
+					log.debug("Running price lookup for {}", priceMatcher.group(2));
+					executor.submit(() -> itemPriceLookup(setMessage.getMessageNode(), Integer.valueOf(priceMatcher.group(1)), priceMatcher.group(2)));
+				}
+				else
+				{
+					log.debug("Running price lookup for {}", priceMatcher.group(2));
+					executor.submit(() -> itemPriceLookup(setMessage.getMessageNode(), 1, priceMatcher.group(2)));
+				}
+			}
 		}
 		else if (config.lvl() && message.toLowerCase().startsWith(LEVEL_COMMAND_STRING + " "))
 		{
