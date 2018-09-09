@@ -56,6 +56,7 @@ class LootTrackerPanel extends PluginPanel
 
 	// Handle loot boxes
 	private final JPanel logsContainer = new JPanel();
+	private final JPanel layoutPanel = new JPanel();
 
 	// Handle overall session data
 	private final JPanel overallPanel = new JPanel();
@@ -72,6 +73,8 @@ class LootTrackerPanel extends PluginPanel
 	@Setter
 	private boolean groupLoot;
 
+	private String detailedKey;
+
 	LootTrackerPanel(final ItemManager itemManager)
 	{
 		this.itemManager = itemManager;
@@ -80,7 +83,6 @@ class LootTrackerPanel extends PluginPanel
 		setLayout(new BorderLayout());
 
 		// Create layout panel for wrapping
-		final JPanel layoutPanel = new JPanel();
 		layoutPanel.setLayout(new BoxLayout(layoutPanel, BoxLayout.Y_AXIS));
 		add(layoutPanel, BorderLayout.NORTH);
 
@@ -129,6 +131,30 @@ class LootTrackerPanel extends PluginPanel
 		add(errorPanel);
 	}
 
+	private void showDefaultView()
+	{
+		this.detailedKey = null;
+		rebuild();
+	}
+
+	private void showDetailedView(LootTrackerBox parentBox)
+	{
+		this.detailedKey = parentBox.getId();
+
+		logsContainer.removeAll();
+
+		for (LootTrackerRecord record : parentBox.getRecords())
+		{
+			buildBox(record);
+		}
+
+		overallKillsLabel.setText(htmlLabel("Total count: ", parentBox.getTotalKills()));
+		overallGpLabel.setText(htmlLabel("Total value: ", parentBox.getTotalPrice()));
+
+		logsContainer.revalidate();
+		logsContainer.repaint();
+	}
+
 	void loadHeaderIcon(BufferedImage img)
 	{
 		overallIcon.setIcon(new ImageIcon(img));
@@ -143,8 +169,13 @@ class LootTrackerPanel extends PluginPanel
 	{
 		final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
 		final LootTrackerRecord record = new LootTrackerRecord(eventName, subTitle, items);
+
 		records.add(record);
-		buildBox(record);
+
+		if (detailedKey == null || eventName.equals(detailedKey))
+		{
+			buildBox(record);
+		}
 	}
 
 	/**
@@ -166,7 +197,7 @@ class LootTrackerPanel extends PluginPanel
 	 */
 	private void buildBox(LootTrackerRecord record)
 	{
-		if (groupLoot)
+		if (groupLoot && detailedKey == null)
 		{
 			for (LootTrackerBox box : boxes)
 			{
@@ -189,6 +220,10 @@ class LootTrackerPanel extends PluginPanel
 		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getSubTitle());
 		box.combine(record);
 
+		// Create popup menu
+		final JPopupMenu popupMenu = new JPopupMenu();
+		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+
 		// Create reset menu
 		final JMenuItem reset = new JMenuItem("Reset");
 		reset.addActionListener(e ->
@@ -199,11 +234,19 @@ class LootTrackerPanel extends PluginPanel
 			logsContainer.remove(box);
 			logsContainer.repaint();
 		});
-
-		// Create popup menu
-		final JPopupMenu popupMenu = new JPopupMenu();
-		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		popupMenu.add(reset);
+
+		if (groupLoot)
+		{
+			// Create details menu
+			final JMenuItem details = new JMenuItem("View details");
+			details.addActionListener(e ->
+			{
+				showDetailedView(box);
+			});
+			popupMenu.add(details);
+		}
+
 		box.setComponentPopupMenu(popupMenu);
 
 		// Add box to panel

@@ -50,6 +50,8 @@ class LootTrackerBox extends JPanel
 	private final JLabel priceLabel = new JLabel();
 	private final JLabel subTitleLabel = new JLabel();
 	private final ItemManager itemManager;
+
+	@Getter
 	private final String id;
 
 	@Getter
