@@ -33,6 +33,7 @@ import java.util.Arrays;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.client.config.ConfigManager;
@@ -64,6 +65,8 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_JEWELLERY_TELEPORT_ICON = "jewelleryIcon";
 	static final String CONFIG_KEY_SCROLL_TELEPORT_ICON = "scrollIcon";
 	static final String CONFIG_KEY_MISC_TELEPORT_ICON = "miscellaneousTeleportIcon";
+	static final String CONFIG_KEY_QUEST_START_ICON = "questStartIcon";
+	static final String CONFIG_KEY_QUEST_START_TOOLTIPS = "questStartTooltips";
 
 	static
 	{
@@ -127,11 +130,25 @@ public class WorldMapPlugin extends Plugin
 					if (config.agilityShortcutTooltips())
 					{
 						int agilityLevel = client.getRealSkillLevel(Skill.AGILITY);
+
 						Arrays.stream(AgilityShortcutLocation.values())
 							.map(value -> new AgilityShortcutPoint(value, config.agilityShortcutLevelIcon() && value.getLevelReq() > agilityLevel ? NOPE_ICON : BLANK_ICON))
 							.forEach(worldMapPointManager::add);
 					}
 					break;
+				case CONFIG_KEY_QUEST_START_TOOLTIPS:
+					if (config.questStartTooltips())
+					{
+						Arrays.stream(QuestStartLocation.values())
+							.map(value -> new QuestStartPoint(value, BLANK_ICON))
+							.forEach(worldMapPointManager::add);
+					}
+					else
+					{
+						worldMapPointManager.removeIf(QuestStartPoint.class::isInstance);
+					}
+				case CONFIG_KEY_QUEST_START_ICON:
+					// TODO
 				case CONFIG_KEY_NORMAL_TELEPORT_ICON:
 				case CONFIG_KEY_ANCIENT_TELEPORT_ICON:
 				case CONFIG_KEY_LUNAR_TELEPORT_ICON:
@@ -163,6 +180,12 @@ public class WorldMapPlugin extends Plugin
 				.map(value -> new AgilityShortcutPoint(value, BLANK_ICON))
 				.forEach(worldMapPointManager::add);
 		}
+		if (config.questStartTooltips())
+		{
+			Arrays.stream(QuestStartLocation.values())
+				.map(value -> new QuestStartPoint(value, BLANK_ICON))
+				.forEach(worldMapPointManager::add);
+		}
 
 		if (config.normalTeleportIcon()
 			|| config.ancientTeleportIcon()
@@ -181,6 +204,7 @@ public class WorldMapPlugin extends Plugin
 	{
 		worldMapPointManager.removeIf(FairyRingPoint.class::isInstance);
 		worldMapPointManager.removeIf(AgilityShortcutPoint.class::isInstance);
+		worldMapPointManager.removeIf(QuestStartPoint.class::isInstance);
 		worldMapPointManager.removeIf(TeleportPoint.class::isInstance);
 	}
 
