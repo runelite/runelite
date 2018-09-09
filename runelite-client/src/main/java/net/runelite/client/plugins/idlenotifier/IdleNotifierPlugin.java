@@ -511,14 +511,18 @@ public class IdleNotifierPlugin extends Plugin
 
 		// Reset animation idle timer
 		lastAnimating = Instant.now();
-		if (client.getGameState() == GameState.LOGIN_SCREEN || local == null || local.getAnimation() != lastAnimation)
+		if (client.getGameState() == GameState.LOGIN_SCREEN
+			|| local == null
+			|| (local.getAnimation() != IDLE && local.getAnimation() != lastAnimation))
 		{
 			lastAnimation = IDLE;
 		}
 
 		// Reset combat idle timer
 		lastInteracting = Instant.now();
-		if (client.getGameState() == GameState.LOGIN_SCREEN || local == null || local.getInteracting() != lastInteract)
+		if (client.getGameState() == GameState.LOGIN_SCREEN
+			|| local == null
+			|| (local.getInteracting() != null && local.getInteracting() != lastInteract))
 		{
 			lastInteract = null;
 		}

@@ -192,6 +192,26 @@ public class IdleNotifierPluginTest
 	}
 
 	@Test
+	public void checkAnimationResetMouse()
+	{
+		when(player.getAnimation()).thenReturn(AnimationID.MINING_MOTHERLODE_INFERNAL);
+		AnimationChanged animationChanged = new AnimationChanged();
+		animationChanged.setActor(player);
+		plugin.onAnimationChanged(animationChanged);
+		plugin.onGameTick(new GameTick());
+
+		when(client.getMouseIdleTicks()).thenReturn(1);
+		when(player.getAnimation()).thenReturn(AnimationID.IDLE);
+		plugin.onAnimationChanged(animationChanged);
+		plugin.onGameTick(new GameTick());
+
+		when(client.getMouseIdleTicks()).thenReturn(12);
+		plugin.onGameTick(new GameTick());
+		plugin.onGameTick(new GameTick());
+		verify(notifier).notify("[" + PLAYER_NAME + "] is now idle!");
+	}
+
+	@Test
 	public void checkCombatIdle()
 	{
 		when(player.getInteracting()).thenReturn(monster);
