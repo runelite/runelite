@@ -68,7 +68,7 @@ enum TeleportLocationData
 	HARMONY_ISLAND(TeleportType.ARCEUUS_MAGIC, "Harmony Island", 65, new WorldPoint(3797, 2866, 0), "harmony_island_teleport_icon.png"),
 	CEMETERY(TeleportType.ARCEUUS_MAGIC, "Cemetery", 71, new WorldPoint(2978, 3763, 0), "cemetery_teleport_icon.png"),
 	BARROWS(TeleportType.ARCEUUS_MAGIC, "Barrows", 83, new WorldPoint(3565, 3315, 0), "barrows_teleport_icon.png"),
-	APE_ATOLL_ARCEUUS(TeleportType.ARCEUUS_MAGIC, "Ape Atoll", 90, new WorldPoint(2771, 9102, 0), "ape_atoll_teleport_icon_arceuus.png"),
+	APE_ATOLL_ARCEUUS(TeleportType.ARCEUUS_MAGIC, "Ape Atoll", 90, new WorldPoint(2770, 2703, 0), "ape_atoll_teleport_icon_arceuus.png"),
 
 	// Jewellery
 	BARBARIAN_ASSAULT(TeleportType.JEWELLERY, "Games Necklace" , "Barbarian Assault", new WorldPoint(2520, 3571, 0), "games_necklace_teleport_icon.png"),
@@ -120,12 +120,40 @@ enum TeleportLocationData
 	STRONGHOLD_OF_SECURITY(TeleportType.OTHER, "Skull Sceptre", "Stronghold of Security", new WorldPoint(3081, 3421, 0), "skull_sceptre_teleport_icon.png"),
 	MYTHS_GUILD(TeleportType.OTHER, "Mythical Cape", "Myth's Guild", new WorldPoint(2458, 2851, 0), "mythical_cape_teleport_icon.png"),
 	ECTOFUNTUS(TeleportType.OTHER, "Ectophial", "Ectofuntus", new WorldPoint(3660, 3522, 0), "ectophial_teleport_icon.png"),
-	CHAMPIONS_GUILD_CHRONICLE(TeleportType.OTHER, "Chronicle", "Champion's Guild", new WorldPoint(3202, 3357, 0), "chronicle_teleport_icon.png"),
+	CHAMPIONS_GUILD_CHRONICLE(TeleportType.OTHER, "Chronicle", "Champions' Guild", new WorldPoint(3202, 3357, 0), "chronicle_teleport_icon.png"),
 	GRAND_TREE(TeleportType.OTHER, "Royal Seed Pod", "Grand Tree", new WorldPoint(2465, 3495, 0), "royal_seed_pod_teleport_icon.png"),
 	RELLEKKKA_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Rellekka", new WorldPoint(2664, 3643, 0), "enchanted_lyre_teleport_icon.png"),
 	WATERBIRTH_ISLAND_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Waterbirth Island", new WorldPoint(2550, 3756, 0), "enchanted_lyre_teleport_icon.png"),
 	NEITIZNOT_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Neitiznot", new WorldPoint(2336, 3801, 0), "enchanted_lyre_teleport_icon.png"),
-	JATIZSO_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Jatizso", new WorldPoint(2409, 3809, 0), "enchanted_lyre_teleport_icon.png"),
+	JATIZSO_LYRE(TeleportType.OTHER, "Enchanted Lyre", "Jatizso", new WorldPoint(2409,  3809, 0), "enchanted_lyre_teleport_icon.png"),
+	WEISS_ICY_BASALT(TeleportType.OTHER, "Icy Basalt", "Weiss", new WorldPoint(2846, 3940, 0), "icy_basalt_teleport_icon.png"),
+	TROLL_STRONGHOLD_STONY_BASALT(TeleportType.OTHER, "Stony Basalt", "Troll Stronghold", new WorldPoint(2838, 3693, 0), "stony_basalt_teleport_icon.png"),
+	KHAREDSTS_MEMOIRS_HOSIDIUS(TeleportType.OTHER, "Kharedst's Memoirs", "Lunch by the Lancalliums (Hosidius)", new WorldPoint(1713, 3612, 0), "kharedsts_memoirs_teleport_icon.png"),
+	KHAREDSTS_MEMOIRS_PISCARILIUS(TeleportType.OTHER, "Kharedst's Memoirs", "The Fisher's Flute (Piscarilius)", new WorldPoint(1802, 3748, 0), "kharedsts_memoirs_teleport_icon.png"),
+	KHAREDSTS_MEMOIRS_SHAYZIEN(TeleportType.OTHER, "Kharedst's Memoirs", "Hearsay and History (Shayzien)", new WorldPoint(1476, 3580, 0), "kharedsts_memoirs_teleport_icon.png"),
+
+	// Wilderness
+	OBELISK_13(TeleportType.OTHER, "Obelisk", "13", new WorldPoint(3156, 3620, 0), "obelisk_icon.png"),
+	OBELISK_19(TeleportType.OTHER, "Obelisk", "19", new WorldPoint(3227, 3667, 0), "obelisk_icon.png"),
+	OBELISK_27(TeleportType.OTHER, "Obelisk", "27", new WorldPoint(3035, 3732, 0), "obelisk_icon.png"),
+	OBELISK_35(TeleportType.OTHER, "Obelisk", "35", new WorldPoint(3106, 3794, 0), "obelisk_icon.png"),
+	OBELISK_44(TeleportType.OTHER, "Obelisk", "44", new WorldPoint(2980, 3866, 0), "obelisk_icon.png"),
+	OBELISK_50(TeleportType.OTHER, "Obelisk", "50", new WorldPoint(3307, 3916, 0), "obelisk_icon.png"),
+
+	// Achievement Diary
+	ARDOUGNE_CLOAK_MONASTERY(TeleportType.OTHER, "Ardougne Cloak", "Monastery", new WorldPoint(2606, 3222, 0), "ardougne_cloak_icon.png"),
+	ARDOUGNE_CLOAK_FARM(TeleportType.OTHER, "Ardougne Cloak", "Farm", new WorldPoint(2673, 3375, 0), "ardougne_cloak_icon.png"),
+	EXPLORERS_RING(TeleportType.OTHER, "Explorer's Ring",  new WorldPoint(3052, 3292, 0), "explorers_ring_icon.png"),
+	KARAMJA_GLOVES_GEM_MINE(TeleportType.OTHER, "Karamja Gloves", "Gem Mine (Underground)", new WorldPoint(2827, 2997, 0), "karamja_gloves_icon.png"),
+	KARAMJA_GLOVES_DURADEL(TeleportType.OTHER, "Karamja Gloves", "Duradel", new WorldPoint(2870, 2981, 0), "karamja_gloves_icon.png"),
+	DESERT_AMULET_NARDAH(TeleportType.OTHER, "Desert Amulet", "Nardah", new WorldPoint(3432, 2914, 0), "desert_amulet_icon.png"),
+	DESERT_AMULKT_KALPHITE_CAVE(TeleportType.OTHER, "Desert Amulet", "Kalphite Cave", new WorldPoint(3322, 3122, 0), "desert_amulet_icon.png"),
+	MORYTANIA_LEGS_SLIME_PIT(TeleportType.OTHER, "Morytania Legs", "Slime Pit (Underground)", new WorldPoint(3654, 3516, 0), "morytania_legs_icon.png"),
+	MORYTANIA_LEGS_BURGH_DE_ROTT(TeleportType.OTHER, "Morytania Legs", "Burgh de Rott", new WorldPoint(3482, 3231, 0), "morytania_legs_icon.png"),
+	FREMENNIK_SEA_BOOTS(TeleportType.OTHER, "Fremennik Sea Boots",  new WorldPoint(2640, 3675, 0), "fremennik_boots_icon.png"),
+	KANDARIN_HEADGEAR(TeleportType.OTHER, "Kandarin Headgear",  new WorldPoint(2729, 3411, 0), "kandarin_headgear_icon.png"),
+	WILDERNESS_SWORD(TeleportType.OTHER, "Wilderness Sword", new WorldPoint(3377, 3891, 0), "wilderness_sword_icon.png"),
+	WESTERN_BANNER(TeleportType.OTHER, "Western Banner",  new WorldPoint(2329, 3685, 0), "western_banner_icon.png"),
 
 	// Scrolls
 	DIGSITE_SCROLL(TeleportType.SCROLL, "Digsite Teleport", new WorldPoint(3324, 3412, 0), "scroll_teleport_icon.png"),

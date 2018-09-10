@@ -80,7 +80,7 @@ public class InterfaceStylesPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		clientThread.invokeLater(() ->
+		clientThread.invoke(() ->
 		{
 			overrideSprites();
 			overrideWidgetSprites();
@@ -92,7 +92,7 @@ public class InterfaceStylesPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		clientThread.invokeLater(() ->
+		clientThread.invoke(() ->
 		{
 			restoreWidgetDimensions();
 			removeGameframe();
@@ -104,7 +104,7 @@ public class InterfaceStylesPlugin extends Plugin
 	{
 		if (config.getGroup().equals("interfaceStyles"))
 		{
-			clientThread.invokeLater(() ->
+			clientThread.invoke(() ->
 			{
 				removeGameframe();
 				overrideSprites();
@@ -193,6 +193,10 @@ public class InterfaceStylesPlugin extends Plugin
 		catch (IOException ex)
 		{
 			log.debug("Unable to load image: ", ex);
+		}
+		catch (IllegalArgumentException ex)
+		{
+			log.debug("Input stream of file path " + filePath + " could not be read: ", ex);
 		}
 
 		return null;

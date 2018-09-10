@@ -52,6 +52,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.LootManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.rs.ClientUpdateCheckMode;
@@ -136,6 +137,9 @@ public class RuneLite
 
 	@Inject
 	private Provider<WorldMapOverlay> worldMapOverlay;
+
+	@Inject
+	private Provider<LootManager> lootManager;
 
 	@Inject
 	@Nullable
@@ -232,6 +236,9 @@ public class RuneLite
 		// Load user configuration
 		configManager.load();
 
+		// Load the session, including saved configuration
+		sessionManager.loadSession();
+
 		// Tell the plugin manager if client is outdated or not
 		pluginManager.setOutdated(isOutdated);
 
@@ -245,9 +252,6 @@ public class RuneLite
 
 		// Start client session
 		clientSessionManager.start();
-
-		// Load the session, including saved configuration
-		sessionManager.loadSession();
 
 		// Initialize UI
 		clientUI.open(this);
@@ -273,6 +277,7 @@ public class RuneLite
 			eventBus.register(menuManager.get());
 			eventBus.register(chatMessageManager.get());
 			eventBus.register(commandManager.get());
+			eventBus.register(lootManager.get());
 
 			// Add core overlays
 			WidgetOverlay.createOverlays(client).forEach(overlayManager::add);

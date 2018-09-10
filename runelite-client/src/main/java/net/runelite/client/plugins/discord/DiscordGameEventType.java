@@ -77,6 +77,7 @@ enum DiscordGameEventType
 	BOSS_SKOTIZO("Skotizo", DiscordAreaType.BOSSES, 6810),
 	BOSS_SMOKE_DEVIL("Thermonuclear smoke devil", DiscordAreaType.BOSSES, 9363, 9619),
 	BOSS_VORKATH("Vorkath", DiscordAreaType.BOSSES, 9023),
+	BOSS_WINTERTODT("Wintertodt", DiscordAreaType.BOSSES, 6462),
 	BOSS_ZULRAH("Zulrah", DiscordAreaType.BOSSES, 9007),
 
 	// Cities
@@ -137,6 +138,7 @@ enum DiscordGameEventType
 	CITY_UZER("Uzer" , DiscordAreaType.CITIES, 13872),
 	CITY_VARROCK("Varrock" , DiscordAreaType.CITIES, 12596, 12597, 12598, 12852, 12853, 12854, 13108, 13109, 13110),
 	CITY_WITCHHAVEN("Witchaven" , DiscordAreaType.CITIES, 10803),
+	CITY_WOODCUTTING_GUILD("Woodcutting Guild", DiscordAreaType.CITIES, 6454, 6198, 6298),
 	CITY_YANILLE("Yanille" , DiscordAreaType.CITIES, 10288, 10032),
 	CITY_ZANARIS("Zanaris" , DiscordAreaType.CITIES, 9285, 9541, 9540, 9797),
 	CITY_ZULANDRA("Zul-Andra" , DiscordAreaType.CITIES, 8751),

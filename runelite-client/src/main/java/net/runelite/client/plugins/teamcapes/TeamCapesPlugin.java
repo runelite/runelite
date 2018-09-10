@@ -115,7 +115,6 @@ public class TeamCapesPlugin extends Plugin
 						Comparator.comparing(Map.Entry<Integer, Integer>::getValue, Comparator.reverseOrder())
 								.thenComparingInt(Map.Entry::getKey)
 					)
-					.limit(5)
 					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 	}
 

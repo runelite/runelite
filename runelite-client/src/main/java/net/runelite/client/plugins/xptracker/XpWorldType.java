@@ -29,6 +29,7 @@ import net.runelite.api.WorldType;
 enum XpWorldType
 {
 	NORMAL,
+	TOURNEY,
 	DMM,
 	SDMM;
 
@@ -36,6 +37,8 @@ enum XpWorldType
 	{
 		switch (type)
 		{
+			case TOURNAMENT:
+				return TOURNEY;
 			case DEADMAN:
 				return DMM;
 			case SEASONAL_DEADMAN:

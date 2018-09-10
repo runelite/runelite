@@ -96,4 +96,26 @@ public class ColorUtilTest
 			assertEquals(hex, ColorUtil.colorToHexCode(color));
 		});
 	}
+
+	@Test
+	public void isFullyTransparent()
+	{
+		for (Color color : COLOR_HEXSTRING_MAP.keySet())
+		{
+			assert(!ColorUtil.isFullyTransparent(color));
+		}
+		assert(ColorUtil.isFullyTransparent(new Color(0, 0, 0, 0)));
+		assert(!ColorUtil.isFullyTransparent(new Color(0, 0, 0, 1)));
+	}
+
+	@Test
+	public void isNotFullyTransparent()
+	{
+		for (Color color : COLOR_HEXSTRING_MAP.keySet())
+		{
+			assert(ColorUtil.isNotFullyTransparent(color));
+		}
+		assert(!ColorUtil.isNotFullyTransparent(new Color(0, 0, 0, 0)));
+		assert(ColorUtil.isNotFullyTransparent(new Color(0, 0, 0, 1)));
+	}
 }

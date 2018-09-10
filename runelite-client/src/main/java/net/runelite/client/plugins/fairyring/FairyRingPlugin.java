@@ -51,6 +51,7 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ChatboxInputManager;
 import net.runelite.client.plugins.Plugin;
@@ -83,9 +84,11 @@ public class FairyRingPlugin extends Plugin
 	@Inject
 	private ChatboxInputManager chatboxInputManager;
 
+	@Inject
+	private ClientThread clientThread;
+
 	private Widget searchBtn;
 	private boolean chatboxOpenLastTick = false;
-	private boolean clearFilter = false;
 	private Collection<CodeWidgets> codes = null;
 
 	@Data
@@ -198,23 +201,18 @@ public class FairyRingPlugin extends Plugin
 	{
 		updateFilter("");
 		searchBtn.setAction(1, MENU_CLOSE);
-		chatboxInputManager.openInputWindow("Filter fairy rings", "", ChatboxInputManager.NO_LIMIT, this::updateFilter, s ->
-		{
-			// We can't run it right now because scripts can't run other scripts in their callbacks
-			clearFilter = true;
-			searchBtn.setAction(1, MENU_OPEN);
-		});
+		chatboxInputManager.openInputWindow("Filter fairy rings", "", ChatboxInputManager.NO_LIMIT,
+			s -> clientThread.invokeLater(() -> updateFilter(s)),
+			s ->
+			{
+				clientThread.invokeLater(() -> updateFilter(""));
+				searchBtn.setAction(1, MENU_OPEN);
+			});
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick t)
 	{
-		if (clearFilter)
-		{
-			updateFilter("");
-			clearFilter = false;
-		}
-
 		// This has to happen because the only widget that gets hidden is the tli one
 		Widget fairyRingTeleportButton = client.getWidget(WidgetInfo.FAIRY_RING_TELEPORT_BUTTON);
 		boolean fairyRingWidgetOpen = fairyRingTeleportButton != null && !fairyRingTeleportButton.isHidden();

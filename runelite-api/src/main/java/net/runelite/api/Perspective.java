@@ -328,6 +328,11 @@ public class Perspective
 		final int sceneX = localLocation.getSceneX();
 		final int sceneY = localLocation.getSceneY();
 
+		if (sceneX < 0 || sceneY < 0 || sceneX >= SCENE_SIZE || sceneY >= SCENE_SIZE)
+		{
+			return null;
+		}
+
 		int tilePlane = plane;
 		if (plane < Constants.MAX_Z - 1 && (tileSettings[1][sceneX][sceneY] & TILE_FLAG_BRIDGE) == TILE_FLAG_BRIDGE)
 		{

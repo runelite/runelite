@@ -82,11 +82,11 @@ public class ChatKeyboardListener implements KeyListener
 						replacement = "";
 					}
 
-					clientThread.invokeLater(() -> client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, replacement));
+					clientThread.invoke(() -> client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, replacement));
 				}
 				break;
 			case KeyEvent.VK_BACK_SPACE:
-				clientThread.invokeLater(() -> client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, ""));
+				clientThread.invoke(() -> client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, ""));
 				break;
 		}
 	}

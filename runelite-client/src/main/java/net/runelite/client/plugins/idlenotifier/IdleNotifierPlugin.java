@@ -30,17 +30,25 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
+import net.runelite.api.AnimationID;
 import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Hitsplat;
+import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.HitsplatApplied;
+import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -53,7 +61,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class IdleNotifierPlugin extends Plugin
 {
-	private static final int LOGOUT_WARNING_AFTER_TICKS = 14000; // 4 minutes and 40 seconds
+	private static final int LOGOUT_WARNING_AFTER_TICKS = 280 * 50; // 4 minutes and 40 seconds
+	private static final int LOGOUT_WARNING_AFTER_TICKS_IN_COMBAT = 1140 * 50; // 19 minutes
+	private static final int HIGHEST_MONSTER_ATTACK_SPEED = 8; // Except Scarab Mage, but they are with other monsters
 	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
 
 	@Inject
@@ -65,15 +75,15 @@ public class IdleNotifierPlugin extends Plugin
 	@Inject
 	private IdleNotifierConfig config;
 
-	private Actor lastOpponent;
 	private Instant lastAnimating;
+	private int lastAnimation = AnimationID.IDLE;
 	private Instant lastInteracting;
-	private boolean notifyIdle = false;
+	private Actor lastInteract;
 	private boolean notifyHitpoints = true;
 	private boolean notifyPrayer = true;
 	private boolean notifyIdleLogout = true;
 	private boolean notify6HourLogout = true;
-
+	private int lastCombatCountdown = 0;
 	private Instant sixHourWarningTime;
 	private boolean ready;
 
@@ -126,6 +136,7 @@ public class IdleNotifierPlugin extends Plugin
 			case CRAFTING_GLASSBLOWING:
 			case CRAFTING_SPINNING:
 			case CRAFTING_BATTLESTAVES:
+			case CRAFTING_LEATHER:
 			/* Fletching(Cutting, Stringing) */
 			case FLETCHING_BOW_CUTTING:
 			case FLETCHING_STRING_NORMAL_SHORTBOW:
@@ -156,6 +167,7 @@ public class IdleNotifierPlugin extends Plugin
 			case FISHING_OILY_ROD:
 			case FISHING_KARAMBWAN:
 			case FISHING_CRUSHING_INFERNAL_EELS:
+			case FISHING_CUTTING_SACRED_EELS:
 			case FISHING_BAREHAND:
 			/* Mining(Normal) */
 			case MINING_BRONZE_PICKAXE:
@@ -169,6 +181,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_DRAGON_PICKAXE_ORN:
 			case MINING_INFERNAL_PICKAXE:
 			case MINING_3A_PICKAXE:
+			case DENSE_ESSENCE_CHIPPING:
 			/* Mining(Motherlode) */
 			case MINING_MOTHERLODE_BRONZE:
 			case MINING_MOTHERLODE_IRON:
@@ -188,11 +201,54 @@ public class IdleNotifierPlugin extends Plugin
 			case MAGIC_CHARGING_ORBS:
 			case MAGIC_LUNAR_STRING_JEWELRY:
 			case MAGIC_LUNAR_BAKE_PIE:
+			case MAGIC_MAKE_TABLET:
 			/* Prayer */
 			case USING_GILDED_ALTAR:
 				resetTimers();
-				notifyIdle = true;
+				lastAnimation = animation;
 				break;
+			case IDLE:
+				break;
+			default:
+				// On unknown animation simply assume the animation is invalid and dont throw notification
+				lastAnimation = IDLE;
+		}
+	}
+
+	@Subscribe
+	public void onInteractingChanged(InteractingChanged event)
+	{
+		final Actor source = event.getSource();
+		if (source != client.getLocalPlayer())
+		{
+			return;
+		}
+
+		final Actor target = event.getTarget();
+
+		// Reset last interact
+		if (target != null)
+		{
+			lastInteract = null;
+		}
+
+		final boolean isNpc = target instanceof NPC;
+
+		// If this is not NPC, do not process as we are not interested in other entities
+		if (!isNpc)
+		{
+			return;
+		}
+
+		final NPC npc = (NPC) target;
+		final NPCComposition npcComposition = npc.getComposition();
+		final List<String> npcMenuActions = Arrays.asList(npcComposition.getActions());
+
+		if (npcMenuActions.contains("Attack"))
+		{
+			// Player is most likely in combat with attack-able NPC
+			resetTimers();
+			lastInteract = target;
 		}
 	}
 
@@ -205,6 +261,9 @@ public class IdleNotifierPlugin extends Plugin
 
 		switch (state)
 		{
+			case LOGIN_SCREEN:
+				resetTimers();
+				break;
 			case LOGGING_IN:
 			case HOPPING:
 			case CONNECTION_LOST:
@@ -215,8 +274,27 @@ public class IdleNotifierPlugin extends Plugin
 				{
 					sixHourWarningTime = Instant.now().plus(SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION);
 					ready = false;
+					resetTimers();
 				}
+
 				break;
+		}
+	}
+
+	@Subscribe
+	public void onHitsplatApplied(HitsplatApplied event)
+	{
+		if (event.getActor() != client.getLocalPlayer())
+		{
+			return;
+		}
+
+		final Hitsplat hitsplat = event.getHitsplat();
+
+		if (hitsplat.getHitsplatType() == Hitsplat.HitsplatType.DAMAGE
+			|| hitsplat.getHitsplatType() == Hitsplat.HitsplatType.BLOCK)
+		{
+			lastCombatCountdown = HIGHEST_MONSTER_ATTACK_SPEED;
 		}
 	}
 
@@ -230,13 +308,15 @@ public class IdleNotifierPlugin extends Plugin
 		final Color combatIdleColor = config.getCombatIdleFlashColor();
 		final Color hitpointsColor = config.getHitpointsFlashColor();
 		final Color prayerColor = config.getPrayerFlashColor();
+		lastCombatCountdown = Math.max(lastCombatCountdown - 1, 0);
 
-		if (client.getGameState() != GameState.LOGGED_IN || local == null)
+		if (client.getGameState() != GameState.LOGGED_IN || local == null || client.getMouseIdleTicks() < 10)
 		{
+			resetTimers();
 			return;
 		}
 
-		if (checkIdleLogout())
+		if (config.logoutIdle() && checkIdleLogout())
 		{
 			notifier.notify("[" + local.getName() + "] is about to log out from idling too long!", logoutIdleColor);
 		}
@@ -319,30 +399,25 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkOutOfCombat(Duration waitDuration, Player local)
 	{
-		Actor opponent = local.getInteracting();
-		boolean isPlayer = opponent instanceof Player;
-
-		if (opponent != null
-			&& !isPlayer
-			&& opponent.getCombatLevel() > 0)
+		if (lastInteract == null)
 		{
-			resetTimers();
-			lastOpponent = opponent;
-		}
-		else if (opponent == null)
-		{
-			lastOpponent = null;
+			return false;
 		}
 
-		if (lastOpponent != null && opponent == lastOpponent)
+		final Actor interact = local.getInteracting();
+
+		if (interact == null)
+		{
+			if (lastInteracting != null && Instant.now().compareTo(lastInteracting.plus(waitDuration)) >= 0)
+			{
+				lastInteract = null;
+				lastInteracting = null;
+				return true;
+			}
+		}
+		else
 		{
 			lastInteracting = Instant.now();
-		}
-
-		if (lastInteracting != null && Instant.now().compareTo(lastInteracting.plus(waitDuration)) >= 0)
-		{
-			lastInteracting = null;
-			return true;
 		}
 
 		return false;
@@ -353,7 +428,16 @@ public class IdleNotifierPlugin extends Plugin
 		if (client.getMouseIdleTicks() > LOGOUT_WARNING_AFTER_TICKS
 			&& client.getKeyboardIdleTicks() > LOGOUT_WARNING_AFTER_TICKS)
 		{
-			if (notifyIdleLogout)
+			if (lastCombatCountdown > 0)
+			{
+				if (client.getMouseIdleTicks() > LOGOUT_WARNING_AFTER_TICKS_IN_COMBAT
+					&& client.getKeyboardIdleTicks() > LOGOUT_WARNING_AFTER_TICKS_IN_COMBAT && notifyIdleLogout)
+				{
+					notifyIdleLogout = false;
+					return true;
+				}
+			}
+			else if (notifyIdleLogout)
 			{
 				notifyIdleLogout = false;
 				return true;
@@ -392,21 +476,25 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkAnimationIdle(Duration waitDuration, Player local)
 	{
-		if (notifyIdle)
+		if (lastAnimation == IDLE)
 		{
-			if (lastAnimating != null)
+			return false;
+		}
+
+		final int animation = local.getAnimation();
+
+		if (animation == IDLE)
+		{
+			if (lastAnimating != null && Instant.now().compareTo(lastAnimating.plus(waitDuration)) >= 0)
 			{
-				if (Instant.now().compareTo(lastAnimating.plus(waitDuration)) >= 0)
-				{
-					notifyIdle = false;
-					lastAnimating = null;
-					return true;
-				}
+				lastAnimation = IDLE;
+				lastAnimating = null;
+				return true;
 			}
-			else if (local.getAnimation() == IDLE)
-			{
-				lastAnimating = Instant.now();
-			}
+		}
+		else
+		{
+			lastAnimating = Instant.now();
 		}
 
 		return false;
@@ -414,12 +502,23 @@ public class IdleNotifierPlugin extends Plugin
 
 	private void resetTimers()
 	{
-		// Reset animation idle timer
-		notifyIdle = false;
-		lastAnimating = null;
+		final Player local = client.getLocalPlayer();
 
 		// Reset combat idle timer
-		lastOpponent = null;
+		lastCombatCountdown = 0;
+
+		// Reset animation idle timer
+		lastAnimating = null;
+		if (client.getGameState() == GameState.LOGIN_SCREEN || local == null || local.getAnimation() != lastAnimation)
+		{
+			lastAnimation = IDLE;
+		}
+
+		// Reset combat idle timer
 		lastInteracting = null;
+		if (client.getGameState() == GameState.LOGIN_SCREEN || local == null || local.getInteracting() != lastInteract)
+		{
+			lastInteract = null;
+		}
 	}
 }

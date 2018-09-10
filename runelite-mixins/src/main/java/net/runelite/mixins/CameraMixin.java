@@ -49,6 +49,8 @@ public abstract class CameraMixin implements RSClient
 	@Inject
 	static int lastPitch = 128;
 
+	@Inject
+	static int lastPitchTarget = 128;
 
 	@Inject
 	public void setCameraPitchRelaxerEnabled(boolean enabled)
@@ -68,12 +70,33 @@ public abstract class CameraMixin implements RSClient
 		}
 	}
 
-
 	@FieldHook("cameraPitchTarget")
+	@Inject
+	static void onCameraPitchTargetChanged(int idx)
+	{
+		int newPitch = client.getCameraPitchTarget();
+		int pitch = newPitch;
+		if (pitchRelaxEnabled)
+		{
+			// This works because the vanilla camera movement code only moves %2
+			if (lastPitchTarget > STANDARD_PITCH_MAX && newPitch == STANDARD_PITCH_MAX)
+			{
+				pitch = lastPitchTarget;
+				if (pitch > NEW_PITCH_MAX)
+				{
+					pitch = NEW_PITCH_MAX;
+				}
+				client.setCameraPitchTarget(pitch);
+			}
+		}
+		lastPitchTarget = pitch;
+	}
+
+	@FieldHook("cameraPitch")
 	@Inject
 	static void onCameraPitchChanged(int idx)
 	{
-		int newPitch = client.getCameraPitchTarget();
+		int newPitch = client.getCameraPitch();
 		int pitch = newPitch;
 		if (pitchRelaxEnabled)
 		{
@@ -85,7 +108,7 @@ public abstract class CameraMixin implements RSClient
 				{
 					pitch = NEW_PITCH_MAX;
 				}
-				client.setCameraPitchTarget(pitch);
+				client.setCameraPitch(pitch);
 			}
 		}
 		lastPitch = pitch;

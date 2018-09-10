@@ -26,12 +26,10 @@
 
 package net.runelite.client.plugins.skillcalculator;
 
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.Client;
@@ -71,15 +69,7 @@ class SkillCalculatorPanel extends PluginPanel
 		final UICalculatorInputArea uiInput = new UICalculatorInputArea();
 		uiInput.setBorder(new EmptyBorder(15, 0, 15, 0));
 		uiInput.setBackground(ColorScheme.DARK_GRAY_COLOR);
-
 		uiCalculator = new SkillCalculator(client, uiInput);
-
-		JLabel title = new JLabel("Skilling Calculator");
-		title.setBorder(new EmptyBorder(0, 1, 8, 0));
-		title.setForeground(Color.WHITE);
-
-		add(title, c);
-		c.gridy++;
 
 		add(tabGroup, c);
 		c.gridy++;

@@ -38,14 +38,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -64,7 +62,6 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
@@ -89,7 +86,7 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.ComboBoxListRenderer;
 import net.runelite.client.ui.components.IconButton;
 import net.runelite.client.ui.components.IconTextField;
-import net.runelite.client.util.SwingUtil;
+import net.runelite.client.util.ImageUtil;
 
 @Slf4j
 public class ConfigPanel extends PluginPanel
@@ -124,20 +121,10 @@ public class ConfigPanel extends PluginPanel
 
 	static
 	{
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				BufferedImage backIcon = ImageIO.read(ConfigPanel.class.getResourceAsStream("config_back_icon.png"));
-				BACK_ICON = new ImageIcon(backIcon);
-				BACK_ICON_HOVER = new ImageIcon(SwingUtil.grayscaleOffset(backIcon, -100));
-				SEARCH = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("search.png")));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+		final BufferedImage backIcon = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "config_back_icon.png");
+		BACK_ICON = new ImageIcon(backIcon);
+		BACK_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(backIcon, -100));
+		SEARCH = new ImageIcon(ImageUtil.getResourceStreamFromClass(IconTextField.class, "search.png"));
 	}
 
 	ConfigPanel(PluginManager pluginManager, ConfigManager configManager, ScheduledExecutorService executorService,
@@ -263,11 +250,6 @@ public class ConfigPanel extends PluginPanel
 
 		topPanel.removeAll();
 		mainPanel.removeAll();
-
-		JLabel title = new JLabel("Configuration", SwingConstants.LEFT);
-		title.setForeground(Color.WHITE);
-
-		topPanel.add(title, BorderLayout.NORTH);
 		topPanel.add(searchBar, BorderLayout.CENTER);
 
 		onSearchBarChanged();

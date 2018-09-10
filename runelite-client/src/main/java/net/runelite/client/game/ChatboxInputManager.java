@@ -30,14 +30,12 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.util.function.Consumer;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.callback.ClientThread;
 
 @Singleton
-@Slf4j
 public class ChatboxInputManager
 {
 	public static final int NO_LIMIT = Integer.MAX_VALUE;
@@ -82,7 +80,7 @@ public class ChatboxInputManager
 		this.changed = changed;
 		this.characterLimit = characterLimit;
 		this.open = true;
-		clientThread.invokeLater(() -> client.runScript(
+		clientThread.invoke(() -> client.runScript(
 			ScriptID.RUNELITE_CHATBOX_INPUT_INIT,
 			text,
 			defaul
@@ -99,7 +97,7 @@ public class ChatboxInputManager
 			return;
 		}
 		this.open = false;
-		clientThread.invokeLater(() -> client.runScript(
+		clientThread.invoke(() -> client.runScript(
 			ScriptID.CLOSE_CHATBOX_INPUT,
 			1,
 			1
@@ -116,30 +114,23 @@ public class ChatboxInputManager
 			int stringStackSize = client.getStringStackSize();
 			int typedKey = client.getIntStack()[--intStackSize];
 			String str = client.getStringStack()[--stringStackSize];
-			int retval = 0;
+			boolean isDone = false;
 
 			switch (typedKey)
 			{
 				case 27: // Escape
 					str = "";
-					if (changed != null)
-					{
-						changed.accept(str);
-					}
 					// fallthrough
 				case '\n':
-					if (done != null)
-					{
-						done.accept(str);
-					}
 					this.open = false;
-					retval = 1;
+					isDone = true;
 					break;
 				case '\b':
 					if (str.length() > 0)
 					{
 						str = str.substring(0, str.length() - 1);
 					}
+					break;
 				default:
 					// If we wanted to do numbers only, we could add a limit here
 					if (typedKey >= 32 && (str.length() < characterLimit))
@@ -153,8 +144,13 @@ public class ChatboxInputManager
 				changed.accept(str);
 			}
 
+			if (isDone && done != null)
+			{
+				done.accept(str);
+			}
+
 			client.getStringStack()[stringStackSize++] = str;
-			client.getIntStack()[intStackSize++] = retval;
+			client.getIntStack()[intStackSize++] = isDone ? 1 : 0;
 			client.setIntStackSize(intStackSize);
 			client.setStringStackSize(stringStackSize);
 		}

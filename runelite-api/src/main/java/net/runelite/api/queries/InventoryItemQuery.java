@@ -33,6 +33,12 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Query;
 
+/**
+ * Used for getting inventory items,deprecated as of existence of item container changed events
+ *
+ * @see net.runelite.api.events.ItemContainerChanged
+ */
+@Deprecated
 @RequiredArgsConstructor
 public class InventoryItemQuery extends Query<Item, InventoryItemQuery>
 {

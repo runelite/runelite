@@ -35,37 +35,45 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
+import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.FontManager;
 
 /**
- * This component is a FlatTextField with an icon on its left side.
+ * This component is a FlatTextField with an icon on its left side, and a clear button (×) on its right side.
  */
 public class IconTextField extends JPanel
 {
+	// To support gifs, the icon needs to be wrapped in a JLabel
+	private final JLabel iconWrapperLabel;
+
 	private final FlatTextField textField;
 
-	//to support gifs, the icon needs to be wrapped in a JLabel
-	private final JLabel iconWrapperLabel;
+	private final JButton clearButton;
 
 	public IconTextField()
 	{
 		setLayout(new BorderLayout());
 
-		this.iconWrapperLabel = new JLabel();
-		this.iconWrapperLabel.setPreferredSize(new Dimension(30, 0));
-		this.iconWrapperLabel.setVerticalAlignment(JLabel.CENTER);
-		this.iconWrapperLabel.setHorizontalAlignment(JLabel.CENTER);
+		iconWrapperLabel = new JLabel();
+		iconWrapperLabel.setPreferredSize(new Dimension(30, 0));
+		iconWrapperLabel.setVerticalAlignment(JLabel.CENTER);
+		iconWrapperLabel.setHorizontalAlignment(JLabel.CENTER);
 
 		textField = new FlatTextField();
 		textField.setBorder(null);
 
-		JTextField innerTxt = textField.getTextField();
+		final JTextField innerTxt = textField.getTextField();
 		innerTxt.removeMouseListener(innerTxt.getMouseListeners()[innerTxt.getMouseListeners().length - 1]);
 
-		MouseListener hoverEffect = new MouseAdapter()
+		final MouseListener hoverEffect = new MouseAdapter()
 		{
 			@Override
 			public void mouseEntered(MouseEvent mouseEvent)
@@ -75,7 +83,7 @@ public class IconTextField extends JPanel
 					return;
 				}
 
-				Color hoverColor = textField.getHoverBackgroundColor();
+				final Color hoverColor = textField.getHoverBackgroundColor();
 
 				if (hoverColor != null)
 				{
@@ -95,8 +103,66 @@ public class IconTextField extends JPanel
 		textField.addMouseListener(hoverEffect);
 		innerTxt.addMouseListener(hoverEffect);
 
+		clearButton = new JButton("×");
+		clearButton.setPreferredSize(new Dimension(30, 0));
+		clearButton.setFont(FontManager.getRunescapeBoldFont());
+		clearButton.setForeground(ColorScheme.PROGRESS_ERROR_COLOR);
+		clearButton.setBorder(null);
+		clearButton.setBorderPainted(false);
+		clearButton.setContentAreaFilled(false);
+		clearButton.setVisible(false);
+
+		// ActionListener for keyboard use (via Tab -> Space)
+		clearButton.addActionListener((l) -> setText(null));
+
+		// MouseListener for hover and click events
+		clearButton.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				setText(null);
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				clearButton.setForeground(Color.PINK);
+				textField.dispatchEvent(mouseEvent);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				clearButton.setForeground(ColorScheme.PROGRESS_ERROR_COLOR);
+				textField.dispatchEvent(mouseEvent);
+			}
+		});
+
+		// Show the clear button when text is present, and hide again when empty
+		textField.getTextField().getDocument().addDocumentListener(new DocumentListener()
+		{
+			@Override
+			public void insertUpdate(DocumentEvent e)
+			{
+				SwingUtilities.invokeLater(() -> clearButton.setVisible(true));
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e)
+			{
+				SwingUtilities.invokeLater(() -> clearButton.setVisible(!getText().isEmpty()));
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e)
+			{
+			}
+		});
+
 		add(iconWrapperLabel, BorderLayout.WEST);
 		add(textField, BorderLayout.CENTER);
+		add(clearButton, BorderLayout.EAST);
 	}
 
 	public void addActionListener(ActionListener actionListener)

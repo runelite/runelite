@@ -39,6 +39,16 @@ public enum Varbits
 	 */
 	TRANSPARENT_CHATBOX(4608),
 
+	/*
+	 * If the player has an active stamina potion effect or not
+	 */
+	RUN_SLOWED_DEPLETION_ACTIVE(25),
+
+	/**
+	 * If scrollbar in resizable mode chat is on the left
+	 */
+	CHAT_SCROLLBAR_ON_LEFT(6374),
+
 	/**
 	 * Runecraft pouches
 	 */
@@ -260,6 +270,11 @@ public enum Varbits
 	RAID_PARTY_SIZE(5424),
 
 	/**
+	 * Theatre of Blood 1=In Party, 2=Inside/Spectator, 3=Dead Spectating
+	 */
+	THEATRE_OF_BLOOD(6440),
+
+	/**
 	 * Nightmare Zone
 	 */
 	NMZ_ABSORPTION(3956),
@@ -377,7 +392,10 @@ public enum Varbits
 	/**
 	 * Corp beast damage
 	 */
-	CORP_DAMAGE(999);
+	CORP_DAMAGE(999),
+
+	WORLDHOPPER_FAVROITE_1(4597),
+	WORLDHOPPER_FAVROITE_2(4598);
 
 	/**
 	 * The raw varbit ID.

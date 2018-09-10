@@ -60,8 +60,16 @@ public class ModelManager
 
 	public ModelDefinition getModel(int id, ObjectDefinition object, Location location)
 	{
-		int type = location.getType();
-		int rot = location.getOrientation();
+		final int type, rot;
+		if (location != null)
+		{
+			type = location.getType();
+			rot = location.getOrientation();
+		}
+		else
+		{
+			type = rot = 0;
+		}
 		return this.getModel(new ModelKey(id, object.getId(), type, rot), md ->
 		{
 			// this logic is from method3697 in 140
@@ -166,6 +174,7 @@ public class ModelManager
 			loadConsumer.accept(md);
 		}
 		md.computeNormals();
+		md.computeMaxPriority();
 		models.put(key, md);
 		return md;
 	}

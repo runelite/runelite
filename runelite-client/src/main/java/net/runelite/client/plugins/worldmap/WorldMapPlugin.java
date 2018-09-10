@@ -29,9 +29,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Arrays;
-import javax.imageio.ImageIO;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
@@ -41,6 +39,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
+import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "World Map",
@@ -65,6 +64,7 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_JEWELLERY_TELEPORT_ICON = "jewelleryIcon";
 	static final String CONFIG_KEY_SCROLL_TELEPORT_ICON = "scrollIcon";
 	static final String CONFIG_KEY_MISC_TELEPORT_ICON = "miscellaneousTeleportIcon";
+	static final String CONFIG_KEY_MINIGAME_TOOLTIP = "minigameTooltip";
 
 	static
 	{
@@ -73,23 +73,13 @@ public class WorldMapPlugin extends Plugin
 
 		BLANK_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
 
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				FAIRY_TRAVEL_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
-				final BufferedImage icon = ImageIO.read(WorldMapPlugin.class.getResourceAsStream("fairy_ring_travel.png"));
-				FAIRY_TRAVEL_ICON.getGraphics().drawImage(icon, 1, 1, null);
+		FAIRY_TRAVEL_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
+		final BufferedImage fairyTravelIcon = ImageUtil.getResourceStreamFromClass(WorldMapPlugin.class, "fairy_ring_travel.png");
+		FAIRY_TRAVEL_ICON.getGraphics().drawImage(fairyTravelIcon, 1, 1, null);
 
-				NOPE_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
-				final BufferedImage nopeImage = ImageIO.read(WorldMapPlugin.class.getResourceAsStream("nope_icon.png"));
-				NOPE_ICON.getGraphics().drawImage(nopeImage, 1, 1, null);
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+		NOPE_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
+		final BufferedImage nopeImage = ImageUtil.getResourceStreamFromClass(WorldMapPlugin.class, "nope_icon.png");
+		NOPE_ICON.getGraphics().drawImage(nopeImage, 1, 1, null);
 	}
 
 	@Inject
@@ -143,6 +133,18 @@ public class WorldMapPlugin extends Plugin
 							.forEach(worldMapPointManager::add);
 					}
 					break;
+				case CONFIG_KEY_MINIGAME_TOOLTIP:
+					if (config.minigameTooltip())
+					{
+						Arrays.stream(MinigameLocation.values())
+							.map(value -> new MinigamePoint(value, BLANK_ICON))
+							.forEach(worldMapPointManager::add);
+					}
+					else
+					{
+						worldMapPointManager.removeIf(MinigamePoint.class::isInstance);
+					}
+					break;
 				case CONFIG_KEY_NORMAL_TELEPORT_ICON:
 				case CONFIG_KEY_ANCIENT_TELEPORT_ICON:
 				case CONFIG_KEY_LUNAR_TELEPORT_ICON:
@@ -168,10 +170,18 @@ public class WorldMapPlugin extends Plugin
 				.map(FairyRingLocation::getFairyRingPoint)
 				.forEach(worldMapPointManager::add);
 		}
+
 		if (config.agilityShortcutTooltips())
 		{
 			Arrays.stream(AgilityShortcutLocation.values())
 				.map(value -> new AgilityShortcutPoint(value, BLANK_ICON))
+				.forEach(worldMapPointManager::add);
+		}
+
+		if (config.minigameTooltip())
+		{
+			Arrays.stream(MinigameLocation.values())
+				.map(value -> new MinigamePoint(value, BLANK_ICON))
 				.forEach(worldMapPointManager::add);
 		}
 
@@ -193,6 +203,7 @@ public class WorldMapPlugin extends Plugin
 		worldMapPointManager.removeIf(FairyRingPoint.class::isInstance);
 		worldMapPointManager.removeIf(AgilityShortcutPoint.class::isInstance);
 		worldMapPointManager.removeIf(TeleportPoint.class::isInstance);
+		worldMapPointManager.removeIf(MinigamePoint.class::isInstance);
 	}
 
 	@Subscribe

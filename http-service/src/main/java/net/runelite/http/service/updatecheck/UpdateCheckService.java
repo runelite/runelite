@@ -81,6 +81,26 @@ public class UpdateCheckService
 		updateAvailable = checkUpdate();
 	}
 
+	private int checkResponse(InetAddress address, int revision) throws IOException
+	{
+		try (Socket socket = new Socket())
+		{
+			socket.setSoTimeout((int) TIMEOUT.toMillis());
+			socket.connect(new InetSocketAddress(address, PORT), (int) TIMEOUT.toMillis());
+
+			ByteBuffer buffer = ByteBuffer.allocate(5);
+			buffer.put(HANDSHAKE_TYPE);
+			buffer.putInt(revision);
+
+			InputStream is = socket.getInputStream();
+			OutputStream os = socket.getOutputStream();
+			os.write(buffer.array());
+
+			int reply = is.read();
+			return reply;
+		}
+	}
+
 	private boolean checkUpdate()
 	{
 		World nextWorld = randomWorld();
@@ -101,44 +121,36 @@ public class UpdateCheckService
 			return false;
 		}
 
-		try (Socket socket = new Socket())
+		// Since mobile, the handshake server will handshake multiple revisions successfully,
+		// so we can't assume that just because it says our revision is okay doesn't mean that
+		// the client revision hasn't changed.
+		int thisRevision = RuneLiteAPI.getRsVersion();
+		int nextRevision = thisRevision + 1;
+
+		try
 		{
-			socket.setSoTimeout((int) TIMEOUT.toMillis());
-			socket.connect(new InetSocketAddress(address, PORT), (int) TIMEOUT.toMillis());
+			int thisCode = checkResponse(address, thisRevision);
+			int nextCode = checkResponse(address, nextRevision);
 
-			ByteBuffer buffer = ByteBuffer.allocate(5);
-			buffer.put(HANDSHAKE_TYPE);
-			buffer.putInt(RuneLiteAPI.getRsVersion());
-
-			InputStream is = socket.getInputStream();
-			OutputStream os = socket.getOutputStream();
-			os.write(buffer.array());
-
-			int reply = is.read();
-
-			if (reply == RESPONSE_OUTDATED)
+			if (thisCode == RESPONSE_OK && nextCode == RESPONSE_OUTDATED)
 			{
-				return true;
+				return false; // This is most up-to-date
 			}
 
-			if (reply != RESPONSE_OK)
-			{
-				logger.debug("Non-ok response for handshake: {}", reply);
-			}
+			return true; // Needs to be updated
 		}
 		catch (IOException ex)
 		{
 			logger.warn(null, ex);
+			return false; // assume not updated
 		}
-
-		return false; // no update
 	}
 
 	private World randomWorld()
 	{
 		try
 		{
-			WorldResult worldResult = worldsService.listWorlds();
+			WorldResult worldResult = worldsService.getWorlds();
 			List<World> worlds = worldResult.getWorlds();
 			Random rand = new Random();
 			return worlds.get(rand.nextInt(worlds.size()));

@@ -32,7 +32,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.feed.FeedItem;
 import net.runelite.http.api.feed.FeedItemType;
@@ -47,7 +46,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
 public class TwitterService
 {
 	private static final HttpUrl AUTH_URL = HttpUrl.parse("https://api.twitter.com/oauth2/token");

@@ -26,7 +26,6 @@
 package net.runelite.client.plugins.skillcalculator;
 
 import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.client.game.ItemManager;
@@ -37,6 +36,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Skill Calculator",
@@ -69,11 +69,7 @@ public class SkillCalculatorPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		BufferedImage icon;
-		synchronized (ImageIO.class)
-		{
-			icon = ImageIO.read(getClass().getResourceAsStream("calc.png"));
-		}
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "calc.png");
 
 		SkillCalculator.spriteManager = spriteManager;
 		SkillCalculator.itemManager = itemManager;

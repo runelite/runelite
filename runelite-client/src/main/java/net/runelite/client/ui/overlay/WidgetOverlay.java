@@ -24,12 +24,13 @@
  */
 package net.runelite.client.ui.overlay;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableMap;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.util.Collection;
+import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
@@ -37,28 +38,34 @@ import net.runelite.api.widgets.WidgetInfo;
 
 public class WidgetOverlay extends Overlay
 {
-	private static final Set<WidgetInfo> WIDGETS = ImmutableSet.of(
-		WidgetInfo.RESIZABLE_MINIMAP_WIDGET,
-		WidgetInfo.RESIZABLE_MINIMAP_STONES_WIDGET,
-		WidgetInfo.EXPERIENCE_TRACKER_WIDGET
-	);
+	private static final Map<WidgetInfo, OverlayPosition> WIDGETS = ImmutableMap
+		.<WidgetInfo, OverlayPosition>builder()
+		.put(WidgetInfo.RESIZABLE_MINIMAP_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT)
+		.put(WidgetInfo.RESIZABLE_MINIMAP_STONES_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT)
+		.put(WidgetInfo.FOSSIL_ISLAND_OXYGENBAR, OverlayPosition.TOP_LEFT)
+		.put(WidgetInfo.EXPERIENCE_TRACKER_WIDGET, OverlayPosition.TOP_RIGHT)
+		.put(WidgetInfo.TITHE_FARM, OverlayPosition.TOP_RIGHT)
+		.put(WidgetInfo.PEST_CONTROL_BOAT_INFO, OverlayPosition.TOP_LEFT)
+		.put(WidgetInfo.PEST_CONTROL_INFO, OverlayPosition.TOP_LEFT)
+		.build();
 
-	public static Set<WidgetOverlay> createOverlays(final Client client)
+	public static Collection<WidgetOverlay> createOverlays(final Client client)
 	{
-		return WIDGETS.stream().map(w -> new WidgetOverlay(client, w)).collect(Collectors.toSet());
+		return WIDGETS.entrySet().stream()
+			.map(w -> new WidgetOverlay(client, w.getKey(), w.getValue()))
+			.collect(Collectors.toList());
 	}
 
 	private final Client client;
 	private final WidgetInfo widgetInfo;
-	private Integer toRestoreX;
-	private Integer toRestoreY;
 
-	private WidgetOverlay(final Client client, final WidgetInfo widgetInfo)
+	private WidgetOverlay(final Client client, final WidgetInfo widgetInfo, final OverlayPosition overlayPosition)
 	{
 		this.client = client;
 		this.widgetInfo = widgetInfo;
+		setPriority(OverlayPriority.HIGHEST);
 		setLayer(OverlayLayer.UNDER_WIDGETS);
-		setPosition(OverlayPosition.DETACHED);
+		setPosition(overlayPosition);
 	}
 
 	@Override
@@ -68,72 +75,38 @@ public class WidgetOverlay extends Overlay
 	}
 
 	@Override
-	public Rectangle getBounds()
-	{
-		final Widget widget = client.getWidget(widgetInfo);
-
-		if (widget != null && !widget.isHidden())
-		{
-			return new Rectangle(
-				widget.getOriginalX() + widget.getRelativeX(),
-				widget.getOriginalY() + widget.getRelativeY(),
-				widget.getWidth(), widget.getHeight());
-		}
-
-		return new Rectangle();
-	}
-
-	@Override
 	public Dimension render(Graphics2D graphics)
 	{
 		final Widget widget = client.getWidget(widgetInfo);
-
 		if (widget == null || widget.isHidden())
 		{
 			return null;
 		}
 
-		if (getPreferredLocation() == null)
-		{
-			if (toRestoreX != null)
-			{
-				widget.setRelativeX(toRestoreX);
-				toRestoreX = null;
-			}
-
-			if (toRestoreY != null)
-			{
-				widget.setRelativeY(toRestoreY);
-				toRestoreY = null;
-			}
-
-			return null;
-		}
-
 		final Rectangle bounds = getBounds();
-		int x = getPreferredLocation().x - widget.getOriginalX();
-		int y = getPreferredLocation().y - widget.getOriginalY();
-		x = Math.max(0, x);
-		y = Math.max(0, y);
+		final Rectangle parent = getParentBounds(widget);
+		int x = bounds.x;
+		int y = bounds.y;
+		x = Math.max(parent.x, x);
+		y = Math.max(parent.y, y);
+		x = Math.min((int)parent.getMaxX() - bounds.width, x);
+		y = Math.min((int)parent.getMaxY() - bounds.height, y);
+		bounds.setLocation(x, y);
+		widget.setOriginalX(0);
+		widget.setRelativeX(0);
+		widget.setRelativeX(bounds.x - parent.x);
+		widget.setRelativeY(bounds.y - parent.y);
+		return new Dimension(widget.getWidth(), widget.getHeight());
+	}
 
+	private Rectangle getParentBounds(final Widget widget)
+	{
 		final Widget parent = widget.getParent();
-		final Dimension dimensions = parent == null ? client.getRealDimensions() : new Dimension(parent.getWidth(), parent.getHeight());
-		x = Math.min(dimensions.width - bounds.width, x);
-		y = Math.min(dimensions.height - bounds.height, y);
-
-		if (toRestoreX == null)
+		if (parent == null)
 		{
-			toRestoreX = widget.getRelativeX();
+			return new Rectangle(client.getRealDimensions());
 		}
 
-		if (toRestoreY == null)
-		{
-			toRestoreY = widget.getRelativeY();
-		}
-
-		widget.setRelativeX(x);
-		widget.setRelativeY(y);
-
-		return null;
+		return new Rectangle(parent.getCanvasLocation().getX(), parent.getCanvasLocation().getY(), parent.getWidth(), parent.getHeight());
 	}
 }
