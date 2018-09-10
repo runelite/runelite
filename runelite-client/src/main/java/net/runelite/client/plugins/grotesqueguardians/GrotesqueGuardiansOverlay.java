@@ -42,8 +42,8 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 class GrotesqueGuardiansOverlay extends Overlay
 {
+	static final int GROTESQUE_GUARDIANS_REGION_ID = 6727;
 	private final Client client;
-	private final int GROTESQUE_GUARDIANS_REGION_ID = 6727;
 
 	@Inject
 	private GrotesqueGuardiansOverlay(Client client)
