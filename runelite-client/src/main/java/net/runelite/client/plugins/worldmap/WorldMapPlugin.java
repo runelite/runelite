@@ -32,11 +32,9 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
-import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -46,6 +44,7 @@ import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ImageUtil;
 
 import static net.runelite.api.widgets.WidgetID.QUEST_COMPLETED_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.WORLD_MAP_GROUP_ID;
 
 @PluginDescriptor(
 	name = "World Map",
@@ -155,7 +154,6 @@ public class WorldMapPlugin extends Plugin
 
 					if (config.questStartTooltips())
 					{
-						System.out.println("configs");
 						Arrays.stream(QuestStartLocation.values())
 							.map(value -> new QuestStartPoint(value, config.questStartIcon() && !value.isComplete() ? HIGHLIGHT_ICON : BLANK_ICON))
 							.forEach(worldMapPointManager::add);
@@ -239,9 +237,16 @@ public class WorldMapPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGameState() == GameState.LOGGED_IN)
+		if (event.getGroupId() == QUEST_COMPLETED_GROUP_ID && config.questStartIcon())
+		{
+			worldMapPointManager.removeIf(QuestStartPoint.class::isInstance);
+			Arrays.stream(QuestStartLocation.values())
+				.map(value -> new QuestStartPoint(value, config.questStartIcon() && !value.isComplete() ? HIGHLIGHT_ICON : BLANK_ICON))
+				.forEach(worldMapPointManager::add);
+		}
+		else if (event.getGroupId() == WORLD_MAP_GROUP_ID && config.questStartIcon())
 		{
 			clientThread.invokeLater(() ->
 			{
@@ -254,7 +259,6 @@ public class WorldMapPlugin extends Plugin
 						if (client.getIntStack()[client.getIntStackSize() - 1] != 2)
 						{
 							complete = false;
-							System.out.println(qsL.name() + "not complete");
 						}
 					}
 					qsL.setComplete(complete);
@@ -263,18 +267,6 @@ public class WorldMapPlugin extends Plugin
 				worldMapPointManager.removeIf(QuestStartPoint.class::isInstance);
 				Arrays.stream(QuestStartLocation.values()).map(value -> new QuestStartPoint(value, config.questStartIcon() && !value.isComplete() ? HIGHLIGHT_ICON : BLANK_ICON)).forEach(worldMapPointManager::add);
 			});
-		}
-	}
-
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
-	{
-		if (event.getGroupId() == QUEST_COMPLETED_GROUP_ID && config.questStartIcon())
-		{
-			worldMapPointManager.removeIf(QuestStartPoint.class::isInstance);
-			Arrays.stream(QuestStartLocation.values())
-				.map(value -> new QuestStartPoint(value, config.questStartIcon() && !value.isComplete() ? HIGHLIGHT_ICON : BLANK_ICON))
-				.forEach(worldMapPointManager::add);
 		}
 	}
 
