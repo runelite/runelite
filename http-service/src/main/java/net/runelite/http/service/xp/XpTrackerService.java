@@ -24,8 +24,8 @@
  */
 package net.runelite.http.service.xp;
 
-import java.io.IOException;
 import java.time.Instant;
+import java.util.concurrent.ExecutionException;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
@@ -51,7 +51,7 @@ public class XpTrackerService
 	@Autowired
 	private HiscoreService hiscoreService;
 
-	public void update(String username) throws IOException
+	public void update(String username) throws ExecutionException
 	{
 		HiscoreResultBuilder hiscoreResultBuilder = hiscoreService.lookupUsername(username, HiscoreEndpoint.NORMAL);
 		HiscoreResult hiscoreResult = hiscoreResultBuilder.build();
