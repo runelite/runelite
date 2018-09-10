@@ -38,6 +38,7 @@ import net.runelite.api.events.ExperienceChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.worldmap.WorldMapLineManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ImageUtil;
 
@@ -64,6 +65,9 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_JEWELLERY_TELEPORT_ICON = "jewelleryIcon";
 	static final String CONFIG_KEY_SCROLL_TELEPORT_ICON = "scrollIcon";
 	static final String CONFIG_KEY_MISC_TELEPORT_ICON = "miscellaneousTeleportIcon";
+	static final String CONFIG_KEY_WILDERNESS_LINES = "wildernessLines";
+	static final String CONFIG_KEY_WILDERNESS_LINES_LEVELS = "wildernessLinesX";
+	static final String CONFIG_KEY_WILDERNESS_LINE_COLOR = "wildernessLineColor";
 
 	static
 	{
@@ -90,6 +94,9 @@ public class WorldMapPlugin extends Plugin
 	@Inject
 	private WorldMapPointManager worldMapPointManager;
 
+	@Inject
+	private WorldMapLineManager worldMapLineManager;
+
 	private int agilityLevel = 0;
 
 	@Provides
@@ -105,6 +112,15 @@ public class WorldMapPlugin extends Plugin
 		{
 			switch (event.getKey())
 			{
+				case CONFIG_KEY_WILDERNESS_LINES:
+					createWildernessLines(config.wildernessLines());
+					break;
+				case CONFIG_KEY_WILDERNESS_LINES_LEVELS:
+					createWildernessLines(true);
+					break;
+				case CONFIG_KEY_WILDERNESS_LINE_COLOR:
+					createWildernessLines(true);
+					break;
 				case CONFIG_KEY_FAIRY_RING_TOOLTIPS:
 					if (config.fairyRingTooltips())
 					{
@@ -174,6 +190,11 @@ public class WorldMapPlugin extends Plugin
 		{
 			createMagicTeleportPoints();
 		}
+
+		if (config.wildernessLines())
+		{
+			createWildernessLines(true);
+		}
 	}
 
 	@Override
@@ -182,6 +203,7 @@ public class WorldMapPlugin extends Plugin
 		worldMapPointManager.removeIf(FairyRingPoint.class::isInstance);
 		worldMapPointManager.removeIf(AgilityShortcutPoint.class::isInstance);
 		worldMapPointManager.removeIf(TeleportPoint.class::isInstance);
+		clearWildernessLines();
 	}
 
 	@Subscribe
@@ -228,5 +250,30 @@ public class WorldMapPlugin extends Plugin
 				}
 			}).map(TeleportPoint::new)
 			.forEach(worldMapPointManager::add);
+	}
+
+	private void clearWildernessLines()
+	{
+		worldMapLineManager.removeIf(WildernessLine.class::isInstance);
+	}
+
+	private void createWildernessLines(boolean update)
+	{
+		if (update && config.wildernessLines())
+		{
+			clearWildernessLines();
+			Arrays.stream(WildernessLinesData.values())
+				.filter(l -> l.getLevel() % config.wildernessLinesLevels().getLevel() == 0)
+				.map(WildernessLine::new)
+				.forEach(f ->
+				{
+					f.setColor(config.wildernessLineColor());
+					worldMapLineManager.add(f);
+				});
+		}
+		else
+		{
+			clearWildernessLines();
+		}
 	}
 }
