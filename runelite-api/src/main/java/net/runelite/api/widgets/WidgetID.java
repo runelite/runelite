@@ -552,6 +552,7 @@ public class WidgetID
 		static final int LIGHT_BOX = 1;
 		static final int LIGHT_BOX_WINDOW = 2;
 		static final int LIGHT_BULB_CONTAINER = 3;
+		static final int LIGHT_BOX_BUTTON_CONTAINER = 6;
 		static final int BUTTON_A = 8;
 		static final int BUTTON_B = 9;
 		static final int BUTTON_C = 10;

@@ -28,8 +28,10 @@ package net.runelite.client.plugins.puzzlesolver;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Arrays;
 import javax.inject.Inject;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.GameTick;
@@ -52,6 +54,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.puzzlesolver.lightbox.Combination;
 import net.runelite.client.plugins.puzzlesolver.lightbox.LightBox;
+import net.runelite.client.plugins.puzzlesolver.lightbox.LightBoxOverlay;
 import net.runelite.client.plugins.puzzlesolver.lightbox.LightboxSolution;
 import net.runelite.client.plugins.puzzlesolver.lightbox.LightboxSolver;
 import net.runelite.client.plugins.puzzlesolver.lightbox.LightboxState;
@@ -73,11 +76,18 @@ public class PuzzleSolverPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
-	private PuzzleSolverOverlay overlay;
+	private PuzzleSolverOverlay puzzleOverlay;
+
+	@Inject
+	private LightBoxOverlay lightBoxOverlay;
 
 	@Inject
 	private Client client;
 
+	@Getter
+	private ArrayList<String> unclickedButtons = new ArrayList<>(Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H"));
+
+	private ArrayList<String> clickedThisTick = new ArrayList<>(8);
 	private LightboxState lightbox;
 	private LightboxState[] changes = new LightboxState[LightBox.COMBINATIONS_POWER];
 	private Combination lastClick;
@@ -86,13 +96,15 @@ public class PuzzleSolverPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(overlay);
+		overlayManager.add(puzzleOverlay);
+		overlayManager.add(lightBoxOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(overlay);
+		overlayManager.remove(puzzleOverlay);
+		overlayManager.remove(lightBoxOverlay);
 	}
 
 	@Provides
@@ -147,34 +159,42 @@ public class PuzzleSolverPlugin extends Plugin
 		Combination combination;
 		if (widgetId == LIGHT_BOX_BUTTON_A.getId())
 		{
+			clickedThisTick.add("A");
 			combination = Combination.A;
 		}
 		else if (widgetId == LIGHT_BOX_BUTTON_B.getId())
 		{
+			clickedThisTick.add("B");
 			combination = Combination.B;
 		}
 		else if (widgetId == LIGHT_BOX_BUTTON_C.getId())
 		{
+			clickedThisTick.add("C");
 			combination = Combination.C;
 		}
 		else if (widgetId == LIGHT_BOX_BUTTON_D.getId())
 		{
+			clickedThisTick.add("D");
 			combination = Combination.D;
 		}
 		else if (widgetId == LIGHT_BOX_BUTTON_E.getId())
 		{
+			clickedThisTick.add("E");
 			combination = Combination.E;
 		}
 		else if (widgetId == LIGHT_BOX_BUTTON_F.getId())
 		{
+			clickedThisTick.add("F");
 			combination = Combination.F;
 		}
 		else if (widgetId == LIGHT_BOX_BUTTON_G.getId())
 		{
+			clickedThisTick.add("G");
 			combination = Combination.G;
 		}
 		else if (widgetId == LIGHT_BOX_BUTTON_H.getId())
 		{
+			clickedThisTick.add("H");
 			combination = Combination.H;
 		}
 		else
@@ -200,6 +220,8 @@ public class PuzzleSolverPlugin extends Plugin
 		{
 			if (lightbox != null)
 			{
+				unclickedButtons.clear();
+				unclickedButtons.addAll(Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H"));
 				lastClick = null;
 				lastClickInvalid = false;
 				lightbox = null;
@@ -224,6 +246,13 @@ public class PuzzleSolverPlugin extends Plugin
 		}
 
 		log.debug("Lightbox changed!");
+
+		if (clickedThisTick.size() == 1)
+		{
+			unclickedButtons.removeAll(clickedThisTick);
+		}
+
+		clickedThisTick.clear();
 
 		LightboxState prev = lightbox;
 		lightbox = lightboxState;
@@ -269,10 +298,12 @@ public class PuzzleSolverPlugin extends Plugin
 			if (solution != null && solution.numMoves() > 0)
 			{
 				title.setText("Light box - Solution: " + solution);
+				unclickedButtons.clear();
 			}
 			else if (solution != null)
 			{
 				title.setText("Light box - Solution: solved!");
+				unclickedButtons.clear();
 			}
 			else
 			{
