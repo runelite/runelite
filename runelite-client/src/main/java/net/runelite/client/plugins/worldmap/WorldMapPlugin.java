@@ -32,11 +32,9 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.GameState;
 import net.runelite.api.Skill;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.ExperienceChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.events.*;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -238,29 +236,31 @@ public class WorldMapPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (!QuestStartLocation.init)
+		if (event.getGameState() == GameState.LOGGED_IN)
 		{
-			for (QuestStartLocation qsL : QuestStartLocation.values())
+			clientThread.invokeLater(() ->
 			{
-				boolean complete = true;
-				for (int[] quest : qsL.getQuests())
+				for (QuestStartLocation qsL : QuestStartLocation.values())
 				{
-					client.runScript(quest[0], quest[1]);
-					if (client.getIntStack()[client.getIntStackSize() - 1] != 2)
+					boolean complete = true;
+					for (int[] quest : qsL.getQuests())
 					{
-						complete = false;
+						client.runScript(quest[0], quest[1]);
+						if (client.getIntStack()[client.getIntStackSize() - 1] != 2)
+						{
+							complete = false;
+						}
 					}
+					qsL.setComplete(complete);
 				}
-				qsL.setComplete(complete);
-			}
 
-			worldMapPointManager.removeIf(QuestStartPoint.class::isInstance);
-			Arrays.stream(QuestStartLocation.values())
-				.map(value -> new QuestStartPoint(value, value.isComplete() ? BLANK_ICON : QUEST_HIGHLIGHT_ICON))
-				.forEach(worldMapPointManager::add);
-			QuestStartLocation.setInit(true);
+				worldMapPointManager.removeIf(QuestStartPoint.class::isInstance);
+				Arrays.stream(QuestStartLocation.values())
+					.map(value -> new QuestStartPoint(value, value.isComplete() ? BLANK_ICON : QUEST_HIGHLIGHT_ICON))
+					.forEach(worldMapPointManager::add);
+			});
 		}
 	}
 
