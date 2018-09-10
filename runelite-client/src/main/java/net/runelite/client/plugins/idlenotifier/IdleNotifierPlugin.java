@@ -304,7 +304,8 @@ public class IdleNotifierPlugin extends Plugin
 		final Duration waitDuration = Duration.ofMillis(config.getIdleNotificationDelay());
 		lastCombatCountdown = Math.max(lastCombatCountdown - 1, 0);
 
-		if (client.getGameState() != GameState.LOGGED_IN || local == null || client.getMouseIdleTicks() < 10)
+		if (client.getGameState() != GameState.LOGGED_IN || local == null
+			|| (!config.ignoreMouseActivity() && client.getMouseIdleTicks() < 10))
 		{
 			resetTimers();
 			return;

@@ -32,10 +32,10 @@ import net.runelite.client.config.ConfigItem;
 public interface IdleNotifierConfig extends Config
 {
 	@ConfigItem(
+		position = 1,
 		keyName = "animationidle",
 		name = "Idle Animation Notifications",
-		description = "Configures if idle animation notifications are enabled",
-		position = 1
+		description = "Enable idle animation notifications."
 	)
 	default boolean animationIdle()
 	{
@@ -43,10 +43,10 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 2,
 		keyName = "combatidle",
 		name = "Combat Idle Notifications",
-		description = "Configures if out of combat notifications are enabled",
-		position = 2
+		description = "Enable out of combat notifications."
 	)
 	default boolean combatIdle()
 	{
@@ -54,10 +54,10 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 3,
 		keyName = "logoutidle",
 		name = "Idle Logout Notifications",
-		description = "Configures if the idle logout notifications are enabled",
-		position = 3
+		description = "Enable idle logout notifications."
 	)
 	default boolean logoutIdle()
 	{
@@ -65,10 +65,21 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 4,
+		keyName = "ignoreMouseActivity",
+		name = "Ignore Mouse Activity",
+		description = "Send notifications even if there has been mouse activity in the past 200ms."
+	)
+	default boolean ignoreMouseActivity()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 5,
 		keyName = "timeout",
 		name = "Idle Notification Delay (ms)",
-		description = "The notification delay after the player is idle",
-		position = 4
+		description = "The notification delay after the player is idle."
 	)
 	default int getIdleNotificationDelay()
 	{
@@ -76,10 +87,10 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 6,
 		keyName = "hitpoints",
 		name = "Hitpoints Notification Threshold",
-		description = "The amount of hitpoints to send a notification at. A value of 0 will disable notification.",
-		position = 5
+		description = "The amount of hitpoints to send a notification at. A value of 0 will disable notification."
 	)
 	default int getHitpointsThreshold()
 	{
@@ -87,10 +98,10 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 7,
 		keyName = "prayer",
 		name = "Prayer Notification Threshold",
-		description = "The amount of prayer points to send a notification at. A value of 0 will disable notification.",
-		position = 6
+		description = "The amount of prayer points to send a notification at. A value of 0 will disable notification."
 	)
 	default int getPrayerThreshold()
 	{
