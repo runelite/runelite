@@ -154,20 +154,9 @@ public interface WorldMapConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = WorldMapPlugin.CONFIG_KEY_QUEST_START_ICON,
-		name = "Show quest start level requirements",
-		description = "Indicates quests you don't have the requirements to start",
-		position = 12
-	)
-	default boolean questStartIcon()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_QUEST_START_TOOLTIPS,
 		name = "Show quest names",
-		description = "Indicates the names of quests",
+		description = "Indicates the names of quests and highlights incomplete ones",
 		position = 13
 	)
 	default boolean questStartTooltips()
