@@ -397,7 +397,6 @@ public class SlayerPlugin extends Plugin
 					log.warn("Unreachable default case for message ending in '; return to Slayer master'");
 			}
 			setTask("", 0);
-			highlightedTargets.clear();
 			return;
 		}
 
@@ -521,12 +520,16 @@ public class SlayerPlugin extends Plugin
 	private void rebuildTargetNames(Task task)
 	{
 		targetNames.clear();
-		Arrays.stream(task.getTargetNames())
-			.map(String::toLowerCase)
-			.forEach(targetNames::add);
-		targetNames.add(taskName.toLowerCase().replaceAll("s$", ""));
-	}
+		highlightedTargets.clear();
 
+		if (task != null)
+		{
+			Arrays.stream(task.getTargetNames())
+					.map(String::toLowerCase)
+					.forEach(targetNames::add);
+			targetNames.add(taskName.toLowerCase().replaceAll("s$", ""));
+		}
+	}
 	private void rebuildTargetList()
 	{
 		highlightedTargets.clear();
@@ -550,10 +553,7 @@ public class SlayerPlugin extends Plugin
 		infoTimer = Instant.now();
 
 		Task task = Task.getTask(name);
-		if (task != null)
-		{
-			rebuildTargetNames(task);
-		}
+		rebuildTargetNames(task);
 		rebuildTargetList();
 	}
 
