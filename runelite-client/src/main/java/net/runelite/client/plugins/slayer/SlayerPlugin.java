@@ -397,6 +397,7 @@ public class SlayerPlugin extends Plugin
 					log.warn("Unreachable default case for message ending in '; return to Slayer master'");
 			}
 			setTask("", 0);
+			highlightedTargets.clear();
 			return;
 		}
 
