@@ -520,16 +520,17 @@ public class SlayerPlugin extends Plugin
 	private void rebuildTargetNames(Task task)
 	{
 		targetNames.clear();
-		highlightedTargets.clear();
 
 		if (task != null)
 		{
 			Arrays.stream(task.getTargetNames())
-					.map(String::toLowerCase)
-					.forEach(targetNames::add);
+				.map(String::toLowerCase)
+				.forEach(targetNames::add);
+
 			targetNames.add(taskName.toLowerCase().replaceAll("s$", ""));
 		}
 	}
+
 	private void rebuildTargetList()
 	{
 		highlightedTargets.clear();
