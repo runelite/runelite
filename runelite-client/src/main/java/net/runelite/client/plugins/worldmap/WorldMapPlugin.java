@@ -35,6 +35,7 @@ import net.runelite.api.Experience;
 import net.runelite.api.Skill;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -44,7 +45,6 @@ import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ImageUtil;
 
 import static net.runelite.api.widgets.WidgetID.QUEST_COMPLETED_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.WORLD_MAP_GROUP_ID;
 
 @PluginDescriptor(
 	name = "World Map",
@@ -56,7 +56,7 @@ public class WorldMapPlugin extends Plugin
 	static final BufferedImage BLANK_ICON;
 	static final BufferedImage FAIRY_TRAVEL_ICON;
 	static final BufferedImage NOPE_ICON;
-	static final BufferedImage HIGHLIGHT_ICON;
+	static final BufferedImage QUEST_HIGHLIGHT_ICON;
 
 	static final String CONFIG_KEY = "worldmap";
 	static final String CONFIG_KEY_FAIRY_RING_TOOLTIPS = "fairyRingTooltips";
@@ -88,9 +88,9 @@ public class WorldMapPlugin extends Plugin
 		final BufferedImage nopeImage = ImageUtil.getResourceStreamFromClass(WorldMapPlugin.class, "nope_icon.png");
 		NOPE_ICON.getGraphics().drawImage(nopeImage, 1, 1, null);
 
-		HIGHLIGHT_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
+		QUEST_HIGHLIGHT_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
 		final BufferedImage highlightImage = ImageUtil.getResourceStreamFromClass(WorldMapPlugin.class, "quest_highlight_icon.png");
-		HIGHLIGHT_ICON.getGraphics().drawImage(highlightImage, 1, 1, null);
+		QUEST_HIGHLIGHT_ICON.getGraphics().drawImage(highlightImage, 1, 1, null);
 	}
 
 	@Inject
@@ -149,13 +149,12 @@ public class WorldMapPlugin extends Plugin
 					}
 					break;
 				case CONFIG_KEY_QUEST_START_TOOLTIPS:
-				case CONFIG_KEY_QUEST_START_ICON:
 					worldMapPointManager.removeIf(QuestStartPoint.class::isInstance);
 
 					if (config.questStartTooltips())
 					{
 						Arrays.stream(QuestStartLocation.values())
-							.map(value -> new QuestStartPoint(value, config.questStartIcon() && !value.isComplete() ? HIGHLIGHT_ICON : BLANK_ICON))
+							.map(value -> new QuestStartPoint(value, value.isComplete() ? BLANK_ICON : QUEST_HIGHLIGHT_ICON))
 							.forEach(worldMapPointManager::add);
 					}
 					break;
@@ -184,12 +183,14 @@ public class WorldMapPlugin extends Plugin
 				.map(FairyRingLocation::getFairyRingPoint)
 				.forEach(worldMapPointManager::add);
 		}
+
 		if (config.agilityShortcutTooltips())
 		{
 			Arrays.stream(AgilityShortcutLocation.values())
 				.map(value -> new AgilityShortcutPoint(value, BLANK_ICON))
 				.forEach(worldMapPointManager::add);
 		}
+
 		if (config.questStartTooltips())
 		{
 			Arrays.stream(QuestStartLocation.values())
@@ -237,36 +238,41 @@ public class WorldMapPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (!QuestStartLocation.init)
+		{
+			for (QuestStartLocation qsL : QuestStartLocation.values())
+			{
+				boolean complete = true;
+				for (int[] quest : qsL.getQuests())
+				{
+					client.runScript(quest[0], quest[1]);
+					if (client.getIntStack()[client.getIntStackSize() - 1] != 2)
+					{
+						complete = false;
+					}
+				}
+				qsL.setComplete(complete);
+			}
+
+			worldMapPointManager.removeIf(QuestStartPoint.class::isInstance);
+			Arrays.stream(QuestStartLocation.values())
+				.map(value -> new QuestStartPoint(value, value.isComplete() ? BLANK_ICON : QUEST_HIGHLIGHT_ICON))
+				.forEach(worldMapPointManager::add);
+			QuestStartLocation.setInit(true);
+		}
+	}
+
+	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == QUEST_COMPLETED_GROUP_ID && config.questStartIcon())
+		if (event.getGroupId() == QUEST_COMPLETED_GROUP_ID && config.questStartTooltips())
 		{
 			worldMapPointManager.removeIf(QuestStartPoint.class::isInstance);
 			Arrays.stream(QuestStartLocation.values())
-				.map(value -> new QuestStartPoint(value, config.questStartIcon() && !value.isComplete() ? HIGHLIGHT_ICON : BLANK_ICON))
+				.map(value -> new QuestStartPoint(value, value.isComplete() ? BLANK_ICON : QUEST_HIGHLIGHT_ICON))
 				.forEach(worldMapPointManager::add);
-		}
-		else if (event.getGroupId() == WORLD_MAP_GROUP_ID && config.questStartIcon())
-		{
-			clientThread.invokeLater(() ->
-			{
-				for (QuestStartLocation qsL : QuestStartLocation.values())
-				{
-					boolean complete = true;
-					for (int[] quest : qsL.getQuests())
-					{
-						client.runScript(quest[0], quest[1]);
-						if (client.getIntStack()[client.getIntStackSize() - 1] != 2)
-						{
-							complete = false;
-						}
-					}
-					qsL.setComplete(complete);
-				}
-
-				worldMapPointManager.removeIf(QuestStartPoint.class::isInstance);
-				Arrays.stream(QuestStartLocation.values()).map(value -> new QuestStartPoint(value, config.questStartIcon() && !value.isComplete() ? HIGHLIGHT_ICON : BLANK_ICON)).forEach(worldMapPointManager::add);
-			});
 		}
 	}
 

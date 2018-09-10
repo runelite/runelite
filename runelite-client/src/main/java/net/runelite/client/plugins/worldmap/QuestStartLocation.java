@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Morgan Lewis <https://github.com/MESLewis>
+ * Copyright (c) 2018, John James Hamilton <https://github.com/johnhamilto>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -157,6 +157,9 @@ enum QuestStartLocation
 	WHAT_LIES_BELOW("What Lies Below", new WorldPoint(3265, 3333, 0), new int[] {1358, 103}),
 	WITCHS_HOUSE("Witch's House", new WorldPoint(2927, 3456, 0), new int[] {1358, 91}),
 	ZOGRE_FLESH_EATERS("Zogre Flesh Eaters", new WorldPoint(2442, 3051, 0), new int[] {1358, 7});
+
+	@Setter
+	public static boolean init = false;
 
 	private final String tooltip;
 	private final WorldPoint location;
