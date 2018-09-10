@@ -113,6 +113,11 @@ public class WASDCameraPlugin extends Plugin
 
 	boolean chatboxFocused()
 	{
+		if (client.getOculusOrbState() == 1)
+		{
+			return true;
+		}
+
 		Widget chatboxParent = client.getWidget(WidgetInfo.CHATBOX_PARENT);
 		if (chatboxParent == null || chatboxParent.getOnKeyListener() == null)
 		{
