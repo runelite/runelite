@@ -346,7 +346,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 			}
 		}
 
-		if(option.equals("withdraw-1")) {
+
+
+		if(option.equals("withdraw-1") && client.getVarbitValue(client.getVarps(), 3960) != 1) {
 			if(config.swapWithdraw())
 			{
 				swap( Text.removeTags(entries[entries.length - 4].getOption()).toLowerCase(), option, target, true);
