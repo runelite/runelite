@@ -44,6 +44,7 @@ import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.WorldHoppingManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.rs.ClientUpdateCheckMode;
@@ -83,6 +84,7 @@ public class RuneLiteModule extends AbstractModule
 		bind(PluginManager.class);
 		bind(RuneLiteProperties.class);
 		bind(SessionManager.class);
+		bind(WorldHoppingManager.class);
 
 		bind(Callbacks.class).to(Hooks.class);
 
