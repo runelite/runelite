@@ -89,7 +89,6 @@ class LootTrackerPanel extends PluginPanel
 	private final ItemManager itemManager;
 
 	private boolean groupLoot;
-
 	private String detailedKey;
 
 	static
@@ -207,8 +206,9 @@ class LootTrackerPanel extends PluginPanel
 		final JMenuItem reset = new JMenuItem("Reset All");
 		reset.addActionListener(e ->
 		{
-			records.removeIf(r -> detailedKey == null || r.getTitle().equals(detailedKey));
-			boxes.removeIf(b -> detailedKey == null || b.getId().equals(detailedKey));
+			// If not in detailed view, remove all, otherwise only remove for the currently detailed title
+			records.removeIf(r -> !isInDetailedView() || r.getTitle().equals(detailedKey));
+			boxes.removeIf(b -> !isInDetailedView() || b.getId().equals(detailedKey));
 
 			overallKillsLabel.setText(htmlLabel("Total count: ", 0));
 			overallGpLabel.setText(htmlLabel("Total value: ", 0));
@@ -237,7 +237,7 @@ class LootTrackerPanel extends PluginPanel
 
 	private void showDefaultView()
 	{
-		this.detailedKey = null;
+		detailedKey = null;
 
 		backBtn.setVisible(false);
 		detailsTitle.setText("");
@@ -247,9 +247,9 @@ class LootTrackerPanel extends PluginPanel
 
 	private void showDetailedView(LootTrackerBox parentBox)
 	{
-		this.detailedKey = parentBox.getId();
+		detailedKey = parentBox.getId();
 
-		detailsTitle.setText(parentBox.getId());
+		detailsTitle.setText(detailedKey);
 		backBtn.setVisible(true);
 
 		rebuild();
@@ -272,7 +272,8 @@ class LootTrackerPanel extends PluginPanel
 
 		records.add(record);
 
-		if (detailedKey == null || eventName.equals(detailedKey))
+		// Do not add a new box if currently in detailed view, and the title does not match the detailed key
+		if (!isInDetailedView() || eventName.equals(detailedKey))
 		{
 			buildBox(record);
 		}
@@ -281,11 +282,12 @@ class LootTrackerPanel extends PluginPanel
 	/**
 	 * Rebuilds all the boxes from scratch using existing listed records, depending on the grouping mode.
 	 */
-	void rebuild()
+	private void rebuild()
 	{
 		logsContainer.removeAll();
 		boxes.clear();
-		records.stream().filter(r -> detailedKey == null || r.getTitle().equals(detailedKey)).forEach(this::buildBox);
+
+		records.stream().filter(r -> !isInDetailedView() || r.getTitle().equals(detailedKey)).forEach(this::buildBox);
 		updateOverall();
 
 		logsContainer.revalidate();
@@ -358,7 +360,12 @@ class LootTrackerPanel extends PluginPanel
 		updateOverall();
 	}
 
-	void onGroupingModeChanged(boolean group)
+	private boolean isInDetailedView()
+	{
+		return detailedKey != null;
+	}
+
+	void onViewModeChanged(boolean group)
 	{
 		groupLoot = group;
 		rebuild();

@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.loottracker;
 
-import java.util.ArrayList;
 import lombok.Value;
 
 @Value
