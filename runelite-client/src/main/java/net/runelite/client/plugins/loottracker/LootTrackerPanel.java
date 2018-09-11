@@ -26,10 +26,15 @@
 package net.runelite.client.plugins.loottracker;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -37,17 +42,24 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
-import lombok.Setter;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
 
 class LootTrackerPanel extends PluginPanel
 {
+	private static final ImageIcon SINGLE_LOOT_VIEW;
+	private static final ImageIcon SINGLE_LOOT_VIEW_FADED;
+	private static final ImageIcon GROUPED_LOOT_VIEW;
+	private static final ImageIcon GROUPED_LOOT_VIEW_FADED;
+	private static final ImageIcon BACK_ARROW_ICON;
+	private static final ImageIcon BACK_ARROW_ICON_FADED;
+
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
 
@@ -64,18 +76,39 @@ class LootTrackerPanel extends PluginPanel
 	private final JLabel overallGpLabel = new JLabel();
 	private final JLabel overallIcon = new JLabel();
 
+	private final JPanel actionsContainer = new JPanel();
+	private final JLabel detailsTitle = new JLabel();
+	private final JLabel backBtn = new JLabel();
+	private final JLabel singleLootBtn = new JLabel();
+	private final JLabel groupedLootBtn = new JLabel();
+
 	// Log collection
 	private final List<LootTrackerRecord> records = new ArrayList<>();
 	private final List<LootTrackerBox> boxes = new ArrayList<>();
 
 	private final ItemManager itemManager;
 
-	@Setter
 	private boolean groupLoot;
 
 	private String detailedKey;
 
-	LootTrackerPanel(final ItemManager itemManager)
+	static
+	{
+		final BufferedImage singleLootImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "single_loot_icon.png");
+		final BufferedImage groupedLootImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "grouped_loot_icon.png");
+		final BufferedImage backArrowImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "back_icon.png");
+
+		SINGLE_LOOT_VIEW = new ImageIcon(singleLootImg);
+		SINGLE_LOOT_VIEW_FADED = new ImageIcon(ImageUtil.grayscaleOffset(singleLootImg, -150));
+
+		GROUPED_LOOT_VIEW = new ImageIcon(groupedLootImg);
+		GROUPED_LOOT_VIEW_FADED = new ImageIcon(ImageUtil.grayscaleOffset(groupedLootImg, -150));
+
+		BACK_ARROW_ICON = new ImageIcon(backArrowImg);
+		BACK_ARROW_ICON_FADED = new ImageIcon(ImageUtil.grayscaleOffset(backArrowImg, -150));
+	}
+
+	LootTrackerPanel(final ItemManager itemManager, final LootTrackerConfig config)
 	{
 		this.itemManager = itemManager;
 		setBorder(new EmptyBorder(6, 6, 6, 6));
@@ -85,6 +118,72 @@ class LootTrackerPanel extends PluginPanel
 		// Create layout panel for wrapping
 		layoutPanel.setLayout(new BoxLayout(layoutPanel, BoxLayout.Y_AXIS));
 		add(layoutPanel, BorderLayout.NORTH);
+
+		actionsContainer.setLayout(new BorderLayout());
+		actionsContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		actionsContainer.setPreferredSize(new Dimension(0, 30));
+		actionsContainer.setBorder(new EmptyBorder(5, 5, 5, 10));
+		actionsContainer.setVisible(false);
+
+		final JPanel viewControls = new JPanel(new GridLayout(1, 2, 10, 0));
+		viewControls.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
+		singleLootBtn.setIcon(SINGLE_LOOT_VIEW);
+		singleLootBtn.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				config.setGroupLoot(false);
+			}
+		});
+
+		groupedLootBtn.setIcon(GROUPED_LOOT_VIEW);
+		groupedLootBtn.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				config.setGroupLoot(true);
+			}
+		});
+
+		viewControls.add(singleLootBtn);
+		viewControls.add(groupedLootBtn);
+
+		final JPanel leftTitleContainer = new JPanel(new BorderLayout(5, 0));
+		leftTitleContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
+		detailsTitle.setForeground(Color.WHITE);
+
+		backBtn.setIcon(BACK_ARROW_ICON);
+		backBtn.setVisible(false);
+		backBtn.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				showDefaultView();
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				backBtn.setIcon(BACK_ARROW_ICON);
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				backBtn.setIcon(BACK_ARROW_ICON_FADED);
+			}
+		});
+
+		leftTitleContainer.add(backBtn, BorderLayout.WEST);
+		leftTitleContainer.add(detailsTitle, BorderLayout.CENTER);
+
+		actionsContainer.add(leftTitleContainer, BorderLayout.WEST);
+		actionsContainer.add(viewControls, BorderLayout.EAST);
 
 		// Create panel that will contain overall data
 		overallPanel.setBorder(new EmptyBorder(8, 10, 8, 10));
@@ -108,9 +207,12 @@ class LootTrackerPanel extends PluginPanel
 		final JMenuItem reset = new JMenuItem("Reset All");
 		reset.addActionListener(e ->
 		{
-			records.clear();
-			boxes.clear();
-			updateOverall();
+			records.removeIf(r -> detailedKey == null || r.getTitle().equals(detailedKey));
+			boxes.removeIf(b -> detailedKey == null || b.getId().equals(detailedKey));
+
+			overallKillsLabel.setText(htmlLabel("Total count: ", 0));
+			overallGpLabel.setText(htmlLabel("Total value: ", 0));
+
 			logsContainer.removeAll();
 			logsContainer.repaint();
 		});
@@ -123,6 +225,8 @@ class LootTrackerPanel extends PluginPanel
 
 		// Create loot boxes wrapper
 		logsContainer.setLayout(new BoxLayout(logsContainer, BoxLayout.Y_AXIS));
+		layoutPanel.add(actionsContainer);
+		layoutPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 		layoutPanel.add(overallPanel);
 		layoutPanel.add(logsContainer);
 
@@ -134,6 +238,10 @@ class LootTrackerPanel extends PluginPanel
 	private void showDefaultView()
 	{
 		this.detailedKey = null;
+
+		backBtn.setVisible(false);
+		detailsTitle.setText("");
+
 		rebuild();
 	}
 
@@ -141,18 +249,10 @@ class LootTrackerPanel extends PluginPanel
 	{
 		this.detailedKey = parentBox.getId();
 
-		logsContainer.removeAll();
+		detailsTitle.setText(parentBox.getId());
+		backBtn.setVisible(true);
 
-		for (LootTrackerRecord record : parentBox.getRecords())
-		{
-			buildBox(record);
-		}
-
-		overallKillsLabel.setText(htmlLabel("Total count: ", parentBox.getTotalKills()));
-		overallGpLabel.setText(htmlLabel("Total value: ", parentBox.getTotalPrice()));
-
-		logsContainer.revalidate();
-		logsContainer.repaint();
+		rebuild();
 	}
 
 	void loadHeaderIcon(BufferedImage img)
@@ -168,7 +268,7 @@ class LootTrackerPanel extends PluginPanel
 	void add(final String eventName, final int actorLevel, LootTrackerItem[] items)
 	{
 		final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
-		final LootTrackerRecord record = new LootTrackerRecord(eventName, subTitle, items);
+		final LootTrackerRecord record = new LootTrackerRecord(eventName, subTitle, items, System.currentTimeMillis());
 
 		records.add(record);
 
@@ -185,8 +285,10 @@ class LootTrackerPanel extends PluginPanel
 	{
 		logsContainer.removeAll();
 		boxes.clear();
+		records.stream().filter(r -> detailedKey == null || r.getTitle().equals(detailedKey)).forEach(this::buildBox);
 		updateOverall();
-		records.forEach(this::buildBox);
+
+		logsContainer.revalidate();
 		logsContainer.repaint();
 	}
 
@@ -197,7 +299,7 @@ class LootTrackerPanel extends PluginPanel
 	 */
 	private void buildBox(LootTrackerRecord record)
 	{
-		if (groupLoot && detailedKey == null)
+		if (groupLoot)
 		{
 			for (LootTrackerBox box : boxes)
 			{
@@ -214,6 +316,7 @@ class LootTrackerPanel extends PluginPanel
 
 		// Show main view
 		remove(errorPanel);
+		actionsContainer.setVisible(true);
 		overallPanel.setVisible(true);
 
 		// Create box
@@ -236,16 +339,14 @@ class LootTrackerPanel extends PluginPanel
 		});
 		popupMenu.add(reset);
 
-		if (groupLoot)
+		// Create details menu
+		final JMenuItem details = new JMenuItem("View details");
+		details.addActionListener(e ->
 		{
-			// Create details menu
-			final JMenuItem details = new JMenuItem("View details");
-			details.addActionListener(e ->
-			{
-				showDetailedView(box);
-			});
-			popupMenu.add(details);
-		}
+			showDetailedView(box);
+		});
+		popupMenu.add(details);
+
 
 		box.setComponentPopupMenu(popupMenu);
 
@@ -255,6 +356,15 @@ class LootTrackerPanel extends PluginPanel
 
 		// Update overall
 		updateOverall();
+	}
+
+	void onGroupingModeChanged(boolean group)
+	{
+		groupLoot = group;
+		rebuild();
+
+		groupedLootBtn.setIcon(group ? GROUPED_LOOT_VIEW : GROUPED_LOOT_VIEW_FADED);
+		singleLootBtn.setIcon(group ? SINGLE_LOOT_VIEW_FADED : SINGLE_LOOT_VIEW);
 	}
 
 	private void updateOverall()

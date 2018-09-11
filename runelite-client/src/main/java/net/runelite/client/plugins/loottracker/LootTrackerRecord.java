@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.loottracker;
 
+import java.util.ArrayList;
 import lombok.Value;
 
 @Value
@@ -32,4 +33,5 @@ class LootTrackerRecord
 	private final String title;
 	private final String subTitle;
 	private final LootTrackerItem[] items;
+	private final long timestamp;
 }

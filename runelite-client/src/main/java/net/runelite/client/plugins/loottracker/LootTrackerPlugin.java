@@ -134,8 +134,8 @@ public class LootTrackerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		panel = new LootTrackerPanel(itemManager);
-		panel.setGroupLoot(config.groupLoot());
+		panel = new LootTrackerPanel(itemManager, config);
+		panel.onGroupingModeChanged(config.groupLoot());
 
 		spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, panel::loadHeaderIcon);
 
@@ -165,8 +165,7 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		panel.setGroupLoot(config.groupLoot());
-		panel.rebuild();
+		panel.onGroupingModeChanged(config.groupLoot());
 	}
 
 	@Subscribe

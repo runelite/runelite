@@ -36,10 +36,19 @@ public interface LootTrackerConfig extends Config
 	@ConfigItem(
 		keyName = "groupLoot",
 		name = "Group loot by NPC/Activity",
-		description = "Groups the loot received from a NPC or Activity into one single log."
+		description = "Groups the loot received from a NPC or Activity into one single log.",
+		hidden = true
 	)
 	default boolean groupLoot()
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "groupLoot",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	void setGroupLoot(boolean group);
 }
