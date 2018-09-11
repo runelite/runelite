@@ -208,10 +208,21 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showDarkCrab",
+		name = "Show Dark Crab",
+		description = "Configures whether dark crab is displayed",
+		position = 17
+	)
+	default boolean showDarkCrab()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showFishingStats",
 		name = "Show Fishing session stats",
 		description = "Configures whether to display the fishing session stats",
-		position = 17
+		position = 18
 	)
 	default boolean showFishingStats()
 	{
@@ -222,7 +233,7 @@ public interface FishingConfig extends Config
 		keyName = "showMinnowOverlay",
 		name = "Show Minnow Movement overlay",
 		description = "Configures whether to display the minnow progress pie overlay",
-		position = 18
+		position = 19
 	)
 	default boolean showMinnowOverlay()
 	{

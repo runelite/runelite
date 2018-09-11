@@ -41,6 +41,7 @@ import static net.runelite.api.NpcID.FISHING_SPOT_1524;
 import static net.runelite.api.NpcID.FISHING_SPOT_1525;
 import static net.runelite.api.NpcID.FISHING_SPOT_1528;
 import static net.runelite.api.NpcID.FISHING_SPOT_1530;
+import static net.runelite.api.NpcID.FISHING_SPOT_1536;
 import static net.runelite.api.NpcID.FISHING_SPOT_1542;
 import static net.runelite.api.NpcID.FISHING_SPOT_1544;
 import static net.runelite.api.NpcID.FISHING_SPOT_2653;
@@ -148,6 +149,9 @@ public enum FishingSpot
 	),
 	SLIMY_EEL("Slimy eel", ItemID.RAW_SLIMY_EEL,
 		FISHING_SPOT_2653, FISHING_SPOT_2654, FISHING_SPOT_2655
+	),
+	DARK_CRAB("Dark Crab", ItemID.RAW_DARK_CRAB,
+		FISHING_SPOT_1536
 	);
 
 	private static final Map<Integer, FishingSpot> fishingSpots = new HashMap<>();

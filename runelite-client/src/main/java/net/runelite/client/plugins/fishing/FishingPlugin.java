@@ -265,6 +265,10 @@ public class FishingPlugin extends Plugin
 		{
 			spotIds.addAll(Ints.asList(FishingSpot.KARAMBWAN.getIds()));
 		}
+		if (config.showDarkCrab())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.DARK_CRAB.getIds()));
+		}
 	}
 
 	@Subscribe
