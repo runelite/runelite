@@ -928,6 +928,11 @@ public interface Client extends GameEngine
 	int getMouseIdleTicks();
 
 	/**
+	 * Gets the number of milliseconds since the last mouse press occurred.
+	 */
+	long getMouseLastPressedMillis();
+
+	/**
 	 * Gets the amount of ticks since the last keyboard press occurred.
 	 *
 	 * @return amount of idle keyboard ticks

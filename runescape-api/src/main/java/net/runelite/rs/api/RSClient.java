@@ -479,6 +479,10 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	int getMouseIdleTicks();
 
+	@Import("mouseLastPressedTimeMillis")
+	@Override
+	long getMouseLastPressedMillis();
+
 	@Import("keyboardIdleTicks")
 	@Override
 	int getKeyboardIdleTicks();
