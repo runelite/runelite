@@ -29,13 +29,22 @@ import com.google.inject.Provides;
 import java.io.IOException;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.SessionOpen;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.WorldHoppingManager;
+import net.runelite.client.game.WorldHoppingResult;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.WorldUtil;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldClient;
@@ -54,13 +63,33 @@ public class DefaultWorldPlugin extends Plugin
 	@Inject
 	private DefaultWorldConfig config;
 
+	@Inject
+	private KeyManager keyManager;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
+
+	@Inject
+	private WorldHoppingManager worldHoppingManager;
+
 	private final WorldClient worldClient = new WorldClient();
 	private int worldCache;
 	private boolean worldChangeRequired;
 
+	private final HotkeyListener quickHopKeyListener = new HotkeyListener(() -> config.quickHopKey())
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			forceApplyWorld();
+		}
+	};
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		keyManager.registerKeyListener(quickHopKeyListener);
+
 		worldChangeRequired = true;
 		applyWorld();
 	}
@@ -68,6 +97,8 @@ public class DefaultWorldPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		keyManager.unregisterKeyListener(quickHopKeyListener);
+
 		worldChangeRequired = true;
 		changeWorld(worldCache);
 	}
@@ -97,13 +128,12 @@ public class DefaultWorldPlugin extends Plugin
 		{
 			return;
 		}
-
 		worldChangeRequired = false;
-		int correctedWorld = newWorld < 300 ? newWorld + 300 : newWorld;
 
-		// Old School RuneScape worlds start on 301 so don't even bother trying to find lower id ones
-		// and also do not try to set world if we are already on it
-		if (correctedWorld <= 300 || client.getWorld() == correctedWorld)
+		int correctedWorld = correctWorld(newWorld);
+
+		// Do not try to set world if we are already on it
+		if (client.getWorld() == correctedWorld)
 		{
 			return;
 		}
@@ -147,5 +177,80 @@ public class DefaultWorldPlugin extends Plugin
 
 		final int newWorld = config.getWorld();
 		changeWorld(newWorld);
+	}
+
+	private void forceChangeWorld(int newWorld)
+	{
+		int correctedWorld = correctWorld(newWorld);
+
+		try
+		{
+			final WorldResult worldResult = worldClient.lookupWorlds();
+			final World world = worldResult.findWorld(correctedWorld);
+
+			if (world != null)
+			{
+				final net.runelite.api.World rsWorld = client.createWorld();
+				rsWorld.setActivity(world.getActivity());
+				rsWorld.setAddress(world.getAddress());
+				rsWorld.setId(world.getId());
+				rsWorld.setPlayerCount(world.getPlayers());
+				rsWorld.setLocation(world.getLocation());
+				rsWorld.setTypes(WorldUtil.toWorldTypes(world.getTypes()));
+
+				{
+					String chatMessage = new ChatMessageBuilder()
+						.append(ChatColorType.NORMAL)
+						.append("Quick-hopping to World ")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(Integer.toString(world.getId()))
+						.append(ChatColorType.NORMAL)
+						.append("..")
+						.build();
+
+					chatMessageManager
+						.queue(QueuedMessage.builder()
+							.type(ChatMessageType.GAME)
+							.runeLiteFormattedMessage(chatMessage)
+							.build());
+				}
+
+				worldHoppingManager.hop(rsWorld, (result) ->
+				{
+					if (result == WorldHoppingResult.FAILED_TO_OPEN_HOPPER_AFTER_RETRYING)
+					{
+						String chatMessage = new ChatMessageBuilder()
+							.append(ChatColorType.NORMAL)
+							.append("Failed to quick-hop after retrying.")
+							.build();
+
+						chatMessageManager
+							.queue(QueuedMessage.builder()
+								.type(ChatMessageType.GAME)
+								.runeLiteFormattedMessage(chatMessage)
+								.build());
+					}
+				});
+			}
+			else
+			{
+				log.warn("World {} not found.", correctedWorld);
+			}
+		}
+		catch (IOException e)
+		{
+			log.warn("Error looking up world {}. Error: {}", correctedWorld, e);
+		}
+	}
+
+	private void forceApplyWorld()
+	{
+		final int newWorld = config.getWorld();
+		forceChangeWorld(newWorld);
+	}
+
+	private int correctWorld(int world)
+	{
+		return world < 300 ? world + 300 : world;
 	}
 }

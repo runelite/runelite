@@ -24,9 +24,12 @@
  */
 package net.runelite.client.plugins.defaultworld;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
 
 @ConfigGroup("defaultworld")
 public interface DefaultWorldConfig extends Config
@@ -34,10 +37,22 @@ public interface DefaultWorldConfig extends Config
 	@ConfigItem(
 		keyName = "defaultWorld",
 		name = "Default world",
-		description = "World to use as default one"
+		description = "World to use as default one",
+		position = 0
 	)
 	default int getWorld()
 	{
 		return 0;
+	}
+
+	@ConfigItem(
+		keyName = "quickHopKey",
+		name = "Quick-hop key",
+		description = "When you press this key you'll hop to your default world",
+		position = 1
+	)
+	default Keybind quickHopKey()
+	{
+		return new Keybind(KeyEvent.VK_HOME, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK);
 	}
 }
