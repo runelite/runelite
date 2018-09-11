@@ -55,10 +55,12 @@ class LootTrackerPanel extends PluginPanel
 {
 	private static final ImageIcon SINGLE_LOOT_VIEW;
 	private static final ImageIcon SINGLE_LOOT_VIEW_FADED;
+	private static final ImageIcon SINGLE_LOOT_VIEW_HOVER;
 	private static final ImageIcon GROUPED_LOOT_VIEW;
 	private static final ImageIcon GROUPED_LOOT_VIEW_FADED;
+	private static final ImageIcon GROUPED_LOOT_VIEW_HOVER;
 	private static final ImageIcon BACK_ARROW_ICON;
-	private static final ImageIcon BACK_ARROW_ICON_FADED;
+	private static final ImageIcon BACK_ARROW_ICON_HOVER;
 
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
@@ -98,13 +100,15 @@ class LootTrackerPanel extends PluginPanel
 		final BufferedImage backArrowImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "back_icon.png");
 
 		SINGLE_LOOT_VIEW = new ImageIcon(singleLootImg);
-		SINGLE_LOOT_VIEW_FADED = new ImageIcon(ImageUtil.grayscaleOffset(singleLootImg, -150));
+		SINGLE_LOOT_VIEW_FADED = new ImageIcon(ImageUtil.alphaOffset(singleLootImg, -180));
+		SINGLE_LOOT_VIEW_HOVER = new ImageIcon(ImageUtil.alphaOffset(singleLootImg, -220));
 
 		GROUPED_LOOT_VIEW = new ImageIcon(groupedLootImg);
-		GROUPED_LOOT_VIEW_FADED = new ImageIcon(ImageUtil.grayscaleOffset(groupedLootImg, -150));
+		GROUPED_LOOT_VIEW_FADED = new ImageIcon(ImageUtil.alphaOffset(groupedLootImg, -180));
+		GROUPED_LOOT_VIEW_HOVER = new ImageIcon(ImageUtil.alphaOffset(groupedLootImg, -220));
 
 		BACK_ARROW_ICON = new ImageIcon(backArrowImg);
-		BACK_ARROW_ICON_FADED = new ImageIcon(ImageUtil.grayscaleOffset(backArrowImg, -150));
+		BACK_ARROW_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(backArrowImg, -180));
 	}
 
 	LootTrackerPanel(final ItemManager itemManager, final LootTrackerConfig config)
@@ -135,6 +139,18 @@ class LootTrackerPanel extends PluginPanel
 			{
 				config.setGroupLoot(false);
 			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				singleLootBtn.setIcon(groupLoot ? SINGLE_LOOT_VIEW_FADED : SINGLE_LOOT_VIEW);
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				singleLootBtn.setIcon(groupLoot ? SINGLE_LOOT_VIEW_HOVER : SINGLE_LOOT_VIEW);
+			}
 		});
 
 		groupedLootBtn.setIcon(GROUPED_LOOT_VIEW);
@@ -144,6 +160,18 @@ class LootTrackerPanel extends PluginPanel
 			public void mousePressed(MouseEvent mouseEvent)
 			{
 				config.setGroupLoot(true);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				groupedLootBtn.setIcon(groupLoot ? GROUPED_LOOT_VIEW : GROUPED_LOOT_VIEW_FADED);
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				groupedLootBtn.setIcon(groupLoot ? GROUPED_LOOT_VIEW : GROUPED_LOOT_VIEW_HOVER);
 			}
 		});
 
@@ -174,7 +202,7 @@ class LootTrackerPanel extends PluginPanel
 			@Override
 			public void mouseEntered(MouseEvent mouseEvent)
 			{
-				backBtn.setIcon(BACK_ARROW_ICON_FADED);
+				backBtn.setIcon(BACK_ARROW_ICON_HOVER);
 			}
 		});
 
