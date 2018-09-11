@@ -28,7 +28,7 @@ package net.runelite.client.plugins.worldmap;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 import java.awt.image.BufferedImage;
 
-public class QuestStartPoint extends WorldMapPoint
+class QuestStartPoint extends WorldMapPoint
 {
 	QuestStartPoint(QuestStartLocation data, BufferedImage icon)
 	{
