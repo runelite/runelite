@@ -40,6 +40,7 @@ import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
 	name = "Player Indicators",
@@ -169,7 +170,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 						target = target.substring(idx + 1);
 					}
 
-					lastEntry.setTarget("<col=" + Integer.toHexString(color.getRGB() & 0xFFFFFF) + ">" + target);
+					lastEntry.setTarget(ColorUtil.prependColorTag(target, color));
 				}
 
 				if (image != -1 && config.showClanRanks())
