@@ -26,10 +26,8 @@
 package net.runelite.client.plugins.worldmap;
 
 import lombok.Getter;
-import lombok.Setter;
 import net.runelite.api.coords.WorldPoint;
 
-@Getter
 enum QuestStartLocation
 {
 	COOKS_ASSISTANT_RFD("Cook's Assistant", new WorldPoint(3211, 3216, 0), new int[][] {{1357, 1}, {1358, 69}}),
@@ -158,10 +156,13 @@ enum QuestStartLocation
 	WITCHS_HOUSE("Witch's House", new WorldPoint(2927, 3456, 0), new int[] {1358, 91}),
 	ZOGRE_FLESH_EATERS("Zogre Flesh Eaters", new WorldPoint(2442, 3051, 0), new int[] {1358, 7});
 
+	@Getter
 	private final String tooltip;
+
+	@Getter
 	private final WorldPoint location;
-	@Setter
-	private boolean complete;
+
+	@Getter
 	private final int[][] quests;
 
 	QuestStartLocation(String description, WorldPoint location, int[][] quests)
@@ -169,7 +170,6 @@ enum QuestStartLocation
 		this.tooltip = "Quest Start - " + description;
 		this.location = location;
 		this.quests = quests;
-		this.complete = true;
 	}
 
 	QuestStartLocation(String description, WorldPoint location, int[] quest)

@@ -32,17 +32,14 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
-import net.runelite.api.GameState;
 import net.runelite.api.Skill;
-import net.runelite.api.events.*;
-import net.runelite.client.callback.ClientThread;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.ExperienceChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ImageUtil;
-
-import static net.runelite.api.widgets.WidgetID.QUEST_COMPLETED_GROUP_ID;
 
 @PluginDescriptor(
 	name = "World Map",
@@ -54,7 +51,6 @@ public class WorldMapPlugin extends Plugin
 	static final BufferedImage BLANK_ICON;
 	static final BufferedImage FAIRY_TRAVEL_ICON;
 	static final BufferedImage NOPE_ICON;
-	static final BufferedImage QUEST_HIGHLIGHT_ICON;
 
 	static final String CONFIG_KEY = "worldmap";
 	static final String CONFIG_KEY_FAIRY_RING_TOOLTIPS = "fairyRingTooltips";
@@ -85,17 +81,10 @@ public class WorldMapPlugin extends Plugin
 		NOPE_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
 		final BufferedImage nopeImage = ImageUtil.getResourceStreamFromClass(WorldMapPlugin.class, "nope_icon.png");
 		NOPE_ICON.getGraphics().drawImage(nopeImage, 1, 1, null);
-
-		QUEST_HIGHLIGHT_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
-		final BufferedImage highlightImage = ImageUtil.getResourceStreamFromClass(WorldMapPlugin.class, "quest_highlight_icon.png");
-		QUEST_HIGHLIGHT_ICON.getGraphics().drawImage(highlightImage, 1, 1, null);
 	}
 
 	@Inject
 	private Client client;
-
-	@Inject
-	private ClientThread clientThread;
 
 	@Inject
 	private WorldMapConfig config;
@@ -152,10 +141,10 @@ public class WorldMapPlugin extends Plugin
 					if (config.questStartTooltips())
 					{
 						Arrays.stream(QuestStartLocation.values())
-							.map(value -> new QuestStartPoint(value, value.isComplete() ? BLANK_ICON : QUEST_HIGHLIGHT_ICON))
+							.map(value -> new QuestStartPoint(value, BLANK_ICON))
 							.forEach(worldMapPointManager::add);
 					}
-          break;
+					break;
 				case CONFIG_KEY_MINIGAME_TOOLTIP:
 					if (config.minigameTooltip())
 					{
@@ -205,7 +194,9 @@ public class WorldMapPlugin extends Plugin
 		{
 			Arrays.stream(QuestStartLocation.values())
 				.map(value -> new QuestStartPoint(value, BLANK_ICON))
-        
+				.forEach(worldMapPointManager::add);
+		}
+
 		if (config.minigameTooltip())
 		{
 			Arrays.stream(MinigameLocation.values())
@@ -250,47 +241,6 @@ public class WorldMapPlugin extends Plugin
 					.map(value -> new AgilityShortcutPoint(value, config.agilityShortcutLevelIcon() && value.getLevelReq() > agilityLevel ? NOPE_ICON : BLANK_ICON))
 					.forEach(worldMapPointManager::add);
 			}
-		}
-	}
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
-	{
-		if (event.getGameState() == GameState.LOGGED_IN)
-		{
-			clientThread.invokeLater(() ->
-			{
-				for (QuestStartLocation qsL : QuestStartLocation.values())
-				{
-					boolean complete = true;
-					for (int[] quest : qsL.getQuests())
-					{
-						client.runScript(quest[0], quest[1]);
-						if (client.getIntStack()[client.getIntStackSize() - 1] != 2)
-						{
-							complete = false;
-						}
-					}
-					qsL.setComplete(complete);
-				}
-
-				worldMapPointManager.removeIf(QuestStartPoint.class::isInstance);
-				Arrays.stream(QuestStartLocation.values())
-					.map(value -> new QuestStartPoint(value, value.isComplete() ? BLANK_ICON : QUEST_HIGHLIGHT_ICON))
-					.forEach(worldMapPointManager::add);
-			});
-		}
-	}
-
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
-	{
-		if (event.getGroupId() == QUEST_COMPLETED_GROUP_ID && config.questStartTooltips())
-		{
-			worldMapPointManager.removeIf(QuestStartPoint.class::isInstance);
-			Arrays.stream(QuestStartLocation.values())
-				.map(value -> new QuestStartPoint(value, value.isComplete() ? BLANK_ICON : QUEST_HIGHLIGHT_ICON))
-				.forEach(worldMapPointManager::add);
 		}
 	}
 
