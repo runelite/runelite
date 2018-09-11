@@ -29,12 +29,13 @@ import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import javax.inject.Inject;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
+import static net.runelite.api.ItemID.AGILITY_ARENA_TICKET;
 import net.runelite.api.Player;
 import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
@@ -60,6 +61,7 @@ import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -70,6 +72,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 	description = "Show helpful information about agility courses and obstacles",
 	tags = {"grace", "marks", "overlay", "shortcuts", "skilling", "traps"}
 )
+@Slf4j
 public class AgilityPlugin extends Plugin
 {
 	private static final int AGILITY_ARENA_REGION_ID = 11157;
@@ -100,6 +103,9 @@ public class AgilityPlugin extends Plugin
 
 	@Inject
 	private AgilityConfig config;
+
+	@Inject
+	private ItemManager itemManager;
 
 	@Getter
 	private AgilitySession session;
@@ -233,24 +239,26 @@ public class AgilityPlugin extends Plugin
 	{
 		if (isInAgilityArena())
 		{
+			// Hint arrow has no plane, and always returns the current plane
 			WorldPoint newTicketPosition = client.getHintArrowPoint();
-			if (!Objects.equals(lastArenaTicketPosition, newTicketPosition))
-			{
-				// We don't want to notify when players first enter the course
-				if (lastArenaTicketPosition != null && newTicketPosition != null)
-				{
-					if (config.notifyAgilityArena())
-					{
-						notifier.notify("Ticket location changed");
-					}
+			WorldPoint oldTickPosition = lastArenaTicketPosition;
 
-					if (config.showAgilityArenaTimer())
-					{
-						showNewAgilityArenaTimer();
-					}
+			lastArenaTicketPosition = newTicketPosition;
+
+			if (oldTickPosition != null && newTicketPosition != null
+				&& (oldTickPosition.getX() != newTicketPosition.getX() || oldTickPosition.getY() != newTicketPosition.getY()))
+			{
+				log.debug("Ticked position moved from {} to {}", oldTickPosition, newTicketPosition);
+
+				if (config.notifyAgilityArena())
+				{
+					notifier.notify("Ticket location changed");
 				}
 
-				lastArenaTicketPosition = newTicketPosition;
+				if (config.showAgilityArenaTimer())
+				{
+					showNewAgilityArenaTimer();
+				}
 			}
 		}
 	}
@@ -275,7 +283,7 @@ public class AgilityPlugin extends Plugin
 	private void showNewAgilityArenaTimer()
 	{
 		removeAgilityArenaTimer();
-		infoBoxManager.addInfoBox(new AgilityArenaTimer(this));
+		infoBoxManager.addInfoBox(new AgilityArenaTimer(this, itemManager.getImage(AGILITY_ARENA_TICKET)));
 	}
 
 	@Subscribe

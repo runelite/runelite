@@ -93,6 +93,7 @@ public final class AnimationID
 	public static final int FISHING_OILY_ROD = 622;
 	public static final int FISHING_KARAMBWAN = 1193;
 	public static final int FISHING_CRUSHING_INFERNAL_EELS = 7553;
+	public static final int FISHING_CUTTING_SACRED_EELS = 7151;
 	public static final int FISHING_BAREHAND = 6709;
 	public static final int MINING_BRONZE_PICKAXE = 625;
 	public static final int MINING_IRON_PICKAXE = 626;
@@ -116,10 +117,12 @@ public final class AnimationID
 	public static final int MINING_MOTHERLODE_DRAGON_ORN = 335;
 	public static final int MINING_MOTHERLODE_INFERNAL = 4481;
 	public static final int MINING_MOTHERLODE_3A = 7282;
+	public static final int DENSE_ESSENCE_CHIPPING = 7201;
 	public static final int HERBLORE_POTIONMAKING = 363; //used for both herb and secondary
 	public static final int MAGIC_CHARGING_ORBS = 726;
 	public static final int MAGIC_LUNAR_STRING_JEWELRY = 4412;
 	public static final int MAGIC_LUNAR_BAKE_PIE = 4413;
+	public static final int MAGIC_MAKE_TABLET = 4068;
 	public static final int BURYING_BONES = 827;
 	public static final int USING_GILDED_ALTAR = 3705;
 	public static final int LOOKING_INTO = 832;
@@ -130,7 +133,17 @@ public final class AnimationID
 	public static final int DEMONIC_GORILLA_AOE_ATTACK = 7228;
 	public static final int DEMONIC_GORILLA_PRAYER_SWITCH = 7228;
 	public static final int DEMONIC_GORILLA_DEFEND = 7224;
-	public static final int IMP_DEATH = 172;
+	public static final int BOOK_HOME_TELEPORT_1 = 4847;
+	public static final int BOOK_HOME_TELEPORT_2 = 4850;
+	public static final int BOOK_HOME_TELEPORT_3 = 4853;
+	public static final int BOOK_HOME_TELEPORT_4 = 4855;
+	public static final int BOOK_HOME_TELEPORT_5 = 4857;
+	public static final int COW_HOME_TELEPORT_1 = 1696;
+	public static final int COW_HOME_TELEPORT_2 = 1697;
+	public static final int COW_HOME_TELEPORT_3 = 1698;
+	public static final int COW_HOME_TELEPORT_4 = 1699;
+	public static final int COW_HOME_TELEPORT_5 = 1700;
+	public static final int COW_HOME_TELEPORT_6 = 1701;
 
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
@@ -166,4 +179,5 @@ public final class AnimationID
 	public static final int LIZARD_DEATH = 2778;
 	public static final int ROCKSLUG_DEATH = 1568;
 	public static final int ZYGOMITE_DEATH = 3327;
+	public static final int IMP_DEATH = 172;
 }

@@ -56,7 +56,6 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.StackFormatter;
 
-@Slf4j
 class XpInfoBox extends JPanel
 {
 	// Templates

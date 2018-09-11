@@ -32,7 +32,6 @@ import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
@@ -64,8 +63,9 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.osbuddy.GrandExchangeClient;
@@ -134,15 +134,11 @@ public class GrandExchangePlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws IOException
+	protected void startUp()
 	{
 		panel = injector.getInstance(GrandExchangePanel.class);
 
-		BufferedImage icon;
-		synchronized (ImageIO.class)
-		{
-			icon = ImageIO.read(getClass().getResourceAsStream("ge_icon.png"));
-		}
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "ge_icon.png");
 
 		button = NavigationButton.builder()
 			.tooltip("Grand Exchange")
@@ -297,9 +293,17 @@ public class GrandExchangePlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (grandExchangeText == null || grandExchangeItem == null)
+		if (grandExchangeText == null || grandExchangeItem == null || grandExchangeItem.isHidden())
 		{
 			return;
+		}
+
+		final Widget geText = grandExchangeText;
+
+		if (!geText.getText().contains("Actively traded price"))
+		{
+			// searching for the same item twice without closing the search window will cause this.
+			lastItem = -1;
 		}
 
 		int itemId = grandExchangeItem.getItemId();
@@ -311,7 +315,8 @@ public class GrandExchangePlugin extends Plugin
 		}
 
 		lastItem = itemId;
-		final Widget geText = grandExchangeText;
+
+		log.debug("Looking up item {}", itemId);
 
 		executorService.submit(() ->
 		{

@@ -194,6 +194,10 @@ public class InterfaceStylesPlugin extends Plugin
 		{
 			log.debug("Unable to load image: ", ex);
 		}
+		catch (IllegalArgumentException ex)
+		{
+			log.debug("Input stream of file path " + filePath + " could not be read: ", ex);
+		}
 
 		return null;
 	}

@@ -172,10 +172,21 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "showBellowCharges",
+			name = "Show Bellow Charges",
+			description = "Configures if ogre bellow item charge is shown",
+			position = 12
+	)
+	default boolean showBellowCharges()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "recoilNotification",
 		name = "Ring of Recoil Notification",
 		description = "Configures if the ring of recoil breaking notification is shown",
-		position = 12
+		position = 13
 	)
 	default boolean recoilNotification()
 	{

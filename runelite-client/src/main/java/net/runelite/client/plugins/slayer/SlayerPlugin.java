@@ -520,10 +520,15 @@ public class SlayerPlugin extends Plugin
 	private void rebuildTargetNames(Task task)
 	{
 		targetNames.clear();
-		Arrays.stream(task.getTargetNames())
-			.map(String::toLowerCase)
-			.forEach(targetNames::add);
-		targetNames.add(taskName.toLowerCase().replaceAll("s$", ""));
+
+		if (task != null)
+		{
+			Arrays.stream(task.getTargetNames())
+				.map(String::toLowerCase)
+				.forEach(targetNames::add);
+
+			targetNames.add(taskName.toLowerCase().replaceAll("s$", ""));
+		}
 	}
 
 	private void rebuildTargetList()
@@ -549,10 +554,7 @@ public class SlayerPlugin extends Plugin
 		infoTimer = Instant.now();
 
 		Task task = Task.getTask(name);
-		if (task != null)
-		{
-			rebuildTargetNames(task);
-		}
+		rebuildTargetNames(task);
 		rebuildTargetList();
 	}
 

@@ -41,7 +41,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -57,6 +56,7 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.RunnableExceptionLogger;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.hiscore.HiscoreClient;
@@ -146,19 +146,9 @@ public class HiscorePanel extends PluginPanel
 
 	static
 	{
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				SEARCH_ICON = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("search.png")));
-				LOADING_ICON = new ImageIcon(IconTextField.class.getResource("loading_spinner_darker.gif"));
-				ERROR_ICON = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("error.png")));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+		SEARCH_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(IconTextField.class, "search.png"));
+		LOADING_ICON = new ImageIcon(IconTextField.class.getResource("loading_spinner_darker.gif"));
+		ERROR_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(IconTextField.class, "error.png"));
 	}
 
 	@Inject
@@ -220,51 +210,39 @@ public class HiscorePanel extends PluginPanel
 
 		for (HiscoreEndpoint endpoint : HiscoreEndpoint.values())
 		{
-			try
+			final BufferedImage iconImage = ImageUtil.getResourceStreamFromClass(getClass(), endpoint.name().toLowerCase() + ".png");
+
+			MaterialTab tab = new MaterialTab(new ImageIcon(iconImage), tabGroup, null);
+			tab.setToolTipText(endpoint.getName() + " Hiscores");
+			tab.setOnSelectEvent(() ->
 			{
-				BufferedImage iconImage;
-				synchronized (ImageIO.class)
+				if (loading)
 				{
-					iconImage = ImageIO.read(HiscorePanel.class.getResourceAsStream(
-						endpoint.name().toLowerCase() + ".png"));
+					return false;
 				}
 
-				MaterialTab tab = new MaterialTab(new ImageIcon(iconImage), tabGroup, null);
-				tab.setToolTipText(endpoint.getName() + " Hiscores");
-				tab.setOnSelectEvent(() ->
+				selectedEndPoint = endpoint;
+				return true;
+			});
+
+			// Adding the lookup method to a mouseListener instead of the above onSelectedEvent
+			// Because sometimes you might want to switch the tab, without calling for lookup
+			// Ex: selecting the normal hiscores as default
+			tab.addMouseListener(new MouseAdapter()
+			{
+				@Override
+				public void mousePressed(MouseEvent mouseEvent)
 				{
 					if (loading)
 					{
-						return false;
+						return;
 					}
 
-					selectedEndPoint = endpoint;
-					return true;
-				});
+					executor.execute(HiscorePanel.this::lookup);
+				}
+			});
 
-				// Adding the lookup method to a mouseListener instead of the above onSelectedEvent
-				// Because sometimes you might want to switch the tab, without calling for lookup
-				// Ex: selecting the normal hiscores as default
-				tab.addMouseListener(new MouseAdapter()
-				{
-					@Override
-					public void mousePressed(MouseEvent mouseEvent)
-					{
-						if (loading)
-						{
-							return;
-						}
-
-						executor.execute(HiscorePanel.this::lookup);
-					}
-				});
-
-				tabGroup.addTab(tab);
-			}
-			catch (IOException ex)
-			{
-				throw new RuntimeException(ex);
-			}
+			tabGroup.addTab(tab);
 		}
 
 		// Default selected tab is normal hiscores
@@ -328,22 +306,22 @@ public class HiscorePanel extends PluginPanel
 		label.setFont(FontManager.getRunescapeSmallFont());
 		label.setText("--");
 
-		String skillIcon = "skill_icons_small/" + (skill == null ? "combat" : skill.getName().toLowerCase()) + ".png";
+		String skillName = (skill == null ? "combat" : skill.getName().toLowerCase());
+		String directory = "/skill_icons";
+		if (skillName.equals("combat") || skillName.equals("overall"))
+		{
+			// Cannot use SpriteManager as HiscorePlugin loads before a Client is available
+			directory += "/";
+		}
+		else
+		{
+			directory += "_small/";
+		}
+
+		String skillIcon = directory + skillName + ".png";
 		log.debug("Loading skill icon from {}", skillIcon);
 
-		try
-		{
-			BufferedImage icon;
-			synchronized (ImageIO.class)
-			{
-				icon = ImageIO.read(HiscorePanel.class.getResourceAsStream(skillIcon));
-			}
-			label.setIcon(new ImageIcon(icon));
-		}
-		catch (IOException ex)
-		{
-			log.warn(null, ex);
-		}
+		label.setIcon(new ImageIcon(ImageUtil.getResourceStreamFromClass(getClass(), skillIcon)));
 
 		boolean totalLabel = skill == HiscoreSkill.OVERALL || skill == null; //overall or combat
 		label.setIconTextGap(totalLabel ? 10 : 4);

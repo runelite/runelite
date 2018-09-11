@@ -29,13 +29,11 @@ package net.runelite.client.plugins.cluescrolls;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +45,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Query;
 import net.runelite.api.Scene;
@@ -83,6 +82,7 @@ import net.runelite.client.plugins.cluescrolls.clues.ObjectClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.TextClueScroll;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QueryRunner;
 import net.runelite.client.util.Text;
 
@@ -95,11 +95,6 @@ import net.runelite.client.util.Text;
 public class ClueScrollPlugin extends Plugin
 {
 	private static final Duration WAIT_DURATION = Duration.ofMinutes(4);
-
-	public static final BufferedImage CLUE_SCROLL_IMAGE;
-	public static final BufferedImage MAP_ARROW;
-	public static final BufferedImage EMOTE_IMAGE;
-	public static final BufferedImage SPADE_IMAGE;
 
 	@Getter
 	private ClueScroll clue;
@@ -147,27 +142,11 @@ public class ClueScrollPlugin extends Plugin
 	@Inject
 	private WorldMapPointManager worldMapPointManager;
 
+	private BufferedImage emoteImage;
+	private BufferedImage mapArrow;
 	private Integer clueItemId;
 	private boolean clueItemChanged = false;
 	private boolean worldMapPointsSet = false;
-
-	static
-	{
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				CLUE_SCROLL_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("clue_scroll.png"));
-				MAP_ARROW = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("clue_arrow.png"));
-				EMOTE_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("emote.png"));
-				SPADE_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("spade.png"));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
-	}
 
 	@Provides
 	ClueScrollConfig getConfig(ConfigManager configManager)
@@ -411,6 +390,40 @@ public class ClueScrollPlugin extends Plugin
 		}
 	}
 
+	public BufferedImage getClueScrollImage()
+	{
+		return itemManager.getImage(ItemID.CLUE_SCROLL_MASTER);
+	}
+
+	public BufferedImage getEmoteImage()
+	{
+		if (emoteImage != null)
+		{
+			return emoteImage;
+		}
+
+		emoteImage = ImageUtil.getResourceStreamFromClass(getClass(), "emote.png");
+
+		return emoteImage;
+	}
+
+	public BufferedImage getSpadeImage()
+	{
+		return itemManager.getImage(ItemID.SPADE);
+	}
+
+	BufferedImage getMapArrow()
+	{
+		if (mapArrow != null)
+		{
+			return mapArrow;
+		}
+
+		mapArrow = ImageUtil.getResourceStreamFromClass(getClass(), "/util/clue_arrow.png");
+
+		return mapArrow;
+	}
+
 	private void resetClue()
 	{
 		if (!clueItemChanged)
@@ -594,7 +607,7 @@ public class ClueScrollPlugin extends Plugin
 
 		for (final WorldPoint point : points)
 		{
-			worldMapPointManager.add(new ClueScrollWorldMapPoint(point));
+			worldMapPointManager.add(new ClueScrollWorldMapPoint(point, this));
 		}
 	}
 }

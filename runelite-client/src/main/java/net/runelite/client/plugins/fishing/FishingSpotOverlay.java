@@ -31,6 +31,8 @@ import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GraphicID;
 import net.runelite.api.NPC;
@@ -54,6 +56,9 @@ class FishingSpotOverlay extends Overlay
 	private final Client client;
 	private final ItemManager itemManager;
 
+	@Setter(AccessLevel.PACKAGE)
+	private boolean hidden;
+
 	@Inject
 	private FishingSpotOverlay(FishingPlugin plugin, FishingConfig config, Client client, ItemManager itemManager)
 	{
@@ -68,6 +73,11 @@ class FishingSpotOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (hidden)
+		{
+			return null;
+		}
+
 		NPC[] fishingSpots = plugin.getFishingSpots();
 		if (fishingSpots == null)
 		{

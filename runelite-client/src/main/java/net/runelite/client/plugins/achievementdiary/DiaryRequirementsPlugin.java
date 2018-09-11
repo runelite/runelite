@@ -35,10 +35,12 @@ import java.util.Map;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.ScriptID;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.achievementdiary.diaries.ArdougneDiaryRequirement;
@@ -65,6 +67,9 @@ public class DiaryRequirementsPlugin extends Plugin
 {
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Subscribe
 	public void onWidgetLoaded(final WidgetLoaded event)
@@ -150,11 +155,20 @@ public class DiaryRequirementsPlugin extends Plugin
 			}
 		}
 
+		int lastLine = 0;
 		for (int i = 0; i < newRequirements.size() && i < children.length; i++)
 		{
 			Widget achievementWidget = children[i];
-			achievementWidget.setText(newRequirements.get(i));
+			String text = newRequirements.get(i);
+			achievementWidget.setText(text);
+			if (text != null && !text.isEmpty())
+			{
+				lastLine = i;
+			}
 		}
+
+		int numLines = lastLine;
+		clientThread.invokeLater(() -> client.runScript(ScriptID.DIARY_QUEST_UPDATE_LINECOUNT, 1, numLines));
 	}
 
 	private List<String> getOriginalAchievements(Widget[] children)

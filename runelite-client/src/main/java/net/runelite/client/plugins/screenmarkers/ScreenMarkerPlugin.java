@@ -39,11 +39,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.MouseManager;
@@ -53,13 +51,13 @@ import net.runelite.client.plugins.screenmarkers.ui.ScreenMarkerPluginPanel;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Screen Markers",
 	description = "Enable drawing of screen markers on top of the client",
 	tags = {"boxes", "overlay", "panel"}
 )
-@Slf4j
 public class ScreenMarkerPlugin extends Plugin
 {
 	private static final String PLUGIN_NAME = "Screen Markers";
@@ -108,11 +106,7 @@ public class ScreenMarkerPlugin extends Plugin
 		pluginPanel = injector.getInstance(ScreenMarkerPluginPanel.class);
 		pluginPanel.rebuild();
 
-		BufferedImage icon;
-		synchronized (ImageIO.class)
-		{
-			icon = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream(ICON_FILE));
-		}
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), ICON_FILE);
 
 		navigationButton = NavigationButton.builder()
 			.tooltip(PLUGIN_NAME)
