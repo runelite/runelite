@@ -55,10 +55,8 @@ import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Varbits;
-import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
@@ -70,6 +68,8 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.WorldHoppingManager;
+import net.runelite.client.game.WorldHoppingResult;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -94,8 +94,6 @@ public class WorldHopperPlugin extends Plugin
 	private static final int WORLD_FETCH_TIMER = 10;
 	private static final int REFRESH_THROTTLE = 60_000;  // ms
 	private static final int TICK_THROTTLE = (int) Duration.ofMinutes(10).toMillis();
-
-	private static final int DISPLAY_SWITCHER_MAX_ATTEMPTS = 3;
 
 	private static final String HOP_TO = "Hop-to";
 	private static final String KICK_OPTION = "Kick";
@@ -123,6 +121,9 @@ public class WorldHopperPlugin extends Plugin
 	private ChatMessageManager chatMessageManager;
 
 	@Inject
+	private WorldHoppingManager worldHoppingManager;
+
+	@Inject
 	private ScheduledExecutorService executorService;
 
 	@Inject
@@ -130,9 +131,6 @@ public class WorldHopperPlugin extends Plugin
 
 	private NavigationButton navButton;
 	private WorldSwitcherPanel panel;
-
-	private net.runelite.api.World quickHopTargetWorld;
-	private int displaySwitcherAttempts = 0;
 
 	@Getter
 	private int lastWorld;
@@ -605,46 +603,30 @@ public class WorldHopperPlugin extends Plugin
 			return;
 		}
 
-		String chatMessage = new ChatMessageBuilder()
-			.append(ChatColorType.NORMAL)
-			.append("Quick-hopping to World ")
-			.append(ChatColorType.HIGHLIGHT)
-			.append(Integer.toString(world.getId()))
-			.append(ChatColorType.NORMAL)
-			.append("..")
-			.build();
-
-		chatMessageManager
-			.queue(QueuedMessage.builder()
-				.type(ChatMessageType.GAME)
-				.runeLiteFormattedMessage(chatMessage)
-				.build());
-
-		quickHopTargetWorld = rsWorld;
-		displaySwitcherAttempts = 0;
-	}
-
-	@Subscribe
-	public void onGameTick(GameTick event)
-	{
-		if (quickHopTargetWorld == null)
 		{
-			return;
+			String chatMessage = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("Quick-hopping to World ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(Integer.toString(world.getId()))
+				.append(ChatColorType.NORMAL)
+				.append("..")
+				.build();
+
+			chatMessageManager
+				.queue(QueuedMessage.builder()
+					.type(ChatMessageType.GAME)
+					.runeLiteFormattedMessage(chatMessage)
+					.build());
 		}
 
-		if (client.getWidget(WidgetInfo.WORLD_SWITCHER_LIST) == null)
+		worldHoppingManager.hop(rsWorld, (result) ->
 		{
-			client.openWorldHopper();
-
-			if (++displaySwitcherAttempts >= DISPLAY_SWITCHER_MAX_ATTEMPTS)
+			if (result == WorldHoppingResult.FAILED_TO_OPEN_HOPPER_AFTER_RETRYING)
 			{
 				String chatMessage = new ChatMessageBuilder()
 					.append(ChatColorType.NORMAL)
-					.append("Failed to quick-hop after ")
-					.append(ChatColorType.HIGHLIGHT)
-					.append(Integer.toString(displaySwitcherAttempts))
-					.append(ChatColorType.NORMAL)
-					.append(" attempts.")
+					.append("Failed to quick-hop after retrying.")
 					.build();
 
 				chatMessageManager
@@ -652,35 +634,8 @@ public class WorldHopperPlugin extends Plugin
 						.type(ChatMessageType.GAME)
 						.runeLiteFormattedMessage(chatMessage)
 						.build());
-
-				resetQuickHopper();
 			}
-		}
-		else
-		{
-			client.hopToWorld(quickHopTargetWorld);
-			resetQuickHopper();
-		}
-	}
-
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
-	{
-		if (event.getType() != ChatMessageType.SERVER)
-		{
-			return;
-		}
-
-		if (event.getMessage().equals("Please finish what you're doing before using the World Switcher."))
-		{
-			resetQuickHopper();
-		}
-	}
-
-	private void resetQuickHopper()
-	{
-		displaySwitcherAttempts = 0;
-		quickHopTargetWorld = null;
+		});
 	}
 
 	private ChatPlayer getChatPlayerFromName(String name)
