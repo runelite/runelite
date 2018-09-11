@@ -48,12 +48,12 @@ public interface RightclickOptionsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hiddenItems",
-		name = "Hidden Items",
-		description = "List of right-click menu entries to prevent from appearing, separated by commas.",
+		keyName = "dimmedItems",
+		name = "Dimmed Items",
+		description = "List of right-click menu entries to dim, separated by commas",
 		position = 1
 	)
-	default String getHiddenItems()
+	default String getDimmedItems()
 	{
 		return "";
 	}
@@ -70,14 +70,101 @@ public interface RightclickOptionsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "highlightedColor",
-		name = "Highlighted items color",
-		description = "Configures the color for highlighted entries",
-		position = 3
+			keyName = "highlightedColor",
+			name = "Highlighted items color",
+			description = "Configures the color for highlighted entries",
+			position = 3
 	)
 	default Color highlightedColor()
 	{
-		return Color.decode("#AA00FF");
+		return Color.decode("#FF66AA");
 	}
 
+	@ConfigItem(
+			keyName = "dimmedColor",
+			name = "Dimmed items color",
+			description = "Configures the color for dimmed entries",
+			position = 4
+	)
+	default Color dimmedColor()
+	{
+		return Color.decode("#808080");
+	}
+
+	@ConfigItem(
+			keyName = "hideExamine",
+			name = "Hide \"Examine\"",
+			description = "Hides Examine from all right-click menus",
+			position = 5
+	)
+	default boolean hideExamine()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "hideTradeWith",
+			name = "Hide \"Trade with\"",
+			description = "Hides Trade from all right-click menus",
+			position = 6
+	)
+	default boolean hideTradeWith()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "hideFollow",
+			name = "Hide \"Follow\"",
+			description = "Hides Follow from all right-click menus",
+			position = 7
+	)
+	default boolean hideFollow()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "hideWithdraw5",
+			name = "Hide \"Withdraw-5\"",
+			description = "Hides Withdraw-5 from all right-click menus",
+			position = 8
+	)
+	default boolean hideWithdraw5()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "hideWithdraw10",
+			name = "Hide \"Withdraw-10\"",
+			description = "Hides Withdraw-10 from all right-click menus",
+			position = 9
+	)
+	default boolean hideWithdraw10()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "hideWithdrawAllButOne",
+			name = "Hide \"Withdraw-All-But-One\"",
+			description = "Hides WithdrawAllButOne from all right-click menus",
+			position = 10
+	)
+	default boolean hideWithdrawAllButOne()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "hideDepositWornItems",
+			name = "Hide \"Deposit worn items\"",
+			description = "Prevents you from depositing your worn items by accident",
+			position = 11
+	)
+	default boolean hideDepositWornItems()
+	{
+		return false;
+	}
 }
