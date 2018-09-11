@@ -64,6 +64,7 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_JEWELLERY_TELEPORT_ICON = "jewelleryIcon";
 	static final String CONFIG_KEY_SCROLL_TELEPORT_ICON = "scrollIcon";
 	static final String CONFIG_KEY_MISC_TELEPORT_ICON = "miscellaneousTeleportIcon";
+	static final String CONFIG_KEY_QUEST_START_TOOLTIPS = "questStartTooltips";
 	static final String CONFIG_KEY_MINIGAME_TOOLTIP = "minigameTooltip";
 
 	static
@@ -128,8 +129,19 @@ public class WorldMapPlugin extends Plugin
 					if (config.agilityShortcutTooltips())
 					{
 						int agilityLevel = client.getRealSkillLevel(Skill.AGILITY);
+
 						Arrays.stream(AgilityShortcutLocation.values())
 							.map(value -> new AgilityShortcutPoint(value, config.agilityShortcutLevelIcon() && value.getLevelReq() > agilityLevel ? NOPE_ICON : BLANK_ICON))
+							.forEach(worldMapPointManager::add);
+					}
+					break;
+				case CONFIG_KEY_QUEST_START_TOOLTIPS:
+					worldMapPointManager.removeIf(QuestStartPoint.class::isInstance);
+
+					if (config.questStartTooltips())
+					{
+						Arrays.stream(QuestStartLocation.values())
+							.map(value -> new QuestStartPoint(value, BLANK_ICON))
 							.forEach(worldMapPointManager::add);
 					}
 					break;
@@ -178,6 +190,13 @@ public class WorldMapPlugin extends Plugin
 				.forEach(worldMapPointManager::add);
 		}
 
+		if (config.questStartTooltips())
+		{
+			Arrays.stream(QuestStartLocation.values())
+				.map(value -> new QuestStartPoint(value, BLANK_ICON))
+				.forEach(worldMapPointManager::add);
+		}
+
 		if (config.minigameTooltip())
 		{
 			Arrays.stream(MinigameLocation.values())
@@ -202,6 +221,7 @@ public class WorldMapPlugin extends Plugin
 	{
 		worldMapPointManager.removeIf(FairyRingPoint.class::isInstance);
 		worldMapPointManager.removeIf(AgilityShortcutPoint.class::isInstance);
+		worldMapPointManager.removeIf(QuestStartPoint.class::isInstance);
 		worldMapPointManager.removeIf(TeleportPoint.class::isInstance);
 		worldMapPointManager.removeIf(MinigamePoint.class::isInstance);
 	}
