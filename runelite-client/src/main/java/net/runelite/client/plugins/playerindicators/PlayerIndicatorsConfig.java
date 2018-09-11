@@ -196,4 +196,15 @@ public interface PlayerIndicatorsConfig extends Config
 	{
 		return true;
 	}
+	
+	@ConfigItem(
+		position = 15,
+		keyName = "showOfflineFriends",
+		name = "Show offline friends",
+		description = "Draw friends names even if they're offline"
+	)
+	default boolean showOfflineFriends()
+	{
+		return true;
+	}
 }

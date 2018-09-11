@@ -70,9 +70,15 @@ public class PlayerIndicatorsService
 					consumer.accept(player, config.getOwnPlayerColor());
 				}
 			}
-			else if (config.highlightFriends() && player.isFriend())
+			else if (config.highlightFriends())
 			{
-				consumer.accept(player, config.getFriendColor());
+				boolean friends = config.showOfflineFriends() ?
+						client.isFriended(player.getName(), false) : player.isFriend();
+				
+				if (friends)
+				{
+					consumer.accept(player, config.getFriendColor());
+				}
 			}
 			else if (config.drawClanMemberNames() && isClanMember)
 			{
