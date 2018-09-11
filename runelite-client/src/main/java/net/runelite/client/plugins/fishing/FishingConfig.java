@@ -239,4 +239,15 @@ public interface FishingConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "alwaysShowFishingSpots",
+		name = "Always Show Fishing Spots",
+		description = "Configues whether to always display fishing spots",
+		position = 20
+	)
+	default boolean alwaysShowFishingSpots()
+	{
+		return false;
+	}
 }
