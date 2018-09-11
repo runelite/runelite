@@ -28,6 +28,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Setter;
 import net.runelite.api.GraphicID;
 import net.runelite.api.NPC;
 import net.runelite.client.ui.overlay.Overlay;
@@ -38,6 +40,9 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 class FishingSpotMinimapOverlay extends Overlay
 {
 	private final FishingPlugin plugin;
+
+	@Setter(AccessLevel.PACKAGE)
+	private boolean hidden;
 
 	@Inject
 	public FishingSpotMinimapOverlay(FishingPlugin plugin)
@@ -50,6 +55,11 @@ class FishingSpotMinimapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (hidden)
+		{
+			return null;
+		}
+
 		NPC[] fishingSpots = plugin.getFishingSpots();
 		if (fishingSpots == null)
 		{

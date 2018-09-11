@@ -27,7 +27,13 @@ package net.runelite.api.queries;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 
-
+/**
+ * Used for getting NPCs in view,deprecated as of existence of NPC spawn events
+ *
+ * @see net.runelite.api.events.NpcSpawned
+ * @see net.runelite.api.events.NpcDespawned
+ */
+@Deprecated
 public class NPCQuery extends ActorQuery<NPC, NPCQuery>
 {
 	@Override

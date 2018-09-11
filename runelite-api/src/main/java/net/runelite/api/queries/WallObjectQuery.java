@@ -32,6 +32,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
+/**
+ * Used for getting wall objects in view,deprecated as of existence of Wall object spawn events
+ *
+ * @see net.runelite.api.events.WallObjectSpawned
+ * @see net.runelite.api.events.WallObjectDespawned
+ * @see net.runelite.api.events.WallObjectChanged
+ */
+@Deprecated
 public class WallObjectQuery extends TileObjectQuery<WallObject, WallObjectQuery>
 {
 	@Override

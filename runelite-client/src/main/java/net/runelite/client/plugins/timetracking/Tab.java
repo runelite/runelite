@@ -45,7 +45,7 @@ public enum Tab
 	GRAPE("Grape Patches", ItemID.GRAPES),
 	SPECIAL("Special Patches", ItemID.MUSHROOM);
 
-	public static final Tab[] FARMING_TABS = {ALLOTMENT, FLOWER, HERB, TREE, FRUIT_TREE, HOPS, BUSH, GRAPE, SPECIAL};
+	public static final Tab[] FARMING_TABS = {HERB, TREE, FRUIT_TREE, SPECIAL, FLOWER, ALLOTMENT, BUSH, GRAPE, HOPS};
 
 	private final String name;
 	private final int itemID;

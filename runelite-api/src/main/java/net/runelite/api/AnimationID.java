@@ -133,6 +133,17 @@ public final class AnimationID
 	public static final int DEMONIC_GORILLA_AOE_ATTACK = 7228;
 	public static final int DEMONIC_GORILLA_PRAYER_SWITCH = 7228;
 	public static final int DEMONIC_GORILLA_DEFEND = 7224;
+	public static final int BOOK_HOME_TELEPORT_1 = 4847;
+	public static final int BOOK_HOME_TELEPORT_2 = 4850;
+	public static final int BOOK_HOME_TELEPORT_3 = 4853;
+	public static final int BOOK_HOME_TELEPORT_4 = 4855;
+	public static final int BOOK_HOME_TELEPORT_5 = 4857;
+	public static final int COW_HOME_TELEPORT_1 = 1696;
+	public static final int COW_HOME_TELEPORT_2 = 1697;
+	public static final int COW_HOME_TELEPORT_3 = 1698;
+	public static final int COW_HOME_TELEPORT_4 = 1699;
+	public static final int COW_HOME_TELEPORT_5 = 1700;
+	public static final int COW_HOME_TELEPORT_6 = 1701;
 
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;

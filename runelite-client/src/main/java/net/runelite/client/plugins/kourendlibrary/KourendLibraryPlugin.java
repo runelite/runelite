@@ -118,6 +118,8 @@ public class KourendLibraryPlugin extends Plugin
 			.panel(panel)
 			.build();
 
+		overlayManager.add(overlay);
+
 		if (!config.hideButton())
 		{
 			clientToolbar.addNavigation(navButton);
@@ -127,6 +129,7 @@ public class KourendLibraryPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		overlay.setHidden(true);
 		overlayManager.remove(overlay);
 		clientToolbar.removeNavigation(navButton);
 		buttonAttached = false;
@@ -170,7 +173,7 @@ public class KourendLibraryPlugin extends Plugin
 		if (MenuAction.GAME_OBJECT_FIRST_OPTION == menuOpt.getMenuAction() && menuOpt.getMenuTarget().contains("Bookshelf"))
 		{
 			lastBookcaseClick = WorldPoint.fromScene(client, menuOpt.getActionParam(), menuOpt.getWidgetId(), client.getPlane());
-			overlayManager.add(overlay);
+			overlay.setHidden(false);
 		}
 	}
 
@@ -256,7 +259,7 @@ public class KourendLibraryPlugin extends Plugin
 						return;
 					}
 
-					overlayManager.add(overlay);
+					overlay.setHidden(false);
 					library.setCustomer(cust, book);
 					panel.update();
 				}

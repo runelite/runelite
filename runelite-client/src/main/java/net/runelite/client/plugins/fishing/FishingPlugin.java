@@ -114,12 +114,16 @@ public class FishingPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		overlayManager.add(spotOverlay);
+		overlayManager.add(fishingSpotMinimapOverlay);
 		updateConfig();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		spotOverlay.setHidden(true);
+		fishingSpotMinimapOverlay.setHidden(true);
 		overlayManager.remove(overlay);
 		overlayManager.remove(spotOverlay);
 		overlayManager.remove(fishingSpotMinimapOverlay);
@@ -139,16 +143,8 @@ public class FishingPlugin extends Plugin
 			|| canPlayerFish(client.getItemContainer(InventoryID.INVENTORY))
 			|| canPlayerFish(client.getItemContainer(InventoryID.EQUIPMENT));
 
-		if (showOverlays)
-		{
-			overlayManager.add(spotOverlay);
-			overlayManager.add(fishingSpotMinimapOverlay);
-		}
-		else
-		{
-			overlayManager.remove(spotOverlay);
-			overlayManager.remove(fishingSpotMinimapOverlay);
-		}
+		spotOverlay.setHidden(!showOverlays);
+		fishingSpotMinimapOverlay.setHidden(!showOverlays);
 	}
 
 	@Subscribe
@@ -162,8 +158,8 @@ public class FishingPlugin extends Plugin
 		if (event.getMessage().contains("You catch a") || event.getMessage().contains("You catch some"))
 		{
 			session.setLastFishCaught(Instant.now());
-			overlayManager.add(spotOverlay);
-			overlayManager.add(fishingSpotMinimapOverlay);
+			spotOverlay.setHidden(false);
+			fishingSpotMinimapOverlay.setHidden(false);
 		}
 	}
 

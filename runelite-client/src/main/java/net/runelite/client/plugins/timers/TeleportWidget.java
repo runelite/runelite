@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Unmoon <https://github.com/Unmoon>
+ * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.tithefarm;
+package net.runelite.client.plugins.timers;
 
-import java.awt.Color;
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import com.google.common.collect.ImmutableList;
+import java.util.Collection;
+import javax.annotation.Nullable;
+import net.runelite.api.widgets.WidgetInfo;
 
-@ConfigGroup("tithefarmplugin")
-public interface TitheFarmPluginConfig extends Config
+enum TeleportWidget
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "hexColorUnwatered",
-		name = "Unwatered plant",
-		description = "Color of unwatered plant timer"
-	)
-	default Color getColorUnwatered()
-	{
-		return new Color(255, 187, 0);
-	}
+	HOME_TELEPORT,
+	MINIGAME_TELEPORT;
 
-	@ConfigItem(
-		position = 2,
-		keyName = "hexColorWatered",
-		name = "Watered plant",
-		description = "Color of watered plant timer"
-	)
-	default Color getColorWatered()
-	{
-		return new Color(0, 153, 255);
-	}
+	private static final Collection HOME_TELEPORT_IDS = ImmutableList.of(
+		WidgetInfo.SPELL_LUMBRIDGE_HOME_TELEPORT.getId(),
+		WidgetInfo.SPELL_EDGEVILLE_HOME_TELEPORT.getId(),
+		WidgetInfo.SPELL_LUNAR_HOME_TELEPORT.getId(),
+		WidgetInfo.SPELL_ARCEUUS_HOME_TELEPORT.getId()
+	);
+	private static final Collection MINIGAME_TELEPORT_IDS = ImmutableList.of(
+		WidgetInfo.MINIGAME_TELEPORT_BUTTON.getId()
+	);
 
-	@ConfigItem(
-		position = 3,
-		keyName = "hexColorGrown",
-		name = "Grown plant",
-		description = "Color of grown plant timer"
-	)
-	default Color getColorGrown()
+	@Nullable
+	static TeleportWidget of(int widgetId)
 	{
-		return new Color(0, 217, 0);
+		if (HOME_TELEPORT_IDS.contains(widgetId))
+		{
+			return HOME_TELEPORT;
+		}
+		else if (MINIGAME_TELEPORT_IDS.contains(widgetId))
+		{
+			return MINIGAME_TELEPORT;
+		}
+		return null;
 	}
 }
