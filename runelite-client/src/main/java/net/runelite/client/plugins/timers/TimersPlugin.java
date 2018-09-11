@@ -102,6 +102,8 @@ public class TimersPlugin extends Plugin
 
 	private int lastRaidVarb;
 	private WorldPoint lastPoint;
+	private TeleportWidget lastTeleportClicked;
+	private int lastAnimation;
 
 	@Inject
 	private ItemManager itemManager;
@@ -128,6 +130,10 @@ public class TimersPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer);
+		lastRaidVarb = -1;
+		lastPoint = null;
+		lastTeleportClicked = null;
+		lastAnimation = -1;
 	}
 
 	@Subscribe
@@ -145,6 +151,12 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void updateConfig(ConfigChanged event)
 	{
+		if (!config.showHomeMinigameTeleports())
+		{
+			removeGameTimer(HOME_TELEPORT);
+			removeGameTimer(MINIGAME_TELEPORT);
+		}
+
 		if (!config.showAntidotePlus())
 		{
 			removeGameTimer(ANTIDOTEPLUS);
@@ -316,6 +328,12 @@ public class TimersPlugin extends Plugin
 			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
 			createGameTimer(STAMINA);
 			return;
+		}
+
+		TeleportWidget teleportWidget = TeleportWidget.of(event.getWidgetId());
+		if (teleportWidget != null)
+		{
+			lastTeleportClicked = teleportWidget;
 		}
 	}
 
@@ -558,6 +576,23 @@ public class TimersPlugin extends Plugin
 		{
 			createGameTimer(VENGEANCEOTHER);
 		}
+
+		if (config.showHomeMinigameTeleports()
+			&& client.getLocalPlayer().getAnimation() == AnimationID.IDLE
+			&& (lastAnimation == AnimationID.BOOK_HOME_TELEPORT_5
+				|| lastAnimation == AnimationID.COW_HOME_TELEPORT_6))
+		{
+			if (lastTeleportClicked == TeleportWidget.HOME_TELEPORT)
+			{
+				createGameTimer(HOME_TELEPORT);
+			}
+			else if (lastTeleportClicked == TeleportWidget.MINIGAME_TELEPORT)
+			{
+				createGameTimer(MINIGAME_TELEPORT);
+			}
+		}
+
+		lastAnimation = client.getLocalPlayer().getAnimation();
 	}
 
 
