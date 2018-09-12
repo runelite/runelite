@@ -51,147 +51,172 @@ import java.util.stream.Stream;
 import static net.runelite.client.plugins.rightclick.config.MenuHighlightMode.*;
 
 @PluginDescriptor(
-        name = "Right-Click Menu",
-        description = "Changes the appearance of right-click menus",
-        tags = {"rightclick", "examine", "hide", "highlight"},
-        enabledByDefault = false
+	name = "Right-Click Menu",
+	description = "Changes the appearance of right-click menus",
+	tags = {"rightclick", "examine", "hide", "highlight"},
+	enabledByDefault = false
 )
-public class RightclickOptionsPlugin extends Plugin {
-    // Based on grounditems plugin
+public class RightclickOptionsPlugin extends Plugin
+{
+	// Based on grounditems plugin
 
-    private static final Splitter COMMA_SPLITTER = Splitter
-            .on(",")
-            .omitEmptyStrings()
-            .trimResults();
+	private static final Splitter COMMA_SPLITTER = Splitter
+		.on(",")
+		.omitEmptyStrings()
+		.trimResults();
 
-    private List<String> highlightedItemsList = new CopyOnWriteArrayList<>();
-    private List<String> dimmedItemsList = new CopyOnWriteArrayList<>();
-    private List<String> hiddenItemList = new CopyOnWriteArrayList<>();
+	private List<String> highlightedItemsList = new CopyOnWriteArrayList<>();
+	private List<String> dimmedItemsList = new CopyOnWriteArrayList<>();
+	private List<String> hiddenItemList = new CopyOnWriteArrayList<>();
 
-    @Inject
-    private Client client;
+	@Inject
+	private Client client;
 
-    @Inject
-    private RightclickOptionsConfig config;
+	@Inject
+	private RightclickOptionsConfig config;
 
-    private Color highlightedColor;
-    private Color dimmedColor;
+	private Color highlightedColor;
+	private Color dimmedColor;
 
-    @Provides
-    RightclickOptionsConfig provideConfig(ConfigManager configManager) {
-        return configManager.getConfig(RightclickOptionsConfig.class);
-    }
+	@Provides
+	RightclickOptionsConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(RightclickOptionsConfig.class);
+	}
 
-    @Override
-    protected void startUp() {
-        reset();
-    }
+	@Override
+	protected void startUp()
+	{
+		reset();
+	}
 
-    @Override
-    protected void shutDown() throws Exception {
-        highlightedItemsList = null;
-        dimmedItemsList = null;
-        hiddenItemList = null;
-    }
+	@Override
+	protected void shutDown() throws Exception
+	{
+		highlightedItemsList = null;
+		dimmedItemsList = null;
+		hiddenItemList = null;
+	}
 
-    @Subscribe
-    public void onConfigChanged(ConfigChanged event) {
-        if (event.getGroup().equals("rightclick")) {
-            reset();
-        }
-    }
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("rightclick"))
+		{
+			reset();
+		}
+	}
 
-    private void reset() {
-        // gets the highlighted items from the text box in the config
-        highlightedItemsList = COMMA_SPLITTER.splitToList(config.getHighlightedRightclickItems());
+	private void reset()
+	{
+		// gets the highlighted items from the text box in the config
+		highlightedItemsList = COMMA_SPLITTER.splitToList(config.getHighlightedRightclickItems());
 
-        // gets the hidden items from the text box in the config
-        dimmedItemsList = COMMA_SPLITTER.splitToList(config.getDimmedItems());
+		// gets the hidden items from the text box in the config
+		dimmedItemsList = COMMA_SPLITTER.splitToList(config.getDimmedItems());
 
-        hiddenItemList = new ArrayList<>();
-        if (config.hideExamine()) {
-            hiddenItemList.add("Examine");
-        }
-        if (config.hideFollow()) {
-            hiddenItemList.add("Follow");
-        }
-        if (config.hideTradeWith()) {
-            hiddenItemList.add("Trade with");
-        }
-        if (config.hideWithdraw5()) {
-            hiddenItemList.add("Withdraw-5");
-        }
-        if (config.hideWithdraw10()) {
-            hiddenItemList.add("Withdraw-10");
-        }
-        if (config.hideWithdrawAllButOne()) {
-            hiddenItemList.add("Withdraw-All-But-One");
-        }
-        if (config.hideDepositWornItems()) {
-            hiddenItemList.add("Deposit worn items");
-        }
+		hiddenItemList = new ArrayList<>();
+		if (config.hideExamine())
+		{
+			hiddenItemList.add("Examine");
+		}
+		if (config.hideFollow())
+		{
+			hiddenItemList.add("Follow");
+		}
+		if (config.hideTradeWith())
+		{
+			hiddenItemList.add("Trade with");
+		}
+		if (config.hideWithdraw5())
+		{
+			hiddenItemList.add("Withdraw-5");
+		}
+		if (config.hideWithdraw10())
+		{
+			hiddenItemList.add("Withdraw-10");
+		}
+		if (config.hideWithdrawAllButOne())
+		{
+			hiddenItemList.add("Withdraw-All-But-One");
+		}
+		if (config.hideDepositWornItems())
+		{
+			hiddenItemList.add("Deposit worn items");
+		}
 
-        highlightedColor = config.highlightedColor();
-        dimmedColor = config.dimmedColor();
-    }
+		highlightedColor = config.highlightedColor();
+		dimmedColor = config.dimmedColor();
+	}
 
-    @Subscribe
-    public void onMenuEntryAdded(MenuEntryAdded event) {
-        MenuEntry[] menuEntries = client.getMenuEntries();
-        MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		MenuEntry[] menuEntries = client.getMenuEntries();
+		MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
 
-        // Check for removal of entries
-        if (hiddenItemList.contains(lastEntry.getOption()))
-        {
-            if (menuEntries.length > 1)
-            {
-                MenuEntry[] newEntries = Arrays.copyOfRange(menuEntries, 0, menuEntries.length - 1);
-                client.setMenuEntries(newEntries);
-            }
-            else
-            {
-                client.setMenuEntries(new MenuEntry[]{});
-            }
-        }
+		// Check for removal of entries
+		if (hiddenItemList.contains(lastEntry.getOption()))
+		{
+			if (menuEntries.length > 1)
+			{
+				MenuEntry[] newEntries = Arrays.copyOfRange(menuEntries, 0, menuEntries.length - 1);
+				client.setMenuEntries(newEntries);
+			}
+			else
+			{
+				client.setMenuEntries(new MenuEntry[]{});
+			}
+		}
 
-        // Highlighted options and dimmed options
-        if (highlightedColor != null &&
-                matchesPatterns(event.getOption(), event.getTarget(), highlightedItemsList)) {
-            final MenuHighlightMode mode = config.menuHighlightMode();
+		// Highlighted options and dimmed options
+		if (highlightedColor != null &&
+			matchesPatterns(event.getOption(), event.getTarget(), highlightedItemsList))
+		{
+			final MenuHighlightMode mode = config.menuHighlightMode();
 
-            if (mode == BOTH || mode == OPTION) {
-                lastEntry.setOption(ColorUtil.prependColorTag(lastEntry.getOption(), highlightedColor));
-            }
-            if (mode == BOTH || mode == NAME) {
-                String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
-                lastEntry.setTarget(ColorUtil.prependColorTag(target, highlightedColor));
-            }
-            client.setMenuEntries(menuEntries);
-        } else if (dimmedColor != null &&
-                matchesPatterns(event.getOption(), event.getTarget(), dimmedItemsList)) {
-            final MenuHighlightMode mode = config.menuHighlightMode();
+			if (mode == BOTH || mode == OPTION)
+			{
+				lastEntry.setOption(ColorUtil.prependColorTag(lastEntry.getOption(), highlightedColor));
+			}
+			if (mode == BOTH || mode == NAME)
+			{
+				String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
+				lastEntry.setTarget(ColorUtil.prependColorTag(target, highlightedColor));
+			}
+			client.setMenuEntries(menuEntries);
+		}
+		else if (dimmedColor != null &&
+			matchesPatterns(event.getOption(), event.getTarget(), dimmedItemsList))
+		{
+			final MenuHighlightMode mode = config.menuHighlightMode();
 
-            if (mode == BOTH || mode == OPTION) {
-                lastEntry.setOption(ColorUtil.prependColorTag(lastEntry.getOption(), dimmedColor));
-            }
-            if (mode == BOTH || mode == NAME) {
-                String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
-                lastEntry.setTarget(ColorUtil.prependColorTag(target, dimmedColor));
-            }
-            client.setMenuEntries(menuEntries);
-        }
+			if (mode == BOTH || mode == OPTION)
+			{
+				lastEntry.setOption(ColorUtil.prependColorTag(lastEntry.getOption(), dimmedColor));
+			}
+			if (mode == BOTH || mode == NAME)
+			{
+				String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
+				lastEntry.setTarget(ColorUtil.prependColorTag(target, dimmedColor));
+			}
+			client.setMenuEntries(menuEntries);
+		}
 
-    }
+	}
 
-    boolean matchesPatterns(String action, String target, List<String> patterns) {
-        for (String pattern : patterns) {
-            if (WildcardMatcher.matches(pattern, action) ||
-                    WildcardMatcher.matches(pattern, target) ||
-                    WildcardMatcher.matches(pattern, action + " " + target)) {
-                return true;
-            }
-        }
-        return false;
-    }
+	boolean matchesPatterns(String action, String target, List<String> patterns)
+	{
+		for (String pattern : patterns)
+		{
+			if (WildcardMatcher.matches(pattern, action) ||
+				WildcardMatcher.matches(pattern, target) ||
+				WildcardMatcher.matches(pattern, action + " " + target))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 
 }
