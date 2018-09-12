@@ -4,7 +4,14 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -33,7 +40,9 @@ import net.runelite.http.api.hiscore.HiscoreResult;
 public class OddsPlugin extends Plugin {
 
     @Getter
-    private final LinkedHashMap<Skill, Integer> theirSkillMap = new LinkedHashMap<>();
+    private final Map<Skill, Integer> theirSkillMap = new LinkedHashMap<>();
+
+    private final Map<String, HiscoreResult> scoreMap = new HashMap<>();
 
     @Getter
     private HiscoreResult result;
@@ -70,6 +79,8 @@ public class OddsPlugin extends Plugin {
     @Override
     protected void shutDown() throws Exception {
         overlayManager.remove(oddsOverlay);
+        theirSkillMap.clear();
+        scoreMap.clear();
     }
 
     @Subscribe
@@ -92,58 +103,67 @@ public class OddsPlugin extends Plugin {
         }
     }
 
-    private void lookup(String username) {
-        theirSkillMap.clear();
-        meleeOdds = 0.0;
-        rangedOdds = 0.0;
-        result = null;
-        username = sanitize(username);
+    private void lookup(String user) {
+        Thread t = new Thread(() ->
+        {
+            theirSkillMap.clear();
+            meleeOdds = 0.0;
+            rangedOdds = 0.0;
+            result = null;
+            final String username = sanitize(user);
 
-        if (Strings.isNullOrEmpty(username)) {
-            return;
-        }
-
-        if (username.length() > 12) {
-            return;
-        }
-
-        try {
-            result = hiscoreClient.lookup(username, HiscoreEndpoint.NORMAL);
-
-            if (result == null) {
+            if (Strings.isNullOrEmpty(username)) {
                 return;
             }
 
-            if (result.getPlayer() != null) {
-                theirSkillMap.put(Skill.ATTACK, result.getAttack().getLevel());
-                theirSkillMap.put(Skill.STRENGTH, result.getStrength().getLevel());
-                theirSkillMap.put(Skill.DEFENCE, result.getDefence().getLevel());
-                theirSkillMap.put(Skill.HITPOINTS, result.getHitpoints().getLevel());
-                theirSkillMap.put(Skill.RANGED, result.getRanged().getLevel());
-
-                meleeOdds = OddsCalculator.calculateMeleeOdds(new OddsPlayer(client.getRealSkillLevel(Skill.ATTACK),
-                        client.getRealSkillLevel(Skill.STRENGTH),
-                        client.getRealSkillLevel(Skill.DEFENCE),
-                        client.getRealSkillLevel(Skill.HITPOINTS),
-                        client.getRealSkillLevel(Skill.RANGED)), new OddsPlayer(getTheirSkillMap().get(Skill.ATTACK),
-                        getTheirSkillMap().get(Skill.STRENGTH),
-                        getTheirSkillMap().get(Skill.DEFENCE),
-                        getTheirSkillMap().get(Skill.HITPOINTS),
-                        getTheirSkillMap().get(Skill.RANGED)));
-                rangedOdds = OddsCalculator.calculateRangedOdds(new OddsPlayer(client.getRealSkillLevel(Skill.ATTACK),
-                        client.getRealSkillLevel(Skill.STRENGTH),
-                        client.getRealSkillLevel(Skill.DEFENCE),
-                        client.getRealSkillLevel(Skill.HITPOINTS),
-                        client.getRealSkillLevel(Skill.RANGED)), new OddsPlayer(getTheirSkillMap().get(Skill.ATTACK),
-                        getTheirSkillMap().get(Skill.STRENGTH),
-                        getTheirSkillMap().get(Skill.DEFENCE),
-                        getTheirSkillMap().get(Skill.HITPOINTS),
-                        getTheirSkillMap().get(Skill.RANGED)));
-
+            if (username.length() > 12) {
+                return;
             }
-        } catch (IOException ex) {
-            log.warn("Error fetching Hiscore data " + ex.getMessage());
-            return;
-        }
+
+            try {
+                if(scoreMap.containsKey(username)) {
+                    result = scoreMap.get(username);
+                } else {
+                    result = hiscoreClient.lookup(username, HiscoreEndpoint.NORMAL);
+                    scoreMap.put(username, result);
+                }
+
+                if (result == null) {
+                    return;
+                }
+
+                if (result.getPlayer() != null) {
+                    theirSkillMap.put(Skill.ATTACK, result.getAttack().getLevel());
+                    theirSkillMap.put(Skill.STRENGTH, result.getStrength().getLevel());
+                    theirSkillMap.put(Skill.DEFENCE, result.getDefence().getLevel());
+                    theirSkillMap.put(Skill.HITPOINTS, result.getHitpoints().getLevel());
+                    theirSkillMap.put(Skill.RANGED, result.getRanged().getLevel());
+
+                    meleeOdds = OddsCalculator.calculateMeleeOdds(new OddsPlayer(client.getRealSkillLevel(Skill.ATTACK),
+                            client.getRealSkillLevel(Skill.STRENGTH),
+                            client.getRealSkillLevel(Skill.DEFENCE),
+                            client.getRealSkillLevel(Skill.HITPOINTS),
+                            client.getRealSkillLevel(Skill.RANGED)), new OddsPlayer(getTheirSkillMap().get(Skill.ATTACK),
+                            getTheirSkillMap().get(Skill.STRENGTH),
+                            getTheirSkillMap().get(Skill.DEFENCE),
+                            getTheirSkillMap().get(Skill.HITPOINTS),
+                            getTheirSkillMap().get(Skill.RANGED)));
+                    rangedOdds = OddsCalculator.calculateRangedOdds(new OddsPlayer(client.getRealSkillLevel(Skill.ATTACK),
+                            client.getRealSkillLevel(Skill.STRENGTH),
+                            client.getRealSkillLevel(Skill.DEFENCE),
+                            client.getRealSkillLevel(Skill.HITPOINTS),
+                            client.getRealSkillLevel(Skill.RANGED)), new OddsPlayer(getTheirSkillMap().get(Skill.ATTACK),
+                            getTheirSkillMap().get(Skill.STRENGTH),
+                            getTheirSkillMap().get(Skill.DEFENCE),
+                            getTheirSkillMap().get(Skill.HITPOINTS),
+                            getTheirSkillMap().get(Skill.RANGED)));
+
+                }
+            } catch (IOException ex) {
+                log.warn("Error fetching Hiscore data " + ex.getMessage());
+                return;
+            }
+        });
+        t.start();
     }
 }
