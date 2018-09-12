@@ -86,7 +86,7 @@ class FishingSpotOverlay extends Overlay
 
 		for (NPC npc : fishingSpots)
 		{
-			FishingSpot spot = FishingSpot.getSpot(npc.getId());
+			FishingSpot spot = FishingSpot.getSPOTS().get(npc.getId());
 
 			if (spot == null)
 			{
