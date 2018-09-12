@@ -136,6 +136,14 @@ public abstract class VarbitMixin implements RSClient
 
 	@Inject
 	@Override
+	public void setVar(VarClientInt varClientInt, int value)
+	{
+		int[] vars = getIntVarcs();
+		vars[varClientInt.getIndex()] = value;
+	}
+
+	@Inject
+	@Override
 	public int[] getIntVarcs()
 	{
 		return getVarcs().getIntVarcs();
