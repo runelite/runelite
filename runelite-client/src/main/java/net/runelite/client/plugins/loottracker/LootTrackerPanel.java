@@ -132,6 +132,7 @@ class LootTrackerPanel extends PluginPanel
 		viewControls.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		singleLootBtn.setIcon(SINGLE_LOOT_VIEW);
+		singleLootBtn.setToolTipText("Show each kill separately");
 		singleLootBtn.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -154,6 +155,7 @@ class LootTrackerPanel extends PluginPanel
 		});
 
 		groupedLootBtn.setIcon(GROUPED_LOOT_VIEW);
+		groupedLootBtn.setToolTipText("Group loot by source");
 		groupedLootBtn.addMouseListener(new MouseAdapter()
 		{
 			@Override
