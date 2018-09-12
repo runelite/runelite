@@ -29,9 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
-import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.IntegerNode;
 import net.runelite.api.InventoryID;
@@ -53,14 +51,12 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Bank Tags",
 	description = "Enable tagging of bank items and searching of bank tags",
 	tags = {"searching", "tagging"}
 )
-@Slf4j
 public class BankTagsPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "banktags";
@@ -103,32 +99,25 @@ public class BankTagsPlugin extends Plugin
 	private KeyManager keyManager;
 
 	@Inject
-	private OverlayManager overlayManager;
-
-	@Inject
 	private BankTagsKeyListener keyListener;
-
-	@Inject
-	private BankTagsMassEditOverlay massEditOverlay;
 
 	@Setter
 	private boolean shiftHeld = false;
 
 	private boolean massEditing = false;
 
-	@Getter
-	private List<Integer> selectedItemIndices = new ArrayList<>();
+	private List<Widget> selectedItemWidgets = new ArrayList<>();
 
 	public void startUp()
 	{
 		keyManager.registerKeyListener(keyListener);
-		overlayManager.add(massEditOverlay);
 	}
 
 	public void shutDown()
 	{
 		keyManager.unregisterKeyListener(keyListener);
-		overlayManager.remove(massEditOverlay);
+		resetMassEdit();
+		shiftHeld = false;
 	}
 
 	private String getTags(int itemId)
@@ -282,7 +271,8 @@ public class BankTagsPlugin extends Plugin
 
 	private String combineTags(String oldTags, String newTags)
 	{
-		List<String> oldTagsList = oldTags.length() == 0 ? new ArrayList<>()
+		List<String> oldTagsList = oldTags.length() == 0
+			? new ArrayList<>()
 			: new ArrayList<>(Arrays.asList(oldTags.toLowerCase().split(",")));
 		List<String> newTagsList = new ArrayList<>(Arrays.asList(newTags.toLowerCase().split(",")));
 		newTagsList.removeIf(oldTagsList::contains);
@@ -324,7 +314,7 @@ public class BankTagsPlugin extends Plugin
 		{
 			event.consume();
 			massEditing = true;
-			selectedItemIndices.add(event.getActionParam());
+			toggleSelect(event.getActionParam());
 		}
 
 		if (event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
@@ -332,15 +322,7 @@ public class BankTagsPlugin extends Plugin
 			&& massEditing)
 		{
 			event.consume();
-
-			if (selectedItemIndices.contains(event.getActionParam()))
-			{
-				selectedItemIndices.remove((Integer) event.getActionParam());
-			}
-			else
-			{
-				selectedItemIndices.add(event.getActionParam());
-			}
+			toggleSelect(event.getActionParam());
 		}
 
 		if (event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
@@ -348,7 +330,7 @@ public class BankTagsPlugin extends Plugin
 		{
 			event.consume();
 
-			int numSelected = selectedItemIndices.size();
+			int numSelected = selectedItemWidgets.size();
 
 			chatboxInputManager.openInputWindow("Adding to " + numSelected + " items:", "", (newTags) ->
 			{
@@ -358,33 +340,19 @@ public class BankTagsPlugin extends Plugin
 					return;
 				}
 
-				for (int bankIndex : selectedItemIndices)
+				for (Widget itemWidget : selectedItemWidgets)
 				{
-					Widget bankContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
-					if (bankContainer == null)
-					{
-						resetMassEdit();
-						return;
-					}
+					String oldTags = getTags(itemWidget.getItemId());
+					setTags(itemWidget.getItemId(), combineTags(oldTags, newTags));
 
-					Widget bankItem = bankContainer.getChild(bankIndex);
-					if (bankItem == null)
-					{
-						resetMassEdit();
-						return;
-					}
-
-					String oldTags = getTags(bankItem.getItemId());
-					setTags(bankItem.getItemId(), combineTags(oldTags, newTags));
-
-					String[] actions = bankItem.getActions();
+					String[] actions = itemWidget.getActions();
 					if (actions == null || EDIT_TAGS_MENU_INDEX - 1 >= actions.length)
 					{
 						resetMassEdit();
 						return;
 					}
 
-					int tagCount = getTagCount(bankItem.getItemId());
+					int tagCount = getTagCount(itemWidget.getItemId());
 					actions[EDIT_TAGS_MENU_INDEX - 1] = EDIT_TAGS_MENU_OPTION;
 					if (tagCount > 0)
 					{
@@ -394,7 +362,6 @@ public class BankTagsPlugin extends Plugin
 
 				resetMassEdit();
 			});
-
 		}
 
 		if (event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
@@ -469,10 +436,36 @@ public class BankTagsPlugin extends Plugin
 		}
 	}
 
+	private void toggleSelect(int childIndex)
+	{
+		Widget bankContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		if (bankContainer == null)
+		{
+			return;
+		}
+
+		Widget childWidget = bankContainer.getChild(childIndex);
+
+		if (selectedItemWidgets.contains(childWidget))
+		{
+			childWidget.setBorderType(0);
+			selectedItemWidgets.remove(childWidget);
+		}
+		else
+		{
+			childWidget.setBorderType(2);
+			selectedItemWidgets.add(childWidget);
+		}
+	}
+
 	private void resetMassEdit()
 	{
 		massEditing = false;
-		selectedItemIndices.clear();
-	}
 
+		for (Widget w : selectedItemWidgets)
+		{
+			w.setBorderType(0);
+		}
+		selectedItemWidgets.clear();
+	}
 }
