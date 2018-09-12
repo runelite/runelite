@@ -71,7 +71,7 @@ public class DisassemblerTest
 					continue;
 				}
 
-				ScriptDefinition script = loader.load(0, contents);
+				ScriptDefinition script = loader.load(archive.getArchiveId(), contents);
 
 				File outFile = new File(outDir, archive.getArchiveId() + ".rs2asm");
 
