@@ -70,7 +70,6 @@ class LootTrackerPanel extends PluginPanel
 
 	// Handle loot boxes
 	private final JPanel logsContainer = new JPanel();
-	private final JPanel layoutPanel = new JPanel();
 
 	// Handle overall session data
 	private final JPanel overallPanel = new JPanel();
@@ -78,6 +77,7 @@ class LootTrackerPanel extends PluginPanel
 	private final JLabel overallGpLabel = new JLabel();
 	private final JLabel overallIcon = new JLabel();
 
+	// Details and navigation
 	private final JPanel actionsContainer = new JPanel();
 	private final JLabel detailsTitle = new JLabel();
 	private final JLabel backBtn = new JLabel();
@@ -89,9 +89,8 @@ class LootTrackerPanel extends PluginPanel
 	private final List<LootTrackerBox> boxes = new ArrayList<>();
 
 	private final ItemManager itemManager;
-
 	private boolean groupLoot;
-	private String detailedKey;
+	private String currentView;
 
 	static
 	{
@@ -119,6 +118,7 @@ class LootTrackerPanel extends PluginPanel
 		setLayout(new BorderLayout());
 
 		// Create layout panel for wrapping
+		final JPanel layoutPanel = new JPanel();
 		layoutPanel.setLayout(new BoxLayout(layoutPanel, BoxLayout.Y_AXIS));
 		add(layoutPanel, BorderLayout.NORTH);
 
@@ -190,7 +190,10 @@ class LootTrackerPanel extends PluginPanel
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
-				showDefaultView();
+				currentView = null;
+				backBtn.setVisible(false);
+				detailsTitle.setText("");
+				rebuild();
 			}
 
 			@Override
@@ -235,12 +238,9 @@ class LootTrackerPanel extends PluginPanel
 		reset.addActionListener(e ->
 		{
 			// If not in detailed view, remove all, otherwise only remove for the currently detailed title
-			records.removeIf(r -> !isInDetailedView() || r.getTitle().equals(detailedKey));
-			boxes.removeIf(b -> !isInDetailedView() || b.getId().equals(detailedKey));
-
-			overallKillsLabel.setText(htmlLabel("Total count: ", 0));
-			overallGpLabel.setText(htmlLabel("Total value: ", 0));
-
+			records.removeIf(r -> r.matches(currentView));
+			boxes.removeIf(b -> b.matches(currentView));
+			updateOverall();
 			logsContainer.removeAll();
 			logsContainer.repaint();
 		});
@@ -263,26 +263,6 @@ class LootTrackerPanel extends PluginPanel
 		add(errorPanel);
 	}
 
-	private void showDefaultView()
-	{
-		detailedKey = null;
-
-		backBtn.setVisible(false);
-		detailsTitle.setText("");
-
-		rebuild();
-	}
-
-	private void showDetailedView(LootTrackerBox parentBox)
-	{
-		detailedKey = parentBox.getId();
-
-		detailsTitle.setText(detailedKey);
-		backBtn.setVisible(true);
-
-		rebuild();
-	}
-
 	void loadHeaderIcon(BufferedImage img)
 	{
 		overallIcon.setIcon(new ImageIcon(img));
@@ -297,14 +277,20 @@ class LootTrackerPanel extends PluginPanel
 	{
 		final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
 		final LootTrackerRecord record = new LootTrackerRecord(eventName, subTitle, items, System.currentTimeMillis());
-
 		records.add(record);
+		buildBox(record);
+	}
 
-		// Do not add a new box if currently in detailed view, and the title does not match the detailed key
-		if (!isInDetailedView() || eventName.equals(detailedKey))
-		{
-			buildBox(record);
-		}
+	/**
+	 * Changes grouping mode of panel
+	 * @param group if loot should be grouped or not
+	 */
+	void changeGrouping(boolean group)
+	{
+		groupLoot = group;
+		rebuild();
+		groupedLootBtn.setIcon(group ? GROUPED_LOOT_VIEW : GROUPED_LOOT_VIEW_FADED);
+		singleLootBtn.setIcon(group ? SINGLE_LOOT_VIEW_FADED : SINGLE_LOOT_VIEW);
 	}
 
 	/**
@@ -314,10 +300,8 @@ class LootTrackerPanel extends PluginPanel
 	{
 		logsContainer.removeAll();
 		boxes.clear();
-
-		records.stream().filter(r -> !isInDetailedView() || r.getTitle().equals(detailedKey)).forEach(this::buildBox);
+		records.forEach(this::buildBox);
 		updateOverall();
-
 		logsContainer.revalidate();
 		logsContainer.repaint();
 	}
@@ -329,18 +313,23 @@ class LootTrackerPanel extends PluginPanel
 	 */
 	private void buildBox(LootTrackerRecord record)
 	{
+		// If this record is not part of current view, return
+		if (!record.matches(currentView))
+		{
+			return;
+		}
+
+		// Group all similar loot together
 		if (groupLoot)
 		{
 			for (LootTrackerBox box : boxes)
 			{
-				if (!box.matches(record))
+				if (box.matches(record))
 				{
-					continue;
+					box.combine(record);
+					updateOverall();
+                    return;
 				}
-
-				box.combine(record);
-				updateOverall();
-				return;
 			}
 		}
 
@@ -356,6 +345,7 @@ class LootTrackerPanel extends PluginPanel
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+		box.setComponentPopupMenu(popupMenu);
 
 		// Create reset menu
 		final JMenuItem reset = new JMenuItem("Reset");
@@ -367,18 +357,20 @@ class LootTrackerPanel extends PluginPanel
 			logsContainer.remove(box);
 			logsContainer.repaint();
 		});
+
 		popupMenu.add(reset);
 
 		// Create details menu
 		final JMenuItem details = new JMenuItem("View details");
 		details.addActionListener(e ->
 		{
-			showDetailedView(box);
+			currentView = record.getTitle();
+			detailsTitle.setText(currentView);
+			backBtn.setVisible(true);
+			rebuild();
 		});
+
 		popupMenu.add(details);
-
-
-		box.setComponentPopupMenu(popupMenu);
 
 		// Add box to panel
 		boxes.add(box);
@@ -386,20 +378,6 @@ class LootTrackerPanel extends PluginPanel
 
 		// Update overall
 		updateOverall();
-	}
-
-	private boolean isInDetailedView()
-	{
-		return detailedKey != null;
-	}
-
-	void onViewModeChanged(boolean group)
-	{
-		groupLoot = group;
-		rebuild();
-
-		groupedLootBtn.setIcon(group ? GROUPED_LOOT_VIEW : GROUPED_LOOT_VIEW_FADED);
-		singleLootBtn.setIcon(group ? SINGLE_LOOT_VIEW_FADED : SINGLE_LOOT_VIEW);
 	}
 
 	private void updateOverall()

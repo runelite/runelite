@@ -50,8 +50,6 @@ class LootTrackerBox extends JPanel
 	private final JLabel priceLabel = new JLabel();
 	private final JLabel subTitleLabel = new JLabel();
 	private final ItemManager itemManager;
-
-	@Getter
 	private final String id;
 
 	@Getter
@@ -108,6 +106,21 @@ class LootTrackerBox extends JPanel
 	boolean matches(final LootTrackerRecord record)
 	{
 		return record.getTitle().equals(id);
+	}
+
+	/**
+	 * Checks if this box matches specified id
+	 * @param id other record id
+	 * @return true if match is made
+	 */
+	boolean matches(final String id)
+	{
+		if (id == null)
+		{
+			return true;
+		}
+
+		return this.id.equals(id);
 	}
 
 	/**
