@@ -175,9 +175,9 @@ class LootTrackerPanel extends PluginPanel
 			}
 		});
 
-		viewControls.add(singleLootBtn);
 		viewControls.add(groupedLootBtn);
-		changeGrouping(false);
+		viewControls.add(singleLootBtn);
+		changeGrouping(true);
 
 		final JPanel leftTitleContainer = new JPanel(new BorderLayout(5, 0));
 		leftTitleContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
