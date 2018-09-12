@@ -395,7 +395,12 @@ public enum Varbits
 	CORP_DAMAGE(999),
 
 	WORLDHOPPER_FAVROITE_1(4597),
-	WORLDHOPPER_FAVROITE_2(4598);
+	WORLDHOPPER_FAVROITE_2(4598),
+
+	/**
+	 * The varbit that stores the % left for fossil island oxygen bar (1000 is 100%, 0 is 0%)
+	 */
+	FOSSIL_ISLAND_OXYGEN_PERCENTAGE(5811);
 
 	/**
 	 * The raw varbit ID.

@@ -24,20 +24,23 @@
  */
 package net.runelite.client.plugins.agility;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
-import static net.runelite.api.ItemID.AGILITY_ARENA_TICKET;
 import net.runelite.api.Player;
 import static net.runelite.api.Skill.AGILITY;
+import static net.runelite.client.plugins.agility.AgilityTimer.*;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
@@ -76,6 +79,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 public class AgilityPlugin extends Plugin
 {
 	private static final int AGILITY_ARENA_REGION_ID = 11157;
+	private static final Set<Integer> UNDERWATER_AGILITY_REGION_ID = ImmutableSet.of(15008, 15264);
 
 	@Getter
 	private final Map<TileObject, Tile> obstacles = new HashMap<>();
@@ -112,6 +116,7 @@ public class AgilityPlugin extends Plugin
 
 	private int lastAgilityXp;
 	private WorldPoint lastArenaTicketPosition;
+	private WorldPoint lastUnderwaterChestPoint;
 
 	@Provides
 	AgilityConfig getConfig(ConfigManager configManager)
@@ -167,6 +172,10 @@ public class AgilityPlugin extends Plugin
 		if (!config.showAgilityArenaTimer())
 		{
 			removeAgilityArenaTimer();
+		}
+		if (!config.showUnderwaterAgilityTimer())
+		{
+			removeUnderwaterAgilityTimer();
 		}
 	}
 
@@ -261,6 +270,22 @@ public class AgilityPlugin extends Plugin
 				}
 			}
 		}
+		if (isUnderWater())
+		{
+			WorldPoint newUnderwaterLocation = client.getHintArrowPoint();
+			WorldPoint oldUnderwaterLocation = lastUnderwaterChestPoint;
+			lastUnderwaterChestPoint = newUnderwaterLocation;
+
+			if (oldUnderwaterLocation != null && newUnderwaterLocation != null
+				&& (oldUnderwaterLocation.getX() != newUnderwaterLocation.getX()
+				|| oldUnderwaterLocation.getY() != newUnderwaterLocation.getY()))
+			{
+				if (config.showUnderwaterAgilityTimer())
+				{
+					showUnderwaterAgilityTimer();
+				}
+			}
+		}
 	}
 
 	private boolean isInAgilityArena()
@@ -275,15 +300,35 @@ public class AgilityPlugin extends Plugin
 		return location.getRegionID() == AGILITY_ARENA_REGION_ID;
 	}
 
+	private boolean isUnderWater()
+	{
+		Player local = client.getLocalPlayer();
+		if (local == null)
+		{
+			return false;
+		}
+		WorldPoint location = local.getWorldLocation();
+		return UNDERWATER_AGILITY_REGION_ID.contains(location.getRegionID());
+	}
+
+	private void removeUnderwaterAgilityTimer()
+	{
+		removeAgilityTimer(UnderwaterAgility);
+	}
+
+	private void showUnderwaterAgilityTimer()
+	{
+		createAgilityTimer(UnderwaterAgility);
+	}
+
 	private void removeAgilityArenaTimer()
 	{
-		infoBoxManager.removeIf(infoBox -> infoBox instanceof AgilityArenaTimer);
+		removeAgilityTimer(AgilityArena);
 	}
 
 	private void showNewAgilityArenaTimer()
 	{
-		removeAgilityArenaTimer();
-		infoBoxManager.addInfoBox(new AgilityArenaTimer(this, itemManager.getImage(AGILITY_ARENA_TICKET)));
+		createAgilityTimer(AgilityArena);
 	}
 
 	@Subscribe
@@ -374,5 +419,19 @@ public class AgilityPlugin extends Plugin
 		{
 			obstacles.put(newObject, tile);
 		}
+	}
+	private AgilityTimerTimer createAgilityTimer(final AgilityTimer timer)
+	{
+		removeAgilityTimer(timer);
+		BufferedImage image = itemManager.getImage(timer.getItemID());
+		AgilityTimerTimer countdownTimer = new AgilityTimerTimer(timer, this, image);
+		countdownTimer.setTooltip(timer.getDescription());
+		infoBoxManager.addInfoBox(countdownTimer);
+		return countdownTimer;
+	}
+
+	private void removeAgilityTimer(AgilityTimer timer)
+	{
+		infoBoxManager.removeIf(t -> t instanceof AgilityTimerTimer && ((AgilityTimerTimer) t).getTimer() == timer);
 	}
 }

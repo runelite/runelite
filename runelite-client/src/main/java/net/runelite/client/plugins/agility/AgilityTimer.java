@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Alex Kolpa <https://github.com/AlexKolpa>
+ * Copyright (c) 2018, Sebastiaan <https://github.com/ItsSebas>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,16 +24,29 @@
  */
 package net.runelite.client.plugins.agility;
 
-import java.awt.image.BufferedImage;
+import lombok.Getter;
+import net.runelite.api.ItemID;
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.infobox.Timer;
 
-class AgilityArenaTimer extends Timer
+public enum AgilityTimer
 {
-	AgilityArenaTimer(Plugin plugin, BufferedImage image)
+	AgilityArena("Time until next ticket location", ItemID.AGILITY_ARENA_TICKET, 60000, ChronoUnit.MILLIS),
+	UnderwaterAgility("Time until next treasure chest", ItemID.PUFFERFISH, 62400, ChronoUnit.MILLIS);
+
+	@Getter
+	private final String description;
+
+	@Getter
+	private final Integer itemID;
+
+	@Getter
+	private final Duration duration;
+
+	AgilityTimer(String description, Integer itemID, long time, ChronoUnit unit)
 	{
-		super(1, ChronoUnit.MINUTES, image, plugin);
-		setTooltip("Time left until location changes");
+		this.description = description;
+		this.itemID = itemID;
+		this.duration = Duration.of(time, unit);
 	}
 }

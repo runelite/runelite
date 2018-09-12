@@ -141,4 +141,15 @@ public interface AgilityConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "underwaterAgilityTimer",
+		name = "Underwater Agility timer",
+		description = "Configures whether Underwater Agility timer is displayed",
+		position = 11
+	)
+	default boolean showUnderwaterAgilityTimer()
+	{
+		return true;
+	}
 }
