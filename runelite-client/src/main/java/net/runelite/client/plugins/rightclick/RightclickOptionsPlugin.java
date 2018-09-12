@@ -29,26 +29,25 @@ package net.runelite.client.plugins.rightclick;
 import com.google.common.base.Splitter;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import lombok.Getter;
-import net.runelite.api.*;
-import net.runelite.api.events.*;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.rightclick.config.MenuHighlightMode;
-import net.runelite.client.util.ColorUtil;
-import net.runelite.client.util.WildcardMatcher;
-
-import javax.inject.Inject;
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static net.runelite.client.plugins.rightclick.config.MenuHighlightMode.*;
+import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.rightclick.config.MenuHighlightMode;
+import static net.runelite.client.plugins.rightclick.config.MenuHighlightMode.BOTH;
+import static net.runelite.client.plugins.rightclick.config.MenuHighlightMode.NAME;
+import static net.runelite.client.plugins.rightclick.config.MenuHighlightMode.OPTION;
+import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.WildcardMatcher;
 
 @PluginDescriptor(
 	name = "Right-Click Menu",

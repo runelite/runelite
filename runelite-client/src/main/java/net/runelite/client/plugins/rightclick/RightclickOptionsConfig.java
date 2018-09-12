@@ -26,12 +26,11 @@
 
 package net.runelite.client.plugins.rightclick;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.plugins.rightclick.config.MenuHighlightMode;
-
-import java.awt.*;
 
 @ConfigGroup("rightclick")
 public interface RightclickOptionsConfig extends Config
