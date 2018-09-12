@@ -110,7 +110,7 @@ class LootTrackerPanel extends PluginPanel
 		BACK_ARROW_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(backArrowImg, -180));
 	}
 
-	LootTrackerPanel(final ItemManager itemManager, final LootTrackerConfig config)
+	LootTrackerPanel(final ItemManager itemManager)
 	{
 		this.itemManager = itemManager;
 		setBorder(new EmptyBorder(6, 6, 6, 6));
@@ -137,7 +137,7 @@ class LootTrackerPanel extends PluginPanel
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
-				config.setGroupLoot(false);
+				changeGrouping(false);
 			}
 
 			@Override
@@ -159,7 +159,7 @@ class LootTrackerPanel extends PluginPanel
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
-				config.setGroupLoot(true);
+				changeGrouping(true);
 			}
 
 			@Override
@@ -177,6 +177,7 @@ class LootTrackerPanel extends PluginPanel
 
 		viewControls.add(singleLootBtn);
 		viewControls.add(groupedLootBtn);
+		changeGrouping(false);
 
 		final JPanel leftTitleContainer = new JPanel(new BorderLayout(5, 0));
 		leftTitleContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -285,7 +286,7 @@ class LootTrackerPanel extends PluginPanel
 	 * Changes grouping mode of panel
 	 * @param group if loot should be grouped or not
 	 */
-	void changeGrouping(boolean group)
+	private void changeGrouping(boolean group)
 	{
 		groupLoot = group;
 		rebuild();
@@ -328,7 +329,7 @@ class LootTrackerPanel extends PluginPanel
 				{
 					box.combine(record);
 					updateOverall();
-                    return;
+					return;
 				}
 			}
 		}
