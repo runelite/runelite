@@ -63,7 +63,7 @@ public class Notifier
 		.build();
 
 	// Notifier properties
-	private static final Color FLASH_COLOR = new Color(255, 0, 0, 70);
+	public static final Color FLASH_COLOR = new Color(255, 0, 0, 70);
 	private static final int FLASH_DURATION = 2000;
 	private static final Color MESSAGE_COLOR = Color.RED;
 
@@ -74,6 +74,7 @@ public class Notifier
 	private final ScheduledExecutorService executorService;
 	private final Path notifyIconPath;
 	private Instant flashStart;
+	private Color flashColor = FLASH_COLOR;
 
 	@Inject
 	private Notifier(
@@ -94,10 +95,19 @@ public class Notifier
 
 	public void notify(String message)
 	{
-		notify(message, TrayIcon.MessageType.NONE);
+		notify(message, TrayIcon.MessageType.NONE, FLASH_COLOR);
+	}
+
+	public void notify(String message, Color color)
+	{
+		notify(message, TrayIcon.MessageType.NONE, color);
 	}
 
 	public void notify(String message, TrayIcon.MessageType type)
+	{
+		notify(message, type, FLASH_COLOR);
+	}
+	public void notify(String message, TrayIcon.MessageType type, Color color)
 	{
 		if (!runeLiteConfig.sendNotificationsWhenFocused() && clientUI.isFocused())
 		{
@@ -131,6 +141,7 @@ public class Notifier
 		if (runeLiteConfig.enableFlashNotification())
 		{
 			flashStart = Instant.now();
+			flashColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 70);
 		}
 	}
 
@@ -147,13 +158,14 @@ public class Notifier
 		}
 
 		final Color color = graphics.getColor();
-		graphics.setColor(FLASH_COLOR);
+		graphics.setColor(flashColor);
 		graphics.fill(new Rectangle(client.getCanvas().getSize()));
 		graphics.setColor(color);
 
 		if (Instant.now().minusMillis(FLASH_DURATION).isAfter(flashStart))
 		{
 			flashStart = null;
+			flashColor = FLASH_COLOR;
 		}
 	}
 

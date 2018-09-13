@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.idlenotifier;
 
+import java.awt.Color;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -95,5 +97,60 @@ public interface IdleNotifierConfig extends Config
 	default int getPrayerThreshold()
 	{
 		return 0;
+	}
+
+	@ConfigItem(
+		keyName = "animationidleflashcolor",
+		name = "Idle Animation Color",
+		description = "Color of flash notification after the player is idle",
+		position = 6
+	)
+	default Color getAnimationIdleFlashColor()
+	{
+		return Notifier.FLASH_COLOR;
+	}
+
+	@ConfigItem(
+		keyName = "logoutidleflashcolor",
+		name = "Idle Logout Color",
+		description = "Color of flash notification when the player is about to be logged out",
+		position = 6
+	)
+	default Color getLogoutIdleFlashColor()
+	{
+		return Notifier.FLASH_COLOR;
+	}
+
+	@ConfigItem(
+		keyName = "combatidleflashcolor",
+		name = "Combat Idle Color",
+		description = "Color of flash notification after the player is out of combat",
+		position = 8
+	)
+	default Color getCombatIdleFlashColor()
+	{
+		return Notifier.FLASH_COLOR;
+	}
+
+	@ConfigItem(
+		keyName = "hitpointsflashcolor",
+		name = "Hitpoints Color",
+		description = "Color of flash notification after hitpoints reach the threshold",
+		position = 9
+	)
+	default Color getHitpointsFlashColor()
+	{
+		return Notifier.FLASH_COLOR;
+	}
+
+	@ConfigItem(
+		keyName = "prayerflashcolor",
+		name = "Prayer Color",
+		description = "Color of flash notification after prayer points reach the threshold",
+		position = 10
+	)
+	default Color getPrayerFlashColor()
+	{
+		return Notifier.FLASH_COLOR;
 	}
 }

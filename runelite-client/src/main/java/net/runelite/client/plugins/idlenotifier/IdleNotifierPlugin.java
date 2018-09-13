@@ -27,6 +27,7 @@ package net.runelite.client.plugins.idlenotifier;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
@@ -304,6 +305,11 @@ public class IdleNotifierPlugin extends Plugin
 	{
 		final Player local = client.getLocalPlayer();
 		final Duration waitDuration = Duration.ofMillis(config.getIdleNotificationDelay());
+		final Color animationIdleColor = config.getAnimationIdleFlashColor();
+		final Color logoutIdleColor = config.getLogoutIdleFlashColor();
+		final Color combatIdleColor = config.getCombatIdleFlashColor();
+		final Color hitpointsColor = config.getHitpointsFlashColor();
+		final Color prayerColor = config.getPrayerFlashColor();
 		lastCombatCountdown = Math.max(lastCombatCountdown - 1, 0);
 
 		if (client.getGameState() != GameState.LOGGED_IN
@@ -317,32 +323,32 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (config.logoutIdle() && checkIdleLogout())
 		{
-			notifier.notify("[" + local.getName() + "] is about to log out from idling too long!");
+			notifier.notify("[" + local.getName() + "] is about to log out from idling too long!", logoutIdleColor);
 		}
 
 		if (check6hrLogout())
 		{
-			notifier.notify("[" + local.getName() + "] is about to log out from being online for 6 hours!");
+			notifier.notify("[" + local.getName() + "] is about to log out from being online for 6 hours!", logoutIdleColor);
 		}
 
 		if (config.animationIdle() && checkAnimationIdle(waitDuration, local))
 		{
-			notifier.notify("[" + local.getName() + "] is now idle!");
+			notifier.notify("[" + local.getName() + "] is now idle!", animationIdleColor);
 		}
 
 		if (config.combatIdle() && checkOutOfCombat(waitDuration, local))
 		{
-			notifier.notify("[" + local.getName() + "] is now out of combat!");
+			notifier.notify("[" + local.getName() + "] is now out of combat!", combatIdleColor);
 		}
 
 		if (checkLowHitpoints())
 		{
-			notifier.notify("[" + local.getName() + "] has low hitpoints!");
+			notifier.notify("[" + local.getName() + "] has low hitpoints!", hitpointsColor);
 		}
 
 		if (checkLowPrayer())
 		{
-			notifier.notify("[" + local.getName() + "] has low prayer!");
+			notifier.notify("[" + local.getName() + "] has low prayer!", prayerColor);
 		}
 	}
 
