@@ -24,7 +24,12 @@
  */
 package net.runelite.http.service.hiscore;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
@@ -45,12 +50,25 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class HiscoreService
 {
-	public HiscoreResultBuilder lookupUsername(String username, HiscoreEndpoint endpoint) throws IOException
+	private final LoadingCache<HiscoreKey, HiscoreResultBuilder> hiscoreCache = CacheBuilder.newBuilder()
+		.maximumSize(128)
+		.expireAfterWrite(1, TimeUnit.MINUTES)
+		.build(
+			new CacheLoader<HiscoreKey, HiscoreResultBuilder>()
+			{
+				@Override
+				public HiscoreResultBuilder load(HiscoreKey key) throws IOException
+				{
+					return lookupUsername(key.getUsername(), key.getEndpoint().getHiscoreURL());
+				}
+			});
+
+	public HiscoreResultBuilder lookupUsername(String username, HiscoreEndpoint endpoint) throws ExecutionException
 	{
-		return lookupUsername(username, endpoint.getHiscoreURL());
+		return hiscoreCache.get(new HiscoreKey(username, endpoint));
 	}
 
-	public HiscoreResultBuilder lookupUsername(String username, HttpUrl hiscoreUrl) throws IOException
+	HiscoreResultBuilder lookupUsername(String username, HttpUrl hiscoreUrl) throws IOException
 	{
 		HttpUrl url = hiscoreUrl.newBuilder()
 			.addQueryParameter("player", username)

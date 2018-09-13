@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,10 +27,25 @@ package net.runelite.client.plugins.loottracker;
 import lombok.Value;
 
 @Value
-class LootTrackerItemEntry
+class LootTrackerRecord
 {
-	private final int id;
-	private final String name;
-	private final int quantity;
-	private final long price;
+	private final String title;
+	private final String subTitle;
+	private final LootTrackerItem[] items;
+	private final long timestamp;
+
+	/**
+	 * Checks if this record matches specified id
+	 * @param id other record id
+	 * @return true if match is made
+	 */
+	boolean matches(final String id)
+	{
+		if (id == null)
+		{
+			return true;
+		}
+
+		return title.equals(id);
+	}
 }

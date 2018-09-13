@@ -61,7 +61,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class IdleNotifierPlugin extends Plugin
 {
 	private static final int LOGOUT_WARNING_AFTER_TICKS = 280 * 50; // 4 minutes and 40 seconds
+	private static final long LOGOUT_WARNING_AFTER_MILLIS = (long) (LOGOUT_WARNING_AFTER_TICKS * 0.6 * 1000);
 	private static final int LOGOUT_WARNING_AFTER_TICKS_IN_COMBAT = 1140 * 50; // 19 minutes
+	private static final long LOGOUT_WARNING_AFTER_MILLIS_IN_COMBAT = (long) (LOGOUT_WARNING_AFTER_TICKS_IN_COMBAT * 0.6 * 1000);
 	private static final int HIGHEST_MONSTER_ATTACK_SPEED = 8; // Except Scarab Mage, but they are with other monsters
 	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
 
@@ -304,7 +306,10 @@ public class IdleNotifierPlugin extends Plugin
 		final Duration waitDuration = Duration.ofMillis(config.getIdleNotificationDelay());
 		lastCombatCountdown = Math.max(lastCombatCountdown - 1, 0);
 
-		if (client.getGameState() != GameState.LOGGED_IN || local == null || client.getMouseIdleTicks() < 10)
+		if (client.getGameState() != GameState.LOGGED_IN
+			|| local == null
+			|| System.currentTimeMillis() - client.getMouseLastPressedMillis() < 200
+			|| client.getKeyboardIdleTicks() < 10)
 		{
 			resetTimers();
 			return;
@@ -419,12 +424,14 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkIdleLogout()
 	{
-		if (client.getMouseIdleTicks() > LOGOUT_WARNING_AFTER_TICKS
+		final long mouseDiff = System.currentTimeMillis() - client.getMouseLastPressedMillis();
+
+		if (mouseDiff > LOGOUT_WARNING_AFTER_MILLIS
 			&& client.getKeyboardIdleTicks() > LOGOUT_WARNING_AFTER_TICKS)
 		{
 			if (lastCombatCountdown > 0)
 			{
-				if (client.getMouseIdleTicks() > LOGOUT_WARNING_AFTER_TICKS_IN_COMBAT
+				if (mouseDiff > LOGOUT_WARNING_AFTER_MILLIS_IN_COMBAT
 					&& client.getKeyboardIdleTicks() > LOGOUT_WARNING_AFTER_TICKS_IN_COMBAT && notifyIdleLogout)
 				{
 					notifyIdleLogout = false;

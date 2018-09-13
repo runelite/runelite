@@ -113,7 +113,8 @@ public class IdleNotifierPluginTest
 
 		// Mock client
 		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
-		when(client.getMouseIdleTicks()).thenReturn(42);
+		when(client.getKeyboardIdleTicks()).thenReturn(42);
+		when(client.getMouseLastPressedMillis()).thenReturn(System.currentTimeMillis() - 100_000L);
 	}
 
 	@Test
@@ -231,7 +232,7 @@ public class IdleNotifierPluginTest
 	public void checkCombatLogoutIdle()
 	{
         // Player is idle
-		when(client.getMouseIdleTicks()).thenReturn(282 * 50);
+		when(client.getMouseLastPressedMillis()).thenReturn(System.currentTimeMillis() - 300_000L);
 
 		// But player is being damaged (is in combat)
 		final HitsplatApplied hitsplatApplied = new HitsplatApplied();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.xp;
+package net.runelite.client.plugins.loottracker;
 
-import java.io.IOException;
-import java.time.Instant;
-import java.util.concurrent.ExecutionException;
-import net.runelite.http.api.xp.XpData;
-import net.runelite.http.service.xp.beans.XpEntity;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.Value;
 
-@RestController
-@RequestMapping("/xp")
-public class XpTrackerController
+@Value
+class LootTrackerItem
 {
-	@Autowired
-	private XpTrackerService xpTrackerService;
-
-	@RequestMapping("/update")
-	public void update(@RequestParam String username) throws ExecutionException
-	{
-		xpTrackerService.update(username);
-	}
-
-	@RequestMapping("/get")
-	public XpData get(@RequestParam String username, @RequestParam(required = false) Instant time) throws IOException
-	{
-		if (time == null)
-		{
-			time = Instant.now();
-		}
-		XpEntity xpEntity = xpTrackerService.findXpAtTime(username, time);
-		return XpMapper.INSTANCE.xpEntityToXpData(xpEntity);
-	}
+	private final int id;
+	private final String name;
+	private final int quantity;
+	private final long price;
 }

@@ -24,6 +24,7 @@
  */
 package net.runelite.cache.definitions.savers;
 
+import net.runelite.cache.definitions.ClientScript1Instruction;
 import net.runelite.cache.definitions.InterfaceDefinition;
 import net.runelite.cache.io.OutputStream;
 
@@ -31,56 +32,74 @@ public class InterfaceSaver
 {
 	public byte[] save(InterfaceDefinition def)
 	{
-		if (def.hasScript)
+		if (def.isIf3)
 		{
-			return saveScript(def);
+			return saveIf3(def);
 		}
 		else
 		{
-			return saveNoScript(def);
+			return saveIf1(def);
 		}
 	}
 
-	private byte[] saveScript(InterfaceDefinition def)
+	private byte[] saveIf3(InterfaceDefinition def)
 	{
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
-	private byte[] saveNoScript(InterfaceDefinition def)
+	private byte[] saveIf1(InterfaceDefinition def)
 	{
 		OutputStream out = new OutputStream();
 		out.writeByte(def.type);
-		out.writeByte(def.field2222);
+		out.writeByte(def.menuType);
 		out.writeShort(def.contentType);
 		out.writeShort(def.originalX);
 		out.writeShort(def.originalY);
 		out.writeShort(def.originalWidth);
-		out.writeShort(def.field2231);
+		out.writeShort(def.originalHeight);
 		out.writeByte(def.opacity);
 		out.writeShort(def.parentId);
-		out.writeShort(def.field2334);
-		if (def.tableActions != null)
+		out.writeShort(def.hoveredSiblingId);
+		if (def.alternateOperators != null)
 		{
-			out.writeByte(def.tableActions.length);
-			for (int i = 0; i < def.tableActions.length; ++i)
+			out.writeByte(def.alternateOperators.length);
+			for (int i = 0; i < def.alternateOperators.length; ++i)
 			{
-				out.writeByte(def.tableActions[i]);
-				out.writeShort(def.field2333[i]);
+				out.writeByte(def.alternateOperators[i]);
+				out.writeShort(def.alternateRhs[i]);
 			}
 		}
 		else
 		{
 			out.writeByte(0);
 		}
-		if (def.dynamicValues != null)
+		if (def.clientScripts != null)
 		{
-			out.writeByte(def.dynamicValues.length);
-			for (int i = 0; i < def.dynamicValues.length; ++i)
+			out.writeByte(def.clientScripts.length);
+			for (int i = 0; i < def.clientScripts.length; ++i)
 			{
-				out.writeShort(def.dynamicValues[i].length);
-				for (int j = 0; j < def.dynamicValues[i].length; ++j)
+				int len = 0;
+				for (int j = 0; j < def.clientScripts[i].length; ++j)
 				{
-					out.writeShort(def.dynamicValues[i][j]);
+					ClientScript1Instruction ins = def.clientScripts[i][j];
+					len++;
+					if (ins.operands != null)
+					{
+						len += ins.operands.length;
+					}
+				}
+				out.writeShort(len);
+				for (int j = 0; j < def.clientScripts[i].length; ++j)
+				{
+					ClientScript1Instruction ins = def.clientScripts[i][j];
+					out.writeShort(ins.opcode.ordinal());
+					if (ins.operands != null)
+					{
+						for (int op : ins.operands)
+						{
+							out.writeShort(op);
+						}
+					}
 				}
 			}
 		}
@@ -100,20 +119,20 @@ public class InterfaceSaver
 		}
 		if (def.type == 2)
 		{
-			out.writeByte((def.config & 268435456) != 0 ? 1 : 0);
-			out.writeByte((def.config & 1073741824) != 0 ? 1 : 0);
-			out.writeByte((def.config & Integer.MIN_VALUE) != 0 ? 1 : 0);
-			out.writeByte((def.config & 536870912) != 0 ? 1 : 0);
-			out.writeByte(def.paddingX);
-			out.writeByte(def.paddingY);
+			out.writeByte((def.clickMask & 268435456) != 0 ? 1 : 0);
+			out.writeByte((def.clickMask & 1073741824) != 0 ? 1 : 0);
+			out.writeByte((def.clickMask & Integer.MIN_VALUE) != 0 ? 1 : 0);
+			out.writeByte((def.clickMask & 536870912) != 0 ? 1 : 0);
+			out.writeByte(def.xPitch);
+			out.writeByte(def.yPitch);
 			for (int i = 0; i < 20; ++i)
 			{
-				if (def.field2289[i] != -1)
+				if (def.sprites[i] != -1)
 				{
 					out.writeByte(1);
-					out.writeShort(def.xSprites[i]);
-					out.writeShort(def.field2288[i]);
-					out.writeShort(def.field2289[i]);
+					out.writeShort(def.xOffsets[i]);
+					out.writeShort(def.yOffsets[i]);
+					out.writeShort(def.sprites[i]);
 				}
 				else
 				{
@@ -134,20 +153,20 @@ public class InterfaceSaver
 		}
 		if (def.type == 3)
 		{
-			out.writeByte(def.field2267 ? 1 : 0);
+			out.writeByte(def.filled ? 1 : 0);
 		}
 		if (def.type == 4 || def.type == 1)
 		{
-			out.writeByte(def.field2219);
-			out.writeByte(def.field2283);
-			out.writeByte(def.field2212);
+			out.writeByte(def.xTextAlignment);
+			out.writeByte(def.yTextAlignment);
+			out.writeByte(def.lineHeight);
 			out.writeShort(def.fontId);
 			out.writeByte(def.textShadowed ? 1 : 0);
 		}
 		if (def.type == 4)
 		{
 			out.writeString(def.text);
-			out.writeString(def.field2241);
+			out.writeString(def.alternateText);
 		}
 		if (def.type == 1 || def.type == 3 || def.type == 4)
 		{
@@ -155,34 +174,34 @@ public class InterfaceSaver
 		}
 		if (def.type == 3 || def.type == 4)
 		{
-			out.writeInt(def.field2245);
-			out.writeInt(def.field2280);
-			out.writeInt(def.field2247);
+			out.writeInt(def.alternateTextColor);
+			out.writeInt(def.hoveredTextColor);
+			out.writeInt(def.alternateHoveredTextColor);
 		}
 		if (def.type == 5)
 		{
 			out.writeInt(def.spriteId);
-			out.writeInt(def.field2332);
+			out.writeInt(def.alternateSpriteId);
 		}
 		if (def.type == 6)
 		{
 			out.writeShort(def.modelId);
-			out.writeShort(def.field2265);
-			out.writeShort(def.field2266);
-			out.writeShort(def.field2276);
+			out.writeShort(def.alternateModelId);
+			out.writeShort(def.animation);
+			out.writeShort(def.alternateAnimation);
 			out.writeShort(def.modelZoom);
 			out.writeShort(def.rotationX);
 			out.writeShort(def.rotationZ);
 		}
 		if (def.type == 7)
 		{
-			out.writeByte(def.field2219);
+			out.writeByte(def.xTextAlignment);
 			out.writeShort(def.fontId);
 			out.writeByte(def.textShadowed ? 1 : 0);
 			out.writeInt(def.textColor);
-			out.writeShort(def.paddingX);
-			out.writeShort(def.paddingY);
-			out.writeByte((def.config & 1073741824) != 0 ? 1 : 0);
+			out.writeShort(def.xPitch);
+			out.writeShort(def.yPitch);
+			out.writeByte((def.clickMask & 1073741824) != 0 ? 1 : 0);
 			for (int i = 0; i < 5; ++i)
 			{
 				out.writeString(def.configActions[i]);
@@ -192,13 +211,13 @@ public class InterfaceSaver
 		{
 			out.writeString(def.text);
 		}
-		if (def.field2222 == 2 || def.type == 2)
+		if (def.menuType == 2 || def.type == 2)
 		{
-			out.writeString(def.selectedAction);
-			out.writeString(def.field2335);
-			out.writeShort((def.config >>> 11) & 63);
+			out.writeString(def.targetVerb);
+			out.writeString(def.spellName);
+			out.writeShort((def.clickMask >>> 11) & 63);
 		}
-		if (def.field2222 == 1 || def.field2222 == 4 || def.field2222 == 5 || def.field2222 == 6)
+		if (def.menuType == 1 || def.menuType == 4 || def.menuType == 5 || def.menuType == 6)
 		{
 			out.writeString(def.tooltip);
 		}

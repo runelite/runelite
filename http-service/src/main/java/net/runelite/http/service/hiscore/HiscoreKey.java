@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,36 +23,14 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.http.service.hiscore;
 
-package net.runelite.http.api.hiscore;
+import lombok.Value;
+import net.runelite.http.api.hiscore.HiscoreEndpoint;
 
-import okhttp3.HttpUrl;
-
-public enum HiscoreEndpoint
+@Value
+class HiscoreKey
 {
-	NORMAL("Normal", "https://services.runescape.com/m=hiscore_oldschool/index_lite.ws"),
-	IRONMAN("Ironman", "https://services.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws"),
-	HARDCORE_IRONMAN("Hardcore Ironman", "https://services.runescape.com/m=hiscore_oldschool_hardcore_ironman/index_lite.ws"),
-	ULTIMATE_IRONMAN("Ultimate Ironman", "https://services.runescape.com/m=hiscore_oldschool_ultimate/index_lite.ws"),
-	DEADMAN("Deadman", "https://services.runescape.com/m=hiscore_oldschool_deadman/index_lite.ws"),
-	SEASONAL_DEADMAN("Seasonal Deadman", "https://services.runescape.com/m=hiscore_oldschool_seasonal/index_lite.ws");
-
-	private final String name;
-	private final HttpUrl hiscoreURL;
-
-	HiscoreEndpoint(String name, String hiscoreURL)
-	{
-		this.name = name;
-		this.hiscoreURL = HttpUrl.parse(hiscoreURL);
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public HttpUrl getHiscoreURL()
-	{
-		return hiscoreURL;
-	}
+	String username;
+	HiscoreEndpoint endpoint;
 }
