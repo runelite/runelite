@@ -70,7 +70,7 @@ enum QuestStartLocation
 	DRAGON_SLAYER_II("Dragon Slayer II", new WorldPoint(2456, 2868, 0)),
 	DREAM_MENTOR("Dream Mentor", new WorldPoint(2144, 10346, 0)),
 	DRUIDIC_RITUAL("Druidic Ritual", new WorldPoint(2916, 3484, 0)),
-	DWARF_CANNON("Dwarf Cannon", new WorldPoint(2466, 3461, 0)),
+	DWARF_CANNON("Dwarf Cannon", new WorldPoint(2566, 3461, 0)),
 	EADGARS_RUSE("Eadgar's Ruse", new WorldPoint(2896, 3426, 0)),
 	EAGLES_PEAK("Eagles' Peak", new WorldPoint(2605, 3264, 0)),
 	ELEMENTAL_WORKSHOP("Elemental Workshop I & II", new WorldPoint(2714, 3482, 0)),
