@@ -614,12 +614,6 @@ public class WidgetID
 		static final int DIARY_TEXT = 3;
 	}
 
-	static class MTA
-	{
-		static final int BONUS_COMPONENT = 7;
-		static final int BONUS_TEXT_COMPONENT = 12;
-	}
-
 	static class DestroyItem
 	{
 		static final int DESTROY_ITEM_NAME = 6;
