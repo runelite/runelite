@@ -25,9 +25,11 @@
 package net.runelite.client.plugins.banktags;
 
 import com.google.common.eventbus.Subscribe;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.IntegerNode;
 import net.runelite.api.InventoryID;
@@ -35,14 +37,18 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ChatboxInputManager;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -71,6 +77,12 @@ public class BankTagsPlugin extends Plugin
 
 	private static final int EDIT_TAGS_MENU_INDEX = 8;
 
+	private final String BEGIN_MASS_EDIT = "Begin Mass Edit";
+
+	private final String END_MASS_EDIT = "End Mass Edit";
+
+	private final String SELECT_ITEM = "Select";
+
 	@Inject
 	private Client client;
 
@@ -82,6 +94,31 @@ public class BankTagsPlugin extends Plugin
 
 	@Inject
 	private ChatboxInputManager chatboxInputManager;
+
+	@Inject
+	private KeyManager keyManager;
+
+	@Inject
+	private BankTagsKeyListener keyListener;
+
+	@Setter
+	private boolean shiftHeld = false;
+
+	private boolean massEditing = false;
+
+	private List<Widget> selectedItemWidgets = new ArrayList<>();
+
+	public void startUp()
+	{
+		keyManager.registerKeyListener(keyListener);
+	}
+
+	public void shutDown()
+	{
+		keyManager.unregisterKeyListener(keyListener);
+		resetMassEdit();
+		shiftHeld = false;
+	}
 
 	private String getTags(int itemId)
 	{
@@ -113,6 +150,32 @@ public class BankTagsPlugin extends Plugin
 			return tags.split(",").length;
 		}
 		return 0;
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		if ((shiftHeld || massEditing) && event.getOption().startsWith(EDIT_TAGS_MENU_OPTION))
+		{
+			MenuEntry[] entries = client.getMenuEntries();
+
+			String option = massEditing ?
+				END_MASS_EDIT :
+				BEGIN_MASS_EDIT;
+
+			entries[entries.length - 1].setOption(option);
+
+			client.setMenuEntries(entries);
+		}
+
+		if (massEditing && event.getOption().equals("Withdraw-1"))
+		{
+			MenuEntry[] entries = client.getMenuEntries();
+
+			entries[entries.length - 1].setOption(SELECT_ITEM);
+
+			client.setMenuEntries(entries);
+		}
 	}
 
 	@Subscribe
@@ -206,9 +269,101 @@ public class BankTagsPlugin extends Plugin
 		}
 	}
 
+	private String combineTags(String oldTags, String newTags)
+	{
+		List<String> oldTagsList = oldTags.length() == 0
+			? new ArrayList<>()
+			: new ArrayList<>(Arrays.asList(oldTags.toLowerCase().split(",")));
+		List<String> newTagsList = new ArrayList<>(Arrays.asList(newTags.toLowerCase().split(",")));
+		newTagsList.removeIf(oldTagsList::contains);
+
+		oldTagsList.addAll(newTagsList);
+
+		StringBuilder sb = new StringBuilder();
+		for (String s : oldTagsList)
+		{
+			if (sb.length() != 0)
+			{
+				sb.append(", ");
+			}
+			sb.append(s);
+		}
+
+		return sb.toString();
+	}
+
+	@Subscribe
+	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
+	{
+		if (event.getWidget().getId() == WidgetInfo.BANK_ITEM_CONTAINER.getId())
+		{
+			resetMassEdit();
+		}
+	}
+
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
+		if (event.getMenuAction() == MenuAction.CANCEL && massEditing)
+		{
+			resetMassEdit();
+		}
+
+		if (event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+			&& event.getMenuOption().startsWith(BEGIN_MASS_EDIT))
+		{
+			event.consume();
+			massEditing = true;
+			toggleSelect(event.getActionParam());
+		}
+
+		if (event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+			&& event.getMenuOption().startsWith(SELECT_ITEM)
+			&& massEditing)
+		{
+			event.consume();
+			toggleSelect(event.getActionParam());
+		}
+
+		if (event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+			&& event.getMenuOption().startsWith(END_MASS_EDIT))
+		{
+			event.consume();
+
+			int numSelected = selectedItemWidgets.size();
+
+			chatboxInputManager.openInputWindow("Adding to " + numSelected + " items:", "", (newTags) ->
+			{
+				if (newTags == null || newTags.equals(""))
+				{
+					resetMassEdit();
+					return;
+				}
+
+				for (Widget itemWidget : selectedItemWidgets)
+				{
+					String oldTags = getTags(itemWidget.getItemId());
+					setTags(itemWidget.getItemId(), combineTags(oldTags, newTags));
+
+					String[] actions = itemWidget.getActions();
+					if (actions == null || EDIT_TAGS_MENU_INDEX - 1 >= actions.length)
+					{
+						resetMassEdit();
+						return;
+					}
+
+					int tagCount = getTagCount(itemWidget.getItemId());
+					actions[EDIT_TAGS_MENU_INDEX - 1] = EDIT_TAGS_MENU_OPTION;
+					if (tagCount > 0)
+					{
+						actions[EDIT_TAGS_MENU_INDEX - 1] += " (" + tagCount + ")";
+					}
+				}
+
+				resetMassEdit();
+			});
+		}
+
 		if (event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
 			&& event.getMenuAction() == MenuAction.EXAMINE_ITEM_BANK_EQ
 			&& event.getId() == EDIT_TAGS_MENU_INDEX
@@ -281,4 +436,36 @@ public class BankTagsPlugin extends Plugin
 		}
 	}
 
+	private void toggleSelect(int childIndex)
+	{
+		Widget bankContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		if (bankContainer == null)
+		{
+			return;
+		}
+
+		Widget childWidget = bankContainer.getChild(childIndex);
+
+		if (selectedItemWidgets.contains(childWidget))
+		{
+			childWidget.setBorderType(0);
+			selectedItemWidgets.remove(childWidget);
+		}
+		else
+		{
+			childWidget.setBorderType(2);
+			selectedItemWidgets.add(childWidget);
+		}
+	}
+
+	private void resetMassEdit()
+	{
+		massEditing = false;
+
+		for (Widget w : selectedItemWidgets)
+		{
+			w.setBorderType(0);
+		}
+		selectedItemWidgets.clear();
+	}
 }
