@@ -26,11 +26,11 @@
 package net.runelite.http.service.hiscore;
 
 import lombok.Value;
-import net.runelite.http.api.hiscore.HiscoreEndpoint;
+import okhttp3.HttpUrl;
 
 @Value
 class HiscoreKey
 {
 	String username;
-	HiscoreEndpoint endpoint;
+	HttpUrl endpoint;
 }
