@@ -31,6 +31,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
@@ -61,9 +62,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class IdleNotifierPlugin extends Plugin
 {
 	private static final int LOGOUT_WARNING_AFTER_TICKS = 280 * 50; // 4 minutes and 40 seconds
-	private static final long LOGOUT_WARNING_AFTER_MILLIS = (long) (LOGOUT_WARNING_AFTER_TICKS * 0.6 * 1000);
+	private static final long LOGOUT_WARNING_AFTER_MILLIS = TimeUnit.MINUTES.toMillis(4) + TimeUnit.SECONDS.toMillis(40);
 	private static final int LOGOUT_WARNING_AFTER_TICKS_IN_COMBAT = 1140 * 50; // 19 minutes
-	private static final long LOGOUT_WARNING_AFTER_MILLIS_IN_COMBAT = (long) (LOGOUT_WARNING_AFTER_TICKS_IN_COMBAT * 0.6 * 1000);
+	private static final long LOGOUT_WARNING_AFTER_MILLIS_IN_COMBAT = TimeUnit.MINUTES.toMillis(19);
 	private static final int HIGHEST_MONSTER_ATTACK_SPEED = 8; // Except Scarab Mage, but they are with other monsters
 	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
 
