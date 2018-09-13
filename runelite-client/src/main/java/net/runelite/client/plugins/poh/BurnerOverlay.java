@@ -76,26 +76,23 @@ public class BurnerOverlay extends Overlay
 						if (plugin.getCountdownTimerMap().containsKey(tile))
 						{
 							double certainSec = plugin.getCountdownTimerMap().get(tile);
+							double randomSec = plugin.getRandomTimerMap().get(tile);
 							certainSec = Double.valueOf(df.format(certainSec));
-							ProgressPieComponent certainPieTimer = new ProgressPieComponent();
-							certainPieTimer.setPosition(object.getCanvasLocation());
-							certainPieTimer.setProgress((certainSec / plugin.getCountdownTimer()));
+							randomSec = Double.valueOf(df.format(randomSec));
+							ProgressPieComponent pieTimer = new ProgressPieComponent();
+							pieTimer.setPosition(object.getCanvasLocation());
+							pieTimer.setProgress((certainSec / plugin.getCountdownTimer()));
 
 							if (certainSec > 0)
 							{
-								renderPie(graphics, Color.GREEN, Color.GREEN, certainPieTimer);
+								renderPie(graphics, Color.GREEN, Color.GREEN, pieTimer);
 							}
 							else
 							{
-								double randomSec = plugin.getRandomTimerMap().get(tile);
-								randomSec = Double.valueOf(df.format(randomSec));
-								ProgressPieComponent randomPieTimer = new ProgressPieComponent();
-								randomPieTimer.setPosition(object.getCanvasLocation());
-								randomPieTimer.setProgress((randomSec / plugin.getRandomTimer()));
-
+								pieTimer.setProgress((randomSec / plugin.getRandomTimer()));
 								if (randomSec > 0)
 								{
-									renderPie(graphics, Color.ORANGE, Color.ORANGE, randomPieTimer);
+									renderPie(graphics, Color.ORANGE, Color.ORANGE, pieTimer);
 								}
 							}
 						}

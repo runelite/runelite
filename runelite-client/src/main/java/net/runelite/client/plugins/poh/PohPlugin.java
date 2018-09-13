@@ -80,9 +80,6 @@ public class PohPlugin extends Plugin
 	private final Multimap<TileObject, Tile> burnerLocs =  ArrayListMultimap.create();
 
 	@Getter(AccessLevel.PACKAGE)
-	private Multimap<TileObject, Tile> shortestDistance =  ArrayListMultimap.create();
-
-	@Getter(AccessLevel.PACKAGE)
 	//Map for the timers that we know the length of
 	private Map<Tile, Double> countdownTimerMap = new HashMap<>();
 
@@ -128,7 +125,6 @@ public class PohPlugin extends Plugin
 		burnerLocs.clear();
 		countdownTimerMap.clear();
 		randomTimerMap.clear();
-		shortestDistance.clear();
 	}
 
 	@Subscribe
