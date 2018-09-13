@@ -163,4 +163,15 @@ public interface WorldMapConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_QUEST_START_TOOLTIPS,
+		name = "Show quest names",
+		description = "Indicates the names of quests and highlights incomplete ones",
+		position = 13
+	)
+	default boolean questStartTooltips()
+	{
+		return true;
+	}
 }

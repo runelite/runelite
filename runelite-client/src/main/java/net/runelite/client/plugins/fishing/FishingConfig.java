@@ -54,164 +54,10 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showShrimp",
-		name = "Show Shrimp/Anchovies",
-		description = "Configures whether shrimp/anchovies is displayed",
-		position = 3
-	)
-	default boolean showShrimp()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showLobster",
-		name = "Show Lobster/Swordfish/Tuna",
-		description = "Configures whether lobster/swordfish/tuna is displayed",
-		position = 4
-	)
-	default boolean showLobster()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showShark",
-		name = "Show Shark",
-		description = "Configures whether shark is displayed",
-		position = 5
-	)
-	default boolean showShark()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showMonkfish",
-		name = "Show Monkfish",
-		description = "Configures whether monkfish displayed",
-		position = 6
-	)
-	default boolean showMonkfish()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showSalmon",
-		name = "Show Salmon/Trout",
-		description = "Configures whether salmon/trout is displayed",
-		position = 7
-	)
-	default boolean showSalmon()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showBarb",
-		name = "Show Barbarian fish",
-		description = "Configures whether barbarian fish is displayed",
-		position = 8
-	)
-	default boolean showBarb()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showAngler",
-		name = "Show Anglerfish",
-		description = "Configures whether anglerfish is displayed",
-		position = 9
-	)
-	default boolean showAngler()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showMinnow",
-		name = "Show Minnow fish",
-		description = "Configures whether minnow fish is displayed",
-		position = 10
-	)
-	default boolean showMinnow()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showInfernalEel",
-		name = "Show Infernal Eel",
-		description = "Configures whether infernal eel is displayed",
-		position = 11
-	)
-	default boolean showInfernalEel()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showSacredEel",
-		name = "Show Sacred Eel",
-		description = "Configures whether sacred eel is displayed",
-		position = 12
-	)
-	default boolean showSacredEel()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showCaveEel",
-		name = "Show Cave Eel",
-		description = "Configures whether cave eel is displayed",
-		position = 13
-	)
-	default boolean showCaveEel()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showSlimyEel",
-		name = "Show Slimy Eel",
-		description = "Configures whether slimy eel is displayed",
-		position = 14
-	)
-	default boolean showSlimyEel()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showKarambwanji",
-		name = "Show Karambwanji",
-		description = "Configures whether karambwanji is displayed",
-		position = 15
-	)
-	default boolean showKarambwanji()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showKarambwan",
-		name = "Show Karambwan",
-		description = "Configures whether karambwan is displayed",
-		position = 16
-	)
-	default boolean showKarambwan()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showFishingStats",
 		name = "Show Fishing session stats",
 		description = "Configures whether to display the fishing session stats",
-		position = 17
+		position = 3
 	)
 	default boolean showFishingStats()
 	{
@@ -222,7 +68,7 @@ public interface FishingConfig extends Config
 		keyName = "showMinnowOverlay",
 		name = "Show Minnow Movement overlay",
 		description = "Configures whether to display the minnow progress pie overlay",
-		position = 18
+		position = 4
 	)
 	default boolean showMinnowOverlay()
 	{

@@ -470,34 +470,6 @@ public interface Widget
 	void setOriginalWidth(int originalWidth);
 
 	/**
-	 * Gets the additional x-axis padding.
-	 *
-	 * @return the x-axis padding
-	 */
-	int getPaddingX();
-
-	/**
-	 * Sets the x-axis padding.
-	 *
-	 * @param paddingX the new padding
-	 */
-	void setPaddingX(int paddingX);
-
-	/**
-	 * Gets the additional y-axis padding.
-	 *
-	 * @return the y-axis padding
-	 */
-	int getPaddingY();
-
-	/**
-	 * Sets the y-axis padding.
-	 *
-	 * @param paddingY the new padding
-	 */
-	void setPaddingY(int paddingY);
-
-	/**
 	 * Gets the actions available on the widget.
 	 *
 	 * @return the actions
@@ -566,14 +538,17 @@ public interface Widget
 	void setFontId(int id);
 
 	/**
-	 * Returns the border thickness of the widget
+	 * Returns the border type of item/sprite on the widget
+	 * 0 - No border
+	 * 1 - 1px black border
+	 * 2 - 1px black under 1px white border (selected item)
 	 */
-	int getBorderThickness();
+	int getBorderType();
 
 	/**
-	 * Sets the border thickness of the widget
+	 * @see #getBorderType
 	 */
-	void setBorderThickness(int thickness);
+	void setBorderType(int thickness);
 
 	/**
 	 * Returns if text is shadowed

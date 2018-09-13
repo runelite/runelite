@@ -142,9 +142,7 @@ public class WidgetInfoTableModel extends AbstractTableModel
 		out.add(new WidgetField<>("ScrollHeight", Widget::getScrollHeight, Widget::setScrollHeight, Integer.class));
 		out.add(new WidgetField<>("OriginalX", Widget::getOriginalX));
 		out.add(new WidgetField<>("OriginalY", Widget::getOriginalY));
-		out.add(new WidgetField<>("PaddingX", Widget::getPaddingX));
-		out.add(new WidgetField<>("PaddingY", Widget::getPaddingY));
-		out.add(new WidgetField<>("BorderThickness", Widget::getBorderThickness, Widget::setBorderThickness, Integer.class));
+		out.add(new WidgetField<>("BorderType", Widget::getBorderType, Widget::setBorderType, Integer.class));
 		out.add(new WidgetField<>("IsIf3", Widget::isIf3));
 		out.add(new WidgetField<>("HasListener", Widget::hasListener, Widget::setHasListener, Boolean.class));
 

@@ -29,11 +29,9 @@ import com.google.common.eventbus.Subscribe;
 import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -49,7 +47,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.NpcDespawned;
@@ -72,8 +69,6 @@ import net.runelite.client.util.QueryRunner;
 @Slf4j
 public class FishingPlugin extends Plugin
 {
-	private final List<Integer> spotIds = new ArrayList<>();
-
 	@Getter(AccessLevel.PACKAGE)
 	private final FishingSession session = new FishingSession();
 
@@ -116,7 +111,6 @@ public class FishingPlugin extends Plugin
 		overlayManager.add(overlay);
 		overlayManager.add(spotOverlay);
 		overlayManager.add(fishingSpotMinimapOverlay);
-		updateConfig();
 	}
 
 	@Override
@@ -163,12 +157,6 @@ public class FishingPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void updateConfig(ConfigChanged event)
-	{
-		updateConfig();
-	}
-
 	private boolean canPlayerFish(final ItemContainer itemContainer)
 	{
 		if (itemContainer == null)
@@ -206,74 +194,13 @@ public class FishingPlugin extends Plugin
 		return false;
 	}
 
-	private void updateConfig()
-	{
-		spotIds.clear();
-		if (config.showShrimp())
-		{
-			spotIds.addAll(Ints.asList(FishingSpot.SHRIMP.getIds()));
-		}
-		if (config.showLobster())
-		{
-			spotIds.addAll(Ints.asList(FishingSpot.LOBSTER.getIds()));
-		}
-		if (config.showShark())
-		{
-			spotIds.addAll(Ints.asList(FishingSpot.SHARK.getIds()));
-		}
-		if (config.showMonkfish())
-		{
-			spotIds.addAll(Ints.asList(FishingSpot.MONKFISH.getIds()));
-		}
-		if (config.showSalmon())
-		{
-			spotIds.addAll(Ints.asList(FishingSpot.SALMON.getIds()));
-		}
-		if (config.showBarb())
-		{
-			spotIds.addAll(Ints.asList(FishingSpot.BARB_FISH.getIds()));
-		}
-		if (config.showAngler())
-		{
-			spotIds.addAll(Ints.asList(FishingSpot.ANGLERFISH.getIds()));
-		}
-		if (config.showMinnow())
-		{
-			spotIds.addAll(Ints.asList(FishingSpot.MINNOW.getIds()));
-		}
-		if (config.showInfernalEel())
-		{
-			spotIds.addAll(Ints.asList(FishingSpot.INFERNAL_EEL.getIds()));
-		}
-		if (config.showSacredEel())
-		{
-			spotIds.addAll(Ints.asList(FishingSpot.SACRED_EEL.getIds()));
-		}
-		if (config.showCaveEel())
-		{
-			spotIds.addAll(Ints.asList(FishingSpot.CAVE_EEL.getIds()));
-		}
-		if (config.showSlimyEel())
-		{
-			spotIds.addAll(Ints.asList(FishingSpot.SLIMY_EEL.getIds()));
-		}
-		if (config.showKarambwanji())
-		{
-			spotIds.addAll(Ints.asList(FishingSpot.KARAMBWANJI.getIds()));
-		}
-		if (config.showKarambwan())
-		{
-			spotIds.addAll(Ints.asList(FishingSpot.KARAMBWAN.getIds()));
-		}
-	}
-
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		final LocalPoint cameraPoint = new LocalPoint(client.getCameraX(), client.getCameraY());
 
 		final NPCQuery query = new NPCQuery()
-			.idEquals(Ints.toArray(spotIds));
+			.idEquals(Ints.toArray(FishingSpot.getSPOTS().keySet()));
 		NPC[] spots = queryRunner.runQuery(query);
 		// -1 to make closer things draw last (on top of farther things)
 		Arrays.sort(spots, Comparator.comparing(npc -> -1 * npc.getLocalLocation().distanceTo(cameraPoint)));
@@ -282,7 +209,7 @@ public class FishingPlugin extends Plugin
 		// process minnows
 		for (NPC npc : spots)
 		{
-			FishingSpot spot = FishingSpot.getSpot(npc.getId());
+			FishingSpot spot = FishingSpot.getSPOTS().get(npc.getId());
 
 			if (spot == null)
 			{

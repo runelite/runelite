@@ -648,12 +648,14 @@ public interface Client extends GameEngine
 	String getVar(VarClientStr varClientStr);
 
 	/**
-	 * Sets the given variable
-	 *
-	 * @param varClientStr
-	 * @param value
+	 * Sets a VarClientString to the passed value
 	 */
 	void setVar(VarClientStr varClientStr, String value);
+
+	/**
+	 * Sets a VarClientInt to the passed value
+	 */
+	void setVar(VarClientInt varClientStr, int value);
 
 	/**
 	 * Sets the value of a given variable.
@@ -926,6 +928,11 @@ public interface Client extends GameEngine
 	 * @return amount of idle mouse ticks
 	 */
 	int getMouseIdleTicks();
+
+	/**
+	 * Gets the number of milliseconds since the last mouse press occurred.
+	 */
+	long getMouseLastPressedMillis();
 
 	/**
 	 * Gets the amount of ticks since the last keyboard press occurred.
