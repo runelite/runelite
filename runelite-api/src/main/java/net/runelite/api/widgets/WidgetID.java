@@ -506,17 +506,21 @@ public class WidgetID
 	{
 		static class ATK
 		{
-			static final int CORRECT_STYLE2 = 4;
-			static final int TO_CALL = 6;
-			static final int ROLE = 8;
-			static final int ROLE_SPRITE = 7;
+			static final int CALL_TEXT = 8;
+			static final int TO_CALL_WIDGET = 9;
+			static final int TO_CALL = 10;
+			static final int ROLE_SPRITE = 11;
+			static final int ROLE = 12;
 		}
-
-		static final int CURRENT_WAVE = 1;
 		static final int CORRECT_STYLE = 3;
-		static final int TO_CALL = 5;
-		static final int ROLE_SPRITE = 6;
-		static final int ROLE = 7;
+		static final int CURRENT_WAVE_WIDGET = 4;
+		static final int CURRENT_WAVE = 5;
+		static final int CALL_WIDGET = 6;
+		static final int CALL_TEXT = 7;
+		static final int TO_CALL_WIDGET = 8;
+		static final int TO_CALL = 9;
+		static final int ROLE_SPRITE = 10;
+		static final int ROLE = 11;
 	}
 
 	static class LevelUp
@@ -614,12 +618,6 @@ public class WidgetID
 	{
 		static final int DIARY_TITLE = 2;
 		static final int DIARY_TEXT = 3;
-	}
-
-	static class MTA
-	{
-		static final int BONUS_COMPONENT = 7;
-		static final int BONUS_TEXT_COMPONENT = 12;
 	}
 
 	static class DestroyItem

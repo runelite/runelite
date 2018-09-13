@@ -79,7 +79,9 @@ public class AlchemyRoom extends MTARoom
 
 	private static final int IMAGE_Z_OFFSET = 150;
 	private static final int NUM_CUPBOARDS = 8;
-	private static final int INFO_START = 5;
+	private static final int INFO_ITEM_START = 8;
+	private static final int INFO_POINT_START = 13;
+	private static final int INFO_LENGTH = 5;
 	private static final int BEST_POINTS = 30;
 
 	private static final String YOU_FOUND = "You found:";
@@ -286,19 +288,16 @@ public class AlchemyRoom extends MTARoom
 
 	private AlchemyItem getBest()
 	{
-		for (int i = 0; i < INFO_START; i++)
+		for (int i = 0; i < INFO_LENGTH; i++)
 		{
-			int index = i + INFO_START;
-
-			Widget textWidget = client.getWidget(WidgetID.MTA_ALCHEMY_GROUP_ID, index);
-
+			Widget textWidget = client.getWidget(WidgetID.MTA_ALCHEMY_GROUP_ID, INFO_ITEM_START + i);
 			if (textWidget == null)
 			{
 				return null;
 			}
 
-			String item = textWidget.getText().replace(":", "");
-			Widget pointsWidget = client.getWidget(WidgetID.MTA_ALCHEMY_GROUP_ID, index + INFO_START);
+			String item = textWidget.getText();
+			Widget pointsWidget = client.getWidget(WidgetID.MTA_ALCHEMY_GROUP_ID, INFO_POINT_START + i);
 			int points = Integer.parseInt(pointsWidget.getText());
 
 			if (points == BEST_POINTS)
