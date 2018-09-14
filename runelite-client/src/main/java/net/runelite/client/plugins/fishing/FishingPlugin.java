@@ -28,6 +28,7 @@ package net.runelite.client.plugins.fishing;
 import com.google.common.eventbus.Subscribe;
 import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -38,6 +39,7 @@ import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -50,6 +52,7 @@ import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
@@ -86,6 +89,9 @@ public class FishingPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private NPC[] fishingSpots;
+
+	@Getter(AccessLevel.PACKAGE)
+	private FishingSpot currentSpot;
 
 	@Inject
 	private Client client;
@@ -137,6 +143,7 @@ public class FishingPlugin extends Plugin
 		overlayManager.remove(fishingSpotMinimapOverlay);
 		minnowSpots.clear();
 		trawlerNotificationSent = false;
+		currentSpot = null;
 	}
 
 	@Subscribe
@@ -151,6 +158,11 @@ public class FishingPlugin extends Plugin
 		final boolean showOverlays = session.getLastFishCaught() != null
 			|| canPlayerFish(client.getItemContainer(InventoryID.INVENTORY))
 			|| canPlayerFish(client.getItemContainer(InventoryID.EQUIPMENT));
+
+		if (!showOverlays)
+		{
+			currentSpot = null;
+		}
 
 		spotOverlay.setHidden(!showOverlays);
 		fishingSpotMinimapOverlay.setHidden(!showOverlays);
@@ -170,6 +182,32 @@ public class FishingPlugin extends Plugin
 			spotOverlay.setHidden(false);
 			fishingSpotMinimapOverlay.setHidden(false);
 		}
+	}
+
+	@Subscribe
+	public void onInteractingChanged(InteractingChanged event)
+	{
+		if (event.getSource() != client.getLocalPlayer())
+		{
+			return;
+		}
+
+		final Actor target = event.getTarget();
+
+		if (!(target instanceof NPC))
+		{
+			return;
+		}
+
+		final NPC npc = (NPC) target;
+		FishingSpot spot = FishingSpot.getSPOTS().get(npc.getId());
+
+		if (spot == null)
+		{
+			return;
+		}
+
+		currentSpot = spot;
 	}
 
 	private boolean canPlayerFish(final ItemContainer itemContainer)
@@ -212,6 +250,19 @@ public class FishingPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		// Reset fishing session
+		if (session.getLastFishCaught() != null)
+		{
+			final Duration statTimeout = Duration.ofMinutes(config.statTimeout());
+			final Duration sinceCaught = Duration.between(session.getLastFishCaught(), Instant.now());
+
+			if (sinceCaught.compareTo(statTimeout) >= 0)
+			{
+				currentSpot = null;
+				session.setLastFishCaught(null);
+			}
+		}
+
 		final LocalPoint cameraPoint = new LocalPoint(client.getCameraX(), client.getCameraY());
 
 		final NPCQuery query = new NPCQuery()

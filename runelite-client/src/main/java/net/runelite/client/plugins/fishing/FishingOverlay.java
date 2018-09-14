@@ -27,8 +27,6 @@ package net.runelite.client.plugins.fishing;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.time.Duration;
-import java.time.Instant;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
@@ -63,24 +61,8 @@ class FishingOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showFishingStats())
+		if (!config.showFishingStats() || plugin.getSession().getLastFishCaught() == null)
 		{
-			return null;
-		}
-
-		FishingSession session = plugin.getSession();
-
-		if (session.getLastFishCaught() == null)
-		{
-			return null;
-		}
-
-		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceCaught = Duration.between(session.getLastFishCaught(), Instant.now());
-
-		if (sinceCaught.compareTo(statTimeout) >= 0)
-		{
-			session.setLastFishCaught(null);
 			return null;
 		}
 
