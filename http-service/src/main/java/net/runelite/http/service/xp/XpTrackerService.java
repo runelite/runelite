@@ -30,7 +30,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.xp.XpData;
-import net.runelite.http.service.hiscore.HiscoreResultBuilder;
 import net.runelite.http.service.hiscore.HiscoreService;
 import net.runelite.http.service.xp.beans.PlayerEntity;
 import net.runelite.http.service.xp.beans.XpEntity;
@@ -53,8 +52,7 @@ public class XpTrackerService
 
 	public void update(String username) throws ExecutionException
 	{
-		HiscoreResultBuilder hiscoreResultBuilder = hiscoreService.lookupUsername(username, HiscoreEndpoint.NORMAL);
-		HiscoreResult hiscoreResult = hiscoreResultBuilder.build();
+		HiscoreResult hiscoreResult = hiscoreService.lookupUsername(username, HiscoreEndpoint.NORMAL);
 		update(username, hiscoreResult);
 	}
 
