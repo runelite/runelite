@@ -315,6 +315,11 @@ public class ConfigManager
 
 		String oldValue = (String) properties.remove(groupName + "." + key);
 
+		if (oldValue == null)
+		{
+			return;
+		}
+
 		if (client != null)
 		{
 			client.unset(groupName + "." + key);
