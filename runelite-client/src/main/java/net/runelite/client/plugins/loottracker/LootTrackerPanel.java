@@ -302,9 +302,27 @@ class LootTrackerPanel extends PluginPanel
 	}
 
 	/**
+	 * After an item changed it's ignored state, iterate all the records and make
+	 * sure all items of the same name also get updated
+	 */
+	void updateIgnoredRecords()
+	{
+		for (LootTrackerRecord r : records)
+		{
+			for (LootTrackerItem item : r.getItems())
+			{
+				if (plugin.isIgnored(item.getName()) != item.isIgnored())
+				{
+					item.setIgnored(plugin.isIgnored(item.getName()));
+				}
+			}
+		}
+	}
+
+	/**
 	 * Rebuilds all the boxes from scratch using existing listed records, depending on the grouping mode.
 	 */
-	private void rebuild()
+	void rebuild()
 	{
 		logsContainer.removeAll();
 		boxes.clear();
@@ -350,20 +368,7 @@ class LootTrackerPanel extends PluginPanel
 		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getSubTitle(), (name, ignored) ->
 		{
 			plugin.toggleItem(name, ignored);
-
-			// After an item changed it's ignored state, iterate all the records and make sure all items
-			// of the same name also get updated
-			for (LootTrackerRecord r : records)
-			{
-				for (LootTrackerItem item : r.getItems())
-				{
-					if (plugin.isIgnored(item.getName()) != item.isIgnored())
-					{
-						item.setIgnored(plugin.isIgnored(item.getName()));
-					}
-				}
-			}
-
+			updateIgnoredRecords();
 			rebuild();
 		});
 		box.combine(record);

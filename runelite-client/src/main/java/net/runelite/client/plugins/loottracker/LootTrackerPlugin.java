@@ -25,12 +25,17 @@
  */
 package net.runelite.client.plugins.loottracker;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -47,8 +52,10 @@ import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.game.ItemManager;
@@ -74,6 +81,13 @@ public class LootTrackerPlugin extends Plugin
 	private static final Pattern CLUE_SCROLL_PATTERN = Pattern.compile("You have completed [0-9]+ ([a-z]+) Treasure Trails.");
 	private static final int THEATRE_OF_BLOOD_REGION = 12867;
 
+	private static final Splitter COMMA_SPLITTER = Splitter
+		.on(",")
+		.omitEmptyStrings()
+		.trimResults();
+
+	private static final Joiner COMMA_JOINER = Joiner.on(",").skipNulls();
+
 	@Inject
 	private ClientToolbar clientToolbar;
 
@@ -84,13 +98,16 @@ public class LootTrackerPlugin extends Plugin
 	private SpriteManager spriteManager;
 
 	@Inject
+	private LootTrackerConfig config;
+
+	@Inject
 	private Client client;
 
 	private LootTrackerPanel panel;
 	private NavigationButton navButton;
 	private String eventType;
 
-	private final List<String> ignoredItems = new ArrayList<>();
+	private List<String> ignoredItems = new ArrayList<>();
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
 	{
@@ -121,9 +138,27 @@ public class LootTrackerPlugin extends Plugin
 		return list;
 	}
 
+	@Provides
+	LootTrackerConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(LootTrackerConfig.class);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("loottracker"))
+		{
+			ignoredItems = COMMA_SPLITTER.splitToList(config.getIgnoredItems());
+			panel.updateIgnoredRecords();
+			panel.rebuild();
+		}
+	}
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		ignoredItems = COMMA_SPLITTER.splitToList(config.getIgnoredItems());
 		panel = new LootTrackerPanel(this, itemManager);
 		spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, panel::loadHeaderIcon);
 
@@ -256,14 +291,18 @@ public class LootTrackerPlugin extends Plugin
 
 	void toggleItem(String name, boolean ignore)
 	{
+		final Set<String> ignoredItemSet = new HashSet<>(ignoredItems);
+
 		if (ignore)
 		{
-			ignoredItems.add(name);
+			ignoredItemSet.add(name);
 		}
 		else
 		{
-			ignoredItems.remove(name);
+			ignoredItemSet.remove(name);
 		}
+
+		config.setIgnoredItems(COMMA_JOINER.join(ignoredItemSet));
 	}
 
 	boolean isIgnored(String name)
