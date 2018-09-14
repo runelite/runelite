@@ -63,9 +63,9 @@ class LootTrackerBox extends JPanel
 	@Getter
 	private long totalPrice;
 
-	private BiConsumer<Integer, Boolean> onItemToggle;
+	private BiConsumer<String, Boolean> onItemToggle;
 
-	LootTrackerBox(final ItemManager itemManager, final String id, @Nullable final String subtitle, BiConsumer<Integer, Boolean> onItemToggle)
+	LootTrackerBox(final ItemManager itemManager, final String id, @Nullable final String subtitle, BiConsumer<String, Boolean> onItemToggle)
 	{
 		this.id = id;
 		this.itemManager = itemManager;
@@ -233,7 +233,7 @@ class LootTrackerBox extends JPanel
 				toggle.addActionListener(e ->
 				{
 					item.setIgnored(!item.isIgnored());
-					onItemToggle.accept(item.getId(), item.isIgnored());
+					onItemToggle.accept(item.getName(), item.isIgnored());
 				});
 
 				popupMenu.add(toggle);
