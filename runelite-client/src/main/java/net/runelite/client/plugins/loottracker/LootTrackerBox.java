@@ -32,9 +32,12 @@ import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
@@ -46,6 +49,8 @@ import net.runelite.client.util.StackFormatter;
 class LootTrackerBox extends JPanel
 {
 	private static final int ITEMS_PER_ROW = 5;
+	private static final Color IGNORED_ITEM_BG = new Color(65, 35, 35);
+
 	private final JPanel itemContainer = new JPanel();
 	private final JLabel priceLabel = new JLabel();
 	private final JLabel subTitleLabel = new JLabel();
@@ -58,10 +63,13 @@ class LootTrackerBox extends JPanel
 	@Getter
 	private long totalPrice;
 
-	LootTrackerBox(final ItemManager itemManager, final String id, @Nullable final String subtitle)
+	private BiConsumer<Integer, Boolean> onItemToggle;
+
+	LootTrackerBox(final ItemManager itemManager, final String id, @Nullable final String subtitle, BiConsumer<Integer, Boolean> onItemToggle)
 	{
 		this.id = id;
 		this.itemManager = itemManager;
+		this.onItemToggle = onItemToggle;
 
 		setLayout(new BorderLayout(0, 1));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
@@ -100,6 +108,7 @@ class LootTrackerBox extends JPanel
 
 	/**
 	 * Checks if this box matches specified record
+	 *
 	 * @param record loot record
 	 * @return true if match is made
 	 */
@@ -110,6 +119,7 @@ class LootTrackerBox extends JPanel
 
 	/**
 	 * Checks if this box matches specified id
+	 *
 	 * @param id other record id
 	 * @return true if match is made
 	 */
@@ -163,7 +173,10 @@ class LootTrackerBox extends JPanel
 
 		for (final LootTrackerItem entry : allItems)
 		{
-			totalPrice += entry.getPrice();
+			if (!entry.isIgnored())
+			{
+				totalPrice += entry.getPrice();
+			}
 
 			int quantity = 0;
 			for (final LootTrackerItem i : items)
@@ -180,7 +193,7 @@ class LootTrackerBox extends JPanel
 				int newQuantity = entry.getQuantity() + quantity;
 				long pricePerItem = entry.getPrice() == 0 ? 0 : (entry.getPrice() / entry.getQuantity());
 
-				items.add(new LootTrackerItem(entry.getId(), entry.getName(), newQuantity, pricePerItem * newQuantity));
+				items.add(new LootTrackerItem(entry.getId(), entry.getName(), newQuantity, pricePerItem * newQuantity, entry.isIgnored()));
 			}
 			else
 			{
@@ -210,6 +223,25 @@ class LootTrackerBox extends JPanel
 				imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 				itemManager.getImage(item.getId(), item.getQuantity(), item.getQuantity() > 1).addTo(imageLabel);
 				slotContainer.add(imageLabel);
+
+				// Create popup menu
+				final JPopupMenu popupMenu = new JPopupMenu();
+				popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+				slotContainer.setComponentPopupMenu(popupMenu);
+
+				final JMenuItem toggle = new JMenuItem("Toggle item");
+				toggle.addActionListener(e ->
+				{
+					item.setIgnored(!item.isIgnored());
+					onItemToggle.accept(item.getId(), item.isIgnored());
+				});
+
+				popupMenu.add(toggle);
+
+				if (item.isIgnored())
+				{
+					slotContainer.setBackground(IGNORED_ITEM_BG);
+				}
 			}
 
 			itemContainer.add(slotContainer);

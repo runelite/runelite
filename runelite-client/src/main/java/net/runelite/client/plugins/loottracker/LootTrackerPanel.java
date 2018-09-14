@@ -89,6 +89,8 @@ class LootTrackerPanel extends PluginPanel
 	private final List<LootTrackerBox> boxes = new ArrayList<>();
 
 	private final ItemManager itemManager;
+	private final LootTrackerPlugin plugin;
+
 	private boolean groupLoot;
 	private String currentView;
 
@@ -110,9 +112,11 @@ class LootTrackerPanel extends PluginPanel
 		BACK_ARROW_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(backArrowImg, -180));
 	}
 
-	LootTrackerPanel(final ItemManager itemManager)
+	LootTrackerPanel(final LootTrackerPlugin plugin, final ItemManager itemManager)
 	{
 		this.itemManager = itemManager;
+		this.plugin = plugin;
+
 		setBorder(new EmptyBorder(6, 6, 6, 6));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new BorderLayout());
@@ -286,6 +290,7 @@ class LootTrackerPanel extends PluginPanel
 
 	/**
 	 * Changes grouping mode of panel
+	 *
 	 * @param group if loot should be grouped or not
 	 */
 	private void changeGrouping(boolean group)
@@ -342,7 +347,25 @@ class LootTrackerPanel extends PluginPanel
 		overallPanel.setVisible(true);
 
 		// Create box
-		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getSubTitle());
+		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getSubTitle(), (id, ignored) ->
+		{
+			plugin.toggleItem(id, ignored);
+
+			// After an item changed it's ignored state, iterate all the records and make sure all items
+			// of the same id also get updated
+			for (LootTrackerRecord r : records)
+			{
+				for (LootTrackerItem item : r.getItems())
+				{
+					if (plugin.isIgnored(item.getId()) != item.isIgnored())
+					{
+						item.setIgnored(plugin.isIgnored(item.getId()));
+					}
+				}
+			}
+
+			rebuild();
+		});
 		box.combine(record);
 
 		// Create popup menu
