@@ -87,7 +87,7 @@ class XpPanel extends PluginPanel
 
 		// Create CrystalMathLabs Menu
 		final JMenuItem openCMLPage = new JMenuItem("Open CML tracker");
-		openCMLPage.addActionListener(e -> LinkBrowser.browse(XpPanel.cmlUrl(client.getLocalPlayer())));
+		openCMLPage.addActionListener(e -> LinkBrowser.browse(XpPanel.buildCmlUrl(client.getLocalPlayer())));
 
 		// Create reset all menu
 		final JMenuItem reset = new JMenuItem("Reset All");
