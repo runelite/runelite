@@ -114,6 +114,7 @@ public class IdleNotifierPluginTest
 		// Mock client
 		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
 		when(client.getMouseIdleTicks()).thenReturn(42);
+		when(client.getKeyboardIdleTicks()).thenReturn(42);
 	}
 
 	@Test

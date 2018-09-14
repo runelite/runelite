@@ -50,6 +50,7 @@ import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -79,6 +80,9 @@ public class IdleNotifierPlugin extends Plugin
 	private MouseManager mouseManager;
 
 	@Inject
+	private KeyManager keyManager;
+
+	@Inject
 	private IdleNotifierListener listener;
 
 	private Instant lastAnimating;
@@ -103,12 +107,14 @@ public class IdleNotifierPlugin extends Plugin
 	protected void startUp()
 	{
 		mouseManager.registerMouseListener(listener);
+		keyManager.registerKeyListener(listener);
 	}
 
 	@Override
 	protected void shutDown()
 	{
 		mouseManager.unregisterMouseListener(listener);
+		keyManager.unregisterKeyListener(listener);
 	}
 
 	@Subscribe

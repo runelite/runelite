@@ -24,11 +24,13 @@
  */
 package net.runelite.client.plugins.idlenotifier;
 
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import javax.inject.Inject;
+import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseListener;
 
-class IdleNotifierListener extends MouseListener
+class IdleNotifierListener extends MouseListener implements KeyListener
 {
 	private final IdleNotifierPlugin plugin;
 
@@ -43,5 +45,23 @@ class IdleNotifierListener extends MouseListener
 	{
 		plugin.resetTimers();
 		return mouseEvent;
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e)
+	{
+		plugin.resetTimers();
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		plugin.resetTimers();
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+
 	}
 }
