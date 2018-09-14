@@ -90,6 +90,8 @@ public class LootTrackerPlugin extends Plugin
 	private NavigationButton navButton;
 	private String eventType;
 
+	private final List<Integer> ignoredIds = new ArrayList<>();
+
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
 	{
 		final List<ItemStack> list = new ArrayList<>();
@@ -122,7 +124,7 @@ public class LootTrackerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		panel = new LootTrackerPanel(itemManager);
+		panel = new LootTrackerPanel(this, itemManager);
 		spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, panel::loadHeaderIcon);
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
@@ -252,6 +254,23 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
+	void toggleItem(int id, boolean ignore)
+	{
+		if (ignore)
+		{
+			ignoredIds.add(id);
+		}
+		else
+		{
+			ignoredIds.remove(Integer.valueOf(id));
+		}
+	}
+
+	boolean isIgnored(int id)
+	{
+		return ignoredIds.contains(id);
+	}
+
 	private LootTrackerItem[] buildEntries(final Collection<ItemStack> itemStacks)
 	{
 		return itemStacks.stream().map(itemStack ->
@@ -259,12 +278,14 @@ public class LootTrackerPlugin extends Plugin
 			final ItemComposition itemComposition = itemManager.getItemComposition(itemStack.getId());
 			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemStack.getId();
 			final long price = (long) itemManager.getItemPrice(realItemId) * (long) itemStack.getQuantity();
+			final boolean ignored = ignoredIds.contains(itemStack.getId());
 
 			return new LootTrackerItem(
 				itemStack.getId(),
 				itemComposition.getName(),
 				itemStack.getQuantity(),
-				price);
+				price,
+				ignored);
 		}).toArray(LootTrackerItem[]::new);
 	}
 }
