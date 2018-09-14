@@ -50,6 +50,7 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.NpcDespawned;
@@ -160,7 +161,15 @@ public class LootManager
 		final LocalPoint location = tile.getLocalLocation();
 		final int packed = location.getSceneX() << 8 | location.getSceneY();
 		itemSpawns.put(packed, new ItemStack(item.getId(), item.getQuantity()));
-		log.debug("Item spawn {} location {},{}", item.getId(), location);
+		log.debug("Item spawn {} ({}) location {},{}", item.getId(), item.getQuantity(), location);
+	}
+
+	@Subscribe
+	public void onItemDespawned(ItemDespawned itemDespawned)
+	{
+		final Item item = itemDespawned.getItem();
+		final LocalPoint location = itemDespawned.getTile().getLocalLocation();
+		log.debug("Item despawn {} ({}) location {},{}", item.getId(), item.getQuantity(), location);
 	}
 
 	@Subscribe
