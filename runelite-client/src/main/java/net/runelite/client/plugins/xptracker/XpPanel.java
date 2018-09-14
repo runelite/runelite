@@ -30,17 +30,12 @@ import java.awt.GridLayout;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.ColorScheme;
@@ -85,7 +80,11 @@ class XpPanel extends PluginPanel
 		final JMenuItem openXpTracker = new JMenuItem("Open online tracker");
 		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(client.getLocalPlayer(), Skill.OVERALL)));
 
-		// Create reset all menu
+        // Create CrystalMathLabs Menu
+        final JMenuItem openCMLPage = new JMenuItem("Open CML tracker");
+        openCMLPage.addActionListener(e -> LinkBrowser.browse(XpPanel.cmlUrl(client.getLocalPlayer())));
+
+        // Create reset all menu
 		final JMenuItem reset = new JMenuItem("Reset All");
 		reset.addActionListener(e -> xpTrackerPlugin.resetAndInitState());
 
@@ -109,6 +108,7 @@ class XpPanel extends PluginPanel
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		popupMenu.add(openXpTracker);
+		popupMenu.add(openCMLPage);
 		popupMenu.add(reset);
 		popupMenu.add(pauseAll);
 		overallPanel.setComponentPopupMenu(popupMenu);
@@ -174,6 +174,18 @@ class XpPanel extends PluginPanel
 			.build()
 			.toString();
 	}
+
+	static String cmlUrl(final Actor player)
+    {
+        return new HttpUrl.Builder()
+            .scheme("https")
+            .host("crystalmathlabs.com")
+            .addPathSegment("tracker")
+            .addPathSegment("track.php")
+            .query("player="+player.getName())
+            .build()
+            .toString();
+    }
 
 	void resetAllInfoBoxes()
 	{
