@@ -365,7 +365,7 @@ class LootTrackerPanel extends PluginPanel
 		overallPanel.setVisible(true);
 
 		// Create box
-		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getSubTitle(), (name, ignored) ->
+		final LootTrackerBox box = new LootTrackerBox(itemManager, plugin.getConfig(), record.getTitle(), record.getSubTitle(), (name, ignored) ->
 		{
 			plugin.toggleItem(name, ignored);
 			updateIgnoredRecords();

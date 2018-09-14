@@ -63,13 +63,16 @@ class LootTrackerBox extends JPanel
 	@Getter
 	private long totalPrice;
 
+	private final LootTrackerConfig config;
+
 	private BiConsumer<String, Boolean> onItemToggle;
 
-	LootTrackerBox(final ItemManager itemManager, final String id, @Nullable final String subtitle, BiConsumer<String, Boolean> onItemToggle)
+	LootTrackerBox(final ItemManager itemManager, final LootTrackerConfig config, final String id, @Nullable final String subtitle, BiConsumer<String, Boolean> onItemToggle)
 	{
 		this.id = id;
 		this.itemManager = itemManager;
 		this.onItemToggle = onItemToggle;
+		this.config = config;
 
 		setLayout(new BorderLayout(0, 1));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
@@ -188,6 +191,12 @@ class LootTrackerBox extends JPanel
 					break;
 				}
 			}
+
+			if (entry.isIgnored() && !config.showIgnoredItems())
+			{
+				continue;
+			}
+
 			if (quantity > 0)
 			{
 				int newQuantity = entry.getQuantity() + quantity;
