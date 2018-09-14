@@ -60,7 +60,7 @@ class AgilitySession
 			nextLevel++;
 		} while (remainingXp < 0);
 
-		lapsTillLevel = remainingXp > 0 ? (int) Math.ceil(remainingXp / course.getTotalXp()) : 0;
+		lapsTillLevel = remainingXp > 0 ? (int) Math.ceil(remainingXp / course.getTotalXp(client.getRealSkillLevel(Skill.AGILITY))) : 0;
 	}
 
 	void resetLapCount()

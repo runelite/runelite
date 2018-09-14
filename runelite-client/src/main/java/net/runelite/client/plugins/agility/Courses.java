@@ -26,6 +26,7 @@ package net.runelite.client.plugins.agility;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
@@ -34,7 +35,7 @@ enum Courses
 	GNOME(86.5, 46, 9781),
 	DRAYNOR(120.0, 79, 12338),
 	AL_KHARID(180.0, 30, 13105, new WorldPoint(3299, 3194, 0)),
-	PYRAMID(722.0, 300, 13356, new WorldPoint(3364, 2830, 0)),
+	PYRAMID(Courses::agilityPyramidTotalXp, Courses::agilityPyramidFinalObstacle, 13356),
 	VARROCK(238.0, 125, 12853),
 	PENGUIN(540.0, 65, 10559),
 	BARBARIAN(139.5, 60, 10039),
@@ -50,11 +51,11 @@ enum Courses
 
 	private final static Map<Integer, Courses> coursesByRegion = new HashMap<>();
 
-	@Getter
 	private final double totalXp;
+	private final Function<Integer, Double> totalXpFunction;
 
-	@Getter
 	private final int lastObstacleXp;
+	private final Function<Integer, Integer> lastObstacleXpFunction;
 
 	@Getter
 	private final int regionId;
@@ -72,14 +73,67 @@ enum Courses
 
 	Courses(double totalXp, int lastObstacleXp, int regionId, WorldPoint... courseEndWorldPoints)
 	{
+		this(totalXp, null, lastObstacleXp, null, regionId, courseEndWorldPoints);
+	}
+
+	Courses(Function<Integer, Double> totalXpFunction, int lastObstacleXp, int regionId, WorldPoint... courseEndWorldPoints)
+	{
+		this(-1, totalXpFunction, lastObstacleXp, null, regionId, courseEndWorldPoints);
+	}
+
+	Courses(Function<Integer, Double> totalXpFunction, Function<Integer, Integer> lastObstacleXpFunction, int regionId, WorldPoint... courseEndWorldPoints)
+	{
+		this(-1, totalXpFunction, -1, lastObstacleXpFunction, regionId, courseEndWorldPoints);
+	}
+
+	Courses(double totalXp, Function<Integer, Double> totalXpFunction, int lastObstacleXp, Function<Integer, Integer> lastObstacleXpFunction, int regionId, WorldPoint... courseEndWorldPoints)
+	{
+		assert totalXp == -1 || totalXpFunction == null;
+		assert lastObstacleXp == -1 || lastObstacleXpFunction == null;
 		this.totalXp = totalXp;
+		this.totalXpFunction = totalXpFunction;
 		this.lastObstacleXp = lastObstacleXp;
+		this.lastObstacleXpFunction = lastObstacleXpFunction;
 		this.regionId = regionId;
 		this.courseEndWorldPoints = courseEndWorldPoints;
+	}
+
+	double getTotalXp(int agilityLevel)
+	{
+		if (totalXp != -1.0)
+		{
+			return totalXp;
+		}
+		else
+		{
+			return totalXpFunction.apply(agilityLevel);
+		}
+	}
+
+	int getLastObstacleXp(int agilityLevel)
+	{
+		if (lastObstacleXp != -1)
+		{
+			return lastObstacleXp;
+		}
+		else
+		{
+			return lastObstacleXpFunction.apply(agilityLevel);
+		}
 	}
 
 	static Courses getCourse(int regionId)
 	{
 		return coursesByRegion.get(regionId);
+	}
+
+	private static double agilityPyramidTotalXp(int agilityLevel)
+	{
+		return 722.0 + Courses.agilityPyramidFinalObstacle(agilityLevel);
+	}
+
+	private static int agilityPyramidFinalObstacle(int agilityLevel)
+	{
+		return 300 + agilityLevel * 8;
 	}
 }
