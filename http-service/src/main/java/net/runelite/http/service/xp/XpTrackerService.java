@@ -52,7 +52,7 @@ public class XpTrackerService
 
 	public void update(String username) throws ExecutionException
 	{
-		HiscoreResult hiscoreResult = hiscoreService.lookupUsername(username, HiscoreEndpoint.NORMAL.getHiscoreURL());
+		HiscoreResult hiscoreResult = hiscoreService.lookupUsername(username, HiscoreEndpoint.NORMAL);
 		update(username, hiscoreResult);
 	}
 

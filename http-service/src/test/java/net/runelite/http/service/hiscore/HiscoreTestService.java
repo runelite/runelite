@@ -25,6 +25,7 @@
  */
 package net.runelite.http.service.hiscore;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import net.runelite.http.api.hiscore.HiscoreResult;
 import okhttp3.HttpUrl;
@@ -39,7 +40,7 @@ class HiscoreTestService extends HiscoreService
 	}
 
 	@Override
-	public HiscoreResult lookupUsername(String username, HttpUrl endpoint) throws ExecutionException
+	public HiscoreResult lookupUsername(String username, HttpUrl endpoint) throws IOException
 	{
 		return super.lookupUsername(username, testUrl);
 	}

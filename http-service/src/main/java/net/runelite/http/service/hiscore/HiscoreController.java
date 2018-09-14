@@ -53,7 +53,7 @@ public class HiscoreController
 	@RequestMapping("/{endpoint}")
 	public HiscoreResult lookup(@PathVariable HiscoreEndpoint endpoint, @RequestParam String username) throws ExecutionException
 	{
-		HiscoreResult result = hiscoreService.lookupUsername(username, endpoint.getHiscoreURL());
+		HiscoreResult result = hiscoreService.lookupUsername(username, endpoint);
 
 		// Submit to xp tracker?
 		switch (endpoint)
@@ -74,7 +74,7 @@ public class HiscoreController
 		HiscoreSkill skill = HiscoreSkill.valueOf(skillName.toUpperCase());
 
 		// RS api only supports looking up all stats
-		HiscoreResult result = hiscoreService.lookupUsername(username, endpoint.getHiscoreURL());
+		HiscoreResult result = hiscoreService.lookupUsername(username, endpoint);
 
 		// Find the skill to return
 		Skill requested = result.getSkill(skill);

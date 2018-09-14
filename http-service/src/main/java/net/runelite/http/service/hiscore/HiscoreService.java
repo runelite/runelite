@@ -24,6 +24,7 @@
  */
 package net.runelite.http.service.hiscore;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -32,6 +33,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.hiscore.HiscoreClient;
+import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
 import okhttp3.HttpUrl;
 import org.springframework.stereotype.Service;
@@ -54,7 +56,13 @@ public class HiscoreService
 				}
 			});
 
-	public HiscoreResult lookupUsername(String username, HttpUrl endpoint) throws ExecutionException
+	@VisibleForTesting
+	HiscoreResult lookupUsername(String username, HttpUrl httpUrl) throws IOException
+	{
+		return hiscoreClient.lookup(username, httpUrl);
+	}
+
+	public HiscoreResult lookupUsername(String username, HiscoreEndpoint endpoint) throws ExecutionException
 	{
 		return hiscoreCache.get(new HiscoreKey(username, endpoint));
 	}
