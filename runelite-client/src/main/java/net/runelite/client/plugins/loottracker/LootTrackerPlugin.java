@@ -90,7 +90,7 @@ public class LootTrackerPlugin extends Plugin
 	private NavigationButton navButton;
 	private String eventType;
 
-	private final List<Integer> ignoredIds = new ArrayList<>();
+	private final List<String> ignoredItems = new ArrayList<>();
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
 	{
@@ -254,21 +254,21 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
-	void toggleItem(int id, boolean ignore)
+	void toggleItem(String name, boolean ignore)
 	{
 		if (ignore)
 		{
-			ignoredIds.add(id);
+			ignoredItems.add(name);
 		}
 		else
 		{
-			ignoredIds.remove(Integer.valueOf(id));
+			ignoredItems.remove(name);
 		}
 	}
 
-	boolean isIgnored(int id)
+	boolean isIgnored(String name)
 	{
-		return ignoredIds.contains(id);
+		return ignoredItems.contains(name);
 	}
 
 	private LootTrackerItem[] buildEntries(final Collection<ItemStack> itemStacks)
@@ -278,7 +278,7 @@ public class LootTrackerPlugin extends Plugin
 			final ItemComposition itemComposition = itemManager.getItemComposition(itemStack.getId());
 			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemStack.getId();
 			final long price = (long) itemManager.getItemPrice(realItemId) * (long) itemStack.getQuantity();
-			final boolean ignored = ignoredIds.contains(itemStack.getId());
+			final boolean ignored = ignoredItems.contains(itemComposition.getName());
 
 			return new LootTrackerItem(
 				itemStack.getId(),

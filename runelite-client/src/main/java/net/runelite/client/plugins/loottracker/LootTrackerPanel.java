@@ -347,19 +347,19 @@ class LootTrackerPanel extends PluginPanel
 		overallPanel.setVisible(true);
 
 		// Create box
-		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getSubTitle(), (id, ignored) ->
+		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getSubTitle(), (name, ignored) ->
 		{
-			plugin.toggleItem(id, ignored);
+			plugin.toggleItem(name, ignored);
 
 			// After an item changed it's ignored state, iterate all the records and make sure all items
-			// of the same id also get updated
+			// of the same name also get updated
 			for (LootTrackerRecord r : records)
 			{
 				for (LootTrackerItem item : r.getItems())
 				{
-					if (plugin.isIgnored(item.getId()) != item.isIgnored())
+					if (plugin.isIgnored(item.getName()) != item.isIgnored())
 					{
-						item.setIgnored(plugin.isIgnored(item.getId()));
+						item.setIgnored(plugin.isIgnored(item.getName()));
 					}
 				}
 			}
