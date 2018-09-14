@@ -50,6 +50,7 @@ import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -74,6 +75,12 @@ public class IdleNotifierPlugin extends Plugin
 	@Inject
 	private IdleNotifierConfig config;
 
+	@Inject
+	private MouseManager mouseManager;
+
+	@Inject
+	private IdleNotifierListener listener;
+
 	private Instant lastAnimating;
 	private int lastAnimation = AnimationID.IDLE;
 	private Instant lastInteracting;
@@ -90,6 +97,18 @@ public class IdleNotifierPlugin extends Plugin
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(IdleNotifierConfig.class);
+	}
+
+	@Override
+	protected void startUp()
+	{
+		mouseManager.registerMouseListener(listener);
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		mouseManager.unregisterMouseListener(listener);
 	}
 
 	@Subscribe
@@ -304,7 +323,7 @@ public class IdleNotifierPlugin extends Plugin
 		final Duration waitDuration = Duration.ofMillis(config.getIdleNotificationDelay());
 		lastCombatCountdown = Math.max(lastCombatCountdown - 1, 0);
 
-		if (client.getGameState() != GameState.LOGGED_IN || local == null || client.getMouseIdleTicks() < 10)
+		if (client.getGameState() != GameState.LOGGED_IN || local == null)
 		{
 			resetTimers();
 			return;
@@ -494,7 +513,7 @@ public class IdleNotifierPlugin extends Plugin
 		return false;
 	}
 
-	private void resetTimers()
+	void resetTimers()
 	{
 		final Player local = client.getLocalPlayer();
 
