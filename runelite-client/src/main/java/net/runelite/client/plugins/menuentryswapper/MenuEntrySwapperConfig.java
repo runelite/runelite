@@ -32,6 +32,16 @@ import net.runelite.client.config.ConfigItem;
 public interface MenuEntrySwapperConfig extends Config
 {
 	@ConfigItem(
+		keyName = "shiftWalk",
+		name = "Shift walk",
+		description = "Holding shift prioritizes Walk here"
+	)
+	default boolean shiftWalk()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		position = 0,
 		keyName = "shiftClickCustomization",
 		name = "Customizable shift-click",

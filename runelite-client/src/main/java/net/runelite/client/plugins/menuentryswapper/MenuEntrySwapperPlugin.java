@@ -37,6 +37,8 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuAction;
+import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
+import static net.runelite.api.MenuAction.WALK;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
@@ -333,6 +335,19 @@ public class MenuEntrySwapperPlugin extends Plugin
 		int itemId = event.getIdentifier();
 		String option = Text.removeTags(event.getOption()).toLowerCase();
 		String target = Text.removeTags(event.getTarget()).toLowerCase();
+
+		if (config.shiftWalk() && shiftModifier)
+		{
+			if (event.getType() < WALK.getId())
+			{
+				MenuEntry[] menuEntries = client.getMenuEntries();
+				MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
+				menuEntry.setType(event.getType() + MENU_ACTION_DEPRIORITIZE_OFFSET);
+
+				client.setMenuEntries(menuEntries);
+			}
+			return;
+		}
 
 		if (option.equals("talk-to"))
 		{
