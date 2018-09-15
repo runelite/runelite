@@ -44,17 +44,39 @@ public interface FishingConfig extends Config
 
 	@ConfigItem(
 		position = 1,
-		keyName = "showIcons",
-		name = "Display Fish icons",
-		description = "Display icons instead of text on fishing spots."
+		keyName = "showTiles",
+		name = "Display spot tiles",
+		description = "Configures whether tiles for fishing spots are highlighted"
 	)
-	default boolean showIcons()
+	default boolean showSpotTiles()
 	{
 		return true;
 	}
 
 	@ConfigItem(
 		position = 2,
+		keyName = "showIcons",
+		name = "Display spot icons",
+		description = "Configures whether icons for fishing spots are displayed"
+	)
+	default boolean showSpotIcons()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "showNames",
+		name = "Display spot names",
+		description = "Configures whether names for fishing spots are displayed"
+	)
+	default boolean showSpotNames()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 4,
 		keyName = "statTimeout",
 		name = "Reset stats (minutes)",
 		description = "The time until fishing session data is reset in minutes."
@@ -65,7 +87,7 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 5,
 		keyName = "showFishingStats",
 		name = "Show Fishing session stats",
 		description = "Display the fishing session stats."
@@ -76,7 +98,7 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 6,
 		keyName = "showMinnowOverlay",
 		name = "Show Minnow Movement overlay",
 		description = "Display the minnow progress pie overlay."
@@ -87,7 +109,7 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 7,
 		keyName = "trawlerNotification",
 		name = "Trawler activity notification",
 		description = "Send a notification when fishing trawler activity drops below 15%."
