@@ -35,24 +35,17 @@ import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.Client;
+import net.runelite.api.*;
+
+import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
 import static net.runelite.api.ObjectID.DRIFTWOOD_30523;
 import static net.runelite.api.ObjectID.MUSHROOM_30520;
 import static net.runelite.api.ObjectID.ROCK_30519;
 import static net.runelite.api.ObjectID.ROCK_30521;
 import static net.runelite.api.ObjectID.ROCK_30522;
-import net.runelite.api.Tile;
-import net.runelite.api.TileObject;
-import net.runelite.api.Varbits;
+
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameObjectChanged;
-import net.runelite.api.events.GameObjectDespawned;
-import net.runelite.api.events.GameObjectSpawned;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GroundObjectChanged;
-import net.runelite.api.events.GroundObjectDespawned;
-import net.runelite.api.events.GroundObjectSpawned;
-import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.*;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -92,6 +85,10 @@ public class HerbiboarPlugin extends Plugin
 		14907
 	};
 
+	private static final int NPC_SECTION_ACTION = MenuAction.NPC_SECOND_OPTION.getId();
+	private static final String PICK = "Pick";
+	private static final String ANCIENT_FUNGI = "Ancient Fungi";
+
 	@Inject
 	private Client client;
 
@@ -103,6 +100,9 @@ public class HerbiboarPlugin extends Plugin
 
 	@Inject
 	private HerbiboarMinimapOverlay minimapOverlay;
+
+	@Inject
+	private HerbiboarConfig config;
 
 	@Getter
 	private boolean inHerbiboarArea;
@@ -335,6 +335,29 @@ public class HerbiboarPlugin extends Plugin
 		return client.getMapRegions() != null && Arrays.stream(client.getMapRegions())
 				.filter(x -> Arrays.stream(HERBIBOAR_REGIONS).anyMatch(y -> y == x))
 				.toArray().length > 0;
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	{
+		if (!config.leftClickFungi() || !menuEntryAdded.getOption().equals(PICK))
+		{
+			return;
+		}
+
+		final int npcIndex = menuEntryAdded.getIdentifier();
+		final NPC npc = client.getCachedNPCs()[npcIndex];
+		if (npc == null || !npc.getName().equals(ANCIENT_FUNGI))
+		{
+			return;
+		}
+
+		// since this is the menu entry add event, this is the last menu entry
+		MenuEntry[] menuEntries = client.getMenuEntries();
+		MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
+
+		menuEntry.setType(NPC_SECTION_ACTION + MENU_ACTION_DEPRIORITIZE_OFFSET);
+		client.setMenuEntries(menuEntries);
 	}
 
 	public List<WorldPoint> getEndLocations()
