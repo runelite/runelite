@@ -119,10 +119,12 @@ public class WidgetID
 
 	static class WorldMap
 	{
-		static final int OPTION = 42;
-		static final int TOOLTIP = 35;
 		static final int MAPVIEW = 3;
+		static final int OVERVIEW_MAP = 6;
 		static final int SEARCH = 21;
+		static final int SURFACE_SELECTOR = 29;
+		static final int TOOLTIP = 35;
+		static final int OPTION = 42;
 	}
 
 	static class SlayerRewards
