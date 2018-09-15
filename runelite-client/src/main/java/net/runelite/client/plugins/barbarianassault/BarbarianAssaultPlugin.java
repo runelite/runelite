@@ -149,6 +149,10 @@ public class BarbarianAssaultPlugin extends Plugin
 						break;
 				}
 			}
+			if (overlay.getCurrentRound() != null)
+			{
+				currentWave = client.getWidget(overlay.getCurrentRound().getRoundRole().getWave()).getText();
+			}
 
 			if (waveStartFlag &&
 				client.getWidget(
@@ -162,8 +166,6 @@ public class BarbarianAssaultPlugin extends Plugin
 				gameTime = new GameTimer();
 				waveStartFlag = false;
 			}
-
-			currentWave = client.getWidget(overlay.getCurrentRound().getRoundRole().getWave()).getText();
 		}
 	}
 
