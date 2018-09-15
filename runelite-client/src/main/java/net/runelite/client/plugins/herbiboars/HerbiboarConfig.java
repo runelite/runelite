@@ -130,4 +130,15 @@ public interface HerbiboarConfig extends Config
 	{
 		return Color.WHITE;
 	}
+	
+	@ConfigItem(
+	position = 9,
+	keyName = "leftClickFungi",
+	name = "Hide Pick option",
+	description = "Hide Pick option on Ancient Fungi"
+	)
+	default boolean leftClickFungi()
+	{
+		return false;
+	}
 }
