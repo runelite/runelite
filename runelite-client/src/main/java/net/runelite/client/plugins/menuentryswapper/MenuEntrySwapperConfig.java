@@ -239,4 +239,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 19,
+		keyName = "swapPuroPuro",
+		name = "Puro-Puro",
+		description = "Swap Walk here with Push-through and Use portal with Escape in Puro-Puro."
+	)
+	default boolean swapPuroPuro()
+	{
+		return true;
+	}
 }

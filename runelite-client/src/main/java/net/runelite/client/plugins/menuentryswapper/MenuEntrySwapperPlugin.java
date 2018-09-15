@@ -37,7 +37,11 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuAction;
+import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
+import static net.runelite.api.MenuAction.WALK;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.Player;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.MenuEntryAdded;
@@ -91,6 +95,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
 		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
+
+	private static final int PURO_PURO_REGION_ID = 10307;
 
 	@Inject
 	private Client client;
@@ -490,7 +496,28 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("empty", option, target, true);
 		}
+		else if (config.swapPuroPuro() && isPuroPuro())
+		{
+			if (event.getType() == WALK.getId())
+			{
+				// since this is the menu entry add event, this is the last menu entry
+				MenuEntry[] menuEntries = client.getMenuEntries();
+				MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
+
+				menuEntry.setType(MenuAction.WALK.getId() + MENU_ACTION_DEPRIORITIZE_OFFSET);
+				client.setMenuEntries(menuEntries);
+			}
+			else if (option.equals("examine"))
+			{
+				swap("push-through", option, target, true);
+			}
+			else if (option.equals("use"))
+			{
+				swap("escape", option, target, true);
+			}
+		}
 	}
+
 
 	@Subscribe
 	public void onPostItemComposition(PostItemComposition event)
@@ -515,6 +542,18 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			shiftModifier = false;
 		}
+	}
+
+	private boolean isPuroPuro()
+	{
+		Player local = client.getLocalPlayer();
+		if (local == null)
+		{
+			return false;
+		}
+
+		WorldPoint location = local.getWorldLocation();
+		return location.getRegionID() == PURO_PURO_REGION_ID;
 	}
 
 	private int searchIndex(MenuEntry[] entries, String option, String target, boolean strict)
