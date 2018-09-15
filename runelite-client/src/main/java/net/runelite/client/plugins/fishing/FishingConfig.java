@@ -32,6 +32,17 @@ import net.runelite.client.config.ConfigItem;
 public interface FishingConfig extends Config
 {
 	@ConfigItem(
+		position = 0,
+		keyName = "onlyCurrent",
+		name = "Display only currently fished fish",
+		description = "Configures whether only current fished fish's fishing spots are displayed"
+	)
+	default boolean onlyCurrentSpot()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		position = 1,
 		keyName = "showIcons",
 		name = "Display Fish icons",

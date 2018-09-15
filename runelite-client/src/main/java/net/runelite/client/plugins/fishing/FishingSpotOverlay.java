@@ -93,6 +93,11 @@ class FishingSpotOverlay extends Overlay
 				continue;
 			}
 
+			if (config.onlyCurrentSpot() && plugin.getCurrentSpot() != null && plugin.getCurrentSpot() != spot)
+			{
+				continue;
+			}
+
 			Color color = npc.getGraphic() == GraphicID.FLYING_FISH ? Color.RED : Color.CYAN;
 
 			if (spot == FishingSpot.MINNOW && config.showMinnowOverlay())
