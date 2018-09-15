@@ -116,7 +116,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	 * NPCs to highlight
 	 */
 	@Getter(AccessLevel.PACKAGE)
-	private final List<NPC> highlightedNpcs = new ArrayList<>();
+	private final Set<NPC> highlightedNpcs = new HashSet<>();
 
 	/**
 	 * Dead NPCs that should be displayed with a respawn indicator if the config is on.

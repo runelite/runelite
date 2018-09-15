@@ -53,14 +53,16 @@ public class TargetClickboxOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.highlightStyle() == OverlayStyle.NONE)
+		if (config.highlightStyle() == HighlightStyle.NONE)
 		{
 			return null;
 		}
 
 		List<NPC> targets = plugin.getHighlightedTargets();
-		OverlayUtil.renderNPCList(graphics, client, targets, config.getTargetColor(), config.highlightStyle(),  false);
-
+		for (NPC npc : targets)
+		{
+			OverlayUtil.renderNPCOverlay(graphics, client, npc, config.getTargetColor(), config.highlightStyle(), false);
+		}
 		return null;
 	}
 }

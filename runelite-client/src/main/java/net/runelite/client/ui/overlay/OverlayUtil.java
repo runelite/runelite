@@ -182,60 +182,38 @@ public class OverlayUtil
 		}
 	}
 
-	public static void renderNPCList(Graphics2D graphics, Client client, List<NPC> actorList, Color color, OverlayStyle style, boolean drawNames)
+	public static void renderNPCOverlay(Graphics2D graphics, Client client, NPC npc, Color color, HighlightStyle style, boolean drawNames)
 	{
-		if (actorList != null)
+		if (npc != null)
 		{
-			for (NPC npc : actorList)
+			switch (style)
 			{
-				if (npc != null)
-				{
-					switch (style)
+				case NONE:
+					break;
+				case HULL:
+					Polygon hPoly = npc.getConvexHull();
+					if (hPoly != null)
 					{
-						case NONE:
-							break;
-						case HULL:
-							Polygon hPoly = npc.getConvexHull();
-							if (hPoly != null)
-							{
-								OverlayUtil.renderPolygon(graphics, hPoly, color);
-							}
-							break;
-						case TILE:
-							int actorSize = npc.getTransformedComposition().getSize();
-							LocalPoint actorLocation = npc.getLocalLocation();
-							Polygon tPoly = actorSize >= 1 ? Perspective.getCanvasTileAreaPoly(client, actorLocation, actorSize) : null;
-							if (tPoly != null)
-							{
-								OverlayUtil.renderPolygon(graphics, tPoly, color);
-							}
-							break;
+						OverlayUtil.renderPolygon(graphics, hPoly, color);
 					}
-					if (drawNames)
+					break;
+				case TILE:
+					int actorSize = npc.getTransformedComposition().getSize();
+					LocalPoint actorLocation = npc.getLocalLocation();
+					Polygon tPoly = actorSize >= 1 ? Perspective.getCanvasTileAreaPoly(client, actorLocation, actorSize) : null;
+					if (tPoly != null)
 					{
-						String name = npc.getName();
-						Point textLocation = npc.getCanvasTextLocation(graphics, name, npc.getLogicalHeight() + 40);
-						if (textLocation != null)
-						{
-							OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
-						}
+						OverlayUtil.renderPolygon(graphics, tPoly, color);
 					}
-				}
+					break;
 			}
-		}
-	}
-
-	public static void renderMinimapNPCList(Graphics2D graphics, List<NPC> actorList, Color color, boolean drawNames)
-	{
-		for (NPC npc : actorList)
-		{
-			Point minimapLocation = npc.getMinimapLocation();
-			if (minimapLocation != null)
+			if (drawNames)
 			{
-				OverlayUtil.renderMinimapLocation(graphics, minimapLocation, color.darker());
-				if (drawNames)
+				String name = npc.getName();
+				Point textLocation = npc.getCanvasTextLocation(graphics, name, npc.getLogicalHeight() + 40);
+				if (textLocation != null)
 				{
-					OverlayUtil.renderTextLocation(graphics, minimapLocation, npc.getName(), color);
+					OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
 				}
 			}
 		}

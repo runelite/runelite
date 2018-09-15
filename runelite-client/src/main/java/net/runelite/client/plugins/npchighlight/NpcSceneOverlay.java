@@ -32,7 +32,6 @@ import java.awt.Polygon;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.Instant;
-import java.util.List;
 import java.util.Locale;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -84,8 +83,13 @@ public class NpcSceneOverlay extends Overlay
 			plugin.getDeadNpcsToDisplay().forEach((id, npc) -> renderNpcRespawn(npc, graphics));
 		}
 
-		List<NPC> highlightedNPC = plugin.getHighlightedNpcs();
-		OverlayUtil.renderNPCList(graphics, client, highlightedNPC, config.getHighlightColor(), config.overlayStyle(), config.drawNames());
+		for (NPC npc : plugin.getHighlightedNpcs())
+		{
+			if (npc != null)
+			{
+				OverlayUtil.renderNPCOverlay(graphics, client, npc, config.getHighlightColor(), config.highlightStyle(), config.drawNames());
+			}
+		}
 
 		return null;
 	}

@@ -24,7 +24,7 @@
  */
 package net.runelite.client.ui.overlay;
 
-public enum OverlayStyle
+public enum HighlightStyle
 {
 	NONE("Off"),
 	TILE("Tile"),
@@ -32,7 +32,7 @@ public enum OverlayStyle
 
 	private final String name;
 
-	OverlayStyle(String name)
+	HighlightStyle(String name)
 	{
 		this.name = name;
 	}
