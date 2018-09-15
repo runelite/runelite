@@ -40,17 +40,21 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.queries.NPCQuery;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
@@ -69,6 +73,11 @@ import net.runelite.client.util.QueryRunner;
 @Slf4j
 public class FishingPlugin extends Plugin
 {
+	private static final int TRAWLER_SHIP_REGION_NORMAL = 7499;
+	private static final int TRAWLER_SHIP_REGION_SINKING = 8011;
+
+	private static final int TRAWLER_ACTIVITY_THRESHOLD = Math.round(0.15f * 255);
+
 	@Getter(AccessLevel.PACKAGE)
 	private final FishingSession session = new FishingSession();
 
@@ -85,6 +94,9 @@ public class FishingPlugin extends Plugin
 	private QueryRunner queryRunner;
 
 	@Inject
+	private Notifier notifier;
+
+	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
@@ -98,6 +110,8 @@ public class FishingPlugin extends Plugin
 
 	@Inject
 	private FishingSpotMinimapOverlay fishingSpotMinimapOverlay;
+
+	private boolean trawlerNotificationSent;
 
 	@Provides
 	FishingConfig provideConfig(ConfigManager configManager)
@@ -122,6 +136,7 @@ public class FishingPlugin extends Plugin
 		overlayManager.remove(spotOverlay);
 		overlayManager.remove(fishingSpotMinimapOverlay);
 		minnowSpots.clear();
+		trawlerNotificationSent = false;
 	}
 
 	@Subscribe
@@ -242,6 +257,31 @@ public class FishingPlugin extends Plugin
 		if (minnowSpot != null)
 		{
 			log.debug("Minnow spot {} despawned", npc);
+		}
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		if (!config.trawlerNotification() || client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
+		int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
+
+		if ((regionID == TRAWLER_SHIP_REGION_NORMAL || regionID == TRAWLER_SHIP_REGION_SINKING)
+			&& client.getVar(Varbits.FISHING_TRAWLER_ACTIVITY) <= TRAWLER_ACTIVITY_THRESHOLD)
+		{
+			if (!trawlerNotificationSent)
+			{
+				notifier.notify("[" + client.getLocalPlayer().getName() + "] has low Fishing Trawler activity!");
+				trawlerNotificationSent = true;
+			}
+		}
+		else
+		{
+			trawlerNotificationSent = false;
 		}
 	}
 }
