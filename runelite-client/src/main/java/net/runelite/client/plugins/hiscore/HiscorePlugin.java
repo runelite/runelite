@@ -201,6 +201,7 @@ public class HiscorePlugin extends Plugin
 			lookup.setType(MenuAction.RUNELITE.getId());
 			lookup.setParam0(event.getActionParam0());
 			lookup.setParam1(event.getActionParam1());
+			lookup.setIdentifier(event.getIdentifier());
 
 			insertMenuEntry(lookup, client.getMenuEntries(), after);
 		}
