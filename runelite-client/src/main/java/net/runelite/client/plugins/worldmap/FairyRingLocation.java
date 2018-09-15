@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Morgan Lewis <https://github.com/MESLewis>
+ * Copyright (c) 2018, Heikki <https://github.com/Justsofun>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -86,6 +87,14 @@ enum FairyRingLocation
 		for (FairyRingLocation fairyRingLocation : values())
 		{
 			fairyRingLocation.fairyRingPoint.setImage(image);
+		}
+	}
+
+	static void setTooltip(boolean displayCode)
+	{
+		for (FairyRingLocation fairyRingLocation : values())
+		{
+			fairyRingLocation.fairyRingPoint.setTooltip(displayCode ? "Fairy Ring - " + fairyRingLocation.code : "Transportation");
 		}
 	}
 }

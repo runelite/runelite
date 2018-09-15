@@ -34,6 +34,5 @@ class FairyRingPoint extends WorldMapPoint
 	FairyRingPoint(String tooltip, WorldPoint worldPoint)
 	{
 		super(worldPoint, BLANK_ICON);
-		setTooltip("Fairy Ring - " + tooltip);
 	}
 }
