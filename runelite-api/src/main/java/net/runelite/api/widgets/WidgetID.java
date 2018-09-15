@@ -119,10 +119,12 @@ public class WidgetID
 
 	static class WorldMap
 	{
-		static final int OPTION = 42;
-		static final int TOOLTIP = 35;
 		static final int MAPVIEW = 3;
+		static final int OVERVIEW_MAP = 6;
 		static final int SEARCH = 21;
+		static final int SURFACE_SELECTOR = 29;
+		static final int TOOLTIP = 35;
+		static final int OPTION = 42;
 	}
 
 	static class SlayerRewards
@@ -504,17 +506,21 @@ public class WidgetID
 	{
 		static class ATK
 		{
-			static final int CORRECT_STYLE2 = 4;
-			static final int TO_CALL = 6;
-			static final int ROLE = 8;
-			static final int ROLE_SPRITE = 7;
+			static final int CALL_TEXT = 8;
+			static final int TO_CALL_WIDGET = 9;
+			static final int TO_CALL = 10;
+			static final int ROLE_SPRITE = 11;
+			static final int ROLE = 12;
 		}
-
-		static final int CURRENT_WAVE = 1;
 		static final int CORRECT_STYLE = 3;
-		static final int TO_CALL = 5;
-		static final int ROLE_SPRITE = 6;
-		static final int ROLE = 7;
+		static final int CURRENT_WAVE_WIDGET = 4;
+		static final int CURRENT_WAVE = 5;
+		static final int CALL_WIDGET = 6;
+		static final int CALL_TEXT = 7;
+		static final int TO_CALL_WIDGET = 8;
+		static final int TO_CALL = 9;
+		static final int ROLE_SPRITE = 10;
+		static final int ROLE = 11;
 	}
 
 	static class LevelUp
