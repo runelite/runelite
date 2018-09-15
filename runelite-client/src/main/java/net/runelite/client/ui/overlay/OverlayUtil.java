@@ -34,13 +34,14 @@ import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
+import java.util.List;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
-
 
 /**
  * Created by Kyle Fricilone on Jun 09, 2017.
@@ -178,6 +179,65 @@ public class OverlayUtil
 			graphics.draw(area);
 			graphics.setColor(fillColor);
 			graphics.fill(area);
+		}
+	}
+
+	public static void renderNPCList(Graphics2D graphics, Client client, List<NPC> actorList, Color color, OverlayStyle style, boolean drawNames)
+	{
+		if (actorList != null)
+		{
+			for (NPC npc : actorList)
+			{
+				if (npc != null)
+				{
+					switch (style)
+					{
+						case NONE:
+							break;
+						case HULL:
+							Polygon hPoly = npc.getConvexHull();
+							if (hPoly != null)
+							{
+								OverlayUtil.renderPolygon(graphics, hPoly, color);
+							}
+							break;
+						case TILE:
+							int actorSize = npc.getTransformedComposition().getSize();
+							LocalPoint actorLocation = npc.getLocalLocation();
+							Polygon tPoly = actorSize >= 1 ? Perspective.getCanvasTileAreaPoly(client, actorLocation, actorSize) : null;
+							if (tPoly != null)
+							{
+								OverlayUtil.renderPolygon(graphics, tPoly, color);
+							}
+							break;
+					}
+					if (drawNames)
+					{
+						String name = npc.getName();
+						Point textLocation = npc.getCanvasTextLocation(graphics, name, npc.getLogicalHeight() + 40);
+						if (textLocation != null)
+						{
+							OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public static void renderMinimapNPCList(Graphics2D graphics, List<NPC> actorList, Color color, boolean drawNames)
+	{
+		for (NPC npc : actorList)
+		{
+			Point minimapLocation = npc.getMinimapLocation();
+			if (minimapLocation != null)
+			{
+				OverlayUtil.renderMinimapLocation(graphics, minimapLocation, color.darker());
+				if (drawNames)
+				{
+					OverlayUtil.renderTextLocation(graphics, minimapLocation, npc.getName(), color);
+				}
+			}
 		}
 	}
 

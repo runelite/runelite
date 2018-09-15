@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Raqes <j.raqes@gmail.com>
+ * Copyright (c) 2018 Sebastiaan <github.com/ItsSebas>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.npchighlight;
+package net.runelite.client.ui.overlay;
 
-public enum RenderStyle
+public enum OverlayStyle
 {
-	OFF("Off"),
+	NONE("Off"),
 	TILE("Tile"),
 	HULL("Hull");
 
 	private final String name;
 
-	RenderStyle(String name)
+	OverlayStyle(String name)
 	{
 		this.name = name;
 	}

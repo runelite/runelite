@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.npchighlight;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -33,11 +32,11 @@ import java.awt.Polygon;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.Instant;
+import java.util.List;
 import java.util.Locale;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
@@ -85,10 +84,8 @@ public class NpcSceneOverlay extends Overlay
 			plugin.getDeadNpcsToDisplay().forEach((id, npc) -> renderNpcRespawn(npc, graphics));
 		}
 
-		for (NPC npc : plugin.getHighlightedNpcs())
-		{
-			renderNpcOverlay(graphics, npc, npc.getName(), config.getHighlightColor());
-		}
+		List<NPC> highlightedNPC = plugin.getHighlightedNpcs();
+		OverlayUtil.renderNPCList(graphics, client, highlightedNPC, config.getHighlightColor(), config.overlayStyle(), config.drawNames());
 
 		return null;
 	}
@@ -140,57 +137,6 @@ public class NpcSceneOverlay extends Overlay
 				canvasPoint.getY() + textHeight / 2);
 
 			OverlayUtil.renderTextLocation(graphics, canvasCenterPoint, timeLeftStr, TEXT_COLOR);
-		}
-	}
-
-	private void renderNpcOverlay(Graphics2D graphics, NPC actor, String name, Color color)
-	{
-		switch (config.renderStyle())
-		{
-			case TILE:
-			{
-				int size = 1;
-				NPCComposition composition = actor.getTransformedComposition();
-				if (composition != null)
-				{
-					size = composition.getSize();
-				}
-				LocalPoint lp = actor.getLocalLocation();
-				Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
-
-				if (tilePoly != null)
-				{
-					graphics.setColor(color);
-					graphics.setStroke(new BasicStroke(2));
-					graphics.draw(tilePoly);
-					graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
-					graphics.fill(tilePoly);
-				}
-				break;
-			}
-
-			case HULL:
-				Polygon objectClickbox = actor.getConvexHull();
-
-				if (objectClickbox != null)
-				{
-					graphics.setColor(color);
-					graphics.setStroke(new BasicStroke(2));
-					graphics.draw(objectClickbox);
-					graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
-					graphics.fill(objectClickbox);
-				}
-				break;
-		}
-
-		if (config.drawNames())
-		{
-			Point textLocation = actor.getCanvasTextLocation(graphics, name, actor.getLogicalHeight() + 40);
-
-			if (textLocation != null)
-			{
-				OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
-			}
 		}
 	}
 }

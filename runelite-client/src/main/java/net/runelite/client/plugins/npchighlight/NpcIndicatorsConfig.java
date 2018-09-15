@@ -28,6 +28,7 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.ui.overlay.OverlayStyle;
 
 @ConfigGroup("npcindicators")
 public interface NpcIndicatorsConfig extends Config
@@ -38,9 +39,9 @@ public interface NpcIndicatorsConfig extends Config
 		name = "Highlight Style",
 		description = "Highlight setting"
 	)
-	default RenderStyle renderStyle()
+	default OverlayStyle overlayStyle()
 	{
-		return RenderStyle.HULL;
+		return OverlayStyle.HULL;
 	}
 
 	@ConfigItem(
