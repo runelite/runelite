@@ -73,7 +73,7 @@ class FishingSpotOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (hidden)
+		if (!config.alwaysShowFishingSpots() && hidden)
 		{
 			return null;
 		}
