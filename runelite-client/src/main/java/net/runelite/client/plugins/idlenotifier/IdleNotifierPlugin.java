@@ -50,6 +50,8 @@ import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.input.KeyManager;
+import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -61,9 +63,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class IdleNotifierPlugin extends Plugin
 {
 	private static final int LOGOUT_WARNING_AFTER_TICKS = 280 * 50; // 4 minutes and 40 seconds
-	private static final long LOGOUT_WARNING_AFTER_MILLIS = (long) (LOGOUT_WARNING_AFTER_TICKS * 0.6 * 1000);
 	private static final int LOGOUT_WARNING_AFTER_TICKS_IN_COMBAT = 1140 * 50; // 19 minutes
-	private static final long LOGOUT_WARNING_AFTER_MILLIS_IN_COMBAT = (long) (LOGOUT_WARNING_AFTER_TICKS_IN_COMBAT * 0.6 * 1000);
 	private static final int HIGHEST_MONSTER_ATTACK_SPEED = 8; // Except Scarab Mage, but they are with other monsters
 	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
 
@@ -75,6 +75,15 @@ public class IdleNotifierPlugin extends Plugin
 
 	@Inject
 	private IdleNotifierConfig config;
+
+	@Inject
+	private MouseManager mouseManager;
+
+	@Inject
+	private KeyManager keyManager;
+
+	@Inject
+	private IdleNotifierListener listener;
 
 	private Instant lastAnimating;
 	private int lastAnimation = AnimationID.IDLE;
@@ -92,6 +101,20 @@ public class IdleNotifierPlugin extends Plugin
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(IdleNotifierConfig.class);
+	}
+
+	@Override
+	protected void startUp()
+	{
+		mouseManager.registerMouseListener(listener);
+		keyManager.registerKeyListener(listener);
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		mouseManager.unregisterMouseListener(listener);
+		keyManager.unregisterKeyListener(listener);
 	}
 
 	@Subscribe
@@ -306,10 +329,7 @@ public class IdleNotifierPlugin extends Plugin
 		final Duration waitDuration = Duration.ofMillis(config.getIdleNotificationDelay());
 		lastCombatCountdown = Math.max(lastCombatCountdown - 1, 0);
 
-		if (client.getGameState() != GameState.LOGGED_IN
-			|| local == null
-			|| System.currentTimeMillis() - client.getMouseLastPressedMillis() < 200
-			|| client.getKeyboardIdleTicks() < 10)
+		if (client.getGameState() != GameState.LOGGED_IN || local == null)
 		{
 			resetTimers();
 			return;
@@ -424,14 +444,12 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkIdleLogout()
 	{
-		final long mouseDiff = System.currentTimeMillis() - client.getMouseLastPressedMillis();
-
-		if (mouseDiff > LOGOUT_WARNING_AFTER_MILLIS
+		if (client.getMouseIdleTicks() > LOGOUT_WARNING_AFTER_TICKS
 			&& client.getKeyboardIdleTicks() > LOGOUT_WARNING_AFTER_TICKS)
 		{
 			if (lastCombatCountdown > 0)
 			{
-				if (mouseDiff > LOGOUT_WARNING_AFTER_MILLIS_IN_COMBAT
+				if (client.getMouseIdleTicks() > LOGOUT_WARNING_AFTER_TICKS_IN_COMBAT
 					&& client.getKeyboardIdleTicks() > LOGOUT_WARNING_AFTER_TICKS_IN_COMBAT && notifyIdleLogout)
 				{
 					notifyIdleLogout = false;
@@ -501,7 +519,7 @@ public class IdleNotifierPlugin extends Plugin
 		return false;
 	}
 
-	private void resetTimers()
+	void resetTimers()
 	{
 		final Player local = client.getLocalPlayer();
 
