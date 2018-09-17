@@ -239,4 +239,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 19,
+		keyName = "swapLever",
+		name = "Lever",
+		description = "Swap Ardougne with Edgeville for the wildnerness teleport lever."
+	)
+	default boolean swapLever()
+	{
+		return true;
+	}
 }
