@@ -239,4 +239,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			position = 19,
+			keyName = "swapReleaseSalamander",
+			name = "Release Salamander",
+			description = "Swap wield with release for salamanders when training hunter."
+	)
+	default boolean swapReleaseSalamander()
+	{
+		return false;
+	}
 }

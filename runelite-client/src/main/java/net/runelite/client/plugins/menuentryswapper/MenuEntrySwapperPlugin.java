@@ -490,6 +490,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("empty", option, target, true);
 		}
+		else if (config.swapReleaseSalamander() && target.contains("salamander"))
+		{
+			swap("release", option, target, true);
+		}
 	}
 
 	@Subscribe
