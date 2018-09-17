@@ -362,6 +362,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("assignment", option, target, true);
 			}
 
+			if (config.swapPlank())
+			{
+				swap("buy-plank", option, target, true);
+			}
+
 			if (config.swapTrade())
 			{
 				swap("trade", option, target, true);
@@ -485,8 +490,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("use", option, target, true);
 		}
-		else if (config.swapBirdhouseEmpty() && option.equals("interact") && target.contains("birdhouse"))
-		{
+		else if (config.swapBirdhouseEmpty() && option.equals("interact") && target.contains("birdhouse")) {
 			swap("empty", option, target, true);
 		}
 	}
