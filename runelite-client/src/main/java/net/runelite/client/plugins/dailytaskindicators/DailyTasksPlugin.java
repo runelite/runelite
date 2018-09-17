@@ -59,7 +59,7 @@ public class DailyTasksPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg, check;
+	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg, hasSentRunesMsg, check;
 
 	@Provides
 	DailyTasksConfig provideConfig(ConfigManager configManager)
@@ -70,13 +70,13 @@ public class DailyTasksPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = false;
+		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = hasSentRunesMsg = false;
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = false;
+		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = hasSentRunesMsg = false;
 	}
 
 	@Subscribe
@@ -94,6 +94,9 @@ public class DailyTasksPlugin extends Plugin
 					break;
 				case "showEssence":
 					hasSentEssenceMsg = false;
+					break;
+				case "showRunes":
+					hasSentRunesMsg = false;
 					break;
 			}
 		}
@@ -139,6 +142,12 @@ public class DailyTasksPlugin extends Plugin
 			sendChatMessage("You have pure essence waiting to be collected from Wizard Cromperty.");
 			hasSentEssenceMsg = true;
 		}
+
+		if (config.showRunes() && !hasSentRunesMsg && checkCanCollectRunes())
+		{
+			sendChatMessage("You have random runes waiting to be collected from Lundail.");
+			hasSentRunesMsg = true;
+		}
 	}
 
 	private boolean checkCanCollectHerbBox()
@@ -158,6 +167,12 @@ public class DailyTasksPlugin extends Plugin
 	{
 		int value = client.getVar(Varbits.DAILY_ESSENCE);
 		return value == 0; // 1 = can't claim
+	}
+
+	private boolean checkCanCollectRunes()
+	{
+		return client.getVar(Varbits.DIARY_WILDERNESS_EASY) == 1
+				&& client.getVar(Varbits.DAILY_RUNES) == 0;
 	}
 
 	private void sendChatMessage(String chatMessage)
