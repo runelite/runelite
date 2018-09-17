@@ -59,15 +59,8 @@ class WintertodtOverlay extends Overlay
 		panelComponent.setPreferredSize(new Dimension(150, 0));
 
 		panelComponent.getChildren().add(TitleComponent.builder()
-			.text("Wintertodt")
-			.color(Color.CYAN)
-			.build());
-
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Activity:")
-			.leftColor(Color.WHITE)
-			.right(plugin.getCurrentActivity().getActionString())
-			.rightColor(plugin.getCurrentActivity() == WintertodtActivity.IDLE ? Color.RED : Color.GREEN)
+			.text(plugin.getCurrentActivity().getActionString())
+			.color(plugin.getCurrentActivity() == WintertodtActivity.IDLE ? Color.RED : Color.GREEN)
 			.build());
 
 		String inventoryString = plugin.getNumLogs() > 0 ? plugin.getInventoryScore() + " (" + plugin.getTotalPotentialinventoryScore() + ") pts" : plugin.getInventoryScore() + " pts";

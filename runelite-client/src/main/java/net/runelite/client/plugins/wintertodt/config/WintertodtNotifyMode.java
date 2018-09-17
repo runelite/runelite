@@ -32,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum WintertodtNotifyMode
 {
+	NONE("None"),
 	WHEN_DAMAGED("Damage Taken"),
 	ONLY_WHEN_INTERRUPTED("Action Interrupted"),
 	EITHER("Either");

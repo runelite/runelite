@@ -27,7 +27,6 @@ package net.runelite.client.plugins.wintertodt;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.awt.Color;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
@@ -68,15 +67,17 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
 	name = "Wintertodt",
-	description = "Wintertodt"
+	description = "Wintertodt",
+	tags = {"minigame", "firemaking"}
 )
 @Slf4j
 public class WintertodtPlugin extends Plugin
 {
-	static final int WINTERTODT_REGION = 6462;
+	private static final int WINTERTODT_REGION = 6462;
 
 	@Inject
 	private Notifier notifier;
@@ -111,10 +112,10 @@ public class WintertodtPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private int numKindling;
 
-	private Instant lastActionTime;
-
 	@Getter(AccessLevel.PACKAGE)
 	private boolean isInWintertodt;
+
+	private Instant lastActionTime;
 
 	@Provides
 	WintertodtConfig getConfig(ConfigManager configManager)
@@ -143,6 +144,7 @@ public class WintertodtPlugin extends Plugin
 		numLogs = 0;
 		numKindling = 0;
 		currentActivity = WintertodtActivity.IDLE;
+		lastActionTime = null;
 	}
 
 	private boolean isInWintertodtRegion()
@@ -183,10 +185,12 @@ public class WintertodtPlugin extends Plugin
 	private void checkActionTimeout()
 	{
 		if (currentActivity == WintertodtActivity.IDLE)
+		{
 			return;
+		}
 
 		int currentAnimation = client.getLocalPlayer() != null ? client.getLocalPlayer().getAnimation() : -1;
-		if (currentAnimation != IDLE)
+		if (currentAnimation != IDLE || lastActionTime == null)
 		{
 			return;
 		}
@@ -217,7 +221,7 @@ public class WintertodtPlugin extends Plugin
 		}
 
 		MessageNode messageNode = setMessage.getMessageNode();
-		WintertodtInterruptType interruptType = null;
+		final WintertodtInterruptType interruptType;
 
 		if (messageNode.getValue().startsWith("The cold of"))
 		{
@@ -251,8 +255,7 @@ public class WintertodtPlugin extends Plugin
 		{
 			interruptType = WintertodtInterruptType.BRAZIER_WENT_OUT;
 		}
-
-		if (interruptType == null)
+		else
 		{
 			return;
 		}
@@ -269,7 +272,7 @@ public class WintertodtPlugin extends Plugin
 				wasDamaged = true;
 
 				// Recolor message for damage notification
-				messageNode.setRuneLiteFormatMessage(wrapTextWithColour(messageNode.getValue(), config.damageNotificationColor()));
+				messageNode.setRuneLiteFormatMessage(ColorUtil.wrapWithColorTag(messageNode.getValue(), config.damageNotificationColor()));
 				chatMessageManager.update(messageNode);
 				client.refreshChat();
 
@@ -469,10 +472,5 @@ public class WintertodtPlugin extends Plugin
 			default:
 				return 0;
 		}
-	}
-
-	private static String wrapTextWithColour(String text, Color colour)
-	{
-		return "<col=" + Integer.toHexString(colour.getRGB() & 0xFFFFFF) + ">" + text + "</col>";
 	}
 }
