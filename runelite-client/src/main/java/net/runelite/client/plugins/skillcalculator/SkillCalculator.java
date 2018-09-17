@@ -231,7 +231,7 @@ class SkillCalculator extends JPanel
 	private void adjustAllExcept(JCheckBox except)
 	{
 		bonusCheckBoxes.stream()
-			.filter(checkbox -> !checkbox.equals(except))
+			.filter(checkbox -> checkbox != except)
 			.filter(JCheckBox::isSelected)
 			.forEach(otherSelectedCheckbox ->
 			{
