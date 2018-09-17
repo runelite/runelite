@@ -362,7 +362,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("assignment", option, target, true);
 			}
 
-			if (config.swapPlank())
+			if (config.swapBuyPlank())
 			{
 				swap("buy-plank", option, target, true);
 			}
