@@ -61,6 +61,10 @@ class LootTrackerPanel extends PluginPanel
 	private static final ImageIcon GROUPED_LOOT_VIEW_HOVER;
 	private static final ImageIcon BACK_ARROW_ICON;
 	private static final ImageIcon BACK_ARROW_ICON_HOVER;
+	private static final ImageIcon VISIBLE_ICON;
+	private static final ImageIcon VISIBLE_ICON_HOVER;
+	private static final ImageIcon INVISIBLE_ICON;
+	private static final ImageIcon INVISIBLE_ICON_HOVER;
 
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
@@ -81,6 +85,7 @@ class LootTrackerPanel extends PluginPanel
 	private final JPanel actionsContainer = new JPanel();
 	private final JLabel detailsTitle = new JLabel();
 	private final JLabel backBtn = new JLabel();
+	private final JLabel viewHiddenBtn = new JLabel();
 	private final JLabel singleLootBtn = new JLabel();
 	private final JLabel groupedLootBtn = new JLabel();
 
@@ -91,7 +96,7 @@ class LootTrackerPanel extends PluginPanel
 	private final ItemManager itemManager;
 	private final LootTrackerPlugin plugin;
 
-	private boolean groupLoot;
+	private boolean groupLoot, showIgnoredItems;
 	private String currentView;
 
 	static
@@ -99,6 +104,8 @@ class LootTrackerPanel extends PluginPanel
 		final BufferedImage singleLootImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "single_loot_icon.png");
 		final BufferedImage groupedLootImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "grouped_loot_icon.png");
 		final BufferedImage backArrowImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "back_icon.png");
+		final BufferedImage visibleImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "visible_icon.png");
+		final BufferedImage invisibleImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "invisible_icon.png");
 
 		SINGLE_LOOT_VIEW = new ImageIcon(singleLootImg);
 		SINGLE_LOOT_VIEW_FADED = new ImageIcon(ImageUtil.alphaOffset(singleLootImg, -180));
@@ -110,12 +117,19 @@ class LootTrackerPanel extends PluginPanel
 
 		BACK_ARROW_ICON = new ImageIcon(backArrowImg);
 		BACK_ARROW_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(backArrowImg, -180));
+
+		VISIBLE_ICON = new ImageIcon(visibleImg);
+		VISIBLE_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(visibleImg, -220));
+
+		INVISIBLE_ICON = new ImageIcon(invisibleImg);
+		INVISIBLE_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(invisibleImg, -220));
 	}
 
 	LootTrackerPanel(final LootTrackerPlugin plugin, final ItemManager itemManager)
 	{
 		this.itemManager = itemManager;
 		this.plugin = plugin;
+		this.showIgnoredItems = true;
 
 		setBorder(new EmptyBorder(6, 6, 6, 6));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -132,7 +146,7 @@ class LootTrackerPanel extends PluginPanel
 		actionsContainer.setBorder(new EmptyBorder(5, 5, 5, 10));
 		actionsContainer.setVisible(false);
 
-		final JPanel viewControls = new JPanel(new GridLayout(1, 2, 10, 0));
+		final JPanel viewControls = new JPanel(new GridLayout(1, 3, 10, 0));
 		viewControls.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		singleLootBtn.setIcon(SINGLE_LOOT_VIEW);
@@ -181,8 +195,34 @@ class LootTrackerPanel extends PluginPanel
 			}
 		});
 
+		viewHiddenBtn.setIcon(VISIBLE_ICON);
+		viewHiddenBtn.setToolTipText("Show ignored items");
+		viewHiddenBtn.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				showIgnoredItems = !showIgnoredItems;
+				viewHiddenBtn.setIcon(showIgnoredItems ? VISIBLE_ICON : INVISIBLE_ICON);
+				rebuild();
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				viewHiddenBtn.setIcon(showIgnoredItems ? VISIBLE_ICON : INVISIBLE_ICON);
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				viewHiddenBtn.setIcon(showIgnoredItems ? VISIBLE_ICON_HOVER : INVISIBLE_ICON_HOVER);
+			}
+		});
+
 		viewControls.add(groupedLootBtn);
 		viewControls.add(singleLootBtn);
+		viewControls.add(viewHiddenBtn);
 		changeGrouping(true);
 
 		final JPanel leftTitleContainer = new JPanel(new BorderLayout(5, 0));
@@ -365,7 +405,7 @@ class LootTrackerPanel extends PluginPanel
 		overallPanel.setVisible(true);
 
 		// Create box
-		final LootTrackerBox box = new LootTrackerBox(itemManager, plugin.getConfig(), record.getTitle(), record.getSubTitle(), (name, ignored) ->
+		final LootTrackerBox box = new LootTrackerBox(itemManager, showIgnoredItems, record.getTitle(), record.getSubTitle(), (name, ignored) ->
 		{
 			plugin.toggleItem(name, ignored);
 			updateIgnoredRecords();
