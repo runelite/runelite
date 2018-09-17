@@ -246,7 +246,8 @@ public interface MenuEntrySwapperConfig extends Config
 			name = "Buy-plank",
 			description = "Swap Talk-to with Buy-Plank for Sawmill Operator at the LumberYard."
 	)
-	default boolean swapPlank() { 
+	default boolean swapPlank() 
+	{ 
 		return false;
 	}
 }
