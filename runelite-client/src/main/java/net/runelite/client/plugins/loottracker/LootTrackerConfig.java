@@ -48,14 +48,4 @@ public interface LootTrackerConfig extends Config
 		description = ""
 	)
 	void setIgnoredItems(String key);
-
-	@ConfigItem(
-		keyName = "showIgnoredItems",
-		name = "Show Ignored Items",
-		description = "Configures whether or not to show ignored items."
-	)
-	default boolean showIgnoredItems()
-	{
-		return false;
-	}
 }
