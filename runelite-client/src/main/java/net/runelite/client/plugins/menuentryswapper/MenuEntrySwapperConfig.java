@@ -244,7 +244,7 @@ public interface MenuEntrySwapperConfig extends Config
 		position = 19,
 		keyName = "swapLever",
 		name = "Lever",
-		description = "Swap Ardougne with Edgeville for the wildnerness teleport lever."
+		description = "Swap Ardougne with Edgeville for the Wilderness teleport lever."
 	)
 	default boolean swapLever()
 	{
