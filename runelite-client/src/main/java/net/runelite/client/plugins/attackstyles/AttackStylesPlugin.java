@@ -57,16 +57,18 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
 	name = "Attack Styles",
 	description = "Show your current attack style as an overlay",
-	tags = {"combat", "defence", "magic", "overlay", "ranged", "strength"}
+	tags = {"combat", "defence", "magic", "overlay", "ranged", "strength", "retaliate", "auto"}
 )
 public class AttackStylesPlugin extends Plugin
 {
 	private int attackStyleVarbit = -1;
 	private int equippedWeaponTypeVarbit = -1;
 	private int castingModeVarbit = -1;
+	private int autoRetaliateVarbit = -1;
 	private AttackStyle attackStyle;
 	private final Set<Skill> warnedSkills = new HashSet<>();
 	private boolean warnedSkillSelected = false;
+	private boolean hideAutoRetaliate = false;
 	private final Table<WeaponType, WidgetInfo, Boolean> widgetsToHide = HashBasedTable.create();
 
 	@Inject
@@ -108,9 +110,11 @@ public class AttackStylesPlugin extends Plugin
 		updateWarnedSkills(config.warnForDefence(), Skill.DEFENCE);
 		updateWarnedSkills(config.warnForRanged(), Skill.RANGED);
 		updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
+		updateAutoRetaliate(config.warnForAutoRetaliate());
 		attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
 		equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
 		castingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
+		autoRetaliateVarbit = client.getVar(VarPlayer.AUTO_RETALIATE);
 		updateAttackStyle(
 			equippedWeaponTypeVarbit,
 			attackStyleVarbit,
@@ -162,6 +166,9 @@ public class AttackStylesPlugin extends Plugin
 				hideWidget(client.getWidget(widgetKey), widgetsToHide.get(equippedWeaponType, widgetKey));
 			}
 		}
+		Boolean shouldHideAR = config.removeWarnedStyles() && hideAutoRetaliate;
+		hideWidget(client.getWidget(WidgetInfo.COMBAT_AUTO_RETALIATE_BOX), shouldHideAR);
+		hideAutoRetaliateTextWidget(shouldHideAR);
 	}
 
 	@Subscribe
@@ -174,6 +181,7 @@ public class AttackStylesPlugin extends Plugin
 			updateWarnedSkills(config.warnForDefence(), Skill.DEFENCE);
 			updateWarnedSkills(config.warnForRanged(), Skill.RANGED);
 			updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
+			updateAutoRetaliate(config.warnForAutoRetaliate());
 		}
 	}
 
@@ -236,6 +244,9 @@ public class AttackStylesPlugin extends Plugin
 				case "warnForMagic":
 					updateWarnedSkills(enabled, Skill.MAGIC);
 					break;
+				case "warnForAutoRetaliate":
+					updateAutoRetaliate(enabled);
+					break;
 				case "removeWarnedStyles":
 					hideWarnedStyles(enabled);
 					break;
@@ -259,6 +270,20 @@ public class AttackStylesPlugin extends Plugin
 				attackStyle = DEFENSIVE_CASTING;
 			}
 		}
+	}
+
+	public void updateAutoRetaliate(Boolean enabled)
+	{
+		autoRetaliateVarbit = client.getVar(VarPlayer.AUTO_RETALIATE);
+		if (enabled)
+		{
+			hideAutoRetaliate = true;
+		}
+		else
+		{
+			hideAutoRetaliate = false;
+		}
+		updateWarning(false);
 	}
 
 	private void updateWarnedSkills(boolean enabled, Skill skill)
@@ -362,6 +387,25 @@ public class AttackStylesPlugin extends Plugin
 		if (widget != null)
 		{
 			widget.setHidden(hidden);
+		}
+	}
+
+	private void hideAutoRetaliateTextWidget(Boolean enabled)
+	{
+		// Note, this function sets text rather than hides widget, because of a bug with hiding AR_TEXT widget
+		// which results in the special attack widget not updating
+		Widget autoRetaliateTextWidget = client.getWidget(WidgetInfo.COMBAT_AUTO_RETALIATE_TEXT);
+		String currentARText = (autoRetaliateVarbit == 0) ? "Auto Retaliate<br>(On)" : "Auto Retaliate<br>(Off)";
+		if (autoRetaliateTextWidget != null)
+		{
+			if (enabled && hideAutoRetaliate)
+			{
+				autoRetaliateTextWidget.setText("");
+			}
+			else
+			{
+				autoRetaliateTextWidget.setText(currentARText);
+			}
 		}
 	}
 

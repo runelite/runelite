@@ -28,6 +28,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.VarPlayer;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -38,6 +40,9 @@ public class AttackStylesOverlay extends Overlay
 	private final AttackStylesPlugin plugin;
 	private final AttackStylesConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
+
+	@Inject
+	private Client client;
 
 	@Inject
 	public AttackStylesOverlay(AttackStylesPlugin plugin, AttackStylesConfig config)
@@ -51,8 +56,8 @@ public class AttackStylesOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		panelComponent.getChildren().clear();
-		boolean warnedSkillSelected = plugin.isWarnedSkillSelected();
-
+		boolean warnedSkillSelected = plugin.isWarnedSkillSelected() || (config.warnForAutoRetaliate() && client.getVar(VarPlayer.AUTO_RETALIATE) == 0);
+		
 		if (warnedSkillSelected || config.alwaysShowStyle())
 		{
 			final String attackStyleString = plugin.getAttackStyle().getName();
