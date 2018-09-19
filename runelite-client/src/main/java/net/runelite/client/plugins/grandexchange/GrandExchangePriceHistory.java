@@ -24,72 +24,19 @@
  */
 package net.runelite.client.plugins.grandexchange;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.Data;
 
-@ConfigGroup("grandexchange")
-public interface GrandExchangeConfig extends Config
+@Data
+public class GrandExchangePriceHistory
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "quickLookup",
-		name = "Hotkey lookup (Alt + Left click)",
-		description = "Configures whether to enable the hotkey lookup for ge searches"
-	)
-	default boolean quickLookup()
-	{
-		return true;
-	}
+	private Integer bought;
+	private Integer sold;
+	private String timeStamp;
 
-	@ConfigItem(
-		position = 2,
-		keyName = "enableNotifications",
-		name = "Enable Notifications",
-		description = "Configures whether to enable notifications when an offer updates"
-	)
-	default boolean enableNotifications()
+	GrandExchangePriceHistory(Integer bought, Integer sold, String timeStamp)
 	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 3,
-		keyName = "enableOsbPrices",
-		name = "Enable OSB actively traded prices",
-		description = "Shows the OSBuddy actively traded price at the GE"
-	)
-	default boolean enableOsbPrices()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "geBuySellData",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default String geBuySellData()
-	{
-		return "{}";
-	}
-
-	@ConfigItem(
-		keyName = "geBuySellData",
-		name = "",
-		description = ""
-	)
-	void geBuySellData(String str);
-
-	@ConfigItem(
-		position = 3,
-		keyName = "enableGeBuySellHistory",
-		name = "Enable buy and sell tracking of GE items",
-		description = "Shows the bought and sold price at the GE"
-	)
-	default boolean enableGeBuySellHistory()
-	{
-		return true;
+		this.bought = bought;
+		this.sold = sold;
+		this.timeStamp = timeStamp;
 	}
 }
