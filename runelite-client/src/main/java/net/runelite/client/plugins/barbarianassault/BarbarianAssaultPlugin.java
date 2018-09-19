@@ -74,9 +74,6 @@ public class BarbarianAssaultPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private ConfigManager configManager;
-
-	@Inject
 	private ChatMessageManager chatMessageManager;
 
 	@Inject
@@ -144,7 +141,6 @@ public class BarbarianAssaultPlugin extends Plugin
 			{
 				gameTime.setWaveStartTime();
 			}
-
 		}
 	}
 

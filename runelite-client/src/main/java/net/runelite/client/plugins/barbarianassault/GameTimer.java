@@ -31,8 +31,8 @@ import java.time.format.DateTimeFormatter;
 
 class GameTimer
 {
-	private Instant startTime = Instant.now();
-	private Instant prevWave = Instant.now();
+	final private Instant startTime = Instant.now();
+	private Instant prevWave = startTime;
 
 	String getTime(boolean waveTime)
 	{
@@ -56,7 +56,7 @@ class GameTimer
 		prevWave = Instant.now();
 	}
 
-	private String formatTime(LocalTime time)
+	private static String formatTime(LocalTime time)
 	{
 		if (time.getHour() > 0)
 		{
