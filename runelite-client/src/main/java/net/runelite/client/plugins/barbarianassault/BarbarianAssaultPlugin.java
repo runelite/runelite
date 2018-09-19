@@ -34,6 +34,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
@@ -63,9 +64,10 @@ public class BarbarianAssaultPlugin extends Plugin
 	private Font font;
 	private Image clockImage;
 	private int inGameBit = 0;
-	private boolean waveStartFlag = false;
-	private String currentWave = "Wave 1";
+	private String currentWave = "1";
 	private GameTimer gameTime;
+
+	private static final int BA_WAVE_NUM_INDEX = 2;
 
 	@Inject
 	private Client client;
@@ -106,8 +108,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		gameTime = null;
-		currentWave = "Wave 1";
-		waveStartFlag = false;
+		currentWave = "1";
 		inGameBit = 0;
 	}
 
@@ -122,6 +123,27 @@ public class BarbarianAssaultPlugin extends Plugin
 			{
 				announceTime("Game finished, duration: ", gameTime.getTime(false));
 			}
+		}
+	}
+
+	@Subscribe
+	public void onMessageEvent(ChatMessage event)
+	{
+		if (event.getType() == ChatMessageType.SERVER
+			&& event.getMessage().startsWith("---- Wave:"))
+		{
+			String[] message = event.getMessage().split(" ");
+			currentWave = message[BA_WAVE_NUM_INDEX];
+
+			if (currentWave.equals("1"))
+			{
+				gameTime = new GameTimer();
+			}
+			else if (gameTime != null)
+			{
+				gameTime.setWaveStartTime();
+			}
+
 		}
 	}
 
@@ -149,23 +171,6 @@ public class BarbarianAssaultPlugin extends Plugin
 						break;
 				}
 			}
-			if (overlay.getCurrentRound() != null)
-			{
-				currentWave = client.getWidget(overlay.getCurrentRound().getRoundRole().getWave()).getText();
-			}
-
-			if (waveStartFlag &&
-				client.getWidget(
-					overlay.getCurrentRound()
-						.getRoundRole()
-						.getWave())
-					.getText()
-					.equals("Wave 1") &&
-				!currentWave.equals("Wave 9"))
-			{
-				gameTime = new GameTimer();
-				waveStartFlag = false;
-			}
 		}
 	}
 
@@ -182,16 +187,7 @@ public class BarbarianAssaultPlugin extends Plugin
 
 				if (config.waveTimes() && gameTime != null)
 				{
-					announceTime(currentWave + " duration: ", gameTime.getTime(true));
-				}
-			}
-			else
-			{
-				waveStartFlag = true;
-
-				if (gameTime != null)
-				{
-					gameTime.setWaveStartTime();
+					announceTime("Wave " + currentWave + " duration: ", gameTime.getTime(true));
 				}
 			}
 		}
