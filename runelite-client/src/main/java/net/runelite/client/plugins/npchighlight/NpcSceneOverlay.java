@@ -147,8 +147,14 @@ public class NpcSceneOverlay extends Overlay
 	{
 		switch (config.renderStyle())
 		{
+			case SOUTH_WEST_TILE:
+				LocalPoint lp1 = LocalPoint.fromWorld(client, actor.getWorldLocation());
+				Polygon tilePoly1 = Perspective.getCanvasTilePoly(client, lp1);
+
+				renderPoly(graphics, color, tilePoly1);
+				break;
+
 			case TILE:
-			{
 				int size = 1;
 				NPCComposition composition = actor.getTransformedComposition();
 				if (composition != null)
@@ -158,28 +164,13 @@ public class NpcSceneOverlay extends Overlay
 				LocalPoint lp = actor.getLocalLocation();
 				Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
 
-				if (tilePoly != null)
-				{
-					graphics.setColor(color);
-					graphics.setStroke(new BasicStroke(2));
-					graphics.draw(tilePoly);
-					graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
-					graphics.fill(tilePoly);
-				}
+				renderPoly(graphics, color, tilePoly);
 				break;
-			}
 
 			case HULL:
 				Polygon objectClickbox = actor.getConvexHull();
 
-				if (objectClickbox != null)
-				{
-					graphics.setColor(color);
-					graphics.setStroke(new BasicStroke(2));
-					graphics.draw(objectClickbox);
-					graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
-					graphics.fill(objectClickbox);
-				}
+				renderPoly(graphics, color, objectClickbox);
 				break;
 		}
 
@@ -191,6 +182,18 @@ public class NpcSceneOverlay extends Overlay
 			{
 				OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
 			}
+		}
+	}
+
+	private void renderPoly(Graphics2D graphics, Color color, Polygon polygon)
+	{
+		if (polygon != null)
+		{
+			graphics.setColor(color);
+			graphics.setStroke(new BasicStroke(2));
+			graphics.draw(polygon);
+			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
+			graphics.fill(polygon);
 		}
 	}
 }
