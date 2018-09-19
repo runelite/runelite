@@ -1,0 +1,16 @@
+net\runelite\protocol\handshake\HandshakeResponseEncoder.class
+net\runelite\protocol\handshake\UpdateHandshakeEncoder.class
+net\runelite\protocol\update\decoders\UpdateOpcodes.class
+net\runelite\protocol\update\decoders\ArchiveResponseDecoder.class
+net\runelite\protocol\update\decoders\ArchiveRequestDecoder.class
+net\runelite\protocol\update\encoders\ArchiveRequestEncoder.class
+net\runelite\protocol\update\decoders\EncryptionDecoder.class
+net\runelite\protocol\update\encoders\EncryptionEncoder.class
+net\runelite\protocol\handshake\HandshakeDecoder$1.class
+net\runelite\protocol\update\encoders\ArchiveResponseEncoder.class
+net\runelite\protocol\update\decoders\HandshakeResponseDecoder.class
+net\runelite\protocol\handshake\LoginHandshakeEncoder.class
+net\runelite\protocol\handshake\HandshakeDecoder.class
+net\runelite\protocol\update\decoders\LoggedOutDecoder.class
+net\runelite\protocol\update\decoders\LoggedInDecoder.class
+net\runelite\protocol\update\encoders\XorEncoder.class

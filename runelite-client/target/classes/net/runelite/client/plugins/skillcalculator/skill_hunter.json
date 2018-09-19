@@ -1,0 +1,346 @@
+{
+  "actions": [
+    {
+      "level": 1,
+      "icon": 9965,
+      "name": "Crimson Swift",
+      "xp": 34
+    },
+    {
+      "level": 1,
+      "icon": 9953,
+      "name": "Polar Kebbit",
+      "xp": 30
+    },
+    {
+      "level": 3,
+      "icon": 9954,
+      "name": "Common Kebbit",
+      "xp": 36
+    },
+    {
+      "level": 5,
+      "icon": 9968,
+      "name": "Golden Warbler",
+      "xp": 47
+    },
+    {
+      "level": 5,
+      "icon": 21512,
+      "name": "Regular Bird House",
+      "xp": 280
+    },
+    {
+      "level": 7,
+      "icon": 9955,
+      "name": "Feldip Weasel",
+      "xp": 48
+    },
+    {
+      "level": 9,
+      "icon": 9966,
+      "name": "Copper Longtail",
+      "xp": 61
+    },
+    {
+      "level": 11,
+      "icon": 9967,
+      "name": "Cerulean Twitch",
+      "xp": 64.5
+    },
+    {
+      "level": 13,
+      "icon": 9956,
+      "name": "Desert Devil",
+      "xp": 66
+    },
+    {
+      "level": 14,
+      "icon": 21515,
+      "name": "Oak Bird House",
+      "xp": 420
+    },
+    {
+      "level": 15,
+      "icon": 9970,
+      "name": "Ruby Harvest",
+      "xp": 24
+    },
+    {
+      "level": 17,
+      "icon": 11238,
+      "name": "Baby Impling",
+      "xp": 18
+    },
+    {
+      "level": 19,
+      "icon": 9969,
+      "name": "Tropical Wagtail",
+      "xp": 95
+    },
+    {
+      "level": 22,
+      "icon": 11240,
+      "name": "Young Impling",
+      "xp": 20
+    },
+    {
+      "level": 23,
+      "icon": 9953,
+      "name": "Wild Kebbit",
+      "xp": 128
+    },
+    {
+      "level": 24,
+      "icon": 21518,
+      "name": "Willow Bird House",
+      "xp": 560
+    },
+    {
+      "level": 25,
+      "icon": 9971,
+      "name": "Sapphire Glacialis",
+      "xp": 34
+    },
+    {
+      "level": 27,
+      "icon": 10092,
+      "name": "Ferret",
+      "xp": 115
+    },
+    {
+      "level": 27,
+      "icon": 9975,
+      "name": "White Rabbit",
+      "xp": 144
+    },
+    {
+      "level": 28,
+      "icon": 11242,
+      "name": "Gourmet Impling",
+      "xp": 22
+    },
+    {
+      "level": 29,
+      "icon": 10149,
+      "name": "Swamp Lizard",
+      "xp": 152
+    },
+    {
+      "level": 31,
+      "icon": 10045,
+      "name": "Spined Larupia",
+      "xp": 180
+    },
+    {
+      "level": 33,
+      "icon": 9958,
+      "name": "Barb-tailed Kebbit",
+      "xp": 168
+    },
+    {
+      "level": 34,
+      "icon": 21521,
+      "name": "Teak Bird House",
+      "xp": 700
+    },
+    {
+      "level": 35,
+      "icon": 9972,
+      "name": "Snowy Knight",
+      "xp": 44
+    },
+    {
+      "level": 36,
+      "icon": 11244,
+      "name": "Earth Impling",
+      "xp": 25
+    },
+    {
+      "level": 37,
+      "icon": 9957,
+      "name": "Prickly Kebbit",
+      "xp": 204
+    },
+    {
+      "level": 41,
+      "icon": 10051,
+      "name": "Horned Graahk",
+      "xp": 240
+    },
+    {
+      "level": 42,
+      "icon": 11246,
+      "name": "Essence Impling",
+      "xp": 27
+    },
+    {
+      "level": 43,
+      "icon": 9960,
+      "name": "Spotted Kebbit",
+      "xp": 104
+    },
+    {
+      "level": 44,
+      "icon": 22192,
+      "name": "Maple Bird House",
+      "xp": 820
+    },
+    {
+      "level": 45,
+      "icon": 9973,
+      "name": "Black Warlock",
+      "xp": 54
+    },
+    {
+      "level": 47,
+      "icon": 10146,
+      "name": "Orange Salamander",
+      "xp": 224
+    },
+    {
+      "level": 49,
+      "icon": 9961,
+      "name": "Razor-backed Kebbit",
+      "xp": 348
+    },
+    {
+      "level": 49,
+      "icon": 22195,
+      "name": "Mahogany Bird House",
+      "xp": 960
+    },
+    {
+      "level": 50,
+      "icon": 11248,
+      "name": "Eclectic Impling",
+      "xp": 32
+    },
+    {
+      "level": 51,
+      "icon": 9959,
+      "name": "Sabre-toothed Kebbit",
+      "xp": 200
+    },
+    {
+      "level": 53,
+      "icon": 9976,
+      "name": "Chinchompa",
+      "xp": 198.3
+    },
+    {
+      "level": 55,
+      "icon": 10039,
+      "name": "Sabre-toothed Kyatt",
+      "xp": 300
+    },
+    {
+      "level": 57,
+      "icon": 9963,
+      "name": "Dark Kebbit",
+      "xp": 132
+    },
+    {
+      "level": 58,
+      "icon": 11250,
+      "name": "Nature Impling",
+      "xp": 34
+    },
+    {
+      "level": 59,
+      "icon": 10147,
+      "name": "Red Salamander",
+      "xp": 272
+    },
+    {
+      "level": 59,
+      "icon": 22198,
+      "name": "Yew Bird House",
+      "xp": 1020
+    },
+    {
+      "level": 60,
+      "icon": 19556,
+      "name": "Maniacal Monkey",
+      "xp": 1000
+    },
+    {
+      "level": 63,
+      "icon": 9977,
+      "name": "Carnivorous Chinchompa",
+      "xp": 265
+    },
+    {
+      "level": 65,
+      "icon": 11252,
+      "name": "Magpie Impling",
+      "xp": 44
+    },
+    {
+      "level": 65,
+      "icon": 11252,
+      "name": "Magpie Impling (Gielinor)",
+      "xp": 216
+    },
+    {
+      "level": 67,
+      "icon": 10148,
+      "name": "Black Salamander",
+      "xp": 319.5
+    },
+    {
+      "level": 69,
+      "icon": 9964,
+      "name": "Dashing Kebbit",
+      "xp": 156
+    },
+    {
+      "level": 73,
+      "icon": 5091,
+      "name": "Black Chinchompa",
+      "xp": 315
+    },
+    {
+      "level": 74,
+      "icon": 22201,
+      "name": "Magic Bird House",
+      "xp": 1140
+    },
+    {
+      "level": 74,
+      "icon": 11254,
+      "name": "Ninja Impling",
+      "xp": 52
+    },
+    {
+      "level": 74,
+      "icon": 11254,
+      "name": "Ninja Impling (Gielinor)",
+      "xp": 240
+    },
+    {
+      "level": 83,
+      "icon": 11256,
+      "name": "Dragon Impling",
+      "xp": 65
+    },
+    {
+      "level": 83,
+      "icon": 11256,
+      "name": "Dragon Impling (Gielinor)",
+      "xp": 300
+    },
+    {
+      "level": 89,
+      "icon": 22204,
+      "name": "Redwood Bird House",
+      "xp": 1200
+    },
+    {
+      "level": 89,
+      "icon": 19732,
+      "name": "Lucky Impling",
+      "xp": 380
+    }
+  ]
+}

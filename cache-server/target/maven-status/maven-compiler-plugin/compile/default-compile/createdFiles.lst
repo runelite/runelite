@@ -1,0 +1,6 @@
+net\runelite\cache\server\ArchiveRequestHandler.class
+net\runelite\cache\server\CacheServer.class
+net\runelite\cache\server\CacheFrameDecoder.class
+net\runelite\cache\server\CacheServerInitializer.class
+net\runelite\cache\server\EncryptionHandler.class
+net\runelite\cache\server\HandshakeHandler.class

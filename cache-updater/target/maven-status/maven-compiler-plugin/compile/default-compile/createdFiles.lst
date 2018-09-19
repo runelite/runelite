@@ -1,0 +1,10 @@
+net\runelite\cache\updater\CacheUploader.class
+net\runelite\cache\updater\CacheConfiguration.class
+net\runelite\cache\updater\CacheStorage.class
+net\runelite\cache\updater\beans\FileEntry.class
+net\runelite\cache\updater\CacheDAO.class
+net\runelite\cache\updater\beans\CacheEntry.class
+net\runelite\cache\updater\beans\IndexEntry.class
+net\runelite\cache\updater\CacheUpdater.class
+net\runelite\cache\updater\beans\ArchiveEntry.class
+net\runelite\cache\updater\InstantConverter.class

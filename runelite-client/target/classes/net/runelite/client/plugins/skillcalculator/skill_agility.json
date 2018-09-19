@@ -1,0 +1,94 @@
+{
+  "actions": [
+    {
+      "level": 1,
+      "icon": 2150,
+      "name": "Gnome Stronghold",
+      "xp": 86.5
+    },
+    {
+      "level": 10,
+      "icon": 11849,
+      "name": "Draynor Village Rooftop",
+      "xp": 120
+    },
+    {
+      "level": 20,
+      "icon": 11849,
+      "name": "Al Kharid Rooftop",
+      "xp": 180
+    },
+    {
+      "level": 30,
+      "icon": 11849,
+      "name": "Varrock Rooftop",
+      "xp": 238
+    },
+    {
+      "level": 30,
+      "icon": 10595,
+      "name": "Penguin Agility Course",
+      "xp": 540
+    },
+    {
+      "level": 35,
+      "icon": 1365,
+      "name": "Barbarian Outpost",
+      "xp": 152.5
+    },
+    {
+      "level": 40,
+      "icon": 11849,
+      "name": "Canifis Rooftop",
+      "xp": 240
+    },
+    {
+      "level": 48,
+      "icon": 4026,
+      "name": "Ape Atoll",
+      "xp": 580
+    },
+    {
+      "level": 50,
+      "icon": 11849,
+      "name": "Falador Rooftop",
+      "xp": 440
+    },
+    {
+      "level": 52,
+      "icon": 964,
+      "name": "Wilderness Agility Course",
+      "xp": 571
+    },
+    {
+      "level": 60,
+      "icon": 11849,
+      "name": "Seers' Village Rooftop",
+      "xp": 570
+    },
+    {
+      "level": 60,
+      "icon": 4179,
+      "name": "Werewolf Agility Course",
+      "xp": 540
+    },
+    {
+      "level": 70,
+      "icon": 11849,
+      "name": "Pollnivneach Rooftop",
+      "xp": 890
+    },
+    {
+      "level": 80,
+      "icon": 11849,
+      "name": "Rellekka Rooftop",
+      "xp": 780
+    },
+    {
+      "level": 90,
+      "icon": 11849,
+      "name": "Ardougne Rooftop",
+      "xp": 793
+    }
+  ]
+}

@@ -239,4 +239,16 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 19,
+		keyName = "swapEscort",
+		name = "Escort",
+		description = "Swap Talk-to with Escort for victoms in the minigame Temple Trekking"
+	)
+	default boolean swapEscort()
+	{
+		return true;
+	}
+
 }

@@ -1,0 +1,10 @@
+net\runelite\cache\client\CacheClient$1.class
+net\runelite\cache\client\ArchiveResponseHandler.class
+net\runelite\cache\client\PendingFileRequest.class
+net\runelite\cache\client\DownloadWatcher.class
+net\runelite\cache\client\FileResult.class
+net\runelite\cache\client\IndexInfo.class
+net\runelite\cache\client\CacheClientHandler.class
+net\runelite\cache\client\HandshakeResponseHandler.class
+net\runelite\cache\client\ClientState.class
+net\runelite\cache\client\CacheClient.class
