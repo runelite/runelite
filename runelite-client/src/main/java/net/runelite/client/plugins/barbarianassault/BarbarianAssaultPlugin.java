@@ -60,14 +60,15 @@ import net.runelite.client.util.ImageUtil;
 )
 public class BarbarianAssaultPlugin extends Plugin
 {
+	private static final int BA_WAVE_NUM_INDEX = 2;
+	private static final String START_WAVE = "1";
+	private static final String ENDGAME_REWARD_NEEDLE_TEXT = "<br>5";
 
 	private Font font;
 	private Image clockImage;
 	private int inGameBit = 0;
-	private String currentWave = "1";
+	private String currentWave = START_WAVE;
 	private GameTimer gameTime;
-
-	private static final int BA_WAVE_NUM_INDEX = 2;
 
 	@Inject
 	private Client client;
@@ -108,7 +109,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		gameTime = null;
-		currentWave = "1";
+		currentWave = START_WAVE;
 		inGameBit = 0;
 	}
 
@@ -119,7 +120,7 @@ public class BarbarianAssaultPlugin extends Plugin
 		{
 			Widget rewardWidget = client.getWidget(WidgetInfo.BA_REWARD_TEXT);
 
-			if (config.waveTimes() && rewardWidget != null && rewardWidget.getText().contains("<br>5") && gameTime != null)
+			if (config.waveTimes() && rewardWidget != null && rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && gameTime != null)
 			{
 				announceTime("Game finished, duration: ", gameTime.getTime(false));
 			}
@@ -127,7 +128,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMessageEvent(ChatMessage event)
+	public void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() == ChatMessageType.SERVER
 			&& event.getMessage().startsWith("---- Wave:"))
@@ -135,7 +136,7 @@ public class BarbarianAssaultPlugin extends Plugin
 			String[] message = event.getMessage().split(" ");
 			currentWave = message[BA_WAVE_NUM_INDEX];
 
-			if (currentWave.equals("1"))
+			if (currentWave.equals(START_WAVE))
 			{
 				gameTime = new GameTimer();
 			}
@@ -150,27 +151,25 @@ public class BarbarianAssaultPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (client.getVar(Varbits.IN_GAME_BA) == 1 &&
-			client.getLocalPlayer() != null)
+		if (client.getVar(Varbits.IN_GAME_BA) == 0 || client.getLocalPlayer() == null || overlay.getCurrentRound() != null)
 		{
-			if (overlay.getCurrentRound() == null)
-			{
-				switch (client.getLocalPlayer().getPlayerComposition().getEquipmentId(KitType.CAPE))
-				{
-					case ItemID.ATTACKER_ICON:
-						overlay.setCurrentRound(new Round(Role.ATTACKER));
-						break;
-					case ItemID.COLLECTOR_ICON:
-						overlay.setCurrentRound(new Round(Role.COLLECTOR));
-						break;
-					case ItemID.DEFENDER_ICON:
-						overlay.setCurrentRound(new Round(Role.DEFENDER));
-						break;
-					case ItemID.HEALER_ICON:
-						overlay.setCurrentRound(new Round(Role.HEALER));
-						break;
-				}
-			}
+			return;
+		}
+
+		switch (client.getLocalPlayer().getPlayerComposition().getEquipmentId(KitType.CAPE))
+		{
+			case ItemID.ATTACKER_ICON:
+				overlay.setCurrentRound(new Round(Role.ATTACKER));
+				break;
+			case ItemID.COLLECTOR_ICON:
+				overlay.setCurrentRound(new Round(Role.COLLECTOR));
+				break;
+			case ItemID.DEFENDER_ICON:
+				overlay.setCurrentRound(new Round(Role.DEFENDER));
+				break;
+			case ItemID.HEALER_ICON:
+				overlay.setCurrentRound(new Round(Role.HEALER));
+				break;
 		}
 	}
 
