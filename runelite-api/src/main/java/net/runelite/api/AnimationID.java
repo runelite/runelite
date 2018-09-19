@@ -144,6 +144,7 @@ public final class AnimationID
 	public static final int COW_HOME_TELEPORT_4 = 1699;
 	public static final int COW_HOME_TELEPORT_5 = 1700;
 	public static final int COW_HOME_TELEPORT_6 = 1701;
+	public static final int CONSTRUCTION = 3676;
 
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
