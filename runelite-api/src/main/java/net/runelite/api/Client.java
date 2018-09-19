@@ -1391,14 +1391,7 @@ public interface Client extends GameEngine
 	@VisibleForDevtools
 	int[] getSkillExperiences();
 
-	@VisibleForDevtools
-	int[] getChangedSkills();
-
-	@VisibleForDevtools
-	int getChangedSkillsCount();
-
-	@VisibleForDevtools
-	void setChangedSkillsCount(int i);
+	void queueChangedSkill(Skill skill);
 
 	/**
 	 * Sets a mapping of sprites to override.

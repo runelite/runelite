@@ -118,15 +118,12 @@ public interface RSClient extends RSGameEngine, Client
 	int[] getSkillExperiences();
 
 	@Import("changedSkills")
-	@Override
 	int[] getChangedSkills();
 
 	@Import("changedSkillsCount")
-	@Override
 	int getChangedSkillsCount();
 
 	@Import("changedSkillsCount")
-	@Override
 	void setChangedSkillsCount(int i);
 
 	@Import("gameState")
