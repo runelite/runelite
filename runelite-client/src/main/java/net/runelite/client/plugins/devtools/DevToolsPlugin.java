@@ -225,10 +225,7 @@ public class DevToolsPlugin extends Plugin
 				client.getRealSkillLevels()[skill.ordinal()] = level;
 				client.getSkillExperiences()[skill.ordinal()] = totalXp;
 
-				int[] skills = client.getChangedSkills();
-				int count = client.getChangedSkillsCount();
-				skills[++count - 1 & 31] = skill.ordinal();
-				client.setChangedSkillsCount(count);
+				client.queueChangedSkill(skill);
 
 				ExperienceChanged experienceChanged = new ExperienceChanged();
 				experienceChanged.setSkill(skill);

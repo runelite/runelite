@@ -1243,4 +1243,14 @@ public abstract class RSClientMixin implements RSClient
 	{
 		RSClientMixin.lastItemDespawn = lastItemDespawn;
 	}
+
+	@Inject
+	@Override
+	public void queueChangedSkill(Skill skill)
+	{
+		int[] skills = client.getChangedSkills();
+		int count = client.getChangedSkillsCount();
+		skills[++count - 1 & 31] = skill.ordinal();
+		client.setChangedSkillsCount(count);
+	}
 }
