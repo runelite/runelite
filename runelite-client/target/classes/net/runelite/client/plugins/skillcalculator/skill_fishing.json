@@ -1,0 +1,190 @@
+{
+  "bonuses": [
+    {
+      "name": "Anglers Outfit (+2.5%)",
+      "value": 0.025
+    }
+  ],
+  "actions": [
+    {
+      "level": 1,
+      "icon": 317,
+      "name": "Raw Shrimps",
+      "xp": 10
+    },
+    {
+      "level": 5,
+      "icon": 327,
+      "name": "Raw Sardine",
+      "xp": 20
+    },
+    {
+      "level": 5,
+      "icon": 3150,
+      "name": "Raw Karambwanji",
+      "xp": 5
+    },
+    {
+      "level": 10,
+      "icon": 345,
+      "name": "Raw Herring",
+      "xp": 30
+    },
+    {
+      "level": 15,
+      "icon": 321,
+      "name": "Raw Anchovies",
+      "xp": 40
+    },
+    {
+      "level": 16,
+      "icon": 353,
+      "name": "Raw Mackerel",
+      "xp": 20
+    },
+    {
+      "level": 20,
+      "icon": 335,
+      "name": "Raw Trout",
+      "xp": 50
+    },
+    {
+      "level": 23,
+      "icon": 341,
+      "name": "Raw Cod",
+      "xp": 45
+    },
+    {
+      "level": 25,
+      "icon": 349,
+      "name": "Raw Pike",
+      "xp": 60
+    },
+    {
+      "level": 28,
+      "icon": 3379,
+      "name": "Raw Slimy Eel",
+      "xp": 65
+    },
+    {
+      "level": 30,
+      "icon": 331,
+      "name": "Raw Salmon",
+      "xp": 70
+    },
+    {
+      "level": 35,
+      "icon": 359,
+      "name": "Raw Tuna",
+      "xp": 80
+    },
+    {
+      "level": 38,
+      "icon": 10138,
+      "name": "Raw Rainbow Fish",
+      "xp": 80
+    },
+    {
+      "level": 38,
+      "icon": 5001,
+      "name": "Raw Cave Eel",
+      "xp": 80
+    },
+    {
+      "level": 40,
+      "icon": 377,
+      "name": "Raw Lobster",
+      "xp": 90
+    },
+    {
+      "level": 46,
+      "icon": 363,
+      "name": "Raw Bass",
+      "xp": 100
+    },
+    {
+      "level": 48,
+      "icon": 11328,
+      "name": "Leaping Trout",
+      "xp": 50
+    },
+    {
+      "level": 50,
+      "icon": 371,
+      "name": "Raw Swordfish",
+      "xp": 100
+    },
+    {
+      "level": 58,
+      "icon": 11330,
+      "name": "Leaping Salmon",
+      "xp": 70
+    },
+    {
+      "level": 62,
+      "icon": 7944,
+      "name": "Raw Monkfish",
+      "xp": 120
+    },
+    {
+      "level": 65,
+      "icon": 3142,
+      "name": "Raw Karambwan",
+      "xp": 50
+    },
+    {
+      "level": 70,
+      "icon": 11332,
+      "name": "Leaping Sturgeon",
+      "xp": 80
+    },
+    {
+      "level": 76,
+      "icon": 383,
+      "name": "Raw Shark",
+      "xp": 110
+    },
+    {
+      "level": 79,
+      "icon": 395,
+      "name": "Raw Sea Turtle",
+      "xp": 38
+    },
+    {
+      "level": 80,
+      "icon": 21293,
+      "name": "Infernal Eel",
+      "xp": 95
+    },
+    {
+      "level": 81,
+      "icon": 389,
+      "name": "Raw Manta Ray",
+      "xp": 46
+    },
+    {
+      "level": 82,
+      "icon": 13439,
+      "name": "Raw Anglerfish",
+      "xp": 120
+    },
+    {
+      "level": 82,
+      "icon": 21356,
+      "name": "Minnow",
+      "xp": 26.5
+    },
+    {
+      "level": 85,
+      "icon": 11934,
+      "name": "Raw Dark Crab",
+      "xp": 130
+    },
+    {
+      "level": 87,
+      "icon": 13339,
+      "name": "Sacred Eel",
+      "xp": 105
+    }
+  ]
+}

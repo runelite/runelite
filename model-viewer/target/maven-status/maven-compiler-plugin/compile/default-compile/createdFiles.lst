@@ -1,0 +1,10 @@
+net\runelite\modelviewer\Texture.class
+net\runelite\modelviewer\ShaderManager.class
+net\runelite\modelviewer\SceneTilePaint.class
+net\runelite\modelviewer\SceneTileModel.class
+net\runelite\modelviewer\ModelManager.class
+net\runelite\modelviewer\Camera.class
+net\runelite\modelviewer\Scene.class
+net\runelite\modelviewer\ModelKey.class
+net\runelite\modelviewer\ModelViewer.class
+net\runelite\modelviewer\KitManager.class

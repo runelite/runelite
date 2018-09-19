@@ -1,0 +1,5 @@
+net\runelite\http\service\xp\XpMapperTest.class
+net\runelite\http\service\hiscore\HiscoreServiceTest.class
+net\runelite\http\service\worlds\WorldsServiceTest.class
+net\runelite\http\service\SpringBootWebApplicationTest.class
+net\runelite\http\service\hiscore\HiscoreTestService.class

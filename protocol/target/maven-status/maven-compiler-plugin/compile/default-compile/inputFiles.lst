@@ -1,0 +1,15 @@
+C:\Users\fishe\Documents\runelite\protocol\src\main\java\net\runelite\protocol\update\encoders\EncryptionEncoder.java
+C:\Users\fishe\Documents\runelite\protocol\src\main\java\net\runelite\protocol\update\decoders\LoggedOutDecoder.java
+C:\Users\fishe\Documents\runelite\protocol\src\main\java\net\runelite\protocol\handshake\UpdateHandshakeEncoder.java
+C:\Users\fishe\Documents\runelite\protocol\src\main\java\net\runelite\protocol\update\decoders\ArchiveResponseDecoder.java
+C:\Users\fishe\Documents\runelite\protocol\src\main\java\net\runelite\protocol\update\decoders\EncryptionDecoder.java
+C:\Users\fishe\Documents\runelite\protocol\src\main\java\net\runelite\protocol\update\decoders\UpdateOpcodes.java
+C:\Users\fishe\Documents\runelite\protocol\src\main\java\net\runelite\protocol\update\decoders\HandshakeResponseDecoder.java
+C:\Users\fishe\Documents\runelite\protocol\src\main\java\net\runelite\protocol\handshake\LoginHandshakeEncoder.java
+C:\Users\fishe\Documents\runelite\protocol\src\main\java\net\runelite\protocol\update\decoders\ArchiveRequestDecoder.java
+C:\Users\fishe\Documents\runelite\protocol\src\main\java\net\runelite\protocol\update\encoders\ArchiveResponseEncoder.java
+C:\Users\fishe\Documents\runelite\protocol\src\main\java\net\runelite\protocol\update\decoders\LoggedInDecoder.java
+C:\Users\fishe\Documents\runelite\protocol\src\main\java\net\runelite\protocol\update\encoders\XorEncoder.java
+C:\Users\fishe\Documents\runelite\protocol\src\main\java\net\runelite\protocol\handshake\HandshakeDecoder.java
+C:\Users\fishe\Documents\runelite\protocol\src\main\java\net\runelite\protocol\handshake\HandshakeResponseEncoder.java
+C:\Users\fishe\Documents\runelite\protocol\src\main\java\net\runelite\protocol\update\encoders\ArchiveRequestEncoder.java

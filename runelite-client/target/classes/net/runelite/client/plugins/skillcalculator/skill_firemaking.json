@@ -1,0 +1,76 @@
+{
+  "bonuses": [
+    {
+      "name": "Pyromancer Outfit (+2.5%)",
+      "value": 0.025
+    }
+  ],
+  "actions": [
+    {
+      "level": 1,
+      "icon": 1511,
+      "name": "Logs",
+      "xp": 40
+    },
+    {
+      "level": 1,
+      "icon": 2862,
+      "name": "Achey Tree Logs",
+      "xp": 40
+    },
+    {
+      "level": 15,
+      "icon": 1521,
+      "name": "Oak Logs",
+      "xp": 60
+    },
+    {
+      "level": 30,
+      "icon": 1519,
+      "name": "Willow Logs",
+      "xp": 90
+    },
+    {
+      "level": 35,
+      "icon": 6333,
+      "name": "Teak Logs",
+      "xp": 105
+    },
+    {
+      "level": 42,
+      "icon": 10810,
+      "name": "Arctic Pine Logs",
+      "xp": 125
+    },
+    {
+      "level": 45,
+      "icon": 1517,
+      "name": "Maple Logs",
+      "xp": 135
+    },
+    {
+      "level": 50,
+      "icon": 6332,
+      "name": "Mahogany Logs",
+      "xp": 157.5
+    },
+    {
+      "level": 60,
+      "icon": 1515,
+      "name": "Yew Logs",
+      "xp": 202.5
+    },
+    {
+      "level": 75,
+      "icon": 1513,
+      "name": "Magic Logs",
+      "xp": 303.8
+    },
+    {
+      "level": 90,
+      "icon": 19669,
+      "name": "Redwood Logs",
+      "xp": 350
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+net\runelite\protocol\api\login\HandshakeResponseType.class
+net\runelite\protocol\api\handshake\UpdateHandshakePacket.class
+net\runelite\protocol\api\update\EncryptionPacket.class
+net\runelite\protocol\api\handshake\LoginHandshakePacket.class
+net\runelite\protocol\api\handshake\HandshakeResponsePacket.class
+net\runelite\protocol\api\handshake\HandshakePacket.class
+net\runelite\protocol\api\handshake\HandshakeType.class
+net\runelite\protocol\api\update\ArchiveResponsePacket.class
+net\runelite\protocol\api\update\ArchiveRequestPacket.class

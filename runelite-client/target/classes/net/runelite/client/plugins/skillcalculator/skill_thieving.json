@@ -1,0 +1,232 @@
+{
+  "actions": [
+    {
+      "level": 1,
+      "icon": 3241,
+      "name": "Man / Woman",
+      "xp": 8
+    },
+    {
+      "level": 2,
+      "icon": 1965,
+      "name": "Vegetable Stall",
+      "xp": 10
+    },
+    {
+      "level": 5,
+      "icon": 1891,
+      "name": "Cake Stall",
+      "xp": 16
+    },
+    {
+      "level": 5,
+      "icon": 4242,
+      "name": "Tea Stall",
+      "xp": 16
+    },
+    {
+      "level": 5,
+      "icon": 5601,
+      "name": "Crafting Stall",
+      "xp": 16
+    },
+    {
+      "level": 5,
+      "icon": 1963,
+      "name": "Monkey Food Stall",
+      "xp": 16
+    },
+    {
+      "level": 10,
+      "icon": 3243,
+      "name": "Farmer",
+      "xp": 14.5
+    },
+    {
+      "level": 15,
+      "icon": 4295,
+      "name": "Female H.A.M. Member",
+      "xp": 18.5
+    },
+    {
+      "level": 20,
+      "icon": 950,
+      "name": "Silk Stall",
+      "xp": 24
+    },
+    {
+      "level": 20,
+      "icon": 4297,
+      "name": "Male H.A.M. Member",
+      "xp": 22.5
+    },
+    {
+      "level": 22,
+      "icon": 7919,
+      "name": "Wine Stall",
+      "xp": 27
+    },
+    {
+      "level": 25,
+      "icon": 3245,
+      "name": "Warrior Women / Al-Kharid Warrior",
+      "xp": 26
+    },
+    {
+      "level": 25,
+      "icon": 464,
+      "name": "Fruit Stall",
+      "xp": 28
+    },
+    {
+      "level": 27,
+      "icon": 5318,
+      "name": "Seed Stall",
+      "xp": 10
+    },
+    {
+      "level": 32,
+      "icon": 3247,
+      "name": "Rogue",
+      "xp": 35.5
+    },
+    {
+      "level": 35,
+      "icon": 958,
+      "name": "Fur Stall",
+      "xp": 36
+    },
+    {
+      "level": 36,
+      "icon": 10998,
+      "name": "Cave Goblin",
+      "xp": 40
+    },
+    {
+      "level": 38,
+      "icon": 5068,
+      "name": "Master Farmer",
+      "xp": 43
+    },
+    {
+      "level": 40,
+      "icon": 3249,
+      "name": "Guard",
+      "xp": 46.8
+    },
+    {
+      "level": 42,
+      "icon": 331,
+      "name": "Fish Stall",
+      "xp": 42
+    },
+    {
+      "level": 45,
+      "icon": 6782,
+      "name": "Bearded Pollnivnian Bandit",
+      "xp": 65
+    },
+    {
+      "level": 45,
+      "icon": 3686,
+      "name": "Fremennik Citizen",
+      "xp": 65
+    },
+    {
+      "level": 49,
+      "icon": 837,
+      "name": "Crossbow Stall",
+      "xp": 52
+    },
+    {
+      "level": 50,
+      "icon": 2355,
+      "name": "Silver Stall",
+      "xp": 54
+    },
+    {
+      "level": 53,
+      "icon": 4625,
+      "name": "Desert Bandit",
+      "xp": 79.5
+    },
+    {
+      "level": 55,
+      "icon": 3251,
+      "name": "Knight",
+      "xp": 84.3
+    },
+    {
+      "level": 55,
+      "icon": 6781,
+      "name": "Pollnivnian Bandit",
+      "xp": 84.3
+    },
+    {
+      "level": 65,
+      "icon": 6422,
+      "name": "Magic Stall",
+      "xp": 100
+    },
+    {
+      "level": 65,
+      "icon": 1325,
+      "name": "Scimitar Stall",
+      "xp": 100
+    },
+    {
+      "level": 65,
+      "icon": 6780,
+      "name": "Menaphite Thug",
+      "xp": 137.5
+    },
+    {
+      "level": 65,
+      "icon": 2007,
+      "name": "Spices Stall",
+      "xp": 81
+    },
+    {
+      "level": 65,
+      "icon": 3253,
+      "name": "Yanille Watchman",
+      "xp": 137.5
+    },
+    {
+      "level": 70,
+      "icon": 3255,
+      "name": "Paladin",
+      "xp": 151.8
+    },
+    {
+      "level": 75,
+      "icon": 3257,
+      "name": "Gnome",
+      "xp": 198.5
+    },
+    {
+      "level": 75,
+      "icon": 1607,
+      "name": "Gems Stall",
+      "xp": 160
+    },
+    {
+      "level": 80,
+      "icon": 3259,
+      "name": "Hero",
+      "xp": 275
+    },
+    {
+      "level": 85,
+      "icon": 6105,
+      "name": "Elf",
+      "xp": 353
+    },
+    {
+      "level": 90,
+      "icon": 21278,
+      "name": "TzHaar-Hur",
+      "xp": 103.4
+    }
+  ]
+}
