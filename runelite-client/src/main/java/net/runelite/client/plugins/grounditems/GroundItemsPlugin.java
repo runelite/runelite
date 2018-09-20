@@ -218,11 +218,14 @@ public class GroundItemsPlugin extends Plugin
 			existing.setQuantity(existing.getQuantity() + groundItem.getQuantity());
 		}
 
-		ValueThreshold valueThreshold = getThreshold(groundItem.getName(), groundItem.getGePrice(), groundItem.getHaPrice());
-		if (valueThreshold != null && valueThreshold.isGreaterThan(config
-			.notifierThreshold()))
+		if (!config.notifierThreshold().equals(ValueThreshold.OFF))
 		{
-			notifyValuableItem(groundItem, valueThreshold);
+			ValueThreshold valueThreshold = getThreshold(groundItem.getName(), groundItem.getGePrice(), groundItem.getHaPrice());
+			if (valueThreshold != null && valueThreshold.isGreaterThan(config
+				.notifierThreshold()))
+			{
+				notifyValuableItem(groundItem, valueThreshold);
+			}
 		}
 	}
 
