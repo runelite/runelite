@@ -60,10 +60,11 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class IdleNotifierPlugin extends Plugin
 {
-	private static final int LOGOUT_WARNING_AFTER_TICKS = 280 * 50; // 4 minutes and 40 seconds
-	private static final long LOGOUT_WARNING_AFTER_MILLIS = (long) (LOGOUT_WARNING_AFTER_TICKS * 0.6 * 1000);
-	private static final int LOGOUT_WARNING_AFTER_TICKS_IN_COMBAT = 1140 * 50; // 19 minutes
-	private static final long LOGOUT_WARNING_AFTER_MILLIS_IN_COMBAT = (long) (LOGOUT_WARNING_AFTER_TICKS_IN_COMBAT * 0.6 * 1000);
+	// This must be more than 500 client ticks (10 seconds) before you get AFK kicked
+	private static final int LOGOUT_WARNING_CLIENT_TICKS = ((4 * 60) + 40) * 50;// 4 minutes and 40 seconds
+	private static final int COMBAT_WARNING_MILLIS = 19 * 60 * 1000; // 19 minutes
+	private static final int COMBAT_WARNING_CLIENT_TICKS = COMBAT_WARNING_MILLIS / 20;
+
 	private static final int HIGHEST_MONSTER_ATTACK_SPEED = 8; // Except Scarab Mage, but they are with other monsters
 	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
 
@@ -424,32 +425,40 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkIdleLogout()
 	{
-		final long mouseDiff = System.currentTimeMillis() - client.getMouseLastPressedMillis();
-
-		if (mouseDiff > LOGOUT_WARNING_AFTER_MILLIS
-			&& client.getKeyboardIdleTicks() > LOGOUT_WARNING_AFTER_TICKS)
+		// Check clientside AFK first, because this is required for the server to disconnect you for being first
+		int idleClientTicks = client.getKeyboardIdleTicks();
+		if (client.getMouseIdleTicks() < idleClientTicks)
 		{
-			if (lastCombatCountdown > 0)
-			{
-				if (mouseDiff > LOGOUT_WARNING_AFTER_MILLIS_IN_COMBAT
-					&& client.getKeyboardIdleTicks() > LOGOUT_WARNING_AFTER_TICKS_IN_COMBAT && notifyIdleLogout)
-				{
-					notifyIdleLogout = false;
-					return true;
-				}
-			}
-			else if (notifyIdleLogout)
-			{
-				notifyIdleLogout = false;
-				return true;
-			}
+			idleClientTicks = client.getMouseIdleTicks();
 		}
-		else
+
+		if (idleClientTicks < LOGOUT_WARNING_CLIENT_TICKS)
 		{
 			notifyIdleLogout = true;
+			return false;
 		}
 
-		return false;
+		// If we are not receiving hitsplats then we can be afk kicked
+		if (lastCombatCountdown <= 0)
+		{
+			boolean warn = notifyIdleLogout;
+			notifyIdleLogout = false;
+			return warn;
+		}
+
+		// We are in combat, so now we have to check for the timer that knocks you out of combat
+		// I think there are other conditions that I don't know about, because during testing I just didn't
+		// get removed from combat sometimes.
+		final long lastInteractionAgo = System.currentTimeMillis() - client.getMouseLastPressedMillis();
+		if (lastInteractionAgo < COMBAT_WARNING_MILLIS || client.getKeyboardIdleTicks() < COMBAT_WARNING_CLIENT_TICKS)
+		{
+			notifyIdleLogout = true;
+			return false;
+		}
+
+		boolean warn = notifyIdleLogout;
+		notifyIdleLogout = false;
+		return warn;
 	}
 
 	private boolean check6hrLogout()

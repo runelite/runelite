@@ -1,7 +1,6 @@
 /*
- * Copyright (c) 2018, Infinitay <https://github.com/Infinitay>
- * Copyright (c) 2018, Shaun Dreclin <https://github.com/ShaunDreclin>
- *
+ * Copyright (c) 2018, terminatusx <jbfleischman@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,67 +23,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.dailytaskindicators;
+package net.runelite.client.plugins.wintertodt;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.plugins.wintertodt.config.WintertodtNotifyMode;
 
-@ConfigGroup("dailytaskindicators")
-public interface DailyTasksConfig extends Config
+@ConfigGroup("wintertodt")
+public interface WintertodtConfig extends Config
 {
 	@ConfigItem(
 		position = 1,
-		keyName = "showHerbBoxes",
-		name = "Show Herb Boxes",
-		description = "Show a message when you can collect your daily herb boxes at NMZ."
+		keyName = "notifyCondition",
+		name = "Notify When",
+		description = "Configures when to send notifications"
 	)
-	default boolean showHerbBoxes()
+	default WintertodtNotifyMode notifyCondition()
 	{
-		return true;
+		return WintertodtNotifyMode.ONLY_WHEN_INTERRUPTED;
 	}
 
 	@ConfigItem(
 		position = 2,
-		keyName = "showStaves",
-		name = "Show Claimable Staves",
-		description = "Show a message when you can collect your daily battlestaves from Zaff."
+		keyName = "damageNotificationColor",
+		name = "Damage Notification Color",
+		description = "Color of damage notification text in chat"
 	)
-	default boolean showStaves()
+	default Color damageNotificationColor()
 	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 3,
-		keyName = "showEssence",
-		name = "Show Claimable Essence",
-		description = "Show a message when you can collect your daily pure essence from Wizard Cromperty."
-	)
-	default boolean showEssence()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 4,
-		keyName = "showRunes",
-		name = "Show Claimable Random Runes",
-		description = "Show a message when you can collect your daily random runes from Lundail."
-	)
-	default boolean showRunes()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 5,
-		keyName = "showSand",
-		name = "Show Claimable Sand",
-		description = "Show a message when you can collect your daily sand from Bert."
-	)
-	default boolean showSand()
-	{
-		return true;
+		return Color.CYAN;
 	}
 }

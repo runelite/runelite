@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2018, terminatusx <jbfleischman@gmail.com>
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
@@ -22,23 +23,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.wintertodt.config;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-/**
- * An enumeration of integer local variables.
- */
-@AllArgsConstructor
 @Getter
-public enum VarClientInt
+@RequiredArgsConstructor
+public enum WintertodtNotifyMode
 {
-	TOOLTIP_TIMEOUT(1),
+	NONE("None"),
+	WHEN_DAMAGED("Damage Taken"),
+	ONLY_WHEN_INTERRUPTED("Action Interrupted"),
+	EITHER("Either");
 
-	MEMBERSHIP_STATUS(103),
+	private final String name;
 
-	WORLD_MAP_SEARCH_FOCUSED(190);
-
-	private final int index;
+	@Override
+	public String toString()
+	{
+		return name;
+	}
 }

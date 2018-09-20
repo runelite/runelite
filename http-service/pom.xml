@@ -28,7 +28,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.4.18-SNAPSHOT</version>
+		<version>1.4.19-SNAPSHOT</version>
 	</parent>
 
 	<name>Web Service</name>
@@ -82,11 +82,6 @@
 			<groupId>org.sql2o</groupId>
 			<artifactId>sql2o</artifactId>
 			<version>1.5.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-csv</artifactId>
-			<version>1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>

@@ -899,7 +899,6 @@ public final class ObjectID
 	public static final int DOOR_1726 = 1726;
 	public static final int GATE_1727 = 1727;
 	public static final int GATE_1728 = 1728;
-	public static final int GATE_1729 = 1729;
 	public static final int GATE_1730 = 1730;
 	public static final int GATE_1731 = 1731;
 	public static final int MAGIC_GUILD_DOOR = 1732;

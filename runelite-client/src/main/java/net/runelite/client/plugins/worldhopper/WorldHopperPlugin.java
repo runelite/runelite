@@ -72,7 +72,6 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.HotkeyListener;
@@ -84,10 +83,10 @@ import net.runelite.http.api.worlds.WorldResult;
 import net.runelite.http.api.worlds.WorldType;
 import org.apache.commons.lang3.ArrayUtils;
 
-@PluginDescriptor(
-	name = "World Hopper",
-	description = "Allows you to quickly hop worlds"
-)
+//@PluginDescriptor(
+//	name = "World Hopper",
+//	description = "Allows you to quickly hop worlds"
+//)
 @Slf4j
 public class WorldHopperPlugin extends Plugin
 {

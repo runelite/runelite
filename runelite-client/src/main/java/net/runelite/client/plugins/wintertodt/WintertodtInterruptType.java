@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2018, terminatusx <jbfleischman@gmail.com>
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
@@ -22,23 +23,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.wintertodt;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-/**
- * An enumeration of integer local variables.
- */
 @AllArgsConstructor
 @Getter
-public enum VarClientInt
+enum WintertodtInterruptType
 {
-	TOOLTIP_TIMEOUT(1),
+	COLD("Damaged by Wintertodt Cold"),
+	SNOWFALL("Damaged by Wintertodt Snowfall"),
+	BRAZIER("Brazier Shattered"),
+	INVENTORY_FULL("Inventory full of Bruma Roots"),
+	OUT_OF_ROOTS("Out of Bruma Roots"),
+	FIXED_BRAZIER("Fixed Brazier"),
+	LIT_BRAZIER("Lit Brazier"),
+	BRAZIER_WENT_OUT("Brazier went out");
 
-	MEMBERSHIP_STATUS(103),
-
-	WORLD_MAP_SEARCH_FOCUSED(190);
-
-	private final int index;
+	private final String interruptSourceString;
 }

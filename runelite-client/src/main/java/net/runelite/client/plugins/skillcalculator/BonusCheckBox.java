@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Robbie McLeod <https://github.com/rbbi>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
 
-import lombok.AllArgsConstructor;
+package net.runelite.client.plugins.skillcalculator;
+
+import javax.swing.JCheckBox;
 import lombok.Getter;
+import lombok.Setter;
+import net.runelite.client.plugins.skillcalculator.beans.SkillDataBonus;
 
-/**
- * An enumeration of integer local variables.
- */
-@AllArgsConstructor
-@Getter
-public enum VarClientInt
+class BonusCheckBox extends JCheckBox
 {
-	TOOLTIP_TIMEOUT(1),
-
-	MEMBERSHIP_STATUS(103),
-
-	WORLD_MAP_SEARCH_FOCUSED(190);
-
-	private final int index;
+	@Getter
+	@Setter
+	private SkillDataBonus bonus;
 }

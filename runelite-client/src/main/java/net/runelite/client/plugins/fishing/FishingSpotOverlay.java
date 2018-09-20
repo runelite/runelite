@@ -27,6 +27,7 @@ package net.runelite.client.plugins.fishing;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
@@ -93,6 +94,11 @@ class FishingSpotOverlay extends Overlay
 				continue;
 			}
 
+			if (config.onlyCurrentSpot() && plugin.getCurrentSpot() != null && plugin.getCurrentSpot() != spot)
+			{
+				continue;
+			}
+
 			Color color = npc.getGraphic() == GraphicID.FLYING_FISH ? Color.RED : Color.CYAN;
 
 			if (spot == FishingSpot.MINNOW && config.showMinnowOverlay())
@@ -121,27 +127,39 @@ class FishingSpotOverlay extends Overlay
 				}
 			}
 
-			if (config.showIcons())
+			if (config.showSpotTiles())
 			{
-				BufferedImage fishImage = getFishImage(spot);
-				if (fishImage != null)
+				Polygon poly = npc.getCanvasTilePoly();
+				if (poly != null)
 				{
-					OverlayUtil.renderActorOverlayImage(graphics, npc, fishImage, color.darker(), npc.getLogicalHeight());
+					OverlayUtil.renderPolygon(graphics, poly, color.darker());
 				}
 			}
-			else
+
+			if (config.showSpotIcons())
+			{
+				BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());;
+				if (fishImage != null)
+				{
+					Point imageLocation = npc.getCanvasImageLocation(graphics, fishImage, npc.getLogicalHeight());
+					if (imageLocation != null)
+					{
+						OverlayUtil.renderImageLocation(graphics, imageLocation, fishImage);
+					}
+				}
+			}
+
+			if (config.showSpotNames())
 			{
 				String text = spot.getName();
-				OverlayUtil.renderActorOverlay(graphics, npc, text, color.darker());
+				Point textLocation = npc.getCanvasTextLocation(graphics, text, npc.getLogicalHeight() + 40);
+				if (textLocation != null)
+				{
+					OverlayUtil.renderTextLocation(graphics, textLocation, text, color.darker());
+				}
 			}
 		}
 
 		return null;
-	}
-
-	private BufferedImage getFishImage(FishingSpot spot)
-	{
-		BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());
-		return fishImage;
 	}
 }
