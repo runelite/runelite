@@ -54,6 +54,7 @@ import net.runelite.api.ItemLayer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Node;
+import net.runelite.api.Player;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.events.ConfigChanged;
@@ -63,6 +64,7 @@ import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
@@ -74,8 +76,10 @@ import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.BOTH;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.NAME;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.OPTION;
+import net.runelite.client.plugins.grounditems.config.ValueThreshold;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.StackFormatter;
 
 @PluginDescriptor(
 	name = "Ground Items",
@@ -90,6 +94,9 @@ public class GroundItemsPlugin extends Plugin
 		.trimResults();
 
 	private static final Joiner COMMA_JOINER = Joiner.on(",").skipNulls();
+	// The game won't send anything higher than this value to the plugin -
+	// so we replace any item quantity higher with "Lots" instead.
+	private static final int MAX_QUANTITY = 65535;
 	// Used when getting High Alchemy value - multiplied by general store price.
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 	// ItemID for coins
@@ -138,9 +145,13 @@ public class GroundItemsPlugin extends Plugin
 	@Inject
 	private GroundItemsOverlay overlay;
 
+	@Inject
+	private Notifier notifier;
+
 	@Getter
 	private final Map<GroundItem.GroundItemKey, GroundItem> collectedGroundItems = new LinkedHashMap<>();
 	private final Map<Integer, Color> priceChecks = new LinkedHashMap<>();
+	private final Map<Integer, ValueThreshold> thresholdChecks = new LinkedHashMap<>();
 	private LoadingCache<String, Boolean> highlightedItems;
 	private LoadingCache<String, Boolean> hiddenItems;
 
@@ -205,6 +216,13 @@ public class GroundItemsPlugin extends Plugin
 		if (existing != null)
 		{
 			existing.setQuantity(existing.getQuantity() + groundItem.getQuantity());
+		}
+
+		ValueThreshold valueThreshold = getThreshold(groundItem.getName(), groundItem.getGePrice(), groundItem.getHaPrice());
+		if (valueThreshold != null && valueThreshold.isGreaterThan(config
+			.notifierThreshold()))
+		{
+			notifyValuableItem(groundItem, valueThreshold);
 		}
 	}
 
@@ -302,30 +320,36 @@ public class GroundItemsPlugin extends Plugin
 
 		// Cache colors
 		priceChecks.clear();
+		thresholdChecks.clear();
 
 		if (config.insaneValuePrice() > 0)
 		{
 			priceChecks.put(config.insaneValuePrice(), config.insaneValueColor());
+			thresholdChecks.put(config.insaneValuePrice(), ValueThreshold.INSANE);
 		}
 
 		if (config.highValuePrice() > 0)
 		{
 			priceChecks.put(config.highValuePrice(), config.highValueColor());
+			thresholdChecks.put(config.highValuePrice(), ValueThreshold.HIGH);
 		}
 
 		if (config.mediumValuePrice() > 0)
 		{
 			priceChecks.put(config.mediumValuePrice(), config.mediumValueColor());
+			thresholdChecks.put(config.mediumValuePrice(), ValueThreshold.MEDIUM);
 		}
 
 		if (config.lowValuePrice() > 0)
 		{
 			priceChecks.put(config.lowValuePrice(), config.lowValueColor());
+			thresholdChecks.put(config.lowValuePrice(), ValueThreshold.LOW);
 		}
 
 		if (config.getHighlightOverValue() > 0)
 		{
 			priceChecks.put(config.getHighlightOverValue(), config.highlightedColor());
+			thresholdChecks.put(config.getHighlightOverValue(), ValueThreshold.HIGHLIGHTED);
 		}
 	}
 
@@ -476,6 +500,25 @@ public class GroundItemsPlugin extends Plugin
 		return config.defaultColor();
 	}
 
+	private ValueThreshold getThreshold(String itemName, int gePrice, int haPrice)
+	{
+		final ValueThreshold valueThreshold = (getHighlighted(itemName, gePrice, haPrice) == config.highlightedColor())
+			? ValueThreshold.HIGHLIGHTED : null;
+
+		if (valueThreshold == null)
+		{
+			for (Map.Entry<Integer, ValueThreshold> entry : thresholdChecks.entrySet())
+			{
+				if (gePrice > entry.getKey() || haPrice > entry.getKey())
+				{
+					return entry.getValue();
+				}
+			}
+		}
+
+		return valueThreshold;
+	}
+
 	@Subscribe
 	public void onFocusChanged(FocusChanged focusChanged)
 	{
@@ -483,5 +526,52 @@ public class GroundItemsPlugin extends Plugin
 		{
 			setHotKeyPressed(false);
 		}
+	}
+
+	private void notifyValuableItem(GroundItem item, ValueThreshold threshold)
+	{
+		final Player local = client.getLocalPlayer();
+		final StringBuilder notificationStringBuilder = new StringBuilder()
+			.append("[")
+			.append(local.getName())
+			.append("] received ");
+
+		if (threshold == ValueThreshold.INSANE)
+		{
+			notificationStringBuilder.append("an ");
+		}
+		else
+		{
+			notificationStringBuilder.append("a ");
+		}
+
+		notificationStringBuilder.append(threshold);
+
+		if (threshold != ValueThreshold.HIGHLIGHTED)
+		{
+			notificationStringBuilder.append(" value");
+		}
+
+		notificationStringBuilder.append(" drop: ")
+			.append(item.getName());
+
+		if (item.getQuantity() > 1)
+		{
+			notificationStringBuilder.append(" x ").append(item.getQuantity());
+
+			if (item.getQuantity() >= MAX_QUANTITY)
+			{
+				notificationStringBuilder.append(" (Lots!)");
+			}
+			else
+			{
+				notificationStringBuilder.append(" (")
+					.append(StackFormatter.quantityToStackSize(item.getQuantity()))
+					.append(")");
+			}
+		}
+
+		notificationStringBuilder.append("!");
+		notifier.notify(notificationStringBuilder.toString());
 	}
 }

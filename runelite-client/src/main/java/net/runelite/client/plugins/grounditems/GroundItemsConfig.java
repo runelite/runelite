@@ -32,6 +32,7 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
+import net.runelite.client.plugins.grounditems.config.ValueThreshold;
 
 @ConfigGroup("grounditems")
 public interface GroundItemsConfig extends Config
@@ -301,5 +302,16 @@ public interface GroundItemsConfig extends Config
 	default int insaneValuePrice()
 	{
 		return 10000000;
+	}
+
+	@ConfigItem(
+		keyName = "notifierThreshold",
+		name = "Notification threshold",
+		description = "Configures the threshold for valuable item notifications",
+		position = 23
+	)
+	default ValueThreshold notifierThreshold()
+	{
+		return ValueThreshold.OFF;
 	}
 }
