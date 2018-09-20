@@ -230,6 +230,26 @@ public class ItemManager
 	}
 
 	/**
+	 * Get an item's un-noted, un-placeholdered ID
+	 */
+	public int canonicalize(int itemID)
+	{
+		ItemComposition itemComposition = getItemComposition(itemID);
+		
+		if (itemComposition.getNote() != -1)
+		{
+			return itemComposition.getLinkedNoteId();
+		}
+
+		if (itemComposition.getPlaceholderTemplateId() != -1)
+		{
+			return itemComposition.getPlaceholderId();
+		}
+
+		return itemID;
+	}
+
+	/**
 	 * Loads item sprite from game, makes transparent, and generates image
 	 *
 	 * @param itemId

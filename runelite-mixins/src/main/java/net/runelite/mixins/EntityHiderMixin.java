@@ -77,12 +77,25 @@ public abstract class EntityHiderMixin implements RSScene
 	private static boolean hideProjectiles;
 
 	@Copy("addEntityMarker")
-	abstract boolean addEntityMarker(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, RSRenderable renderable, int var10, boolean var11, long var12, int var13);
+	abstract boolean addEntityMarker(int var1, int var2, int var3, int var4, int var5, int x, int y, int var8, RSRenderable renderable, int var10, boolean var11, long var12, int var13);
 
 	@Replace("addEntityMarker")
-	boolean rl$addEntityMarker(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, RSRenderable renderable, int var10, boolean var11, long var12, int var13)
+	boolean rl$addEntityMarker(int var1, int var2, int var3, int var4, int var5, int x, int y, int var8, RSRenderable renderable, int var10, boolean var11, long var12, int var13)
 	{
-		return shouldDraw(renderable, false) && addEntityMarker(var1, var2, var3, var4, var5, var6, var7, var8, renderable, var10, var11, var12, var13);
+		final boolean shouldDraw = shouldDraw(renderable, false);
+
+		if (!shouldDraw)
+		{
+			final int tileX = x >> 7;
+			final int tileY = y >> 7;
+			/*
+			 * Set the 'occupied' tick to -1, to reset the tile being 'occupied',
+			 * making the game think an entity hasn't been rendered at the location yet.
+			 */
+			client.getOccupiedTilesTick()[tileX][tileY] = -1;
+		}
+
+		return shouldDraw && addEntityMarker(var1, var2, var3, var4, var5, x, y, var8, renderable, var10, var11, var12, var13);
 	}
 
 	@Copy("draw2DExtras")

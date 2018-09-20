@@ -45,6 +45,12 @@ public class HiscoreClient
 	public HiscoreResult lookup(String username, HttpUrl endpoint) throws IOException
 	{
 		HiscoreResultBuilder resultBuilder = lookupUsername(username, endpoint);
+
+		if (resultBuilder == null)
+		{
+			return null;
+		}
+
 		return resultBuilder.build();
 	}
 
@@ -56,6 +62,12 @@ public class HiscoreClient
 	public SingleHiscoreSkillResult lookup(String username, HiscoreSkill skill, HiscoreEndpoint endpoint) throws IOException
 	{
 		HiscoreResultBuilder resultBuilder = lookupUsername(username, endpoint.getHiscoreURL());
+
+		if (resultBuilder == null)
+		{
+			return null;
+		}
+
 		HiscoreResult result = resultBuilder.build();
 
 		Skill requested = result.getSkill(skill);
@@ -92,7 +104,7 @@ public class HiscoreClient
 				switch (okresponse.code())
 				{
 					case 404:
-						throw new IllegalArgumentException();
+						return null;
 					default:
 						throw new IOException("Error retrieving data from Jagex Hiscores: " + okresponse.message());
 				}

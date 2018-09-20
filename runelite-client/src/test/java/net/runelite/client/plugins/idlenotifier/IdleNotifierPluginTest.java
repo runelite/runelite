@@ -231,8 +231,8 @@ public class IdleNotifierPluginTest
 	@Test
 	public void checkCombatLogoutIdle()
 	{
-        // Player is idle
-		when(client.getMouseLastPressedMillis()).thenReturn(System.currentTimeMillis() - 300_000L);
+		// Player is idle
+		when(client.getMouseIdleTicks()).thenReturn(80_000);
 
 		// But player is being damaged (is in combat)
 		final HitsplatApplied hitsplatApplied = new HitsplatApplied();
@@ -241,5 +241,19 @@ public class IdleNotifierPluginTest
 		plugin.onHitsplatApplied(hitsplatApplied);
 		plugin.onGameTick(new GameTick());
 		verify(notifier, times(0)).notify(any());
+	}
+
+	@Test
+	public void doubleNotifyOnMouseReset()
+	{
+		// Player is idle, but in combat so the idle packet is getting set repeatedly
+		// make sure we are not notifying
+
+		when(client.getKeyboardIdleTicks()).thenReturn(80_000);
+		when(client.getMouseIdleTicks()).thenReturn(14_500);
+
+		plugin.onGameTick(new GameTick());
+		plugin.onGameTick(new GameTick());
+		verify(notifier, times(1)).notify(any());
 	}
 }

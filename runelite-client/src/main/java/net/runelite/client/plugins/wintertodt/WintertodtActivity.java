@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2018, terminatusx <jbfleischman@gmail.com>
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
@@ -22,23 +23,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.wintertodt;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-/**
- * An enumeration of integer local variables.
- */
 @AllArgsConstructor
 @Getter
-public enum VarClientInt
+enum WintertodtActivity
 {
-	TOOLTIP_TIMEOUT(1),
+	IDLE("IDLE"),
+	WOODCUTTING("Woodcutting"),
+	FLETCHING("Fletching"),
+	FEEDING_BRAZIER("Feeding"),
+	FIXING_BRAZIER("Fixing"),
+	LIGHTING_BRAZIER("Lighting");
 
-	MEMBERSHIP_STATUS(103),
-
-	WORLD_MAP_SEARCH_FOCUSED(190);
-
-	private final int index;
+	private final String actionString;
 }

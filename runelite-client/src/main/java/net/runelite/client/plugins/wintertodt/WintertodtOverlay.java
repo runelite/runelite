@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, terminatusx <jbfleischman@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,83 +23,61 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fishing;
+package net.runelite.client.plugins.wintertodt;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.Skill;
-import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-class FishingOverlay extends Overlay
+class WintertodtOverlay extends Overlay
 {
-	private static final String FISHING_SPOT = "Fishing spot";
-
-	private final Client client;
-	private final FishingPlugin plugin;
-	private final FishingConfig config;
-	private final XpTrackerService xpTrackerService;
-
+	private final WintertodtPlugin plugin;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	public FishingOverlay(Client client, FishingPlugin plugin, FishingConfig config, XpTrackerService xpTrackerService)
+	private WintertodtOverlay(WintertodtPlugin plugin)
 	{
-		setPosition(OverlayPosition.TOP_LEFT);
-		this.client = client;
 		this.plugin = plugin;
-		this.config = config;
-		this.xpTrackerService = xpTrackerService;
+		setPosition(OverlayPosition.BOTTOM_LEFT);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showFishingStats() || plugin.getSession().getLastFishCaught() == null)
+		if (!plugin.isInWintertodt())
 		{
 			return null;
 		}
 
 		panelComponent.getChildren().clear();
-		if (client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().getName()
-			.contains(FISHING_SPOT))
-		{
-			panelComponent.getChildren().add(TitleComponent.builder()
-				.text("Fishing")
-				.color(Color.GREEN)
-				.build());
-		}
-		else
-		{
-			panelComponent.getChildren().add(TitleComponent.builder()
-				.text("NOT fishing")
-				.color(Color.RED)
-				.build());
-		}
+		panelComponent.setPreferredSize(new Dimension(150, 0));
 
-		int actions = xpTrackerService.getActions(Skill.FISHING);
-		if (actions > 0)
-		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Caught fish:")
-				.right(Integer.toString(actions))
-				.build());
+		panelComponent.getChildren().add(TitleComponent.builder()
+			.text(plugin.getCurrentActivity().getActionString())
+			.color(plugin.getCurrentActivity() == WintertodtActivity.IDLE ? Color.RED : Color.GREEN)
+			.build());
 
-			if (actions > 2)
-			{
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Fish/hr:")
-					.right(Integer.toString(xpTrackerService.getActionsHr(Skill.FISHING)))
-					.build());
-			}
-		}
+		String inventoryString = plugin.getNumLogs() > 0 ? plugin.getInventoryScore() + " (" + plugin.getTotalPotentialinventoryScore() + ") pts" : plugin.getInventoryScore() + " pts";
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Inventory:")
+			.leftColor(Color.WHITE)
+			.right(inventoryString)
+			.rightColor(plugin.getInventoryScore() > 0 ? Color.GREEN : Color.RED)
+			.build());
+
+		String kindlingString = plugin.getNumLogs() > 0 ? plugin.getNumKindling() + " (" + (plugin.getNumLogs() + plugin.getNumKindling()) + ")" : Integer.toString(plugin.getNumKindling());
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Kindling:")
+			.leftColor(Color.WHITE)
+			.right(kindlingString)
+			.rightColor(plugin.getNumKindling() + plugin.getNumLogs() > 0 ? Color.GREEN : Color.RED)
+			.build());
 
 		return panelComponent.render(graphics);
 	}

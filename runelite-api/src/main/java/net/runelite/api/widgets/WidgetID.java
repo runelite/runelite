@@ -119,11 +119,11 @@ public class WidgetID
 
 	static class WorldMap
 	{
-		static final int MAPVIEW = 3;
-		static final int OVERVIEW_MAP = 6;
-		static final int SEARCH = 21;
-		static final int SURFACE_SELECTOR = 29;
-		static final int TOOLTIP = 35;
+		static final int MAPVIEW = 4;
+		static final int OVERVIEW_MAP = 7;
+		static final int SEARCH = 22;
+		static final int SURFACE_SELECTOR = 30;
+		static final int TOOLTIP = 36;
 		static final int OPTION = 42;
 	}
 
@@ -274,7 +274,7 @@ public class WidgetID
 
 	static class LoginClickToPlayScreen
 	{
-		static final int MESSAGE_OF_THE_DAY = 3;
+		static final int MESSAGE_OF_THE_DAY = 4;
 	}
 
 	static class Viewport

@@ -536,6 +536,13 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		try
 		{
 			final SingleHiscoreSkillResult result = hiscoreClient.lookup(lookup.getName(), skill, lookup.getEndpoint());
+
+			if (result == null)
+			{
+				log.warn("unable to look up skill {} for {}: not found", skill, search);
+				return;
+			}
+
 			final Skill hiscoreSkill = result.getSkill();
 
 			final String response = new ChatMessageBuilder()
@@ -580,6 +587,12 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		try
 		{
 			HiscoreResult playerStats = hiscoreClient.lookup(player);
+
+			if (playerStats == null)
+			{
+				log.warn("Error fetching hiscore data: not found");
+				return;
+			}
 
 			int attack = playerStats.getAttack().getLevel();
 			int strength = playerStats.getStrength().getLevel();
@@ -650,6 +663,13 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		{
 			final Skill hiscoreSkill;
 			final HiscoreResult result = hiscoreClient.lookup(lookup.getName(), lookup.getEndpoint());
+
+			if (result == null)
+			{
+				log.warn("error looking up clues: not found");
+				return;
+			}
+
 			String level = search.toLowerCase();
 
 			switch (level)
