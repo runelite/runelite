@@ -28,12 +28,22 @@ package net.runelite.client.plugins.zoom;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+import java.awt.event.KeyEvent;
 import net.runelite.api.Client;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.FocusChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Keybind;
+import net.runelite.client.input.KeyListener;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.HotkeyListener;
 
 @PluginDescriptor(
 	name = "Camera Zoom",
@@ -48,6 +58,11 @@ public class ZoomPlugin extends Plugin
 
 	@Inject
 	private ZoomConfig zoomConfig;
+
+	@Inject
+	private KeyManager keyManager;
+
+	private boolean hotkeyDown;
 
 	@Provides
 	ZoomConfig getConfig(ConfigManager configManager)
@@ -117,21 +132,109 @@ public class ZoomPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		if (!zoomConfig.requireControlDown())
+		{
+			return;
+		}
+
+		if (!hotkeyDown)
+		{
+			updateControlZoom(false);
+		}
+		else
+		{
+			updateControlZoom(true);
+		}
+	}
+
+	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> Keybind.CTRL)
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			if (!zoomConfig.requireControlDown())
+			{
+				return;
+			}
+
+			hotkeyDown = true;
+			updateControlZoom(true);
+		}
+
+		@Override
+		public void hotkeyReleased()
+		{
+			if (!zoomConfig.requireControlDown())
+			{
+				return;
+			}
+
+			hotkeyDown = false;
+			updateControlZoom(false);
+		}
+	};
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (zoomConfig.requireControlDown() && !hotkeyDown)
+		{
+			updateControlZoom(false);
+		}
+	}
+
+
 	@Override
 	protected void startUp()
 	{
 		client.setCameraPitchRelaxerEnabled(zoomConfig.relaxCameraPitch());
+		keyManager.registerKeyListener(hotkeyListener);
+		updateControlZoom(!zoomConfig.requireControlDown());
 	}
 
 	@Override
 	protected void shutDown()
 	{
 		client.setCameraPitchRelaxerEnabled(false);
+		keyManager.unregisterKeyListener(hotkeyListener);
+		updateControlZoom(true);
+	}
+
+	private void updateControlZoom(Boolean value)
+	{
+		if (client.getWidget(WidgetInfo.SETTINGS_TAB_SCROLL_WHEEL_ICON) == null)
+		{
+			return;
+		}
+
+		client.getWidget(WidgetInfo.SETTINGS_TAB_SCROLL_WHEEL_INDICATOR).setHidden(value);
+		client.setVarbitValue(client.getVarps(), Varbits.SCROLL_WHEEL_ZOOM.getId(), value ? 0 : 1);
 	}
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged ev)
 	{
+		if (!zoomConfig.requireControlDown())
+		{
+			updateControlZoom(true);
+		}
+		else
+		{
+			updateControlZoom(false);
+		}
 		client.setCameraPitchRelaxerEnabled(zoomConfig.relaxCameraPitch());
+	}
+
+	@Subscribe
+	public void onFocusChanged(FocusChanged event)
+	{
+		hotkeyDown = false;
+		if (zoomConfig.requireControlDown())
+		{
+			updateControlZoom(false);
+		}
 	}
 }
