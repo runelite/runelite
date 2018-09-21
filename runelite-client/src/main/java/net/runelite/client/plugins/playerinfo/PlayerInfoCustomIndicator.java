@@ -41,7 +41,7 @@ public class PlayerInfoCustomIndicator extends InfoBox
 	@Override
 	public String getText()
 	{
-		switch(type)
+		switch (type)
 		{
 			case HEALTH:
 				return String.valueOf(client.getBoostedSkillLevel(Skill.HITPOINTS));
@@ -60,7 +60,7 @@ public class PlayerInfoCustomIndicator extends InfoBox
 	public Color getTextColor()
 	{
 		float currLvl = 0;
-		switch(type)
+		switch (type)
 		{
 			case HEALTH:
 				currLvl = client.getBoostedSkillLevel(Skill.HITPOINTS) / (float) client.getRealSkillLevel(Skill.HITPOINTS);
