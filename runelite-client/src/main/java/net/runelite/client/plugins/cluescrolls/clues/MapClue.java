@@ -200,4 +200,9 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 
 		return null;
 	}
+
+	public int[] getObjectIds()
+	{
+		return new int[] {objectId};
+	}
 }

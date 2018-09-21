@@ -219,4 +219,9 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 
 		return null;
 	}
+
+	public String[] getNpcs()
+	{
+		return new String[] {npc};
+	}
 }

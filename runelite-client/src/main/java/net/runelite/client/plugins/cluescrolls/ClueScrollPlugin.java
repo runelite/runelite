@@ -32,7 +32,6 @@ import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -80,11 +79,13 @@ import net.runelite.client.plugins.cluescrolls.clues.MapClue;
 import net.runelite.client.plugins.cluescrolls.clues.NpcClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ObjectClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.TextClueScroll;
+import net.runelite.client.plugins.cluescrolls.clues.ThreeStepCrypticClue;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QueryRunner;
 import net.runelite.client.util.Text;
+import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Clue Scroll",
@@ -179,9 +180,9 @@ public class ClueScrollPlugin extends Plugin
 			return;
 		}
 
-		if (clue instanceof LocationsClueScroll)
+		if (clue instanceof HotColdClue)
 		{
-			if (((LocationsClueScroll)clue).update(event.getMessage(), this))
+			if (((HotColdClue) clue).update(event.getMessage(), this))
 			{
 				worldMapPointsSet = false;
 			}
@@ -225,6 +226,12 @@ public class ClueScrollPlugin extends Plugin
 				resetClue();
 			}
 		}
+
+		// if three step clue check for clue scroll pieces
+		if (clue instanceof ThreeStepCrypticClue)
+		{
+			((ThreeStepCrypticClue) clue).checkForParts(client, event, itemManager);
+		}
 	}
 
 	@Subscribe
@@ -255,11 +262,41 @@ public class ClueScrollPlugin extends Plugin
 
 		if (clue instanceof LocationsClueScroll)
 		{
-			final List<WorldPoint> locations = ((LocationsClueScroll) clue).getLocations();
+			final WorldPoint[] locations = ((LocationsClueScroll) clue).getLocations();
 
-			if (!locations.isEmpty())
+			if (locations.length > 0)
 			{
-				addMapPoints(locations.toArray(new WorldPoint[locations.size()]));
+				addMapPoints(locations);
+			}
+
+			if (clue instanceof ObjectClueScroll)
+			{
+				int[] objectIds = ((ObjectClueScroll) clue).getObjectIds();
+
+				if (objectIds.length > 0)
+				{
+					for (WorldPoint location : locations)
+					{
+						final LocalPoint localLocation = LocalPoint.fromWorld(client, location);
+
+						if (localLocation != null)
+						{
+							final Scene scene = client.getScene();
+							final Tile[][][] tiles = scene.getTiles();
+							final Tile tile = tiles[client.getPlane()][localLocation.getSceneX()][localLocation.getSceneY()];
+
+							objectsToMark = Arrays.stream(tile.getGameObjects())
+								.filter(object -> object != null && ArrayUtils.contains(objectIds, object.getId()))
+								.toArray(GameObject[]::new);
+
+							// Set hint arrow to first object found as there can only be 1 hint arrow
+							if (config.displayHintArrows() && objectsToMark.length >= 1)
+							{
+								client.setHintArrow(objectsToMark[0].getWorldLocation());
+							}
+						}
+					}
+				}
 			}
 		}
 
@@ -282,11 +319,11 @@ public class ClueScrollPlugin extends Plugin
 
 		if (clue instanceof NpcClueScroll)
 		{
-			String npc = ((NpcClueScroll) clue).getNpc();
+			String[] npcs = ((NpcClueScroll) clue).getNpcs();
 
-			if (npc != null)
+			if (npcs.length > 0)
 			{
-				Query query = new NPCQuery().nameEquals(npc);
+				Query query = new NPCQuery().nameEquals(npcs);
 				npcsToMark = queryRunner.runQuery(query);
 
 				// Set hint arrow to first NPC found as there can only be 1 hint arrow
@@ -298,40 +335,6 @@ public class ClueScrollPlugin extends Plugin
 					}
 
 					addMapPoints(npcsToMark[0].getWorldLocation());
-				}
-			}
-		}
-
-		if (clue instanceof ObjectClueScroll)
-		{
-			final ObjectClueScroll objectClueScroll = (ObjectClueScroll) clue;
-			int objectId = objectClueScroll.getObjectId();
-
-			if (objectId != -1)
-			{
-				// Match object with location every time
-				final WorldPoint location = objectClueScroll.getLocation();
-
-				if (location != null)
-				{
-					final LocalPoint localLocation = LocalPoint.fromWorld(client, location);
-
-					if (localLocation != null)
-					{
-						final Scene scene = client.getScene();
-						final Tile[][][] tiles = scene.getTiles();
-						final Tile tile = tiles[client.getPlane()][localLocation.getSceneX()][localLocation.getSceneY()];
-
-						objectsToMark = Arrays.stream(tile.getGameObjects())
-							.filter(object -> object != null && object.getId() == objectId)
-							.toArray(GameObject[]::new);
-
-						// Set hint arrow to first object found as there can only be 1 hint arrow
-						if (config.displayHintArrows() && objectsToMark.length >= 1)
-						{
-							client.setHintArrow(objectsToMark[0].getWorldLocation());
-						}
-					}
 				}
 			}
 		}
@@ -508,6 +511,14 @@ public class ClueScrollPlugin extends Plugin
 				if (hotColdClue != null)
 				{
 					return hotColdClue;
+				}
+
+				// three step cryptic clues need unedited text to check which steps are already done
+				final ThreeStepCrypticClue threeStepCrypticClue = ThreeStepCrypticClue.forText(text, clueScrollText.getText());
+
+				if (threeStepCrypticClue != null)
+				{
+					return threeStepCrypticClue;
 				}
 
 				// We have unknown clue, reset
