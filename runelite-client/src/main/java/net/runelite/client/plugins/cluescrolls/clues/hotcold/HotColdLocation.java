@@ -51,7 +51,7 @@ import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.
 @Getter
 public enum HotColdLocation
 {
-	ASGARNIA_WARRIORS(new WorldPoint(2854, 3558, 0), ASGARNIA, "North of the Warriors' Guild in Burthorpe."),
+	ASGARNIA_WARRIORS(new WorldPoint(2860, 3562, 0), ASGARNIA, "North of the Warriors' Guild in Burthorpe."),
 	ASGARNIA_JATIX(new WorldPoint(2914, 3429, 0), ASGARNIA, "East of Jatix's Herblore Shop in Taverley."),
 	ASGARNIA_BARB(new WorldPoint(3036, 3439, 0), ASGARNIA, "West of Barbarian Village."),
 	ASGARNIA_MIAZRQA(new WorldPoint(2972, 3489, 0), ASGARNIA, "North of Miazrqa's tower, outside Goblin Village."),
