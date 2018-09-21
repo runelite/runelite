@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Cameron <https://github.com/noremac201>
+ * Copyright (c) 2018, Jacob M <https://github.com/jacoblairm>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,61 +24,51 @@
  */
 package net.runelite.client.plugins.barbarianassault;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
-public enum Calls
+class GameTimer
 {
-	//Attacker Calls
-	RED_EGG("Red egg", "Tell-red"),
-	GREEN_EGG("Green egg", "Tell-green"),
-	BLUE_EGG("Blue egg", "Tell-blue"),
-	//Collector Calls
-	CONTROLLED("Controlled/Bullet/Wind", "Tell-controlled"),
-	ACCURATE("Accurate/Field/Water", "Tell-accurate"),
-	AGGRESSIVE("Aggressive/Blunt/Earth", "Tell-aggressive"),
-	DEFENSIVE("Defensive/Barbed/Fire", "Tell-defensive"),
-	//Healer Calls
-	TOFU("Tofu", "Tell-tofu"),
-	CRACKERS("Crackers", "Tell-crackers"),
-	WORMS("Worms", "Tell-worms"),
-	//Defender Calls
-	POIS_WORMS("Pois. Worms", "Tell-worms"),
-	POIS_TOFU("Pois. Tofu", "Tell-tofu"),
-	POIS_MEAT("Pois. Meat", "Tell-meat");
+	final private Instant startTime = Instant.now();
+	private Instant prevWave = startTime;
 
-	private final String call;
-	private final String option;
-
-	private static final Map<String, String> CALL_MENU = new HashMap<>();
-
-	static
+	String getTime(boolean waveTime)
 	{
-		for (Calls s : values())
+		final Instant now = Instant.now();
+		final Duration elapsed;
+
+		if (waveTime)
 		{
-			CALL_MENU.put(s.getCall(), s.getOption());
+			elapsed = Duration.between(prevWave, now);
+		}
+		else
+		{
+			elapsed = Duration.between(startTime, now).minusMillis(600);
+		}
+
+		return formatTime(LocalTime.ofSecondOfDay(elapsed.getSeconds()));
+	}
+
+	void setWaveStartTime()
+	{
+		prevWave = Instant.now();
+	}
+
+	private static String formatTime(LocalTime time)
+	{
+		if (time.getHour() > 0)
+		{
+			return time.format(DateTimeFormatter.ofPattern("HH:mm"));
+		}
+		else if (time.getMinute() > 9)
+		{
+			return time.format(DateTimeFormatter.ofPattern("mm:ss"));
+		}
+		else
+		{
+			return time.format(DateTimeFormatter.ofPattern("m:ss"));
 		}
 	}
-
-	Calls(String call, String option)
-	{
-		this.call = call;
-		this.option = option;
-	}
-
-	public String getCall()
-	{
-		return call;
-	}
-
-	public String getOption()
-	{
-		return option;
-	}
-
-	public static String getOption(String call)
-	{
-		return CALL_MENU.get(call);
-	}
-
 }

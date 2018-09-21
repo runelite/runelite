@@ -79,6 +79,7 @@ public class WidgetID
 	public static final int BA_COLLECTOR_GROUP_ID = 486;
 	public static final int BA_DEFENDER_GROUP_ID = 487;
 	public static final int BA_HEALER_GROUP_ID = 488;
+	public static final int BA_REWARD_GROUP_ID = 497;
 	public static final int LEVEL_UP_GROUP_ID = 233;
 	public static final int DIALOG_SPRITE_GROUP_ID = 193;
 	public static final int QUEST_COMPLETED_GROUP_ID = 277;
@@ -521,6 +522,7 @@ public class WidgetID
 		static final int TO_CALL = 9;
 		static final int ROLE_SPRITE = 10;
 		static final int ROLE = 11;
+		static final int REWARD_TEXT = 57;
 	}
 
 	static class LevelUp
