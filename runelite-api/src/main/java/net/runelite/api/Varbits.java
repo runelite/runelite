@@ -172,6 +172,7 @@ public enum Varbits
 	 * Options
 	 */
 	SIDE_PANELS(4607),
+	SCROLL_WHEEL_ZOOM(6357),
 
 	/**
 	 * Herbiboar Trails

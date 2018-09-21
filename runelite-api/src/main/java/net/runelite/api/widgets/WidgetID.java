@@ -117,6 +117,7 @@ public class WidgetID
 	public static final int FOSSIL_ISLAND_OXYGENBAR_ID = 609;
 	public static final int MINIGAME_TAB_ID = 76;
 	public static final int SPELLBOOK_GROUP_ID = 218;
+	public static final int SETTINGS_TAB = 261;
 
 	static class WorldMap
 	{
@@ -678,5 +679,11 @@ public class WidgetID
 	static class ArceuusSpellBook
 	{
 		static final int ARCEUUS_HOME_TELEPORT = 145;
+	}
+
+	static class SettingsTab
+	{
+		static final int SCROLL_WHEEL_ZOOM_ICON = 5;
+		static final int SCROLL_WHEEL_ZOOM_INDICATOR = 6;
 	}
 }
