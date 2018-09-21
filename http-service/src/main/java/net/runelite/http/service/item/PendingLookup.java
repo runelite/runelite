@@ -32,8 +32,8 @@ class PendingLookup
 	enum Type
 	{
 		SEARCH,
-		ITEM;
-	}
+		ITEM
+    }
 
 	private final int itemId;
 	private final String search;

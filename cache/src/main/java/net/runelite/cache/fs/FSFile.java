@@ -68,12 +68,8 @@ public class FSFile
 		{
 			return false;
 		}
-		if (!Arrays.equals(this.contents, other.contents))
-		{
-			return false;
-		}
-		return true;
-	}
+        return Arrays.equals(this.contents, other.contents);
+    }
 
 	public int getFileId()
 	{

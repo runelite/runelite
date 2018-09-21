@@ -80,13 +80,11 @@ public class AreaLoader
 			int var3 = in.readUnsignedByte();
 			if ((var3 & 1) == 0)
 			{
-				;
-			}
+            }
 
 			if ((var3 & 2) == 2)
 			{
-				;
-			}
+            }
 		}
 		else if (opcode == 8)
 		{

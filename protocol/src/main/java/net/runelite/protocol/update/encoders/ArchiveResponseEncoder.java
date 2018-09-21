@@ -39,8 +39,7 @@ public class ArchiveResponseEncoder extends MessageToByteEncoder<ArchiveResponse
 	private static final int CHUNK_SIZE = 512;
 
 	@Override
-	protected void encode(ChannelHandlerContext ctx, ArchiveResponsePacket archiveResponse, ByteBuf out) throws Exception
-	{
+	protected void encode(ChannelHandlerContext ctx, ArchiveResponsePacket archiveResponse, ByteBuf out) {
 		// archive file header
 		// 1 byte index
 		// 2 byte archive

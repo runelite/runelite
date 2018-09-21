@@ -86,12 +86,8 @@ public class Skill
 		{
 			return false;
 		}
-		if (this.experience != other.experience)
-		{
-			return false;
-		}
-		return true;
-	}
+        return this.experience == other.experience;
+    }
 
 	@Override
 	public String toString()

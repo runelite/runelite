@@ -40,8 +40,8 @@ public class PanelComponent implements LayoutableRenderableEntity
 	public enum Orientation
 	{
 		HORIZONTAL,
-		VERTICAL;
-	}
+		VERTICAL
+    }
 
 	@Setter
 	@Nullable

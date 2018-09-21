@@ -61,13 +61,11 @@ public class CacheStorage implements Storage
 	}
 
 	@Override
-	public void init(Store store) throws IOException
-	{
+	public void init(Store store) {
 	}
 
 	@Override
-	public void close() throws IOException
-	{
+	public void close() {
 	}
 
 	@Override
@@ -102,8 +100,7 @@ public class CacheStorage implements Storage
 	}
 
 	@Override
-	public void save(Store store) throws IOException
-	{
+	public void save(Store store) {
 		for (Index index : store.getIndexes())
 		{
 			IndexEntry entry = cacheDao.createIndex(con, cacheEntry, index.getId(), index.getCrc(), index.getRevision());
@@ -130,14 +127,12 @@ public class CacheStorage implements Storage
 	}
 
 	@Override
-	public byte[] loadArchive(Archive archive) throws IOException
-	{
+	public byte[] loadArchive(Archive archive) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public void saveArchive(Archive archive, byte[] data) throws IOException
-	{
+	public void saveArchive(Archive archive, byte[] data) {
 		throw new UnsupportedOperationException();
 	}
 

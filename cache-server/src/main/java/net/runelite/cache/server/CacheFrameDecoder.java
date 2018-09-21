@@ -41,8 +41,7 @@ public class CacheFrameDecoder extends ByteToMessageDecoder
 	private static final Logger logger = LoggerFactory.getLogger(CacheFrameDecoder.class);
 
 	@Override
-	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception
-	{
+	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) {
 		in.markReaderIndex();
 		byte opcode = in.readByte();
 		in.resetReaderIndex();

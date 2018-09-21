@@ -96,8 +96,7 @@ public class CrystalMathLabs extends Plugin
 			}
 
 			@Override
-			public void onResponse(Call call, Response response) throws IOException
-			{
+			public void onResponse(Call call, Response response) {
 				response.close();
 			}
 		});

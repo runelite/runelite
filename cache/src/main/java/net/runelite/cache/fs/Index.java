@@ -83,12 +83,8 @@ public class Index
 		{
 			return false;
 		}
-		if (!Objects.equals(this.archives, other.archives))
-		{
-			return false;
-		}
-		return true;
-	}
+        return Objects.equals(this.archives, other.archives);
+    }
 
 	public int getId()
 	{

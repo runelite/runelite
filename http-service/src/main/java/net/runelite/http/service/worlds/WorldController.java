@@ -46,8 +46,7 @@ public class WorldController
 	private WorldResult worldResult;
 
 	@RequestMapping
-	public ResponseEntity<WorldResult> listWorlds() throws IOException
-	{
+	public ResponseEntity<WorldResult> listWorlds() {
 		return ResponseEntity.ok()
 			.cacheControl(CacheControl.maxAge(10, TimeUnit.MINUTES).cachePublic())
 			.body(worldResult);

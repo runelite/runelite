@@ -35,8 +35,7 @@ public class HandshakeResponseDecoder extends ByteToMessageDecoder
 {
 
 	@Override
-	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception
-	{
+	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) {
 		byte response = in.readByte();
 
 		HandshakeResponsePacket handshakeResponse = new HandshakeResponsePacket();

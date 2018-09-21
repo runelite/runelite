@@ -104,7 +104,7 @@ public class CacheServerTest
 		}
 	}
 
-	private void addInitialFilesToStore(Store store) throws FileNotFoundException, IOException
+	private void addInitialFilesToStore(Store store) throws IOException
 	{
 		Storage storage = store.getStorage();
 		Index index = store.addIndex(0);

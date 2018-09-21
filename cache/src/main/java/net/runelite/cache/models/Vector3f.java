@@ -64,12 +64,8 @@ public class Vector3f
 		{
 			return false;
 		}
-		if (Float.floatToIntBits(this.z) != Float.floatToIntBits(other.z))
-		{
-			return false;
-		}
-		return true;
-	}
+        return Float.floatToIntBits(this.z) == Float.floatToIntBits(other.z);
+    }
 
 	public float getX()
 	{

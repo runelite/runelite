@@ -106,8 +106,7 @@ public class Disassembler
 		return jumped;
 	}
 
-	public String disassemble(ScriptDefinition script) throws IOException
-	{
+	public String disassemble(ScriptDefinition script) {
 		int[] instructions = script.getInstructions();
 		int[] iops = script.getIntOperands();
 		String[] sops = script.getStringOperands();

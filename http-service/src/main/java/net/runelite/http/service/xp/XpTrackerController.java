@@ -48,8 +48,7 @@ public class XpTrackerController
 	}
 
 	@RequestMapping("/get")
-	public XpData get(@RequestParam String username, @RequestParam(required = false) Instant time) throws IOException
-	{
+	public XpData get(@RequestParam String username, @RequestParam(required = false) Instant time) {
 		if (time == null)
 		{
 			time = Instant.now();

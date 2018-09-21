@@ -34,8 +34,7 @@ public class EncryptionDecoder extends ByteToMessageDecoder
 {
 
 	@Override
-	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception
-	{
+	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) {
 		if (in.getByte(in.readerIndex()) != UpdateOpcodes.ENCRYPTION)
 		{
 			ctx.fireChannelRead(in.retain());

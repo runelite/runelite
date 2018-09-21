@@ -88,8 +88,7 @@ class Rasterizer2D
 
 		for (var1 += 7; var0 < var1; graphicsPixels[var0++] = 0)
 		{
-			;
-		}
+        }
 
 	}
 

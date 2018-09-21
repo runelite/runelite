@@ -667,12 +667,8 @@ public class HiscoreResult
 		{
 			return false;
 		}
-		if (!Objects.equals(this.clueScrollMaster, other.clueScrollMaster))
-		{
-			return false;
-		}
-		return true;
-	}
+        return Objects.equals(this.clueScrollMaster, other.clueScrollMaster);
+    }
 
 	@Override
 	public String toString()

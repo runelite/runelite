@@ -28,5 +28,5 @@ enum SolvedState
 {
 	NO_DATA,
 	INCOMPLETE,
-	COMPLETE;
+	COMPLETE
 }

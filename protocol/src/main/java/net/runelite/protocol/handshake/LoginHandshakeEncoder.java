@@ -33,8 +33,7 @@ import net.runelite.protocol.api.handshake.LoginHandshakePacket;
 public class LoginHandshakeEncoder extends MessageToByteEncoder<LoginHandshakePacket>
 {
 	@Override
-	protected void encode(ChannelHandlerContext ctx, LoginHandshakePacket packet, ByteBuf buf) throws Exception
-	{
+	protected void encode(ChannelHandlerContext ctx, LoginHandshakePacket packet, ByteBuf buf) {
 		buf.writeByte(HandshakeType.LOGIN.getValue());
 	}
 

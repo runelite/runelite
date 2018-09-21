@@ -32,8 +32,7 @@ import java.util.List;
 public class LoggedInDecoder extends ByteToMessageDecoder
 {
 	@Override
-	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> list) throws Exception
-	{
+	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> list) {
 		if (in.getByte(in.readerIndex()) != UpdateOpcodes.CLIENT_LOGGED_IN)
 		{
 			ctx.fireChannelRead(in.retain());

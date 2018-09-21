@@ -49,8 +49,7 @@ public class IndexMojo extends AbstractMojo
 	private File indexFile;
 
 	@Override
-	public void execute() throws MojoExecutionException, MojoFailureException
-	{
+	public void execute() throws MojoExecutionException {
 		try (DataOutputStream fout = new DataOutputStream(new FileOutputStream(indexFile)))
 		{
 			for (File indexFolder : archiveOverlayDirectory.listFiles())

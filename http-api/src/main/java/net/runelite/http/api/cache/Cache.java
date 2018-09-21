@@ -80,12 +80,8 @@ public class Cache
 		{
 			return false;
 		}
-		if (!Objects.equals(this.date, other.date))
-		{
-			return false;
-		}
-		return true;
-	}
+        return Objects.equals(this.date, other.date);
+    }
 
 	public int getId()
 	{

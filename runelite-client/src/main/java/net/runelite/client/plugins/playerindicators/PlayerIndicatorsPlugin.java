@@ -58,6 +58,9 @@ public class PlayerIndicatorsPlugin extends Plugin
 	private PlayerIndicatorsOverlay playerIndicatorsOverlay;
 
 	@Inject
+	private FriendMinimapOverlay friendMinimapOverlay;
+
+	@Inject
 	private PlayerIndicatorsTileOverlay playerIndicatorsTileOverlay;
 
 	@Inject
@@ -81,6 +84,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 		overlayManager.add(playerIndicatorsOverlay);
 		overlayManager.add(playerIndicatorsTileOverlay);
 		overlayManager.add(playerIndicatorsMinimapOverlay);
+		overlayManager.add(friendMinimapOverlay);
 	}
 
 	@Override
@@ -89,6 +93,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 		overlayManager.remove(playerIndicatorsOverlay);
 		overlayManager.remove(playerIndicatorsTileOverlay);
 		overlayManager.remove(playerIndicatorsMinimapOverlay);
+		overlayManager.remove(friendMinimapOverlay);
 	}
 
 	@Subscribe

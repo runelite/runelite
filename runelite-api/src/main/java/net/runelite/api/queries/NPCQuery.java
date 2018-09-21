@@ -58,6 +58,6 @@ public class NPCQuery extends ActorQuery<NPC, NPCQuery>
 			}
 			return false;
 		});
-		return (NPCQuery) this;
+		return this;
 	}
 }

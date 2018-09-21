@@ -38,8 +38,7 @@ public class ArchiveResponseHandler extends SimpleChannelInboundHandler<ArchiveR
 	}
 
 	@Override
-	protected void channelRead0(ChannelHandlerContext ctx, ArchiveResponsePacket archiveResponse) throws Exception
-	{
+	protected void channelRead0(ChannelHandlerContext ctx, ArchiveResponsePacket archiveResponse) {
 		client.onFileFinish(archiveResponse.getIndex(),
 			archiveResponse.getArchive(),
 			archiveResponse.getData());

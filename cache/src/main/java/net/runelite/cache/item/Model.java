@@ -286,14 +286,7 @@ class Model extends Renderable
 						if ((var10 - var11) * (modelViewportXs[var9] - modelViewportXs[var27]) - (var12 - var11) * (modelViewportXs[var7] - modelViewportXs[var27]) > 0)
 						{
 							field1885[var26] = false;
-							if (var10 >= 0 && var11 >= 0 && var12 >= 0 && var10 <= graphics.rasterClipX && var11 <= graphics.rasterClipX && var12 <= graphics.rasterClipX)
-							{
-								field1887[var26] = false;
-							}
-							else
-							{
-								field1887[var26] = true;
-							}
+                            field1887[var26] = var10 < 0 || var11 < 0 || var12 < 0 || var10 > graphics.rasterClipX || var11 > graphics.rasterClipX || var12 > graphics.rasterClipX;
 
 							var13 = (modelViewportZs[var7] + modelViewportZs[var27] + modelViewportZs[var9]) / 3 + this.radius;
 							field1868[var13][field1871[var13]++] = var26;

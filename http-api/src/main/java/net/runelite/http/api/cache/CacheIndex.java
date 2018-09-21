@@ -66,12 +66,8 @@ public class CacheIndex
 		{
 			return false;
 		}
-		if (this.revision != other.revision)
-		{
-			return false;
-		}
-		return true;
-	}
+        return this.revision == other.revision;
+    }
 
 	public int getIndexId()
 	{

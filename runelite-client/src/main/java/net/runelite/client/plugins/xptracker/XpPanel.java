@@ -146,7 +146,7 @@ class XpPanel extends PluginPanel
 				infoBoxes.put(skill, new XpInfoBox(xpTrackerPlugin, client, infoBoxPanel, skill, iconManager));
 			}
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
 			log.warn(null, e);
 		}
