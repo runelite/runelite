@@ -67,7 +67,7 @@ class SkillCalculator extends JPanel
 
 	private UICombinedActionSlot combinedActionSlot = new UICombinedActionSlot();
 	private ArrayList<UIActionSlot> combinedActionSlots = new ArrayList<>();
-	private final List<BonusCheckBox> bonusCheckBoxes = new ArrayList<>();
+	private final List<JCheckBox> bonusCheckBoxes = new ArrayList<>();
 
 	private int currentLevel = 1;
 	private int currentXP = Experience.getXpForLevel(currentLevel);
@@ -193,7 +193,7 @@ class SkillCalculator extends JPanel
 	{
 		JPanel uiOption = new JPanel(new BorderLayout());
 		JLabel uiLabel = new JLabel(bonus.getName());
-		BonusCheckBox uiCheckbox = new BonusCheckBox();
+		JCheckBox uiCheckbox = new JCheckBox();
 
 		uiLabel.setForeground(Color.WHITE);
 		uiLabel.setFont(FontManager.getRunescapeSmallFont());
@@ -202,43 +202,32 @@ class SkillCalculator extends JPanel
 		uiOption.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		// Adjust XP bonus depending on check-state of the boxes.
-		uiCheckbox.addActionListener(event -> adjustCheckboxes(uiCheckbox));
+		uiCheckbox.addActionListener(event -> adjustCheckboxes(uiCheckbox, bonus));
 
 		uiCheckbox.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
 
 		uiOption.add(uiLabel, BorderLayout.WEST);
 		uiOption.add(uiCheckbox, BorderLayout.EAST);
-
-		uiCheckbox.setBonus(bonus);
 		bonusCheckBoxes.add(uiCheckbox);
 
 		return uiOption;
 	}
 
-	private void adjustCheckboxes(BonusCheckBox target)
+	private void adjustCheckboxes(JCheckBox target, SkillDataBonus bonus)
 	{
-		adjustAllExcept(target);
-		adjustXPBonus(target.isSelected(), target.getBonus().getValue());
-	}
-
-	/**
-	 * Adjusts and deselects all <b>other</b> checkboxes
-	 * contained within {@link SkillCalculator#bonusCheckBoxes}
-	 * except the checkbox provided as the parameter
-	 *
-	 * @param except The checkbox to keep unchanged
-	 */
-	private void adjustAllExcept(JCheckBox except)
-	{
-		bonusCheckBoxes.stream()
-			.filter(checkbox -> checkbox != except)
-			.filter(JCheckBox::isSelected)
-			.forEach(otherSelectedCheckbox ->
+		adjustXPBonus(0);
+		bonusCheckBoxes.forEach(otherSelectedCheckbox ->
+		{
+			if (otherSelectedCheckbox != target)
 			{
 				otherSelectedCheckbox.setSelected(false);
-				adjustXPBonus(false,
-					otherSelectedCheckbox.getBonus().getValue());
-			});
+			}
+		});
+
+		if (target.isSelected())
+		{
+			adjustXPBonus(bonus.getValue());
+		}
 	}
 
 	private void renderActionSlots()
@@ -326,9 +315,9 @@ class SkillCalculator extends JPanel
 		calculate();
 	}
 
-	private void adjustXPBonus(boolean addBonus, float value)
+	private void adjustXPBonus(float value)
 	{
-		xpFactor += addBonus ? value : -value;
+		xpFactor = 1f + value;
 		calculate();
 	}
 
