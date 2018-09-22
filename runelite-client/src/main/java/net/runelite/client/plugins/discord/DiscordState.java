@@ -45,7 +45,7 @@ class DiscordState
 	private class EventWithTime
 	{
 		private final DiscordGameEventType type;
-		private final Instant start;
+		private Instant start;
 		private Instant updated;
 	}
 
@@ -87,7 +87,13 @@ class DiscordState
 		}
 		else
 		{
-			event = new EventWithTime(eventType, Instant.now());
+			event = new EventWithTime(eventType);
+
+			if (config.showElapsedTime())
+			{
+				event.start = Instant.now();
+			}
+
 			events.add(event);
 		}
 
