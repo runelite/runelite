@@ -79,7 +79,7 @@ public enum HotColdLocation
 	FELDIP_HILLS_CW_BALLOON(new WorldPoint(2452, 3108, 0), FELDIP_HILLS, "Directly west of the Castle Wars balloon."),
 	FREMENNIK_PROVINCE_MTN_CAMP(new WorldPoint(2804, 3672, 0), FREMENNIK_PROVINCE, "At the Mountain Camp."),
 	FREMENNIK_PROVINCE_RELLEKKA_HUNTER(new WorldPoint(2724, 3783, 0), FREMENNIK_PROVINCE, "At the Rellekka Hunter area, near the icon."),
-	FREMENNIK_PROVINCE_KELGADRIM_ENTRANCE(new WorldPoint(2719, 3688, 0), FREMENNIK_PROVINCE, "West of the Keldagrim entrance mine."),
+	FREMENNIK_PROVINCE_KELGADRIM_ENTRANCE(new WorldPoint(2712, 3689, 0), FREMENNIK_PROVINCE, "West of the Keldagrim entrance mine."),
 	FREMENNIK_PROVINCE_SW(new WorldPoint(2605, 3648, 0), FREMENNIK_PROVINCE, "Outside the fence in the south-western corner of Rellekka."),
 	FREMENNIK_PROVINCE_LIGHTHOUSE(new WorldPoint(2589, 3598, 0), FREMENNIK_PROVINCE, "South-east of the Lighthouse."),
 	FREMENNIK_PROVINCE_ETCETERIA_CASTLE(new WorldPoint(2614, 3867, 0), FREMENNIK_PROVINCE, "Inside Etceteria's castle, in the southern staircase."),
