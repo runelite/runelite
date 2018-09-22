@@ -104,6 +104,7 @@ public class DevToolsPlugin extends Plugin
 	private boolean toggleCamera;
 	private boolean toggleWorldMapLocation;
 	private boolean toggleTileLocation;
+	private boolean toggleInteracting;
 
 	Widget currentWidget;
 	int itemIndex = -1;
@@ -355,6 +356,11 @@ public class DevToolsPlugin extends Plugin
 		toggleTileLocation = !toggleTileLocation;
 	}
 
+	void toggleInteracting()
+	{
+		toggleInteracting = !toggleInteracting;
+	}
+
 	boolean isTogglePlayers()
 	{
 		return togglePlayers;
@@ -443,5 +449,10 @@ public class DevToolsPlugin extends Plugin
 	boolean isToggleTileLocation()
 	{
 		return toggleTileLocation;
+	}
+
+	boolean isToggleInteracting()
+	{
+		return toggleInteracting;
 	}
 }
