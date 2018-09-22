@@ -82,13 +82,13 @@ public interface CannonConfig extends Config
 		return true;
 	}
 
-    @ConfigItem(
-            keyName = "requireCannon",
-            name = "Require cannon for spots",
-            description = "Configures whether cannon in inventory is required to show spots or not"
-    )
-    default boolean requireCannon()
-    {
-        return true;
-    }
+	@ConfigItem(
+		keyName = "requireCannon",
+		name = "Require cannon for spots",
+		description = "Configures whether cannon in inventory is required to show spots or not"
+	)
+	default boolean requireCannon()
+	{
+		return true;
+	}
 }
