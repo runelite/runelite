@@ -29,11 +29,13 @@ import com.google.common.base.Strings;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -41,15 +43,16 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
+import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
 
 class LootTrackerBox extends JPanel
 {
 	private static final int ITEMS_PER_ROW = 5;
-	private static final Color IGNORED_ITEM_BG = new Color(65, 35, 35);
 
 	private final JPanel itemContainer = new JPanel();
 	private final JLabel priceLabel = new JLabel();
@@ -228,7 +231,24 @@ class LootTrackerBox extends JPanel
 				imageLabel.setToolTipText(buildToolTip(item));
 				imageLabel.setVerticalAlignment(SwingConstants.CENTER);
 				imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-				itemManager.getImage(item.getId(), item.getQuantity(), item.getQuantity() > 1).addTo(imageLabel);
+
+				AsyncBufferedImage itemImage = itemManager.getImage(item.getId(), item.getQuantity(), item.getQuantity() > 1);
+
+				if (item.isIgnored())
+				{
+					Runnable addTransparency = () ->
+					{
+						BufferedImage transparentImage = ImageUtil.alphaOffset(itemImage, .3f);
+						imageLabel.setIcon(new ImageIcon(transparentImage));
+					};
+					itemImage.onChanged(addTransparency);
+					addTransparency.run();
+				}
+				else
+				{
+					itemImage.addTo(imageLabel);
+				}
+
 				slotContainer.add(imageLabel);
 
 				// Create popup menu
@@ -244,11 +264,6 @@ class LootTrackerBox extends JPanel
 				});
 
 				popupMenu.add(toggle);
-
-				if (item.isIgnored())
-				{
-					slotContainer.setBackground(IGNORED_ITEM_BG);
-				}
 			}
 
 			itemContainer.add(slotContainer);
