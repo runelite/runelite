@@ -76,13 +76,13 @@ class LootTrackerBox extends JPanel
 
 		logTitle.add(titleLabel, BorderLayout.WEST);
 
-		// If we have subtitle, add it
+		subTitleLabel.setFont(FontManager.getRunescapeSmallFont());
+		subTitleLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+		logTitle.add(subTitleLabel, BorderLayout.CENTER);
+
 		if (!Strings.isNullOrEmpty(subtitle))
 		{
 			subTitleLabel.setText(subtitle);
-			subTitleLabel.setFont(FontManager.getRunescapeSmallFont());
-			subTitleLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
-			logTitle.add(subTitleLabel, BorderLayout.CENTER);
 		}
 
 		priceLabel.setFont(FontManager.getRunescapeSmallFont());
