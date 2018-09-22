@@ -373,6 +373,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("claim-slime", option, target, true);
 			}
 
+			if(config.swapTempleTrekking())
+			{
+				swap("escort", option, target, true);
+			}
+
 			if (config.swapTravel())
 			{
 				swap("travel", option, target, true);
@@ -429,6 +434,18 @@ public class MenuEntrySwapperPlugin extends Plugin
 					break;
 				case FRIENDS_HOUSE:
 					swap("friend's house", option, target, true);
+					break;
+			}
+		}
+		else if (config.swapLarryBoat() != LarryBoatMode.TRAVEL && option.equals("travel"))
+		{
+			switch (config.swapLarryBoat())
+			{
+				case ICEBERG:
+					swap("iceberg", option, target, true);
+					break;
+				case WEISS:
+					swap("weiss", option, target, true);
 					break;
 			}
 		}
@@ -489,6 +506,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapBirdhouseEmpty() && option.equals("interact") && target.contains("birdhouse"))
 		{
 			swap("empty", option, target, true);
+		}
+		else if (config.swapWildernessLever() && target.equals("lever") && option.equals("ardougne"))
+		{
+			swap("edgeville", option, target, true);
 		}
 	}
 
