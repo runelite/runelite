@@ -24,12 +24,11 @@
  */
 package net.runelite.client.plugins.puzzlesolver;
 
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.widgets.Widget;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
@@ -89,9 +88,13 @@ enum SecurityStrongholdAnswer
 			for (Widget child : parent.getDynamicChildren())
 			{
 				if (child == null)
+				{
 					continue;
+				}
 				if (MATCHES.contains(child.getText()))
+				{
 					return child;
+				}
 			}
 		}
 

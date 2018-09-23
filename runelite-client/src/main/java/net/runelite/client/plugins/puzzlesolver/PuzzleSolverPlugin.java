@@ -27,6 +27,9 @@ package net.runelite.client.plugins.puzzlesolver;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.Color;
+import java.util.Arrays;
+import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.GameTick;
@@ -35,24 +38,31 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
+import static net.runelite.api.widgets.WidgetInfo.LIGHT_BOX_BUTTON_A;
+import static net.runelite.api.widgets.WidgetInfo.LIGHT_BOX_BUTTON_B;
+import static net.runelite.api.widgets.WidgetInfo.LIGHT_BOX_BUTTON_C;
+import static net.runelite.api.widgets.WidgetInfo.LIGHT_BOX_BUTTON_D;
+import static net.runelite.api.widgets.WidgetInfo.LIGHT_BOX_BUTTON_E;
+import static net.runelite.api.widgets.WidgetInfo.LIGHT_BOX_BUTTON_F;
+import static net.runelite.api.widgets.WidgetInfo.LIGHT_BOX_BUTTON_G;
+import static net.runelite.api.widgets.WidgetInfo.LIGHT_BOX_BUTTON_H;
+import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.puzzlesolver.lightbox.*;
+import net.runelite.client.plugins.puzzlesolver.lightbox.Combination;
+import net.runelite.client.plugins.puzzlesolver.lightbox.LightBox;
+import net.runelite.client.plugins.puzzlesolver.lightbox.LightboxSolution;
+import net.runelite.client.plugins.puzzlesolver.lightbox.LightboxSolver;
+import net.runelite.client.plugins.puzzlesolver.lightbox.LightboxState;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
-import javax.inject.Inject;
-import java.awt.*;
-import java.util.Arrays;
-
-import static net.runelite.api.widgets.WidgetInfo.*;
-
 @PluginDescriptor(
-		name = "Puzzle Solver",
-		description = "Show you where to click to solve puzzle boxes",
-		tags = {"clues", "scrolls", "overlay"}
+	name = "Puzzle Solver",
+	description = "Show you where to click to solve puzzle boxes",
+	tags = {"clues", "scrolls", "overlay"}
 )
 @Slf4j
 public class PuzzleSolverPlugin extends Plugin
@@ -109,11 +119,11 @@ public class PuzzleSolverPlugin extends Plugin
 				}
 
 				final Widget answerWidget = VarrockMuseumAnswer.findCorrect(
-						client,
-						questionWidget.getText(),
-						WidgetInfo.VARROCK_MUSEUM_FIRST_ANSWER,
-						WidgetInfo.VARROCK_MUSEUM_SECOND_ANSWER,
-						WidgetInfo.VARROCK_MUSEUM_THIRD_ANSWER);
+					client,
+					questionWidget.getText(),
+					WidgetInfo.VARROCK_MUSEUM_FIRST_ANSWER,
+					WidgetInfo.VARROCK_MUSEUM_SECOND_ANSWER,
+					WidgetInfo.VARROCK_MUSEUM_THIRD_ANSWER);
 
 				if (answerWidget == null)
 				{
@@ -148,7 +158,9 @@ public class PuzzleSolverPlugin extends Plugin
 	{
 		int widgetId = menuOptionClicked.getWidgetId();
 		if (TO_GROUP(widgetId) != WidgetID.LIGHT_BOX_GROUP_ID)
+		{
 			return;
+		}
 
 		Combination combination;
 		if (widgetId == LIGHT_BOX_BUTTON_A.getId())
@@ -180,6 +192,7 @@ public class PuzzleSolverPlugin extends Plugin
 			combination = Combination.G;
 		}
 		else if (widgetId == LIGHT_BOX_BUTTON_H.getId())
+
 		{
 			combination = Combination.H;
 		}
@@ -211,7 +224,7 @@ public class PuzzleSolverPlugin extends Plugin
 				final String answerText = strongholdAnswerWidget.getText();
 				if (answerText.equals(Text.removeTags(answerText)))
 				{
-					strongholdAnswerWidget.setText(ColorUtil.wrapWithColorTag(answerText, CORRECT_MUSEUM_PUZZLE_ANSWER_COLOR));
+					strongholdAnswerWidget.setText(ColorUtil.wrapWithColorTag(answerText, CORRECT_SECURITY_STRONGHOLD_ANSWER_COLOR));
 				}
 			}
 			securityStrongholdWidget = null;
