@@ -29,9 +29,6 @@ import net.runelite.mapping.Import;
 
 public interface RSWidget extends Widget
 {
-	@Import("dynamicValues")
-	int[][] getDynamicValues();
-
 	@Import("children")
 	@Override
 	RSWidget[] getChildren();
@@ -87,10 +84,10 @@ public interface RSWidget extends Widget
 	@Import("text")
 	String getRSText();
 
-	@Import("opBase")
+	@Import("name")
 	String getRSName();
 
-	@Import("opBase")
+	@Import("name")
 	void setRSName(String name);
 
 	@Import("text")
@@ -218,16 +215,29 @@ public interface RSWidget extends Widget
 	@Override
 	void setSpriteId(int spriteId);
 
-	@Import("borderThickness")
-	int getBorderThickness();
+	@Import("borderType")
+	@Override
+	int getBorderType();
+
+	@Import("borderType")
+	@Override
+	void setBorderType(int type);
 
 	@Import("itemId")
 	@Override
 	int getItemId();
 
+	@Import("itemId")
+	@Override
+	void setItemId(int itemId);
+
 	@Import("itemQuantity")
 	@Override
 	int getItemQuantity();
+
+	@Import("itemQuantity")
+	@Override
+	void setItemQuantity(int quantity);
 
 	@Import("originalX")
 	@Override
@@ -261,27 +271,17 @@ public interface RSWidget extends Widget
 	@Override
 	void setOriginalWidth(int originalWidth);
 
-	@Import("paddingX")
-	@Override
-	int getPaddingX();
+	@Import("xPitch")
+	int getXPitch();
 
-	@Import("paddingX")
-	@Override
-	void setPaddingX(int paddingX);
-
-	@Import("paddingY")
-	@Override
-	int getPaddingY();
-
-	@Import("paddingY")
-	@Override
-	void setPaddingY(int paddingY);
+	@Import("yPitch")
+	int getYPitch();
 
 	void broadcastHidden(boolean hidden);
 
 	@Import("onOpListener")
 	@Override
-	void setOnOpListener(Object ...args);
+	void setOnOpListener(Object... args);
 
 	@Import("setAction")
 	@Override
@@ -305,4 +305,20 @@ public interface RSWidget extends Widget
 	@Import("onKeyListener")
 	@Override
 	Object[] getOnKeyListener();
+
+	@Import("fontId")
+	@Override
+	int getFontId();
+
+	@Import("fontId")
+	@Override
+	void setFontId(int id);
+
+	@Import("textShadowed")
+	@Override
+	boolean getTextShadowed();
+
+	@Import("textShadowed")
+	@Override
+	void setTextShadowed(boolean shadowed);
 }

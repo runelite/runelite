@@ -36,9 +36,9 @@ import net.runelite.api.Point;
  * <p>
  * Examples of Widgets include:
  * <ul>
- *     <li>The fairy ring configuration selector</li>
- *     <li>The mini-map</li>
- *     <li>The bank inventory</li>
+ * <li>The fairy ring configuration selector</li>
+ * <li>The mini-map</li>
+ * <li>The bank inventory</li>
  * </ul>
  * <p>
  * For a more complete idea of what is classified as a widget, see {@link WidgetID}.
@@ -332,7 +332,7 @@ public interface Widget
 	 *
 	 * @param index index of the item
 	 * @return the widget item at index, or null if an item at index
-	 * 		   does not exist
+	 * does not exist
 	 */
 	WidgetItem getWidgetItem(int index);
 
@@ -344,11 +344,25 @@ public interface Widget
 	int getItemId();
 
 	/**
+	 * Sets the item ID displayed by the widget.
+	 *
+	 * @param itemId the item ID
+	 */
+	void setItemId(int itemId);
+
+	/**
 	 * Gets the quantity of the item displayed by the widget.
 	 *
 	 * @return the item quantity
 	 */
 	int getItemQuantity();
+
+	/**
+	 * Sets the item quantity displayed by the widget.
+	 *
+	 * @param quantity the quantity of the item
+	 */
+	void setItemQuantity(int quantity);
 
 	/**
 	 * Checks whether or not the drawn area of this widget contains
@@ -456,34 +470,6 @@ public interface Widget
 	void setOriginalWidth(int originalWidth);
 
 	/**
-	 * Gets the additional x-axis padding.
-	 *
-	 * @return the x-axis padding
-	 */
-	int getPaddingX();
-
-	/**
-	 * Sets the x-axis padding.
-	 *
-	 * @param paddingX the new padding
-	 */
-	void setPaddingX(int paddingX);
-
-	/**
-	 * Gets the additional y-axis padding.
-	 *
-	 * @return the y-axis padding
-	 */
-	int getPaddingY();
-
-	/**
-	 * Sets the y-axis padding.
-	 *
-	 * @param paddingY the new padding
-	 */
-	void setPaddingY(int paddingY);
-
-	/**
 	 * Gets the actions available on the widget.
 	 *
 	 * @return the actions
@@ -501,7 +487,7 @@ public interface Widget
 	/**
 	 * Creates a menu action on the widget
 	 *
-	 * @param index The index of the menu
+	 * @param index  The index of the menu
 	 * @param action The string to be displayed next to the widget's name in the context menu
 	 */
 	void setAction(int index, String action);
@@ -512,7 +498,7 @@ public interface Widget
 	 *
 	 * @param args A ScriptID, then the args for the script
 	 */
-	void setOnOpListener(Object ...args);
+	void setOnOpListener(Object... args);
 
 	/**
 	 * If this widget has any listeners on it
@@ -540,4 +526,37 @@ public interface Widget
 	void revalidateScroll();
 
 	Object[] getOnKeyListener();
+
+	/**
+	 * Returns the archive id of the font used
+	 */
+	int getFontId();
+
+	/**
+	 * Sets the archive id of the font
+	 */
+	void setFontId(int id);
+
+	/**
+	 * Returns the border type of item/sprite on the widget
+	 * 0 - No border
+	 * 1 - 1px black border
+	 * 2 - 1px black under 1px white border (selected item)
+	 */
+	int getBorderType();
+
+	/**
+	 * @see #getBorderType
+	 */
+	void setBorderType(int thickness);
+
+	/**
+	 * Returns if text is shadowed
+	 */
+	boolean getTextShadowed();
+
+	/**
+	 * Sets if text should be shadowed
+	 */
+	void setTextShadowed(boolean shadowed);
 }

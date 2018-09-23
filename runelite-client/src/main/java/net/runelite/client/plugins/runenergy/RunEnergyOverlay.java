@@ -43,13 +43,15 @@ class RunEnergyOverlay extends Overlay
 {
 	private final RunEnergyPlugin plugin;
 	private final Client client;
+	private final RunEnergyConfig config;
 	private final TooltipManager tooltipManager;
 
 	@Inject
-	private RunEnergyOverlay(final RunEnergyPlugin plugin, final Client client, final TooltipManager tooltipManager)
+	private RunEnergyOverlay(final RunEnergyPlugin plugin, final Client client, final RunEnergyConfig config, final TooltipManager tooltipManager)
 	{
 		this.plugin = plugin;
 		this.client = client;
+		this.config = config;
 		this.tooltipManager = tooltipManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
@@ -60,7 +62,7 @@ class RunEnergyOverlay extends Overlay
 	{
 		final Widget runOrb = client.getWidget(WidgetInfo.MINIMAP_TOGGLE_RUN_ORB);
 
-		if (runOrb == null)
+		if (runOrb == null || runOrb.isHidden())
 		{
 			return null;
 		}
@@ -77,8 +79,16 @@ class RunEnergyOverlay extends Overlay
 		if (bounds.contains(mousePosition.getX(), mousePosition.getY()))
 		{
 			StringBuilder sb = new StringBuilder();
-			sb.append("Weight: ").append(client.getWeight()).append(" kg</br>")
-				.append("Run Time Remaining: ").append(plugin.getEstimatedRunTimeRemaining(false));
+			sb.append("Weight: ").append(client.getWeight()).append(" kg</br>");
+
+			if (config.replaceOrbText())
+			{
+				sb.append("Run Energy: ").append(client.getEnergy()).append("%");
+			}
+			else
+			{
+				sb.append("Run Time Remaining: ").append(plugin.getEstimatedRunTimeRemaining(false));
+			}
 
 			int secondsUntil100 = plugin.getEstimatedRecoverTimeRemaining();
 			if (secondsUntil100 > 0)

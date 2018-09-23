@@ -33,6 +33,17 @@ public interface TimersConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
+		keyName = "showHomeMinigameTeleports",
+		name = "Teleport cooldown timers",
+		description = "Configures whether timers for home and minigame teleport cooldowns are displayed"
+	)
+	default boolean showHomeMinigameTeleports()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 1,
 		keyName = "showAntipoison",
 		name = "Antipoison timer",
 		description = "Configures whether Antipoison timer is displayed"
@@ -43,7 +54,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 1,
+		position = 2,
 		keyName = "showSuperantipoison",
 		name = "Superantipoison timer",
 		description = "Configures whether Superantipoison timer is displayed"
@@ -54,7 +65,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
+		position = 3,
 		keyName = "showAntidotePlus",
 		name = "Antidote+ timer",
 		description = "Configures whether antidote+ timer is displayed"
@@ -65,7 +76,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 4,
 		keyName = "showAntidotePlusPlus",
 		name = "Antidote++ timer",
 		description = "Configures whether antidote++ timer is displayed"
@@ -76,7 +87,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 5,
 		keyName = "showSanfew",
 		name = "Sanfew serum timer",
 		description = "Configures whether sanfew serum timer is displayed"
@@ -87,7 +98,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 6,
 		keyName = "showAntiVenom",
 		name = "Anti-venom timer",
 		description = "Configures whether antivenom timer is displayed"
@@ -98,7 +109,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 7,
 		keyName = "showAntiVenomPlus",
 		name = "Anti-venom+ timer",
 		description = "Configures whether anti venom+ timer is displayed"
@@ -109,7 +120,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 8,
 		keyName = "showAntiFire",
 		name = "Antifire timer",
 		description = "Configures whether antifire timer is displayed"
@@ -120,7 +131,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 9,
 		keyName = "showExAntiFire",
 		name = "Extended antifire timer",
 		description = "Configures whether extended antifire timer is displayed"
@@ -131,7 +142,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 10,
 		keyName = "showSuperAntiFire",
 		name = "Super antifire timer",
 		description = "Configures whether super antifire timer is displayed"
@@ -142,7 +153,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
+		position = 11,
 		keyName = "showExSuperAntifire",
 		name = "Extended super antifire timer",
 		description = "Configures whether extended super antifire timer is displayed"
@@ -153,7 +164,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 12,
 		keyName = "showStamina",
 		name = "Stamina timer",
 		description = "Configures whether stamina timer is displayed"
@@ -164,7 +175,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 13,
 		keyName = "showOverload",
 		name = "Overload timer",
 		description = "Configures whether overload timer is displayed"
@@ -175,7 +186,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+		position = 14,
 		keyName = "showPrayerEnhance",
 		name = "Prayer enhance timer",
 		description = "Configures whether prayer enhance timer is displayed"
@@ -186,7 +197,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+		position = 15,
 		keyName = "showCannon",
 		name = "Cannon timer",
 		description = "Configures whether cannon timer is displayed"
@@ -197,7 +208,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
+		position = 16,
 		keyName = "showMagicImbue",
 		name = "Magic imbue timer",
 		description = "Configures whether magic imbue timer is displayed"
@@ -208,7 +219,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 16,
+		position = 17,
 		keyName = "showCharge",
 		name = "Charge timer",
 		description = "Configures whether to show a timer for the Charge spell"
@@ -219,7 +230,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 17,
+		position = 18,
 		keyName = "showImbuedHeart",
 		name = "Imbued heart timer",
 		description = "Configures whether imbued heart timer is displayed"
@@ -230,7 +241,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 18,
+		position = 19,
 		keyName = "showVengeance",
 		name = "Vengeance timer",
 		description = "Configures whether vengeance timer is displayed"
@@ -241,7 +252,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 19,
+		position = 20,
 		keyName = "showVengeanceOther",
 		name = "Vengeance Other timer",
 		description = "Configures whether vengeance other timer is displayed"
@@ -252,7 +263,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 20,
+		position = 21,
 		keyName = "showTeleblock",
 		name = "Teleblock timer",
 		description = "Configures whether teleblock timer is displayed"
@@ -263,7 +274,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 21,
+		position = 22,
 		keyName = "showFreezes",
 		name = "Freeze timer",
 		description = "Configures whether freeze timer is displayed"
@@ -274,7 +285,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 22,
+		position = 23,
 		keyName = "showGodWarsAltar",
 		name = "God wars altar timer",
 		description = "Configures whether god wars altar timer is displayed"
@@ -285,7 +296,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 23,
+		position = 24,
 		keyName = "showStaffOfTheDead",
 		name = "Staff of the Dead timer",
 		description = "Configures whether staff of the dead timer is displayed"
@@ -296,7 +307,7 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 24,
+		position = 25,
 		keyName = "showAbyssalSireStun",
 		name = "Abyssal Sire Stun Timer",
 		description = "Configures whether Abyssal Sire stun timer is displayed"

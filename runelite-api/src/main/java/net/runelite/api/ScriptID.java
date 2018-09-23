@@ -55,6 +55,15 @@ public final class ScriptID
 	public static final int CLOSE_CHATBOX_INPUT = 299;
 
 	/**
+	 * Updates the Diary/Quest interface's scrollbar
+	 * <ul>
+	 * <li> int (boolean) Reset scroll position </li>
+	 * <li> int Number of lines </li>
+	 * </ul>
+	 */
+	public static final int DIARY_QUEST_UPDATE_LINECOUNT = 2523;
+
+	/**
 	 * Initializes the chatbox input to use RuneLite callbacks
 	 * <ul>
 	 * <li> String  Prompt text </li>

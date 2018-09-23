@@ -33,6 +33,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 
+/**
+ * Used for getting game objects in view,deprecated as of existence of GameObject spawn events
+ *
+ * @see net.runelite.api.events.GameObjectSpawned
+ * @see net.runelite.api.events.GameObjectDespawned
+ * @see net.runelite.api.events.GameObjectChanged
+ */
+@Deprecated
 public class GameObjectQuery extends TileObjectQuery<GameObject, GameObjectQuery>
 {
 	@Override

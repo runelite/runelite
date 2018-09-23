@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2018, Unmoon <https://github.com/Unmoon>
+ * Copyright (c) 2018, terminatusx <jbfleischman@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,58 +23,61 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.tithefarm;
+package net.runelite.client.plugins.wintertodt;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.Varbits;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
-class TitheFarmSackOverlay extends Overlay
+class WintertodtOverlay extends Overlay
 {
-	private final Client client;
-	private final TitheFarmPluginConfig config;
+	private final WintertodtPlugin plugin;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	TitheFarmSackOverlay(Client client, TitheFarmPluginConfig config)
+	private WintertodtOverlay(WintertodtPlugin plugin)
 	{
-		setPosition(OverlayPosition.TOP_LEFT);
-		this.client = client;
-		this.config = config;
+		this.plugin = plugin;
+		setPosition(OverlayPosition.BOTTOM_LEFT);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Widget sack = client.getWidget(WidgetInfo.TITHE_FARM);
-		if (sack == null)
+		if (!plugin.isInWintertodt())
 		{
 			return null;
 		}
 
 		panelComponent.getChildren().clear();
-		sack.setHidden(true);
+		panelComponent.setPreferredSize(new Dimension(150, 0));
 
-		if (config.showSack())
-		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Fruits in sack:")
-				.right(String.valueOf(client.getVar(Varbits.TITHE_FARM_SACK_AMOUNT)))
-				.build());
+		panelComponent.getChildren().add(TitleComponent.builder()
+			.text(plugin.getCurrentActivity().getActionString())
+			.color(plugin.getCurrentActivity() == WintertodtActivity.IDLE ? Color.RED : Color.GREEN)
+			.build());
 
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Points:")
-				.right(String.valueOf(client.getVar(Varbits.TITHE_FARM_POINTS)))
-				.build());
-		}
+		String inventoryString = plugin.getNumLogs() > 0 ? plugin.getInventoryScore() + " (" + plugin.getTotalPotentialinventoryScore() + ") pts" : plugin.getInventoryScore() + " pts";
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Inventory:")
+			.leftColor(Color.WHITE)
+			.right(inventoryString)
+			.rightColor(plugin.getInventoryScore() > 0 ? Color.GREEN : Color.RED)
+			.build());
+
+		String kindlingString = plugin.getNumLogs() > 0 ? plugin.getNumKindling() + " (" + (plugin.getNumLogs() + plugin.getNumKindling()) + ")" : Integer.toString(plugin.getNumKindling());
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Kindling:")
+			.leftColor(Color.WHITE)
+			.right(kindlingString)
+			.rightColor(plugin.getNumKindling() + plugin.getNumLogs() > 0 ? Color.GREEN : Color.RED)
+			.build());
 
 		return panelComponent.render(graphics);
 	}

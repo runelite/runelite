@@ -51,7 +51,7 @@ import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.
 @Getter
 public enum HotColdLocation
 {
-	ASGARNIA_WARRIORS(new WorldPoint(2854, 3558, 0), ASGARNIA, "North of the Warriors' Guild in Burthorpe."),
+	ASGARNIA_WARRIORS(new WorldPoint(2860, 3562, 0), ASGARNIA, "North of the Warriors' Guild in Burthorpe."),
 	ASGARNIA_JATIX(new WorldPoint(2914, 3429, 0), ASGARNIA, "East of Jatix's Herblore Shop in Taverley."),
 	ASGARNIA_BARB(new WorldPoint(3036, 3439, 0), ASGARNIA, "West of Barbarian Village."),
 	ASGARNIA_MIAZRQA(new WorldPoint(2972, 3489, 0), ASGARNIA, "North of Miazrqa's tower, outside Goblin Village."),
@@ -79,7 +79,7 @@ public enum HotColdLocation
 	FELDIP_HILLS_CW_BALLOON(new WorldPoint(2452, 3108, 0), FELDIP_HILLS, "Directly west of the Castle Wars balloon."),
 	FREMENNIK_PROVINCE_MTN_CAMP(new WorldPoint(2804, 3672, 0), FREMENNIK_PROVINCE, "At the Mountain Camp."),
 	FREMENNIK_PROVINCE_RELLEKKA_HUNTER(new WorldPoint(2724, 3783, 0), FREMENNIK_PROVINCE, "At the Rellekka Hunter area, near the icon."),
-	FREMENNIK_PROVINCE_KELGADRIM_ENTRANCE(new WorldPoint(2719, 3688, 0), FREMENNIK_PROVINCE, "West of the Keldagrim entrance mine."),
+	FREMENNIK_PROVINCE_KELGADRIM_ENTRANCE(new WorldPoint(2712, 3689, 0), FREMENNIK_PROVINCE, "West of the Keldagrim entrance mine."),
 	FREMENNIK_PROVINCE_SW(new WorldPoint(2605, 3648, 0), FREMENNIK_PROVINCE, "Outside the fence in the south-western corner of Rellekka."),
 	FREMENNIK_PROVINCE_LIGHTHOUSE(new WorldPoint(2589, 3598, 0), FREMENNIK_PROVINCE, "South-east of the Lighthouse."),
 	FREMENNIK_PROVINCE_ETCETERIA_CASTLE(new WorldPoint(2614, 3867, 0), FREMENNIK_PROVINCE, "Inside Etceteria's castle, in the southern staircase."),
@@ -136,7 +136,7 @@ public enum HotColdLocation
 	WESTERN_PROVINCE_PISCATORIS_HUNTER_AREA(new WorldPoint(2361, 3566, 0), WESTERN_PROVINCE, "Eastern part of Piscatoris Hunter area, south-west of the Falconry."),
 	WESTERN_PROVINCE_ARANDAR(new WorldPoint(2366, 3318, 0), WESTERN_PROVINCE, "South-west of the crystal gate to Arandar."),
 	WESTERN_PROVINCE_ELF_CAMP_EAST(new WorldPoint(2270, 3244, 0), WESTERN_PROVINCE, "East of Elf Camp."),
-	WESTERN_PROVINCE_ELF_CAMP_NW(new WorldPoint(2171, 3280, 0), WESTERN_PROVINCE, "North-west of Elf Camp."),
+	WESTERN_PROVINCE_ELF_CAMP_NW(new WorldPoint(2174, 3280, 0), WESTERN_PROVINCE, "North-west of Elf Camp."),
 	WESTERN_PROVINCE_LLETYA(new WorldPoint(2335, 3166, 0), WESTERN_PROVINCE, "In Lletya."),
 	WESTERN_PROVINCE_TYRAS(new WorldPoint(2204, 3157, 0), WESTERN_PROVINCE, "Near Tyras Camp."),
 	WESTERN_PROVINCE_ZULANDRA(new WorldPoint(2196, 3057, 0), WESTERN_PROVINCE, "The northern house at Zul-Andra."),

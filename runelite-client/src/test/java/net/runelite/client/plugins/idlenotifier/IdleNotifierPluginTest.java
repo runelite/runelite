@@ -31,12 +31,14 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Hitsplat;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.Notifier;
 import org.junit.Before;
@@ -102,6 +104,7 @@ public class IdleNotifierPluginTest
 		when(client.getLocalPlayer()).thenReturn(player);
 
 		// Mock config
+		when(config.logoutIdle()).thenReturn(true);
 		when(config.animationIdle()).thenReturn(true);
 		when(config.combatIdle()).thenReturn(true);
 		when(config.getIdleNotificationDelay()).thenReturn(0);
@@ -110,7 +113,8 @@ public class IdleNotifierPluginTest
 
 		// Mock client
 		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
-		when(client.getMouseIdleTicks()).thenReturn(42);
+		when(client.getKeyboardIdleTicks()).thenReturn(42);
+		when(client.getMouseLastPressedMillis()).thenReturn(System.currentTimeMillis() - 100_000L);
 	}
 
 	@Test
@@ -222,5 +226,34 @@ public class IdleNotifierPluginTest
 		plugin.onInteractingChanged(new InteractingChanged(player, null));
 		plugin.onGameTick(new GameTick());
 		verify(notifier, times(0)).notify(any());
+	}
+
+	@Test
+	public void checkCombatLogoutIdle()
+	{
+		// Player is idle
+		when(client.getMouseIdleTicks()).thenReturn(80_000);
+
+		// But player is being damaged (is in combat)
+		final HitsplatApplied hitsplatApplied = new HitsplatApplied();
+		hitsplatApplied.setActor(player);
+		hitsplatApplied.setHitsplat(new Hitsplat(Hitsplat.HitsplatType.DAMAGE, 0, 0));
+		plugin.onHitsplatApplied(hitsplatApplied);
+		plugin.onGameTick(new GameTick());
+		verify(notifier, times(0)).notify(any());
+	}
+
+	@Test
+	public void doubleNotifyOnMouseReset()
+	{
+		// Player is idle, but in combat so the idle packet is getting set repeatedly
+		// make sure we are not notifying
+
+		when(client.getKeyboardIdleTicks()).thenReturn(80_000);
+		when(client.getMouseIdleTicks()).thenReturn(14_500);
+
+		plugin.onGameTick(new GameTick());
+		plugin.onGameTick(new GameTick());
+		verify(notifier, times(1)).notify(any());
 	}
 }

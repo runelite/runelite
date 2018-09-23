@@ -227,6 +227,10 @@ class FarmingWorld
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.HOPS)
 		));
 
+		add(new FarmingRegion("Weiss", 11325,
+			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.HERB)
+		));
+
 		// Finalize
 		this.regions = Collections.unmodifiableMap(regions);
 		Map<Tab, Set<FarmingPatch>> umtabs = new TreeMap<>();

@@ -99,21 +99,10 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "Center orbs",
-		name = "Center orbs",
-		description = "Where to center the xp orbs around",
-		position = 6
-	)
-	default OrbCentering centerOrbs()
-	{
-		return OrbCentering.DYNAMIC;
-	}
-
-	@ConfigItem(
 		keyName = "Orb duration",
 		name = "Duration of orbs",
 		description = "Change the duration the xp orbs are visible",
-		position = 7
+		position = 6
 	)
 	default int xpOrbDuration()
 	{

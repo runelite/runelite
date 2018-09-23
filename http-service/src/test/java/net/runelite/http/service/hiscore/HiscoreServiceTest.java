@@ -91,7 +91,7 @@ public class HiscoreServiceTest
 	{
 		HiscoreTestService hiscores = new HiscoreTestService(server.url("/"));
 
-		HiscoreResult result = hiscores.lookupUsername("zezima", HiscoreEndpoint.NORMAL).build();
+		HiscoreResult result = hiscores.lookupUsername("zezima", HiscoreEndpoint.NORMAL.getHiscoreURL());
 
 		Assert.assertEquals(50, result.getAttack().getLevel());
 		Assert.assertEquals(159727L, result.getFishing().getExperience());

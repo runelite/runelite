@@ -24,12 +24,12 @@
  */
 package net.runelite.client.ui.overlay.worldmap;
 
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import javax.inject.Inject;
@@ -70,7 +70,7 @@ public class WorldMapOverlay extends Overlay
 		this.worldMapPointManager = worldMapPointManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGHEST);
-		setLayer(OverlayLayer.ALWAYS_ON_TOP);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		mouseManager.registerMouseListener(worldMapOverlayMouseListener);
 	}
 
@@ -91,6 +91,8 @@ public class WorldMapOverlay extends Overlay
 		}
 
 		final Rectangle worldMapRectangle = widget.getBounds();
+		final Area mapViewArea = getWorldMapClipArea(worldMapRectangle);
+		final Area canvasViewArea = getWorldMapClipArea(client.getCanvas().getBounds());
 		WorldMapPoint tooltipPoint = null;
 
 		for (WorldMapPoint worldPoint : points)
@@ -110,8 +112,7 @@ public class WorldMapOverlay extends Overlay
 
 				if (worldPoint.isSnapToEdge())
 				{
-					Canvas canvas = client.getCanvas();
-					graphics.setClip(0, 0, canvas.getWidth(), canvas.getHeight());
+					graphics.setClip(canvasViewArea);
 
 					if (worldMapRectangle.contains(drawPoint.getX(), drawPoint.getY()))
 					{
@@ -133,7 +134,7 @@ public class WorldMapOverlay extends Overlay
 				}
 				else
 				{
-					graphics.setClip(worldMapRectangle);
+					graphics.setClip(mapViewArea);
 				}
 
 				int drawX = drawPoint.getX();
@@ -216,6 +217,33 @@ public class WorldMapOverlay extends Overlay
 		return null;
 	}
 
+	/**
+	 * Gets a clip area which excludes the area of widgets which overlay the world map.
+	 *
+	 * @param baseRectangle The base area to clip from
+	 * @return              An {@link Area} representing <code>baseRectangle</code>, with the area
+	 *                      of visible widgets overlaying the world map clipped from it.
+	 */
+	private Area getWorldMapClipArea(Rectangle baseRectangle)
+	{
+		final Widget overview = client.getWidget(WidgetInfo.WORLD_MAP_OVERVIEW_MAP);
+		final Widget surfaceSelector = client.getWidget(WidgetInfo.WORLD_MAP_SURFACE_SELECTOR);
+
+		Area clipArea = new Area(baseRectangle);
+
+		if (overview != null && !overview.isHidden())
+		{
+			clipArea.subtract(new Area(overview.getBounds()));
+		}
+
+		if (surfaceSelector != null && !surfaceSelector.isHidden())
+		{
+			clipArea.subtract(new Area(surfaceSelector.getBounds()));
+		}
+
+		return clipArea;
+	}
+
 	private void drawTooltip(Graphics2D graphics, WorldMapPoint worldPoint)
 	{
 		String tooltip = worldPoint.getTooltip();
@@ -227,7 +255,7 @@ public class WorldMapOverlay extends Overlay
 
 		drawPoint = new Point(drawPoint.getX() + TOOLTIP_OFFSET_WIDTH, drawPoint.getY() + TOOLTIP_OFFSET_HEIGHT);
 
-		graphics.setClip(0, 0, client.getCanvas().getWidth(), client.getCanvas().getHeight());
+		graphics.setClip(client.getCanvas().getBounds());
 		graphics.setColor(TOOLTIP_BACKGROUND);
 		graphics.setFont(FontManager.getRunescapeFont());
 		FontMetrics fm = graphics.getFontMetrics();

@@ -67,6 +67,7 @@ class SkillCalculator extends JPanel
 
 	private UICombinedActionSlot combinedActionSlot = new UICombinedActionSlot();
 	private ArrayList<UIActionSlot> combinedActionSlots = new ArrayList<>();
+	private final List<JCheckBox> bonusCheckBoxes = new ArrayList<>();
 
 	private int currentLevel = 1;
 	private int currentXP = Experience.getXpForLevel(currentLevel);
@@ -151,10 +152,15 @@ class SkillCalculator extends JPanel
 		double xp = 0;
 
 		for (UIActionSlot slot : combinedActionSlots)
+		{
 			xp += slot.getValue();
+		}
 
 		if (neededXP > 0)
+		{
+			assert xp != 0;
 			actionCount = (int) Math.ceil(neededXP / xp);
+		}
 
 		combinedActionSlot.setText(formatXPActionString(xp, actionCount, "exp - "));
 	}
@@ -162,7 +168,9 @@ class SkillCalculator extends JPanel
 	private void clearCombinedSlots()
 	{
 		for (UIActionSlot slot : combinedActionSlots)
+		{
 			slot.setSelected(false);
+		}
 
 		combinedActionSlots.clear();
 	}
@@ -173,26 +181,52 @@ class SkillCalculator extends JPanel
 		{
 			for (SkillDataBonus bonus : skillData.getBonuses())
 			{
-				JPanel uiOption = new JPanel(new BorderLayout());
-				JLabel uiLabel = new JLabel(bonus.getName());
-				JCheckBox uiCheckbox = new JCheckBox();
+				JPanel checkboxPanel = buildCheckboxPanel(bonus);
 
-				uiLabel.setForeground(Color.WHITE);
-				uiLabel.setFont(FontManager.getRunescapeSmallFont());
-
-				uiOption.setBorder(BorderFactory.createEmptyBorder(3, 7, 3, 0));
-				uiOption.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-
-				// Adjust XP bonus depending on check-state of the boxes.
-				uiCheckbox.addActionListener(e -> adjustXPBonus(uiCheckbox.isSelected(), bonus.getValue()));
-				uiCheckbox.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
-
-				uiOption.add(uiLabel, BorderLayout.WEST);
-				uiOption.add(uiCheckbox, BorderLayout.EAST);
-
-				add(uiOption);
+				add(checkboxPanel);
 				add(Box.createRigidArea(new Dimension(0, 5)));
 			}
+		}
+	}
+
+	private JPanel buildCheckboxPanel(SkillDataBonus bonus)
+	{
+		JPanel uiOption = new JPanel(new BorderLayout());
+		JLabel uiLabel = new JLabel(bonus.getName());
+		JCheckBox uiCheckbox = new JCheckBox();
+
+		uiLabel.setForeground(Color.WHITE);
+		uiLabel.setFont(FontManager.getRunescapeSmallFont());
+
+		uiOption.setBorder(BorderFactory.createEmptyBorder(3, 7, 3, 0));
+		uiOption.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
+		// Adjust XP bonus depending on check-state of the boxes.
+		uiCheckbox.addActionListener(event -> adjustCheckboxes(uiCheckbox, bonus));
+
+		uiCheckbox.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+
+		uiOption.add(uiLabel, BorderLayout.WEST);
+		uiOption.add(uiCheckbox, BorderLayout.EAST);
+		bonusCheckBoxes.add(uiCheckbox);
+
+		return uiOption;
+	}
+
+	private void adjustCheckboxes(JCheckBox target, SkillDataBonus bonus)
+	{
+		adjustXPBonus(0);
+		bonusCheckBoxes.forEach(otherSelectedCheckbox ->
+		{
+			if (otherSelectedCheckbox != target)
+			{
+				otherSelectedCheckbox.setSelected(false);
+			}
+		});
+
+		if (target.isSelected())
+		{
+			adjustXPBonus(bonus.getValue());
 		}
 	}
 
@@ -214,12 +248,18 @@ class SkillCalculator extends JPanel
 				public void mousePressed(MouseEvent e)
 				{
 					if (!e.isShiftDown())
+					{
 						clearCombinedSlots();
+					}
 
 					if (slot.isSelected())
+					{
 						combinedActionSlots.remove(slot);
+					}
 					else
+					{
 						combinedActionSlots.add(slot);
+					}
 
 					slot.setSelected(!slot.isSelected());
 					updateCombinedAction();
@@ -242,7 +282,9 @@ class SkillCalculator extends JPanel
 			double xp = (action.isIgnoreBonus()) ? action.getXp() : action.getXp() * xpFactor;
 
 			if (neededXP > 0)
+			{
 				actionCount = (int) Math.ceil(neededXP / xp);
+			}
 
 			slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
 			slot.setAvailable(currentLevel >= action.getLevel());
@@ -273,9 +315,9 @@ class SkillCalculator extends JPanel
 		calculate();
 	}
 
-	private void adjustXPBonus(boolean addBonus, float value)
+	private void adjustXPBonus(float value)
 	{
-		xpFactor += addBonus ? value : -value;
+		xpFactor = 1f + value;
 		calculate();
 	}
 

@@ -70,7 +70,7 @@ import net.runelite.client.events.PluginChanged;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.task.ScheduledMethod;
 import net.runelite.client.task.Scheduler;
-import net.runelite.client.util.SceneTileManager;
+import net.runelite.client.util.GameEventManager;
 
 @Singleton
 @Slf4j
@@ -86,7 +86,7 @@ public class PluginManager
 	private final Scheduler scheduler;
 	private final ConfigManager configManager;
 	private final ScheduledExecutorService executor;
-	private final Provider<SceneTileManager> sceneTileManager;
+	private final Provider<GameEventManager> sceneTileManager;
 	private final List<Plugin> plugins = new CopyOnWriteArrayList<>();
 	private final List<Plugin> activePlugins = new CopyOnWriteArrayList<>();
 	private final String runeliteGroupName = RuneLiteConfig.class
@@ -103,7 +103,7 @@ public class PluginManager
 		final Scheduler scheduler,
 		final ConfigManager configManager,
 		final ScheduledExecutorService executor,
-		final Provider<SceneTileManager> sceneTileManager)
+		final Provider<GameEventManager> sceneTileManager)
 	{
 		this.developerMode = developerMode;
 		this.eventBus = eventBus;
@@ -326,10 +326,10 @@ public class PluginManager
 			log.debug("Plugin {} is now running", plugin.getClass().getSimpleName());
 			if (!isOutdated && sceneTileManager != null)
 			{
-				final SceneTileManager sceneTileManager = this.sceneTileManager.get();
-				if (sceneTileManager != null)
+				final GameEventManager gameEventManager = this.sceneTileManager.get();
+				if (gameEventManager != null)
 				{
-					sceneTileManager.simulateObjectSpawns(plugin);
+					gameEventManager.simulateGameEvents(plugin);
 				}
 			}
 

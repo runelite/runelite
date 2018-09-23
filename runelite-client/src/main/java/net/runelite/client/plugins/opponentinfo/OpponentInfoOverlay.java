@@ -55,6 +55,7 @@ class OpponentInfoOverlay extends Overlay
 
 	private final Client client;
 	private final OpponentInfoPlugin opponentInfoPlugin;
+	private final OpponentInfoConfig opponentInfoConfig;
 	private final HiscoreManager hiscoreManager;
 
 	private final PanelComponent panelComponent = new PanelComponent();
@@ -65,10 +66,12 @@ class OpponentInfoOverlay extends Overlay
 	private String opponentsOpponentName;
 
 	@Inject
-	private OpponentInfoOverlay(Client client, OpponentInfoPlugin opponentInfoPlugin, HiscoreManager hiscoreManager)
+	private OpponentInfoOverlay(Client client, OpponentInfoPlugin opponentInfoPlugin,
+		OpponentInfoConfig opponentInfoConfig, HiscoreManager hiscoreManager)
 	{
 		this.client = client;
 		this.opponentInfoPlugin = opponentInfoPlugin;
+		this.opponentInfoConfig = opponentInfoConfig;
 		this.hiscoreManager = hiscoreManager;
 
 		setPosition(OverlayPosition.TOP_LEFT);
@@ -147,7 +150,7 @@ class OpponentInfoOverlay extends Overlay
 			progressBarComponent.setBackgroundColor(HP_RED);
 			progressBarComponent.setForegroundColor(HP_GREEN);
 
-			if (lastMaxHealth != null)
+			if (lastMaxHealth != null && !opponentInfoConfig.showPercent())
 			{
 				progressBarComponent.setLabelDisplayMode(ProgressBarComponent.LabelDisplayMode.FULL);
 				progressBarComponent.setMaximum(lastMaxHealth);

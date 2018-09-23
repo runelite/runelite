@@ -104,6 +104,7 @@ public class DevToolsPlugin extends Plugin
 	private boolean toggleCamera;
 	private boolean toggleWorldMapLocation;
 	private boolean toggleTileLocation;
+	private boolean toggleInteracting;
 
 	Widget currentWidget;
 	int itemIndex = -1;
@@ -225,10 +226,7 @@ public class DevToolsPlugin extends Plugin
 				client.getRealSkillLevels()[skill.ordinal()] = level;
 				client.getSkillExperiences()[skill.ordinal()] = totalXp;
 
-				int[] skills = client.getChangedSkills();
-				int count = client.getChangedSkillsCount();
-				skills[++count - 1 & 31] = skill.ordinal();
-				client.setChangedSkillsCount(count);
+				client.queueChangedSkill(skill);
 
 				ExperienceChanged experienceChanged = new ExperienceChanged();
 				experienceChanged.setSkill(skill);
@@ -358,6 +356,11 @@ public class DevToolsPlugin extends Plugin
 		toggleTileLocation = !toggleTileLocation;
 	}
 
+	void toggleInteracting()
+	{
+		toggleInteracting = !toggleInteracting;
+	}
+
 	boolean isTogglePlayers()
 	{
 		return togglePlayers;
@@ -446,5 +449,10 @@ public class DevToolsPlugin extends Plugin
 	boolean isToggleTileLocation()
 	{
 		return toggleTileLocation;
+	}
+
+	boolean isToggleInteracting()
+	{
+		return toggleInteracting;
 	}
 }

@@ -35,7 +35,7 @@ public interface PrayerConfig extends Config
 		position = 0,
 		keyName = "prayerFlickLocation",
 		name = "Pray flick location",
-		description = "Choose where to display the prayer flick helper"
+		description = "Choose where to display the prayer flick helper."
 	)
 	default PrayerFlickLocation prayerFlickLocation()
 	{
@@ -44,9 +44,20 @@ public interface PrayerConfig extends Config
 
 	@ConfigItem(
 		position = 1,
+		keyName = "prayerFlickAlwaysOn",
+		name = "Never hide prayer flick helper",
+		description = "Show prayer flick helper regardless of if you're praying or not."
+	)
+	default boolean prayerFlickAlwaysOn()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 2,
 		keyName = "prayerIndicator",
 		name = "Boost indicator",
-		description = "Enable infoboxes for prayers"
+		description = "Enable infoboxes for prayers."
 	)
 	default boolean prayerIndicator()
 	{
@@ -54,10 +65,10 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
+		position = 3,
 		keyName = "prayerIndicatorOverheads",
 		name = "Overhead indicator",
-		description = "Also enable infoboxes for overheads"
+		description = "Also enable infoboxes for overheads."
 	)
 	default boolean prayerIndicatorOverheads()
 	{
@@ -65,7 +76,7 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 4,
 		keyName = "showPrayerDoseIndicator",
 		name = "Show prayer dose indicator",
 		description = "Enables the prayer dose indicator."
@@ -76,7 +87,7 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 5,
 		keyName = "showPrayerTooltip",
 		name = "Show prayer orb tooltip",
 		description = "Displays time remaining and prayer bonus as a tooltip on the quick-prayer icon."
@@ -87,7 +98,7 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 6,
 		keyName = "showPrayerBar",
 		name = "Show prayer bar",
 		description = "Displays prayer bar under HP bar when praying."
@@ -98,10 +109,10 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 7,
 		keyName = "prayerBarHideIfNotPraying",
 		name = "Hide bar while prayer is inactive",
-		description = "Prayer bar will be hidden while prayers are inactivate.",
-		position = 6
+		description = "Prayer bar will be hidden while prayers are inactive."
 	)
 	default boolean hideIfNotPraying()
 	{
@@ -109,10 +120,10 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 8,
 		keyName = "prayerBarHideIfNonCombat",
 		name = "Hide bar while out-of-combat",
-		description = "Prayer bar will be hidden while out-of-combat.",
-		position = 7
+		description = "Prayer bar will be hidden while out-of-combat."
 	)
 	default boolean hideIfOutOfCombat()
 	{

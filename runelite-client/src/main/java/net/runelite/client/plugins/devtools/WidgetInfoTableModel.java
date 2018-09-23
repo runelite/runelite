@@ -123,9 +123,11 @@ public class WidgetInfoTableModel extends AbstractTableModel
 			(w, str) -> w.setTextColor(Integer.parseInt(str, 16)),
 			String.class
 		));
+		out.add(new WidgetField<>("FontId", Widget::getFontId, Widget::setFontId, Integer.class));
+		out.add(new WidgetField<>("TextShadowed", Widget::getTextShadowed, Widget::setTextShadowed, Boolean.class));
 		out.add(new WidgetField<>("Name", w -> w.getName().trim(), Widget::setName, String.class));
-		out.add(new WidgetField<>("ItemId", Widget::getItemId));
-		out.add(new WidgetField<>("ItemQuantity", Widget::getItemQuantity));
+		out.add(new WidgetField<>("ItemId", Widget::getItemId, Widget::setItemId, Integer.class));
+		out.add(new WidgetField<>("ItemQuantity", Widget::getItemQuantity, Widget::setItemQuantity, Integer.class));
 		out.add(new WidgetField<>("ModelId", Widget::getModelId));
 		out.add(new WidgetField<>("SpriteId", Widget::getSpriteId, Widget::setSpriteId, Integer.class));
 		out.add(new WidgetField<>("Width", Widget::getWidth, Widget::setWidth, Integer.class));
@@ -140,8 +142,7 @@ public class WidgetInfoTableModel extends AbstractTableModel
 		out.add(new WidgetField<>("ScrollHeight", Widget::getScrollHeight, Widget::setScrollHeight, Integer.class));
 		out.add(new WidgetField<>("OriginalX", Widget::getOriginalX));
 		out.add(new WidgetField<>("OriginalY", Widget::getOriginalY));
-		out.add(new WidgetField<>("PaddingX", Widget::getPaddingX));
-		out.add(new WidgetField<>("PaddingY", Widget::getPaddingY));
+		out.add(new WidgetField<>("BorderType", Widget::getBorderType, Widget::setBorderType, Integer.class));
 		out.add(new WidgetField<>("IsIf3", Widget::isIf3));
 		out.add(new WidgetField<>("HasListener", Widget::hasListener, Widget::setHasListener, Boolean.class));
 

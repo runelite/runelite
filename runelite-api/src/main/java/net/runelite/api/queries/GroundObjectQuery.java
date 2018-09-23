@@ -32,6 +32,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
+/**
+ * Used for getting ground objects in view,deprecated as of existence of Item spawn events
+ *
+ * @see net.runelite.api.events.ItemSpawned
+ * @see net.runelite.api.events.ItemDespawned
+ * @see net.runelite.api.events.ItemQuantityChanged
+ */
+@Deprecated
 public class GroundObjectQuery extends TileObjectQuery<GroundObject, GroundObjectQuery>
 {
 	@Override

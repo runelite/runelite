@@ -26,5 +26,10 @@ package net.runelite.api;
 
 public final class WidgetType
 {
+	public static final int LAYER = 0;
+	public static final int RECTANGLE = 3;
+	public static final int TEXT = 4;
 	public static final int GRAPHIC = 5;
+	public static final int MODEL = 6;
+	public static final int LINE = 9;
 }

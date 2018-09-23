@@ -45,6 +45,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
@@ -71,6 +72,7 @@ public class LootTrackerPlugin extends Plugin
 {
 	// Activity/Event loot handling
 	private static final Pattern CLUE_SCROLL_PATTERN = Pattern.compile("You have completed [0-9]+ ([a-z]+) Treasure Trails.");
+	private static final int THEATRE_OF_BLOOD_REGION = 12867;
 
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -148,8 +150,8 @@ public class LootTrackerPlugin extends Plugin
 		final Collection<ItemStack> items = npcLootReceived.getItems();
 		final String name = npc.getName();
 		final int combat = npc.getCombatLevel();
-		final LootTrackerItemEntry[] entries = buildEntries(stack(items));
-		SwingUtilities.invokeLater(() -> panel.addLog(name, combat, entries));
+		final LootTrackerItem[] entries = buildEntries(stack(items));
+		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
 	}
 
 	@Subscribe
@@ -159,8 +161,8 @@ public class LootTrackerPlugin extends Plugin
 		final Collection<ItemStack> items = playerLootReceived.getItems();
 		final String name = player.getName();
 		final int combat = player.getCombatLevel();
-		final LootTrackerItemEntry[] entries = buildEntries(stack(items));
-		SwingUtilities.invokeLater(() -> panel.addLog(name, combat, entries));
+		final LootTrackerItem[] entries = buildEntries(stack(items));
+		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
 	}
 
 	@Subscribe
@@ -178,6 +180,11 @@ public class LootTrackerPlugin extends Plugin
 				container = client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST);
 				break;
 			case (WidgetID.THEATRE_OF_BLOOD_GROUP_ID):
+				int region = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
+				if (region != THEATRE_OF_BLOOD_REGION)
+				{
+					return;
+				}
 				eventType = "Theatre of Blood";
 				container = client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST);
 				break;
@@ -202,8 +209,8 @@ public class LootTrackerPlugin extends Plugin
 
 		if (!items.isEmpty())
 		{
-			final LootTrackerItemEntry[] entries = buildEntries(stack(items));
-			SwingUtilities.invokeLater(() -> panel.addLog(eventType, -1, entries));
+			final LootTrackerItem[] entries = buildEntries(stack(items));
+			SwingUtilities.invokeLater(() -> panel.add(eventType, -1, entries));
 		}
 		else
 		{
@@ -245,19 +252,19 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
-	private LootTrackerItemEntry[] buildEntries(final Collection<ItemStack> itemStacks)
+	private LootTrackerItem[] buildEntries(final Collection<ItemStack> itemStacks)
 	{
 		return itemStacks.stream().map(itemStack ->
 		{
 			final ItemComposition itemComposition = itemManager.getItemComposition(itemStack.getId());
 			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemStack.getId();
-			final long price = (long)itemManager.getItemPrice(realItemId) * (long)itemStack.getQuantity();
+			final long price = (long) itemManager.getItemPrice(realItemId) * (long) itemStack.getQuantity();
 
-			return new LootTrackerItemEntry(
+			return new LootTrackerItem(
 				itemStack.getId(),
 				itemComposition.getName(),
 				itemStack.getQuantity(),
 				price);
-		}).toArray(LootTrackerItemEntry[]::new);
+		}).toArray(LootTrackerItem[]::new);
 	}
 }

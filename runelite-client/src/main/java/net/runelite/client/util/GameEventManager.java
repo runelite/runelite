@@ -34,24 +34,27 @@ import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
+import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.Node;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GroundObjectSpawned;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.WallObjectSpawned;
 
 @Singleton
-public class SceneTileManager
+public class GameEventManager
 {
 	private final EventBus eventBus = new EventBus();
 	private final Client client;
 
 	@Inject
-	private SceneTileManager(Client client)
+	private GameEventManager(Client client)
 	{
 		this.client = client;
 	}
@@ -61,12 +64,8 @@ public class SceneTileManager
 	 *
 	 * @param consumer consumer accepting tile as parameter
 	 */
-	public void forEachTile(Consumer<Tile> consumer)
+	private void forEachTile(Consumer<Tile> consumer)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
-		{
-			return;
-		}
 
 		final Scene scene = client.getScene();
 		final Tile[][][] tiles = scene.getTiles();
@@ -91,13 +90,28 @@ public class SceneTileManager
 	}
 
 	/**
-	 * Simulate object spawns for EventBus subscriber
+	 * Simulate game events for EventBus subscriber
 	 *
 	 * @param subscriber EventBus subscriber
 	 */
-	public void simulateObjectSpawns(Object subscriber)
+	public void simulateGameEvents(Object subscriber)
 	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
 		eventBus.register(subscriber);
+
+		for (final InventoryID inventory : InventoryID.values())
+		{
+			final ItemContainer itemContainer = client.getItemContainer(inventory);
+
+			if (itemContainer != null)
+			{
+				eventBus.post(new ItemContainerChanged(itemContainer));
+			}
+		}
 
 		forEachTile((tile) ->
 		{

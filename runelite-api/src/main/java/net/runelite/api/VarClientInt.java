@@ -36,6 +36,8 @@ public enum VarClientInt
 {
 	TOOLTIP_TIMEOUT(1),
 
+	MEMBERSHIP_STATUS(103),
+
 	WORLD_MAP_SEARCH_FOCUSED(190);
 
 	private final int index;
