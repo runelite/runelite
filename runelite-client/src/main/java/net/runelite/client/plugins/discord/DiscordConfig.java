@@ -32,25 +32,25 @@ import net.runelite.client.config.ConfigItem;
 public interface DiscordConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showElapsedTime",
-		name = "Show elapsed time",
-		description = "Configures if the elapsed time of your activity should be shown.",
-		position = 1
-	)
-	default boolean showElapsedTime()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "actionTimeout",
 		name = "Action timeout (minutes)",
 		description = "Configures after how long of not updating status will be reset (in minutes)",
-		position = 2
+		position = 1
 	)
 	default int actionTimeout()
 	{
 		return 5;
+	}
+
+	@ConfigItem(
+		keyName = "hideElapsedTime",
+		name = "Hide elapsed time",
+		description = "Configures if the elapsed time of your activity should be hidden.",
+		position = 2
+	)
+	default boolean hideElapsedTime()
+	{
+		return false;
 	}
 
 	@ConfigItem(
