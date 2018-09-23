@@ -33,11 +33,14 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
-import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.game.AsyncBufferedImage;
+import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.StackFormatter;
 
@@ -50,25 +53,26 @@ class GrandExchangeItemPanel extends JPanel
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
 
 	GrandExchangeItemPanel(AsyncBufferedImage icon, String name, int itemID, int gePrice, Double
-		haPrice)
+		haPrice, int geItemLimit)
 	{
 		BorderLayout layout = new BorderLayout();
 		layout.setHgap(5);
 		setLayout(layout);
 		setToolTipText(name);
 		setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
-		
-		Color background = getBackground();
 
-		addMouseListener(new MouseAdapter()
+		Color background = getBackground();
+		List<JPanel> panels = new ArrayList();
+		panels.add(this);
+
+		MouseAdapter itemPanelMouseListener = new MouseAdapter()
 		{
 			@Override
 			public void mouseEntered(MouseEvent e)
 			{
-				setBackground(background.brighter());
-				for (Component component : getComponents())
+				for (JPanel panel : panels)
 				{
-					component.setBackground(component.getBackground().brighter());
+					matchComponentBackground(panel, background.brighter());
 				}
 				setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
@@ -76,10 +80,9 @@ class GrandExchangeItemPanel extends JPanel
 			@Override
 			public void mouseExited(MouseEvent e)
 			{
-				setBackground(background);
-				for (Component component : getComponents())
+				for (JPanel panel : panels)
 				{
-					component.setBackground(background);
+					matchComponentBackground(panel, background);
 				}
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
@@ -89,7 +92,9 @@ class GrandExchangeItemPanel extends JPanel
 			{
 				geLink(name, itemID);
 			}
-		});
+		};
+
+		addMouseListener(itemPanelMouseListener);
 
 		setBorder(new EmptyBorder(5, 5, 5, 0));
 
@@ -104,7 +109,8 @@ class GrandExchangeItemPanel extends JPanel
 
 		// Item details panel
 		JPanel rightPanel = new JPanel(new GridLayout(3, 1));
-		rightPanel.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		panels.add(rightPanel);
+		rightPanel.setBackground(background);
 
 		// Item name
 		JLabel itemName = new JLabel();
@@ -127,13 +133,36 @@ class GrandExchangeItemPanel extends JPanel
 		gePriceLabel.setForeground(ColorScheme.GRAND_EXCHANGE_PRICE);
 		rightPanel.add(gePriceLabel);
 
+		JPanel alchAndLimitPanel = new JPanel(new BorderLayout());
+		panels.add(alchAndLimitPanel);
+		alchAndLimitPanel.setBackground(background);
+
 		// Alch price
 		JLabel haPriceLabel = new JLabel();
 		haPriceLabel.setText(StackFormatter.formatNumber(haPrice.intValue()) + " alch");
 		haPriceLabel.setForeground(ColorScheme.GRAND_EXCHANGE_ALCH);
-		rightPanel.add(haPriceLabel);
+		alchAndLimitPanel.add(haPriceLabel, BorderLayout.WEST);
+
+		// GE Limit
+		JLabel geLimitLabel = new JLabel();
+		String limitLabelText = geItemLimit == 0 ? "" : "Limit " + StackFormatter.formatNumber(geItemLimit);
+		geLimitLabel.setText(limitLabelText);
+		geLimitLabel.setForeground(ColorScheme.GRAND_EXCHANGE_LIMIT);
+		geLimitLabel.setBorder(new CompoundBorder(geLimitLabel.getBorder(), new EmptyBorder(0, 0, 0, 7)));
+		alchAndLimitPanel.add(geLimitLabel, BorderLayout.EAST);
+
+		rightPanel.add(alchAndLimitPanel);
 
 		add(rightPanel, BorderLayout.CENTER);
+	}
+
+	private void matchComponentBackground(JPanel panel, Color color)
+	{
+		panel.setBackground(color);
+		for (Component c : panel.getComponents())
+		{
+			c.setBackground(color);
+		}
 	}
 
 	private void geLink(String name, int itemID)
