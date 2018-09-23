@@ -125,8 +125,6 @@ public class GrandExchangePlugin extends Plugin
 	private Widget grandExchangeText;
 	private Widget grandExchangeItem;
 
-	private int lastItem = -1;
-
 	@Provides
 	GrandExchangeConfig provideConfig(ConfigManager configManager)
 	{
@@ -278,14 +276,12 @@ public class GrandExchangePlugin extends Plugin
 				Widget grandExchangeOffer = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_CONTAINER);
 				grandExchangeText = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_TEXT);
 				grandExchangeItem = grandExchangeOffer.getDynamicChildren()[OFFER_CONTAINER_ITEM];
-				lastItem = -1;
 				break;
 
 			// Grand exchange was closed (if it was open before).
 			case WidgetID.INVENTORY_GROUP_ID:
 				grandExchangeText = null;
 				grandExchangeItem = null;
-				lastItem = -1;
 				break;
 		}
 	}
@@ -300,21 +296,18 @@ public class GrandExchangePlugin extends Plugin
 
 		final Widget geText = grandExchangeText;
 
-		if (!geText.getText().contains("Actively traded price"))
+		if (geText.getText().contains("Actively traded price"))
 		{
 			// searching for the same item twice without closing the search window will cause this.
-			lastItem = -1;
+			return;
 		}
 
 		int itemId = grandExchangeItem.getItemId();
 		if (itemId == OFFER_DEFAULT_ITEM_ID
-			|| itemId == -1
-			|| lastItem == itemId)
+			|| itemId == -1)
 		{
 			return;
 		}
-
-		lastItem = itemId;
 
 		log.debug("Looking up item {}", itemId);
 
@@ -323,12 +316,6 @@ public class GrandExchangePlugin extends Plugin
 			try
 			{
 				final GrandExchangeResult result = CLIENT.lookupItem(itemId);
-
-				if (result.getItem_id() != lastItem)
-				{
-					// something else has since been looked up?
-					return;
-				}
 
 				final String text = geText.getText() + "<br>OSBuddy Actively traded price: " + StackFormatter.formatNumber(result.getOverall_average());
 				geText.setText(text);
