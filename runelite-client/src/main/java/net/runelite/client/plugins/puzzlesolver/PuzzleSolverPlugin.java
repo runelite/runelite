@@ -60,14 +60,15 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Puzzle Solver",
-	description = "Show you where to click to solve puzzle boxes",
-	tags = {"clues", "scrolls", "overlay"}
+		name = "Puzzle Solver",
+		description = "Show you where to click to solve puzzle boxes",
+		tags = {"clues", "scrolls", "overlay"}
 )
 @Slf4j
 public class PuzzleSolverPlugin extends Plugin
 {
 	private static final Color CORRECT_MUSEUM_PUZZLE_ANSWER_COLOR = new Color(0, 248, 128);
+	private static final Color CORRECT_SECURITY_STRONGHOLD_ANSWER_COLOR = new Color(0, 128, 64);
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -82,6 +83,7 @@ public class PuzzleSolverPlugin extends Plugin
 	private LightboxState[] changes = new LightboxState[LightBox.COMBINATIONS_POWER];
 	private Combination lastClick;
 	private boolean lastClickInvalid;
+	private Widget securityStrongholdWidget;
 
 	@Override
 	protected void startUp() throws Exception
@@ -104,34 +106,50 @@ public class PuzzleSolverPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widget)
 	{
-		if (widget.getGroupId() != WidgetID.VARROCK_MUSEUM_QUIZ_GROUP_ID)
+
+		switch (widget.getGroupId())
 		{
-			return;
-		}
+			case WidgetID.VARROCK_MUSEUM_QUIZ_GROUP_ID:
+			{
+				final Widget questionWidget = client.getWidget(WidgetInfo.VARROCK_MUSEUM_QUESTION);
 
-		final Widget questionWidget = client.getWidget(WidgetInfo.VARROCK_MUSEUM_QUESTION);
+				if (questionWidget == null)
+				{
+					return;
+				}
 
-		if (questionWidget == null)
-		{
-			return;
-		}
+				final Widget answerWidget = VarrockMuseumAnswer.findCorrect(
+						client,
+						questionWidget.getText(),
+						WidgetInfo.VARROCK_MUSEUM_FIRST_ANSWER,
+						WidgetInfo.VARROCK_MUSEUM_SECOND_ANSWER,
+						WidgetInfo.VARROCK_MUSEUM_THIRD_ANSWER);
 
-		final Widget answerWidget = VarrockMuseumAnswer.findCorrect(
-			client,
-			questionWidget.getText(),
-			WidgetInfo.VARROCK_MUSEUM_FIRST_ANSWER,
-			WidgetInfo.VARROCK_MUSEUM_SECOND_ANSWER,
-			WidgetInfo.VARROCK_MUSEUM_THIRD_ANSWER);
+				if (answerWidget == null)
+				{
+					return;
+				}
 
-		if (answerWidget == null)
-		{
-			return;
-		}
+				final String answerText = answerWidget.getText();
+				if (answerText.equals(Text.removeTags(answerText)))
+				{
+					answerWidget.setText(ColorUtil.wrapWithColorTag(answerText, CORRECT_MUSEUM_PUZZLE_ANSWER_COLOR));
+				}
+			}
+			break;
 
-		final String answerText = answerWidget.getText();
-		if (answerText.equals(Text.removeTags(answerText)))
-		{
-			answerWidget.setText(ColorUtil.wrapWithColorTag(answerText, CORRECT_MUSEUM_PUZZLE_ANSWER_COLOR));
+			case WidgetID.DIALOG_OPTION_GROUP_ID:
+			{
+				final Widget strongholdQuestionWidget = client.getWidget(WidgetInfo.DIALOG_OPTION);
+
+				if (strongholdQuestionWidget == null)
+				{
+					return;
+				}
+				//sets flag for onTick to color the dynamic answer widget after it has loaded.
+				securityStrongholdWidget = strongholdQuestionWidget;
+			}
+			break;
 		}
 	}
 
@@ -195,6 +213,22 @@ public class PuzzleSolverPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		//On tick because dynamic widgets were not loaded on the onWidgetLoaded event.
+		if(securityStrongholdWidget != null)
+		{
+			final Widget strongholdAnswerWidget = SecurityStrongholdAnswer.findCorrect(securityStrongholdWidget);
+
+			if (strongholdAnswerWidget != null)
+			{
+				final String answerText = strongholdAnswerWidget.getText();
+				if (answerText.equals(Text.removeTags(answerText)))
+				{
+					strongholdAnswerWidget.setText(ColorUtil.wrapWithColorTag(answerText, CORRECT_MUSEUM_PUZZLE_ANSWER_COLOR));
+				}
+			}
+			securityStrongholdWidget = null;
+		}
+
 		Widget lightboxWidget = client.getWidget(WidgetInfo.LIGHT_BOX_CONTENTS);
 		if (lightboxWidget == null)
 		{
