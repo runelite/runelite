@@ -54,6 +54,7 @@ class NotesPanel extends PluginPanel
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
+		notesEditor.setTabSize(2);
 		notesEditor.setLineWrap(true);
 		notesEditor.setWrapStyleWord(true);
 
