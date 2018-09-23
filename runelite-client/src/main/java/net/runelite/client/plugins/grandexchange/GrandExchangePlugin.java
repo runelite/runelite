@@ -82,6 +82,7 @@ public class GrandExchangePlugin extends Plugin
 	private static final int OFFER_CONTAINER_ITEM = 21;
 	private static final int OFFER_DEFAULT_ITEM_ID = 6512;
 	private static final GrandExchangeClient CLIENT = new GrandExchangeClient();
+	private static final String OSB_GE_TEXT = "<br>OSBuddy Actively traded price: ";
 
 	static final String SEARCH_GRAND_EXCHANGE = "Search Grand Exchange";
 
@@ -125,8 +126,6 @@ public class GrandExchangePlugin extends Plugin
 	private Widget grandExchangeText;
 	private Widget grandExchangeItem;
 
-	private int lastItem = -1;
-
 	@Provides
 	GrandExchangeConfig provideConfig(ConfigManager configManager)
 	{
@@ -162,6 +161,8 @@ public class GrandExchangePlugin extends Plugin
 		clientToolbar.removeNavigation(button);
 		mouseManager.unregisterMouseListener(inputListener);
 		keyManager.unregisterKeyListener(inputListener);
+		grandExchangeText = null;
+		grandExchangeItem = null;
 	}
 
 	@Subscribe
@@ -270,22 +271,14 @@ public class GrandExchangePlugin extends Plugin
 		{
 			// Grand exchange was opened.
 			case WidgetID.GRAND_EXCHANGE_GROUP_ID:
-				if (!config.enableOsbPrices())
-				{
-					return;
-				}
-
 				Widget grandExchangeOffer = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_CONTAINER);
 				grandExchangeText = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_TEXT);
 				grandExchangeItem = grandExchangeOffer.getDynamicChildren()[OFFER_CONTAINER_ITEM];
-				lastItem = -1;
 				break;
-
 			// Grand exchange was closed (if it was open before).
 			case WidgetID.INVENTORY_GROUP_ID:
 				grandExchangeText = null;
 				grandExchangeItem = null;
-				lastItem = -1;
 				break;
 		}
 	}
@@ -299,38 +292,29 @@ public class GrandExchangePlugin extends Plugin
 		}
 
 		final Widget geText = grandExchangeText;
+		final String geTextString = geText.getText();
+		final int itemId = grandExchangeItem.getItemId();
 
-		if (!geText.getText().contains("Actively traded price"))
+		if (itemId == OFFER_DEFAULT_ITEM_ID || itemId == -1)
 		{
-			// searching for the same item twice without closing the search window will cause this.
-			lastItem = -1;
-		}
-
-		int itemId = grandExchangeItem.getItemId();
-		if (itemId == OFFER_DEFAULT_ITEM_ID
-			|| itemId == -1
-			|| lastItem == itemId)
-		{
+			// This item is invalid/nothing has been searched for
 			return;
 		}
 
-		lastItem = itemId;
+		if (!config.enableOsbPrices() || geTextString.contains(OSB_GE_TEXT))
+		{
+			// OSB prices are disabled or price was already looked up, so no need to set it again
+			return;
+		}
 
-		log.debug("Looking up item {}", itemId);
+		log.debug("Looking up OSB item price {}", itemId);
 
 		executorService.submit(() ->
 		{
 			try
 			{
 				final GrandExchangeResult result = CLIENT.lookupItem(itemId);
-
-				if (result.getItem_id() != lastItem)
-				{
-					// something else has since been looked up?
-					return;
-				}
-
-				final String text = geText.getText() + "<br>OSBuddy Actively traded price: " + StackFormatter.formatNumber(result.getOverall_average());
+				final String text = geText.getText() + OSB_GE_TEXT + StackFormatter.formatNumber(result.getOverall_average());
 				geText.setText(text);
 			}
 			catch (IOException e)
