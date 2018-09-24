@@ -99,10 +99,6 @@ public class HiscorePanel extends PluginPanel
 	/* The maximum allowed username length in runescape accounts */
 	private static final int MAX_USERNAME_LENGTH = 12;
 
-	private static final ImageIcon SEARCH_ICON;
-	private static final ImageIcon LOADING_ICON;
-	private static final ImageIcon ERROR_ICON;
-
 	/**
 	 * Real skills, ordered in the way they should be displayed in the panel.
 	 */
@@ -125,7 +121,8 @@ public class HiscorePanel extends PluginPanel
 	private Client client;
 
 	private final HiscoreConfig config;
-	private final IconTextField input;
+
+	private final IconTextField searchBar;
 
 	private final List<JLabel> skillLabels = new ArrayList<>();
 
@@ -143,13 +140,6 @@ public class HiscorePanel extends PluginPanel
 
 	/* Used to prevent users from switching endpoint tabs while the results are loading */
 	private boolean loading = false;
-
-	static
-	{
-		SEARCH_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(IconTextField.class, "search.png"));
-		LOADING_ICON = new ImageIcon(IconTextField.class.getResource("loading_spinner_darker.gif"));
-		ERROR_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(IconTextField.class, "error.png"));
-	}
 
 	@Inject
 	public HiscorePanel(HiscoreConfig config)
@@ -173,13 +163,14 @@ public class HiscorePanel extends PluginPanel
 		c.weighty = 0;
 		c.insets = new Insets(0, 0, 10, 0);
 
-		input = new IconTextField();
-		input.setMinimumSize(new Dimension(0, 30));
-		input.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		input.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
-		input.setIcon(SEARCH_ICON);
-		input.addActionListener(e -> executor.execute(RunnableExceptionLogger.wrap(this::lookup)));
-		input.addMouseListener(new MouseAdapter()
+		searchBar = new IconTextField();
+		searchBar.setIcon(IconTextField.Icon.SEARCH);
+		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 30));
+		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
+		searchBar.setMinimumSize(new Dimension(0, 30));
+		searchBar.addActionListener(e -> executor.execute(RunnableExceptionLogger.wrap(this::lookup)));
+		searchBar.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mouseClicked(MouseEvent e)
@@ -202,7 +193,7 @@ public class HiscorePanel extends PluginPanel
 			}
 		});
 
-		add(input, c);
+		add(searchBar, c);
 		c.gridy++;
 
 		tabGroup = new MaterialTabGroup();
@@ -296,7 +287,7 @@ public class HiscorePanel extends PluginPanel
 	public void onActivate()
 	{
 		super.onActivate();
-		input.requestFocusInWindow();
+		searchBar.requestFocusInWindow();
 	}
 
 	/* Builds a JPanel displaying an icon and level/number associated with it */
@@ -337,14 +328,14 @@ public class HiscorePanel extends PluginPanel
 
 	public void lookup(String username)
 	{
-		input.setText(username);
+		searchBar.setText(username);
 		resetEndpoints();
 		lookup();
 	}
 
 	private void lookup()
 	{
-		String lookup = input.getText();
+		String lookup = searchBar.getText();
 
 		lookup = sanitize(lookup);
 
@@ -356,13 +347,13 @@ public class HiscorePanel extends PluginPanel
 		/* Runescape usernames can't be longer than 12 characters long */
 		if (lookup.length() > MAX_USERNAME_LENGTH)
 		{
-			input.setIcon(ERROR_ICON);
+			searchBar.setIcon(IconTextField.Icon.ERROR);
 			loading = false;
 			return;
 		}
 
-		input.setEditable(false);
-		input.setIcon(LOADING_ICON);
+		searchBar.setEditable(false);
+		searchBar.setIcon(IconTextField.Icon.LOADING_DARKER);
 		loading = true;
 
 		for (JLabel label : skillLabels)
@@ -385,23 +376,23 @@ public class HiscorePanel extends PluginPanel
 		catch (IOException ex)
 		{
 			log.warn("Error fetching Hiscore data " + ex.getMessage());
-			input.setIcon(ERROR_ICON);
-			input.setEditable(true);
+			searchBar.setIcon(IconTextField.Icon.ERROR);
+			searchBar.setEditable(true);
 			loading = false;
 			return;
 		}
 
 		if (result == null)
 		{
-			input.setIcon(ERROR_ICON);
-			input.setEditable(true);
+			searchBar.setIcon(IconTextField.Icon.ERROR);
+			searchBar.setEditable(true);
 			loading = false;
 			return;
 		}
 
 		//successful player search
-		input.setIcon(SEARCH_ICON);
-		input.setEditable(true);
+		searchBar.setIcon(IconTextField.Icon.SEARCH);
+		searchBar.setEditable(true);
 		loading = false;
 
 		int index = 0;
@@ -448,12 +439,12 @@ public class HiscorePanel extends PluginPanel
 
 	void addInputKeyListener(KeyListener l)
 	{
-		this.input.addKeyListener(l);
+		this.searchBar.addKeyListener(l);
 	}
 
 	void removeInputKeyListener(KeyListener l)
 	{
-		this.input.removeKeyListener(l);
+		this.searchBar.removeKeyListener(l);
 	}
 
 	/*
