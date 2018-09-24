@@ -89,6 +89,17 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
+			position = 5,
+			keyName = "maximumPointsNotification",
+			name = "Maximum Points Notification",
+			description = "Gives you a warning when you should do a task with Duradel for the most points."
+	)
+	default boolean maximumPointsNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		position = 6,
 		keyName = "targetColor",
 		name = "Target Color",

@@ -57,6 +57,8 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
@@ -111,6 +113,9 @@ public class SlayerPlugin extends Plugin
 
 	@Inject
 	private OverlayManager overlayManager;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
 
 	@Inject
 	private SlayerOverlay overlay;
@@ -397,6 +402,15 @@ public class SlayerPlugin extends Plugin
 					log.warn("Unreachable default case for message ending in '; return to Slayer master'");
 			}
 			setTask("", 0);
+			String holder;
+            holder = Integer.toString(streak);
+			if (config.maximumPointsNotification() && holder.endsWith("9")) {
+				String message = "Your next task will earn you more points, it is reccomended to do your next task with Duradel for maximum points..";
+				chatMessageManager.queue(QueuedMessage.builder()
+						.type(ChatMessageType.ABUSE_REPORT)
+						.runeLiteFormattedMessage(message)
+						.build());
+            }
 			return;
 		}
 
