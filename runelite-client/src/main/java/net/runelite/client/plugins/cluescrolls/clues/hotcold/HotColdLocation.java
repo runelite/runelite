@@ -110,7 +110,7 @@ public enum HotColdLocation
 	KANDARIN_BA_AGILITY_COURSE(new WorldPoint(2536, 3546, 0), KANDARIN, "Inside the Barbarian Agility Course. Completion of Alfred Grimhand's Barcrawl is required."),
 	KARAMJA_MUSA_POINT(new WorldPoint(2914, 3168, 0), KARAMJA, "Musa Point, banana plantation."),
 	KARAMJA_BRIMHAVEN_FRUIT_TREE(new WorldPoint(2783, 3214, 0), KARAMJA, "Brimhaven, east of the fruit tree patch."),
-	KARAMJA_WEST_BRIMHAVEN(new WorldPoint(2715, 3161, 0), KARAMJA, "West of Brimhaven."),
+	KARAMJA_WEST_BRIMHAVEN(new WorldPoint(2721, 3169, 0), KARAMJA, "West of Brimhaven."),
 	KARAMJA_GLIDER(new WorldPoint(2966, 2975, 0), KARAMJA, "West of the gnome glider."),
 	KARAMJA_KHARAZI_NE(new WorldPoint(2908, 2922, 0), KARAMJA, "North-eastern part of Kharazi Jungle."),
 	KARAMJA_KHARAZI_SW(new WorldPoint(2783, 2898, 0), KARAMJA, "South-western part of Kharazi Jungle."),
