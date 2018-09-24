@@ -26,7 +26,6 @@ package net.runelite.client.plugins.corp;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.awt.Color;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
@@ -57,7 +56,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
 	name = "Corporeal Beast",
@@ -70,7 +68,6 @@ public class CorpPlugin extends Plugin
 	private static final int NPC_SECTION_ACTION = MenuAction.NPC_SECOND_OPTION.getId();
 	private static final String ATTACK = "Attack";
 	private static final String DARK_ENERGY_CORE = "Dark energy core";
-	private static final Color CHAT_COLOR = Color.magenta;
 
 	@Getter(AccessLevel.PACKAGE)
 	private NPC corp;
@@ -175,10 +172,12 @@ public class CorpPlugin extends Plugin
 				String message = new ChatMessageBuilder()
 					.append(ChatColorType.NORMAL)
 					.append("Corporeal Beast: Your damage: ")
-					.append(ColorUtil.prependColorTag(Integer.toString(yourDamage), CHAT_COLOR))
+					.append(ChatColorType.HIGHLIGHT)
+					.append(Integer.toString(yourDamage))
 					.append(ChatColorType.NORMAL)
 					.append(", Total damage: ")
-					.append(ColorUtil.prependColorTag(Integer.toString(totalDamage), CHAT_COLOR))
+					.append(ChatColorType.HIGHLIGHT)
+					.append(Integer.toString(totalDamage))
 					.build();
 
 				chatMessageManager.queue(QueuedMessage.builder()
