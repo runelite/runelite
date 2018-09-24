@@ -89,6 +89,7 @@ public class GroundItemsOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		final boolean dontShowOverlay = config.itemHighlightMode() == MENU && !plugin.isHotKeyPressed();
+		//final boolean dontShowOverlay = config.itemHighlightMode() == MENU && !config.showAddRemove();
 
 		if (dontShowOverlay && !config.highlightTiles())
 		{
@@ -109,7 +110,7 @@ public class GroundItemsOverlay extends Overlay
 		Collection<GroundItem> groundItemList = plugin.getCollectedGroundItems().values();
 		GroundItem topGroundItem = null;
 
-		if (plugin.isHotKeyPressed())
+		if (plugin.isHotKeyPressed() || config.showAddRemove())
 		{
 			// Make copy of ground items because we are going to modify them here, and the array list supports our
 			// desired behaviour here
@@ -127,24 +128,24 @@ public class GroundItemsOverlay extends Overlay
 				}
 
 				if (plugin.getTextBoxBounds() != null
-					&& item.equals(plugin.getTextBoxBounds().getValue())
-					&& plugin.getTextBoxBounds().getKey().contains(awtMousePos))
+						&& item.equals(plugin.getTextBoxBounds().getValue())
+						&& plugin.getTextBoxBounds().getKey().contains(awtMousePos))
 				{
 					groundItem = item;
 					continue;
 				}
 
 				if (plugin.getHiddenBoxBounds() != null
-					&& item.equals(plugin.getHiddenBoxBounds().getValue())
-					&& plugin.getHiddenBoxBounds().getKey().contains(awtMousePos))
+						&& item.equals(plugin.getHiddenBoxBounds().getValue())
+						&& plugin.getHiddenBoxBounds().getKey().contains(awtMousePos))
 				{
 					groundItem = item;
 					continue;
 				}
 
 				if (plugin.getHighlightBoxBounds() != null
-					&& item.equals(plugin.getHighlightBoxBounds().getValue())
-					&& plugin.getHighlightBoxBounds().getKey().contains(awtMousePos))
+						&& item.equals(plugin.getHighlightBoxBounds().getValue())
+						&& plugin.getHighlightBoxBounds().getKey().contains(awtMousePos))
 				{
 					groundItem = item;
 				}
@@ -217,8 +218,8 @@ public class GroundItemsOverlay extends Overlay
 				else
 				{
 					itemStringBuilder.append(" (")
-						.append(StackFormatter.quantityToStackSize(item.getQuantity()))
-						.append(")");
+							.append(StackFormatter.quantityToStackSize(item.getQuantity()))
+							.append(")");
 				}
 			}
 
@@ -227,29 +228,29 @@ public class GroundItemsOverlay extends Overlay
 				if (item.getGePrice() > 0)
 				{
 					itemStringBuilder.append(" (EX: ")
-						.append(StackFormatter.quantityToStackSize(item.getGePrice()))
-						.append(" gp)");
+							.append(StackFormatter.quantityToStackSize(item.getGePrice()))
+							.append(" gp)");
 				}
 
 				if (item.getHaPrice() > 0)
 				{
 					itemStringBuilder.append(" (HA: ")
-						.append(StackFormatter.quantityToStackSize(item.getHaPrice()))
-						.append(" gp)");
+							.append(StackFormatter.quantityToStackSize(item.getHaPrice()))
+							.append(" gp)");
 				}
 			}
 			else if (config.priceDisplayMode() != PriceDisplayMode.OFF)
 			{
 				final int price = config.priceDisplayMode() == PriceDisplayMode.GE
-					? item.getGePrice()
-					: item.getHaPrice();
+						? item.getGePrice()
+						: item.getHaPrice();
 
 				if (price > 0)
 				{
 					itemStringBuilder
-						.append(" (")
-						.append(StackFormatter.quantityToStackSize(price))
-						.append(" gp)");
+							.append(" (")
+							.append(StackFormatter.quantityToStackSize(price))
+							.append(" gp)");
 				}
 			}
 
@@ -257,10 +258,10 @@ public class GroundItemsOverlay extends Overlay
 			itemStringBuilder.setLength(0);
 
 			final Point textPoint = Perspective.getCanvasTextLocation(client,
-				graphics,
-				groundPoint,
-				itemString,
-				item.getHeight() + OFFSET_Z);
+					graphics,
+					groundPoint,
+					itemString,
+					item.getHeight() + OFFSET_Z);
 
 			if (textPoint == null)
 			{
@@ -268,13 +269,13 @@ public class GroundItemsOverlay extends Overlay
 			}
 
 			final int offset = plugin.isHotKeyPressed()
-				? item.getOffset()
-				: offsetMap.compute(item.getLocation(), (k, v) -> v != null ? v + 1 : 0);
+					? item.getOffset()
+					: offsetMap.compute(item.getLocation(), (k, v) -> v != null ? v + 1 : 0);
 
 			final int textX = textPoint.getX();
 			final int textY = textPoint.getY() - (STRING_GAP * offset);
 
-			if (plugin.isHotKeyPressed())
+			if (plugin.isHotKeyPressed() || config.showAddRemove())
 			{
 				final int stringWidth = fm.stringWidth(itemString);
 				final int stringHeight = fm.getHeight();
@@ -355,23 +356,23 @@ public class GroundItemsOverlay extends Overlay
 		graphics.setColor(Color.WHITE);
 		// Minus symbol
 		graphics.drawLine
-			(
-				rect.x + 2,
-				rect.y + (rect.height / 2),
-				rect.x + rect.width - 2,
-				rect.y + (rect.height / 2)
-			);
+				(
+						rect.x + 2,
+						rect.y + (rect.height / 2),
+						rect.x + rect.width - 2,
+						rect.y + (rect.height / 2)
+				);
 
 		if (!hiddenBox)
 		{
 			// Plus symbol
 			graphics.drawLine
-				(
-					rect.x + (rect.width / 2),
-					rect.y + 2,
-					rect.x + (rect.width / 2),
-					rect.y + rect.height - 2
-				);
+					(
+							rect.x + (rect.width / 2),
+							rect.y + 2,
+							rect.x + (rect.width / 2),
+							rect.y + rect.height - 2
+					);
 		}
 
 	}
