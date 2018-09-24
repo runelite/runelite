@@ -43,10 +43,21 @@ public interface DiscordConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "hideElapsedTime",
+		name = "Hide elapsed time",
+		description = "Configures if the elapsed time of your activity should be hidden.",
+		position = 2
+	)
+	default boolean hideElapsedTime()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "showSkillActivity",
 		name = "Show activity while skilling",
 		description = "Configures if your activity while training skills should be shown.",
-		position = 2
+		position = 3
 	)
 	default boolean showSkillingActivity()
 	{
@@ -57,7 +68,7 @@ public interface DiscordConfig extends Config
 		keyName = "showBossActivity",
 		name = "Show activity at bosses",
 		description = "Configures if your activity at bosses should be shown.",
-		position = 3
+		position = 4
 	)
 	default boolean showBossActivity()
 	{
@@ -68,7 +79,7 @@ public interface DiscordConfig extends Config
 		keyName = "showCityActivity",
 		name = "Show activity at cities",
 		description = "Configures if your activity at cities should be shown.",
-		position = 4
+		position = 5
 	)
 	default boolean showCityActivity()
 	{
@@ -79,7 +90,7 @@ public interface DiscordConfig extends Config
 		keyName = "showDungeonActivity",
 		name = "Show activity at dungeons",
 		description = "Configures if your activity at dungeons should be shown.",
-		position = 5
+		position = 6
 	)
 	default boolean showDungeonActivity()
 	{
@@ -90,7 +101,7 @@ public interface DiscordConfig extends Config
 		keyName = "showMinigameActivity",
 		name = "Show activity at minigames",
 		description = "Configures if your activity at minigames should be shown.",
-		position = 6
+		position = 7
 	)
 	default boolean showMinigameActivity()
 	{
