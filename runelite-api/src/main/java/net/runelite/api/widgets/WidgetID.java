@@ -117,6 +117,7 @@ public class WidgetID
 	public static final int FOSSIL_ISLAND_OXYGENBAR_ID = 609;
 	public static final int MINIGAME_TAB_ID = 76;
 	public static final int SPELLBOOK_GROUP_ID = 218;
+	public static final int PVP_GROUP_ID = 90;
 
 	static class WorldMap
 	{
@@ -678,5 +679,16 @@ public class WidgetID
 	static class ArceuusSpellBook
 	{
 		static final int ARCEUUS_HOME_TELEPORT = 145;
+	}
+
+	static class Pvp
+	{
+		static final int PVP_WIDGET_CONTAINER = 50;
+		static final int SKULL_CONTAINER = 51;
+		static final int SKULL = 52;
+		static final int SAFE_ZONE = 53;
+		static final int ATTACK_RANGE = 55;
+		static final int WILDERNESS_LEVEL = 56; // this can also be the Deadman Mode "Protection" text
+		static final int DEADMAN_PROTECTION_TIME = 57;
 	}
 }

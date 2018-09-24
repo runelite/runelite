@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,6 +29,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
@@ -48,13 +50,17 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import static net.runelite.api.widgets.WidgetInfo.PVP_WORLD_SAFE_ZONE;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
@@ -68,6 +74,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 	description = "Show various timers in an infobox",
 	tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire"}
 )
+@Slf4j
 public class TimersPlugin extends Plugin
 {
 	private static final String ANTIFIRE_DRINK_MESSAGE = "You drink some of your antifire potion.";
@@ -101,9 +108,12 @@ public class TimersPlugin extends Plugin
 	private int freezeTime = -1; // time frozen, in game ticks
 
 	private int lastRaidVarb;
+	private int lastWildernessVarb;
 	private WorldPoint lastPoint;
 	private TeleportWidget lastTeleportClicked;
 	private int lastAnimation;
+	private boolean loggedInRace;
+	private boolean widgetHiddenChangedOnPvpWorld;
 
 	@Inject
 	private ItemManager itemManager;
@@ -134,6 +144,8 @@ public class TimersPlugin extends Plugin
 		lastPoint = null;
 		lastTeleportClicked = null;
 		lastAnimation = -1;
+		loggedInRace = false;
+		widgetHiddenChangedOnPvpWorld = false;
 	}
 
 	@Subscribe
@@ -145,6 +157,33 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(OVERLOAD_RAID);
 			removeGameTimer(PRAYER_ENHANCE);
 			lastRaidVarb = raidVarb;
+		}
+
+		int inWilderness = client.getVar(Varbits.IN_WILDERNESS);
+
+		if (lastWildernessVarb != inWilderness
+			&& client.getGameState() == GameState.LOGGED_IN
+			&& !loggedInRace)
+		{
+			if (!WorldType.isPvpWorld(client.getWorldType())
+				&& inWilderness == 0)
+			{
+				log.debug("Left wilderness in non-PVP world, clearing Teleblock timer.");
+				removeTbTimers();
+			}
+
+			lastWildernessVarb = inWilderness;
+		}
+	}
+
+	@Subscribe
+	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
+	{
+		Widget widget = event.getWidget();
+		if (WorldType.isPvpWorld(client.getWorldType())
+			&& WidgetInfo.TO_GROUP(widget.getId()) == WidgetInfo.PVP_CONTAINER.getGroupId())
+		{
+			widgetHiddenChangedOnPvpWorld = true;
 		}
 	}
 
@@ -250,10 +289,7 @@ public class TimersPlugin extends Plugin
 
 		if (!config.showTeleblock())
 		{
-			removeGameTimer(FULLTB);
-			removeGameTimer(HALFTB);
-			removeGameTimer(DMM_FULLTB);
-			removeGameTimer(DMM_HALFTB);
+			removeTbTimers();
 		}
 
 		if (!config.showFreezes())
@@ -503,34 +539,51 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		loggedInRace = false;
+
 		Player player = client.getLocalPlayer();
 		WorldPoint currentWorldPoint = player.getWorldLocation();
 
-		if (freezeTimer == null)
+		if (freezeTimer != null)
 		{
-			lastPoint = currentWorldPoint;
+			// assume movement means unfrozen
+			if (!currentWorldPoint.equals(lastPoint))
+			{
+				removeGameTimer(freezeTimer.getTimer());
+				freezeTimer = null;
+			}
+		}
+
+		lastPoint = currentWorldPoint;
+
+		if (!widgetHiddenChangedOnPvpWorld)
+		{
 			return;
 		}
 
-		// assume movement means unfrozen
-		if (!currentWorldPoint.equals(lastPoint))
+		widgetHiddenChangedOnPvpWorld = false;
+
+		Widget widget = client.getWidget(PVP_WORLD_SAFE_ZONE);
+		if (widget != null
+			&& !widget.isSelfHidden())
 		{
-			removeGameTimer(freezeTimer.getTimer());
-			freezeTimer = null;
-			lastPoint = currentWorldPoint;
+			log.debug("Entered safe zone in PVP world, clearing Teleblock timer.");
+			removeTbTimers();
 		}
 	}
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		// Check for game state changes which removes a teleblock (Hopping or Login screen)
-		if (gameStateChanged.getGameState() == GameState.HOPPING || gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
+		switch (gameStateChanged.getGameState())
 		{
-			removeGameTimer(HALFTB);
-			removeGameTimer(DMM_HALFTB);
-			removeGameTimer(FULLTB);
-			removeGameTimer(DMM_FULLTB);
+			case HOPPING:
+			case LOGIN_SCREEN:
+				removeTbTimers();
+				break;
+			case LOGGED_IN:
+				loggedInRace = true;
+				break;
 		}
 	}
 
@@ -754,5 +807,13 @@ public class TimersPlugin extends Plugin
 	private void removeGameTimer(GameTimer timer)
 	{
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer);
+	}
+
+	private void removeTbTimers()
+	{
+		removeGameTimer(FULLTB);
+		removeGameTimer(HALFTB);
+		removeGameTimer(DMM_FULLTB);
+		removeGameTimer(DMM_HALFTB);
 	}
 }
