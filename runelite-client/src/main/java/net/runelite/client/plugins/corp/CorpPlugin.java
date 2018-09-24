@@ -166,7 +166,7 @@ public class CorpPlugin extends Plugin
 			corp = null;
 			players.clear();
 
-			if (npc.isDead())
+			if (npc.isDead() && config.showChatDamage())
 			{
 				// Show kill stats
 				String message = new ChatMessageBuilder()
