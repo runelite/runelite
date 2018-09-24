@@ -49,6 +49,8 @@ import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.IconTextField;
 
 class SkillCalculator extends JPanel
 {
@@ -64,6 +66,7 @@ class SkillCalculator extends JPanel
 	private final UICombinedActionSlot combinedActionSlot;
 	private final ArrayList<UIActionSlot> combinedActionSlots = new ArrayList<>();
 	private final List<JCheckBox> bonusCheckBoxes = new ArrayList<>();
+	private final IconTextField searchBar = new IconTextField();
 
 	private SkillData skillData;
 	private int currentLevel = 1;
@@ -80,6 +83,12 @@ class SkillCalculator extends JPanel
 		this.itemManager = itemManager;
 
 		combinedActionSlot = new UICombinedActionSlot(spriteManager);
+
+		searchBar.setIcon(IconTextField.Icon.SEARCH);
+		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 30));
+		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
+		searchBar.addKeyListener(e -> onSearch());
 
 		setLayout(new DynamicGridLayout(0, 1, 0, 5));
 
@@ -122,6 +131,9 @@ class SkillCalculator extends JPanel
 
 		// Add the combined action slot.
 		add(combinedActionSlot);
+
+		// Add the search bar
+		add(searchBar);
 
 		// Create action slots for the skill actions.
 		renderActionSlots();
@@ -370,4 +382,28 @@ class SkillCalculator extends JPanel
 	{
 		return Math.min(MAX_XP, Math.max(0, input));
 	}
+
+	private void onSearch()
+	{
+		//only show slots that match our search text
+		uiActionSlots.forEach(slot ->
+		{
+			if (slotContainsText(slot, searchBar.getText()))
+			{
+				super.add(slot);
+			}
+			else
+			{
+				super.remove(slot);
+			}
+
+			revalidate();
+		});
+	}
+
+	private boolean slotContainsText(UIActionSlot slot, String text)
+	{
+		return slot.getAction().getName().toLowerCase().contains(text.toLowerCase());
+	}
+
 }
