@@ -155,7 +155,6 @@ public class IdleNotifierPluginTest
 		AnimationChanged animationChanged = new AnimationChanged();
 		animationChanged.setActor(player);
 		plugin.onAnimationChanged(animationChanged);
-		plugin.onInteractingChanged(new InteractingChanged(player, monster));
 		plugin.onGameTick(new GameTick());
 
 		// Logout
@@ -174,6 +173,23 @@ public class IdleNotifierPluginTest
 		plugin.onAnimationChanged(animationChanged);
 		plugin.onGameTick(new GameTick());
 		verify(notifier, times(0)).notify(any());
+	}
+
+	@Test
+	public void checkAnimationMultipleIdle()
+	{
+		when(player.getAnimation()).thenReturn(AnimationID.MINING_INFERNAL_PICKAXE);
+		AnimationChanged animationChanged = new AnimationChanged();
+		animationChanged.setActor(player);
+		plugin.onAnimationChanged(animationChanged);
+		plugin.onGameTick(new GameTick());
+		when(player.getAnimation()).thenReturn(AnimationID.DENSE_ESSENCE_CHIPPING);
+		plugin.onAnimationChanged(animationChanged);
+		plugin.onGameTick(new GameTick());
+		when(player.getAnimation()).thenReturn(AnimationID.IDLE);
+		plugin.onAnimationChanged(animationChanged);
+		plugin.onGameTick(new GameTick());
+		verify(notifier).notify("[" + PLAYER_NAME + "] is now idle!");
 	}
 
 	@Test
@@ -206,8 +222,8 @@ public class IdleNotifierPluginTest
 	@Test
 	public void checkCombatLogout()
 	{
-		plugin.onInteractingChanged(new InteractingChanged(player, monster));
 		when(player.getInteracting()).thenReturn(monster);
+		plugin.onInteractingChanged(new InteractingChanged(player, monster));
 		plugin.onGameTick(new GameTick());
 
 		// Logout
