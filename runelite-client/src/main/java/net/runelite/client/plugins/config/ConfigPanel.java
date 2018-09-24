@@ -96,7 +96,6 @@ public class ConfigPanel extends PluginPanel
 	private static final int OFFSET = 6;
 	private static final ImageIcon BACK_ICON;
 	private static final ImageIcon BACK_ICON_HOVER;
-	private static final ImageIcon SEARCH;
 
 	private static final String RUNELITE_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).value();
 	private static final String PINNED_PLUGINS_CONFIG_KEY = "pinnedPlugins";
@@ -109,9 +108,9 @@ public class ConfigPanel extends PluginPanel
 	private final ScheduledExecutorService executorService;
 	private final RuneLiteConfig runeLiteConfig;
 	private final ChatColorConfig chatColorConfig;
-	private final IconTextField searchBar = new IconTextField();
 	private final List<PluginListItem> pluginList = new ArrayList<>();
 
+	private final IconTextField searchBar = new IconTextField();
 	private final JPanel topPanel;
 	private final JPanel mainPanel;
 	private final JScrollPane scrollPane;
@@ -124,7 +123,6 @@ public class ConfigPanel extends PluginPanel
 		final BufferedImage backIcon = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "config_back_icon.png");
 		BACK_ICON = new ImageIcon(backIcon);
 		BACK_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(backIcon, -100));
-		SEARCH = new ImageIcon(ImageUtil.getResourceStreamFromClass(IconTextField.class, "search.png"));
 	}
 
 	ConfigPanel(PluginManager pluginManager, ConfigManager configManager, ScheduledExecutorService executorService,
@@ -137,7 +135,7 @@ public class ConfigPanel extends PluginPanel
 		this.runeLiteConfig = runeLiteConfig;
 		this.chatColorConfig = chatColorConfig;
 
-		searchBar.setIcon(SEARCH);
+		searchBar.setIcon(IconTextField.Icon.SEARCH);
 		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 30));
 		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
