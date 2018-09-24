@@ -55,48 +55,49 @@ class SkillCalculator extends JPanel
 	private static final int MAX_XP = 200_000_000;
 	private static final DecimalFormat XP_FORMAT = new DecimalFormat("#.#");
 
-	static SpriteManager spriteManager;
-	static ItemManager itemManager;
-
-	private Client client;
-	private SkillData skillData;
-	private List<UIActionSlot> uiActionSlots = new ArrayList<>();
-	private UICalculatorInputArea uiInput;
-
-	private CacheSkillData cacheSkillData = new CacheSkillData();
-
-	private UICombinedActionSlot combinedActionSlot = new UICombinedActionSlot();
-	private ArrayList<UIActionSlot> combinedActionSlots = new ArrayList<>();
+	private final UICalculatorInputArea uiInput;
+	private final Client client;
+	private final SpriteManager spriteManager;
+	private final ItemManager itemManager;
+	private final List<UIActionSlot> uiActionSlots = new ArrayList<>();
+	private final CacheSkillData cacheSkillData = new CacheSkillData();
+	private final UICombinedActionSlot combinedActionSlot;
+	private final ArrayList<UIActionSlot> combinedActionSlots = new ArrayList<>();
 	private final List<JCheckBox> bonusCheckBoxes = new ArrayList<>();
 
+	private SkillData skillData;
 	private int currentLevel = 1;
 	private int currentXP = Experience.getXpForLevel(currentLevel);
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
 	private float xpFactor = 1.0f;
 
-	SkillCalculator(Client client, UICalculatorInputArea uiInput)
+	SkillCalculator(Client client, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
 	{
 		this.client = client;
 		this.uiInput = uiInput;
+		this.spriteManager = spriteManager;
+		this.itemManager = itemManager;
+
+		combinedActionSlot = new UICombinedActionSlot(spriteManager);
 
 		setLayout(new DynamicGridLayout(0, 1, 0, 5));
 
 		// Register listeners on the input fields and then move on to the next related text field
-		uiInput.uiFieldCurrentLevel.addActionListener(e ->
+		uiInput.getUiFieldCurrentLevel().addActionListener(e ->
 		{
 			onFieldCurrentLevelUpdated();
-			uiInput.uiFieldTargetLevel.requestFocusInWindow();
+			uiInput.getUiFieldTargetLevel().requestFocusInWindow();
 		});
 
-		uiInput.uiFieldCurrentXP.addActionListener(e ->
+		uiInput.getUiFieldCurrentXP().addActionListener(e ->
 		{
 			onFieldCurrentXPUpdated();
-			uiInput.uiFieldTargetXP.requestFocusInWindow();
+			uiInput.getUiFieldTargetXP().requestFocusInWindow();
 		});
 
-		uiInput.uiFieldTargetLevel.addActionListener(e -> onFieldTargetLevelUpdated());
-		uiInput.uiFieldTargetXP.addActionListener(e -> onFieldTargetXPUpdated());
+		uiInput.getUiFieldTargetLevel().addActionListener(e -> onFieldTargetLevelUpdated());
+		uiInput.getUiFieldTargetXP().addActionListener(e -> onFieldTargetXPUpdated());
 	}
 
 	void openCalculator(CalculatorType calculatorType)
@@ -238,7 +239,18 @@ class SkillCalculator extends JPanel
 		// Create new components for the action slots.
 		for (SkillDataEntry action : skillData.getActions())
 		{
-			UIActionSlot slot = new UIActionSlot(action);
+			JLabel uiIcon = new JLabel();
+
+			if (action.getIcon() != null)
+			{
+				itemManager.getImage(action.getIcon()).addTo(uiIcon);
+			}
+			else if (action.getSprite() != null)
+			{
+				spriteManager.addSpriteTo(uiIcon, action.getSprite(), 0);
+			}
+
+			UIActionSlot slot = new UIActionSlot(action, uiIcon);
 			uiActionSlots.add(slot); // Keep our own reference.
 			add(slot); // Add component to the panel.
 
