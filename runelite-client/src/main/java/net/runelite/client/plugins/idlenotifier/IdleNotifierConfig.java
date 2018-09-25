@@ -98,22 +98,14 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "oxygenNotifyAlert",
-		name = "Oxygen Notifier Message",
-		position = 8,
-		description = "Get a notifier even when not in runelite when your oxygen is about to run out")
-	default boolean oxygenNotifyAlert()
+		keyName = "oxygen",
+		name = "Oxygen Notification Threshold",
+		position = 7,
+		description = "The amount of remaining oxygen to send a notification at. A value of 0 will disable notification."
+	)
+	default int getOxygenThreshold()
 	{
-		return true;
+		return 0;
 	}
 
-	@ConfigItem(
-		keyName = "oxygenThreshold",
-		name = "Oxygen Threshold",
-		position = 9,
-		description = "Configure the % of oxygen you should get a warning for surpassing (1-99) Any value lower or higher will result in the default value.")
-	default int oxygenAlertAmount()
-	{
-		return 20;
-	}
 }

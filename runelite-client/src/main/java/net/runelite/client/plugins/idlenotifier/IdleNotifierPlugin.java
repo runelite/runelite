@@ -48,7 +48,6 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
-import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
@@ -88,12 +87,12 @@ public class IdleNotifierPlugin extends Plugin
 	private Actor lastInteract;
 	private boolean notifyHitpoints = true;
 	private boolean notifyPrayer = true;
+	private boolean notifyOxygen = true;
 	private boolean notifyIdleLogout = true;
 	private boolean notify6HourLogout = true;
 	private int lastCombatCountdown = 0;
 	private Instant sixHourWarningTime;
 	private boolean ready;
-	private int oxygenThreshold;
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
@@ -351,6 +350,32 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			notifier.notify("[" + local.getName() + "] has low prayer!");
 		}
+
+		if (checkLowOxygen())
+		{
+			notifier.notify("[" + local.getName() + "] has low oxygen!");
+		}
+	}
+
+	private boolean checkLowOxygen()
+	{
+		if (config.getOxygenThreshold() == 0)
+		{
+			return false;
+		}
+		if (config.getOxygenThreshold() >= client.getVar(Varbits.OXYGEN_LEVEL) * 0.1)
+		{
+			if (!notifyOxygen)
+			{
+				notifyOxygen = true;
+				return true;
+			}
+		}
+		else
+		{
+			notifyOxygen = false;
+		}
+		return false;
 	}
 
 	private boolean checkLowHitpoints()
@@ -535,23 +560,6 @@ public class IdleNotifierPlugin extends Plugin
 		if (client.getGameState() == GameState.LOGIN_SCREEN || local == null || local.getInteracting() != lastInteract)
 		{
 			lastInteract = null;
-		}
-	}
-
-	@Subscribe
-	private void onVarbitChanged(VarbitChanged ev)
-	{
-		oxygenThreshold = config.oxygenAlertAmount();
-		if (oxygenThreshold >= 100 || oxygenThreshold < 0)
-		{
-			oxygenThreshold = 20;
-		}
-		if (client.getVar(Varbits.OXYGEN_LEVEL) <= oxygenThreshold * 10 && client.getVar(Varbits.OXYGEN_LEVEL) > 0)
-		{
-			if (oxygenThreshold == client.getVar(Varbits.OXYGEN_LEVEL) * 0.1)
-			{
-				notifier.notify("Your oxygen is dangerously low! Currently: " + client.getVar(Varbits.OXYGEN_LEVEL) * 0.1 + "%");
-			}
 		}
 	}
 }
