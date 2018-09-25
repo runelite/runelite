@@ -44,8 +44,9 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 @Singleton
 class PrayerBarOverlay extends Overlay
 {
-	private static final Color BAR_FILL_COLOR = Color.cyan;
-	private static final Color BAR_BG_COLOR = Color.white;
+	private static final Color BAR_FILL_COLOR = new Color(0, 149, 151);
+	private static final Color BAR_BG_COLOR = Color.black;
+	private static final Color FLICK_HELP_COLOR = Color.white;
 	private static final Dimension PRAYER_BAR_SIZE = new Dimension(30, 5);
 
 	private final Client client;
@@ -101,7 +102,7 @@ class PrayerBarOverlay extends Overlay
 
 			int xOffset = (int) (-Math.cos(t) * barWidth / 2) + barWidth / 2;
 
-			graphics.setColor(Color.black);
+			graphics.setColor(FLICK_HELP_COLOR);
 			graphics.fillRect(barX + xOffset, barY, 1, barHeight);
 		}
 
