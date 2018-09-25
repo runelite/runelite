@@ -32,6 +32,15 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("bankvalue")
 public interface BankValueConfig extends Config
 {
+	enum BankTitleDecimalOptions
+	{
+		Dynamic,
+		One,
+		Two,
+		Three,
+		Four
+	}
+
 	@ConfigItem(
 		keyName = "showGE",
 		name = "Show Grand Exchange price",
@@ -63,5 +72,16 @@ public interface BankValueConfig extends Config
 	default boolean showExact()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "bankTitleDecimal",
+		name = "Bank Title Rounding",
+		description = "How Many Decimals to Show in the Bank Title",
+		position = 4
+	)
+	default BankTitleDecimalOptions titleDecimal()
+	{
+		return BankTitleDecimalOptions.Dynamic;
 	}
 }

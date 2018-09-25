@@ -53,32 +53,47 @@ public class StackFormatter
 	 */
 	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance(Locale.ENGLISH);
 
-	/**
-	 * A decimal number formatter
-	 */
-	private static final NumberFormat DECIMAL_FORMATTER = new DecimalFormat(
-		"#,###.#",
-		DecimalFormatSymbols.getInstance(Locale.ENGLISH)
-	);
+	private static DecimalFormat getDecimalFormatter(int decimalCount, boolean useComma)
+	{
 
-	/**
-	 * Convert a quantity to a nicely formatted stack size.
-	 * See the StackFormatterTest to see expected output.
-	 *
-	 * @param quantity The quantity to convert.
-	 * @return A condensed version, with commas, K, M or B
-	 * as needed to 3 significant figures.
-	 */
-	public static String quantityToStackSize(long quantity)
+		String decimalPattern = "#,###";
+
+		if (!useComma) {
+			decimalPattern = "####";
+		}
+
+		switch (decimalCount)
+		{
+			case 1:
+				decimalPattern += ".#";
+				break;
+			case 2:
+				decimalPattern += ".##";
+				break;
+			case 3:
+				decimalPattern += ".###";
+				break;
+			case 4:
+				decimalPattern += ".####";
+				break;
+			default:
+				decimalPattern += ".####";
+		}
+
+		return new DecimalFormat(decimalPattern, DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+	}
+
+	private static final String anyQuantityToStackSize(long quantity, int maxCharacter, int decimalCount, boolean useBillionPrefix, boolean useComma)
 	{
 		if (quantity < 0)
 		{
 			// Long.MIN_VALUE = -1 * Long.MIN_VALUE so we need to correct for it.
-			return "-" + quantityToStackSize(quantity == Long.MIN_VALUE ? Long.MAX_VALUE : -quantity);
+			return "-" + anyQuantityToStackSize(quantity == Long.MIN_VALUE ? Long.MAX_VALUE : -quantity, maxCharacter, decimalCount, useBillionPrefix, useComma);
 		}
 		else if (quantity < 10_000)
 		{
-			return NUMBER_FORMATTER.format(quantity);
+			// Numerical Formatting rules don't apply when the value is less then 10,000
+			return getDecimalFormatter(decimalCount, useComma).format(quantity);
 		}
 
 		String suffix = SUFFIXES[0];
@@ -88,6 +103,8 @@ public class StackFormatter
 		// of suffixes until the suffix results in a value >= 1
 		for (int i = (SUFFIXES.length - 1); i >= 0; i--)
 		{
+			if (SUFFIXES[i] == "B" && !useBillionPrefix) break;
+
 			divideBy = (long) Math.pow(10, i * 3);
 			if ((double) quantity / divideBy >= 1)
 			{
@@ -97,70 +114,43 @@ public class StackFormatter
 		}
 
 		// get locale formatted string
-		String formattedString = NUMBER_FORMATTER.format((double) quantity / divideBy);
+		String formattedString = getDecimalFormatter(decimalCount, useComma).format((double) quantity / divideBy);
 
 		// strip down any digits past the 4 first
-		formattedString = (formattedString.length() > 4 ? formattedString.substring(0, 4) : formattedString);
+		if (maxCharacter != -1)
+		{
+			formattedString = (formattedString.length() > maxCharacter ? formattedString.substring(0, maxCharacter) : formattedString);
+		}
 
 		// make sure the last character is not a "."
-		return (formattedString.endsWith(".") ? formattedString.substring(0, 3) : formattedString) + suffix;
+		return (formattedString.endsWith(".") ? formattedString.substring(0, maxCharacter - 1) : formattedString) + suffix;
 	}
 
-	/**
-	 * Convert a quantity to stack size as it would
-	 * appear in RuneScape.
-	 *
-	 * @param quantity The quantity to convert.
-	 * @return The stack size as it would appear in RS,
-	 * with K after 100,000 and M after 10,000,000
-	 */
+	// Generate a standard stack size using the "Billion" prefix and limiting it to
+	// 3 significant numbers
+	public static String quantityToStackSize(long quantity)
+	{
+		return anyQuantityToStackSize(quantity, 4, 4, true, true);
+	}
+
+	// Generate a standard stack size using the "Billion" prefix and following the
+	// specified decimal ignoring the number of significant numbers
+	public static String quantityToDecimalStack(long quantity, int decimalCount)
+	{
+		return anyQuantityToStackSize(quantity, 10, decimalCount, true, true);
+	}
+
+	// Generate a RuneScape stack without the "Billion" prefix and with no decimal places
 	public static String quantityToRSStackSize(int quantity)
 	{
-		if (quantity == Integer.MIN_VALUE)
-		{
-			// Integer.MIN_VALUE = Integer.MIN_VALUE * -1 so we need to correct for it.
-			return "-" + quantityToRSStackSize(Integer.MAX_VALUE);
-		}
-		else if (quantity < 0)
-		{
-			return "-" + quantityToRSStackSize(-quantity);
-		}
-		else if (quantity < 100_000)
-		{
-			return Integer.toString(quantity);
-		}
-		else if (quantity < 10_000_000)
-		{
-			return quantity / 1_000 + "K";
-		}
-		else
-		{
-			return quantity / 1_000_000 + "M";
-		}
+		return anyQuantityToStackSize(quantity, 10, 0, false, false);
 	}
 
-	/**
-	 * Convert a quantity to stack size as it would
-	 * appear in RuneScape. (with decimals)
-	 * <p>
-	 * This differs from quantityToRSStack in that it displays
-	 * decimals. Ex: 27100 is 27.1k (not 27k)
-	 * <p>
-	 *
-	 * @param quantity The quantity to convert.
-	 * @return The stack size as it would appear in RS, with decimals,
-	 * with K after 100,000 and M after 10,000,000
-	 */
-	public static String quantityToRSDecimalStack(int quantity)
+	// Generate a RuneScape stack without the "Billion" prefix and with a specified
+	// number of decimal places
+	public static String quantityToRSDecimalStack(long quantity, int decimalCount)
 	{
-		String quantityStr = String.valueOf(quantity);
-		if (quantityStr.length() <= 4)
-		{
-			return quantityStr;
-		}
-
-		int power = (int) Math.log10(quantity);
-		return DECIMAL_FORMATTER.format(quantity / (Math.pow(10, (power / 3) * 3))) + SUFFIXES[power / 3];
+		return anyQuantityToStackSize(quantity, 10, decimalCount, false, false);
 	}
 
 	/**
