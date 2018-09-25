@@ -216,8 +216,8 @@ public class GrandExchangeOfferSlot extends JPanel
 				|| newOffer.getState() == GrandExchangeOfferState.CANCELLED_BUY;
 
 			String offerState = (buying ? "Bought " : "Sold ")
-				+ StackFormatter.quantityToRSDecimalStack(newOffer.getQuantitySold()) + " / "
-				+ StackFormatter.quantityToRSDecimalStack(newOffer.getTotalQuantity());
+				+ StackFormatter.quantityToRSDecimalStack(newOffer.getQuantitySold(), 1) + " / "
+				+ StackFormatter.quantityToRSDecimalStack(newOffer.getTotalQuantity(), 1);
 
 			offerInfo.setText(offerState);
 

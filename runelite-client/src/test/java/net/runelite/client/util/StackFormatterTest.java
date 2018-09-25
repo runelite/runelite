@@ -43,21 +43,21 @@ public class StackFormatterTest
 	@Test
 	public void quantityToRSDecimalStackSize()
 	{
-		assertEquals("0", StackFormatter.quantityToRSDecimalStack(0));
-		assertEquals("8500", StackFormatter.quantityToRSDecimalStack(8_500));
-		assertEquals("10K", StackFormatter.quantityToRSDecimalStack(10_000));
-		assertEquals("21.7K", StackFormatter.quantityToRSDecimalStack(21_700));
-		assertEquals("100K", StackFormatter.quantityToRSDecimalStack(100_000));
-		assertEquals("100.3K", StackFormatter.quantityToRSDecimalStack(100_300));
-		assertEquals("1M", StackFormatter.quantityToRSDecimalStack(1_000_000));
-		assertEquals("8.4M", StackFormatter.quantityToRSDecimalStack(8_450_000));
-		assertEquals("10M", StackFormatter.quantityToRSDecimalStack(10_000_000));
-		assertEquals("12.8M", StackFormatter.quantityToRSDecimalStack(12_800_000));
-		assertEquals("100M", StackFormatter.quantityToRSDecimalStack(100_000_000));
-		assertEquals("250.1M", StackFormatter.quantityToRSDecimalStack(250_100_000));
-		assertEquals("1B", StackFormatter.quantityToRSDecimalStack(1_000_000_000));
-		assertEquals("1.5B", StackFormatter.quantityToRSDecimalStack(1500_000_000));
-		assertEquals("2.1B", StackFormatter.quantityToRSDecimalStack(Integer.MAX_VALUE));
+		assertEquals("0", StackFormatter.quantityToRSDecimalStack(0, 1));
+		assertEquals("8500", StackFormatter.quantityToRSDecimalStack(8_500, 1));
+		assertEquals("10K", StackFormatter.quantityToRSDecimalStack(10_000, 1));
+		assertEquals("21.7K", StackFormatter.quantityToRSDecimalStack(21_700, 1));
+		assertEquals("100K", StackFormatter.quantityToRSDecimalStack(100_000, 1));
+		assertEquals("100.3K", StackFormatter.quantityToRSDecimalStack(100_300, 1));
+		assertEquals("1M", StackFormatter.quantityToRSDecimalStack(1_000_000, 1));
+		assertEquals("8.4M", StackFormatter.quantityToRSDecimalStack(8_450_000, 1));
+		assertEquals("10M", StackFormatter.quantityToRSDecimalStack(10_000_000, 1));
+		assertEquals("12.8M", StackFormatter.quantityToRSDecimalStack(12_800_000, 1));
+		assertEquals("100M", StackFormatter.quantityToRSDecimalStack(100_000_000, 1));
+		assertEquals("250.1M", StackFormatter.quantityToRSDecimalStack(250_100_000, 1));
+		assertEquals("1B", StackFormatter.quantityToRSDecimalStack(1_000_000_000, 1));
+		assertEquals("1.5B", StackFormatter.quantityToRSDecimalStack(1500_000_000, 1));
+		assertEquals("2.1B", StackFormatter.quantityToRSDecimalStack(Integer.MAX_VALUE, 1));
 	}
 
 	@Test
@@ -96,6 +96,24 @@ public class StackFormatterTest
 		assertEquals("-40M", StackFormatter.quantityToStackSize(-40_000_000));
 		assertEquals(NumberFormat.getNumberInstance().format(-2.14) + "B", StackFormatter.quantityToStackSize(Integer.MIN_VALUE));
 		assertEquals("-400B", StackFormatter.quantityToStackSize(-400_000_000_000L));
+	}
+
+	@Test
+	public void quantityToDecimalStack()
+	{
+		assertEquals("0", StackFormatter.quantityToDecimalStack(0,0));
+		assertEquals("100K", StackFormatter.quantityToDecimalStack(100000,0));
+		assertEquals("100M", StackFormatter.quantityToDecimalStack(100000000,0));
+		assertEquals("100B", StackFormatter.quantityToDecimalStack(100_000_000_000L,0));
+		assertEquals("0", StackFormatter.quantityToDecimalStack(0,2));
+		assertEquals("100.23K", StackFormatter.quantityToDecimalStack(100230,2));
+		assertEquals("100.23M", StackFormatter.quantityToDecimalStack(100230000,2));
+		assertEquals("100.23B", StackFormatter.quantityToDecimalStack(100_230_000_000L,2));
+		assertEquals("100.232K", StackFormatter.quantityToDecimalStack(100232,3));
+		assertEquals("100.233M", StackFormatter.quantityToDecimalStack(100233400,3));
+		assertEquals("100.2334M", StackFormatter.quantityToDecimalStack(100233400,4));
+		assertEquals("2B", StackFormatter.quantityToDecimalStack(Integer.MAX_VALUE, 0));
+		assertEquals("-2.14B", StackFormatter.quantityToDecimalStack(Integer.MIN_VALUE, 2));
 	}
 
 	@Test

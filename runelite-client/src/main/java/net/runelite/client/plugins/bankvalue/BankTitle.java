@@ -100,7 +100,7 @@ class BankTitle
 			}
 			else
 			{
-				strCurrentTab += StackFormatter.quantityToStackSize(gePrice) + ")";
+				strCurrentTab += formatBankTitle(gePrice) + ")";
 			}
 		}
 
@@ -114,11 +114,37 @@ class BankTitle
 			}
 			else
 			{
-				strCurrentTab += StackFormatter.quantityToStackSize(haPrice) + ")";
+				strCurrentTab += formatBankTitle(haPrice) + ")";
 			}
 		}
 
 		log.debug("Setting bank title: {}", bankTitle + strCurrentTab);
 		widgetBankTitleBar.setText(bankTitle + strCurrentTab);
+	}
+
+
+	String formatBankTitle(long value)
+	{
+		if (config.titleDecimal() == BankValueConfig.BankTitleDecimalOptions.One)
+		{
+			return StackFormatter.quantityToDecimalStack(value, 1);
+		}
+
+		if (config.titleDecimal() == BankValueConfig.BankTitleDecimalOptions.Two)
+		{
+			return StackFormatter.quantityToDecimalStack(value, 2);
+		}
+
+		if (config.titleDecimal() == BankValueConfig.BankTitleDecimalOptions.Three)
+		{
+			return StackFormatter.quantityToDecimalStack(value, 3);
+		}
+
+		if (config.titleDecimal() == BankValueConfig.BankTitleDecimalOptions.Four)
+		{
+			return StackFormatter.quantityToDecimalStack(value, 4);
+		}
+
+		return StackFormatter.quantityToStackSize(value);
 	}
 }
