@@ -63,7 +63,7 @@ enum Task
 	CERBERUS("Cerberus", ItemID.HELLPUPPY),
 	CHAOS_ELEMENTAL("Chaos Elemental", ItemID.PET_CHAOS_ELEMENTAL),
 	CHAOS_FANATIC("Chaos Fanatic", ItemID.PET_CHAOS_ELEMENTAL),
-	COCKATRICE("Cockatrice", ItemID.COCKATRICE, "Cockathrice"),
+	COCKATRICE("Cockatrice", ItemID.COCKATRICE, "Cockatrice"),
 	COWS("Cows", ItemID.COW_MASK),
 	CRAWLING_HANDS("Crawling hands", ItemID.CRAWLING_HAND, "Crushing hand"),
 	CRAZY_ARCHAEOLOGIST("Crazy Archaeologist", ItemID.FEDORA),
