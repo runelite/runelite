@@ -98,16 +98,6 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "oxygenChatAlert",
-		name = "Oxygen Chat Message",
-		position = 7,
-		description = "Get a text message warning you when your oxygen is about to run out")
-	default boolean oxygenChatAlert()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "oxygenNotifyAlert",
 		name = "Oxygen Notifier Message",
 		position = 8,

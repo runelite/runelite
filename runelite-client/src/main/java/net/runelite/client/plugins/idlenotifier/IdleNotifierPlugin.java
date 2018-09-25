@@ -35,7 +35,6 @@ import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
 import static net.runelite.api.AnimationID.*;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Hitsplat;
@@ -52,7 +51,6 @@ import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatMessageManager;
-import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -131,11 +129,11 @@ public class IdleNotifierPlugin extends Plugin
 			case WOODCUTTING_DRAGON:
 			case WOODCUTTING_INFERNAL:
 			case WOODCUTTING_3A_AXE:
-			/* Cooking(Fire, Range) */
+				/* Cooking(Fire, Range) */
 			case COOKING_FIRE:
 			case COOKING_RANGE:
 			case COOKING_WINE:
-			/* Crafting(Gem Cutting, Glassblowing, Spinning, Battlestaves) */
+				/* Crafting(Gem Cutting, Glassblowing, Spinning, Battlestaves) */
 			case GEM_CUTTING_OPAL:
 			case GEM_CUTTING_JADE:
 			case GEM_CUTTING_REDTOPAZ:
@@ -147,7 +145,7 @@ public class IdleNotifierPlugin extends Plugin
 			case CRAFTING_SPINNING:
 			case CRAFTING_BATTLESTAVES:
 			case CRAFTING_LEATHER:
-			/* Fletching(Cutting, Stringing) */
+				/* Fletching(Cutting, Stringing) */
 			case FLETCHING_BOW_CUTTING:
 			case FLETCHING_STRING_NORMAL_SHORTBOW:
 			case FLETCHING_STRING_OAK_SHORTBOW:
@@ -161,11 +159,11 @@ public class IdleNotifierPlugin extends Plugin
 			case FLETCHING_STRING_MAPLE_LONGBOW:
 			case FLETCHING_STRING_YEW_LONGBOW:
 			case FLETCHING_STRING_MAGIC_LONGBOW:
-			/* Smithing(Anvil, Furnace, Cannonballs */
+				/* Smithing(Anvil, Furnace, Cannonballs */
 			case SMITHING_ANVIL:
 			case SMITHING_SMELTING:
 			case SMITHING_CANNONBALL:
-			/* Fishing */
+				/* Fishing */
 			case FISHING_NET:
 			case FISHING_BIG_NET:
 			case FISHING_HARPOON:
@@ -179,7 +177,7 @@ public class IdleNotifierPlugin extends Plugin
 			case FISHING_CRUSHING_INFERNAL_EELS:
 			case FISHING_CUTTING_SACRED_EELS:
 			case FISHING_BAREHAND:
-			/* Mining(Normal) */
+				/* Mining(Normal) */
 			case MINING_BRONZE_PICKAXE:
 			case MINING_IRON_PICKAXE:
 			case MINING_STEEL_PICKAXE:
@@ -192,7 +190,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_INFERNAL_PICKAXE:
 			case MINING_3A_PICKAXE:
 			case DENSE_ESSENCE_CHIPPING:
-			/* Mining(Motherlode) */
+				/* Mining(Motherlode) */
 			case MINING_MOTHERLODE_BRONZE:
 			case MINING_MOTHERLODE_IRON:
 			case MINING_MOTHERLODE_STEEL:
@@ -204,15 +202,15 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_MOTHERLODE_DRAGON_ORN:
 			case MINING_MOTHERLODE_INFERNAL:
 			case MINING_MOTHERLODE_3A:
-			/* Herblore */
+				/* Herblore */
 			case HERBLORE_POTIONMAKING:
 			case HERBLORE_MAKE_TAR:
-			/* Magic */
+				/* Magic */
 			case MAGIC_CHARGING_ORBS:
 			case MAGIC_LUNAR_STRING_JEWELRY:
 			case MAGIC_LUNAR_BAKE_PIE:
 			case MAGIC_MAKE_TABLET:
-			/* Prayer */
+				/* Prayer */
 			case USING_GILDED_ALTAR:
 				resetTimers();
 				lastAnimation = animation;
@@ -550,15 +548,6 @@ public class IdleNotifierPlugin extends Plugin
 		}
 		if (client.getVar(Varbits.OXYGEN_LEVEL) <= oxygenThreshold * 10 && client.getVar(Varbits.OXYGEN_LEVEL) > 0)
 		{
-			if (config.oxygenChatAlert())
-			{
-				String message = "Your oxygen is dangerously low! Currently: " + client.getVar(Varbits.OXYGEN_LEVEL) * 0.1 + "%";
-				chatMessageManager.queue(QueuedMessage.builder()
-					.type(ChatMessageType.DUEL)
-					.runeLiteFormattedMessage(message)
-					.build());
-			}
-
 			if (oxygenThreshold == client.getVar(Varbits.OXYGEN_LEVEL) * 0.1)
 			{
 				notifier.notify("Your oxygen is dangerously low! Currently: " + client.getVar(Varbits.OXYGEN_LEVEL) * 0.1 + "%");
