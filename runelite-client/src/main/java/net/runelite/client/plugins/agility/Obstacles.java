@@ -210,7 +210,9 @@ class Obstacles
 		// Underwater Area Fossil Island
 		TUNNEL_30959, HOLE_30966, OBSTACLE, OBSTACLE_30767, OBSTACLE_30964, OBSTACLE_30962,
 		// Tree Gnome Village
-		LOOSE_RAILING_2186
+		LOOSE_RAILING_2186,
+		// Weiss
+		LITTLE_BOULDER
 	);
 
 	static final Set<Integer> TRAP_OBSTACLE_IDS = ImmutableSet.of(
