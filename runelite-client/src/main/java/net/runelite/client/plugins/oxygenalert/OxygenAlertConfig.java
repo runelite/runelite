@@ -75,7 +75,7 @@ public interface OxygenAlertConfig extends Config
 		keyName = "oxygenThreshold",
 		name = "Oxygen Threshold",
 		position = 4,
-		description = "Configure the % of oxygen you should get a warning for surpassing (1-100) Any value lower or higher will result in the default value.")
+		description = "Configure the % of oxygen you should get a warning for surpassing (1-99) Any value lower or higher will result in the default value.")
 	default int oxygenAlertAmount()
 	{
 		return 20;
