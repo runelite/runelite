@@ -49,7 +49,6 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.Notifier;
-import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -74,9 +73,6 @@ public class IdleNotifierPlugin extends Plugin
 
 	@Inject
 	private Client client;
-
-	@Inject
-	private ChatMessageManager chatMessageManager;
 
 	@Inject
 	private IdleNotifierConfig config;
