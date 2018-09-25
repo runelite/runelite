@@ -35,6 +35,7 @@ import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
 import static net.runelite.api.AnimationID.*;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Hitsplat;
@@ -48,7 +49,10 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -75,6 +79,9 @@ public class IdleNotifierPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ChatMessageManager chatMessageManager;
+
+	@Inject
 	private IdleNotifierConfig config;
 
 	private Instant lastAnimating;
@@ -88,6 +95,7 @@ public class IdleNotifierPlugin extends Plugin
 	private int lastCombatCountdown = 0;
 	private Instant sixHourWarningTime;
 	private boolean ready;
+	private int oxygenThreshold;
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
@@ -529,6 +537,32 @@ public class IdleNotifierPlugin extends Plugin
 		if (client.getGameState() == GameState.LOGIN_SCREEN || local == null || local.getInteracting() != lastInteract)
 		{
 			lastInteract = null;
+		}
+	}
+
+	@Subscribe
+	private void onVarbitChanged(VarbitChanged ev)
+	{
+		oxygenThreshold = config.oxygenAlertAmount();
+		if (oxygenThreshold >= 100 || oxygenThreshold < 0)
+		{
+			oxygenThreshold = 20;
+		}
+		if (client.getVar(Varbits.OXYGEN_LEVEL) <= oxygenThreshold * 10 && client.getVar(Varbits.OXYGEN_LEVEL) > 0)
+		{
+			if (config.oxygenChatAlert())
+			{
+				String message = "Your oxygen is dangerously low! Currently: " + client.getVar(Varbits.OXYGEN_LEVEL) * 0.1 + "%";
+				chatMessageManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.DUEL)
+					.runeLiteFormattedMessage(message)
+					.build());
+			}
+
+			if (oxygenThreshold == client.getVar(Varbits.OXYGEN_LEVEL) * 0.1)
+			{
+				notifier.notify("Your oxygen is dangerously low! Currently: " + client.getVar(Varbits.OXYGEN_LEVEL) * 0.1 + "%");
+			}
 		}
 	}
 }

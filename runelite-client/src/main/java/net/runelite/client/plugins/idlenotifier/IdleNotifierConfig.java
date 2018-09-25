@@ -96,4 +96,34 @@ public interface IdleNotifierConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+		keyName = "oxygenChatAlert",
+		name = "Oxygen Chat Message",
+		position = 7,
+		description = "Get a text message warning you when your oxygen is about to run out")
+	default boolean oxygenChatAlert()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "oxygenNotifyAlert",
+		name = "Oxygen Notifier Message",
+		position = 8,
+		description = "Get a notifier even when not in runelite when your oxygen is about to run out")
+	default boolean oxygenNotifyAlert()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "oxygenThreshold",
+		name = "Oxygen Threshold",
+		position = 9,
+		description = "Configure the % of oxygen you should get a warning for surpassing (1-99) Any value lower or higher will result in the default value.")
+	default int oxygenAlertAmount()
+	{
+		return 20;
+	}
 }
