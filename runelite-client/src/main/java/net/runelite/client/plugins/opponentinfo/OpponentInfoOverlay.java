@@ -64,10 +64,11 @@ class OpponentInfoOverlay extends Overlay
 	private float lastRatio = 0;
 	private String opponentName;
 	private String opponentsOpponentName;
+	private int id;
 
 	@Inject
 	private OpponentInfoOverlay(Client client, OpponentInfoPlugin opponentInfoPlugin,
-		OpponentInfoConfig opponentInfoConfig, HiscoreManager hiscoreManager)
+								OpponentInfoConfig opponentInfoConfig, HiscoreManager hiscoreManager)
 	{
 		this.client = client;
 		this.opponentInfoPlugin = opponentInfoPlugin;
@@ -85,8 +86,16 @@ class OpponentInfoOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		final Actor opponent = opponentInfoPlugin.getLastOpponent();
-
-		if (opponent == null)
+		if (opponent != null)
+		{
+			id = ((NPC) opponent).getId();
+			if (blacklistedNpc(id))
+			{
+				opponentName = null;
+				return null;
+			}
+		}
+		else
 		{
 			opponentName = null;
 			return null;
@@ -117,7 +126,7 @@ class OpponentInfoOverlay extends Overlay
 
 			final Actor opponentsOpponent = opponent.getInteracting();
 			if (opponentsOpponent != null
-					&& (opponentsOpponent != client.getLocalPlayer() || client.getVar(Varbits.MULTICOMBAT_AREA) == 1))
+				&& (opponentsOpponent != client.getLocalPlayer() || client.getVar(Varbits.MULTICOMBAT_AREA) == 1))
 			{
 				opponentsOpponentName = Text.removeTags(opponentsOpponent.getName());
 			}
@@ -175,5 +184,54 @@ class OpponentInfoOverlay extends Overlay
 		}
 
 		return panelComponent.render(graphics);
+	}
+
+	private boolean blacklistedNpc(int monsterID)
+	{
+		if (!opponentInfoConfig.hideBlacklistedMonsters())
+		{
+			return false;
+		}
+		switch (monsterID)
+		{
+			case 7706:
+				return true; //tzkal zuk
+			case 8360:
+				return true; //maiden of sugadinti
+			case 8361:
+				return true; //maiden of sugadinti
+			case 8362:
+				return true; //maiden of sugadinti
+			case 8363:
+				return true; //maiden of sugadinti
+			case 8364:
+				return true; //maiden of sugadinti
+			case 8359:
+				return true; //pestilent bloat
+			case 8338:
+				return true; //xarpus
+			case 8339:
+				return true; //xarpus
+			case 8340:
+				return true; //xarpus
+			case 8341:
+				return true; //xarpus
+			case 8369:
+				return true; //verzik
+			case 8370:
+				return true; //verzik
+			case 8371:
+				return true; //verzik
+			case 8372:
+				return true; //verzik
+			case 8373:
+				return true; //verzik
+			case 8374:
+				return true; //verzik
+			case 8375:
+				return true; //verzik
+			default:
+				return false;
+		}
 	}
 }
