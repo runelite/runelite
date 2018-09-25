@@ -52,4 +52,15 @@ public interface OpponentInfoConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "hideBlacklistedMonsters",
+		name = "Hide on already existing healthbars",
+		description = "Hides the Runelite healthbar when a monster has its own one.",
+		position = 1
+	)
+	default boolean hideBlacklistedMonsters()
+	{
+		return false;
+	}
 }
