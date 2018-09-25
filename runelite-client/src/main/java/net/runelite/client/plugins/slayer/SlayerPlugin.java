@@ -95,6 +95,7 @@ public class SlayerPlugin extends Plugin
 
 	//NPC messages
 	private static final Pattern NPC_ASSIGN_MESSAGE = Pattern.compile(".*Your new task is to kill\\s*(\\d*) (.*)\\.");
+	private static final Pattern NPC_ASSIGN_BOSS_MESSAGE = Pattern.compile("^Excellent. You're now assigned to kill (.*) (\\d+) times.*Your reward point tally is (.*)\\.$");
 	private static final Pattern NPC_CURRENT_MESSAGE = Pattern.compile("You're still hunting (.*); you have (\\d*) to go\\..*");
 
 	//Reward UI
@@ -262,19 +263,23 @@ public class SlayerPlugin extends Plugin
 		if (NPCDialog != null)
 		{
 			String NPCText = Text.removeTags(NPCDialog.getText()); //remove color and linebreaks
-			Matcher mAssign = NPC_ASSIGN_MESSAGE.matcher(NPCText); //number, name
-			Matcher mCurrent = NPC_CURRENT_MESSAGE.matcher(NPCText); //name, number
-			boolean found1 = mAssign.find();
-			boolean found2 = mCurrent.find();
-			if (!found1 && !found2)
+			final Matcher mAssign = NPC_ASSIGN_MESSAGE.matcher(NPCText); //number, name
+			final Matcher mAssignBoss = NPC_ASSIGN_BOSS_MESSAGE.matcher(NPCText); // name, number, points
+			final Matcher mCurrent = NPC_CURRENT_MESSAGE.matcher(NPCText); //name, number
+
+			if (mAssign.find())
 			{
-				return;
+				setTask(mAssign.group(2), Integer.parseInt(mAssign.group(1)));
 			}
-
-			String taskName = found1 ? mAssign.group(2) : mCurrent.group(1);
-			int amount = Integer.parseInt(found1 ? mAssign.group(1) : mCurrent.group(2));
-
-			setTask(taskName, amount);
+			else if (mAssignBoss.find())
+			{
+				setTask(mAssignBoss.group(1), Integer.parseInt(mAssignBoss.group(2)));
+				points = Integer.parseInt(mAssignBoss.group(3).replaceAll(",", ""));
+			}
+			else if (mCurrent.find())
+			{
+				setTask(mCurrent.group(1), Integer.parseInt(mCurrent.group(2)));
+			}
 		}
 
 		Widget braceletBreakWidget = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
