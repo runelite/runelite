@@ -409,6 +409,10 @@ public enum Varbits
 	ACCOUNT_TYPE(1777),
 
 	/**
+	 * The varbit that stores the oxygen percentage for player
+	 */
+	OXYGEN_LEVEL(5811),
+	/**
 	 * Corp beast damage
 	 */
 	CORP_DAMAGE(999),
