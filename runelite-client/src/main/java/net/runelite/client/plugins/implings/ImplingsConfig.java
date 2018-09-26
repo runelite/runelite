@@ -310,4 +310,12 @@ public interface ImplingsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			position = 26,
+			keyName = "notifyImplings",
+			name = "Impling Notification",
+			description = "Configures implings to send notifications about. Format: (type), (type)"
+	)
+	default String getNotifyImplings() { return ""; }
 }

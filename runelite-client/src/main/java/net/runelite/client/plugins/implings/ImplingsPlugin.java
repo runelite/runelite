@@ -24,11 +24,13 @@
  */
 package net.runelite.client.plugins.implings;
 
+import com.google.common.base.Splitter;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -37,6 +39,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -52,6 +55,13 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class ImplingsPlugin extends Plugin
 {
+	private static final Splitter COMMA_SPLITTER = Splitter
+			.on(",")
+			.omitEmptyStrings()
+			.trimResults();
+
+	private List<String> notifyImplingsList = new CopyOnWriteArrayList<>();
+
 	@Getter(AccessLevel.PACKAGE)
 	private final List<NPC> implings = new ArrayList<>();
 
@@ -67,6 +77,9 @@ public class ImplingsPlugin extends Plugin
 	@Inject
 	private ImplingsConfig config;
 
+	@Inject
+	private Notifier notifier;
+
 	@Provides
 	ImplingsConfig getConfig(ConfigManager configManager)
 	{
@@ -79,6 +92,7 @@ public class ImplingsPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		overlayManager.add(minimapOverlay);
+		notifyImplingsList = COMMA_SPLITTER.splitToList(config.getNotifyImplings());
 	}
 
 	@Override
@@ -86,6 +100,7 @@ public class ImplingsPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(minimapOverlay);
+		notifyImplingsList = null;
 	}
 
 	@Subscribe
@@ -97,6 +112,17 @@ public class ImplingsPlugin extends Plugin
 		if (impling != null)
 		{
 			implings.add(npc);
+
+			if (!notifyImplingsList.isEmpty())
+			{
+				for (String s : notifyImplingsList)
+				{
+					if (impling.getImplingType().getName().toLowerCase().contains(s.toLowerCase()))
+					{
+						notifier.notify(impling.getImplingType().getName() + " impling spotted");
+					}
+				}
+			}
 		}
 	}
 
