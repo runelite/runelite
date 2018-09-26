@@ -154,11 +154,7 @@ public class RegenMeterPlugin extends Plugin
 			// Show it going down
 			hitpointsPercentage = 1 - hitpointsPercentage;
 		}
-		else if (maxHP > currentHP && config.regenWarning() > 0 && config.regenWarning() < 100 && (Math.round(hitpointsPercentage * 100)) == config.regenWarning() && !client.isPrayerActive(Prayer.RAPID_HEAL))
-		{
-			notifier.notify("You have reached your HP Regeneration Threshold!");
-		}
-		else if (!messageSend && maxHP > currentHP && config.regenWarning() > 0 && config.regenWarning() < 100 && ((Math.round(hitpointsPercentage * 100)) == config.regenWarning() - 1 || (Math.round(hitpointsPercentage * 100)) == config.regenWarning() ) && client.isPrayerActive(Prayer.RAPID_HEAL))
+		else if (!messageSend && maxHP > currentHP && config.regenWarning() > 0 && config.regenWarning() < 100 && ((Math.round(hitpointsPercentage * 100)) == config.regenWarning() || (Math.round(hitpointsPercentage * 100)) == config.regenWarning() - 1))
 		{
 			notifier.notify("You have reached your HP Regeneration Threshold!");
 			messageSend = true;
