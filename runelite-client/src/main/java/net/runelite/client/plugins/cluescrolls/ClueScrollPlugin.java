@@ -57,7 +57,6 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -146,7 +145,6 @@ public class ClueScrollPlugin extends Plugin
 	private BufferedImage emoteImage;
 	private BufferedImage mapArrow;
 	private Integer clueItemId;
-	private boolean clueItemChanged = false;
 	private boolean worldMapPointsSet = false;
 
 	@Provides
@@ -169,7 +167,7 @@ public class ClueScrollPlugin extends Plugin
 		overlayManager.remove(clueScrollOverlay);
 		overlayManager.remove(clueScrollEmoteOverlay);
 		overlayManager.remove(clueScrollWorldOverlay);
-		resetClue();
+		resetClue(true);
 	}
 
 	@Subscribe
@@ -194,7 +192,7 @@ public class ClueScrollPlugin extends Plugin
 			return;
 		}
 
-		resetClue();
+		resetClue(true);
 	}
 
 	@Subscribe
@@ -207,7 +205,7 @@ public class ClueScrollPlugin extends Plugin
 			if (itemComposition != null && itemComposition.getName().startsWith("Clue scroll"))
 			{
 				clueItemId = itemComposition.getId();
-				clueItemChanged = true;
+				updateClue(MapClue.forItemId(clueItemId));
 			}
 		}
 	}
@@ -223,7 +221,7 @@ public class ClueScrollPlugin extends Plugin
 			// Check if clue was removed from inventory
 			if (items.noneMatch(item -> itemManager.getItemComposition(item.getId()).getId() == clueItemId))
 			{
-				resetClue();
+				resetClue(true);
 			}
 		}
 
@@ -248,7 +246,7 @@ public class ClueScrollPlugin extends Plugin
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
-			resetClue();
+			resetClue(true);
 		}
 	}
 
@@ -342,7 +340,7 @@ public class ClueScrollPlugin extends Plugin
 		if (clue instanceof EmoteClue)
 		{
 			ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
-			
+
 			if (equipment != null)
 			{
 				equippedItems = equipment.getItems();
@@ -383,12 +381,7 @@ public class ClueScrollPlugin extends Plugin
 		// so the clue window doesn't have to be open.
 		if (clue != null)
 		{
-			if (clue != this.clue)
-			{
-				resetClue();
-			}
-
-			this.clue = clue;
+			updateClue(clue);
 			this.clueTimeout = Instant.now();
 		}
 	}
@@ -427,19 +420,18 @@ public class ClueScrollPlugin extends Plugin
 		return mapArrow;
 	}
 
-	private void resetClue()
+	private void resetClue(boolean withItemId)
 	{
-		if (!clueItemChanged)
-		{
-			clueItemId = null;
-		}
-
 		if (clue instanceof LocationsClueScroll)
 		{
 			((LocationsClueScroll) clue).reset();
 		}
 
-		clueItemChanged = false;
+		if (withItemId)
+		{
+			clueItemId = null;
+		}
+
 		clue = null;
 		worldMapPointManager.removeIf(ClueScrollWorldMapPoint.class::isInstance);
 		worldMapPointsSet = false;
@@ -522,27 +514,8 @@ public class ClueScrollPlugin extends Plugin
 				}
 
 				// We have unknown clue, reset
-				resetClue();
+				resetClue(true);
 				return null;
-			}
-		}
-
-		Item[] result = queryRunner.runQuery(new InventoryItemQuery(InventoryID.INVENTORY));
-
-		if (result == null)
-		{
-			return null;
-		}
-
-		for (Item item : result)
-		{
-			MapClue clue = MapClue.forItemId(item.getId());
-
-			if (clue != null)
-			{
-				clueItemId = item.getId();
-				clueItemChanged = true;
-				return clue;
 			}
 		}
 
@@ -620,5 +593,16 @@ public class ClueScrollPlugin extends Plugin
 		{
 			worldMapPointManager.add(new ClueScrollWorldMapPoint(point, this));
 		}
+	}
+
+	private void updateClue(final ClueScroll clue)
+	{
+		if (clue == null || clue == this.clue)
+		{
+			return;
+		}
+
+		resetClue(false);
+		this.clue = clue;
 	}
 }
