@@ -95,16 +95,16 @@ class OpponentInfoOverlay extends Overlay
 
 		if (opponent.getName() != null && opponent.getHealth() > 0)
 		{
+			if (opponent instanceof NPC && bosHasHealthbar(((NPC) opponent).getId()))
+			{
+				return null;
+			}
 			lastRatio = (float) opponent.getHealthRatio() / (float) opponent.getHealth();
 			opponentName = Text.removeTags(opponent.getName());
 
 			lastMaxHealth = null;
 			if (opponent instanceof NPC)
 			{
-				if (bosHasHealthbar(((NPC) opponent).getId()))
-				{
-					return null;
-				}
 				lastMaxHealth = opponentInfoPlugin.getOppInfoHealth().get(opponentName + "_" + opponent.getCombatLevel());
 			}
 			else if (opponent instanceof Player)
