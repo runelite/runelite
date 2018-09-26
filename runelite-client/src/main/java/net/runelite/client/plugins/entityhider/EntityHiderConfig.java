@@ -40,7 +40,7 @@ public interface EntityHiderConfig extends Config
 	)
 	default boolean hidePlayers()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -51,7 +51,7 @@ public interface EntityHiderConfig extends Config
 	)
 	default boolean hidePlayers2D()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
