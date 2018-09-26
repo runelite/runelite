@@ -30,8 +30,6 @@ import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -356,22 +354,23 @@ public class FishingPlugin extends Plugin
      * Changes the Fishing Trawler timer widget from minutes to minutes and seconds
      *
      */
-   private void setTrawlerTimer()
-   {
+	private void setTrawlerTimer()
+	{
 		int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
 
 		if (regionID == TRAWLER_SHIP_REGION_NORMAL || regionID == TRAWLER_SHIP_REGION_SINKING)
 		{
 			Widget trawlerTimerWidget = client.getWidget(WidgetID.FISHING_TRAWLER_GROUP_ID, 37);
 
-		    Instant now = Instant.now();
+			Instant now = Instant.now();
 			long timerInSeconds = Duration.between(now, endTime).getSeconds();
 
 			String trawlerText = String.format("Time Left: %02d Mins %02d Secs", (timerInSeconds % 3600) / 60, (timerInSeconds % 60));
 
-            // set widget text
-            trawlerTimerWidget.setText(trawlerText);
+			// set widget text
+			trawlerTimerWidget.setText(trawlerText);
 
-        }
-    }
+
+		}
+	}
 }
