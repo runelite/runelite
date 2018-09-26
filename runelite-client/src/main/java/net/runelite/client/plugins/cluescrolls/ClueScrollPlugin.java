@@ -31,7 +31,10 @@ import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -46,7 +49,6 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
-import net.runelite.api.Query;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
@@ -57,7 +59,8 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.queries.NPCQuery;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
@@ -82,7 +85,6 @@ import net.runelite.client.plugins.cluescrolls.clues.ThreeStepCrypticClue;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.QueryRunner;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -100,7 +102,7 @@ public class ClueScrollPlugin extends Plugin
 	private ClueScroll clue;
 
 	@Getter
-	private NPC[] npcsToMark;
+	private final List<NPC> npcsToMark = new ArrayList<>();
 
 	@Getter
 	private GameObject[] objectsToMark;
@@ -120,9 +122,6 @@ public class ClueScrollPlugin extends Plugin
 
 	@Inject
 	private ItemManager itemManager;
-
-	@Inject
-	private QueryRunner queryRunner;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -167,6 +166,7 @@ public class ClueScrollPlugin extends Plugin
 		overlayManager.remove(clueScrollOverlay);
 		overlayManager.remove(clueScrollEmoteOverlay);
 		overlayManager.remove(clueScrollWorldOverlay);
+		npcsToMark.clear();
 		resetClue(true);
 	}
 
@@ -233,6 +233,32 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onNpcSpawned(final NpcSpawned event)
+	{
+		final NPC npc = event.getNpc();
+		checkClueNPCs(clue, npc);
+	}
+
+	@Subscribe
+	public void onNpcDespawned(final NpcDespawned event)
+	{
+		final boolean removed = npcsToMark.remove(event.getNpc());
+
+		if (removed)
+		{
+			if (npcsToMark.isEmpty())
+			{
+				client.clearHintArrow();
+			}
+			else
+			{
+				// Always set hint arrow to first seen NPC
+				client.setHintArrow(npcsToMark.get(0));
+			}
+		}
+	}
+
+	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("cluescroll") && !config.displayHintArrows())
@@ -253,7 +279,6 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(final GameTick event)
 	{
-		npcsToMark = null;
 		objectsToMark = null;
 		equippedItems = null;
 		inventoryItems = null;
@@ -298,42 +323,21 @@ public class ClueScrollPlugin extends Plugin
 			}
 		}
 
-		// If we have location clue, set world location before all other types of clues
-		// to allow NPCs and objects to override it when needed
 		if (clue instanceof LocationClueScroll)
 		{
 			final WorldPoint location = ((LocationClueScroll) clue).getLocation();
 
 			if (location != null)
 			{
-				if (config.displayHintArrows())
+				// Only set the location hint arrow if we do not already have more accurate location
+				if (config.displayHintArrows()
+					&& (client.getHintArrowNpc() == null
+					|| !npcsToMark.contains(client.getHintArrowNpc())))
 				{
 					client.setHintArrow(location);
 				}
 
 				addMapPoints(location);
-			}
-		}
-
-		if (clue instanceof NpcClueScroll)
-		{
-			String[] npcs = ((NpcClueScroll) clue).getNpcs();
-
-			if (npcs.length > 0)
-			{
-				Query query = new NPCQuery().nameEquals(npcs);
-				npcsToMark = queryRunner.runQuery(query);
-
-				// Set hint arrow to first NPC found as there can only be 1 hint arrow
-				if (npcsToMark.length >= 1)
-				{
-					if (config.displayHintArrows())
-					{
-						client.setHintArrow(npcsToMark[0]);
-					}
-
-					addMapPoints(npcsToMark[0].getWorldLocation());
-				}
 			}
 		}
 
@@ -435,6 +439,7 @@ public class ClueScrollPlugin extends Plugin
 		clue = null;
 		worldMapPointManager.removeIf(ClueScrollWorldMapPoint.class::isInstance);
 		worldMapPointsSet = false;
+		npcsToMark.clear();
 
 		if (config.displayHintArrows())
 		{
@@ -595,6 +600,45 @@ public class ClueScrollPlugin extends Plugin
 		}
 	}
 
+	private void checkClueNPCs(ClueScroll clue, final NPC... npcs)
+	{
+		if (!(clue instanceof NpcClueScroll))
+		{
+			return;
+		}
+
+		final NpcClueScroll npcClueScroll = (NpcClueScroll) clue;
+
+		if (npcClueScroll.getNpcs() == null || npcClueScroll.getNpcs().length == 0)
+		{
+			return;
+		}
+
+		for (NPC npc : npcs)
+		{
+			if (npc == null || npc.getName() == null)
+			{
+				continue;
+			}
+
+			for (String npcName : npcClueScroll.getNpcs())
+			{
+				if (!Objects.equals(npc.getName(), npcName))
+				{
+					continue;
+				}
+
+				npcsToMark.add(npc);
+			}
+		}
+
+		if (!npcsToMark.isEmpty() && config.displayHintArrows())
+		{
+			// Always set hint arrow to first seen NPC
+			client.setHintArrow(npcsToMark.get(0));
+		}
+	}
+
 	private void updateClue(final ClueScroll clue)
 	{
 		if (clue == null || clue == this.clue)
@@ -603,6 +647,7 @@ public class ClueScrollPlugin extends Plugin
 		}
 
 		resetClue(false);
+		checkClueNPCs(clue, client.getCachedNPCs());
 		this.clue = clue;
 	}
 }
