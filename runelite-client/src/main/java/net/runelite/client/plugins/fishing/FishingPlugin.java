@@ -30,6 +30,7 @@ import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -57,6 +58,7 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.queries.NPCQuery;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -80,6 +82,11 @@ public class FishingPlugin extends Plugin
 	private static final int TRAWLER_SHIP_REGION_SINKING = 8011;
 
 	private static final int TRAWLER_ACTIVITY_THRESHOLD = Math.round(0.15f * 255);
+
+
+	//fishing trawler 12min timer
+    private static final  Duration startTimer   = Duration.of(12, ChronoUnit.MINUTES);
+    private static        Duration currentTimer = startTimer;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final FishingSession session = new FishingSession();
@@ -298,6 +305,9 @@ public class FishingPlugin extends Plugin
 				}
 			}
 		}
+		//set Trawler timer to seconds
+        setTrawlerTimer();
+
 	}
 
 	@Subscribe
@@ -334,5 +344,41 @@ public class FishingPlugin extends Plugin
 		{
 			trawlerNotificationSent = false;
 		}
+	}
+
+    /**
+     * Changes the Fishing Trawler timer widget from minutes to minutes and seconds
+     * To the nearest 10 seconds
+     */
+    private void setTrawlerTimer() {
+		if (!config.trawlerTimer() || client.getGameState() != GameState.LOGGED_IN) {
+			return;
+		}
+		int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
+
+		if (regionID == TRAWLER_SHIP_REGION_NORMAL || regionID == TRAWLER_SHIP_REGION_SINKING) {
+			String trawlerText;
+		    Widget trawlerTimerWidget = client.getWidget(366, 37);
+
+		    //start's at 12 minutes
+            currentTimer = currentTimer.minusMillis(600);
+
+            trawlerText  = currentTimer.toString();
+            trawlerText  = trawlerText.replace("PT", "")
+                                     .replace("M", " Mins ")
+                                     .replace("S", " Secs");
+
+            //remove decimal
+            if (trawlerText.contains(".")){
+                trawlerText = trawlerText.replace(trawlerText.substring(trawlerText.indexOf("."), trawlerText.indexOf("S")), "");
+            }
+
+            //set widget text
+            trawlerTimerWidget.setText("Time Left: " + trawlerText);
+
+        }
+        else {
+            currentTimer = startTimer;
+        }
 	}
 }
