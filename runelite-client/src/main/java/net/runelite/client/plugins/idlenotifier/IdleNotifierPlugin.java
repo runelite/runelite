@@ -83,6 +83,7 @@ public class IdleNotifierPlugin extends Plugin
 	private Actor lastInteract;
 	private boolean notifyHitpoints = true;
 	private boolean notifyPrayer = true;
+	private boolean notifyOxygen = true;
 	private boolean notifyIdleLogout = true;
 	private boolean notify6HourLogout = true;
 	private int lastCombatCountdown = 0;
@@ -345,6 +346,32 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			notifier.notify("[" + local.getName() + "] has low prayer!");
 		}
+
+		if (checkLowOxygen())
+		{
+			notifier.notify("[" + local.getName() + "] has low oxygen!");
+		}
+	}
+
+	private boolean checkLowOxygen()
+	{
+		if (config.getOxygenThreshold() == 0)
+		{
+			return false;
+		}
+		if (config.getOxygenThreshold() >= client.getVar(Varbits.OXYGEN_LEVEL) * 0.1)
+		{
+			if (!notifyOxygen)
+			{
+				notifyOxygen = true;
+				return true;
+			}
+		}
+		else
+		{
+			notifyOxygen = false;
+		}
+		return false;
 	}
 
 	private boolean checkLowHitpoints()
