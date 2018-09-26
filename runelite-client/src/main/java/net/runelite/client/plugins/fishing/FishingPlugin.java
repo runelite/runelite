@@ -30,6 +30,7 @@ import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -51,14 +52,10 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.InteractingChanged;
-import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.NpcDespawned;
-import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.*;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -83,8 +80,7 @@ public class FishingPlugin extends Plugin
 
 	private static final int TRAWLER_ACTIVITY_THRESHOLD = Math.round(0.15f * 255);
 
-        private static final  Duration startTimer   = Duration.of(12, ChronoUnit.MINUTES);
-        private static        Duration currentTimer = startTimer;
+	private static Instant endTime = Instant.now().plusSeconds(616);
 
 	@Getter(AccessLevel.PACKAGE)
 	private final FishingSession session = new FishingSession();
@@ -303,8 +299,10 @@ public class FishingPlugin extends Plugin
 				}
 			}
 		}
-		//set Trawler timer to seconds
-        setTrawlerTimer();
+		if (config.trawlerTimer() && client.getGameState() == GameState.LOGGED_IN)
+		{
+			setTrawlerTimer();
+		}
 
 	}
 
@@ -344,40 +342,36 @@ public class FishingPlugin extends Plugin
 		}
 	}
 
-   /**
-     * Changes the Fishing Trawler timer widget from minutes to minutes and seconds
-     * To the nearest 10 seconds
-     */
-    private void setTrawlerTimer() 
-    {
-		if (!config.trawlerTimer() || client.getGameState() != GameState.LOGGED_IN) {
-			return;
+	@Subscribe
+	public void onWidgertLoaded(WidgetLoaded event)
+	{
+		if (event.getGroupId() == WidgetID.FISHING_TRAWLER_GROUP_ID)
+		{
+			// 12 minute timer
+			endTime = Instant.now().plusSeconds(616);
 		}
+	}
+
+	/**
+     * Changes the Fishing Trawler timer widget from minutes to minutes and seconds
+     *
+     */
+   private void setTrawlerTimer()
+   {
 		int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
 
-		if (regionID == TRAWLER_SHIP_REGION_NORMAL || regionID == TRAWLER_SHIP_REGION_SINKING) {
-			String trawlerText;
-		    Widget trawlerTimerWidget = client.getWidget(366, 37);
+		if (regionID == TRAWLER_SHIP_REGION_NORMAL || regionID == TRAWLER_SHIP_REGION_SINKING)
+		{
+			Widget trawlerTimerWidget = client.getWidget(WidgetID.FISHING_TRAWLER_GROUP_ID, 37);
 
-		    //start's at 12 minutes
-            currentTimer = currentTimer.minusMillis(600);
+		    Instant now = Instant.now();
+			long timerInSeconds = Duration.between(now, endTime).getSeconds();
 
-            trawlerText  = currentTimer.toString();
-            trawlerText  = trawlerText.replace("PT", "")
-                                     .replace("M", " Mins ")
-                                     .replace("S", " Secs");
+			String trawlerText = String.format("Time Left: %02d Mins %02d Secs", (timerInSeconds % 3600) / 60, (timerInSeconds % 60));
 
-            //remove decimal
-            if (trawlerText.contains(".")){
-                trawlerText = trawlerText.replace(trawlerText.substring(trawlerText.indexOf("."), trawlerText.indexOf("S")), " ");
-            }
+            // set widget text
+            trawlerTimerWidget.setText(trawlerText);
 
-            //set widget text
-            trawlerTimerWidget.setText("Time Left: " + trawlerText);
-
-        }
-        else {
-            currentTimer = startTimer;
         }
     }
 }
