@@ -35,6 +35,7 @@ import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
+import static net.runelite.api.NpcID.*;
 import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.client.game.HiscoreManager;
@@ -100,6 +101,10 @@ class OpponentInfoOverlay extends Overlay
 			lastMaxHealth = null;
 			if (opponent instanceof NPC)
 			{
+				if (bosHasHealthbar(((NPC) opponent).getId()))
+				{
+					return null;
+				}
 				lastMaxHealth = opponentInfoPlugin.getOppInfoHealth().get(opponentName + "_" + opponent.getCombatLevel());
 			}
 			else if (opponent instanceof Player)
@@ -175,5 +180,36 @@ class OpponentInfoOverlay extends Overlay
 		}
 
 		return panelComponent.render(graphics);
+	}
+
+	private boolean bosHasHealthbar(int bossId)
+	{
+		switch (bossId)
+		{ //all defined in NpcID.java
+			case TZKALZUK:
+			case THE_MAIDEN_OF_SUGADINTI:
+			case THE_MAIDEN_OF_SUGADINTI_8361:
+			case THE_MAIDEN_OF_SUGADINTI_8362:
+			case THE_MAIDEN_OF_SUGADINTI_8363:
+			case THE_MAIDEN_OF_SUGADINTI_8364:
+			case THE_MAIDEN_OF_SUGADINTI_8365:
+			case PESTILENT_BLOAT:
+			case XARPUS:
+			case XARPUS_8339:
+			case XARPUS_8340:
+			case XARPUS_8341:
+			case VERZIK_VITUR:
+			case VERZIK_VITUR_8369:
+			case VERZIK_VITUR_8370:
+			case VERZIK_VITUR_8371:
+			case VERZIK_VITUR_8372:
+			case VERZIK_VITUR_8373:
+			case VERZIK_VITUR_8374:
+			case VERZIK_VITUR_8375:
+			case GALVEK:
+				return true;
+			default:
+				return false;
+		}
 	}
 }
