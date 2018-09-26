@@ -135,12 +135,26 @@ class DiscordState
 			}
 		}
 
-		final DiscordPresence presence = DiscordPresence.builder()
-			.state(MoreObjects.firstNonNull(state, ""))
-			.details(MoreObjects.firstNonNull(details, ""))
-			.startTimestamp(event.getStart())
-			.smallImageKey(MoreObjects.firstNonNull(imageKey, "default"))
-			.build();
+		final DiscordPresence presence;
+
+		if (config.showActivityTimer())
+		{
+			presence = DiscordPresence.builder()
+					.state(MoreObjects.firstNonNull(state, ""))
+					.details(MoreObjects.firstNonNull(details, ""))
+					.startTimestamp(event.getStart())
+					.smallImageKey(MoreObjects.firstNonNull(imageKey, "default"))
+					.build();
+		}
+		else
+		{
+			presence = DiscordPresence.builder()
+					.state(MoreObjects.firstNonNull(state, ""))
+					.details(MoreObjects.firstNonNull(details, ""))
+					.smallImageKey(MoreObjects.firstNonNull(imageKey, "default"))
+					.build();
+		}
+
 
 		// This is to reduce amount of RPC calls
 		if (!presence.equals(lastPresence))
