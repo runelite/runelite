@@ -46,7 +46,6 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Scene;
@@ -167,6 +166,8 @@ public class ClueScrollPlugin extends Plugin
 		overlayManager.remove(clueScrollEmoteOverlay);
 		overlayManager.remove(clueScrollWorldOverlay);
 		npcsToMark.clear();
+		inventoryItems = null;
+		equippedItems = null;
 		resetClue(true);
 	}
 
@@ -213,8 +214,21 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(final ItemContainerChanged event)
 	{
+		if (event.getItemContainer() == client.getItemContainer(InventoryID.EQUIPMENT))
+		{
+			equippedItems = event.getItemContainer().getItems();
+			return;
+		}
+
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
+		{
+			return;
+		}
+
+		inventoryItems = event.getItemContainer().getItems();
+
 		// Check if item was removed from inventory
-		if (clue != null && clueItemId != null && event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
+		if (clue != null && clueItemId != null)
 		{
 			final Stream<Item> items = Arrays.stream(event.getItemContainer().getItems());
 
@@ -338,33 +352,6 @@ public class ClueScrollPlugin extends Plugin
 				}
 
 				addMapPoints(location);
-			}
-		}
-
-		if (clue instanceof EmoteClue)
-		{
-			ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
-
-			if (equipment != null)
-			{
-				equippedItems = equipment.getItems();
-			}
-
-			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-
-			if (inventory != null)
-			{
-				inventoryItems = inventory.getItems();
-			}
-		}
-
-		if (clue instanceof CoordinateClue || clue instanceof FairyRingClue)
-		{
-			ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
-
-			if (container != null)
-			{
-				inventoryItems = container.getItems();
 			}
 		}
 
