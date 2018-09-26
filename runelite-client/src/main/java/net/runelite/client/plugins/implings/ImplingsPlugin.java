@@ -117,7 +117,7 @@ public class ImplingsPlugin extends Plugin
 			{
 				for (String s : notifyImplingsList)
 				{
-					if (impling.getImplingType().getName().toLowerCase().contains(s.toLowerCase()))
+					if (s.toLowerCase().contains(impling.getImplingType().getName().toLowerCase()))
 					{
 						notifier.notify(impling.getImplingType().getName() + " impling spotted");
 					}
