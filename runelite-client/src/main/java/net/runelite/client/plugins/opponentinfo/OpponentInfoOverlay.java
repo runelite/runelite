@@ -186,7 +186,7 @@ class OpponentInfoOverlay extends Overlay
 	{
 		switch (bossId)
 		{
-			//all defined in NpcID.java
+			// All defined in NpcID.java
 			case TZKALZUK:
 			case THE_MAIDEN_OF_SUGADINTI:
 			case THE_MAIDEN_OF_SUGADINTI_8361:
