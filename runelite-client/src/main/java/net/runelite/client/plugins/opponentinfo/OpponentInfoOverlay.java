@@ -95,7 +95,7 @@ class OpponentInfoOverlay extends Overlay
 
 		if (opponent.getName() != null && opponent.getHealth() > 0)
 		{
-			if (opponent instanceof NPC && bosHasHealthbar(((NPC) opponent).getId()))
+			if (opponentInfoConfig.hideOnExisting() && opponent instanceof NPC && bosHasHealthbar(((NPC) opponent).getId()))
 			{
 				return null;
 			}
