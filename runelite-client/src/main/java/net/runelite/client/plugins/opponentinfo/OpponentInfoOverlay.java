@@ -95,7 +95,7 @@ class OpponentInfoOverlay extends Overlay
 
 		if (opponent.getName() != null && opponent.getHealth() > 0)
 		{
-			if (opponentInfoConfig.hideOnExisting() && opponent instanceof NPC && bosHasHealthbar(((NPC) opponent).getId()))
+			if (opponentInfoConfig.hideOnExisting() && opponent instanceof NPC && bossHasHealthBar(((NPC) opponent).getId()))
 			{
 				return null;
 			}
@@ -182,10 +182,11 @@ class OpponentInfoOverlay extends Overlay
 		return panelComponent.render(graphics);
 	}
 
-	private boolean bosHasHealthbar(int bossId)
+	private static boolean bossHasHealthBar(int bossId)
 	{
 		switch (bossId)
-		{ //all defined in NpcID.java
+		{
+			//all defined in NpcID.java
 			case TZKALZUK:
 			case THE_MAIDEN_OF_SUGADINTI:
 			case THE_MAIDEN_OF_SUGADINTI_8361:
