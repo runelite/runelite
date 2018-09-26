@@ -83,10 +83,8 @@ public class FishingPlugin extends Plugin
 
 	private static final int TRAWLER_ACTIVITY_THRESHOLD = Math.round(0.15f * 255);
 
-
-	//fishing trawler 12min timer
-    private static final  Duration startTimer   = Duration.of(12, ChronoUnit.MINUTES);
-    private static        Duration currentTimer = startTimer;
+        private static final  Duration startTimer   = Duration.of(12, ChronoUnit.MINUTES);
+        private static        Duration currentTimer = startTimer;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final FishingSession session = new FishingSession();
@@ -346,11 +344,12 @@ public class FishingPlugin extends Plugin
 		}
 	}
 
-    /**
+   /**
      * Changes the Fishing Trawler timer widget from minutes to minutes and seconds
      * To the nearest 10 seconds
      */
-    private void setTrawlerTimer() {
+    private void setTrawlerTimer() 
+    {
 		if (!config.trawlerTimer() || client.getGameState() != GameState.LOGGED_IN) {
 			return;
 		}
@@ -370,7 +369,7 @@ public class FishingPlugin extends Plugin
 
             //remove decimal
             if (trawlerText.contains(".")){
-                trawlerText = trawlerText.replace(trawlerText.substring(trawlerText.indexOf("."), trawlerText.indexOf("S")), "");
+                trawlerText = trawlerText.replace(trawlerText.substring(trawlerText.indexOf("."), trawlerText.indexOf("S")), " ");
             }
 
             //set widget text
@@ -380,5 +379,5 @@ public class FishingPlugin extends Plugin
         else {
             currentTimer = startTimer;
         }
-	}
+    }
 }
