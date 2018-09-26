@@ -57,4 +57,13 @@ public interface RegenMeterConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "regenWarning",
+		name = "Show a warning when about to regenerate health.",
+		description = "0 Means disabled, the value can be 0 - 99 with the value equalling the percentage of hp regeneration.")
+	default int regenWarning()
+	{
+		return 0;
+	}
 }
