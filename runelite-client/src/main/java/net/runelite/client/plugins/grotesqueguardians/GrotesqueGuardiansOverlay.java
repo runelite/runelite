@@ -65,32 +65,29 @@ class GrotesqueGuardiansOverlay extends Overlay
 		// TODO: Awaiting GraphicsObjectDespawn event to be tracked to make this more efficient.
 		for (GraphicsObject graphicsObject : client.getGraphicsObjects())
 		{
-			LocalPoint lp = graphicsObject.getLocation();
-			Polygon poly = Perspective.getCanvasTilePoly(client, lp);
 			Color color = null;
-
-			if (poly == null)
-			{
-				return null;
-			}
 
 			if (graphicsObject.getId() >= GraphicID.GROTESQUE_GUARDIANS_LIGHTNING_START && graphicsObject.getId() <= GraphicID.GROTESQUE_GUARDIANS_LIGHTNING_END)
 			{
 				color = Color.ORANGE;
 			}
-
-			if (graphicsObject.getId() == GraphicID.GROTESQUE_GUARDIANS_STONE_ORB)
+			else if (graphicsObject.getId() == GraphicID.GROTESQUE_GUARDIANS_STONE_ORB)
 			{
 				color = Color.GRAY;
 			}
-
-			if (graphicsObject.getId() == GraphicID.GROTESQUE_GUARDIANS_FALLING_ROCKS)
+			else if (graphicsObject.getId() == GraphicID.GROTESQUE_GUARDIANS_FALLING_ROCKS)
 			{
 				color = Color.YELLOW;
-
+			}
+			else
+			{
+				continue;
 			}
 
-			if (color != null)
+			LocalPoint lp = graphicsObject.getLocation();
+			Polygon poly = Perspective.getCanvasTilePoly(client, lp);
+
+			if (poly != null)
 			{
 				OverlayUtil.renderPolygon(graphics, poly, color);
 			}
