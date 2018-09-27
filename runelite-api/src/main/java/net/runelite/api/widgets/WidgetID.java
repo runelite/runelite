@@ -195,10 +195,10 @@ public class WidgetID
 
 	static class Bank
 	{
-		static final int ITEM_CONTAINER = 23;
+		static final int ITEM_CONTAINER = 12;
 		static final int INVENTORY_ITEM_CONTAINER = 3;
-		static final int BANK_TITLE_BAR = 15;
-		static final int BANK_ITEM_COUNT = 16;
+		static final int BANK_TITLE_BAR = 4;
+		static final int BANK_ITEM_COUNT = 5;
 	}
 
 	static class GrandExchange
@@ -396,10 +396,10 @@ public class WidgetID
 	{
 		static final int CHATBOX_PARENT = 0;
 		static final int CHATBOX_BUTTONS = 1;
-		static final int CHATBOX_REPORT_TEXT = 29;
-		static final int CHATBOX_FRAME = 30;
-		static final int CHATBOX_MESSAGES = 48;
-		static final int CHATBOX_INPUT = 50;
+		static final int CHATBOX_REPORT_TEXT = 36;
+		static final int CHATBOX_FRAME = 37;
+		static final int CHATBOX_MESSAGES = 55;
+		static final int CHATBOX_INPUT = 57;
 	}
 
 	static class Prayer
@@ -648,7 +648,7 @@ public class WidgetID
 
 	static class WorldSwitcher
 	{
-		static final int WORLD_LIST = 14;
+		static final int WORLD_LIST = 15;
 	}
 
 	static class FossilOxygen

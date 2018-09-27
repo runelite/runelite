@@ -48,7 +48,7 @@
 
 ; Set text
    sload                  0
-   load_int               10616869 ; 162:37
+   load_int               10616876
    widget_put_text_widget
 
 ; Init the widgets
@@ -59,7 +59,7 @@
    load_int               10002
    load_int               -2147483639 ; typedKey
    load_string            "i"
-   load_int               10616870
+   load_int               10616877
    widget_put_key_listener_widget
 
 ; Restore the chatbox on exit
@@ -67,7 +67,7 @@
    load_int               1
    load_int               1
    load_string            "ii"
-   load_int               10616870
+   load_int               10616877
    widget_put_dialog_abort_listener_widget
 
 ; 70% sure this opens the keyboard on mobile

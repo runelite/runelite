@@ -3,11 +3,11 @@
 .string_stack_count 0
 .int_var_count      5
 .string_var_count   0
-   load_int               10616880
+   load_int               10616887
    widget_get_hidden_widget
    load_int               1
    if_icmpeq              LABEL9
-   load_int               10616881
+   load_int               10616888
    widget_get_hidden_widget
    load_int               1
    if_icmpeq              LABEL9
@@ -193,7 +193,7 @@ LABEL147:
    load_int               0
    if_icmpeq              LABEL154
    load_string            "runeliteCommand" ; load callback name
-   runelite_callback                        ; invoke callback
+   runelite_callback     ; invoke callback
    jump                   LABEL158
 LABEL154:
    load_string            "Hey, everyone, I just tried to do something very silly!"
@@ -320,7 +320,7 @@ LABEL244:
    load_int               1                 ; check if we're ignoring input
    load_int               0                 ;
    load_string            "blockChatInput"  ;
-   runelite_callback                        ;
+   runelite_callback     ;
    if_icmpeq              LABEL250          ; don't add to input varcstr
    put_varc_string        1
 LABEL250:
