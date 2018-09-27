@@ -317,5 +317,8 @@ public interface ImplingsConfig extends Config
 			name = "Impling Notification",
 			description = "Configures implings to send notifications about. Format: (type), (type)"
 	)
-	default String getNotifyImplings() { return ""; }
+	default String getNotifyImplings()
+	{
+		return "";
+	}
 }
