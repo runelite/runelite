@@ -436,81 +436,82 @@ public class ClueScrollPlugin extends Plugin
 
 	private ClueScroll findClueScroll()
 	{
-		Widget clueScrollText = client.getWidget(WidgetInfo.CLUE_SCROLL_TEXT);
+		final Widget clueScrollText = client.getWidget(WidgetInfo.CLUE_SCROLL_TEXT);
 
-		if (clueScrollText != null)
+		if (clueScrollText == null)
 		{
-			// Remove line breaks and also the rare occasion where there are double line breaks
-			String text = Text.removeTags(clueScrollText.getText()
-					.replaceAll("-<br>", "-")
-					.replaceAll("<br>", " ")
-					.replaceAll("[ ]+", " ")
-					.toLowerCase());
+			return null;
+		}
 
-			if (clue instanceof TextClueScroll)
+		// Remove line breaks and also the rare occasion where there are double line breaks
+		final String text = Text.removeTags(clueScrollText.getText()
+			.replaceAll("-<br>", "-")
+			.replaceAll("<br>", " ")
+			.replaceAll("[ ]+", " ")
+			.toLowerCase());
+
+		// Early return if this is same clue as already existing one
+		if (clue instanceof TextClueScroll)
+		{
+			if (((TextClueScroll) clue).getText().equalsIgnoreCase(text))
 			{
-				if (((TextClueScroll) clue).getText().equalsIgnoreCase(text))
-				{
-					return clue;
-				}
-			}
-
-			if (text.startsWith("this anagram reveals who to speak to next:"))
-			{
-				return AnagramClue.forText(text);
-			}
-			else if (text.startsWith("the cipher reveals who to speak to next:"))
-			{
-				return CipherClue.forText(text);
-			}
-			else if (text.contains("degrees") && text.contains("minutes"))
-			{
-				return coordinatesToWorldPoint(text);
-			}
-			else
-			{
-				CrypticClue crypticClue = CrypticClue.forText(text);
-
-				if (crypticClue != null)
-				{
-					return crypticClue;
-				}
-
-				EmoteClue emoteClue = EmoteClue.forText(text);
-
-				if (emoteClue != null)
-				{
-					return emoteClue;
-				}
-
-				final FairyRingClue fairyRingClue = FairyRingClue.forText(text);
-
-				if (fairyRingClue != null)
-				{
-					return fairyRingClue;
-				}
-
-				final HotColdClue hotColdClue = HotColdClue.forText(text);
-
-				if (hotColdClue != null)
-				{
-					return hotColdClue;
-				}
-
-				// three step cryptic clues need unedited text to check which steps are already done
-				final ThreeStepCrypticClue threeStepCrypticClue = ThreeStepCrypticClue.forText(text, clueScrollText.getText());
-
-				if (threeStepCrypticClue != null)
-				{
-					return threeStepCrypticClue;
-				}
-
-				// We have unknown clue, reset
-				resetClue(true);
-				return null;
+				return clue;
 			}
 		}
 
+		if (text.startsWith("this anagram reveals who to speak to next:"))
+		{
+			return AnagramClue.forText(text);
+		}
+
+		if (text.startsWith("the cipher reveals who to speak to next:"))
+		{
+			return CipherClue.forText(text);
+		}
+
+		if (text.contains("degrees") && text.contains("minutes"))
+		{
+			return coordinatesToWorldPoint(text);
+		}
+
+		final CrypticClue crypticClue = CrypticClue.forText(text);
+
+		if (crypticClue != null)
+		{
+			return crypticClue;
+		}
+
+		final EmoteClue emoteClue = EmoteClue.forText(text);
+
+		if (emoteClue != null)
+		{
+			return emoteClue;
+		}
+
+		final FairyRingClue fairyRingClue = FairyRingClue.forText(text);
+
+		if (fairyRingClue != null)
+		{
+			return fairyRingClue;
+		}
+
+		final HotColdClue hotColdClue = HotColdClue.forText(text);
+
+		if (hotColdClue != null)
+		{
+			return hotColdClue;
+		}
+
+		// three step cryptic clues need unedited text to check which steps are already done
+		final ThreeStepCrypticClue threeStepCrypticClue = ThreeStepCrypticClue.forText(text, clueScrollText.getText());
+
+		if (threeStepCrypticClue != null)
+		{
+			return threeStepCrypticClue;
+		}
+
+		// We have unknown clue, reset
+		resetClue(true);
 		return null;
 	}
 
