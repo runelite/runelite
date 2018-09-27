@@ -667,9 +667,9 @@ LABEL609:
    string_append          3
    iload                  21                             ; load number of matches
    load_string            "setSearchBankInputTextFound"  ; load event name
-   runelite_callback                                     ; invoke callback
-   pop_int                                               ; pop number of matches
-   load_int               10616869
+   runelite_callback     ; invoke callback
+   pop_int               ; pop number of matches
+   load_int               10616876
    widget_put_text_widget
 LABEL616:
    jump                   LABEL631
@@ -688,8 +688,8 @@ LABEL617:
 LABEL628:
    load_string            "Show items whose names contain the following text:"
    load_string            "setSearchBankInputText"  ; load event name
-   runelite_callback                                ; invoke callback
-   load_int               10616869
+   runelite_callback     ; invoke callback
+   load_int               10616876
    widget_put_text_widget
 LABEL631:
    jump                   LABEL635
