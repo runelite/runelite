@@ -56,7 +56,7 @@ public interface OpponentInfoConfig extends Config
 	@ConfigItem(
 		keyName = "hideOnExisting",
 		name = "Hide on existing vanilla healthbar",
-		description = "NPC's that are known to have vanilla health bars will not have a Runelite one.",
+		description = "Hides Runelite health bar for NPCs who have a vanilla healthbar.",
 		position = 2
 	)
 	default boolean hideOnExisting()
