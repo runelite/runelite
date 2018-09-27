@@ -76,9 +76,11 @@ public class FishingPlugin extends Plugin
 	private static final int TRAWLER_SHIP_REGION_NORMAL = 7499;
 	private static final int TRAWLER_SHIP_REGION_SINKING = 8011;
 
+	private static final int fishingTrawlerTimeLimit = 614;
+
 	private static final int TRAWLER_ACTIVITY_THRESHOLD = Math.round(0.15f * 255);
 
-	private static Instant endTime = Instant.now().plusSeconds(616);
+	private static Instant endTime = Instant.now().plusSeconds(fishingTrawlerTimeLimit);
 
 	@Getter(AccessLevel.PACKAGE)
 	private final FishingSession session = new FishingSession();
@@ -345,8 +347,7 @@ public class FishingPlugin extends Plugin
 	{
 		if (event.getGroupId() == WidgetID.FISHING_TRAWLER_GROUP_ID)
 		{
-			// 12 minute timer
-			endTime = Instant.now().plusSeconds(616);
+			endTime = Instant.now().plusSeconds(fishingTrawlerTimeLimit);
 		}
 	}
 
