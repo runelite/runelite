@@ -366,7 +366,7 @@ public class FishingPlugin extends Plugin
 			Instant now = Instant.now();
 			long timerInSeconds = Duration.between(now, endTime).getSeconds();
 			int minutes = (int) (timerInSeconds % 3600) / 60;
-			int seconds = (int) timerInSeconds % 60;
+			int seconds = (int) timerInSeconds % 60 > 0 ? (int) timerInSeconds % 60 : 0;
 
 			String trawlerText = minutes > 0 ?
 					String.format("Time Left: " + minutes + " Mins " + seconds + " Secs") :
@@ -374,8 +374,6 @@ public class FishingPlugin extends Plugin
 
 			// set widget text
 			trawlerTimerWidget.setText(trawlerText);
-
-
 		}
 	}
 }
