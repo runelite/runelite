@@ -149,9 +149,12 @@ public class RegenMeterPlugin extends Plugin
 		int maxHP = client.getRealSkillLevel(Skill.HITPOINTS);
 		long hpPercentage = (Math.round(hitpointsPercentage * 100));
 		boolean checkHealthPercentage = (hpPercentage == config.regenWarning() || hpPercentage == config.regenWarning() - 1);
-		if (!config.showWhenNoChange() && currentHP == maxHP)
+		if (currentHP == maxHP)
 		{
-			hitpointsPercentage = 0;
+			if (!config.showWhenNoChange())
+			{
+				hitpointsPercentage = 0;
+			}
 		}
 		else if (currentHP > maxHP)
 		{
