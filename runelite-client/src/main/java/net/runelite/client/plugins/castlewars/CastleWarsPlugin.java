@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, cw-dev
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,6 +26,9 @@
 package net.runelite.client.plugins.castlewars;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +54,7 @@ import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.castlewars.data.CWFlag;
@@ -59,8 +64,7 @@ import net.runelite.client.util.Text;
 @PluginDescriptor(
 	name = "Castle Wars",
 	description = "Show post-game competitive CW statistics such as cast rate and number of barricades set",
-	tags = {"castle wars", "cw", "minigame"},
-	enabledByDefault = false
+	tags = {"castle wars", "cw", "minigame"}
 )
 @Slf4j
 public class CastleWarsPlugin extends Plugin
@@ -76,6 +80,9 @@ public class CastleWarsPlugin extends Plugin
 	@Inject
 	private StatsTracker statsTracker;
 
+	@Inject
+	private CastleWarsConfig config;
+
 	private boolean inCwGame = false;
 
 	private static String highlight(int value)
@@ -90,6 +97,12 @@ public class CastleWarsPlugin extends Plugin
 			.append(value)
 			.append(ChatColorType.NORMAL)
 			.build();
+	}
+
+	@Provides
+	CastleWarsConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(CastleWarsConfig.class);
 	}
 
 	@Override
@@ -271,6 +284,8 @@ public class CastleWarsPlugin extends Plugin
 			return;
 		}
 
+		final Collection<String> messages = new ArrayList<>();
+
 		final boolean tie = gameRecord.getSaraScore() == gameRecord.getZamScore();
 		final boolean won = gameRecord.getTeam() == CWTeam.SARA
 			? gameRecord.getSaraScore() > gameRecord.getZamScore()
@@ -284,6 +299,8 @@ public class CastleWarsPlugin extends Plugin
 			.append(String.format("%d", gameRecord.getWorld()))
 			.build();
 
+		messages.add(summary);
+
 		final String score = new ChatMessageBuilder()
 			.append(ChatColorType.NORMAL)
 			.append(gameRecord.getTeam().toString())
@@ -293,6 +310,8 @@ public class CastleWarsPlugin extends Plugin
 			.append(String.format("%d-%d", gameRecord.getSaraScore(), gameRecord.getZamScore()))
 			.append(")")
 			.build();
+
+		messages.add(score);
 
 		final String damage = new ChatMessageBuilder()
 			.append(ChatColorType.NORMAL)
@@ -308,25 +327,27 @@ public class CastleWarsPlugin extends Plugin
 			.append(")")
 			.build();
 
-		final String player = new ChatMessageBuilder()
-			.append(ChatColorType.NORMAL)
-			.append("Captures: ")
-			.append(highlight(gameRecord.getFlagsScored()))
-			.append(" Saves: ")
-			.append(highlight(gameRecord.getFlagsSafed()))
-			.append(" Deaths: ")
-			.append(highlight(String.format("%d", gameRecord.getDeaths())))
-			.append(" Stuns: ")
-			.append(highlight(String.format("%d", gameRecord.getTimesSpeared())))
-			.append(" Freezes: ")
-			.append(highlight(String.format("%d", gameRecord.getFreezesOnMe())))
-			.build();
+		messages.add(damage);
 
-		send(summary, score, damage, player);
-	}
+		if (config.displayAdvancedStats())
+		{
+			final String advanced = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("Captures: ")
+				.append(highlight(gameRecord.getFlagsScored()))
+				.append(" Saves: ")
+				.append(highlight(gameRecord.getFlagsSafed()))
+				.append(" Deaths: ")
+				.append(highlight(String.format("%d", gameRecord.getDeaths())))
+				.append(" Stuns: ")
+				.append(highlight(String.format("%d", gameRecord.getTimesSpeared())))
+				.append(" Freezes: ")
+				.append(highlight(String.format("%d", gameRecord.getFreezesOnMe())))
+				.build();
 
-	private void send(String... messages)
-	{
+			messages.add(advanced);
+		}
+
 		for (String message : messages)
 		{
 			chatMessageManager.queue(QueuedMessage.builder()

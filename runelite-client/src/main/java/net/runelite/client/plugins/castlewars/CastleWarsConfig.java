@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2018, cw-dev
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
@@ -25,50 +24,20 @@
  */
 package net.runelite.client.plugins.castlewars;
 
-import java.time.Instant;
-import lombok.Data;
-import net.runelite.client.plugins.castlewars.data.CWTeam;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@Data
-class GameRecord
+@ConfigGroup("castlewars")
+public interface CastleWarsConfig extends Config
 {
-	private final Instant created = Instant.now();
-	private final int world;
-	private final int teamSize;
-	private final CWTeam team;
-
-	private int zamScore;
-	private int saraScore;
-
-	private int flagsSafed;
-	private int flagsScored;
-
-	// Positive/damage dealt
-	private double damageDealt;
-	private double highestHitDealt;
-
-	// Negative/damage taken
-	private int damageTaken;
-	private int highestHitTaken;
-	private int deaths;
-	private int freezesOnMe;
-	private int timesSpeared;
-
-	void recordDamageDealt(double approxDmg)
+	@ConfigItem(
+		keyName = "advancedStats",
+		name = "Display advanced statistics",
+		description = "Configures whether or not advanced game statistics will be displayed after game"
+	)
+	default boolean displayAdvancedStats()
 	{
-		damageDealt += approxDmg;
-		if (approxDmg > highestHitDealt)
-		{
-			highestHitDealt = approxDmg;
-		}
-	}
-
-	void recordDamageTaken(int dmg)
-	{
-		damageTaken += dmg;
-		if (dmg > highestHitTaken)
-		{
-			highestHitTaken = dmg;
-		}
+		return false;
 	}
 }
