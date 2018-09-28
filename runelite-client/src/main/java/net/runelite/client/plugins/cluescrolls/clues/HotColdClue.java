@@ -41,6 +41,7 @@ import java.util.regex.Pattern;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
@@ -62,13 +63,13 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	private static final Pattern FINAL_STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is visibly shaking.*");
 	private static final HotColdClue CLUE =
 		new HotColdClue("Buried beneath the ground, who knows where it's found. Lucky for you, A man called Jorral may have a clue.",
-			"Jorral",
+			NpcID.JORRAL,
 			"Speak to Jorral to receive a strange device.");
 
 	// list of potential places to dig
 	private List<HotColdLocation> digLocations = new ArrayList<>();
 	private final String text;
-	private final String npc;
+	private final Integer npc;
 	private final String solution;
 	private WorldPoint location;
 	private WorldPoint lastWorldPoint;
@@ -114,7 +115,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 					.left("NPC:")
 					.build());
 				panelComponent.getChildren().add(LineComponent.builder()
-					.left(getNpc())
+					.left(plugin.getClient().getNpcDefinition(getNpc()).getName())
 					.leftColor(TITLED_CONTENT_COLOR)
 					.build());
 			}
