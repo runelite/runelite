@@ -265,6 +265,12 @@
       "xp": 75
     },
     {
+      "level": 41,
+      "icon": 22269,
+      "name": "Hard leather shield",
+      "xp": 70
+    },
+    {
       "level": 42,
       "icon": 11085,
       "name": "Ruby Bracelet",
@@ -331,6 +337,12 @@
       "xp": 90
     },
     {
+      "level": 56,
+      "icon": 22272,
+      "name": "Snakeskin shield",
+      "xp": 100
+    },
+    {
       "level": 57,
       "icon": 1065,
       "name": "Green D'hide Vamb",
@@ -359,6 +371,12 @@
       "icon": 1393,
       "name": "Fire Battlestaff",
       "xp": 125
+    },
+    {
+      "level": 62,
+      "icon": 22275,
+      "name": "Green D'hide Shield",
+      "xp": 124
     },
     {
       "level": 63,
@@ -394,6 +412,12 @@
       "level": 68,
       "icon": 2493,
       "name": "Blue D'hide Chaps",
+      "xp": 140
+    },
+    {
+      "level": 69,
+      "icon": 22278,
+      "name": "Blue D'hide Shield",
       "xp": 140
     },
     {
@@ -433,6 +457,12 @@
       "xp": 156
     },
     {
+      "level": 76,
+      "icon": 22281,
+      "name": "Red D'hide Shield",
+      "xp": 156
+    },
+    {
       "level": 77,
       "icon": 2501,
       "name": "Red D'hide Body",
@@ -467,6 +497,12 @@
       "icon": 21338,
       "name": "Amethyst Bolt Tips",
       "xp": 60
+    },
+    {
+      "level": 83,
+      "icon": 22284,
+      "name": "Black D'hide Shield",
+      "xp": 172
     },
     {
       "level": 84,
