@@ -85,7 +85,7 @@ public class OverlayUtil
 
 	public static void renderImageLocation(Client client, Graphics2D graphics, LocalPoint localPoint, BufferedImage image, int zOffset)
 	{
-		net.runelite.api.Point imageLocation = Perspective.getCanvasImageLocation(client, graphics, localPoint, image, zOffset);
+		net.runelite.api.Point imageLocation = Perspective.getCanvasImageLocation(client, localPoint, image, zOffset);
 		if (imageLocation != null)
 		{
 			renderImageLocation(graphics, imageLocation, image);
@@ -123,7 +123,7 @@ public class OverlayUtil
 			renderPolygon(graphics, poly, color);
 		}
 
-		Point imageLocation = actor.getCanvasImageLocation(graphics, image, zOffset);
+		Point imageLocation = actor.getCanvasImageLocation(image, zOffset);
 		if (imageLocation != null)
 		{
 			renderImageLocation(graphics, imageLocation, image);

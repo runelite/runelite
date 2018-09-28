@@ -135,9 +135,8 @@ public class SceneOverlay extends Overlay
 			boolean first = true;
 			for (int y = lp1.getY(); y <= lp2.getY(); y += LOCAL_TILE_SIZE)
 			{
-				Point p = Perspective.worldToCanvas(client,
-					lp1.getX() - LOCAL_TILE_SIZE / 2,
-					y - LOCAL_TILE_SIZE / 2,
+				Point p = Perspective.localToCanvas(client,
+					new LocalPoint(lp1.getX() - LOCAL_TILE_SIZE / 2, y - LOCAL_TILE_SIZE / 2),
 					client.getPlane());
 				if (p != null)
 				{
@@ -161,9 +160,8 @@ public class SceneOverlay extends Overlay
 			boolean first = true;
 			for (int x = lp1.getX(); x <= lp2.getX(); x += LOCAL_TILE_SIZE)
 			{
-				Point p = Perspective.worldToCanvas(client,
-					x - LOCAL_TILE_SIZE / 2,
-					lp1.getY() - LOCAL_TILE_SIZE / 2,
+				Point p = Perspective.localToCanvas(client,
+					new LocalPoint(x - LOCAL_TILE_SIZE / 2, lp1.getY() - LOCAL_TILE_SIZE / 2),
 					client.getPlane());
 				if (p != null)
 				{
@@ -202,9 +200,8 @@ public class SceneOverlay extends Overlay
 			boolean first = true;
 			for (int y = lp1.getY(); y <= lp2.getY(); y += LOCAL_TILE_SIZE)
 			{
-				Point p = Perspective.worldToCanvas(client,
-					lp1.getX() - LOCAL_TILE_SIZE / 2,
-					y - LOCAL_TILE_SIZE / 2,
+				Point p = Perspective.localToCanvas(client,
+					new LocalPoint(lp1.getX() - LOCAL_TILE_SIZE / 2, y - LOCAL_TILE_SIZE / 2),
 					client.getPlane());
 				if (p != null)
 				{
@@ -228,9 +225,8 @@ public class SceneOverlay extends Overlay
 			boolean first = true;
 			for (int x = lp1.getX(); x <= lp2.getX(); x += LOCAL_TILE_SIZE)
 			{
-				Point p = Perspective.worldToCanvas(client,
-					x - LOCAL_TILE_SIZE / 2,
-					lp1.getY() - LOCAL_TILE_SIZE / 2,
+				Point p = Perspective.localToCanvas(client,
+					new LocalPoint(x - LOCAL_TILE_SIZE / 2, lp1.getY() - LOCAL_TILE_SIZE / 2),
 					client.getPlane());
 				if (p != null)
 				{
@@ -376,7 +372,7 @@ public class SceneOverlay extends Overlay
 			}
 
 			LocalPoint fl = fa.getLocalLocation();
-			Point fs = Perspective.worldToCanvas(client, fl.getX(), fl.getY(), client.getPlane(), fa.getLogicalHeight() / 2);
+			Point fs = Perspective.localToCanvas(client, fl, client.getPlane(), fa.getLogicalHeight() / 2);
 			if (fs == null)
 			{
 				return;
@@ -385,7 +381,7 @@ public class SceneOverlay extends Overlay
 			int fsy = fs.getY() - INTERACTING_SHIFT;
 
 			LocalPoint tl = ta.getLocalLocation();
-			Point ts = Perspective.worldToCanvas(client, tl.getX(), tl.getY(), client.getPlane(), ta.getLogicalHeight() / 2);
+			Point ts = Perspective.localToCanvas(client, tl, client.getPlane(), ta.getLogicalHeight() / 2);
 			if (ts == null)
 			{
 				return;

@@ -438,6 +438,6 @@ public class MotherlodePlugin extends Plugin
 	 */
 	boolean isUpstairs(LocalPoint localPoint)
 	{
-		return Perspective.getTileHeight(client, localPoint.getX(), localPoint.getY(), 0) < UPPER_FLOOR_HEIGHT;
+		return Perspective.getTileHeight(client, localPoint, 0) < UPPER_FLOOR_HEIGHT;
 	}
 }

@@ -37,6 +37,7 @@ import static net.runelite.api.HeadIcon.SMITE;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -129,21 +130,18 @@ public abstract class RSPlayerMixin implements RSPlayer
 			Vertex vy = triangle.getB();
 			Vertex vz = triangle.getC();
 
-			Point x = Perspective.worldToCanvas(client,
-				localX - vx.getX(),
-				localY - vx.getZ(),
+			Point x = Perspective.localToCanvas(client,
+				new LocalPoint(localX - vx.getX(), localY - vx.getZ()),
 				client.getPlane(),
 				-vx.getY());
 
-			Point y = Perspective.worldToCanvas(client,
-				localX - vy.getX(),
-				localY - vy.getZ(),
+			Point y = Perspective.localToCanvas(client,
+				new LocalPoint(localX - vy.getX(), localY - vy.getZ()),
 				client.getPlane(),
 				-vy.getY());
 
-			Point z = Perspective.worldToCanvas(client,
-				localX - vz.getX(),
-				localY - vz.getZ(),
+			Point z = Perspective.localToCanvas(client,
+				new LocalPoint(localX - vz.getX(), localY - vz.getZ()),
 				client.getPlane(),
 				-vz.getY());
 

@@ -75,15 +75,14 @@ public class Perspective
 	 * their corresponding coordinates on the game screen.
 	 *
 	 * @param client the game client
-	 * @param x ground coordinate on the x axis
-	 * @param y ground coordinate on the y axis
+	 * @param point ground coordinate
 	 * @param plane ground plane on the z axis
 	 * @return a {@link Point} on screen corresponding to the position in
 	 * 3D-space
 	 */
-	public static Point worldToCanvas(@Nonnull Client client, int x, int y, int plane)
+	public static Point localToCanvas(@Nonnull Client client, @Nonnull LocalPoint point, int plane)
 	{
-		return worldToCanvas(client, x, y, plane, 0);
+		return localToCanvas(client, point, plane, 0);
 	}
 
 	/**
@@ -91,17 +90,16 @@ public class Perspective
 	 * their corresponding coordinates on the game screen.
 	 *
 	 * @param client the game client
-	 * @param x ground coordinate on the x axis
-	 * @param y ground coordinate on the y axis
+	 * @param point ground coordinate
 	 * @param plane ground plane on the z axis
 	 * @param zOffset distance from ground on the z axis
 	 * @return a {@link Point} on screen corresponding to the position in
 	 * 3D-space
 	 */
-	public static Point worldToCanvas(@Nonnull Client client, int x, int y, int plane, int zOffset)
+	public static Point localToCanvas(@Nonnull Client client, @Nonnull LocalPoint point, int plane, int zOffset)
 	{
-		final int tileHeight = getTileHeight(client, x, y, plane);
-		return localToCanvas(client, x, y, tileHeight - zOffset);
+		final int tileHeight = getTileHeight(client, point, plane);
+		return localToCanvas(client, point.getX(), point.getY(), tileHeight - zOffset);
 	}
 
 	/**
@@ -154,15 +152,14 @@ public class Perspective
 	 * their corresponding coordinates on the Minimap.
 	 *
 	 * @param client the game client
-	 * @param x ground coordinate on the x axis
-	 * @param y ground coordinate on the y axis
+	 * @param point ground coordinate
 	 * @return a {@link Point} on screen corresponding to the position in
 	 * 3D-space
 	 */
 	@Nullable
-	public static Point worldToMiniMap(@Nonnull Client client, int x, int y)
+	public static Point localToMinimap(@Nonnull Client client, @Nonnull LocalPoint point)
 	{
-		return worldToMiniMap(client, x, y, 6400);
+		return localToMinimap(client, point, 6400);
 	}
 
 	/**
@@ -170,18 +167,17 @@ public class Perspective
 	 * their corresponding coordinates on the Minimap.
 	 *
 	 * @param client the game client
-	 * @param x ground coordinate on the x axis
-	 * @param y ground coordinate on the y axis
+	 * @param point ground coordinate
 	 * @param distance max distance from local player to minimap point
 	 * @return a {@link Point} on screen corresponding to the position in
 	 * 3D-space
 	 */
 	@Nullable
-	public static Point worldToMiniMap(@Nonnull Client client, int x, int y, int distance)
+	public static Point localToMinimap(@Nonnull Client client, @Nonnull LocalPoint point, int distance)
 	{
 		LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
-		x = x / 32 - localLocation.getX() / 32;
-		y = y / 32 - localLocation.getY() / 32;
+		int x = point.getX() / 32 - localLocation.getX() / 32;
+		int y = point.getY() / 32 - localLocation.getY() / 32;
 
 		int dist = x * x + y * y;
 		if (dist < distance)
@@ -229,15 +225,14 @@ public class Perspective
 	 * Calculates the above ground height of a tile point.
 	 *
 	 * @param client the game client
-	 * @param localX the ground coordinate on the x axis
-	 * @param localY the ground coordinate on the y axis
+	 * @param point the local ground coordinate
 	 * @param plane the client plane/ground level
 	 * @return the offset from the ground of the tile
 	 */
-	public static int getTileHeight(@Nonnull Client client, int localX, int localY, int plane)
+	public static int getTileHeight(@Nonnull Client client, @Nonnull LocalPoint point, int plane)
 	{
-		int sceneX = localX >> LOCAL_COORD_BITS;
-		int sceneY = localY >> LOCAL_COORD_BITS;
+		int sceneX = point.getSceneX();
+		int sceneY = point.getSceneY();
 		if (sceneX >= 0 && sceneY >= 0 && sceneX < SCENE_SIZE && sceneY < SCENE_SIZE)
 		{
 			byte[][][] tileSettings = client.getTileSettings();
@@ -249,8 +244,8 @@ public class Perspective
 				z1 = plane + 1;
 			}
 
-			int x = localX & (LOCAL_TILE_SIZE - 1);
-			int y = localY & (LOCAL_TILE_SIZE - 1);
+			int x = point.getX() & (LOCAL_TILE_SIZE - 1);
+			int y = point.getY() & (LOCAL_TILE_SIZE - 1);
 			int var8 = x * tileHeights[z1][sceneX + 1][sceneY] + (LOCAL_TILE_SIZE - x) * tileHeights[z1][sceneX][sceneY] >> LOCAL_COORD_BITS;
 			int var9 = tileHeights[z1][sceneX][sceneY + 1] * (LOCAL_TILE_SIZE - x) + x * tileHeights[z1][sceneX + 1][sceneY + 1] >> LOCAL_COORD_BITS;
 			return (LOCAL_TILE_SIZE - y) * var8 + y * var9 >> LOCAL_COORD_BITS;
@@ -388,7 +383,7 @@ public class Perspective
 
 		int plane = client.getPlane();
 
-		Point p = worldToCanvas(client, localLocation.getX(), localLocation.getY(), plane, zOffset);
+		Point p = localToCanvas(client, localLocation, plane, zOffset);
 
 		if (p == null)
 		{
@@ -406,7 +401,6 @@ public class Perspective
 	 * Calculates image position and centers depending on image size.
 	 *
 	 * @param client the game client
-	 * @param graphics the game graphics
 	 * @param localLocation local location of the tile
 	 * @param image image for size measurement
 	 * @param zOffset offset from ground plane
@@ -415,14 +409,13 @@ public class Perspective
 	 */
 	public static Point getCanvasImageLocation(
 		@Nonnull Client client,
-		@Nonnull Graphics2D graphics,
 		@Nonnull LocalPoint localLocation,
 		@Nonnull BufferedImage image,
 		int zOffset)
 	{
 		int plane = client.getPlane();
 
-		Point p = worldToCanvas(client, localLocation.getX(), localLocation.getY(), plane, zOffset);
+		Point p = localToCanvas(client, localLocation, plane, zOffset);
 
 		if (p == null)
 		{
@@ -449,7 +442,7 @@ public class Perspective
 		@Nonnull LocalPoint localLocation,
 		@Nonnull BufferedImage image)
 	{
-		Point p = Perspective.worldToMiniMap(client, localLocation.getX(), localLocation.getY());
+		Point p = Perspective.localToMinimap(client, localLocation);
 
 		if (p == null)
 		{
@@ -466,7 +459,6 @@ public class Perspective
 	 * Calculates sprite position and centers depending on sprite size.
 	 *
 	 * @param client the game client
-	 * @param graphics the game graphics
 	 * @param localLocation local location of the tile
 	 * @param sprite SpritePixel for size measurement
 	 * @param zOffset offset from ground plane
@@ -474,14 +466,13 @@ public class Perspective
 	 */
 	public static Point getCanvasSpriteLocation(
 		@Nonnull Client client,
-		@Nonnull Graphics2D graphics,
 		@Nonnull LocalPoint localLocation,
 		@Nonnull SpritePixels sprite,
 		int zOffset)
 	{
 		int plane = client.getPlane();
 
-		Point p = worldToCanvas(client, localLocation.getX(), localLocation.getY(), plane, zOffset);
+		Point p = localToCanvas(client, localLocation, plane, zOffset);
 
 		if (p == null)
 		{
@@ -504,11 +495,10 @@ public class Perspective
 	 * @param client the game client
 	 * @param model the model to calculate a clickbox for
 	 * @param orientation the orientation of the model (0-2048, where 0 is north)
-	 * @param localX the x-axis coordinate of the tile
-	 * @param localY the y-axis coordinate of the tile
+	 * @param point the coordinate of the tile
 	 * @return the clickable area of the model
 	 */
-	public static Area getClickbox(@Nonnull Client client, Model model, int orientation, int localX, int localY)
+	public static Area getClickbox(@Nonnull Client client, Model model, int orientation, @Nonnull LocalPoint point)
 	{
 		if (model == null)
 		{
@@ -523,8 +513,8 @@ public class Perspective
 				.map(v -> v.rotate(orientation))
 				.collect(Collectors.toList());
 
-		Area clickBox = get2DGeometry(client, triangles, orientation, localX, localY);
-		Area visibleAABB = getAABB(client, vertices, orientation, localX, localY);
+		Area clickBox = get2DGeometry(client, triangles, point);
+		Area visibleAABB = getAABB(client, vertices, point);
 
 		if (visibleAABB == null || clickBox == null)
 		{
@@ -551,22 +541,20 @@ public class Perspective
 	private static Area get2DGeometry(
 		@Nonnull Client client,
 		@Nonnull List<Triangle> triangles,
-		int orientation,
-		int localX,
-		int localY
+		@Nonnull LocalPoint point
 	)
 	{
 		int radius = 5;
 		Area geometry = new Area();
 
-		final int tileHeight = getTileHeight(client, localX, localY, client.getPlane());
+		final int tileHeight = getTileHeight(client, point, client.getPlane());
 
 		for (Triangle triangle : triangles)
 		{
 			Vertex _a = triangle.getA();
 			Point a = localToCanvas(client,
-				localX - _a.getX(),
-				localY - _a.getZ(),
+				point.getX() - _a.getX(),
+				point.getY() - _a.getZ(),
 				tileHeight + _a.getY());
 			if (a == null)
 			{
@@ -575,8 +563,8 @@ public class Perspective
 
 			Vertex _b = triangle.getB();
 			Point b = localToCanvas(client,
-				localX - _b.getX(),
-				localY - _b.getZ(),
+				point.getX() - _b.getX(),
+				point.getY() - _b.getZ(),
 				tileHeight + _b.getY());
 			if (b == null)
 			{
@@ -585,8 +573,8 @@ public class Perspective
 
 			Vertex _c = triangle.getC();
 			Point c = localToCanvas(client,
-				localX - _c.getX(),
-				localY - _c.getZ(),
+				point.getX() - _c.getX(),
+				point.getY() - _c.getZ(),
 				tileHeight + _c.getY());
 			if (c == null)
 			{
@@ -633,9 +621,7 @@ public class Perspective
 	private static Area getAABB(
 		@Nonnull Client client,
 		@Nonnull List<Vertex> vertices,
-		int orientation,
-		int localX,
-		int localY
+		@Nonnull LocalPoint point
 	)
 	{
 		int maxX = 0;
@@ -697,15 +683,15 @@ public class Perspective
 			extremeZ = 32;
 		}
 
-		int x1 = localX - (centerX - extremeX);
+		int x1 = point.getX() - (centerX - extremeX);
 		int y1 = centerY - extremeY;
-		int z1 = localY - (centerZ - extremeZ);
+		int z1 = point.getY() - (centerZ - extremeZ);
 
-		int x2 = localX - (centerX + extremeX);
+		int x2 = point.getX() - (centerX + extremeX);
 		int y2 = centerY + extremeY;
-		int z2 = localY - (centerZ + extremeZ);
+		int z2 = point.getY() - (centerZ + extremeZ);
 
-		final int tileHeight = getTileHeight(client, localX, localY, client.getPlane());
+		final int tileHeight = getTileHeight(client, point, client.getPlane());
 
 		Point p1 = localToCanvas(client, x1, z1, tileHeight + y1);
 		Point p2 = localToCanvas(client, x1, z2, tileHeight + y1);
@@ -770,7 +756,7 @@ public class Perspective
 		@Nonnull LocalPoint localLocation,
 		@Nonnull String text)
 	{
-		Point p = Perspective.worldToMiniMap(client, localLocation.getX(), localLocation.getY());
+		Point p = Perspective.localToMinimap(client, localLocation);
 
 		if (p == null)
 		{
