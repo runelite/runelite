@@ -49,7 +49,7 @@ public abstract class WidgetSpriteMixin implements RSWidget
 	@Replace("getWidgetSprite")
 	public RSSpritePixels rl$getWidgetSprite(boolean var1)
 	{
-		if (getSpriteId() != -1 && widgetSpriteOverrides != null)
+		if (getSpriteId() != -1)
 		{
 			SpritePixels sprite = widgetSpriteOverrides.get(getId());
 
