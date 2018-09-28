@@ -158,7 +158,7 @@ public class RegenMeterPlugin extends Plugin
 		else if (!messageSend && maxHP > currentHP && config.regenWarning() > 0 && config.regenWarning() < 100 && ((Math.round(hitpointsPercentage * 100)) == config.regenWarning() || (Math.round(hitpointsPercentage * 100)) == config.regenWarning() - 1))
 		{
 			Player local = client.getLocalPlayer();
-			notifier.notify("[" + local.getName() + "] has reached the regeneration threshold!");
+			notifier.notify("[" + local.getName() + "] is about to regenerate health!");
 			messageSend = true;
 			return;
 		}
