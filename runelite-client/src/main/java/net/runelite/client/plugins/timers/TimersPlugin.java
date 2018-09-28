@@ -54,6 +54,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
@@ -633,7 +634,7 @@ public class TimersPlugin extends Plugin
 		if (config.showHomeMinigameTeleports()
 			&& client.getLocalPlayer().getAnimation() == AnimationID.IDLE
 			&& (lastAnimation == AnimationID.BOOK_HOME_TELEPORT_5
-				|| lastAnimation == AnimationID.COW_HOME_TELEPORT_6))
+			|| lastAnimation == AnimationID.COW_HOME_TELEPORT_6))
 		{
 			if (lastTeleportClicked == TeleportWidget.HOME_TELEPORT)
 			{
@@ -791,6 +792,12 @@ public class TimersPlugin extends Plugin
 		{
 			removeGameTimer(ICEBARRAGE);
 		}
+	}
+
+	@Subscribe
+	public void onLocalPlayerDeath(LocalPlayerDeath event)
+	{
+		infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer().isRemovedOnDeath());
 	}
 
 	private TimerTimer createGameTimer(final GameTimer timer)
