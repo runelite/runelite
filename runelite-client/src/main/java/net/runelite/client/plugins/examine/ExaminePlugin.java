@@ -261,17 +261,13 @@ public class ExaminePlugin extends Plugin
 
 		if (itemComposition != null)
 		{
-			executor.submit(() -> getItemPrice(itemComposition, itemQuantity));
+			final int id = itemManager.canonicalize(itemComposition.getId());
+			executor.submit(() -> getItemPrice(id, itemComposition, itemQuantity));
 		}
 	}
 
-	private void getItemPrice(ItemComposition itemComposition, int quantity)
+	private void getItemPrice(int id, ItemComposition itemComposition, int quantity)
 	{
-		// convert to unnoted id
-		final boolean note = itemComposition.getNote() != -1;
-		final int id = note ? itemComposition.getLinkedNoteId() : itemComposition.getId();
-
-
 		int itemCompositionPrice = itemComposition.getPrice();
 		final int gePrice = itemManager.getItemPrice(id);
 		final int alchPrice = itemCompositionPrice <= 0 ? 0 : Math.round(itemCompositionPrice * HIGH_ALCHEMY_CONSTANT);
