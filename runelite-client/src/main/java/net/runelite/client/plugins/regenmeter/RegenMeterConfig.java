@@ -60,8 +60,8 @@ public interface RegenMeterConfig extends Config
 
 	@ConfigItem(
 		keyName = "regenWarning",
-		name = "Show a warning when about to regenerate health.",
-		description = "0 Means disabled, the value can be 0 - 99 with the value being the percentage of hp that triggers a warning.")
+		name = "Health Regeneration Notification Threshold",
+		description = "The amount of remaining health regeneration % to send a notification at. A value of 0 will disable notification.")
 	default int regenWarning()
 	{
 		return 0;

@@ -32,6 +32,7 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Player;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
@@ -156,7 +157,8 @@ public class RegenMeterPlugin extends Plugin
 		}
 		else if (!messageSend && maxHP > currentHP && config.regenWarning() > 0 && config.regenWarning() < 100 && ((Math.round(hitpointsPercentage * 100)) == config.regenWarning() || (Math.round(hitpointsPercentage * 100)) == config.regenWarning() - 1))
 		{
-			notifier.notify("You have reached your HP Regeneration Threshold!");
+			Player local = client.getLocalPlayer();
+			notifier.notify("[" + local.getName() + "] has reached the regeneration threshold!");
 			messageSend = true;
 			return;
 		}
