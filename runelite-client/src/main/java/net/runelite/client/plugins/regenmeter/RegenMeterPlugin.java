@@ -2,6 +2,7 @@
  * Copyright (c) 2018 Abex
  * Copyright (c) 2018, Zimaya <https://github.com/Zimaya>
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Robin Withes
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -80,6 +81,7 @@ public class RegenMeterPlugin extends Plugin
 	private int ticksSinceHPRegen;
 	private boolean wasRapidHeal;
 	private boolean messageSend;
+	private boolean checkHealthPercentage;
 
 	@Provides
 	RegenMeterConfig provideConfig(ConfigManager configManager)
@@ -146,6 +148,7 @@ public class RegenMeterPlugin extends Plugin
 
 		int currentHP = client.getBoostedSkillLevel(Skill.HITPOINTS);
 		int maxHP = client.getRealSkillLevel(Skill.HITPOINTS);
+		checkHealthPercentage = ((Math.round(hitpointsPercentage * 100)) == config.regenWarning() || (Math.round(hitpointsPercentage * 100)) == config.regenWarning() - 1);
 		if (currentHP == maxHP && !config.showWhenNoChange())
 		{
 			hitpointsPercentage = 0;
@@ -155,7 +158,7 @@ public class RegenMeterPlugin extends Plugin
 			// Show it going down
 			hitpointsPercentage = 1 - hitpointsPercentage;
 		}
-		else if (!messageSend && maxHP > currentHP && config.regenWarning() > 0 && config.regenWarning() < 100 && ((Math.round(hitpointsPercentage * 100)) == config.regenWarning() || (Math.round(hitpointsPercentage * 100)) == config.regenWarning() - 1))
+		else if (!messageSend && maxHP > currentHP && checkHealthPercentage && config.regenWarning() > 0)
 		{
 			Player local = client.getLocalPlayer();
 			notifier.notify("[" + local.getName() + "] is about to regenerate health!");
