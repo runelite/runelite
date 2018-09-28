@@ -219,6 +219,15 @@ public class ExaminePlugin extends Plugin
 					itemId = widgetItem.getItemId();
 				}
 			}
+			else if (WidgetInfo.SMITHING_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup)
+			{
+				Widget widgetItem = widget.getChild(2);
+				if (widgetItem != null)
+				{
+					quantity = widgetItem.getItemQuantity();
+					itemId = widgetItem.getItemId();
+				}
+			}
 			else if (WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup
 					|| WidgetInfo.RUNE_POUCH_ITEM_CONTAINER.getGroupId() == widgetGroup)
 			{
@@ -268,6 +277,8 @@ public class ExaminePlugin extends Plugin
 
 	private void getItemPrice(int id, ItemComposition itemComposition, int quantity)
 	{
+		// quantity is at least 1
+		quantity = Math.max(1, quantity);
 		int itemCompositionPrice = itemComposition.getPrice();
 		final int gePrice = itemManager.getItemPrice(id);
 		final int alchPrice = itemCompositionPrice <= 0 ? 0 : Math.round(itemCompositionPrice * HIGH_ALCHEMY_CONSTANT);
