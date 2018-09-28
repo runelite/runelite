@@ -81,7 +81,6 @@ public class RegenMeterPlugin extends Plugin
 	private int ticksSinceHPRegen;
 	private boolean wasRapidHeal;
 	private boolean messageSend;
-	private boolean checkHealthPercentage;
 
 	@Provides
 	RegenMeterConfig provideConfig(ConfigManager configManager)
@@ -148,8 +147,9 @@ public class RegenMeterPlugin extends Plugin
 
 		int currentHP = client.getBoostedSkillLevel(Skill.HITPOINTS);
 		int maxHP = client.getRealSkillLevel(Skill.HITPOINTS);
-		checkHealthPercentage = ((Math.round(hitpointsPercentage * 100)) == config.regenWarning() || (Math.round(hitpointsPercentage * 100)) == config.regenWarning() - 1);
-		if (currentHP == maxHP && !config.showWhenNoChange())
+		long hpPercentage = (Math.round(hitpointsPercentage * 100));
+		boolean checkHealthPercentage = (hpPercentage == config.regenWarning() || hpPercentage == config.regenWarning() - 1);
+		if (!config.showWhenNoChange() && currentHP == maxHP)
 		{
 			hitpointsPercentage = 0;
 		}
@@ -158,7 +158,7 @@ public class RegenMeterPlugin extends Plugin
 			// Show it going down
 			hitpointsPercentage = 1 - hitpointsPercentage;
 		}
-		else if (!messageSend && maxHP > currentHP && checkHealthPercentage && config.regenWarning() > 0)
+		else if (config.regenWarning() > 0 && !messageSend && maxHP > currentHP && checkHealthPercentage)
 		{
 			Player local = client.getLocalPlayer();
 			notifier.notify("[" + local.getName() + "] is about to regenerate health!");
