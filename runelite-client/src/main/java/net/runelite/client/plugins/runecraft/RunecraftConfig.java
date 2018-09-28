@@ -33,17 +33,6 @@ import net.runelite.client.config.ConfigItem;
 public interface RunecraftConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showPouch",
-		name = "Show Pouch count",
-		description = "Configures whether the pouch ess count is displayed",
-		position = 1
-	)
-	default boolean showPouch()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showBindNeck",
 		name = "Show Binding Neck charges",
 		description = "Configures whether the binding neck charge is displayed",
