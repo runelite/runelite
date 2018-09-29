@@ -149,6 +149,7 @@ public class FishingPlugin extends Plugin
 		minnowSpots.clear();
 		trawlerNotificationSent = false;
 		currentSpot = null;
+		startTime = null;
 	}
 
 	@Subscribe
