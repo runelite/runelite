@@ -145,8 +145,6 @@ public class ScreenshotPlugin extends Plugin
 
 	private Integer theatreOfBloodNumber;
 
-	private boolean hasBeenKilled = false;
-
 	private boolean shouldTakeScreenshot;
 
 	@Inject
@@ -278,11 +276,6 @@ public class ScreenshotPlugin extends Plugin
 			String text = client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT).getText();
 			fileName = "Quest(" + text.substring(19, text.length() - 1) + ")";
 		}
-		else if (hasBeenKilled)
-		{
-			hasBeenKilled = false;
-			takeScreenshot("Died on " + LocalDate.now());
-		}
 
 		if (fileName != null)
 		{
@@ -296,8 +289,7 @@ public class ScreenshotPlugin extends Plugin
 	{
 		if (config.screenshotPlayerDeads())
 		{
-			shouldTakeScreenshot = true;
-			hasBeenKilled = true;
+			takeScreenshot("Died on " + LocalDate.now());
 		}
 	}
 
