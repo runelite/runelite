@@ -35,18 +35,6 @@ public class HealthAlerterPlugin extends Plugin {
         return configManager.getConfig(HealthAlerterConfig.class);
     }
 
-    @Override
-    protected void startUp() throws Exception {
-        client.getLogger().info("Health Alerter is started up!");
-        super.startUp();
-    }
-
-    @Override
-    protected void shutDown() throws Exception {
-        client.getLogger().info("Health Alerter is shutting down!");
-        super.shutDown();
-    }
-
     @Subscribe
     public void onHitsplatApplied(HitsplatApplied event) {
         if (event.getActor().getName().equals(client.getLocalPlayer().getName())) {
