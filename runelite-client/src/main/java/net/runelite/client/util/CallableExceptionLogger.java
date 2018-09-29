@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,31 +24,32 @@
  */
 package net.runelite.client.util;
 
+import java.util.concurrent.Callable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-public class RunnableExceptionLogger implements Runnable
+public class CallableExceptionLogger<V> implements Callable<V>
 {
-	private final Runnable runnable;
+	private final Callable<V> callable;
 
 	@Override
-	public void run()
+	public V call() throws Exception
 	{
 		try
 		{
-			runnable.run();
+			return callable.call();
 		}
 		catch (Throwable ex)
 		{
-			log.warn("Uncaught exception in runnable {}", runnable, ex);
+			log.warn("Uncaught exception in callable {}", callable, ex);
 			throw ex;
 		}
 	}
 
-	public static RunnableExceptionLogger wrap(Runnable runnable)
+	public static <V> CallableExceptionLogger<V> wrap(Callable<V> callable)
 	{
-		return new RunnableExceptionLogger(runnable);
+		return new CallableExceptionLogger<>(callable);
 	}
 }
