@@ -59,11 +59,13 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Point;
+import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.BARROWS_REWARD_GROUP_ID;
@@ -143,6 +145,8 @@ public class ScreenshotPlugin extends Plugin
 	private Integer chambersOfXericNumber;
 
 	private Integer theatreOfBloodNumber;
+
+	private boolean hasBeenKilled = false;
 
 	private boolean shouldTakeScreenshot;
 
@@ -253,6 +257,11 @@ public class ScreenshotPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		if (client.getRealSkillLevel(Skill.HITPOINTS) <= 0)
+		{
+			shouldTakeScreenshot = true;
+		}
+
 		if (!shouldTakeScreenshot)
 		{
 			return;
@@ -275,10 +284,26 @@ public class ScreenshotPlugin extends Plugin
 			String text = client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT).getText();
 			fileName = "Quest(" + text.substring(19, text.length() - 1) + ")";
 		}
+		else if (hasBeenKilled)
+		{
+
+			hasBeenKilled = false;
+		}
 
 		if (fileName != null)
 		{
 			takeScreenshot(fileName);
+		}
+	}
+
+
+	@Subscribe
+	public void onLocalPlayerDeath(LocalPlayerDeath death)
+	{
+		if (config.screenshotPlayerDeads())
+		{
+			log.debug("123noob123");
+			takeScreenshot(client.getLocalPlayer().getName() + " has died!");
 		}
 	}
 
