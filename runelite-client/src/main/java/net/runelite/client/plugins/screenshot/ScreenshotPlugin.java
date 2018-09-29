@@ -281,7 +281,7 @@ public class ScreenshotPlugin extends Plugin
 		else if (hasBeenKilled)
 		{
 			hasBeenKilled = false;
-			takeScreenshot(client.getLocalPlayer().getName() + " Died on " + LocalDate.now());
+			takeScreenshot("Died on " + LocalDate.now());
 		}
 
 		if (fileName != null)
