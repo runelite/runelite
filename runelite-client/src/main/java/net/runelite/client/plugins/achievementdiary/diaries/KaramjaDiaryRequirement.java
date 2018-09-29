@@ -60,7 +60,7 @@ public class KaramjaDiaryRequirement extends GenericDiaryRequirement
 		add("Trap a horned graahk.",
 			new Requirement(Skill.HUNTER, 41));
 		add("Chop the vines to gain deeper access to Brimhaven Dungeon.",
-			new Requirement(Skill.FARMING, 27));
+			new Requirement(Skill.WOODCUTTING, 10));
 		add("Cross the lava using the stepping stones within Brimhaven Dungeon.",
 			new Requirement(Skill.AGILITY, 12));
 		add("Climb the stairs within Brimhaven Dungeon.",
