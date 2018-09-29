@@ -167,6 +167,8 @@ class Obstacles
 		ROCKS_19849,
 		// Catherby
 		CROSSBOW_TREE_17062, ROCKS_17042,
+		// McGrubor's Woods
+		LOOSE_RAILING,
 		// Cairn Isle
 		ROCKS_2231,
 		// South Kourend
