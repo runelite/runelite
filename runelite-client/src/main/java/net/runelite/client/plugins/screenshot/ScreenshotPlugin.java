@@ -61,7 +61,6 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Point;
-import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
@@ -259,7 +258,6 @@ public class ScreenshotPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-
 		if (!shouldTakeScreenshot)
 		{
 			return;
@@ -574,6 +572,7 @@ public class ScreenshotPlugin extends Plugin
 			}
 
 			playerFolder.mkdirs();
+			
 			executor.execute(() ->
 			{
 				try
