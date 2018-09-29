@@ -81,12 +81,10 @@ public class FishingPlugin extends Plugin
 {
 	private static final int TRAWLER_SHIP_REGION_NORMAL = 7499;
 	private static final int TRAWLER_SHIP_REGION_SINKING = 8011;
-
-	private static final int fishingTrawlerTimeLimit = 614;
-
+	private static final int TRAWLER_TIME_LIMIT = 614;
 	private static final int TRAWLER_ACTIVITY_THRESHOLD = Math.round(0.15f * 255);
 
-	private static Instant endTime = Instant.now().plusSeconds(fishingTrawlerTimeLimit);
+	private Instant endTime;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final FishingSession session = new FishingSession();
@@ -349,11 +347,11 @@ public class FishingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgertLoaded(WidgetLoaded event)
+	public void onWidgetLoaded(WidgetLoaded event)
 	{
 		if (event.getGroupId() == WidgetID.FISHING_TRAWLER_GROUP_ID)
 		{
-			endTime = Instant.now().plusSeconds(fishingTrawlerTimeLimit);
+			endTime = Instant.now().plusSeconds(TRAWLER_TIME_LIMIT);
 		}
 	}
 
@@ -365,21 +363,21 @@ public class FishingPlugin extends Plugin
 	{
 		int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
 
-		if (regionID == TRAWLER_SHIP_REGION_NORMAL || regionID == TRAWLER_SHIP_REGION_SINKING)
+		if (regionID != TRAWLER_SHIP_REGION_NORMAL && regionID != TRAWLER_SHIP_REGION_SINKING)
 		{
-			Widget trawlerTimerWidget = client.getWidget(WidgetID.FISHING_TRAWLER_GROUP_ID, 37);
-
-			Instant now = Instant.now();
-			long timerInSeconds = Duration.between(now, endTime).getSeconds();
-			int minutes = (int) (timerInSeconds % 3600) / 60;
-			int seconds = (int) timerInSeconds % 60 > 0 ? (int) timerInSeconds % 60 : 0;
-
-			String trawlerText = minutes > 0 ?
-					String.format("Time Left: " + minutes + " Mins " + seconds + " Secs") :
-					String.format("Time Left: " + seconds + " Secs");
-
-			// set widget text
-			trawlerTimerWidget.setText(trawlerText);
+			return;
 		}
+		Widget trawlerTimerWidget = client.getWidget(WidgetID.FISHING_TRAWLER_GROUP_ID, 37);
+
+		long timerInSeconds = Duration.between(Instant.now(), endTime).getSeconds();
+		int minutes = (int) (timerInSeconds % 3600) / 60;
+		int seconds = (int) timerInSeconds % 60 > 0 ? (int) timerInSeconds % 60 : 0;
+
+		String trawlerText = minutes > 0 ?
+				String.format("Time Left: " + minutes + " Mins " + seconds + " Secs") :
+				String.format("Time Left: " + seconds + " Secs");
+
+		// set widget text
+		trawlerTimerWidget.setText(trawlerText);
 	}
 }
