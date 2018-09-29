@@ -259,10 +259,6 @@ public class ScreenshotPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (client.getRealSkillLevel(Skill.HITPOINTS) <= 0)
-		{
-			shouldTakeScreenshot = true;
-		}
 
 		if (!shouldTakeScreenshot)
 		{
