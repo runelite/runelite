@@ -288,12 +288,12 @@ public class ScreenshotPlugin extends Plugin
 		}
 		else if (hasBeenKilled)
 		{
+			hasBeenKilled = false;
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:MM");
 			LocalDateTime now = LocalDateTime.now();
 			String date = dtf.format(now);
 			String message = client.getLocalPlayer().getName() + " Died on " + date;
 			takeScreenshot(message);
-			hasBeenKilled = false;
 		}
 
 		if (fileName != null)
