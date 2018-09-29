@@ -72,9 +72,6 @@ class GrandExchangeSearchPanel extends JPanel
 
 	private final IconTextField searchBar = new IconTextField();
 
-	/*  The main container, this holds the search bar and the center panel */
-	private final JPanel container = new JPanel();
-
 	/*  The results container, this will hold all the individual ge item panels */
 	private final JPanel searchItemsPanel = new JPanel();
 
@@ -84,10 +81,7 @@ class GrandExchangeSearchPanel extends JPanel
 	/*  The error panel, this displays an error message */
 	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
 
-	/*  The results wrapper, this scrolling panel wraps the results container */
-	private JScrollPane resultsWrapper;
-
-	private List<GrandExchangeItems> itemsList = new ArrayList<>();
+	private final List<GrandExchangeItems> itemsList = new ArrayList<>();
 
 	@Setter
 	private Map<Integer, Integer> itemGELimits = Collections.emptyMap();
@@ -97,14 +91,12 @@ class GrandExchangeSearchPanel extends JPanel
 		this.clientThread = clientThread;
 		this.itemManager = itemManager;
 		this.executor = executor;
-		init();
-	}
 
-	private void init()
-	{
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
+		/*  The main container, this holds the search bar and the center panel */
+		JPanel container = new JPanel();
 		container.setLayout(new BorderLayout(5, 5));
 		container.setBorder(new EmptyBorder(10, 10, 10, 10));
 		container.setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -128,7 +120,8 @@ class GrandExchangeSearchPanel extends JPanel
 		wrapper.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		wrapper.add(searchItemsPanel, BorderLayout.NORTH);
 
-		resultsWrapper = new JScrollPane(wrapper);
+		/*  The results wrapper, this scrolling panel wraps the results container */
+		JScrollPane resultsWrapper = new JScrollPane(wrapper);
 		resultsWrapper.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		resultsWrapper.getVerticalScrollBar().setPreferredSize(new Dimension(12, 0));
 		resultsWrapper.getVerticalScrollBar().setBorder(new EmptyBorder(0, 5, 0, 0));
