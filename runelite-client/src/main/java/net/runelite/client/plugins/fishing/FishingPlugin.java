@@ -84,7 +84,7 @@ public class FishingPlugin extends Plugin
 	private static final int TRAWLER_TIME_LIMIT = 614;
 	private static final int TRAWLER_ACTIVITY_THRESHOLD = Math.round(0.15f * 255);
 
-	private Instant endTime;
+	private Instant startTime;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final FishingSession session = new FishingSession();
@@ -351,7 +351,7 @@ public class FishingPlugin extends Plugin
 	{
 		if (event.getGroupId() == WidgetID.FISHING_TRAWLER_GROUP_ID)
 		{
-			endTime = Instant.now().plusSeconds(TRAWLER_TIME_LIMIT);
+			startTime = Instant.now();
 		}
 	}
 
@@ -369,9 +369,9 @@ public class FishingPlugin extends Plugin
 		}
 		Widget trawlerTimerWidget = client.getWidget(WidgetID.FISHING_TRAWLER_GROUP_ID, 37);
 
-		long timerInSeconds = Duration.between(Instant.now(), endTime).getSeconds();
-		int minutes = (int) (timerInSeconds % 3600) / 60;
-		int seconds = (int) timerInSeconds % 60 > 0 ? (int) timerInSeconds % 60 : 0;
+		long timeLeft = TRAWLER_TIME_LIMIT - Duration.between(startTime, Instant.now()).getSeconds();
+		int minutes = (int) (timeLeft % 3600) / 60;
+		int seconds = (int) timeLeft % 60 > 0 ? (int) timeLeft % 60 : 0;
 
 		String trawlerText = minutes > 0 ?
 				String.format("Time Left: " + minutes + " Mins " + seconds + " Secs") :
