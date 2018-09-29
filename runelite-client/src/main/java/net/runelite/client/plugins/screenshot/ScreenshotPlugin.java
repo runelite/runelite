@@ -44,6 +44,8 @@ import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.concurrent.ScheduledExecutorService;
@@ -286,7 +288,11 @@ public class ScreenshotPlugin extends Plugin
 		}
 		else if (hasBeenKilled)
 		{
-
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:MM");
+			LocalDateTime now = LocalDateTime.now();
+			String date = dtf.format(now);
+			String message = client.getLocalPlayer().getName() + " Died on " + date;
+			takeScreenshot(message);
 			hasBeenKilled = false;
 		}
 
@@ -302,8 +308,8 @@ public class ScreenshotPlugin extends Plugin
 	{
 		if (config.screenshotPlayerDeads())
 		{
-			log.debug("123noob123");
-			takeScreenshot(client.getLocalPlayer().getName() + " has died!");
+			shouldTakeScreenshot = true;
+			hasBeenKilled = true;
 		}
 	}
 
@@ -572,7 +578,6 @@ public class ScreenshotPlugin extends Plugin
 			}
 
 			playerFolder.mkdirs();
-
 			executor.execute(() ->
 			{
 				try
