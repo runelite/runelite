@@ -329,6 +329,12 @@
       "icon": 21978,
       "name": "Extended Super Antifire (4)",
       "xp": 160
+    },
+    {
+      "level": 92,
+      "icon": 21981,
+      "name": "Super Antifire (3)",
+      "xp": 130
     }
   ]
 }
