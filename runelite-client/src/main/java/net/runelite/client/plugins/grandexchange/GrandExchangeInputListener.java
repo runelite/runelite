@@ -41,7 +41,7 @@ public class GrandExchangeInputListener extends MouseListener implements KeyList
 	private final GrandExchangePlugin plugin;
 
 	@Inject
-	GrandExchangeInputListener(Client client, GrandExchangePlugin plugin)
+	private GrandExchangeInputListener(Client client, GrandExchangePlugin plugin)
 	{
 		this.client = client;
 		this.plugin = plugin;
