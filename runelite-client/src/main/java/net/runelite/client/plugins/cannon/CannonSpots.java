@@ -40,7 +40,7 @@ public enum CannonSpots
 	BLACK_DEMONS(new WorldPoint(2859, 9778, 0), new WorldPoint(2841, 9791, 0)),
 	ELVES(new WorldPoint(2044, 4635, 0)),
 	SUQAHS(new WorldPoint(2114, 3943, 0)),
-	TROLLS(new WorldPoint(2405, 3857, 0)),
+	TROLLS(new WorldPoint(2401, 3856, 0)),
 	GREATER_DEMONS(new WorldPoint(1435, 10086, 2)),
 	BRINE_RAT(new WorldPoint(2707, 10132, 0)),
 	DAGGANOTH(new WorldPoint(2524, 10020, 0)),
