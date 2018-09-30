@@ -24,26 +24,21 @@
  */
 package net.runelite.client.plugins.hunter;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import javax.inject.Inject;
+
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.GameObject;
-import net.runelite.api.ObjectID;
-import net.runelite.api.Player;
-import net.runelite.api.Tile;
+import net.runelite.api.*;
 import net.runelite.api.coords.Direction;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GameObjectSpawned;
-import net.runelite.api.events.GameTick;
+import net.runelite.api.events.*;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -58,6 +53,13 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class HunterPlugin extends Plugin
 {
+	static final Map<Integer, VarPlayer> BIRDHOUSE_ID_TO_VAR = ImmutableMap.of(
+			NullObjectID.NULL_30565, VarPlayer.BIRDHOUSE_1,
+			NullObjectID.NULL_30566, VarPlayer.BIRDHOUSE_2,
+			NullObjectID.NULL_30567, VarPlayer.BIRDHOUSE_3,
+			NullObjectID.NULL_30568, VarPlayer.BIRDHOUSE_4
+	);
+
 	@Inject
 	private Client client;
 
@@ -75,6 +77,9 @@ public class HunterPlugin extends Plugin
 
 	@Getter
 	private final Map<WorldPoint, HunterTrap> traps = new HashMap<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private List<TileObject> birdhouses = new ArrayList<TileObject>();
 
 	@Getter
 	private Instant lastActionTime = Instant.ofEpochMilli(0);
@@ -100,6 +105,7 @@ public class HunterPlugin extends Plugin
 		overlayManager.remove(overlay);
 		lastActionTime = Instant.ofEpochMilli(0);
 		traps.clear();
+		birdhouses.clear();
 	}
 
 	@Subscribe
@@ -110,6 +116,7 @@ public class HunterPlugin extends Plugin
 		final HunterTrap myTrap = traps.get(trapLocation);
 		final Player localPlayer = client.getLocalPlayer();
 
+		onGameObject(null, event.getGameObject());
 		switch (gameObject.getId())
 		{
 			/*
@@ -296,6 +303,32 @@ public class HunterPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onGameObjectChanged(GameObjectChanged event)
+	{
+		onGameObject(event.getPrevious(), event.getGameObject());
+	}
+
+	@Subscribe
+	public void onGameObjectDeSpawned(GameObjectDespawned event)
+	{
+		onGameObject(event.getGameObject(), null);
+	}
+
+	private void onGameObject(GameObject oldObject, GameObject newObject)
+	{
+		birdhouses.remove(oldObject);
+		if (newObject == null)
+		{
+			return;
+		}
+
+		if (BIRDHOUSE_ID_TO_VAR.keySet().contains(newObject.getId()))
+		{
+			birdhouses.add(newObject);
+		}
+	}
+
 	/**
 	 * Iterates over all the traps that were placed by the local player and
 	 * checks if the trap is still there. If the trap is gone, it removes
@@ -385,6 +418,23 @@ public class HunterPlugin extends Plugin
 		if (event.getGroup().equals("hunterplugin"))
 		{
 			overlay.updateConfig();
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChange(GameStateChanged event)
+	{
+		switch (event.getGameState())
+		{
+			case HOPPING:
+			case LOGGING_IN:
+				birdhouses = new ArrayList<>();
+				break;
+			case LOADING:
+				birdhouses.clear();
+				break;
+			default:
+				break;
 		}
 	}
 }
