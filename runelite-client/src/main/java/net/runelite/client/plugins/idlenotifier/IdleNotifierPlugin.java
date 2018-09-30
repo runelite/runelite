@@ -207,6 +207,8 @@ public class IdleNotifierPlugin extends Plugin
 			case MAGIC_MAKE_TABLET:
 			/* Prayer */
 			case USING_GILDED_ALTAR:
+			/* Misc */
+			case SAND_COLLECTION:
 				resetTimers();
 				lastAnimation = animation;
 				break;
