@@ -304,9 +304,10 @@ public class FishingPlugin extends Plugin
 				}
 			}
 		}
-		if (config.trawlerTimer() && client.getGameState() == GameState.LOGGED_IN)
+
+		if (config.trawlerTimer())
 		{
-			setTrawlerTimer();
+			updateTrawlerTimer();
 		}
 
 	}
@@ -360,14 +361,15 @@ public class FishingPlugin extends Plugin
      * Changes the Fishing Trawler timer widget from minutes to minutes and seconds
      *
      */
-	private void setTrawlerTimer()
+	private void updateTrawlerTimer()
 	{
 		int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
 
-		if (regionID != TRAWLER_SHIP_REGION_NORMAL && regionID != TRAWLER_SHIP_REGION_SINKING)
+		if (regionID != TRAWLER_SHIP_REGION_NORMAL && regionID != TRAWLER_SHIP_REGION_SINKING || startTime == null)
 		{
 			return;
 		}
+
 		Widget trawlerTimerWidget = client.getWidget(WidgetID.FISHING_TRAWLER_GROUP_ID, 37);
 
 		long timeLeft = TRAWLER_TIME_LIMIT - Duration.between(startTime, Instant.now()).getSeconds();
@@ -375,8 +377,8 @@ public class FishingPlugin extends Plugin
 		int seconds = (int) timeLeft % 60 > 0 ? (int) timeLeft % 60 : 0;
 
 		String trawlerText = minutes > 0 ?
-				String.format("Time Left: " + minutes + " Mins " + seconds + " Secs") :
-				String.format("Time Left: " + seconds + " Secs");
+				"Time Left: " + minutes + " Mins " + seconds + " Secs" :
+				"Time Left: " + seconds + " Secs";
 
 		// set widget text
 		trawlerTimerWidget.setText(trawlerText);
