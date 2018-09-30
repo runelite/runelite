@@ -525,7 +525,15 @@ public interface Widget
 	 */
 	void revalidateScroll();
 
+	/**
+	 * Array of widget key listeners
+	 */
 	Object[] getOnKeyListener();
+
+	/**
+     * Array of widget load listeners
+	 */
+	Object[] getOnLoadListener();
 
 	/**
 	 * Returns the archive id of the font used

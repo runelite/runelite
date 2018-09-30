@@ -306,6 +306,10 @@ public interface RSWidget extends Widget
 	@Override
 	Object[] getOnKeyListener();
 
+	@Import("onLoadListener")
+	@Override
+	Object[] getOnLoadListener();
+
 	@Import("fontId")
 	@Override
 	int getFontId();
