@@ -282,7 +282,7 @@ public class ScreenshotPlugin extends Plugin
 			takeScreenshot(fileName);
 		}
 	}
-	
+
 	@Subscribe
 	public void onLocalPlayerDeath(LocalPlayerDeath death)
 	{
