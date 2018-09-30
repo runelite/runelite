@@ -287,9 +287,9 @@ public class ScreenshotPlugin extends Plugin
 	@Subscribe
 	public void onLocalPlayerDeath(LocalPlayerDeath death)
 	{
-		if (config.screenshotPlayerDeads())
+		if (config.screenshotPlayerDeath())
 		{
-			takeScreenshot("Died on " + LocalDate.now());
+			takeScreenshot("Death " + LocalDate.now());
 		}
 	}
 

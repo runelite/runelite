@@ -144,12 +144,12 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "playerDeads",
+		keyName = "playerDeath",
 		name = "Screenshot Deaths",
 		description = "Configures whether or not screenshots are automatically taken when you die.",
 		position = 10
 	)
-	default boolean screenshotPlayerDeads()
+	default boolean screenshotPlayerDeath()
 	{
 		return false;
 	}
