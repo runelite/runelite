@@ -289,7 +289,7 @@ public class ScreenshotPlugin extends Plugin
 	{
 		if (config.screenshotPlayerDeath())
 		{
-			takeScreenshot("Death " + LocalDate.now());
+			takeScreenshot("Death " + format(new Date()));
 		}
 	}
 
