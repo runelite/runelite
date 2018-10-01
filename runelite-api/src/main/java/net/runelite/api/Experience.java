@@ -43,6 +43,11 @@ public class Experience
 	public static final int MAX_SKILL_XP = 200_000_000;
 
 	/**
+	 * Maximum effective skill level at 13,034,431 experience.
+	 */
+	public static final int MAX_REAL_LEVEL = 99;
+
+	/**
 	 * The total experience required for each skill level.
 	 */
 	private static final int[] XP_FOR_LEVEL = new int[MAX_VIRT_LEVEL];
