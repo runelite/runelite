@@ -531,7 +531,7 @@ public interface Widget
 	Object[] getOnKeyListener();
 
 	/**
-     * Array of widget load listeners
+	 * Array of widget load listeners
 	 */
 	Object[] getOnLoadListener();
 
@@ -567,4 +567,24 @@ public interface Widget
 	 * Sets if text should be shadowed
 	 */
 	void setTextShadowed(boolean shadowed);
+
+	/**
+	 * Returns the widget drag dead zone
+	 */
+	int getDragDeadZone();
+
+	/**
+	 * Sets the widget drag dead zone
+	 */
+	void setDragDeadZone(int deadZone);
+
+	/**
+	 * Returns the widget drag dead time
+	 */
+	int getDragDeadTime();
+
+	/**
+	 * Sets the widget drag dead time
+	 */
+	void setDragDeadTime(int deadTime);
 }
