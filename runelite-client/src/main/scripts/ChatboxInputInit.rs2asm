@@ -46,6 +46,10 @@
    sload                  1
    put_varc_string        22
 
+; Mark varcstring22 for our use
+   load_int               -2
+   put_varc               5
+
 ; Set text
    sload                  0
    load_int               10616876
