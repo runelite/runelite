@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import lombok.Setter;
+import net.runelite.api.Client;
 import net.runelite.client.plugins.raids.solver.Room;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -39,6 +40,9 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 
 public class RaidsOverlay extends Overlay
 {
+	private static final int OLM_PLANE = 0;
+
+	private Client client;
 	private RaidsPlugin plugin;
 	private RaidsConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
@@ -47,10 +51,11 @@ public class RaidsOverlay extends Overlay
 	private boolean scoutOverlayShown = false;
 
 	@Inject
-	public RaidsOverlay(RaidsPlugin plugin, RaidsConfig config)
+	public RaidsOverlay(Client client, RaidsPlugin plugin, RaidsConfig config)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.LOW);
+		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
 	}
@@ -58,7 +63,7 @@ public class RaidsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.scoutOverlay() || !scoutOverlayShown)
+		if (!config.scoutOverlay() || !scoutOverlayShown || client.getPlane() == OLM_PLANE)
 		{
 			return null;
 		}
