@@ -239,4 +239,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			position = 19,
+			keyName = "swapSendParcel",
+			name = "Send Parcel",
+			description = "Swap Talk-To to with Send-Parcel for Rionasta at the Tai Bwo Wannai village."
+	)
+	default boolean swapSendParcel()
+	{
+		return false;
+	}
 }
