@@ -28,10 +28,14 @@ package net.runelite.client.plugins.zoom;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+import java.awt.event.KeyEvent;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.input.KeyListener;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -41,13 +45,18 @@ import net.runelite.client.plugins.PluginDescriptor;
 	tags = {"limit", "vertical"},
 	enabledByDefault = false
 )
-public class ZoomPlugin extends Plugin
+public class ZoomPlugin extends Plugin implements KeyListener
 {
+	private boolean controlDown;
+	
 	@Inject
 	private Client client;
 
 	@Inject
 	private ZoomConfig zoomConfig;
+
+	@Inject
+	private KeyManager keyManager;
 
 	@Provides
 	ZoomConfig getConfig(ConfigManager configManager)
@@ -67,6 +76,12 @@ public class ZoomPlugin extends Plugin
 
 		int[] intStack = client.getIntStack();
 		int intStackSize = client.getIntStackSize();
+
+		if ("scrollWheelZoom".equals(event.getEventName()) && zoomConfig.requireControlDown() && !controlDown)
+		{
+			intStack[intStackSize - 1] = 1;
+		}
+
 		if (zoomConfig.outerLimit())
 		{
 			switch (event.getEventName())
@@ -117,21 +132,56 @@ public class ZoomPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onFocusChanged(FocusChanged event)
+	{
+		if (!event.isFocused())
+		{
+			controlDown = false;
+		}
+	}
+	
 	@Override
 	protected void startUp()
 	{
 		client.setCameraPitchRelaxerEnabled(zoomConfig.relaxCameraPitch());
+		keyManager.registerKeyListener(this);
 	}
 
 	@Override
 	protected void shutDown()
 	{
 		client.setCameraPitchRelaxerEnabled(false);
+		keyManager.unregisterKeyListener(this);
+		controlDown = false;
 	}
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged ev)
 	{
 		client.setCameraPitchRelaxerEnabled(zoomConfig.relaxCameraPitch());
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e)
+	{
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		if (e.getKeyCode() == KeyEvent.VK_CONTROL)
+		{
+			controlDown = true;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+		if (e.getKeyCode() == KeyEvent.VK_CONTROL)
+		{
+			controlDown = false;
+		}
 	}
 }
