@@ -28,6 +28,7 @@ package net.runelite.client.plugins.loottracker;
 import com.google.common.base.Strings;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,6 +50,7 @@ class LootTrackerBox extends JPanel
 	private final JPanel itemContainer = new JPanel();
 	private final JLabel priceLabel = new JLabel();
 	private final JLabel subTitleLabel = new JLabel();
+	private final JLabel titleLabel;
 	private final ItemManager itemManager;
 	private final String id;
 
@@ -70,9 +72,10 @@ class LootTrackerBox extends JPanel
 		logTitle.setBorder(new EmptyBorder(7, 7, 7, 7));
 		logTitle.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
 
-		final JLabel titleLabel = new JLabel(id);
+		titleLabel = new JLabel(id);
 		titleLabel.setFont(FontManager.getRunescapeSmallFont());
 		titleLabel.setForeground(Color.WHITE);
+		titleLabel.setToolTipText(id);
 
 		logTitle.add(titleLabel, BorderLayout.WEST);
 
@@ -143,7 +146,19 @@ class LootTrackerBox extends JPanel
 			subTitleLabel.setText("x " + records.size());
 		}
 
+		resizeLogTitle();
+
 		repaint();
+	}
+
+	private void resizeLogTitle()
+	{
+		double maxWidth = itemContainer.getMinimumSize().getWidth() - 14;
+		int titleLabelHeight = titleLabel.getFontMetrics(titleLabel.getFont()).getHeight();
+		int subtitleLabelWidth = subTitleLabel.getFontMetrics(subTitleLabel.getFont()).stringWidth(subTitleLabel.getText());
+		int priceLabelWidth = priceLabel.getFontMetrics(priceLabel.getFont()).stringWidth(priceLabel.getText());
+		int titleLabelTruncatedWidth = (int) (maxWidth - subtitleLabelWidth - priceLabelWidth - 18);
+		titleLabel.setPreferredSize(new Dimension(titleLabelTruncatedWidth, titleLabelHeight));
 	}
 
 	/**
