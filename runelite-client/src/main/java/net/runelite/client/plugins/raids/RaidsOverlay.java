@@ -40,6 +40,8 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 
 public class RaidsOverlay extends Overlay
 {
+	private static final int OLM_PLANE = 0;
+
 	private Client client;
 	private RaidsPlugin plugin;
 	private RaidsConfig config;
@@ -61,8 +63,7 @@ public class RaidsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		//Do not show the scout overlay while we are down at olm (plane == 0)
-		if (!config.scoutOverlay() || !scoutOverlayShown || client.getPlane() == 0)
+		if (!config.scoutOverlay() || !scoutOverlayShown || client.getPlane() == OLM_PLANE)
 		{
 			return null;
 		}
