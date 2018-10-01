@@ -302,4 +302,16 @@ public interface GroundItemsConfig extends Config
 	{
 		return 10000000;
 	}
+
+
+	@ConfigItem(
+			position = 13,
+			keyName = "removeIgnored",
+			name = "Hide Ignored",
+			description = "Remove take option for items that are on the hidden items list."
+	)
+	default boolean removeIgnored()
+	{
+		return false;
+	}
 }
