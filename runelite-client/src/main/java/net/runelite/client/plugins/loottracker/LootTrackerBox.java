@@ -28,6 +28,7 @@ package net.runelite.client.plugins.loottracker;
 import com.google.common.base.Strings;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -66,19 +67,24 @@ class LootTrackerBox extends JPanel
 		setLayout(new BorderLayout(0, 1));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
 
-		final JPanel logTitle = new JPanel(new BorderLayout(5, 0));
+		int gap = 5;
+		final JPanel logTitle = new JPanel(new BorderLayout(gap, 0));
 		logTitle.setBorder(new EmptyBorder(7, 7, 7, 7));
 		logTitle.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
 
 		final JLabel titleLabel = new JLabel(id);
 		titleLabel.setFont(FontManager.getRunescapeSmallFont());
 		titleLabel.setForeground(Color.WHITE);
+		titleLabel.setToolTipText(id);
+		logTitle.add(titleLabel, BorderLayout.CENTER);
 
-		logTitle.add(titleLabel, BorderLayout.WEST);
+		final JPanel logSubtitleAndPrice = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+		logSubtitleAndPrice.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
 
 		subTitleLabel.setFont(FontManager.getRunescapeSmallFont());
 		subTitleLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
-		logTitle.add(subTitleLabel, BorderLayout.CENTER);
+		subTitleLabel.setBorder(new EmptyBorder(0, 0, 0, gap));
+		logSubtitleAndPrice.add(subTitleLabel);
 
 		if (!Strings.isNullOrEmpty(subtitle))
 		{
@@ -87,7 +93,9 @@ class LootTrackerBox extends JPanel
 
 		priceLabel.setFont(FontManager.getRunescapeSmallFont());
 		priceLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
-		logTitle.add(priceLabel, BorderLayout.EAST);
+		logSubtitleAndPrice.add(priceLabel);
+
+		logTitle.add(logSubtitleAndPrice, BorderLayout.EAST);
 
 		add(logTitle, BorderLayout.NORTH);
 		add(itemContainer, BorderLayout.CENTER);
