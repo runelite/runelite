@@ -40,7 +40,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
-
 import java.util.HashMap;
 
 @RunWith(MockitoJUnitRunner.class)
