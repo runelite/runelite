@@ -40,18 +40,21 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-public class CombatLevelOverlay extends Overlay
+class CombatLevelOverlay extends Overlay
 {
-	public static final Color COMBAT_LEVEL_COLOUR = new Color(0xff981f);
+	private static final Color COMBAT_LEVEL_COLOUR = new Color(0xff981f);
 
-	@Inject
 	private Client client;
-
-	@Inject
 	private CombatLevelConfig config;
+	private TooltipManager tooltipManager;
 
 	@Inject
-	private TooltipManager tooltipManager;
+	private CombatLevelOverlay(Client client, CombatLevelConfig config, TooltipManager tooltipManager)
+	{
+		this.client = client;
+		this.config = config;
+		this.tooltipManager = tooltipManager;
+	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
