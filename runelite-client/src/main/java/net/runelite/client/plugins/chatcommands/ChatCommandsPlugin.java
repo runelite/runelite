@@ -82,10 +82,10 @@ import net.runelite.http.api.kc.KillCountClient;
 public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 {
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
-	private static final Pattern KILLCOUNT_PATERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
+	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
 	private static final Pattern RAIDS_PATTERN = Pattern.compile("Your completed (.+) count is: <col=ff0000>(\\d+)</col>.");
-	private static final Pattern WINTERTODT_PATERN = Pattern.compile("Your subdued Wintertodt count is: <col=ff0000>(\\d+)</col>.");
-	private static final Pattern BARROWS_PATERN = Pattern.compile("Your Barrows chest count is: <col=ff0000>(\\d+)</col>.");
+	private static final Pattern WINTERTODT_PATTERN = Pattern.compile("Your subdued Wintertodt count is: <col=ff0000>(\\d+)</col>.");
+	private static final Pattern BARROWS_PATTERN = Pattern.compile("Your Barrows chest count is: <col=ff0000>(\\d+)</col>.");
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
 	private static final String PRICE_COMMAND_STRING = "!price";
 	private static final String LEVEL_COMMAND_STRING = "!lvl";
@@ -244,7 +244,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		}
 
 		String message = chatMessage.getMessage();
-		Matcher matcher = KILLCOUNT_PATERN.matcher(message);
+		Matcher matcher = KILLCOUNT_PATTERN.matcher(message);
 		if (matcher.find())
 		{
 			String boss = matcher.group(1);
@@ -253,7 +253,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			setKc(boss, kc);
 		}
 
-		matcher = WINTERTODT_PATERN.matcher(message);
+		matcher = WINTERTODT_PATTERN.matcher(message);
 		if (matcher.find())
 		{
 			int kc = Integer.parseInt(matcher.group(1));
@@ -270,7 +270,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			setKc(boss, kc);
 		}
 
-		matcher = BARROWS_PATERN.matcher(message);
+		matcher = BARROWS_PATTERN.matcher(message);
 		if (matcher.find())
 		{
 			int kc = Integer.parseInt(matcher.group(1));
