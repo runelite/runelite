@@ -53,6 +53,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -112,6 +113,9 @@ public class RaidsPlugin extends Plugin
 	@Inject
 	private SpriteManager spriteManager;
 
+	@Inject
+	private ClientThread clientThread;
+
 	@Getter
 	private final ArrayList<String> roomWhitelist = new ArrayList<>();
 
@@ -150,7 +154,7 @@ public class RaidsPlugin extends Plugin
 		overlayManager.add(overlay);
 		overlayManager.add(pointsOverlay);
 		updateLists();
-		checkRaidPresence(true);
+		clientThread.invokeLater(() -> checkRaidPresence(true));
 	}
 
 	@Override
