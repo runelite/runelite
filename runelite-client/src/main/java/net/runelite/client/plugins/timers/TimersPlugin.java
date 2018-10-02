@@ -384,9 +384,7 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (config.showStamina()
-			&& event.getMessage().equals(STAMINA_DRINK_MESSAGE)
-			|| event.getMessage().equals(STAMINA_SHARED_DRINK_MESSAGE))
+		if (config.showStamina() && (event.getMessage().equals(STAMINA_DRINK_MESSAGE) || event.getMessage().equals(STAMINA_SHARED_DRINK_MESSAGE)))
 		{
 			createGameTimer(STAMINA);
 		}
