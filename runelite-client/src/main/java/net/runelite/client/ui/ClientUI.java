@@ -34,6 +34,8 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.TrayIcon;
@@ -393,7 +395,28 @@ public class ClientUI
 					if (clientBounds != null)
 					{
 						frame.setBounds(clientBounds);
-						frame.revalidateMinimumSize();
+
+						GraphicsConfiguration gc = getIntersectingMonitor(clientBounds);
+						if (gc != null)
+						{
+							double scale = gc.getDefaultTransform().getScaleX();
+
+							if (scale != 1)
+							{
+								clientBounds.setRect(
+									clientBounds.getX() / scale,
+									clientBounds.getY() / scale,
+									clientBounds.getWidth() / scale,
+									clientBounds.getHeight() / scale);
+
+								frame.setMinimumSize(clientBounds.getSize());
+								frame.setBounds(clientBounds);
+							}
+						}
+						else
+						{
+							frame.setLocationRelativeTo(frame.getOwner());
+						}
 					}
 					else
 					{
@@ -416,25 +439,13 @@ public class ClientUI
 				frame.setLocationRelativeTo(frame.getOwner());
 			}
 
-			// If the frame is well hidden (e.g. unplugged 2nd screen),
-			// we want to move it back to default position as it can be
-			// hard for the user to reposition it themselves otherwise.
-			Rectangle clientBounds = frame.getBounds();
-			Rectangle screenBounds = frame.getGraphicsConfiguration().getBounds();
-			if (clientBounds.x + clientBounds.width - CLIENT_WELL_HIDDEN_MARGIN < screenBounds.getX() ||
-				clientBounds.x + CLIENT_WELL_HIDDEN_MARGIN > screenBounds.getX() + screenBounds.getWidth() ||
-				clientBounds.y + CLIENT_WELL_HIDDEN_MARGIN_TOP < screenBounds.getY() ||
-				clientBounds.y + CLIENT_WELL_HIDDEN_MARGIN > screenBounds.getY() + screenBounds.getHeight())
-			{
-				frame.setLocationRelativeTo(frame.getOwner());
-			}
-
 			// Show frame
 			frame.setVisible(true);
 			frame.toFront();
 			requestFocus();
 			giveClientFocus();
 			log.info("Showing frame {}", frame);
+			frame.revalidateMinimumSize();
 		});
 
 		// Show out of date dialog if needed
@@ -446,6 +457,24 @@ public class ClientUI
 					+ "game update, it will work with reduced functionality until then.",
 				"RuneLite is outdated", INFORMATION_MESSAGE));
 		}
+	}
+
+	private GraphicsConfiguration getIntersectingMonitor(final Rectangle bounds)
+	{
+		GraphicsDevice[] gds = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
+
+		for (GraphicsDevice gd : gds)
+		{
+			GraphicsConfiguration gc = gd.getDefaultConfiguration();
+
+			final Rectangle monitorBounds = gc.getBounds();
+			if (monitorBounds.intersects(bounds))
+			{
+				return gc;
+			}
+		}
+
+		return null;
 	}
 
 	private boolean showWarningOnExit()
@@ -727,14 +756,15 @@ public class ClientUI
 
 	private void saveClientBoundsConfig()
 	{
+		final Rectangle bounds = frame.getBounds();
+
 		if ((frame.getExtendedState() & JFrame.MAXIMIZED_BOTH) != 0)
 		{
+			configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, bounds);
 			configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED, true);
 		}
 		else
 		{
-			final Rectangle bounds = frame.getBounds();
-
 			// Try to expand sidebar
 			if (!sidebarOpen)
 			{
