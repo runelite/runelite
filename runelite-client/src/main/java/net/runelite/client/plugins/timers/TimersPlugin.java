@@ -100,6 +100,7 @@ public class TimersPlugin extends Plugin
 	private static final String STAFF_OF_THE_DEAD_SPEC_EXPIRED_MESSAGE = "Your protection fades away";
 	private static final String STAFF_OF_THE_DEAD_SPEC_MESSAGE = "Spirits of deceased evildoers offer you their protection";
 	private static final String STAMINA_DRINK_MESSAGE = "You drink some of your stamina potion.";
+	private static final String STAMINA_SHARED_DRINK_MESSAGE = "You have received a shared dose of stamina potion.";
 	private static final String STAMINA_EXPIRED_MESSAGE = "<col=8f4808>Your stamina potion has expired.</col>";
 	private static final String SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your super antifire potion";
 	private static final String SUPER_ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your super antifire potion has expired.</col>";
@@ -383,7 +384,7 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (config.showStamina() && event.getMessage().equals(STAMINA_DRINK_MESSAGE))
+		if (config.showStamina() && (event.getMessage().equals(STAMINA_DRINK_MESSAGE) || event.getMessage().equals(STAMINA_SHARED_DRINK_MESSAGE)))
 		{
 			createGameTimer(STAMINA);
 		}
