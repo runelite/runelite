@@ -502,7 +502,7 @@ public class ScreenshotPlugin extends Plugin
 	 *
 	 * @param fileName    Filename to use, without file extension.
 	 */
-	void takeScreenshot(String fileName)
+	private void takeScreenshot(String fileName)
 	{
 		if (client.getGameState() == GameState.LOGIN_SCREEN)
 		{
