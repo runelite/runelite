@@ -47,6 +47,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
+import net.runelite.client.util.SkillColor;
 
 public class XpGlobesOverlay extends Overlay
 {
@@ -124,7 +125,7 @@ public class XpGlobesOverlay extends Overlay
 			config.xpOrbSize(), config.xpOrbSize(),
 			PROGRESS_RADIUS_START, radiusCurrentXp,
 			config.progressArcStrokeWidth(),
-			config.progressArcColor());
+			config.enableColorBasedSkillOrbs() ? SkillColor.values()[skillToDraw.getSkill().ordinal()].getColor() : config.progressArcColor());
 
 		graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, renderHint);
 

@@ -22,12 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.xptracker;
+package net.runelite.client.util;
 
 import java.awt.Color;
 import lombok.Getter;
 
-enum SkillColor
+public enum SkillColor
 {
 	ATTACK(105, 32, 7),
 	DEFENCE(98, 119, 190),

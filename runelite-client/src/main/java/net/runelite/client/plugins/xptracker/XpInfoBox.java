@@ -49,6 +49,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.ProgressBar;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.LinkBrowser;
+import net.runelite.client.util.SkillColor;
 import net.runelite.client.util.StackFormatter;
 
 class XpInfoBox extends JPanel
