@@ -44,7 +44,7 @@ import java.awt.Rectangle;
 
 public class CombatLevelOverlay extends Overlay
 {
-	public static final Color COMBAT_LEVEL_COLOR = new Color(0xff981f);
+	public static final Color COMBAT_LEVEL_COLOUR = new Color(0xff981f);
 
 	@Inject
 	private Client client;
@@ -58,16 +58,10 @@ public class CombatLevelOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		Widget combatLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
 		if (!config.showLevelsUntil()
 			|| client.getLocalPlayer().getCombatLevel() == Experience.MAX_COMBAT_LEVEL
-			|| client.getVar(VarClientInt.CURRENT_TAB) != TabIndex.ATTACK_STYLES.getValue())
-		{
-			return null;
-		}
-
-		Widget combatLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
-
-		if (combatLevelWidget == null)
+			|| combatLevelWidget == null || combatLevelWidget.isHidden())
 		{
 			return null;
 		}
@@ -118,7 +112,7 @@ public class CombatLevelOverlay extends Overlay
 
 		// create tooltip string
 		StringBuilder sb = new StringBuilder();
-		sb.append(ColorUtil.wrapWithColorTag("Next combat level:</br>", new Color(0xff981f)));
+		sb.append(ColorUtil.wrapWithColorTag("Next combat level:</br>", COMBAT_LEVEL_COLOUR));
 
 		if ((attackLevel + strengthLevel + meleeNeed) <= 198)
 		{
