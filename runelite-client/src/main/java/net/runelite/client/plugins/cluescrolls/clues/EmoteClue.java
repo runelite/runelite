@@ -33,6 +33,7 @@ import net.runelite.api.EquipmentInventorySlot;
 import static net.runelite.api.EquipmentInventorySlot.*;
 import static net.runelite.api.EquipmentInventorySlot.LEGS;
 import net.runelite.api.Item;
+import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -162,7 +163,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		new EmoteClue("Yawn in the rogues' general store. Beware of double agents! Equip an adamant square shield, blue dragon vambraces and a rune pickaxe.", new WorldPoint(3026, 3701, 0), YAWN, item(ADAMANT_SQ_SHIELD), item(BLUE_DHIDE_VAMB), item(RUNE_PICKAXE)),
 		new EmoteClue("Yawn at the top of Trollheim. Equip a lava battlestaff, black dragonhide vambraces and a mind shield.", new WorldPoint(2590, 4452, 0), YAWN, item(LAVA_BATTLESTAFF), item(BLACK_DHIDE_VAMB), item(MIND_SHIELD)),
 		new EmoteClue("Yawn in the centre of Arceuus library. Nod your head before you talk to me. Equip blue dragonhide vambraces, adamant boots and an adamant dagger.", new WorldPoint(1632, 3807, 0), YAWN, YES, item(BLUE_DHIDE_VAMB), item(ADAMANT_BOOTS), item(ADAMANT_DAGGER)),
-		new EmoteClue("Swing a bullroarer at the top of the watchtower. Beware of double agents! Equip a dragon plateskirt, climbing boots and a dragon chainbody.", new WorldPoint(2932, 4712, 0), BULL_ROARER, item(DRAGON_PLATESKIRT), item(CLIMBING_BOOTS), item(DRAGON_CHAINBODY_3140))
+		new EmoteClue("Swing a bullroarer at the top of the watchtower. Beware of double agents! Equip a dragon plateskirt, climbing boots and a dragon chainbody.", new WorldPoint(2932, 4712, 0), BULL_ROARER, item(DRAGON_PLATESKIRT), item(CLIMBING_BOOTS), item(DRAGON_CHAINBODY_3140), item(ItemID.BULL_ROARER))
 	);
 
 	private static SingleItemRequirement item(int itemId)
