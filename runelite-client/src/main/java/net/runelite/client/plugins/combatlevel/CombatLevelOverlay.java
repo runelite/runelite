@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.combatlevel;
 
+import com.google.common.annotations.VisibleForTesting;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
@@ -150,6 +151,7 @@ public class CombatLevelOverlay extends Overlay
 	 * @param multiple	how much adding one skill level will change combat
 	 * @return	levels required for a specific skill to level up combat
 	 */
+	@VisibleForTesting
 	static int calcLevels(double start, int end, double multiple)
 	{
 		return (int) Math.ceil((end - start) / multiple);
@@ -163,6 +165,7 @@ public class CombatLevelOverlay extends Overlay
 	 * @param dhp	defence, hitpoints, and prayer; this is the initial calculated "base" value
 	 * @return	levels required for a specific skill to level up combat
 	 */
+	@VisibleForTesting
 	static int calcLevelsRM(double start, int end, double dhp)
 	{
 		start = Math.floor(start * 1.5) * 0.325;
@@ -175,6 +178,7 @@ public class CombatLevelOverlay extends Overlay
 	 * @param need	needed prayer level calculated by calcLevels(...)
 	 * @return	a corrected number to increase combat through prayer only
 	 */
+	@VisibleForTesting
 	static int correctPrayer(int level, int need)
 	{
 		if ((level + need) % 2 == 1)
