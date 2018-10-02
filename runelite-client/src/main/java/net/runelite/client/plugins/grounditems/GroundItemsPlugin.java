@@ -70,12 +70,14 @@ import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.OVERLAY;
+import net.runelite.client.plugins.grounditems.config.ItemQuantityMode;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.BOTH;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.NAME;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.OPTION;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.StackFormatter;
 
 @PluginDescriptor(
 	name = "Ground Items",
@@ -94,6 +96,9 @@ public class GroundItemsPlugin extends Plugin
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 	// ItemID for coins
 	private static final int COINS = ItemID.COINS_995;
+	// The game won't send anything higher than this value to the plugin -
+	// so we replace any item quantity higher with "Lots" instead.
+	protected static final int MAX_QUANTITY = 65535;
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -391,7 +396,22 @@ public class GroundItemsPlugin extends Plugin
 
 			if (config.showMenuItemQuantities() && itemComposition.isStackable() && quantity > 1)
 			{
-				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
+				final String amount = formatItemQuantity(quantity);
+
+				StringBuilder itemStringBuilder = new StringBuilder(lastEntry.getTarget());
+				if (config.itemQuantityMode() == ItemQuantityMode.PARENTHESIS)
+				{
+					itemStringBuilder.append(" (")
+							.append(amount)
+							.append(")");
+				}
+				else
+				{
+					itemStringBuilder.append(" x ")
+							.append(amount);
+				}
+
+				lastEntry.setTarget(itemStringBuilder.toString());
 			}
 
 			client.setMenuEntries(menuEntries);
@@ -483,5 +503,15 @@ public class GroundItemsPlugin extends Plugin
 		{
 			setHotKeyPressed(false);
 		}
+	}
+
+	public final String formatItemQuantity(int quantity)
+	{
+		if (quantity >= MAX_QUANTITY)
+		{
+			return "Lots!";
+		}
+
+		return StackFormatter.quantityToStackSize(quantity);
 	}
 }
