@@ -33,12 +33,23 @@ import net.runelite.client.config.ConfigItem;
 public interface RunecraftConfig extends Config
 {
 	@ConfigItem(
+		keyName = "overlayStyle",
+		name = "Color overlay style",
+		description = "Configures the colored overlay style",
+		position = 0
+	)
+	default OverlayStyle overlayStyle()
+	{
+		return OverlayStyle.OUTLINE;
+	}
+
+	@ConfigItem(
 		keyName = "showPouch",
 		name = "Show Pouch count",
 		description = "Configures whether the pouch ess count is displayed",
 		position = 1
 	)
-	default boolean showPouch()
+	default boolean showPouchCount()
 	{
 		return true;
 	}
