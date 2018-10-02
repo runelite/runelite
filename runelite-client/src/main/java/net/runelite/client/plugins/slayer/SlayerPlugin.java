@@ -79,6 +79,7 @@ public class SlayerPlugin extends Plugin
 {
 	//Chat messages
 	private static final Pattern CHAT_GEM_PROGRESS_MESSAGE = Pattern.compile("You're assigned to kill (.*); only (\\d*) more to go\\.");
+	private static final Pattern CHAT_GEM_PROGRESS_MESSAGE_WILDERNESS = Pattern.compile("You're assigned to kill (.*) in the Wilderness; only (\\d*) more to go\\.");
 	private static final String CHAT_GEM_COMPLETE_MESSAGE = "You need something new to hunt.";
 	private static final Pattern CHAT_COMPLETE_MESSAGE = Pattern.compile("(?:\\d+,)*\\d+");
 	private static final String CHAT_CANCEL_MESSAGE = "Your task has been cancelled.";
@@ -417,10 +418,14 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
-		Matcher mProgress = CHAT_GEM_PROGRESS_MESSAGE.matcher(chatMsg);
+		Matcher mProgress = CHAT_GEM_PROGRESS_MESSAGE_WILDERNESS.matcher(chatMsg);
 		if (!mProgress.find())
 		{
-			return;
+			mProgress = CHAT_GEM_PROGRESS_MESSAGE.matcher(chatMsg);
+			if (!mProgress.find())
+			{
+				return;
+			}
 		}
 		String taskName = mProgress.group(1);
 		int amount = Integer.parseInt(mProgress.group(2));
