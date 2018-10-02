@@ -28,16 +28,15 @@ package net.runelite.client.plugins.zoom;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
-import java.awt.event.KeyEvent;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.input.KeyListener;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.HotkeyListener;
 
 @PluginDescriptor(
 	name = "Camera Zoom",
@@ -45,7 +44,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 	tags = {"limit", "vertical"},
 	enabledByDefault = false
 )
-public class ZoomPlugin extends Plugin implements KeyListener
+public class ZoomPlugin extends Plugin
 {
 	/**
 	 * The largest (most zoomed in) value that can be used without the client crashing.
@@ -54,8 +53,6 @@ public class ZoomPlugin extends Plugin implements KeyListener
 	 */
 	private static final int INNER_ZOOM_LIMIT = 1004;
 
-	private boolean controlDown;
-	
 	@Inject
 	private Client client;
 
@@ -64,6 +61,11 @@ public class ZoomPlugin extends Plugin implements KeyListener
 
 	@Inject
 	private KeyManager keyManager;
+
+	@Inject
+	private RuneLiteConfig runeLiteConfig;
+
+	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> runeLiteConfig.hotkey());
 
 	@Provides
 	ZoomConfig getConfig(ConfigManager configManager)
@@ -84,7 +86,7 @@ public class ZoomPlugin extends Plugin implements KeyListener
 		int[] intStack = client.getIntStack();
 		int intStackSize = client.getIntStackSize();
 
-		if ("scrollWheelZoom".equals(event.getEventName()) && zoomConfig.requireControlDown() && !controlDown)
+		if ("scrollWheelZoom".equals(event.getEventName()) && zoomConfig.requireHotKey() && !hotkeyListener.isPressed())
 		{
 			intStack[intStackSize - 1] = 1;
 		}
@@ -121,56 +123,23 @@ public class ZoomPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
-	public void onFocusChanged(FocusChanged event)
-	{
-		if (!event.isFocused())
-		{
-			controlDown = false;
-		}
-	}
-	
 	@Override
 	protected void startUp()
 	{
 		client.setCameraPitchRelaxerEnabled(zoomConfig.relaxCameraPitch());
-		keyManager.registerKeyListener(this);
+		keyManager.registerKeyListener(hotkeyListener);
 	}
 
 	@Override
 	protected void shutDown()
 	{
 		client.setCameraPitchRelaxerEnabled(false);
-		keyManager.unregisterKeyListener(this);
-		controlDown = false;
+		keyManager.unregisterKeyListener(hotkeyListener);
 	}
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged ev)
 	{
 		client.setCameraPitchRelaxerEnabled(zoomConfig.relaxCameraPitch());
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e)
-	{
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e)
-	{
-		if (e.getKeyCode() == KeyEvent.VK_CONTROL)
-		{
-			controlDown = true;
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e)
-	{
-		if (e.getKeyCode() == KeyEvent.VK_CONTROL)
-		{
-			controlDown = false;
-		}
 	}
 }
