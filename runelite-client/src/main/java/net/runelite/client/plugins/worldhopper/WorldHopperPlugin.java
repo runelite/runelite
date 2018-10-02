@@ -92,7 +92,7 @@ import org.apache.commons.lang3.ArrayUtils;
 public class WorldHopperPlugin extends Plugin
 {
 	private static final int WORLD_FETCH_TIMER = 10;
-	private static final int REFRESH_THROTTLE = 60_000;  // ms
+	private static final int REFRESH_THROTTLE = 120_000;  // ms
 	private static final int TICK_THROTTLE = (int) Duration.ofMinutes(10).toMillis();
 
 	private static final int DISPLAY_SWITCHER_MAX_ATTEMPTS = 3;
