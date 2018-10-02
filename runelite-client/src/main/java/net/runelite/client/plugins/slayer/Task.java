@@ -73,7 +73,7 @@ enum Task
 	DAGANNOTH("Dagannoth", ItemID.DAGANNOTH),
 	DAGANNOTH_KINGS("Dagannoth Kings", ItemID.PET_DAGANNOTH_PRIME),
 	DARK_BEASTS("Dark beasts", ItemID.DARK_BEAST, "Night beast"),
-	DARK_WARRIORS("Dark warriors", ItemID.BLACK_SWORD, "Dark warrior"),
+	DARK_WARRIORS("Dark warriors", ItemID.BLACK_MED_HELM, "Dark warrior"),
 	DERANGED_ARCHAEOLOGIST("Deranged Archaeologist", ItemID.ARCHAEOLOGISTS_DIARY),
 	DESERT_LIZARDS("Desert lizards", ItemID.DESERT_LIZARD, "Small lizard", "Lizard"),
 	DOGS("Dogs", ItemID.GUARD_DOG, "Jackal"),
