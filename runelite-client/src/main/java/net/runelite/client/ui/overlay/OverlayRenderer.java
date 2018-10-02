@@ -37,6 +37,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.FocusChanged;
@@ -78,6 +79,9 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 	private boolean isResizeable;
 	private OverlayBounds snapCorners;
 
+	@Setter
+	private boolean pauseRendering;
+
 	@Inject
 	private OverlayRenderer(
 		final Client client,
@@ -104,6 +108,11 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 	public void render(Graphics2D graphics, final OverlayLayer layer)
 	{
+		if (pauseRendering)
+		{
+			return;
+		}
+
 		final List<Overlay> overlays = overlayManager.getLayer(layer);
 
 		if (overlays == null

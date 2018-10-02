@@ -44,10 +44,21 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "hideOverlays",
+		name = "Hide RuneLite Overlays",
+		description = "Configures whether or not to hide RuneLite overlays while the screenshot is taken",
+		position = 1
+	)
+	default boolean hideOverlays()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "displayDate",
 		name = "Display Date",
-		description = "Configures whether or not the report button shows the date the screenshot was taken",
-		position = 1
+		description = "Configures whether or not the report button shows the date the screenshot was taken <br> This is ignored if overlays are hidden.",
+		position = 2
 	)
 	default boolean displayDate()
 	{
@@ -58,7 +69,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "notifyWhenTaken",
 		name = "Notify When Taken",
 		description = "Configures whether or not you are notified when a screenshot has been taken",
-		position = 2
+		position = 3
 	)
 	default boolean notifyWhenTaken()
 	{
@@ -69,7 +80,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "rewards",
 		name = "Screenshot Rewards",
 		description = "Configures whether screenshots are taken of clues, barrows, and quest completion",
-		position = 3
+		position = 4
 	)
 	default boolean screenshotRewards()
 	{
@@ -80,7 +91,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "levels",
 		name = "Screenshot Levels",
 		description = "Configures whether screenshots are taken of level ups",
-		position = 4
+		position = 5
 	)
 	default boolean screenshotLevels()
 	{
@@ -91,7 +102,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "kingdom",
 		name = "Screenshot Kingdom Reward",
 		description = "Configures whether screenshots are taken of Kingdom Reward",
-		position = 5
+		position = 6
 	)
 	default boolean screenshotKingdom()
 	{
@@ -102,7 +113,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "pets",
 		name = "Screenshot Pet",
 		description = "Configures whether screenshots are taken of receiving pets",
-		position = 6
+		position = 7
 	)
 	default boolean screenshotPet()
 	{
@@ -113,7 +124,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "uploadScreenshot",
 		name = "Upload To Imgur",
 		description = "Configures whether or not screenshots are uploaded to Imgur and copied into your clipboard",
-		position = 7
+		position = 8
 	)
 	default boolean uploadScreenshot()
 	{
@@ -125,7 +136,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "kills",
 		name = "Screenshot PvP Kills",
 		description = "Configures whether or not screenshots are automatically taken of PvP kills",
-		position = 8
+		position = 9
 	)
 	default boolean screenshotKills()
 	{
@@ -136,7 +147,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "boss",
 		name = "Screenshot Boss Kills",
 		description = "Configures whether or not screenshots are automatically taken of boss kills",
-		position = 9
+		position = 10
 	)
 	default boolean screenshotBossKills()
 	{
@@ -147,7 +158,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "playerDeath",
 		name = "Screenshot Deaths",
 		description = "Configures whether or not screenshots are automatically taken when you die.",
-		position = 10
+		position = 11
 	)
 	default boolean screenshotPlayerDeath()
 	{
@@ -158,7 +169,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "hotkey",
 		name = "Screenshot hotkey",
 		description = "When you press this key a screenshot will be taken",
-		position = 11
+		position = 12
 	)
 	default Keybind hotkey()
 	{
