@@ -356,13 +356,19 @@ public class FairyRingPlugin extends Plugin
 			y = 0;
 		}
 
+		int newHeight = 0;
+		if (list.getScrollHeight() > 0)
+		{
+			newHeight = (list.getScrollY() * y) / list.getScrollHeight();
+		}
+
 		list.setScrollHeight(y);
 		list.revalidateScroll();
 		client.runScript(
 			ScriptID.UPDATE_SCROLLBAR,
 			WidgetInfo.FAIRY_RING_LIST_SCROLLBAR.getId(),
 			WidgetInfo.FAIRY_RING_LIST.getId(),
-			0
+			newHeight
 		);
 	}
 }
