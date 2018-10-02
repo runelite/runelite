@@ -44,9 +44,9 @@ class CombatLevelOverlay extends Overlay
 {
 	private static final Color COMBAT_LEVEL_COLOUR = new Color(0xff981f);
 
-	private Client client;
-	private CombatLevelConfig config;
-	private TooltipManager tooltipManager;
+	private final Client client;
+	private final CombatLevelConfig config;
+	private final TooltipManager tooltipManager;
 
 	@Inject
 	private CombatLevelOverlay(Client client, CombatLevelConfig config, TooltipManager tooltipManager)
