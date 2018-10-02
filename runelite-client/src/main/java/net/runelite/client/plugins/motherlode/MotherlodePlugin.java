@@ -66,6 +66,7 @@ import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -111,6 +112,9 @@ public class MotherlodePlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean inMlm;
@@ -165,10 +169,13 @@ public class MotherlodePlugin extends Plugin
 
 		Widget sack = client.getWidget(WidgetInfo.MOTHERLODE_MINE);
 
-		if (sack != null && sack.isHidden())
+		clientThread.invokeLater(() ->
 		{
-			sack.setHidden(false);
-		}
+			if (sack != null && sack.isHidden())
+			{
+				sack.setHidden(false);
+			}
+		});
 	}
 
 	public MotherlodeSession getSession()
