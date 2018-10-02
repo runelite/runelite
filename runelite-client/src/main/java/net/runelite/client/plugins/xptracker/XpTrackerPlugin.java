@@ -230,17 +230,21 @@ public class XpTrackerPlugin extends Plugin
 	{
 		final Skill skill = event.getSkill();
 		final int currentXp = client.getSkillExperience(skill);
+		final int currentLevel = client.getRealSkillLevel(skill);
 		final VarPlayer startGoal = startGoalVarpForSkill(skill);
 		final VarPlayer endGoal = endGoalVarpForSkill(skill);
 		final int startGoalXp = startGoal != null ? client.getVar(startGoal) : -1;
 		final int endGoalXp = endGoal != null ? client.getVar(endGoal) : -1;
 
-		final XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp, startGoalXp, endGoalXp);
+		if (currentLevel < 99 || !xpTrackerConfig.doNotTrackSkillAfter99())
+		{
+			final XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp, startGoalXp, endGoalXp);
 
-		final boolean updated = XpUpdateResult.UPDATED.equals(updateResult);
-		xpPanel.updateSkillExperience(updated, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
-		xpState.recalculateTotal();
-		xpPanel.updateTotal(xpState.getTotalSnapshot());
+			final boolean updated = XpUpdateResult.UPDATED.equals(updateResult);
+			xpPanel.updateSkillExperience(updated, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
+			xpState.recalculateTotal();
+			xpPanel.updateTotal(xpState.getTotalSnapshot());
+		}
 	}
 
 	@Subscribe
