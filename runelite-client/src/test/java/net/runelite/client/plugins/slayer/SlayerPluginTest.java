@@ -27,6 +27,8 @@ package net.runelite.client.plugins.slayer;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import static net.runelite.api.ChatMessageType.SERVER;
 import net.runelite.api.Client;
@@ -38,6 +40,7 @@ import net.runelite.client.Notifier;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.Text;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,9 +58,12 @@ public class SlayerPluginTest
 {
 	private static final String TASK_NEW = "Your new task is to kill 231 Suqahs.";
 	private static final String TASK_NEW_NPC_CONTACT = "Excellent, you're doing great. Your new task is to kill<br>211 Suqahs.";
+	private static final String TASK_CHECKSLAYERGEM_WILDERNESS = "You're assigned to kill Suqahs in the Wilderness; only 211 more to go.";
+	private static final String TASK_CHECKSLAYERGEM = "You're assigned to kill Suqahs; only 211 more to go.";
 
 	private static final String TASK_BOSS_NEW = "Excellent. You're now assigned to kill Vet'ion 3 times.<br>Your reward point tally is 914.";
 
+	private static final Pattern CHAT_GEM_PROGRESS_MESSAGE = Pattern.compile("You're assigned to kill (.*?)(?: in the Wilderness)?; only (\\d*) more to go\\.");
 	private static final String TASK_EXISTING = "You're still hunting suqahs; you have 222 to go. Come<br>back when you've finished your task.";
 
 	private static final String REWARD_POINTS = "Reward points: 17,566";
@@ -162,6 +168,40 @@ public class SlayerPluginTest
 		assertEquals("Vet'ion", slayerPlugin.getTaskName());
 		assertEquals(3, slayerPlugin.getAmount());
 		assertEquals(914, slayerPlugin.getPoints());
+	}
+
+	@Test
+	public void testCheckSlayerGem()
+	{
+		String chatMsg = Text.removeTags(TASK_CHECKSLAYERGEM); //remove color and linebreaks
+
+		Matcher mProgress = CHAT_GEM_PROGRESS_MESSAGE.matcher(chatMsg);
+
+		if (!mProgress.find())
+		{
+			return;
+		}
+		String taskName = mProgress.group(1);
+		int amount = Integer.parseInt(mProgress.group(2));
+		assertEquals("Suqahs", taskName);
+		assertEquals(211, amount);
+	}
+
+	@Test
+	public void testCheckSlayerGemWildernessTask()
+	{
+		String chatMsg = Text.removeTags(TASK_CHECKSLAYERGEM_WILDERNESS); //remove color and linebreaks
+
+		Matcher mProgress = CHAT_GEM_PROGRESS_MESSAGE.matcher(chatMsg);
+
+		if (!mProgress.find())
+		{
+			return;
+		}
+		String taskName = mProgress.group(1);
+		int amount = Integer.parseInt(mProgress.group(2));
+		assertEquals("Suqahs", taskName);
+		assertEquals(211, amount);
 	}
 
 	@Test
