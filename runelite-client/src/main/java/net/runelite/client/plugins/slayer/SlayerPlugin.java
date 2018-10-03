@@ -78,8 +78,7 @@ import net.runelite.client.util.Text;
 public class SlayerPlugin extends Plugin
 {
 	//Chat messages
-	private static final Pattern CHAT_PARTNER_NEW_TASK_REGEX = Pattern.compile("You have received a new Slayer assignment from (.*): (.*) \\((\\d*)\\)");
-	private static final Pattern CHAT_GEM_PROGRESS_MESSAGE = Pattern.compile("You're assigned to kill (.*); only (\\d*) more to go\\.");
+	private static final Pattern CHAT_GEM_PROGRESS_MESSAGE = Pattern.compile("^(?:You're assigned to kill|You have received a new Slayer assignment from .*:) (.*)(?:; only | \\()(\\d*)(?: more to go\\.|\\))$");
 	private static final String CHAT_GEM_COMPLETE_MESSAGE = "You need something new to hunt.";
 	private static final Pattern CHAT_COMPLETE_MESSAGE = Pattern.compile("(?:\\d+,)*\\d+");
 	private static final String CHAT_CANCEL_MESSAGE = "Your task has been cancelled.";
@@ -418,27 +417,14 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
-		String taskName = null;
-		int amount = 0;
-
 		Matcher mProgress = CHAT_GEM_PROGRESS_MESSAGE.matcher(chatMsg);
-		if (mProgress.find())
-		{
-			taskName = mProgress.group(1);
-			amount = Integer.parseInt(mProgress.group(2));
-		}
-
-		Matcher mPartnerNewTask = CHAT_PARTNER_NEW_TASK_REGEX.matcher(chatMsg);
-		if (mPartnerNewTask.find())
-		{
-			taskName = mPartnerNewTask.group(2);
-			amount = Integer.parseInt(mPartnerNewTask.group(3));
-		}
-
-		if (taskName == null || amount == 0)
+		if (!mProgress.find())
 		{
 			return;
 		}
+
+		String taskName = mProgress.group(1);
+		int amount = Integer.parseInt(mProgress.group(2));
 
 		setTask(taskName, amount);
 	}
