@@ -167,12 +167,10 @@ public class SlayerPluginTest
 		assertEquals(914, slayerPlugin.getPoints());
 	}
 
-	public void testNewPartnerTask()
+	public void testPartnerTask()
 	{
-		Widget npcDialog = mock(Widget.class);
-		when(npcDialog.getText()).thenReturn(TASK_NEW_FROM_PARTNER);
-		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
-		slayerPlugin.onGameTick(new GameTick());
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", TASK_NEW_FROM_PARTNER, null);
+		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals("Dust Devils", slayerPlugin.getTaskName());
 		assertEquals(377, slayerPlugin.getAmount());
