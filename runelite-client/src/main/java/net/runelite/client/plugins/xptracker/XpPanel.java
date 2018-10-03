@@ -108,9 +108,9 @@ class XpPanel extends PluginPanel
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+		popupMenu.add(pauseAll);
 		popupMenu.add(openXpTracker);
 		popupMenu.add(reset);
-		popupMenu.add(pauseAll);
 		overallPanel.setComponentPopupMenu(popupMenu);
 
 		final JLabel overallIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(Skill.OVERALL)));

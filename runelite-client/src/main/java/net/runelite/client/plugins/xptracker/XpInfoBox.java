@@ -28,6 +28,8 @@ package net.runelite.client.plugins.xptracker;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -115,10 +117,10 @@ class XpInfoBox extends JPanel
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+		popupMenu.add(pauseSkill);
 		popupMenu.add(openXpTracker);
 		popupMenu.add(reset);
 		popupMenu.add(resetOthers);
-		popupMenu.add(pauseSkill);
 
 		JLabel skillIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(skill)));
 		skillIcon.setHorizontalAlignment(SwingConstants.CENTER);
@@ -162,6 +164,18 @@ class XpInfoBox extends JPanel
 
 		container.setComponentPopupMenu(popupMenu);
 		progressBar.setComponentPopupMenu(popupMenu);
+
+		MouseAdapter leftClickPause = new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if (SwingUtilities.isLeftMouseButton(e)) {
+					xpTrackerPlugin.pauseSkill(skill, !paused);
+				}
+			}
+		};
+
+		container.addMouseListener(leftClickPause);
+		progressBar.addMouseListener(leftClickPause);
 
 		add(container, BorderLayout.NORTH);
 	}
