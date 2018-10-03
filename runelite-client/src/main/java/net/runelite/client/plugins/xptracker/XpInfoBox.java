@@ -165,10 +165,13 @@ class XpInfoBox extends JPanel
 		container.setComponentPopupMenu(popupMenu);
 		progressBar.setComponentPopupMenu(popupMenu);
 
-		MouseAdapter leftClickPause = new MouseAdapter() {
+		MouseAdapter leftClickPause = new MouseAdapter()
+		{
 			@Override
-			public void mousePressed(MouseEvent e) {
-				if (SwingUtilities.isLeftMouseButton(e)) {
+			public void mousePressed(MouseEvent e)
+			{
+				if (SwingUtilities.isLeftMouseButton(e))
+				{
 					xpTrackerPlugin.pauseSkill(skill, !paused);
 				}
 			}

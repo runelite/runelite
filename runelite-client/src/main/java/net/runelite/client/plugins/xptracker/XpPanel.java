@@ -93,7 +93,7 @@ class XpPanel extends PluginPanel
 
 		// Create pause all menu
 		final JMenuItem pauseAll = new JMenuItem("Pause All");
-		pauseAll.addActionListener(e -> { pauseAllInfoBoxes(pauseAll, xpTrackerPlugin); });
+		pauseAll.addActionListener(e -> pauseAllInfoBoxes(pauseAll, xpTrackerPlugin));
 
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
@@ -119,10 +119,13 @@ class XpPanel extends PluginPanel
 		overallPanel.add(overallIcon, BorderLayout.WEST);
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
 
-		MouseAdapter leftClickPauseAll = new MouseAdapter() {
+		MouseAdapter leftClickPauseAll = new MouseAdapter()
+		{
 			@Override
-			public void mousePressed(MouseEvent e) {
-				if (SwingUtilities.isLeftMouseButton(e)) {
+			public void mousePressed(MouseEvent e)
+			{
+				if (SwingUtilities.isLeftMouseButton(e))
+				{
 					pauseAllInfoBoxes(pauseAll, xpTrackerPlugin);
 				}
 			}
