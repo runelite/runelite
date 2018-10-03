@@ -36,10 +36,22 @@ public interface InterfaceStylesConfig extends Config
 	@ConfigItem(
 		keyName = "gameframe",
 		name = "Gameframe",
-		description = "The gameframe to use for the interface"
+		description = "The gameframe to use for the interface",
+		position = 0
 	)
 	default Skin skin()
 	{
 		return Skin.AROUND_2010;
+	}
+
+	@ConfigItem(
+		keyName = "alwaysStack",
+		name = "Always stack bottom bar",
+		description = "Always stack the bottom bar in resizable",
+		position = 1
+	)
+	default boolean stack()
+	{
+		return false;
 	}
 }

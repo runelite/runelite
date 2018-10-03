@@ -371,6 +371,8 @@ public class WidgetID
 	static class ResizableViewportBottomLine
 	{
 		static final int LOGOUT_BUTTON_OVERLAY = 29;
+		static final int SECTION_1 = 32;
+		static final int SECTION_2 = 47;
 		static final int CMB_TAB = 50;
 		static final int CMB_ICON = 57;
 		static final int SKILLS_TAB = 51;
@@ -397,6 +399,7 @@ public class WidgetID
 		static final int EMOTE_ICON = 45;
 		static final int MUSIC_TAB = 40;
 		static final int MUSIC_ICON = 46;
+		static final int INVENTORY = 64;
 	}
 
 	static class Chatbox

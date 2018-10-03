@@ -228,6 +228,23 @@ public class InterfaceStylesPlugin extends Plugin
 
 	private void adjustWidgetDimensions()
 	{
+		if (config.stack())
+		{
+			Widget section1 = client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_SECTION_1);
+			if (section1 != null && !section1.isHidden())
+			{
+				Widget section2 = client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_SECTION_2);
+				section2.setRelativeY(section1.getRelativeY() - section1.getHeight());
+				section2.setRelativeX(section1.getRelativeX());
+
+				Widget inventory = client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY);
+				if (inventory != null)
+				{
+					inventory.setRelativeY(section1.getRelativeY() - section1.getHeight() - inventory.getHeight());
+				}
+			}
+		}
+
 		for (WidgetOffset widgetOffset : WidgetOffset.values())
 		{
 			if (widgetOffset.getSkin() != config.skin())
@@ -264,6 +281,19 @@ public class InterfaceStylesPlugin extends Plugin
 
 	private void restoreWidgetDimensions()
 	{
+		Widget section1 = client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_SECTION_1);
+		if (section1 != null && !section1.isHidden())
+		{
+			Widget section2 = client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_SECTION_2);
+			section2.revalidate();
+
+			Widget inventory = client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY);
+			if (inventory != null)
+			{
+				inventory.revalidate();
+			}
+		}
+
 		for (WidgetOffset widgetOffset : WidgetOffset.values())
 		{
 			Widget widget = client.getWidget(widgetOffset.getWidgetInfo());
