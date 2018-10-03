@@ -174,14 +174,17 @@ public class SlayerPluginTest
 	public void testCheckSlayerGem()
 	{
 		String chatMsg = Text.removeTags(TASK_CHECKSLAYERGEM); //remove color and linebreaks
-
+		String taskName;
 		Matcher mProgress = CHAT_GEM_PROGRESS_MESSAGE.matcher(chatMsg);
 
 		if (!mProgress.find())
 		{
-			return;
+			taskName = "return";
 		}
-		String taskName = mProgress.group(1);
+		else
+		{
+			taskName = mProgress.group(1);
+		}
 		int amount = Integer.parseInt(mProgress.group(2));
 		assertEquals("Suqahs", taskName);
 		assertEquals(211, amount);
@@ -191,14 +194,18 @@ public class SlayerPluginTest
 	public void testCheckSlayerGemWildernessTask()
 	{
 		String chatMsg = Text.removeTags(TASK_CHECKSLAYERGEM_WILDERNESS); //remove color and linebreaks
-
+		String taskName;
 		Matcher mProgress = CHAT_GEM_PROGRESS_MESSAGE.matcher(chatMsg);
 
 		if (!mProgress.find())
 		{
-			return;
+			taskName = "return";
 		}
-		String taskName = mProgress.group(1);
+		else
+		{
+			taskName = mProgress.group(1);
+		}
+		taskName = mProgress.group(1);
 		int amount = Integer.parseInt(mProgress.group(2));
 		assertEquals("Suqahs", taskName);
 		assertEquals(211, amount);
