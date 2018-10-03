@@ -53,6 +53,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class SlayerPluginTest
 {
+	private static final String TASK_GEM_PROGRESS = "You're assigned to kill Dust Devils; only 317 more to go.";
+	private static final String TASK_NEW_FROM_PARTNER = "You have received a new Slayer assignment from breaklulz: Dust Devils (377)";
+
 	private static final String TASK_NEW = "Your new task is to kill 231 Suqahs.";
 	private static final String TASK_NEW_NPC_CONTACT = "Excellent, you're doing great. Your new task is to kill<br>211 Suqahs.";
 	private static final String TASK_CHECKSLAYERGEM_WILDERNESS = "You're assigned to kill Suqahs in the Wilderness; only 211 more to go.";
@@ -127,6 +130,26 @@ public class SlayerPluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+	}
+
+	@Test
+	public void testGemProgress()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Perterter", TASK_GEM_PROGRESS, null);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals("Dust Devils", slayerPlugin.getTaskName());
+		assertEquals(317, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testPartnerNewTask()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Perterter", TASK_NEW_FROM_PARTNER, null);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals("Dust Devils", slayerPlugin.getTaskName());
+		assertEquals(377, slayerPlugin.getAmount());
 	}
 
 	@Test
