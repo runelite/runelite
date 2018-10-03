@@ -167,6 +167,7 @@ public class SlayerPluginTest
 		assertEquals(914, slayerPlugin.getPoints());
 	}
 
+	@Test
 	public void testPartnerTask()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", TASK_NEW_FROM_PARTNER, null);
