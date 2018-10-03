@@ -173,42 +173,19 @@ public class SlayerPluginTest
 	@Test
 	public void testCheckSlayerGem()
 	{
-		String chatMsg = Text.removeTags(TASK_CHECKSLAYERGEM); //remove color and linebreaks
-		String taskName;
-		Matcher mProgress = CHAT_GEM_PROGRESS_MESSAGE.matcher(chatMsg);
-
-		if (!mProgress.find())
-		{
-			taskName = "return";
-		}
-		else
-		{
-			taskName = mProgress.group(1);
-		}
-		int amount = Integer.parseInt(mProgress.group(2));
-		assertEquals("Suqahs", taskName);
-		assertEquals(211, amount);
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", TASK_CHECKSLAYERGEM, null);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+		assertEquals("Suqahs", slayerPlugin.getTaskName());
+		assertEquals(211, slayerPlugin.getAmount());
 	}
 
 	@Test
 	public void testCheckSlayerGemWildernessTask()
 	{
-		String chatMsg = Text.removeTags(TASK_CHECKSLAYERGEM_WILDERNESS); //remove color and linebreaks
-		String taskName;
-		Matcher mProgress = CHAT_GEM_PROGRESS_MESSAGE.matcher(chatMsg);
-
-		if (!mProgress.find())
-		{
-			taskName = "return";
-		}
-		else
-		{
-			taskName = mProgress.group(1);
-		}
-		taskName = mProgress.group(1);
-		int amount = Integer.parseInt(mProgress.group(2));
-		assertEquals("Suqahs", taskName);
-		assertEquals(211, amount);
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", TASK_CHECKSLAYERGEM_WILDERNESS, null);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+		assertEquals("Suqahs", slayerPlugin.getTaskName());
+		assertEquals(211, slayerPlugin.getAmount());
 	}
 
 	@Test
