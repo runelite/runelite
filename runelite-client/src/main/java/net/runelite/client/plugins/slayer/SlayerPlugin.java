@@ -425,7 +425,6 @@ public class SlayerPlugin extends Plugin
 
 		String taskName = mProgress.group(1);
 		int amount = Integer.parseInt(mProgress.group(2));
-
 		setTask(taskName, amount);
 	}
 
