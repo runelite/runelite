@@ -27,14 +27,17 @@ package net.runelite.client.plugins.chathistory;
 import com.google.common.collect.EvictingQueue;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import java.util.Queue;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.SetMessage;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -57,6 +60,9 @@ public class ChatHistoryPlugin extends Plugin
 		ChatMessageType.GAME
 	);
 
+	@Inject
+	private ChatHistoryConfig config;
+
 	private Queue<QueuedMessage> messageQueue;
 
 	@Inject
@@ -66,6 +72,24 @@ public class ChatHistoryPlugin extends Plugin
 	protected void startUp()
 	{
 		messageQueue = EvictingQueue.create(100);
+		if (config.retainGameChat())
+		{
+			ALLOWED_HISTORY.add(ChatMessageType.SERVER);
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (config.retainGameChat())
+		{
+			ALLOWED_HISTORY.add(ChatMessageType.SERVER);
+		}
+		else
+		{
+			ALLOWED_HISTORY.remove(ChatMessageType.SERVER);
+			messageQueue.removeIf(queuedMessage -> queuedMessage.getType() == ChatMessageType.SERVER);
+		}
 	}
 
 	@Override
@@ -73,6 +97,12 @@ public class ChatHistoryPlugin extends Plugin
 	{
 		messageQueue.clear();
 		messageQueue = null;
+	}
+
+	@Provides
+	ChatHistoryConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(ChatHistoryConfig.class);
 	}
 
 	@Subscribe
