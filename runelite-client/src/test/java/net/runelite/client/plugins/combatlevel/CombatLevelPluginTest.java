@@ -236,7 +236,7 @@ public class CombatLevelPluginTest
 	public void testPlayerZezima()
 	{
 		// snapshot of current stats 2018-10-3
-		// Zezima cannot earn a combat level from ranged/magic anymore, so it won't show as th result is too high
+		// Zezima cannot earn a combat level from ranged/magic anymore, so it won't show as the result is too high
 		when(player.getCombatLevel()).thenReturn(90);
 		when(client.getRealSkillLevel(Skill.ATTACK)).thenReturn(74);
 		when(client.getRealSkillLevel(Skill.STRENGTH)).thenReturn(74);
