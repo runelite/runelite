@@ -56,6 +56,8 @@ public class SlayerPluginTest
 	private static final String TASK_NEW = "Your new task is to kill 231 Suqahs.";
 	private static final String TASK_NEW_NPC_CONTACT = "Excellent, you're doing great. Your new task is to kill<br>211 Suqahs.";
 
+	private static final String TASK_NEW_FROM_PARTNER = "You have received a new Slayer assignment from breaklulz: Dust Devils (317)";
+
 	private static final String TASK_BOSS_NEW = "Excellent. You're now assigned to kill Vet'ion 3 times.<br>Your reward point tally is 914.";
 
 	private static final String TASK_EXISTING = "You're still hunting suqahs; you have 222 to go. Come<br>back when you've finished your task.";
@@ -137,6 +139,16 @@ public class SlayerPluginTest
 
 		assertEquals("Suqahs", slayerPlugin.getTaskName());
 		assertEquals(231, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testPartnerNewTask()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Perterter", TASK_NEW_FROM_PARTNER, null);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals("Dust Devils", slayerPlugin.getTaskName());
+		assertEquals(317, slayerPlugin.getAmount());
 	}
 
 	@Test
