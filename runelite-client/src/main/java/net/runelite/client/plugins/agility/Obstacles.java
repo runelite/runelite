@@ -215,7 +215,7 @@ class Obstacles
 		// Tree Gnome Village
 		LOOSE_RAILING_2186,
 		// Weiss
-		LITTLE_BOULDER
+		LITTLE_BOULDER, ROCKSLIDE_33184, ROCKSLIDE_33185, NULL_33327, NULL_33328
 	);
 
 	static final Set<Integer> TRAP_OBSTACLE_IDS = ImmutableSet.of(
