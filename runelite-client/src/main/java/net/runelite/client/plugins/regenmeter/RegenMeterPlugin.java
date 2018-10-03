@@ -32,9 +32,11 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.InventoryID;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
@@ -42,11 +44,12 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.Graceful;
 
 @PluginDescriptor(
 	name = "Regeneration Meter",
 	description = "Track and show the hitpoints and special attack regeneration timers",
-	tags = {"combat", "health", "hitpoints", "special", "attack", "overlay"}
+	tags = {"combat", "health", "hitpoints", "special", "attack", "overlay", "run", "energy"}
 )
 public class RegenMeterPlugin extends Plugin
 {
@@ -71,9 +74,20 @@ public class RegenMeterPlugin extends Plugin
 	@Getter
 	private double specialPercentage;
 
+	@Getter
+	private double runPercentage;
+
 	private int ticksSinceSpecRegen;
 	private int ticksSinceHPRegen;
+
+	@Getter
+	private double ticksSinceRunRegen;
+
 	private boolean wasRapidHeal;
+	private int lastEnergy = 0;
+
+	private WorldPoint currPoint;
+	private WorldPoint lastPoint = new WorldPoint(0, 0, 0);
 
 	@Provides
 	RegenMeterConfig provideConfig(ConfigManager configManager)
@@ -100,6 +114,7 @@ public class RegenMeterPlugin extends Plugin
 		{
 			ticksSinceHPRegen = -2; // For some reason this makes this accurate
 			ticksSinceSpecRegen = 0;
+			ticksSinceRunRegen = -1;
 		}
 	}
 
@@ -135,6 +150,34 @@ public class RegenMeterPlugin extends Plugin
 			ticksPerHPRegen /= 2;
 		}
 
+		int currEnergy = client.getEnergy();
+		currPoint = client.getLocalPlayer().getWorldLocation();
+
+		if (currEnergy == 100 || currPoint.distanceTo(lastPoint) > 1 || currEnergy < lastEnergy)
+		{
+			ticksSinceRunRegen = 0;
+		}
+		else if (currEnergy > lastEnergy)
+		{
+			if (runPercentage < 1)
+			{
+				ticksSinceRunRegen = (1 - runPercentage) / runRegenPerTick();
+				ticksSinceRunRegen = ticksSinceRunRegen > 1 ? 1 : ticksSinceRunRegen;
+			}
+			else
+			{
+				ticksSinceRunRegen = (runPercentage - 1) / runRegenPerTick();
+			}
+		}
+		else
+		{
+			ticksSinceRunRegen += 1;
+		}
+
+		runPercentage = ticksSinceRunRegen * runRegenPerTick();
+		lastPoint = currPoint;
+		lastEnergy = currEnergy;
+
 		ticksSinceHPRegen = (ticksSinceHPRegen + 1) % ticksPerHPRegen;
 		hitpointsPercentage = ticksSinceHPRegen / (double) ticksPerHPRegen;
 
@@ -149,5 +192,15 @@ public class RegenMeterPlugin extends Plugin
 			// Show it going down
 			hitpointsPercentage = 1 - hitpointsPercentage;
 		}
+	}
+
+	private double runRegenPerTick()
+	{
+		if (Graceful.hasFullSet(client.getItemContainer(InventoryID.EQUIPMENT)))
+		{
+			return 1.3 * (client.getBoostedSkillLevel(Skill.AGILITY) / 6d + 8) / 100;
+		}
+
+		return (client.getBoostedSkillLevel(Skill.AGILITY) / 6d + 8) / 100;
 	}
 }
