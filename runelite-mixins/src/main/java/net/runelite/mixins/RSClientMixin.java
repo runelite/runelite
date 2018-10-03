@@ -1137,7 +1137,7 @@ public abstract class RSClientMixin implements RSClient
 	@Inject
 	public static void onUsernameChanged(int idx)
 	{
-		client.getCallbacks().post(new UsernameChanged());
+		client.getCallbacks().post(new UsernameChanged(client.getUsername()));
 	}
 
 	@Override

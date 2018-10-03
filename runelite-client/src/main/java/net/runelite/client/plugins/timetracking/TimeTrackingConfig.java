@@ -28,7 +28,10 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("timetracking")
+@ConfigGroup(
+	value = "timetracking",
+	accountSpecific = true
+)
 public interface TimeTrackingConfig extends Config
 {
 	String CONFIG_GROUP = "timetracking";

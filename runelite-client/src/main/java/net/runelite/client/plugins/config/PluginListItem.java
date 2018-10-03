@@ -56,6 +56,7 @@ class PluginListItem extends JPanel
 	private static final ImageIcon OFF_SWITCHER;
 	private static final ImageIcon ON_STAR;
 	private static final ImageIcon OFF_STAR;
+	private static final ImageIcon USER;
 
 	private final ConfigPanel configPanel;
 
@@ -103,6 +104,7 @@ class PluginListItem extends JPanel
 			0.77f
 		);
 		OFF_STAR = new ImageIcon(offStar);
+		USER = new ImageIcon(ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "user.png"));
 	}
 
 	/**
@@ -161,15 +163,20 @@ class PluginListItem extends JPanel
 		});
 
 		final JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new GridLayout(1, 2));
+		buttonPanel.setLayout(new GridLayout(1, 3));
 		add(buttonPanel, BorderLayout.LINE_END);
+
+		final IconButton accountButton = new IconButton(USER);
+		accountButton.setPreferredSize(new Dimension(25, 0));
+		accountButton.setVisible(false);
+		buttonPanel.add(accountButton);
 
 		configButton.setPreferredSize(new Dimension(25, 0));
 		configButton.setVisible(false);
 		buttonPanel.add(configButton);
 
 		// add a listener to configButton only if there are config items to show
-		if (config != null && !configDescriptor.getItems().stream().allMatch(item -> item.getItem().hidden()))
+		if (config != null && configDescriptor != null && !configDescriptor.getItems().stream().allMatch(item -> item.getItem().hidden()))
 		{
 			configButton.addActionListener(e ->
 			{
@@ -179,6 +186,12 @@ class PluginListItem extends JPanel
 
 			configButton.setVisible(true);
 			configButton.setToolTipText("Edit plugin configuration");
+
+			if (configDescriptor.getGroup().accountSpecific())
+			{
+				accountButton.setVisible(true);
+				accountButton.setToolTipText("This plugin configuration is RuneScape account specific");
+			}
 		}
 
 		toggleButton.setPreferredSize(new Dimension(25, 0));

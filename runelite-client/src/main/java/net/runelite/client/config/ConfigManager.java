@@ -27,6 +27,7 @@ package net.runelite.client.config;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -40,6 +41,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -47,11 +49,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.UsernameChanged;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
 import net.runelite.http.api.config.ConfigClient;
@@ -63,23 +67,29 @@ import net.runelite.http.api.config.Configuration;
 public class ConfigManager
 {
 	private static final String SETTINGS_FILE_NAME = "settings.properties";
-
-	@Inject
-	EventBus eventBus;
-
-	@Inject
-	ScheduledExecutorService executor;
+	private final EventBus eventBus;
+	private final ScheduledExecutorService executor;
+	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
+	private final Properties properties = new Properties();
+	private final List<String> accountSpecificGroups = new ArrayList<>();
 
 	private AccountSession session;
 	private ConfigClient client;
 	private File propertiesFile;
+	private String username;
 
-	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
-	private final Properties properties = new Properties();
-
-	public ConfigManager()
+	@Inject
+	private ConfigManager(final EventBus eventBus, final ScheduledExecutorService executor)
 	{
-		this.propertiesFile = getPropertiesFile();
+		this.eventBus = eventBus;
+		this.executor = executor;
+	}
+
+	@Subscribe
+	public void onUsernameChanged(final UsernameChanged event)
+	{
+		this.username = event.getUsername();
+		postConfigEvents(true); // post updates about config if any
 	}
 
 	public final void switchSession(AccountSession session)
@@ -94,8 +104,6 @@ public class ConfigManager
 			this.session = session;
 			this.client = new ConfigClient(session.getUuid());
 		}
-
-		this.propertiesFile = getPropertiesFile();
 
 		load(); // load profile specific config
 	}
@@ -114,8 +122,59 @@ public class ConfigManager
 		}
 	}
 
+	private void postConfigEvents(boolean usernameOnly)
+	{
+		try
+		{
+			Map<String, String> copy = (Map) ImmutableMap.copyOf(properties);
+			copy.forEach((groupAndKey, value) ->
+			{
+				final String[] split = groupAndKey.split("\\.", 2);
+				if (split.length != 2)
+				{
+					log.debug("Properties key malformed!: {}", groupAndKey);
+					return;
+				}
+
+				final String groupName = split[0];
+				String key = split[1];
+				boolean isUsername = false;
+
+				// Do not propagate events for incorrect username
+				if (!Strings.isNullOrEmpty(username) && accountSpecificGroups.contains(groupName))
+				{
+					final String[] keySplit = key.split("^" + Pattern.quote(username) + "\\.", 2);
+					if (keySplit.length == 2)
+					{
+						key = keySplit[1];
+						isUsername = true;
+					}
+				}
+
+				if (usernameOnly && !isUsername)
+				{
+					return;
+				}
+
+				final ConfigChanged configChanged = new ConfigChanged();
+				configChanged.setGroup(groupName);
+				configChanged.setKey(key);
+				configChanged.setOldValue(null);
+				configChanged.setNewValue(value);
+				log.debug("Posting config change event {}", configChanged);
+				eventBus.post(configChanged);
+			});
+		}
+		catch (Exception ex)
+		{
+			log.warn("Error posting config events", ex);
+		}
+	}
+
 	public void load()
 	{
+		propertiesFile = getPropertiesFile();
+
 		if (client == null)
 		{
 			loadFromFile();
@@ -147,24 +206,14 @@ public class ConfigManager
 		for (ConfigEntry entry : configuration.getConfig())
 		{
 			log.debug("Loading configuration value from client {}: {}", entry.getKey(), entry.getValue());
-			final String[] split = entry.getKey().split("\\.");
-			final String groupName = split[0];
-			final String key = split[1];
-			final String value = entry.getValue();
-			final String oldValue = (String) properties.setProperty(entry.getKey(), value);
-
-			ConfigChanged configChanged = new ConfigChanged();
-			configChanged.setGroup(groupName);
-			configChanged.setKey(key);
-			configChanged.setOldValue(oldValue);
-			configChanged.setNewValue(value);
-			eventBus.post(configChanged);
+			properties.setProperty(entry.getKey(), entry.getValue());
 		}
+
+		postConfigEvents(false);
 
 		try
 		{
 			saveToFile();
-
 			log.debug("Updated configuration on disk with the latest version");
 		}
 		catch (IOException ex)
@@ -184,39 +233,15 @@ public class ConfigManager
 		catch (FileNotFoundException ex)
 		{
 			log.debug("Unable to load settings - no such file");
+			return;
 		}
 		catch (IllegalArgumentException | IOException ex)
 		{
 			log.warn("Unable to load settings", ex);
+			return;
 		}
 
-		try
-		{
-			Map<String, String> copy = (Map) ImmutableMap.copyOf(properties);
-			copy.forEach((groupAndKey, value) ->
-			{
-				final String[] split = groupAndKey.split("\\.", 2);
-				if (split.length != 2)
-				{
-					log.debug("Properties key malformed!: {}", groupAndKey);
-					return;
-				}
-
-				final String groupName = split[0];
-				final String key = split[1];
-
-				ConfigChanged configChanged = new ConfigChanged();
-				configChanged.setGroup(groupName);
-				configChanged.setKey(key);
-				configChanged.setOldValue(null);
-				configChanged.setNewValue(value);
-				eventBus.post(configChanged);
-			});
-		}
-		catch (Exception ex)
-		{
-			log.warn("Error posting config events", ex);
-		}
+		postConfigEvents(false);
 	}
 
 	private synchronized void saveToFile() throws IOException
@@ -244,9 +269,22 @@ public class ConfigManager
 		return t;
 	}
 
+	private String getConfigGroup(final String group)
+	{
+		if (!Strings.isNullOrEmpty(username) && accountSpecificGroups.contains(group))
+		{
+			return group + "." + username;
+		}
+
+		return group;
+	}
+
 	public String getConfiguration(String groupName, String key)
 	{
-		return properties.getProperty(groupName + "." + key);
+		final String origGroupName = groupName;
+		groupName = getConfigGroup(groupName);
+		final String value = properties.getProperty(groupName + "." + key);
+		return Strings.isNullOrEmpty(value) ? properties.getProperty(origGroupName + "." + key) : value;
 	}
 
 	public <T> T getConfiguration(String groupName, String key, Class<T> clazz)
@@ -268,6 +306,8 @@ public class ConfigManager
 
 	public void setConfiguration(String groupName, String key, String value)
 	{
+		final String origGroupName = groupName;
+		groupName = getConfigGroup(groupName);
 		log.debug("Setting configuration value for {}.{} to {}", groupName, key, value);
 
 		String oldValue = (String) properties.setProperty(groupName + "." + key, value);
@@ -291,7 +331,7 @@ public class ConfigManager
 		executor.execute(task);
 
 		ConfigChanged configChanged = new ConfigChanged();
-		configChanged.setGroup(groupName);
+		configChanged.setGroup(origGroupName);
 		configChanged.setKey(key);
 		configChanged.setOldValue(oldValue);
 		configChanged.setNewValue(value);
@@ -306,6 +346,8 @@ public class ConfigManager
 
 	public void unsetConfiguration(String groupName, String key)
 	{
+		final String origGroupName = groupName;
+		groupName = getConfigGroup(groupName);
 		log.debug("Unsetting configuration value for {}.{}", groupName, key);
 
 		String oldValue = (String) properties.remove(groupName + "." + key);
@@ -329,7 +371,7 @@ public class ConfigManager
 		executor.execute(task);
 
 		ConfigChanged configChanged = new ConfigChanged();
-		configChanged.setGroup(groupName);
+		configChanged.setGroup(origGroupName);
 		configChanged.setKey(key);
 		configChanged.setOldValue(oldValue);
 
@@ -370,6 +412,11 @@ public class ConfigManager
 		if (group == null)
 		{
 			return;
+		}
+
+		if (group.accountSpecific())
+		{
+			accountSpecificGroups.add(group.value());
 		}
 
 		for (Method method : clazz.getDeclaredMethods())
