@@ -53,10 +53,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class SlayerPluginTest
 {
+	private static final String TASK_GEM_PROGRESS = "You're assigned to kill Dust Devils; only 317 more to go.";
+	private static final String TASK_GEM_PROGRESS_WILDERNESS = "You're assigned to kill Dust Devils in the Wilderness; only 222 more to go.";
+	private static final String TASK_NEW_FROM_PARTNER = "You have received a new Slayer assignment from breaklulz: Dust Devils (377)";
+
 	private static final String TASK_NEW = "Your new task is to kill 231 Suqahs.";
 	private static final String TASK_NEW_NPC_CONTACT = "Excellent, you're doing great. Your new task is to kill<br>211 Suqahs.";
-	private static final String TASK_CHECKSLAYERGEM_WILDERNESS = "You're assigned to kill Suqahs in the Wilderness; only 211 more to go.";
-	private static final String TASK_CHECKSLAYERGEM = "You're assigned to kill Suqahs; only 211 more to go.";
 
 	private static final String TASK_BOSS_NEW = "Excellent. You're now assigned to kill Vet'ion 3 times.<br>Your reward point tally is 914.";
 
@@ -130,6 +132,36 @@ public class SlayerPluginTest
 	}
 
 	@Test
+	public void testGemProgress()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Perterter", TASK_GEM_PROGRESS, null);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals("Dust Devils", slayerPlugin.getTaskName());
+		assertEquals(317, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testGemWilderness()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Perterter", TASK_GEM_PROGRESS_WILDERNESS, null);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals("Dust Devils", slayerPlugin.getTaskName());
+		assertEquals(222, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testPartnerNewTask()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Perterter", TASK_NEW_FROM_PARTNER, null);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals("Dust Devils", slayerPlugin.getTaskName());
+		assertEquals(377, slayerPlugin.getAmount());
+	}
+
+	@Test
 	public void testNewTask()
 	{
 		Widget npcDialog = mock(Widget.class);
@@ -164,24 +196,6 @@ public class SlayerPluginTest
 		assertEquals("Vet'ion", slayerPlugin.getTaskName());
 		assertEquals(3, slayerPlugin.getAmount());
 		assertEquals(914, slayerPlugin.getPoints());
-	}
-
-	@Test
-	public void testCheckSlayerGem()
-	{
-		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", TASK_CHECKSLAYERGEM, null);
-		slayerPlugin.onChatMessage(chatMessageEvent);
-		assertEquals("Suqahs", slayerPlugin.getTaskName());
-		assertEquals(211, slayerPlugin.getAmount());
-	}
-
-	@Test
-	public void testCheckSlayerGemWildernessTask()
-	{
-		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", TASK_CHECKSLAYERGEM_WILDERNESS, null);
-		slayerPlugin.onChatMessage(chatMessageEvent);
-		assertEquals("Suqahs", slayerPlugin.getTaskName());
-		assertEquals(211, slayerPlugin.getAmount());
 	}
 
 	@Test
