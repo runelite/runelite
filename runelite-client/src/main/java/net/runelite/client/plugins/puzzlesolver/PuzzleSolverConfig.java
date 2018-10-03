@@ -33,11 +33,21 @@ import net.runelite.client.config.ConfigItem;
 public interface PuzzleSolverConfig extends Config
 {
 	@ConfigItem(
-		keyName = "displaySolution",
-		name = "Display solution",
-		description = "Display a solution to the puzzle"
+		keyName = "displayLightBoxSolution",
+		name = "Display light box solution",
+		description = "Display a solution to the light box"
 	)
-	default boolean displaySolution()
+	default boolean displayLightBoxSolution()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "displaySliderSolution",
+		name = "Display slider puzzle solution",
+		description = "Display a solution to the slider puzzle"
+	)
+	default boolean displaySliderSolution()
 	{
 		return true;
 	}
