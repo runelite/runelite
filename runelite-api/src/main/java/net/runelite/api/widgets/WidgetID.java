@@ -266,6 +266,7 @@ public class WidgetID
 	static class Cluescroll
 	{
 		static final int CLUE_TEXT = 2;
+		static final int CLUE_SCROLL_ITEM_CONTAINER = 3;
 	}
 
 	static class Minimap
