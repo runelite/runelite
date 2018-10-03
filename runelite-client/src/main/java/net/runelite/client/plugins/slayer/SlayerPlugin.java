@@ -418,13 +418,13 @@ public class SlayerPlugin extends Plugin
 		}
 
 		Matcher mProgress = CHAT_GEM_PROGRESS_MESSAGE.matcher(chatMsg);
-
 		if (!mProgress.find())
 		{
 			return;
 		}
 		String taskName = mProgress.group(1);
 		int amount = Integer.parseInt(mProgress.group(2));
+
 		setTask(taskName, amount);
 	}
 
