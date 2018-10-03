@@ -114,4 +114,6 @@ LABEL85:
 LABEL88:
    iload                  1
    invoke                 387
+   sconst                 "wildernessWidgetTextSet"  ; set callback name
+   runelite_callback                                 ; invoke callback
    return                
