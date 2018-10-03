@@ -159,7 +159,7 @@ public class CombatLevelPluginTest
 	}
 
 	@Test
-	public void testAuthorPlayer()
+	public void testPlayerBmid()
 	{
 		// snapshot of current stats 2018-10-2
 		when(player.getCombatLevel()).thenReturn(83);
@@ -196,7 +196,7 @@ public class CombatLevelPluginTest
 	}
 
 	@Test
-	public void testRunelitePlayer()
+	public void testPlayerRunelite()
 	{
 		// snapshot of current stats 2018-10-2
 		when(player.getCombatLevel()).thenReturn(43);
@@ -230,5 +230,35 @@ public class CombatLevelPluginTest
 		// test magic
 		assertEquals(1, calcLevelsRM(client.getRealSkillLevel(Skill.MAGIC),
 			player.getCombatLevel() + 1, baseValues.get("base")));
+	}
+
+	@Test
+	public void testPlayerZezima()
+	{
+		// snapshot of current stats 2018-10-3
+		// Zezima cannot earn a combat level from ranged/magic anymore, so it won't show as th result is too high
+		when(player.getCombatLevel()).thenReturn(90);
+		when(client.getRealSkillLevel(Skill.ATTACK)).thenReturn(74);
+		when(client.getRealSkillLevel(Skill.STRENGTH)).thenReturn(74);
+		when(client.getRealSkillLevel(Skill.DEFENCE)).thenReturn(72);
+		when(client.getRealSkillLevel(Skill.PRAYER)).thenReturn(52);
+		when(client.getRealSkillLevel(Skill.RANGED)).thenReturn(44);
+		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(60);
+		when(client.getRealSkillLevel(Skill.HITPOINTS)).thenReturn(72);
+
+		HashMap<String, Double> baseValues = getBaseValues();
+
+		// test attack/strength
+		assertEquals(2, calcLevels(baseValues.get("base") + baseValues.get("melee"),
+			player.getCombatLevel() + 1, ATT_STR_MULT));
+
+		// test defence/hitpoints
+		assertEquals(2, calcLevels(baseValues.get("base") + baseValues.get("max"),
+			player.getCombatLevel() + 1, DEF_HP_MULT));
+
+		// test prayer
+		int prayNeed = calcLevels(baseValues.get("base") + baseValues.get("max"),
+			player.getCombatLevel() + 1, PRAY_MULT);
+		assertEquals(4, correctPrayer(client.getRealSkillLevel(Skill.PRAYER), prayNeed));
 	}
 }
