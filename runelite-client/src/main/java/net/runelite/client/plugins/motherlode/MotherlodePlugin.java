@@ -169,10 +169,13 @@ public class MotherlodePlugin extends Plugin
 
 		Widget sack = client.getWidget(WidgetInfo.MOTHERLODE_MINE);
 
-		if (sack != null && sack.isHidden())
+		clientThread.invokeLater(() ->
 		{
-			sack.setHidden(false);
-		}
+			if (sack != null && sack.isHidden())
+			{
+				sack.setHidden(false);
+			}
+		});
 	}
 
 	public MotherlodeSession getSession()
