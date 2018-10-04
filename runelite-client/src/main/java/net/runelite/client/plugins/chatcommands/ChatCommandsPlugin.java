@@ -192,7 +192,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		}
 
 		String message = setMessage.getValue();
-		String[] splitMessage = message.split(" ",2);
+		String[] splitMessage = message.split(" ", 2);
 		String command = splitMessage[0].toLowerCase();
 		MessageNode messageNode = setMessage.getMessageNode();
 
