@@ -325,12 +325,6 @@ public class ClueScrollPlugin extends Plugin
 							objectsToMark = Arrays.stream(tile.getGameObjects())
 								.filter(object -> object != null && ArrayUtils.contains(objectIds, object.getId()))
 								.toArray(GameObject[]::new);
-
-							// Set hint arrow to first object found as there can only be 1 hint arrow
-							if (config.displayHintArrows() && objectsToMark.length >= 1)
-							{
-								client.setHintArrow(objectsToMark[0].getWorldLocation());
-							}
 						}
 					}
 				}
