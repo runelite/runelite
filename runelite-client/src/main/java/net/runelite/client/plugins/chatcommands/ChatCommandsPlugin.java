@@ -339,7 +339,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		}
 
 		int idx = value.indexOf(' ');
-		final String boss = longBossName(value.substring(idx + 1));
+		final String boss = BossAbbreviations.getFullName(value.substring(idx + 1));
 
 		final int kc = getKc(boss);
 		if (kc <= 0)
@@ -378,7 +378,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		}
 
 		int idx = message.indexOf(' ');
-		final String boss = longBossName(message.substring(idx + 1));
+		final String boss = BossAbbreviations.getFullName(message.substring(idx + 1));
 
 		final int kc = getKc(boss);
 		if (kc <= 0)
@@ -419,7 +419,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			player = sanitize(setMessage.getName());
 		}
 
-		search = longBossName(search);
+		search = BossAbbreviations.getFullName(search);
 
 		final int kc;
 		try
@@ -863,112 +863,4 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		private final HiscoreEndpoint endpoint;
 	}
 
-	private static String longBossName(String boss)
-	{
-		switch (boss.toLowerCase())
-		{
-			case "corp":
-				return "Corporeal Beast";
-
-			case "jad":
-				return "TzTok-Jad";
-
-			case "kq":
-				return "Kalphite Queen";
-
-			case "chaos ele":
-				return "Chaos Elemental";
-
-			case "dusk":
-			case "dawn":
-			case "gargs":
-				return "Grotesque Guardians";
-
-			case "crazy arch":
-				return "Crazy Archaeologist";
-
-			case "deranged arch":
-				return "Deranged Archaeologist";
-
-			case "mole":
-				return "Giant Mole";
-
-			case "vetion":
-				return "Vet'ion";
-
-			case "vene":
-				return "Venenatis";
-
-			case "kbd":
-				return "King Black Dragon";
-
-			case "vork":
-				return "Vorkath";
-
-			case "sire":
-				return "Abyssal Sire";
-
-			case "smoke devil":
-			case "thermy":
-				return "Thermonuclear Smoke Devil";
-
-			case "cerb":
-				return "Cerberus";
-
-			case "zuk":
-			case "inferno":
-				return "TzKal-Zuk";
-
-			// gwd
-			case "sara":
-			case "saradomin":
-			case "zilyana":
-			case "zily":
-				return "Commander Zilyana";
-			case "zammy":
-			case "zamorak":
-			case "kril":
-			case "kril trutsaroth":
-				return "K'ril Tsutsaroth";
-			case "arma":
-			case "kree":
-			case "kreearra":
-			case "armadyl":
-				return "Kree'arra";
-			case "bando":
-			case "bandos":
-			case "graardor":
-				return "General Graardor";
-
-			// dks
-			case "supreme":
-				return "Dagannoth Supreme";
-			case "rex":
-				return "Dagannoth Rex";
-			case "prime":
-				return "Dagannoth Prime";
-
-			case "wt":
-				return "Wintertodt";
-			case "barrows":
-				return "Barrows Chests";
-
-			case "cox":
-			case "xeric":
-			case "chambers":
-			case "olm":
-			case "raids":
-				return "Chambers of Xeric";
-
-			case "tob":
-			case "theatre":
-			case "verzik":
-			case "verzik vitur":
-			case "raids 2":
-				return "Theatre of Blood";
-
-			default:
-				return boss;
-		}
-	}
 }
