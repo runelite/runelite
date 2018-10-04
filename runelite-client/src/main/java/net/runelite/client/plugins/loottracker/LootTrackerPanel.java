@@ -455,7 +455,8 @@ class LootTrackerPanel extends PluginPanel
 	{
 		final long overallGp = boxes.stream().mapToLong(LootTrackerBox::getTotalPrice).sum();
 		final int overallKills = boxes.stream().mapToInt(LootTrackerBox::getTotalKills).sum();
-		overallKillsLabel.setText(htmlLabel("Total count: ", overallKills));
+		final int overallIgnoredKills = boxes.stream().mapToInt(LootTrackerBox::getIgnoredRecords).sum();
+		overallKillsLabel.setText(htmlLabel("Total count: ", overallKills - overallIgnoredKills));
 		overallGpLabel.setText(htmlLabel("Total value: ", overallGp));
 	}
 
