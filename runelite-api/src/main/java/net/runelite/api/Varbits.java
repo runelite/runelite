@@ -50,14 +50,6 @@ public enum Varbits
 	CHAT_SCROLLBAR_ON_LEFT(6374),
 
 	/**
-	 * Runecraft pouches
-	 */
-	POUCH_SMALL(603),
-	POUCH_MEDIUM(604),
-	POUCH_LARGE(605),
-	POUCH_GIANT(606),
-
-	/**
 	 * Runepouch
 	 */
 	RUNE_POUCH_RUNE1(29),
