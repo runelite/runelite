@@ -65,6 +65,8 @@ class LootTrackerBox extends JPanel
 
 	@Getter
 	private long totalPrice;
+	@Getter
+	private int ignoredRecords;
 	private boolean showIgnoredItems;
 	private BiConsumer<String, Boolean> onItemToggle;
 
@@ -169,10 +171,29 @@ class LootTrackerBox extends JPanel
 		final List<LootTrackerItem> allItems = new ArrayList<>();
 		final List<LootTrackerItem> items = new ArrayList<>();
 		totalPrice = 0;
+		ignoredRecords = 0;
 
-		for (LootTrackerRecord records : records)
+		for (LootTrackerRecord record : records)
 		{
-			allItems.addAll(Arrays.asList(records.getItems()));
+			allItems.addAll(Arrays.asList(record.getItems()));
+
+			/* If all the items in this record are ignored */
+			if (!showIgnoredItems && Arrays.stream(record.getItems()).allMatch(i -> i.isIgnored()))
+			{
+				ignoredRecords++;
+			}
+		}
+
+		if (!showIgnoredItems)
+		{
+			/* If all the items in this box are ignored */
+			boolean hideBox = allItems.stream().allMatch(i -> i.isIgnored());
+			setVisible(!hideBox);
+
+			if (hideBox)
+			{
+				return;
+			}
 		}
 
 		for (final LootTrackerItem entry : allItems)
