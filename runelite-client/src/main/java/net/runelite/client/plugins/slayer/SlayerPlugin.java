@@ -578,6 +578,9 @@ public class SlayerPlugin extends Plugin
 		}
 
 		int actionsPerHour = xpTrackerService.getActionsHr(SLAYER);
+
+		log.debug("actionsPerHour=" + actionsPerHour);
+
 		float actionsPerSecond = actionsPerHour / (60f * 60);
 		int taskRemainingSeconds = (int) Math.ceil(amount / actionsPerSecond);
 		int taskRemainingMinutes = taskRemainingSeconds / 60;
@@ -591,13 +594,16 @@ public class SlayerPlugin extends Plugin
 		}
 
 		BufferedImage taskImg = itemManager.getImage(itemSpriteId);
-		final String taskTooltip = ColorUtil.prependColorTag("%s</br>", new Color(255, 119, 0))
+		String taskTooltip = ColorUtil.prependColorTag("%s</br>", new Color(255, 119, 0))
 			+ ColorUtil.wrapWithColorTag("Pts:", Color.YELLOW)
 			+ " %s</br>"
 			+ ColorUtil.wrapWithColorTag("Streak:", Color.YELLOW)
-			+ " %s"
-			+ ColorUtil.wrapWithColorTag("TTC:", Color.YELLOW)
 			+ " %s";
+
+		if (actionsPerHour > 0) {
+			taskTooltip = taskTooltip + "</br>" + ColorUtil.wrapWithColorTag("TTC:", Color.YELLOW) + " %s";
+		}
+
 		counter = new TaskCounter(taskImg, this, amount);
 		counter.setTooltip(String.format(taskTooltip,
 				capsString(taskName),
