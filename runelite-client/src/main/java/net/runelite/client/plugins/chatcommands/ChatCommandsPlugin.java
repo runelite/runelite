@@ -219,11 +219,11 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 				log.debug("Running killcount lookup for {}", search);
 				executor.submit(() -> killCountLookup(setMessage.getType(), setMessage, search));
 			}
-            else if (config.lvl() && LEVEL_COMMAND_SET.contains(command))
-            {
-                log.debug("Running level lookup for {}", search);
-                executor.submit(() -> playerSkillLookup(setMessage, search));
-            }
+			else if (config.lvl() && LEVEL_COMMAND_SET.contains(command))
+			{
+				log.debug("Running level lookup for {}", search);
+				executor.submit(() -> playerSkillLookup(setMessage, search));
+			}
 		}
 		else
 		{
