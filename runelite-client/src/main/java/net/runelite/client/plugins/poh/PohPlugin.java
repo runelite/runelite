@@ -232,18 +232,23 @@ public class PohPlugin extends Plugin
 		//Get actor who is doing light_burner anim
 		if (actor.getAnimation() == AnimationID.INCENSE_BURNER)
 		{
-			//Code for implementing fm level scales
-			try
+			if (actor == client.getLocalPlayer())
+			{
+				int level = client.getRealSkillLevel(net.runelite.api.Skill.FIREMAKING);
+				countdownTimer = (200 + level) * ESTIMATED_TICK_LENGTH;
+				randomTimer = level * ESTIMATED_TICK_LENGTH;
+			}
+			else try
 			{
 				//On initial lookup client will freeze for ~1 tick to generate HiscoreKey,
 				//after that the hiscore lookup is mapped to a HiscoreKey (see HiscoreManager.java)
 				HiscoreResult playerStats = hiscoreManager.lookup(actorName, HiscoreEndpoint.NORMAL);
 				Skill fm = playerStats.getFiremaking();
-				int fmLevel = fm.getLevel();
-				log.debug("Succesfully looked up '{}' with firemaking level '{}'", actorName, fmLevel);
+				int level = fm.getLevel();
+				log.debug("Succesfully looked up '{}' with firemaking level '{}'", actorName, level);
 				//Burn time is : 200 + Fm level + (random number between 0 and Fm level) game ticks
-				countdownTimer = (200 + fmLevel) * ESTIMATED_TICK_LENGTH;
-				randomTimer = fmLevel * ESTIMATED_TICK_LENGTH;
+				countdownTimer = (200 + level) * ESTIMATED_TICK_LENGTH;
+				randomTimer = level * ESTIMATED_TICK_LENGTH;
 			}
 			catch (IOException ex)
 			{
