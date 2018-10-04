@@ -603,10 +603,10 @@ public class SlayerPlugin extends Plugin
 		}
 
 		counter.setTooltip(String.format(taskTooltip,
-				capsString(taskName),
-				points,
-				streak,
-				String.format("%02d:%02d", taskRemainingHours, taskRemainingMinutes % 60)));
+			capsString(taskName),
+			points,
+			streak,
+			String.format("%02d:%02d", taskRemainingHours, taskRemainingMinutes % 60)));
 	}
 
 	private void removeCounter()
