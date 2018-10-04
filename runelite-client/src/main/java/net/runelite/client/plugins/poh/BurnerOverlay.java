@@ -89,13 +89,12 @@ public class BurnerOverlay extends Overlay
 					else
 					{
 						pieComponent.setProgress(randomSec / plugin.getRandomTimer());
-					}
 
-					if (randomSec > 0)
-					{
-						renderPie(graphics, Color.ORANGE, Color.ORANGE, pieComponent);
+						if (randomSec > 0)
+						{
+							renderPie(graphics, Color.ORANGE, Color.ORANGE, pieComponent);
+						}
 					}
-
 				}
 
 				/*
