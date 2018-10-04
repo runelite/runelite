@@ -863,4 +863,8 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		private final HiscoreEndpoint endpoint;
 	}
 
+	private static String longBossName(String boss)
+	{
+		return BossAbbreviations.getFullName(boss);
+	}
 }
