@@ -48,19 +48,14 @@ class UICalculatorInputArea extends JPanel
 
 	UICalculatorInputArea()
 	{
-		setLayout(new BorderLayout(0, 7));
-
-		JPanel inputPanel = new JPanel(new GridLayout(2, 2, 7, 7));
-		uiFieldCurrentLevel = addComponent(inputPanel, "Current Level");
-		uiFieldCurrentXP = addComponent(inputPanel, "Current Experience");
-		uiFieldTargetLevel = addComponent(inputPanel, "Target Level");
-		uiFieldTargetXP = addComponent(inputPanel, "Target Experience");
-		add(inputPanel, BorderLayout.CENTER);
-
-		JPanel infoPanel = new JPanel(new BorderLayout());
-		uiFieldRemainingXP = addComponent(infoPanel, "Remaining Experience");
+		setLayout(new GridLayout(3, 2, 7, 7));
+		uiFieldCurrentLevel = addComponent("Current Level");
+		uiFieldCurrentXP = addComponent("Current Experience");
+		uiFieldTargetLevel = addComponent("Target Level");
+		uiFieldTargetXP = addComponent("Target Experience");
+		add(new JLabel(""));
+		uiFieldRemainingXP = addComponent("Experience Left");
 		uiFieldRemainingXP.setEditable(false);
-		add(infoPanel, BorderLayout.SOUTH);
 	}
 
 	int getCurrentLevelInput()
@@ -125,7 +120,7 @@ class UICalculatorInputArea extends JPanel
 		field.setText(String.valueOf(value));
 	}
 
-	private JTextField addComponent(JPanel target, String label)
+	private JTextField addComponent(String label)
 	{
 		final JPanel container = new JPanel();
 		container.setLayout(new BorderLayout());
@@ -144,7 +139,7 @@ class UICalculatorInputArea extends JPanel
 		container.add(uiLabel, BorderLayout.NORTH);
 		container.add(uiInput, BorderLayout.CENTER);
 
-		target.add(container);
+		add(container);
 
 		return uiInput.getTextField();
 	}
