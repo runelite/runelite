@@ -63,7 +63,10 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
+import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ColorUtil;
@@ -74,6 +77,7 @@ import net.runelite.client.util.Text;
 	description = "Show additional slayer task related information",
 	tags = {"combat", "notifications", "overlay", "tasks"}
 )
+@PluginDependency(XpTrackerPlugin.class)
 @Slf4j
 public class SlayerPlugin extends Plugin
 {
@@ -133,6 +137,9 @@ public class SlayerPlugin extends Plugin
 
 	@Inject
 	private TargetMinimapOverlay targetMinimapOverlay;
+
+	@Inject
+	private XpTrackerService xpTrackerService;
 
 	@Getter(AccessLevel.PACKAGE)
 	private List<NPC> highlightedTargets = new ArrayList<>();
@@ -570,6 +577,12 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
+		int actionsPerHour = xpTrackerService.getActionsHr(SLAYER);
+		float actionsPerSecond = actionsPerHour / (60f * 60);
+		float taskRemainingSeconds = amount / actionsPerSecond;
+		int taskRemainingMinutes = (int) taskRemainingSeconds / 60;
+		int taskRemainingHours = taskRemainingMinutes / 60;
+
 		Task task = Task.getTask(taskName);
 		int itemSpriteId = ItemID.ENCHANTED_GEM;
 		if (task != null)
@@ -582,9 +595,15 @@ public class SlayerPlugin extends Plugin
 			+ ColorUtil.wrapWithColorTag("Pts:", Color.YELLOW)
 			+ " %s</br>"
 			+ ColorUtil.wrapWithColorTag("Streak:", Color.YELLOW)
+			+ " %s"
+			+ ColorUtil.wrapWithColorTag("TTC:", Color.YELLOW)
 			+ " %s";
 		counter = new TaskCounter(taskImg, this, amount);
-		counter.setTooltip(String.format(taskTooltip, capsString(taskName), points, streak));
+		counter.setTooltip(String.format(taskTooltip,
+				capsString(taskName),
+				points,
+				streak,
+				String.format("%02d:%02d", taskRemainingHours, taskRemainingMinutes)));
 
 		infoBoxManager.addInfoBox(counter);
 	}
