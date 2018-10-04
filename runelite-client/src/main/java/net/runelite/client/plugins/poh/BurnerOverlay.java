@@ -67,9 +67,41 @@ public class BurnerOverlay extends Overlay
 			// If planes match
 			if (tile.getPlane() == client.getPlane())
 			{
-				if (getBURNER_LIT().contains(object.getId()))
+				if (!plugin.getBURNER_LIT().contains(object.getId()))
 				{
-					if (config.showBurnerTime())
+					return;
+				}
+
+				if (config.showBurner() && plugin.getCountdownTimerMap().containsKey(tile))
+				{
+					DecimalFormat decimalFormat = new DecimalFormat("#.##");
+					double certainSec = Double.valueOf(decimalFormat.format(plugin.getCountdownTimerMap().get(tile)));
+					double randomSec = Double.valueOf(decimalFormat.format(plugin.getRandomTimerMap().get(tile)));
+					ProgressPieComponent pieComponent = new ProgressPieComponent();
+					pieComponent.setPosition(object.getCanvasLocation());
+					pieComponent.setProgress(certainSec / plugin.getCountdownTimer());
+
+					if (certainSec > 0)
+					{
+						renderPie(graphics, Color.GREEN, Color.GREEN, pieComponent);
+					}
+
+					else
+					{
+						pieComponent.setProgress(randomSec / plugin.getRandomTimer());
+					}
+
+					if (randomSec > 0)
+					{
+						renderPie(graphics, Color.ORANGE, Color.ORANGE, pieComponent);
+					}
+
+				}
+
+				/*
+				if (plugin.getBURNER_LIT().contains(object.getId()))
+				{
+					if (config.showBurner())
 					{
 						DecimalFormat df = new DecimalFormat("#.##");
 						if (plugin.getCountdownTimerMap().containsKey(tile))
@@ -97,6 +129,7 @@ public class BurnerOverlay extends Overlay
 						}
 					}
 				}
+				 */
 			}
 		});
 		return null;
