@@ -200,48 +200,47 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		// being reused
 		messageNode.setRuneLiteFormatMessage(null);
 
-		if (config.lvl() && TOTAL_LEVEL_COMMAND_SET.contains(command))
+		if (splitMessage.length == 2)
 		{
-			log.debug("Running total level lookup");
-			executor.submit(() -> playerSkillLookup(setMessage, "total"));
+			String search = splitMessage[1];
+			if (config.price() && PRICE_COMMAND_SET.contains(command))
+			{
+				log.debug("Running price lookup for {}", search);
+				executor.submit(() -> itemPriceLookup(setMessage.getMessageNode(), search));
+			}
+			else if (config.clue() && message.toLowerCase().startsWith(CLUES_COMMAND_STRING + " "))
+			{
+				log.debug("Running clue lookup for {}", search);
+				executor.submit(() -> playerClueLookup(setMessage, search));
+			}
+			else if (config.killcount() && KILLCOUNT_COMMAND_SET.contains(command))
+			{
+				log.debug("Running killcount lookup for {}", search);
+				executor.submit(() -> killCountLookup(setMessage.getType(), setMessage, search));
+			}
+            else if (config.lvl() && LEVEL_COMMAND_SET.contains(command))
+            {
+                log.debug("Running level lookup for {}", search);
+                executor.submit(() -> playerSkillLookup(setMessage, search));
+            }
 		}
-		else if (config.lvl() && CMB_COMMAND_SET.contains(command))
+		else
 		{
-			log.debug("Running combat level lookup");
-			executor.submit(() -> combatLevelLookup(setMessage.getType(), setMessage));
-		}
-		else if (config.price() && PRICE_COMMAND_SET.contains(command))
-		{
-			String search = splitMessage[1].toLowerCase();
-
-			log.debug("Running price lookup for {}", search);
-			executor.submit(() -> itemPriceLookup(setMessage.getMessageNode(), search));
-		}
-		else if (config.lvl() && LEVEL_COMMAND_SET.contains(command))
-		{
-			String search = splitMessage[1].toLowerCase();
-
-			log.debug("Running level lookup for {}", search);
-			executor.submit(() -> playerSkillLookup(setMessage, search));
-		}
-		else if (config.clue() && message.toLowerCase().equals(CLUES_COMMAND_STRING))
-		{
-			log.debug("Running lookup for overall clues");
-			executor.submit(() -> playerClueLookup(setMessage, "total"));
-		}
-		else if (config.clue() && message.toLowerCase().startsWith(CLUES_COMMAND_STRING + " "))
-		{
-			String search = splitMessage[1].toLowerCase();
-
-			log.debug("Running clue lookup for {}", search);
-			executor.submit(() -> playerClueLookup(setMessage, search));
-		}
-		else if (config.killcount() && KILLCOUNT_COMMAND_SET.contains(command))
-		{
-			String search = longBossName(splitMessage[1].toLowerCase());
-
-			log.debug("Running killcount lookup for {}", search);
-			executor.submit(() -> killCountLookup(setMessage.getType(), setMessage, search));
+			if (config.lvl() && TOTAL_LEVEL_COMMAND_SET.contains(command))
+			{
+				log.debug("Running total level lookup");
+				executor.submit(() -> playerSkillLookup(setMessage, "total"));
+			}
+			else if (config.lvl() && CMB_COMMAND_SET.contains(command))
+			{
+				log.debug("Running combat level lookup");
+				executor.submit(() -> combatLevelLookup(setMessage.getType(), setMessage));
+			}
+			else if (config.clue() && message.toLowerCase().equals(CLUES_COMMAND_STRING))
+			{
+				log.debug("Running lookup for overall clues");
+				executor.submit(() -> playerClueLookup(setMessage, "total"));
+			}
 		}
 	}
 
