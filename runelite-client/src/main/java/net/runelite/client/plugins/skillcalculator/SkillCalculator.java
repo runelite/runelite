@@ -51,6 +51,7 @@ import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
+import net.runelite.client.util.StackFormatter;
 
 class SkillCalculator extends JPanel
 {
@@ -73,6 +74,7 @@ class SkillCalculator extends JPanel
 	private int currentXP = Experience.getXpForLevel(currentLevel);
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
+	private int remainingXP = targetXP - currentXP;
 	private float xpFactor = 1.0f;
 
 	SkillCalculator(Client client, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
@@ -122,6 +124,7 @@ class SkillCalculator extends JPanel
 		currentLevel = Experience.getLevelForXp(currentXP);
 		targetLevel = enforceSkillBounds(currentLevel + 1);
 		targetXP = Experience.getXpForLevel(targetLevel);
+		remainingXP = targetXP - currentXP;
 
 		// Remove all components (action slots) from this panel.
 		removeAll();
@@ -301,13 +304,12 @@ class SkillCalculator extends JPanel
 		for (UIActionSlot slot : uiActionSlots)
 		{
 			int actionCount = 0;
-			int neededXP = targetXP - currentXP;
 			SkillDataEntry action = slot.getAction();
 			double xp = (action.isIgnoreBonus()) ? action.getXp() : action.getXp() * xpFactor;
 
-			if (neededXP > 0)
+			if (remainingXP > 0)
 			{
-				actionCount = (int) Math.ceil(neededXP / xp);
+				actionCount = (int) Math.ceil(remainingXP / xp);
 			}
 
 			slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
@@ -330,12 +332,14 @@ class SkillCalculator extends JPanel
 		{
 			targetLevel = enforceSkillBounds(currentLevel + 1);
 			targetXP = Experience.getXpForLevel(targetLevel);
+			remainingXP = targetXP - currentXP;
 		}
 
 		uiInput.setCurrentLevelInput(currentLevel);
 		uiInput.setCurrentXPInput(currentXP);
 		uiInput.setTargetLevelInput(targetLevel);
 		uiInput.setTargetXPInput(targetXP);
+		uiInput.setRemainingXPInput(StackFormatter.formatNumber(remainingXP));
 		calculate();
 	}
 
@@ -349,6 +353,7 @@ class SkillCalculator extends JPanel
 	{
 		currentLevel = enforceSkillBounds(uiInput.getCurrentLevelInput());
 		currentXP = Experience.getXpForLevel(currentLevel);
+		remainingXP = targetXP - currentXP;
 		updateInputFields();
 	}
 
@@ -356,6 +361,7 @@ class SkillCalculator extends JPanel
 	{
 		currentXP = enforceXPBounds(uiInput.getCurrentXPInput());
 		currentLevel = Experience.getLevelForXp(currentXP);
+		remainingXP = targetXP - currentXP;
 		updateInputFields();
 	}
 
@@ -363,6 +369,7 @@ class SkillCalculator extends JPanel
 	{
 		targetLevel = enforceSkillBounds(uiInput.getTargetLevelInput());
 		targetXP = Experience.getXpForLevel(targetLevel);
+		remainingXP = targetXP - currentXP;
 		updateInputFields();
 	}
 
@@ -370,6 +377,7 @@ class SkillCalculator extends JPanel
 	{
 		targetXP = enforceXPBounds(uiInput.getTargetXPInput());
 		targetLevel = Experience.getLevelForXp(targetXP);
+		remainingXP = targetXP - currentXP;
 		updateInputFields();
 	}
 
