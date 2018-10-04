@@ -90,7 +90,7 @@ enum DiscordGameEventType
 	CITY_BEDABIN_CAMP("Bedabin Camp" , DiscordAreaType.CITIES, 12590),
 	CITY_BRIMHAVEN("Brimhaven" , DiscordAreaType.CITIES, 11057, 11058),
 	CITY_BURGH_DE_ROTT("Burgh de Rott" , DiscordAreaType.CITIES, 13874, 13873, 14130, 14129),
-	CITY_BURTHOPE("Burthope" , DiscordAreaType.CITIES, 11319, 11575),
+	CITY_BURTHORPE("Burthorpe" , DiscordAreaType.CITIES, 11319, 11575),
 	CITY_CANIFIS("Canifis" , DiscordAreaType.CITIES, 13878),
 	CITY_CATHERBY("Catherby" , DiscordAreaType.CITIES, 11317, 11318, 11061),
 	CITY_CORSAIR_CAVE("Corsair Cove" , DiscordAreaType.CITIES, 10028, 10284),
