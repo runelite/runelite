@@ -579,8 +579,8 @@ public class SlayerPlugin extends Plugin
 
 		int actionsPerHour = xpTrackerService.getActionsHr(SLAYER);
 		float actionsPerSecond = actionsPerHour / (60f * 60);
-		float taskRemainingSeconds = amount / actionsPerSecond;
-		int taskRemainingMinutes = (int) taskRemainingSeconds / 60;
+		int taskRemainingSeconds = (int) Math.ceil(amount / actionsPerSecond);
+		int taskRemainingMinutes = taskRemainingSeconds / 60;
 		int taskRemainingHours = taskRemainingMinutes / 60;
 
 		Task task = Task.getTask(taskName);
@@ -603,7 +603,7 @@ public class SlayerPlugin extends Plugin
 				capsString(taskName),
 				points,
 				streak,
-				String.format("%02d:%02d", taskRemainingHours, taskRemainingMinutes)));
+				String.format("%02d:%02d", taskRemainingHours, taskRemainingMinutes % 60)));
 
 		infoBoxManager.addInfoBox(counter);
 	}
