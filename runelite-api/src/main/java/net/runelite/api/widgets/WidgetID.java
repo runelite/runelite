@@ -196,10 +196,14 @@ public class WidgetID
 
 	static class Bank
 	{
-		static final int ITEM_CONTAINER = 12;
+		static final int BANK_CONTAINER = 1;
 		static final int INVENTORY_ITEM_CONTAINER = 3;
 		static final int BANK_TITLE_BAR = 4;
-		static final int BANK_ITEM_COUNT = 5;
+		static final int CONTENT_CONTAINER = 9;
+		static final int ITEM_CONTAINER = 12;
+		static final int SEARCH_BUTTON_BACKGROUND = 39;
+		static final int INCINERATOR = 45;
+		static final int INCINERATOR_CONFIRM = 46;
 	}
 
 	static class GrandExchange
