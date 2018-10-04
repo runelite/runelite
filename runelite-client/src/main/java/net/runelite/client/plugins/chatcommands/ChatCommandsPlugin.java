@@ -93,7 +93,8 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	private static final Set<String> TOTAL_LEVEL_COMMAND_SET = new HashSet<>(Arrays.asList(TOTAL_LEVEL_COMMAND_STRINGS));
 	private static final String[] PRICE_COMMAND_STRINGS = new String[] {"!price", "!ge", "!value", "!cost"};
 	private static final Set<String> PRICE_COMMAND_SET = new HashSet<>(Arrays.asList(PRICE_COMMAND_STRINGS));
-	private static final String LEVEL_COMMAND_STRING = "!lvl";
+	private static final String[] LEVEL_COMMAND_STRINGS = new String[] {"!lvl", "!level", "!levl", "!lvel"};
+	private static final Set<String> LEVEL_COMMAND_SET = new HashSet<>(Arrays.asList(LEVEL_COMMAND_STRINGS));
 	private static final String CLUES_COMMAND_STRING = "!clues";
 	private static final String KILLCOUNT_COMMAND_STRING = "!kc";
 	private static final String CMB_COMMAND_STRING = "!cmb";
@@ -216,9 +217,9 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			log.debug("Running price lookup for {}", search);
 			executor.submit(() -> itemPriceLookup(setMessage.getMessageNode(), search));
 		}
-		else if (config.lvl() && message.toLowerCase().startsWith(LEVEL_COMMAND_STRING + " "))
+		else if (config.lvl() && LEVEL_COMMAND_SET.contains(command))
 		{
-			String search = message.substring(LEVEL_COMMAND_STRING.length() + 1);
+			String search = message.substring(command.length() + 1);
 
 			log.debug("Running level lookup for {}", search);
 			executor.submit(() -> playerSkillLookup(setMessage, search));
