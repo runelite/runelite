@@ -40,6 +40,8 @@ class LootTrackerItem
 	@Getter
 	private final long price;
 	@Getter
+	private final long alchPrice;
+	@Getter
 	@Setter
 	private boolean ignored;
 }
