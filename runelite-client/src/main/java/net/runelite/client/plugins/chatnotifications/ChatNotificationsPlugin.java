@@ -71,6 +71,8 @@ public class ChatNotificationsPlugin extends Plugin
 	@Inject
 	private RuneLiteProperties runeLiteProperties;
 
+	private final Pattern SPLIT_REGEX = Pattern.compile("\\s*,\\s*");
+
 	//Custom Highlights
 	private Pattern usernameMatcher = null;
 	private String usernameReplacer = "";
@@ -115,7 +117,7 @@ public class ChatNotificationsPlugin extends Plugin
 
 		if (!config.highlightWordsString().trim().equals(""))
 		{
-			String[] items = config.highlightWordsString().trim().split(", ");
+			String[] items = SPLIT_REGEX.split(config.highlightWordsString().trim());
 			String joined = Arrays.stream(items)
 				.map(Pattern::quote)
 				.collect(Collectors.joining("|"));
