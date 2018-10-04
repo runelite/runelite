@@ -33,7 +33,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-public class AttackStylesOverlay extends Overlay
+class AttackStylesOverlay extends Overlay
 {
 	private final AttackStylesPlugin plugin;
 	private final AttackStylesConfig config;
