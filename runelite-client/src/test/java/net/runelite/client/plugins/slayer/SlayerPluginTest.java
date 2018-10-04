@@ -36,6 +36,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import static org.junit.Assert.assertEquals;
@@ -120,6 +121,10 @@ public class SlayerPluginTest
 	@Mock
 	@Bind
 	Notifier notifier;
+
+	@Mock
+	@Bind
+	XpTrackerService xpTrackerService;
 
 	@Inject
 	SlayerPlugin slayerPlugin;
