@@ -27,18 +27,13 @@ package net.runelite.client.plugins.poh;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
+import java.text.DecimalFormat;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.Perspective;
-import net.runelite.api.Point;
-import net.runelite.api.TileObject;
-import static net.runelite.client.plugins.poh.PohPlugin.BURNER_LIT;
-import static net.runelite.client.plugins.poh.PohPlugin.BURNER_UNLIT;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
 
 public class BurnerOverlay extends Overlay
@@ -46,7 +41,7 @@ public class BurnerOverlay extends Overlay
 	private final Client client;
 	private final PohConfig config;
 	private final PohPlugin plugin;
-	private final TextComponent textComponent = new TextComponent();
+	private final TextComponent textComponent = new TextComponent(); //todo remove this as it is unused?
 
 	@Inject
 	public BurnerOverlay(Client client, PohConfig config, PohPlugin plugin)
@@ -66,42 +61,51 @@ public class BurnerOverlay extends Overlay
 			return null;
 		}
 
+		// Get each object in POH
 		plugin.getPohObjects().forEach((object, tile) ->
 		{
+			// If planes match
 			if (tile.getPlane() == client.getPlane())
 			{
-				if (BURNER_UNLIT.contains(object.getId()))
+				if (getBURNER_LIT().contains(object.getId()))
 				{
-					drawBurner(graphics, "Unlit", object, Color.RED);
-				}
-				else if (BURNER_LIT.contains(object.getId()))
-				{
-					drawBurner(graphics, "Lit", object, Color.GREEN);
+					if (config.showBurnerTime())
+					{
+						DecimalFormat df = new DecimalFormat("#.##");
+						if (plugin.getCountdownTimerMap().containsKey(tile))
+						{
+							double certainSec = plugin.getCountdownTimerMap().get(tile);
+							double randomSec = plugin.getRandomTimerMap().get(tile);
+							certainSec = Double.valueOf(df.format(certainSec));
+							randomSec = Double.valueOf(df.format(randomSec));
+							ProgressPieComponent pieTimer = new ProgressPieComponent();
+							pieTimer.setPosition(object.getCanvasLocation());
+							pieTimer.setProgress((certainSec / plugin.getCountdownTimer()));
+
+							if (certainSec > 0)
+							{
+								renderPie(graphics, Color.GREEN, Color.GREEN, pieTimer);
+							}
+							else
+							{
+								pieTimer.setProgress((randomSec / plugin.getRandomTimer()));
+								if (randomSec > 0)
+								{
+									renderPie(graphics, Color.ORANGE, Color.ORANGE, pieTimer);
+								}
+							}
+						}
+					}
 				}
 			}
 		});
 		return null;
 	}
 
-	private void drawBurner(Graphics2D graphics, String text, TileObject tileObject, Color color)
+	private void renderPie(Graphics2D graphics, Color fillColor, Color borderColor, ProgressPieComponent pieProgress)
 	{
-		Point canvasText = Perspective.getCanvasTextLocation(client, graphics, tileObject.getLocalLocation(), text, 200);
-
-		if (canvasText == null)
-		{
-			return;
-		}
-
-		textComponent.setText(text);
-		textComponent.setPosition(new java.awt.Point(canvasText.getX(), canvasText.getY()));
-		textComponent.setColor(color);
-		textComponent.render(graphics);
-
-		//render tile
-		Polygon poly = tileObject.getCanvasTilePoly();
-		if (poly != null)
-		{
-			OverlayUtil.renderPolygon(graphics, poly, color);
-		}
+		pieProgress.setFill(fillColor);
+		pieProgress.setBorderColor(borderColor);
+		pieProgress.render(graphics);
 	}
 }
