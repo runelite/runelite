@@ -95,7 +95,8 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	private static final Set<String> PRICE_COMMAND_SET = new HashSet<>(Arrays.asList(PRICE_COMMAND_STRINGS));
 	private static final String[] LEVEL_COMMAND_STRINGS = new String[] {"!lvl", "!level", "!levl", "!lvel"};
 	private static final Set<String> LEVEL_COMMAND_SET = new HashSet<>(Arrays.asList(LEVEL_COMMAND_STRINGS));
-	private static final String CLUES_COMMAND_STRING = "!clues";
+	private static final String[] CLUES_COMMAND_STRINGS = new String[] {"!clues", "!clue", "!cls"};
+	private static final Set<String> CLUES_COMMAND_SET = new HashSet<>(Arrays.asList(CLUES_COMMAND_STRINGS));
 	private static final String[] KILLCOUNT_COMMAND_STRINGS = new String[] {"!kc", "!kills", "!killcount"};
 	private static final Set<String> KILLCOUNT_COMMAND_SET = new HashSet<>(Arrays.asList(KILLCOUNT_COMMAND_STRINGS));
 	private static final String[] CMB_COMMAND_STRINGS = new String[] {"!combat", "!cmb", "!cbt", "!cb"};
@@ -208,7 +209,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 				log.debug("Running price lookup for {}", search);
 				executor.submit(() -> itemPriceLookup(setMessage.getMessageNode(), search));
 			}
-			else if (config.clue() && message.toLowerCase().startsWith(CLUES_COMMAND_STRING + " "))
+			else if (config.clue() && CLUES_COMMAND_SET.contains(command))
 			{
 				log.debug("Running clue lookup for {}", search);
 				executor.submit(() -> playerClueLookup(setMessage, search));
@@ -236,7 +237,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 				log.debug("Running combat level lookup");
 				executor.submit(() -> combatLevelLookup(setMessage.getType(), setMessage));
 			}
-			else if (config.clue() && message.toLowerCase().equals(CLUES_COMMAND_STRING))
+			else if (config.clue() && CLUES_COMMAND_SET.contains(command))
 			{
 				log.debug("Running lookup for overall clues");
 				executor.submit(() -> playerClueLookup(setMessage, "total"));
