@@ -396,6 +396,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("decant", option, target, true);
 			}
+			if (config.swapMetamorphosis() && target.contains("baby chinchompa"))
+			{
+				swap("metamorphosis", option, target, true);
+			}
 		}
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
 		{
