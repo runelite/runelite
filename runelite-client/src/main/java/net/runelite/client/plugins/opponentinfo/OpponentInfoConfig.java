@@ -52,4 +52,15 @@ public interface OpponentInfoConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showTargetsTarget",
+		name = "Show targets target",
+		description = "Shows your targets target name",
+		position = 2
+	)
+	default boolean showTargetsTarget()
+	{
+		return true;
+	}
 }
