@@ -314,18 +314,7 @@ public class ClueScrollPlugin extends Plugin
 				{
 					for (WorldPoint location : locations)
 					{
-						final LocalPoint localLocation = LocalPoint.fromWorld(client, location);
-
-						if (localLocation != null)
-						{
-							final Scene scene = client.getScene();
-							final Tile[][][] tiles = scene.getTiles();
-							final Tile tile = tiles[client.getPlane()][localLocation.getSceneX()][localLocation.getSceneY()];
-
-							objectsToMark = Arrays.stream(tile.getGameObjects())
-								.filter(object -> object != null && ArrayUtils.contains(objectIds, object.getId()))
-								.toArray(GameObject[]::new);
-						}
+						highlightObjectsForLocation(location, objectIds);
 					}
 				}
 			}
@@ -346,6 +335,16 @@ public class ClueScrollPlugin extends Plugin
 				}
 
 				addMapPoints(location);
+
+				if (clue instanceof ObjectClueScroll)
+				{
+					int[] objectIds = ((ObjectClueScroll) clue).getObjectIds();
+
+					if (objectIds.length > 0)
+					{
+						highlightObjectsForLocation(location, objectIds);
+					}
+				}
 			}
 		}
 
@@ -580,6 +579,24 @@ public class ClueScrollPlugin extends Plugin
 		{
 			worldMapPointManager.add(new ClueScrollWorldMapPoint(point, this));
 		}
+	}
+
+	private void highlightObjectsForLocation(final WorldPoint location, final int... objectIds)
+	{
+		final LocalPoint localLocation = LocalPoint.fromWorld(client, location);
+
+		if (localLocation == null)
+		{
+			return;
+		}
+
+		final Scene scene = client.getScene();
+		final Tile[][][] tiles = scene.getTiles();
+		final Tile tile = tiles[client.getPlane()][localLocation.getSceneX()][localLocation.getSceneY()];
+
+		objectsToMark = Arrays.stream(tile.getGameObjects())
+			.filter(object -> object != null && ArrayUtils.contains(objectIds, object.getId()))
+			.toArray(GameObject[]::new);
 	}
 
 	private void checkClueNPCs(ClueScroll clue, final NPC... npcs)
