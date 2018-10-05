@@ -183,7 +183,7 @@ public class RaidsPlugin extends Plugin
 		}
 
 		updateLists();
-		checkRaidPresence(true);
+		clientThread.invokeLater(() -> checkRaidPresence(true));
 	}
 
 	@Subscribe
