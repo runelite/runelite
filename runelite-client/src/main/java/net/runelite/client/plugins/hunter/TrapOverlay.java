@@ -30,7 +30,6 @@ import java.awt.Graphics2D;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
-
 import com.google.common.collect.ImmutableList;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
