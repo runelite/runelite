@@ -83,10 +83,10 @@ public class PohPlugin extends Plugin
 	private final Set<Integer> burnerLit = Sets.newHashSet(ObjectID.INCENSE_BURNER_13209, ObjectID.INCENSE_BURNER_13211, ObjectID.INCENSE_BURNER_13213);
 
 	@Getter(AccessLevel.PACKAGE)
-	private double countdownTimer = 130.0; //Minimum amount of seconds a burner will light
+	private double countdownTimer;
 
 	@Getter(AccessLevel.PACKAGE)
-	private double randomTimer = 30.0; //Minimum amount of seconds a burner will light
+	private double randomTimer;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<TileObject, Tile> pohObjects = new HashMap<>();
@@ -154,6 +154,8 @@ public class PohPlugin extends Plugin
 		GameObject gameObject = event.getGameObject();
 		if (burnerLit.contains(gameObject.getId()) || burnerUnlit.contains(gameObject.getId()) || PohIcons.getIcon(gameObject.getId()) != null)
 		{
+			countdownTimer = 130.0; //Minimum amount of seconds a burner will light
+			randomTimer = 30.0; //Minimum amount of seconds a burner will light
 			pohObjects.put(gameObject, event.getTile());
 			//Found a new burner in the POH (on load or on relight)
 			if (burnerLit.contains(gameObject.getId()) ||  burnerUnlit.contains(gameObject.getId()))
