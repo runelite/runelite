@@ -76,7 +76,6 @@ import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.BOTH;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.NAME;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.OPTION;
-import net.runelite.client.plugins.grounditems.config.ValueThreshold;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.StackFormatter;
@@ -151,7 +150,6 @@ public class GroundItemsPlugin extends Plugin
 	@Getter
 	private final Map<GroundItem.GroundItemKey, GroundItem> collectedGroundItems = new LinkedHashMap<>();
 	private final Map<Integer, Color> priceChecks = new LinkedHashMap<>();
-	private final Map<Integer, ValueThreshold> thresholdChecks = new LinkedHashMap<>();
 	private LoadingCache<String, Boolean> highlightedItems;
 	private LoadingCache<String, Boolean> hiddenItems;
 
@@ -218,14 +216,11 @@ public class GroundItemsPlugin extends Plugin
 			existing.setQuantity(existing.getQuantity() + groundItem.getQuantity());
 		}
 
-		if (!config.notifierThreshold().equals(ValueThreshold.OFF))
+		boolean isHighlighted = config.highlightedColor().equals(getHighlighted(groundItem.getName(),
+				groundItem.getGePrice(), groundItem.getHaPrice()));
+		if (config.notifyHighlightedDrops() && isHighlighted)
 		{
-			ValueThreshold valueThreshold = getThreshold(groundItem.getName(), groundItem.getGePrice(), groundItem.getHaPrice());
-			if (valueThreshold != null && valueThreshold.isGreaterThan(config
-				.notifierThreshold()))
-			{
-				notifyValuableItem(groundItem, valueThreshold);
-			}
+			notifyHighlightedItem(groundItem);
 		}
 	}
 
@@ -323,36 +318,30 @@ public class GroundItemsPlugin extends Plugin
 
 		// Cache colors
 		priceChecks.clear();
-		thresholdChecks.clear();
 
 		if (config.insaneValuePrice() > 0)
 		{
 			priceChecks.put(config.insaneValuePrice(), config.insaneValueColor());
-			thresholdChecks.put(config.insaneValuePrice(), ValueThreshold.INSANE);
 		}
 
 		if (config.highValuePrice() > 0)
 		{
 			priceChecks.put(config.highValuePrice(), config.highValueColor());
-			thresholdChecks.put(config.highValuePrice(), ValueThreshold.HIGH);
 		}
 
 		if (config.mediumValuePrice() > 0)
 		{
 			priceChecks.put(config.mediumValuePrice(), config.mediumValueColor());
-			thresholdChecks.put(config.mediumValuePrice(), ValueThreshold.MEDIUM);
 		}
 
 		if (config.lowValuePrice() > 0)
 		{
 			priceChecks.put(config.lowValuePrice(), config.lowValueColor());
-			thresholdChecks.put(config.lowValuePrice(), ValueThreshold.LOW);
 		}
 
 		if (config.getHighlightOverValue() > 0)
 		{
 			priceChecks.put(config.getHighlightOverValue(), config.highlightedColor());
-			thresholdChecks.put(config.getHighlightOverValue(), ValueThreshold.HIGHLIGHTED);
 		}
 	}
 
@@ -503,25 +492,6 @@ public class GroundItemsPlugin extends Plugin
 		return config.defaultColor();
 	}
 
-	private ValueThreshold getThreshold(String itemName, int gePrice, int haPrice)
-	{
-		final ValueThreshold valueThreshold = (getHighlighted(itemName, gePrice, haPrice) == config.highlightedColor())
-			? ValueThreshold.HIGHLIGHTED : null;
-
-		if (valueThreshold == null)
-		{
-			for (Map.Entry<Integer, ValueThreshold> entry : thresholdChecks.entrySet())
-			{
-				if (gePrice > entry.getKey() || haPrice > entry.getKey())
-				{
-					return entry.getValue();
-				}
-			}
-		}
-
-		return valueThreshold;
-	}
-
 	@Subscribe
 	public void onFocusChanged(FocusChanged focusChanged)
 	{
@@ -531,31 +501,13 @@ public class GroundItemsPlugin extends Plugin
 		}
 	}
 
-	private void notifyValuableItem(GroundItem item, ValueThreshold threshold)
+	private void notifyHighlightedItem(GroundItem item)
 	{
 		final Player local = client.getLocalPlayer();
 		final StringBuilder notificationStringBuilder = new StringBuilder()
 			.append("[")
 			.append(local.getName())
-			.append("] received ");
-
-		if (threshold == ValueThreshold.INSANE)
-		{
-			notificationStringBuilder.append("an ");
-		}
-		else
-		{
-			notificationStringBuilder.append("a ");
-		}
-
-		notificationStringBuilder.append(threshold);
-
-		if (threshold != ValueThreshold.HIGHLIGHTED)
-		{
-			notificationStringBuilder.append(" value");
-		}
-
-		notificationStringBuilder.append(" drop: ")
+			.append("] received a highlighted drop: ")
 			.append(item.getName());
 
 		if (item.getQuantity() > 1)
