@@ -151,8 +151,15 @@ public class LootTrackerPlugin extends Plugin
 	{
 		if (event.getGroup().equals("loottracker"))
 		{
-			ignoredItems = COMMA_SPLITTER.splitToList(config.getIgnoredItems());
-			panel.updateIgnoredRecords();
+			if (event.getKey().equals("ignoredItems"))
+			{
+				ignoredItems = COMMA_SPLITTER.splitToList(config.getIgnoredItems());
+				panel.updateIgnoredRecords();
+			}
+			else if (event.getKey().equals("showAlchPrice"))
+			{
+				panel.setShowAlchValue(config.showAlchPrice());
+			}
 			panel.rebuild();
 		}
 	}
