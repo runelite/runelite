@@ -162,13 +162,16 @@ public class ExaminePlugin extends Plugin
 		{
 			String name = new String(event.getMessage().replaceAll(".* x Grimy ", "").trim().toLowerCase());
 
-			PendingExamine pendingExamine = new PendingExamine();
-			pendingExamine.setWidgetId(CHATBOX.getId());
-			pendingExamine.setActionParam(Integer.parseInt(event.getMessage().replaceAll( " x Grimy .*", "")));
-			pendingExamine.setType(ExamineType.ITEM_BANK_EQ);
-			pendingExamine.setId(herbs.get(name));
-			pendingExamine.setCreated(Instant.now());
-			pending.push(pendingExamine);
+			if (herbs.containsKey(name))
+			{
+				PendingExamine pendingExamine = new PendingExamine();
+				pendingExamine.setWidgetId(CHATBOX.getId());
+				pendingExamine.setActionParam(Integer.parseInt(event.getMessage().replaceAll( " x Grimy .*", "")));
+				pendingExamine.setType(ExamineType.ITEM_BANK_EQ);
+				pendingExamine.setId(herbs.get(name));
+				pendingExamine.setCreated(Instant.now());
+				pending.push(pendingExamine);
+			}
 		}
 
 		ExamineType type;
