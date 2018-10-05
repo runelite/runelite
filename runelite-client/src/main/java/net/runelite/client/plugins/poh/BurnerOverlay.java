@@ -34,14 +34,12 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
-import net.runelite.client.ui.overlay.components.TextComponent;
 
 public class BurnerOverlay extends Overlay
 {
 	private final Client client;
 	private final PohConfig config;
 	private final PohPlugin plugin;
-	private final TextComponent textComponent = new TextComponent(); //todo remove this as it is unused?
 
 	@Inject
 	public BurnerOverlay(Client client, PohConfig config, PohPlugin plugin)
@@ -83,7 +81,9 @@ public class BurnerOverlay extends Overlay
 
 					if (certainSec > 0)
 					{
-						renderPie(graphics, Color.GREEN, Color.GREEN, pieComponent);
+						pieComponent.setFill(Color.GREEN);
+						pieComponent.setBorderColor(Color.GREEN);
+						pieComponent.render(graphics);
 					}
 
 					else
@@ -92,52 +92,14 @@ public class BurnerOverlay extends Overlay
 
 						if (randomSec > 0)
 						{
-							renderPie(graphics, Color.ORANGE, Color.ORANGE, pieComponent);
+							pieComponent.setFill(Color.ORANGE);
+							pieComponent.setBorderColor(Color.ORANGE);
+							pieComponent.render(graphics);
 						}
 					}
 				}
-
-				/*
-				if (plugin.getBURNER_LIT().contains(object.getId()))
-				{
-					if (config.showBurner())
-					{
-						DecimalFormat df = new DecimalFormat("#.##");
-						if (plugin.getCountdownTimerMap().containsKey(tile))
-						{
-							double certainSec = plugin.getCountdownTimerMap().get(tile);
-							double randomSec = plugin.getRandomTimerMap().get(tile);
-							certainSec = Double.valueOf(df.format(certainSec));
-							randomSec = Double.valueOf(df.format(randomSec));
-							ProgressPieComponent pieTimer = new ProgressPieComponent();
-							pieTimer.setPosition(object.getCanvasLocation());
-							pieTimer.setProgress((certainSec / plugin.getCountdownTimer()));
-
-							if (certainSec > 0)
-							{
-								renderPie(graphics, Color.GREEN, Color.GREEN, pieTimer);
-							}
-							else
-							{
-								pieTimer.setProgress((randomSec / plugin.getRandomTimer()));
-								if (randomSec > 0)
-								{
-									renderPie(graphics, Color.ORANGE, Color.ORANGE, pieTimer);
-								}
-							}
-						}
-					}
-				}
-				 */
 			}
 		});
 		return null;
-	}
-
-	private void renderPie(Graphics2D graphics, Color fillColor, Color borderColor, ProgressPieComponent pieProgress)
-	{
-		pieProgress.setFill(fillColor);
-		pieProgress.setBorderColor(borderColor);
-		pieProgress.render(graphics);
 	}
 }
