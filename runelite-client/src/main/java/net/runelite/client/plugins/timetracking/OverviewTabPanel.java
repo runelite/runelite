@@ -24,15 +24,16 @@
  */
 package net.runelite.client.plugins.timetracking;
 
+import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.time.Instant;
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Stream;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.clocks.ClockManager;
 import net.runelite.client.plugins.timetracking.farming.FarmingTracker;
-import net.runelite.client.plugins.timetracking.farming.PatchImplementation;
 import net.runelite.client.plugins.timetracking.hunter.BirdHouseTracker;
 import net.runelite.client.ui.ColorScheme;
 
@@ -45,7 +46,7 @@ class OverviewTabPanel extends TabContentPanel
 
 	private final OverviewItemPanel timerOverview;
 	private final OverviewItemPanel stopwatchOverview;
-	private final Map<PatchImplementation, OverviewItemPanel> farmingOverviews;
+	private final Map<Tab, OverviewItemPanel> farmingOverviews;
 	private final OverviewItemPanel birdHouseOverview;
 
 	OverviewTabPanel(ItemManager itemManager, TimeTrackingConfig config, TimeTrackingPanel pluginPanel,
@@ -68,21 +69,17 @@ class OverviewTabPanel extends TabContentPanel
 		birdHouseOverview = new OverviewItemPanel(itemManager, pluginPanel, Tab.BIRD_HOUSE, "Bird Houses");
 		add(birdHouseOverview);
 
-		farmingOverviews = new LinkedHashMap<>();
-		farmingOverviews.put(PatchImplementation.HERB, new OverviewItemPanel(itemManager, pluginPanel, Tab.HERB, "Herb Patches"));
-		farmingOverviews.put(PatchImplementation.TREE, new OverviewItemPanel(itemManager, pluginPanel, Tab.TREE, "Tree Patches"));
-		farmingOverviews.put(PatchImplementation.FRUIT_TREE, new OverviewItemPanel(itemManager, pluginPanel, Tab.FRUIT_TREE, "Fruit Tree Patches"));
-		farmingOverviews.put(PatchImplementation.SEAWEED, new OverviewItemPanel(itemManager, pluginPanel, Tab.SPECIAL, "Special Patches"));
-		farmingOverviews.put(PatchImplementation.FLOWER, new OverviewItemPanel(itemManager, pluginPanel, Tab.FLOWER, "Flower Patches"));
-		farmingOverviews.put(PatchImplementation.ALLOTMENT, new OverviewItemPanel(itemManager, pluginPanel, Tab.ALLOTMENT, "Allotment Patches"));
-		farmingOverviews.put(PatchImplementation.BUSH, new OverviewItemPanel(itemManager, pluginPanel, Tab.BUSH, "Bush Patches"));
-		farmingOverviews.put(PatchImplementation.GRAPES, new OverviewItemPanel(itemManager, pluginPanel, Tab.GRAPE, "Grape Patches"));
-		farmingOverviews.put(PatchImplementation.HOPS, new OverviewItemPanel(itemManager, pluginPanel, Tab.HOPS, "Hops Patches"));
-
-		for (OverviewItemPanel panel : farmingOverviews.values())
-		{
-			add(panel);
-		}
+		farmingOverviews = Stream.of(Tab.FARMING_TABS)
+			.filter(v -> v != Tab.OVERVIEW)
+			.collect(ImmutableMap.toImmutableMap(
+				Function.identity(),
+				t ->
+				{
+					OverviewItemPanel p = new OverviewItemPanel(itemManager, pluginPanel, t, t.getName() + " Patches");
+					add(p);
+					return p;
+				}
+			));
 	}
 
 	@Override
