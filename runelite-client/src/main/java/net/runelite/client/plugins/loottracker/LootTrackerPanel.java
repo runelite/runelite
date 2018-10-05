@@ -96,7 +96,7 @@ class LootTrackerPanel extends PluginPanel
 	private final ItemManager itemManager;
 	private final LootTrackerPlugin plugin;
 
-	private boolean groupLoot, showIgnoredItems;
+	private boolean groupLoot, showIgnoredItems, showAlchValue;
 	private String currentView;
 
 	static
@@ -130,6 +130,7 @@ class LootTrackerPanel extends PluginPanel
 		this.itemManager = itemManager;
 		this.plugin = plugin;
 		this.showIgnoredItems = true;
+		this.showAlchValue = plugin.getConfig().showAlchPrice();
 
 		setBorder(new EmptyBorder(6, 6, 6, 6));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -405,7 +406,8 @@ class LootTrackerPanel extends PluginPanel
 		overallPanel.setVisible(true);
 
 		// Create box
-		final LootTrackerBox box = new LootTrackerBox(itemManager, showIgnoredItems, record.getTitle(), record.getSubTitle(), (name, ignored) ->
+		final LootTrackerBox box = new LootTrackerBox(itemManager, showIgnoredItems, showAlchValue,
+			record.getTitle(), record.getSubTitle(), (name, ignored) ->
 		{
 			plugin.toggleItem(name, ignored);
 			updateIgnoredRecords();
