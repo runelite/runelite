@@ -43,8 +43,6 @@ import net.runelite.client.util.QueryRunner;
 @Slf4j
 class BankCalculation
 {
-	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
-
 	private final QueryRunner queryRunner;
 	private final BankValueConfig config;
 	private final ItemManager itemManager;
@@ -117,12 +115,11 @@ class BankCalculation
 
 			if (config.showHA())
 			{
-				int price = itemComposition.getPrice();
+				int alchValue = itemManager.getAlchValue(widgetItem.getId());
 
-				if (price > 0)
+				if (alchValue > 0)
 				{
-					haPrice += (long) Math.round(price * HIGH_ALCHEMY_CONSTANT) *
-						(long) quantity;
+					haPrice += alchValue * quantity;
 				}
 			}
 		}
