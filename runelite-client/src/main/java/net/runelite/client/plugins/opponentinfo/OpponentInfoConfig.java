@@ -54,13 +54,13 @@ public interface OpponentInfoConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showTargetsTarget",
-		name = "Show targets target",
-		description = "Shows your targets target name",
+		keyName = "hideTargetsTarget",
+		name = "Hide targets target",
+		description = "Configures whether your targets target will be visible",
 		position = 2
 	)
-	default boolean showTargetsTarget()
+	default boolean hideTargetsTarget()
 	{
-		return true;
+		return false;
 	}
 }
