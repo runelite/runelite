@@ -46,7 +46,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class CombatLevelPlugin extends Plugin
 {
-	private final DecimalFormat decimalFormat = new DecimalFormat("#.###");
+	private final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.###");
 
 	@Inject
 	private Client client;
@@ -110,6 +110,6 @@ public class CombatLevelPlugin extends Plugin
 				client.getRealSkillLevel(Skill.PRAYER)
 		);
 
-		combatLevelWidget.setText("Combat Lvl: " + decimalFormat.format(combatLevelPrecise));
+		combatLevelWidget.setText("Combat Lvl: " + DECIMAL_FORMAT.format(combatLevelPrecise));
 	}
 }
