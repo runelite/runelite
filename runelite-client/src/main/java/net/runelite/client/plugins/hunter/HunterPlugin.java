@@ -94,7 +94,7 @@ public class HunterPlugin extends Plugin
 	private final Map<WorldPoint, HunterTrap> traps = new HashMap<>();
 
 	@Getter(AccessLevel.PACKAGE)
-	private List<TileObject> birdhouses = new ArrayList<TileObject>();
+	private final List<TileObject> birdhouses = new ArrayList<TileObject>();
 
 	@Getter
 	private Instant lastActionTime = Instant.ofEpochMilli(0);
@@ -325,7 +325,7 @@ public class HunterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameObjectDeSpawned(GameObjectDespawned event)
+	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		onGameObject(event.getGameObject(), null);
 	}
@@ -443,9 +443,6 @@ public class HunterPlugin extends Plugin
 		{
 			case HOPPING:
 			case LOGGING_IN:
-				birdhouses = new ArrayList<>();
-				break;
-			case LOADING:
 				birdhouses.clear();
 				break;
 			default:
