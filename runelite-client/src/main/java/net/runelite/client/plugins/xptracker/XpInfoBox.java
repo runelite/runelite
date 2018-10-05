@@ -46,6 +46,7 @@ import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.SkillColor;
 import net.runelite.client.ui.components.ProgressBar;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.LinkBrowser;
@@ -152,7 +153,7 @@ class XpInfoBox extends JPanel
 
 		progressBar.setMaximumValue(100);
 		progressBar.setBackground(new Color(61, 56, 49));
-		progressBar.setForeground(SkillColor.values()[skill.ordinal()].getColor());
+		progressBar.setForeground(SkillColor.find(skill).getColor());
 		progressBar.setDimmedText("Paused");
 
 		progressWrapper.add(progressBar, BorderLayout.NORTH);
