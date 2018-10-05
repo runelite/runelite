@@ -48,9 +48,6 @@ import net.runelite.client.util.StackFormatter;
 
 class ItemPricesOverlay extends Overlay
 {
-	// Used when getting High Alchemy value - multiplied by general store price.
-	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
-
 	private static final int INVENTORY_ITEM_WIDGETID = WidgetInfo.INVENTORY.getPackedId();
 	private static final int BANK_INVENTORY_ITEM_WIDGETID = WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId();
 	private static final int BANK_ITEM_WIDGETID = WidgetInfo.BANK_ITEM_CONTAINER.getPackedId();
@@ -203,7 +200,7 @@ class ItemPricesOverlay extends Overlay
 		}
 		if (config.showHAValue())
 		{
-			haPrice = Math.round(itemDef.getPrice() * HIGH_ALCHEMY_CONSTANT);
+			haPrice = itemManager.getAlchValue(id);
 		}
 
 		if (gePrice > 0 || haPrice > 0)
