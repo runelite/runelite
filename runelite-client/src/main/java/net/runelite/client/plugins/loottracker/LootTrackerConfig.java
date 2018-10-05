@@ -48,4 +48,14 @@ public interface LootTrackerConfig extends Config
 		description = ""
 	)
 	void setIgnoredItems(String key);
+
+	@ConfigItem(
+		keyName = "showAlchPrice",
+		name = "Show prices as alchemy values.",
+		description = "Configures whether or not to display the alchemy value of an item instead of it's GE price."
+	)
+	default boolean showAlchPrice()
+	{
+		return true;
+	}
 }
