@@ -65,7 +65,7 @@ public class BurnerOverlay extends Overlay
 			// If planes match
 			if (tile.getPlane() == client.getPlane())
 			{
-				if (!plugin.getBURNER_LIT().contains(object.getId()))
+				if (!plugin.getBurnerLit().contains(object.getId()))
 				{
 					return;
 				}

@@ -77,10 +77,10 @@ public class PohPlugin extends Plugin
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 
 	@Getter(AccessLevel.PACKAGE)
-	private final Set<Integer> BURNER_UNLIT = Sets.newHashSet(ObjectID.INCENSE_BURNER, ObjectID.INCENSE_BURNER_13210, ObjectID.INCENSE_BURNER_13212);
+	private final Set<Integer> burnerUnlit = Sets.newHashSet(ObjectID.INCENSE_BURNER, ObjectID.INCENSE_BURNER_13210, ObjectID.INCENSE_BURNER_13212);
 
 	@Getter(AccessLevel.PACKAGE)
-	private final Set<Integer> BURNER_LIT = Sets.newHashSet(ObjectID.INCENSE_BURNER_13209, ObjectID.INCENSE_BURNER_13211, ObjectID.INCENSE_BURNER_13213);
+	private final Set<Integer> burnerLit = Sets.newHashSet(ObjectID.INCENSE_BURNER_13209, ObjectID.INCENSE_BURNER_13211, ObjectID.INCENSE_BURNER_13213);
 
 	@Getter(AccessLevel.PACKAGE)
 	private double countdownTimer = 130.0; //Minimum amount of seconds a burner will light
@@ -152,11 +152,11 @@ public class PohPlugin extends Plugin
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		GameObject gameObject = event.getGameObject();
-		if (BURNER_LIT.contains(gameObject.getId()) || BURNER_UNLIT.contains(gameObject.getId()) || PohIcons.getIcon(gameObject.getId()) != null)
+		if (burnerLit.contains(gameObject.getId()) || burnerUnlit.contains(gameObject.getId()) || PohIcons.getIcon(gameObject.getId()) != null)
 		{
 			pohObjects.put(gameObject, event.getTile());
 			//Found a new burner in the POH (on load or on relight)
-			if (BURNER_LIT.contains(gameObject.getId()) ||  BURNER_UNLIT.contains(gameObject.getId()))
+			if (burnerLit.contains(gameObject.getId()) ||  burnerUnlit.contains(gameObject.getId()))
 			{
 				countdownTimerMap.replace(event.getTile(), countdownTimer);
 				randomTimerMap.replace(event.getTile(), randomTimer);
