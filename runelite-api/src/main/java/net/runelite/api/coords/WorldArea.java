@@ -88,6 +88,17 @@ public class WorldArea
 		this.height = height;
 	}
 
+	public static WorldArea fromCoords(int x1, int y1, int x2, int y2, int plane)
+	{
+		int bottomLeftX = Math.min(x1, x2);
+		int bottomLeftY = Math.min(y1, y2);
+		int topRightX = Math.max(x1, x2);
+		int topRightY = Math.max(y1, y2);
+		int width = topRightX - bottomLeftX + 1;
+		int height = topRightY - bottomLeftY + 1;
+		return new WorldArea(bottomLeftX, bottomLeftY, width, height, plane);
+	}
+
 	/**
 	 * Computes the shortest distance to another area.
 	 *

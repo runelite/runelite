@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, cw-dev
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,27 +22,52 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.castlewars;
 
-public class GraphicID
+import java.time.Instant;
+import lombok.Data;
+import net.runelite.client.plugins.castlewars.data.CWTeam;
+
+@Data
+class GameRecord
 {
-	public static final int TELEPORT = 111;
-	public static final int GREY_BUBBLE_TELEPORT = 86;
-	public static final int ENTANGLE = 179;
-	public static final int SNARE = 180;
-	public static final int BIND = 181;
-	public static final int ICE_RUSH = 361;
-	public static final int ICE_BURST = 363;
-	public static final int ICE_BLITZ = 367;
-	public static final int ICE_BARRAGE = 369;
-	public static final int VENGEANCE_OTHER = 725;
-	public static final int VENGEANCE = 726;
-	public static final int BOOK_HOME_TELEPORT_1 = 800;
-	public static final int BOOK_HOME_TELEPORT_2 = 802;
-	public static final int BOOK_HOME_TELEPORT_3 = 803;
-	public static final int BOOK_HOME_TELEPORT_4 = 804;
-	public static final int STAFF_OF_THE_DEAD = 1228;
-	public static final int IMBUED_HEART = 1316;
-	public static final int FLYING_FISH = 1387;
-	public static final int SPLASH = 85;
+	private final Instant created = Instant.now();
+	private final int world;
+	private final int teamSize;
+	private final CWTeam team;
+
+	private int zamScore;
+	private int saraScore;
+
+	private int flagsSafed;
+	private int flagsScored;
+
+	// Positive/damage dealt
+	private double damageDealt;
+	private double highestHitDealt;
+
+	// Negative/damage taken
+	private int damageTaken;
+	private int highestHitTaken;
+	private int deaths;
+	private int freezesOnMe;
+	private int timesSpeared;
+
+	void recordDamageDealt(double approxDmg)
+	{
+		damageDealt += approxDmg;
+		if (approxDmg > highestHitDealt)
+		{
+			highestHitDealt = approxDmg;
+		}
+	}
+
+	void recordDamageTaken(int dmg)
+	{
+		damageTaken += dmg;
+		if (dmg > highestHitTaken)
+		{
+			highestHitTaken = dmg;
+		}
+	}
 }
