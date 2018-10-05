@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -110,6 +111,9 @@ public class PohPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ScheduledExecutorService executor;
 
 	@Inject
 	private HiscoreManager hiscoreManager;
@@ -240,22 +244,34 @@ public class PohPlugin extends Plugin
 				countdownTimer = (200 + level) * ESTIMATED_TICK_LENGTH;
 				randomTimer = level * ESTIMATED_TICK_LENGTH;
 			}
-			else try
+			else
 			{
-				//On initial lookup client will freeze for ~1 tick to generate HiscoreKey,
-				//after that the hiscore lookup is mapped to a HiscoreKey (see HiscoreManager.java)
-				HiscoreResult playerStats = hiscoreManager.lookup(actorName, HiscoreEndpoint.NORMAL);
-				Skill fm = playerStats.getFiremaking();
-				int level = fm.getLevel();
-				log.debug("Succesfully looked up '{}' with firemaking level '{}'", actorName, level);
-				//Burn time is : 200 + Fm level + (random number between 0 and Fm level) game ticks
-				countdownTimer = (200 + level) * ESTIMATED_TICK_LENGTH;
-				randomTimer = level * ESTIMATED_TICK_LENGTH;
+				lookupPlayer(actorName);
 			}
-			catch (IOException ex)
+		}
+	}
+
+	private void lookupPlayer(String playerName)
+	{
+		if (playerName != null)
+		{
+			executor.execute(() ->
 			{
-				log.debug("Unable to lookup '{}' : exeption '{}'", actorName, ex);
-			}
+				try
+				{
+					HiscoreResult playerStats = hiscoreManager.lookup(playerName, HiscoreEndpoint.NORMAL);
+					Skill fm = playerStats.getFiremaking();
+					int level = fm.getLevel();
+					log.debug("Succesfully looked up '{}' with firemaking level '{}'", playerName, level);
+					//Burn time is : 200 + Fm level + (random number between 0 and Fm level) game ticks
+					countdownTimer = (200 + level) * ESTIMATED_TICK_LENGTH;
+					randomTimer = level * ESTIMATED_TICK_LENGTH;
+				}
+				catch (IOException e)
+				{
+					log.warn("Error fetching Hiscore data " + e.getMessage());
+				}
+			});
 		}
 	}
 }
