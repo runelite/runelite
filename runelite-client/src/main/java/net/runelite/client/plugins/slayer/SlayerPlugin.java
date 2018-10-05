@@ -585,6 +585,11 @@ public class SlayerPlugin extends Plugin
 
 	private void updateCounterTooltip()
 	{
+		if (counter == null)
+		{
+			return;
+		}
+
 		int actionsPerHour = xpTrackerService.getActionsHr(SLAYER);
 		float actionsPerSecond = actionsPerHour / (60f * 60);
 		int taskRemainingSeconds = (int) Math.ceil(amount / actionsPerSecond);
