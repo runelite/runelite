@@ -34,6 +34,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ImageComponent;
+import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 public class TeamCapesOverlay extends Overlay
@@ -51,8 +52,6 @@ public class TeamCapesOverlay extends Overlay
 		this.plugin = plugin;
 		this.config = config;
 		this.manager = manager;
-		panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
-		panelComponent.setWrapping(4);
 	}
 
 	@Override
@@ -74,21 +73,35 @@ public class TeamCapesOverlay extends Overlay
 				continue;
 			}
 
-			// Make the number 0 based
-			final int teamcapeNumber = team.getKey() - 1;
-			final int itemID;
-			if (teamcapeNumber < 50)
+			if (config.imageCapeStyle())
 			{
-				// The team cape is every 2nd item id based on tc number
-				itemID = 2 * teamcapeNumber + ItemID.TEAM1_CAPE;
-			}
-			else
-			{
-				// The team cape is every 3rd item id based on tc number starting from 0
-				itemID = 3 * (teamcapeNumber - 50) + ItemID.TEAM_CAPE_ZERO;
+				panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
+				panelComponent.setWrapping(4);
+				// Make the number 0 based
+				final int teamcapeNumber = team.getKey() - 1;
+				final int itemID;
+				if (teamcapeNumber < 50)
+				{
+					// The team cape is every 2nd item id based on tc number
+					itemID = 2 * teamcapeNumber + ItemID.TEAM1_CAPE;
+				}
+				else
+				{
+					// The team cape is every 3rd item id based on tc number starting from 0
+					itemID = 3 * (teamcapeNumber - 50) + ItemID.TEAM_CAPE_ZERO;
+				}
+
+				panelComponent.getChildren().add(new ImageComponent(manager.getImage(itemID, team.getValue(), true)));
+			} else {
+				panelComponent.setOrientation(PanelComponent.Orientation.VERTICAL);
+				panelComponent.setWrapping(-1);
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("Team-" + Integer.toString(team.getKey()))
+					.right(Integer.toString(team.getValue()))
+					.build());
+
 			}
 
-			panelComponent.getChildren().add(new ImageComponent(manager.getImage(itemID, team.getValue(), true)));
 		}
 
 		return panelComponent.render(graphics);

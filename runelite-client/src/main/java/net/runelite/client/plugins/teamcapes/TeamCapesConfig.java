@@ -41,4 +41,16 @@ public interface TeamCapesConfig extends Config
 	{
 		return 1;
 	}
+
+	@ConfigItem(
+		keyName = "imageCapeStyle",
+		name = "Image Overlay Style",
+		description = "Enables/disables the item image overlay style and replaces with the classic team cape overlay",
+		position = 0
+	)
+
+	default boolean imageCapeStyle()
+	{
+		return true;
+	}
 }
