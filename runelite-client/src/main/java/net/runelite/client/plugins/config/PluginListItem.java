@@ -135,6 +135,7 @@ class PluginListItem extends JPanel
 		this.name = name;
 		this.description = description;
 		Collections.addAll(keywords, name.toLowerCase().split(" "));
+		Collections.addAll(keywords, description.toLowerCase().split(" "));
 		Collections.addAll(keywords, tags);
 
 		setLayout(new BorderLayout(3, 0));

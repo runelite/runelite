@@ -90,7 +90,7 @@ import org.apache.commons.lang3.ArrayUtils;
 @PluginDescriptor(
 	name = "Clue Scroll",
 	description = "Show answers to clue scroll riddles, anagrams, ciphers, and cryptic clues",
-	tags = {"arrow", "hints", "world", "map"}
+	tags = {"arrow", "hints", "world", "map", "coordinates", "emotes"}
 )
 @Slf4j
 public class ClueScrollPlugin extends Plugin
