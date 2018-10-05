@@ -239,4 +239,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+		@ConfigItem(
+			position = 19,
+			keyName = "swapRune",
+			name = "Combination Runes",
+			description = "Swap Craft-Rune with Walk here for runecrafting altars"
+		)
+		default boolean swapRune()
+		{
+			return false;
+		}
 }
