@@ -30,7 +30,6 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -111,9 +110,6 @@ public class ClueScrollPlugin extends Plugin
 
 	@Getter
 	private Item[] inventoryItems;
-
-	@Getter
-	private Instant clueTimeout;
 
 	@Inject
 	@Getter
@@ -348,26 +344,9 @@ public class ClueScrollPlugin extends Plugin
 			}
 		}
 
-		ClueScroll clue = findClueScroll();
-
-		if (clue == null && this.clue != null)
-		{
-			// If clue window isn't open, and we don't have a map clue in inventory,
-			// but we have recorded the player having a clue,
-			// wait for WAIT_DURATION before discarding the knowledge of the player having a clue.
-			if (Instant.now().compareTo(clueTimeout.plus(WAIT_DURATION)) < 0)
-			{
-				return;
-			}
-		}
-
 		// If we have a clue, save that knowledge
 		// so the clue window doesn't have to be open.
-		if (clue != null)
-		{
-			updateClue(clue);
-			this.clueTimeout = Instant.now();
-		}
+		updateClue(findClueScroll());
 	}
 
 	public BufferedImage getClueScrollImage()
