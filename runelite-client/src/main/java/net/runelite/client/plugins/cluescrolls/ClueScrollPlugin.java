@@ -30,8 +30,10 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
-import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -43,10 +45,8 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
-import net.runelite.api.Query;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
@@ -57,8 +57,8 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.queries.InventoryItemQuery;
-import net.runelite.api.queries.NPCQuery;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
@@ -83,7 +83,6 @@ import net.runelite.client.plugins.cluescrolls.clues.ThreeStepCrypticClue;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.QueryRunner;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -101,7 +100,7 @@ public class ClueScrollPlugin extends Plugin
 	private ClueScroll clue;
 
 	@Getter
-	private NPC[] npcsToMark;
+	private final List<NPC> npcsToMark = new ArrayList<>();
 
 	@Getter
 	private GameObject[] objectsToMark;
@@ -112,18 +111,12 @@ public class ClueScrollPlugin extends Plugin
 	@Getter
 	private Item[] inventoryItems;
 
-	@Getter
-	private Instant clueTimeout;
-
 	@Inject
 	@Getter
 	private Client client;
 
 	@Inject
 	private ItemManager itemManager;
-
-	@Inject
-	private QueryRunner queryRunner;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -146,7 +139,6 @@ public class ClueScrollPlugin extends Plugin
 	private BufferedImage emoteImage;
 	private BufferedImage mapArrow;
 	private Integer clueItemId;
-	private boolean clueItemChanged = false;
 	private boolean worldMapPointsSet = false;
 
 	@Provides
@@ -169,7 +161,10 @@ public class ClueScrollPlugin extends Plugin
 		overlayManager.remove(clueScrollOverlay);
 		overlayManager.remove(clueScrollEmoteOverlay);
 		overlayManager.remove(clueScrollWorldOverlay);
-		resetClue();
+		npcsToMark.clear();
+		inventoryItems = null;
+		equippedItems = null;
+		resetClue(true);
 	}
 
 	@Subscribe
@@ -194,7 +189,7 @@ public class ClueScrollPlugin extends Plugin
 			return;
 		}
 
-		resetClue();
+		resetClue(true);
 	}
 
 	@Subscribe
@@ -207,7 +202,7 @@ public class ClueScrollPlugin extends Plugin
 			if (itemComposition != null && itemComposition.getName().startsWith("Clue scroll"))
 			{
 				clueItemId = itemComposition.getId();
-				clueItemChanged = true;
+				updateClue(MapClue.forItemId(clueItemId));
 			}
 		}
 	}
@@ -215,15 +210,28 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(final ItemContainerChanged event)
 	{
+		if (event.getItemContainer() == client.getItemContainer(InventoryID.EQUIPMENT))
+		{
+			equippedItems = event.getItemContainer().getItems();
+			return;
+		}
+
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
+		{
+			return;
+		}
+
+		inventoryItems = event.getItemContainer().getItems();
+
 		// Check if item was removed from inventory
-		if (clue != null && clueItemId != null && event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
+		if (clue != null && clueItemId != null)
 		{
 			final Stream<Item> items = Arrays.stream(event.getItemContainer().getItems());
 
 			// Check if clue was removed from inventory
 			if (items.noneMatch(item -> itemManager.getItemComposition(item.getId()).getId() == clueItemId))
 			{
-				resetClue();
+				resetClue(true);
 			}
 		}
 
@@ -231,6 +239,32 @@ public class ClueScrollPlugin extends Plugin
 		if (clue instanceof ThreeStepCrypticClue)
 		{
 			((ThreeStepCrypticClue) clue).checkForParts(client, event, itemManager);
+		}
+	}
+
+	@Subscribe
+	public void onNpcSpawned(final NpcSpawned event)
+	{
+		final NPC npc = event.getNpc();
+		checkClueNPCs(clue, npc);
+	}
+
+	@Subscribe
+	public void onNpcDespawned(final NpcDespawned event)
+	{
+		final boolean removed = npcsToMark.remove(event.getNpc());
+
+		if (removed)
+		{
+			if (npcsToMark.isEmpty())
+			{
+				client.clearHintArrow();
+			}
+			else
+			{
+				// Always set hint arrow to first seen NPC
+				client.setHintArrow(npcsToMark.get(0));
+			}
 		}
 	}
 
@@ -248,14 +282,13 @@ public class ClueScrollPlugin extends Plugin
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
-			resetClue();
+			resetClue(true);
 		}
 	}
 
 	@Subscribe
 	public void onGameTick(final GameTick event)
 	{
-		npcsToMark = null;
 		objectsToMark = null;
 		equippedItems = null;
 		inventoryItems = null;
@@ -277,120 +310,43 @@ public class ClueScrollPlugin extends Plugin
 				{
 					for (WorldPoint location : locations)
 					{
-						final LocalPoint localLocation = LocalPoint.fromWorld(client, location);
-
-						if (localLocation != null)
-						{
-							final Scene scene = client.getScene();
-							final Tile[][][] tiles = scene.getTiles();
-							final Tile tile = tiles[client.getPlane()][localLocation.getSceneX()][localLocation.getSceneY()];
-
-							objectsToMark = Arrays.stream(tile.getGameObjects())
-								.filter(object -> object != null && ArrayUtils.contains(objectIds, object.getId()))
-								.toArray(GameObject[]::new);
-
-							// Set hint arrow to first object found as there can only be 1 hint arrow
-							if (config.displayHintArrows() && objectsToMark.length >= 1)
-							{
-								client.setHintArrow(objectsToMark[0].getWorldLocation());
-							}
-						}
+						highlightObjectsForLocation(location, objectIds);
 					}
 				}
 			}
 		}
 
-		// If we have location clue, set world location before all other types of clues
-		// to allow NPCs and objects to override it when needed
 		if (clue instanceof LocationClueScroll)
 		{
 			final WorldPoint location = ((LocationClueScroll) clue).getLocation();
 
 			if (location != null)
 			{
-				if (config.displayHintArrows())
+				// Only set the location hint arrow if we do not already have more accurate location
+				if (config.displayHintArrows()
+					&& (client.getHintArrowNpc() == null
+					|| !npcsToMark.contains(client.getHintArrowNpc())))
 				{
 					client.setHintArrow(location);
 				}
 
 				addMapPoints(location);
-			}
-		}
 
-		if (clue instanceof NpcClueScroll)
-		{
-			String[] npcs = ((NpcClueScroll) clue).getNpcs();
-
-			if (npcs.length > 0)
-			{
-				Query query = new NPCQuery().nameEquals(npcs);
-				npcsToMark = queryRunner.runQuery(query);
-
-				// Set hint arrow to first NPC found as there can only be 1 hint arrow
-				if (npcsToMark.length >= 1)
+				if (clue instanceof ObjectClueScroll)
 				{
-					if (config.displayHintArrows())
+					int[] objectIds = ((ObjectClueScroll) clue).getObjectIds();
+
+					if (objectIds.length > 0)
 					{
-						client.setHintArrow(npcsToMark[0]);
+						highlightObjectsForLocation(location, objectIds);
 					}
-
-					addMapPoints(npcsToMark[0].getWorldLocation());
 				}
-			}
-		}
-
-		if (clue instanceof EmoteClue)
-		{
-			ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
-			
-			if (equipment != null)
-			{
-				equippedItems = equipment.getItems();
-			}
-
-			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-
-			if (inventory != null)
-			{
-				inventoryItems = inventory.getItems();
-			}
-		}
-
-		if (clue instanceof CoordinateClue || clue instanceof FairyRingClue)
-		{
-			ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
-
-			if (container != null)
-			{
-				inventoryItems = container.getItems();
-			}
-		}
-
-		ClueScroll clue = findClueScroll();
-
-		if (clue == null && this.clue != null)
-		{
-			// If clue window isn't open, and we don't have a map clue in inventory,
-			// but we have recorded the player having a clue,
-			// wait for WAIT_DURATION before discarding the knowledge of the player having a clue.
-			if (Instant.now().compareTo(clueTimeout.plus(WAIT_DURATION)) < 0)
-			{
-				return;
 			}
 		}
 
 		// If we have a clue, save that knowledge
 		// so the clue window doesn't have to be open.
-		if (clue != null)
-		{
-			if (clue != this.clue)
-			{
-				resetClue();
-			}
-
-			this.clue = clue;
-			this.clueTimeout = Instant.now();
-		}
+		updateClue(findClueScroll());
 	}
 
 	public BufferedImage getClueScrollImage()
@@ -427,22 +383,22 @@ public class ClueScrollPlugin extends Plugin
 		return mapArrow;
 	}
 
-	private void resetClue()
+	private void resetClue(boolean withItemId)
 	{
-		if (!clueItemChanged)
-		{
-			clueItemId = null;
-		}
-
 		if (clue instanceof LocationsClueScroll)
 		{
 			((LocationsClueScroll) clue).reset();
 		}
 
-		clueItemChanged = false;
+		if (withItemId)
+		{
+			clueItemId = null;
+		}
+
 		clue = null;
 		worldMapPointManager.removeIf(ClueScrollWorldMapPoint.class::isInstance);
 		worldMapPointsSet = false;
+		npcsToMark.clear();
 
 		if (config.displayHintArrows())
 		{
@@ -452,100 +408,82 @@ public class ClueScrollPlugin extends Plugin
 
 	private ClueScroll findClueScroll()
 	{
-		Widget clueScrollText = client.getWidget(WidgetInfo.CLUE_SCROLL_TEXT);
+		final Widget clueScrollText = client.getWidget(WidgetInfo.CLUE_SCROLL_TEXT);
 
-		if (clueScrollText != null)
-		{
-			// Remove line breaks and also the rare occasion where there are double line breaks
-			String text = Text.removeTags(clueScrollText.getText()
-					.replaceAll("-<br>", "-")
-					.replaceAll("<br>", " ")
-					.replaceAll("[ ]+", " ")
-					.toLowerCase());
-
-			if (clue instanceof TextClueScroll)
-			{
-				if (((TextClueScroll) clue).getText().equalsIgnoreCase(text))
-				{
-					return clue;
-				}
-			}
-
-			if (text.startsWith("this anagram reveals who to speak to next:"))
-			{
-				return AnagramClue.forText(text);
-			}
-			else if (text.startsWith("the cipher reveals who to speak to next:"))
-			{
-				return CipherClue.forText(text);
-			}
-			else if (text.contains("degrees") && text.contains("minutes"))
-			{
-				return coordinatesToWorldPoint(text);
-			}
-			else
-			{
-				CrypticClue crypticClue = CrypticClue.forText(text);
-
-				if (crypticClue != null)
-				{
-					return crypticClue;
-				}
-
-				EmoteClue emoteClue = EmoteClue.forText(text);
-
-				if (emoteClue != null)
-				{
-					return emoteClue;
-				}
-
-				final FairyRingClue fairyRingClue = FairyRingClue.forText(text);
-
-				if (fairyRingClue != null)
-				{
-					return fairyRingClue;
-				}
-
-				final HotColdClue hotColdClue = HotColdClue.forText(text);
-
-				if (hotColdClue != null)
-				{
-					return hotColdClue;
-				}
-
-				// three step cryptic clues need unedited text to check which steps are already done
-				final ThreeStepCrypticClue threeStepCrypticClue = ThreeStepCrypticClue.forText(text, clueScrollText.getText());
-
-				if (threeStepCrypticClue != null)
-				{
-					return threeStepCrypticClue;
-				}
-
-				// We have unknown clue, reset
-				resetClue();
-				return null;
-			}
-		}
-
-		Item[] result = queryRunner.runQuery(new InventoryItemQuery(InventoryID.INVENTORY));
-
-		if (result == null)
+		if (clueScrollText == null)
 		{
 			return null;
 		}
 
-		for (Item item : result)
-		{
-			MapClue clue = MapClue.forItemId(item.getId());
+		// Remove line breaks and also the rare occasion where there are double line breaks
+		final String text = Text.removeTags(clueScrollText.getText()
+			.replaceAll("-<br>", "-")
+			.replaceAll("<br>", " ")
+			.replaceAll("[ ]+", " ")
+			.toLowerCase());
 
-			if (clue != null)
+		// Early return if this is same clue as already existing one
+		if (clue instanceof TextClueScroll)
+		{
+			if (((TextClueScroll) clue).getText().equalsIgnoreCase(text))
 			{
-				clueItemId = item.getId();
-				clueItemChanged = true;
 				return clue;
 			}
 		}
 
+		if (text.startsWith("this anagram reveals who to speak to next:"))
+		{
+			return AnagramClue.forText(text);
+		}
+
+		if (text.startsWith("the cipher reveals who to speak to next:"))
+		{
+			return CipherClue.forText(text);
+		}
+
+		if (text.contains("degrees") && text.contains("minutes"))
+		{
+			return coordinatesToWorldPoint(text);
+		}
+
+		final CrypticClue crypticClue = CrypticClue.forText(text);
+
+		if (crypticClue != null)
+		{
+			return crypticClue;
+		}
+
+		final EmoteClue emoteClue = EmoteClue.forText(text);
+
+		if (emoteClue != null)
+		{
+			return emoteClue;
+		}
+
+		final FairyRingClue fairyRingClue = FairyRingClue.forText(text);
+
+		if (fairyRingClue != null)
+		{
+			return fairyRingClue;
+		}
+
+		final HotColdClue hotColdClue = HotColdClue.forText(text);
+
+		if (hotColdClue != null)
+		{
+			return hotColdClue;
+		}
+
+		// three step cryptic clues need unedited text to check which steps are already done
+		final ThreeStepCrypticClue threeStepCrypticClue = ThreeStepCrypticClue.forText(text, clueScrollText.getText());
+
+		if (threeStepCrypticClue != null)
+		{
+			return threeStepCrypticClue;
+		}
+
+		// We have unknown clue, reset
+		resetClue(true);
 		return null;
 	}
 
@@ -620,5 +558,74 @@ public class ClueScrollPlugin extends Plugin
 		{
 			worldMapPointManager.add(new ClueScrollWorldMapPoint(point, this));
 		}
+	}
+
+	private void highlightObjectsForLocation(final WorldPoint location, final int... objectIds)
+	{
+		final LocalPoint localLocation = LocalPoint.fromWorld(client, location);
+
+		if (localLocation == null)
+		{
+			return;
+		}
+
+		final Scene scene = client.getScene();
+		final Tile[][][] tiles = scene.getTiles();
+		final Tile tile = tiles[client.getPlane()][localLocation.getSceneX()][localLocation.getSceneY()];
+
+		objectsToMark = Arrays.stream(tile.getGameObjects())
+			.filter(object -> object != null && ArrayUtils.contains(objectIds, object.getId()))
+			.toArray(GameObject[]::new);
+	}
+
+	private void checkClueNPCs(ClueScroll clue, final NPC... npcs)
+	{
+		if (!(clue instanceof NpcClueScroll))
+		{
+			return;
+		}
+
+		final NpcClueScroll npcClueScroll = (NpcClueScroll) clue;
+
+		if (npcClueScroll.getNpcs() == null || npcClueScroll.getNpcs().length == 0)
+		{
+			return;
+		}
+
+		for (NPC npc : npcs)
+		{
+			if (npc == null || npc.getName() == null)
+			{
+				continue;
+			}
+
+			for (String npcName : npcClueScroll.getNpcs())
+			{
+				if (!Objects.equals(npc.getName(), npcName))
+				{
+					continue;
+				}
+
+				npcsToMark.add(npc);
+			}
+		}
+
+		if (!npcsToMark.isEmpty() && config.displayHintArrows())
+		{
+			// Always set hint arrow to first seen NPC
+			client.setHintArrow(npcsToMark.get(0));
+		}
+	}
+
+	private void updateClue(final ClueScroll clue)
+	{
+		if (clue == null || clue == this.clue)
+		{
+			return;
+		}
+
+		resetClue(false);
+		checkClueNPCs(clue, client.getCachedNPCs());
+		this.clue = clue;
 	}
 }
