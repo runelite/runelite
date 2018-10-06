@@ -123,7 +123,8 @@ public class KingdomPlugin extends Plugin
 
 	private boolean isInKingdom()
 	{
-		return KINGDOM_REGION.contains(client.getLocalPlayer().getWorldLocation().getRegionID());
+		return client.getLocalPlayer() != null
+			&& KINGDOM_REGION.contains(client.getLocalPlayer().getWorldLocation().getRegionID());
 	}
 
 	private boolean hasCompletedQuest()
