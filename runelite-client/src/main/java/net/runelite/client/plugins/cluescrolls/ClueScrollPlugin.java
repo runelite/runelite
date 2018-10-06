@@ -592,7 +592,7 @@ public class ClueScrollPlugin extends Plugin
 
 	/**
 	 * This conversion is explained on
-	 * http://oldschoolrunescape.wikia.com/wiki/Treasure_Trails/Guide/Coordinates
+	 * https://oldschool.runescape.wiki/w/Treasure_Trails/Guide/Coordinates
 	 */
 	private WorldPoint coordinatesToWorldPoint(int degX, int minX, int degY, int minY)
 	{
