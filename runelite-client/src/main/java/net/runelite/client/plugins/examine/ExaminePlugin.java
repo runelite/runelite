@@ -323,12 +323,12 @@ public class ExaminePlugin extends Plugin
 				if (quantity > 1)
 				{
 					message
-							.append(ChatColorType.NORMAL)
-							.append(" (")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(StackFormatter.formatNumber(gePrice))
-							.append(ChatColorType.NORMAL)
-							.append("ea)");
+						.append(ChatColorType.NORMAL)
+						.append(" (")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(StackFormatter.formatNumber(gePrice))
+						.append(ChatColorType.NORMAL)
+						.append("ea)");
 				}
 			}
 
