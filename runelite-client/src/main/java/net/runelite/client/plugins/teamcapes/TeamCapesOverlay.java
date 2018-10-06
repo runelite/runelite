@@ -92,7 +92,9 @@ public class TeamCapesOverlay extends Overlay
 				}
 
 				panelComponent.getChildren().add(new ImageComponent(manager.getImage(itemID, team.getValue(), true)));
-			} else {
+			}
+			else
+			{
 				panelComponent.setOrientation(PanelComponent.Orientation.VERTICAL);
 				panelComponent.setWrapping(-1);
 				panelComponent.getChildren().add(LineComponent.builder()
