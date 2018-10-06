@@ -88,7 +88,7 @@ class XpInfoBox extends JPanel
 
 	private boolean paused = false;
 
-	private static final DecimalFormat twoDecimalPlaces = new DecimalFormat("0.00");
+	private static final DecimalFormat TWO_DECIMAL_FORMAT = new DecimalFormat("0.00");
 
 	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, JPanel panel, Skill skill, SkillIconManager iconManager) throws IOException
 	{
@@ -201,7 +201,7 @@ class XpInfoBox extends JPanel
 
 			// Update progress bar
 			progressBar.setValue((int) xpSnapshotSingle.getSkillProgressToGoal());
-			progressBar.setCenterLabel(twoDecimalPlaces.format(xpSnapshotSingle.getSkillProgressToGoal()) + "%");
+			progressBar.setCenterLabel(TWO_DECIMAL_FORMAT.format(xpSnapshotSingle.getSkillProgressToGoal()) + "%");
 			progressBar.setLeftLabel("Lvl. " + xpSnapshotSingle.getStartLevel());
 			progressBar.setRightLabel(xpSnapshotSingle.getEndGoalXp() == Experience.MAX_SKILL_XP
 				? "200M"
