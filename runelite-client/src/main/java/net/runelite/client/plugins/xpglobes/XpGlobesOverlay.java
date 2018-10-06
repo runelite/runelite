@@ -56,6 +56,7 @@ public class XpGlobesOverlay extends Overlay
 	private static final int PROGRESS_RADIUS_REMAINDER = 0;
 	private static final int DEFAULT_START_Y = 10;
 	private static final int TOOLTIP_RECT_SIZE_X = 150;
+	private static final Color DARK_OVERLAY_COLOR = new Color(0, 0, 0, 180);
 
 	private final Client client;
 	private final XpGlobesPlugin plugin;
@@ -131,14 +132,18 @@ public class XpGlobesOverlay extends Overlay
 
 		drawSkillImage(graphics, skillToDraw, x, y);
 
-		if (config.enableTooltips())
-		{
-			Point mouse = client.getMouseCanvasPosition();
-			int mouseX = mouse.getX() - bounds.x;
-			int mouseY = mouse.getY() - bounds.y;
+		Point mouse = client.getMouseCanvasPosition();
+		int mouseX = mouse.getX() - bounds.x;
+		int mouseY = mouse.getY() - bounds.y;
 
-			// If mouse is hovering the globe
-			if (backgroundCircle.contains(mouseX, mouseY))
+		// If mouse is hovering the globe
+		if (backgroundCircle.contains(mouseX, mouseY))
+		{
+			// Fill a darker overlay circle
+			graphics.setColor(DARK_OVERLAY_COLOR);
+			graphics.fill(backgroundCircle);
+
+			if (config.enableTooltips())
 			{
 				drawTooltip(graphics, skillToDraw, backgroundCircle);
 			}
