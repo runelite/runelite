@@ -36,7 +36,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerPlugin;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 import net.runelite.client.util.ImageUtil;
 
@@ -69,7 +68,6 @@ public class ScreenMarkerCreationPanel extends JPanel
 		setBorder(new EmptyBorder(8, 8, 8, 8));
 		setLayout(new BorderLayout());
 
-		instructionsLabel.setFont(FontManager.getRunescapeSmallFont());
 		instructionsLabel.setForeground(Color.WHITE);
 
 		JPanel actionsContainer = new JPanel(new GridLayout(1, 2, 8, 0));

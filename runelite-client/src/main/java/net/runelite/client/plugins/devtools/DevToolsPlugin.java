@@ -31,7 +31,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
 import java.util.List;
@@ -53,7 +52,6 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -123,7 +121,6 @@ public class DevToolsPlugin extends Plugin
 	Widget currentWidget;
 	int itemIndex = -1;
 
-	private Font font;
 	private NavigationButton navButton;
 
 	@Provides
@@ -153,9 +150,6 @@ public class DevToolsPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(navButton);
-
-		font = FontManager.getRunescapeFont()
-			.deriveFont(Font.BOLD, 16);
 	}
 
 	@Override
@@ -312,11 +306,6 @@ public class DevToolsPlugin extends Plugin
 			entry.setTarget(entry.getTarget() + " " + ColorUtil.prependColorTag("(" + info + ")", COLOR_ORANGE));
 			client.setMenuEntries(entries);
 		}
-	}
-
-	Font getFont()
-	{
-		return font;
 	}
 
 	void togglePlayers()

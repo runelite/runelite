@@ -40,7 +40,6 @@ import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -131,8 +130,6 @@ class SlayerOverlay extends Overlay
 
 		int slaughterCount = plugin.getSlaughterChargeCount();
 		int expeditiousCount = plugin.getExpeditiousChargeCount();
-
-		graphics.setFont(FontManager.getRunescapeSmallFont());
 
 		for (WidgetItem item : getSlayerItems())
 		{

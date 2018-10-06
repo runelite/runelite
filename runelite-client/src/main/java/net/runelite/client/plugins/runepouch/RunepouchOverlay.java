@@ -39,7 +39,6 @@ import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import static net.runelite.client.plugins.runepouch.config.RunePouchOverlayMode.BOTH;
 import static net.runelite.client.plugins.runepouch.config.RunePouchOverlayMode.MOUSE_HOVER;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -99,8 +98,6 @@ public class RunepouchOverlay extends Overlay
 		}
 
 		assert AMOUNT_VARBITS.length == RUNE_VARBITS.length;
-
-		graphics.setFont(FontManager.getRunescapeSmallFont());
 
 		StringBuilder tooltipBuilder = new StringBuilder();
 

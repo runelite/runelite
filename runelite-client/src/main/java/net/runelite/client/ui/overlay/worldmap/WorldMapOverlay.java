@@ -271,7 +271,7 @@ public class WorldMapOverlay extends Overlay
 
 		graphics.setColor(Color.black);
 		graphics.drawRect((int) tooltipRect.getX(), (int) tooltipRect.getY(), (int) tooltipRect.getWidth(), (int) tooltipRect.getHeight());
-		graphics.drawString(tooltip, drawPoint.getX(), drawPoint.getY() + height);
+		graphics.drawString(tooltip, drawPoint.getX(), drawPoint.getY() + fm.getMaxAscent());
 	}
 
 	private Point clipToRectangle(Point drawPoint, Rectangle mapDisplayRectangle)

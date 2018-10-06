@@ -58,7 +58,6 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
-import net.runelite.client.ui.FontManager;
 
 @Slf4j
 class VarInspector extends JFrame
@@ -189,7 +188,6 @@ class VarInspector extends JFrame
 			{
 				lastTick = tick;
 				JLabel header = new JLabel("Tick " + tick);
-				header.setFont(FontManager.getRunescapeSmallFont());
 				header.setBorder(new CompoundBorder(
 					BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.LIGHT_GRAY_COLOR),
 					BorderFactory.createEmptyBorder(3, 6, 0, 0)

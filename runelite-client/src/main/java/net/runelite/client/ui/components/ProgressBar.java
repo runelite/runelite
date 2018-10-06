@@ -61,15 +61,20 @@ public class ProgressBar extends DimmableJPanel
 
 		setPreferredSize(new Dimension(100, 16));
 
-		leftLabel.setFont(FontManager.getRunescapeSmallFont());
+		//only do this for runescape default font because that would be too big
+		if (getFont().equals(FontManager.getRunescapeFont()))
+		{
+			leftLabel.setFont(FontManager.getRunescapeSmallFont());
+			rightLabel.setFont(FontManager.getRunescapeSmallFont());
+			centerLabel.setFont(FontManager.getRunescapeSmallFont());
+		}
+
 		leftLabel.setForeground(Color.WHITE);
 		leftLabel.setBorder(new EmptyBorder(2, 5, 0, 0));
 
-		rightLabel.setFont(FontManager.getRunescapeSmallFont());
 		rightLabel.setForeground(Color.WHITE);
 		rightLabel.setBorder(new EmptyBorder(2, 0, 0, 5));
 
-		centerLabel.setFont(FontManager.getRunescapeSmallFont());
 		centerLabel.setForeground(Color.WHITE);
 		centerLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		centerLabel.setBorder(new EmptyBorder(2, 0, 0, 0));
