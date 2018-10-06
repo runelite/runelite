@@ -133,7 +133,15 @@ public class XpGlobesOverlay extends Overlay
 
 		if (config.enableTooltips())
 		{
-			drawTooltipIfMouseover(graphics, skillToDraw, backgroundCircle, bounds);
+			Point mouse = client.getMouseCanvasPosition();
+			int mouseX = mouse.getX() - bounds.x;
+			int mouseY = mouse.getY() - bounds.y;
+
+			// If mouse is hovering the globe
+			if (backgroundCircle.contains(mouseX, mouseY))
+			{
+				drawTooltip(graphics, skillToDraw, backgroundCircle);
+			}
 		}
 	}
 
@@ -176,17 +184,8 @@ public class XpGlobesOverlay extends Overlay
 		);
 	}
 
-	private void drawTooltipIfMouseover(Graphics2D graphics, XpGlobe mouseOverSkill, Ellipse2D drawnGlobe, Rectangle bounds)
+	private void drawTooltip(Graphics2D graphics, XpGlobe mouseOverSkill, Ellipse2D drawnGlobe)
 	{
-		Point mouse = client.getMouseCanvasPosition();
-		int mouseX = mouse.getX() - bounds.x;
-		int mouseY = mouse.getY() - bounds.y;
-
-		if (!drawnGlobe.contains(mouseX, mouseY))
-		{
-			return;
-		}
-
 		//draw tooltip under the globe of the mouse location
 		int x = (int) drawnGlobe.getX() - (TOOLTIP_RECT_SIZE_X / 2) + (config.xpOrbSize() / 2);
 		int y = (int) drawnGlobe.getY() + config.xpOrbSize() + 10;
