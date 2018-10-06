@@ -55,6 +55,8 @@ import net.runelite.client.util.StackFormatter;
 
 class XpInfoBox extends JPanel
 {
+	private static final DecimalFormat TWO_DECIMAL_FORMAT = new DecimalFormat("0.00");
+
 	// Templates
 	private static final String HTML_TOOL_TIP_TEMPLATE =
 		"<html>%s actions done<br/>"
@@ -87,8 +89,6 @@ class XpInfoBox extends JPanel
 	private final JMenuItem pauseSkill = new JMenuItem("Pause");
 
 	private boolean paused = false;
-
-	private static final DecimalFormat TWO_DECIMAL_FORMAT = new DecimalFormat("0.00");
 
 	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, JPanel panel, Skill skill, SkillIconManager iconManager) throws IOException
 	{
