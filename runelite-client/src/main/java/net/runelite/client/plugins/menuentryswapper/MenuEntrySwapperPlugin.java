@@ -362,6 +362,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("assignment", option, target, true);
 			}
 
+			if (config.swapBuyPlank() && target.contains("sawmill operator"))
+			{
+				swap("buy-plank", option, target, true);
+			}
+
 			if (config.swapTrade())
 			{
 				swap("trade", option, target, true);

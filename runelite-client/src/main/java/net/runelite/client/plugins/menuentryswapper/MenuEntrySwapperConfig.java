@@ -239,4 +239,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 19,
+		keyName = "swapBuyPlank",
+		name = "Buy Plank",
+		description = "Swap Talk-to with Buy-plank for the Sawmill operator."
+	)
+	default boolean swapBuyPlank()
+	{
+		return true;
+	}
 }
