@@ -239,4 +239,15 @@ public interface RuneLiteConfig extends Config
 	{
 		return 35;
 	}
+
+	@ConfigItem(
+		keyName = "infoBoxSeparate",
+		name = "Infobox separate groups",
+		description = "Separate the rendering of infoboxes so they can be moved per plugin",
+		position = 35
+	)
+	default boolean infoBoxSeparate()
+	{
+		return false;
+	}
 }
