@@ -352,7 +352,6 @@ public class ExaminePlugin extends Plugin
 				}
 			}
 
-
 			chatMessageManager.queue(QueuedMessage.builder()
 				.type(ChatMessageType.EXAMINE_ITEM)
 				.runeLiteFormattedMessage(message.build())
