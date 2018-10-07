@@ -117,16 +117,20 @@ public class XpGlobesOverlay extends Overlay
 		int mouseY = mouse.getY() - bounds.y;
 
 		// If mouse is hovering the globe
-		boolean hovering = backgroundCircle.contains(mouseX, mouseY);
-
-		if (hovering)
+		if (backgroundCircle.contains(mouseX, mouseY))
 		{
 			// Fill a darker overlay circle
 			graphics.setColor(DARK_OVERLAY_COLOR);
 			graphics.fill(backgroundCircle);
+
+			drawProgressLabel(graphics, skillToDraw, x, y);
+
+			if (config.enableTooltips())
+			{
+				drawTooltip(graphics, skillToDraw, backgroundCircle);
+			}
 		}
 
-		Object renderHint = graphics.getRenderingHint(RenderingHints.KEY_STROKE_CONTROL);
 		graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
 		drawProgressArc(
@@ -144,18 +148,6 @@ public class XpGlobesOverlay extends Overlay
 			PROGRESS_RADIUS_START, radiusCurrentXp,
 			config.progressArcStrokeWidth(),
 			config.enableCustomArcColor() ? config.progressArcColor() : SkillColor.find(skillToDraw.getSkill()).getColor());
-
-		graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, renderHint);
-
-		if (hovering)
-		{
-			drawProgressLabel(graphics, skillToDraw, x, y);
-
-			if (config.enableTooltips())
-			{
-				drawTooltip(graphics, skillToDraw, backgroundCircle);
-			}
-		}
 	}
 
 	private void drawProgressLabel(Graphics2D graphics, XpGlobe globe, int x, int y)
