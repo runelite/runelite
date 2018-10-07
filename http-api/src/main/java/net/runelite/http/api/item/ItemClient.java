@@ -141,11 +141,11 @@ public class ItemClient
 
 	public SearchResult search(String itemName) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("item")
-			.addPathSegment("search")
-			.addQueryParameter("query", itemName)
-			.build();
+	    HttpUrl url = HttpUrl.parse("http://services.runescape.com/m=itemdb_oldschool/api/catalogue/").newBuilder()
+				.addPathSegment("search.json")
+				.addQueryParameter("page", "1")
+				.addQueryParameter("query", itemName)
+				.addQueryParameter("simple", "1").build();
 
 		logger.debug("Built URI: {}", url);
 

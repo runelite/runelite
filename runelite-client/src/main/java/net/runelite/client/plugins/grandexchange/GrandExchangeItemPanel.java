@@ -52,7 +52,7 @@ class GrandExchangeItemPanel extends JPanel
 {
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
 
-	GrandExchangeItemPanel(AsyncBufferedImage icon, String name, int itemID, int gePrice, Double
+	GrandExchangeItemPanel(AsyncBufferedImage icon, String name, int itemID, String gePrice, Double
 		haPrice, int geItemLimit)
 	{
 		BorderLayout layout = new BorderLayout();
@@ -122,9 +122,9 @@ class GrandExchangeItemPanel extends JPanel
 
 		// Ge price
 		JLabel gePriceLabel = new JLabel();
-		if (gePrice > 0)
+		if (gePrice != null && !gePrice.isEmpty())
 		{
-			gePriceLabel.setText(StackFormatter.formatNumber(gePrice) + " gp");
+			gePriceLabel.setText(gePrice + " gp");
 		}
 		else
 		{

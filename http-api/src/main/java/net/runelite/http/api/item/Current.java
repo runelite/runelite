@@ -27,10 +27,8 @@ package net.runelite.http.api.item;
 import lombok.Data;
 
 @Data
-public class Item
+public class Current
 {
-	private int id;
-	private String name;
-	private String description;
-	private Current current;
+    private String trend;
+    private String price;
 }

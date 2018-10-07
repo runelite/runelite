@@ -28,15 +28,15 @@ import java.util.List;
 
 public class SearchResult
 {
-	private List<Item> items;
+	private List<Item> results;
 
 	public List<Item> getItems()
 	{
-		return items;
+		return results;
 	}
 
 	public void setItems(List<Item> items)
 	{
-		this.items = items;
+		this.results = items;
 	}
 }

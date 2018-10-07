@@ -207,7 +207,7 @@ class GrandExchangeSearchPanel extends JPanel
 					continue;
 				}
 
-				int itemPrice = itemManager.getItemPrice(itemId);
+				String itemPrice = item.getCurrent().getPrice();
 				int itemLimit = itemGELimits.getOrDefault(itemId, 0);
 				AsyncBufferedImage itemImage = itemManager.getImage(itemId);
 
