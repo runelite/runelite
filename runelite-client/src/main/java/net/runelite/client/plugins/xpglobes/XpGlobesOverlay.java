@@ -111,6 +111,8 @@ public class XpGlobesOverlay extends Overlay
 
 		Ellipse2D backgroundCircle = drawEllipse(graphics, x, y);
 
+		drawSkillImage(graphics, skillToDraw, x, y);
+
 		Point mouse = client.getMouseCanvasPosition();
 		int mouseX = mouse.getX() - bounds.x;
 		int mouseY = mouse.getY() - bounds.y;
@@ -145,8 +147,6 @@ public class XpGlobesOverlay extends Overlay
 			config.enableCustomArcColor() ? config.progressArcColor() : SkillColor.find(skillToDraw.getSkill()).getColor());
 
 		graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, renderHint);
-
-		drawSkillImage(graphics, skillToDraw, x, y);
 
 		if (hovering)
 		{
