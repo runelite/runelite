@@ -72,6 +72,7 @@ public class ItemController
 			{
 				Item item = new Item();
 				item.setId(priceEntry.getItem()); // fake item
+				item.setName(priceEntry.getName());
 
 				ItemPrice itemPrice = new ItemPrice();
 				itemPrice.setItem(item);
@@ -211,6 +212,7 @@ public class ItemController
 			{
 				Item item = new Item();
 				item.setId(priceEntry.getItem()); // fake item
+				item.setName(priceEntry.getName());
 
 				ItemPrice itemPrice = new ItemPrice();
 				itemPrice.setItem(item);
