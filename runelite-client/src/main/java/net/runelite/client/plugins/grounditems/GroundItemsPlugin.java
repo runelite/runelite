@@ -93,9 +93,6 @@ public class GroundItemsPlugin extends Plugin
 		.trimResults();
 
 	private static final Joiner COMMA_JOINER = Joiner.on(",").skipNulls();
-	// The game won't send anything higher than this value to the plugin -
-	// so we replace any item quantity higher with "Lots" instead.
-	private static final int MAX_QUANTITY = 65535;
 	// Used when getting High Alchemy value - multiplied by general store price.
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 	// ItemID for coins
@@ -514,7 +511,8 @@ public class GroundItemsPlugin extends Plugin
 		{
 			notificationStringBuilder.append(" x ").append(item.getQuantity());
 
-			if (item.getQuantity() >= MAX_QUANTITY)
+
+			if (item.getQuantity() > (int) Character.MAX_VALUE)
 			{
 				notificationStringBuilder.append(" (Lots!)");
 			}

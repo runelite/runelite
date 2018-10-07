@@ -128,14 +128,14 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "notifyHighlightedDrops",
-			name = "Notify for Highlighted drops",
-			description = "Configures whether or not to notify for drops on your highlighted list",
-			position = 7
+		keyName = "notifyHighlightedDrops",
+		name = "Notify for Highlighted drops",
+		description = "Configures whether or not to notify for drops on your highlighted list",
+		position = 7
 	)
 	default boolean notifyHighlightedDrops()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
