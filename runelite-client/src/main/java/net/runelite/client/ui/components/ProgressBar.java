@@ -70,14 +70,14 @@ public class ProgressBar extends DimmableJPanel
 		}
 
 		leftLabel.setForeground(Color.WHITE);
-		leftLabel.setBorder(new EmptyBorder(2, 5, 0, 0));
+		leftLabel.setBorder(new EmptyBorder(0, 5, 0, 0));
 
 		rightLabel.setForeground(Color.WHITE);
-		rightLabel.setBorder(new EmptyBorder(2, 0, 0, 5));
+		rightLabel.setBorder(new EmptyBorder(0, 0, 0, 5));
 
 		centerLabel.setForeground(Color.WHITE);
 		centerLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		centerLabel.setBorder(new EmptyBorder(2, 0, 0, 0));
+		centerLabel.setBorder(new EmptyBorder(0, 0, 0, 0));
 
 		// Adds components to be automatically redrawn when paintComponents is called
 		add(leftLabel, BorderLayout.WEST);
