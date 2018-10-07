@@ -152,7 +152,7 @@ public class ItemManager
 				ImmutableMap.Builder<Integer, ItemPrice> map = ImmutableMap.builderWithExpectedSize(prices.length);
 				for (ItemPrice price : prices)
 				{
-					map.put(price.getItem().getId(), price);
+					map.put(price.getId(), price);
 				}
 				itemPrices = map.build();
 			}
