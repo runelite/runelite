@@ -240,7 +240,7 @@ public class OverlayManager
 		});
 	}
 
-	private void loadOverlay(final Overlay overlay)
+	public void loadOverlay(final Overlay overlay)
 	{
 		final Point location = loadOverlayLocation(overlay);
 		overlay.setPreferredLocation(location);
