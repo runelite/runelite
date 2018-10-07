@@ -141,7 +141,7 @@ public class ItemClient
 
 	public SearchResult search(String itemName) throws IOException
 	{
-	    HttpUrl url = HttpUrl.parse("http://services.runescape.com/m=itemdb_oldschool/api/catalogue/").newBuilder()
+		HttpUrl url = HttpUrl.parse("http://services.runescape.com/m=itemdb_oldschool/api/catalogue/").newBuilder()
 				.addPathSegment("search.json")
 				.addQueryParameter("page", "1")
 				.addQueryParameter("query", itemName)

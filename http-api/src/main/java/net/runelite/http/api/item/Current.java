@@ -29,6 +29,6 @@ import lombok.Data;
 @Data
 public class Current
 {
-    private String trend;
-    private String price;
+	private String trend;
+	private String price;
 }
