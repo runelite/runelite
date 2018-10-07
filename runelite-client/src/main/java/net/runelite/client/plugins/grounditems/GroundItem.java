@@ -39,12 +39,12 @@ class GroundItem
 	private int quantity;
 	private WorldPoint location;
 	private int height;
-	private int haPrice;
+	private long haPrice;
 	private int gePrice;
 	private int offset;
 	private boolean tradeable;
 
-	int getHaPrice()
+	long getHaPrice()
 	{
 		return haPrice * quantity;
 	}

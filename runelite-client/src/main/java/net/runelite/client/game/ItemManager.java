@@ -259,7 +259,7 @@ public class ItemManager
 		return price;
 	}
 
-	public int getAlchValue(int itemID)
+	public long getAlchValue(int itemID)
 	{
 		if (itemID == ItemID.COINS_995)
 		{

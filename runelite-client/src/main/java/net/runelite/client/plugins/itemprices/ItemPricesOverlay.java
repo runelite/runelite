@@ -192,7 +192,7 @@ class ItemPricesOverlay extends Overlay
 		}
 
 		int gePrice = 0;
-		int haPrice = 0;
+		long haPrice = 0;
 
 		if (config.showGEPrice())
 		{
@@ -211,7 +211,7 @@ class ItemPricesOverlay extends Overlay
 		return null;
 	}
 
-	private String stackValueText(int qty, int gePrice, int haValue)
+	private String stackValueText(int qty, int gePrice, long haValue)
 	{
 		if (gePrice > 0)
 		{

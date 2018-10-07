@@ -240,7 +240,7 @@ public class GroundItemsOverlay extends Overlay
 			}
 			else if (config.priceDisplayMode() != PriceDisplayMode.OFF)
 			{
-				final int price = config.priceDisplayMode() == PriceDisplayMode.GE
+				final long price = config.priceDisplayMode() == PriceDisplayMode.GE
 					? item.getGePrice()
 					: item.getHaPrice();
 

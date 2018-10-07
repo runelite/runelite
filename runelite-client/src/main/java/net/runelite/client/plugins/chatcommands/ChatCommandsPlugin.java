@@ -477,7 +477,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 			if (itemComposition != null)
 			{
-				int alchPrice = itemManager.getAlchValue(itemId);
+				long alchPrice = itemManager.getAlchValue(itemId);
 				builder
 					.append(ChatColorType.NORMAL)
 					.append(" HA value ")

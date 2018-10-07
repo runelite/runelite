@@ -115,7 +115,7 @@ class BankCalculation
 
 			if (config.showHA())
 			{
-				int alchValue = itemManager.getAlchValue(widgetItem.getId());
+				long alchValue = itemManager.getAlchValue(widgetItem.getId());
 
 				if (alchValue > 0)
 				{
