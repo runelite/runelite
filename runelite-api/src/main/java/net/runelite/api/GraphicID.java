@@ -44,4 +44,7 @@ public class GraphicID
 	public static final int STAFF_OF_THE_DEAD = 1228;
 	public static final int IMBUED_HEART = 1316;
 	public static final int FLYING_FISH = 1387;
+	public static final int NPC_CONTACT = 728;
+	public static final int POT_SHARE = 733;
+	public static final int BAKE_PIE = 746;
 }
