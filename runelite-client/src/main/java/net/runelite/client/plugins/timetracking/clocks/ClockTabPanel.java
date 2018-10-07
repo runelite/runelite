@@ -96,6 +96,13 @@ public class ClockTabPanel extends TabContentPanel
 		rebuild();
 	}
 
+	// The max panel width is 225 but the + sign gets cut off at 225 so we set it at 223
+	@Override
+	public Dimension getPreferredSize()
+	{
+		return new Dimension(223, super.getPreferredSize().height);
+	}
+
 	/**
 	 * Clears and recreates the components of this panel.
 	 * This should be done whenever a clock is added or removed.
