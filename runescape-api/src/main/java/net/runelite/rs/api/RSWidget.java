@@ -34,7 +34,8 @@ public interface RSWidget extends Widget
 	RSWidget[] getChildren();
 
 	@Import("children")
-	void setChildren(RSWidget[] children);
+	@Override
+	void setChildren(Widget[] children);
 
 	@Import("id")
 	@Override
