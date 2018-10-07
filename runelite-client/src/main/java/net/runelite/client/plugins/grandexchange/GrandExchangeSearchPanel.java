@@ -206,11 +206,11 @@ class GrandExchangeSearchPanel extends JPanel
 				continue;
 			}
 
-			int itemPrice = item.getPrice();
+			long itemPrice = item.getPrice();
 			int itemLimit = itemGELimits.getOrDefault(itemId, 0);
 			AsyncBufferedImage itemImage = itemManager.getImage(itemId);
 
-			itemsList.add(new GrandExchangeItems(itemImage, item.getName(), itemId, itemPrice, itemComp.getPrice() * 0.6, itemLimit));
+			itemsList.add(new GrandExchangeItems(itemImage, item.getName(), itemId, itemPrice, itemManager.getAlchValue(itemId), itemLimit));
 
 			// If using hotkey to lookup item, stop after finding match.
 			if (exactMatch && item.getName().equalsIgnoreCase(lookup))

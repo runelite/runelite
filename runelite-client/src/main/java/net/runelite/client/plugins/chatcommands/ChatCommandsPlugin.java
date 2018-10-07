@@ -462,7 +462,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			ItemPrice item = retrieveFromList(results, search);
 
 			int itemId = item.getId();
-			int itemPrice = item.getPrice();
+			long itemPrice = itemManager.getItemPrice(itemId);
 
 			final ChatMessageBuilder builder = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)

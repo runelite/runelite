@@ -235,7 +235,7 @@ public class ItemManager
 	 * @param itemID item id
 	 * @return item price
 	 */
-	public int getItemPrice(int itemID)
+	public long getItemPrice(int itemID)
 	{
 		if (itemID == ItemID.COINS_995)
 		{

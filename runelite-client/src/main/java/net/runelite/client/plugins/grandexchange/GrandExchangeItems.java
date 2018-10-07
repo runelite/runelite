@@ -33,7 +33,7 @@ class GrandExchangeItems
 	private final AsyncBufferedImage icon;
 	private final String name;
 	private final int itemId;
-	private final int gePrice;
-	private final double haPrice;
+	private final long gePrice;
+	private final long haPrice;
 	private final int geItemLimit;
 }
