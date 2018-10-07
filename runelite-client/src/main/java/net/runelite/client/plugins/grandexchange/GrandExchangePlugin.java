@@ -338,15 +338,14 @@ public class GrandExchangePlugin extends Plugin
 
 		executorService.submit(() ->
 		{
-			try
-			{
-				final GrandExchangeResult result = CLIENT.lookupItem(itemId);
-				final String text = geText.getText() + OSB_GE_TEXT + StackFormatter.formatNumber(result.getOverall_average());
-				geText.setText(text);
-			}
-			catch (IOException e)
-			{
-				log.debug("Error getting price of item {}", itemId, e);
+			if (!geText.getText().contains(OSB_GE_TEXT)) {
+				try {
+					final GrandExchangeResult result = CLIENT.lookupItem(itemId);
+					final String text = geText.getText() + OSB_GE_TEXT + StackFormatter.formatNumber(result.getOverall_average());
+					geText.setText(text);
+				} catch (IOException e) {
+					log.debug("Error getting price of item {}", itemId, e);
+				}
 			}
 		});
 	}
