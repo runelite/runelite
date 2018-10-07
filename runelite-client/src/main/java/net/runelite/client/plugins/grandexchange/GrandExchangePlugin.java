@@ -338,18 +338,21 @@ public class GrandExchangePlugin extends Plugin
 
 		executorService.submit(() ->
 		{
-			if (!geText.getText().contains(OSB_GE_TEXT)) 
+			if (geText.getText().contains(OSB_GE_TEXT))
 			{
-				try 
-				{
-					final GrandExchangeResult result = CLIENT.lookupItem(itemId);
-					final String text = geText.getText() + OSB_GE_TEXT + StackFormatter.formatNumber(result.getOverall_average());
-					geText.setText(text);
-				} 
-				catch (IOException e) 
-				{
-					log.debug("Error getting price of item {}", itemId, e);
-				}
+				// If there are multiple tasks queued and one of them have already added the price
+				return;
+			}
+
+			try
+			{
+				final GrandExchangeResult result = CLIENT.lookupItem(itemId);
+				final String text = geText.getText() + OSB_GE_TEXT + StackFormatter.formatNumber(result.getOverall_average());
+				geText.setText(text);
+			}
+			catch (IOException e)
+			{
+				log.debug("Error getting price of item {}", itemId, e);
 			}
 		});
 	}
