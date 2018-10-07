@@ -71,4 +71,9 @@ public abstract class InfoBox
 	{
 		return false;
 	}
+
+	public String getName()
+	{
+		return plugin.getClass().getSimpleName();
+	}
 }
