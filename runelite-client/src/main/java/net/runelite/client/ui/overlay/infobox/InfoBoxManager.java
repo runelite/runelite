@@ -24,81 +24,227 @@
  */
 package net.runelite.client.ui.overlay.infobox;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ComparisonChain;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
+import com.google.common.collect.TreeMultimap;
 import com.google.common.eventbus.Subscribe;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.function.Predicate;
+import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.input.KeyListener;
+import net.runelite.client.input.KeyManager;
+import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 @Singleton
 @Slf4j
-public class InfoBoxManager
+public class InfoBoxManager implements KeyListener
 {
-	private final List<InfoBox> infoBoxes = new ArrayList<>();
+	private static final String DEFAULT_NAME = "Overlay";
+
+	private final Multimap<String, InfoBox> infoBoxes = TreeMultimap.create(Comparator.naturalOrder(), (a, b) ->
+	{
+		int priority = a.getPriority().compareTo(b.getPriority());
+		if (priority != 0)
+		{
+			return priority * -1;
+		}
+
+		int i = a.getName().compareTo(b.getName());
+		return i != 0 ? i : 1;
+	});
+
+	private final Map<String, InfoBoxOverlay> overlays = new HashMap<>();
+	private final Map<String, InfoBoxOverlay> snapCorners = new HashMap<>();
+
 	private final RuneLiteConfig runeLiteConfig;
+	private final OverlayManager overlayManager;
+	private final TooltipManager tooltipManager;
+	private final Client client;
+	private final KeyManager keyManager;
+
+	@Getter
+	private boolean inOverlayDraggingMode = false;
 
 	@Inject
-	private InfoBoxManager(final RuneLiteConfig runeLiteConfig)
+	private InfoBoxManager(final RuneLiteConfig runeLiteConfig, final OverlayManager overlayManager, final TooltipManager tooltipManager, final Client client, final KeyManager keyManager)
 	{
 		this.runeLiteConfig = runeLiteConfig;
+		this.overlayManager = overlayManager;
+		this.tooltipManager = tooltipManager;
+		this.client = client;
+		this.keyManager = keyManager;
+
+		keyManager.registerKeyListener(this);
+	}
+
+	@Subscribe
+	public void onGameStateChange(GameStateChanged gameStateChanged)
+	{
+		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			rebuildOverlays();
+		}
 	}
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("runelite") && event.getKey().equals("infoBoxSize"))
+		if (event.getGroup().equals("runelite"))
 		{
-			infoBoxes.forEach(this::updateInfoBoxImage);
+			if (event.getKey().equals("infoBoxSize"))
+			{
+				infoBoxes.values().forEach(this::updateInfoBoxImage);
+			}
+			else if (event.getKey().equals("infoBoxSeparate"))
+			{
+				rebuildOverlays();
+			}
 		}
+	}
+
+	private InfoBoxOverlay lazyLoad(String name)
+	{
+		if (!overlays.containsKey(name))
+		{
+			InfoBoxOverlay overlay = makeOverlay(name);
+			overlayManager.loadOverlay(overlay);
+			overlayManager.add(overlay);
+			overlays.put(name, overlay);
+
+			overlay.setHide(overlay.getPreferredLocation() == null);
+			overlay.setGrouped(overlay.getPreferredLocation() == null);
+
+			overlay.setInfoBoxes(Multimaps.filterKeys(infoBoxes, key -> key.equals(name)));
+
+			return overlay;
+		}
+
+		return overlays.get(name);
+	}
+
+	private void rebuildOverlays()
+	{
+		overlays.values().forEach(overlayManager::remove);
+		snapCorners.values().forEach(overlayManager::remove);
+
+		overlays.clear();
+		snapCorners.clear();
+
+		if (runeLiteConfig.infoBoxSeparate())
+		{
+			for (OverlayPosition position : OverlayPosition.values())
+			{
+				if (position == OverlayPosition.DYNAMIC || position == OverlayPosition.DETACHED || position == OverlayPosition.TOOLTIP)
+				{
+					continue;
+				}
+
+				InfoBoxOverlay overlay = makeOverlay(position.toString());
+				snapCorners.put(position.toString(), overlay);
+
+				overlay.setInfoBoxes(Multimaps.filterKeys(infoBoxes, key ->
+				{
+					InfoBoxOverlay o = overlays.get(key);
+					if (o != null &&
+						(o.getPreferredPosition() == overlay.getPosition() ||
+							(o.getPreferredPosition() == null && o.getPosition() == overlay.getPosition() && o.getPreferredLocation() == null)))
+					{
+						o.setGrouped(true);
+						return true;
+					}
+
+					return false;
+				}));
+
+				overlay.setPosition(position);
+				overlayManager.add(overlay);
+			}
+
+			for (Map.Entry<String, InfoBox> entry : infoBoxes.entries())
+			{
+				lazyLoad(entry.getKey());
+			}
+
+			groupInfoBoxes(false);
+		}
+		else
+		{
+			InfoBoxOverlay overlay = makeOverlay(DEFAULT_NAME);
+			overlayManager.loadOverlay(overlay);
+			snapCorners.put(DEFAULT_NAME, overlay);
+
+			overlay.setPosition(OverlayPosition.TOP_LEFT);
+			overlay.setInfoBoxes(infoBoxes);
+			overlayManager.add(overlay);
+		}
+	}
+
+	private InfoBoxOverlay makeOverlay(String name)
+	{
+		InfoBoxOverlay overlay = new InfoBoxOverlay(
+			this,
+			tooltipManager,
+			client,
+			runeLiteConfig);
+		overlay.setName("InfoBox" + name);
+
+		return overlay;
 	}
 
 	public void addInfoBox(InfoBox infoBox)
 	{
-		Preconditions.checkNotNull(infoBox);
-		log.debug("Adding InfoBox {}", infoBox);
+		if (infoBoxes.containsEntry(infoBox.getName(), infoBox))
+		{
+			return;
+		}
 
+		log.debug("InfoBox added {}", infoBox);
+
+		infoBoxes.put(infoBox.getName(), infoBox);
+		lazyLoad(!runeLiteConfig.infoBoxSeparate() ? DEFAULT_NAME : infoBox.getName());
 		updateInfoBoxImage(infoBox);
-		infoBoxes.add(infoBox);
-		refreshInfoBoxes();
+
+		groupInfoBoxes(false);
 	}
 
 	public void removeInfoBox(InfoBox infoBox)
 	{
-		log.debug("Removing InfoBox {}", infoBox);
-		infoBoxes.remove(infoBox);
+		if (infoBox == null)
+		{
+			return;
+		}
 
-		refreshInfoBoxes();
+		log.debug("Removing InfoBox {}", infoBox);
+		infoBoxes.removeAll(infoBox);
 	}
 
 	public void removeIf(Predicate<InfoBox> filter)
 	{
 		log.debug("Removing InfoBoxes for filter {}", filter);
-		infoBoxes.removeIf(filter);
-
-		refreshInfoBoxes();
-	}
-
-	public List<InfoBox> getInfoBoxes()
-	{
-		return Collections.unmodifiableList(infoBoxes);
+		Multimap<String, InfoBox> filtered = Multimaps.filterValues(infoBoxes, filter);
+		filtered.clear();
 	}
 
 	public void cull()
 	{
-		boolean culled = false;
-		for (Iterator<InfoBox> it = infoBoxes.iterator(); it.hasNext();)
+		for (Iterator<InfoBox> it = infoBoxes.values().iterator(); it.hasNext(); )
 		{
 			InfoBox box = it.next();
 
@@ -106,13 +252,7 @@ public class InfoBoxManager
 			{
 				log.debug("Culling InfoBox {}", box);
 				it.remove();
-				culled = true;
 			}
-		}
-
-		if (culled)
-		{
-			refreshInfoBoxes();
 		}
 	}
 
@@ -153,12 +293,62 @@ public class InfoBoxManager
 		infoBox.setScaledImage(resultImage);
 	}
 
-	private void refreshInfoBoxes()
+	private void groupInfoBoxes(boolean showIndividual)
 	{
-		infoBoxes.sort((b1, b2) -> ComparisonChain
-			.start()
-			.compare(b1.getPriority(), b2.getPriority())
-			.compare(b1.getPlugin().getClass().getAnnotation(PluginDescriptor.class).name(), b2.getPlugin().getClass().getAnnotation(PluginDescriptor.class).name())
-			.result());
+		if (!runeLiteConfig.infoBoxSeparate())
+		{
+			return;
+		}
+
+		for (InfoBoxOverlay overlay : snapCorners.values())
+		{
+			overlay.setHide(showIndividual);
+		}
+
+		for (InfoBoxOverlay overlay : overlays.values())
+		{
+			overlay.setHide(!showIndividual);
+
+			if (overlay.getPreferredLocation() != null)
+			{
+				overlay.setHide(false);
+				overlay.setGrouped(false);
+			}
+		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e)
+	{
+
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		if (e.isAltDown())
+		{
+			if (!inOverlayDraggingMode)
+			{
+				groupInfoBoxes(true);
+			}
+
+			inOverlayDraggingMode = true;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+		if (!e.isAltDown())
+		{
+			if (inOverlayDraggingMode)
+			{
+				groupInfoBoxes(false);
+
+			}
+
+			inOverlayDraggingMode = false;
+		}
 	}
 }

@@ -26,18 +26,19 @@
 package net.runelite.client.ui.overlay.infobox;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Multimap;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.InfoBoxComponent;
 import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -53,8 +54,21 @@ public class InfoBoxOverlay extends Overlay
 	private final Client client;
 	private final RuneLiteConfig config;
 
+	@Setter
+	private boolean grouped = false;
+
+	@Setter
+	private boolean hide = false;
+
+	@Setter
+	private Multimap<String, InfoBox> infoBoxes;
+
+	@Setter
+	@Getter
+	private String name;
+
 	@Inject
-	private InfoBoxOverlay(
+	InfoBoxOverlay(
 		InfoBoxManager infoboxManager,
 		TooltipManager tooltipManager,
 		Client client,
@@ -74,9 +88,7 @@ public class InfoBoxOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final List<InfoBox> infoBoxes = infoboxManager.getInfoBoxes();
-
-		if (infoBoxes.isEmpty())
+		if (infoBoxes == null || infoBoxes.isEmpty() || (grouped && hide) || hide)
 		{
 			return null;
 		}
@@ -88,7 +100,7 @@ public class InfoBoxOverlay extends Overlay
 			: PanelComponent.Orientation.HORIZONTAL);
 		panelComponent.setPreferredSize(new Dimension(config.infoBoxSize(), config.infoBoxSize()));
 
-		for (InfoBox box : infoBoxes)
+		for (InfoBox box : infoBoxes.values())
 		{
 			if (!box.render())
 			{
@@ -105,29 +117,28 @@ public class InfoBoxOverlay extends Overlay
 
 		final Dimension dimension = panelComponent.render(graphics);
 
-		// Handle tooltips
-		final Point mouse = new Point(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY());
-
-		for (final LayoutableRenderableEntity child : panelComponent.getChildren())
+		if (!infoboxManager.isInOverlayDraggingMode())
 		{
-			if (child instanceof InfoBoxComponent)
+			// Handle tooltips
+			final Point mouse = new Point(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY());
+
+			for (final LayoutableRenderableEntity child : panelComponent.getChildren())
 			{
-				final InfoBoxComponent component = (InfoBoxComponent) child;
-
-				if (!Strings.isNullOrEmpty(component.getTooltip()))
+				if (child instanceof InfoBoxComponent)
 				{
-					final Rectangle intersectionRectangle = new Rectangle(component.getPreferredLocation(), component.getPreferredSize());
+					final InfoBoxComponent component = (InfoBoxComponent) child;
 
-					// Move the intersection based on overlay position
-					intersectionRectangle.translate(getBounds().x, getBounds().y);
-
-					// Move the intersection based on overlay "orientation"
-					final Point transformed = OverlayUtil.transformPosition(getPosition(), intersectionRectangle.getSize());
-					intersectionRectangle.translate(transformed.x, transformed.y);
-
-					if (intersectionRectangle.contains(mouse))
+					if (!Strings.isNullOrEmpty(component.getTooltip()))
 					{
-						tooltipManager.add(new Tooltip(component.getTooltip()));
+						final Rectangle intersectionRectangle = new Rectangle(component.getPreferredLocation(), component.getPreferredSize());
+
+						// Move the intersection based on overlay position
+						intersectionRectangle.translate(getBounds().x, getBounds().y);
+
+						if (intersectionRectangle.contains(mouse))
+						{
+							tooltipManager.add(new Tooltip(component.getTooltip()));
+						}
 					}
 				}
 			}
