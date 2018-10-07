@@ -27,6 +27,7 @@ package net.runelite.client.plugins.xpglobes;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -45,6 +46,7 @@ import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.SkillColor;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
@@ -109,6 +111,20 @@ public class XpGlobesOverlay extends Overlay
 
 		Ellipse2D backgroundCircle = drawEllipse(graphics, x, y);
 
+		Point mouse = client.getMouseCanvasPosition();
+		int mouseX = mouse.getX() - bounds.x;
+		int mouseY = mouse.getY() - bounds.y;
+
+		// If mouse is hovering the globe
+		boolean hovering = backgroundCircle.contains(mouseX, mouseY);
+
+		if (hovering)
+		{
+			// Fill a darker overlay circle
+			graphics.setColor(DARK_OVERLAY_COLOR);
+			graphics.fill(backgroundCircle);
+		}
+
 		Object renderHint = graphics.getRenderingHint(RenderingHints.KEY_STROKE_CONTROL);
 		graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
@@ -132,22 +148,31 @@ public class XpGlobesOverlay extends Overlay
 
 		drawSkillImage(graphics, skillToDraw, x, y);
 
-		Point mouse = client.getMouseCanvasPosition();
-		int mouseX = mouse.getX() - bounds.x;
-		int mouseY = mouse.getY() - bounds.y;
-
-		// If mouse is hovering the globe
-		if (backgroundCircle.contains(mouseX, mouseY))
+		if (hovering)
 		{
-			// Fill a darker overlay circle
-			graphics.setColor(DARK_OVERLAY_COLOR);
-			graphics.fill(backgroundCircle);
+			drawProgressLabel(graphics, skillToDraw, x, y);
 
 			if (config.enableTooltips())
 			{
 				drawTooltip(graphics, skillToDraw, backgroundCircle);
 			}
 		}
+	}
+
+	private void drawProgressLabel(Graphics2D graphics, XpGlobe globe, int x, int y)
+	{
+		final int currentExp = globe.getCurrentXp();
+		final int goalExp = globe.getGoalXp();
+		final int expForLevel = Experience.getXpForLevel(globe.getCurrentLevel());
+
+		// Convert to int just to limit the decimal cases
+		String progress = (int) (globe.getSkillProgress(expForLevel, currentExp, goalExp)) + "%";
+
+		final FontMetrics metrics = graphics.getFontMetrics();
+		int drawX = x + (config.xpOrbSize() / 2) - (metrics.stringWidth(progress) / 2);
+		int drawY = y + (config.xpOrbSize() / 2) + (metrics.getHeight() / 2);
+
+		OverlayUtil.renderTextLocation(graphics, new Point(drawX, drawY), progress, Color.WHITE);
 	}
 
 	private void drawProgressArc(Graphics2D graphics, int x, int y, int w, int h, double radiusStart, double radiusEnd, int strokeWidth, Color color)
