@@ -50,8 +50,7 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.RunnableExceptionLogger;
-import net.runelite.http.api.item.Item;
-import net.runelite.http.api.item.SearchResult;
+import net.runelite.http.api.item.ItemPrice;
 
 /**
  * This panel holds the search section of the Grand Exchange Plugin.
@@ -169,19 +168,13 @@ class GrandExchangeSearchPanel extends JPanel
 		searchBar.setEditable(false);
 		searchBar.setIcon(IconTextField.Icon.LOADING);
 
-		SearchResult result;
-
-		try
+		List<ItemPrice> result = itemManager.search(lookup);
+		if (result.isEmpty())
 		{
-			result = itemManager.searchForItem(lookup);
-		}
-		catch (Exception ex) // handle com.google.common.cache.CacheLoader$InvalidCacheLoadException
-		{
-			log.warn("Unable to search for item {}", lookup, ex);
 			searchBar.setIcon(IconTextField.Icon.ERROR);
-			searchBar.setEditable(true);
-			errorPanel.setContent("Error fetching results", "An error occurred while trying to fetch item data, please try again later.");
+			errorPanel.setContent("No results found.", "No items were found with that name, please try again.");
 			cardLayout.show(centerPanel, ERROR_PANEL);
+			searchBar.setEditable(true);
 			return;
 		}
 
@@ -189,42 +182,33 @@ class GrandExchangeSearchPanel extends JPanel
 		clientThread.invokeLater(() -> processResult(result, lookup, exactMatch));
 	}
 
-	private void processResult(SearchResult result, String lookup, boolean exactMatch)
+	private void processResult(List<ItemPrice> result, String lookup, boolean exactMatch)
 	{
 		itemsList.clear();
 
-		if (result != null && !result.getItems().isEmpty())
-		{
-			cardLayout.show(centerPanel, RESULTS_PANEL);
+		cardLayout.show(centerPanel, RESULTS_PANEL);
 
-			for (Item item : result.getItems())
+		for (ItemPrice item : result)
+		{
+			int itemId = item.getId();
+
+			ItemComposition itemComp = itemManager.getItemComposition(itemId);
+			if (itemComp == null)
 			{
-				int itemId = item.getId();
-
-				ItemComposition itemComp = itemManager.getItemComposition(itemId);
-				if (itemComp == null)
-				{
-					continue;
-				}
-
-				int itemPrice = itemManager.getItemPrice(itemId);
-				int itemLimit = itemGELimits.getOrDefault(itemId, 0);
-				AsyncBufferedImage itemImage = itemManager.getImage(itemId);
-
-				itemsList.add(new GrandExchangeItems(itemImage, item.getName(), itemId, itemPrice, itemComp.getPrice() * 0.6, itemLimit));
-
-				// If using hotkey to lookup item, stop after finding match.
-				if (exactMatch && item.getName().equalsIgnoreCase(lookup))
-				{
-					break;
-				}
+				continue;
 			}
-		}
-		else
-		{
-			searchBar.setIcon(IconTextField.Icon.ERROR);
-			errorPanel.setContent("No results found.", "No items were found with that name, please try again.");
-			cardLayout.show(centerPanel, ERROR_PANEL);
+
+			int itemPrice = item.getPrice();
+			int itemLimit = itemGELimits.getOrDefault(itemId, 0);
+			AsyncBufferedImage itemImage = itemManager.getImage(itemId);
+
+			itemsList.add(new GrandExchangeItems(itemImage, item.getName(), itemId, itemPrice, itemComp.getPrice() * 0.6, itemLimit));
+
+			// If using hotkey to lookup item, stop after finding match.
+			if (exactMatch && item.getName().equalsIgnoreCase(lookup))
+			{
+				break;
+			}
 		}
 
 		SwingUtilities.invokeLater(() ->

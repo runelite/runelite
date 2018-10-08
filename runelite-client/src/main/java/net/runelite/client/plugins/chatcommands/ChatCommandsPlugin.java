@@ -29,7 +29,6 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -69,8 +68,7 @@ import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.HiscoreSkill;
 import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
 import net.runelite.http.api.hiscore.Skill;
-import net.runelite.http.api.item.Item;
-import net.runelite.http.api.item.SearchResult;
+import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.kc.KillCountClient;
 
 @PluginDescriptor(
@@ -205,7 +203,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			String search = message.substring(PRICE_COMMAND_STRING.length() + 1);
 
 			log.debug("Running price lookup for {}", search);
-			executor.submit(() -> itemPriceLookup(setMessage.getMessageNode(), search));
+			itemPriceLookup(setMessage.getMessageNode(), search);
 		}
 		else if (config.lvl() && message.toLowerCase().startsWith(LEVEL_COMMAND_STRING + " "))
 		{
@@ -457,29 +455,14 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	 */
 	private void itemPriceLookup(MessageNode messageNode, String search)
 	{
-		SearchResult result;
+		List<ItemPrice> results = itemManager.search(search);
 
-		try
+		if (!results.isEmpty())
 		{
-			result = itemManager.searchForItem(search);
-		}
-		catch (ExecutionException ex)
-		{
-			log.warn("Unable to search for item {}", search, ex);
-			return;
-		}
-
-		if (result != null && !result.getItems().isEmpty())
-		{
-			Item item = retrieveFromList(result.getItems(), search);
-			if (item == null)
-			{
-				log.debug("Unable to find item {} in result {}", search, result);
-				return;
-			}
+			ItemPrice item = retrieveFromList(results, search);
 
 			int itemId = item.getId();
-			int itemPrice = itemManager.getItemPrice(itemId);
+			int itemPrice = item.getPrice();
 
 			final ChatMessageBuilder builder = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
@@ -767,23 +750,31 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 
 	/**
 	 * Compares the names of the items in the list with the original input.
-	 * Returns the item if its name is equal to the original input or null
-	 * if it can't find the item.
+	 * Returns the item if its name is equal to the original input or the
+	 * shortest match if no exact match is found.
 	 *
 	 * @param items         List of items.
 	 * @param originalInput String with the original input.
 	 * @return Item which has a name equal to the original input.
 	 */
-	private Item retrieveFromList(List<Item> items, String originalInput)
+	private ItemPrice retrieveFromList(List<ItemPrice> items, String originalInput)
 	{
-		for (Item item : items)
+		ItemPrice shortest = null;
+		for (ItemPrice item : items)
 		{
 			if (item.getName().toLowerCase().equals(originalInput.toLowerCase()))
 			{
 				return item;
 			}
+
+			if (shortest == null || item.getName().length() < shortest.getName().length())
+			{
+				shortest = item;
+			}
 		}
-		return null;
+
+		// Take a guess
+		return shortest;
 	}
 
 	/**

@@ -32,7 +32,9 @@ import com.google.common.eventbus.Subscribe;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
@@ -51,7 +53,6 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
-import net.runelite.http.api.item.SearchResult;
 
 @Singleton
 @Slf4j
@@ -78,7 +79,6 @@ public class ItemManager
 	private final ClientThread clientThread;
 
 	private final ItemClient itemClient = new ItemClient();
-	private final LoadingCache<String, SearchResult> itemSearches;
 	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
 	private final LoadingCache<ImageKey, AsyncBufferedImage> itemImages;
 	private final LoadingCache<Integer, ItemComposition> itemCompositions;
@@ -92,18 +92,6 @@ public class ItemManager
 		this.clientThread = clientThread;
 
 		scheduledExecutorService.scheduleWithFixedDelay(this::loadPrices, 0, 30, TimeUnit.MINUTES);
-
-		itemSearches = CacheBuilder.newBuilder()
-			.maximumSize(512L)
-			.expireAfterAccess(1, TimeUnit.HOURS)
-			.build(new CacheLoader<String, SearchResult>()
-			{
-				@Override
-				public SearchResult load(String key) throws Exception
-				{
-					return itemClient.search(key);
-				}
-			});
 
 		itemImages = CacheBuilder.newBuilder()
 			.maximumSize(128L)
@@ -152,7 +140,7 @@ public class ItemManager
 				ImmutableMap.Builder<Integer, ItemPrice> map = ImmutableMap.builderWithExpectedSize(prices.length);
 				for (ItemPrice price : prices)
 				{
-					map.put(price.getItem().getId(), price);
+					map.put(price.getId(), price);
 				}
 				itemPrices = map.build();
 			}
@@ -205,16 +193,25 @@ public class ItemManager
 	}
 
 	/**
-	 * Look up an item's composition
+	 * Search for tradeable items based on item name
 	 *
 	 * @param itemName item name
-	 * @return item search result
-	 * @throws java.util.concurrent.ExecutionException exception when item
-	 * is not found
+	 * @return
 	 */
-	public SearchResult searchForItem(String itemName) throws ExecutionException
+	public List<ItemPrice> search(String itemName)
 	{
-		return itemSearches.get(itemName);
+		itemName = itemName.toLowerCase();
+
+		List<ItemPrice> result = new ArrayList<>();
+		for (ItemPrice itemPrice : itemPrices.values())
+		{
+			final String name = itemPrice.getName();
+			if (name.toLowerCase().contains(itemName))
+			{
+				result.add(itemPrice);
+			}
+		}
+		return result;
 	}
 
 	/**
