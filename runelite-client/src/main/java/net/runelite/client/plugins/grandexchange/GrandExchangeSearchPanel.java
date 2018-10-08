@@ -49,7 +49,6 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.PluginErrorPanel;
-import net.runelite.client.util.RunnableExceptionLogger;
 import net.runelite.http.api.item.ItemPrice;
 
 /**
@@ -104,7 +103,7 @@ class GrandExchangeSearchPanel extends JPanel
 		searchBar.setPreferredSize(new Dimension(100, 30));
 		searchBar.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
 		searchBar.setHoverBackgroundColor(ColorScheme.MEDIUM_GRAY_COLOR.brighter());
-		searchBar.addActionListener(e -> executor.execute(RunnableExceptionLogger.wrap(() -> priceLookup(false))));
+		searchBar.addActionListener(e -> executor.execute(() -> priceLookup(false)));
 
 		searchItemsPanel.setLayout(new GridBagLayout());
 		searchItemsPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -148,7 +147,7 @@ class GrandExchangeSearchPanel extends JPanel
 	void priceLookup(String item)
 	{
 		searchBar.setText(item);
-		executor.execute(RunnableExceptionLogger.wrap(() -> priceLookup(true)));
+		executor.execute(() -> priceLookup(true));
 	}
 
 	private void priceLookup(boolean exactMatch)
