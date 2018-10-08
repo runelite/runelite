@@ -37,7 +37,16 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemID;
+import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.NPC;
+import net.runelite.api.Player;
+import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ItemContainerChanged;
@@ -86,7 +95,7 @@ public class LootTrackerPlugin extends Plugin
 	private NavigationButton navButton;
 	private String eventType;
 	private long lastNumberOfSupplyCrates;
-	private Item[] inventorySnapshop;
+	private Item[] inventorySnapshot;
 	private static final String WINTERTODT_EVENT_TYPE = "Wintertodt Crate";
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
@@ -231,14 +240,14 @@ public class LootTrackerPlugin extends Plugin
 					.count();
 
 			// We want to make sure that we actually opened the supply crate, not banked it
-			if (numberOfSupplyCrates != lastNumberOfSupplyCrates && inventorySnapshop!= null)
+			if (numberOfSupplyCrates != lastNumberOfSupplyCrates && inventorySnapshot!= null)
 			{
 				log.debug("Number of supply crates in inventory has changed from {} to {}", lastNumberOfSupplyCrates, numberOfSupplyCrates);
 
 				// we lost a crate by opening it
 				if (numberOfSupplyCrates < lastNumberOfSupplyCrates && !bankWidgetIsOpen())
 				{
-					List<Item> loot = itemDelta(inventorySnapshop, items);
+					List<Item> loot = itemDelta(inventorySnapshot, items);
 
 					final Collection<ItemStack> lootStacks = loot.stream()
 							.map(item -> new ItemStack(item.getId(), item.getQuantity()))
@@ -254,7 +263,7 @@ public class LootTrackerPlugin extends Plugin
 				lastNumberOfSupplyCrates = numberOfSupplyCrates;
 			}
 
-			inventorySnapshop = items;
+			inventorySnapshot = items;
 		}
 	}
 
