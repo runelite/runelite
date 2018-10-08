@@ -323,12 +323,12 @@ public class ExaminePlugin extends Plugin
 				if (quantity > 1)
 				{
 					message
-							.append(ChatColorType.NORMAL)
-							.append(" (")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(StackFormatter.formatNumber(gePrice))
-							.append(ChatColorType.NORMAL)
-							.append("ea)");
+						.append(ChatColorType.NORMAL)
+						.append(" (")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(StackFormatter.formatNumber(gePrice))
+						.append(ChatColorType.NORMAL)
+						.append("ea)");
 				}
 			}
 
@@ -339,17 +339,17 @@ public class ExaminePlugin extends Plugin
 					.append(" HA value ")
 					.append(ChatColorType.HIGHLIGHT)
 					.append(StackFormatter.formatNumber(alchPrice * quantity));
-			}
 
-			if (quantity > 1)
-			{
-				message
-					.append(ChatColorType.NORMAL)
-					.append(" (")
-					.append(ChatColorType.HIGHLIGHT)
-					.append(StackFormatter.formatNumber(alchPrice))
-					.append(ChatColorType.NORMAL)
-					.append("ea)");
+				if (quantity > 1)
+				{
+					message
+						.append(ChatColorType.NORMAL)
+						.append(" (")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(StackFormatter.formatNumber(alchPrice))
+						.append(ChatColorType.NORMAL)
+						.append("ea)");
+				}
 			}
 
 			chatMessageManager.queue(QueuedMessage.builder()
