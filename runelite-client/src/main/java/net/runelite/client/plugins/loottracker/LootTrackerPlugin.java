@@ -240,7 +240,7 @@ public class LootTrackerPlugin extends Plugin
 					.count();
 
 			// We want to make sure that we actually opened the supply crate, not banked it
-			if (numberOfSupplyCrates != lastNumberOfSupplyCrates && inventorySnapshot!= null)
+			if (numberOfSupplyCrates != lastNumberOfSupplyCrates && inventorySnapshot != null)
 			{
 				log.debug("Number of supply crates in inventory has changed from {} to {}", lastNumberOfSupplyCrates, numberOfSupplyCrates);
 
