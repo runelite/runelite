@@ -32,11 +32,14 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuOptionClicked;
@@ -79,21 +82,24 @@ public class ExaminePlugin extends Plugin
 
 	private static final HashMap<String, Integer> herbs = new HashMap<String, Integer>()
 	{{
-		put("guam leaf", 199);
-		put("tarromin", 203);
-		put("ranarr weed", 207);
-		put("avantoe", 211);
-		put("snapdragon", 3051);
-		put("marrentil", 201);
-		put("harralander", 205);
-		put("kwuarm", 213);
-		put("toadflax", 3049);
-		put("cadantine", 215);
-		put("lantadyme", 2485);
-		put("dwarf weed", 217);
-		put("torstol", 219);
-		put("irit leaf", 209);
+		put("guam leaf", ItemID.GRIMY_GUAM_LEAF);
+		put("tarromin", ItemID.GRIMY_TARROMIN);
+		put("ranarr weed", ItemID.GRIMY_RANARR_WEED);
+		put("avantoe", ItemID.GRIMY_AVANTOE);
+		put("snapdragon", ItemID.GRIMY_SNAPDRAGON);
+		put("marrentil", ItemID.GRIMY_MARRENTILL);
+		put("harralander", ItemID.GRIMY_HARRALANDER);
+		put("kwuarm", ItemID.GRIMY_KWUARM);
+		put("toadflax", ItemID.GRIMY_TOADFLAX);
+		put("cadantine", ItemID.GRIMY_CADANTINE);
+		put("lantadyme", ItemID.GRIMY_LANTADYME);
+		put("dwarf weed", ItemID.GRIMY_DWARF_WEED);
+		put("torstol", ItemID.GRIMY_TORSTOL);
+		put("irit leaf", ItemID.GRIMY_IRIT_LEAF);
 	}};
+	
+	private final Pattern herbPattern = Pattern.compile("\\d+ x grimy (.*)");
+	private final Pattern herbCount = Pattern.compile("(\\d+) x grimy .*");
 
 	@Inject
 	private Client client;
@@ -160,17 +166,27 @@ public class ExaminePlugin extends Plugin
 	{
 		if (event.getType() == ChatMessageType.SERVER && event.getMessage().contains("Grimy"))
 		{
-			String name = new String(event.getMessage().replaceAll(".* x Grimy ", "").trim().toLowerCase());
-
-			if (herbs.containsKey(name))
+			Matcher match = herbPattern.matcher(event.getMessage().toLowerCase());
+			
+			if (match.matches())
 			{
-				PendingExamine pendingExamine = new PendingExamine();
-				pendingExamine.setWidgetId(CHATBOX.getId());
-				pendingExamine.setActionParam(Integer.parseInt(event.getMessage().replaceAll( " x Grimy .*", "")));
-				pendingExamine.setType(ExamineType.ITEM_BANK_EQ);
-				pendingExamine.setId(herbs.get(name));
-				pendingExamine.setCreated(Instant.now());
-				pending.push(pendingExamine);
+				String name = match.group(1);
+				
+				if (herbs.containsKey(name))
+				{
+					match = herbCount.matcher(event.getMessage().toLowerCase());
+					
+					if (match.matches())
+					{
+						PendingExamine pendingExamine = new PendingExamine();
+						pendingExamine.setWidgetId(CHATBOX.getId());
+						pendingExamine.setActionParam(Integer.parseInt(match.group(1)));
+						pendingExamine.setType(ExamineType.ITEM_BANK_EQ);
+						pendingExamine.setId(herbs.get(name));
+						pendingExamine.setCreated(Instant.now());
+						pending.push(pendingExamine);
+					}
+				}
 			}
 		}
 
