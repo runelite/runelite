@@ -141,7 +141,7 @@ public class CommandManager
 				}
 				resumed = true;
 
-				clientThread.invoke(() -> sendChatboxInput(chatType, typedText));
+				clientThread.invoke(() -> sendChatboxInput(this.getChatType(), this.getValue()));
 			}
 		};
 		boolean stop = false;

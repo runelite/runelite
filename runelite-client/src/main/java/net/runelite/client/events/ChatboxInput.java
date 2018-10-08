@@ -25,12 +25,14 @@
 package net.runelite.client.events;
 
 import lombok.Data;
+import lombok.AllArgsConstructor;
 
 @Data
+@AllArgsConstructor
 public abstract class ChatboxInput
 {
-	private final String value;
-	private final int chatType;
+	private String value;
+	private int chatType;
 
 	public abstract void resume();
 }
