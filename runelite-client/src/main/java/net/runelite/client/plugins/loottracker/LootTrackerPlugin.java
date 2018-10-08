@@ -37,18 +37,14 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.NPC;
-import net.runelite.api.Player;
-import net.runelite.api.SpriteID;
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.game.ItemManager;
@@ -89,6 +85,9 @@ public class LootTrackerPlugin extends Plugin
 	private LootTrackerPanel panel;
 	private NavigationButton navButton;
 	private String eventType;
+	private long lastNumberOfSupplyCrates;
+	private Item[] inventorySnapshop;
+	private static final String WINTERTODT_EVENT_TYPE = "Wintertodt Crate";
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
 	{
@@ -216,6 +215,74 @@ public class LootTrackerPlugin extends Plugin
 		{
 			log.debug("No items to find for Event: {} | Container: {}", eventType, container);
 		}
+	}
+
+	@Subscribe
+	public void itemContainerChanged(ItemContainerChanged event)
+	{
+		final ItemContainer container = event.getItemContainer();
+
+		if (container == client.getItemContainer(InventoryID.INVENTORY))
+		{
+			final Item[] items = container.getItems();
+
+			long numberOfSupplyCrates = Arrays.stream(items)
+					.filter(item -> item.getId() == ItemID.SUPPLY_CRATE)
+					.count();
+
+			// We want to make sure that we actually opened the supply crate, not banked it
+			if (numberOfSupplyCrates != lastNumberOfSupplyCrates && inventorySnapshop!= null)
+			{
+				log.debug("Number of supply crates in inventory has changed from {} to {}", lastNumberOfSupplyCrates, numberOfSupplyCrates);
+
+				// we lost a crate by opening it
+				if (numberOfSupplyCrates < lastNumberOfSupplyCrates && !bankWidgetIsOpen())
+				{
+					List<Item> loot = itemDelta(inventorySnapshop, items);
+
+					final Collection<ItemStack> lootStacks = loot.stream()
+							.map(item -> new ItemStack(item.getId(), item.getQuantity()))
+							.collect(Collectors.toList());
+
+					if (!lootStacks.isEmpty())
+					{
+						final LootTrackerItem[] entries = buildEntries(stack(lootStacks));
+						SwingUtilities.invokeLater(() -> panel.add(WINTERTODT_EVENT_TYPE, -1, entries));
+					}
+				}
+
+				lastNumberOfSupplyCrates = numberOfSupplyCrates;
+			}
+
+			inventorySnapshop = items;
+		}
+	}
+
+	private List<Item> itemDelta(Item[] oldItems, Item[] newItems)
+	{
+		List<Item> deltaItems = new ArrayList<>();
+
+		for (int i = 0; i < newItems.length; i++)
+		{
+			if (i > (oldItems.length - 1) ||
+					newItems[i].getId() != oldItems[i].getId() ||
+					newItems[i].getQuantity() != oldItems[i].getQuantity())
+			{
+				log.debug("new item {} quanitity {} ", newItems[i].getId(), newItems[i].getQuantity());
+				if (newItems[i].getId() != -1 && newItems[i].getQuantity() > 0)
+				{
+					deltaItems.add(newItems[i]);
+				}
+			}
+		}
+
+		return deltaItems;
+	}
+
+	private boolean bankWidgetIsOpen()
+	{
+		Widget bankWidget = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		return (bankWidget != null && !bankWidget.isHidden());
 	}
 
 	@Subscribe
