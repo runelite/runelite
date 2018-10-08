@@ -32,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import static net.runelite.api.ItemID.TEAK_CHEST;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
@@ -129,7 +130,7 @@ public class KingdomPlugin extends Plugin
 
 	private boolean hasCompletedQuest()
 	{
-		return client.getVar(Varbits.THRONE_OF_MISCELLANIA_QUEST) == 1;
+		return client.getVar(VarPlayer.THRONE_OF_MISCELLANIA) > 0;
 	}
 
 	static int getFavorPercent(int favor)

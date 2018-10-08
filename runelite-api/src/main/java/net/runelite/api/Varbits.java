@@ -342,7 +342,6 @@ public enum Varbits
 	 */
 	KINGDOM_FAVOR(72),
 	KINGDOM_COFFER(74),
-	THRONE_OF_MISCELLANIA_QUEST(359),
 
 	/**
 	 * The Hand in the Sand quest status
