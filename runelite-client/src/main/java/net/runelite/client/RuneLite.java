@@ -53,6 +53,7 @@ import net.runelite.client.discord.DiscordService;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.LootManager;
+import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.rs.ClientUpdateCheckMode;
@@ -140,6 +141,9 @@ public class RuneLite
 
 	@Inject
 	private Provider<LootManager> lootManager;
+
+	@Inject
+	private Provider<ChatboxPanelManager> chatboxPanelManager;
 
 	@Inject
 	@Nullable
@@ -278,6 +282,7 @@ public class RuneLite
 			eventBus.register(chatMessageManager.get());
 			eventBus.register(commandManager.get());
 			eventBus.register(lootManager.get());
+			eventBus.register(chatboxPanelManager.get());
 
 			// Add core overlays
 			WidgetOverlay.createOverlays(client).forEach(overlayManager::add);

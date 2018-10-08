@@ -1,15 +1,15 @@
 /*
- * Copyright (c) 2018, Ron Young <https://github.com/raiyni>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *     list of conditions and the following disclaimer.
+ *    list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -22,23 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.vars;
+package net.runelite.api.widgets;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import net.runelite.api.VarClientInt;
-
-/**
- * An enumeration of input types for {@link VarClientInt#INPUT_TYPE}.
- */
-@Getter
-@RequiredArgsConstructor
-public enum InputType
+public final class WidgetPositionMode
 {
-	RUNELITE_CHATBOX_PANEL(-3),
-	RUNELITE(-2),
-	NONE(0),
-	SEARCH(11);
-
-	private final int type;
+	public static final int ABSOLUTE_LEFT = 0;
+	public static final int ABSOLUTE_TOP = 0;
+	public static final int ABSOLUTE_CENTER = 1;
+	public static final int ABSOLUTE_RIGHT = 2;
+	public static final int ABSOLUTE_BOTTOM = 2;
+	public static final int LEFT_16384THS = 3;
+	public static final int TOP_16384THS = 3;
+	public static final int CENTER_16384THS = 4;
+	public static final int RIGHT_16384THS = 5;
+	public static final int BOTTOM_16384THS = 5;
 }
