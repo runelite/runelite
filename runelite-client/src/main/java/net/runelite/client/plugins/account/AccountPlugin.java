@@ -39,7 +39,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.RunnableExceptionLogger;
 
 @PluginDescriptor(
 	name = "Account",
@@ -108,7 +107,7 @@ public class AccountPlugin extends Plugin
 
 	private void loginClick()
 	{
-		executor.execute(RunnableExceptionLogger.wrap(sessionManager::login));
+		executor.execute(sessionManager::login);
 	}
 
 	private void logoutClick()
