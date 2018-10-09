@@ -65,17 +65,21 @@ class LootTrackerBox extends JPanel
 
 	@Getter
 	private long totalPrice;
-	@Getter
-	private int ignoredRecords;
-	private boolean showIgnoredItems;
+
+	private boolean hideIgnoredItems;
 	private BiConsumer<String, Boolean> onItemToggle;
 
-	LootTrackerBox(final ItemManager itemManager, final boolean showIgnoredItems, final String id, @Nullable final String subtitle, BiConsumer<String, Boolean> onItemToggle)
+	LootTrackerBox(
+		final ItemManager itemManager,
+		final String id,
+		@Nullable final String subtitle,
+		final boolean hideIgnoredItems,
+		final BiConsumer<String, Boolean> onItemToggle)
 	{
 		this.id = id;
 		this.itemManager = itemManager;
 		this.onItemToggle = onItemToggle;
-		this.showIgnoredItems = showIgnoredItems;
+		this.hideIgnoredItems = hideIgnoredItems;
 
 		setLayout(new BorderLayout(0, 1));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
@@ -107,9 +111,16 @@ class LootTrackerBox extends JPanel
 		add(itemContainer, BorderLayout.CENTER);
 	}
 
-	int getTotalKills()
+	/**
+	 * Returns total amount of kills, removing ignored kills when necessary
+	 *
+	 * @return total amount of kills
+	 */
+	long getTotalKills()
 	{
-		return records.size();
+		return hideIgnoredItems
+			? records.stream().filter(r -> !Arrays.stream(r.getItems()).allMatch(LootTrackerItem::isIgnored)).count()
+			: records.size();
 	}
 
 	/**
@@ -171,23 +182,16 @@ class LootTrackerBox extends JPanel
 		final List<LootTrackerItem> allItems = new ArrayList<>();
 		final List<LootTrackerItem> items = new ArrayList<>();
 		totalPrice = 0;
-		ignoredRecords = 0;
 
 		for (LootTrackerRecord record : records)
 		{
 			allItems.addAll(Arrays.asList(record.getItems()));
-
-			/* If all the items in this record are ignored */
-			if (!showIgnoredItems && Arrays.stream(record.getItems()).allMatch(i -> i.isIgnored()))
-			{
-				ignoredRecords++;
-			}
 		}
 
-		if (!showIgnoredItems)
+		if (hideIgnoredItems)
 		{
 			/* If all the items in this box are ignored */
-			boolean hideBox = allItems.stream().allMatch(i -> i.isIgnored());
+			boolean hideBox = allItems.stream().allMatch(LootTrackerItem::isIgnored);
 			setVisible(!hideBox);
 
 			if (hideBox)
@@ -198,10 +202,12 @@ class LootTrackerBox extends JPanel
 
 		for (final LootTrackerItem entry : allItems)
 		{
-			if (!entry.isIgnored())
+			if (entry.isIgnored() && hideIgnoredItems)
 			{
-				totalPrice += entry.getPrice();
+				continue;
 			}
+
+			totalPrice += entry.getPrice();
 
 			int quantity = 0;
 			for (final LootTrackerItem i : items)
@@ -212,11 +218,6 @@ class LootTrackerBox extends JPanel
 					items.remove(i);
 					break;
 				}
-			}
-
-			if (entry.isIgnored() && !showIgnoredItems)
-			{
-				continue;
 			}
 
 			if (quantity > 0)

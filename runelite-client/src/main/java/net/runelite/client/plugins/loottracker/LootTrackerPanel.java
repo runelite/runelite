@@ -96,7 +96,8 @@ class LootTrackerPanel extends PluginPanel
 	private final ItemManager itemManager;
 	private final LootTrackerPlugin plugin;
 
-	private boolean groupLoot, showIgnoredItems;
+	private boolean groupLoot;
+	private boolean hideIgnoredItems;
 	private String currentView;
 
 	static
@@ -129,7 +130,7 @@ class LootTrackerPanel extends PluginPanel
 	{
 		this.itemManager = itemManager;
 		this.plugin = plugin;
-		this.showIgnoredItems = true;
+		this.hideIgnoredItems = true;
 
 		setBorder(new EmptyBorder(6, 6, 6, 6));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -202,21 +203,19 @@ class LootTrackerPanel extends PluginPanel
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
-				showIgnoredItems = !showIgnoredItems;
-				viewHiddenBtn.setIcon(showIgnoredItems ? VISIBLE_ICON : INVISIBLE_ICON);
-				rebuild();
+				changeItemHiding(!hideIgnoredItems);
 			}
 
 			@Override
 			public void mouseExited(MouseEvent mouseEvent)
 			{
-				viewHiddenBtn.setIcon(showIgnoredItems ? VISIBLE_ICON : INVISIBLE_ICON);
+				viewHiddenBtn.setIcon(hideIgnoredItems ? INVISIBLE_ICON : VISIBLE_ICON);
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent mouseEvent)
 			{
-				viewHiddenBtn.setIcon(showIgnoredItems ? VISIBLE_ICON_HOVER : INVISIBLE_ICON_HOVER);
+				viewHiddenBtn.setIcon(hideIgnoredItems ? INVISIBLE_ICON_HOVER : VISIBLE_ICON_HOVER);
 			}
 		});
 
@@ -224,6 +223,7 @@ class LootTrackerPanel extends PluginPanel
 		viewControls.add(singleLootBtn);
 		viewControls.add(viewHiddenBtn);
 		changeGrouping(true);
+		changeItemHiding(true);
 
 		final JPanel leftTitleContainer = new JPanel(new BorderLayout(5, 0));
 		leftTitleContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -342,6 +342,18 @@ class LootTrackerPanel extends PluginPanel
 	}
 
 	/**
+	 * Changes item hiding mode of panel
+	 *
+	 * @param hide if ignored items should be hidden or not
+	 */
+	private void changeItemHiding(boolean hide)
+	{
+		hideIgnoredItems = hide;
+		rebuild();
+		viewHiddenBtn.setIcon(hideIgnoredItems ? VISIBLE_ICON : INVISIBLE_ICON);
+	}
+
+	/**
 	 * After an item changed it's ignored state, iterate all the records and make
 	 * sure all items of the same name also get updated
 	 */
@@ -357,12 +369,14 @@ class LootTrackerPanel extends PluginPanel
 				}
 			}
 		}
+
+		rebuild();
 	}
 
 	/**
 	 * Rebuilds all the boxes from scratch using existing listed records, depending on the grouping mode.
 	 */
-	void rebuild()
+	private void rebuild()
 	{
 		logsContainer.removeAll();
 		boxes.clear();
@@ -405,12 +419,7 @@ class LootTrackerPanel extends PluginPanel
 		overallPanel.setVisible(true);
 
 		// Create box
-		final LootTrackerBox box = new LootTrackerBox(itemManager, showIgnoredItems, record.getTitle(), record.getSubTitle(), (name, ignored) ->
-		{
-			plugin.toggleItem(name, ignored);
-			updateIgnoredRecords();
-			rebuild();
-		});
+		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getSubTitle(), hideIgnoredItems, plugin::toggleItem);
 		box.combine(record);
 
 		// Create popup menu
@@ -454,9 +463,8 @@ class LootTrackerPanel extends PluginPanel
 	private void updateOverall()
 	{
 		final long overallGp = boxes.stream().mapToLong(LootTrackerBox::getTotalPrice).sum();
-		final int overallKills = boxes.stream().mapToInt(LootTrackerBox::getTotalKills).sum();
-		final int overallIgnoredKills = boxes.stream().mapToInt(LootTrackerBox::getIgnoredRecords).sum();
-		overallKillsLabel.setText(htmlLabel("Total count: ", overallKills - overallIgnoredKills));
+		final long overallKills = boxes.stream().mapToLong(LootTrackerBox::getTotalKills).sum();
+		overallKillsLabel.setText(htmlLabel("Total count: ", overallKills));
 		overallGpLabel.setText(htmlLabel("Total value: ", overallGp));
 	}
 

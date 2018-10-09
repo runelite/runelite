@@ -153,7 +153,6 @@ public class LootTrackerPlugin extends Plugin
 		{
 			ignoredItems = COMMA_SPLITTER.splitToList(config.getIgnoredItems());
 			panel.updateIgnoredRecords();
-			panel.rebuild();
 		}
 	}
 
@@ -305,6 +304,7 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		config.setIgnoredItems(COMMA_JOINER.join(ignoredItemSet));
+		panel.updateIgnoredRecords();
 	}
 
 	boolean isIgnored(String name)
