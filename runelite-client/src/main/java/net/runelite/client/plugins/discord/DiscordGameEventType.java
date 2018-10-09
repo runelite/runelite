@@ -218,7 +218,7 @@ enum DiscordGameEventType
 	MG_BARROWS("Barrows", DiscordAreaType.MINIGAMES, 14131, 14231),
 	MG_BLAST_FURNACE("Blast Furnace", DiscordAreaType.MINIGAMES, 7757),
 	MG_BRIMHAVEN_AGILITY_ARENA("Brimhaven Agility Arena", DiscordAreaType.MINIGAMES, 11157),
-	MG_BURTHOPE_GAMES_ROOM("Burthope Games Room", DiscordAreaType.MINIGAMES, 8781),
+	MG_BURTHORPE_GAMES_ROOM("Burthorpe Games Room", DiscordAreaType.MINIGAMES, 8781),
 	MG_CASTLE_WARS("Castle Wars", DiscordAreaType.MINIGAMES, 9520),
 	MG_CLAN_WARS("Clan Wars", DiscordAreaType.MINIGAMES, 13135, 13134, 13133, 13131, 13130, 13387, 13386),
 	MG_DUEL_ARENA("Duel Arena", DiscordAreaType.MINIGAMES, 13362),
