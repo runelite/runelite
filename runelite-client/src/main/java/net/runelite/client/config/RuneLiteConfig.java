@@ -42,21 +42,10 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "resizeToMultiple",
-		name = "Resize to",
-		description = "Set the current client size to a multiple of the minimum size",
-		position = 11
-	)
-	default ResizeScaleType resizeToMultiple()
-	{
-		return ResizeScaleType.MULT_NOT_SET;
-	}
-
-	@ConfigItem(
 		keyName = "automaticResizeType",
 		name = "Resize type",
 		description = "Choose how the window should resize when opening and closing panels",
-		position = 12
+		position = 11
 	)
 	default ExpandResizeType automaticResizeType()
 	{
@@ -67,7 +56,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "lockWindowSize",
 		name = "Lock window size",
 		description = "Determines if the window resizing is allowed or not",
-		position = 13
+		position = 12
 	)
 	default boolean lockWindowSize()
 	{
@@ -78,7 +67,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "containInScreen",
 		name = "Contain in screen",
 		description = "Makes the client stay contained in the screen when attempted to move out of it.<br>Note: Only works if custom chrome is enabled.",
-		position = 14
+		position = 13
 	)
 	default boolean containInScreen()
 	{
@@ -89,7 +78,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "rememberScreenBounds",
 		name = "Remember client position",
 		description = "Save the position and size of the client after exiting",
-		position = 15
+		position = 14
 	)
 	default boolean rememberScreenBounds()
 	{
@@ -101,7 +90,7 @@ public interface RuneLiteConfig extends Config
 		name = "Enable custom window chrome",
 		description = "Use Runelite's custom window title and borders.",
 		warning = "Please restart your client after changing this setting",
-		position = 16
+		position = 15
 	)
 	default boolean enableCustomChrome()
 	{
@@ -112,7 +101,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "gameAlwaysOnTop",
 		name = "Enable client always on top",
 		description = "The game will always be on the top of the screen",
-		position = 17
+		position = 16
 	)
 	default boolean gameAlwaysOnTop()
 	{
@@ -123,7 +112,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "warningOnExit",
 		name = "Display warning on exit",
 		description = "Toggles a warning popup when trying to exit the client",
-		position = 18
+		position = 17
 	)
 	default WarningOnExit warningOnExit()
 	{

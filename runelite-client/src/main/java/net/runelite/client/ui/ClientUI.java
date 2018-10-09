@@ -65,7 +65,6 @@ import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ExpandResizeType;
 import net.runelite.client.config.Keybind;
-import net.runelite.client.config.ResizeScaleType;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.config.WarningOnExit;
 import net.runelite.client.events.NavigationButtonAdded;
@@ -703,13 +702,6 @@ public class ClientUI
 		if (client == null)
 		{
 			return;
-		}
-
-		if (config.resizeToMultiple() != ResizeScaleType.MULT_NOT_SET) {
-			int width = (int)(Constants.GAME_FIXED_WIDTH * config.resizeToMultiple().getMultiple());
-			int height = (int)(Constants.GAME_FIXED_HEIGHT * config.resizeToMultiple().getMultiple());
-			configManager.setConfiguration(CONFIG_GROUP, "gameSize", new Dimension(width, height));
-			configManager.setConfiguration(CONFIG_GROUP, "resizeToMultiple", ResizeScaleType.MULT_NOT_SET);
 		}
 
 		// The upper bounds are defined by the applet's max size

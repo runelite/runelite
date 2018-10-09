@@ -35,7 +35,8 @@ public interface StretchedFixedModeConfig extends Config
 	@ConfigItem(
 		keyName = "keepAspectRatio",
 		name = "Keep aspect ratio",
-		description = "Keeps the aspect ratio when stretching"
+		description = "Keeps the aspect ratio when stretching",
+		position = 10
 	)
 	default boolean keepAspectRatio()
 	{
@@ -45,7 +46,8 @@ public interface StretchedFixedModeConfig extends Config
 	@ConfigItem(
 		keyName = "increasedPerformance",
 		name = "Increased performance mode",
-		description = "Uses a fast algorithm when stretching, lowering quality but increasing performance"
+		description = "Uses a fast algorithm when stretching, lowering quality but increasing performance",
+		position = 11
 	)
 	default boolean increasedPerformance()
 	{
@@ -55,10 +57,23 @@ public interface StretchedFixedModeConfig extends Config
 	@ConfigItem(
 		keyName = "integerScaling",
 		name = "Integer Scaling",
-		description = "Forces use of a whole number scale factor"
+		description = "Forces use of a whole number scale factor",
+		position = 12
 	)
 	default boolean integerScaling()
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "resizeToMultiple",
+		name = "Resize client to",
+		description = "Set the current client size to a multiple of the minimum size",
+		position = 13
+	)
+	default ResizeScaleType resizeToMultiple()
+	{
+		return ResizeScaleType.MULT_NOT_SET;
+	}
+
 }
