@@ -69,6 +69,7 @@ class SkillCalculator extends JPanel
 	private final IconTextField searchBar = new IconTextField();
 
 	private SkillData skillData;
+	private SkillDataEntry customSkillDataEntry;
 	private int currentLevel = 1;
 	private int currentXP = Experience.getXpForLevel(currentLevel);
 	private int targetLevel = currentLevel + 1;
@@ -83,6 +84,12 @@ class SkillCalculator extends JPanel
 		this.itemManager = itemManager;
 
 		combinedActionSlot = new UICombinedActionSlot(spriteManager);
+
+		customSkillDataEntry = new SkillDataEntry();
+		customSkillDataEntry.setXp(0);
+		customSkillDataEntry.setIcon(11203);
+		customSkillDataEntry.setLevel(1);
+		customSkillDataEntry.setName("Custom Action");
 
 		searchBar.setIcon(IconTextField.Icon.SEARCH);
 		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 30));
@@ -107,6 +114,7 @@ class SkillCalculator extends JPanel
 
 		uiInput.getUiFieldTargetLevel().addActionListener(e -> onFieldTargetLevelUpdated());
 		uiInput.getUiFieldTargetXP().addActionListener(e -> onFieldTargetXPUpdated());
+		uiInput.getUiFieldCustomActionXP().addActionListener(e -> onFieldCustomActionUpdated());
 	}
 
 	void openCalculator(CalculatorType calculatorType)
@@ -248,6 +256,8 @@ class SkillCalculator extends JPanel
 		// Wipe the list of references to the slot components.
 		uiActionSlots.clear();
 
+		skillData.getActions()[0] = customSkillDataEntry;
+
 		// Create new components for the action slots.
 		for (SkillDataEntry action : skillData.getActions())
 		{
@@ -371,6 +381,13 @@ class SkillCalculator extends JPanel
 		targetXP = enforceXPBounds(uiInput.getTargetXPInput());
 		targetLevel = Experience.getLevelForXp(targetXP);
 		updateInputFields();
+	}
+
+	private void onFieldCustomActionUpdated()
+	{
+		customSkillDataEntry.setXp(enforceXPBounds(uiInput.getCustomActionXP()));
+		uiInput.setCustomActionXP(enforceXPBounds(uiInput.getCustomActionXP()));
+		calculate();
 	}
 
 	private static int enforceSkillBounds(int input)
