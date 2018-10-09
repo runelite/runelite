@@ -397,6 +397,7 @@ public class WidgetID
 		static final int EMOTE_ICON = 45;
 		static final int MUSIC_TAB = 40;
 		static final int MUSIC_ICON = 46;
+		static final int MAGIC_ICON = 63;
 	}
 
 	static class Chatbox
