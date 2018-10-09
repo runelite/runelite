@@ -656,6 +656,79 @@ public class TimersPlugin extends Plugin
 	{
 		Actor actor = event.getActor();
 
+		if (config.showFreezes())
+		{
+			if (actor.getGraphic() == BIND.getGraphicId())
+			{
+				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
+					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
+				{
+//					createGameTimer(HALFBIND);
+				}
+				else
+				{
+//					createGameTimer(BIND);
+				}
+			}
+
+			if (actor.getGraphic() == SNARE.getGraphicId())
+			{
+				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
+					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
+				{
+//					createGameTimer(HALFSNARE);
+				}
+				else
+				{
+//					createGameTimer(SNARE);
+				}
+			}
+
+			if (actor.getGraphic() == ENTANGLE.getGraphicId())
+			{
+				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
+					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
+				{
+//					createGameTimer(HALFENTANGLE);
+				}
+				else
+				{
+//					createGameTimer(ENTANGLE);
+				}
+			}
+
+			if (actor.getGraphic() == ICERUSH.getGraphicId())
+			{
+//				removeGameTimer(ICEBARRAGE);
+//				freezeTimer = createGameTimer(ICERUSH);
+				System.out.println("ICERUSH");
+				System.out.println(actor.getName());
+			}
+
+			if (actor.getGraphic() == ICEBURST.getGraphicId())
+			{
+//				removeGameTimer(ICEBARRAGE);
+//				freezeTimer = createGameTimer(ICEBURST);
+				System.out.println("ICEBURST");
+				System.out.println(actor.getName());
+			}
+
+			if (actor.getGraphic() == ICEBLITZ.getGraphicId())
+			{
+				System.out.println("ICEBLITZ");
+				System.out.println(actor.getName());
+//				removeGameTimer(ICEBARRAGE);
+//				freezeTimer = createGameTimer(ICEBLITZ);
+			}
+			if (actor.getGraphic() == ICEBARRAGE.getGraphicId())
+			{
+				System.out.println("ICEBARRAGE");
+				System.out.println(actor.getName());
+//				removeGameTimer(ICEBARRAGE);
+//				freezeTimer = createGameTimer(ICEBLITZ);
+			}
+		}
+
 		if (actor != client.getLocalPlayer())
 		{
 			return;
