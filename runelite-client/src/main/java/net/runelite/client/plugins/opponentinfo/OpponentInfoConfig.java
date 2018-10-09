@@ -55,7 +55,7 @@ public interface OpponentInfoConfig extends Config
 
 	@ConfigItem(
 		keyName = "hideTargetsTarget",
-		name = "Hide targets target",
+		name = "Hide target's target",
 		description = "Configures whether your target's target will be visible",
 		position = 2
 	)
