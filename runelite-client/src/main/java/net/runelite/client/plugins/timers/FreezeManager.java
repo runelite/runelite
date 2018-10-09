@@ -29,7 +29,7 @@ public class FreezeManager
 		}
 		else
 		{
-			FreezeInfo freezeInfo = new FreezeInfo(gameTimer, actor.getWorldLocation());
+			FreezeInfo freezeInfo = new FreezeInfo(gameTimer, actor);
 			freezes.put(actor.getName(), freezeInfo);
 		}
 

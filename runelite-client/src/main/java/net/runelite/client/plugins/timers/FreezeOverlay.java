@@ -1,13 +1,12 @@
 package net.runelite.client.plugins.timers;
 
-import com.google.common.base.Strings;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import net.runelite.api.Point;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.api.Client;
+//import net.runelite.api.Client;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -24,31 +23,25 @@ public class FreezeOverlay extends Overlay
 	private final ItemManager itemManager;
 	private final SpriteManager spriteManager;
 	private final FreezeManager freezeManager;
-	private final Client client;
+//	private final Client client;
 
 	@Inject
-	private InfoBoxOverlay(
+	private FreezeOverlay(
 		FreezeManager freezeManager,
-		Client client,
+//		Client client,
 		SpriteManager spriteManager,
 		ItemManager itemManager)
 	{
-		this.client = client;
+//		this.client = client;
 		this.itemManager = itemManager;
 		this.spriteManager = spriteManager;
 		this.freezeManager = freezeManager;
 	}
 
 	@Override
-	public void render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics)
 	{
 		final ConcurrentMap<String, FreezeInfo> freezeInfos = freezeManager.getFreezeInfo();
-
-		if (freezeInfos.size() == 0)
-		{
-			return null;
-		}
-
 
 		for (Map.Entry<String, FreezeInfo> entry : freezeInfos.entrySet())
 		{
@@ -65,6 +58,7 @@ public class FreezeOverlay extends Overlay
 				OverlayUtil.renderImageLocation(graphics, imageLocation, freezeImage);
 			}
 		}
+		return null;
 
 	}
 

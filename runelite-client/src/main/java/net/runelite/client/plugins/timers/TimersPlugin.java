@@ -68,6 +68,7 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.timers.GameTimer.*;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
@@ -132,10 +133,25 @@ public class TimersPlugin extends Plugin
 	@Inject
 	private InfoBoxManager infoBoxManager;
 
+	@Inject
+	private FreezeManager freezeManager;
+
+	@Inject
+	private FreezeOverlay freezeOverlay;
+
+	@Inject
+	private OverlayManager overlayManager;
+
 	@Provides
 	TimersConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(TimersConfig.class);
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(freezeOverlay);
 	}
 
 	@Override
@@ -148,6 +164,7 @@ public class TimersPlugin extends Plugin
 		lastAnimation = -1;
 		loggedInRace = false;
 		widgetHiddenChangedOnPvpWorld = false;
+		overlayManager.remove(freezeOverlay);
 	}
 
 	@Subscribe
@@ -663,11 +680,11 @@ public class TimersPlugin extends Plugin
 				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
 					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
 				{
-//					createGameTimer(HALFBIND);
+					freezeManager.put(actor, HALFBIND);
 				}
 				else
 				{
-//					createGameTimer(BIND);
+					freezeManager.put(actor, BIND);
 				}
 			}
 
@@ -676,11 +693,11 @@ public class TimersPlugin extends Plugin
 				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
 					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
 				{
-//					createGameTimer(HALFSNARE);
+					freezeManager.put(actor, HALFSNARE);
 				}
 				else
 				{
-//					createGameTimer(SNARE);
+					freezeManager.put(actor, SNARE);
 				}
 			}
 
@@ -689,43 +706,39 @@ public class TimersPlugin extends Plugin
 				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
 					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
 				{
-//					createGameTimer(HALFENTANGLE);
+					freezeManager.put(actor, HALFENTANGLE);
 				}
 				else
 				{
-//					createGameTimer(ENTANGLE);
+					freezeManager.put(actor, ENTANGLE);
 				}
 			}
 
 			if (actor.getGraphic() == ICERUSH.getGraphicId())
 			{
-//				removeGameTimer(ICEBARRAGE);
-//				freezeTimer = createGameTimer(ICERUSH);
+				freezeManager.put(actor, ICERUSH);
 				System.out.println("ICERUSH");
 				System.out.println(actor.getName());
 			}
 
 			if (actor.getGraphic() == ICEBURST.getGraphicId())
 			{
-//				removeGameTimer(ICEBARRAGE);
-//				freezeTimer = createGameTimer(ICEBURST);
+				freezeManager.put(actor, ICEBURST);
 				System.out.println("ICEBURST");
 				System.out.println(actor.getName());
 			}
 
 			if (actor.getGraphic() == ICEBLITZ.getGraphicId())
 			{
+				freezeManager.put(actor, ICEBLITZ);
 				System.out.println("ICEBLITZ");
 				System.out.println(actor.getName());
-//				removeGameTimer(ICEBARRAGE);
-//				freezeTimer = createGameTimer(ICEBLITZ);
 			}
 			if (actor.getGraphic() == ICEBARRAGE.getGraphicId())
 			{
+				freezeManager.put(actor, ICEBARRAGE);
 				System.out.println("ICEBARRAGE");
 				System.out.println(actor.getName());
-//				removeGameTimer(ICEBARRAGE);
-//				freezeTimer = createGameTimer(ICEBLITZ);
 			}
 		}
 
