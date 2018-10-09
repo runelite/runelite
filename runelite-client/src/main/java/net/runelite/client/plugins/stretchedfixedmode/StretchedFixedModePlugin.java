@@ -105,7 +105,8 @@ public class StretchedFixedModePlugin extends Plugin
 		client.setStretchedKeepAspectRatio(config.keepAspectRatio());
 		client.setStretchedFast(config.increasedPerformance());
 
-		if (config.resizeToMultiple() != ResizeScaleType.MULT_NOT_SET) {
+		if (config.resizeToMultiple() != ResizeScaleType.MULT_NOT_SET)
+		{
 			int width = (int)(Constants.GAME_FIXED_WIDTH * config.resizeToMultiple().getMultiple());
 			int height = (int)(Constants.GAME_FIXED_HEIGHT * config.resizeToMultiple().getMultiple());
 			configManager.setConfiguration("runelite", "gameSize", new Dimension(width, height));
