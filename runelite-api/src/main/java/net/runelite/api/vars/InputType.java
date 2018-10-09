@@ -1,15 +1,15 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Ron Young <https://github.com/raiyni>
  * All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ *     list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -22,31 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.vars;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import net.runelite.api.VarClientInt;
 
 /**
- * An enumeration of integer local variables.
+ * An enumeration of input types for {@link VarClientInt#INPUT_TYPE}.
  */
-@AllArgsConstructor
 @Getter
-public enum VarClientInt
+@RequiredArgsConstructor
+public enum InputType
 {
-	TOOLTIP_TIMEOUT(1),
+	RUNELITE(-2),
+	NONE(0),
+	SEARCH(11);
 
-	/**
-	 * 0 = no tooltip displayed
-	 * 1 = tooltip displaying
-	 */
-	TOOLTIP_VISIBLE(2),
-
-	INPUT_TYPE(5),
-
-	MEMBERSHIP_STATUS(103),
-
-	WORLD_MAP_SEARCH_FOCUSED(190);
-
-	private final int index;
+	private final int type;
 }

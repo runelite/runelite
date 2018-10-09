@@ -244,6 +244,11 @@ public class ConfigManager
 		return t;
 	}
 
+	public List<String> getConfigurationKeys(String prefix)
+	{
+		return properties.keySet().stream().filter(v -> ((String) v).startsWith(prefix)).map(String.class::cast).collect(Collectors.toList());
+	}
+
 	public String getConfiguration(String groupName, String key)
 	{
 		return properties.getProperty(groupName + "." + key);
