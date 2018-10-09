@@ -1,12 +1,14 @@
 package net.runelite.client.plugins.timers;
 
 import lombok.Builder;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.plugins.timers.GameTimer;
+import lombok.Getter;
+import net.runelite.api.Actor;
 
 @Builder
 public class FreezeInfo
 {
+	@Getter
 	private final GameTimer timer;
-	private final WorldPoint worldPoint;
+	@Getter
+	private final Actor actor;
 }

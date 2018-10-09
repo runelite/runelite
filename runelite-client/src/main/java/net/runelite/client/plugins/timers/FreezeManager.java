@@ -2,6 +2,7 @@ package net.runelite.client.plugins.timers;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 import net.runelite.api.Actor;
 import net.runelite.client.plugins.timers.FreezeInfo;
@@ -9,15 +10,34 @@ import net.runelite.client.plugins.timers.FreezeInfo;
 public class FreezeManager
 {
 	private final Cache<String, FreezeInfo> freezes = CacheBuilder.newBuilder()
-		.maximumSize(100)
+		.maximumSize(200)
 		.expireAfterWrite(1, TimeUnit.HOURS)
 		.build();
 
 	public void put(Actor actor, GameTimer gameTimer)
 	{
-		// TODO: create FreezeInfo from GameTimer
-		FreezeInfo freezeInfo = new FreezeInfo(gameTimer, actor.getWorldLocation());
-		freezes.put(actor.getName(), freezeInfo);
+		FreezeInfo previousFreezeInfo = freezes.getIfPresent(actor.getName());
+
+		// conditions to skip putting
+		// 1. already entry inside
+		// AND... Either of the following
+		// 2. worldPoint hasnt changed
+		// 3. timer hasnt run out
+		if (previousFreezeInfo != null)// && (actor.getWorldLocation().equals(previousFreezeInfo.getWorldPoint()) || ))
+		{
+			return;
+		}
+		else
+		{
+			FreezeInfo freezeInfo = new FreezeInfo(gameTimer, actor.getWorldLocation());
+			freezes.put(actor.getName(), freezeInfo);
+		}
+
+	}
+
+	public ConcurrentMap<String, FreezeInfo> getFreezeInfo()
+	{
+		return freezes.asMap();
 	}
 
 }
