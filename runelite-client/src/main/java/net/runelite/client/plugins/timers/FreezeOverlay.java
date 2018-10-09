@@ -10,11 +10,14 @@ import javax.inject.Singleton;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import  net.runelite.client.plugins.timers.FreezeManager;
 import java.util.concurrent.ConcurrentMap;
 import java.util.Map;
 import net.runelite.api.Actor;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
 
 
 @Singleton
@@ -32,7 +35,12 @@ public class FreezeOverlay extends Overlay
 		SpriteManager spriteManager,
 		ItemManager itemManager)
 	{
+		System.out.println("HERE1");
 //		this.client = client;
+		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		setPriority(OverlayPriority.MED);
+
 		this.itemManager = itemManager;
 		this.spriteManager = spriteManager;
 		this.freezeManager = freezeManager;
@@ -41,15 +49,17 @@ public class FreezeOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final ConcurrentMap<String, FreezeInfo> freezeInfos = freezeManager.getFreezeInfo();
-
+		ConcurrentMap<String, FreezeInfo> freezeInfos = freezeManager.getFreezeInfo();
 		for (Map.Entry<String, FreezeInfo> entry : freezeInfos.entrySet())
 		{
 			String username = entry.getKey();
 			FreezeInfo info = entry.getValue();
 			Actor actor = info.getActor();
 
-			int offset = actor.getLogicalHeight() - 80;
+			// TODO: Resize image
+			// TODO: Add timer
+
+			int offset = actor.getLogicalHeight() - 40;
 			BufferedImage freezeImage = info.getTimer().getImage(itemManager, spriteManager);
 			Point imageLocation = actor.getCanvasImageLocation(freezeImage, offset);
 
