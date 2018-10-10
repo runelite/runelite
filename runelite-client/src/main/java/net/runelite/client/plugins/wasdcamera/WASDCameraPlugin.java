@@ -166,7 +166,7 @@ public class WASDCameraPlugin extends Plugin
 	{
 		if (KEY_SHOW_USERNAME.equals(ev.getKey()) && !typing)
 		{
-		    lockChat();
+			lockChat();
 		}
 	}
 
@@ -199,16 +199,18 @@ public class WASDCameraPlugin extends Plugin
 		}
 	}
 
-    /**
-     * Helper function used to update the chatbox input field once the chat
-     * has been locked.
-     *
-     * @param chatboxInput Non-null chatbox input widget.
-     */
-	private void hideChatInput(@Nonnull Widget chatboxInput) {
+	/**
+	 * Helper function used to update the chatbox input field once the chat
+	 * has been locked.
+	 *
+	 * @param chatboxInput Non-null chatbox input widget.
+	 */
+	private void hideChatInput(@Nonnull Widget chatboxInput)
+	{
 		String prefix = "";
 
-		if (config.showUsername()) {
+		if (config.showUsername())
+		{
 			prefix = client.getLocalPlayer().getName() + ": ";
 		}
 
