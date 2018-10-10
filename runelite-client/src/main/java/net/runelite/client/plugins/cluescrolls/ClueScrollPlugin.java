@@ -72,7 +72,7 @@ import net.runelite.client.plugins.cluescrolls.clues.CoordinateClue;
 import net.runelite.client.plugins.cluescrolls.clues.CrypticClue;
 import net.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import net.runelite.client.plugins.cluescrolls.clues.FairyRingClue;
-import net.runelite.client.plugins.cluescrolls.clues.HotColdClue;
+//import net.runelite.client.plugins.cluescrolls.clues.HotColdClue;
 import net.runelite.client.plugins.cluescrolls.clues.LocationClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.LocationsClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.MapClue;
@@ -175,13 +175,13 @@ public class ClueScrollPlugin extends Plugin
 			return;
 		}
 
-		if (clue instanceof HotColdClue)
+		/*if (clue instanceof HotColdClue)
 		{
 			if (((HotColdClue) clue).update(event.getMessage(), this))
 			{
 				worldMapPointsSet = false;
 			}
-		}
+		}*/
 
 		if (!event.getMessage().equals("The strange device cools as you find your treasure.")
 			&& !event.getMessage().equals("Well done, you've completed the Treasure Trail!"))
@@ -467,12 +467,12 @@ public class ClueScrollPlugin extends Plugin
 			return fairyRingClue;
 		}
 
-		final HotColdClue hotColdClue = HotColdClue.forText(text);
+		/*final HotColdClue hotColdClue = HotColdClue.forText(text);
 
 		if (hotColdClue != null)
 		{
 			return hotColdClue;
-		}
+		}*/
 
 		// three step cryptic clues need unedited text to check which steps are already done
 		final ThreeStepCrypticClue threeStepCrypticClue = ThreeStepCrypticClue.forText(text, clueScrollText.getText());
