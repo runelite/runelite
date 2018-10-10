@@ -199,6 +199,7 @@ public class ConfigManager
 				if (split.length != 2)
 				{
 					log.debug("Properties key malformed!: {}", groupAndKey);
+					properties.remove(groupAndKey);
 					return;
 				}
 
