@@ -549,7 +549,7 @@ public class TabInterface
 	{
 		if (activeTab != null && activeTab.getTag().equals(tag))
 		{
-			doSearch(InputType.SEARCH, "");
+			resetSearch();
 		}
 
 		tabManager.remove(tag);
