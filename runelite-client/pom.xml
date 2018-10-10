@@ -149,6 +149,11 @@
 			<version>${guice.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-translate</artifactId>
+			<version>1.40.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
