@@ -57,6 +57,7 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
@@ -556,6 +557,18 @@ public class TimersPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onPlayerDespawned(PlayerDespawned playerDespawned)
+	{
+		final Player player = playerDespawned.getPlayer();
+		// All despawns ok: death, teleports, log out, runs away from screen
+		if (config.showFreezes())
+		{
+			freezeManager.remove(player);
+		}
+
+	}
+
+	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		loggedInRace = false;
@@ -574,6 +587,9 @@ public class TimersPlugin extends Plugin
 		}
 
 		lastPoint = currentWorldPoint;
+
+		freezeManager.prune();
+
 
 		if (!widgetHiddenChangedOnPvpWorld)
 		{
@@ -717,28 +733,20 @@ public class TimersPlugin extends Plugin
 			if (actor.getGraphic() == ICERUSH.getGraphicId())
 			{
 				freezeManager.put(actor, ICERUSH);
-				System.out.println("ICERUSH");
-				System.out.println(actor.getName());
 			}
 
 			if (actor.getGraphic() == ICEBURST.getGraphicId())
 			{
 				freezeManager.put(actor, ICEBURST);
-				System.out.println("ICEBURST");
-				System.out.println(actor.getName());
 			}
 
 			if (actor.getGraphic() == ICEBLITZ.getGraphicId())
 			{
 				freezeManager.put(actor, ICEBLITZ);
-				System.out.println("ICEBLITZ");
-				System.out.println(actor.getName());
 			}
 			if (actor.getGraphic() == ICEBARRAGE.getGraphicId())
 			{
 				freezeManager.put(actor, ICEBARRAGE);
-				System.out.println("ICEBARRAGE");
-				System.out.println(actor.getName());
 			}
 		}
 

@@ -1,12 +1,14 @@
 package net.runelite.client.plugins.timers;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import net.runelite.api.Point;
 import java.awt.image.BufferedImage;
+import net.runelite.api.Point;
+//import java.awt.image.BufferedImage;
+import java.awt.Image;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-//import net.runelite.api.Client;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -18,54 +20,55 @@ import java.util.Map;
 import net.runelite.api.Actor;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.TextComponent;
 
 
 @Singleton
 public class FreezeOverlay extends Overlay
 {
-	private final ItemManager itemManager;
-	private final SpriteManager spriteManager;
 	private final FreezeManager freezeManager;
-//	private final Client client;
 
 	@Inject
-	private FreezeOverlay(
-		FreezeManager freezeManager,
-//		Client client,
-		SpriteManager spriteManager,
-		ItemManager itemManager)
+	private SpriteManager spriteManager;
+
+	@Inject
+	private ItemManager itemManager;
+
+	@Inject
+	private FreezeOverlay(FreezeManager freezeManager)
 	{
-		System.out.println("HERE1");
-//		this.client = client;
+		this.freezeManager = freezeManager;
+
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPriority(OverlayPriority.MED);
-
-		this.itemManager = itemManager;
-		this.spriteManager = spriteManager;
-		this.freezeManager = freezeManager;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		ConcurrentMap<String, FreezeInfo> freezeInfos = freezeManager.getFreezeInfo();
-		for (Map.Entry<String, FreezeInfo> entry : freezeInfos.entrySet())
+		for (Map.Entry<String, FreezeInfo> entry : freezeManager.getFreezeInfo())
 		{
-			String username = entry.getKey();
 			FreezeInfo info = entry.getValue();
 			Actor actor = info.getActor();
 
 			// TODO: Resize image
-			// TODO: Add timer
+			// look at InfoBoxManager
 
-			int offset = actor.getLogicalHeight() - 40;
-			BufferedImage freezeImage = info.getTimer().getImage(itemManager, spriteManager);
+			int offset = actor.getLogicalHeight() - 180;
+			BufferedImage freezeImage = info.getGameTimer().getImage(itemManager, spriteManager);
 			Point imageLocation = actor.getCanvasImageLocation(freezeImage, offset);
 
 			if (imageLocation != null)
 			{
+				// Render image
 				OverlayUtil.renderImageLocation(graphics, imageLocation, freezeImage);
+				// Render caption
+				final TextComponent textComponent = new TextComponent();
+				textComponent.setColor(Color.WHITE);
+				textComponent.setText(info.getTimer().getText());
+				textComponent.setPosition(new java.awt.Point(imageLocation.getX(), imageLocation.getY()));
+				textComponent.render(graphics);
 			}
 		}
 		return null;
