@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
@@ -95,8 +97,8 @@ public class LootTrackerPlugin extends Plugin
 	private NavigationButton navButton;
 	private String eventType;
 	private long lastNumberOfSupplyCrates;
-	private Item[] inventorySnapshot;
-	private static final String WINTERTODT_EVENT_TYPE = "Wintertodt Crate";
+	private HashMap<Integer, Integer> inventorySnapshotMap;
+	private static final String WINTERTODT_EVENT_TYPE = "Wintertodt";
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
 	{
@@ -231,61 +233,75 @@ public class LootTrackerPlugin extends Plugin
 	{
 		final ItemContainer container = event.getItemContainer();
 
-		if (container == client.getItemContainer(InventoryID.INVENTORY))
+		if (container != client.getItemContainer(InventoryID.INVENTORY))
 		{
-			final Item[] items = container.getItems();
+			return;
+		}
 
-			long numberOfSupplyCrates = Arrays.stream(items)
-					.filter(item -> item.getId() == ItemID.SUPPLY_CRATE)
-					.count();
+		final Item[] items = container.getItems();
 
-			// We want to make sure that we actually opened the supply crate, not banked it
-			if (numberOfSupplyCrates != lastNumberOfSupplyCrates && inventorySnapshot != null)
+		// EXTRA_SUPPLY_CRATE is the reward when you trade in items to Ignisia
+		long numberOfSupplyCrates = Arrays.stream(items)
+				.filter(item -> (item.getId() == ItemID.SUPPLY_CRATE) || (item.getId() == ItemID.EXTRA_SUPPLY_CRATE))
+				.count();
+
+		HashMap<Integer, Integer> currentSnapshot = generateInventorySnapshot(items);
+
+		// We want to make sure that we actually opened the supply crate, not banked it
+		if (numberOfSupplyCrates != lastNumberOfSupplyCrates && inventorySnapshotMap != null)
+		{
+			log.debug("Number of supply crates in inventory has changed from {} to {}", lastNumberOfSupplyCrates, numberOfSupplyCrates);
+
+			// we lost a crate by opening it
+			if (numberOfSupplyCrates < lastNumberOfSupplyCrates && !bankWidgetIsOpen() && !depositWidgetIsOpen())
 			{
-				log.debug("Number of supply crates in inventory has changed from {} to {}", lastNumberOfSupplyCrates, numberOfSupplyCrates);
-
-				// we lost a crate by opening it
-				if (numberOfSupplyCrates < lastNumberOfSupplyCrates && !bankWidgetIsOpen())
-				{
-					List<Item> loot = itemDelta(inventorySnapshot, items);
-
-					final Collection<ItemStack> lootStacks = loot.stream()
-							.map(item -> new ItemStack(item.getId(), item.getQuantity()))
-							.collect(Collectors.toList());
-
-					if (!lootStacks.isEmpty())
-					{
-						final LootTrackerItem[] entries = buildEntries(stack(lootStacks));
-						SwingUtilities.invokeLater(() -> panel.add(WINTERTODT_EVENT_TYPE, -1, entries));
-					}
-				}
-
-				lastNumberOfSupplyCrates = numberOfSupplyCrates;
+				List<ItemStack> loot = generateSnapshotDelta(inventorySnapshotMap, currentSnapshot);
+				final LootTrackerItem[] entries = buildEntries(stack(loot));
+				SwingUtilities.invokeLater(() -> panel.add(WINTERTODT_EVENT_TYPE, -1, entries));
 			}
 
-			inventorySnapshot = items;
+			lastNumberOfSupplyCrates = numberOfSupplyCrates;
 		}
+
+		inventorySnapshotMap = currentSnapshot;
 	}
 
-	private List<Item> itemDelta(Item[] oldItems, Item[] newItems)
-	{
-		List<Item> deltaItems = new ArrayList<>();
+	private HashMap<Integer, Integer> generateInventorySnapshot(Item[] inventory) {
+		HashMap<Integer, Integer> snapshot = new HashMap<>();
 
-		for (int i = 0; i < newItems.length; i++)
+		for (Item item : inventory)
 		{
-			if (i > (oldItems.length - 1) ||
-					newItems[i].getId() != oldItems[i].getId() ||
-					newItems[i].getQuantity() != oldItems[i].getQuantity())
+			if (!snapshot.containsKey(item.getId()))
 			{
-				log.debug("new item {} quanitity {} ", newItems[i].getId(), newItems[i].getQuantity());
-				if (newItems[i].getId() != -1 && newItems[i].getQuantity() > 0)
-				{
-					deltaItems.add(newItems[i]);
-				}
+				snapshot.put(item.getId(), 0);
+			}
+
+			snapshot.put(item.getId(), snapshot.get(item.getId()) + item.getQuantity());
+		}
+
+		return snapshot;
+	}
+
+	private List<ItemStack> generateSnapshotDelta(HashMap<Integer, Integer> oldSnapshop, HashMap<Integer, Integer> currentSnapshot)
+	{
+		List<ItemStack> itemDelta = new ArrayList<>();
+
+		for(Map.Entry<Integer, Integer> item : currentSnapshot.entrySet())
+		{
+			Integer itemID = item.getKey();
+			Integer quantity = item.getValue();
+
+			if (!oldSnapshop.containsKey(itemID))
+			{
+				itemDelta.add(new ItemStack(itemID, quantity));
+			}
+			else if (oldSnapshop.containsKey(itemID) && oldSnapshop.get(itemID) < quantity)
+			{
+				itemDelta.add(new ItemStack(itemID, quantity - oldSnapshop.get(itemID)));
 			}
 		}
 
-		return deltaItems;
+		return itemDelta;
 	}
 
 	private boolean bankWidgetIsOpen()
@@ -293,6 +309,13 @@ public class LootTrackerPlugin extends Plugin
 		Widget bankWidget = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
 		return (bankWidget != null && !bankWidget.isHidden());
 	}
+
+	private boolean depositWidgetIsOpen()
+	{
+		Widget bankWidget = client.getWidget(WidgetInfo.DEPOSIT_BOX_INVENTORY_ITEMS_CONTAINER);
+		return (bankWidget != null && !bankWidget.isHidden());
+	}
+
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
