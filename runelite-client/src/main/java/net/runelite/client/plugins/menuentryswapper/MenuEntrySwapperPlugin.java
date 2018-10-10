@@ -357,7 +357,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			}
 			if (config.swapDarkMage())
 			{
-				swap("repairs",option,target,true);
+				swap("repairs", option, target, true);
 			}
 
 			// make sure assignment swap is higher priority than trade swap for slayer masters
