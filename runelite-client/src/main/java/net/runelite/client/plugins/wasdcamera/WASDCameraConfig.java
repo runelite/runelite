@@ -30,9 +30,13 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Keybind;
 
+import static net.runelite.client.plugins.wasdcamera.WASDCameraPlugin.PRESS_ENTER_TO_CHAT;
+
 @ConfigGroup("wasdcamera")
 public interface WASDCameraConfig extends Config
 {
+	String KEY_SHOW_USERNAME = "show_username";
+
 	@ConfigItem(
 		position = 1,
 		keyName = "up",
@@ -75,5 +79,16 @@ public interface WASDCameraConfig extends Config
 	default Keybind right()
 	{
 		return new Keybind(KeyEvent.VK_D, 0);
+	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = KEY_SHOW_USERNAME,
+		name = "Show username",
+		description = "Prefixes '" + PRESS_ENTER_TO_CHAT + "' with username."
+	)
+	default boolean showUsername()
+	{
+		return false;
 	}
 }
