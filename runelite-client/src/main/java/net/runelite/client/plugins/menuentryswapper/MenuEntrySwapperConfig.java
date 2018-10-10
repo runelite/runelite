@@ -239,4 +239,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+	@ConfigItem(
+		position = 19,
+		keyName = "swapDarkMage",
+		name = "Repairs",
+		description = "Swap Talk-to with Repairs for Dark mage "
+	)
+	default boolean swapDarkMage()
+	{
+		return true;		
+	}
 }
