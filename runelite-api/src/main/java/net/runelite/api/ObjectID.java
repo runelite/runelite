@@ -15788,6 +15788,7 @@ public final class ObjectID
 	public static final int FAIRY_RING_29557 = 29557;
 	public static final int FAIRY_RING_29558 = 29558;
 	public static final int FAIRY_RING_29559 = 29559;
+	public static final int FAIRY_RING_29560 = 29560;
 	public static final int FAIRY_RING_29561 = 29561;
 	public static final int FAIRY_RING_29562 = 29562;
 	public static final int FAIRY_RING_29563 = 29563;
