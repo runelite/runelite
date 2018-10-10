@@ -224,6 +224,14 @@ public class TabInterface
 			return;
 		}
 
+		if (activeTab != null && client.getVar(VarClientInt.INPUT_TYPE) == InputType.RUNELITE.getType())
+		{
+			// don't reset active tab if we are editing tags
+			updateBounds();
+			scrollTab(0);
+			return;
+		}
+
 		String str = client.getVar(VarClientStr.INPUT_TEXT);
 
 		if (Strings.isNullOrEmpty(str))
@@ -232,7 +240,7 @@ public class TabInterface
 		}
 
 		Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
-		if (bankTitle != null && !bankTitle.isHidden())
+		if (bankTitle != null && !bankTitle.isHidden() && !str.startsWith(TAG_SEARCH))
 		{
 			str = bankTitle.getText().replaceFirst("Showing items: ", "");
 

@@ -32,6 +32,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.event.MouseWheelEvent;
 import java.util.Arrays;
+import java.util.Objects;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
@@ -40,6 +41,7 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.GameTick;
@@ -248,7 +250,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 
 			chatboxInputManager.openInputWindow(itemName + " tags:", initialValue, (newTags) ->
 			{
-				if (newTags == null)
+				if (!Objects.equals(newTags, client.getVar(VarClientStr.INPUT_TEXT)))
 				{
 					return;
 				}
