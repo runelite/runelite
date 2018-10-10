@@ -266,7 +266,8 @@ public class LootTrackerPlugin extends Plugin
 		inventorySnapshotMap = currentSnapshot;
 	}
 
-	private HashMap<Integer, Integer> generateInventorySnapshot(Item[] inventory) {
+	private HashMap<Integer, Integer> generateInventorySnapshot(Item[] inventory)
+	{
 		HashMap<Integer, Integer> snapshot = new HashMap<>();
 
 		for (Item item : inventory)
@@ -286,7 +287,7 @@ public class LootTrackerPlugin extends Plugin
 	{
 		List<ItemStack> itemDelta = new ArrayList<>();
 
-		for(Map.Entry<Integer, Integer> item : currentSnapshot.entrySet())
+		for (Map.Entry<Integer, Integer> item : currentSnapshot.entrySet())
 		{
 			Integer itemID = item.getKey();
 			Integer quantity = item.getValue();
