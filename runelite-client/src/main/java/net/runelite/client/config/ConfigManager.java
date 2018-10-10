@@ -41,6 +41,7 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
+import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
 import java.time.Instant;
 import java.util.Arrays;
@@ -229,7 +230,16 @@ public class ConfigManager
 
 		try (FileOutputStream out = new FileOutputStream(propertiesFile))
 		{
-			properties.store(new OutputStreamWriter(out, Charset.forName("UTF-8")), "RuneLite configuration");
+			final FileLock lock = out.getChannel().lock();
+
+			try
+			{
+				properties.store(new OutputStreamWriter(out, Charset.forName("UTF-8")), "RuneLite configuration");
+			}
+			finally
+			{
+				lock.release();
+			}
 		}
 	}
 
