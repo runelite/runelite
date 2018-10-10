@@ -425,11 +425,11 @@ public class TabInterface
 							{
 								case "1":
 									tagManager.removeTag(target);
+								case "2":
 									if (activeTab != null && activeTab.getTag().equals(target))
 									{
-										resetSearch();
+										clientThread.invokeLater(this::resetSearch);
 									}
-								case "2":
 									deleteTab(target);
 									break;
 								default:
