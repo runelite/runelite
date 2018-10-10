@@ -133,9 +133,51 @@ public interface ChatTranslateConfig extends Config
 	}
 
 	/*
+	//TODO: Implement this, will need to watch out for Menu entry swapper
+	 @ConfigItem(
+			position = 9,
+			keyName = "translateMenuOptions",
+			name = "Translate Menu Options",
+			description = "Translates right clicked menu options"
+	)
+	default boolean translateMenuOptions()
+	{
+		return false;
+	}
+	*/
+
+	/*
+	//TODO: Implement this
+	 @ConfigItem(
+			position = 10,
+			keyName = "translateItemNames",
+			name = "Translate Item Names",
+			description = "Translates item names"
+	)
+	default boolean translateItemNames()
+	{
+		return false;
+	}
+	*/
+
+	/*
+	//TODO: Implement this
+	 @ConfigItem(
+			position = 11,
+			keyName = "enableCaching",
+			name = "Enable Caching of translations",
+			description = "Reduces quota usage"
+	)
+	default boolean enableCaching()
+	{
+		return false;
+	}
+	*/
+
+	/*
 	//TODO: Implement this
 	@ConfigItem(
-			position = 9,
+			position = 12,
 			keyName = "translateNPCConversations",
 			name = "Translate NPC Conversations*",
 			description = "Translates options and dialog between your character and a NPC."
@@ -149,7 +191,7 @@ public interface ChatTranslateConfig extends Config
 	/*
     //TODO: Implement this
 	@ConfigItem(
-			position = 10,
+			position = 13,
 			keyName = "enableTranslationCommands",
 			name = "Enable Translation Commands",
 			description = "Translate outgoing messages; Usage: !t<lang> <message> !tes Hello = Hola"

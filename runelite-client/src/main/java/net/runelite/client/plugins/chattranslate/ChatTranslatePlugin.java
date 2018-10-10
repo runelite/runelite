@@ -32,7 +32,6 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.SetMessage;
-import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -65,10 +64,11 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ChatTranslatePlugin extends Plugin
 {
+	private static final Pattern fromUserMatcherDotAll = Pattern.compile(".", Pattern.DOTALL);
 	private final ExecutorService executorService = Executors.newScheduledThreadPool(100);
-	private static Pattern fromUserMatcher = null;
 	private Queue<QueuedMessage> messageQueue;
-	private static String jsonPath = "";
+	private static Pattern fromUserMatcher = null;
+	private String jsonPath = "";
 
 	@Inject
 	private Client client;
@@ -195,30 +195,6 @@ public class ChatTranslatePlugin extends Plugin
 		messageQueueManager(message);
 	}
 
-
-	// These 4 functions skipped in case logic.
-    /*
-    private void translatePublicMessage(SetMessage message)
-    {
-        messageHandler(message);
-    }
-
-    private void translateExamineMessage(SetMessage message)
-    {
-        messageHandler(message);
-    }
-
-    private void translateClanMessage(SetMessage message)
-    {
-        messageHandler(message);
-    }
-
-    private void translateGameMessage(SetMessage message)
-    {
-        messageHandler(message);
-    }
-    */
-
 	/**
 	 * Sets up the regex matching for private message username whitelisting
 	 */
@@ -227,8 +203,9 @@ public class ChatTranslatePlugin extends Plugin
 		fromUserMatcher = null;
 		if (config.translateFromUsers().trim().equals("*") && config.translatePrivateMessages())
 		{
-			fromUserMatcher = Pattern.compile(".", Pattern.DOTALL);
-		} else if (!config.translateFromUsers().trim().equals("") && config.translatePrivateMessages())
+			fromUserMatcher = fromUserMatcherDotAll;
+		}
+		else if (!config.translateFromUsers().trim().equals("") && config.translatePrivateMessages())
 		{
 			//ClanMember[] clanMembers = client.getClanMembers();
 			String[] names = config.translateFromUsers().trim().split(", ");
@@ -292,7 +269,8 @@ public class ChatTranslatePlugin extends Plugin
 							TranslateOption.sourceLanguage(config.translateFromLang().toString()),
 							TranslateOption.targetLanguage(config.translateToLang().toString()));
 			return translation.getTranslatedText();
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
 			log.error(e.getMessage());
 			return valueToTranslate;
