@@ -61,6 +61,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ChatboxInputManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.banktags.BankTagsConfig;
+import net.runelite.client.plugins.banktags.BankTagsPlugin;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.ICON_SEARCH;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_SEARCH;
@@ -243,10 +244,9 @@ public class TabInterface
 
 		str = Text.standardize(str);
 
-		if (str.startsWith("tag:"))
+		if (str.startsWith(BankTagsPlugin.TAG_SEARCH))
 		{
-			str = str.substring(4);
-			activateTab(tabManager.find(str));
+			activateTab(tabManager.find(str.substring(TAG_SEARCH.length())));
 		}
 		else
 		{
