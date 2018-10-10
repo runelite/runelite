@@ -57,151 +57,146 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @PluginDescriptor(
-        name = "Chat Translation",
-        description = "Automatic translation of messages",
-        tags = {"translate", "messages", "notifications", "private", "chat"},
-        enabledByDefault = false
+		name = "Chat Translation",
+		description = "Automatic translation of messages",
+		tags = {"translate", "messages", "notifications", "private", "chat"},
+		enabledByDefault = false
 )
 @Slf4j
 public class ChatTranslatePlugin extends Plugin
 {
-    @Inject
-    private Client client;
+	private final ExecutorService executorService = Executors.newScheduledThreadPool(100);
+	private static Pattern fromUserMatcher = null;
+	private Queue<QueuedMessage> messageQueue;
+	private static String jsonPath = "";
 
-    @Inject
-    private ChatTranslateConfig config;
+	@Inject
+	private Client client;
 
-    @Inject
-    private ChatMessageManager chatMessageManager;
+	@Inject
+	private ChatTranslateConfig config;
 
-    private Queue<QueuedMessage> messageQueue;
+	@Provides
+	ChatTranslateConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(ChatTranslateConfig.class);
+	}
 
-    private final ExecutorService executorService = Executors.newScheduledThreadPool(100);
+	@Override
+	public void startUp()
+	{
+		updateTranslateFromUsers();
+		messageQueue = EvictingQueue.create(100);
+	}
 
-    //Custom Translate
-    private Pattern fromUserMatcher = null;
-    private String jsonPath = "";
+	@Override
+	public void shutDown()
+	{
+		messageQueue.clear();
+		messageQueue = null;
+	}
 
-    @Provides
-    ChatTranslateConfig provideConfig(ConfigManager configManager)
-    {
-        return configManager.getConfig(ChatTranslateConfig.class);
-    }
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		switch (event.getGameState())
+		{
+			case LOGIN_SCREEN:
+			case HOPPING:
+				break;
+		}
+	}
 
-    @Override
-    public void startUp()
-    {
-        updateTranslateFromUsers();
-        messageQueue = EvictingQueue.create(100);
-    }
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("chattranslate"))
+		{
+			updateTranslateFromUsers();
+		}
+	}
 
-    @Override
-    public void shutDown()
-    {
-        messageQueue.clear();
-        messageQueue = null;
-    }
+	@Subscribe
+	public void onSetMessage(SetMessage message)
+	{
+		executorService.submit(() ->
+		{
+			switch (message.getType())
+			{
+				case PRIVATE_MESSAGE_RECEIVED_MOD:
+				case PRIVATE_MESSAGE_RECEIVED:
+					if (config.translatePrivateMessages())
+					{
+						translatePrivateMessage(message);
+					}
+					break;
+				case PRIVATE_MESSAGE_SENT:
+					break;
+				case GAME:
+				case SERVER:
+					if (config.translateGameMessages())
+					{
+						messageHandler(message);
+					}
+					break;
+				case PUBLIC_MOD:
+				case PUBLIC:
+					if (config.translatePublicMessages())
+					{
+						messageHandler(message);
+					}
+					break;
+				case CLANCHAT_INFO:
+				case CLANCHAT:
+					if (config.translateClanMessages())
+					{
+						messageHandler(message);
+					}
+					break;
+				case EXAMINE_ITEM:
+				case EXAMINE_OBJECT:
+				case EXAMINE_NPC:
+					if (config.translateExamineMessages())
+					{
+						messageHandler(message);
+					}
+				default:
+			}
 
-    @Subscribe
-    public void onGameStateChanged(GameStateChanged event)
-    {
-        switch (event.getGameState())
-        {
-            case LOGIN_SCREEN:
-            case HOPPING:
-                break;
-        }
-    }
-
-    @Subscribe
-    public void onConfigChanged(ConfigChanged event)
-    {
-        if (event.getGroup().equals("chattranslate"))
-        {
-            updateTranslateFromUsers();
-        }
-    }
-
-    @Subscribe
-    public void onSetMessage(SetMessage message)
-    {
-        executorService.submit(() ->
-        {
-            switch (message.getType())
-            {
-                case PRIVATE_MESSAGE_RECEIVED_MOD:
-                case PRIVATE_MESSAGE_RECEIVED:
-                    if(config.translatePrivateMessages())
-                    {
-                        translatePrivateMessage(message);
-                    }
-                    break;
-                case PRIVATE_MESSAGE_SENT:
-                    break;
-                case GAME:
-                case SERVER:
-                    if(config.translateGameMessages())
-                    {
-                        messageHandler(message);}
-                    break;
-                case PUBLIC_MOD:
-                case PUBLIC:
-                    if(config.translatePublicMessages())
-                    {
-                        messageHandler(message);
-                    }
-                    break;
-                case CLANCHAT_INFO:
-                case CLANCHAT:
-                    if(config.translateClanMessages())
-                    {
-                        messageHandler(message);
-                    }
-                    break;
-                case EXAMINE_ITEM:
-                case EXAMINE_OBJECT:
-                case EXAMINE_NPC:
-                    if(config.translateExamineMessages())
-                    {
-                        messageHandler(message);
-                    }
-                default:
-            }
-
-        });
-    }
+		});
+	}
 
 
-    // TODO: Rewrite messageHandler to do this function
-    private void translatePrivateMessage(SetMessage message)
-    {
-        MessageNode messageNode = message.getMessageNode();
-        if (fromUserMatcher != null)
-        {
-            String msg = "";
-            String sentFromUser = messageNode.getName();
-            String messageValue = messageNode.getValue();
-            log.debug(sentFromUser + ": " + messageValue);
-            Matcher matcher = fromUserMatcher.matcher(sentFromUser);
-            boolean foundMatch = false;
-            if (matcher.find() && !(client.getLocalPlayer().getName().equalsIgnoreCase(messageNode.getName())))
-            {
-                // outgoing value to translate
-                msg = doTranslation(messageValue);
-                //update = true;
-                foundMatch = true;
-            }
-            log.debug(foundMatch + " in private message from specified user");
-            if (foundMatch)
-            {
-                messageNode.setValue(msg);
-            }
-        }
-        messageQueueManager(message);
-    }
+	// TODO: Rewrite messageHandler to do this function
+	private void translatePrivateMessage(SetMessage message)
+	{
+		MessageNode messageNode = message.getMessageNode();
+		if (fromUserMatcher != null)
+		{
+			String msg = "";
+			String sentFromUser = messageNode.getName();
+			String messageValue = messageNode.getValue();
+			log.debug(sentFromUser + ": " + messageValue);
+			Matcher matcher = fromUserMatcher.matcher(sentFromUser);
+			boolean foundMatch = false;
+			if (matcher.find() && !(client.getLocalPlayer().getName().equalsIgnoreCase(messageNode.getName())))
+			{
+				// outgoing value to translate
+				msg = doTranslation(messageValue);
+				//update = true;
+				foundMatch = true;
+			}
+			log.debug(foundMatch + " in private message from specified user");
+			if (foundMatch)
+			{
+				messageNode.setValue(msg);
+			}
+		}
+		messageQueueManager(message);
+	}
 
 
-    // These 4 functions skipped in case logic.
+	// These 4 functions skipped in case logic.
     /*
     private void translatePublicMessage(SetMessage message)
     {
@@ -224,120 +219,121 @@ public class ChatTranslatePlugin extends Plugin
     }
     */
 
-    /**
-     * Sets up the regex matching for private message username whitelisting
-     */
-    private void updateTranslateFromUsers()
-    {
-        fromUserMatcher = null;
-        if (config.translateFromUsers().trim().equals("*") && config.translatePrivateMessages())
-        {
-            fromUserMatcher = Pattern.compile(".", Pattern.DOTALL);
-        } else if (!config.translateFromUsers().trim().equals("") && config.translatePrivateMessages())
-        {
-            //ClanMember[] clanMembers = client.getClanMembers();
-            String[] names = config.translateFromUsers().trim().split(", ");
-            String joined = Arrays.stream(names)
-                    .map(Pattern::quote)
-                    .collect(Collectors.joining("|"));
-            fromUserMatcher = Pattern.compile("\\b(" + joined + ")\\b", Pattern.CASE_INSENSITIVE);
-        }
-        this.jsonPath = config.translateJSONFile();
-    }
+	/**
+	 * Sets up the regex matching for private message username whitelisting
+	 */
+	private void updateTranslateFromUsers()
+	{
+		fromUserMatcher = null;
+		if (config.translateFromUsers().trim().equals("*") && config.translatePrivateMessages())
+		{
+			fromUserMatcher = Pattern.compile(".", Pattern.DOTALL);
+		} else if (!config.translateFromUsers().trim().equals("") && config.translatePrivateMessages())
+		{
+			//ClanMember[] clanMembers = client.getClanMembers();
+			String[] names = config.translateFromUsers().trim().split(", ");
+			String joined = Arrays.stream(names)
+					.map(Pattern::quote)
+					.collect(Collectors.joining("|"));
+			fromUserMatcher = Pattern.compile("\\b(" + joined + ")\\b", Pattern.CASE_INSENSITIVE);
+		}
+		this.jsonPath = config.translateJSONFile();
+	}
 
-    /**
-     * Takes message from most given scenarios and passes to translate then queueManager
-     * added to remove redundant code
-     * @param message
-     */
-    private void messageHandler(SetMessage message)
-    {
-        MessageNode messageNode = message.getMessageNode();
-        String msg = "";
-        String sentFromUser = messageNode.getName();
-        String messageValue = messageNode.getValue();
-        log.debug(sentFromUser + ": " + messageValue);
-        boolean foundMatch = false;
+	/**
+	 * Takes message from most given scenarios and passes to translate then queueManager
+	 * added to remove redundant code
+	 *
+	 * @param message
+	 */
+	private void messageHandler(SetMessage message)
+	{
+		MessageNode messageNode = message.getMessageNode();
+		String msg = "";
+		String sentFromUser = messageNode.getName();
+		String messageValue = messageNode.getValue();
+		log.debug(sentFromUser + ": " + messageValue);
+		boolean foundMatch = false;
 
-        if (!(client.getLocalPlayer().getName().equalsIgnoreCase(messageNode.getName())))
-        {
-            // outgoing value to translate
-            msg = doTranslation(messageValue);
-            //update = true;
-            foundMatch = true;
-        }
-        if (foundMatch)
-        {
-            messageNode.setValue(msg);
-        }
+		if (!(client.getLocalPlayer().getName().equalsIgnoreCase(messageNode.getName())))
+		{
+			// outgoing value to translate
+			msg = doTranslation(messageValue);
+			//update = true;
+			foundMatch = true;
+		}
+		if (foundMatch)
+		{
+			messageNode.setValue(msg);
+		}
 
-        messageQueueManager(message);
-    }
+		messageQueueManager(message);
+	}
 
-    /**
-     * Completing the translation of a given message
-     *
-     * @param valueToTranslate
-     * @return translated message
-     */
-    private String doTranslation(String valueToTranslate)
-    {
-        //Translate translate = TranslateOptions.getDefaultInstance().getService();
-        GoogleCredentials credentials;
-        try
-        {
-            credentials = GoogleCredentials.fromStream(new FileInputStream(jsonPath)).createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
-            Translate translate = TranslateOptions.newBuilder().setCredentials(credentials).build().getService();
+	/**
+	 * Completing the translation of a given message
+	 *
+	 * @param valueToTranslate
+	 * @return translated message
+	 */
+	private String doTranslation(String valueToTranslate)
+	{
+		//Translate translate = TranslateOptions.getDefaultInstance().getService();
+		GoogleCredentials credentials;
+		try
+		{
+			credentials = GoogleCredentials.fromStream(new FileInputStream(jsonPath)).createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
+			Translate translate = TranslateOptions.newBuilder().setCredentials(credentials).build().getService();
 
-            // doing the actual translation
-            Translation translation =
-                    translate.translate(
-                            valueToTranslate,
-                            TranslateOption.sourceLanguage(config.translateFromLang().toString()),
-                            TranslateOption.targetLanguage(config.translateToLang().toString()));
-            return translation.getTranslatedText();
-        }
-        catch(IOException e)
-        {
-            log.error(e.getMessage());
-            return valueToTranslate;
-        }
+			// doing the actual translation
+			Translation translation =
+					translate.translate(
+							valueToTranslate,
+							TranslateOption.sourceLanguage(config.translateFromLang().toString()),
+							TranslateOption.targetLanguage(config.translateToLang().toString()));
+			return translation.getTranslatedText();
+		} catch (IOException e)
+		{
+			log.error(e.getMessage());
+			return valueToTranslate;
+		}
 
-    }
+	}
 
-    /**
-     * Updating the final translated value to chat.
-     * @param message
-     */
-    private void messageQueueManager(SetMessage message)
-    {
-        final QueuedMessage queuedMessage = QueuedMessage.builder()
-                .type(message.getType())
-                .name(message.getName())
-                .sender(message.getSender())
-                .value(nbsp(message.getValue()))
-                .runeLiteFormattedMessage(nbsp(message.getMessageNode().getRuneLiteFormatMessage()))
-                .build();
+	/**
+	 * Updating the final translated value to chat.
+	 *
+	 * @param message
+	 */
+	private void messageQueueManager(SetMessage message)
+	{
+		final QueuedMessage queuedMessage = QueuedMessage.builder()
+				.type(message.getType())
+				.name(message.getName())
+				.sender(message.getSender())
+				.value(nbsp(message.getValue()))
+				.runeLiteFormattedMessage(nbsp(message.getMessageNode().getRuneLiteFormatMessage()))
+				.build();
 
-        if (!messageQueue.contains(queuedMessage))
-        {
-            messageQueue.offer(queuedMessage);
-        }
-    }
+		if (!messageQueue.contains(queuedMessage))
+		{
+			messageQueue.offer(queuedMessage);
+		}
+	}
 
-    /**
-     * Small hack to prevent plugins checking for specific messages to match
-     *
-     * @param message message
-     * @return message with nbsp
-     */
-    private static String nbsp(final String message)
-    {
-        if (message != null)
-        {
-            return message.replace(' ', '\u00A0');
-        }
+	/**
+	 * Small hack to prevent plugins checking for specific messages to match
+	 *
+	 * @param message message
+	 * @return message with nbsp
+	 */
+	private static String nbsp(final String message)
+	{
+		if (message != null)
+		{
+			return message.replace(' ', '\u00A0');
+		}
 
-        return null;
-    }
+		return null;
+	}
 }
