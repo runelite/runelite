@@ -203,7 +203,6 @@ public class TimeTrackingPlugin extends Plugin
 	@Subscribe
 	public void onUsernameChanged(UsernameChanged e)
 	{
-		farmingTracker.migrateConfiguration();
 		farmingTracker.loadCompletionTimes();
 		birdHouseTracker.loadFromConfig();
 		panel.update();
