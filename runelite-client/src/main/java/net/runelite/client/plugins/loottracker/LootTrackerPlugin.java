@@ -25,8 +25,9 @@
  */
 package net.runelite.client.plugins.loottracker;
 
-import com.google.common.collect.Maps;
-import com.google.common.collect.MapDifference;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.Multisets;
 import com.google.common.eventbus.Subscribe;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -98,7 +99,7 @@ public class LootTrackerPlugin extends Plugin
 	private NavigationButton navButton;
 	private String eventType;
 	private long lastNumberOfSupplyCrates;
-	private Map<Integer, Integer> inventorySnapshotMap;
+	private HashMultiset<Map.Entry<Integer,Integer>> inventorySnapshot;
 	private static final String WINTERTODT_EVENT_TYPE = "Wintertodt";
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
@@ -246,17 +247,17 @@ public class LootTrackerPlugin extends Plugin
 				.filter(item -> (item.getId() == ItemID.SUPPLY_CRATE) || (item.getId() == ItemID.EXTRA_SUPPLY_CRATE))
 				.count();
 
-		Map<Integer, Integer> currentSnapshot = generateInventorySnapshot(items);
+		HashMultiset<Map.Entry<Integer,Integer>> currentSnapshot = generateInventorySnapshot(items);
 
 		// We want to make sure that we actually opened the supply crate, not banked it
-		if (numberOfSupplyCrates != lastNumberOfSupplyCrates && inventorySnapshotMap != null)
+		if (numberOfSupplyCrates != lastNumberOfSupplyCrates && inventorySnapshot != null)
 		{
 			log.debug("Number of supply crates in inventory has changed from {} to {}", lastNumberOfSupplyCrates, numberOfSupplyCrates);
 
 			// we lost a crate by opening it
 			if (numberOfSupplyCrates < lastNumberOfSupplyCrates && !bankWidgetIsOpen() && !depositWidgetIsOpen())
 			{
-				List<ItemStack> loot = generateSnapshotDelta(inventorySnapshotMap, currentSnapshot);
+				List<ItemStack> loot = generateSnapshotDelta(currentSnapshot, inventorySnapshot);
 				final LootTrackerItem[] entries = buildEntries(stack(loot));
 				SwingUtilities.invokeLater(() -> panel.add(WINTERTODT_EVENT_TYPE, -1, entries));
 			}
@@ -264,41 +265,29 @@ public class LootTrackerPlugin extends Plugin
 			lastNumberOfSupplyCrates = numberOfSupplyCrates;
 		}
 
-		inventorySnapshotMap = currentSnapshot;
+		inventorySnapshot = currentSnapshot;
 	}
 
-	private Map<Integer, Integer> generateInventorySnapshot(Item[] inventory)
+	private HashMultiset<Map.Entry<Integer,Integer>> generateInventorySnapshot(Item[] inventory)
 	{
-		return Arrays.stream(inventory)
+		Map<Integer, Integer> collapsedItems = Arrays.stream(inventory)
+				.filter(e -> WintertodtLoot.isWintertodtLoot(itemManager.canonicalize(e.getId())))
 				.collect(Collectors.groupingBy(Item::getId, Collectors.summingInt(Item::getQuantity)));
+
+		return HashMultiset.create(collapsedItems.entrySet());
 	}
 
-	private List<ItemStack> generateSnapshotDelta(Map<Integer, Integer> oldSnapshop, Map<Integer, Integer> currentSnapshot)
+	private List<ItemStack> generateSnapshotDelta(HashMultiset<Map.Entry<Integer,Integer>> newItems,
+												  HashMultiset<Map.Entry<Integer,Integer>> oldItems)
 	{
 		List<ItemStack> itemDelta = new ArrayList<>();
 
-		MapDifference<Integer, Integer> difference = Maps.difference(oldSnapshop, currentSnapshot);
-		Map<Integer,Integer> newItems = difference.entriesOnlyOnRight();
-		Map<Integer, MapDifference.ValueDifference<Integer>> changedItems = difference.entriesDiffering();
+		final Multiset<Map.Entry<Integer, Integer>> difference = Multisets.difference(newItems, oldItems);
 
-		itemDelta.addAll(
-				newItems.entrySet().stream()
-						.map(item -> new ItemStack(item.getKey(), item.getValue()))
-						.collect(Collectors.toList())
-		);
-
-		itemDelta.addAll(
-				changedItems.entrySet().stream()
-						.filter(diff -> diff.getValue().leftValue() < diff.getValue().rightValue())
-						.map(diff -> new ItemStack(diff.getKey(), diff.getValue().rightValue() - diff.getValue().leftValue()))
-						.collect(Collectors.toList())
-		);
-
-		itemDelta = itemDelta.stream().filter(itemStack -> WintertodtLoot.isWintertodtLoot(itemStack.getId())).collect(Collectors.toList());
+		difference.forEach(entry -> itemDelta.add(new ItemStack(entry.getKey(), entry.getValue())));
 
 		return itemDelta;
 	}
-
 
 	private boolean bankWidgetIsOpen()
 	{
@@ -311,7 +300,6 @@ public class LootTrackerPlugin extends Plugin
 		Widget bankWidget = client.getWidget(WidgetInfo.DEPOSIT_BOX_INVENTORY_ITEMS_CONTAINER);
 		return bankWidget != null && !bankWidget.isHidden();
 	}
-
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
