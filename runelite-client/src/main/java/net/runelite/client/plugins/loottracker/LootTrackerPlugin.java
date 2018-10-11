@@ -291,8 +291,10 @@ public class LootTrackerPlugin extends Plugin
 
 		for (Item item : inventory)
 		{
-			if (!WintertodtLoot.isWintertodtLoot(item.getId())) continue;
-			snapshot.add(item.getId(), item.getQuantity());
+			if (WintertodtLoot.isWintertodtLoot(itemManager.canonicalize(item.getId())))
+			{
+				snapshot.add(item.getId(), item.getQuantity());
+			}
 		}
 
 		return snapshot;
@@ -304,7 +306,7 @@ public class LootTrackerPlugin extends Plugin
 		final Multiset<Integer> difference = Multisets.difference(newItems, oldItems);
 
 		List<ItemStack> itemDelta = new ArrayList<>();
-		difference.forEach(entry -> itemDelta.add(new ItemStack(entry, difference.count(entry))));
+		difference.forEachEntry((entry,count) -> itemDelta.add(new ItemStack(entry, count)));
 
 		return itemDelta;
 	}
