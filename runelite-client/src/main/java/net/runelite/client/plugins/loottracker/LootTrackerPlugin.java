@@ -306,7 +306,7 @@ public class LootTrackerPlugin extends Plugin
 		final Multiset<Integer> difference = Multisets.difference(newItems, oldItems);
 
 		List<ItemStack> itemDelta = new ArrayList<>();
-		difference.forEachEntry((entry,count) -> itemDelta.add(new ItemStack(entry, count)));
+		difference.forEachEntry((entry, count) -> itemDelta.add(new ItemStack(entry, count)));
 
 		return itemDelta;
 	}
