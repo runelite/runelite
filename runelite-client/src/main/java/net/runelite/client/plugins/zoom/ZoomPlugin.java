@@ -37,14 +37,13 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
 
-@PluginDescriptor(
-	name = "Camera Zoom",
-	description = "Expand zoom limit and/or enable vertical camera",
-	tags = {"limit", "vertical"},
-	enabledByDefault = false
-)
+//@PluginDescriptor(
+//	name = "Camera Zoom",
+//	description = "Expand zoom limit and/or enable vertical camera",
+//	tags = {"limit", "vertical"},
+//	enabledByDefault = false
+//)
 public class ZoomPlugin extends Plugin implements KeyListener
 {
 	private boolean controlDown;
