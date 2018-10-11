@@ -35,19 +35,15 @@ LABEL5:
    invoke                 1046
    istore                 2
    load_int               896
-   load_string            "resizableInnerZoomLimit"
+   load_string            "innerZoomLimit"
    runelite_callback     
    load_int               128
-   load_string            "resizableOuterZoomLimit"
-   runelite_callback     
    isub                  
    istore                 6 ; resizable delta
    load_int               896
-   load_string            "fixedInnerZoomLimit"
+   load_string            "innerZoomLimit"
    runelite_callback     
    load_int               128
-   load_string            "fixedOuterZoomLimit"
-   runelite_callback     
    isub                  
    istore                 7 ; fixed delta
    iload                  2
@@ -57,11 +53,9 @@ LABEL5:
    idiv                  
    iload                  6
    load_string            "zoomLinToExp"
-   runelite_callback     
-   pop_int               
+   runelite_callback
+   pop_int
    load_int               128
-   load_string            "resizableOuterZoomLimit"
-   runelite_callback     
    iadd                  
    istore                 3
    iload                  2
@@ -71,11 +65,9 @@ LABEL5:
    idiv                  
    iload                  7
    load_string            "zoomLinToExp"
-   runelite_callback     
-   pop_int               
+   runelite_callback
+   pop_int
    load_int               128
-   load_string            "fixedOuterZoomLimit"
-   runelite_callback     
    iadd                  
    istore                 4
    iload                  4
