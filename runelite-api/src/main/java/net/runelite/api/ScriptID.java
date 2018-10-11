@@ -46,6 +46,13 @@ public final class ScriptID
 	public static final int CHATBOX_INPUT = 96;
 
 	/**
+	 * Layouts the bank widgets
+	 *
+	 * Takes 13 widget ids of various parts of the bank interface
+	 */
+	public static final int BANK_LAYOUT = 277;
+
+	/**
 	 * Closes the chatbox input
 	 * <ul>
 	 * <li> int (boolean) Clear the current text </li>

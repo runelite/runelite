@@ -25,10 +25,11 @@
  */
 package net.runelite.client.plugins.chatnotifications;
 
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static java.util.regex.Pattern.quote;
@@ -56,6 +57,8 @@ import net.runelite.client.util.Text;
 )
 public class ChatNotificationsPlugin extends Plugin
 {
+	private static final Splitter SPLITTER = Splitter.on(",").trimResults().omitEmptyStrings();
+
 	@Inject
 	private Client client;
 
@@ -115,8 +118,8 @@ public class ChatNotificationsPlugin extends Plugin
 
 		if (!config.highlightWordsString().trim().equals(""))
 		{
-			String[] items = config.highlightWordsString().trim().split(", ");
-			String joined = Arrays.stream(items)
+			List<String> items = SPLITTER.splitToList(config.highlightWordsString());
+			String joined = items.stream()
 				.map(Pattern::quote)
 				.collect(Collectors.joining("|"));
 			highlightMatcher = Pattern.compile("\\b(" + joined + ")\\b", Pattern.CASE_INSENSITIVE);

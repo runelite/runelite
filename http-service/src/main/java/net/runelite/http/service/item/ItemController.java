@@ -28,7 +28,6 @@ import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
@@ -50,7 +49,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/item")
 public class ItemController
 {
-	private static final Duration CACHE_DUATION = Duration.ofMinutes(30);
 	private static final String RUNELITE_CACHE = "RuneLite-Cache";
 	private static final int MAX_BATCH_LOOKUP = 1024;
 
@@ -70,11 +68,9 @@ public class ItemController
 		memorizedPrices = Suppliers.memoizeWithExpiration(() -> itemService.fetchPrices().stream()
 			.map(priceEntry ->
 			{
-				Item item = new Item();
-				item.setId(priceEntry.getItem()); // fake item
-
 				ItemPrice itemPrice = new ItemPrice();
-				itemPrice.setItem(item);
+				itemPrice.setId(priceEntry.getItem());
+				itemPrice.setName(priceEntry.getName());
 				itemPrice.setPrice(priceEntry.getPrice());
 				itemPrice.setTime(priceEntry.getTime());
 				return itemPrice;
@@ -173,7 +169,8 @@ public class ItemController
 		}
 
 		ItemPrice itemPrice = new ItemPrice();
-		itemPrice.setItem(item.toItem());
+		itemPrice.setId(item.getId());
+		itemPrice.setName(item.getName());
 		itemPrice.setPrice(priceEntry.getPrice());
 		itemPrice.setTime(priceEntry.getTime());
 
@@ -209,11 +206,9 @@ public class ItemController
 		return prices.stream()
 			.map(priceEntry ->
 			{
-				Item item = new Item();
-				item.setId(priceEntry.getItem()); // fake item
-
 				ItemPrice itemPrice = new ItemPrice();
-				itemPrice.setItem(item);
+				itemPrice.setId(priceEntry.getItem());
+				itemPrice.setName(priceEntry.getName());
 				itemPrice.setPrice(priceEntry.getPrice());
 				itemPrice.setTime(priceEntry.getTime());
 				return itemPrice;

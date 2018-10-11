@@ -392,7 +392,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 	private boolean shouldInvalidateBounds()
 	{
-		final Widget chatbox = client.getWidget(WidgetInfo.CHATBOX_MESSAGES);
+		final Widget chatbox = client.getWidget(WidgetInfo.CHATBOX);
 		final boolean resizeableChanged = isResizeable != client.isResized();
 		boolean changed = false;
 

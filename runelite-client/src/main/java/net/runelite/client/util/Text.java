@@ -45,4 +45,13 @@ public class Text
 		return TAG_REGEXP.matcher(str).replaceAll("");
 	}
 
+	/**
+	 * In addition to removing all tags, replaces nbsp with space, trims string and lowercases it
+	 * @param str The string to standardize
+	 * @return The given `str` that is standardized
+	 */
+	public static String standardize(String str)
+	{
+		return Text.removeTags(str).replace('\u00A0', ' ').trim().toLowerCase();
+	}
 }
