@@ -320,7 +320,7 @@ public class TabInterface
 
 		if (iconToSet != null)
 		{
-			if (event.getMenuOption().startsWith(CHANGE_ICON))
+			if (event.getMenuOption().startsWith(CHANGE_ICON + " ("))
 			{
 				ItemComposition item = getItem(event.getActionParam());
 				int itemId = itemManager.canonicalize(item.getId());
