@@ -276,28 +276,24 @@ LABEL253:
    6202                  
    get_varc               73
    load_int               128
-   load_string            "fixedOuterZoomLimit"
-   runelite_callback     
    if_icmpge              LABEL262
    jump                   LABEL278
 LABEL262:
    get_varc               73
    load_int               896
-   load_string            "fixedInnerZoomLimit"
+   load_string            "innerZoomLimit"
    runelite_callback     
    if_icmple              LABEL266
    jump                   LABEL278
 LABEL266:
    get_varc               74
    load_int               128
-   load_string            "resizableOuterZoomLimit"
-   runelite_callback     
    if_icmpge              LABEL270
    jump                   LABEL278
 LABEL270:
    get_varc               74
    load_int               896
-   load_string            "resizableInnerZoomLimit"
+   load_string            "innerZoomLimit"
    runelite_callback     
    if_icmple              LABEL274
    jump                   LABEL278

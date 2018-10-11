@@ -8,19 +8,15 @@
 ; 1 fixedZoomRange
 ; 2 bar size
    load_int               896
-   load_string            "resizableInnerZoomLimit"
+   load_string            "innerZoomLimit"
    runelite_callback     
    load_int               128
-   load_string            "resizableOuterZoomLimit"
-   runelite_callback     
    isub                  
    istore                 0
    load_int               896
-   load_string            "fixedInnerZoomLimit"
+   load_string            "innerZoomLimit"
    runelite_callback     
    load_int               128
-   load_string            "fixedOuterZoomLimit"
-   runelite_callback     
    isub                  
    istore                 1
    load_int               17104905
@@ -45,33 +41,29 @@
 LABEL27:
    get_varc               74
    load_int               128
-   load_string            "resizableOuterZoomLimit"
-   runelite_callback     
-   isub                  
-   iload                  2
+   isub
+   iload                  0
    load_string            "zoomExpToLin"
-   runelite_callback     
-   pop_int               
+   runelite_callback
+   pop_int
    iload                  2
    imul                  
    iload                  0
-   idiv                  
+   idiv
    istore                 5
    jump                   LABEL44
 LABEL36:
    get_varc               73
    load_int               128
-   load_string            "fixedOuterZoomLimit"
-   runelite_callback     
-   isub                  
-   iload                  2
+   isub
+   iload                  0
    load_string            "zoomExpToLin"
-   runelite_callback     
-   pop_int               
+   runelite_callback
+   pop_int
    iload                  2
    imul                  
    iload                  1
-   idiv                  
+   idiv
    istore                 5
 LABEL44:
    iload                  5
