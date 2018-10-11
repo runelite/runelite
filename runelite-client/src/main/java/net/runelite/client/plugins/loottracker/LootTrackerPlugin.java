@@ -277,8 +277,8 @@ public class LootTrackerPlugin extends Plugin
 		return HashMultiset.create(collapsedItems.entrySet());
 	}
 
-	private List<ItemStack> generateSnapshotDelta(HashMultiset<Map.Entry<Integer, Integer>> newItems,
-												  HashMultiset<Map.Entry<Integer, Integer>> oldItems)
+	private List<ItemStack> generateSnapshotDelta(	HashMultiset<Map.Entry<Integer, Integer>> newItems,
+													HashMultiset<Map.Entry<Integer, Integer>> oldItems)
 	{
 		List<ItemStack> itemDelta = new ArrayList<>();
 
