@@ -39,6 +39,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<lombok.version>1.16.22</lombok.version>
+		<kotlin.version>1.2.71</kotlin.version>
+		<kotlin.compiler.incremental>true</kotlin.compiler.incremental>
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
@@ -153,11 +155,54 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.jetbrains.kotlin</groupId>
+				<artifactId>kotlin-stdlib</artifactId>
+				<version>${kotlin.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	<dependencies>
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-stdlib-jdk8</artifactId>
+			<version>${kotlin.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-test</artifactId>
+			<version>${kotlin.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>
+			<plugin>
+				<!--To compile mixed code applications Kotlin compiler should be invoked before Java compiler.-->
+				<!--In maven terms that means kotlin-maven-plugin should be run before maven-compiler-plugin-->
+				<!--using the following method, making sure that the kotlin plugin is above the maven-compiler-plugin-->
+				<artifactId>kotlin-maven-plugin</artifactId>
+				<configuration>
+					<jvmTarget>1.8</jvmTarget>
+				</configuration>
+				<groupId>org.jetbrains.kotlin</groupId>
+				<version>${kotlin.version}</version>
+
+				<executions>
+					<execution>
+						<id>compile</id>
+						<phase>compile</phase>
+						<goals> <goal>compile</goal> </goals>
+					</execution>
+
+					<execution>
+						<id>test-compile</id>
+						<phase>test-compile</phase>
+						<goals> <goal>test-compile</goal> </goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
