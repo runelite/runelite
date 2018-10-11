@@ -675,12 +675,12 @@ public class WidgetID
 
 	static class StandardSpellBook
 	{
-		static final int LUMBRIDGE_HOME_TELEPORT = 1;
+		static final int LUMBRIDGE_HOME_TELEPORT = 4;
 	}
 
 	static class AncientSpellBook
 	{
-		static final int EDGEVILLE_HOME_TELEPORT = 97;
+		static final int EDGEVILLE_HOME_TELEPORT = 98;
 	}
 
 	static class LunarSpellBook
@@ -690,7 +690,7 @@ public class WidgetID
 
 	static class ArceuusSpellBook
 	{
-		static final int ARCEUUS_HOME_TELEPORT = 145;
+		static final int ARCEUUS_HOME_TELEPORT = 143;
 	}
 
 	static class Pvp
