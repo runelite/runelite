@@ -25,6 +25,8 @@
  */
 package net.runelite.client.plugins.loottracker;
 
+import com.google.common.collect.Maps;
+import com.google.common.collect.MapDifference;
 import com.google.common.eventbus.Subscribe;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -34,7 +36,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
@@ -97,7 +98,7 @@ public class LootTrackerPlugin extends Plugin
 	private NavigationButton navButton;
 	private String eventType;
 	private long lastNumberOfSupplyCrates;
-	private HashMap<Integer, Integer> inventorySnapshotMap;
+	private Map<Integer, Integer> inventorySnapshotMap;
 	private static final String WINTERTODT_EVENT_TYPE = "Wintertodt";
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
@@ -245,7 +246,7 @@ public class LootTrackerPlugin extends Plugin
 				.filter(item -> (item.getId() == ItemID.SUPPLY_CRATE) || (item.getId() == ItemID.EXTRA_SUPPLY_CRATE))
 				.count();
 
-		HashMap<Integer, Integer> currentSnapshot = generateInventorySnapshot(items);
+		Map<Integer, Integer> currentSnapshot = generateInventorySnapshot(items);
 
 		// We want to make sure that we actually opened the supply crate, not banked it
 		if (numberOfSupplyCrates != lastNumberOfSupplyCrates && inventorySnapshotMap != null)
@@ -266,55 +267,49 @@ public class LootTrackerPlugin extends Plugin
 		inventorySnapshotMap = currentSnapshot;
 	}
 
-	private HashMap<Integer, Integer> generateInventorySnapshot(Item[] inventory)
+	private Map<Integer, Integer> generateInventorySnapshot(Item[] inventory)
 	{
-		HashMap<Integer, Integer> snapshot = new HashMap<>();
-
-		for (Item item : inventory)
-		{
-			if (!snapshot.containsKey(item.getId()))
-			{
-				snapshot.put(item.getId(), 0);
-			}
-
-			snapshot.put(item.getId(), snapshot.get(item.getId()) + item.getQuantity());
-		}
-
-		return snapshot;
+		return Arrays.stream(inventory)
+				.collect(Collectors.groupingBy(Item::getId, Collectors.summingInt(Item::getQuantity)));
 	}
 
-	private List<ItemStack> generateSnapshotDelta(HashMap<Integer, Integer> oldSnapshop, HashMap<Integer, Integer> currentSnapshot)
+	private List<ItemStack> generateSnapshotDelta(Map<Integer, Integer> oldSnapshop, Map<Integer, Integer> currentSnapshot)
 	{
 		List<ItemStack> itemDelta = new ArrayList<>();
 
-		for (Map.Entry<Integer, Integer> item : currentSnapshot.entrySet())
-		{
-			Integer itemID = item.getKey();
-			Integer quantity = item.getValue();
+		MapDifference<Integer, Integer> difference = Maps.difference(oldSnapshop, currentSnapshot);
+		Map<Integer,Integer> newItems = difference.entriesOnlyOnRight();
+		Map<Integer, MapDifference.ValueDifference<Integer>> changedItems = difference.entriesDiffering();
 
-			if (!oldSnapshop.containsKey(itemID))
-			{
-				itemDelta.add(new ItemStack(itemID, quantity));
-			}
-			else if (oldSnapshop.containsKey(itemID) && oldSnapshop.get(itemID) < quantity)
-			{
-				itemDelta.add(new ItemStack(itemID, quantity - oldSnapshop.get(itemID)));
-			}
-		}
+		itemDelta.addAll(
+				newItems.entrySet().stream()
+						.map(item -> new ItemStack(item.getKey(), item.getValue()))
+						.collect(Collectors.toList())
+		);
+
+		itemDelta.addAll(
+				changedItems.entrySet().stream()
+						.filter(diff -> diff.getValue().leftValue() < diff.getValue().rightValue())
+						.map(diff -> new ItemStack(diff.getKey(), diff.getValue().rightValue() - diff.getValue().leftValue()))
+						.collect(Collectors.toList())
+		);
+
+		itemDelta = itemDelta.stream().filter(itemStack -> WintertodtLoot.isWintertodtLoot(itemStack.getId())).collect(Collectors.toList());
 
 		return itemDelta;
 	}
 
+
 	private boolean bankWidgetIsOpen()
 	{
 		Widget bankWidget = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
-		return (bankWidget != null && !bankWidget.isHidden());
+		return bankWidget != null && !bankWidget.isHidden();
 	}
 
 	private boolean depositWidgetIsOpen()
 	{
 		Widget bankWidget = client.getWidget(WidgetInfo.DEPOSIT_BOX_INVENTORY_ITEMS_CONTAINER);
-		return (bankWidget != null && !bankWidget.isHidden());
+		return bankWidget != null && !bankWidget.isHidden();
 	}
 
 
