@@ -99,7 +99,7 @@ public class LootTrackerPlugin extends Plugin
 	private NavigationButton navButton;
 	private String eventType;
 	private long lastNumberOfSupplyCrates;
-	private HashMultiset<Map.Entry<Integer, Integer>> inventorySnapshot;
+	private HashMultiset<Integer> inventorySnapshot;
 	private static final String WINTERTODT_EVENT_TYPE = "Wintertodt";
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
@@ -234,7 +234,11 @@ public class LootTrackerPlugin extends Plugin
 	public void itemContainerChanged(ItemContainerChanged event)
 	{
 		final ItemContainer container = event.getItemContainer();
+		observeForWintertodtLootEntry(container);
+	}
 
+	private void observeForWintertodtLootEntry(ItemContainer container)
+	{
 		if (container != client.getItemContainer(InventoryID.INVENTORY))
 		{
 			return;
@@ -243,11 +247,9 @@ public class LootTrackerPlugin extends Plugin
 		final Item[] items = container.getItems();
 
 		// EXTRA_SUPPLY_CRATE is the reward when you trade in items to Ignisia
-		long numberOfSupplyCrates = Arrays.stream(items)
-				.filter(item -> (item.getId() == ItemID.SUPPLY_CRATE) || (item.getId() == ItemID.EXTRA_SUPPLY_CRATE))
-				.count();
+		long numberOfSupplyCrates = countSupplyCrates(items);
 
-		HashMultiset<Map.Entry<Integer, Integer>> currentSnapshot = generateInventorySnapshot(items);
+		HashMultiset<Integer> currentSnapshot = generateInventorySnapshot(items);
 
 		// We want to make sure that we actually opened the supply crate, not banked it
 		if (numberOfSupplyCrates != lastNumberOfSupplyCrates && inventorySnapshot != null)
@@ -268,23 +270,41 @@ public class LootTrackerPlugin extends Plugin
 		inventorySnapshot = currentSnapshot;
 	}
 
-	private HashMultiset<Map.Entry<Integer, Integer>> generateInventorySnapshot(Item[] inventory)
+	private int countSupplyCrates(Item[] inventory)
 	{
-		Map<Integer, Integer> collapsedItems = Arrays.stream(inventory)
-				.filter(e -> WintertodtLoot.isWintertodtLoot(itemManager.canonicalize(e.getId())))
-				.collect(Collectors.groupingBy(Item::getId, Collectors.summingInt(Item::getQuantity)));
+		int count = 0;
 
-		return HashMultiset.create(collapsedItems.entrySet());
+		for (Item item : inventory)
+		{
+			if (item.getId() == ItemID.SUPPLY_CRATE || item.getId() == ItemID.EXTRA_SUPPLY_CRATE)
+			{
+				count = count + 1;
+			}
+		}
+
+		return count;
 	}
 
-	private List<ItemStack> generateSnapshotDelta(	HashMultiset<Map.Entry<Integer, Integer>> newItems,
-													HashMultiset<Map.Entry<Integer, Integer>> oldItems)
+	private HashMultiset<Integer> generateInventorySnapshot(Item[] inventory)
 	{
+		HashMultiset<Integer> snapshot = HashMultiset.create();
+
+		for (Item item : inventory)
+		{
+			if (!WintertodtLoot.isWintertodtLoot(item.getId())) continue;
+			snapshot.add(item.getId(), item.getQuantity());
+		}
+
+		return snapshot;
+	}
+
+	private List<ItemStack> generateSnapshotDelta(	HashMultiset<Integer> newItems,
+													HashMultiset<Integer> oldItems)
+	{
+		final Multiset<Integer> difference = Multisets.difference(newItems, oldItems);
+
 		List<ItemStack> itemDelta = new ArrayList<>();
-
-		final Multiset<Map.Entry<Integer, Integer>> difference = Multisets.difference(newItems, oldItems);
-
-		difference.forEach(entry -> itemDelta.add(new ItemStack(entry.getKey(), entry.getValue())));
+		difference.forEach(entry -> itemDelta.add(new ItemStack(entry, difference.count(entry))));
 
 		return itemDelta;
 	}
