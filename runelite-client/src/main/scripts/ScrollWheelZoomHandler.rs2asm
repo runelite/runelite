@@ -3,20 +3,20 @@
 .string_stack_count 0
 .int_var_count      4
 .string_var_count   0
-   load_int               1
+   load_int               0
    load_int               0
    load_string            "scrollWheelZoom"
-   runelite_callback
+   runelite_callback     
    if_icmpeq              LABEL18
    load_int               0
    iload                  0
-   load_int               5
-   imul
-   isub
+   load_int               25
+   imul                  
+   isub                  
    istore                 1
-   load_int               320
+   load_int               512
    istore                 2
-   load_int               256
+   load_int               512
    istore                 3
    get_varbit             6357
    load_int               0
@@ -28,21 +28,21 @@ LABEL14:
    if_icmpne              LABEL18
    jump                   LABEL19
 LABEL18:
-   return
+   return                
 LABEL19:
-   get_zoom_distance
+   6205                  
    istore                 2
    istore                 3
    iload                  3
    iload                  1
-   add_percent
+   iadd                  
    istore                 3
    iload                  2
    iload                  1
-   add_percent
+   iadd                  
    istore                 2
    iload                  3
    iload                  2
    invoke                 42
 LABEL33:
-   return
+   return                

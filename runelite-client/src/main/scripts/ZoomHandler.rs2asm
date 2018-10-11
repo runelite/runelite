@@ -10,33 +10,33 @@
 LABEL4:
    return                
 LABEL5:
-   load_int               700
+   load_int               896
    load_string            "fixedInnerZoomLimit"
-   runelite_callback
+   runelite_callback     
    iload                  0
    invoke                 1046
    istore                 0
-   load_int               195
+   load_int               128
    load_string            "fixedOuterZoomLimit"
-   runelite_callback
+   runelite_callback     
    iload                  0
    invoke                 1045
    istore                 0
-   load_int               715
+   load_int               896
    load_string            "resizableInnerZoomLimit"
-   runelite_callback
+   runelite_callback     
    iload                  1
    invoke                 1046
    istore                 1
-   load_int               175
+   load_int               128
    load_string            "resizableOuterZoomLimit"
-   runelite_callback
+   runelite_callback     
    iload                  1
    invoke                 1045
    istore                 1
    iload                  0
    iload                  1
-   set_zoom_distance     
+   6200                  
    load_int               0
    istore                 2
    load_int               0
