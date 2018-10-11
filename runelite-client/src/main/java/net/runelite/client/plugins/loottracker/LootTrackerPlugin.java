@@ -99,7 +99,7 @@ public class LootTrackerPlugin extends Plugin
 	private NavigationButton navButton;
 	private String eventType;
 	private long lastNumberOfSupplyCrates;
-	private HashMultiset<Map.Entry<Integer,Integer>> inventorySnapshot;
+	private HashMultiset<Map.Entry<Integer, Integer>> inventorySnapshot;
 	private static final String WINTERTODT_EVENT_TYPE = "Wintertodt";
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
@@ -247,7 +247,7 @@ public class LootTrackerPlugin extends Plugin
 				.filter(item -> (item.getId() == ItemID.SUPPLY_CRATE) || (item.getId() == ItemID.EXTRA_SUPPLY_CRATE))
 				.count();
 
-		HashMultiset<Map.Entry<Integer,Integer>> currentSnapshot = generateInventorySnapshot(items);
+		HashMultiset<Map.Entry<Integer, Integer>> currentSnapshot = generateInventorySnapshot(items);
 
 		// We want to make sure that we actually opened the supply crate, not banked it
 		if (numberOfSupplyCrates != lastNumberOfSupplyCrates && inventorySnapshot != null)
@@ -268,7 +268,7 @@ public class LootTrackerPlugin extends Plugin
 		inventorySnapshot = currentSnapshot;
 	}
 
-	private HashMultiset<Map.Entry<Integer,Integer>> generateInventorySnapshot(Item[] inventory)
+	private HashMultiset<Map.Entry<Integer, Integer>> generateInventorySnapshot(Item[] inventory)
 	{
 		Map<Integer, Integer> collapsedItems = Arrays.stream(inventory)
 				.filter(e -> WintertodtLoot.isWintertodtLoot(itemManager.canonicalize(e.getId())))
@@ -277,8 +277,8 @@ public class LootTrackerPlugin extends Plugin
 		return HashMultiset.create(collapsedItems.entrySet());
 	}
 
-	private List<ItemStack> generateSnapshotDelta(HashMultiset<Map.Entry<Integer,Integer>> newItems,
-												  HashMultiset<Map.Entry<Integer,Integer>> oldItems)
+	private List<ItemStack> generateSnapshotDelta(HashMultiset<Map.Entry<Integer, Integer>> newItems,
+												  HashMultiset<Map.Entry<Integer, Integer>> oldItems)
 	{
 		List<ItemStack> itemDelta = new ArrayList<>();
 
