@@ -12,9 +12,9 @@
 LABEL4:
    return                
 LABEL5:
-   load_int               320
+   load_int               512
    istore                 3
-   load_int               256
+   load_int               512
    istore                 4
    iload                  1
    widget_get_width_widget
@@ -34,48 +34,48 @@ LABEL5:
    iload                  2
    invoke                 1046
    istore                 2
-   load_int               715
+   load_int               896
    load_string            "resizableInnerZoomLimit"
-   runelite_callback
-   load_int               175
+   runelite_callback     
+   load_int               128
    load_string            "resizableOuterZoomLimit"
-   runelite_callback
+   runelite_callback     
    isub                  
    istore                 6 ; resizable delta
-   load_int               700
+   load_int               896
    load_string            "fixedInnerZoomLimit"
-   runelite_callback
-   load_int               195
+   runelite_callback     
+   load_int               128
    load_string            "fixedOuterZoomLimit"
-   runelite_callback
+   runelite_callback     
    isub                  
    istore                 7 ; fixed delta
    iload                  2
    iload                  6
    imul                  
    iload                  5
-   idiv
+   idiv                  
    iload                  6
    load_string            "zoomLinToExp"
-   runelite_callback
-   pop_int
-   load_int               175
+   runelite_callback     
+   pop_int               
+   load_int               128
    load_string            "resizableOuterZoomLimit"
-   runelite_callback
+   runelite_callback     
    iadd                  
    istore                 3
    iload                  2
    iload                  7
    imul                  
    iload                  5
-   idiv
+   idiv                  
    iload                  7
    load_string            "zoomLinToExp"
-   runelite_callback
-   pop_int
-   load_int               195
+   runelite_callback     
+   pop_int               
+   load_int               128
    load_string            "fixedOuterZoomLimit"
-   runelite_callback
+   runelite_callback     
    iadd                  
    istore                 4
    iload                  4

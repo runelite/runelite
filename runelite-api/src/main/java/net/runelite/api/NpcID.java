@@ -3118,7 +3118,7 @@ public final class NpcID
 	public static final int MASTER_CHEF = 3305;
 	public static final int SURVIVAL_EXPERT = 3306;
 	public static final int COMBAT_INSTRUCTOR = 3307;
-	public static final int RUNESCAPE_GUIDE = 3308;
+	public static final int GIELINOR_GUIDE = 3308;
 	public static final int MAGIC_INSTRUCTOR = 3309;
 	public static final int FINANCIAL_ADVISOR = 3310;
 	public static final int MINING_INSTRUCTOR = 3311;
@@ -5048,7 +5048,7 @@ public final class NpcID
 	public static final int HEAD_MOURNER_5310 = 5310;
 	public static final int MOURNER_5311 = 5311;
 	public static final int MOURNER_5312 = 5312;
-	public static final int RPDT_EMPLOYEE = 5313;
+	public static final int GPDT_EMPLOYEE = 5313;
 	public static final int HORACIO = 5315;
 	public static final int KANGAI_MAU = 5316;
 	public static final int EAGLE_5317 = 5317;

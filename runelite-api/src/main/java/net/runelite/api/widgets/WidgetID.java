@@ -492,12 +492,12 @@ public class WidgetID
 		static final int STYLE_FOUR = 15;
 		static final int SPELLS = 19;
 		static final int DEFENSIVE_SPELL_BOX = 20;
-		static final int DEFENSIVE_SPELL_ICON = 21;
-		static final int DEFENSIVE_SPELL_SHIELD = 22;
-		static final int DEFENSIVE_SPELL_TEXT = 23;
-		static final int SPELL_BOX = 24;
-		static final int SPELL_ICON = 25;
-		static final int SPELL_TEXT = 26;
+		static final int DEFENSIVE_SPELL_ICON = 22;
+		static final int DEFENSIVE_SPELL_SHIELD = 23;
+		static final int DEFENSIVE_SPELL_TEXT = 24;
+		static final int SPELL_BOX = 25;
+		static final int SPELL_ICON = 27;
+		static final int SPELL_TEXT = 28;
 	}
 
 	static class VolcanicMine
@@ -670,7 +670,7 @@ public class WidgetID
 
 	static class Minigames
 	{
-		static final int TELEPORT_BUTTON = 29;
+		static final int TELEPORT_BUTTON = 31;
 	}
 
 	static class StandardSpellBook
