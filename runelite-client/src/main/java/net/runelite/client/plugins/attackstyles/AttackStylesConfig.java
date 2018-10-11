@@ -107,4 +107,15 @@ public interface AttackStylesConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "removeAttack",
+			name = "Remove attack option",
+			description = "Remove attack option when warned attack style is used",
+			position = 8
+	)
+	default boolean removeAttack()
+	{
+		return false;
+	}
 }

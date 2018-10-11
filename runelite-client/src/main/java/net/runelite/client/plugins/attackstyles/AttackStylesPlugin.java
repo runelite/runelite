@@ -29,16 +29,20 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+
+import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
@@ -53,6 +57,7 @@ import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE_CASTING;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Attack Styles",
@@ -375,5 +380,38 @@ public class AttackStylesPlugin extends Plugin
 	Table<WeaponType, WidgetInfo, Boolean> getHiddenWidgets()
 	{
 		return widgetsToHide;
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		if (client.getGameState() != GameState.LOGGED_IN || !config.removeAttack() || !isWarnedSkillSelected())
+		{
+			return;
+		}
+
+		String option = Text.removeTags(event.getOption()).toLowerCase();
+
+		if (option.equals("attack"))
+		{
+			removeOption(option);
+		}
+	}
+
+	private void removeOption(String option)
+	{
+		MenuEntry[] entries = client.getMenuEntries();
+		MenuEntry[] newEntries = new MenuEntry[entries.length - 1];
+		int j = 0;
+
+		for (int i = 0; i < entries.length; i++)
+		{
+			if (!entries[i].getOption().toLowerCase().equals(option))
+			{
+				newEntries[j++] = entries[i];
+			}
+		}
+
+		client.setMenuEntries(newEntries);
 	}
 }
