@@ -56,10 +56,10 @@ import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.WallObjectSpawned;
-import net.runelite.api.queries.GroundObjectQuery;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.mta.MTAConfig;
@@ -79,6 +79,7 @@ public class TelekineticRoom extends MTARoom
 	private Stack<Direction> moves = new Stack<>();
 	private LocalPoint destination;
 	private WorldPoint location;
+	private WorldPoint finishLocation;
 	private Rectangle bounds;
 	private NPC guardian;
 	private Maze maze;
@@ -92,6 +93,7 @@ public class TelekineticRoom extends MTARoom
 
 	public void resetRoom()
 	{
+		finishLocation = null;
 		telekineticWalls.clear();
 	}
 
@@ -115,6 +117,16 @@ public class TelekineticRoom extends MTARoom
 			// Game objects are nulled when loading new scenes, thus never trigger their respective
 			// ObjectDespawned events.
 			resetRoom();
+		}
+	}
+
+	@Subscribe
+	public void onGroundObjectSpawned(GroundObjectSpawned event)
+	{
+		final GroundObject object = event.getGroundObject();
+		if (object.getId() == TELEKINETIC_FINISH)
+		{
+			finishLocation = object.getWorldLocation();
 		}
 	}
 
@@ -159,9 +171,8 @@ public class TelekineticRoom extends MTARoom
 			log.debug("Updating guarding location {} -> {}", location, current);
 
 			location = current;
-			final LocalPoint finish = finish();
 
-			if (finish != null && location.equals(WorldPoint.fromLocal(client, finish)))
+			if (location.equals(finishLocation))
 			{
 				client.clearHintArrow();
 			}
@@ -338,8 +349,6 @@ public class TelekineticRoom extends MTARoom
 
 	private Stack<Direction> build(WorldPoint start)
 	{
-		LocalPoint finish = finish();
-
 		Queue<WorldPoint> visit = new LinkedList<>();
 		Set<WorldPoint> closed = new HashSet<>();
 		Map<WorldPoint, Integer> scores = new HashMap<>();
@@ -379,7 +388,7 @@ public class TelekineticRoom extends MTARoom
 			}
 		}
 
-		return build(edges, WorldPoint.fromLocal(client, finish));
+		return build(edges, finishLocation);
 	}
 
 	private Stack<Direction> build(Map<WorldPoint, WorldPoint> edges, WorldPoint finish)
@@ -461,21 +470,6 @@ public class TelekineticRoom extends MTARoom
 		}
 
 		return LocalPoint.fromWorld(client, worldPoint);
-	}
-
-	private LocalPoint finish()
-	{
-		GroundObjectQuery qry = new GroundObjectQuery()
-				.idEquals(TELEKINETIC_FINISH);
-
-		GroundObject[] result = qry.result(client);
-
-		if (result.length > 0)
-		{
-			return result[0].getLocalLocation();
-		}
-
-		return null;
 	}
 
 	private Rectangle getBounds(WallObject[] walls)
