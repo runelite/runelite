@@ -190,6 +190,11 @@ public class TabInterface
 		tabManager.getAllTabs().forEach(this::loadTab);
 		activateTab(null);
 		scrollTab(0);
+
+		if (config.rememberTab() && !Strings.isNullOrEmpty(config.tab()))
+		{
+			openTag(TAG_SEARCH + config.tab());
+		}
 	}
 
 	public void destroy()
@@ -219,6 +224,23 @@ public class TabInterface
 			if (currentTabIndex != config.position())
 			{
 				config.position(currentTabIndex);
+			}
+
+			// Do the same for last active tab
+			if (config.rememberTab())
+			{
+				if (activeTab == null && !Strings.isNullOrEmpty(config.tab()))
+				{
+					config.tab("");
+				}
+				else if (activeTab != null && !activeTab.getTag().equals(config.tab()))
+				{
+					config.tab(activeTab.getTag());
+				}
+			}
+			else if (!Strings.isNullOrEmpty(config.tab()))
+			{
+				config.tab("");
 			}
 
 			return;
@@ -790,7 +812,7 @@ public class TabInterface
 	private void openTag(String tag)
 	{
 		doSearch(InputType.SEARCH, tag);
-		activateTab(tabManager.find(tag.substring(4)));
+		activateTab(tabManager.find(tag.substring(TAG_SEARCH.length())));
 
 		// When tab is selected with search window open, the search window closes but the search button
 		// stays highlighted, this solves that issue
