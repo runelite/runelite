@@ -48,7 +48,7 @@ class GameTimer
 			elapsed = Duration.between(startTime, now).minusMillis(600);
 		}
 
-		return formatTime(LocalTime.ofSecondOfDay(elapsed.getSeconds()));
+		return formatTime(LocalTime.ofSecondOfDay(Math.round((double)elapsed.toMillis() / 1000)));
 	}
 
 	void setWaveStartTime()
