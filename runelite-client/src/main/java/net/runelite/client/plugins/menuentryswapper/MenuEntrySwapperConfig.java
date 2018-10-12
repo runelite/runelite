@@ -187,6 +187,17 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 14,
+		keyName = "swapQuick",
+		name = "Quick Pass/Start/Travel",
+		description = "Swap Pass with Quick-Pass, Ring with Quick-Start and Talk-to with Quick-Travel"
+	)
+	default boolean swapQuick()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 15,
 		keyName = "swapBoxTrap",
 		name = "Reset",
 		description = "Swap Check with Reset on box trap"
@@ -197,7 +208,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
+		position = 16,
 		keyName = "swapTeleportItem",
 		name = "Teleport item",
 		description = "Swap Wear, Wield with Rub, Teleport on teleport item<br>Example: Amulet of glory, Ardougne cloak, Chronicle"
@@ -208,7 +219,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 16,
+		position = 17,
 		keyName = "swapAbyssTeleport",
 		name = "Teleport to Abyss",
 		description = "Swap Talk-to with Teleport for the Mage of Zamorak"
@@ -219,7 +230,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 17,
+		position = 18,
 		keyName = "swapTrade",
 		name = "Trade",
 		description = "Swap Talk-to with Trade on NPC<br>Example: Shop keeper, Shop assistant"
@@ -230,7 +241,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 18,
+		position = 19,
 		keyName = "swapTravel",
 		name = "Travel",
 		description = "Swap Talk-to with Travel, Take-boat, Pay-fare, Charter on NPC<br>Example: Squire, Monk of Entrana, Customs officer, Trader Crewmember"
