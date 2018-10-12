@@ -30,15 +30,12 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
-import java.util.Arrays;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import net.runelite.api.Query;
-import net.runelite.api.queries.NPCQuery;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.client.plugins.pestcontrol.Portal.BLUE;
@@ -48,12 +45,11 @@ import static net.runelite.client.plugins.pestcontrol.Portal.YELLOW;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.client.util.QueryRunner;
 
 @Slf4j
 public class PestControlOverlay extends Overlay
 {
-	private final QueryRunner queryRunner;
+	private final PestControlPlugin plugin;
 	private final Client client;
 
 	// Pest control game
@@ -61,10 +57,10 @@ public class PestControlOverlay extends Overlay
 	private Game game;
 
 	@Inject
-	public PestControlOverlay(QueryRunner queryRunner, Client client)
+	public PestControlOverlay(PestControlPlugin plugin, Client client)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		this.queryRunner = queryRunner;
+		this.plugin = plugin;
 		this.client = client;
 	}
 
@@ -97,9 +93,10 @@ public class PestControlOverlay extends Overlay
 
 	private void renderSpinners(Graphics2D graphics)
 	{
-		Query query = new NPCQuery().nameEquals("Spinner");
-		NPC[] result = queryRunner.runQuery(query);
-		Arrays.stream(result).forEach(npc -> OverlayUtil.renderActorOverlay(graphics, npc, npc.getName(), Color.CYAN));
+		for (NPC npc : plugin.getSpinners())
+		{
+			OverlayUtil.renderActorOverlay(graphics, npc, npc.getName(), Color.CYAN);
+		}
 	}
 
 	private void renderPortalWidgets(Graphics2D graphics)

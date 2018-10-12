@@ -44,16 +44,15 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
-import net.runelite.api.Query;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.queries.NPCQuery;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
@@ -62,7 +61,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
 	name = "Runecraft",
@@ -101,9 +99,6 @@ public class RunecraftPlugin extends Plugin
 
 	@Inject
 	private AbyssOverlay abyssOverlay;
-
-	@Inject
-	private QueryRunner queryRunner;
 
 	@Inject
 	private RunecraftConfig config;
@@ -253,18 +248,22 @@ public class RunecraftPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	public void onNpcSpawned(NpcSpawned event)
 	{
-		darkMage = null;
-
-		if (!config.hightlightDarkMage()
-			|| !degradedPouchInInventory)
+		final NPC npc = event.getNpc();
+		if (npc.getId() == NpcID.DARK_MAGE)
 		{
-			return;
+			darkMage = npc;
 		}
+	}
 
-		Query darkMageQuery = new NPCQuery().idEquals(NpcID.DARK_MAGE);
-		NPC[] result = queryRunner.runQuery(darkMageQuery);
-		darkMage = result.length >= 1 ? result[0] : null;
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned event)
+	{
+		final NPC npc = event.getNpc();
+		if (npc == darkMage)
+		{
+			darkMage = null;
+		}
 	}
 }
