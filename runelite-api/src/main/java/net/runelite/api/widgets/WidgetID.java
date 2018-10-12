@@ -119,6 +119,7 @@ public class WidgetID
 	public static final int MINIGAME_TAB_ID = 76;
 	public static final int SPELLBOOK_GROUP_ID = 218;
 	public static final int PVP_GROUP_ID = 90;
+	public static final int WINTERTODT_GROUP_ID = 396;
 
 	static class WorldMap
 	{
@@ -703,5 +704,11 @@ public class WidgetID
 		static final int ATTACK_RANGE = 55;
 		static final int WILDERNESS_LEVEL = 56; // this can also be the Deadman Mode "Protection" text
 		static final int DEADMAN_PROTECTION_TIME = 57;
+	}
+
+	static class Wintertodt
+	{
+		static final int PROGRESS_BAR = 16;
+		static final int STATUS = 4;
 	}
 }
