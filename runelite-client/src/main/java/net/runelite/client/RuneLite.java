@@ -67,6 +67,7 @@ import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import ru.vyarus.guice.ext.ExtAnnotationsModule;
 
 @Singleton
 @Slf4j
@@ -210,9 +211,13 @@ public class RuneLite
 
 		final long start = System.currentTimeMillis();
 
-		injector = Guice.createInjector(new RuneLiteModule(
-			options.valueOf(updateMode),
-			developerMode));
+		injector = Guice.createInjector(
+			new ExtAnnotationsModule(),
+			new RuneLiteModule(
+				options.valueOf(updateMode),
+				developerMode
+			)
+		);
 
 		injector.getInstance(RuneLite.class).start();
 
