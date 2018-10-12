@@ -72,7 +72,7 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	default boolean swapBones()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -127,7 +127,7 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	default boolean swapHarpoon()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
