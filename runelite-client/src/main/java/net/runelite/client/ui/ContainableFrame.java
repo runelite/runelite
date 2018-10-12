@@ -36,52 +36,7 @@ public class ContainableFrame extends JFrame
 
 	@Setter
 	private ExpandResizeType expandResizeType;
-	private boolean containedInScreen;
 	private boolean expandedClientOppositeDirection;
-
-	public void setContainedInScreen(boolean value)
-	{
-		this.containedInScreen = value;
-
-		if (value)
-		{
-			// Reposition the frame if it is intersecting with the bounds
-			this.setLocation(this.getX(), this.getY());
-			this.setBounds(this.getX(), this.getY(), this.getWidth(), this.getHeight());
-		}
-	}
-
-	@Override
-	public void setLocation(int x, int y)
-	{
-		if (containedInScreen)
-		{
-			Rectangle bounds = this.getGraphicsConfiguration().getBounds();
-			x = Math.max(x, (int)bounds.getX());
-			x = Math.min(x, (int)(bounds.getX() + bounds.getWidth() - this.getWidth()));
-			y = Math.max(y, (int)bounds.getY());
-			y = Math.min(y, (int)(bounds.getY() + bounds.getHeight() - this.getHeight()));
-		}
-
-		super.setLocation(x, y);
-	}
-
-	@Override
-	public void setBounds(int x, int y, int width, int height)
-	{
-		if (containedInScreen)
-		{
-			Rectangle bounds = this.getGraphicsConfiguration().getBounds();
-			width = Math.min(width, width - (int)bounds.getX() + x);
-			x = Math.max(x, (int)bounds.getX());
-			height = Math.min(height, height - (int)bounds.getY() + y);
-			y = Math.max(y, (int)bounds.getY());
-			width = Math.min(width, (int)(bounds.getX() + bounds.getWidth()) - x);
-			height = Math.min(height, (int)(bounds.getY() + bounds.getHeight()) - y);
-		}
-
-		super.setBounds(x, y, width, height);
-	}
 
 	/**
 	 * Expand frame by specified value. If the frame is going to be expanded outside of screen push the frame to
