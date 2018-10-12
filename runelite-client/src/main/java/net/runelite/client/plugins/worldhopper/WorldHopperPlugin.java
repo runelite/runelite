@@ -126,6 +126,9 @@ public class WorldHopperPlugin extends Plugin
 	@Inject
 	private WorldHopperConfig config;
 
+	@Inject
+	private WorldHopperOverlay worldHopperOverlay;
+
 	private NavigationButton navButton;
 	private WorldSwitcherPanel panel;
 
