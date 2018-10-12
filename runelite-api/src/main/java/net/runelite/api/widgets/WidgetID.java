@@ -127,6 +127,7 @@ public class WidgetID
 		static final int SEARCH = 22;
 		static final int SURFACE_SELECTOR = 30;
 		static final int TOOLTIP = 36;
+		static final int ORB = 40;
 		static final int OPTION = 42;
 	}
 

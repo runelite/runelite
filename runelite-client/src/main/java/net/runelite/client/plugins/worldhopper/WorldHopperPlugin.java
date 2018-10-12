@@ -75,6 +75,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.Text;
 import net.runelite.client.util.WorldUtil;
@@ -125,6 +126,9 @@ public class WorldHopperPlugin extends Plugin
 
 	@Inject
 	private WorldHopperConfig config;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private WorldHopperOverlay worldHopperOverlay;
@@ -194,6 +198,8 @@ public class WorldHopperPlugin extends Plugin
 		{
 			clientToolbar.addNavigation(navButton);
 		}
+
+		overlayManager.add(worldHopperOverlay);
 	}
 
 	@Override
