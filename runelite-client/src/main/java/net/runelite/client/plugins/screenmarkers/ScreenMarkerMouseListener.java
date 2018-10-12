@@ -26,11 +26,16 @@ package net.runelite.client.plugins.screenmarkers;
 
 import java.awt.event.MouseEvent;
 import javax.swing.SwingUtilities;
+import lombok.AccessLevel;
+import lombok.Setter;
 import net.runelite.client.input.MouseListener;
 
 public class ScreenMarkerMouseListener extends MouseListener
 {
 	private final ScreenMarkerPlugin plugin;
+
+	@Setter(AccessLevel.PACKAGE)
+	private boolean creationMode;
 
 	ScreenMarkerMouseListener(ScreenMarkerPlugin plugin)
 	{
@@ -52,6 +57,16 @@ public class ScreenMarkerMouseListener extends MouseListener
 	@Override
 	public MouseEvent mousePressed(MouseEvent event)
 	{
+		if (!creationMode)
+		{
+			if (plugin.shouldEatClick(event.getPoint()))
+			{
+				event.consume();
+			}
+
+			return event;
+		}
+
 		if (SwingUtilities.isMiddleMouseButton(event))
 		{
 			return event;
@@ -73,6 +88,11 @@ public class ScreenMarkerMouseListener extends MouseListener
 	@Override
 	public MouseEvent mouseReleased(MouseEvent event)
 	{
+		if (!creationMode)
+		{
+			return event;
+		}
+
 		if (SwingUtilities.isMiddleMouseButton(event))
 		{
 			return event;
@@ -91,6 +111,11 @@ public class ScreenMarkerMouseListener extends MouseListener
 	@Override
 	public MouseEvent mouseDragged(MouseEvent event)
 	{
+		if (!creationMode)
+		{
+			return event;
+		}
+
 		if (!plugin.isCreatingScreenMarker())
 		{
 			return event;
