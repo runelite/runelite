@@ -192,6 +192,7 @@ public class WidgetID
 		static final int TITLE = 1;
 		static final int NAME = 3;
 		static final int OWNER = 5;
+		static final int LIST = 15;
 	}
 
 	static class Bank

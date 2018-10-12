@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2017, Ron <https://github.com/raiyni>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.clanchat;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-/**
- * An enumeration of string local variables.
- */
-@AllArgsConstructor
-@Getter
-public enum VarClientStr
+@ConfigGroup("clanchat")
+public interface ClanChatConfig extends Config
 {
-	CHATBOX_TYPED_TEXT(1),
-	INPUT_TEXT(22),
-	RECENT_CLAN_CHAT(129);
+	@ConfigItem(
+		keyName = "recentChats",
+		name = "Recent Chats",
+		description = "Show recent clan chats.",
+		position = 1
+	)
+	default boolean recentChats()
+	{
+		return true;
+	}
 
-	private final int index;
+	@ConfigItem(
+		keyName = "chatsData",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default String chatsData()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "chatsData",
+		name = "",
+		description = ""
+	)
+	void chatsData(String str);
 }
