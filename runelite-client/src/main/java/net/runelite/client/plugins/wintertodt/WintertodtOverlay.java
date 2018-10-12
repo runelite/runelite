@@ -27,18 +27,17 @@ package net.runelite.client.plugins.wintertodt;
 
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
-import net.runelite.api.Varbits;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
-import net.runelite.client.util.StackFormatter;
 
 import javax.inject.Inject;
-import java.awt.*;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 
 import static net.runelite.client.plugins.wintertodt.WintertodtPlugin.WINTERTODT_KINDLING_MULTIPLIER;
 import static net.runelite.client.plugins.wintertodt.WintertodtPlugin.WINTERTODT_ROOTS_MULTIPLIER;

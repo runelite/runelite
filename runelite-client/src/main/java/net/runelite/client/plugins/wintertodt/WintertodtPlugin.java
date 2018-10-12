@@ -49,11 +49,16 @@ import static net.runelite.api.AnimationID.WOODCUTTING_MITHRIL;
 import static net.runelite.api.AnimationID.WOODCUTTING_RUNE;
 import static net.runelite.api.AnimationID.WOODCUTTING_STEEL;
 
-import net.runelite.api.*;
-
 import static net.runelite.api.ItemID.BRUMA_KINDLING;
 import static net.runelite.api.ItemID.BRUMA_ROOT;
 
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.MessageNode;
+import net.runelite.api.Player;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
