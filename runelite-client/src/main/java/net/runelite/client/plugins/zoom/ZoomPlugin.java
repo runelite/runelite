@@ -37,13 +37,14 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 
-//@PluginDescriptor(
-//	name = "Camera Zoom",
-//	description = "Expand zoom limit and/or enable vertical camera",
-//	tags = {"limit", "vertical"},
-//	enabledByDefault = false
-//)
+@PluginDescriptor(
+	name = "Camera Zoom",
+	description = "Expand zoom limit and/or enable vertical camera",
+	tags = {"limit", "vertical"},
+	enabledByDefault = false
+)
 public class ZoomPlugin extends Plugin implements KeyListener
 {
 	private boolean controlDown;
@@ -81,34 +82,16 @@ public class ZoomPlugin extends Plugin implements KeyListener
 			intStack[intStackSize - 1] = 1;
 		}
 
-		if (zoomConfig.outerLimit())
+		if ("innerZoomLimit".equals(event.getEventName()) && zoomConfig.innerLimit())
 		{
-			switch (event.getEventName())
-			{
-				case "fixedOuterZoomLimit":
-					intStack[intStackSize - 1] = 95;
-					break;
-				case "resizableOuterZoomLimit":
-					intStack[intStackSize - 1] = 70;
-					break;
-			}
+			intStack[intStackSize - 1] = 1200;
+			return;
 		}
+
 		if (zoomConfig.innerLimit())
 		{
-			switch (event.getEventName())
-			{
-				case "fixedInnerZoomLimit":
-					intStack[intStackSize - 1] = 2100;
-					break;
-				case "resizableInnerZoomLimit":
-					intStack[intStackSize - 1] = 2200;
-					break;
-			}
-		}
-		if (zoomConfig.outerLimit() || zoomConfig.innerLimit())
-		{
 			// This lets the options panel's slider have an exponential rate
-			final double exponent = 3.d;
+			final double exponent = 2.d;
 			switch (event.getEventName())
 			{
 				case "zoomLinToExp":
