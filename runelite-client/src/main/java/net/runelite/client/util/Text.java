@@ -45,4 +45,29 @@ public class Text
 		return TAG_REGEXP.matcher(str).replaceAll("");
 	}
 
+	/**
+	 * In addition to removing all tags, replaces nbsp with space, trims string and lowercases it
+	 * @param str The string to standardize
+	 *
+	 * @return The given `str` that is standardized
+	 */
+	public static String standardize(String str)
+	{
+		return removeTags(str).replace('\u00A0', ' ').trim().toLowerCase();
+	}
+
+	/**
+	 * In addition to removing all tags, replaces all <br> delimited text with spaces and all multiple continuous
+	 * spaces with single space
+	 *
+	 * @param str The string to sanitize
+	 * @return sanitized string
+	 */
+	public static String sanitizeMultilineText(String str)
+	{
+		return removeTags(str
+			.replaceAll("-<br>", "-")
+			.replaceAll("<br>", " ")
+			.replaceAll("[ ]+", " "));
+	}
 }

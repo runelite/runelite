@@ -42,9 +42,6 @@ import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
 @Singleton
 public class FarmingTracker
 {
-	@Deprecated
-	private static final String OLD_KEY_NAME = "farmingTracker";
-
 	private final Client client;
 	private final ItemManager itemManager;
 	private final ConfigManager configManager;
@@ -260,48 +257,6 @@ public class FarmingTracker
 			}
 			summaries.put(tab.getKey(), state);
 			completionTimes.put(tab.getKey(), completionTime);
-		}
-	}
-
-	/**
-	 * Migrates configuration data from {@code "farmingTracker"} key to {@code "timetracking"} key.
-	 * This method should be removed after a reasonable amount of time.
-	 */
-	@Deprecated
-	public void migrateConfiguration()
-	{
-		String username = client.getUsername();
-
-		// migrate autoweed config
-		{
-			String oldGroup = OLD_KEY_NAME + "." + username;
-			String newGroup = TimeTrackingConfig.CONFIG_GROUP + "." + username;
-			String storedValue = configManager.getConfiguration(oldGroup, TimeTrackingConfig.AUTOWEED);
-
-			if (storedValue != null)
-			{
-				configManager.setConfiguration(newGroup, TimeTrackingConfig.AUTOWEED, storedValue);
-				configManager.unsetConfiguration(oldGroup, TimeTrackingConfig.AUTOWEED);
-			}
-		}
-
-		// migrate all saved data in all regions
-		for (FarmingRegion region : farmingWorld.getRegions().values())
-		{
-			String oldGroup = OLD_KEY_NAME + "." + username + "." + region.getRegionID();
-			String newGroup = TimeTrackingConfig.CONFIG_GROUP + "." + username + "." + region.getRegionID();
-
-			for (Varbits varbit : region.getVarbits())
-			{
-				String key = Integer.toString(varbit.getId());
-				String storedValue = configManager.getConfiguration(oldGroup, key);
-
-				if (storedValue != null)
-				{
-					configManager.setConfiguration(newGroup, key, storedValue);
-					configManager.unsetConfiguration(oldGroup, key);
-				}
-			}
 		}
 	}
 }

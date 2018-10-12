@@ -54,6 +54,7 @@ import net.runelite.api.ItemLayer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Node;
+import net.runelite.api.Player;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.events.ConfigChanged;
@@ -63,6 +64,7 @@ import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
@@ -76,6 +78,7 @@ import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.N
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.OPTION;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.StackFormatter;
 
 @PluginDescriptor(
 	name = "Ground Items",
@@ -137,6 +140,9 @@ public class GroundItemsPlugin extends Plugin
 
 	@Inject
 	private GroundItemsOverlay overlay;
+
+	@Inject
+	private Notifier notifier;
 
 	@Getter
 	private final Map<GroundItem.GroundItemKey, GroundItem> collectedGroundItems = new LinkedHashMap<>();
@@ -205,6 +211,13 @@ public class GroundItemsPlugin extends Plugin
 		if (existing != null)
 		{
 			existing.setQuantity(existing.getQuantity() + groundItem.getQuantity());
+		}
+
+		boolean isHighlighted = config.highlightedColor().equals(getHighlighted(groundItem.getName(),
+				groundItem.getGePrice(), groundItem.getHaPrice()));
+		if (config.notifyHighlightedDrops() && isHighlighted)
+		{
+			notifyHighlightedItem(groundItem);
 		}
 	}
 
@@ -483,5 +496,35 @@ public class GroundItemsPlugin extends Plugin
 		{
 			setHotKeyPressed(false);
 		}
+	}
+
+	private void notifyHighlightedItem(GroundItem item)
+	{
+		final Player local = client.getLocalPlayer();
+		final StringBuilder notificationStringBuilder = new StringBuilder()
+			.append("[")
+			.append(local.getName())
+			.append("] received a highlighted drop: ")
+			.append(item.getName());
+
+		if (item.getQuantity() > 1)
+		{
+			notificationStringBuilder.append(" x ").append(item.getQuantity());
+
+
+			if (item.getQuantity() > (int) Character.MAX_VALUE)
+			{
+				notificationStringBuilder.append(" (Lots!)");
+			}
+			else
+			{
+				notificationStringBuilder.append(" (")
+					.append(StackFormatter.quantityToStackSize(item.getQuantity()))
+					.append(")");
+			}
+		}
+
+		notificationStringBuilder.append("!");
+		notifier.notify(notificationStringBuilder.toString());
 	}
 }

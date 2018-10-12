@@ -48,6 +48,13 @@ public enum VarPlayer
 	NMZ_REWARD_POINTS(1060),
 
 	/**
+	 * 0 : not started
+	 * greater than 0 : in progress
+	 * greater than 99 : completed
+	 */
+	THRONE_OF_MISCELLANIA(359),
+
+	/**
 	 * Experience tracker goal start.
 	 */
 	ATTACK_GOAL_START(1229),

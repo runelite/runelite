@@ -237,11 +237,16 @@ public class ConfigManager
 		}
 
 		T t = (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class<?>[]
-		{
-			clazz
-		}, handler);
+			{
+				clazz
+			}, handler);
 
 		return t;
+	}
+
+	public List<String> getConfigurationKeys(String prefix)
+	{
+		return properties.keySet().stream().filter(v -> ((String) v).startsWith(prefix)).map(String.class::cast).collect(Collectors.toList());
 	}
 
 	public String getConfiguration(String groupName, String key)
@@ -271,6 +276,11 @@ public class ConfigManager
 		log.debug("Setting configuration value for {}.{} to {}", groupName, key, value);
 
 		String oldValue = (String) properties.setProperty(groupName + "." + key, value);
+
+		if (Objects.equals(oldValue, value))
+		{
+			return;
+		}
 
 		if (client != null)
 		{
@@ -309,6 +319,11 @@ public class ConfigManager
 		log.debug("Unsetting configuration value for {}.{}", groupName, key);
 
 		String oldValue = (String) properties.remove(groupName + "." + key);
+
+		if (oldValue == null)
+		{
+			return;
+		}
 
 		if (client != null)
 		{

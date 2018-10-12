@@ -342,7 +342,6 @@ public enum Varbits
 	 */
 	KINGDOM_FAVOR(72),
 	KINGDOM_COFFER(74),
-	THRONE_OF_MISCELLANIA_QUEST(359),
 
 	/**
 	 * The Hand in the Sand quest status
@@ -409,6 +408,8 @@ public enum Varbits
 	 * Corp beast damage
 	 */
 	CORP_DAMAGE(999),
+
+	CURRENT_BANK_TAB(4150),
 
 	WORLDHOPPER_FAVROITE_1(4597),
 	WORLDHOPPER_FAVROITE_2(4598);
