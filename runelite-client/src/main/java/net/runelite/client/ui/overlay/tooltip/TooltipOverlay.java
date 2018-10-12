@@ -97,6 +97,7 @@ public class TooltipOverlay extends Overlay
 			final TooltipComponent tooltipComponent = new TooltipComponent();
 			tooltipComponent.setModIcons(client.getModIcons());
 			tooltipComponent.setText(tooltip.getText());
+			tooltipComponent.setImage(tooltip.getImage());
 
 			if (newBounds.contains(mousePosition))
 			{
@@ -105,6 +106,11 @@ public class TooltipOverlay extends Overlay
 
 			tooltipComponent.setPosition(mousePosition);
 			final Dimension dimension = tooltipComponent.render(graphics);
+
+			if (dimension == null)
+			{
+				continue;
+			}
 
 			// Create incremental tooltip newBounds
 			newBounds.x = newBounds.x != -1 ? Math.min(newBounds.x, mousePosition.x) : mousePosition.x;

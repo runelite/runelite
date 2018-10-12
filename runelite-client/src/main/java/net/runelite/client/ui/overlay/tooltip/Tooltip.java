@@ -24,12 +24,24 @@
  */
 package net.runelite.client.ui.overlay.tooltip;
 
+import java.awt.Image;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
 @AllArgsConstructor
+@Getter
 public class Tooltip
 {
-	private final String text;
+	private String text;
+	private Image image;
+
+	public Tooltip(final String text)
+	{
+		this.text = text;
+	}
+
+	public Tooltip(final Image image)
+	{
+		this.image = image;
+	}
 }

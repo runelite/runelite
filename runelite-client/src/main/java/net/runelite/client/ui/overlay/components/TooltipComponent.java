@@ -24,10 +24,12 @@
  */
 package net.runelite.client.ui.overlay.components;
 
+import com.google.common.base.Strings;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.regex.Pattern;
@@ -43,6 +45,7 @@ public class TooltipComponent implements RenderableEntity
 	private static final int MOD_ICON_WIDTH = 13; // they are generally 13px wide
 
 	private String text;
+	private Image image;
 	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
 	private Point position = new Point();
 	private IndexedSprite[] modIcons;
@@ -50,6 +53,29 @@ public class TooltipComponent implements RenderableEntity
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		// Tooltip position
+		int x = position.x;
+		int y = position.y;
+
+		// Render tooltip image
+		if (image != null)
+		{
+			int width = image.getWidth(null);
+			int height = image.getHeight(null);
+			graphics.drawImage(image, x, y + OFFSET / 2, width, height, null);
+			x += width + OFFSET;
+		}
+
+		if (Strings.isNullOrEmpty(text))
+		{
+			if (image == null)
+			{
+				return null;
+			}
+
+			return new Dimension(image.getWidth(null) + OFFSET * 2, image.getHeight(null) + OFFSET * 2);
+		}
+
 		// Tooltip size
 		final FontMetrics metrics = graphics.getFontMetrics();
 		final int textDescent = metrics.getDescent();
@@ -70,10 +96,6 @@ public class TooltipComponent implements RenderableEntity
 
 			tooltipHeight += textHeight;
 		}
-
-		// Tooltip position
-		int x = position.x;
-		int y = position.y;
 
 		// Render tooltip - background
 		final Rectangle tooltipBackground = new Rectangle(x, y,
@@ -154,7 +176,7 @@ public class TooltipComponent implements RenderableEntity
 			// Draw trailing text (after last tag)
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setColor(nextColor);
-			textComponent.setText(line.substring(begin, line.length()));
+			textComponent.setText(line.substring(begin));
 			textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
 			textComponent.render(graphics);
 		}
