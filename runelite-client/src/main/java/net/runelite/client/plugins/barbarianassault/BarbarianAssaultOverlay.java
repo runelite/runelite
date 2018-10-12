@@ -75,9 +75,18 @@ class BarbarianAssaultOverlay extends Overlay
 		Widget roleText = client.getWidget(role.getRoleText());
 		Widget roleSprite = client.getWidget(role.getRoleSprite());
 
-		if (config.showTimer() && roleText != null && roleSprite != null)
+		if ((config.showTimer() || config.secondsTimer()) && roleText != null && roleSprite != null)
 		{
-			roleText.setText(String.format("00:%02d", currentRound.getTimeToChange()));
+			if (config.showTimer() && config.secondsTimer())
+			{
+				roleText.setText(String.format("00:%02d (%d)", currentRound.getTimeToChange(), currentRound.getRoundTime()));
+			}
+			else
+			{
+				roleText.setText(config.showTimer() ? String.format("00:%02d", currentRound.getTimeToChange())
+					: String.format("%d", currentRound.getRoundTime()));
+			}
+
 			Rectangle spriteBounds = roleSprite.getBounds();
 			roleSprite.setHidden(true);
 			graphics.drawImage(plugin.getClockImage(), spriteBounds.x, spriteBounds.y, null);
