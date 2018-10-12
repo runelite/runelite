@@ -95,7 +95,7 @@ public class SlayerPlugin extends Plugin
 
 	//NPC messages
 	private static final Pattern NPC_ASSIGN_MESSAGE = Pattern.compile(".*Your new task is to kill\\s*(\\d*) (.*)\\.");
-	private static final Pattern NPC_ASSIGN_BOSS_MESSAGE = Pattern.compile("^Excellent. You're now assigned to kill (.*) (\\d+) times.*Your reward point tally is (.*)\\.$");
+	private static final Pattern NPC_ASSIGN_BOSS_MESSAGE = Pattern.compile("^Excellent. You're now assigned to kill (?:the )?(.*) (\\d+) times.*Your reward point tally is (.*)\\.$");
 	private static final Pattern NPC_CURRENT_MESSAGE = Pattern.compile("You're still hunting (.*); you have (\\d*) to go\\..*");
 
 	//Reward UI
@@ -259,13 +259,13 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		Widget NPCDialog = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
-		if (NPCDialog != null)
+		Widget npcDialog = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
+		if (npcDialog != null)
 		{
-			String NPCText = Text.removeTags(NPCDialog.getText()); //remove color and linebreaks
-			final Matcher mAssign = NPC_ASSIGN_MESSAGE.matcher(NPCText); //number, name
-			final Matcher mAssignBoss = NPC_ASSIGN_BOSS_MESSAGE.matcher(NPCText); // name, number, points
-			final Matcher mCurrent = NPC_CURRENT_MESSAGE.matcher(NPCText); //name, number
+			String npcText = Text.sanitizeMultilineText(npcDialog.getText()); //remove color and linebreaks
+			final Matcher mAssign = NPC_ASSIGN_MESSAGE.matcher(npcText); //number, name
+			final Matcher mAssignBoss = NPC_ASSIGN_BOSS_MESSAGE.matcher(npcText); // name, number, points
+			final Matcher mCurrent = NPC_CURRENT_MESSAGE.matcher(npcText); //name, number
 
 			if (mAssign.find())
 			{

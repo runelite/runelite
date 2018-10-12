@@ -60,6 +60,7 @@ public class SlayerPluginTest
 	private static final String TASK_CHECKSLAYERGEM = "You're assigned to kill Suqahs; only 211 more to go.";
 
 	private static final String TASK_BOSS_NEW = "Excellent. You're now assigned to kill Vet'ion 3 times.<br>Your reward point tally is 914.";
+	private static final String TASK_BOSS_NEW_THE = "Excellent. You're now assigned to kill the Chaos <br>Elemental 3 times. Your reward point tally is 914.";
 
 	private static final String TASK_EXISTING = "You're still hunting suqahs; you have 222 to go. Come<br>back when you've finished your task.";
 
@@ -163,6 +164,19 @@ public class SlayerPluginTest
 		slayerPlugin.onGameTick(new GameTick());
 
 		assertEquals("Vet'ion", slayerPlugin.getTaskName());
+		assertEquals(3, slayerPlugin.getAmount());
+		assertEquals(914, slayerPlugin.getPoints());
+	}
+
+	@Test
+	public void testBossTaskThe()
+	{
+		Widget npcDialog = mock(Widget.class);
+		when(npcDialog.getText()).thenReturn(TASK_BOSS_NEW_THE);
+		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
+		slayerPlugin.onGameTick(new GameTick());
+
+		assertEquals("Chaos Elemental", slayerPlugin.getTaskName());
 		assertEquals(3, slayerPlugin.getAmount());
 		assertEquals(914, slayerPlugin.getPoints());
 	}
