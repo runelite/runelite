@@ -44,7 +44,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class ChatHistoryPlugin extends Plugin
 {
-	private static final String WELCOME_MESSAGE = "Welcome to RuneScape.";
+	private static final String WELCOME_MESSAGE = "Welcome to Old School RuneScape.";
 	private static final String CLEAR_HISTORY = "Clear history";
 	private static final String CLEAR_PRIVATE = "<col=ffff00>Private:";
 	private static final Set<ChatMessageType> ALLOWED_HISTORY = Sets.newHashSet(

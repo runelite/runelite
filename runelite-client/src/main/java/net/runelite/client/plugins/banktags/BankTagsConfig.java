@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Ron Young <https://github.com/raiyni>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,31 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.banktags;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-/**
- * An enumeration of integer local variables.
- */
-@AllArgsConstructor
-@Getter
-public enum VarClientInt
+@ConfigGroup("banktags")
+public interface BankTagsConfig extends Config
 {
-	TOOLTIP_TIMEOUT(1),
+	@ConfigItem(
+		keyName = "useTabs",
+		name = "Use Tag Tabs",
+		description = "Enable the ability to add tabs to your bank which allow fast access to tags.",
+		position = 1
+	)
+	default boolean tabs()
+	{
+		return true;
+	}
 
-	/**
-	 * 0 = no tooltip displayed
-	 * 1 = tooltip displaying
-	 */
-	TOOLTIP_VISIBLE(2),
+	@ConfigItem(
+		keyName = "position",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int position()
+	{
+		return 0;
+	}
 
-	INPUT_TYPE(5),
-
-	MEMBERSHIP_STATUS(103),
-
-	WORLD_MAP_SEARCH_FOCUSED(190);
-
-	private final int index;
+	@ConfigItem(
+		keyName = "position",
+		name = "",
+		description = ""
+	)
+	void position(int idx);
 }

@@ -290,8 +290,6 @@ public class ClueScrollPlugin extends Plugin
 	public void onGameTick(final GameTick event)
 	{
 		objectsToMark = null;
-		equippedItems = null;
-		inventoryItems = null;
 
 		if (clue instanceof LocationsClueScroll)
 		{

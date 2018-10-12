@@ -694,7 +694,7 @@ LABEL628:
 LABEL631:
    jump                   LABEL635
 LABEL632:
-   load_string            "The Bank of RuneScape"
+   load_string            "The Bank of Gielinor"
    iload                  6
    widget_put_text_widget
 LABEL635:
