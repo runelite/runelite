@@ -246,7 +246,6 @@ public class LootTrackerPlugin extends Plugin
 
 		final Item[] items = container.getItems();
 
-		// EXTRA_SUPPLY_CRATE is the reward when you trade in items to Ignisia
 		long numberOfSupplyCrates = countSupplyCrates(items);
 
 		HashMultiset<Integer> currentSnapshot = generateInventorySnapshot(items);
@@ -276,6 +275,7 @@ public class LootTrackerPlugin extends Plugin
 
 		for (Item item : inventory)
 		{
+			// EXTRA_SUPPLY_CRATE is the reward when you trade in items to Ignisia
 			if (item.getId() == ItemID.SUPPLY_CRATE || item.getId() == ItemID.EXTRA_SUPPLY_CRATE)
 			{
 				count = count + 1;
