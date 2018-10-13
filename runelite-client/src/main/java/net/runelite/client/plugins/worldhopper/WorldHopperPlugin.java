@@ -72,6 +72,7 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.HotkeyListener;
@@ -83,10 +84,10 @@ import net.runelite.http.api.worlds.WorldResult;
 import net.runelite.http.api.worlds.WorldType;
 import org.apache.commons.lang3.ArrayUtils;
 
-//@PluginDescriptor(
-//	name = "World Hopper",
-//	description = "Allows you to quickly hop worlds"
-//)
+@PluginDescriptor(
+	name = "World Hopper",
+	description = "Allows you to quickly hop worlds"
+)
 @Slf4j
 public class WorldHopperPlugin extends Plugin
 {
@@ -100,8 +101,6 @@ public class WorldHopperPlugin extends Plugin
 	private static final String KICK_OPTION = "Kick";
 	private static final ImmutableList<String> BEFORE_OPTIONS = ImmutableList.of("Add friend", "Remove friend", KICK_OPTION);
 	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message");
-
-	private static final ImmutableList<String> BEFORE_OPTIONS_CHAT = ImmutableList.of("Report");
 
 	@Inject
 	private Client client;
@@ -292,8 +291,7 @@ public class WorldHopperPlugin extends Plugin
 		int groupId = WidgetInfo.TO_GROUP(event.getActionParam1());
 		String option = event.getOption();
 
-		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.CLAN_CHAT.getGroupId() ||
-			groupId == WidgetInfo.PRIVATE_CHAT_MESSAGE.getGroupId())
+		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.CLAN_CHAT.getGroupId())
 		{
 			boolean after;
 
@@ -326,30 +324,6 @@ public class WorldHopperPlugin extends Plugin
 			hopTo.setParam1(event.getActionParam1());
 
 			insertMenuEntry(hopTo, client.getMenuEntries(), after);
-		}
-		else if (groupId == WidgetInfo.CHATBOX.getGroupId())
-		{
-			if (!BEFORE_OPTIONS_CHAT.contains(option))
-			{
-				return;
-			}
-
-			// Don't add entry if user is offline
-			ChatPlayer player = getChatPlayerFromName(event.getTarget());
-
-			if (player == null || player.getWorld() == 0 || player.getWorld() == client.getWorld())
-			{
-				return;
-			}
-
-			final MenuEntry hopTo = new MenuEntry();
-			hopTo.setOption(HOP_TO);
-			hopTo.setTarget(event.getTarget());
-			hopTo.setType(MenuAction.RUNELITE.getId());
-			hopTo.setParam0(event.getActionParam0());
-			hopTo.setParam1(event.getActionParam1());
-
-			insertMenuEntry(hopTo, client.getMenuEntries(), false);
 		}
 	}
 

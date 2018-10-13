@@ -84,9 +84,9 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	}
 
 	@Override
-	public List<WorldPoint> getLocations()
+	public WorldPoint[] getLocations()
 	{
-		return Lists.transform(digLocations, HotColdLocation::getWorldPoint);
+		return Lists.transform(digLocations, HotColdLocation::getWorldPoint).toArray(new WorldPoint[0]);
 	}
 
 	@Override
@@ -232,7 +232,6 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		}
 	}
 
-	@Override
 	public boolean update(final String message, final ClueScrollPlugin plugin)
 	{
 		if (!message.startsWith("The device is"))
@@ -406,5 +405,10 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	{
 		this.location = wp;
 		reset();
+	}
+
+	public String[] getNpcs()
+	{
+		return new String[] {npc};
 	}
 }

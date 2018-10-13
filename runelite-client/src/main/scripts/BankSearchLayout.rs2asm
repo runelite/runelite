@@ -640,7 +640,8 @@ LABEL587:
    if_icmpeq              LABEL591
    jump                   LABEL632
 LABEL591:
-   invoke                 280
+   get_varc_string        22                 ; Skip truncating of varcstr 22 by not calling 280
+   tolowercase                               ; instead get the var directly and lowercase it
    sstore                 0
    sload                  0
    string_length         
@@ -667,9 +668,9 @@ LABEL609:
    string_append          3
    iload                  21                             ; load number of matches
    load_string            "setSearchBankInputTextFound"  ; load event name
-   runelite_callback                                     ; invoke callback
-   pop_int                                               ; pop number of matches
-   load_int               10616869
+   runelite_callback     ; invoke callback
+   pop_int               ; pop number of matches
+   load_int               10616876
    widget_put_text_widget
 LABEL616:
    jump                   LABEL631
@@ -688,13 +689,13 @@ LABEL617:
 LABEL628:
    load_string            "Show items whose names contain the following text:"
    load_string            "setSearchBankInputText"  ; load event name
-   runelite_callback                                ; invoke callback
-   load_int               10616869
+   runelite_callback     ; invoke callback
+   load_int               10616876
    widget_put_text_widget
 LABEL631:
    jump                   LABEL635
 LABEL632:
-   load_string            "The Bank of RuneScape"
+   load_string            "The Bank of Gielinor"
    iload                  6
    widget_put_text_widget
 LABEL635:

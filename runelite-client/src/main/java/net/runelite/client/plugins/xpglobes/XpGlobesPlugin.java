@@ -104,6 +104,11 @@ public class XpGlobesPlugin extends Plugin
 			return;
 		}
 
+		if (config.hideMaxed() && currentLevel >= Experience.MAX_REAL_LEVEL)
+		{
+			return;
+		}
+
 		int startingXp = Experience.getXpForLevel(currentLevel);
 		int goalXp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;
 

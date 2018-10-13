@@ -104,7 +104,7 @@ public class CannonSpotOverlay extends Overlay
 		}
 
 		//Render icon
-		Point imageLoc = Perspective.getCanvasImageLocation(client, graphics, point, image, 0);
+		Point imageLoc = Perspective.getCanvasImageLocation(client, point, image, 0);
 
 		if (imageLoc != null)
 		{

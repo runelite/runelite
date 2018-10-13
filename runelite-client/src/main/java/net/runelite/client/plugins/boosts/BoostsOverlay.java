@@ -127,12 +127,12 @@ class BoostsOverlay extends Overlay
 
 	private Color getTextColor(int boost)
 	{
-		if (boost > 0)
+		if (boost < 0)
 		{
-			return Color.GREEN;
+			return new Color(238, 51, 51);
 		}
 
-		return new Color(238, 51, 51);
+		return boost < config.boostThreshold() ? Color.YELLOW : Color.GREEN;
 
 	}
 }

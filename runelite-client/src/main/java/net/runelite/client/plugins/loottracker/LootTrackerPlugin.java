@@ -204,6 +204,7 @@ public class LootTrackerPlugin extends Plugin
 
 		// Convert container items to array of ItemStack
 		final Collection<ItemStack> items = Arrays.stream(container.getItems())
+			.filter(item -> item.getId() > 0)
 			.map(item -> new ItemStack(item.getId(), item.getQuantity()))
 			.collect(Collectors.toList());
 

@@ -163,23 +163,23 @@ public abstract class RSActorMixin implements RSActor
 
 	@Inject
 	@Override
-	public Point getCanvasImageLocation(Graphics2D graphics, BufferedImage image, int zOffset)
+	public Point getCanvasImageLocation(BufferedImage image, int zOffset)
 	{
-		return Perspective.getCanvasImageLocation(client, graphics, getLocalLocation(), image, zOffset);
+		return Perspective.getCanvasImageLocation(client, getLocalLocation(), image, zOffset);
 	}
 
 	@Inject
 	@Override
-	public Point getCanvasSpriteLocation(Graphics2D graphics, SpritePixels sprite, int zOffset)
+	public Point getCanvasSpriteLocation(SpritePixels sprite, int zOffset)
 	{
-		return Perspective.getCanvasSpriteLocation(client, graphics, getLocalLocation(), sprite, zOffset);
+		return Perspective.getCanvasSpriteLocation(client, getLocalLocation(), sprite, zOffset);
 	}
 
 	@Inject
 	@Override
 	public Point getMinimapLocation()
 	{
-		return Perspective.worldToMiniMap(client, getX(), getY());
+		return Perspective.localToMinimap(client, getLocalLocation());
 	}
 
 	@FieldHook("animation")

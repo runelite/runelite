@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
@@ -250,9 +251,8 @@ public abstract class RSModelMixin implements RSModel
 		for (Vertex v : vertices)
 		{
 			// Compute canvas location of vertex
-			Point p = Perspective.worldToCanvas(client,
-				localX - v.getX(),
-				localY - v.getZ(),
+			Point p = Perspective.localToCanvas(client,
+				new LocalPoint(localX - v.getX(), localY - v.getZ()),
 				client.getPlane(),
 				-v.getY());
 			if (p != null)

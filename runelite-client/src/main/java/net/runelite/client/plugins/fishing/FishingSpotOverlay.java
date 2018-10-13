@@ -113,7 +113,7 @@ class FishingSpotOverlay extends Overlay
 					}
 
 					LocalPoint localPoint = npc.getLocalLocation();
-					Point location = Perspective.worldToCanvas(client, localPoint.getX(), localPoint.getY(), client.getPlane());
+					Point location = Perspective.localToCanvas(client, localPoint, client.getPlane());
 
 					if (location != null)
 					{
@@ -141,7 +141,7 @@ class FishingSpotOverlay extends Overlay
 				BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());;
 				if (fishImage != null)
 				{
-					Point imageLocation = npc.getCanvasImageLocation(graphics, fishImage, npc.getLogicalHeight());
+					Point imageLocation = npc.getCanvasImageLocation(fishImage, npc.getLogicalHeight());
 					if (imageLocation != null)
 					{
 						OverlayUtil.renderImageLocation(graphics, imageLocation, fishImage);

@@ -124,14 +124,14 @@ public class ItemService
 	{
 		if (time != null)
 		{
-			return con.createQuery("select item, price, time, fetched_time from prices where item = :item and time <= :time order by time desc limit 1")
+			return con.createQuery("select item, name, price, time, fetched_time from prices t1 join items t2 on t1.item=t2.id where item = :item and time <= :time order by time desc limit 1")
 				.addParameter("item", itemId)
 				.addParameter("time", time.toString())
 				.executeAndFetchFirst(PriceEntry.class);
 		}
 		else
 		{
-			return con.createQuery("select item, price, time, fetched_time from prices where item = :item order by time desc limit 1")
+			return con.createQuery("select item, name, price, time, fetched_time from prices t1 join items t2 on t1.item=t2.id where item = :item order by time desc limit 1")
 				.addParameter("item", itemId)
 				.executeAndFetchFirst(PriceEntry.class);
 		}
@@ -295,9 +295,10 @@ public class ItemService
 	{
 		try (Connection con = sql2o.beginTransaction())
 		{
-			Query query = con.createQuery("select t2.item, t2.time, prices.price, prices.fetched_time from (select t1.item as item, max(t1.time) as time from prices t1 group by item) t2 join prices on t2.item=prices.item and t2.time=prices.time");
-			List<PriceEntry> entries = query.executeAndFetch(PriceEntry.class);
-			return entries;
+			Query query = con.createQuery("select t2.item, t3.name, t2.time, prices.price, prices.fetched_time from (select t1.item as item, max(t1.time) as time from prices t1 group by item) t2 " +
+					" join prices on t2.item=prices.item and t2.time=prices.time" +
+					" join items t3 on t2.item=t3.id");
+			return query.executeAndFetch(PriceEntry.class);
 		}
 	}
 

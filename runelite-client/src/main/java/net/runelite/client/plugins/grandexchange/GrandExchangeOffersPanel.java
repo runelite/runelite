@@ -30,14 +30,11 @@ import java.awt.CardLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
-import java.util.concurrent.ScheduledExecutorService;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import net.runelite.api.Client;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GrandExchangeOfferState;
 import net.runelite.api.ItemComposition;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.components.PluginErrorPanel;
 
@@ -54,27 +51,12 @@ public class GrandExchangeOffersPanel extends JPanel
 	/*  The offers container, this will hold all the individual ge offers panels */
 	private final JPanel offerPanel = new JPanel();
 
-	/*  The error panel, this displays an error message */
-	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
-
 	/*  The center panel, this holds either the error panel or the offers container */
 	private final JPanel container = new JPanel(cardLayout);
 
-	private final Client client;
-	private final ItemManager itemManager;
-	private final ScheduledExecutorService executor;
+	private final GrandExchangeOfferSlot[] offerSlotPanels = new GrandExchangeOfferSlot[MAX_OFFERS];
 
-	private GrandExchangeOfferSlot[] offerSlotPanels = new GrandExchangeOfferSlot[MAX_OFFERS];
-
-	public GrandExchangeOffersPanel(Client client, ItemManager itemManager, ScheduledExecutorService executor)
-	{
-		this.client = client;
-		this.itemManager = itemManager;
-		this.executor = executor;
-		init();
-	}
-
-	void init()
+	GrandExchangeOffersPanel()
 	{
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -96,6 +78,8 @@ public class GrandExchangeOffersPanel extends JPanel
 		/* This panel wraps the error panel and limits its height */
 		JPanel errorWrapper = new JPanel(new BorderLayout());
 		errorWrapper.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		/*  The error panel, this displays an error message */
+		PluginErrorPanel errorPanel = new PluginErrorPanel();
 		errorWrapper.add(errorPanel, BorderLayout.NORTH);
 
 		errorPanel.setBorder(new EmptyBorder(50, 20, 20, 20));
@@ -197,5 +181,4 @@ public class GrandExchangeOffersPanel extends JPanel
 		}
 
 	}
-
 }

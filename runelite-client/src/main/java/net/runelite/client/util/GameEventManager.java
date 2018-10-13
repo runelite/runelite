@@ -37,7 +37,9 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.NPC;
 import net.runelite.api.Node;
+import net.runelite.api.Player;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.events.DecorativeObjectSpawned;
@@ -45,6 +47,8 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemSpawned;
+import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.WallObjectSpawned;
 
 @Singleton
@@ -110,6 +114,24 @@ public class GameEventManager
 			if (itemContainer != null)
 			{
 				eventBus.post(new ItemContainerChanged(itemContainer));
+			}
+		}
+
+		for (NPC npc : client.getCachedNPCs())
+		{
+			if (npc != null)
+			{
+				final NpcSpawned npcSpawned = new NpcSpawned(npc);
+				eventBus.post(npcSpawned);
+			}
+		}
+
+		for (Player player : client.getCachedPlayers())
+		{
+			if (player != null)
+			{
+				final PlayerSpawned playerSpawned = new PlayerSpawned(player);
+				eventBus.post(playerSpawned);
 			}
 		}
 
