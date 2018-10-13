@@ -25,7 +25,11 @@
 package net.runelite.client.ui.components.shadowlabel;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Toolkit;
+import java.util.Map;
 import javax.swing.JLabel;
 import lombok.Getter;
 
@@ -60,5 +64,19 @@ public class JShadowedLabel extends JLabel
 		this.shadowSize = newSize;
 		revalidate();
 		repaint();
+	}
+
+	@Override
+	public void paint(Graphics g)
+	{
+		// Set font rendering properties like the OS's font rendering
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Map desktopHints = (Map)(tk.getDesktopProperty("awt.font.desktophints"));
+		if (desktopHints != null)
+		{
+			((Graphics2D)g).addRenderingHints(desktopHints);
+		}
+
+		super.paint(g);
 	}
 }

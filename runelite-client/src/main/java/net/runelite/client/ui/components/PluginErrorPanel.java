@@ -68,6 +68,7 @@ public class PluginErrorPanel extends JPanel
 	{
 		noResultsTitle.setText(title);
 		noResultsDescription.setText("<html><body style = 'text-align:center'>" + description + "</body></html>");
+//		noResultsDescription.setText(description);
 		setVisible(true);
 	}
 }
