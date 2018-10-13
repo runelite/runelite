@@ -324,7 +324,7 @@ public class SlayerPluginTest
 	}
 
 	@Test
-	public void testBracletSlaughter()
+	public void testBraceletSlaughter()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", BRACLET_SLAUGHTER, null);
 

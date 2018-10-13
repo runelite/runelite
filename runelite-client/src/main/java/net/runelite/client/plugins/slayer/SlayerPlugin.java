@@ -49,14 +49,19 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import static net.runelite.api.Skill.SLAYER;
+
+import net.runelite.api.Point;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
@@ -101,6 +106,9 @@ public class SlayerPlugin extends Plugin
 
 	//Reward UI
 	private static final Pattern REWARD_POINTS = Pattern.compile("Reward points: ((?:\\d+,)*\\d+)");
+    private static final int REWARD_ENABLED_SPRITE = 1213;
+    private static final String CHAT_DOUBLE_TROUBLE = "Double Trouble";
+	private static final int REWARD_DOUBLE_TROUBLE_CHECKBOX_ID = 151;
 
 	private static final int EXPEDITIOUS_CHARGE = 30;
 	private static final int SLAUGHTER_CHARGE = 30;
@@ -164,6 +172,7 @@ public class SlayerPlugin extends Plugin
 	private int cachedXp;
 	private Instant infoTimer;
 	private boolean loginFlag;
+	private boolean doubleTroubleEnabled;
 	private List<String> targetNames = new ArrayList<>();
 
 	@Override
@@ -181,6 +190,7 @@ public class SlayerPlugin extends Plugin
 			streak = config.streak();
 			setExpeditiousChargeCount(config.expeditious());
 			setSlaughterChargeCount(config.slaughter());
+			doubleTroubleEnabled = config.doubleTroubleEnabled();
 			clientThread.invoke(() -> setTask(config.taskName(), config.amount()));
 		}
 	}
@@ -223,6 +233,7 @@ public class SlayerPlugin extends Plugin
 					streak = config.streak();
 					setExpeditiousChargeCount(config.expeditious());
 					setSlaughterChargeCount(config.slaughter());
+					doubleTroubleEnabled = config.doubleTroubleEnabled();
 					setTask(config.taskName(), config.amount());
 					loginFlag = false;
 				}
@@ -237,6 +248,7 @@ public class SlayerPlugin extends Plugin
 		config.points(points);
 		config.streak(streak);
 		config.expeditious(expeditiousChargeCount);
+		config.doubleTroubleEnabled(doubleTroubleEnabled);
 		config.slaughter(slaughterChargeCount);
 	}
 
@@ -439,6 +451,36 @@ public class SlayerPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
+	{
+		int groupId = widgetLoaded.getGroupId();
+		if (groupId == WidgetID.SLAYER_REWARDS_GROUP_ID)
+		{
+			Widget rewardOptions = client.getWidget(WidgetInfo.SLAYER_REWARDS_REWARD_OPTIONS);
+			Widget doubleTroubleCheckbox = rewardOptions.getChild(REWARD_DOUBLE_TROUBLE_CHECKBOX_ID);
+			doubleTroubleEnabled = (doubleTroubleCheckbox.getSpriteId() == REWARD_ENABLED_SPRITE);
+			config.doubleTroubleEnabled(doubleTroubleEnabled);
+		}
+	}
+
+	@Subscribe
+	public void onWidgetClicked(MenuOptionClicked menuOptionClicked)
+	{
+		int groupId = WidgetInfo.TO_GROUP(menuOptionClicked.getWidgetId());
+		if (groupId == WidgetID.SLAYER_REWARDS_GROUP_ID)
+		{
+			if (menuOptionClicked.getWidgetId() == client.getWidget(WidgetInfo.SLAYER_REWARDS_REWARD_CONFIRMATION_BUTTON).getId())
+			{
+				if (Text.removeTags(menuOptionClicked.getMenuTarget()).contains(CHAT_DOUBLE_TROUBLE))
+				{
+					doubleTroubleEnabled = !doubleTroubleEnabled;
+					config.doubleTroubleEnabled(doubleTroubleEnabled);
+				}
+			}
+		}
+	}
+
+	@Subscribe
 	public void onExperienceChanged(ExperienceChanged event)
 	{
 		if (event.getSkill() != SLAYER)
@@ -490,6 +532,11 @@ public class SlayerPlugin extends Plugin
 		}
 
 		amount--;
+		if (doubleTroubleExtraKill())
+		{
+			amount--;
+		}
+
 		config.amount(amount); // save changed value
 
 		if (!config.showInfobox())
@@ -501,6 +548,23 @@ public class SlayerPlugin extends Plugin
 		addCounter();
 		counter.setText(String.valueOf(amount));
 		infoTimer = Instant.now();
+	}
+
+	private boolean doubleTroubleExtraKill()
+	{
+		return config.doubleTroubleEnabled() &&
+				config.taskName().equalsIgnoreCase(Task.GROTESQUE_GUARDIANS.name()) || config.taskName().equalsIgnoreCase(Task.GARGOYLES.name()) &&
+				isInGrotesqueGuardiansScene();
+	}
+
+	private boolean isInGrotesqueGuardiansScene() {
+		Point minSceneLocation = new Point(41, 55);
+		Point maxSceneLocation = new Point(56, 70);
+		int playerX = client.getLocalPlayer().getLocalLocation().getSceneX();
+		int playerY = client.getLocalPlayer().getLocalLocation().getSceneY();
+
+		return playerX >= minSceneLocation.getX() && playerY >= minSceneLocation.getY() &&
+				playerX <= maxSceneLocation.getX() && playerY <= maxSceneLocation.getY();
 	}
 
 	private boolean isTarget(NPC npc)
