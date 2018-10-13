@@ -32,6 +32,9 @@ import java.awt.event.MouseWheelEvent;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
@@ -64,6 +67,7 @@ import net.runelite.client.plugins.banktags.BankTagsConfig;
 import net.runelite.client.plugins.banktags.BankTagsPlugin;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.ICON_SEARCH;
+import static net.runelite.client.plugins.banktags.BankTagsPlugin.SPLITTER;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_SEARCH;
 import net.runelite.client.plugins.banktags.TagManager;
 import net.runelite.client.util.ColorUtil;
@@ -80,6 +84,8 @@ public class TabInterface
 	private static final String VIEW_TAB = "View tag tab";
 	private static final String CHANGE_ICON = "Change icon";
 	private static final String REMOVE_TAG = "Remove-tag";
+	private static final String TAG_GEAR = "Tag-equipment";
+	private static final String TAG_INVENTORY = "Tag-inventory";
 	private static final int TAB_HEIGHT = 40;
 	private static final int TAB_WIDTH = 39;
 	private static final int BUTTON_HEIGHT = 20;
@@ -331,6 +337,62 @@ public class TabInterface
 			entry.setOption(CHANGE_ICON + " (" + iconToSet.getTag() + ")");
 			client.setMenuEntries(entries);
 		}
+		else if (event.getActionParam1() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId()
+			&& event.getOption().equals("Deposit inventory"))
+		{
+			MenuEntry tagInventory = new MenuEntry();
+			tagInventory.setParam0(event.getActionParam0());
+			tagInventory.setParam1(event.getActionParam1());
+			tagInventory.setTarget(event.getTarget());
+			tagInventory.setOption(TAG_INVENTORY);
+			tagInventory.setType(MenuAction.RUNELITE.getId());
+			tagInventory.setIdentifier(event.getIdentifier());
+			entries = Arrays.copyOf(entries, entries.length + 1);
+			entries[entries.length - 1] = tagInventory;
+
+			if (activeTab != null)
+			{
+				tagInventory = new MenuEntry();
+				tagInventory.setParam0(event.getActionParam0());
+				tagInventory.setParam1(event.getActionParam1());
+				tagInventory.setTarget(ColorUtil.wrapWithColorTag(activeTab.getTag(), HILIGHT_COLOR));
+				tagInventory.setOption(TAG_INVENTORY);
+				tagInventory.setType(MenuAction.RUNELITE.getId());
+				tagInventory.setIdentifier(event.getIdentifier());
+				entries = Arrays.copyOf(entries, entries.length + 1);
+				entries[entries.length - 1] = tagInventory;
+			}
+
+			client.setMenuEntries(entries);
+		}
+		else if (event.getActionParam1() == WidgetInfo.BANK_DEPOSIT_EQUIPMENT.getId()
+			&& event.getOption().equals("Deposit worn items"))
+		{
+			MenuEntry tagEquipment = new MenuEntry();
+			tagEquipment.setParam0(event.getActionParam0());
+			tagEquipment.setParam1(event.getActionParam1());
+			tagEquipment.setTarget(event.getTarget());
+			tagEquipment.setOption(TAG_GEAR);
+			tagEquipment.setType(MenuAction.RUNELITE.getId());
+			tagEquipment.setIdentifier(event.getIdentifier());
+			entries = Arrays.copyOf(entries, entries.length + 1);
+			entries[entries.length - 1] = tagEquipment;
+
+			if (activeTab != null)
+			{
+				tagEquipment = new MenuEntry();
+				tagEquipment.setParam0(event.getActionParam0());
+				tagEquipment.setParam1(event.getActionParam1());
+				tagEquipment.setTarget(ColorUtil.wrapWithColorTag(activeTab.getTag(), HILIGHT_COLOR));
+				tagEquipment.setOption(TAG_GEAR);
+				tagEquipment.setType(MenuAction.RUNELITE.getId());
+				tagEquipment.setIdentifier(event.getIdentifier());
+				entries = Arrays.copyOf(entries, entries.length + 1);
+				entries[entries.length - 1] = tagEquipment;
+			}
+
+			client.setMenuEntries(entries);
+		}
 	}
 
 	public void handleClick(MenuOptionClicked event)
@@ -382,6 +444,60 @@ public class TabInterface
 			final int itemId = itemManager.canonicalize(item.getId());
 			tagManager.removeTag(itemId, activeTab.getTag());
 			doSearch(InputType.SEARCH, TAG_SEARCH + activeTab.getTag());
+		}
+		else if (activeTab != null
+			&& event.getMenuAction() == MenuAction.RUNELITE
+			&& (event.getMenuOption().equals(TAG_INVENTORY) || event.getMenuOption().equals(TAG_GEAR)))
+		{
+			// Tag gear as current active tab
+			event.consume();
+			ItemContainer container = client.getItemContainer(event.getMenuOption().equals(TAG_GEAR) ? InventoryID.EQUIPMENT : InventoryID.INVENTORY);
+			if (container != null)
+			{
+				for (Item item : container.getItems())
+				{
+					if (item != null)
+					{
+						tagManager.addTag(itemManager.canonicalize(item.getId()), activeTab.getTag());
+					}
+				}
+			}
+
+			openTag(TAG_SEARCH + activeTab.getTag());
+		}
+		else if (activeTab == null
+			&& event.getMenuAction() == MenuAction.RUNELITE
+			&& (event.getMenuOption().equals(TAG_INVENTORY) || event.getMenuOption().equals(TAG_GEAR)))
+		{
+			event.consume();
+			boolean inventory = event.getMenuOption().equals(TAG_INVENTORY);
+			ItemContainer container = client.getItemContainer(inventory ? InventoryID.INVENTORY : InventoryID.EQUIPMENT);
+			if (container != null)
+			{
+				HashSet<Integer> items = new HashSet<>();
+				for (Item item : container.getItems())
+				{
+					if (item != null)
+					{
+						items.add(item.getId());
+					}
+				}
+
+				chatboxInputManager.openInputWindow((inventory ? "Inventory " : "Equipment ") + "tags:", "", (newTags) ->
+				{
+					if (!Objects.equals(newTags, client.getVar(VarClientStr.INPUT_TEXT)) || Strings.isNullOrEmpty(newTags))
+					{
+						return;
+					}
+
+					List<String> tags = SPLITTER.splitToList(newTags);
+
+					for (int itemId : items)
+					{
+						tagManager.addTags(itemManager.canonicalize(itemId), tags);
+					}
+				});
+			}
 		}
 		else
 		{
