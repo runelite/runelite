@@ -302,8 +302,7 @@ public class LootTrackerPlugin extends Plugin
 		return snapshot;
 	}
 
-	private List<ItemStack> generateSnapshotDelta(	HashMultiset<Integer> newItems,
-													HashMultiset<Integer> oldItems)
+	private List<ItemStack> generateSnapshotDelta(HashMultiset<Integer> newItems, HashMultiset<Integer> oldItems)
 	{
 		final Multiset<Integer> difference = Multisets.difference(newItems, oldItems);
 
