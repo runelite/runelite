@@ -35,7 +35,6 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -49,6 +48,7 @@ import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.SetMessage;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.util.ColorUtil;
 
@@ -57,18 +57,20 @@ public class ChatMessageManager
 {
 	private final Multimap<ChatMessageType, ChatColor> colorCache = HashMultimap.create();
 	private final Client client;
-	private final ScheduledExecutorService executor;
 	private final ChatColorConfig chatColorConfig;
+	private final ClientThread clientThread;
 	private int transparencyVarbit = -1;
 	private final Queue<QueuedMessage> queuedMessages = new ConcurrentLinkedQueue<>();
 
 	@Inject
-	private ChatMessageManager(Client client, ScheduledExecutorService executor,
-		ChatColorConfig chatColorConfig)
+	private ChatMessageManager(
+		Client client,
+		ChatColorConfig chatColorConfig,
+		ClientThread clientThread)
 	{
 		this.client = client;
-		this.executor = executor;
 		this.chatColorConfig = chatColorConfig;
+		this.clientThread = clientThread;
 	}
 
 	@Subscribe
@@ -95,7 +97,7 @@ public class ChatMessageManager
 		if (event.getGroup().equals("textrecolor"))
 		{
 			loadColors();
-			refreshAll();
+			clientThread.invokeLater(this::refreshAll);
 		}
 	}
 
@@ -594,15 +596,12 @@ public class ChatMessageManager
 
 	private void refreshAll()
 	{
-		executor.submit(() ->
-		{
-			client.getChatLineMap().values().stream()
-				.filter(Objects::nonNull)
-				.flatMap(clb -> Arrays.stream(clb.getLines()))
-				.filter(Objects::nonNull)
-				.forEach(this::update);
+		client.getChatLineMap().values().stream()
+			.filter(Objects::nonNull)
+			.flatMap(clb -> Arrays.stream(clb.getLines()))
+			.filter(Objects::nonNull)
+			.forEach(this::update);
 
-			client.refreshChat();
-		});
+		client.refreshChat();
 	}
 }
