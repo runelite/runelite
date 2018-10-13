@@ -106,7 +106,7 @@ class KourendLibraryOverlay extends Overlay
 			{
 				continue;
 			}
-			Point screenBookcase = Perspective.worldToCanvas(client, localBookcase.getX(), localBookcase.getY(), caseLoc.getPlane(), 25);
+			Point screenBookcase = Perspective.localToCanvas(client, localBookcase, caseLoc.getPlane(), 25);
 
 			if (screenBookcase != null)
 			{
@@ -219,7 +219,7 @@ class KourendLibraryOverlay extends Overlay
 					LocalPoint local = n.getLocalLocation();
 					Polygon poly = getCanvasTilePoly(client, local);
 					OverlayUtil.renderPolygon(g, poly, Color.WHITE);
-					Point screen = Perspective.worldToCanvas(client, local.getX(), local.getY(), client.getPlane(), n.getLogicalHeight());
+					Point screen = Perspective.localToCanvas(client, local, client.getPlane(), n.getLogicalHeight());
 					if (screen != null)
 					{
 						g.drawImage(b.getIcon(), screen.getX() - (b.getIcon().getWidth() / 2), screen.getY() - b.getIcon().getHeight(), null);

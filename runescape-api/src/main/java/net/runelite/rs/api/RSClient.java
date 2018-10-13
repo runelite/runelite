@@ -129,6 +129,16 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("gameState")
 	int getRSGameState();
 
+	@Import("checkClick")
+	@Override
+	void setCheckClick(boolean checkClick);
+
+	@Import("mouseX2")
+	void setMouseCanvasHoverPositionX(int x);
+
+	@Import("mouseY2")
+	void setMouseCanvasHoverPositionY(int y);
+
 	@Import("mouseCurrentButton")
 	@Override
 	int getMouseCurrentButton();
@@ -645,6 +655,7 @@ public interface RSClient extends RSGameEngine, Client
 	void setCompass(SpritePixels spritePixels);
 
 	@Import("widgetSpriteCache")
+	@Override
 	RSNodeCache getWidgetSpriteCache();
 
 	@Import("oculusOrbState")

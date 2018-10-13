@@ -24,24 +24,45 @@
  */
 package net.runelite.client.plugins.devtools;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.callback.ClientThread;
 
 public class WidgetInfoTableModel extends AbstractTableModel
 {
+	@Inject
+	private ClientThread clientThread;
+
 	private static final int COL_FIELD = 0;
 	private static final int COL_VALUE = 1;
 
 	private static final List<WidgetField> fields = populateWidgetFields();
 
 	private Widget widget = null;
+	private Map<WidgetField, Object> values = null;
 
 	public void setWidget(Widget w)
 	{
-		this.widget = w;
-		fireTableStructureChanged();
+		clientThread.invoke(() ->
+		{
+			Map<WidgetField, Object> newValues = w == null ? null : fields.stream().collect(ImmutableMap.toImmutableMap(
+				Function.identity(),
+				i -> i.getValue(w)
+			));
+			SwingUtilities.invokeLater(() ->
+			{
+				widget = w;
+				values = newValues;
+				fireTableStructureChanged();
+			});
+		});
 	}
 
 	@Override
@@ -67,11 +88,11 @@ public class WidgetInfoTableModel extends AbstractTableModel
 	@Override
 	public int getRowCount()
 	{
-		if (widget == null)
+		if (values == null)
 		{
 			return 0;
 		}
-		return fields.size();
+		return values.size();
 	}
 
 	@Override
@@ -83,7 +104,7 @@ public class WidgetInfoTableModel extends AbstractTableModel
 			case COL_FIELD:
 				return field.getName();
 			case COL_VALUE:
-				return field.getValue(widget);
+				return values.get(field);
 			default:
 				return null;
 		}
@@ -104,7 +125,11 @@ public class WidgetInfoTableModel extends AbstractTableModel
 	public void setValueAt(Object value, int rowIndex, int columnIndex)
 	{
 		WidgetField<?> field = fields.get(rowIndex);
-		field.setValue(widget, value);
+		clientThread.invoke(() ->
+		{
+			field.setValue(widget, value);
+			setWidget(widget);
+		});
 	}
 
 	private static List<WidgetField> populateWidgetFields()
@@ -143,6 +168,8 @@ public class WidgetInfoTableModel extends AbstractTableModel
 		out.add(new WidgetField<>("OriginalX", Widget::getOriginalX));
 		out.add(new WidgetField<>("OriginalY", Widget::getOriginalY));
 		out.add(new WidgetField<>("BorderType", Widget::getBorderType, Widget::setBorderType, Integer.class));
+		out.add(new WidgetField<>("DragDeadZone", Widget::getDragDeadZone, Widget::setDragDeadZone, Integer.class));
+		out.add(new WidgetField<>("DragDeadTime", Widget::getDragDeadTime, Widget::setDragDeadTime, Integer.class));
 		out.add(new WidgetField<>("IsIf3", Widget::isIf3));
 		out.add(new WidgetField<>("HasListener", Widget::hasListener, Widget::setHasListener, Boolean.class));
 

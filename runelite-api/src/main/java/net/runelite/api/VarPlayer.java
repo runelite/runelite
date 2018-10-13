@@ -38,7 +38,7 @@ public enum VarPlayer
 
 	BANK_TAB(115),
 
-	MEMBERSHIP_DAYS(263),
+	MEMBERSHIP_DAYS(1780),
 
 	SPECIAL_ATTACK_PERCENT(300),
 	SPECIAL_ATTACK_ENABLED(301),
@@ -46,6 +46,13 @@ public enum VarPlayer
 	IN_RAID_PARTY(1427),
 
 	NMZ_REWARD_POINTS(1060),
+
+	/**
+	 * 0 : not started
+	 * greater than 0 : in progress
+	 * greater than 99 : completed
+	 */
+	THRONE_OF_MISCELLANIA(359),
 
 	/**
 	 * Experience tracker goal start.

@@ -77,7 +77,7 @@ class PrayerBarOverlay extends Overlay
 
 		final int height = client.getLocalPlayer().getLogicalHeight() + 10;
 		final LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
-		final Point canvasPoint = Perspective.worldToCanvas(client, localLocation.getX(), localLocation.getY(), client.getPlane(), height);
+		final Point canvasPoint = Perspective.localToCanvas(client, localLocation, client.getPlane(), height);
 
 		// Draw bar
 		final int barX = canvasPoint.getX() + client.getViewportXOffset() - 15;

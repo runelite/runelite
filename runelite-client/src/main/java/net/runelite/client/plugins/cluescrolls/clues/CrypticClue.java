@@ -50,7 +50,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 @Getter
 public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueScroll, ObjectClueScroll
 {
-	private static final Set<CrypticClue> CLUES = ImmutableSet.of(
+	public static final Set<CrypticClue> CLUES = ImmutableSet.of(
 		new CrypticClue("Show this to Sherlock.", "Sherlock", new WorldPoint(2733, 3415, 0), "Sherlock is located to the east of the Sorcerer's tower in Seers' Village."),
 		new CrypticClue("Talk to the bartender of the Rusty Anchor in Port Sarim.", "Bartender", new WorldPoint(3045, 3256, 0), "The Rusty Anchor is located in the north of Port Sarim."),
 		new CrypticClue("The keeper of Melzars... Spare? Skeleton? Anar?", "Oziach", new WorldPoint(3068, 3516, 0), "Speak to Oziach in Edgeville"),
@@ -198,7 +198,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Fiendish cooks probably won’t dig the dirty dishes.", new WorldPoint(3043, 4974, 1), "Dig by the fire in the Rogues' Den."),
 		new CrypticClue("My life was spared but these voices remain, now guarding these iron gates is my bane.",  "Key Master", new WorldPoint(1310, 1251, 0), "Speak to the Key Master in Cerberus' Lair."),
 		new CrypticClue("Search the boxes in one of the tents in Al Kharid.", BOXES_361, new WorldPoint(3308, 3206, 0), "Search the boxes in the tent east of the Silk trader."),
-		new CrypticClue("One of several rhyming brothers, in business attire with an obsession for paper work.",  "Piles", new WorldPoint(3186, 3936, 0), "Speak to Piles in the Resource Area."),
+		new CrypticClue("One of several rhyming brothers, in business attire with an obsession for paper work.",  "Piles", new WorldPoint(3186, 3936, 0), "Speak to Piles in the Wilderness Resource Area. An entry fee of 7,500 coins is required, or less if Wilderness Diaries have been completed."),
 		new CrypticClue("Search the drawers on the first floor of a building overlooking Ardougne's Market.", DRAWERS_352, new WorldPoint(2657, 3322, 1), "Climb the ladder in the house north of the market."),
 		new CrypticClue("'A bag belt only?', he asked his balding brothers.", "Abbot Langley", new WorldPoint(3058, 3487, 0), "Talk-to Abbot Langley in Monastery west of Edgeville"),
 		new CrypticClue("Search the drawers upstairs in Falador's shield shop.", DRAWERS, new WorldPoint(2971, 3386, 1), "Cassie's Shield Shop at the northern Falador entrance."),
@@ -216,10 +216,10 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the drawers in the house next to the Port Sarim mage shop.", DRAWERS, new WorldPoint(3024, 3259, 0), "House east of Betty's. Contains a cooking sink."),
 		new CrypticClue("With a name like that, you'd expect a little more than just a few scimitars.", "Daga", new WorldPoint(2759, 2775, 0), "Speak to Daga on Ape Atoll."),
 		new CrypticClue("Strength potions with red spiders' eggs? He is quite a herbalist.", "Apothecary", new WorldPoint(3194, 3403, 0), "Talk to Apothecary in the South-western Varrock. (the) apothecary is just north-west of the Varrock Swordshop."),
-		new CrypticClue("Robin wishes to see your finest range equipment.", "Robin", new WorldPoint(3673, 3492, 0), "Robin at the inn in Port Phasmatys. Speak to him with +182 in ranged attack bonus."),
+		new CrypticClue("Robin wishes to see your finest ranged equipment.", "Robin", new WorldPoint(3673, 3492, 0), "Robin at the inn in Port Phasmatys. Speak to him with +182 in ranged attack bonus."),
 		new CrypticClue("You will need to under-cook to solve this one.", CRATE_357, new WorldPoint(3219, 9617, 0), "Search the crate in the Lumbridge basement."),
 		new CrypticClue("Search through some drawers found in Taverley's houses.", DRAWERS_350, new WorldPoint(2894, 3418, 0), "The south-eastern most house, south of Jatix's Herblore Shop."),
-		new CrypticClue("Anger Abbot Langley.", "Abbot Langley", new WorldPoint(3058, 3487, 0), "Speak to Abbot Langley while you have a negative prayer bonus"),
+		new CrypticClue("Anger Abbot Langley.", "Abbot Langley", new WorldPoint(3058, 3487, 0), "Speak to Abbot Langley in the Edgeville Monastery while you have a negative prayer bonus (currently only possible with an Ancient staff)."),
 		new CrypticClue("Dig where only the skilled, the wealthy, or the brave can choose not to visit again.", new WorldPoint(3221, 3219, 0), "Dig at Lumbridge spawn"),
 		new CrypticClue("Scattered coins and gems fill the floor. The chest you seek is in the north east.", "King Black Dragon", CLOSED_CHEST_375, new WorldPoint(2288, 4702, 0), "Kill the King Black Dragon for a key (elite), and then open the closed chest in the NE corner of the lair."),
 		new CrypticClue("A ring of water surrounds 4 powerful rings, dig above the ladder located there.", new WorldPoint(1910, 4367, 0), "Dig by the ladder leading to the Dagannoth Kings room in the Waterbirth Island Dungeon."),
@@ -229,7 +229,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Dig under Razorlor's toad batta.", new WorldPoint(3139, 4554, 0), "Dig on the toad batta spawn in Tarn's Lair."),
 		new CrypticClue("Talk to Cassie in Falador.", "Cassie", new WorldPoint(2975, 3383, 0), "Cassie is found just south-east of the northern Falador gate."),
 		new CrypticClue("Faint sounds of 'Arr', fire giants found deep, the eastern tip of a lake, are the rewards you could reap.", new WorldPoint(3055, 10338, 0), "Dig south of the pillar at the end of the Deep Wilderness Dungeon."),
-		new CrypticClue("If you're feeling brave, dig beneath the dragon's eye.", new WorldPoint(2410, 4714, 0), "Dig below the mossy rock under the Viyeldi caves."),
+		new CrypticClue("If you're feeling brave, dig beneath the dragon's eye.", new WorldPoint(2410, 4714, 0), "Dig below the mossy rock under the Viyeldi caves (Legend's Quest). Items needed: Pickaxe, unpowered orb, lockpick, spade, and any charge orb spell."),
 		new CrypticClue("Search the tents in the Imperial Guard camp in Burthorpe for some boxes.", BOXES_3686, new WorldPoint(2885, 3540, 0), "Search in the tents in northwest corner of the camp."),
 		new CrypticClue("A dwarf, approaching death, but very much in the light.", "Thorgel", new WorldPoint(1863, 4639, 0), "Thorgel at the entrance to the Death altar"),
 		new CrypticClue("You must be 100 to play with me.", "Squire (Veteran)", new WorldPoint(2638, 2656, 0), "Speak to the Veteran boat squire at Pest Control"),
@@ -273,9 +273,9 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Belladonna, my dear. If only I had gloves, then I could hold you at last.", "Tool Leprechaun", new WorldPoint(3088, 3357, 0), "Talk to Tool Leprechaun at Draynor Manor"),
 		new CrypticClue("Impossible to make angry", "Abbot Langley", new WorldPoint(3059, 3486, 0), "Speak to Abbot Langley at the Edgeville Monastery."),
 		new CrypticClue("Search the crates in Horvik's armoury.", CRATE_5106, new WorldPoint(3228, 3433, 0), "Horvik's in Varrock"),
-		new CrypticClue("Ghommal wishes to be impressed by how strong your equipment is.", "Ghommal", new WorldPoint(2878, 3546, 0), "Talk to Ghommal at the Warriors' Guild while wearing sufficiently strong equipment"),
+		new CrypticClue("Ghommal wishes to be impressed by how strong your equipment is.", "Ghommal", new WorldPoint(2878, 3546, 0), "Speak to Ghommal at the Warriors' Guild with a total Melee Strength bonus of over 100."),
 		new CrypticClue("Shhhh!", "Logosia", new WorldPoint(1633, 3808, 0), "Speak to Logosia in the Arceuus House Library's ground floor."),
-		new CrypticClue("Salty peter.", "Konoo", null, "Talk to Konoo who is digging saltpeter in the Hosidius district in Zeah."),
+		new CrypticClue("Salty peter.", "Konoo", new WorldPoint(1703, 3524, 0), "Talk to Konoo who is digging saltpeter in the Hosidius district in Zeah."),
 		new CrypticClue("Talk to Zeke in Al Kharid.", "Zeke", new WorldPoint(3287, 3190, 0),  "Zeke is the owner of the scimitar shop in Al Kharid."),
 		new CrypticClue("Guthix left his mark in a fiery lake, dig at the tip of it.", new WorldPoint(3069, 3935, 0), "Dig at the tip of the lava lake that is shaped like a Guthixian symbol, west of the Mage Arena."),
 		new CrypticClue("Search the drawers in the upstairs of a house in Catherby.", DRAWERS_350, new WorldPoint(2809, 3451, 1), "Perdu's house in Catherby."),
@@ -288,11 +288,11 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Speak to Ellis in Al Kharid.", "Ellis", new WorldPoint(3276, 3191, 0), "Ellis is tanner just north of Al Kharid bank."),
 		new CrypticClue("Search the chests in the Dwarven Mine.", CLOSED_CHEST_375, new WorldPoint(3000, 9798, 0), "The chest is on the western wall, where Hura's Crossbow Shop is, in the Dwarven Mine."),
 		new CrypticClue("In a while...", null, "Kill a crocodile."),
-		new CrypticClue("A chisel and hammer reside in his home, strange for one of magic. Impress him with your magical equipment.", "Wizard Cromperty", new WorldPoint(2682, 3325, 0), "Wizard Cromperty NE, East Ardougne. +100 magic attack bonus needed"),
+		new CrypticClue("A chisel and hammer reside in his home, strange for one of magic. Impress him with your magical equipment.", "Wizard Cromperty", new WorldPoint(2682, 3325, 0), "Wizard Cromperty, NE corner of East Ardougne. +100 magic attack bonus needed"),
 		new CrypticClue("You have all of the elements available to solve this clue. Fortunately you do not have to go as far as to stand in a draft.", CRATE_18506, new WorldPoint(2723, 9891, 0), "Search the crate, west of the Air Elementals, inside the Elemental Workshop."),
 		new CrypticClue("A demon's best friend holds the next step of this clue.", null, "Kill a hellhound."),
 		new CrypticClue("Dig in the centre of a great city of 5 districts.", new WorldPoint(1639, 3673, 0), "Dig in front of the large statue in the centre of Great Kourend."),
-		new CrypticClue("Hopefully this set of armor will help you to keep surviving.", "Sir Vyvin", new WorldPoint(2982, 3336, 2), "Speak to Sir Vyvin while wearing a white full helm, platebody, and platelegs."),
+		new CrypticClue("Hopefully this set of armour will help you to keep surviving.", "Sir Vyvin", new WorldPoint(2982, 3336, 2), "Speak to Sir Vyvin while wearing a white full helm, platebody, and platelegs."),
 		new CrypticClue("The beasts retreat, for their Queen is gone; the song of this town still plays on. Dig near the birthplace of a blade, be careful not to melt your spade.", new WorldPoint(2342, 3677, 0), "Dig in front of the small furnace in the Piscatoris Fishing Colony."),
 		new CrypticClue("Darkness wanders around me, but fills my mind with knowledge.", "Biblia",  new WorldPoint(1633, 3825, 2), "Speak to Biblia on the Arceuus House Library's top floor."),
 		new CrypticClue("I would make a chemistry joke, but I'm afraid I wouldn't get a reaction.", "Chemist", new WorldPoint(2932, 3212, 0), "Talk to the Chemist in Rimmington"),
@@ -431,5 +431,15 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		}
 
 		return null;
+	}
+
+	public int[] getObjectIds()
+	{
+		return new int[] {objectId};
+	}
+
+	public String[] getNpcs()
+	{
+		return new String[] {npc};
 	}
 }

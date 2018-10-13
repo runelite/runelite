@@ -12,7 +12,8 @@
    if_icmpeq              LABEL8
    jump                   LABEL34
 LABEL8:
-   invoke                 280
+   get_varc_string        22                 ; Skip truncating of varcstr 22 by not calling 280
+   tolowercase                               ; instead get the var directly and lowercase it
    sstore                 1
    sload                  1
    string_length

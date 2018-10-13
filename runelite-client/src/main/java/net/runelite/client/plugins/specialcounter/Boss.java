@@ -49,7 +49,7 @@ enum Boss
 	private final String name;
 	private final double modifier; // Some NPCs have a modifier to the experience a player receives.
 
-	public static Boss getBoss(String name)
+	static Boss getBoss(String name)
 	{
 		for (Boss boss : values())
 		{

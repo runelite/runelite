@@ -168,10 +168,11 @@ public class ItemStatChanges
 		add(boost(HUNTER, 3), HUNTER_POTION1, HUNTER_POTION2, HUNTER_POTION3, HUNTER_POTION4);
 		add(combo(2, boost(HITPOINTS, 5), heal(RUN_ENERGY, 5)), GUTHIX_REST1, GUTHIX_REST2, GUTHIX_REST3, GUTHIX_REST4);
 
-		// Misc run energy
+		// Misc/run energy
 		add(heal(RUN_ENERGY, 10), WHITE_TREE_FRUIT);
 		add(heal(RUN_ENERGY, 30), STRANGE_FRUIT, BANDAGES);
-		add(heal(RUN_ENERGY, 50), MINT_CAKE, GOUT_TUBER);
+		add(heal(RUN_ENERGY, 50), MINT_CAKE);
+		add(combo(food(12), heal(RUN_ENERGY, 50)), GOUT_TUBER);
 
 		// Pies
 		add(combo(2, heal(HITPOINTS, 6), boost(FARMING, 3)), GARDEN_PIE, HALF_A_GARDEN_PIE);

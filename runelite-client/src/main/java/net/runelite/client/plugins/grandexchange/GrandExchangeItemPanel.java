@@ -62,7 +62,7 @@ class GrandExchangeItemPanel extends JPanel
 		setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
 
 		Color background = getBackground();
-		List<JPanel> panels = new ArrayList();
+		List<JPanel> panels = new ArrayList<>();
 		panels.add(this);
 
 		MouseAdapter itemPanelMouseListener = new MouseAdapter()
@@ -165,7 +165,7 @@ class GrandExchangeItemPanel extends JPanel
 		}
 	}
 
-	private void geLink(String name, int itemID)
+	private static void geLink(String name, int itemID)
 	{
 		final String url = "http://services.runescape.com/m=itemdb_oldschool/"
 			+ name.replaceAll(" ", "_")

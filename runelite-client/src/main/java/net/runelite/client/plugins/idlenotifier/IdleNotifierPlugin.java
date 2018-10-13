@@ -37,6 +37,7 @@ import net.runelite.api.AnimationID;
 import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.GraphicID;
 import net.runelite.api.Hitsplat;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
@@ -110,6 +111,7 @@ public class IdleNotifierPlugin extends Plugin
 			return;
 		}
 
+		int graphic = localPlayer.getGraphic();
 		int animation = localPlayer.getAnimation();
 		switch (animation)
 		{
@@ -203,13 +205,21 @@ public class IdleNotifierPlugin extends Plugin
 			/* Magic */
 			case MAGIC_CHARGING_ORBS:
 			case MAGIC_LUNAR_STRING_JEWELRY:
-			case MAGIC_LUNAR_BAKE_PIE:
 			case MAGIC_MAKE_TABLET:
 			/* Prayer */
 			case USING_GILDED_ALTAR:
+			/* Misc */
+			case SAND_COLLECTION:
 				resetTimers();
 				lastAnimation = animation;
 				break;
+			case MAGIC_LUNAR_SHARED:
+				if (graphic == GraphicID.BAKE_PIE)
+				{
+					resetTimers();
+					lastAnimation = animation;
+					break;
+				}
 			case IDLE:
 				break;
 			default:

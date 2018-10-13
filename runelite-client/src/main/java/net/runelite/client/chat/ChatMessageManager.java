@@ -46,6 +46,7 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ResizeableChanged;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.SetMessage;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ChatColorConfig;
@@ -164,6 +165,37 @@ public class ChatMessageManager
 		}
 	}
 
+	@Subscribe
+	public void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
+	{
+		final String eventName = scriptCallbackEvent.getEventName();
+
+		switch (eventName)
+		{
+			case "privateChatFrom":
+			case "privateChatTo":
+			case "privateChatSplitFrom":
+			case "privateChatSplitTo":
+				break;
+			default:
+				return;
+		}
+
+		boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
+		Color usernameColor = isChatboxTransparent ? chatColorConfig.transparentPrivateUsernames() : chatColorConfig.opaquePrivateUsernames();
+		if (usernameColor == null)
+		{
+			return;
+		}
+
+		final String[] stringStack = client.getStringStack();
+		final int stringStackSize = client.getStringStackSize();
+
+		// Stack is: To/From playername :
+		String toFrom = stringStack[stringStackSize - 3];
+		stringStack[stringStackSize - 3] = ColorUtil.prependColorTag(toFrom, usernameColor);
+	}
+
 	private static Color getDefaultColor(ChatMessageType type, boolean transparent)
 	{
 		if (!transparent)
@@ -174,6 +206,7 @@ public class ChatMessageManager
 				case PUBLIC_MOD:
 					return Color.decode("#0000FF");
 				case PRIVATE_MESSAGE_SENT:
+				case PRIVATE_MESSAGE_RECEIVED_MOD:
 				case PRIVATE_MESSAGE_RECEIVED:
 					return Color.decode("#00FFFF");
 				case CLANCHAT:
@@ -193,6 +226,7 @@ public class ChatMessageManager
 				case PUBLIC_MOD:
 					return Color.decode("#9090FF");
 				case PRIVATE_MESSAGE_SENT:
+				case PRIVATE_MESSAGE_RECEIVED_MOD:
 				case PRIVATE_MESSAGE_RECEIVED:
 					return Color.decode("#00FFFF");
 				case CLANCHAT:
