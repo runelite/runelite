@@ -28,7 +28,6 @@ package net.runelite.client.plugins.wasdcamera;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
-import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -37,7 +36,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -48,8 +46,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.ColorUtil;
 
-import static net.runelite.client.plugins.wasdcamera.WASDCameraConfig.KEY_SHOW_USERNAME;
-
 @PluginDescriptor(
 	name = "WASD Camera",
 	description = "Allows use of WASD keys for camera movement with 'Press Enter to Chat'",
@@ -58,7 +54,7 @@ import static net.runelite.client.plugins.wasdcamera.WASDCameraConfig.KEY_SHOW_U
 )
 public class WASDCameraPlugin extends Plugin
 {
-	static final String PRESS_ENTER_TO_CHAT = "Press Enter to Chat...";
+	private static final String PRESS_ENTER_TO_CHAT = "Press Enter to Chat...";
 	private static final String SCRIPT_EVENT_SET_CHATBOX_INPUT = "setChatboxInput";
 	private static final String SCRIPT_EVENT_BLOCK_CHAT_INPUT = "blockChatInput";
 
@@ -70,9 +66,6 @@ public class WASDCameraPlugin extends Plugin
 
 	@Inject
 	private KeyManager keyManager;
-
-	@Inject
-	private WASDCameraConfig config;
 
 	@Inject
 	private WASDCameraListener inputListener;
@@ -146,7 +139,7 @@ public class WASDCameraPlugin extends Plugin
 				{
 					if (chatboxFocused() && !typing)
 					{
-						hideChatInput(chatboxInput);
+						chatboxInput.setText(client.getLocalPlayer().getName() + ": " + PRESS_ENTER_TO_CHAT);
 					}
 				}
 				break;
@@ -161,15 +154,6 @@ public class WASDCameraPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged ev)
-	{
-		if (KEY_SHOW_USERNAME.equals(ev.getKey()) && !typing)
-		{
-			lockChat();
-		}
-	}
-
 	void lockChat()
 	{
 		Widget chatboxParent = client.getWidget(WidgetInfo.CHATBOX_PARENT);
@@ -178,7 +162,7 @@ public class WASDCameraPlugin extends Plugin
 			Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
 			if (chatboxInput != null)
 			{
-				hideChatInput(chatboxInput);
+				chatboxInput.setText(client.getLocalPlayer().getName() + ": " + PRESS_ENTER_TO_CHAT);
 			}
 		}
 	}
@@ -197,23 +181,5 @@ public class WASDCameraPlugin extends Plugin
 				}
 			}
 		}
-	}
-
-	/**
-	 * Helper function used to update the chatbox input field once the chat
-	 * has been locked.
-	 *
-	 * @param chatboxInput Non-null chatbox input widget.
-	 */
-	private void hideChatInput(@Nonnull Widget chatboxInput)
-	{
-		String prefix = "";
-
-		if (config.showUsername())
-		{
-			prefix = client.getLocalPlayer().getName() + ": ";
-		}
-
-		chatboxInput.setText(prefix + PRESS_ENTER_TO_CHAT);
 	}
 }
