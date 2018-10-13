@@ -563,6 +563,8 @@ public class SlayerPlugin extends Plugin
 		int playerX = client.getLocalPlayer().getLocalLocation().getSceneX();
 		int playerY = client.getLocalPlayer().getLocalLocation().getSceneY();
 
+		return playerX >= minSceneLocation.getX() && playerY >= minSceneLocation.getY() &&
+				playerX <= maxSceneLocation.getX() && playerY <= maxSceneLocation.getY();
 	}
 
 	private boolean isTarget(NPC npc)
