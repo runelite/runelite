@@ -214,7 +214,10 @@ public interface SlayerConfig extends Config
 			description = "",
 			hidden = true
 	)
-	default boolean doubleTroubleEnabled() { return false; }
+	default boolean doubleTroubleEnabled()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 			keyName = "doubleTroubleEnabled",

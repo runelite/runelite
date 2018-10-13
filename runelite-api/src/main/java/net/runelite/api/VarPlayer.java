@@ -114,7 +114,12 @@ public enum VarPlayer
 	BIRD_HOUSE_MEADOW_NORTH(1626),
 	BIRD_HOUSE_MEADOW_SOUTH(1627),
 	BIRD_HOUSE_VALLEY_NORTH(1628),
-	BIRD_HOUSE_VALLEY_SOUTH(1629);
+	BIRD_HOUSE_VALLEY_SOUTH(1629),
+
+	/**
+	 * Slayer Rewards interface states
+	 */
+	DOUBLE_TROUBLE(1344);
 
 	private final int id;
 }

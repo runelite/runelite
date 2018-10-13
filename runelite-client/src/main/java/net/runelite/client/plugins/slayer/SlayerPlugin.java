@@ -51,6 +51,7 @@ import net.runelite.api.NPCComposition;
 import static net.runelite.api.Skill.SLAYER;
 
 import net.runelite.api.Point;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
@@ -106,9 +107,7 @@ public class SlayerPlugin extends Plugin
 
 	//Reward UI
 	private static final Pattern REWARD_POINTS = Pattern.compile("Reward points: ((?:\\d+,)*\\d+)");
-	private static final int REWARD_ENABLED_SPRITE = 1213;
 	private static final String REWARD_NAME_DOUBLE_TROUBLE = "Double Trouble";
-	private static final int REWARD_DOUBLE_TROUBLE_CHECKBOX_ID = 151;
 
 	private static final int EXPEDITIOUS_CHARGE = 30;
 	private static final int SLAUGHTER_CHARGE = 30;
@@ -456,9 +455,7 @@ public class SlayerPlugin extends Plugin
 		int groupId = widgetLoaded.getGroupId();
 		if (groupId == WidgetID.SLAYER_REWARDS_GROUP_ID)
 		{
-			Widget rewardOptions = client.getWidget(WidgetInfo.SLAYER_REWARDS_REWARD_OPTIONS);
-			Widget doubleTroubleCheckbox = rewardOptions.getChild(REWARD_DOUBLE_TROUBLE_CHECKBOX_ID);
-			doubleTroubleEnabled = (doubleTroubleCheckbox.getSpriteId() == REWARD_ENABLED_SPRITE);
+			doubleTroubleEnabled = (client.getVar(VarPlayer.DOUBLE_TROUBLE) >> 12 & 1) == 1;
 			config.doubleTroubleEnabled(doubleTroubleEnabled);
 		}
 	}
@@ -557,7 +554,8 @@ public class SlayerPlugin extends Plugin
 				isInGrotesqueGuardiansScene();
 	}
 
-	private boolean isInGrotesqueGuardiansScene() {
+	private boolean isInGrotesqueGuardiansScene()
+	{
 		Point minSceneLocation = new Point(41, 55);
 		Point maxSceneLocation = new Point(56, 70);
 		int playerX = client.getLocalPlayer().getLocalLocation().getSceneX();
