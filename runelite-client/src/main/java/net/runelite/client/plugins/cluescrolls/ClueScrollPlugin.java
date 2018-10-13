@@ -290,8 +290,6 @@ public class ClueScrollPlugin extends Plugin
 	public void onGameTick(final GameTick event)
 	{
 		objectsToMark = null;
-		equippedItems = null;
-		inventoryItems = null;
 
 		if (clue instanceof LocationsClueScroll)
 		{
@@ -416,11 +414,7 @@ public class ClueScrollPlugin extends Plugin
 		}
 
 		// Remove line breaks and also the rare occasion where there are double line breaks
-		final String text = Text.removeTags(clueScrollText.getText()
-			.replaceAll("-<br>", "-")
-			.replaceAll("<br>", " ")
-			.replaceAll("[ ]+", " ")
-			.toLowerCase());
+		final String text = Text.sanitizeMultilineText(clueScrollText.getText()).toLowerCase();
 
 		// Early return if this is same clue as already existing one
 		if (clue instanceof TextClueScroll)

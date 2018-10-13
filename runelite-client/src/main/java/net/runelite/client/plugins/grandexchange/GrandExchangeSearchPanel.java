@@ -60,6 +60,7 @@ class GrandExchangeSearchPanel extends JPanel
 {
 	private static final String ERROR_PANEL = "ERROR_PANEL";
 	private static final String RESULTS_PANEL = "RESULTS_PANEL";
+	private static final int MAX_SEARCH_ITEMS = 100;
 
 	private final GridBagConstraints constraints = new GridBagConstraints();
 	private final CardLayout cardLayout = new CardLayout();
@@ -187,8 +188,16 @@ class GrandExchangeSearchPanel extends JPanel
 
 		cardLayout.show(centerPanel, RESULTS_PANEL);
 
+		int count = 0;
+
 		for (ItemPrice item : result)
 		{
+			if (count++ > MAX_SEARCH_ITEMS)
+			{
+				// Cap search
+				break;
+			}
+
 			int itemId = item.getId();
 
 			ItemComposition itemComp = itemManager.getItemComposition(itemId);

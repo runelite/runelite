@@ -61,6 +61,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ChatboxInputManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.banktags.BankTagsConfig;
+import net.runelite.client.plugins.banktags.BankTagsPlugin;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.ICON_SEARCH;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_SEARCH;
@@ -189,6 +190,11 @@ public class TabInterface
 		tabManager.getAllTabs().forEach(this::loadTab);
 		activateTab(null);
 		scrollTab(0);
+
+		if (config.rememberTab() && !Strings.isNullOrEmpty(config.tab()))
+		{
+			openTag(TAG_SEARCH + config.tab());
+		}
 	}
 
 	public void destroy()
@@ -220,6 +226,31 @@ public class TabInterface
 				config.position(currentTabIndex);
 			}
 
+			// Do the same for last active tab
+			if (config.rememberTab())
+			{
+				if (activeTab == null && !Strings.isNullOrEmpty(config.tab()))
+				{
+					config.tab("");
+				}
+				else if (activeTab != null && !activeTab.getTag().equals(config.tab()))
+				{
+					config.tab(activeTab.getTag());
+				}
+			}
+			else if (!Strings.isNullOrEmpty(config.tab()))
+			{
+				config.tab("");
+			}
+
+			return;
+		}
+
+		if (activeTab != null && client.getVar(VarClientInt.INPUT_TYPE) == InputType.RUNELITE.getType())
+		{
+			// don't reset active tab if we are editing tags
+			updateBounds();
+			scrollTab(0);
 			return;
 		}
 
@@ -231,7 +262,7 @@ public class TabInterface
 		}
 
 		Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
-		if (bankTitle != null && !bankTitle.isHidden())
+		if (bankTitle != null && !bankTitle.isHidden() && !str.startsWith(TAG_SEARCH))
 		{
 			str = bankTitle.getText().replaceFirst("Showing items: ", "");
 
@@ -243,10 +274,9 @@ public class TabInterface
 
 		str = Text.standardize(str);
 
-		if (str.startsWith("tag:"))
+		if (str.startsWith(BankTagsPlugin.TAG_SEARCH))
 		{
-			str = str.substring(4);
-			activateTab(tabManager.find(str));
+			activateTab(tabManager.find(str.substring(TAG_SEARCH.length())));
 		}
 		else
 		{
@@ -312,7 +342,7 @@ public class TabInterface
 
 		if (iconToSet != null)
 		{
-			if (event.getMenuOption().startsWith(CHANGE_ICON))
+			if (event.getMenuOption().startsWith(CHANGE_ICON + " ("))
 			{
 				ItemComposition item = getItem(event.getActionParam());
 				int itemId = itemManager.canonicalize(item.getId());
@@ -541,7 +571,7 @@ public class TabInterface
 	{
 		if (activeTab != null && activeTab.getTag().equals(tag))
 		{
-			doSearch(InputType.SEARCH, "");
+			resetSearch();
 		}
 
 		tabManager.remove(tag);
@@ -782,7 +812,7 @@ public class TabInterface
 	private void openTag(String tag)
 	{
 		doSearch(InputType.SEARCH, tag);
-		activateTab(tabManager.find(tag.substring(4)));
+		activateTab(tabManager.find(tag.substring(TAG_SEARCH.length())));
 
 		// When tab is selected with search window open, the search window closes but the search button
 		// stays highlighted, this solves that issue

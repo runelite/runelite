@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Ron Young <https://github.com/raiyni>
+ * Copyright (c) 2017, Ron <https://github.com/raiyni>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,70 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.banktags;
+package net.runelite.client.plugins.clanchat;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("banktags")
-public interface BankTagsConfig extends Config
+@ConfigGroup("clanchat")
+public interface ClanChatConfig extends Config
 {
 	@ConfigItem(
-		keyName = "useTabs",
-		name = "Use Tag Tabs",
-		description = "Enable the ability to add tabs to your bank which allow fast access to tags.",
+		keyName = "recentChats",
+		name = "Recent Chats",
+		description = "Show recent clan chats.",
 		position = 1
 	)
-	default boolean tabs()
+	default boolean recentChats()
 	{
 		return true;
 	}
 
 	@ConfigItem(
-		keyName = "rememberTab",
-		name = "Remember last Tag Tab",
-		description = "Enable the ability to remember last Tag Tab when closing/opening the bank.",
-		position = 2
-	)
-	default boolean rememberTab()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "position",
+		keyName = "chatsData",
 		name = "",
 		description = "",
 		hidden = true
 	)
-	default int position()
-	{
-		return 0;
-	}
-
-	@ConfigItem(
-		keyName = "position",
-		name = "",
-		description = ""
-	)
-	void position(int idx);
-
-	@ConfigItem(
-		keyName = "tab",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default String tab()
+	default String chatsData()
 	{
 		return "";
 	}
 
 	@ConfigItem(
-		keyName = "tab",
+		keyName = "chatsData",
 		name = "",
 		description = ""
 	)
-	void tab(String tab);
+	void chatsData(String str);
 }

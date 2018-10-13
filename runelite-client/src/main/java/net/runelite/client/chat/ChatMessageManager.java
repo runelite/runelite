@@ -206,6 +206,7 @@ public class ChatMessageManager
 				case PUBLIC_MOD:
 					return Color.decode("#0000FF");
 				case PRIVATE_MESSAGE_SENT:
+				case PRIVATE_MESSAGE_RECEIVED_MOD:
 				case PRIVATE_MESSAGE_RECEIVED:
 					return Color.decode("#00FFFF");
 				case CLANCHAT:
@@ -225,6 +226,7 @@ public class ChatMessageManager
 				case PUBLIC_MOD:
 					return Color.decode("#9090FF");
 				case PRIVATE_MESSAGE_SENT:
+				case PRIVATE_MESSAGE_RECEIVED_MOD:
 				case PRIVATE_MESSAGE_RECEIVED:
 					return Color.decode("#00FFFF");
 				case CLANCHAT:
