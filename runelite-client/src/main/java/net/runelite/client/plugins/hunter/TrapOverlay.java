@@ -27,15 +27,20 @@ package net.runelite.client.plugins.hunter;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+import com.google.common.collect.ImmutableList;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
+import net.runelite.api.TileObject;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 
 /**
@@ -48,6 +53,9 @@ public class TrapOverlay extends Overlay
 	 * The timer is low when only 25% is left.
 	 */
 	private static final double TIMER_LOW = 0.25; // When the timer is under a quarter left, if turns red.
+	private static final List<Integer> BIRDHOUSE_EMPTY_STATES = ImmutableList.of(
+			1, 4, 7, 10, 13, 16, 19, 22, 25
+	);
 
 	private final Client client;
 	private final HunterPlugin plugin;
@@ -72,6 +80,7 @@ public class TrapOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		drawTraps(graphics);
+		drawBirdhouses(graphics);
 		return null;
 	}
 
@@ -180,5 +189,17 @@ public class TrapOverlay extends Overlay
 		pie.setPosition(loc);
 		pie.setProgress(1);
 		pie.render(graphics);
+	}
+
+	private void drawBirdhouses(Graphics2D graphics)
+	{
+		for (TileObject birdhouse : plugin.getBirdhouses())
+		{
+			VarPlayer var = HunterPlugin.BIRDHOUSE_ID_TO_VAR.get(birdhouse.getId());
+			if (BIRDHOUSE_EMPTY_STATES.contains(client.getVar(var)))
+			{
+				OverlayUtil.renderTileOverlay(graphics, birdhouse, "", config.getEmptyTrapColor());
+			}
+		}
 	}
 }
