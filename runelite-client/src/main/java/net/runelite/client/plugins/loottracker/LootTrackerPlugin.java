@@ -98,7 +98,7 @@ public class LootTrackerPlugin extends Plugin
 	private LootTrackerPanel panel;
 	private NavigationButton navButton;
 	private String eventType;
-	private long lastNumberOfSupplyCrates;
+	private int lastNumberOfSupplyCrates;
 	private HashMultiset<Integer> inventorySnapshot;
 	private static final String WINTERTODT_EVENT_NAME = "Wintertodt";
 	private static final Collection SUPPLY_CRATES = ImmutableList.of(ItemID.SUPPLY_CRATE, ItemID.EXTRA_SUPPLY_CRATE);
@@ -248,7 +248,7 @@ public class LootTrackerPlugin extends Plugin
 
 		final Item[] items = container.getItems();
 
-		long numberOfSupplyCrates = countSupplyCrates(items);
+		int numberOfSupplyCrates = countSupplyCrates(items);
 
 		HashMultiset<Integer> currentSnapshot = generateInventorySnapshot(items);
 
