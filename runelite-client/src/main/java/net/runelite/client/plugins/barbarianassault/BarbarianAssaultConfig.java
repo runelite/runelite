@@ -44,8 +44,8 @@ public interface BarbarianAssaultConfig extends Config
 
 	@ConfigItem(
 		keyName = "secondsTimer",
-		name = "Show elapsed seconds",
-		description = "Instead of showing the call change timer, the wave elapsed time will be shown (in seconds)"
+		name = "Show elapsed seconds of wave",
+		description = "Show the elapsed time of the current wave (in seconds)"
 	)
 	default boolean secondsTimer()
 	{
