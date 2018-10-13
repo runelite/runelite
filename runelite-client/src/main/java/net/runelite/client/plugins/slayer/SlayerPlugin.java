@@ -92,6 +92,7 @@ public class SlayerPlugin extends Plugin
 	private static final Pattern CHAT_BRACELET_SLAUGHTER_CHARGE_REGEX = Pattern.compile("Your bracelet of slaughter has (\\d{1,2}) charge[s]? left.");
 	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE = "Your expeditious bracelet has ";
 	private static final Pattern CHAT_BRACELET_EXPEDITIOUS_CHARGE_REGEX = Pattern.compile("Your expeditious bracelet has (\\d{1,2}) charge[s]? left.");
+	private static final Pattern COMBAT_BRACELET_TASK_UPDATE_MESSAGE = Pattern.compile("^You still need to kill (\\d+) monsters to complete your current Slayer assignment");
 
 	//NPC messages
 	private static final Pattern NPC_ASSIGN_MESSAGE = Pattern.compile(".*Your new task is to kill\\s*(\\d*) (.*)\\.");
@@ -419,13 +420,22 @@ public class SlayerPlugin extends Plugin
 
 		Matcher mProgress = CHAT_GEM_PROGRESS_MESSAGE.matcher(chatMsg);
 
-		if (!mProgress.find())
+		if (mProgress.find())
 		{
+			String gemTaskName = mProgress.group(1);
+			int gemAmount = Integer.parseInt(mProgress.group(2));
+			setTask(gemTaskName, gemAmount);
 			return;
 		}
-		String taskName = mProgress.group(1);
-		int amount = Integer.parseInt(mProgress.group(2));
-		setTask(taskName, amount);
+
+		final Matcher bracerProgress = COMBAT_BRACELET_TASK_UPDATE_MESSAGE.matcher(chatMsg);
+
+		if (bracerProgress.find())
+		{
+			final int taskAmount = Integer.parseInt(bracerProgress.group(1));
+			setTask(taskName, taskAmount);
+			return;
+		}
 	}
 
 	@Subscribe
