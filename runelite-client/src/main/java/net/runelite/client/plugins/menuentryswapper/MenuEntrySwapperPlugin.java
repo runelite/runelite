@@ -481,6 +481,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 					break;
 			}
 		}
+		else if (config.swapAdmire() && option.equals("admire"))
+		{
+			swap("teleport", option, target, true);
+			swap("spellbook", option, target, true);
+		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
 			Integer customOption = getSwapConfig(itemId);
