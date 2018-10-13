@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.loottracker;
 
 import com.google.common.collect.HashMultiset;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
 import com.google.common.eventbus.Subscribe;
@@ -100,6 +101,7 @@ public class LootTrackerPlugin extends Plugin
 	private long lastNumberOfSupplyCrates;
 	private HashMultiset<Integer> inventorySnapshot;
 	private static final String WINTERTODT_EVENT_NAME = "Wintertodt";
+	private static final Collection SUPPLY_CRATES = ImmutableList.of(ItemID.SUPPLY_CRATE, ItemID.EXTRA_SUPPLY_CRATE);
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
 	{
@@ -276,7 +278,7 @@ public class LootTrackerPlugin extends Plugin
 		for (Item item : inventory)
 		{
 			// EXTRA_SUPPLY_CRATE is the reward when you trade in items to Ignisia
-			if (item.getId() == ItemID.SUPPLY_CRATE || item.getId() == ItemID.EXTRA_SUPPLY_CRATE)
+			if (SUPPLY_CRATES.contains(item.getId()))
 			{
 				count = count + 1;
 			}
