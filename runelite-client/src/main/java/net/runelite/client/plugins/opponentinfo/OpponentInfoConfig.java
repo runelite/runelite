@@ -52,15 +52,4 @@ public interface OpponentInfoConfig extends Config
 	{
 		return false;
 	}
-
-	@ConfigItem(
-		keyName = "hideOnExisting",
-		name = "Hide when health bar already exists",
-		description = "Do not displays health bar for NPCs that already have their own health bars displayed in game",
-		position = 2
-	)
-	default boolean hideOnExisting()
-	{
-		return true;
-	}
 }

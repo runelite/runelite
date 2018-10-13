@@ -96,10 +96,12 @@ class OpponentInfoOverlay extends Overlay
 
 		if (opponent.getName() != null && opponent.getHealth() > 0)
 		{
-			if (opponentInfoConfig.hideOnExisting() && opponent instanceof NPC && bossHasHealthBar(((NPC) opponent).getId()))
+
+			if (opponent instanceof NPC && bossHasHealthBar(((NPC) opponent).getId()))
 			{
 				return null;
 			}
+
 			lastRatio = opponent.getHealthRatio();
 			lastHealthScale = opponent.getHealth();
 			opponentName = Text.removeTags(opponent.getName());
