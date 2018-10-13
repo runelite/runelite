@@ -99,7 +99,7 @@ public class LootTrackerPlugin extends Plugin
 	private String eventType;
 	private long lastNumberOfSupplyCrates;
 	private HashMultiset<Integer> inventorySnapshot;
-	private static final String WINTERTODT_EVENT_TYPE = "Wintertodt";
+	private static final String WINTERTODT_EVENT_NAME = "Wintertodt";
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
 	{
@@ -260,7 +260,7 @@ public class LootTrackerPlugin extends Plugin
 			{
 				List<ItemStack> loot = generateSnapshotDelta(currentSnapshot, inventorySnapshot);
 				final LootTrackerItem[] entries = buildEntries(stack(loot));
-				SwingUtilities.invokeLater(() -> panel.add(WINTERTODT_EVENT_TYPE, -1, entries));
+				SwingUtilities.invokeLater(() -> panel.add(WINTERTODT_EVENT_NAME, -1, entries));
 			}
 
 			lastNumberOfSupplyCrates = numberOfSupplyCrates;
