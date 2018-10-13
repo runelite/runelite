@@ -257,18 +257,28 @@ public class LootTrackerPlugin extends Plugin
 		{
 			log.debug("Number of supply crates in inventory has changed from {} to {}", lastNumberOfSupplyCrates, numberOfSupplyCrates);
 
-			// we lost a crate by opening it
 			if (numberOfSupplyCrates < lastNumberOfSupplyCrates && !bankWidgetIsOpen() && !depositWidgetIsOpen())
 			{
-				List<ItemStack> loot = generateSnapshotDelta(currentSnapshot, inventorySnapshot);
-				final LootTrackerItem[] entries = buildEntries(stack(loot));
-				SwingUtilities.invokeLater(() -> panel.add(WINTERTODT_EVENT_NAME, -1, entries));
+				buildAndAddLootEntries(currentSnapshot);
 			}
 
 			lastNumberOfSupplyCrates = numberOfSupplyCrates;
 		}
 
 		inventorySnapshot = currentSnapshot;
+	}
+
+	private void buildAndAddLootEntries(HashMultiset<Integer> currentSnapshot)
+	{
+		List<ItemStack> loot = generateSnapshotDelta(currentSnapshot, inventorySnapshot);
+
+		// If a supply crate is used on a deposit box or a player dies with a supply crate we do
+		// not want to put in an empty loot entry, so we simply ignore any snapshot deltas with no gained items
+		if (loot.size() > 0)
+		{
+			final LootTrackerItem[] entries = buildEntries(stack(loot));
+			SwingUtilities.invokeLater(() -> panel.add(WINTERTODT_EVENT_NAME, -1, entries));
+		}
 	}
 
 	private int countSupplyCrates(Item[] inventory)
