@@ -31,6 +31,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import static net.runelite.client.plugins.raids.RaidsPlugin.POINTS_FORMAT;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -49,6 +50,7 @@ public class RaidsPointsOverlay extends Overlay
 	@Inject
 	public RaidsPointsOverlay()
 	{
+		setGroup(OverlayGroup.GROUP2);
 		setPosition(OverlayPosition.TOP_RIGHT);
 		setPriority(OverlayPriority.HIGH);
 	}

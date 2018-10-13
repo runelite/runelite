@@ -39,6 +39,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.client.game.HiscoreManager;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
@@ -75,6 +76,7 @@ class OpponentInfoOverlay extends Overlay
 		this.opponentInfoConfig = opponentInfoConfig;
 		this.hiscoreManager = hiscoreManager;
 
+		setGroup(OverlayGroup.GROUP2);
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.HIGH);
 

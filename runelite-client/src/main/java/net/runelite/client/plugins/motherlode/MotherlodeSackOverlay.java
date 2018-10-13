@@ -35,6 +35,7 @@ import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -52,6 +53,7 @@ class MotherlodeSackOverlay extends Overlay
 	@Inject
 	MotherlodeSackOverlay(Client client, MotherlodeConfig config, MotherlodePlugin plugin)
 	{
+		setGroup(OverlayGroup.GROUP2);
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
 		this.config = config;

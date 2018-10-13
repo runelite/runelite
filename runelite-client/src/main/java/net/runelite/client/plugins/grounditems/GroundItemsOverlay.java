@@ -46,6 +46,7 @@ import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.MENU;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -79,6 +80,7 @@ public class GroundItemsOverlay extends Overlay
 	private GroundItemsOverlay(Client client, GroundItemsPlugin plugin, GroundItemsConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
+		setGroup(OverlayGroup.GROUP1);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
 		this.plugin = plugin;

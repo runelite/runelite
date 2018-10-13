@@ -31,6 +31,7 @@ import javax.inject.Inject;
 import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ImageComponent;
@@ -46,6 +47,7 @@ public class TeamCapesOverlay extends Overlay
 	@Inject
 	private TeamCapesOverlay(TeamCapesPlugin plugin, TeamCapesConfig config, ItemManager manager)
 	{
+		setGroup(OverlayGroup.GROUP2);
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.LOW);
 		this.plugin = plugin;

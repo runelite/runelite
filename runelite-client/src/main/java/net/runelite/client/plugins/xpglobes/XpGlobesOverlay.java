@@ -45,6 +45,7 @@ import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.SkillColor;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -80,6 +81,7 @@ public class XpGlobesOverlay extends Overlay
 		this.config = config;
 		this.xpTrackerService = xpTrackerService;
 		setPosition(OverlayPosition.TOP_CENTER);
+		setGroup(OverlayGroup.GROUP2);
 	}
 
 	@Override

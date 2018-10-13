@@ -33,6 +33,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -52,6 +53,7 @@ public class TooltipOverlay extends Overlay
 		this.client = client;
 		this.tooltipManager = tooltipManager;
 		setPosition(OverlayPosition.TOOLTIP);
+		setGroup(OverlayGroup.GROUP2);
 		setPriority(OverlayPriority.HIGHEST);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 	}

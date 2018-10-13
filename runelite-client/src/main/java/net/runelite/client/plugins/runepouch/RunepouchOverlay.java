@@ -40,6 +40,7 @@ import net.runelite.client.game.ItemManager;
 import static net.runelite.client.plugins.runepouch.config.RunePouchOverlayMode.BOTH;
 import static net.runelite.client.plugins.runepouch.config.RunePouchOverlayMode.MOUSE_HOVER;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -73,6 +74,7 @@ public class RunepouchOverlay extends Overlay
 	RunepouchOverlay(QueryRunner queryRunner, Client client, RunepouchConfig config, TooltipManager tooltipManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
+		setGroup(OverlayGroup.GROUP3);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.tooltipManager = tooltipManager;
 		this.queryRunner = queryRunner;

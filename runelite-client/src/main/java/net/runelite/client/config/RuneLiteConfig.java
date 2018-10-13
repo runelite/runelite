@@ -210,34 +210,34 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "dynamicOverlayFont",
-		name = "Dynamic Overlay Font",
+		keyName = "overlayGroup1Font",
+		name = "Overlays 1",
 		description = "Configures what font type is used for in-game overlays such as player name, ground items, etc.",
 		position = 27
 	)
-	default Font dynamicOverlayFont()
+	default Font overlayGroup1Font()
 	{
 		return FontManager.getRunescapeSmallFont();
 	}
 
 	@ConfigItem(
-		keyName = "overlayFont",
-		name = "Overlay Font",
+		keyName = "overlayGroup2Font",
+		name = "Overlays 2",
 		description = "Configures what font type is used for in-game overlays such as boost info, opponent info and plugin specific overlays",
 		position = 28
 	)
-	default Font overlayFont()
+	default Font overlayGroup2Font()
 	{
 		return FontManager.getRunescapeFont();
 	}
 
 	@ConfigItem(
-		keyName = "tooltipFont",
-		name = "Tooltip Font",
+		keyName = "overlayGroup3Font",
+		name = "Overlays 3",
 		description = "Configures what font type is used for in-game tooltips such as food stats, NPC names, etc.",
 		position = 29
 	)
-	default Font tooltipFont()
+	default Font overlayGroup3Font()
 	{
 		return FontManager.getRunescapeSmallFont();
 	}

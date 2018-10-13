@@ -1,15 +1,16 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018. l2-
+ *
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ *     list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -22,34 +23,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package net.runelite.client.ui.overlay;
 
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
-
-@Getter
-@Setter
-public abstract class Overlay implements LayoutableRenderableEntity
+// For now this is only used so signal which font should be used for the overlay but this could be extended.
+public enum OverlayGroup
 {
-	private Point preferredLocation;
-	private Dimension preferredSize;
-	private OverlayPosition preferredPosition;
-	private Rectangle bounds = new Rectangle();
-	private OverlayPosition position = OverlayPosition.TOP_LEFT;
-	private OverlayPriority priority = OverlayPriority.NONE;
-	private OverlayLayer layer = OverlayLayer.UNDER_WIDGETS;
-	private OverlayGroup group = OverlayGroup.GROUP2;
+	// Configures what font type is used for in-game overlays such as player name, ground items, etc.
+	// this group of overlays is mostly overlay text placed in or around the 3d game world.
+	GROUP1,
 
-	/**
-	 * Overlay name, used for saving the overlay, needs to be unique
-	 * @return overlay name
-	 */
-	public String getName()
-	{
-		return this.getClass().getSimpleName();
-	}
+	// Configures what font type is used for in-game overlays such as boost info, opponent info and plugin specific overlays.
+	GROUP2,
+
+	// Configures what font type is used for in-game tooltips such as food stats, NPC names, etc.
+	// This group of overlays shouldn't be distinguishable from the game overlays.
+	GROUP3
 }

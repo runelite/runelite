@@ -46,6 +46,7 @@ import static net.runelite.client.plugins.pestcontrol.Portal.PURPLE;
 import static net.runelite.client.plugins.pestcontrol.Portal.RED;
 import static net.runelite.client.plugins.pestcontrol.Portal.YELLOW;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.QueryRunner;
@@ -64,6 +65,7 @@ public class PestControlOverlay extends Overlay
 	public PestControlOverlay(QueryRunner queryRunner, Client client)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
+		setGroup(OverlayGroup.GROUP2);
 		this.queryRunner = queryRunner;
 		this.client = client;
 	}

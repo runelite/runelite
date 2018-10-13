@@ -34,6 +34,7 @@ import net.runelite.api.VarClientInt;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
@@ -47,6 +48,7 @@ class MouseHighlightOverlay extends Overlay
 	@Inject
 	MouseHighlightOverlay(Client client, TooltipManager tooltipManager, MouseHighlightConfig config)
 	{
+		setGroup(OverlayGroup.GROUP2);
 		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.tooltipManager = tooltipManager;
