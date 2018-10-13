@@ -358,9 +358,8 @@ public class FishingPlugin extends Plugin
 	}
 
 	/**
-     * Changes the Fishing Trawler timer widget from minutes to minutes and seconds
-     *
-     */
+	 * Changes the Fishing Trawler timer widget from minutes to minutes and seconds
+	 */
 	private void updateTrawlerTimer()
 	{
 		int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
@@ -380,7 +379,6 @@ public class FishingPlugin extends Plugin
 				"Time Left: " + minutes + " Mins " + seconds + " Secs" :
 				"Time Left: " + seconds + " Secs";
 
-		// set widget text
 		trawlerTimerWidget.setText(trawlerText);
 	}
 }

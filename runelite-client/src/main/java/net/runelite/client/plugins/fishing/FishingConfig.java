@@ -123,7 +123,7 @@ public interface FishingConfig extends Config
 		position = 8,
 		keyName = "trawlerTimer",
 		name = "Trawler timer in seconds",
-		description = "Display the Trawler timer in minutes and seconds."
+		description = "Add seconds to trawler timer."
 	)
 	default boolean trawlerTimer()
 	{
