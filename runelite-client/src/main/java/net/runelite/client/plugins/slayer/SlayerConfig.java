@@ -207,4 +207,19 @@ public interface SlayerConfig extends Config
 		description = ""
 	)
 	void slaughter(int slaughter);
+
+	@ConfigItem(
+			keyName = "doubleTroubleEnabled",
+			name = "",
+			description = "",
+			hidden = true
+	)
+	default boolean doubleTroubleEnabled() { return false; }
+
+	@ConfigItem(
+			keyName = "doubleTroubleEnabled",
+			name = "",
+			description = ""
+	)
+	void doubleTroubleEnabled(boolean doubleTroubleEnabled);
 }

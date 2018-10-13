@@ -132,7 +132,9 @@ public class WidgetID
 
 	static class SlayerRewards
 	{
+		static final int CONFIRMATION_BUTTON = 8;
 		static final int TOP_BAR = 12;
+		static final int REWARD_OPTIONS = 15;
 	}
 
 	static class DialogNPC
