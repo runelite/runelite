@@ -107,7 +107,7 @@ public class SlayerPlugin extends Plugin
 	//Reward UI
 	private static final Pattern REWARD_POINTS = Pattern.compile("Reward points: ((?:\\d+,)*\\d+)");
     private static final int REWARD_ENABLED_SPRITE = 1213;
-    private static final String CHAT_DOUBLE_TROUBLE = "Double Trouble";
+    private static final String REWARD_NAME_DOUBLE_TROUBLE = "Double Trouble";
 	private static final int REWARD_DOUBLE_TROUBLE_CHECKBOX_ID = 151;
 
 	private static final int EXPEDITIOUS_CHARGE = 30;
@@ -471,7 +471,7 @@ public class SlayerPlugin extends Plugin
 		{
 			if (menuOptionClicked.getWidgetId() == client.getWidget(WidgetInfo.SLAYER_REWARDS_REWARD_CONFIRMATION_BUTTON).getId())
 			{
-				if (Text.removeTags(menuOptionClicked.getMenuTarget()).contains(CHAT_DOUBLE_TROUBLE))
+				if (Text.removeTags(menuOptionClicked.getMenuTarget()).contains(REWARD_NAME_DOUBLE_TROUBLE))
 				{
 					doubleTroubleEnabled = !doubleTroubleEnabled;
 					config.doubleTroubleEnabled(doubleTroubleEnabled);
@@ -563,8 +563,6 @@ public class SlayerPlugin extends Plugin
 		int playerX = client.getLocalPlayer().getLocalLocation().getSceneX();
 		int playerY = client.getLocalPlayer().getLocalLocation().getSceneY();
 
-		return playerX >= minSceneLocation.getX() && playerY >= minSceneLocation.getY() &&
-				playerX <= maxSceneLocation.getX() && playerY <= maxSceneLocation.getY();
 	}
 
 	private boolean isTarget(NPC npc)
