@@ -408,7 +408,7 @@ public class WorldHopperPlugin extends Plugin
 				.type(ChatMessageType.GAME)
 				.runeLiteFormattedMessage(hoppedFromMessage)
 				.build());
-			log.debug("Hopped from: " + hoppedFrom + " to: " + lastWorld);
+			
 			hoppedFrom = null;
 		}
 
