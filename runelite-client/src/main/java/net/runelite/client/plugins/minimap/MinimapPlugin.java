@@ -24,10 +24,12 @@
  */
 package net.runelite.client.plugins.minimap;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.Arrays;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -52,6 +54,21 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class MinimapPlugin extends Plugin
 {
 	private static final int NUM_MAPDOTS = 6;
+
+	private static List<WidgetInfo> orbs = ImmutableList
+		.<WidgetInfo>builder()
+		.add(WidgetInfo.MINIMAP_HEALTH_ORB)
+		.add(WidgetInfo.MINIMAP_PRAYER_ORB)
+		.add(WidgetInfo.MINIMAP_RUN_ORB)
+		.add(WidgetInfo.MINIMAP_SPEC_ORB)
+		.build();
+
+	private static int[][] orbDefaultPositions = {
+		{-1, -1, -1, -1},
+		{-1, -1, -1, -1},
+		{-1, -1, -1, -1},
+		{-1, -1, -1, -1}
+	};
 
 	@Inject
 	private Client client;
@@ -263,73 +280,55 @@ public class MinimapPlugin extends Plugin
 
 	private void moveOrbs()
 	{
-		Widget healthOrb = client.getWidget(WidgetInfo.MINIMAP_HEALTH_ORB);
-		Widget prayerOrb = client.getWidget(WidgetInfo.MINIMAP_PRAYER_ORB);
-		Widget runOrb = client.getWidget(WidgetInfo.MINIMAP_RUN_ORB);
-		Widget specOrb = client.getWidget(WidgetInfo.MINIMAP_SPEC_ORB);
-
-		if (healthOrb != null)
+		for (int i = 0; i < orbs.size(); i++)
 		{
-			healthOrb.setRelativeY(33);
-			healthOrb.setOriginalY(33);
-		}
+			Widget widget = client.getWidget(orbs.get(i));
+			if (widget != null)
+			{
+				//Back up default widget positions before they are changed
+				if (orbDefaultPositions[i][0] == -1)
+				{
+					orbDefaultPositions[i] = new int[]{
+						widget.getOriginalX(),
+						widget.getRelativeX(),
+						widget.getOriginalY(),
+						widget.getRelativeY()};
+				}
+				widget.setOriginalX(1);
+				widget.setRelativeX(1);
 
-		if (prayerOrb != null)
-		{
-			prayerOrb.setRelativeY(65);
-			prayerOrb.setOriginalY(65);
-		}
-
-		if (runOrb != null)
-		{
-			runOrb.setRelativeX(0);
-			runOrb.setRelativeY(97);
-			runOrb.setOriginalX(0);
-			runOrb.setOriginalY(97);
-		}
-
-		if (specOrb != null)
-		{
-			specOrb.setRelativeX(0);
-			specOrb.setRelativeY(129);
-			specOrb.setOriginalX(0);
-			specOrb.setOriginalY(129);
+				widget.setOriginalY(((i + 1) * 32) + 3);
+				widget.setRelativeY(((i + 1) * 32) + 3);
+			}
 		}
 	}
 
 	private void resetOrbs()
 	{
-		Widget healthOrb = client.getWidget(WidgetInfo.MINIMAP_HEALTH_ORB);
-		Widget prayerOrb = client.getWidget(WidgetInfo.MINIMAP_PRAYER_ORB);
-		Widget runOrb = client.getWidget(WidgetInfo.MINIMAP_RUN_ORB);
-		Widget specOrb = client.getWidget(WidgetInfo.MINIMAP_SPEC_ORB);
-
-		if (healthOrb != null)
+		for (int i = 0; i < orbs.size(); i++)
 		{
-			healthOrb.setRelativeY(37);
-			healthOrb.setOriginalY(37);
-		}
+			Widget widget = client.getWidget(orbs.get(i));
+			if (widget != null)
+			{
+				//Set widget backup before it's used below
+				if (orbDefaultPositions[i][0] == -1)
+				{
+					orbDefaultPositions[i] = new int[]{
+						widget.getOriginalX(),
+						widget.getRelativeX(),
+						widget.getOriginalY(),
+						widget.getRelativeY()};
+				}
+				int[] positions = orbDefaultPositions[i];
+				if (positions[0] != -1)
+				{
+					widget.setOriginalX(positions[0]);
+					widget.setRelativeX(positions[1]);
 
-		if (prayerOrb != null)
-		{
-			prayerOrb.setRelativeY(71);
-			prayerOrb.setOriginalY(71);
-		}
-
-		if (runOrb != null)
-		{
-			runOrb.setRelativeX(10);
-			runOrb.setRelativeY(103);
-			runOrb.setOriginalX(10);
-			runOrb.setOriginalY(103);
-		}
-
-		if (specOrb != null)
-		{
-			specOrb.setRelativeX(32);
-			specOrb.setRelativeY(128);
-			specOrb.setOriginalX(32);
-			specOrb.setOriginalY(128);
+					widget.setOriginalY(positions[2]);
+					widget.setRelativeY(positions[3]);
+				}
+			}
 		}
 	}
 }
