@@ -48,7 +48,8 @@ public class WidgetOverlay extends Overlay
 		PEST_CONTROL_BOAT_INFO(WidgetInfo.PEST_CONTROL_BOAT_INFO, OverlayPosition.TOP_LEFT),
 		PEST_CONTROL_INFO(WidgetInfo.PEST_CONTROL_INFO, OverlayPosition.TOP_LEFT),
 		PVP_BOUNTY_HUNTER_STATS(WidgetInfo.PVP_BOUNTY_HUNTER_STATS, OverlayPosition.TOP_RIGHT),
-		PVP_KILLDEATH_COUNTER(WidgetInfo.PVP_KILLDEATH_COUNTER, OverlayPosition.TOP_LEFT);
+		PVP_KILLDEATH_COUNTER(WidgetInfo.PVP_KILLDEATH_COUNTER, OverlayPosition.TOP_LEFT),
+		EXPERIENCE_DROPS(WidgetInfo.EXPERIENCE_DROPS, OverlayPosition.TOP_RIGHT, new Rectangle(50, 140));
 
 		@Getter
 		private final WidgetInfo widget;
