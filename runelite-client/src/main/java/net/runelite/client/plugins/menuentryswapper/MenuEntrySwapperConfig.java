@@ -272,6 +272,7 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+	
 	@ConfigItem(
 		position = 19,
 		keyName = "swapDarkMage",
@@ -281,5 +282,6 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean swapDarkMage()
 	{
 		return true;		
-	}  
+	} 
+	
 }
