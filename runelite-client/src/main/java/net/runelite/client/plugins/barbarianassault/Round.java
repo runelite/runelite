@@ -57,7 +57,7 @@ class Round
 
 	public long getRoundTime()
 	{
-		return Duration.between(roundStartTime, Instant.now()).getSeconds();
+		return Duration.between(roundStartTime.minusMillis(1000), Instant.now()).getSeconds();
 	}
 
 	public long getTimeToChange()
