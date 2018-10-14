@@ -282,6 +282,5 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean swapDarkMage()
 	{
 		return true;		
-	} 
-	
+	}
 }
