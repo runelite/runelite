@@ -107,4 +107,15 @@ public interface DiscordConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showRaidingActivity",
+		name = "Show activity at raids",
+		description = "Configures if your activity at raids should be shown.",
+		position = 8
+	)
+	default boolean showRaidingActivity()
+	{
+		return true;
+	}
 }
