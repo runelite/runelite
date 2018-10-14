@@ -47,17 +47,16 @@ import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.util.Text;
 
 @Getter
 public class ThreeStepCrypticClue extends ClueScroll implements TextClueScroll, ObjectClueScroll, NpcClueScroll, LocationsClueScroll
 {
-	private static final int CLUE_STEPS = 3;
-
-	private List<Map.Entry<CrypticClue, Boolean>> clueSteps;
-	private int[] objectIds;
+	private final List<Map.Entry<CrypticClue, Boolean>> clueSteps;
+	private final int[] objectIds;
+	private final String[] npcs;
+	private final String text;
 	private WorldPoint[] locations;
-	private String[] npcs;
-	private String text;
 
 	private ThreeStepCrypticClue(List<Map.Entry<CrypticClue, Boolean>> steps, String text)
 	{
@@ -70,8 +69,7 @@ public class ThreeStepCrypticClue extends ClueScroll implements TextClueScroll, 
 
 		for (int i = 0; i < numClueSteps; i++)
 		{
-			CrypticClue c = clueSteps.get(i).getKey();
-
+			final CrypticClue c = clueSteps.get(i).getKey();
 			locations[i] = c.getLocation();
 			npcs[i] = c.getNpc();
 			objectIds[i] = c.getObjectId();
@@ -83,9 +81,9 @@ public class ThreeStepCrypticClue extends ClueScroll implements TextClueScroll, 
 	{
 		panelComponent.setPreferredSize(new Dimension(200, 0));
 
-		for (int i = 0; i < CLUE_STEPS; i++)
+		for (int i = 0; i < clueSteps.size(); i++)
 		{
-			Map.Entry<CrypticClue, Boolean> e = clueSteps.get(i);
+			final Map.Entry<CrypticClue, Boolean> e = clueSteps.get(i);
 
 			if (!e.getValue())
 			{
@@ -142,48 +140,27 @@ public class ThreeStepCrypticClue extends ClueScroll implements TextClueScroll, 
 
 	public static ThreeStepCrypticClue forText(String plainText, String text)
 	{
-		List<Map.Entry<CrypticClue, Boolean>> steps = new ArrayList<>(CLUE_STEPS);
-		StringBuilder threeStepText = new StringBuilder(text.replaceAll("<br><br>", " ").toLowerCase());
-		boolean stepDone;
+		final String[] split = text.split("<br>\\s*<br>");
+		final List<Map.Entry<CrypticClue, Boolean>> steps = new ArrayList<>(split.length);
 
-		for (int i = 0; i < CLUE_STEPS; i++)
+		for (String part : split)
 		{
-			// if text has <str> - strikethrough - tag then it is already done
-			stepDone = threeStepText.toString().startsWith("<str>");
-
-			if (stepDone)
-			{
-				// chop off <str> tag
-				threeStepText.delete(0, 5);
-			}
+			boolean isDone = part.contains("<str>");
+			final String rawText = Text.sanitizeMultilineText(part);
 
 			for (CrypticClue clue : CrypticClue.CLUES)
 			{
-				if (threeStepText.toString().startsWith(clue.getText().toLowerCase()))
+				if (!rawText.equalsIgnoreCase(clue.getText()))
 				{
-					if (stepDone)
-					{
-						steps.add(new AbstractMap.SimpleEntry<>(clue, true));
-						// chop off </str> tag
-						threeStepText.delete(0, 6);
-					}
-					else
-					{
-						steps.add(new AbstractMap.SimpleEntry<>(clue, false));
-					}
-
-					if (i < CLUE_STEPS - 1)
-					{
-						// chop off the length of the clue text plus a space
-						threeStepText.delete(0, clue.getText().length() + 1);
-					}
-
-					break;
+					continue;
 				}
+
+				steps.add(new AbstractMap.SimpleEntry<>(clue, isDone));
+				break;
 			}
 		}
 
-		if (steps.isEmpty())
+		if (steps.isEmpty() || steps.size() < 3)
 		{
 			return null;
 		}
