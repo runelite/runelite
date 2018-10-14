@@ -477,6 +477,7 @@ public class ClueScrollPlugin extends Plugin
 		}
 
 		// We have unknown clue, reset
+		log.warn("Encountered unhandled clue text: {}", clueScrollText.getText());
 		resetClue(true);
 		return null;
 	}
