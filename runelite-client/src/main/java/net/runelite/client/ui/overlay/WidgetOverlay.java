@@ -24,49 +24,77 @@
  */
 package net.runelite.client.ui.overlay;
 
-import com.google.common.collect.ImmutableMap;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
 public class WidgetOverlay extends Overlay
 {
-	private static final Map<WidgetInfo, OverlayPosition> WIDGETS = ImmutableMap
-		.<WidgetInfo, OverlayPosition>builder()
-		.put(WidgetInfo.RESIZABLE_MINIMAP_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT)
-		.put(WidgetInfo.RESIZABLE_MINIMAP_STONES_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT)
-		.put(WidgetInfo.FOSSIL_ISLAND_OXYGENBAR, OverlayPosition.TOP_LEFT)
-		.put(WidgetInfo.EXPERIENCE_TRACKER_WIDGET, OverlayPosition.TOP_RIGHT)
-		.put(WidgetInfo.TITHE_FARM, OverlayPosition.TOP_RIGHT)
-		.put(WidgetInfo.PEST_CONTROL_BOAT_INFO, OverlayPosition.TOP_LEFT)
-		.put(WidgetInfo.PEST_CONTROL_INFO, OverlayPosition.TOP_LEFT)
-		.put(WidgetInfo.ZEAH_MESS_HALL_COOKING_DISPLAY, OverlayPosition.TOP_LEFT)
-		.put(WidgetInfo.PVP_BOUNTY_HUNTER_STATS, OverlayPosition.TOP_RIGHT)
-		.put(WidgetInfo.PVP_KILLDEATH_COUNTER, OverlayPosition.TOP_LEFT)
-		.build();
+
+	private enum RSWidgetStorage
+	{
+		RESIZABLE_MINIMAP_WIDGET(WidgetInfo.RESIZABLE_MINIMAP_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT),
+		RESIZABLE_MINIMAP_STONES_WIDGET(WidgetInfo.RESIZABLE_MINIMAP_STONES_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT),
+		FOSSIL_ISLAND_OXYGENBAR(WidgetInfo.FOSSIL_ISLAND_OXYGENBAR, OverlayPosition.TOP_LEFT),
+		EXPERIENCE_TRACKER_WIDGET(WidgetInfo.EXPERIENCE_TRACKER_WIDGET, OverlayPosition.TOP_RIGHT),
+		TITHE_FARM(WidgetInfo.TITHE_FARM, OverlayPosition.TOP_RIGHT),
+		PEST_CONTROL_BOAT_INFO(WidgetInfo.PEST_CONTROL_BOAT_INFO, OverlayPosition.TOP_LEFT),
+		PEST_CONTROL_INFO(WidgetInfo.PEST_CONTROL_INFO, OverlayPosition.TOP_LEFT),
+		PVP_BOUNTY_HUNTER_STATS(WidgetInfo.PVP_BOUNTY_HUNTER_STATS, OverlayPosition.TOP_RIGHT),
+		PVP_KILLDEATH_COUNTER(WidgetInfo.PVP_KILLDEATH_COUNTER, OverlayPosition.TOP_LEFT);
+
+		@Getter
+		private final WidgetInfo widget;
+		@Getter
+		private final OverlayPosition position;
+		@Getter
+		private final Rectangle customSize;
+
+		RSWidgetStorage(WidgetInfo widget, OverlayPosition position)
+		{
+			this.widget = widget;
+			this.position = position;
+			this.customSize = null;
+		}
+
+		RSWidgetStorage(WidgetInfo widget, OverlayPosition position, Rectangle customSize)
+		{
+			this.widget = widget;
+			this.position = position;
+			this.customSize = customSize;
+		}
+	}
 
 	public static Collection<WidgetOverlay> createOverlays(final Client client)
 	{
-		return WIDGETS.entrySet().stream()
-			.map(w -> new WidgetOverlay(client, w.getKey(), w.getValue()))
-			.collect(Collectors.toList());
+		ArrayList<WidgetOverlay> overlays = new ArrayList<>();
+		for (RSWidgetStorage widget : RSWidgetStorage.values())
+		{
+			overlays.add(new WidgetOverlay(client, widget.widget, widget.position, widget.customSize));
+		}
+
+		Collection<WidgetOverlay> fin = overlays;
+
+		return fin;
 	}
 
 	private final Client client;
 	private final WidgetInfo widgetInfo;
 	private final Rectangle parentBounds = new Rectangle();
+	private final Rectangle customSize;
 
-	private WidgetOverlay(final Client client, final WidgetInfo widgetInfo, final OverlayPosition overlayPosition)
+	private WidgetOverlay(final Client client, final WidgetInfo widgetInfo, final OverlayPosition overlayPosition, final Rectangle customSize)
 	{
 		this.client = client;
 		this.widgetInfo = widgetInfo;
+		this.customSize = customSize;
 		setPriority(OverlayPriority.HIGHEST);
 		setLayer(OverlayLayer.UNDER_WIDGETS);
 		setPosition(overlayPosition);
@@ -82,6 +110,11 @@ public class WidgetOverlay extends Overlay
 	public Rectangle getBounds()
 	{
 		final Rectangle bounds = super.getBounds();
+		if (this.customSize != null)
+		{
+			bounds.width = this.customSize.width;
+			bounds.height = this.customSize.height;
+		}
 		final Rectangle parent = getParentBounds(client.getWidget(widgetInfo));
 
 		if (parent.isEmpty())
