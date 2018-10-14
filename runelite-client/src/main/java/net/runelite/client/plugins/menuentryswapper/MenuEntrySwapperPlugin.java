@@ -490,6 +490,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("empty", option, target, true);
 		}
+
+		if (option.equals("ring"))
+		{
+			if (config.swapGargoyleBoss())
+			{
+				swap("quick-start", option, target, true);
+			}
+		}
 	}
 
 	@Subscribe

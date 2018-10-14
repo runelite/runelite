@@ -239,4 +239,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			position = 19,
+			keyName = "swapGargoyleBoss",
+			name = "Gargoyle boss bell swapper",
+			description = "Swaps Quick-start option for the boss to leftclick"
+	)
+	default boolean swapGargoyleBoss()
+	{
+		return false;
+	}
 }
