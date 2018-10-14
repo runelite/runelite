@@ -238,7 +238,12 @@ public class ClueScrollPlugin extends Plugin
 		// if three step clue check for clue scroll pieces
 		if (clue instanceof ThreeStepCrypticClue)
 		{
-			((ThreeStepCrypticClue) clue).checkForParts(client, event, itemManager);
+			if (((ThreeStepCrypticClue) clue).update(client, event, itemManager))
+			{
+				worldMapPointsSet = false;
+				npcsToMark.clear();
+				checkClueNPCs(clue, client.getCachedNPCs());
+			}
 		}
 	}
 
