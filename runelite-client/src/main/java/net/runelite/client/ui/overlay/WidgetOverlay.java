@@ -49,7 +49,7 @@ public class WidgetOverlay extends Overlay
 		PEST_CONTROL_INFO(WidgetInfo.PEST_CONTROL_INFO, OverlayPosition.TOP_LEFT),
 		PVP_BOUNTY_HUNTER_STATS(WidgetInfo.PVP_BOUNTY_HUNTER_STATS, OverlayPosition.TOP_RIGHT),
 		PVP_KILLDEATH_COUNTER(WidgetInfo.PVP_KILLDEATH_COUNTER, OverlayPosition.TOP_LEFT),
-		EXPERIENCE_DROPS(WidgetInfo.EXPERIENCE_DROPS, OverlayPosition.TOP_RIGHT, new Rectangle(50, 140));
+		EXPERIENCE_DROPS(WidgetInfo.EXPERIENCE_DROPS, OverlayPosition.DETACHED, new Rectangle(50, 50));
 
 		@Getter
 		private final WidgetInfo widget;
@@ -90,12 +90,15 @@ public class WidgetOverlay extends Overlay
 	private final WidgetInfo widgetInfo;
 	private final Rectangle parentBounds = new Rectangle();
 	private final Rectangle customSize;
+	private final OverlayPosition overlayPosition;
+	private Rectangle defaultPosition;
 
 	private WidgetOverlay(final Client client, final WidgetInfo widgetInfo, final OverlayPosition overlayPosition, final Rectangle customSize)
 	{
 		this.client = client;
 		this.widgetInfo = widgetInfo;
 		this.customSize = customSize;
+		this.overlayPosition = overlayPosition;
 		setPriority(OverlayPriority.HIGHEST);
 		setLayer(OverlayLayer.UNDER_WIDGETS);
 		setPosition(overlayPosition);
@@ -116,6 +119,24 @@ public class WidgetOverlay extends Overlay
 			bounds.width = this.customSize.width;
 			bounds.height = this.customSize.height;
 		}
+		Widget widget = client.getWidget(widgetInfo);
+
+		if (defaultPosition == null && widget != null)
+		{
+			defaultPosition = new Rectangle(
+				widget.getRelativeX(),
+				widget.getRelativeY(),
+				widget.getOriginalX(),
+				widget.getOriginalY());
+		}
+
+		if (getPreferredLocation() == null && overlayPosition == OverlayPosition.DETACHED && this.defaultPosition != null)
+		{
+			bounds.x = defaultPosition.x + defaultPosition.width;
+			bounds.y = defaultPosition.y + defaultPosition.height;
+			return bounds;
+		}
+
 		final Rectangle parent = getParentBounds(client.getWidget(widgetInfo));
 
 		if (parent.isEmpty())
