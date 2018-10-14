@@ -70,6 +70,10 @@ public class MinimapPlugin extends Plugin
 		{-1, -1, -1, -1}
 	};
 
+	private static int orbHeight = 32;
+	private static int orbXOffset = 1;
+	private static int orbYOffset = 3;
+
 	@Inject
 	private Client client;
 
@@ -294,11 +298,11 @@ public class MinimapPlugin extends Plugin
 						widget.getOriginalY(),
 						widget.getRelativeY()};
 				}
-				widget.setOriginalX(1);
-				widget.setRelativeX(1);
+				widget.setOriginalX(orbXOffset);
+				widget.setRelativeX(orbXOffset);
 
-				widget.setOriginalY(((i + 1) * 32) + 3);
-				widget.setRelativeY(((i + 1) * 32) + 3);
+				widget.setOriginalY(((i + 1) * orbHeight) + orbYOffset);
+				widget.setRelativeY(((i + 1) * orbHeight) + orbYOffset);
 			}
 		}
 	}
