@@ -308,7 +308,10 @@ public class ClueScrollPlugin extends Plugin
 				{
 					for (WorldPoint location : locations)
 					{
-						highlightObjectsForLocation(location, objectIds);
+						if (location != null)
+						{
+							highlightObjectsForLocation(location, objectIds);
+						}
 					}
 				}
 			}
