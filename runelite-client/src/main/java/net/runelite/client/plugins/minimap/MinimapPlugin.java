@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Dreyri <https://github.com/Dreyri>
+ * Copyright (c) 2018, Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,24 +56,23 @@ public class MinimapPlugin extends Plugin
 {
 	private static final int NUM_MAPDOTS = 6;
 
-	private static List<WidgetInfo> orbs = ImmutableList
-		.<WidgetInfo>builder()
-		.add(WidgetInfo.MINIMAP_HEALTH_ORB)
-		.add(WidgetInfo.MINIMAP_PRAYER_ORB)
-		.add(WidgetInfo.MINIMAP_RUN_ORB)
-		.add(WidgetInfo.MINIMAP_SPEC_ORB)
-		.build();
+	private static final List<WidgetInfo> ORBS = ImmutableList.of(
+		WidgetInfo.MINIMAP_HEALTH_ORB,
+		WidgetInfo.MINIMAP_PRAYER_ORB,
+		WidgetInfo.MINIMAP_RUN_ORB,
+		WidgetInfo.MINIMAP_SPEC_ORB
+	);
 
-	private static int[][] orbDefaultPositions = {
+	private static final int[][] ORB_DEFAULT_POSITIONS = {
 		{-1, -1, -1, -1},
 		{-1, -1, -1, -1},
 		{-1, -1, -1, -1},
 		{-1, -1, -1, -1}
 	};
 
-	private static int orbHeight = 32;
-	private static int orbXOffset = 1;
-	private static int orbYOffset = 3;
+	private static final int ORB_HEIGHT = 32;
+	private static final int ORB_X_OFFSET = 1;
+	private static final int ORB_Y_OFFSET = 3;
 
 	@Inject
 	private Client client;
@@ -131,26 +131,18 @@ public class MinimapPlugin extends Plugin
 		{
 			if (config.leftAlignOrbs() != AlignmentMode.OFF)
 			{
-				if (config.leftAlignOrbs() == AlignmentMode.BOTH)
+				if (shouldMoveOrbs())
 				{
-					moveOrbs();
-				}
-				else if (!client.isResized() && config.leftAlignOrbs() == AlignmentMode.FIXED)
-				{
-					moveOrbs();
-				}
-				else if (client.isResized() && config.leftAlignOrbs() == AlignmentMode.RESIZEABLE)
-				{
-					moveOrbs();
+					moveOrbs(false);
 				}
 				else
 				{
-					resetOrbs();
+					moveOrbs(true);
 				}
 			}
 			else
 			{
-				resetOrbs();
+				moveOrbs(true);
 			}
 		}
 
@@ -160,21 +152,13 @@ public class MinimapPlugin extends Plugin
 	@Subscribe
 	public void onResizeableChanged(ResizeableChanged event)
 	{
-		if (config.leftAlignOrbs() == AlignmentMode.BOTH)
+		if (shouldMoveOrbs())
 		{
-			moveOrbs();
-		}
-		else if (!client.isResized() && config.leftAlignOrbs() == AlignmentMode.FIXED)
-		{
-			moveOrbs();
-		}
-		else if (client.isResized() && config.leftAlignOrbs() == AlignmentMode.RESIZEABLE)
-		{
-			moveOrbs();
+			moveOrbs(false);
 		}
 		else
 		{
-			resetOrbs();
+			moveOrbs(true);
 		}
 	}
 
@@ -266,71 +250,57 @@ public class MinimapPlugin extends Plugin
 		{
 			if (config.leftAlignOrbs() != AlignmentMode.OFF)
 			{
-				if (config.leftAlignOrbs() == AlignmentMode.BOTH)
+				if (shouldMoveOrbs())
 				{
-					moveOrbs();
-				}
-				else if (!client.isResized() && config.leftAlignOrbs() == AlignmentMode.FIXED)
-				{
-					moveOrbs();
-				}
-				else if (client.isResized() && config.leftAlignOrbs() == AlignmentMode.RESIZEABLE)
-				{
-					moveOrbs();
+					moveOrbs(false);
 				}
 			}
 		}
 	}
 
-	private void moveOrbs()
+	private boolean shouldMoveOrbs()
 	{
-		for (int i = 0; i < orbs.size(); i++)
+		return config.leftAlignOrbs() == AlignmentMode.BOTH
+			|| (!client.isResized() && config.leftAlignOrbs() == AlignmentMode.FIXED)
+			|| (client.isResized() && config.leftAlignOrbs() == AlignmentMode.RESIZEABLE);
+	}
+
+	private void moveOrbs(boolean reset)
+	{
+		for (int i = 0; i < ORBS.size(); i++)
 		{
-			Widget widget = client.getWidget(orbs.get(i));
+			Widget widget = client.getWidget(ORBS.get(i));
 			if (widget != null)
 			{
 				//Back up default widget positions before they are changed
-				if (orbDefaultPositions[i][0] == -1)
+				if (ORB_DEFAULT_POSITIONS[i][0] == -1)
 				{
-					orbDefaultPositions[i] = new int[]{
+					ORB_DEFAULT_POSITIONS[i] = new int[]{
 						widget.getOriginalX(),
 						widget.getRelativeX(),
 						widget.getOriginalY(),
-						widget.getRelativeY()};
+						widget.getRelativeY()
+					};
 				}
-				widget.setOriginalX(orbXOffset);
-				widget.setRelativeX(orbXOffset);
-
-				widget.setOriginalY(((i + 1) * orbHeight) + orbYOffset);
-				widget.setRelativeY(((i + 1) * orbHeight) + orbYOffset);
-			}
-		}
-	}
-
-	private void resetOrbs()
-	{
-		for (int i = 0; i < orbs.size(); i++)
-		{
-			Widget widget = client.getWidget(orbs.get(i));
-			if (widget != null)
-			{
-				//Set widget backup before it's used below
-				if (orbDefaultPositions[i][0] == -1)
+				if (reset)
 				{
-					orbDefaultPositions[i] = new int[]{
-						widget.getOriginalX(),
-						widget.getRelativeX(),
-						widget.getOriginalY(),
-						widget.getRelativeY()};
+					int[] positions = ORB_DEFAULT_POSITIONS[i];
+					if (positions[0] != -1)
+					{
+						widget.setOriginalX(positions[0]);
+						widget.setRelativeX(positions[1]);
+
+						widget.setOriginalY(positions[2]);
+						widget.setRelativeY(positions[3]);
+					}
 				}
-				int[] positions = orbDefaultPositions[i];
-				if (positions[0] != -1)
+				else
 				{
-					widget.setOriginalX(positions[0]);
-					widget.setRelativeX(positions[1]);
+					widget.setOriginalX(ORB_X_OFFSET);
+					widget.setRelativeX(ORB_X_OFFSET);
 
-					widget.setOriginalY(positions[2]);
-					widget.setRelativeY(positions[3]);
+					widget.setOriginalY(((i + 1) * ORB_HEIGHT) + ORB_Y_OFFSET);
+					widget.setRelativeY(((i + 1) * ORB_HEIGHT) + ORB_Y_OFFSET);
 				}
 			}
 		}
