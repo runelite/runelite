@@ -594,12 +594,12 @@ public interface Widget
 	void setDragDeadTime(int deadTime);
 
 	/**
-	 * Returns the item quantity mode
+	 * Returns widget {@link net.runelite.api.widgets.ItemQuantityMode}.
 	 */
 	int getItemQuantityMode();
 
 	/**
-	 * Sets the widget item quantity mode
+	 * Sets the widget {@link net.runelite.api.widgets.ItemQuantityMode}
 	 */
 	void setItemQuantityMode(int itemQuantityMode);
 }
