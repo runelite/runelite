@@ -118,7 +118,7 @@ public class WidgetOverlay extends Overlay
 		y = Math.min((int)parent.getMaxY() - bounds.height, y);
 		bounds.setLocation(x, y);
 		widget.setOriginalX(0);
-		widget.setRelativeX(0);
+		widget.setOriginalY(0);
 		widget.setRelativeX(bounds.x - parent.x);
 		widget.setRelativeY(bounds.y - parent.y);
 		return new Dimension(widget.getWidth(), widget.getHeight());

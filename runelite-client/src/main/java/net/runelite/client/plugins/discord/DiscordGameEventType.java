@@ -25,11 +25,15 @@
  */
 package net.runelite.client.plugins.discord;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import net.runelite.api.Varbits;
 
 @AllArgsConstructor
 @Getter
@@ -212,6 +216,7 @@ enum DiscordGameEventType
 	DUNGEON_WHITE_WOLF_MOUNTAIN_CAVES("White Wolf Mountain Caves", DiscordAreaType.DUNGEONS, 11418, 11419, 11675),
 	DUNGEON_WITCHAVEN_SHRINE("Witchhaven Shrine Dungeon", DiscordAreaType.DUNGEONS, 10903),
 	DUNGEON_YANILLE_AGILITY("Yanile Agility Dungeon", DiscordAreaType.DUNGEONS, 10388),
+	DUNGEON_MOTHERLODE_MINE("Motherlode Mine", DiscordAreaType.DUNGEONS, 14679, 14680, 14681, 14935, 14936, 14937, 15191, 15192, 15193),
 
 	// Minigames
 	MG_BARBARIAN_ASSAULT("Barbarian Assault", DiscordAreaType.MINIGAMES, 10332),
@@ -236,14 +241,25 @@ enum DiscordGameEventType
 	MG_TROUBLE_BREWING("Trouble Brewing", DiscordAreaType.MINIGAMES, 15150),
 	MG_TZHAAR_FIGHT_CAVES("Tzhaar Fight Caves", DiscordAreaType.MINIGAMES, 9551),
 	MG_TZHAAR_FIGHT_PITS("Tzhaar Fight Pits", DiscordAreaType.MINIGAMES, 9552),
-	MG_VOLCANIC_MINE("Volcanic Mine", DiscordAreaType.MINIGAMES, 15263, 15262);
+	MG_VOLCANIC_MINE("Volcanic Mine", DiscordAreaType.MINIGAMES, 15263, 15262),
+
+	// Raids
+	RAIDS_CHAMBERS_OF_XERIC("Chambers of Xeric", DiscordAreaType.RAIDS, Varbits.IN_RAID),
+	RAIDS_THEATRE_OF_BLOOD("Theatre of Blood", DiscordAreaType.RAIDS, Varbits.THEATRE_OF_BLOOD);
 
 	private static final Map<Integer, DiscordGameEventType> FROM_REGION = new HashMap<>();
+	private static final List<DiscordGameEventType> FROM_VARBITS = new ArrayList<>();
 
 	static
 	{
 		for (DiscordGameEventType discordGameEventType : DiscordGameEventType.values())
 		{
+			if (discordGameEventType.getVarbits() != null)
+			{
+				FROM_VARBITS.add(discordGameEventType);
+				continue;
+			}
+
 			if (discordGameEventType.getRegionIds() == null)
 			{
 				continue;
@@ -265,6 +281,7 @@ enum DiscordGameEventType
 	private boolean shouldTimeout;
 
 	private DiscordAreaType discordAreaType;
+	private Varbits varbits;
 	private int[] regionIds;
 
 	DiscordGameEventType(Skill skill)
@@ -294,6 +311,15 @@ enum DiscordGameEventType
 	{
 		this.details = state;
 		this.priority = priority;
+		this.shouldClear = true;
+	}
+
+	DiscordGameEventType(String areaName, DiscordAreaType areaType, Varbits varbits)
+	{
+		this.details = exploring(areaType, areaName);
+		this.priority = -2;
+		this.discordAreaType = areaType;
+		this.varbits = varbits;
 		this.shouldClear = true;
 	}
 
@@ -329,6 +355,8 @@ enum DiscordGameEventType
 				return "Location: " + areaName;
 			case MINIGAMES:
 				return "Playing: " + areaName;
+			case RAIDS:
+				return "Raiding: " + areaName;
 		}
 
 		return "";
@@ -367,5 +395,18 @@ enum DiscordGameEventType
 	public static DiscordGameEventType fromRegion(final int regionId)
 	{
 		return FROM_REGION.get(regionId);
+	}
+
+	public static DiscordGameEventType fromVarbit(final Client client)
+	{
+		for (DiscordGameEventType fromVarbit : FROM_VARBITS)
+		{
+			if (client.getVar(fromVarbit.getVarbits()) != 0)
+			{
+				return fromVarbit;
+			}
+		}
+
+		return null;
 	}
 }

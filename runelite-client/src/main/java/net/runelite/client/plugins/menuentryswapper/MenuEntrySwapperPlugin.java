@@ -469,17 +469,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("empty", option, target, true);
 		}
-		else if (config.swapQuick())
+		else if (config.swapQuick() && option.equals("ring"))
 		{
-			switch (option)
-			{
-				case "ring":
-					swap("quick-start", option, target, true);
-					break;
-				case "pass":
-					swap("quick-pass", option, target, true);
-					break;
-			}
+			swap("quick-start", option, target, true);
+		}
+		else if (config.swapQuick() && option.equals("pass"))
+		{
+			swap("quick-pass", option, target, true);
 		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
