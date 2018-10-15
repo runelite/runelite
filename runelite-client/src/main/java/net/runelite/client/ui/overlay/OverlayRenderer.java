@@ -47,7 +47,6 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
-import net.runelite.client.ui.FontManager;
 
 @Singleton
 public class OverlayRenderer extends MouseListener implements KeyListener
@@ -371,7 +370,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		final OverlayPosition position = overlay.getPosition();
 
 		// Set font based on configuration
-		if (position == OverlayPosition.DYNAMIC)
+		if (position == OverlayPosition.DYNAMIC || position == OverlayPosition.DETACHED)
 		{
 			subGraphics.setFont(runeLiteConfig.fontType().getFont());
 		}
@@ -381,7 +380,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		}
 		else
 		{
-			subGraphics.setFont(FontManager.getRunescapeFont());
+			subGraphics.setFont(runeLiteConfig.interfaceFontType().getFont());
 		}
 
 		subGraphics.translate(point.x, point.y);
