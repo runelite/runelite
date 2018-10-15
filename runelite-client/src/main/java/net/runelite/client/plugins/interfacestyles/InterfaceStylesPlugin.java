@@ -41,6 +41,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.events.WidgetPositioned;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -57,12 +58,19 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class InterfaceStylesPlugin extends Plugin
 {
-	private int prayerOriginalX, prayerOriginalY,
-				magicOriginalX, magicOriginalY,
-				craftingOriginalX, craftingOriginalY,
-				runecraftingOriginalX, runecraftingOriginalY,
-				woodcuttingOriginalX, woodcuttingOriginalY,
-				totalOriginalX, totalOriginalY;
+	private static final int
+			PRAYER_X = 1,
+			PRAYER_Y = 129,
+			MAGIC_X = 1,
+			MAGIC_Y = 161,
+			CRAFTING_X = 64,
+			CRAFTING_Y = 129,
+			RUNECRAFTING_X = 1,
+			RUNECRAFTING_Y = 193,
+			WOODCUTTING_X = 127,
+			WOODCUTTING_Y = 161,
+			TOTAL_X = 127,
+			TOTAL_Y = 225;
 	@Inject
 	private Client client;
 
@@ -112,7 +120,6 @@ public class InterfaceStylesPlugin extends Plugin
 	{
 		if (!client.getWorldType().contains(WorldType.MEMBERS))
 		{
-			getOriginalWidgetLocation();
 			showMemberOnlySkills();
 		}
 	}
@@ -130,8 +137,6 @@ public class InterfaceStylesPlugin extends Plugin
 		overrideWidgetSprites();
 		restoreWidgetDimensions();
 		adjustWidgetDimensions();
-
-		getOriginalWidgetLocation();
 
 		if (!client.getWorldType().contains(WorldType.MEMBERS))
 		{
@@ -364,33 +369,33 @@ public class InterfaceStylesPlugin extends Plugin
 	{
 		if (hideMembers)
 		{
-			client.getWidget(WidgetInfo.SKILL_TOTAL).setRelativeX(woodcuttingOriginalX);
-			client.getWidget(WidgetInfo.SKILL_TOTAL).setRelativeY(woodcuttingOriginalY);
+			client.getWidget(WidgetInfo.SKILL_TOTAL).setRelativeX(WOODCUTTING_X);
+			client.getWidget(WidgetInfo.SKILL_TOTAL).setRelativeY(WOODCUTTING_Y);
 			client.getWidget(WidgetInfo.SKILL_PRAYER).setRelativeX(client.getWidget(WidgetInfo.SKILL_AGILITY).getRelativeX());
 			client.getWidget(WidgetInfo.SKILL_PRAYER).setRelativeY(client.getWidget(WidgetInfo.SKILL_AGILITY).getRelativeY());
-			client.getWidget(WidgetInfo.SKILL_MAGIC).setRelativeX(prayerOriginalX);
-			client.getWidget(WidgetInfo.SKILL_MAGIC).setRelativeY(prayerOriginalY);
+			client.getWidget(WidgetInfo.SKILL_MAGIC).setRelativeX(PRAYER_X);
+			client.getWidget(WidgetInfo.SKILL_MAGIC).setRelativeY(PRAYER_Y);
 			client.getWidget(WidgetInfo.SKILL_CRAFTING).setRelativeX(client.getWidget(WidgetInfo.SKILL_HERBLORE).getRelativeX());
 			client.getWidget(WidgetInfo.SKILL_CRAFTING).setRelativeY(client.getWidget(WidgetInfo.SKILL_HERBLORE).getRelativeY());
 			client.getWidget(WidgetInfo.SKILL_RUNECRAFTING).setRelativeX(client.getWidget(WidgetInfo.SKILL_THIEVING).getRelativeX());
 			client.getWidget(WidgetInfo.SKILL_RUNECRAFTING).setRelativeY(client.getWidget(WidgetInfo.SKILL_THIEVING).getRelativeY());
-			client.getWidget(WidgetInfo.SKILL_WOODCUTTING).setRelativeX(craftingOriginalX);
-			client.getWidget(WidgetInfo.SKILL_WOODCUTTING).setRelativeY(craftingOriginalY);
+			client.getWidget(WidgetInfo.SKILL_WOODCUTTING).setRelativeX(CRAFTING_X);
+			client.getWidget(WidgetInfo.SKILL_WOODCUTTING).setRelativeY(CRAFTING_Y);
 		}
 		else
 		{
-			client.getWidget(WidgetInfo.SKILL_TOTAL).setRelativeX(totalOriginalX);
-			client.getWidget(WidgetInfo.SKILL_TOTAL).setRelativeY(totalOriginalY);
-			client.getWidget(WidgetInfo.SKILL_PRAYER).setRelativeX(prayerOriginalX);
-			client.getWidget(WidgetInfo.SKILL_PRAYER).setRelativeY(prayerOriginalY);
-			client.getWidget(WidgetInfo.SKILL_MAGIC).setRelativeX(magicOriginalX);
-			client.getWidget(WidgetInfo.SKILL_MAGIC).setRelativeY(magicOriginalY);
-			client.getWidget(WidgetInfo.SKILL_CRAFTING).setRelativeX(craftingOriginalX);
-			client.getWidget(WidgetInfo.SKILL_CRAFTING).setRelativeY(craftingOriginalY);
-			client.getWidget(WidgetInfo.SKILL_RUNECRAFTING).setRelativeX(runecraftingOriginalX);
-			client.getWidget(WidgetInfo.SKILL_RUNECRAFTING).setRelativeY(runecraftingOriginalY);
-			client.getWidget(WidgetInfo.SKILL_WOODCUTTING).setRelativeX(woodcuttingOriginalX);
-			client.getWidget(WidgetInfo.SKILL_WOODCUTTING).setRelativeY(woodcuttingOriginalY);
+			client.getWidget(WidgetInfo.SKILL_TOTAL).setRelativeX(TOTAL_X);
+			client.getWidget(WidgetInfo.SKILL_TOTAL).setRelativeY(TOTAL_Y);
+			client.getWidget(WidgetInfo.SKILL_PRAYER).setRelativeX(PRAYER_X);
+			client.getWidget(WidgetInfo.SKILL_PRAYER).setRelativeY(PRAYER_Y);
+			client.getWidget(WidgetInfo.SKILL_MAGIC).setRelativeX(MAGIC_X);
+			client.getWidget(WidgetInfo.SKILL_MAGIC).setRelativeY(MAGIC_Y);
+			client.getWidget(WidgetInfo.SKILL_CRAFTING).setRelativeX(CRAFTING_X);
+			client.getWidget(WidgetInfo.SKILL_CRAFTING).setRelativeY(CRAFTING_Y);
+			client.getWidget(WidgetInfo.SKILL_RUNECRAFTING).setRelativeX(RUNECRAFTING_X);
+			client.getWidget(WidgetInfo.SKILL_RUNECRAFTING).setRelativeY(RUNECRAFTING_Y);
+			client.getWidget(WidgetInfo.SKILL_WOODCUTTING).setRelativeX(WOODCUTTING_X);
+			client.getWidget(WidgetInfo.SKILL_WOODCUTTING).setRelativeY(WOODCUTTING_Y);
 		}
 	}
 
@@ -401,21 +406,23 @@ public class InterfaceStylesPlugin extends Plugin
 			widget.setHidden(config.hideMembersSkills());
 		}
 		shuffleSkills(config.hideMembersSkills());
+		updateTotalLevels();
 	}
 
-	private void getOriginalWidgetLocation()
+	private void updateTotalLevels()
 	{
-		totalOriginalX = totalOriginalX > 0 ? totalOriginalX : client.getWidget(WidgetInfo.SKILL_TOTAL).getRelativeX();
-		totalOriginalY = totalOriginalY > 0 ? totalOriginalY : client.getWidget(WidgetInfo.SKILL_TOTAL).getRelativeY();
-		prayerOriginalX = prayerOriginalX > 0 ? prayerOriginalX : client.getWidget(WidgetInfo.SKILL_PRAYER).getRelativeX();
-		prayerOriginalY = prayerOriginalY > 0 ? prayerOriginalY : client.getWidget(WidgetInfo.SKILL_PRAYER).getRelativeY();
-		magicOriginalX = magicOriginalX > 0 ? magicOriginalX : client.getWidget(WidgetInfo.SKILL_MAGIC).getRelativeX();
-		magicOriginalY = magicOriginalY > 0 ? magicOriginalY : client.getWidget(WidgetInfo.SKILL_MAGIC).getRelativeY();
-		craftingOriginalX = craftingOriginalX > 0 ? craftingOriginalX : client.getWidget(WidgetInfo.SKILL_CRAFTING).getRelativeX();
-		craftingOriginalY = craftingOriginalY > 0 ? craftingOriginalY : client.getWidget(WidgetInfo.SKILL_CRAFTING).getRelativeY();
-		runecraftingOriginalX = runecraftingOriginalX > 0 ? runecraftingOriginalX : client.getWidget(WidgetInfo.SKILL_RUNECRAFTING).getRelativeX();
-		runecraftingOriginalY = runecraftingOriginalY > 0 ? runecraftingOriginalY : client.getWidget(WidgetInfo.SKILL_RUNECRAFTING).getRelativeY();
-		woodcuttingOriginalX = woodcuttingOriginalX > 0 ? woodcuttingOriginalX : client.getWidget(WidgetInfo.SKILL_WOODCUTTING).getRelativeX();
-		woodcuttingOriginalY = woodcuttingOriginalY > 0 ? woodcuttingOriginalY : client.getWidget(WidgetInfo.SKILL_WOODCUTTING).getRelativeY();
+		int totalLevel = 0;
+
+		for (int skill = 1; skill <= 23; skill++)
+		{
+			Widget currentSkill = client.getWidget(WidgetID.STATS_GROUP_ID, skill);
+
+			if (!currentSkill.isHidden() && currentSkill.getDynamicChildren().length >= 4)
+			{
+				// [4] is the denominator of the skill fraction widget
+				totalLevel += Integer.parseInt(currentSkill.getDynamicChildren()[4].getText());
+			}
+		}
+		client.getWidget(WidgetInfo.SKILL_TOTAL_TEXT).setText("Total level:<br>" + totalLevel);
 	}
 }

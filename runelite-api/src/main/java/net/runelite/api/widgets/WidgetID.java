@@ -443,6 +443,7 @@ public class WidgetID
 		static final int WOODCUTTING = 22;
 		static final int FARMING = 23;
 		static final int TOTAL = 24;
+		static final int TOTAL_TEXT = 27;
 	}
 
 	static class Prayer
