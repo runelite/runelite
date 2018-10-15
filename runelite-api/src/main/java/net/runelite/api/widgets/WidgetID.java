@@ -119,7 +119,6 @@ public class WidgetID
 	public static final int MINIGAME_TAB_ID = 76;
 	public static final int SPELLBOOK_GROUP_ID = 218;
 	public static final int PVP_GROUP_ID = 90;
-	public static final int FISHING_TRAWLER_GROUP_ID = 366;
 	public static final int STATS_GROUP_ID = 320;
 
 	static class WorldMap

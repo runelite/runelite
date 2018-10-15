@@ -56,10 +56,7 @@ import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.queries.NPCQuery;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -81,10 +78,7 @@ public class FishingPlugin extends Plugin
 {
 	private static final int TRAWLER_SHIP_REGION_NORMAL = 7499;
 	private static final int TRAWLER_SHIP_REGION_SINKING = 8011;
-	private static final int TRAWLER_TIME_LIMIT = 614;
 	private static final int TRAWLER_ACTIVITY_THRESHOLD = Math.round(0.15f * 255);
-
-	private Instant startTime;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final FishingSession session = new FishingSession();
@@ -149,7 +143,6 @@ public class FishingPlugin extends Plugin
 		minnowSpots.clear();
 		trawlerNotificationSent = false;
 		currentSpot = null;
-		startTime = null;
 	}
 
 	@Subscribe
@@ -304,12 +297,6 @@ public class FishingPlugin extends Plugin
 				}
 			}
 		}
-
-		if (config.trawlerTimer())
-		{
-			updateTrawlerTimer();
-		}
-
 	}
 
 	@Subscribe
@@ -348,37 +335,4 @@ public class FishingPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
-	{
-		if (event.getGroupId() == WidgetID.FISHING_TRAWLER_GROUP_ID)
-		{
-			startTime = Instant.now();
-		}
-	}
-
-	/**
-	 * Changes the Fishing Trawler timer widget from minutes to minutes and seconds
-	 */
-	private void updateTrawlerTimer()
-	{
-		int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
-
-		if (regionID != TRAWLER_SHIP_REGION_NORMAL && regionID != TRAWLER_SHIP_REGION_SINKING || startTime == null)
-		{
-			return;
-		}
-
-		Widget trawlerTimerWidget = client.getWidget(WidgetID.FISHING_TRAWLER_GROUP_ID, 37);
-
-		long timeLeft = TRAWLER_TIME_LIMIT - Duration.between(startTime, Instant.now()).getSeconds();
-		int minutes = (int) (timeLeft % 3600) / 60;
-		int seconds = (int) timeLeft % 60 > 0 ? (int) timeLeft % 60 : 0;
-
-		String trawlerText = minutes > 0 ?
-				"Time Left: " + minutes + " Mins " + seconds + " Secs" :
-				"Time Left: " + seconds + " Secs";
-
-		trawlerTimerWidget.setText(trawlerText);
-	}
 }

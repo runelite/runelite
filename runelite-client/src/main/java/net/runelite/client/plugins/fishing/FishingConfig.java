@@ -118,15 +118,4 @@ public interface FishingConfig extends Config
 	{
 		return true;
 	}
-
-	@ConfigItem(
-		position = 8,
-		keyName = "trawlerTimer",
-		name = "Trawler timer in seconds",
-		description = "Add seconds to trawler timer."
-	)
-	default boolean trawlerTimer()
-	{
-		return true;
-	}
 }
