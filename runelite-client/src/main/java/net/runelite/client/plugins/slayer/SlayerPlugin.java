@@ -172,7 +172,6 @@ public class SlayerPlugin extends Plugin
 	private int cachedXp;
 	private Instant infoTimer;
 	private boolean loginFlag;
-	private boolean doubleTroubleEnabled;
 	private List<String> targetNames = new ArrayList<>();
 
 	@Override
@@ -190,7 +189,6 @@ public class SlayerPlugin extends Plugin
 			streak = config.streak();
 			setExpeditiousChargeCount(config.expeditious());
 			setSlaughterChargeCount(config.slaughter());
-			doubleTroubleEnabled = config.doubleTroubleEnabled();
 			clientThread.invoke(() -> setTask(config.taskName(), config.amount()));
 		}
 	}
@@ -233,7 +231,6 @@ public class SlayerPlugin extends Plugin
 					streak = config.streak();
 					setExpeditiousChargeCount(config.expeditious());
 					setSlaughterChargeCount(config.slaughter());
-					doubleTroubleEnabled = config.doubleTroubleEnabled();
 					setTask(config.taskName(), config.amount());
 					loginFlag = false;
 				}
@@ -248,7 +245,6 @@ public class SlayerPlugin extends Plugin
 		config.points(points);
 		config.streak(streak);
 		config.expeditious(expeditiousChargeCount);
-		config.doubleTroubleEnabled(doubleTroubleEnabled);
 		config.slaughter(slaughterChargeCount);
 	}
 
@@ -451,13 +447,6 @@ public class SlayerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChange(VarbitChanged event)
-	{
-		doubleTroubleEnabled = (client.getVar(VarPlayer.DOUBLE_TROUBLE) >> REWARD_DOUBLE_TROUBLE_ENABLED_BIT & 1) == 1;
-		config.doubleTroubleEnabled(doubleTroubleEnabled);
-	}
-
-	@Subscribe
 	public void onExperienceChanged(ExperienceChanged event)
 	{
 		if (event.getSkill() != SLAYER)
@@ -529,7 +518,7 @@ public class SlayerPlugin extends Plugin
 
 	private boolean doubleTroubleExtraKill()
 	{
-		return config.doubleTroubleEnabled() &&
+		return (client.getVar(VarPlayer.DOUBLE_TROUBLE) >> REWARD_DOUBLE_TROUBLE_ENABLED_BIT & 1) == 1 &&
 				config.taskName().equalsIgnoreCase(Task.GROTESQUE_GUARDIANS.name()) || config.taskName().equalsIgnoreCase(Task.GARGOYLES.name()) &&
 				WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID() == GROTESQUE_GUARDIANS_REGION;
 	}
