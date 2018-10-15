@@ -35,6 +35,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
@@ -57,6 +58,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -247,7 +249,7 @@ public class GrandExchangePlugin extends Plugin
 			return;
 		}
 
-		final MenuEntry[] entries = client.getMenuEntries();
+		MenuEntry[] entries = client.getMenuEntries();
 		final MenuEntry menuEntry = entries[entries.length - 1];
 		final int widgetId = menuEntry.getParam1();
 		final int groupId = WidgetInfo.TO_GROUP(widgetId);
@@ -266,7 +268,29 @@ public class GrandExchangePlugin extends Plugin
 			case WidgetID.SHOP_INVENTORY_GROUP_ID:
 				menuEntry.setOption(SEARCH_GRAND_EXCHANGE);
 				menuEntry.setType(MenuAction.RUNELITE.getId());
+				entries = Arrays.copyOf(entries, 2);
+				entries[1] = menuEntry;
 				client.setMenuEntries(entries);
+		}
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (event.getMenuAction() == MenuAction.RUNELITE && event.getMenuOption().equals(SEARCH_GRAND_EXCHANGE))
+		{
+			SwingUtilities.invokeLater(() ->
+			{
+				panel.showSearch();
+
+				if (!button.isSelected())
+				{
+					button.getOnSelect().run();
+				}
+
+				panel.getSearchPanel().priceLookup(Text.removeTags(event.getMenuTarget()));
+			});
+			event.consume();
 		}
 	}
 
