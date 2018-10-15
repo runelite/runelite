@@ -164,10 +164,10 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 12,
-			keyName = "swapPay",
-			name = "Pay",
-			description = "Swap Talk-to with Pay on NPC<br>Example: Elstan, Heskel, Fayeth"
+		position = 12,
+		keyName = "swapPay",
+		name = "Pay",
+		description = "Swap Talk-to with Pay on NPC<br>Example: Elstan, Heskel, Fayeth"
 	)
 	default boolean swapPay()
 	{
