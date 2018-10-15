@@ -27,14 +27,19 @@ package net.runelite.client.plugins.mousehighlight;
 import com.google.common.base.Strings;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
@@ -43,14 +48,18 @@ class MouseHighlightOverlay extends Overlay
 	private final TooltipManager tooltipManager;
 	private final Client client;
 	private final MouseHighlightConfig config;
+	private final SpriteManager spriteManager;
 
 	@Inject
-	MouseHighlightOverlay(Client client, TooltipManager tooltipManager, MouseHighlightConfig config)
+	MouseHighlightOverlay(Client client, TooltipManager tooltipManager, MouseHighlightConfig config, SpriteManager spriteManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
+		setPriority(OverlayPriority.HIGHEST);
+		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 		this.client = client;
 		this.tooltipManager = tooltipManager;
 		this.config = config;
+		this.spriteManager = spriteManager;
 	}
 
 	@Override
@@ -125,7 +134,50 @@ class MouseHighlightOverlay extends Overlay
 			return null;
 		}
 
-		tooltipManager.addFront(new Tooltip(option + (Strings.isNullOrEmpty(target) ? "" : " " + target)));
+		Image image = null;
+
+		if (config.tooltipMode() != MouseHighlightConfig.TooltipMode.TEXT)
+		{
+			switch (menuEntry.getOption())
+			{
+				case "Take":
+					image = spriteManager.getSprite(SpriteID.MAP_ICON_STAFF_SHOP, 0);
+					break;
+				case "Talk-to":
+					image = spriteManager.getSprite(SpriteID.MAP_ICON_MAKEOVER_MAGE, 0);
+					break;
+				case "Bank":
+					image = spriteManager.getSprite(SpriteID.MAP_ICON_BANK, 0);
+					break;
+				case "Eat":
+					image = spriteManager.getSprite(SpriteID.MAP_ICON_FOOD_SHOP_FRUIT, 0);
+					break;
+				case "Wear":
+				case "Wield":
+					image = spriteManager.getSprite(SpriteID.MAP_ICON_CLOTHES_SHOP, 0);
+					break;
+				case "Destroy":
+					image = spriteManager.getSprite(SpriteID.MAP_ICON_DUNGEON, 0);
+					break;
+				case "Attack":
+					image = spriteManager.getSprite(SpriteID.MAP_ICON_SWORD_SHOP, 0);
+					break;
+				case "Examine":
+					image = spriteManager.getSprite(SpriteID.MAP_ICON_GUIDE, 0);
+					break;
+				case "Catch":
+					image = spriteManager.getSprite(SpriteID.MAP_ICON_HUNTER_TRAINING, 0);
+					break;
+				case "Exchange":
+				case "Buy":
+				case "Sell":
+					image = spriteManager.getSprite(SpriteID.MAP_ICON_GRAND_EXCHANGE, 0);
+					break;
+			}
+		}
+
+		final String text = option + (Strings.isNullOrEmpty(target) ? "" : " " + target);
+		tooltipManager.addFront(new Tooltip(config.tooltipMode() != MouseHighlightConfig.TooltipMode.ICON ? text : null, image));
 		return null;
 	}
 }

@@ -31,6 +31,13 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("mousehighlight")
 public interface MouseHighlightConfig extends Config
 {
+	enum TooltipMode
+	{
+		TEXT,
+		ICON,
+		BOTH
+	}
+
 	@ConfigItem(
 		position = 0,
 		keyName = "uiTooltip",
@@ -51,5 +58,16 @@ public interface MouseHighlightConfig extends Config
 	default boolean chatboxTooltip()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "tooltipMode",
+		name = "Tooltip Mode",
+		description = "What type of tooltips should mouse highlighting display"
+	)
+	default TooltipMode tooltipMode()
+	{
+		return TooltipMode.TEXT;
 	}
 }
