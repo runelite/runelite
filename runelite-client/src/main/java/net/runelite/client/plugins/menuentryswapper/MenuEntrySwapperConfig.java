@@ -186,10 +186,10 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 14,
-			keyName = "swapStorageUnit",
-			name = "Private",
-			description = "Swap Shared with Private on raids storage unit"
+		position = 14,
+		keyName = "swapStorageUnit",
+		name = "Private",
+		description = "Swap Shared with Private on raids storage unit"
 	)
 	default boolean swapStorage()
 	{
