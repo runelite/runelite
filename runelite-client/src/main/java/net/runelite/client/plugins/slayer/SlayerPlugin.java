@@ -527,9 +527,8 @@ public class SlayerPlugin extends Plugin
 
 	private boolean doubleTroubleExtraKill()
 	{
-		return (client.getVar(VarPlayer.DOUBLE_TROUBLE) >> REWARD_DOUBLE_TROUBLE_ENABLED_BIT & 1) == 1 &&
-				config.taskName().equalsIgnoreCase(Task.GROTESQUE_GUARDIANS.name()) || config.taskName().equalsIgnoreCase(Task.GARGOYLES.name()) &&
-				WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID() == GROTESQUE_GUARDIANS_REGION;
+		return WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID() == GROTESQUE_GUARDIANS_REGION &&
+				(client.getVar(VarPlayer.DOUBLE_TROUBLE) >> REWARD_DOUBLE_TROUBLE_ENABLED_BIT & 1) == 1;
 	}
 
 	private boolean isTarget(NPC npc)
