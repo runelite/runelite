@@ -40,7 +40,7 @@ public interface WikiLookupConfig extends Config
 	)
 	default boolean boundToShift()
 	{
-		return true;
+		return false;
 	}
 	
 	@ConfigItem(
@@ -51,14 +51,14 @@ public interface WikiLookupConfig extends Config
 	)
 	default boolean removeNonVital()
 	{
-		return false;
+		return true;
 	}
 	
 	@ConfigItem(
 			position = 2,
 			keyName = "permWiki",
 			name = "Make wiki option always visible",
-			description = "Makes the wiki option always visible but never the default regardless of options."
+			description = "Makes the wiki option always visible but never the default regardless of options. This will override the other options."
 	)
 	default boolean permWiki()
 	{

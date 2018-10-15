@@ -51,8 +51,7 @@ import javax.inject.Inject;
 import java.awt.event.KeyEvent;
 
 @PluginDescriptor(
-		name = "Wiki Lookup",
-		enabledByDefault = false
+		name = "Wiki Lookup"
 )
 public class WikiLookupPlugin extends Plugin implements KeyListener
 {
@@ -87,7 +86,8 @@ public class WikiLookupPlugin extends Plugin implements KeyListener
 		return configManager.getConfig(WikiLookupConfig.class);
 	}
 	
-	private boolean wikiLookupTrigger = false;
+	private boolean wikiLookupTriggerKey = false;
+	private boolean isWikiLookupTriggerButton = false;
 	
 	@Override
 	public void keyTyped(KeyEvent e)
@@ -98,21 +98,18 @@ public class WikiLookupPlugin extends Plugin implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (e.getKeyCode() == HOTKEY && config.boundToShift())
+		if (e.getKeyCode() == HOTKEY && config.boundToShift() && !isWikiLookupTriggerButton)
 		{
-			wikiLookupTrigger = true;
+			wikiLookupTriggerKey = true;
 		}
 	}
 	
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		if (e.getKeyCode() == HOTKEY && config.boundToShift())
+		if (e.getKeyCode() == HOTKEY)
 		{
-			if (!wikiOrbInterface.getStatus())
-			{
-				wikiLookupTrigger = false;
-			}
+			wikiLookupTriggerKey = false;
 		}
 	}
 	
@@ -151,25 +148,28 @@ public class WikiLookupPlugin extends Plugin implements KeyListener
 			if (wikiOrbInterface.getStatus())
 			{
 				wikiOrbInterface.setStatus(false);
-				wikiLookupTrigger = false;
+				isWikiLookupTriggerButton = false;
 			}
 			else
 			{
-				wikiLookupTrigger = true;
+				System.out.println("We have clicked the button");
+				isWikiLookupTriggerButton = true;
 				wikiOrbInterface.setStatus(true);
 			}
 		}
 		else if (click.getMenuOption().equals(WIKI))
 		{
 			wikiOrbInterface.setStatus(false);
-			wikiLookupTrigger = false;
+			wikiLookupTriggerKey = false;
+			isWikiLookupTriggerButton = false;
 			LinkBrowser.browse("https://oldschool.runescape.wiki/w/" + Text.removeTags(click.getMenuTarget()).replaceAll("\\(.*?\\)", "").replace(' ', '_'));
 
 		}
 		else if (click.getMenuOption().equals("Cancel"))
 		{
 			wikiOrbInterface.setStatus(false);
-			wikiLookupTrigger = false;
+			wikiLookupTriggerKey = false;
+			isWikiLookupTriggerButton = false;
 		}
 	}
 	
@@ -178,9 +178,10 @@ public class WikiLookupPlugin extends Plugin implements KeyListener
 	{
 		if (config.permWiki())
 		{
-			wikiLookupTrigger = true;
+			wikiLookupTriggerKey = true;
+			isWikiLookupTriggerButton = true;
 		}
-		if (!wikiLookupTrigger)
+		if (!wikiLookupTriggerKey && !isWikiLookupTriggerButton)
 		{
 			return;
 		}
@@ -214,6 +215,7 @@ public class WikiLookupPlugin extends Plugin implements KeyListener
 		}
 		if (!config.permWiki() &&
 				(config.removeNonVital() &&
+						!wikiLookupTriggerKey &&
 						(event.getTarget().length() >= 1
 								|| option.equals("walk here")
 								|| option.contains("guide")
@@ -228,7 +230,9 @@ public class WikiLookupPlugin extends Plugin implements KeyListener
 	{
 		if (event.getGroup().equals("wikilookup"))
 		{
-			wikiLookupTrigger = false;
+			wikiLookupTriggerKey = false;
+			isWikiLookupTriggerButton = false;
+			wikiOrbInterface.setStatus(false);
 			if (event.getKey().equals("permWiki"))
 			{
 				if (config.permWiki())
