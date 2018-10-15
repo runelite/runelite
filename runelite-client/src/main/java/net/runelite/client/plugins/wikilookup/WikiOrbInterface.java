@@ -28,7 +28,6 @@ package net.runelite.client.plugins.wikilookup;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SpriteID;
@@ -37,9 +36,8 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
-@Slf4j
 @Singleton
-public class WikiOrbInterface
+class WikiOrbInterface
 {
 	private static final String WIKI_ORB = "Wiki Lookup";
 
@@ -93,7 +91,7 @@ public class WikiOrbInterface
 	{
 		if (isHidden())
 		{
-            return;
+			return;
 		}
 
 		orbBackground.setSpriteId(active ? SpriteID.MINIMAP_ORB_RUN_ACTIVATED : SpriteID.MINIMAP_ORB_RUN);
@@ -110,6 +108,10 @@ public class WikiOrbInterface
 		{
 			event.consume();
 			setActive(!isActive());
+		}
+		else
+		{
+			setActive(false);
 		}
 	}
 

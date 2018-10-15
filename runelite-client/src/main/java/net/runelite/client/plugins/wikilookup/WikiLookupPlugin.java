@@ -135,12 +135,11 @@ public class WikiLookupPlugin extends Plugin implements KeyListener
 	}
 
 	@Subscribe
-	public void onMenuObjectClicked(MenuOptionClicked event)
+	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		wikiOrbInterface.setActive(false);
-
 		if (event.getMenuOption().equals(WIKI))
 		{
+			wikiOrbInterface.setActive(false);
 			LinkBrowser.browse("https://oldschool.runescape.wiki/w/" + Text.removeTags(event.getMenuTarget())
 				.replaceAll("\\(.*?\\)", "")
 				.replace(' ', '_'));
@@ -189,6 +188,7 @@ public class WikiLookupPlugin extends Plugin implements KeyListener
 
 		if (!hotkeyPressed && (
 			event.getTarget().length() >= 1
+				|| option.contains("walk here")
 				|| option.contains("guide")
 				|| option.contains("open")))
 		{
