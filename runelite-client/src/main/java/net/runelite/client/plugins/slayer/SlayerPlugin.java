@@ -104,7 +104,6 @@ public class SlayerPlugin extends Plugin
 
 	//Reward UI
 	private static final Pattern REWARD_POINTS = Pattern.compile("Reward points: ((?:\\d+,)*\\d+)");
-	private static final String REWARD_NAME_DOUBLE_TROUBLE = "Double Trouble";
 	private static final int REWARD_DOUBLE_TROUBLE_ENABLED_BIT = 12;
 
 	private static final int GROTESQUE_GUARDIANS_REGION = 6727;
