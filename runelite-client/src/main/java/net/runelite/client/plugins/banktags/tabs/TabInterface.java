@@ -445,28 +445,7 @@ public class TabInterface
 			tagManager.removeTag(itemId, activeTab.getTag());
 			doSearch(InputType.SEARCH, TAG_SEARCH + activeTab.getTag());
 		}
-		else if (activeTab != null
-			&& event.getMenuAction() == MenuAction.RUNELITE
-			&& (event.getMenuOption().equals(TAG_INVENTORY) || event.getMenuOption().equals(TAG_GEAR)))
-		{
-			// Tag gear as current active tab
-			event.consume();
-			ItemContainer container = client.getItemContainer(event.getMenuOption().equals(TAG_GEAR) ? InventoryID.EQUIPMENT : InventoryID.INVENTORY);
-			if (container != null)
-			{
-				for (Item item : container.getItems())
-				{
-					if (item != null)
-					{
-						tagManager.addTag(itemManager.canonicalize(item.getId()), activeTab.getTag());
-					}
-				}
-			}
-
-			openTag(TAG_SEARCH + activeTab.getTag());
-		}
-		else if (activeTab == null
-			&& event.getMenuAction() == MenuAction.RUNELITE
+		else if (event.getMenuAction() == MenuAction.RUNELITE
 			&& (event.getMenuOption().equals(TAG_INVENTORY) || event.getMenuOption().equals(TAG_GEAR)))
 		{
 			event.consume();
@@ -479,24 +458,38 @@ public class TabInterface
 				{
 					if (item != null)
 					{
-						items.add(item.getId());
+						if (activeTab != null)
+						{
+							tagManager.addTag(itemManager.canonicalize(item.getId()), activeTab.getTag());
+						}
+						else
+						{
+							items.add(item.getId());
+						}
 					}
 				}
 
-				chatboxInputManager.openInputWindow((inventory ? "Inventory " : "Equipment ") + "tags:", "", (newTags) ->
+				if (activeTab != null)
 				{
-					if (!Objects.equals(newTags, client.getVar(VarClientStr.INPUT_TEXT)) || Strings.isNullOrEmpty(newTags))
+					openTag(TAG_SEARCH + activeTab.getTag());
+				}
+				else
+				{
+					chatboxInputManager.openInputWindow((inventory ? "Inventory " : "Equipment ") + "tags:", "", (newTags) ->
 					{
-						return;
-					}
+						if (!Objects.equals(newTags, client.getVar(VarClientStr.INPUT_TEXT)) || Strings.isNullOrEmpty(newTags))
+						{
+							return;
+						}
 
-					List<String> tags = SPLITTER.splitToList(newTags);
+						List<String> tags = SPLITTER.splitToList(newTags);
 
-					for (int itemId : items)
-					{
-						tagManager.addTags(itemManager.canonicalize(itemId), tags);
-					}
-				});
+						for (int itemId : items)
+						{
+							tagManager.addTags(itemManager.canonicalize(itemId), tags);
+						}
+					});
+				}
 			}
 		}
 		else
