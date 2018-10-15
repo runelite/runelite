@@ -421,7 +421,7 @@ public class TabInterface
 				.map(i -> itemManager.canonicalize(i.getId()))
 				.collect(Collectors.toList());
 
-			if (activeTab != null)
+			if (activeTab != null && event.getMenuTarget() != null && Text.removeTags(event.getMenuTarget()).equals(activeTab.getTag()))
 			{
 				for (Integer item : items)
 				{
