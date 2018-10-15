@@ -138,7 +138,6 @@ public class WikiLookupPlugin extends Plugin implements KeyListener
 	public void onMenuObjectClicked(MenuOptionClicked event)
 	{
 		wikiOrbInterface.setActive(false);
-		hotkeyPressed = false;
 
 		if (event.getMenuOption().equals(WIKI))
 		{
@@ -155,7 +154,7 @@ public class WikiLookupPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (!hotkeyPressed || !wikiOrbInterface.isActive())
+		if (!hotkeyPressed && !wikiOrbInterface.isActive())
 		{
 			return;
 		}
@@ -190,7 +189,6 @@ public class WikiLookupPlugin extends Plugin implements KeyListener
 
 		if (!hotkeyPressed && (
 			event.getTarget().length() >= 1
-				|| option.equals("walk here")
 				|| option.contains("guide")
 				|| option.contains("open")))
 		{

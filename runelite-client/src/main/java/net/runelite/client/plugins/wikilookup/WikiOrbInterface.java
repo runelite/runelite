@@ -67,7 +67,7 @@ public class WikiOrbInterface
 		parent = client.getWidget(WidgetInfo.MINIMAP_ORBS);
 		wikiOrb = createGraphic(SpriteID.MINIMAP_ORB_WORLD_MAP_FRAME, 30 , 30 , 170, 0, true);
 		orbBackground = createGraphic(SpriteID.MINIMAP_ORB_RUN, 25 , 25 , 173, 3, false);
-		orbSearch = createGraphic(SpriteID.BANK_SEARCH, 22, 20, 173, 5, false);
+		orbSearch = createGraphic(SpriteID.GE_SEARCH, 22, 20, 174, 6, false);
 		wikiOrb.setAction(0, WIKI_ORB);
 	}
 
@@ -108,6 +108,7 @@ public class WikiOrbInterface
 
 		if (event.getMenuOption().equals(WIKI_ORB))
 		{
+			event.consume();
 			setActive(!isActive());
 		}
 	}
@@ -126,13 +127,6 @@ public class WikiOrbInterface
 		widget.setOriginalX(x);
 		widget.setOriginalY(y);
 		widget.setSpriteId(spriteId);
-
-		if (-1 > -1)
-		{
-			widget.setItemId(-1);
-			widget.setItemQuantity(-1);
-			widget.setBorderType(1);
-		}
 
 		if (hasListener)
 		{
