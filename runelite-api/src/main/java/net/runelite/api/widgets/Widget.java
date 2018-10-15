@@ -592,4 +592,14 @@ public interface Widget
 	 * Sets the widget drag dead time
 	 */
 	void setDragDeadTime(int deadTime);
+
+	/**
+	 * Returns the item quantity mode
+	 */
+	int getItemQuantityMode();
+
+	/**
+	 * Sets the widget item quantity mode
+	 */
+	void setItemQuantityMode(int itemQuantityMode);
 }
