@@ -209,6 +209,7 @@ public class Notifier
 		executorService.submit(() ->
 		{
 			final boolean success = sendCommand(commands)
+					.filter(process -> !process.isAlive())
 					.map(process -> process.exitValue() == 0)
 					.orElse(false);
 
