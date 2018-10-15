@@ -33,10 +33,10 @@ import lombok.ToString;
 @ToString
 enum Boss
 {
-	ABYSSAL_SIRE("Abyssal sire", 1.25d),
+	ABYSSAL_SIRE("Abyssal Sire", 1.25d),
 	CALLISTO("Callisto", 1.225d),
 	CERBERUS("Cerberus", 1.15d),
-	CHAOS_ELEMENTAL("Chaos elemental", 1.075d),
+	CHAOS_ELEMENTAL("Chaos Elemental", 1.075d),
 	CORPOREAL_BEAST("Corporeal Beast", 1.55d),
 	GENERAL_GRAARDOR("General Graardor", 1.325d),
 	GIANT_MOLE("Giant Mole", 1.075d),
