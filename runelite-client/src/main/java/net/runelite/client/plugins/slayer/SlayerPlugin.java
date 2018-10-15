@@ -50,19 +50,17 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import static net.runelite.api.Skill.SLAYER;
 
-import net.runelite.api.Point;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
@@ -108,6 +106,9 @@ public class SlayerPlugin extends Plugin
 	//Reward UI
 	private static final Pattern REWARD_POINTS = Pattern.compile("Reward points: ((?:\\d+,)*\\d+)");
 	private static final String REWARD_NAME_DOUBLE_TROUBLE = "Double Trouble";
+	private static final int REWARD_DOUBLE_TROUBLE_ENABLED_BIT = 12;
+
+	private static final int GROTESQUE_GUARDIANS_REGION = 6727;
 
 	private static final int EXPEDITIOUS_CHARGE = 30;
 	private static final int SLAUGHTER_CHARGE = 30;
@@ -450,31 +451,10 @@ public class SlayerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
+	public void onVarbitChange(VarbitChanged event)
 	{
-		int groupId = widgetLoaded.getGroupId();
-		if (groupId == WidgetID.SLAYER_REWARDS_GROUP_ID)
-		{
-			doubleTroubleEnabled = (client.getVar(VarPlayer.DOUBLE_TROUBLE) >> 12 & 1) == 1;
-			config.doubleTroubleEnabled(doubleTroubleEnabled);
-		}
-	}
-
-	@Subscribe
-	public void onWidgetClicked(MenuOptionClicked menuOptionClicked)
-	{
-		int groupId = WidgetInfo.TO_GROUP(menuOptionClicked.getWidgetId());
-		if (groupId == WidgetID.SLAYER_REWARDS_GROUP_ID)
-		{
-			if (menuOptionClicked.getWidgetId() == client.getWidget(WidgetInfo.SLAYER_REWARDS_REWARD_CONFIRMATION_BUTTON).getId())
-			{
-				if (Text.removeTags(menuOptionClicked.getMenuTarget()).contains(REWARD_NAME_DOUBLE_TROUBLE))
-				{
-					doubleTroubleEnabled = !doubleTroubleEnabled;
-					config.doubleTroubleEnabled(doubleTroubleEnabled);
-				}
-			}
-		}
+		doubleTroubleEnabled = (client.getVar(VarPlayer.DOUBLE_TROUBLE) >> REWARD_DOUBLE_TROUBLE_ENABLED_BIT & 1) == 1;
+		config.doubleTroubleEnabled(doubleTroubleEnabled);
 	}
 
 	@Subscribe
@@ -551,18 +531,7 @@ public class SlayerPlugin extends Plugin
 	{
 		return config.doubleTroubleEnabled() &&
 				config.taskName().equalsIgnoreCase(Task.GROTESQUE_GUARDIANS.name()) || config.taskName().equalsIgnoreCase(Task.GARGOYLES.name()) &&
-				isInGrotesqueGuardiansScene();
-	}
-
-	private boolean isInGrotesqueGuardiansScene()
-	{
-		Point minSceneLocation = new Point(41, 55);
-		Point maxSceneLocation = new Point(56, 70);
-		int playerX = client.getLocalPlayer().getLocalLocation().getSceneX();
-		int playerY = client.getLocalPlayer().getLocalLocation().getSceneY();
-
-		return playerX >= minSceneLocation.getX() && playerY >= minSceneLocation.getY() &&
-				playerX <= maxSceneLocation.getX() && playerY <= maxSceneLocation.getY();
+				WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID() == GROTESQUE_GUARDIANS_REGION;
 	}
 
 	private boolean isTarget(NPC npc)
