@@ -63,7 +63,7 @@ import org.apache.commons.lang3.ArrayUtils;
 	description = "Change the default option that is displayed when hovering over objects",
 	tags = {"npcs", "inventory", "items", "objects"},
 	enabledByDefault = false
-	)
+)
 public class MenuEntrySwapperPlugin extends Plugin
 {
 	private static final String CONFIGURE = "Configure";
@@ -427,14 +427,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 			switch (config.swapHomePortal())
 			{
 				case HOME:
-				swap("home", option, target, true);
-				break;
+					swap("home", option, target, true);
+					break;
 				case BUILD_MODE:
-				swap("build mode", option, target, true);
-				break;
+					swap("build mode", option, target, true);
+					break;
 				case FRIENDS_HOUSE:
-				swap("friend's house", option, target, true);
-				break;
+					swap("friend's house", option, target, true);
+					break;
 			}
 		}
 		else if (config.swapFairyRing() != FairyRingMode.OFF && config.swapFairyRing() != FairyRingMode.ZANARIS
