@@ -24,96 +24,95 @@
  */
 package net.runelite.client.plugins.loottracker;
 
+import java.util.HashSet;
+import java.util.Set;
 import net.runelite.api.ItemID;
-import java.util.Arrays;
 
 // Loot is according to RS wiki [http://oldschoolrunescape.wikia.com/wiki/Wintertodt]
-public enum WintertodtLoot
+class WintertodtLoot
 {
-	DRAGON_AXE(ItemID.DRAGON_AXE),
-	PHEONIX(ItemID.PHOENIX),
-	PYROMANCER_GARB(ItemID.PYROMANCER_GARB),
-	PYROMANCER_ROBE(ItemID.PYROMANCER_ROBE),
-	PYROMANCER_HOOD(ItemID.PYROMANCER_HOOD),
-	PYROMANCER_BOOTS(ItemID.PYROMANCER_BOOTS),
-	WARM_GLOVES(ItemID.WARM_GLOVES),
-	BRUMA_TORCH(ItemID.BRUMA_TORCH),
-	TOME_OF_FIRE(ItemID.TOME_OF_FIRE),
-	TOME_OF_FIRE_EMPTY(ItemID.TOME_OF_FIRE_EMPTY),
-	BURNT_PAGE(ItemID.BURNT_PAGE),
+	private static Set<Integer> validWintertodtRewards;
 
-	COINS_995(ItemID.COINS_995),
-	SALTPETRE(ItemID.SALTPETRE),
-	DYNAMITE(ItemID.DYNAMITE),
-	LIMESTONE_BRICK(ItemID.LIMESTONE_BRICK),
-	PURE_ESSENCE(ItemID.PURE_ESSENCE),
-
-	LOGS(ItemID.LOGS),
-	OAK_LOGS(ItemID.OAK_LOGS),
-	WILLOW_LOGS(ItemID.WILLOW_LOGS),
-	MAPLE_LOGS(ItemID.MAPLE_LOGS),
-	TEAK_LOGS(ItemID.TEAK_LOGS),
-	MAHOGANY_LOGS(ItemID.MAHOGANY_LOGS),
-	YEW_LOGS(ItemID.YEW_LOGS),
-	MAGIC_LOGS(ItemID.MAGIC_LOGS),
-
-	GRIMY_GUAM_LEAF(ItemID.GRIMY_GUAM_LEAF),
-	GRIMY_MARRENTILL(ItemID.GRIMY_MARRENTILL),
-	GRIMY_HARRALANDER(ItemID.GRIMY_HARRALANDER),
-	GRIMY_RANNAR_WEED(ItemID.GRIMY_RANARR_WEED),
-	GRIMY_AVANTOE(ItemID.GRIMY_AVANTOE),
-	GRIMY_KWUARM(ItemID.GRIMY_KWUARM),
-	GRIMY_CADANTINE(ItemID.GRIMY_CADANTINE),
-	GRIMY_TORSTOL(ItemID.GRIMY_TORSTOL),
-
-	RAW_ANCHOVIES(ItemID.RAW_ANCHOVIES),
-	RAW_TROUT(ItemID.RAW_TROUT),
-	RAW_SALMON(ItemID.RAW_SALMON),
-	RAW_LOBSTER(ItemID.RAW_LOBSTER),
-	RAW_SWORDFISH(ItemID.RAW_SWORDFISH),
-	RAW_SHARK(ItemID.RAW_SHARK),
-
-	UNCUT_SAPPHIRE(ItemID.UNCUT_SAPPHIRE),
-	UNCUT_EMERALD(ItemID.UNCUT_EMERALD),
-	UNCUT_RUBY(ItemID.UNCUT_RUBY),
-	UNCUT_DIAMOND(ItemID.UNCUT_DIAMOND),
-
-	IRON_ORE(ItemID.IRON_ORE),
-	SILVER_ORE(ItemID.SILVER_ORE),
-	COAL(ItemID.COAL),
-	GOLD_ORE(ItemID.GOLD_ORE),
-	MITHRIL_ORE(ItemID.MITHRIL_ORE),
-	ADAMANTITE_ORE(ItemID.ADAMANTITE_ORE),
-	RUNITE_ORE(ItemID.RUNITE_ORE),
-
-	WATERMELON_SEED(ItemID.WATERMELON_SEED),
-	TARROMIN_SEED(ItemID.TARROMIN_SEED),
-	HARRALANDER_SEED(ItemID.HARRALANDER_SEED),
-	RANNAR_SEED(ItemID.RANARR_SEED),
-	TOADFLAX_SEED(ItemID.TOADFLAX_SEED),
-	AVANTOE_SEED(ItemID.AVANTOE_SEED),
-	SNAPDRAGON_SEED(ItemID.SNAPDRAGON_SEED),
-	DWARF_WEED_SEED(ItemID.DWARF_WEED_SEED),
-	ACORN(ItemID.ACORN),
-	WILLOW_SEED(ItemID.WILLOW_SEED),
-	BANANA_TREE_SEED(ItemID.BANANA_TREE_SEED),
-	TEAK_SEED(ItemID.TEAK_SEED),
-	MAPLE_SEED(ItemID.MAPLE_SEED),
-	MAHOGANY_SEED(ItemID.MAHOGANY_SEED),
-	TORSTOL_SEED(ItemID.TORSTOL_SEED),
-	YEW_SEED(ItemID.YEW_SEED),
-	MAGIC_SEED(ItemID.MAGIC_SEED),
-	SPIRIT_SEED(ItemID.SPIRIT_SEED);
-
-	private final int itemID;
-
-	WintertodtLoot(int itemID)
+	static boolean isWintertodtLoot(Integer itemID)
 	{
-		this.itemID = itemID;
+		if (validWintertodtRewards == null)
+		{
+			loadValidWintertodtRewards();
+		}
+
+		return validWintertodtRewards.contains(itemID);
 	}
 
-	public static boolean isWintertodtLoot(Integer item)
+	private static void loadValidWintertodtRewards()
 	{
-		return Arrays.stream(WintertodtLoot.values()).anyMatch(enumItem -> enumItem.itemID == item);
+		validWintertodtRewards = new HashSet<>();
+		validWintertodtRewards.add(ItemID.DRAGON_AXE);
+		validWintertodtRewards.add(ItemID.PHOENIX);
+		validWintertodtRewards.add(ItemID.PYROMANCER_GARB);
+		validWintertodtRewards.add(ItemID.PYROMANCER_ROBE);
+		validWintertodtRewards.add(ItemID.PYROMANCER_HOOD);
+		validWintertodtRewards.add(ItemID.PYROMANCER_BOOTS);
+		validWintertodtRewards.add(ItemID.WARM_GLOVES);
+		validWintertodtRewards.add(ItemID.BRUMA_TORCH);
+		validWintertodtRewards.add(ItemID.TOME_OF_FIRE);
+		validWintertodtRewards.add(ItemID.TOME_OF_FIRE_EMPTY);
+		validWintertodtRewards.add(ItemID.BURNT_PAGE);
+		validWintertodtRewards.add(ItemID.COINS_995);
+		validWintertodtRewards.add(ItemID.SALTPETRE);
+		validWintertodtRewards.add(ItemID.DYNAMITE);
+		validWintertodtRewards.add(ItemID.LIMESTONE_BRICK);
+		validWintertodtRewards.add(ItemID.PURE_ESSENCE);
+		validWintertodtRewards.add(ItemID.LOGS);
+		validWintertodtRewards.add(ItemID.OAK_LOGS);
+		validWintertodtRewards.add(ItemID.WILLOW_LOGS);
+		validWintertodtRewards.add(ItemID.MAPLE_LOGS);
+		validWintertodtRewards.add(ItemID.TEAK_LOGS);
+		validWintertodtRewards.add(ItemID.MAHOGANY_LOGS);
+		validWintertodtRewards.add(ItemID.YEW_LOGS);
+		validWintertodtRewards.add(ItemID.MAGIC_LOGS);
+		validWintertodtRewards.add(ItemID.GRIMY_GUAM_LEAF);
+		validWintertodtRewards.add(ItemID.IRIT_LEAF);
+		validWintertodtRewards.add(ItemID.GRIMY_MARRENTILL);
+		validWintertodtRewards.add(ItemID.GRIMY_HARRALANDER);
+		validWintertodtRewards.add(ItemID.GRIMY_RANARR_WEED);
+		validWintertodtRewards.add(ItemID.GRIMY_AVANTOE);
+		validWintertodtRewards.add(ItemID.GRIMY_KWUARM);
+		validWintertodtRewards.add(ItemID.GRIMY_CADANTINE);
+		validWintertodtRewards.add(ItemID.GRIMY_TORSTOL);
+		validWintertodtRewards.add(ItemID.RAW_ANCHOVIES);
+		validWintertodtRewards.add(ItemID.RAW_TROUT);
+		validWintertodtRewards.add(ItemID.RAW_SALMON);
+		validWintertodtRewards.add(ItemID.RAW_LOBSTER);
+		validWintertodtRewards.add(ItemID.RAW_SWORDFISH);
+		validWintertodtRewards.add(ItemID.RAW_SHARK);
+		validWintertodtRewards.add(ItemID.UNCUT_SAPPHIRE);
+		validWintertodtRewards.add(ItemID.UNCUT_EMERALD);
+		validWintertodtRewards.add(ItemID.UNCUT_RUBY);
+		validWintertodtRewards.add(ItemID.UNCUT_DIAMOND);
+		validWintertodtRewards.add(ItemID.IRON_ORE);
+		validWintertodtRewards.add(ItemID.SILVER_ORE);
+		validWintertodtRewards.add(ItemID.COAL);
+		validWintertodtRewards.add(ItemID.GOLD_ORE);
+		validWintertodtRewards.add(ItemID.MITHRIL_ORE);
+		validWintertodtRewards.add(ItemID.ADAMANTITE_ORE);
+		validWintertodtRewards.add(ItemID.RUNITE_ORE);
+		validWintertodtRewards.add(ItemID.WATERMELON_SEED);
+		validWintertodtRewards.add(ItemID.TARROMIN_SEED);
+		validWintertodtRewards.add(ItemID.HARRALANDER_SEED);
+		validWintertodtRewards.add(ItemID.RANARR_SEED);
+		validWintertodtRewards.add(ItemID.TOADFLAX_SEED);
+		validWintertodtRewards.add(ItemID.AVANTOE_SEED);
+		validWintertodtRewards.add(ItemID.SNAPDRAGON_SEED);
+		validWintertodtRewards.add(ItemID.DWARF_WEED_SEED);
+		validWintertodtRewards.add(ItemID.ACORN);
+		validWintertodtRewards.add(ItemID.WILLOW_SEED);
+		validWintertodtRewards.add(ItemID.BANANA_TREE_SEED);
+		validWintertodtRewards.add(ItemID.TEAK_SEED);
+		validWintertodtRewards.add(ItemID.MAPLE_SEED);
+		validWintertodtRewards.add(ItemID.MAHOGANY_SEED);
+		validWintertodtRewards.add(ItemID.TORSTOL_SEED);
+		validWintertodtRewards.add(ItemID.YEW_SEED);
+		validWintertodtRewards.add(ItemID.MAGIC_SEED);
+		validWintertodtRewards.add(ItemID.SPIRIT_SEED);
 	}
 }
