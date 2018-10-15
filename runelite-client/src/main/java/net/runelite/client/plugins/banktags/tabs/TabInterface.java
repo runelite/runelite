@@ -67,6 +67,7 @@ import net.runelite.client.plugins.banktags.BankTagsConfig;
 import net.runelite.client.plugins.banktags.BankTagsPlugin;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.ICON_SEARCH;
+import static net.runelite.client.plugins.banktags.BankTagsPlugin.SPLITTER;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_SEARCH;
 import net.runelite.client.plugins.banktags.TagManager;
 import net.runelite.client.util.ColorUtil;
@@ -439,9 +440,11 @@ public class TabInterface
 						return;
 					}
 
+					final List<String> tags = SPLITTER.splitToList(newTags);
+
 					for (Integer item : items)
 					{
-						tagManager.setTagString(item, newTags);
+						tagManager.addTags(item, tags);
 					}
 				});
 			}

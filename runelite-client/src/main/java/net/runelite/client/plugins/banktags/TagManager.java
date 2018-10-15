@@ -76,6 +76,15 @@ public class TagManager
 		}
 	}
 
+	public void addTags(int itemId, final Collection<String> t)
+	{
+		final Collection<String> tags = getTags(itemId);
+		if (tags.addAll(t))
+		{
+			setTags(itemId, tags);
+		}
+	}
+
 	public void addTag(int itemId, String tag)
 	{
 		final Collection<String> tags = getTags(itemId);
