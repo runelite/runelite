@@ -49,7 +49,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import static net.runelite.api.Skill.SLAYER;
-
 import net.runelite.api.VarPlayer;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -268,6 +267,17 @@ public class SlayerPlugin extends Plugin
 		NPC npc = npcDespawned.getNpc();
 		highlightedTargets.remove(npc);
 	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		int slayerTargetsLeft = client.getVar(VarPlayer.SLAYER_TARGETS_LEFT);
+		if (slayerTargetsLeft > 0 && taskName != null)
+		{
+			setTask(taskName, slayerTargetsLeft);
+		}
+	}
+
 
 	@Subscribe
 	public void onGameTick(GameTick tick)
