@@ -340,27 +340,11 @@ public class TabInterface
 		else if (event.getActionParam1() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId()
 			&& event.getOption().equals("Deposit inventory"))
 		{
-			MenuEntry tagInventory = new MenuEntry();
-			tagInventory.setParam0(event.getActionParam0());
-			tagInventory.setParam1(event.getActionParam1());
-			tagInventory.setTarget(event.getTarget());
-			tagInventory.setOption(TAG_INVENTORY);
-			tagInventory.setType(MenuAction.RUNELITE.getId());
-			tagInventory.setIdentifier(event.getIdentifier());
-			entries = Arrays.copyOf(entries, entries.length + 1);
-			entries[entries.length - 1] = tagInventory;
+			entries = createMenuEntry(event, TAG_INVENTORY, event.getTarget(), entries);
 
 			if (activeTab != null)
 			{
-				tagInventory = new MenuEntry();
-				tagInventory.setParam0(event.getActionParam0());
-				tagInventory.setParam1(event.getActionParam1());
-				tagInventory.setTarget(ColorUtil.wrapWithColorTag(activeTab.getTag(), HILIGHT_COLOR));
-				tagInventory.setOption(TAG_INVENTORY);
-				tagInventory.setType(MenuAction.RUNELITE.getId());
-				tagInventory.setIdentifier(event.getIdentifier());
-				entries = Arrays.copyOf(entries, entries.length + 1);
-				entries[entries.length - 1] = tagInventory;
+				entries = createMenuEntry(event, TAG_INVENTORY, ColorUtil.wrapWithColorTag(activeTab.getTag(), HILIGHT_COLOR), entries);
 			}
 
 			client.setMenuEntries(entries);
@@ -368,31 +352,30 @@ public class TabInterface
 		else if (event.getActionParam1() == WidgetInfo.BANK_DEPOSIT_EQUIPMENT.getId()
 			&& event.getOption().equals("Deposit worn items"))
 		{
-			MenuEntry tagEquipment = new MenuEntry();
-			tagEquipment.setParam0(event.getActionParam0());
-			tagEquipment.setParam1(event.getActionParam1());
-			tagEquipment.setTarget(event.getTarget());
-			tagEquipment.setOption(TAG_GEAR);
-			tagEquipment.setType(MenuAction.RUNELITE.getId());
-			tagEquipment.setIdentifier(event.getIdentifier());
-			entries = Arrays.copyOf(entries, entries.length + 1);
-			entries[entries.length - 1] = tagEquipment;
+			entries = createMenuEntry(event, TAG_GEAR, event.getTarget(), entries);
 
 			if (activeTab != null)
 			{
-				tagEquipment = new MenuEntry();
-				tagEquipment.setParam0(event.getActionParam0());
-				tagEquipment.setParam1(event.getActionParam1());
-				tagEquipment.setTarget(ColorUtil.wrapWithColorTag(activeTab.getTag(), HILIGHT_COLOR));
-				tagEquipment.setOption(TAG_GEAR);
-				tagEquipment.setType(MenuAction.RUNELITE.getId());
-				tagEquipment.setIdentifier(event.getIdentifier());
-				entries = Arrays.copyOf(entries, entries.length + 1);
-				entries[entries.length - 1] = tagEquipment;
+				entries = createMenuEntry(event, TAG_GEAR, ColorUtil.wrapWithColorTag(activeTab.getTag(), HILIGHT_COLOR), entries);
 			}
 
 			client.setMenuEntries(entries);
 		}
+	}
+
+	private MenuEntry[] createMenuEntry(MenuEntryAdded event, String option, String target, MenuEntry[] entries)
+	{
+		MenuEntry entry = new MenuEntry();
+		entry.setParam0(event.getActionParam0());
+		entry.setParam1(event.getActionParam1());
+		entry.setTarget(target);
+		entry.setOption(option);
+		entry.setType(MenuAction.RUNELITE.getId());
+		entry.setIdentifier(event.getIdentifier());
+		entries = Arrays.copyOf(entries, entries.length + 1);
+		entries[entries.length - 1] = entry;
+
+		return entries;
 	}
 
 	public void handleClick(MenuOptionClicked event)
