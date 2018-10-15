@@ -96,11 +96,26 @@ class WASDCameraListener extends MouseListener implements KeyListener
 					case KeyEvent.VK_SLASH:
 						// refocus chatbox
 						plugin.setTyping(true);
-						clientThread.invoke(() ->
-						{
-							plugin.unlockChat();
-						});
+						clientThread.invoke(() -> plugin.unlockChat());
 						break;
+					case KeyEvent.VK_1:
+					case KeyEvent.VK_2:
+					case KeyEvent.VK_3:
+					case KeyEvent.VK_4:
+					case KeyEvent.VK_5:
+					case KeyEvent.VK_6:
+					case KeyEvent.VK_7:
+					case KeyEvent.VK_8:
+					case KeyEvent.VK_9:
+					case KeyEvent.VK_0:
+						if (config.numbers())
+						{
+							final int newKeyCode = e.getKeyCode() == KeyEvent.VK_0
+								? KeyEvent.VK_F10
+								: e.getKeyCode() + 0x40 - 1; // This is the difference between num key
+							modified.put(e.getKeyCode(), newKeyCode);
+							e.setKeyCode(newKeyCode);
+						}
 				}
 			}
 		}
@@ -141,36 +156,10 @@ class WASDCameraListener extends MouseListener implements KeyListener
 			return;
 		}
 
-		if (!plugin.isTyping())
+		Integer m = modified.remove(e.getKeyCode());
+		if (m != null)
 		{
-			modified.remove(e.getKeyCode());
-
-			if (config.up().matches(e))
-			{
-				e.setKeyCode(KeyEvent.VK_UP);
-			}
-			else if (config.down().matches(e))
-			{
-				e.setKeyCode(KeyEvent.VK_DOWN);
-			}
-			else if (config.left().matches(e))
-			{
-				e.setKeyCode(KeyEvent.VK_LEFT);
-			}
-			else if (config.right().matches(e))
-			{
-				e.setKeyCode(KeyEvent.VK_RIGHT);
-			}
-		}
-		else
-		{
-			// press d + enter + release d - causes the right arrow to never be released
-			Integer m = modified.get(e.getKeyCode());
-			if (m != null)
-			{
-				modified.remove(e.getKeyCode());
-				e.setKeyCode(m);
-			}
+			e.setKeyCode(m);
 		}
 	}
 }
