@@ -367,7 +367,7 @@ public class InterfaceStylesPlugin extends Plugin
 
 	private void shuffleSkills(boolean hideMembers)
 	{
-		if (hideMembers)
+		if (hideMembers && client.getWidget(WidgetInfo.SKILL_TOTAL) != null)
 		{
 			client.getWidget(WidgetInfo.SKILL_TOTAL).setRelativeX(WOODCUTTING_X);
 			client.getWidget(WidgetInfo.SKILL_TOTAL).setRelativeY(WOODCUTTING_Y);
@@ -382,7 +382,7 @@ public class InterfaceStylesPlugin extends Plugin
 			client.getWidget(WidgetInfo.SKILL_WOODCUTTING).setRelativeX(CRAFTING_X);
 			client.getWidget(WidgetInfo.SKILL_WOODCUTTING).setRelativeY(CRAFTING_Y);
 		}
-		else
+		else if (client.getWidget(WidgetInfo.SKILL_TOTAL) != null)
 		{
 			client.getWidget(WidgetInfo.SKILL_TOTAL).setRelativeX(TOTAL_X);
 			client.getWidget(WidgetInfo.SKILL_TOTAL).setRelativeY(TOTAL_Y);
@@ -403,7 +403,10 @@ public class InterfaceStylesPlugin extends Plugin
 	{
 		for (Widget widget : getMemberSkills())
 		{
-			widget.setHidden(config.hideMembersSkills());
+			if (widget != null)
+			{
+				widget.setHidden(config.hideMembersSkills());
+			}
 		}
 		shuffleSkills(config.hideMembersSkills());
 		updateTotalLevels();
@@ -411,6 +414,11 @@ public class InterfaceStylesPlugin extends Plugin
 
 	private void updateTotalLevels()
 	{
+		if (client.getWidget(WidgetInfo.SKILL_TOTAL_TEXT) == null)
+		{
+			return;
+		}
+
 		int totalLevel = 0;
 
 		for (int skill = 1; skill <= 23; skill++)
