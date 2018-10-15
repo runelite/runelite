@@ -24,7 +24,7 @@
  */
 grammar rs2asm;
 
-prog: NEWLINE* (header NEWLINE+)* (line NEWLINE+)+ ;
+prog: NEWLINE* (header NEWLINE+)* (line NEWLINE*)+ EOF;
 
 header: id | int_stack_count | string_stack_count | int_var_count | string_var_count ;
 
