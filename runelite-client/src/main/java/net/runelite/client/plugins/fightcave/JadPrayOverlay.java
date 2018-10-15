@@ -1,5 +1,7 @@
 /*
  * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ *               2018, DrizzyBot <https://github.com/drizzybot>
+ *               2018, Dave Inga <https://github.com/daveinga>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,17 +41,23 @@ import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class FightCaveOverlay extends Overlay
+public class JadPrayOverlay extends Overlay
 {
 	private static final Color NOT_ACTIVATED_BACKGROUND_COLOR = new Color(150, 0, 0, 150);
 
-	private final Client client;
-	private final FightCavePlugin plugin;
-	private final SpriteManager spriteManager;
-	private final PanelComponent imagePanelComponent = new PanelComponent();
+	@Inject
+	private Client client;
 
 	@Inject
-	private FightCaveOverlay(Client client, FightCavePlugin plugin, SpriteManager spriteManager)
+	private FightCavePlugin plugin;
+
+	@Inject
+	private SpriteManager spriteManager;
+
+	private PanelComponent imagePanelComponent = new PanelComponent();
+
+	@Inject
+	private JadPrayOverlay(Client client, FightCavePlugin plugin, SpriteManager spriteManager)
 	{
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		setPriority(OverlayPriority.HIGH);

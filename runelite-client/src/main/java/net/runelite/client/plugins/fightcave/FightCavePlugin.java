@@ -1,5 +1,8 @@
 /*
  * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ *               2018, DrizzyBot <https://github.com/drizzybot>
+ *               2018, Dave Inga <https://github.com/daveinga>
+ *
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,31 +28,48 @@
 package net.runelite.client.plugins.fightcave;
 
 import com.google.common.eventbus.Subscribe;
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+
+import com.google.inject.Provides;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
-import net.runelite.api.events.AnimationChanged;
-import net.runelite.api.events.NpcDespawned;
-import net.runelite.api.events.NpcSpawned;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.*;
+import net.runelite.api.events.*;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @PluginDescriptor(
 	name = "Fight Cave",
 	description = "Show what to pray against Jad",
 	tags = {"bosses", "combat", "minigame", "overlay", "prayer", "pve", "pvm"}
 )
+@Slf4j
 public class FightCavePlugin extends Plugin
 {
+	@Inject
+	private Client client;
+
 	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
-	private FightCaveOverlay overlay;
+	private FightCaveWaveOverlay fightCaveWaveOverlay;
+
+	@Inject
+	private FightCaveMinimapOverlay fightWaveMinimapOverlay;
+
+	@Inject
+	private JadPrayOverlay jadPrayOverlay;
 
 	@Getter(AccessLevel.PACKAGE)
 	@Nullable
@@ -57,18 +77,52 @@ public class FightCavePlugin extends Plugin
 
 	private NPC jad;
 
+	private static final int[] FIGHT_CAVE_REGION = {9551};
+
+	private int currentWaveNumber;
+
+	private HashMap<Integer, Integer> thisWave;
+
+	private HashMap<Integer, Integer> nextWave;
+
+	private Map<Integer, String> monsters;
+
+	private Map<Integer, int[]> waves;
+
+	@Getter(AccessLevel.PACKAGE)
+	private List<Actor> waveMonsters = new ArrayList<>();
+
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(overlay);
+		overlayManager.add(jadPrayOverlay);
+		overlayManager.add(fightCaveWaveOverlay);
+		overlayManager.add(fightWaveMinimapOverlay);
+		monsters = FightCaveMappings.npcNameMapping();
+		waves = FightCaveMappings.waveMapping();
+
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(overlay);
+		overlayManager.remove(jadPrayOverlay);
+		overlayManager.remove(fightCaveWaveOverlay);
+		overlayManager.remove(fightWaveMinimapOverlay);
 		jad = null;
 		attack = null;
+		monsters = null;
+		waves = null;
+		thisWave = null;
+		nextWave = null;
+		currentWaveNumber = 0;
+
+	}
+
+	@Provides
+	FightCaveConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(FightCaveConfig.class);
 	}
 
 	@Subscribe
@@ -76,10 +130,19 @@ public class FightCavePlugin extends Plugin
 	{
 		final int id = event.getNpc().getId();
 
+
 		if (id == NpcID.TZTOKJAD || id == NpcID.TZTOKJAD_6506)
 		{
 			jad = event.getNpc();
 		}
+
+		final Actor actor = event.getActor();
+
+		if (actor != null)
+		{
+			waveMonsters.add(actor);
+		}
+
 	}
 
 	@Subscribe
@@ -89,6 +152,13 @@ public class FightCavePlugin extends Plugin
 		{
 			jad = null;
 			attack = null;
+		}
+
+		final Actor actor = event.getActor();
+
+		if (actor != null)
+		{
+			waveMonsters.remove(actor);
 		}
 	}
 
@@ -109,4 +179,104 @@ public class FightCavePlugin extends Plugin
 			attack = JadAttack.RANGE;
 		}
 	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (!isInFightCaveInstance())
+		{
+			currentWaveNumber = 0;
+		}
+
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() != ChatMessageType.SERVER)
+		{
+			return;
+		}
+
+		String message = event.getMessage();
+		if (event.getMessage().contains("Wave:"))
+		{
+			message = message.substring(message.indexOf(": ") + 2);
+			message = message.substring(0, message.indexOf("<"));
+			currentWaveNumber = Integer.parseInt(message);
+			newWave(getCurrentWaveNumber());
+		}
+
+	}
+
+	public void killedMonster(int combat)
+	{
+		thisWave.put(combat, thisWave.get(combat) - 1);
+	}
+
+	public void newWave(int wave)
+	{
+		thisWave = arrayElementCount(waves.get(wave));
+		if (wave < 63)
+		{
+			nextWave = arrayElementCount(waves.get(wave + 1));
+		}
+		else
+		{
+			nextWave = null;
+		}
+	}
+
+	private HashMap arrayElementCount(int inputArray[])
+	{
+		HashMap<Integer, Integer> elementCountMap = new HashMap<Integer, Integer>();
+		for (int i : inputArray)
+		{
+			if (elementCountMap.containsKey(i))
+			{
+				elementCountMap.put(i, elementCountMap.get(i) + 1);
+			}
+			else
+			{
+				elementCountMap.put(i, 1);
+			}
+		}
+		return elementCountMap;
+	}
+
+	protected boolean isInFightCaveInstance()
+	{
+		return Arrays.equals(client.getMapRegions(), FIGHT_CAVE_REGION);
+	}
+
+	public int getCurrentWaveNumber()
+	{
+		return currentWaveNumber;
+	}
+
+	public List<Actor> getWaveMonsters()
+	{
+		return waveMonsters;
+	}
+
+	public HashMap<Integer, Integer> getThisWave()
+	{
+		return thisWave;
+	}
+
+	public HashMap<Integer, Integer> getNextWave()
+	{
+		return nextWave;
+	}
+
+	public Map<Integer, String> getMonsters()
+	{
+		return monsters;
+	}
+
+	public Map<Integer, int[]> getWaves()
+	{
+		return waves;
+	}
+
 }
