@@ -203,6 +203,8 @@ public class WidgetID
 		static final int CONTENT_CONTAINER = 9;
 		static final int ITEM_CONTAINER = 12;
 		static final int SEARCH_BUTTON_BACKGROUND = 39;
+		static final int DEPOSIT_INVENTORY = 41;
+		static final int DEPOSIT_EQUIPMENT = 43;
 		static final int INCINERATOR = 45;
 		static final int INCINERATOR_CONFIRM = 46;
 	}
