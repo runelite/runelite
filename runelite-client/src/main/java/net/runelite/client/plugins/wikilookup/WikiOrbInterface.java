@@ -33,111 +33,114 @@ import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.WidgetType;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.callback.ClientThread;
-import net.runelite.client.config.ConfigManager;
 
 @Slf4j
 @Singleton
 public class WikiOrbInterface
 {
 	private static final String WIKI_ORB = "Wiki Lookup";
-	private final Client client;
-	private final ClientThread clientThread;
-	private final ConfigManager configManager;
-	private final WikiLookupConfig config;
-	private boolean loaded = false;
 
+	private final Client client;
 	private Widget wikiOrb;
 	private Widget orbSearch;
 	private Widget orbBackground;
 
 	@Getter
 	private Widget parent;
-	
+
 	@Inject
-	private WikiOrbInterface(
-			final Client client,
-			final ClientThread clientThread,
-			final ConfigManager configManager,
-			final WikiLookupConfig config)
+	private WikiOrbInterface(final Client client)
 	{
 		this.client = client;
-		this.clientThread = clientThread;
-		this.configManager = configManager;
-		this.config = config;
 	}
-	
-	public void init()
+
+	void init()
+	{
+		if (isHidden() || parent != null)
+		{
+			return;
+		}
+
+		parent = client.getWidget(WidgetInfo.MINIMAP_ORBS);
+		wikiOrb = createGraphic(SpriteID.MINIMAP_ORB_WORLD_MAP_FRAME, 30 , 30 , 170, 0, true);
+		orbBackground = createGraphic(SpriteID.MINIMAP_ORB_RUN, 25 , 25 , 173, 3, false);
+		orbSearch = createGraphic(SpriteID.BANK_SEARCH, 22, 20, 173, 5, false);
+		wikiOrb.setAction(0, WIKI_ORB);
+	}
+
+	void destroy()
+	{
+		parent = null;
+		wikiOrb.setHidden(true);
+		orbSearch.setHidden(true);
+		orbBackground.setHidden(true);
+	}
+
+	boolean isActive()
+	{
+		if (isHidden())
+		{
+			return false;
+		}
+
+		return orbBackground.getSpriteId() == SpriteID.MINIMAP_ORB_RUN_ACTIVATED;
+	}
+
+	void setActive(boolean active)
+	{
+		if (isHidden())
+		{
+            return;
+		}
+
+		orbBackground.setSpriteId(active ? SpriteID.MINIMAP_ORB_RUN_ACTIVATED : SpriteID.MINIMAP_ORB_RUN);
+	}
+
+	void handleClick(MenuOptionClicked event)
 	{
 		if (isHidden())
 		{
 			return;
 		}
-		loaded = true;
-		parent = client.getWidget(WidgetInfo.MINIMAP_ORBS);
-		wikiOrb = createGraphic("", SpriteID.MINIMAP_ORB_WORLD_MAP_FRAME, -1, 30 , 30 , 170, 0, true);
-		orbBackground = createGraphic("", SpriteID.MINIMAP_ORB_RUN, -1, 25 , 25 , 173, 3, false);
-		orbSearch = createGraphic("", SpriteID.BANK_SEARCH, -1, 22, 20, 173, 5, false);
-		wikiOrb.setAction(0, WIKI_ORB);
+
+		if (event.getMenuOption().equals(WIKI_ORB))
+		{
+			setActive(!isActive());
+		}
 	}
-	
-	public void destroy()
-	{
-		wikiOrb.setHidden(true);
-		orbSearch.setHidden(true);
-		orbBackground.setHidden(true);
-	}
-	
-	public boolean getLoaded()
-	{
-		return loaded;
-	}
-	
+
 	private boolean isHidden()
 	{
 		Widget widget = client.getWidget(WidgetInfo.MINIMAP_ORBS);
 		return widget == null || widget.isHidden();
 	}
 
-	public boolean getStatus()
+	private Widget createGraphic(int spriteId, int width, int height, int x, int y, boolean hasListener)
 	{
-		return orbBackground.getSpriteId() == SpriteID.MINIMAP_ORB_RUN_ACTIVATED;
-	}
-
-	public void setStatus(boolean status)
-	{
-		if (status)
-		{
-			orbBackground.setSpriteId(SpriteID.MINIMAP_ORB_RUN_ACTIVATED);
-		}
-		else
-		{
-			orbBackground.setSpriteId(SpriteID.MINIMAP_ORB_RUN);
-		}
-	}
-	
-	private Widget createGraphic(String name, int spriteId, int itemId, int width, int height, int x, int y, boolean hasListener)
-	{
-		Widget widget = parent.createChild(-1, WidgetType.GRAPHIC);
+		final Widget widget = parent.createChild(-1, WidgetType.GRAPHIC);
 		widget.setOriginalWidth(width);
 		widget.setOriginalHeight(height);
 		widget.setOriginalX(x);
 		widget.setOriginalY(y);
 		widget.setSpriteId(spriteId);
-		if (itemId > -1)
+
+		if (-1 > -1)
 		{
-			widget.setItemId(itemId);
+			widget.setItemId(-1);
 			widget.setItemQuantity(-1);
 			widget.setBorderType(1);
 		}
+
 		if (hasListener)
 		{
 			widget.setOnOpListener(ScriptID.NULL);
 			widget.setHasListener(true);
 		}
-		widget.setName(name);
+
+		widget.setName("");
 		widget.revalidate();
 		return widget;
 	}

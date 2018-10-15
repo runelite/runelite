@@ -33,34 +33,11 @@ import net.runelite.client.config.ConfigItem;
 public interface WikiLookupConfig extends Config
 {
 	@ConfigItem(
-			position = 0,
-			keyName = "boundToShift",
-			name = "Shift bound lookup",
-			description = "Determines if wiki lookup will enable while shift is held."
+		keyName = "boundToShift",
+		name = "Shift bound lookup",
+		description = "Determines if wiki lookup will enable while shift is held."
 	)
 	default boolean boundToShift()
-	{
-		return false;
-	}
-	
-	@ConfigItem(
-			position = 1,
-			keyName = "removeNonVital",
-			name = "Make wiki option default",
-			description = "Determines whether wiki is the only option available during lookup."
-	)
-	default boolean removeNonVital()
-	{
-		return true;
-	}
-	
-	@ConfigItem(
-			position = 2,
-			keyName = "permWiki",
-			name = "Make wiki option always visible",
-			description = "Makes the wiki option always visible but never the default regardless of options. This will override the other options."
-	)
-	default boolean permWiki()
 	{
 		return false;
 	}

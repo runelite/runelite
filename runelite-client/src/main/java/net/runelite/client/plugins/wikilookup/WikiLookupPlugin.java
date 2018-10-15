@@ -29,18 +29,15 @@ import com.google.inject.Provides;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
-import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.LinkBrowser;
@@ -51,208 +48,164 @@ import javax.inject.Inject;
 import java.awt.event.KeyEvent;
 
 @PluginDescriptor(
-		name = "Wiki Lookup"
+	name = "Wiki Lookup"
 )
 public class WikiLookupPlugin extends Plugin implements KeyListener
 {
-	private static final String WIKI = "Wiki";
-	
 	private static final int HOTKEY = KeyEvent.VK_SHIFT;
-	
+	private static final String WIKI = "Wiki";
+
 	@Inject
 	private Client client;
-	
-	@Inject
-	private MenuManager menuManager;
-	
+
 	@Inject
 	private KeyManager keyManager;
-	
+
 	@Inject
 	private WikiLookupConfig config;
-	
+
 	@Inject
 	private ClientThread clientThread;
-	
+
 	@Inject
 	private WikiOrbInterface wikiOrbInterface;
-	
-	private Widget wikiOrb;
-	private Widget parent;
-	
+
+	private boolean hotkeyPressed = false;
+
 	@Provides
 	WikiLookupConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(WikiLookupConfig.class);
 	}
-	
-	private boolean wikiLookupTriggerKey = false;
-	private boolean isWikiLookupTriggerButton = false;
-	
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		keyManager.registerKeyListener(this);
+		clientThread.invokeLater(wikiOrbInterface::init);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		keyManager.unregisterKeyListener(this);
+		clientThread.invokeLater(wikiOrbInterface::destroy);
+	}
+
 	@Override
 	public void keyTyped(KeyEvent e)
 	{
-	
+
 	}
-	
+
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (e.getKeyCode() == HOTKEY && config.boundToShift() && !isWikiLookupTriggerButton)
+		if (e.getKeyCode() == HOTKEY && config.boundToShift())
 		{
-			wikiLookupTriggerKey = true;
+			hotkeyPressed = true;
 		}
 	}
-	
+
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
 		if (e.getKeyCode() == HOTKEY)
 		{
-			wikiLookupTriggerKey = false;
+			hotkeyPressed = false;
 		}
 	}
-	
-	@Override
-	protected void startUp() throws Exception
+
+	@Subscribe
+	public void onFocusChanged(final FocusChanged event)
 	{
-		keyManager.registerKeyListener(this);
-		
-		if (client.getWidget(WidgetInfo.MINIMAP_ORBS) != null && !config.permWiki())
+		if (!event.isFocused())
 		{
-			clientThread.invokeLater(() -> wikiOrbInterface.init());
+			hotkeyPressed = false;
 		}
 	}
-	
-	@Override
-	protected void shutDown() throws Exception
-	{
-		keyManager.unregisterKeyListener(this);
-		clientThread.invokeLater(() -> wikiOrbInterface.destroy());
-	}
-	
+
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == WidgetID.MINIMAP_GROUP_ID && !wikiOrbInterface.getLoaded() && !config.permWiki())
+		if (event.getGroupId() == WidgetID.MINIMAP_GROUP_ID)
 		{
 			wikiOrbInterface.init();
 		}
 	}
-	
-	@Subscribe
-	public void onMenuObjectClicked(MenuOptionClicked click)
-	{
-		if (click.getMenuOption().equals("Wiki Lookup"))
-		{
-			if (wikiOrbInterface.getStatus())
-			{
-				wikiOrbInterface.setStatus(false);
-				isWikiLookupTriggerButton = false;
-			}
-			else
-			{
-				System.out.println("We have clicked the button");
-				isWikiLookupTriggerButton = true;
-				wikiOrbInterface.setStatus(true);
-			}
-		}
-		else if (click.getMenuOption().equals(WIKI))
-		{
-			wikiOrbInterface.setStatus(false);
-			wikiLookupTriggerKey = false;
-			isWikiLookupTriggerButton = false;
-			LinkBrowser.browse("https://oldschool.runescape.wiki/w/" + Text.removeTags(click.getMenuTarget()).replaceAll("\\(.*?\\)", "").replace(' ', '_'));
 
-		}
-		else if (click.getMenuOption().equals("Cancel"))
+	@Subscribe
+	public void onMenuObjectClicked(MenuOptionClicked event)
+	{
+		wikiOrbInterface.setActive(false);
+		hotkeyPressed = false;
+
+		if (event.getMenuOption().equals(WIKI))
 		{
-			wikiOrbInterface.setStatus(false);
-			wikiLookupTriggerKey = false;
-			isWikiLookupTriggerButton = false;
+			LinkBrowser.browse("https://oldschool.runescape.wiki/w/" + Text.removeTags(event.getMenuTarget())
+				.replaceAll("\\(.*?\\)", "")
+				.replace(' ', '_'));
+		}
+		else
+		{
+			wikiOrbInterface.handleClick(event);
 		}
 	}
-	
+
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (config.permWiki())
-		{
-			wikiLookupTriggerKey = true;
-			isWikiLookupTriggerButton = true;
-		}
-		if (!wikiLookupTriggerKey && !isWikiLookupTriggerButton)
+		if (!hotkeyPressed || !wikiOrbInterface.isActive())
 		{
 			return;
 		}
-		
-		String option = Text.removeTags(event.getOption()).toLowerCase();
-		
+
+		final String option = Text.removeTags(event.getOption()).toLowerCase();
+
 		if (event.getType() == MenuAction.EXAMINE_ITEM_GROUND.getId()
-				|| event.getType() == MenuAction.EXAMINE_ITEM.getId()
-				|| event.getType() == MenuAction.EXAMINE_ITEM_BANK_EQ.getId()
-				|| event.getType() == MenuAction.EXAMINE_OBJECT.getId()
-				|| event.getType() == MenuAction.EXAMINE_NPC.getId()
-				|| event.getType() == MenuAction.WIDGET_DEFAULT.getId()
-				|| event.getType() == MenuAction.WIDGET_TYPE_2.getId())
+			|| event.getType() == MenuAction.EXAMINE_ITEM.getId()
+			|| event.getType() == MenuAction.EXAMINE_ITEM_BANK_EQ.getId()
+			|| event.getType() == MenuAction.EXAMINE_OBJECT.getId()
+			|| event.getType() == MenuAction.EXAMINE_NPC.getId()
+			|| event.getType() == MenuAction.WIDGET_DEFAULT.getId()
+			|| event.getType() == MenuAction.WIDGET_TYPE_2.getId())
 		{
 			if ((option.equals("read journal:")
-					|| option.equals("cast")
-					|| option.equals("activate"))
-					|| option.contains("play")
-					|| option.equals("examine"))
+				|| option.equals("cast")
+				|| option.equals("activate"))
+				|| option.contains("play")
+				|| option.equals("examine"))
 			{
-				addBlankOption("cancel", WIKI, event.getTarget());
+				addBlankOption(event.getTarget());
 			}
 			else if (option.contains("open"))
 			{
-				addBlankOption("cancel", WIKI, event.getOption().replaceFirst("Open ", "").replaceAll("Journal", "") + "Diary");
+				addBlankOption(event.getOption().replaceFirst("Open ", "").replaceAll("Journal", "") + "Diary");
 			}
 			else if (option.contains("guide"))
 			{
-				addBlankOption("cancel", WIKI, event.getOption().replaceFirst("View ", "").replaceFirst(" guide", ""));
+				addBlankOption(event.getOption().replaceFirst("View ", "").replaceFirst(" guide", ""));
 			}
 		}
-		if (!config.permWiki() &&
-				(config.removeNonVital() &&
-						!wikiLookupTriggerKey &&
-						(event.getTarget().length() >= 1
-								|| option.equals("walk here")
-								|| option.contains("guide")
-								|| option.contains("open"))))
+
+		if (!hotkeyPressed && (
+			event.getTarget().length() >= 1
+				|| option.equals("walk here")
+				|| option.contains("guide")
+				|| option.contains("open")))
 		{
 			removeOption(option);
 		}
 	}
-	
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
-	{
-		if (event.getGroup().equals("wikilookup"))
-		{
-			wikiLookupTriggerKey = false;
-			isWikiLookupTriggerButton = false;
-			wikiOrbInterface.setStatus(false);
-			if (event.getKey().equals("permWiki"))
-			{
-				if (config.permWiki())
-				{
-					clientThread.invokeLater(() -> wikiOrbInterface.destroy());
-				}
-				else if (client.getWidget(WidgetInfo.MINIMAP_ORBS) != null)
-				{
-					clientThread.invokeLater(() -> wikiOrbInterface.init());
-				}
-			}
-		}
-	}
-	
+
 	private void removeOption(String option)
 	{
-		MenuEntry[] entries = client.getMenuEntries();
+		final MenuEntry[] entries = client.getMenuEntries();
+
 		if (entries.length > 1)
 		{
 			MenuEntry[] newEntries = new MenuEntry[entries.length - 1];
+
 			for (int i = 0; i < entries.length; ++i)
 			{
 				if (!(Text.removeTags(entries[i].getOption()).toLowerCase().contains(option)))
@@ -260,32 +213,34 @@ public class WikiLookupPlugin extends Plugin implements KeyListener
 					newEntries[i] = entries[i];
 				}
 			}
+
 			client.setMenuEntries(newEntries);
 		}
 	}
-	
-	private void addBlankOption(String toCopy, String newOption, String newTarget)
+
+	private void addBlankOption(String newTarget)
 	{
 		MenuEntry[] entries = client.getMenuEntries();
 		MenuEntry[] newEntries = new MenuEntry[entries.length + 1];
+
 		for (int i = 0; i < entries.length; ++i)
 		{
-			if (Text.removeTags(entries[i].getOption()).toLowerCase().contains(toCopy))
+			if (Text.removeTags(entries[i].getOption()).toLowerCase().contains("cancel"))
 			{
 				final MenuEntry blankOption = new MenuEntry();
-				blankOption.setOption(newOption);
+				blankOption.setOption(WikiLookupPlugin.WIKI);
 				blankOption.setTarget(newTarget);
 				blankOption.setIdentifier(entries[i].getIdentifier());
 				blankOption.setParam1(entries[i].getParam1());
 				blankOption.setType(entries[i].getType());
 				client.setMenuEntries(ArrayUtils.addAll(entries, blankOption));
 				newEntries[newEntries.length - 1] = blankOption;
-				
-				//newEntries[newEntries.length - 1] = entries[i].toBuilder().option(newOption).target(newTarget).build();
 			}
+
 			newEntries[i] = entries[i];
 		}
-		newEntries[newEntries.length - 1].setOption(newOption);
+
+		newEntries[newEntries.length - 1].setOption(WikiLookupPlugin.WIKI);
 		MenuEntry holder = newEntries[newEntries.length - 1];
 		newEntries[newEntries.length - 1] = newEntries[newEntries.length - 2];
 		newEntries[newEntries.length - 2] = holder;
