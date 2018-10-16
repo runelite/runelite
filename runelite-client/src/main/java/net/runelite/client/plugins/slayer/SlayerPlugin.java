@@ -49,6 +49,8 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import static net.runelite.api.Skill.SLAYER;
+
+import net.runelite.api.SlayerUnlock;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -104,7 +106,6 @@ public class SlayerPlugin extends Plugin
 
 	//Reward UI
 	private static final Pattern REWARD_POINTS = Pattern.compile("Reward points: ((?:\\d+,)*\\d+)");
-	private static final int REWARD_DOUBLE_TROUBLE_ENABLED_BIT = 12;
 
 	private static final int GROTESQUE_GUARDIANS_REGION = 6727;
 
@@ -528,7 +529,7 @@ public class SlayerPlugin extends Plugin
 	private boolean doubleTroubleExtraKill()
 	{
 		return WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID() == GROTESQUE_GUARDIANS_REGION &&
-				(client.getVar(VarPlayer.DOUBLE_TROUBLE) >> REWARD_DOUBLE_TROUBLE_ENABLED_BIT & 1) == 1;
+				SlayerUnlock.GROTESQUE_GARDIAN_DOUBLE_COUNT.isEnabled(client);
 	}
 
 	private boolean isTarget(NPC npc)

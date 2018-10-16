@@ -119,9 +119,10 @@ public enum VarPlayer
 	BIRD_HOUSE_VALLEY_SOUTH(1629),
 
 	/**
-	 * Slayer Rewards interface states
+	 * Slayer unlock bitfields
 	 */
-	DOUBLE_TROUBLE(1344);
+	SLAYER_UNLOCK_1(1076),
+	SLAYER_UNLOCK_2(1344);
 
 	private final int id;
 }
