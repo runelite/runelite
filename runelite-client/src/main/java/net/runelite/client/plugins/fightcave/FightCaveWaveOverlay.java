@@ -40,14 +40,12 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 @Slf4j
 public class FightCaveWaveOverlay extends Overlay
 {
-	@Inject
-	private Client client;
 
-	@Inject
-	private FightCavePlugin plugin;
+	private final Client client;
 
-	@Inject
-	private FightCaveConfig config;
+	private final FightCavePlugin plugin;
+
+	private final FightCaveConfig config;
 
 	private PanelComponent panelComponent;
 

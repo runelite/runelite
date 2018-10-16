@@ -1,7 +1,6 @@
 /*
  * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
- *               2018, DrizzyBot <https://github.com/drizzybot>
- *               2018, Dave Inga <https://github.com/daveinga>
+ * Copyright (c) 2018, DrizzyBot <https://github.com/drizzybot>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +40,7 @@ import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class JadPrayOverlay extends Overlay
+public class FightCaveOverlay extends Overlay
 {
 	private static final Color NOT_ACTIVATED_BACKGROUND_COLOR = new Color(150, 0, 0, 150);
 

@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2018, DrizzyBot <https://github.com/drizzybot>
- *               2018, DaveInga <https://github.com/daveinga>
+ * Copyright (c) 2018, DaveInga <https://github.com/daveinga>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,11 +25,11 @@
  */
 package net.runelite.client.plugins.fightcave;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-import java.awt.*;
 
 @ConfigGroup("fightcaves")
 public interface FightCaveConfig extends Config

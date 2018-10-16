@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
- *               2018, DrizzyBot <https://github.com/drizzybot>
- *               2018, Dave Inga <https://github.com/daveinga>
+ * Copyright (c) 2018, DrizzyBot <https://github.com/drizzybot>
+ * Copyright (c) 2018, DaveInga <https://github.com/daveinga>
  *
  * All rights reserved.
  *
@@ -36,9 +36,16 @@ import javax.inject.Inject;
 import com.google.inject.Provides;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
-import net.runelite.api.events.*;
+import net.runelite.api.Actor;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
+import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -53,7 +60,7 @@ import java.util.List;
 	description = "Show what to pray against Jad",
 	tags = {"bosses", "combat", "minigame", "overlay", "prayer", "pve", "pvm"}
 )
-@Slf4j
+
 public class FightCavePlugin extends Plugin
 {
 	@Inject
@@ -69,7 +76,7 @@ public class FightCavePlugin extends Plugin
 	private FightCaveMinimapOverlay fightWaveMinimapOverlay;
 
 	@Inject
-	private JadPrayOverlay jadPrayOverlay;
+	private FightCaveOverlay fightCaveOverlay;
 
 	@Getter(AccessLevel.PACKAGE)
 	@Nullable
@@ -95,7 +102,7 @@ public class FightCavePlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(jadPrayOverlay);
+		overlayManager.add(fightCaveOverlay);
 		overlayManager.add(fightCaveWaveOverlay);
 		overlayManager.add(fightWaveMinimapOverlay);
 		monsters = FightCaveMappings.npcNameMapping();
@@ -106,7 +113,7 @@ public class FightCavePlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(jadPrayOverlay);
+		overlayManager.remove(fightCaveOverlay);
 		overlayManager.remove(fightCaveWaveOverlay);
 		overlayManager.remove(fightWaveMinimapOverlay);
 		jad = null;
