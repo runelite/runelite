@@ -207,22 +207,25 @@ public class Notifier
 		commands.add("-t");
 		commands.add(String.valueOf(DEFAULT_TIMEOUT));
 
-        executorService.submit(() ->
-        {
-            try {
-                Process notificationProcess = sendCommand(commands).orElse(null);
-                if (Objects.requireNonNull(notificationProcess).waitFor() == 0
-                        && Objects.requireNonNull(notificationProcess).exitValue() == 0)
-                {
-                    return;
-                }
-            } catch (InterruptedException e) {
-                log.error("Error during sending linux notification.");
-                e.printStackTrace();
-            }
+		executorService.submit(() ->
+		{
+			try
+			{
+				Process notificationProcess = sendCommand(commands).orElse(null);
+				if (Objects.requireNonNull(notificationProcess).waitFor() == 0
+					&& Objects.requireNonNull(notificationProcess).exitValue() == 0)
+				{
+					return;
+				}
+			}
+			catch (InterruptedException e)
+			{
+				log.error("Error during sending linux notification.");
+				e.printStackTrace();
+			}
 
-            sendTrayNotification(title, message, type);
-        });
+			sendTrayNotification(title, message, type);
+		});
 	}
 
 	private void sendMacNotification(
