@@ -64,6 +64,7 @@ import net.runelite.api.WidgetType;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.vars.InputType;
+import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
 import net.runelite.api.widgets.WidgetInfo;
@@ -696,6 +697,8 @@ public class TabInterface
 			icon.setClickMask(clickmask);
 			icon.setDragDeadTime(5);
 			icon.setDragDeadZone(5);
+			icon.setItemQuantity(10000);
+			icon.setItemQuantityMode(ItemQuantityMode.NEVER);
 			tagTab.setIcon(icon);
 		}
 
