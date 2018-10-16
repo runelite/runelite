@@ -28,6 +28,8 @@ package net.runelite.client.plugins.banktags;
 import com.google.common.base.Strings;
 import java.util.Collection;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.client.config.ConfigManager;
@@ -102,6 +104,15 @@ public class TagManager
 	boolean findTag(int itemId, String search)
 	{
 		return getTags(itemId).stream().anyMatch(tag -> tag.contains(Text.standardize(search)));
+	}
+
+	public List<Integer> getItemsForTag(String tag)
+	{
+		final String prefix = CONFIG_GROUP + "." + ITEM_KEY_PREFIX;
+		return configManager.getConfigurationKeys(prefix).stream()
+			.map(item -> Integer.parseInt(item.replace(prefix, "")))
+			.filter(item -> getTags(item).contains(tag))
+			.collect(Collectors.toList());
 	}
 
 	public void removeTag(String tag)
