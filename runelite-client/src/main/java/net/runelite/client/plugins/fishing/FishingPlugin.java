@@ -78,6 +78,7 @@ public class FishingPlugin extends Plugin
 {
 	private static final int TRAWLER_SHIP_REGION_NORMAL = 7499;
 	private static final int TRAWLER_SHIP_REGION_SINKING = 8011;
+	
 	private static final int TRAWLER_ACTIVITY_THRESHOLD = Math.round(0.15f * 255);
 
 	@Getter(AccessLevel.PACKAGE)
@@ -334,5 +335,4 @@ public class FishingPlugin extends Plugin
 			trawlerNotificationSent = false;
 		}
 	}
-
 }
