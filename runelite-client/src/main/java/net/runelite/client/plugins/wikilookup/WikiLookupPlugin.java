@@ -185,14 +185,33 @@ public class WikiLookupPlugin extends Plugin implements KeyListener
 				addBlankOption(event.getOption().replaceFirst("View ", "").replaceFirst(" guide", ""));
 			}
 		}
-
-		if (!hotkeyPressed && (
-			event.getTarget().length() >= 1
-				|| option.contains("walk here")
-				|| option.contains("guide")
-				|| option.contains("open")))
+		//printEntries();
+		if (!hotkeyPressed)
 		{
-			removeOption(option);
+			removeWalk(option);
+			if ((event.getTarget().length() >= 1) || option.contains("guide") || option.contains("open"))
+			{
+				removeOption(option);
+			}
+		}
+	}
+
+	private void removeWalk(String option)
+	{
+		MenuEntry[] entries = client.getMenuEntries();
+
+		if (!option.equals("walk here") && entries.length >= 2 && entries[1].getOption().toLowerCase().equals("walk here"))
+		{
+			MenuEntry[] newEntries = new MenuEntry[entries.length - 1];
+			int j = 0;
+			for (int i = 0; i < entries.length; i++)
+			{
+				if (!entries[i].getOption().toLowerCase().equals("walk here"))
+				{
+					newEntries[j++] = entries[i];
+				}
+			}
+			client.setMenuEntries(newEntries);
 		}
 	}
 
