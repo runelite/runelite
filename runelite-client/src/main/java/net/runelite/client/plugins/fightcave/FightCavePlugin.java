@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
-
 import com.google.inject.Provides;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -50,10 +49,10 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Fight Cave",
@@ -84,16 +83,21 @@ public class FightCavePlugin extends Plugin
 
 	private NPC jad;
 
-	private static final int[] FIGHT_CAVE_REGION = {9551};
+	private static final int FIGHT_CAVE_REGION = 9551;
 
+	@Getter(AccessLevel.PACKAGE)
 	private int currentWaveNumber;
 
+	@Getter(AccessLevel.PACKAGE)
 	private HashMap<Integer, Integer> thisWave;
 
+	@Getter(AccessLevel.PACKAGE)
 	private HashMap<Integer, Integer> nextWave;
 
+	@Getter(AccessLevel.PACKAGE)
 	private Map<Integer, String> monsters;
 
+	@Getter(AccessLevel.PACKAGE)
 	private Map<Integer, int[]> waves;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -200,7 +204,7 @@ public class FightCavePlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SERVER)
+		if (event.getType() != ChatMessageType.SERVER || !isInFightCaveInstance())
 		{
 			return;
 		}
@@ -209,8 +213,7 @@ public class FightCavePlugin extends Plugin
 		if (event.getMessage().contains("Wave:"))
 		{
 			message = message.substring(message.indexOf(": ") + 2);
-			message = message.substring(0, message.indexOf("<"));
-			currentWaveNumber = Integer.parseInt(message);
+			currentWaveNumber = Integer.parseInt(message.substring(0, message.indexOf("<")));
 			newWave(getCurrentWaveNumber());
 		}
 
@@ -253,37 +256,11 @@ public class FightCavePlugin extends Plugin
 
 	protected boolean isInFightCaveInstance()
 	{
-		return Arrays.equals(client.getMapRegions(), FIGHT_CAVE_REGION);
+		return ArrayUtils.contains(client.getMapRegions(),FIGHT_CAVE_REGION);
 	}
 
-	public int getCurrentWaveNumber()
+	public boolean isNotFinalWave()
 	{
-		return currentWaveNumber;
+		return currentWaveNumber <= 62;
 	}
-
-	public List<Actor> getWaveMonsters()
-	{
-		return waveMonsters;
-	}
-
-	public HashMap<Integer, Integer> getThisWave()
-	{
-		return thisWave;
-	}
-
-	public HashMap<Integer, Integer> getNextWave()
-	{
-		return nextWave;
-	}
-
-	public Map<Integer, String> getMonsters()
-	{
-		return monsters;
-	}
-
-	public Map<Integer, int[]> getWaves()
-	{
-		return waves;
-	}
-
 }

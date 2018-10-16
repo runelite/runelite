@@ -78,4 +78,26 @@ public interface FightCaveConfig extends Config
 		return Color.WHITE;
 	}
 
+	@ConfigItem(
+		position = 4,
+		keyName = "getWaveOverlayHeaderColor",
+		name = "Wave Header",
+		description = "Color for Wave Header"
+	)
+	default Color getWaveOverlayHeaderColor()
+	{
+		return Color.ORANGE;
+	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "getWaveTextColor",
+		name = "Wave Text Color",
+		description = "Color for Wave Texts"
+	)
+	default Color getWaveTextColor()
+	{
+		return Color.WHITE;
+	}
+
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2018, DrizzyBot <https://github.com/drizzybot>
- *               2018, DaveInga <https://github.com/daveinga>
+ * Copyright (c) 2018, DaveInga <https://github.com/daveinga>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,11 +25,10 @@
  */
 package net.runelite.client.plugins.fightcave;
 
-import java.awt.*;
-import java.util.HashMap;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.util.Map;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -37,7 +36,6 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-@Slf4j
 public class FightCaveWaveOverlay extends Overlay
 {
 
@@ -59,8 +57,6 @@ public class FightCaveWaveOverlay extends Overlay
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
-
-
 	}
 
 	@Override
@@ -74,22 +70,24 @@ public class FightCaveWaveOverlay extends Overlay
 
 		if (config.showCurrentWave())
 		{
-			renderCurrentWave();
+			renderWave("Wave " + plugin.getCurrentWaveNumber(),plugin.getThisWave(),plugin.getMonsters());
 		}
-		if (config.showNextWave() && plugin.getCurrentWaveNumber() <= 62)
+		if (config.showNextWave() && plugin.isNotFinalWave())
 		{
-			renderNextWave();
+			renderWave("Next Wave:",plugin.getNextWave(),plugin.getMonsters());
+
 		}
 		return panelComponent.render(graphics);
 	}
 
-	private void renderCurrentWave()
+	private void renderWave(String header, Map<Integer,Integer> waveMap, Map<Integer,String> nameMap)
 	{
 		panelComponent.getChildren().add(TitleComponent.builder()
-			.text("Wave " + plugin.getCurrentWaveNumber())
-			.color(Color.orange)
+			.text(header)
+			.color(config.getWaveOverlayHeaderColor())
 			.build());
-		for (Map.Entry<Integer, Integer> entry : plugin.getThisWave().entrySet())
+
+		for (Map.Entry<Integer, Integer> entry : waveMap.entrySet())
 		{
 			int monsterID = entry.getKey();
 			int quantity = entry.getValue();
@@ -97,27 +95,9 @@ public class FightCaveWaveOverlay extends Overlay
 			{
 				continue;
 			}
-
 			panelComponent.getChildren().add(TitleComponent.builder()
-				.text(quantity + "x " + plugin.getMonsters().get(monsterID))
-				.color(Color.white)
-				.build());
-		}
-	}
-
-	private void renderNextWave()
-	{
-		panelComponent.getChildren().add(TitleComponent.builder()
-			.text("Next Wave:")
-			.color(Color.orange)
-			.build());
-		for (Map.Entry<Integer, Integer> entry : plugin.getNextWave().entrySet())
-		{
-			int monsterID = entry.getKey();
-			int quantity = entry.getValue();
-			panelComponent.getChildren().add(TitleComponent.builder()
-				.text(quantity + "x " + plugin.getMonsters().get(monsterID))
-				.color(Color.white)
+				.text(quantity + "x " + nameMap.get(monsterID))
+				.color(config.getWaveTextColor())
 				.build());
 		}
 	}
