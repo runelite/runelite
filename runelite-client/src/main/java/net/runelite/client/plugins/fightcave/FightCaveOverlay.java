@@ -56,7 +56,7 @@ public class FightCaveOverlay extends Overlay
 	private PanelComponent imagePanelComponent = new PanelComponent();
 
 	@Inject
-	private JadPrayOverlay(Client client, FightCavePlugin plugin, SpriteManager spriteManager)
+	private FightCaveOverlay(Client client, FightCavePlugin plugin, SpriteManager spriteManager)
 	{
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		setPriority(OverlayPriority.HIGH);
