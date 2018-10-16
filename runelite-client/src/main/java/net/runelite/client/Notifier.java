@@ -39,6 +39,7 @@ import java.nio.file.Path;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Singleton;
@@ -206,18 +207,22 @@ public class Notifier
 		commands.add("-t");
 		commands.add(String.valueOf(DEFAULT_TIMEOUT));
 
-		executorService.submit(() ->
-		{
-			final boolean success = sendCommand(commands)
-					.filter(process -> !process.isAlive())
-					.map(process -> process.exitValue() == 0)
-					.orElse(false);
+        executorService.submit(() ->
+        {
+            try {
+                Process notificationProcess = sendCommand(commands).orElse(null);
+                if (Objects.requireNonNull(notificationProcess).waitFor() == 0
+                        && Objects.requireNonNull(notificationProcess).exitValue() == 0)
+                {
+                    return;
+                }
+            } catch (InterruptedException e) {
+                log.error("Error during sending linux notification.");
+                e.printStackTrace();
+            }
 
-			if (!success)
-			{
-				sendTrayNotification(title, message, type);
-			}
-		});
+            sendTrayNotification(title, message, type);
+        });
 	}
 
 	private void sendMacNotification(
