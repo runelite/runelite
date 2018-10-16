@@ -416,7 +416,7 @@ public class TabInterface
 			// Add "remove" menu entry to all items in bank while tab is selected
 			event.consume();
 			final ItemComposition item = getItem(event.getActionParam());
-			final int itemId = itemManager.canonicalize(item.getId());
+			final int itemId = item.getId();
 			tagManager.removeTag(itemId, activeTab.getTag());
 			doSearch(InputType.SEARCH, TAG_SEARCH + activeTab.getTag());
 		}
@@ -434,7 +434,7 @@ public class TabInterface
 
 			List<Integer> items = Arrays.stream(container.getItems())
 				.filter(Objects::nonNull)
-				.map(i -> itemManager.canonicalize(i.getId()))
+				.map(Item::getId)
 				.collect(Collectors.toList());
 
 			if (activeTab != null && event.getMenuTarget() != null && Text.removeTags(event.getMenuTarget()).equals(activeTab.getTag()))
@@ -620,7 +620,7 @@ public class TabInterface
 				// Tag an item dragged on a tag tab
 				if (draggedOn.getId() == parent.getId())
 				{
-					int itemId = itemManager.canonicalize(draggedWidget.getItemId());
+					int itemId = draggedWidget.getItemId();
 					tagManager.addTag(itemId, draggedOn.getName());
 				}
 			}

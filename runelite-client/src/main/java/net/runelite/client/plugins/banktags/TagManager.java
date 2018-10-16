@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.JOINER;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.SPLITTER;
@@ -42,16 +43,19 @@ import net.runelite.client.util.Text;
 public class TagManager
 {
 	private static final String ITEM_KEY_PREFIX = "item_";
+	private final ItemManager itemManager;
 	private final ConfigManager configManager;
 
 	@Inject
-	private TagManager(final ConfigManager configManager)
+	private TagManager(final ItemManager itemManager, final ConfigManager configManager)
 	{
+		this.itemManager = itemManager;
 		this.configManager = configManager;
 	}
 
-	public String getTagString(int itemId)
+	String getTagString(int itemId)
 	{
+		itemId = itemManager.canonicalize(itemId);
 		String config = configManager.getConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
 		if (config == null)
 		{
@@ -66,8 +70,9 @@ public class TagManager
 		return new LinkedHashSet<>(SPLITTER.splitToList(getTagString(itemId).toLowerCase()));
 	}
 
-	public void setTagString(int itemId, String tags)
+	void setTagString(int itemId, String tags)
 	{
+		itemId = itemManager.canonicalize(itemId);
 		if (Strings.isNullOrEmpty(tags))
 		{
 			configManager.unsetConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
