@@ -256,7 +256,7 @@ public class FightCavePlugin extends Plugin
 
 	protected boolean isInFightCaveInstance()
 	{
-		return ArrayUtils.contains(client.getMapRegions(),FIGHT_CAVE_REGION);
+		return ArrayUtils.contains(client.getMapRegions(), FIGHT_CAVE_REGION);
 	}
 
 	public boolean isNotFinalWave()

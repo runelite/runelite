@@ -70,17 +70,17 @@ public class FightCaveWaveOverlay extends Overlay
 
 		if (config.showCurrentWave())
 		{
-			renderWave("Wave " + plugin.getCurrentWaveNumber(),plugin.getThisWave(),plugin.getMonsters());
+			renderWave("Wave " + plugin.getCurrentWaveNumber(), plugin.getThisWave(), plugin.getMonsters());
 		}
 		if (config.showNextWave() && plugin.isNotFinalWave())
 		{
-			renderWave("Next Wave:",plugin.getNextWave(),plugin.getMonsters());
+			renderWave("Next Wave:", plugin.getNextWave(), plugin.getMonsters());
 
 		}
 		return panelComponent.render(graphics);
 	}
 
-	private void renderWave(String header, Map<Integer,Integer> waveMap, Map<Integer,String> nameMap)
+	private void renderWave(String header, Map<Integer, Integer> waveMap, Map<Integer, String> nameMap)
 	{
 		panelComponent.getChildren().add(TitleComponent.builder()
 			.text(header)
