@@ -119,9 +119,9 @@ public class WidgetID
 	public static final int MINIGAME_TAB_ID = 76;
 	public static final int SPELLBOOK_GROUP_ID = 218;
 	public static final int PVP_GROUP_ID = 90;
-  	public static final int ZEAH_MESS_HALL_GROUP_ID = 235;
-  	public static final int STATS_GROUP_ID = 320;
-  
+	public static final int ZEAH_MESS_HALL_GROUP_ID = 235;
+	public static final int STATS_GROUP_ID = 320;
+	
 	static class WorldMap
 	{
 		static final int MAPVIEW = 4;
