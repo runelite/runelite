@@ -33,6 +33,7 @@ import net.runelite.api.Client;
 import net.runelite.api.SpriteID;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
@@ -52,6 +53,7 @@ public class FightCaveOverlay extends Overlay
 	private FightCaveOverlay(Client client, FightCavePlugin plugin, SpriteManager spriteManager)
 	{
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
+		setGroup(OverlayGroup.GROUP2);
 		setPriority(OverlayPriority.HIGH);
 		this.client = client;
 		this.plugin = plugin;

@@ -35,6 +35,7 @@ import javax.inject.Inject;
 import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -58,6 +59,7 @@ class MotherlodeOverlay extends Overlay
 	MotherlodeOverlay(Client client, MotherlodePlugin plugin, MotherlodeConfig config)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
+		setGroup(OverlayGroup.GROUP2);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;

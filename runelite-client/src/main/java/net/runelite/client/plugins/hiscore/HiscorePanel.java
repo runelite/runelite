@@ -51,7 +51,6 @@ import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Player;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.materialtabs.MaterialTab;
@@ -293,7 +292,6 @@ public class HiscorePanel extends PluginPanel
 	private JPanel makeSkillPanel(HiscoreSkill skill)
 	{
 		JLabel label = new JLabel();
-		label.setFont(FontManager.getRunescapeSmallFont());
 		label.setText("--");
 
 		String skillName = (skill == null ? "combat" : skill.getName().toLowerCase());

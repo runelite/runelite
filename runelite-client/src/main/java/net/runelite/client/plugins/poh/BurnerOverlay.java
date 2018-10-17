@@ -36,6 +36,7 @@ import net.runelite.api.TileObject;
 import static net.runelite.client.plugins.poh.PohPlugin.BURNER_LIT;
 import static net.runelite.client.plugins.poh.PohPlugin.BURNER_UNLIT;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -51,6 +52,7 @@ public class BurnerOverlay extends Overlay
 	@Inject
 	public BurnerOverlay(Client client, PohConfig config, PohPlugin plugin)
 	{
+		setGroup(OverlayGroup.GROUP1);
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;

@@ -46,7 +46,6 @@ import net.runelite.api.Skill;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.SkillColor;
 import net.runelite.client.ui.components.ProgressBar;
 import net.runelite.client.util.ColorUtil;
@@ -135,11 +134,6 @@ class XpInfoBox extends JPanel
 		statsPanel.setLayout(new DynamicGridLayout(2, 2));
 		statsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		statsPanel.setBorder(new EmptyBorder(9, 2, 9, 2));
-
-		expGained.setFont(FontManager.getRunescapeSmallFont());
-		expHour.setFont(FontManager.getRunescapeSmallFont());
-		expLeft.setFont(FontManager.getRunescapeSmallFont());
-		actionsLeft.setFont(FontManager.getRunescapeSmallFont());
 
 		statsPanel.add(expGained);
 		statsPanel.add(expLeft);

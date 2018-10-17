@@ -25,7 +25,9 @@
 package net.runelite.client.config;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import net.runelite.api.Constants;
+import net.runelite.client.ui.FontManager;
 
 @ConfigGroup("runelite")
 public interface RuneLiteConfig extends Config
@@ -197,36 +199,47 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "fontType",
-		name = "Dynamic Overlay Font",
+		keyName = "clientFont",
+		name = "Client Font",
+		description = "Configures what font type is used for the client",
+		position = 26
+	)
+	default Font clientFont()
+	{
+		return FontManager.getRunescapeFont();
+	}
+
+	@ConfigItem(
+		keyName = "overlayGroup1Font",
+		name = "Overlays 1",
 		description = "Configures what font type is used for in-game overlays such as player name, ground items, etc.",
-		position = 30
+		position = 27
 	)
-	default FontType fontType()
+	default Font overlayGroup1Font()
 	{
-		return FontType.SMALL;
+		return FontManager.getRunescapeSmallFont();
 	}
 
 	@ConfigItem(
-		keyName = "tooltipFontType",
-		name = "Tooltip Font",
+		keyName = "overlayGroup2Font",
+		name = "Overlays 2",
+		description = "Configures what font type is used for in-game overlays such as boost info, opponent info and plugin specific overlays",
+		position = 28
+	)
+	default Font overlayGroup2Font()
+	{
+		return FontManager.getRunescapeFont();
+	}
+
+	@ConfigItem(
+		keyName = "overlayGroup3Font",
+		name = "Overlays 3",
 		description = "Configures what font type is used for in-game tooltips such as food stats, NPC names, etc.",
-		position = 31
+		position = 29
 	)
-	default FontType tooltipFontType()
+	default Font overlayGroup3Font()
 	{
-		return FontType.SMALL;
-	}
-
-	@ConfigItem(
-		keyName = "interfaceFontType",
-		name = "Interface Overlay Font",
-		description = "Configures what font type is used for in-game interface overlays such as panels, opponent info, clue scrolls etc.",
-		position = 32
-	)
-	default FontType interfaceFontType()
-	{
-		return FontType.REGULAR;
+		return FontManager.getRunescapeSmallFont();
 	}
 
 	@ConfigItem(

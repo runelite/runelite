@@ -35,6 +35,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -54,6 +55,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 		this.playerIndicatorsService = playerIndicatorsService;
 		this.clanManager = clanManager;
 		setPosition(OverlayPosition.DYNAMIC);
+		setGroup(OverlayGroup.GROUP1);
 		setPriority(OverlayPriority.MED);
 	}
 

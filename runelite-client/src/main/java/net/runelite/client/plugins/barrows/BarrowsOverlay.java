@@ -38,6 +38,7 @@ import net.runelite.api.Player;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
@@ -53,6 +54,7 @@ class BarrowsOverlay extends Overlay
 	BarrowsOverlay(Client client, BarrowsPlugin plugin, BarrowsConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
+		setGroup(OverlayGroup.GROUP3);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
 		this.plugin = plugin;

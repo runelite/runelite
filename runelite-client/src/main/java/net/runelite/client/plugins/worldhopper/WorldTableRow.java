@@ -40,7 +40,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldType;
@@ -237,7 +236,6 @@ class WorldTableRow extends JPanel
 		column.setBorder(new EmptyBorder(0, 5, 0, 5));
 
 		playerCountField = new JLabel(world.getPlayers() + "");
-		playerCountField.setFont(FontManager.getRunescapeSmallFont());
 
 		column.add(playerCountField, BorderLayout.WEST);
 
@@ -253,7 +251,6 @@ class WorldTableRow extends JPanel
 		column.setBorder(new EmptyBorder(0, 5, 0, 5));
 
 		activityField = new JLabel(world.getActivity());
-		activityField.setFont(FontManager.getRunescapeSmallFont());
 
 		column.add(activityField, BorderLayout.WEST);
 

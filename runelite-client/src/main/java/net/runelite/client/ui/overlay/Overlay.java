@@ -42,6 +42,7 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	private OverlayPosition position = OverlayPosition.TOP_LEFT;
 	private OverlayPriority priority = OverlayPriority.NONE;
 	private OverlayLayer layer = OverlayLayer.UNDER_WIDGETS;
+	private OverlayGroup group = OverlayGroup.GROUP2;
 
 	/**
 	 * Overlay name, used for saving the overlay, needs to be unique

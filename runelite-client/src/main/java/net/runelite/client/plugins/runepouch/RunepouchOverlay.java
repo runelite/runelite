@@ -39,8 +39,8 @@ import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import static net.runelite.client.plugins.runepouch.config.RunePouchOverlayMode.BOTH;
 import static net.runelite.client.plugins.runepouch.config.RunePouchOverlayMode.MOUSE_HOVER;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -74,6 +74,7 @@ public class RunepouchOverlay extends Overlay
 	RunepouchOverlay(QueryRunner queryRunner, Client client, RunepouchConfig config, TooltipManager tooltipManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
+		setGroup(OverlayGroup.GROUP3);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.tooltipManager = tooltipManager;
 		this.queryRunner = queryRunner;
@@ -100,10 +101,12 @@ public class RunepouchOverlay extends Overlay
 
 		assert AMOUNT_VARBITS.length == RUNE_VARBITS.length;
 
-		graphics.setFont(FontManager.getRunescapeSmallFont());
-
 		StringBuilder tooltipBuilder = new StringBuilder();
 
+		// location.getY() + graphics.getFontMetrics().getMaxAscent() - graphics.getFontMetrics().getMaxDescent()
+		// this will draw the character exactly on the border
+		int yLocation = location.getY() + 1 +
+			graphics.getFontMetrics().getMaxAscent() - graphics.getFontMetrics().getMaxDescent();
 		for (int i = 0; i < AMOUNT_VARBITS.length; i++)
 		{
 			Varbits amountVarbit = AMOUNT_VARBITS[i];
@@ -133,13 +136,18 @@ public class RunepouchOverlay extends Overlay
 				continue;
 			}
 
+			// the reason this is not split up in maxascent and maxdescent to equal the height of the text like it should
+			// be is because numbers (afaik) dont use font descent so a 1 pixel seperator should be good and give
+			// consistent results across fonts
+			int yOffset = (1 + (graphics.getFontMetrics().getMaxAscent()) * i);
+
 			graphics.setColor(Color.black);
 			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 13 : 6),
-				location.getY() + 14 + (graphics.getFontMetrics().getHeight() - 1) * i);
+				yLocation + yOffset);
 
 			graphics.setColor(config.fontColor());
 			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 12 : 5),
-				location.getY() + 13 + (graphics.getFontMetrics().getHeight() - 1) * i);
+				yLocation + yOffset);
 
 			if (!config.showIcons())
 			{
@@ -150,7 +158,7 @@ public class RunepouchOverlay extends Overlay
 			if (image != null)
 			{
 				OverlayUtil.renderImageLocation(graphics,
-					new Point(location.getX(), location.getY() + graphics.getFontMetrics().getHeight() * i),
+					new Point(location.getX(), location.getY() + (1 + graphics.getFontMetrics().getMaxAscent()) * i),
 					image);
 			}
 		}

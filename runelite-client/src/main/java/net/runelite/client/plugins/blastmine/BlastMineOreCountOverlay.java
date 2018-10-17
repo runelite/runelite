@@ -35,6 +35,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -49,6 +50,7 @@ class BlastMineOreCountOverlay extends Overlay
 	@Inject
 	private BlastMineOreCountOverlay(Client client, BlastMinePluginConfig config, ItemManager itemManager)
 	{
+		setGroup(OverlayGroup.GROUP3);
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
 		this.config = config;

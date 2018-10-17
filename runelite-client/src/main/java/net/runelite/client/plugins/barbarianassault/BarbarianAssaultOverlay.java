@@ -34,6 +34,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
@@ -51,6 +52,7 @@ class BarbarianAssaultOverlay extends Overlay
 	@Inject
 	private BarbarianAssaultOverlay(Client client, BarbarianAssaultPlugin plugin, BarbarianAssaultConfig config)
 	{
+		setGroup(OverlayGroup.GROUP2);
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;

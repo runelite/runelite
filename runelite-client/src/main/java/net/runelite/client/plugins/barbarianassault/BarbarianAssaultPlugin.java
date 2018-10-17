@@ -27,7 +27,6 @@ package net.runelite.client.plugins.barbarianassault;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.awt.Font;
 import java.awt.Image;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
@@ -49,7 +48,6 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
 
@@ -64,7 +62,6 @@ public class BarbarianAssaultPlugin extends Plugin
 	private static final String START_WAVE = "1";
 	private static final String ENDGAME_REWARD_NEEDLE_TEXT = "<br>5";
 
-	private Font font;
 	private Image clockImage;
 	private int inGameBit = 0;
 	private String currentWave = START_WAVE;
@@ -95,8 +92,6 @@ public class BarbarianAssaultPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
-		font = FontManager.getRunescapeFont()
-			.deriveFont(Font.BOLD, 24);
 
 		clockImage = ImageUtil.getResourceStreamFromClass(getClass(), "clock.png");
 	}
@@ -203,11 +198,6 @@ public class BarbarianAssaultPlugin extends Plugin
 			.type(ChatMessageType.GAME)
 			.runeLiteFormattedMessage(chatMessage)
 			.build());
-	}
-
-	public Font getFont()
-	{
-		return font;
 	}
 
 	public Image getClockImage()

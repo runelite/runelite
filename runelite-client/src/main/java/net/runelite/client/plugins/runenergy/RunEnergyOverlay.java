@@ -33,6 +33,7 @@ import net.runelite.api.Point;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
@@ -54,6 +55,7 @@ class RunEnergyOverlay extends Overlay
 		this.config = config;
 		this.tooltipManager = tooltipManager;
 		setPosition(OverlayPosition.DYNAMIC);
+		setGroup(OverlayGroup.GROUP3);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 	}
 

@@ -38,6 +38,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -58,6 +59,7 @@ public class ClueScrollEmoteOverlay extends Overlay
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		setGroup(OverlayGroup.GROUP2);
 		this.plugin = plugin;
 		this.client = client;
 	}

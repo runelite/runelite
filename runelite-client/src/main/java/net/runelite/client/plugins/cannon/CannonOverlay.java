@@ -35,6 +35,7 @@ import static net.runelite.api.Perspective.LOCAL_TILE_SIZE;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -52,6 +53,7 @@ class CannonOverlay extends Overlay
 	@Inject
 	CannonOverlay(Client client, CannonConfig config, CannonPlugin plugin)
 	{
+		setGroup(OverlayGroup.GROUP2);
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.MED);
 		this.client = client;

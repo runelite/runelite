@@ -51,7 +51,6 @@ import javax.swing.border.MatteBorder;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerOverlay;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerPlugin;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.FlatTextField;
 import net.runelite.client.util.ImageUtil;
 
@@ -162,7 +161,6 @@ class ScreenMarkerPanel extends JPanel
 		nameActions.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		save.setVisible(false);
-		save.setFont(FontManager.getRunescapeSmallFont());
 		save.setForeground(ColorScheme.PROGRESS_COMPLETE_COLOR);
 		save.addMouseListener(new MouseAdapter()
 		{
@@ -191,7 +189,6 @@ class ScreenMarkerPanel extends JPanel
 		});
 
 		cancel.setVisible(false);
-		cancel.setFont(FontManager.getRunescapeSmallFont());
 		cancel.setForeground(ColorScheme.PROGRESS_ERROR_COLOR);
 		cancel.addMouseListener(new MouseAdapter()
 		{
@@ -217,7 +214,6 @@ class ScreenMarkerPanel extends JPanel
 			}
 		});
 
-		rename.setFont(FontManager.getRunescapeSmallFont());
 		rename.setForeground(ColorScheme.LIGHT_GRAY_COLOR.darker());
 		rename.addMouseListener(new MouseAdapter()
 		{

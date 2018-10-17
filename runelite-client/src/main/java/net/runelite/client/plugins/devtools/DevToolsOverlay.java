@@ -27,7 +27,6 @@ package net.runelite.client.plugins.devtools;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -59,6 +58,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -89,6 +89,7 @@ public class DevToolsOverlay extends Overlay
 	@Inject
 	public DevToolsOverlay(Client client, DevToolsPlugin plugin, TooltipManager toolTipManager)
 	{
+		setGroup(OverlayGroup.GROUP2);
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 		this.client = client;
@@ -99,12 +100,6 @@ public class DevToolsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Font font = plugin.getFont();
-		if (font != null)
-		{
-			graphics.setFont(font);
-		}
-
 		if (plugin.isTogglePlayers())
 		{
 			renderPlayers(graphics);
@@ -359,7 +354,7 @@ public class DevToolsOverlay extends Overlay
 			Rectangle2D textBounds = fm.getStringBounds(idText, graphics);
 
 			int textX = (int) (slotBounds.getX() + (slotBounds.getWidth() / 2) - (textBounds.getWidth() / 2));
-			int textY = (int) (slotBounds.getY() + (slotBounds.getHeight() / 2) + (textBounds.getHeight() / 2));
+			int textY = (int) (slotBounds.getY() + (slotBounds.getHeight() / 2) + (fm.getMaxAscent() / 2));
 
 			graphics.setColor(new Color(255, 255, 255, 65));
 			graphics.fill(slotBounds);
@@ -493,7 +488,7 @@ public class DevToolsOverlay extends Overlay
 		Rectangle2D textBounds = fm.getStringBounds(text, graphics);
 
 		int textX = (int) (bounds.getX() + (bounds.getWidth() / 2) - (textBounds.getWidth() / 2));
-		int textY = (int) (bounds.getY() + (bounds.getHeight() / 2) + (textBounds.getHeight() / 2));
+		int textY = (int) (bounds.getY() + (bounds.getHeight() / 2) + (fm.getMaxAscent() / 2));
 
 		graphics.setColor(Color.BLACK);
 		graphics.drawString(text, textX + 1, textY + 1);

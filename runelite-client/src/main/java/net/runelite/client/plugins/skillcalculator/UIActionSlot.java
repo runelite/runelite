@@ -44,7 +44,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
 class UIActionSlot extends JPanel
@@ -125,7 +124,6 @@ class UIActionSlot extends JPanel
 		uiLabelName.setForeground(Color.WHITE);
 
 		uiLabelActions = new JShadowedLabel("Unknown");
-		uiLabelActions.setFont(FontManager.getRunescapeSmallFont());
 		uiLabelActions.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 
 		uiInfo.add(uiLabelName);

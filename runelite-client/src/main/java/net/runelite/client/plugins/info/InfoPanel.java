@@ -32,7 +32,6 @@ import com.google.inject.Inject;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -51,7 +50,6 @@ import net.runelite.api.events.SessionOpen;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
@@ -106,13 +104,9 @@ public class InfoPanel extends PluginPanel
 		versionPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		versionPanel.setLayout(new GridLayout(0, 1));
 
-		final Font smallFont = FontManager.getRunescapeSmallFont();
-
 		JLabel version = new JLabel(htmlLabel("RuneLite version: ", runeLiteProperties.getVersion()));
-		version.setFont(smallFont);
 
 		JLabel revision = new JLabel();
-		revision.setFont(smallFont);
 
 		String engineVer = "Unknown";
 		if (client != null)
@@ -124,13 +118,10 @@ public class InfoPanel extends PluginPanel
 
 		JLabel launcher = new JLabel(htmlLabel("Launcher version: ", MoreObjects
 			.firstNonNull(RuneLiteProperties.getLauncherVersion(), "Unknown")));
-		launcher.setFont(smallFont);
 
 		loggedLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
-		loggedLabel.setFont(smallFont);
 
 		emailLabel.setForeground(Color.WHITE);
-		emailLabel.setFont(smallFont);
 		emailLabel.enableAutoLinkHandler(false);
 		emailLabel.addHyperlinkListener(e ->
 		{
@@ -224,11 +215,9 @@ public class InfoPanel extends PluginPanel
 
 		JLabel topLine = new JLabel(topText);
 		topLine.setForeground(Color.WHITE);
-		topLine.setFont(FontManager.getRunescapeSmallFont());
 
 		JLabel bottomLine = new JLabel(bottomText);
 		bottomLine.setForeground(Color.WHITE);
-		bottomLine.setFont(FontManager.getRunescapeSmallFont());
 
 		textContainer.add(topLine);
 		textContainer.add(bottomLine);

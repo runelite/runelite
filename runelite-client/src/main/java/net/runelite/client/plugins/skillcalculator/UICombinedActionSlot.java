@@ -36,7 +36,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
 class UICombinedActionSlot extends JPanel
@@ -68,7 +67,6 @@ class UICombinedActionSlot extends JPanel
 		uiLabelTitle.setForeground(Color.WHITE);
 
 		uiLabelActions = new JShadowedLabel("Shift-click to select multiple");
-		uiLabelActions.setFont(FontManager.getRunescapeSmallFont());
 		uiLabelActions.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 
 		uiInfo.add(uiLabelTitle);

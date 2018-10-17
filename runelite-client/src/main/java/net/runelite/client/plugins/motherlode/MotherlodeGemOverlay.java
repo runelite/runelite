@@ -30,6 +30,7 @@ import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -44,6 +45,7 @@ public class MotherlodeGemOverlay extends Overlay
 	@Inject
 	MotherlodeGemOverlay(MotherlodePlugin plugin, MotherlodeConfig config)
 	{
+		setGroup(OverlayGroup.GROUP2);
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.plugin = plugin;
 		this.config = config;

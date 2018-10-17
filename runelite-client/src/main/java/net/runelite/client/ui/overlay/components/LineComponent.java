@@ -63,7 +63,7 @@ public class LineComponent implements LayoutableRenderableEntity
 
 		final FontMetrics metrics = graphics.getFontMetrics();
 		int x = 0;
-		int y = metrics.getHeight();
+		int y = 0;
 		final int leftFullWidth = getLineWidth(left, metrics);
 		final int rightFullWidth = getLineWidth(right, metrics);
 
@@ -85,6 +85,7 @@ public class LineComponent implements LayoutableRenderableEntity
 
 			for (int i = 0; i < lineCount; i++)
 			{
+				y += metrics.getMaxAscent();
 				String leftText = "";
 				String rightText = "";
 
@@ -109,12 +110,13 @@ public class LineComponent implements LayoutableRenderableEntity
 				rightLineComponent.setText(rightText);
 				rightLineComponent.setColor(rightColor);
 				rightLineComponent.render(graphics);
-				y += metrics.getHeight();
+				y += metrics.getMaxDescent();
 			}
 
 			graphics.translate(-preferredLocation.x, -preferredLocation.y);
-			return new Dimension(preferredSize.width, y - metrics.getHeight());
+			return new Dimension(preferredSize.width, y);
 		}
+		y += metrics.getMaxAscent();
 
 		final TextComponent leftLineComponent = new TextComponent();
 		leftLineComponent.setPosition(new Point(x, y));
@@ -127,10 +129,10 @@ public class LineComponent implements LayoutableRenderableEntity
 		rightLineComponent.setText(right);
 		rightLineComponent.setColor(rightColor);
 		rightLineComponent.render(graphics);
-		y += metrics.getHeight();
+		y += metrics.getMaxDescent();
 
 		graphics.translate(-preferredLocation.x, -preferredLocation.y);
-		return new Dimension(preferredSize.width, y - metrics.getHeight());
+		return new Dimension(preferredSize.width, y);
 	}
 
 	private static int getLineWidth(final String line, final FontMetrics metrics)

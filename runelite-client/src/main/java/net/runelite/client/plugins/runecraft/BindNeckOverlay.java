@@ -40,8 +40,8 @@ import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TextComponent;
@@ -57,6 +57,7 @@ public class BindNeckOverlay extends Overlay
 	BindNeckOverlay(QueryRunner queryRunner, RunecraftConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
+		setGroup(OverlayGroup.GROUP3);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.queryRunner = queryRunner;
 		this.config = config;
@@ -70,8 +71,6 @@ public class BindNeckOverlay extends Overlay
 			return null;
 		}
 
-		graphics.setFont(FontManager.getRunescapeSmallFont());
-
 		for (WidgetItem necklace : getNecklaceWidgetItems())
 		{
 			final Color color = bindingCharges == 1 ? Color.RED : Color.WHITE;
@@ -79,7 +78,8 @@ public class BindNeckOverlay extends Overlay
 			final String text = bindingCharges <= 0 ? "?" : bindingCharges + "";
 
 			final TextComponent textComponent = new TextComponent();
-			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
+			//bounds.y + graphics.getFontMetrics().getMaxAscent() - graphics.getFontMetrics().getMaxDescent() this will draw the character exactly on the border
+			textComponent.setPosition(new Point(bounds.x, bounds.y + 1 + graphics.getFontMetrics().getMaxAscent() - graphics.getFontMetrics().getMaxDescent()));
 			textComponent.setText(text);
 			textComponent.setColor(color);
 			textComponent.render(graphics);

@@ -31,6 +31,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -51,6 +52,7 @@ class BoostsOverlay extends Overlay
 		this.client = client;
 		this.config = config;
 		setPosition(OverlayPosition.TOP_LEFT);
+		setGroup(OverlayGroup.GROUP2);
 		setPriority(OverlayPriority.MED);
 	}
 

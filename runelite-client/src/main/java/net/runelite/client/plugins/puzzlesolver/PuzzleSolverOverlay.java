@@ -51,6 +51,7 @@ import net.runelite.client.plugins.puzzlesolver.solver.PuzzleState;
 import net.runelite.client.plugins.puzzlesolver.solver.heuristics.ManhattanDistance;
 import net.runelite.client.plugins.puzzlesolver.solver.pathfinding.IDAStar;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -88,6 +89,7 @@ public class PuzzleSolverOverlay extends Overlay
 	@Inject
 	public PuzzleSolverOverlay(Client client, PuzzleSolverConfig config, ScheduledExecutorService executorService, SpriteManager spriteManager)
 	{
+		setGroup(OverlayGroup.GROUP2);
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
