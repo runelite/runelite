@@ -242,6 +242,12 @@ public class ClueScrollPlugin extends Plugin
 			{
 				worldMapPointsSet = false;
 				npcsToMark.clear();
+
+				if (config.displayHintArrows())
+				{
+					client.clearHintArrow();
+				}
+
 				checkClueNPCs(clue, client.getCachedNPCs());
 			}
 		}
