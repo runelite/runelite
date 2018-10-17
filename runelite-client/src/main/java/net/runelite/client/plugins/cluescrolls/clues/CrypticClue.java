@@ -122,7 +122,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search for a crate in Varrock Castle.", CRATE_5113, new WorldPoint(3224, 3492, 0), "Search the crate in the corner of the kitchen in Varrock Castle."),
 		new CrypticClue("And so on, and so on, and so on. Walking from the land of many unimportant things leads to a choice of paths.", new WorldPoint(2591, 3879, 0), "Dig on Etceteria next to the Evergreen tree in front of the castle walls."),
 		new CrypticClue("Speak to Donovan, the Family Handyman.", "Donovan the Family Handyman", new WorldPoint(2743, 3578, 0), "Donovan the Family Handyman is found on the first floor of Sinclair Mansion."),
-		new CrypticClue("Search the crates in the Barbarian Village helmet shop.", CRATES_11600, new WorldPoint(3073, 3430, 0), "Peska's Helmet Shop in Barbarian Village."),
+		new CrypticClue("Search the crates in the Barbarian Village helmet shop.", CRATES_11600, new WorldPoint(3073, 3430, 0), "Peksa's Helmet Shop in Barbarian Village."),
 		new CrypticClue("Search the boxes of Falador's general store.", CRATES_24088, new WorldPoint(2955, 3390, 0), "Falador general store."),
 		new CrypticClue("In a village made of bamboo, look for some crates under one of the houses.", CRATE_356, new WorldPoint(2800, 3074, 0), "Search the crate by the house at the northern point of the broken jungle fence in Tai Bwo Wannai."),
 		new CrypticClue("This crate is mine, all mine, even if it is in the middle of the desert.", CRATE_18889, new WorldPoint(3289, 3022, 0), "Center of desert Mining Camp. Search the crates. Requires the metal key from Tourist Trap to enter."),
