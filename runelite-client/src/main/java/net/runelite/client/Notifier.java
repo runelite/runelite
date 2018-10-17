@@ -39,9 +39,9 @@ import java.nio.file.Path;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -209,19 +209,23 @@ public class Notifier
 
 		executorService.submit(() ->
 		{
-			try
+			Process notificationProcess = sendCommand(commands).orElse(null);
+
+			if (notificationProcess != null)
 			{
-				Process notificationProcess = sendCommand(commands).orElse(null);
-				if (Objects.requireNonNull(notificationProcess).waitFor() == 0
-					&& Objects.requireNonNull(notificationProcess).exitValue() == 0)
+				try
 				{
-					return;
+					if (notificationProcess.waitFor(500, TimeUnit.MILLISECONDS)
+							&& notificationProcess.exitValue() == 0)
+					{
+						return;
+					}
 				}
-			}
-			catch (InterruptedException e)
-			{
-				log.error("Error during sending linux notification.");
-				e.printStackTrace();
+				catch (InterruptedException e)
+				{
+					log.error("Error during sending linux notification.");
+					e.printStackTrace();
+				}
 			}
 
 			sendTrayNotification(title, message, type);
