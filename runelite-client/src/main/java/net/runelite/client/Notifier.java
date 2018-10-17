@@ -39,7 +39,6 @@ import java.nio.file.Path;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Singleton;
@@ -209,23 +208,13 @@ public class Notifier
 
 		executorService.submit(() ->
 		{
-			Process notificationProcess = sendCommand(commands).orElse(null);
-
-			if (notificationProcess != null)
+			try
 			{
-				try
-				{
-					if (notificationProcess.waitFor(500, TimeUnit.MILLISECONDS)
-							&& notificationProcess.exitValue() == 0)
-					{
-						return;
-					}
-				}
-				catch (InterruptedException e)
-				{
-					log.error("Error during sending linux notification.");
-					e.printStackTrace();
-				}
+				sendCommand(commands, 500);
+			}
+			catch (IOException | InterruptedException ex)
+			{
+				log.warn("Error sending Linux notification", ex);
 			}
 
 			sendTrayNotification(title, message, type);
@@ -261,23 +250,28 @@ public class Notifier
 		}
 
 		commands.add(script.toString());
-		sendCommand(commands);
-	}
 
-	private Optional<Process> sendCommand(final List<String> commands)
-	{
 		try
 		{
-			return Optional.of(new ProcessBuilder(commands.toArray(new String[commands.size()]))
-				.redirectErrorStream(true)
-				.start());
+			sendCommand(commands, 500);
 		}
-		catch (IOException ex)
+		catch (IOException | InterruptedException ex)
 		{
-			log.warn(null, ex);
+			log.warn("Error sending Mac notification", ex);
 		}
+	}
 
-		return Optional.empty();
+	private void sendCommand(final List<String> commands, final int timeout) throws IOException, InterruptedException
+	{
+		Process notificationProcess = new ProcessBuilder(commands.toArray(new String[0]))
+				.redirectErrorStream(true)
+				.start();
+
+		if (!notificationProcess.waitFor(timeout, TimeUnit.MILLISECONDS)
+				|| notificationProcess.exitValue() != 0)
+		{
+			throw new InterruptedException();
+		}
 	}
 
 	private void storeIcon()
