@@ -210,11 +210,17 @@ public class Notifier
 		{
 			try
 			{
-				sendCommand(commands, 500);
+				Process notificationProcess = sendCommand(commands);
+
+				boolean exited = notificationProcess.waitFor(500, TimeUnit.MILLISECONDS);
+				if (exited && notificationProcess.exitValue() == 0)
+				{
+					return;
+				}
 			}
 			catch (IOException | InterruptedException ex)
 			{
-				log.warn("Error sending Linux notification", ex);
+				log.warn("Error sending linux notification.", ex);
 			}
 
 			sendTrayNotification(title, message, type);
@@ -253,25 +259,24 @@ public class Notifier
 
 		try
 		{
-			sendCommand(commands, 500);
+			Process notificationProcess = sendCommand(commands);
+
+			if (notificationProcess.waitFor(500, TimeUnit.MILLISECONDS))
+			{
+				notificationProcess.exitValue();
+			}
 		}
 		catch (IOException | InterruptedException ex)
 		{
-			log.warn("Error sending Mac notification", ex);
+			log.warn("Error sending mac notification.", ex);
 		}
 	}
 
-	private void sendCommand(final List<String> commands, final int timeout) throws IOException, InterruptedException
+	private Process sendCommand(final List<String> commands) throws IOException
 	{
-		Process notificationProcess = new ProcessBuilder(commands.toArray(new String[0]))
+		return new ProcessBuilder(commands.toArray(new String[commands.size()]))
 				.redirectErrorStream(true)
 				.start();
-
-		if (!notificationProcess.waitFor(timeout, TimeUnit.MILLISECONDS)
-				|| notificationProcess.exitValue() != 0)
-		{
-			throw new InterruptedException();
-		}
 	}
 
 	private void storeIcon()
