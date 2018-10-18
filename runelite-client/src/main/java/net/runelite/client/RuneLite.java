@@ -38,8 +38,6 @@ import java.util.Locale;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.inject.Singleton;
-import javax.swing.*;
-
 import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -226,7 +224,6 @@ public class RuneLite
 		final RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
 		final long uptime = rb.getUptime();
 		log.info("Client initialization took {}ms. Uptime: {}ms", end - start, uptime);
-
 
 	}
 

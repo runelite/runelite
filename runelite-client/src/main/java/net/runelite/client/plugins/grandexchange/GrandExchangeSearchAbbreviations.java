@@ -27,13 +27,13 @@ package net.runelite.client.plugins.grandexchange;
 public class GrandExchangeSearchAbbreviations {
 
     /**
-     * This holds a list of common abbreviations for various items.
-     * It will check the GrandExchangePanel Search box and if it
-     * finds a match will assign the actual name of the item to
-     * a string to be looked up.
+     *  This holds a list of common abbreviations for various items.
+     *  It will check the GrandExchangePanel Search box and if it
+     *  finds a match will assign the actual name of the item to
+     *  a string to be looked up.
      *
-     * @param lookup Holds the string that contains the item being searched.
-     * @return Returns actual item name.
+     *  @param lookup Holds the string that contains the item being searched.
+     *  @return Returns actual item name.
      */
     public String CheckAbbreviation(String lookup)
     {
