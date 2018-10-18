@@ -32,6 +32,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.event.MouseWheelEvent;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -256,6 +257,13 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				}
 
 				tagManager.setTagString(itemId, newTags);
+
+				// Check both previous and current tags in case the tag got removed in new tags or in case
+				// the tag got added in new tags
+				final List<String> initialTags = SPLITTER.splitToList(initialValue.toLowerCase());
+				final List<String> tags = SPLITTER.splitToList(newTags.toLowerCase());
+				tabInterface.updateTabIfActive(initialTags);
+				tabInterface.updateTabIfActive(tags);
 			});
 		}
 		else
