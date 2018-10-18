@@ -436,6 +436,7 @@ public class TabInterface
 			List<Integer> items = Arrays.stream(container.getItems())
 				.filter(Objects::nonNull)
 				.map(Item::getId)
+				.filter(id -> id != -1)
 				.collect(Collectors.toList());
 
 			if (activeTab != null && event.getMenuTarget() != null && Text.removeTags(event.getMenuTarget()).equals(activeTab.getTag()))
