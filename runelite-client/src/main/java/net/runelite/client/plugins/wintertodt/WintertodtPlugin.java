@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, terminatusx <jbfleischman@gmail.com>
+ * Copyright (c) 2018, Robin Withes <www.github.com/robinwithes>
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
@@ -50,6 +51,7 @@ import static net.runelite.api.AnimationID.WOODCUTTING_RUNE;
 import static net.runelite.api.AnimationID.WOODCUTTING_STEEL;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameObject;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -58,6 +60,7 @@ import static net.runelite.api.ItemID.BRUMA_ROOT;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.SetMessage;
@@ -78,6 +81,8 @@ import net.runelite.client.util.ColorUtil;
 public class WintertodtPlugin extends Plugin
 {
 	private static final int WINTERTODT_REGION = 6462;
+	private static final int WINDERTODT_AVALANCHE = 26690;
+	private static final String WINDERTODT_AVALANCHE_MESSAGE = "Windertodt: You are standing on a spot where snow is about to fall!";
 
 	@Inject
 	private Notifier notifier;
@@ -203,6 +208,27 @@ public class WintertodtPlugin extends Plugin
 			log.debug("Activity timeout!");
 			currentActivity = WintertodtActivity.IDLE;
 		}
+	}
+
+	@Subscribe
+	public void onGameObjectSpawned(GameObjectSpawned event)
+	{
+		if (!config.notifyAvalanche() || !isInWintertodt())
+		{
+			return;
+		}
+
+		Player player = client.getLocalPlayer();
+		GameObject gameObject = event.getGameObject();
+
+		if (WINDERTODT_AVALANCHE == gameObject.getId())
+		{
+			if (gameObject.getLocalLocation().equals(player.getLocalLocation()))
+			{
+				notifier.notify(WINDERTODT_AVALANCHE_MESSAGE);
+			}
+		}
+
 	}
 
 	@Subscribe
