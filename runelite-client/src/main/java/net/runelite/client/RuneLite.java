@@ -158,18 +158,18 @@ public class RuneLite
 		parser.accepts("debug", "Show extra debugging output");
 
 		final ArgumentAcceptingOptionSpec<ClientUpdateCheckMode> updateMode = parser
-			.accepts("rs", "Select client type")
-			.withRequiredArg()
-			.ofType(ClientUpdateCheckMode.class)
-			.defaultsTo(ClientUpdateCheckMode.AUTO)
-			.withValuesConvertedBy(new EnumConverter<ClientUpdateCheckMode>(ClientUpdateCheckMode.class)
-			{
-				@Override
-				public ClientUpdateCheckMode convert(String v)
+				.accepts("rs", "Select client type")
+				.withRequiredArg()
+				.ofType(ClientUpdateCheckMode.class)
+				.defaultsTo(ClientUpdateCheckMode.AUTO)
+				.withValuesConvertedBy(new EnumConverter<ClientUpdateCheckMode>(ClientUpdateCheckMode.class)
 				{
-					return super.convert(v.toUpperCase());
-				}
-			});
+					@Override
+					public ClientUpdateCheckMode convert(String v)
+					{
+						return super.convert(v.toUpperCase());
+					}
+				});
 
 		parser.accepts("help", "Show this text").forHelp();
 		OptionSet options = parser.parse(args);
@@ -215,8 +215,8 @@ public class RuneLite
 		final long start = System.currentTimeMillis();
 
 		injector = Guice.createInjector(new RuneLiteModule(
-			options.valueOf(updateMode),
-			developerMode));
+				options.valueOf(updateMode),
+				developerMode));
 
 		injector.getInstance(RuneLite.class).start();
 
@@ -224,7 +224,6 @@ public class RuneLite
 		final RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
 		final long uptime = rb.getUptime();
 		log.info("Client initialization took {}ms. Uptime: {}ms", end - start, uptime);
-
 	}
 
 	public void start() throws Exception

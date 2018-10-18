@@ -35,52 +35,43 @@ public class GrandExchangeSearchAbbreviations {
      *  @param lookup Holds the string that contains the item being searched.
      *  @return Returns actual item name.
      */
-    public String CheckAbbreviation(String lookup)
+    public static String CheckAbbreviation(String lookup)
     {
-
-        if(lookup.equals("bgs"))
+        // do this as a switch statement
+        switch(lookup)
         {
-            lookup = "bandos godsword";
-        }
+            case "bgs": lookup = "bandos godsword";
+            break;
 
-        if(lookup.equals("ags"))
-        {
-            lookup = "armadyl godsword";
-        }
+            case "zgs": lookup = "zamorak godsword";
+            break;
 
-        if(lookup.equals("zgs"))
-        {
-            lookup = "zamorak godsword";
-        }
+            case "sgs": lookup = "saradomin godsword";
+            break;
 
-        if(lookup.equals("sgs"))
-        {
-            lookup = "saradomin godsword";
-        }
+            case "dclaws": lookup = "dragon claws";
+            break;
 
-        if(lookup.equals("d claws") || lookup.equals("dclaws"))
-        {
-            lookup = "dragon claws";
-        }
+            case "d claws": lookup = "dragon claws";
+            break;
 
-        if(lookup.equals("dwh"))
-        {
-            lookup = "dragon warhammer";
-        }
+            case "dwh": lookup = "dragon warhammer";
+            break;
 
-        if(lookup.equals("ely"))
-        {
-            lookup = "elysian";
-        }
+            case "ely": lookup = "elysian";
+            break;
 
-        if(lookup.equals("dds"))
-        {
-            lookup = "dragon dagger";
-        }
+            case "dds": lookup = "dragon dagger";
+            break;
 
-        if(lookup.equals("p pot"))
-        {
-            lookup = "prayer potion";
+            case "p pot": lookup = "prayer potion";
+            break;
+
+            case "ppot": lookup = "prayer potion";
+            break;
+
+            case "gmaul": lookup = "granite maul";
+            break;
         }
 
         return lookup;

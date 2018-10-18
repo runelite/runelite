@@ -82,8 +82,6 @@ class GrandExchangeSearchPanel extends JPanel
 
 	private final List<GrandExchangeItems> itemsList = new ArrayList<>();
 
-	private String lookup;
-
 	@Setter
 	private Map<Integer, Integer> itemGELimits = Collections.emptyMap();
 
@@ -155,11 +153,9 @@ class GrandExchangeSearchPanel extends JPanel
 
 	private void priceLookup(boolean exactMatch)
 	{
-		lookup = searchBar.getText();
-
 		// Search common abbreviations and set lookup to actual item name
 		GrandExchangeSearchAbbreviations abbreviation = new GrandExchangeSearchAbbreviations();
-		lookup = abbreviation.CheckAbbreviation(lookup);
+		String lookup = abbreviation.CheckAbbreviation(searchBar.getText());
 
 		if (Strings.isNullOrEmpty(lookup))
 		{
