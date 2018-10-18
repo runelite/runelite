@@ -113,12 +113,12 @@ public class ClanChatPlugin extends Plugin
 		if (clanChatTitleWidget != null)
 		{
 			Widget clanChatList = client.getWidget(WidgetInfo.CLAN_CHAT_LIST);
-
+			Widget owner = client.getWidget(WidgetInfo.CLAN_CHAT_OWNER);
 			if (client.getClanChatCount() > 0)
 			{
 				clanChatTitleWidget.setText(CLAN_CHAT_TITLE + " (" + client.getClanChatCount() + "/100)");
 			}
-			else if (config.recentChats() && clanChatList.getChildren() == null)
+			else if (config.recentChats() && clanChatList.getChildren() == null && !Strings.isNullOrEmpty(owner.getText()))
 			{
 				clanChatTitleWidget.setText(RECENT_TITLE);
 
