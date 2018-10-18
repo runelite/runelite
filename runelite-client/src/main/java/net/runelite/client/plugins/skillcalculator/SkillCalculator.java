@@ -263,6 +263,8 @@ class SkillCalculator extends JPanel
 			}
 
 			UIActionSlot slot = new UIActionSlot(action, uiIcon);
+			slot.setPreferredSize(new Dimension(0, 45));
+
 			uiActionSlots.add(slot); // Keep our own reference.
 			add(slot); // Add component to the panel.
 
