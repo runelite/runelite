@@ -3120,7 +3120,7 @@ public final class NpcID
 	public static final int COMBAT_INSTRUCTOR = 3307;
 	public static final int GIELINOR_GUIDE = 3308;
 	public static final int MAGIC_INSTRUCTOR = 3309;
-	public static final int FINANCIAL_ADVISOR = 3310;
+	public static final int ACCOUNT_GUIDE = 3310;
 	public static final int MINING_INSTRUCTOR = 3311;
 	public static final int QUEST_GUIDE = 3312;
 	public static final int GIANT_RAT_3313 = 3313;
@@ -7468,12 +7468,12 @@ public final class NpcID
 	public static final int JAMES = 8193;
 	public static final int GROWTHLING = 8194;
 	public static final int BRYOPHYTA = 8195;
-	public static final int DOGADILE = 8196;
+	public static final int PUPPADILE = 8196;
 	public static final int TEKTONNE = 8197;
 	public static final int VANGUARD_8198 = 8198;
 	public static final int MINI_NISTIRIO = 8199;
 	public static final int VESPINA = 8200;
-	public static final int PUPPADILE = 8201;
+	public static final int PUPPADILE_8201 = 8201;
 	public static final int TEKTINY = 8202;
 	public static final int VANGUARD_8203 = 8203;
 	public static final int VASA_MINIRIO = 8204;
