@@ -970,6 +970,19 @@ public interface Client extends GameEngine
 	void playSoundEffect(int id, int x, int y, int range);
 
 	/**
+	 * Play a sound effect from some point in the world.
+	 *
+	 * @param id the ID of the sound to play. Any int is allowed, but see
+	 * {@link SoundEffectID} for some common ones
+	 * @param x the ground coordinate on the x axis
+	 * @param y the ground coordinate on the y axis
+	 * @param range the number of tiles away that the sound can be heard
+	 * from
+	 * @param delay the amount of frames before the sound starts playing
+	 */
+	void playSoundEffect(int id, int x, int y, int range, int delay);
+
+	/**
 	 * Gets the clients graphic buffer provider.
 	 *
 	 * @return the buffer provider
