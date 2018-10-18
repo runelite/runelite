@@ -38,6 +38,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -438,14 +439,17 @@ public class TabInterface
 				.map(Item::getId)
 				.collect(Collectors.toList());
 
-			if (activeTab != null && event.getMenuTarget() != null && Text.removeTags(event.getMenuTarget()).equals(activeTab.getTag()))
+			if (!Strings.isNullOrEmpty(event.getMenuTarget()))
 			{
-				for (Integer item : items)
+				if (activeTab != null && Text.removeTags(event.getMenuTarget()).equals(activeTab.getTag()))
 				{
-					tagManager.addTag(item, activeTab.getTag());
-				}
+					for (Integer item : items)
+					{
+						tagManager.addTag(item, activeTab.getTag());
+					}
 
-				openTag(TAG_SEARCH + activeTab.getTag());
+					openTag(TAG_SEARCH + activeTab.getTag());
+				}
 			}
 			else
 			{
@@ -456,12 +460,14 @@ public class TabInterface
 						return;
 					}
 
-					final List<String> tags = SPLITTER.splitToList(newTags);
+					final List<String> tags = SPLITTER.splitToList(newTags.toLowerCase());
 
 					for (Integer item : items)
 					{
 						tagManager.addTags(item, tags);
 					}
+
+					updateTabIfActive(tags);
 				});
 			}
 		}
@@ -595,6 +601,14 @@ public class TabInterface
 						notifier.notify("Failed to import tag tab from clipboard, invalid format.");
 					}
 			}
+		}
+	}
+
+	public void updateTabIfActive(final Collection<String> tags)
+	{
+		if (activeTab != null && tags.contains(activeTab.getTag()))
+		{
+			openTag(TAG_SEARCH + activeTab.getTag());
 		}
 	}
 
