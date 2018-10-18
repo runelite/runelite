@@ -43,70 +43,10 @@ public interface TimersConfig extends Config
 
 	@ConfigItem(
 		keyName = "showAntipoison",
-		name = "Antipoison timer",
-		description = "Configures whether Antipoison timer is displayed"
+		name = "Antipoison/Venom timers",
+		description = "Configures whether timers for Antipoision, Antidoe, Antivenom are is displayed"
 	)
 	default boolean showAntiPoison()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showSuperantipoison",
-		name = "Superantipoison timer",
-		description = "Configures whether Superantipoison timer is displayed"
-	)
-	default boolean showSuperantipoison()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showAntidotePlus",
-		name = "Antidote+ timer",
-		description = "Configures whether antidote+ timer is displayed"
-	)
-	default boolean showAntidotePlus()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showAntidotePlusPlus",
-		name = "Antidote++ timer",
-		description = "Configures whether antidote++ timer is displayed"
-	)
-	default boolean showAntidotePlusPlus()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showSanfew",
-		name = "Sanfew serum timer",
-		description = "Configures whether sanfew serum timer is displayed"
-	)
-	default boolean showSanfew()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showAntiVenom",
-		name = "Anti-venom timer",
-		description = "Configures whether antivenom timer is displayed"
-	)
-	default boolean showAntiVenom()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showAntiVenomPlus",
-		name = "Anti-venom+ timer",
-		description = "Configures whether anti venom+ timer is displayed"
-	)
-	default boolean showAntiVenomPlus()
 	{
 		return true;
 	}
@@ -117,36 +57,6 @@ public interface TimersConfig extends Config
 		description = "Configures whether antifire timer is displayed"
 	)
 	default boolean showAntiFire()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showExAntiFire",
-		name = "Extended antifire timer",
-		description = "Configures whether extended antifire timer is displayed"
-	)
-	default boolean showExAntiFire()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showSuperAntiFire",
-		name = "Super antifire timer",
-		description = "Configures whether super antifire timer is displayed"
-	)
-	default boolean showSuperAntiFire()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showExSuperAntifire",
-		name = "Extended super antifire timer",
-		description = "Configures whether extended super antifire timer is displayed"
-	)
-	default boolean showExSuperAntifire()
 	{
 		return true;
 	}
@@ -224,19 +134,9 @@ public interface TimersConfig extends Config
 	@ConfigItem(
 		keyName = "showVengeance",
 		name = "Vengeance timer",
-		description = "Configures whether vengeance timer is displayed"
+		description = "Configures whether vengeance and vengeance other timer is displayed"
 	)
 	default boolean showVengeance()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showVengeanceOther",
-		name = "Vengeance Other timer",
-		description = "Configures whether vengeance other timer is displayed"
-	)
-	default boolean showVengeanceOther()
 	{
 		return true;
 	}
@@ -283,7 +183,7 @@ public interface TimersConfig extends Config
 
 	@ConfigItem(
 		keyName = "showAbyssalSireStun",
-		name = "Abyssal Sire Stun Timer",
+		name = "Abyssal Sire stun Timer",
 		description = "Configures whether Abyssal Sire stun timer is displayed"
 	)
 	default boolean showAbyssalSireStun()
