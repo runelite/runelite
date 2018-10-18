@@ -26,10 +26,12 @@
 
 package net.runelite.client.plugins.skillcalculator;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
+import java.awt.event.ItemEvent;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.Client;
@@ -38,21 +40,17 @@ import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
-import net.runelite.client.ui.components.materialtabs.MaterialTab;
-import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
+import net.runelite.client.ui.components.iconcombobox.ComboBoxIconEntry;
+import net.runelite.client.ui.components.iconcombobox.ComboBoxIconRenderer;
 
 class SkillCalculatorPanel extends PluginPanel
 {
 	private final SkillCalculator uiCalculator;
-	private final SkillIconManager iconManager;
-	private final MaterialTabGroup tabGroup;
 
 	SkillCalculatorPanel(SkillIconManager iconManager, Client client, SpriteManager spriteManager, ItemManager itemManager)
 	{
 		super();
 		getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
-		this.iconManager = iconManager;
 
 		setBorder(new EmptyBorder(10, 10, 10, 10));
 		setLayout(new GridBagLayout());
@@ -63,17 +61,38 @@ class SkillCalculatorPanel extends PluginPanel
 		c.gridx = 0;
 		c.gridy = 0;
 
-		tabGroup = new MaterialTabGroup();
-		tabGroup.setLayout(new GridLayout(0, 6, 7, 7));
+		JComboBox<ComboBoxIconEntry> skillSelector = new JComboBox<>();
+		skillSelector.setFocusable(false); // To prevent an annoying "focus paint" effect
+		skillSelector.setForeground(Color.WHITE);
+		skillSelector.setRenderer(new ComboBoxIconRenderer());
 
-		addCalculatorButtons();
+		// Populate the combo box entries
+		for (CalculatorType calculatorType : CalculatorType.values())
+		{
+			ImageIcon icon = new ImageIcon(iconManager.getSkillImage(calculatorType.getSkill(), true));
+			ComboBoxIconEntry dropdownEntry = new ComboBoxIconEntry(icon, calculatorType.getSkill().getName(), calculatorType);
+			skillSelector.addItem(dropdownEntry);
+		}
 
 		final UICalculatorInputArea uiInput = new UICalculatorInputArea();
 		uiInput.setBorder(new EmptyBorder(15, 0, 15, 0));
 		uiInput.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		uiCalculator = new SkillCalculator(client, uiInput, spriteManager, itemManager);
 
-		add(tabGroup, c);
+		skillSelector.addItemListener(e ->
+		{
+			if (e.getStateChange() == ItemEvent.SELECTED)
+			{
+				ComboBoxIconEntry entry = (ComboBoxIconEntry) e.getItem();
+
+				if (entry.getObject() != null && entry.getObject() instanceof CalculatorType)
+				{
+					uiCalculator.openCalculator((CalculatorType) entry.getObject());
+				}
+			}
+		});
+
+		add(skillSelector, c);
 		c.gridy++;
 
 		add(uiInput, c);
@@ -81,21 +100,5 @@ class SkillCalculatorPanel extends PluginPanel
 
 		add(uiCalculator, c);
 		c.gridy++;
-	}
-
-	private void addCalculatorButtons()
-	{
-		for (CalculatorType calculatorType : CalculatorType.values())
-		{
-			ImageIcon icon = new ImageIcon(iconManager.getSkillImage(calculatorType.getSkill(), true));
-			MaterialTab tab = new MaterialTab(icon, tabGroup, null);
-			tab.setOnSelectEvent(() ->
-			{
-				uiCalculator.openCalculator(calculatorType);
-				return true;
-			});
-
-			tabGroup.addTab(tab);
-		}
 	}
 }
