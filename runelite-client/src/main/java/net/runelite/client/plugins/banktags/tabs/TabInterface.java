@@ -437,6 +437,7 @@ public class TabInterface
 			List<Integer> items = Arrays.stream(container.getItems())
 				.filter(Objects::nonNull)
 				.map(Item::getId)
+				.filter(id -> id != -1)
 				.collect(Collectors.toList());
 
 			if (!Strings.isNullOrEmpty(event.getMenuTarget()))
