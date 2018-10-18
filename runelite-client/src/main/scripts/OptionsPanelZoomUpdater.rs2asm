@@ -19,7 +19,7 @@
    load_int               128
    isub                  
    istore                 1
-   load_int               17104905
+   load_int               17104910
    widget_get_width_widget
    load_int               17104911
    widget_get_width_widget
@@ -41,29 +41,29 @@
 LABEL27:
    get_varc               74
    load_int               128
-   isub
+   isub                  
    iload                  0
    load_string            "zoomExpToLin"
-   runelite_callback
-   pop_int
+   runelite_callback     
+   pop_int               
    iload                  2
    imul                  
    iload                  0
-   idiv
+   idiv                  
    istore                 5
    jump                   LABEL44
 LABEL36:
    get_varc               73
    load_int               128
-   isub
+   isub                  
    iload                  0
    load_string            "zoomExpToLin"
-   runelite_callback
-   pop_int
+   runelite_callback     
+   pop_int               
    iload                  2
    imul                  
    iload                  1
-   idiv
+   idiv                  
    istore                 5
 LABEL44:
    iload                  5
