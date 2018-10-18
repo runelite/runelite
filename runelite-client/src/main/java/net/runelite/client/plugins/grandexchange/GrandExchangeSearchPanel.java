@@ -154,8 +154,7 @@ class GrandExchangeSearchPanel extends JPanel
 	private void priceLookup(boolean exactMatch)
 	{
 		// Search common abbreviations and set lookup to actual item name
-		GrandExchangeSearchAbbreviations abbreviation = new GrandExchangeSearchAbbreviations();
-		String lookup = abbreviation.CheckAbbreviation(searchBar.getText());
+		String lookup = GrandExchangeSearchAbbreviations.CheckAbbreviation(searchBar.getText());
 
 		if (Strings.isNullOrEmpty(lookup))
 		{

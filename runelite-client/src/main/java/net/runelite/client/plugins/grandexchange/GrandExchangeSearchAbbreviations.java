@@ -24,57 +24,45 @@
  */
 package net.runelite.client.plugins.grandexchange;
 
-public class GrandExchangeSearchAbbreviations {
+public class GrandExchangeSearchAbbreviations
+{
+	/**
+	*  This holds a list of common abbreviations for various items.
+	*  It will check the GrandExchangePanel Search box and if it
+	*  finds a match will assign the actual name of the item to
+	*  a string to be looked up.
+	*
+	*  @param lookup Holds the string that contains the item being searched.
+	*  @return Returns actual item name.
+	*/
+	public static String CheckAbbreviation(String lookup)
+	{
+		switch (lookup)
+		{
+			case "bgs": return "bandos godsword";
 
-    /**
-     *  This holds a list of common abbreviations for various items.
-     *  It will check the GrandExchangePanel Search box and if it
-     *  finds a match will assign the actual name of the item to
-     *  a string to be looked up.
-     *
-     *  @param lookup Holds the string that contains the item being searched.
-     *  @return Returns actual item name.
-     */
-    public static String CheckAbbreviation(String lookup)
-    {
-        // do this as a switch statement
-        switch(lookup)
-        {
-            case "bgs": lookup = "bandos godsword";
-            break;
+			case "zgs": return "zamorak godsword";
 
-            case "zgs": lookup = "zamorak godsword";
-            break;
+			case "sgs": return "saradomin godsword";
 
-            case "sgs": lookup = "saradomin godsword";
-            break;
+			case "dclaws": return "dragon claws";
 
-            case "dclaws": lookup = "dragon claws";
-            break;
+			case "d claws": return "dragon claws";
 
-            case "d claws": lookup = "dragon claws";
-            break;
+			case "dwh": return "dragon warhammer";
 
-            case "dwh": lookup = "dragon warhammer";
-            break;
+			case "ely": return "elysian";
 
-            case "ely": lookup = "elysian";
-            break;
+			case "dds": return "dragon dagger";
 
-            case "dds": lookup = "dragon dagger";
-            break;
+			case "p pot": return "prayer potion";
 
-            case "p pot": lookup = "prayer potion";
-            break;
+			case "ppot": return "prayer potion";
 
-            case "ppot": lookup = "prayer potion";
-            break;
+			case "gmaul": return "granite maul";
+		}
 
-            case "gmaul": lookup = "granite maul";
-            break;
-        }
-
-        return lookup;
-    }
+		return lookup;
+	}
 
 }
