@@ -25,6 +25,7 @@
  */
 package net.runelite.client.util;
 
+import com.google.common.base.CharMatcher;
 import java.util.regex.Pattern;
 
 /**
@@ -54,6 +55,18 @@ public class Text
 	public static String standardize(String str)
 	{
 		return removeTags(str).replace('\u00A0', ' ').trim().toLowerCase();
+	}
+
+	/**
+	 * Convert a string into Jagex username format
+	 * Remove all non-ascii characters, replace nbsp with space, replace _- with spaces, and trim
+	 *
+	 * @param str The string to standardize
+	 * @return The given `str` that is in Jagex name format
+	 */
+	public static String toJagexName(String str)
+	{
+		return CharMatcher.ascii().retainFrom(str.replace('\u00A0', ' ')).replaceAll("[_-]+", " ").trim();
 	}
 
 	/**
