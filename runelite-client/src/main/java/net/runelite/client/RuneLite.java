@@ -308,4 +308,3 @@ public class RuneLite
 		RuneLite.injector = injector;
 	}
 }
-
