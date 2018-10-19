@@ -772,6 +772,14 @@ public class Perspective
 		return new Point(xOffset, yOffset);
 	}
 
+	/**
+	 * Calculates a polygon line from 2 LocalPoints
+	 *
+	 * @param client the game client
+	 * @param startLocation start location of the polygon
+	 * @param endLocation end location of the polygon
+	 * @return a {@link Polygon}
+	 */
 	private static Polygon linePoly(@Nonnull Client client, @Nonnull LocalPoint startLocation, @Nonnull LocalPoint endLocation)
 	{
 		LocalPoint startPoint = new LocalPoint(
@@ -793,7 +801,14 @@ public class Perspective
 		return null;
 	}
 
-
+	/**
+	 * Calculates a list of polygon lines with 2 Worldpoints
+	 * Start location is the South-West WorldPoint, end location is the North-East WorldPoint
+	 * @param client the game client
+	 * @param startLocation start location of the polygon
+	 * @param endLocation end location of the polygon
+	 * @return a {@link List} of {@link Polygon} 
+	 */
 	public static List<Polygon> getLinePolyList(@Nonnull Client client, @Nonnull WorldPoint startLocation, @Nonnull WorldPoint endLocation)
 	{
 		List<Polygon> pList = new ArrayList<>();
