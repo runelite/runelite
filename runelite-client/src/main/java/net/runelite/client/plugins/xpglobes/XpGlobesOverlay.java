@@ -93,7 +93,7 @@ public class XpGlobesOverlay extends Overlay
 		}
 
 		final List<XpGlobe> sortedXpGlobes = plugin.getXpGlobes();
-		sortedXpGlobes.sort((a,b) -> a.getSkill().compareTo(b.getSkill()));
+		sortedXpGlobes.sort((a, b) -> a.getSkill().compareTo(b.getSkill()));
 
 		int curDrawX = 0;
 		for (final XpGlobe xpGlobe : sortedXpGlobes)
