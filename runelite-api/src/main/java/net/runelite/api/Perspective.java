@@ -37,6 +37,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.model.Jarvis;
 import net.runelite.api.model.Triangle;
 import net.runelite.api.model.Vertex;
@@ -771,4 +772,104 @@ public class Perspective
 		return new Point(xOffset, yOffset);
 	}
 
+	private static Polygon linePoly(@Nonnull Client client, @Nonnull LocalPoint startLocation, @Nonnull LocalPoint endLocation)
+	{
+		LocalPoint startPoint = new LocalPoint(
+				startLocation.getX() - (LOCAL_TILE_SIZE / 2),
+				startLocation.getY() + (LOCAL_TILE_SIZE / 2));
+		LocalPoint endPoint = new LocalPoint(
+				endLocation.getX() - (LOCAL_TILE_SIZE / 2),
+				endLocation.getY() + (LOCAL_TILE_SIZE / 2));
+		int plane = client.getPlane();
+		Point p1 = Perspective.localToCanvas(client, startPoint, plane);
+		Point p2 = Perspective.localToCanvas(client, endPoint, plane);
+		if (p1 != null && p2 != null)
+		{
+			Polygon polygon = new Polygon();
+			polygon.addPoint(p1.getX(), p1.getY());
+			polygon.addPoint(p2.getX(), p2.getY());
+			return polygon;
+		}
+		return null;
+	}
+
+
+	public static List<Polygon> getLinePolyList(@Nonnull Client client, @Nonnull WorldPoint startLocation, @Nonnull WorldPoint endLocation)
+	{
+		List<Polygon> pList = new ArrayList<>();
+		int sizeX = Math.abs(endLocation.getX() - startLocation.getX()) + 1;
+		int sizeY = Math.abs(endLocation.getY() - startLocation.getY()) + 1;
+		//HANDLE NORTH
+		for (int i = 0; i < sizeX; i++)
+		{
+			WorldPoint startPoint = new WorldPoint(startLocation.getX() + i, startLocation.getY() + sizeY - 1, startLocation.getPlane());
+			WorldPoint endPoint = new WorldPoint(startLocation.getX() + (i + 1), startLocation.getY() + sizeY - 1, startLocation.getPlane());
+			LocalPoint localPointStart = LocalPoint.fromWorld(client, startPoint);
+			LocalPoint localPointEnd = LocalPoint.fromWorld(client, endPoint);
+
+			if (localPointStart != null && localPointEnd != null)
+			{
+				Polygon p = linePoly(client, localPointStart, localPointEnd);
+				if (p != null)
+				{
+					pList.add(p);
+				}
+			}
+		}
+
+		//HANDLE SOUTH
+		for (int i = 0; i < sizeX; i++)
+		{
+			WorldPoint startPoint = new WorldPoint(startLocation.getX() + i, startLocation.getY() - 1, startLocation.getPlane());
+			WorldPoint endPoint = new WorldPoint(startLocation.getX() + (i + 1), startLocation.getY() - 1, startLocation.getPlane());
+			LocalPoint localPointStart = LocalPoint.fromWorld(client, startPoint);
+			LocalPoint localPointEnd = LocalPoint.fromWorld(client, endPoint);
+
+			if (localPointStart != null && localPointEnd != null)
+			{
+				Polygon p = linePoly(client, localPointStart, localPointEnd);
+				if (p != null)
+				{
+					pList.add(p);
+				}
+			}
+		}
+
+		//HANDLE WEST
+		for (int j = 0; j < sizeY; j++)
+		{
+			WorldPoint startPoint = new WorldPoint(startLocation.getX(), startLocation.getY() + (j - 1), startLocation.getPlane());
+			WorldPoint endPoint = new WorldPoint(startLocation.getX(), startLocation.getY() + j, startLocation.getPlane());
+			LocalPoint localPointStart = LocalPoint.fromWorld(client, startPoint);
+			LocalPoint localPointEnd = LocalPoint.fromWorld(client, endPoint);
+
+			if (localPointStart != null && localPointEnd != null)
+			{
+				Polygon p = linePoly(client, localPointStart, localPointEnd);
+				if (p != null)
+				{
+					pList.add(p);
+				}
+			}
+		}
+
+		//HANDLE EAST
+		for (int j = 0; j < sizeY; j++)
+		{
+			WorldPoint startPoint = new WorldPoint(startLocation.getX() + sizeX, startLocation.getY() + (j - 1), startLocation.getPlane());
+			WorldPoint endPoint = new WorldPoint(startLocation.getX() + sizeX, startLocation.getY() + j, startLocation.getPlane());
+			LocalPoint localPointStart = LocalPoint.fromWorld(client, startPoint);
+			LocalPoint localPointEnd = LocalPoint.fromWorld(client, endPoint);
+
+			if (localPointStart != null && localPointEnd != null)
+			{
+				Polygon p = linePoly(client, localPointStart, localPointEnd);
+				if (p != null)
+				{
+					pList.add(p);
+				}
+			}
+		}
+		return pList;
+	}
 }

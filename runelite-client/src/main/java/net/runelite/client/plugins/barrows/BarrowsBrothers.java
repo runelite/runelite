@@ -32,17 +32,26 @@ import net.runelite.api.coords.WorldPoint;
 @RequiredArgsConstructor
 public enum BarrowsBrothers
 {
-	AHRIM("Ahrim", new WorldPoint(3566, 3289, 0), Varbits.BARROWS_KILLED_AHRIM),
-	DHAROK("Dharok", new WorldPoint(3575, 3298, 0), Varbits.BARROWS_KILLED_DHAROK),
-	GUTHAN("Guthan", new WorldPoint(3577, 3283, 0), Varbits.BARROWS_KILLED_GUTHAN),
-	KARIL("Karil", new WorldPoint(3566, 3275, 0), Varbits.BARROWS_KILLED_KARIL),
-	TORAG("Torag", new WorldPoint(3553, 3283, 0), Varbits.BARROWS_KILLED_TORAG),
-	VERAC("Verac", new WorldPoint(3557, 3298, 0), Varbits.BARROWS_KILLED_VERAC);
-
+	AHRIM("Ahrim", new WorldPoint(3566, 3289, 0), Varbits.BARROWS_KILLED_AHRIM,
+			new WorldPoint(3562, 3286, 0), new WorldPoint(3567, 3292, 0)),
+	DHAROK("Dharok", new WorldPoint(3575, 3298, 0), Varbits.BARROWS_KILLED_DHAROK,
+			new WorldPoint(3572, 3295, 0), new WorldPoint(3577, 3300, 0)),
+	GUTHAN("Guthan", new WorldPoint(3576, 3282, 0), Varbits.BARROWS_KILLED_GUTHAN,
+			new WorldPoint(3574, 3280, 0), new WorldPoint(3580, 3284, 0)),
+	KARIL("Karil", new WorldPoint(3566, 3276, 0), Varbits.BARROWS_KILLED_KARIL,
+			new WorldPoint(3563, 3273, 0), new WorldPoint(3569, 3279, 0)),
+	TORAG("Torag", new WorldPoint(3554, 3283, 0), Varbits.BARROWS_KILLED_TORAG,
+			new WorldPoint(3552, 3281, 0), new WorldPoint(3555, 3284, 0)),
+	VERAC("Verac", new WorldPoint(3557, 3298, 0), Varbits.BARROWS_KILLED_VERAC,
+			new WorldPoint(3555, 3295, 0), new WorldPoint(3559, 3300, 0));
 	@Getter
 	private final String name;
 	@Getter
 	private final WorldPoint location;
 	@Getter
 	private final Varbits killedVarbit;
+	@Getter
+	private final WorldPoint digLocationStart;
+	@Getter
+	private final WorldPoint digLocationEnd;
 }
