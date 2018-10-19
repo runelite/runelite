@@ -43,6 +43,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapAdmire",
+		name = "Admire",
+		description = "Swap Admire with Teleport or Spellbook for mounted skill capes."
+	)
+	default boolean swapAdmire()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "swapAssignment",
 		name = "Assignment",
 		description = "Swap Talk-to with Assignment for Slayer Masters. This will take priority over swapping Trade."
