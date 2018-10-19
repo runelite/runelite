@@ -41,7 +41,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -99,7 +98,6 @@ public class LootTrackerPlugin extends Plugin
 	private SpriteManager spriteManager;
 
 	@Inject
-	@Getter
 	private LootTrackerConfig config;
 
 	@Inject
