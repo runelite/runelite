@@ -48,8 +48,7 @@ public class WidgetOverlay extends Overlay
 		PEST_CONTROL_BOAT_INFO(WidgetInfo.PEST_CONTROL_BOAT_INFO, OverlayPosition.TOP_LEFT),
 		PEST_CONTROL_INFO(WidgetInfo.PEST_CONTROL_INFO, OverlayPosition.TOP_LEFT),
 		PVP_BOUNTY_HUNTER_STATS(WidgetInfo.PVP_BOUNTY_HUNTER_STATS, OverlayPosition.TOP_RIGHT),
-		PVP_KILLDEATH_COUNTER(WidgetInfo.PVP_KILLDEATH_COUNTER, OverlayPosition.TOP_LEFT),
-		EXPERIENCE_DROPS(WidgetInfo.EXPERIENCE_DROPS, OverlayPosition.DETACHED, new Rectangle(50, 50));
+		PVP_KILLDEATH_COUNTER(WidgetInfo.PVP_KILLDEATH_COUNTER, OverlayPosition.TOP_LEFT);
 
 		@Getter
 		private final WidgetInfo widget;
@@ -93,7 +92,7 @@ public class WidgetOverlay extends Overlay
 	private final OverlayPosition overlayPosition;
 	private Rectangle defaultPosition;
 
-	private WidgetOverlay(final Client client, final WidgetInfo widgetInfo, final OverlayPosition overlayPosition, final Rectangle customSize)
+	public WidgetOverlay(final Client client, final WidgetInfo widgetInfo, final OverlayPosition overlayPosition, final Rectangle customSize)
 	{
 		this.client = client;
 		this.widgetInfo = widgetInfo;

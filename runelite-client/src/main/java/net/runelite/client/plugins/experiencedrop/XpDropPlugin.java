@@ -26,12 +26,14 @@ package net.runelite.client.plugins.experiencedrop;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -39,6 +41,9 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.WidgetOverlay;
 
 @PluginDescriptor(
 	name = "XP Drop",
@@ -51,6 +56,9 @@ public class XpDropPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private XpDropConfig config;
@@ -182,5 +190,49 @@ public class XpDropPlugin extends Plugin
 			}
 		}
 		return null;
+	}
+
+	private WidgetOverlay overlay;
+	private int positionBit = -1;
+
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		int newPos = client.getVar(Varbits.EXPERIENCE_TRACKER_POSITION);
+		if (newPos != positionBit)
+		{
+			positionBit = newPos;
+			Widget viewport = client.getViewportWidget();
+			if (viewport != null)
+			{
+				Rectangle viewportSize = viewport.getBounds();
+				Rectangle bounds = new Rectangle(50, 50);
+				switch (newPos)
+				{
+					case 0: //Right
+						bounds.x = viewportSize.width - bounds.width;
+						break;
+
+					case 1: //Middle
+						bounds.x = (int) (viewportSize.width / 2.0f - bounds.width / 2.0f);
+						break;
+
+					case 2: //Left
+						bounds.x = 0;
+						break;
+
+					default:
+						return;
+				}
+
+				if (overlay != null)
+				{
+					overlayManager.remove(overlay);
+				}
+				overlay = new WidgetOverlay(client, WidgetInfo.EXPERIENCE_DROPS, OverlayPosition.DETACHED, bounds);
+				overlayManager.add(overlay);
+			}
+		}
 	}
 }
