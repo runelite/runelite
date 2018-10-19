@@ -47,6 +47,7 @@ public class WidgetOverlay extends Overlay
 		.put(WidgetInfo.TITHE_FARM, OverlayPosition.TOP_RIGHT)
 		.put(WidgetInfo.PEST_CONTROL_BOAT_INFO, OverlayPosition.TOP_LEFT)
 		.put(WidgetInfo.PEST_CONTROL_INFO, OverlayPosition.TOP_LEFT)
+		.put(WidgetInfo.ZEAH_MESS_HALL_COOKING_DISPLAY, OverlayPosition.TOP_LEFT)
 		.put(WidgetInfo.PVP_BOUNTY_HUNTER_STATS, OverlayPosition.TOP_RIGHT)
 		.put(WidgetInfo.PVP_KILLDEATH_COUNTER, OverlayPosition.TOP_LEFT)
 		.build();
@@ -118,7 +119,7 @@ public class WidgetOverlay extends Overlay
 		y = Math.min((int)parent.getMaxY() - bounds.height, y);
 		bounds.setLocation(x, y);
 		widget.setOriginalX(0);
-		widget.setRelativeX(0);
+		widget.setOriginalY(0);
 		widget.setRelativeX(bounds.x - parent.x);
 		widget.setRelativeY(bounds.y - parent.y);
 		return new Dimension(widget.getWidth(), widget.getHeight());

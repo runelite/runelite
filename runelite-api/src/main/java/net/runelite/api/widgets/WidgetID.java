@@ -119,14 +119,15 @@ public class WidgetID
 	public static final int MINIGAME_TAB_ID = 76;
 	public static final int SPELLBOOK_GROUP_ID = 218;
 	public static final int PVP_GROUP_ID = 90;
+	public static final int ZEAH_MESS_HALL_GROUP_ID = 235;
 
 	static class WorldMap
 	{
-		static final int MAPVIEW = 4;
-		static final int OVERVIEW_MAP = 7;
-		static final int SEARCH = 22;
-		static final int SURFACE_SELECTOR = 30;
-		static final int TOOLTIP = 36;
+		static final int MAPVIEW = 6;
+		static final int OVERVIEW_MAP = 9;
+		static final int SEARCH = 24;
+		static final int SURFACE_SELECTOR = 25;
+		static final int TOOLTIP = 38;
 		static final int OPTION = 42;
 	}
 
@@ -203,6 +204,8 @@ public class WidgetID
 		static final int CONTENT_CONTAINER = 9;
 		static final int ITEM_CONTAINER = 12;
 		static final int SEARCH_BUTTON_BACKGROUND = 39;
+		static final int DEPOSIT_INVENTORY = 41;
+		static final int DEPOSIT_EQUIPMENT = 43;
 		static final int INCINERATOR = 45;
 		static final int INCINERATOR_CONFIRM = 46;
 	}
@@ -288,7 +291,7 @@ public class WidgetID
 
 	static class LoginClickToPlayScreen
 	{
-		static final int MESSAGE_OF_THE_DAY = 4;
+		static final int MESSAGE_OF_THE_DAY = 7;
 	}
 
 	static class Viewport
@@ -705,5 +708,10 @@ public class WidgetID
 		static final int ATTACK_RANGE = 55;
 		static final int WILDERNESS_LEVEL = 56; // this can also be the Deadman Mode "Protection" text
 		static final int DEADMAN_PROTECTION_TIME = 57;
+	}
+
+	static class Zeah
+	{
+		static final int MESS_HALL_COOKING_DISPLAY = 3;
 	}
 }

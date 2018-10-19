@@ -49,7 +49,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import static net.runelite.api.Skill.SLAYER;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
@@ -57,7 +56,6 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
@@ -258,17 +256,6 @@ public class SlayerPlugin extends Plugin
 		NPC npc = npcDespawned.getNpc();
 		highlightedTargets.remove(npc);
 	}
-
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
-	{
-		int slayerTargetsLeft = client.getVar(VarPlayer.SLAYER_TARGETS_LEFT);
-		if (slayerTargetsLeft > 0 && taskName != null)
-		{
-			setTask(taskName, slayerTargetsLeft);
-		}
-	}
-
 
 	@Subscribe
 	public void onGameTick(GameTick tick)

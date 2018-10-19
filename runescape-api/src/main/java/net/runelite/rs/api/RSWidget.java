@@ -342,4 +342,12 @@ public interface RSWidget extends Widget
 	@Import("dragDeadTime")
 	@Override
 	void setDragDeadTime(int deadTime);
+
+	@Import("itemQuantityMode")
+	@Override
+	int getItemQuantityMode();
+
+	@Import("itemQuantityMode")
+	@Override
+	void setItemQuantityMode(int itemQuantityMode);
 }

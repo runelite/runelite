@@ -238,7 +238,18 @@ public class ClueScrollPlugin extends Plugin
 		// if three step clue check for clue scroll pieces
 		if (clue instanceof ThreeStepCrypticClue)
 		{
-			((ThreeStepCrypticClue) clue).checkForParts(client, event, itemManager);
+			if (((ThreeStepCrypticClue) clue).update(client, event, itemManager))
+			{
+				worldMapPointsSet = false;
+				npcsToMark.clear();
+
+				if (config.displayHintArrows())
+				{
+					client.clearHintArrow();
+				}
+
+				checkClueNPCs(clue, client.getCachedNPCs());
+			}
 		}
 	}
 
@@ -308,7 +319,10 @@ public class ClueScrollPlugin extends Plugin
 				{
 					for (WorldPoint location : locations)
 					{
-						highlightObjectsForLocation(location, objectIds);
+						if (location != null)
+						{
+							highlightObjectsForLocation(location, objectIds);
+						}
 					}
 				}
 			}
@@ -477,6 +491,7 @@ public class ClueScrollPlugin extends Plugin
 		}
 
 		// We have unknown clue, reset
+		log.warn("Encountered unhandled clue text: {}", clueScrollText.getText());
 		resetClue(true);
 		return null;
 	}

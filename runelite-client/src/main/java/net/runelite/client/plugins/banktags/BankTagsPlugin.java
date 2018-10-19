@@ -32,6 +32,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.event.MouseWheelEvent;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -160,7 +161,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				break;
 			}
 			case "bankSearchFilter":
-				int itemId = itemManager.canonicalize(intStack[intStackSize - 1]);
+				int itemId = intStack[intStackSize - 1];
 				String itemName = stringStack[stringStackSize - 2];
 				String search = stringStack[stringStackSize - 1];
 
@@ -196,7 +197,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 		{
 			Widget container = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
 			Widget item = container.getChild(event.getActionParam0());
-			int itemID = itemManager.canonicalize(item.getItemId());
+			int itemID = item.getItemId();
 			String text = EDIT_TAGS_MENU_OPTION;
 			int tagCount = tagManager.getTags(itemID).size();
 			if (tagCount > 0)
@@ -243,7 +244,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				return;
 			}
 
-			int itemId = itemManager.canonicalize(item.getId());
+			int itemId = item.getId();
 			ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 			String itemName = itemComposition.getName();
 			String initialValue = tagManager.getTagString(itemId);
@@ -256,6 +257,13 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				}
 
 				tagManager.setTagString(itemId, newTags);
+
+				// Check both previous and current tags in case the tag got removed in new tags or in case
+				// the tag got added in new tags
+				final List<String> initialTags = SPLITTER.splitToList(initialValue.toLowerCase());
+				final List<String> tags = SPLITTER.splitToList(newTags.toLowerCase());
+				tabInterface.updateTabIfActive(initialTags);
+				tabInterface.updateTabIfActive(tags);
 			});
 		}
 		else

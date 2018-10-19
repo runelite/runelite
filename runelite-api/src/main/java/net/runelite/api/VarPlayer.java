@@ -47,8 +47,6 @@ public enum VarPlayer
 
 	NMZ_REWARD_POINTS(1060),
 
-	SLAYER_TARGETS_LEFT(261),
-
 	/**
 	 * 0 : not started
 	 * greater than 0 : in progress
