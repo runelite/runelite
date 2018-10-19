@@ -27,6 +27,7 @@
 package net.runelite.client.plugins.cluescrolls;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
@@ -145,6 +146,12 @@ public class ClueScrollPlugin extends Plugin
 	ClueScrollConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ClueScrollConfig.class);
+	}
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(ClueScrollService.class).to(ClueScrollServiceImpl.class);
 	}
 
 	@Override

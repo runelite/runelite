@@ -60,15 +60,18 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.input.MouseWheelListener;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
+import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 
 @PluginDescriptor(
 	name = "Bank Tags",
 	description = "Enable tagging of bank items and searching of bank tags",
 	tags = {"searching", "tagging"}
 )
+@PluginDependency(ClueScrollPlugin.class)
 public class BankTagsPlugin extends Plugin implements MouseWheelListener
 {
 	public static final Splitter SPLITTER = Splitter.on(",").omitEmptyStrings().trimResults();

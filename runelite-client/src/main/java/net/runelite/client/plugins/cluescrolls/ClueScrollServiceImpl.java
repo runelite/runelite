@@ -1,15 +1,15 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2018, Ron Young <https://github.com/raiyni>
  * All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ *     list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -22,16 +22,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues.emote;
 
-import net.runelite.api.Client;
-import net.runelite.api.Item;
+package net.runelite.client.plugins.cluescrolls;
 
-public interface ItemRequirement
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
+
+@Singleton
+class ClueScrollServiceImpl implements ClueScrollService
 {
-	boolean fulfilledBy(int itemId);
+	private final ClueScrollPlugin plugin;
 
-	boolean fulfilledBy(Item[] items);
+	@Inject
+	private ClueScrollServiceImpl(ClueScrollPlugin plugin)
+	{
+		this.plugin = plugin;
+	}
 
-	String getCollectiveName(Client client);
+	@Override
+	public ClueScroll getClue()
+	{
+		return plugin.getClue();
+	}
 }
