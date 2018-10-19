@@ -319,7 +319,8 @@ public class TabInterface
 
 		if (canvasBounds.contains(event.getPoint()))
 		{
-			scrollTab(event.getWheelRotation());
+			event.consume();
+			clientThread.invoke(() -> scrollTab(event.getWheelRotation()));
 		}
 	}
 
@@ -686,7 +687,7 @@ public class TabInterface
 	private boolean isHidden()
 	{
 		Widget widget = client.getWidget(WidgetInfo.BANK_CONTAINER);
-		return !config.tabs() || widget == null || widget.isHidden();
+		return !config.tabs() || widget == null;
 	}
 
 	private void loadTab(String tag)
