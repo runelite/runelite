@@ -24,11 +24,11 @@
  */
 package net.runelite.client.plugins.poh;
 
-import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -47,6 +47,7 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
@@ -54,7 +55,6 @@ import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.HiscoreManager;
 import net.runelite.client.plugins.Plugin;
@@ -150,24 +150,6 @@ public class PohPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
-	{
-		incenseBurners.forEach((k, v) ->
-		{
-			final double certainSec = v.getCountdownTimer();
-			final double certainNewSec = Math.max(certainSec - ESTIMATED_TICK_LENGTH, 0);
-			v.setCountdownTimer(certainNewSec);
-
-			if (certainNewSec == 0)
-			{
-				final double randomSec = v.getRandomTimer();
-				final double randomNewSec = Math.max(randomSec - ESTIMATED_TICK_LENGTH, 0);
-				v.setRandomTimer(randomNewSec);
-			}
-		});
-	}
-
-	@Subscribe
 	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		GameObject gameObject = event.getGameObject();
@@ -212,14 +194,12 @@ public class PohPlugin extends Plugin
 			return;
 		}
 
-		final int x = actor.getLocalLocation().getX();
-		final int y = actor.getLocalLocation().getY();
+		final LocalPoint loc = actor.getLocalLocation();
 
 		// Find burner closest to player
-		incenseBurners.keySet().stream().min((a, b) -> ComparisonChain.start()
-			.compare(Math.abs(a.getLocalLocation().getY() - y), Math.abs(b.getLocalLocation().getY() - y))
-			.compare(Math.abs(a.getLocalLocation().getX() - x), Math.abs(b.getLocalLocation().getX() - x))
-			.result())
+		incenseBurners.keySet()
+			.stream()
+			.min(Comparator.comparingInt(a -> loc.distanceTo(a.getLocalLocation())))
 			.ifPresent(tile ->
 			{
 				final IncenseBurner incenseBurner = incenseBurners.get(tile);
@@ -244,9 +224,15 @@ public class PohPlugin extends Plugin
 			try
 			{
 				final HiscoreResult playerStats = hiscoreManager.lookup(playerName, HiscoreEndpoint.NORMAL);
+
+				if (playerStats == null)
+				{
+					return;
+				}
+
 				final Skill fm = playerStats.getFiremaking();
 				final int level = fm.getLevel();
-				updateBurner(incenseBurner, level);
+				updateBurner(incenseBurner, Math.max(level, 1));
 			}
 			catch (IOException e)
 			{
