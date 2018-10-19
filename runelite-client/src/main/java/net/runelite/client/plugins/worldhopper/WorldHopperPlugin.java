@@ -660,19 +660,8 @@ public class WorldHopperPlugin extends Plugin
 	{
 		String cleanName = Text.removeTags(name);
 
-		Friend[] friends = client.getFriends();
-
-		if (friends != null)
-		{
-			for (Friend friend : friends)
-			{
-				if (friend != null && friend.getName().equals(cleanName))
-				{
-					return friend;
-				}
-			}
-		}
-
+		// Search clan members first, because if a friend is in the clan chat but their private
+		// chat is 'off', then the hop-to option will not get shown in the menu (issue #5679).
 		ClanMember[] clanMembers = client.getClanMembers();
 
 		if (clanMembers != null)
@@ -682,6 +671,19 @@ public class WorldHopperPlugin extends Plugin
 				if (clanMember != null && clanMember.getUsername().equals(cleanName))
 				{
 					return clanMember;
+				}
+			}
+		}
+
+		Friend[] friends = client.getFriends();
+
+		if (friends != null)
+		{
+			for (Friend friend : friends)
+			{
+				if (friend != null && friend.getName().equals(cleanName))
+				{
+					return friend;
 				}
 			}
 		}
