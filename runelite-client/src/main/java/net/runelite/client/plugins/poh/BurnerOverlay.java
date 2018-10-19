@@ -27,22 +27,25 @@ package net.runelite.client.plugins.poh;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.text.DecimalFormat;
+import java.time.Duration;
+import java.time.Instant;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Perspective;
+import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 
-public class BurnerOverlay extends Overlay
+class BurnerOverlay extends Overlay
 {
 	private final Client client;
 	private final PohConfig config;
 	private final PohPlugin plugin;
 
 	@Inject
-	public BurnerOverlay(Client client, PohConfig config, PohPlugin plugin)
+	private BurnerOverlay(Client client, PohConfig config, PohPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -59,47 +62,61 @@ public class BurnerOverlay extends Overlay
 			return null;
 		}
 
-		// Get each object in POH
-		plugin.getPohObjects().forEach((object, tile) ->
+		plugin.getIncenseBurners().forEach((tile, burner) ->
 		{
-			// If planes match
-			if (tile.getPlane() == client.getPlane())
+			if (tile.getPlane() != client.getPlane())
 			{
-				if (!plugin.getBurnerLit().contains(object.getId()))
+				return;
+			}
+
+			if (!PohPlugin.BURNER_LIT.contains(burner.getId()))
+			{
+				return;
+			}
+
+			final Instant now = Instant.now();
+			final long startCountdown = Duration.between(burner.getStart(), now).getSeconds();
+			final double certainSec = burner.getCountdownTimer() - startCountdown;
+
+			long endCountdown = 0;
+
+			if (certainSec <= 0)
+			{
+				if (burner.getEnd() == null)
 				{
-					return;
+					burner.setEnd(Instant.now());
 				}
 
-				if (config.showBurner() && plugin.getCountdownTimerMap().containsKey(tile))
-				{
-					DecimalFormat decimalFormat = new DecimalFormat("#.##");
-					double certainSec = Double.valueOf(decimalFormat.format(plugin.getCountdownTimerMap().get(tile)));
-					double randomSec = Double.valueOf(decimalFormat.format(plugin.getRandomTimerMap().get(tile)));
-					ProgressPieComponent pieComponent = new ProgressPieComponent();
-					pieComponent.setPosition(object.getCanvasLocation());
-					pieComponent.setProgress(certainSec / plugin.getCountdownTimer());
+				endCountdown = Duration.between(burner.getEnd(), now).getSeconds();
+			}
 
-					if (certainSec > 0)
-					{
-						pieComponent.setFill(Color.GREEN);
-						pieComponent.setBorderColor(Color.GREEN);
-						pieComponent.render(graphics);
-					}
+			final double randomSec = burner.getRandomTimer() - endCountdown;
+			final ProgressPieComponent pieComponent = new ProgressPieComponent();
+			final Point loc = Perspective.localToCanvas(client, tile.getLocalLocation(), tile.getPlane());
 
-					else
-					{
-						pieComponent.setProgress(randomSec / plugin.getRandomTimer());
+			if (loc == null)
+			{
+				return;
+			}
 
-						if (randomSec > 0)
-						{
-							pieComponent.setFill(Color.ORANGE);
-							pieComponent.setBorderColor(Color.ORANGE);
-							pieComponent.render(graphics);
-						}
-					}
-				}
+			pieComponent.setPosition(loc);
+
+			if (certainSec > 0)
+			{
+				pieComponent.setProgress(certainSec / burner.getCountdownTimer());
+				pieComponent.setFill(Color.GREEN);
+				pieComponent.setBorderColor(Color.GREEN);
+				pieComponent.render(graphics);
+			}
+			else if (randomSec > 0)
+			{
+				pieComponent.setProgress(randomSec / burner.getRandomTimer());
+				pieComponent.setFill(Color.ORANGE);
+				pieComponent.setBorderColor(Color.ORANGE);
+				pieComponent.render(graphics);
 			}
 		});
+
 		return null;
 	}
 }

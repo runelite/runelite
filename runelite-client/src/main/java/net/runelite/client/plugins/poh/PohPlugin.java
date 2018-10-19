@@ -24,8 +24,7 @@
  */
 package net.runelite.client.plugins.poh;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
+import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
@@ -45,6 +44,7 @@ import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Player;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.events.AnimationChanged;
@@ -60,7 +60,6 @@ import net.runelite.client.game.HiscoreManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.Skill;
@@ -70,38 +69,18 @@ import net.runelite.http.api.hiscore.Skill;
 	description = "Show minimap icons and mark unlit/lit burners",
 	tags = {"construction", "poh", "minimap", "overlay"}
 )
-
 @Slf4j
 public class PohPlugin extends Plugin
 {
+	static final Set<Integer> BURNER_UNLIT = Sets.newHashSet(ObjectID.INCENSE_BURNER, ObjectID.INCENSE_BURNER_13210, ObjectID.INCENSE_BURNER_13212);
+	static final Set<Integer> BURNER_LIT = Sets.newHashSet(ObjectID.INCENSE_BURNER_13209, ObjectID.INCENSE_BURNER_13211, ObjectID.INCENSE_BURNER_13213);
 	private static final double ESTIMATED_TICK_LENGTH = 0.6;
-	private final HiscoreClient hiscoreClient = new HiscoreClient();
-
-	@Getter(AccessLevel.PACKAGE)
-	private final Set<Integer> burnerUnlit = Sets.newHashSet(ObjectID.INCENSE_BURNER, ObjectID.INCENSE_BURNER_13210, ObjectID.INCENSE_BURNER_13212);
-
-	@Getter(AccessLevel.PACKAGE)
-	private final Set<Integer> burnerLit = Sets.newHashSet(ObjectID.INCENSE_BURNER_13209, ObjectID.INCENSE_BURNER_13211, ObjectID.INCENSE_BURNER_13213);
-
-	@Getter(AccessLevel.PACKAGE)
-	private double countdownTimer;
-
-	@Getter(AccessLevel.PACKAGE)
-	private double randomTimer;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<TileObject, Tile> pohObjects = new HashMap<>();
 
 	@Getter(AccessLevel.PACKAGE)
-	private final Multimap<TileObject, Tile> burnerLocs =  ArrayListMultimap.create();
-
-	@Getter(AccessLevel.PACKAGE)
-	//Map for the timers that we know the length of
-	private Map<Tile, Double> countdownTimerMap = new HashMap<>();
-
-	@Getter(AccessLevel.PACKAGE)
-	//Map for the random timers we don't know the length of
-	private Map<Tile, Double> randomTimerMap = new HashMap<>();
+	private final Map<Tile, IncenseBurner> incenseBurners =  new HashMap<>();
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -141,9 +120,7 @@ public class PohPlugin extends Plugin
 		overlayManager.remove(overlay);
 		overlayManager.remove(burnerOverlay);
 		pohObjects.clear();
-		burnerLocs.clear();
-		countdownTimerMap.clear();
-		randomTimerMap.clear();
+		incenseBurners.clear();
 	}
 
 	@Subscribe
@@ -155,46 +132,39 @@ public class PohPlugin extends Plugin
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
-		GameObject gameObject = event.getGameObject();
-		if (burnerLit.contains(gameObject.getId()) || burnerUnlit.contains(gameObject.getId()) || PohIcons.getIcon(gameObject.getId()) != null)
+		final GameObject gameObject = event.getGameObject();
+
+		if (!BURNER_LIT.contains(gameObject.getId()) && !BURNER_UNLIT.contains(gameObject.getId()))
 		{
-			countdownTimer = 130.0; //Minimum amount of seconds a burner will light
-			randomTimer = 30.0; //Minimum amount of seconds a burner will light
-			pohObjects.put(gameObject, event.getTile());
-			//Found a new burner in the POH (on load or on relight)
-			if (burnerLit.contains(gameObject.getId()) ||  burnerUnlit.contains(gameObject.getId()))
+			if (PohIcons.getIcon(gameObject.getId()) != null)
 			{
-				countdownTimerMap.replace(event.getTile(), countdownTimer);
-				randomTimerMap.replace(event.getTile(), randomTimer);
-				log.debug("Setting burner at tile '{}' to '{}' seconds and '{}' random seconds", event.getTile().getWorldLocation(), countdownTimer, randomTimer);
-				//Add burner to burnerLocs if it isn't already in there
-				if (!burnerLocs.containsValue(event.getTile()))
-				{
-					burnerLocs.put(gameObject, event.getTile());
-					//Add the new burner to timeMap and set secondsLeft
-					countdownTimerMap.put(event.getTile(), countdownTimer);
-					randomTimerMap.put(event.getTile(), randomTimer);
-				}
+				pohObjects.put(gameObject, event.getTile());
 			}
+
+			return;
 		}
+
+		final double countdownTimer = 130.0; // Minimum amount of seconds a burner will light
+		final double randomTimer = 30.0; // Minimum amount of seconds a burner will light
+		incenseBurners.put(event.getTile(), new IncenseBurner(gameObject.getId(), countdownTimer, randomTimer, null));
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		//Countdown for both timers
-		for (Tile t : countdownTimerMap.keySet())
+		incenseBurners.forEach((k, v) ->
 		{
-			double certainSec = countdownTimerMap.get(t);
-			double certainNewSec = Math.max(certainSec - ESTIMATED_TICK_LENGTH, 0);
-			countdownTimerMap.replace(t, certainSec, certainNewSec);
+			final double certainSec = v.getCountdownTimer();
+			final double certainNewSec = Math.max(certainSec - ESTIMATED_TICK_LENGTH, 0);
+			v.setCountdownTimer(certainNewSec);
+
 			if (certainNewSec == 0)
 			{
-				double randomSec = randomTimerMap.get(t);
-				double randomNewSec = Math.max(randomSec - ESTIMATED_TICK_LENGTH, 0);
-				randomTimerMap.replace(t, randomSec, randomNewSec);
+				final double randomSec = v.getRandomTimer();
+				final double randomNewSec = Math.max(randomSec - ESTIMATED_TICK_LENGTH, 0);
+				v.setRandomTimer(randomNewSec);
 			}
-		}
+		});
 	}
 
 	@Subscribe
@@ -227,51 +197,67 @@ public class PohPlugin extends Plugin
 		if (event.getGameState() == GameState.LOADING)
 		{
 			pohObjects.clear();
+			incenseBurners.clear();
 		}
 	}
 
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)
 	{
-		Actor actor = event.getActor();
-		String actorName = actor.getName();
-		//Get actor who is doing light_burner anim
-		if (actor.getAnimation() == AnimationID.INCENSE_BURNER)
-		{
-			if (actor == client.getLocalPlayer())
-			{
-				int level = client.getRealSkillLevel(net.runelite.api.Skill.FIREMAKING);
-				countdownTimer = (200 + level) * ESTIMATED_TICK_LENGTH;
-				randomTimer = level * ESTIMATED_TICK_LENGTH;
-			}
-			else
-			{
-				lookupPlayer(actorName);
-			}
-		}
-	}
+		final Actor actor = event.getActor();
+		final String actorName = actor.getName();
 
-	private void lookupPlayer(String playerName)
-	{
-		if (playerName != null)
+		if (!(actor instanceof Player) || actor.getAnimation() != AnimationID.INCENSE_BURNER)
 		{
-			executor.execute(() ->
+			return;
+		}
+
+		final int x = actor.getLocalLocation().getX();
+		final int y = actor.getLocalLocation().getY();
+
+		// Find burner closest to player
+		incenseBurners.keySet().stream().min((a, b) -> ComparisonChain.start()
+			.compare(Math.abs(a.getLocalLocation().getY() - y), Math.abs(b.getLocalLocation().getY() - y))
+			.compare(Math.abs(a.getLocalLocation().getX() - x), Math.abs(b.getLocalLocation().getX() - x))
+			.result())
+			.ifPresent(tile ->
 			{
-				try
+				final IncenseBurner incenseBurner = incenseBurners.get(tile);
+
+				if (actor == client.getLocalPlayer())
 				{
-					HiscoreResult playerStats = hiscoreManager.lookup(playerName, HiscoreEndpoint.NORMAL);
-					Skill fm = playerStats.getFiremaking();
-					int level = fm.getLevel();
-					log.debug("Succesfully looked up '{}' with firemaking level '{}'", playerName, level);
-					//Burn time is : 200 + Fm level + (random number between 0 and Fm level) game ticks
-					countdownTimer = (200 + level) * ESTIMATED_TICK_LENGTH;
-					randomTimer = level * ESTIMATED_TICK_LENGTH;
+					int level = client.getRealSkillLevel(net.runelite.api.Skill.FIREMAKING);
+					updateBurner(incenseBurner, level);
 				}
-				catch (IOException e)
+				else if (actorName != null)
 				{
-					log.warn("Error fetching Hiscore data " + e.getMessage());
+					lookupPlayer(actorName, incenseBurner);
 				}
 			});
-		}
+
+	}
+
+	private void lookupPlayer(String playerName, IncenseBurner incenseBurner)
+	{
+		executor.execute(() ->
+		{
+			try
+			{
+				final HiscoreResult playerStats = hiscoreManager.lookup(playerName, HiscoreEndpoint.NORMAL);
+				final Skill fm = playerStats.getFiremaking();
+				final int level = fm.getLevel();
+				updateBurner(incenseBurner, level);
+			}
+			catch (IOException e)
+			{
+				log.warn("Error fetching Hiscore data " + e.getMessage());
+			}
+		});
+	}
+
+	private static void updateBurner(IncenseBurner incenseBurner, int fmLevel)
+	{
+		incenseBurner.setCountdownTimer((200 + fmLevel) * ESTIMATED_TICK_LENGTH);
+		incenseBurner.setRandomTimer(fmLevel * ESTIMATED_TICK_LENGTH);
 	}
 }
