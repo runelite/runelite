@@ -61,6 +61,10 @@ class LootTrackerPanel extends PluginPanel
 	private static final ImageIcon GROUPED_LOOT_VIEW_HOVER;
 	private static final ImageIcon BACK_ARROW_ICON;
 	private static final ImageIcon BACK_ARROW_ICON_HOVER;
+	private static final ImageIcon VISIBLE_ICON;
+	private static final ImageIcon VISIBLE_ICON_HOVER;
+	private static final ImageIcon INVISIBLE_ICON;
+	private static final ImageIcon INVISIBLE_ICON_HOVER;
 
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
@@ -81,6 +85,7 @@ class LootTrackerPanel extends PluginPanel
 	private final JPanel actionsContainer = new JPanel();
 	private final JLabel detailsTitle = new JLabel();
 	private final JLabel backBtn = new JLabel();
+	private final JLabel viewHiddenBtn = new JLabel();
 	private final JLabel singleLootBtn = new JLabel();
 	private final JLabel groupedLootBtn = new JLabel();
 
@@ -89,7 +94,10 @@ class LootTrackerPanel extends PluginPanel
 	private final List<LootTrackerBox> boxes = new ArrayList<>();
 
 	private final ItemManager itemManager;
+	private final LootTrackerPlugin plugin;
+
 	private boolean groupLoot;
+	private boolean hideIgnoredItems;
 	private String currentView;
 
 	static
@@ -97,6 +105,8 @@ class LootTrackerPanel extends PluginPanel
 		final BufferedImage singleLootImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "single_loot_icon.png");
 		final BufferedImage groupedLootImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "grouped_loot_icon.png");
 		final BufferedImage backArrowImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "back_icon.png");
+		final BufferedImage visibleImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "visible_icon.png");
+		final BufferedImage invisibleImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "invisible_icon.png");
 
 		SINGLE_LOOT_VIEW = new ImageIcon(singleLootImg);
 		SINGLE_LOOT_VIEW_FADED = new ImageIcon(ImageUtil.alphaOffset(singleLootImg, -180));
@@ -108,11 +118,20 @@ class LootTrackerPanel extends PluginPanel
 
 		BACK_ARROW_ICON = new ImageIcon(backArrowImg);
 		BACK_ARROW_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(backArrowImg, -180));
+
+		VISIBLE_ICON = new ImageIcon(visibleImg);
+		VISIBLE_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(visibleImg, -220));
+
+		INVISIBLE_ICON = new ImageIcon(invisibleImg);
+		INVISIBLE_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(invisibleImg, -220));
 	}
 
-	LootTrackerPanel(final ItemManager itemManager)
+	LootTrackerPanel(final LootTrackerPlugin plugin, final ItemManager itemManager)
 	{
 		this.itemManager = itemManager;
+		this.plugin = plugin;
+		this.hideIgnoredItems = true;
+
 		setBorder(new EmptyBorder(6, 6, 6, 6));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new BorderLayout());
@@ -128,7 +147,7 @@ class LootTrackerPanel extends PluginPanel
 		actionsContainer.setBorder(new EmptyBorder(5, 5, 5, 10));
 		actionsContainer.setVisible(false);
 
-		final JPanel viewControls = new JPanel(new GridLayout(1, 2, 10, 0));
+		final JPanel viewControls = new JPanel(new GridLayout(1, 3, 10, 0));
 		viewControls.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		singleLootBtn.setIcon(SINGLE_LOOT_VIEW);
@@ -177,9 +196,34 @@ class LootTrackerPanel extends PluginPanel
 			}
 		});
 
+		viewHiddenBtn.setIcon(VISIBLE_ICON);
+		viewHiddenBtn.setToolTipText("Show ignored items");
+		viewHiddenBtn.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				changeItemHiding(!hideIgnoredItems);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				viewHiddenBtn.setIcon(hideIgnoredItems ? INVISIBLE_ICON : VISIBLE_ICON);
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				viewHiddenBtn.setIcon(hideIgnoredItems ? INVISIBLE_ICON_HOVER : VISIBLE_ICON_HOVER);
+			}
+		});
+
 		viewControls.add(groupedLootBtn);
 		viewControls.add(singleLootBtn);
+		viewControls.add(viewHiddenBtn);
 		changeGrouping(true);
+		changeItemHiding(true);
 
 		final JPanel leftTitleContainer = new JPanel(new BorderLayout(5, 0));
 		leftTitleContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -286,6 +330,7 @@ class LootTrackerPanel extends PluginPanel
 
 	/**
 	 * Changes grouping mode of panel
+	 *
 	 * @param group if loot should be grouped or not
 	 */
 	private void changeGrouping(boolean group)
@@ -294,6 +339,38 @@ class LootTrackerPanel extends PluginPanel
 		rebuild();
 		groupedLootBtn.setIcon(group ? GROUPED_LOOT_VIEW : GROUPED_LOOT_VIEW_FADED);
 		singleLootBtn.setIcon(group ? SINGLE_LOOT_VIEW_FADED : SINGLE_LOOT_VIEW);
+	}
+
+	/**
+	 * Changes item hiding mode of panel
+	 *
+	 * @param hide if ignored items should be hidden or not
+	 */
+	private void changeItemHiding(boolean hide)
+	{
+		hideIgnoredItems = hide;
+		rebuild();
+		viewHiddenBtn.setIcon(hideIgnoredItems ? VISIBLE_ICON : INVISIBLE_ICON);
+	}
+
+	/**
+	 * After an item changed it's ignored state, iterate all the records and make
+	 * sure all items of the same name also get updated
+	 */
+	void updateIgnoredRecords()
+	{
+		for (LootTrackerRecord r : records)
+		{
+			for (LootTrackerItem item : r.getItems())
+			{
+				if (plugin.isIgnored(item.getName()) != item.isIgnored())
+				{
+					item.setIgnored(plugin.isIgnored(item.getName()));
+				}
+			}
+		}
+
+		rebuild();
 	}
 
 	/**
@@ -342,7 +419,7 @@ class LootTrackerPanel extends PluginPanel
 		overallPanel.setVisible(true);
 
 		// Create box
-		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getSubTitle());
+		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getSubTitle(), hideIgnoredItems, plugin::toggleItem);
 		box.combine(record);
 
 		// Create popup menu
@@ -386,7 +463,7 @@ class LootTrackerPanel extends PluginPanel
 	private void updateOverall()
 	{
 		final long overallGp = boxes.stream().mapToLong(LootTrackerBox::getTotalPrice).sum();
-		final int overallKills = boxes.stream().mapToInt(LootTrackerBox::getTotalKills).sum();
+		final long overallKills = boxes.stream().mapToLong(LootTrackerBox::getTotalKills).sum();
 		overallKillsLabel.setText(htmlLabel("Total count: ", overallKills));
 		overallGpLabel.setText(htmlLabel("Total value: ", overallGp));
 	}

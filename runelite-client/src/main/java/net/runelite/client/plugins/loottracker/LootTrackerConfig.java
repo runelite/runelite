@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package net.runelite.client.plugins.loottracker;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@AllArgsConstructor
-class LootTrackerItem
+@ConfigGroup("loottracker")
+public interface LootTrackerConfig extends Config
 {
-	@Getter
-	private final int id;
-	@Getter
-	private final String name;
-	@Getter
-	private final int quantity;
-	@Getter
-	private final long price;
-	@Getter
-	@Setter
-	private boolean ignored;
+	@ConfigItem(
+		keyName = "ignoredItems",
+		name = "Ignored items",
+		description = "Configures which items should be ignored when calculating loot prices."
+	)
+	default String getIgnoredItems()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "ignoredItems",
+		name = "",
+		description = ""
+	)
+	void setIgnoredItems(String key);
 }
