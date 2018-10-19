@@ -37,6 +37,8 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.time.Instant;
+import java.util.Comparator;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
@@ -91,8 +93,19 @@ public class XpGlobesOverlay extends Overlay
 			return null;
 		}
 
+		class GlobeComparator implements Comparator<XpGlobe>
+		{
+			public int compare(XpGlobe a, XpGlobe b)
+			{
+				return a.getSkill().compareTo(b.getSkill());
+			}
+		}
+
+		List<XpGlobe> sortedXpGlobes = plugin.getXpGlobes();
+		sortedXpGlobes.sort(new GlobeComparator());
+
 		int curDrawX = 0;
-		for (final XpGlobe xpGlobe : plugin.getXpGlobes())
+		for (final XpGlobe xpGlobe : sortedXpGlobes)
 		{
 			renderProgressCircle(graphics, xpGlobe, curDrawX, 0, getBounds());
 			curDrawX += MINIMUM_STEP + config.xpOrbSize();
