@@ -81,8 +81,8 @@ import net.runelite.client.util.ColorUtil;
 public class WintertodtPlugin extends Plugin
 {
 	private static final int WINTERTODT_REGION = 6462;
-	private static final int WINDERTODT_AVALANCHE = 26690;
-	private static final String WINDERTODT_AVALANCHE_MESSAGE = "Windertodt: You are standing on a spot where snow is about to fall!";
+	private static final int WINDERTODT_FALLING_SNOW = 26690;
+	private static final String WINDERTODT_FALLING_SNOW_MESSAGE = "Windertodt: You are standing on a spot where snow is about to fall!";
 
 	@Inject
 	private Notifier notifier;
@@ -213,7 +213,7 @@ public class WintertodtPlugin extends Plugin
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
-		if (!config.notifyAvalanche() || !isInWintertodt())
+		if (!config.notifyFallingSnow() || !isInWintertodt())
 		{
 			return;
 		}
@@ -221,11 +221,11 @@ public class WintertodtPlugin extends Plugin
 		Player player = client.getLocalPlayer();
 		GameObject gameObject = event.getGameObject();
 
-		if (WINDERTODT_AVALANCHE == gameObject.getId())
+		if (WINDERTODT_FALLING_SNOW == gameObject.getId())
 		{
 			if (gameObject.getLocalLocation().equals(player.getLocalLocation()))
 			{
-				notifier.notify(WINDERTODT_AVALANCHE_MESSAGE);
+				notifier.notify(WINDERTODT_FALLING_SNOW_MESSAGE);
 			}
 		}
 

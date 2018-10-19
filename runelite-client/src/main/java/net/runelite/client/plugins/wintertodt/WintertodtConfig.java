@@ -60,10 +60,10 @@ public interface WintertodtConfig extends Config
 	@ConfigItem(
 		position = 3,
 		keyName = "notifyAvalanche",
-		name = "Notify when in a avalanche",
-		description = "Gives you a notification when in a avalanche"
+		name = "Notify when in a spot where snow is about to fall",
+		description = "Gives you a notification when in a falling snow spot"
 	)
-	default boolean notifyAvalanche()
+	default boolean notifyFallingSnow()
 	{
 		return true;
 	}
