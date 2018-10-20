@@ -35,10 +35,8 @@ import java.util.regex.Pattern;
 import static java.util.regex.Pattern.quote;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
-import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.SetMessage;
@@ -131,25 +129,6 @@ public class ChatNotificationsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
-	{
-		if (!config.kittenIdle() || event.getType() != ChatMessageType.SERVER)
-		{
-			return;
-		}
-
-		if (Text.removeTags(event.getMessage()).equals(KITTEN_HUNGRY_MESSAGE))
-		{
-			notifier.notify(KITTEN_HUNGRY_MESSAGE);
-		}
-		else if (Text.removeTags(event.getMessage()).equals(KITTEN_ATTENTION_MESSAGE))
-		{
-			notifier.notify(KITTEN_ATTENTION_MESSAGE);
-		}
-
-	}
-
-	@Subscribe
 	public void onSetMessage(SetMessage event)
 	{
 		MessageNode messageNode = event.getMessageNode();
@@ -174,6 +153,19 @@ public class ChatNotificationsPlugin extends Plugin
 				if (event.getName().equals(runeLiteProperties.getTitle()))
 				{
 					return;
+				}
+				break;
+			case SERVER:
+				if (config.kittenIdle())
+				{
+					if (Text.removeTags(messageNode.getValue()).equals(KITTEN_HUNGRY_MESSAGE))
+					{
+						notifier.notify(KITTEN_HUNGRY_MESSAGE);
+					}
+					else if (Text.removeTags(messageNode.getValue()).equals(KITTEN_ATTENTION_MESSAGE))
+					{
+						notifier.notify(KITTEN_ATTENTION_MESSAGE);
+					}
 				}
 				break;
 		}
