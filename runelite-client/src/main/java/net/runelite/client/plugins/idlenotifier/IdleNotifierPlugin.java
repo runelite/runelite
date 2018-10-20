@@ -304,23 +304,19 @@ public class IdleNotifierPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		System.out.println("Chat Type: " + event.getType() + " Chat Message: " + Text.removeTags(event.getMessage()));
-		if (event.getType() != ChatMessageType.SERVER)
+		if (!config.kittenIdle() || event.getType() != ChatMessageType.SERVER)
 		{
-			System.out.println("onchat returned");
 			return;
 		}
 
 		if (Text.removeTags(event.getMessage()).equals(KITTEN_HUNGRY_MESSAGE))
 		{
-			System.out.println("Kitten is hungry!");
 			notifier.notify(KITTEN_HUNGRY_MESSAGE);
 		}
 		else if (Text.removeTags(event.getMessage()).equals(KITTEN_ATTENTION_MESSAGE))
 		{
-			System.out.println("Kitten wants attention!");
 			notifier.notify(KITTEN_HUNGRY_MESSAGE);
-		} else {System.out.println("No cat messages");}
+		}
 
 	}
 
