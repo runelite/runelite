@@ -71,8 +71,6 @@ public class IdleNotifierPlugin extends Plugin
 
 	private static final int HIGHEST_MONSTER_ATTACK_SPEED = 8; // Except Scarab Mage, but they are with other monsters
 	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
-	private static final String KITTEN_HUNGRY_MESSAGE = "Your kitten is hungry.";
-	private static final String KITTEN_ATTENTION_MESSAGE = "Your kitten wants attention.";
 
 	@Inject
 	private Notifier notifier;
@@ -299,25 +297,6 @@ public class IdleNotifierPlugin extends Plugin
 
 				break;
 		}
-	}
-
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
-	{
-		if (!config.kittenIdle() || event.getType() != ChatMessageType.SERVER)
-		{
-			return;
-		}
-
-		if (Text.removeTags(event.getMessage()).equals(KITTEN_HUNGRY_MESSAGE))
-		{
-			notifier.notify(KITTEN_HUNGRY_MESSAGE);
-		}
-		else if (Text.removeTags(event.getMessage()).equals(KITTEN_ATTENTION_MESSAGE))
-		{
-			notifier.notify(KITTEN_ATTENTION_MESSAGE);
-		}
-
 	}
 
 	@Subscribe

@@ -97,4 +97,15 @@ public interface ChatNotificationsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "notifyOnKittenHunger",
+		name = "Notify on hungry kitten message",
+		position = 6,
+		description = "Sends you a notification when your cat is hungry."
+	)
+	default boolean kittenIdle()
+	{
+		return false;
+	}
 }

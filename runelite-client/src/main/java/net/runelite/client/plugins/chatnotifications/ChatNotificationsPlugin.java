@@ -35,8 +35,10 @@ import java.util.regex.Pattern;
 import static java.util.regex.Pattern.quote;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.SetMessage;
@@ -57,6 +59,8 @@ import net.runelite.client.util.Text;
 )
 public class ChatNotificationsPlugin extends Plugin
 {
+	private static final String KITTEN_HUNGRY_MESSAGE = "Your kitten is hungry.";
+	private static final String KITTEN_ATTENTION_MESSAGE = "Your kitten wants attention.";
 	private static final Splitter SPLITTER = Splitter.on(",").trimResults().omitEmptyStrings();
 
 	@Inject
@@ -124,6 +128,25 @@ public class ChatNotificationsPlugin extends Plugin
 				.collect(Collectors.joining("|"));
 			highlightMatcher = Pattern.compile("\\b(" + joined + ")\\b", Pattern.CASE_INSENSITIVE);
 		}
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (!config.kittenIdle() || event.getType() != ChatMessageType.SERVER)
+		{
+			return;
+		}
+
+		if (Text.removeTags(event.getMessage()).equals(KITTEN_HUNGRY_MESSAGE))
+		{
+			notifier.notify(KITTEN_HUNGRY_MESSAGE);
+		}
+		else if (Text.removeTags(event.getMessage()).equals(KITTEN_ATTENTION_MESSAGE))
+		{
+			notifier.notify(KITTEN_ATTENTION_MESSAGE);
+		}
+
 	}
 
 	@Subscribe
