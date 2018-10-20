@@ -108,4 +108,15 @@ public interface IdleNotifierConfig extends Config
 		return 0;
 	}
 
+	@ConfigItem(
+		keyName = "kitten",
+		name = "Kitten Hunger Notification",
+		position = 8,
+		description = "Sends you a notification when your cat is hungry."
+	)
+	default boolean kittenIdle()
+	{
+		return false;
+	}
+
 }

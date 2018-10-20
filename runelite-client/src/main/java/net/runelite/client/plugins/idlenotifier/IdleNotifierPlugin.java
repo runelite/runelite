@@ -35,6 +35,7 @@ import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
 import static net.runelite.api.AnimationID.*;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.GraphicID;
@@ -45,6 +46,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
@@ -53,6 +55,7 @@ import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Idle Notifier",
@@ -68,6 +71,8 @@ public class IdleNotifierPlugin extends Plugin
 
 	private static final int HIGHEST_MONSTER_ATTACK_SPEED = 8; // Except Scarab Mage, but they are with other monsters
 	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
+	private static final String KITTEN_HUNGRY_MESSAGE = "Your kitten is hungry.";
+	private static final String KITTEN_ATTENTION_MESSAGE = "Your kitten wants attention.";
 
 	@Inject
 	private Notifier notifier;
@@ -294,6 +299,29 @@ public class IdleNotifierPlugin extends Plugin
 
 				break;
 		}
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		System.out.println("Chat Type: " + event.getType() + " Chat Message: " + Text.removeTags(event.getMessage()));
+		if (event.getType() != ChatMessageType.SERVER)
+		{
+			System.out.println("onchat returned");
+			return;
+		}
+
+		if (Text.removeTags(event.getMessage()).equals(KITTEN_HUNGRY_MESSAGE))
+		{
+			System.out.println("Kitten is hungry!");
+			notifier.notify(KITTEN_HUNGRY_MESSAGE);
+		}
+		else if (Text.removeTags(event.getMessage()).equals(KITTEN_ATTENTION_MESSAGE))
+		{
+			System.out.println("Kitten wants attention!");
+			notifier.notify(KITTEN_HUNGRY_MESSAGE);
+		} else {System.out.println("No cat messages");}
+
 	}
 
 	@Subscribe
