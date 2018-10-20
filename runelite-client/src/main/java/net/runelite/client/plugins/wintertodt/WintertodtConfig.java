@@ -59,7 +59,7 @@ public interface WintertodtConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "notifyAvalanche",
+		keyName = "notifyFallingSnow",
 		name = "Notify when in a spot where snow is about to fall",
 		description = "Gives you a notification when in a falling snow spot"
 	)
