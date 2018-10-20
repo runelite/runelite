@@ -240,7 +240,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the crates in the guard house of the northern gate of East Ardougne.", CRATE_356, new WorldPoint(2645, 3338, 0), "The guard house is northeast of the Handelmort Mansion."),
 		new CrypticClue("Go to the village being attacked by trolls, search the drawers in one of the houses.", "Penda", DRAWERS_350, new WorldPoint(2921, 3577, 0), "Go to Dunstan's house in the northeast corner of Burthorpe. Kill Penda in the Toad and Chicken to obtain the key."),
 		new CrypticClue("You'll get licked.", null, "Kill a Bloodveld."),
-		new CrypticClue("She's small but can build both literally and figuratively, as long as you have their favour", "Lovada", new WorldPoint(1486, 3834, 0), "Speak to Lovada south of the Lovakengj House blast mine"),
+		new CrypticClue("She's small but can build both literally and figuratively, as long as you have their favour.", "Lovada", new WorldPoint(1486, 3834, 0), "Speak to Lovada south of the Lovakengj House blast mine"),
 		new CrypticClue("Dig in front of the icy arena where 1 of 4 was fought.", new WorldPoint(2874, 3757, 0), "Where you fought Kamil from Desert Treasure."),
 		new CrypticClue("Speak to Roavar.", "Roavar", new WorldPoint(3494, 3474, 0), "Talk to Roavar in the Canifis tavern."),
 		new CrypticClue("Search the drawers upstairs of houses in the eastern part of Falador.", DRAWERS_350, new WorldPoint(3035, 3347, 1), "House is located east of the eastern Falador bank and south of the fountain. The house is indicated by the icon on the minimap."),
