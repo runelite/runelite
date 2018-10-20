@@ -118,4 +118,21 @@ public class FightCaveMappings
 			}
 		};
 	}
+
+	static HashMap intArrayToHashmap(int inputArray[])
+	{
+		HashMap<Integer, Integer> elementCountMap = new HashMap<Integer, Integer>();
+		for (int i : inputArray)
+		{
+			if (elementCountMap.containsKey(i))
+			{
+				elementCountMap.put(i, elementCountMap.get(i) + 1);
+			}
+			else
+			{
+				elementCountMap.put(i, 1);
+			}
+		}
+		return elementCountMap;
+	}
 }

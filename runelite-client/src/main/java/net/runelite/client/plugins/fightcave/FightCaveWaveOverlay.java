@@ -27,6 +27,7 @@ package net.runelite.client.plugins.fightcave;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -62,7 +63,7 @@ public class FightCaveWaveOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isInFightCaveInstance() || plugin.getCurrentWaveNumber() == 0)
+		if (!plugin.isInFightCaveInstance() || plugin.getCurrentWaveNumber() == -1)
 		{
 			return null;
 		}
@@ -70,22 +71,24 @@ public class FightCaveWaveOverlay extends Overlay
 
 		if (config.showCurrentWave())
 		{
-			renderWave("Wave " + plugin.getCurrentWaveNumber(), plugin.getThisWave(), plugin.getMonsters());
+			renderWave("Wave " + plugin.getCurrentWaveNumber(), plugin.getCurrentWaveNumber());
 		}
 		if (config.showNextWave() && plugin.isNotFinalWave())
 		{
-			renderWave("Next Wave:", plugin.getNextWave(), plugin.getMonsters());
+			renderWave("Next Wave:", plugin.getNextWaveNumber());
 
 		}
 		return panelComponent.render(graphics);
 	}
 
-	private void renderWave(String header, Map<Integer, Integer> waveMap, Map<Integer, String> nameMap)
+	private void renderWave(String header, int waveNumber)
 	{
 		panelComponent.getChildren().add(TitleComponent.builder()
 			.text(header)
 			.color(config.getWaveOverlayHeaderColor())
 			.build());
+
+		HashMap<Integer, Integer> waveMap = FightCaveMappings.intArrayToHashmap(plugin.getWaves().get(waveNumber));
 
 		for (Map.Entry<Integer, Integer> entry : waveMap.entrySet())
 		{
@@ -95,8 +98,9 @@ public class FightCaveWaveOverlay extends Overlay
 			{
 				continue;
 			}
+
 			panelComponent.getChildren().add(TitleComponent.builder()
-				.text(quantity + "x " + nameMap.get(monsterID))
+				.text(quantity + "x " + plugin.getMonsters().get(monsterID))
 				.color(config.getWaveTextColor())
 				.build());
 		}

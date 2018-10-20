@@ -28,7 +28,6 @@
 package net.runelite.client.plugins.fightcave;
 
 import com.google.common.eventbus.Subscribe;
-import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -88,10 +87,7 @@ public class FightCavePlugin extends Plugin
 	private int currentWaveNumber;
 
 	@Getter(AccessLevel.PACKAGE)
-	private HashMap<Integer, Integer> thisWave;
-
-	@Getter(AccessLevel.PACKAGE)
-	private HashMap<Integer, Integer> nextWave;
+	private int nextWaveNumber;
 
 	@Getter(AccessLevel.PACKAGE)
 	private Map<Integer, String> monsters;
@@ -123,9 +119,8 @@ public class FightCavePlugin extends Plugin
 		attack = null;
 		monsters = null;
 		waves = null;
-		thisWave = null;
-		nextWave = null;
-		currentWaveNumber = 0;
+		currentWaveNumber = -1;
+		nextWaveNumber = -1;
 
 	}
 
@@ -195,7 +190,8 @@ public class FightCavePlugin extends Plugin
 	{
 		if (!isInFightCaveInstance())
 		{
-			currentWaveNumber = 0;
+			currentWaveNumber = -1;
+			nextWaveNumber = -1;
 		}
 
 	}
@@ -213,44 +209,9 @@ public class FightCavePlugin extends Plugin
 		{
 			message = message.substring(message.indexOf(": ") + 2);
 			currentWaveNumber = Integer.parseInt(message.substring(0, message.indexOf("<")));
-			newWave(getCurrentWaveNumber());
+			nextWaveNumber = currentWaveNumber < 63 ? currentWaveNumber + 1 : -1;
 		}
 
-	}
-
-	public void killedMonster(int combat)
-	{
-		thisWave.put(combat, thisWave.get(combat) - 1);
-	}
-
-	public void newWave(int wave)
-	{
-		thisWave = arrayElementCount(waves.get(wave));
-		if (wave < 63)
-		{
-			nextWave = arrayElementCount(waves.get(wave + 1));
-		}
-		else
-		{
-			nextWave = null;
-		}
-	}
-
-	private HashMap arrayElementCount(int inputArray[])
-	{
-		HashMap<Integer, Integer> elementCountMap = new HashMap<Integer, Integer>();
-		for (int i : inputArray)
-		{
-			if (elementCountMap.containsKey(i))
-			{
-				elementCountMap.put(i, elementCountMap.get(i) + 1);
-			}
-			else
-			{
-				elementCountMap.put(i, 1);
-			}
-		}
-		return elementCountMap;
 	}
 
 	protected boolean isInFightCaveInstance()
