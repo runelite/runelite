@@ -33,6 +33,8 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
@@ -72,7 +74,8 @@ public class XpDropPlugin extends Plugin
 	}
 
 	private WidgetOverlay overlay;
-	private int positionBit = -1;
+	private int overlayPosition = -1;
+	private boolean createOverlayFlag = false;
 
 	@Subscribe
 	public void onWidgetHidden(WidgetHiddenChanged event)
@@ -141,40 +144,59 @@ public class XpDropPlugin extends Plugin
 			return;
 		}
 
-		String text = widget.getText();
-		final IntStream spriteIDs =
-			Arrays.stream(widget.getParent().getDynamicChildren()).mapToInt(Widget::getSpriteId);
-
-		if (text != null)
+		if (config.recolorDrops())
 		{
-			int color = widget.getTextColor();
+			String text = widget.getText();
+			final IntStream spriteIDs =
+				Arrays.stream(widget.getParent().getDynamicChildren()).mapToInt(Widget::getSpriteId);
 
-			switch (prayer)
+			if (text != null)
 			{
-				case MELEE:
-					if (spriteIDs.anyMatch(id ->
+				int color = widget.getTextColor();
+
+				switch (prayer)
+				{
+					case MELEE:
+						if (spriteIDs.anyMatch(id ->
 							id == SpriteID.SKILL_ATTACK || id == SpriteID.SKILL_STRENGTH || id == SpriteID.SKILL_DEFENCE
 								|| id == SpriteID.SKILL_HITPOINTS))
-					{
-						color = config.getMeleePrayerColor().getRGB();
-					}
-					break;
+						{
+							color = config.getMeleePrayerColor().getRGB();
+						}
+						break;
 
-				case RANGE:
-					if (spriteIDs.anyMatch(id -> id == SpriteID.SKILL_RANGED || id == SpriteID.SKILL_HITPOINTS))
-					{
-						color = config.getRangePrayerColor().getRGB();
-					}
-					break;
-				case MAGIC:
-					if (spriteIDs.anyMatch(id -> id == SpriteID.SKILL_MAGIC || id == SpriteID.SKILL_HITPOINTS))
-					{
-						color = config.getMagePrayerColor().getRGB();
-					}
-					break;
+					case RANGE:
+						if (spriteIDs.anyMatch(id -> id == SpriteID.SKILL_RANGED || id == SpriteID.SKILL_HITPOINTS))
+						{
+							color = config.getRangePrayerColor().getRGB();
+						}
+						break;
+					case MAGIC:
+						if (spriteIDs.anyMatch(id -> id == SpriteID.SKILL_MAGIC || id == SpriteID.SKILL_HITPOINTS))
+						{
+							color = config.getMagePrayerColor().getRGB();
+						}
+						break;
+				}
+
+				widget.setTextColor(color);
 			}
+		}
+	}
 
-			widget.setTextColor(color);
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("xpdrop"))
+		{
+			if (config.moveableDrops())
+			{
+				createOverlayFlag = true;
+			}
+			else
+			{
+				removeOverlay();
+			}
 		}
 	}
 
@@ -197,65 +219,110 @@ public class XpDropPlugin extends Plugin
 		return null;
 	}
 
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (createOverlayFlag)
+		{
+			updateOverlay();
+		}
+	}
+
+	@Override
+	public void startUp() throws Exception
+	{
+		updateOverlay();
+	}
+
 	@Override
 	public void shutDown() throws Exception
 	{
-		if (overlay != null)
-		{
-			overlayManager.remove(overlay);
-		}
+		removeOverlay();
 	}
 
 	private void moveMoveableXPDropWidget(int position)
 	{
-		Widget viewport = client.getViewportWidget();
-		if (viewport != null)
+		if (config.moveableDrops())
 		{
-			Rectangle viewportBounds = viewport.getBounds();
-			Rectangle bounds = new Rectangle(0, 0, 50, 50);
-			switch (position)
+			Widget viewport = client.getViewportWidget();
+			if (viewport != null)
 			{
-				case 0: //Right
-					bounds.x = viewportBounds.width - bounds.width;
-					break;
-
-				case 1: //Middle
-					bounds.x = (int) (viewportBounds.width / 2.0f - bounds.width / 2.0f);
-					break;
-
-				case 2: //Left
-						bounds.x = 0;
-						break;
-
-					default:
-						return;
-				}
-
-				if (overlay != null)
+				Rectangle viewportBounds = viewport.getBounds();
+				if (viewportBounds.width > 0 && viewportBounds.height > 0)
 				{
-					overlayManager.remove(overlay);
+					Rectangle bounds = new Rectangle(0, 0, 50, 50);
+					switch (position)
+					{
+						case 0: //Right
+							bounds.x = viewportBounds.width - bounds.width;
+							break;
+
+						case 1: //Middle
+							bounds.x = (int) (viewportBounds.width / 2.0f - bounds.width / 2.0f);
+							break;
+
+						case 2: //Left
+							bounds.x = 0;
+							break;
+
+						default:
+							return;
+					}
+
+					if (overlay != null)
+					{
+						overlayManager.remove(overlay);
+					}
+					overlay = new WidgetOverlay(client, WidgetInfo.EXPERIENCE_DROPS, OverlayPosition.DETACHED, bounds);
+					overlayManager.add(overlay);
+
+					overlayPosition = position;
+					createOverlayFlag = false;
+				}
 			}
-			overlay = new WidgetOverlay(client, WidgetInfo.EXPERIENCE_DROPS, OverlayPosition.DETACHED, bounds);
-			overlayManager.add(overlay);
-			positionBit = position;
 		}
 	}
 
 	private void updateOverlay()
 	{
+
 		Widget widget = client.getWidget(WidgetInfo.EXPERIENCE_DROPS);
 		if (widget != null)
 		{
 			int newPos = client.getVar(Varbits.EXPERIENCE_TRACKER_POSITION);
-			if (newPos != positionBit)
+			if (newPos != overlayPosition)
 			{
 				moveMoveableXPDropWidget(newPos);
 			}
 		}
 	}
 
+	private void resetOverlay()
+	{
+		Widget widget = client.getWidget(WidgetInfo.EXPERIENCE_DROPS);
+		if (widget != null)
+		{
+			moveMoveableXPDropWidget(overlayPosition);
+		}
+	}
+
+	private void removeOverlay()
+	{
+		if (overlay != null)
+		{
+			overlayManager.remove(overlay);
+		}
+		overlayPosition = -1;
+	}
+
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
+	{
+		updateOverlay();
+	}
+
+	@Subscribe
+	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
 		updateOverlay();
 	}
@@ -269,10 +336,6 @@ public class XpDropPlugin extends Plugin
 	@Subscribe
 	public void onResizeableChanged(ResizeableChanged event)
 	{
-		Widget widget = client.getWidget(WidgetInfo.EXPERIENCE_DROPS);
-		if (widget != null)
-		{
-			moveMoveableXPDropWidget(positionBit);
-		}
+		resetOverlay();
 	}
 }
