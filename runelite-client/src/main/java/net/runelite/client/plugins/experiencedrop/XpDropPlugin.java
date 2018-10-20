@@ -33,8 +33,10 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -68,6 +70,9 @@ public class XpDropPlugin extends Plugin
 	{
 		return configManager.getConfig(XpDropConfig.class);
 	}
+
+	private WidgetOverlay overlay;
+	private int positionBit = -1;
 
 	@Subscribe
 	public void onWidgetHidden(WidgetHiddenChanged event)
@@ -192,33 +197,33 @@ public class XpDropPlugin extends Plugin
 		return null;
 	}
 
-	private WidgetOverlay overlay;
-	private int positionBit = -1;
-
-
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	@Override
+	public void shutDown() throws Exception
 	{
-		int newPos = client.getVar(Varbits.EXPERIENCE_TRACKER_POSITION);
-		if (newPos != positionBit)
+		if (overlay != null)
 		{
-			positionBit = newPos;
-			Widget viewport = client.getViewportWidget();
-			if (viewport != null)
+			overlayManager.remove(overlay);
+		}
+	}
+
+	private void moveMoveableXPDropWidget(int position)
+	{
+		Widget viewport = client.getViewportWidget();
+		if (viewport != null)
+		{
+			Rectangle viewportBounds = viewport.getBounds();
+			Rectangle bounds = new Rectangle(0, 0, 50, 50);
+			switch (position)
 			{
-				Rectangle viewportSize = viewport.getBounds();
-				Rectangle bounds = new Rectangle(50, 50);
-				switch (newPos)
-				{
-					case 0: //Right
-						bounds.x = viewportSize.width - bounds.width;
-						break;
+				case 0: //Right
+					bounds.x = viewportBounds.width - bounds.width;
+					break;
 
-					case 1: //Middle
-						bounds.x = (int) (viewportSize.width / 2.0f - bounds.width / 2.0f);
-						break;
+				case 1: //Middle
+					bounds.x = (int) (viewportBounds.width / 2.0f - bounds.width / 2.0f);
+					break;
 
-					case 2: //Left
+				case 2: //Left
 						bounds.x = 0;
 						break;
 
@@ -229,10 +234,45 @@ public class XpDropPlugin extends Plugin
 				if (overlay != null)
 				{
 					overlayManager.remove(overlay);
-				}
-				overlay = new WidgetOverlay(client, WidgetInfo.EXPERIENCE_DROPS, OverlayPosition.DETACHED, bounds);
-				overlayManager.add(overlay);
 			}
+			overlay = new WidgetOverlay(client, WidgetInfo.EXPERIENCE_DROPS, OverlayPosition.DETACHED, bounds);
+			overlayManager.add(overlay);
+			positionBit = position;
+		}
+	}
+
+	private void updateOverlay()
+	{
+		Widget widget = client.getWidget(WidgetInfo.EXPERIENCE_DROPS);
+		if (widget != null)
+		{
+			int newPos = client.getVar(Varbits.EXPERIENCE_TRACKER_POSITION);
+			if (newPos != positionBit)
+			{
+				moveMoveableXPDropWidget(newPos);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		updateOverlay();
+	}
+
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event)
+	{
+		updateOverlay();
+	}
+
+	@Subscribe
+	public void onResizeableChanged(ResizeableChanged event)
+	{
+		Widget widget = client.getWidget(WidgetInfo.EXPERIENCE_DROPS);
+		if (widget != null)
+		{
+			moveMoveableXPDropWidget(positionBit);
 		}
 	}
 }
