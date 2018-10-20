@@ -315,7 +315,7 @@ public class IdleNotifierPlugin extends Plugin
 		}
 		else if (Text.removeTags(event.getMessage()).equals(KITTEN_ATTENTION_MESSAGE))
 		{
-			notifier.notify(KITTEN_HUNGRY_MESSAGE);
+			notifier.notify(KITTEN_ATTENTION_MESSAGE);
 		}
 
 	}
