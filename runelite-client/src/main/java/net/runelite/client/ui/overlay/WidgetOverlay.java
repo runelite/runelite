@@ -33,6 +33,7 @@ import java.util.Collection;
 import java.util.Objects;
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -49,7 +50,8 @@ public class WidgetOverlay extends Overlay
 		PEST_CONTROL_BOAT_INFO(WidgetInfo.PEST_CONTROL_BOAT_INFO, OverlayPosition.TOP_LEFT),
 		PEST_CONTROL_INFO(WidgetInfo.PEST_CONTROL_INFO, OverlayPosition.TOP_LEFT),
 		PVP_BOUNTY_HUNTER_STATS(WidgetInfo.PVP_BOUNTY_HUNTER_STATS, OverlayPosition.TOP_RIGHT),
-		PVP_KILLDEATH_COUNTER(WidgetInfo.PVP_KILLDEATH_COUNTER, OverlayPosition.TOP_LEFT);
+		PVP_KILLDEATH_COUNTER(WidgetInfo.PVP_KILLDEATH_COUNTER, OverlayPosition.TOP_LEFT),
+		EXPERIENCE_DROPS(WidgetInfo.EXPERIENCE_DROPS, OverlayPosition.DETACHED, new Rectangle(50, 50));
 
 		@Getter
 		private final WidgetInfo widget;
@@ -93,7 +95,7 @@ public class WidgetOverlay extends Overlay
 	private final OverlayPosition overlayPosition;
 	private Rectangle defaultPosition;
 
-	public WidgetOverlay(final Client client, final WidgetInfo widgetInfo, final OverlayPosition overlayPosition, final Rectangle customSize)
+	private WidgetOverlay(final Client client, final WidgetInfo widgetInfo, final OverlayPosition overlayPosition, final Rectangle customSize)
 	{
 		this.client = client;
 		this.widgetInfo = widgetInfo;
@@ -165,6 +167,43 @@ public class WidgetOverlay extends Overlay
 		final Widget widget = client.getWidget(widgetInfo);
 		final Rectangle bounds = super.getBounds();
 		final Rectangle parent = getParentBounds(widget);
+
+		if (widgetInfo == WidgetInfo.EXPERIENCE_DROPS)
+		{
+			int position = client.getVar(Varbits.EXPERIENCE_TRACKER_POSITION);
+			Widget viewport = client.getViewportWidget();
+			if (viewport != null)
+			{
+				Rectangle viewportBounds = viewport.getBounds();
+				if (viewportBounds.width > 0 && viewportBounds.height > 0)
+				{
+					Rectangle newBounds = new Rectangle(0, 0, 50, 50);
+					switch (position)
+					{
+						case 0: //Right
+							newBounds.x = viewportBounds.width - newBounds.width;
+							break;
+
+						case 1: //Middle
+							newBounds.x = (int) (viewportBounds.width / 2.0f - newBounds.width / 2.0f);
+							break;
+
+						case 2: //Left
+							newBounds.x = 0;
+							break;
+
+						default:
+							return new Dimension(widget.getWidth(), widget.getHeight());
+					}
+					widget.setRelativeX(bounds.x - parent.x - newBounds.x);
+					widget.setRelativeY(bounds.y - parent.y - newBounds.y);
+					bounds.setLocation(newBounds.x, newBounds.y);
+					defaultPosition.x = newBounds.x + widget.getOriginalX();
+					defaultPosition.y = newBounds.y + widget.getOriginalY();
+					return new Dimension(widget.getWidth(), widget.getHeight());
+				}
+			}
+		}
 
 		if (parent.isEmpty())
 		{

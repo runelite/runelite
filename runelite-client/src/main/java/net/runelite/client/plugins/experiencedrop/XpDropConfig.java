@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2018, Cameron <https://github.com/noremac201>
- * Copyright (c) 2018, Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,21 +33,10 @@ import net.runelite.client.config.ConfigItem;
 public interface XpDropConfig extends Config
 {
 	@ConfigItem(
-		keyName = "moveableDrops",
-		name = "Moveable XP Drops",
-		description = "Configures whether the XP Drops can be moved with Alt",
-		position = 0
-	)
-	default boolean moveableDrops()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "hideSkillIcons",
 		name = "Hide skill icons",
 		description = "Configure if XP drops will show their respective skill icons",
-		position = 1
+		position = 0
 	)
 	default boolean hideSkillIcons()
 	{
@@ -56,21 +44,10 @@ public interface XpDropConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "recolorDrops",
-		name = "Recolor XP Drops",
-		description = "Recolor XP drops if you have boosting prayers active",
-		position = 2
-	)
-	default boolean recolorDrops()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "meleePrayerColor",
 		name = "Melee Prayer Color",
 		description = "XP drop color when a melee prayer is active",
-		position = 3
+		position = 1
 	)
 	default Color getMeleePrayerColor()
 	{
@@ -81,7 +58,7 @@ public interface XpDropConfig extends Config
 		keyName = "rangePrayerColor",
 		name = "Range Prayer Color",
 		description = "XP drop color when a range prayer is active",
-		position = 4
+		position = 2
 	)
 	default Color getRangePrayerColor()
 	{
@@ -92,7 +69,7 @@ public interface XpDropConfig extends Config
 		keyName = "magePrayerColor",
 		name = "Mage Prayer Color",
 		description = "XP drop color when a mage prayer is active",
-		position = 5
+		position = 3
 	)
 	default Color getMagePrayerColor()
 	{
