@@ -120,11 +120,11 @@ public class WidgetOverlay extends Overlay
 		}
 		Widget widget = client.getWidget(widgetInfo);
 
-		if (defaultPosition == null && widget != null)
+		if (overlayPosition == OverlayPosition.DETACHED && defaultPosition == null && widget != null)
 		{
 			defaultPosition = new Rectangle(
-				widget.getOriginalX() + widget.getRelativeX(),
-				widget.getOriginalY() + widget.getRelativeY(),
+				widget.getOriginalX(),
+				widget.getOriginalY(),
 				0, 0);
 
 			if (customSize != null)
@@ -177,8 +177,6 @@ public class WidgetOverlay extends Overlay
 		x = Math.min((int)parent.getMaxX() - bounds.width, x);
 		y = Math.min((int)parent.getMaxY() - bounds.height, y);
 		bounds.setLocation(x, y);
-		widget.setOriginalX(0);
-		widget.setOriginalY(0);
 		if (customSize != null)
 		{
 			widget.setRelativeX(bounds.x - parent.x - customSize.x);
@@ -189,7 +187,6 @@ public class WidgetOverlay extends Overlay
 			widget.setRelativeX(bounds.x - parent.x);
 			widget.setRelativeY(bounds.y - parent.y);
 		}
-
 		return new Dimension(widget.getWidth(), widget.getHeight());
 	}
 
