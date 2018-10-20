@@ -49,7 +49,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import static net.runelite.api.Skill.SLAYER;
-
 import net.runelite.api.SlayerUnlock;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
