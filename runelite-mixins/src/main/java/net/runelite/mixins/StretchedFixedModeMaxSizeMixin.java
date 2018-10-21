@@ -1,16 +1,15 @@
 /*
- * Copyright (c) 2017. l2-
- *
+ * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *     list of conditions and the following disclaimer.
+ *    list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -23,19 +22,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.mixins;
 
-package net.runelite.api.events;
+import java.awt.Dimension;
+import net.runelite.api.mixins.Copy;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Replace;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClient;
+import net.runelite.rs.api.RSGameEngine;
 
-import lombok.Data;
-
-/**
- * An event where the game has changed from fixed to resizable mode or vice versa.
- */
-@Data
-public class ResizeableChanged
+@Mixin(RSGameEngine.class)
+public abstract class StretchedFixedModeMaxSizeMixin implements RSGameEngine
 {
-	/**
-	 * Whether the game is in resizable mode.
-	 */
-	private boolean isResized;
+	@Shadow("clientInstance")
+	private static RSClient client;
+
+	@Copy("setMaxCanvasSize")
+	abstract void rs$setMaxCanvasSize(int width, int height);
+
+	@Replace("setMaxCanvasSize")
+	public void setMaxCanvasSize(int width, int height)
+	{
+		if (client.isStretchedEnabled() && client.isResized())
+		{
+			Dimension realDimensions = client.getRealDimensions();
+
+			rs$setMaxCanvasSize(realDimensions.width, realDimensions.height);
+		}
+		else
+		{
+			rs$setMaxCanvasSize(width, height);
+		}
+	}
 }
