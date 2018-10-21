@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2018, Ron Young <https://github.com/raiyni>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,45 +22,70 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues.emote;
+package net.runelite.client.plugins.banktags;
 
-import net.runelite.api.Client;
-import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.Item;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public class SlotLimitationRequirement implements ItemRequirement
+@ConfigGroup("banktags")
+public interface BankTagsConfig extends Config
 {
-	private String description;
-	private EquipmentInventorySlot[] slots;
-
-	public SlotLimitationRequirement(String description, EquipmentInventorySlot... slots)
+	@ConfigItem(
+		keyName = "useTabs",
+		name = "Use Tag Tabs",
+		description = "Enable the ability to add tabs to your bank which allow fast access to tags.",
+		position = 1
+	)
+	default boolean tabs()
 	{
-		this.description = description;
-		this.slots = slots;
-	}
-
-	@Override
-	public boolean fulfilledBy(Item[] items)
-	{
-		for (EquipmentInventorySlot slot : slots)
-		{
-			if (slot.getSlotIdx() >= items.length)
-			{
-				continue; //We can't check the slot, because there is nothing in it, the array hasn't been resized
-			}
-
-			if (items[slot.getSlotIdx()].getId() != -1)
-			{
-				return false;
-			}
-		}
-
 		return true;
 	}
 
-	@Override
-	public String getCollectiveName(Client client)
+	@ConfigItem(
+		keyName = "rememberTab",
+		name = "Remember last Tag Tab",
+		description = "Enable the ability to remember last Tag Tab when closing/opening the bank.",
+		position = 2
+	)
+	default boolean rememberTab()
 	{
-		return description;
+		return true;
 	}
+
+	@ConfigItem(
+		keyName = "position",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int position()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+		keyName = "position",
+		name = "",
+		description = ""
+	)
+	void position(int idx);
+
+	@ConfigItem(
+		keyName = "tab",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default String tab()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "tab",
+		name = "",
+		description = ""
+	)
+	void tab(String tab);
 }

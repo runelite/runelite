@@ -51,7 +51,7 @@ public class RaidsOverlay extends Overlay
 	private boolean scoutOverlayShown = false;
 
 	@Inject
-	public RaidsOverlay(Client client, RaidsPlugin plugin, RaidsConfig config)
+	private RaidsOverlay(Client client, RaidsPlugin plugin, RaidsConfig config)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.LOW);
@@ -63,7 +63,7 @@ public class RaidsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.scoutOverlay() || !scoutOverlayShown || client.getPlane() == OLM_PLANE)
+		if (!config.scoutOverlay() || !scoutOverlayShown || plugin.isInRaidChambers() && client.getPlane() == OLM_PLANE)
 		{
 			return null;
 		}
@@ -80,10 +80,6 @@ public class RaidsOverlay extends Overlay
 			return panelComponent.render(graphics);
 		}
 
-		panelComponent.getChildren().add(TitleComponent.builder()
-			.text("Raid scouter")
-			.build());
-
 		Color color = Color.WHITE;
 		String layout = plugin.getRaid().getLayout().toCode().replaceAll("#", "").replaceAll("¤", "");
 
@@ -92,10 +88,9 @@ public class RaidsOverlay extends Overlay
 			color = Color.RED;
 		}
 
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Layout")
-			.right(layout)
-			.rightColor(color)
+		panelComponent.getChildren().add(TitleComponent.builder()
+			.text(layout)
+			.color(color)
 			.build());
 
 		int bossMatches = 0;

@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Ron Young <https://github.com/raiyni>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,41 +23,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues.emote;
+package net.runelite.client.plugins.banktags.tabs;
 
-import net.runelite.api.Client;
-import net.runelite.api.Item;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import net.runelite.api.widgets.Widget;
 
-public class RangeItemRequirement implements ItemRequirement
+@Data
+@EqualsAndHashCode(of = "tag")
+class TagTab
 {
-	private String name;
-	private int startItemId;
-	private int endItemId;
+	private final String tag;
+	private int iconItemId;
+	private Widget background;
+	private Widget icon;
 
-	public RangeItemRequirement(String name, int startItemId, int endItemId)
+	TagTab(int iconItemId, String tag)
 	{
-		this.name = name;
-		this.startItemId = startItemId;
-		this.endItemId = endItemId;
+		this.iconItemId = iconItemId;
+		this.tag = tag;
 	}
 
-	@Override
-	public boolean fulfilledBy(Item[] items)
+	void setHidden(boolean hide)
 	{
-		for (Item item : items)
+		if (background != null)
 		{
-			if (item.getId() >= startItemId && item.getId() <= endItemId)
-			{
-				return true;
-			}
+			background.setHidden(hide);
 		}
 
-		return false;
-	}
-
-	@Override
-	public String getCollectiveName(Client client)
-	{
-		return name;
+		if (icon != null)
+		{
+			icon.setHidden(hide);
+		}
 	}
 }

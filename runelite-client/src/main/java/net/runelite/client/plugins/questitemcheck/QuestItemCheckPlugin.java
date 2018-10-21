@@ -1,59 +1,57 @@
 package net.runelite.client.plugins.questitemcheck;
 
-import com.google.common.eventbus.Subscribe;
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import com.google.inject.Provides;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Map;
-import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
-import javax.swing.SwingUtilities;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.GrandExchangeOffer;
-import net.runelite.api.ItemComposition;
-import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.FocusChanged;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.GrandExchangeOfferChanged;
-import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.Notifier;
-import net.runelite.client.config.ConfigManager;
+
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.input.KeyManager;
-import net.runelite.client.input.MouseManager;
-import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.bankvalue.BankValueConfig;
 import net.runelite.client.ui.ClientToolbar;
-import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.StackFormatter;
-import net.runelite.client.util.Text;
-import net.runelite.http.api.osbuddy.GrandExchangeClient;
-import net.runelite.http.api.osbuddy.GrandExchangeResult;
+import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
         name = "Quest Item Check",
         description = "Helps quickly identify if you have a item needed for a quest either within your bank or inventory",
-        tags = {"external", "integration", "notifications", "quest"}
+        tags = {"external", "integration", "notifications", "quest", "items"}
 )
 
-public class QuestItemCheckPlugin {
+class QuestItemCheckPlugin{
+    @Inject
+    private ClientToolbar clientToolbar;
+
+    @Inject
+    private QuestItemCheckConfig config;
+
+    private final QueryRunner queryRunner;
+    private final ItemManager itemManager;
+    private TestQuest testQuest = new TestQuest();
+
+
+    //pass in quest object with all items needed, run bank and inventory queries checking over each item needed from the quest
+
+    //class constructor
+    @Inject
+    QuestItemCheckPlugin(QueryRunner queryRunner, ItemManager itemManager, TestQuest testQuest)
+    {
+        this.queryRunner = queryRunner;
+        this.itemManager = itemManager;
+        this.testQuest = testQuest;
+
+        doQuestCheck(testQuest.getItemList(), "A");
+    }
+
+    //pass in selected quest to check for items (maybe store those in a JSON format?)
+    //Go over list of items needed and check if each is contained within Bank or Inventory
+    //Will a query have to be run for each item? And have a true or false returned?
+    //Or can a single query be run and items cached somewhere so then we just need to perform a single query
+    @Inject
+    boolean doQuestCheck(String questItems, String item)
+    {
+        if (questItems.contains(item)) {
+            return true;
+        }
+        return false;
+    }
+
+
+
 }

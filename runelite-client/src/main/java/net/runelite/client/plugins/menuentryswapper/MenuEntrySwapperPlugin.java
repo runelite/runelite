@@ -396,6 +396,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("decant", option, target, true);
 			}
+
+			if (config.swapQuick())
+			{
+				swap("quick-travel", option, target, true);
+			}
 		}
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
 		{
@@ -460,6 +465,18 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("chase", option, target, true);
 		}
+		else if (config.swapBirdhouseEmpty() && option.equals("interact") && target.contains("birdhouse"))
+		{
+			swap("empty", option, target, true);
+		}
+		else if (config.swapQuick() && option.equals("ring"))
+		{
+			swap("quick-start", option, target, true);
+		}
+		else if (config.swapQuick() && option.equals("pass"))
+		{
+			swap("quick-pass", option, target, true);
+		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
 			Integer customOption = getSwapConfig(itemId);
@@ -485,10 +502,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapBones() && option.equals("bury"))
 		{
 			swap("use", option, target, true);
-		}
-		else if (config.swapBirdhouseEmpty() && option.equals("interact") && target.contains("birdhouse"))
-		{
-			swap("empty", option, target, true);
 		}
 	}
 

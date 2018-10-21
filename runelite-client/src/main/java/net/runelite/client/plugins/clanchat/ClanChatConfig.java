@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2017, Ron <https://github.com/raiyni>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,54 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues.emote;
+package net.runelite.client.plugins.clanchat;
 
-import lombok.Getter;
-import static net.runelite.api.SpriteID.*;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@Getter
-public enum Emote
+@ConfigGroup("clanchat")
+public interface ClanChatConfig extends Config
 {
-	BULL_ROARER("Bull Roarer", -1),
-	YES("Yes", EMOTE_YES),
-	NO("No", EMOTE_NO),
-	THINK("Think", EMOTE_THINK),
-	BOW("Bow", EMOTE_BOW),
-	ANGRY("Angry", EMOTE_ANGRY),
-	CRY("Cry", EMOTE_CRY),
-	LAUGH("Laugh", EMOTE_LAUGH),
-	CHEER("Cheer", EMOTE_CHEER),
-	WAVE("Wave", EMOTE_WAVE),
-	BECKON("Beckon", EMOTE_BECKON),
-	DANCE("Dance", EMOTE_DANCE),
-	CLAP("Clap", EMOTE_CLAP),
-	PANIC("Panic", EMOTE_PANIC),
-	JIG("Jig", EMOTE_JIG),
-	SPIN("Spin", EMOTE_SPIN),
-	HEADBANG("Headbang", EMOTE_HEADBANG),
-	JUMP_FOR_JOY("Jump for Joy", EMOTE_JUMP_FOR_JOY),
-	RASPBERRY("Raspberry", EMOTE_RASPBERRY),
-	YAWN("Yawn", EMOTE_YAWN),
-	SALUTE("Salute", EMOTE_SALUTE),
-	SHRUG("Shrug", EMOTE_SHRUG),
-	BLOW_KISS("Blow Kiss", EMOTE_BLOW_KISS),
-	GOBLIN_SALUTE("Goblin Salute", EMOTE_GOBLIN_SALUTE),
-	SLAP_HEAD("Slap Head", EMOTE_SLAP_HEAD),
-	STOMP("Stomp", EMOTE_STOMP),
-	FLAP("Flap", EMOTE_FLAP),
-	PUSH_UP("Push up", EMOTE_PUSH_UP);
-
-	private String name;
-	private int spriteId;
-
-	Emote(String name, int spriteId)
+	@ConfigItem(
+		keyName = "recentChats",
+		name = "Recent Chats",
+		description = "Show recent clan chats.",
+		position = 1
+	)
+	default boolean recentChats()
 	{
-		this.name = name;
-		this.spriteId = spriteId;
+		return true;
 	}
 
-	public boolean hasSprite()
+	@ConfigItem(
+		keyName = "chatsData",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default String chatsData()
 	{
-		return spriteId != -1;
+		return "";
 	}
+
+	@ConfigItem(
+		keyName = "chatsData",
+		name = "",
+		description = ""
+	)
+	void chatsData(String str);
 }

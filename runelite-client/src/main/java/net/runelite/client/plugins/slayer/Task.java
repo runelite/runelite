@@ -112,7 +112,7 @@ enum Task
 	KALPHITE_QUEEN("Kalphite Queen", ItemID.KALPHITE_PRINCESS),
 	KILLERWATTS("Killerwatts", ItemID.KILLERWATT),
 	KING_BLACK_DRAGON("King Black Dragon", ItemID.PRINCE_BLACK_DRAGON),
-	KRAKEN("Kraken", ItemID.PET_KRAKEN),
+	KRAKEN("Cave Kraken Boss", ItemID.PET_KRAKEN, "Kraken"),
 	KREEARRA("Kree'arra", ItemID.PET_KREEARRA),
 	KRIL_TSUTSAROTH("K'ril Tsutsaroth", ItemID.PET_KRIL_TSUTSAROTH),
 	KURASK("Kurask", ItemID.KURASK),
