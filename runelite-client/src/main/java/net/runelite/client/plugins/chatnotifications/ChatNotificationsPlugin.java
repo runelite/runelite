@@ -158,11 +158,11 @@ public class ChatNotificationsPlugin extends Plugin
 			case SERVER:
 				if (config.kittenIdle())
 				{
-					if (Text.removeTags(messageNode.getValue()).equals(KITTEN_HUNGRY_MESSAGE))
+					if (messageNode.getValue().contains(KITTEN_HUNGRY_MESSAGE))
 					{
 						notifier.notify(KITTEN_HUNGRY_MESSAGE);
 					}
-					else if (Text.removeTags(messageNode.getValue()).equals(KITTEN_ATTENTION_MESSAGE))
+					else if (messageNode.getValue().contains(KITTEN_ATTENTION_MESSAGE))
 					{
 						notifier.notify(KITTEN_ATTENTION_MESSAGE);
 					}
