@@ -602,6 +602,7 @@ public class WidgetID
 	{
 		static final int WIDGET = 3;
 		static final int BOTTOM_BAR = 15;
+		static final int DROPS_CONTAINER = 16;
 	}
 
 	static class FairyRingPanel
