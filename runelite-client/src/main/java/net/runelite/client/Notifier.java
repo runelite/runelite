@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -216,8 +217,23 @@ public class Notifier
 		executorService.submit(() ->
 		{
 			final boolean success = sendCommand(commands)
-					.map(process -> process.exitValue() == 0)
-					.orElse(false);
+				.map(process ->
+				{
+					try
+					{
+						if (!process.waitFor(500, TimeUnit.MILLISECONDS))
+						{
+							return false;
+						}
+					}
+					catch (InterruptedException e)
+					{
+						return false;
+					}
+
+					return process.exitValue() == 0;
+				})
+				.orElse(false);
 
 			if (!success)
 			{
