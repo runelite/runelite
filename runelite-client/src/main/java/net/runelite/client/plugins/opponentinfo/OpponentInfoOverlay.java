@@ -190,8 +190,8 @@ class OpponentInfoOverlay extends Overlay
 		}
 
 		// Opponents opponent
-		//Show if checkbox is checked within plugin panel
-		if (opponentsOpponentName != null && !opponentInfoConfig.showOpponentsOpponent())
+		// Show if checkbox is checked within plugin panel
+		if (opponentsOpponentName != null && opponentInfoConfig.showOpponentsOpponent())
 		{
 			textWidth = Math.max(textWidth, fontMetrics.stringWidth(opponentsOpponentName));
 			panelComponent.setPreferredSize(new Dimension(textWidth, 0));

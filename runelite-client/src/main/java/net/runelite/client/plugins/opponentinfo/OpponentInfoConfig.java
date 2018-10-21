@@ -59,5 +59,5 @@ public interface OpponentInfoConfig extends Config
 			description = "Toggle showing opponents opponent if within a multi-combat area",
 			position = 2
 	)
-	default boolean showOpponentsOpponent() {return false;}
+	default boolean showOpponentsOpponent() {return true;}
 }
