@@ -102,7 +102,7 @@ class WorldTableHeader extends JPanel
 		});
 
 		textLabel.setText(title);
-		textLabel.setFont(FontManager.getRunescapeSmallFont());
+		textLabel.setFont(FontManager.getSmallFont(getFont()));
 
 		final JMenuItem refresh = new JMenuItem("Refresh worlds");
 		refresh.addActionListener(e ->

@@ -131,16 +131,21 @@ public class FontManager
 		return f.equals(runescapeFont) || f.equals(runescapeSmallFont) || f.equals(runescapeBoldFont);
 	}
 
+	public static Font getSmallFont(Font f)
+	{
+		if (isRunescapeFont(f))
+		{
+			return runescapeSmallFont;
+		}
+		return getFontOrDefault(f);
+	}
+
 	public static Font getFontFromType(Font f, FontType type)
 	{
 		switch (type)
 		{
 			case SMALL:
-				if (isRunescapeFont(f))
-				{
-					return runescapeSmallFont;
-				}
-				return getFontOrDefault(f);
+				return getSmallFont(f);
 			case BOLD:
 				if (isRunescapeFont(f))
 				{

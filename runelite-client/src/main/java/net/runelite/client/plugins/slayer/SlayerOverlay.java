@@ -134,7 +134,7 @@ class SlayerOverlay extends Overlay
 		int slaughterCount = plugin.getSlaughterChargeCount();
 		int expeditiousCount = plugin.getExpeditiousChargeCount();
 
-		graphics.setFont(FontManager.getRunescapeSmallFont());
+		graphics.setFont(FontManager.getSmallFont(graphics.getFont()));
 
 		for (WidgetItem item : getSlayerItems())
 		{

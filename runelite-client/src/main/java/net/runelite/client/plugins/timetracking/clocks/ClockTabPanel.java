@@ -155,7 +155,7 @@ public class ClockTabPanel extends TabContentPanel
 
 		JLabel headerLabel = new JLabel(title);
 		headerLabel.setForeground(Color.WHITE);
-		headerLabel.setFont(FontManager.getRunescapeSmallFont());
+		headerLabel.setFont(FontManager.getSmallFont(getFont()));
 		panel.add(headerLabel, BorderLayout.CENTER);
 
 		IconButton addButton = new IconButton(ADD_ICON, ADD_ICON_HOVER);
@@ -175,7 +175,7 @@ public class ClockTabPanel extends TabContentPanel
 
 		JLabel infoLabel = new JShadowedLabel(text);
 		infoLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR.darker());
-		infoLabel.setFont(FontManager.getRunescapeSmallFont());
+		infoLabel.setFont(FontManager.getSmallFont(getFont()));
 		panel.add(infoLabel);
 
 		return panel;

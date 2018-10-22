@@ -63,7 +63,14 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 			return new Dimension();
 		}
 
-		graphics.setFont(getSize() < DEFAULT_SIZE ? FontManager.getRunescapeSmallFont() : FontManager.getRunescapeFont());
+		if (graphics.getFont().equals(FontManager.getRunescapeFont()) && getSize() > DEFAULT_SIZE)
+		{
+			graphics.setFont(FontManager.getRunescapeFont());
+		}
+		else
+		{
+			graphics.setFont(FontManager.getSmallFont(graphics.getFont()));
+		}
 
 		final int baseX = preferredLocation.x;
 		final int baseY = preferredLocation.y;
