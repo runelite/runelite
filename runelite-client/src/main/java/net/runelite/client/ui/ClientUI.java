@@ -302,7 +302,7 @@ public class ClientUI
 			SwingUtil.setTheme(new SubstanceRuneLiteLookAndFeel());
 
 			// Use custom UI font
-			SwingUtil.setFont(FontManager.getRunescapeFont());
+			SwingUtil.setFont(FontManager.getFontOrDefault(config.clientFont()));
 
 			// Create main window
 			frame = new ContainableFrame();

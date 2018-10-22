@@ -24,11 +24,16 @@
  */
 package net.runelite.client.ui;
 
-import javax.swing.text.StyleContext;
+import com.google.common.collect.ImmutableBiMap;
+import java.awt.Canvas;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
+import net.runelite.client.config.FontType;
 
 public class FontManager
 {
@@ -36,37 +41,45 @@ public class FontManager
 	private static final Font runescapeSmallFont;
 	private static final Font runescapeBoldFont;
 
+	private static final ImmutableBiMap<String, Font> fontMap;
+
 	static
 	{
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 
 		try
 		{
-			Font font = Font.createFont(Font.TRUETYPE_FONT,
+			runescapeFont = Font.createFont(Font.TRUETYPE_FONT,
 				FontManager.class.getResourceAsStream("runescape.ttf"))
 				.deriveFont(Font.PLAIN, 16);
-			ge.registerFont(font);
 
-			runescapeFont = StyleContext.getDefaultStyleContext()
-					.getFont(font.getName(), Font.PLAIN, 16);
-			ge.registerFont(runescapeFont);
-
-			Font smallFont = Font.createFont(Font.TRUETYPE_FONT,
+			runescapeSmallFont = Font.createFont(Font.TRUETYPE_FONT,
 				FontManager.class.getResourceAsStream("runescape_small.ttf"))
 				.deriveFont(Font.PLAIN, 16);
-			ge.registerFont(smallFont);
 
-			runescapeSmallFont = StyleContext.getDefaultStyleContext()
-					.getFont(smallFont.getName(), Font.PLAIN, 16);
+			runescapeBoldFont = Font.createFont(Font.TRUETYPE_FONT,
+				FontManager.class.getResourceAsStream("runescape_bold.ttf"))
+				.deriveFont(Font.PLAIN, 16);
+
+			final LinkedHashMap<String, Font> _fontMap = new LinkedHashMap<>();
+			_fontMap.put("Runescape small", runescapeSmallFont);
+			_fontMap.put("Runescape default", runescapeFont);
+			_fontMap.put("Runescape bold", runescapeBoldFont);
+
+			// Get all available fonts on the system
+			Font[] availableFonts = ge.getAllFonts();
+			// build bidirectional map
+			Arrays.stream(availableFonts).sorted(Comparator.comparing(Font::getFontName)).forEach(f ->
+			{
+				if (!_fontMap.containsKey(f.getFontName()))
+				{
+					_fontMap.put(f.getFontName(), f);
+				}
+			});
+			fontMap = ImmutableBiMap.copyOf(_fontMap);
+
+			ge.registerFont(runescapeFont);
 			ge.registerFont(runescapeSmallFont);
-
-			Font boldFont = Font.createFont(Font.TRUETYPE_FONT,
-					FontManager.class.getResourceAsStream("runescape_bold.ttf"))
-					.deriveFont(Font.PLAIN, 16);
-			ge.registerFont(boldFont);
-
-			runescapeBoldFont = StyleContext.getDefaultStyleContext()
-					.getFont(boldFont.getName(), Font.PLAIN, 16);
 			ge.registerFont(runescapeBoldFont);
 		}
 		catch (FontFormatException ex)
@@ -77,6 +90,25 @@ public class FontManager
 		{
 			throw new RuntimeException("Font file not found.", ex);
 		}
+	}
+
+	public static Font getFontOffCorrectSize(Font f)
+	{
+		// Size of the font is already set
+		if (f.getSize2D() > 1)
+		{
+			return f;
+		}
+
+		// Dummy canvas for font metrics
+		Canvas c = new Canvas();
+
+		f = f.deriveFont(12f);
+		if (c.getFontMetrics(f).getMaxAscent() > 11)
+		{
+			f = f.deriveFont(11f);
+		}
+		return f;
 	}
 
 	public static Font getRunescapeFont()
@@ -92,5 +124,64 @@ public class FontManager
 	public static Font getRunescapeBoldFont()
 	{
 		return runescapeBoldFont;
+	}
+
+	private static boolean isRunescapeFont(Font f)
+	{
+		return f.equals(runescapeFont) || f.equals(runescapeSmallFont) || f.equals(runescapeBoldFont);
+	}
+
+	public static Font getFontFromType(Font f, FontType type)
+	{
+		switch (type)
+		{
+			case SMALL:
+				if (isRunescapeFont(f))
+				{
+					return runescapeSmallFont;
+				}
+				return getFontOrDefault(f);
+			case BOLD:
+				if (isRunescapeFont(f))
+				{
+					return runescapeBoldFont;
+				}
+				return getFontOrDefault(f).deriveFont(Font.BOLD, 14.0f);
+			default: //in this case regular
+				if (isRunescapeFont(f))
+				{
+					return runescapeFont;
+				}
+				return getFontOrDefault(f).deriveFont(14.0f);
+		}
+	}
+
+	public static Font lookupFont(String fontName)
+	{
+		return fontMap.get(fontName);
+	}
+
+	public static String getFontName(Font font)
+	{
+		return fontMap.inverse().get(font);
+	}
+
+	public static String[] getAvailableFontNames()
+	{
+		return fontMap.keySet().toArray(new String[fontMap.keySet().size()]);
+	}
+
+	public static boolean isAvailable(Font font)
+	{
+		return fontMap.containsKey(font.getFontName());
+	}
+
+	public static Font getFontOrDefault(Font font)
+	{
+		if (font == null || !fontMap.containsKey(font.getFontName()))
+		{
+			return getRunescapeFont();
+		}
+		return getFontOffCorrectSize(font);
 	}
 }

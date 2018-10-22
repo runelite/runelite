@@ -56,6 +56,7 @@ import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.ui.FontManager;
 
 @Singleton
 public class OverlayRenderer extends MouseAdapter implements KeyListener
@@ -456,15 +457,15 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		// Set font based on configuration
 		if (position == OverlayPosition.DYNAMIC || position == OverlayPosition.DETACHED)
 		{
-			subGraphics.setFont(runeLiteConfig.fontType().getFont());
+			subGraphics.setFont(FontManager.getFontFromType(runeLiteConfig.clientFont(), runeLiteConfig.fontType()));
 		}
 		else if (position == OverlayPosition.TOOLTIP)
 		{
-			subGraphics.setFont(runeLiteConfig.tooltipFontType().getFont());
+			subGraphics.setFont(FontManager.getFontFromType(runeLiteConfig.clientFont(), runeLiteConfig.tooltipFontType()));
 		}
 		else
 		{
-			subGraphics.setFont(runeLiteConfig.interfaceFontType().getFont());
+			subGraphics.setFont(FontManager.getFontFromType(runeLiteConfig.clientFont(), runeLiteConfig.interfaceFontType()));
 		}
 
 		subGraphics.translate(point.x, point.y);
