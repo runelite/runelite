@@ -196,7 +196,7 @@ class GrandExchangeSearchPanel extends JPanel
 		for (ItemPrice item : result)
 		{
 			if (count++ > MAX_SEARCH_ITEMS)
-				{
+			{
 				// Cap search
 				break;
 			}

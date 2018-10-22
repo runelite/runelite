@@ -60,9 +60,11 @@ public class GrandExchangeSearchAbbreviations
 			case "ppot": return "prayer potion";
 
 			case "gmaul": return "granite maul";
+
+			default: return lookup;
 		}
 
-		return lookup;
+		//return lookup;
 	}
 
 }
