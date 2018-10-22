@@ -68,21 +68,20 @@ public class ConfigManager
 {
 	private static final String SETTINGS_FILE_NAME = "settings.properties";
 
-	@Inject
-	EventBus eventBus;
-
-	@Inject
-	ScheduledExecutorService executor;
+	private final EventBus eventBus;
+	private final ScheduledExecutorService executor;
+	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
+	private final Properties properties = new Properties();
 
 	private AccountSession session;
 	private ConfigClient client;
 	private File propertiesFile;
 
-	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
-	private final Properties properties = new Properties();
-
-	public ConfigManager()
+	@Inject
+	private ConfigManager(final EventBus eventBus, final ScheduledExecutorService executor)
 	{
+		this.eventBus = eventBus;
+		this.executor = executor;
 		this.propertiesFile = getPropertiesFile();
 	}
 
