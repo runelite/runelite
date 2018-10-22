@@ -373,7 +373,7 @@ class DevToolsOverlay extends Overlay
 			Rectangle2D textBounds = fm.getStringBounds(idText, graphics);
 
 			int textX = (int) (slotBounds.getX() + (slotBounds.getWidth() / 2) - (textBounds.getWidth() / 2));
-			int textY = (int) (slotBounds.getY() + (slotBounds.getHeight() / 2) + (textBounds.getHeight() / 2));
+			int textY = (int) (slotBounds.getY() + (slotBounds.getHeight() / 2) + (fm.getAscent() / 2));
 
 			graphics.setColor(new Color(255, 255, 255, 65));
 			graphics.fill(slotBounds);
@@ -483,7 +483,7 @@ class DevToolsOverlay extends Overlay
 		Rectangle2D textBounds = fm.getStringBounds(text, graphics);
 
 		int textX = (int) (bounds.getX() + (bounds.getWidth() / 2) - (textBounds.getWidth() / 2));
-		int textY = (int) (bounds.getY() + (bounds.getHeight() / 2) + (textBounds.getHeight() / 2));
+		int textY = (int) (bounds.getY() + (bounds.getHeight() / 2) + (fm.getMaxAscent() / 2));
 
 		graphics.setColor(Color.BLACK);
 		graphics.drawString(text, textX + 1, textY + 1);

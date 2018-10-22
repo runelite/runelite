@@ -79,7 +79,7 @@ public class BindNeckOverlay extends Overlay
 			final String text = bindingCharges <= 0 ? "?" : bindingCharges + "";
 
 			final TextComponent textComponent = new TextComponent();
-			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
+			textComponent.setPosition(new Point(bounds.x, bounds.y + 1 + graphics.getFontMetrics().getMaxAscent() - graphics.getFontMetrics().getMaxDescent()));
 			textComponent.setText(text);
 			textComponent.setColor(color);
 			textComponent.render(graphics);

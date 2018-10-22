@@ -284,14 +284,14 @@ public class GroundItemsOverlay extends Overlay
 
 				// Item bounds
 				int x = textX - 2;
-				int y = textY - stringHeight - 2;
+				int y = textY - stringHeight - 2 + fm.getMaxDescent();
 				int width = stringWidth + 4;
 				int height = stringHeight + 4;
 				final Rectangle itemBounds = new Rectangle(x, y, width, height);
 
 				// Hidden box
 				x += width + 2;
-				y = textY - (RECTANGLE_SIZE + stringHeight) / 2;
+				y = textY - (fm.getMaxAscent() + RECTANGLE_SIZE) / 2;
 				width = height = RECTANGLE_SIZE;
 				final Rectangle itemHiddenBox = new Rectangle(x, y, width, height);
 
