@@ -31,9 +31,11 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
@@ -163,6 +165,14 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 			|| client.getViewportWidget() == null)
 		{
 			return;
+		}
+
+		// Set font rendering properties like the OS's font rendering
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Map desktopHints = (Map)(tk.getDesktopProperty("awt.font.desktophints"));
+		if (desktopHints != null)
+		{
+			graphics.addRenderingHints(desktopHints);
 		}
 
 		if (shouldInvalidateBounds())
