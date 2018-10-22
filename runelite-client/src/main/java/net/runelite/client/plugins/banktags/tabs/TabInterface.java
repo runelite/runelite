@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.banktags.tabs;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -77,10 +78,12 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.banktags.BankTagsConfig;
 import net.runelite.client.plugins.banktags.BankTagsPlugin;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
-import static net.runelite.client.plugins.banktags.BankTagsPlugin.ICON_SEARCH;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.SPLITTER;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_SEARCH;
 import net.runelite.client.plugins.banktags.TagManager;
+import static net.runelite.client.plugins.banktags.TagManager.ITEM_KEY_PREFIX;
+import static net.runelite.client.plugins.banktags.tabs.TabManager.ICON_SEARCH;
+import static net.runelite.client.plugins.banktags.tabs.TabManager.TAG_TABS_CONFIG;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
@@ -182,6 +185,23 @@ public class TabInterface
 		return activeTab != null;
 	}
 
+	/**
+	 * TODO: remove this
+	 * Temporary migration of global bank tags config to per-account bank tags config
+	 */
+	@Deprecated
+	public void migrate()
+	{
+		configManager.addConfigMigration(BankTagsPlugin.CONFIG_GROUP, CONFIG_ACTIVE_TAB);
+		configManager.addConfigMigration(BankTagsPlugin.CONFIG_GROUP, CONFIG_POSITION);
+		configManager.addConfigMigration(BankTagsPlugin.CONFIG_GROUP, TAG_TABS_CONFIG);
+		configManager.getConfigurationKeys(CONFIG_GROUP + "." + ICON_SEARCH).forEach(k ->
+			configManager.addConfigMigration(CONFIG_GROUP, k.replace(CONFIG_GROUP + ".", "")));
+
+		configManager.getConfigurationKeys(CONFIG_GROUP + "." + ITEM_KEY_PREFIX).forEach(k ->
+			configManager.addConfigMigration(CONFIG_GROUP, k.replace(CONFIG_GROUP + ".", "")));
+	}
+
 	public void init()
 	{
 		if (isHidden())
@@ -192,7 +212,9 @@ public class TabInterface
 		Widget bankContainer = client.getWidget(WidgetInfo.BANK_CONTAINER);
 		widgetIds = bankContainer.getOnLoadListener();
 
-		currentTabIndex = configManager.getConfiguration(BankTagsPlugin.CONFIG_GROUP, CONFIG_POSITION, int.class);
+		currentTabIndex = MoreObjects.firstNonNull(
+			configManager.getConfiguration(BankTagsPlugin.CONFIG_GROUP, client.getUsername() + "." + CONFIG_POSITION, Integer.class),
+			0);
 		parent = client.getWidget(WidgetInfo.BANK_CONTENT_CONTAINER);
 
 		updateBounds();
@@ -218,7 +240,7 @@ public class TabInterface
 		activateTab(null);
 		scrollTab(0);
 
-		final String savedTab = configManager.getConfiguration(BankTagsPlugin.CONFIG_GROUP, CONFIG_ACTIVE_TAB, String.class);
+		final String savedTab = configManager.getConfiguration(BankTagsPlugin.CONFIG_GROUP, client.getUsername() + "." + CONFIG_ACTIVE_TAB, String.class);
 		if (config.rememberTab() && !Strings.isNullOrEmpty(savedTab))
 		{
 			openTag(TAG_SEARCH + savedTab);
@@ -247,13 +269,17 @@ public class TabInterface
 		if (isHidden())
 		{
 			parent = null;
-			final int pos = configManager.getConfiguration(BankTagsPlugin.CONFIG_GROUP, CONFIG_POSITION, int.class);
-			final String savedTab = configManager.getConfiguration(BankTagsPlugin.CONFIG_GROUP, CONFIG_ACTIVE_TAB, String.class);
+			Integer pos = configManager.getConfiguration(BankTagsPlugin.CONFIG_GROUP, client.getUsername() + "." + CONFIG_POSITION, Integer.class);
+			if (pos == null)
+			{
+				pos = 0;
+			}
+			final String savedTab = configManager.getConfiguration(BankTagsPlugin.CONFIG_GROUP, client.getUsername() + "." + CONFIG_ACTIVE_TAB, String.class);
 
 			// If bank window was just hidden, update last active tab position
 			if (currentTabIndex != pos)
 			{
-				configManager.setConfiguration(BankTagsPlugin.CONFIG_GROUP, CONFIG_POSITION, pos);
+				configManager.setConfiguration(BankTagsPlugin.CONFIG_GROUP, client.getUsername() + "." + CONFIG_POSITION, pos);
 			}
 
 			// Do the same for last active tab
@@ -261,16 +287,16 @@ public class TabInterface
 			{
 				if (activeTab == null && !Strings.isNullOrEmpty(savedTab))
 				{
-                    configManager.unsetConfiguration(BankTagsPlugin.CONFIG_GROUP, CONFIG_ACTIVE_TAB);
+					configManager.unsetConfiguration(BankTagsPlugin.CONFIG_GROUP, client.getUsername() + "." + CONFIG_ACTIVE_TAB);
 				}
 				else if (activeTab != null && !activeTab.getTag().equals(savedTab))
 				{
-					configManager.setConfiguration(BankTagsPlugin.CONFIG_GROUP, CONFIG_ACTIVE_TAB, activeTab.getTag());
+					configManager.setConfiguration(BankTagsPlugin.CONFIG_GROUP, client.getUsername() + "." + CONFIG_ACTIVE_TAB, activeTab.getTag());
 				}
 			}
 			else if (!Strings.isNullOrEmpty(savedTab))
 			{
-				configManager.unsetConfiguration(BankTagsPlugin.CONFIG_GROUP, CONFIG_ACTIVE_TAB);
+				configManager.unsetConfiguration(BankTagsPlugin.CONFIG_GROUP, client.getUsername() + "." + CONFIG_ACTIVE_TAB);
 			}
 
 			return;

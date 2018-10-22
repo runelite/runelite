@@ -34,10 +34,10 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
+import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
-import static net.runelite.client.plugins.banktags.BankTagsPlugin.ICON_SEARCH;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.JOINER;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.SPLITTER;
 import net.runelite.client.util.Text;
@@ -46,16 +46,19 @@ import org.apache.commons.lang3.math.NumberUtils;
 @Singleton
 class TabManager
 {
-	private static final String TAG_TABS_CONFIG = "tagtabs";
+	static final String TAG_TABS_CONFIG = "tagtabs";
+	static final String ICON_SEARCH = "icon_";
 
 	@Getter
 	private final List<TagTab> tabs = new ArrayList<>();
 	private final ConfigManager configManager;
+	private final Client client;
 
 	@Inject
-	private TabManager(ConfigManager configManager)
+	private TabManager(ConfigManager configManager, Client client)
 	{
 		this.configManager = configManager;
+		this.client = client;
 	}
 
 	void add(TagTab tagTab)
@@ -80,7 +83,7 @@ class TabManager
 
 	List<String> getAllTabs()
 	{
-		return SPLITTER.splitToList(MoreObjects.firstNonNull(configManager.getConfiguration(CONFIG_GROUP, TAG_TABS_CONFIG), ""));
+		return SPLITTER.splitToList(MoreObjects.firstNonNull(configManager.getConfiguration(CONFIG_GROUP, client.getUsername() + "." + TAG_TABS_CONFIG), ""));
 	}
 
 	TagTab load(String tag)
@@ -90,7 +93,7 @@ class TabManager
 		if (tagTab == null)
 		{
 			tag = Text.standardize(tag);
-			String item = configManager.getConfiguration(CONFIG_GROUP, ICON_SEARCH + tag);
+			String item = configManager.getConfiguration(CONFIG_GROUP, client.getUsername() + "." + ICON_SEARCH + tag);
 			int itemid = NumberUtils.toInt(item, ItemID.SPADE);
 			tagTab = new TagTab(itemid, tag);
 		}
@@ -123,7 +126,7 @@ class TabManager
 	void save()
 	{
 		String tags = JOINER.join(tabs.stream().map(TagTab::getTag).collect(Collectors.toList()));
-		configManager.setConfiguration(CONFIG_GROUP, TAG_TABS_CONFIG, tags);
+		configManager.setConfiguration(CONFIG_GROUP, client.getUsername() + "." + TAG_TABS_CONFIG, tags);
 	}
 
 	int size()

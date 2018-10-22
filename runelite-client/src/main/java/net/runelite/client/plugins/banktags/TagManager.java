@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -51,24 +52,25 @@ import net.runelite.client.util.Text;
 @Singleton
 public class TagManager
 {
-	private static final String ITEM_KEY_PREFIX = "item_";
+	public static final String ITEM_KEY_PREFIX = "item_";
 	private final ItemManager itemManager;
 	private final ConfigManager configManager;
-
 	private final ClueScrollService clueScrollService;
+	private final Client client;
 
 	@Inject
-	private TagManager(final ItemManager itemManager, final ConfigManager configManager, final ClueScrollService clueScrollService)
+	private TagManager(final ItemManager itemManager, final ConfigManager configManager, final ClueScrollService clueScrollService, final Client client)
 	{
 		this.itemManager = itemManager;
 		this.configManager = configManager;
 		this.clueScrollService = clueScrollService;
+		this.client = client;
 	}
 
 	String getTagString(int itemId)
 	{
 		itemId = itemManager.canonicalize(itemId);
-		String config = configManager.getConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
+		String config = configManager.getConfiguration(CONFIG_GROUP, client.getUsername() + "." + ITEM_KEY_PREFIX + itemId);
 		if (config == null)
 		{
 			return "";
@@ -87,11 +89,11 @@ public class TagManager
 		itemId = itemManager.canonicalize(itemId);
 		if (Strings.isNullOrEmpty(tags))
 		{
-			configManager.unsetConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
+			configManager.unsetConfiguration(CONFIG_GROUP, client.getUsername() + "." + ITEM_KEY_PREFIX + itemId);
 		}
 		else
 		{
-			configManager.setConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId, tags);
+			configManager.setConfiguration(CONFIG_GROUP, client.getUsername() + "." + ITEM_KEY_PREFIX + itemId, tags);
 		}
 	}
 
@@ -130,7 +132,7 @@ public class TagManager
 
 	public List<Integer> getItemsForTag(String tag)
 	{
-		final String prefix = CONFIG_GROUP + "." + ITEM_KEY_PREFIX;
+		final String prefix = CONFIG_GROUP + "." + client.getUsername() + "." + ITEM_KEY_PREFIX;
 		return configManager.getConfigurationKeys(prefix).stream()
 			.map(item -> Integer.parseInt(item.replace(prefix, "")))
 			.filter(item -> getTags(item).contains(tag))
@@ -139,7 +141,7 @@ public class TagManager
 
 	public void removeTag(String tag)
 	{
-		final String prefix = CONFIG_GROUP + "." + ITEM_KEY_PREFIX;
+		final String prefix = CONFIG_GROUP + "." + client.getUsername() + "." + ITEM_KEY_PREFIX;
 		configManager.getConfigurationKeys(prefix).forEach(item -> removeTag(Integer.parseInt(item.replace(prefix, "")), tag));
 	}
 

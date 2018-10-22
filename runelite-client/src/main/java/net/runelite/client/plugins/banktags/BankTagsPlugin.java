@@ -79,7 +79,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	public static final String CONFIG_GROUP = "banktags";
 	public static final String TAG_SEARCH = "tag:";
 	public static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
-	public static final String ICON_SEARCH = "icon_";
 
 	private static final String SEARCH_BANK_INPUT_TEXT =
 		"Show items whose names or tags contain the following text:<br>" +
@@ -122,6 +121,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	public void startUp()
 	{
 		mouseManager.registerMouseWheelListener(this);
+		tabInterface.migrate();
 		clientThread.invokeLater(tabInterface::init);
 		client.getSpriteOverrides().putAll(TabSprites.toMap(client));
 	}
