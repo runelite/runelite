@@ -28,6 +28,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -45,17 +46,24 @@ import java.lang.reflect.Proxy;
 import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
 import java.time.Instant;
+import java.util.AbstractMap;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
 import net.runelite.http.api.config.ConfigClient;
@@ -70,19 +78,62 @@ public class ConfigManager
 
 	private final EventBus eventBus;
 	private final ScheduledExecutorService executor;
+	private final Provider<Client> clientProvider;
 	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
 	private final Properties properties = new Properties();
+	private final Set<AbstractMap.SimpleEntry<String, String>> migrations = new HashSet<>();
 
 	private AccountSession session;
 	private ConfigClient client;
 	private File propertiesFile;
 
 	@Inject
-	private ConfigManager(final EventBus eventBus, final ScheduledExecutorService executor)
+	private ConfigManager(final EventBus eventBus, final ScheduledExecutorService executor, final Provider<Client> clientProvider)
 	{
 		this.eventBus = eventBus;
 		this.executor = executor;
+		this.clientProvider = clientProvider;
 		this.propertiesFile = getPropertiesFile();
+	}
+
+	@Subscribe
+	public void onGameStateChanged(final GameStateChanged event)
+	{
+		if (event.getGameState() != GameState.LOGGED_IN || migrations.isEmpty())
+		{
+			return;
+		}
+
+		// Migrate all configurations on first login
+		final Client client = clientProvider.get();
+		final String username = client.getUsername();
+
+		for (AbstractMap.SimpleEntry<String, String> migration : migrations)
+		{
+			final String group = migration.getKey();
+			final String key = migration.getValue();
+			final String value = getConfiguration(group, key);
+
+			if (!Strings.isNullOrEmpty(value))
+			{
+				log.info("Migrating config {} - {}", group, key);
+
+				// Set per-account value
+				setConfiguration(group, username + "." + key, value);
+
+				// Delete global value
+				unsetConfiguration(group, key);
+			}
+		}
+
+		// Do this only once
+		migrations.clear();
+	}
+
+	public void addConfigMigration(final String group, final String key)
+	{
+		log.debug("Adding config migration {} - {}", group, key);
+		migrations.add(new AbstractMap.SimpleEntry<>(group, key));
 	}
 
 	public final void switchSession(AccountSession session)

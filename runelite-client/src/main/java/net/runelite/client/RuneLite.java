@@ -265,6 +265,7 @@ public class RuneLite
 		eventBus.register(overlayManager);
 		eventBus.register(drawManager);
 		eventBus.register(infoBoxManager);
+		eventBus.register(configManager);
 
 		if (!isOutdated)
 		{
