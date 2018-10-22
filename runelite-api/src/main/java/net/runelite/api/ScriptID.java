@@ -80,6 +80,15 @@ public final class ScriptID
 	public static final int RUNELITE_CHATBOX_INPUT_INIT = 10001;
 
 	/**
+	 * Handles zoom input
+	 * <ul>
+	 * <li> int  zoom value </li>
+	 * <li> int  zoom value </li>
+	 * </ul>
+	 */
+	public static final int ZOOM_INPUT = 42;
+
+	/**
 	 * Does nothing
 	 *
 	 * This is used to eat events when you want a menu action attached to it

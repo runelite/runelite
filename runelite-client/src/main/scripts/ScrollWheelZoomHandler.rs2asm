@@ -11,6 +11,8 @@
    load_int               0
    iload                  0
    load_int               25
+   load_string            "scrollWheelZoomIncrement"
+   runelite_callback
    imul                  
    isub                  
    istore                 1

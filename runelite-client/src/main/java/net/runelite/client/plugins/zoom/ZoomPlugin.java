@@ -30,9 +30,11 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
 import net.runelite.api.Client;
+import net.runelite.api.ScriptID;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
@@ -48,9 +50,12 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class ZoomPlugin extends Plugin implements KeyListener
 {
 	private boolean controlDown;
-	
+
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private ZoomConfig zoomConfig;
@@ -77,7 +82,7 @@ public class ZoomPlugin extends Plugin implements KeyListener
 		int[] intStack = client.getIntStack();
 		int intStackSize = client.getIntStackSize();
 
-		if ("scrollWheelZoom".equals(event.getEventName()) && zoomConfig.requireControlDown() && !controlDown)
+		if ("scrollWheelZoom".equals(event.getEventName()) && zoomConfig.controlFunction().equals(ControlFunction.CONTROL_TO_ZOOM) && !controlDown)
 		{
 			intStack[intStackSize - 1] = 1;
 		}
@@ -86,6 +91,11 @@ public class ZoomPlugin extends Plugin implements KeyListener
 		{
 			intStack[intStackSize - 1] = 1200;
 			return;
+		}
+
+		if ("scrollWheelZoomIncrement".equals(event.getEventName()) && zoomConfig.zoomIncrement() != 25)
+		{
+			intStack[intStackSize - 1] = zoomConfig.zoomIncrement();
 		}
 
 		if (zoomConfig.innerLimit())
@@ -122,7 +132,7 @@ public class ZoomPlugin extends Plugin implements KeyListener
 			controlDown = false;
 		}
 	}
-	
+
 	@Override
 	protected void startUp()
 	{
@@ -163,7 +173,17 @@ public class ZoomPlugin extends Plugin implements KeyListener
 	{
 		if (e.getKeyCode() == KeyEvent.VK_CONTROL)
 		{
-			controlDown = false;
+			switch (zoomConfig.controlFunction())
+			{
+				case CONTROL_TO_ZOOM:
+					controlDown = false;
+					break;
+				case CONTROL_TO_RESET:
+					int zoomValue = zoomConfig.ctrlZoomValue();
+					clientThread.invokeLater(() -> client.runScript(ScriptID.ZOOM_INPUT, zoomValue, zoomValue));
+					controlDown = false;
+					break;
+			}
 		}
 	}
 }
