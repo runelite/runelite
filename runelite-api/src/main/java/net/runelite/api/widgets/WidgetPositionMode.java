@@ -22,16 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api.widgets;
 
-import net.runelite.api.ScriptEvent;
-import net.runelite.mapping.Import;
-
-public interface RSScriptEvent extends ScriptEvent
+public final class WidgetPositionMode
 {
-	@Import("params")
-	Object[] getArguments();
-
-	@Import("params")
-	void setArguments(Object[] args);
+	public static final int ABSOLUTE_LEFT = 0;
+	public static final int ABSOLUTE_TOP = 0;
+	public static final int ABSOLUTE_CENTER = 1;
+	public static final int ABSOLUTE_RIGHT = 2;
+	public static final int ABSOLUTE_BOTTOM = 2;
+	public static final int LEFT_16384THS = 3;
+	public static final int TOP_16384THS = 3;
+	public static final int CENTER_16384THS = 4;
+	public static final int RIGHT_16384THS = 5;
+	public static final int BOTTOM_16384THS = 5;
 }

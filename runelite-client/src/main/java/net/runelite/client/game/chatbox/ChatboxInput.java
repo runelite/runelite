@@ -22,16 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.game.chatbox;
 
-import net.runelite.api.ScriptEvent;
-import net.runelite.mapping.Import;
-
-public interface RSScriptEvent extends ScriptEvent
+/**
+ * A modal input that lives in the chatbox panel.
+ */
+public abstract class ChatboxInput
 {
-	@Import("params")
-	Object[] getArguments();
+	protected void open()
+	{
+	}
 
-	@Import("params")
-	void setArguments(Object[] args);
+	protected void close()
+	{
+	}
 }

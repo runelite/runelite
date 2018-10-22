@@ -24,14 +24,16 @@
  */
 package net.runelite.rs.api;
 
-import net.runelite.api.ScriptEvent;
+import net.runelite.api.FontTypeFace;
 import net.runelite.mapping.Import;
 
-public interface RSScriptEvent extends ScriptEvent
+public interface RSFontTypeFace extends FontTypeFace
 {
-	@Import("params")
-	Object[] getArguments();
+	@Import("getTextWidth")
+	@Override
+	int getTextWidth(String text);
 
-	@Import("params")
-	void setArguments(Object[] args);
+	@Import("verticalSpace")
+	@Override
+	int getBaseline();
 }

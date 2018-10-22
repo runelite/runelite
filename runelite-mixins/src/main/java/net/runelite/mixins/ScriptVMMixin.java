@@ -33,6 +33,7 @@ import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
+import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSScript;
 import net.runelite.rs.api.RSScriptEvent;
@@ -115,6 +116,13 @@ public abstract class ScriptVMMixin implements RSClient
 	@Replace("runScript")
 	static void rl$runScript(RSScriptEvent event, int maxExecutionTime)
 	{
+		Object[] arguments = event.getArguments();
+		if (arguments != null && arguments.length > 0 && arguments[0] instanceof JavaScriptCallback)
+		{
+			((JavaScriptCallback) arguments[0]).run(event);
+			return;
+		}
+
 		try
 		{
 			rs$runScript(event, maxExecutionTime);

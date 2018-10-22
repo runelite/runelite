@@ -22,16 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api.widgets;
 
-import net.runelite.api.ScriptEvent;
-import net.runelite.mapping.Import;
-
-public interface RSScriptEvent extends ScriptEvent
+public final class WidgetSizeMode
 {
-	@Import("params")
-	Object[] getArguments();
+	/**
+	 * dim = originalDim
+	 */
+	public static final int ABSOLUTE = 0;
 
-	@Import("params")
-	void setArguments(Object[] args);
+	/**
+	 * dim = parentDim - originalDim
+	 */
+	public static final int MINUS = 1;
+
+	/**
+	 * dim = parentDim * (originalDim / 16384)
+	 */
+	public static final int ABSOLUTE_16384THS = 2;
 }

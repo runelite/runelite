@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api;
 
-import net.runelite.api.ScriptEvent;
-import net.runelite.mapping.Import;
-
-public interface RSScriptEvent extends ScriptEvent
+public interface ScriptEvent
 {
-	@Import("params")
-	Object[] getArguments();
-
-	@Import("params")
-	void setArguments(Object[] args);
+	int MOUSE_X = -2147483647;
+	int MOUSE_Y = -2147483646;
+	int MENU_OP = -2147483644;
+	int WIDGET_ID = -2147483645;
+	int WIDGET_INDEX = -2147483643;
+	int WIDGET_TARGET_ID = -2147483642;
+	int WIDGET_TARGET_INDEX = -2147483641;
+	int KEY_CODE = -2147483640;
+	int KEY_CHAR = -2147483639;
+	String NAME =  "event_opbase";
 }

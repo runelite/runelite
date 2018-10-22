@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api.widgets;
 
 import net.runelite.api.ScriptEvent;
-import net.runelite.mapping.Import;
 
-public interface RSScriptEvent extends ScriptEvent
+@FunctionalInterface
+public interface JavaScriptCallback
 {
-	@Import("params")
-	Object[] getArguments();
-
-	@Import("params")
-	void setArguments(Object[] args);
+	void run(ScriptEvent event);
 }

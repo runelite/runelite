@@ -22,16 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api;
 
-import net.runelite.api.ScriptEvent;
-import net.runelite.mapping.Import;
-
-public interface RSScriptEvent extends ScriptEvent
+/**
+ * IDs of fonts in the cache
+ */
+public final class FontID
 {
-	@Import("params")
-	Object[] getArguments();
+	public static final int PLAIN_11 = 494;
+	public static final int PLAIN_12 = 495;
 
-	@Import("params")
-	void setArguments(Object[] args);
+	public static final int BOLD_12 = 496;
+
+	public static final int QUILL_8 = 497;
+	public static final int QUILL_MEDIUM = 645;
+	public static final int QUILL_CAPS_LARGE = 646;
+
+	public static final int FAIRY_SMALL = 647;
+	public static final int FAIRY_LARGE = 648;
+
+	public static final int BARBARIAN = 764;
+
+	public static final int SUROK = 819;
+
+	public static final int VERDANA_11 = 1442;
+	public static final int VERDANA_11_BOLD = 1443;
+
+	public static final int TAHOMA_11 = 1444;
+
+	public static final int VERDANA_13 = 1445;
+	public static final int VERDANA_13_BOLD = 1446;
+
+	public static final int VERDANA_15 = 1447;
 }

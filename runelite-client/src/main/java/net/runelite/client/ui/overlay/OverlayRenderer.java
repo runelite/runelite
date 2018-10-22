@@ -45,11 +45,11 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
-import net.runelite.client.input.MouseListener;
+import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseManager;
 
 @Singleton
-public class OverlayRenderer extends MouseListener implements KeyListener
+public class OverlayRenderer extends MouseAdapter implements KeyListener
 {
 	private static final int BORDER = 5;
 	private static final int BORDER_TOP = BORDER + 15;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.input;
 
-import net.runelite.api.ScriptEvent;
-import net.runelite.mapping.Import;
+import java.awt.event.MouseEvent;
 
-public interface RSScriptEvent extends ScriptEvent
+public abstract class MouseAdapter implements MouseListener
 {
-	@Import("params")
-	Object[] getArguments();
+	@Override
+	public MouseEvent mouseClicked(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
 
-	@Import("params")
-	void setArguments(Object[] args);
+	@Override
+	public MouseEvent mousePressed(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseReleased(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseEntered(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseExited(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseDragged(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseMoved(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
 }
