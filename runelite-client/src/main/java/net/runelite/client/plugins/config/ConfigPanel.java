@@ -546,8 +546,8 @@ public class ConfigPanel extends PluginPanel
 				}
 				else
 				{
-					log.debug("Selected font wasn't found on this system, resetting font back to runescape small");
-					configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), FontManager.getRunescapeSmallFont());
+					log.debug("Selected font wasn't found on this system, resetting font back to runescape regular");
+					configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), FontManager.getRunescapeFont());
 				}
 				box.addItemListener(e ->
 				{
