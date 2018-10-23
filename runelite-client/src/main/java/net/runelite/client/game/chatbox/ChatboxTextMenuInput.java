@@ -87,7 +87,7 @@ public class ChatboxTextMenuInput extends ChatboxInput implements KeyListener
 		return this;
 	}
 
-	public void build()
+	public ChatboxTextMenuInput build()
 	{
 		if (title == null)
 		{
@@ -100,6 +100,7 @@ public class ChatboxTextMenuInput extends ChatboxInput implements KeyListener
 		}
 
 		chatboxPanelManager.openInput(this);
+		return this;
 	}
 
 	@Override
