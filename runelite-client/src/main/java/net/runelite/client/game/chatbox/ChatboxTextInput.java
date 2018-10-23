@@ -280,11 +280,13 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		else
 		{
 			cursor.setTextColor(0xFFFFFF);
+			long start = System.currentTimeMillis();
 			cursor.setOnTimerListener((JavaScriptCallback) ev ->
 			{
-				boolean on = System.currentTimeMillis() % CURSOR_FLASH_RATE_MILLIS > (CURSOR_FLASH_RATE_MILLIS / 2);
+				boolean on = (System.currentTimeMillis() - start) % CURSOR_FLASH_RATE_MILLIS > (CURSOR_FLASH_RATE_MILLIS / 2);
 				cursor.setOpacity(on ? 255 : 0);
 			});
+			cursor.setHasListener(true);
 		}
 		cursor.setFilled(true);
 		cursor.setOriginalX(mtx - 1);
