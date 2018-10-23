@@ -318,6 +318,11 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		isInBounds = ev -> bounds.contains(ev.getPoint());
 		getCharOffset = ev ->
 		{
+			if (fullWidth <= 0)
+			{
+				return 0;
+			}
+
 			int cx = ev.getX() - canvasX;
 
 			int charIndex = (tsValue.length() * cx) / fullWidth;
