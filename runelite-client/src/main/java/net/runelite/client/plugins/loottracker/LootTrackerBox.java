@@ -162,6 +162,10 @@ class LootTrackerBox extends JPanel
 		}
 
 		records.add(record);
+	}
+
+	void rebuild()
+	{
 		buildItems();
 
 		priceLabel.setText(StackFormatter.quantityToStackSize(totalPrice) + " gp");

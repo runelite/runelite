@@ -325,7 +325,12 @@ class LootTrackerPanel extends PluginPanel
 		final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
 		final LootTrackerRecord record = new LootTrackerRecord(eventName, subTitle, items, System.currentTimeMillis());
 		records.add(record);
-		buildBox(record);
+		LootTrackerBox box = buildBox(record);
+		if (box != null)
+		{
+			box.rebuild();
+			updateOverall();
+		}
 	}
 
 	/**
@@ -381,6 +386,7 @@ class LootTrackerPanel extends PluginPanel
 		logsContainer.removeAll();
 		boxes.clear();
 		records.forEach(this::buildBox);
+		boxes.forEach(LootTrackerBox::rebuild);
 		updateOverall();
 		logsContainer.revalidate();
 		logsContainer.repaint();
@@ -391,12 +397,12 @@ class LootTrackerPanel extends PluginPanel
 	 * add its items to it, updating the log's overall price and kills. If not, a new log will be created
 	 * to hold this entry's information.
 	 */
-	private void buildBox(LootTrackerRecord record)
+	private LootTrackerBox buildBox(LootTrackerRecord record)
 	{
 		// If this record is not part of current view, return
 		if (!record.matches(currentView))
 		{
-			return;
+			return null;
 		}
 
 		// Group all similar loot together
@@ -407,8 +413,7 @@ class LootTrackerPanel extends PluginPanel
 				if (box.matches(record))
 				{
 					box.combine(record);
-					updateOverall();
-					return;
+					return box;
 				}
 			}
 		}
@@ -456,8 +461,7 @@ class LootTrackerPanel extends PluginPanel
 		boxes.add(box);
 		logsContainer.add(box, 0);
 
-		// Update overall
-		updateOverall();
+		return box;
 	}
 
 	private void updateOverall()
