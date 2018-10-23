@@ -53,6 +53,8 @@ import net.runelite.client.util.StackFormatter;
 
 class LootTrackerPanel extends PluginPanel
 {
+	private static final int MAX_LOOT_BOXES = 500;
+
 	private static final ImageIcon SINGLE_LOOT_VIEW;
 	private static final ImageIcon SINGLE_LOOT_VIEW_FADED;
 	private static final ImageIcon SINGLE_LOOT_VIEW_HOVER;
@@ -385,7 +387,15 @@ class LootTrackerPanel extends PluginPanel
 	{
 		logsContainer.removeAll();
 		boxes.clear();
-		records.forEach(this::buildBox);
+		int start = 0;
+		if (!groupLoot && records.size() > MAX_LOOT_BOXES)
+		{
+			start = records.size() - MAX_LOOT_BOXES;
+		}
+		for (int i = start; i < records.size(); i++)
+		{
+			buildBox(records.get(i));
+		}
 		boxes.forEach(LootTrackerBox::rebuild);
 		updateOverall();
 		logsContainer.revalidate();
@@ -460,6 +470,11 @@ class LootTrackerPanel extends PluginPanel
 		// Add box to panel
 		boxes.add(box);
 		logsContainer.add(box, 0);
+
+		if (!groupLoot && boxes.size() > MAX_LOOT_BOXES)
+		{
+			logsContainer.remove(boxes.remove(0));
+		}
 
 		return box;
 	}
