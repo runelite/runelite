@@ -120,10 +120,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	public ChatboxTextInput value(String value)
 	{
 		this.value = new StringBuffer(value);
-		if (built)
-		{
-			clientThread.invoke(this::update);
-		}
+		cursorAt(this.value.length());
 		return this;
 	}
 
