@@ -40,8 +40,8 @@ import java.nio.file.Path;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -215,14 +215,23 @@ public class Notifier
 
 		executorService.submit(() ->
 		{
-			final boolean success = sendCommand(commands)
-					.map(process -> process.exitValue() == 0)
-					.orElse(false);
-
-			if (!success)
+			try
 			{
-				sendTrayNotification(title, message, type);
+				Process notificationProcess = sendCommand(commands);
+
+				boolean exited = notificationProcess.waitFor(500, TimeUnit.MILLISECONDS);
+				if (exited && notificationProcess.exitValue() == 0)
+				{
+					return;
+				}
 			}
+			catch (IOException | InterruptedException ex)
+			{
+				log.debug("error sending notification", ex);
+			}
+
+			// fall back to tray notification
+			sendTrayNotification(title, message, type);
 		});
 	}
 
@@ -258,25 +267,21 @@ public class Notifier
 			commands.add(script);
 		}
 
-		sendCommand(commands);
-	}
-
-	private Optional<Process> sendCommand(final List<String> commands)
-	{
-		log.debug("Sending command {}", commands);
-
 		try
 		{
-			return Optional.of(new ProcessBuilder(commands.toArray(new String[commands.size()]))
-				.redirectErrorStream(true)
-				.start());
+			sendCommand(commands);
 		}
 		catch (IOException ex)
 		{
-			log.warn(null, ex);
+			log.warn("error sending notification", ex);
 		}
+	}
 
-		return Optional.empty();
+	private static Process sendCommand(final List<String> commands) throws IOException
+	{
+		return new ProcessBuilder(commands.toArray(new String[commands.size()]))
+			.redirectErrorStream(true)
+			.start();
 	}
 
 	private void storeIcon()

@@ -98,7 +98,7 @@ public class ChatboxInputManager
 		}
 		this.open = false;
 		clientThread.invoke(() -> client.runScript(
-			ScriptID.CLOSE_CHATBOX_INPUT,
+			ScriptID.RESET_CHATBOX_INPUT,
 			1,
 			1
 		));

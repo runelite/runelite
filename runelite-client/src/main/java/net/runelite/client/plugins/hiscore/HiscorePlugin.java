@@ -66,8 +66,7 @@ public class HiscorePlugin extends Plugin
 {
 	private static final String LOOKUP = "Lookup";
 	private static final String KICK_OPTION = "Kick";
-	private static final ImmutableList<String> BEFORE_OPTIONS = ImmutableList.of("Add friend", "Remove friend", KICK_OPTION);
-	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message");
+	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message", "Add ignore", "Remove friend", KICK_OPTION);
 	private static final Pattern BOUNTY_PATTERN = Pattern.compile("<col=ff0000>You've been assigned a target: (.*)</col>");
 
 	@Inject
@@ -182,15 +181,7 @@ public class HiscorePlugin extends Plugin
 		{
 			boolean after;
 
-			if (AFTER_OPTIONS.contains(option))
-			{
-				after = true;
-			}
-			else if (BEFORE_OPTIONS.contains(option))
-			{
-				after = false;
-			}
-			else
+			if (!AFTER_OPTIONS.contains(option))
 			{
 				return;
 			}
@@ -203,7 +194,7 @@ public class HiscorePlugin extends Plugin
 			lookup.setParam1(event.getActionParam1());
 			lookup.setIdentifier(event.getIdentifier());
 
-			insertMenuEntry(lookup, client.getMenuEntries(), after);
+			insertMenuEntry(lookup, client.getMenuEntries());
 		}
 	}
 
@@ -232,16 +223,11 @@ public class HiscorePlugin extends Plugin
 		}
 	}
 
-	private void insertMenuEntry(MenuEntry newEntry, MenuEntry[] entries, boolean after)
+	private void insertMenuEntry(MenuEntry newEntry, MenuEntry[] entries)
 	{
 		MenuEntry[] newMenu = ObjectArrays.concat(entries, newEntry);
-
-		if (after)
-		{
-			int menuEntryCount = newMenu.length;
-			ArrayUtils.swap(newMenu, menuEntryCount - 1, menuEntryCount - 2);
-		}
-
+		int menuEntryCount = newMenu.length;
+		ArrayUtils.swap(newMenu, menuEntryCount - 1, menuEntryCount - 2);
 		client.setMenuEntries(newMenu);
 	}
 

@@ -319,7 +319,8 @@ public class TabInterface
 
 		if (canvasBounds.contains(event.getPoint()))
 		{
-			scrollTab(event.getWheelRotation());
+			event.consume();
+			clientThread.invoke(() -> scrollTab(event.getWheelRotation()));
 		}
 	}
 
@@ -500,7 +501,7 @@ public class TabInterface
 					{
 						resetSearch();
 
-						clientThread.invokeLater(() -> client.runScript(ScriptID.CLOSE_CHATBOX_INPUT));
+						clientThread.invokeLater(() -> client.runScript(ScriptID.RESET_CHATBOX_INPUT));
 					}
 					else
 					{
@@ -686,7 +687,7 @@ public class TabInterface
 	private boolean isHidden()
 	{
 		Widget widget = client.getWidget(WidgetInfo.BANK_CONTAINER);
-		return !config.tabs() || widget == null || widget.isHidden();
+		return !config.tabs() || widget == null;
 	}
 
 	private void loadTab(String tag)
@@ -933,7 +934,7 @@ public class TabInterface
 		{
 			// This ensures that any chatbox input (e.g from search) will not remain visible when
 			// selecting/changing tab
-			client.runScript(ScriptID.CLOSE_CHATBOX_INPUT);
+			client.runScript(ScriptID.RESET_CHATBOX_INPUT);
 
 			client.setVar(VarClientInt.INPUT_TYPE, inputType.getType());
 			client.setVar(VarClientStr.INPUT_TEXT, search);

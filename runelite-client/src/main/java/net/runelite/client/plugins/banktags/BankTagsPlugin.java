@@ -315,7 +315,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	@Override
 	public MouseWheelEvent mouseWheelMoved(MouseWheelEvent event)
 	{
-		clientThread.invokeLater(() -> tabInterface.handleWheel(event));
+		tabInterface.handleWheel(event);
 		return event;
 	}
 }

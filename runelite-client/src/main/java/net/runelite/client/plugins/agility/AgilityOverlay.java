@@ -30,6 +30,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.geom.Area;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
@@ -63,7 +64,7 @@ class AgilityOverlay extends Overlay
 	{
 		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
 		Point mousePosition = client.getMouseCanvasPosition();
-		final Tile markOfGrace = plugin.getMarkOfGrace();
+		final List<Tile> marksOfGrace = plugin.getMarksOfGrace();
 		plugin.getObstacles().forEach((object, tile) ->
 		{
 			if (Obstacles.SHORTCUT_OBSTACLE_IDS.contains(object.getId()) && !config.highlightShortcuts() ||
@@ -90,7 +91,7 @@ class AgilityOverlay extends Overlay
 				if (objectClickbox != null)
 				{
 					Color configColor = config.getOverlayColor();
-					if (config.highlightMarks() && markOfGrace != null)
+					if (config.highlightMarks() && !marksOfGrace.isEmpty())
 					{
 						configColor = config.getMarkColor();
 					}
@@ -112,19 +113,22 @@ class AgilityOverlay extends Overlay
 
 		});
 
-		if (markOfGrace != null && config.highlightMarks())
+		if (config.highlightMarks() && !marksOfGrace.isEmpty())
 		{
-			if (markOfGrace.getPlane() == client.getPlane() && markOfGrace.getItemLayer() != null
-				&& markOfGrace.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
+			for (Tile markOfGraceTile : marksOfGrace)
 			{
-				final Polygon poly = markOfGrace.getItemLayer().getCanvasTilePoly();
-
-				if (poly == null)
+				if (markOfGraceTile.getPlane() == client.getPlane() && markOfGraceTile.getItemLayer() != null
+						&& markOfGraceTile.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
 				{
-					return null;
-				}
+					final Polygon poly = markOfGraceTile.getItemLayer().getCanvasTilePoly();
 
-				OverlayUtil.renderPolygon(graphics, poly, config.getMarkColor());
+					if (poly == null)
+					{
+						continue;
+					}
+
+					OverlayUtil.renderPolygon(graphics, poly, config.getMarkColor());
+				}
 			}
 		}
 

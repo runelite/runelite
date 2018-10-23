@@ -49,6 +49,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Clan Chat",
@@ -132,7 +133,7 @@ public class ClanChatPlugin extends Plugin
 	{
 		if (strChanged.getIndex() == VarClientStr.RECENT_CLAN_CHAT.getIndex() && config.recentChats())
 		{
-			updateRecentChat(client.getVar(VarClientStr.RECENT_CLAN_CHAT));
+			updateRecentChat(Text.toJagexName(client.getVar(VarClientStr.RECENT_CLAN_CHAT)));
 		}
 	}
 
