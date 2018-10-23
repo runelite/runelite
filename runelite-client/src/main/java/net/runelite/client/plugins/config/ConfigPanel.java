@@ -38,14 +38,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -58,17 +56,18 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.JTextComponent;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.Config;
@@ -89,7 +88,7 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.ComboBoxListRenderer;
 import net.runelite.client.ui.components.IconButton;
 import net.runelite.client.ui.components.IconTextField;
-import net.runelite.client.util.SwingUtil;
+import net.runelite.client.util.ImageUtil;
 
 @Slf4j
 public class ConfigPanel extends PluginPanel
@@ -99,7 +98,6 @@ public class ConfigPanel extends PluginPanel
 	private static final int OFFSET = 6;
 	private static final ImageIcon BACK_ICON;
 	private static final ImageIcon BACK_ICON_HOVER;
-	private static final ImageIcon SEARCH;
 
 	private static final String RUNELITE_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).value();
 	private static final String PINNED_PLUGINS_CONFIG_KEY = "pinnedPlugins";
@@ -112,9 +110,9 @@ public class ConfigPanel extends PluginPanel
 	private final ScheduledExecutorService executorService;
 	private final RuneLiteConfig runeLiteConfig;
 	private final ChatColorConfig chatColorConfig;
-	private final IconTextField searchBar = new IconTextField();
 	private final List<PluginListItem> pluginList = new ArrayList<>();
 
+	private final IconTextField searchBar = new IconTextField();
 	private final JPanel topPanel;
 	private final JPanel mainPanel;
 	private final JScrollPane scrollPane;
@@ -124,20 +122,9 @@ public class ConfigPanel extends PluginPanel
 
 	static
 	{
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				BufferedImage backIcon = ImageIO.read(ConfigPanel.class.getResourceAsStream("config_back_icon.png"));
-				BACK_ICON = new ImageIcon(backIcon);
-				BACK_ICON_HOVER = new ImageIcon(SwingUtil.grayscaleOffset(backIcon, -100));
-				SEARCH = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("search.png")));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+		final BufferedImage backIcon = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "config_back_icon.png");
+		BACK_ICON = new ImageIcon(backIcon);
+		BACK_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(backIcon, -100));
 	}
 
 	ConfigPanel(PluginManager pluginManager, ConfigManager configManager, ScheduledExecutorService executorService,
@@ -150,7 +137,7 @@ public class ConfigPanel extends PluginPanel
 		this.runeLiteConfig = runeLiteConfig;
 		this.chatColorConfig = chatColorConfig;
 
-		searchBar.setIcon(SEARCH);
+		searchBar.setIcon(IconTextField.Icon.SEARCH);
 		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 30));
 		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
@@ -263,11 +250,6 @@ public class ConfigPanel extends PluginPanel
 
 		topPanel.removeAll();
 		mainPanel.removeAll();
-
-		JLabel title = new JLabel("Configuration", SwingConstants.LEFT);
-		title.setForeground(Color.WHITE);
-
-		topPanel.add(title, BorderLayout.NORTH);
 		topPanel.add(searchBar, BorderLayout.CENTER);
 
 		onSearchBarChanged();
@@ -371,9 +353,20 @@ public class ConfigPanel extends PluginPanel
 
 			if (cid.getType() == String.class)
 			{
-				JTextArea textField = new JTextArea();
-				textField.setLineWrap(true);
-				textField.setWrapStyleWord(true);
+				JTextComponent textField;
+
+				if (cid.getItem().secret())
+				{
+					textField = new JPasswordField();
+				}
+				else
+				{
+					final JTextArea textArea = new JTextArea();
+					textArea.setLineWrap(true);
+					textArea.setWrapStyleWord(true);
+					textField = textArea;
+				}
+
 				textField.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 				textField.setText(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
 
@@ -568,9 +561,9 @@ public class ConfigPanel extends PluginPanel
 			JSpinner spinner = (JSpinner) component;
 			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), "" + spinner.getValue());
 		}
-		else if (component instanceof JTextArea)
+		else if (component instanceof JTextComponent)
 		{
-			JTextArea textField = (JTextArea) component;
+			JTextComponent textField = (JTextComponent) component;
 			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), textField.getText());
 		}
 		else if (component instanceof JColorChooser)

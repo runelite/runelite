@@ -111,7 +111,7 @@ class MotherlodeRocksOverlay extends Overlay
 
 	private void renderVein(Graphics2D graphics, WallObject vein)
 	{
-		Point canvasLoc = Perspective.getCanvasImageLocation(client, graphics, vein.getLocalLocation(), miningIcon, 150);
+		Point canvasLoc = Perspective.getCanvasImageLocation(client, vein.getLocalLocation(), miningIcon, 150);
 
 		if (canvasLoc != null)
 		{

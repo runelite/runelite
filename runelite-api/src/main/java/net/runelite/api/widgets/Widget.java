@@ -26,6 +26,7 @@ package net.runelite.api.widgets;
 
 import java.awt.Rectangle;
 import java.util.Collection;
+import net.runelite.api.FontTypeFace;
 import net.runelite.api.Point;
 
 /**
@@ -36,9 +37,9 @@ import net.runelite.api.Point;
  * <p>
  * Examples of Widgets include:
  * <ul>
- *     <li>The fairy ring configuration selector</li>
- *     <li>The mini-map</li>
- *     <li>The bank inventory</li>
+ * <li>The fairy ring configuration selector</li>
+ * <li>The mini-map</li>
+ * <li>The bank inventory</li>
  * </ul>
  * <p>
  * For a more complete idea of what is classified as a widget, see {@link WidgetID}.
@@ -125,6 +126,11 @@ public interface Widget
 	Widget[] getChildren();
 
 	/**
+	 * Sets the widget children
+	 */
+	void setChildren(Widget[] children);
+
+	/**
 	 * Gets all dynamic children.
 	 *
 	 * @return the dynamic children
@@ -196,12 +202,21 @@ public interface Widget
 	int getTextColor();
 
 	/**
-	 * Sets the RGB color of the displayed text.
+	 * Sets the RGB color of the displayed text or rectangle.
 	 *
 	 * @param textColor the new text color
 	 * @see java.awt.Color#getRGB()
 	 */
 	void setTextColor(int textColor);
+
+	/**
+	 * Sets the opacity of the rectangle
+	 */
+	int getOpacity();
+	/**
+	 * Gets the opacity of the rectangle
+	 */
+	void setOpacity(int opacity);
 
 	/**
 	 * Gets the name of the widget.
@@ -332,7 +347,7 @@ public interface Widget
 	 *
 	 * @param index index of the item
 	 * @return the widget item at index, or null if an item at index
-	 * 		   does not exist
+	 * does not exist
 	 */
 	WidgetItem getWidgetItem(int index);
 
@@ -344,11 +359,25 @@ public interface Widget
 	int getItemId();
 
 	/**
+	 * Sets the item ID displayed by the widget.
+	 *
+	 * @param itemId the item ID
+	 */
+	void setItemId(int itemId);
+
+	/**
 	 * Gets the quantity of the item displayed by the widget.
 	 *
 	 * @return the item quantity
 	 */
 	int getItemQuantity();
+
+	/**
+	 * Sets the item quantity displayed by the widget.
+	 *
+	 * @param quantity the quantity of the item
+	 */
+	void setItemQuantity(int quantity);
 
 	/**
 	 * Checks whether or not the drawn area of this widget contains
@@ -456,34 +485,6 @@ public interface Widget
 	void setOriginalWidth(int originalWidth);
 
 	/**
-	 * Gets the additional x-axis padding.
-	 *
-	 * @return the x-axis padding
-	 */
-	int getPaddingX();
-
-	/**
-	 * Sets the x-axis padding.
-	 *
-	 * @param paddingX the new padding
-	 */
-	void setPaddingX(int paddingX);
-
-	/**
-	 * Gets the additional y-axis padding.
-	 *
-	 * @return the y-axis padding
-	 */
-	int getPaddingY();
-
-	/**
-	 * Sets the y-axis padding.
-	 *
-	 * @param paddingY the new padding
-	 */
-	void setPaddingY(int paddingY);
-
-	/**
 	 * Gets the actions available on the widget.
 	 *
 	 * @return the actions
@@ -499,9 +500,14 @@ public interface Widget
 	Widget createChild(int index, int type);
 
 	/**
+	 * Removes all of this widget's dynamic children
+	 */
+	void deleteAllChildren();
+
+	/**
 	 * Creates a menu action on the widget
 	 *
-	 * @param index The index of the menu
+	 * @param index  The index of the menu
 	 * @param action The string to be displayed next to the widget's name in the context menu
 	 */
 	void setAction(int index, String action);
@@ -512,7 +518,42 @@ public interface Widget
 	 *
 	 * @param args A ScriptID, then the args for the script
 	 */
-	void setOnOpListener(Object ...args);
+	void setOnOpListener(Object... args);
+
+	/**
+	 * Sets a script to be ran when the dialog is canceled
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnDialogAbortListener(Object... args);
+
+	/**
+	 * Sets a script to be ran on key input
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnKeyListener(Object... args);
+
+	/**
+	 * Sets a script to be ran when the mouse enters the widget bounds
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnMouseOverListener(Object... args);
+
+	/**
+	 * Sets a script to be ran when the mouse leaves the widget bounds
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnMouseLeaveListener(Object... args);
+
+	/**
+	 * Sets a script to be ran every frame
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnTimerListener(Object... args);
 
 	/**
 	 * If this widget has any listeners on it
@@ -538,4 +579,176 @@ public interface Widget
 	 * Recomputes this widget's group's x/y/w/h including scroll
 	 */
 	void revalidateScroll();
+
+	/**
+	 * Array of widget key listeners
+	 */
+	Object[] getOnKeyListener();
+
+	/**
+	 * Array of widget load listeners
+	 */
+	Object[] getOnLoadListener();
+
+	/**
+	 * Returns the archive id of the font used
+	 */
+	int getFontId();
+
+	/**
+	 * Sets the archive id of the font
+	 */
+	void setFontId(int id);
+
+	/**
+	 * Returns the border type of item/sprite on the widget
+	 * 0 - No border
+	 * 1 - 1px black border
+	 * 2 - 1px black under 1px white border (selected item)
+	 */
+	int getBorderType();
+
+	/**
+	 * @see #getBorderType
+	 */
+	void setBorderType(int thickness);
+
+	/**
+	 * Returns if text is shadowed
+	 */
+	boolean getTextShadowed();
+
+	/**
+	 * Sets if text should be shadowed
+	 */
+	void setTextShadowed(boolean shadowed);
+
+	/**
+	 * Returns the widget drag dead zone
+	 */
+	int getDragDeadZone();
+
+	/**
+	 * Sets the widget drag dead zone
+	 */
+	void setDragDeadZone(int deadZone);
+
+	/**
+	 * Returns the widget drag dead time
+	 */
+	int getDragDeadTime();
+
+	/**
+	 * Sets the widget drag dead time
+	 */
+	void setDragDeadTime(int deadTime);
+
+	/**
+	 * Returns widget {@link net.runelite.api.widgets.ItemQuantityMode}.
+	 */
+	int getItemQuantityMode();
+
+	/**
+	 * Sets the widget {@link net.runelite.api.widgets.ItemQuantityMode}
+	 */
+	void setItemQuantityMode(int itemQuantityMode);
+
+	/**
+	 * Gets the mode that the X position is calculated from the original X position
+	 *
+	 * @see WidgetPositionMode
+	 */
+	int getXPositionMode();
+
+	/**
+	 * Sets the mode that the X position is calculated from the original X position
+	 *
+	 * @see WidgetPositionMode
+	 */
+	void setXPositionMode(int xpm);
+
+	/**
+	 * Gets the mode that the Y position is calculated from the original Y position
+	 *
+	 * @see WidgetPositionMode
+	 */
+	int getYPositionMode();
+
+	/**
+	 * Sets the mode that the Y position is calculated from the original Y position
+	 *
+	 * @see WidgetPositionMode
+	 */
+	void setYPositionMode(int ypm);
+
+	/**
+	 * Gets the X axis text position mode
+	 *
+	 * @see WidgetTextAlignment
+	 */
+	int getXTextAlignment();
+
+	/**
+	 * Sets the X axis text position mode
+	 *
+	 * @see WidgetTextAlignment
+	 */
+	void setXTextAlignment(int xta);
+
+	/**
+	 * Gets the Y axis text position mode
+	 *
+	 * @see WidgetTextAlignment
+	 */
+	int getYTextAlignment();
+
+	/**
+	 * Sets the Y axis text position mode
+	 *
+	 * @see WidgetTextAlignment
+	 */
+	void setYTextAlignment(int yta);
+
+	/**
+	 * Gets the mode controlling widget width
+	 *
+	 * @see WidgetSizeMode
+	 */
+	int getWidthMode();
+
+	/**
+	 * Sets the mode controlling widget width
+	 *
+	 * @see WidgetSizeMode
+	 */
+	void setWidthMode(int widthMode);
+
+	/**
+	 * Gets the mode controlling widget width
+	 *
+	 * @see WidgetSizeMode
+	 */
+	int getHeightMode();
+
+	/**
+	 * Sets the mode controlling widget width
+	 *
+	 * @see WidgetSizeMode
+	 */
+	void setHeightMode(int heightMode);
+
+	/**
+	 * Gets the font that this widget uses
+	 */
+	FontTypeFace getFont();
+
+	/**
+	 * Gets if the rectangle is filled or just stroked
+	 */
+	boolean isFilled();
+
+	/**
+	 * Sets if the rectangle is filled or just stroked
+	 */
+	void setFilled(boolean filled);
 }

@@ -41,4 +41,24 @@ public interface TileIndicatorsConfig extends Config
 	{
 		return Color.GRAY;
 	}
+
+	@ConfigItem(
+		keyName = "highlightDestinationTile",
+		name = "Highlight destination tile",
+		description = "Highlights tile player is walking to"
+	)
+	default boolean highlightDestinationTile()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "highlightHoveredTile",
+		name = "Highlight hovered tile",
+		description = "Highlights tile player is hovering with mouse"
+	)
+	default boolean highlightHoveredTile()
+	{
+		return false;
+	}
 }

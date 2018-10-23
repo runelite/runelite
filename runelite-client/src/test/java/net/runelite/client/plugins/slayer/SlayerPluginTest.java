@@ -55,6 +55,13 @@ public class SlayerPluginTest
 {
 	private static final String TASK_NEW = "Your new task is to kill 231 Suqahs.";
 	private static final String TASK_NEW_NPC_CONTACT = "Excellent, you're doing great. Your new task is to kill<br>211 Suqahs.";
+	private static final String TASK_NEW_FROM_PARTNER = "You have received a new Slayer assignment from breaklulz: Dust Devils (377)";
+	private static final String TASK_CHECKSLAYERGEM_WILDERNESS = "You're assigned to kill Suqahs in the Wilderness; only 211 more to go.";
+	private static final String TASK_CHECKSLAYERGEM = "You're assigned to kill Suqahs; only 211 more to go.";
+	private static final String TASK_UPDATE_COMBAT_BRACELET = "You still need to kill 30 monsters to complete your current Slayer assignment";
+
+	private static final String TASK_BOSS_NEW = "Excellent. You're now assigned to kill Vet'ion 3 times.<br>Your reward point tally is 914.";
+	private static final String TASK_BOSS_NEW_THE = "Excellent. You're now assigned to kill the Chaos <br>Elemental 3 times. Your reward point tally is 914.";
 
 	private static final String TASK_EXISTING = "You're still hunting suqahs; you have 222 to go. Come<br>back when you've finished your task.";
 
@@ -145,6 +152,60 @@ public class SlayerPluginTest
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
+		assertEquals("Suqahs", slayerPlugin.getTaskName());
+		assertEquals(211, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testBossTask()
+	{
+		Widget npcDialog = mock(Widget.class);
+		when(npcDialog.getText()).thenReturn(TASK_BOSS_NEW);
+		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
+		slayerPlugin.onGameTick(new GameTick());
+
+		assertEquals("Vet'ion", slayerPlugin.getTaskName());
+		assertEquals(3, slayerPlugin.getAmount());
+		assertEquals(914, slayerPlugin.getPoints());
+	}
+
+	@Test
+	public void testBossTaskThe()
+	{
+		Widget npcDialog = mock(Widget.class);
+		when(npcDialog.getText()).thenReturn(TASK_BOSS_NEW_THE);
+		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
+		slayerPlugin.onGameTick(new GameTick());
+
+		assertEquals("Chaos Elemental", slayerPlugin.getTaskName());
+		assertEquals(3, slayerPlugin.getAmount());
+		assertEquals(914, slayerPlugin.getPoints());
+	}
+
+	@Test
+	public void testPartnerTask()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", TASK_NEW_FROM_PARTNER, null);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals("Dust Devils", slayerPlugin.getTaskName());
+		assertEquals(377, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testCheckSlayerGem()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", TASK_CHECKSLAYERGEM, null);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+		assertEquals("Suqahs", slayerPlugin.getTaskName());
+		assertEquals(211, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testCheckSlayerGemWildernessTask()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", TASK_CHECKSLAYERGEM_WILDERNESS, null);
+		slayerPlugin.onChatMessage(chatMessageEvent);
 		assertEquals("Suqahs", slayerPlugin.getTaskName());
 		assertEquals(211, slayerPlugin.getAmount());
 	}
@@ -356,5 +417,18 @@ public class SlayerPluginTest
 
 		assertEquals(41, slayerPlugin.getAmount());
 		assertEquals(1, slayerPlugin.getExpeditiousChargeCount());
+	}
+
+	@Test
+	public void testCombatBraceletUpdate()
+	{
+		slayerPlugin.setTaskName("Suqahs");
+		slayerPlugin.setAmount(231);
+
+		ChatMessage chatMessage = new ChatMessage(SERVER, "", TASK_UPDATE_COMBAT_BRACELET, null);
+		slayerPlugin.onChatMessage(chatMessage);
+
+		assertEquals("Suqahs", slayerPlugin.getTaskName());
+		assertEquals(30, slayerPlugin.getAmount());
 	}
 }

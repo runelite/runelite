@@ -129,6 +129,8 @@ public class ItemStatChanges
 		add(new SaradominBrew(0.15, 0.2, 0.1, 2), SARADOMIN_BREW1, SARADOMIN_BREW2, SARADOMIN_BREW3, SARADOMIN_BREW4);
 		add(boost(RANGED, perc(.15, 5)), SUPER_RANGING_1, SUPER_RANGING_2, SUPER_RANGING_3, SUPER_RANGING_4);
 		add(boost(MAGIC, perc(.15, 5)), SUPER_MAGIC_POTION_1, SUPER_MAGIC_POTION_2, SUPER_MAGIC_POTION_3, SUPER_MAGIC_POTION_4);
+		add(combo(2, boost(RANGED, perc(0.1, 4)), boost(DEFENCE, perc(0.15, 5))), BASTION_POTION1, BASTION_POTION2, BASTION_POTION3, BASTION_POTION4);
+		add(combo(2, boost(MAGIC, 4), boost(DEFENCE, perc(0.15, 5))), BATTLEMAGE_POTION1, BATTLEMAGE_POTION2, BATTLEMAGE_POTION3, BATTLEMAGE_POTION4);
 
 		// Regular overload (NMZ)
 		add(combo(5, boost(ATTACK, perc(.15, 5)), boost(STRENGTH, perc(.15, 5)), boost(DEFENCE, perc(.15, 5)), boost(RANGED, perc(.15, 5)), boost(MAGIC, perc(.15, 5)), heal(HITPOINTS, -50)), OVERLOAD_1, OVERLOAD_2, OVERLOAD_3, OVERLOAD_4);
@@ -166,10 +168,11 @@ public class ItemStatChanges
 		add(boost(HUNTER, 3), HUNTER_POTION1, HUNTER_POTION2, HUNTER_POTION3, HUNTER_POTION4);
 		add(combo(2, boost(HITPOINTS, 5), heal(RUN_ENERGY, 5)), GUTHIX_REST1, GUTHIX_REST2, GUTHIX_REST3, GUTHIX_REST4);
 
-		// Misc run energy
+		// Misc/run energy
 		add(heal(RUN_ENERGY, 10), WHITE_TREE_FRUIT);
 		add(heal(RUN_ENERGY, 30), STRANGE_FRUIT, BANDAGES);
-		add(heal(RUN_ENERGY, 50), MINT_CAKE, GOUT_TUBER);
+		add(heal(RUN_ENERGY, 50), MINT_CAKE);
+		add(combo(food(12), heal(RUN_ENERGY, 50)), GOUT_TUBER);
 
 		// Pies
 		add(combo(2, heal(HITPOINTS, 6), boost(FARMING, 3)), GARDEN_PIE, HALF_A_GARDEN_PIE);

@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -41,6 +40,7 @@ import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.events.ChatboxInput;
+import net.runelite.client.events.PrivateMessageInput;
 
 @Slf4j
 @Singleton
@@ -48,20 +48,21 @@ public class CommandManager
 {
 	private static final String RUNELITE_COMMAND = "runeliteCommand";
 	private static final String CHATBOX_INPUT = "chatboxInput";
+	private static final String PRIVMATE_MESSAGE = "privateMessage";
 
-	private final Provider<Client> clientProvider;
+	private final Client client;
 	private final EventBus eventBus;
-	private final Provider<ClientThread> clientThreadProvider;
+	private final ClientThread clientThread;
 	private boolean sending;
 
 	private final List<ChatboxInputListener> chatboxInputListenerList = new ArrayList<>();
 
 	@Inject
-	public CommandManager(Provider<Client> clientProvider, EventBus eventBus, Provider<ClientThread> clientThreadProvider)
+	private CommandManager(Client client, EventBus eventBus, ClientThread clientThread)
 	{
-		this.clientProvider = clientProvider;
+		this.client = client;
 		this.eventBus = eventBus;
-		this.clientThreadProvider = clientThreadProvider;
+		this.clientThread = clientThread;
 	}
 
 	public void register(ChatboxInputListener chatboxInputListener)
@@ -90,12 +91,14 @@ public class CommandManager
 			case CHATBOX_INPUT:
 				handleInput(event);
 				break;
+			case PRIVMATE_MESSAGE:
+				handlePrivateMessage(event);
+				break;
 		}
 	}
 
 	private void runCommand()
 	{
-		Client client = clientProvider.get();
 		String typedText = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT).substring(2); // strip ::
 
 		log.debug("Command: {}", typedText);
@@ -117,7 +120,6 @@ public class CommandManager
 
 	private void handleInput(ScriptCallbackEvent event)
 	{
-		Client client = clientProvider.get();
 		final String[] stringStack = client.getStringStack();
 		final int[] intStack = client.getIntStack();
 		int stringStackCount = client.getStringStackSize();
@@ -139,8 +141,7 @@ public class CommandManager
 				}
 				resumed = true;
 
-				ClientThread clientThread = clientThreadProvider.get();
-				clientThread.invokeLater(() -> sendChatboxInput(chatType, typedText));
+				clientThread.invoke(() -> sendChatboxInput(chatType, typedText));
 			}
 		};
 		boolean stop = false;
@@ -156,9 +157,48 @@ public class CommandManager
 		}
 	}
 
+	private void handlePrivateMessage(ScriptCallbackEvent event)
+	{
+		final String[] stringStack = client.getStringStack();
+		final int[] intStack = client.getIntStack();
+		int stringStackCount = client.getStringStackSize();
+		int intStackCount = client.getIntStackSize();
+
+		final String target = stringStack[stringStackCount - 2];
+		final String message = stringStack[stringStackCount - 1];
+
+		PrivateMessageInput privateMessageInput = new PrivateMessageInput(target, message)
+		{
+			private boolean resumed;
+
+			@Override
+			public void resume()
+			{
+				if (resumed)
+				{
+					return;
+				}
+				resumed = true;
+
+				clientThread.invoke(() -> sendPrivmsg(target, message));
+			}
+		};
+
+		boolean stop = false;
+		for (ChatboxInputListener chatboxInputListener : chatboxInputListenerList)
+		{
+			stop |= chatboxInputListener.onPrivateMessageInput(privateMessageInput);
+		}
+
+		if (stop)
+		{
+			intStack[intStackCount - 1] = 1;
+			client.setStringStackSize(stringStackCount - 2); // remove both target and message
+		}
+	}
+
 	private void sendChatboxInput(int chatType, String input)
 	{
-		Client client = clientProvider.get();
 		sending = true;
 		try
 		{
@@ -168,5 +208,10 @@ public class CommandManager
 		{
 			sending = false;
 		}
+	}
+
+	private void sendPrivmsg(String target, String message)
+	{
+		client.runScript(ScriptID.PRIVMSG, target, message);
 	}
 }

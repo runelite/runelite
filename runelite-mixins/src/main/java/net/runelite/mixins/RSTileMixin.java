@@ -295,7 +295,6 @@ public abstract class RSTileMixin implements RSTile
 				for (RSNode cur = head.getNext(); cur != head; cur = cur.getNext())
 				{
 					RSItem item = (RSItem) cur;
-					client.getLogger().debug("Item despawn (chunk reset): {} ({})", item.getId(), item.getQuantity());
 					ItemDespawned itemDespawned = new ItemDespawned(this, item);
 					client.getCallbacks().post(itemDespawned);
 				}
@@ -314,7 +313,6 @@ public abstract class RSTileMixin implements RSTile
 		{
 			if (lastUnlink != null)
 			{
-				client.getLogger().debug("Item despawn: {} ({})", lastUnlink.getId(), lastUnlink.getQuantity());
 				ItemDespawned itemDespawned = new ItemDespawned(this, lastUnlink);
 				client.getCallbacks().post(itemDespawned);
 			}
@@ -327,7 +325,6 @@ public abstract class RSTileMixin implements RSTile
 		{
 			if (lastUnlink != null)
 			{
-				client.getLogger().debug("Item despawn: {} ({})", lastUnlink.getId(), lastUnlink.getQuantity());
 				ItemDespawned itemDespawned = new ItemDespawned(this, lastUnlink);
 				client.getCallbacks().post(itemDespawned);
 			}
@@ -361,7 +358,6 @@ public abstract class RSTileMixin implements RSTile
 
 		if (lastUnlink != null && lastUnlink != previous && lastUnlink != next)
 		{
-			client.getLogger().debug("Item despawn: {} ({})", lastUnlink.getId(), lastUnlink.getQuantity());
 			ItemDespawned itemDespawned = new ItemDespawned(this, lastUnlink);
 			client.getCallbacks().post(itemDespawned);
 		}
@@ -374,7 +370,6 @@ public abstract class RSTileMixin implements RSTile
 		do
 		{
 			RSItem item = (RSItem) current;
-			client.getLogger().debug("Item spawn: {} ({})", item.getId(), item.getQuantity());
 			item.setX(x);
 			item.setY(y);
 

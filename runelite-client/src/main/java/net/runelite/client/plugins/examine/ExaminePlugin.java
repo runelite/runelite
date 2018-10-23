@@ -53,7 +53,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.examine.ExamineClient;
-import net.runelite.http.api.item.ItemPrice;
 
 /**
  * Submits exammine info to the api
@@ -220,6 +219,15 @@ public class ExaminePlugin extends Plugin
 					itemId = widgetItem.getItemId();
 				}
 			}
+			else if (WidgetInfo.SMITHING_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup)
+			{
+				Widget widgetItem = widget.getChild(2);
+				if (widgetItem != null)
+				{
+					quantity = widgetItem.getItemQuantity();
+					itemId = widgetItem.getItemId();
+				}
+			}
 			else if (WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup
 					|| WidgetInfo.RUNE_POUCH_ITEM_CONTAINER.getGroupId() == widgetGroup)
 			{
@@ -250,6 +258,16 @@ public class ExaminePlugin extends Plugin
 					itemId = widgetItem.getItemId();
 				}
 			}
+			else if (WidgetInfo.CLUE_SCROLL_REWARD_ITEM_CONTAINER.getGroupId() == widgetGroup)
+			{
+				Widget[] children = widget.getDynamicChildren();
+				if (pendingExamine.getActionParam() < children.length)
+				{
+					Widget widgetItem = children[pendingExamine.getActionParam()];
+					quantity = widgetItem.getItemQuantity();
+					itemId = widgetItem.getItemId();
+				}
+			}
 		}
 
 		if (itemId == -1)
@@ -262,24 +280,17 @@ public class ExaminePlugin extends Plugin
 
 		if (itemComposition != null)
 		{
-			executor.submit(() -> getItemPrice(itemComposition, itemQuantity));
+			final int id = itemManager.canonicalize(itemComposition.getId());
+			executor.submit(() -> getItemPrice(id, itemComposition, itemQuantity));
 		}
 	}
 
-	private void getItemPrice(ItemComposition itemComposition, int quantity)
+	private void getItemPrice(int id, ItemComposition itemComposition, int quantity)
 	{
-		// convert to unnoted id
-		final boolean note = itemComposition.getNote() != -1;
-		final int id = note ? itemComposition.getLinkedNoteId() : itemComposition.getId();
-
-		ItemPrice itemPrice = itemManager.getItemPrice(id);
-		if (itemPrice == null)
-		{
-			return;
-		}
-
+		// quantity is at least 1
+		quantity = Math.max(1, quantity);
 		int itemCompositionPrice = itemComposition.getPrice();
-		final int gePrice = itemPrice == null ? 0 : itemPrice.getPrice();
+		final int gePrice = itemManager.getItemPrice(id);
 		final int alchPrice = itemCompositionPrice <= 0 ? 0 : Math.round(itemCompositionPrice * HIGH_ALCHEMY_CONSTANT);
 
 		if (gePrice > 0 || alchPrice > 0)
@@ -308,17 +319,17 @@ public class ExaminePlugin extends Plugin
 					.append(" GE average ")
 					.append(ChatColorType.HIGHLIGHT)
 					.append(StackFormatter.formatNumber(gePrice * quantity));
-			}
 
-			if (quantity > 1)
-			{
-				message
-					.append(ChatColorType.NORMAL)
-					.append(" (")
-					.append(ChatColorType.HIGHLIGHT)
-					.append(StackFormatter.formatNumber(gePrice))
-					.append(ChatColorType.NORMAL)
-					.append("ea)");
+				if (quantity > 1)
+				{
+					message
+						.append(ChatColorType.NORMAL)
+						.append(" (")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(StackFormatter.formatNumber(gePrice))
+						.append(ChatColorType.NORMAL)
+						.append("ea)");
+				}
 			}
 
 			if (alchPrice > 0)
@@ -328,17 +339,17 @@ public class ExaminePlugin extends Plugin
 					.append(" HA value ")
 					.append(ChatColorType.HIGHLIGHT)
 					.append(StackFormatter.formatNumber(alchPrice * quantity));
-			}
 
-			if (quantity > 1)
-			{
-				message
-					.append(ChatColorType.NORMAL)
-					.append(" (")
-					.append(ChatColorType.HIGHLIGHT)
-					.append(StackFormatter.formatNumber(alchPrice))
-					.append(ChatColorType.NORMAL)
-					.append("ea)");
+				if (quantity > 1)
+				{
+					message
+						.append(ChatColorType.NORMAL)
+						.append(" (")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(StackFormatter.formatNumber(alchPrice))
+						.append(ChatColorType.NORMAL)
+						.append("ea)");
+				}
 			}
 
 			chatMessageManager.queue(QueuedMessage.builder()

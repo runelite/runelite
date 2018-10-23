@@ -30,6 +30,8 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Setter;
 import net.runelite.api.Client;
 import static net.runelite.api.ItemID.CANNONBALL;
 import net.runelite.api.Perspective;
@@ -52,6 +54,9 @@ public class CannonSpotOverlay extends Overlay
 	@Inject
 	private ItemManager itemManager;
 
+	@Setter(AccessLevel.PACKAGE)
+	private boolean hidden;
+
 	@Inject
 	CannonSpotOverlay(Client client, CannonPlugin plugin, CannonConfig config)
 	{
@@ -64,7 +69,7 @@ public class CannonSpotOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showCannonSpots() || plugin.isCannonPlaced())
+		if (hidden || !config.showCannonSpots() || plugin.isCannonPlaced())
 		{
 			return null;
 		}
@@ -99,7 +104,7 @@ public class CannonSpotOverlay extends Overlay
 		}
 
 		//Render icon
-		Point imageLoc = Perspective.getCanvasImageLocation(client, graphics, point, image, 0);
+		Point imageLoc = Perspective.getCanvasImageLocation(client, point, image, 0);
 
 		if (imageLoc != null)
 		{

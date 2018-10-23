@@ -33,10 +33,10 @@ import java.awt.image.BufferedImage;
 import java.time.temporal.ChronoUnit;
 import java.util.EnumSet;
 import java.util.Objects;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Experience;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
@@ -52,7 +52,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.http.api.xp.XpClient;
 
 @PluginDescriptor(
@@ -64,7 +65,7 @@ import net.runelite.http.api.xp.XpClient;
 public class XpTrackerPlugin extends Plugin
 {
 	@Inject
-	private PluginToolbar pluginToolbar;
+	private ClientToolbar clientToolbar;
 
 	@Inject
 	private Client client;
@@ -102,11 +103,7 @@ public class XpTrackerPlugin extends Plugin
 	{
 		xpPanel = new XpPanel(this, client, skillIconManager);
 
-		BufferedImage icon;
-		synchronized (ImageIO.class)
-		{
-			icon = ImageIO.read(getClass().getResourceAsStream("xp.png"));
-		}
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "/skill_icons/overall.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("XP Tracker")
@@ -115,14 +112,14 @@ public class XpTrackerPlugin extends Plugin
 			.panel(xpPanel)
 			.build();
 
-		pluginToolbar.addNavigation(navButton);
+		clientToolbar.addNavigation(navButton);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		xpState.reset();
-		pluginToolbar.removeNavigation(navButton);
+		clientToolbar.removeNavigation(navButton);
 	}
 
 	@Subscribe
@@ -234,10 +231,16 @@ public class XpTrackerPlugin extends Plugin
 	{
 		final Skill skill = event.getSkill();
 		final int currentXp = client.getSkillExperience(skill);
+		final int currentLevel = Experience.getLevelForXp(currentXp);
 		final VarPlayer startGoal = startGoalVarpForSkill(skill);
 		final VarPlayer endGoal = endGoalVarpForSkill(skill);
 		final int startGoalXp = startGoal != null ? client.getVar(startGoal) : -1;
 		final int endGoalXp = endGoal != null ? client.getVar(endGoal) : -1;
+
+		if (xpTrackerConfig.hideMaxed() && currentLevel >= Experience.MAX_REAL_LEVEL)
+		{
+			return;
+		}
 
 		final XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp, startGoalXp, endGoalXp);
 
@@ -420,6 +423,14 @@ public class XpTrackerPlugin extends Plugin
 		if (pause ? xpPauseState.pauseSkill(skill) : xpPauseState.unpauseSkill(skill))
 		{
 			xpPanel.updateSkillExperience(false, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
+		}
+	}
+
+	void pauseAllSkills(boolean pause)
+	{
+		for (Skill skill : Skill.values())
+		{
+			pauseSkill(skill, pause);
 		}
 	}
 }

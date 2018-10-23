@@ -126,6 +126,6 @@ public class ChatCommandsPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", "Your Barrows chest count is: <col=ff0000>277</col>.", null);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
-		verify(configManager).setConfiguration("killcount.adam", "barrows", 277);
+		verify(configManager).setConfiguration("killcount.adam", "barrows chests", 277);
 	}
 }

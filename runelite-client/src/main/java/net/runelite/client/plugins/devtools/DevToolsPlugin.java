@@ -26,22 +26,28 @@ package net.runelite.client.plugins.devtools;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
+import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
-import javax.imageio.ImageIO;
+import java.util.List;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.ExperienceChanged;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
@@ -49,8 +55,10 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.ImageUtil;
 import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
@@ -58,14 +66,17 @@ import org.slf4j.LoggerFactory;
 	tags = {"panel"},
 	developerPlugin = true
 )
-@Slf4j
 public class DevToolsPlugin extends Plugin
 {
+	private static final List<MenuAction> EXAMINE_MENU_ACTIONS = ImmutableList.of(MenuAction.EXAMINE_ITEM,
+			MenuAction.EXAMINE_ITEM_GROUND, MenuAction.EXAMINE_NPC, MenuAction.EXAMINE_OBJECT);
+	private static final Color COLOR_ORANGE = new Color(255, 144, 64);
+
 	@Inject
 	private Client client;
 
 	@Inject
-	private PluginToolbar pluginToolbar;
+	private ClientToolbar clientToolbar;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -106,6 +117,8 @@ public class DevToolsPlugin extends Plugin
 	private boolean toggleCamera;
 	private boolean toggleWorldMapLocation;
 	private boolean toggleTileLocation;
+	private boolean toggleInteracting;
+	private boolean toggleExamineInfo;
 
 	Widget currentWidget;
 	int itemIndex = -1;
@@ -130,11 +143,7 @@ public class DevToolsPlugin extends Plugin
 
 		final DevToolsPanel panel = injector.getInstance(DevToolsPanel.class);
 
-		BufferedImage icon;
-		synchronized (ImageIO.class)
-		{
-			icon = ImageIO.read(getClass().getResourceAsStream("devtools_icon.png"));
-		}
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "devtools_icon.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Developer Tools")
@@ -143,7 +152,7 @@ public class DevToolsPlugin extends Plugin
 			.panel(panel)
 			.build();
 
-		pluginToolbar.addNavigation(navButton);
+		clientToolbar.addNavigation(navButton);
 
 		font = FontManager.getRunescapeFont()
 			.deriveFont(Font.BOLD, 16);
@@ -157,7 +166,7 @@ public class DevToolsPlugin extends Plugin
 		overlayManager.remove(sceneOverlay);
 		overlayManager.remove(cameraOverlay);
 		overlayManager.remove(worldMapLocationOverlay);
-		pluginToolbar.removeNavigation(navButton);
+		clientToolbar.removeNavigation(navButton);
 	}
 
 	@Subscribe
@@ -231,10 +240,7 @@ public class DevToolsPlugin extends Plugin
 				client.getRealSkillLevels()[skill.ordinal()] = level;
 				client.getSkillExperiences()[skill.ordinal()] = totalXp;
 
-				int[] skills = client.getChangedSkills();
-				int count = client.getChangedSkillsCount();
-				skills[++count - 1 & 31] = skill.ordinal();
-				client.setChangedSkillsCount(count);
+				client.queueChangedSkill(skill);
 
 				ExperienceChanged experienceChanged = new ExperienceChanged();
 				experienceChanged.setSkill(skill);
@@ -266,6 +272,45 @@ public class DevToolsPlugin extends Plugin
 				player.setPoseAnimation(-1);
 				break;
 			}
+		}
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		if (!toggleExamineInfo)
+		{
+			return;
+		}
+
+		MenuAction action = MenuAction.of(event.getType());
+
+		if (EXAMINE_MENU_ACTIONS.contains(action))
+		{
+			MenuEntry[] entries = client.getMenuEntries();
+			MenuEntry entry = entries[entries.length - 1];
+
+			final int identifier = event.getIdentifier();
+			String info = "ID: ";
+
+			if (action == MenuAction.EXAMINE_NPC)
+			{
+				NPC npc = client.getCachedNPCs()[identifier];
+				info += npc.getId();
+			}
+			else
+			{
+				info += identifier;
+
+				if (action == MenuAction.EXAMINE_OBJECT)
+				{
+					WorldPoint point = WorldPoint.fromScene(client, entry.getParam0(), entry.getParam1(), client.getPlane());
+					info += " X: " + point.getX() + " Y: " + point.getY();
+				}
+			}
+
+			entry.setTarget(entry.getTarget() + " " + ColorUtil.prependColorTag("(" + info + ")", COLOR_ORANGE));
+			client.setMenuEntries(entries);
 		}
 	}
 
@@ -364,6 +409,16 @@ public class DevToolsPlugin extends Plugin
 		toggleTileLocation = !toggleTileLocation;
 	}
 
+	void toggleInteracting()
+	{
+		toggleInteracting = !toggleInteracting;
+	}
+
+	void toggleExamineInfo()
+	{
+		toggleExamineInfo = !toggleExamineInfo;
+	}
+
 	boolean isTogglePlayers()
 	{
 		return togglePlayers;
@@ -452,5 +507,10 @@ public class DevToolsPlugin extends Plugin
 	boolean isToggleTileLocation()
 	{
 		return toggleTileLocation;
+	}
+
+	boolean isToggleInteracting()
+	{
+		return toggleInteracting;
 	}
 }

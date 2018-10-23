@@ -154,7 +154,9 @@ public class OpponentInfoPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		if (lastOpponent != null && client.getLocalPlayer().getInteracting() == null)
+		if (lastOpponent != null
+			&& lastTime != null
+			&& client.getLocalPlayer().getInteracting() == null)
 		{
 			if (Duration.between(lastTime, Instant.now()).compareTo(WAIT) > 0)
 			{

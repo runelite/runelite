@@ -47,17 +47,19 @@ class CorpDamageOverlay extends Overlay
 {
 	private final Client client;
 	private final CorpPlugin corpPlugin;
+	private final CorpConfig config;
 
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private CorpDamageOverlay(Client client, CorpPlugin corpPlugin)
+	private CorpDamageOverlay(Client client, CorpPlugin corpPlugin, CorpConfig config)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		setLayer(OverlayLayer.UNDER_WIDGETS);
 		setPriority(OverlayPriority.LOW);
 		this.client = client;
 		this.corpPlugin = corpPlugin;
+		this.config = config;
 	}
 
 	@Override
@@ -114,16 +116,19 @@ class CorpDamageOverlay extends Overlay
 			}
 		}
 
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Your damage")
-			.right(Integer.toString(myDamage))
-			.rightColor(damageForKill > 0 && myDamage >= damageForKill ? Color.GREEN : Color.RED)
-			.build());
+		if (config.showDamage())
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Your damage")
+				.right(Integer.toString(myDamage))
+				.rightColor(damageForKill > 0 && myDamage >= damageForKill ? Color.GREEN : Color.RED)
+				.build());
 
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Total damage")
-			.right(Integer.toString(totalDamage))
-			.build());
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Total damage")
+				.right(Integer.toString(totalDamage))
+				.build());
+		}
 
 		return panelComponent.render(graphics);
 	}

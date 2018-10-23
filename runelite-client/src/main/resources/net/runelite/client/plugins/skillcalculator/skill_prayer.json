@@ -12,15 +12,23 @@
   "actions": [
     {
       "level": 1,
-      "icon": 526,
-      "name": "Bones",
-      "xp": 4.5
+      "icon": 13447,
+      "name": "Ensouled Goblin Head",
+      "xp": 130,
+      "ignoreBonus": true
     },
     {
       "level": 1,
-      "icon": 13480,
-      "name": "Ensouled Elf Head",
-      "xp": 754,
+      "icon": 13450,
+      "name": "Ensouled Monkey Head",
+      "xp": 182,
+      "ignoreBonus": true
+    },
+    {
+      "level": 1,
+      "icon": 13453,
+      "name": "Ensouled Imp Head",
+      "xp": 286,
       "ignoreBonus": true
     },
     {
@@ -81,16 +89,16 @@
     },
     {
       "level": 1,
-      "icon": 13483,
-      "name": "Ensouled Troll Head",
-      "xp": 780,
+      "icon": 13480,
+      "name": "Ensouled Elf Head",
+      "xp": 754,
       "ignoreBonus": true
     },
     {
       "level": 1,
-      "icon": 13450,
-      "name": "Ensouled Monkey Head",
-      "xp": 182,
+      "icon": 13483,
+      "name": "Ensouled Troll Head",
+      "xp": 780,
       "ignoreBonus": true
     },
     {
@@ -158,17 +166,9 @@
     },
     {
       "level": 1,
-      "icon": 13453,
-      "name": "Ensouled Imp Head",
-      "xp": 286,
-      "ignoreBonus": true
-    },
-    {
-      "level": 1,
-      "icon": 13447,
-      "name": "Ensouled Goblin Head",
-      "xp": 130,
-      "ignoreBonus": true
+      "icon": 526,
+      "name": "Bones",
+      "xp": 4.5
     },
     {
       "level": 1,

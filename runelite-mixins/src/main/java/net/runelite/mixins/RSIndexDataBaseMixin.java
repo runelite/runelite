@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import net.runelite.api.mixins.Copy;
+import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
@@ -47,6 +48,16 @@ public abstract class RSIndexDataBaseMixin implements RSIndexDataBase
 {
 	@Shadow("clientInstance")
 	private static RSClient client;
+
+	@Inject
+	private boolean overlayOutdated;
+
+	@Inject
+	@Override
+	public boolean isOverlayOutdated()
+	{
+		return overlayOutdated;
+	}
 
 	@Copy("getConfigData")
 	abstract byte[] rs$getConfigData(int archiveId, int fileId);
@@ -116,6 +127,7 @@ public abstract class RSIndexDataBaseMixin implements RSIndexDataBase
 
 			log.warn("Mismatch in overlaid cache archive hash for {}/{}: {} != {}",
 				indexData.getIndex(), archiveId, replaceHash, rsHash);
+			overlayOutdated = true;
 		}
 		catch (IOException ex)
 		{

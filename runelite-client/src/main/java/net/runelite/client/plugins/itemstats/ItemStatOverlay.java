@@ -27,13 +27,13 @@ package net.runelite.client.plugins.itemstats;
 import com.google.inject.Inject;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import net.runelite.api.Client;
-import net.runelite.api.queries.InventoryWidgetItemQuery;
-import net.runelite.api.widgets.WidgetItem;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.QueryRunner;
 
 public class ItemStatOverlay extends Overlay
@@ -61,34 +61,42 @@ public class ItemStatOverlay extends Overlay
 			return null;
 		}
 
-		WidgetItem[] inventory = queryRunner.runQuery(new InventoryWidgetItemQuery());
-		Point mousePos = new Point(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY());
-		for (WidgetItem item : inventory)
+		final MenuEntry[] menu = client.getMenuEntries();
+		final int menuSize = menu.length;
+
+		if (menuSize <= 0)
 		{
-			if (item.getCanvasBounds().contains(mousePos))
-			{
-				Effect change = statChanges.get(item.getId());
-				if (change != null)
-				{
-					StringBuilder b = new StringBuilder();
-					StatsChanges statsChanges = change.calculate(client);
-					for (StatChange c : statsChanges.getStatChanges())
-					{
-						b.append(buildStatChangeString(c));
-					}
-					tooltipManager.add(new Tooltip(b.toString()));
-				}
-			}
+			return null;
 		}
+
+		final MenuEntry entry = menu[menuSize - 1];
+
+		if (entry.getParam1() != WidgetInfo.INVENTORY.getId())
+		{
+			return null;
+		}
+
+		final Effect change = statChanges.get(entry.getIdentifier());
+		if (change != null)
+		{
+			final StringBuilder b = new StringBuilder();
+			final StatsChanges statsChanges = change.calculate(client);
+
+			for (final StatChange c : statsChanges.getStatChanges())
+			{
+				b.append(buildStatChangeString(c));
+			}
+
+			tooltipManager.add(new Tooltip(b.toString()));
+		}
+
 		return null;
 	}
 
 	private String buildStatChangeString(StatChange c)
 	{
 		StringBuilder b = new StringBuilder();
-		b.append("<col=");
-		b.append(Integer.toHexString(Positivity.getColor(config, c.getPositivity()).getRGB() & 0xFFFFFF));
-		b.append(">");
+		b.append(ColorUtil.colorTag(Positivity.getColor(config, c.getPositivity())));
 
 		if (config.relative())
 		{

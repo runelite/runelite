@@ -29,6 +29,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -39,21 +40,23 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Experience;
 import net.runelite.api.Skill;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.SkillColor;
 import net.runelite.client.ui.components.ProgressBar;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.StackFormatter;
-import net.runelite.client.util.SwingUtil;
 
-@Slf4j
 class XpInfoBox extends JPanel
 {
+	private static final DecimalFormat TWO_DECIMAL_FORMAT = new DecimalFormat("0.00");
+
 	// Templates
 	private static final String HTML_TOOL_TIP_TEMPLATE =
 		"<html>%s actions done<br/>"
@@ -153,7 +156,7 @@ class XpInfoBox extends JPanel
 
 		progressBar.setMaximumValue(100);
 		progressBar.setBackground(new Color(61, 56, 49));
-		progressBar.setForeground(SkillColor.values()[skill.ordinal()].getColor());
+		progressBar.setForeground(SkillColor.find(skill).getColor());
 		progressBar.setDimmedText("Paused");
 
 		progressWrapper.add(progressBar, BorderLayout.NORTH);
@@ -197,10 +200,12 @@ class XpInfoBox extends JPanel
 			actionsLeft.setText(htmlLabel("Actions: ", xpSnapshotSingle.getActionsRemainingToGoal()));
 
 			// Update progress bar
-			progressBar.setValue(xpSnapshotSingle.getSkillProgressToGoal());
-			progressBar.setCenterLabel(xpSnapshotSingle.getSkillProgressToGoal() + "%");
+			progressBar.setValue((int) xpSnapshotSingle.getSkillProgressToGoal());
+			progressBar.setCenterLabel(TWO_DECIMAL_FORMAT.format(xpSnapshotSingle.getSkillProgressToGoal()) + "%");
 			progressBar.setLeftLabel("Lvl. " + xpSnapshotSingle.getStartLevel());
-			progressBar.setRightLabel("Lvl. " + xpSnapshotSingle.getEndLevel());
+			progressBar.setRightLabel(xpSnapshotSingle.getEndGoalXp() == Experience.MAX_SKILL_XP
+				? "200M"
+				: "Lvl. " + xpSnapshotSingle.getEndLevel());
 
 			progressBar.setToolTipText(String.format(
 				HTML_TOOL_TIP_TEMPLATE,
@@ -236,6 +241,6 @@ class XpInfoBox extends JPanel
 	static String htmlLabel(String key, int value)
 	{
 		String valueStr = StackFormatter.quantityToRSDecimalStack(value);
-		return String.format(HTML_LABEL_TEMPLATE, SwingUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
+		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
 }

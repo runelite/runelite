@@ -115,11 +115,11 @@ class XpStateSingle
 		return Integer.MAX_VALUE;
 	}
 
-	private int getSkillProgress()
+	private double getSkillProgress()
 	{
 		double xpGained = getCurrentXp() - startLevelExp;
 		double xpGoal = endLevelExp - startLevelExp;
-		return (int) ((xpGained / xpGoal) * 100);
+		return (xpGained / xpGoal) * 100;
 	}
 
 	private String getTimeTillLevel()
@@ -220,7 +220,9 @@ class XpStateSingle
 		if (goalEndXp <= 0 || currentXp > goalEndXp)
 		{
 			int currentLevel = Experience.getLevelForXp(currentXp);
-			endLevelExp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;
+			endLevelExp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL
+				? Experience.getXpForLevel(currentLevel + 1)
+				: Experience.MAX_SKILL_XP;
 		}
 		else
 		{
@@ -232,6 +234,11 @@ class XpStateSingle
 
 	public void tick(long delta)
 	{
+		// Don't tick skills that have not gained XP or have been reset.
+		if (xpGained <= 0)
+		{
+			return;
+		}
 		skillTime += delta;
 	}
 
@@ -248,6 +255,8 @@ class XpStateSingle
 			.actionsRemainingToGoal(getActionsRemaining())
 			.actionsPerHour(getActionsHr())
 			.timeTillGoal(getTimeTillLevel())
+			.startGoalXp(startLevelExp)
+			.endGoalXp(endLevelExp)
 			.build();
 	}
 }

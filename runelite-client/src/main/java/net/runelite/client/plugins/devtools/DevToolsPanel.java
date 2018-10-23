@@ -30,12 +30,10 @@ import java.awt.GridLayout;
 import javax.inject.Inject;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 
-@Slf4j
 public class DevToolsPanel extends PluginPanel
 {
 	private final Client client;
@@ -233,6 +231,22 @@ public class DevToolsPanel extends PluginPanel
 			client.setOculusOrbNormalSpeed(enabled ? 36 : 12);
 		});
 		container.add(oculusOrbBtn);
+
+		final JButton interactingBtn = new JButton("Interacting");
+		interactingBtn.addActionListener(e ->
+		{
+			highlightButton(interactingBtn);
+			plugin.toggleInteracting();
+		});
+		container.add(interactingBtn);
+
+		final JButton examineInfoBtn = new JButton("Examine Info");
+		examineInfoBtn.addActionListener(e ->
+		{
+			highlightButton(examineInfoBtn);
+			plugin.toggleExamineInfo();
+		});
+		container.add(examineInfoBtn);
 
 		return container;
 	}

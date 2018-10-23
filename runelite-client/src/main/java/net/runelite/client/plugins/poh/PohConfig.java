@@ -93,7 +93,7 @@ public interface PohConfig extends Config
 
 	@ConfigItem(
 		keyName = "showBurner",
-		name = "Show Unlit/Lit burner",
+		name = "Show Incense Burner timers",
 		description = "Configures whether or not unlit/lit burners are displayed"
 	)
 	default boolean showBurner()

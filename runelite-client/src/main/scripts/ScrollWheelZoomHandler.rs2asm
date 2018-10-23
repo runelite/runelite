@@ -1,0 +1,48 @@
+.id                 39
+.int_stack_count    1
+.string_stack_count 0
+.int_var_count      4
+.string_var_count   0
+   load_int               1
+   load_int               0
+   load_string            "scrollWheelZoom"
+   runelite_callback     
+   if_icmpeq              LABEL18
+   load_int               0
+   iload                  0
+   load_int               25
+   imul                  
+   isub                  
+   istore                 1
+   load_int               512
+   istore                 2
+   load_int               512
+   istore                 3
+   get_varbit             6357
+   load_int               0
+   if_icmpeq              LABEL14
+   jump                   LABEL33
+LABEL14:
+   get_varbit             4606
+   load_int               0
+   if_icmpne              LABEL18
+   jump                   LABEL19
+LABEL18:
+   return                
+LABEL19:
+   6205                  
+   istore                 2
+   istore                 3
+   iload                  3
+   iload                  1
+   iadd                  
+   istore                 3
+   iload                  2
+   iload                  1
+   iadd                  
+   istore                 2
+   iload                  3
+   iload                  2
+   invoke                 42
+LABEL33:
+   return                

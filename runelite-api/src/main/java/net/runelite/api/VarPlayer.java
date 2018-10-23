@@ -38,10 +38,21 @@ public enum VarPlayer
 
 	BANK_TAB(115),
 
+	MEMBERSHIP_DAYS(1780),
+
 	SPECIAL_ATTACK_PERCENT(300),
 	SPECIAL_ATTACK_ENABLED(301),
 
 	IN_RAID_PARTY(1427),
+
+	NMZ_REWARD_POINTS(1060),
+
+	/**
+	 * 0 : not started
+	 * greater than 0 : in progress
+	 * greater than 99 : completed
+	 */
+	THRONE_OF_MISCELLANIA(359),
 
 	/**
 	 * Experience tracker goal start.
@@ -95,7 +106,15 @@ public enum VarPlayer
 	SLAYER_GOAL_END(1272),
 	FARMING_GOAL_END(1273),
 	CONSTRUCTION_GOAL_END(1274),
-	HUNTER_GOAL_END(1275);
+	HUNTER_GOAL_END(1275),
+
+	/**
+	 * Bird house states
+	 */
+	BIRD_HOUSE_MEADOW_NORTH(1626),
+	BIRD_HOUSE_MEADOW_SOUTH(1627),
+	BIRD_HOUSE_VALLEY_NORTH(1628),
+	BIRD_HOUSE_VALLEY_SOUTH(1629);
 
 	private final int id;
 }

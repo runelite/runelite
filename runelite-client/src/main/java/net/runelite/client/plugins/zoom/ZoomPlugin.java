@@ -28,11 +28,14 @@ package net.runelite.client.plugins.zoom;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
-import lombok.extern.slf4j.Slf4j;
+import java.awt.event.KeyEvent;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.input.KeyListener;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -42,14 +45,18 @@ import net.runelite.client.plugins.PluginDescriptor;
 	tags = {"limit", "vertical"},
 	enabledByDefault = false
 )
-@Slf4j
-public class ZoomPlugin extends Plugin
+public class ZoomPlugin extends Plugin implements KeyListener
 {
+	private boolean controlDown;
+	
 	@Inject
 	private Client client;
 
 	@Inject
 	private ZoomConfig zoomConfig;
+
+	@Inject
+	private KeyManager keyManager;
 
 	@Provides
 	ZoomConfig getConfig(ConfigManager configManager)
@@ -60,36 +67,31 @@ public class ZoomPlugin extends Plugin
 	@Subscribe
 	public void onScriptEvent(ScriptCallbackEvent event)
 	{
+		if (client.getIndexScripts().isOverlayOutdated())
+		{
+			// if any cache overlay fails to load then assume at least one of the zoom scripts is outdated
+			// and prevent zoom extending entirely.
+			return;
+		}
+
 		int[] intStack = client.getIntStack();
 		int intStackSize = client.getIntStackSize();
-		if (zoomConfig.outerLimit())
+
+		if ("scrollWheelZoom".equals(event.getEventName()) && zoomConfig.requireControlDown() && !controlDown)
 		{
-			switch (event.getEventName())
-			{
-				case "fixedOuterZoomLimit":
-					intStack[intStackSize - 1] = 95;
-					break;
-				case "resizableOuterZoomLimit":
-					intStack[intStackSize - 1] = 70;
-					break;
-			}
+			intStack[intStackSize - 1] = 1;
 		}
+
+		if ("innerZoomLimit".equals(event.getEventName()) && zoomConfig.innerLimit())
+		{
+			intStack[intStackSize - 1] = 1200;
+			return;
+		}
+
 		if (zoomConfig.innerLimit())
 		{
-			switch (event.getEventName())
-			{
-				case "fixedInnerZoomLimit":
-					intStack[intStackSize - 1] = 2100;
-					break;
-				case "resizableInnerZoomLimit":
-					intStack[intStackSize - 1] = 2200;
-					break;
-			}
-		}
-		if (zoomConfig.outerLimit() || zoomConfig.innerLimit())
-		{
 			// This lets the options panel's slider have an exponential rate
-			final double exponent = 3.d;
+			final double exponent = 2.d;
 			switch (event.getEventName())
 			{
 				case "zoomLinToExp":
@@ -112,21 +114,56 @@ public class ZoomPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onFocusChanged(FocusChanged event)
+	{
+		if (!event.isFocused())
+		{
+			controlDown = false;
+		}
+	}
+	
 	@Override
 	protected void startUp()
 	{
 		client.setCameraPitchRelaxerEnabled(zoomConfig.relaxCameraPitch());
+		keyManager.registerKeyListener(this);
 	}
 
 	@Override
 	protected void shutDown()
 	{
 		client.setCameraPitchRelaxerEnabled(false);
+		keyManager.unregisterKeyListener(this);
+		controlDown = false;
 	}
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged ev)
 	{
 		client.setCameraPitchRelaxerEnabled(zoomConfig.relaxCameraPitch());
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e)
+	{
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		if (e.getKeyCode() == KeyEvent.VK_CONTROL)
+		{
+			controlDown = true;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+		if (e.getKeyCode() == KeyEvent.VK_CONTROL)
+		{
+			controlDown = false;
+		}
 	}
 }

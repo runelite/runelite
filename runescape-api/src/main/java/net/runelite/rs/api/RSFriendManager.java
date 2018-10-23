@@ -32,6 +32,9 @@ public interface RSFriendManager extends FriendManager
 	@Import("friendContainer")
 	RSFriendContainer getFriendContainer();
 
+	@Import("ignoreContainer")
+	RSIgnoreContainer getIgnoreContainer();
+
 	@Import("isFriended")
 	boolean isFriended(RSName var1, boolean var2);
 }

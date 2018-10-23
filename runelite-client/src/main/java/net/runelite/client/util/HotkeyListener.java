@@ -26,7 +26,6 @@ package net.runelite.client.util;
 
 import java.awt.event.KeyEvent;
 import java.util.function.Supplier;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.input.KeyListener;
@@ -36,12 +35,17 @@ public abstract class HotkeyListener implements KeyListener
 {
 	private final Supplier<Keybind> keybind;
 
-	@Getter
 	private boolean isPressed = false;
+
+	private boolean isConsumingTyped = false;
 
 	@Override
 	public void keyTyped(KeyEvent e)
 	{
+		if (isConsumingTyped)
+		{
+			e.consume();
+		}
 	}
 
 	@Override
@@ -49,8 +53,18 @@ public abstract class HotkeyListener implements KeyListener
 	{
 		if (keybind.get().matches(e))
 		{
+			boolean wasPressed = isPressed;
 			isPressed = true;
-			hotkeyPressed();
+			if (!wasPressed)
+			{
+				hotkeyPressed();
+			}
+			if (Keybind.getModifierForKeyCode(e.getKeyCode()) == null)
+			{
+				isConsumingTyped = true;
+				// Only consume non modifier keys
+				e.consume();
+			}
 		}
 	}
 
@@ -60,15 +74,11 @@ public abstract class HotkeyListener implements KeyListener
 		if (keybind.get().matches(e))
 		{
 			isPressed = false;
-			hotkeyReleased();
+			isConsumingTyped = false;
 		}
 	}
 
 	public void hotkeyPressed()
-	{
-	}
-
-	public void hotkeyReleased()
 	{
 	}
 }

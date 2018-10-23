@@ -32,8 +32,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.PixelGrabber;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +52,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 @PluginDescriptor(
 	name = "Interface Styles",
 	description = "Change the interface style to the 2005/2010 interface",
-	tags = {"2005", "2010"},
+	tags = {"2005", "2010", "skin", "theme", "ui"},
 	enabledByDefault = false
 )
 public class InterfaceStylesPlugin extends Plugin
@@ -80,19 +78,13 @@ public class InterfaceStylesPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		clientThread.invokeLater(() ->
-		{
-			overrideSprites();
-			overrideWidgetSprites();
-			restoreWidgetDimensions();
-			adjustWidgetDimensions();
-		});
+		clientThread.invoke(this::updateAllOverrides);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		clientThread.invokeLater(() ->
+		clientThread.invoke(() ->
 		{
 			restoreWidgetDimensions();
 			removeGameframe();
@@ -104,14 +96,7 @@ public class InterfaceStylesPlugin extends Plugin
 	{
 		if (config.getGroup().equals("interfaceStyles"))
 		{
-			clientThread.invokeLater(() ->
-			{
-				removeGameframe();
-				overrideSprites();
-				overrideWidgetSprites();
-				restoreWidgetDimensions();
-				adjustWidgetDimensions();
-			});
+			clientThread.invoke(this::updateAllOverrides);
 		}
 	}
 
@@ -121,10 +106,17 @@ public class InterfaceStylesPlugin extends Plugin
 		adjustWidgetDimensions();
 	}
 
+	private void updateAllOverrides()
+	{
+		removeGameframe();
+		overrideSprites();
+		overrideWidgetSprites();
+		restoreWidgetDimensions();
+		adjustWidgetDimensions();
+	}
+
 	private void overrideSprites()
 	{
-		Map<Integer, SpritePixels> overrides = new HashMap<>();
-
 		for (SpriteOverride spriteOverride : SpriteOverride.values())
 		{
 			for (Skin skin : spriteOverride.getSkin())
@@ -139,19 +131,25 @@ public class InterfaceStylesPlugin extends Plugin
 					}
 					else
 					{
-						overrides.put(spriteOverride.getSpriteID(), spritePixels);
+						client.getSpriteOverrides().put(spriteOverride.getSpriteID(), spritePixels);
 					}
 				}
 			}
 		}
+	}
 
-		client.setSpriteOverrides(overrides);
+	private void restoreSprites()
+	{
+		client.getWidgetSpriteCache().reset();
+
+		for (SpriteOverride spriteOverride : SpriteOverride.values())
+		{
+			client.getSpriteOverrides().remove(spriteOverride.getSpriteID());
+		}
 	}
 
 	private void overrideWidgetSprites()
 	{
-		Map<Integer, SpritePixels> widgetOverrides = new HashMap<>();
-
 		for (WidgetOverride widgetOverride : WidgetOverride.values())
 		{
 			if (widgetOverride.getSkin() == config.skin())
@@ -162,13 +160,22 @@ public class InterfaceStylesPlugin extends Plugin
 				{
 					for (WidgetInfo widgetInfo : widgetOverride.getWidgetInfo())
 					{
-						widgetOverrides.put(widgetInfo.getPackedId(), spritePixels);
+						client.getWidgetSpriteOverrides().put(widgetInfo.getPackedId(), spritePixels);
 					}
 				}
 			}
 		}
+	}
 
-		client.setWidgetSpriteOverrides(widgetOverrides);
+	private void restoreWidgetSprites()
+	{
+		for (WidgetOverride widgetOverride : WidgetOverride.values())
+		{
+			for (WidgetInfo widgetInfo : widgetOverride.getWidgetInfo())
+			{
+				client.getWidgetSpriteOverrides().remove(widgetInfo.getPackedId());
+			}
+		}
 	}
 
 	private SpritePixels getFileSpritePixels(String file, String subfolder)
@@ -193,6 +200,10 @@ public class InterfaceStylesPlugin extends Plugin
 		catch (IOException ex)
 		{
 			log.debug("Unable to load image: ", ex);
+		}
+		catch (IllegalArgumentException ex)
+		{
+			log.debug("Input stream of file path " + filePath + " could not be read: ", ex);
 		}
 
 		return null;
@@ -288,8 +299,8 @@ public class InterfaceStylesPlugin extends Plugin
 
 	private void removeGameframe()
 	{
-		client.setSpriteOverrides(null);
-		client.setWidgetSpriteOverrides(null);
+		restoreSprites();
+		restoreWidgetSprites();
 
 		BufferedImage compassImage = spriteManager.getSprite(SpriteID.COMPASS_TEXTURE, 0);
 

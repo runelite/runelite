@@ -37,6 +37,7 @@ import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.HashTable;
 import net.runelite.api.HintArrowType;
+import net.runelite.api.Ignore;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.InventoryID;
 import net.runelite.api.MenuAction;
@@ -101,6 +102,7 @@ import net.runelite.rs.api.RSDeque;
 import net.runelite.rs.api.RSFriendContainer;
 import net.runelite.rs.api.RSFriendManager;
 import net.runelite.rs.api.RSHashTable;
+import net.runelite.rs.api.RSIgnoreContainer;
 import net.runelite.rs.api.RSIndexedSprite;
 import net.runelite.rs.api.RSItem;
 import net.runelite.rs.api.RSItemContainer;
@@ -237,6 +239,14 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
+	public void setMouseCanvasHoverPosition(final Point position)
+	{
+		setMouseCanvasHoverPositionX(position.getX());
+		setMouseCanvasHoverPositionY(position.getY());
+	}
+
+	@Inject
+	@Override
 	public Tile getSelectedSceneTile()
 	{
 		int tileX = getSelectedSceneTileX();
@@ -298,6 +308,26 @@ public abstract class RSClientMixin implements RSClient
 	{
 		int[] realLevels = getRealSkillLevels();
 		return realLevels[skill.ordinal()];
+	}
+
+	@Inject
+	@Override
+	public int getTotalLevel()
+	{
+		int totalLevel = 0;
+
+		int[] realLevels = client.getRealSkillLevels();
+		int lastSkillIdx = Skill.CONSTRUCTION.ordinal();
+
+		for (int i = 0; i < realLevels.length; i++)
+		{
+			if (i <= lastSkillIdx)
+			{
+				totalLevel += realLevels[i];
+			}
+		}
+
+		return totalLevel;
 	}
 
 	@Inject
@@ -663,6 +693,64 @@ public abstract class RSClientMixin implements RSClient
 
 		RSNameable[] nameables = friendContainer.getNameables();
 		return (Friend[]) nameables;
+	}
+
+	@Inject
+	@Override
+	public int getFriendsCount()
+	{
+		final RSFriendManager friendManager = getFriendManager();
+		if (friendManager == null)
+		{
+			return -1;
+		}
+
+		final RSFriendContainer friendContainer = friendManager.getFriendContainer();
+		if (friendContainer == null)
+		{
+			return -1;
+		}
+
+		return friendContainer.getCount();
+	}
+
+	@Inject
+	@Override
+	public Ignore[] getIgnores()
+	{
+		final RSFriendManager friendManager = getFriendManager();
+		if (friendManager == null)
+		{
+			return null;
+		}
+
+		final RSIgnoreContainer ignoreContainer = friendManager.getIgnoreContainer();
+		if (ignoreContainer == null)
+		{
+			return null;
+		}
+
+		RSNameable[] nameables = ignoreContainer.getNameables();
+		return (Ignore[]) nameables;
+	}
+
+	@Inject
+	@Override
+	public int getIgnoreCount()
+	{
+		final RSFriendManager friendManager = getFriendManager();
+		if (friendManager == null)
+		{
+			return -1;
+		}
+
+		final RSIgnoreContainer ignoreContainer = friendManager.getIgnoreContainer();
+		if (ignoreContainer == null)
+		{
+			return -1;
+		}
+
+		return ignoreContainer.getCount();
 	}
 
 	@Inject
@@ -1119,20 +1207,17 @@ public abstract class RSClientMixin implements RSClient
 		for (Widget rlWidget : widgets)
 		{
 			RSWidget widget = (RSWidget) rlWidget;
-			if (widget == null)
+			if (widget == null || widget.getRSParentId() != parentId)
 			{
 				continue;
 			}
 
-			if (widget.getRSParentId() == parentId)
+			if (parentId != -1)
 			{
-				if (parentId != -1)
-				{
-					widget.setRenderParentId(parentId);
-				}
-				widget.setRenderX(x + widget.getRelativeX());
-				widget.setRenderY(y + widget.getRelativeY());
+				widget.setRenderParentId(parentId);
 			}
+			widget.setRenderX(x + widget.getRelativeX());
+			widget.setRenderY(y + widget.getRelativeY());
 
 			HashTable<WidgetNode> componentTable = client.getComponentTable();
 			WidgetNode childNode = componentTable.get(widget.getId());
@@ -1165,5 +1250,15 @@ public abstract class RSClientMixin implements RSClient
 	public void setLastItemDespawn(RSItem lastItemDespawn)
 	{
 		RSClientMixin.lastItemDespawn = lastItemDespawn;
+	}
+
+	@Inject
+	@Override
+	public void queueChangedSkill(Skill skill)
+	{
+		int[] skills = client.getChangedSkills();
+		int count = client.getChangedSkillsCount();
+		skills[++count - 1 & 31] = skill.ordinal();
+		client.setChangedSkillsCount(count);
 	}
 }

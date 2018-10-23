@@ -25,11 +25,15 @@
  */
 package net.runelite.client.plugins.discord;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import net.runelite.api.Varbits;
 
 @AllArgsConstructor
 @Getter
@@ -77,6 +81,7 @@ enum DiscordGameEventType
 	BOSS_SKOTIZO("Skotizo", DiscordAreaType.BOSSES, 6810),
 	BOSS_SMOKE_DEVIL("Thermonuclear smoke devil", DiscordAreaType.BOSSES, 9363, 9619),
 	BOSS_VORKATH("Vorkath", DiscordAreaType.BOSSES, 9023),
+	BOSS_WINTERTODT("Wintertodt", DiscordAreaType.BOSSES, 6462),
 	BOSS_ZULRAH("Zulrah", DiscordAreaType.BOSSES, 9007),
 
 	// Cities
@@ -89,7 +94,7 @@ enum DiscordGameEventType
 	CITY_BEDABIN_CAMP("Bedabin Camp" , DiscordAreaType.CITIES, 12590),
 	CITY_BRIMHAVEN("Brimhaven" , DiscordAreaType.CITIES, 11057, 11058),
 	CITY_BURGH_DE_ROTT("Burgh de Rott" , DiscordAreaType.CITIES, 13874, 13873, 14130, 14129),
-	CITY_BURTHOPE("Burthope" , DiscordAreaType.CITIES, 11319, 11575),
+	CITY_BURTHORPE("Burthorpe" , DiscordAreaType.CITIES, 11319, 11575),
 	CITY_CANIFIS("Canifis" , DiscordAreaType.CITIES, 13878),
 	CITY_CATHERBY("Catherby" , DiscordAreaType.CITIES, 11317, 11318, 11061),
 	CITY_CORSAIR_CAVE("Corsair Cove" , DiscordAreaType.CITIES, 10028, 10284),
@@ -137,6 +142,7 @@ enum DiscordGameEventType
 	CITY_UZER("Uzer" , DiscordAreaType.CITIES, 13872),
 	CITY_VARROCK("Varrock" , DiscordAreaType.CITIES, 12596, 12597, 12598, 12852, 12853, 12854, 13108, 13109, 13110),
 	CITY_WITCHHAVEN("Witchaven" , DiscordAreaType.CITIES, 10803),
+	CITY_WOODCUTTING_GUILD("Woodcutting Guild", DiscordAreaType.CITIES, 6454, 6198, 6298),
 	CITY_YANILLE("Yanille" , DiscordAreaType.CITIES, 10288, 10032),
 	CITY_ZANARIS("Zanaris" , DiscordAreaType.CITIES, 9285, 9541, 9540, 9797),
 	CITY_ZULANDRA("Zul-Andra" , DiscordAreaType.CITIES, 8751),
@@ -210,13 +216,14 @@ enum DiscordGameEventType
 	DUNGEON_WHITE_WOLF_MOUNTAIN_CAVES("White Wolf Mountain Caves", DiscordAreaType.DUNGEONS, 11418, 11419, 11675),
 	DUNGEON_WITCHAVEN_SHRINE("Witchhaven Shrine Dungeon", DiscordAreaType.DUNGEONS, 10903),
 	DUNGEON_YANILLE_AGILITY("Yanile Agility Dungeon", DiscordAreaType.DUNGEONS, 10388),
+	DUNGEON_MOTHERLODE_MINE("Motherlode Mine", DiscordAreaType.DUNGEONS, 14679, 14680, 14681, 14935, 14936, 14937, 15191, 15192, 15193),
 
 	// Minigames
 	MG_BARBARIAN_ASSAULT("Barbarian Assault", DiscordAreaType.MINIGAMES, 10332),
 	MG_BARROWS("Barrows", DiscordAreaType.MINIGAMES, 14131, 14231),
 	MG_BLAST_FURNACE("Blast Furnace", DiscordAreaType.MINIGAMES, 7757),
 	MG_BRIMHAVEN_AGILITY_ARENA("Brimhaven Agility Arena", DiscordAreaType.MINIGAMES, 11157),
-	MG_BURTHOPE_GAMES_ROOM("Burthope Games Room", DiscordAreaType.MINIGAMES, 8781),
+	MG_BURTHORPE_GAMES_ROOM("Burthorpe Games Room", DiscordAreaType.MINIGAMES, 8781),
 	MG_CASTLE_WARS("Castle Wars", DiscordAreaType.MINIGAMES, 9520),
 	MG_CLAN_WARS("Clan Wars", DiscordAreaType.MINIGAMES, 13135, 13134, 13133, 13131, 13130, 13387, 13386),
 	MG_DUEL_ARENA("Duel Arena", DiscordAreaType.MINIGAMES, 13362),
@@ -234,14 +241,25 @@ enum DiscordGameEventType
 	MG_TROUBLE_BREWING("Trouble Brewing", DiscordAreaType.MINIGAMES, 15150),
 	MG_TZHAAR_FIGHT_CAVES("Tzhaar Fight Caves", DiscordAreaType.MINIGAMES, 9551),
 	MG_TZHAAR_FIGHT_PITS("Tzhaar Fight Pits", DiscordAreaType.MINIGAMES, 9552),
-	MG_VOLCANIC_MINE("Volcanic Mine", DiscordAreaType.MINIGAMES, 15263, 15262);
+	MG_VOLCANIC_MINE("Volcanic Mine", DiscordAreaType.MINIGAMES, 15263, 15262),
+
+	// Raids
+	RAIDS_CHAMBERS_OF_XERIC("Chambers of Xeric", DiscordAreaType.RAIDS, Varbits.IN_RAID),
+	RAIDS_THEATRE_OF_BLOOD("Theatre of Blood", DiscordAreaType.RAIDS, Varbits.THEATRE_OF_BLOOD);
 
 	private static final Map<Integer, DiscordGameEventType> FROM_REGION = new HashMap<>();
+	private static final List<DiscordGameEventType> FROM_VARBITS = new ArrayList<>();
 
 	static
 	{
 		for (DiscordGameEventType discordGameEventType : DiscordGameEventType.values())
 		{
+			if (discordGameEventType.getVarbits() != null)
+			{
+				FROM_VARBITS.add(discordGameEventType);
+				continue;
+			}
+
 			if (discordGameEventType.getRegionIds() == null)
 			{
 				continue;
@@ -263,6 +281,7 @@ enum DiscordGameEventType
 	private boolean shouldTimeout;
 
 	private DiscordAreaType discordAreaType;
+	private Varbits varbits;
 	private int[] regionIds;
 
 	DiscordGameEventType(Skill skill)
@@ -292,6 +311,15 @@ enum DiscordGameEventType
 	{
 		this.details = state;
 		this.priority = priority;
+		this.shouldClear = true;
+	}
+
+	DiscordGameEventType(String areaName, DiscordAreaType areaType, Varbits varbits)
+	{
+		this.details = exploring(areaType, areaName);
+		this.priority = -2;
+		this.discordAreaType = areaType;
+		this.varbits = varbits;
 		this.shouldClear = true;
 	}
 
@@ -327,6 +355,8 @@ enum DiscordGameEventType
 				return "Location: " + areaName;
 			case MINIGAMES:
 				return "Playing: " + areaName;
+			case RAIDS:
+				return "Raiding: " + areaName;
 		}
 
 		return "";
@@ -365,5 +395,18 @@ enum DiscordGameEventType
 	public static DiscordGameEventType fromRegion(final int regionId)
 	{
 		return FROM_REGION.get(regionId);
+	}
+
+	public static DiscordGameEventType fromVarbit(final Client client)
+	{
+		for (DiscordGameEventType fromVarbit : FROM_VARBITS)
+		{
+			if (client.getVar(fromVarbit.getVarbits()) != 0)
+			{
+				return fromVarbit;
+			}
+		}
+
+		return null;
 	}
 }

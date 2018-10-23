@@ -26,6 +26,7 @@ package net.runelite.http.service.xp;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.concurrent.ExecutionException;
 import net.runelite.http.api.xp.XpData;
 import net.runelite.http.service.xp.beans.XpEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class XpTrackerController
 	private XpTrackerService xpTrackerService;
 
 	@RequestMapping("/update")
-	public void update(@RequestParam String username) throws IOException
+	public void update(@RequestParam String username) throws ExecutionException
 	{
 		xpTrackerService.update(username);
 	}

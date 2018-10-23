@@ -34,7 +34,6 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
-import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
@@ -45,19 +44,23 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 @Singleton
 class PrayerBarOverlay extends Overlay
 {
-	private static final Color BAR_FILL_COLOR = Color.cyan;
-	private static final Color BAR_BG_COLOR = Color.white;
+	private static final Color BAR_FILL_COLOR = new Color(0, 149, 151);
+	private static final Color BAR_BG_COLOR = Color.black;
+	private static final Color FLICK_HELP_COLOR = Color.white;
 	private static final Dimension PRAYER_BAR_SIZE = new Dimension(30, 5);
 
 	private final Client client;
 	private final PrayerConfig config;
+	private final PrayerPlugin plugin;
+
 	private boolean showingPrayerBar;
 
 	@Inject
-	private PrayerBarOverlay(final Client client, final PrayerConfig config)
+	private PrayerBarOverlay(final Client client, final PrayerConfig config, final PrayerPlugin plugin)
 	{
 		this.client = client;
 		this.config = config;
+		this.plugin = plugin;
 
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
@@ -74,7 +77,7 @@ class PrayerBarOverlay extends Overlay
 
 		final int height = client.getLocalPlayer().getLogicalHeight() + 10;
 		final LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
-		final Point canvasPoint = Perspective.worldToCanvas(client, localLocation.getX(), localLocation.getY(), client.getPlane(), height);
+		final Point canvasPoint = Perspective.localToCanvas(client, localLocation, client.getPlane(), height);
 
 		// Draw bar
 		final int barX = canvasPoint.getX() + client.getViewportXOffset() - 15;
@@ -90,12 +93,24 @@ class PrayerBarOverlay extends Overlay
 		graphics.fillRect(barX, barY, barWidth, barHeight);
 		graphics.setColor(BAR_FILL_COLOR);
 		graphics.fillRect(barX, barY, progressFill, barHeight);
+
+		if ((plugin.isPrayersActive() || config.prayerFlickAlwaysOn())
+			&& (config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR)
+			|| config.prayerFlickLocation().equals(PrayerFlickLocation.BOTH)))
+		{
+			double t = plugin.getTickProgress();
+
+			int xOffset = (int) (-Math.cos(t) * barWidth / 2) + barWidth / 2;
+
+			graphics.setColor(FLICK_HELP_COLOR);
+			graphics.fillRect(barX + xOffset, barY, 1, barHeight);
+		}
+
 		return new Dimension(barWidth, barHeight);
 	}
 
 	void onTick()
 	{
-		final boolean anyPrayerActive = checkIfAnyPrayerIsActive();
 		final Player localPlayer = client.getLocalPlayer();
 		showingPrayerBar = true;
 
@@ -105,7 +120,7 @@ class PrayerBarOverlay extends Overlay
 			return;
 		}
 
-		if (config.hideIfNotPraying() && !anyPrayerActive)
+		if (config.hideIfNotPraying() && !plugin.isPrayersActive())
 		{
 			showingPrayerBar = false;
 			return;
@@ -115,18 +130,5 @@ class PrayerBarOverlay extends Overlay
 		{
 			showingPrayerBar = false;
 		}
-	}
-
-	private boolean checkIfAnyPrayerIsActive()
-	{
-		for (Prayer pray : Prayer.values())
-		{
-			if (client.isPrayerActive(pray))
-			{
-				return true;
-			}
-		}
-
-		return false;
 	}
 }
