@@ -94,9 +94,6 @@ public class BarrowsPlugin extends Plugin
 	private BarrowsOverlay barrowsOverlay;
 
 	@Inject
-	private BarrowsBrotherSlainOverlay brotherOverlay;
-
-	@Inject
 	private Client client;
 
 	@Inject
@@ -118,14 +115,12 @@ public class BarrowsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(barrowsOverlay);
-		overlayManager.add(brotherOverlay);
 	}
 
 	@Override
 	protected void shutDown()
 	{
 		overlayManager.remove(barrowsOverlay);
-		overlayManager.remove(brotherOverlay);
 		walls.clear();
 		ladders.clear();
 	}
