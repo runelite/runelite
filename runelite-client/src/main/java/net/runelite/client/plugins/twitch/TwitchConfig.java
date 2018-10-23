@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,28 +22,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.config;
+package net.runelite.client.plugins.twitch;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface ConfigItem
+@ConfigGroup("twitch")
+public interface TwitchConfig extends Config
 {
-	int position() default -1;
+	@ConfigItem(
+		keyName = "username",
+		name = "Username",
+		description = "Twitch Username",
+		position = 0
+	)
+	String username();
 
-	String keyName();
+	@ConfigItem(
+		keyName = "oauth",
+		name = "OAuth Token",
+		description = "Enter your OAuth token here. This can be found at http://www.twitchapps.com/tmi/",
+		secret = true,
+		position = 1
+	)
+	String oauthToken();
 
-	String name();
-
-	String description();
-
-	boolean hidden() default false;
-
-	String warning() default "";
-
-	boolean secret() default false;
+	@ConfigItem(
+		keyName = "channel",
+		name = "Channel",
+		description = "Username of Twitch chat to join",
+		position = 2
+	)
+	String channel();
 }
