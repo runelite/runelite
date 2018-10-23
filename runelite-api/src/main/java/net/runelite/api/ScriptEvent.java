@@ -36,4 +36,11 @@ public interface ScriptEvent
 	int KEY_CODE = -2147483640;
 	int KEY_CHAR = -2147483639;
 	String NAME =  "event_opbase";
+
+	/**
+	 * Gets the index of the menu action creating the event
+	 *
+	 * @return the index
+	 */
+	int getOp();
 }

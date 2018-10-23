@@ -34,4 +34,7 @@ public interface RSScriptEvent extends ScriptEvent
 
 	@Import("params")
 	void setArguments(Object[] args);
+
+	@Import("op")
+	int getOp();
 }
