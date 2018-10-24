@@ -133,7 +133,7 @@ public class ClanChatPlugin extends Plugin
 	{
 		if (strChanged.getIndex() == VarClientStr.RECENT_CLAN_CHAT.getIndex() && config.recentChats())
 		{
-			updateRecentChat(Text.toJagexName(client.getVar(VarClientStr.RECENT_CLAN_CHAT)));
+			updateRecentChat(client.getVar(VarClientStr.RECENT_CLAN_CHAT));
 		}
 	}
 
@@ -214,6 +214,8 @@ public class ClanChatPlugin extends Plugin
 		{
 			return;
 		}
+
+		s = Text.toJagexName(s);
 
 		chats.removeIf(s::equalsIgnoreCase);
 		chats.add(s);
