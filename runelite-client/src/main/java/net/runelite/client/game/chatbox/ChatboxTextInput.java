@@ -120,10 +120,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	public ChatboxTextInput value(String value)
 	{
 		this.value = new StringBuffer(value);
-		if (built)
-		{
-			clientThread.invoke(this::update);
-		}
+		cursorAt(this.value.length());
 		return this;
 	}
 
@@ -283,11 +280,13 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		else
 		{
 			cursor.setTextColor(0xFFFFFF);
+			long start = System.currentTimeMillis();
 			cursor.setOnTimerListener((JavaScriptCallback) ev ->
 			{
-				boolean on = System.currentTimeMillis() % CURSOR_FLASH_RATE_MILLIS > (CURSOR_FLASH_RATE_MILLIS / 2);
+				boolean on = (System.currentTimeMillis() - start) % CURSOR_FLASH_RATE_MILLIS > (CURSOR_FLASH_RATE_MILLIS / 2);
 				cursor.setOpacity(on ? 255 : 0);
 			});
+			cursor.setHasListener(true);
 		}
 		cursor.setFilled(true);
 		cursor.setOriginalX(mtx - 1);
@@ -321,6 +320,11 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		isInBounds = ev -> bounds.contains(ev.getPoint());
 		getCharOffset = ev ->
 		{
+			if (fullWidth <= 0)
+			{
+				return 0;
+			}
+
 			int cx = ev.getX() - canvasX;
 
 			int charIndex = (tsValue.length() * cx) / fullWidth;
