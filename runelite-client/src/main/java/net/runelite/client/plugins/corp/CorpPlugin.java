@@ -151,7 +151,6 @@ public class CorpPlugin extends Plugin
 			case NpcID.CORPOREAL_BEAST:
 				log.debug("Corporeal beast spawn: {}", npc);
 				corp = npc;
-				darkCoreSpawned = false;
 				yourDamage = 0;
 				totalDamage = 0;
 				players.clear();
@@ -200,6 +199,10 @@ public class CorpPlugin extends Plugin
 		}
 		else if (npc == core)
 		{
+			if (npc.isDead())
+			{
+				darkCoreSpawned = false;
+			}
 			core = null;
 		}
 	}
