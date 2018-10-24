@@ -33,7 +33,7 @@ import net.runelite.api.mixins.Mixin;
 import net.runelite.rs.api.RSClient;
 
 @Mixin(RSClient.class)
-public abstract class StretchedFixedModeMixin implements RSClient
+public abstract class StretchedModeMixin implements RSClient
 {
 	@Inject
 	private static boolean stretchedEnabled;

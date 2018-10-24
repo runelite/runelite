@@ -33,7 +33,7 @@ import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSGameEngine;
 
 @Mixin(RSGameEngine.class)
-public abstract class StretchedFixedModeMaxSizeMixin implements RSGameEngine
+public abstract class StretchedModeMaxSizeMixin implements RSGameEngine
 {
 	@Shadow("clientInstance")
 	private static RSClient client;

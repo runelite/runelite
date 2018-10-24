@@ -23,32 +23,68 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.stretchedfixedmode;
+package net.runelite.client.plugins.stretchedmode;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.client.input.MouseWheelListener;
+import net.runelite.client.input.MouseListener;
 
-public class TranslateMouseWheelListener implements MouseWheelListener
+public class TranslateMouseListener implements MouseListener
 {
 	private final Client client;
 
 	@Inject
-	public TranslateMouseWheelListener(Client client)
+	public TranslateMouseListener(Client client)
 	{
 		this.client = client;
 	}
 
 	@Override
-	public MouseWheelEvent mouseWheelMoved(MouseWheelEvent event)
+	public MouseEvent mouseClicked(MouseEvent mouseEvent)
 	{
-		return translateEvent(event);
+		return translateEvent(mouseEvent);
 	}
 
-	private MouseWheelEvent translateEvent(MouseWheelEvent e)
+	@Override
+	public MouseEvent mousePressed(MouseEvent mouseEvent)
+	{
+		return translateEvent(mouseEvent);
+	}
+
+	@Override
+	public MouseEvent mouseReleased(MouseEvent mouseEvent)
+	{
+		return translateEvent(mouseEvent);
+	}
+
+	@Override
+	public MouseEvent mouseEntered(MouseEvent mouseEvent)
+	{
+		return translateEvent(mouseEvent);
+	}
+
+	@Override
+	public MouseEvent mouseExited(MouseEvent mouseEvent)
+	{
+		return translateEvent(mouseEvent);
+	}
+
+	@Override
+	public MouseEvent mouseDragged(MouseEvent mouseEvent)
+	{
+		return translateEvent(mouseEvent);
+	}
+
+	@Override
+	public MouseEvent mouseMoved(MouseEvent mouseEvent)
+	{
+		return translateEvent(mouseEvent);
+	}
+
+	private MouseEvent translateEvent(MouseEvent e)
 	{
 		Dimension stretchedDimensions = client.getStretchedDimensions();
 		Dimension realDimensions = client.getRealDimensions();
@@ -56,7 +92,7 @@ public class TranslateMouseWheelListener implements MouseWheelListener
 		int newX = (int) (e.getX() / (stretchedDimensions.width / realDimensions.getWidth()));
 		int newY = (int) (e.getY() / (stretchedDimensions.height / realDimensions.getHeight()));
 
-		return new MouseWheelEvent((Component) e.getSource(), e.getID(), e.getWhen(), e.getModifiers(), newX, newY,
-				e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation());
+		return new MouseEvent((Component) e.getSource(), e.getID(), e.getWhen(), e.getModifiersEx(),
+				newX, newY, e.getClickCount(), e.isPopupTrigger(), e.getButton());
 	}
 }
