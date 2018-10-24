@@ -52,4 +52,15 @@ public interface CorpConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "notifOnCore",
+		name = "Send notification on core spawn",
+		description = "Sends a notification on core spawn",
+		position = 2
+	)
+	default boolean notifOnCore()
+	{
+		return false;
+	}
 }

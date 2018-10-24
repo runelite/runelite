@@ -48,6 +48,7 @@ import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -66,8 +67,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class CorpPlugin extends Plugin
 {
 	private static final int NPC_SECTION_ACTION = MenuAction.NPC_SECOND_OPTION.getId();
+	private static boolean darkCoreSpawned = false;
 	private static final String ATTACK = "Attack";
 	private static final String DARK_ENERGY_CORE = "Dark energy core";
+	private static final String DARK_ENERGY_CORE_SPAWNED_MESSAGE = "Dark Energy Core has spawned!";
 
 	@Getter(AccessLevel.PACKAGE)
 	private NPC corp;
@@ -85,6 +88,9 @@ public class CorpPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private Notifier notifier;
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
@@ -145,11 +151,17 @@ public class CorpPlugin extends Plugin
 			case NpcID.CORPOREAL_BEAST:
 				log.debug("Corporeal beast spawn: {}", npc);
 				corp = npc;
+				darkCoreSpawned = false;
 				yourDamage = 0;
 				totalDamage = 0;
 				players.clear();
 				break;
 			case NpcID.DARK_ENERGY_CORE:
+				if (config.notifOnCore() && !darkCoreSpawned)
+				{
+					darkCoreSpawned = true;
+					notifier.notify(DARK_ENERGY_CORE_SPAWNED_MESSAGE);
+				}
 				core = npc;
 				break;
 		}
