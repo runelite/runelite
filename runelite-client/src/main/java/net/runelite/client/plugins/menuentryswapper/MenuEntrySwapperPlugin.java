@@ -354,7 +354,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (config.swapExchange())
 			{
 				swap("exchange", option, target, true);
-			}			
+			}
 
 			// make sure assignment swap is higher priority than trade swap for slayer masters
 			if (config.swapAssignment())
@@ -476,12 +476,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapQuick() && option.equals("pass"))
 		{
 			swap("quick-pass", option, target, true);
-			swap("quick pass", option, target, true);
-		}
-		else if (config.swapAdmire() && option.equals("admire"))
-		{
-			swap("teleport", option, target, true);
-			swap("spellbook", option, target, true);
 		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
