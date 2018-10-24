@@ -155,10 +155,21 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hotkey",
-		name = "Screenshot hotkey",
-		description = "When you press this key a screenshot will be taken",
-		position = 11
+			keyName = "valuableDrop",
+			name = "Screenshot Valuable Drops",
+			description = "Configures whether or not screenshots are automatically taken of valuable drops.",
+			position = 11
+	)
+	default boolean screenshotValuableDrops()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "hotkey",
+			name = "Screenshot hotkey",
+			description = "When you press this key a screenshot will be taken",
+			position = 12
 	)
 	default Keybind hotkey()
 	{

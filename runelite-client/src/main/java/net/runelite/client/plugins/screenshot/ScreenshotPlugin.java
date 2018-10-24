@@ -44,6 +44,7 @@ import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.concurrent.ScheduledExecutorService;
@@ -55,12 +56,7 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.Point;
-import net.runelite.api.SpriteID;
-import net.runelite.api.WorldType;
+import net.runelite.api.*;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -79,6 +75,9 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.events.NpcLootReceived;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemStack;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -145,6 +144,7 @@ public class ScreenshotPlugin extends Plugin
 
 	private Integer theatreOfBloodNumber;
 
+	private boolean canValuableScreenshot;
 	private boolean shouldTakeScreenshot;
 
 	@Inject
@@ -179,6 +179,9 @@ public class ScreenshotPlugin extends Plugin
 
 	@Inject
 	private SpriteManager spriteManager;
+
+	@Inject
+	private ItemManager itemManager;
 
 	@Getter(AccessLevel.PACKAGE)
 	private BufferedImage reportButton;
@@ -293,6 +296,25 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onNPCLoot(NpcLootReceived event)
+	{
+		Collection<ItemStack> itemStacks = event.getItems();
+		if (canValuableScreenshot)
+		{
+			int totalValue = 0;
+			for (ItemStack item : itemStacks)
+			{
+				ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
+				int itemID = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : item.getId();
+				totalValue += (itemManager.getItemPrice(itemID) * (long)item.getQuantity());
+			}
+			String fileName = "Drop" + " (" + String.format("%,d", totalValue) + " GP) " + format(new Date());
+			takeScreenshot(fileName);
+			canValuableScreenshot = false;
+		}
+	}
+
+	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
@@ -341,6 +363,11 @@ public class ScreenshotPlugin extends Plugin
 				theatreOfBloodNumber = Integer.valueOf(m.group());
 				return;
 			}
+		}
+
+		if (config.screenshotValuableDrops() && chatMessage.startsWith("<col=ef1020>Valuable drop:") && chatMessage.contains("coins)"))
+		{
+			canValuableScreenshot = true;
 		}
 
 		if (config.screenshotPet() && PET_MESSAGES.stream().anyMatch(chatMessage::contains))
