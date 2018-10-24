@@ -34,7 +34,7 @@ public class AttemptTotal
 	private int completions;
 	private int deathCount;
 	private int damageTaken;
-	private int damageDealt;
+	private double damageDealt;
 
 	public AttemptTotal(List<Attempt> attemptList)
 	{

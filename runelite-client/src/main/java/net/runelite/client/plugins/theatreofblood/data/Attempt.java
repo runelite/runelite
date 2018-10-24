@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.theatreofblood.data;
 
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,7 +34,7 @@ public class Attempt
 	private boolean completed;
 	private int deathCount;
 	private int damageTaken;
-	private int damageDealt;
+	private double damageDealt;
 
 	public void addDeath()
 	{
@@ -47,7 +46,7 @@ public class Attempt
 		this.damageTaken += a;
 	}
 
-	public void addDamageDealt(int a)
+	public void addDamageDealt(double a)
 	{
 		this.damageDealt += a;
 	}
