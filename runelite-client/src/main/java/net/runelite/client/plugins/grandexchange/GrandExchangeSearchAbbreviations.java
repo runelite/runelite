@@ -24,6 +24,10 @@
  */
 package net.runelite.client.plugins.grandexchange;
 
+import java.util.Map;
+import java.util.HashMap;
+
+
 public class GrandExchangeSearchAbbreviations
 {
 	/**
@@ -37,34 +41,21 @@ public class GrandExchangeSearchAbbreviations
 	*/
 	public static String CheckAbbreviation(String lookup)
 	{
-		switch (lookup)
-		{
-			case "bgs": return "bandos godsword";
+		Map<String, String> AbbrDictionary = new HashMap<String, String>();
 
-			case "zgs": return "zamorak godsword";
+		AbbrDictionary.put("bgs", "bandos godsword");
+		AbbrDictionary.put("dclaws", "dragon claws");
+		AbbrDictionary.put("d claws", "dragon claws");
+		AbbrDictionary.put("dds", "dragon dagger");
+		AbbrDictionary.put("dwh", "dragon warhammer");
+		AbbrDictionary.put("ely", "elysian");
+		AbbrDictionary.put("gmaul", "granite maul");
+		AbbrDictionary.put("p pot", "prayer potion");
+		AbbrDictionary.put("ppot", "prayer potion");
+		AbbrDictionary.put("sgs", "saradomin godsword");
+		AbbrDictionary.put("zgs", "zamorak godsword");
 
-			case "sgs": return "saradomin godsword";
-
-			case "dclaws": return "dragon claws";
-
-			case "d claws": return "dragon claws";
-
-			case "dwh": return "dragon warhammer";
-
-			case "ely": return "elysian";
-
-			case "dds": return "dragon dagger";
-
-			case "p pot": return "prayer potion";
-
-			case "ppot": return "prayer potion";
-
-			case "gmaul": return "granite maul";
-
-			default: return lookup;
-		}
-
-		//return lookup;
+		return AbbrDictionary.get(lookup);
 	}
 
 }
