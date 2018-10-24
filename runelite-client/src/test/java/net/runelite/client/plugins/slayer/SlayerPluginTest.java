@@ -429,6 +429,7 @@ public class SlayerPluginTest
 		slayerPlugin.onChatMessage(chatMessage);
 
 		assertEquals("Suqahs", slayerPlugin.getTaskName());
+		slayerPlugin.killedOne();
 		assertEquals(30, slayerPlugin.getAmount());
 	}
 }
