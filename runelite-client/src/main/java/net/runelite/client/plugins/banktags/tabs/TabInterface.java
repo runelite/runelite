@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.banktags.tabs;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -80,6 +81,7 @@ import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.ICON_SEARCH;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.SPLITTER;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_SEARCH;
+import static net.runelite.client.plugins.banktags.BankTagsPlugin.VAR_TAG_SUFFIX;
 import net.runelite.client.plugins.banktags.TagManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
@@ -453,7 +455,7 @@ public class TabInterface
 				{
 					for (Integer item : items)
 					{
-						tagManager.addTag(item, activeTab.getTag());
+						tagManager.addTag(item, activeTab.getTag(), false);
 					}
 
 					openTag(TAG_SEARCH + activeTab.getTag());
@@ -472,7 +474,7 @@ public class TabInterface
 
 					for (Integer item : items)
 					{
-						tagManager.addTags(item, tags);
+						tagManager.addTags(item, tags, false);
 					}
 
 					updateTabIfActive(tags);
@@ -590,7 +592,8 @@ public class TabInterface
 
 						while (dataIter.hasNext())
 						{
-							tagManager.addTag(Integer.valueOf(dataIter.next()), name);
+							final int itemId = Integer.valueOf(dataIter.next());
+							tagManager.addTag(itemId, name, itemId < 0);
 						}
 
 						loadTab(name);
@@ -620,7 +623,7 @@ public class TabInterface
 		}
 	}
 
-	public void handleDrag(boolean isDragging)
+	public void handleDrag(boolean isDragging, boolean shiftDown)
 	{
 		if (isHidden())
 		{
@@ -643,8 +646,8 @@ public class TabInterface
 				// Tag an item dragged on a tag tab
 				if (draggedOn.getId() == parent.getId())
 				{
-					int itemId = draggedWidget.getItemId();
-					tagManager.addTag(itemId, draggedOn.getName());
+					tagManager.addTag(draggedWidget.getItemId(), draggedOn.getName(), shiftDown);
+					updateTabIfActive(Lists.newArrayList(Text.standardize(draggedOn.getName())));
 				}
 			}
 			else if (parent.getId() == draggedOn.getId() && parent.getId() == draggedWidget.getId())
@@ -668,7 +671,7 @@ public class TabInterface
 
 				if (draggedWidget.getItemId() > 0 && entry.getOption().equals(VIEW_TAB) && draggedOn.getId() != draggedWidget.getId())
 				{
-					entry.setOption(TAG_SEARCH + Text.removeTags(entry.getTarget()));
+					entry.setOption(TAG_SEARCH + Text.removeTags(entry.getTarget()) + (shiftDown ? VAR_TAG_SUFFIX : ""));
 					entry.setTarget(draggedWidget.getName());
 					client.setMenuEntries(entries);
 				}
