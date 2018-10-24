@@ -195,6 +195,8 @@ public class CorpPlugin extends Plugin
 					.type(ChatMessageType.GAME)
 					.runeLiteFormattedMessage(message)
 					.build());
+
+				darkCoreSpawned = false;
 			}
 		}
 		else if (npc == core)
