@@ -34,6 +34,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.client.plugins.theatreofblood.data.Attempt;
 import net.runelite.client.plugins.theatreofblood.data.AttemptTotal;
+import net.runelite.client.plugins.theatreofblood.data.RoomStat;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -49,7 +50,6 @@ public class StatOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 	private final TheatreOfBloodPlugin plugin;
 
-	private Attempt current;
 	private AttemptTotal total;
 
 	@Inject
@@ -67,33 +67,46 @@ public class StatOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		int state = client.getVar(Varbits.THEATRE_OF_BLOOD);
-		current = plugin.getCurrent();
+		Attempt current = plugin.getCurrent();
+		RoomStat room = plugin.getRoom();
 
 		// Only display if in a party
 		if (state >= 1)
 		{
 			reset();
+			graphics.setColor(Color.WHITE);
 
 			LayoutableRenderableEntity title = LineComponent.builder().left("ToB Session Stats").build();
-			LayoutableRenderableEntity spacer = LineComponent.builder().left("Current:").build();
+			add(title);
+
+			if (room != null)
+			{
+				LayoutableRenderableEntity room_title = LineComponent.builder().left("Current Room").build();
+				LayoutableRenderableEntity room_dealt = LineComponent.builder().left("Dmg Dealt").right(String.valueOf((int) Math.round(room.getDamageDealt()))).build();
+				LayoutableRenderableEntity room_taken = LineComponent.builder().left("Dmg Taken").right(String.valueOf(room.getDamageTaken())).build();
+				LayoutableRenderableEntity room_died = LineComponent.builder().left("Died").right(String.valueOf(room.isDied())).build();
+				add(room_title);
+				add(room_dealt);
+				add(room_taken);
+				add(room_died);
+			}
+
+
+			LayoutableRenderableEntity spacer = LineComponent.builder().left("Current Raid").build();
 			LayoutableRenderableEntity dealt = LineComponent.builder().left("Dmg Dealt").right(String.valueOf((int) Math.round(current.getDamageDealt()))).build();
 			LayoutableRenderableEntity taken = LineComponent.builder().left("Dmg Taken").right(String.valueOf(current.getDamageTaken())).build();
 			LayoutableRenderableEntity deaths = LineComponent.builder().left("Deaths").right(String.valueOf(current.getDeathCount())).build();
+			add(spacer);
+			add(dealt);
+			add(taken);
+			add(deaths);
 
-			LayoutableRenderableEntity spacer2 = LineComponent.builder().left("Total:").build();
+			LayoutableRenderableEntity spacer2 = LineComponent.builder().left("Overall Totals").build();
 			LayoutableRenderableEntity totalDealt = LineComponent.builder().left("Dmg Dealt").right(String.valueOf((int) Math.round(total.getDamageDealt() + current.getDamageDealt()))).build();
 			LayoutableRenderableEntity totalTaken = LineComponent.builder().left("Dmg Taken").right(String.valueOf(total.getDamageTaken() + current.getDamageTaken())).build();
 			LayoutableRenderableEntity totalDeaths = LineComponent.builder().left("Deaths").right(String.valueOf((total.getDeathCount() + current.getDeathCount()))).build();
 			String successRateText = String.valueOf(total.getCompletions()) + "/" + String.valueOf(total.getAttempts());
 			LayoutableRenderableEntity successRate = LineComponent.builder().left("Fin/Att").right(successRateText).build();
-
-			graphics.setColor(Color.WHITE);
-
-			add(title);
-			add(spacer);
-			add(dealt);
-			add(taken);
-			add(deaths);
 			add(spacer2);
 			add(totalDealt);
 			add(totalTaken);

@@ -24,25 +24,18 @@
  */
 package net.runelite.client.plugins.theatreofblood.data;
 
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-public class Attempt
+public class RoomStat
 {
 	@Setter
-	private boolean completed;
-	private int deathCount;
+	private int act;
+	@Setter
+	private boolean died;
 	private int damageTaken;
 	private double damageDealt;
-	private List<RoomStat> stats = new ArrayList<>();
-
-	public void addDeath()
-	{
-		this.deathCount++;
-	}
 
 	public void addDamageTaken(int a)
 	{
@@ -54,16 +47,11 @@ public class Attempt
 		this.damageDealt += a;
 	}
 
-	public void addRoomStat(RoomStat stat)
-	{
-		stats.add(stat);
-	}
-
 	@Override
 	public String toString()
 	{
-		return "Attempt(completed=" + completed
-			+ ",deathCount=" + deathCount
+		return "RoomStat(act=" + act
+			+ ",died=" + died
 			+ ",damageTaken=" + damageTaken
 			+ ",damageDealt=" + damageDealt
 			+ ")";

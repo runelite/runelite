@@ -30,6 +30,7 @@ import java.util.List;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
@@ -37,6 +38,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.game.ItemManager;
@@ -44,6 +46,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.theatreofblood.data.Attempt;
 import net.runelite.client.plugins.theatreofblood.data.BossExpModifier;
+import net.runelite.client.plugins.theatreofblood.data.RoomStat;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 
@@ -62,6 +65,8 @@ public class TheatreOfBloodPlugin extends Plugin
 	private static final int SOTETSEG_REGION = 13123;
 	private static final int XARPUS_REGION = 12612;
 	private static final int VERZIK_REGION = 12611;
+
+	private static final int LOBBY_REGION = 14642;
 	private static final int REWARD_REGION = 12867;
 
 	// For every damage point dealt, 1.33 experience is given to the player's hitpoints
@@ -86,6 +91,9 @@ public class TheatreOfBloodPlugin extends Plugin
 	private double hpExp = 0;
 	@Getter
 	private Attempt current;
+	@Getter
+	private RoomStat room;
+	private Actor oldTarget;
 
 	@Override
 	protected void startUp() throws Exception
@@ -124,6 +132,7 @@ public class TheatreOfBloodPlugin extends Plugin
 		if (e.getActor().equals(client.getLocalPlayer()))
 		{
 			current.addDamageTaken(e.getHitsplat().getAmount());
+			room.addDamageTaken(e.getHitsplat().getAmount());
 		}
 	}
 
@@ -141,6 +150,15 @@ public class TheatreOfBloodPlugin extends Plugin
 
 				// Account for NPCs that give bonus xp
 				NPC target = (NPC) client.getLocalPlayer().getInteracting();
+				if (target == null)
+				{
+					if (oldTarget == null)
+					{
+						log.warn("Couldn't find current or past target...");
+						return;
+					}
+					target = (NPC) oldTarget;
+				}
 				String targetName = target.getName();
 				// Account for Verzik phases by NPC id
 				if (targetName.toLowerCase().contains("verzik"))
@@ -154,6 +172,7 @@ public class TheatreOfBloodPlugin extends Plugin
 				}
 
 				current.addDamageDealt(damageDealt);
+				room.addDamageDealt(damageDealt);
 			}
 		}
 	}
@@ -161,17 +180,23 @@ public class TheatreOfBloodPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState() == GameState.LOGGED_IN)
+		if (state >= 1 && event.getGameState() == GameState.LOGGED_IN)
 		{
 			// LOGGED_IN is triggered between region changes too.
 			int oldRegion = region;
 			region = client.getLocalPlayer().getWorldLocation().getRegionID();
 
-			if (region == REWARD_REGION)
+			if (region != oldRegion)
 			{
-				current.setCompleted(true);
+				handleRegionChange(oldRegion);
 			}
 		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick tick)
+	{
+		oldTarget = client.getLocalPlayer().getInteracting();
 	}
 
 	private void stateChanged(int old)
@@ -204,7 +229,51 @@ public class TheatreOfBloodPlugin extends Plugin
 			case 3:
 				// Died, increment attempt death counter.
 				current.addDeath();
+				room.setDied(true);
 				break;
 		}
 	}
+
+	private void handleRegionChange(int old)
+	{
+		if (room != null)
+		{
+			current.addRoomStat(room);
+			room = null;
+		}
+
+		int act = -1;
+		switch (region)
+		{
+			case MAIDEN_REGION:
+				act = 1;
+				break;
+			case BLOAT_REGION:
+				act = 2;
+				break;
+			case NYLOCAS_REGION:
+				act = 3;
+				break;
+			case SOTETSEG_REGION:
+				act = 4;
+				break;
+			case XARPUS_REGION:
+				act = 5;
+				break;
+			case VERZIK_REGION:
+				act = 6;
+				break;
+			case REWARD_REGION:
+				current.setCompleted(true);
+				return;
+			case LOBBY_REGION:
+				// Don't create a new room if they end up in the lobby
+				return;
+		}
+
+		// Create a new room stat
+		room = new RoomStat();
+		room.setAct(act);
+	}
+
 }
