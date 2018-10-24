@@ -55,7 +55,15 @@ public class GrandExchangeSearchAbbreviations
 		AbbrDictionary.put("sgs", "saradomin godsword");
 		AbbrDictionary.put("zgs", "zamorak godsword");
 
-		return AbbrDictionary.get(lookup);
+		if (AbbrDictionary.containsKey(lookup))
+		{
+			return AbbrDictionary.get(lookup);
+		}
+
+		else
+		{
+			return lookup;
+		}
 	}
 
 }
