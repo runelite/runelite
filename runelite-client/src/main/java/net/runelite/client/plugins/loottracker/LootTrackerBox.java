@@ -63,9 +63,7 @@ class LootTrackerBox extends JPanel
 	@Getter
 	private final List<LootTrackerRecord> records = new ArrayList<>();
 
-	@Getter
 	private long totalPrice;
-
 	private boolean hideIgnoredItems;
 	private BiConsumer<String, Boolean> onItemToggle;
 
@@ -116,7 +114,7 @@ class LootTrackerBox extends JPanel
 	 *
 	 * @return total amount of kills
 	 */
-	long getTotalKills()
+	private long getTotalKills()
 	{
 		return hideIgnoredItems
 			? records.stream().filter(r -> !Arrays.stream(r.getItems()).allMatch(LootTrackerItem::isIgnored)).count()
@@ -169,9 +167,11 @@ class LootTrackerBox extends JPanel
 		buildItems();
 
 		priceLabel.setText(StackFormatter.quantityToStackSize(totalPrice) + " gp");
-		if (records.size() > 1)
+
+		final long kills = getTotalKills();
+		if (kills > 1)
 		{
-			subTitleLabel.setText("x " + records.size());
+			subTitleLabel.setText("x " + kills);
 		}
 
 		repaint();

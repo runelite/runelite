@@ -481,8 +481,35 @@ class LootTrackerPanel extends PluginPanel
 
 	private void updateOverall()
 	{
-		final long overallGp = boxes.stream().mapToLong(LootTrackerBox::getTotalPrice).sum();
-		final long overallKills = boxes.stream().mapToLong(LootTrackerBox::getTotalKills).sum();
+		long overallKills = 0;
+		long overallGp = 0;
+
+		for (LootTrackerRecord record : records)
+		{
+			if (!record.matches(currentView))
+			{
+				continue;
+			}
+
+			int present = record.getItems().length;
+
+			for (LootTrackerItem item : record.getItems())
+			{
+				if (hideIgnoredItems && item.isIgnored())
+				{
+					present--;
+					continue;
+				}
+
+				overallGp += item.getPrice();
+			}
+
+			if (present > 0)
+			{
+				overallKills++;
+			}
+		}
+
 		overallKillsLabel.setText(htmlLabel("Total count: ", overallKills));
 		overallGpLabel.setText(htmlLabel("Total value: ", overallGp));
 	}
