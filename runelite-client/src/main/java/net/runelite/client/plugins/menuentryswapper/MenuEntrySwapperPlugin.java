@@ -117,10 +117,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private MenuManager menuManager;
 
 	@Getter
-	private boolean configuringShiftClick = false;
+	private boolean configuringShiftClick;
 
 	@Setter
-	private boolean shiftModifier = false;
+	private boolean shiftModifier;
 
 	@Provides
 	MenuEntrySwapperConfig provideConfig(ConfigManager configManager)
@@ -162,13 +162,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private Integer getSwapConfig(int itemId)
 	{
 		itemId = ItemVariationMapping.map(itemId);
-		String config = configManager.getConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
-		if (config == null || config.isEmpty())
+		String configValue = configManager.getConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
+		if (configValue == null || configValue.isEmpty())
 		{
 			return null;
 		}
 
-		return Integer.parseInt(config);
+		return Integer.parseInt(configValue);
 	}
 
 	private void setSwapConfig(int itemId, int index)
@@ -236,12 +236,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 		ItemComposition itemComposition = client.getItemDefinition(itemId);
 		String itemName = itemComposition.getName();
 		String option = "Use";
-		int shiftClickActionindex = itemComposition.getShiftClickActionIndex();
+		int shiftClickActionIndex = itemComposition.getShiftClickActionIndex();
 		String[] inventoryActions = itemComposition.getInventoryActions();
 
-		if (shiftClickActionindex >= 0 && shiftClickActionindex < inventoryActions.length)
+		if (shiftClickActionIndex >= 0 && shiftClickActionIndex < inventoryActions.length)
 		{
-			option = inventoryActions[shiftClickActionindex];
+			option = inventoryActions[shiftClickActionIndex];
 		}
 
 		MenuEntry[] entries = event.getMenuEntries();
@@ -516,17 +516,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 			}
 		}
 		// Put all item-related swapping after shift-click
-		else if (config.swapTeleportItem() && option.equals("wear"))
+		else if (config.swapTeleportItem()
+			&& (option.equals("wear") || option.equals("wield")))
 		{
 			swap("rub", option, target, true);
 			swap("teleport", option, target, true);
-		}
-		else if (option.equals("wield"))
-		{
-			if (config.swapTeleportItem())
-			{
-				swap("teleport", option, target, true);
-			}
 		}
 		else if (config.swapBones() && option.equals("bury"))
 		{
@@ -555,7 +549,18 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
-	private int searchIndex(MenuEntry[] entries, String option, String target, boolean strict)
+	/**
+	 * Returns the index of a {@link MenuEntry} which has a matching option and target, or -1 if no such entry exists.
+	 *
+	 * @param entries           An array of {@link MenuEntry}s to search
+	 * @param option            The option to be matched
+	 * @param target            The target of the menu entry
+	 * @param requireExactMatch Whether menu entry options should be compared using {@code String.contains(option)} (if
+	 *                          true) or {@code String.equals(option)} (if false).
+	 * @return The highest index where a menu entry matches the given option and target, or -1 if no such entry was
+	 *         matched.
+	 */
+	private static int searchIndex(MenuEntry[] entries, String option, String target, boolean requireExactMatch)
 	{
 		for (int i = entries.length - 1; i >= 0; i--)
 		{
@@ -563,7 +568,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			String entryOption = Text.removeTags(entry.getOption()).toLowerCase();
 			String entryTarget = Text.removeTags(entry.getTarget()).toLowerCase();
 
-			if (strict)
+			if (requireExactMatch)
 			{
 				if (entryOption.equals(option) && entryTarget.equals(target))
 				{
@@ -582,14 +587,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 		return -1;
 	}
 
-	private void swap(String optionA, String optionB, String target, boolean strict)
+	private void swap(String optionA, String optionB, String target, boolean requireExactMatch)
 	{
 		MenuEntry[] entries = client.getMenuEntries();
 
-		int idxA = searchIndex(entries, optionA, target, strict);
-		int idxB = searchIndex(entries, optionB, target, strict);
+		int idxA = searchIndex(entries, optionA, target, requireExactMatch);
+		int idxB = searchIndex(entries, optionB, target, requireExactMatch);
 
-		if (idxA >= 0 && idxB >= 0)
+		if (idxA >= 0 && idxB >= 0 && idxA != idxB)
 		{
 			MenuEntry entry = entries[idxA];
 			entries[idxA] = entries[idxB];
