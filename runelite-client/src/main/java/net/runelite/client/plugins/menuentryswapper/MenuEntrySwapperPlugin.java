@@ -25,8 +25,12 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,6 +39,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.MenuEntryAdded;
@@ -50,7 +55,10 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import net.runelite.client.plugins.cluescrolls.ClueScrollService;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -60,6 +68,7 @@ import org.apache.commons.lang3.ArrayUtils;
 	tags = {"npcs", "inventory", "items", "objects"},
 	enabledByDefault = false
 )
+@PluginDependency(ClueScrollPlugin.class)
 public class MenuEntrySwapperPlugin extends Plugin
 {
 	private static final String CONFIGURE = "Configure";
@@ -88,6 +97,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
 		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
 
+	private static final Set<Integer> NPC_MENU_TYPES = Stream.of(
+		MenuAction.NPC_FIRST_OPTION,
+		MenuAction.NPC_SECOND_OPTION,
+		MenuAction.NPC_THIRD_OPTION,
+		MenuAction.NPC_FOURTH_OPTION,
+		MenuAction.NPC_FIFTH_OPTION,
+		MenuAction.EXAMINE_NPC
+	).map(MenuAction::getId).collect(ImmutableSet.toImmutableSet());
+
 	@Inject
 	private Client client;
 
@@ -108,6 +126,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	@Inject
 	private MenuManager menuManager;
+
+	@Inject
+	private ClueScrollService clueScrollService;
 
 	@Getter
 	private boolean configuringShiftClick = false;
@@ -533,9 +554,23 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private int searchIndex(MenuEntry[] entries, String option, String target, boolean strict)
 	{
+		entrySearch:
 		for (int i = entries.length - 1; i >= 0; i--)
 		{
 			MenuEntry entry = entries[i];
+
+			List<NPC> npcs = clueScrollService.getNpcsToMark();
+			if (npcs.size() > 0 && NPC_MENU_TYPES.contains(entry.getType()))
+			{
+				for (NPC n : npcs)
+				{
+					if (n.getIndex() == entry.getIdentifier())
+					{
+						continue entrySearch;
+					}
+				}
+			}
+
 			String entryOption = Text.removeTags(entry.getOption()).toLowerCase();
 			String entryTarget = Text.removeTags(entry.getTarget()).toLowerCase();
 

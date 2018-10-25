@@ -25,8 +25,12 @@
 
 package net.runelite.client.plugins.cluescrolls;
 
+import java.util.Collections;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.Getter;
+import net.runelite.api.NPC;
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
 
 @Singleton
@@ -34,12 +38,16 @@ public class ClueScrollService
 {
 	private final ClueScrollPlugin plugin;
 
+	@Getter
+	private final List<NPC> npcsToMark;
+
 	@Inject
 	private ClueScrollService(ClueScrollPlugin plugin)
 	{
 		this.plugin = plugin;
+		this.npcsToMark = Collections.unmodifiableList(plugin.getNpcsToMark());
 	}
-	
+
 	public ClueScroll getClue()
 	{
 		return plugin.getClue();
