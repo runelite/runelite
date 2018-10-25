@@ -53,6 +53,8 @@ import net.runelite.client.util.StackFormatter;
 
 class LootTrackerPanel extends PluginPanel
 {
+	private static final int MAX_LOOT_BOXES = 500;
+
 	private static final ImageIcon SINGLE_LOOT_VIEW;
 	private static final ImageIcon SINGLE_LOOT_VIEW_FADED;
 	private static final ImageIcon SINGLE_LOOT_VIEW_HOVER;
@@ -325,7 +327,12 @@ class LootTrackerPanel extends PluginPanel
 		final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
 		final LootTrackerRecord record = new LootTrackerRecord(eventName, subTitle, items, System.currentTimeMillis());
 		records.add(record);
-		buildBox(record);
+		LootTrackerBox box = buildBox(record);
+		if (box != null)
+		{
+			box.rebuild();
+			updateOverall();
+		}
 	}
 
 	/**
@@ -380,7 +387,16 @@ class LootTrackerPanel extends PluginPanel
 	{
 		logsContainer.removeAll();
 		boxes.clear();
-		records.forEach(this::buildBox);
+		int start = 0;
+		if (!groupLoot && records.size() > MAX_LOOT_BOXES)
+		{
+			start = records.size() - MAX_LOOT_BOXES;
+		}
+		for (int i = start; i < records.size(); i++)
+		{
+			buildBox(records.get(i));
+		}
+		boxes.forEach(LootTrackerBox::rebuild);
 		updateOverall();
 		logsContainer.revalidate();
 		logsContainer.repaint();
@@ -391,12 +407,12 @@ class LootTrackerPanel extends PluginPanel
 	 * add its items to it, updating the log's overall price and kills. If not, a new log will be created
 	 * to hold this entry's information.
 	 */
-	private void buildBox(LootTrackerRecord record)
+	private LootTrackerBox buildBox(LootTrackerRecord record)
 	{
 		// If this record is not part of current view, return
 		if (!record.matches(currentView))
 		{
-			return;
+			return null;
 		}
 
 		// Group all similar loot together
@@ -407,8 +423,7 @@ class LootTrackerPanel extends PluginPanel
 				if (box.matches(record))
 				{
 					box.combine(record);
-					updateOverall();
-					return;
+					return box;
 				}
 			}
 		}
@@ -456,14 +471,45 @@ class LootTrackerPanel extends PluginPanel
 		boxes.add(box);
 		logsContainer.add(box, 0);
 
-		// Update overall
-		updateOverall();
+		if (!groupLoot && boxes.size() > MAX_LOOT_BOXES)
+		{
+			logsContainer.remove(boxes.remove(0));
+		}
+
+		return box;
 	}
 
 	private void updateOverall()
 	{
-		final long overallGp = boxes.stream().mapToLong(LootTrackerBox::getTotalPrice).sum();
-		final long overallKills = boxes.stream().mapToLong(LootTrackerBox::getTotalKills).sum();
+		long overallKills = 0;
+		long overallGp = 0;
+
+		for (LootTrackerRecord record : records)
+		{
+			if (!record.matches(currentView))
+			{
+				continue;
+			}
+
+			int present = record.getItems().length;
+
+			for (LootTrackerItem item : record.getItems())
+			{
+				if (hideIgnoredItems && item.isIgnored())
+				{
+					present--;
+					continue;
+				}
+
+				overallGp += item.getPrice();
+			}
+
+			if (present > 0)
+			{
+				overallKills++;
+			}
+		}
+
 		overallKillsLabel.setText(htmlLabel("Total count: ", overallKills));
 		overallGpLabel.setText(htmlLabel("Total value: ", overallGp));
 	}
