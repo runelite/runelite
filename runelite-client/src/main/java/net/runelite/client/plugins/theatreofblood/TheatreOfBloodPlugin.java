@@ -241,8 +241,16 @@ public class TheatreOfBloodPlugin extends Plugin
 				}
 				else
 				{
-					// Back to just in a party, sumbit the raid
-					roomCompleted();
+					// Back to just in a party, submit the raid
+					if (!current.isCompleted())
+					{
+						// Didn't finish room but complete anyway
+						roomCompleted();
+					}
+					else
+					{
+						currentMessage();
+					}
 					submitAttempt();
 				}
 				break;
