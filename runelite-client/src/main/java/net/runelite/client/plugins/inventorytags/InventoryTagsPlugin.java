@@ -92,7 +92,7 @@ public class InventoryTagsPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private boolean hasTaggedItems;
 
-	private boolean editorMode = false;
+	private boolean editorMode;
 
 	@Provides
 	InventoryTagsConfig provideConfig(ConfigManager configManager)
@@ -111,12 +111,12 @@ public class InventoryTagsPlugin extends Plugin
 		return tag;
 	}
 
-	void setTag(int itemId, String tag)
+	private void setTag(int itemId, String tag)
 	{
 		configManager.setConfiguration(InventoryTagsConfig.GROUP, ITEM_KEY_PREFIX + itemId, tag);
 	}
 
-	void unsetTag(int itemId)
+	private void unsetTag(int itemId)
 	{
 		configManager.unsetConfiguration(InventoryTagsConfig.GROUP, ITEM_KEY_PREFIX + itemId);
 	}
@@ -228,7 +228,7 @@ public class InventoryTagsPlugin extends Plugin
 				final String group = getTag(itemId);
 				final MenuEntry newMenu = new MenuEntry();
 				final Color color = getGroupNameColor(groupName);
-				newMenu.setOption(group != null && groupName.equals(group) ? MENU_REMOVE : MENU_SET);
+				newMenu.setOption(groupName.equals(group) ? MENU_REMOVE : MENU_SET);
 				newMenu.setTarget(ColorUtil.prependColorTag(groupName, MoreObjects.firstNonNull(color, Color.WHITE)));
 				newMenu.setIdentifier(itemId);
 				newMenu.setParam1(widgetId);
