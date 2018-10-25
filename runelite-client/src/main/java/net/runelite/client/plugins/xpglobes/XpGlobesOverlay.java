@@ -239,7 +239,7 @@ public class XpGlobesOverlay extends Overlay
 			.build());
 
 		xpTooltip.getChildren().add(LineComponent.builder()
-			.left("Current xp:")
+			.left("Current XP:")
 			.leftColor(Color.ORANGE)
 			.right(skillCurrentXp)
 			.build());
@@ -260,7 +260,7 @@ public class XpGlobesOverlay extends Overlay
 			int xpLeft = goalXp - mouseOverSkill.getCurrentXp();
 			String skillXpToLvl = decimalFormat.format(xpLeft);
 			xpTooltip.getChildren().add(LineComponent.builder()
-				.left("Xp left:")
+				.left("XP left:")
 				.leftColor(Color.ORANGE)
 				.right(skillXpToLvl)
 				.build());
@@ -270,7 +270,7 @@ public class XpGlobesOverlay extends Overlay
 			{
 				String xpHrString = decimalFormat.format(xpHr);
 				xpTooltip.getChildren().add(LineComponent.builder()
-					.left("Xp per hour:")
+					.left("XP per hour:")
 					.leftColor(Color.ORANGE)
 					.right(xpHrString)
 					.build());
