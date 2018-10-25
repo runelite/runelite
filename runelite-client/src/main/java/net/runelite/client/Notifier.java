@@ -47,6 +47,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.util.ColorUtil;
@@ -73,6 +74,7 @@ public class Notifier
 	private final RuneLiteConfig runeLiteConfig;
 	private final ClientUI clientUI;
 	private final ScheduledExecutorService executorService;
+	private final ClientThread clientThread;
 	private final Path notifyIconPath;
 	private final boolean terminalNotifierAvailable;
 	private Instant flashStart;
@@ -83,13 +85,15 @@ public class Notifier
 			final Client client,
 			final RuneLiteConfig runeliteConfig,
 			final RuneLiteProperties runeLiteProperties,
-			final ScheduledExecutorService executorService)
+			final ScheduledExecutorService executorService,
+			final ClientThread clientThread)
 	{
 		this.client = client;
 		this.appName = runeLiteProperties.getTitle();
 		this.clientUI = clientUI;
 		this.runeLiteConfig = runeliteConfig;
 		this.executorService = executorService;
+		this.clientThread = clientThread;
 		this.notifyIconPath = RuneLite.RUNELITE_DIR.toPath().resolve("icon.png");
 
 		// First check if we are running in launcher
@@ -131,8 +135,8 @@ public class Notifier
 		{
 			if (client.getGameState() == GameState.LOGGED_IN)
 			{
-				client.addChatMessage(ChatMessageType.GAME, appName,
-					ColorUtil.wrapWithColorTag(message, MESSAGE_COLOR), "");
+				clientThread.invoke(() -> client.addChatMessage(ChatMessageType.GAME, appName,
+					ColorUtil.wrapWithColorTag(message, MESSAGE_COLOR), ""));
 			}
 		}
 
