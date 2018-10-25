@@ -38,9 +38,9 @@ public interface MotherlodeConfig extends Config
 		description = "Configures whether or not the pay-dirt mining spots are displayed."
 	)
 	default boolean showVeins()
-{
+	{
 	return true;
-}
+	}
 
 	@ConfigItem(
 			keyName = "showRockFalls",
