@@ -25,14 +25,23 @@
 
 package net.runelite.client.plugins.cluescrolls;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
 
-public interface ClueScrollService
+@Singleton
+public class ClueScrollService
 {
-	/**
-	 * Get the clue scroll
-	 *
-	 * @return ClueScroll
-	 */
-	ClueScroll getClue();
+	private final ClueScrollPlugin plugin;
+
+	@Inject
+	private ClueScrollService(ClueScrollPlugin plugin)
+	{
+		this.plugin = plugin;
+	}
+	
+	public ClueScroll getClue()
+	{
+		return plugin.getClue();
+	}
 }
