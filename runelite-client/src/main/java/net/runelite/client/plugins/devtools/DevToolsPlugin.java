@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Kronos <https://github.com/KronosDesign>
+ * Copyright (c) 2018, trimbe <https://github.com/trimbe>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,6 +35,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
+import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
+import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
+
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
@@ -50,7 +54,9 @@ import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
@@ -69,11 +75,15 @@ import org.slf4j.LoggerFactory;
 public class DevToolsPlugin extends Plugin
 {
 	private static final List<MenuAction> EXAMINE_MENU_ACTIONS = ImmutableList.of(MenuAction.EXAMINE_ITEM,
-			MenuAction.EXAMINE_ITEM_GROUND, MenuAction.EXAMINE_NPC, MenuAction.EXAMINE_OBJECT);
+			MenuAction.EXAMINE_ITEM_GROUND, MenuAction.EXAMINE_NPC, MenuAction.EXAMINE_OBJECT,
+			MenuAction.EXAMINE_ITEM_BANK_EQ);
 	private static final Color COLOR_ORANGE = new Color(255, 144, 64);
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ItemManager itemManager;
 
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -297,6 +307,48 @@ public class DevToolsPlugin extends Plugin
 			{
 				NPC npc = client.getCachedNPCs()[identifier];
 				info += npc.getId();
+			}
+			else if (action == MenuAction.EXAMINE_ITEM_BANK_EQ)
+			{
+				// EXAMINE_ITEM_BANK_EQ is also used on Withdraw-X and Withdraw-All options
+				if (!"examine".equalsIgnoreCase(event.getOption()))
+				{
+					return;
+				}
+
+				Widget entryWidget = client.getWidget(TO_GROUP(event.getActionParam1()), TO_CHILD(event.getActionParam1()));
+
+				if (entryWidget == null)
+				{
+					return;
+				}
+
+				if (entryWidget.getId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+					|| entryWidget.getId() == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getId())
+				{
+					// Edit-tags will be the last entry in the bank if bank tags are enabled
+					if (!"examine".equalsIgnoreCase(entry.getOption()))
+					{
+						entry = entries[entries.length - 2];
+					}
+
+					Widget item = entryWidget.getDynamicChildren()[event.getActionParam0()];
+
+					if (item == null)
+					{
+						return;
+					}
+
+					info += itemManager.canonicalize(item.getItemId());
+				}
+				else if (entryWidget.getDynamicChildren().length > 1)
+				{
+					info += entryWidget.getDynamicChildren()[1].getItemId();
+				}
+				else
+				{
+					return;
+				}
 			}
 			else
 			{
