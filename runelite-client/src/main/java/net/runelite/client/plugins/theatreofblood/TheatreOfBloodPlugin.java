@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.theatreofblood;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -41,15 +42,13 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.client.game.ItemManager;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.theatreofblood.data.Attempt;
 import net.runelite.client.plugins.theatreofblood.data.BossExpModifier;
 import net.runelite.client.plugins.theatreofblood.data.NpcHps;
 import net.runelite.client.plugins.theatreofblood.data.RoomStat;
-import net.runelite.client.ui.overlay.OverlayManager;
-
 
 @PluginDescriptor(
 	name = "ToB Stats",
@@ -73,16 +72,10 @@ public class TheatreOfBloodPlugin extends Plugin
 	private static final double HITPOINT_RATIO = 1.33;
 
 	@Inject
-	private OverlayManager overlayManager;
-
-	@Inject
-	private StatOverlay overlay;
-
-	@Inject
 	private Client client;
 
 	@Inject
-	private ItemManager itemManager;
+	private TheatreOfBloodConfig config;
 
 	@Getter
 	private Attempt current;
@@ -98,16 +91,15 @@ public class TheatreOfBloodPlugin extends Plugin
 	private boolean isSpectator = false;
 	private boolean wentBack = false;
 
-	@Override
-	protected void startUp() throws Exception
+	@Provides
+	TheatreOfBloodConfig provideConfig(ConfigManager configManager)
 	{
-		overlayManager.add(overlay);
+		return configManager.getConfig(TheatreOfBloodConfig.class);
 	}
 
 	@Override
 	protected void shutDown()
 	{
-		overlayManager.remove(overlay);
 		attempts.clear();
 		state = -1;
 	}
@@ -198,7 +190,6 @@ public class TheatreOfBloodPlugin extends Plugin
 					return;
 				}
 				current = null;
-				overlay.reset();
 				break;
 			case 1:
 				if (old == 0)
@@ -225,7 +216,6 @@ public class TheatreOfBloodPlugin extends Plugin
 				// Died, increment attempt death counter.
 				current.addDeath();
 				room.setDied(true);
-				overlay.reset();
 				break;
 		}
 	}
@@ -331,8 +321,6 @@ public class TheatreOfBloodPlugin extends Plugin
 	{
 		attempts.add(current);
 		current = new Attempt();
-		overlay.calculateTotal();
-
 	}
 
 	/**
