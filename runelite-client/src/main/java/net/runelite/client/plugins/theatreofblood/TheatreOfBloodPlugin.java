@@ -26,26 +26,35 @@ package net.runelite.client.plugins.theatreofblood;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
+import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.theatreofblood.data.Attempt;
+import net.runelite.client.plugins.theatreofblood.data.AttemptTotal;
 import net.runelite.client.plugins.theatreofblood.data.BossExpModifier;
 import net.runelite.client.plugins.theatreofblood.data.NpcHps;
 import net.runelite.client.plugins.theatreofblood.data.RoomStat;
@@ -58,9 +67,12 @@ import net.runelite.client.plugins.theatreofblood.data.RoomStat;
 @Slf4j
 public class TheatreOfBloodPlugin extends Plugin
 {
+	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
+	private static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("#,###");
+
 	// Regions
 	private static final int LOBBY_REGION = 14642;
-	private static final int MAIDEN_REGION = 12613;
+	private static final int MAIDEN_REGION = 12869;
 	private static final int BLOAT_REGION = 13125;
 	private static final int NYLOCAS_REGION = 13122;
 	private static final int SOTETSEG_REGION = 13123;
@@ -73,6 +85,9 @@ public class TheatreOfBloodPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
 
 	@Inject
 	private TheatreOfBloodConfig config;
@@ -155,7 +170,7 @@ public class TheatreOfBloodPlugin extends Plugin
 		{
 			// LOGGED_IN is triggered between region changes
 			int oldRegion = region;
-			region = client.getLocalPlayer().getWorldLocation().getRegionID();
+			region = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
 
 			if (region != oldRegion)
 			{
@@ -213,6 +228,11 @@ public class TheatreOfBloodPlugin extends Plugin
 				}
 				break;
 			case 3:
+				if (old == 0)
+				{
+					log.debug("Logged out and returned to non-existing raid");
+					return;
+				}
 				// Died, increment attempt death counter.
 				current.addDeath();
 				room.setDied(true);
@@ -302,6 +322,7 @@ public class TheatreOfBloodPlugin extends Plugin
 		// Create a room stat for the next act
 		room = new RoomStat();
 		room.setAct(act);
+		log.debug("Starting act {}", act);
 	}
 
 	private void roomCompleted()
@@ -314,11 +335,15 @@ public class TheatreOfBloodPlugin extends Plugin
 
 		// Add RoomStat to current Attempt
 		current.addRoomStat(room);
+		log.debug("Completed act {}", room.getAct());
+		roomMessage();
+		currentMessage();
 		room = null;
 	}
 
 	private void submitAttempt()
 	{
+		totalMessage();
 		attempts.add(current);
 		current = new Attempt();
 	}
@@ -403,6 +428,7 @@ public class TheatreOfBloodPlugin extends Plugin
 		{
 			targetName = BossExpModifier.getBossNameByNpcId(target.getId());
 		}
+		log.debug("Attacking NPC named: {}", targetName);
 
 		// Some NPCs have an XP modifier, account for that.
 		BossExpModifier m = BossExpModifier.getByName(targetName);
@@ -424,5 +450,115 @@ public class TheatreOfBloodPlugin extends Plugin
 		}
 
 		return damageDealt;
+	}
+
+	private void roomMessage()
+	{
+		if (config.showRoomChatMessages())
+		{
+			String chatMessage = new ChatMessageBuilder()
+				.append(ChatColorType.HIGHLIGHT)
+				.append("Room Stats: ")
+				.append(ChatColorType.NORMAL)
+				.append("Damage Taken:")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(NUMBER_FORMAT.format(room.getDamageTaken()))
+				.append(ChatColorType.NORMAL)
+				.append(", Damage Dealt: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(NUMBER_FORMAT.format(room.getDamageDealt()))
+				.append(ChatColorType.NORMAL)
+				.append(", Died: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(room.isDied() ? "Yes" : "No")
+				.build();
+
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.CLANCHAT_INFO)
+				.runeLiteFormattedMessage(chatMessage)
+				.build());
+		}
+	}
+
+	private void currentMessage()
+	{
+		if (config.showCurrentRaidChatMessages())
+		{
+			String chatMessage = new ChatMessageBuilder()
+				.append(ChatColorType.HIGHLIGHT)
+				.append("Current Raid Stats: ")
+				.append(ChatColorType.NORMAL)
+				.append("Damage Taken:")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(NUMBER_FORMAT.format(current.getDamageTaken()))
+				.append(ChatColorType.NORMAL)
+				.append(", Damage Dealt: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(NUMBER_FORMAT.format(current.getDamageDealt()))
+				.append(ChatColorType.NORMAL)
+				.append(", Death Count: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.valueOf(current.getDeathCount()))
+				.build();
+
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.CLANCHAT_INFO)
+				.runeLiteFormattedMessage(chatMessage)
+				.build());
+		}
+
+	}
+
+	private void totalMessage()
+	{
+		if (config.showTotalRaidChatMessages())
+		{
+			AttemptTotal total = new AttemptTotal(attempts);
+			total.addAttempt(current);
+
+			String title = new ChatMessageBuilder()
+				.append(ChatColorType.HIGHLIGHT)
+				.append("Session Raid Stats: ")
+				.append(ChatColorType.NORMAL)
+				.append("Attempted: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.valueOf(total.getAttempts()))
+				.append(ChatColorType.NORMAL)
+				.append(", Completed: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.valueOf(total.getCompletions()))
+				.append(", (")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(DECIMAL_FORMAT.format(total.getCompletions() / total.getAttempts()))
+				.append("%)")
+				.build();
+
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.CLANCHAT_INFO)
+				.runeLiteFormattedMessage(title)
+				.build());
+
+			String chatMessage = new ChatMessageBuilder()
+				.append(ChatColorType.HIGHLIGHT)
+				.append("Session Raid Stats: ")
+				.append(ChatColorType.NORMAL)
+				.append("Damage Taken:")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(NUMBER_FORMAT.format(total.getDamageTaken()))
+				.append(ChatColorType.NORMAL)
+				.append(", Damage Dealt: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(NUMBER_FORMAT.format(total.getDamageDealt()))
+				.append(ChatColorType.NORMAL)
+				.append(", Death Count: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.valueOf(total.getDeathCount()))
+				.build();
+
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.CLANCHAT_INFO)
+				.runeLiteFormattedMessage(chatMessage)
+				.build());
+		}
 	}
 }

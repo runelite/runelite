@@ -61,4 +61,18 @@ public class AttemptTotal
 			+ ",damageDealt=" + damageDealt
 			+ ")";
 	}
+
+	public void addAttempt(Attempt a)
+	{
+		if (a == null)
+		{
+			return;
+		}
+
+		this.attempts++;
+		this.completions += (a.isCompleted() ? 1 : 0);
+		this.deathCount += a.getDeathCount();
+		this.damageTaken += a.getDamageTaken();
+		this.damageDealt += a.getDamageDealt();
+	}
 }
