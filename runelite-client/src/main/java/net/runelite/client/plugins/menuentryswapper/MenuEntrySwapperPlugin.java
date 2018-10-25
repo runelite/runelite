@@ -64,13 +64,13 @@ import org.apache.commons.lang3.ArrayUtils;
 )
 public class MenuEntrySwapperPlugin extends Plugin
 {
-	private static final String CONFIGURE = "Configure";
-	private static final String SAVE = "Save";
-	private static final String RESET = "Reset";
-	private static final String MENU_TARGET = "Shift-click";
+	static final String CONFIGURE = "Configure";
+	static final String SAVE = "Save";
+	static final String RESET = "Reset";
+	static final String MENU_TARGET = "Shift-click";
 
-	private static final String CONFIG_GROUP = "shiftclick";
-	private static final String ITEM_KEY_PREFIX = "item_";
+	static final String CONFIG_GROUP = "shiftclick";
+	static final String ITEM_KEY_PREFIX = "item_";
 
 	private static final WidgetMenuOption FIXED_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
 		MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB);
@@ -117,7 +117,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private MenuManager menuManager;
 
 	@Getter
-	private boolean configuringShiftClick;
+	boolean configuringShiftClick;
 
 	@Setter
 	private boolean shiftModifier;
