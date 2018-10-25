@@ -30,7 +30,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
@@ -57,10 +56,6 @@ import net.runelite.client.plugins.theatreofblood.data.AttemptTotal;
 import net.runelite.client.plugins.theatreofblood.data.BossExpModifier;
 import net.runelite.client.plugins.theatreofblood.data.NpcHps;
 import net.runelite.client.plugins.theatreofblood.data.RoomStat;
-import net.runelite.client.plugins.theatreofblood.overlays.AttemptOverlay;
-import net.runelite.client.plugins.theatreofblood.overlays.RoomOverlay;
-import net.runelite.client.plugins.theatreofblood.overlays.TotalOverlay;
-import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "ToB Stats",
@@ -73,7 +68,6 @@ public class TheatreOfBloodPlugin extends Plugin
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
 	private static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("#,###");
 
-	// Regions
 	private static final int LOBBY_REGION = 14642;
 	private static final int MAIDEN_REGION = 12869;
 	private static final int BLOAT_REGION = 13125;
@@ -95,26 +89,9 @@ public class TheatreOfBloodPlugin extends Plugin
 	@Inject
 	private TheatreOfBloodConfig config;
 
-	@Inject
-	private OverlayManager overlayManager;
-
-	@Inject
-	private AttemptOverlay attemptOverlay;
-
-	@Inject
-	private RoomOverlay roomOverlay;
-
-	@Inject
-	private TotalOverlay totalOverlay;
-
-	@Getter
 	private Attempt current;
-	@Getter
 	private RoomStat room;
-	@Getter
 	private final List<Attempt> attempts = new ArrayList<>();
-	// Varbit state
-	@Getter
 	private int state = 0;
 	private int region = 0;
 	private double hpExp = 0;
@@ -128,19 +105,8 @@ public class TheatreOfBloodPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
-	{
-		overlayManager.add(roomOverlay);
-		overlayManager.add(attemptOverlay);
-		overlayManager.add(totalOverlay);
-	}
-
-	@Override
 	protected void shutDown()
 	{
-		overlayManager.remove(roomOverlay);
-		overlayManager.remove(attemptOverlay);
-		overlayManager.remove(totalOverlay);
 		attempts.clear();
 		state = -1;
 	}

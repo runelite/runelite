@@ -32,21 +32,10 @@ import net.runelite.client.config.ConfigItem;
 public interface TheatreOfBloodConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showRoomOverlay",
-		name = "Show Room Overlay",
-		description = "Toggles whether the Room overlay is displayed or not",
-		position = 0
-	)
-	default boolean showRoomOverlay()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "showRoomChatMessages",
 		name = "Room Chat Messages",
 		description = "Should in-game chat messages displaying Room stats be shown upon competition",
-		position = 1
+		position = 0
 	)
 	default boolean showRoomChatMessages()
 	{
@@ -54,21 +43,10 @@ public interface TheatreOfBloodConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showCurrentRaidOverlay",
-		name = "Show Current Raid Overlay",
-		description = "Toggles whether the Current Raid overlay is displayed or not",
-		position = 2
-	)
-	default boolean showCurrentRaidOverlay()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "showCurrentRaidChatMessages",
 		name = "Current Raid Chat Messages",
 		description = "Should in-game chat messages displaying Current Raid stats be shown upon competition",
-		position = 3
+		position = 1
 	)
 	default boolean showCurrentRaidChatMessages()
 	{
@@ -76,21 +54,10 @@ public interface TheatreOfBloodConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showTotalRaidOverlay",
-		name = "Show Total Raid Overlay",
-		description = "Toggles whether the Total Raid overlay is displayed or not",
-		position = 4
-	)
-	default boolean showTotalRaidOverlay()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "showTotalRaidChatMessages",
 		name = "Total Raid Chat Messages",
 		description = "Should in-game chat messages displaying Total Raid stats be shown upon competition",
-		position = 5
+		position = 2
 	)
 	default boolean showTotalRaidChatMessages()
 	{
