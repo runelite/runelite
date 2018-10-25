@@ -48,8 +48,10 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
+import net.runelite.api.ObjectComposition;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
+import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -85,7 +87,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
-import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Clue Scroll",
@@ -104,7 +105,7 @@ public class ClueScrollPlugin extends Plugin
 	private final List<NPC> npcsToMark = new ArrayList<>();
 
 	@Getter
-	private GameObject[] objectsToMark;
+	private final List<TileObject> objectsToMark = new ArrayList<>();
 
 	@Getter
 	private Item[] equippedItems;
@@ -307,7 +308,7 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(final GameTick event)
 	{
-		objectsToMark = null;
+		objectsToMark.clear();
 
 		if (clue instanceof LocationsClueScroll)
 		{
@@ -588,10 +589,33 @@ public class ClueScrollPlugin extends Plugin
 		final Scene scene = client.getScene();
 		final Tile[][][] tiles = scene.getTiles();
 		final Tile tile = tiles[client.getPlane()][localLocation.getSceneX()][localLocation.getSceneY()];
+		objectsToMark.clear();
 
-		objectsToMark = Arrays.stream(tile.getGameObjects())
-			.filter(object -> object != null && ArrayUtils.contains(objectIds, object.getId()))
-			.toArray(GameObject[]::new);
+		for (GameObject object : tile.getGameObjects())
+		{
+			if (object == null)
+			{
+				continue;
+			}
+
+			for (int id : objectIds)
+			{
+				if (object.getId() == id)
+				{
+					objectsToMark.add(object);
+					continue;
+				}
+
+				// Check impostors
+				final ObjectComposition comp = client.getObjectDefinition(object.getId());
+				final ObjectComposition impostor = comp.getImpostor();
+
+				if (impostor != null && impostor.getId() == id)
+				{
+					objectsToMark.add(object);
+				}
+			}
+		}
 	}
 
 	private void checkClueNPCs(ClueScroll clue, final NPC... npcs)

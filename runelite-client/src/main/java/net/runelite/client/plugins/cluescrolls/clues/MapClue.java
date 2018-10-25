@@ -29,7 +29,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Set;
 import lombok.Getter;
-import net.runelite.api.GameObject;
 import static net.runelite.api.ItemID.*;
 import net.runelite.api.ObjectComposition;
 import static net.runelite.api.ObjectID.CRATE_18506;
@@ -37,6 +36,7 @@ import static net.runelite.api.ObjectID.CRATE_2620;
 import static net.runelite.api.ObjectID.CRATE_354;
 import static net.runelite.api.ObjectID.CRATE_357;
 import static net.runelite.api.ObjectID.CRATE_6616;
+import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
@@ -185,7 +185,7 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 
 			if (plugin.getObjectsToMark() != null)
 			{
-				for (GameObject gameObject : plugin.getObjectsToMark())
+				for (TileObject gameObject : plugin.getObjectsToMark())
 				{
 					OverlayUtil.renderHoverableArea(graphics, gameObject.getClickbox(), mousePosition,
 						CLICKBOX_FILL_COLOR, CLICKBOX_BORDER_COLOR, CLICKBOX_HOVER_BORDER_COLOR);
