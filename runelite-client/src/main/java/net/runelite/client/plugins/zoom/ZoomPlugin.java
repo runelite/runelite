@@ -51,6 +51,7 @@ public class ZoomPlugin extends Plugin implements KeyListener
 {
 	private boolean controlDown;
 	private static final int INNER_ZOOM_LIMIT = 1200;
+	private static final int OUTER_ZOOM_LIMIT = 128;
 
 	@Inject
 	private Client client;
@@ -175,10 +176,22 @@ public class ZoomPlugin extends Plugin implements KeyListener
 		if (e.getKeyCode() == KeyEvent.VK_CONTROL)
 		{
 			controlDown = false;
+
 			if (zoomConfig.controlFunction() == ControlFunction.CONTROL_TO_RESET)
 			{
-				int zoomValue = zoomConfig.ctrlZoomValue() > INNER_ZOOM_LIMIT ? INNER_ZOOM_LIMIT : zoomConfig.ctrlZoomValue();
-				clientThread.invokeLater(() -> client.runScript(ScriptID.CAMERA_DO_ZOOM, zoomValue, zoomValue));
+				int finalZoomValue;
+				int zoomValue = zoomConfig.ctrlZoomValue();
+
+				if (zoomValue > INNER_ZOOM_LIMIT || zoomValue < OUTER_ZOOM_LIMIT)
+				{
+					finalZoomValue = zoomConfig.ctrlZoomValue() > INNER_ZOOM_LIMIT ? INNER_ZOOM_LIMIT : OUTER_ZOOM_LIMIT;
+				}
+				else
+				{
+					finalZoomValue = zoomValue;
+				}
+
+				clientThread.invokeLater(() -> client.runScript(ScriptID.CAMERA_DO_ZOOM, finalZoomValue, finalZoomValue));
 			}
 		}
 	}
