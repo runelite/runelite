@@ -95,7 +95,8 @@ public class TheatreOfBloodPlugin extends Plugin
 	private int region = 0;
 	private double hpExp = 0;
 	private Actor oldTarget;
-	private boolean isSpectator;
+	private boolean isSpectator = false;
+	private boolean wentBack = false;
 
 	@Override
 	protected void startUp() throws Exception
@@ -240,14 +241,16 @@ public class TheatreOfBloodPlugin extends Plugin
 		{
 			case MAIDEN_REGION:
 				act = 1;
-				if (oldRegion == BLOAT_REGION) // Ignore if we are coming from next room
+				if (oldRegion == BLOAT_REGION)
 				{
+					wentBack = true;
 					return;
 				}
 				break;
 			case BLOAT_REGION:
 				if (oldRegion == NYLOCAS_REGION)
 				{
+					wentBack = true;
 					return;
 				}
 				act = 2;
@@ -255,6 +258,7 @@ public class TheatreOfBloodPlugin extends Plugin
 			case NYLOCAS_REGION:
 				if (oldRegion == SOTETSEG_REGION)
 				{
+					wentBack = true;
 					return;
 				}
 				act = 3;
@@ -262,6 +266,7 @@ public class TheatreOfBloodPlugin extends Plugin
 			case SOTETSEG_REGION:
 				if (oldRegion == XARPUS_REGION)
 				{
+					wentBack = true;
 					return;
 				}
 				act = 4;
@@ -269,24 +274,42 @@ public class TheatreOfBloodPlugin extends Plugin
 			case XARPUS_REGION:
 				if (oldRegion == VERZIK_REGION)
 				{
+					wentBack = true;
 					return;
 				}
 				act = 5;
 				break;
 			case VERZIK_REGION:
+				if (oldRegion == REWARD_REGION)
+				{
+					wentBack = true;
+					return;
+				}
 				act = 6;
 				break;
 			case REWARD_REGION:
 				current.setCompleted(true);
+				roomCompleted();
+				wentBack = false;
 				return;
 			case LOBBY_REGION:
+				wentBack = false;
 			default:
 				// Don't create a new room if they end up in the lobby or somewhere else
 				return;
 		}
 
-		// Create a new room stat
+		// If we went back to the previous room.
+		if (wentBack)
+		{
+			wentBack = false;
+			return;
+		}
+
+		// Went to new room which means last room was completed.
 		roomCompleted();
+
+		// Create a room stat for the next act
 		room = new RoomStat();
 		room.setAct(act);
 	}
