@@ -59,18 +59,17 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Slf4j
 public class TheatreOfBloodPlugin extends Plugin
 {
-	// Boss Regions
+	// Regions
+	private static final int LOBBY_REGION = 14642;
 	private static final int MAIDEN_REGION = 12613;
 	private static final int BLOAT_REGION = 13125;
 	private static final int NYLOCAS_REGION = 13122;
 	private static final int SOTETSEG_REGION = 13123;
 	private static final int XARPUS_REGION = 12612;
 	private static final int VERZIK_REGION = 12611;
-
-	private static final int LOBBY_REGION = 14642;
 	private static final int REWARD_REGION = 12867;
 
-	// For every damage point dealt, 1.33 experience is given to the player's hitpoints
+	// For every damage point dealt, 1.33 experience is given to the player's hitpoints (base rate)
 	private static final double HITPOINT_RATIO = 1.33;
 
 	@Inject
@@ -86,15 +85,17 @@ public class TheatreOfBloodPlugin extends Plugin
 	private ItemManager itemManager;
 
 	@Getter
-	private final List<Attempt> attempts = new ArrayList<>();
-	private int state = 0;
-	private int region = 0;
-	private double hpExp = 0;
-	@Getter
 	private Attempt current;
 	@Getter
 	private RoomStat room;
+	@Getter
+	private final List<Attempt> attempts = new ArrayList<>();
+	// Varbit state
+	private int state = 0;
+	private int region = 0;
+	private double hpExp = 0;
 	private Actor oldTarget;
+	private boolean isSpectator;
 
 	@Override
 	protected void startUp() throws Exception
@@ -107,7 +108,7 @@ public class TheatreOfBloodPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		attempts.clear();
-		state = 0;
+		state = -1;
 	}
 
 	@Subscribe
@@ -124,13 +125,8 @@ public class TheatreOfBloodPlugin extends Plugin
 	@Subscribe
 	protected void onHitsplatApplied(HitsplatApplied e)
 	{
-		if (state <= 1)
-		{
-			return;
-		}
-
-		// Hitsplat on us = damage taken
-		if (e.getActor().equals(client.getLocalPlayer()))
+		// Hitsplat on us while inside Theatre of Blood means we took damage
+		if (state == 2 && e.getActor().equals(client.getLocalPlayer()))
 		{
 			current.addDamageTaken(e.getHitsplat().getAmount());
 			room.addDamageTaken(e.getHitsplat().getAmount());
@@ -140,71 +136,31 @@ public class TheatreOfBloodPlugin extends Plugin
 	@Subscribe
 	protected void onExperienceChanged(ExperienceChanged c)
 	{
-		if (c.getSkill().equals(Skill.HITPOINTS))
+		if (c.getSkill().equals(Skill.HITPOINTS) && state >= 2)
 		{
-			if (state >= 2)
+			// Calculate XP difference for HP skill and calculate damage based off it
+			double oldExp = hpExp;
+			hpExp = client.getSkillExperience(Skill.HITPOINTS);
+			double diff = hpExp - oldExp;
+			if (diff < 1)
 			{
-				// Calculate XP difference & damage dealt based on HP ratio
-				double oldExp = hpExp;
-				hpExp = client.getSkillExperience(Skill.HITPOINTS);
-				double diff = hpExp - oldExp;
-				if (diff < 1)
-				{
-					return;
-				}
-				double damageDealt = diff / HITPOINT_RATIO;
-
-				// Determine which NPC we are attacking, if not interacting with one use last ticks npc
-				NPC target = (NPC) client.getLocalPlayer().getInteracting();
-				if (target == null) // Sometimes interacting is null if you click off at the right tick
-				{
-					if (oldTarget == null)
-					{
-						log.warn("Couldn't find current or past target...");
-						return;
-					}
-					target = (NPC) oldTarget;
-				}
-
-				// Account for Verzik phases by NPC id
-				String targetName = target.getName();
-				if (targetName.toLowerCase().contains("verzik"))
-				{
-					targetName = BossExpModifier.getBossNameByNpcId(target.getId());
-				}
-
-				// Some NPCs have an XP modifier, account for that.
-				BossExpModifier m = BossExpModifier.getByName(targetName);
-				if (m != null)
-				{
-					damageDealt = damageDealt / BossExpModifier.calculateBonus(m);
-				}
-
-				// We need to limit damageDealt to the current NPCs health for weapons that can overhit, such as Scythe
-				log.debug("Ratio: {} | Health: {}", target.getHealthRatio(), target.getHealth());
-				int maxHP = NpcHps.getMaxHpByNpcName(targetName);
-				log.debug("Max HP: {}", maxHP);
-				int currentHP = getCurrentHealth(target.getHealthRatio(), target.getHealth(), maxHP);
-				log.debug("Current Hp: {}", currentHP);
-
-				if (currentHP > -1 && damageDealt > currentHP)
-				{
-					damageDealt = currentHP;
-				}
-
-				log.debug("Damage Dealt: {} | {}", Math.round(damageDealt), damageDealt);
-				current.addDamageDealt(damageDealt);
-				room.addDamageDealt(damageDealt);
+				return;
 			}
+			double damageDealt = calculateDamageDealt(diff);
+
+			// Add damage dealt to the current logs
+			log.debug("Damage Dealt: {} | Exact: {}", Math.round(damageDealt), damageDealt);
+			current.addDamageDealt(damageDealt);
+			room.addDamageDealt(damageDealt);
 		}
 	}
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (state >= 1 && event.getGameState() == GameState.LOGGED_IN)
+		if (!isSpectator && state >= 1 && event.getGameState() == GameState.LOGGED_IN)
 		{
-			// LOGGED_IN is triggered between region changes too.
+			// LOGGED_IN is triggered between region changes
 			int oldRegion = region;
 			region = client.getLocalPlayer().getWorldLocation().getRegionID();
 
@@ -218,68 +174,103 @@ public class TheatreOfBloodPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		oldTarget = client.getLocalPlayer().getInteracting();
+		if (!isSpectator && state == 2)
+		{
+			oldTarget = client.getLocalPlayer().getInteracting();
+		}
 	}
 
+	/**
+	 * Handles changes to the Theatre of Blood Varbit
+	 * @param old previous Theatre of Blood varbit value
+	 */
 	private void stateChanged(int old)
 	{
-		// Wasn't previously doing a raid
 		// TODO: Figure out a way to determine if they are logging back into a raid
-		if (old == 0)
-		{
-			hpExp = client.getSkillExperience(Skill.HITPOINTS);
-			current = new Attempt();
-			return;
-		}
-
+		// 0=default | 1=party | 2=inside/spectator | 3=dead-spectator
 		switch (state)
 		{
 			case 0:
-				// Left the Theatre of Blood area
+				if (old == 2)
+				{
+					isSpectator = false;
+					return;
+				}
 				current = null;
 				overlay.reset();
 				break;
 			case 1:
-				// Back to just in a party, must have died/completed a raid
-				attempts.add(current);
-				current = new Attempt();
-				overlay.calculateTotal();
+				if (old == 0)
+				{
+					// Starting a new raid
+					hpExp = client.getSkillExperience(Skill.HITPOINTS);
+					current = new Attempt();
+				}
+				else
+				{
+					// Back to just in a party, sumbit the raid
+					submitAttempt();
+				}
 				break;
 			case 2:
-				// Inside the Theatre (includes spectators), not sure if I need to do anything here.
+				// Inside the Theatre, are they a spectator?
+				if (old == 0)
+				{
+					isSpectator = true;
+					return;
+				}
 				break;
 			case 3:
 				// Died, increment attempt death counter.
 				current.addDeath();
 				room.setDied(true);
+				overlay.reset();
 				break;
 		}
 	}
 
-	private void handleRegionChange(int old)
+	/**
+	 * Handles region changes while inside Theatre of Blood
+	 *
+	 */
+	private void handleRegionChange(int oldRegion)
 	{
-		if (room != null)
-		{
-			current.addRoomStat(room);
-			room = null;
-		}
-
-		int act = -1;
+		int act;
 		switch (region)
 		{
 			case MAIDEN_REGION:
 				act = 1;
+				if (oldRegion == BLOAT_REGION) // Ignore if we are coming from next room
+				{
+					return;
+				}
 				break;
 			case BLOAT_REGION:
+				if (oldRegion == NYLOCAS_REGION)
+				{
+					return;
+				}
 				act = 2;
 				break;
 			case NYLOCAS_REGION:
+				if (oldRegion == SOTETSEG_REGION)
+				{
+					return;
+				}
 				act = 3;
 				break;
 			case SOTETSEG_REGION:
+				if (oldRegion == XARPUS_REGION)
+				{
+					return;
+				}
 				act = 4;
 				break;
 			case XARPUS_REGION:
+				if (oldRegion == VERZIK_REGION)
+				{
+					return;
+				}
 				act = 5;
 				break;
 			case VERZIK_REGION:
@@ -289,16 +280,48 @@ public class TheatreOfBloodPlugin extends Plugin
 				current.setCompleted(true);
 				return;
 			case LOBBY_REGION:
-				// Don't create a new room if they end up in the lobby
+			default:
+				// Don't create a new room if they end up in the lobby or somewhere else
 				return;
 		}
 
 		// Create a new room stat
+		roomCompleted();
 		room = new RoomStat();
 		room.setAct(act);
 	}
 
+	private void roomCompleted()
+	{
+		if (room == null)
+		{
+			log.warn("Tried completing a null room");
+			return;
+		}
 
+		// Add RoomStat to current Attempt
+		current.addRoomStat(room);
+		room = null;
+	}
+
+	private void submitAttempt()
+	{
+		attempts.add(current);
+		current = new Attempt();
+		overlay.calculateTotal();
+
+	}
+
+	/**
+	 * Estimate NPCs current health based on passed parameters
+	 *
+	 * Slightly modified version of what the OpponentInformation plugin does
+	 *
+	 * @param healthRatio Current amount of bars above NPCs head
+	 * @param health Maximum amount of bars above NPCs head
+	 * @param maxHP Maximum HP of NPC (full hp bar)
+	 * @return estimated current health
+	 */
 	private int getCurrentHealth(int healthRatio, int health, int maxHP)
 	{
 		int currentHealth = -1;
@@ -338,5 +361,57 @@ public class TheatreOfBloodPlugin extends Plugin
 		}
 
 		return currentHealth;
+	}
+
+	/**
+	 * Calculates damage dealt based on HP xp gained
+	 * @param diff HP xp gained
+	 * @return damage dealt
+	 */
+	private double calculateDamageDealt(double diff)
+	{
+		double damageDealt = diff / HITPOINT_RATIO;
+
+		// Determine which NPC we attacked.
+		NPC target = (NPC) client.getLocalPlayer().getInteracting();
+		if (target == null)
+		{
+			// If we are interacting with nothing we may have clicked away at the perfect time
+			// Fall back to the actor we were interacting with last game tick
+			if (oldTarget == null)
+			{
+				log.warn("Couldn't find current or past target...");
+				return damageDealt;
+			}
+			target = (NPC) oldTarget;
+		}
+
+		// Account for Verzik phases by NPC id
+		String targetName = target.getName();
+		if (targetName.toLowerCase().contains("verzik"))
+		{
+			targetName = BossExpModifier.getBossNameByNpcId(target.getId());
+		}
+
+		// Some NPCs have an XP modifier, account for that.
+		BossExpModifier m = BossExpModifier.getByName(targetName);
+		if (m != null)
+		{
+			damageDealt = damageDealt / BossExpModifier.calculateBonus(m);
+		}
+
+		// We need to limit damage dealt to the current NPCs health for weapons that can overhit, such as Scythe
+		log.debug("Ratio: {} | Health: {}", target.getHealthRatio(), target.getHealth());
+		int maxHP = NpcHps.getMaxHpByNpcName(targetName);
+		log.debug("Max HP: {}", maxHP);
+		int currentHP = getCurrentHealth(target.getHealthRatio(), target.getHealth(), maxHP);
+		log.debug("Current Hp: {}", currentHP);
+
+		if (currentHP > -1 && damageDealt > currentHP)
+		{
+			damageDealt = currentHP;
+		}
+
+		return damageDealt;
 	}
 }
