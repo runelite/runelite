@@ -33,11 +33,21 @@ import net.runelite.client.config.ConfigItem;
 public interface MotherlodeConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showRocks",
+		keyName = "showVeins",
 		name = "Show pay-dirt mining spots",
 		description = "Configures whether or not the pay-dirt mining spots are displayed."
 	)
-	default boolean showRocks()
+	default boolean showVeins()
+{
+	return true;
+}
+
+	@ConfigItem(
+			keyName = "showRockFalls",
+			name = "Show RockFall obstacles",
+			description = "Configures whether or not the RockFall obstacles are displayed."
+	)
+	default boolean showRockFalls()
 	{
 		return true;
 	}
