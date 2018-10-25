@@ -47,6 +47,7 @@ public class MenuEntryAdded
 	private final String target;
 	/**
 	 * The action type that will be triggered.
+	 * See {@link net.runelite.api.MenuAction}
 	 */
 	private final int type;
 	/**
