@@ -40,6 +40,7 @@ public final class WidgetMenuOption
 	 * The right hand text to be displayed on the menu option Ex. the menuTarget of "Drop Bones" is "Bones"
 	 */
 	private String menuTarget;
+
 	/**
 	 * The color that the menuTarget should be. Defaults to the brownish color that most menu options have.
 	 */
@@ -74,9 +75,9 @@ public final class WidgetMenuOption
 	 *
 	 * @param target The target text without color code.
 	 */
-	public void setMenuTarget(String target)
+	private void setMenuTarget(String target)
 	{
-		menuTarget = ColorUtil.wrapWithColorTag(target, color);
+		menuTarget = applyTargetMenuColor(target, color);
 	}
 
 	public String getMenuOption()
@@ -102,5 +103,15 @@ public final class WidgetMenuOption
 	public void setColor(Color col)
 	{
 		color = col;
+	}
+
+	public static String applyTargetMenuColor(String target)
+	{
+		return applyTargetMenuColor(target, JagexColors.MENU_TARGET);
+	}
+
+	public static String applyTargetMenuColor(String target, Color color)
+	{
+		return ColorUtil.wrapWithColorTag(target, color);
 	}
 }
