@@ -120,7 +120,6 @@ public class TheatreOfBloodPlugin extends Plugin
 	private double hpExp = 0;
 	private Actor oldTarget;
 	private boolean isSpectator = false;
-	private boolean wentBack = false;
 
 	@Provides
 	TheatreOfBloodConfig provideConfig(ConfigManager configManager)
@@ -201,7 +200,7 @@ public class TheatreOfBloodPlugin extends Plugin
 
 			if (region != oldRegion)
 			{
-				handleRegionChange(oldRegion);
+				handleRegionChange();
 			}
 		}
 	}
@@ -272,49 +271,24 @@ public class TheatreOfBloodPlugin extends Plugin
 	 * Handles region changes while inside Theatre of Blood
 	 *
 	 */
-	private void handleRegionChange(int oldRegion)
+	private void handleRegionChange()
 	{
 		int act;
 		switch (region)
 		{
 			case MAIDEN_REGION:
 				act = 1;
-				if (oldRegion == BLOAT_REGION)
-				{
-					wentBack = true;
-					return;
-				}
 				break;
 			case BLOAT_REGION:
-				if (oldRegion == NYLOCAS_REGION)
-				{
-					wentBack = true;
-					return;
-				}
 				act = 2;
 				break;
 			case NYLOCAS_REGION:
-				if (oldRegion == SOTETSEG_REGION)
-				{
-					wentBack = true;
-					return;
-				}
 				act = 3;
 				break;
 			case SOTETSEG_REGION:
-				if (oldRegion == XARPUS_REGION)
-				{
-					wentBack = true;
-					return;
-				}
 				act = 4;
 				break;
 			case XARPUS_REGION:
-				if (oldRegion == VERZIK_REGION)
-				{
-					wentBack = true;
-					return;
-				}
 				act = 5;
 				break;
 			case VERZIK_REGION:
@@ -323,24 +297,18 @@ public class TheatreOfBloodPlugin extends Plugin
 			case REWARD_REGION:
 				current.setCompleted(true);
 				roomCompleted();
-				wentBack = false;
 				return;
 			case LOBBY_REGION:
-				wentBack = false;
 			default:
 				// Don't create a new room if they end up in the lobby or somewhere else
 				return;
 		}
 
-		// If we went back to the previous room.
-		if (wentBack)
-		{
-			wentBack = false;
-			return;
-		}
-
 		// Went to new room which means last room was completed.
-		roomCompleted();
+		if (act > 1)
+		{
+			roomCompleted();
+		}
 
 		// Create a room stat for the next act
 		room = new RoomStat();
