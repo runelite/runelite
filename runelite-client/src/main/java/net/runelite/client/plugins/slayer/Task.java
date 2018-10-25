@@ -141,7 +141,7 @@ enum Task
 	MAGIC_AXES("Magic axes", ItemID.IRON_BATTLEAXE, "Magic axe"),
 	SCORPIONS("Scorpions", ItemID.ENSOULED_SCORPION_HEAD),
 	SEA_SNAKES("Sea snakes", ItemID.SNAKE_CORPSE),
-	SHADES("Shades", ItemID.SHADE_ROBE_TOP),
+	SHADES("Shades", ItemID.SHADE_ROBE_TOP, "Loar Shadow", "Loar Shade", "Phrin Shadow", "Phrin Shade", "Riyl Shadow", "Riyl Shade", "Asyn Shadow", "Asyn Shade", "Fiyr Shadow", "Fiyr Shade"),
 	SHADOW_WARRIORS("Shadow warriors", ItemID.BLACK_FULL_HELM),
 	SKELETAL_WYVERNS("Skeletal wyverns", ItemID.SKELETAL_WYVERN),
 	SKELETONS("Skeletons", ItemID.SKELETON_GUARD),
