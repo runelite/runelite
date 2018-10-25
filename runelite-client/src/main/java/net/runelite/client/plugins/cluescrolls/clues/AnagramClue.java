@@ -30,17 +30,22 @@ import java.awt.Graphics2D;
 import java.util.Set;
 import lombok.Getter;
 import net.runelite.api.NPC;
+import net.runelite.api.ObjectID;
+import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
-import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_BORDER_COLOR;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_FILL_COLOR;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_HOVER_BORDER_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
+import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
-public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueScroll, LocationClueScroll
+public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueScroll, ObjectClueScroll
 {
 	private static final Set<AnagramClue> CLUES = ImmutableSet.of(
 		new AnagramClue("A BAKER", "Baraek", new WorldPoint(3217, 3434, 0), "Varrock square", "5"),
@@ -139,7 +144,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("UNLEASH NIGHT MIST", "Sigli the Huntsman", new WorldPoint(2660, 3654, 0), "Rellekka", "302"),
 		new AnagramClue("VESTE", "Steve", new WorldPoint(2432, 3423, 0), "Upstairs Wyvern Area or Stronghold Slayer Cave", "2"),
 		new AnagramClue("VEIL VEDA", "Evil Dave", new WorldPoint(3079, 9892, 0), "Doris' basement, Edgeville", "666"),
-		new AnagramClue("WOO AN EGG KIWI", "Awowogei", new WorldPoint(2802, 2764, 0), "Ape Atoll", "24"),
+		new AnagramClue("WOO AN EGG KIWI", "Awowogei", ObjectID.AWOWOGEI, new WorldPoint(2802, 2765, 0), "Ape Atoll", "24"),
 		new AnagramClue("YAWNS GY", "Ysgawyn", new WorldPoint(2340, 3167, 0), "Lletya"),
 		new AnagramClue("MAJORS LAVA BADS AIR", "Ambassador Alvijar", new WorldPoint(2736, 5351, 1), "Dorgesh-Kaan, NE Middle Level", "2505")
 	);
@@ -149,6 +154,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	private WorldPoint location;
 	private String area;
 	private String answer;
+	private int objectId;
 
 	private AnagramClue(String text, String npc, WorldPoint location, String area)
 	{
@@ -162,6 +168,13 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		this.location = location;
 		this.area = area;
 		this.answer = answer;
+		this.objectId = -1;
+	}
+
+	private AnagramClue(String text, String npc, int objectId, WorldPoint location, String area, String answer)
+	{
+		this(text, npc, location, area, answer);
+		this.objectId = objectId;
 	}
 
 	@Override
@@ -198,11 +211,26 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			return;
 		}
 
-		if (plugin.getNpcsToMark() != null)
+		// Mark NPC
+		if (objectId == -1 && plugin.getNpcsToMark() != null)
 		{
 			for (NPC npc : plugin.getNpcsToMark())
 			{
 				OverlayUtil.renderActorOverlayImage(graphics, npc, plugin.getClueScrollImage(), Color.ORANGE, IMAGE_Z_OFFSET);
+			}
+		}
+
+		// Mark game object
+		if (objectId != -1)
+		{
+			net.runelite.api.Point mousePosition = plugin.getClient().getMouseCanvasPosition();
+
+			for (TileObject gameObject : plugin.getObjectsToMark())
+			{
+				OverlayUtil.renderHoverableArea(graphics, gameObject.getClickbox(), mousePosition,
+					CLICKBOX_FILL_COLOR, CLICKBOX_BORDER_COLOR, CLICKBOX_HOVER_BORDER_COLOR);
+
+				OverlayUtil.renderImageLocation(plugin.getClient(), graphics, gameObject.getLocalLocation(), plugin.getClueScrollImage(), IMAGE_Z_OFFSET);
 			}
 		}
 	}
@@ -223,5 +251,10 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	public String[] getNpcs()
 	{
 		return new String[] {npc};
+	}
+
+	public int[] getObjectIds()
+	{
+		return new int[] {objectId};
 	}
 }
