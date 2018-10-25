@@ -44,7 +44,6 @@ import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
-import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -58,6 +57,10 @@ import net.runelite.client.plugins.theatreofblood.data.AttemptTotal;
 import net.runelite.client.plugins.theatreofblood.data.BossExpModifier;
 import net.runelite.client.plugins.theatreofblood.data.NpcHps;
 import net.runelite.client.plugins.theatreofblood.data.RoomStat;
+import net.runelite.client.plugins.theatreofblood.overlays.AttemptOverlay;
+import net.runelite.client.plugins.theatreofblood.overlays.RoomOverlay;
+import net.runelite.client.plugins.theatreofblood.overlays.TotalOverlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "ToB Stats",
@@ -92,6 +95,18 @@ public class TheatreOfBloodPlugin extends Plugin
 	@Inject
 	private TheatreOfBloodConfig config;
 
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private AttemptOverlay attemptOverlay;
+
+	@Inject
+	private RoomOverlay roomOverlay;
+
+	@Inject
+	private TotalOverlay totalOverlay;
+
 	@Getter
 	private Attempt current;
 	@Getter
@@ -99,6 +114,7 @@ public class TheatreOfBloodPlugin extends Plugin
 	@Getter
 	private final List<Attempt> attempts = new ArrayList<>();
 	// Varbit state
+	@Getter
 	private int state = 0;
 	private int region = 0;
 	private double hpExp = 0;
@@ -113,8 +129,19 @@ public class TheatreOfBloodPlugin extends Plugin
 	}
 
 	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(roomOverlay);
+		overlayManager.add(attemptOverlay);
+		overlayManager.add(totalOverlay);
+	}
+
+	@Override
 	protected void shutDown()
 	{
+		overlayManager.remove(roomOverlay);
+		overlayManager.remove(attemptOverlay);
+		overlayManager.remove(totalOverlay);
 		attempts.clear();
 		state = -1;
 	}
@@ -216,6 +243,7 @@ public class TheatreOfBloodPlugin extends Plugin
 				else
 				{
 					// Back to just in a party, sumbit the raid
+					roomCompleted();
 					submitAttempt();
 				}
 				break;
@@ -290,11 +318,6 @@ public class TheatreOfBloodPlugin extends Plugin
 				act = 5;
 				break;
 			case VERZIK_REGION:
-				if (oldRegion == REWARD_REGION)
-				{
-					wentBack = true;
-					return;
-				}
 				act = 6;
 				break;
 			case REWARD_REGION:
@@ -460,17 +483,13 @@ public class TheatreOfBloodPlugin extends Plugin
 				.append(ChatColorType.HIGHLIGHT)
 				.append("Room Stats: ")
 				.append(ChatColorType.NORMAL)
-				.append("Damage Taken:")
+				.append("Damage Taken: ")
 				.append(ChatColorType.HIGHLIGHT)
 				.append(NUMBER_FORMAT.format(room.getDamageTaken()))
 				.append(ChatColorType.NORMAL)
 				.append(", Damage Dealt: ")
 				.append(ChatColorType.HIGHLIGHT)
 				.append(NUMBER_FORMAT.format(room.getDamageDealt()))
-				.append(ChatColorType.NORMAL)
-				.append(", Died: ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(room.isDied() ? "Yes" : "No")
 				.build();
 
 			chatMessageManager.queue(QueuedMessage.builder()
@@ -488,7 +507,7 @@ public class TheatreOfBloodPlugin extends Plugin
 				.append(ChatColorType.HIGHLIGHT)
 				.append("Current Raid Stats: ")
 				.append(ChatColorType.NORMAL)
-				.append("Damage Taken:")
+				.append("Damage Taken: ")
 				.append(ChatColorType.HIGHLIGHT)
 				.append(NUMBER_FORMAT.format(current.getDamageTaken()))
 				.append(ChatColorType.NORMAL)
@@ -542,7 +561,7 @@ public class TheatreOfBloodPlugin extends Plugin
 				.append(ChatColorType.HIGHLIGHT)
 				.append("Session Raid Stats: ")
 				.append(ChatColorType.NORMAL)
-				.append("Damage Taken:")
+				.append("Damage Taken: ")
 				.append(ChatColorType.HIGHLIGHT)
 				.append(NUMBER_FORMAT.format(total.getDamageTaken()))
 				.append(ChatColorType.NORMAL)

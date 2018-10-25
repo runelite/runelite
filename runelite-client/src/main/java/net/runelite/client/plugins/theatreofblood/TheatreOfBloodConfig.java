@@ -35,8 +35,7 @@ public interface TheatreOfBloodConfig extends Config
 		keyName = "showRoomOverlay",
 		name = "Show Room Overlay",
 		description = "Toggles whether the Room overlay is displayed or not",
-		position = 0,
-		hidden = true
+		position = 0
 	)
 	default boolean showRoomOverlay()
 	{
@@ -58,8 +57,7 @@ public interface TheatreOfBloodConfig extends Config
 		keyName = "showCurrentRaidOverlay",
 		name = "Show Current Raid Overlay",
 		description = "Toggles whether the Current Raid overlay is displayed or not",
-		position = 2,
-		hidden = true
+		position = 2
 	)
 	default boolean showCurrentRaidOverlay()
 	{
@@ -81,8 +79,7 @@ public interface TheatreOfBloodConfig extends Config
 		keyName = "showTotalRaidOverlay",
 		name = "Show Total Raid Overlay",
 		description = "Toggles whether the Total Raid overlay is displayed or not",
-		position = 4,
-		hidden = true
+		position = 4
 	)
 	default boolean showTotalRaidOverlay()
 	{
