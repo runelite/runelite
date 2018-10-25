@@ -86,7 +86,7 @@ public final class ScriptID
 	 * <li> int  zoom value </li>
 	 * </ul>
 	 */
-	public static final int ZOOM_INPUT = 42;
+	public static final int CAMERA_DO_ZOOM = 42;
 
 	/**
 	 * Does nothing

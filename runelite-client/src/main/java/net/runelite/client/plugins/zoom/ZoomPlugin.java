@@ -50,6 +50,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class ZoomPlugin extends Plugin implements KeyListener
 {
 	private boolean controlDown;
+	private static final int INNER_ZOOM_LIMIT = 1200;
 
 	@Inject
 	private Client client;
@@ -82,14 +83,14 @@ public class ZoomPlugin extends Plugin implements KeyListener
 		int[] intStack = client.getIntStack();
 		int intStackSize = client.getIntStackSize();
 
-		if ("scrollWheelZoom".equals(event.getEventName()) && zoomConfig.controlFunction().equals(ControlFunction.CONTROL_TO_ZOOM) && !controlDown)
+		if ("scrollWheelZoom".equals(event.getEventName()) && zoomConfig.controlFunction() == ControlFunction.CONTROL_TO_ZOOM && !controlDown)
 		{
 			intStack[intStackSize - 1] = 1;
 		}
 
 		if ("innerZoomLimit".equals(event.getEventName()) && zoomConfig.innerLimit())
 		{
-			intStack[intStackSize - 1] = 1200;
+			intStack[intStackSize - 1] = INNER_ZOOM_LIMIT;
 			return;
 		}
 
@@ -173,16 +174,11 @@ public class ZoomPlugin extends Plugin implements KeyListener
 	{
 		if (e.getKeyCode() == KeyEvent.VK_CONTROL)
 		{
-			switch (zoomConfig.controlFunction())
+			controlDown = false;
+			if (zoomConfig.controlFunction() == ControlFunction.CONTROL_TO_RESET)
 			{
-				case CONTROL_TO_ZOOM:
-					controlDown = false;
-					break;
-				case CONTROL_TO_RESET:
-					int zoomValue = zoomConfig.ctrlZoomValue();
-					clientThread.invokeLater(() -> client.runScript(ScriptID.ZOOM_INPUT, zoomValue, zoomValue));
-					controlDown = false;
-					break;
+				int zoomValue = zoomConfig.ctrlZoomValue() > INNER_ZOOM_LIMIT ? INNER_ZOOM_LIMIT : zoomConfig.ctrlZoomValue();
+				clientThread.invokeLater(() -> client.runScript(ScriptID.CAMERA_DO_ZOOM, zoomValue, zoomValue));
 			}
 		}
 	}
