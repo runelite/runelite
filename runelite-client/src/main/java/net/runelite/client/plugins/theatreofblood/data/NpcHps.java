@@ -39,7 +39,7 @@ public enum NpcHps
 	NYLOCAS_TOXOBOLOS("Nylocas toxobolos", 11),		// Range (Big & Small)
 	NYLOCAS_ATHANATOS("Nylocas Athanatos", 180),	// Purple
 	// Bosses
-	MAIDEN("Maiden of sugadiniti", 3500),
+	MAIDEN("The Maiden of Sugadinti", 3500),
 	BLOAT("Pestilent bloat", 2000),
 	NYLOCAS("Nylocas Vasilias", 2500),
 	SOTETSEG("Sotetseg", 4000),

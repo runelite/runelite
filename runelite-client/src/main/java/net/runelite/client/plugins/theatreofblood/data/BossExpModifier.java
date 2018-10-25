@@ -32,7 +32,7 @@ import net.runelite.api.NpcID;
 @Getter
 public enum BossExpModifier
 {
-	MAIDEN("Maiden of sugadiniti", 350, 350, 200, 3500, 0, 0, 0, 0, 0),
+	MAIDEN("The Maiden of Sugadinti", 350, 350, 200, 3500, 0, 0, 0, 0, 0),
 	BLOAT("Pestilent bloat", 250, 340, 100, 2000, 40, 20, 40, 82, 150),
 	NYLOCAS("Nylocas Vasilias", 400, 350, 50, 2500, 0, 0, 0, 60, 0),
 	SOTETSEG("Sotetseg", 250, 250, 200, 4000, 70, 70, 70, 49, 0),
