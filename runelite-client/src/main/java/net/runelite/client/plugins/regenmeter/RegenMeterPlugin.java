@@ -46,7 +46,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
 	name = "Regeneration Meter",
 	description = "Track and show the hitpoints and special attack regeneration timers",
-	tags = {"combat", "health", "hitpoints", "special", "attack", "overlay"}
+	tags = {"combat", "health", "hitpoints", "special", "attack", "overlay", "smooth"}
 )
 public class RegenMeterPlugin extends Plugin
 {
@@ -74,6 +74,12 @@ public class RegenMeterPlugin extends Plugin
 	private int ticksSinceSpecRegen;
 	private int ticksSinceHPRegen;
 	private boolean wasRapidHeal;
+
+	@Getter
+	private double hpPerMs;
+
+	@Getter
+	private double specPerMs = (double) 1 / (SPEC_REGEN_TICKS * 600);
 
 	@Provides
 	RegenMeterConfig provideConfig(ConfigManager configManager)
@@ -130,9 +136,11 @@ public class RegenMeterPlugin extends Plugin
 
 
 		int ticksPerHPRegen = NORMAL_HP_REGEN_TICKS;
+		hpPerMs = ticksPerHPRegen / (double) 6000000;
 		if (client.isPrayerActive(Prayer.RAPID_HEAL))
 		{
 			ticksPerHPRegen /= 2;
+			hpPerMs *= 2;
 		}
 
 		ticksSinceHPRegen = (ticksSinceHPRegen + 1) % ticksPerHPRegen;

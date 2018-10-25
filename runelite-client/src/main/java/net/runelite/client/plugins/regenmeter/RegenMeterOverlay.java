@@ -53,6 +53,14 @@ public class RegenMeterOverlay extends Overlay
 	private RegenMeterPlugin plugin;
 	private RegenMeterConfig config;
 
+	private long last = System.nanoTime();
+
+	private double percentHp;
+	private double lastHp;
+
+	private double percentSpec;
+	private double lastSpec;
+
 	private static Color brighter(int color)
 	{
 		float[] hsv = new float[3];
@@ -75,9 +83,23 @@ public class RegenMeterOverlay extends Overlay
 	{
 		g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
+		long current = System.nanoTime();
+		double ms = (current - last) / (double) 1000000;
+
 		if (config.showHitpoints())
 		{
-			renderRegen(g, WidgetInfo.MINIMAP_HEALTH_ORB, plugin.getHitpointsPercentage(), HITPOINTS_COLOR);
+
+			if (lastHp == plugin.getHitpointsPercentage() && plugin.getHitpointsPercentage() != 0)
+			{
+				percentHp += ms * plugin.getHpPerMs();
+			}
+			else
+			{
+				percentHp = plugin.getHitpointsPercentage();
+				lastHp = plugin.getHitpointsPercentage();
+			}
+
+			renderRegen(g, WidgetInfo.MINIMAP_HEALTH_ORB, percentHp, HITPOINTS_COLOR);
 		}
 
 		if (config.showSpecial())
@@ -97,9 +119,20 @@ public class RegenMeterOverlay extends Overlay
 				}
 			}
 
-			renderRegen(g, WidgetInfo.MINIMAP_SPEC_ORB, plugin.getSpecialPercentage(), SPECIAL_COLOR);
+			if (lastSpec == plugin.getSpecialPercentage() && plugin.getSpecialPercentage() != 0)
+			{
+				percentSpec += ms * plugin.getSpecPerMs();
+			}
+			else
+			{
+				percentSpec = plugin.getSpecialPercentage();
+				lastSpec = plugin.getSpecialPercentage();
+			}
+
+			renderRegen(g, WidgetInfo.MINIMAP_SPEC_ORB, percentSpec, SPECIAL_COLOR);
 		}
 
+		last = current;
 		return null;
 	}
 
