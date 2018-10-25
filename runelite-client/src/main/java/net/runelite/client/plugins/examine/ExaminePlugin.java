@@ -39,10 +39,8 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
-import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -51,6 +49,8 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.MenuEntryItem;
+import net.runelite.client.util.ExamineType;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.examine.ExamineClient;
 
@@ -102,35 +102,19 @@ public class ExaminePlugin extends Plugin
 			return;
 		}
 
-		ExamineType type;
-		int id;
-		switch (event.getMenuAction())
+		final ExamineType type = ExamineType.of(event.getMenuAction());
+
+		if (type == null)
 		{
-			case EXAMINE_ITEM:
-				type = ExamineType.ITEM;
-				id = event.getId();
-				break;
-			case EXAMINE_ITEM_BANK_EQ:
-				type = ExamineType.ITEM_BANK_EQ;
-				id = event.getId();
-				break;
-			case EXAMINE_OBJECT:
-				type = ExamineType.OBJECT;
-				id = event.getId();
-				break;
-			case EXAMINE_NPC:
-				type = ExamineType.NPC;
-				id = event.getId();
-				break;
-			default:
-				return;
+			return;
 		}
 
 		PendingExamine pendingExamine = new PendingExamine();
 		pendingExamine.setWidgetId(event.getWidgetId());
 		pendingExamine.setActionParam(event.getActionParam());
 		pendingExamine.setType(type);
-		pendingExamine.setId(id);
+		pendingExamine.setMenuAction(event.getMenuAction());
+		pendingExamine.setId(event.getId());
 		pendingExamine.setCreated(Instant.now());
 		pending.push(pendingExamine);
 	}
@@ -138,23 +122,11 @@ public class ExaminePlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		ExamineType type;
-		switch (event.getType())
+		final ExamineType type = ExamineType.of(event.getType());
+
+		if (type == null)
 		{
-			case EXAMINE_ITEM:
-				type = ExamineType.ITEM;
-				break;
-			case EXAMINE_OBJECT:
-				type = ExamineType.OBJECT;
-				break;
-			case EXAMINE_NPC:
-				type = ExamineType.NPC;
-				break;
-			case SERVER:
-				type = ExamineType.ITEM_BANK_EQ;
-				break;
-			default:
-				return;
+			return;
 		}
 
 		if (pending.isEmpty())
@@ -188,105 +160,23 @@ public class ExaminePlugin extends Plugin
 
 	private void findExamineItem(PendingExamine pendingExamine)
 	{
-		int quantity = 1;
-		int itemId = -1;
-
-		// Get widget
-		int widgetId = pendingExamine.getWidgetId();
-		int widgetGroup = TO_GROUP(widgetId);
-		int widgetChild = TO_CHILD(widgetId);
-		Widget widget = client.getWidget(widgetGroup, widgetChild);
+		final int widgetId = pendingExamine.getWidgetId();
+		final Widget widget = client.getWidget(TO_GROUP(widgetId), TO_CHILD(widgetId));
 
 		if (widget == null)
 		{
 			return;
 		}
 
-		if (pendingExamine.getType() == ExamineType.ITEM)
-		{
-			WidgetItem widgetItem = widget.getWidgetItem(pendingExamine.getActionParam());
-			quantity = widgetItem != null ? widgetItem.getQuantity() : 1;
-			itemId = pendingExamine.getId();
-		}
-		else if (pendingExamine.getType() == ExamineType.ITEM_BANK_EQ)
-		{
-			if (WidgetInfo.EQUIPMENT.getGroupId() == widgetGroup)
-			{
-				Widget widgetItem = widget.getChild(1);
-				if (widgetItem != null)
-				{
-					quantity = widgetItem.getItemQuantity();
-					itemId = widgetItem.getItemId();
-				}
-			}
-			else if (WidgetInfo.SMITHING_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup)
-			{
-				Widget widgetItem = widget.getChild(2);
-				if (widgetItem != null)
-				{
-					quantity = widgetItem.getItemQuantity();
-					itemId = widgetItem.getItemId();
-				}
-			}
-			else if (WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup
-					|| WidgetInfo.RUNE_POUCH_ITEM_CONTAINER.getGroupId() == widgetGroup)
-			{
-				Widget widgetItem = widget.getChild(pendingExamine.getActionParam());
-				if (widgetItem != null)
-				{
-					quantity = widgetItem.getItemQuantity();
-					itemId = widgetItem.getItemId();
-				}
-			}
-			else if (WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() == widgetGroup)
-			{
-				Widget[] children = widget.getDynamicChildren();
-				if (pendingExamine.getActionParam() < children.length)
-				{
-					Widget widgetItem = children[pendingExamine.getActionParam()];
-					quantity = widgetItem.getItemQuantity();
-					itemId = widgetItem.getItemId();
-				}
-			}
-			else if (WidgetInfo.SHOP_ITEMS_CONTAINER.getGroupId() == widgetGroup)
-			{
-				Widget[] children = widget.getDynamicChildren();
-				if (pendingExamine.getActionParam() < children.length)
-				{
-					Widget widgetItem = children[pendingExamine.getActionParam()];
-					quantity = 1;
-					itemId = widgetItem.getItemId();
-				}
-			}
-			else if (WidgetInfo.CLUE_SCROLL_REWARD_ITEM_CONTAINER.getGroupId() == widgetGroup)
-			{
-				Widget[] children = widget.getDynamicChildren();
-				if (pendingExamine.getActionParam() < children.length)
-				{
-					Widget widgetItem = children[pendingExamine.getActionParam()];
-					quantity = widgetItem.getItemQuantity();
-					itemId = widgetItem.getItemId();
-				}
-			}
-			else if (WidgetInfo.LOOTING_BAG_CONTAINER.getGroupId() == widgetGroup)
-			{
-				Widget[] children = widget.getDynamicChildren();
-				if (pendingExamine.getActionParam() < children.length)
-				{
-					Widget widgetItem = children[pendingExamine.getActionParam()];
-					quantity = widgetItem.getItemQuantity();
-					itemId = widgetItem.getItemId();
-				}
-			}
-		}
+		final MenuEntryItem examineItem = MenuEntryItem.find(widget, pendingExamine.getMenuAction(), pendingExamine.getActionParam());
 
-		if (itemId == -1)
+		if (examineItem == null)
 		{
 			return;
 		}
 
-		final int itemQuantity = quantity;
-		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+		final int itemQuantity = examineItem.getItemQuantity();
+		final ItemComposition itemComposition = itemManager.getItemComposition(examineItem.getItemId());
 
 		if (itemComposition != null)
 		{

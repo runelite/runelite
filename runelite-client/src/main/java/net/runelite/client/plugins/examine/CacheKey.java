@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.examine;
 
 import java.util.Objects;
+import net.runelite.client.util.ExamineType;
 
 class CacheKey
 {

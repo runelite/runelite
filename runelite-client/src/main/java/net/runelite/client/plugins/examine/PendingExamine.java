@@ -26,11 +26,14 @@ package net.runelite.client.plugins.examine;
 
 import java.time.Instant;
 import lombok.Data;
+import net.runelite.api.MenuAction;
+import net.runelite.client.util.ExamineType;
 
 @Data
 class PendingExamine
 {
 	private ExamineType type;
+	private MenuAction menuAction;
 	private int id;
 	private int widgetId;
 	private int actionParam;

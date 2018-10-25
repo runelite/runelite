@@ -24,6 +24,8 @@
  */
 package net.runelite.api.widgets;
 
+import javax.annotation.Nullable;
+
 /**
  * Represents a group-child {@link Widget} relationship.
  * <p>
@@ -549,4 +551,25 @@ public enum WidgetInfo
 		return groupId << 16 | childId;
 	}
 
+	/**
+	 * Gets the {@link WidgetInfo} of given group and child IDs
+	 *
+	 * @param groupId The group ID to search for
+	 * @param childId The child ID to search for
+	 * @return The first matching {@link WidgetInfo} definition matching the passed IDs, or null if no such entry was
+	 *         found.
+	 */
+	@Nullable
+	public static WidgetInfo from(final int groupId, final int childId)
+	{
+		for (WidgetInfo widget : values())
+		{
+			if (widget.getGroupId() == groupId && widget.getChildId() == childId)
+			{
+				return widget;
+			}
+		}
+
+		return null;
+	}
 }
