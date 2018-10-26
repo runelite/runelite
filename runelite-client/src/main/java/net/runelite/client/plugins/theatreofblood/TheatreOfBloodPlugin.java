@@ -52,10 +52,8 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.theatreofblood.data.Attempt;
-import net.runelite.client.plugins.theatreofblood.data.AttemptTotal;
 import net.runelite.client.plugins.theatreofblood.data.BossExpModifier;
 import net.runelite.client.plugins.theatreofblood.data.NpcHps;
-import net.runelite.client.plugins.theatreofblood.data.RoomStat;
 
 @PluginDescriptor(
 	name = "ToB Stats",
@@ -65,7 +63,6 @@ import net.runelite.client.plugins.theatreofblood.data.RoomStat;
 @Slf4j
 public class TheatreOfBloodPlugin extends Plugin
 {
-	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
 	private static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("#,###");
 
 	private static final int LOBBY_REGION = 14642;
@@ -89,9 +86,12 @@ public class TheatreOfBloodPlugin extends Plugin
 	@Inject
 	private TheatreOfBloodConfig config;
 
-	private Attempt current;
-	private RoomStat room;
 	private final List<Attempt> attempts = new ArrayList<>();
+	private Attempt current;
+	// Room stats
+	private double dealt = 0;
+	private double taken = 0;
+
 	private int state = 0;
 	private int region = 0;
 	private double hpExp = 0;
@@ -129,7 +129,7 @@ public class TheatreOfBloodPlugin extends Plugin
 		if (state == 2 && e.getActor().equals(client.getLocalPlayer()))
 		{
 			current.addDamageTaken(e.getHitsplat().getAmount());
-			room.addDamageTaken(e.getHitsplat().getAmount());
+			taken += e.getHitsplat().getAmount();
 		}
 	}
 
@@ -151,7 +151,7 @@ public class TheatreOfBloodPlugin extends Plugin
 			// Add damage dealt to the current logs
 			log.debug("Damage Dealt: {} | Exact: {}", Math.round(damageDealt), damageDealt);
 			current.addDamageDealt(damageDealt);
-			room.addDamageDealt(damageDealt);
+			dealt += damageDealt;
 		}
 	}
 
@@ -210,13 +210,10 @@ public class TheatreOfBloodPlugin extends Plugin
 					// Back to just in a party, submit the raid
 					if (!current.isCompleted())
 					{
-						// Didn't finish room but complete anyway
-						roomCompleted();
+						// Didn't finish room, trigger message now.
+						roomMessage();
 					}
-					else
-					{
-						currentMessage();
-					}
+					currentMessage();
 					submitAttempt();
 				}
 				break;
@@ -236,7 +233,6 @@ public class TheatreOfBloodPlugin extends Plugin
 				}
 				// Died, increment attempt death counter.
 				current.addDeath();
-				room.setDied(true);
 				break;
 		}
 	}
@@ -270,8 +266,8 @@ public class TheatreOfBloodPlugin extends Plugin
 				break;
 			case REWARD_REGION:
 				current.setCompleted(true);
-				roomCompleted();
-				return;
+				act = 0;
+				break;
 			case LOBBY_REGION:
 			default:
 				// Don't create a new room if they end up in the lobby or somewhere else
@@ -279,38 +275,25 @@ public class TheatreOfBloodPlugin extends Plugin
 		}
 
 		// Went to new room which means last room was completed.
-		if (act > 1)
+		if (act != 1)
 		{
-			roomCompleted();
+			roomMessage();
+			currentMessage();
 		}
 
 		// Create a room stat for the next act
-		room = new RoomStat();
-		room.setAct(act);
+		dealt = 0;
+		taken = 0;
 		log.debug("Starting act {}", act);
-	}
-
-	private void roomCompleted()
-	{
-		if (room == null)
-		{
-			log.warn("Tried completing a null room");
-			return;
-		}
-
-		// Add RoomStat to current Attempt
-		current.addRoomStat(room);
-		log.debug("Completed act {}", room.getAct());
-		roomMessage();
-		currentMessage();
-		room = null;
 	}
 
 	private void submitAttempt()
 	{
-		totalMessage();
 		attempts.add(current);
+		totalMessage();
 		current = new Attempt();
+		dealt = 0;
+		taken = 0;
 	}
 
 	/**
@@ -427,11 +410,11 @@ public class TheatreOfBloodPlugin extends Plugin
 				.append(ChatColorType.NORMAL)
 				.append("Damage Taken: ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(NUMBER_FORMAT.format(room.getDamageTaken()))
+				.append(NUMBER_FORMAT.format(taken))
 				.append(ChatColorType.NORMAL)
 				.append(", Damage Dealt: ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(NUMBER_FORMAT.format(room.getDamageDealt()))
+				.append(NUMBER_FORMAT.format(dealt))
 				.build();
 
 			chatMessageManager.queue(QueuedMessage.builder()
@@ -474,8 +457,18 @@ public class TheatreOfBloodPlugin extends Plugin
 	{
 		if (config.showTotalRaidChatMessages())
 		{
-			AttemptTotal total = new AttemptTotal(attempts);
-			total.addAttempt(current);
+			int completions = 0, deathCount = 0, damageTaken = 0;
+			double damageDealt = 0;
+			for (Attempt a : attempts)
+			{
+				if (a.isCompleted())
+				{
+					completions++;
+				}
+				deathCount += a.getDeathCount();
+				damageTaken += a.getDamageTaken();
+				damageDealt += a.getDamageDealt();
+			}
 
 			String title = new ChatMessageBuilder()
 				.append(ChatColorType.HIGHLIGHT)
@@ -483,14 +476,14 @@ public class TheatreOfBloodPlugin extends Plugin
 				.append(ChatColorType.NORMAL)
 				.append("Attempted: ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(String.valueOf(total.getAttempts()))
+				.append(String.valueOf(attempts.size()))
 				.append(ChatColorType.NORMAL)
 				.append(", Completed: ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(String.valueOf(total.getCompletions()))
+				.append(String.valueOf(completions))
 				.append(", (")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(DECIMAL_FORMAT.format(total.getCompletions() / total.getAttempts()))
+				.append(NUMBER_FORMAT.format((completions / attempts.size()) * 100))
 				.append("%)")
 				.build();
 
@@ -505,15 +498,15 @@ public class TheatreOfBloodPlugin extends Plugin
 				.append(ChatColorType.NORMAL)
 				.append("Damage Taken: ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(NUMBER_FORMAT.format(total.getDamageTaken()))
+				.append(NUMBER_FORMAT.format(damageTaken))
 				.append(ChatColorType.NORMAL)
 				.append(", Damage Dealt: ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(NUMBER_FORMAT.format(total.getDamageDealt()))
+				.append(NUMBER_FORMAT.format(damageDealt))
 				.append(ChatColorType.NORMAL)
 				.append(", Death Count: ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(String.valueOf(total.getDeathCount()))
+				.append(String.valueOf(deathCount))
 				.build();
 
 			chatMessageManager.queue(QueuedMessage.builder()

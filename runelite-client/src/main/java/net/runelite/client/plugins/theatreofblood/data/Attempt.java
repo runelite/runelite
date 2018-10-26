@@ -24,8 +24,6 @@
  */
 package net.runelite.client.plugins.theatreofblood.data;
 
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,7 +35,6 @@ public class Attempt
 	private int deathCount;
 	private int damageTaken;
 	private double damageDealt;
-	private List<RoomStat> stats = new ArrayList<>();
 
 	public void addDeath()
 	{
@@ -52,11 +49,6 @@ public class Attempt
 	public void addDamageDealt(double a)
 	{
 		this.damageDealt += a;
-	}
-
-	public void addRoomStat(RoomStat stat)
-	{
-		stats.add(stat);
 	}
 
 	@Override
