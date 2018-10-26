@@ -32,7 +32,6 @@ import java.util.Set;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
@@ -40,7 +39,6 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import static net.runelite.api.ItemID.COINS_995;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.WallObject;
@@ -63,14 +61,12 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.StackFormatter;
-import net.runelite.http.api.item.ItemPrice;
 
 @PluginDescriptor(
 	name = "Barrows Brothers",
 	description = "Show helpful information for the Barrows minigame",
-	tags = {"combat", "minigame", "minimap"}
+	tags = {"combat", "minigame", "minimap", "bosses", "pve", "pvm"}
 )
-@Slf4j
 public class BarrowsPlugin extends Plugin
 {
 	@Getter(AccessLevel.PACKAGE)
@@ -216,21 +212,7 @@ public class BarrowsPlugin extends Plugin
 
 			for (Item item : items)
 			{
-				if (item.getId() == COINS_995)
-				{
-					chestPrice += item.getQuantity();
-				}
-			}
-
-			for (Item item : items)
-			{
-				ItemPrice cachedItemPrice = itemManager.getItemPrice(item.getId());
-				if (cachedItemPrice == null)
-				{
-					continue;
-				}
-
-				long itemStack = (long) cachedItemPrice.getPrice() * (long) item.getQuantity();
+				long itemStack = (long) itemManager.getItemPrice(item.getId()) * (long) item.getQuantity();
 				chestPrice += itemStack;
 			}
 

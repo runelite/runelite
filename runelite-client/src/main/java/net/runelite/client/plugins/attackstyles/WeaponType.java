@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.*;
 
-public enum WeaponType
+enum WeaponType
 {
 	TYPE_0(ACCURATE, AGGRESSIVE, null, DEFENSIVE),
 	TYPE_1(ACCURATE, AGGRESSIVE, AGGRESSIVE, DEFENSIVE),

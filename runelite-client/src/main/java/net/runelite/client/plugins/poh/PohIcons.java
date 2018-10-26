@@ -25,16 +25,13 @@
 package net.runelite.client.plugins.poh;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import javax.imageio.ImageIO;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import static net.runelite.api.ObjectID.*;
 import static net.runelite.api.NullObjectID.*;
+import net.runelite.client.util.ImageUtil;
 
-@Slf4j
 public enum PohIcons
 {
 	EXITPORTAL("exitportal", PORTAL_4525),
@@ -52,6 +49,7 @@ public enum PohIcons
 	ANNAKARL("annakarl", ANNAKARL_PORTAL, ANNAKARL_PORTAL_29349, ANNAKARL_PORTAL_29357),
 	KOUREND("kourend", KOUREND_PORTAL, KOUREND_PORTAL_29353, KOUREND_PORTAL_29361),
 	MARIM("marim", MARIM_PORTAL, MARIM_PORTAL_29352, MARIM_PORTAL_29360),
+	TROLLSTRONGHOLD("trollheim", TROLL_STRONGHOLD_PORTAL, TROLL_STRONGHOLD_PORTAL_33180, TROLL_STRONGHOLD_PORTAL_33181),
 	ALTAR("altar",
 		ALTAR_13179, ALTAR_13180, ALTAR_13181, ALTAR_13182, ALTAR_13183, ALTAR_13184, ALTAR_13185, ALTAR_13186,
 		ALTAR_13187, ALTAR_13188, ALTAR_13189, ALTAR_13190, ALTAR_13191, ALTAR_13192, ALTAR_13193, ALTAR_13194,
@@ -105,17 +103,7 @@ public enum PohIcons
 			return image;
 		}
 
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				image = ImageIO.read(PohIcons.class.getResourceAsStream(getImageResource() + ".png"));
-			}
-		}
-		catch (IOException ex)
-		{
-			log.warn("unable to load image", ex);
-		}
+		image = ImageUtil.getResourceStreamFromClass(getClass(), getImageResource() + ".png");
 
 		return image;
 	}

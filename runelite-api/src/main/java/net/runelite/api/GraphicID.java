@@ -37,7 +37,14 @@ public class GraphicID
 	public static final int ICE_BARRAGE = 369;
 	public static final int VENGEANCE_OTHER = 725;
 	public static final int VENGEANCE = 726;
+	public static final int BOOK_HOME_TELEPORT_1 = 800;
+	public static final int BOOK_HOME_TELEPORT_2 = 802;
+	public static final int BOOK_HOME_TELEPORT_3 = 803;
+	public static final int BOOK_HOME_TELEPORT_4 = 804;
 	public static final int STAFF_OF_THE_DEAD = 1228;
 	public static final int IMBUED_HEART = 1316;
 	public static final int FLYING_FISH = 1387;
+	public static final int NPC_CONTACT = 728;
+	public static final int POT_SHARE = 733;
+	public static final int BAKE_PIE = 746;
 }

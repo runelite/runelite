@@ -65,6 +65,7 @@ import net.runelite.client.plugins.mta.MTARoom;
 @Slf4j
 public class TelekineticRoom extends MTARoom
 {
+	private static final int MAZE_GUARDIAN_MOVING = 6778;
 	private static final int TELEKINETIC_WALL = NullObjectID.NULL_10755;
 	private static final int TELEKINETIC_FINISH = NullObjectID.NULL_23672;
 
@@ -110,7 +111,7 @@ public class TelekineticRoom extends MTARoom
 		else if (guardian != null)
 		{
 			WorldPoint current;
-			if (guardian.getId() == NpcID.MAZE_GUARDIAN_MOVING)
+			if (guardian.getId() == MAZE_GUARDIAN_MOVING)
 			{
 				destination = getGuardianDestination();
 				current = WorldPoint.fromLocal(client, destination);
@@ -130,8 +131,9 @@ public class TelekineticRoom extends MTARoom
 			log.debug("Updating guarding location {} -> {}", location, current);
 
 			location = current;
+			final LocalPoint finish = finish();
 
-			if (location.equals(finish()))
+			if (finish != null && location.equals(WorldPoint.fromLocal(client, finish)))
 			{
 				client.clearHintArrow();
 			}
@@ -288,7 +290,7 @@ public class TelekineticRoom extends MTARoom
 
 	private Stack<Direction> build()
 	{
-		if (guardian.getId() == NpcID.MAZE_GUARDIAN_MOVING)
+		if (guardian.getId() == MAZE_GUARDIAN_MOVING)
 		{
 			WorldPoint converted = WorldPoint.fromLocal(client, getGuardianDestination());
 			return build(converted);

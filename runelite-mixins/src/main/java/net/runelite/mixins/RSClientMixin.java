@@ -37,6 +37,7 @@ import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.HashTable;
 import net.runelite.api.HintArrowType;
+import net.runelite.api.Ignore;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.InventoryID;
 import net.runelite.api.MenuAction;
@@ -101,7 +102,9 @@ import net.runelite.rs.api.RSDeque;
 import net.runelite.rs.api.RSFriendContainer;
 import net.runelite.rs.api.RSFriendManager;
 import net.runelite.rs.api.RSHashTable;
+import net.runelite.rs.api.RSIgnoreContainer;
 import net.runelite.rs.api.RSIndexedSprite;
+import net.runelite.rs.api.RSItem;
 import net.runelite.rs.api.RSItemContainer;
 import net.runelite.rs.api.RSNPC;
 import net.runelite.rs.api.RSName;
@@ -148,6 +151,9 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	private static int oldMenuEntryCount;
+
+	@Inject
+	private static RSItem lastItemDespawn;
 
 	@Inject
 	@Override
@@ -233,17 +239,25 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public Tile getSelectedRegionTile()
+	public void setMouseCanvasHoverPosition(final Point position)
 	{
-		int tileX = getSelectedRegionTileX();
-		int tileY = getSelectedRegionTileY();
+		setMouseCanvasHoverPositionX(position.getX());
+		setMouseCanvasHoverPositionY(position.getY());
+	}
+
+	@Inject
+	@Override
+	public Tile getSelectedSceneTile()
+	{
+		int tileX = getSelectedSceneTileX();
+		int tileY = getSelectedSceneTileY();
 
 		if (tileX == -1 || tileY == -1)
 		{
 			return null;
 		}
 
-		return getRegion().getTiles()[getPlane()][tileX][tileY];
+		return getScene().getTiles()[getPlane()][tileX][tileY];
 	}
 
 	@Inject
@@ -294,6 +308,26 @@ public abstract class RSClientMixin implements RSClient
 	{
 		int[] realLevels = getRealSkillLevels();
 		return realLevels[skill.ordinal()];
+	}
+
+	@Inject
+	@Override
+	public int getTotalLevel()
+	{
+		int totalLevel = 0;
+
+		int[] realLevels = client.getRealSkillLevels();
+		int lastSkillIdx = Skill.CONSTRUCTION.ordinal();
+
+		for (int i = 0; i < realLevels.length; i++)
+		{
+			if (i <= lastSkillIdx)
+			{
+				totalLevel += realLevels[i];
+			}
+		}
+
+		return totalLevel;
 	}
 
 	@Inject
@@ -383,6 +417,20 @@ public abstract class RSClientMixin implements RSClient
 	{
 		int[] varps = getVarps();
 		return varps[varPlayer.getId()];
+	}
+
+	@Inject
+	@Override
+	public int getVarpValue(int[] varps, int varpId)
+	{
+		return varps[varpId];
+	}
+
+	@Inject
+	@Override
+	public void setVarpValue(int[] varps, int varpId, int value)
+	{
+		varps[varpId] = value;
 	}
 
 	@Inject
@@ -576,11 +624,11 @@ public abstract class RSClientMixin implements RSClient
 	@Nullable
 	public LocalPoint getLocalDestinationLocation()
 	{
-		int regionX = getDestinationX();
-		int regionY = getDestinationY();
-		if (regionX != 0 && regionY != 0)
+		int sceneX = getDestinationX();
+		int sceneY = getDestinationY();
+		if (sceneX != 0 && sceneY != 0)
 		{
-			return LocalPoint.fromRegion(regionX, regionY);
+			return LocalPoint.fromScene(sceneX, sceneY);
 		}
 		return null;
 	}
@@ -590,7 +638,7 @@ public abstract class RSClientMixin implements RSClient
 	public void changeMemoryMode(boolean lowMemory)
 	{
 		setLowMemory(lowMemory);
-		setRegionLowMemory(lowMemory);
+		setSceneLowMemory(lowMemory);
 		setAudioHighMemory(true);
 		setObjectCompositionLowDetail(lowMemory);
 	}
@@ -645,6 +693,64 @@ public abstract class RSClientMixin implements RSClient
 
 		RSNameable[] nameables = friendContainer.getNameables();
 		return (Friend[]) nameables;
+	}
+
+	@Inject
+	@Override
+	public int getFriendsCount()
+	{
+		final RSFriendManager friendManager = getFriendManager();
+		if (friendManager == null)
+		{
+			return -1;
+		}
+
+		final RSFriendContainer friendContainer = friendManager.getFriendContainer();
+		if (friendContainer == null)
+		{
+			return -1;
+		}
+
+		return friendContainer.getCount();
+	}
+
+	@Inject
+	@Override
+	public Ignore[] getIgnores()
+	{
+		final RSFriendManager friendManager = getFriendManager();
+		if (friendManager == null)
+		{
+			return null;
+		}
+
+		final RSIgnoreContainer ignoreContainer = friendManager.getIgnoreContainer();
+		if (ignoreContainer == null)
+		{
+			return null;
+		}
+
+		RSNameable[] nameables = ignoreContainer.getNameables();
+		return (Ignore[]) nameables;
+	}
+
+	@Inject
+	@Override
+	public int getIgnoreCount()
+	{
+		final RSFriendManager friendManager = getFriendManager();
+		if (friendManager == null)
+		{
+			return -1;
+		}
+
+		final RSIgnoreContainer ignoreContainer = friendManager.getIgnoreContainer();
+		if (ignoreContainer == null)
+		{
+			return -1;
+		}
+
+		return ignoreContainer.getCount();
 	}
 
 	@Inject
@@ -1101,20 +1207,17 @@ public abstract class RSClientMixin implements RSClient
 		for (Widget rlWidget : widgets)
 		{
 			RSWidget widget = (RSWidget) rlWidget;
-			if (widget == null)
+			if (widget == null || widget.getRSParentId() != parentId)
 			{
 				continue;
 			}
 
-			if (widget.getRSParentId() == parentId)
+			if (parentId != -1)
 			{
-				if (parentId != -1)
-				{
-					widget.setRenderParentId(parentId);
-				}
-				widget.setRenderX(x + widget.getRelativeX());
-				widget.setRenderY(y + widget.getRelativeY());
+				widget.setRenderParentId(parentId);
 			}
+			widget.setRenderX(x + widget.getRelativeX());
+			widget.setRenderY(y + widget.getRelativeY());
 
 			HashTable<WidgetNode> componentTable = client.getComponentTable();
 			WidgetNode childNode = componentTable.get(widget.getId());
@@ -1133,5 +1236,29 @@ public abstract class RSClientMixin implements RSClient
 				}
 			}
 		}
+	}
+
+	@Inject
+	@Override
+	public RSItem getLastItemDespawn()
+	{
+		return lastItemDespawn;
+	}
+
+	@Inject
+	@Override
+	public void setLastItemDespawn(RSItem lastItemDespawn)
+	{
+		RSClientMixin.lastItemDespawn = lastItemDespawn;
+	}
+
+	@Inject
+	@Override
+	public void queueChangedSkill(Skill skill)
+	{
+		int[] skills = client.getChangedSkills();
+		int count = client.getChangedSkillsCount();
+		skills[++count - 1 & 31] = skill.ordinal();
+		client.setChangedSkillsCount(count);
 	}
 }

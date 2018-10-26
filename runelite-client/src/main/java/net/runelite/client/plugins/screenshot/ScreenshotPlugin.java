@@ -45,44 +45,53 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Point;
+import net.runelite.api.SpriteID;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetID.BARROWS_REWARD_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.CLUE_SCROLL_REWARD_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.KINGDOM_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.QUEST_COMPLETED_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.RAIDS_REWARD_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.screenshot.imgur.ImageUploadRequest;
 import net.runelite.client.plugins.screenshot.imgur.ImageUploadResponse;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.HotkeyListener;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
@@ -108,8 +117,8 @@ public class ScreenshotPlugin extends Plugin
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
-	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile("Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
-
+	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
+	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
 		"You feel something weird sneaking into your backpack",
 		"You have a funny feeling like you would have been followed");
@@ -132,7 +141,11 @@ public class ScreenshotPlugin extends Plugin
 
 	private Integer barrowsNumber;
 
-	private Integer raidsNumber;
+	private Integer chambersOfXericNumber;
+
+	private Integer theatreOfBloodNumber;
+
+	private boolean shouldTakeScreenshot;
 
 	@Inject
 	private ScreenshotConfig config;
@@ -153,7 +166,7 @@ public class ScreenshotPlugin extends Plugin
 	private ClientUI clientUi;
 
 	@Inject
-	private TitleToolbar titleToolbar;
+	private ClientToolbar clientToolbar;
 
 	@Inject
 	private DrawManager drawManager;
@@ -164,12 +177,18 @@ public class ScreenshotPlugin extends Plugin
 	@Inject
 	private KeyManager keyManager;
 
+	@Inject
+	private SpriteManager spriteManager;
+
+	@Getter(AccessLevel.PACKAGE)
+	private BufferedImage reportButton;
+
 	private NavigationButton titleBarButton;
 
 	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.hotkey())
 	{
 		@Override
-		public void hotkeyReleased()
+		public void hotkeyPressed()
 		{
 			takeScreenshot(format(new Date()));
 		}
@@ -188,49 +207,89 @@ public class ScreenshotPlugin extends Plugin
 		SCREENSHOT_DIR.mkdirs();
 		keyManager.registerKeyListener(hotkeyListener);
 
-		try
-		{
-			BufferedImage iconImage;
-			synchronized (ImageIO.class)
-			{
-				iconImage = ImageIO.read(ScreenshotPlugin.class.getResourceAsStream("screenshot.png"));
-			}
+		final BufferedImage iconImage = ImageUtil.getResourceStreamFromClass(getClass(), "screenshot.png");
 
-			titleBarButton = NavigationButton.builder()
-				.tooltip("Take screenshot")
-				.icon(iconImage)
-				.onClick(() -> takeScreenshot(format(new Date())))
-				.popup(ImmutableMap
-					.<String, Runnable>builder()
-					.put("Open screenshot folder...", () ->
+		titleBarButton = NavigationButton.builder()
+			.tab(false)
+			.tooltip("Take screenshot")
+			.icon(iconImage)
+			.onClick(() -> takeScreenshot(format(new Date())))
+			.popup(ImmutableMap
+				.<String, Runnable>builder()
+				.put("Open screenshot folder...", () ->
+				{
+					try
 					{
-						try
-						{
-							Desktop.getDesktop().open(SCREENSHOT_DIR);
-						}
-						catch (IOException ex)
-						{
-							log.warn("Error opening screenshot dir", ex);
+						Desktop.getDesktop().open(SCREENSHOT_DIR);
+					}
+					catch (IOException ex)
+					{
+						log.warn("Error opening screenshot dir", ex);
+					}
+				})
+				.build())
+			.build();
 
-						}
-					})
-					.build())
-				.build();
-
-			titleToolbar.addNavigation(titleBarButton);
-		}
-		catch (IOException ex)
-		{
-			log.warn("Error adding screenshot button to titlebar", ex);
-		}
+		clientToolbar.addNavigation(titleBarButton);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(screenshotOverlay);
-		titleToolbar.removeNavigation(titleBarButton);
+		clientToolbar.removeNavigation(titleBarButton);
 		keyManager.unregisterKeyListener(hotkeyListener);
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGGED_IN
+			&& reportButton == null)
+		{
+			reportButton = spriteManager.getSprite(SpriteID.CHATBOX_REPORT_BUTTON, 0);
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (!shouldTakeScreenshot)
+		{
+			return;
+		}
+
+		shouldTakeScreenshot = false;
+
+		String fileName = null;
+		if (client.getWidget(WidgetInfo.LEVEL_UP_LEVEL) != null)
+		{
+			fileName = parseLevelUpWidget(WidgetInfo.LEVEL_UP_LEVEL);
+		}
+		else if (client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT) != null)
+		{
+			fileName = parseLevelUpWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
+		}
+		else if (client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT) != null)
+		{
+			// "You have completed The Corsair Curse!"
+			String text = client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT).getText();
+			fileName = "Quest(" + text.substring(19, text.length() - 1) + ")";
+		}
+
+		if (fileName != null)
+		{
+			takeScreenshot(fileName);
+		}
+	}
+
+	@Subscribe
+	public void onLocalPlayerDeath(LocalPlayerDeath death)
+	{
+		if (config.screenshotPlayerDeath())
+		{
+			takeScreenshot("Death " + format(new Date()));
+		}
 	}
 
 	@Subscribe
@@ -269,7 +328,17 @@ public class ScreenshotPlugin extends Plugin
 			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
 			if (m.find())
 			{
-				raidsNumber = Integer.valueOf(m.group());
+				chambersOfXericNumber = Integer.valueOf(m.group());
+				return;
+			}
+		}
+
+		if (chatMessage.startsWith("Your completed Theatre of Blood count is:"))
+		{
+			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
+			if (m.find())
+			{
+				theatreOfBloodNumber = Integer.valueOf(m.group());
 				return;
 			}
 		}
@@ -285,34 +354,38 @@ public class ScreenshotPlugin extends Plugin
 			String fileName = "Kill " + format(new Date());
 			takeScreenshot(fileName);
 		}
-	}
 
-	@Subscribe
-	public void loadWidgets(WidgetLoaded event)
-	{
-		if (!config.screenshotKingdom())
+		if (config.screenshotBossKills() )
 		{
-			return;
-		}
-		if (event.getGroupId() == WidgetID.KINGDOM_GROUP_ID)
-		{
-			String fileName = "Kingdom " + LocalDate.now();
-			takeScreenshot(fileName);
+			Matcher m = BOSSKILL_MESSAGE_PATTERN.matcher(chatMessage);
+			if (m.matches())
+			{
+				String bossName = m.group(1);
+				String bossKillcount = m.group(2);
+				String fileName = bossName + "(" + bossKillcount + ")";
+				takeScreenshot(fileName);
+			}
 		}
 	}
 
 	@Subscribe
-	public void hideWidgets(WidgetHiddenChanged event)
+	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		Widget widget = event.getWidget();
+		String fileName;
+		int groupId = event.getGroupId();
 
-		if (widget.isHidden())
+		switch (groupId)
 		{
-			return;
-		}
-
-		switch (TO_GROUP(widget.getId()))
-		{
+			case QUEST_COMPLETED_GROUP_ID:
+			case CLUE_SCROLL_REWARD_GROUP_ID:
+			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
+			case THEATRE_OF_BLOOD_REWARD_GROUP_ID:
+			case BARROWS_REWARD_GROUP_ID:
+				if (!config.screenshotRewards())
+				{
+					return;
+				}
+				break;
 			case LEVEL_UP_GROUP_ID:
 			case DIALOG_SPRITE_GROUP_ID:
 				if (!config.screenshotLevels())
@@ -320,56 +393,42 @@ public class ScreenshotPlugin extends Plugin
 					return;
 				}
 				break;
-			case QUEST_COMPLETED_GROUP_ID:
-			case CLUE_SCROLL_REWARD_GROUP_ID:
-			case BARROWS_REWARD_GROUP_ID:
-			case RAIDS_REWARD_GROUP_ID:
-				if (!config.screenshotRewards())
+			case KINGDOM_GROUP_ID:
+				if (!config.screenshotKingdom())
 				{
 					return;
 				}
 				break;
 		}
 
-		String fileName;
-
-		switch (TO_GROUP(widget.getId()))
+		switch (groupId)
 		{
-			case LEVEL_UP_GROUP_ID:
+			case KINGDOM_GROUP_ID:
 			{
-				fileName = parseLevelUpWidget(WidgetInfo.LEVEL_UP_LEVEL);
+				fileName = "Kingdom " + LocalDate.now();
+				takeScreenshot(fileName);
 				break;
 			}
-			case DIALOG_SPRITE_GROUP_ID:
+			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
 			{
-				fileName = parseLevelUpWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
-				break;
-			}
-			case QUEST_COMPLETED_GROUP_ID:
-			{
-				Widget textChild = client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT);
-
-				if (textChild == null)
+				if (chambersOfXericNumber == null)
 				{
 					return;
 				}
 
-				// "You have completed The Corsair Curse!"
-				String text = textChild.getText();
-
-				fileName = text.substring(19, text.length() - 1);
+				fileName = "Chambers of Xeric(" + chambersOfXericNumber + ")";
+				chambersOfXericNumber = null;
 				break;
 			}
-			case CLUE_SCROLL_REWARD_GROUP_ID:
+			case THEATRE_OF_BLOOD_REWARD_GROUP_ID:
 			{
-				if (clueType == null || clueNumber == null)
+				if (theatreOfBloodNumber == null)
 				{
 					return;
 				}
 
-				fileName = Character.toUpperCase(clueType.charAt(0)) + clueType.substring(1) + "(" + clueNumber + ")";
-				clueType = null;
-				clueNumber = null;
+				fileName = "Theatre of Blood(" + theatreOfBloodNumber + ")";
+				theatreOfBloodNumber = null;
 				break;
 			}
 			case BARROWS_REWARD_GROUP_ID:
@@ -383,24 +442,28 @@ public class ScreenshotPlugin extends Plugin
 				barrowsNumber = null;
 				break;
 			}
-			case RAIDS_REWARD_GROUP_ID:
+			case LEVEL_UP_GROUP_ID:
+			case DIALOG_SPRITE_GROUP_ID:
+			case QUEST_COMPLETED_GROUP_ID:
 			{
-				if (raidsNumber == null)
+				// level up widget gets loaded prior to the text being set, so wait until the next tick
+				shouldTakeScreenshot = true;
+				return;
+			}
+			case CLUE_SCROLL_REWARD_GROUP_ID:
+			{
+				if (clueType == null || clueNumber == null)
 				{
 					return;
 				}
 
-				fileName = "Raids(" + raidsNumber + ")";
-				raidsNumber = null;
+				fileName = Character.toUpperCase(clueType.charAt(0)) + clueType.substring(1) + "(" + clueNumber + ")";
+				clueType = null;
+				clueNumber = null;
 				break;
 			}
 			default:
 				return;
-		}
-
-		if (fileName == null)
-		{
-			return;
 		}
 
 		takeScreenshot(fileName);
@@ -439,7 +502,7 @@ public class ScreenshotPlugin extends Plugin
 	 *
 	 * @param fileName    Filename to use, without file extension.
 	 */
-	void takeScreenshot(String fileName)
+	private void takeScreenshot(String fileName)
 	{
 		if (client.getGameState() == GameState.LOGIN_SCREEN)
 		{
@@ -476,7 +539,17 @@ public class ScreenshotPlugin extends Plugin
 			File playerFolder;
 			if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
 			{
-				playerFolder = new File(SCREENSHOT_DIR, client.getLocalPlayer().getName());
+				final EnumSet<WorldType> worldTypes = client.getWorldType();
+				final boolean dmm = worldTypes.contains(WorldType.DEADMAN);
+				final boolean sdmm = worldTypes.contains(WorldType.SEASONAL_DEADMAN);
+				final boolean isDmmWorld = dmm || sdmm;
+
+				String playerDir = client.getLocalPlayer().getName();
+				if (isDmmWorld)
+				{
+					playerDir += "-Deadman";
+				}
+				playerFolder = new File(SCREENSHOT_DIR, playerDir);
 			}
 			else
 			{
@@ -589,8 +662,14 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@VisibleForTesting
-	int getRaidsNumber()
+	int getChambersOfXericNumber()
 	{
-		return raidsNumber;
+		return chambersOfXericNumber;
+	}
+
+	@VisibleForTesting
+	int gettheatreOfBloodNumber()
+	{
+		return theatreOfBloodNumber;
 	}
 }

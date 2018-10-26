@@ -26,6 +26,7 @@ package net.runelite.client.plugins.fishing;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Getter;
 import net.runelite.api.ItemID;
 import static net.runelite.api.NpcID.FISHING_SPOT_1497;
 import static net.runelite.api.NpcID.FISHING_SPOT_1498;
@@ -41,6 +42,7 @@ import static net.runelite.api.NpcID.FISHING_SPOT_1524;
 import static net.runelite.api.NpcID.FISHING_SPOT_1525;
 import static net.runelite.api.NpcID.FISHING_SPOT_1528;
 import static net.runelite.api.NpcID.FISHING_SPOT_1530;
+import static net.runelite.api.NpcID.FISHING_SPOT_1536;
 import static net.runelite.api.NpcID.FISHING_SPOT_1542;
 import static net.runelite.api.NpcID.FISHING_SPOT_1544;
 import static net.runelite.api.NpcID.FISHING_SPOT_2653;
@@ -92,7 +94,8 @@ import static net.runelite.api.NpcID.ROD_FISHING_SPOT_7464;
 import static net.runelite.api.NpcID.ROD_FISHING_SPOT_7468;
 import static net.runelite.api.NpcID.ROD_FISHING_SPOT_7676;
 
-public enum FishingSpot
+@Getter
+enum FishingSpot
 {
 	SHRIMP("Shrimp, Anchovies", ItemID.RAW_SHRIMPS,
 		FISHING_SPOT_1518, FISHING_SPOT_1521, FISHING_SPOT_1523,
@@ -148,13 +151,17 @@ public enum FishingSpot
 	),
 	SLIMY_EEL("Slimy eel", ItemID.RAW_SLIMY_EEL,
 		FISHING_SPOT_2653, FISHING_SPOT_2654, FISHING_SPOT_2655
+	),
+	DARK_CRAB("Dark Crab", ItemID.RAW_DARK_CRAB,
+		FISHING_SPOT_1536
 	);
 
-	private static final Map<Integer, FishingSpot> fishingSpots = new HashMap<>();
+	@Getter
+	private static final Map<Integer, FishingSpot> SPOTS = new HashMap<>();
 
 	private final String name;
 	private final int fishSpriteId;
-	private final int[] spots;
+	private final int[] ids;
 
 	static
 	{
@@ -164,35 +171,15 @@ public enum FishingSpot
 		{
 			for (int spotId : spot.getIds())
 			{
-				fishingSpots.put(spotId, spot);
+				SPOTS.put(spotId, spot);
 			}
 		}
 	}
 
-	FishingSpot(String spot, int fishSpriteId, int... spots)
+	FishingSpot(String spot, int fishSpriteId, int... ids)
 	{
 		this.name = spot;
 		this.fishSpriteId = fishSpriteId;
-		this.spots = spots;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public int getFishSpriteId()
-	{
-		return fishSpriteId;
-	}
-
-	public int[] getIds()
-	{
-		return spots;
-	}
-
-	public static FishingSpot getSpot(int npcId)
-	{
-		return fishingSpots.get(npcId);
+		this.ids = ids;
 	}
 }

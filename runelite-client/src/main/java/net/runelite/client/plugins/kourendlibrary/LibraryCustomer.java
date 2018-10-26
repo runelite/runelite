@@ -34,7 +34,7 @@ enum LibraryCustomer
 {
 	VILLIA(NpcID.VILLIA, "Villia"),
 	PROFESSOR_GRACKLEBONE(NpcID.PROFESSOR_GRACKLEBONE, "Prof. Gracklebone"),
-	Sam(NpcID.SAM_7049, "Sam");
+	SAM(NpcID.SAM_7049, "Sam");
 
 	@Getter
 	private final int id;

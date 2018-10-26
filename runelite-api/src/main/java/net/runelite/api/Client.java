@@ -102,6 +102,13 @@ public interface Client extends GameEngine
 	int getRealSkillLevel(Skill skill);
 
 	/**
+	 * Calculates the total level from real skill levels.
+	 *
+	 * @return the total level
+	 */
+	int getTotalLevel();
+
+	/**
 	 * Adds a new chat message to the chatbox.
 	 *
 	 * @param type the type of message
@@ -290,11 +297,9 @@ public interface Client extends GameEngine
 	int getPlane();
 
 	/**
-	 * Gets the current region the local player is in.
-	 *
-	 * @return the region
+	 * Gets the current scene
 	 */
-	Region getRegion();
+	Scene getScene();
 
 	/**
 	 * Gets the logged in player instance.
@@ -327,14 +332,14 @@ public interface Client extends GameEngine
 	SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted, int scale);
 
 	/**
-	 * Loads and creates the sprite image of the passed archive and file IDs.
+	 * Loads and creates the sprite images of the passed archive and file IDs.
 	 *
 	 * @param source the sprite database
 	 * @param archiveId the sprites archive ID
 	 * @param fileId the sprites file ID
 	 * @return the sprite image of the file
 	 */
-	SpritePixels getSprite(IndexDataBase source, int archiveId, int fileId);
+	SpritePixels[] getSprites(IndexDataBase source, int archiveId, int fileId);
 
 	/**
 	 * Gets the sprite index database.
@@ -344,11 +349,17 @@ public interface Client extends GameEngine
 	IndexDataBase getIndexSprites();
 
 	/**
+	 * Gets the script index database.
+	 *
+	 * @return the script database
+	 */
+	IndexDataBase getIndexScripts();
+
+	/**
 	 * Returns the x-axis base coordinate.
 	 * <p>
 	 * This value is the x-axis world coordinate of tile (0, 0) in
-	 * the current scene (ie. the bottom-left most coordinates in
-	 * the rendered region).
+	 * the current scene (ie. the bottom-left most coordinates in the scene).
 	 *
 	 * @return the base x-axis coordinate
 	 */
@@ -358,8 +369,7 @@ public interface Client extends GameEngine
 	 * Returns the y-axis base coordinate.
 	 * <p>
 	 * This value is the y-axis world coordinate of tile (0, 0) in
-	 * the current scene (ie. the bottom-left most coordinates in
-	 * the rendered region).
+	 * the current scene (ie. the bottom-left most coordinates in the scene).
 	 *
 	 * @return the base y-axis coordinate
 	 */
@@ -373,12 +383,28 @@ public interface Client extends GameEngine
 	int getMouseCurrentButton();
 
 	/**
-	 * Gets the currently selected region tile (ie. last right clicked
-	 * tile).
+	 * Schedules checking of current region tile for next frame, so ${@link Client#getSelectedSceneTile()} ()} will
+	 * return actual value.
 	 *
-	 * @return the selected region tile
+	 * @param checkClick when true next frame selected region tile will be updated
 	 */
-	Tile getSelectedRegionTile();
+	void setCheckClick(boolean checkClick);
+
+	/**
+	 * Sets current mouse hover position. This value is automatically updated only when right-clicking in game.
+	 * Setting this value together with ${@link Client#setCheckClick(boolean)} will update ${@link Client#getSelectedSceneTile()} ()}
+	 * for next frame.
+	 *
+	 * @param position current mouse hover position
+	 */
+	void setMouseCanvasHoverPosition(Point position);
+
+	/**
+	 * Gets the currently selected tile (ie. last right clicked tile).
+	 *
+	 * @return the selected tile
+	 */
+	Tile getSelectedSceneTile();
 
 	/**
 	 * Checks whether a widget is currently being dragged.
@@ -460,6 +486,13 @@ public interface Client extends GameEngine
 	 * @return the run energy
 	 */
 	int getEnergy();
+
+	/**
+	 * Gets the current weight of the logged in player.
+	 *
+	 * @return the weight
+	 */
+	int getWeight();
 
 	/**
 	 * Gets an array of options that can currently be used on other players.
@@ -646,12 +679,14 @@ public interface Client extends GameEngine
 	String getVar(VarClientStr varClientStr);
 
 	/**
-	 * Sets the given variable
-	 *
-	 * @param varClientStr
-	 * @param value
+	 * Sets a VarClientString to the passed value
 	 */
 	void setVar(VarClientStr varClientStr, String value);
+
+	/**
+	 * Sets a VarClientInt to the passed value
+	 */
+	void setVar(VarClientInt varClientStr, int value);
 
 	/**
 	 * Sets the value of a given variable.
@@ -672,6 +707,28 @@ public interface Client extends GameEngine
 	 */
 	@VisibleForDevtools
 	int getVarbitValue(int[] varps, int varbitId);
+
+	/**
+	 * Gets the value of a given VarPlayer.
+	 *
+	 * @param varps passed varps
+	 * @param varpId the VarpPlayer id
+	 * @return the value
+	 * @see VarPlayer#id
+	 */
+	@VisibleForDevtools
+	int getVarpValue(int[] varps, int varpId);
+
+	/**
+	 * Sets the value of a given VarPlayer.
+	 *
+	 * @param varps passed varps
+	 * @param varpId the VarpPlayer id
+	 * @param value the value
+	 * @see VarPlayer#id
+	 */
+	@VisibleForDevtools
+	void setVarpValue(int[] varps, int varpId, int value);
 
 	/**
 	 * Sets the value of a given variable.
@@ -904,6 +961,11 @@ public interface Client extends GameEngine
 	int getMouseIdleTicks();
 
 	/**
+	 * Gets the number of milliseconds since the last mouse press occurred.
+	 */
+	long getMouseLastPressedMillis();
+
+	/**
 	 * Gets the amount of ticks since the last keyboard press occurred.
 	 *
 	 * @return amount of idle keyboard ticks
@@ -1002,6 +1064,27 @@ public interface Client extends GameEngine
 	 * @return the friends list
 	 */
 	Friend[] getFriends();
+
+	/**
+	 * Gets the number of friends on the friends list.
+	 *
+	 * @return
+	 */
+	int getFriendsCount();
+
+	/**
+	 * Gets an array of players on the ignore list.
+	 *
+	 * @return
+	 */
+	Ignore[] getIgnores();
+
+	/**
+	 * Gets the number of ignored players on the ignore list.
+	 *
+	 * @return
+	 */
+	int getIgnoreCount();
 
 	/**
 	 * Checks whether a player is in the same clan chat.
@@ -1339,34 +1422,23 @@ public interface Client extends GameEngine
 	@VisibleForDevtools
 	int[] getSkillExperiences();
 
-	@VisibleForDevtools
-	int[] getChangedSkills();
-
-	@VisibleForDevtools
-	int getChangedSkillsCount();
-
-	@VisibleForDevtools
-	void setChangedSkillsCount(int i);
+	void queueChangedSkill(Skill skill);
 
 	/**
-	 * Sets a mapping of sprites to override.
+	 * Gets a mapping of sprites to override.
 	 * <p>
 	 * The key value in the map corresponds to the ID of the sprite,
 	 * and the value the sprite to replace it with.
-	 *
-	 * @param overrides the sprites to override
 	 */
-	void setSpriteOverrides(Map<Integer, SpritePixels> overrides);
+	Map<Integer, SpritePixels> getSpriteOverrides();
 
 	/**
-	 * Sets a mapping of widget sprites to override.
+	 * Gets a mapping of widget sprites to override.
 	 * <p>
 	 * The key value in the map corresponds to the packed widget ID,
 	 * and the value the sprite to replace the widgets sprite with.
-	 *
-	 * @param overrides the sprites to override
 	 */
-	void setWidgetSpriteOverrides(Map<Integer, SpritePixels> overrides);
+	Map<Integer, SpritePixels> getWidgetSpriteOverrides();
 
 	/**
 	 * Sets the compass sprite.
@@ -1374,6 +1446,13 @@ public interface Client extends GameEngine
 	 * @param spritePixels the new sprite
 	 */
 	void setCompass(SpritePixels spritePixels);
+
+	/**
+	 * Returns widget sprite cache, to be used with {@link Client#getSpriteOverrides()}
+	 *
+	 * @return the cache
+	 */
+	NodeCache getWidgetSpriteCache();
 
 	/**
 	 * Gets the current server tick count.
@@ -1409,4 +1488,22 @@ public interface Client extends GameEngine
 	 * @param state boolean enabled value
 	 */
 	void setOculusOrbState(int state);
+
+	/**
+	 * Sets the normal moving speed when using oculus orb (default value is 12)
+	 *
+	 * @param speed speed
+	 */
+	void setOculusOrbNormalSpeed(int speed);
+
+	/**
+	 * Opens in-game world hopper interface
+	 */
+	void openWorldHopper();
+
+	/**
+	 * Hops using in-game world hopper widget to another world
+	 * @param world target world to hop to
+	 */
+	void hopToWorld(World world);
 }

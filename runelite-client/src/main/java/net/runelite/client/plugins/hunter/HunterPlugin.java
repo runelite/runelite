@@ -306,7 +306,7 @@ public class HunterPlugin extends Plugin
 	{
 		// Check if all traps are still there, and remove the ones that are not.
 		Iterator<Map.Entry<WorldPoint, HunterTrap>> it = traps.entrySet().iterator();
-		Tile[][][] tiles = client.getRegion().getTiles();
+		Tile[][][] tiles = client.getScene().getTiles();
 
 		Instant expire = Instant.now().minus(HunterTrap.TRAP_TIME.multipliedBy(2));
 
@@ -330,7 +330,7 @@ public class HunterPlugin extends Plugin
 				continue;
 			}
 
-			Tile tile = tiles[world.getPlane()][local.getRegionX()][local.getRegionY()];
+			Tile tile = tiles[world.getPlane()][local.getSceneX()][local.getSceneY()];
 			GameObject[] objects = tile.getGameObjects();
 
 			boolean containsBoulder = false;

@@ -33,7 +33,8 @@ import javax.inject.Inject;
 import static net.runelite.api.ChatMessageType.SERVER;
 import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
@@ -60,7 +61,8 @@ public class ScreenshotPluginTest
 {
 	private static final String CLUE_SCROLL = "<col=3300ff>You have completed 28 medium Treasure Trails</col>";
 	private static final String BARROWS_CHEST = "Your Barrows chest count is <col=ff0000>310</col>";
-	private static final String RAIDS_CHEST = "Your completed Chambers of Xeric count is: <col=ff0000>489.</col>";
+	private static final String CHAMBERS_OF_XERIC_CHEST = "Your completed Chambers of Xeric count is: <col=ff0000>489</col>.";
+	private static final String THEATRE_OF_BLOOD_CHEST = "Your completed Theatre of Blood count is: <col=ff0000>73</col>.";
 
 	@Mock
 	@Bind
@@ -121,12 +123,21 @@ public class ScreenshotPluginTest
 	}
 
 	@Test
-	public void testRaidsChest()
+	public void testChambersOfXericChest()
 	{
-		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Seth", RAIDS_CHEST, null);
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Seth", CHAMBERS_OF_XERIC_CHEST, null);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		assertEquals(489, screenshotPlugin.getRaidsNumber());
+		assertEquals(489, screenshotPlugin.getChambersOfXericNumber());
+	}
+
+	@Test
+	public void testTheatreOfBloodChest()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Magic fTail", THEATRE_OF_BLOOD_CHEST, null);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals(73, screenshotPlugin.gettheatreOfBloodNumber());
 	}
 
 	@Test
@@ -142,9 +153,12 @@ public class ScreenshotPluginTest
 
 		assertEquals("Hitpoints(99)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
 
-		WidgetHiddenChanged event = new WidgetHiddenChanged();
-		event.setWidget(widget);
-		screenshotPlugin.hideWidgets(event);
+		WidgetLoaded event = new WidgetLoaded();
+		event.setGroupId(LEVEL_UP_GROUP_ID);
+		screenshotPlugin.onWidgetLoaded(event);
+
+		GameTick tick = new GameTick();
+		screenshotPlugin.onGameTick(tick);
 
 		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
 	}
@@ -162,9 +176,12 @@ public class ScreenshotPluginTest
 
 		assertEquals("Firemaking(9)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
 
-		WidgetHiddenChanged event = new WidgetHiddenChanged();
-		event.setWidget(widget);
-		screenshotPlugin.hideWidgets(event);
+		WidgetLoaded event = new WidgetLoaded();
+		event.setGroupId(LEVEL_UP_GROUP_ID);
+		screenshotPlugin.onWidgetLoaded(event);
+
+		GameTick tick = new GameTick();
+		screenshotPlugin.onGameTick(tick);
 
 		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
 	}
@@ -182,9 +199,12 @@ public class ScreenshotPluginTest
 
 		assertEquals("Attack(70)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
 
-		WidgetHiddenChanged event = new WidgetHiddenChanged();
-		event.setWidget(widget);
-		screenshotPlugin.hideWidgets(event);
+		WidgetLoaded event = new WidgetLoaded();
+		event.setGroupId(LEVEL_UP_GROUP_ID);
+		screenshotPlugin.onWidgetLoaded(event);
+
+		GameTick tick = new GameTick();
+		screenshotPlugin.onGameTick(tick);
 
 		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
 	}
@@ -198,13 +218,16 @@ public class ScreenshotPluginTest
 		Widget levelChild = mock(Widget.class);
 		when(client.getWidget(Matchers.eq(DIALOG_SPRITE_TEXT))).thenReturn(levelChild);
 
-		when(levelChild.getText()).thenReturn("Your Hunter level is now 2.");
+		when(levelChild.getText()).thenReturn("<col=000080>Congratulations, you've just advanced a Hunter level.<col=000000><br><br>Your Hunter level is now 2.");
 
 		assertEquals("Hunter(2)", screenshotPlugin.parseLevelUpWidget(DIALOG_SPRITE_TEXT));
 
-		WidgetHiddenChanged event = new WidgetHiddenChanged();
-		event.setWidget(widget);
-		screenshotPlugin.hideWidgets(event);
+		WidgetLoaded event = new WidgetLoaded();
+		event.setGroupId(DIALOG_SPRITE_GROUP_ID);
+		screenshotPlugin.onWidgetLoaded(event);
+
+		GameTick tick = new GameTick();
+		screenshotPlugin.onGameTick(tick);
 
 		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
 	}

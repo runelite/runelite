@@ -32,6 +32,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
+/**
+ * Used for getting decorative objects in view, deprecated as of existence of DecorativeObject spawn events
+ *
+ * @see net.runelite.api.events.DecorativeObjectSpawned
+ * @see net.runelite.api.events.DecorativeObjectDespawned
+ * @see net.runelite.api.events.DecorativeObjectChanged
+ */
+@Deprecated
 public class DecorativeObjectQuery extends TileObjectQuery<DecorativeObject, DecorativeObjectQuery>
 {
 	@Override

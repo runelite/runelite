@@ -71,8 +71,8 @@ public class SpriteManager
 			return cached;
 		}
 
-		SpritePixels sp = client.getSprite(client.getIndexSprites(), archive, file);
-		BufferedImage img = sp.toBufferedImage();
+		SpritePixels[] sp = client.getSprites(client.getIndexSprites(), archive, 0);
+		BufferedImage img = sp[file].toBufferedImage();
 
 		cache.put(key, img);
 		return img;
@@ -87,7 +87,7 @@ public class SpriteManager
 			return;
 		}
 
-		clientThread.invokeLater(() ->
+		clientThread.invoke(() ->
 		{
 			BufferedImage img = getSprite(archive, file);
 			if (img == null)

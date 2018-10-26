@@ -52,6 +52,7 @@ public class ItemChargePlugin extends Plugin
 		"Your dodgy necklace protects you\\..*It has (\\d+) charges? left\\.");
 	private static final Pattern DODGY_BREAK_PATTERN = Pattern.compile(
 		"Your dodgy necklace protects you\\..*It then crumbles to dust\\.");
+	private static final String RING_OF_RECOIL_BREAK_MESSAGE = "<col=7f007f>Your Ring of Recoil has shattered.</col>";
 
 	private static final int MAX_DODGY_CHARGES = 10;
 
@@ -98,7 +99,7 @@ public class ItemChargePlugin extends Plugin
 		Matcher dodgyBreakMatcher = DODGY_BREAK_PATTERN.matcher(message);
 		if (event.getType() == ChatMessageType.SERVER || event.getType() == ChatMessageType.FILTERED)
 		{
-			if (config.recoilNotification() && message.contains("<col=7f007f>Your Ring of Recoil has shattered.</col>"))
+			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
 				notifier.notify("Your Ring of Recoil has shattered");
 			}

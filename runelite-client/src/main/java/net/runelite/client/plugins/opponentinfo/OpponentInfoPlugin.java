@@ -118,13 +118,13 @@ public class OpponentInfoPlugin extends Plugin
 		}
 
 		EnumSet<WorldType> worldType = client.getWorldType();
-		if (worldType.contains(WorldType.DEADMAN))
-		{
-			hiscoreEndpoint = HiscoreEndpoint.DEADMAN;
-		}
-		else if (worldType.contains(WorldType.SEASONAL_DEADMAN))
+		if (worldType.contains(WorldType.SEASONAL_DEADMAN))
 		{
 			hiscoreEndpoint = HiscoreEndpoint.SEASONAL_DEADMAN;
+		}
+		else if (worldType.contains(WorldType.DEADMAN))
+		{
+			hiscoreEndpoint = HiscoreEndpoint.DEADMAN;
 		}
 		else
 		{
@@ -154,7 +154,9 @@ public class OpponentInfoPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		if (lastOpponent != null && client.getLocalPlayer().getInteracting() == null)
+		if (lastOpponent != null
+			&& lastTime != null
+			&& client.getLocalPlayer().getInteracting() == null)
 		{
 			if (Duration.between(lastTime, Instant.now()).compareTo(WAIT) > 0)
 			{

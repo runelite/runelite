@@ -38,9 +38,7 @@ import static net.runelite.api.ItemID.PLATINUM_TOKEN;
 import net.runelite.api.queries.BankItemQuery;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.ItemMapping;
 import net.runelite.client.util.QueryRunner;
-import net.runelite.http.api.item.ItemPrice;
 
 @Slf4j
 class BankCalculation
@@ -143,20 +141,7 @@ class BankCalculation
 					continue;
 				}
 
-				long price = 0;
-				for (int mappedItemId : ItemMapping.map(itemId))
-				{
-					ItemPrice cachedItemPrice = itemManager.getItemPrice(mappedItemId);
-					if (cachedItemPrice == null)
-					{
-						// this happens to items which have no ge price
-						continue;
-					}
-
-					price += cachedItemPrice.getPrice();
-				}
-
-				gePrice += price * quantity;
+				gePrice += (long) itemManager.getItemPrice(itemId) * quantity;
 			}
 		}
 	}

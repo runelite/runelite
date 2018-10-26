@@ -87,7 +87,7 @@ public abstract class TileObjectMixin implements TileObject
 	@Inject
 	public Point getCanvasLocation(int zOffset)
 	{
-		return Perspective.worldToCanvas(client, getX(), getY(), 0, zOffset);
+		return Perspective.localToCanvas(client, getLocalLocation(), getPlane(), zOffset);
 	}
 
 	@Override
@@ -108,6 +108,6 @@ public abstract class TileObjectMixin implements TileObject
 	@Inject
 	public Point getMinimapLocation()
 	{
-		return Perspective.worldToMiniMap(client, getX(), getY());
+		return Perspective.localToMinimap(client, getLocalLocation());
 	}
 }

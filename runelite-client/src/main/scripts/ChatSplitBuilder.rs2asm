@@ -1,0 +1,599 @@
+.id                 89
+.int_stack_count    1
+.string_stack_count 0
+.int_var_count      16
+.string_var_count   4
+   load_int               0
+   istore                 1
+   load_int               2
+   istore                 2
+   load_int               103
+   istore                 3
+   load_int               4
+   istore                 4
+   load_int               23
+   istore                 5
+   invoke                 900
+   istore                 6
+   load_int               103
+   load_int               105
+   load_int               1136
+   iload                  6
+   get_enum_value        
+   load_int               0
+   if_icmpgt              LABEL20
+   jump                   LABEL58
+LABEL20:
+   iload                  6
+   load_int               1745
+   if_icmpeq              LABEL24
+   jump                   LABEL36
+LABEL24:
+   load_int               0
+   load_int               102
+   load_int               103
+   load_int               105
+   load_int               1960
+   iload                  6
+   get_enum_value        
+   load_int               30
+   istore                 5
+   istore                 1
+   istore                 3
+   istore                 2
+LABEL36:
+   get_varc               41
+   load_int               -1
+   if_icmpeq              LABEL40
+   jump                   LABEL49
+LABEL40:
+   invoke                 922
+   load_int               1
+   if_icmpeq              LABEL44
+   jump                   LABEL49
+LABEL44:
+   iload                  4
+   iload                  5
+   iadd                  
+   istore                 4
+   jump                   LABEL58
+LABEL49:
+   iload                  4
+   load_int               73
+   load_int               73
+   iload                  6
+   load_int               10551325
+   get_enum_value        
+   widget_get_height_widget
+   iadd                  
+   istore                 4
+LABEL58:
+   iload                  4
+   istore                 7
+   load_int               10682368
+   widget_get_width_widget
+   istore                 8
+   load_int               0
+   istore                 9
+   load_int               105
+   load_int               73
+   load_int               580
+   iload                  9
+   get_enum_value        
+   istore                 10
+   load_int               0
+   istore                 11
+   load_string            ""
+   sstore                 0
+   get_system_update_timer
+   load_int               0
+   if_icmpgt              LABEL79
+   jump                   LABEL156
+LABEL79:
+   get_system_update_timer
+   load_int               50
+   idiv                  
+   load_int               60
+   modulo                
+   istore                 11
+   iload                  11
+   load_int               10
+   if_icmplt              LABEL89
+   jump                   LABEL100
+LABEL89:
+   load_string            "System update in: "
+   get_system_update_timer
+   load_int               3000
+   idiv                  
+   int_to_string         
+   load_string            ":0"
+   iload                  11
+   int_to_string         
+   string_append          4
+   sstore                 0
+   jump                   LABEL110
+LABEL100:
+   load_string            "System update in: "
+   get_system_update_timer
+   load_int               3000
+   idiv                  
+   int_to_string         
+   load_string            ":"
+   iload                  11
+   int_to_string         
+   string_append          4
+   sstore                 0
+LABEL110:
+   iload                  7
+   sload                  0
+   iload                  9
+   iload                  10
+   load_int               10682368
+   iload                  8
+   iload                  1
+   load_int               13
+   iload                  7
+   iload                  2
+   iload                  3
+   load_int               16776960
+   load_int               1
+   invoke                 199
+   iadd                  
+   istore                 7
+   iload                  10
+   widget_put_actions_null_widget
+   load_int               -1
+   load_string            ""
+   iload                  10
+   widget_put_option_click_listener_widget
+   load_int               -1
+   load_string            ""
+   iload                  10
+   widget_put_mouse_hover_listener_widget
+   load_int               -1
+   load_string            ""
+   iload                  10
+   widget_put_mouse_exit_listener_widget
+   load_int               0
+   load_int               0
+   load_int               0
+   load_int               0
+   iload                  10
+   widget_put_size_widget
+   iload                  9
+   load_int               1
+   iadd                  
+   istore                 9
+   load_int               105
+   load_int               73
+   load_int               580
+   iload                  9
+   get_enum_value        
+   istore                 10
+LABEL156:
+   load_int               -1
+   istore                 12
+   load_int               -1
+   istore                 13
+   load_string            ""
+   sstore                 1
+   load_int               0
+   istore                 14
+   load_string            ""
+   sstore                 2
+   load_string            ""
+   sstore                 3
+   get_varc               55
+   get_varc               202
+   if_icmpge              LABEL172
+   jump                   LABEL282
+LABEL172:
+   get_varc               55
+   get_gamecycle         
+   load_int               3000
+   isub                  
+   if_icmpgt              LABEL178
+   jump                   LABEL282
+LABEL178:
+   load_int               14
+   get_chatlinebuffer_length
+   load_int               0
+   if_icmpgt              LABEL183
+   jump                   LABEL282
+LABEL183:
+   load_int               14
+   load_int               0
+   get_chat_message_type 
+   istore                 14
+   sstore                 0
+   sstore                 2
+   sstore                 1
+   istore                 13
+   istore                 12
+   iload                  12
+   load_int               -1
+   if_icmpne              LABEL196
+   jump                   LABEL282
+LABEL196:
+   sload                  0
+   invoke                 2066
+   sstore                 3
+   sstore                 0
+   iload                  7
+   sload                  0
+   iload                  9
+   iload                  10
+   load_int               10682368
+   iload                  8
+   iload                  1
+   load_int               13
+   iload                  7
+   iload                  2
+   iload                  3
+   load_int               16776960
+   load_int               1
+   invoke                 199
+   iadd                  
+   istore                 7
+   iload                  10
+   widget_put_actions_null_widget
+   sload                  3
+   string_length         
+   load_int               0
+   if_icmpgt              LABEL223
+   jump                   LABEL248
+LABEL223:
+   load_int               6
+   load_string            "Open"
+   iload                  10
+   widget_put_action_widget
+   load_int               7
+   load_string            "Check"
+   iload                  10
+   widget_put_action_widget
+   load_int               2065
+   iload                  10
+   widget_get_parentid_widget
+   iload                  9
+   load_int               16777215
+   load_string            "Iii"
+   iload                  10
+   widget_put_mouse_hover_listener_widget
+   load_int               2065
+   iload                  10
+   widget_get_parentid_widget
+   iload                  9
+   load_int               16776960
+   load_string            "Iii"
+   iload                  10
+   widget_put_mouse_exit_listener_widget
+   jump                   LABEL256
+LABEL248:
+   load_int               -1
+   load_string            ""
+   iload                  10
+   widget_put_mouse_hover_listener_widget
+   load_int               -1
+   load_string            ""
+   iload                  10
+   widget_put_mouse_exit_listener_widget
+LABEL256:
+   load_int               9
+   load_string            "Clear history"
+   iload                  10
+   widget_put_action_widget
+   load_string            "<col=ff9040>"
+   load_string            "Notification"
+   load_string            "</col>"
+   string_append          3
+   iload                  10
+   widget_put_name_widget
+   load_int               2064
+   load_int               -2147483644
+   sload                  3
+   load_string            "is"
+   iload                  10
+   widget_put_option_click_listener_widget
+   iload                  9
+   load_int               1
+   iadd                  
+   istore                 9
+   load_int               105
+   load_int               73
+   load_int               580
+   iload                  9
+   get_enum_value        
+   istore                 10
+LABEL282:
+   iload                  0
+   istore                 12
+   load_int               0
+   istore                 15
+   get_varp               287
+   load_int               1
+   if_icmpeq              LABEL290
+   jump                   LABEL479
+LABEL290:
+   get_varc               41
+   load_int               -1
+   if_icmpne              LABEL297
+   get_varbit             4089
+   load_int               0
+   if_icmpeq              LABEL297
+   jump                   LABEL479
+LABEL297:
+   iload                  12
+   load_int               -1
+   if_icmpne              LABEL301
+   jump                   LABEL479
+LABEL301:
+   iload                  10
+   load_int               -1
+   if_icmpne              LABEL305
+   jump                   LABEL479
+LABEL305:
+   iload                  7
+   iload                  4
+   isub                  
+   load_int               57
+   if_icmplt              LABEL311
+   jump                   LABEL479
+LABEL311:
+   iload                  12
+   get_chat_message      
+   istore                 14
+   sstore                 0
+   sstore                 2
+   sstore                 1
+   istore                 13
+   istore                 15
+   iload                  15
+   sload                  1
+   iload                  13
+   iload                  14
+   invoke                 91
+   load_int               1
+   if_icmpeq              LABEL327
+   jump                   LABEL475
+LABEL327:
+   iload                  15
+   switch                
+      3: LABEL330
+      6: LABEL351
+      7: LABEL330
+   jump                   LABEL372
+LABEL330:
+   iload                  7
+   load_string            "From "
+   sload                  1
+   load_string            ":"
+   load_string            "privateChatSplitFrom"
+   runelite_callback
+   string_append          3
+   sload                  0
+   iload                  9
+   iload                  10
+   load_int               10682368
+   iload                  8
+   iload                  1
+   load_int               13
+   iload                  7
+   iload                  2
+   iload                  3
+   load_int               65535
+   load_int               1
+   invoke                 203
+   iadd                  
+   istore                 7
+   jump                   LABEL407
+LABEL351:
+   iload                  7
+   load_string            "To "
+   sload                  1
+   load_string            ":"
+   load_string            "privateChatSplitTo"
+   runelite_callback
+   string_append          3
+   sload                  0
+   iload                  9
+   iload                  10
+   load_int               10682368
+   iload                  8
+   iload                  1
+   load_int               13
+   iload                  7
+   iload                  2
+   iload                  3
+   load_int               65535
+   load_int               1
+   invoke                 203
+   iadd                  
+   istore                 7
+   jump                   LABEL407
+LABEL372:
+   iload                  7
+   sload                  0
+   iload                  9
+   iload                  10
+   load_int               10682368
+   iload                  8
+   iload                  1
+   load_int               13
+   iload                  7
+   iload                  2
+   iload                  3
+   load_int               65535
+   load_int               1
+   invoke                 199
+   iadd                  
+   istore                 7
+   iload                  15
+   load_int               5
+   if_icmpeq              LABEL392
+   jump                   LABEL407
+LABEL392:
+   get_varbit             1627
+   load_int               0
+   if_icmpeq              LABEL396
+   jump                   LABEL407
+LABEL396:
+   iload                  13
+   load_int               500
+   iadd                  
+   load_int               1
+   iadd                  
+   put_varc               65
+   load_int               664
+   load_int               0
+   load_string            "1"
+   load_int               10616832
+   widget_put_render_listener_widget
+LABEL407:
+   iload                  10
+   widget_put_actions_null_widget
+   iload                  15
+   load_int               3
+   if_icmpeq              LABEL419
+   iload                  15
+   load_int               6
+   if_icmpeq              LABEL419
+   iload                  15
+   load_int               7
+   if_icmpeq              LABEL419
+   jump                   LABEL453
+LABEL419:
+   iload                  14
+   load_int               1
+   if_icmpeq              LABEL423
+   jump                   LABEL428
+LABEL423:
+   load_int               8
+   load_string            "Message"
+   iload                  10
+   widget_put_action_widget
+   jump                   LABEL436
+LABEL428:
+   load_int               8
+   load_string            "Add friend"
+   iload                  10
+   widget_put_action_widget
+   load_int               9
+   load_string            "Add ignore"
+   iload                  10
+   widget_put_action_widget
+LABEL436:
+   load_int               10
+   load_string            "Report"
+   iload                  10
+   widget_put_action_widget
+   load_string            "<col=ffffff>"
+   sload                  1
+   load_string            "</col>"
+   string_append          3
+   iload                  10
+   widget_put_name_widget
+   load_int               88
+   load_int               -2147483644
+   load_string            "event_opbase"
+   load_string            "is"
+   iload                  10
+   widget_put_option_click_listener_widget
+   jump                   LABEL457
+LABEL453:
+   load_int               -1
+   load_string            ""
+   iload                  10
+   widget_put_option_click_listener_widget
+LABEL457:
+   load_int               -1
+   load_string            ""
+   iload                  10
+   widget_put_mouse_hover_listener_widget
+   load_int               -1
+   load_string            ""
+   iload                  10
+   widget_put_mouse_exit_listener_widget
+   iload                  9
+   load_int               1
+   iadd                  
+   istore                 9
+   load_int               105
+   load_int               73
+   load_int               580
+   iload                  9
+   get_enum_value        
+   istore                 10
+LABEL475:
+   iload                  12
+   get_messagenode_next_id
+   istore                 12
+   jump                   LABEL297
+LABEL479:
+   iload                  10
+   load_int               -1
+   if_icmpne              LABEL483
+   jump                   LABEL540
+LABEL483:
+   iload                  10
+   widget_put_actions_null_widget
+   load_int               -1
+   load_string            ""
+   iload                  10
+   widget_put_option_click_listener_widget
+   load_int               -1
+   load_string            ""
+   iload                  10
+   widget_put_mouse_hover_listener_widget
+   load_int               -1
+   load_string            ""
+   iload                  10
+   widget_put_mouse_exit_listener_widget
+   load_int               0
+   load_int               0
+   load_int               0
+   load_int               0
+   iload                  10
+   widget_put_size_widget
+   load_int               10682368
+   iload                  9
+   load_int               2
+   imul                  
+   widget_load_child     
+   load_int               1
+   if_icmpeq              LABEL511
+   jump                   LABEL515
+LABEL511:
+   load_string            ""
+   widget_put_text       
+   load_int               1
+   widget_put_hidden     
+LABEL515:
+   load_int               10682368
+   iload                  9
+   load_int               2
+   imul                  
+   load_int               1
+   iadd                  
+   widget_load_child     
+   load_int               1
+   if_icmpeq              LABEL525
+   jump                   LABEL529
+LABEL525:
+   load_string            ""
+   widget_put_text       
+   load_int               1
+   widget_put_hidden     
+LABEL529:
+   iload                  9
+   load_int               1
+   iadd                  
+   istore                 9
+   load_int               105
+   load_int               73
+   load_int               580
+   iload                  9
+   get_enum_value        
+   istore                 10
+   jump                   LABEL479
+LABEL540:
+   return                

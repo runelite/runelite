@@ -1,0 +1,367 @@
+.id                 395
+.int_stack_count    3
+.string_stack_count 1
+.int_var_count      10
+.string_var_count   4
+   iload                  0
+   get_boostedskilllevels
+   int_to_string
+   widget_put_text
+   iload                  0
+   get_realskilllevels
+   istore                 3
+   iload                  0                   ; load the skill id from arguments
+   iload                  3                   ; load the current real skill level
+   load_string            "skillTabBaseLevel" ; push event name
+   runelite_callback                          ; invoke callback
+   istore                 3                   ; store the (possibly) edited real skill level
+   iload                  3
+   int_to_string
+   widget_put_text        1
+   iload                  0
+   get_skillexperiences
+   istore                 4
+   load_string            ","
+   sstore                 1
+   sload                  0
+   load_string            " XP:"
+   string_append          2
+   sstore                 2
+   iload                  4
+   sload                  1
+   invoke                 46
+   sstore                 3
+   load_int               0
+   istore                 5
+   get_varbit             4181
+   load_int               0
+   if_icmpeq              LABEL29
+   jump                   LABEL60
+LABEL29:
+   iload                  3
+   load_int               99
+   load_string            "skillTabMaxLevel"   ; push event name
+   runelite_callback                           ; invoke callback
+   if_icmplt              LABEL33
+   jump                   LABEL59
+LABEL33:
+   load_int               105
+   load_int               105
+   load_int               256
+   iload                  3
+   load_int               1
+   iadd
+   get_enum_value
+   istore                 5
+   sload                  2
+   load_string            "|Next level at:|Remaining XP:"
+   concat_string
+   sstore                 2
+   sload                  3
+   load_string            "|"
+   iload                  5
+   sload                  1
+   invoke                 46
+   load_string            "|"
+   iload                  5
+   iload                  4
+   isub
+   sload                  1
+   invoke                 46
+   string_append          4
+   concat_string
+   sstore                 3
+LABEL59:
+   jump                   LABEL78
+LABEL60:
+   sload                  2
+   load_string            "|Next level at:"
+   concat_string
+   sstore                 2
+   sload                  3
+   load_string            "|"
+   load_int               105
+   load_int               105
+   load_int               256
+   iload                  3
+   load_int               1
+   iadd
+   get_enum_value
+   sload                  1
+   invoke                 46
+   string_append          2
+   concat_string
+   sstore                 3
+LABEL78:
+   load_int               0
+   istore                 6
+   load_int               0
+   istore                 7
+   load_int               0
+   istore                 8
+   load_int               0
+   istore                 9
+   invoke                 1138
+   load_int               1
+   if_icmpeq              LABEL90
+   jump                   LABEL227
+LABEL90:
+   iload                  0
+   invoke                 1936
+   istore                 6
+   iload                  6
+   load_int               -1
+   if_icmpne              LABEL97
+   jump                   LABEL127
+LABEL97:
+   iload                  6
+   load_int               10
+   idiv
+   istore                 6
+   iload                  6
+   iload                  4
+   if_icmpgt              LABEL105
+   jump                   LABEL127
+LABEL105:
+   sload                  2
+   load_string            "|"
+   load_string            "<col=7c0808>"
+   load_string            "XP to regain:"
+   load_string            "</col>"
+   string_append          4
+   concat_string
+   sstore                 2
+   sload                  3
+   load_string            "|"
+   load_string            "<col=7c0808>"
+   iload                  6
+   iload                  4
+   isub
+   sload                  1
+   invoke                 46
+   load_string            "</col>"
+   string_append          4
+   concat_string
+   sstore                 3
+   load_int               1
+   istore                 7
+LABEL127:
+   iload                  7
+   load_int               0
+   if_icmpeq              LABEL131
+   jump                   LABEL227
+LABEL131:
+   get_varp               1588
+   load_int               0
+   if_icmpgt              LABEL135
+   jump                   LABEL227
+LABEL135:
+   iload                  0
+   switch
+      0: LABEL138
+      1: LABEL183
+      2: LABEL138
+      4: LABEL183
+      6: LABEL138
+   jump                   LABEL227
+LABEL138:
+   load_int               20
+   invoke                 2031
+   istore                 9
+   iload                  9
+   load_int               0
+   if_icmpgt              LABEL145
+   jump                   LABEL164
+LABEL145:
+   sload                  2
+   load_string            "|"
+   load_string            "<col=7c0808>"
+   load_string            "XP permitted:"
+   load_string            "</col>"
+   string_append          4
+   concat_string
+   sstore                 2
+   sload                  3
+   load_string            "|"
+   load_string            "<col=7c0808>"
+   iload                  9
+   sload                  1
+   invoke                 46
+   load_string            "</col>"
+   string_append          4
+   concat_string
+   sstore                 3
+   jump                   LABEL182
+LABEL164:
+   load_int               1
+   istore                 8
+   sload                  2
+   load_string            "|"
+   load_string            "<col=7c0808>"
+   load_string            "XP permitted:"
+   load_string            "</col>"
+   string_append          4
+   concat_string
+   sstore                 2
+   sload                  3
+   load_string            "|"
+   load_string            "<col=7c0808>"
+   load_string            "NONE"
+   load_string            "</col>"
+   string_append          4
+   concat_string
+   sstore                 3
+LABEL182:
+   jump                   LABEL227
+LABEL183:
+   load_int               30
+   invoke                 2031
+   istore                 9
+   iload                  9
+   load_int               0
+   if_icmpgt              LABEL190
+   jump                   LABEL209
+LABEL190:
+   sload                  2
+   load_string            "|"
+   load_string            "<col=7c0808>"
+   load_string            "XP permitted:"
+   load_string            "</col>"
+   string_append          4
+   concat_string
+   sstore                 2
+   sload                  3
+   load_string            "|"
+   load_string            "<col=7c0808>"
+   iload                  9
+   sload                  1
+   invoke                 46
+   load_string            "</col>"
+   string_append          4
+   concat_string
+   sstore                 3
+   jump                   LABEL227
+LABEL209:
+   load_int               1
+   istore                 8
+   sload                  2
+   load_string            "|"
+   load_string            "<col=7c0808>"
+   load_string            "XP permitted:"
+   load_string            "</col>"
+   string_append          4
+   concat_string
+   sstore                 2
+   sload                  3
+   load_string            "|"
+   load_string            "<col=7c0808>"
+   load_string            "NONE"
+   load_string            "</col>"
+   string_append          4
+   concat_string
+   sstore                 3
+LABEL227:
+   iload                  1
+   load_int               5
+   widget_load_child      1
+   load_int               1
+   if_icmpeq              LABEL233
+   jump                   LABEL243
+LABEL233:
+   iload                  8
+   load_int               1
+   if_icmpeq              LABEL237
+   jump                   LABEL240
+LABEL237:
+   load_int               0
+   widget_put_hidden      1
+   jump                   LABEL242
+LABEL240:
+   load_int               1
+   widget_put_hidden      1
+LABEL242:
+   jump                   LABEL270
+LABEL243:
+   iload                  1
+   load_int               5
+   load_int               5
+   widget_create_child    1
+   load_int               6
+   load_int               0
+   load_int               0
+   load_int               1
+   widget_put_position    1
+   load_int               19
+   load_int               19
+   load_int               0
+   load_int               0
+   widget_put_size        1
+   load_int               940
+   widget_put_spriteid    1
+   load_int               65793
+   widget_put_sprite2     1
+   iload                  8
+   load_int               1
+   if_icmpeq              LABEL265
+   jump                   LABEL268
+LABEL265:
+   load_int               0
+   widget_put_hidden      1
+   jump                   LABEL270
+LABEL268:
+   load_int               1
+   widget_put_hidden      1
+LABEL270:
+   invoke                 1972
+   load_int               1
+   if_icmpeq              LABEL274
+   jump                   LABEL301
+LABEL274:
+   load_int               2367
+   load_int               -2147483644
+   load_int               -2147483645
+   load_int               -1
+   iload                  2
+   sload                  2
+   sload                  3
+   load_int               495
+   load_string            "iIiIssf"
+   iload                  1
+   widget_put_option_click_listener_widget
+   get_varc               218
+   iload                  1
+   if_icmpeq              LABEL289
+   jump                   LABEL300
+LABEL289:
+   get_varc               217
+   load_int               -1
+   if_icmpeq              LABEL293
+   jump                   LABEL300
+LABEL293:
+   iload                  1
+   load_int               -1
+   iload                  2
+   sload                  2
+   sload                  3
+   load_int               495
+   invoke                 2344
+LABEL300:
+   jump                   LABEL316
+LABEL301:
+   load_int               992
+   load_int               -2147483645
+   load_int               -1
+   iload                  2
+   sload                  2
+   sload                  3
+   load_int               495
+   load_int               25
+   load_int               5
+   idiv
+   load_string            "IiIssfi"
+   iload                  1
+   widget_put_mouse_hover_listener_widget
+   load_int               0
+   put_varc               2
+LABEL316:
+   return

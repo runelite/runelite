@@ -32,6 +32,7 @@ import net.runelite.api.World;
 import net.runelite.api.widgets.Widget;
 import net.runelite.mapping.Construct;
 import net.runelite.mapping.Import;
+import net.runelite.mapping.Protect;
 
 public interface RSClient extends RSGameEngine, Client
 {
@@ -54,6 +55,9 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("cameraPitch")
 	@Override
 	int getCameraPitch();
+
+	@Import("cameraPitch")
+	void setCameraPitch(int cameraPitch);
 
 	@Import("cameraYaw")
 	@Override
@@ -90,6 +94,7 @@ public interface RSClient extends RSGameEngine, Client
 	int getEnergy();
 
 	@Import("weight")
+	@Override
 	int getWeight();
 
 	@Import("baseX")
@@ -113,29 +118,36 @@ public interface RSClient extends RSGameEngine, Client
 	int[] getSkillExperiences();
 
 	@Import("changedSkills")
-	@Override
 	int[] getChangedSkills();
 
 	@Import("changedSkillsCount")
-	@Override
 	int getChangedSkillsCount();
 
 	@Import("changedSkillsCount")
-	@Override
 	void setChangedSkillsCount(int i);
 
 	@Import("gameState")
 	int getRSGameState();
 
+	@Import("checkClick")
+	@Override
+	void setCheckClick(boolean checkClick);
+
+	@Import("mouseX2")
+	void setMouseCanvasHoverPositionX(int x);
+
+	@Import("mouseY2")
+	void setMouseCanvasHoverPositionY(int y);
+
 	@Import("mouseCurrentButton")
 	@Override
 	int getMouseCurrentButton();
 
-	@Import("selectedRegionTileX")
-	int getSelectedRegionTileX();
+	@Import("selectedSceneTileX")
+	int getSelectedSceneTileX();
 
-	@Import("selectedRegionTileY")
-	int getSelectedRegionTileY();
+	@Import("selectedSceneTileY")
+	int getSelectedSceneTileY();
 
 	@Import("draggingWidget")
 	@Override
@@ -165,9 +177,9 @@ public interface RSClient extends RSGameEngine, Client
 	 */
 	RSWidget[] getGroup(int groupId);
 
-	@Import("region")
+	@Import("scene")
 	@Override
-	RSRegion getRegion();
+	RSScene getScene();
 
 	@Import("localPlayer")
 	@Override
@@ -323,13 +335,17 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("createSprite")
 	RSSpritePixels createItemSprite(int itemId, int quantity, int thickness, int borderColor, int stackable, boolean noted);
 
-	@Import("getSpriteAsSpritePixels")
+	@Import("getSpritesAsSpritePixels")
 	@Override
-	RSSpritePixels getSprite(IndexDataBase source, int archiveId, int fileId);
+	RSSpritePixels[] getSprites(IndexDataBase source, int archiveId, int fileId);
 
 	@Import("indexSprites")
 	@Override
 	RSIndexDataBase getIndexSprites();
+
+	@Import("indexScripts")
+	@Override
+	RSIndexDataBase getIndexScripts();
 
 	@Import("widgetFlags")
 	@Override
@@ -444,8 +460,8 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("unknownSoundValues1")
 	int[] getUnknownSoundValues1();
 
-	@Import("unknownSoundValues2")
-	int[] getUnknownSoundValues2();
+	@Import("queuedSoundEffectDelays")
+	int[] getQueuedSoundEffectDelays();
 
 	@Import("queuedSoundEffectCount")
 	int getQueuedSoundEffectCount();
@@ -461,6 +477,10 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	int getMouseIdleTicks();
 
+	@Import("mouseLastPressedTimeMillis")
+	@Override
+	long getMouseLastPressedMillis();
+
 	@Import("keyboardIdleTicks")
 	@Override
 	int getKeyboardIdleTicks();
@@ -468,8 +488,8 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("lowMemory")
 	void setLowMemory(boolean lowMemory);
 
-	@Import("regionLowMemory")
-	void setRegionLowMemory(boolean lowMemory);
+	@Import("sceneLowMemory")
+	void setSceneLowMemory(boolean lowMemory);
 
 	@Import("audioHighMemory")
 	void setAudioHighMemory(boolean highMemory);
@@ -643,9 +663,34 @@ public interface RSClient extends RSGameEngine, Client
 	void setCompass(SpritePixels spritePixels);
 
 	@Import("widgetSpriteCache")
+	@Override
 	RSNodeCache getWidgetSpriteCache();
 
 	@Import("oculusOrbState")
 	@Override
 	void setOculusOrbState(int state);
+
+	@Import("oculusOrbNormalSpeed")
+	@Override
+	void setOculusOrbNormalSpeed(int state);
+
+	RSItem getLastItemDespawn();
+
+	void setLastItemDespawn(RSItem lastItemDespawn);
+
+	@Construct
+	RSWidget createWidget();
+
+	@Import("revalidateWidget")
+	void revalidateWidget(Widget w);
+
+	@Import("revalidateWidgetScroll")
+	void revalidateWidgetScroll(Widget[] group, Widget w, boolean postEvent);
+
+	@Import("menuAction")
+	@Protect
+	void menuAction(int var0, int var1, int var2, int var3, String var4, String var5, int var6, int var7);
+
+	@Import("occupiedTilesTick")
+	int[][] getOccupiedTilesTick();
 }

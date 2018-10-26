@@ -33,7 +33,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.ConfigChanged;
@@ -42,7 +41,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.http.api.feed.FeedClient;
 import net.runelite.http.api.feed.FeedResult;
 
@@ -56,7 +56,7 @@ import net.runelite.http.api.feed.FeedResult;
 public class FeedPlugin extends Plugin
 {
 	@Inject
-	private PluginToolbar pluginToolbar;
+	private ClientToolbar clientToolbar;
 
 	@Inject
 	private FeedConfig config;
@@ -86,11 +86,7 @@ public class FeedPlugin extends Plugin
 	{
 		feedPanel = new FeedPanel(config, feedSupplier);
 
-		BufferedImage icon;
-		synchronized (ImageIO.class)
-		{
-			icon = ImageIO.read(getClass().getResourceAsStream("icon.png"));
-		}
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "icon.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("News Feed")
@@ -99,14 +95,14 @@ public class FeedPlugin extends Plugin
 			.panel(feedPanel)
 			.build();
 
-		pluginToolbar.addNavigation(navButton);
+		clientToolbar.addNavigation(navButton);
 		executorService.submit(this::updateFeed);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		pluginToolbar.removeNavigation(navButton);
+		clientToolbar.removeNavigation(navButton);
 	}
 
 	private void updateFeed()

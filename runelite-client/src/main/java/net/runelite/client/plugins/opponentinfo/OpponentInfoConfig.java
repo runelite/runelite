@@ -34,9 +34,21 @@ public interface OpponentInfoConfig extends Config
 	@ConfigItem(
 		keyName = "lookupOnInteraction",
 		name = "Lookup players on interaction",
-		description = "Display a combat stat comparison panel on player interaction. (follow, trade, challenge, attack, etc.)"
+		description = "Display a combat stat comparison panel on player interaction. (follow, trade, challenge, attack, etc.)",
+		position = 0
 	)
 	default boolean lookupOnInteraction()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showPercent",
+		name = "Show percent",
+		description = "Shows hitpoints as a percentage even if hitpoints are known",
+		position = 1
+	)
+	default boolean showPercent()
 	{
 		return false;
 	}

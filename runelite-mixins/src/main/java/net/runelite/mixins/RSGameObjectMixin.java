@@ -45,14 +45,14 @@ public abstract class RSGameObjectMixin implements RSGameObject
 
 	@Inject
 	@Override
-	public Point getRegionMinLocation()
+	public Point getSceneMinLocation()
 	{
 		return new Point(getRelativeX(), getRelativeY());
 	}
 
 	@Inject
 	@Override
-	public Point getRegionMaxLocation()
+	public Point getSceneMaxLocation()
 	{
 		return new Point(getOffsetX(), getOffsetY());
 	}
@@ -80,7 +80,7 @@ public abstract class RSGameObjectMixin implements RSGameObject
 	@Override
 	public Area getClickbox()
 	{
-		return Perspective.getClickbox(client, getModel(), getRsOrientation(), getX(), getY());
+		return Perspective.getClickbox(client, getModel(), getRsOrientation(), getLocalLocation());
 	}
 
 	@Inject
