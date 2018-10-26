@@ -393,6 +393,13 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
+	public Widget getWidget(int packedId)
+	{
+		return getWidget(WidgetInfo.TO_GROUP(packedId), WidgetInfo.TO_CHILD(packedId));
+	}
+
+	@Inject
+	@Override
 	public Widget getWidget(int groupId, int childId)
 	{
 		RSWidget[][] widgets = getWidgets();

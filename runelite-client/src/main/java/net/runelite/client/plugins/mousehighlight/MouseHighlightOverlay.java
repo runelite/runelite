@@ -94,16 +94,14 @@ class MouseHighlightOverlay extends Overlay
 		}
 
 		final int widgetId = menuEntry.getParam1();
-		final int groupId = WidgetInfo.TO_GROUP(widgetId);
-		final int childId = WidgetInfo.TO_CHILD(widgetId);
-		final Widget widget = client.getWidget(groupId, childId);
+		final Widget widget = client.getWidget(widgetId);
 
 		if (!config.uiTooltip() && widget != null)
 		{
 			return null;
 		}
 
-		if (!config.chatboxTooltip() && groupId == WidgetInfo.CHATBOX.getGroupId())
+		if (!config.chatboxTooltip() && WidgetInfo.TO_GROUP(widgetId) == WidgetInfo.CHATBOX.getGroupId())
 		{
 			return null;
 		}

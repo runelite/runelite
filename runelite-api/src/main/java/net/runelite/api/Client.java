@@ -439,6 +439,14 @@ public interface Client extends GameEngine
 	Widget getWidget(WidgetInfo widget);
 
 	/**
+	 * Gets a widget by its packed ID.
+	 *
+	 * @param packedId the packed widget ID
+	 * @return the widget corresponding to the given ID
+	 */
+	Widget getWidget(int packedId);
+
+	/**
 	 * Gets a widget by its raw group ID and child ID.
 	 * <p>
 	 * Note: Use {@link #getWidget(WidgetInfo)} for a more human-readable

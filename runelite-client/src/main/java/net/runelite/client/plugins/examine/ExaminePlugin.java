@@ -41,7 +41,6 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.chat.ChatColorType;
@@ -194,8 +193,7 @@ public class ExaminePlugin extends Plugin
 		// Get widget
 		int widgetId = pendingExamine.getWidgetId();
 		int widgetGroup = TO_GROUP(widgetId);
-		int widgetChild = TO_CHILD(widgetId);
-		Widget widget = client.getWidget(widgetGroup, widgetChild);
+		Widget widget = client.getWidget(widgetId);
 
 		if (widget == null)
 		{
