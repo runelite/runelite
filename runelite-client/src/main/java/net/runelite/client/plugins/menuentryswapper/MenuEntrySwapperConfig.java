@@ -241,4 +241,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "swapDream",
+		name = "Dream",
+		description = "Swap Talk-to with Dream for Dominic Onion"
+	)
+	default boolean swapDream()
+	{
+		return true;
+	}
 }
