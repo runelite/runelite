@@ -51,4 +51,14 @@ public interface BarbarianAssaultConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "colorEggs",
+			name = "Highlight eggs",
+			description = "Enables coloring of the barbarian assault eggs in the right click menu."
+	)
+	default boolean colorEggs()
+	{
+		return true;
+	}
 }

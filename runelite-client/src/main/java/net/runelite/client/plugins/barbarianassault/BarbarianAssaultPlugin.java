@@ -27,15 +27,19 @@ package net.runelite.client.plugins.barbarianassault;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.kit.KitType;
@@ -51,6 +55,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
@@ -188,6 +193,41 @@ public class BarbarianAssaultPlugin extends Plugin
 		}
 
 		inGameBit = inGame;
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		int itemId = event.getIdentifier();
+		if (event.getOption().equals("Take")
+				&& event.getType() == MenuAction.GROUND_ITEM_THIRD_OPTION.getId()
+				&& (itemId == ItemID.GREEN_EGG
+				|| itemId == ItemID.RED_EGG
+				|| itemId == ItemID.BLUE_EGG
+				|| itemId == ItemID.YELLOW_EGG))
+		{
+			Color color = null;
+			MenuEntry[] menuEntries = client.getMenuEntries();
+			MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
+			switch (itemId)
+			{
+				case ItemID.GREEN_EGG:
+					color = Color.GREEN;
+					break;
+				case ItemID.RED_EGG:
+					color = Color.RED;
+					break;
+				case ItemID.BLUE_EGG:
+					color = Color.CYAN;
+					break;
+				case ItemID.YELLOW_EGG:
+					color = Color.YELLOW;
+					break;
+			}
+			String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
+			lastEntry.setTarget(ColorUtil.prependColorTag(target, color));
+			client.setMenuEntries(menuEntries);
+		}
 	}
 
 	private void announceTime(String preText, String time)
