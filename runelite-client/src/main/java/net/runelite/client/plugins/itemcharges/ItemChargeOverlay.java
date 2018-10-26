@@ -45,7 +45,6 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.QueryRunner;
-
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.*;
 
 class ItemChargeOverlay extends Overlay
