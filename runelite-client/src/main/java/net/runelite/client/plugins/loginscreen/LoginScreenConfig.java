@@ -44,7 +44,7 @@ public interface LoginScreenConfig extends Config
 	@ConfigItem(
 		keyName = "pasteenabled",
 		name = "Ctrl-V paste",
-		description = "Enables Ctrl + V key binding that will set username or password on login screen from clipboard."
+		description = "Emulates Ctrl + V pasting on the login screen"
 	)
 	default boolean pasteEnabled()
 	{
