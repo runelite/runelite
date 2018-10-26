@@ -26,11 +26,9 @@ package net.runelite.client.plugins.devtools;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
-import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
-import java.util.List;
 import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
@@ -47,6 +45,7 @@ import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.kit.KitType;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -57,6 +56,8 @@ import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.MenuEntryItem;
+import net.runelite.client.util.ExamineType;
 import net.runelite.client.util.ImageUtil;
 import org.slf4j.LoggerFactory;
 
@@ -68,9 +69,6 @@ import org.slf4j.LoggerFactory;
 @Getter
 public class DevToolsPlugin extends Plugin
 {
-	private static final List<MenuAction> EXAMINE_MENU_ACTIONS = ImmutableList.of(MenuAction.EXAMINE_ITEM,
-			MenuAction.EXAMINE_ITEM_GROUND, MenuAction.EXAMINE_NPC, MenuAction.EXAMINE_OBJECT);
-
 	@Inject
 	private Client client;
 
@@ -263,7 +261,7 @@ public class DevToolsPlugin extends Plugin
 				int xp = Integer.parseInt(args[1]);
 
 				int totalXp = client.getSkillExperience(skill) + xp;
-				int level = min(Experience.getLevelForXp(totalXp), 99);
+				int level = min(Experience.getLevelForXp(totalXp), Experience.MAX_REAL_LEVEL);
 
 				client.getBoostedSkillLevels()[skill.ordinal()] = level;
 				client.getRealSkillLevels()[skill.ordinal()] = level;
@@ -315,39 +313,69 @@ public class DevToolsPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (!examine.isActive())
+		if (!examine.isActive()
+			|| !"examine".equalsIgnoreCase(event.getOption()))
 		{
 			return;
 		}
 
-		MenuAction action = MenuAction.of(event.getType());
+		final MenuEntry[] entries = client.getMenuEntries();
+		MenuEntry examineEntry = null;
 
-		if (EXAMINE_MENU_ACTIONS.contains(action))
+		// We only want the last "Examine" entry, if multiple are present in the menu
+		for (int i = entries.length - 1; i >= 0; i--)
 		{
-			MenuEntry[] entries = client.getMenuEntries();
-			MenuEntry entry = entries[entries.length - 1];
-
-			final int identifier = event.getIdentifier();
-			String info = "ID: ";
-
-			if (action == MenuAction.EXAMINE_NPC)
+			if ("examine".equalsIgnoreCase(entries[i].getOption()))
 			{
+				examineEntry = entries[i];
+				break;
+			}
+		}
+
+		if (examineEntry == null)
+		{
+			return;
+		}
+
+		final MenuAction menuAction = MenuAction.of(examineEntry.getType());
+		final ExamineType examineType = ExamineType.of(menuAction);
+
+		if (examineType == null)
+		{
+			return;
+		}
+
+		final int identifier = examineEntry.getIdentifier();
+		String info = "ID: ";
+
+		switch (examineType)
+		{
+			case NPC:
 				NPC npc = client.getCachedNPCs()[identifier];
 				info += npc.getId();
-			}
-			else
-			{
-				info += identifier;
-
-				if (action == MenuAction.EXAMINE_OBJECT)
+				break;
+			case ITEM:
+			case ITEM_BANK_EQ:
+				final int widgetId = examineEntry.getParam1();
+				final int widgetGroup = WidgetInfo.TO_GROUP(widgetId);
+				final int widgetChild = WidgetInfo.TO_CHILD(widgetId);
+				final MenuEntryItem examinedItem = MenuEntryItem.find(client.getWidget(widgetGroup, widgetChild), menuAction, examineEntry.getParam0());
+				if (examinedItem == null)
 				{
-					WorldPoint point = WorldPoint.fromScene(client, entry.getParam0(), entry.getParam1(), client.getPlane());
-					info += " X: " + point.getX() + " Y: " + point.getY();
+					return;
 				}
-			}
-
-			entry.setTarget(entry.getTarget() + " " + ColorUtil.prependColorTag("(" + info + ")", JagexColors.MENU_TARGET));
-			client.setMenuEntries(entries);
+				info += examinedItem.getItemId();
+				break;
+			case OBJECT:
+				WorldPoint point = WorldPoint.fromScene(client, examineEntry.getParam0(), examineEntry.getParam1(), client.getPlane());
+				info += identifier + " X: " + point.getX() + " Y: " + point.getY();
+				break;
+			default:
+				info += identifier;
+				break;
 		}
+
+		examineEntry.setTarget(examineEntry.getTarget() + ' ' + ColorUtil.prependColorTag('(' + info + ')', JagexColors.MENU_TARGET));
+		client.setMenuEntries(entries);
 	}
 }

@@ -30,6 +30,8 @@ import net.runelite.api.MenuAction;
 
 public enum ExamineType
 {
+	GROUND_ITEM,
+
 	/**
 	 * Inventory item
 	 */
@@ -87,6 +89,8 @@ public enum ExamineType
 		{
 			case EXAMINE_ITEM:
 				return ITEM;
+			case EXAMINE_ITEM_GROUND:
+				return GROUND_ITEM;
 			case EXAMINE_ITEM_BANK_EQ:
 				return ITEM_BANK_EQ;
 			case EXAMINE_OBJECT:
