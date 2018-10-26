@@ -110,7 +110,8 @@ public class MenuEntryItem
 			else if (WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() == widgetGroup
 				|| WidgetInfo.SHOP_ITEMS_CONTAINER.getGroupId() == widgetGroup
 				|| WidgetInfo.CLUE_SCROLL_REWARD_ITEM_CONTAINER.getGroupId() == widgetGroup
-				|| WidgetInfo.LOOTING_BAG_CONTAINER.getGroupId() == widgetGroup)
+				|| WidgetInfo.LOOTING_BAG_CONTAINER.getGroupId() == widgetGroup
+				|| WidgetInfo.GRAND_EXCHANGE_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup)
 			{
 				Widget[] children = widget.getDynamicChildren();
 				if (actionParam < children.length)
