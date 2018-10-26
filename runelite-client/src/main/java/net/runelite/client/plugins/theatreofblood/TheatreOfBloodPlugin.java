@@ -29,6 +29,8 @@ import com.google.inject.Provides;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
@@ -39,6 +41,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -54,6 +57,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.theatreofblood.data.Attempt;
 import net.runelite.client.plugins.theatreofblood.data.BossExpModifier;
 import net.runelite.client.plugins.theatreofblood.data.NpcHps;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "ToB Stats",
@@ -64,6 +68,7 @@ import net.runelite.client.plugins.theatreofblood.data.NpcHps;
 public class TheatreOfBloodPlugin extends Plugin
 {
 	private static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("#,###");
+	private static final Pattern DEATH_TEXT = Pattern.compile("You have died. Death count: \\d.");
 
 	private static final int LOBBY_REGION = 14642;
 	private static final int MAIDEN_REGION = 12869;
@@ -109,6 +114,21 @@ public class TheatreOfBloodPlugin extends Plugin
 	{
 		attempts.clear();
 		state = -1;
+	}
+
+	@Subscribe
+	protected void onChatMessage(ChatMessage m)
+	{
+		if (!isSpectator && state > 1 && m.getType() == ChatMessageType.SERVER)
+		{
+			String message = Text.removeTags(m.getMessage());
+			Matcher match = DEATH_TEXT.matcher(message);
+			if (match.matches())
+			{
+				// Died
+				current.addDeath();
+			}
+		}
 	}
 
 	@Subscribe
@@ -231,8 +251,6 @@ public class TheatreOfBloodPlugin extends Plugin
 					log.debug("Logged out and returned to non-existing raid");
 					return;
 				}
-				// Died, increment attempt death counter.
-				current.addDeath();
 				break;
 		}
 	}
