@@ -482,6 +482,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("teleport", option, target, true);
 			swap("spellbook", option, target, true);
+			swap("perks", option, target, true);
 		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
