@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2018, Kbman99 <https://github.com/Kbman99>
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
@@ -22,22 +23,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.defaultworld;
+package net.runelite.client.plugins.world;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("defaultworld")
-public interface DefaultWorldConfig extends Config
+@ConfigGroup("world")
+public interface WorldConfig extends Config
 {
 	@ConfigItem(
 		keyName = "defaultWorld",
 		name = "Default world",
-		description = "World to use as default one"
+		description = "World to use as default one",
+		position = 0
 	)
 	default int getWorld()
 	{
 		return 0;
+	}
+
+	@ConfigItem(
+		keyName = "showWorld",
+		name = "Display your current world",
+		description = "Displays your world as an overlay",
+		position = 1
+	)
+	default boolean showWorld()
+	{
+		return false;
 	}
 }
