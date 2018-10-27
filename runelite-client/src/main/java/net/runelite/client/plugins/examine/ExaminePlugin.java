@@ -97,7 +97,7 @@ public class ExaminePlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!event.getMenuOption().equals("Examine"))
+		if (!event.getMenuOption().startsWith("Examine"))
 		{
 			return;
 		}
@@ -229,7 +229,9 @@ public class ExaminePlugin extends Plugin
 				}
 			}
 			else if (WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup
-					|| WidgetInfo.RUNE_POUCH_ITEM_CONTAINER.getGroupId() == widgetGroup)
+					|| WidgetInfo.RUNE_POUCH_ITEM_CONTAINER.getGroupId() == widgetGroup
+					|| WidgetInfo.SHOP_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup
+					|| WidgetInfo.GRAND_EXCHANGE_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup)
 			{
 				Widget widgetItem = widget.getChild(pendingExamine.getActionParam());
 				if (widgetItem != null)
