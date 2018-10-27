@@ -357,15 +357,15 @@ public class ScreenshotPlugin extends Plugin
 				if (chatMessage.contains(KILL_MESSAGES(i)))
 				{
 					enemyName = chatMessage.replace((String.valueOf(KILL_MESSAGES(i))),"");
-					break
+					break;
 				}
 				else 
 				{
-					i++
+					i++;
 				}
 			}
 			if (enemyName)
-			String fileName = "Kill " + format(new Date() + enemyName);
+			String fileName = "Kill " + format(new Date()) + enemyName);
 			takeScreenshot(fileName);
 		}
 
