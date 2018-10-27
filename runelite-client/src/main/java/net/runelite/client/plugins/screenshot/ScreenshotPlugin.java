@@ -351,7 +351,8 @@ public class ScreenshotPlugin extends Plugin
 
 		if (config.screenshotKills() && KILL_MESSAGES.stream().anyMatch(chatMessage::contains))
 		{
-			String fileName = "Kill " + format(new Date());
+			String enemyName = chatMessage.replace(KILL_MESSAGES.stream().anyMatch(chatMessage::contains),"");
+			String fileName = "Kill " + format(new Date() + enemyName);
 			takeScreenshot(fileName);
 		}
 
