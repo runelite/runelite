@@ -501,7 +501,7 @@ public class TheatreOfBloodPlugin extends Plugin
 				.append(String.valueOf(completions))
 				.append(", (")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(NUMBER_FORMAT.format((completions / attempts.size()) * 100))
+				.append(NUMBER_FORMAT.format((completions * 100) / attempts.size()))
 				.append("%)")
 				.build();
 
