@@ -101,7 +101,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 			&& twitchConfig.oauthToken() != null
 			&& twitchConfig.channel() != null)
 		{
-			String channel = twitchConfig.channel();
+			String channel = twitchConfig.channel().toLowerCase();
 			if (!channel.startsWith("#"))
 			{
 				channel = "#" + channel;
