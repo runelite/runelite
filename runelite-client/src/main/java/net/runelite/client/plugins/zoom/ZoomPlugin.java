@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.zoom;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.common.primitives.Ints;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
@@ -179,19 +180,8 @@ public class ZoomPlugin extends Plugin implements KeyListener
 
 			if (zoomConfig.controlFunction() == ControlFunction.CONTROL_TO_RESET)
 			{
-				int finalZoomValue;
-				int zoomValue = zoomConfig.ctrlZoomValue();
-
-				if (zoomValue > INNER_ZOOM_LIMIT || zoomValue < OUTER_ZOOM_LIMIT)
-				{
-					finalZoomValue = zoomConfig.ctrlZoomValue() > INNER_ZOOM_LIMIT ? INNER_ZOOM_LIMIT : OUTER_ZOOM_LIMIT;
-				}
-				else
-				{
-					finalZoomValue = zoomValue;
-				}
-
-				clientThread.invokeLater(() -> client.runScript(ScriptID.CAMERA_DO_ZOOM, finalZoomValue, finalZoomValue));
+				final int zoomValue = Ints.constrainToRange(zoomConfig.ctrlZoomValue(), OUTER_ZOOM_LIMIT, INNER_ZOOM_LIMIT);
+				clientThread.invokeLater(() -> client.runScript(ScriptID.CAMERA_DO_ZOOM, zoomValue, zoomValue));
 			}
 		}
 	}
