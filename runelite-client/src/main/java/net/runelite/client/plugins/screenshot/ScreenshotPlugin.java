@@ -351,7 +351,15 @@ public class ScreenshotPlugin extends Plugin
 
 		if (config.screenshotKills() && KILL_MESSAGES.stream().anyMatch(chatMessage::contains))
 		{
-			String fileName = "Kill " + format(new Date());
+			String kill_name = chatMessage;
+
+			for(String test_string : KILL_MESSAGES) {
+				kill_name = kill_name.replace(test_string, "");
+			}
+			// Remove trailing full stops and leading/trailing blank spaces
+			kill_name = kill_name.replace(".", "").trim();
+
+			String fileName = "Kill - " + kill_name + " " + format(new Date());
 			takeScreenshot(fileName);
 		}
 
