@@ -47,7 +47,8 @@ import net.runelite.http.api.worlds.WorldResult;
 	name = "World",
 	description = "Enable a default world to be selected when launching the client and overlay your current world " +
 		"on the minimap globe",
-	tags = {"default", "world", "overlay"}
+	tags = {"default", "world", "overlay"},
+	enabledByDefault = false
 )
 @Slf4j
 public class WorldPlugin extends Plugin
