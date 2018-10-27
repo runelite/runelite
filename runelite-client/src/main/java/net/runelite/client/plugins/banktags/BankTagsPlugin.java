@@ -47,6 +47,8 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.VarClientInt;
+import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.FocusChanged;
@@ -55,6 +57,7 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -276,6 +279,8 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 				.map(i -> i + "*")
 				.forEach(tags::add);
 
+			boolean isSearchOpen = client.getVar(VarClientInt.INPUT_TYPE) == InputType.SEARCH.getType();
+			String searchText = client.getVar(VarClientStr.INPUT_TEXT);
 			String initialValue = JOINER.join(tags);
 
 			chatboxPanelManager.openTextInput(name + " tags:<br>(append " + VAR_TAG_SUFFIX + " for variation tag)")
@@ -301,6 +306,12 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 						tabInterface.updateTabIfActive(SPLITTER.splitToList(newValue.toLowerCase().replaceAll(Pattern.quote(VAR_TAG_SUFFIX), "")));
 					}))
 				.build();
+
+			if (isSearchOpen)
+			{
+				tabInterface.doSearch(InputType.NONE, "", false);
+				tabInterface.doSearch(InputType.SEARCH, searchText, false);
+			}
 		}
 		else
 		{
