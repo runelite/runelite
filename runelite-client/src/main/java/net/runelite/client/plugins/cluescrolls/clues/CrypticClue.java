@@ -29,11 +29,11 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Set;
 import lombok.Getter;
-import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
+import static net.runelite.api.NullObjectID.NULL_1293;
 import net.runelite.api.ObjectComposition;
 import static net.runelite.api.ObjectID.*;
-import static net.runelite.api.NullObjectID.*;
+import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
@@ -409,7 +409,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 
 			if (plugin.getObjectsToMark() != null)
 			{
-				for (GameObject gameObject : plugin.getObjectsToMark())
+				for (TileObject gameObject : plugin.getObjectsToMark())
 				{
 					OverlayUtil.renderHoverableArea(graphics, gameObject.getClickbox(), mousePosition,
 							CLICKBOX_FILL_COLOR, CLICKBOX_BORDER_COLOR, CLICKBOX_HOVER_BORDER_COLOR);
