@@ -122,7 +122,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
 	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
 
-	private static final List<Pattern> PVP_KILL_MESSAGES = Arrays.asList(
+	private static final ImmutableList<Pattern> PVP_KILL_MESSAGES = ImmutableList.of(
 			// Complete list available from Mod Ash: https://twitter.com/JagexAsh/status/1056613188513468416
 			Pattern.compile("With a crushing blow you finish (.+)\\."),
 			Pattern.compile("What was (.+) thinking challenging you\\.\\.\\."),
@@ -163,12 +163,10 @@ public class ScreenshotPlugin extends Plugin
 
 	private String clueType;
 	private Integer clueNumber;
-
 	private Integer barrowsNumber;
-
 	private Integer chambersOfXericNumber;
-
 	private Integer theatreOfBloodNumber;
+	private String pvpKillName;
 
 	private boolean shouldTakeScreenshot;
 
@@ -381,6 +379,7 @@ public class ScreenshotPlugin extends Plugin
 				Matcher m = killMessage.matcher(chatMessage);
 				if (m.matches())
 				{
+					pvpKillName = m.group(1);
 					String fileName = "Killed " + m.group(1) + " " + format(new Date());
 					takeScreenshot(fileName);
 				}
@@ -704,4 +703,7 @@ public class ScreenshotPlugin extends Plugin
 	{
 		return theatreOfBloodNumber;
 	}
+
+	@VisibleForTesting
+	String getPvPKillName() { return pvpKillName; }
 }
