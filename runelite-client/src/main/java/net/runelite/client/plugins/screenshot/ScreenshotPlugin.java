@@ -44,8 +44,10 @@ import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
@@ -119,13 +121,14 @@ public class ScreenshotPlugin extends Plugin
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
 	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
+
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
 		"You feel something weird sneaking into your backpack",
 		"You have a funny feeling like you would have been followed");
 
 	private static final ImmutableList<String> KILL_MESSAGES = ImmutableList.of("into tiny pieces and sat on them", "you have obliterated",
 		"falls before your might", "A humiliating defeat for", "With a crushing blow you", "thinking challenging you",
-		"Can anyone defeat you? Certainly", "was no match for you", "You were clearly a better fighter than", "RIP",
+		"Can anyone defeat you? Certainly not", "was no match for you", "You were clearly a better fighter than", "RIP",
 		"You have defeated", "What an embarrassing performance by", "was no match for your awesomeness");
 
 	static String format(Date date)
@@ -351,15 +354,15 @@ public class ScreenshotPlugin extends Plugin
 
 		if (config.screenshotKills() && KILL_MESSAGES.stream().anyMatch(chatMessage::contains))
 		{
-			String kill_name = chatMessage;
+			String enemyName = chatMessage;
 
-			for(String test_string : KILL_MESSAGES) {
-				kill_name = kill_name.replace(test_string, "");
+			for(String killMessage : KILL_MESSAGES) {
+				enemyName = enemyName.replace(killMessage, "");
 			}
 			// Remove trailing full stops and leading/trailing blank spaces
-			kill_name = kill_name.replace(".", "").trim();
+			enemyName = enemyName.replace(".", "").trim();
 
-			String fileName = "Kill - " + kill_name + " " + format(new Date());
+			String fileName = "Kill - " + enemyName + " " + format(new Date());
 			takeScreenshot(fileName);
 		}
 
