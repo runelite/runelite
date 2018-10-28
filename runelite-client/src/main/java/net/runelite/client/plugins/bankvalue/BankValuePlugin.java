@@ -32,7 +32,6 @@ import net.runelite.api.Client;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -46,9 +45,6 @@ public class BankValuePlugin extends Plugin
 {
 	@Inject
 	private Client client;
-
-	@Inject
-	private ClientThread clientThread;
 
 	@Inject
 	private BankCalculation bankCalculation;
@@ -65,7 +61,7 @@ public class BankValuePlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		clientThread.invokeLater(bankTitle::reset);
+		bankTitle.reset();
 	}
 
 	@Subscribe

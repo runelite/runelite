@@ -30,13 +30,6 @@ package net.runelite.api;
 public interface ObjectComposition
 {
 	/**
-	 * Gets ID for the object.
-	 *
-	 * @return the object ID
-	 */
-	int getId();
-
-	/**
 	 * Gets the name of the object.
 	 *
 	 * @return the object name

@@ -26,7 +26,7 @@ package net.runelite.client.plugins.attackstyles;
 
 import net.runelite.api.Skill;
 
-enum AttackStyle
+public enum AttackStyle
 {
 	ACCURATE("Accurate", Skill.ATTACK),
 	AGGRESSIVE("Aggressive", Skill.STRENGTH),

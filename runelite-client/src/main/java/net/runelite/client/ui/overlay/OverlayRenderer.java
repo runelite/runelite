@@ -45,11 +45,12 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
-import net.runelite.client.input.MouseAdapter;
+import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
+import net.runelite.client.ui.FontManager;
 
 @Singleton
-public class OverlayRenderer extends MouseAdapter implements KeyListener
+public class OverlayRenderer extends MouseListener implements KeyListener
 {
 	private static final int BORDER = 5;
 	private static final int BORDER_TOP = BORDER + 15;
@@ -370,7 +371,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		final OverlayPosition position = overlay.getPosition();
 
 		// Set font based on configuration
-		if (position == OverlayPosition.DYNAMIC || position == OverlayPosition.DETACHED)
+		if (position == OverlayPosition.DYNAMIC)
 		{
 			subGraphics.setFont(runeLiteConfig.fontType().getFont());
 		}
@@ -380,7 +381,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		}
 		else
 		{
-			subGraphics.setFont(runeLiteConfig.interfaceFontType().getFont());
+			subGraphics.setFont(FontManager.getRunescapeFont());
 		}
 
 		subGraphics.translate(point.x, point.y);
@@ -391,7 +392,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 
 	private boolean shouldInvalidateBounds()
 	{
-		final Widget chatbox = client.getWidget(WidgetInfo.CHATBOX);
+		final Widget chatbox = client.getWidget(WidgetInfo.CHATBOX_MESSAGES);
 		final boolean resizeableChanged = isResizeable != client.isResized();
 		boolean changed = false;
 

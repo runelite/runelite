@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.tileindicators;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -40,7 +39,6 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class TileIndicatorsOverlay extends Overlay
 {
-	private static final Color EMPTY = new Color(0, 0, 0, 0);
 	private final Client client;
 	private final TileIndicatorsConfig config;
 
@@ -57,44 +55,20 @@ public class TileIndicatorsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.highlightHoveredTile())
-		{
-			// Update selected scene tile
-			if (!client.isMenuOpen())
-			{
-				client.setCheckClick(true);
-				client.setMouseCanvasHoverPosition(client.getMouseCanvasPosition());
-			}
-
-			// If we have tile "selected" render it
-			if (client.getSelectedSceneTile() != null)
-			{
-				renderTile(graphics, client.getSelectedSceneTile().getLocalLocation(), EMPTY);
-			}
-		}
-
-		if (config.highlightDestinationTile())
-		{
-			renderTile(graphics, client.getLocalDestinationLocation(), config.highlightDestinationColor());
-		}
-
-		return null;
-	}
-
-	private void renderTile(final Graphics2D graphics, final LocalPoint dest, final Color color)
-	{
+		LocalPoint dest = client.getLocalDestinationLocation();
 		if (dest == null)
 		{
-			return;
+			return null;
 		}
 
-		final Polygon poly = Perspective.getCanvasTilePoly(client, dest);
-
+		Polygon poly = Perspective.getCanvasTilePoly(client, dest);
 		if (poly == null)
 		{
-			return;
+			return null;
 		}
+		
+		OverlayUtil.renderPolygon(graphics, poly, config.highlightDestinationColor());
 
-		OverlayUtil.renderPolygon(graphics, poly, color);
+		return null;
 	}
 }

@@ -47,7 +47,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 
-class ScreenshotOverlay extends Overlay
+public class ScreenshotOverlay extends Overlay
 {
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMM. dd, yyyy");
 	private static final int REPORT_BUTTON_X_OFFSET = 404;
@@ -59,7 +59,7 @@ class ScreenshotOverlay extends Overlay
 	private final Queue<Consumer<Image>> consumers = new ConcurrentLinkedQueue<>();
 
 	@Inject
-	private ScreenshotOverlay(Client client, DrawManager drawManager, ScreenshotPlugin plugin)
+	public ScreenshotOverlay(Client client, DrawManager drawManager, ScreenshotPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
@@ -110,7 +110,7 @@ class ScreenshotOverlay extends Overlay
 		return null;
 	}
 
-	void queueForTimestamp(Consumer<Image> screenshotConsumer)
+	public void queueForTimestamp(Consumer<Image> screenshotConsumer)
 	{
 		if (plugin.getReportButton() == null)
 		{

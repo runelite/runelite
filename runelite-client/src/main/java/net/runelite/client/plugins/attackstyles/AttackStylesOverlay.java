@@ -33,14 +33,14 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-class AttackStylesOverlay extends Overlay
+public class AttackStylesOverlay extends Overlay
 {
 	private final AttackStylesPlugin plugin;
 	private final AttackStylesConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private AttackStylesOverlay(AttackStylesPlugin plugin, AttackStylesConfig config)
+	public AttackStylesOverlay(AttackStylesPlugin plugin, AttackStylesConfig config)
 	{
 		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
 		this.plugin = plugin;

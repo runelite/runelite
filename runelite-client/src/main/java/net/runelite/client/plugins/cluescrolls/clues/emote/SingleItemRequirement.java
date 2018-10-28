@@ -38,12 +38,6 @@ public class SingleItemRequirement implements ItemRequirement
 	}
 
 	@Override
-	public boolean fulfilledBy(int itemId)
-	{
-		return this.itemId == itemId;
-	}
-
-	@Override
 	public boolean fulfilledBy(Item[] items)
 	{
 		for (Item item : items)

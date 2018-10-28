@@ -24,11 +24,15 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import java.util.List;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 
 public interface LocationsClueScroll
 {
+	boolean update(String message, ClueScrollPlugin plugin);
+
 	void reset();
 
-	WorldPoint[] getLocations();
+	List<WorldPoint> getLocations();
 }

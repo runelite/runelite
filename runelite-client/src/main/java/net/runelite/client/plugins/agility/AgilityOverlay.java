@@ -30,7 +30,6 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.geom.Area;
-import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
@@ -64,7 +63,7 @@ class AgilityOverlay extends Overlay
 	{
 		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
 		Point mousePosition = client.getMouseCanvasPosition();
-		final List<Tile> marksOfGrace = plugin.getMarksOfGrace();
+		final Tile markOfGrace = plugin.getMarkOfGrace();
 		plugin.getObstacles().forEach((object, tile) ->
 		{
 			if (Obstacles.SHORTCUT_OBSTACLE_IDS.contains(object.getId()) && !config.highlightShortcuts() ||
@@ -91,7 +90,7 @@ class AgilityOverlay extends Overlay
 				if (objectClickbox != null)
 				{
 					Color configColor = config.getOverlayColor();
-					if (config.highlightMarks() && !marksOfGrace.isEmpty())
+					if (config.highlightMarks() && markOfGrace != null)
 					{
 						configColor = config.getMarkColor();
 					}
@@ -113,22 +112,19 @@ class AgilityOverlay extends Overlay
 
 		});
 
-		if (config.highlightMarks() && !marksOfGrace.isEmpty())
+		if (markOfGrace != null && config.highlightMarks())
 		{
-			for (Tile markOfGraceTile : marksOfGrace)
+			if (markOfGrace.getPlane() == client.getPlane() && markOfGrace.getItemLayer() != null
+				&& markOfGrace.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
 			{
-				if (markOfGraceTile.getPlane() == client.getPlane() && markOfGraceTile.getItemLayer() != null
-						&& markOfGraceTile.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
+				final Polygon poly = markOfGrace.getItemLayer().getCanvasTilePoly();
+
+				if (poly == null)
 				{
-					final Polygon poly = markOfGraceTile.getItemLayer().getCanvasTilePoly();
-
-					if (poly == null)
-					{
-						continue;
-					}
-
-					OverlayUtil.renderPolygon(graphics, poly, config.getMarkColor());
+					return null;
 				}
+
+				OverlayUtil.renderPolygon(graphics, poly, config.getMarkColor());
 			}
 		}
 

@@ -55,6 +55,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
+import net.runelite.client.util.RunnableExceptionLogger;
 
 @Singleton
 public class InfoPanel extends PluginPanel
@@ -138,7 +139,7 @@ public class InfoPanel extends PluginPanel
 			{
 				if (e.getURL().toString().equals(RUNELITE_LOGIN))
 				{
-					executor.execute(sessionManager::login);
+					executor.execute(RunnableExceptionLogger.wrap(sessionManager::login));
 				}
 			}
 		});

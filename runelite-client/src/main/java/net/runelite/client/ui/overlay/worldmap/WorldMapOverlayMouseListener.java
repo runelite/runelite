@@ -36,10 +36,10 @@ import net.runelite.api.RenderOverview;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.input.MouseAdapter;
+import net.runelite.client.input.MouseListener;
 
 @Singleton
-public class WorldMapOverlayMouseListener extends MouseAdapter
+public class WorldMapOverlayMouseListener extends MouseListener
 {
 	private final Client client;
 	private final WorldMapPointManager worldMapPointManager;

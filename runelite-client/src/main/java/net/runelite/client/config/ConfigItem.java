@@ -44,6 +44,4 @@ public @interface ConfigItem
 	boolean hidden() default false;
 
 	String warning() default "";
-
-	boolean secret() default false;
 }

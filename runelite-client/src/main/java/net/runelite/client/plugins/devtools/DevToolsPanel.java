@@ -240,14 +240,6 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(interactingBtn);
 
-		final JButton examineInfoBtn = new JButton("Examine Info");
-		examineInfoBtn.addActionListener(e ->
-		{
-			highlightButton(examineInfoBtn);
-			plugin.toggleExamineInfo();
-		});
-		container.add(examineInfoBtn);
-
 		return container;
 	}
 

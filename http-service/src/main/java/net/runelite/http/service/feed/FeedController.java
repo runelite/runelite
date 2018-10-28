@@ -24,41 +24,34 @@
  */
 package net.runelite.http.service.feed;
 
+import com.google.common.base.Suppliers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.feed.FeedItem;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 import net.runelite.http.api.feed.FeedResult;
+import net.runelite.http.api.feed.FeedItem;
 import net.runelite.http.service.feed.blog.BlogService;
 import net.runelite.http.service.feed.osrsnews.OSRSNewsService;
 import net.runelite.http.service.feed.twitter.TwitterService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/feed")
-@Slf4j
 public class FeedController
 {
-	private final BlogService blogService;
-	private final TwitterService twitterService;
-	private final OSRSNewsService osrsNewsService;
+	private static final Logger logger = LoggerFactory.getLogger(FeedController.class);
 
-	private FeedResult feedResult;
+	private BlogService blogService;
+	private TwitterService twitterService;
+	private OSRSNewsService osrsNewsService;
 
-	@Autowired
-	public FeedController(BlogService blogService, TwitterService twitterService, OSRSNewsService osrsNewsService)
-	{
-		this.blogService = blogService;
-		this.twitterService = twitterService;
-		this.osrsNewsService = osrsNewsService;
-	}
-
-	@Scheduled(fixedDelay = 10 * 60 * 1000)
-	public void updateFeed()
+	private final Supplier<FeedResult> feed = Suppliers.memoizeWithExpiration(() ->
 	{
 		List<FeedItem> items = new ArrayList<>();
 
@@ -68,7 +61,7 @@ public class FeedController
 		}
 		catch (IOException e)
 		{
-			log.warn(null, e);
+			logger.warn(null, e);
 		}
 
 		try
@@ -77,7 +70,7 @@ public class FeedController
 		}
 		catch (IOException e)
 		{
-			log.warn(null, e);
+			logger.warn(null, e);
 		}
 
 		try
@@ -86,15 +79,23 @@ public class FeedController
 		}
 		catch (IOException e)
 		{
-			log.warn(null, e);
+			logger.warn(null, e);
 		}
 
-		feedResult = new FeedResult(items);
+		return new FeedResult(items);
+	}, 10, TimeUnit.MINUTES);
+
+	@Autowired
+	public FeedController(BlogService blogService, TwitterService twitterService, OSRSNewsService osrsNewsService)
+	{
+		this.blogService = blogService;
+		this.twitterService = twitterService;
+		this.osrsNewsService = osrsNewsService;
 	}
 
 	@RequestMapping
-	public FeedResult getFeed()
+	public FeedResult getFeed() throws IOException
 	{
-		return feedResult;
+		return feed.get();
 	}
 }

@@ -30,7 +30,6 @@ import java.util.Arrays;
 import java.util.List;
 import net.runelite.client.plugins.puzzlesolver.solver.heuristics.Heuristic;
 import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.DIMENSION;
-import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.BLANK_TILE_VALUE;
 
 public class PuzzleState
 {
@@ -55,7 +54,7 @@ public class PuzzleState
 
 		for (int i = 0; i < pieces.length; i++)
 		{
-			if (pieces[i] == BLANK_TILE_VALUE)
+			if (pieces[i] == -1)
 			{
 				emptyPiece = i;
 			}
@@ -90,7 +89,7 @@ public class PuzzleState
 				PuzzleState state = new PuzzleState(this);
 				state.parent = this;
 
-				state.pieces[emptyPiece - 1] = BLANK_TILE_VALUE;
+				state.pieces[emptyPiece - 1] = -1;
 				state.pieces[emptyPiece] = pieces[emptyPiece - 1];
 				state.emptyPiece--;
 
@@ -106,7 +105,7 @@ public class PuzzleState
 				PuzzleState state = new PuzzleState(this);
 				state.parent = this;
 
-				state.pieces[emptyPiece + 1] = BLANK_TILE_VALUE;
+				state.pieces[emptyPiece + 1] = -1;
 				state.pieces[emptyPiece] = pieces[emptyPiece + 1];
 				state.emptyPiece++;
 
@@ -122,7 +121,7 @@ public class PuzzleState
 				PuzzleState state = new PuzzleState(this);
 				state.parent = this;
 
-				state.pieces[emptyPiece - DIMENSION] = BLANK_TILE_VALUE;
+				state.pieces[emptyPiece - DIMENSION] = -1;
 				state.pieces[emptyPiece] = pieces[emptyPiece - DIMENSION];
 				state.emptyPiece -= DIMENSION;
 
@@ -138,7 +137,7 @@ public class PuzzleState
 				PuzzleState state = new PuzzleState(this);
 				state.parent = this;
 
-				state.pieces[emptyPiece + DIMENSION] = BLANK_TILE_VALUE;
+				state.pieces[emptyPiece + DIMENSION] = -1;
 				state.pieces[emptyPiece] = pieces[emptyPiece + DIMENSION];
 				state.emptyPiece += DIMENSION;
 

@@ -30,7 +30,7 @@ import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
 
-class Round
+public class Round
 {
 	private final Instant roundStartTime;
 	@Getter

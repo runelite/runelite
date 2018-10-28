@@ -92,10 +92,7 @@ public interface ChatColorConfig extends Config
 		name = "Clan chat info",
 		description = "Clan Chat Information (eg. when joining a channel)"
 	)
-	default Color opaqueClanChatInfo()
-	{
-		return Color.BLACK;
-	}
+	Color opaqueClanChatInfo();
 
 	@ConfigItem(
 		position = 38,
@@ -105,7 +102,7 @@ public interface ChatColorConfig extends Config
 	)
 	default Color opaqueClanChatInfoHighlight()
 	{
-		return Color.RED;
+		return Color.decode("#EF20FF");
 	}
 
 	@ConfigItem(
@@ -332,10 +329,7 @@ public interface ChatColorConfig extends Config
 		name = "Clan chat info (transparent)",
 		description = "Clan Chat Information (eg. when joining a channel) (transparent)"
 	)
-	default Color transparentClanChatInfo()
-	{
-		return Color.WHITE;
-	}
+	Color transparentClanChatInfo();
 
 	@ConfigItem(
 		position = 68,
@@ -345,7 +339,7 @@ public interface ChatColorConfig extends Config
 	)
 	default Color transparentClanChatInfoHighlight()
 	{
-		return Color.RED;
+		return Color.decode("#EF20FF");
 	}
 
 	@ConfigItem(

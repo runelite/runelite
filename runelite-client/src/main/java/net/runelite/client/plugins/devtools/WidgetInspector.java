@@ -36,6 +36,7 @@ import java.awt.event.WindowEvent;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -44,7 +45,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
-import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import lombok.extern.slf4j.Slf4j;
@@ -53,14 +54,12 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.ui.ClientUI;
 
 @Slf4j
 class WidgetInspector extends JFrame
 {
 	private final Client client;
-	private final ClientThread clientThread;
 	private final DevToolsPlugin plugin;
 	private final DevToolsConfig config;
 
@@ -71,11 +70,10 @@ class WidgetInspector extends JFrame
 	private static final Map<Integer, WidgetInfo> widgetIdMap = new HashMap<>();
 
 	@Inject
-	WidgetInspector(DevToolsPlugin plugin, Client client, ClientThread clientThread, WidgetInfoTableModel infoTableModel, DevToolsConfig config, EventBus eventBus)
+	WidgetInspector(DevToolsPlugin plugin, Client client, WidgetInfoTableModel infoTableModel, DevToolsConfig config, EventBus eventBus)
 	{
 		this.plugin = plugin;
 		this.client = client;
-		this.clientThread = clientThread;
 		this.infoTableModel = infoTableModel;
 		this.config = config;
 
@@ -142,17 +140,6 @@ class WidgetInspector extends JFrame
 		onConfigChanged(null);
 		bottomPanel.add(alwaysOnTop);
 
-		final JButton revalidateWidget = new JButton("Revalidate");
-		revalidateWidget.addActionListener(ev -> clientThread.invokeLater(() ->
-		{
-			if (plugin.currentWidget == null)
-			{
-				return;
-			}
-
-			plugin.currentWidget.revalidate();
-		}));
-		bottomPanel.add(revalidateWidget);
 
 		final JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treeScrollPane, infoScrollPane);
 		add(split, BorderLayout.CENTER);
@@ -170,31 +157,45 @@ class WidgetInspector extends JFrame
 
 	private void refreshWidgets()
 	{
-		clientThread.invokeLater(() ->
+		new SwingWorker<DefaultMutableTreeNode, Void>()
 		{
-			Widget[] rootWidgets = client.getWidgetRoots();
-			DefaultMutableTreeNode root = new DefaultMutableTreeNode();
-
-			plugin.currentWidget = null;
-			plugin.itemIndex = -1;
-
-			for (Widget widget : rootWidgets)
+			@Override
+			protected DefaultMutableTreeNode doInBackground() throws Exception
 			{
-				DefaultMutableTreeNode childNode = addWidget("R", widget);
-				if (childNode != null)
-				{
-					root.add(childNode);
-				}
-			}
+				Widget[] rootWidgets = client.getWidgetRoots();
+				DefaultMutableTreeNode root = new DefaultMutableTreeNode();
 
-			SwingUtilities.invokeLater(() ->
-			{
 				plugin.currentWidget = null;
 				plugin.itemIndex = -1;
-				refreshInfo();
-				widgetTree.setModel(new DefaultTreeModel(root));
-			});
-		});
+
+				for (Widget widget : rootWidgets)
+				{
+					DefaultMutableTreeNode childNode = addWidget("R", widget);
+					if (childNode != null)
+					{
+						root.add(childNode);
+					}
+				}
+
+				return root;
+			}
+
+			@Override
+			protected void done()
+			{
+				try
+				{
+					plugin.currentWidget = null;
+					plugin.itemIndex = -1;
+					refreshInfo();
+					widgetTree.setModel(new DefaultTreeModel(get()));
+				}
+				catch (InterruptedException | ExecutionException ex)
+				{
+					throw new RuntimeException(ex);
+				}
+			}
+		}.execute();
 	}
 
 	private DefaultMutableTreeNode addWidget(String type, Widget widget)

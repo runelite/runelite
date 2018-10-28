@@ -87,10 +87,7 @@ class DiscordState
 		}
 		else
 		{
-			// If we aren't showing the elapsed time within Discord then
-			// We null out the event start property
-			event = new EventWithTime(eventType, config.hideElapsedTime() ? null : Instant.now());
-
+			event = new EventWithTime(eventType, Instant.now());
 			events.add(event);
 		}
 

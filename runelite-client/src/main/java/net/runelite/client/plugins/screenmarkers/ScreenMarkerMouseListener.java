@@ -26,9 +26,9 @@ package net.runelite.client.plugins.screenmarkers;
 
 import java.awt.event.MouseEvent;
 import javax.swing.SwingUtilities;
-import net.runelite.client.input.MouseAdapter;
+import net.runelite.client.input.MouseListener;
 
-public class ScreenMarkerMouseListener extends MouseAdapter
+public class ScreenMarkerMouseListener extends MouseListener
 {
 	private final ScreenMarkerPlugin plugin;
 

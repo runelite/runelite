@@ -39,7 +39,12 @@ import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.*;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.FUNGICIDE_SPRAY;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.IMPBOX;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.TELEPORT;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERCAN;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERSKIN;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.BELLOWS;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -99,8 +104,7 @@ class ItemChargeOverlay extends Overlay
 					|| (type == IMPBOX && !config.showImpCharges())
 					|| (type == WATERCAN && !config.showWateringCanCharges())
 					|| (type == WATERSKIN && !config.showWaterskinCharges())
-					|| (type == BELLOWS && !config.showBellowCharges())
-					|| (type == ABYSSAL_BRACELET && !config.showAbyssalBraceletCharges()))
+					|| (type == BELLOWS && !config.showBellowCharges()))
 				{
 					continue;
 				}
@@ -155,6 +159,6 @@ class ItemChargeOverlay extends Overlay
 	{
 		return config.showTeleportCharges() || config.showDodgyCount() || config.showFungicideCharges()
 			|| config.showImpCharges() || config.showWateringCanCharges() || config.showWaterskinCharges()
-			|| config.showBellowCharges() || config.showAbyssalBraceletCharges();
+			|| config.showBellowCharges();
 	}
 }

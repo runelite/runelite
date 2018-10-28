@@ -92,11 +92,7 @@ public class WorldMapOverlay extends Overlay
 
 		final Rectangle worldMapRectangle = widget.getBounds();
 		final Area mapViewArea = getWorldMapClipArea(worldMapRectangle);
-		final Rectangle canvasBounds = client.getCanvas().getBounds();
-		// in fixed, the bounds are offset by the size of the black borders outside the canvas
-		canvasBounds.setLocation(0, 0);
-		final Area canvasViewArea = getWorldMapClipArea(canvasBounds);
-
+		final Area canvasViewArea = getWorldMapClipArea(client.getCanvas().getBounds());
 		WorldMapPoint tooltipPoint = null;
 
 		for (WorldMapPoint worldPoint : points)

@@ -115,11 +115,11 @@ class XpStateSingle
 		return Integer.MAX_VALUE;
 	}
 
-	private double getSkillProgress()
+	private int getSkillProgress()
 	{
 		double xpGained = getCurrentXp() - startLevelExp;
 		double xpGoal = endLevelExp - startLevelExp;
-		return (xpGained / xpGoal) * 100;
+		return (int) ((xpGained / xpGoal) * 100);
 	}
 
 	private String getTimeTillLevel()

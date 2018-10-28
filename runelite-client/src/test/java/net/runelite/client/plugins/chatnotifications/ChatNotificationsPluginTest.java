@@ -24,12 +24,9 @@
  */
 package net.runelite.client.plugins.chatnotifications;
 
-import com.google.common.base.Splitter;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import java.util.Iterator;
-import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -37,7 +34,6 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.events.SetMessage;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatMessageManager;
-import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -91,20 +87,5 @@ public class ChatNotificationsPluginTest
 		chatNotificationsPlugin.onSetMessage(setMessage);
 
 		verify(messageNode).setValue("<colHIGHLIGHT>Deathbeam<colNORMAL>, <colHIGHLIGHT>Deathbeam<colNORMAL> OSRS");
-	}
-
-	@Test
-	public void highlightListTest()
-	{
-		when(config.highlightWordsString()).thenReturn("this,is, a                   , test, ");
-		final Splitter splitter = Splitter.on(",").trimResults().omitEmptyStrings();
-		final List<String> higlights = splitter.splitToList(config.highlightWordsString());
-		assertEquals(4, higlights.size());
-
-		final Iterator<String> iterator = higlights.iterator();
-		assertEquals("this", iterator.next());
-		assertEquals("is", iterator.next());
-		assertEquals("a", iterator.next());
-		assertEquals("test", iterator.next());
 	}
 }

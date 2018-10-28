@@ -153,13 +153,6 @@ public class NightmareZonePlugin extends Plugin
 					notifier.notify(msg);
 				}
 			}
-			else if (msg.contains("Ultimate force"))
-			{
-				if (config.ultimateForceNotification())
-				{
-					notifier.notify(msg);
-				}
-			}
 		}
 	}
 

@@ -53,7 +53,6 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -72,7 +71,7 @@ import net.runelite.client.util.Text;
 @PluginDescriptor(
 	name = "Chambers Of Xeric",
 	description = "Show helpful information for the Chambers of Xeric raid",
-	tags = {"combat", "raid", "overlay", "pve", "pvm", "bosses"}
+	tags = {"combat", "raid", "overlay"}
 )
 @Slf4j
 public class RaidsPlugin extends Plugin
@@ -113,9 +112,6 @@ public class RaidsPlugin extends Plugin
 	@Inject
 	private SpriteManager spriteManager;
 
-	@Inject
-	private ClientThread clientThread;
-
 	@Getter
 	private final ArrayList<String> roomWhitelist = new ArrayList<>();
 
@@ -154,7 +150,7 @@ public class RaidsPlugin extends Plugin
 		overlayManager.add(overlay);
 		overlayManager.add(pointsOverlay);
 		updateLists();
-		clientThread.invokeLater(() -> checkRaidPresence(true));
+		checkRaidPresence(true);
 	}
 
 	@Override
@@ -183,7 +179,7 @@ public class RaidsPlugin extends Plugin
 		}
 
 		updateLists();
-		clientThread.invokeLater(() -> checkRaidPresence(true));
+		checkRaidPresence(true);
 	}
 
 	@Subscribe

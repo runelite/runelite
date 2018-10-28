@@ -51,7 +51,7 @@ class BlastFurnaceClickBoxOverlay extends Overlay
 	private final BlastFurnaceConfig config;
 
 	@Inject
-	private BlastFurnaceClickBoxOverlay(Client client, BlastFurnacePlugin plugin, BlastFurnaceConfig config)
+	BlastFurnaceClickBoxOverlay(Client client, BlastFurnacePlugin plugin, BlastFurnaceConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;

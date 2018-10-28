@@ -31,7 +31,6 @@ import net.runelite.client.plugins.puzzlesolver.solver.pathfinding.Pathfinder;
 public class PuzzleSolver implements Runnable
 {
 	public static final int DIMENSION = 5;
-	public static final int BLANK_TILE_VALUE = -1;
 
 	private Pathfinder pathfinder;
 	private PuzzleState startState;

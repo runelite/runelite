@@ -66,7 +66,6 @@ import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -113,9 +112,6 @@ public class MotherlodePlugin extends Plugin
 	@Inject
 	private Client client;
 
-	@Inject
-	private ClientThread clientThread;
-
 	@Getter(AccessLevel.PACKAGE)
 	private boolean inMlm;
 
@@ -152,7 +148,7 @@ public class MotherlodePlugin extends Plugin
 
 		if (inMlm)
 		{
-			clientThread.invokeLater(this::refreshSackValues);
+			refreshSackValues();
 		}
 	}
 
@@ -169,13 +165,10 @@ public class MotherlodePlugin extends Plugin
 
 		Widget sack = client.getWidget(WidgetInfo.MOTHERLODE_MINE);
 
-		clientThread.invokeLater(() ->
+		if (sack != null && sack.isHidden())
 		{
-			if (sack != null && sack.isHidden())
-			{
-				sack.setHidden(false);
-			}
-		});
+			sack.setHidden(false);
+		}
 	}
 
 	public MotherlodeSession getSession()
@@ -445,6 +438,6 @@ public class MotherlodePlugin extends Plugin
 	 */
 	boolean isUpstairs(LocalPoint localPoint)
 	{
-		return Perspective.getTileHeight(client, localPoint, 0) < UPPER_FLOOR_HEIGHT;
+		return Perspective.getTileHeight(client, localPoint.getX(), localPoint.getY(), 0) < UPPER_FLOOR_HEIGHT;
 	}
 }

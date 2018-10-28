@@ -68,9 +68,11 @@ public class GrandExchangeOfferSlot extends JPanel
 	private final JLabel itemIcon = new JLabel();
 	private final JLabel itemName = new JLabel();
 	private final JLabel offerInfo = new JLabel();
+	private final JLabel switchFaceViewIcon = new JLabel();
 
 	private final JLabel itemPrice = new JLabel();
 	private final JLabel offerSpent = new JLabel();
+	private final JLabel switchDetailsViewIcon = new JLabel();
 
 	private final ThinProgressBar progressBar = new ThinProgressBar();
 
@@ -88,6 +90,11 @@ public class GrandExchangeOfferSlot extends JPanel
 	 * in the sidebar
 	 */
 	GrandExchangeOfferSlot()
+	{
+		buildPanel();
+	}
+
+	private void buildPanel()
 	{
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -137,7 +144,6 @@ public class GrandExchangeOfferSlot extends JPanel
 		offerInfo.setVerticalAlignment(JLabel.TOP);
 		offerInfo.setFont(FontManager.getRunescapeSmallFont());
 
-		JLabel switchFaceViewIcon = new JLabel();
 		switchFaceViewIcon.setIcon(RIGHT_ARROW_ICON);
 		switchFaceViewIcon.setVerticalAlignment(JLabel.CENTER);
 		switchFaceViewIcon.setHorizontalAlignment(JLabel.CENTER);
@@ -168,7 +174,6 @@ public class GrandExchangeOfferSlot extends JPanel
 		offerSpent.setVerticalAlignment(JLabel.TOP);
 		offerSpent.setFont(FontManager.getRunescapeSmallFont());
 
-		JLabel switchDetailsViewIcon = new JLabel();
 		switchDetailsViewIcon.setIcon(LEFT_ARROW_ICON);
 		switchDetailsViewIcon.setVerticalAlignment(JLabel.CENTER);
 		switchDetailsViewIcon.setHorizontalAlignment(JLabel.CENTER);
@@ -192,7 +197,7 @@ public class GrandExchangeOfferSlot extends JPanel
 		add(container, BorderLayout.CENTER);
 		add(progressBar, BorderLayout.SOUTH);
 	}
-
+	
 	void updateOffer(ItemComposition offerItem, BufferedImage itemImage, @Nullable GrandExchangeOffer newOffer)
 	{
 		if (newOffer == null || newOffer.getState() == EMPTY)

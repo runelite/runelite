@@ -25,8 +25,6 @@
 package net.runelite.client.plugins.specialcounter;
 
 import com.google.common.eventbus.Subscribe;
-import java.util.HashSet;
-import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -63,7 +61,7 @@ public class SpecialCounterPlugin extends Plugin
 	private double modifier = 1d;
 
 	private SpecialWeapon specialWeapon;
-	private final Set<Integer> interactedNpcIds = new HashSet<>();
+	private int interactedNpcId;
 	private final SpecialCounter[] specialCounter = new SpecialCounter[SpecialWeapon.values().length];
 
 	@Inject
@@ -99,7 +97,7 @@ public class SpecialCounterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	public void onSpecialChanged(VarbitChanged event)
 	{
 		int specialPercentage = client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT);
 
@@ -154,29 +152,23 @@ public class SpecialCounterPlugin extends Plugin
 		{
 			int interactingId = ((NPC) interacting).getId();
 
-			if (!interactedNpcIds.contains(interactingId))
+			if (interactedNpcId != interactingId)
 			{
+				interactedNpcId = interactingId;
 				removeCounters();
-				modifier = 1d;
-				interactedNpcIds.add(interactingId);
 
-				final Boss boss = Boss.getBoss(interactingId);
-				if (boss != null)
-				{
-					modifier = boss.getModifier();
-					interactedNpcIds.addAll(boss.getIds());
-				}
-
+				Boss boss = Boss.getBoss(interacting.getName());
+				modifier = boss != null ? boss.getModifier() : 1d;
 			}
 		}
 	}
 
 	@Subscribe
-	public void onNpcDespawned(NpcDespawned npcDespawned)
+	public void onNpcDespawn(NpcDespawned npcDespawned)
 	{
 		NPC actor = npcDespawned.getNpc();
 
-		if (actor.isDead() && interactedNpcIds.contains(actor.getId()))
+		if (actor.isDead() && actor.getId() == interactedNpcId)
 		{
 			removeCounters();
 		}
@@ -230,8 +222,6 @@ public class SpecialCounterPlugin extends Plugin
 
 	private void removeCounters()
 	{
-		interactedNpcIds.clear();
-
 		for (int i = 0; i < specialCounter.length; ++i)
 		{
 			SpecialCounter counter = specialCounter[i];

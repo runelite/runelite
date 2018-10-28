@@ -120,17 +120,6 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "usernameInTitle",
-		name = "Show display name in title",
-		description = "Toggles displaying of local player's display name in client title",
-		position = 18
-	)
-	default boolean usernameInTitle()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "notificationTray",
 		name = "Enable tray notifications",
 		description = "Enables tray notifications",
@@ -219,21 +208,10 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "interfaceFontType",
-		name = "Interface Overlay Font",
-		description = "Configures what font type is used for in-game interface overlays such as panels, opponent info, clue scrolls etc.",
-		position = 32
-	)
-	default FontType interfaceFontType()
-	{
-		return FontType.REGULAR;
-	}
-
-	@ConfigItem(
 		keyName = "infoBoxVertical",
 		name = "Display infoboxes vertically",
 		description = "Toggles the infoboxes to display vertically",
-		position = 33
+		position = 32
 	)
 	default boolean infoBoxVertical()
 	{
@@ -244,7 +222,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "infoBoxWrap",
 		name = "Infobox wrap count",
 		description = "Configures the amount of infoboxes shown before wrapping",
-		position = 34
+		position = 33
 	)
 	default int infoBoxWrap()
 	{
@@ -255,7 +233,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "infoBoxSize",
 		name = "Infobox size (px)",
 		description = "Configures the size of each infobox in pixels",
-		position = 35
+		position = 34
 	)
 	default int infoBoxSize()
 	{

@@ -29,7 +29,6 @@ import com.google.inject.Singleton;
 import java.time.Instant;
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.Set;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
@@ -42,19 +41,22 @@ import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
 @Singleton
 public class FarmingTracker
 {
+	@Deprecated
+	private static final String OLD_KEY_NAME = "farmingTracker";
+
 	private final Client client;
 	private final ItemManager itemManager;
 	private final ConfigManager configManager;
 	private final TimeTrackingConfig config;
 	private final FarmingWorld farmingWorld;
 
-	private final Map<Tab, SummaryState> summaries = new EnumMap<>(Tab.class);
+	private final Map<PatchImplementation, SummaryState> summaries = new EnumMap<>(PatchImplementation.class);
 
 	/**
 	 * The time at which all patches of a particular type will be ready to be harvested,
 	 * or {@code -1} if we have no data about any patch of the given type.
 	 */
-	private final Map<Tab, Long> completionTimes = new EnumMap<>(Tab.class);
+	private final Map<PatchImplementation, Long> completionTimes = new EnumMap<>(PatchImplementation.class);
 
 	@Inject
 	private FarmingTracker(Client client, ItemManager itemManager, ConfigManager configManager,
@@ -128,13 +130,9 @@ public class FarmingTracker
 
 				String value = strVarbit + ":" + unixNow;
 				configManager.setConfiguration(group, key, value);
+				updateCompletionTime(patch.getImplementation());
 				changed = true;
 			}
-		}
-
-		if (changed)
-		{
-			updateCompletionTime();
 		}
 
 		return changed;
@@ -144,10 +142,14 @@ public class FarmingTracker
 	{
 		summaries.clear();
 		completionTimes.clear();
-		updateCompletionTime();
+
+		for (PatchImplementation patchType : PatchImplementation.values())
+		{
+			updateCompletionTime(patchType);
+		}
 	}
 
-	public SummaryState getSummary(Tab patchType)
+	public SummaryState getSummary(PatchImplementation patchType)
 	{
 		SummaryState summary = summaries.get(patchType);
 		return summary == null ? SummaryState.UNKNOWN : summary;
@@ -155,10 +157,9 @@ public class FarmingTracker
 
 	/**
 	 * Gets the overall completion time for the given patch type.
-	 *
 	 * @see #completionTimes
 	 */
-	public long getCompletionTime(Tab patchType)
+	public long getCompletionTime(PatchImplementation patchType)
 	{
 		Long completionTime = completionTimes.get(patchType);
 		return completionTime == null ? -1 : completionTime;
@@ -166,97 +167,130 @@ public class FarmingTracker
 
 	/**
 	 * Updates the overall completion time for the given patch type.
-	 *
 	 * @see #completionTimes
 	 */
-	private void updateCompletionTime()
+	private void updateCompletionTime(PatchImplementation patchType)
 	{
-		for (Map.Entry<Tab, Set<FarmingPatch>> tab : farmingWorld.getTabs().entrySet())
+		long maxCompletionTime = 0;
+		boolean allUnknown = true;
+		boolean allEmpty = true;
+
+		for (FarmingPatch patch : farmingWorld.getPatchTypes().get(patchType))
 		{
-			long maxCompletionTime = 0;
-			boolean allUnknown = true;
-			boolean allEmpty = true;
+			String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername() + "." + patch.getRegion().getRegionID();
+			String key = Integer.toString(patch.getVarbit().getId());
+			String storedValue = configManager.getConfiguration(group, key);
+			long unixTime = 0;
+			int value = 0;
 
-			for (FarmingPatch patch : tab.getValue())
+			if (storedValue != null)
 			{
-				String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername() + "." + patch.getRegion().getRegionID();
-				String key = Integer.toString(patch.getVarbit().getId());
-				String storedValue = configManager.getConfiguration(group, key);
-				long unixTime = 0;
-				int value = 0;
-
-				if (storedValue != null)
+				String[] parts = storedValue.split(":");
+				if (parts.length == 2)
 				{
-					String[] parts = storedValue.split(":");
-					if (parts.length == 2)
+					try
 					{
-						try
-						{
-							value = Integer.parseInt(parts[0]);
-							unixTime = Long.parseLong(parts[1]);
-						}
-						catch (NumberFormatException e)
-						{
-							// ignored
-						}
+						value = Integer.parseInt(parts[0]);
+						unixTime = Long.parseLong(parts[1]);
+					}
+					catch (NumberFormatException e)
+					{
+						// ignored
 					}
 				}
+			}
 
-				PatchState state = unixTime <= 0 ? null : patch.getImplementation().forVarbitValue(value);
-				if (state == null || state.getProduce().getItemID() < 0)
+			PatchState state = unixTime <= 0 ? null : patch.getImplementation().forVarbitValue(value);
+			if (state == null || state.getProduce().getItemID() < 0)
+			{
+				continue; // unknown state
+			}
+
+			int tickrate = state.getTickRate() * 60;
+			int stage = state.getStage();
+			int stages = state.getStages();
+
+			if (state.getProduce() != Produce.WEEDS && state.getProduce() != Produce.SCARECROW)
+			{
+				allEmpty = false;
+
+				// update max duration if this patch takes longer to grow
+				if (tickrate > 0)
+				{
+					long tickTime = unixTime / tickrate;
+					long doneEstimate = ((stages - 1 - stage) + tickTime) * tickrate;
+					maxCompletionTime = Math.max(maxCompletionTime, doneEstimate);
+				}
+				else if (state.getCropState() == CropState.GROWING && stage != stages - 1)
 				{
 					continue; // unknown state
 				}
+			}
 
-				int tickrate = state.getTickRate() * 60;
-				int stage = state.getStage();
-				int stages = state.getStages();
+			allUnknown = false;
+		}
 
-				if (state.getProduce() != Produce.WEEDS && state.getProduce() != Produce.SCARECROW)
+		if (allUnknown)
+		{
+			summaries.put(patchType, SummaryState.UNKNOWN);
+			completionTimes.put(patchType, -1L);
+		}
+		else if (allEmpty)
+		{
+			summaries.put(patchType, SummaryState.EMPTY);
+			completionTimes.put(patchType, -1L);
+		}
+		else if (maxCompletionTime <= Instant.now().getEpochSecond())
+		{
+			summaries.put(patchType, SummaryState.COMPLETED);
+			completionTimes.put(patchType, 0L);
+		}
+		else
+		{
+			summaries.put(patchType, SummaryState.IN_PROGRESS);
+			completionTimes.put(patchType, maxCompletionTime);
+		}
+	}
+
+	/**
+	 * Migrates configuration data from {@code "farmingTracker"} key to {@code "timetracking"} key.
+	 * This method should be removed after a reasonable amount of time.
+	 */
+	@Deprecated
+	public void migrateConfiguration()
+	{
+		String username = client.getUsername();
+
+		// migrate autoweed config
+		{
+			String oldGroup = OLD_KEY_NAME + "." + username;
+			String newGroup = TimeTrackingConfig.CONFIG_GROUP + "." + username;
+			String storedValue = configManager.getConfiguration(oldGroup, TimeTrackingConfig.AUTOWEED);
+
+			if (storedValue != null)
+			{
+				configManager.setConfiguration(newGroup, TimeTrackingConfig.AUTOWEED, storedValue);
+				configManager.unsetConfiguration(oldGroup, TimeTrackingConfig.AUTOWEED);
+			}
+		}
+
+		// migrate all saved data in all regions
+		for (FarmingRegion region : farmingWorld.getRegions().values())
+		{
+			String oldGroup = OLD_KEY_NAME + "." + username + "." + region.getRegionID();
+			String newGroup = TimeTrackingConfig.CONFIG_GROUP + "." + username + "." + region.getRegionID();
+
+			for (Varbits varbit : region.getVarbits())
+			{
+				String key = Integer.toString(varbit.getId());
+				String storedValue = configManager.getConfiguration(oldGroup, key);
+
+				if (storedValue != null)
 				{
-					allEmpty = false;
-
-					// update max duration if this patch takes longer to grow
-					if (tickrate > 0)
-					{
-						long tickTime = unixTime / tickrate;
-						long doneEstimate = ((stages - 1 - stage) + tickTime) * tickrate;
-						maxCompletionTime = Math.max(maxCompletionTime, doneEstimate);
-					}
-					else if (state.getCropState() == CropState.GROWING && stage != stages - 1)
-					{
-						continue; // unknown state
-					}
+					configManager.setConfiguration(newGroup, key, storedValue);
+					configManager.unsetConfiguration(oldGroup, key);
 				}
-
-				allUnknown = false;
 			}
-
-			final SummaryState state;
-			final long completionTime;
-
-			if (allUnknown)
-			{
-				state = SummaryState.UNKNOWN;
-				completionTime = -1L;
-			}
-			else if (allEmpty)
-			{
-				state = SummaryState.EMPTY;
-				completionTime = -1L;
-			}
-			else if (maxCompletionTime <= Instant.now().getEpochSecond())
-			{
-				state = SummaryState.COMPLETED;
-				completionTime = 0;
-			}
-			else
-			{
-				state = SummaryState.IN_PROGRESS;
-				completionTime = maxCompletionTime;
-			}
-			summaries.put(tab.getKey(), state);
-			completionTimes.put(tab.getKey(), completionTime);
 		}
 	}
 }

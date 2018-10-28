@@ -28,7 +28,6 @@ package net.runelite.client.plugins.puzzlesolver.solver.heuristics;
 
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleState;
 import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.DIMENSION;
-import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.BLANK_TILE_VALUE;
 
 /**
  * An implementation of the manhattan distance heuristic function.
@@ -52,7 +51,7 @@ public class ManhattanDistance implements Heuristic
 				{
 					int piece = state.getPiece(x, y);
 
-					if (piece == BLANK_TILE_VALUE)
+					if (piece == -1)
 					{
 						continue;
 					}

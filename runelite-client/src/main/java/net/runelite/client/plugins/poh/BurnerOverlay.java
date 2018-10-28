@@ -27,25 +27,29 @@ package net.runelite.client.plugins.poh;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.time.Duration;
-import java.time.Instant;
+import java.awt.Polygon;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
+import net.runelite.api.TileObject;
+import static net.runelite.client.plugins.poh.PohPlugin.BURNER_LIT;
+import static net.runelite.client.plugins.poh.PohPlugin.BURNER_UNLIT;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.ProgressPieComponent;
+import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.TextComponent;
 
-class BurnerOverlay extends Overlay
+public class BurnerOverlay extends Overlay
 {
 	private final Client client;
 	private final PohConfig config;
 	private final PohPlugin plugin;
+	private final TextComponent textComponent = new TextComponent();
 
 	@Inject
-	private BurnerOverlay(Client client, PohConfig config, PohPlugin plugin)
+	public BurnerOverlay(Client client, PohConfig config, PohPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -62,61 +66,42 @@ class BurnerOverlay extends Overlay
 			return null;
 		}
 
-		plugin.getIncenseBurners().forEach((tile, burner) ->
+		plugin.getPohObjects().forEach((object, tile) ->
 		{
-			if (tile.getPlane() != client.getPlane())
+			if (tile.getPlane() == client.getPlane())
 			{
-				return;
-			}
-
-			if (!PohPlugin.BURNER_LIT.contains(burner.getId()))
-			{
-				return;
-			}
-
-			final Instant now = Instant.now();
-			final long startCountdown = Duration.between(burner.getStart(), now).getSeconds();
-			final double certainSec = burner.getCountdownTimer() - startCountdown;
-
-			long endCountdown = 0;
-
-			if (certainSec <= 0)
-			{
-				if (burner.getEnd() == null)
+				if (BURNER_UNLIT.contains(object.getId()))
 				{
-					burner.setEnd(Instant.now());
+					drawBurner(graphics, "Unlit", object, Color.RED);
 				}
-
-				endCountdown = Duration.between(burner.getEnd(), now).getSeconds();
-			}
-
-			final double randomSec = burner.getRandomTimer() - endCountdown;
-			final ProgressPieComponent pieComponent = new ProgressPieComponent();
-			final Point loc = Perspective.localToCanvas(client, tile.getLocalLocation(), tile.getPlane());
-
-			if (loc == null)
-			{
-				return;
-			}
-
-			pieComponent.setPosition(loc);
-
-			if (certainSec > 0)
-			{
-				pieComponent.setProgress(certainSec / burner.getCountdownTimer());
-				pieComponent.setFill(Color.GREEN);
-				pieComponent.setBorderColor(Color.GREEN);
-				pieComponent.render(graphics);
-			}
-			else if (randomSec > 0)
-			{
-				pieComponent.setProgress(randomSec / burner.getRandomTimer());
-				pieComponent.setFill(Color.ORANGE);
-				pieComponent.setBorderColor(Color.ORANGE);
-				pieComponent.render(graphics);
+				else if (BURNER_LIT.contains(object.getId()))
+				{
+					drawBurner(graphics, "Lit", object, Color.GREEN);
+				}
 			}
 		});
-
 		return null;
+	}
+
+	private void drawBurner(Graphics2D graphics, String text, TileObject tileObject, Color color)
+	{
+		Point canvasText = Perspective.getCanvasTextLocation(client, graphics, tileObject.getLocalLocation(), text, 200);
+
+		if (canvasText == null)
+		{
+			return;
+		}
+
+		textComponent.setText(text);
+		textComponent.setPosition(new java.awt.Point(canvasText.getX(), canvasText.getY()));
+		textComponent.setColor(color);
+		textComponent.render(graphics);
+
+		//render tile
+		Polygon poly = tileObject.getCanvasTilePoly();
+		if (poly != null)
+		{
+			OverlayUtil.renderPolygon(graphics, poly, color);
+		}
 	}
 }

@@ -37,9 +37,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.NPC;
 import net.runelite.api.Node;
-import net.runelite.api.Player;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.events.DecorativeObjectSpawned;
@@ -47,23 +45,18 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemSpawned;
-import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.WallObjectSpawned;
-import net.runelite.client.callback.ClientThread;
 
 @Singleton
 public class GameEventManager
 {
 	private final EventBus eventBus = new EventBus();
 	private final Client client;
-	private final ClientThread clientThread;
 
 	@Inject
-	private GameEventManager(Client client, ClientThread clientThread)
+	private GameEventManager(Client client)
 	{
 		this.client = client;
-		this.clientThread = clientThread;
 	}
 
 	/**
@@ -73,6 +66,7 @@ public class GameEventManager
 	 */
 	private void forEachTile(Consumer<Tile> consumer)
 	{
+
 		final Scene scene = client.getScene();
 		final Tile[][][] tiles = scene.getTiles();
 
@@ -107,92 +101,70 @@ public class GameEventManager
 			return;
 		}
 
-		clientThread.invoke(() ->
+		eventBus.register(subscriber);
+
+		for (final InventoryID inventory : InventoryID.values())
 		{
+			final ItemContainer itemContainer = client.getItemContainer(inventory);
 
-			eventBus.register(subscriber);
-
-			for (final InventoryID inventory : InventoryID.values())
+			if (itemContainer != null)
 			{
-				final ItemContainer itemContainer = client.getItemContainer(inventory);
-
-				if (itemContainer != null)
-				{
-					eventBus.post(new ItemContainerChanged(itemContainer));
-				}
+				eventBus.post(new ItemContainerChanged(itemContainer));
 			}
+		}
 
-			for (NPC npc : client.getCachedNPCs())
+		forEachTile((tile) ->
+		{
+			Optional.ofNullable(tile.getWallObject()).ifPresent(object ->
 			{
-				if (npc != null)
-				{
-					final NpcSpawned npcSpawned = new NpcSpawned(npc);
-					eventBus.post(npcSpawned);
-				}
-			}
-
-			for (Player player : client.getCachedPlayers())
-			{
-				if (player != null)
-				{
-					final PlayerSpawned playerSpawned = new PlayerSpawned(player);
-					eventBus.post(playerSpawned);
-				}
-			}
-
-			forEachTile((tile) ->
-			{
-				Optional.ofNullable(tile.getWallObject()).ifPresent(object ->
-				{
-					final WallObjectSpawned objectSpawned = new WallObjectSpawned();
-					objectSpawned.setTile(tile);
-					objectSpawned.setWallObject(object);
-					eventBus.post(objectSpawned);
-				});
-
-				Optional.ofNullable(tile.getDecorativeObject()).ifPresent(object ->
-				{
-					final DecorativeObjectSpawned objectSpawned = new DecorativeObjectSpawned();
-					objectSpawned.setTile(tile);
-					objectSpawned.setDecorativeObject(object);
-					eventBus.post(objectSpawned);
-				});
-
-				Optional.ofNullable(tile.getGroundObject()).ifPresent(object ->
-				{
-					final GroundObjectSpawned objectSpawned = new GroundObjectSpawned();
-					objectSpawned.setTile(tile);
-					objectSpawned.setGroundObject(object);
-					eventBus.post(objectSpawned);
-				});
-
-				Arrays.stream(tile.getGameObjects())
-					.filter(Objects::nonNull)
-					.forEach(object ->
-					{
-						final GameObjectSpawned objectSpawned = new GameObjectSpawned();
-						objectSpawned.setTile(tile);
-						objectSpawned.setGameObject(object);
-						eventBus.post(objectSpawned);
-					});
-
-				Optional.ofNullable(tile.getItemLayer()).ifPresent(itemLayer ->
-				{
-					Node current = itemLayer.getBottom();
-
-					while (current instanceof Item)
-					{
-						final Item item = (Item) current;
-
-						current = current.getNext();
-
-						final ItemSpawned itemSpawned = new ItemSpawned(tile, item);
-						eventBus.post(itemSpawned);
-					}
-				});
+				final WallObjectSpawned objectSpawned = new WallObjectSpawned();
+				objectSpawned.setTile(tile);
+				objectSpawned.setWallObject(object);
+				eventBus.post(objectSpawned);
 			});
 
-			eventBus.unregister(subscriber);
+			Optional.ofNullable(tile.getDecorativeObject()).ifPresent(object ->
+			{
+				final DecorativeObjectSpawned objectSpawned = new DecorativeObjectSpawned();
+				objectSpawned.setTile(tile);
+				objectSpawned.setDecorativeObject(object);
+				eventBus.post(objectSpawned);
+			});
+
+			Optional.ofNullable(tile.getGroundObject()).ifPresent(object ->
+			{
+				final GroundObjectSpawned objectSpawned = new GroundObjectSpawned();
+				objectSpawned.setTile(tile);
+				objectSpawned.setGroundObject(object);
+				eventBus.post(objectSpawned);
+			});
+
+			Arrays.stream(tile.getGameObjects())
+				.filter(Objects::nonNull)
+				.forEach(object ->
+				{
+					final GameObjectSpawned objectSpawned = new GameObjectSpawned();
+					objectSpawned.setTile(tile);
+					objectSpawned.setGameObject(object);
+					eventBus.post(objectSpawned);
+				});
+
+			Optional.ofNullable(tile.getItemLayer()).ifPresent(itemLayer ->
+			{
+				Node current = itemLayer.getBottom();
+
+				while (current instanceof Item)
+				{
+					final Item item = (Item) current;
+
+					current = current.getNext();
+
+					final ItemSpawned itemSpawned = new ItemSpawned(tile, item);
+					eventBus.post(itemSpawned);
+				}
+			});
 		});
+
+		eventBus.unregister(subscriber);
 	}
 }

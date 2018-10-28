@@ -30,12 +30,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.function.Consumer;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -45,8 +43,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 
@@ -117,7 +113,7 @@ public class IconTextField extends JPanel
 		clearButton.setVisible(false);
 
 		// ActionListener for keyboard use (via Tab -> Space)
-		clearButton.addActionListener(evt -> setText(null));
+		clearButton.addActionListener((l) -> setText(null));
 
 		// MouseListener for hover and click events
 		clearButton.addMouseListener(new MouseAdapter()
@@ -174,10 +170,9 @@ public class IconTextField extends JPanel
 		textField.addActionListener(actionListener);
 	}
 
-	public void setIcon(Icon icon)
+	public void setIcon(ImageIcon icon)
 	{
-		final ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(icon.getFile()));
-		iconWrapperLabel.setIcon(imageIcon);
+		iconWrapperLabel.setIcon(icon);
 	}
 
 	public String getText()
@@ -222,30 +217,6 @@ public class IconTextField extends JPanel
 		textField.addKeyListener(keyListener);
 	}
 
-	public void addKeyListener(Consumer<KeyEvent> keyEventConsumer)
-	{
-		addKeyListener(new net.runelite.client.input.KeyListener()
-		{
-			@Override
-			public void keyTyped(KeyEvent e)
-			{
-				keyEventConsumer.accept(e);
-			}
-
-			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				keyEventConsumer.accept(e);
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e)
-			{
-				keyEventConsumer.accept(e);
-			}
-		});
-	}
-
 	@Override
 	public void removeKeyListener(KeyListener keyListener)
 	{
@@ -271,18 +242,6 @@ public class IconTextField extends JPanel
 	public Document getDocument()
 	{
 		return textField.getDocument();
-	}
-
-	@Getter
-	@RequiredArgsConstructor
-	public enum Icon
-	{
-		SEARCH("search.png"),
-		LOADING("loading_spinner.gif"),
-		LOADING_DARKER("loading_spinner_darker.gif"),
-		ERROR("error.png");
-
-		private final String file;
 	}
 
 }

@@ -131,7 +131,7 @@ public class NpcSceneOverlay extends Overlay
 		final int textHeight = graphics.getFontMetrics().getAscent();
 
 		final Point canvasPoint = Perspective
-			.localToCanvas(client, centerLp, respawnLocation.getPlane());
+			.worldToCanvas(client, centerLp.getX(), centerLp.getY(), respawnLocation.getPlane());
 
 		if (canvasPoint != null)
 		{

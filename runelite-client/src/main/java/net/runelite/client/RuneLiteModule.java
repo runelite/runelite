@@ -46,16 +46,15 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
-import net.runelite.client.rs.ClientLoader;
 import net.runelite.client.rs.ClientUpdateCheckMode;
+import net.runelite.client.rs.ClientLoader;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.util.DeferredEventBus;
-import net.runelite.client.util.ExecutorServiceExceptionLogger;
 import net.runelite.client.util.QueryRunner;
-import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import net.runelite.http.api.RuneLiteAPI;
+import okhttp3.OkHttpClient;
 
 @Slf4j
 public class RuneLiteModule extends AbstractModule
@@ -74,7 +73,7 @@ public class RuneLiteModule extends AbstractModule
 	{
 		bindConstant().annotatedWith(Names.named("updateCheckMode")).to(updateCheckMode);
 		bindConstant().annotatedWith(Names.named("developerMode")).to(developerMode);
-		bind(ScheduledExecutorService.class).toInstance(new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor()));
+		bind(ScheduledExecutorService.class).toInstance(Executors.newSingleThreadScheduledExecutor());
 		bind(OkHttpClient.class).toInstance(RuneLiteAPI.CLIENT);
 		bind(QueryRunner.class);
 		bind(MenuManager.class);

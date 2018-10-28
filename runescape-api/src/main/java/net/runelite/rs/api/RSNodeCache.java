@@ -24,10 +24,9 @@
  */
 package net.runelite.rs.api;
 
-import net.runelite.api.NodeCache;
 import net.runelite.mapping.Import;
 
-public interface RSNodeCache extends NodeCache
+public interface RSNodeCache
 {
 	@Import("get")
 	RSCacheableNode get(long id);

@@ -77,21 +77,10 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "ultimateforcenotification",
-		name = "Ultimate Force notification",
-		description = "Toggles notifications when an ultimate force power-up appears",
-		position = 5
-	)
-	default boolean ultimateForceNotification()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "overloadnotification",
 		name = "Overload notification",
 		description = "Toggles notifications when your overload runs out",
-		position = 6
+		position = 5
 	)
 	default boolean overloadNotification()
 	{
@@ -102,7 +91,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptionnotification",
 		name = "Absorption notification",
 		description = "Toggles notifications when your absorption points gets below your threshold",
-		position = 7
+		position = 6
 	)
 	default boolean absorptionNotification()
 	{
@@ -113,7 +102,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptionthreshold",
 		name = "Absorption Threshold",
 		description = "The amount of absorption points to send a notification at",
-		position = 8
+		position = 7
 	)
 	default int absorptionThreshold()
 	{
@@ -124,7 +113,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptioncoloroverthreshold",
 		name = "Color above threshold",
 		description = "Configures the color for the absorption widget when above the threshold",
-		position = 9
+		position = 8
 	)
 	default Color absorptionColorAboveThreshold()
 	{
@@ -135,7 +124,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptioncolorbelowthreshold",
 		name = "Color below threshold",
 		description = "Configures the color for the absorption widget when below the threshold",
-		position = 10
+		position = 9
 	)
 	default Color absorptionColorBelowThreshold()
 	{
