@@ -116,7 +116,7 @@ public enum HotColdLocation
 	KARAMJA_KHARAZI_SW(new WorldPoint(2783, 2898, 0), KARAMJA, "South-western part of Kharazi Jungle."),
 	KARAMJA_CRASH_ISLAND(new WorldPoint(2910, 2737, 0), KARAMJA, "Northern part of Crash Island."),
 	MISTHALIN_VARROCK_STONE_CIRCLE(new WorldPoint(3225, 3355, 0), MISTHALIN, "South of the stone circle near Varrock's entrance."),
-	MISTHALIN_LUMBRIDGE(new WorldPoint(3238, 3166, 0), MISTHALIN, "Just north-west of the Lumbridge Fishing tutor."),
+	MISTHALIN_LUMBRIDGE(new WorldPoint(3238, 3169, 0), MISTHALIN, "Just north-west of the Lumbridge Fishing tutor."),
 	MISTHALIN_LUMBRIDGE_2(new WorldPoint(3170, 3278, 0), MISTHALIN, "North of the pond between Lumbridge and Draynor Village."),
 	MISTHALIN_GERTUDES(new WorldPoint(3158, 3421, 0), MISTHALIN, "Nort-east of Gertrude's house west of Varrock."),
 	MISTHALIN_DRAYNOR_BANK(new WorldPoint(3096, 3235, 0), MISTHALIN, "South of Draynor Village bank."),
