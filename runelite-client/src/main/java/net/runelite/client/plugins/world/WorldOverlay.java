@@ -29,15 +29,15 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-
 import net.runelite.api.Client;
 import net.runelite.api.Point;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TextComponent;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
+
 
 @Slf4j
 class WorldOverlay extends Overlay
@@ -59,33 +59,33 @@ class WorldOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		boolean showWorld = config.showWorld();
-		final String world = Integer.toString(client.getWorld());
 
-		if (showWorld)
+		if (!showWorld)
 		{
-			final Color worldTextColor = new Color(0, 255, 0);
-			final Widget view = client.getWidget(WidgetInfo.WORLD_MAP_OPTION);
-
-			Point orbPosition = view.getCanvasLocation();
-
-			int x = orbPosition.getX();
-			int y = orbPosition.getY();
-			int orbWidth = view.getWidth();
-			int orbHeight = view.getHeight();
-
-			Color transparentOrb = new Color(0, 0, 0, 80);
-
-			graphics.setColor(transparentOrb);
-			graphics.fillOval(x, y, orbWidth, orbHeight);
-
-			java.awt.Point newPoint = new java.awt.Point(x + 1, y + (orbWidth * 3) / 4);
-			textComponent.setColor(worldTextColor);
-			textComponent.setText(world);
-			textComponent.setPosition(newPoint);
-
-			return textComponent.render(graphics);
+			return null;
 		}
 
-		return null;
+		final String world = Integer.toString(client.getWorld());
+		final Color worldTextColor = new Color(0, 255, 0);
+		final Widget view = client.getWidget(WidgetInfo.WORLD_MAP_OPTION);
+
+		Point orbPosition = view.getCanvasLocation();
+
+		int x = orbPosition.getX();
+		int y = orbPosition.getY();
+		int orbWidth = view.getWidth();
+		int orbHeight = view.getHeight();
+
+		Color transparentOrb = new Color(0, 0, 0, 80);
+
+		graphics.setColor(transparentOrb);
+		graphics.fillOval(x, y, orbWidth, orbHeight);
+
+		java.awt.Point newPoint = new java.awt.Point(x + 1, y + (orbWidth * 3) / 4);
+		textComponent.setColor(worldTextColor);
+		textComponent.setText(world);
+		textComponent.setPosition(newPoint);
+
+		return textComponent.render(graphics);
 	}
 }

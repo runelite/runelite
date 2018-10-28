@@ -35,8 +35,7 @@ public interface WorldConfig extends Config
 	@ConfigItem(
 		keyName = "defaultWorld",
 		name = "Default world",
-		description = "World to use as default one",
-		position = 0
+		description = "World to use as default one"
 	)
 	default int getWorld()
 	{
@@ -46,8 +45,7 @@ public interface WorldConfig extends Config
 	@ConfigItem(
 		keyName = "showWorld",
 		name = "Display your current world",
-		description = "Displays your world as an overlay",
-		position = 1
+		description = "Displays your world as an overlay"
 	)
 	default boolean showWorld()
 	{
