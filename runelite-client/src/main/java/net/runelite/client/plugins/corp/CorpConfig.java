@@ -34,7 +34,7 @@ public interface CorpConfig extends Config
 	@ConfigItem(
 		keyName = "leftClickCore",
 		name = "Left click walk on core",
-		description = "Prioritizes Walk here over Attack on the Dark energy core",
+		description = "Prioritizes Walk here over Attack on the Dark energey core",
 		position = 1
 	)
 	default boolean leftClickCore()
@@ -49,6 +49,17 @@ public interface CorpConfig extends Config
 		position = 2
 	)
 	default boolean showDamage()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showChatDamage",
+		name = "Show damage stats in chat",
+		description = "Shows damage stats in the chat after each kill",
+		position = 3
+	)
+	default boolean showChatDamage()
 	{
 		return true;
 	}
