@@ -144,7 +144,7 @@ public class ScreenshotPlugin extends Plugin
 			Pattern.compile("(.+) got rekt\\."),
 			Pattern.compile("(.+) was made to sit down\\."),
 			Pattern.compile("The struggle for (.+) is real\\."),
-			Pattern.compile("(.+) should take lessons from you\\. You're clearly too good for (?:him)?(?:her)?\\."),
+			Pattern.compile("(.+) should take lessons from you\\. You're clearly too good for (?:him|her)\\."),
 			Pattern.compile("MUM! GET THE CAMERA, I JUST KILLED (.+)!")
 			);
 
