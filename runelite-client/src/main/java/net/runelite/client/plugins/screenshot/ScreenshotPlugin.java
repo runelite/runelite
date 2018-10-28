@@ -122,14 +122,25 @@ public class ScreenshotPlugin extends Plugin
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
 	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
 
+	private static final List<Pattern> PVP_KILL_MESSAGES = Arrays.asList(
+			Pattern.compile("With a crushing blow you finish (.+)\\."),
+			Pattern.compile("What was (.+) thinking challenging you\\.\\.\\."),
+			Pattern.compile("(.+) was no match for you\\."),
+			Pattern.compile("(.+) was no match for your awesomeness\\."),
+			Pattern.compile("You were clearly a better fighter than (.+)\\."),
+			Pattern.compile("A humiliating defeat for (.+)\\."),
+			Pattern.compile("RIP (.+)\\."),
+			Pattern.compile("Can anyone defeat you\\? Certainly not (.+)\\."),
+			Pattern.compile("(.+) falls before your might\\."),
+			Pattern.compile("What an embarrassing performance by (.+)\\."),
+			Pattern.compile("You have defeated (.+)\\."),
+			Pattern.compile("(.+) didn't stand a chance against you\\.")
+			);
+
+
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
 		"You feel something weird sneaking into your backpack",
 		"You have a funny feeling like you would have been followed");
-
-	private static final ImmutableList<String> KILL_MESSAGES = ImmutableList.of("into tiny pieces and sat on them", "you have obliterated",
-		"falls before your might", "A humiliating defeat for", "With a crushing blow you", "thinking challenging you",
-		"Can anyone defeat you? Certainly not", "was no match for you", "You were clearly a better fighter than", "RIP",
-		"You have defeated", "What an embarrassing performance by", "was no match for your awesomeness");
 
 	static String format(Date date)
 	{
@@ -352,18 +363,17 @@ public class ScreenshotPlugin extends Plugin
 			takeScreenshot(fileName);
 		}
 
-		if (config.screenshotKills() && KILL_MESSAGES.stream().anyMatch(chatMessage::contains))
+		if (config.screenshotKills())
 		{
-			String enemyName = chatMessage;
-
-			for(String killMessage : KILL_MESSAGES) {
-				enemyName = enemyName.replace(killMessage, "");
+			for (Pattern killMessage : PVP_KILL_MESSAGES)
+			{
+				Matcher m = killMessage.matcher(chatMessage);
+				if (m.matches())
+				{
+					String fileName = "Killed " + m.group(1) + " " + format(new Date());
+					takeScreenshot(fileName);
+				}
 			}
-			// Remove trailing full stops and leading/trailing blank spaces
-			enemyName = enemyName.replace(".", "").trim();
-
-			String fileName = "Kill - " + enemyName + " " + format(new Date());
-			takeScreenshot(fileName);
 		}
 
 		if (config.screenshotBossKills() )
