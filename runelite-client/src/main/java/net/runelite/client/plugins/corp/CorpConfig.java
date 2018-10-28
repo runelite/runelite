@@ -34,7 +34,7 @@ public interface CorpConfig extends Config
 	@ConfigItem(
 		keyName = "leftClickCore",
 		name = "Left click walk on core",
-		description = "Prioritizes Walk here over Attack on the Dark energey core",
+		description = "Prioritizes Walk here over Attack on the Dark energy core",
 		position = 1
 	)
 	default boolean leftClickCore()
