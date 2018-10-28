@@ -123,10 +123,10 @@ public class ScreenshotPlugin extends Plugin
 	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
 
 	private static final List<Pattern> PVP_KILL_MESSAGES = Arrays.asList(
+			// Complete list available from Mod Ash: https://twitter.com/JagexAsh/status/1056613188513468416
 			Pattern.compile("With a crushing blow you finish (.+)\\."),
 			Pattern.compile("What was (.+) thinking challenging you\\.\\.\\."),
 			Pattern.compile("(.+) was no match for you\\."),
-			Pattern.compile("(.+) was no match for your awesomeness\\."),
 			Pattern.compile("You were clearly a better fighter than (.+)\\."),
 			Pattern.compile("A humiliating defeat for (.+)\\."),
 			Pattern.compile("RIP (.+)\\."),
@@ -134,7 +134,18 @@ public class ScreenshotPlugin extends Plugin
 			Pattern.compile("(.+) falls before your might\\."),
 			Pattern.compile("What an embarrassing performance by (.+)\\."),
 			Pattern.compile("You have defeated (.+)\\."),
-			Pattern.compile("(.+) didn't stand a chance against you\\.")
+			Pattern.compile("(.+) didn't stand a chance against you\\."),
+			// Rarer death messages.
+			Pattern.compile("(.+) will probably tell you s?he wanted a free teleport after that performance\\."),
+			Pattern.compile("(.+) probably logged out after that beating\\."),
+			Pattern.compile("Such a shame that (.+) can't play this game\\."),
+			Pattern.compile("How not to do it right: Written by (.+)\\."),
+			Pattern.compile("A certain, crouching-over-face animation would be suitable for (.+) right now\\."),
+			Pattern.compile("(.+) got rekt\\."),
+			Pattern.compile("(.+) was made to sit down\\."),
+			Pattern.compile("The struggle for (.+) is real\\."),
+			Pattern.compile("(.+) should take lessons from you\\. You're clearly too good for (?:him)?(?:her)?\\."),
+			Pattern.compile("MUM! GET THE CAMERA, I JUST KILLED (.+)!")
 			);
 
 
