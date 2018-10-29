@@ -214,19 +214,23 @@ public class IdleNotifierPlugin extends Plugin
 			case SAND_COLLECTION:
 				resetTimers();
 				lastAnimation = animation;
+				lastAnimating = Instant.now();
 				break;
 			case MAGIC_LUNAR_SHARED:
 				if (graphic == GraphicID.BAKE_PIE)
 				{
 					resetTimers();
 					lastAnimation = animation;
+					lastAnimating = Instant.now();
 					break;
 				}
 			case IDLE:
+				lastAnimating = Instant.now();
 				break;
 			default:
 				// On unknown animation simply assume the animation is invalid and dont throw notification
 				lastAnimation = IDLE;
+				lastAnimating = null;
 		}
 	}
 
@@ -246,6 +250,10 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			lastInteract = null;
 		}
+		else
+		{
+			lastInteracting = Instant.now();
+		}
 
 		final boolean isNpc = target instanceof NPC;
 
@@ -264,6 +272,7 @@ public class IdleNotifierPlugin extends Plugin
 			// Player is most likely in combat with attack-able NPC
 			resetTimers();
 			lastInteract = target;
+			lastInteracting = Instant.now();
 		}
 	}
 
@@ -552,9 +561,6 @@ public class IdleNotifierPlugin extends Plugin
 	private void resetTimers()
 	{
 		final Player local = client.getLocalPlayer();
-
-		// Reset combat idle timer
-		lastCombatCountdown = 0;
 
 		// Reset animation idle timer
 		lastAnimating = null;
