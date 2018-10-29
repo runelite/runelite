@@ -26,7 +26,9 @@ package net.runelite.client.plugins.pyramidplunder;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.time.temporal.ChronoUnit;
 import javax.inject.Inject;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import static net.runelite.api.ItemID.PHARAOHS_SCEPTRE;
@@ -54,6 +56,8 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 public class PyramidPlunderPlugin extends Plugin
 {
 	private static final int PYRAMIND_PLUNDER_REGION_ID = 7749;
+	private static final int PYRAMIND_PLUNDER_TIMER_MAX = 500;
+	private static final double GAMETICK_SECOND = 0.6;
 
 	@Inject
 	private Client client;
@@ -73,6 +77,11 @@ public class PyramidPlunderPlugin extends Plugin
 	@Inject
 	private PyramidPlunderOverlay pyramidPlunderOverlay;
 
+	@Getter
+	private boolean isInGame;
+
+	private int pyramidTimer = 0;
+
 	@Provides
 	PyramidPlunderConfig getConfig(ConfigManager configManager)
 	{
@@ -89,6 +98,7 @@ public class PyramidPlunderPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(pyramidPlunderOverlay);
+		reset();
 	}
 
 	@Subscribe
@@ -97,6 +107,17 @@ public class PyramidPlunderPlugin extends Plugin
 		if (!config.showTimer())
 		{
 			removeTimer();
+		}
+
+		if (config.showTimer() && isInGame)
+		{
+			int remainingTime = PYRAMIND_PLUNDER_TIMER_MAX - pyramidTimer;
+
+			if (remainingTime >= 2)
+			{
+				double timeInSeconds = remainingTime * GAMETICK_SECOND;
+				showTimer((int)timeInSeconds, ChronoUnit.SECONDS);
+			}
 		}
 	}
 
@@ -107,8 +128,13 @@ public class PyramidPlunderPlugin extends Plugin
 
 	private void showTimer()
 	{
+		showTimer(5, ChronoUnit.MINUTES);
+	}
+
+	private void showTimer(int period, ChronoUnit chronoUnit)
+	{
 		removeTimer();
-		infoBoxManager.addInfoBox(new PyramidPlunderTimer(this, itemManager.getImage(PHARAOHS_SCEPTRE)));
+		infoBoxManager.addInfoBox(new PyramidPlunderTimer(this, itemManager.getImage(PHARAOHS_SCEPTRE), period, chronoUnit));
 	}
 
 	@Subscribe
@@ -118,31 +144,57 @@ public class PyramidPlunderPlugin extends Plugin
 		{
 			case HOPPING:
 			case LOGIN_SCREEN:
-				removeTimer();
+				reset();
 				break;
 			case LOADING:
 			case LOGGED_IN:
-				Player local = client.getLocalPlayer();
-				if (local == null)
+				if (!isInRegion())
 				{
-					return;
-				}
-
-				WorldPoint location = local.getWorldLocation();
-				if (location.getRegionID() != PYRAMIND_PLUNDER_REGION_ID)
-				{
-					removeTimer();
+					reset();
 				}
 				break;
 		}
 	}
 
+	private boolean isInRegion()
+	{
+		Player local = client.getLocalPlayer();
+		if (local == null)
+		{
+			return false;
+		}
+
+		WorldPoint location = local.getWorldLocation();
+		if (location.getRegionID() != PYRAMIND_PLUNDER_REGION_ID)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (client.getVar(Varbits.PYRAMID_PLUNDER_TIMER) == 1 && config.showTimer())
+		pyramidTimer = client.getVar(Varbits.PYRAMID_PLUNDER_TIMER);
+
+		if (pyramidTimer == 0)
 		{
-			showTimer();
+			reset();
 		}
+		if (pyramidTimer == 1)
+		{
+			isInGame = true;
+			if (config.showTimer())
+			{
+				showTimer();
+			}
+		}
+	}
+
+	private void reset()
+	{
+		isInGame = false;
+		removeTimer();
 	}
 }

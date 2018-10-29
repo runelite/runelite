@@ -31,9 +31,9 @@ import net.runelite.client.ui.overlay.infobox.Timer;
 
 public class PyramidPlunderTimer extends Timer
 {
-	PyramidPlunderTimer(Plugin plugin, BufferedImage image)
+	PyramidPlunderTimer(Plugin plugin, BufferedImage image, int period, ChronoUnit chronoUnit)
 	{
-		super(5, ChronoUnit.MINUTES, image, plugin);
+		super(period, chronoUnit, image, plugin);
 		setTooltip("Time left until minigame ends");
 	}
 }
