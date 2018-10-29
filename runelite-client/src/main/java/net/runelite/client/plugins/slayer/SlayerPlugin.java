@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.slayer;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
@@ -438,7 +439,9 @@ public class SlayerPlugin extends Plugin
 		{
 			final int taskAmount = Integer.parseInt(bracerProgress.group(1));
 			setTask(taskName, taskAmount);
-			return;
+
+			// Avoid race condition (combat brace message goes through first before XP drop)
+			amount++;
 		}
 	}
 
@@ -486,7 +489,8 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
-	private void killedOne()
+	@VisibleForTesting
+	void killedOne()
 	{
 		if (amount == 0)
 		{
