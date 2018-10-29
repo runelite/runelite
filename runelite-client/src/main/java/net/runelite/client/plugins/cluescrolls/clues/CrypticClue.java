@@ -338,11 +338,6 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
 		panelComponent.getChildren().add(TitleComponent.builder().text("Cryptic Clue").build());
-		panelComponent.getChildren().add(LineComponent.builder().left("Clue:").build());
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left(getText())
-			.leftColor(TITLED_CONTENT_COLOR)
-			.build());
 
 		if (getNpc() != null)
 		{
