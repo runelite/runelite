@@ -33,7 +33,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Skin
 {
-	DEFAULT("Default"),
 	AROUND_2005("2005"),
 	AROUND_2010("2010");
 

@@ -32,16 +32,15 @@ import java.awt.image.BufferedImage;
 import java.awt.image.PixelGrabber;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.SpriteID;
+import net.runelite.api.SpritePixels;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.events.WidgetPositioned;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -52,25 +51,12 @@ import net.runelite.client.plugins.PluginDescriptor;
 @Slf4j
 @PluginDescriptor(
 	name = "Interface Styles",
-	description = "Change the interface style to the 2005/2010 interface and toggle member skills",
-	tags = {"2005", "2010", "skin", "theme", "ui", "f2p"},
+	description = "Change the interface style to the 2005/2010 interface",
+	tags = {"2005", "2010", "skin", "theme", "ui"},
 	enabledByDefault = false
 )
 public class InterfaceStylesPlugin extends Plugin
 {
-	private static final int
-			PRAYER_X = 1,
-			PRAYER_Y = 129,
-			MAGIC_X = 1,
-			MAGIC_Y = 161,
-			CRAFTING_X = 64,
-			CRAFTING_Y = 129,
-			RUNECRAFTING_X = 1,
-			RUNECRAFTING_Y = 193,
-			WOODCUTTING_X = 127,
-			WOODCUTTING_Y = 161,
-			TOTAL_X = 127,
-			TOTAL_Y = 225;
 	@Inject
 	private Client client;
 
@@ -112,16 +98,6 @@ public class InterfaceStylesPlugin extends Plugin
 		{
 			clientThread.invoke(this::updateAllOverrides);
 		}
-
-	}
-
-	@Subscribe
-	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
-	{
-		if (!client.getWorldType().contains(WorldType.MEMBERS))
-		{
-			showMemberOnlySkills();
-		}
 	}
 
 	@Subscribe
@@ -137,11 +113,6 @@ public class InterfaceStylesPlugin extends Plugin
 		overrideWidgetSprites();
 		restoreWidgetDimensions();
 		adjustWidgetDimensions();
-
-		if (!client.getWorldType().contains(WorldType.MEMBERS))
-		{
-			showMemberOnlySkills();
-		}
 	}
 
 	private void overrideSprites()
@@ -338,99 +309,5 @@ public class InterfaceStylesPlugin extends Plugin
 			SpritePixels compass = getImageSpritePixels(compassImage);
 			client.setCompass(compass);
 		}
-	}
-
-	private ArrayList<Widget> getMemberSkills()
-	{
-		ArrayList<Widget> membersOnlyWidgets = new ArrayList<>();
-
-		Widget agility = client.getWidget(WidgetInfo.SKILL_AGILITY),
-				construction = client.getWidget(WidgetInfo.SKILL_CONSTRUCTION),
-				farming = client.getWidget(WidgetInfo.SKILL_FARMING),
-				fletching = client.getWidget(WidgetInfo.SKILL_FLETCHING),
-				herblore = client.getWidget(WidgetInfo.SKILL_HERBLORE),
-				hunter = client.getWidget(WidgetInfo.SKILL_HUNTER),
-				thieving = client.getWidget(WidgetInfo.SKILL_THIEVING),
-				slayer = client.getWidget(WidgetInfo.SKILL_SLAYER);
-
-		membersOnlyWidgets.add(agility);
-		membersOnlyWidgets.add(construction);
-		membersOnlyWidgets.add(farming);
-		membersOnlyWidgets.add(fletching);
-		membersOnlyWidgets.add(herblore);
-		membersOnlyWidgets.add(hunter);
-		membersOnlyWidgets.add(thieving);
-		membersOnlyWidgets.add(slayer);
-
-		return membersOnlyWidgets;
-	}
-
-	private void shuffleSkills(boolean hideMembers)
-	{
-		if (hideMembers && client.getWidget(WidgetInfo.SKILL_TOTAL) != null)
-		{
-			client.getWidget(WidgetInfo.SKILL_TOTAL).setRelativeX(WOODCUTTING_X);
-			client.getWidget(WidgetInfo.SKILL_TOTAL).setRelativeY(WOODCUTTING_Y);
-			client.getWidget(WidgetInfo.SKILL_PRAYER).setRelativeX(client.getWidget(WidgetInfo.SKILL_AGILITY).getRelativeX());
-			client.getWidget(WidgetInfo.SKILL_PRAYER).setRelativeY(client.getWidget(WidgetInfo.SKILL_AGILITY).getRelativeY());
-			client.getWidget(WidgetInfo.SKILL_MAGIC).setRelativeX(PRAYER_X);
-			client.getWidget(WidgetInfo.SKILL_MAGIC).setRelativeY(PRAYER_Y);
-			client.getWidget(WidgetInfo.SKILL_CRAFTING).setRelativeX(client.getWidget(WidgetInfo.SKILL_HERBLORE).getRelativeX());
-			client.getWidget(WidgetInfo.SKILL_CRAFTING).setRelativeY(client.getWidget(WidgetInfo.SKILL_HERBLORE).getRelativeY());
-			client.getWidget(WidgetInfo.SKILL_RUNECRAFTING).setRelativeX(client.getWidget(WidgetInfo.SKILL_THIEVING).getRelativeX());
-			client.getWidget(WidgetInfo.SKILL_RUNECRAFTING).setRelativeY(client.getWidget(WidgetInfo.SKILL_THIEVING).getRelativeY());
-			client.getWidget(WidgetInfo.SKILL_WOODCUTTING).setRelativeX(CRAFTING_X);
-			client.getWidget(WidgetInfo.SKILL_WOODCUTTING).setRelativeY(CRAFTING_Y);
-		}
-		else if (client.getWidget(WidgetInfo.SKILL_TOTAL) != null)
-		{
-			client.getWidget(WidgetInfo.SKILL_TOTAL).setRelativeX(TOTAL_X);
-			client.getWidget(WidgetInfo.SKILL_TOTAL).setRelativeY(TOTAL_Y);
-			client.getWidget(WidgetInfo.SKILL_PRAYER).setRelativeX(PRAYER_X);
-			client.getWidget(WidgetInfo.SKILL_PRAYER).setRelativeY(PRAYER_Y);
-			client.getWidget(WidgetInfo.SKILL_MAGIC).setRelativeX(MAGIC_X);
-			client.getWidget(WidgetInfo.SKILL_MAGIC).setRelativeY(MAGIC_Y);
-			client.getWidget(WidgetInfo.SKILL_CRAFTING).setRelativeX(CRAFTING_X);
-			client.getWidget(WidgetInfo.SKILL_CRAFTING).setRelativeY(CRAFTING_Y);
-			client.getWidget(WidgetInfo.SKILL_RUNECRAFTING).setRelativeX(RUNECRAFTING_X);
-			client.getWidget(WidgetInfo.SKILL_RUNECRAFTING).setRelativeY(RUNECRAFTING_Y);
-			client.getWidget(WidgetInfo.SKILL_WOODCUTTING).setRelativeX(WOODCUTTING_X);
-			client.getWidget(WidgetInfo.SKILL_WOODCUTTING).setRelativeY(WOODCUTTING_Y);
-		}
-	}
-
-	private void showMemberOnlySkills()
-	{
-		for (Widget widget : getMemberSkills())
-		{
-			if (widget != null)
-			{
-				widget.setHidden(config.hideMembersSkills());
-			}
-		}
-		shuffleSkills(config.hideMembersSkills());
-		updateTotalLevels();
-	}
-
-	private void updateTotalLevels()
-	{
-		if (client.getWidget(WidgetInfo.SKILL_TOTAL_TEXT) == null)
-		{
-			return;
-		}
-
-		int totalLevel = 0;
-
-		for (int skill = 1; skill <= 23; skill++)
-		{
-			Widget currentSkill = client.getWidget(WidgetID.STATS_GROUP_ID, skill);
-
-			if (!currentSkill.isHidden() && currentSkill.getDynamicChildren().length >= 4)
-			{
-				// [4] is the denominator of the skill fraction widget
-				totalLevel += Integer.parseInt(currentSkill.getDynamicChildren()[4].getText());
-			}
-		}
-		client.getWidget(WidgetInfo.SKILL_TOTAL_TEXT).setText("Total level:<br>" + totalLevel);
 	}
 }

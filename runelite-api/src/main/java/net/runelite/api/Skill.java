@@ -39,30 +39,37 @@ public enum Skill
 	MAGIC("Magic"),
 	COOKING("Cooking"),
 	WOODCUTTING("Woodcutting"),
-	FLETCHING("Fletching"),
+	FLETCHING("Fletching", true),
 	FISHING("Fishing"),
 	FIREMAKING("Firemaking"),
 	CRAFTING("Crafting"),
 	SMITHING("Smithing"),
 	MINING("Mining"),
-	HERBLORE("Herblore"),
-	AGILITY("Agility"),
-	THIEVING("Thieving"),
-	SLAYER("Slayer"),
-	FARMING("Farming"),
+	HERBLORE("Herblore", true),
+	AGILITY("Agility", true),
+	THIEVING("Thieving", true),
+	SLAYER("Slayer", true),
+	FARMING("Farming", true),
 	RUNECRAFT("Runecraft"),
-	HUNTER("Hunter"),
-	CONSTRUCTION("Construction"),
+	HUNTER("Hunter", true),
+	CONSTRUCTION("Construction", true),
 	/**
 	 * The level of all skills added together.
 	 */
 	OVERALL("Overall");
 
 	private final String name;
+	private boolean membersSkill = false;
 
 	Skill(String name)
 	{
 		this.name = name;
+	}
+
+	Skill(String name, boolean membersOnly)
+	{
+		this.name = name;
+		this.membersSkill = membersOnly;
 	}
 
 	/**
@@ -73,5 +80,15 @@ public enum Skill
 	public String getName()
 	{
 		return name;
+	}
+
+	/**
+	 * Gets membersSkill boolean value.
+	 *
+	 * @return membersSkill
+	 */
+	public boolean getMembersSkill()
+	{
+		return membersSkill;
 	}
 }

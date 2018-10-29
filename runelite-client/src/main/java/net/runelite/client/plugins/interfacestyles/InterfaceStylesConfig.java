@@ -34,25 +34,12 @@ import net.runelite.client.config.ConfigItem;
 public interface InterfaceStylesConfig extends Config
 {
 	@ConfigItem(
-			position = 1,
 			keyName = "gameframe",
 			name = "Gameframe",
 			description = "The gameframe to use for the interface"
 	)
 	default Skin skin()
 	{
-		return Skin.DEFAULT;
+		return Skin.AROUND_2010;
 	}
-
-	@ConfigItem(
-			position = 2,
-			keyName = "hideMembersSkills",
-			name = "Hide Members Skills on F2P worlds",
-			description = "Hide Members Skills on F2P worlds."
-	)
-	default boolean hideMembersSkills()
-	{
-		return false;
-	}
-
 }
