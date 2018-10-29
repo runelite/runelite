@@ -295,11 +295,15 @@ public class ChatMessageManager
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaquePrivateMessageReceived(), false),
 				ChatMessageType.PRIVATE_MESSAGE_RECEIVED);
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaquePrivateMessageReceived(), false),
+				ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD);
 		}
 		if (chatColorConfig.opaquePrivateMessageReceivedHighlight() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaquePrivateMessageReceivedHighlight(), false),
 				ChatMessageType.PRIVATE_MESSAGE_RECEIVED);
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaquePrivateMessageReceivedHighlight(), false),
+				ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD);
 		}
 		if (chatColorConfig.opaqueClanChatInfo() != null)
 		{
@@ -419,11 +423,15 @@ public class ChatMessageManager
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentPrivateMessageReceived(), true),
 				ChatMessageType.PRIVATE_MESSAGE_RECEIVED);
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentPrivateMessageReceived(), true),
+				ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD);
 		}
 		if (chatColorConfig.transparentPrivateMessageReceivedHighlight() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentPrivateMessageReceivedHighlight(), true),
 				ChatMessageType.PRIVATE_MESSAGE_RECEIVED);
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentPrivateMessageReceivedHighlight(), true),
+				ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD);
 		}
 		if (chatColorConfig.transparentClanChatInfo() != null)
 		{
