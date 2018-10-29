@@ -456,7 +456,9 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (interact == null)
 		{
-			if (lastInteracting != null && Instant.now().compareTo(lastInteracting.plus(waitDuration)) >= 0)
+			if (lastInteracting != null
+				&& Instant.now().compareTo(lastInteracting.plus(waitDuration)) >= 0
+				&& lastCombatCountdown == 0)
 			{
 				lastInteract = null;
 				lastInteracting = null;
