@@ -47,6 +47,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.util.ColorUtil;
@@ -73,23 +75,26 @@ public class Notifier
 	private final RuneLiteConfig runeLiteConfig;
 	private final ClientUI clientUI;
 	private final ScheduledExecutorService executorService;
+	private final ChatMessageManager chatMessageManager;
 	private final Path notifyIconPath;
 	private final boolean terminalNotifierAvailable;
 	private Instant flashStart;
 
 	@Inject
 	private Notifier(
-			final ClientUI clientUI,
-			final Client client,
-			final RuneLiteConfig runeliteConfig,
-			final RuneLiteProperties runeLiteProperties,
-			final ScheduledExecutorService executorService)
+		final ClientUI clientUI,
+		final Client client,
+		final RuneLiteConfig runeliteConfig,
+		final RuneLiteProperties runeLiteProperties,
+		final ScheduledExecutorService executorService,
+		final ChatMessageManager chatMessageManager)
 	{
 		this.client = client;
 		this.appName = runeLiteProperties.getTitle();
 		this.clientUI = clientUI;
 		this.runeLiteConfig = runeliteConfig;
 		this.executorService = executorService;
+		this.chatMessageManager = chatMessageManager;
 		this.notifyIconPath = RuneLite.RUNELITE_DIR.toPath().resolve("icon.png");
 
 		// First check if we are running in launcher
@@ -127,13 +132,13 @@ public class Notifier
 			Toolkit.getDefaultToolkit().beep();
 		}
 
-		if (runeLiteConfig.enableGameMessageNotification())
+		if (runeLiteConfig.enableGameMessageNotification() && client.getGameState() == GameState.LOGGED_IN)
 		{
-			if (client.getGameState() == GameState.LOGGED_IN)
-			{
-				client.addChatMessage(ChatMessageType.GAME, appName,
-					ColorUtil.wrapWithColorTag(message, MESSAGE_COLOR), "");
-			}
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.GAME)
+				.name(appName)
+				.value(ColorUtil.wrapWithColorTag(message, MESSAGE_COLOR))
+				.build());
 		}
 
 		if (runeLiteConfig.enableFlashNotification())
