@@ -27,17 +27,26 @@ package net.runelite.client.plugins.pyramidplunder;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import static net.runelite.api.ItemID.PHARAOHS_SCEPTRE;
 import net.runelite.api.Player;
+import net.runelite.api.Tile;
+import net.runelite.api.TileObject;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameObjectChanged;
+import net.runelite.api.events.GameObjectDespawned;
+import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.WallObjectChanged;
+import net.runelite.api.events.WallObjectDespawned;
+import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -52,12 +61,14 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 	enabledByDefault = false
 )
 
-@Slf4j
 public class PyramidPlunderPlugin extends Plugin
 {
 	private static final int PYRAMIND_PLUNDER_REGION_ID = 7749;
 	private static final int PYRAMIND_PLUNDER_TIMER_MAX = 500;
 	private static final double GAMETICK_SECOND = 0.6;
+
+	@Getter
+	private final Map<TileObject, Tile> obstacles = new HashMap<>();
 
 	@Inject
 	private Client client;
@@ -98,6 +109,7 @@ public class PyramidPlunderPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(pyramidPlunderOverlay);
+		obstacles.clear();
 		reset();
 	}
 
@@ -147,6 +159,7 @@ public class PyramidPlunderPlugin extends Plugin
 				reset();
 				break;
 			case LOADING:
+				obstacles.clear();
 			case LOGGED_IN:
 				if (!isInRegion())
 				{
@@ -176,7 +189,13 @@ public class PyramidPlunderPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
+		int lastValue = pyramidTimer;
 		pyramidTimer = client.getVar(Varbits.PYRAMID_PLUNDER_TIMER);
+
+		if (lastValue == pyramidTimer)
+		{
+			return;
+		}
 
 		if (pyramidTimer == 0)
 		{
@@ -196,5 +215,57 @@ public class PyramidPlunderPlugin extends Plugin
 	{
 		isInGame = false;
 		removeTimer();
+	}
+
+	@Subscribe
+	public void onGameObjectSpawned(GameObjectSpawned event)
+	{
+		onTileObject(event.getTile(), null, event.getGameObject());
+	}
+
+	@Subscribe
+	public void onGameObjectChanged(GameObjectChanged event)
+	{
+		onTileObject(event.getTile(), event.getPrevious(), event.getGameObject());
+	}
+
+	@Subscribe
+	public void onGameObjectDeSpawned(GameObjectDespawned event)
+	{
+		onTileObject(event.getTile(), event.getGameObject(), null);
+	}
+
+	@Subscribe
+	public void onWallObjectSpawned(WallObjectSpawned event)
+	{
+		onTileObject(event.getTile(), null, event.getWallObject());
+	}
+
+	@Subscribe
+	public void onWallObjectChanged(WallObjectChanged event)
+	{
+		onTileObject(event.getTile(), event.getPrevious(), event.getWallObject());
+	}
+
+	@Subscribe
+	public void onWallObjectDeSpawned(WallObjectDespawned event)
+	{
+		onTileObject(event.getTile(), event.getWallObject(), null);
+	}
+
+	private void onTileObject(Tile tile, TileObject oldObject, TileObject newObject)
+	{
+		obstacles.remove(oldObject);
+
+		if (newObject == null)
+		{
+			return;
+		}
+
+		if (Obstacles.WALL_OBSTACLE_IDS.contains(newObject.getId()) ||
+			Obstacles.TRAP_OBSTACLE_IDS.contains(newObject.getId()))
+		{
+			obstacles.put(newObject, tile);
+		}
 	}
 }

@@ -24,16 +24,28 @@
  */
 package net.runelite.client.plugins.pyramidplunder;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.geom.Area;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.ObjectComposition;
+import static net.runelite.api.ObjectID.SPEARTRAP_21280;
+import static net.runelite.api.ObjectID.TOMB_DOOR_20948;
+import static net.runelite.api.ObjectID.TOMB_DOOR_20949;
+import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
 public class PyramidPlunderOverlay extends Overlay
 {
+	private static final int MAX_DISTANCE = 2400;
+	private static final Color COLOR_DOOR = Color.GREEN;
+	private static final Color COLOR_SPEAR_TRAP = Color.ORANGE;
+
 	private final Client client;
 	private final PyramidPlunderPlugin plugin;
 	private final PyramidPlunderConfig config;
@@ -54,6 +66,65 @@ public class PyramidPlunderOverlay extends Overlay
 		{
 			return null;
 		}
+
+		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
+		Point mousePosition = client.getMouseCanvasPosition();
+
+		plugin.getObstacles().forEach((object, tile) ->
+		{
+			if (Obstacles.WALL_OBSTACLE_IDS.contains(object.getId()) && !config.highlightDoors() ||
+				Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && !config.highlightSpearTrap())
+			{
+				return;
+			}
+
+			if (tile.getPlane() == client.getPlane() &&
+				object.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
+			{
+				int objectID = object.getId();
+				if (Obstacles.WALL_OBSTACLE_IDS.contains(object.getId()))
+				{
+					//Impostor
+					ObjectComposition comp = client.getObjectDefinition(objectID);
+					ObjectComposition impostor = comp.getImpostor();
+
+					if (impostor == null)
+					{
+						return;
+					}
+					objectID = impostor.getId();
+				}
+
+				Area objectClickbox = object.getClickbox();
+				if (objectClickbox != null)
+				{
+					Color configColor = Color.GREEN;
+					switch (objectID)
+					{
+						case SPEARTRAP_21280:
+							configColor = COLOR_SPEAR_TRAP;
+							break;
+						case TOMB_DOOR_20948:
+						case TOMB_DOOR_20949:
+							configColor = COLOR_DOOR;
+							break;
+					}
+
+					if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))
+					{
+						graphics.setColor(configColor.darker());
+					}
+					else
+					{
+						graphics.setColor(configColor);
+					}
+
+					graphics.draw(objectClickbox);
+					graphics.setColor(new Color(configColor.getRed(), configColor.getGreen(), configColor.getBlue(), 50));
+					graphics.fill(objectClickbox);
+				}
+			}
+		});
 
 		return null;
 	}

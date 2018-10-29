@@ -24,43 +24,17 @@
  */
 package net.runelite.client.plugins.pyramidplunder;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import com.google.common.collect.ImmutableSet;
+import java.util.Set;
+import static net.runelite.api.ObjectID.SPEARTRAP_21280;
 
-@ConfigGroup("pyramidplunder")
-public interface PyramidPlunderConfig extends Config
+public class Obstacles
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "highlightDoors",
-		name = "Highlights doors",
-		description = "Highlights the four doors in each room"
-	)
-	default boolean highlightDoors()
-	{
-		return true;
-	}
+	static final Set<Integer> WALL_OBSTACLE_IDS = ImmutableSet.of(
+		26618, 26619, 26620, 26621
+	);
 
-	@ConfigItem(
-		position = 2,
-		keyName = "highlightSpearTrap",
-		name = "Highlights spear traps",
-		description = "Highlights the spear traps in each room"
-	)
-	default boolean highlightSpearTrap()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 3,
-		keyName = "showTimer",
-		name = "Display numerical timer",
-		description = "Displays a numerical timer instead of the default timer"
-	)
-	default boolean showTimer()
-	{
-		return true;
-	}
+	static final Set<Integer> TRAP_OBSTACLE_IDS = ImmutableSet.of(
+		SPEARTRAP_21280
+	);
 }
