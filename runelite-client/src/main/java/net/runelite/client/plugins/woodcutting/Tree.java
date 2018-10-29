@@ -29,14 +29,11 @@ import java.util.Map;
 import lombok.Getter;
 import static net.runelite.api.ObjectID.REDWOOD;
 import static net.runelite.api.ObjectID.REDWOOD_29670;
-import static net.runelite.api.ObjectID.SULLIUSCEP;
-import static net.runelite.api.ObjectID.SULLIUSCEP_SPROUT;
 
 @Getter
 enum Tree
 {
-	REDWOOD_TREE_SPAWN(REDWOOD, REDWOOD_29670),
-	SULLUISCEP_MUSHROOM_SPAWN(SULLIUSCEP, SULLIUSCEP_SPROUT);
+	REDWOOD_TREE_SPAWN(REDWOOD, REDWOOD_29670);
 
 	private final int[] treeIds;
 
