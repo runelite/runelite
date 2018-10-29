@@ -224,7 +224,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Scattered coins and gems fill the floor. The chest you seek is in the north east.", "King Black Dragon", CLOSED_CHEST_375, new WorldPoint(2288, 4702, 0), "Kill the King Black Dragon for a key (elite), and then open the closed chest in the NE corner of the lair."),
 		new CrypticClue("A ring of water surrounds 4 powerful rings, dig above the ladder located there.", new WorldPoint(1910, 4367, 0), "Dig by the ladder leading to the Dagannoth Kings room in the Waterbirth Island Dungeon."),
 		new CrypticClue("This place sure is a mess.", "Ewesey", new WorldPoint(1646, 3631, 0), "Ewesey is located in the Hosidius House mess hall in Great Kourend."),
-		new CrypticClue("Here, there are tears, but nobody is crying. Speak to the guardian and show off your alignment to balance.", "Juna", new WorldPoint(3252, 9517, 2), "Talk to Juna while wearing three Guthix related items."),
+		new CrypticClue("Here, there are tears, but nobody is crying. Speak to the guardian and show off your alignment to balance.", "Juna", JUNA, new WorldPoint(3252, 9517, 2), "Talk to Juna while wearing three Guthix related items."),
 		new CrypticClue("You might have to turn over a few stones to progress.", null, "Kill a rock crab."),
 		new CrypticClue("Dig under Razorlor's toad batta.", new WorldPoint(3139, 4554, 0), "Dig on the toad batta spawn in Tarn's Lair."),
 		new CrypticClue("Talk to Cassie in Falador.", "Cassie", new WorldPoint(2975, 3383, 0), "Cassie is found just south-east of the northern Falador gate."),
