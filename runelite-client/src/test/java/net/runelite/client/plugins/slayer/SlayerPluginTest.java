@@ -30,6 +30,8 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import static net.runelite.api.ChatMessageType.SERVER;
 import net.runelite.api.Client;
+import net.runelite.api.Player;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
@@ -422,6 +424,10 @@ public class SlayerPluginTest
 	@Test
 	public void testCombatBraceletUpdate()
 	{
+		final Player player = mock(Player.class);
+		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
+		when(client.getLocalPlayer()).thenReturn(player);
+
 		slayerPlugin.setTaskName("Suqahs");
 		slayerPlugin.setAmount(231);
 
