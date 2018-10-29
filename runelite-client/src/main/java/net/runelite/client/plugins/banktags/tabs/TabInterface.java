@@ -312,16 +312,22 @@ public class TabInterface
 
 	public void handleWheel(final MouseWheelEvent event)
 	{
-		if (isHidden())
+		if (parent == null || !canvasBounds.contains(event.getPoint()))
 		{
 			return;
 		}
 
-		if (canvasBounds.contains(event.getPoint()))
+		event.consume();
+
+		clientThread.invoke(() ->
 		{
-			event.consume();
-			clientThread.invoke(() -> scrollTab(event.getWheelRotation()));
-		}
+			if (isHidden())
+			{
+				return;
+			}
+
+			scrollTab(event.getWheelRotation());
+		});
 	}
 
 	public void handleAdd(MenuEntryAdded event)
@@ -687,7 +693,7 @@ public class TabInterface
 	private boolean isHidden()
 	{
 		Widget widget = client.getWidget(WidgetInfo.BANK_CONTAINER);
-		return !config.tabs() || widget == null;
+		return !config.tabs() || widget == null || widget.isHidden();
 	}
 
 	private void loadTab(String tag)
