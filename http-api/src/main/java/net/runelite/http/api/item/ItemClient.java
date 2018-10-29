@@ -174,7 +174,7 @@ public class ItemClient
 	{
 		HttpUrl.Builder urlBuilder = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("item")
-			.addPathSegment("prices");
+			.addPathSegment("prices.js");
 
 		HttpUrl url = urlBuilder.build();
 
