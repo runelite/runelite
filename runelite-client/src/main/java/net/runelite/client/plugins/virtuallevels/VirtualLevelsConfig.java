@@ -46,7 +46,7 @@ public interface VirtualLevelsConfig extends Config
 	@ConfigItem(
 		keyName = "hideMembersSkills",
 		name = "Hide Members Skills on F2P worlds",
-		description = "Hide Members Skills on F2P worlds."
+		description = "Hide Members levels and recalculate total level on F2P worlds."
 	)
 	default boolean hideMembersSkills()
 	{
