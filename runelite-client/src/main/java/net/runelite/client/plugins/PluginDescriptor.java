@@ -58,4 +58,9 @@ public @interface PluginDescriptor
 	boolean developerPlugin() default false;
 
 	boolean loadWhenOutdated() default false;
+
+	/**
+	 * Whether this Plugin should be starred when running the application for the first time
+	 */
+	boolean pinnedByDefault() default false;
 }

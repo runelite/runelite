@@ -208,13 +208,14 @@ public class ConfigPanel extends PluginPanel
 		// add special entries for core client configurations
 		final PluginListItem runeLite = new PluginListItem(this, runeLiteConfig,
 			configManager.getConfigDescriptor(runeLiteConfig),
-			RUNELITE_PLUGIN, "RuneLite client settings", "client");
-		runeLite.setPinned(pinnedPlugins.contains(RUNELITE_PLUGIN));
+			RUNELITE_PLUGIN, "RuneLite client settings", true, "client");
+		//runeLite.setPinned(pinnedPlugins.contains(RUNELITE_PLUGIN));
 		pluginList.add(runeLite);
+
 
 		final PluginListItem chatColor = new PluginListItem(this, chatColorConfig,
 			configManager.getConfigDescriptor(chatColorConfig),
-			CHAT_COLOR_PLUGIN, "Recolor chat text", "colour", "messages");
+			CHAT_COLOR_PLUGIN, "Recolor chat text", false, "colour", "messages");
 		chatColor.setPinned(pinnedPlugins.contains(CHAT_COLOR_PLUGIN));
 		pluginList.add(chatColor);
 

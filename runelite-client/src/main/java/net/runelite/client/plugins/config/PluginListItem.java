@@ -80,6 +80,9 @@ class PluginListItem extends JPanel
 	@Getter
 	private boolean isPinned = false;
 
+	@Getter
+	private boolean isPinnedByDefault = false;
+
 	static
 	{
 		BufferedImage configIcon = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "config_edit_icon.png");
@@ -115,25 +118,26 @@ class PluginListItem extends JPanel
 		@Nullable Config config, @Nullable ConfigDescriptor configDescriptor)
 	{
 		this(configPanel, plugin, config, configDescriptor,
-			descriptor.name(), descriptor.description(), descriptor.tags());
+			descriptor.name(), descriptor.description(), descriptor.pinnedByDefault(), descriptor.tags());
 	}
 
 	/**
 	 * Creates a new {@code PluginListItem} for a core configuration.
 	 */
 	PluginListItem(ConfigPanel configPanel, Config config, ConfigDescriptor configDescriptor,
-		String name, String description, String... tags)
+		String name, String description, boolean starredByDefault, String... tags)
 	{
-		this(configPanel, null, config, configDescriptor, name, description, tags);
+		this(configPanel, null, config, configDescriptor, name, description, starredByDefault, tags);
 	}
 
 	private PluginListItem(ConfigPanel configPanel, @Nullable Plugin plugin, @Nullable Config config,
-		@Nullable ConfigDescriptor configDescriptor, String name, String description, String... tags)
+		@Nullable ConfigDescriptor configDescriptor, String name, String description, boolean isPinnedByDefault, String... tags)
 	{
 		this.configPanel = configPanel;
 		this.plugin = plugin;
 		this.name = name;
 		this.description = description;
+		this.isPinnedByDefault = isPinnedByDefault;
 		Collections.addAll(keywords, name.toLowerCase().split(" "));
 		Collections.addAll(keywords, description.toLowerCase().split(" "));
 		Collections.addAll(keywords, tags);
@@ -156,7 +160,11 @@ class PluginListItem extends JPanel
 
 		pinButton.addActionListener(e ->
 		{
+			// Cannot update the pinning if it is pinnedByDefault
+			if(isPinnedByDefault()) return;
+
 			setPinned(!isPinned);
+			// If it is now no longer pinned && it was pinned by default, lets update the default config
 			configPanel.savePinnedPlugins();
 			configPanel.openConfigList();
 		});
@@ -185,6 +193,12 @@ class PluginListItem extends JPanel
 		toggleButton.setPreferredSize(new Dimension(25, 0));
 		attachToggleButtonListener(toggleButton);
 		buttonPanel.add(toggleButton);
+
+		// Update the pinning if it is pinned by default
+		if(this.isPinnedByDefault)
+		{
+			setPinned(true);
+		}
 	}
 
 	private void attachToggleButtonListener(IconButton button)
