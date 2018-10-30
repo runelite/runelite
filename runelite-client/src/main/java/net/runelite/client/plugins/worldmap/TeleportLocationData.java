@@ -160,7 +160,7 @@ enum TeleportLocationData
 	ELF_CAMP_SCROLL(TeleportType.SCROLL, "Elf Camp Teleport", new WorldPoint(2193, 3257, 0), "scroll_teleport_icon.png"),
 	FELDIP_HILLS_SCROLL(TeleportType.SCROLL, "Feldip Hills Teleport", new WorldPoint(2542, 2925, 0), "scroll_teleport_icon.png"),
 	LUMBERYARD_SCROLL(TeleportType.SCROLL, "Lumberyard Teleport", new WorldPoint(3303, 3487, 0), "scroll_teleport_icon.png"),
-	LUNAR_ISLE_SCROLL(TeleportType.SCROLL, "Lunar Aisle Teleport", new WorldPoint(2093, 3912, 0), "scroll_teleport_icon.png"),
+	LUNAR_ISLE_SCROLL(TeleportType.SCROLL, "Lunar Isle Teleport", new WorldPoint(2093, 3912, 0), "scroll_teleport_icon.png"),
 	MORTTON_SCROLL(TeleportType.SCROLL, "Mort'ton", new WorldPoint(3489, 3288, 0), "scroll_teleport_icon.png"),
 	MOS_LEHARMLESS_SCROLL(TeleportType.SCROLL, "Mos Le'Harmless Teleport", new WorldPoint(3701, 2996, 0), "scroll_teleport_icon.png"),
 	NARDAH_SCROLL(TeleportType.SCROLL, "Nardah Teleport", new WorldPoint(3421, 2917, 0), "scroll_teleport_icon.png"),

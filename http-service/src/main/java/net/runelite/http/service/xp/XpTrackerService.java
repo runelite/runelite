@@ -24,6 +24,7 @@
  */
 package net.runelite.http.service.xp;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.ExecutionException;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +44,8 @@ import org.sql2o.Sql2o;
 @Slf4j
 public class XpTrackerService
 {
+	private static final Duration UPDATE_TIME = Duration.ofMinutes(5);
+
 	@Autowired
 	@Qualifier("Runelite XP Tracker SQL2O")
 	private Sql2o sql2o;
@@ -62,7 +65,8 @@ public class XpTrackerService
 		{
 			PlayerEntity playerEntity = findOrCreatePlayer(con, username);
 
-			XpEntity currentXp = findXpAtTime(con, username, Instant.now());
+			Instant now = Instant.now();
+			XpEntity currentXp = findXpAtTime(con, username, now);
 			if (currentXp != null)
 			{
 				XpData hiscoreData = XpMapper.INSTANCE.hiscoreResultToXpData(hiscoreResult);
@@ -71,6 +75,13 @@ public class XpTrackerService
 				if (hiscoreData.equals(existingData))
 				{
 					log.debug("Hiscore for {} already up to date", username);
+					return;
+				}
+
+				Duration difference = Duration.between(currentXp.getTime(), now);
+				if (difference.compareTo(UPDATE_TIME) <= 0)
+				{
+					log.debug("Updated {} too recently", username);
 					return;
 				}
 			}

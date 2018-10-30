@@ -131,8 +131,9 @@ public class TelekineticRoom extends MTARoom
 			log.debug("Updating guarding location {} -> {}", location, current);
 
 			location = current;
+			final LocalPoint finish = finish();
 
-			if (location.equals(finish()))
+			if (finish != null && location.equals(WorldPoint.fromLocal(client, finish)))
 			{
 				client.clearHintArrow();
 			}

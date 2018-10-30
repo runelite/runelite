@@ -86,7 +86,7 @@ public abstract class RSDecorativeObjectMixin implements RSDecorativeObject
 	@Override
 	public Area getClickbox()
 	{
-		return Perspective.getClickbox(client, getModel(), getOrientation(), getX(), getY());
+		return Perspective.getClickbox(client, getModel(), getOrientation(), getLocalLocation());
 	}
 
 	@Inject

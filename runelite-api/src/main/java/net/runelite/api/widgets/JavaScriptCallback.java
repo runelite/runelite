@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Robbie McLeod <https://github.com/rbbi>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.api.widgets;
 
-package net.runelite.client.plugins.skillcalculator;
+import net.runelite.api.ScriptEvent;
 
-import javax.swing.JCheckBox;
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.client.plugins.skillcalculator.beans.SkillDataBonus;
-
-class BonusCheckBox extends JCheckBox
+@FunctionalInterface
+public interface JavaScriptCallback
 {
-	@Getter
-	@Setter
-	private SkillDataBonus bonus;
+	void run(ScriptEvent event);
 }

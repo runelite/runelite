@@ -224,7 +224,7 @@ public class OverlayManager
 			{
 				// When UNDER_WIDGET overlays are in preferred locations, move to
 				// ABOVE_WIDGETS so that it can draw over interfaces
-				if (layer == OverlayLayer.UNDER_WIDGETS)
+				if (layer == OverlayLayer.UNDER_WIDGETS && !(overlay instanceof WidgetOverlay))
 				{
 					layer = OverlayLayer.ABOVE_WIDGETS;
 				}

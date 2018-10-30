@@ -232,6 +232,22 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(oculusOrbBtn);
 
+		final JButton interactingBtn = new JButton("Interacting");
+		interactingBtn.addActionListener(e ->
+		{
+			highlightButton(interactingBtn);
+			plugin.toggleInteracting();
+		});
+		container.add(interactingBtn);
+
+		final JButton examineInfoBtn = new JButton("Examine Info");
+		examineInfoBtn.addActionListener(e ->
+		{
+			highlightButton(examineInfoBtn);
+			plugin.toggleExamineInfo();
+		});
+		container.add(examineInfoBtn);
+
 		return container;
 	}
 

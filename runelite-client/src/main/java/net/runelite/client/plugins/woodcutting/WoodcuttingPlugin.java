@@ -133,7 +133,7 @@ public class WoodcuttingPlugin extends Plugin
 	{
 		if (event.getType() == ChatMessageType.FILTERED || event.getType() == ChatMessageType.SERVER)
 		{
-			if (event.getMessage().startsWith("You get some") && event.getMessage().endsWith("logs."))
+			if (event.getMessage().startsWith("You get some") && (event.getMessage().endsWith("logs.") || event.getMessage().endsWith("mushrooms.")))
 			{
 				if (session == null)
 				{

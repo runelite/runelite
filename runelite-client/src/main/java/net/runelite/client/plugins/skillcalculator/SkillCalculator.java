@@ -49,54 +49,64 @@ import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.IconTextField;
 
 class SkillCalculator extends JPanel
 {
 	private static final int MAX_XP = 200_000_000;
 	private static final DecimalFormat XP_FORMAT = new DecimalFormat("#.#");
 
-	static SpriteManager spriteManager;
-	static ItemManager itemManager;
+	private final UICalculatorInputArea uiInput;
+	private final Client client;
+	private final SpriteManager spriteManager;
+	private final ItemManager itemManager;
+	private final List<UIActionSlot> uiActionSlots = new ArrayList<>();
+	private final CacheSkillData cacheSkillData = new CacheSkillData();
+	private final UICombinedActionSlot combinedActionSlot;
+	private final ArrayList<UIActionSlot> combinedActionSlots = new ArrayList<>();
+	private final List<JCheckBox> bonusCheckBoxes = new ArrayList<>();
+	private final IconTextField searchBar = new IconTextField();
 
-	private Client client;
 	private SkillData skillData;
-	private List<UIActionSlot> uiActionSlots = new ArrayList<>();
-	private UICalculatorInputArea uiInput;
-
-	private CacheSkillData cacheSkillData = new CacheSkillData();
-
-	private UICombinedActionSlot combinedActionSlot = new UICombinedActionSlot();
-	private ArrayList<UIActionSlot> combinedActionSlots = new ArrayList<>();
-	private final List<BonusCheckBox> bonusCheckBoxes = new ArrayList<>();
-
 	private int currentLevel = 1;
 	private int currentXP = Experience.getXpForLevel(currentLevel);
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
 	private float xpFactor = 1.0f;
 
-	SkillCalculator(Client client, UICalculatorInputArea uiInput)
+	SkillCalculator(Client client, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
 	{
 		this.client = client;
 		this.uiInput = uiInput;
+		this.spriteManager = spriteManager;
+		this.itemManager = itemManager;
+
+		combinedActionSlot = new UICombinedActionSlot(spriteManager);
+
+		searchBar.setIcon(IconTextField.Icon.SEARCH);
+		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 30));
+		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
+		searchBar.addKeyListener(e -> onSearch());
 
 		setLayout(new DynamicGridLayout(0, 1, 0, 5));
 
 		// Register listeners on the input fields and then move on to the next related text field
-		uiInput.uiFieldCurrentLevel.addActionListener(e ->
+		uiInput.getUiFieldCurrentLevel().addActionListener(e ->
 		{
 			onFieldCurrentLevelUpdated();
-			uiInput.uiFieldTargetLevel.requestFocusInWindow();
+			uiInput.getUiFieldTargetLevel().requestFocusInWindow();
 		});
 
-		uiInput.uiFieldCurrentXP.addActionListener(e ->
+		uiInput.getUiFieldCurrentXP().addActionListener(e ->
 		{
 			onFieldCurrentXPUpdated();
-			uiInput.uiFieldTargetXP.requestFocusInWindow();
+			uiInput.getUiFieldTargetXP().requestFocusInWindow();
 		});
 
-		uiInput.uiFieldTargetLevel.addActionListener(e -> onFieldTargetLevelUpdated());
-		uiInput.uiFieldTargetXP.addActionListener(e -> onFieldTargetXPUpdated());
+		uiInput.getUiFieldTargetLevel().addActionListener(e -> onFieldTargetLevelUpdated());
+		uiInput.getUiFieldTargetXP().addActionListener(e -> onFieldTargetXPUpdated());
 	}
 
 	void openCalculator(CalculatorType calculatorType)
@@ -121,6 +131,9 @@ class SkillCalculator extends JPanel
 
 		// Add the combined action slot.
 		add(combinedActionSlot);
+
+		// Add the search bar
+		add(searchBar);
 
 		// Create action slots for the skill actions.
 		renderActionSlots();
@@ -193,7 +206,7 @@ class SkillCalculator extends JPanel
 	{
 		JPanel uiOption = new JPanel(new BorderLayout());
 		JLabel uiLabel = new JLabel(bonus.getName());
-		BonusCheckBox uiCheckbox = new BonusCheckBox();
+		JCheckBox uiCheckbox = new JCheckBox();
 
 		uiLabel.setForeground(Color.WHITE);
 		uiLabel.setFont(FontManager.getRunescapeSmallFont());
@@ -202,43 +215,32 @@ class SkillCalculator extends JPanel
 		uiOption.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		// Adjust XP bonus depending on check-state of the boxes.
-		uiCheckbox.addActionListener(event -> adjustCheckboxes(uiCheckbox));
+		uiCheckbox.addActionListener(event -> adjustCheckboxes(uiCheckbox, bonus));
 
 		uiCheckbox.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
 
 		uiOption.add(uiLabel, BorderLayout.WEST);
 		uiOption.add(uiCheckbox, BorderLayout.EAST);
-
-		uiCheckbox.setBonus(bonus);
 		bonusCheckBoxes.add(uiCheckbox);
 
 		return uiOption;
 	}
 
-	private void adjustCheckboxes(BonusCheckBox target)
+	private void adjustCheckboxes(JCheckBox target, SkillDataBonus bonus)
 	{
-		adjustAllExcept(target);
-		adjustXPBonus(target.isSelected(), target.getBonus().getValue());
-	}
-
-	/**
-	 * Adjusts and deselects all <b>other</b> checkboxes
-	 * contained within {@link SkillCalculator#bonusCheckBoxes}
-	 * except the checkbox provided as the parameter
-	 *
-	 * @param except The checkbox to keep unchanged
-	 */
-	private void adjustAllExcept(JCheckBox except)
-	{
-		bonusCheckBoxes.stream()
-			.filter(checkbox -> checkbox != except)
-			.filter(JCheckBox::isSelected)
-			.forEach(otherSelectedCheckbox ->
+		adjustXPBonus(0);
+		bonusCheckBoxes.forEach(otherSelectedCheckbox ->
+		{
+			if (otherSelectedCheckbox != target)
 			{
 				otherSelectedCheckbox.setSelected(false);
-				adjustXPBonus(false,
-					otherSelectedCheckbox.getBonus().getValue());
-			});
+			}
+		});
+
+		if (target.isSelected())
+		{
+			adjustXPBonus(bonus.getValue());
+		}
 	}
 
 	private void renderActionSlots()
@@ -249,7 +251,18 @@ class SkillCalculator extends JPanel
 		// Create new components for the action slots.
 		for (SkillDataEntry action : skillData.getActions())
 		{
-			UIActionSlot slot = new UIActionSlot(action);
+			JLabel uiIcon = new JLabel();
+
+			if (action.getIcon() != null)
+			{
+				itemManager.getImage(action.getIcon()).addTo(uiIcon);
+			}
+			else if (action.getSprite() != null)
+			{
+				spriteManager.addSpriteTo(uiIcon, action.getSprite(), 0);
+			}
+
+			UIActionSlot slot = new UIActionSlot(action, uiIcon);
 			uiActionSlots.add(slot); // Keep our own reference.
 			add(slot); // Add component to the panel.
 
@@ -326,9 +339,9 @@ class SkillCalculator extends JPanel
 		calculate();
 	}
 
-	private void adjustXPBonus(boolean addBonus, float value)
+	private void adjustXPBonus(float value)
 	{
-		xpFactor += addBonus ? value : -value;
+		xpFactor = 1f + value;
 		calculate();
 	}
 
@@ -369,4 +382,28 @@ class SkillCalculator extends JPanel
 	{
 		return Math.min(MAX_XP, Math.max(0, input));
 	}
+
+	private void onSearch()
+	{
+		//only show slots that match our search text
+		uiActionSlots.forEach(slot ->
+		{
+			if (slotContainsText(slot, searchBar.getText()))
+			{
+				super.add(slot);
+			}
+			else
+			{
+				super.remove(slot);
+			}
+
+			revalidate();
+		});
+	}
+
+	private boolean slotContainsText(UIActionSlot slot, String text)
+	{
+		return slot.getAction().getName().toLowerCase().contains(text.toLowerCase());
+	}
+
 }

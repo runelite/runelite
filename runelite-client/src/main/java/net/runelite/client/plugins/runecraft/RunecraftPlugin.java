@@ -89,9 +89,6 @@ public class RunecraftPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
-	private RunecraftOverlay overlay;
-
-	@Inject
 	private BindNeckOverlay bindNeckOverlay;
 
 	@Inject
@@ -115,7 +112,6 @@ public class RunecraftPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(overlay);
 		overlayManager.add(bindNeckOverlay);
 		overlayManager.add(abyssOverlay);
 		abyssOverlay.updateConfig();
@@ -124,7 +120,6 @@ public class RunecraftPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(overlay);
 		overlayManager.remove(bindNeckOverlay);
 		overlayManager.remove(abyssOverlay);
 		abyssObjects.clear();

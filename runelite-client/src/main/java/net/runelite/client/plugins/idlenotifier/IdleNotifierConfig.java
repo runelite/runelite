@@ -96,4 +96,16 @@ public interface IdleNotifierConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+		keyName = "oxygen",
+		name = "Oxygen Notification Threshold",
+		position = 7,
+		description = "The amount of remaining oxygen to send a notification at. A value of 0 will disable notification."
+	)
+	default int getOxygenThreshold()
+	{
+		return 0;
+	}
+
 }

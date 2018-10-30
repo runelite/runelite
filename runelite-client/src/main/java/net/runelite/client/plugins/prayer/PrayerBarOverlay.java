@@ -44,8 +44,9 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 @Singleton
 class PrayerBarOverlay extends Overlay
 {
-	private static final Color BAR_FILL_COLOR = Color.cyan;
-	private static final Color BAR_BG_COLOR = Color.white;
+	private static final Color BAR_FILL_COLOR = new Color(0, 149, 151);
+	private static final Color BAR_BG_COLOR = Color.black;
+	private static final Color FLICK_HELP_COLOR = Color.white;
 	private static final Dimension PRAYER_BAR_SIZE = new Dimension(30, 5);
 
 	private final Client client;
@@ -76,7 +77,7 @@ class PrayerBarOverlay extends Overlay
 
 		final int height = client.getLocalPlayer().getLogicalHeight() + 10;
 		final LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
-		final Point canvasPoint = Perspective.worldToCanvas(client, localLocation.getX(), localLocation.getY(), client.getPlane(), height);
+		final Point canvasPoint = Perspective.localToCanvas(client, localLocation, client.getPlane(), height);
 
 		// Draw bar
 		final int barX = canvasPoint.getX() + client.getViewportXOffset() - 15;
@@ -93,13 +94,15 @@ class PrayerBarOverlay extends Overlay
 		graphics.setColor(BAR_FILL_COLOR);
 		graphics.fillRect(barX, barY, progressFill, barHeight);
 
-		if (plugin.isPrayersActive() && (config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR) || config.prayerFlickLocation().equals(PrayerFlickLocation.BOTH)))
+		if ((plugin.isPrayersActive() || config.prayerFlickAlwaysOn())
+			&& (config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR)
+			|| config.prayerFlickLocation().equals(PrayerFlickLocation.BOTH)))
 		{
 			double t = plugin.getTickProgress();
 
 			int xOffset = (int) (-Math.cos(t) * barWidth / 2) + barWidth / 2;
 
-			graphics.setColor(Color.black);
+			graphics.setColor(FLICK_HELP_COLOR);
 			graphics.fillRect(barX + xOffset, barY, 1, barHeight);
 		}
 

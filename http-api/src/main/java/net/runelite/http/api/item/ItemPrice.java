@@ -30,7 +30,8 @@ import lombok.Data;
 @Data
 public class ItemPrice
 {
-	private Item item;
+	private int id;
+	private String name;
 	private int price;
 	private Instant time;
 }

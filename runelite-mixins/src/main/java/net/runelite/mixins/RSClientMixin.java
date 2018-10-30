@@ -239,6 +239,14 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
+	public void setMouseCanvasHoverPosition(final Point position)
+	{
+		setMouseCanvasHoverPositionX(position.getX());
+		setMouseCanvasHoverPositionY(position.getY());
+	}
+
+	@Inject
+	@Override
 	public Tile getSelectedSceneTile()
 	{
 		int tileX = getSelectedSceneTileX();

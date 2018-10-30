@@ -36,6 +36,18 @@
 .int_var_count      2
 .string_var_count   1
 
+; If we are not the active listener, the widget ids have probably changed
+   get_varc               5
+   load_int               -2
+   if_icmpeq              LABEL2
+
+; Log the error
+   load_string "Got input while not active; Widget ids in ChatboxInputInit are probably wrong."
+   load_string "debug"
+   runelite_callback
+   return
+
+LABEL2:
 ; Discard zero presses
    iload                  0
    load_int               0

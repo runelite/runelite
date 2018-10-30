@@ -65,7 +65,7 @@ import net.runelite.client.util.StackFormatter;
 @PluginDescriptor(
 	name = "Barrows Brothers",
 	description = "Show helpful information for the Barrows minigame",
-	tags = {"combat", "minigame", "minimap"}
+	tags = {"combat", "minigame", "minimap", "bosses", "pve", "pvm"}
 )
 public class BarrowsPlugin extends Plugin
 {

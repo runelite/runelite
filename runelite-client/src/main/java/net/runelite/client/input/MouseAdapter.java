@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,43 +22,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.xptracker;
+package net.runelite.client.input;
 
-import java.awt.Color;
-import lombok.Getter;
+import java.awt.event.MouseEvent;
 
-enum SkillColor
+public abstract class MouseAdapter implements MouseListener
 {
-	ATTACK(105, 32, 7),
-	DEFENCE(98, 119, 190),
-	STRENGTH(4, 149, 90),
-	HITPOINTS(131, 126, 126),
-	RANGED(109, 144, 23),
-	PRAYER(159, 147, 35),
-	MAGIC(50, 80, 193),
-	COOKING(112, 35, 134),
-	WOODCUTTING(52, 140, 37),
-	FLETCHING(3, 141, 125),
-	FISHING(106, 132, 164),
-	FIREMAKING(189, 120, 25),
-	CRAFTING(151, 110, 77),
-	SMITHING(108, 107, 82),
-	MINING(93, 143, 167),
-	HERBLORE(7, 133, 9),
-	AGILITY(58, 60, 137),
-	THIEVING(108, 52, 87),
-	SLAYER(100, 100, 100),
-	FARMING(101, 152, 63),
-	RUNECRAFT(170, 141, 26),
-	HUNTER(92, 89, 65),
-	CONSTRUCTION(130, 116, 95);
-
-	@Getter
-	private final Color color;
-
-	SkillColor(int red, int green, int blue)
+	@Override
+	public MouseEvent mouseClicked(MouseEvent mouseEvent)
 	{
-		this.color = new Color(red, green, blue);
+		return mouseEvent;
 	}
 
+	@Override
+	public MouseEvent mousePressed(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseReleased(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseEntered(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseExited(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseDragged(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseMoved(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
 }

@@ -76,12 +76,12 @@ public class BoostIndicator extends InfoBox
 		int boosted = client.getBoostedSkillLevel(skill),
 			base = client.getRealSkillLevel(skill);
 
-		if (boosted > base)
+		if (boosted < base)
 		{
-			return Color.GREEN;
+			return new Color(238, 51, 51);
 		}
 
-		return new Color(238, 51, 51);
+		return boosted - base < config.boostThreshold() ? Color.YELLOW : Color.GREEN;
 	}
 
 	@Override
