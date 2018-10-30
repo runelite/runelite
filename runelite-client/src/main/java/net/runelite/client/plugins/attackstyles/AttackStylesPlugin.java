@@ -178,7 +178,7 @@ public class AttackStylesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onAttackStyleChange(VarbitChanged event)
+	public void onVarbitChanged(VarbitChanged event)
 	{
 		if (attackStyleVarbit == -1 || attackStyleVarbit != client.getVar(VarPlayer.ATTACK_STYLE))
 		{
@@ -187,11 +187,7 @@ public class AttackStylesPlugin extends Plugin
 				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
 			updateWarning(false);
 		}
-	}
 
-	@Subscribe
-	public void onEquippedWeaponTypeChange(VarbitChanged event)
-	{
 		if (equippedWeaponTypeVarbit == -1 || equippedWeaponTypeVarbit != client.getVar(Varbits.EQUIPPED_WEAPON_TYPE))
 		{
 			equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
@@ -199,11 +195,7 @@ public class AttackStylesPlugin extends Plugin
 				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
 			updateWarning(true);
 		}
-	}
 
-	@Subscribe
-	public void onCastingModeChange(VarbitChanged event)
-	{
 		if (castingModeVarbit == -1 || castingModeVarbit != client.getVar(Varbits.DEFENSIVE_CASTING_MODE))
 		{
 			castingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
