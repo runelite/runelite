@@ -35,8 +35,8 @@ public interface InterfaceStylesConfig extends Config
 {
 	@ConfigItem(
 		keyName = "gameframe",
-			name = "Gameframe",
-			description = "The gameframe to use for the interface"
+		name = "Gameframe",
+		description = "The gameframe to use for the interface"
 	)
 	default Skin skin()
 	{
