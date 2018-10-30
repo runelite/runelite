@@ -34,7 +34,7 @@ import net.runelite.client.config.ConfigItem;
 public interface InterfaceStylesConfig extends Config
 {
 	@ConfigItem(
-			keyName = "gameframe",
+		keyName = "gameframe",
 			name = "Gameframe",
 			description = "The gameframe to use for the interface"
 	)
