@@ -36,20 +36,21 @@ public class ItemInfo
 {
 	private int id;
 	private String name;
+	private String url;
 	private boolean tradeable;
 	private boolean stackable;
+	private boolean noted;
 	private boolean noteable;
 	private boolean equipable;
 	private boolean members;
 	private double weight;
 	private long buy_limit;
-	private boolean quest_item;
+	private Boolean quest_item;
 	private String release_date;
 	private long cost;
 	private int lowalch;
 	private int highalch;
-	private String examine;
-	private String item_slot;
+	private String[] examine;
 
-	private Map<ItemBonus, Integer> bonuses;
+	private Map<ItemBonus, String> bonuses;
 }

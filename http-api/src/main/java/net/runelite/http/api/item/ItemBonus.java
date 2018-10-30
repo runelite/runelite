@@ -42,7 +42,9 @@ public enum ItemBonus
 	melee_strength("Melee Strength"),
 	ranged_strength("Ranged Strength"),
 	magic_damage("Magic Damage"),
-	prayer("Prayer");
+	prayer("Prayer"),
+	//slot("Slot"),
+	attack_speed("Attack Speed");
 
 	String title;
 	ItemBonus(String title)

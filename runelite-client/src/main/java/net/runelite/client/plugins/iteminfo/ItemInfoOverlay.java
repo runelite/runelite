@@ -206,10 +206,13 @@ public class ItemInfoOverlay extends Overlay
 	{
 		StringBuilder b = new StringBuilder();
 
-		if (config.showDescription())
+		if (config.showDescription() && item.getExamine() != null)
 		{
-			b.append(" ").append(item.getExamine());
-			b.append("</br>");
+			for (String examine : item.getExamine())
+			{
+				b.append(" ").append(examine);
+				b.append("</br>");
+			}
 		}
 		if (config.showWeight())
 		{
@@ -254,7 +257,7 @@ public class ItemInfoOverlay extends Overlay
 			b.append("</br>");
 		}
 
-		if (item.isQuest_item() && config.showIsQuestItem())
+		if (config.showIsQuestItem() && item.getQuest_item() != null && item.getQuest_item())
 		{
 			b.append(" Quest Item");
 			b.append("</br>");
@@ -270,15 +273,15 @@ public class ItemInfoOverlay extends Overlay
 
 		if (config.showBonuses())
 		{
-			Map<ItemBonus, Integer> bonuses = item.getBonuses();
+			Map<ItemBonus, String> bonuses = item.getBonuses();
 			if (bonuses != null && !bonuses.isEmpty())
 			{
 				b.append(" Bonuses:</br>");
 
-				for (Map.Entry<ItemBonus, Integer> entry : bonuses.entrySet())
+				for (Map.Entry<ItemBonus, String> entry : bonuses.entrySet())
 				{
-					Integer bonus = entry.getValue();
-					if (config.showEmptyBonuses() || bonus != 0)
+					String bonus = entry.getValue();
+					if ((config.showEmptyBonuses() || !bonus.equals("0")) && entry.getKey() != null)
 					{
 						b.append("   ").append(entry.getKey().getTitle()).append(": ").append(bonus)
 							.append("</br>");
@@ -291,8 +294,14 @@ public class ItemInfoOverlay extends Overlay
 		if (b.toString().equals("</br>"))
 		{
 			b = new StringBuilder();
-			b.append(" ").append(item.getExamine());
-			b.append("</br>");
+			if (item.getExamine() != null)
+			{
+				for (String examine : item.getExamine())
+				{
+					b.append(" ").append(examine);
+					b.append("</br>");
+				}
+			}
 		}
 		return b.toString();
 	}

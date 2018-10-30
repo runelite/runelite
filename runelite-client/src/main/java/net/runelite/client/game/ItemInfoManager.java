@@ -40,7 +40,6 @@ import net.runelite.http.api.osrsbox.OSRSBoxClient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Ben Dol
@@ -68,13 +67,11 @@ public class ItemInfoManager
 		this.itemInfoLoader = new ItemInfoLoader(executor);
 		this.itemInfoSearches = CacheBuilder.newBuilder()
 			.maximumSize(512L)
-			.expireAfterAccess(1, TimeUnit.HOURS)
 			.build(itemInfoLoader);
 
 		this.itemSearchLoader = new ItemSearchLoader(itemClient, executor);
 		this.itemSearches = CacheBuilder.newBuilder()
 			.maximumSize(512L)
-			.expireAfterAccess(1, TimeUnit.HOURS)
 			.build(itemSearchLoader);
 	}
 
