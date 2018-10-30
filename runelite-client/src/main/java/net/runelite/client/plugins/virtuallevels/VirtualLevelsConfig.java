@@ -40,7 +40,7 @@ public interface VirtualLevelsConfig extends Config
 	)
 	default boolean virtualLevelsEnabled()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
