@@ -113,20 +113,6 @@ public class TabInterface
 	private static final int MARGIN = 1;
 	private static final int SCROLL_TICK = 500;
 
-	// Widget indexes for searching
-	private static final int INNER_CONTAINER_IDX = 2;
-	private static final int SETTINGS_IDX = 4;
-	private static final int ITEM_CONTAINER_IDX = 7;
-	private static final int SCROLLBAR_IDX = 8;
-	private static final int BOTTOM_BAR_IDX = 9;
-	private static final int SEARCH_BUTTON_BACKGROUND_IDX = 15;
-	private static final int TITLE_BAR_IDX = 16;
-	private static final int ITEM_COUNT_IDX = 17;
-	private static final int TAB_BAR_IDX = 18;
-	private static final int INCINERATOR_IDX = 19;
-	private static final int INCINERATOR_CONFIRM_IDX = 20;
-	private static final int HIDDEN_WIDGET_IDX = 21;
-
 	private final Client client;
 	private final ClientThread clientThread;
 	private final ItemManager itemManager;
@@ -136,6 +122,7 @@ public class TabInterface
 	private final ChatboxPanelManager chatboxPanelManager;
 	private final BankTagsConfig config;
 	private final Notifier notifier;
+	private final BankSearch bankSearch;
 	private final Rectangle bounds = new Rectangle();
 	private final Rectangle canvasBounds = new Rectangle();
 
@@ -144,7 +131,6 @@ public class TabInterface
 	private int currentTabIndex;
 	private TagTab iconToSet = null;
 	private Instant startScroll = Instant.now();
-	private Object[] widgetIds;
 
 	@Getter
 	private Widget upButton;
@@ -168,7 +154,8 @@ public class TabInterface
 		final TabManager tabManager,
 		final ChatboxPanelManager chatboxPanelManager,
 		final BankTagsConfig config,
-		final Notifier notifier)
+		final Notifier notifier,
+		final BankSearch bankSearch)
 	{
 		this.client = client;
 		this.clientThread = clientThread;
@@ -179,6 +166,7 @@ public class TabInterface
 		this.chatboxPanelManager = chatboxPanelManager;
 		this.config = config;
 		this.notifier = notifier;
+		this.bankSearch = bankSearch;
 	}
 
 	public boolean isActive()
@@ -192,9 +180,6 @@ public class TabInterface
 		{
 			return;
 		}
-
-		Widget bankContainer = client.getWidget(WidgetInfo.BANK_CONTAINER);
-		widgetIds = bankContainer.getOnLoadListener();
 
 		currentTabIndex = config.position();
 		parent = client.getWidget(WidgetInfo.BANK_CONTENT_CONTAINER);
@@ -346,7 +331,7 @@ public class TabInterface
 
 				if (tab.equals(activeTab))
 				{
-					resetSearch();
+					bankSearch.reset(true);
 
 					clientThread.invokeLater(() -> client.runScript(ScriptID.RESET_CHATBOX_INPUT));
 				}
@@ -599,7 +584,7 @@ public class TabInterface
 			final ItemComposition item = getItem(event.getActionParam());
 			final int itemId = item.getId();
 			tagManager.removeTag(itemId, activeTab.getTag());
-			doSearch(InputType.SEARCH, TAG_SEARCH + activeTab.getTag());
+			bankSearch.search(InputType.SEARCH, TAG_SEARCH + activeTab.getTag(), true);
 		}
 		else if (event.getMenuAction() == MenuAction.RUNELITE
 			&& ((event.getWidgetId() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId() && event.getMenuOption().equals(TAG_INVENTORY))
@@ -682,11 +667,6 @@ public class TabInterface
 		}
 	}
 
-	private void resetSearch()
-	{
-		doSearch(InputType.NONE, "");
-	}
-
 	private boolean isHidden()
 	{
 		Widget widget = client.getWidget(WidgetInfo.BANK_CONTAINER);
@@ -729,7 +709,7 @@ public class TabInterface
 	{
 		if (activeTab != null && activeTab.getTag().equals(tag))
 		{
-			resetSearch();
+			bankSearch.reset(true);
 		}
 
 		tabManager.remove(tag);
@@ -926,48 +906,6 @@ public class TabInterface
 		t.revalidate();
 	}
 
-	public void doSearch(InputType inputType, String search, Boolean closeInput)
-	{
-		// In case the widget ids array is incorrect, do not proceed
-		if (widgetIds == null || widgetIds.length < 21)
-		{
-			return;
-		}
-
-		clientThread.invoke(() ->
-		{
-			// This ensures that any chatbox input (e.g from search) will not remain visible when
-			// selecting/changing tab
-			if (closeInput)
-			{
-				client.runScript(ScriptID.RESET_CHATBOX_INPUT);
-			}
-
-			client.setVar(VarClientInt.INPUT_TYPE, inputType.getType());
-			client.setVar(VarClientStr.INPUT_TEXT, search);
-
-			client.runScript(ScriptID.BANK_LAYOUT,
-				WidgetInfo.BANK_CONTAINER.getId(),
-				widgetIds[INNER_CONTAINER_IDX],
-				widgetIds[SETTINGS_IDX],
-				widgetIds[ITEM_CONTAINER_IDX],
-				widgetIds[SCROLLBAR_IDX],
-				widgetIds[BOTTOM_BAR_IDX],
-				widgetIds[TITLE_BAR_IDX],
-				widgetIds[ITEM_COUNT_IDX],
-				widgetIds[SEARCH_BUTTON_BACKGROUND_IDX],
-				widgetIds[TAB_BAR_IDX],
-				widgetIds[INCINERATOR_IDX],
-				widgetIds[INCINERATOR_CONFIRM_IDX],
-				widgetIds[HIDDEN_WIDGET_IDX]);
-		});
-	}
-
-
-	private void doSearch(InputType inputType, String search)
-	{
-		doSearch(inputType, search, true);
-	}
 
 	private ItemComposition getItem(int idx)
 	{
@@ -978,7 +916,7 @@ public class TabInterface
 
 	private void openTag(String tag)
 	{
-		doSearch(InputType.SEARCH, tag);
+		bankSearch.search(InputType.SEARCH, tag, true);
 		activateTab(tabManager.find(tag.substring(TAG_SEARCH.length())));
 
 		// When tab is selected with search window open, the search window closes but the search button

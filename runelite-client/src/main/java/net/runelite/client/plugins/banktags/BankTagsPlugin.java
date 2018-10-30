@@ -35,10 +35,8 @@ import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
@@ -64,14 +62,15 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
-import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.input.MouseWheelListener;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.banktags.tabs.BankSearch;
 import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
@@ -122,6 +121,9 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 
 	@Inject
 	private TabInterface tabInterface;
+
+	@Inject
+	private BankSearch bankSearch;
 
 	@Inject
 	private KeyManager keyManager;
@@ -285,7 +287,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 
 			chatboxPanelManager.openTextInput(name + " tags:<br>(append " + VAR_TAG_SUFFIX + " for variation tag)")
 				.value(initialValue)
-				.onDone((newTags) ->
+				.onDone((newValue) ->
 					clientThread.invoke(() ->
 					{
 						// Split inputted tags to vartags (ending with *) and regular tags
@@ -309,8 +311,8 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 
 			if (isSearchOpen)
 			{
-				tabInterface.doSearch(InputType.NONE, "", false);
-				tabInterface.doSearch(InputType.SEARCH, searchText, false);
+				bankSearch.reset(false);
+				bankSearch.search(InputType.SEARCH, searchText, false);
 			}
 		}
 		else
