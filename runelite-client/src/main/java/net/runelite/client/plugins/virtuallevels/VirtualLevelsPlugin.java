@@ -113,6 +113,11 @@ public class VirtualLevelsPlugin extends Plugin
 	public void onPluginChanged(PluginChanged pluginChanged)
 	{
 		// this is guaranteed to be called after the plugin has been registered by the eventbus. startUp is not.
+		if (pluginChanged.getPlugin() != this)
+		{
+			return;
+		}
+
 		if (config.virtualLevelsEnabled())
 		{
 			clientThread.invoke(this::simulateSkillChange);
