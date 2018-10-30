@@ -26,14 +26,17 @@ package net.runelite.client.plugins.devtools;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.google.common.html.HtmlEscapers;
 import com.google.inject.Inject;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -46,6 +49,7 @@ import net.runelite.api.events.SetMessage;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
+import net.runelite.client.util.ColorUtil;
 
 @Slf4j
 class ChatInspector extends JFrame
@@ -55,6 +59,8 @@ class ChatInspector extends JFrame
 	private final EventBus eventBus;
 
 	private final JPanel tracker = new JPanel();
+
+	private final String hexBrandOrange = ColorUtil.toHexColor(ColorScheme.BRAND_ORANGE);
 
 	@Inject
 	ChatInspector(EventBus eventBus)
@@ -106,6 +112,19 @@ class ChatInspector extends JFrame
 			}
 		});
 
+		final JPanel options = new JPanel();
+		options.setLayout(new FlowLayout());
+
+		final JButton clearBtn = new JButton("Clear");
+		clearBtn.addActionListener(e ->
+		{
+			tracker.removeAll();
+			tracker.revalidate();
+		});
+		options.add(clearBtn);
+
+		add(options, BorderLayout.SOUTH);
+
 		add(trackerScroller, BorderLayout.CENTER);
 
 		pack();
@@ -115,8 +134,20 @@ class ChatInspector extends JFrame
 	{
 		SwingUtilities.invokeLater(() ->
 		{
-			tracker.add(new JLabel(String.format("%s, %s", type.toString(), channel)));
-			JLabel last = new JLabel(String.format("%s: %s", name, message));
+			tracker.add(
+				new JLabel(
+					String.format("<html><font color=%s>Type:</font> %s, <font color=%s>Clan:</font> %s, <font color=%s>Sender:</font> %s</html>",
+						hexBrandOrange, type.toString(),
+						hexBrandOrange, channel,
+						hexBrandOrange, HtmlEscapers.htmlEscaper().escape(name)
+					).replace("\u00a0", "&amp;nbsp;")
+				)
+			);
+
+			JLabel last = new JLabel(
+				String.format("<html><font color=%s>Message:</font> %s</html>", hexBrandOrange, HtmlEscapers.htmlEscaper().escape(message)
+				).replace("\u00a0", "&amp;nbsp;")
+			);
 			last.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.LIGHT_GRAY_COLOR));
 			tracker.add(last);
 
