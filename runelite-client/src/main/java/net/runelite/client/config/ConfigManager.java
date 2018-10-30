@@ -287,6 +287,11 @@ public class ConfigManager
 
 	public void setConfiguration(String groupName, String key, String value)
 	{
+		setConfiguration(groupName, key, value, true);
+	}
+
+	public void setConfiguration(String groupName, String key, String value, boolean sync)
+	{
 		log.debug("Setting configuration value for {}.{} to {}", groupName, key, value);
 
 		String oldValue = (String) properties.setProperty(groupName + "." + key, value);
@@ -296,7 +301,7 @@ public class ConfigManager
 			return;
 		}
 
-		if (client != null)
+		if (client != null && sync)
 		{
 			client.set(groupName + "." + key, value);
 		}
