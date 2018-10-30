@@ -54,6 +54,10 @@ public enum InventoryID
 	 */
 	MONKEY_MADNESS_PUZZLE_BOX(221),
 	/**
+	 * Kingdom resource collection inventory
+	 */
+	KINGDOM_RESOURCE_COLLECTION(390),
+	/**
 	 * Chambers of Xeric chest inventory.
 	 */
 	CHAMBERS_OF_XERIC_CHEST(581),
