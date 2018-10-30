@@ -31,5 +31,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class Tooltip
 {
-	private final String text;
+	private String text;
 }

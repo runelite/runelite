@@ -1,15 +1,15 @@
 /*
- * Copyright (c) 2017, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018 Ben Dol <dolb90@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ *	list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ *	this list of conditions and the following disclaimer in the documentation
+ *	and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -22,36 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay.tooltip;
+package net.runelite.http.api.item;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.inject.Singleton;
-import lombok.Getter;
+import lombok.Data;
 
-@Singleton
-public class TooltipManager
+import java.util.Map;
+
+/**
+ * @author Ben Dol
+ */
+@Data
+public class ItemInfo
 {
-	@Getter
-	private final List<Tooltip> tooltips = new ArrayList<>();
+	private int id;
+	private String name;
+	private boolean tradeable;
+	private boolean stackable;
+	private boolean noteable;
+	private boolean equipable;
+	private boolean members;
+	private double weight;
+	private long buy_limit;
+	private boolean quest_item;
+	private String release_date;
+	private long cost;
+	private int lowalch;
+	private int highalch;
+	private String examine;
+	private String item_slot;
 
-	public void add(Tooltip tooltip)
-	{
-		tooltips.add(tooltip);
-	}
-
-	public boolean remove(Tooltip tooltip)
-	{
-		return tooltips.remove(tooltip);
-	}
-
-	public void addFront(Tooltip tooltip)
-	{
-		tooltips.add(0, tooltip);
-	}
-
-	public void clear()
-	{
-		tooltips.clear();
-	}
+	private Map<ItemBonus, Integer> bonuses;
 }

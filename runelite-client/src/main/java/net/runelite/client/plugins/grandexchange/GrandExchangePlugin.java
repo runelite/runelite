@@ -79,7 +79,7 @@ import net.runelite.http.api.osbuddy.GrandExchangeResult;
 @Slf4j
 public class GrandExchangePlugin extends Plugin
 {
-	private static final int OFFER_CONTAINER_ITEM = 21;
+	public static final int OFFER_CONTAINER_ITEM = 21;
 	private static final int OFFER_DEFAULT_ITEM_ID = 6512;
 	private static final GrandExchangeClient CLIENT = new GrandExchangeClient();
 
