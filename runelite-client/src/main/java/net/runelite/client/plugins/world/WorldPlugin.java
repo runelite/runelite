@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2018, Kbman99 <https://github.com/Kbman99>
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
@@ -22,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.defaultworld;
+package net.runelite.client.plugins.world;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
@@ -36,33 +37,50 @@ import net.runelite.api.events.SessionOpen;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.WorldUtil;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldClient;
 import net.runelite.http.api.worlds.WorldResult;
 
 @PluginDescriptor(
-	name = "Default World",
-	description = "Enable a default world to be selected when launching the client"
+	name = "World",
+	description = "Enable a default world to be selected when launching the client and overlay your current world " +
+		"on the minimap globe",
+	tags = {"default", "world", "overlay"},
+	enabledByDefault = false
 )
 @Slf4j
-public class DefaultWorldPlugin extends Plugin
+public class WorldPlugin extends Plugin
 {
 	@Inject
 	private Client client;
 
 	@Inject
-	private DefaultWorldConfig config;
+	private OverlayManager overlayManager;
+
+	@Inject
+	private WorldOverlay overlay;
+
+	@Inject
+	private WorldConfig config;
 
 	private final WorldClient worldClient = new WorldClient();
 	private int worldCache;
 	private boolean worldChangeRequired;
+
+	@Provides
+	WorldConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(WorldConfig.class);
+	}
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		worldChangeRequired = true;
 		applyWorld();
+		overlayManager.add(overlay);
 	}
 
 	@Override
@@ -70,12 +88,7 @@ public class DefaultWorldPlugin extends Plugin
 	{
 		worldChangeRequired = true;
 		changeWorld(worldCache);
-	}
-
-	@Provides
-	DefaultWorldConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(DefaultWorldConfig.class);
+		overlayManager.remove(overlay);
 	}
 
 	@Subscribe
