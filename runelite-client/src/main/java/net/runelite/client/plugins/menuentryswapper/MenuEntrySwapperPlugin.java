@@ -28,8 +28,6 @@ package net.runelite.client.plugins.menuentryswapper;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
-import java.util.Collection;
-import java.util.Collections;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,9 +44,9 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
@@ -158,6 +156,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private Integer getSwapConfig(int itemId)
 	{
+		itemId = ItemVariationMapping.map(itemId);
 		String config = configManager.getConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
 		if (config == null || config.isEmpty())
 		{
@@ -169,6 +168,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private void setSwapConfig(int itemId, int index)
 	{
+		itemId = ItemVariationMapping.map(itemId);
 		configManager.setConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId, index);
 	}
 
@@ -606,10 +606,5 @@ public class MenuEntrySwapperPlugin extends Plugin
 			menuManager.addManagedCustomMenu(RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_CONFIGURE);
 			menuManager.addManagedCustomMenu(RESIZABLE_INVENTORY_TAB_CONFIGURE);
 		}
-	}
-
-	Collection<WidgetItem> getInventoryItems()
-	{
-		return Collections.unmodifiableCollection(client.getWidget(WidgetInfo.INVENTORY).getWidgetItems());
 	}
 }
