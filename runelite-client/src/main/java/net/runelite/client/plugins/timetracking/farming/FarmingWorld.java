@@ -26,12 +26,9 @@
 package net.runelite.client.plugins.timetracking.farming;
 
 import com.google.inject.Singleton;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -49,9 +46,6 @@ class FarmingWorld
 
 	@Getter
 	private Map<Tab, Set<FarmingPatch>> tabs = new HashMap<>();
-
-	@Getter
-	private Map<PatchImplementation, List<FarmingPatch>> patchTypes = new EnumMap<>(PatchImplementation.class);
 
 	private final Comparator<FarmingPatch> tabSorter = Comparator
 		.comparing(FarmingPatch::getImplementation)
@@ -252,10 +246,6 @@ class FarmingWorld
 		{
 			tabs
 				.computeIfAbsent(p.getImplementation().getTab(), k -> new TreeSet<>(tabSorter))
-				.add(p);
-
-			patchTypes
-				.computeIfAbsent(p.getImplementation(), k -> new ArrayList<>())
 				.add(p);
 		}
 	}

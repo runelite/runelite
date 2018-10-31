@@ -33,7 +33,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.client.input.MouseListener;
 
-public class TranslateMouseListener extends MouseListener
+public class TranslateMouseListener implements MouseListener
 {
 	private final Client client;
 

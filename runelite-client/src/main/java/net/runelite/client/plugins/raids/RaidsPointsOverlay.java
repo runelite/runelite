@@ -76,7 +76,7 @@ public class RaidsPointsOverlay extends Overlay
 			.right(POINTS_FORMAT.format(personalPoints))
 			.build());
 
-		if (partySize != 1)
+		if (partySize > 1)
 		{
 			panel.getChildren().add(LineComponent.builder()
 				.left("Party size:")

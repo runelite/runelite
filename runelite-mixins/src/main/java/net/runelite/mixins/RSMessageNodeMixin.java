@@ -79,6 +79,10 @@ public abstract class RSMessageNodeMixin implements RSMessageNode
 	@MethodHook(value = "setMessage", end = true)
 	public void setMessage(int type, String name, String sender, String value)
 	{
+		// Message nodes get reused after a time by calling setMessage.
+		// Clear the runelite formatted message then.
+		runeLiteFormatMessage = null;
+
 		final SetMessage setMessage = new SetMessage();
 		setMessage.setMessageNode(this);
 		setMessage.setType(ChatMessageType.of(type));

@@ -35,7 +35,7 @@ public interface ChatCommandsConfig extends Config
 		position = 0,
 		keyName = "price",
 		name = "Price Command",
-		description = "Configures whether the Price command is enabled"
+		description = "Configures whether the Price command is enabled<br> !price [item]"
 	)
 	default boolean price()
 	{
@@ -46,7 +46,7 @@ public interface ChatCommandsConfig extends Config
 		position = 1,
 		keyName = "lvl",
 		name = "Level Command",
-		description = "Configures whether the Level command is enabled"
+		description = "Configures whether the Level command is enabled<br> !lvl [skill]"
 	)
 	default boolean lvl()
 	{
@@ -57,7 +57,7 @@ public interface ChatCommandsConfig extends Config
 		position = 2,
 		keyName = "clue",
 		name = "Clue Command",
-		description = "Configures whether the Clue command is enabled"
+		description = "Configures whether the Clue command is enabled<br> !clues"
 	)
 	default boolean clue()
 	{
@@ -68,7 +68,7 @@ public interface ChatCommandsConfig extends Config
 		position = 3,
 		keyName = "killcount",
 		name = "Killcount Command",
-		description = "Configures whether the Killcount command is enabled"
+		description = "Configures whether the Killcount command is enabled<br> !kc [boss]"
 	)
 	default boolean killcount()
 	{

@@ -26,8 +26,10 @@ package net.runelite.client.plugins.agility;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -81,7 +83,7 @@ public class AgilityPlugin extends Plugin
 	private final Map<TileObject, Tile> obstacles = new HashMap<>();
 
 	@Getter
-	private Tile markOfGrace;
+	private final List<Tile> marksOfGrace = new ArrayList<>();
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -131,7 +133,7 @@ public class AgilityPlugin extends Plugin
 	{
 		overlayManager.remove(agilityOverlay);
 		overlayManager.remove(lapCounterOverlay);
-		markOfGrace = null;
+		marksOfGrace.clear();
 		obstacles.clear();
 		session = null;
 	}
@@ -148,7 +150,7 @@ public class AgilityPlugin extends Plugin
 				removeAgilityArenaTimer();
 				break;
 			case LOADING:
-				markOfGrace = null;
+				marksOfGrace.clear();
 				obstacles.clear();
 				break;
 			case LOGGED_IN:
@@ -219,19 +221,15 @@ public class AgilityPlugin extends Plugin
 
 		if (item.getId() == ItemID.MARK_OF_GRACE)
 		{
-			markOfGrace = tile;
+			marksOfGrace.add(tile);
 		}
 	}
 
 	@Subscribe
 	public void onItemDespawned(ItemDespawned itemDespawned)
 	{
-		final Item item = itemDespawned.getItem();
-
-		if (item.getId() == ItemID.MARK_OF_GRACE)
-		{
-			markOfGrace = null;
-		}
+		final Tile tile = itemDespawned.getTile();
+		marksOfGrace.remove(tile);
 	}
 
 	@Subscribe

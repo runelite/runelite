@@ -7,25 +7,21 @@
 ; 0 resizableZoomRange
 ; 1 fixedZoomRange
 ; 2 bar size
-   load_int               715
-   load_string            "resizableInnerZoomLimit"
-   runelite_callback
-   load_int               175
-   load_string            "resizableOuterZoomLimit"
-   runelite_callback
+   load_int               896
+   load_string            "innerZoomLimit"
+   runelite_callback     
+   load_int               128
    isub                  
    istore                 0
-   load_int               700
-   load_string            "fixedInnerZoomLimit"
-   runelite_callback
-   load_int               195
-   load_string            "fixedOuterZoomLimit"
-   runelite_callback
+   load_int               896
+   load_string            "innerZoomLimit"
+   runelite_callback     
+   load_int               128
    isub                  
    istore                 1
-   load_int               17104905
-   widget_get_width_widget
    load_int               17104910
+   widget_get_width_widget
+   load_int               17104911
    widget_get_width_widget
    isub                  
    istore                 2
@@ -44,14 +40,12 @@
    jump                   LABEL36
 LABEL27:
    get_varc               74
-   load_int               175
-   load_string            "resizableOuterZoomLimit"
-   runelite_callback
+   load_int               128
    isub                  
    iload                  0
    load_string            "zoomExpToLin"
-   runelite_callback
-   pop_int
+   runelite_callback     
+   pop_int               
    iload                  2
    imul                  
    iload                  0
@@ -60,14 +54,12 @@ LABEL27:
    jump                   LABEL44
 LABEL36:
    get_varc               73
-   load_int               195
-   load_string            "fixedOuterZoomLimit"
-   runelite_callback
+   load_int               128
    isub                  
-   iload                  1
+   iload                  0
    load_string            "zoomExpToLin"
-   runelite_callback
-   pop_int
+   runelite_callback     
+   pop_int               
    iload                  2
    imul                  
    iload                  1
@@ -78,6 +70,6 @@ LABEL44:
    load_int               0
    load_int               0
    load_int               0
-   load_int               17104910
+   load_int               17104911
    widget_put_position_widget
    return                

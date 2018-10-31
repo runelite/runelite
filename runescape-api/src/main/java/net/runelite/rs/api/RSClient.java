@@ -129,6 +129,16 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("gameState")
 	int getRSGameState();
 
+	@Import("checkClick")
+	@Override
+	void setCheckClick(boolean checkClick);
+
+	@Import("mouseX2")
+	void setMouseCanvasHoverPositionX(int x);
+
+	@Import("mouseY2")
+	void setMouseCanvasHoverPositionY(int y);
+
 	@Import("mouseCurrentButton")
 	@Override
 	int getMouseCurrentButton();
@@ -442,8 +452,8 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("unknownSoundValues1")
 	int[] getUnknownSoundValues1();
 
-	@Import("unknownSoundValues2")
-	int[] getUnknownSoundValues2();
+	@Import("queuedSoundEffectDelays")
+	int[] getQueuedSoundEffectDelays();
 
 	@Import("queuedSoundEffectCount")
 	int getQueuedSoundEffectCount();
