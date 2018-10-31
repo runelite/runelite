@@ -32,4 +32,7 @@ public interface RSGameEngine extends GameEngine
 {
 	@Import("canvas")
 	Canvas getCanvas();
+
+	@Import("resizeCanvasNextFrame")
+	void setResizeCanvasNextFrame(boolean state);
 }

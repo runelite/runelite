@@ -23,19 +23,19 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.stretchedfixedmode;
+package net.runelite.client.plugins.stretchedmode;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("stretchedfixedmode")
-public interface StretchedFixedModeConfig extends Config
+@ConfigGroup("stretchedmode")
+public interface StretchedModeConfig extends Config
 {
 	@ConfigItem(
 		keyName = "keepAspectRatio",
 		name = "Keep aspect ratio",
-		description = "Keeps the aspect ratio when stretching"
+		description = "Keeps the aspect ratio when stretching."
 	)
 	default boolean keepAspectRatio()
 	{
@@ -45,7 +45,7 @@ public interface StretchedFixedModeConfig extends Config
 	@ConfigItem(
 		keyName = "increasedPerformance",
 		name = "Increased performance mode",
-		description = "Uses a fast algorithm when stretching, lowering quality but increasing performance"
+		description = "Uses a fast algorithm when stretching, lowering quality but increasing performance."
 	)
 	default boolean increasedPerformance()
 	{
@@ -55,10 +55,20 @@ public interface StretchedFixedModeConfig extends Config
 	@ConfigItem(
 		keyName = "integerScaling",
 		name = "Integer Scaling",
-		description = "Forces use of a whole number scale factor"
+		description = "Forces use of a whole number scale factor when stretching."
 	)
 	default boolean integerScaling()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "scalingFactor",
+		name = "Resizable Scaling (%)",
+		description = "In resizable mode, the game is reduced in size this much before it's stretched."
+	)
+	default int scalingFactor()
+	{
+		return 50;
 	}
 }

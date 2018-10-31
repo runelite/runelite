@@ -24,7 +24,8 @@
  */
 package net.runelite.mixins;
 
-import java.awt.Canvas;
+import com.google.common.primitives.Ints;
+import java.awt.Container;
 import java.awt.Dimension;
 import net.runelite.api.Constants;
 import net.runelite.api.mixins.Inject;
@@ -32,7 +33,7 @@ import net.runelite.api.mixins.Mixin;
 import net.runelite.rs.api.RSClient;
 
 @Mixin(RSClient.class)
-public abstract class StretchedFixedModeMixin implements RSClient
+public abstract class StretchedModeMixin implements RSClient
 {
 	@Inject
 	private static boolean stretchedEnabled;
@@ -47,10 +48,13 @@ public abstract class StretchedFixedModeMixin implements RSClient
 	private static boolean stretchedKeepAspectRatio;
 
 	@Inject
+	private static double scalingFactor;
+
+	@Inject
 	private static Dimension cachedStretchedDimensions;
 
 	@Inject
-	private static Dimension lastCanvasDimensions;
+	private static Dimension cachedRealDimensions;
 
 	@Inject
 	@Override
@@ -85,7 +89,6 @@ public abstract class StretchedFixedModeMixin implements RSClient
 	public void setStretchedIntegerScaling(boolean state)
 	{
 		stretchedIntegerScaling = state;
-		cachedStretchedDimensions = null;
 	}
 
 	@Inject
@@ -93,62 +96,127 @@ public abstract class StretchedFixedModeMixin implements RSClient
 	public void setStretchedKeepAspectRatio(boolean state)
 	{
 		stretchedKeepAspectRatio = state;
-		cachedStretchedDimensions = null;
+	}
+
+	@Inject
+	@Override
+	public void setScalingFactor(int factor)
+	{
+		factor = Ints.constrainToRange(factor, 0, 100);
+
+		scalingFactor = (100 - factor) / 100D;
 	}
 
 	@Inject
 	@Override
 	public Dimension getRealDimensions()
 	{
-		if (isStretchedEnabled() && !isResized())
+		if (!isStretchedEnabled())
 		{
-			return Constants.GAME_FIXED_SIZE;
+			return getCanvas().getSize();
 		}
 
-		return getCanvas().getSize();
+		if (cachedRealDimensions == null)
+		{
+			if (isResized())
+			{
+				Container canvasParent = getCanvas().getParent();
+
+				int parentWidth = canvasParent.getWidth();
+				int parentHeight = canvasParent.getHeight();
+
+				int widthOffset = parentWidth - Constants.GAME_FIXED_WIDTH;
+				int heightOffset = parentHeight - Constants.GAME_FIXED_HEIGHT;
+
+				int newWidth = Constants.GAME_FIXED_WIDTH + (int) (widthOffset * scalingFactor);
+				int newHeight = Constants.GAME_FIXED_HEIGHT + (int) (heightOffset * scalingFactor);
+
+				cachedRealDimensions = new Dimension(newWidth, newHeight);
+			}
+			else
+			{
+				cachedRealDimensions = Constants.GAME_FIXED_SIZE;
+			}
+		}
+
+		return cachedRealDimensions;
 	}
 
 	@Inject
 	@Override
 	public Dimension getStretchedDimensions()
 	{
-		Canvas canvas = getCanvas();
-
-		int width = canvas.getParent().getWidth();
-		int height = canvas.getParent().getHeight();
-
-		if (cachedStretchedDimensions == null || width != lastCanvasDimensions.width || height != lastCanvasDimensions.height)
+		if (cachedStretchedDimensions == null)
 		{
+			Container canvasParent = getCanvas().getParent();
+
+			int parentWidth = canvasParent.getWidth();
+			int parentHeight = canvasParent.getHeight();
+
+			Dimension realDimensions = getRealDimensions();
+
 			if (stretchedKeepAspectRatio)
 			{
-				int tempNewWidth = (int) (height * Constants.GAME_FIXED_ASPECT_RATIO);
+				double aspectRatio = realDimensions.getWidth() / realDimensions.getHeight();
 
-				if (tempNewWidth > canvas.getWidth())
+				int tempNewWidth = (int) (parentHeight * aspectRatio);
+
+				if (tempNewWidth > parentWidth)
 				{
-					height = (int) (width / Constants.GAME_FIXED_ASPECT_RATIO);
+					parentHeight = (int) (parentWidth / aspectRatio);
 				}
 				else
 				{
-					width = tempNewWidth;
+					parentWidth = tempNewWidth;
 				}
 			}
 
 			if (stretchedIntegerScaling)
 			{
-				if (width > Constants.GAME_FIXED_WIDTH)
+				if (parentWidth > realDimensions.width)
 				{
-					width = width - (width % Constants.GAME_FIXED_WIDTH);
+					parentWidth = parentWidth - (parentWidth % realDimensions.width);
 				}
-				if (height > Constants.GAME_FIXED_HEIGHT)
+				if (parentHeight > realDimensions.height)
 				{
-					height = height - (height % Constants.GAME_FIXED_HEIGHT);
+					parentHeight = parentHeight - (parentHeight % realDimensions.height);
 				}
 			}
 
-			cachedStretchedDimensions = new Dimension(width, height);
-			lastCanvasDimensions = new Dimension(width, height);
+			cachedStretchedDimensions = new Dimension(parentWidth, parentHeight);
 		}
 
 		return cachedStretchedDimensions;
+	}
+
+	@Inject
+	@Override
+	public void invalidateStretching(boolean resize)
+	{
+		cachedStretchedDimensions = null;
+		cachedRealDimensions = null;
+
+		if (resize && isResized())
+		{
+			/*
+				Tells the game to run resizeCanvas the next frame.
+
+				resizeCanvas in turn calls the method that
+				determines the maximum size of the canvas,
+				AFTER setting the size of the canvas.
+
+				The frame after that, the game sees that
+				the maximum size of the canvas isn't
+				the current size, so it runs resizeCanvas again.
+				This time it uses our new maximum size
+				as the bounds for the canvas size.
+
+				This is useful when resizeCanvas wouldn't usually run,
+				for example when we've only changed the scaling factor
+				and we still want the game's canvas to resize
+				with regards to the new maximum bounds.
+			 */
+			setResizeCanvasNextFrame(true);
+		}
 	}
 }

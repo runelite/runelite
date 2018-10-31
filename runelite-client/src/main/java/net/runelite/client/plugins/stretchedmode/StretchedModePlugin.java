@@ -23,31 +23,33 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.stretchedfixedmode;
+package net.runelite.client.plugins.stretchedmode;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.events.CanvasSizeChanged;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.ResizeableChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Stretched Fixed Mode",
-	description = "Resize the game while in fixed mode",
-	tags = {"resize"},
+	name = "Stretched Mode",
+	description = "Stretches the game in fixed and resizable modes.",
+	tags = {"resize", "ui", "interface", "stretch", "scaling", "fixed"},
 	enabledByDefault = false
 )
-public class StretchedFixedModePlugin extends Plugin
+public class StretchedModePlugin extends Plugin
 {
 	@Inject
 	private Client client;
 
 	@Inject
-	private StretchedFixedModeConfig config;
+	private StretchedModeConfig config;
 
 	@Inject
 	private MouseManager mouseManager;
@@ -59,9 +61,9 @@ public class StretchedFixedModePlugin extends Plugin
 	private TranslateMouseWheelListener mouseWheelListener;
 
 	@Provides
-	StretchedFixedModeConfig provideConfig(ConfigManager configManager)
+	StretchedModeConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(StretchedFixedModeConfig.class);
+		return configManager.getConfig(StretchedModeConfig.class);
 	}
 
 	@Override
@@ -84,9 +86,21 @@ public class StretchedFixedModePlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onResizableChanged(ResizeableChanged event)
+	{
+		client.invalidateStretching(true);
+	}
+
+	@Subscribe
+	public void onCanvasSizeChanged(CanvasSizeChanged event)
+	{
+		client.invalidateStretching(false);
+	}
+
+	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("stretchedfixedmode"))
+		if (!event.getGroup().equals("stretchedmode"))
 		{
 			return;
 		}
@@ -99,5 +113,8 @@ public class StretchedFixedModePlugin extends Plugin
 		client.setStretchedIntegerScaling(config.integerScaling());
 		client.setStretchedKeepAspectRatio(config.keepAspectRatio());
 		client.setStretchedFast(config.increasedPerformance());
+		client.setScalingFactor(config.scalingFactor());
+
+		client.invalidateStretching(true);
 	}
 }

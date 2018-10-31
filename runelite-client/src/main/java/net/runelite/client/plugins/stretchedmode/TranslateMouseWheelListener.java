@@ -23,14 +23,13 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.stretchedfixedmode;
+package net.runelite.client.plugins.stretchedmode;
 
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseWheelEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.Constants;
 import net.runelite.client.input.MouseWheelListener;
 
 public class TranslateMouseWheelListener implements MouseWheelListener
@@ -51,17 +50,13 @@ public class TranslateMouseWheelListener implements MouseWheelListener
 
 	private MouseWheelEvent translateEvent(MouseWheelEvent e)
 	{
-		if (!client.isResized())
-		{
-			Dimension stretchedDimensions = client.getStretchedDimensions();
+		Dimension stretchedDimensions = client.getStretchedDimensions();
+		Dimension realDimensions = client.getRealDimensions();
 
-			int newX = (int) (e.getX() / (stretchedDimensions.width / (double) Constants.GAME_FIXED_WIDTH));
-			int newY = (int) (e.getY() / (stretchedDimensions.height / (double) Constants.GAME_FIXED_HEIGHT));
+		int newX = (int) (e.getX() / (stretchedDimensions.width / realDimensions.getWidth()));
+		int newY = (int) (e.getY() / (stretchedDimensions.height / realDimensions.getHeight()));
 
-			return new MouseWheelEvent((Component) e.getSource(), e.getID(), e.getWhen(), e.getModifiers(), newX, newY,
-					e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation());
-		}
-
-		return e;
+		return new MouseWheelEvent((Component) e.getSource(), e.getID(), e.getWhen(), e.getModifiers(), newX, newY,
+				e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation());
 	}
 }
