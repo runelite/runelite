@@ -242,22 +242,22 @@ public class VirtualLevelsPlugin extends Plugin
 				thievingX = client.getWidget(WidgetInfo.SKILL_THIEVING).getRelativeX(),
 				thievingY = client.getWidget(WidgetInfo.SKILL_THIEVING).getRelativeY();
 
-			setWidgetXandY(WidgetInfo.SKILL_TOTAL, woodcuttingX, woodcuttingY);
-			setWidgetXandY(WidgetInfo.SKILL_MAGIC, prayerX, prayerY);
-			setWidgetXandY(WidgetInfo.SKILL_WOODCUTTING, craftingX, craftingY);
-			setWidgetXandY(WidgetInfo.SKILL_PRAYER, agilityX, agilityY);
-			setWidgetXandY(WidgetInfo.SKILL_CRAFTING, herbloreX, herbloreY);
-			setWidgetXandY(WidgetInfo.SKILL_RUNECRAFTING, thievingX, thievingY);
+			setWidgetRelativePosition(WidgetInfo.SKILL_TOTAL, woodcuttingX, woodcuttingY);
+			setWidgetRelativePosition(WidgetInfo.SKILL_MAGIC, prayerX, prayerY);
+			setWidgetRelativePosition(WidgetInfo.SKILL_WOODCUTTING, craftingX, craftingY);
+			setWidgetRelativePosition(WidgetInfo.SKILL_PRAYER, agilityX, agilityY);
+			setWidgetRelativePosition(WidgetInfo.SKILL_CRAFTING, herbloreX, herbloreY);
+			setWidgetRelativePosition(WidgetInfo.SKILL_RUNECRAFTING, thievingX, thievingY);
 		}
 		//move all skills back to original positions
 		else
 		{
-			setWidgetXandY(WidgetInfo.SKILL_TOTAL, totalX, totalY);
-			setWidgetXandY(WidgetInfo.SKILL_MAGIC, magicX, magicY);
-			setWidgetXandY(WidgetInfo.SKILL_WOODCUTTING, woodcuttingX, woodcuttingY);
-			setWidgetXandY(WidgetInfo.SKILL_PRAYER, prayerX, prayerY);
-			setWidgetXandY(WidgetInfo.SKILL_CRAFTING, craftingX, craftingY);
-			setWidgetXandY(WidgetInfo.SKILL_RUNECRAFTING, runecraftingX, runecraftingY);
+			setWidgetRelativePosition(WidgetInfo.SKILL_TOTAL, totalX, totalY);
+			setWidgetRelativePosition(WidgetInfo.SKILL_MAGIC, magicX, magicY);
+			setWidgetRelativePosition(WidgetInfo.SKILL_WOODCUTTING, woodcuttingX, woodcuttingY);
+			setWidgetRelativePosition(WidgetInfo.SKILL_PRAYER, prayerX, prayerY);
+			setWidgetRelativePosition(WidgetInfo.SKILL_CRAFTING, craftingX, craftingY);
+			setWidgetRelativePosition(WidgetInfo.SKILL_RUNECRAFTING, runecraftingX, runecraftingY);
 		}
 	}
 
@@ -266,7 +266,7 @@ public class VirtualLevelsPlugin extends Plugin
 		return !client.getWorldType().contains(WorldType.MEMBERS) && config.hideMembersSkills();
 	}
 
-	private void setWidgetXandY(WidgetInfo skillWidgetInfo, int x, int y)
+	private void setWidgetRelativePosition(WidgetInfo skillWidgetInfo, int x, int y)
 	{
 		final Widget widget = client.getWidget(skillWidgetInfo);
 		if (widget == null)
