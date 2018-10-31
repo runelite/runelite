@@ -31,11 +31,28 @@ import java.util.HashMap;
 public abstract class GrandExchangeSearchAbbreviations
 {
 	private static Map<String, String> AbbrDictionary = new HashMap<String, String>();
+	static
+	{
+		AbbrDictionary.put("acb", "armadyl crossbow");
+		AbbrDictionary.put("bgs", "bandos godsword");
+		AbbrDictionary.put("dclaws", "dragon claws");
+		AbbrDictionary.put("d claws", "dragon claws");
+		AbbrDictionary.put("dds", "dragon dagger");
+		AbbrDictionary.put("dfs", "dragonfire shield");
+		AbbrDictionary.put("dh", "dharok");
+		AbbrDictionary.put("dwh", "dragon warhammer");
+		AbbrDictionary.put("ely", "elysian");
+		AbbrDictionary.put("gmaul", "granite maul");
+		AbbrDictionary.put("p pot", "prayer potion");
+		AbbrDictionary.put("ppot", "prayer potion");
+		AbbrDictionary.put("sgs", "saradomin godsword");
+		AbbrDictionary.put("tbow", "twisted bow");
+		AbbrDictionary.put("zgs", "zamorak godsword");
+	}
 
 	/**
-	*  This holds a list of common abbreviations for various items.
-	*  It will check the GrandExchangePanel Search box and if it
-	*  finds a match will assign the actual name of the item to
+	*  CheckAbbreviation will check the GrandExchangePanel Search box and if
+	*  it finds a match will assign the actual name of the item to
 	*  a string to be looked up.
 	*
 	*  @param lookup Holds the string that contains the item being searched.
@@ -43,18 +60,6 @@ public abstract class GrandExchangeSearchAbbreviations
 	*/
 	public static String CheckAbbreviation(String lookup)
 	{
-		AbbrDictionary.put("bgs", "bandos godsword");
-		AbbrDictionary.put("dclaws", "dragon claws");
-		AbbrDictionary.put("d claws", "dragon claws");
-		AbbrDictionary.put("dds", "dragon dagger");
-		AbbrDictionary.put("dwh", "dragon warhammer");
-		AbbrDictionary.put("ely", "elysian");
-		AbbrDictionary.put("gmaul", "granite maul");
-		AbbrDictionary.put("p pot", "prayer potion");
-		AbbrDictionary.put("ppot", "prayer potion");
-		AbbrDictionary.put("sgs", "saradomin godsword");
-		AbbrDictionary.put("zgs", "zamorak godsword");
-
 		return AbbrDictionary.getOrDefault(lookup, lookup);
 	}
 
