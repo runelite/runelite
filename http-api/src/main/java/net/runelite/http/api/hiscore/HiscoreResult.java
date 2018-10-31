@@ -53,15 +53,15 @@ public class HiscoreResult
 	private Skill runecraft;
 	private Skill hunter;
 	private Skill construction;
+	private Skill bountyHunterHunter;
+	private Skill bountyHunterRogue;
+	private Skill clueScrollAll;
 	private Skill clueScrollEasy;
 	private Skill clueScrollMedium;
-	private Skill clueScrollAll;
-	private Skill bountyHunterRogue;
-	private Skill bountyHunterHunter;
 	private Skill clueScrollHard;
-	private Skill lastManStanding;
 	private Skill clueScrollElite;
 	private Skill clueScrollMaster;
+	private Skill lastManStanding;
 
 	public String getPlayer()
 	{
@@ -313,6 +313,36 @@ public class HiscoreResult
 		this.construction = construction;
 	}
 
+	public Skill getBountyHunterHunter()
+	{
+		return bountyHunterHunter;
+	}
+
+	public void setBountyHunterHunter(Skill bountyHunterHunter)
+	{
+		this.bountyHunterHunter = bountyHunterHunter;
+	}
+
+	public Skill getBountyHunterRogue()
+	{
+		return bountyHunterRogue;
+	}
+
+	public void setBountyHunterRogue(Skill bountyHunterRogue)
+	{
+		this.bountyHunterRogue = bountyHunterRogue;
+	}
+
+	public Skill getClueScrollAll()
+	{
+		return clueScrollAll;
+	}
+
+	public void setClueScrollAll(Skill clueScrollAll)
+	{
+		this.clueScrollAll = clueScrollAll;
+	}
+
 	public Skill getClueScrollEasy()
 	{
 		return clueScrollEasy;
@@ -333,36 +363,6 @@ public class HiscoreResult
 		this.clueScrollMedium = clueScrollMedium;
 	}
 
-	public Skill getClueScrollAll()
-	{
-		return clueScrollAll;
-	}
-
-	public void setClueScrollAll(Skill clueScrollAll)
-	{
-		this.clueScrollAll = clueScrollAll;
-	}
-
-	public Skill getBountyHunterRogue()
-	{
-		return bountyHunterRogue;
-	}
-
-	public void setBountyHunterRogue(Skill bountyHunterRogue)
-	{
-		this.bountyHunterRogue = bountyHunterRogue;
-	}
-
-	public Skill getBountyHunterHunter()
-	{
-		return bountyHunterHunter;
-	}
-
-	public void setBountyHunterHunter(Skill bountyHunterHunter)
-	{
-		this.bountyHunterHunter = bountyHunterHunter;
-	}
-
 	public Skill getClueScrollHard()
 	{
 		return clueScrollHard;
@@ -371,16 +371,6 @@ public class HiscoreResult
 	public void setClueScrollHard(Skill clueScrollHard)
 	{
 		this.clueScrollHard = clueScrollHard;
-	}
-
-	public Skill getLastManStanding()
-	{
-		return lastManStanding;
-	}
-
-	public void setLastManStanding(Skill lastManStanding)
-	{
-		this.lastManStanding = lastManStanding;
 	}
 
 	public Skill getClueScrollElite()
@@ -401,6 +391,16 @@ public class HiscoreResult
 	public void setClueScrollMaster(Skill clueScrollMaster)
 	{
 		this.clueScrollMaster = clueScrollMaster;
+	}
+
+	public Skill getLastManStanding()
+	{
+		return lastManStanding;
+	}
+
+	public void setLastManStanding(Skill lastManStanding)
+	{
+		this.lastManStanding = lastManStanding;
 	}
 
 	public Skill getSkill(HiscoreSkill skill)
@@ -455,24 +455,24 @@ public class HiscoreResult
 				return getConstruction();
 			case OVERALL:
 				return getOverall();
+			case BOUNTY_HUNTER_HUNTER:
+				return getBountyHunterHunter();
+			case BOUNTY_HUNTER_ROGUE:
+				return getBountyHunterRogue();
+			case CLUE_SCROLL_ALL:
+				return getClueScrollAll();
 			case CLUE_SCROLL_EASY:
 				return getClueScrollEasy();
 			case CLUE_SCROLL_MEDIUM:
 				return getClueScrollMedium();
-			case CLUE_SCROLL_ALL:
-				return getClueScrollAll();
-			case BOUNTY_HUNTER_ROGUE:
-				return getBountyHunterRogue();
-			case BOUNTY_HUNTER_HUNTER:
-				return getBountyHunterHunter();
 			case CLUE_SCROLL_HARD:
 				return getClueScrollHard();
-			case LAST_MAN_STANDING:
-				return getLastManStanding();
 			case CLUE_SCROLL_ELITE:
 				return getClueScrollElite();
 			case CLUE_SCROLL_MASTER:
 				return getClueScrollMaster();
+			case LAST_MAN_STANDING:
+				return getLastManStanding();
 		}
 
 		throw new IllegalArgumentException("Invalid hiscore item");
@@ -507,15 +507,15 @@ public class HiscoreResult
 		hash = 29 * hash + Objects.hashCode(this.runecraft);
 		hash = 29 * hash + Objects.hashCode(this.hunter);
 		hash = 29 * hash + Objects.hashCode(this.construction);
-		hash = 29 * hash + Objects.hashCode(this.clueScrollEasy);
-		hash = 29 * hash + Objects.hashCode(this.clueScrollMedium);
-		hash = 29 * hash + Objects.hashCode(this.clueScrollAll);
 		hash = 29 * hash + Objects.hashCode(this.bountyHunterRogue);
 		hash = 29 * hash + Objects.hashCode(this.bountyHunterHunter);
+		hash = 29 * hash + Objects.hashCode(this.clueScrollAll);
+		hash = 29 * hash + Objects.hashCode(this.clueScrollEasy);
+		hash = 29 * hash + Objects.hashCode(this.clueScrollMedium);
 		hash = 29 * hash + Objects.hashCode(this.clueScrollHard);
-		hash = 29 * hash + Objects.hashCode(this.lastManStanding);
 		hash = 29 * hash + Objects.hashCode(this.clueScrollElite);
 		hash = 29 * hash + Objects.hashCode(this.clueScrollMaster);
+		hash = 29 * hash + Objects.hashCode(this.lastManStanding);
 		return hash;
 	}
 
