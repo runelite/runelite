@@ -87,7 +87,7 @@ public class VirtualLevelsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		hideMembersSkillsAndShuffle(enabledHideMembers());
+		hideMembersSkillsAndShuffle(hideMembersEnabled());
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public class VirtualLevelsPlugin extends Plugin
 		if (config.getGroup().equals("virtualLevels"))
 		{
 			clientThread.invoke(this::simulateSkillChange);
-			hideMembersSkillsAndShuffle(enabledHideMembers());
+			hideMembersSkillsAndShuffle(hideMembersEnabled());
 		}
 	}
 
@@ -122,14 +122,14 @@ public class VirtualLevelsPlugin extends Plugin
 		}
 		else if (config.hideMembersSkills())
 		{
-			hideMembersSkillsAndShuffle(enabledHideMembers());
+			hideMembersSkillsAndShuffle(hideMembersEnabled());
 		}
 	}
 
 	@Subscribe
 	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
-		hideMembersSkillsAndShuffle(enabledHideMembers());
+		hideMembersSkillsAndShuffle(hideMembersEnabled());
 	}
 
 	@Subscribe
@@ -165,7 +165,7 @@ public class VirtualLevelsPlugin extends Plugin
 					{
 						continue;
 					}
-					if (enabledHideMembers())
+					if (hideMembersEnabled())
 					{
 						//only adds to level if the skill if client is in f2p world and is not a members skill
 						level += s.getMembersSkill() ? 0 : Experience.getLevelForXp(client.getSkillExperience(s));
@@ -261,14 +261,18 @@ public class VirtualLevelsPlugin extends Plugin
 		}
 	}
 
-	private boolean enabledHideMembers()
+	private boolean hideMembersEnabled()
 	{
 		return !client.getWorldType().contains(WorldType.MEMBERS) && config.hideMembersSkills();
 	}
 
 	private void setWidgetXandY(WidgetInfo skillWidgetInfo, int x, int y)
 	{
-		Widget widget = client.getWidget(skillWidgetInfo);
+		final Widget widget = client.getWidget(skillWidgetInfo);
+		if (widget == null)
+		{
+			return;
+		}
 		widget.setRelativeX(x);
 		widget.setRelativeY(y);
 	}
