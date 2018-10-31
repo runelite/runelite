@@ -65,7 +65,7 @@ public class ZoomPlugin extends Plugin implements KeyListener
 	}
 
 	@Subscribe
-	public void onScriptEvent(ScriptCallbackEvent event)
+	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (client.getIndexScripts().isOverlayOutdated())
 		{

@@ -227,7 +227,7 @@ public class XpTrackerPlugin extends Plugin
 
 
 	@Subscribe
-	public void onXpChanged(ExperienceChanged event)
+	public void onExperienceChanged(ExperienceChanged event)
 	{
 		final Skill skill = event.getSkill();
 		final int currentXp = client.getSkillExperience(skill);

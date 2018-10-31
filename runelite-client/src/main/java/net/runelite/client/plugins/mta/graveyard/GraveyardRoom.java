@@ -91,7 +91,7 @@ public class GraveyardRoom extends MTARoom
 	}
 
 	@Subscribe
-	public void itemContainerChanged(ItemContainerChanged event)
+	public void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (!inside())
 		{

@@ -170,7 +170,7 @@ public class DevToolsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onCommand(CommandExecuted commandExecuted)
+	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
 		String[] args = commandExecuted.getArguments();
 

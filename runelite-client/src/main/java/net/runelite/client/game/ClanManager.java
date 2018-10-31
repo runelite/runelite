@@ -138,7 +138,7 @@ public class ClanManager
 	}
 
 	@Subscribe
-	public void onClanChange(ClanChanged clanChanged)
+	public void onClanChanged(ClanChanged clanChanged)
 	{
 		clanRanksCache.invalidateAll();
 	}

@@ -129,7 +129,7 @@ public class WASDCameraPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptEvent(ScriptCallbackEvent scriptCallbackEvent)
+	public void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
 	{
 		switch (scriptCallbackEvent.getEventName())
 		{
