@@ -55,7 +55,7 @@ import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.examine.ExamineClient;
 
 /**
- * Submits exammine info to the api
+ * Submits examine info to the api
  *
  * @author Adam
  */
@@ -107,6 +107,10 @@ public class ExaminePlugin extends Plugin
 		switch (event.getMenuAction())
 		{
 			case EXAMINE_ITEM:
+				type = ExamineType.ITEM;
+				id = event.getId();
+				break;
+			case EXAMINE_ITEM_GROUND:
 				type = ExamineType.ITEM;
 				id = event.getId();
 				break;
@@ -197,76 +201,67 @@ public class ExaminePlugin extends Plugin
 		int widgetChild = TO_CHILD(widgetId);
 		Widget widget = client.getWidget(widgetGroup, widgetChild);
 
-		if (widget == null)
+		if (widget != null)
 		{
-			return;
+			if (pendingExamine.getType() == ExamineType.ITEM)
+			{
+				WidgetItem widgetItem = widget.getWidgetItem(pendingExamine.getActionParam());
+				quantity = widgetItem != null ? widgetItem.getQuantity() : 1;
+				itemId = pendingExamine.getId();
+			}
+			else if (pendingExamine.getType() == ExamineType.ITEM_BANK_EQ) {
+				if (WidgetInfo.EQUIPMENT.getGroupId() == widgetGroup) {
+					Widget widgetItem = widget.getChild(1);
+					if (widgetItem != null) {
+						quantity = widgetItem.getItemQuantity();
+						itemId = widgetItem.getItemId();
+					}
+				} else if (WidgetInfo.SMITHING_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup) {
+					Widget widgetItem = widget.getChild(2);
+					if (widgetItem != null) {
+						quantity = widgetItem.getItemQuantity();
+						itemId = widgetItem.getItemId();
+					}
+				} else if (WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup
+						|| WidgetInfo.RUNE_POUCH_ITEM_CONTAINER.getGroupId() == widgetGroup) {
+					Widget widgetItem = widget.getChild(pendingExamine.getActionParam());
+					if (widgetItem != null) {
+						quantity = widgetItem.getItemQuantity();
+						itemId = widgetItem.getItemId();
+					}
+				} else if (WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() == widgetGroup) {
+					Widget[] children = widget.getDynamicChildren();
+					if (pendingExamine.getActionParam() < children.length) {
+						Widget widgetItem = children[pendingExamine.getActionParam()];
+						quantity = widgetItem.getItemQuantity();
+						itemId = widgetItem.getItemId();
+					}
+				} else if (WidgetInfo.SHOP_ITEMS_CONTAINER.getGroupId() == widgetGroup) {
+					Widget[] children = widget.getDynamicChildren();
+					if (pendingExamine.getActionParam() < children.length) {
+						Widget widgetItem = children[pendingExamine.getActionParam()];
+						quantity = 1;
+						itemId = widgetItem.getItemId();
+					}
+				} else if (WidgetInfo.CLUE_SCROLL_REWARD_ITEM_CONTAINER.getGroupId() == widgetGroup) {
+					Widget[] children = widget.getDynamicChildren();
+					if (pendingExamine.getActionParam() < children.length) {
+						Widget widgetItem = children[pendingExamine.getActionParam()];
+						quantity = widgetItem.getItemQuantity();
+						itemId = widgetItem.getItemId();
+					}
+				}
+			}
 		}
-
-		if (pendingExamine.getType() == ExamineType.ITEM)
-		{
-			WidgetItem widgetItem = widget.getWidgetItem(pendingExamine.getActionParam());
-			quantity = widgetItem != null ? widgetItem.getQuantity() : 1;
-			itemId = pendingExamine.getId();
-		}
-		else if (pendingExamine.getType() == ExamineType.ITEM_BANK_EQ)
-		{
-			if (WidgetInfo.EQUIPMENT.getGroupId() == widgetGroup)
+		else{
+			// We might be examining something in the open world.
+			if (pendingExamine.getType() == ExamineType.ITEM)
 			{
-				Widget widgetItem = widget.getChild(1);
-				if (widgetItem != null)
-				{
-					quantity = widgetItem.getItemQuantity();
-					itemId = widgetItem.getItemId();
-				}
+				quantity = 1;
+				itemId = pendingExamine.getId();
 			}
-			else if (WidgetInfo.SMITHING_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup)
-			{
-				Widget widgetItem = widget.getChild(2);
-				if (widgetItem != null)
-				{
-					quantity = widgetItem.getItemQuantity();
-					itemId = widgetItem.getItemId();
-				}
-			}
-			else if (WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup
-					|| WidgetInfo.RUNE_POUCH_ITEM_CONTAINER.getGroupId() == widgetGroup)
-			{
-				Widget widgetItem = widget.getChild(pendingExamine.getActionParam());
-				if (widgetItem != null)
-				{
-					quantity = widgetItem.getItemQuantity();
-					itemId = widgetItem.getItemId();
-				}
-			}
-			else if (WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() == widgetGroup)
-			{
-				Widget[] children = widget.getDynamicChildren();
-				if (pendingExamine.getActionParam() < children.length)
-				{
-					Widget widgetItem = children[pendingExamine.getActionParam()];
-					quantity = widgetItem.getItemQuantity();
-					itemId = widgetItem.getItemId();
-				}
-			}
-			else if (WidgetInfo.SHOP_ITEMS_CONTAINER.getGroupId() == widgetGroup)
-			{
-				Widget[] children = widget.getDynamicChildren();
-				if (pendingExamine.getActionParam() < children.length)
-				{
-					Widget widgetItem = children[pendingExamine.getActionParam()];
-					quantity = 1;
-					itemId = widgetItem.getItemId();
-				}
-			}
-			else if (WidgetInfo.CLUE_SCROLL_REWARD_ITEM_CONTAINER.getGroupId() == widgetGroup)
-			{
-				Widget[] children = widget.getDynamicChildren();
-				if (pendingExamine.getActionParam() < children.length)
-				{
-					Widget widgetItem = children[pendingExamine.getActionParam()];
-					quantity = widgetItem.getItemQuantity();
-					itemId = widgetItem.getItemId();
-				}
+			else {
+				return;
 			}
 		}
 
