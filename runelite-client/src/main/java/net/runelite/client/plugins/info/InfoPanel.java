@@ -26,7 +26,6 @@
 package net.runelite.client.plugins.info;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import java.awt.BorderLayout;
@@ -46,6 +45,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
 import net.runelite.api.Client;
+import net.runelite.api.events.EventBus;
 import net.runelite.api.events.SessionClose;
 import net.runelite.api.events.SessionOpen;
 import net.runelite.client.RuneLiteProperties;

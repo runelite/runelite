@@ -24,7 +24,6 @@
  */
 package net.runelite.client.util;
 
-import com.google.common.eventbus.EventBus;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
@@ -43,6 +42,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.events.DecorativeObjectSpawned;
+import net.runelite.api.events.EventBus;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.ItemContainerChanged;

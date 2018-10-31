@@ -24,12 +24,12 @@
  */
 package net.runelite.client.plugins.mta;
 
-import com.google.common.eventbus.EventBus;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.events.EventBus;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
