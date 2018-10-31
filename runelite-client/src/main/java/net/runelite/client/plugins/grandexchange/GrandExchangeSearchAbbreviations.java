@@ -26,7 +26,6 @@ package net.runelite.client.plugins.grandexchange;
 
 import java.util.Map;
 import com.google.common.collect.ImmutableMap;
-//import com.google.common.collect.ImmutableMap.Builder;
 
 public abstract class GrandExchangeSearchAbbreviations
 {
