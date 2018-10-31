@@ -170,7 +170,6 @@ class GrandExchangeSearchPanel extends JPanel
 		searchBar.setIcon(IconTextField.Icon.LOADING);
 
 		List<ItemPrice> result = itemManager.search(lookup);
-
 		if (result.isEmpty())
 		{
 			searchBar.setIcon(IconTextField.Icon.ERROR);
@@ -179,7 +178,6 @@ class GrandExchangeSearchPanel extends JPanel
 			searchBar.setEditable(true);
 			return;
 		}
-
 
 		// move to client thread to lookup item composition
 		clientThread.invokeLater(() -> processResult(result, lookup, exactMatch));
@@ -220,7 +218,6 @@ class GrandExchangeSearchPanel extends JPanel
 			{
 				break;
 			}
-
 		}
 
 		SwingUtilities.invokeLater(() ->

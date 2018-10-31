@@ -28,8 +28,10 @@ import java.util.Map;
 import java.util.HashMap;
 
 
-public class GrandExchangeSearchAbbreviations
+public abstract class GrandExchangeSearchAbbreviations
 {
+	private static Map<String, String> AbbrDictionary = new HashMap<String, String>();
+
 	/**
 	*  This holds a list of common abbreviations for various items.
 	*  It will check the GrandExchangePanel Search box and if it
@@ -41,8 +43,6 @@ public class GrandExchangeSearchAbbreviations
 	*/
 	public static String CheckAbbreviation(String lookup)
 	{
-		Map<String, String> AbbrDictionary = new HashMap<String, String>();
-
 		AbbrDictionary.put("bgs", "bandos godsword");
 		AbbrDictionary.put("dclaws", "dragon claws");
 		AbbrDictionary.put("d claws", "dragon claws");
@@ -55,15 +55,7 @@ public class GrandExchangeSearchAbbreviations
 		AbbrDictionary.put("sgs", "saradomin godsword");
 		AbbrDictionary.put("zgs", "zamorak godsword");
 
-		if (AbbrDictionary.containsKey(lookup))
-		{
-			return AbbrDictionary.get(lookup);
-		}
-
-		else
-		{
-			return lookup;
-		}
+		return AbbrDictionary.getOrDefault(lookup, lookup);
 	}
 
 }
