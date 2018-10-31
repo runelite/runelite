@@ -25,30 +25,28 @@
 package net.runelite.client.plugins.grandexchange;
 
 import java.util.Map;
-import java.util.HashMap;
-
+import com.google.common.collect.ImmutableMap;
+//import com.google.common.collect.ImmutableMap.Builder;
 
 public abstract class GrandExchangeSearchAbbreviations
 {
-	private static Map<String, String> AbbrDictionary = new HashMap<String, String>();
-	static
-	{
-		AbbrDictionary.put("acb", "armadyl crossbow");
-		AbbrDictionary.put("bgs", "bandos godsword");
-		AbbrDictionary.put("dclaws", "dragon claws");
-		AbbrDictionary.put("d claws", "dragon claws");
-		AbbrDictionary.put("dds", "dragon dagger");
-		AbbrDictionary.put("dfs", "dragonfire shield");
-		AbbrDictionary.put("dh", "dharok");
-		AbbrDictionary.put("dwh", "dragon warhammer");
-		AbbrDictionary.put("ely", "elysian");
-		AbbrDictionary.put("gmaul", "granite maul");
-		AbbrDictionary.put("p pot", "prayer potion");
-		AbbrDictionary.put("ppot", "prayer potion");
-		AbbrDictionary.put("sgs", "saradomin godsword");
-		AbbrDictionary.put("tbow", "twisted bow");
-		AbbrDictionary.put("zgs", "zamorak godsword");
-	}
+	private static final Map<String, String> AbbrDictionary = new ImmutableMap.Builder<String, String>()
+		.put("acb", "armadyl crossbow")
+		.put("bgs", "bandos godsword")
+		.put("dclaws", "dragon claws")
+		.put("d claws", "dragon claws")
+		.put("dds", "dragon dagger")
+		.put("dfs", "dragonfire shield")
+		.put("dh", "dharok")
+		.put("dwh", "dragon warhammer")
+		.put("ely", "elysian")
+		.put("gmaul", "granite maul")
+		.put("p pot", "prayer potion")
+		.put("ppot", "prayer potion")
+		.put("sgs", "saradomin godsword")
+		.put("tbow", "twisted bow")
+		.put("zgs", "zamorak godsword")
+		.build();
 
 	/**
 	*  CheckAbbreviation will check the GrandExchangePanel Search box and if
@@ -62,5 +60,4 @@ public abstract class GrandExchangeSearchAbbreviations
 	{
 		return AbbrDictionary.getOrDefault(lookup, lookup);
 	}
-
 }
