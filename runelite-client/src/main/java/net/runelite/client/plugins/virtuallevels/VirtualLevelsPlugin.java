@@ -25,10 +25,10 @@
  */
 package net.runelite.client.plugins.virtuallevels;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
-import javax.inject.Inject;
-
 import com.google.inject.Provides;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
@@ -44,12 +44,10 @@ import net.runelite.client.events.PluginChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
-import java.util.ArrayList;
-
 @PluginDescriptor(
 	name = "Virtual Levels",
 	description = "Configuration for the virtual levels plugin.",
-	tags = {"skill", "total", "max", "f2p", "free "},
+	tags = {"skill", "total", "max", "f2p", "free"},
 	enabledByDefault = false
 )
 
@@ -57,19 +55,19 @@ public class VirtualLevelsPlugin extends Plugin
 {
 	private static final String TOTAL_LEVEL_TEXT_PREFIX = "Total level:<br>";
 
-	private static final int
-			PRAYER_X = 1,
-			PRAYER_Y = 129,
-			MAGIC_X = 1,
-			MAGIC_Y = 161,
-			CRAFTING_X = 64,
-			CRAFTING_Y = 129,
-			RUNECRAFTING_X = 1,
-			RUNECRAFTING_Y = 193,
-			WOODCUTTING_X = 127,
-			WOODCUTTING_Y = 161,
-			TOTAL_X = 127,
-			TOTAL_Y = 225;
+	private static int
+			prayerX = 0,
+			prayerY = 0,
+			magicX = 0,
+			magicY = 0,
+			craftingX = 0,
+			craftingY = 0,
+			runecraftingX = 0,
+			runecraftingY = 0,
+			woodcuttingX = 0,
+			woodcuttingY = 0,
+			totalX = 0,
+			totalY = 0;
 
 	@Inject
 	private VirtualLevelsConfig config;
@@ -89,14 +87,14 @@ public class VirtualLevelsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		showMemberOnlySkills(enabledHideMembers());
+		hideMembersSkillsAndShuffle(enabledHideMembers());
 	}
 
 	@Override
 	protected void shutDown()
 	{
 		clientThread.invoke(this::simulateSkillChange);
-		showMemberOnlySkills(false);
+		hideMembersSkillsAndShuffle(false);
 	}
 
 	@Subscribe
@@ -105,7 +103,7 @@ public class VirtualLevelsPlugin extends Plugin
 		if (config.getGroup().equals("virtualLevels"))
 		{
 			clientThread.invoke(this::simulateSkillChange);
-			showMemberOnlySkills(enabledHideMembers());
+			hideMembersSkillsAndShuffle(enabledHideMembers());
 		}
 	}
 
@@ -119,14 +117,14 @@ public class VirtualLevelsPlugin extends Plugin
 		}
 		else if (config.hideMembersSkills())
 		{
-			showMemberOnlySkills(enabledHideMembers());
+			hideMembersSkillsAndShuffle(enabledHideMembers());
 		}
 	}
 
 	@Subscribe
 	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
-		showMemberOnlySkills(enabledHideMembers());
+		hideMembersSkillsAndShuffle(enabledHideMembers());
 	}
 
 	@Subscribe
@@ -189,73 +187,39 @@ public class VirtualLevelsPlugin extends Plugin
 		}
 	}
 
-	private ArrayList<Widget> getMemberSkills()
+	private ImmutableList<Widget> getMemberSkills()
 	{
-		ArrayList<Widget> membersOnlyWidgets = new ArrayList<>();
-
-		Widget agility = client.getWidget(WidgetInfo.SKILL_AGILITY),
-			construction = client.getWidget(WidgetInfo.SKILL_CONSTRUCTION),
-			farming = client.getWidget(WidgetInfo.SKILL_FARMING),
-			fletching = client.getWidget(WidgetInfo.SKILL_FLETCHING),
-			herblore = client.getWidget(WidgetInfo.SKILL_HERBLORE),
-			hunter = client.getWidget(WidgetInfo.SKILL_HUNTER),
-			thieving = client.getWidget(WidgetInfo.SKILL_THIEVING),
-			slayer = client.getWidget(WidgetInfo.SKILL_SLAYER);
-
-		membersOnlyWidgets.add(agility);
-		membersOnlyWidgets.add(construction);
-		membersOnlyWidgets.add(farming);
-		membersOnlyWidgets.add(fletching);
-		membersOnlyWidgets.add(herblore);
-		membersOnlyWidgets.add(hunter);
-		membersOnlyWidgets.add(thieving);
-		membersOnlyWidgets.add(slayer);
-
-		return membersOnlyWidgets;
+		return ImmutableList.of(
+			client.getWidget(WidgetInfo.SKILL_AGILITY),
+			client.getWidget(WidgetInfo.SKILL_CONSTRUCTION),
+			client.getWidget(WidgetInfo.SKILL_FARMING),
+			client.getWidget(WidgetInfo.SKILL_FLETCHING),
+			client.getWidget(WidgetInfo.SKILL_HERBLORE),
+			client.getWidget(WidgetInfo.SKILL_HUNTER),
+			client.getWidget(WidgetInfo.SKILL_THIEVING),
+			client.getWidget(WidgetInfo.SKILL_SLAYER));
 	}
 
-	private void shuffleSkills(boolean enabled)
+	private void hideMembersSkillsAndShuffle(boolean enabled)
 	{
 		if (client.getWidget(WidgetInfo.SKILL_TOTAL) == null)
 		{
 			return;
 		}
-		//move some free-to-play skills into member skill locations to fill the gaps
-		if (enabled)
-		{
-			client.getWidget(WidgetInfo.SKILL_TOTAL).setRelativeX(WOODCUTTING_X);
-			client.getWidget(WidgetInfo.SKILL_TOTAL).setRelativeY(WOODCUTTING_Y);
-			client.getWidget(WidgetInfo.SKILL_PRAYER).setRelativeX(client.getWidget(WidgetInfo.SKILL_AGILITY).getRelativeX());
-			client.getWidget(WidgetInfo.SKILL_PRAYER).setRelativeY(client.getWidget(WidgetInfo.SKILL_AGILITY).getRelativeY());
-			client.getWidget(WidgetInfo.SKILL_MAGIC).setRelativeX(PRAYER_X);
-			client.getWidget(WidgetInfo.SKILL_MAGIC).setRelativeY(PRAYER_Y);
-			client.getWidget(WidgetInfo.SKILL_CRAFTING).setRelativeX(client.getWidget(WidgetInfo.SKILL_HERBLORE).getRelativeX());
-			client.getWidget(WidgetInfo.SKILL_CRAFTING).setRelativeY(client.getWidget(WidgetInfo.SKILL_HERBLORE).getRelativeY());
-			client.getWidget(WidgetInfo.SKILL_RUNECRAFTING).setRelativeX(client.getWidget(WidgetInfo.SKILL_THIEVING).getRelativeX());
-			client.getWidget(WidgetInfo.SKILL_RUNECRAFTING).setRelativeY(client.getWidget(WidgetInfo.SKILL_THIEVING).getRelativeY());
-			client.getWidget(WidgetInfo.SKILL_WOODCUTTING).setRelativeX(CRAFTING_X);
-			client.getWidget(WidgetInfo.SKILL_WOODCUTTING).setRelativeY(CRAFTING_Y);
-		}
-		//move all skills back to original positions
-		else
-		{
-			client.getWidget(WidgetInfo.SKILL_TOTAL).setRelativeX(TOTAL_X);
-			client.getWidget(WidgetInfo.SKILL_TOTAL).setRelativeY(TOTAL_Y);
-			client.getWidget(WidgetInfo.SKILL_PRAYER).setRelativeX(PRAYER_X);
-			client.getWidget(WidgetInfo.SKILL_PRAYER).setRelativeY(PRAYER_Y);
-			client.getWidget(WidgetInfo.SKILL_MAGIC).setRelativeX(MAGIC_X);
-			client.getWidget(WidgetInfo.SKILL_MAGIC).setRelativeY(MAGIC_Y);
-			client.getWidget(WidgetInfo.SKILL_CRAFTING).setRelativeX(CRAFTING_X);
-			client.getWidget(WidgetInfo.SKILL_CRAFTING).setRelativeY(CRAFTING_Y);
-			client.getWidget(WidgetInfo.SKILL_RUNECRAFTING).setRelativeX(RUNECRAFTING_X);
-			client.getWidget(WidgetInfo.SKILL_RUNECRAFTING).setRelativeY(RUNECRAFTING_Y);
-			client.getWidget(WidgetInfo.SKILL_WOODCUTTING).setRelativeX(WOODCUTTING_X);
-			client.getWidget(WidgetInfo.SKILL_WOODCUTTING).setRelativeY(WOODCUTTING_Y);
-		}
-	}
+		//sets original location of widgets if not already set
+		prayerX = prayerX > 0 ? prayerX : client.getWidget(WidgetInfo.SKILL_PRAYER).getRelativeX();
+		prayerY = prayerY > 0 ? prayerY : client.getWidget(WidgetInfo.SKILL_PRAYER).getRelativeY();
+		magicX = magicX > 0 ? magicX : client.getWidget(WidgetInfo.SKILL_MAGIC).getRelativeX();
+		magicY = magicY > 0 ? magicY : client.getWidget(WidgetInfo.SKILL_MAGIC).getRelativeY();
+		craftingX = craftingX > 0 ? craftingX : client.getWidget(WidgetInfo.SKILL_CRAFTING).getRelativeX();
+		craftingY = craftingY > 0 ? craftingY : client.getWidget(WidgetInfo.SKILL_CRAFTING).getRelativeY();
+		runecraftingX = runecraftingX > 0 ? runecraftingX : client.getWidget(WidgetInfo.SKILL_RUNECRAFTING).getRelativeX();
+		runecraftingY = runecraftingY > 0 ? runecraftingY : client.getWidget(WidgetInfo.SKILL_RUNECRAFTING).getRelativeY();
+		woodcuttingX = woodcuttingX > 0 ? woodcuttingX : client.getWidget(WidgetInfo.SKILL_WOODCUTTING).getRelativeX();
+		woodcuttingY = woodcuttingY > 0 ? woodcuttingY : client.getWidget(WidgetInfo.SKILL_WOODCUTTING).getRelativeY();
+		totalX = totalX > 0 ? totalX : client.getWidget(WidgetInfo.SKILL_TOTAL).getRelativeX();
+		totalY = totalY > 0 ? totalY : client.getWidget(WidgetInfo.SKILL_TOTAL).getRelativeY();
 
-	private void showMemberOnlySkills(boolean enabled)
-	{
 		for (Widget widget : getMemberSkills())
 		{
 			if (widget != null)
@@ -263,11 +227,44 @@ public class VirtualLevelsPlugin extends Plugin
 				widget.setHidden(enabled);
 			}
 		}
-		shuffleSkills(enabled);
+		//move some free-to-play skills into member skill locations to fill the gaps
+		if (enabled)
+		{
+			int agilityX = client.getWidget(WidgetInfo.SKILL_AGILITY).getRelativeX(),
+				agilityY = client.getWidget(WidgetInfo.SKILL_AGILITY).getRelativeY(),
+				herbloreX = client.getWidget(WidgetInfo.SKILL_HERBLORE).getRelativeX(),
+				herbloreY = client.getWidget(WidgetInfo.SKILL_HERBLORE).getRelativeY(),
+				thievingX = client.getWidget(WidgetInfo.SKILL_THIEVING).getRelativeX(),
+				thievingY = client.getWidget(WidgetInfo.SKILL_THIEVING).getRelativeY();
+
+			setWidgetXandY(WidgetInfo.SKILL_TOTAL, woodcuttingX, woodcuttingY);
+			setWidgetXandY(WidgetInfo.SKILL_MAGIC, prayerX, prayerY);
+			setWidgetXandY(WidgetInfo.SKILL_WOODCUTTING, craftingX, craftingY);
+			setWidgetXandY(WidgetInfo.SKILL_PRAYER, agilityX, agilityY);
+			setWidgetXandY(WidgetInfo.SKILL_CRAFTING, herbloreX, herbloreY);
+			setWidgetXandY(WidgetInfo.SKILL_RUNECRAFTING, thievingX, thievingY);
+		}
+		//move all skills back to original positions
+		else
+		{
+			setWidgetXandY(WidgetInfo.SKILL_TOTAL, totalX, totalY);
+			setWidgetXandY(WidgetInfo.SKILL_MAGIC, magicX, magicY);
+			setWidgetXandY(WidgetInfo.SKILL_WOODCUTTING, woodcuttingX, woodcuttingY);
+			setWidgetXandY(WidgetInfo.SKILL_PRAYER, prayerX, prayerY);
+			setWidgetXandY(WidgetInfo.SKILL_CRAFTING, craftingX, craftingY);
+			setWidgetXandY(WidgetInfo.SKILL_RUNECRAFTING, runecraftingX, runecraftingY);
+		}
 	}
 
 	private boolean enabledHideMembers()
 	{
 		return !client.getWorldType().contains(WorldType.MEMBERS) && config.hideMembersSkills();
+	}
+
+	private void setWidgetXandY(WidgetInfo skillWidgetInfo, int x, int y)
+	{
+		Widget widget = client.getWidget(skillWidgetInfo);
+		widget.setRelativeX(x);
+		widget.setRelativeY(y);
 	}
 }
