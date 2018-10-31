@@ -27,8 +27,10 @@ package net.runelite.client.plugins.stretchedfixedmode;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.Dimension;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.MouseManager;
@@ -57,6 +59,9 @@ public class StretchedFixedModePlugin extends Plugin
 
 	@Inject
 	private TranslateMouseWheelListener mouseWheelListener;
+
+	@Inject
+	private ConfigManager configManager;
 
 	@Provides
 	StretchedFixedModeConfig provideConfig(ConfigManager configManager)
@@ -99,5 +104,13 @@ public class StretchedFixedModePlugin extends Plugin
 		client.setStretchedIntegerScaling(config.integerScaling());
 		client.setStretchedKeepAspectRatio(config.keepAspectRatio());
 		client.setStretchedFast(config.increasedPerformance());
+
+		if (config.resizeToMultiple() != ResizeScaleType.MULT_NOT_SET)
+		{
+			int width = (int)(Constants.GAME_FIXED_WIDTH * config.resizeToMultiple().getMultiple());
+			int height = (int)(Constants.GAME_FIXED_HEIGHT * config.resizeToMultiple().getMultiple());
+			configManager.setConfiguration("runelite", "gameSize", new Dimension(width, height));
+			configManager.setConfiguration("stretchedfixedmode", "resizeToMultiple", ResizeScaleType.MULT_NOT_SET);
+		}
 	}
 }
