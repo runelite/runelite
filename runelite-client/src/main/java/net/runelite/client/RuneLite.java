@@ -53,7 +53,6 @@ import net.runelite.client.discord.DiscordService;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.LootManager;
-import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.rs.ClientUpdateCheckMode;
@@ -143,9 +142,6 @@ public class RuneLite
 	private Provider<LootManager> lootManager;
 
 	@Inject
-	private Provider<ChatboxPanelManager> chatboxPanelManager;
-
-	@Inject
 	@Nullable
 	private Client client;
 
@@ -158,18 +154,18 @@ public class RuneLite
 		parser.accepts("debug", "Show extra debugging output");
 
 		final ArgumentAcceptingOptionSpec<ClientUpdateCheckMode> updateMode = parser
-				.accepts("rs", "Select client type")
-				.withRequiredArg()
-				.ofType(ClientUpdateCheckMode.class)
-				.defaultsTo(ClientUpdateCheckMode.AUTO)
-				.withValuesConvertedBy(new EnumConverter<ClientUpdateCheckMode>(ClientUpdateCheckMode.class)
+			.accepts("rs", "Select client type")
+			.withRequiredArg()
+			.ofType(ClientUpdateCheckMode.class)
+			.defaultsTo(ClientUpdateCheckMode.AUTO)
+			.withValuesConvertedBy(new EnumConverter<ClientUpdateCheckMode>(ClientUpdateCheckMode.class)
+			{
+				@Override
+				public ClientUpdateCheckMode convert(String v)
 				{
-					@Override
-					public ClientUpdateCheckMode convert(String v)
-					{
-						return super.convert(v.toUpperCase());
-					}
-				});
+					return super.convert(v.toUpperCase());
+				}
+			});
 
 		parser.accepts("help", "Show this text").forHelp();
 		OptionSet options = parser.parse(args);
@@ -215,8 +211,8 @@ public class RuneLite
 		final long start = System.currentTimeMillis();
 
 		injector = Guice.createInjector(new RuneLiteModule(
-				options.valueOf(updateMode),
-				developerMode));
+			options.valueOf(updateMode),
+			developerMode));
 
 		injector.getInstance(RuneLite.class).start();
 
@@ -282,7 +278,6 @@ public class RuneLite
 			eventBus.register(chatMessageManager.get());
 			eventBus.register(commandManager.get());
 			eventBus.register(lootManager.get());
-			eventBus.register(chatboxPanelManager.get());
 
 			// Add core overlays
 			WidgetOverlay.createOverlays(client).forEach(overlayManager::add);
