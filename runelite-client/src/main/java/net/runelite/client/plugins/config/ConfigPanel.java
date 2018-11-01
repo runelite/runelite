@@ -68,6 +68,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
+
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.Config;
@@ -101,6 +103,7 @@ public class ConfigPanel extends PluginPanel
 
 	private static final String RUNELITE_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).value();
 	private static final String PINNED_PLUGINS_CONFIG_KEY = "pinnedPlugins";
+	private static final String DEFAULT_OVERRIDDEN_PINNED_PLUGINS_CONFIG_KEY = "overriddenDefaultPinnedPlugins";
 	private static final String RUNELITE_PLUGIN = "RuneLite";
 	private static final String CHAT_COLOR_PLUGIN = "Chat Color";
 	private static final Splitter COMMA_SPLITTER = Splitter.on(',');
@@ -209,7 +212,8 @@ public class ConfigPanel extends PluginPanel
 		final PluginListItem runeLite = new PluginListItem(this, runeLiteConfig,
 			configManager.getConfigDescriptor(runeLiteConfig),
 			RUNELITE_PLUGIN, "RuneLite client settings", true, "client");
-		//runeLite.setPinned(pinnedPlugins.contains(RUNELITE_PLUGIN));
+		// pin this if the pinned plugin list contains runelite OR if it has not been disabled yet
+		runeLite.setPinned(pinnedPlugins.contains(RUNELITE_PLUGIN) || !hasDisabledPinningDefaultPlugin(runeLite));
 		pluginList.add(runeLite);
 
 
@@ -642,6 +646,57 @@ public class ConfigPanel extends PluginPanel
 			.collect(Collectors.joining(","));
 
 		configManager.setConfiguration(RUNELITE_GROUP_NAME, PINNED_PLUGINS_CONFIG_KEY, value);
+	}
+
+	/**
+	 * PluginListItems that are defaulted as pinned can use this function to update the config.
+	 * It updates the config to add this plugin to a list of disabledDefaultPinning.
+	 *
+	 * @param pluginListItem - A plugin list item that is pinned by default
+	 */
+	void disablePinningDefaultPlugin(@NonNull PluginListItem pluginListItem)
+	{
+		// Cannot disable a default pinned plugin if it is not pinned by default
+		if(!pluginListItem.isPinnedByDefault())
+		{
+			throw new IllegalArgumentException("PluginListItem must be a default");
+		}
+
+		// Grab the configuration if it exists
+		String defaultPinnedConfiguration = configManager.getConfiguration(RUNELITE_GROUP_NAME, DEFAULT_OVERRIDDEN_PINNED_PLUGINS_CONFIG_KEY);
+		// If it does not exist, create the configuration add this list item to it
+		if(defaultPinnedConfiguration == null)
+		{
+			configManager.setConfiguration(RUNELITE_GROUP_NAME, DEFAULT_OVERRIDDEN_PINNED_PLUGINS_CONFIG_KEY, pluginListItem.getName());
+			return;
+		// if the default was already overridden, we do not need to re-add
+		} else if(hasDisabledPinningDefaultPlugin(pluginListItem)) {
+			return;
+		}
+
+		// Here, the configuration exists and it does not have the default overriden yet
+		// So, we add the plugin list item to a list of disabled defaulted pinned items tacked onto the other configurations
+		configManager.setConfiguration(RUNELITE_GROUP_NAME, DEFAULT_OVERRIDDEN_PINNED_PLUGINS_CONFIG_KEY, defaultPinnedConfiguration + "," + pluginListItem.getName());
+	}
+
+	/**
+	 * Determine if this plugin has already been overridden and is pre
+	 * @param pluginListItem - Plugin that needs to check if it has been overridden already in the config
+	 * @return True if the default pinned plugin was overridden
+	 */
+	boolean hasDisabledPinningDefaultPlugin(@NonNull PluginListItem pluginListItem)
+	{
+		// Cannot disable a default pinned plugin if it is not pinned by default
+		if (!pluginListItem.isPinnedByDefault()) throw new IllegalArgumentException("PluginListItem must be a default");
+
+		// Grab the configuration if it exists
+		String defaultPinnedConfiguration = configManager.getConfiguration(RUNELITE_GROUP_NAME, DEFAULT_OVERRIDDEN_PINNED_PLUGINS_CONFIG_KEY);
+
+		// If there is no configuration specified, it has not been overriden yet
+		if(defaultPinnedConfiguration == null) return false;
+
+		// If it contains the default pinning in the override setting
+		return defaultPinnedConfiguration.contains(pluginListItem.getName());
 	}
 
 	@Override

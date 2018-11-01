@@ -125,9 +125,9 @@ class PluginListItem extends JPanel
 	 * Creates a new {@code PluginListItem} for a core configuration.
 	 */
 	PluginListItem(ConfigPanel configPanel, Config config, ConfigDescriptor configDescriptor,
-		String name, String description, boolean starredByDefault, String... tags)
+		String name, String description, boolean isPinnedByDefault, String... tags)
 	{
-		this(configPanel, null, config, configDescriptor, name, description, starredByDefault, tags);
+		this(configPanel, null, config, configDescriptor, name, description, isPinnedByDefault, tags);
 	}
 
 	private PluginListItem(ConfigPanel configPanel, @Nullable Plugin plugin, @Nullable Config config,
@@ -160,10 +160,16 @@ class PluginListItem extends JPanel
 
 		pinButton.addActionListener(e ->
 		{
-			// Cannot update the pinning if it is pinnedByDefault
-			if(isPinnedByDefault()) return;
+			// If this plugin is pinned by default, and it has not been overridden yet
+			if(isPinnedByDefault() && !configPanel.hasDisabledPinningDefaultPlugin(this))
+			{
+				// Update config that this defaulted-to-pinned list item has been removed from default
+				configPanel.disablePinningDefaultPlugin(this);
+			}
 
+			// Toggle the pinning
 			setPinned(!isPinned);
+
 			// If it is now no longer pinned && it was pinned by default, lets update the default config
 			configPanel.savePinnedPlugins();
 			configPanel.openConfigList();
@@ -193,12 +199,6 @@ class PluginListItem extends JPanel
 		toggleButton.setPreferredSize(new Dimension(25, 0));
 		attachToggleButtonListener(toggleButton);
 		buttonPanel.add(toggleButton);
-
-		// Update the pinning if it is pinned by default
-		if(this.isPinnedByDefault)
-		{
-			setPinned(true);
-		}
 	}
 
 	private void attachToggleButtonListener(IconButton button)
@@ -241,8 +241,20 @@ class PluginListItem extends JPanel
 		updateToggleButton(toggleButton);
 	}
 
+	/**
+	 * Update the pin status of the plugin. Updates the star between On and Off, tooltip from pin to unpin,
+	 * and if it is defaulted as pinned, it will add a override to the configuration
+	 *
+	 * @param pinned - True if the item is pinned, False if the item is unpinned
+	 */
 	void setPinned(boolean pinned)
 	{
+		// If we are unpinning && this is a pin by default plugin,
+		// lets add the overriden configuration to the configuration file
+		if(!pinned && isPinnedByDefault())
+		{
+			configPanel.disablePinningDefaultPlugin(this);
+		}
 		isPinned = pinned;
 		pinButton.setIcon(pinned ? ON_STAR : OFF_STAR);
 		pinButton.setToolTipText(pinned ? "Unpin plugin" : "Pin plugin");
