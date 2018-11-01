@@ -29,6 +29,7 @@ import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -97,9 +98,17 @@ class NightmareZoneOverlay extends Overlay
 		renderAbsorptionCounter();
 
 		panelComponent.getChildren().clear();
+
+		int points = client.getVar(Varbits.NMZ_POINTS);
+
+		if (config.showTotalPoints())
+		{
+			points += client.getVar(VarPlayer.NMZ_REWARD_POINTS);
+		}
+
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Points: ")
-			.right(StackFormatter.formatNumber(client.getVar(Varbits.NMZ_POINTS)))
+			.right(StackFormatter.formatNumber(points))
 			.build());
 
 		return panelComponent.render(graphics);
