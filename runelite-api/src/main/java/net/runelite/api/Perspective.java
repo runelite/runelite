@@ -139,7 +139,9 @@ public class Perspective
 			{
 				int pointX = client.getViewportWidth() / 2 + x * client.getScale() / y;
 				int pointY = client.getViewportHeight() / 2 + var8 * client.getScale() / y;
-				return new Point(pointX, pointY);
+				return new Point(
+					pointX + client.getViewportXOffset(),
+					pointY + client.getViewportYOffset());
 			}
 		}
 
