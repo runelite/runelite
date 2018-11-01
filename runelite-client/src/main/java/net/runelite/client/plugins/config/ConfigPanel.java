@@ -204,7 +204,10 @@ public class ConfigPanel extends PluginPanel
 				final ConfigDescriptor configDescriptor = config == null ? null : configManager.getConfigDescriptor(config);
 
 				final PluginListItem listItem = new PluginListItem(this, plugin, descriptor, config, configDescriptor);
-				listItem.setPinned(pinnedPlugins.contains(listItem.getName()));
+
+				// If pinned plugins has this item OR (if it is pinned by default AND it has not been overridden) we can pin
+				// Else, don't pin
+				listItem.setPinned(pinnedPlugins.contains(listItem.getName()) || (listItem.isPinnedByDefault() && !hasDisabledPinningDefaultPlugin(listItem)));
 				pluginList.add(listItem);
 			});
 
@@ -212,15 +215,18 @@ public class ConfigPanel extends PluginPanel
 		final PluginListItem runeLite = new PluginListItem(this, runeLiteConfig,
 			configManager.getConfigDescriptor(runeLiteConfig),
 			RUNELITE_PLUGIN, "RuneLite client settings", true, "client");
-		// pin this if the pinned plugin list contains runelite OR if it has not been disabled yet
-		runeLite.setPinned(pinnedPlugins.contains(RUNELITE_PLUGIN) || !hasDisabledPinningDefaultPlugin(runeLite));
+		// If pinned plugins has this item OR (if it is pinned by default AND it has not been overridden) we can pin
+		// Else, don't pin
+		runeLite.setPinned(pinnedPlugins.contains(RUNELITE_PLUGIN) || (runeLite.isPinnedByDefault() && !hasDisabledPinningDefaultPlugin(runeLite)));
 		pluginList.add(runeLite);
 
 
 		final PluginListItem chatColor = new PluginListItem(this, chatColorConfig,
 			configManager.getConfigDescriptor(chatColorConfig),
 			CHAT_COLOR_PLUGIN, "Recolor chat text", false, "colour", "messages");
-		chatColor.setPinned(pinnedPlugins.contains(CHAT_COLOR_PLUGIN));
+		// If pinned plugins has this item OR (if it is pinned by default AND it has not been overridden) we can pin
+		// Else, don't pin
+		chatColor.setPinned(pinnedPlugins.contains(CHAT_COLOR_PLUGIN) || (chatColor.isPinnedByDefault() && !hasDisabledPinningDefaultPlugin(chatColor)));
 		pluginList.add(chatColor);
 
 		pluginList.sort(Comparator.comparing(PluginListItem::getName));

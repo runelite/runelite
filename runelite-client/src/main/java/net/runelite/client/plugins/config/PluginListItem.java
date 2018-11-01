@@ -250,7 +250,7 @@ class PluginListItem extends JPanel
 	void setPinned(boolean pinned)
 	{
 		// If we are unpinning && this is a pin by default plugin,
-		// lets add the overriden configuration to the configuration file
+		// lets add the overridden configuration to the configuration file
 		if(!pinned && isPinnedByDefault())
 		{
 			configPanel.disablePinningDefaultPlugin(this);
