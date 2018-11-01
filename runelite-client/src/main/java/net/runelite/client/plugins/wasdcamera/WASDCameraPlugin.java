@@ -27,6 +27,7 @@ package net.runelite.client.plugins.wasdcamera;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.Color;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -35,6 +36,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -177,7 +179,9 @@ public class WASDCameraPlugin extends Plugin
 			{
 				if (client.getGameState() == GameState.LOGGED_IN)
 				{
-					chatboxInput.setText(client.getLocalPlayer().getName() + ": " + ColorUtil.wrapWithColorTag(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*", JagexColors.CHAT_TYPED_TEXT_OPAQUE_BACKGROUND));
+					final boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
+					final Color textColor = isChatboxTransparent ? JagexColors.CHAT_TYPED_TEXT_TRANSPARENT_BACKGROUND : JagexColors.CHAT_TYPED_TEXT_OPAQUE_BACKGROUND;
+					chatboxInput.setText(client.getLocalPlayer().getName() + ": " + ColorUtil.wrapWithColorTag(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
 				}
 			}
 		}
