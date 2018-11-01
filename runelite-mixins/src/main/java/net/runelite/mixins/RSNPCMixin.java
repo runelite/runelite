@@ -26,6 +26,7 @@ package net.runelite.mixins;
 
 import net.runelite.api.AnimationID;
 import net.runelite.api.NPCComposition;
+import net.runelite.api.events.NpcCompositionChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.FieldHook;
@@ -108,6 +109,13 @@ public abstract class RSNPCMixin implements RSNPC
 		{
 			client.getCallbacks().post(new NpcDespawned(this));
 		}
+	}
+
+	@FieldHook("composition")
+	@Inject
+	public void afterCompositionChanged(int idx)
+	{
+		client.getCallbacks().post(new NpcCompositionChanged(this));
 	}
 
 	@Copy("getModel")
