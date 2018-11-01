@@ -663,7 +663,7 @@ public class ConfigPanel extends PluginPanel
 	void disablePinningDefaultPlugin(@NonNull PluginListItem pluginListItem)
 	{
 		// Cannot disable a default pinned plugin if it is not pinned by default
-		if(!pluginListItem.isPinnedByDefault())
+		if (!pluginListItem.isPinnedByDefault())
 		{
 			throw new IllegalArgumentException("PluginListItem must be a default");
 		}
@@ -671,12 +671,14 @@ public class ConfigPanel extends PluginPanel
 		// Grab the configuration if it exists
 		String defaultPinnedConfiguration = configManager.getConfiguration(RUNELITE_GROUP_NAME, DEFAULT_OVERRIDDEN_PINNED_PLUGINS_CONFIG_KEY);
 		// If it does not exist, create the configuration add this list item to it
-		if(defaultPinnedConfiguration == null)
+		if (defaultPinnedConfiguration == null)
 		{
 			configManager.setConfiguration(RUNELITE_GROUP_NAME, DEFAULT_OVERRIDDEN_PINNED_PLUGINS_CONFIG_KEY, pluginListItem.getName());
 			return;
 		// if the default was already overridden, we do not need to re-add
-		} else if(hasDisabledPinningDefaultPlugin(pluginListItem)) {
+		} 
+		else if (hasDisabledPinningDefaultPlugin(pluginListItem))
+		{
 			return;
 		}
 

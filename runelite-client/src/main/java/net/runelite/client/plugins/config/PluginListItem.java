@@ -161,7 +161,7 @@ class PluginListItem extends JPanel
 		pinButton.addActionListener(e ->
 		{
 			// If this plugin is pinned by default, and it has not been overridden yet
-			if(isPinnedByDefault() && !configPanel.hasDisabledPinningDefaultPlugin(this))
+			if (isPinnedByDefault() && !configPanel.hasDisabledPinningDefaultPlugin(this))
 			{
 				// Update config that this defaulted-to-pinned list item has been removed from default
 				configPanel.disablePinningDefaultPlugin(this);
@@ -251,7 +251,7 @@ class PluginListItem extends JPanel
 	{
 		// If we are unpinning && this is a pin by default plugin,
 		// lets add the overridden configuration to the configuration file
-		if(!pinned && isPinnedByDefault())
+		if (!pinned && isPinnedByDefault())
 		{
 			configPanel.disablePinningDefaultPlugin(this);
 		}
