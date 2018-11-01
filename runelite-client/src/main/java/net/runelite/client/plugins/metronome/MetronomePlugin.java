@@ -59,7 +59,7 @@ public class MetronomePlugin extends Plugin
 	}
 
 	@Subscribe
-	void onTick(GameTick tick)
+	public void onGameTick(GameTick tick)
 	{
 		if (config.tickCount() == 0)
 		{

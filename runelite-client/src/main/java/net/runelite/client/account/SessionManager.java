@@ -215,7 +215,7 @@ public class SessionManager
 	}
 
 	@Subscribe
-	public void onLogin(LoginResponse loginResponse)
+	public void onLoginResponse(LoginResponse loginResponse)
 	{
 		log.debug("Now logged in as {}", loginResponse.getUsername());
 

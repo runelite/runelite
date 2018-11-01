@@ -105,7 +105,7 @@ public class ChatboxInputManager
 	}
 
 	@Subscribe
-	public void scriptCallback(ScriptCallbackEvent ev)
+	public void onScriptCallbackEvent(ScriptCallbackEvent ev)
 	{
 		// This replaces script 74 and most of 112
 		if ("chatboxInputHandler".equals(ev.getEventName()))

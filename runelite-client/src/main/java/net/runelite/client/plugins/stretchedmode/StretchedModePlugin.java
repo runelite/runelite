@@ -86,7 +86,7 @@ public class StretchedModePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onResizableChanged(ResizeableChanged event)
+	public void onResizeableChanged(ResizeableChanged event)
 	{
 		client.invalidateStretching(true);
 	}

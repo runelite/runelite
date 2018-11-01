@@ -138,7 +138,7 @@ public class AttackStylesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void hideWidgets(WidgetHiddenChanged event)
+	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
 		if (event.getWidget().isSelfHidden() || TO_GROUP(event.getWidget().getId()) != COMBAT_GROUP_ID)
 		{
@@ -165,7 +165,7 @@ public class AttackStylesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{

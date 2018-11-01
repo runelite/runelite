@@ -139,7 +139,7 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
@@ -297,7 +297,7 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameObjectDeSpawned(GameObjectDespawned event)
+	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getGameObject(), null);
 	}
@@ -315,7 +315,7 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGroundObjectDeSpawned(GroundObjectDespawned event)
+	public void onGroundObjectDespawned(GroundObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getGroundObject(), null);
 	}
@@ -333,7 +333,7 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWallObjectDeSpawned(WallObjectDespawned event)
+	public void onWallObjectDespawned(WallObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getWallObject(), null);
 	}
@@ -351,7 +351,7 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onDecorativeObjectDeSpawned(DecorativeObjectDespawned event)
+	public void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getDecorativeObject(), null);
 	}
