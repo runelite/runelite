@@ -55,6 +55,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.NpcCompositionChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.callback.ClientThread;
@@ -307,6 +308,29 @@ public class NpcIndicatorsPlugin extends Plugin
 					spawnedNpcsThisTick.add(npc);
 					break;
 				}
+			}
+		}
+	}
+
+	@Subscribe
+	public void onNpcCompositionChanged(NpcCompositionChanged event)
+	{
+		NPC npc = event.getNpc();
+		if (npcTags.contains(npc.getIndex()))
+		{
+			return;
+		}
+
+		String npcName = npc.getName();
+		for (String highlight : highlights)
+		{
+			if (npcName != null && WildcardMatcher.matches(highlight, npcName))
+			{
+				highlightedNpcs.add(npc);
+			}
+			else
+			{
+				highlightedNpcs.remove(npc);
 			}
 		}
 	}
