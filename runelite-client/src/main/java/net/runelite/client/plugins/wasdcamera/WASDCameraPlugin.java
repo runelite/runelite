@@ -27,7 +27,6 @@ package net.runelite.client.plugins.wasdcamera;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.awt.Color;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -44,6 +43,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
@@ -177,7 +177,7 @@ public class WASDCameraPlugin extends Plugin
 			{
 				if (client.getGameState() == GameState.LOGGED_IN)
 				{
-					chatboxInput.setText(client.getLocalPlayer().getName() + ": " + ColorUtil.wrapWithColorTag(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*", Color.BLUE));
+					chatboxInput.setText(client.getLocalPlayer().getName() + ": " + ColorUtil.wrapWithColorTag(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*", JagexColors.CHAT_TYPED_TEXT_OPAQUE_BACKGROUND));
 				}
 			}
 		}
