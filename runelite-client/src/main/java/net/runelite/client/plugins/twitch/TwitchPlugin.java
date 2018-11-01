@@ -34,6 +34,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.ChatboxInputListener;
@@ -156,6 +157,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 	private void addChatMessage(String sender, String message)
 	{
 		String chatMessage = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
 			.append(message)
 			.build();
 
