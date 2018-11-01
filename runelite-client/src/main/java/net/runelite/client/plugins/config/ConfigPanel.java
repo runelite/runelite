@@ -676,7 +676,7 @@ public class ConfigPanel extends PluginPanel
 			configManager.setConfiguration(RUNELITE_GROUP_NAME, DEFAULT_OVERRIDDEN_PINNED_PLUGINS_CONFIG_KEY, pluginListItem.getName());
 			return;
 		// if the default was already overridden, we do not need to re-add
-		} 
+		}
 		else if (hasDisabledPinningDefaultPlugin(pluginListItem))
 		{
 			return;
@@ -701,7 +701,7 @@ public class ConfigPanel extends PluginPanel
 		String defaultPinnedConfiguration = configManager.getConfiguration(RUNELITE_GROUP_NAME, DEFAULT_OVERRIDDEN_PINNED_PLUGINS_CONFIG_KEY);
 
 		// If there is no configuration specified, it has not been overriden yet
-		if(defaultPinnedConfiguration == null) return false;
+		if (defaultPinnedConfiguration == null) return false;
 
 		// If it contains the default pinning in the override setting
 		return defaultPinnedConfiguration.contains(pluginListItem.getName());
