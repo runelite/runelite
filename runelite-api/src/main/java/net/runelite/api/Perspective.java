@@ -595,15 +595,6 @@ public class Perspective
 			int maxX = Math.max(Math.max(a.getX(), b.getX()), c.getX()) + 4;
 			int maxY = Math.max(Math.max(a.getY(), b.getY()), c.getY()) + 4;
 
-			// ...and the rectangles in the fixed client are shifted 4 pixels right and down
-			if (!client.isResized())
-			{
-				minX += client.getViewportXOffset();
-				minY += client.getViewportYOffset();
-				maxX += client.getViewportXOffset();
-				maxY += client.getViewportYOffset();
-			}
-
 			Rectangle clickableRect = new Rectangle(
 				minX - radius, minY - radius,
 				maxX - minX + radius, maxY - minY + radius
