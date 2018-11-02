@@ -115,7 +115,10 @@ public abstract class RSNPCMixin implements RSNPC
 	@Inject
 	public void afterCompositionChanged(int idx)
 	{
-		client.getCallbacks().post(new NpcCompositionChanged(this));
+		if (this.getComposition() != null)
+		{
+			client.getCallbacks().post(new NpcCompositionChanged(this));
+		}
 	}
 
 	@Copy("getModel")
