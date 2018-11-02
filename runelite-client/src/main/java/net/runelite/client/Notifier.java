@@ -316,7 +316,7 @@ public class Notifier
 			}
 			catch (IOException | InterruptedException e)
 			{
-				log.warn("error checking availability of terminal notifier");
+				log.debug("error checking availability of terminal notifier", e);
 			}
 		}
 
