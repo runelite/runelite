@@ -132,7 +132,7 @@ public class TagManager
 
 		Collection<String> tags = getTags(itemId, false);
 		tags.addAll(getTags(itemId, true));
-		return tags.stream().anyMatch(tag -> tag.contains(Text.standardize(search)));
+		return tags.stream().anyMatch(tag -> tag.startsWith(Text.standardize(search)));
 	}
 
 	public List<Integer> getItemsForTag(String tag)
