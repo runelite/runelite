@@ -43,6 +43,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
@@ -83,6 +84,7 @@ public class IdleNotifierPlugin extends Plugin
 	private Instant lastInteracting;
 	private Actor lastInteract;
 	private boolean notifyHitpoints = true;
+	private boolean notifySpec = true;
 	private boolean notifyPrayer = true;
 	private boolean notifyOxygen = true;
 	private boolean notifyIdleLogout = true;
@@ -363,6 +365,11 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			notifier.notify("[" + local.getName() + "] has low oxygen!");
 		}
+
+		if (checkSpecialAttack())
+		{
+			notifier.notify("[" + local.getName() + "] has reached his special attack threshold!");
+		}
 	}
 
 	private boolean checkLowOxygen()
@@ -406,6 +413,26 @@ public class IdleNotifierPlugin extends Plugin
 			{
 				notifyHitpoints = false;
 			}
+		}
+
+		return false;
+	}
+
+	private boolean checkSpecialAttack()
+	{
+		double specialAttack = client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT) * 0.1;
+		if (config.getSpecAttackThreshold() <= 0)
+		{
+			return false;
+		}
+		if (specialAttack >= config.getSpecAttackThreshold() && notifySpec)
+		{
+			notifySpec = false;
+			return true;
+		}
+		else if (specialAttack < config.getSpecAttackThreshold())
+		{
+			notifySpec = true;
 		}
 
 		return false;

@@ -108,4 +108,14 @@ public interface IdleNotifierConfig extends Config
 		return 0;
 	}
 
+	@ConfigItem(
+		keyName = "specAttack",
+		name = "Special Attack Notification Threshold",
+		position = 8,
+		description = "The amount of special attack to send a notification at. A value of 0 will disable notification."
+	)
+	default int getSpecAttackThreshold()
+	{
+		return 0;
+	}
 }
