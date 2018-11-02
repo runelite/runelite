@@ -34,7 +34,7 @@ public interface RSActor extends RSRenderable, Actor
 
 	@Import("overhead")
 	@Override
-	String getOverhead();
+	String getOverheadText();
 
 	@Import("overhead")
 	@Override
