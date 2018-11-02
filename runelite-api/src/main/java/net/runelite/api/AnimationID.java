@@ -185,4 +185,10 @@ public final class AnimationID
 
 	// POH Animations
 	public static final int INCENSE_BURNER = 3687;
+
+	// Ranged Attacking Animations
+	public static final int RANGED_ARROW_SHOOT = 426;
+	public static final int RANGED_KNIFE_THROW = 7617;
+	public static final int RANGED_DART_THROW = 7554;
+	public static final int RANGED_CROSSBOW_FIRE = 7552;
 }
