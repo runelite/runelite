@@ -25,7 +25,9 @@
 package net.runelite.client.plugins.npchighlight;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.NPC;
@@ -38,7 +40,7 @@ class MemorizedNpc
 	private int npcIndex;
 
 	@Getter
-	private String npcName;
+	private Set<String> npcNames;
 
 	@Getter
 	private int npcSize;
@@ -63,7 +65,8 @@ class MemorizedNpc
 
 	MemorizedNpc(NPC npc)
 	{
-		this.npcName = npc.getName();
+		this.npcNames = new HashSet<>();
+		this.npcNames.add(npc.getName());
 		this.npcIndex = npc.getIndex();
 		this.possibleRespawnLocations = new ArrayList<>();
 		this.respawnTime = -1;
