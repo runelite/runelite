@@ -33,7 +33,7 @@ public interface AmmoConfig extends Config
 {
 	@ConfigItem(
 		keyName = "alwaysShowAmmoCount",
-		name = "Always show ammo acount",
+		name = "Always show ammo count",
 		description = "Show your current ammo count at all times",
 		position = 1
 	)

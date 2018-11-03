@@ -29,6 +29,7 @@ import com.google.inject.Provides;
 import net.runelite.api.*;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.kit.KitType;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -65,52 +66,72 @@ public class AmmoPlugin extends Plugin
 
 	@Override
 	protected void startUp() throws Exception
-	{
-	}
-
+	{ }
 
 	@Override
 	protected void shutDown()
 	{
+		removeCounter();
+		ammoCount = 0;
 	}
 
-	private ArrowCounter counter;
+	private ArrowCounter counter = null;
 	private int ammoCount;
+	private int activeEquipmentId;
+	private int activeCounterImageItemId;
 
 	private void debugToChat(String s)
 	{
 		client.addChatMessage(ChatMessageType.SERVER, "DEBUG", s, "DEBUG");
 	}
 
-	private void addCounter()
+	private void addCounter(int imageItemId)
 	{
-		if (counter != null)
+		if (counter == null)
 		{
-			infoBoxManager.removeInfoBox(counter);
+			int itemSpriteId = (imageItemId > 0) ? imageItemId :  ItemID.RUNE_ARROW;
+			BufferedImage taskImg = itemManager.getImage(itemSpriteId, 50, false);
+			counter = new ArrowCounter(taskImg, this, 0);
+
+			infoBoxManager.addInfoBox(counter);
 		}
+	}
 
-		int itemSpriteId = ItemID.RUNE_ARROW;
+	private void removeCounter()
+	{
+		if (counter != null) infoBoxManager.removeInfoBox(counter);
+		counter = null;
+	}
 
-		BufferedImage taskImg = itemManager.getImage(itemSpriteId);
-		counter = new ArrowCounter(taskImg, this, 0);
-
-		infoBoxManager.addInfoBox(counter);
+	private void updateCounter(int itemId)
+	{
+		if (activeCounterImageItemId != itemId)
+		{
+			removeCounter();
+			activeCounterImageItemId = itemId;
+			addCounter(itemId);
+		}
 	}
 
 	@Subscribe
 	public void onAnimationChange(AnimationChanged event)
 	{
-		int id = event.getActor().getAnimation();
-		switch (id)
+		int animationId = event.getActor().getAnimation();
+
+		if (
+			(animationId == AnimationID.RANGED_ARROW_SHOOT) ||
+			(animationId == AnimationID.RANGED_CROSSBOW_FIRE))
 		{
-			case AnimationID.RANGED_ARROW_SHOOT:
-				break;
-			case AnimationID.RANGED_CROSSBOW_FIRE:
-				break;
-			case AnimationID.RANGED_KNIFE_THROW:
-				break;
-			case AnimationID.RANGED_DART_THROW:
-				break;
+			addCounter(0);
+			activeEquipmentId = 13;
+		}
+			else if (
+				(animationId == AnimationID.RANGED_KNIFE_THROW) ||
+				(animationId == AnimationID.RANGED_DART_THROW)
+			)
+		{
+			addCounter(0);
+			activeEquipmentId = KitType.WEAPON.getIndex();
 		}
 	}
 
@@ -123,10 +144,20 @@ public class AmmoPlugin extends Plugin
 		}
 
 		Item[] items = event.getItemContainer().getItems();
-		ammoCount = items[items.length - 1].getQuantity();
 
 		if (counter != null)
 		{
+			Item ammoItem = items[activeEquipmentId];
+			ItemComposition heldItem = itemManager.getItemComposition(items[KitType.WEAPON.getIndex()].getId());
+
+
+			if (activeEquipmentId == KitType.WEAPON.getIndex() && !(heldItem.isStackable()))
+			{
+				return;
+			}
+
+			ammoCount = ammoItem.getQuantity();
+			updateCounter(ammoItem.getId());
 			counter.setText(String.valueOf(ammoCount));
 		}
 	}
