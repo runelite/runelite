@@ -296,6 +296,9 @@ public class Hooks implements Callbacks
 
 		notifier.processFlash(graphics2d);
 
+		// Draw clientUI overlays
+		clientUi.paintOverlays(graphics2d);
+
 		// Stretch the game image if the user has that enabled
 		if (client.isStretchedEnabled())
 		{
