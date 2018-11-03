@@ -99,6 +99,28 @@ public interface SlayerConfig extends Config
 		return Color.RED;
 	}
 
+	@ConfigItem(
+			position = 7,
+			keyName = "expeditiousbreaknotification",
+			name = "Expeditious Break Notification",
+			description = "Toggles notifications on expeditious bracelet breaking."
+	)
+	default boolean showExpeditiousBreakNotification()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 7,
+			keyName = "slaughterbreaknotification",
+			name = "Slaughter Break Notification",
+			description = "Toggles notifications on bracelet of slaughter breaking."
+	)
+	default boolean showSlaughterBreakNotification()
+	{
+		return false;
+	}
+
 	// Stored data
 	@ConfigItem(
 		keyName = "taskName",
