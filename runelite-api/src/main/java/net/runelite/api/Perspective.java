@@ -139,7 +139,9 @@ public class Perspective
 			{
 				int pointX = client.getViewportWidth() / 2 + x * client.getScale() / y;
 				int pointY = client.getViewportHeight() / 2 + var8 * client.getScale() / y;
-				return new Point(pointX, pointY);
+				return new Point(
+					pointX + client.getViewportXOffset(),
+					pointY + client.getViewportYOffset());
 			}
 		}
 
@@ -592,15 +594,6 @@ public class Perspective
 			// For some reason, this calculation is always 4 pixels short of the actual in-client one
 			int maxX = Math.max(Math.max(a.getX(), b.getX()), c.getX()) + 4;
 			int maxY = Math.max(Math.max(a.getY(), b.getY()), c.getY()) + 4;
-
-			// ...and the rectangles in the fixed client are shifted 4 pixels right and down
-			if (!client.isResized())
-			{
-				minX += client.getViewportXOffset();
-				minY += client.getViewportYOffset();
-				maxX += client.getViewportXOffset();
-				maxY += client.getViewportYOffset();
-			}
 
 			Rectangle clickableRect = new Rectangle(
 				minX - radius, minY - radius,
