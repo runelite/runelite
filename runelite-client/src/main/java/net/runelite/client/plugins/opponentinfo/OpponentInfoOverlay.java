@@ -200,7 +200,6 @@ class OpponentInfoOverlay extends Overlay
 		}
 
 		// Opponents opponent
-		// Show if checkbox is marked within plugin panel
 		if (opponentsOpponentName != null && opponentInfoConfig.showOpponentsOpponent())
 		{
 			textWidth = Math.max(textWidth, fontMetrics.stringWidth(opponentsOpponentName));
