@@ -91,6 +91,10 @@ public class SlayerPlugin extends Plugin
 	private static final Pattern CHAT_BRACELET_SLAUGHTER_REGEX = Pattern.compile("Your bracelet of slaughter prevents your slayer count decreasing. It has (\\d{1,2}) charge[s]? left.");
 	private static final String CHAT_BRACELET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your";
 	private static final Pattern CHAT_BRACELET_EXPEDITIOUS_REGEX = Pattern.compile("Your expeditious bracelet helps you progress your slayer (?:task )?faster. It has (\\d{1,2}) charge[s]? left.");
+	private static final String CHAT_BRACELET_EXPEDITIOUS_CRUMBLE = "Your expeditious bracelet helps you progress your slayer faster. It then crumbles to dust.";
+	private static final String NOTIFY_BRACELET_EXPEDITIOUS_CRUMBLE = "Your expeditious bracelet has crumbled.";
+	private static final String CHAT_BRACELET_SLAUGHTER_CRUMBLE = "Your bracelet of slaughter prevents your slayer count decreasing. It then crumbles to dust.";
+	private static final String NOTIFY_BRACELET_SLAUGHTER_CRUMBLE = "Your slaughter bracelet has crumbled.";
 	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE = "Your bracelet of slaughter has ";
 	private static final Pattern CHAT_BRACELET_SLAUGHTER_CHARGE_REGEX = Pattern.compile("Your bracelet of slaughter has (\\d{1,2}) charge[s]? left.");
 	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE = "Your expeditious bracelet has ";
@@ -381,6 +385,20 @@ public class SlayerPlugin extends Plugin
 			slaughterChargeCount = Integer.parseInt(mSlaughter.group(1));
 			config.slaughter(slaughterChargeCount);
 		}
+
+		if (config.showExpeditiousBreakNotification() && chatMsg.equals(CHAT_BRACELET_EXPEDITIOUS_CRUMBLE))
+		{
+			notifier.notify(NOTIFY_BRACELET_EXPEDITIOUS_CRUMBLE);
+			return;
+		}
+
+
+		if (config.showSlaughterBreakNotification() && chatMsg.equals(CHAT_BRACELET_SLAUGHTER_CRUMBLE))
+		{
+			notifier.notify(NOTIFY_BRACELET_SLAUGHTER_CRUMBLE);
+			return;
+		}
+
 
 		if (chatMsg.endsWith("; return to a Slayer master."))
 		{
