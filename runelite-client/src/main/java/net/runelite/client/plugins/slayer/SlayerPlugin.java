@@ -392,13 +392,11 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
-
 		if (config.showSlaughterBreakNotification() && chatMsg.equals(CHAT_BRACELET_SLAUGHTER_CRUMBLE))
 		{
 			notifier.notify(NOTIFY_BRACELET_SLAUGHTER_CRUMBLE);
 			return;
 		}
-
 
 		if (chatMsg.endsWith("; return to a Slayer master."))
 		{
