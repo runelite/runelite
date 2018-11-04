@@ -322,7 +322,7 @@
       "level": 30,
       "icon": 1207,
       "name": "Steel Dagger",
-      "xp": 27
+      "xp": 37.5
     },
     {
       "level": 30,
@@ -346,13 +346,13 @@
       "level": 31,
       "icon": 1353,
       "name": "Steel Axe",
-      "xp": 37
+      "xp": 37.5
     },
     {
       "level": 32,
       "icon": 1424,
       "name": "Steel Mace",
-      "xp": 37
+      "xp": 37.5
     },
     {
       "level": 33,
@@ -364,31 +364,31 @@
       "level": 33,
       "icon": 1141,
       "name": "Steel Med Helm",
-      "xp": 37
+      "xp": 37.5
     },
     {
       "level": 33,
       "icon": 9378,
       "name": "Steel Bolts (Unf)",
-      "xp": 37
+      "xp": 37.5
     },
     {
       "level": 34,
       "icon": 821,
       "name": "Steel Dart Tip",
-      "xp": 37
+      "xp": 37.5
     },
     {
       "level": 34,
       "icon": 1539,
       "name": "Steel Nails",
-      "xp": 37
+      "xp": 37.5
     },
     {
       "level": 34,
       "icon": 1281,
       "name": "Steel Sword",
-      "xp": 37
+      "xp": 37.5
     },
     {
       "level": 35,
@@ -406,19 +406,19 @@
       "level": 35,
       "icon": 41,
       "name": "Steel Arrowtips",
-      "xp": 37
+      "xp": 37.5
     },
     {
       "level": 36,
       "icon": 9425,
       "name": "Steel Limbs",
-      "xp": 37
+      "xp": 37.5
     },
     {
       "level": 36,
       "icon": 2370,
       "name": "Steel Studs",
-      "xp": 37
+      "xp": 37.5
     },
     {
       "level": 36,
@@ -520,7 +520,7 @@
       "level": 49,
       "icon": 4544,
       "name": "Bullseye Lantern (Unf)",
-      "xp": 37
+      "xp": 37.5
     },
     {
       "level": 50,
