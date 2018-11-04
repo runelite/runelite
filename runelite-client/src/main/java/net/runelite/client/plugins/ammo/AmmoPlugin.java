@@ -95,18 +95,26 @@ public class AmmoPlugin extends Plugin
 		ammoCounterManager.createCounter(0, "");
 
 		Item[] items = event.getItemContainer().getItems();
-		ItemComposition heldItem = itemManager.getItemComposition(items[KitType.WEAPON.getIndex()].getId());
+		ItemComposition heldItemComposition = itemManager.getItemComposition(items[KitType.WEAPON.getIndex()].getId());
+		Item heldItem = items[KitType.WEAPON.getIndex()];
+		Item ammoItem = items[KitType.AMMO.getIndex()];
 
-		if (heldItem.isStackable())
+		if (heldItemComposition.isStackable())
 		{
-			ammoCount = items[KitType.WEAPON.getIndex()].getQuantity();
+			ammoCount = heldItem.getQuantity();
 			ammoCounterManager.updateCounter(heldItem.getId());
 		}
 		else
 		{
-			ammoCount = items[KitType.AMMO.getIndex()].getQuantity();
-			ammoCounterManager.updateCounter(items[KitType.AMMO.getIndex()].getId());
+			ammoCount = ammoItem.getQuantity();
+			ammoCounterManager.updateCounter(ammoItem.getId());
 
+		}
+
+		if (ammoCount == 0)
+		{
+			ammoCounterManager.removeCounter();
+			return;
 		}
 
 		ammoCounterManager.getCounter().setText(String.valueOf(ammoCount));
