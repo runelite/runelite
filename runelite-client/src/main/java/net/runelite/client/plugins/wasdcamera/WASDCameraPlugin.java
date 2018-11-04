@@ -141,7 +141,7 @@ public class WASDCameraPlugin extends Plugin
 				{
 					if (chatboxFocused() && !typing)
 					{
-						chatboxInput.setText(PRESS_ENTER_TO_CHAT);
+						chatboxInput.setText(client.getLocalPlayer().getName() + ": " + PRESS_ENTER_TO_CHAT);
 					}
 				}
 				break;
@@ -164,7 +164,7 @@ public class WASDCameraPlugin extends Plugin
 			Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
 			if (chatboxInput != null)
 			{
-				chatboxInput.setText(PRESS_ENTER_TO_CHAT);
+				chatboxInput.setText(client.getLocalPlayer().getName() + ": " + PRESS_ENTER_TO_CHAT);
 			}
 		}
 	}
