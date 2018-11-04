@@ -105,6 +105,24 @@ public class WASDCameraPlugin extends Plugin
 		keyManager.unregisterKeyListener(inputListener);
 	}
 
+	String getPlayerNameWithIcon()
+	{
+		String tag = "";
+		switch (client.getAccountType())
+		{
+			case IRONMAN:
+				tag = "<img=2>";
+				break;
+			case ULTIMATE_IRONMAN:
+				tag = "<img=3>";
+				break;
+			case HARDCORE_IRONMAN:
+				tag = "<img=10>";
+				break;
+		}
+		return tag + client.getLocalPlayer().getName();
+	}
+
 	@Provides
 	WASDCameraConfig getConfig(ConfigManager configManager)
 	{
@@ -141,7 +159,7 @@ public class WASDCameraPlugin extends Plugin
 				{
 					if (chatboxFocused() && !typing)
 					{
-						chatboxInput.setText(client.getLocalPlayer().getName() + ": " + PRESS_ENTER_TO_CHAT);
+						chatboxInput.setText(getPlayerNameWithIcon() + ": " + PRESS_ENTER_TO_CHAT);
 					}
 				}
 				break;
@@ -164,7 +182,7 @@ public class WASDCameraPlugin extends Plugin
 			Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
 			if (chatboxInput != null)
 			{
-				chatboxInput.setText(client.getLocalPlayer().getName() + ": " + PRESS_ENTER_TO_CHAT);
+				chatboxInput.setText(getPlayerNameWithIcon() + ": " + PRESS_ENTER_TO_CHAT);
 			}
 		}
 	}
@@ -181,7 +199,7 @@ public class WASDCameraPlugin extends Plugin
 				{
 					final boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
 					final Color textColor = isChatboxTransparent ? JagexColors.CHAT_TYPED_TEXT_TRANSPARENT_BACKGROUND : JagexColors.CHAT_TYPED_TEXT_OPAQUE_BACKGROUND;
-					chatboxInput.setText(client.getLocalPlayer().getName() + ": " + ColorUtil.wrapWithColorTag(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
+					chatboxInput.setText(getPlayerNameWithIcon() + ": " + ColorUtil.wrapWithColorTag(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
 				}
 			}
 		}
