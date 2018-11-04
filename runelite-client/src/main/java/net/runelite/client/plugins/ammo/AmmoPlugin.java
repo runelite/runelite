@@ -24,11 +24,9 @@
  */
 package net.runelite.client.plugins.ammo;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import net.runelite.api.*;
-import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.kit.KitType;
 import net.runelite.client.Notifier;
