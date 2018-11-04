@@ -29,13 +29,25 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import javax.inject.Inject;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.Player;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "April Fools",
@@ -50,13 +62,48 @@ public class AprilFirstPlugin extends Plugin
 	private static final boolean enabled = date.equals("04/01") || true;
 	private static final int EMPTY_BANK_CHANCE = 20; // Percent chance for feature to trigger
 
+
+	private static final String IRONMAN_ICON = "<img=2>";
+	private static final String ULTIMATE_IRONMAN_ICON = "<img=3>";
+	private static final String HARDCORE_IRONMAN_ICON = "<img=10>";
+	private static final String NAME_SUFFIX = ": ";
+
 	@Inject
 	private Client client;
 
-	// Empty Bank values
+	@Inject
+	private ClientThread clientThread;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	// Using overlay for quicker redraws of play username
+	@Inject
+	private AprilFirstOverlay aprilFirstOverlay;
+
+	// Empty Bank Feature
 	private boolean bankOpened = false;
 	private Widget[] widgets;
 
+	// Fake Account Type Feature
+	@Getter
+	private String fakeName = "";
+	private boolean isRunning = false;
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(aprilFirstOverlay);
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		overlayManager.remove(aprilFirstOverlay);
+	}
 
 	@Subscribe
 	public void onGameTick(GameTick event)
@@ -74,6 +121,35 @@ public class AprilFirstPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged changed)
+	{
+		if (!enabled)
+		{
+			return;
+		}
+
+		if (changed.getGameState().equals(GameState.LOGGING_IN) && !isRunning)
+		{
+			isRunning = true;
+			clientThread.invokeLater(() ->
+			{
+				Player p = client.getLocalPlayer();
+				// Checking for local username to ensure player has finished logging in.
+				if (p != null && p.getName() != null)
+				{
+					toggleIcon(client.getAccountType());
+					isRunning = false;
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			});
+		}
+	}
+
 	private void bankToggled()
 	{
 		if (bankOpened)
@@ -87,6 +163,34 @@ public class AprilFirstPlugin extends Plugin
 		{
 			widgets = null;
 		}
+	}
+
+	private void toggleIcon(AccountType t)
+	{
+		AccountType n;
+		switch (t)
+		{
+			case IRONMAN:
+				sendMessage("Your account has been successfully downgraded to a normal account!");
+				n = AccountType.NORMAL;
+				break;
+			case HARDCORE_IRONMAN:
+				sendMessage("Your account has been manually downgraded to normal iron status per your request!");
+				n = AccountType.IRONMAN;
+				break;
+			case NORMAL:
+				sendMessage("Your account has been successfully upgraded to an iron man account!");
+				n = AccountType.IRONMAN;
+				break;
+			case ULTIMATE_IRONMAN:
+				sendMessage("Your account has been successfully downgraded to a Hardcore iron!");
+				n = AccountType.HARDCORE_IRONMAN;
+				break;
+			default:
+				return;
+		}
+
+		updateInputName(n);
 	}
 
 	private void emptyBank()
@@ -127,10 +231,49 @@ public class AprilFirstPlugin extends Plugin
 		log.debug("Reset bank title");
 	}
 
+	private void updateInputName(AccountType t)
+	{
+		String prefix = "";
+		switch (t)
+		{
+			case IRONMAN:
+				prefix = IRONMAN_ICON;
+				break;
+			case HARDCORE_IRONMAN:
+				prefix = HARDCORE_IRONMAN_ICON;
+				break;
+			case NORMAL:
+				break;
+			case ULTIMATE_IRONMAN:
+				prefix = ULTIMATE_IRONMAN_ICON;
+				break;
+			default:
+				return;
+		}
+
+		fakeName = prefix + client.getLocalPlayer().getName() + NAME_SUFFIX;
+		log.debug("Updated fakeName to {}", fakeName);
+	}
+
 	private boolean rng(int percent)
 	{
 		Random r = new Random();
 		int v = r.nextInt(100);
 		return v < percent;
+	}
+
+	private void sendMessage(String msg)
+	{
+		log.debug("Sending chat message: {}", msg);
+		final String message = new ChatMessageBuilder()
+			.append(ChatColorType.HIGHLIGHT)
+			.append(msg)
+			.build();
+
+		chatMessageManager.queue(
+			QueuedMessage.builder()
+				.type(ChatMessageType.GAME)
+				.runeLiteFormattedMessage(message)
+				.build());
 	}
 }
