@@ -59,7 +59,8 @@ public interface BankTagsConfig extends Config
 		description = "Hide menu options for adding/removing tags.",
 		position = 3
 	)
-	default boolean hideTagMenuItems() {
+	default boolean hideTagMenuItems()
+	{
 		return false;
 	}
 
