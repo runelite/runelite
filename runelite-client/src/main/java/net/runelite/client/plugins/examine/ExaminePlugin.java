@@ -55,7 +55,7 @@ import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.examine.ExamineClient;
 
 /**
- * Submits exammine info to the api
+ * Submits examine info to the api
  *
  * @author Adam
  */
@@ -279,6 +279,7 @@ public class ExaminePlugin extends Plugin
 				}
 			}
 		}
+
 		if (itemId == -1)
 		{
 			return;
