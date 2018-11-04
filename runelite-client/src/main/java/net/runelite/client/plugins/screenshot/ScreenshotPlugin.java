@@ -124,9 +124,16 @@ public class ScreenshotPlugin extends Plugin
 		"You have a funny feeling like you would have been followed");
 
 	private static final ImmutableList<String> KILL_MESSAGES = ImmutableList.of("into tiny pieces and sat on them", "you have obliterated",
-		"falls before your might", "A humiliating defeat for", "With a crushing blow you", "thinking challenging you",
-		"Can anyone defeat you? Certainly", "was no match for you", "You were clearly a better fighter than", "RIP",
-		"You have defeated", "What an embarrassing performance by", "was no match for your awesomeness");
+		"falls before your might", "A humiliating defeat for", "With a crushing blow you finish", "thinking challenging you",
+		"Can anyone defeat you? Certainly not", "was no match for you", "You were clearly a better fighter than", "RIP",
+		"You have defeated", "What an embarrassing performance by", "was no match for your awesomeness", "" + "You have defeated",
+		"didn't stand a chance against you", "will probably tell you", "wanted a free teleport after that performance",
+		"probably logged out after that beating", "Such a shame that", "can't play this game", "How not to do it right: Written by",
+		"A certain, crouching-over-face animation would be suitable for", "got rekt", "was made to sit down",
+		"The struggle for", "MUM! GET THE CAMERA, I JUST KILLED", "should take lessons from you. You're clearly too good for");
+
+	private static final ImmutableList<String> KILL_MESSAGE_TRIM = ImmutableList.of("him", "her", "he", "she", "is real",
+		"right now.", "What was", ".", "?", ",");
 
 	static String format(Date date)
 	{
@@ -351,7 +358,8 @@ public class ScreenshotPlugin extends Plugin
 
 		if (config.screenshotKills() && KILL_MESSAGES.stream().anyMatch(chatMessage::contains))
 		{
-			String fileName = "Kill " + format(new Date());
+			String killedPlayer = killedPlayerName(chatMessage);
+			String fileName = "Kill " + killedPlayer + " " + format(new Date());
 			takeScreenshot(fileName);
 		}
 
@@ -641,6 +649,33 @@ public class ScreenshotPlugin extends Plugin
 				}
 			}
 		});
+	}
+
+	/**
+	 * Extracts the name of the player the user killed in a PvP environment and returns it as a string.
+	 * Specifically, this is necessary to add the player's name to the file name.
+	 *
+	 * @param chatMessage Message to parse for killed player's name
+	 * @return String This returns the killed player's name
+	 */
+	private String killedPlayerName(String chatMessage)
+	{
+		for (String killMessage:KILL_MESSAGES)
+		{
+			while (chatMessage.contains(killMessage))
+			{
+				chatMessage = chatMessage.replace(killMessage, "");
+			}
+		}
+		for (String killMessageTrim:KILL_MESSAGE_TRIM)
+		{
+			while (chatMessage.contains(killMessageTrim))
+			{
+				chatMessage = chatMessage.replace(killMessageTrim, "");
+			}
+		}
+		chatMessage = chatMessage.trim();
+		return chatMessage;
 	}
 
 	@VisibleForTesting
