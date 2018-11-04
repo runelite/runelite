@@ -24,21 +24,30 @@
  */
 package net.runelite.client.plugins.ammo;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+	import net.runelite.client.config.Config;
+	import net.runelite.client.config.ConfigGroup;
+	import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("attackIndicator")
+@ConfigGroup("ammo")
 public interface AmmoConfig extends Config
 {
 	@ConfigItem(
-		keyName = "alwaysShowAmmoCount",
-		name = "Always show ammo count",
-		description = "Show your current ammo count at all times",
-		position = 1
+		keyName = "showLowAmmoNotification",
+		name = "Low ammunition notification",
+		description = "Configures whether to notify you that the you're running low on ammunition."
 	)
-	default boolean alwaysShowAmmoCount()
+	default boolean showLowAmmoNotification()
 	{
-		return true;
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "notificationThreshold",
+		name = "Notification Threshold",
+		description = "Ammunition remaining required for notification"
+	)
+	default int notificationThreshold()
+	{
+		return 10;
 	}
 }

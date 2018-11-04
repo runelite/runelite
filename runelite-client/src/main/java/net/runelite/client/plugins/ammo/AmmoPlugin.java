@@ -24,12 +24,14 @@
  */
 package net.runelite.client.plugins.ammo;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import net.runelite.api.*;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.kit.KitType;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -37,12 +39,11 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 import javax.inject.Inject;
-import java.awt.image.BufferedImage;
 
 @PluginDescriptor(
-		name = "Ammo",
-		description = "Show your current ammo count",
-		tags = {"combat", "ranged", "ammo", "arrows"}
+	name = "Ammo",
+	description = "Show your current ammo count",
+	tags = {"combat", "ranged", "ammo", "arrows"}
 )
 public class AmmoPlugin extends Plugin
 {
@@ -53,10 +54,17 @@ public class AmmoPlugin extends Plugin
 	private AmmoConfig config;
 
 	@Inject
-	private InfoBoxManager infoBoxManager;
+	private Notifier notifier;
 
 	@Inject
 	private ItemManager itemManager;
+
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	private AmmoCounterManager ammoCounterManager;
+	private int ammoCount;
+	private int activeEquipmentId;
 
 	@Provides
 	AmmoConfig provideConfig(ConfigManager configManager)
@@ -64,53 +72,29 @@ public class AmmoPlugin extends Plugin
 		return configManager.getConfig(AmmoConfig.class);
 	}
 
+	private final static ImmutableList<Integer> RANGED_THROWN_ANIMATIONS = ImmutableList.of(
+		AnimationID.RANGED_DART_THROW,
+		AnimationID.RANGED_KNIFE_THROW
+	);
+
+	private final static ImmutableList<Integer> RANGED_BOW_ANIMATIONS = ImmutableList.of(
+		AnimationID.RANGED_CROSSBOW_FIRE,
+		AnimationID.RANGED_ARROW_SHOOT
+	);
+
+
 	@Override
 	protected void startUp() throws Exception
-	{ }
+	{
+		this.ammoCounterManager = new AmmoCounterManager(this, config, itemManager, infoBoxManager);
+	}
 
 	@Override
 	protected void shutDown()
 	{
-		removeCounter();
 		ammoCount = 0;
-	}
-
-	private ArrowCounter counter = null;
-	private int ammoCount;
-	private int activeEquipmentId;
-	private int activeCounterImageItemId;
-
-	private void debugToChat(String s)
-	{
-		client.addChatMessage(ChatMessageType.SERVER, "DEBUG", s, "DEBUG");
-	}
-
-	private void addCounter(int imageItemId)
-	{
-		if (counter == null)
-		{
-			int itemSpriteId = (imageItemId > 0) ? imageItemId :  ItemID.RUNE_ARROW;
-			BufferedImage taskImg = itemManager.getImage(itemSpriteId, 50, false);
-			counter = new ArrowCounter(taskImg, this, 0);
-
-			infoBoxManager.addInfoBox(counter);
-		}
-	}
-
-	private void removeCounter()
-	{
-		if (counter != null) infoBoxManager.removeInfoBox(counter);
-		counter = null;
-	}
-
-	private void updateCounter(int itemId)
-	{
-		if (activeCounterImageItemId != itemId)
-		{
-			removeCounter();
-			activeCounterImageItemId = itemId;
-			addCounter(itemId);
-		}
+		ammoCounterManager.removeCounter();
+		ammoCounterManager = null;
 	}
 
 	@Subscribe
@@ -118,21 +102,22 @@ public class AmmoPlugin extends Plugin
 	{
 		int animationId = event.getActor().getAnimation();
 
-		if (
-			(animationId == AnimationID.RANGED_ARROW_SHOOT) ||
-			(animationId == AnimationID.RANGED_CROSSBOW_FIRE))
+		if (!RANGED_BOW_ANIMATIONS.contains(animationId) &&
+			!RANGED_THROWN_ANIMATIONS.contains(animationId))
 		{
-			addCounter(0);
+			return;
+		}
+
+		if (RANGED_BOW_ANIMATIONS.contains(animationId))
+		{
 			activeEquipmentId = 13;
 		}
-			else if (
-				(animationId == AnimationID.RANGED_KNIFE_THROW) ||
-				(animationId == AnimationID.RANGED_DART_THROW)
-			)
+		else if (RANGED_THROWN_ANIMATIONS.contains(animationId))
 		{
-			addCounter(0);
 			activeEquipmentId = KitType.WEAPON.getIndex();
 		}
+
+		ammoCounterManager.createCounter(0, "");
 	}
 
 	@Subscribe
@@ -143,22 +128,29 @@ public class AmmoPlugin extends Plugin
 			return;
 		}
 
-		Item[] items = event.getItemContainer().getItems();
-
-		if (counter != null)
+		if (ammoCounterManager.getCounter() == null)
 		{
-			Item ammoItem = items[activeEquipmentId];
-			ItemComposition heldItem = itemManager.getItemComposition(items[KitType.WEAPON.getIndex()].getId());
+			return;
+		}
 
+		Item[] items = event.getItemContainer().getItems();
+		Item ammoItem = items[activeEquipmentId];
+		ItemComposition heldItem = itemManager.getItemComposition(items[KitType.WEAPON.getIndex()].getId());
 
-			if (activeEquipmentId == KitType.WEAPON.getIndex() && !(heldItem.isStackable()))
-			{
-				return;
-			}
+		if (activeEquipmentId == KitType.WEAPON.getIndex() && !(heldItem.isStackable()))
+		{
+			return;
+		}
 
-			ammoCount = ammoItem.getQuantity();
-			updateCounter(ammoItem.getId());
-			counter.setText(String.valueOf(ammoCount));
+		ammoCount = ammoItem.getQuantity();
+
+		ammoCounterManager.updateCounter(ammoItem.getId());
+		ammoCounterManager.getCounter().setText(String.valueOf(ammoCount));
+		ammoCounterManager.displayCounter();
+
+		if (config.showLowAmmoNotification() && ammoCount == config.notificationThreshold())
+		{
+			notifier.notify("You're running low on ammunition.");
 		}
 	}
 }

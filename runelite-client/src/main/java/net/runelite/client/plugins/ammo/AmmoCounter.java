@@ -29,9 +29,9 @@ import net.runelite.client.ui.overlay.infobox.Counter;
 
 import java.awt.image.BufferedImage;
 
-public class ArrowCounter extends Counter
+public class AmmoCounter extends Counter
 {
-	public ArrowCounter(BufferedImage img, Plugin plugin, int amount)
+	public AmmoCounter(BufferedImage img, Plugin plugin, int amount)
 	{
 		super(img, plugin, String.valueOf(amount));
 	}
