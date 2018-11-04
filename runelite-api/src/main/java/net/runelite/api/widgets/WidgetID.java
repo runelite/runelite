@@ -201,7 +201,9 @@ public class WidgetID
 		static final int BANK_CONTAINER = 1;
 		static final int INVENTORY_ITEM_CONTAINER = 3;
 		static final int BANK_TITLE_BAR = 4;
+		static final int BANK_SPACE_TITLE = 5;
 		static final int CONTENT_CONTAINER = 9;
+		static final int BANK_TABS_BAR = 10;
 		static final int ITEM_CONTAINER = 12;
 		static final int SEARCH_BUTTON_BACKGROUND = 39;
 		static final int DEPOSIT_INVENTORY = 41;
