@@ -344,7 +344,8 @@ public class TabInterface
 
 		if (activeTab != null
 			&& event.getActionParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
-			&& event.getOption().equals("Examine"))
+			&& event.getOption().equals("Examine")
+			&& !config.hideTagMenuItems())
 		{
 			entries = createMenuEntry(event, REMOVE_TAG + " (" + activeTab.getTag() + ")", event.getTarget(), entries);
 			client.setMenuEntries(entries);

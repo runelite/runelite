@@ -54,6 +54,16 @@ public interface BankTagsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "hideTagMenuItems",
+		name = "Hide Menu Items",
+		description = "Hide menu options for adding/removing tags.",
+		position = 3
+	)
+	default boolean hideTagMenuItems() {
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "position",
 		name = "",
 		description = "",

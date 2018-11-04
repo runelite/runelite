@@ -213,7 +213,8 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		MenuEntry[] entries = client.getMenuEntries();
 
 		if (event.getActionParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
-			&& event.getOption().equals("Examine"))
+			&& event.getOption().equals("Examine")
+			&& !config.hideTagMenuItems())
 		{
 			Widget container = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
 			Widget item = container.getChild(event.getActionParam0());
