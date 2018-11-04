@@ -34,6 +34,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.IconID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
@@ -111,13 +112,13 @@ public class WASDCameraPlugin extends Plugin
 		switch (client.getAccountType())
 		{
 			case IRONMAN:
-				tag = "<img=2>";
+				tag = IconID.IRONMAN.toString();
 				break;
 			case ULTIMATE_IRONMAN:
-				tag = "<img=3>";
+				tag = IconID.ULTIMATE_IRONMAN.toString();
 				break;
 			case HARDCORE_IRONMAN:
-				tag = "<img=10>";
+				tag = IconID.HARDCORE_IRONMAN.toString();
 				break;
 		}
 		return tag + client.getLocalPlayer().getName();
