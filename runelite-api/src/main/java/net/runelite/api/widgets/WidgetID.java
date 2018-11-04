@@ -120,6 +120,7 @@ public class WidgetID
 	public static final int SPELLBOOK_GROUP_ID = 218;
 	public static final int PVP_GROUP_ID = 90;
 	public static final int ZEAH_MESS_HALL_GROUP_ID = 235;
+	public static final int STAT_ICON_GROUP_ID = 320;
 
 	static class WorldMap
 	{
@@ -718,5 +719,33 @@ public class WidgetID
 	static class Zeah
 	{
 		static final int MESS_HALL_COOKING_DISPLAY = 3;
+	}
+
+	static class Stats
+	{
+		static final int ATTACK = 1;
+		static final int STRENGTH = 2;
+		static final int DEFENCE = 3;
+		static final int RANGE = 4;
+		static final int PRAYER = 5;
+		static final int MAGIC = 6;
+		static final int RUNECRAFT = 7;
+		static final int CONSTRUCTION = 8;
+		static final int HITPOINTS = 9;
+		static final int AGILITY = 10;
+		static final int HERBLORE = 11;
+		static final int THIEVING = 12;
+		static final int CRAFTING = 13;
+		static final int FLETCHING = 14;
+		static final int SLAYER = 15;
+		static final int HUNTER = 16;
+		static final int MINING = 17;
+		static final int SMITHING = 18;
+		static final int FISHING = 19;
+		static final int COOKING = 20;
+		static final int FIREMAKING = 21;
+		static final int WOODCUTTING = 22;
+		static final int FARMING = 23;
+		static final int OVERALL = 24;
 	}
 }

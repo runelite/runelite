@@ -47,6 +47,8 @@ public class AprilFirstOverlay extends Overlay
 	private String fakeName;
 	private String fakeMessage;
 
+	private int defenceLevel;
+
 	@Inject
 	AprilFirstOverlay(Client client, AprilFirstPlugin plugin)
 	{
@@ -54,6 +56,7 @@ public class AprilFirstOverlay extends Overlay
 		this.plugin = plugin;
 
 		fakeName = plugin.getFakeName();
+		defenceLevel = plugin.getDefenceLevel();
 	}
 
 	@Override
@@ -75,6 +78,19 @@ public class AprilFirstOverlay extends Overlay
 			log.info("Reapplying fake name...");
 			fakeMessage = fakeName + message + MESSAGE_SUFFIX;
 			w.setText(fakeMessage);
+		}
+
+		if (defenceLevel == -1)
+		{
+			defenceLevel = plugin.getDefenceLevel();
+		}
+		if (defenceLevel == 1)
+		{
+			Widget w2 = client.getWidget(WidgetInfo.DEFENCE_SKILL_ICON);
+			Widget[] entries = w2.getChildren();
+			entries[3].setText("2");
+			entries[4].setText("2");
+			w2.setChildren(entries);
 		}
 
 		return null;

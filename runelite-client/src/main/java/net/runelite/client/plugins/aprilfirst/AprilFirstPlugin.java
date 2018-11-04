@@ -35,6 +35,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
+import net.runelite.api.Skill;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.vars.AccountType;
@@ -93,6 +94,10 @@ public class AprilFirstPlugin extends Plugin
 	private String fakeName = "";
 	private boolean isRunning = false;
 
+	// Fake Defence Level overlay
+	@Getter
+	private int defenceLevel = -1;
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -139,6 +144,7 @@ public class AprilFirstPlugin extends Plugin
 				if (p != null && p.getName() != null)
 				{
 					toggleIcon(client.getAccountType());
+					defenceLevel = client.getRealSkillLevel(Skill.DEFENCE);
 					isRunning = false;
 					return true;
 				}
