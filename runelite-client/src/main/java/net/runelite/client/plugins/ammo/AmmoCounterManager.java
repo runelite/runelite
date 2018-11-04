@@ -50,10 +50,6 @@ public class AmmoCounterManager
 		this.itemManager = itemManager;
 	}
 
-	public boolean isCounterVisible()
-	{
-		return counter != null && !infoBoxManager.getInfoBoxes().contains(counter);
-	}
 
 	public void createCounter(int imageItemId, String tooltipText)
 	{
@@ -70,17 +66,9 @@ public class AmmoCounterManager
 
 	public void displayCounter()
 	{
-		if (!isCounterVisible())
+		if (counter != null && !infoBoxManager.getInfoBoxes().contains(counter))
 		{
 			infoBoxManager.addInfoBox(counter);
-		}
-	}
-
-	public void hideCounter()
-	{
-		if (isCounterVisible())
-		{
-			infoBoxManager.removeInfoBox(counter);
 		}
 	}
 

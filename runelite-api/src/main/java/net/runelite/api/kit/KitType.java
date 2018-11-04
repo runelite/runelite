@@ -45,7 +45,8 @@ public enum KitType
 	HEAD(8),
 	HANDS(9),
 	BOOTS(10),
-	JAW(11);
+	JAW(11),
+	AMMO(13);
 
 	/**
 	 * Raw equipment index.

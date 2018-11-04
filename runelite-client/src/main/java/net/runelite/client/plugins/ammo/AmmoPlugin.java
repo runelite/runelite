@@ -64,23 +64,12 @@ public class AmmoPlugin extends Plugin
 
 	private AmmoCounterManager ammoCounterManager;
 	private int ammoCount;
-	private int activeEquipmentId;
 
 	@Provides
 	AmmoConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(AmmoConfig.class);
 	}
-
-	private final static ImmutableList<Integer> RANGED_THROWN_ANIMATIONS = ImmutableList.of(
-		AnimationID.RANGED_DART_THROW,
-		AnimationID.RANGED_KNIFE_THROW
-	);
-
-	private final static ImmutableList<Integer> RANGED_BOW_ANIMATIONS = ImmutableList.of(
-		AnimationID.RANGED_CROSSBOW_FIRE,
-		AnimationID.RANGED_ARROW_SHOOT
-	);
 
 
 	@Override
@@ -98,29 +87,6 @@ public class AmmoPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onAnimationChange(AnimationChanged event)
-	{
-		int animationId = event.getActor().getAnimation();
-
-		if (!RANGED_BOW_ANIMATIONS.contains(animationId) &&
-			!RANGED_THROWN_ANIMATIONS.contains(animationId))
-		{
-			return;
-		}
-
-		if (RANGED_BOW_ANIMATIONS.contains(animationId))
-		{
-			activeEquipmentId = 13;
-		}
-		else if (RANGED_THROWN_ANIMATIONS.contains(animationId))
-		{
-			activeEquipmentId = KitType.WEAPON.getIndex();
-		}
-
-		ammoCounterManager.createCounter(0, "");
-	}
-
-	@Subscribe
 	public void onItemContainerChange(ItemContainerChanged event)
 	{
 		if (event.getItemContainer() != client.getItemContainer(InventoryID.EQUIPMENT))
@@ -128,23 +94,23 @@ public class AmmoPlugin extends Plugin
 			return;
 		}
 
-		if (ammoCounterManager.getCounter() == null)
-		{
-			return;
-		}
+		ammoCounterManager.createCounter(0, "");
 
 		Item[] items = event.getItemContainer().getItems();
-		Item ammoItem = items[activeEquipmentId];
 		ItemComposition heldItem = itemManager.getItemComposition(items[KitType.WEAPON.getIndex()].getId());
 
-		if (activeEquipmentId == KitType.WEAPON.getIndex() && !(heldItem.isStackable()))
+		if (heldItem.isStackable())
 		{
-			return;
+			ammoCount = items[KitType.WEAPON.getIndex()].getQuantity();
+			ammoCounterManager.updateCounter(heldItem.getId());
+		}
+		else
+		{
+			ammoCount = items[KitType.AMMO.getIndex()].getQuantity();
+			ammoCounterManager.updateCounter(items[KitType.AMMO.getIndex()].getId());
+
 		}
 
-		ammoCount = ammoItem.getQuantity();
-
-		ammoCounterManager.updateCounter(ammoItem.getId());
 		ammoCounterManager.getCounter().setText(String.valueOf(ammoCount));
 		ammoCounterManager.displayCounter();
 
