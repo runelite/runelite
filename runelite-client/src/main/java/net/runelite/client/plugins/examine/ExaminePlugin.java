@@ -268,8 +268,17 @@ public class ExaminePlugin extends Plugin
 					itemId = widgetItem.getItemId();
 				}
 			}
+			else if (WidgetInfo.LOOTING_BAG_CONTAINER.getGroupId() == widgetGroup)
+			{
+				Widget[] children = widget.getDynamicChildren();
+				if (pendingExamine.getActionParam() < children.length)
+				{
+					Widget widgetItem = children[pendingExamine.getActionParam()];
+					quantity = widgetItem.getItemQuantity();
+					itemId = widgetItem.getItemId();
+				}
+			}
 		}
-
 		if (itemId == -1)
 		{
 			return;
