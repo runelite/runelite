@@ -368,7 +368,7 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (checkSpecialAttack())
 		{
-			notifier.notify("[" + local.getName() + "] has reached his special attack threshold!");
+			notifier.notify("[" + local.getName() + "] has regained special attack!");
 		}
 	}
 
@@ -420,11 +420,11 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkSpecialAttack()
 	{
-		double specialAttack = client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT) * 0.1;
 		if (config.getSpecAttackThreshold() <= 0)
 		{
 			return false;
 		}
+		double specialAttack = client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT) * 0.1;
 		if (specialAttack >= config.getSpecAttackThreshold() && notifySpec)
 		{
 			notifySpec = false;
