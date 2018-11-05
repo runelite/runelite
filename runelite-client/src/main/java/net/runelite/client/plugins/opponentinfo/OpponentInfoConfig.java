@@ -55,8 +55,8 @@ public interface OpponentInfoConfig extends Config
 
 	@ConfigItem(
 		keyName = "showOpponentsOpponent",
-		name = "Show Opponents Opponent",
-		description = "Toggle showing opponents opponent if within a multi-combat area",
+		name = "Show opponent's opponent",
+		description = "Toggle showing opponent's opponent if within a multi-combat area",
 		position = 2
 	)
 	default boolean showOpponentsOpponent()
