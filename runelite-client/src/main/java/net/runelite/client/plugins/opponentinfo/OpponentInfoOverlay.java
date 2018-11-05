@@ -200,7 +200,7 @@ class OpponentInfoOverlay extends Overlay
 		}
 
 		// Opponents opponent
-		if (opponentsOpponentName != null)
+		if (opponentsOpponentName != null && opponentInfoConfig.showOpponentsOpponent())
 		{
 			textWidth = Math.max(textWidth, fontMetrics.stringWidth(opponentsOpponentName));
 			panelComponent.setPreferredSize(new Dimension(textWidth, 0));
