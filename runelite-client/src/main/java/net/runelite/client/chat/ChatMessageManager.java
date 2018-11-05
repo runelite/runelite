@@ -574,7 +574,7 @@ public class ChatMessageManager
 			return;
 		}
 
-		final boolean transparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) != 0;
+		final boolean transparent = client.isResized() && transparencyVarbit != 0;
 		final Collection<ChatColor> chatColors = colorCache.get(target.getType());
 
 		// If we do not have any colors cached, simply set clean message
