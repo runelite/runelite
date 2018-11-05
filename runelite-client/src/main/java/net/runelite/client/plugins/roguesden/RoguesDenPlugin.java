@@ -116,37 +116,37 @@ public class RoguesDenPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void GameObjectSpawned(GameObjectSpawned event)
+	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getGameObject());
 	}
 
 	@Subscribe
-	public void GameObjectChanged(GameObjectChanged event)
+	public void onGameObjectChanged(GameObjectChanged event)
 	{
 		onTileObject(event.getTile(), event.getPrevious(), event.getGameObject());
 	}
 
 	@Subscribe
-	public void GameObjectDespawned(GameObjectDespawned event)
+	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getGameObject(), null);
 	}
 
 	@Subscribe
-	public void GroundObjectSpawned(GroundObjectSpawned event)
+	public void onGroundObjectSpawned(GroundObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getGroundObject());
 	}
 
 	@Subscribe
-	public void GroundObjectChanged(GroundObjectChanged event)
+	public void onGroundObjectChanged(GroundObjectChanged event)
 	{
 		onTileObject(event.getTile(), event.getPrevious(), event.getGroundObject());
 	}
 
 	@Subscribe
-	public void GroundObjectDespawned(GroundObjectDespawned event)
+	public void onGroundObjectDespawned(GroundObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getGroundObject(), null);
 	}

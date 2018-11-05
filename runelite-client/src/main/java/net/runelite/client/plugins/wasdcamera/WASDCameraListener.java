@@ -35,9 +35,9 @@ import net.runelite.api.GameState;
 import net.runelite.api.VarClientStr;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
-import net.runelite.client.input.MouseListener;
+import net.runelite.client.input.MouseAdapter;
 
-class WASDCameraListener extends MouseListener implements KeyListener
+class WASDCameraListener extends MouseAdapter implements KeyListener
 {
 	@Inject
 	private WASDCameraPlugin plugin;
@@ -94,6 +94,7 @@ class WASDCameraListener extends MouseListener implements KeyListener
 				{
 					case KeyEvent.VK_ENTER:
 					case KeyEvent.VK_SLASH:
+					case KeyEvent.VK_COLON:
 						// refocus chatbox
 						plugin.setTyping(true);
 						clientThread.invoke(() ->

@@ -89,7 +89,7 @@ public class ExaminePlugin extends Plugin
 
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		pending.clear();
 	}

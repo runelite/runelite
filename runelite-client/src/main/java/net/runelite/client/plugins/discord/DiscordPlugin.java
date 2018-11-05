@@ -41,6 +41,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -131,7 +132,7 @@ public class DiscordPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void configChanged(ConfigChanged event)
+	public void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equalsIgnoreCase("discord"))
 		{
@@ -141,7 +142,7 @@ public class DiscordPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onXpChanged(ExperienceChanged event)
+	public void onExperienceChanged(ExperienceChanged event)
 	{
 		final int exp = client.getSkillExperience(event.getSkill());
 		final Integer previous = skillExp.put(event.getSkill(), exp);
@@ -154,6 +155,22 @@ public class DiscordPlugin extends Plugin
 		final DiscordGameEventType discordGameEventType = DiscordGameEventType.fromSkill(event.getSkill());
 
 		if (discordGameEventType != null && config.showSkillingActivity())
+		{
+			discordState.triggerEvent(discordGameEventType);
+		}
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		if (!config.showRaidingActivity())
+		{
+			return;
+		}
+
+		final DiscordGameEventType discordGameEventType = DiscordGameEventType.fromVarbit(client);
+
+		if (discordGameEventType != null)
 		{
 			discordState.triggerEvent(discordGameEventType);
 		}

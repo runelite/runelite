@@ -128,7 +128,7 @@ public class RunecraftPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void updateConfig(ConfigChanged event)
+	public void onConfigChanged(ConfigChanged event)
 	{
 		abyssOverlay.updateConfig();
 	}
@@ -207,7 +207,7 @@ public class RunecraftPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onDecorativeObjectSpawn(DecorativeObjectSpawned event)
+	public void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
 	{
 		DecorativeObject decorativeObject = event.getDecorativeObject();
 		if (AbyssRifts.getRift(decorativeObject.getId()) != null)

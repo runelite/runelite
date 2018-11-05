@@ -426,7 +426,7 @@ public class AlchemyRoom extends MTARoom
 				continue;
 			}
 
-			int objectDistance = (int) cupboard.gameObject.getWorldLocation().distanceTo(mine);
+			int objectDistance = cupboard.gameObject.getWorldLocation().distanceTo(mine);
 
 			if (nearest == null || objectDistance < distance)
 			{

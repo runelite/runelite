@@ -68,6 +68,7 @@ import net.runelite.api.WorldType;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BoostedLevelChanged;
+import net.runelite.api.events.CanvasSizeChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ClanChanged;
 import net.runelite.api.events.DraggingWidgetChanged;
@@ -154,6 +155,9 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	private static RSItem lastItemDespawn;
+
+	@Inject
+	private static boolean oldIsResized;
 
 	@Inject
 	@Override
@@ -968,9 +972,16 @@ public abstract class RSClientMixin implements RSClient
 	public static void resizeChanged(int idx)
 	{
 		//maybe couple with varbitChanged. resizeable may not be a varbit but it would fit with the other client settings.
-		ResizeableChanged resizeableChanged = new ResizeableChanged();
-		resizeableChanged.setResized(client.isResized());
-		client.getCallbacks().post(resizeableChanged);
+		boolean isResized = client.isResized();
+
+		if (oldIsResized != isResized)
+		{
+			ResizeableChanged resizeableChanged = new ResizeableChanged();
+			resizeableChanged.setResized(isResized);
+			client.getCallbacks().post(resizeableChanged);
+
+			oldIsResized = isResized;
+		}
 	}
 
 	@FieldHook("clanMemberManager")
@@ -978,6 +989,20 @@ public abstract class RSClientMixin implements RSClient
 	public static void clanMemberManagerChanged(int idx)
 	{
 		client.getCallbacks().post(new ClanChanged(client.getClanMemberManager() != null));
+	}
+
+	@FieldHook("canvasWidth")
+	@Inject
+	public static void canvasWidthChanged(int idx)
+	{
+		client.getCallbacks().post(new CanvasSizeChanged());
+	}
+
+	@FieldHook("canvasHeight")
+	@Inject
+	public static void canvasHeightChanged(int idx)
+	{
+		client.getCallbacks().post(new CanvasSizeChanged());
 	}
 
 	@Inject

@@ -47,6 +47,9 @@ public class WidgetOverlay extends Overlay
 		.put(WidgetInfo.TITHE_FARM, OverlayPosition.TOP_RIGHT)
 		.put(WidgetInfo.PEST_CONTROL_BOAT_INFO, OverlayPosition.TOP_LEFT)
 		.put(WidgetInfo.PEST_CONTROL_INFO, OverlayPosition.TOP_LEFT)
+		.put(WidgetInfo.ZEAH_MESS_HALL_COOKING_DISPLAY, OverlayPosition.TOP_LEFT)
+		.put(WidgetInfo.PVP_BOUNTY_HUNTER_STATS, OverlayPosition.TOP_RIGHT)
+		.put(WidgetInfo.PVP_KILLDEATH_COUNTER, OverlayPosition.TOP_LEFT)
 		.build();
 
 	public static Collection<WidgetOverlay> createOverlays(final Client client)
@@ -58,6 +61,7 @@ public class WidgetOverlay extends Overlay
 
 	private final Client client;
 	private final WidgetInfo widgetInfo;
+	private final Rectangle parentBounds = new Rectangle();
 
 	private WidgetOverlay(final Client client, final WidgetInfo widgetInfo, final OverlayPosition overlayPosition)
 	{
@@ -75,16 +79,38 @@ public class WidgetOverlay extends Overlay
 	}
 
 	@Override
+	public Rectangle getBounds()
+	{
+		final Rectangle bounds = super.getBounds();
+		final Rectangle parent = getParentBounds(client.getWidget(widgetInfo));
+
+		if (parent.isEmpty())
+		{
+			return bounds;
+		}
+
+		int x = bounds.x;
+		int y = bounds.y;
+		x = Math.max(parent.x, x);
+		y = Math.max(parent.y, y);
+		x = Math.min((int)parent.getMaxX() - bounds.width, x);
+		y = Math.min((int)parent.getMaxY() - bounds.height, y);
+		bounds.setLocation(x, y);
+		return bounds;
+	}
+
+	@Override
 	public Dimension render(Graphics2D graphics)
 	{
 		final Widget widget = client.getWidget(widgetInfo);
-		if (widget == null || widget.isHidden())
+		final Rectangle bounds = super.getBounds();
+		final Rectangle parent = getParentBounds(widget);
+
+		if (parent.isEmpty())
 		{
 			return null;
 		}
 
-		final Rectangle bounds = getBounds();
-		final Rectangle parent = getParentBounds(widget);
 		int x = bounds.x;
 		int y = bounds.y;
 		x = Math.max(parent.x, x);
@@ -93,7 +119,7 @@ public class WidgetOverlay extends Overlay
 		y = Math.min((int)parent.getMaxY() - bounds.height, y);
 		bounds.setLocation(x, y);
 		widget.setOriginalX(0);
-		widget.setRelativeX(0);
+		widget.setOriginalY(0);
 		widget.setRelativeX(bounds.x - parent.x);
 		widget.setRelativeY(bounds.y - parent.y);
 		return new Dimension(widget.getWidth(), widget.getHeight());
@@ -101,12 +127,30 @@ public class WidgetOverlay extends Overlay
 
 	private Rectangle getParentBounds(final Widget widget)
 	{
-		final Widget parent = widget.getParent();
-		if (parent == null)
+		if (!client.isClientThread())
 		{
-			return new Rectangle(client.getRealDimensions());
+			return parentBounds;
 		}
 
-		return new Rectangle(parent.getCanvasLocation().getX(), parent.getCanvasLocation().getY(), parent.getWidth(), parent.getHeight());
+		if (widget == null || widget.isHidden())
+		{
+			parentBounds.setBounds(new Rectangle());
+			return parentBounds;
+		}
+
+		final Widget parent = widget.getParent();
+		final Rectangle bounds;
+
+		if (parent == null)
+		{
+			bounds = new Rectangle(client.getRealDimensions());
+		}
+		else
+		{
+			bounds = new Rectangle(parent.getCanvasLocation().getX(), parent.getCanvasLocation().getY(), parent.getWidth(), parent.getHeight());
+		}
+
+		parentBounds.setBounds(bounds);
+		return bounds;
 	}
 }

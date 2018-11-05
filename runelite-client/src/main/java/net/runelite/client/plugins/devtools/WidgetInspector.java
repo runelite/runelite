@@ -142,6 +142,17 @@ class WidgetInspector extends JFrame
 		onConfigChanged(null);
 		bottomPanel.add(alwaysOnTop);
 
+		final JButton revalidateWidget = new JButton("Revalidate");
+		revalidateWidget.addActionListener(ev -> clientThread.invokeLater(() ->
+		{
+			if (plugin.currentWidget == null)
+			{
+				return;
+			}
+
+			plugin.currentWidget.revalidate();
+		}));
+		bottomPanel.add(revalidateWidget);
 
 		final JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treeScrollPane, infoScrollPane);
 		add(split, BorderLayout.CENTER);
