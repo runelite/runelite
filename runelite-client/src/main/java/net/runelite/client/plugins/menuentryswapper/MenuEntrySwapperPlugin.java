@@ -399,6 +399,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("quick-travel", option, target, true);
 			}
+
+			if (config.swapCollect() && target.equals("priestess zul-gwenwynig"))
+			{
+				swap( "collect", option, target, true);
+			}
 		}
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
 		{
