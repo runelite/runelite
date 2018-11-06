@@ -357,6 +357,16 @@ public class SlayerPluginTest
 
 		assertEquals(30, slayerPlugin.getSlaughterChargeCount());
 
+		chatMessageEvent = new ChatMessage(SERVER, "", BRACLET_SLAUGHTER_V3, null);
+
+		when(slayerConfig.showSlaughterBreakNotification()).thenReturn(true);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+		verify(notifier).notify(BRACELET_SLAUGHTER_CRUMBLE_NOTIFY);
+
+		when(slayerConfig.showSlaughterBreakNotification()).thenReturn(false);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+		verifyNoMoreInteractions(notifier);
+
 		Widget braceletBreakWidget = mock(Widget.class);
 		when(braceletBreakWidget.getText()).thenReturn(BREAK_SLAUGHTER);
 		when(client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT)).thenReturn(braceletBreakWidget);
@@ -404,6 +414,16 @@ public class SlayerPluginTest
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(30, slayerPlugin.getExpeditiousChargeCount());
+
+		chatMessageEvent = new ChatMessage(SERVER, "", BRACLET_EXPEDITIOUS_V3, null);
+
+		when(slayerConfig.showExpeditiousBreakNotification()).thenReturn(true);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+		verify(notifier).notify(BRACELET_EXPEDITIOUS_CRUMBLE_NOTIFY);
+
+		when(slayerConfig.showExpeditiousBreakNotification()).thenReturn(false);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+		verifyNoMoreInteractions(notifier);
 
 		Widget braceletBreakWidget = mock(Widget.class);
 		when(braceletBreakWidget.getText()).thenReturn(BREAK_EXPEDITIOUS);
