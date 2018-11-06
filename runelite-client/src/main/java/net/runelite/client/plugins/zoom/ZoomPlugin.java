@@ -47,6 +47,13 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class ZoomPlugin extends Plugin implements KeyListener
 {
+	/**
+	 * The largest (most zoomed in) value that can be used without the client crashing.
+	 *
+	 * Larger values trigger an overflow in the engine's fov to scale code.
+	 */
+	private static final int INNER_ZOOM_LIMIT = 1004;
+
 	private boolean controlDown;
 	
 	@Inject
@@ -84,7 +91,7 @@ public class ZoomPlugin extends Plugin implements KeyListener
 
 		if ("innerZoomLimit".equals(event.getEventName()) && zoomConfig.innerLimit())
 		{
-			intStack[intStackSize - 1] = 1200;
+			intStack[intStackSize - 1] = INNER_ZOOM_LIMIT;
 			return;
 		}
 
