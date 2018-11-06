@@ -127,6 +127,7 @@ public class ClientUI
 	private final Provider<ClientThread> clientThreadProvider;
 	private final CardLayout cardLayout = new CardLayout();
 	private final Rectangle sidebarButtonPosition = new Rectangle();
+	private boolean withTitleBar;
 	private ContainableFrame frame;
 	private JPanel navContainer;
 	private PluginPanel pluginPanel;
@@ -179,8 +180,7 @@ public class ClientUI
 		{
 			final NavigationButton navigationButton = event.getButton();
 			final PluginPanel pluginPanel = navigationButton.getPanel();
-			final boolean inTitle = !event.getButton().isTab() &&
-				(config.enableCustomChrome() || SwingUtil.isCustomTitlePanePresent(frame));
+			final boolean inTitle = !event.getButton().isTab() && withTitleBar;
 			final int iconSize = 16;
 
 			if (pluginPanel != null)
@@ -382,7 +382,7 @@ public class ClientUI
 			mouseManager.registerMouseListener(mouseListener);
 
 			// Decorate window with custom chrome and titlebar if needed
-			final boolean withTitleBar = config.enableCustomChrome();
+			withTitleBar = config.enableCustomChrome();
 			frame.setUndecorated(withTitleBar);
 
 			if (withTitleBar)
@@ -618,7 +618,7 @@ public class ClientUI
 	 */
 	public void paintOverlays(final Graphics2D graphics)
 	{
-		if (!(client instanceof Client) || config.enableCustomChrome())
+		if (!(client instanceof Client) || withTitleBar)
 		{
 			return;
 		}
@@ -807,7 +807,7 @@ public class ClientUI
 		}
 
 		frame.setExpandResizeType(config.automaticResizeType());
-		frame.setContainedInScreen(config.containInScreen() && config.enableCustomChrome());
+		frame.setContainedInScreen(config.containInScreen() && withTitleBar);
 
 		if (!config.rememberScreenBounds())
 		{
