@@ -100,10 +100,10 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 7,
-			keyName = "expeditiousbreaknotification",
-			name = "Expeditious Break Notification",
-			description = "Toggles notifications on expeditious bracelet breaking."
+		position = 7,
+		keyName = "expeditiousbreaknotification",
+		name = "Expeditious Break Notification",
+		description = "Toggles notifications on expeditious bracelet breaking."
 	)
 	default boolean showExpeditiousBreakNotification()
 	{
@@ -111,10 +111,10 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 7,
-			keyName = "slaughterbreaknotification",
-			name = "Slaughter Break Notification",
-			description = "Toggles notifications on bracelet of slaughter breaking."
+		position = 8,
+		keyName = "slaughterbreaknotification",
+		name = "Slaughter Break Notification",
+		description = "Toggles notifications on bracelet of slaughter breaking."
 	)
 	default boolean showSlaughterBreakNotification()
 	{
