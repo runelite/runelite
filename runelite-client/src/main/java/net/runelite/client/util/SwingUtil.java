@@ -31,7 +31,6 @@ import java.awt.Frame;
 import java.awt.Image;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
-import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -59,7 +58,6 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.components.CustomScrollBarUI;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
-import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
  * Various Swing utilities.
@@ -278,16 +276,5 @@ public class SwingUtil
 
 		navigationButton.setOnSelect(button::doClick);
 		return button;
-	}
-
-	/**
-	 * Checks if custom substance title pane is present.
-	 *
-	 * @param frame the parent frame
-	 * @return true if title pane is present
-	 */
-	public static boolean isCustomTitlePanePresent(final Window frame)
-	{
-		return SubstanceCoreUtilities.getTitlePaneComponent(frame) != null;
 	}
 }
