@@ -90,6 +90,8 @@ public class ItemStatChanges
 		add(food(perc(.1, 1)), COOKED_SWEETCORN, SWEETCORN_7088 /* Bowl of cooked sweetcorn */);
 		add(combo(food(1), boost(DEFENCE, perc(.02, 1))), CABBAGE_1967 /* Draynor Manor */);
 		add(combo(2, food(4), heal(RUN_ENERGY, 5)), PAPAYA_FRUIT);
+		add(range(food(5), food(7)), THIN_SNAIL_MEAT);
+		add(range(food(7), food(9)), FAT_SNAIL_MEAT);
 
 		// Dorgeshuun Cuisine
 		add(food(2), BAT_SHISH, COATED_FROGS_LEGS, FILLETS, FINGERS, FROGBURGER, FROGSPAWN_GUMBO, GREEN_GLOOP_SOUP,
