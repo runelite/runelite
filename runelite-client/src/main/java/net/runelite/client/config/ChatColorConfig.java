@@ -508,4 +508,28 @@ public interface ChatColorConfig extends Config
 		description = "Color of Friend Usernames in Public Chat (transparent)"
 	)
 	Color transparentPublicFriendUsernames();
+
+	// Custom added Color configs for Twitch plugin rework
+	@ConfigItem(
+			position = 88,
+			keyName = "transparentTwitchChatColor",
+			name = "Twitch chat color (transparent)",
+			description = "Color of the Twitch Chat (transparent)"
+	)
+	default Color transparentTwitchChatColor()
+	{
+		return Color.decode("#C921EB");
+	}
+
+	// Custom added Color configs for Twitch plugin rework
+	@ConfigItem(
+			position = 89,
+			keyName = "opaqueTwitchChatColor",
+			name = "Twitch chat color (opaque)",
+			description = "Color of the Twitch Chat (opaque)"
+	)
+	default Color opaqueTwitchChatColor()
+	{
+		return Color.decode("#C921EB");
+	}
 }

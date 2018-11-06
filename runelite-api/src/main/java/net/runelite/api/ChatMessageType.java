@@ -131,7 +131,11 @@ public enum ChatMessageType
 	/**
 	 * An unknown message type.
 	 */
-	UNKNOWN(-1);
+	UNKNOWN(-1),
+	/**
+	 * A message from Twitch IRC
+	 */
+	TWITCH(9);
 
 	private final int type;
 

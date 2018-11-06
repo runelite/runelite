@@ -31,14 +31,19 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("twitch")
 public interface TwitchConfig extends Config
 {
+	// Textfield for user to enter Twitch username.
 	@ConfigItem(
 		keyName = "username",
 		name = "Username",
-		description = "Twitch Username",
+		description = "Enter your Twitch username here",
 		position = 0
 	)
-	String username();
+	default String username()
+	{
+		return "";
+	}
 
+	// Textfield for user to enter OAuth.
 	@ConfigItem(
 		keyName = "oauth",
 		name = "OAuth Token",
@@ -46,13 +51,31 @@ public interface TwitchConfig extends Config
 		secret = true,
 		position = 1
 	)
-	String oauthToken();
+	default String oauthToken()
+	{
+		return "";
+	}
 
 	@ConfigItem(
-		keyName = "channel",
-		name = "Channel",
-		description = "Username of Twitch chat to join",
-		position = 2
+			keyName = "channel",
+			name = "Channel",
+			description = "Username of Twitch chat to join",
+			position = 2
 	)
-	String channel();
+	default String channel()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+			position = 3,
+			keyName = "userHelp",
+			name = "Instructions: ",
+			description = "Simple explanation of how to configure plugin features"
+	)
+	default String userHelp()
+	{
+		return "To configure the color of the Twitch chat in either fixed," +
+				"or resizeable mode, visit the plugin configuration panel of \"Chat Color\".";
+	}
 }

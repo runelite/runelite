@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,48 +22,62 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
-
-import lombok.Data;
+package net.runelite.client.plugins.twitch;
 
 /**
- * A menu entry in a right-click menu.
+ * @author JBerben
  */
-@Data
-public class  MenuEntry
+public enum TwitchBadges
 {
-	/**
-	 * The option text added to the menu (ie. "Walk here", "Use").
-	 */
-	private String option;
-	/**
-	 * The target of the action (ie. Item or Actor name).
-	 * <p>
-	 * If the option does not apply to any target, this field
-	 * will be set to empty string.
-	 */
-	private String target;
-	/**
-	 * An identifier value for the target of the action.
-	 */
-	private int identifier;
-	/**
-	 * The action the entry will trigger.
-	 */
-	private int type;
-	/**
-	 * An additional parameter for the action.
-	 */
-	private int param0;
-	/**
-	 * A second additional parameter for the action.
-	 */
-	private int param1;
+	// NAME_OF_BADGE(badgeTag, imgCode, badgeCode);
+	NO_BADGE("null", 0, 0),
+	ONE_MONTH_SUB("subscriber", 9, 1),
+	THREE_MONTH_SUB("subscriber", 8, 2),
+	SIX_MONTH_SUB("subscriber", 7, 3),
+	ONE_YEAR_SUB("subscriber", 6, 4),
+	TWO_YEAR_SUB("subscriber", 5, 5),
+	THREE_YEAR_SUB("subscriber", 4, 6),
+	MOD("moderator", 0, 1),
+	BROADCASTER("broadcaster", 1, 1),
+	TWITCH_PRIME("prime", 25, 1),
+	TWITCH_TURBO("turbo", 12, 1)
+	;
 
-	@Override
-	public String toString()
+	private final String badgeType;
+	private final int imgCode;
+	private final int ircCode;
+
+	private TwitchBadges(String badgeTag, int imageId, int ircId)
 	{
-		return "MenuEntry{" + "option=" + option + ", target=" + target + ", identifier=" + identifier + ", type=" + type + ", param0=" + param0 + ", param1=" + param1 + '}';
+		badgeType = badgeTag;
+		imgCode = imageId;
+		ircCode = ircId;
 	}
 
+	static TwitchBadges getCodeGivenRank(String badgeTag, int rank)
+	{
+		for (TwitchBadges badge : TwitchBadges.values())
+		{
+			if (badge.getBadgeType().equalsIgnoreCase(badgeTag) && badge.getIrcCode() == rank)
+			{
+				return badge;
+			}
+		}
+		return NO_BADGE;
+	}
+
+	public String getBadgeType()
+	{
+		return badgeType;
+	}
+
+	public int getImgCode()
+	{
+		return imgCode;
+	}
+
+	public int getIrcCode()
+	{
+		return ircCode;
+	}
 }
