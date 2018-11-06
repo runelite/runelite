@@ -139,6 +139,11 @@ public class ChatMessageManager
 			case CLANCHAT:
 				usernameColor = isChatboxTransparent ? chatColorConfig.transparentClanUsernames() : chatColorConfig.opaqueClanUsernames();
 				break;
+			case TWITCH:
+				// Null so we can set these in TwitchPlugin
+				usernameColor = null;
+				senderColor = null;
+				break;
 		}
 
 		senderColor = isChatboxTransparent ? chatColorConfig.transparentClanChannelName() : chatColorConfig.opaqueClanChannelName();
@@ -218,6 +223,8 @@ public class ChatMessageManager
 				case EXAMINE_NPC:
 				case GAME:
 					return Color.decode("#000000");
+				case TWITCH:
+					return Color.decode("#C921EB");
 			}
 		}
 		else
@@ -238,6 +245,8 @@ public class ChatMessageManager
 				case EXAMINE_NPC:
 				case GAME:
 					return Color.decode("#FFFFFF");
+				case TWITCH:
+					return Color.decode("#C921EB");
 			}
 		}
 
@@ -393,6 +402,12 @@ public class ChatMessageManager
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaqueFilteredHighlight(), false),
 				ChatMessageType.FILTERED);
 		}
+		// Twitch Opaque
+		if (chatColorConfig.opaqueTwitchChatColor() != null)
+		{
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueTwitchChatColor(), false),
+					ChatMessageType.TWITCH);
+		}
 
 		//Transparent Chat Colours
 		if (chatColorConfig.transparentPublicChat() != null)
@@ -520,6 +535,12 @@ public class ChatMessageManager
 		{
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentFilteredHighlight(), true),
 				ChatMessageType.FILTERED);
+		}
+		// Twitch Transparent
+		if (chatColorConfig.transparentTwitchChatColor() != null)
+		{
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentTwitchChatColor(), true),
+					ChatMessageType.TWITCH);
 		}
 	}
 
