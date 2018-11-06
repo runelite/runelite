@@ -104,16 +104,7 @@ public class ClientUI
 	private static final String CONFIG_CLIENT_MAXIMIZED = "clientMaximized";
 	private static final int CLIENT_WELL_HIDDEN_MARGIN = 160;
 	private static final int CLIENT_WELL_HIDDEN_MARGIN_TOP = 10;
-	public static final BufferedImage ICON;
-	private static final BufferedImage SIDEBAR_OPEN;
-	private static final BufferedImage SIDEBAR_CLOSE;
-
-	static
-	{
-		ICON = ImageUtil.getResourceStreamFromClass(ClientUI.class, "/runelite.png");
-		SIDEBAR_OPEN = ImageUtil.getResourceStreamFromClass(ClientUI.class, "open.png");
-		SIDEBAR_CLOSE = ImageUtil.flipImage(SIDEBAR_OPEN, true, false);
-	}
+	public static final BufferedImage ICON = ImageUtil.getResourceStreamFromClass(ClientUI.class, "/runelite.png");
 
 	@Getter
 	private TrayIcon trayIcon;
@@ -128,6 +119,8 @@ public class ClientUI
 	private final CardLayout cardLayout = new CardLayout();
 	private final Rectangle sidebarButtonPosition = new Rectangle();
 	private boolean withTitleBar;
+	private BufferedImage sidebarOpenIcon;
+	private BufferedImage sidebarClosedIcon;
 	private ContainableFrame frame;
 	private JPanel navContainer;
 	private PluginPanel pluginPanel;
@@ -436,10 +429,14 @@ public class ClientUI
 			updateFrameConfig(true);
 
 			// Create hide sidebar button
+
+			sidebarOpenIcon = ImageUtil.getResourceStreamFromClass(ClientUI.class, withTitleBar ? "open.png" : "open_rs.png");
+			sidebarClosedIcon = ImageUtil.flipImage(sidebarOpenIcon, true, false);
+
 			sidebarNavigationButton = NavigationButton
 				.builder()
 				.priority(100)
-				.icon(SIDEBAR_CLOSE)
+				.icon(sidebarClosedIcon)
 				.onClick(this::toggleSidebar)
 				.build();
 
@@ -623,16 +620,16 @@ public class ClientUI
 			return;
 		}
 
-		final Client client = (Client)this.client;
-		final int x = client.getRealDimensions().width - SIDEBAR_OPEN.getWidth() - 5;
+		final Client client = (Client) this.client;
+		final int x = client.getRealDimensions().width - sidebarOpenIcon.getWidth() - 5;
 
 		// Offset sidebar button if resizable mode logout is visible
 		final Widget logoutButton = client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_LOGOUT_BUTTON);
 		final int y = logoutButton != null && !logoutButton.isHidden() && logoutButton.getParent() != null
-			? logoutButton.getHeight() + logoutButton.getRelativeY() + 5
+			? logoutButton.getHeight() + logoutButton.getRelativeY()
 			: 5;
 
-		final BufferedImage image = sidebarOpen ? SIDEBAR_OPEN : SIDEBAR_CLOSE;
+		final BufferedImage image = sidebarOpen ? sidebarOpenIcon : sidebarClosedIcon;
 		graphics.drawImage(image, x, y, null);
 
 		// Update button dimensions
@@ -663,7 +660,7 @@ public class ClientUI
 
 		if (isSidebarOpen)
 		{
-			sidebarNavigationJButton.setIcon(new ImageIcon(SIDEBAR_OPEN));
+			sidebarNavigationJButton.setIcon(new ImageIcon(sidebarOpenIcon));
 			sidebarNavigationJButton.setToolTipText("Open SideBar");
 
 			contract();
@@ -673,7 +670,7 @@ public class ClientUI
 		}
 		else
 		{
-			sidebarNavigationJButton.setIcon(new ImageIcon(SIDEBAR_CLOSE));
+			sidebarNavigationJButton.setIcon(new ImageIcon(sidebarClosedIcon));
 			sidebarNavigationJButton.setToolTipText("Close SideBar");
 
 			// Try to restore last panel
