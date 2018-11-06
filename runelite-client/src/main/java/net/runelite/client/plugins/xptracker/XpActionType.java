@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Levi <me@levischuck.com>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,24 +24,15 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import lombok.Builder;
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-@Builder
-@Value
-class XpSnapshotSingle
+@Getter
+@AllArgsConstructor
+enum XpActionType
 {
-	private XpActionType actionType;
-	private int startLevel;
-	private int endLevel;
-	private int startGoalXp;
-	private int endGoalXp;
-	private int xpGainedInSession;
-	private int xpRemainingToGoal;
-	private int xpPerHour;
-	private double skillProgressToGoal;
-	private int actionsInSession;
-	private int actionsRemainingToGoal;
-	private int actionsPerHour;
-	private String timeTillGoal;
+	EXPERIENCE("Actions"),
+	ACTOR_HEALTH("Kills");
+
+	private final String label;
 }

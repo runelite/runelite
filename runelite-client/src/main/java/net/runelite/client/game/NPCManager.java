@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Levi <me@levischuck.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,26 +22,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.xptracker;
+package net.runelite.client.game;
 
-import lombok.Builder;
-import lombok.Value;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.util.Map;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
-@Builder
-@Value
-class XpSnapshotSingle
+@Singleton
+public class NPCManager
 {
-	private XpActionType actionType;
-	private int startLevel;
-	private int endLevel;
-	private int startGoalXp;
-	private int endGoalXp;
-	private int xpGainedInSession;
-	private int xpRemainingToGoal;
-	private int xpPerHour;
-	private double skillProgressToGoal;
-	private int actionsInSession;
-	private int actionsRemainingToGoal;
-	private int actionsPerHour;
-	private String timeTillGoal;
+	private final Map<String, Integer> healthMap;
+
+	@Inject
+	private NPCManager()
+	{
+		final Gson gson = new Gson();
+		final Type typeToken = new TypeToken<Map<String, Integer>>()
+		{
+		}.getType();
+
+		final InputStream healthFile = getClass().getResourceAsStream("/npc_health.json");
+		healthMap = gson.fromJson(new InputStreamReader(healthFile), typeToken);
+	}
+
+	/**
+	 * Returns health for target NPC based on it's combat level and name
+	 * @param name npc name
+	 * @param combatLevel npc combat level
+	 * @return health or null if HP is unknown
+	 */
+	@Nullable
+	public Integer getHealth(final String name, final int combatLevel)
+	{
+		return healthMap.get(name + "_" + combatLevel);
+	}
 }
