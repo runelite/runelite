@@ -24,6 +24,8 @@
  */
 package net.runelite.api;
 
+import net.runelite.api.widgets.Widget;
+
 public interface ScriptEvent
 {
 	int MOUSE_X = -2147483647;
@@ -35,5 +37,28 @@ public interface ScriptEvent
 	int WIDGET_TARGET_INDEX = -2147483641;
 	int KEY_CODE = -2147483640;
 	int KEY_CHAR = -2147483639;
-	String NAME =  "event_opbase";
+	String NAME = "event_opbase";
+
+	/**
+	 * Gets the widget of the event.
+	 *
+	 * @return the widget
+	 * @see net.runelite.api.widgets.Widget
+	 */
+	Widget getSource();
+
+	/**
+	 * Gets the menu index of the event
+	 *
+	 * @return the index
+	 */
+	int getOp();
+
+	/**
+	 * Gets the target of the menu option
+	 *
+	 * @return the target
+	 * @see net.runelite.api.events.MenuOptionClicked
+	 */
+	String getOpbase();
 }
