@@ -249,9 +249,6 @@ public class SlayerPlugin extends Plugin
 	public void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		NPC npc = npcSpawned.getNpc();
-		for(int i = 0; i < npc.getComposition().getConfigs().length; i++) {
-			System.out.println("HI + " + npc.getComposition().getConfigs()[i]);
-		}
 		if (isTarget(npc))
 		{
 			highlightedTargets.add(npc);
