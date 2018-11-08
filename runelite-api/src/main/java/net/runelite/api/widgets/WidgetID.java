@@ -729,5 +729,5 @@ public class WidgetID
 	{
 		static final int PROGRESS_BAR = 16;
 		static final int STATUS = 4;
-  }
+	}
 }
