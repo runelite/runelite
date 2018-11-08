@@ -251,4 +251,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "swapPrivateRaidChest",
+		name = "Private Raid Chest",
+		description = "Swap Shared with Private on the Chamber of Xeric storage units."
+	)
+	default boolean swapPrivateRaidChest()
+	{
+		return false;
+	}
 }
