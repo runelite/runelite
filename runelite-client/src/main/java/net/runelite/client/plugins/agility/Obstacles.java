@@ -219,7 +219,9 @@ class Obstacles
 		// Al-Kharid
 		BROKEN_WALL_33344, BIG_WINDOW,
 		//Burgh de Rott
-		LOW_FENCE
+		LOW_FENCE,
+        // Taverley
+        STILE
 	);
 
 	static final Set<Integer> TRAP_OBSTACLE_IDS = ImmutableSet.of(
