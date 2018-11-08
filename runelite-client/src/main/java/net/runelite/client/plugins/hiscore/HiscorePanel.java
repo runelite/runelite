@@ -524,6 +524,7 @@ public class HiscorePanel extends PluginPanel
 					String hard = (result.getClueScrollHard().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollHard().getLevel()));
 					String elite = (result.getClueScrollElite().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollElite().getLevel()));
 					String master = (result.getClueScrollMaster().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollMaster().getLevel()));
+					content += "<p><span style = 'color:white'>Clue Scrolls</span></p>";
 					content += "<p><span style = 'color:white'>All:</span> " + all + " <span style = 'color:white'>Rank:</span> " + allRank + "</p>";
 					content += "<p><span style = 'color:white'>Easy:</span> " + easy + " <span style = 'color:white'>Rank:</span> " + easyRank + "</p>";
 					content += "<p><span style = 'color:white'>Medium:</span> " + medium + " <span style = 'color:white'>Rank:</span> " + mediumRank + "</p>";
@@ -535,18 +536,21 @@ public class HiscorePanel extends PluginPanel
 				case BOUNTY_HUNTER_ROGUE:
 				{
 					String rank = (result.getBountyHunterRogue().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getBountyHunterRogue().getRank());
+					content += "<p><span style = 'color:white'>Bounty Hunter - Rogue</span></p>";
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
 					break;
 				}
 				case BOUNTY_HUNTER_HUNTER:
 				{
 					String rank = (result.getBountyHunterHunter().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getBountyHunterHunter().getRank());
+					content += "<p><span style = 'color:white'>Bounty Hunter - Hunter</span></p>";
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
 					break;
 				}
 				case LAST_MAN_STANDING:
 				{
 					String rank = (result.getLastManStanding().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getLastManStanding().getRank());
+					content += "<p><span style = 'color:white'>Last Man Standing</span></p>";
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
 					break;
 				}
