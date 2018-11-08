@@ -120,6 +120,7 @@ public class WidgetID
 	public static final int SPELLBOOK_GROUP_ID = 218;
 	public static final int PVP_GROUP_ID = 90;
 	public static final int ZEAH_MESS_HALL_GROUP_ID = 235;
+	public static final int LOOTING_BAG_GROUP_ID = 81;
 	public static final int WINTERTODT_GROUP_ID = 396;
 
 	static class WorldMap
@@ -719,9 +720,14 @@ public class WidgetID
 		static final int MESS_HALL_COOKING_DISPLAY = 3;
 	}
 
+	static class LootingBag
+	{
+		static final int LOOTING_BAG_INVENTORY = 5;
+	}
+
 	static class Wintertodt
 	{
 		static final int PROGRESS_BAR = 16;
 		static final int STATUS = 4;
-	}
+  }
 }

@@ -217,7 +217,9 @@ class Obstacles
 		// Weiss
 		LITTLE_BOULDER, ROCKSLIDE_33184, ROCKSLIDE_33185, NULL_33327, NULL_33328,
 		// Al-Kharid
-		BROKEN_WALL_33344, BIG_WINDOW
+		BROKEN_WALL_33344, BIG_WINDOW,
+		//Burgh de Rott
+		LOW_FENCE
 	);
 
 	static final Set<Integer> TRAP_OBSTACLE_IDS = ImmutableSet.of(

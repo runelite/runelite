@@ -1,15 +1,15 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Ron Young <https://github.com/raiyni>
  * All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ *     list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -22,26 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
 
-import net.runelite.api.ScriptEvent;
-import net.runelite.api.widgets.Widget;
-import net.runelite.mapping.Import;
+package net.runelite.client.plugins.banktags.tabs;
 
-public interface RSScriptEvent extends ScriptEvent
+class MenuIndexes
 {
-	@Import("params")
-	Object[] getArguments();
+	static class NewTab
+	{
+		static final int NEW_TAB = 2;
+		static final int IMPORT_TAB = 3;
+	}
 
-	@Import("params")
-	void setArguments(Object[] args);
-
-	@Import("source")
-	Widget getSource();
-
-	@Import("op")
-	int getOp();
-
-	@Import("opbase")
-	String getOpbase();
+	static class Tab
+	{
+		static final int OPEN_TAG = 2;
+		static final int CHANGE_ICON = 3;
+		static final int DELETE_TAB = 4;
+		static final int EXPORT_TAB = 5;
+	}
 }
