@@ -132,9 +132,9 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showPortalNexus",
-			name = "Show Portal Nexus",
-			description = "Configures whether or not the Portal Nexus is displayed"
+		keyName = "showPortalNexus",
+		name = "Show Portal Nexus",
+		description = "Configures whether or not the Portal Nexus is displayed"
 	)
 	default boolean showPortalNexus()
 	{
@@ -142,9 +142,9 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showDigsitePendant",
-			name = "Show Digsite Pendant",
-			description = "Configures whether or not the Digsite Pendant is displayed"
+		keyName = "showDigsitePendant",
+		name = "Show Digsite Pendant",
+		description = "Configures whether or not the Digsite Pendant is displayed"
 	)
 	default boolean showDigsitePendant()
 	{
@@ -152,9 +152,9 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showXericsTalisman",
-			name = "Show Xeric's Talisman",
-			description = "Configures whether or not the Xeric's Talisman is displayed"
+		keyName = "showXericsTalisman",
+		name = "Show Xeric's Talisman",
+		description = "Configures whether or not the Xeric's Talisman is displayed"
 	)
 	default boolean showXericsTalisman()
 	{
