@@ -97,4 +97,26 @@ public interface ChatNotificationsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			position = 6,
+			keyName = "notifyOnValuable",
+			name = "Notify on valuable drop",
+			description = "Notifies you whenever you receive a valuable drop"
+	)
+	default boolean notifyOnValuable()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 7,
+			keyName = "notifyOnUntradeable",
+			name = "Notify on untradeable drop",
+			description = "Notifies you whenever you receive an untradeable drop"
+	)
+	default boolean notifyOnUntradeable()
+	{
+		return false;
+	}
 }

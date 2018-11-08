@@ -29,6 +29,7 @@ import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -137,13 +138,22 @@ public class ChatNotificationsPlugin extends Plugin
 			case TRADE:
 				if (event.getValue().contains("wishes to trade with you.") && config.notifyOnTrade())
 				{
-					notifier.notify(event.getValue());
+					notifier.notify(event.getValue(), false);
 				}
 				break;
 			case DUEL:
 				if (event.getValue().contains("wishes to duel with you.") && config.notifyOnDuel())
 				{
-					notifier.notify(event.getValue());
+					notifier.notify(event.getValue(), false);
+				}
+				break;
+			case SERVER:
+				if ((config.notifyOnValuable() && event.getValue().startsWith("Valuable drop:")) || (config.notifyOnUntradeable() && event.getValue().startsWith("Untradeable drop:")))
+				{
+					event.setValue(Text.removeTags(event.getValue()));
+					event.setSender(client.getLocalPlayer().getName());
+					sendNotification(event);
+					return;
 				}
 				break;
 			case GAME:
@@ -227,6 +237,6 @@ public class ChatNotificationsPlugin extends Plugin
 		stringBuilder.append(message.getValue());
 
 		String notification = stringBuilder.toString();
-		notifier.notify(notification);
+		notifier.notify(notification, false);
 	}
 }

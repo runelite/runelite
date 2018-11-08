@@ -105,12 +105,22 @@ public class Notifier
 		storeIcon();
 	}
 
+	public  void notify(String message, boolean shouldPrint)
+	{
+		notify(message, TrayIcon.MessageType.NONE, shouldPrint);
+	}
+
 	public void notify(String message)
 	{
-		notify(message, TrayIcon.MessageType.NONE);
+		notify(message, TrayIcon.MessageType.NONE, true);
 	}
 
 	public void notify(String message, TrayIcon.MessageType type)
+	{
+		notify(message, type, true);
+	}
+
+	public void notify(String message, TrayIcon.MessageType type, boolean shouldPrint)
 	{
 		if (!runeLiteConfig.sendNotificationsWhenFocused() && clientUI.isFocused())
 		{
@@ -132,7 +142,7 @@ public class Notifier
 			Toolkit.getDefaultToolkit().beep();
 		}
 
-		if (runeLiteConfig.enableGameMessageNotification() && client.getGameState() == GameState.LOGGED_IN)
+		if (runeLiteConfig.enableGameMessageNotification() && client.getGameState() == GameState.LOGGED_IN && shouldPrint)
 		{
 			chatMessageManager.queue(QueuedMessage.builder()
 				.type(ChatMessageType.GAME)
