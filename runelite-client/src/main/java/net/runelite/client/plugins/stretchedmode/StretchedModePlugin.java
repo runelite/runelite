@@ -80,6 +80,7 @@ public class StretchedModePlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		client.setStretchedEnabled(false);
+		client.invalidateStretching(true);
 
 		mouseManager.unregisterMouseListener(mouseListener);
 		mouseManager.unregisterMouseWheelListener(mouseWheelListener);

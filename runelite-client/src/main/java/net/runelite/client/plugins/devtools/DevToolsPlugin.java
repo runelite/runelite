@@ -30,7 +30,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
@@ -54,6 +53,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -70,7 +70,6 @@ public class DevToolsPlugin extends Plugin
 {
 	private static final List<MenuAction> EXAMINE_MENU_ACTIONS = ImmutableList.of(MenuAction.EXAMINE_ITEM,
 			MenuAction.EXAMINE_ITEM_GROUND, MenuAction.EXAMINE_NPC, MenuAction.EXAMINE_OBJECT);
-	private static final Color COLOR_ORANGE = new Color(255, 144, 64);
 
 	@Inject
 	private Client client;
@@ -309,7 +308,7 @@ public class DevToolsPlugin extends Plugin
 				}
 			}
 
-			entry.setTarget(entry.getTarget() + " " + ColorUtil.prependColorTag("(" + info + ")", COLOR_ORANGE));
+			entry.setTarget(entry.getTarget() + " " + ColorUtil.prependColorTag("(" + info + ")", JagexColors.MENU_TARGET));
 			client.setMenuEntries(entries);
 		}
 	}

@@ -35,7 +35,6 @@ import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
@@ -46,6 +45,7 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.DraggingWidgetChanged;
@@ -55,13 +55,14 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.ChatboxInputManager;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
@@ -69,6 +70,7 @@ import net.runelite.client.input.MouseWheelListener;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.banktags.tabs.BankSearch;
 import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
@@ -85,7 +87,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	public static final Joiner JOINER = Joiner.on(",").skipNulls();
 	public static final String CONFIG_GROUP = "banktags";
 	public static final String TAG_SEARCH = "tag:";
-	public static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
+	private static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
 	public static final String ICON_SEARCH = "icon_";
 	public static final String VAR_TAG_SUFFIX = "*";
 
@@ -106,7 +108,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	private ClientThread clientThread;
 
 	@Inject
-	private ChatboxInputManager chatboxInputManager;
+	private ChatboxPanelManager chatboxPanelManager;
 
 	@Inject
 	private MouseManager mouseManager;
@@ -119,6 +121,9 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 
 	@Inject
 	private TabInterface tabInterface;
+
+	@Inject
+	private BankSearch bankSearch;
 
 	@Inject
 	private KeyManager keyManager;
@@ -276,33 +281,39 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 				.map(i -> i + "*")
 				.forEach(tags::add);
 
-			// Create initial value string
+			boolean isSearchOpen = client.getVar(VarClientInt.INPUT_TYPE) == InputType.SEARCH.getType();
+			String searchText = client.getVar(VarClientStr.INPUT_TEXT);
 			String initialValue = JOINER.join(tags);
 
-			chatboxInputManager.openInputWindow(name + " tags:<br>(append " + VAR_TAG_SUFFIX + " for variation tag)", initialValue, (newValue) ->
+			chatboxPanelManager.openTextInput(name + " tags:<br>(append " + VAR_TAG_SUFFIX + " for variation tag)")
+				.value(initialValue)
+				.onDone((newValue) ->
+					clientThread.invoke(() ->
+					{
+						// Split inputted tags to vartags (ending with *) and regular tags
+						final Collection<String> newTags = new ArrayList<>(SPLITTER.splitToList(newValue.toLowerCase()));
+						final Collection<String> newVarTags = new ArrayList<>(newTags).stream().filter(s -> s.endsWith(VAR_TAG_SUFFIX)).map(s ->
+						{
+							newTags.remove(s);
+							return s.substring(0, s.length() - VAR_TAG_SUFFIX.length());
+						}).collect(Collectors.toList());
+
+						// And save them
+						tagManager.setTagString(itemId, JOINER.join(newTags), false);
+						tagManager.setTagString(itemId, JOINER.join(newVarTags), true);
+
+						// Check both previous and current tags in case the tag got removed in new tags or in case
+						// the tag got added in new tags
+						tabInterface.updateTabIfActive(SPLITTER.splitToList(initialValue.toLowerCase().replaceAll(Pattern.quote(VAR_TAG_SUFFIX), "")));
+						tabInterface.updateTabIfActive(SPLITTER.splitToList(newValue.toLowerCase().replaceAll(Pattern.quote(VAR_TAG_SUFFIX), "")));
+					}))
+				.build();
+
+			if (isSearchOpen)
 			{
-				if (!Objects.equals(newValue, client.getVar(VarClientStr.INPUT_TEXT)))
-				{
-					return;
-				}
-
-				// Split inputted tags to vartags (ending with *) and regular tags
-				final Collection<String> newTags = new ArrayList<>(SPLITTER.splitToList(newValue.toLowerCase()));
-				final Collection<String> newVarTags = new ArrayList<>(newTags).stream().filter(s -> s.endsWith(VAR_TAG_SUFFIX)).map(s ->
-				{
-					newTags.remove(s);
-					return s.substring(0, s.length() - VAR_TAG_SUFFIX.length());
-				}).collect(Collectors.toList());
-
-				// And save them
-				tagManager.setTagString(itemId, JOINER.join(newTags), false);
-				tagManager.setTagString(itemId, JOINER.join(newVarTags), true);
-
-				// Check both previous and current tags in case the tag got removed in new tags or in case
-				// the tag got added in new tags
-				tabInterface.updateTabIfActive(SPLITTER.splitToList(initialValue.toLowerCase().replaceAll(Pattern.quote(VAR_TAG_SUFFIX), "")));
-				tabInterface.updateTabIfActive(SPLITTER.splitToList(newValue.toLowerCase().replaceAll(Pattern.quote(VAR_TAG_SUFFIX), "")));
-			});
+				bankSearch.reset(false);
+				bankSearch.search(InputType.SEARCH, searchText, false);
+			}
 		}
 		else
 		{

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,43 +22,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.game;
 
-import net.runelite.api.widgets.Widget;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.util.Map;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
-public interface ScriptEvent
+@Singleton
+public class NPCManager
 {
-	int MOUSE_X = -2147483647;
-	int MOUSE_Y = -2147483646;
-	int MENU_OP = -2147483644;
-	int WIDGET_ID = -2147483645;
-	int WIDGET_INDEX = -2147483643;
-	int WIDGET_TARGET_ID = -2147483642;
-	int WIDGET_TARGET_INDEX = -2147483641;
-	int KEY_CODE = -2147483640;
-	int KEY_CHAR = -2147483639;
-	String NAME = "event_opbase";
+	private final Map<String, Integer> healthMap;
+
+	@Inject
+	private NPCManager()
+	{
+		final Gson gson = new Gson();
+		final Type typeToken = new TypeToken<Map<String, Integer>>()
+		{
+		}.getType();
+
+		final InputStream healthFile = getClass().getResourceAsStream("/npc_health.json");
+		healthMap = gson.fromJson(new InputStreamReader(healthFile), typeToken);
+	}
 
 	/**
-	 * Gets the widget of the event.
-	 *
-	 * @return the widget
-	 * @see net.runelite.api.widgets.Widget
+	 * Returns health for target NPC based on it's combat level and name
+	 * @param name npc name
+	 * @param combatLevel npc combat level
+	 * @return health or null if HP is unknown
 	 */
-	Widget getSource();
-
-	/**
-	 * Gets the menu index of the event
-	 *
-	 * @return the index
-	 */
-	int getOp();
-
-	/**
-	 * Gets the target of the menu option
-	 *
-	 * @return the target
-	 * @see net.runelite.api.events.MenuOptionClicked
-	 */
-	String getOpbase();
+	@Nullable
+	public Integer getHealth(final String name, final int combatLevel)
+	{
+		return healthMap.get(name + "_" + combatLevel);
+	}
 }

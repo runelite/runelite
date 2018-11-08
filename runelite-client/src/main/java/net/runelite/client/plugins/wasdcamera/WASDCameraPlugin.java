@@ -36,6 +36,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -44,6 +45,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
@@ -139,7 +141,7 @@ public class WASDCameraPlugin extends Plugin
 				{
 					if (chatboxFocused() && !typing)
 					{
-						chatboxInput.setText(PRESS_ENTER_TO_CHAT);
+						chatboxInput.setText(client.getLocalPlayer().getName() + ": " + PRESS_ENTER_TO_CHAT);
 					}
 				}
 				break;
@@ -162,7 +164,7 @@ public class WASDCameraPlugin extends Plugin
 			Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
 			if (chatboxInput != null)
 			{
-				chatboxInput.setText(PRESS_ENTER_TO_CHAT);
+				chatboxInput.setText(client.getLocalPlayer().getName() + ": " + PRESS_ENTER_TO_CHAT);
 			}
 		}
 	}
@@ -177,7 +179,9 @@ public class WASDCameraPlugin extends Plugin
 			{
 				if (client.getGameState() == GameState.LOGGED_IN)
 				{
-					chatboxInput.setText(client.getLocalPlayer().getName() + ": " + ColorUtil.wrapWithColorTag(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*", Color.BLUE));
+					final boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
+					final Color textColor = isChatboxTransparent ? JagexColors.CHAT_TYPED_TEXT_TRANSPARENT_BACKGROUND : JagexColors.CHAT_TYPED_TEXT_OPAQUE_BACKGROUND;
+					chatboxInput.setText(client.getLocalPlayer().getName() + ": " + ColorUtil.wrapWithColorTag(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
 				}
 			}
 		}

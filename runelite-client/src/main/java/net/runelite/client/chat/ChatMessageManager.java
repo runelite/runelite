@@ -50,6 +50,7 @@ import net.runelite.api.events.SetMessage;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ChatColorConfig;
+import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 
 @Singleton
@@ -206,18 +207,18 @@ public class ChatMessageManager
 			{
 				case PUBLIC:
 				case PUBLIC_MOD:
-					return Color.decode("#0000FF");
+					return JagexColors.CHAT_PUBLIC_TEXT_OPAQUE_BACKGROUND;
 				case PRIVATE_MESSAGE_SENT:
 				case PRIVATE_MESSAGE_RECEIVED_MOD:
 				case PRIVATE_MESSAGE_RECEIVED:
-					return Color.decode("#00FFFF");
+					return JagexColors.CHAT_PRIVATE_MESSAGE_TEXT_OPAQUE_BACKGROUND;
 				case CLANCHAT:
-					return Color.decode("#7F0000");
+					return JagexColors.CHAT_CLAN_TEXT_OPAQUE_BACKGROUND;
 				case EXAMINE_ITEM:
 				case EXAMINE_OBJECT:
 				case EXAMINE_NPC:
 				case GAME:
-					return Color.decode("#000000");
+					return JagexColors.CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND;
 			}
 		}
 		else
@@ -226,18 +227,18 @@ public class ChatMessageManager
 			{
 				case PUBLIC:
 				case PUBLIC_MOD:
-					return Color.decode("#9090FF");
+					return JagexColors.CHAT_PUBLIC_TEXT_TRANSPARENT_BACKGROUND;
 				case PRIVATE_MESSAGE_SENT:
 				case PRIVATE_MESSAGE_RECEIVED_MOD:
 				case PRIVATE_MESSAGE_RECEIVED:
-					return Color.decode("#00FFFF");
+					return JagexColors.CHAT_PRIVATE_MESSAGE_TEXT_TRANSPARENT_BACKGROUND;
 				case CLANCHAT:
-					return Color.decode("#7F0000");
+					return JagexColors.CHAT_CLAN_TEXT_TRANSPARENT_BACKGROUND;
 				case EXAMINE_ITEM:
 				case EXAMINE_OBJECT:
 				case EXAMINE_NPC:
 				case GAME:
-					return Color.decode("#FFFFFF");
+					return JagexColors.CHAT_GAME_EXAMINE_TEXT_TRANSPARENT_BACKGROUND;
 			}
 		}
 
@@ -573,7 +574,7 @@ public class ChatMessageManager
 			return;
 		}
 
-		final boolean transparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) != 0;
+		final boolean transparent = client.isResized() && transparencyVarbit != 0;
 		final Collection<ChatColor> chatColors = colorCache.get(target.getType());
 
 		// If we do not have any colors cached, simply set clean message
