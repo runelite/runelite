@@ -56,7 +56,7 @@ public enum HotColdLocation
 	ASGARNIA_BARB(new WorldPoint(3036, 3439, 0), ASGARNIA, "West of Barbarian Village."),
 	ASGARNIA_MIAZRQA(new WorldPoint(2973, 3489, 0), ASGARNIA, "North of Miazrqa's tower, outside Goblin Village."),
 	ASGARNIA_COW(new WorldPoint(3033, 3308, 0), ASGARNIA, "In the cow pen north of Sarah's Farming Shop."),
-	ASGARNIA_PARTY_ROOM(new WorldPoint(3034, 3368, 0), ASGARNIA, "Outside the Falador Party Room."),
+	ASGARNIA_PARTY_ROOM(new WorldPoint(3026, 3363, 0), ASGARNIA, "Outside the Falador Party Room."),
 	ASGARNIA_CRAFT_GUILD(new WorldPoint(2917, 3295, 0), ASGARNIA, "Outside the Crafting Guild cow pen."),
 	ASGARNIA_RIMMINGTON(new WorldPoint(2978, 3241, 0), ASGARNIA, "In the centre of the Rimmington mine."),
 	ASGARNIA_MUDSKIPPER(new WorldPoint(2984, 3109, 0), ASGARNIA, "Mudskipper Point, on the starfish in the south-west corner."),
