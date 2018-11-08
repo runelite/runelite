@@ -69,4 +69,12 @@ public class Constants
 	public static final int MAX_Z = 4;
 
 	public static final int TILE_FLAG_BRIDGE = 2;
+
+	/**
+	 * The number of milliseconds in a client tick.
+	 * <p>
+	 * This is the length of a single frame when the client is running at
+	 * the maximum framerate of 50 fps.
+	 */
+	public static final int CLIENT_TICK_LENGTH = 20;
 }
