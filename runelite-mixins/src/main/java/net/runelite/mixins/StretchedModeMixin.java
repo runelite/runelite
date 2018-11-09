@@ -122,8 +122,18 @@ public abstract class StretchedModeMixin implements RSClient
 				int parentWidth = canvasParent.getWidth();
 				int parentHeight = canvasParent.getHeight();
 
-				int newWidth = Math.max(Constants.GAME_FIXED_WIDTH, (int) (parentWidth / scalingFactor));
-				int newHeight = Math.max(Constants.GAME_FIXED_HEIGHT, (int) (parentHeight / scalingFactor));
+				int newWidth = (int) (parentWidth / scalingFactor);
+				int newHeight = (int) (parentHeight / scalingFactor);
+
+				if (newWidth < Constants.GAME_FIXED_WIDTH || newHeight < Constants.GAME_FIXED_HEIGHT)
+				{
+					double scalingFactorW = (double)parentWidth / Constants.GAME_FIXED_WIDTH;
+					double scalingFactorH = (double)parentHeight / Constants.GAME_FIXED_HEIGHT;
+					double scalingFactor = Math.min(scalingFactorW, scalingFactorH);
+
+					newWidth = (int) (parentWidth / scalingFactor);
+					newHeight = (int) (parentHeight / scalingFactor);
+				}
 
 				cachedRealDimensions = new Dimension(newWidth, newHeight);
 			}
