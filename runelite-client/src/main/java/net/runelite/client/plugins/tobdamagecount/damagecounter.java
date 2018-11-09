@@ -180,7 +180,8 @@ public class damagecounter extends Plugin {
             DamagePrint(actor);
             ResetCounter();
         }
-        else if (actor.isDead() && actor.getName().equals(this.Name) && !actor.getName().equals("VERZIK VITUR")){
+        else if (actor.isDead() && actor.getName().equals(this.Name) && actor.getId() != NpcID.VERZIK_VITUR_8374 &&
+                actor.getId() != NpcID.VERZIK_VITUR_8372 && actor.getId() != NpcID.VERZIK_VITUR_8370){
             DamagePrint(actor);
             ResetCounter();
         }
