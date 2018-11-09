@@ -63,14 +63,15 @@ public class damagecounter extends Plugin
 	private boolean bossfound = false;
 
 	//locations at ToB
-	private static final int MAIDEN_REGION = 12869;
+	private static final int MAIDEN_REGION = 12613;
+	private static final int MAIDEN_REGION_1 = 12869;
 	private static final int BLOAT_REGION = 13125;
 	private static final int NYLOCAS_REGION = 13122;
 	private static final int SOTETSEG_REGION = 13123;
 	private static final int XARPUS_REGION = 12612;
 	private static final int VERZIK_REGION = 12611;
-	private static final int[] ToB_Region = {MAIDEN_REGION, BLOAT_REGION, NYLOCAS_REGION, SOTETSEG_REGION,
-			XARPUS_REGION, VERZIK_REGION};
+	private static final int[] ToB_Region = {MAIDEN_REGION, MAIDEN_REGION_1, BLOAT_REGION, NYLOCAS_REGION,
+			SOTETSEG_REGION, XARPUS_REGION, VERZIK_REGION};
 
 	//setting up the array for a check list
 	private static int[] NPCARRAY = {NpcID.THE_MAIDEN_OF_SUGADINTI, NpcID.THE_MAIDEN_OF_SUGADINTI_8361,
@@ -116,7 +117,7 @@ public class damagecounter extends Plugin
 					{
 						if (aNPCARRAY == interactingId)
 						{
-							this.BossName = interactingName;
+							BossName = interactingName;
 							this.bossfound = true;
 						}
 					}
@@ -170,7 +171,7 @@ public class damagecounter extends Plugin
 			if (interacting instanceof NPC)
 			{
 				String interactingName = ((NPC) interacting).getName();
-				if (interactingName == this.BossName)
+				if (interactingName == BossName)
 				{
 					this.DamageCount += XPtoDamage();
 				}
@@ -190,7 +191,7 @@ public class damagecounter extends Plugin
 			DamagePrint(actor);
 			ResetCounter();
 		}
-		else if (actor.isDead() && actor.getName().equals(this.BossName) && actor.getId() != NpcID.VERZIK_VITUR_8374 &&
+		else if (actor.isDead() && actor.getName().equals(BossName) && actor.getId() != NpcID.VERZIK_VITUR_8374 &&
 				actor.getId() != NpcID.VERZIK_VITUR_8372 &&  actor.getId() != NpcID.VERZIK_VITUR_8370)
 		{
 			DamagePrint(actor);
@@ -202,7 +203,7 @@ public class damagecounter extends Plugin
 	private void ResetCounter()
 	{
 		this.DamageCount = 0;
-		this.BossName = null;
+		BossName = null;
 		this.bossfound = false;
 	}
 
@@ -219,7 +220,7 @@ public class damagecounter extends Plugin
 	private void Death(LocalPlayerDeath death)
 	{
 		String DeathMessage = "You have tried your best! You have done " + this.DamageCount + " damage to this " +
-				this.BossName + "!";
+				BossName + "!";
 		for (int i = 0; i < ToB_Region.length; i++)
 		{
 			if (client.getLocalPlayer().getWorldLocation().getRegionID() == ToB_Region[i])
