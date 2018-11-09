@@ -328,4 +328,5 @@ public class LootTrackerPlugin extends Plugin
 				ignored);
 		}).toArray(LootTrackerItem[]::new);
 	}
+
 }

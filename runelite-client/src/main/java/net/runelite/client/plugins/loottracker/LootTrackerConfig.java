@@ -48,4 +48,15 @@ public interface LootTrackerConfig extends Config
 		description = ""
 	)
 	void setIgnoredItems(String key);
+
+	@ConfigItem(
+			keyName = "notifyHighlighted",
+			name = "Notify on highlighted",
+			description = "Notifies player on recieving highlights drops"
+	)
+
+	default boolean notifyHighlighted()
+	{
+		return false;
+	}
 }

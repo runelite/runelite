@@ -34,6 +34,7 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Rectangle;
 import static java.lang.Boolean.TRUE;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -66,7 +67,9 @@ import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemStack;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
@@ -213,12 +216,12 @@ public class GroundItemsPlugin extends Plugin
 			existing.setQuantity(existing.getQuantity() + groundItem.getQuantity());
 		}
 
-		boolean isHighlighted = config.highlightedColor().equals(getHighlighted(groundItem.getName(),
-				groundItem.getGePrice(), groundItem.getHaPrice()));
-		if (config.notifyHighlightedDrops() && isHighlighted)
-		{
-			notifyHighlightedItem(groundItem);
-		}
+//		boolean isHighlighted = config.highlightedColor().equals(getHighlighted(groundItem.getName(),
+//				groundItem.getGePrice(), groundItem.getHaPrice()));
+//		if (config.notifyHighlightedDrops() && isHighlighted)
+//		{
+//			notifyHighlightedItem(groundItem);
+//		}
 	}
 
 	@Subscribe
@@ -526,5 +529,51 @@ public class GroundItemsPlugin extends Plugin
 
 		notificationStringBuilder.append("!");
 		notifier.notify(notificationStringBuilder.toString());
+	}
+
+	@Subscribe
+	public void onNpcLootReceived(final NpcLootReceived npcLootReceived)
+	{
+		Collection<ItemStack> items = npcLootReceived.getItems();
+		ItemComposition composition;
+		for (ItemStack is : items)
+		{
+			composition = itemManager.getItemComposition(is.getId());
+			Color itemColor = getHighlighted(composition.getName(), itemManager.getItemPrice(is.getId()) * is.getQuantity(), Math.round(composition.getPrice() * HIGH_ALCHEMY_CONSTANT) * is.getQuantity());
+			if (itemColor != null)
+			{
+				if (config.notifyHighlightedDrops() && itemColor.equals(config.highlightedColor()))
+				{
+					sendLootNotification(composition.getName(), "highlighted");
+				}
+				else if (config.notifyLowValueDrops() && itemColor.equals(config.lowValueColor()))
+				{
+					sendLootNotification(composition.getName(), "low value");
+				}
+				else if (config.notifyMediumValueDrops() && itemColor.equals(config.mediumValueColor()))
+				{
+					sendLootNotification(composition.getName(), "medium value");
+				}
+				else if (config.notifyHighValueDrops() && itemColor.equals(config.highValueColor()))
+				{
+					sendLootNotification(composition.getName(), "high value");
+				}
+				else if (config.notifyInsaneValueDrops() && itemColor.equals(config.insaneValueColor()))
+				{
+					sendLootNotification(composition.getName(), "insane value");
+				}
+			}
+		}
+	}
+
+	private  void sendLootNotification(String itemName, String message)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+
+		stringBuilder.append('[').append(client.getLocalPlayer().getName()).append("] ");
+		stringBuilder.append("Received a ").append(message).append(" item: ").append(itemName);
+
+		String notification = stringBuilder.toString();
+		notifier.notify(notification);
 	}
 }

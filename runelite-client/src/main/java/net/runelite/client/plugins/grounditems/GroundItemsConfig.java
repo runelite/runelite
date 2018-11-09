@@ -73,10 +73,21 @@ public interface GroundItemsConfig extends Config
 	void setHiddenItems(String key);
 
 	@ConfigItem(
+			keyName = "notifyHighlightedDrops",
+			name = "Notify for Highlighted drops",
+			description = "Configures whether or not to notify for drops on your highlighted list",
+			position = 2
+	)
+	default boolean notifyHighlightedDrops()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "showHighlightedOnly",
 		name = "Show Highlighted items only",
 		description = "Configures whether or not to draw items only on your highlighted list",
-		position = 2
+		position = 3
 	)
 	default boolean showHighlightedOnly()
 	{
@@ -87,7 +98,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "dontHideUntradeables",
 		name = "Do not hide untradeables",
 		description = "Configures whether or not untradeable items ignore hiding under settings",
-		position = 3
+		position = 4
 	)
 	default boolean dontHideUntradeables()
 	{
@@ -98,7 +109,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "showMenuItemQuantities",
 		name = "Show Menu Item Quantities",
 		description = "Configures whether or not to show the item quantities in the menu",
-		position = 4
+		position = 5
 	)
 	default boolean showMenuItemQuantities()
 	{
@@ -109,7 +120,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "recolorMenuHiddenItems",
 		name = "Recolor Menu Hidden Items",
 		description = "Configures whether or not hidden items in right click menu will be recolored",
-		position = 5
+		position = 6
 	)
 	default boolean recolorMenuHiddenItems()
 	{
@@ -120,22 +131,11 @@ public interface GroundItemsConfig extends Config
 		keyName = "highlightTiles",
 		name = "Highlight Tiles",
 		description = "Configures whether or not to highlight tiles containing ground items",
-		position = 6
+		position = 7
 	)
 	default boolean highlightTiles() 
 	{ 
 		return false; 
-	}
-
-	@ConfigItem(
-		keyName = "notifyHighlightedDrops",
-		name = "Notify for Highlighted drops",
-		description = "Configures whether or not to notify for drops on your highlighted list",
-		position = 7
-	)
-	default boolean notifyHighlightedDrops()
-	{
-		return false;
 	}
 
 	@ConfigItem(
@@ -249,10 +249,21 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "notifyLowValueDrops",
+			name = "Notify for low value drops",
+			description = "Configures whether or not to notify for drops of low value",
+			position = 18
+	)
+	default boolean notifyLowValueDrops()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "mediumValueColor",
 		name = "Medium value items color",
 		description = "Configures the color for medium value items",
-		position = 18
+		position = 19
 	)
 	default Color mediumValueColor()
 	{
@@ -263,7 +274,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "mediumValuePrice",
 		name = "Medium value price",
 		description = "Configures the start price for medium value items",
-		position = 19
+		position = 20
 	)
 	default int mediumValuePrice()
 	{
@@ -271,10 +282,21 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "notifyMediumValueDrops",
+			name = "Notify for medium value drops",
+			description = "Configures whether or not to notify for drops of medium value",
+			position = 21
+	)
+	default boolean notifyMediumValueDrops()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "highValueColor",
 		name = "High value items color",
 		description = "Configures the color for high value items",
-		position = 20
+		position = 22
 	)
 	default Color highValueColor()
 	{
@@ -285,7 +307,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "highValuePrice",
 		name = "High value price",
 		description = "Configures the start price for high value items",
-		position = 21
+		position = 23
 	)
 	default int highValuePrice()
 	{
@@ -293,10 +315,21 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "notifyHighValueDrops",
+			name = "Notify for high value drops",
+			description = "Configures whether or not to notify for drops of high value",
+			position = 24
+	)
+	default boolean notifyHighValueDrops()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "insaneValueColor",
 		name = "Insane value items color",
 		description = "Configures the color for insane value items",
-		position = 22
+		position = 25
 	)
 	default Color insaneValueColor()
 	{
@@ -307,10 +340,21 @@ public interface GroundItemsConfig extends Config
 		keyName = "insaneValuePrice",
 		name = "Insane value price",
 		description = "Configures the start price for insane value items",
-		position = 23
+		position = 26
 	)
 	default int insaneValuePrice()
 	{
 		return 10000000;
+	}
+
+	@ConfigItem(
+			keyName = "notifyInsaneValueDrops",
+			name = "Notify for insane value drops",
+			description = "Configures whether or not to notify for drops of insane value",
+			position = 27
+	)
+	default boolean notifyInsaneValueDrops()
+	{
+		return false;
 	}
 }
