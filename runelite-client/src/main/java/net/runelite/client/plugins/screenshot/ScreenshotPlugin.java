@@ -118,6 +118,7 @@ public class ScreenshotPlugin extends Plugin
 
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
+	private static final Pattern RECIPE_FOR_DISASTER_PATTERN = Pattern.compile("You have freed (.+)");
 	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
 		"You feel something weird sneaking into your backpack",
@@ -272,9 +273,44 @@ public class ScreenshotPlugin extends Plugin
 		}
 		else if (client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT) != null)
 		{
-			// "You have completed The Corsair Curse!"
+			Widget membersQuests = client.getWidget(WidgetInfo.MEMBERS_QUESTS);
+			Widget freeQuests = client.getWidget(WidgetInfo.FREE_QUESTS);
+
 			String text = client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT).getText();
-			fileName = "Quest(" + text.substring(19, text.length() - 1) + ")";
+
+			for (Widget membersQuest : membersQuests.getChildren())
+			{
+				if (text.contains(membersQuest.getText()))
+				{
+					fileName = "Quest(" + membersQuest.getText() + ")";
+					break;
+				}
+			}
+
+			for (Widget freeQuest : freeQuests.getChildren())
+			{
+				if (text.contains(freeQuest.getText()))
+				{
+					fileName = "Quest(" + freeQuest.getText() + ")";
+					break;
+				}
+			}
+
+			//Special cases for Recipe for Disaster
+			if (fileName == null)
+			{
+				Matcher m = RECIPE_FOR_DISASTER_PATTERN.matcher(text);
+
+				if (m.find())
+				{
+					fileName = "Quest(RfD " + m.group(1) + ")";
+				}
+
+				if ("Congratulations! You have defeated the Culinaromancer!".equals(text))
+				{
+					fileName = "Quest(Recipe for Disaster)";
+				}
+			}
 		}
 
 		if (fileName != null)

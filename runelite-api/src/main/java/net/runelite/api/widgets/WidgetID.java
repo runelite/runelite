@@ -121,6 +121,7 @@ public class WidgetID
 	public static final int PVP_GROUP_ID = 90;
 	public static final int ZEAH_MESS_HALL_GROUP_ID = 235;
 	public static final int LOOTING_BAG_GROUP_ID = 81;
+	public static final int QUEST_TAB_GROUP_ID = 399;
 
 	static class WorldMap
 	{
@@ -722,5 +723,12 @@ public class WidgetID
 	static class LootingBag
 	{
 		static final int LOOTING_BAG_INVENTORY = 5;
+	}
+
+	static class QuestTab
+	{
+		static final int FREE_QUESTS = 9;
+		static final int MEMBERS_QUESTS = 10;
+		static final int MINIQUESTS = 11;
 	}
 }
