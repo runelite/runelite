@@ -50,6 +50,8 @@ public class VarrockDiaryRequirement extends GenericDiaryRequirement
 		// MEDIUM
 		add("Cast the teleport to Varrock spell.",
 			new Requirement(Skill.MAGIC, 25));
+		add("Get a Slayer task from Vannaka.",
+			new Requirement("Combat", 40));
 		add("Pick a White tree fruit.",
 			new Requirement(Skill.FARMING, 25));
 		add("Use the balloon to travel from Varrock.",
