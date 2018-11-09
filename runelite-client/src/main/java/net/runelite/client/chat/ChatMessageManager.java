@@ -52,6 +52,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.Text;
 
 @Singleton
 public class ChatMessageManager
@@ -173,20 +174,33 @@ public class ChatMessageManager
 	{
 		final String eventName = scriptCallbackEvent.getEventName();
 
+		boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
+
+		Color color = null;
+		Boolean privateMessage = false;
+		Boolean publicMessage = false;
+
 		switch (eventName)
 		{
+			case "clanChatMessage":
+				color = isChatboxTransparent ? chatColorConfig.transparentClanUsernames() : chatColorConfig.opaqueClanUsernames();
+				break;
+			case "publicChat":
+				color = isChatboxTransparent ? chatColorConfig.transparentUsername() : chatColorConfig.opaqueUsername();
+				publicMessage = true;
+				break;
 			case "privateChatFrom":
 			case "privateChatTo":
 			case "privateChatSplitFrom":
 			case "privateChatSplitTo":
+				color = isChatboxTransparent ? chatColorConfig.transparentPrivateUsernames() : chatColorConfig.opaquePrivateUsernames();
+				privateMessage = true;
 				break;
 			default:
 				return;
 		}
 
-		boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
-		Color usernameColor = isChatboxTransparent ? chatColorConfig.transparentPrivateUsernames() : chatColorConfig.opaquePrivateUsernames();
-		if (usernameColor == null)
+		if (color == null)
 		{
 			return;
 		}
@@ -194,9 +208,27 @@ public class ChatMessageManager
 		final String[] stringStack = client.getStringStack();
 		final int stringStackSize = client.getStringStackSize();
 
+		if (publicMessage)
+		{
+			String sender = Text.removeTags(stringStack[stringStackSize - 2]);
+
+			boolean isFriend = client.isFriended(sender, true) && !client.getLocalPlayer().getName().equals(sender);
+
+			if (isFriend)
+			{
+				color = isChatboxTransparent ? chatColorConfig.transparentPublicFriendUsernames() : chatColorConfig.opaquePublicFriendUsernames();
+			}
+		}
+
+		String colon = stringStack[stringStackSize - 1];
+		stringStack[stringStackSize - 1] = ColorUtil.prependColorTag(colon, color);
+
 		// Stack is: To/From playername :
-		String toFrom = stringStack[stringStackSize - 3];
-		stringStack[stringStackSize - 3] = ColorUtil.prependColorTag(toFrom, usernameColor);
+		if (privateMessage)
+		{
+			String toFrom = stringStack[stringStackSize - 3];
+			stringStack[stringStackSize - 3] = ColorUtil.prependColorTag(toFrom, color);
+		}
 	}
 
 	private static Color getDefaultColor(ChatMessageType type, boolean transparent)

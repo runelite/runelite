@@ -218,6 +218,8 @@ LABEL183:
 LABEL186:
    sload                  9
    load_string            ":"
+   load_string            "publicChat"
+   runelite_callback
    string_append          2
    sload                  1
    sload                  11
@@ -391,6 +393,8 @@ LABEL341:
    load_string            "] "
    sload                  9
    load_string            ":"
+   load_string            "clanChatMessage"
+   runelite_callback
    string_append          7
    sload                  6
    sload                  11
