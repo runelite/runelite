@@ -54,8 +54,9 @@ import net.runelite.client.plugins.PluginDescriptor;
    enabledByDefault = false
 )
 
-public class damagecounter extend Plugin
+public class damagecounter extends Plugin
 {
+
    private int currentWorld = -1;
    private int Count;
    private String Name;
@@ -69,7 +70,7 @@ public class damagecounter extend Plugin
    private static final int SOTETSEG_REGION = 13123;
    private static final int XARPUS_REGION = 12612;
    private static final int VERZIK_REGION = 12611;
-   private static final int[] ToB_Region = MAIDEN_REGION, BLOAT_REGION, NYLOCAS_REGION, SOTETSEG_REGION,
+   private static final int[] ToB_Region = {MAIDEN_REGION, BLOAT_REGION, NYLOCAS_REGION, SOTETSEG_REGION,
       XARPUS_REGION, VERZIK_REGION};
    
    //setting up the array for a check list
@@ -156,7 +157,7 @@ public class damagecounter extend Plugin
       {
          XPdrop = client.getSkillExperience(Skill.HITPOINTS);
          NewXp = XPdrop - currenthp;
-         currenthp -1;
+         currenthp = -1;
          damageOutput = NewXp / 1.3333;
       }
       //returns the damage you have done
@@ -241,7 +242,7 @@ public class damagecounter extend Plugin
             .append(ChatColorType.HIGHLIGHT)
             .append(chatMessage)
             .build();
-      chatMessageManager.queue(
+       chatMessangerManager.queue(
             QueuedMessage.builder()
                   .type(ChatMessageType.GAME)
                   .runeLiteFormattedMessage(message)
