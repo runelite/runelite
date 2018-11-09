@@ -24,7 +24,6 @@
  */
 package net.runelite.mixins;
 
-import com.google.common.primitives.Ints;
 import java.awt.Container;
 import java.awt.Dimension;
 import net.runelite.api.Constants;
@@ -102,8 +101,6 @@ public abstract class StretchedModeMixin implements RSClient
 	@Override
 	public void setScalingFactor(int factor)
 	{
-		factor = Ints.constrainToRange(factor, 0, 100);
-
 		scalingFactor = 1 + (factor / 100D);
 	}
 
