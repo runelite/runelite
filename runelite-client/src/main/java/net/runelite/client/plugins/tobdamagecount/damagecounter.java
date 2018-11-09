@@ -42,18 +42,19 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.plugins.Plugin;
+
 import net.runelite.client.plugins.PluginDescriptor;
 import com.google.common.eventbus.Subscribe;
 import javax.inject.Inject;
 
-
 @PluginDescriptor(
-        name = "ToB Damage Counter",
-        description = "Gives you an estimation damage on a boss after the boss fight posted in the chat",
-        tags = {"combat", "npcs", "tob"},
-        enabledByDefault = false
+    name = "ToB Damage Counter",
+    description = "Gives you an estimation damage on a boss after the boss fight posted in the chat",
+    tags = {"combat", "npcs", "tob"},
+    enabledByDefault = false
 )
-public class damagecounter extends Plugin {
+public class damagecounter extends Plugin
+{
     private int currentWorld = -1; //reset the counter if not a valid world
     private int Count;  //counting the damage
     private String Name; //NPC name to valid the count
@@ -73,8 +74,8 @@ public class damagecounter extends Plugin {
     //seting up the array for a check list, the chicken at the end was a test dummy so
     //I don't have go to ToB to check every time to print out a damage.
     private final int[] NPCARRAY = {NpcID.THE_MAIDEN_OF_SUGADINTI, NpcID.THE_MAIDEN_OF_SUGADINTI_8361,
-    NpcID.THE_MAIDEN_OF_SUGADINTI_8361,NpcID.THE_MAIDEN_OF_SUGADINTI_8362, NpcID.THE_MAIDEN_OF_SUGADINTI_8363,
-    NpcID.THE_MAIDEN_OF_SUGADINTI_8364, NpcID.THE_MAIDEN_OF_SUGADINTI_8365,NpcID.PESTILENT_BLOAT,
+    NpcID.THE_MAIDEN_OF_SUGADINTI_8361, NpcID.THE_MAIDEN_OF_SUGADINTI_8362, NpcID.THE_MAIDEN_OF_SUGADINTI_8363,
+    NpcID.THE_MAIDEN_OF_SUGADINTI_8364, NpcID.THE_MAIDEN_OF_SUGADINTI_8365, NpcID.PESTILENT_BLOAT,
     NpcID.NYLOCAS_VASILIAS, NpcID.NYLOCAS_VASILIAS_8355, NpcID.NYLOCAS_VASILIAS_8356, NpcID.NYLOCAS_VASILIAS_8357,
     NpcID.SOTETSEG, NpcID.SOTETSEG_8388,NpcID.XARPUS, NpcID.XARPUS_8339, NpcID.XARPUS_8340, NpcID.XARPUS_8341,
     NpcID.VERZIK_VITUR, NpcID.VERZIK_VITUR_8369, NpcID.VERZIK_VITUR_8370, NpcID.VERZIK_VITUR_8371,
@@ -89,8 +90,9 @@ public class damagecounter extends Plugin {
 
     //every gametick will check these methods
     @Subscribe
-    private void onGameTick(GameTick tick) {
-        if (client.getGameState() != GameState.LOGGED_IN) {
+    private void onGameTick(GameTick tick)
+    {
+        if(client.getGameState() != GameState.LOGGED_IN) {
             ResetCounter();
             return;
         }
@@ -105,13 +107,18 @@ public class damagecounter extends Plugin {
     {
         Player localPlayer = client.getLocalPlayer();
         Actor interacting = localPlayer.getInteracting();
-        if(client.getGameState() == GameState.LOGGED_IN){
-            if(!bossfound){
-                if (interacting instanceof NPC) {
+        if(client.getGameState() == GameState.LOGGED_IN)
+        {
+            if(!bossfound)
+            {
+                if (interacting instanceof NPC)
+                {
                     int interactingId = ((NPC) interacting).getId();
                     String interactingName = interacting.getName();
-                    for (int aNPCARRAY : NPCARRAY) {
-                        if (aNPCARRAY == interactingId) {
+                    for (int aNPCARRAY : NPCARRAY)
+                    {
+                        if (aNPCARRAY == interactingId)
+                        {
                             this.Name = interactingName;
                             this.bossfound = true;
                         }
@@ -141,11 +148,13 @@ public class damagecounter extends Plugin {
 
 
     //grabbing the XP drops and calculating the damage
-    private int XPtoDamage() {
+    private int XPtoDamage()
+    {
         int NewXp = 0;
         double damageOutput = 0;
         int XPdrop = 0;
-        if (currenthp != -1){
+        if (currenthp != -1)
+        {
             XPdrop = client.getSkillExperience(Skill.HITPOINTS);
             NewXp = XPdrop - currenthp;
             currenthp = -1;
@@ -157,7 +166,8 @@ public class damagecounter extends Plugin {
 
 
     //adding up the damage and on the interaction(aka per attack tick)
-    private void DamageCounting(){
+    private void DamageCounting()
+    {
         Player localPlayer = client.getLocalPlayer();
         Actor interacting = localPlayer.getInteracting();
         if(client.getGameState() == GameState.LOGGED_IN ){
@@ -174,7 +184,8 @@ public class damagecounter extends Plugin {
     //will check for the monster if it died works on ToB bosses
     //verzik has three different phases so the program will add all of the damage and combine it to one
     //making sure the else if statement doesnt check with verzik
-    public void onNpcDespawned(ActorDespawned npc) {
+    public void onNpcDespawned(ActorDespawned npc)
+    {
         NPC actor = (NPC) npc.getActor();
         if(actor.isDead() && actor.getId() == NpcID.VERZIK_VITUR_8375){
             DamagePrint(actor);
@@ -196,7 +207,8 @@ public class damagecounter extends Plugin {
     }
 
     //print out the damage after the Boss have died
-    private void DamagePrint(NPC actor){
+    private void DamagePrint(NPC actor)
+    {
         String MessageDamage = "Well done! You have done " + this.Count + " damage to " + actor.getName() + "!";
         sendChatMessage(MessageDamage);
     }
@@ -204,7 +216,8 @@ public class damagecounter extends Plugin {
     @Subscribe
     //whenever you have died in tob you will get a death message
     //made sure the message works at ToB area or else we will get it everywhere
-    private void Death(LocalPlayerDeath death){
+    private void Death(LocalPlayerDeath death)
+    {
         String DeathMessage = "You have tried your best! You have done " + this.Count + " damage to this " +
                 this.Name + "!";
         for(int i = 0; i<ToB_Region.length; i++) {
