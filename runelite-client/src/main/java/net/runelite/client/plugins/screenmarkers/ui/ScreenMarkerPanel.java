@@ -36,8 +36,6 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JColorChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -53,6 +51,7 @@ import net.runelite.client.plugins.screenmarkers.ScreenMarkerPlugin;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.FlatTextField;
+import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
 import net.runelite.client.util.ImageUtil;
 
 class ScreenMarkerPanel extends JPanel
@@ -489,17 +488,14 @@ class ScreenMarkerPanel extends JPanel
 
 	private void openFillColorPicker()
 	{
-		final JFrame parent = new JFrame();
-		JColorChooser jColorChooser = new JColorChooser(marker.getMarker().getFill());
-
-		jColorChooser.getSelectionModel().addChangeListener(e1 ->
+		RuneliteColorPicker colorPicker = new RuneliteColorPicker(marker.getMarker().getFill());
+		colorPicker.setOnColorChange(c ->
 		{
-			Color chosen = jColorChooser.getColor();
-			marker.getMarker().setFill(new Color(chosen.getRed(), chosen.getGreen(), chosen.getBlue(), DEFAULT_FILL_OPACITY));
+			marker.getMarker().setFill(new Color(c.getRed(), c.getGreen(), c.getBlue(), DEFAULT_FILL_OPACITY));
 			updateFill();
 		});
 
-		parent.addWindowListener(new WindowAdapter()
+		colorPicker.addWindowListener(new WindowAdapter()
 		{
 			@Override
 			public void windowClosing(WindowEvent e)
@@ -507,25 +503,18 @@ class ScreenMarkerPanel extends JPanel
 				plugin.updateConfig();
 			}
 		});
-
-		parent.add(jColorChooser);
-		parent.pack();
-		parent.setLocationRelativeTo(null);
-		parent.setVisible(true);
 	}
 
 	private void openBorderColorPicker()
 	{
-		final JFrame parent = new JFrame();
-		JColorChooser jColorChooser = new JColorChooser(marker.getMarker().getColor());
-
-		jColorChooser.getSelectionModel().addChangeListener(e1 ->
+		RuneliteColorPicker colorPicker = new RuneliteColorPicker(marker.getMarker().getColor());
+		colorPicker.setOnColorChange(c ->
 		{
-			marker.getMarker().setColor(jColorChooser.getColor());
+			marker.getMarker().setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), DEFAULT_FILL_OPACITY));
 			updateBorder();
 		});
 
-		parent.addWindowListener(new WindowAdapter()
+		colorPicker.addWindowListener(new WindowAdapter()
 		{
 			@Override
 			public void windowClosing(WindowEvent e)
@@ -533,10 +522,5 @@ class ScreenMarkerPanel extends JPanel
 				plugin.updateConfig();
 			}
 		});
-
-		parent.add(jColorChooser);
-		parent.pack();
-		parent.setLocationRelativeTo(null);
-		parent.setVisible(true);
 	}
 }
