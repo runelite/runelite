@@ -55,6 +55,7 @@ import javax.inject.Inject;
 )
 public class damagecounter extends Plugin
 {
+
     private int currentWorld = -1; //reset the counter if not a valid world
     private int Count;  //counting the damage
     private String Name; //NPC name to valid the count
@@ -68,7 +69,7 @@ public class damagecounter extends Plugin
     private static final int SOTETSEG_REGION = 13123;
     private static final int XARPUS_REGION = 12612;
     private static final int VERZIK_REGION = 12611;
-    private static final int[] ToB_Region = {MAIDEN_REGION, BLOAT_REGION, NYLOCAS_REGION,SOTETSEG_REGION, XARPUS_REGION,
+    private static final int[] ToB_Region = {MAIDEN_REGION, BLOAT_REGION, NYLOCAS_REGION, SOTETSEG_REGION, XARPUS_REGION,
             VERZIK_REGION};
 
     //seting up the array for a check list, the chicken at the end was a test dummy so
@@ -77,7 +78,7 @@ public class damagecounter extends Plugin
     NpcID.THE_MAIDEN_OF_SUGADINTI_8361, NpcID.THE_MAIDEN_OF_SUGADINTI_8362, NpcID.THE_MAIDEN_OF_SUGADINTI_8363,
     NpcID.THE_MAIDEN_OF_SUGADINTI_8364, NpcID.THE_MAIDEN_OF_SUGADINTI_8365, NpcID.PESTILENT_BLOAT,
     NpcID.NYLOCAS_VASILIAS, NpcID.NYLOCAS_VASILIAS_8355, NpcID.NYLOCAS_VASILIAS_8356, NpcID.NYLOCAS_VASILIAS_8357,
-    NpcID.SOTETSEG, NpcID.SOTETSEG_8388,NpcID.XARPUS, NpcID.XARPUS_8339, NpcID.XARPUS_8340, NpcID.XARPUS_8341,
+    NpcID.SOTETSEG, NpcID.SOTETSEG_8388, NpcID.XARPUS, NpcID.XARPUS_8339, NpcID.XARPUS_8340, NpcID.XARPUS_8341,
     NpcID.VERZIK_VITUR, NpcID.VERZIK_VITUR_8369, NpcID.VERZIK_VITUR_8370, NpcID.VERZIK_VITUR_8371,
     NpcID.VERZIK_VITUR_8372, NpcID.VERZIK_VITUR_8373, NpcID.VERZIK_VITUR_8374, NpcID.VERZIK_VITUR_8375,
     NpcID.UNDEAD_CHICKEN};
@@ -92,7 +93,8 @@ public class damagecounter extends Plugin
     @Subscribe
     private void onGameTick(GameTick tick)
     {
-        if(client.getGameState() != GameState.LOGGED_IN) {
+        if (client.getGameState() != GameState.LOGGED_IN)
+        {
             ResetCounter();
             return;
         }
@@ -107,9 +109,9 @@ public class damagecounter extends Plugin
     {
         Player localPlayer = client.getLocalPlayer();
         Actor interacting = localPlayer.getInteracting();
-        if(client.getGameState() == GameState.LOGGED_IN)
+        if (client.getGameState() == GameState.LOGGED_IN)
         {
-            if(!bossfound)
+            if (!bossfound)
             {
                 if (interacting instanceof NPC)
                 {
@@ -127,7 +129,7 @@ public class damagecounter extends Plugin
             }
         }
     }
-    //add
+
     @Subscribe
     //if you hop you reset counter or logout etc
     public void onGameStateChanged(GameStateChanged event)
@@ -146,7 +148,6 @@ public class damagecounter extends Plugin
         }
     }
 
-
     //grabbing the XP drops and calculating the damage
     private int XPtoDamage()
     {
@@ -164,16 +165,18 @@ public class damagecounter extends Plugin
         return (int) Math.floor(damageOutput);
     }
 
-
     //adding up the damage and on the interaction(aka per attack tick)
     private void DamageCounting()
     {
         Player localPlayer = client.getLocalPlayer();
         Actor interacting = localPlayer.getInteracting();
-        if(client.getGameState() == GameState.LOGGED_IN ){
-            if (interacting instanceof NPC) {
+        if (client.getGameState() == GameState.LOGGED_IN )
+        {
+            if (interacting instanceof NPC)
+            {
                 String interactingName = ((NPC) interacting).getName();
-                if (interactingName == this.Name) {
+                if (interactingName == this.Name)
+                {
                     this.Count += XPtoDamage();
                 }
             }
@@ -187,7 +190,8 @@ public class damagecounter extends Plugin
     public void onNpcDespawned(ActorDespawned npc)
     {
         NPC actor = (NPC) npc.getActor();
-        if(actor.isDead() && actor.getId() == NpcID.VERZIK_VITUR_8375){
+        if (actor.isDead() && actor.getId() == NpcID.VERZIK_VITUR_8375)
+        {
             DamagePrint(actor);
             ResetCounter();
         }
@@ -220,7 +224,8 @@ public class damagecounter extends Plugin
     {
         String DeathMessage = "You have tried your best! You have done " + this.Count + " damage to this " +
                 this.Name + "!";
-        for(int i = 0; i<ToB_Region.length; i++) {
+        for(int i = 0; i<ToB_Region.length; i++)
+        {
             if (client.getLocalPlayer().getWorldLocation().getRegionID() == ToB_Region[i]) {
                 sendChatMessage(DeathMessage);
                 ResetCounter();
@@ -235,7 +240,6 @@ public class damagecounter extends Plugin
                 .append(ChatColorType.HIGHLIGHT)
                 .append(chatMessage)
                 .build();
-
         chatMessageManager.queue(
                 QueuedMessage.builder()
                         .type(ChatMessageType.GAME)
