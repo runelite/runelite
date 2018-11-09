@@ -189,7 +189,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		// being reused
 		messageNode.setRuneLiteFormatMessage(null);
 
-		if (config.lvl() && message.toLowerCase().equals(TOTAL_LEVEL_COMMAND_STRING))
+		if (config.lvl() && (message.toLowerCase().equals(TOTAL_LEVEL_COMMAND_STRING) || message.toLowerCase().equals("level")))
 		{
 			log.debug("Running total level lookup");
 			executor.submit(() -> playerSkillLookup(setMessage, localEndpoint, "total"));
