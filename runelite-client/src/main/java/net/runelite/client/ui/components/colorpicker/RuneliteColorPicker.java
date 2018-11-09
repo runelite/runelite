@@ -37,9 +37,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import lombok.Getter;
 import lombok.Setter;
 
-class RuneliteColorPicker extends JFrame
+public class RuneliteColorPicker extends JFrame
 {
 
 	private final static int FRAME_WIDTH = 400;
@@ -58,13 +59,14 @@ class RuneliteColorPicker extends JFrame
 	private final JTextField hexInput = new JTextField();
 	private final JTextField rgbaInput = new JTextField();
 
+	@Getter
 	private Color selectedColor;
 	@Setter
 	private Consumer<Color> onColorChange;
 
-	RuneliteColorPicker(Color previousColor)
+	public RuneliteColorPicker(Color previousColor)
 	{
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("RuneLite Color Picker");
 		setResizable(false);
 		setSize(FRAME_WIDTH, FRAME_HEIGHT);

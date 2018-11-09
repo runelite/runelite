@@ -48,11 +48,8 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -88,6 +85,7 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.ComboBoxListRenderer;
 import net.runelite.client.ui.components.IconButton;
 import net.runelite.client.ui.components.IconTextField;
+import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
 import net.runelite.client.util.ImageUtil;
 
 @Slf4j
@@ -128,7 +126,7 @@ public class ConfigPanel extends PluginPanel
 	}
 
 	ConfigPanel(PluginManager pluginManager, ConfigManager configManager, ScheduledExecutorService executorService,
-		RuneLiteConfig runeLiteConfig, ChatColorConfig chatColorConfig)
+				RuneLiteConfig runeLiteConfig, ChatColorConfig chatColorConfig)
 	{
 		super(false);
 		this.pluginManager = pluginManager;
@@ -387,47 +385,44 @@ public class ConfigPanel extends PluginPanel
 				String existing = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName());
 
 				Color existingColor;
-				JButton colorPicker;
+				JButton colorPickerBtn;
 
 				if (existing == null)
 				{
 					existingColor = Color.BLACK;
-					colorPicker = new JButton("Pick a color");
+					colorPickerBtn = new JButton("Pick a color");
 				}
 				else
 				{
 					existingColor = Color.decode(existing);
-					colorPicker = new JButton("#" + Integer.toHexString(existingColor.getRGB()).substring(2).toUpperCase());
+					colorPickerBtn = new JButton("#" + Integer.toHexString(existingColor.getRGB()).substring(2).toUpperCase());
 				}
 
-				colorPicker.setFocusable(false);
-				colorPicker.setBackground(existingColor);
-				colorPicker.addMouseListener(new MouseAdapter()
+				colorPickerBtn.setFocusable(false);
+				colorPickerBtn.setBackground(existingColor);
+				colorPickerBtn.addMouseListener(new MouseAdapter()
 				{
 					@Override
 					public void mouseClicked(MouseEvent e)
 					{
-						final JFrame parent = new JFrame();
-						JColorChooser jColorChooser = new JColorChooser(existingColor);
-						jColorChooser.getSelectionModel().addChangeListener(e1 ->
+						RuneliteColorPicker colorPicker = new RuneliteColorPicker(existingColor);
+						colorPicker.setOnColorChange(c ->
 						{
-							colorPicker.setBackground(jColorChooser.getColor());
-							colorPicker.setText("#" + Integer.toHexString(jColorChooser.getColor().getRGB()).substring(2).toUpperCase());
+							colorPickerBtn.setBackground(c);
+							colorPickerBtn.setText("#" + Integer.toHexString(c.getRGB()).substring(2).toUpperCase());
 						});
-						parent.addWindowListener(new WindowAdapter()
+
+						colorPicker.addWindowListener(new WindowAdapter()
 						{
 							@Override
 							public void windowClosing(WindowEvent e)
 							{
-								changeConfiguration(listItem, config, jColorChooser, cd, cid);
+								changeConfiguration(listItem, config, colorPicker, cd, cid);
 							}
 						});
-						parent.add(jColorChooser);
-						parent.pack();
-						parent.setVisible(true);
 					}
 				});
-				item.add(colorPicker, BorderLayout.EAST);
+				item.add(colorPickerBtn, BorderLayout.EAST);
 			}
 
 			if (cid.getType() == Dimension.class)
@@ -534,7 +529,7 @@ public class ConfigPanel extends PluginPanel
 		scrollPane.getVerticalScrollBar().setValue(0);
 	}
 
-	private void changeConfiguration(PluginListItem listItem, Config config, JComponent component, ConfigDescriptor cd, ConfigItemDescriptor cid)
+	private void changeConfiguration(PluginListItem listItem, Config config, Component component, ConfigDescriptor cd, ConfigItemDescriptor cid)
 	{
 		final ConfigItem configItem = cid.getItem();
 
@@ -566,10 +561,10 @@ public class ConfigPanel extends PluginPanel
 			JTextComponent textField = (JTextComponent) component;
 			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), textField.getText());
 		}
-		else if (component instanceof JColorChooser)
+		else if (component instanceof RuneliteColorPicker)
 		{
-			JColorChooser jColorChooser = (JColorChooser) component;
-			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), String.valueOf(jColorChooser.getColor().getRGB()));
+			RuneliteColorPicker colorPicker = (RuneliteColorPicker) component;
+			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), String.valueOf(colorPicker.getSelectedColor().getRGB()));
 		}
 		else if (component instanceof JComboBox)
 		{
