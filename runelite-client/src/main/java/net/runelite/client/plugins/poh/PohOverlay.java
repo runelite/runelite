@@ -131,5 +131,17 @@ public class PohOverlay extends Overlay
 		{
 			iconList.add(PohIcons.MAGICTRAVEL);
 		}
+		if (config.showPortalNexus())
+		{
+			iconList.add(PohIcons.PORTALNEXUS);
+		}
+		if (config.showDigsitePendant())
+		{
+			iconList.add(PohIcons.DIGSITEPENDANT);
+		}
+		if (config.showXericsTalisman())
+		{
+			iconList.add(PohIcons.XERICSTALISMAN);
+		}
 	}
 }

@@ -130,4 +130,34 @@ public interface PohConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showPortalNexus",
+		name = "Show Portal Nexus",
+		description = "Configures whether or not the Portal Nexus is displayed"
+	)
+	default boolean showPortalNexus()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showDigsitePendant",
+		name = "Show Digsite Pendant",
+		description = "Configures whether or not the Digsite Pendant is displayed"
+	)
+	default boolean showDigsitePendant()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showXericsTalisman",
+		name = "Show Xeric's Talisman",
+		description = "Configures whether or not the Xeric's Talisman is displayed"
+	)
+	default boolean showXericsTalisman()
+	{
+		return true;
+	}
 }
