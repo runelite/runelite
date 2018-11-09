@@ -25,42 +25,44 @@
 
 package net.runelite.client.plugins.tobdamagecount;
 
+import com.google.common.eventbus.Subscribe;
+import javax.inject.Inject;
+import net.runelite.api.Actor;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.NpcID;
 import net.runelite.api.Skill;
 import net.runelite.api.NPC;
-import net.runelite.api.ChatMessageType;
+import net.runelite.api.NpcID;
+import net.runelite.api.Player;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ActorDespawned;
 import net.runelite.api.events.LocalPlayerDeath;
-import net.runelite.api.Actor;
-import net.runelite.api.Player;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.plugins.Plugin;
-
 import net.runelite.client.plugins.PluginDescriptor;
-import com.google.common.eventbus.Subscribe;
-import javax.inject.Inject;
+
+
 
 @PluginDescriptor(
-    name = "ToB Damage Counter",
-    description = "Gives you an estimation damage on a boss after the boss fight posted in the chat",
-    tags = {"combat", "npcs", "tob"},
-    enabledByDefault = false
+        name = "ToB Damage Counter",
+        description = "Gives you an estimation damage on a boss after the boss fight, "
+                + "the damage will be posted in chat",
+        tags = {"combat", "npcs", "tob", "damage"},
+        enabledByDefault = false
 )
+
 public class damagecounter extends Plugin
 {
-
-    private int currentWorld = -1; //reset the counter if not a valid world
-    private int Count;  //counting the damage
-    private String Name; //NPC name to valid the count
-    private int currenthp = -1; //to calculate the damage
-    private boolean bossfound = false; //once it is found it will reset
+    private int currentWorld = -1;
+    private int Count;
+    private String Name;
+    private int currenthp = -1;
+    private boolean bossfound = false;
 
     //location at tob
     private static final int MAIDEN_REGION = 12869;
@@ -75,13 +77,13 @@ public class damagecounter extends Plugin
     //seting up the array for a check list, the chicken at the end was a test dummy so
     //I don't have go to ToB to check every time to print out a damage.
     private final int[] NPCARRAY = {NpcID.THE_MAIDEN_OF_SUGADINTI, NpcID.THE_MAIDEN_OF_SUGADINTI_8361,
-    NpcID.THE_MAIDEN_OF_SUGADINTI_8361, NpcID.THE_MAIDEN_OF_SUGADINTI_8362, NpcID.THE_MAIDEN_OF_SUGADINTI_8363,
-    NpcID.THE_MAIDEN_OF_SUGADINTI_8364, NpcID.THE_MAIDEN_OF_SUGADINTI_8365, NpcID.PESTILENT_BLOAT,
-    NpcID.NYLOCAS_VASILIAS, NpcID.NYLOCAS_VASILIAS_8355, NpcID.NYLOCAS_VASILIAS_8356, NpcID.NYLOCAS_VASILIAS_8357,
-    NpcID.SOTETSEG, NpcID.SOTETSEG_8388, NpcID.XARPUS, NpcID.XARPUS_8339, NpcID.XARPUS_8340, NpcID.XARPUS_8341,
-    NpcID.VERZIK_VITUR, NpcID.VERZIK_VITUR_8369, NpcID.VERZIK_VITUR_8370, NpcID.VERZIK_VITUR_8371,
-    NpcID.VERZIK_VITUR_8372, NpcID.VERZIK_VITUR_8373, NpcID.VERZIK_VITUR_8374, NpcID.VERZIK_VITUR_8375,
-    NpcID.UNDEAD_CHICKEN};
+        NpcID.THE_MAIDEN_OF_SUGADINTI_8361, NpcID.THE_MAIDEN_OF_SUGADINTI_8362, NpcID.THE_MAIDEN_OF_SUGADINTI_8363,
+        NpcID.THE_MAIDEN_OF_SUGADINTI_8364, NpcID.THE_MAIDEN_OF_SUGADINTI_8365, NpcID.PESTILENT_BLOAT,
+        NpcID.NYLOCAS_VASILIAS, NpcID.NYLOCAS_VASILIAS_8355, NpcID.NYLOCAS_VASILIAS_8356, NpcID.NYLOCAS_VASILIAS_8357,
+        NpcID.SOTETSEG, NpcID.SOTETSEG_8388, NpcID.XARPUS, NpcID.XARPUS_8339, NpcID.XARPUS_8340, NpcID.XARPUS_8341,
+        NpcID.VERZIK_VITUR, NpcID.VERZIK_VITUR_8369, NpcID.VERZIK_VITUR_8370, NpcID.VERZIK_VITUR_8371,
+        NpcID.VERZIK_VITUR_8372, NpcID.VERZIK_VITUR_8373, NpcID.VERZIK_VITUR_8374, NpcID.VERZIK_VITUR_8375,
+        NpcID.UNDEAD_CHICKEN};
 
     @Inject
     private Client client;
@@ -89,8 +91,8 @@ public class damagecounter extends Plugin
     @Inject
     private ChatMessageManager chatMessageManager;
 
-    //every gametick will check these methods
     @Subscribe
+    //every gametick will check these methods
     private void onGameTick(GameTick tick)
     {
         if (client.getGameState() != GameState.LOGGED_IN)
@@ -196,11 +198,11 @@ public class damagecounter extends Plugin
             ResetCounter();
         }
         else if (actor.isDead() && actor.getName().equals(this.Name) && actor.getId() != NpcID.VERZIK_VITUR_8374 &&
-                actor.getId() != NpcID.VERZIK_VITUR_8372 && actor.getId() != NpcID.VERZIK_VITUR_8370){
+                actor.getId() != NpcID.VERZIK_VITUR_8372 && actor.getId() != NpcID.VERZIK_VITUR_8370)
+        {
             DamagePrint(actor);
             ResetCounter();
         }
-
     }
     //just reset counters
     private void ResetCounter()
@@ -224,9 +226,10 @@ public class damagecounter extends Plugin
     {
         String DeathMessage = "You have tried your best! You have done " + this.Count + " damage to this " +
                 this.Name + "!";
-        for(int i = 0; i<ToB_Region.length; i++)
+        for(int i = 0; i < ToB_Region.length; i++)
         {
-            if (client.getLocalPlayer().getWorldLocation().getRegionID() == ToB_Region[i]) {
+            if (client.getLocalPlayer().getWorldLocation().getRegionID() == ToB_Region[i])
+            {
                 sendChatMessage(DeathMessage);
                 ResetCounter();
             }
