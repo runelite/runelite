@@ -189,12 +189,12 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		// being reused
 		messageNode.setRuneLiteFormatMessage(null);
 
-		if (config.lvl() && (message.toLowerCase().equals(TOTAL_LEVEL_COMMAND_STRING) || message.toLowerCase().equals("level")))
+		if (config.lvl() && (message.toLowerCase().equals(TOTAL_LEVEL_COMMAND_STRING) || message.toLowerCase().equals("overall")))
 		{
 			log.debug("Running total level lookup");
 			executor.submit(() -> playerSkillLookup(setMessage, localEndpoint, "total"));
 		}
-		else if (config.lvl() && message.toLowerCase().equals(CMB_COMMAND_STRING))
+		else if (config.lvl() && (message.toLowerCase().equals(CMB_COMMAND_STRING) || message.toLowerCase().equals("cmb") || message.toLowerCase().equals("cb")))
 		{
 			log.debug("Running combat level lookup");
 			executor.submit(() -> combatLevelLookup(setMessage.getType(), setMessage));
@@ -206,7 +206,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			log.debug("Running price lookup for {}", search);
 			itemPriceLookup(setMessage.getMessageNode(), search);
 		}
-		else if (config.lvl() && message.toLowerCase().startsWith(LEVEL_COMMAND_STRING + " "))
+		else if (config.lvl() && (message.toLowerCase().startsWith(LEVEL_COMMAND_STRING + " ") || message.toLowerCase().startsWith("level" + " ")))
 		{
 			String search = message.substring(LEVEL_COMMAND_STRING.length() + 1);
 
