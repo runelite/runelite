@@ -39,6 +39,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.client.ui.ColorScheme;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 
 public class RuneliteColorPicker extends JFrame
 {
@@ -70,26 +72,23 @@ public class RuneliteColorPicker extends JFrame
 		setTitle("RuneLite Color Picker");
 		setResizable(false);
 		setSize(FRAME_WIDTH, FRAME_HEIGHT);
+		setBackground(ColorScheme.PROGRESS_COMPLETE_COLOR);
 
 		JPanel content = new JPanel(new BorderLayout());
+		content.putClientProperty(SubstanceSynapse.COLORIZATION_FACTOR, 1.0);
 		content.setBorder(new EmptyBorder(15, 15, 15, 15));
-		content.setBackground(new Color(30, 30, 30));
 
 		JPanel colorSelection = new JPanel(new BorderLayout(15, 0));
-		colorSelection.setBackground(new Color(30, 30, 30));
 
 		JPanel leftPanel = new JPanel(new BorderLayout(15, 0));
-		leftPanel.setBackground(new Color(30, 30, 30));
 
 		leftPanel.add(colorPanel, BorderLayout.WEST);
 		leftPanel.add(tonePanel, BorderLayout.CENTER);
 
 		JPanel rightPanel = new JPanel();
 		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
-		rightPanel.setBackground(new Color(30, 30, 30));
 
 		JPanel contrastPanel = new JPanel(new GridLayout(1, 2));
-		contrastPanel.setBackground(new Color(30, 30, 30));
 
 		JPanel beforePreview = new JPanel();
 		beforePreview.setBackground(selectedColor);
@@ -99,29 +98,25 @@ public class RuneliteColorPicker extends JFrame
 		contrastPanel.add(afterPreview);
 
 		JPanel hexContainer = new JPanel(new GridLayout(2, 1, 0, 5));
-		hexContainer.setBackground(new Color(30, 30, 30));
 
 		JLabel hexLabel = new JLabel("Hex color:");
-		hexLabel.setVerticalAlignment(SwingConstants.BOTTOM);
 		hexLabel.setForeground(Color.WHITE);
+		hexLabel.setVerticalAlignment(SwingConstants.BOTTOM);
 
 		hexInput.setBorder(new EmptyBorder(5, 5, 5, 5));
-		hexInput.setBackground(new Color(20, 20, 20));
-		hexInput.setForeground(Color.WHITE);
+		hexInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		hexContainer.add(hexLabel);
 		hexContainer.add(hexInput);
 
 		JPanel rgbContainer = new JPanel(new GridLayout(2, 1, 0, 5));
-		rgbContainer.setBackground(new Color(30, 30, 30));
 
 		JLabel rgbLabel = new JLabel("RGBA color:");
-		rgbLabel.setVerticalAlignment(SwingConstants.BOTTOM);
 		rgbLabel.setForeground(Color.WHITE);
+		rgbLabel.setVerticalAlignment(SwingConstants.BOTTOM);
 
 		rgbaInput.setBorder(new EmptyBorder(5, 5, 5, 5));
-		rgbaInput.setBackground(new Color(20, 20, 20));
-		rgbaInput.setForeground(Color.WHITE);
+		rgbaInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		rgbContainer.add(rgbLabel);
 		rgbContainer.add(rgbaInput);
@@ -132,7 +127,6 @@ public class RuneliteColorPicker extends JFrame
 
 		JPanel slidersContainer = new JPanel(new GridLayout(4, 1, 0, 10));
 		slidersContainer.setBorder(new EmptyBorder(15, 0, 0, 0));
-		slidersContainer.setBackground(new Color(30, 30, 30));
 
 		slidersContainer.add(redSlider);
 		slidersContainer.add(greenSlider);

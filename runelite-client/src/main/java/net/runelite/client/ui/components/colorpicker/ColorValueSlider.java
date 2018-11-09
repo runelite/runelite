@@ -34,6 +34,7 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import lombok.Setter;
+import net.runelite.client.ui.ColorScheme;
 
 public class ColorValueSlider extends JPanel
 {
@@ -50,14 +51,13 @@ public class ColorValueSlider extends JPanel
 
 	ColorValueSlider(String labelText)
 	{
-		setBackground(new Color(30, 30, 30));
 		setLayout(new BorderLayout(10, 0));
+		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		input = new JTextField();
+		input.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		input.setPreferredSize(new Dimension(40, 30));
 		input.setBorder(new EmptyBorder(5, 5, 5, 5));
-		input.setBackground(new Color(20, 20, 20));
-		input.setForeground(Color.WHITE);
 		input.addActionListener(a ->
 		{
 			if (!input.getText().isEmpty() && input.getText().matches("-?(0|[1-9]\\d*)"))
@@ -74,12 +74,13 @@ public class ColorValueSlider extends JPanel
 		});
 
 		JLabel label = new JLabel(labelText);
+		label.setPreferredSize(new Dimension(40, 0));
 		label.setForeground(Color.WHITE);
 
 		slider = new JSlider();
+		slider.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		slider.setMinimum(ColorUtils.MIN_RGB_VALUE);
 		slider.setMaximum(ColorUtils.MAX_RGB_VALUE);
-		slider.setBackground(new Color(30, 30, 30));
 		slider.setBorder(new EmptyBorder(0, 0, 5, 0));
 		slider.setUI(new CustomSliderUI(slider));
 
