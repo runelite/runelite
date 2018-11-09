@@ -199,7 +199,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			log.debug("Running combat level lookup");
 			executor.submit(() -> combatLevelLookup(setMessage.getType(), setMessage));
 		}
-		else if (config.price() && message.toLowerCase().startsWith(PRICE_COMMAND_STRING + " "))
+		else if (config.price() && (message.toLowerCase().startsWith(PRICE_COMMAND_STRING + " ") || message.toLowerCase().startsWith("ge" + " ") || message.toLowerCase().startsWith("value" + " ")))
 		{
 			String search = message.substring(PRICE_COMMAND_STRING.length() + 1);
 
