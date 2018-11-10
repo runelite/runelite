@@ -6,24 +6,26 @@
    load_string            "Total level:"
    load_string            "<br>"
    invoke                 1007
-   int_to_string
+   int_to_string         
    string_append          3
    iload                  0
    load_string            "skillTabTotalLevel" ; push event name
-   runelite_callback                           ; invoke callback
+   runelite_callback     ; invoke callback
    widget_put_text_widget
    iload                  0
    widget_put_actions_null_widget
-   load_string            "Total XP:"
+   load_string            ""
    sstore                 0
-   invoke                 1008
-   invoke                 1009
+   load_string            ""
    sstore                 1
+   invoke                 2685
+   sstore                 1
+   sstore                 0
    invoke                 1972
    load_int               1
-   if_icmpeq              LABEL18
-   jump                   LABEL49
-LABEL18:
+   if_icmpeq              LABEL20
+   jump                   LABEL51
+LABEL20:
    load_int               1
    load_string            "Toggle Total XP"
    iload                  0
@@ -41,14 +43,14 @@ LABEL18:
    widget_put_option_click_listener_widget
    get_varc               218
    iload                  0
-   if_icmpeq              LABEL37
-   jump                   LABEL48
-LABEL37:
+   if_icmpeq              LABEL39
+   jump                   LABEL50
+LABEL39:
    get_varc               217
    load_int               -1
-   if_icmpeq              LABEL41
-   jump                   LABEL48
-LABEL41:
+   if_icmpeq              LABEL43
+   jump                   LABEL50
+LABEL43:
    iload                  0
    load_int               -1
    iload                  1
@@ -56,9 +58,9 @@ LABEL41:
    sload                  1
    load_int               495
    invoke                 2344
-LABEL48:
-   jump                   LABEL69
-LABEL49:
+LABEL50:
+   jump                   LABEL71
+LABEL51:
    load_int               992
    load_int               -2147483645
    load_int               -1
@@ -68,7 +70,7 @@ LABEL49:
    load_int               495
    load_int               25
    load_int               5
-   idiv
+   idiv                  
    load_string            "IiIssfi"
    iload                  0
    widget_put_mouse_hover_listener_widget
@@ -79,5 +81,5 @@ LABEL49:
    widget_put_mouse_exit_listener_widget
    load_int               0
    put_varc               2
-LABEL69:
-   return
+LABEL71:
+   return                

@@ -119,14 +119,16 @@ public class WidgetID
 	public static final int MINIGAME_TAB_ID = 76;
 	public static final int SPELLBOOK_GROUP_ID = 218;
 	public static final int PVP_GROUP_ID = 90;
+	public static final int ZEAH_MESS_HALL_GROUP_ID = 235;
+	public static final int LOOTING_BAG_GROUP_ID = 81;
 
 	static class WorldMap
 	{
-		static final int MAPVIEW = 4;
-		static final int OVERVIEW_MAP = 7;
-		static final int SEARCH = 22;
-		static final int SURFACE_SELECTOR = 30;
-		static final int TOOLTIP = 36;
+		static final int MAPVIEW = 6;
+		static final int OVERVIEW_MAP = 9;
+		static final int SEARCH = 24;
+		static final int SURFACE_SELECTOR = 25;
+		static final int TOOLTIP = 38;
 		static final int OPTION = 42;
 	}
 
@@ -192,6 +194,7 @@ public class WidgetID
 		static final int TITLE = 1;
 		static final int NAME = 3;
 		static final int OWNER = 5;
+		static final int LIST = 15;
 	}
 
 	static class Bank
@@ -202,6 +205,8 @@ public class WidgetID
 		static final int CONTENT_CONTAINER = 9;
 		static final int ITEM_CONTAINER = 12;
 		static final int SEARCH_BUTTON_BACKGROUND = 39;
+		static final int DEPOSIT_INVENTORY = 41;
+		static final int DEPOSIT_EQUIPMENT = 43;
 		static final int INCINERATOR = 45;
 		static final int INCINERATOR_CONFIRM = 46;
 	}
@@ -287,7 +292,7 @@ public class WidgetID
 
 	static class LoginClickToPlayScreen
 	{
-		static final int MESSAGE_OF_THE_DAY = 4;
+		static final int MESSAGE_OF_THE_DAY = 7;
 	}
 
 	static class Viewport
@@ -406,12 +411,15 @@ public class WidgetID
 
 	static class Chatbox
 	{
-		static final int CHATBOX_PARENT = 0;
-		static final int CHATBOX_BUTTONS = 1;
-		static final int CHATBOX_REPORT_TEXT = 36;
-		static final int CHATBOX_FRAME = 37;
-		static final int CHATBOX_MESSAGES = 55;
-		static final int CHATBOX_INPUT = 57;
+		static final int PARENT = 0;
+		static final int BUTTONS = 1;
+		static final int REPORT_TEXT = 36;
+		static final int FRAME = 37;
+		static final int CONTAINER = 40;
+		static final int TITLE = 44;
+		static final int FULL_INPUT = 45;
+		static final int MESSAGES = 55;
+		static final int INPUT = 57;
 	}
 
 	static class Prayer
@@ -675,12 +683,12 @@ public class WidgetID
 
 	static class StandardSpellBook
 	{
-		static final int LUMBRIDGE_HOME_TELEPORT = 1;
+		static final int LUMBRIDGE_HOME_TELEPORT = 4;
 	}
 
 	static class AncientSpellBook
 	{
-		static final int EDGEVILLE_HOME_TELEPORT = 97;
+		static final int EDGEVILLE_HOME_TELEPORT = 98;
 	}
 
 	static class LunarSpellBook
@@ -690,11 +698,13 @@ public class WidgetID
 
 	static class ArceuusSpellBook
 	{
-		static final int ARCEUUS_HOME_TELEPORT = 145;
+		static final int ARCEUUS_HOME_TELEPORT = 143;
 	}
 
 	static class Pvp
 	{
+		static final int KILLDEATH_RATIO = 6;
+		static final int BOUNTY_HUNTER_STATS = 25;
 		static final int PVP_WIDGET_CONTAINER = 50;
 		static final int SKULL_CONTAINER = 51;
 		static final int SKULL = 52;
@@ -702,5 +712,15 @@ public class WidgetID
 		static final int ATTACK_RANGE = 55;
 		static final int WILDERNESS_LEVEL = 56; // this can also be the Deadman Mode "Protection" text
 		static final int DEADMAN_PROTECTION_TIME = 57;
+	}
+
+	static class Zeah
+	{
+		static final int MESS_HALL_COOKING_DISPLAY = 3;
+	}
+
+	static class LootingBag
+	{
+		static final int LOOTING_BAG_INVENTORY = 5;
 	}
 }

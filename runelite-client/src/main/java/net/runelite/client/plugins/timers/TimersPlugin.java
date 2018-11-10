@@ -151,7 +151,7 @@ public class TimersPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChange(VarbitChanged event)
+	public void onVarbitChanged(VarbitChanged event)
 	{
 		int raidVarb = client.getVar(Varbits.IN_RAID);
 		if (lastRaidVarb != raidVarb)
@@ -190,7 +190,7 @@ public class TimersPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void updateConfig(ConfigChanged event)
+	public void onConfigChanged(ConfigChanged event)
 	{
 		if (!config.showHomeMinigameTeleports())
 		{
@@ -198,43 +198,19 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(MINIGAME_TELEPORT);
 		}
 
-		if (!config.showAntidotePlus())
+		if (!config.showAntiPoison())
 		{
 			removeGameTimer(ANTIDOTEPLUS);
-		}
-
-		if (!config.showAntidotePlusPlus())
-		{
 			removeGameTimer(ANTIDOTEPLUSPLUS);
-		}
-
-		if (!config.showSanfew())
-		{
 			removeGameTimer(SANFEW);
-		}
-
-		if (!config.showAntiVenom())
-		{
 			removeGameTimer(ANTIVENOM);
-		}
-
-		if (!config.showAntiVenomPlus())
-		{
 			removeGameTimer(ANTIVENOMPLUS);
 		}
 
 		if (!config.showAntiFire())
 		{
 			removeGameTimer(ANTIFIRE);
-		}
-
-		if (!config.showExAntiFire())
-		{
 			removeGameTimer(EXANTIFIRE);
-		}
-
-		if (!config.showSuperAntiFire())
-		{
 			removeGameTimer(SUPERANTIFIRE);
 		}
 
@@ -282,10 +258,6 @@ public class TimersPlugin extends Plugin
 		if (!config.showVengeance())
 		{
 			removeGameTimer(VENGEANCE);
-		}
-
-		if (!config.showVengeanceOther())
-		{
 			removeGameTimer(VENGEANCEOTHER);
 		}
 
@@ -312,7 +284,7 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (config.showAntidotePlusPlus()
+		if (config.showAntiPoison()
 			&& event.getMenuOption().contains("Drink")
 			&& (event.getId() == ItemID.ANTIDOTE1_5958
 			|| event.getId() == ItemID.ANTIDOTE2_5956
@@ -324,7 +296,7 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (config.showAntidotePlus()
+		if (config.showAntiPoison()
 			&& event.getMenuOption().contains("Drink")
 			&& (event.getId() == ItemID.ANTIDOTE1
 			|| event.getId() == ItemID.ANTIDOTE2
@@ -347,7 +319,7 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (config.showSuperantipoison()
+		if (config.showAntiPoison()
 			&& event.getMenuOption().contains("Drink")
 			&& (event.getId() == ItemID.SUPERANTIPOISON1
 			|| event.getId() == ItemID.SUPERANTIPOISON2
@@ -389,7 +361,7 @@ public class TimersPlugin extends Plugin
 			createGameTimer(STAMINA);
 		}
 
-		if (event.getMessage().equals(STAMINA_EXPIRED_MESSAGE))
+		if (config.showStamina() && event.getMessage().equals(STAMINA_EXPIRED_MESSAGE))
 		{
 			removeGameTimer(STAMINA);
 		}
@@ -399,7 +371,7 @@ public class TimersPlugin extends Plugin
 			createGameTimer(ANTIFIRE);
 		}
 
-		if (config.showExAntiFire() && event.getMessage().equals(EXTENDED_ANTIFIRE_DRINK_MESSAGE))
+		if (config.showAntiFire() && event.getMessage().equals(EXTENDED_ANTIFIRE_DRINK_MESSAGE))
 		{
 			createGameTimer(EXANTIFIRE);
 		}
@@ -409,12 +381,12 @@ public class TimersPlugin extends Plugin
 			createGameTimer(GOD_WARS_ALTAR);
 		}
 
-		if (config.showExSuperAntifire() && event.getMessage().equals(EXTENDED_SUPER_ANTIFIRE_DRINK_MESSAGE))
+		if (config.showAntiFire() && event.getMessage().equals(EXTENDED_SUPER_ANTIFIRE_DRINK_MESSAGE))
 		{
 			createGameTimer(EXSUPERANTIFIRE);
 		}
 
-		if (event.getMessage().equals(ANTIFIRE_EXPIRED_MESSAGE))
+		if (config.showAntiFire() && event.getMessage().equals(ANTIFIRE_EXPIRED_MESSAGE))
 		{
 			//they have the same expired message
 			removeGameTimer(ANTIFIRE);
@@ -439,12 +411,12 @@ public class TimersPlugin extends Plugin
 			createGameTimer(CANNON);
 		}
 
-		if (event.getMessage().equals(CANNON_PICKUP_MESSAGE))
+		if (config.showCannon() && event.getMessage().equals(CANNON_PICKUP_MESSAGE))
 		{
 			removeGameTimer(CANNON);
 		}
 
-		if (config.showAntiVenomPlus() && event.getMessage().contains(SUPER_ANTIVENOM_DRINK_MESSAGE))
+		if (config.showAntiPoison() && event.getMessage().contains(SUPER_ANTIVENOM_DRINK_MESSAGE))
 		{
 			createGameTimer(ANTIVENOMPLUS);
 		}
@@ -481,27 +453,27 @@ public class TimersPlugin extends Plugin
 			createGameTimer(DMM_HALFTB);
 		}
 
-		if (config.showSuperAntiFire() && event.getMessage().contains(SUPER_ANTIFIRE_DRINK_MESSAGE))
+		if (config.showAntiFire() && event.getMessage().contains(SUPER_ANTIFIRE_DRINK_MESSAGE))
 		{
 			createGameTimer(SUPERANTIFIRE);
 		}
 
-		if (event.getMessage().equals(SUPER_ANTIFIRE_EXPIRED_MESSAGE))
+		if (config.showAntiFire() && event.getMessage().equals(SUPER_ANTIFIRE_EXPIRED_MESSAGE))
 		{
 			removeGameTimer(SUPERANTIFIRE);
 		}
 
-		if (event.getMessage().equals(IMBUED_HEART_READY_MESSAGE))
+		if (config.showImbuedHeart() && event.getMessage().equals(IMBUED_HEART_READY_MESSAGE))
 		{
 			removeGameTimer(IMBUEDHEART);
 		}
 
-		if (config.showAntiVenom() && event.getMessage().contains(ANTIVENOM_DRINK_MESSAGE))
+		if (config.showAntiPoison() && event.getMessage().contains(ANTIVENOM_DRINK_MESSAGE))
 		{
 			createGameTimer(ANTIVENOM);
 		}
 
-		if (config.showSanfew() && event.getMessage().contains(SANFEW_SERUM_DRINK_MESSAGE))
+		if (config.showAntiPoison() && event.getMessage().contains(SANFEW_SERUM_DRINK_MESSAGE))
 		{
 			createGameTimer(SANFEW);
 		}
@@ -625,7 +597,7 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (config.showVengeanceOther()
+		if (config.showVengeance()
 			&& actor.getAnimation() == AnimationID.ENERGY_TRANSFER_VENGEANCE_OTHER
 			&& actor.getInteracting().getGraphic() == VENGEANCEOTHER.getGraphicId())
 		{

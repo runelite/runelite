@@ -86,6 +86,7 @@ public class KaramjaDiaryRequirement extends GenericDiaryRequirement
 		add("Collect 5 palm leaves.",
 			new Requirement(Skill.WOODCUTTING, 15));
 		add("Be assigned a Slayer task by Duradel north of Shilo Village.",
+			new Requirement("Combat", 100),
 			new Requirement(Skill.SLAYER, 50));
 		add("Kill a metal dragon in Brimhaven Dungeon.",
 			new Requirement(Skill.AGILITY, 12),

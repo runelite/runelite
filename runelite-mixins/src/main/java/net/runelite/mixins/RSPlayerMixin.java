@@ -57,9 +57,6 @@ public abstract class RSPlayerMixin implements RSPlayer
 	private static RSClient client;
 
 	@Inject
-	private int playerIndex;
-
-	@Inject
 	@Override
 	public String getName()
 	{

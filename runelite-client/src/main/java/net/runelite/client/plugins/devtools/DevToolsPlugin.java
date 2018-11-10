@@ -26,29 +26,38 @@ package net.runelite.client.plugins.devtools;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
+import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.ExperienceChanged;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import org.slf4j.LoggerFactory;
 
@@ -59,6 +68,9 @@ import org.slf4j.LoggerFactory;
 )
 public class DevToolsPlugin extends Plugin
 {
+	private static final List<MenuAction> EXAMINE_MENU_ACTIONS = ImmutableList.of(MenuAction.EXAMINE_ITEM,
+			MenuAction.EXAMINE_ITEM_GROUND, MenuAction.EXAMINE_NPC, MenuAction.EXAMINE_OBJECT);
+
 	@Inject
 	private Client client;
 
@@ -105,6 +117,7 @@ public class DevToolsPlugin extends Plugin
 	private boolean toggleWorldMapLocation;
 	private boolean toggleTileLocation;
 	private boolean toggleInteracting;
+	private boolean toggleExamineInfo;
 
 	Widget currentWidget;
 	int itemIndex = -1;
@@ -156,7 +169,7 @@ public class DevToolsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onCommand(CommandExecuted commandExecuted)
+	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
 		String[] args = commandExecuted.getArguments();
 
@@ -261,6 +274,45 @@ public class DevToolsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		if (!toggleExamineInfo)
+		{
+			return;
+		}
+
+		MenuAction action = MenuAction.of(event.getType());
+
+		if (EXAMINE_MENU_ACTIONS.contains(action))
+		{
+			MenuEntry[] entries = client.getMenuEntries();
+			MenuEntry entry = entries[entries.length - 1];
+
+			final int identifier = event.getIdentifier();
+			String info = "ID: ";
+
+			if (action == MenuAction.EXAMINE_NPC)
+			{
+				NPC npc = client.getCachedNPCs()[identifier];
+				info += npc.getId();
+			}
+			else
+			{
+				info += identifier;
+
+				if (action == MenuAction.EXAMINE_OBJECT)
+				{
+					WorldPoint point = WorldPoint.fromScene(client, entry.getParam0(), entry.getParam1(), client.getPlane());
+					info += " X: " + point.getX() + " Y: " + point.getY();
+				}
+			}
+
+			entry.setTarget(entry.getTarget() + " " + ColorUtil.prependColorTag("(" + info + ")", JagexColors.MENU_TARGET));
+			client.setMenuEntries(entries);
+		}
+	}
+
 	Font getFont()
 	{
 		return font;
@@ -359,6 +411,11 @@ public class DevToolsPlugin extends Plugin
 	void toggleInteracting()
 	{
 		toggleInteracting = !toggleInteracting;
+	}
+
+	void toggleExamineInfo()
+	{
+		toggleExamineInfo = !toggleExamineInfo;
 	}
 
 	boolean isTogglePlayers()

@@ -30,9 +30,13 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseWheelEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Objects;
+import java.util.Collection;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
@@ -41,41 +45,51 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.DraggingWidgetChanged;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.ChatboxInputManager;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.chatbox.ChatboxPanelManager;
+import net.runelite.client.input.KeyListener;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.input.MouseWheelListener;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.banktags.tabs.BankSearch;
 import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
+import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 
 @PluginDescriptor(
 	name = "Bank Tags",
 	description = "Enable tagging of bank items and searching of bank tags",
 	tags = {"searching", "tagging"}
 )
-public class BankTagsPlugin extends Plugin implements MouseWheelListener
+@PluginDependency(ClueScrollPlugin.class)
+public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyListener
 {
 	public static final Splitter SPLITTER = Splitter.on(",").omitEmptyStrings().trimResults();
 	public static final Joiner JOINER = Joiner.on(",").skipNulls();
 	public static final String CONFIG_GROUP = "banktags";
 	public static final String TAG_SEARCH = "tag:";
-	public static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
+	private static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
 	public static final String ICON_SEARCH = "icon_";
+	public static final String VAR_TAG_SUFFIX = "*";
 
 	private static final String SEARCH_BANK_INPUT_TEXT =
 		"Show items whose names or tags contain the following text:<br>" +
@@ -94,7 +108,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	private ClientThread clientThread;
 
 	@Inject
-	private ChatboxInputManager chatboxInputManager;
+	private ChatboxPanelManager chatboxPanelManager;
 
 	@Inject
 	private MouseManager mouseManager;
@@ -108,6 +122,14 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	@Inject
 	private TabInterface tabInterface;
 
+	@Inject
+	private BankSearch bankSearch;
+
+	@Inject
+	private KeyManager keyManager;
+
+	private boolean shiftPressed = false;
+
 	@Provides
 	BankTagsConfig getConfig(ConfigManager configManager)
 	{
@@ -117,6 +139,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	@Override
 	public void startUp()
 	{
+		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseWheelListener(this);
 		clientThread.invokeLater(tabInterface::init);
 		client.getSpriteOverrides().putAll(TabSprites.toMap(client));
@@ -125,6 +148,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	@Override
 	public void shutDown()
 	{
+		keyManager.unregisterKeyListener(this);
 		mouseManager.unregisterMouseWheelListener(this);
 		clientThread.invokeLater(tabInterface::destroy);
 
@@ -132,6 +156,8 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 		{
 			client.getSpriteOverrides().remove(value.getSpriteId());
 		}
+
+		shiftPressed = false;
 	}
 
 	@Subscribe
@@ -160,7 +186,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				break;
 			}
 			case "bankSearchFilter":
-				int itemId = itemManager.canonicalize(intStack[intStackSize - 1]);
+				int itemId = intStack[intStackSize - 1];
 				String itemName = stringStack[stringStackSize - 2];
 				String search = stringStack[stringStackSize - 1];
 
@@ -196,13 +222,15 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 		{
 			Widget container = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
 			Widget item = container.getChild(event.getActionParam0());
-			int itemID = itemManager.canonicalize(item.getItemId());
+			int itemID = item.getItemId();
 			String text = EDIT_TAGS_MENU_OPTION;
-			int tagCount = tagManager.getTags(itemID).size();
+			int tagCount = tagManager.getTags(itemID, false).size() + tagManager.getTags(itemID, true).size();
+
 			if (tagCount > 0)
 			{
 				text += " (" + tagCount + ")";
 			}
+
 			MenuEntry editTags = new MenuEntry();
 			editTags.setParam0(event.getActionParam0());
 			editTags.setParam1(event.getActionParam1());
@@ -243,20 +271,49 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				return;
 			}
 
-			int itemId = itemManager.canonicalize(item.getId());
+			int itemId = item.getId();
 			ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-			String itemName = itemComposition.getName();
-			String initialValue = tagManager.getTagString(itemId);
+			String name = itemComposition.getName();
 
-			chatboxInputManager.openInputWindow(itemName + " tags:", initialValue, (newTags) ->
+			// Get both tags and vartags and append * to end of vartags name
+			Collection<String> tags = tagManager.getTags(itemId, false);
+			tagManager.getTags(itemId, true).stream()
+				.map(i -> i + "*")
+				.forEach(tags::add);
+
+			boolean isSearchOpen = client.getVar(VarClientInt.INPUT_TYPE) == InputType.SEARCH.getType();
+			String searchText = client.getVar(VarClientStr.INPUT_TEXT);
+			String initialValue = JOINER.join(tags);
+
+			chatboxPanelManager.openTextInput(name + " tags:<br>(append " + VAR_TAG_SUFFIX + " for variation tag)")
+				.value(initialValue)
+				.onDone((newValue) ->
+					clientThread.invoke(() ->
+					{
+						// Split inputted tags to vartags (ending with *) and regular tags
+						final Collection<String> newTags = new ArrayList<>(SPLITTER.splitToList(newValue.toLowerCase()));
+						final Collection<String> newVarTags = new ArrayList<>(newTags).stream().filter(s -> s.endsWith(VAR_TAG_SUFFIX)).map(s ->
+						{
+							newTags.remove(s);
+							return s.substring(0, s.length() - VAR_TAG_SUFFIX.length());
+						}).collect(Collectors.toList());
+
+						// And save them
+						tagManager.setTagString(itemId, JOINER.join(newTags), false);
+						tagManager.setTagString(itemId, JOINER.join(newVarTags), true);
+
+						// Check both previous and current tags in case the tag got removed in new tags or in case
+						// the tag got added in new tags
+						tabInterface.updateTabIfActive(SPLITTER.splitToList(initialValue.toLowerCase().replaceAll(Pattern.quote(VAR_TAG_SUFFIX), "")));
+						tabInterface.updateTabIfActive(SPLITTER.splitToList(newValue.toLowerCase().replaceAll(Pattern.quote(VAR_TAG_SUFFIX), "")));
+					}))
+				.build();
+
+			if (isSearchOpen)
 			{
-				if (!Objects.equals(newTags, client.getVar(VarClientStr.INPUT_TEXT)))
-				{
-					return;
-				}
-
-				tagManager.setTagString(itemId, newTags);
-			});
+				bankSearch.reset(false);
+				bankSearch.search(InputType.SEARCH, searchText, false);
+			}
 		}
 		else
 		{
@@ -289,7 +346,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	@Subscribe
 	public void onDraggingWidgetChanged(DraggingWidgetChanged event)
 	{
-		tabInterface.handleDrag(event.isDraggingWidget());
+		tabInterface.handleDrag(event.isDraggingWidget(), shiftPressed);
 	}
 
 	@Subscribe
@@ -301,10 +358,42 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 		}
 	}
 
+	@Subscribe
+	public void onFocusChanged(FocusChanged event)
+	{
+		if (!event.isFocused())
+		{
+			shiftPressed = false;
+		}
+	}
+
 	@Override
 	public MouseWheelEvent mouseWheelMoved(MouseWheelEvent event)
 	{
-		clientThread.invokeLater(() -> tabInterface.handleWheel(event));
+		tabInterface.handleWheel(event);
 		return event;
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e)
+	{
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+		{
+			shiftPressed = true;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+		{
+			shiftPressed = false;
+		}
 	}
 }

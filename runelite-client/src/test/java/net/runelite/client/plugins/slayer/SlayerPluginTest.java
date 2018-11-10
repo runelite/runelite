@@ -30,6 +30,8 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import static net.runelite.api.ChatMessageType.SERVER;
 import net.runelite.api.Client;
+import net.runelite.api.Player;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
@@ -58,8 +60,10 @@ public class SlayerPluginTest
 	private static final String TASK_NEW_FROM_PARTNER = "You have received a new Slayer assignment from breaklulz: Dust Devils (377)";
 	private static final String TASK_CHECKSLAYERGEM_WILDERNESS = "You're assigned to kill Suqahs in the Wilderness; only 211 more to go.";
 	private static final String TASK_CHECKSLAYERGEM = "You're assigned to kill Suqahs; only 211 more to go.";
+	private static final String TASK_UPDATE_COMBAT_BRACELET = "You still need to kill 30 monsters to complete your current Slayer assignment";
 
 	private static final String TASK_BOSS_NEW = "Excellent. You're now assigned to kill Vet'ion 3 times.<br>Your reward point tally is 914.";
+	private static final String TASK_BOSS_NEW_THE = "Excellent. You're now assigned to kill the Chaos <br>Elemental 3 times. Your reward point tally is 914.";
 
 	private static final String TASK_EXISTING = "You're still hunting suqahs; you have 222 to go. Come<br>back when you've finished your task.";
 
@@ -163,6 +167,19 @@ public class SlayerPluginTest
 		slayerPlugin.onGameTick(new GameTick());
 
 		assertEquals("Vet'ion", slayerPlugin.getTaskName());
+		assertEquals(3, slayerPlugin.getAmount());
+		assertEquals(914, slayerPlugin.getPoints());
+	}
+
+	@Test
+	public void testBossTaskThe()
+	{
+		Widget npcDialog = mock(Widget.class);
+		when(npcDialog.getText()).thenReturn(TASK_BOSS_NEW_THE);
+		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
+		slayerPlugin.onGameTick(new GameTick());
+
+		assertEquals("Chaos Elemental", slayerPlugin.getTaskName());
 		assertEquals(3, slayerPlugin.getAmount());
 		assertEquals(914, slayerPlugin.getPoints());
 	}
@@ -309,7 +326,7 @@ public class SlayerPluginTest
 	}
 
 	@Test
-	public void testBracletSlaughter()
+	public void testBraceletSlaughter()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", BRACLET_SLAUGHTER, null);
 
@@ -402,5 +419,23 @@ public class SlayerPluginTest
 
 		assertEquals(41, slayerPlugin.getAmount());
 		assertEquals(1, slayerPlugin.getExpeditiousChargeCount());
+	}
+
+	@Test
+	public void testCombatBraceletUpdate()
+	{
+		final Player player = mock(Player.class);
+		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		slayerPlugin.setTaskName("Suqahs");
+		slayerPlugin.setAmount(231);
+
+		ChatMessage chatMessage = new ChatMessage(SERVER, "", TASK_UPDATE_COMBAT_BRACELET, null);
+		slayerPlugin.onChatMessage(chatMessage);
+
+		assertEquals("Suqahs", slayerPlugin.getTaskName());
+		slayerPlugin.killedOne();
+		assertEquals(30, slayerPlugin.getAmount());
 	}
 }

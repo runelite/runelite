@@ -27,6 +27,7 @@
 package net.runelite.client.plugins.cluescrolls;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
@@ -47,8 +48,10 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
+import net.runelite.api.ObjectComposition;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
+import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -84,7 +87,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
-import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Clue Scroll",
@@ -103,7 +105,7 @@ public class ClueScrollPlugin extends Plugin
 	private final List<NPC> npcsToMark = new ArrayList<>();
 
 	@Getter
-	private GameObject[] objectsToMark;
+	private final List<TileObject> objectsToMark = new ArrayList<>();
 
 	@Getter
 	private Item[] equippedItems;
@@ -145,6 +147,12 @@ public class ClueScrollPlugin extends Plugin
 	ClueScrollConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ClueScrollConfig.class);
+	}
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(ClueScrollService.class).to(ClueScrollServiceImpl.class);
 	}
 
 	@Override
@@ -238,7 +246,18 @@ public class ClueScrollPlugin extends Plugin
 		// if three step clue check for clue scroll pieces
 		if (clue instanceof ThreeStepCrypticClue)
 		{
-			((ThreeStepCrypticClue) clue).checkForParts(client, event, itemManager);
+			if (((ThreeStepCrypticClue) clue).update(client, event, itemManager))
+			{
+				worldMapPointsSet = false;
+				npcsToMark.clear();
+
+				if (config.displayHintArrows())
+				{
+					client.clearHintArrow();
+				}
+
+				checkClueNPCs(clue, client.getCachedNPCs());
+			}
 		}
 	}
 
@@ -289,9 +308,7 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(final GameTick event)
 	{
-		objectsToMark = null;
-		equippedItems = null;
-		inventoryItems = null;
+		objectsToMark.clear();
 
 		if (clue instanceof LocationsClueScroll)
 		{
@@ -310,7 +327,10 @@ public class ClueScrollPlugin extends Plugin
 				{
 					for (WorldPoint location : locations)
 					{
-						highlightObjectsForLocation(location, objectIds);
+						if (location != null)
+						{
+							highlightObjectsForLocation(location, objectIds);
+						}
 					}
 				}
 			}
@@ -416,11 +436,7 @@ public class ClueScrollPlugin extends Plugin
 		}
 
 		// Remove line breaks and also the rare occasion where there are double line breaks
-		final String text = Text.removeTags(clueScrollText.getText()
-			.replaceAll("-<br>", "-")
-			.replaceAll("<br>", " ")
-			.replaceAll("[ ]+", " ")
-			.toLowerCase());
+		final String text = Text.sanitizeMultilineText(clueScrollText.getText()).toLowerCase();
 
 		// Early return if this is same clue as already existing one
 		if (clue instanceof TextClueScroll)
@@ -483,6 +499,7 @@ public class ClueScrollPlugin extends Plugin
 		}
 
 		// We have unknown clue, reset
+		log.warn("Encountered unhandled clue text: {}", clueScrollText.getText());
 		resetClue(true);
 		return null;
 	}
@@ -572,10 +589,33 @@ public class ClueScrollPlugin extends Plugin
 		final Scene scene = client.getScene();
 		final Tile[][][] tiles = scene.getTiles();
 		final Tile tile = tiles[client.getPlane()][localLocation.getSceneX()][localLocation.getSceneY()];
+		objectsToMark.clear();
 
-		objectsToMark = Arrays.stream(tile.getGameObjects())
-			.filter(object -> object != null && ArrayUtils.contains(objectIds, object.getId()))
-			.toArray(GameObject[]::new);
+		for (GameObject object : tile.getGameObjects())
+		{
+			if (object == null)
+			{
+				continue;
+			}
+
+			for (int id : objectIds)
+			{
+				if (object.getId() == id)
+				{
+					objectsToMark.add(object);
+					continue;
+				}
+
+				// Check impostors
+				final ObjectComposition comp = client.getObjectDefinition(object.getId());
+				final ObjectComposition impostor = comp.getImpostor();
+
+				if (impostor != null && impostor.getId() == id)
+				{
+					objectsToMark.add(object);
+				}
+			}
+		}
 	}
 
 	private void checkClueNPCs(ClueScroll clue, final NPC... npcs)

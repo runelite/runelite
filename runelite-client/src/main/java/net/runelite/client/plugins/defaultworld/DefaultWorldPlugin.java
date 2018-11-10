@@ -86,7 +86,7 @@ public class DefaultWorldPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		applyWorld();
 	}

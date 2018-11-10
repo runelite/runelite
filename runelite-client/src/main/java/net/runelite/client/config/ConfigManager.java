@@ -25,6 +25,7 @@
 package net.runelite.client.config;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.EventBus;
 import java.awt.Color;
@@ -36,12 +37,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
+import java.nio.channels.FileLock;
+import java.nio.charset.Charset;
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -179,7 +183,7 @@ public class ConfigManager
 
 		try (FileInputStream in = new FileInputStream(propertiesFile))
 		{
-			properties.load(in);
+			properties.load(new InputStreamReader(in, Charset.forName("UTF-8")));
 		}
 		catch (FileNotFoundException ex)
 		{
@@ -199,6 +203,7 @@ public class ConfigManager
 				if (split.length != 2)
 				{
 					log.debug("Properties key malformed!: {}", groupAndKey);
+					properties.remove(groupAndKey);
 					return;
 				}
 
@@ -225,7 +230,16 @@ public class ConfigManager
 
 		try (FileOutputStream out = new FileOutputStream(propertiesFile))
 		{
-			properties.store(out, "RuneLite configuration");
+			final FileLock lock = out.getChannel().lock();
+
+			try
+			{
+				properties.store(new OutputStreamWriter(out, Charset.forName("UTF-8")), "RuneLite configuration");
+			}
+			finally
+			{
+				lock.release();
+			}
 		}
 	}
 
@@ -237,9 +251,9 @@ public class ConfigManager
 		}
 
 		T t = (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class<?>[]
-		{
-			clazz
-		}, handler);
+			{
+				clazz
+			}, handler);
 
 		return t;
 	}
@@ -276,6 +290,11 @@ public class ConfigManager
 		log.debug("Setting configuration value for {}.{} to {}", groupName, key, value);
 
 		String oldValue = (String) properties.setProperty(groupName + "." + key, value);
+
+		if (Objects.equals(oldValue, value))
+		{
+			return;
+		}
 
 		if (client != null)
 		{
@@ -315,6 +334,11 @@ public class ConfigManager
 
 		String oldValue = (String) properties.remove(groupName + "." + key);
 
+		if (oldValue == null)
+		{
+			return;
+		}
+
 		if (client != null)
 		{
 			client.unset(groupName + "." + key);
@@ -351,14 +375,18 @@ public class ConfigManager
 			throw new IllegalArgumentException("Not a config group");
 		}
 
-		List<ConfigItemDescriptor> items = Arrays.stream(inter.getMethods())
+		final List<ConfigItemDescriptor> items = Arrays.stream(inter.getMethods())
 			.filter(m -> m.getParameterCount() == 0)
-			.sorted(Comparator.comparingInt(m -> m.getDeclaredAnnotation(ConfigItem.class).position()))
 			.map(m -> new ConfigItemDescriptor(
 				m.getDeclaredAnnotation(ConfigItem.class),
 				m.getReturnType()
 			))
+			.sorted((a, b) -> ComparisonChain.start()
+				.compare(a.getItem().position(), b.getItem().position())
+				.compare(a.getItem().name(), b.getItem().name())
+				.result())
 			.collect(Collectors.toList());
+
 		return new ConfigDescriptor(group, items);
 	}
 

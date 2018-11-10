@@ -104,7 +104,12 @@ public interface RSWidget extends Widget
 	void setTextColor(int textColor);
 
 	@Import("opacity")
+	@Override
 	int getOpacity();
+
+	@Import("opacity")
+	@Override
+	void setOpacity(int opacity);
 
 	@Import("relativeX")
 	@Override
@@ -311,6 +316,26 @@ public interface RSWidget extends Widget
 	@Override
 	Object[] getOnLoadListener();
 
+	@Import("onDialogAbortListener")
+	@Override
+	void setOnDialogAbortListener(Object... args);
+
+	@Import("onKeyListener")
+	@Override
+	void setOnKeyListener(Object... args);
+
+	@Import("onMouseOverListener")
+	@Override
+	void setOnMouseOverListener(Object... args);
+
+	@Import("onMouseLeaveListener")
+	@Override
+	void setOnMouseLeaveListener(Object... args);
+
+	@Import("onTimerListener")
+	@Override
+	void setOnTimerListener(Object... args);
+
 	@Import("fontId")
 	@Override
 	int getFontId();
@@ -342,4 +367,72 @@ public interface RSWidget extends Widget
 	@Import("dragDeadTime")
 	@Override
 	void setDragDeadTime(int deadTime);
+
+	@Import("itemQuantityMode")
+	@Override
+	int getItemQuantityMode();
+
+	@Import("itemQuantityMode")
+	@Override
+	void setItemQuantityMode(int itemQuantityMode);
+
+	@Import("xPositionMode")
+	@Override
+	int getXPositionMode();
+
+	@Import("xPositionMode")
+	@Override
+	void setXPositionMode(int xpm);
+
+	@Import("yPositionMode")
+	@Override
+	int getYPositionMode();
+
+	@Import("yPositionMode")
+	@Override
+	void setYPositionMode(int ypm);
+
+	@Import("xTextAlignment")
+	@Override
+	int getXTextAlignment();
+
+	@Import("xTextAlignment")
+	@Override
+	void setXTextAlignment(int xta);
+
+	@Import("yTextAlignment")
+	@Override
+	int getYTextAlignment();
+
+	@Import("yTextAlignment")
+	@Override
+	void setYTextAlignment(int yta);
+
+	@Import("widthMode")
+	@Override
+	int getWidthMode();
+
+	@Import("widthMode")
+	@Override
+	void setWidthMode(int widthMode);
+	
+	@Import("heightMode")
+	@Override
+	int getHeightMode();
+
+	@Import("heightMode")
+	@Override
+	void setHeightMode(int heightMode);
+
+	@Import("getFont")
+	@Override
+	RSFontTypeFace getFont();
+
+	@Import("filled")
+	@Override
+	boolean isFilled();
+
+	@Import("filled")
+	@Override
+	void setFilled(boolean filled);
 }

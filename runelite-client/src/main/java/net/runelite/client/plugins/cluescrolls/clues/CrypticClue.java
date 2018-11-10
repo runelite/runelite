@@ -29,11 +29,11 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Set;
 import lombok.Getter;
-import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
+import static net.runelite.api.NullObjectID.NULL_1293;
 import net.runelite.api.ObjectComposition;
 import static net.runelite.api.ObjectID.*;
-import static net.runelite.api.NullObjectID.*;
+import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
@@ -122,7 +122,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search for a crate in Varrock Castle.", CRATE_5113, new WorldPoint(3224, 3492, 0), "Search the crate in the corner of the kitchen in Varrock Castle."),
 		new CrypticClue("And so on, and so on, and so on. Walking from the land of many unimportant things leads to a choice of paths.", new WorldPoint(2591, 3879, 0), "Dig on Etceteria next to the Evergreen tree in front of the castle walls."),
 		new CrypticClue("Speak to Donovan, the Family Handyman.", "Donovan the Family Handyman", new WorldPoint(2743, 3578, 0), "Donovan the Family Handyman is found on the first floor of Sinclair Mansion."),
-		new CrypticClue("Search the crates in the Barbarian Village helmet shop.", CRATES_11600, new WorldPoint(3073, 3430, 0), "Peska's Helmet Shop in Barbarian Village."),
+		new CrypticClue("Search the crates in the Barbarian Village helmet shop.", CRATES_11600, new WorldPoint(3073, 3430, 0), "Peksa's Helmet Shop in Barbarian Village."),
 		new CrypticClue("Search the boxes of Falador's general store.", CRATES_24088, new WorldPoint(2955, 3390, 0), "Falador general store."),
 		new CrypticClue("In a village made of bamboo, look for some crates under one of the houses.", CRATE_356, new WorldPoint(2800, 3074, 0), "Search the crate by the house at the northern point of the broken jungle fence in Tai Bwo Wannai."),
 		new CrypticClue("This crate is mine, all mine, even if it is in the middle of the desert.", CRATE_18889, new WorldPoint(3289, 3022, 0), "Center of desert Mining Camp. Search the crates. Requires the metal key from Tourist Trap to enter."),
@@ -195,7 +195,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Reflection is the weakness for these eyes of evil.", null, "Kill a basilisk."),
 		new CrypticClue("Search a bookcase in Lumbridge swamp.", BOOKCASE_9523, new WorldPoint(3146, 3177, 0), "Located in Father Urhney's house."),
 		new CrypticClue("Surround my bones in fire, ontop the wooden pyre. Finally lay me to rest, before my one last test.", null, "Kill a confused/lost barbarian to receive mangled bones. Construct and burn a pyre ship. Kill the ferocious barbarian spirit that spawns to receive a clue casket."),
-		new CrypticClue("Fiendish cooks probably won’t dig the dirty dishes.", new WorldPoint(3043, 4974, 1), "Dig by the fire in the Rogues' Den."),
+		new CrypticClue("Fiendish cooks probably won't dig the dirty dishes.", new WorldPoint(3043, 4974, 1), "Dig by the fire in the Rogues' Den."),
 		new CrypticClue("My life was spared but these voices remain, now guarding these iron gates is my bane.",  "Key Master", new WorldPoint(1310, 1251, 0), "Speak to the Key Master in Cerberus' Lair."),
 		new CrypticClue("Search the boxes in one of the tents in Al Kharid.", BOXES_361, new WorldPoint(3308, 3206, 0), "Search the boxes in the tent east of the Silk trader."),
 		new CrypticClue("One of several rhyming brothers, in business attire with an obsession for paper work.",  "Piles", new WorldPoint(3186, 3936, 0), "Speak to Piles in the Wilderness Resource Area. An entry fee of 7,500 coins is required, or less if Wilderness Diaries have been completed."),
@@ -208,7 +208,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the drawers above Varrock's shops.", DRAWERS_7194, new WorldPoint(3206, 3419, 1), "Located upstairs in Thessalia's Fine Clothes shop in Varrock."),
 		new CrypticClue("Search the drawers in one of Gertrude's bedrooms.", DRAWERS_7194, new WorldPoint(3156, 3406, 0), "Kanel's bedroom (southeastern room), outside of west Varrock."),
 		new CrypticClue("Under a giant robotic bird that cannot fly.", new WorldPoint(1756, 4940, 0), "Dig next to the terrorbird display in the south exhibit of Varrock Museum's basement."),
-		new CrypticClue("Great demons, dragons, and spiders protect this blue rock, beneath which, you may find what you seek.", new WorldPoint(3045, 10265, 0), "Dig by the runite rock in the Lava Maze Dungeon"),
+		new CrypticClue("Great demons, dragons and spiders protect this blue rock, beneath which, you may find what you seek.", new WorldPoint(3045, 10265, 0), "Dig by the runite rock in the Lava Maze Dungeon"),
 		new CrypticClue("My giant guardians below the market streets would be fans of rock and roll, if only they could grab hold of it. Dig near my green bubbles!", new WorldPoint(3161, 9904, 0), "Dig near the cauldron by Moss Giants under Varrock Sewers"),
 		new CrypticClue("Varrock is where I reside, not the land of the dead, but I am so old, I should be there instead. Let's hope your reward is as good as it says, just 1 gold one and you can have it read.", "Gypsy Aris", new WorldPoint(3203, 3424, 0), "Talk to Gypsy Aris, West of varrock main square."),
 		new CrypticClue("Speak to a referee.", "Gnome ball referee", new WorldPoint(2386, 3487, 0), "Talk to a Gnome ball referee found on the Gnome ball field in the Gnome Stronghold. Answer: 5096"),
@@ -224,7 +224,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Scattered coins and gems fill the floor. The chest you seek is in the north east.", "King Black Dragon", CLOSED_CHEST_375, new WorldPoint(2288, 4702, 0), "Kill the King Black Dragon for a key (elite), and then open the closed chest in the NE corner of the lair."),
 		new CrypticClue("A ring of water surrounds 4 powerful rings, dig above the ladder located there.", new WorldPoint(1910, 4367, 0), "Dig by the ladder leading to the Dagannoth Kings room in the Waterbirth Island Dungeon."),
 		new CrypticClue("This place sure is a mess.", "Ewesey", new WorldPoint(1646, 3631, 0), "Ewesey is located in the Hosidius House mess hall in Great Kourend."),
-		new CrypticClue("Here, there are tears, but nobody is crying. Speak to the guardian and show off your alignment to balance.", "Juna", new WorldPoint(3252, 9517, 2), "Talk to Juna while wearing three Guthix related items."),
+		new CrypticClue("Here, there are tears, but nobody is crying. Speak to the guardian and show off your alignment to balance.", "Juna", JUNA, new WorldPoint(3252, 9517, 2), "Talk to Juna while wearing three Guthix related items."),
 		new CrypticClue("You might have to turn over a few stones to progress.", null, "Kill a rock crab."),
 		new CrypticClue("Dig under Razorlor's toad batta.", new WorldPoint(3139, 4554, 0), "Dig on the toad batta spawn in Tarn's Lair."),
 		new CrypticClue("Talk to Cassie in Falador.", "Cassie", new WorldPoint(2975, 3383, 0), "Cassie is found just south-east of the northern Falador gate."),
@@ -240,7 +240,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the crates in the guard house of the northern gate of East Ardougne.", CRATE_356, new WorldPoint(2645, 3338, 0), "The guard house is northeast of the Handelmort Mansion."),
 		new CrypticClue("Go to the village being attacked by trolls, search the drawers in one of the houses.", "Penda", DRAWERS_350, new WorldPoint(2921, 3577, 0), "Go to Dunstan's house in the northeast corner of Burthorpe. Kill Penda in the Toad and Chicken to obtain the key."),
 		new CrypticClue("You'll get licked.", null, "Kill a Bloodveld."),
-		new CrypticClue("She's small but can build both literally and figuratively, as long as you have their favour", "Lovada", new WorldPoint(1486, 3834, 0), "Speak to Lovada south of the Lovakengj House blast mine"),
+		new CrypticClue("She's small but can build both literally and figuratively, as long as you have their favour.", "Lovada", new WorldPoint(1486, 3834, 0), "Speak to Lovada south of the Lovakengj House blast mine"),
 		new CrypticClue("Dig in front of the icy arena where 1 of 4 was fought.", new WorldPoint(2874, 3757, 0), "Where you fought Kamil from Desert Treasure."),
 		new CrypticClue("Speak to Roavar.", "Roavar", new WorldPoint(3494, 3474, 0), "Talk to Roavar in the Canifis tavern."),
 		new CrypticClue("Search the drawers upstairs of houses in the eastern part of Falador.", DRAWERS_350, new WorldPoint(3035, 3347, 1), "House is located east of the eastern Falador bank and south of the fountain. The house is indicated by the icon on the minimap."),
@@ -292,7 +292,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("You have all of the elements available to solve this clue. Fortunately you do not have to go as far as to stand in a draft.", CRATE_18506, new WorldPoint(2723, 9891, 0), "Search the crate, west of the Air Elementals, inside the Elemental Workshop."),
 		new CrypticClue("A demon's best friend holds the next step of this clue.", null, "Kill a hellhound."),
 		new CrypticClue("Dig in the centre of a great city of 5 districts.", new WorldPoint(1639, 3673, 0), "Dig in front of the large statue in the centre of Great Kourend."),
-		new CrypticClue("Hopefully this set of armour will help you to keep surviving.", "Sir Vyvin", new WorldPoint(2982, 3336, 2), "Speak to Sir Vyvin while wearing a white full helm, platebody, and platelegs."),
+		new CrypticClue("Hopefully this set of armour will help you to keep surviving.", "Sir Vyvin", new WorldPoint(2982, 3336, 2), "Speak to Sir Vyvin while wearing a white platebody, and platelegs."),
 		new CrypticClue("The beasts retreat, for their Queen is gone; the song of this town still plays on. Dig near the birthplace of a blade, be careful not to melt your spade.", new WorldPoint(2342, 3677, 0), "Dig in front of the small furnace in the Piscatoris Fishing Colony."),
 		new CrypticClue("Darkness wanders around me, but fills my mind with knowledge.", "Biblia",  new WorldPoint(1633, 3825, 2), "Speak to Biblia on the Arceuus House Library's top floor."),
 		new CrypticClue("I would make a chemistry joke, but I'm afraid I wouldn't get a reaction.", "Chemist", new WorldPoint(2932, 3212, 0), "Talk to the Chemist in Rimmington"),
@@ -338,11 +338,6 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
 		panelComponent.getChildren().add(TitleComponent.builder().text("Cryptic Clue").build());
-		panelComponent.getChildren().add(LineComponent.builder().left("Clue:").build());
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left(getText())
-			.leftColor(TITLED_CONTENT_COLOR)
-			.build());
 
 		if (getNpc() != null)
 		{
@@ -409,7 +404,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 
 			if (plugin.getObjectsToMark() != null)
 			{
-				for (GameObject gameObject : plugin.getObjectsToMark())
+				for (TileObject gameObject : plugin.getObjectsToMark())
 				{
 					OverlayUtil.renderHoverableArea(graphics, gameObject.getClickbox(), mousePosition,
 							CLICKBOX_FILL_COLOR, CLICKBOX_BORDER_COLOR, CLICKBOX_HOVER_BORDER_COLOR);

@@ -35,6 +35,7 @@ import net.runelite.api.VarClientInt;
 @RequiredArgsConstructor
 public enum InputType
 {
+	RUNELITE_CHATBOX_PANEL(-3),
 	RUNELITE(-2),
 	NONE(0),
 	SEARCH(11);
