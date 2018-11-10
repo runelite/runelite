@@ -35,9 +35,10 @@ import net.runelite.api.Skill;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Player;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.ActorDespawned;
+import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -118,7 +119,7 @@ public class damagecounter extends Plugin
 						if (aNPCARRAY == interactingId)
 						{
 							BossName = interactingName;
-							this.bossfound = true;
+							bossfound = true;
 						}
 					}
 				}
@@ -173,7 +174,7 @@ public class damagecounter extends Plugin
 				String interactingName = ((NPC) interacting).getName();
 				if (interactingName == BossName)
 				{
-					this.DamageCount += XPtoDamage();
+					DamageCount += XPtoDamage();
 				}
 			}
 		}
@@ -183,7 +184,7 @@ public class damagecounter extends Plugin
 	//will check for the monster if it died works only on ToB Bosses
 	// Verzik has three phases so the program will add up all the damage and prints it into one message
 	// making sure else if statement doesnt check with Verzik
-	public void onNpcDespawned(ActorDespawned npc)
+	public void onNpcDespawned(NpcDespawned npc)
 	{
 		NPC actor = (NPC) npc.getActor();
 		if (actor.isDead() && actor.getId() == NpcID.VERZIK_VITUR_8375)
@@ -202,15 +203,15 @@ public class damagecounter extends Plugin
 	//just reset the counter
 	private void ResetCounter()
 	{
-		this.DamageCount = 0;
+		DamageCount = 0;
 		BossName = null;
-		this.bossfound = false;
+		bossfound = false;
 	}
 
 	//print out the damage after the boss have died
 	private void DamagePrint(NPC actor)
 	{
-		String MessageDamage = "Well done! You have done " + this.DamageCount + " damage to " + actor.getName() + "!";
+		String MessageDamage = "Well done! You have done " + DamageCount + " damage to " + actor.getName() + "!";
 		sendChatMessage(MessageDamage);
 	}
 
@@ -219,11 +220,11 @@ public class damagecounter extends Plugin
 	// made sure the message works at ToB area or else we will get it every where
 	private void Death(LocalPlayerDeath death)
 	{
-		String DeathMessage = "You have tried your best! You have done " + this.DamageCount + " damage to this " +
+		String DeathMessage = "You have tried your best! You have done " + DamageCount + " damage to this " +
 				BossName + "!";
 		for (int i = 0; i < ToB_Region.length; i++)
 		{
-			if (client.getLocalPlayer().getWorldLocation().getRegionID() == ToB_Region[i])
+			if (WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID() == ToB_Region[i])
 			{
 				sendChatMessage(DeathMessage);
 				ResetCounter();
