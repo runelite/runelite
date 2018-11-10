@@ -221,7 +221,9 @@ class Obstacles
 		// Burgh de Rott
 		LOW_FENCE,
 		// Taverley
-		STILE
+		STILE,
+		// Asgarnian Ice Dungeon
+		STEPS
 	);
 
 	static final Set<Integer> TRAP_OBSTACLE_IDS = ImmutableSet.of(
