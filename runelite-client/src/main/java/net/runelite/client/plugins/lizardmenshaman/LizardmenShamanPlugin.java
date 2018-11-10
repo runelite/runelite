@@ -1,6 +1,7 @@
 package net.runelite.client.plugins.lizardmenshaman;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,6 +10,8 @@ import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.client.Notifier;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import java.util.HashMap;
@@ -25,6 +28,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class LizardmenShamanPlugin extends Plugin
 {
 	private static final String SHAMAN = "Lizardman shaman";
+	private static final String MESSAGE = "A Lizardman shaman has summoned his spawn!";
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<LocalPoint, LizardmenShamanSpawn> spawns =  new HashMap<>();
@@ -36,7 +40,19 @@ public class LizardmenShamanPlugin extends Plugin
 	private ShamanSpawnOverlay overlay;
 
 	@Inject
+	private LizardmenShamanConfig config;
+
+	@Inject
+	private Notifier notifier;
+
+	@Inject
 	private Client client;
+
+	@Provides
+	LizardmenShamanConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(LizardmenShamanConfig.class);
+	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -61,7 +77,15 @@ public class LizardmenShamanPlugin extends Plugin
 		}
 		else if (actor.getName().equals(SHAMAN) && actor.getAnimation() == 7157)
 		{
-			spawns.put(event.getActor().getLocalLocation(), new LizardmenShamanSpawn(8.4, null));
+			if (config.showTimer())
+			{
+				spawns.put(event.getActor().getLocalLocation(), new LizardmenShamanSpawn(8.4, null));
+			}
+
+			if (config.notifyOnSpawn())
+			{
+				notifier.notify(MESSAGE);
+			}
 		}
 	}
 }
