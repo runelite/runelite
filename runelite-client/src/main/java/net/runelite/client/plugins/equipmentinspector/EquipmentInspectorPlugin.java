@@ -10,8 +10,8 @@ import net.runelite.api.kit.KitType;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.util.Text;
 
 import javax.annotation.Nullable;
@@ -47,7 +47,7 @@ public class EquipmentInspectorPlugin extends Plugin
 	private ScheduledExecutorService executor;
 
 	@Inject
-	private PluginToolbar pluginToolbar;
+	private ClientToolbar pluginToolbar;
 
 	private NavigationButton navButton;
 	private EquipmentInspectorPanel equipmentInspectorPanel;
