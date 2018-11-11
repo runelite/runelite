@@ -27,17 +27,22 @@ package net.runelite.client.plugins.discordwebhook;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.NPC;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.vars.AccountType;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.NpcLootReceived;
@@ -52,12 +57,14 @@ import net.runelite.http.api.discord.embed.AuthorEmbed;
 import net.runelite.http.api.discord.embed.FieldEmbed;
 import net.runelite.http.api.discord.embed.FooterEmbed;
 import okhttp3.HttpUrl;
+import org.slf4j.Logger;
 
 @PluginDescriptor(
 	name = "Discord Logger",
 	description = "Configure events to be posted to a Discord channel via a webhook",
 	tags = {"discord", "webhook", "log", "logger"}
 )
+@Slf4j
 public class DiscordWebhookPlugin extends Plugin
 {
 	private static final DiscordClient CLIENT = new DiscordClient();
@@ -66,6 +73,8 @@ public class DiscordWebhookPlugin extends Plugin
 	private String iconUrl;
 	private boolean checkAccount;
 	private AccountType accountType;
+
+	private List fieldList = new ArrayList();
 
 	private HttpUrl url;
 
@@ -113,6 +122,7 @@ public class DiscordWebhookPlugin extends Plugin
 			return;
 		}
 
+		discordInit();
 		checkAccount = false;
 		accountType = client.getAccountType();
 
@@ -149,13 +159,11 @@ public class DiscordWebhookPlugin extends Plugin
 			return;
 		}
 
-		if (config.lootLogType().equals(LootLogType.ALL) && url.pathSize() > 1)
+		if (config.lootLogType().equals(LootLogType.ALL) && url.pathSize() > 1) //todo fix LootLogType check
 		{
 			final NPC npc = npcLootReceived.getNpc();
 			final String npcName = npc.getName();
 			final Collection<ItemStack> items = npcLootReceived.getItems();
-
-			List lootList = new ArrayList();
 
 			for (ItemStack item : items)
 			{
@@ -167,34 +175,65 @@ public class DiscordWebhookPlugin extends Plugin
 
 				if ((itemQuantity * gePrice) > config.getMinLootValue())
 				{
-					lootList.add(FieldEmbed.builder()
+					fieldList.add(FieldEmbed.builder()
 					.name(itemName + " x " + itemQuantity)
 					.value((itemQuantity * gePrice) + " gp")
 					.build());
 				}
 			}
 
-			if (!lootList.isEmpty())
+			if (!fieldList.isEmpty())
 			{
-				DiscordEmbed npcLootRecord = DiscordEmbed.builder()
-					.author(AuthorEmbed.builder()
-						.icon_url("")
-						.name(npcName)
-						.build())
-					.description("has been slain for:")
-					.fields(lootList)
-					.footer(FooterEmbed.builder()
-						.icon_url(iconUrl)
-						.text(client.getLocalPlayer().getName())
-						.build())
-					.build();
-
-				DiscordMessage discordMessage = new DiscordMessage("Runelite", "", "");
-				discordMessage.getEmbeds().add(npcLootRecord);
-				CLIENT.message(url, discordMessage);
-				lootList.clear();
+				message(npcName, "has been slain for:", fieldList);
+				fieldList.clear();
 			}
 		}
+	}
+
+	@Subscribe
+	public void localPlayerDeath(LocalPlayerDeath localPlayerDeath)
+	{
+		final Actor target = client.getLocalPlayer().getInteracting();
+
+		if (config.isLoggingDeaths() && target != null)
+		{
+			final String npcName = target.getName();
+
+			fieldList.add(FieldEmbed.builder()
+			.name(Time.valueOf(LocalTime.now()).toString())
+			.value("Oh dear, someone died...")
+			.build());
+
+			message(npcName, "", fieldList);
+			fieldList.clear();
+		}
+	}
+
+	private void message(String name, String description, List fields)
+	{
+		if (name.isEmpty() || description.isEmpty() || fields.isEmpty())
+		{
+			log.warn("Discord message will fail with a missing name/description/field");
+			return;
+		}
+
+		DiscordEmbed discordEmbed = DiscordEmbed.builder()
+			.author(AuthorEmbed.builder()
+				.icon_url("") // Icon of npc / player
+				.name(name)
+				.build())
+			.description(description)
+			.fields(fields)
+			.footer(FooterEmbed.builder()
+				.icon_url(iconUrl)
+				.text(client.getLocalPlayer().getName())
+				.build())
+			.build();
+
+		DiscordMessage discordMessage = new DiscordMessage("Runelite", "", "");
+		discordMessage.getEmbeds().add(discordEmbed);
+		CLIENT.message(url, discordMessage);
+		fields.clear();
 	}
 
 	private void discordInit()

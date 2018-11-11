@@ -38,7 +38,8 @@ public interface DiscordWebhookConfig extends Config
 		description = "Enter your Discord Webhook URL",
 		position = 0
 	)
-	default String getDiscordUrl() {
+	default String getDiscordUrl()
+	{
 		return "";
 	}
 
@@ -48,7 +49,8 @@ public interface DiscordWebhookConfig extends Config
 		description = "configure what received loot is logged",
 		position = 1
 	)
-	default LootLogType lootLogType() {
+	default LootLogType lootLogType()
+	{
 		return LootLogType.NONE;
 	}
 
@@ -58,7 +60,8 @@ public interface DiscordWebhookConfig extends Config
 		description = "Configures the minimum value which loot received is logged",
 		position = 2
 	)
-	default int getMinLootValue() {
+	default int getMinLootValue()
+	{
 		return 0;
 	}
 
@@ -68,7 +71,8 @@ public interface DiscordWebhookConfig extends Config
 		description = "Configures logging boss kill count",
 		position = 3
 	)
-	default boolean isLoggingBossKc() {
+	default boolean isLoggingBossKc()
+	{
 		return false;
 	}
 
@@ -78,7 +82,8 @@ public interface DiscordWebhookConfig extends Config
 		description = "Configures logging clue scrolls",
 		position = 4
 	)
-	default boolean isLoggingClues() {
+	default boolean isLoggingClues()
+	{
 		return false;
 	}
 
@@ -88,7 +93,8 @@ public interface DiscordWebhookConfig extends Config
 		description = "Configures logging PvP kills",
 		position = 5
 	)
-	default boolean isLoggingPvpKills() {
+	default boolean isLoggingPvpKills()
+	{
 		return false;
 	}
 
@@ -98,7 +104,8 @@ public interface DiscordWebhookConfig extends Config
 		description = "Configures logging level ups",
 		position = 6
 	)
-	default boolean isLoggingLevelUps() {
+	default boolean isLoggingLevelUps()
+	{
 		return false;
 	}
 
@@ -108,7 +115,8 @@ public interface DiscordWebhookConfig extends Config
 		description = "Configures logging slayer tasks completion and streak count",
 		position = 7
 	)
-	default boolean isLoggingSlayer() {
+	default boolean isLoggingSlayer()
+	{
 		return false;
 	}
 
@@ -118,7 +126,8 @@ public interface DiscordWebhookConfig extends Config
 		description = "Configures logging your deaths",
 		position = 8
 	)
-	default boolean isLoggingDeaths() {
+	default boolean isLoggingDeaths()
+	{
 		return false;
 	}
 
@@ -128,7 +137,8 @@ public interface DiscordWebhookConfig extends Config
 		description = "Configures logging quest completions",
 		position = 9
 	)
-	default boolean isLoggingQuests() {
+	default boolean isLoggingQuests()
+	{
 		return false;
 	}
 
