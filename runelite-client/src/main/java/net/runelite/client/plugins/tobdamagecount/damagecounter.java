@@ -219,7 +219,7 @@ public class damagecounter extends Plugin
 			ResetCounter();
 		}
 		//will reset the counter after the boss dies and if you died during the fight
-		else if (actor.isDead() && actor.getName().equals(BossName))
+		else if (actor.isDead() && actor.getName().equals(BossName) && !status)
 		{
 			ResetCounter();
 		}
