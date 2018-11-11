@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Cameron <https://github.com/noremac201>
+ * Copyright (c) 2020, melky <https://github.com/melkypie>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,30 +24,20 @@
  */
 package net.runelite.client.plugins.reportbutton;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.RequiredArgsConstructor;
 
-@ConfigGroup("reportButton")
-public interface ReportButtonConfig extends Config
+@RequiredArgsConstructor
+public enum TimeFormat
 {
-	@ConfigItem(
-		keyName = "time",
-		name = "Display Options",
-		description = "Configures what text the report button shows."
-	)
-	default TimeStyle time()
-	{
-		return TimeStyle.LOGIN_TIME;
-	}
+	TIME_12H("12-hour"),
+	TIME_24H("24-hour");
 
-	@ConfigItem(
-		keyName = "switchTimeFormat",
-		name = "Time Format",
-		description = "Configures time between 12 or 24 hour time format"
-	)
-	default TimeFormat switchTimeFormat()
+	private final String name;
+
+	@Override
+	public String toString()
 	{
-		return TimeFormat.TIME_12H;
+		return this.name;
 	}
 }
+
