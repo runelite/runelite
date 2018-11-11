@@ -131,7 +131,7 @@ public class DiscordWebhookPlugin extends Plugin
 			switch (accountType)
 			{
 				case NORMAL:
-					iconUrl = ICONBASEURL + 1038 + ".png";
+					iconUrl = getIcon(1038);
 					break;
 				case IRONMAN:
 					iconUrl = "https://raw.githubusercontent.com/runelite/runelite/master/runelite-client/src/main/resources/net/runelite/client/plugins/hiscore/ironman.png";
@@ -239,5 +239,10 @@ public class DiscordWebhookPlugin extends Plugin
 	private void discordInit()
 	{
 		url = HttpUrl.parse(config.getDiscordUrl());
+	}
+
+	private String getIcon(int itemID)
+	{
+		return ICONBASEURL + itemID + ".png";
 	}
 }
