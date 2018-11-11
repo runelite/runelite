@@ -216,12 +216,10 @@ public class GroundItemsPlugin extends Plugin
 			existing.setQuantity(existing.getQuantity() + groundItem.getQuantity());
 		}
 
-//		boolean isHighlighted = config.highlightedColor().equals(getHighlighted(groundItem.getName(),
-//				groundItem.getGePrice(), groundItem.getHaPrice()));
-//		if (config.notifyHighlightedDrops() && isHighlighted)
-//		{
-//			notifyHighlightedItem(groundItem);
-//		}
+		if (!config.notifyOwnDrops() && config.notifyHighlightedDrops())
+		{
+			notifyHighlightedItem(groundItem.getName(), groundItem.getQuantity(), groundItem.getGePrice(), groundItem.getHaPrice());
+		}
 	}
 
 	@Subscribe
@@ -501,28 +499,57 @@ public class GroundItemsPlugin extends Plugin
 		}
 	}
 
-	private void notifyHighlightedItem(GroundItem item)
+
+	private void notifyHighlightedItem(String itemName, int quantity, int gePrice, int haPrice)
 	{
+		final Color itemColor = getHighlighted(itemName, gePrice, haPrice);
+		String type = "highlighted";
+		if (itemColor != null)
+		{
+			if (itemColor.equals(config.lowValueColor()))
+			{
+				type = "low value";
+			}
+			else if (itemColor.equals(config.mediumValueColor()))
+			{
+				type = "medium value";
+			}
+			else if (itemColor.equals(config.highValueColor()))
+			{
+				type = "high value";
+			}
+			else if (itemColor.equals(config.insaneValueColor()))
+			{
+				type = "insane value";
+			}
+		}
+		else
+		{
+			return;
+		}
+
 		final Player local = client.getLocalPlayer();
 		final StringBuilder notificationStringBuilder = new StringBuilder()
 			.append("[")
 			.append(local.getName())
-			.append("] received a highlighted drop: ")
-			.append(item.getName());
+			.append("] received a ")
+			.append(type)
+			.append(" drop: ")
+			.append(itemName);
 
-		if (item.getQuantity() > 1)
+		if (quantity > 1)
 		{
-			notificationStringBuilder.append(" x ").append(item.getQuantity());
+			notificationStringBuilder.append(" x ").append(quantity);
 
 
-			if (item.getQuantity() > (int) Character.MAX_VALUE)
+			if (quantity > (int) Character.MAX_VALUE)
 			{
 				notificationStringBuilder.append(" (Lots!)");
 			}
 			else
 			{
 				notificationStringBuilder.append(" (")
-					.append(StackFormatter.quantityToStackSize(item.getQuantity()))
+					.append(StackFormatter.quantityToStackSize(quantity))
 					.append(")");
 			}
 		}
@@ -534,46 +561,17 @@ public class GroundItemsPlugin extends Plugin
 	@Subscribe
 	public void onNpcLootReceived(final NpcLootReceived npcLootReceived)
 	{
-		Collection<ItemStack> items = npcLootReceived.getItems();
-		ItemComposition composition;
-		for (ItemStack is : items)
+		if (config.notifyOwnDrops() && config.notifyHighlightedDrops())
 		{
-			composition = itemManager.getItemComposition(is.getId());
-			Color itemColor = getHighlighted(composition.getName(), itemManager.getItemPrice(is.getId()) * is.getQuantity(), Math.round(composition.getPrice() * HIGH_ALCHEMY_CONSTANT) * is.getQuantity());
-			if (itemColor != null)
+			Collection<ItemStack> items = npcLootReceived.getItems();
+			ItemComposition composition;
+			for (ItemStack is : items)
 			{
-				if (config.notifyHighlightedDrops() && itemColor.equals(config.highlightedColor()))
-				{
-					sendLootNotification(composition.getName(), "highlighted");
-				}
-				else if (config.notifyLowValueDrops() && itemColor.equals(config.lowValueColor()))
-				{
-					sendLootNotification(composition.getName(), "low value");
-				}
-				else if (config.notifyMediumValueDrops() && itemColor.equals(config.mediumValueColor()))
-				{
-					sendLootNotification(composition.getName(), "medium value");
-				}
-				else if (config.notifyHighValueDrops() && itemColor.equals(config.highValueColor()))
-				{
-					sendLootNotification(composition.getName(), "high value");
-				}
-				else if (config.notifyInsaneValueDrops() && itemColor.equals(config.insaneValueColor()))
-				{
-					sendLootNotification(composition.getName(), "insane value");
-				}
+				composition = itemManager.getItemComposition(is.getId());
+				int gePrice = itemManager.getItemPrice(is.getId()) * is.getQuantity();
+				int haPrice = Math.round(composition.getPrice() * HIGH_ALCHEMY_CONSTANT) * is.getQuantity();
+				notifyHighlightedItem(composition.getName(), is.getQuantity(), gePrice, haPrice);
 			}
 		}
-	}
-
-	private  void sendLootNotification(String itemName, String message)
-	{
-		StringBuilder stringBuilder = new StringBuilder();
-
-		stringBuilder.append('[').append(client.getLocalPlayer().getName()).append("] ");
-		stringBuilder.append("Received a ").append(message).append(" item: ").append(itemName);
-
-		String notification = stringBuilder.toString();
-		notifier.notify(notification);
 	}
 }
