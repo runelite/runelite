@@ -57,7 +57,6 @@ import net.runelite.http.api.discord.embed.AuthorEmbed;
 import net.runelite.http.api.discord.embed.FieldEmbed;
 import net.runelite.http.api.discord.embed.FooterEmbed;
 import okhttp3.HttpUrl;
-import org.slf4j.Logger;
 
 @PluginDescriptor(
 	name = "Discord Logger",
