@@ -56,7 +56,13 @@ public class ChatboxPerformancePlugin extends Plugin
 
 	private boolean areWidgetsFixed()
 	{
-		Widget[] widgets = client.getWidget(WidgetInfo.CHATBOX_TRANSPARENT_BACKGROUND).getChildren();
+		Widget widget = client.getWidget(WidgetInfo.CHATBOX_TRANSPARENT_BACKGROUND);
+		if (widget == null)
+		{
+			return true;
+		}
+		
+		Widget[] widgets = widget.getChildren();
 		return widgets.length > 0 && widgets[widgets.length - 1].getOpacity() < 254;
 	}
 
