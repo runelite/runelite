@@ -187,7 +187,7 @@ class XpState
 	{
 		XpStateSingle state = getSkill(skill);
 
-		if (state.getStartXp() == -1 || npcHealth == null || npc != interactedNPC)
+		if (state.getXpGained() <= 0 || npcHealth == null || npc != interactedNPC)
 		{
 			return XpUpdateResult.NO_CHANGE;
 		}
