@@ -49,6 +49,7 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
+
 @PluginDescriptor(
 		name = "ToB Damage Counter",
 		description = "Gives you an estimation damage on a boss after the fight is done" +
@@ -64,9 +65,12 @@ public class damagecounter extends Plugin
 	private int currenthpxp = -1; // checking the current hp xp so be easier to find
 	private String BossName = null; //to ID the boss to calculate the damage
 	private int DamageTaken = 0;
+	private boolean status = true; //default boolean alive = true, dead = false
 	//formatting the number for damage taken and dealt with to look beeter
 	private static final DecimalFormat DAMAGEFORMAT = new DecimalFormat("#,###");
 	private static final double XP_RATIO = 1.3333;
+	private static final boolean ALIVE = true; //
+	private static final boolean DEAD = false; //if they're dead they cannot "recreate" the message of being alive
 	//locations at ToB
 	private static final int MAIDEN_REGION = 12613;
 	private static final int MAIDEN_REGION_1 = 12869;
@@ -202,25 +206,32 @@ public class damagecounter extends Plugin
 	public void onNpcDespawned(NpcDespawned npc)
 	{
 		NPC actor = (NPC) npc.getActor();
-		if (actor.isDead() && actor.getId() == NpcID.VERZIK_VITUR_8375)
+		if (actor.isDead() && actor.getId() == NpcID.VERZIK_VITUR_8375 && status)
 		{
 			DamagePrint(actor);
 			ResetCounter();
 		}
 		else if (actor.isDead() && actor.getName().equals(BossName) && actor.getId() != NpcID.VERZIK_VITUR_8374 &&
-				actor.getId() != NpcID.VERZIK_VITUR_8372 &&  actor.getId() != NpcID.VERZIK_VITUR_8370)
+				actor.getId() != NpcID.VERZIK_VITUR_8372 &&  actor.getId() != NpcID.VERZIK_VITUR_8370 &&
+				status)
 		{
 			DamagePrint(actor);
 			ResetCounter();
 		}
+		//will reset the counter after the boss dies and if you died during the fight
+		else if (actor.isDead() && actor.getName().equals(BossName))
+		{
+			ResetCounter();
+		}
 	}
 
-	//just reset the counter for the next fight
+	//just reset the counter for the next fight and status
 	private void ResetCounter()
 	{
 		DamageCount = 0;
 		DamageTaken = 0;
 		BossName = null;
+		status = ALIVE;
 	}
 
 	//print out the damage after the boss have died
@@ -247,6 +258,8 @@ public class damagecounter extends Plugin
 				sendChatMessage(DeathMessage);
 				sendChatMessage(MessageTaken);
 				ResetCounter();
+				//status will become "dead" after you died in the fight
+				status = DEAD;
 			}
 		}
 	}
