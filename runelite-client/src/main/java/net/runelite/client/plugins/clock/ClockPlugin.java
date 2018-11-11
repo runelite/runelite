@@ -35,7 +35,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
 	name = "Clock",
 	description = "Displays a real-time clock",
-	tags = {"clock", "time"}
+	tags = {"clock", "time"},
+	enabledByDefault = false
 )
 public class ClockPlugin extends Plugin
 {
