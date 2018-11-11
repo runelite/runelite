@@ -36,6 +36,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcDespawned;
@@ -58,10 +59,10 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class damagecounter extends Plugin
 {
 	private int currentWorld = -1;
-	private int DamageCount;
-	private String BossName;
-	private int currenthp = -1;
-	private boolean bossfound = false;
+	private int DamageCount = 0;
+	private int currenthpxp = -1;
+	private String BossName = null;
+	private int DamageTaken = 0;
 
 	//locations at ToB
 	private static final int MAIDEN_REGION = 12613;
@@ -98,7 +99,7 @@ public class damagecounter extends Plugin
 		}
 		checkInterAction();
 		DamageCounting();
-		currenthp = client.getSkillExperience(Skill.HITPOINTS);
+		currenthpxp = client.getSkillExperience(Skill.HITPOINTS);
 	}
 	//checks for npcID and put the boss name into a string be easier to ID it
 	//once the boss is found it will never check it
@@ -108,7 +109,7 @@ public class damagecounter extends Plugin
 		Actor interacting = localPlayer.getInteracting();
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			if (!bossfound)
+			if (BossName == null)
 			{
 				if (interacting instanceof NPC)
 				{
@@ -119,7 +120,6 @@ public class damagecounter extends Plugin
 						if (aNPCARRAY == interactingId)
 						{
 							BossName = interactingName;
-							bossfound = true;
 						}
 					}
 				}
@@ -151,11 +151,11 @@ public class damagecounter extends Plugin
 		int NewXp = 0;
 		double damageOutput = 0;
 		int XPdrop = 0;
-		if (currenthp != -1)
+		if (currenthpxp != -1)
 		{
 			XPdrop = client.getSkillExperience(Skill.HITPOINTS);
-			NewXp = XPdrop - currenthp;
-			currenthp = -1;
+			NewXp = XPdrop - currenthpxp;
+			currenthpxp = -1;
 			damageOutput = NewXp / 1.3333;
 		}
 		//returns the damage you have done
@@ -172,7 +172,7 @@ public class damagecounter extends Plugin
 			if (interacting instanceof NPC)
 			{
 				String interactingName = ((NPC) interacting).getName();
-				if (interactingName == BossName)
+				if (interactingName.equals(BossName))
 				{
 					DamageCount += XPtoDamage();
 				}
@@ -181,9 +181,19 @@ public class damagecounter extends Plugin
 	}
 
 	@Subscribe
+	//will add the damage that you have taken from the current boss fight
+	private void DamageTakenCounter(HitsplatApplied Hit)
+	{
+		if (Hit.getActor().equals(client.getLocalPlayer()))
+		{
+			DamageTaken += Hit.getHitsplat().getAmount();
+		}
+	}
+
+	@Subscribe
 	//will check for the monster if it died works only on ToB Bosses
-	// Verzik has three phases so the program will add up all the damage and prints it into one message
-	// making sure else if statement doesnt check with Verzik
+	//Verzik has three phases so the program will add up all the damage and prints it into one message
+	//making sure else if statement doesnt check with Verzik
 	public void onNpcDespawned(NpcDespawned npc)
 	{
 		NPC actor = (NPC) npc.getActor();
@@ -204,15 +214,17 @@ public class damagecounter extends Plugin
 	private void ResetCounter()
 	{
 		DamageCount = 0;
+		DamageTaken = 0;
 		BossName = null;
-		bossfound = false;
 	}
 
 	//print out the damage after the boss have died
 	private void DamagePrint(NPC actor)
 	{
-		String MessageDamage = "Well done! You have done " + DamageCount + " damage to " + actor.getName() + "!";
+		String MessageDamage = "Well done! You did " + DamageCount + " damage to " + actor.getName() + "!";
 		sendChatMessage(MessageDamage);
+		String MessageTaken = "You have taken " + DamageTaken + " damage from this fight!";
+		sendChatMessage(MessageTaken);
 	}
 
 	@Subscribe
@@ -220,13 +232,15 @@ public class damagecounter extends Plugin
 	// made sure the message works at ToB area or else we will get it every where
 	private void Death(LocalPlayerDeath death)
 	{
-		String DeathMessage = "You have tried your best! You have done " + DamageCount + " damage to this " +
+		String DeathMessage = "You have tried your best! You did " + DamageCount + " damage to " +
 				BossName + "!";
+		String MessageTaken = "You have taken " + DamageTaken + " damage from this fight!";
 		for (int i = 0; i < ToB_Region.length; i++)
 		{
 			if (WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID() == ToB_Region[i])
 			{
 				sendChatMessage(DeathMessage);
+				sendChatMessage(MessageTaken);
 				ResetCounter();
 			}
 		}
