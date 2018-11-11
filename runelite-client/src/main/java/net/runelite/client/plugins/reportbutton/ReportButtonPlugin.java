@@ -55,8 +55,7 @@ public class ReportButtonPlugin extends Plugin
 	private static final ZoneId UTC = ZoneId.of("UTC");
 	private static final ZoneId JAGEX = ZoneId.of("Europe/London");
 
-	private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
-
+	private DateTimeFormatter format;
 	private Instant loginTime;
 	private boolean ready;
 
@@ -138,6 +137,15 @@ public class ReportButtonPlugin extends Plugin
 			return;
 		}
 
+		if (config.switchFormat())
+		{
+			format = DateTimeFormatter.ofPattern("HH:mm:ss");
+		}
+		else
+		{
+			format =  DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
+		}
+
 		switch (config.time())
 		{
 			case UTC:
@@ -160,7 +168,7 @@ public class ReportButtonPlugin extends Plugin
 
 	private String getLocalTime()
 	{
-		return LocalTime.now().format(DATE_TIME_FORMAT);
+		return LocalTime.now().format(format);
 	}
 
 	private String getLoginTime()
@@ -178,12 +186,12 @@ public class ReportButtonPlugin extends Plugin
 	private String getUTCTime()
 	{
 		LocalTime time = LocalTime.now(UTC);
-		return time.format(DATE_TIME_FORMAT);
+		return time.format(format);
 	}
 
 	private String getJagexTime()
 	{
 		LocalTime time = LocalTime.now(JAGEX);
-		return time.format(DATE_TIME_FORMAT);
+		return time.format(format);
 	}
 }

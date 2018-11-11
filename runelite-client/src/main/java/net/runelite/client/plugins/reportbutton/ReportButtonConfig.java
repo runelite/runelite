@@ -40,4 +40,15 @@ public interface ReportButtonConfig extends Config
 	{
 		return TimeStyle.LOGIN_TIME;
 	}
+
+	@ConfigItem(
+			keyName = "format",
+			name = "24 hour time format",
+			description = "Configures time to the 24 hour time format",
+			position = 2
+	)
+	default boolean switchFormat()
+	{
+		return true;
+	}
 }
