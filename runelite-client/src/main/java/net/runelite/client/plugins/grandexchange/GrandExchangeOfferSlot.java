@@ -30,6 +30,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
@@ -65,6 +66,8 @@ public class GrandExchangeOfferSlot extends JPanel
 	private final JPanel container = new JPanel();
 	private final CardLayout cardLayout = new CardLayout();
 
+	private final JPanel faceCard = new JPanel();
+	private final JPanel detailsCard = new JPanel();
 	private final JLabel itemIcon = new JLabel();
 	private final JLabel itemName = new JLabel();
 	private final JLabel offerInfo = new JLabel();
@@ -105,22 +108,31 @@ public class GrandExchangeOfferSlot extends JPanel
 			@Override
 			public void mouseEntered(MouseEvent mouseEvent)
 			{
-				super.mouseEntered(mouseEvent);
-				container.setBackground(ColorScheme.MEDIUM_GRAY_COLOR.brighter());
+				JPanel panel = showingFace ? faceCard : detailsCard;
+				panel.setBackground(ColorScheme.MEDIUM_GRAY_COLOR.brighter());
+				for (Component component : panel.getComponents())
+				{
+					component.setBackground(ColorScheme.MEDIUM_GRAY_COLOR.brighter());
+				}
+				setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent mouseEvent)
 			{
-				super.mouseExited(mouseEvent);
-				container.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+				JPanel panel = showingFace ? faceCard : detailsCard;
+				panel.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+				for (Component component : panel.getComponents())
+				{
+					component.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+				}
+				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 		};
 
 		container.setLayout(cardLayout);
 		container.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
 
-		JPanel faceCard = new JPanel();
 		faceCard.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
 		faceCard.setLayout(new BorderLayout());
 		faceCard.addMouseListener(ml);
@@ -154,7 +166,6 @@ public class GrandExchangeOfferSlot extends JPanel
 		faceCard.add(itemIcon, BorderLayout.WEST);
 		faceCard.add(switchFaceViewIcon, BorderLayout.EAST);
 
-		JPanel detailsCard = new JPanel();
 		detailsCard.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
 		detailsCard.setLayout(new BorderLayout());
 		detailsCard.setBorder(new EmptyBorder(0, 15, 0, 0));
