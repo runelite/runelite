@@ -43,6 +43,9 @@ public class BarrowsBrotherSlainOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
+	private BarrowsConfig config;
+
+	@Inject
 	private BarrowsBrotherSlainOverlay(Client client)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
@@ -62,9 +65,14 @@ public class BarrowsBrotherSlainOverlay extends Overlay
 
 		// Hide original overlay
 		Widget barrowsBrothers = client.getWidget(WidgetInfo.BARROWS_BROTHERS);
-		if (barrowsBrothers != null)
+		if (barrowsBrothers != null || !config.showBrotherOverlay())
 		{
 			barrowsBrothers.setHidden(true);
+		}
+
+		if (!config.showBrotherOverlay())
+		{
+			return null;
 		}
 
 		panelComponent.getChildren().clear();
