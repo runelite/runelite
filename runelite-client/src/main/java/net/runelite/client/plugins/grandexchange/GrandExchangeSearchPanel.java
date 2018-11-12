@@ -102,8 +102,8 @@ class GrandExchangeSearchPanel extends JPanel
 
 		searchBar.setIcon(IconTextField.Icon.SEARCH);
 		searchBar.setPreferredSize(new Dimension(100, 30));
-		searchBar.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
-		searchBar.setHoverBackgroundColor(ColorScheme.MEDIUM_GRAY_COLOR.brighter());
+		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		searchBar.addActionListener(e -> executor.execute(() -> priceLookup(false)));
 
 		searchItemsPanel.setLayout(new GridBagLayout());
@@ -164,7 +164,7 @@ class GrandExchangeSearchPanel extends JPanel
 
 		// Input is not empty, add searching label
 		searchItemsPanel.removeAll();
-		searchBar.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		searchBar.setEditable(false);
 		searchBar.setIcon(IconTextField.Icon.LOADING);
 

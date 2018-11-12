@@ -59,7 +59,7 @@ class GrandExchangeItemPanel extends JPanel
 		layout.setHgap(5);
 		setLayout(layout);
 		setToolTipText(name);
-		setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		Color background = getBackground();
 		List<JPanel> panels = new ArrayList<>();
@@ -72,7 +72,7 @@ class GrandExchangeItemPanel extends JPanel
 			{
 				for (JPanel panel : panels)
 				{
-					matchComponentBackground(panel, background.brighter());
+					matchComponentBackground(panel, ColorScheme.DARK_GRAY_HOVER_COLOR);
 				}
 				setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
