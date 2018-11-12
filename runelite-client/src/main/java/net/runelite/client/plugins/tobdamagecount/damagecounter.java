@@ -52,8 +52,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 		name = "ToB Damage Counter",
-		description = "Gives you an estimation damage on a boss after the fight is done" +
-				"the damage will be posted in chat",
+		description = "Gives you an estimation damage on a boss and taken after the fight is done" +
+				"the damage will be posted in the chat",
 		tags = {"combat", "npcs", "tob", "damage"},
 		enabledByDefault = false
 )
@@ -248,7 +248,7 @@ public class damagecounter extends Plugin
 	// made sure the message works at ToB area or else it will message every where
 	private void Death(LocalPlayerDeath death)
 	{
-		String DeathMessage = "You have tried your best! You did " + DAMAGEFORMAT.format(DamageCount) + " damage to " +
+		String DeathMessage = "You tried your best! You did " + DAMAGEFORMAT.format(DamageCount) + " damage to " +
 				BossName + "!";
 		String MessageTaken = "You have taken " + DAMAGEFORMAT.format(DamageTaken) + " damage from this fight!";
 		for (int i = 0; i < ToB_Region.length; i++)
