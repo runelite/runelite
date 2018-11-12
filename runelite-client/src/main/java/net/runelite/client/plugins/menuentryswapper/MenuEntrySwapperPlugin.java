@@ -452,6 +452,18 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("configure", option, target, false);
 			}
 		}
+		else if (config.swapArdougneCloak() != ArdougneCloakMode.OFF && option.equals("wear"))
+		{
+			switch (config.swapArdougneCloak())
+			{
+				case MONASTERY_TELEPORT:
+					swap("wear", option, target, true);
+					break;
+				case FARM_TELEPORT:
+					swap("wear", option, target, true);
+					break;				
+			}
+		}
 		else if (config.swapFairyRing() == FairyRingMode.ZANARIS && option.equals("tree"))
 		{
 			swap("zanaris", option, target, false);

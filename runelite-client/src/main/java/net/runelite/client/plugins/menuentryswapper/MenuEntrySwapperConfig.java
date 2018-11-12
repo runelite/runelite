@@ -53,6 +53,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapArdougneCloak",
+		name  = "Ardougne Cloak",
+		description = "Swap Wear with Monastery Teleport or Farm teleport on Ardougne Cloak"
+	)
+	default boolean swapArdougneCloak()
+	{
+		return ArdougneCloakMode.MONASTERY_TELEPORT;
+	}
+
+	@ConfigItem(
 		keyName = "swapAssignment",
 		name = "Assignment",
 		description = "Swap Talk-to with Assignment for Slayer Masters. This will take priority over swapping Trade."
