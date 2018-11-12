@@ -332,9 +332,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 		int itemId = event.getIdentifier();
 		String option = Text.removeTags(event.getOption()).toLowerCase();
 		String target = Text.removeTags(event.getTarget()).toLowerCase();
-		NPC npc  = client.getHintArrowNpc();
+		NPC hintArrowNpc  = client.getHintArrowNpc();
 
-		if (npc != null && npc.getName().toLowerCase().equals(target))
+		if (hintArrowNpc != null && hintArrowNpc.getName().toLowerCase().equals(target))
 		{
 			return;
 		}
