@@ -36,6 +36,9 @@ import net.runelite.api.Skill;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Player;
+import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.ItemID;
+import net.runelite.api.ItemComposition;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.GameTick;
@@ -69,6 +72,8 @@ public class damagecounter extends Plugin
 	//formatting the number for damage taken and dealt with to look beeter
 	private static final DecimalFormat DAMAGEFORMAT = new DecimalFormat("#,###");
 	private static final double XP_RATIO = 1.3333;
+	private static final double BOSS_MODIFIER = 1.05;
+	private static final double SCYTHE_MODIFIER = .70;
 	private static final boolean ALIVE = true; //
 	private static final boolean DEAD = false; //if they're dead they cannot "recreate" the message of being alive
 	//locations at ToB
@@ -85,11 +90,11 @@ public class damagecounter extends Plugin
 	//setting up the array for a check list
 	private static int[] NPCARRAY = {NpcID.THE_MAIDEN_OF_SUGADINTI, NpcID.THE_MAIDEN_OF_SUGADINTI_8361,
 			NpcID.THE_MAIDEN_OF_SUGADINTI_8362, NpcID.THE_MAIDEN_OF_SUGADINTI_8363, NpcID.THE_MAIDEN_OF_SUGADINTI_8364,
-			NpcID.THE_MAIDEN_OF_SUGADINTI_8365, NpcID.PESTILENT_BLOAT, NpcID.NYLOCAS_VASILIAS, NpcID.NYLOCAS_VASILIAS_8355,
-			NpcID.NYLOCAS_VASILIAS_8356, NpcID.NYLOCAS_VASILIAS_8357, NpcID.SOTETSEG, NpcID.SOTETSEG_8388, NpcID.XARPUS,
-			NpcID.XARPUS_8339, NpcID.XARPUS_8340, NpcID.XARPUS_8341, NpcID.VERZIK_VITUR, NpcID.VERZIK_VITUR_8369,
-			NpcID.VERZIK_VITUR_8370, NpcID.VERZIK_VITUR_8371, NpcID.VERZIK_VITUR_8372, NpcID.VERZIK_VITUR_8373,
-			NpcID.VERZIK_VITUR_8374, NpcID.VERZIK_VITUR_8375};
+			NpcID.THE_MAIDEN_OF_SUGADINTI_8365, NpcID.PESTILENT_BLOAT, NpcID.NYLOCAS_VASILIAS,
+			NpcID.NYLOCAS_VASILIAS_8355, NpcID.NYLOCAS_VASILIAS_8356, NpcID.NYLOCAS_VASILIAS_8357, NpcID.SOTETSEG,
+			NpcID.SOTETSEG_8388, NpcID.XARPUS, NpcID.XARPUS_8339, NpcID.XARPUS_8340, NpcID.XARPUS_8341,
+			NpcID.VERZIK_VITUR, NpcID.VERZIK_VITUR_8369, NpcID.VERZIK_VITUR_8370, NpcID.VERZIK_VITUR_8371,
+			NpcID.VERZIK_VITUR_8372, NpcID.VERZIK_VITUR_8373, NpcID.VERZIK_VITUR_8374, NpcID.VERZIK_VITUR_8375};
 
 	@Inject
 	private Client client;
@@ -169,6 +174,23 @@ public class damagecounter extends Plugin
 		return (int) Math.floor(damageOutput);
 	}
 
+	//calculating the scythe damage if the player has the weapon
+	private int ScytheDamageCalc()
+	{
+		int NewXp;
+		double damageOutput = 0;
+		int XPdrop;
+		if (currenthpxp != -1)
+		{
+			XPdrop = client.getSkillExperience(Skill.HITPOINTS);
+			NewXp = XPdrop - currenthpxp;
+			currenthpxp = -1;
+			damageOutput = NewXp * SCYTHE_MODIFIER;
+		}
+		//returns the damage you have done
+		return (int) Math.floor(damageOutput);
+	}
+
 	//adding up the damage for the print message checks every tick(aka attack tick)
 	private void DamageCounting()
 	{
@@ -179,9 +201,19 @@ public class damagecounter extends Plugin
 			if (interacting instanceof NPC)
 			{
 				String interactingName = interacting.getName();
+				ItemComposition item = client.getItemDefinition(ItemID.SCYTHE_OF_VITUR);
+				int WEAPONSLOT = EquipmentInventorySlot.WEAPON.getSlotIdx();
 				if (interactingName.equals(BossName))
 				{
-					DamageCount += XPtoDamage();
+					//checks the weapon slot if they have a scythe or not
+					if (WEAPONSLOT == item.getId())
+					{
+						DamageCount += (ScytheDamageCalc() * BOSS_MODIFIER);
+					}
+					else
+					{
+						DamageCount += (XPtoDamage() * BOSS_MODIFIER);
+					}
 				}
 			}
 		}
@@ -235,12 +267,17 @@ public class damagecounter extends Plugin
 	}
 
 	//print out the damage after the boss have died
+	//prevent people from spectating to get the damage message, it is impossible for them to get damage
 	private void DamagePrint(NPC actor)
 	{
-		String MessageDamage = "Well done! You did " + DAMAGEFORMAT.format(DamageCount) + " damage to " + actor.getName() + "!";
-		sendChatMessage(MessageDamage);
-		String MessageTaken = "You have taken " + DAMAGEFORMAT.format(DamageTaken) + " damage from this fight!";
-		sendChatMessage(MessageTaken);
+		if (DamageTaken != 0)
+		{
+			String MessageDamage = "Well done! You did " + DAMAGEFORMAT.format(DamageCount) + " damage to " +
+					actor.getName() + "!";
+			sendChatMessage(MessageDamage);
+			String MessageTaken = "You have taken " + DAMAGEFORMAT.format(DamageTaken) + " damage from this fight!";
+			sendChatMessage(MessageTaken);
+		}
 	}
 
 	@Subscribe
@@ -253,7 +290,8 @@ public class damagecounter extends Plugin
 		String MessageTaken = "You have taken " + DAMAGEFORMAT.format(DamageTaken) + " damage from this fight!";
 		for (int i = 0; i < ToB_Region.length; i++)
 		{
-			if (WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID() == ToB_Region[i])
+			if (WorldPoint.fromLocalInstance(client,
+					client.getLocalPlayer().getLocalLocation()).getRegionID() == ToB_Region[i])
 			{
 				sendChatMessage(DeathMessage);
 				sendChatMessage(MessageTaken);
