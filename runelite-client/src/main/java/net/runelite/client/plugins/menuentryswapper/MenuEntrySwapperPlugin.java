@@ -35,6 +35,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.MenuEntryAdded;
@@ -331,6 +332,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 		int itemId = event.getIdentifier();
 		String option = Text.removeTags(event.getOption()).toLowerCase();
 		String target = Text.removeTags(event.getTarget()).toLowerCase();
+		NPC npc  = client.getHintArrowNpc();
+
+		if (npc != null && npc.getName().toLowerCase().equals(target))
+		{
+			return;
+		}
 
 		if (option.equals("talk-to"))
 		{
