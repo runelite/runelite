@@ -73,4 +73,28 @@ public interface RSTile extends Tile
 	@Import("plane")
 	@Override
 	int getPlane();
+
+	@Import("physicalLevel")
+	int getPhysicalLevel();
+
+	@Import("draw")
+	boolean isDraw();
+
+	@Import("draw")
+	void setDraw(boolean draw);
+
+	@Import("visible")
+	boolean isVisible();
+
+	@Import("visible")
+	void setVisible(boolean visible);
+
+	@Import("drawEntities")
+	boolean isDrawEntities();
+
+	@Import("drawEntities")
+	void setDrawEntities(boolean drawEntities);
+
+	@Import("wallCullDirection")
+	void setWallCullDirection(int wallCullDirection);
 }

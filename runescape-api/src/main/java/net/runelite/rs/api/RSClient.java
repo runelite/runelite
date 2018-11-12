@@ -558,6 +558,12 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("pitchCos")
 	void setPitchCos(int v);
 
+	@Import("yawSin")
+	void setYawSin(int v);
+
+	@Import("yawCos")
+	void setYawCos(int v);
+
 	@Import("Rasterizer3D_zoom")
 	int get3dZoom();
 
@@ -685,4 +691,52 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("occupiedTilesTick")
 	int[][] getOccupiedTilesTick();
+
+	@Import("cycle")
+	int getCycle();
+
+	@Import("cycle")
+	void setCycle(int cycle);
+
+	@Import("visibilityMaps")
+	boolean[][][][] getVisibilityMaps();
+
+	@Import("renderArea")
+	void setRenderArea(boolean[][] renderArea);
+
+	@Import("cameraX2")
+	void setCameraX2(int cameraX2);
+
+	@Import("cameraY2")
+	void setCameraY2(int cameraY2);
+
+	@Import("cameraZ2")
+	void setCameraZ2(int cameraZ2);
+
+	@Import("screenCenterX")
+	void setScreenCenterX(int screenCenterX);
+
+	@Import("screenCenterZ")
+	void setScreenCenterZ(int screenCenterZ);
+
+	@Import("Scene_plane")
+	void setScenePlane(int scenePlane);
+
+	@Import("minTileX")
+	void setMinTileX(int i);
+
+	@Import("minTileZ")
+	void setMinTileZ(int i);
+
+	@Import("maxTileX")
+	void setMaxTileX(int i);
+
+	@Import("maxTileZ")
+	void setMaxTileZ(int i);
+
+	@Import("tileUpdateCount")
+	int getTileUpdateCount();
+
+	@Import("tileUpdateCount")
+	void setTileUpdateCount(int tileUpdateCount);
 }
