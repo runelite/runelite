@@ -70,6 +70,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.timers.GameTimer.*;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
+import java.util.function.Function;
+
 @PluginDescriptor(
 	name = "Timers",
 	description = "Show various timers in an infobox",
@@ -408,7 +410,7 @@ public class TimersPlugin extends Plugin
 
 		if (config.showCannon() && (event.getMessage().equals(CANNON_FURNACE_MESSAGE) || event.getMessage().contains(CANNON_REPAIR_MESSAGE)))
 		{
-			createGameTimer(CANNON);
+			createGameTimerFunc(CANNON, timer -> timer.getDescription() + " is on world " + client.getWorld());
 		}
 
 		if (config.showCannon() && event.getMessage().equals(CANNON_PICKUP_MESSAGE))
@@ -622,7 +624,6 @@ public class TimersPlugin extends Plugin
 		lastAnimation = client.getLocalPlayer().getAnimation();
 	}
 
-
 	@Subscribe
 	public void onGraphicChanged(GraphicChanged event)
 	{
@@ -782,6 +783,15 @@ public class TimersPlugin extends Plugin
 		t.setTooltip(timer.getDescription());
 		infoBoxManager.addInfoBox(t);
 		return t;
+	}
+
+	private void createGameTimerFunc(GameTimer timer, Function<GameTimer, String> getDescription)
+	{
+		removeGameTimer(timer);
+
+		TimerTimer t = new TimerTimer(timer, this);
+		t.setTooltip(getDescription.apply(timer));
+		infoBoxManager.addInfoBox(t);
 	}
 
 	private void removeGameTimer(GameTimer timer)
