@@ -57,7 +57,7 @@ public interface MenuEntrySwapperConfig extends Config
 		name  = "Ardougne Cloak",
 		description = "Swap Wear with Monastery Teleport or Farm teleport on Ardougne Cloak"
 	)
-	default boolean swapArdougneCloak()
+	default ArdougneCloakMode swapArdougneCloak()
 	{
 		return ArdougneCloakMode.MONASTERY_TELEPORT;
 	}
