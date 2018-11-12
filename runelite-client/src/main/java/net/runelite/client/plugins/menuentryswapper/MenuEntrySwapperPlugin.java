@@ -487,7 +487,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			swap("spellbook", option, target, true);
 			swap("perks", option, target, true);
 		}
-		else if (config.swapPrivateRaidChest() && option.equals("shared"))
+		else if (config.swapPrivate() && option.equals("shared"))
 		{
 			swap("private", option, target, true);
 		}
