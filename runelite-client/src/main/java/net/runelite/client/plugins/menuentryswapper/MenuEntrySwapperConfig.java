@@ -193,6 +193,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapPrivate",
+		name = "Private",
+		description = "Swap Shared with Private on the Chamber of Xeric storage units."
+	)
+	default boolean swapPrivate()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "swapQuick",
 		name = "Quick Pass/Start/Travel",
 		description = "Swap Pass with Quick-Pass, Ring with Quick-Start and Talk-to with Quick-Travel"

@@ -487,6 +487,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 			swap("spellbook", option, target, true);
 			swap("perks", option, target, true);
 		}
+		else if (config.swapPrivate() && option.equals("shared"))
+		{
+			swap("private", option, target, true);
+		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
 			Integer customOption = getSwapConfig(itemId);
