@@ -92,7 +92,6 @@ public class IdleNotifierPlugin extends Plugin
 	private int lastCombatCountdown = 0;
 	private Instant sixHourWarningTime;
 	private boolean ready;
-	private boolean lastInteractFishing;
 	private Instant lastInteractingFishing;
 
 	@Provides
@@ -268,10 +267,9 @@ public class IdleNotifierPlugin extends Plugin
 			lastInteracting = Instant.now();
 		}
 
-		if (target.getName().contains(FISHING_SPOT))
+		if (target.getName() != null && target.getName().contains(FISHING_SPOT))
 		{
 			resetTimers();
-			lastInteractFishing = true;
 			lastInteractingFishing = Instant.now();
 		}
 	}
@@ -331,7 +329,8 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (client.getGameState() != GameState.LOGGED_IN
 			|| local == null
-			|| System.currentTimeMillis() - client.getMouseLastPressedMillis() < 200
+			// If user has clicked in the last second then they're not idle so don't send idle notification
+			|| System.currentTimeMillis() - client.getMouseLastPressedMillis() < 1000
 			|| client.getKeyboardIdleTicks() < 10)
 		{
 			resetTimers();
@@ -567,7 +566,7 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkFishingIdle(Duration waitDuration, Player local)
 	{
-		if (!lastInteractFishing)
+		if (lastInteractingFishing == null)
 		{
 			return false;
 		}
@@ -579,7 +578,6 @@ public class IdleNotifierPlugin extends Plugin
 			if (lastInteractingFishing != null
 				&& Instant.now().compareTo(lastInteractingFishing.plus(waitDuration)) >= 0)
 			{
-				lastInteractFishing = false;
 				lastInteractingFishing = null;
 				return true;
 			}
@@ -612,13 +610,13 @@ public class IdleNotifierPlugin extends Plugin
 		}
 
 		// Reset fishing idle timer
-		lastInteractingFishing = null;
 		if (client.getGameState() == GameState.LOGIN_SCREEN
 			|| local == null
 			|| local.getInteracting() == null
+			|| local.getInteracting().getName() == null
 			|| !local.getInteracting().getName().contains(FISHING_SPOT))
 		{
-			lastInteractFishing = false;
+			lastInteractingFishing = null;
 		}
 	}
 }
