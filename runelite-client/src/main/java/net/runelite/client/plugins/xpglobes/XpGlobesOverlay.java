@@ -37,6 +37,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.time.Instant;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
@@ -89,8 +90,11 @@ public class XpGlobesOverlay extends Overlay
 			return null;
 		}
 
+		final List<XpGlobe> sortedXpGlobes = plugin.getXpGlobes();
+		sortedXpGlobes.sort((a, b) -> a.getSkill().compareTo(b.getSkill()));
+
 		int curDrawX = 0;
-		for (final XpGlobe xpGlobe : plugin.getXpGlobes())
+		for (final XpGlobe xpGlobe : sortedXpGlobes)
 		{
 			int startXp = xpTrackerService.getStartGoalXp(xpGlobe.getSkill());
 			int goalXp = xpTrackerService.getEndGoalXp(xpGlobe.getSkill());
