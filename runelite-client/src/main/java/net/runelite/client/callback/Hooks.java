@@ -283,6 +283,7 @@ public class Hooks implements Callbacks
 		}
 
 		Image image = mainBufferProvider.getImage();
+		final Image finalImage;
 		final Graphics2D graphics2d = (Graphics2D) image.getGraphics();
 
 		try
@@ -334,13 +335,17 @@ public class Hooks implements Callbacks
 					: RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 			stretchedGraphics.drawImage(image, 0, 0, stretchedDimensions.width, stretchedDimensions.height, null);
 
-			image = stretchedImage;
+			finalImage = image = stretchedImage;
+		}
+		else
+		{
+			finalImage = image;
 		}
 
 		// Draw the image onto the game canvas
 		graphics.drawImage(image, 0, 0, client.getCanvas());
 
-		drawManager.processDrawComplete(image);
+		drawManager.processDrawComplete(() -> finalImage);
 	}
 
 	@Override
