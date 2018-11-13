@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Jos <Malevolentdev@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,50 +22,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.itemstats;
+package net.runelite.client.plugins.statusbars;
 
-import com.google.inject.Binder;
-import com.google.inject.Inject;
-import com.google.inject.Provides;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@PluginDescriptor(
-	name = "Item Stats",
-	description = "Show information about food and potion effects",
-	tags = {"food", "inventory", "overlay", "potion"}
-)
-public class ItemStatPlugin extends Plugin
+@ConfigGroup("statusbars")
+public interface StatusBarsConfig extends Config
 {
-	@Inject
-	private OverlayManager overlayManager;
-
-	@Inject
-	private ItemStatOverlay overlay;
-
-	@Provides
-	ItemStatConfig getConfig(ConfigManager configManager)
+	@ConfigItem(
+		keyName = "enableCounter",
+		name = "Show hitpoints & prayer counter",
+		description = "Shows current amount of hitpoints & prayer on the status bars"
+	)
+	default boolean enableCounter()
 	{
-		return configManager.getConfig(ItemStatConfig.class);
+		return false;
 	}
 
-	@Override
-	public void configure(Binder binder)
+	@ConfigItem(
+		keyName = "enableSkillIcon",
+		name = "Show hitpoints & prayer icons",
+		description = "Adds skill icons at the top of the bars."
+	)
+	default boolean enableSkillIcon()
 	{
-		binder.bind(ItemStatChangesService.class).to(ItemStatChangesServiceImpl.class);
+		return true;
 	}
 
-	@Override
-	protected void startUp() throws Exception
+	@ConfigItem(
+		keyName = "enableRestorationBars",
+		name = "Show amount of hitpoints and prayer restored",
+		description = "Visually shows how much a food or prayer will heal/restore you on the bars."
+	)
+	default boolean enableRestorationBars()
 	{
-		overlayManager.add(overlay);
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		overlayManager.remove(overlay);
+		return true;
 	}
 }

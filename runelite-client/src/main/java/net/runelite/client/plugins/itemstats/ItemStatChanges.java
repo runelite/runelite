@@ -43,7 +43,6 @@ import static net.runelite.client.plugins.itemstats.stats.Stats.*;
 @Slf4j
 public class ItemStatChanges
 {
-
 	ItemStatChanges()
 	{
 		init();
@@ -210,5 +209,4 @@ public class ItemStatChanges
 	{
 		return effects.get(id);
 	}
-
 }

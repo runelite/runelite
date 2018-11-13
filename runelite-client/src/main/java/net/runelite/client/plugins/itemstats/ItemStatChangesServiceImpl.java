@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Jos <Malevolentdev@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,48 +24,23 @@
  */
 package net.runelite.client.plugins.itemstats;
 
-import com.google.inject.Binder;
-import com.google.inject.Inject;
-import com.google.inject.Provides;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.OverlayManager;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
-@PluginDescriptor(
-	name = "Item Stats",
-	description = "Show information about food and potion effects",
-	tags = {"food", "inventory", "overlay", "potion"}
-)
-public class ItemStatPlugin extends Plugin
+@Singleton
+class ItemStatChangesServiceImpl implements ItemStatChangesService
 {
-	@Inject
-	private OverlayManager overlayManager;
+	private final ItemStatChanges itemstatchanges;
 
 	@Inject
-	private ItemStatOverlay overlay;
-
-	@Provides
-	ItemStatConfig getConfig(ConfigManager configManager)
+	private ItemStatChangesServiceImpl(ItemStatChanges itemstatchanges)
 	{
-		return configManager.getConfig(ItemStatConfig.class);
+		this.itemstatchanges = itemstatchanges;
 	}
 
 	@Override
-	public void configure(Binder binder)
+	public Effect getItemStatChanges(int id)
 	{
-		binder.bind(ItemStatChangesService.class).to(ItemStatChangesServiceImpl.class);
-	}
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		overlayManager.add(overlay);
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		overlayManager.remove(overlay);
+		return itemstatchanges.get(id);
 	}
 }

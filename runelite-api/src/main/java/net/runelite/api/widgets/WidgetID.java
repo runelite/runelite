@@ -375,6 +375,7 @@ public class WidgetID
 		static final int EQUIPMENT_ICON = 62;
 		static final int PRAYER_ICON = 63;
 		static final int MAGIC_ICON = 64;
+		static final int INTERFACE_CONTAINER = 65;
 	}
 
 	static class ResizableViewportBottomLine

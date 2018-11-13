@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Jos <Malevolentdev@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,50 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.itemstats;
+package net.runelite.client.plugins.statusbars;
 
-import com.google.inject.Binder;
-import com.google.inject.Inject;
-import com.google.inject.Provides;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.OverlayManager;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import net.runelite.api.Point;
+import net.runelite.api.widgets.WidgetInfo;
 
-@PluginDescriptor(
-	name = "Item Stats",
-	description = "Show information about food and potion effects",
-	tags = {"food", "inventory", "overlay", "potion"}
-)
-public class ItemStatPlugin extends Plugin
+@Getter
+@AllArgsConstructor
+enum Viewport
 {
-	@Inject
-	private OverlayManager overlayManager;
+	RESIZED_BOX(WidgetInfo.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX, WidgetInfo.RESIZABLE_VIEWPORT_INTERFACE_CONTAINER,
+			new Point(20,  -4), new Point( 0,  -4)),
+	RESIZED_BOTTOM(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INTERFACE_CONTAINER,
+			new Point(61,  8), new Point(35,  -12)),
+	FIXED(WidgetInfo.FIXED_VIEWPORT, WidgetInfo.FIXED_VIEWPORT_INTERFACE_CONTAINER,
+			new Point(20, -4), new Point(0, -4));
 
-	@Inject
-	private ItemStatOverlay overlay;
-
-	@Provides
-	ItemStatConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(ItemStatConfig.class);
-	}
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(ItemStatChangesService.class).to(ItemStatChangesServiceImpl.class);
-	}
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		overlayManager.add(overlay);
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		overlayManager.remove(overlay);
-	}
+	private WidgetInfo container;
+	private WidgetInfo viewport;
+	private Point offsetLeft;
+	private Point offsetRight;
 }

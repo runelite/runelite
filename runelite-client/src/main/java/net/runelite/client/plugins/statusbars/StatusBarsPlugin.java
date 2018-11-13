@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Jos <Malevolentdev@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,40 +22,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.itemstats;
+package net.runelite.client.plugins.statusbars;
 
-import com.google.inject.Binder;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import com.google.inject.Provides;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.itemstats.ItemStatPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Item Stats",
-	description = "Show information about food and potion effects",
-	tags = {"food", "inventory", "overlay", "potion"}
+	name = "Status Bars",
+	description = "Draws status bars next to players inventory showing current HP & Prayer and healing amounts",
+	enabledByDefault = false
 )
-public class ItemStatPlugin extends Plugin
+@PluginDependency(ItemStatPlugin.class)
+public class StatusBarsPlugin extends Plugin
 {
 	@Inject
-	private OverlayManager overlayManager;
+	private StatusBarsOverlay overlay;
 
 	@Inject
-	private ItemStatOverlay overlay;
-
-	@Provides
-	ItemStatConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(ItemStatConfig.class);
-	}
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(ItemStatChangesService.class).to(ItemStatChangesServiceImpl.class);
-	}
+	private OverlayManager overlayManager;
 
 	@Override
 	protected void startUp() throws Exception
@@ -67,5 +57,11 @@ public class ItemStatPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+	}
+
+	@Provides
+	StatusBarsConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(StatusBarsConfig.class);
 	}
 }
