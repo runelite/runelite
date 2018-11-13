@@ -329,12 +329,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		int itemId = event.getIdentifier();
+		int eventId = event.getIdentifier();
 		String option = Text.removeTags(event.getOption()).toLowerCase();
 		String target = Text.removeTags(event.getTarget()).toLowerCase();
 		NPC hintArrowNpc  = client.getHintArrowNpc();
 
-		if (hintArrowNpc != null && hintArrowNpc.getName().toLowerCase().equals(target))
+		if (hintArrowNpc != null && hintArrowNpc.getIndex() == eventId)
 		{
 			return;
 		}
@@ -496,7 +496,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
-			Integer customOption = getSwapConfig(itemId);
+			Integer customOption = getSwapConfig(eventId);
 
 			if (customOption != null && customOption == -1)
 			{
