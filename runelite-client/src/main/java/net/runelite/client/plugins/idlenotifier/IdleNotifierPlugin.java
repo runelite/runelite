@@ -69,6 +69,8 @@ public class IdleNotifierPlugin extends Plugin
 	private static final int HIGHEST_MONSTER_ATTACK_SPEED = 8; // Except Scarab Mage, but they are with other monsters
 	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
 
+	private static final String FISHING_SPOT = "Fishing spot";
+
 	@Inject
 	private Notifier notifier;
 
@@ -90,6 +92,8 @@ public class IdleNotifierPlugin extends Plugin
 	private int lastCombatCountdown = 0;
 	private Instant sixHourWarningTime;
 	private boolean ready;
+	private boolean lastInteractFishing;
+	private Instant lastInteractingFishing;
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
@@ -161,19 +165,8 @@ public class IdleNotifierPlugin extends Plugin
 			case SMITHING_SMELTING:
 			case SMITHING_CANNONBALL:
 			/* Fishing */
-			case FISHING_NET:
-			case FISHING_BIG_NET:
-			case FISHING_HARPOON:
-			case FISHING_BARBTAIL_HARPOON:
-			case FISHING_DRAGON_HARPOON:
-			case FISHING_CAGE:
-			case FISHING_POLE_CAST:
-			case FISHING_INFERNAL_HARPOON:
-			case FISHING_OILY_ROD:
-			case FISHING_KARAMBWAN:
 			case FISHING_CRUSHING_INFERNAL_EELS:
 			case FISHING_CUTTING_SACRED_EELS:
-			case FISHING_BAREHAND:
 			/* Mining(Normal) */
 			case MINING_BRONZE_PICKAXE:
 			case MINING_IRON_PICKAXE:
@@ -274,6 +267,13 @@ public class IdleNotifierPlugin extends Plugin
 			lastInteract = target;
 			lastInteracting = Instant.now();
 		}
+
+		if (target.getName().contains(FISHING_SPOT))
+		{
+			resetTimers();
+			lastInteractFishing = true;
+			lastInteractingFishing = Instant.now();
+		}
 	}
 
 	@Subscribe
@@ -371,6 +371,11 @@ public class IdleNotifierPlugin extends Plugin
 		if (checkLowOxygen())
 		{
 			notifier.notify("[" + local.getName() + "] has low oxygen!");
+		}
+
+		if (config.fishingIdle() && checkFishingIdle(waitDuration, local))
+		{
+			notifier.notify("[" + local.getName() + "] has stopped fishing!");
 		}
 	}
 
@@ -560,6 +565,34 @@ public class IdleNotifierPlugin extends Plugin
 		return false;
 	}
 
+	private boolean checkFishingIdle(Duration waitDuration, Player local)
+	{
+		if (!lastInteractFishing)
+		{
+			return false;
+		}
+
+		final Actor actor = local.getInteracting();
+
+		if (actor == null)
+		{
+			if (lastInteractingFishing != null
+				&& Instant.now().compareTo(lastInteractingFishing.plus(waitDuration)) >= 0)
+			{
+				lastInteractFishing = false;
+				lastInteractingFishing = null;
+				return true;
+			}
+		}
+		else
+		{
+			lastInteractingFishing = Instant.now();
+		}
+
+		return false;
+
+	}
+
 	private void resetTimers()
 	{
 		final Player local = client.getLocalPlayer();
@@ -576,6 +609,16 @@ public class IdleNotifierPlugin extends Plugin
 		if (client.getGameState() == GameState.LOGIN_SCREEN || local == null || local.getInteracting() != lastInteract)
 		{
 			lastInteract = null;
+		}
+
+		// Reset fishing idle timer
+		lastInteractingFishing = null;
+		if (client.getGameState() == GameState.LOGIN_SCREEN
+			|| local == null
+			|| local.getInteracting() == null
+			|| !local.getInteracting().getName().contains(FISHING_SPOT))
+		{
+			lastInteractFishing = false;
 		}
 	}
 }
