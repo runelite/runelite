@@ -125,6 +125,8 @@ public class WidgetID
 	public static final int SKOTIZO_GROUP_ID = 308;
 	public static final int ENTERING_HOUSE_GROUP_ID = 71;
 	public static final int FULLSCREEN_MAP_GROUP_ID = 165;
+	public static final int CW_SARA_GROUP_ID = 58;
+	public static final int CW_ZAM_GROUP_ID = 59;
 
 	static class WorldMap
 	{
@@ -745,5 +747,10 @@ public class WidgetID
 	static class FullScreenMap
 	{
 		static final int ROOT = 25;
+	}
+
+	static class CastleWars
+	{
+		static final int TIME_REMAINING = 25;
 	}
 }

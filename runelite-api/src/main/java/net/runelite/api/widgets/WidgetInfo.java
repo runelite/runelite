@@ -462,7 +462,10 @@ public enum WidgetInfo
 
 	SKOTIZO_CONTAINER(WidgetID.SKOTIZO_GROUP_ID, WidgetID.Skotizo.CONTAINER),
 
-	FULLSCREEN_MAP_ROOT(WidgetID.FULLSCREEN_MAP_GROUP_ID, WidgetID.FullScreenMap.ROOT);
+	FULLSCREEN_MAP_ROOT(WidgetID.FULLSCREEN_MAP_GROUP_ID, WidgetID.FullScreenMap.ROOT),
+
+	CW_TIME_REMAINING_SARA(WidgetID.CW_SARA_GROUP_ID, WidgetID.CastleWars.TIME_REMAINING),
+	CW_TIME_REMAINING_ZAM(WidgetID.CW_ZAM_GROUP_ID, WidgetID.CastleWars.TIME_REMAINING);
 
 	private final int groupId;
 	private final int childId;

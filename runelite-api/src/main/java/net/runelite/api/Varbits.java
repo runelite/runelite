@@ -421,7 +421,13 @@ public enum Varbits
 	CURRENT_BANK_TAB(4150),
 
 	WORLDHOPPER_FAVROITE_1(4597),
-	WORLDHOPPER_FAVROITE_2(4598);
+	WORLDHOPPER_FAVROITE_2(4598),
+
+	/**
+	 * Castle Wars
+	 */
+	CW_SARA_SCORE(145),
+	CW_ZAM_SCORE(155);
 
 	/**
 	 * The raw varbit ID.
