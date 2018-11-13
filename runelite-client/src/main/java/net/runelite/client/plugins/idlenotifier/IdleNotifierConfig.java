@@ -108,4 +108,15 @@ public interface IdleNotifierConfig extends Config
 		return 0;
 	}
 
+	@ConfigItem(
+		keyName = "fishingIdle",
+		name = "Fishing Idle Notifications",
+		position = 8,
+		description = "Configures if fishing idle notifications are enabled."
+	)
+	default boolean fishingIdle()
+	{
+		return true;
+	}
+
 }
