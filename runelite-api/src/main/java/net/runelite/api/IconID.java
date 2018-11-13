@@ -24,6 +24,9 @@
  */
 package net.runelite.api;
 
+/**
+ * Enum of all official icons that Jagex uses in chat.
+ */
 public enum IconID
 {
 	PLAYER_MODERATOR,
