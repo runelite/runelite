@@ -90,7 +90,7 @@ public class InventoryTagsPlugin extends Plugin
 		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
 
 	private static final List<String> GROUPS = ImmutableList.of(SETNAME_GROUP_4, SETNAME_GROUP_3, SETNAME_GROUP_2, SETNAME_GROUP_1);
-    private static List<String> itemIdsList = new ArrayList<>();
+	private static List<String> itemIdsList = new ArrayList<>();
 
 	@Inject
 	private Client client;
@@ -134,24 +134,24 @@ public class InventoryTagsPlugin extends Plugin
 
 	private void setTag(int itemId, String tag)
 	{
-	    itemIdsList.add(ITEM_KEY_PREFIX+itemId);
+		itemIdsList.add(ITEM_KEY_PREFIX + itemId);
 		configManager.setConfiguration(InventoryTagsConfig.GROUP, ITEM_KEY_PREFIX + itemId, tag);
 	}
 
 	private void unsetTag(int itemId)
 	{
 		configManager.unsetConfiguration(InventoryTagsConfig.GROUP, ITEM_KEY_PREFIX + itemId);
-		itemIdsList.remove(ITEM_KEY_PREFIX+itemId);
+		itemIdsList.remove(ITEM_KEY_PREFIX + itemId);
 	}
 
 	private void clearTag()
-    {
-        for(String s : itemIdsList)
-        {
-            configManager.unsetConfiguration(InventoryTagsConfig.GROUP, s);
-        }
-        itemIdsList.clear();
-    }
+	{
+		for (String s : itemIdsList)
+		{
+			configManager.unsetConfiguration(InventoryTagsConfig.GROUP, s);
+		}
+		itemIdsList.clear();
+	}
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -202,11 +202,11 @@ public class InventoryTagsPlugin extends Plugin
 			checkForTags(client.getItemContainer(InventoryID.INVENTORY));
 		}
 		else if (event.getMenuOption().equals(MENU_CLEAR))
-        {
-            clearTag();
+		{
+			clearTag();
 
-            checkForTags(client.getItemContainer(InventoryID.INVENTORY));
-        }
+			checkForTags(client.getItemContainer(InventoryID.INVENTORY));
+		}
 	}
 
 	@Subscribe
@@ -239,39 +239,39 @@ public class InventoryTagsPlugin extends Plugin
 				final String group = getTag(itemId);
 				final MenuEntry newMenu = new MenuEntry();
 				final Color color = getGroupNameColor(groupName);
-				if(groupName.equals(group))
+				if (groupName.equals(group))
 				{
 					newMenu.setOption(MENU_REMOVE);
-                    newMenu.setTarget(ColorUtil.prependColorTag(groupName, MoreObjects.firstNonNull(color, Color.WHITE)));
-                    newMenu.setIdentifier(itemId);
-                    newMenu.setParam1(widgetId);
-                    newMenu.setType(MenuAction.RUNELITE.getId());
-                    menuList.add(newMenu);
+					newMenu.setTarget(ColorUtil.prependColorTag(groupName, MoreObjects.firstNonNull(color, Color.WHITE)));
+					newMenu.setIdentifier(itemId);
+					newMenu.setParam1(widgetId);
+					newMenu.setType(MenuAction.RUNELITE.getId());
+					menuList.add(newMenu);
 				}
 				else
 				{
 					newMenu.setOption(MENU_SET);
-                    newMenu.setTarget(ColorUtil.prependColorTag(groupName, MoreObjects.firstNonNull(color, Color.WHITE)));
-                    newMenu.setIdentifier(itemId);
-                    newMenu.setParam1(widgetId);
-                    newMenu.setType(MenuAction.RUNELITE.getId());
-                    menuList.add(newMenu);
+					newMenu.setTarget(ColorUtil.prependColorTag(groupName, MoreObjects.firstNonNull(color, Color.WHITE)));
+					newMenu.setIdentifier(itemId);
+					newMenu.setParam1(widgetId);
+					newMenu.setType(MenuAction.RUNELITE.getId());
+					menuList.add(newMenu);
 
 				}
 
 			}
-			if(getTag(itemId)!=null)
-            {
-                final MenuEntry newMenu = new MenuEntry();
-                newMenu.setOption(MENU_CLEAR);
-                newMenu.setTarget(ColorUtil.prependColorTag("All Groups", MoreObjects.firstNonNull(Color.WHITE, Color.WHITE)));
-                newMenu.setIdentifier(itemId);
-                newMenu.setParam1(widgetId);
-                newMenu.setType(MenuAction.RUNELITE.getId());
-                menuList.add(0, newMenu);
-            }
+			if (getTag(itemId) != null)
+			{
+				final MenuEntry newMenu = new MenuEntry();
+				newMenu.setOption(MENU_CLEAR);
+				newMenu.setTarget(ColorUtil.prependColorTag("All Groups", MoreObjects.firstNonNull(Color.WHITE, Color.WHITE)));
+				newMenu.setIdentifier(itemId);
+				newMenu.setParam1(widgetId);
+				newMenu.setType(MenuAction.RUNELITE.getId());
+				menuList.add(0, newMenu);
+			}
 
-            MenuEntry[] menu = new MenuEntry[menuList.size()];
+			MenuEntry[] menu = new MenuEntry[menuList.size()];
 			menu = menuList.toArray(menu);
 			client.setMenuEntries(menu);
 		}
