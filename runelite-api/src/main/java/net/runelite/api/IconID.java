@@ -24,9 +24,14 @@
  */
 package net.runelite.api;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 /**
  * Enum of all official icons that Jagex uses in chat.
  */
+@RequiredArgsConstructor
+@Getter
 public enum IconID
 {
 	PLAYER_MODERATOR(0),
@@ -43,12 +48,7 @@ public enum IconID
 	NO_ENTRY(11),
 	CHAIN_LINK(12);
 
-	int index;
-
-	IconID(int index)
-	{
-		this.index = index;
-	}
+	private final int index;
 
 	@Override
 	public String toString()
