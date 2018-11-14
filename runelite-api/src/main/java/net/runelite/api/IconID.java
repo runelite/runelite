@@ -29,23 +29,30 @@ package net.runelite.api;
  */
 public enum IconID
 {
-	PLAYER_MODERATOR,
-	JAGEX_MODERATOR,
-	IRONMAN,
-	ULTIMATE_IRONMAN,
-	DMM_SKULL_5_KEYS,
-	DMM_SKULL_4_KEYS,
-	DMM_SKULL_3_KEYS,
-	DMM_SKULL_2_KEYS,
-	DMM_SKULL_1_KEYS,
-	SKULL,
-	HARDCORE_IRONMAN,
-	NO_ENTRY,
-	CHAIN_LINK;
+	PLAYER_MODERATOR(0),
+	JAGEX_MODERATOR(1),
+	IRONMAN(2),
+	ULTIMATE_IRONMAN(3),
+	DMM_SKULL_5_KEYS(4),
+	DMM_SKULL_4_KEYS(5),
+	DMM_SKULL_3_KEYS(6),
+	DMM_SKULL_2_KEYS(7),
+	DMM_SKULL_1_KEYS(8),
+	SKULL(9),
+	HARDCORE_IRONMAN(10),
+	NO_ENTRY(11),
+	CHAIN_LINK(12);
+
+	int index;
+
+	IconID(int index)
+	{
+		this.index = index;
+	}
 
 	@Override
 	public String toString()
 	{
-		return "<img=" + String.valueOf(this.ordinal()) + ">";
+		return "<img=" + String.valueOf(this.index) + ">";
 	}
 }
