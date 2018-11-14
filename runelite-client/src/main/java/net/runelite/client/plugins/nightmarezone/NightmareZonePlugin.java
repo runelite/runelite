@@ -26,8 +26,12 @@ package net.runelite.client.plugins.nightmarezone;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import javax.inject.Inject;
+
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
@@ -42,150 +46,149 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Nightmare Zone",
-	description = "Show NMZ points/absorption and/or notify about expiring potions",
-	tags = {"combat", "nmz", "minigame", "notifications"}
+        name = "Nightmare Zone",
+        description = "Show NMZ points/absorption and/or notify about expiring potions",
+        tags = {"combat", "nmz", "minigame", "notifications"}
 )
-public class NightmareZonePlugin extends Plugin
-{
-	private static final int[] NMZ_MAP_REGION = {9033};
+public class NightmareZonePlugin extends Plugin {
+    private static final int[] NMZ_MAP_REGION = {9033};
 
-	@Inject
-	private Notifier notifier;
+    @Inject
+    private Notifier notifier;
 
-	@Inject
-	private Client client;
+    @Inject
+    private Client client;
 
-	@Inject
-	private OverlayManager overlayManager;
+    @Inject
+    private OverlayManager overlayManager;
 
-	@Inject
-	private NightmareZoneConfig config;
+    @Inject
+    private NightmareZoneConfig config;
 
-	@Inject
-	private NightmareZoneOverlay overlay;
+    @Inject
+    private NightmareZoneOverlay overlay;
 
-	// This starts as true since you need to get
-	// above the threshold before sending notifications
-	private boolean absorptionNotificationSend = true;
+    // This starts as true since you need to get
+    // above the threshold before sending notifications
+    private boolean absorptionNotificationSend = true;
+    private boolean shouldCheckOverload = false;
+    //Timer variables for overload tracking
+    private Instant startTime, endTime;
+    private final Duration overloadDuration = Duration.ofMinutes(5);
+    //Used to check if user changed overload threshold mid-timer
+    private int overloadPlaceholder;
 
-	@Override
-	protected void startUp() throws Exception
-	{
-		overlayManager.add(overlay);
-		overlay.removeAbsorptionCounter();
-	}
+    @Override
+    protected void startUp() throws Exception {
+        overloadPlaceholder = config.overloadThreshold();
+        overlayManager.add(overlay);
+        overlay.removeAbsorptionCounter();
+    }
 
-	@Override
-	protected void shutDown() throws Exception
-	{
-		overlayManager.remove(overlay);
-		overlay.removeAbsorptionCounter();
-	}
+    @Override
+    protected void shutDown() throws Exception {
+        overlayManager.remove(overlay);
+        overlay.removeAbsorptionCounter();
+    }
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
-	{
-		overlay.updateConfig();
-	}
+    @Subscribe
+    public void onConfigChanged(ConfigChanged event) {
+        overlay.updateConfig();
+    }
 
-	@Provides
-	NightmareZoneConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(NightmareZoneConfig.class);
-	}
+    @Provides
+    NightmareZoneConfig getConfig(ConfigManager configManager) {
+        return configManager.getConfig(NightmareZoneConfig.class);
+    }
 
-	@Subscribe
-	public void onGameTick(GameTick event)
-	{
-		if (!isInNightmareZone())
-		{
-			if (!absorptionNotificationSend)
-			{
-				absorptionNotificationSend = true;
-			}
+    @Subscribe
+    public void onGameTick(GameTick event) {
+        if (!isInNightmareZone()) {
+            if (!absorptionNotificationSend) {
+                absorptionNotificationSend = true;
+            }
 
-			return;
-		}
-		if (config.absorptionNotification())
-		{
-			checkAbsorption();
-		}
-	}
+            return;
+        }
+        if (config.absorptionNotification()) {
+            checkAbsorption();
+        }
+        if (config.overloadNotification()) {
+            if (config.overloadThreshold() != overloadPlaceholder) {
+                overloadPlaceholder = config.overloadThreshold();
+                shouldCheckOverload = true;
+            }
+            checkOverload();
+        }
+    }
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
-	{
-		if (event.getType() != ChatMessageType.SERVER
-				|| !isInNightmareZone())
-		{
-			return;
-		}
+    @Subscribe
+    public void onChatMessage(ChatMessage event) {
+        if (event.getType() == ChatMessageType.PUBLIC
+                || !isInNightmareZone()) {
+            return;
+        }
 
-		String msg = Text.removeTags(event.getMessage()); //remove color
-		if (msg.contains("The effects of overload have worn off, and you feel normal again."))
-		{
-			if (config.overloadNotification())
-			{
-				notifier.notify("Your overload has worn off");
-			}
-		}
-		else if (msg.contains("A power-up has spawned:"))
-		{
-			if (msg.contains("Power surge"))
-			{
-				if (config.powerSurgeNotification())
-				{
-					notifier.notify(msg);
-				}
-			}
-			else if (msg.contains("Recurrent damage"))
-			{
-				if (config.recurrentDamageNotification())
-				{
-					notifier.notify(msg);
-				}
-			}
-			else if (msg.contains("Zapper"))
-			{
-				if (config.zapperNotification())
-				{
-					notifier.notify(msg);
-				}
-			}
-			else if (msg.contains("Ultimate force"))
-			{
-				if (config.ultimateForceNotification())
-				{
-					notifier.notify(msg);
-				}
-			}
-		}
-	}
+        String msg = Text.removeTags(event.getMessage()); //remove color
+        if (msg.contains("You drink some of your overload potion")) {
+            if (config.overloadNotification() && config.overloadThreshold() > 0) {
+                startTime = Instant.now();
+                endTime = startTime.plus(overloadDuration);
+                shouldCheckOverload = true;
+            }
+        } else if (msg.contains("The effects of overload have worn off, and you feel normal again.")) {
+            if (config.overloadNotification()) {
+                notifier.notify("Your overload has worn off");
+            }
+        } else if (msg.contains("A power-up has spawned:")) {
+            if (msg.contains("Power surge")) {
+                if (config.powerSurgeNotification()) {
+                    notifier.notify(msg);
+                }
+            } else if (msg.contains("Recurrent damage")) {
+                if (config.recurrentDamageNotification()) {
+                    notifier.notify(msg);
+                }
+            } else if (msg.contains("Zapper")) {
+                if (config.zapperNotification()) {
+                    notifier.notify(msg);
+                }
+            } else if (msg.contains("Ultimate force")) {
+                if (config.ultimateForceNotification()) {
+                    notifier.notify(msg);
+                }
+            }
+        }
+    }
 
-	private void checkAbsorption()
-	{
-		int absorptionPoints = client.getVar(Varbits.NMZ_ABSORPTION);
+    private void checkAbsorption() {
+        int absorptionPoints = client.getVar(Varbits.NMZ_ABSORPTION);
 
-		if (!absorptionNotificationSend)
-		{
-			if (absorptionPoints < config.absorptionThreshold())
-			{
-				notifier.notify("Absorption points below: " + config.absorptionThreshold());
-				absorptionNotificationSend = true;
-			}
-		}
-		else
-		{
-			if (absorptionPoints > config.absorptionThreshold())
-			{
-				absorptionNotificationSend = false;
-			}
-		}
-	}
+        if (!absorptionNotificationSend) {
+            if (absorptionPoints < config.absorptionThreshold()) {
+                notifier.notify("Absorption points below: " + config.absorptionThreshold());
+                absorptionNotificationSend = true;
+            }
+        } else {
+            if (absorptionPoints > config.absorptionThreshold()) {
+                absorptionNotificationSend = false;
+            }
+        }
+    }
 
-	public boolean isInNightmareZone()
-	{
-		return Arrays.equals(client.getMapRegions(), NMZ_MAP_REGION);
-	}
+    private void checkOverload() {
+        if (shouldCheckOverload) {
+            Duration timeLeft = Duration.between(Instant.now(), endTime);
+            int seconds = (int) (timeLeft.toMillis() / 1000L);
+
+            if (seconds <= config.overloadThreshold()) {
+                notifier.notify("Overload ending in " + config.overloadThreshold() + " seconds");
+                shouldCheckOverload = false;
+            }
+        }
+    }
+
+    public boolean isInNightmareZone() {
+        return Arrays.equals(client.getMapRegions(), NMZ_MAP_REGION);
+    }
 }
