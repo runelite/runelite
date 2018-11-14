@@ -153,6 +153,6 @@ public class RegenMeterPlugin extends Plugin
 			hitpointsPercentage = 1 - hitpointsPercentage;
 		}
 
-		runPercentage=client.getEnergy()/100.0;
+		runPercentage = client.getEnergy() / 100.0;
 	}
 }

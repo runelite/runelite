@@ -101,10 +101,8 @@ public class RegenMeterOverlay extends Overlay
 			renderRegen(g, WidgetInfo.MINIMAP_SPEC_ORB, plugin.getSpecialPercentage(), SPECIAL_COLOR);
 		}
 
-		if (config.showRun()){
-            renderRegen(g, WidgetInfo.MINIMAP_RUN_ORB, plugin.getRunPercentage(), RUN_COLOR);
-        }
-
+		if (config.showRun())
+			renderRegen(g, WidgetInfo.MINIMAP_RUN_ORB, plugin.getRunPercentage(), RUN_COLOR);
 		return null;
 	}
 
