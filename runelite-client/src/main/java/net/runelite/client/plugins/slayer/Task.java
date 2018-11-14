@@ -78,7 +78,7 @@ enum Task
 	DESERT_LIZARDS("Desert lizards", ItemID.DESERT_LIZARD, "Small lizard", "Lizard"),
 	DOGS("Dogs", ItemID.GUARD_DOG, "Jackal"),
 	DUST_DEVILS("Dust devils", ItemID.DUST_DEVIL, "Choke devil"),
-	DWARVES("Dwarves", ItemID.DWARVEN_HELMET, "Dwarf"),
+	DWARVES("Dwarves", ItemID.DWARVEN_HELMET, "Dwarf", "ID:5185"),
 	EARTH_WARRIORS("Earth warriors", ItemID.BRONZE_FULL_HELM_T),
 	ELVES("Elves", ItemID.ELF, "Elf"),
 	FEVER_SPIDERS("Fever spiders", ItemID.FEVER_SPIDER),

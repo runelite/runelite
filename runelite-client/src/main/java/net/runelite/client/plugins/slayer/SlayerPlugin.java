@@ -536,10 +536,20 @@ public class SlayerPlugin extends Plugin
 		}
 
 		name = name.toLowerCase();
+		int npcId = npc.getId();
 
 		for (String target : targetNames)
 		{
-			if (name.contains(target))
+			if (target.startsWith("id:"))
+			{
+				int targetId = Integer.parseInt(target.substring(3));
+				if (targetId == npcId)
+				{
+
+					return true;
+				}
+			}
+			else if (name.contains(target))
 			{
 				NPCComposition composition = npc.getTransformedComposition();
 				if (composition != null && Arrays.asList(composition.getActions()).contains("Attack"))
