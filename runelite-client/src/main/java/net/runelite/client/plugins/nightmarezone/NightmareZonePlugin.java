@@ -26,6 +26,8 @@ package net.runelite.client.plugins.nightmarezone;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
@@ -68,6 +70,12 @@ public class NightmareZonePlugin extends Plugin
 	// This starts as true since you need to get
 	// above the threshold before sending notifications
 	private boolean absorptionNotificationSend = true;
+	private boolean shouldCheckOverload = false;
+	//Timer variables for overload tracking
+	private Instant startTime, endTime;
+	private final Duration overloadDuration = Duration.ofMinutes(5);
+	//Used to check if user changed overload threshold mid-timer
+	private int overloadPlaceholder = config.overloadThreshold();
 
 	@Override
 	protected void startUp() throws Exception
@@ -111,19 +119,33 @@ public class NightmareZonePlugin extends Plugin
 		{
 			checkAbsorption();
 		}
+		if(config.overloadNotification()) {
+			if(config.overloadThreshold() != overloadPlaceholder) {
+				overloadPlaceholder = config.overloadThreshold();
+				shouldCheckOverload = true;
+			}
+			checkOverload();
+		}
 	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SERVER
+		if (event.getType() == ChatMessageType.PUBLIC
 				|| !isInNightmareZone())
 		{
 			return;
 		}
 
 		String msg = Text.removeTags(event.getMessage()); //remove color
-		if (msg.contains("The effects of overload have worn off, and you feel normal again."))
+		if(msg.contains("You drink some of your overload potion")) {
+			if(config.overloadNotification() && config.overloadThreshold() > 0) {
+				startTime = Instant.now();
+				endTime = startTime.plus(overloadDuration);
+				shouldCheckOverload = true;
+			}
+		}
+		else if (msg.contains("The effects of overload have worn off, and you feel normal again."))
 		{
 			if (config.overloadNotification())
 			{
@@ -180,6 +202,18 @@ public class NightmareZonePlugin extends Plugin
 			if (absorptionPoints > config.absorptionThreshold())
 			{
 				absorptionNotificationSend = false;
+			}
+		}
+	}
+
+	private void checkOverload() {
+		if(shouldCheckOverload) {
+			Duration timeLeft = Duration.between(Instant.now(), endTime);
+			int seconds = (int) (timeLeft.toMillis() / 1000L);
+
+			if(seconds <= config.overloadThreshold()) {
+				notifier.notify("Overload ending in " + config.overloadThreshold() + " seconds");
+				shouldCheckOverload = false;
 			}
 		}
 	}

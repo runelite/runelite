@@ -121,10 +121,21 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "overloadthreshold",
+			name = "Overload Threshold",
+			description = "The amount of overload time to send a notification at",
+			position = 9
+	)
+	default int overloadThreshold()
+	{
+		return 30;
+	}
+
+	@ConfigItem(
 		keyName = "absorptioncoloroverthreshold",
 		name = "Color above threshold",
 		description = "Configures the color for the absorption widget when above the threshold",
-		position = 9
+		position = 10
 	)
 	default Color absorptionColorAboveThreshold()
 	{
@@ -135,7 +146,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptioncolorbelowthreshold",
 		name = "Color below threshold",
 		description = "Configures the color for the absorption widget when below the threshold",
-		position = 10
+		position = 11
 	)
 	default Color absorptionColorBelowThreshold()
 	{
