@@ -106,24 +106,6 @@ public class WASDCameraPlugin extends Plugin
 		keyManager.unregisterKeyListener(inputListener);
 	}
 
-	String getPlayerNameWithIcon()
-	{
-		String tag = "";
-		switch (client.getAccountType())
-		{
-			case IRONMAN:
-				tag = IconID.IRONMAN.toString();
-				break;
-			case ULTIMATE_IRONMAN:
-				tag = IconID.ULTIMATE_IRONMAN.toString();
-				break;
-			case HARDCORE_IRONMAN:
-				tag = IconID.HARDCORE_IRONMAN.toString();
-				break;
-		}
-		return tag + client.getLocalPlayer().getName();
-	}
-
 	@Provides
 	WASDCameraConfig getConfig(ConfigManager configManager)
 	{
@@ -203,6 +185,21 @@ public class WASDCameraPlugin extends Plugin
 					chatboxInput.setText(getPlayerNameWithIcon() + ": " + ColorUtil.wrapWithColorTag(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
 				}
 			}
+		}
+	}
+
+	private String getPlayerNameWithIcon()
+	{
+		switch (client.getAccountType())
+		{
+			case IRONMAN:
+				return IconID.IRONMAN + client.getLocalPlayer().getName();
+			case ULTIMATE_IRONMAN:
+				return IconID.ULTIMATE_IRONMAN + client.getLocalPlayer().getName();
+			case HARDCORE_IRONMAN:
+				return IconID.HARDCORE_IRONMAN + client.getLocalPlayer().getName();
+			default:
+				return client.getLocalPlayer().getName();
 		}
 	}
 }
