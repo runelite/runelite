@@ -25,8 +25,10 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,7 +47,6 @@ import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.MenuManager;
@@ -89,6 +90,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
 		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
 
+	private static final Set<MenuAction> NPC_MENU_TYPES = ImmutableSet.of(
+		MenuAction.NPC_FIRST_OPTION,
+		MenuAction.NPC_SECOND_OPTION,
+		MenuAction.NPC_THIRD_OPTION,
+		MenuAction.NPC_FOURTH_OPTION,
+		MenuAction.NPC_FIFTH_OPTION,
+		MenuAction.EXAMINE_NPC);
+
 	@Inject
 	private Client client;
 
@@ -100,9 +109,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	@Inject
 	private ConfigManager configManager;
-
-	@Inject
-	private ItemManager itemManager;
 
 	@Inject
 	private KeyManager keyManager;
@@ -329,12 +335,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		int eventId = event.getIdentifier();
-		String option = Text.removeTags(event.getOption()).toLowerCase();
-		String target = Text.removeTags(event.getTarget()).toLowerCase();
-		NPC hintArrowNpc  = client.getHintArrowNpc();
+		final int eventId = event.getIdentifier();
+		final String option = Text.removeTags(event.getOption()).toLowerCase();
+		final String target = Text.removeTags(event.getTarget()).toLowerCase();
+		final NPC hintArrowNpc  = client.getHintArrowNpc();
 
-		if (hintArrowNpc != null && hintArrowNpc.getIndex() == eventId)
+		if (hintArrowNpc != null
+			&& hintArrowNpc.getIndex() == eventId
+			&& NPC_MENU_TYPES.contains(MenuAction.of(event.getType())))
 		{
 			return;
 		}
