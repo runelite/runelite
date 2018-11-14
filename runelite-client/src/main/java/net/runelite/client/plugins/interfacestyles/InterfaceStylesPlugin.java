@@ -270,29 +270,7 @@ public class InterfaceStylesPlugin extends Plugin
 
 			if (widget != null)
 			{
-				if (widgetOffset.isOriginalWidthAndHeight())
-				{
-					widget.setHeight(widget.getOriginalHeight());
-					widget.setWidth(widget.getOriginalWidth());
-				}
-
-				if (widgetOffset.getOriginalX() != null)
-				{
-					widget.setRelativeX(widgetOffset.getOriginalX());
-				}
-				else
-				{
-					widget.setRelativeX(widget.getOriginalX());
-				}
-
-				if (widgetOffset.getOriginalY() != null)
-				{
-					widget.setRelativeY(widgetOffset.getOriginalY());
-				}
-				else
-				{
-					widget.setRelativeY(widget.getOriginalY());
-				}
+				widget.revalidate();
 			}
 		}
 	}
