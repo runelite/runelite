@@ -190,16 +190,21 @@ public class WASDCameraPlugin extends Plugin
 
 	private String getPlayerNameWithIcon()
 	{
+		IconID icon;
 		switch (client.getAccountType())
 		{
 			case IRONMAN:
-				return IconID.IRONMAN + client.getLocalPlayer().getName();
+				icon = IconID.IRONMAN;
+				break;
 			case ULTIMATE_IRONMAN:
-				return IconID.ULTIMATE_IRONMAN + client.getLocalPlayer().getName();
+				icon = IconID.ULTIMATE_IRONMAN;
+				break;
 			case HARDCORE_IRONMAN:
-				return IconID.HARDCORE_IRONMAN + client.getLocalPlayer().getName();
+				icon = IconID.HARDCORE_IRONMAN;
+				break;
 			default:
 				return client.getLocalPlayer().getName();
 		}
+		return icon + client.getLocalPlayer().getName();
 	}
 }
