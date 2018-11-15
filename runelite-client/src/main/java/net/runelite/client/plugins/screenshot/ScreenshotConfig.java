@@ -165,7 +165,7 @@ public interface ScreenshotConfig extends Config
 		return Keybind.NOT_SET;
 	}
 
-	//default is set to off just incase if someone has the notification on still
+	
 	@ConfigItem(
 			keyName = "sound",
 			name = "Play Sound",

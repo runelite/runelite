@@ -633,7 +633,7 @@ public class ScreenshotPlugin extends Plugin
 						StringSelection selection = new StringSelection(link);
 						Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 						clipboard.setContents(selection, selection);
-						//plays a sound
+
 						if (config.screenshotSound())
 						{
 							client.playSoundEffect(SoundEffectID.MAGIC_SPLASH_BOING);
