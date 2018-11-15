@@ -525,11 +525,6 @@ public class SlayerPlugin extends Plugin
 
 	private boolean isTarget(NPC npc)
 	{
-		if (targetIds.isEmpty())
-		{
-			return false;
-		}
-
 		int npcId = npc.getId();
 		return targetIds.contains(npcId);
 	}
