@@ -85,6 +85,9 @@ public class AgilityPlugin extends Plugin
 	@Getter
 	private final List<Tile> marksOfGrace = new ArrayList<>();
 
+	@Getter
+	private Tile Stick;
+
 	@Inject
 	private OverlayManager overlayManager;
 
@@ -222,6 +225,11 @@ public class AgilityPlugin extends Plugin
 		if (item.getId() == ItemID.MARK_OF_GRACE)
 		{
 			marksOfGrace.add(tile);
+		}
+
+		if (item.getId() == ItemID.STICK)
+		{
+			Stick = tile;
 		}
 	}
 

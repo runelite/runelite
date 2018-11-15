@@ -65,6 +65,7 @@ class AgilityOverlay extends Overlay
 		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
 		Point mousePosition = client.getMouseCanvasPosition();
 		final List<Tile> marksOfGrace = plugin.getMarksOfGrace();
+		final Tile Stick = plugin.getStick();
 		plugin.getObstacles().forEach((object, tile) ->
 		{
 			if (Obstacles.SHORTCUT_OBSTACLE_IDS.contains(object.getId()) && !config.highlightShortcuts() ||
@@ -131,6 +132,17 @@ class AgilityOverlay extends Overlay
 				}
 			}
 		}
+
+        if (Stick != null && config.highlightStick())
+        {
+            if (Stick.getPlane() == client.getPlane() && Stick.getItemLayer() != null
+                    && Stick.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
+            {
+                Tile StickTile = Stick;
+                final Polygon poly = StickTile.getItemLayer().getCanvasTilePoly();
+                OverlayUtil.renderPolygon(graphics, poly, config.getStickColor());
+            }
+        }
 
 		return null;
 	}
