@@ -141,4 +141,26 @@ public interface AgilityConfig extends Config
 	{
 		return true;
 	}
+
+    @ConfigItem(
+            keyName = "highlightStick",
+            name = "Highlight Stick",
+            description = "Enable/disable the highlighting of retrievable Stick at Werewolf course",
+            position = 11
+    )
+    default boolean highlightStick()
+    {
+        return true;
+    }
+
+	@ConfigItem(
+        keyName = "highlightStick",
+        name = "Mark Highlight Color",
+        description = "Color of highlighted Stick at Werewolf course",
+        position = 12
+	)
+    default Color getStickColor()
+    {
+        return Color.RED;
+    }
 }
