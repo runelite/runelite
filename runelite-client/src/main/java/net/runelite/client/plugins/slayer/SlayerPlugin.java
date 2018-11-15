@@ -170,7 +170,7 @@ public class SlayerPlugin extends Plugin
 	private int cachedXp;
 	private Instant infoTimer;
 	private boolean loginFlag;
-	private Set<Integer> targetIds = new HashSet<>();
+	private final Set<Integer> targetIds = new HashSet<>();
 
 	@Override
 	protected void startUp() throws Exception
