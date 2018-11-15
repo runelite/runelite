@@ -35,10 +35,12 @@ public enum ScriptVarType
 	BOOLEAN('l', "boolean"),
 	SEQ('A', "seq"),
 	COLOUR('C', "colour"),
+	/**
+	 * Also known as {@code Widget}.
+	 */
 	COMPONENT('I', "component"),
 	IDKIT('K', "idkit"),
 	MIDI('M', "midi"),
-	NAMEDOBJ('O', "namedobj"),
 	SYNTH('P', "synth"),
 	STAT('S', "stat"),
 	COORDGRID('c', "coordgrid"),
@@ -46,18 +48,25 @@ public enum ScriptVarType
 	FONTMETRICS('f', "fontmetrics"),
 	ENUM('g', "enum"),
 	JINGLE('j', "jingle"),
-	CHATCAT('k', "chatcat"),
+	/**
+	 * Also known as {@code Object}.
+	 */
 	LOC('l', "loc"),
 	MODEL('m', "model"),
 	NPC('n', "npc"),
+	/**
+	 * Also known as {@code Item}.
+	 */
 	OBJ('o', "obj"),
+	/**
+	 * Another version of {@code OBJ}, but means that on Jagex's side they used the internal name for an item.
+	 */
+	NAMEDOBJ('O', "namedobj"),
 	STRING('s', "string"),
 	SPOTANIM('t', "spotanim"),
 	INV('v', "inv"),
 	TEXTURE('x', "texture"),
-	CATEGORY('y', "category"),
 	CHAR('z', "char"),
-	BAS('€', "bas"),
 	MAPSCENEICON('£', "mapsceneicon"),
 	MAPELEMENT('µ', "mapelement"),
 	HITMARK('×', "hitmark"),
