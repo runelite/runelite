@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,72 +25,28 @@
  */
 package net.runelite.http.service.updatecheck;
 
-import java.io.IOException;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.HttpUrl;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import java.util.HashMap;
+import java.util.Map;
+import lombok.Getter;
 
-@RestController
-@RequestMapping("/update-check")
-@Slf4j
-public class UpdateCheckService
+@Getter
+class RSConfig
 {
-	private boolean updateAvailable;
+	private final Map<String, String> appletProperties = new HashMap<>();
+	private final Map<String, String> classLoaderProperties = new HashMap<>();
 
-	@RequestMapping
-	public boolean check()
+	String getCodeBase()
 	{
-		return updateAvailable;
+		return classLoaderProperties.get("codebase");
 	}
 
-	@Scheduled(fixedDelay = 60_000)
-	public void scheduledCheck()
+	String getInitialJar()
 	{
-		updateAvailable = checkUpdate();
+		return classLoaderProperties.get("initial_jar");
 	}
 
-	private int getRevision() throws IOException
+	String getInitialClass()
 	{
-		RSConfig config = ClientConfigLoader.fetch();
-
-		for (String value : config.getAppletProperties().values())
-		{
-			// http://www.runescape.com/g=oldscape/slr.ws?order=LPWM&ep=176
-			if (value.contains("slr.ws"))
-			{
-				HttpUrl url = HttpUrl.parse(value);
-				String revstr = url.queryParameter("ep");
-				int rev = Integer.parseInt(revstr);
-				return rev;
-			}
-		}
-
-		return -1;
-	}
-
-	private boolean checkUpdate()
-	{
-		int rev;
-		try
-		{
-			rev = getRevision();
-		}
-		catch (IOException e)
-		{
-			log.warn("error checking revision", e);
-			return false;
-		}
-
-		if (rev == -1)
-		{
-			log.warn("Unable to parse revision from config!");
-			return false;
-		}
-
-		int thisRevision = RuneLiteAPI.getRsVersion();
-		return rev != thisRevision;
+		return classLoaderProperties.get("initial_class").replace(".class", "");
 	}
 }
