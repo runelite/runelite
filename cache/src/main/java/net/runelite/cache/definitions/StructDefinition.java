@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Joshua Filby <joshua@filby.me>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,38 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.cache.definitions;
 
-package net.runelite.cache;
+import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
-public enum ConfigType
+@RequiredArgsConstructor
+public class StructDefinition
 {
-	// types from https://github.com/im-frizzy/OpenRS/blob/master/source/net/openrs/cache/type/ConfigArchive.java
-	UNDERLAY(1),
-	IDENTKIT(3),
-	OVERLAY(4),
-	INV(5),
-	OBJECT(6),
-	ENUM(8),
-	NPC(9),
-	ITEM(10),
-	SEQUENCE(12),
-	SPOTANIM(13),
-	VARBIT(14),
-	VARCLIENT(19),
-	VARCLIENTSTRING(15),
-	VARPLAYER(16),
-	STRUCT(34),
-	AREA(35);
-
-	private final int id;
-
-	ConfigType(int id)
-	{
-		this.id = id;
-	}
-
-	public int getId()
-	{
-		return id;
-	}
+	public Map<Integer, Object> params = null;
 }
