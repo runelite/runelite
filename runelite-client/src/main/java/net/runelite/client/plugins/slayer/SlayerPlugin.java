@@ -48,7 +48,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
 import static net.runelite.api.Skill.SLAYER;
 import net.runelite.api.vars.SlayerUnlock;
 import net.runelite.api.coords.WorldPoint;
@@ -169,7 +168,7 @@ public class SlayerPlugin extends Plugin
 	private int cachedXp;
 	private Instant infoTimer;
 	private boolean loginFlag;
-	private List<String> targetNames = new ArrayList<>();
+	private List<Integer> targetIds = new ArrayList<>();
 
 	@Override
 	protected void startUp() throws Exception
@@ -524,54 +523,31 @@ public class SlayerPlugin extends Plugin
 
 	private boolean isTarget(NPC npc)
 	{
-		if (targetNames.isEmpty())
+		if (targetIds.isEmpty())
 		{
 			return false;
 		}
 
-		String name = npc.getName();
-		if (name == null)
-		{
-			return false;
-		}
-
-		name = name.toLowerCase();
 		int npcId = npc.getId();
 
-		for (String target : targetNames)
+		for (int targetId : targetIds)
 		{
-			if (target.startsWith("id:"))
+			if (targetId == npcId)
 			{
-				int targetId = Integer.parseInt(target.substring(3));
-				if (targetId == npcId)
-				{
-
-					return true;
-				}
-			}
-			else if (name.contains(target))
-			{
-				NPCComposition composition = npc.getTransformedComposition();
-				if (composition != null && Arrays.asList(composition.getActions()).contains("Attack"))
-				{
-					return true;
-				}
+				return true;
 			}
 		}
 		return false;
 	}
 
-	private void rebuildTargetNames(Task task)
+	private void rebuildTargetIds(Task task)
 	{
-		targetNames.clear();
+		targetIds.clear();
 
 		if (task != null)
 		{
-			Arrays.stream(task.getTargetNames())
-				.map(String::toLowerCase)
-				.forEach(targetNames::add);
-
-			targetNames.add(taskName.toLowerCase().replaceAll("s$", ""));
+			Arrays.stream(task.getTargetIds())
+				.forEach(targetIds::add);
 		}
 	}
 
@@ -598,7 +574,7 @@ public class SlayerPlugin extends Plugin
 		infoTimer = Instant.now();
 
 		Task task = Task.getTask(name);
-		rebuildTargetNames(task);
+		rebuildTargetIds(task);
 		rebuildTargetList();
 	}
 
