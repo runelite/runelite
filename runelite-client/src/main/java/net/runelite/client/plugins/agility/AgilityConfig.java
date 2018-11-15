@@ -143,10 +143,10 @@ public interface AgilityConfig extends Config
 	}
 
     @ConfigItem(
-            keyName = "highlightStick",
-            name = "Highlight Stick",
-            description = "Enable/disable the highlighting of retrievable Stick at Werewolf course",
-            position = 11
+        keyName = "highlightStick",
+        name = "Highlight Stick",
+        description = "Enable/disable the highlighting of retrievable Stick at Werewolf course",
+        position = 11
     )
     default boolean highlightStick()
     {
@@ -154,10 +154,10 @@ public interface AgilityConfig extends Config
     }
 
 	@ConfigItem(
-			keyName = "stickHighlight",
-			name = "Stick Overlay Color",
-			description = "Color of Stick",
-			position = 12
+		keyName = "stickHighlight",
+		name = "Stick Overlay Color",
+		description = "Color of Stick",
+		position = 12
 	)
 	default Color getStickColor()
 	{
