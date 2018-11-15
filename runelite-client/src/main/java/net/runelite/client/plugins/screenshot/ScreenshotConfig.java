@@ -164,4 +164,13 @@ public interface ScreenshotConfig extends Config
 	{
 		return Keybind.NOT_SET;
 	}
+
+	//default is set to off just incase if someone has the notification on still
+	@ConfigItem(
+			keyName = "sound",
+			name = "Play Sound",
+			description = "Configures whether or not screenshots are taken and play a sound.",
+			position = 12
+	)
+	default boolean screenshotSound(){return false;}
 }
