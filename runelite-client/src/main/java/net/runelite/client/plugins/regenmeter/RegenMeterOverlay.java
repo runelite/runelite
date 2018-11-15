@@ -46,7 +46,6 @@ public class RegenMeterOverlay extends Overlay
 	private static final Color HITPOINTS_COLOR = brighter(0x9B0703);
 	private static final Color SPECIAL_COLOR = brighter(0x1E95B0);
 	private static final Color OVERLAY_COLOR = new Color(255, 255, 255, 60);
-	private static final Color RUN_COLOR = Color.YELLOW;
 	private static final double DIAMETER = 26D;
 	private static final int OFFSET = 27;
 
@@ -101,8 +100,6 @@ public class RegenMeterOverlay extends Overlay
 			renderRegen(g, WidgetInfo.MINIMAP_SPEC_ORB, plugin.getSpecialPercentage(), SPECIAL_COLOR);
 		}
 
-		if (config.showRun())
-			renderRegen(g, WidgetInfo.MINIMAP_RUN_ORB, plugin.getRunPercentage(), RUN_COLOR);
 		return null;
 	}
 

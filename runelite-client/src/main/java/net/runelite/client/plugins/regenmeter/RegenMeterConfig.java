@@ -50,15 +50,6 @@ public interface RegenMeterConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showRun",
-			name = "Show Run Energy regen",
-			description = "Show a ring around the Run Energy orb")
-	default boolean showRun()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showWhenNoChange",
 		name = "Show hitpoints regen at full hitpoints",
 		description = "Always show the hitpoints regen orb, even if there will be no stat change")

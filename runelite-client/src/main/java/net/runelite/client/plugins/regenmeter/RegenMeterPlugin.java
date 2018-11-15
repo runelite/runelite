@@ -71,9 +71,6 @@ public class RegenMeterPlugin extends Plugin
 	@Getter
 	private double specialPercentage;
 
-	@Getter
-	private double runPercentage;
-
 	private int ticksSinceSpecRegen;
 	private int ticksSinceHPRegen;
 	private boolean wasRapidHeal;
@@ -152,7 +149,5 @@ public class RegenMeterPlugin extends Plugin
 			// Show it going down
 			hitpointsPercentage = 1 - hitpointsPercentage;
 		}
-
-		runPercentage = client.getEnergy() / 100.0;
 	}
 }
