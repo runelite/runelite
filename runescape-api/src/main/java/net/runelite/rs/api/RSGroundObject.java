@@ -25,7 +25,6 @@
 package net.runelite.rs.api;
 
 import net.runelite.api.GroundObject;
-import net.runelite.api.Renderable;
 import net.runelite.mapping.Import;
 
 public interface RSGroundObject extends GroundObject
@@ -41,7 +40,8 @@ public interface RSGroundObject extends GroundObject
 	int getY();
 
 	@Import("renderable")
-	Renderable getRenderable();
+	@Override
+	RSRenderable getRenderable();
 
 	void setPlane(int plane);
 }

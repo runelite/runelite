@@ -41,12 +41,15 @@ import java.awt.image.VolatileImage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.BufferProvider;
 import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.RenderOverview;
+import net.runelite.api.Renderable;
 import net.runelite.api.WorldMapManager;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.hooks.Callbacks;
+import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP_VIEW;
 import net.runelite.client.Notifier;
@@ -300,6 +303,15 @@ public class Hooks implements Callbacks
 		// Draw clientUI overlays
 		clientUi.paintOverlays(graphics2d);
 
+		graphics2d.dispose();
+
+		if (client.isGpu())
+		{
+			// processDrawComplete gets called on GPU by the gpu plugin at the end of its
+			// drawing cycle, which is later on.
+			return;
+		}
+
 		// Stretch the game image if the user has that enabled
 		if (client.isStretchedEnabled())
 		{
@@ -417,5 +429,37 @@ public class Hooks implements Callbacks
 		// but having the game tick event after all packets
 		// have been processed is typically more useful.
 		shouldProcessGameTick = true;
+	}
+
+	public static void renderDraw(Renderable renderable, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash)
+	{
+		DrawCallbacks drawCallbacks = client.getDrawCallbacks();
+		if (drawCallbacks != null)
+		{
+			drawCallbacks.draw(renderable, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
+		}
+		else
+		{
+			renderable.draw(orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
+		}
+	}
+
+	public static void clearColorBuffer(int x, int y, int width, int height, int color)
+	{
+		BufferProvider bp = client.getBufferProvider();
+		int canvasWidth = bp.getWidth();
+		int[] pixels = bp.getPixels();
+
+		int pixelPos = y * canvasWidth + x;
+		int pixelJump = canvasWidth - width;
+
+		for (int cy = y; cy < y + height; cy++)
+		{
+			for (int cx = x; cx < x + width; cx++)
+			{
+				pixels[pixelPos++] = 0;
+			}
+			pixelPos += pixelJump;
+		}
 	}
 }

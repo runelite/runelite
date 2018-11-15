@@ -40,6 +40,9 @@ public interface RSScene extends Scene
 	@Import("draw")
 	void draw(Tile tile, boolean var2);
 
+	@Import("tileHeights")
+	int[][][] getTileHeights();
+
 	@Import("drawTile")
 	void drawTile(int[] pixels, int pixelOffset, int width, int z, int x, int y);
 

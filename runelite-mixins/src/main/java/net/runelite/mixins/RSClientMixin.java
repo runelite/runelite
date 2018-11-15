@@ -87,6 +87,7 @@ import net.runelite.api.events.UsernameChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.hooks.Callbacks;
+import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
@@ -125,6 +126,9 @@ public abstract class RSClientMixin implements RSClient
 	private Callbacks callbacks;
 
 	@Inject
+	private DrawCallbacks drawCallbacks;
+
+	@Inject
 	@javax.inject.Inject
 	@Named("Core Logger")
 	private Logger logger;
@@ -157,6 +161,9 @@ public abstract class RSClientMixin implements RSClient
 	private static RSItem lastItemDespawn;
 
 	@Inject
+	private boolean gpu;
+
+	@Inject
 	private static boolean oldIsResized;
 
 	@Inject
@@ -164,6 +171,20 @@ public abstract class RSClientMixin implements RSClient
 	public Callbacks getCallbacks()
 	{
 		return callbacks;
+	}
+
+	@Inject
+	@Override
+	public DrawCallbacks getDrawCallbacks()
+	{
+		return drawCallbacks;
+	}
+
+	@Inject
+	@Override
+	public void setDrawCallbacks(DrawCallbacks drawCallbacks)
+	{
+		this.drawCallbacks = drawCallbacks;
 	}
 
 	@Inject
@@ -1275,6 +1296,20 @@ public abstract class RSClientMixin implements RSClient
 	public void setLastItemDespawn(RSItem lastItemDespawn)
 	{
 		RSClientMixin.lastItemDespawn = lastItemDespawn;
+	}
+
+	@Inject
+	@Override
+	public boolean isGpu()
+	{
+		return gpu;
+	}
+
+	@Inject
+	@Override
+	public void setGpu(boolean gpu)
+	{
+		this.gpu = gpu;
 	}
 
 	@Inject

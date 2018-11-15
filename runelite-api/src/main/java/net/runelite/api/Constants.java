@@ -67,4 +67,6 @@ public class Constants
 	 * the plane value to 0-3.
 	 */
 	public static final int MAX_Z = 4;
+
+	public static final int TILE_FLAG_BRIDGE = 2;
 }

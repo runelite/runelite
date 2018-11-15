@@ -74,8 +74,19 @@ public interface RSTile extends Tile
 	@Override
 	int getPlane();
 
+	@Import("renderLevel")
+	@Override
+	int getRenderLevel();
+
 	@Import("physicalLevel")
 	int getPhysicalLevel();
+
+	@Import("flags")
+	int getFlags();
+
+	@Import("bridge")
+	@Override
+	RSTile getBridge();
 
 	@Import("draw")
 	boolean isDraw();
@@ -88,9 +99,6 @@ public interface RSTile extends Tile
 
 	@Import("visible")
 	void setVisible(boolean visible);
-
-	@Import("drawEntities")
-	boolean isDrawEntities();
 
 	@Import("drawEntities")
 	void setDrawEntities(boolean drawEntities);

@@ -34,6 +34,7 @@ import net.runelite.api.annotations.VisibleForDevtools;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.hooks.Callbacks;
+import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -49,6 +50,10 @@ public interface Client extends GameEngine
 	 * @return
 	 */
 	Callbacks getCallbacks();
+
+	DrawCallbacks getDrawCallbacks();
+
+	void setDrawCallbacks(DrawCallbacks drawCallbacks);
 
 	/**
 	 * Retrieve a global logger for the client.
@@ -209,6 +214,18 @@ public interface Client extends GameEngine
 	 * @return the logged in world number
 	 */
 	int getWorld();
+
+	/**
+	 * Gets the canvas height
+	 * @return
+	 */
+	int getCanvasHeight();
+
+	/**
+	 * Gets the canvas width
+	 * @return
+	 */
+	int getCanvasWidth();
 
 	/**
 	 * Gets the height of the viewport.
@@ -1486,6 +1503,13 @@ public interface Client extends GameEngine
 	EnumSet<WorldType> getWorldType();
 
 	/**
+	 * Gets the enabled state for the Oculus orb mode
+	 *
+	 * @return
+	 */
+	int getOculusOrbState();
+
+	/**
 	 * Sets the enabled state for the Oculus orb state
 	 *
 	 * @param state boolean enabled value
@@ -1509,4 +1533,29 @@ public interface Client extends GameEngine
 	 * @param world target world to hop to
 	 */
 	void hopToWorld(World world);
+
+	boolean isGpu();
+
+	void setGpu(boolean gpu);
+
+	int get3dZoom();
+	int getCenterX();
+	int getCenterY();
+
+	int getCameraX2();
+	int getCameraY2();
+	int getCameraZ2();
+
+	TextureProvider getTextureProvider();
+
+	NodeCache getCachedModels2();
+
+	void setRenderArea(boolean[][] renderArea);
+
+	int getRasterizer3D_clipMidX2();
+	int getRasterizer3D_clipNegativeMidX();
+	int getRasterizer3D_clipNegativeMidY();
+	int getRasterizer3D_clipMidY2();
+
+	void checkClickbox(Model model, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash);
 }
