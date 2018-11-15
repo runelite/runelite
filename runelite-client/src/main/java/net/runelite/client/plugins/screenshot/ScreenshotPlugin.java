@@ -60,6 +60,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Point;
 import net.runelite.api.SpriteID;
+import net.runelite.api.SoundEffectID;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
@@ -632,7 +633,11 @@ public class ScreenshotPlugin extends Plugin
 						StringSelection selection = new StringSelection(link);
 						Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 						clipboard.setContents(selection, selection);
-
+						//plays a sound
+						if (config.screenshotSound())
+						{
+							client.playSoundEffect(SoundEffectID.MAGIC_SPLASH_BOING);
+						}
 						if (config.notifyWhenTaken())
 						{
 							notifier.notify("A screenshot was uploaded and inserted into your clipboard!", TrayIcon.MessageType.INFO);
