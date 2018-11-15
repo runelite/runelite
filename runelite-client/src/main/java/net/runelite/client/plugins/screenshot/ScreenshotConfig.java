@@ -165,12 +165,15 @@ public interface ScreenshotConfig extends Config
 		return Keybind.NOT_SET;
 	}
 
-	
+
 	@ConfigItem(
 			keyName = "sound",
 			name = "Play Sound",
 			description = "Configures whether or not screenshots are taken and play a sound.",
 			position = 12
 	)
-	default boolean screenshotSound(){return false;}
+	default boolean screenshotSound()
+	{
+		return false;
+	}
 }
