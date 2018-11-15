@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Mika Kuijpers <github.com/mkuijpers>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

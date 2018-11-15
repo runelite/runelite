@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Mika Kuijpers <github.com/mkuijpers>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,6 +39,8 @@ class FarmingProfitRun
 	@Getter
 	private Crop crop;
 	@Getter
+	private int gameObjClicked;
+	@Getter
 	private int amount;
 	@Getter
 	private WorldPoint latestHarvestWorldPoint;
@@ -55,10 +57,11 @@ class FarmingProfitRun
 	private ItemManager itemManager;
 
 
-	FarmingProfitRun(ItemManager itemManager, Crop crop, int amount, WorldPoint latestHarvest)
+	FarmingProfitRun(ItemManager itemManager, Crop crop, int amount, WorldPoint latestHarvest, int gameObjClicked)
 	{
 		this.itemManager = itemManager;
 		this.crop = crop;
+		this.gameObjClicked = gameObjClicked;
 		updateRun(amount, latestHarvest);
 	}
 
@@ -80,11 +83,10 @@ class FarmingProfitRun
 	 * Add a certain amount of products to the run, with a new location
 	 *
 	 * @param toAdd             Amount of products to add
-	 * @param harvestWorldPoint The new location
 	 */
-	void addAmount(int toAdd, WorldPoint harvestWorldPoint)
+	void addAmount(int toAdd)
 	{
-		updateRun(amount + toAdd, harvestWorldPoint);
+		updateRun(amount + toAdd, latestHarvestWorldPoint);
 	}
 
 	/**

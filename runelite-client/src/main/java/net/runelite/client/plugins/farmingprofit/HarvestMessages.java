@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Mika Kuijpers <github.com/mkuijpers>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,12 +35,12 @@ import lombok.Getter;
 public enum HarvestMessages
 {
 	SEAWEED(Crop.SEAWEED, "You pick some giant seaweed."),
+	CACTUS(Crop.CACTUS, "You carefully pick a spine from the cactus."),
 	CADAVABERRY(Crop.CADAVABERRY, "You pick some cadavaberries."),
 	DWELLBERRY(Crop.DWELLBERRY, "You pick some dwellberries."),
 	REDBERRY(Crop.REDBERRY, "You pick some redberries."),
 	JANGERBERRY(Crop.JANGERBERRY, "You pick some jangerberries."),
 	WHITEBERRY(Crop.WHITEBERRY, "You pick some whiteberries.");
-
 
 	HarvestMessages(Crop crop, String harvestMessage)
 	{

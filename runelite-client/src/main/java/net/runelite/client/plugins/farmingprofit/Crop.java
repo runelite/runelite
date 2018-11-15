@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Mika Kuijpers <github.com/mkuijpers>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,66 +36,61 @@ import java.util.Map;
  */
 public enum Crop
 {
-	UNKNOWN("Unknown", -1, -1),
+	UNKNOWN("Unknown", PatchType.UNKNOWN, -1, -1),
 
 	// Allotments
-	POTATO		("Potatoes", 			3, ItemID.POTATO_SEED, 			ItemID.POTATO),
-	ONION		("Onions", 				3, ItemID.ONION_SEED, 			ItemID.ONION),
-	CABBAGE		("Cabbages", 			3, ItemID.CABBAGE_SEED, 		ItemID.CABBAGE),
-	TOMATO		("Tomatoes", 			3, ItemID.TOMATO_SEED, 			ItemID.TOMATO),
-	SWEETCORN	("Sweetcorn", 			3, ItemID.SWEETCORN_SEED, 		ItemID.SWEETCORN),
-	STRAWBERRY	("Strawberries", 		3, ItemID.STRAWBERRY_SEED, 		ItemID.STRAWBERRY),
-	WATERMELON	("Watermelons", 		3, ItemID.WATERMELON_SEED, 		ItemID.WATERMELON),
-
-	// Flowers
-	MARIGOLD	("Marigolds", 			1, ItemID.MARIGOLD_SEED, 		ItemID.MARIGOLDS),
-	ROSEMARY	("Rosemaries", 			1, ItemID.ROSEMARY_SEED, 		ItemID.ROSEMARY),
-	NASTURTIUM	("Nasturtiums", 		1, ItemID.NASTURTIUM_SEED, 		ItemID.NASTURTIUMS),
-	LIMPWURT	("Limpwurt roots", 		1, ItemID.LIMPWURT_SEED, 		ItemID.LIMPWURT_ROOT),
+	POTATO("Potatoes", PatchType.ALLOTMENTS, 3, ItemID.POTATO_SEED, ItemID.POTATO),
+	ONION("Onions", PatchType.ALLOTMENTS, 3, ItemID.ONION_SEED, ItemID.ONION),
+	CABBAGE("Cabbages", PatchType.ALLOTMENTS, 3, ItemID.CABBAGE_SEED, ItemID.CABBAGE),
+	TOMATO("Tomatoes", PatchType.ALLOTMENTS, 3, ItemID.TOMATO_SEED, ItemID.TOMATO),
+	SWEETCORN("Sweetcorn", PatchType.ALLOTMENTS, 3, ItemID.SWEETCORN_SEED, ItemID.SWEETCORN),
+	STRAWBERRY("Strawberries", PatchType.ALLOTMENTS, 3, ItemID.STRAWBERRY_SEED, ItemID.STRAWBERRY),
+	WATERMELON("Watermelons", PatchType.ALLOTMENTS, 3, ItemID.WATERMELON_SEED, ItemID.WATERMELON),
 
 	// Herbs
-	GUAM		("Guam", 				1, ItemID.GUAM_SEED, 			ItemID.GUAM_LEAF, 	ItemID.GRIMY_GUAM_LEAF),
-	MARRENTIL	("Marrentil", 			1, ItemID.MARRENTILL_SEED, 		ItemID.MARRENTILL, 	ItemID.GRIMY_MARRENTILL),
-	TARROMIN	("Tarromin", 			1, ItemID.TARROMIN_SEED, 		ItemID.TARROMIN, 	ItemID.GRIMY_TARROMIN),
-	HARRALANDER	("Harralander", 		1, ItemID.HARRALANDER_SEED,		ItemID.HARRALANDER, ItemID.GRIMY_HARRALANDER),
-	RANARR		("Ranarr", 				1, ItemID.RANARR_SEED, 			ItemID.RANARR_WEED, ItemID.GRIMY_RANARR_WEED),
-	TOADFLAX	("Toadflax", 			1, ItemID.TOADFLAX_SEED, 		ItemID.TOADFLAX, 	ItemID.GRIMY_TOADFLAX),
-	IRIT		("Irit", 				1, ItemID.IRIT_SEED, 			ItemID.IRIT_LEAF, 	ItemID.GRIMY_IRIT_LEAF),
-	AVANTOE		("Avantoe", 			1, ItemID.AVANTOE_SEED, 		ItemID.AVANTOE, 	ItemID.GRIMY_AVANTOE),
-	KWUARM		("Kwuarm", 				1, ItemID.KWUARM_SEED, 			ItemID.KWUARM, 		ItemID.GRIMY_KWUARM),
-	SNAPDRAGON	("Snapdragon", 			1, ItemID.SNAPDRAGON_SEED, 		ItemID.SNAPDRAGON, 	ItemID.GRIMY_SNAPDRAGON),
-	CADANTINE	("Cadantine", 			1, ItemID.CADANTINE_SEED, 		ItemID.CADANTINE, 	ItemID.GRIMY_CADANTINE),
-	LANTADYME	("Lantadyme", 			1, ItemID.LANTADYME_SEED, 		ItemID.LANTADYME, 	ItemID.GRIMY_LANTADYME),
-	DWARF_WEED	("Dwarf weed", 			1, ItemID.DWARF_WEED_SEED, 		ItemID.DWARF_WEED, 	ItemID.GRIMY_DWARF_WEED),
-	TORSTOL		("Torstol", 			1, ItemID.TORSTOL_SEED, 		ItemID.TORSTOL, 	ItemID.GRIMY_TORSTOL),
+	GUAM("Guam", PatchType.HERBS, 1, ItemID.GUAM_SEED, ItemID.GUAM_LEAF, ItemID.GRIMY_GUAM_LEAF),
+	MARRENTIL("Marrentil", PatchType.HERBS, 1, ItemID.MARRENTILL_SEED, ItemID.MARRENTILL, ItemID.GRIMY_MARRENTILL),
+	TARROMIN("Tarromin", PatchType.HERBS, 1, ItemID.TARROMIN_SEED, ItemID.TARROMIN, ItemID.GRIMY_TARROMIN),
+	HARRALANDER("Harralander", PatchType.HERBS, 1, ItemID.HARRALANDER_SEED, ItemID.HARRALANDER, ItemID.GRIMY_HARRALANDER),
+	RANARR("Ranarr", PatchType.HERBS, 1, ItemID.RANARR_SEED, ItemID.RANARR_WEED, ItemID.GRIMY_RANARR_WEED),
+	TOADFLAX("Toadflax", PatchType.HERBS, 1, ItemID.TOADFLAX_SEED, ItemID.TOADFLAX, ItemID.GRIMY_TOADFLAX),
+	IRIT("Irit", PatchType.HERBS, 1, ItemID.IRIT_SEED, ItemID.IRIT_LEAF, ItemID.GRIMY_IRIT_LEAF),
+	AVANTOE("Avantoe", PatchType.HERBS, 1, ItemID.AVANTOE_SEED, ItemID.AVANTOE, ItemID.GRIMY_AVANTOE),
+	KWUARM("Kwuarm", PatchType.HERBS, 1, ItemID.KWUARM_SEED, ItemID.KWUARM, ItemID.GRIMY_KWUARM),
+	SNAPDRAGON("Snapdragon", PatchType.HERBS, 1, ItemID.SNAPDRAGON_SEED, ItemID.SNAPDRAGON, ItemID.GRIMY_SNAPDRAGON),
+	CADANTINE("Cadantine", PatchType.HERBS, 1, ItemID.CADANTINE_SEED, ItemID.CADANTINE, ItemID.GRIMY_CADANTINE),
+	LANTADYME("Lantadyme", PatchType.HERBS, 1, ItemID.LANTADYME_SEED, ItemID.LANTADYME, ItemID.GRIMY_LANTADYME),
+	DWARF_WEED("Dwarf weed", PatchType.HERBS, 1, ItemID.DWARF_WEED_SEED, ItemID.DWARF_WEED, ItemID.GRIMY_DWARF_WEED),
+	TORSTOL("Torstol", PatchType.HERBS, 1, ItemID.TORSTOL_SEED, ItemID.TORSTOL, ItemID.GRIMY_TORSTOL),
 
 	// Hops
-	BARLEY		("Barley", 				4, ItemID.BARLEY_SEED, 			ItemID.BARLEY),
-	HAMMERSTONE	("Hammerstone hops", 	4, ItemID.HAMMERSTONE_SEED, 	ItemID.HAMMERSTONE_HOPS),
-	ASGARNIAN	("Asgarnian hops", 		4, ItemID.ASGARNIAN_SEED, 		ItemID.ASGARNIAN_HOPS),
-	JUTE		("Jute fibre", 			3, ItemID.JUTE_SEED, 			ItemID.JUTE_FIBRE),
-	YANILLIAN	("Yanillian hops", 		4, ItemID.YANILLIAN_SEED, 		ItemID.YANILLIAN_HOPS),
-	KRANDORIAN	("Krandorian hops", 	4, ItemID.KRANDORIAN_SEED, 		ItemID.KRANDORIAN_HOPS),
-	WILDBLOOD	("Wildblood hops", 		4, ItemID.WILDBLOOD_SEED, 		ItemID.WILDBLOOD_HOPS),
+	BARLEY("Barley", PatchType.HOPS, 4, ItemID.BARLEY_SEED, ItemID.BARLEY),
+	HAMMERSTONE("Hammerstone hops", PatchType.HOPS, 4, ItemID.HAMMERSTONE_SEED, ItemID.HAMMERSTONE_HOPS),
+	ASGARNIAN("Asgarnian hops", PatchType.HOPS, 4, ItemID.ASGARNIAN_SEED, ItemID.ASGARNIAN_HOPS),
+	JUTE("Jute fibre", PatchType.HOPS, 3, ItemID.JUTE_SEED, ItemID.JUTE_FIBRE),
+	YANILLIAN("Yanillian hops", PatchType.HOPS, 4, ItemID.YANILLIAN_SEED, ItemID.YANILLIAN_HOPS),
+	KRANDORIAN("Krandorian hops", PatchType.HOPS, 4, ItemID.KRANDORIAN_SEED, ItemID.KRANDORIAN_HOPS),
+	WILDBLOOD("Wildblood hops", PatchType.HOPS, 4, ItemID.WILDBLOOD_SEED, ItemID.WILDBLOOD_HOPS),
 
 	// Bushes
-	REDBERRY	("Redberries", 			1, ItemID.REDBERRY_SEED, 		ItemID.REDBERRIES),
-	CADAVABERRY	("Cadava berries", 		1, ItemID.CADAVABERRY_SEED, 	ItemID.CADAVA_BERRIES),
-	DWELLBERRY	("Dwellberries", 		1, ItemID.DWELLBERRY_SEED, 		ItemID.DWELLBERRIES),
-	JANGERBERRY	("Jangerberries", 		1, ItemID.JANGERBERRY_SEED, 	ItemID.JANGERBERRIES),
-	WHITEBERRY	("White berries", 		1, ItemID.WHITEBERRY_SEED, 		ItemID.WHITE_BERRIES),
-	POISON_IVY	("Poison ivy berries", 	1, ItemID.POISON_IVY_SEED, 		ItemID.POISON_IVY_BERRIES),
+	REDBERRY("Redberries", PatchType.BUSHES, 1, ItemID.REDBERRY_SEED, ItemID.REDBERRIES),
+	CADAVABERRY("Cadava berries", PatchType.BUSHES, 1, ItemID.CADAVABERRY_SEED, ItemID.CADAVA_BERRIES),
+	DWELLBERRY("Dwellberries", PatchType.BUSHES, 1, ItemID.DWELLBERRY_SEED, ItemID.DWELLBERRIES),
+	JANGERBERRY("Jangerberries", PatchType.BUSHES, 1, ItemID.JANGERBERRY_SEED, ItemID.JANGERBERRIES),
+	WHITEBERRY("White berries", PatchType.BUSHES, 1, ItemID.WHITEBERRY_SEED, ItemID.WHITE_BERRIES),
+	POISON_IVY("Poison ivy berries", PatchType.BUSHES, 1, ItemID.POISON_IVY_SEED, ItemID.POISON_IVY_BERRIES),
 
 	// Special
-	SEAWEED		("Seaweed", 			1, ItemID.SEAWEED_SPORE, 		ItemID.GIANT_SEAWEED),
-	CACTUS		("Cactus", 				1, ItemID.CACTUS_SEED, 			ItemID.CACTUS_SPINE);
+	SEAWEED("Seaweed", PatchType.SPECIAL, 1, ItemID.SEAWEED_SPORE, ItemID.GIANT_SEAWEED),
+	CACTUS("Cactus", PatchType.SPECIAL, 1, ItemID.CACTUS_SEED, ItemID.CACTUS_SPINE);
 
 
-	Crop(String displayName, int seedAmount, int seedId, int... products)
+	Crop(String displayName, PatchType patchType, int seedAmount, int seedId, int... products)
 	{
 		this.seedAmount = seedAmount;
 		this.seedId = seedId;
 		this.products = products;
+		this.patchType = patchType;
 		this.displayName = displayName;
 	}
 
@@ -105,6 +100,8 @@ public enum Crop
 	private final int seedId;
 	@Getter
 	private final int[] products;
+	@Getter
+	private final PatchType patchType;
 	@Getter
 	private final String displayName;
 
@@ -139,6 +136,16 @@ public enum Crop
 			}
 		}
 		return mMap;
+	}
+
+	public static Crop fromHarvestMessage(String message)
+	{
+		return HarvestMessages.cropFromMessage(message);
+	}
+
+	public String toString()
+	{
+		return displayName;
 	}
 
 }
