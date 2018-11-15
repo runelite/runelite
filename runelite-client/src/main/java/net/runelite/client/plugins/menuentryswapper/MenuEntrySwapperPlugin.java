@@ -491,6 +491,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("quick-start", option, target, true);
 		}
+		else if (config.swapStun() && target.contains("hoop snake"))
+		{
+			swap("stun", option, target, true);
+		}
 		else if (config.swapQuick() && option.equals("pass"))
 		{
 			swap("quick-pass", option, target, true);

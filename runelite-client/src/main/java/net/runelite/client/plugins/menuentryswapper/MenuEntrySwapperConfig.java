@@ -261,4 +261,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "swapStun",
+		name = "Stun Hoop Snakes",
+		description = "Swap Attack with Stun"
+	)
+	default boolean swapStun()
+	{
+		return true;
+	}
 }
