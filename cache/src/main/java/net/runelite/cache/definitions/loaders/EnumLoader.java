@@ -36,6 +36,11 @@ public class EnumLoader
 
 	public EnumDefinition load(int id, byte[] b)
 	{
+		if (b.length == 1 && b[0] == 0)
+		{
+			return null;
+		}
+
 		EnumDefinition def = new EnumDefinition();
 		InputStream is = new InputStream(b);
 
