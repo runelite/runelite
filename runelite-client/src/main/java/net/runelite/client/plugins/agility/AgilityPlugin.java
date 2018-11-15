@@ -43,24 +43,7 @@ import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.DecorativeObjectChanged;
-import net.runelite.api.events.DecorativeObjectDespawned;
-import net.runelite.api.events.DecorativeObjectSpawned;
-import net.runelite.api.events.ExperienceChanged;
-import net.runelite.api.events.GameObjectChanged;
-import net.runelite.api.events.GameObjectDespawned;
-import net.runelite.api.events.GameObjectSpawned;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.GroundObjectChanged;
-import net.runelite.api.events.GroundObjectDespawned;
-import net.runelite.api.events.GroundObjectSpawned;
-import net.runelite.api.events.ItemDespawned;
-import net.runelite.api.events.ItemSpawned;
-import net.runelite.api.events.WallObjectChanged;
-import net.runelite.api.events.WallObjectDespawned;
-import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.api.events.*;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -187,23 +170,28 @@ public class AgilityPlugin extends Plugin
 
 		// Get course
 		Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
-		if (course == null
-			|| (course.getCourseEndWorldPoints().length == 0
-			? Math.abs(course.getLastObstacleXp() - skillGained) > 1
-			: Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation()))))
-		{
+		if (course == null)
 			return;
-		}
 
-		if (session != null && session.getCourse() == course)
+		// Get new agility session
+		if ( !(session != null && session.getCourse() == course))
 		{
-			session.incrementLapCount(client);
-		}
-		else
-		{
+
 			session = new AgilitySession(course);
 			// New course found, reset lap count and set new course
 			session.resetLapCount();
+		}
+
+		// Refresh laps till level even if did not complete course (check for mid course level up)
+		// Increment lap count if course completed
+		if (course.getCourseEndWorldPoints().length == 0
+			? Math.abs(course.getLastObstacleXp() - skillGained) > 1
+			: Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation())))
+		{
+			session.refreshLapsTillLvl(client);
+		}
+		else
+		{
 			session.incrementLapCount(client);
 		}
 	}

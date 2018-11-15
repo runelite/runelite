@@ -49,7 +49,12 @@ class AgilitySession
 	{
 		lastLapCompleted = Instant.now();
 		++totalLaps;
+		refreshLapsTillLvl(client);
 
+	}
+
+	void refreshLapsTillLvl(Client client)
+	{
 		int currentExp = client.getSkillExperience(Skill.AGILITY);
 		int nextLevel = client.getRealSkillLevel(Skill.AGILITY) + 1;
 
@@ -61,6 +66,7 @@ class AgilitySession
 		} while (remainingXp < 0);
 
 		lapsTillLevel = remainingXp > 0 ? (int) Math.ceil(remainingXp / course.getTotalXp()) : 0;
+
 	}
 
 	void resetLapCount()
