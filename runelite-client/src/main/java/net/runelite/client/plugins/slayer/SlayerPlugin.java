@@ -531,15 +531,7 @@ public class SlayerPlugin extends Plugin
 		}
 
 		int npcId = npc.getId();
-
-		for (int targetId : targetIds)
-		{
-			if (targetId == npcId)
-			{
-				return true;
-			}
-		}
-		return false;
+		return targetIds.contains(npcId);
 	}
 
 	private void rebuildTargetIds(Task task)
