@@ -35,6 +35,8 @@ import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import static net.runelite.api.GameState.HOPPING;
+import static net.runelite.api.GameState.LOGIN_SCREEN;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.AGILITY_ARENA_TICKET;
@@ -43,7 +45,24 @@ import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.*;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.DecorativeObjectChanged;
+import net.runelite.api.events.DecorativeObjectDespawned;
+import net.runelite.api.events.DecorativeObjectSpawned;
+import net.runelite.api.events.ExperienceChanged;
+import net.runelite.api.events.GameObjectChanged;
+import net.runelite.api.events.GameObjectDespawned;
+import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.GroundObjectChanged;
+import net.runelite.api.events.GroundObjectDespawned;
+import net.runelite.api.events.GroundObjectSpawned;
+import net.runelite.api.events.ItemDespawned;
+import net.runelite.api.events.ItemSpawned;
+import net.runelite.api.events.WallObjectChanged;
+import net.runelite.api.events.WallObjectDespawned;
+import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -96,6 +115,7 @@ public class AgilityPlugin extends Plugin
 	private AgilitySession session;
 
 	private int lastAgilityXp;
+	private int lastAgilityLevel;
 	private WorldPoint lastArenaTicketPosition;
 
 	@Provides
@@ -144,6 +164,7 @@ public class AgilityPlugin extends Plugin
 				}
 				break;
 		}
+
 	}
 
 	@Subscribe
@@ -158,15 +179,21 @@ public class AgilityPlugin extends Plugin
 	@Subscribe
 	public void onExperienceChanged(ExperienceChanged event)
 	{
-		if (event.getSkill() != AGILITY || !config.showLapCount())
-		{
+		if (event.getSkill() != AGILITY)
 			return;
-		}
+
+		if (!config.showLapCount())
+			return;
 
 		// Determine how much EXP was actually gained
 		int agilityXp = client.getSkillExperience(AGILITY);
 		int skillGained = agilityXp - lastAgilityXp;
 		lastAgilityXp = agilityXp;
+
+		// Determine if levelled up
+		int curLevel = client.getRealSkillLevel(AGILITY);
+		boolean levelledUp = lastAgilityLevel > 0 && curLevel > lastAgilityLevel ;
+		lastAgilityLevel = curLevel;
 
 		// Get course
 		Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
@@ -174,7 +201,7 @@ public class AgilityPlugin extends Plugin
 			return;
 
 		// Get new agility session
-		if ( !(session != null && session.getCourse() == course))
+		if ( session == null || session.getCourse() != course )
 		{
 
 			session = new AgilitySession(course);
@@ -188,7 +215,10 @@ public class AgilityPlugin extends Plugin
 			? Math.abs(course.getLastObstacleXp() - skillGained) > 1
 			: Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation())))
 		{
-			session.refreshLapsTillLvl(client);
+			if (levelledUp)
+			{
+				session.reloadLapsTillLevel(client);
+			}
 		}
 		else
 		{
