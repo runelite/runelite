@@ -34,7 +34,9 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -168,7 +170,7 @@ public class SlayerPlugin extends Plugin
 	private int cachedXp;
 	private Instant infoTimer;
 	private boolean loginFlag;
-	private List<Integer> targetIds = new ArrayList<>();
+	private Set<Integer> targetIds = new HashSet<>();
 
 	@Override
 	protected void startUp() throws Exception
