@@ -154,13 +154,13 @@ public interface AgilityConfig extends Config
     }
 
 	@ConfigItem(
-        keyName = "highlightStick",
-        name = "Mark Highlight Color",
-        description = "Color of highlighted Stick at Werewolf course",
-        position = 12
+			keyName = "stickHighlight",
+			name = "Stick Overlay Color",
+			description = "Color of Stick",
+			position = 12
 	)
-    default Color getStickColor()
-    {
-        return Color.RED;
-    }
+	default Color getStickColor()
+	{
+		return Color.RED;
+	}
 }
