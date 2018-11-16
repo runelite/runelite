@@ -28,10 +28,12 @@ uniform sampler2DArray textures;
 uniform vec2 textureOffsets[64];
 uniform float brightness;
 uniform float smoothBanding;
+uniform vec4 fogColor;
 
 in vec4 Color;
 in float fHsl;
 in vec4 fUv;
+in float fogAmount;
 
 out vec4 FragColor;
 
@@ -58,4 +60,6 @@ void main() {
   } else {
     FragColor = smoothColor;
   }
+
+  FragColor = mix(FragColor, fogColor, fogAmount);
 }

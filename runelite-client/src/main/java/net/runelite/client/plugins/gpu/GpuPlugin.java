@@ -43,11 +43,13 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.function.Function;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import jogamp.nativewindow.jawt.x11.X11JAWTWindow;
 import jogamp.newt.awt.NewtFactoryAWT;
@@ -59,12 +61,16 @@ import net.runelite.api.GameState;
 import net.runelite.api.Model;
 import net.runelite.api.NodeCache;
 import net.runelite.api.Perspective;
+import net.runelite.api.Player;
+import net.runelite.api.Point;
 import net.runelite.api.Renderable;
 import net.runelite.api.Scene;
 import net.runelite.api.SceneTileModel;
 import net.runelite.api.SceneTilePaint;
 import net.runelite.api.Texture;
 import net.runelite.api.TextureProvider;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.client.callback.ClientThread;
@@ -212,6 +218,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int centerY;
 
 	// Uniforms
+	private int uniFogColor;
 	private int uniProjectionMatrix;
 	private int uniBrightness;
 	private int uniTex;
@@ -221,6 +228,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniBlockLarge;
 	private int uniBlockMain;
 	private int uniSmoothBanding;
+
+	private static final int SCALE = 2;
+	private static final int LOCAL_SCALE = Perspective.LOCAL_TILE_SIZE * SCALE;
+
+	private BufferedImage skybox = null;
+	private static Point shift;
 
 	@Override
 	protected void startUp()
@@ -297,6 +310,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				initProgram();
 				initInterfaceTexture();
 				initUniformBuffer();
+				initSkybox();
 
 				client.setDrawCallbacks(this);
 				client.setGpu(true);
@@ -471,6 +485,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniProjectionMatrix = gl.glGetUniformLocation(glProgram, "projectionMatrix");
 		uniBrightness = gl.glGetUniformLocation(glProgram, "brightness");
 		uniSmoothBanding = gl.glGetUniformLocation(glProgram, "smoothBanding");
+		uniFogColor = gl.glGetUniformLocation(glProgram, "fogColor");
 
 		uniTex = gl.glGetUniformLocation(glUiProgram, "tex");
 		uniTextures = gl.glGetUniformLocation(glProgram, "textures");
@@ -479,6 +494,26 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniBlockSmall = gl.glGetUniformBlockIndex(glSmallComputeProgram, "uniforms");
 		uniBlockLarge = gl.glGetUniformBlockIndex(glComputeProgram, "uniforms");
 		uniBlockMain = gl.glGetUniformBlockIndex(glProgram, "uniforms");
+	}
+
+	private void initSkybox()
+	{
+		synchronized (ImageIO.class)
+		{
+			try
+			{
+				skybox = ImageIO.read(getClass().getResourceAsStream("skybox/skybox.png"));
+			}
+			catch (IOException e)
+			{
+				throw new RuntimeException(e);
+			}
+		}
+
+		Point wp = new Point(3232, 3232);
+		Point px = new Point(1040, 3600);
+
+		shift = new Point(px.getX() - (wp.getX() / 2), (skybox.getHeight() - px.getY()) - (wp.getY() / 2));
 	}
 
 	private void shutdownProgram()
@@ -937,6 +972,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			gl.glUseProgram(glProgram);
 
+			drawSkybox();
+
 			// Brightness happens to also be stored in the texture provider, so we use that
 			gl.glUniform1f(uniBrightness, (float) textureProvider.getBrightness());
 			gl.glUniform1f(uniSmoothBanding, config.smoothBanding() ? 0f : 1f);
@@ -1027,6 +1064,81 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		glDrawable.swapBuffers();
 
 		drawManager.processDrawComplete(this::screenshot);
+	}
+
+	private void drawSkybox()
+	{
+		if (skybox == null)
+		{
+			return;
+		}
+
+		int[] rgbAvg = new int[3];
+
+		Player player = client.getLocalPlayer();
+		if (player == null)
+		{
+			return;
+		}
+
+		LocalPoint lp = player.getLocalLocation();
+
+		// basic bilinear to smooth the values
+
+		int xm = lp.getX();
+		int ym = lp.getY();
+		int x0 = xm & ~(LOCAL_SCALE - 1);
+		int y0 = ym & ~(LOCAL_SCALE - 1);
+		int x1 = x0 + LOCAL_SCALE;
+		int y1 = y0 + LOCAL_SCALE;
+
+		int area = 0;
+		area += getColorForTile(x1, y1, xm - x0, ym - y0, rgbAvg);
+		area += getColorForTile(x1, y0, xm - x0, y1 - ym, rgbAvg);
+		area += getColorForTile(x0, y1, x1 - xm, ym - y0, rgbAvg);
+		area += getColorForTile(x0, y0, x1 - xm, y1 - ym, rgbAvg);
+
+		if (area <= 0)
+		{
+			return;
+		}
+
+		rgbAvg[0] /= area;
+		rgbAvg[1] /= area;
+		rgbAvg[2] /= area;
+
+
+		gl.glClearColor(rgbAvg[0] / 255f, rgbAvg[1] / 255f, rgbAvg[2] / 255f, 1f);
+		gl.glClear(gl.GL_COLOR_BUFFER_BIT);
+
+		gl.glUniform4f(uniFogColor, rgbAvg[0] / 255f, rgbAvg[1] / 255f, rgbAvg[2] / 255f, 1f);
+	}
+
+	private int getColorForTile(int lx, int ly, int xlen, int ylen, int[] rgbAvg)
+	{
+		WorldPoint twp = WorldPoint.fromLocalInstance(client, new LocalPoint(lx, ly));
+		if (twp == null)
+		{
+			return 0;
+		}
+
+		int px = twp.getX() / SCALE + shift.getX();
+		int py = skybox.getHeight() - (twp.getY() / SCALE + shift.getY());
+
+		if (px < 0 || py < 0 || px >= skybox.getWidth() || py >= skybox.getHeight())
+		{
+			return 0;
+		}
+
+		int area = xlen * ylen;
+
+		int rgb = skybox.getRGB(px, py);
+
+		rgbAvg[0] += ((rgb >> 16) & 0xFF) * area;
+		rgbAvg[1] += ((rgb >> 8) & 0xFF) * area;
+		rgbAvg[2] += (rgb & 0xFF) * area;
+
+		return area;
 	}
 
 	private void drawUi(final int canvasHeight, final int canvasWidth)
