@@ -22,29 +22,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.heartdisplay;
+package net.runelite.client.plugins.statusorbs;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.SpriteID;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.interfacestyles.InterfaceStylesPlugin;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-	name = "Dynamic HP heart",
-	description = "Changes the HP heart color to reflect background color.",
-	tags = {"hp", "heart", "replace"}
+	name = "Status Orbs",
+	description = "Settings for the Minimap orbs",
+	tags = {"hp", "heart", "minimap"}
 )
 @Slf4j
-public class HeartDisplayPlugin extends Plugin
+public class StatusOrbsPlugin extends Plugin
 {
 	private static final BufferedImage HEART_NORMAL;
 	private static final BufferedImage HEART_DISEASE;
@@ -52,10 +55,10 @@ public class HeartDisplayPlugin extends Plugin
 	private static final BufferedImage HEART_VENOM;
 	static
 	{
-		HEART_NORMAL = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(HeartDisplayPlugin.class, "1067-NORMAL.png"), 26, 26);
-		HEART_DISEASE = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(HeartDisplayPlugin.class, "1067-DISEASE.png"), 26, 26);
-		HEART_POISON = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(HeartDisplayPlugin.class, "1067-POISON.png"), 26, 26);
-		HEART_VENOM = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(HeartDisplayPlugin.class, "1067-VENOM.png"), 26, 26);
+		HEART_NORMAL = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(StatusOrbsPlugin.class, "1067-NORMAL.png"), 26, 26);
+		HEART_DISEASE = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(StatusOrbsPlugin.class, "1067-DISEASE.png"), 26, 26);
+		HEART_POISON = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(StatusOrbsPlugin.class, "1067-POISON.png"), 26, 26);
+		HEART_VENOM = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(StatusOrbsPlugin.class, "1067-VENOM.png"), 26, 26);
 	}
 
 	@Inject
@@ -64,18 +67,56 @@ public class HeartDisplayPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
+	@Inject
+	private StatusOrbsConfig config;
+
+	@Provides
+	StatusOrbsConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(StatusOrbsConfig.class);
+	}
+
 	private BufferedImage currentHeart;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		clientThread.invoke(this::checkHealthIcon);
+		if (config.dynamicHpHeart())
+		{
+			clientThread.invoke(this::checkHealthIcon);
+		}
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		clientThread.invoke(this::resetHeathIcon);
+		if (config.dynamicHpHeart())
+		{
+			clientThread.invoke(this::resetHealthIcon);
+		}
+	}
+
+	@Subscribe
+	private void onConfigChanged(ConfigChanged c)
+	{
+		if (c.getGroup().equals("statusorbs"))
+		{
+			switch (c.getKey())
+			{
+				case "dynamicHpHeart":
+					if (config.dynamicHpHeart())
+					{
+						checkHealthIcon();
+					}
+					else
+					{
+						resetHealthIcon();
+					}
+					break;
+				default:
+					return;
+			}
+		}
 	}
 
 	@Subscribe
@@ -84,13 +125,16 @@ public class HeartDisplayPlugin extends Plugin
 		checkHealthIcon();
 	}
 
-	private void resetHeathIcon()
+	private void resetHealthIcon()
 	{
 		client.getWidgetSpriteCache().reset();
 		client.getSpriteOverrides().remove(SpriteID.MINIMAP_ORB_HITPOINTS_ICON);
 		currentHeart = null;
 	}
 
+	/**
+	 * Check player afflictions to determine health icon
+	 */
 	private void checkHealthIcon()
 	{
 		int poison = client.getVar(VarPlayer.IS_POISONED);
