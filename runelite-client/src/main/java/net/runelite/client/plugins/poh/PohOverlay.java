@@ -44,7 +44,9 @@ public class PohOverlay extends Overlay
 	{
 		PohIcons.LUMBRIDGE, PohIcons.FALADOR, PohIcons.VARROCK, PohIcons.CAMELOT, PohIcons.ARDOUGNE,
 		PohIcons.YANILLE, PohIcons.LUNARISLE, PohIcons.WATERBIRTH, PohIcons.FISHINGGUILD,
-		PohIcons.SENNTISTEN, PohIcons.KHARYLL, PohIcons.ANNAKARL, PohIcons.KOUREND, PohIcons.MARIM, PohIcons.TROLLSTRONGHOLD
+		PohIcons.SENNTISTEN, PohIcons.KHARYLL, PohIcons.ANNAKARL, PohIcons.KOUREND, PohIcons.MARIM, PohIcons.TROLLSTRONGHOLD,
+        PohIcons.GHORROCK, PohIcons.CATHERBY, PohIcons.CARRALLANGAR
+
 	};
 
 	private static final int MAX_DISTANCE = 2350;
