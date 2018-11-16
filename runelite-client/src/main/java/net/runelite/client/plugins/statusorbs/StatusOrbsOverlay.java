@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.regenmeter;
+package net.runelite.client.plugins.statusorbs;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -41,7 +41,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
-public class RegenMeterOverlay extends Overlay
+public class StatusOrbsOverlay extends Overlay
 {
 	private static final Color HITPOINTS_COLOR = brighter(0x9B0703);
 	private static final Color SPECIAL_COLOR = brighter(0x1E95B0);
@@ -50,8 +50,8 @@ public class RegenMeterOverlay extends Overlay
 	private static final int OFFSET = 27;
 
 	private final Client client;
-	private RegenMeterPlugin plugin;
-	private RegenMeterConfig config;
+	private StatusOrbsPlugin plugin;
+	private StatusOrbsConfig config;
 
 	private static Color brighter(int color)
 	{
@@ -61,7 +61,7 @@ public class RegenMeterOverlay extends Overlay
 	}
 
 	@Inject
-	public RegenMeterOverlay(Client client, RegenMeterPlugin plugin, RegenMeterConfig config)
+	public StatusOrbsOverlay(Client client, StatusOrbsPlugin plugin, StatusOrbsConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
@@ -89,7 +89,7 @@ public class RegenMeterOverlay extends Overlay
 				if (widget != null && !widget.isHidden())
 				{
 					final Rectangle bounds = widget.getBounds();
-					g.setColor(RegenMeterOverlay.OVERLAY_COLOR);
+					g.setColor(OVERLAY_COLOR);
 					g.fillOval(
 						bounds.x + OFFSET,
 						bounds.y + (int) (bounds.height / 2 - (DIAMETER) / 2),

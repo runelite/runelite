@@ -41,4 +41,34 @@ public interface StatusOrbsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "showHitpoints",
+		name = "Show hitpoints regen",
+		description = "Show a ring around the hitpoints orb")
+	default boolean showHitpoints()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "showWhenNoChange",
+		name = "Show hitpoints regen at full hitpoints",
+		description = "Always show the hitpoints regen orb, even if there will be no stat change")
+	default boolean showWhenNoChange()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "showSpecial",
+		name = "Show Spec. Attack regen",
+		description = "Show a ring around the Special Attack orb")
+	default boolean showSpecial()
+	{
+		return true;
+	}
 }

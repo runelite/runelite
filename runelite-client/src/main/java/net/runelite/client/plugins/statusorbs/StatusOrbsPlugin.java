@@ -28,23 +28,30 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.Prayer;
+import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.interfacestyles.InterfaceStylesPlugin;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Status Orbs",
-	description = "Settings for the Minimap orbs",
-	tags = {"hp", "heart", "minimap"}
+	description = "Settings for the Minimap orbs (HP, Run, & Special Attack)",
+	tags = {"hp", "heart", "minimap", "run", "energy"}
 )
 @Slf4j
 public class StatusOrbsPlugin extends Plugin
@@ -61,6 +68,9 @@ public class StatusOrbsPlugin extends Plugin
 		HEART_VENOM = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(StatusOrbsPlugin.class, "1067-VENOM.png"), 26, 26);
 	}
 
+	private static final int SPEC_REGEN_TICKS = 50;
+	private static final int NORMAL_HP_REGEN_TICKS = 100;
+
 	@Inject
 	private Client client;
 
@@ -68,7 +78,27 @@ public class StatusOrbsPlugin extends Plugin
 	private ClientThread clientThread;
 
 	@Inject
-	private StatusOrbsConfig config;
+	private StatusOrbsConfig config;;
+
+	@Inject
+	private StatusOrbsOverlay overlay;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Getter
+	private double hitpointsPercentage;
+
+	@Getter
+	private double specialPercentage;
+
+	// HeartDisplay
+	private BufferedImage currentHeart;
+
+	// RegenMeter
+	private int ticksSinceSpecRegen;
+	private int ticksSinceHPRegen;
+	private boolean wasRapidHeal;
 
 	@Provides
 	StatusOrbsConfig provideConfig(ConfigManager configManager)
@@ -76,11 +106,10 @@ public class StatusOrbsPlugin extends Plugin
 		return configManager.getConfig(StatusOrbsConfig.class);
 	}
 
-	private BufferedImage currentHeart;
-
 	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
 		if (config.dynamicHpHeart())
 		{
 			clientThread.invoke(this::checkHealthIcon);
@@ -90,6 +119,7 @@ public class StatusOrbsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
 		if (config.dynamicHpHeart())
 		{
 			clientThread.invoke(this::resetHealthIcon);
@@ -122,14 +152,63 @@ public class StatusOrbsPlugin extends Plugin
 	@Subscribe
 	private void onVarbitChanged(VarbitChanged e)
 	{
+		// Dynamic HP Heart
 		checkHealthIcon();
+
+		// RegenMeter
+		boolean isRapidHeal = client.isPrayerActive(Prayer.RAPID_HEAL);
+		if (wasRapidHeal != isRapidHeal)
+		{
+			ticksSinceHPRegen = 0;
+		}
+		wasRapidHeal = isRapidHeal;
 	}
 
-	private void resetHealthIcon()
+	@Subscribe
+	private void onGameStateChanged(GameStateChanged ev)
 	{
-		client.getWidgetSpriteCache().reset();
-		client.getSpriteOverrides().remove(SpriteID.MINIMAP_ORB_HITPOINTS_ICON);
-		currentHeart = null;
+		if (ev.getGameState() == GameState.HOPPING || ev.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			ticksSinceHPRegen = -2; // For some reason this makes this accurate
+			ticksSinceSpecRegen = 0;
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT) == 1000)
+		{
+			// The recharge doesn't tick when at 100%
+			ticksSinceSpecRegen = 0;
+		}
+		else
+		{
+			ticksSinceSpecRegen = (ticksSinceSpecRegen + 1) % SPEC_REGEN_TICKS;
+		}
+		specialPercentage = ticksSinceSpecRegen / (double) SPEC_REGEN_TICKS;
+
+
+		int ticksPerHPRegen = NORMAL_HP_REGEN_TICKS;
+		if (client.isPrayerActive(Prayer.RAPID_HEAL))
+		{
+			ticksPerHPRegen /= 2;
+		}
+
+		ticksSinceHPRegen = (ticksSinceHPRegen + 1) % ticksPerHPRegen;
+		hitpointsPercentage = ticksSinceHPRegen / (double) ticksPerHPRegen;
+
+		int currentHP = client.getBoostedSkillLevel(Skill.HITPOINTS);
+		int maxHP = client.getRealSkillLevel(Skill.HITPOINTS);
+		if (currentHP == maxHP && !config.showWhenNoChange())
+		{
+			hitpointsPercentage = 0;
+		}
+		else if (currentHP > maxHP)
+		{
+			// Show it going down
+			hitpointsPercentage = 1 - hitpointsPercentage;
+		}
 	}
 
 	/**
@@ -151,5 +230,15 @@ public class StatusOrbsPlugin extends Plugin
 			client.getWidgetSpriteCache().reset();
 			client.getSpriteOverrides().put(SpriteID.MINIMAP_ORB_HITPOINTS_ICON, InterfaceStylesPlugin.getImageSpritePixels(currentHeart, client));
 		}
+	}
+
+	/**
+	 * Ensure the HP Heart is the default Sprite
+	 */
+	private void resetHealthIcon()
+	{
+		client.getWidgetSpriteCache().reset();
+		client.getSpriteOverrides().remove(SpriteID.MINIMAP_ORB_HITPOINTS_ICON);
+		currentHeart = null;
 	}
 }
