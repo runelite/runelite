@@ -70,7 +70,7 @@ public class TeleportNameChangesPlugin extends Plugin
 		}
 
 		// Ancient teleports renaming
-		if (event.getOption().equals("Break"))
+		if (event.getOption().equals("Break") || event.getOption().equals("Use") || event.getOption().equals("Withdraw-1"))
 		{
 			MenuEntry[] menuEntries = client.getMenuEntries();
 			for (MenuEntry object : menuEntries)
