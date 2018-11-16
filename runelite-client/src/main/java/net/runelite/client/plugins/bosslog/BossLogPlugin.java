@@ -3,6 +3,7 @@ package net.runelite.client.plugins.bosslog;
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.game.ItemManager;
@@ -13,6 +14,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
 import java.awt.image.BufferedImage;
@@ -24,6 +26,7 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Matcher;
 
 import static java.lang.Integer.parseInt;
 
@@ -39,11 +42,8 @@ public class BossLogPlugin extends Plugin {
     private BossLogPanel panel;
     private NavigationButton navButton;
 
-    private Bosses[] bossTypes = {Bosses.ZULRAH};
-    public Boss zulrah;
-
-    //Files
-    File zulrah_log = new File("zulrah_log.txt");
+    public Bosses[] bossTypes = {Bosses.ZULRAH};
+    public List<Boss> bosses = new ArrayList<>();
 
     @Inject
     private Client client;
@@ -62,24 +62,28 @@ public class BossLogPlugin extends Plugin {
     {
     //Load Persistant Data
         //create new file if non-existant
-        if(!zulrah_log.exists()) {
-            zulrah_log.createNewFile();
-            BufferedWriter bw = new BufferedWriter(new FileWriter(zulrah_log));
-            bw.write("0");
-            bw.close();
+        for(Bosses b : bossTypes)
+        {
+            File logFile = new File(b.getName()+"_log.txt");
+            if(!logFile.exists())
+            {
+                logFile.createNewFile();
+                BufferedWriter bw = new BufferedWriter(new FileWriter(logFile));
+                bw.write("0");
+                bw.close();
+            }
+            BufferedReader br = new BufferedReader(new FileReader(logFile));
+            String st;
+            int KC = parseInt(br.readLine());
+            List<Item> itemList = new ArrayList<>();
+            while ((st = br.readLine()) != null) {
+                int id = parseInt(st.substring(0, st.indexOf(' ')));
+                int quantity = parseInt(st.substring(st.indexOf(' ')+1));
+                itemList.add(new Item(id, quantity, "", 0));
+            }
+            br.close();
+            bosses.add(new Boss(b, KC, itemList));
         }
-
-        BufferedReader br = new BufferedReader(new FileReader(zulrah_log));
-        String st;
-        int KC = parseInt(br.readLine());
-        List<Item> itemList = new ArrayList<>();
-        while ((st = br.readLine()) != null) {
-            int id = parseInt(st.substring(0, st.indexOf(' ')));
-            int quantity = parseInt(st.substring(st.indexOf(' ')+1));
-            itemList.add(new Item(id, quantity, "", 0));
-        }
-        br.close();
-        zulrah = new Boss(Bosses.ZULRAH, KC, itemList);
 
         panel = new BossLogPanel(this, itemManager);
         spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, panel::loadHeaderIcon);
@@ -121,7 +125,18 @@ public class BossLogPlugin extends Plugin {
             final ItemComposition itemComposition = itemManager.getItemComposition(e.getId());
             System.out.println("elem = " + e.getId() + " " + itemComposition.getName());
         }
-        //final LootTrackerItem[] entries = buildEntries(stack(items));
-        //SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
+    }
+
+    @Subscribe
+    public void onChatMessage(ChatMessage event)
+    {
+        if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
+        {
+            return;
+        }
+
+        // Check if message is for a pet
+        String msg = Text.removeTags(event.getMessage());
+        System.out.println(msg);
     }
 }

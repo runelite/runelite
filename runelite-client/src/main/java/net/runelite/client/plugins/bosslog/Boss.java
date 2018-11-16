@@ -14,21 +14,23 @@ public class Boss {
     private final int KC;
     private final List<Item> drops;
 
-    public void update(ItemManager itemManager) {
-        for(Item i : drops) {
+    public void update(ItemManager itemManager)
+    {
+        for(Item i : drops)
+        {
             ItemComposition itemComposition = itemManager.getItemComposition(i.getId());
             i.setName(itemComposition.getName());
             i.setPrice(itemManager.getItemPrice(i.getId()));
         }
     }
 
-    public int getProfit() {
+    int getProfit()
+    {
         int sum = 0;
-        for(Item i : drops) {
-            sum += i.getPrice();
-            System.out.println(i.getPrice());
+        for(Item i : drops)
+        {
+            sum += i.getPrice()*i.getQuantity();
         }
-        System.out.println(sum);
         return sum;
     }
 }

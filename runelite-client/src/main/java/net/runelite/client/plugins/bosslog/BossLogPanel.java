@@ -8,11 +8,8 @@ import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 
 import javax.annotation.Nullable;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.ImageIcon;
 import java.awt.Image;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
@@ -42,16 +39,16 @@ public class BossLogPanel extends PluginPanel {
 
         setLayout(new BorderLayout());
         setBackground(ColorScheme.DARK_GRAY_COLOR);
-
-        display.setBorder(new EmptyBorder(3, 2, 3, 2));
+        display.setBorder(new EmptyBorder(0, 0, 0, 1));
 
         tabGroup.setLayout(new GridLayout(0, 6, 7, 7));
         tabGroup.setBorder(new EmptyBorder(0, 0, 0, 0));
 
         add(tabGroup, BorderLayout.NORTH);
         add(display, BorderLayout.CENTER);
-        addTab(Tab.OVERVIEW, new BossLogDropPanel(itemManager, plugin.zulrah));
-        addTab(Tab.ZULRAH, new BossLogDropPanel(itemManager, plugin.zulrah));
+        addTab(Tab.OVERVIEW, new BossLogOverviewPanel(itemManager));
+        for(Boss b : plugin.bosses)
+            addTab(b.getBoss().getTab(), new BossLogDropPanel(itemManager, b));
     }
 
     private void addTab(Tab tab, TabContentPanel tabContentPanel)
@@ -93,8 +90,13 @@ public class BossLogPanel extends PluginPanel {
     }
 
     void update() {
-        plugin.zulrah.update(itemManager);
-        activeTabPanel.update();
+        for(Boss b : plugin.bosses) {
+            b.update(itemManager);
+        }
+
+        if(activeTabPanel != null) {
+            activeTabPanel.update();
+        }
     }
 
     void loadHeaderIcon(BufferedImage img)

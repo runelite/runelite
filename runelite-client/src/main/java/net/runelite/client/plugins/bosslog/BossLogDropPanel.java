@@ -11,23 +11,38 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class BossLogDropPanel extends TabContentPanel
 {
-    JPanel uniqueContainer = new JPanel();
-    JPanel logContainer = new JPanel();
+    private JPanel uniqueContainer = new JPanel();
+    private JPanel logContainer = new JPanel();
 
-    JLabel logLabelGP;
-    JLabel logLabelKC;
+    private JLabel logLabelGP;
+    private JLabel logLabelKC;
 
-    Boss panelBoss;
+    private List<JPanel> slots = new ArrayList<>();
+
+    private Boss panelBoss;
+
+    private ItemManager itemManager;
 
     BossLogDropPanel(ItemManager itemManager, Boss boss)
     {
         panelBoss = boss;
+        this.itemManager = itemManager;
+        //setLayout(new DynamicGridLayout(0, 1, 0, 5));
         setLayout(new DynamicGridLayout(0, 1, 0, 5));
         setBackground(ColorScheme.DARK_GRAY_COLOR);
         setBorder(new EmptyBorder(5, 0, 5, 0));
+
+        //uniques
+        JPanel uniqueMainContainer = new JPanel();
+        uniqueMainContainer.setLayout(new BorderLayout(0, 2));
+        add(uniqueMainContainer);
 
         JPanel uniqueTextContainer = new JPanel();
         uniqueTextContainer.setBorder(new EmptyBorder(4,4,4,4));
@@ -39,37 +54,22 @@ public class BossLogDropPanel extends TabContentPanel
         uniqueLabel.setFont(FontManager.getRunescapeFont());
         uniqueLabel.setText("Uniques");
         uniqueTextContainer.add(uniqueLabel, BorderLayout.WEST);
+        uniqueMainContainer.add(uniqueTextContainer, BorderLayout.NORTH);
 
-        JPanel uniqueMainContainer = new JPanel();
-        uniqueMainContainer.setLayout(new DynamicGridLayout(0, 1, 2, 2));
-        add(uniqueMainContainer);
-        uniqueMainContainer.add(uniqueTextContainer);
+        uniqueContainer.setLayout(new GridLayout(0, 5, 1, 1));
 
-        uniqueContainer.setLayout(new GridLayout(0, 5, 2, 2));
-        uniqueMainContainer.add(uniqueContainer);
+        uniqueMainContainer.add(uniqueContainer, BorderLayout.CENTER);
 
-        for(int id : boss.getBoss().getUniques()) {
-            boolean added = false;
-            for(Item i : boss.getDrops()) {
-                if(id == i.getId()) {
-                    uniqueContainer.add(new BossLogUniqueBox(itemManager, i));
-                    added = true;
-                }
-            }
-            if(!added) {
-                uniqueContainer.add(new BossLogUniqueBox(itemManager, new Item(id, 0, "", 0)));
-            }
-        }
-
-        JPanel dropLogMainContainer = new JPanel();
-        dropLogMainContainer.setLayout(new DynamicGridLayout(0, 1, 0, 2));
-        add(dropLogMainContainer);
+        //regular drops
+        JPanel logMainContainer = new JPanel();
+        logMainContainer.setLayout(new BorderLayout(0, 2));
+        add(logMainContainer);
 
         JPanel logTextContainer = new JPanel();
         logTextContainer.setLayout(new BorderLayout());
         logTextContainer.setBorder(new EmptyBorder(4,4,4,4));
         logTextContainer.setBackground(new Color(24, 24, 24));
-        dropLogMainContainer.add(logTextContainer);
+        logMainContainer.add(logTextContainer, BorderLayout.NORTH);
 
         JLabel logLabel = new JLabel();
         logLabel.setForeground(Color.WHITE);
@@ -89,11 +89,9 @@ public class BossLogDropPanel extends TabContentPanel
         logLabelGP.setText("0 gp");
         logTextContainer.add(logLabelGP, BorderLayout.EAST);
 
-        logContainer.setLayout(new GridLayout(0, 5, 2, 2));
-        dropLogMainContainer.add(logContainer);
-
-        for(Item i : boss.getDrops())
-            logContainer.add(new BossLogDropBox( itemManager, i));
+        logContainer.setLayout(new GridLayout(0, 5, 1, 1));
+        logContainer.setBorder(new EmptyBorder(0,0,0,0));
+        logMainContainer.add(logContainer, BorderLayout.CENTER);
     }
 
     @Override
@@ -105,6 +103,39 @@ public class BossLogDropPanel extends TabContentPanel
     @Override
     public void update()
     {
-        logLabelGP.setText(panelBoss.getProfit() + " gp");
+        logLabelGP.setText(NumberFormat.getNumberInstance(Locale.US).format(panelBoss.getProfit()) + " gp");
+        drawSlots();
+    }
+
+    void drawSlots() {
+        //draw unique drops
+        uniqueContainer.removeAll();
+        for(int id : panelBoss.getBoss().getUniques())
+        {
+            boolean added = false;
+            for(Item i : panelBoss.getDrops())
+            {
+                if(id == i.getId())
+                {
+                    uniqueContainer.add(new BossLogDropBox(itemManager, i, false));
+                    added = true;
+                    break;
+                }
+            }
+            if(!added)
+            {
+                ItemComposition ic = itemManager.getItemComposition(id);
+                uniqueContainer.add(new BossLogDropBox(itemManager, new Item(id, 0, ic.getName(), 0), true));
+            }
+        }
+
+        //draw regular drops
+        logContainer.removeAll();
+        for(Item i : panelBoss.getDrops())
+        {
+            BossLogDropBox slot = new BossLogDropBox(itemManager, i, false);
+            logContainer.add(slot);
+            slots.add(slot);
+        }
     }
 }
