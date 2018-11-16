@@ -26,17 +26,16 @@ package net.runelite.client.plugins.heartdisplay;
 
 import com.google.common.eventbus.Subscribe;
 import java.awt.image.BufferedImage;
-import java.awt.image.PixelGrabber;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.SpriteID;
-import net.runelite.api.SpritePixels;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.interfacestyles.InterfaceStylesPlugin;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
@@ -106,25 +105,7 @@ public class HeartDisplayPlugin extends Plugin
 		if (old != currentHeart)
 		{
 			client.getWidgetSpriteCache().reset();
-			client.getSpriteOverrides().put(SpriteID.MINIMAP_ORB_HITPOINTS_ICON, getImageSpritePixels(currentHeart));
+			client.getSpriteOverrides().put(SpriteID.MINIMAP_ORB_HITPOINTS_ICON, InterfaceStylesPlugin.getImageSpritePixels(currentHeart, client));
 		}
-	}
-
-	// Pulled from InterfaceStylesPlugin
-	private SpritePixels getImageSpritePixels(BufferedImage image)
-	{
-		int[] pixels = new int[image.getWidth() * image.getHeight()];
-
-		try
-		{
-			new PixelGrabber(image, 0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth())
-				.grabPixels();
-		}
-		catch (InterruptedException ex)
-		{
-			log.debug("PixelGrabber was interrupted: ", ex);
-		}
-
-		return client.createSpritePixels(pixels, image.getWidth(), image.getHeight());
 	}
 }

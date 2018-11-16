@@ -195,7 +195,7 @@ public class InterfaceStylesPlugin extends Plugin
 		{
 			log.debug("Loading: " + filePath);
 			BufferedImage spriteImage = ImageIO.read(inputStream);
-			return getImageSpritePixels(spriteImage);
+			return getImageSpritePixels(spriteImage, client);
 		}
 		catch (IOException ex)
 		{
@@ -209,7 +209,7 @@ public class InterfaceStylesPlugin extends Plugin
 		return null;
 	}
 
-	private SpritePixels getImageSpritePixels(BufferedImage image)
+	public static SpritePixels getImageSpritePixels(BufferedImage image, Client client)
 	{
 		int[] pixels = new int[image.getWidth() * image.getHeight()];
 
@@ -284,7 +284,7 @@ public class InterfaceStylesPlugin extends Plugin
 
 		if (compassImage != null)
 		{
-			SpritePixels compass = getImageSpritePixels(compassImage);
+			SpritePixels compass = getImageSpritePixels(compassImage, client);
 			client.setCompass(compass);
 		}
 	}
