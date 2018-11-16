@@ -1,5 +1,9 @@
 /*
  * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
+ * Regen Meter Overlay:
+ * Copyright (c) 2018 Abex
+ * Regen Meter Overlay:
+ * Copyright (c) 2018, Sean Dewar <https://github.com/seandewar>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

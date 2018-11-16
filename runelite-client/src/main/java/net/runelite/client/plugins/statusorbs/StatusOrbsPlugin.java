@@ -1,5 +1,11 @@
 /*
  * Copyright (c) 2018 TheStonedTurtle <https://github.com/TheStonedTurtle>
+ * Regen Meter Contributors:
+ * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Zimaya <https://github.com/Zimaya>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Run Energy Contributors:
+ * Copyright (c) 2018, Sean Dewar <https://github.com/seandewar>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
