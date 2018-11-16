@@ -53,10 +53,10 @@ public class HeartDisplayPlugin extends Plugin
 	private static final BufferedImage HEART_VENOM;
 	static
 	{
-		HEART_NORMAL = ImageUtil.getResourceStreamFromClass(HeartDisplayPlugin.class, "1067-NORMAL.png");
-		HEART_DISEASE = ImageUtil.getResourceStreamFromClass(HeartDisplayPlugin.class, "1067-DISEASE.png");
-		HEART_POISON = ImageUtil.getResourceStreamFromClass(HeartDisplayPlugin.class, "1067-POISON.png");
-		HEART_VENOM = ImageUtil.getResourceStreamFromClass(HeartDisplayPlugin.class, "1067-VENOM.png");
+		HEART_NORMAL = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(HeartDisplayPlugin.class, "1067-NORMAL.png"), 26, 26);
+		HEART_DISEASE = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(HeartDisplayPlugin.class, "1067-DISEASE.png"), 26, 26);
+		HEART_POISON = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(HeartDisplayPlugin.class, "1067-POISON.png"), 26, 26);
+		HEART_VENOM = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(HeartDisplayPlugin.class, "1067-VENOM.png"), 26, 26);
 	}
 
 	@Inject
@@ -97,7 +97,7 @@ public class HeartDisplayPlugin extends Plugin
 		int poison = client.getVar(VarPlayer.IS_POISONED);
 		boolean isVenomed = poison >= 1000000;
 		boolean isPoisoned = !isVenomed && poison > 0;
-		boolean isDiseased = client.getVar(VarPlayer.DISEASE_VALUE) > 0; // Todo: Check for disaes varbit
+		boolean isDiseased = client.getVar(VarPlayer.DISEASE_VALUE) > 0;
 
 		BufferedImage old = currentHeart;
 
@@ -105,14 +105,9 @@ public class HeartDisplayPlugin extends Plugin
 
 		if (old != currentHeart)
 		{
-			overrideHealthIcon();
+			client.getWidgetSpriteCache().reset();
+			client.getSpriteOverrides().put(SpriteID.MINIMAP_ORB_HITPOINTS_ICON, getImageSpritePixels(currentHeart));
 		}
-	}
-
-	private void overrideHealthIcon()
-	{
-		client.getWidgetSpriteCache().reset();
-		client.getSpriteOverrides().put(SpriteID.MINIMAP_ORB_HITPOINTS_ICON, getImageSpritePixels(currentHeart));
 	}
 
 	// Pulled from InterfaceStylesPlugin
