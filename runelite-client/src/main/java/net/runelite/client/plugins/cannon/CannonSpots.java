@@ -51,7 +51,8 @@ public enum CannonSpots
 	LIZARDMEN(new WorldPoint(1500, 3703, 0)),
 	MINIONS_OF_SCARABAS(new WorldPoint(3297, 9252, 0)),
 	SMOKE_DEVIL(new WorldPoint(2398, 9444, 0)),
-	CAVE_HORROR(new WorldPoint(3785, 9460, 0));
+	CAVE_HORROR(new WorldPoint(3785, 9460, 0)),
+	BLUE_DRAGON(new WorldPoint(1933, 8973, 1));
 
 	@Getter
 	private static final List<WorldPoint> cannonSpots = new ArrayList<>();

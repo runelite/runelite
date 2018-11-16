@@ -193,7 +193,7 @@ public class CorpPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onHitsplat(HitsplatApplied hitsplatApplied)
+	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
 	{
 		Actor actor = hitsplatApplied.getActor();
 

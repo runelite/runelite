@@ -26,15 +26,11 @@ package net.runelite.client.util;
 
 import java.awt.AWTException;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.awt.SystemTray;
-import java.awt.Toolkit;
 import java.awt.TrayIcon;
-import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -62,7 +58,6 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.components.CustomScrollBarUI;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
-import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
  * Various Swing utilities.
@@ -187,20 +182,6 @@ public class SwingUtil
 	}
 
 	/**
-	 * Check if point is in screen bounds.
-	 *
-	 * @param x the x
-	 * @param y the y
-	 * @return the boolean
-	 */
-	public static boolean isInScreenBounds(final int x, final int y)
-	{
-		final Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-		final Rectangle bounds = new Rectangle(size);
-		return bounds.contains(x, y);
-	}
-
-	/**
 	 * Add graceful exit callback.
 	 *
 	 * @param frame           the frame
@@ -261,7 +242,7 @@ public class SwingUtil
 			: navigationButton.getIcon();
 
 		final JButton button = new JButton();
-		button.setMaximumSize(new Dimension(30, 30));
+		button.setSize(scaledImage.getWidth(), scaledImage.getHeight());
 		button.setToolTipText(navigationButton.getTooltip());
 		button.setIcon(new ImageIcon(scaledImage));
 		button.putClientProperty(SubstanceSynapse.FLAT_LOOK, Boolean.TRUE);
@@ -295,16 +276,5 @@ public class SwingUtil
 
 		navigationButton.setOnSelect(button::doClick);
 		return button;
-	}
-
-	/**
-	 * Checks if custom substance title pane is present.
-	 *
-	 * @param frame the parent frame
-	 * @return true if title pane is present
-	 */
-	public static boolean isCustomTitlePanePresent(final Window frame)
-	{
-		return SubstanceCoreUtilities.getTitlePaneComponent(frame) != null;
 	}
 }

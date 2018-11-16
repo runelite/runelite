@@ -34,6 +34,7 @@ import net.runelite.api.annotations.VisibleForDevtools;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.hooks.Callbacks;
+import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -49,6 +50,10 @@ public interface Client extends GameEngine
 	 * @return
 	 */
 	Callbacks getCallbacks();
+
+	DrawCallbacks getDrawCallbacks();
+
+	void setDrawCallbacks(DrawCallbacks drawCallbacks);
 
 	/**
 	 * Retrieve a global logger for the client.
@@ -209,6 +214,18 @@ public interface Client extends GameEngine
 	 * @return the logged in world number
 	 */
 	int getWorld();
+
+	/**
+	 * Gets the canvas height
+	 * @return
+	 */
+	int getCanvasHeight();
+
+	/**
+	 * Gets the canvas width
+	 * @return
+	 */
+	int getCanvasWidth();
 
 	/**
 	 * Gets the height of the viewport.
@@ -1103,9 +1120,9 @@ public interface Client extends GameEngine
 	RenderOverview getRenderOverview();
 
 	/**
-	 * Checked whether the client is in stretched mode.
+	 * Checks whether the client is in stretched mode.
 	 *
-	 * @return true if the client is in stretched, false otherwise
+	 * @return true if the client is in stretched mode, false otherwise
 	 */
 	boolean isStretchedEnabled();
 
@@ -1117,16 +1134,16 @@ public interface Client extends GameEngine
 	void setStretchedEnabled(boolean state);
 
 	/**
-	 * Checks whether the client is using fast rendering techniques when
-	 * stretching the client in fixed mode.
+	 * Checks whether the client is using fast
+	 * rendering techniques when stretching the canvas.
 	 *
-	 * @return true if client is fast rendering, false otherwise
+	 * @return true if stretching is fast rendering, false otherwise
 	 */
 	boolean isStretchedFast();
 
 	/**
-	 * Sets whether to use fast rendering techniques when in stretch
-	 * fixed mode.
+	 * Sets whether to use fast rendering techniques
+	 * when stretching the canvas.
 	 *
 	 * @param state new fast rendering state
 	 */
@@ -1134,18 +1151,35 @@ public interface Client extends GameEngine
 
 	/**
 	 * Sets whether to force integer scale factor by rounding scale
-	 * factors towards {@code zero} when stretching fixed mode.
+	 * factors towards {@code zero} when stretching.
 	 *
 	 * @param state new integer scaling state
 	*/
 	void setStretchedIntegerScaling(boolean state);
 
 	/**
-	 * Sets whether to keep aspect ratio when stretching fixed mode.
+	 * Sets whether to keep aspect ratio when stretching.
 	 *
 	 * @param state new keep aspect ratio state
 	 */
 	void setStretchedKeepAspectRatio(boolean state);
+
+	/**
+	 * Sets the scaling factor when scaling resizable mode.
+	 *
+	 * @param factor new scaling factor
+	 */
+	void setScalingFactor(int factor);
+
+	/**
+	 * Invalidates cached dimensions that are
+	 * used for stretching and scaling.
+	 *
+	 * @param resize true to tell the game to
+	 *               resize the canvas on the next frame,
+	 *               false otherwise.
+	 */
+	void invalidateStretching(boolean resize);
 
 	/**
 	 * Gets the current stretched dimensions of the client.
@@ -1469,6 +1503,13 @@ public interface Client extends GameEngine
 	EnumSet<WorldType> getWorldType();
 
 	/**
+	 * Gets the enabled state for the Oculus orb mode
+	 *
+	 * @return
+	 */
+	int getOculusOrbState();
+
+	/**
 	 * Sets the enabled state for the Oculus orb state
 	 *
 	 * @param state boolean enabled value
@@ -1492,4 +1533,29 @@ public interface Client extends GameEngine
 	 * @param world target world to hop to
 	 */
 	void hopToWorld(World world);
+
+	boolean isGpu();
+
+	void setGpu(boolean gpu);
+
+	int get3dZoom();
+	int getCenterX();
+	int getCenterY();
+
+	int getCameraX2();
+	int getCameraY2();
+	int getCameraZ2();
+
+	TextureProvider getTextureProvider();
+
+	NodeCache getCachedModels2();
+
+	void setRenderArea(boolean[][] renderArea);
+
+	int getRasterizer3D_clipMidX2();
+	int getRasterizer3D_clipNegativeMidX();
+	int getRasterizer3D_clipNegativeMidY();
+	int getRasterizer3D_clipMidY2();
+
+	void checkClickbox(Model model, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash);
 }

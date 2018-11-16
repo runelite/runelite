@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,52 +25,22 @@
 package net.runelite.http.service.updatecheck;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.nio.ByteBuffer;
-import java.time.Duration;
-import java.util.List;
-import java.util.Random;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
-import net.runelite.http.api.worlds.World;
-import net.runelite.http.api.worlds.WorldResult;
-import net.runelite.http.service.worlds.WorldsService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import okhttp3.HttpUrl;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/update-check")
+@Slf4j
 public class UpdateCheckService
 {
-	private static final Logger logger = LoggerFactory.getLogger(UpdateCheckService.class);
-
-	private static final Duration TIMEOUT = Duration.ofSeconds(5);
-
-	private static final int PORT = 43594;
-	private static final byte HANDSHAKE_TYPE = 15;
-
-	private static final int RESPONSE_OK = 0;
-	private static final int RESPONSE_OUTDATED = 6;
-
-	private final WorldsService worldsService;
 	private boolean updateAvailable;
 
-	@Autowired
-	public UpdateCheckService(WorldsService worldsService)
-	{
-		this.worldsService = worldsService;
-	}
-
 	@RequestMapping
-	public Boolean check()
+	public boolean check()
 	{
 		return updateAvailable;
 	}
@@ -81,84 +51,45 @@ public class UpdateCheckService
 		updateAvailable = checkUpdate();
 	}
 
-	private int checkResponse(InetAddress address, int revision) throws IOException
+	private int getRevision() throws IOException
 	{
-		try (Socket socket = new Socket())
+		RSConfig config = ClientConfigLoader.fetch();
+
+		for (String value : config.getAppletProperties().values())
 		{
-			socket.setSoTimeout((int) TIMEOUT.toMillis());
-			socket.connect(new InetSocketAddress(address, PORT), (int) TIMEOUT.toMillis());
-
-			ByteBuffer buffer = ByteBuffer.allocate(5);
-			buffer.put(HANDSHAKE_TYPE);
-			buffer.putInt(revision);
-
-			InputStream is = socket.getInputStream();
-			OutputStream os = socket.getOutputStream();
-			os.write(buffer.array());
-
-			int reply = is.read();
-			return reply;
+			// http://www.runescape.com/g=oldscape/slr.ws?order=LPWM&ep=176
+			if (value.contains("slr.ws"))
+			{
+				HttpUrl url = HttpUrl.parse(value);
+				String revstr = url.queryParameter("ep");
+				int rev = Integer.parseInt(revstr);
+				return rev;
+			}
 		}
+
+		return -1;
 	}
 
 	private boolean checkUpdate()
 	{
-		World nextWorld = randomWorld();
-		if (nextWorld == null)
-		{
-			return false;
-		}
-
-		InetAddress address;
+		int rev;
 		try
 		{
-			String url = nextWorld.getAddress();
-			address = InetAddress.getByName(url);
+			rev = getRevision();
 		}
-		catch (UnknownHostException ex)
+		catch (IOException e)
 		{
-			logger.warn(null, ex);
+			log.warn("error checking revision", e);
 			return false;
 		}
 
-		// Since mobile, the handshake server will handshake multiple revisions successfully,
-		// so we can't assume that just because it says our revision is okay doesn't mean that
-		// the client revision hasn't changed.
+		if (rev == -1)
+		{
+			log.warn("Unable to parse revision from config!");
+			return false;
+		}
+
 		int thisRevision = RuneLiteAPI.getRsVersion();
-		int nextRevision = thisRevision + 1;
-
-		try
-		{
-			int thisCode = checkResponse(address, thisRevision);
-			int nextCode = checkResponse(address, nextRevision);
-
-			if (thisCode == RESPONSE_OK && nextCode == RESPONSE_OUTDATED)
-			{
-				return false; // This is most up-to-date
-			}
-
-			return true; // Needs to be updated
-		}
-		catch (IOException ex)
-		{
-			logger.warn(null, ex);
-			return false; // assume not updated
-		}
-	}
-
-	private World randomWorld()
-	{
-		try
-		{
-			WorldResult worldResult = worldsService.getWorlds();
-			List<World> worlds = worldResult.getWorlds();
-			Random rand = new Random();
-			return worlds.get(rand.nextInt(worlds.size()));
-		}
-		catch (IOException ex)
-		{
-			logger.warn(null, ex);
-			return null;
-		}
+		return rev != thisRevision;
 	}
 }

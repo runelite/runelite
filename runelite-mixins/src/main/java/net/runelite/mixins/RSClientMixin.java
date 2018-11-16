@@ -68,6 +68,7 @@ import net.runelite.api.WorldType;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BoostedLevelChanged;
+import net.runelite.api.events.CanvasSizeChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ClanChanged;
 import net.runelite.api.events.DraggingWidgetChanged;
@@ -86,6 +87,7 @@ import net.runelite.api.events.UsernameChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.hooks.Callbacks;
+import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
@@ -124,6 +126,9 @@ public abstract class RSClientMixin implements RSClient
 	private Callbacks callbacks;
 
 	@Inject
+	private DrawCallbacks drawCallbacks;
+
+	@Inject
 	@javax.inject.Inject
 	@Named("Core Logger")
 	private Logger logger;
@@ -156,10 +161,30 @@ public abstract class RSClientMixin implements RSClient
 	private static RSItem lastItemDespawn;
 
 	@Inject
+	private boolean gpu;
+
+	@Inject
+	private static boolean oldIsResized;
+
+	@Inject
 	@Override
 	public Callbacks getCallbacks()
 	{
 		return callbacks;
+	}
+
+	@Inject
+	@Override
+	public DrawCallbacks getDrawCallbacks()
+	{
+		return drawCallbacks;
+	}
+
+	@Inject
+	@Override
+	public void setDrawCallbacks(DrawCallbacks drawCallbacks)
+	{
+		this.drawCallbacks = drawCallbacks;
 	}
 
 	@Inject
@@ -968,9 +993,16 @@ public abstract class RSClientMixin implements RSClient
 	public static void resizeChanged(int idx)
 	{
 		//maybe couple with varbitChanged. resizeable may not be a varbit but it would fit with the other client settings.
-		ResizeableChanged resizeableChanged = new ResizeableChanged();
-		resizeableChanged.setResized(client.isResized());
-		client.getCallbacks().post(resizeableChanged);
+		boolean isResized = client.isResized();
+
+		if (oldIsResized != isResized)
+		{
+			ResizeableChanged resizeableChanged = new ResizeableChanged();
+			resizeableChanged.setResized(isResized);
+			client.getCallbacks().post(resizeableChanged);
+
+			oldIsResized = isResized;
+		}
 	}
 
 	@FieldHook("clanMemberManager")
@@ -978,6 +1010,20 @@ public abstract class RSClientMixin implements RSClient
 	public static void clanMemberManagerChanged(int idx)
 	{
 		client.getCallbacks().post(new ClanChanged(client.getClanMemberManager() != null));
+	}
+
+	@FieldHook("canvasWidth")
+	@Inject
+	public static void canvasWidthChanged(int idx)
+	{
+		client.getCallbacks().post(new CanvasSizeChanged());
+	}
+
+	@FieldHook("canvasHeight")
+	@Inject
+	public static void canvasHeightChanged(int idx)
+	{
+		client.getCallbacks().post(new CanvasSizeChanged());
 	}
 
 	@Inject
@@ -1250,6 +1296,20 @@ public abstract class RSClientMixin implements RSClient
 	public void setLastItemDespawn(RSItem lastItemDespawn)
 	{
 		RSClientMixin.lastItemDespawn = lastItemDespawn;
+	}
+
+	@Inject
+	@Override
+	public boolean isGpu()
+	{
+		return gpu;
+	}
+
+	@Inject
+	@Override
+	public void setGpu(boolean gpu)
+	{
+		this.gpu = gpu;
 	}
 
 	@Inject

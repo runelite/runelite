@@ -115,7 +115,7 @@ public class RegenMeterPlugin extends Plugin
 	}
 
 	@Subscribe
-	private void onTick(GameTick event)
+	public void onGameTick(GameTick event)
 	{
 		if (client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT) == 1000)
 		{

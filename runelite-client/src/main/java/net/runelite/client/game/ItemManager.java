@@ -52,6 +52,7 @@ import static net.runelite.api.ItemID.*;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.api.events.PostItemComposition;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
 
@@ -226,6 +227,12 @@ public class ItemManager
 		}
 	}
 
+	@Subscribe
+	public void onPostItemComposition(PostItemComposition event)
+	{
+		itemCompositions.put(event.getItemComposition().getId(), event.getItemComposition());
+	}
+
 	/**
 	 * Look up an item's price
 	 *
@@ -296,7 +303,7 @@ public class ItemManager
 	public int canonicalize(int itemID)
 	{
 		ItemComposition itemComposition = getItemComposition(itemID);
-		
+
 		if (itemComposition.getNote() != -1)
 		{
 			return itemComposition.getLinkedNoteId();

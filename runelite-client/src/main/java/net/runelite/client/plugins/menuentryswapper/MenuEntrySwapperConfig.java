@@ -45,7 +45,7 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapAdmire",
 		name = "Admire",
-		description = "Swap Admire with Teleport or Spellbook for mounted skill capes."
+		description = "Swap Admire with Teleport, Spellbook and Perks (max cape) for mounted skill capes."
 	)
 	default boolean swapAdmire()
 	{
@@ -108,6 +108,16 @@ public interface MenuEntrySwapperConfig extends Config
 		description = "Swap Talk-to with Claim Slime from Morytania diaries"
 	)
 	default boolean claimSlime()
+	{
+		return true;
+	}
+
+	@ConfigItem(		
+		keyName = "swapDarkMage",
+		name = "Repairs",
+		description = "Swap Talk-to with Repairs for Dark Mage"
+	)
+	default boolean swapDarkMage()
 	{
 		return true;
 	}
@@ -183,6 +193,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapPrivate",
+		name = "Private",
+		description = "Swap Shared with Private on the Chamber of Xeric storage units."
+	)
+	default boolean swapPrivate()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "swapQuick",
 		name = "Quick Pass/Start/Travel",
 		description = "Swap Pass with Quick-Pass, Ring with Quick-Start and Talk-to with Quick-Travel"
@@ -205,7 +225,7 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapTeleportItem",
 		name = "Teleport item",
-		description = "Swap Wear, Wield with Rub, Teleport on teleport item<br>Example: Amulet of glory, Ardougne cloak, Chronicle"
+		description = "Swap Wear, Wield with Rub, Teleport on teleport item<br>Example: Amulet of glory, Explorer's ring, Chronicle"
 	)
 	default boolean swapTeleportItem()
 	{

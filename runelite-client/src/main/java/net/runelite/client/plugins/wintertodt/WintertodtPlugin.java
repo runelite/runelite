@@ -399,7 +399,7 @@ public class WintertodtPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void itemContainerChanged(ItemContainerChanged event)
+	public void onItemContainerChanged(ItemContainerChanged event)
 	{
 		final ItemContainer container = event.getItemContainer();
 

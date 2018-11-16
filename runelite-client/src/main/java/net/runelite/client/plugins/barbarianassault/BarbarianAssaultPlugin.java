@@ -170,7 +170,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChange(VarbitChanged event)
+	public void onVarbitChanged(VarbitChanged event)
 	{
 		int inGame = client.getVar(Varbits.IN_GAME_BA);
 

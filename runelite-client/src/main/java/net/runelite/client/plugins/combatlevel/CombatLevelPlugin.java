@@ -65,7 +65,7 @@ public class CombatLevelPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void updateCombatLevel(GameTick event)
+	public void onGameTick(GameTick event)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{

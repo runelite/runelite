@@ -132,7 +132,7 @@ public class DiscordPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void configChanged(ConfigChanged event)
+	public void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equalsIgnoreCase("discord"))
 		{
@@ -142,7 +142,7 @@ public class DiscordPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onXpChanged(ExperienceChanged event)
+	public void onExperienceChanged(ExperienceChanged event)
 	{
 		final int exp = client.getSkillExperience(event.getSkill());
 		final Integer previous = skillExp.put(event.getSkill(), exp);
