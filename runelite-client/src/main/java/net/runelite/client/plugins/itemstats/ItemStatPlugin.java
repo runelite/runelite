@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.itemstats;
 
+import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import net.runelite.client.config.ConfigManager;
@@ -48,6 +49,12 @@ public class ItemStatPlugin extends Plugin
 	ItemStatConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ItemStatConfig.class);
+	}
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(ItemStatChangesService.class).to(ItemStatChangesServiceImpl.class);
 	}
 
 	@Override

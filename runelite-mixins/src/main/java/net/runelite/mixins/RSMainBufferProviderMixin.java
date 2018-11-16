@@ -24,7 +24,17 @@
  */
 package net.runelite.mixins;
 
+import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
+import java.awt.image.DirectColorModel;
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
+import java.nio.IntBuffer;
+import java.util.Hashtable;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
@@ -36,6 +46,30 @@ public abstract class RSMainBufferProviderMixin implements RSMainBufferProvider
 {
 	@Shadow("clientInstance")
 	private static RSClient client;
+
+	@Inject
+	private IntBuffer buffer;
+
+	@MethodHook(value = "<init>", end = true)
+	@Inject
+	public void init(int width, int height, Component canvas)
+	{
+		if (!client.isGpu())
+		{
+			return;
+		}
+
+		final int[] pixels = getPixels();
+
+		// we need to make our own buffered image for the client with the alpha channel enabled in order to
+		// have alphas for the overlays applied correctly
+		DataBufferInt dataBufferInt = new DataBufferInt(pixels, pixels.length);
+		DirectColorModel directColorModel = new DirectColorModel(32, 0xff0000, 0xff00, 0xff, 0xff000000);
+		WritableRaster writableRaster = Raster.createWritableRaster(directColorModel.createCompatibleSampleModel(width, height), dataBufferInt, null);
+		BufferedImage bufferedImage = new BufferedImage(directColorModel, writableRaster, false, new Hashtable());
+
+		setImage(bufferedImage);
+	}
 
 	/**
 	 * Replacing this method makes it so we can completely

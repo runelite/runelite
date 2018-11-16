@@ -203,7 +203,7 @@ public class RaidsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChange(VarbitChanged event)
+	public void onVarbitChanged(VarbitChanged event)
 	{
 		checkRaidPresence(false);
 	}

@@ -62,6 +62,7 @@ public enum Varbits
 	/**
 	 * Prayers
 	 */
+	QUICK_PRAYER(4103),
 	PRAYER_THICK_SKIN(4104),
 	PRAYER_BURST_OF_STRENGTH(4105),
 	PRAYER_CLARITY_OF_THOUGHT(4106),
@@ -323,6 +324,8 @@ public enum Varbits
 	BARROWS_KILLED_KARIL(460),
 	BARROWS_KILLED_TORAG(461),
 	BARROWS_KILLED_VERAC(462),
+	BARROWS_REWARD_POTENTIAL(463),
+	BARROWS_NPCS_SLAIN(464),
 
 	/**
 	 * Spicy stew ingredients
@@ -408,6 +411,12 @@ public enum Varbits
 	 * Corp beast damage
 	 */
 	CORP_DAMAGE(999),
+
+	/**
+	 * Toggleable slayer unlocks
+	 */
+	SUPERIOR_ENABLED(5362),
+	FOSSIL_ISLAND_WYVERN_DISABLE(6251),
 
 	CURRENT_BANK_TAB(4150),
 

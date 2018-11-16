@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.slayer;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
@@ -49,6 +50,8 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import static net.runelite.api.Skill.SLAYER;
+import net.runelite.api.vars.SlayerUnlock;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
@@ -101,6 +104,8 @@ public class SlayerPlugin extends Plugin
 
 	//Reward UI
 	private static final Pattern REWARD_POINTS = Pattern.compile("Reward points: ((?:\\d+,)*\\d+)");
+
+	private static final int GROTESQUE_GUARDIANS_REGION = 6727;
 
 	private static final int EXPEDITIOUS_CHARGE = 30;
 	private static final int SLAUGHTER_CHARGE = 30;
@@ -202,7 +207,7 @@ public class SlayerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
@@ -434,7 +439,9 @@ public class SlayerPlugin extends Plugin
 		{
 			final int taskAmount = Integer.parseInt(bracerProgress.group(1));
 			setTask(taskName, taskAmount);
-			return;
+
+			// Avoid race condition (combat brace message goes through first before XP drop)
+			amount++;
 		}
 	}
 
@@ -482,7 +489,8 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
-	private void killedOne()
+	@VisibleForTesting
+	void killedOne()
 	{
 		if (amount == 0)
 		{
@@ -490,6 +498,11 @@ public class SlayerPlugin extends Plugin
 		}
 
 		amount--;
+		if (doubleTroubleExtraKill())
+		{
+			amount--;
+		}
+
 		config.amount(amount); // save changed value
 
 		if (!config.showInfobox())
@@ -501,6 +514,12 @@ public class SlayerPlugin extends Plugin
 		addCounter();
 		counter.setText(String.valueOf(amount));
 		infoTimer = Instant.now();
+	}
+
+	private boolean doubleTroubleExtraKill()
+	{
+		return WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID() == GROTESQUE_GUARDIANS_REGION &&
+				SlayerUnlock.GROTESQUE_GARDIAN_DOUBLE_COUNT.isEnabled(client);
 	}
 
 	private boolean isTarget(NPC npc)

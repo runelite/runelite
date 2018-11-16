@@ -49,6 +49,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Clan Chat",
@@ -213,6 +214,8 @@ public class ClanChatPlugin extends Plugin
 		{
 			return;
 		}
+
+		s = Text.toJagexName(s);
 
 		chats.removeIf(s::equalsIgnoreCase);
 		chats.add(s);

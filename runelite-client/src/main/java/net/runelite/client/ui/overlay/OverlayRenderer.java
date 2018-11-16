@@ -26,6 +26,7 @@ package net.runelite.client.ui.overlay;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.eventbus.Subscribe;
+import com.google.common.primitives.Ints;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -45,11 +46,11 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
-import net.runelite.client.input.MouseListener;
+import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseManager;
 
 @Singleton
-public class OverlayRenderer extends MouseListener implements KeyListener
+public class OverlayRenderer extends MouseAdapter implements KeyListener
 {
 	private static final int BORDER = 5;
 	private static final int BORDER_TOP = BORDER + 15;
@@ -191,12 +192,13 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 					if (preferredLocation != null)
 					{
-						final Dimension realDimensions = client.getRealDimensions();
-						final int x = Math.min(realDimensions.width - 5, preferredLocation.x);
-						final int y = Math.min(realDimensions.height - 5, preferredLocation.y);
-						location.setLocation(x, y);
+						location.setLocation(preferredLocation);
 					}
 				}
+
+				final Dimension realDimensions = client.getRealDimensions();
+				location.x = Ints.constrainToRange(location.x, 0, realDimensions.width - dimension.width);
+				location.y = Ints.constrainToRange(location.y, 0, realDimensions.height - dimension.height);
 
 				if (overlay.getPreferredSize() != null)
 				{
@@ -284,7 +286,10 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 		if (movedOverlay != null)
 		{
+			final Dimension realDimension = client.getRealDimensions();
 			mousePoint.translate(-overlayOffset.x, -overlayOffset.y);
+			mousePoint.x = Ints.constrainToRange(mousePoint.x, 0, realDimension.width - movedOverlay.getBounds().width);
+			mousePoint.y = Ints.constrainToRange(mousePoint.y, 0, realDimension.height - movedOverlay.getBounds().height);
 			movedOverlay.setPreferredPosition(null);
 			movedOverlay.setPreferredLocation(mousePoint);
 			mouseEvent.consume();

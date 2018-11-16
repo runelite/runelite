@@ -213,7 +213,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN ||
 			event.getGameState() == GameState.HOPPING)

@@ -130,7 +130,7 @@ public class WorldMapPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onXpChanged(ExperienceChanged event)
+	public void onExperienceChanged(ExperienceChanged event)
 	{
 		if (event.getSkill() == Skill.AGILITY)
 		{

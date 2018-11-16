@@ -56,6 +56,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
@@ -66,6 +67,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.JTextComponent;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.Config;
@@ -351,9 +353,20 @@ public class ConfigPanel extends PluginPanel
 
 			if (cid.getType() == String.class)
 			{
-				JTextArea textField = new JTextArea();
-				textField.setLineWrap(true);
-				textField.setWrapStyleWord(true);
+				JTextComponent textField;
+
+				if (cid.getItem().secret())
+				{
+					textField = new JPasswordField();
+				}
+				else
+				{
+					final JTextArea textArea = new JTextArea();
+					textArea.setLineWrap(true);
+					textArea.setWrapStyleWord(true);
+					textField = textArea;
+				}
+
 				textField.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 				textField.setText(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
 
@@ -548,9 +561,9 @@ public class ConfigPanel extends PluginPanel
 			JSpinner spinner = (JSpinner) component;
 			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), "" + spinner.getValue());
 		}
-		else if (component instanceof JTextArea)
+		else if (component instanceof JTextComponent)
 		{
-			JTextArea textField = (JTextArea) component;
+			JTextComponent textField = (JTextComponent) component;
 			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), textField.getText());
 		}
 		else if (component instanceof JColorChooser)

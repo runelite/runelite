@@ -30,7 +30,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
@@ -49,13 +48,15 @@ import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.kit.KitType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.JagexColors;
+import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
@@ -70,7 +71,6 @@ public class DevToolsPlugin extends Plugin
 {
 	private static final List<MenuAction> EXAMINE_MENU_ACTIONS = ImmutableList.of(MenuAction.EXAMINE_ITEM,
 			MenuAction.EXAMINE_ITEM_GROUND, MenuAction.EXAMINE_NPC, MenuAction.EXAMINE_OBJECT);
-	private static final Color COLOR_ORANGE = new Color(255, 144, 64);
 
 	@Inject
 	private Client client;
@@ -170,7 +170,7 @@ public class DevToolsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onCommand(CommandExecuted commandExecuted)
+	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
 		String[] args = commandExecuted.getArguments();
 
@@ -272,6 +272,14 @@ public class DevToolsPlugin extends Plugin
 				player.setPoseAnimation(-1);
 				break;
 			}
+			case "cape":
+			{
+				int id = Integer.parseInt(args[0]);
+				Player player = client.getLocalPlayer();
+				player.getPlayerComposition().getEquipmentIds()[KitType.CAPE.getIndex()] = id + 512;
+				player.getPlayerComposition().setHash();
+				break;
+			}
 		}
 	}
 
@@ -309,7 +317,7 @@ public class DevToolsPlugin extends Plugin
 				}
 			}
 
-			entry.setTarget(entry.getTarget() + " " + ColorUtil.prependColorTag("(" + info + ")", COLOR_ORANGE));
+			entry.setTarget(entry.getTarget() + " " + ColorUtil.prependColorTag("(" + info + ")", JagexColors.MENU_TARGET));
 			client.setMenuEntries(entries);
 		}
 	}

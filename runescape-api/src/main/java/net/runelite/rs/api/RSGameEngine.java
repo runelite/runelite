@@ -32,4 +32,23 @@ public interface RSGameEngine extends GameEngine
 {
 	@Import("canvas")
 	Canvas getCanvas();
+
+	@Import("post")
+	void post(Object canvas);
+
+	@Import("resizeCanvas")
+	@Override
+	void resizeCanvas();
+
+	@Import("resizeCanvasNextFrame")
+	boolean isResizeCanvasNextFrame();
+
+	@Import("resizeCanvasNextFrame")
+	void setResizeCanvasNextFrame(boolean resize);
+
+	@Import("replaceCanvasNextFrame")
+	boolean isReplaceCanvasNextFrame();
+
+	@Import("replaceCanvasNextFrame")
+	void setReplaceCanvasNextFrame(boolean replace);
 }

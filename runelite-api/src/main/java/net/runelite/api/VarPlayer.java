@@ -35,6 +35,7 @@ import lombok.Getter;
 public enum VarPlayer
 {
 	ATTACK_STYLE(43),
+	IS_POISONED(102),
 
 	BANK_TAB(115),
 
@@ -114,7 +115,13 @@ public enum VarPlayer
 	BIRD_HOUSE_MEADOW_NORTH(1626),
 	BIRD_HOUSE_MEADOW_SOUTH(1627),
 	BIRD_HOUSE_VALLEY_NORTH(1628),
-	BIRD_HOUSE_VALLEY_SOUTH(1629);
+	BIRD_HOUSE_VALLEY_SOUTH(1629),
+
+	/**
+	 * Slayer unlock bitfields
+	 */
+	SLAYER_UNLOCK_1(1076),
+	SLAYER_UNLOCK_2(1344);
 
 	private final int id;
 }

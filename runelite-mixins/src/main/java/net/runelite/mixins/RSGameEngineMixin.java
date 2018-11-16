@@ -26,6 +26,8 @@ package net.runelite.mixins;
 
 import java.awt.event.FocusEvent;
 import net.runelite.api.events.FocusChanged;
+import net.runelite.api.hooks.DrawCallbacks;
+import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
@@ -70,5 +72,28 @@ public abstract class RSGameEngineMixin implements RSGameEngine
 		final FocusChanged focusChanged = new FocusChanged();
 		focusChanged.setFocused(true);
 		client.getCallbacks().post(focusChanged);
+	}
+
+	@Inject
+	@MethodHook("post")
+	public void onPost(Object canvas)
+	{
+		DrawCallbacks drawCallbacks = client.getDrawCallbacks();
+		if (drawCallbacks != null)
+		{
+			drawCallbacks.draw();
+		}
+	}
+
+	@FieldHook("replaceCanvasNextFrame")
+	@Inject
+	public void onReplaceCanvasNextFrameChanged(int idx)
+	{
+		// when this is initially called the client instance doesn't exist yet
+		if (client != null && client.isGpu() && isReplaceCanvasNextFrame())
+		{
+			setReplaceCanvasNextFrame(false);
+			setResizeCanvasNextFrame(true);
+		}
 	}
 }
