@@ -34,12 +34,16 @@ import java.awt.Stroke;
 import java.awt.geom.Arc2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Point;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
+import org.apache.commons.lang3.StringUtils;
 
 public class StatusOrbsOverlay extends Overlay
 {
@@ -52,6 +56,7 @@ public class StatusOrbsOverlay extends Overlay
 	private final Client client;
 	private StatusOrbsPlugin plugin;
 	private StatusOrbsConfig config;
+	private TooltipManager tooltipManager;
 
 	private static Color brighter(int color)
 	{
@@ -61,13 +66,14 @@ public class StatusOrbsOverlay extends Overlay
 	}
 
 	@Inject
-	public StatusOrbsOverlay(Client client, StatusOrbsPlugin plugin, StatusOrbsConfig config)
+	public StatusOrbsOverlay(Client client, StatusOrbsPlugin plugin, StatusOrbsConfig config, TooltipManager tooltipManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
+		this.tooltipManager = tooltipManager;
 	}
 
 	@Override
@@ -98,6 +104,51 @@ public class StatusOrbsOverlay extends Overlay
 			}
 
 			renderRegen(g, WidgetInfo.MINIMAP_SPEC_ORB, plugin.getSpecialPercentage(), SPECIAL_COLOR);
+		}
+
+		if (config.replaceOrbText())
+		{
+			final Widget runOrb = client.getWidget(WidgetInfo.MINIMAP_TOGGLE_RUN_ORB);
+
+			if (runOrb == null || runOrb.isHidden())
+			{
+				return null;
+			}
+
+			final Rectangle bounds = runOrb.getBounds();
+
+			if (bounds.getX() <= 0)
+			{
+				return null;
+			}
+
+			final Point mousePosition = client.getMouseCanvasPosition();
+
+			if (bounds.contains(mousePosition.getX(), mousePosition.getY()))
+			{
+				StringBuilder sb = new StringBuilder();
+				sb.append("Weight: ").append(client.getWeight()).append(" kg</br>");
+
+				if (config.replaceOrbText())
+				{
+					sb.append("Run Energy: ").append(client.getEnergy()).append("%");
+				}
+				else
+				{
+					sb.append("Run Time Remaining: ").append(plugin.getEstimatedRunTimeRemaining(false));
+				}
+
+				int secondsUntil100 = plugin.getEstimatedRecoverTimeRemaining();
+				if (secondsUntil100 > 0)
+				{
+					final int minutes = (int) Math.floor(secondsUntil100 / 60.0);
+					final int seconds = (int) Math.floor(secondsUntil100 - (minutes * 60.0));
+
+					sb.append("</br>").append("100% Energy In: ").append(minutes).append(':').append(StringUtils.leftPad(Integer.toString(seconds), 2, "0"));
+				}
+
+				tooltipManager.add(new Tooltip(sb.toString()));
+			}
 		}
 
 		return null;
