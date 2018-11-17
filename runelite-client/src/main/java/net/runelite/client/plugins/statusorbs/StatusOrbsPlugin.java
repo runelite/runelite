@@ -105,17 +105,20 @@ public class StatusOrbsPlugin extends Plugin
 		AGILITY_CAPE, AGILITY_CAPET, MAX_CAPE
 	);
 
-
 	private static final BufferedImage HEART_NORMAL;
 	private static final BufferedImage HEART_DISEASE;
 	private static final BufferedImage HEART_POISON;
 	private static final BufferedImage HEART_VENOM;
+	private static final BufferedImage HEART_POISON_DISEASE;
+	private static final BufferedImage HEART_VENOM_DISEASE;
 	static
 	{
 		HEART_NORMAL = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(StatusOrbsPlugin.class, "1067-NORMAL.png"), 26, 26);
 		HEART_DISEASE = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(StatusOrbsPlugin.class, "1067-DISEASE.png"), 26, 26);
 		HEART_POISON = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(StatusOrbsPlugin.class, "1067-POISON.png"), 26, 26);
 		HEART_VENOM = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(StatusOrbsPlugin.class, "1067-VENOM.png"), 26, 26);
+		HEART_POISON_DISEASE = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(StatusOrbsPlugin.class, "1067-POISON-DISEASE.png"), 26, 26);
+		HEART_VENOM_DISEASE = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(StatusOrbsPlugin.class, "1067-VENOM-DISEASE.png"), 26, 26);
 	}
 
 	private static final int SPEC_REGEN_TICKS = 50;
@@ -307,7 +310,14 @@ public class StatusOrbsPlugin extends Plugin
 
 		BufferedImage old = currentHeart;
 
-		currentHeart = isVenomed ? HEART_VENOM : isPoisoned ? HEART_POISON : isDiseased ? HEART_DISEASE : HEART_NORMAL;
+		if (isDiseased)
+		{
+			currentHeart = isVenomed ? HEART_VENOM_DISEASE : isPoisoned ? HEART_POISON_DISEASE : HEART_DISEASE;
+		}
+		else
+		{
+			currentHeart = isVenomed ? HEART_VENOM : isPoisoned ? HEART_POISON : HEART_NORMAL;;
+		}
 
 		if (old != currentHeart)
 		{
