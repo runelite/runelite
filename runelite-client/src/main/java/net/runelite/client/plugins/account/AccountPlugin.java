@@ -113,7 +113,7 @@ public class AccountPlugin extends Plugin
 	private void logoutClick()
 	{
 		if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null,
-				"Are you sure you want to logout from RuneLite?", "Logout Confirmation",
+				"Kas töötab?", "Logout Confirmation",
 				JOptionPane.YES_NO_OPTION))
 		{
 			sessionManager.logout();

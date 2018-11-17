@@ -147,6 +147,10 @@ public class WoodcuttingPlugin extends Plugin
 			{
 				notifier.notify("A bird nest has spawned!");
 			}
+
+//			if (event.getMessage().contains("You get some willow logs.")) {
+//				notifier.notify("fuck you hacker");
+//			}
 		}
 	}
 

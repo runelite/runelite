@@ -326,7 +326,7 @@ public class ExaminePlugin extends Plugin
 			{
 				message
 					.append(ChatColorType.NORMAL)
-					.append(" GE average ")
+					.append(" GE keskmine hind on nahhui ")
 					.append(ChatColorType.HIGHLIGHT)
 					.append(StackFormatter.formatNumber(gePrice * quantity));
 
@@ -338,7 +338,7 @@ public class ExaminePlugin extends Plugin
 						.append(ChatColorType.HIGHLIGHT)
 						.append(StackFormatter.formatNumber(gePrice))
 						.append(ChatColorType.NORMAL)
-						.append("ea)");
+						.append("tk)");
 				}
 			}
 
@@ -346,7 +346,7 @@ public class ExaminePlugin extends Plugin
 			{
 				message
 					.append(ChatColorType.NORMAL)
-					.append(" HA value ")
+					.append(" high alch value bitch ")
 					.append(ChatColorType.HIGHLIGHT)
 					.append(StackFormatter.formatNumber(alchPrice * quantity));
 
@@ -358,7 +358,7 @@ public class ExaminePlugin extends Plugin
 						.append(ChatColorType.HIGHLIGHT)
 						.append(StackFormatter.formatNumber(alchPrice))
 						.append(ChatColorType.NORMAL)
-						.append("ea)");
+						.append("tk)");
 				}
 			}
 
