@@ -26,12 +26,12 @@
 /*
  * Convert a vertex to screen space
  */
-ivec3 toScreen(ivec3 vertex, int cameraYaw, int cameraPitch, int centerX, int centerY, int zoom) {
-  int yawSin = int(65536.0f * sin(cameraYaw * UNIT));
-  int yawCos = int(65536.0f * cos(cameraYaw * UNIT));
+ivec3 toScreen(ivec3 vertex, int centerX, int centerY, int zoom) {
+  int yawSin = int(65536.0f * sinCameraYaw);
+  int yawCos = int(65536.0f * cosCameraYaw);
 
-  int pitchSin = int(65536.0f * sin(cameraPitch * UNIT));
-  int pitchCos = int(65536.0f * cos(cameraPitch * UNIT));
+  int pitchSin = int(65536.0f * sinCameraPitch);
+  int pitchCos = int(65536.0f * cosCameraPitch);
 
   int rotatedX = ((vertex.z * yawSin) + (vertex.x * yawCos)) >> 16;
   int rotatedZ = ((vertex.z * yawCos) - (vertex.x * yawSin)) >> 16;

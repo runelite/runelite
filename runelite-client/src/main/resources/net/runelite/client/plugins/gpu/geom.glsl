@@ -32,11 +32,13 @@ layout(triangles) in;
 layout(triangle_strip, max_vertices = 3) out;
 
 layout(std140) uniform Uniforms {
-    int cameraYaw;
-    int cameraPitch;
     int centerX;
     int centerY;
     int zoom;
+    float sinCameraYaw;
+    float cosCameraYaw;
+    float sinCameraPitch;
+    float cosCameraPitch;
 };
 
 uniform mat4 projectionMatrix;
@@ -51,9 +53,9 @@ out vec4 fUv;
 #include to_screen.glsl
 
 void main() {
-  ivec3 screenA = toScreen(vPosition[0], cameraYaw, cameraPitch, centerX, centerY, zoom);
-  ivec3 screenB = toScreen(vPosition[1], cameraYaw, cameraPitch, centerX, centerY, zoom);
-  ivec3 screenC = toScreen(vPosition[2], cameraYaw, cameraPitch, centerX, centerY, zoom);
+  vec3 screenA = toScreen(vPosition[0], centerX, centerY, zoom);
+  vec3 screenB = toScreen(vPosition[1], centerX, centerY, zoom);
+  vec3 screenC = toScreen(vPosition[2], centerX, centerY, zoom);
 
   if (-screenA.z < 50 || -screenB.z < 50 || -screenC.z < 50) {
     // the client does not draw a triangle if any vertex distance is <50

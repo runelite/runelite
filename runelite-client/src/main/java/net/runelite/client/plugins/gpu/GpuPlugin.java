@@ -151,7 +151,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private int textureArrayId;
 
-	private final IntBuffer uniformBuffer = GpuIntBuffer.allocateDirect(5);
+	private final ByteBuffer uniformBuffer = ByteBuffer.allocateDirect(3 * Integer.BYTES + 4 * Float.BYTES).order(ByteOrder.nativeOrder());
 	private final float[] textureOffsets = new float[128];
 
 	private GpuIntBuffer vertexBuffer;
@@ -202,6 +202,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniBlockSmall;
 	private int uniBlockLarge;
 	private int uniBlockMain;
+
+	private final double UNIT = Math.PI / 1024.0D;
 
 	@Override
 	protected void startUp()
@@ -679,16 +681,19 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		// UBO
 		int uniformBufferId = glGenBuffers(gl);
 		gl.glBindBuffer(gl.GL_UNIFORM_BUFFER, uniformBufferId);
+
 		uniformBuffer.clear();
 		uniformBuffer
-			.put(client.getCameraYaw())
-			.put(client.getCameraPitch())
-			.put(centerX)
-			.put(centerY)
-			.put(client.getScale());
+			.putInt(centerX)
+			.putInt(centerY)
+			.putInt(client.getScale())
+			.putFloat((float)Math.sin(client.getCameraYaw() * UNIT))
+			.putFloat((float)Math.cos(client.getCameraYaw() * UNIT))
+			.putFloat((float)Math.sin(client.getCameraPitch() * UNIT))
+			.putFloat((float)Math.cos(client.getCameraPitch() * UNIT));
 		uniformBuffer.flip();
 
-		gl.glBufferData(gl.GL_UNIFORM_BUFFER, uniformBuffer.limit() * Integer.BYTES, uniformBuffer, gl.GL_STATIC_DRAW);
+		gl.glBufferData(gl.GL_UNIFORM_BUFFER, uniformBuffer.limit(), uniformBuffer, gl.GL_STATIC_DRAW);
 		gl.glBindBuffer(gl.GL_UNIFORM_BUFFER, 0);
 
 		gl.glUniformBlockBinding(glSmallComputeProgram, uniBlockSmall, 0);

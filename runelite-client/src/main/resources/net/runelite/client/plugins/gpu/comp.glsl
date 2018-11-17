@@ -28,11 +28,13 @@
 #define UNIT PI / 1024.0f
 
 layout(std140) uniform uniforms {
-  int cameraYaw;
-  int cameraPitch;
   int centerX;
   int centerY;
   int zoom;
+  float sinCameraYaw;
+  float cosCameraYaw;
+  float sinCameraPitch;
+  float cosCameraPitch;
 };
 
 shared int totalNum[12]; // number of faces with a given priority
@@ -119,10 +121,10 @@ void main() {
   int prio4, dis4, prio4Adj;
   ivec4 vD1, vD2, vD3;
 
-  get_face(localId,     minfo, cameraYaw, cameraPitch, centerX, centerY, zoom, prio1, dis1, vA1, vA2, vA3);
-  get_face(localId + 1, minfo, cameraYaw, cameraPitch, centerX, centerY, zoom, prio2, dis2, vB1, vB2, vB3);
-  get_face(localId + 2, minfo, cameraYaw, cameraPitch, centerX, centerY, zoom, prio3, dis3, vC1, vC2, vC3);
-  get_face(localId + 3, minfo, cameraYaw, cameraPitch, centerX, centerY, zoom, prio4, dis4, vD1, vD2, vD3);
+  get_face(localId,     minfo, centerX, centerY, zoom, prio1, dis1, vA1, vA2, vA3);
+  get_face(localId + 1, minfo, centerX, centerY, zoom, prio2, dis2, vB1, vB2, vB3);
+  get_face(localId + 2, minfo, centerX, centerY, zoom, prio3, dis3, vC1, vC2, vC3);
+  get_face(localId + 3, minfo, centerX, centerY, zoom, prio4, dis4, vD1, vD2, vD3);
 
   memoryBarrierShared();
   barrier();

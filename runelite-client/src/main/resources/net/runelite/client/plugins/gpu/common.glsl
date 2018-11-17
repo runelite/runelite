@@ -28,23 +28,21 @@
 /*
  * Rotate a vertex by a given orientation in JAU
  */
-ivec4 rotate(ivec4 vertex, int orientation) {
-  int s = int(65536.0f * sin(orientation * UNIT));
-  int c = int(65536.0f * cos(orientation * UNIT));
-  int x = vertex.z * s + vertex.x * c >> 16;
-  int z = vertex.z * c - vertex.x * s >> 16;
+ivec4 rotate(ivec4 vertex, int sinOrientation, int cosOrientation) {
+  int x = vertex.z * sinOrientation + vertex.x * cosOrientation >> 16;
+  int z = vertex.z * cosOrientation - vertex.x * sinOrientation >> 16;
   return ivec4(x, vertex.y, z, vertex.w);
 }
 
 /*
  * Calculate the distance to a vertex given the camera angle
  */
-int distance(ivec4 vertex, int cameraYaw, int cameraPitch) {
-  int yawSin = int(65536.0f * sin(cameraYaw * UNIT));
-  int yawCos = int(65536.0f * cos(cameraYaw * UNIT));
+int distance(ivec4 vertex) {
+  int yawSin = int(65536.0f * sinCameraYaw);
+  int yawCos = int(65536.0f * cosCameraYaw);
 
-  int pitchSin = int(65536.0f * sin(cameraPitch * UNIT));
-  int pitchCos = int(65536.0f * cos(cameraPitch * UNIT));
+  int pitchSin = int(65536.0f * sinCameraPitch);
+  int pitchCos = int(65536.0f * cosCameraPitch);
 
   int j = vertex.z * yawCos - vertex.x * yawSin >> 16;
   int l = vertex.y * pitchSin + j * pitchCos >> 16;
@@ -55,10 +53,10 @@ int distance(ivec4 vertex, int cameraYaw, int cameraPitch) {
 /*
  * Calculate the distance to a face
  */
-int face_distance(ivec4 vA, ivec4 vB, ivec4 vC, int cameraYaw, int cameraPitch) {
-  int dvA = distance(vA, cameraYaw, cameraPitch);
-  int dvB = distance(vB, cameraYaw, cameraPitch);
-  int dvC = distance(vC, cameraYaw, cameraPitch);
+int face_distance(ivec4 vA, ivec4 vB, ivec4 vC) {
+  int dvA = distance(vA);
+  int dvB = distance(vB);
+  int dvC = distance(vC);
   int faceDistance = (dvA + dvB + dvC) / 3;
   return faceDistance;
 }
@@ -66,14 +64,14 @@ int face_distance(ivec4 vA, ivec4 vB, ivec4 vC, int cameraYaw, int cameraPitch) 
 /*
  * Test if a face is visible (not backward facing)
  */
-bool face_visible(ivec4 vA, ivec4 vB, ivec4 vC, ivec4 position, int cameraYaw, int cameraPitch, int centerX, int centerY, int zoom) {
+bool face_visible(ivec4 vA, ivec4 vB, ivec4 vC, ivec4 position, int centerX, int centerY, int zoom) {
   vA += position;
   vB += position;
   vC += position;
 
-  ivec3 sA = toScreen(vA.xyz, cameraYaw, cameraPitch, centerX, centerY, zoom);
-  ivec3 sB = toScreen(vB.xyz, cameraYaw, cameraPitch, centerX, centerY, zoom);
-  ivec3 sC = toScreen(vC.xyz, cameraYaw, cameraPitch, centerX, centerY, zoom);
+  ivec3 sA = toScreen(vA.xyz, centerX, centerY, zoom);
+  ivec3 sB = toScreen(vB.xyz, centerX, centerY, zoom);
+  ivec3 sC = toScreen(vC.xyz, centerX, centerY, zoom);
 
   return (sA.x - sB.x) * (sC.y - sB.y) - (sC.x - sB.x) * (sA.y - sB.y) > 0;
 }

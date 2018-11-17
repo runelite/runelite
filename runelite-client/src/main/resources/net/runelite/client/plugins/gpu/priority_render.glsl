@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-void get_face(uint localId, modelinfo minfo, int cameraYaw, int cameraPitch, int centerX, int centerY, int zoom,
+void get_face(uint localId, modelinfo minfo, int centerX, int centerY, int zoom,
     out int prio, out int dis, out ivec4 o1, out ivec4 o2, out ivec4 o3) {
   int offset = minfo.offset;
   int length = minfo.length;
@@ -63,20 +63,22 @@ void get_face(uint localId, modelinfo minfo, int cameraYaw, int cameraPitch, int
 
   if (localId < length) {
     // rotate for model orientation
-    thisrvA = rotate(thisA, orientation);
-    thisrvB = rotate(thisB, orientation);
-    thisrvC = rotate(thisC, orientation);
+    int sinOrientation = int(65536.0f * sin(orientation * UNIT));
+    int cosOrientation = int(65536.0f * cos(orientation * UNIT));
+    thisrvA = rotate(thisA, sinOrientation, cosOrientation);
+    thisrvB = rotate(thisB, sinOrientation, cosOrientation);
+    thisrvC = rotate(thisC, sinOrientation, cosOrientation);
 
     // calculate distance to face
     thisPriority = (thisA.w >> 16) & 0xff; // all vertices on the face have the same priority
     if (radius == 0) {
       thisDistance = 0;
     } else {
-      thisDistance = face_distance(thisrvA, thisrvB, thisrvC, cameraYaw, cameraPitch) + radius;
+      thisDistance = face_distance(thisrvA, thisrvB, thisrvC) + radius;
     }
 
     // if the face is not culled, it is calculated into priority distance averages
-    if (face_visible(thisrvA, thisrvB, thisrvC, pos, cameraYaw, cameraPitch, centerX, centerY, zoom)) {
+    if (face_visible(thisrvA, thisrvB, thisrvC, pos, centerX, centerY, zoom)) {
       atomicAdd(totalNum[thisPriority], 1);
       atomicAdd(totalDistance[thisPriority], thisDistance);
 
