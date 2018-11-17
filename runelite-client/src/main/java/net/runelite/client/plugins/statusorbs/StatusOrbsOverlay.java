@@ -58,9 +58,9 @@ public class StatusOrbsOverlay extends Overlay
 	private static final int OFFSET = 27;
 
 	private final Client client;
-	private StatusOrbsPlugin plugin;
-	private StatusOrbsConfig config;
-	private TooltipManager tooltipManager;
+	private final StatusOrbsPlugin plugin;
+	private final StatusOrbsConfig config;
+	private final TooltipManager tooltipManager;
 
 	private static Color brighter(int color)
 	{

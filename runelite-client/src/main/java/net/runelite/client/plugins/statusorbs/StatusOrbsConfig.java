@@ -32,10 +32,9 @@ import net.runelite.client.config.ConfigItem;
 public interface StatusOrbsConfig extends Config
 {
 	@ConfigItem(
-		position = 0,
 		keyName = "dynamicHpHeart",
-		name = "Dynamic HP Heart",
-		description = "Changes the HP heart color to match players current affliction."
+		name = "Dynamic hitpoints heart",
+		description = "Changes the HP heart color to match players current affliction"
 	)
 	default boolean dynamicHpHeart()
 	{
@@ -43,7 +42,6 @@ public interface StatusOrbsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 1,
 		keyName = "showHitpoints",
 		name = "Show hitpoints regen",
 		description = "Show a ring around the hitpoints orb")
@@ -53,7 +51,6 @@ public interface StatusOrbsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
 		keyName = "showWhenNoChange",
 		name = "Show hitpoints regen at full hitpoints",
 		description = "Always show the hitpoints regen orb, even if there will be no stat change")
@@ -63,7 +60,6 @@ public interface StatusOrbsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
 		keyName = "showSpecial",
 		name = "Show Spec. Attack regen",
 		description = "Show a ring around the Special Attack orb")
@@ -73,10 +69,9 @@ public interface StatusOrbsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
 		keyName = "replaceOrbText",
-		name = "Replace Run orb text with run time left",
-		description = "Show the remaining run time (in seconds) next in the energy orb."
+		name = "Replace run orb text with run time left",
+		description = "Show the remaining run time (in seconds) next in the energy orb"
 	)
 	default boolean replaceOrbText()
 	{
