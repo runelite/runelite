@@ -60,7 +60,6 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.interfacestyles.InterfaceStylesPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -309,7 +308,7 @@ public class StatusOrbsPlugin extends Plugin
 		if (old != currentHeart)
 		{
 			client.getWidgetSpriteCache().reset();
-			client.getSpriteOverrides().put(SpriteID.MINIMAP_ORB_HITPOINTS_ICON, InterfaceStylesPlugin.getImageSpritePixels(currentHeart, client));
+			client.getSpriteOverrides().put(SpriteID.MINIMAP_ORB_HITPOINTS_ICON, ImageUtil.getImageSpritePixels(currentHeart, client));
 		}
 	}
 
