@@ -30,6 +30,15 @@ import com.jogamp.nativewindow.AbstractGraphicsConfiguration;
 import com.jogamp.nativewindow.NativeWindowFactory;
 import com.jogamp.nativewindow.awt.AWTGraphicsConfiguration;
 import com.jogamp.nativewindow.awt.JAWTWindow;
+import com.jogamp.newt.Window;
+import com.jogamp.newt.event.KeyEvent;
+import com.jogamp.newt.event.KeyListener;
+import com.jogamp.newt.event.MouseEvent;
+import com.jogamp.newt.event.MouseListener;
+import com.jogamp.newt.event.TraceKeyAdapter;
+import com.jogamp.newt.event.TraceMouseAdapter;
+import com.jogamp.newt.event.WindowEvent;
+import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.opengl.GL;
 import static com.jogamp.opengl.GL2ES2.GL_DEBUG_OUTPUT;
 import static com.jogamp.opengl.GL3ES3.GL_SHADER_STORAGE_BARRIER_BIT;
@@ -42,6 +51,7 @@ import com.jogamp.opengl.GLException;
 import com.jogamp.opengl.GLProfile;
 import java.awt.Canvas;
 import java.awt.Image;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.nio.ByteBuffer;
@@ -50,6 +60,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.function.Function;
 import javax.inject.Inject;
+import jogamp.newt.awt.event.AWTParentWindowAdapter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.BufferProvider;
 import net.runelite.api.Client;
@@ -235,9 +246,134 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				jawtWindow = (JAWTWindow) NativeWindowFactory.getNativeWindow(canvas, config);
 
-				GLDrawableFactory glDrawableFactory = GLDrawableFactory.getFactory(glProfile);
+				GLWindow glWindow = GLWindow.create(glCaps);
+				glWindow.setFocusAction(null);
+				glWindow.setSize(canvas.getWidth(), canvas.getHeight());
+				final float[] reqSurfaceScale = glWindow.getRequestedSurfaceScale(new float[2]);
+				jawtWindow.setSurfaceScale(reqSurfaceScale);
+				glWindow.reparentWindow(jawtWindow, -1, -1, Window.REPARENT_HINT_BECOMES_VISIBLE);
+				glWindow.addSurfaceUpdatedListener(jawtWindow);
+				glWindow.setVisible(true);
+				glWindow.sendWindowEvent(WindowEvent.EVENT_WINDOW_RESIZED);
+				glWindow.addKeyListener(new TraceKeyAdapter());
+				glWindow.addMouseListener(new TraceMouseAdapter());
 
-				glDrawable = glDrawableFactory.createGLDrawable(jawtWindow);
+				glWindow.addMouseListener(new MouseListener()
+				{
+					@Override
+					public void mouseClicked(MouseEvent e)
+					{
+
+					}
+
+					@Override
+					public void mouseEntered(MouseEvent e)
+					{
+
+					}
+
+					@Override
+					public void mouseExited(MouseEvent e)
+					{
+
+					}
+
+					@Override
+					public void mousePressed(MouseEvent e)
+					{
+						final java.awt.event.MouseListener[] mouseListeners = canvas.getMouseListeners();
+						final long now = System.currentTimeMillis();
+						final java.awt.event.MouseEvent event = new java.awt.event.MouseEvent(
+							client.getCanvas(), java.awt.event.MouseEvent.MOUSE_PRESSED, now, 0, e.getX(), e.getY(), 1, false,
+							e.getButton());
+
+						for (java.awt.event.MouseListener mouseListener : mouseListeners)
+						{
+							mouseListener.mousePressed(event);
+						}
+					}
+
+					@Override
+					public void mouseReleased(MouseEvent e)
+					{
+						final java.awt.event.MouseListener[] mouseListeners = canvas.getMouseListeners();
+						final long now = System.currentTimeMillis();
+						final java.awt.event.MouseEvent event = new java.awt.event.MouseEvent(
+							client.getCanvas(), java.awt.event.MouseEvent.MOUSE_RELEASED, now, 0, e.getX(), e.getY(), 1, false,
+							e.getButton());
+
+						for (java.awt.event.MouseListener mouseListener : mouseListeners)
+						{
+							mouseListener.mouseReleased(event);
+						}
+					}
+
+					@Override
+					public void mouseMoved(MouseEvent e)
+					{
+						final MouseMotionListener[] mouseMotionListeners = canvas.getMouseMotionListeners();
+						final long now = System.currentTimeMillis();
+						final java.awt.event.MouseEvent event = new java.awt.event.MouseEvent(
+							client.getCanvas(), java.awt.event.MouseEvent.MOUSE_MOVED, now, 0, e.getX(), e.getY(), 1, false,
+							e.getButton());
+
+						for (MouseMotionListener mouseMotionListener : mouseMotionListeners)
+						{
+							mouseMotionListener.mouseMoved(event);
+						}
+					}
+
+					@Override
+					public void mouseDragged(MouseEvent e)
+					{
+
+					}
+
+					@Override
+					public void mouseWheelMoved(MouseEvent e)
+					{
+
+					}
+				});
+
+				glWindow.addKeyListener(new KeyListener()
+				{
+					@Override
+					public void keyPressed(KeyEvent e)
+					{
+						final java.awt.event.KeyListener[] keyListeners = canvas.getKeyListeners();
+						final long now = System.currentTimeMillis();
+						final java.awt.event.KeyEvent event = new java.awt.event.KeyEvent(
+							client.getCanvas(), java.awt.event.KeyEvent.KEY_PRESSED,
+							now, 0, e.getKeyCode(), e.getKeyChar());
+
+						for (java.awt.event.KeyListener keyListener : keyListeners)
+						{
+							keyListener.keyPressed(event);
+						}
+					}
+
+					@Override
+					public void keyReleased(KeyEvent e)
+					{
+						final java.awt.event.KeyListener[] keyListeners = canvas.getKeyListeners();
+						final long now = System.currentTimeMillis();
+						final java.awt.event.KeyEvent event = new java.awt.event.KeyEvent(
+							client.getCanvas(), java.awt.event.KeyEvent.KEY_RELEASED,
+							now, 0, e.getKeyCode(), e.getKeyChar());
+
+						for (java.awt.event.KeyListener keyListener : keyListeners)
+						{
+							keyListener.keyReleased(event);
+						}
+					}
+				});
+
+				GLDrawableFactory glDrawableFactory = GLDrawableFactory.getFactory(glProfile);
+				glDrawable = glDrawableFactory.createGLDrawable(glWindow);
+
+				new AWTParentWindowAdapter(jawtWindow, glWindow).addTo(canvas);
+
 				glDrawable.setRealized(true);
 
 				GLContext glContext = glDrawable.createContext(null);
