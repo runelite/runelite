@@ -4,7 +4,6 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 public class BossLogOverviewPanel extends TabContentPanel

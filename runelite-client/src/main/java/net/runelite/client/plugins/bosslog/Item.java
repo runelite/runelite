@@ -10,7 +10,8 @@ public class Item
     @Getter
     private final int id;
     @Getter
-    private final int quantity;
+    @Setter
+    private int quantity;
     @Getter
     @Setter
     private String name;

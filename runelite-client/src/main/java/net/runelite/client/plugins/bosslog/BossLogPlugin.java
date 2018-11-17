@@ -3,7 +3,6 @@ package net.runelite.client.plugins.bosslog;
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
-import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.game.ItemManager;
@@ -14,19 +13,14 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
+import javax.swing.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.regex.Matcher;
 
 import static java.lang.Integer.parseInt;
 
@@ -42,11 +36,8 @@ public class BossLogPlugin extends Plugin {
     private BossLogPanel panel;
     private NavigationButton navButton;
 
-    public Bosses[] bossTypes = {Bosses.ZULRAH};
+    public Bosses[] bossTypes = {Bosses.ZULRAH, Bosses.BANDOS};
     public List<Boss> bosses = new ArrayList<>();
-
-    @Inject
-    private Client client;
 
     @Inject
     private ItemManager itemManager;
@@ -60,26 +51,33 @@ public class BossLogPlugin extends Plugin {
     @Override
     protected void startUp() throws Exception
     {
-    //Load Persistant Data
+        //Load Persistant Data
         //create new file if non-existant
         for(Bosses b : bossTypes)
         {
             File logFile = new File(b.getName()+"_log.txt");
             if(!logFile.exists())
             {
-                logFile.createNewFile();
-                BufferedWriter bw = new BufferedWriter(new FileWriter(logFile));
-                bw.write("0");
-                bw.close();
+                if(logFile.createNewFile())
+                {
+                    BufferedWriter bw = new BufferedWriter(new FileWriter(logFile));
+                    bw.write("0");
+                    bw.newLine();
+                    bw.close();
+                }
             }
             BufferedReader br = new BufferedReader(new FileReader(logFile));
             String st;
             int KC = parseInt(br.readLine());
             List<Item> itemList = new ArrayList<>();
-            while ((st = br.readLine()) != null) {
-                int id = parseInt(st.substring(0, st.indexOf(' ')));
-                int quantity = parseInt(st.substring(st.indexOf(' ')+1));
-                itemList.add(new Item(id, quantity, "", 0));
+            while ((st = br.readLine()) != null)
+            {
+                if(!st.equals(""))
+                {
+                    int id = parseInt(st.substring(0, st.indexOf(' ')));
+                    int quantity = parseInt(st.substring(st.indexOf(' ') + 1));
+                    itemList.add(new Item(id, quantity, "", 0));
+                }
             }
             br.close();
             bosses.add(new Boss(b, KC, itemList));
@@ -109,34 +107,52 @@ public class BossLogPlugin extends Plugin {
     @Subscribe
     public void onGameStateChanged(GameStateChanged gameStateChanged) throws Exception {
         if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN) {
-            panel.update();
+            SwingUtilities.invokeLater(() -> panel.update());
         }
     }
 
     @Subscribe
-    public void onNpcLootReceived(final NpcLootReceived npcLootReceived)
+    public void onNpcLootReceived(final NpcLootReceived npcLootReceived) throws IOException
     {
         final NPC npc = npcLootReceived.getNpc();
         final Collection<ItemStack> items = npcLootReceived.getItems();
-        final String name = npc.getName();
-        final int combat = npc.getCombatLevel();
-        for (ItemStack e : items)
+        for(Boss b : bosses)
         {
-            final ItemComposition itemComposition = itemManager.getItemComposition(e.getId());
-            System.out.println("elem = " + e.getId() + " " + itemComposition.getName());
+            for(int id : b.getBoss().getIds())
+            {
+                if(id == npc.getId())
+                {
+                    for (ItemStack e : items)
+                    {
+                        final ItemComposition itemComposition = itemManager.getItemComposition(e.getId());
+                        b.addItem(new Item(e.getId(), e.getQuantity(), itemComposition.getName(), itemManager.getItemPrice(e.getId())));
+                    }
+                    b.addKC();
+                    save();
+                    return;
+                }
+            }
         }
     }
 
-    @Subscribe
-    public void onChatMessage(ChatMessage event)
+    void save() throws IOException
     {
-        if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
+        SwingUtilities.invokeLater(() -> panel.update());
+        for(Boss b : bosses)
         {
-            return;
+            File oldFile = new File(b.getBoss().getName()+"_log.txt");
+            if(oldFile.delete()) {
+                File logFile = new File(b.getBoss().getName()+"_log.txt");
+                logFile.createNewFile();
+                BufferedWriter bw = new BufferedWriter(new FileWriter(logFile));
+                bw.write(b.getKC()+""); //Write KC to file
+                bw.newLine();
+                for(Item i : b.getDrops()) {
+                    bw.write(i.getId() + " " + i.getQuantity());
+                    bw.newLine();
+                }
+                bw.close();
+            }
         }
-
-        // Check if message is for a pet
-        String msg = Text.removeTags(event.getMessage());
-        System.out.println(msg);
     }
 }

@@ -33,7 +33,8 @@ import net.runelite.api.ItemID;
 public enum Tab
 {
     OVERVIEW("Overview", ItemID.RING_OF_COINS),
-    ZULRAH("Zulrah", ItemID.ZULANDRA_TELEPORT);
+    ZULRAH("Zulrah", ItemID.ZULANDRA_TELEPORT),
+    BANDOS("Bandos", ItemID.BANDOS_CHESTPLATE);
 
     private final String name;
     private final int itemID;

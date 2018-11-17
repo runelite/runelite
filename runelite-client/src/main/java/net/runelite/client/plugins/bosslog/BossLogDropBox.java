@@ -3,7 +3,6 @@ package net.runelite.client.plugins.bosslog;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.util.StackFormatter;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;

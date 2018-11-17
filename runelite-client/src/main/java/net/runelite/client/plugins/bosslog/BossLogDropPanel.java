@@ -34,7 +34,6 @@ public class BossLogDropPanel extends TabContentPanel
     {
         panelBoss = boss;
         this.itemManager = itemManager;
-        //setLayout(new DynamicGridLayout(0, 1, 0, 5));
         setLayout(new DynamicGridLayout(0, 1, 0, 5));
         setBackground(ColorScheme.DARK_GRAY_COLOR);
         setBorder(new EmptyBorder(5, 0, 5, 0));
@@ -104,6 +103,7 @@ public class BossLogDropPanel extends TabContentPanel
     public void update()
     {
         logLabelGP.setText(NumberFormat.getNumberInstance(Locale.US).format(panelBoss.getProfit()) + " gp");
+        logLabelKC.setText("  (" + panelBoss.getKC() + " KC)");
         drawSlots();
     }
 

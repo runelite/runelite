@@ -1,8 +1,10 @@
 package net.runelite.client.plugins.bosslog;
 
+import net.runelite.api.GameState;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
@@ -18,7 +20,7 @@ import java.awt.Dimension;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BossLogPanel extends PluginPanel {
+class BossLogPanel extends PluginPanel {
 
     private final ItemManager itemManager;
     private final BossLogPlugin plugin;
@@ -40,6 +42,7 @@ public class BossLogPanel extends PluginPanel {
         setLayout(new BorderLayout());
         setBackground(ColorScheme.DARK_GRAY_COLOR);
         display.setBorder(new EmptyBorder(0, 0, 0, 1));
+        display.setLayout(new DynamicGridLayout());
 
         tabGroup.setLayout(new GridLayout(0, 6, 7, 7));
         tabGroup.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -96,6 +99,8 @@ public class BossLogPanel extends PluginPanel {
 
         if(activeTabPanel != null) {
             activeTabPanel.update();
+            display.revalidate();
+            display.repaint();
         }
     }
 

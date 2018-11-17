@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Boss {
     private final Bosses boss;
-    private final int KC;
+    private int KC;
     private final List<Item> drops;
 
     public void update(ItemManager itemManager)
@@ -20,7 +20,8 @@ public class Boss {
         {
             ItemComposition itemComposition = itemManager.getItemComposition(i.getId());
             i.setName(itemComposition.getName());
-            i.setPrice(itemManager.getItemPrice(i.getId()));
+            final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : i.getId();
+            i.setPrice(itemManager.getItemPrice(realItemId));
         }
     }
 
@@ -32,5 +33,19 @@ public class Boss {
             sum += i.getPrice()*i.getQuantity();
         }
         return sum;
+    }
+
+    void addItem(Item item) {
+        for(Item i : drops) {
+            if(item.getId() == i.getId()) {
+                i.setQuantity(i.getQuantity()+item.getQuantity());
+                return;
+            }
+        }
+        drops.add(item);
+    }
+
+    void addKC() {
+        KC++;
     }
 }
