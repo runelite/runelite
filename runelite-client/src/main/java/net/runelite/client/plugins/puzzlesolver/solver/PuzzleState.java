@@ -69,10 +69,10 @@ public class PuzzleState
 		this.pieces = pieces;
 	}
 
-	private PuzzleState(PuzzleState state)
+	public PuzzleState(PuzzleState state)
 	{
 		this.pieces = Arrays.copyOf(state.pieces, state.pieces.length);
-		this.emptyPiece = state.emptyPiece;
+		this.emptyPiece = state.getEmptyPiece();
 	}
 
 	public List<PuzzleState> computeMoves()
@@ -162,6 +162,11 @@ public class PuzzleState
 	public int getPiece(int x, int y)
 	{
 		return pieces[y * DIMENSION + x];
+	}
+
+	public int[] getPuzzle()
+	{
+		return pieces;
 	}
 
 	public int getEmptyPiece()

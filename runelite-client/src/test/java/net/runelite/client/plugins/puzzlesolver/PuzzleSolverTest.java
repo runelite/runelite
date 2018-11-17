@@ -28,6 +28,8 @@ package net.runelite.client.plugins.puzzlesolver;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleState;
 import net.runelite.client.plugins.puzzlesolver.solver.heuristics.ManhattanDistance;
+import net.runelite.client.plugins.puzzlesolver.solver.monkeymadness.PuzzleSolverMM;
+import net.runelite.client.plugins.puzzlesolver.solver.monkeymadness.PuzzleStateMM;
 import net.runelite.client.plugins.puzzlesolver.solver.pathfinding.IDAStar;
 import org.junit.Test;
 import static org.junit.Assert.assertFalse;
@@ -84,6 +86,20 @@ public class PuzzleSolverTest
 	};
 
 	private static final int[] FINISHED_STATE = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, -1};
+
+	@Test
+	public void testSolverMM()
+	{
+		for (PuzzleState state : START_STATES)
+		{
+			PuzzleSolver solver = new PuzzleSolverMM(new IDAStar(new ManhattanDistance()), new PuzzleStateMM(state.getPuzzle()));
+			solver.run();
+
+			assertTrue(solver.hasSolution());
+			assertFalse(solver.hasFailed());
+			assertTrue(solver.getStep(solver.getStepCount() - 1).hasPieces(FINISHED_STATE));
+		}
+	}
 
 	@Test
 	public void testSolver()
