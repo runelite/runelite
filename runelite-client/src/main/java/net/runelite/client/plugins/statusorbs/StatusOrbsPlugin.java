@@ -106,7 +106,6 @@ public class StatusOrbsPlugin extends Plugin
 		AGILITY_CAPE, AGILITY_CAPET, MAX_CAPE
 	);
 
-	private static final BufferedImage HEART_NORMAL;
 	private static final BufferedImage HEART_DISEASE;
 	private static final BufferedImage HEART_POISON;
 	private static final BufferedImage HEART_VENOM;
@@ -114,7 +113,6 @@ public class StatusOrbsPlugin extends Plugin
 	private static final BufferedImage HEART_VENOM_DISEASE;
 	static
 	{
-		HEART_NORMAL = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(StatusOrbsPlugin.class, "1067-NORMAL.png"), 26, 26);
 		HEART_DISEASE = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(StatusOrbsPlugin.class, "1067-DISEASE.png"), 26, 26);
 		HEART_POISON = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(StatusOrbsPlugin.class, "1067-POISON.png"), 26, 26);
 		HEART_VENOM = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(StatusOrbsPlugin.class, "1067-VENOM.png"), 26, 26);
@@ -313,8 +311,8 @@ public class StatusOrbsPlugin extends Plugin
 			switch (currentAffliction)
 			{
 				case NONE:
-					heart = HEART_NORMAL;
-					break;
+					resetHealthIcon();
+					return;
 				case DISEASED:
 					heart = HEART_DISEASE;
 					break;
