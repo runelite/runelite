@@ -29,6 +29,7 @@ import java.util.EnumSet;
 import java.util.List;
 import javax.annotation.Nullable;
 import javax.inject.Named;
+import net.runelite.api.Affliction;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
 import net.runelite.api.Friend;
@@ -1320,5 +1321,21 @@ public abstract class RSClientMixin implements RSClient
 		int count = client.getChangedSkillsCount();
 		skills[++count - 1 & 31] = skill.ordinal();
 		client.setChangedSkillsCount(count);
+	}
+
+
+	@Inject
+	@Override
+	public Affliction getCurrentAffliction()
+	{
+		int poison = getVar(VarPlayer.IS_POISONED);
+		boolean isVenomed = poison >= 1000000;
+		boolean isPoisoned = !isVenomed && poison > 0;
+		boolean isDiseased = getVar(VarPlayer.DISEASE_VALUE) > 0;
+		if (isDiseased)
+		{
+			return isVenomed ? Affliction.VENOM_DISEASED : isPoisoned ? Affliction.POISON_DISEASED : Affliction.DISEASED;
+		}
+		return isVenomed ? Affliction.VENOMED : isPoisoned ? Affliction.POISONED : Affliction.NONE;
 	}
 }

@@ -37,6 +37,7 @@ import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Affliction;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.GameState;
@@ -149,7 +150,7 @@ public class StatusOrbsPlugin extends Plugin
 	private double specialPercentage;
 
 	// HeartDisplay
-	private BufferedImage currentHeart;
+	private Affliction currentAffliction;
 
 	// RegenMeter
 	private int ticksSinceSpecRegen;
@@ -303,26 +304,39 @@ public class StatusOrbsPlugin extends Plugin
 	 */
 	private void checkHealthIcon()
 	{
-		int poison = client.getVar(VarPlayer.IS_POISONED);
-		boolean isVenomed = poison >= 1000000;
-		boolean isPoisoned = !isVenomed && poison > 0;
-		boolean isDiseased = client.getVar(VarPlayer.DISEASE_VALUE) > 0;
+		Affliction old = currentAffliction;
+		currentAffliction = client.getCurrentAffliction();
 
-		BufferedImage old = currentHeart;
+		if (old != currentAffliction)
+		{
+			BufferedImage heart;
+			switch (currentAffliction)
+			{
+				case NONE:
+					heart = HEART_NORMAL;
+					break;
+				case DISEASED:
+					heart = HEART_DISEASE;
+					break;
+				case POISONED:
+					heart = HEART_POISON;
+					break;
+				case VENOMED:
+					heart = HEART_VENOM;
+					break;
+				case POISON_DISEASED:
+					heart = HEART_POISON_DISEASE;
+					break;
+				case VENOM_DISEASED:
+					heart = HEART_VENOM_DISEASE;
+					break;
+				default:
+					log.warn("Unhandled affliction type: {}", currentAffliction);
+					return;
+			}
 
-		if (isDiseased)
-		{
-			currentHeart = isVenomed ? HEART_VENOM_DISEASE : isPoisoned ? HEART_POISON_DISEASE : HEART_DISEASE;
-		}
-		else
-		{
-			currentHeart = isVenomed ? HEART_VENOM : isPoisoned ? HEART_POISON : HEART_NORMAL;;
-		}
-
-		if (old != currentHeart)
-		{
 			client.getWidgetSpriteCache().reset();
-			client.getSpriteOverrides().put(SpriteID.MINIMAP_ORB_HITPOINTS_ICON, ImageUtil.getImageSpritePixels(currentHeart, client));
+			client.getSpriteOverrides().put(SpriteID.MINIMAP_ORB_HITPOINTS_ICON, ImageUtil.getImageSpritePixels(heart, client));
 		}
 	}
 
@@ -333,7 +347,7 @@ public class StatusOrbsPlugin extends Plugin
 	{
 		client.getWidgetSpriteCache().reset();
 		client.getSpriteOverrides().remove(SpriteID.MINIMAP_ORB_HITPOINTS_ICON);
-		currentHeart = null;
+		currentAffliction = null;
 	}
 
 

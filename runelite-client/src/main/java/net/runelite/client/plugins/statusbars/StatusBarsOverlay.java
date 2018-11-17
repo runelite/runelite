@@ -29,12 +29,12 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import javax.inject.Inject;
+import net.runelite.api.Affliction;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Point;
 import net.runelite.api.Skill;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -144,20 +144,24 @@ class StatusBarsOverlay extends Overlay
 			offsetPrayerY = (location.getY() - offsetRight.getY());
 		}
 
-		final int poisonState = client.getVar(VarPlayer.IS_POISONED);
+
+		Affliction state = client.getCurrentAffliction();
 		final Color healthBar;
 
-		if (poisonState > 0 && poisonState < 50)
+		switch (state)
 		{
-			healthBar = POISONED_COLOR;
-		}
-		else if (poisonState >= 1000000)
-		{
-			healthBar = VENOMED_COLOR;
-		}
-		else
-		{
-			healthBar = HEALTH_COLOR;
+			case POISON_DISEASED:
+			case POISONED:
+				healthBar = POISONED_COLOR;
+				break;
+			case VENOM_DISEASED:
+			case VENOMED:
+				healthBar = VENOMED_COLOR;
+				break;
+			case DISEASED:
+			case NONE:
+			default:
+				healthBar = HEALTH_COLOR;
 		}
 
 		final int maxHealth = client.getRealSkillLevel(Skill.HITPOINTS);
