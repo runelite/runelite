@@ -119,6 +119,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private Canvas canvas;
 	private JAWTWindow jawtWindow;
+	private GpuNativeWindow glWindow;
 	private GL4 gl;
 	private GLContext glContext;
 	private GLDrawable glDrawable;
@@ -239,7 +240,16 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				GLDrawableFactory glDrawableFactory = GLDrawableFactory.getFactory(glProfile);
 
-				glDrawable = glDrawableFactory.createGLDrawable(jawtWindow);
+				if (this.config.nativeWindow())
+				{
+					glWindow = new GpuNativeWindow(glCaps, jawtWindow, canvas);
+					glDrawable = glDrawableFactory.createGLDrawable(glWindow.getWindow());
+				}
+				else
+				{
+					glDrawable = glDrawableFactory.createGLDrawable(jawtWindow);
+				}
+
 				glDrawable.setRealized(true);
 
 				glContext = glDrawable.createContext(null);
@@ -361,11 +371,17 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				glContext.destroy();
 			}
 
+			if (glWindow != null)
+			{
+				glWindow.destroy();
+			}
+
 			if (jawtWindow != null)
 			{
 				NewtFactoryAWT.destroyNativeWindow(jawtWindow);
 			}
 
+			glWindow = null;
 			jawtWindow = null;
 			gl = null;
 			glDrawable = null;

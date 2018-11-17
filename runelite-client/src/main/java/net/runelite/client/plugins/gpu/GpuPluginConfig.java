@@ -40,4 +40,14 @@ public interface GpuPluginConfig extends Config
 	{
 		return 25;
 	}
+
+	@ConfigItem(
+		keyName = "nativeWindow",
+		name = "Native Window",
+		description = "Configures whether native window should be used instead of AWT surface, what can increase performance"
+	)
+	default boolean nativeWindow()
+	{
+		return false;
+	}
 }
