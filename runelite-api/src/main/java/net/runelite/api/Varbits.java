@@ -421,7 +421,12 @@ public enum Varbits
 	CURRENT_BANK_TAB(4150),
 
 	WORLDHOPPER_FAVROITE_1(4597),
-	WORLDHOPPER_FAVROITE_2(4598);
+	WORLDHOPPER_FAVROITE_2(4598),
+
+	/**
+	 * World Switcher sorting
+	 */
+	WORLD_SWITCHER_COLUMN_SORT(4596);
 
 	/**
 	 * The raw varbit ID.
