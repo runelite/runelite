@@ -28,7 +28,6 @@ import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
 import lombok.NonNull;
-import net.runelite.api.Experience;
 import net.runelite.api.NPC;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -172,7 +171,6 @@ class XpState
 		final boolean hasCompletedCourse = !(course.getCourseEndWorldPoints().length == 0
 				? Math.abs(course.getLastObstacleXp() - lastGainedExp) > 1
 				: Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(playerLocation)));
-		final boolean isLevelledUp = Experience.getLevelForXp(originalXp) < Experience.getLevelForXp(currentXp);
 
 		if (action.isActionsHistoryInitialized())
 		{
@@ -185,9 +183,10 @@ class XpState
 
 			if (this.course != course)
 			{
-
 				action.setActionExpIndex((action.getActionExpIndex() + 1) % action.getActionExps().length);
 			}
+			// Increment total laps
+			action.setActions(action.getActions() + 1);
 		}
 		else
 		{
@@ -201,8 +200,6 @@ class XpState
 		}
 
 		this.course = course;
-		// Increment total laps
-		action.setActions(action.getActions() + 1);
 
 	}
 

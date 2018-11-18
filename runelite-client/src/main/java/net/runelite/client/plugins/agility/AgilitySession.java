@@ -26,10 +26,13 @@ package net.runelite.client.plugins.agility;
 
 import java.time.Instant;
 
+import java.util.Arrays;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.api.Experience;
 import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 
 @Getter
@@ -40,6 +43,7 @@ class AgilitySession
 	private Instant lastLapCompleted;
 	private int totalLaps;
 	private int lapsTillLevel;
+	private int latestXp;
 	private XpTrackerService xpTrackerService;
 
 	AgilitySession(Courses course, XpTrackerService xpTrackerService)
@@ -49,17 +53,26 @@ class AgilitySession
 		this.xpTrackerService = xpTrackerService;
 	}
 
-	void updateLapCounts(Client client)
+	void updateLapCounts(Client client, int currentXp, WorldPoint playerLocation)
 	{
-		lapsTillLevel = xpTrackerService.getActionsLeft(Skill.AGILITY);
-		int totalLapsNew = xpTrackerService.getActions(Skill.AGILITY);
+		int lastGainedExp = currentXp - latestXp;
+		final boolean hasCompletedCourse = !(course.getCourseEndWorldPoints().length == 0
+				? Math.abs(course.getLastObstacleXp() - lastGainedExp) > 1
+				: Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(playerLocation)));
+		final boolean isLevelledUp = Experience.getLevelForXp(latestXp) < Experience.getLevelForXp(currentXp);
+		latestXp = currentXp;
 
+		int totalLapsNew = xpTrackerService.getActions(Skill.AGILITY);
 		if (totalLapsNew > totalLaps)
 		{
 			lastLapCompleted = Instant.now();
 		}
-		totalLaps = totalLapsNew;
-
+		// Only update laps if levelled up or completed the course
+		if (isLevelledUp || hasCompletedCourse)
+		{
+			totalLaps = totalLapsNew;
+			lapsTillLevel = xpTrackerService.getActionsLeft(Skill.AGILITY);
+		}
 	}
 
 }

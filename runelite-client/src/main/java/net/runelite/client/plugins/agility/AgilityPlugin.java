@@ -41,6 +41,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.AGILITY_ARENA_TICKET;
 import net.runelite.api.Player;
+import net.runelite.api.Skill;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
@@ -118,8 +119,6 @@ public class AgilityPlugin extends Plugin
 	@Getter
 	private AgilitySession session;
 
-	private int lastAgilityXp;
-	private int lastAgilityLevel;
 	private WorldPoint lastArenaTicketPosition;
 
 	@Provides
@@ -237,7 +236,8 @@ public class AgilityPlugin extends Plugin
 			{
 				session = new AgilitySession(course, xpTrackerService);
 			}
-			session.updateLapCounts(client);
+			final int currentXp = client.getSkillExperience(Skill.AGILITY);
+			session.updateLapCounts(client, currentXp, client.getLocalPlayer().getWorldLocation());
 		}
 	}
 
