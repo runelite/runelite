@@ -228,7 +228,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				GLProfile.initSingleton();
 
-				GLProfile glProfile = GLProfile.get(GLProfile.GL4bc);
+				GLProfile glProfile = GLProfile.get(GLProfile.GL4);
 
 				GLCapabilities glCaps = new GLCapabilities(glProfile);
 				AWTGraphicsConfiguration config = AWTGraphicsConfiguration.create(canvas.getGraphicsConfiguration(), glCaps, glCaps);
@@ -890,7 +890,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		// Texture on UI
 		gl.glBindVertexArray(vaoUiHandle);
-		gl.glDrawArrays(gl.GL_QUADS, 0, 4);
+		gl.glDrawArrays(gl.GL_TRIANGLE_FAN, 0, 4);
 
 		// Reset
 		gl.glBindTexture(gl.GL_TEXTURE_2D, 0);
