@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Affliction;
 import net.runelite.api.Client;
@@ -35,14 +36,17 @@ import net.runelite.api.ItemID;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Point;
 import net.runelite.api.Skill;
+import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.SkillIconManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.itemstats.Effect;
 import net.runelite.client.plugins.itemstats.ItemStatChangesService;
 import net.runelite.client.plugins.itemstats.StatChange;
 import net.runelite.client.plugins.itemstats.StatsChanges;
+import net.runelite.client.plugins.statusorbs.StatusOrbsPlugin;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -52,12 +56,26 @@ import net.runelite.client.util.ImageUtil;
 
 class StatusBarsOverlay extends Overlay
 {
+	private static final BufferedImage HEART_DISEASE;
+	private static final BufferedImage HEART_POISON;
+	private static final BufferedImage HEART_VENOM;
+	private static final BufferedImage HEART_POISON_DISEASE;
+	private static final BufferedImage HEART_VENOM_DISEASE;
+	static
+	{
+		HEART_DISEASE = ImageUtil.getResourceStreamFromClass(StatusOrbsPlugin.class, "1067-DISEASE.png");
+		HEART_POISON = ImageUtil.getResourceStreamFromClass(StatusOrbsPlugin.class, "1067-POISON.png");
+		HEART_VENOM = ImageUtil.getResourceStreamFromClass(StatusOrbsPlugin.class, "1067-VENOM.png");
+		HEART_POISON_DISEASE = ImageUtil.getResourceStreamFromClass(StatusOrbsPlugin.class, "1067-POISON-DISEASE.png");
+		HEART_VENOM_DISEASE = ImageUtil.getResourceStreamFromClass(StatusOrbsPlugin.class, "1067-VENOM-DISEASE.png");
+	}
 	private static final Color PRAYER_COLOR = new Color(50, 200, 200, 175);
 	private static final Color QUICK_PRAYER_COLOR = new Color(57, 255, 186, 225);
 	private static final Color BACKGROUND = new Color(0, 0, 0, 150);
 	private static final Color HEALTH_COLOR = new Color(225, 35, 0, 125);
 	private static final Color POISONED_COLOR = new Color(0, 145, 0, 150);
 	private static final Color VENOMED_COLOR = new Color(0, 65, 0, 150);
+	private static final Color DISEASED_COLOR = new Color(166, 132, 62, 255);
 	private static final Color HEAL_COLOR = new Color(255, 112, 6, 150);
 	private static final Color PRAYER_HEAL_COLOR = new Color(57, 255, 186, 75);
 	private static final Color OVERHEAL_COLOR = new Color(216, 255, 139, 150);
@@ -82,9 +100,10 @@ class StatusBarsOverlay extends Overlay
 	private final SkillIconManager skillIconManager;
 	private final TextComponent textComponent = new TextComponent();
 	private final ItemStatChangesService itemStatService;
+	private final SpriteManager spriteManager;
 
 	@Inject
-	private StatusBarsOverlay(Client client, StatusBarsConfig config, SkillIconManager skillIconManager, ItemStatChangesService itemstatservice)
+	private StatusBarsOverlay(Client client, StatusBarsConfig config, SkillIconManager skillIconManager, ItemStatChangesService itemstatservice, SpriteManager spriteManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
@@ -92,6 +111,7 @@ class StatusBarsOverlay extends Overlay
 		this.config = config;
 		this.skillIconManager = skillIconManager;
 		this.itemStatService = itemstatservice;
+		this.spriteManager = spriteManager;
 	}
 
 	@Override
@@ -148,17 +168,29 @@ class StatusBarsOverlay extends Overlay
 		Affliction state = client.getCurrentAffliction();
 		final Color healthBar;
 
+		BufferedImage sprite = null;
 		switch (state)
 		{
 			case POISON_DISEASED:
+				healthBar = POISONED_COLOR;
+				sprite = HEART_POISON_DISEASE;
+				break;
 			case POISONED:
 				healthBar = POISONED_COLOR;
+				sprite = HEART_POISON;
 				break;
 			case VENOM_DISEASED:
+				healthBar = VENOMED_COLOR;
+				sprite = HEART_VENOM_DISEASE;
+				break;
 			case VENOMED:
 				healthBar = VENOMED_COLOR;
+				sprite = HEART_VENOM;
 				break;
 			case DISEASED:
+				healthBar = DISEASED_COLOR;
+				sprite = HEART_DISEASE;
+				break;
 			case NONE:
 			default:
 				healthBar = HEALTH_COLOR;
@@ -222,7 +254,7 @@ class StatusBarsOverlay extends Overlay
 
 		if (config.enableSkillIcon() || config.enableCounter())
 		{
-			final Image healthImage = skillIconManager.getSkillImage(Skill.HITPOINTS, true);
+			final Image healthImage = sprite != null ? sprite : spriteManager.getSprite(SpriteID.MINIMAP_ORB_HITPOINTS_ICON, 0);
 			final Image prayerImage = ImageUtil.resizeImage(skillIconManager.getSkillImage(Skill.PRAYER, true), IMAGE_SIZE, IMAGE_SIZE);
 			final int counterHealth = client.getBoostedSkillLevel(Skill.HITPOINTS);
 			final int counterPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
