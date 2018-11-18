@@ -37,6 +37,7 @@ layout(std140) uniform Uniforms {
     int centerX;
     int centerY;
     int zoom;
+    ivec2 sinCosTable[2048];
 };
 
 uniform mat4 projectionMatrix;

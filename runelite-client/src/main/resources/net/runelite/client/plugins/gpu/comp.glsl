@@ -33,6 +33,7 @@ layout(std140) uniform uniforms {
   int centerX;
   int centerY;
   int zoom;
+  ivec2 sinCosTable[2048];
 };
 
 shared int totalNum[12]; // number of faces with a given priority
