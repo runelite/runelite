@@ -51,7 +51,6 @@ class AgilitySession
 
 	void updateLapCounts(Client client)
 	{
-
 		lapsTillLevel = xpTrackerService.getActionsLeft(Skill.AGILITY);
 		int totalLapsNew = xpTrackerService.getActions(Skill.AGILITY);
 

@@ -35,6 +35,8 @@ import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import static net.runelite.api.GameState.HOPPING;
+import static net.runelite.api.GameState.LOGIN_SCREEN;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.AGILITY_ARENA_TICKET;
@@ -117,6 +119,7 @@ public class AgilityPlugin extends Plugin
 	private AgilitySession session;
 
 	private int lastAgilityXp;
+	private int lastAgilityLevel;
 	private WorldPoint lastArenaTicketPosition;
 
 	@Provides
@@ -165,6 +168,7 @@ public class AgilityPlugin extends Plugin
 				}
 				break;
 		}
+
 	}
 
 	@Subscribe
