@@ -177,7 +177,10 @@ public class LootTrackerPlugin extends Plugin
 	public void onAnimationChange(AnimationChanged animationChanged)
 	{
 		Actor actor = animationChanged.getActor();
-		if(actor != client.getLocalPlayer() || actor.getAnimation() != AnimationID.HERBIBOAR_HARVEST) {return;}
+		if (actor != client.getLocalPlayer() || actor.getAnimation() != AnimationID.HERBIBOAR_HARVEST)
+		{
+			return;
+		}
 		preHarvestInventory = client.getItemContainer(InventoryID.INVENTORY).getItems();
 	}
 
@@ -185,9 +188,11 @@ public class LootTrackerPlugin extends Plugin
 	//Filtering new Items from Inventory
 	private Collection<ItemStack> getNewHerbs(Item[] before, Item[] after)
 	{
-		Collection<ItemStack> newItems = new HashSet<ItemStack>();
-		for(int i = 0; i< 28; i++) {
-			if(before[i].getId() == -1 && after[i].getId() != -1) {
+		Collection<ItemStack> newItems = new HashSet<>();
+		for (int i = 0; i < 28; i++)
+		{
+			if (before[i].getId() == -1 && after[i].getId() != -1)
+			{
 				newItems.add(new ItemStack(after[i].getId(), after[i].getQuantity()));
 			}
 		}
