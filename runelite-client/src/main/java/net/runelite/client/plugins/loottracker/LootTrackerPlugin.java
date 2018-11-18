@@ -42,18 +42,9 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.NPC;
-import net.runelite.api.Player;
-import net.runelite.api.SpriteID;
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.events.*;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.NpcLootReceived;
@@ -106,6 +97,8 @@ public class LootTrackerPlugin extends Plugin
 	private LootTrackerPanel panel;
 	private NavigationButton navButton;
 	private String eventType;
+
+	private Item[] preHarvestInventory;
 
 	private List<String> ignoredItems = new ArrayList<>();
 
@@ -177,6 +170,45 @@ public class LootTrackerPlugin extends Plugin
 	protected void shutDown()
 	{
 		clientToolbar.removeNavigation(navButton);
+	}
+
+	//Copying the inventory before getting Herbs from Herbiboar to filter out new Herbs
+	@Subscribe
+	public void onAnimationChange(AnimationChanged animationChanged)
+	{
+		Actor actor = animationChanged.getActor();
+		if(actor != client.getLocalPlayer() || actor.getAnimation() != AnimationID.HERBIBOAR_HARVEST) {return;}
+		preHarvestInventory = client.getItemContainer(InventoryID.INVENTORY).getItems();
+	}
+
+
+	//Filtering new Items from Inventory
+	private Collection<ItemStack> getNewHerbs(Item[] before, Item[] after)
+	{
+		Collection<ItemStack> newItems = new HashSet<ItemStack>();
+		for(int i = 0; i< 28; i++) {
+			if(before[i].getId() == -1 && after[i].getId() != -1) {
+				newItems.add(new ItemStack(after[i].getId(), after[i].getQuantity()));
+			}
+		}
+		return newItems;
+	}
+
+
+	//Receiving herbs from Herbiboar
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
+	{
+		ItemContainer container = itemContainerChanged.getItemContainer();
+
+		if(container != client.getItemContainer(InventoryID.INVENTORY) || client.getVar(Varbits.HB_HARVEST) == 0) {	//Is Harvesting?
+			return;
+		}
+
+		Collection<ItemStack> herbs = getNewHerbs(preHarvestInventory, container.getItems());
+		final LootTrackerItem[] entries = buildEntries(stack(herbs));
+		SwingUtilities.invokeLater(() -> panel.add("Herbiboar", -1, entries));
+		preHarvestInventory = null;
 	}
 
 	@Subscribe
