@@ -30,8 +30,6 @@ import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
 
-import net.runelite.api.Skill;
-import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;

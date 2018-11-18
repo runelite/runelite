@@ -25,12 +25,10 @@
 package net.runelite.client.plugins.agility;
 
 import java.time.Instant;
-import java.util.Arrays;
 
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
-import net.runelite.api.Experience;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 
@@ -48,20 +46,20 @@ class AgilitySession
 
 	{
 		this.course = course;
-		this.xpTrackerService=xpTrackerService;
+		this.xpTrackerService = xpTrackerService;
 	}
 
 	void updateLapCounts(Client client)
 	{
 
-		lapsTillLevel=xpTrackerService.getActionsLeft(Skill.AGILITY);
-		int totalLapsNew=xpTrackerService.getActions(Skill.AGILITY);
+		lapsTillLevel = xpTrackerService.getActionsLeft(Skill.AGILITY);
+		int totalLapsNew = xpTrackerService.getActions(Skill.AGILITY);
 
 		if (totalLapsNew > totalLaps)
 		{
-			lastLapCompleted=Instant.now();
+			lastLapCompleted = Instant.now();
 		}
-		totalLaps=totalLapsNew;
+		totalLaps = totalLapsNew;
 
 	}
 

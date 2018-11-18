@@ -27,13 +27,11 @@ package net.runelite.client.plugins.agility;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -41,7 +39,6 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.AGILITY_ARENA_TICKET;
 import net.runelite.api.Player;
-import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
@@ -49,7 +46,6 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.DecorativeObjectChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
-import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
@@ -83,7 +79,6 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 @Slf4j
 public class AgilityPlugin extends Plugin
 {
-	private static final int AGILITY_ARENA_REGION_ID = 11157;
 
 	@Getter
 	private final Map<TileObject, Tile> obstacles = new HashMap<>();
@@ -236,7 +231,7 @@ public class AgilityPlugin extends Plugin
 			Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
 			if (session == null || session.getCourse() != course)
 			{
-				session = new AgilitySession(course,xpTrackerService);
+				session = new AgilitySession(course, xpTrackerService);
 			}
 			session.updateLapCounts(client);
 		}

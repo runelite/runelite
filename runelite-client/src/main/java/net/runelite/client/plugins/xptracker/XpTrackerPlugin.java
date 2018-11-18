@@ -32,7 +32,6 @@ import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
@@ -271,8 +270,8 @@ public class XpTrackerPlugin extends Plugin
 			xpState.updateNpcExperience(skill, npc, npcManager.getHealth(npc.getName(), npc.getCombatLevel()));
 		}
 
-		final Courses course=Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
-		xpState.updateAgilityLaps(skill,course,currentXp,client.getLocalPlayer().getWorldLocation());
+		final Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
+		xpState.updateAgilityLaps(skill, course, currentXp, client.getLocalPlayer().getWorldLocation());
 
 		final XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp, startGoalXp, endGoalXp);
 		final boolean updated = XpUpdateResult.UPDATED.equals(updateResult);

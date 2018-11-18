@@ -34,8 +34,6 @@ import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.agility.Courses;
 
-import static net.runelite.api.Skill.AGILITY;
-
 /**
  * Internal state for the XpTrackerPlugin
  *
@@ -157,10 +155,11 @@ class XpState
 
 		final XpStateSingle state = getSkill(skill);
 
-		final int originalXp=(state.getXpGained() + state.getStartXp());
-		final int lastGainedExp=currentXp - originalXp;
+		final int originalXp = (state.getXpGained() + state.getStartXp());
+		final int lastGainedExp = currentXp - originalXp;
 
-		if (originalXp == -1 && currentXp > 0) {
+		if (originalXp == -1 && currentXp > 0)
+		{
 			initializeSkill(skill, currentXp);
 		}
 
@@ -177,7 +176,7 @@ class XpState
 
 		if (action.isActionsHistoryInitialized())
 		{
-			if ( !hasCompletedCourse )
+			if (!hasCompletedCourse)
 			{
 				return;
 			}
@@ -186,6 +185,7 @@ class XpState
 
 			if (this.course != course)
 			{
+
 				action.setActionExpIndex((action.getActionExpIndex() + 1) % action.getActionExps().length);
 			}
 		}
