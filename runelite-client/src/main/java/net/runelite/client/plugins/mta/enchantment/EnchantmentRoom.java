@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.mta.enchantment;
 
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.events.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;

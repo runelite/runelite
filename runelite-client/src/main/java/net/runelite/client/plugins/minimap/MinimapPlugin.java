@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.minimap;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.Arrays;
@@ -34,6 +33,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.Subscribe;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;

@@ -29,7 +29,6 @@
 package net.runelite.client.plugins.fairyring;
 
 import com.google.common.base.Strings;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.Collection;
 import java.util.Map;
@@ -46,6 +45,7 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
 import net.runelite.api.WidgetType;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.Subscribe;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.JavaScriptCallback;

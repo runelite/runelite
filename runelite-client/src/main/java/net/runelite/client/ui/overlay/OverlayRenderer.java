@@ -25,7 +25,6 @@
 package net.runelite.client.ui.overlay;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.eventbus.Subscribe;
 import com.google.common.primitives.Ints;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -41,6 +40,7 @@ import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.FocusChanged;
+import net.runelite.api.events.Subscribe;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.RuneLiteConfig;

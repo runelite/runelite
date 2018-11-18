@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.tearsofguthix;
 
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.events.Subscribe;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;

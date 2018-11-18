@@ -28,7 +28,6 @@ package net.runelite.client.plugins.banktags;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseWheelEvent;
@@ -54,6 +53,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.Subscribe;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.Widget;
