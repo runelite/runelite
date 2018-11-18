@@ -101,6 +101,7 @@ public class WidgetID
 	public static final int TITHE_FARM_GROUP_ID = 241;
 	public static final int KINGDOM_GROUP_ID = 392;
 	public static final int BARROWS_GROUP_ID = 24;
+	public static final int WORLD_SWITCHER_GROUP_ID = 69;
 	public static final int BLAST_MINE_GROUP_ID = 598;
 	public static final int MTA_ALCHEMY_GROUP_ID = 194;
 	public static final int MTA_ENCHANTMENT_GROUP_ID = 195;
@@ -112,7 +113,6 @@ public class WidgetID
 	public static final int KILL_LOGS_GROUP_ID = 549;
 	public static final int DIARY_QUEST_GROUP_ID = 119;
 	public static final int THEATRE_OF_BLOOD_GROUP_ID = 23;
-	public static final int WORLD_SWITCHER_GROUP_ID = 69;
 	public static final int DIALOG_OPTION_GROUP_ID = 219;
 	public static final int DIALOG_PLAYER_GROUP_ID = 217;
 	public static final int FOSSIL_ISLAND_OXYGENBAR_ID = 609;
@@ -671,7 +671,21 @@ public class WidgetID
 
 	static class WorldSwitcher
 	{
+		static final int WIDGET_CONTAINER = 0;
+		static final int HEADER = 2;
+		static final int WIDGET = 8;
+		static final int SCROLLBAR = 16;
+		static final int FULL_AREA = 1;
+		static final int TYPE_SORT = 10;
+		static final int ID_SORT = 11;
+		static final int REGION_SORT = 12;
+		static final int POPULATION_SORT = 13;
+		static final int ACTIVITY_SORT = 14;
 		static final int WORLD_LIST = 15;
+		static final int FAVOURITE_ONE = 19;
+		static final int FAVOURITE_TWO = 20;
+		static final int FAVOURITE_CONTAINER = 17;
+		static final int TOOLTIP_CONTAINER = 22;
 	}
 
 	static class FossilOxygen

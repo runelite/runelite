@@ -1,0 +1,725 @@
+.id 960
+.int_stack_count    17
+.string_stack_count 1
+.int_var_count      22
+.string_var_count   2
+   iload                  4
+   load_int               -1
+   if_icmpne              LABEL4
+   jump                   LABEL37
+LABEL4:
+   iload                  3
+   iload                  4
+   widget_load_child      1
+   load_int               1
+   if_icmpeq              LABEL10
+   jump                   LABEL37
+LABEL10:
+   load_int               0
+   widget_put_hidden      1
+   load_int               0
+   iload                  2
+   load_int               1
+   load_int               0
+   widget_put_position    1
+   sload                  0
+   string_length         
+   load_int               0
+   if_icmpgt              LABEL22
+   jump                   LABEL33
+LABEL22:
+   load_int               526
+   load_int               -2147483645
+   load_int               -2147483643
+   iload                  16
+   sload                  0
+   string_remove_html
+   iload                  5                ; load world
+   load_string            "replaceHover"   ;
+   runelite_callback                       ;
+   pop_int                                 ; pop world
+   load_int               25
+   load_int               190
+   load_string            "IiIsii"
+   widget_put_mouse_hover_listener 1
+   jump                   LABEL36
+LABEL33:
+   load_int               -1
+   load_string            ""
+   widget_put_mouse_hover_listener 1
+LABEL36:
+   jump                   LABEL58
+LABEL37:
+   sload                  0
+   string_length         
+   load_int               0
+   if_icmpgt              LABEL42
+   jump                   LABEL54
+LABEL42:
+   load_int               526
+   load_int               -2147483645
+   load_int               -1
+   iload                  16
+   sload                  0
+   string_remove_html    
+   load_int               25
+   load_int               190
+   load_string            "IiIsii"
+   iload                  3
+   widget_put_mouse_hover_listener_widget
+   jump                   LABEL58
+LABEL54:
+   load_int               -1
+   load_string            ""
+   iload                  3
+   widget_put_mouse_hover_listener_widget
+LABEL58:
+   load_int               0
+   istore                 17
+   load_int               0
+   istore                 18
+   get_worldnum          
+   iload                  5
+   if_icmpeq              LABEL66
+   jump                   LABEL69
+LABEL66:
+   load_int               1
+   istore                 17
+   jump                   LABEL100
+LABEL69:
+   iload                  6
+   load_int               7
+   test_bit              
+   load_int               1
+   if_icmpeq              LABEL75
+   jump                   LABEL100
+LABEL75:
+   load_int               105
+   load_int               105
+   load_int               1496
+   iload                  5
+   get_enum_value        
+   istore                 18
+   iload                  6
+   load_int               0
+   test_bit              
+   load_int               1
+   if_icmpeq              LABEL87
+   jump                   LABEL94
+LABEL87:
+   iload                  14
+   iload                  18
+   if_icmplt              LABEL91
+   jump                   LABEL93
+LABEL91:
+   load_int               1
+   istore                 17
+LABEL93:
+   jump                   LABEL100
+LABEL94:
+   iload                  15
+   iload                  18
+   if_icmplt              LABEL98
+   jump                   LABEL100
+LABEL98:
+   load_int               1
+   istore                 17
+LABEL100:
+   load_int               16
+   istore                 19
+   invoke                 1972
+   load_int               1
+   if_icmpeq              LABEL106
+   jump                   LABEL108
+LABEL106:
+   load_int               24
+   istore                 19
+LABEL108:
+   iload                  0
+   load_int               3
+   iload                  1
+   widget_create_child   
+   iload                  1
+   load_int               1
+   iadd                  
+   istore                 1
+   load_int               0
+   iload                  19
+   load_int               1
+   load_int               0
+   widget_put_size       
+   load_int               0
+   iload                  2
+   load_int               1
+   load_int               0
+   widget_put_position   
+   load_int               1
+   widget_put_filled     
+   iload                  17
+   load_int               0
+   if_icmpeq              LABEL132
+   jump                   LABEL191
+LABEL132:
+   load_int               16777215
+   widget_put_textcolor  
+   load_int               255
+   widget_put_opacity    
+   iload                  4
+   load_int               -1
+   if_icmpne              LABEL140
+   jump                   LABEL167
+LABEL140:
+   iload                  3
+   iload                  4
+   widget_load_child      1
+   load_int               1
+   if_icmpeq              LABEL146
+   jump                   LABEL167
+LABEL146:
+   load_int               244
+   iload                  0
+   widget_get_index      
+   load_int               200
+   load_int               -1
+   load_string            "IiiI"
+   widget_put_mouse_enter_listener 1
+   load_int               244
+   iload                  0
+   widget_get_index      
+   load_int               255
+   iload                  16
+   load_string            "IiiI"
+   widget_put_mouse_exit_listener 1
+   load_int               970
+   load_int               -2147483644
+   load_int               6
+   iload                  5
+   load_string            "iii"
+   widget_put_option_click_listener 1
+   jump                   LABEL190
+LABEL167:
+   load_int               244
+   load_int               -2147483645
+   widget_get_index      
+   load_int               200
+   load_int               -1
+   load_string            "IiiI"
+   iload                  3
+   widget_put_mouse_enter_listener_widget
+   load_int               244
+   load_int               -2147483645
+   widget_get_index      
+   load_int               255
+   iload                  16
+   load_string            "IiiI"
+   iload                  3
+   widget_put_mouse_exit_listener_widget
+   load_int               970
+   load_int               -2147483644
+   load_int               6
+   iload                  5
+   load_string            "iii"
+   iload                  3
+   widget_put_option_click_listener_widget
+LABEL190:
+   jump                   LABEL229
+LABEL191:
+   get_worldnum          
+   iload                  5
+   if_icmpeq              LABEL195
+   jump                   LABEL198
+LABEL195:
+   load_int               901389
+   widget_put_textcolor  
+   jump                   LABEL200
+LABEL198:
+   load_int               0
+   widget_put_textcolor  
+LABEL200:
+   load_int               175
+   widget_put_opacity    
+   iload                  4
+   load_int               -1
+   if_icmpne              LABEL206
+   jump                   LABEL220
+LABEL206:
+   iload                  3
+   iload                  4
+   widget_load_child      1
+   load_int               1
+   if_icmpeq              LABEL212
+   jump                   LABEL220
+LABEL212:
+   load_int               40
+   iload                  16
+   load_string            "I"
+   widget_put_mouse_exit_listener 1
+   load_int               -1
+   load_string            ""
+   widget_put_option_click_listener 1
+   jump                   LABEL229
+LABEL220:
+   load_int               40
+   iload                  16
+   load_string            "I"
+   iload                  3
+   widget_put_mouse_exit_listener_widget
+   load_int               -1
+   load_string            ""
+   iload                  3
+   widget_put_option_click_listener_widget
+LABEL229:
+   iload                  0
+   load_int               5
+   iload                  1
+   widget_create_child   
+   iload                  1
+   load_int               1
+   iadd                  
+   istore                 1
+   load_int               16
+   load_int               16
+   load_int               0
+   load_int               0
+   widget_put_size       
+   invoke                 1972
+   load_int               1
+   if_icmpeq              LABEL246
+   jump                   LABEL254
+LABEL246:
+   load_int               0
+   iload                  2
+   load_int               3
+   iadd                  
+   load_int               0
+   load_int               0
+   widget_put_position   
+   jump                   LABEL259
+LABEL254:
+   load_int               0
+   iload                  2
+   load_int               0
+   load_int               0
+   widget_put_position   
+LABEL259:
+   iload                  0
+   load_int               4
+   iload                  1
+   widget_create_child    1
+   iload                  1
+   load_int               1
+   iadd                  
+   istore                 1
+   iload                  10
+   iload                  19
+   load_int               0
+   load_int               0
+   widget_put_size        1
+   iload                  9
+   iload                  2
+   load_int               0
+   load_int               0
+   widget_put_position    1
+   load_int               495
+   widget_put_fontid      1
+   load_int               1
+   load_int               1
+   load_int               0
+   widget_put_text_alignment 1
+   load_int               1
+   widget_put_text_shadowed 1
+   iload                  5
+   load_int               0
+   if_icmple              LABEL289
+   jump                   LABEL292
+LABEL289:
+   load_string            "-"
+   widget_put_text        1
+   jump                   LABEL295
+LABEL292:
+   iload                  5
+   int_to_string         
+   widget_put_text        1
+LABEL295:
+   iload                  6
+   load_int               2
+   test_bit              
+   load_int               1
+   if_icmpeq              LABEL301
+   jump                   LABEL313
+LABEL301:
+   load_int               1237
+   widget_put_spriteid   
+   iload                  17
+   load_int               0
+   if_icmpeq              LABEL307
+   jump                   LABEL310
+LABEL307:
+   load_int               15790080
+   widget_put_textcolor   1
+   jump                   LABEL312
+LABEL310:
+   load_int               8355711
+   widget_put_textcolor   1
+LABEL312:
+   jump                   LABEL378
+LABEL313:
+   iload                  6
+   load_int               29
+   test_bit              
+   load_int               1
+   if_icmpeq              LABEL319
+   jump                   LABEL331
+LABEL319:
+   load_int               1238
+   widget_put_spriteid   
+   iload                  17
+   load_int               0
+   if_icmpeq              LABEL325
+   jump                   LABEL328
+LABEL325:
+   load_int               15790080
+   widget_put_textcolor   1
+   jump                   LABEL330
+LABEL328:
+   load_int               8355711
+   widget_put_textcolor   1
+LABEL330:
+   jump                   LABEL378
+LABEL331:
+   iload                  6
+   load_int               25
+   test_bit              
+   load_int               1
+   if_icmpeq              LABEL337
+   jump                   LABEL349
+LABEL337:
+   load_int               1338
+   widget_put_spriteid   
+   iload                  17
+   load_int               0
+   if_icmpeq              LABEL343
+   jump                   LABEL346
+LABEL343:
+   load_int               15790080
+   widget_put_textcolor   1
+   jump                   LABEL348
+LABEL346:
+   load_int               8355711
+   widget_put_textcolor   1
+LABEL348:
+   jump                   LABEL378
+LABEL349:
+   iload                  6
+   load_int               0
+   test_bit              
+   load_int               1
+   if_icmpeq              LABEL355
+   jump                   LABEL367
+LABEL355:
+   load_int               1131
+   widget_put_spriteid   
+   iload                  17
+   load_int               0
+   if_icmpeq              LABEL361
+   jump                   LABEL364
+LABEL361:
+   load_int               15790080
+   widget_put_textcolor   1
+   jump                   LABEL366
+LABEL364:
+   load_int               8355711
+   widget_put_textcolor   1
+LABEL366:
+   jump                   LABEL378
+LABEL367:
+   load_int               1130
+   widget_put_spriteid   
+   iload                  17
+   load_int               0
+   if_icmpeq              LABEL373
+   jump                   LABEL376
+LABEL373:
+   load_int               14737632
+   widget_put_textcolor   1
+   jump                   LABEL378
+LABEL376:
+   load_int               8355711
+   widget_put_textcolor   1
+LABEL378:
+   load_int               1                     ;
+   iload                  5                     ; load world num
+   load_string            ""                    ; to be replaced with ping
+   load_string            "replaceRegionCheck"  ;
+   runelite_callback                            ;
+   if_icmpeq              LABEL1000             ; jump to text widget creation
+   pop_string                                   ; pop ping string if we're not replacing
+   iload                  0
+   load_int               5
+   iload                  1
+   widget_create_child   
+   iload                  1
+   load_int               1
+   iadd                  
+   istore                 1
+   iload                  11
+   load_int               15
+   load_int               0
+   load_int               0
+   widget_put_size       
+   invoke                 1972
+   load_int               1
+   if_icmpeq              LABEL395
+   jump                   LABEL405
+LABEL395:
+   iload                  9
+   iload                  10
+   iadd                  
+   iload                  2
+   load_int               4
+   iadd                  
+   load_int               0
+   load_int               0
+   widget_put_position   
+   jump                   LABEL412
+LABEL405:
+   iload                  9
+   iload                  10
+   iadd                  
+   iload                  2
+   load_int               0
+   load_int               0
+   widget_put_position   
+LABEL412:
+   load_int               105
+   load_int               100
+   load_int               1125
+   iload                  7
+   get_enum_value        
+   widget_put_spriteid
+   iload                  0
+   load_int               4
+   iload                  1
+   widget_create_child   
+   iload                  1
+   load_int               1
+   iadd                  
+   istore                 1
+   iload                  12
+   iload                  19
+   load_int               0
+   load_int               0
+   widget_put_size       
+   iload                  13
+   iload                  2
+   load_int               2
+   load_int               0
+   widget_put_position   
+   iload                  17
+   load_int               0
+   if_icmpeq              LABEL440
+   jump                   LABEL443
+LABEL1000:
+   iload                  0            ;  creating a text widget to hold the ping
+   load_int               4            ;
+   iload                  1            ;
+   widget_create_child                 ;
+   iload                  1            ;
+   load_int               1            ;
+   iadd                                ;
+   istore                 1            ;
+   iload                  11           ;
+   load_int               15           ;
+   load_int               0            ;
+   load_int               0            ;
+   widget_put_size                     ;
+   iload                  9            ;
+   iload                  10           ;
+   iadd                                ;
+   iload                  2            ;
+   load_int               0            ;
+   load_int               0            ;
+   widget_put_position                 ;
+   load_int               16777215     ;
+   widget_put_textcolor                ;
+   load_int               494          ;
+   widget_put_fontid                   ;
+   load_int               1            ;
+   load_int               1            ;
+   load_int               0            ;
+   widget_put_text_alignment           ;
+   load_int               1            ;
+   widget_put_text_shadowed            ;
+   widget_put_text                     ;
+   iload                  0            ;
+   load_int               4            ;
+   iload                  1            ;
+   widget_create_child                 ;
+   iload                  1            ;
+   load_int               1            ;
+   iadd                                ;
+   istore                 1            ;
+   iload                  12           ;
+   load_int               16           ;
+   load_int               0            ;
+   load_int               0            ;
+   widget_put_size                     ;
+   iload                  13           ;
+   iload                  2            ;
+   load_int               2            ;
+   load_int               0            ;
+   widget_put_position                 ;
+   iload                  17           ;
+   load_int               0            ;
+   if_icmpeq              LABEL440     ;
+   jump                   LABEL443     ;
+LABEL440:
+   load_int               16777215
+   widget_put_textcolor  
+   jump                   LABEL445
+LABEL443:
+   load_int               8355711
+   widget_put_textcolor  
+LABEL445:
+   load_int               494
+   widget_put_fontid     
+   load_int               1
+   load_int               1
+   load_int               0
+   widget_put_text_alignment
+   load_int               1
+   widget_put_text_shadowed
+   iload                  8
+   int_to_string         
+   widget_put_text       
+   load_int               0
+   istore                 20
+   load_string            ""
+   sstore                 1
+   sload                  0
+   string_length         
+   istore                 21
+   iload                  21
+   load_int               0
+   if_icmple              LABEL467
+   jump                   LABEL471
+LABEL467:
+   load_string            "-"
+   load_int               1
+   istore                 21
+   sstore                 0
+LABEL471:
+   iload                  21
+   load_int               0
+   if_icmpgt              LABEL475
+   jump                   LABEL513
+LABEL475:
+   sload                  0
+   load_int               512
+   load_int               494
+   get_max_line_width    
+   iload                  13
+   if_icmpgt              LABEL482
+   jump                   LABEL513
+LABEL482:
+   iload                  21
+   load_int               1
+   if_icmpgt              LABEL486
+   jump                   LABEL513
+LABEL486:
+   iload                  20
+   load_int               0
+   if_icmpeq              LABEL490
+   jump                   LABEL513
+LABEL490:
+   iload                  21
+   load_int               1
+   isub                  
+   istore                 21
+   sload                  0
+   load_int               0
+   iload                  21
+   string_substring      
+   load_string            "..."
+   concat_string         
+   sstore                 1
+   sload                  1
+   load_int               512
+   load_int               494
+   get_max_line_width    
+   iload                  13
+   if_icmple              LABEL508
+   jump                   LABEL512
+LABEL508:
+   sload                  1
+   load_int               1
+   istore                 20
+   sstore                 0
+LABEL512:
+   jump                   LABEL482
+LABEL513:
+   iload                  0
+   load_int               4
+   iload                  1
+   widget_create_child   
+   iload                  1
+   load_int               1
+   iadd                  
+   istore                 1
+   iload                  13
+   iload                  19
+   load_int               0
+   load_int               0
+   widget_put_size       
+   load_int               0
+   iload                  2
+   load_int               2
+   load_int               0
+   widget_put_position   
+   iload                  17
+   load_int               1
+   if_icmpeq              LABEL535
+   jump                   LABEL538
+LABEL535:
+   load_int               8355711
+   widget_put_textcolor  
+   jump                   LABEL559
+LABEL538:
+   iload                  6
+   load_int               2
+   test_bit              
+   load_int               1
+   if_icmpeq              LABEL554
+   iload                  6
+   load_int               29
+   test_bit              
+   load_int               1
+   if_icmpeq              LABEL554
+   iload                  6
+   load_int               25
+   test_bit              
+   load_int               1
+   if_icmpeq              LABEL554
+   jump                   LABEL557
+LABEL554:
+   load_int               16711680
+   widget_put_textcolor  
+   jump                   LABEL559
+LABEL557:
+   load_int               16750623
+   widget_put_textcolor  
+LABEL559:
+   load_int               494
+   widget_put_fontid     
+   load_int               0
+   load_int               1
+   load_int               0
+   widget_put_text_alignment
+   load_int               1
+   widget_put_text_shadowed
+   sload                  0
+   widget_put_text       
+   iload                  1
+   return                
+   load_int               0
+   return                
