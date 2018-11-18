@@ -199,6 +199,8 @@ public enum Varbits
 	HB_FINISH(5766),
 	HB_STARTED(5767), //not working
 
+	HB_HARVEST(5945),
+
 	/**
 	 * Barbarian Assault
 	 */

@@ -185,4 +185,8 @@ public final class AnimationID
 
 	// POH Animations
 	public static final int INCENSE_BURNER = 3687;
+
+	//Herbiboar
+
+	public static final int HERBIBOAR_HARVEST = 2277;
 }
