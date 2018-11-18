@@ -43,9 +43,10 @@ public enum Tab
 	HOPS("Hops Patches", ItemID.BARLEY),
 	BUSH("Bush Patches", ItemID.POISON_IVY_BERRIES),
 	GRAPE("Grape Patches", ItemID.GRAPES),
-	SPECIAL("Special Patches", ItemID.MUSHROOM);
+	SPECIAL("Special Patches", ItemID.MUSHROOM),
+	COMPOST_BIN("Compost Bins", ItemID.COMPOST_BIN);
 
-	public static final Tab[] FARMING_TABS = {HERB, TREE, FRUIT_TREE, SPECIAL, FLOWER, ALLOTMENT, BUSH, GRAPE, HOPS};
+	public static final Tab[] FARMING_TABS = {HERB, TREE, FRUIT_TREE, SPECIAL, FLOWER, ALLOTMENT, BUSH, GRAPE, HOPS, COMPOST_BIN};
 
 	private final String name;
 	private final int itemID;

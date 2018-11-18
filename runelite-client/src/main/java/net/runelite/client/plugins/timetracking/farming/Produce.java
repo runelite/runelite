@@ -112,7 +112,11 @@ public enum Produce
 	CACTUS("Cactus", ItemID.POTATO_CACTUS, 80, 8, 20, 4),
 	BELLADONNA("Belladonna", ItemID.CAVE_NIGHTSHADE, 80, 5),
 	CALQUAT("Calquat", ItemID.CALQUAT_FRUIT, 160, 9, 0, 7),
-	SPIRIT_TREE("Spirit Tree", ItemID.SPIRIT_TREE, 320, 13);
+	SPIRIT_TREE("Spirit Tree", ItemID.SPIRIT_TREE, 320, 13),
+
+	// Compost bin
+	COMPOST("Compost", ItemID.COMPOST, 20, 4, 0, 15),
+	SUPERCOMPOST("Supercompost", ItemID.SUPERCOMPOST, 20, 4, 0, 15);
 
 	/**
 	 * User-visible name

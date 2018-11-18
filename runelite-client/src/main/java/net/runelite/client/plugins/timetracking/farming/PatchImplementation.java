@@ -2292,6 +2292,46 @@ public enum PatchImplementation
 				}
 				return null;
 			}
+		},
+	COMPOST_BIN(Tab.COMPOST_BIN, "")
+		{
+			@Override
+			PatchState forVarbitValue(int value)
+			{
+				if (value == 31)
+				{
+					return new PatchState(Produce.COMPOST, CropState.GROWING, 0);
+				}
+				if (value == 32)
+				{
+					return new PatchState(Produce.COMPOST, CropState.GROWING, 2);
+				}
+				if (value == 94)
+				{
+					return new PatchState(Produce.COMPOST, CropState.HARVESTABLE, 14);
+				}
+				if (value >= 16 && value <= 30)
+				{
+					return new PatchState(Produce.COMPOST, CropState.HARVESTABLE, value - 16);
+				}
+				if (value == 95)
+				{
+					return new PatchState(Produce.SUPERCOMPOST, CropState.GROWING, 0);
+				}
+				if (value == 96)
+				{
+					return new PatchState(Produce.SUPERCOMPOST, CropState.GROWING, 2);
+				}
+				if (value == 126)
+				{
+					return new PatchState(Produce.SUPERCOMPOST, CropState.HARVESTABLE, 14);
+				}
+				if (value >= 48 && value <= 62)
+				{
+					return new PatchState(Produce.SUPERCOMPOST, CropState.HARVESTABLE, value - 48);
+				}
+				return null;
+			}
 		};
 
 	abstract PatchState forVarbitValue(int value);

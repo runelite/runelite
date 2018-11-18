@@ -375,6 +375,7 @@ public enum Varbits
 	FARMING_4772(4772),
 	FARMING_4773(4773),
 	FARMING_4774(4774),
+	FARMING_4775(4775), //Compost bin
 
 	/**
 	 * Transmog controllers for grapes
