@@ -206,7 +206,8 @@ public class LootTrackerPlugin extends Plugin
 	{
 		ItemContainer container = itemContainerChanged.getItemContainer();
 
-		if(container != client.getItemContainer(InventoryID.INVENTORY) || client.getVar(Varbits.HB_HARVEST) == 0) {	//Is Harvesting?
+		if (container != client.getItemContainer(InventoryID.INVENTORY) || client.getVar(Varbits.HB_HARVEST) == 0) //Is Harvesting?
+		{
 			return;
 		}
 
