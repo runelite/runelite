@@ -152,7 +152,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private int textureArrayId;
 
-	private final IntBuffer uniformBuffer = GpuIntBuffer.allocateDirect(5);
+	private int uniformBufferId;
+	private final IntBuffer uniformBuffer = GpuIntBuffer.allocateDirect(5 + 3 + 2048 * 4);
 	private final float[] textureOffsets = new float[128];
 
 	private GpuIntBuffer vertexBuffer;
@@ -211,7 +212,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		{
 			try
 			{
-				bufferId = uvBufferId = -1;
+				bufferId = uvBufferId = uniformBufferId = -1;
 
 				vertexBuffer = new GpuIntBuffer();
 				uvBuffer = new GpuFloatBuffer();
@@ -265,6 +266,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				initVao();
 				initProgram();
 				initInterfaceTexture();
+				initUniformBuffer();
 
 				client.setDrawCallbacks(this);
 				client.setGpu(true);
@@ -336,6 +338,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			{
 				GLUtil.glDeleteBuffer(gl, uvBufferId);
 				uvBufferId = -1;
+			}
+
+			if (uniformBufferId != -1)
+			{
+				GLUtil.glDeleteBuffer(gl, uniformBufferId);
+				uniformBufferId = -1;
 			}
 
 			shutdownInterfaceTexture();
@@ -522,6 +530,25 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		interfaceTexture = -1;
 	}
 
+	private void initUniformBuffer()
+	{
+		uniformBufferId = glGenBuffers(gl);
+		gl.glBindBuffer(gl.GL_UNIFORM_BUFFER, uniformBufferId);
+		uniformBuffer.clear();
+		uniformBuffer.put(new int[8]);
+		final int[] pad = new int[2];
+		for (int i = 0; i < 2048; i++)
+		{
+			uniformBuffer.put(Perspective.SINE[i]);
+			uniformBuffer.put(Perspective.COSINE[i]);
+			uniformBuffer.put(pad);
+		}
+		uniformBuffer.flip();
+
+		gl.glBufferData(gl.GL_UNIFORM_BUFFER, uniformBuffer.limit() * Integer.BYTES, uniformBuffer, gl.GL_STATIC_DRAW);
+		gl.glBindBuffer(gl.GL_UNIFORM_BUFFER, 0);
+	}
+
 	private void createProjectionMatrix(float left, float right, float bottom, float top, float near, float far)
 	{
 		// create a standard orthographic projection
@@ -695,7 +722,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.GL_STREAM_DRAW);
 
 		// UBO
-		int uniformBufferId = glGenBuffers(gl);
 		gl.glBindBuffer(gl.GL_UNIFORM_BUFFER, uniformBufferId);
 		uniformBuffer.clear();
 		uniformBuffer
@@ -706,7 +732,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			.put(client.getScale());
 		uniformBuffer.flip();
 
-		gl.glBufferData(gl.GL_UNIFORM_BUFFER, uniformBuffer.limit() * Integer.BYTES, uniformBuffer, gl.GL_STATIC_DRAW);
+		gl.glBufferSubData(gl.GL_UNIFORM_BUFFER, 0, uniformBuffer.limit() * Integer.BYTES, uniformBuffer);
 		gl.glBindBuffer(gl.GL_UNIFORM_BUFFER, 0);
 
 		gl.glUniformBlockBinding(glSmallComputeProgram, uniBlockSmall, 0);
@@ -814,8 +840,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			gl.glUseProgram(0);
 		}
-
-		glDeleteBuffer(gl, uniformBufferId);
 
 		vertexBuffer.clear();
 		uvBuffer.clear();
