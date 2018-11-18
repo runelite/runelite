@@ -29,7 +29,6 @@ import net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleState;
 import net.runelite.client.plugins.puzzlesolver.solver.heuristics.ManhattanDistance;
 import net.runelite.client.plugins.puzzlesolver.solver.monkeymadness.PuzzleSolverMM;
-import net.runelite.client.plugins.puzzlesolver.solver.monkeymadness.PuzzleStateMM;
 import net.runelite.client.plugins.puzzlesolver.solver.pathfinding.IDAStar;
 import org.junit.Test;
 import static org.junit.Assert.assertFalse;
@@ -92,7 +91,7 @@ public class PuzzleSolverTest
 	{
 		for (PuzzleState state : START_STATES)
 		{
-			PuzzleSolver solver = new PuzzleSolverMM(new IDAStar(new ManhattanDistance()), new PuzzleStateMM(state.getPuzzle()));
+			PuzzleSolver solver = new PuzzleSolverMM(new IDAStar(new ManhattanDistance()), new PuzzleState(state.getPuzzle()));
 			solver.run();
 
 			assertTrue(solver.hasSolution());

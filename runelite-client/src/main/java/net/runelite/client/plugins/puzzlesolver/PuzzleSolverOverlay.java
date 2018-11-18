@@ -51,6 +51,7 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleState;
 import net.runelite.client.plugins.puzzlesolver.solver.heuristics.ManhattanDistance;
+import net.runelite.client.plugins.puzzlesolver.solver.monkeymadness.PuzzleSolverMM;
 import net.runelite.client.plugins.puzzlesolver.solver.pathfinding.IDAStar;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -79,6 +80,7 @@ public class PuzzleSolverOverlay extends Overlay
 	private PuzzleSolver solver;
 	private Future<?> solverFuture;
 	private int[] cachedItems;
+	private boolean useNormalSolver;
 
 	private BufferedImage upArrow;
 	private BufferedImage leftArrow;
@@ -105,11 +107,18 @@ public class PuzzleSolverOverlay extends Overlay
 			return null;
 		}
 
+		useNormalSolver = true;
 		ItemContainer container = client.getItemContainer(InventoryID.PUZZLE_BOX);
 
 		if (container == null)
 		{
-			return null;
+			useNormalSolver = false;
+			container = client.getItemContainer(InventoryID.MONKEY_MADNESS_PUZZLE_BOX);
+
+			if (container == null)
+			{
+				return null;
+			}
 		}
 
 		Widget puzzleBox = client.getWidget(WidgetInfo.PUZZLE_BOX);
@@ -367,11 +376,9 @@ public class PuzzleSolverOverlay extends Overlay
 		return convertToSolverFormat(itemIds);
 	}
 
-	/**
-	 * This depends on there being no gaps in between item ids in puzzles.
-	 */
 	private int[] convertToSolverFormat(int[] items)
 	{
+		int ratio = useNormalSolver ? 1 : 2;
 		int lowestId = Integer.MAX_VALUE;
 
 		int[] convertedItems = new int[items.length];
@@ -393,7 +400,7 @@ public class PuzzleSolverOverlay extends Overlay
 		{
 			if (items[i] != BLANK_TILE_VALUE)
 			{
-				convertedItems[i] = items[i] - lowestId;
+				convertedItems[i] = (items[i] - lowestId) / ratio;
 			}
 			else
 			{
@@ -419,7 +426,15 @@ public class PuzzleSolverOverlay extends Overlay
 
 		PuzzleState puzzleState = new PuzzleState(items);
 
-		solver = new PuzzleSolver(new IDAStar(new ManhattanDistance()), puzzleState);
+		if (useNormalSolver)
+		{
+			solver = new PuzzleSolver(new IDAStar(new ManhattanDistance()), puzzleState);
+		}
+		else
+		{
+			solver = new PuzzleSolverMM(new IDAStar(new ManhattanDistance()), puzzleState);
+		}
+
 		solverFuture = executorService.submit(solver);
 	}
 

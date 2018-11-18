@@ -76,9 +76,6 @@ public class PuzzleSolverPlugin extends Plugin
 	private PuzzleSolverOverlay overlay;
 
 	@Inject
-	private PuzzleSolverOverlayMM overlayMM;
-
-	@Inject
 	private Client client;
 
 	private LightboxState lightbox;
@@ -90,14 +87,12 @@ public class PuzzleSolverPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
-		overlayManager.add(overlayMM);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
-		overlayManager.remove(overlayMM);
 	}
 
 	@Provides
