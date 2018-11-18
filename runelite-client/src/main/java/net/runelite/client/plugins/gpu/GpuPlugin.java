@@ -120,6 +120,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private Canvas canvas;
 	private JAWTWindow jawtWindow;
 	private GL4 gl;
+	private GLContext glContext;
 	private GLDrawable glDrawable;
 
 	private int glProgram;
@@ -240,7 +241,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				glDrawable = glDrawableFactory.createGLDrawable(jawtWindow);
 				glDrawable.setRealized(true);
 
-				GLContext glContext = glDrawable.createContext(null);
+				glContext = glDrawable.createContext(null);
 				int res = glContext.makeCurrent();
 				if (res == GLContext.CONTEXT_NOT_CURRENT)
 				{
@@ -330,6 +331,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			shutdownInterfaceTexture();
 			shutdownProgram();
 			shutdownVao();
+
+			glContext.destroy();
+
+			jawtWindow = null;
+			gl = null;
+			glDrawable = null;
+			glContext = null;
 
 			vertexBuffer = null;
 			uvBuffer = null;
