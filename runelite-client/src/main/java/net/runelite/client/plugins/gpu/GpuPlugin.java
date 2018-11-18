@@ -26,8 +26,7 @@ package net.runelite.client.plugins.gpu;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import com.jogamp.nativewindow.AbstractGraphicsConfiguration;
-import com.jogamp.nativewindow.NativeWindowFactory;
+import com.jogamp.nativewindow.NativeSurface;
 import com.jogamp.nativewindow.awt.AWTGraphicsConfiguration;
 import com.jogamp.nativewindow.awt.JAWTWindow;
 import com.jogamp.opengl.GL;
@@ -50,6 +49,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.function.Function;
 import javax.inject.Inject;
+import jogamp.newt.awt.NewtFactoryAWT;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.BufferProvider;
 import net.runelite.api.Client;
@@ -120,6 +120,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private Canvas canvas;
 	private JAWTWindow jawtWindow;
 	private GL4 gl;
+	private GLContext glContext;
 	private GLDrawable glDrawable;
 
 	private int glProgram;
@@ -230,21 +231,26 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				GLProfile glProfile = GLProfile.get(GLProfile.GL4bc);
 
 				GLCapabilities glCaps = new GLCapabilities(glProfile);
-				AbstractGraphicsConfiguration config = AWTGraphicsConfiguration.create(canvas.getGraphicsConfiguration(),
-					glCaps, glCaps);
+				AWTGraphicsConfiguration config = AWTGraphicsConfiguration.create(canvas.getGraphicsConfiguration(), glCaps, glCaps);
 
-				jawtWindow = (JAWTWindow) NativeWindowFactory.getNativeWindow(canvas, config);
+				jawtWindow = NewtFactoryAWT.getNativeWindow(canvas, config);
+				canvas.setFocusable(true);
 
 				GLDrawableFactory glDrawableFactory = GLDrawableFactory.getFactory(glProfile);
 
 				glDrawable = glDrawableFactory.createGLDrawable(jawtWindow);
 				glDrawable.setRealized(true);
 
-				GLContext glContext = glDrawable.createContext(null);
+				glContext = glDrawable.createContext(null);
 				int res = glContext.makeCurrent();
 				if (res == GLContext.CONTEXT_NOT_CURRENT)
 				{
 					throw new GLException("Unable to make context current");
+				}
+
+				if (jawtWindow.getLock().isLocked())
+				{
+					jawtWindow.unlockSurface();
 				}
 
 				this.gl = glContext.getGL().getGL4();
@@ -315,6 +321,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			client.setGpu(false);
 			client.setDrawCallbacks(null);
 
+			if (jawtWindow.getLock().getHoldCount() != NativeSurface.LOCK_SURFACE_NOT_READY)
+			{
+				jawtWindow.lockSurface();
+			}
+
 			if (bufferId != -1)
 			{
 				GLUtil.glDeleteBuffer(gl, bufferId);
@@ -330,6 +341,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			shutdownInterfaceTexture();
 			shutdownProgram();
 			shutdownVao();
+
+			glContext.destroy();
+
+			jawtWindow = null;
+			gl = null;
+			glDrawable = null;
+			glContext = null;
 
 			vertexBuffer = null;
 			uvBuffer = null;
