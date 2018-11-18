@@ -24,11 +24,17 @@
  */
 package net.runelite.client.plugins.xptracker;
 
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
 import lombok.NonNull;
+import net.runelite.api.Experience;
 import net.runelite.api.NPC;
 import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.agility.Courses;
+
+import static net.runelite.api.Skill.AGILITY;
 
 /**
  * Internal state for the XpTrackerPlugin
@@ -43,6 +49,7 @@ class XpState
 	private final XpStateTotal xpTotal = new XpStateTotal();
 	private final Map<Skill, XpStateSingle> xpSkills = new EnumMap<>(Skill.class);
 	private NPC interactedNPC;
+	private Courses course;
 
 	/**
 	 * Destroys all internal state, however any XpSnapshotSingle or XpSnapshotTotal remain unaffected.
@@ -70,12 +77,14 @@ class XpState
 	 */
 	void recalculateTotal()
 	{
+
 		xpTotal.reset();
 
 		for (XpStateSingle state : xpSkills.values())
 		{
 			xpTotal.addXpGainedInSession(state.getXpGained());
 			xpTotal.addXpPerHour(state.getXpHr());
+
 		}
 	}
 
@@ -132,6 +141,69 @@ class XpState
 		}
 
 		return DEFAULT_XP_MODIFIER;
+	}
+
+	void updateAgilityLaps(Skill skill, Courses course, int currentXp, WorldPoint playerLocation)
+	{
+		if (skill != Skill.AGILITY)
+		{
+			return;
+		}
+
+		if (course == null)
+		{
+			return;
+		}
+
+		final XpStateSingle state = getSkill(skill);
+
+		final int originalXp=(state.getXpGained() + state.getStartXp());
+		final int lastGainedExp=currentXp - originalXp;
+
+		if (originalXp == -1 && currentXp > 0) {
+			initializeSkill(skill, currentXp);
+		}
+
+		// Set action xp as course completion xp
+		final int courseCompletionXp = (int)course.getTotalXp();
+
+		final XpAction action = state.getXpAction(XpActionType.AGILITY_LAPS);
+		state.setActionType(XpActionType.AGILITY_LAPS);
+
+		final boolean hasCompletedCourse = !(course.getCourseEndWorldPoints().length == 0
+				? Math.abs(course.getLastObstacleXp() - lastGainedExp) > 1
+				: Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(playerLocation)));
+		final boolean isLevelledUp = Experience.getLevelForXp(originalXp) < Experience.getLevelForXp(currentXp);
+
+		if (action.isActionsHistoryInitialized())
+		{
+			if ( !hasCompletedCourse )
+			{
+				return;
+			}
+
+			action.getActionExps()[action.getActionExpIndex()] = courseCompletionXp;
+
+			if (this.course != course)
+			{
+				action.setActionExpIndex((action.getActionExpIndex() + 1) % action.getActionExps().length);
+			}
+		}
+		else
+		{
+			// So we have a decent average off the bat, lets populate all values with what we see.
+			for (int i = 0; i < action.getActionExps().length; i++)
+			{
+				action.getActionExps()[i] = courseCompletionXp;
+			}
+
+			action.setActionsHistoryInitialized(true);
+		}
+
+		this.course = course;
+		// Increment total laps
+		action.setActions(action.getActions() + 1);
+
 	}
 
 	/**

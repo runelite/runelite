@@ -47,6 +47,7 @@ class XpStateSingle
 	@Getter
 	private int xpGained = 0;
 
+
 	@Setter
 	private XpActionType actionType = XpActionType.EXPERIENCE;
 
@@ -182,6 +183,7 @@ class XpStateSingle
 
 	boolean update(int currentXp, int goalStartXp, int goalEndXp)
 	{
+
 		if (startXp == -1)
 		{
 			log.warn("Attempted to update skill state " + skill + " but was not initialized with current xp");
@@ -235,8 +237,8 @@ class XpStateSingle
 		{
 			int currentLevel = Experience.getLevelForXp(currentXp);
 			endLevelExp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL
-				? Experience.getXpForLevel(currentLevel + 1)
-				: Experience.MAX_SKILL_XP;
+					? Experience.getXpForLevel(currentLevel + 1)
+					: Experience.MAX_SKILL_XP;
 		}
 		else
 		{
@@ -259,19 +261,19 @@ class XpStateSingle
 	XpSnapshotSingle snapshot()
 	{
 		return XpSnapshotSingle.builder()
-			.startLevel(Experience.getLevelForXp(startLevelExp))
-			.endLevel(Experience.getLevelForXp(endLevelExp))
-			.xpGainedInSession(xpGained)
-			.xpRemainingToGoal(getXpRemaining())
-			.xpPerHour(getXpHr())
-			.skillProgressToGoal(getSkillProgress())
-			.actionType(actionType)
-			.actionsInSession(getXpAction(actionType).getActions())
-			.actionsRemainingToGoal(getActionsRemaining())
-			.actionsPerHour(getActionsHr())
-			.timeTillGoal(getTimeTillLevel())
-			.startGoalXp(startLevelExp)
-			.endGoalXp(endLevelExp)
-			.build();
+				.startLevel(Experience.getLevelForXp(startLevelExp))
+				.endLevel(Experience.getLevelForXp(endLevelExp))
+				.xpGainedInSession(xpGained)
+				.xpRemainingToGoal(getXpRemaining())
+				.xpPerHour(getXpHr())
+				.skillProgressToGoal(getSkillProgress())
+				.actionType(actionType)
+				.actionsInSession(getXpAction(actionType).getActions())
+				.actionsRemainingToGoal(getActionsRemaining())
+				.actionsPerHour(getActionsHr())
+				.timeTillGoal(getTimeTillLevel())
+				.startGoalXp(startLevelExp)
+				.endGoalXp(endLevelExp)
+				.build();
 	}
 }

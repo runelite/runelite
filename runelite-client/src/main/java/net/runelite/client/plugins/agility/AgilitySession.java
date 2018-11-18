@@ -25,11 +25,14 @@
 package net.runelite.client.plugins.agility;
 
 import java.time.Instant;
+import java.util.Arrays;
+
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
+import net.runelite.client.plugins.xptracker.XpTrackerService;
 
 @Getter
 @Setter
@@ -39,33 +42,27 @@ class AgilitySession
 	private Instant lastLapCompleted;
 	private int totalLaps;
 	private int lapsTillLevel;
+	private XpTrackerService xpTrackerService;
 
-	AgilitySession(Courses course)
+	AgilitySession(Courses course, XpTrackerService xpTrackerService)
+
 	{
 		this.course = course;
+		this.xpTrackerService=xpTrackerService;
 	}
 
-	void incrementLapCount(Client client)
+	void updateLapCounts(Client client)
 	{
-		lastLapCompleted = Instant.now();
-		++totalLaps;
 
-		int currentExp = client.getSkillExperience(Skill.AGILITY);
-		int nextLevel = client.getRealSkillLevel(Skill.AGILITY) + 1;
+		lapsTillLevel=xpTrackerService.getActionsLeft(Skill.AGILITY);
+		int totalLapsNew=xpTrackerService.getActions(Skill.AGILITY);
 
-		int remainingXp;
-		do
+		if (totalLapsNew > totalLaps)
 		{
-			remainingXp = nextLevel <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(nextLevel) - currentExp : 0;
-			nextLevel++;
-		} while (remainingXp < 0);
+			lastLapCompleted=Instant.now();
+		}
+		totalLaps=totalLapsNew;
 
-		lapsTillLevel = remainingXp > 0 ? (int) Math.ceil(remainingXp / course.getTotalXp()) : 0;
 	}
 
-	void resetLapCount()
-	{
-		totalLaps = 0;
-		lapsTillLevel = 0;
-	}
 }

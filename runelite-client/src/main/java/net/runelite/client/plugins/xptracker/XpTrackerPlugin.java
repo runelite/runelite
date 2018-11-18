@@ -32,6 +32,7 @@ import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
@@ -55,6 +56,7 @@ import net.runelite.client.game.NPCManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.agility.Courses;
 import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
@@ -63,20 +65,20 @@ import net.runelite.client.util.ImageUtil;
 import net.runelite.http.api.xp.XpClient;
 
 @PluginDescriptor(
-	name = "XP Tracker",
-	description = "Enable the XP Tracker panel",
-	tags = {"experience", "levels", "panel"}
+		name = "XP Tracker",
+		description = "Enable the XP Tracker panel",
+		tags = {"experience", "levels", "panel"}
 )
 @Slf4j
 public class XpTrackerPlugin extends Plugin
 {
 	static final List<Skill> COMBAT = ImmutableList.of(
-		Skill.ATTACK,
-		Skill.STRENGTH,
-		Skill.DEFENCE,
-		Skill.RANGED,
-		Skill.HITPOINTS,
-		Skill.MAGIC);
+			Skill.ATTACK,
+			Skill.STRENGTH,
+			Skill.DEFENCE,
+			Skill.RANGED,
+			Skill.HITPOINTS,
+			Skill.MAGIC);
 
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -123,11 +125,11 @@ public class XpTrackerPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "/skill_icons/overall.png");
 
 		navButton = NavigationButton.builder()
-			.tooltip("XP Tracker")
-			.icon(icon)
-			.priority(2)
-			.panel(xpPanel)
-			.build();
+				.tooltip("XP Tracker")
+				.icon(icon)
+				.priority(2)
+				.panel(xpPanel)
+				.build();
 
 		clientToolbar.addNavigation(navButton);
 	}
@@ -152,9 +154,9 @@ public class XpTrackerPlugin extends Plugin
 			{
 				// Reset
 				log.debug("World change: {} -> {}, {} -> {}",
-					lastUsername, client.getUsername(),
-					firstNonNull(lastWorldType, "<unknown>"),
-					firstNonNull(type, "<unknown>"));
+						lastUsername, client.getUsername(),
+						firstNonNull(lastWorldType, "<unknown>"),
+						firstNonNull(type, "<unknown>"));
 
 				lastUsername = client.getUsername();
 				lastWorldType = type;
@@ -268,6 +270,9 @@ public class XpTrackerPlugin extends Plugin
 			final NPC npc = (NPC) interacting;
 			xpState.updateNpcExperience(skill, npc, npcManager.getHealth(npc.getName(), npc.getCombatLevel()));
 		}
+
+		final Courses course=Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
+		xpState.updateAgilityLaps(skill,course,currentXp,client.getLocalPlayer().getWorldLocation());
 
 		final XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp, startGoalXp, endGoalXp);
 		final boolean updated = XpUpdateResult.UPDATED.equals(updateResult);
@@ -419,8 +424,8 @@ public class XpTrackerPlugin extends Plugin
 	}
 
 	@Schedule(
-		period = 1,
-		unit = ChronoUnit.SECONDS
+			period = 1,
+			unit = ChronoUnit.SECONDS
 	)
 	public void tickSkillTimes()
 	{

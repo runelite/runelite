@@ -32,7 +32,8 @@ import lombok.Getter;
 enum XpActionType
 {
 	EXPERIENCE("Actions"),
-	ACTOR_HEALTH("Kills");
+	ACTOR_HEALTH("Kills"),
+	AGILITY_LAPS("Laps Left");
 
 	private final String label;
 }

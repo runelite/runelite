@@ -32,6 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+
+import com.sun.org.apache.xpath.internal.SourceTree;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -65,15 +67,19 @@ import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
+import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Agility",
-	description = "Show helpful information about agility courses and obstacles",
-	tags = {"grace", "marks", "overlay", "shortcuts", "skilling", "traps"}
+		name = "Agility",
+		description = "Show helpful information about agility courses and obstacles",
+		tags = {"grace", "marks", "overlay", "shortcuts", "skilling", "traps"}
 )
+@PluginDependency(XpTrackerPlugin.class)
 @Slf4j
 public class AgilityPlugin extends Plugin
 {
@@ -108,6 +114,9 @@ public class AgilityPlugin extends Plugin
 
 	@Inject
 	private ItemManager itemManager;
+
+	@Inject
+	private XpTrackerService xpTrackerService;
 
 	@Getter
 	private AgilitySession session;
@@ -173,42 +182,6 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onExperienceChanged(ExperienceChanged event)
-	{
-		if (event.getSkill() != AGILITY || !config.showLapCount())
-		{
-			return;
-		}
-
-		// Determine how much EXP was actually gained
-		int agilityXp = client.getSkillExperience(AGILITY);
-		int skillGained = agilityXp - lastAgilityXp;
-		lastAgilityXp = agilityXp;
-
-		// Get course
-		Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
-		if (course == null
-			|| (course.getCourseEndWorldPoints().length == 0
-			? Math.abs(course.getLastObstacleXp() - skillGained) > 1
-			: Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation()))))
-		{
-			return;
-		}
-
-		if (session != null && session.getCourse() == course)
-		{
-			session.incrementLapCount(client);
-		}
-		else
-		{
-			session = new AgilitySession(course);
-			// New course found, reset lap count and set new course
-			session.resetLapCount();
-			session.incrementLapCount(client);
-		}
-	}
-
-	@Subscribe
 	public void onItemSpawned(ItemSpawned itemSpawned)
 	{
 		if (obstacles.isEmpty())
@@ -237,6 +210,7 @@ public class AgilityPlugin extends Plugin
 	{
 		if (isInAgilityArena())
 		{
+
 			// Hint arrow has no plane, and always returns the current plane
 			WorldPoint newTicketPosition = client.getHintArrowPoint();
 			WorldPoint oldTickPosition = lastArenaTicketPosition;
@@ -244,7 +218,7 @@ public class AgilityPlugin extends Plugin
 			lastArenaTicketPosition = newTicketPosition;
 
 			if (oldTickPosition != null && newTicketPosition != null
-				&& (oldTickPosition.getX() != newTicketPosition.getX() || oldTickPosition.getY() != newTicketPosition.getY()))
+					&& (oldTickPosition.getX() != newTicketPosition.getX() || oldTickPosition.getY() != newTicketPosition.getY()))
 			{
 				log.debug("Ticked position moved from {} to {}", oldTickPosition, newTicketPosition);
 
@@ -258,6 +232,13 @@ public class AgilityPlugin extends Plugin
 					showNewAgilityArenaTimer();
 				}
 			}
+			// Get course
+			Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
+			if (session == null || session.getCourse() != course)
+			{
+				session = new AgilitySession(course,xpTrackerService);
+			}
+			session.updateLapCounts(client);
 		}
 	}
 
@@ -270,7 +251,7 @@ public class AgilityPlugin extends Plugin
 		}
 
 		WorldPoint location = local.getWorldLocation();
-		return location.getRegionID() == AGILITY_ARENA_REGION_ID;
+		return Courses.getCourse(location.getRegionID()) != null;
 	}
 
 	private void removeAgilityArenaTimer()
@@ -366,9 +347,9 @@ public class AgilityPlugin extends Plugin
 		}
 
 		if (Obstacles.COURSE_OBSTACLE_IDS.contains(newObject.getId()) ||
-			Obstacles.SHORTCUT_OBSTACLE_IDS.contains(newObject.getId()) ||
-			(Obstacles.TRAP_OBSTACLE_IDS.contains(newObject.getId())
-				&& Obstacles.TRAP_OBSTACLE_REGIONS.contains(newObject.getWorldLocation().getRegionID())))
+				Obstacles.SHORTCUT_OBSTACLE_IDS.contains(newObject.getId()) ||
+				(Obstacles.TRAP_OBSTACLE_IDS.contains(newObject.getId())
+						&& Obstacles.TRAP_OBSTACLE_REGIONS.contains(newObject.getWorldLocation().getRegionID())))
 		{
 			obstacles.put(newObject, tile);
 		}
