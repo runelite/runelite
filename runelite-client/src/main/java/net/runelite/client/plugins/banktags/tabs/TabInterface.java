@@ -104,6 +104,7 @@ public class TabInterface
 	private static final String IMPORT_TAB = "Import tag tab";
 	private static final String VIEW_TAB = "View tag tab";
 	private static final String CHANGE_ICON = "Change icon";
+	private static final String RENAME_TAB = "Rename tag tab";
 	private static final String REMOVE_TAG = "Remove-tag";
 	private static final String TAG_GEAR = "Tag-equipment";
 	private static final String TAG_INVENTORY = "Tag-inventory";
@@ -373,6 +374,19 @@ public class TabInterface
 				final StringSelection stringSelection = new StringSelection(BankTagsPlugin.JOINER.join(data));
 				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
 				notifier.notify("Tag tab " + tagTab.getTag() + " has been copied to your clipboard!");
+				break;
+			case Tab.RENAME_TAB:
+				TagTab targetTab = tabManager.find(Text.removeTags(event.getOpbase()));
+
+				chatboxPanelManager.openTextInput("New tag name")
+					.onDone((newTag) -> clientThread.invoke(() ->
+					{
+						if (!Strings.isNullOrEmpty(newTag) && newTag != targetTab.getTag())
+						{
+							renameTab(targetTab, newTag);
+						}
+					}))
+					.build();
 				break;
 		}
 	}
@@ -684,6 +698,7 @@ public class TabInterface
 			btn.setAction(2, CHANGE_ICON);
 			btn.setAction(3, REMOVE_TAB);
 			btn.setAction(4, EXPORT_TAB);
+			btn.setAction(5, RENAME_TAB);
 			btn.setOnOpListener((JavaScriptCallback) this::handleTagTab);
 			tagTab.setBackground(btn);
 		}
@@ -717,6 +732,18 @@ public class TabInterface
 		tabManager.save();
 
 		updateBounds();
+		scrollTab(0);
+	}
+
+	private void renameTab(TagTab tab, String newTag)
+	{
+		tagManager.renameTag(tab.getTag(), newTag);
+
+		configManager.setConfiguration(CONFIG_GROUP, ICON_SEARCH + newTag, tab.getIconItemId());
+		deleteTab(tab.getTag());
+		loadTab(newTag);
+
+		tabManager.save();
 		scrollTab(0);
 	}
 
