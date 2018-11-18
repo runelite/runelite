@@ -39,6 +39,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.GameState;
+import net.runelite.api.IconID;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
 import net.runelite.api.events.ChatMessage;
@@ -811,15 +812,15 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	 */
 	private static HiscoreEndpoint getHiscoreEndpointByName(final String name)
 	{
-		if (name.contains("<img=2>"))
+		if (name.contains(IconID.IRONMAN.toString()))
 		{
 			return toEndPoint(AccountType.IRONMAN);
 		}
-		else if (name.contains("<img=3>"))
+		else if (name.contains(IconID.ULTIMATE_IRONMAN.toString()))
 		{
 			return toEndPoint(AccountType.ULTIMATE_IRONMAN);
 		}
-		else if (name.contains("<img=10>"))
+		else if (name.contains(IconID.HARDCORE_IRONMAN.toString()))
 		{
 			return toEndPoint(AccountType.HARDCORE_IRONMAN);
 		}
