@@ -190,8 +190,9 @@ class StatusBarsOverlay extends Overlay
 
 				for (final StatChange c : statsChanges.getStatChanges())
 				{
-					if (c.getTheoretical().length() > 3)
+					if (c.getTheoretical().contains("~"))
 					{
+						foodHealValue = Integer.parseInt(c.getTheoretical().substring(c.getTheoretical().lastIndexOf("~") + 1));
 						break;
 					}
 
