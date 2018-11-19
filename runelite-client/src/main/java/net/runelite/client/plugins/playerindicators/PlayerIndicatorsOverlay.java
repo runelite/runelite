@@ -72,17 +72,24 @@ public class PlayerIndicatorsOverlay extends Overlay
 		}
 
 		String name = actor.getName().replace('\u00A0', ' ');
-		String combatLevel = "(" + Integer.toString(actor.getCombatLevel()) + ")";
+		String combatLevel = Integer.toString(actor.getCombatLevel());
 		String playerInfo = "";
 
 		if (config.drawOverheadPlayerNames())
 		{
-			playerInfo = playerInfo.concat(name);
+			playerInfo = name;
 		}
 
 		if (config.drawOverheadLevels())
 		{
-			playerInfo = playerInfo.concat(combatLevel);
+			if (!playerInfo.isEmpty())
+			{
+				playerInfo = playerInfo.concat("(" + combatLevel + ")");
+			}
+			else
+			{
+				playerInfo = combatLevel;
+			}
 		}
 
 		int offset = actor.getLogicalHeight() + 40;
