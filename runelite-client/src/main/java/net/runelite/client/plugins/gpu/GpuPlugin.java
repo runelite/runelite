@@ -26,7 +26,6 @@ package net.runelite.client.plugins.gpu;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import com.jogamp.nativewindow.NativeSurface;
 import com.jogamp.nativewindow.awt.AWTGraphicsConfiguration;
 import com.jogamp.nativewindow.awt.JAWTWindow;
 import com.jogamp.opengl.GL;
@@ -328,11 +327,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			client.setGpu(false);
 			client.setDrawCallbacks(null);
 
-			if (jawtWindow.getLock().getHoldCount() != NativeSurface.LOCK_SURFACE_NOT_READY)
-			{
-				jawtWindow.lockSurface();
-			}
-
 			if (bufferId != -1)
 			{
 				GLUtil.glDeleteBuffer(gl, bufferId);
@@ -355,7 +349,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			shutdownProgram();
 			shutdownVao();
 
+			if (!jawtWindow.getLock().isLocked())
+			{
+				jawtWindow.lockSurface();
+			}
+
 			glContext.destroy();
+			NewtFactoryAWT.destroyNativeWindow(jawtWindow);
 
 			jawtWindow = null;
 			gl = null;
