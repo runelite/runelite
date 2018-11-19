@@ -29,8 +29,9 @@
  * Rotate a vertex by a given orientation in JAU
  */
 ivec4 rotate(ivec4 vertex, int orientation) {
-  int s = int(65536.0f * sin(orientation * UNIT));
-  int c = int(65536.0f * cos(orientation * UNIT));
+  ivec2 sinCos = sinCosTable[orientation];
+  int s = sinCos.x;
+  int c = sinCos.y;
   int x = vertex.z * s + vertex.x * c >> 16;
   int z = vertex.z * c - vertex.x * s >> 16;
   return ivec4(x, vertex.y, z, vertex.w);

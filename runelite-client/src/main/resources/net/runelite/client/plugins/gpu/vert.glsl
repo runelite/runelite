@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#version 400
+#version 330
 
 layout (location = 0) in ivec4 VertexPosition;
 layout (location = 1) in vec4 uv;
