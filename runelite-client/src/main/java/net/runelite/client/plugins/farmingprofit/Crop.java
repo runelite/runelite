@@ -98,7 +98,6 @@ public enum Crop
 	private final int seedAmount;
 	@Getter
 	private final int seedId;
-	@Getter
 	private final int[] products;
 	@Getter
 	private final PatchType patchType;
@@ -127,15 +126,15 @@ public enum Crop
 
 	private static Map<Integer, Crop> initializeMapping()
 	{
-		Map<Integer, Crop> mMap = new HashMap<>();
+		Map<Integer, Crop> _map = new HashMap<>();
 		for (Crop s : Crop.values())
 		{
 			for (Integer productId : s.products)
 			{
-				mMap.put(productId, s);
+				_map.put(productId, s);
 			}
 		}
-		return mMap;
+		return _map;
 	}
 
 	public static Crop fromHarvestMessage(String message)

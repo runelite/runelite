@@ -66,12 +66,12 @@ public enum HarvestMessages
 
 	private static Map<String, Crop> initializeMapping()
 	{
-		Map<String, Crop> mMap = new HashMap<>();
+		Map<String, Crop> _map = new HashMap<>();
 		for (HarvestMessages s : HarvestMessages.values())
 		{
-			mMap.put(s.harvestMessage, s.crop);
+			_map.put(s.harvestMessage, s.crop);
 		}
-		return mMap;
+		return _map;
 	}
 
 }

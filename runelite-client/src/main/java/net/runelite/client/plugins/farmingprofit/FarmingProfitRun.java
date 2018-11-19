@@ -82,7 +82,7 @@ class FarmingProfitRun
 	/**
 	 * Add a certain amount of products to the run, with a new location
 	 *
-	 * @param toAdd             Amount of products to add
+	 * @param toAdd Amount of products to add
 	 */
 	void addAmount(int toAdd)
 	{

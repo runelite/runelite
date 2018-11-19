@@ -1,3 +1,27 @@
+/*
+ * Copyright (c) 2018, Mika Kuijpers <github.com/mkuijpers>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package net.runelite.client.plugins.farmingprofit;
 
 import com.google.common.collect.HashMultiset;
@@ -63,7 +87,7 @@ public class FarmingProfitPlugin extends Plugin
 		return configManager.getConfig(FarmingProfitConfig.class);
 	}
 
-	// UI vars
+	// UI elements
 	private FarmingProfitPanel panel;
 	private NavigationButton navButton;
 
@@ -72,7 +96,6 @@ public class FarmingProfitPlugin extends Plugin
 	private Multiset<Crop> prevCropInv;
 	@Getter
 	private FarmingProfitRun latestRun = null;
-
 	@Getter
 	private int latestObjID = -1;
 	@Getter
@@ -80,14 +103,13 @@ public class FarmingProfitPlugin extends Plugin
 	@Getter
 	private boolean startedHarvesting = false;
 
-	// Static vars
-	final private static int MAX_PATCH_DISTANCE = 14;
+	// Static vars for back-up checks
+	final private static int MAX_PATCH_DISTANCE = 20;
 	final private static int MIN_TELEPORT_DISTANCE = 40;
 
 	// Flags
 	private boolean START_HARVEST_NEXT_GAMETICK = false;
 	private boolean FINISH_HARVEST_NEXT_GAMETICK = false;
-
 
 	// ====================== //
 	//     PLUGIN ACTIONS     //
@@ -96,7 +118,7 @@ public class FarmingProfitPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		log.info("Starting New Farming Profit Plugin");
+		log.info("Starting Farming Profit Plugin");
 
 		prevCropInv = HashMultiset.create();
 
@@ -131,11 +153,19 @@ public class FarmingProfitPlugin extends Plugin
 		clientToolbar.removeNavigation(navButton);
 	}
 
-
 	// ====================== //
 	//      EVENT ACTIONS     //
 	// ====================== //
 
+	/**
+	 * OnGameTick event handler.
+	 * The on game tick events are used to perform most harvest actions synced with the game tick timer.
+	 * <p>
+	 * Most of these actions use flags set in the onChatMessage since shat messages would trigger when the inventory
+	 * has not updated yet. Doing it on the next game tick makes sure that the inventory is updated.
+	 *
+	 * @param gameTick
+	 */
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
@@ -145,7 +175,7 @@ public class FarmingProfitPlugin extends Plugin
 			prevCropInv = getCropInv();
 		}
 
-		// Back-up check to make sure all harvests will finish eventually
+		// Distance check to make sure all runs will be added to the UI eventually
 		if (latestRun != null)
 		{
 			int dist = client.getLocalPlayer().getWorldLocation().distanceTo2D(latestRun.getLatestHarvestWorldPoint());
@@ -157,11 +187,10 @@ public class FarmingProfitPlugin extends Plugin
 			}
 		}
 
-		// Flag used to do corresponding actions to starting a harvest on the next game tick
+		// Flag used to do handle starting a harvest on the next game tick
 		if (START_HARVEST_NEXT_GAMETICK)
 		{
-			log.debug("Player has started harvesting");
-			printCropInv(getCropInv());
+			log.debug("Starting harvest");
 
 			startedHarvesting = true;
 			storedObjID = latestObjID;
@@ -171,11 +200,10 @@ public class FarmingProfitPlugin extends Plugin
 			START_HARVEST_NEXT_GAMETICK = false;
 		}
 
-		// Flag used to do corresponding actions when a harvest is finished on the next game tick
+		// Flag used to handle finishing a harvest on the next game tick
 		if (FINISH_HARVEST_NEXT_GAMETICK)
 		{
-			log.debug("Patch empty");
-			printCropInv(getCropInv());
+			log.debug("Finishing harvest");
 
 			startedHarvesting = false;
 
@@ -189,6 +217,13 @@ public class FarmingProfitPlugin extends Plugin
 		}
 	}
 
+	/**
+	 * MenuOptionClicked event handler.
+	 * The menu option clicked is used to track if different patches are harvested based on the latest
+	 * game object clicked.
+	 *
+	 * @param menuOption
+	 */
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked menuOption)
 	{
@@ -200,13 +235,10 @@ public class FarmingProfitPlugin extends Plugin
 	}
 
 	/**
-	 * OnChatMessage event handler:
-	 * - When a chat message is received about a certain patch being harvested this overrides the animation
-	 * harvesting detection system and adds the harvested patches to the latest run.
-	 * - If the chat message displays something about a patch being empty, a flag is set to submit the run. After the
-	 * next harvest update, the run will be submitted and shown in the UI.
+	 * ChatMessage event handler.
+	 * The chat messages of harvesting are used to perform the harvest actions.
 	 *
-	 * @param chatMessage The chat message object passed to the event.
+	 * @param chatMessage
 	 */
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
@@ -241,51 +273,44 @@ public class FarmingProfitPlugin extends Plugin
 	//       HARVESTING       //
 	// ====================== //
 
+	/**
+	 * Check inventory for a new harvest, handle harvest if new crops are detected in the inventory.
+	 */
 	private void checkForHarvest()
 	{
 		Multiset<Crop> currentCropInv = getCropInv();
 		Multiset<Crop> newCrops = getNewCrops(prevCropInv, currentCropInv);
 		if (newCrops.size() > 0)
 		{
-			handleNewCrops(newCrops);
+			Iterator<Crop> it = newCrops.iterator();
+			if (it.hasNext())
+			{
+				Crop crop = it.next();
+				int amount = newCrops.size();
+				handleHarvest(crop, amount);
+			}
 		}
 		prevCropInv = currentCropInv;
 	}
 
-	private void handleNewCrops(Multiset<Crop> newCrops)
-	{
-		log.debug("Handle a new harvest with crops:");
-		printCropInv(newCrops);
-
-		// Get the crop from the product ID
-		Iterator<Crop> it = newCrops.iterator();
-		if (it.hasNext())
-		{
-			Crop crop = it.next();
-			int amount = newCrops.size();
-
-			// Handle the harvest of the crop with respective amount
-			handleHarvest(crop, amount);
-		}
-	}
-
 	/**
-	 * Handle the harvest of a crop with a certain amount, basic flow:
-	 * If there is not latest run, create a now farming run
-	 * Else:
-	 * If the current run is most likely the same patch: add amount to the latest run
-	 * Else: add run to UI and start a new run with the harvested crop
+	 * Handle the harvest of a crop with a given amount harvested
+	 * When there is no latest run, create a new one with this crop and amount.
+	 * When there is a latest run, check whether is could be the same patch. If it is the same patch, add amount to the
+	 * latest run. If not, submit latest run and create a new run.
 	 *
 	 * @param crop   The crop that has been harvested
 	 * @param amount The amount of the crop that is harvested
 	 */
 	private void handleHarvest(Crop crop, int amount)
 	{
-		if (!isPatchTypeEnabled(crop.getPatchType())) {
+		// Check whether the crop patch type is enabled in the plugin config
+		if (!isPatchTypeEnabled(crop.getPatchType()))
+		{
 			return;
 		}
 
-		log.debug("Harvested " + amount + "x of " + crop.getDisplayName());
+		log.debug("Handle harvest of " + amount + "x of " + crop.getDisplayName());
 
 		WorldPoint harvestLocation = client.getLocalPlayer().getWorldLocation();
 
@@ -299,12 +324,13 @@ public class FarmingProfitPlugin extends Plugin
 		else
 		{
 			int dist = harvestLocation.distanceTo2D(latestRun.getLatestHarvestWorldPoint());
-
-			if (latestRun.getCrop() == crop && MAX_PATCH_DISTANCE > dist && storedObjID == latestRun.getGameObjClicked())
+			if (latestRun.getCrop() == crop &&
+				MAX_PATCH_DISTANCE > dist &&
+				storedObjID == latestRun.getGameObjClicked())
 			{
 				latestRun.addAmount(amount);
 
-				log.debug("  Latest run is most likely the same patch, so added to the latest run:");
+				log.debug("  Latest run is most likely the same patch, added to latest run:");
 				log.debug("  " + latestRun.toString());
 			}
 			else
@@ -333,7 +359,6 @@ public class FarmingProfitPlugin extends Plugin
 		prevCropInv = getCropInv();
 	}
 
-
 	// ====================== //
 	//      UTIL METHODS      //
 	// ====================== //
@@ -353,6 +378,13 @@ public class FarmingProfitPlugin extends Plugin
 		}
 	}
 
+	/**
+	 * Get the new crops which would have to be added to prevCropInv to get the currentCropInv.
+	 *
+	 * @param prevCropInv
+	 * @param currentCropInv
+	 * @return Multiset of crops
+	 */
 	private static Multiset<Crop> getNewCrops(Multiset<Crop> prevCropInv, Multiset<Crop> currentCropInv)
 	{
 		Multiset<Crop> newItems = HashMultiset.create();
@@ -384,6 +416,11 @@ public class FarmingProfitPlugin extends Plugin
 			animId == AnimationID.DIG);
 	}
 
+	/**
+	 * Gets the crops inside the player inventory as a multiset of crops
+	 *
+	 * @return Multiset of crops in the inventory of the player
+	 */
 	private Multiset<Crop> getCropInv()
 	{
 		ItemContainer currentItemContainer = client.getItemContainer(InventoryID.INVENTORY);
@@ -394,6 +431,12 @@ public class FarmingProfitPlugin extends Plugin
 		return HashMultiset.create();
 	}
 
+	/**
+	 * Convert an Item array (player inventory) to a Multiset of crops which are found inside this array of items.
+	 *
+	 * @param inv Item array (player inventory)
+	 * @return Multiset of crops from the item array
+	 */
 	private Multiset<Crop> invToCropSet(Item[] inv)
 	{
 		Multiset<Crop> map = HashMultiset.create();
@@ -409,19 +452,36 @@ public class FarmingProfitPlugin extends Plugin
 		return map;
 	}
 
+	/**
+	 * Checks whether the chat message is a harvest starting message.
+	 *
+	 * @param msg
+	 * @return Whether the message is sent when starting a harvest.
+	 */
 	private static boolean isHarvestStartMsg(String msg)
 	{
 		return (msg.startsWith("You begin to harvest the"));
 
 	}
 
+	/**
+	 * Checks whether the chat message is a harvest finishing message.
+	 *
+	 * @param msg
+	 * @return Whether the message is sent when finishing a harvest.
+	 */
 	private static boolean isHarvestFinishMsg(String msg)
 	{
 		return (msg.endsWith("patch is now empty.") ||
 			msg.endsWith("allotment is now empty."));
 	}
 
-	private static void printCropInv(Multiset<Crop> cropInv)
+	/**
+	 * Debug log a multiset of crops
+	 *
+	 * @param cropInv Multiset of Crop to be logged
+	 */
+	private static void debugLogCropSet(Multiset<Crop> cropInv)
 	{
 		if (cropInv.elementSet().size() == 0)
 		{
@@ -433,6 +493,12 @@ public class FarmingProfitPlugin extends Plugin
 		}
 	}
 
+	/**
+	 * Check if patch type is enabled in plugin config.
+	 *
+	 * @param patchType
+	 * @return Whether the patch type is enabled in the plugin config.
+	 */
 	private boolean isPatchTypeEnabled(PatchType patchType)
 	{
 		switch (patchType)

@@ -49,9 +49,7 @@ class FarmingProfitPanel extends PluginPanel
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
 
-	// Handle farm run logs
 	private final JPanel runsContainer = new JPanel();
-
 	private final JLabel overallIcon = new JLabel();
 	private final JLabel overallProfitLabel = new JLabel();
 	private final JLabel overallPatchesLabel = new JLabel();
