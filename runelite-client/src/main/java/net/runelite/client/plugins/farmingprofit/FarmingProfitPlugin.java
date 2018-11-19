@@ -118,7 +118,7 @@ public class FarmingProfitPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		log.info("Starting Farming Profit Plugin");
+		log.debug("Starting Farming Profit Plugin");
 
 		prevCropInv = HashMultiset.create();
 
