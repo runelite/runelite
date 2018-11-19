@@ -36,10 +36,10 @@ public class Text
 	private static final Pattern TAG_REGEXP = Pattern.compile("<[^>]*>");
 
 	/**
-	 * Removes all tags from the given `str`.
+	 * Removes all tags from the given string.
 	 *
 	 * @param str The string to remove tags from.
-	 * @return The given `str` with all tags removed from it.
+	 * @return The given string with all tags removed from it.
 	 */
 	public static String removeTags(String str)
 	{
@@ -70,7 +70,7 @@ public class Text
 	}
 
 	/**
-	 * In addition to removing all tags, replaces all <br> delimited text with spaces and all multiple continuous
+	 * In addition to removing all tags, replaces all &lt;br&gt; delimited text with spaces and all multiple continuous
 	 * spaces with single space
 	 *
 	 * @param str The string to sanitize
@@ -82,5 +82,36 @@ public class Text
 			.replaceAll("-<br>", "-")
 			.replaceAll("<br>", " ")
 			.replaceAll("[ ]+", " "));
+	}
+
+	/**
+	 * Escapes a string for widgets, replacing &lt; and &gt; with their escaped counterparts
+	 */
+	public static String escapeJagex(String str)
+	{
+		StringBuilder out = new StringBuilder(str.length());
+
+		for (int i = 0; i < str.length(); i++)
+		{
+			char c = str.charAt(i);
+			if (c == '<')
+			{
+				out.append("<lt>");
+			}
+			else if (c == '>')
+			{
+				out.append("<gt>");
+			}
+			else if (c == '\n')
+			{
+				out.append("<br>");
+			}
+			else if (c != '\r')
+			{
+				out.append(c);
+			}
+		}
+
+		return out.toString();
 	}
 }
