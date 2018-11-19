@@ -31,13 +31,13 @@
 layout(triangles) in;
 layout(triangle_strip, max_vertices = 3) out;
 
-layout(std140) uniform Uniforms {
-    int cameraYaw;
-    int cameraPitch;
-    int centerX;
-    int centerY;
-    int zoom;
-    ivec2 sinCosTable[2048];
+layout(std140) uniform uniforms {
+  int cameraYaw;
+  int cameraPitch;
+  int centerX;
+  int centerY;
+  int zoom;
+  ivec2 sinCosTable[2048];
 };
 
 uniform mat4 projectionMatrix;
