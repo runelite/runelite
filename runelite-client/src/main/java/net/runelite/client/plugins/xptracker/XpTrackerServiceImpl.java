@@ -58,6 +58,12 @@ class XpTrackerServiceImpl implements XpTrackerService
 	}
 
 	@Override
+	public XpActionType getActionType(Skill skill)
+	{
+		return plugin.getSkillSnapshot(skill).getActionType();
+	}
+
+	@Override
 	public int getXpHr(Skill skill)
 	{
 		return plugin.getSkillSnapshot(skill).getXpPerHour();

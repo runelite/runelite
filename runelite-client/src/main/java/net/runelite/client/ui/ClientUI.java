@@ -629,7 +629,7 @@ public class ClientUI
 			? logoutButton.getHeight() + logoutButton.getRelativeY()
 			: 5;
 
-		final BufferedImage image = sidebarOpen ? sidebarOpenIcon : sidebarClosedIcon;
+		final BufferedImage image = sidebarOpen ? sidebarClosedIcon : sidebarOpenIcon;
 		graphics.drawImage(image, x, y, null);
 
 		// Update button dimensions
