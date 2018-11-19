@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.statusbars;
 
+import com.google.common.primitives.Ints;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -190,7 +191,8 @@ class StatusBarsOverlay extends Overlay
 
 				for (final StatChange c : statsChanges.getStatChanges())
 				{
-					if (c.getTheoretical().contains("~"))
+					Integer string = Ints.tryParse(c.getTheoretical().substring(1));
+					if (string == null)
 					{
 						foodHealValue = Integer.parseInt(c.getTheoretical().substring(c.getTheoretical().lastIndexOf("~") + 1));
 						break;
