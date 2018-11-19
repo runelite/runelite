@@ -64,4 +64,15 @@ public interface GpuPluginConfig extends Config
 	{
 		return AntiAliasingMode.DISABLED;
 	}
+
+	@ConfigItem(
+		keyName = "enableFog",
+		name = "Enable Fog",
+		description = "Enables a dynamic skybox and fog around the draw distance",
+		position = 4
+	)
+	default boolean enableFog()
+	{
+		return true;
+	}
 }
