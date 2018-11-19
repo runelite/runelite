@@ -727,9 +727,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		final Scene scene = client.getScene();
 		drawDistance = Math.max(0, Math.min(MAX_DISTANCE, config.drawDistance()));
 		scene.setDrawDistance(drawDistance);
-		gl.glUseProgram(glProgram);
-		gl.glUniform1i(uniDrawDistance, drawDistance);
-		gl.glUseProgram(0);
 	}
 
 
@@ -985,6 +982,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glUseProgram(glProgram);
 
 			gl.glUniform1i(uniUseFog, config.enableFog() ? 1 : 0);
+			gl.glUniform1i(uniDrawDistance, drawDistance);
 			if (config.enableFog())
 			{
 				drawSkybox();
