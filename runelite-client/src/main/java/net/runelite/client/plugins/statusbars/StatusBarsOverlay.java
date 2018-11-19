@@ -190,6 +190,11 @@ class StatusBarsOverlay extends Overlay
 
 				for (final StatChange c : statsChanges.getStatChanges())
 				{
+					if (c.getTheoretical().length() > 3)
+					{
+						break;
+					}
+
 					if (c.getStat().getName().equals(Skill.HITPOINTS.getName()))
 					{
 						foodHealValue = Integer.parseInt(c.getTheoretical());
