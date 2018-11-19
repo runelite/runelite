@@ -218,7 +218,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int centerY;
 
 	// Uniforms
+	private int uniUseFog;
 	private int uniFogColor;
+	private int uniDrawDistance;
 	private int uniProjectionMatrix;
 	private int uniBrightness;
 	private int uniTex;
@@ -234,6 +236,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private BufferedImage skybox = null;
 	private static Point shift;
+
+	private int drawDistance;
 
 	@Override
 	protected void startUp()
@@ -485,7 +489,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniProjectionMatrix = gl.glGetUniformLocation(glProgram, "projectionMatrix");
 		uniBrightness = gl.glGetUniformLocation(glProgram, "brightness");
 		uniSmoothBanding = gl.glGetUniformLocation(glProgram, "smoothBanding");
+		uniDrawDistance = gl.glGetUniformLocation(glProgram, "drawDistance");
 		uniFogColor = gl.glGetUniformLocation(glProgram, "fogColor");
+		uniUseFog = gl.glGetUniformLocation(glProgram, "useFog");
 
 		uniTex = gl.glGetUniformLocation(glUiProgram, "tex");
 		uniTextures = gl.glGetUniformLocation(glProgram, "textures");
@@ -719,8 +725,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		centerY = client.getCenterY();
 
 		final Scene scene = client.getScene();
-		final int drawDistance = Math.max(0, Math.min(MAX_DISTANCE, config.drawDistance()));
+		drawDistance = Math.max(0, Math.min(MAX_DISTANCE, config.drawDistance()));
 		scene.setDrawDistance(drawDistance);
+		gl.glUseProgram(glProgram);
+		gl.glUniform1i(uniDrawDistance, drawDistance);
+		gl.glUseProgram(0);
 	}
 
 
@@ -800,6 +809,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		final int viewportHeight = client.getViewportHeight();
 		final int viewportWidth = client.getViewportWidth();
+
+		gl.glClearColor(0f, 0f, 0f, 1f);
+		gl.glClear(gl.GL_COLOR_BUFFER_BIT);
 
 		// If the viewport has changed, update the projection matrix
 		if (viewportWidth > 0 && viewportHeight > 0 && (viewportWidth != lastViewportWidth || viewportHeight != lastViewportHeight))
@@ -972,7 +984,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			gl.glUseProgram(glProgram);
 
-			drawSkybox();
+			gl.glUniform1i(uniUseFog, config.enableFog() ? 1 : 0);
+			if (config.enableFog())
+			{
+				drawSkybox();
+			}
 
 			// Brightness happens to also be stored in the texture provider, so we use that
 			gl.glUniform1f(uniBrightness, (float) textureProvider.getBrightness());

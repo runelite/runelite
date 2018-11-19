@@ -25,13 +25,18 @@
 
 #version 330
 
-#define FOG_START 5000
-#define FOG_END 7000
+#define FOG_START_MIN_DIST 2100
+#define FOG_START_MAX_DIST 5000
+#define FOG_END_MIN_DIST 3000
+#define FOG_END_MAX_DIST 7000
+#define FOG_DIST_SCALE 64
 
 layout (location = 0) in ivec4 VertexPosition;
 layout (location = 1) in vec4 uv;
 
 uniform float brightness;
+uniform int useFog;
+uniform int drawDistance;
 
 out ivec3 vPosition;
 out vec4 vColor;
@@ -58,6 +63,16 @@ void main()
   vColor = vec4(rgb, 1.f - a);
   vHsl = float(hsl);
   vUv = uv;
-  float fogDistance = length(vPosition.xyz);
-  vFogAmount = fogFactorLinear(fogDistance, FOG_START, FOG_END);
+
+  if (useFog == 1)
+  {
+    float fogDistance = length(vec3(vPosition.xyz));
+    int fogStart = clamp((drawDistance * FOG_DIST_SCALE), FOG_START_MIN_DIST, FOG_START_MAX_DIST);
+    int fogEnd = clamp((fogStart + ((drawDistance + 2) * FOG_DIST_SCALE)), FOG_END_MIN_DIST, FOG_END_MAX_DIST);
+    vFogAmount = fogFactorLinear(fogDistance, fogStart, fogEnd);
+  }
+  else
+  {
+    vFogAmount = 0;
+  }
 }

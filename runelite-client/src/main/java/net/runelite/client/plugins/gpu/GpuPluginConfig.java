@@ -52,4 +52,14 @@ public interface GpuPluginConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "enableFog",
+		name = "Enable Fog",
+		description = "Enables a dynamic skybox and fog around the draw distance"
+	)
+	default boolean enableFog()
+	{
+		return true;
+	}
 }
