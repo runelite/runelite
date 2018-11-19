@@ -1,6 +1,5 @@
 package net.runelite.client.plugins.bosslog;
 
-import net.runelite.api.GameState;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;

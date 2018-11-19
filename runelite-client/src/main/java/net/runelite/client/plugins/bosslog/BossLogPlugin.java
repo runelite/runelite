@@ -84,7 +84,7 @@ public class BossLogPlugin extends Plugin {
         }
 
         panel = new BossLogPanel(this, itemManager);
-        spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, panel::loadHeaderIcon);
+        //spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, panel::loadHeaderIcon);
 
         final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
 
@@ -128,30 +128,33 @@ public class BossLogPlugin extends Plugin {
                         b.addItem(new Item(e.getId(), e.getQuantity(), itemComposition.getName(), itemManager.getItemPrice(e.getId())));
                     }
                     b.addKC();
-                    save();
+                    save(b.getBoss());
                     return;
                 }
             }
         }
     }
 
-    void save() throws IOException
+    void save(Bosses boss) throws IOException
     {
         SwingUtilities.invokeLater(() -> panel.update());
         for(Boss b : bosses)
         {
-            File oldFile = new File(b.getBoss().getName()+"_log.txt");
-            if(oldFile.delete()) {
-                File logFile = new File(b.getBoss().getName()+"_log.txt");
-                logFile.createNewFile();
-                BufferedWriter bw = new BufferedWriter(new FileWriter(logFile));
-                bw.write(b.getKC()+""); //Write KC to file
-                bw.newLine();
-                for(Item i : b.getDrops()) {
-                    bw.write(i.getId() + " " + i.getQuantity());
+            if(b.getBoss() == boss)
+            {
+                File oldFile = new File(b.getBoss().getName()+"_log.txt");
+                if(oldFile.delete()) {
+                    File logFile = new File(b.getBoss().getName() + "_log.txt");
+                    logFile.createNewFile();
+                    BufferedWriter bw = new BufferedWriter(new FileWriter(logFile));
+                    bw.write(b.getKC() + ""); //Write KC to file
                     bw.newLine();
+                    for (Item i : b.getDrops()) {
+                        bw.write(i.getId() + " " + i.getQuantity());
+                        bw.newLine();
+                    }
+                    bw.close();
                 }
-                bw.close();
             }
         }
     }
