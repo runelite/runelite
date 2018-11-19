@@ -20,6 +20,7 @@ public abstract class ClickboxMixin implements RSClient
 	private static final int MAX_ENTITES_AT_MOUSE = 1000;
 	private static final int CLICKBOX_CLOSE = 50;
 	private static final int CLICKBOX_FAR = 3500;
+	private static final int OBJECT_INTERACTION_FAR = 35; // Max distance, in tiles, from camera
 
 	@Inject
 	private static final int[] rl$modelViewportXs = new int[4700];
@@ -41,6 +42,11 @@ public abstract class ClickboxMixin implements RSClient
 
 		boolean bb = boundingboxCheck(model, _x, _y, _z);
 		if (!bb)
+		{
+			return;
+		}
+
+		if (Math.sqrt(_x * _x + _z * _z) > OBJECT_INTERACTION_FAR * Perspective.LOCAL_TILE_SIZE)
 		{
 			return;
 		}
