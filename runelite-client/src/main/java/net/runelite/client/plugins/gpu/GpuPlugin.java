@@ -243,6 +243,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				glDrawable.setRealized(true);
 
 				glContext = glDrawable.createContext(null);
+				if (log.isDebugEnabled())
+				{
+					// Debug config on context needs to be set before .makeCurrent call
+					glContext.enableGLDebugMessage(true);
+				}
+
 				int res = glContext.makeCurrent();
 				if (res == GLContext.CONTEXT_NOT_CURRENT)
 				{
@@ -259,7 +265,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				if (log.isDebugEnabled())
 				{
-					glContext.enableGLDebugMessage(true);
 					gl.glEnable(GL_DEBUG_OUTPUT);
 				}
 
