@@ -137,15 +137,23 @@ class WASDCameraListener extends MouseAdapter implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN || !plugin.chatboxFocused())
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
 
+		// Remove inputs if we're typing
+		if (plugin.chatboxFocused())
+		{
+			Integer m = modified.get(e.getKeyCode());
+			if (m != null)
+			{
+				modified.remove(e.getKeyCode());
+			}
+		}
+
 		if (!plugin.isTyping())
 		{
-			modified.remove(e.getKeyCode());
-
 			if (config.up().matches(e))
 			{
 				e.setKeyCode(KeyEvent.VK_UP);
@@ -161,16 +169,6 @@ class WASDCameraListener extends MouseAdapter implements KeyListener
 			else if (config.right().matches(e))
 			{
 				e.setKeyCode(KeyEvent.VK_RIGHT);
-			}
-		}
-		else
-		{
-			// press d + enter + release d - causes the right arrow to never be released
-			Integer m = modified.get(e.getKeyCode());
-			if (m != null)
-			{
-				modified.remove(e.getKeyCode());
-				e.setKeyCode(m);
 			}
 		}
 	}
