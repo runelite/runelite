@@ -85,7 +85,7 @@ layout(std430, binding = 6) readonly buffer tempuvbuffer_in {
 
 layout(local_size_x = 1024) in;
 
-#include common.glsl
+#include comp_common.glsl
 #include priority_render.glsl
 
 void main() {
