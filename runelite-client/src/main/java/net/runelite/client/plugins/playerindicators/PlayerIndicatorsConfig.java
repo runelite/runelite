@@ -167,12 +167,12 @@ public interface PlayerIndicatorsConfig extends Config
 	@ConfigItem(
 		position = 12,
 		keyName = "drawOverheadLevels",
-		name = "Draw combat levels",
+		name = "Draw combat levels above players",
 		description = "Configures whether or not combat levels should be drawn above players"
 	)
 	default boolean drawOverheadLevels()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
