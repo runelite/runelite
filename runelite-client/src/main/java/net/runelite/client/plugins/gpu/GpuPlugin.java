@@ -39,6 +39,7 @@ import com.jogamp.opengl.GLDrawableFactory;
 import com.jogamp.opengl.GLException;
 import com.jogamp.opengl.GLProfile;
 import java.awt.Canvas;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -73,9 +74,13 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
 import static net.runelite.client.plugins.gpu.GLUtil.glDeleteBuffer;
+import static net.runelite.client.plugins.gpu.GLUtil.glDeleteFrameBuffer;
+import static net.runelite.client.plugins.gpu.GLUtil.glDeleteRenderbuffers;
 import static net.runelite.client.plugins.gpu.GLUtil.glDeleteTexture;
 import static net.runelite.client.plugins.gpu.GLUtil.glDeleteVertexArrays;
 import static net.runelite.client.plugins.gpu.GLUtil.glGenBuffers;
+import static net.runelite.client.plugins.gpu.GLUtil.glGenFrameBuffer;
+import static net.runelite.client.plugins.gpu.GLUtil.glGenRenderbuffer;
 import static net.runelite.client.plugins.gpu.GLUtil.glGenTexture;
 import static net.runelite.client.plugins.gpu.GLUtil.glGenVertexArrays;
 import static net.runelite.client.plugins.gpu.GLUtil.inputStreamToString;
@@ -150,6 +155,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	// scene uv buffer id
 	private int uvBufferId;
 
+	private int fboStretchedHandle;
+	private int texStretchedHandle;
+	private int rboStretchedHandle;
+
 	private int textureArrayId;
 
 	private int uniformBufferId;
@@ -191,6 +200,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int lastViewportHeight;
 	private int lastCanvasWidth;
 	private int lastCanvasHeight;
+	private Dimension lastStretchedDimensions;
 
 	private int centerX;
 	private int centerY;
@@ -281,6 +291,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				client.resizeCanvas();
 
 				lastViewportWidth = lastViewportHeight = lastCanvasWidth = lastCanvasHeight = -1;
+				lastStretchedDimensions = null;
 
 				textureArrayId = -1;
 
@@ -352,6 +363,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				shutdownInterfaceTexture();
 				shutdownProgram();
 				shutdownVao();
+				shutdownStretchedFbo();
 
 				if (!jawtWindow.getLock().isLocked())
 				{
@@ -563,6 +575,53 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		gl.glBindBuffer(gl.GL_UNIFORM_BUFFER, 0);
 	}
 
+	private void initStretchedFbo(int width, int height)
+	{
+		// Create and bind the FBO
+		fboStretchedHandle = glGenFrameBuffer(gl);
+		gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, fboStretchedHandle);
+
+		// Create color render buffer
+		rboStretchedHandle = glGenRenderbuffer(gl);
+		gl.glBindRenderbuffer(gl.GL_RENDERBUFFER, rboStretchedHandle);
+		gl.glRenderbufferStorage(gl.GL_RENDERBUFFER, gl.GL_RGBA, width, height);
+		gl.glFramebufferRenderbuffer(gl.GL_FRAMEBUFFER, gl.GL_COLOR_ATTACHMENT0, gl.GL_RENDERBUFFER, rboStretchedHandle);
+
+		// Create texture
+		texStretchedHandle = glGenTexture(gl);
+		gl.glBindTexture(gl.GL_TEXTURE_2D, texStretchedHandle);
+		gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, width, height, 0, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, null);
+
+		// Bind texture
+		gl.glFramebufferTexture2D(gl.GL_FRAMEBUFFER, gl.GL_COLOR_ATTACHMENT0, gl.GL_TEXTURE_2D, texStretchedHandle, 0);
+
+		// Reset
+		gl.glBindTexture(gl.GL_TEXTURE_2D, 0);
+		gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, 0);
+		gl.glBindRenderbuffer(gl.GL_RENDERBUFFER, 0);
+	}
+
+	private void shutdownStretchedFbo()
+	{
+		if (texStretchedHandle != -1)
+		{
+			glDeleteTexture(gl, texStretchedHandle);
+			texStretchedHandle = -1;
+		}
+
+		if (fboStretchedHandle != -1)
+		{
+			glDeleteFrameBuffer(gl, fboStretchedHandle);
+			fboStretchedHandle = -1;
+		}
+
+		if (rboStretchedHandle != -1)
+		{
+			glDeleteRenderbuffers(gl, rboStretchedHandle);
+			rboStretchedHandle = -1;
+		}
+	}
+
 	private void createProjectionMatrix(float left, float right, float bottom, float top, float near, float far)
 	{
 		// create a standard orthographic projection
@@ -678,8 +737,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		final int viewportHeight = client.getViewportHeight();
 		final int viewportWidth = client.getViewportWidth();
 
-		gl.glClear(gl.GL_COLOR_BUFFER_BIT);
-
 		// If the viewport has changed, update the projection matrix
 		if (viewportWidth > 0 && viewportHeight > 0 && (viewportWidth != lastViewportWidth || viewportHeight != lastViewportHeight))
 		{
@@ -687,6 +744,29 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			lastViewportWidth = viewportWidth;
 			lastViewportHeight = viewportHeight;
 		}
+
+		// Initialize stretched mode and set draw frame buffer to the stretched fbo
+		if (client.isStretchedEnabled())
+		{
+			Dimension stretchedDimensions = client.getStretchedDimensions();
+
+			if (lastStretchedDimensions == null || !lastStretchedDimensions.equals(stretchedDimensions))
+			{
+				shutdownStretchedFbo();
+				initStretchedFbo(stretchedDimensions.width, stretchedDimensions.height);
+				lastStretchedDimensions = stretchedDimensions;
+			}
+
+			gl.glBindFramebuffer(gl.GL_DRAW_FRAMEBUFFER, fboStretchedHandle);
+		}
+		else if (lastStretchedDimensions != null)
+		{
+			shutdownStretchedFbo();
+			lastStretchedDimensions = null;
+		}
+
+		// Clear scene
+		gl.glClear(gl.GL_COLOR_BUFFER_BIT);
 
 		// Upload buffers
 		vertexBuffer.flip();
@@ -874,6 +954,21 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		// Texture on UI
 		drawUi(canvasHeight, canvasWidth);
+
+		// Output stretched frame
+		if (client.isStretchedEnabled())
+		{
+			Dimension stretchedDimensions = client.getStretchedDimensions();
+
+			gl.glBindFramebuffer(gl.GL_READ_FRAMEBUFFER, fboStretchedHandle);
+			gl.glBindFramebuffer(gl.GL_DRAW_FRAMEBUFFER, 0);
+			gl.glBlitFramebuffer(0, 0, canvasWidth, canvasHeight,
+				0, 0, stretchedDimensions.width, stretchedDimensions.height,
+				gl.GL_COLOR_BUFFER_BIT, client.isStretchedFast() ? gl.GL_NEAREST : gl.GL_LINEAR);
+
+			// Reset
+			gl.glBindFramebuffer(gl.GL_READ_FRAMEBUFFER, 0);
+		}
 
 		glDrawable.swapBuffers();
 
