@@ -320,44 +320,51 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	{
 		clientThread.invoke(() ->
 		{
-			if (textureArrayId != -1)
-			{
-				textureManager.freeTextureArray(gl, textureArrayId);
-				textureArrayId = -1;
-			}
-
 			client.setGpu(false);
 			client.setDrawCallbacks(null);
 
-			if (bufferId != -1)
+			if (gl != null)
 			{
-				GLUtil.glDeleteBuffer(gl, bufferId);
-				bufferId = -1;
+				if (textureArrayId != -1)
+				{
+					textureManager.freeTextureArray(gl, textureArrayId);
+					textureArrayId = -1;
+				}
+
+				if (bufferId != -1)
+				{
+					GLUtil.glDeleteBuffer(gl, bufferId);
+					bufferId = -1;
+				}
+
+				if (uvBufferId != -1)
+				{
+					GLUtil.glDeleteBuffer(gl, uvBufferId);
+					uvBufferId = -1;
+				}
+
+				if (uniformBufferId != -1)
+				{
+					GLUtil.glDeleteBuffer(gl, uniformBufferId);
+					uniformBufferId = -1;
+				}
+
+				shutdownInterfaceTexture();
+				shutdownProgram();
+				shutdownVao();
+
+				if (!jawtWindow.getLock().isLocked())
+				{
+					jawtWindow.lockSurface();
+				}
+
+				glContext.destroy();
 			}
 
-			if (uvBufferId != -1)
+			if (jawtWindow != null)
 			{
-				GLUtil.glDeleteBuffer(gl, uvBufferId);
-				uvBufferId = -1;
+				NewtFactoryAWT.destroyNativeWindow(jawtWindow);
 			}
-
-			if (uniformBufferId != -1)
-			{
-				GLUtil.glDeleteBuffer(gl, uniformBufferId);
-				uniformBufferId = -1;
-			}
-
-			shutdownInterfaceTexture();
-			shutdownProgram();
-			shutdownVao();
-
-			if (!jawtWindow.getLock().isLocked())
-			{
-				jawtWindow.lockSurface();
-			}
-
-			glContext.destroy();
-			NewtFactoryAWT.destroyNativeWindow(jawtWindow);
 
 			jawtWindow = null;
 			gl = null;
