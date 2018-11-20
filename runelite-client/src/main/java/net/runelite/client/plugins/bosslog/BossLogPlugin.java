@@ -47,7 +47,6 @@ public class BossLogPlugin extends Plugin {
     public List<Boss> bosses = new ArrayList<>();
 
     @Inject
-<<<<<<< HEAD
     private BossLogConfig config;
 
     @Provides
@@ -55,9 +54,8 @@ public class BossLogPlugin extends Plugin {
     {
         return configManager.getConfig(BossLogConfig.class);
     }
-=======
+
     private Client client;
->>>>>>> 48b9b29103668a999419f52b7b9e99c0d1140f3c
 
     @Inject
     private ItemManager itemManager;
