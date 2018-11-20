@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemComposition;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.bosslog.enums.Bosses;
 
 import java.util.List;
 

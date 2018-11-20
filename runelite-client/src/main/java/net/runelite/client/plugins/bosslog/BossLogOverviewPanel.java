@@ -1,26 +1,24 @@
 package net.runelite.client.plugins.bosslog;
 
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.bosslog.enums.Bosses;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.DynamicGridLayout;
 
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import java.awt.*;
 
-public class BossLogOverviewPanel extends TabContentPanel
+class BossLogOverviewPanel extends JPanel
 {
-    BossLogOverviewPanel(ItemManager itemManager) {
-        setLayout(new DynamicGridLayout(0, 1, 0, 5));
+    private final ItemManager itemManager;
+
+    BossLogOverviewPanel(ItemManager itemManager, BossLogPanel bossLogPanel) {
+        this.itemManager = itemManager;
+        setLayout(new GridLayout(0,1,0,5));
         setBackground(ColorScheme.DARK_GRAY_COLOR);
-        setBorder(new EmptyBorder(5, 0, 5, 0));
-    }
+        setBorder(new EmptyBorder(5, 0, 5, 5));
 
-    @Override
-    public int getUpdateInterval() {
-        return 0;
-    }
-
-    @Override
-    public void update() {
-
+        for(Bosses b : Bosses.class.getEnumConstants())
+            add(new BossLogSelector(b.getTab(), itemManager, bossLogPanel));
     }
 }
