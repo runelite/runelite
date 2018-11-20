@@ -117,9 +117,9 @@ int priority_map(int p, int distance, int _min10, int avg1, int avg2, int avg3) 
       } else {
         return 17;
       }
-    default:
-      return -1;
   }
+  
+  return -1;
 }
 
 // calculate the number of faces with a lower adjusted priority than
