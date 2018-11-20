@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#version 400
+#version 330
 
 #define PI 3.1415926535897932384626433832795f
 #define UNIT PI / 1024.0f
@@ -31,12 +31,13 @@
 layout(triangles) in;
 layout(triangle_strip, max_vertices = 3) out;
 
-layout(std140) uniform Uniforms {
-    int cameraYaw;
-    int cameraPitch;
-    int centerX;
-    int centerY;
-    int zoom;
+layout(std140) uniform uniforms {
+  int cameraYaw;
+  int cameraPitch;
+  int centerX;
+  int centerY;
+  int zoom;
+  ivec2 sinCosTable[2048];
 };
 
 uniform mat4 projectionMatrix;

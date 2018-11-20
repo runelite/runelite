@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
+import net.runelite.api.events.CanvasSizeChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.SessionOpen;
 import net.runelite.client.config.ConfigManager;
@@ -13,6 +14,8 @@ import net.runelite.client.game.ItemStack;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.bosslog.enums.Bosses;
+import net.runelite.client.plugins.bosslog.enums.Tab;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
@@ -39,10 +42,12 @@ public class BossLogPlugin extends Plugin {
     private BossLogPanel panel;
     private NavigationButton navButton;
 
-    public Bosses[] bossTypes = {Bosses.ZULRAH, Bosses.BANDOS};
+    private String savePath = System.getProperty("user.home")+"\\Documents\\bosslog\\";
+
     public List<Boss> bosses = new ArrayList<>();
 
     @Inject
+<<<<<<< HEAD
     private BossLogConfig config;
 
     @Provides
@@ -50,6 +55,9 @@ public class BossLogPlugin extends Plugin {
     {
         return configManager.getConfig(BossLogConfig.class);
     }
+=======
+    private Client client;
+>>>>>>> 48b9b29103668a999419f52b7b9e99c0d1140f3c
 
     @Inject
     private ItemManager itemManager;
@@ -65,9 +73,13 @@ public class BossLogPlugin extends Plugin {
     {
         //Load Persistant Data
         //create new file if non-existant
-        for(Bosses b : bossTypes)
+        for(Bosses b : Bosses.class.getEnumConstants())
         {
-            File logFile = new File(b.getName()+"_log.txt");
+            File directory = new File(savePath);
+            File logFile = new File(savePath + b.getName()+"_log.txt");
+            if(!directory.exists()) {
+                directory.mkdir();
+            }
             if(!logFile.exists())
             {
                 if(logFile.createNewFile())
@@ -95,8 +107,7 @@ public class BossLogPlugin extends Plugin {
             bosses.add(new Boss(b, KC, itemList));
         }
 
-        panel = new BossLogPanel(this, itemManager);
-        spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, panel::loadHeaderIcon);
+        panel = new BossLogPanel(this, itemManager, client);
 
         final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
 
@@ -108,6 +119,8 @@ public class BossLogPlugin extends Plugin {
                 .build();
 
         clientToolbar.addNavigation(navButton);
+
+        SwingUtilities.invokeLater(() -> panel.switchTab(Tab.OVERVIEW));
     }
 
     @Override
@@ -140,30 +153,36 @@ public class BossLogPlugin extends Plugin {
                         b.addItem(new Item(e.getId(), e.getQuantity(), itemComposition.getName(), itemManager.getItemPrice(e.getId())));
                     }
                     b.addKC();
-                    save();
+                    save(b.getBoss());
                     return;
                 }
             }
         }
     }
 
-    void save() throws IOException
+    @Subscribe
+    public void onCanvasSizeChanged(CanvasSizeChanged event) { if(client.getGameState() == GameState.LOGGED_IN) SwingUtilities.invokeLater(() -> panel.update()); }
+
+    void save(Bosses boss) throws IOException
     {
         SwingUtilities.invokeLater(() -> panel.update());
         for(Boss b : bosses)
         {
-            File oldFile = new File(b.getBoss().getName()+"_log.txt");
-            if(oldFile.delete()) {
-                File logFile = new File(b.getBoss().getName()+"_log.txt");
-                logFile.createNewFile();
-                BufferedWriter bw = new BufferedWriter(new FileWriter(logFile));
-                bw.write(b.getKC()+""); //Write KC to file
-                bw.newLine();
-                for(Item i : b.getDrops()) {
-                    bw.write(i.getId() + " " + i.getQuantity());
+            if(b.getBoss() == boss)
+            {
+                File oldFile = new File(savePath+b.getBoss().getName()+"_log.txt");
+                if(oldFile.delete()) {
+                    File logFile = new File(savePath+b.getBoss().getName() + "_log.txt");
+                    logFile.createNewFile();
+                    BufferedWriter bw = new BufferedWriter(new FileWriter(logFile));
+                    bw.write(b.getKC() + ""); //Write KC to file
                     bw.newLine();
+                    for (Item i : b.getDrops()) {
+                        bw.write(i.getId() + " " + i.getQuantity());
+                        bw.newLine();
+                    }
+                    bw.close();
                 }
-                bw.close();
             }
         }
     }

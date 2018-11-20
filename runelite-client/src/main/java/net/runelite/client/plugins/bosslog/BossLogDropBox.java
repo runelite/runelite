@@ -9,6 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -31,7 +33,7 @@ class BossLogDropBox extends JPanel
             alpha = 75;
             Runnable alphasize = () ->
             {
-                BufferedImage subIcon = setAlpha((byte) alpha, icon);
+                BufferedImage subIcon = setAlpha((byte) alpha, deepCopy(icon));
                 iconLabel.setIcon(new ImageIcon(subIcon));
             };
             icon.onChanged(alphasize);
@@ -67,5 +69,12 @@ class BossLogDropBox extends JPanel
              }
          }
         return img;
+    }
+
+    static BufferedImage deepCopy(BufferedImage bi) {
+        ColorModel cm = bi.getColorModel();
+        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+        WritableRaster raster = bi.copyData(null);
+        return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
     }
 }

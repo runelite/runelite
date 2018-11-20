@@ -22,7 +22,7 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.bosslog;
+package net.runelite.client.plugins.bosslog.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +32,15 @@ import net.runelite.api.ItemID;
 @Getter
 public enum Tab
 {
-    OVERVIEW("Overview", ItemID.RING_OF_COINS),
-    ZULRAH("Zulrah", ItemID.ZULANDRA_TELEPORT),
-    BANDOS("Bandos", ItemID.BANDOS_CHESTPLATE);
+    OVERVIEW("Overview", 0),
+    ZULRAH("Zulrah", ItemID.PET_SNAKELING),
+    VORKATH("Vorkath", ItemID.VORKI),
+    DAGANNOTH_KINGS("Dagannoth Kings", ItemID.PET_DAGANNOTH_REX),
+    BANDOS("Bandos", ItemID.PET_GENERAL_GRAARDOR),
+    ZAMORAK("Zamorak", ItemID.PET_KRIL_TSUTSAROTH),
+    SARADOMIN("Saradomin", ItemID.PET_ZILYANA),
+    ARMADYL("Armadyl", ItemID.PET_KREEARRA),
+    SHAMAN("Lizardmen Shaman", ItemID.DRAGON_WARHAMMER);
 
     private final String name;
     private final int itemID;

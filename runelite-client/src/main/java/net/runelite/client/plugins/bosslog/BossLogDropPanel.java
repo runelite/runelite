@@ -1,42 +1,63 @@
 package net.runelite.client.plugins.bosslog;
 
+import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.bosslog.enums.Tab;
+import net.runelite.client.plugins.config.ConfigPanel;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.util.ImageUtil;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.BorderLayout;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class BossLogDropPanel extends TabContentPanel
+public class BossLogDropPanel extends JPanel
 {
     private JPanel uniqueContainer = new JPanel();
     private JPanel logContainer = new JPanel();
+    private JPanel navbar = new JPanel();
 
     private JLabel logLabelGP;
     private JLabel logLabelKC;
 
     private List<JPanel> slots = new ArrayList<>();
 
-    private Boss panelBoss;
+    private final BufferedImage backIcon = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "config_back_icon.png");
+
+    public Boss panelBoss;
+    private final BossLogPanel bossLogPanel;
 
     private ItemManager itemManager;
 
-    BossLogDropPanel(ItemManager itemManager, Boss boss)
+    private final Client client;
+
+    BossLogDropPanel(final ItemManager itemManager, Boss boss, final Client client, BossLogPanel bossLogPanel)
     {
+        this.client = client;
         panelBoss = boss;
         this.itemManager = itemManager;
+        this.bossLogPanel = bossLogPanel;
+
         setLayout(new DynamicGridLayout(0, 1, 0, 5));
         setBackground(ColorScheme.DARK_GRAY_COLOR);
-        setBorder(new EmptyBorder(5, 0, 5, 0));
+        setBorder(new EmptyBorder(5, 0, 5, 6));
+
+        //back button
+        //navbar.setLayout(new BorderLayout());
+        navbar.setLayout(new GridLayout(1,3,5,5));
+        navbar.setBorder(new EmptyBorder(0,5,5,0));
+        add(navbar);
+        addBack();
 
         //uniques
         JPanel uniqueMainContainer = new JPanel();
@@ -93,13 +114,6 @@ public class BossLogDropPanel extends TabContentPanel
         logMainContainer.add(logContainer, BorderLayout.CENTER);
     }
 
-    @Override
-    public int getUpdateInterval()
-    {
-        return 50;
-    }
-
-    @Override
     public void update()
     {
         logLabelGP.setText(NumberFormat.getNumberInstance(Locale.US).format(panelBoss.getProfit()) + " gp");
@@ -131,11 +145,65 @@ public class BossLogDropPanel extends TabContentPanel
 
         //draw regular drops
         logContainer.removeAll();
+        int rows = ( client.getCanvasHeight()-208)/42; //trim top, calculate rows (will truncate = good)
+        int cr = 0;
         for(Item i : panelBoss.getDrops())
         {
+            if(cr/5==rows) break;
             BossLogDropBox slot = new BossLogDropBox(itemManager, i, false);
             logContainer.add(slot);
             slots.add(slot);
+            cr++;
         }
+    }
+
+    private void addBack() {
+        ImageIcon BACK_ICON = new ImageIcon(backIcon);
+        ImageIcon BACK_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(backIcon, -100));
+
+        JPanel contBB = new JPanel();
+        contBB.setLayout(new BorderLayout());
+        navbar.add(contBB);
+
+        JLabel back_button = new JLabel(BACK_ICON);
+        contBB.add(back_button, BorderLayout.WEST);
+
+        back_button.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mousePressed(MouseEvent mouseEvent)
+            {
+                setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                back_button.setIcon(BACK_ICON);
+                bossLogPanel.switchTab(Tab.OVERVIEW);
+            }
+            @Override
+            public void mouseEntered(MouseEvent e)
+            {
+                back_button.setIcon(BACK_ICON_HOVER);
+                setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e)
+            {
+                back_button.setIcon(BACK_ICON);
+                setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+        });
+
+        JPanel contBL = new JPanel();
+        contBL.setLayout(new BorderLayout());
+        contBL.setBorder(new EmptyBorder(4,0,0,0));
+        navbar.add(contBL);
+
+        JLabel bossLabel = new JLabel(panelBoss.getBoss().getName());
+        bossLabel.setHorizontalAlignment(JLabel.CENTER);
+        bossLabel.setVerticalAlignment(JLabel.CENTER);
+        bossLabel.setForeground(Color.WHITE);
+        bossLabel.setFont(FontManager.getRunescapeBoldFont());
+        contBL.add(bossLabel, BorderLayout.CENTER);
+
+        navbar.add(new JPanel());
     }
 }
