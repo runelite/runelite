@@ -33,9 +33,9 @@ import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Point;
+import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.SkillIconManager;
@@ -53,7 +53,7 @@ import net.runelite.client.util.ImageUtil;
 class StatusBarsOverlay extends Overlay
 {
 	private static final Color PRAYER_COLOR = new Color(50, 200, 200, 175);
-	private static final Color QUICK_PRAYER_COLOR = new Color(57, 255, 186, 225);
+	private static final Color ACTIVE_PRAYER_COLOR = new Color(57, 255, 186, 225);
 	private static final Color BACKGROUND = new Color(0, 0, 0, 150);
 	private static final Color HEALTH_COLOR = new Color(225, 35, 0, 125);
 	private static final Color POISONED_COLOR = new Color(0, 145, 0, 150);
@@ -164,8 +164,15 @@ class StatusBarsOverlay extends Overlay
 		final int maxPrayer = client.getRealSkillLevel(Skill.PRAYER);
 		final int currentHealth = client.getBoostedSkillLevel(Skill.HITPOINTS);
 		final int currentPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
-		final int quickPrayerState = client.getVar(Varbits.QUICK_PRAYER);
-		final Color prayerBar = quickPrayerState == 1 ? QUICK_PRAYER_COLOR : PRAYER_COLOR;
+		Color prayerBar = PRAYER_COLOR;
+
+		for (Prayer pray : Prayer.values())
+		{
+			if (client.isPrayerActive(pray))
+			{
+				prayerBar = ACTIVE_PRAYER_COLOR;
+			}
+		}
 
 		renderBar(g, offsetHealthX, offsetHealthY,
 			maxHealth, currentHealth, height, healthBar);
