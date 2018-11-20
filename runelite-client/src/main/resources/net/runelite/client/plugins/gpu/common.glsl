@@ -118,7 +118,7 @@ int priority_map(int p, int distance, int _min10, int avg1, int avg2, int avg3) 
         return 17;
       }
   }
-  
+
   return -1;
 }
 
@@ -164,4 +164,5 @@ int count_prio_offset(int priority) {
     case 0:
       return total;
   }
+  return total;
 }
