@@ -11,7 +11,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStack;
-import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.bosslog.enums.Bosses;
@@ -62,9 +61,6 @@ public class BossLogPlugin extends Plugin {
 
     @Inject
     private ClientToolbar clientToolbar;
-
-    @Inject
-    private SpriteManager spriteManager;
 
     @Override
     protected void startUp() throws Exception
