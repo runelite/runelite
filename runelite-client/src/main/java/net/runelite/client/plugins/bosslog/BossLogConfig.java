@@ -8,19 +8,19 @@ import net.runelite.client.config.ConfigItem;
 public interface BossLogConfig extends Config
 {
     @ConfigItem(
-            keyName = "ignoredItems",
-            name = "Ignored items",
-            description = "Configures which items should be ignored when calculating loot prices."
+            keyName = "zulrahDrops",
+            name = "Zulrah drops",
+            description = "Stores boss log for Zulrah."
     )
-    default String getIgnoredItems()
+    default String getZulrahDrops()
     {
         return "";
     }
 
     @ConfigItem(
-            keyName = "ignoredItems",
+            keyName = "zulrahDrops",
             name = "",
             description = ""
     )
-    void setIgnoredItems(String key);
+    void setZulrahDrops(String key);
 }

@@ -1,9 +1,12 @@
 package net.runelite.client.plugins.bosslog;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.SessionOpen;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStack;
@@ -38,6 +41,15 @@ public class BossLogPlugin extends Plugin {
 
     public Bosses[] bossTypes = {Bosses.ZULRAH, Bosses.BANDOS};
     public List<Boss> bosses = new ArrayList<>();
+
+    @Inject
+    private BossLogConfig config;
+
+    @Provides
+    BossLogConfig getConfig(ConfigManager configManager)
+    {
+        return configManager.getConfig(BossLogConfig.class);
+    }
 
     @Inject
     private ItemManager itemManager;
@@ -154,5 +166,13 @@ public class BossLogPlugin extends Plugin {
                 bw.close();
             }
         }
+    }
+
+    @Subscribe
+    public void onSessionOpen(SessionOpen event)
+    {
+        // update notes
+        String data = config.getZulrahDrops();
+        System.out.println("Data:" + data);
     }
 }
