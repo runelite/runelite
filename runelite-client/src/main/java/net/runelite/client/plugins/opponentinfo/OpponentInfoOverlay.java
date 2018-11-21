@@ -38,6 +38,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.client.game.HiscoreManager;
+import net.runelite.client.game.NPCManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -57,6 +58,7 @@ class OpponentInfoOverlay extends Overlay
 	private final OpponentInfoPlugin opponentInfoPlugin;
 	private final OpponentInfoConfig opponentInfoConfig;
 	private final HiscoreManager hiscoreManager;
+	private final NPCManager npcManager;
 
 	private final PanelComponent panelComponent = new PanelComponent();
 
@@ -67,13 +69,18 @@ class OpponentInfoOverlay extends Overlay
 	private String opponentsOpponentName;
 
 	@Inject
-	private OpponentInfoOverlay(Client client, OpponentInfoPlugin opponentInfoPlugin,
-		OpponentInfoConfig opponentInfoConfig, HiscoreManager hiscoreManager)
+	private OpponentInfoOverlay(
+		Client client,
+		OpponentInfoPlugin opponentInfoPlugin,
+		OpponentInfoConfig opponentInfoConfig,
+		HiscoreManager hiscoreManager,
+		NPCManager npcManager)
 	{
 		this.client = client;
 		this.opponentInfoPlugin = opponentInfoPlugin;
 		this.opponentInfoConfig = opponentInfoConfig;
 		this.hiscoreManager = hiscoreManager;
+		this.npcManager = npcManager;
 
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.HIGH);
@@ -102,7 +109,7 @@ class OpponentInfoOverlay extends Overlay
 			lastMaxHealth = null;
 			if (opponent instanceof NPC)
 			{
-				lastMaxHealth = opponentInfoPlugin.getOppInfoHealth().get(opponentName + "_" + opponent.getCombatLevel());
+				lastMaxHealth = npcManager.getHealth(opponentName, opponent.getCombatLevel());
 			}
 			else if (opponent instanceof Player)
 			{
@@ -200,7 +207,7 @@ class OpponentInfoOverlay extends Overlay
 		}
 
 		// Opponents opponent
-		if (opponentsOpponentName != null)
+		if (opponentsOpponentName != null && opponentInfoConfig.showOpponentsOpponent())
 		{
 			textWidth = Math.max(textWidth, fontMetrics.stringWidth(opponentsOpponentName));
 			panelComponent.setPreferredSize(new Dimension(textWidth, 0));

@@ -29,23 +29,31 @@ import com.google.common.base.Strings;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
+import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
 
 class LootTrackerBox extends JPanel
 {
 	private static final int ITEMS_PER_ROW = 5;
+
 	private final JPanel itemContainer = new JPanel();
 	private final JLabel priceLabel = new JLabel();
 	private final JLabel subTitleLabel = new JLabel();
@@ -55,13 +63,21 @@ class LootTrackerBox extends JPanel
 	@Getter
 	private final List<LootTrackerRecord> records = new ArrayList<>();
 
-	@Getter
 	private long totalPrice;
+	private boolean hideIgnoredItems;
+	private BiConsumer<String, Boolean> onItemToggle;
 
-	LootTrackerBox(final ItemManager itemManager, final String id, @Nullable final String subtitle)
+	LootTrackerBox(
+		final ItemManager itemManager,
+		final String id,
+		@Nullable final String subtitle,
+		final boolean hideIgnoredItems,
+		final BiConsumer<String, Boolean> onItemToggle)
 	{
 		this.id = id;
 		this.itemManager = itemManager;
+		this.onItemToggle = onItemToggle;
+		this.hideIgnoredItems = hideIgnoredItems;
 
 		setLayout(new BorderLayout(0, 1));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
@@ -93,13 +109,21 @@ class LootTrackerBox extends JPanel
 		add(itemContainer, BorderLayout.CENTER);
 	}
 
-	int getTotalKills()
+	/**
+	 * Returns total amount of kills, removing ignored kills when necessary
+	 *
+	 * @return total amount of kills
+	 */
+	private long getTotalKills()
 	{
-		return records.size();
+		return hideIgnoredItems
+			? records.stream().filter(r -> !Arrays.stream(r.getItems()).allMatch(LootTrackerItem::isIgnored)).count()
+			: records.size();
 	}
 
 	/**
 	 * Checks if this box matches specified record
+	 *
 	 * @param record loot record
 	 * @return true if match is made
 	 */
@@ -110,6 +134,7 @@ class LootTrackerBox extends JPanel
 
 	/**
 	 * Checks if this box matches specified id
+	 *
 	 * @param id other record id
 	 * @return true if match is made
 	 */
@@ -135,12 +160,18 @@ class LootTrackerBox extends JPanel
 		}
 
 		records.add(record);
+	}
+
+	void rebuild()
+	{
 		buildItems();
 
 		priceLabel.setText(StackFormatter.quantityToStackSize(totalPrice) + " gp");
-		if (records.size() > 1)
+
+		final long kills = getTotalKills();
+		if (kills > 1)
 		{
-			subTitleLabel.setText("x " + records.size());
+			subTitleLabel.setText("x " + kills);
 		}
 
 		repaint();
@@ -156,13 +187,30 @@ class LootTrackerBox extends JPanel
 		final List<LootTrackerItem> items = new ArrayList<>();
 		totalPrice = 0;
 
-		for (LootTrackerRecord records : records)
+		for (LootTrackerRecord record : records)
 		{
-			allItems.addAll(Arrays.asList(records.getItems()));
+			allItems.addAll(Arrays.asList(record.getItems()));
+		}
+
+		if (hideIgnoredItems)
+		{
+			/* If all the items in this box are ignored */
+			boolean hideBox = allItems.stream().allMatch(LootTrackerItem::isIgnored);
+			setVisible(!hideBox);
+
+			if (hideBox)
+			{
+				return;
+			}
 		}
 
 		for (final LootTrackerItem entry : allItems)
 		{
+			if (entry.isIgnored() && hideIgnoredItems)
+			{
+				continue;
+			}
+
 			totalPrice += entry.getPrice();
 
 			int quantity = 0;
@@ -175,12 +223,13 @@ class LootTrackerBox extends JPanel
 					break;
 				}
 			}
+
 			if (quantity > 0)
 			{
 				int newQuantity = entry.getQuantity() + quantity;
 				long pricePerItem = entry.getPrice() == 0 ? 0 : (entry.getPrice() / entry.getQuantity());
 
-				items.add(new LootTrackerItem(entry.getId(), entry.getName(), newQuantity, pricePerItem * newQuantity));
+				items.add(new LootTrackerItem(entry.getId(), entry.getName(), newQuantity, pricePerItem * newQuantity, entry.isIgnored()));
 			}
 			else
 			{
@@ -208,8 +257,39 @@ class LootTrackerBox extends JPanel
 				imageLabel.setToolTipText(buildToolTip(item));
 				imageLabel.setVerticalAlignment(SwingConstants.CENTER);
 				imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-				itemManager.getImage(item.getId(), item.getQuantity(), item.getQuantity() > 1).addTo(imageLabel);
+
+				AsyncBufferedImage itemImage = itemManager.getImage(item.getId(), item.getQuantity(), item.getQuantity() > 1);
+
+				if (item.isIgnored())
+				{
+					Runnable addTransparency = () ->
+					{
+						BufferedImage transparentImage = ImageUtil.alphaOffset(itemImage, .3f);
+						imageLabel.setIcon(new ImageIcon(transparentImage));
+					};
+					itemImage.onChanged(addTransparency);
+					addTransparency.run();
+				}
+				else
+				{
+					itemImage.addTo(imageLabel);
+				}
+
 				slotContainer.add(imageLabel);
+
+				// Create popup menu
+				final JPopupMenu popupMenu = new JPopupMenu();
+				popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+				slotContainer.setComponentPopupMenu(popupMenu);
+
+				final JMenuItem toggle = new JMenuItem("Toggle item");
+				toggle.addActionListener(e ->
+				{
+					item.setIgnored(!item.isIgnored());
+					onItemToggle.accept(item.getName(), item.isIgnored());
+				});
+
+				popupMenu.add(toggle);
 			}
 
 			itemContainer.add(slotContainer);
@@ -223,6 +303,7 @@ class LootTrackerBox extends JPanel
 		final String name = item.getName();
 		final int quantity = item.getQuantity();
 		final long price = item.getPrice();
-		return name + " x " + quantity + " (" + StackFormatter.quantityToStackSize(price) + ")";
+		final String ignoredLabel = item.isIgnored() ? " - Ignored" : "";
+		return name + " x " + quantity + " (" + StackFormatter.quantityToStackSize(price) + ") " + ignoredLabel;
 	}
 }

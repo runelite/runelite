@@ -120,14 +120,16 @@ public class WidgetID
 	public static final int SPELLBOOK_GROUP_ID = 218;
 	public static final int PVP_GROUP_ID = 90;
 	public static final int ZEAH_MESS_HALL_GROUP_ID = 235;
+	public static final int LOOTING_BAG_GROUP_ID = 81;
 	public static final int STATS_GROUP_ID = 320;
+
 	static class WorldMap
 	{
-		static final int MAPVIEW = 4;
-		static final int OVERVIEW_MAP = 7;
-		static final int SEARCH = 22;
-		static final int SURFACE_SELECTOR = 30;
-		static final int TOOLTIP = 36;
+		static final int MAPVIEW = 6;
+		static final int OVERVIEW_MAP = 9;
+		static final int SEARCH = 24;
+		static final int SURFACE_SELECTOR = 25;
+		static final int TOOLTIP = 38;
 		static final int OPTION = 42;
 	}
 
@@ -291,7 +293,7 @@ public class WidgetID
 
 	static class LoginClickToPlayScreen
 	{
-		static final int MESSAGE_OF_THE_DAY = 4;
+		static final int MESSAGE_OF_THE_DAY = 7;
 	}
 
 	static class Viewport
@@ -374,6 +376,7 @@ public class WidgetID
 		static final int EQUIPMENT_ICON = 62;
 		static final int PRAYER_ICON = 63;
 		static final int MAGIC_ICON = 64;
+		static final int INTERFACE_CONTAINER = 65;
 	}
 
 	static class ResizableViewportBottomLine
@@ -410,12 +413,17 @@ public class WidgetID
 
 	static class Chatbox
 	{
-		static final int CHATBOX_PARENT = 0;
-		static final int CHATBOX_BUTTONS = 1;
-		static final int CHATBOX_REPORT_TEXT = 36;
-		static final int CHATBOX_FRAME = 37;
-		static final int CHATBOX_MESSAGES = 55;
-		static final int CHATBOX_INPUT = 57;
+		static final int PARENT = 0;
+		static final int BUTTONS = 1;
+		static final int REPORT_TEXT = 36;
+		static final int FRAME = 37;
+		static final int TRANSPARENT_BACKGROUND = 38;
+		static final int CONTAINER = 40;
+		static final int TITLE = 44;
+		static final int FULL_INPUT = 45;
+		static final int MESSAGES = 55;
+		static final int TRANSPARENT_BACKGROUND_LINES = 56;
+		static final int INPUT = 57;
 	}
 
 	static class Stats
@@ -742,5 +750,10 @@ public class WidgetID
 	static class Zeah
 	{
 		static final int MESS_HALL_COOKING_DISPLAY = 3;
+	}
+
+	static class LootingBag
+	{
+		static final int LOOTING_BAG_INVENTORY = 5;
 	}
 }

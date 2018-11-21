@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -50,31 +51,41 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.util.Text;
 
 @Getter
+@RequiredArgsConstructor
 public class ThreeStepCrypticClue extends ClueScroll implements TextClueScroll, ObjectClueScroll, NpcClueScroll, LocationsClueScroll
 {
-	private final List<Map.Entry<CrypticClue, Boolean>> clueSteps;
-	private final int[] objectIds;
-	private final String[] npcs;
-	private final String text;
-	private WorldPoint[] locations;
-
-	private ThreeStepCrypticClue(List<Map.Entry<CrypticClue, Boolean>> steps, String text)
+	public static ThreeStepCrypticClue forText(String plainText, String text)
 	{
-		final int numClueSteps = steps.size();
-		this.clueSteps = steps;
-		this.text = text;
-		this.locations = new WorldPoint[numClueSteps];
-		this.npcs = new String[numClueSteps];
-		this.objectIds = new int[numClueSteps];
+		final String[] split = text.split("<br>\\s*<br>");
+		final List<Map.Entry<CrypticClue, Boolean>> steps = new ArrayList<>(split.length);
 
-		for (int i = 0; i < numClueSteps; i++)
+		for (String part : split)
 		{
-			final CrypticClue c = clueSteps.get(i).getKey();
-			locations[i] = c.getLocation();
-			npcs[i] = c.getNpc();
-			objectIds[i] = c.getObjectId();
+			boolean isDone = part.contains("<str>");
+			final String rawText = Text.sanitizeMultilineText(part);
+
+			for (CrypticClue clue : CrypticClue.CLUES)
+			{
+				if (!rawText.equalsIgnoreCase(clue.getText()))
+				{
+					continue;
+				}
+
+				steps.add(new AbstractMap.SimpleEntry<>(clue, isDone));
+				break;
+			}
 		}
+
+		if (steps.isEmpty() || steps.size() < 3)
+		{
+			return null;
+		}
+
+		return new ThreeStepCrypticClue(steps, plainText);
 	}
+
+	private final List<Map.Entry<CrypticClue, Boolean>> clueSteps;
+	private final String text;
 
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
@@ -111,66 +122,78 @@ public class ThreeStepCrypticClue extends ClueScroll implements TextClueScroll, 
 		}
 	}
 
-	public void checkForParts(Client client, final ItemContainerChanged event, ItemManager itemManager)
+	public boolean update(Client client, final ItemContainerChanged event, ItemManager itemManager)
 	{
 		if (event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
 		{
-			checkForPart(event, itemManager, TORN_CLUE_SCROLL_PART_1, 0);
-			checkForPart(event, itemManager, TORN_CLUE_SCROLL_PART_2, 1);
-			checkForPart(event, itemManager, TORN_CLUE_SCROLL_PART_3, 2);
+			boolean success = false;
+			success |= checkForPart(event, itemManager, TORN_CLUE_SCROLL_PART_1, 0);
+			success |= checkForPart(event, itemManager, TORN_CLUE_SCROLL_PART_2, 1);
+			success |= checkForPart(event, itemManager, TORN_CLUE_SCROLL_PART_3, 2);
+			return success;
 		}
+
+		return false;
 	}
 
-	private void checkForPart(final ItemContainerChanged event, ItemManager itemManager, int clueScrollPart, int index)
+	private boolean checkForPart(final ItemContainerChanged event, ItemManager itemManager, int clueScrollPart, int index)
 	{
 		final Stream<Item> items = Arrays.stream(event.getItemContainer().getItems());
 
 		// If we have the part then that step is done
 		if (items.anyMatch(item -> itemManager.getItemComposition(item.getId()).getId() == clueScrollPart))
 		{
-			clueSteps.get(index).setValue(true);
+			final Map.Entry<CrypticClue, Boolean> entry = clueSteps.get(index);
+
+			if (!entry.getValue())
+			{
+				entry.setValue(true);
+				return true;
+			}
 		}
+
+		return false;
 	}
 
 	@Override
 	public void reset()
 	{
-		this.locations = new WorldPoint[] {};
-	}
-
-	public static ThreeStepCrypticClue forText(String plainText, String text)
-	{
-		final String[] split = text.split("<br>\\s*<br>");
-		final List<Map.Entry<CrypticClue, Boolean>> steps = new ArrayList<>(split.length);
-
-		for (String part : split)
+		for (Map.Entry<CrypticClue, Boolean> clueStep : clueSteps)
 		{
-			boolean isDone = part.contains("<str>");
-			final String rawText = Text.sanitizeMultilineText(part);
-
-			for (CrypticClue clue : CrypticClue.CLUES)
-			{
-				if (!rawText.equalsIgnoreCase(clue.getText()))
-				{
-					continue;
-				}
-
-				steps.add(new AbstractMap.SimpleEntry<>(clue, isDone));
-				break;
-			}
+			clueStep.setValue(false);
 		}
-
-		if (steps.isEmpty() || steps.size() < 3)
-		{
-			return null;
-		}
-
-		return new ThreeStepCrypticClue(steps, plainText);
 	}
 
 	@Override
 	public WorldPoint getLocation()
 	{
 		return null;
+	}
+
+	@Override
+	public WorldPoint[] getLocations()
+	{
+		return clueSteps.stream()
+			.filter(s -> !s.getValue())
+			.map(s -> s.getKey().getLocation())
+			.toArray(WorldPoint[]::new);
+	}
+
+	@Override
+	public String[] getNpcs()
+	{
+		return clueSteps.stream()
+			.filter(s -> !s.getValue())
+			.map(s -> s.getKey().getNpc())
+			.toArray(String[]::new);
+	}
+
+	@Override
+	public int[] getObjectIds()
+	{
+		return clueSteps.stream()
+			.filter(s -> !s.getValue())
+			.mapToInt(s -> s.getKey().getObjectId())
+			.toArray();
 	}
 }

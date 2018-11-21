@@ -24,6 +24,7 @@
  */
 package net.runelite.mixins;
 
+import net.runelite.api.IndexDataBase;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
@@ -37,9 +38,20 @@ public abstract class RSTextureProviderMixin implements RSTextureProvider
 	@Shadow("clientInstance")
 	private static RSClient client;
 
+	@MethodHook(value = "<init>", end = true)
 	@Inject
+	public void rl$init(IndexDataBase indexTextures, IndexDataBase indexSprites, int maxSize, double brightness, int width)
+	{
+		// the client's max size is 20, however there are many scenes with >20 textures,
+		// which causes continuous alloc/free of textures with the gl. There are
+		// only ~57 textures in total.
+		setMaxSize(64);
+		setSize(64);
+	}
+
 	@MethodHook(value = "checkTextures", end = true)
-	public void checkTextures(int var1)
+	@Inject
+	public void checkTextures(int diff)
 	{
 		client.getCallbacks().drawAboveOverheads();
 	}

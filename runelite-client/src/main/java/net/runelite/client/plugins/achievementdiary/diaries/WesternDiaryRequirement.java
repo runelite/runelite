@@ -36,6 +36,8 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 		// EASY
 		add("Catch a Copper Longtail.",
 			new Requirement(Skill.HUNTER, 9));
+		add("Complete a novice game of Pest Control.",
+			new Requirement("Combat", 40));
 		add("Mine some Iron Ore near Piscatoris.",
 			new Requirement(Skill.MINING, 15));
 		add("Fletch an Oak shortbow from the Gnome Stronghold.",
@@ -51,6 +53,8 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 		add("Chop and burn some teak logs on Ape Atoll.",
 			new Requirement(Skill.WOODCUTTING, 35),
 			new Requirement(Skill.FIREMAKING, 35));
+		add("Complete an intermediate game of Pest Control.",
+			new Requirement("Combat", 70));
 		add("Make a Chocolate Bomb at the Grand Tree.",
 			new Requirement(Skill.COOKING, 42));
 		add("Complete a delivery for the Gnome Restaurant.",
@@ -65,6 +69,8 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 		add("Catch and cook a Monkfish in Piscatoris.",
 			new Requirement(Skill.FISHING, 62),
 			new Requirement(Skill.COOKING, 62));
+		add("Complete a Veteran game of Pest Control.",
+			new Requirement("Combat", 100));
 		add("Catch a Dashing Kebbit.",
 			new Requirement(Skill.HUNTER, 69));
 		add("Complete a lap of the Ape Atoll agility course.",

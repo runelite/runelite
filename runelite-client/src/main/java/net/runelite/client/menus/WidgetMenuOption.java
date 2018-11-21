@@ -27,6 +27,7 @@ package net.runelite.client.menus;
 import net.runelite.api.widgets.WidgetInfo;
 
 import java.awt.Color;
+import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 
 public final class WidgetMenuOption
@@ -42,7 +43,7 @@ public final class WidgetMenuOption
 	/**
 	 * The color that the menuTarget should be. Defaults to the brownish color that most menu options have.
 	 */
-	private Color color = Color.decode("#ff9040");
+	private Color color = JagexColors.MENU_TARGET;
 
 	/**
 	 * The widget to add the option to
