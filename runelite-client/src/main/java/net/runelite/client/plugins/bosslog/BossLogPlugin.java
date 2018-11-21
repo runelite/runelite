@@ -22,170 +22,154 @@ import net.runelite.client.util.ImageUtil;
 import javax.inject.Inject;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static java.lang.Integer.parseInt;
-
 @PluginDescriptor(
-        name = "Boss Log",
-        description = "Tracks loot from bosses",
-        tags = {"drops", "boss", "tracker", "log"},
-        enabledByDefault = true //TODO false in final build
+		name = "Boss Log",
+		description = "Tracks loot from bosses",
+		tags = {"drops", "boss", "tracker", "log"},
+		enabledByDefault = true //TODO false in final build
 )
 @Slf4j
-public class BossLogPlugin extends Plugin {
+public class BossLogPlugin extends Plugin
+{
+	private boolean active = false;
 
-    private BossLogPanel panel;
-    private NavigationButton navButton;
+	private BossLogPanel panel;
+	private NavigationButton navButton;
 
-    private String savePath = System.getProperty("user.home")+"\\Documents\\bosslog\\";
+	public List<Boss> bosses = new ArrayList<>();
 
-    public List<Boss> bosses = new ArrayList<>();
+	@Inject
+	private BossLogConfig config;
 
-    @Inject
-    private BossLogConfig config;
+	@Provides
+	BossLogConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(BossLogConfig.class);
+	}
 
-    @Provides
-    BossLogConfig getConfig(ConfigManager configManager)
-    {
-        return configManager.getConfig(BossLogConfig.class);
-    }
+	@Inject
+	private Client client;
 
-    private Client client;
+	@Inject
+	private ItemManager itemManager;
 
-    @Inject
-    private ItemManager itemManager;
+	@Inject
+	private ClientToolbar clientToolbar;
 
-    @Inject
-    private ClientToolbar clientToolbar;
+	private BossLogConfigHandler bossLogConfigHandler;
 
-    @Override
-    protected void startUp() throws Exception
-    {
-        //Load Persistant Data
-        //create new file if non-existant
-        for(Bosses b : Bosses.class.getEnumConstants())
-        {
-            File directory = new File(savePath);
-            File logFile = new File(savePath + b.getName()+"_log.txt");
-            if(!directory.exists()) {
-                directory.mkdir();
-            }
-            if(!logFile.exists())
-            {
-                if(logFile.createNewFile())
-                {
-                    BufferedWriter bw = new BufferedWriter(new FileWriter(logFile));
-                    bw.write("0");
-                    bw.newLine();
-                    bw.close();
-                }
-            }
-            BufferedReader br = new BufferedReader(new FileReader(logFile));
-            String st;
-            int KC = parseInt(br.readLine());
-            List<Item> itemList = new ArrayList<>();
-            while ((st = br.readLine()) != null)
-            {
-                if(!st.equals(""))
-                {
-                    int id = parseInt(st.substring(0, st.indexOf(' ')));
-                    int quantity = parseInt(st.substring(st.indexOf(' ') + 1));
-                    itemList.add(new Item(id, quantity, "", 0));
-                }
-            }
-            br.close();
-            bosses.add(new Boss(b, KC, itemList));
-        }
+	@Override
+	protected void startUp() throws Exception
+	{
+		//init plugin panel
+		panel = new BossLogPanel(this, itemManager, client);
 
-        panel = new BossLogPanel(this, itemManager, client);
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
 
-        final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
+		navButton = NavigationButton.builder()
+				.tooltip("Boss Log")
+				.icon(icon)
+				.priority(8)
+				.panel(panel)
+				.build();
 
-        navButton = NavigationButton.builder()
-                .tooltip("Boss Log")
-                .icon(icon)
-                .priority(8)
-                .panel(panel)
-                .build();
+		clientToolbar.addNavigation(navButton);
+	}
 
-        clientToolbar.addNavigation(navButton);
+	@Override
+	protected void shutDown()
+	{
+		clientToolbar.removeNavigation(navButton);
+	}
 
-        SwingUtilities.invokeLater(() -> panel.switchTab(Tab.OVERVIEW));
-    }
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
+		{
+			updatePlugin();
+		}
+		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			active = false;
+			SwingUtilities.invokeLater(() -> panel.clear());
+		}
+	}
 
-    @Override
-    protected void shutDown()
-    {
-        clientToolbar.removeNavigation(navButton);
-    }
+	@Subscribe
+	public void onNpcLootReceived(final NpcLootReceived npcLootReceived)
+	{
+		final NPC npc = npcLootReceived.getNpc();
+		final Collection<ItemStack> items = npcLootReceived.getItems();
 
-    @Subscribe
-    public void onGameStateChanged(GameStateChanged gameStateChanged) throws Exception {
-        if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN) {
-            SwingUtilities.invokeLater(() -> panel.update());
-        }
-    }
+		for (Boss b : bosses)
+		{
+			for (int id : b.getBoss().getIds())
+			{
+				if (id == npc.getId())
+				{
+					for (ItemStack e : items)
+					{
+						final ItemComposition itemComposition = itemManager.getItemComposition(e.getId());
+						final int price = itemManager.getItemPrice(e.getId());
+						b.addItem(new Item(e.getId(), e.getQuantity(), itemComposition.getName(), price));
+					}
+					b.addKC();
+					save(b.getBoss());
+					return;
+				}
+			}
+		}
+	}
 
-    @Subscribe
-    public void onNpcLootReceived(final NpcLootReceived npcLootReceived) throws IOException
-    {
-        final NPC npc = npcLootReceived.getNpc();
-        final Collection<ItemStack> items = npcLootReceived.getItems();
-        for(Boss b : bosses)
-        {
-            for(int id : b.getBoss().getIds())
-            {
-                if(id == npc.getId())
-                {
-                    for (ItemStack e : items)
-                    {
-                        final ItemComposition itemComposition = itemManager.getItemComposition(e.getId());
-                        b.addItem(new Item(e.getId(), e.getQuantity(), itemComposition.getName(), itemManager.getItemPrice(e.getId())));
-                    }
-                    b.addKC();
-                    save(b.getBoss());
-                    return;
-                }
-            }
-        }
-    }
+	@Subscribe
+	public void onCanvasSizeChanged(CanvasSizeChanged event)
+	{ //resize UI to client size
+		if (client.getGameState() == GameState.LOGGED_IN) SwingUtilities.invokeLater(() -> panel.update());
+	}
 
-    @Subscribe
-    public void onCanvasSizeChanged(CanvasSizeChanged event) { if(client.getGameState() == GameState.LOGGED_IN) SwingUtilities.invokeLater(() -> panel.update()); }
+	@Subscribe
+	public void onSessionOpen(SessionOpen event)
+	{ // update drops
+		updatePlugin();
+	}
 
-    void save(Bosses boss) throws IOException
-    {
-        SwingUtilities.invokeLater(() -> panel.update());
-        for(Boss b : bosses)
-        {
-            if(b.getBoss() == boss)
-            {
-                File oldFile = new File(savePath+b.getBoss().getName()+"_log.txt");
-                if(oldFile.delete()) {
-                    File logFile = new File(savePath+b.getBoss().getName() + "_log.txt");
-                    logFile.createNewFile();
-                    BufferedWriter bw = new BufferedWriter(new FileWriter(logFile));
-                    bw.write(b.getKC() + ""); //Write KC to file
-                    bw.newLine();
-                    for (Item i : b.getDrops()) {
-                        bw.write(i.getId() + " " + i.getQuantity());
-                        bw.newLine();
-                    }
-                    bw.close();
-                }
-            }
-        }
-    }
+	private void save(Bosses boss)
+	{ //save log data to config
+		SwingUtilities.invokeLater(() -> panel.update());
 
-    @Subscribe
-    public void onSessionOpen(SessionOpen event)
-    {
-        // update notes
-        String data = config.getZulrahDrops();
-        System.out.println("Data:" + data);
-    }
+		for (Boss b : bosses)
+		{
+			if (b.getBoss() == boss)
+			{
+				bossLogConfigHandler.write(b);
+				return;
+			}
+		}
+	}
+
+	private void updatePlugin()
+	{
+		bossLogConfigHandler = new BossLogConfigHandler(config, client);
+		bosses.clear();
+
+		//init bosses
+		for (Bosses b : Bosses.class.getEnumConstants())
+		{
+			bosses.add(bossLogConfigHandler.read(b));
+		}
+
+		SwingUtilities.invokeLater(() ->
+		{
+			panel.init();
+			panel.update();
+			panel.switchTab(Tab.OVERVIEW);
+		});
+
+		active = true;
+	}
 }

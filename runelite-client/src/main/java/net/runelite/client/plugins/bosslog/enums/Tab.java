@@ -32,16 +32,16 @@ import net.runelite.api.ItemID;
 @Getter
 public enum Tab
 {
-    OVERVIEW("Overview", 0),
-    ZULRAH("Zulrah", ItemID.PET_SNAKELING),
-    VORKATH("Vorkath", ItemID.VORKI),
-    DAGANNOTH_KINGS("Dagannoth Kings", ItemID.PET_DAGANNOTH_REX),
-    BANDOS("Bandos", ItemID.PET_GENERAL_GRAARDOR),
-    ZAMORAK("Zamorak", ItemID.PET_KRIL_TSUTSAROTH),
-    SARADOMIN("Saradomin", ItemID.PET_ZILYANA),
-    ARMADYL("Armadyl", ItemID.PET_KREEARRA),
-    SHAMAN("Lizardmen Shaman", ItemID.DRAGON_WARHAMMER);
+	OVERVIEW("Overview", 0),
+	ZULRAH("Zulrah", ItemID.PET_SNAKELING),
+	VORKATH("Vorkath", ItemID.VORKI),
+	DAGANNOTH_KINGS("Dagannoth Kings", ItemID.PET_DAGANNOTH_REX),
+	BANDOS("Bandos", ItemID.PET_GENERAL_GRAARDOR),
+	ZAMORAK("Zamorak", ItemID.PET_KRIL_TSUTSAROTH),
+	SARADOMIN("Saradomin", ItemID.PET_ZILYANA),
+	ARMADYL("Armadyl", ItemID.PET_KREEARRA),
+	SHAMAN("Lizardmen Shaman", ItemID.DRAGON_WARHAMMER);
 
-    private final String name;
-    private final int itemID;
+	private final String name;
+	private final int itemID;
 }
