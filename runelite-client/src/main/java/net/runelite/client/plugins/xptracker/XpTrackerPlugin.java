@@ -36,6 +36,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 import javax.inject.Inject;
+
+import com.sun.org.apache.xpath.internal.res.XPATHErrorResources_zh_CN;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -263,10 +265,11 @@ public class XpTrackerPlugin extends Plugin
 		state.setActionType(XpActionType.EXPERIENCE);
 
 		final Actor interacting = client.getLocalPlayer().getInteracting();
-		if (interacting instanceof NPC)
+		if (interacting instanceof NPC && COMBAT.contains(skill))
 		{
 			final NPC npc = (NPC) interacting;
 			xpState.updateNpcExperience(skill, npc, npcManager.getHealth(npc.getName(), npc.getCombatLevel()));
+			state.setActionType(XpActionType.ACTOR_HEALTH);
 		}
 
 		final XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp, startGoalXp, endGoalXp);

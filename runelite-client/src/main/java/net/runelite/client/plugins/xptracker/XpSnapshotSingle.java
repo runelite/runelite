@@ -26,12 +26,14 @@ package net.runelite.client.plugins.xptracker;
 
 import lombok.Builder;
 import lombok.Value;
+import net.runelite.api.Skill;
 
 @Builder
 @Value
 class XpSnapshotSingle
 {
 	private XpActionType actionType;
+	private Skill skill;
 	private int startLevel;
 	private int endLevel;
 	private int startGoalXp;
