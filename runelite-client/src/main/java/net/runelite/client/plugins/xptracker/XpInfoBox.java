@@ -197,11 +197,9 @@ class XpInfoBox extends JPanel
 			// Update information labels
 			expGained.setText(htmlLabel("XP Gained: ", xpSnapshotSingle.getXpGainedInSession()));
 			expLeft.setText(htmlLabel("XP Left: ", xpSnapshotSingle.getXpRemainingToGoal()));
-			// Note that slayer is a special case since it works like an EXPERIENCE skill but should be labeled as
-			// Kills like an ACTOR_HEALTH skill
 			actionsLeft.setText(htmlLabel(
-					(xpSnapshotSingle.getSkill() == Skill.SLAYER ? "Kills" : xpSnapshotSingle.getActionType().getLabel()) + ": ",
-					xpSnapshotSingle.getActionsRemainingToGoal()));
+				xpSnapshotSingle.getActionType().getLabel() + ": ",
+				xpSnapshotSingle.getActionsRemainingToGoal()));
 
 			// Update progress bar
 			progressBar.setValue((int) xpSnapshotSingle.getSkillProgressToGoal());
@@ -214,9 +212,9 @@ class XpInfoBox extends JPanel
 			progressBar.setToolTipText(String.format(
 				HTML_TOOL_TIP_TEMPLATE,
 				xpSnapshotSingle.getActionsInSession(),
-				xpSnapshotSingle.getSkill() == Skill.SLAYER ? "Kills" : xpSnapshotSingle.getActionType().getLabel(),
+				xpSnapshotSingle.getActionType().getLabel(),
 				xpSnapshotSingle.getActionsPerHour(),
-				xpSnapshotSingle.getSkill() == Skill.SLAYER ? "Kills" : xpSnapshotSingle.getActionType().getLabel(),
+				xpSnapshotSingle.getActionType().getLabel(),
 				xpSnapshotSingle.getTimeTillGoal()));
 
 			progressBar.setDimmed(skillPaused);
