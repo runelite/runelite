@@ -691,10 +691,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			y = 0;
 			z = tileY * Perspective.LOCAL_TILE_SIZE;
 
-			x -= client.getCameraX2();
-			y -= client.getCameraY2();
-			z -= client.getCameraZ2();
-
 			GpuIntBuffer b = modelBufferUnordered;
 			++unorderedModels;
 
@@ -720,10 +716,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			x = tileX * Perspective.LOCAL_TILE_SIZE;
 			y = 0;
 			z = tileY * Perspective.LOCAL_TILE_SIZE;
-
-			x -= client.getCameraX2();
-			y -= client.getCameraY2();
-			z -= client.getCameraZ2();
 
 			GpuIntBuffer b = modelBufferUnordered;
 			++unorderedModels;
@@ -858,7 +850,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			.put(client.getCameraPitch())
 			.put(centerX)
 			.put(centerY)
-			.put(client.getScale());
+			.put(client.getScale())
+			.put(client.getCameraX2())
+			.put(client.getCameraY2())
+			.put(client.getCameraZ2());
 		uniformBuffer.flip();
 
 		gl.glBufferSubData(gl.GL_UNIFORM_BUFFER, 0, uniformBuffer.limit() * Integer.BYTES, uniformBuffer);
@@ -1266,7 +1261,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			buffer.put(tc);
 			buffer.put(targetBufferOffset);
 			buffer.put(FLAG_SCENE_BUFFER | (model.getRadius() << 12) | orientation);
-			buffer.put(x).put(y).put(z);
+			buffer.put(x + client.getCameraX2()).put(y + client.getCameraY2()).put(z + client.getCameraZ2());
 
 			targetBufferOffset += tc * 3;
 		}
@@ -1309,7 +1304,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				buffer.put(len / 3);
 				buffer.put(targetBufferOffset);
 				buffer.put((model.getRadius() << 12) | orientation);
-				buffer.put(x).put(y).put(z);
+				buffer.put(x + client.getCameraX2()).put(y + client.getCameraY2()).put(z + client.getCameraZ2());
 
 				tempOffset += len;
 				if (hasUv)

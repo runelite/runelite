@@ -37,6 +37,9 @@ layout(std140) uniform uniforms {
   int centerX;
   int centerY;
   int zoom;
+  int cameraX;
+  int cameraY;
+  int cameraZ;
   ivec2 sinCosTable[2048];
 };
 
@@ -52,9 +55,10 @@ out vec4 fUv;
 #include to_screen.glsl
 
 void main() {
-  ivec3 screenA = toScreen(vPosition[0], cameraYaw, cameraPitch, centerX, centerY, zoom);
-  ivec3 screenB = toScreen(vPosition[1], cameraYaw, cameraPitch, centerX, centerY, zoom);
-  ivec3 screenC = toScreen(vPosition[2], cameraYaw, cameraPitch, centerX, centerY, zoom);
+  ivec3 cameraPos = ivec3(cameraX, cameraY, cameraZ);
+  ivec3 screenA = toScreen(vPosition[0] - cameraPos, cameraYaw, cameraPitch, centerX, centerY, zoom);
+  ivec3 screenB = toScreen(vPosition[1] - cameraPos, cameraYaw, cameraPitch, centerX, centerY, zoom);
+  ivec3 screenC = toScreen(vPosition[2] - cameraPos, cameraYaw, cameraPitch, centerX, centerY, zoom);
 
   if (-screenA.z < 50 || -screenB.z < 50 || -screenC.z < 50) {
     // the client does not draw a triangle if any vertex distance is <50
