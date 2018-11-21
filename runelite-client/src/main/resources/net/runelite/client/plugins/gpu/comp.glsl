@@ -24,18 +24,6 @@
  */
 #version 430 core
 
-#define PI 3.1415926535897932384626433832795f
-#define UNIT PI / 1024.0f
-
-layout(std140) uniform uniforms {
-  int cameraYaw;
-  int cameraPitch;
-  int centerX;
-  int centerY;
-  int zoom;
-  ivec2 sinCosTable[2048];
-};
-
 shared int totalNum[12]; // number of faces with a given priority
 shared int totalDistance[12]; // sum of distances to faces of a given priority
 
@@ -55,33 +43,7 @@ struct modelinfo {
   int z;        // scene position z
 };
 
-layout(std430, binding = 0) readonly buffer modelbuffer_in {
-  modelinfo ol[];
-};
-
-layout(std430, binding = 1) readonly buffer vertexbuffer_in {
-  ivec4 vb[];
-};
-
-layout(std430, binding = 2) readonly buffer tempvertexbuffer_in {
-  ivec4 tempvb[];
-};
-
-layout(std430, binding = 3) writeonly buffer vertex_out {
-  ivec4 vout[];
-};
-
-layout(std430, binding = 4) writeonly buffer uv_out {
-  vec4 uvout[];
-};
-
-layout(std430, binding = 5) readonly buffer uvbuffer_in {
-  vec4 uv[];
-};
-
-layout(std430, binding = 6) readonly buffer tempuvbuffer_in {
-  vec4 tempuv[];
-};
+#include comp_common.glsl
 
 layout(local_size_x = 1024) in;
 
