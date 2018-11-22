@@ -58,8 +58,10 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.components.CustomScrollBarUI;
+import net.runelite.client.ui.skin.SubstanceRuneLiteLookAndFeel;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
 
 /**
@@ -68,6 +70,8 @@ import org.pushingpixels.substance.internal.SubstanceSynapse;
 @Slf4j
 public class SwingUtil
 {
+	private static boolean lookAndFeelIsSet = false;
+
 	/**
 	 * Sets some sensible defaults for swing.
 	 * IMPORTANT! Needs to be called before main frame creation
@@ -287,5 +291,25 @@ public class SwingUtil
 
 		navigationButton.setOnSelect(button::doClick);
 		return button;
+	}
+
+	/**
+	 * Sets up the RuneLite look and feel. Checks to see if the look and feel
+	 * was already set up before running in case the splash screen has already
+	 * set up the theme.
+	 * This must be run inside the Swing Event Dispatch thread.
+	 */
+	public static void setupRuneLiteLookAndFeel()
+	{
+		if (!lookAndFeelIsSet)
+		{
+			lookAndFeelIsSet = true;
+			// Set some sensible swing defaults
+			SwingUtil.setupDefaults();
+			// Use substance look and feel
+			SwingUtil.setTheme(new SubstanceRuneLiteLookAndFeel());
+			// Use custom UI font
+			SwingUtil.setFont(FontManager.getRunescapeFont());
+		}
 	}
 }

@@ -40,7 +40,6 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLiteProperties;
-import net.runelite.client.ui.skin.SubstanceRuneLiteLookAndFeel;
 import net.runelite.client.util.SwingUtil;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
 
@@ -68,12 +67,7 @@ public class RuneLiteSplashScreen
 	 */
 	private void initLayout(final int estimatedSteps)
 	{
-		// Set some sensible swing defaults
-		SwingUtil.setupDefaults();
-		// Use substance look and feel
-		SwingUtil.setTheme(new SubstanceRuneLiteLookAndFeel());
-		// Use custom UI font
-		SwingUtil.setFont(FontManager.getRunescapeFont());
+		SwingUtil.setupRuneLiteLookAndFeel();
 
 		// init fields with updated swing look and feel
 		frame = new JFrame("RuneLite Loading");
