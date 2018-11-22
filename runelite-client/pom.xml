@@ -157,6 +157,11 @@
 			<classifier>natives-linux-i586</classifier>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>io.sigpipe</groupId>
+			<artifactId>jbsdiff</artifactId>
+			<version>1.0</version>
+		</dependency>
 
 		<dependency>
 			<groupId>net.runelite</groupId>
@@ -171,7 +176,7 @@
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>
-			<artifactId>injected-client</artifactId>
+			<artifactId>client-patch</artifactId>
 			<version>${project.version}</version>
 			<scope>runtime</scope>
 		</dependency>
@@ -267,7 +272,7 @@
 							<filters>
 								<!-- include runtime apis -->
 								<filter>
-									<!-- net.runelite:injected-client and net.runelite:api -->
+									<!-- net.runelite:client-patch and net.runelite:api -->
 									<artifact>net.runelite:*</artifact>
 									<includes>
 										<include>**</include>
