@@ -51,8 +51,8 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleState;
 import net.runelite.client.plugins.puzzlesolver.solver.heuristics.ManhattanDistance;
-import net.runelite.client.plugins.puzzlesolver.solver.monkeymadness.PuzzleSolverMM;
 import net.runelite.client.plugins.puzzlesolver.solver.pathfinding.IDAStar;
+import net.runelite.client.plugins.puzzlesolver.solver.pathfinding.IDAStarMM;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -432,7 +432,7 @@ public class PuzzleSolverOverlay extends Overlay
 		}
 		else
 		{
-			solver = new PuzzleSolverMM(new IDAStar(new ManhattanDistance()), puzzleState);
+			solver = new PuzzleSolver(new IDAStarMM(new ManhattanDistance()), puzzleState);
 		}
 
 		solverFuture = executorService.submit(solver);

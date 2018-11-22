@@ -22,96 +22,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.puzzlesolver.solver.monkeymadness;
+package net.runelite.client.plugins.puzzlesolver.solver.pathfinding;
 
-import com.google.common.base.Stopwatch;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import net.runelite.api.Point;
-import net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.BLANK_TILE_VALUE;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.DIMENSION;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleState;
-import net.runelite.client.plugins.puzzlesolver.solver.pathfinding.Pathfinder;
+import net.runelite.client.plugins.puzzlesolver.solver.heuristics.Heuristic;
 
-public class PuzzleSolverMM extends PuzzleSolver implements Runnable
+public class IDAStarMM extends IDAStar
 {
-	private static final Duration MAX_WAIT_DURATION = Duration.ofMillis(1500);
-
-	private Pathfinder pathfinder;
-	private PuzzleState startState;
-
 	private PuzzleState currentState;
 	private List<PuzzleState> stateList = new ArrayList<>();
 	private List<List<Integer>> validRowNumbers = new ArrayList<>();
 	private List<List<Integer>> validColumnNumbers = new ArrayList<>();
 
-	private List<PuzzleState> solution;
-	private int position;
-	private Stopwatch stopwatch;
-	private boolean failed = false;
-
-	public PuzzleSolverMM(Pathfinder pathfinder, PuzzleState startState)
+	public IDAStarMM(Heuristic heuristic)
 	{
-		super(pathfinder, startState);
-
-		this.pathfinder = pathfinder;
-		this.startState = startState;
+		super(heuristic);
 
 		//Add valid numbers for rows and columns
 		validRowNumbers.add(Arrays.asList(0, 1, 2, 3, 4));
 		validColumnNumbers.add(Arrays.asList(5, 10, 15, 20));
 	}
 
-	public PuzzleState getStep(int stepIdx)
-	{
-		return solution.get(stepIdx);
-	}
-
-	public int getStepCount()
-	{
-		return solution.size();
-	}
-
-	public boolean hasSolution()
-	{
-		return solution != null;
-	}
-
-	public int getPosition()
-	{
-		return position;
-	}
-
-	public void setPosition(int position)
-	{
-		this.position = position;
-	}
-
-	public boolean hasExceededWaitDuration()
-	{
-		return stopwatch.elapsed().compareTo(MAX_WAIT_DURATION) > 0;
-	}
-
-	public boolean hasFailed()
-	{
-		return failed;
-	}
-
 	@Override
-	public void run()
+	public List<PuzzleState> computePath(PuzzleState root)
 	{
-		stopwatch = Stopwatch.createStarted();
-		currentState = new PuzzleState(startState);
+		currentState = new PuzzleState(root);
+		stateList.add(new PuzzleState(root));
 
-		stateList.add(new PuzzleState(startState));
-		solution = computePath();
-
-		failed = solution == null;
-	}
-
-	private List<PuzzleState> computePath()
-	{
 		List<PuzzleState> path = new ArrayList<>();
 
 		//Reduce to 4x5
@@ -124,37 +67,11 @@ public class PuzzleSolverMM extends PuzzleSolver implements Runnable
 		stateList.remove(stateList.size() - 1);
 
 		//Pathfinder for 4x4
-		PuzzleState pathfinderSolved = solvePathfinder(currentState, pathfinder);
-
-		if (pathfinderSolved == null)
-		{
-			//Pathfinder failed
-			return null;
-		}
-
-		PuzzleState parent = pathfinderSolved;
-		while (parent != null)
-		{
-			path.add(0, parent);
-			parent = parent.getParent();
-		}
+		path.addAll(super.computePath(new PuzzleState(currentState)));
 
 		path.addAll(0, stateList);
 
 		return path;
-	}
-
-	private PuzzleState solvePathfinder(PuzzleState preSolved, Pathfinder pathfinder)
-	{
-		PuzzleSolver solver = new PuzzleSolver(pathfinder, new PuzzleState(preSolved));
-		solver.run();
-
-		if (solver.hasFailed())
-		{
-			return null;
-		}
-
-		return solver.getStep(solver.getStepCount() - 1);
 	}
 
 	private void solveRow()
