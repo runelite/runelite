@@ -156,9 +156,11 @@ public class BossLogPlugin extends Plugin
 							boss.addItem(new BossLogItem(e.getId(), e.getQuantity(),
 									itemComposition.getName(), price));
 						}
+						boss.addKC();
+						save(boss.getBoss());
 					}
 				}
-				return;
+				break;
 			case (WidgetID.THEATRE_OF_BLOOD_GROUP_ID):
 				int region = WorldPoint.fromLocalInstance(client,
 						client.getLocalPlayer().getLocalLocation()).getRegionID();
@@ -178,9 +180,11 @@ public class BossLogPlugin extends Plugin
 							boss.addItem(new BossLogItem(e.getId(), e.getQuantity(),
 									itemComposition.getName(), price));
 						}
+						boss.addKC();
+						save(boss.getBoss());
 					}
 				}
-				return;
+				break;
 		}
 	}
 

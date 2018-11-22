@@ -3,6 +3,7 @@ package net.runelite.client.plugins.bosslog;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.util.ImageUtil;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -16,8 +17,6 @@ import java.util.Locale;
 
 class BossLogDropBox extends JPanel
 {
-	private int alpha = 255;
-
 	BossLogDropBox(ItemManager itemManager, BossLogItem item, boolean isUnique)
 	{
 		setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -31,11 +30,10 @@ class BossLogDropBox extends JPanel
 		if (isUnique && item.getQuantity() == 0)
 		{
 			icon = itemManager.getImage(item.getId());
-			alpha = 75;
 			Runnable alphasize = () ->
 			{
-				BufferedImage subIcon = setAlpha((byte) alpha, deepCopy(icon));
-				iconLabel.setIcon(new ImageIcon(subIcon));
+				ImageIcon itemIcon = new ImageIcon(ImageUtil.alphaOffset(icon, -180));
+				iconLabel.setIcon(itemIcon);
 			};
 			icon.onChanged(alphasize);
 			alphasize.run();

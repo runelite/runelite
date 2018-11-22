@@ -5,6 +5,7 @@ import net.runelite.api.ItemComposition;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.bosslog.enums.Tab;
 import net.runelite.client.plugins.config.ConfigPanel;
+import net.runelite.client.plugins.timetracking.TimeTrackingPlugin;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
@@ -38,6 +39,7 @@ public class BossLogDropPanel extends BossLogPanelView
 	private List<JPanel> slots = new ArrayList<>();
 
 	private final BufferedImage backIcon = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "config_back_icon.png");
+	private final BufferedImage resetIcon = ImageUtil.getResourceStreamFromClass(TimeTrackingPlugin.class, "reset_icon.png");
 
 	public Boss panelBoss;
 	private final BossLogPanel bossLogPanel;
@@ -212,6 +214,9 @@ public class BossLogDropPanel extends BossLogPanelView
 		bossLabel.setFont(FontManager.getRunescapeBoldFont());
 		contBL.add(bossLabel, BorderLayout.CENTER);
 
-		navbar.add(new JPanel());
+		ImageIcon RESET_ICON = new ImageIcon(resetIcon);
+		ImageIcon RESET_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(resetIcon, -100));
+		JLabel reset_button = new JLabel(RESET_ICON);
+		navbar.add(reset_button);
 	}
 }
