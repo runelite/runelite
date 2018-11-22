@@ -90,6 +90,7 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
@@ -179,6 +180,9 @@ public class ScreenshotPlugin extends Plugin
 
 	@Inject
 	private SpriteManager spriteManager;
+
+	@Inject
+	private OverlayRenderer overlayRenderer;
 
 	@Getter(AccessLevel.PACKAGE)
 	private BufferedImage reportButton;
@@ -536,6 +540,11 @@ public class ScreenshotPlugin extends Plugin
 			// Draw the game onto the screenshot
 			graphics.drawImage(image, gameOffsetX, gameOffsetY, null);
 
+			if (config.hideOverlays())
+			{
+				overlayRenderer.setPauseRendering(false);
+			}
+
 			File playerFolder;
 			if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
 			{
@@ -582,12 +591,17 @@ public class ScreenshotPlugin extends Plugin
 			});
 		};
 
-		if (config.displayDate())
+		if (config.displayDate() && !config.hideOverlays())
 		{
 			screenshotOverlay.queueForTimestamp(screenshotConsumer);
 		}
 		else
 		{
+			if (config.hideOverlays())
+			{
+				overlayRenderer.setPauseRendering(true);
+			}
+
 			drawManager.requestNextFrameListener(screenshotConsumer);
 		}
 	}
