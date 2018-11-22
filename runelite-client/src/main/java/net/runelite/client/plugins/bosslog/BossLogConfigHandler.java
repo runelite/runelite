@@ -29,7 +29,7 @@ class BossLogConfigHandler
 			String newData = ""; //updated data to insert
 
 			newData += b.getKC() + " "; //insert KC
-			for (Item i : b.getDrops())
+			for (BossLogItem i : b.getDrops())
 			{
 				String itemData = "";
 				itemData += i.getId() + " ";
@@ -49,7 +49,7 @@ class BossLogConfigHandler
 	Boss read(Bosses b)
 	{
 		String data;
-		List<Item> items = new ArrayList<>();
+		List<BossLogItem> items = new ArrayList<>();
 		int KC = 0;
 		data = getBossData(b);
 
@@ -67,7 +67,7 @@ class BossLogConfigHandler
 				data = data.substring(data.indexOf(" ") + 1); //slide next
 				int Quantity = parseInt(data.substring(0, data.indexOf(" ")));
 				data = data.substring(data.indexOf(" ") + 1); //slide next
-				items.add(new Item(ItemID, Quantity, "", 0));
+				items.add(new BossLogItem(ItemID, Quantity, "", 0));
 			}
 		}
 		else
@@ -112,6 +112,70 @@ class BossLogConfigHandler
 		{
 			return config.getShamanDrops();
 		}
+		else if (b == Bosses.TOB)
+		{
+			return config.getTobDrops();
+		}
+		else if (b == Bosses.COX)
+		{
+			return config.getCoxDrops();
+		}
+		else if (b == Bosses.ABYSSAL_SIRE)
+		{
+			return config.getSireDrops();
+		}
+		else if (b == Bosses.CERBERUS)
+		{
+			return config.getCerberusDrops();
+		}
+		else if (b == Bosses.THERM_SMOKE_DEVIL)
+		{
+			return config.getThermoDrops();
+		}
+		else if (b == Bosses.KRAKEN)
+		{
+			return config.getKrakenDrops();
+		}
+		else if (b == Bosses.CALLISTO)
+		{
+			return config.getCallistoDrops();
+		}
+		else if (b == Bosses.VENENATIS)
+		{
+			return config.getVenenatisDrops();
+		}
+		else if (b == Bosses.VETION)
+		{
+			return config.getVetionDrops();
+		}
+		else if (b == Bosses.CRAZY_ARCHAEOLOGIST)
+		{
+			return config.getCrazyArchDrops();
+		}
+		else if (b == Bosses.SCORPIA)
+		{
+			return config.getScorpiaDrops();
+		}
+		else if (b == Bosses.CHAOS_FANATIC)
+		{
+			return config.getChaosFanaticDrops();
+		}
+		else if (b == Bosses.KALPHITE_QUEEN)
+		{
+			return config.getKqDrops();
+		}
+		else if (b == Bosses.CORP)
+		{
+			return config.getCorpDrops();
+		}
+		else if (b == Bosses.GRO_GUAR)
+		{
+			return config.getGroguarDrops();
+		}
+		else if (b == Bosses.SKOTIZO)
+		{
+			return config.getSkotizoDrops();
+		}
 		return "";
 	}
 
@@ -148,6 +212,70 @@ class BossLogConfigHandler
 		else if (b == Bosses.SHAMAN)
 		{
 			config.setShamanDrops(data);
+		}
+		else if (b == Bosses.TOB)
+		{
+			config.setTobDrops(data);
+		}
+		else if (b == Bosses.COX)
+		{
+			config.setCoxDrops(data);
+		}
+		else if (b == Bosses.ABYSSAL_SIRE)
+		{
+			config.setSireDrops(data);
+		}
+		else if (b == Bosses.CERBERUS)
+		{
+			config.setCerberusDrops(data);
+		}
+		else if (b == Bosses.THERM_SMOKE_DEVIL)
+		{
+			config.setThermoDrops(data);
+		}
+		else if (b == Bosses.KRAKEN)
+		{
+			config.setKrakenDrops(data);
+		}
+		else if (b == Bosses.CALLISTO)
+		{
+			config.setCallistoDrops(data);
+		}
+		else if (b == Bosses.VENENATIS)
+		{
+			config.setVenenatisDrops(data);
+		}
+		else if (b == Bosses.VETION)
+		{
+			config.setVetionDrops(data);
+		}
+		else if (b == Bosses.CRAZY_ARCHAEOLOGIST)
+		{
+			config.setCrazyArchDrops(data);
+		}
+		else if (b == Bosses.SCORPIA)
+		{
+			config.setScorpiaDrops(data);
+		}
+		else if (b == Bosses.CHAOS_FANATIC)
+		{
+			config.setChaosFanaticDrops(data);
+		}
+		else if (b == Bosses.KALPHITE_QUEEN)
+		{
+			config.setKqDrops(data);
+		}
+		else if (b == Bosses.CORP)
+		{
+			config.setCorpDrops(data);
+		}
+		else if (b == Bosses.GRO_GUAR)
+		{
+			config.setGroguarDrops(data);
+		}
+		else if (b == Bosses.SKOTIZO)
+		{
+			config.setSkotizDrops(data);
 		}
 	}
 }

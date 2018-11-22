@@ -11,9 +11,14 @@ import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 
 import javax.annotation.Nullable;
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,8 +32,6 @@ class BossLogPanel extends PluginPanel
 	public final JPanel display = new JPanel();
 	private final MaterialTabGroup tabGroup = new MaterialTabGroup(display);
 	private final Map<Tab, MaterialTab> uiTabs = new HashMap<>();
-
-	private final JLabel overallIcon = new JLabel();
 
 	@Nullable
 	private BossLogPanelView activeTabPanel = null;
@@ -67,8 +70,8 @@ class BossLogPanel extends PluginPanel
 
 		JScrollPane scroller = new JScrollPane(wrapped);
 		scroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scroller.getVerticalScrollBar().setPreferredSize(new Dimension(16, 0));
-		scroller.getVerticalScrollBar().setBorder(new EmptyBorder(0, 9, 0, 0));
+		scroller.getVerticalScrollBar().setPreferredSize(new Dimension(12, 0));
+		scroller.getVerticalScrollBar().setBorder(new EmptyBorder(0, 6, 0, 0));
 		scroller.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		MaterialTab materialTab = new MaterialTab(new ImageIcon(), tabGroup, scroller);
@@ -126,6 +129,9 @@ class BossLogPanel extends PluginPanel
 		loginLabel.setHorizontalAlignment(JLabel.CENTER);
 		loginLabel.setVerticalAlignment(JLabel.CENTER);
 		loginPanel.add(loginLabel, BorderLayout.CENTER);
+
+		display.revalidate();
+		display.repaint();
 	}
 
 	void switchTab(Tab tab)

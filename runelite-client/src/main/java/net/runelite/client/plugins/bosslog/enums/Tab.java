@@ -1,27 +1,3 @@
-/*
- * Copyright (c) 2018 Abex
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright notice, this
- *     list of conditions and the following disclaimer.
- *  2. Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- *  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- *  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- *  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- *  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- *  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
 package net.runelite.client.plugins.bosslog.enums;
 
 import lombok.Getter;
@@ -35,11 +11,27 @@ public enum Tab
 	OVERVIEW("Overview", 0),
 	ZULRAH("Zulrah", ItemID.PET_SNAKELING),
 	VORKATH("Vorkath", ItemID.VORKI),
-	DAGANNOTH_KINGS("Dagannoth Kings", ItemID.PET_DAGANNOTH_REX),
+	COX("Chambers of Xeric", ItemID.OLMLET),
+	TOB("Theatre of Blood", ItemID.LIL_ZIK),
 	BANDOS("Bandos", ItemID.PET_GENERAL_GRAARDOR),
 	ZAMORAK("Zamorak", ItemID.PET_KRIL_TSUTSAROTH),
 	SARADOMIN("Saradomin", ItemID.PET_ZILYANA),
 	ARMADYL("Armadyl", ItemID.PET_KREEARRA),
+	CORP("Corporeal Beast", ItemID.PET_CORPOREAL_CRITTER),
+	CERBERUS("Cerberus", ItemID.HELLPUPPY),
+	ABYSSAL_SIRE("Abyssal Sire", ItemID.ABYSSAL_ORPHAN),
+	KRAKEN("Kraken", ItemID.PET_KRAKEN),
+	GRO_GUAR("Grotesque Guardians", ItemID.NOON),
+	THERM_SMOKE_DEVIL("Thermonuclear Smoke Devil", ItemID.PET_SMOKE_DEVIL),
+	DAGANNOTH_KINGS("Dagannoth Kings", ItemID.PET_DAGANNOTH_REX),
+	KALPHITE_QUEEN("Kalphite Queen", ItemID.KALPHITE_PRINCESS),
+	CALLISTO("Callisto", ItemID.CALLISTO_CUB),
+	VETION("Vet'ion", ItemID.VETION_JR),
+	VENENATIS("Venenatis", ItemID.VENENATIS_SPIDERLING),
+	SCORPIA("Scorpia", ItemID.SCORPIAS_OFFSPRING),
+	CRAZY_ARCHAEOLOGIST("Crazy Arch.", ItemID.FEDORA),
+	CHAOS_FANATIC("Chaos Fanatic", ItemID.ANCIENT_STAFF),
+	SKOTIZO("Skotizo", ItemID.SKOTOS),
 	SHAMAN("Lizardmen Shaman", ItemID.DRAGON_WARHAMMER);
 
 	private final String name;

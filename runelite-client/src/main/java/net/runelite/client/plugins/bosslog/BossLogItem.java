@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @AllArgsConstructor
-public class Item
+public class BossLogItem
 {
 	@Getter
 	private final int id;

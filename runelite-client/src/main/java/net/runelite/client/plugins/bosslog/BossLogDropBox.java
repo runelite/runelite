@@ -18,7 +18,7 @@ class BossLogDropBox extends JPanel
 {
 	private int alpha = 255;
 
-	BossLogDropBox(ItemManager itemManager, Item item, boolean isUnique)
+	BossLogDropBox(ItemManager itemManager, BossLogItem item, boolean isUnique)
 	{
 		setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		setMaximumSize(new Dimension(45, 42));
@@ -48,7 +48,7 @@ class BossLogDropBox extends JPanel
 		add(iconLabel);
 	}
 
-	private static String buildToolTip(Item item)
+	private static String buildToolTip(BossLogItem item)
 	{
 		final String name = item.getName();
 		final int quantity = item.getQuantity();

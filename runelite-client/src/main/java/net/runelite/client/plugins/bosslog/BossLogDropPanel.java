@@ -10,9 +10,14 @@ import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.ImageUtil;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -53,8 +58,8 @@ public class BossLogDropPanel extends BossLogPanelView
 		setBorder(new EmptyBorder(5, 0, 5, 6));
 
 		//back button
-		//navbar.setLayout(new BorderLayout());
-		navbar.setLayout(new GridLayout(1, 3, 5, 5));
+		navbar.setLayout(new DynamicGridLayout(1, 3, 0 , 0));
+		//navbar.setLayout(new GridLayout(1, 3, 5, 5));
 		navbar.setBorder(new EmptyBorder(0, 5, 5, 0));
 		add(navbar);
 		addBack();
@@ -129,7 +134,7 @@ public class BossLogDropPanel extends BossLogPanelView
 		for (int id : panelBoss.getBoss().getUniques())
 		{
 			boolean added = false;
-			for (Item i : panelBoss.getDrops())
+			for (BossLogItem i : panelBoss.getDrops())
 			{
 				if (id == i.getId())
 				{
@@ -141,7 +146,7 @@ public class BossLogDropPanel extends BossLogPanelView
 			if (!added)
 			{
 				ItemComposition ic = itemManager.getItemComposition(id);
-				uniqueContainer.add(new BossLogDropBox(itemManager, new Item(id, 0, ic.getName(), 0), true));
+				uniqueContainer.add(new BossLogDropBox(itemManager, new BossLogItem(id, 0, ic.getName(), 0), true));
 			}
 		}
 
@@ -149,7 +154,7 @@ public class BossLogDropPanel extends BossLogPanelView
 		logContainer.removeAll();
 		int rows = ( client.getCanvasHeight() - 208) / 42; //trim top, calculate rows (will truncate = good)
 		int cr = 0;
-		for (Item i : panelBoss.getDrops())
+		for (BossLogItem i : panelBoss.getDrops())
 		{
 			if (cr / 5 == rows) break;
 			BossLogDropBox slot = new BossLogDropBox(itemManager, i, false);
@@ -166,7 +171,7 @@ public class BossLogDropPanel extends BossLogPanelView
 
 		JPanel contBB = new JPanel();
 		contBB.setLayout(new BorderLayout());
-		navbar.add(contBB);
+		navbar.add(contBB, BorderLayout.WEST);
 
 		JLabel back_button = new JLabel(BACK_ICON);
 		contBB.add(back_button, BorderLayout.WEST);
@@ -198,7 +203,7 @@ public class BossLogDropPanel extends BossLogPanelView
 		JPanel contBL = new JPanel();
 		contBL.setLayout(new BorderLayout());
 		contBL.setBorder(new EmptyBorder(4, 0, 0, 0));
-		navbar.add(contBL);
+		navbar.add(contBL, BorderLayout.CENTER);
 
 		JLabel bossLabel = new JLabel(panelBoss.getBoss().getName());
 		bossLabel.setHorizontalAlignment(JLabel.CENTER);
