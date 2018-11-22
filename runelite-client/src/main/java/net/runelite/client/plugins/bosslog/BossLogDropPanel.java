@@ -23,8 +23,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 public class BossLogDropPanel extends BossLogPanelView
@@ -36,12 +34,10 @@ public class BossLogDropPanel extends BossLogPanelView
 	private JLabel logLabelGP;
 	private JLabel logLabelKC;
 
-	private List<JPanel> slots = new ArrayList<>();
-
 	private final BufferedImage backIcon = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "config_back_icon.png");
 	private final BufferedImage resetIcon = ImageUtil.getResourceStreamFromClass(TimeTrackingPlugin.class, "reset_icon.png");
 
-	public Boss panelBoss;
+	final Boss panelBoss;
 	private final BossLogPanel bossLogPanel;
 
 	private ItemManager itemManager;
@@ -61,7 +57,6 @@ public class BossLogDropPanel extends BossLogPanelView
 
 		//back button
 		navbar.setLayout(new DynamicGridLayout(1, 3, 0 , 0));
-		//navbar.setLayout(new GridLayout(1, 3, 5, 5));
 		navbar.setBorder(new EmptyBorder(0, 5, 5, 0));
 		add(navbar);
 		addBack();
@@ -161,7 +156,6 @@ public class BossLogDropPanel extends BossLogPanelView
 			if (cr / 5 == rows) break;
 			BossLogDropBox slot = new BossLogDropBox(itemManager, i, false);
 			logContainer.add(slot);
-			slots.add(slot);
 			cr++;
 		}
 	}
@@ -214,9 +208,39 @@ public class BossLogDropPanel extends BossLogPanelView
 		bossLabel.setFont(FontManager.getRunescapeBoldFont());
 		contBL.add(bossLabel, BorderLayout.CENTER);
 
+		JPanel resetContainer = new JPanel();
+		resetContainer.setLayout(new BorderLayout());
+		navbar.add(resetContainer);
+
 		ImageIcon RESET_ICON = new ImageIcon(resetIcon);
 		ImageIcon RESET_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(resetIcon, -100));
 		JLabel reset_button = new JLabel(RESET_ICON);
-		navbar.add(reset_button);
+		reset_button.setToolTipText("Reset Log");
+		resetContainer.add(reset_button, BorderLayout.EAST);
+
+		reset_button.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				reset_button.setIcon(RESET_ICON);
+				panelBoss.clear();
+				bossLogPanel.plugin.save(panelBoss.getBoss());
+			}
+			@Override
+			public void mouseEntered(MouseEvent e)
+			{
+				reset_button.setIcon(RESET_ICON_HOVER);
+				setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				reset_button.setIcon(RESET_ICON);
+				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+		});
 	}
 }

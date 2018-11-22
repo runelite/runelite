@@ -99,8 +99,8 @@ class BossLogPanel extends PluginPanel
 		if (activeTabPanel != null)
 		{
 			activeTabPanel.update();
-			//display.revalidate();
-			//display.repaint();
+			display.revalidate();
+			display.repaint();
 		}
 	}
 

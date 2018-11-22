@@ -29,14 +29,15 @@ class BossLogConfigHandler
 			String newData = ""; //updated data to insert
 
 			newData += b.getKC() + " "; //insert KC
+			StringBuilder sb = new StringBuilder(newData);
 			for (BossLogItem i : b.getDrops())
 			{
 				String itemData = "";
 				itemData += i.getId() + " ";
 				itemData += i.getQuantity() + " ";
-				newData += itemData;
+				sb.append(itemData);
 			}
-			data = front + newData + back; //compile new data string
+			data = front + sb + back; //compile new data string
 			setBossData(data, b.getBoss());
 		}
 		else

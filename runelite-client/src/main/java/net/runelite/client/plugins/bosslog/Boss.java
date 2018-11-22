@@ -76,6 +76,12 @@ public class Boss
 		drops.add(item);
 	}
 
+	void clear()
+	{
+		KC = 0;
+		drops.clear();
+	}
+
 	void addKC()
 	{
 		KC++;

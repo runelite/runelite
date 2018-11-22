@@ -126,8 +126,7 @@ public class BossLogPlugin extends Plugin
 					{
 						final ItemComposition itemComposition = itemManager.getItemComposition(e.getId());
 						final int price = itemManager.getItemPrice(e.getId());
-						b.addItem(new BossLogItem(e.getId(), e.getQuantity(),
-								itemComposition.getName(), price));
+						b.addItem(new BossLogItem(e.getId(), e.getQuantity(), itemComposition.getName(), price));
 					}
 					b.addKC();
 					save(b.getBoss());
@@ -203,10 +202,16 @@ public class BossLogPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		updatePlugin();
+		if (event.getGroup().equals("bosslog") && active)
+		{
+			if (event.getNewValue().equals("true") || event.getNewValue().equals("false"))
+			{
+				updatePlugin();
+			}
+		}
 	}
 
-	private void save(Bosses boss)
+	public void save(Bosses boss)
 	{ //save log data to config
 		SwingUtilities.invokeLater(() -> panel.update());
 
