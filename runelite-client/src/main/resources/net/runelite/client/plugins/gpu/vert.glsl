@@ -25,11 +25,13 @@
 
 #version 330
 
-#define FOG_START_MIN_DIST 2100
-#define FOG_START_MAX_DIST 5000
-#define FOG_END_MIN_DIST 3000
-#define FOG_END_MAX_DIST 7000
+// Define tile size
 #define FOG_DIST_SCALE 64
+// Define min and max distance for fog start/end in tiles
+#define FOG_START_MIN_DIST FOG_DIST_SCALE * 25
+#define FOG_START_MAX_DIST FOG_DIST_SCALE * 100
+#define FOG_END_MIN_DIST FOG_DIST_SCALE * 30
+#define FOG_END_MAX_DIST FOG_DIST_SCALE * 135
 
 layout (location = 0) in ivec4 VertexPosition;
 layout (location = 1) in vec4 uv;
