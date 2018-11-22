@@ -60,13 +60,7 @@ public class PuzzleSolverMM extends PuzzleSolver implements Runnable
 
 		//Add valid numbers for rows and columns
 		validRowNumbers.add(Arrays.asList(0, 1, 2, 3, 4));
-		validRowNumbers.add(Arrays.asList(6, 7, 8, 9));
-		validRowNumbers.add(Arrays.asList(12, 13, 14));
-		validRowNumbers.add(Arrays.asList(18, 19));
 		validColumnNumbers.add(Arrays.asList(5, 10, 15, 20));
-		validColumnNumbers.add(Arrays.asList(11, 16, 21));
-		validColumnNumbers.add(Arrays.asList(17, 22));
-		validColumnNumbers.add(Arrays.asList(23));
 	}
 
 	public PuzzleState getStep(int stepIdx)
@@ -111,20 +105,20 @@ public class PuzzleSolverMM extends PuzzleSolver implements Runnable
 		currentState = new PuzzleState(startState);
 
 		stateList.add(new PuzzleState(startState));
-		solution = computePath(new PuzzleState(startState));
+		solution = computePath();
 
 		failed = solution == null;
 	}
 
-	private List<PuzzleState> computePath(PuzzleState root)
+	private List<PuzzleState> computePath()
 	{
 		List<PuzzleState> path = new ArrayList<>();
 
 		//Reduce to 4x5
-		solveRow(0);
+		solveRow();
 
 		//Reduce to 4x4
-		solveColumn(0);
+		solveColumn();
 
 		//Remove last state
 		stateList.remove(stateList.size() - 1);
@@ -163,8 +157,9 @@ public class PuzzleSolverMM extends PuzzleSolver implements Runnable
 		return solver.getStep(solver.getStepCount() - 1);
 	}
 
-	private void solveRow(int row)
+	private void solveRow()
 	{
+		int row = 0;
 		validateInput(row);
 
 		for (int i = row; i < DIMENSION; i++)
@@ -181,8 +176,9 @@ public class PuzzleSolverMM extends PuzzleSolver implements Runnable
 		}
 	}
 
-	private void solveColumn(int column)
+	private void solveColumn()
 	{
+		int column = 0;
 		validateInput(column);
 
 		for (int i = column + 1; i < DIMENSION; i++)
