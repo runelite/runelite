@@ -39,13 +39,13 @@ public interface MotherlodeConfig extends Config
 	)
 	default boolean showVeins()
 	{
-	return true;
+		return true;
 	}
 
 	@ConfigItem(
-			keyName = "showRockFalls",
-			name = "Show RockFall obstacles",
-			description = "Configures whether or not the RockFall obstacles are displayed."
+		keyName = "showRockFalls",
+		name = "Show RockFall obstacles",
+		description = "Configures whether or not the RockFall obstacles are displayed."
 	)
 	default boolean showRockFalls()
 	{
