@@ -195,7 +195,7 @@ public class GpuNativeWindow
 				final long now = System.currentTimeMillis();
 				final java.awt.event.KeyEvent event = new java.awt.event.KeyEvent(
 					canvas, java.awt.event.KeyEvent.KEY_RELEASED,
-					now, 0, e.getKeyCode(), e.getKeyChar());
+					now, 0, AWTNewtEventFactory.newtKeyCode2AWTKeyCode(e.getKeyCode()), e.getKeyChar());
 
 				for (java.awt.event.KeyListener listener : canvas.getKeyListeners())
 				{
