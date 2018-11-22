@@ -106,6 +106,30 @@ class GLUtil
 		gl.glDeleteTextures(1, buf, 0);
 	}
 
+	static int glGenFrameBuffer(GL4 gl)
+	{
+		gl.glGenFramebuffers(1, buf, 0);
+		return buf[0];
+	}
+
+	static void glDeleteFrameBuffer(GL4 gl, int frameBuffer)
+	{
+		buf[0] = frameBuffer;
+		gl.glDeleteFramebuffers(1, buf, 0);
+	}
+
+	static int glGenRenderbuffer(GL4 gl)
+	{
+		gl.glGenRenderbuffers(1, buf, 0);
+		return buf[0];
+	}
+
+	static void glDeleteRenderbuffers(GL4 gl, int renderBuffer)
+	{
+		buf[0] = renderBuffer;
+		gl.glDeleteRenderbuffers(1, buf, 0);
+	}
+
 	static void loadShaders(GL4 gl, int glProgram, int glVertexShader, int glGeometryShader, int glFragmentShader,
 							String vertexShaderStr, String geomShaderStr, String fragShaderStr) throws ShaderException
 	{

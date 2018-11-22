@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Brett Middle <https://github.com/bmiddle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,41 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.plugins.combatlevel;
 
-import net.runelite.api.SpritePixels;
-import net.runelite.mapping.Import;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public interface RSSpritePixels extends SpritePixels
+@ConfigGroup("combatlevel")
+public interface CombatLevelConfig extends Config
 {
-	@Import("drawAt")
-	@Override
-	void drawAt(int x, int y);
-
-	@Import("height")
-	@Override
-	int getHeight();
-
-	@Import("width")
-	@Override
-	int getWidth();
-
-	@Import("pixels")
-	@Override
-	int[] getPixels();
-
-	@Import("setRaster")
-	void setRaster();
-
-	@Import("maxWidth")
-	void setMaxWidth(int maxWidth);
-
-	@Import("maxHeight")
-	void setMaxHeight(int maxHeight);
-
-	@Import("offsetX")
-	void setOffsetX(int offsetX);
-
-	@Import("offsetY")
-	void setOffsetY(int offsetY);
+	@ConfigItem(
+		keyName = "showLevelsUntil",
+		name = "Calculate next level",
+		description = "Mouse over the combat level to calculate what skill levels will increase combat."
+	)
+	default boolean showLevelsUntil()
+	{
+		return true;
+	}
 }
