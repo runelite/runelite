@@ -26,6 +26,7 @@ package net.runelite.client.util;
 
 import java.awt.AWTException;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Image;
@@ -52,7 +53,9 @@ import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
+import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.plaf.basic.BasicProgressBarUI;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.NavigationButton;
@@ -87,6 +90,14 @@ public class SwingUtil
 		UIManager.put("FormattedTextField.selectionForeground", Color.WHITE);
 		UIManager.put("TextArea.selectionBackground", ColorScheme.BRAND_ORANGE_TRANSPARENT);
 		UIManager.put("TextArea.selectionForeground", Color.WHITE);
+		UIManager.put("ProgressBar.background", ColorScheme.BRAND_ORANGE_TRANSPARENT.darker());
+		UIManager.put("ProgressBar.foreground", ColorScheme.BRAND_ORANGE);
+		UIManager.put("ProgressBar.selectionBackground", ColorScheme.BRAND_ORANGE);
+		UIManager.put("ProgressBar.selectionForeground", Color.BLACK);
+		UIManager.put("ProgressBar.border", new EmptyBorder(0, 0, 0, 0));
+		UIManager.put("ProgressBar.verticalSize", new Dimension(12, 10));
+		UIManager.put("ProgressBar.horizontalSize", new Dimension(10, 12));
+		UIManager.put("ProgressBarUI", BasicProgressBarUI.class.getName());
 
 		// Do not render shadows under popups/tooltips.
 		// Fixes black boxes under popups that are above the game applet.
