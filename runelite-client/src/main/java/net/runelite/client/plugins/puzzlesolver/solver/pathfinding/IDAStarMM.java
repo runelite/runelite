@@ -46,6 +46,7 @@ public class IDAStarMM extends IDAStar
 
 		//Add valid numbers for rows and columns
 		validRowNumbers.add(Arrays.asList(0, 1, 2, 3, 4));
+		validRowNumbers.add(Arrays.asList(6, 7, 8, 9));
 		validColumnNumbers.add(Arrays.asList(5, 10, 15, 20));
 	}
 
@@ -58,10 +59,13 @@ public class IDAStarMM extends IDAStar
 		List<PuzzleState> path = new ArrayList<>();
 
 		//Reduce to 4x5
-		solveRow();
+		solveRow(0);
 
 		//Reduce to 4x4
 		solveColumn();
+
+		//Reduce to 3x4
+		solveRow(1);
 
 		//Remove last state
 		stateList.remove(stateList.size() - 1);
@@ -74,10 +78,8 @@ public class IDAStarMM extends IDAStar
 		return path;
 	}
 
-	private void solveRow()
+	private void solveRow(int row)
 	{
-		int row = 0;
-
 		for (int i = row; i < DIMENSION; i++)
 		{
 			int valTarget = row * DIMENSION + i;
