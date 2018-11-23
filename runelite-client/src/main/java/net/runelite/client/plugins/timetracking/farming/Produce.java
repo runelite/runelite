@@ -115,8 +115,8 @@ public enum Produce
 	SPIRIT_TREE("Spirit Tree", ItemID.SPIRIT_TREE, 320, 13),
 
 	// Compost bin
-	COMPOST("Compost", ItemID.COMPOST, 20, 4, 0, 15),
-	SUPERCOMPOST("Supercompost", ItemID.SUPERCOMPOST, 20, 4, 0, 15);
+	COMPOST("Compost", ItemID.COMPOST, 20, 6, 0, 15),
+	SUPERCOMPOST("Supercompost", ItemID.SUPERCOMPOST, 20, 6, 0, 15);
 
 	/**
 	 * User-visible name

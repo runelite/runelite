@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.timetracking.farming;
 
+import java.time.Instant;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.client.plugins.timetracking.Tab;
@@ -2298,13 +2299,41 @@ public enum PatchImplementation
 			@Override
 			PatchState forVarbitValue(int value)
 			{
-				if (value == 31)
+				int timeBeforeTick = 9 * 60; // Ticks seems to happen 10 to 19 mins after a 40 min tick
+				int tickrate = Produce.COMPOST.getTickrate() * 60; // Super compost share same tickrate
+				long unixNow = Instant.now().getEpochSecond();
+				long unixTick = unixNow / tickrate;
+
+				if (value == 31 || value == 32)
 				{
-					return new PatchState(Produce.COMPOST, CropState.GROWING, 0);
-				}
-				if (value == 32)
-				{
-					return new PatchState(Produce.COMPOST, CropState.GROWING, 2);
+					int stage;
+
+					if (unixTick % 2 == 0)
+					{
+						long unixBeforeNextTick = (unixTick * tickrate) + timeBeforeTick;
+						if (unixBeforeNextTick > unixNow)
+						{
+							// Assume the next tick happens in current 20 min tick
+							stage = 2;
+						}
+						else
+						{
+							// Might have missed a tick assume next tick happens in 3x 20 min ticks
+							stage = 0;
+						}
+					}
+					else
+					{
+						// Assume the next tick happen in the next 20 min tick
+						stage = 1;
+					}
+
+					if (value == 32)
+					{
+						stage += 2;
+					}
+
+					return new PatchState(Produce.COMPOST, CropState.GROWING, stage);
 				}
 				if (value == 94)
 				{
@@ -2314,13 +2343,36 @@ public enum PatchImplementation
 				{
 					return new PatchState(Produce.COMPOST, CropState.HARVESTABLE, value - 16);
 				}
-				if (value == 95)
+				if (value == 95 || value == 96)
 				{
-					return new PatchState(Produce.SUPERCOMPOST, CropState.GROWING, 0);
-				}
-				if (value == 96)
-				{
-					return new PatchState(Produce.SUPERCOMPOST, CropState.GROWING, 2);
+					int stage;
+
+					if (unixTick % 2 == 0)
+					{
+						long unixBeforeNextTick = (unixTick * tickrate) + timeBeforeTick;
+						if (unixBeforeNextTick > unixNow)
+						{
+							// Assume the next tick happens in current 20 min tick
+							stage = 2;
+						}
+						else
+						{
+							// Might have missed a tick assume next tick happens in 3x 20 min ticks
+							stage = 0;
+						}
+					}
+					else
+					{
+						// Assume the next tick happen in the next 20 min tick
+						stage = 1;
+					}
+
+					if (value == 96)
+					{
+						stage += 2;
+					}
+
+					return new PatchState(Produce.SUPERCOMPOST, CropState.GROWING, stage);
 				}
 				if (value == 126)
 				{
