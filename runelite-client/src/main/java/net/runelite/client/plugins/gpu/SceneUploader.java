@@ -475,7 +475,7 @@ class SceneUploader
 		int color3 = color3s[face];
 
 		int alpha = 0;
-		if (transparencies != null)
+		if (transparencies != null && (faceTextures == null || faceTextures[face] == -1))
 		{
 			alpha = (transparencies[face] & 0xFF) << 24;
 		}
