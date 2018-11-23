@@ -121,6 +121,7 @@ public class WidgetID
 	public static final int PVP_GROUP_ID = 90;
 	public static final int ZEAH_MESS_HALL_GROUP_ID = 235;
 	public static final int LOOTING_BAG_GROUP_ID = 81;
+	public static final int SKOTIZO_GROUP_ID = 308;
 
 	static class WorldMap
 	{
@@ -202,13 +203,13 @@ public class WidgetID
 		static final int BANK_CONTAINER = 1;
 		static final int INVENTORY_ITEM_CONTAINER = 3;
 		static final int BANK_TITLE_BAR = 4;
-		static final int CONTENT_CONTAINER = 9;
-		static final int ITEM_CONTAINER = 12;
-		static final int SEARCH_BUTTON_BACKGROUND = 39;
-		static final int DEPOSIT_INVENTORY = 41;
-		static final int DEPOSIT_EQUIPMENT = 43;
-		static final int INCINERATOR = 45;
-		static final int INCINERATOR_CONFIRM = 46;
+		static final int CONTENT_CONTAINER = 10;
+		static final int ITEM_CONTAINER = 13;
+		static final int SEARCH_BUTTON_BACKGROUND = 40;
+		static final int DEPOSIT_INVENTORY = 42;
+		static final int DEPOSIT_EQUIPMENT = 44;
+		static final int INCINERATOR = 46;
+		static final int INCINERATOR_CONFIRM = 47;
 	}
 
 	static class GrandExchange
@@ -725,5 +726,10 @@ public class WidgetID
 	static class LootingBag
 	{
 		static final int LOOTING_BAG_INVENTORY = 5;
+	}
+
+	static class Skotizo
+	{
+		static final int CONTAINER = 3;
 	}
 }
