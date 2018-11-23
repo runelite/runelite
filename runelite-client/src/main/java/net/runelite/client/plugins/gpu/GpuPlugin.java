@@ -277,6 +277,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				if (log.isDebugEnabled())
 				{
 					gl.glEnable(GL_DEBUG_OUTPUT);
+
+					// Suppress warning messages which flood the log on NVIDIA systems.
+					gl.getContext().glDebugMessageControl(gl.GL_DEBUG_SOURCE_API, gl.GL_DEBUG_TYPE_OTHER,
+						gl.GL_DEBUG_SEVERITY_NOTIFICATION, 0, null, 0, false);
 				}
 
 				initVao();
