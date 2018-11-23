@@ -74,4 +74,15 @@ public interface ItemPricesConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "hideBank",
+		name = "Hide Tooltips on Bank Items",
+		description = "Tooltips should be hidden on items in the bank",
+		position = 5
+	)
+	default boolean hideBank()
+	{
+		return true;
+	}
 }
