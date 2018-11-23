@@ -29,6 +29,7 @@ import java.util.Map;
 import lombok.NonNull;
 import net.runelite.api.NPC;
 import net.runelite.api.Skill;
+import net.runelite.client.game.attackstyles.AttackStyle;
 
 /**
  * Internal state for the XpTrackerPlugin

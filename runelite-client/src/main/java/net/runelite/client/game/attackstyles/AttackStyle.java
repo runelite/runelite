@@ -1,4 +1,4 @@
-package net.runelite.client.plugins.xptracker;
+package net.runelite.client.game.attackstyles;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

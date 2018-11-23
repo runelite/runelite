@@ -35,11 +35,9 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
@@ -48,11 +46,12 @@ import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.events.AttackStyleChanged;
+import net.runelite.client.game.attackstyles.AttackStyle;
+import net.runelite.client.game.attackstyles.AttackStylesManager;
+import net.runelite.client.game.attackstyles.WeaponType;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE_CASTING;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
@@ -62,13 +61,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class AttackStylesPlugin extends Plugin
 {
-	private int attackStyleVarbit = -1;
-	private int equippedWeaponTypeVarbit = -1;
-	private int castingModeVarbit = -1;
-	private AttackStyle attackStyle;
 	private final Set<Skill> warnedSkills = new HashSet<>();
 	private boolean warnedSkillSelected = false;
 	private final Table<WeaponType, WidgetInfo, Boolean> widgetsToHide = HashBasedTable.create();
+	private AttackStyle attackStyle;
 
 	@Inject
 	private Client client;
@@ -84,6 +80,9 @@ public class AttackStylesPlugin extends Plugin
 
 	@Inject
 	private AttackStylesOverlay overlay;
+
+	@Inject
+	private AttackStylesManager attackStylesManager;
 
 	@Provides
 	AttackStylesConfig provideConfig(ConfigManager configManager)
@@ -109,15 +108,9 @@ public class AttackStylesPlugin extends Plugin
 		updateWarnedSkills(config.warnForDefence(), Skill.DEFENCE);
 		updateWarnedSkills(config.warnForRanged(), Skill.RANGED);
 		updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
-		attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
-		equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
-		castingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
-		updateAttackStyle(
-			equippedWeaponTypeVarbit,
-			attackStyleVarbit,
-			castingModeVarbit);
 		updateWarning(false);
 		processWidgets();
+		attackStyle = attackStylesManager.getAttackStyle();
 	}
 
 	@Override
@@ -128,7 +121,7 @@ public class AttackStylesPlugin extends Plugin
 		processWidgets();
 	}
 
-	public AttackStyle getAttackStyle()
+	AttackStyle getAttackStyle()
 	{
 		return attackStyle;
 	}
@@ -165,6 +158,7 @@ public class AttackStylesPlugin extends Plugin
 	 */
 	private void processWidgets()
 	{
+		int equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
 		WeaponType equippedWeaponType = WeaponType.getWeaponType(equippedWeaponTypeVarbit);
 
 		if (widgetsToHide.containsRow(equippedWeaponType))
@@ -190,31 +184,10 @@ public class AttackStylesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	public void onAttackStyleChanged(AttackStyleChanged event)
 	{
-		if (attackStyleVarbit == -1 || attackStyleVarbit != client.getVar(VarPlayer.ATTACK_STYLE))
-		{
-			attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
-			updateAttackStyle(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), attackStyleVarbit,
-				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
-			updateWarning(false);
-		}
-
-		if (equippedWeaponTypeVarbit == -1 || equippedWeaponTypeVarbit != client.getVar(Varbits.EQUIPPED_WEAPON_TYPE))
-		{
-			equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
-			updateAttackStyle(equippedWeaponTypeVarbit, client.getVar(VarPlayer.ATTACK_STYLE),
-				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
-			updateWarning(true);
-		}
-
-		if (castingModeVarbit == -1 || castingModeVarbit != client.getVar(Varbits.DEFENSIVE_CASTING_MODE))
-		{
-			castingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
-			updateAttackStyle(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), client.getVar(VarPlayer.ATTACK_STYLE),
-				castingModeVarbit);
-			updateWarning(false);
-		}
+		attackStyle = event.getAttackStyle();
+		updateWarning(false);
 	}
 
 	@Subscribe
@@ -248,23 +221,6 @@ public class AttackStylesPlugin extends Plugin
 		}
 	}
 
-	private void updateAttackStyle(int equippedWeaponType, int attackStyleIndex, int castingMode)
-	{
-		AttackStyle[] attackStyles = WeaponType.getWeaponType(equippedWeaponType).getAttackStyles();
-		if (attackStyleIndex < attackStyles.length)
-		{
-			attackStyle = attackStyles[attackStyleIndex];
-			if (attackStyle == null)
-			{
-				attackStyle = OTHER;
-			}
-			else if ((attackStyle == CASTING) && (castingMode == 1))
-			{
-				attackStyle = DEFENSIVE_CASTING;
-			}
-		}
-	}
-
 	private void updateWarnedSkills(boolean enabled, Skill skill)
 	{
 		if (enabled)
@@ -283,9 +239,9 @@ public class AttackStylesPlugin extends Plugin
 		warnedSkillSelected = false;
 		if (attackStyle != null)
 		{
-			for (Skill skill : attackStyle.getSkills())
+			for (AttackStyle.SkillAmount skillAmount : attackStyle.getSkillAmounts())
 			{
-				if (warnedSkills.contains(skill))
+				if (warnedSkills.contains(skillAmount.getSkill()))
 				{
 					if (weaponSwitch)
 					{
@@ -301,6 +257,7 @@ public class AttackStylesPlugin extends Plugin
 
 	private void hideWarnedStyles(boolean enabled)
 	{
+		int equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
 		WeaponType equippedWeaponType = WeaponType.getWeaponType(equippedWeaponTypeVarbit);
 		if (equippedWeaponType == null)
 		{
@@ -319,9 +276,9 @@ public class AttackStylesPlugin extends Plugin
 			}
 
 			boolean warnedSkill = false;
-			for (Skill skill : attackStyle.getSkills())
+			for (AttackStyle.SkillAmount skillAmount : attackStyle.getSkillAmounts())
 			{
-				if (warnedSkills.contains(skill))
+				if (warnedSkills.contains(skillAmount.getSkill()))
 				{
 					warnedSkill = true;
 					break;
