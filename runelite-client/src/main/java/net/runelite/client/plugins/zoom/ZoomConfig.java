@@ -55,11 +55,11 @@ public interface ZoomConfig extends Config
 
 	@ConfigItem(
 		keyName = "requireControlDown",
-		name = "Require control down",
-		description = "Configures if holding control is required for zooming",
+		name = "Require RuneLite hotkey",
+		description = "Configures if holding the RuneLite hotkey is required for zooming",
 		position = 3
 	)
-	default boolean requireControlDown()
+	default boolean requireHotKey()
 	{
 		return false;
 	}

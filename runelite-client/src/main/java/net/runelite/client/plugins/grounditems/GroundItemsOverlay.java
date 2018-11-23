@@ -88,7 +88,7 @@ public class GroundItemsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final boolean dontShowOverlay = config.itemHighlightMode() == MENU && !plugin.isHotKeyPressed();
+		final boolean dontShowOverlay = config.itemHighlightMode() == MENU && !plugin.getHotkeyListener().isPressed();
 
 		if (dontShowOverlay && !config.highlightTiles())
 		{
@@ -109,7 +109,7 @@ public class GroundItemsOverlay extends Overlay
 		Collection<GroundItem> groundItemList = plugin.getCollectedGroundItems().values();
 		GroundItem topGroundItem = null;
 
-		if (plugin.isHotKeyPressed())
+		if (plugin.getHotkeyListener().isPressed())
 		{
 			// Make copy of ground items because we are going to modify them here, and the array list supports our
 			// desired behaviour here
@@ -174,7 +174,7 @@ public class GroundItemsOverlay extends Overlay
 			final Color highlighted = plugin.getHighlighted(item.getName(), item.getGePrice(), item.getHaPrice());
 			final Color hidden = plugin.getHidden(item.getName(), item.getGePrice(), item.getHaPrice(), item.isTradeable());
 
-			if (highlighted == null && !plugin.isHotKeyPressed())
+			if (highlighted == null && !plugin.getHotkeyListener().isPressed())
 			{
 				// Do not display hidden items
 				if (hidden != null)
@@ -267,14 +267,14 @@ public class GroundItemsOverlay extends Overlay
 				continue;
 			}
 
-			final int offset = plugin.isHotKeyPressed()
+			final int offset = plugin.getHotkeyListener().isPressed()
 				? item.getOffset()
 				: offsetMap.compute(item.getLocation(), (k, v) -> v != null ? v + 1 : 0);
 
 			final int textX = textPoint.getX();
 			final int textY = textPoint.getY() - (STRING_GAP * offset);
 
-			if (plugin.isHotKeyPressed())
+			if (plugin.getHotkeyListener().isPressed())
 			{
 				final int stringWidth = fm.stringWidth(itemString);
 				final int stringHeight = fm.getHeight();

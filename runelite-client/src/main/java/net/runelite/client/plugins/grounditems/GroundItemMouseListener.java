@@ -25,53 +25,22 @@
 package net.runelite.client.plugins.grounditems;
 
 import java.awt.Point;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
-import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseAdapter;
 
-public class GroundItemInputListener extends MouseAdapter implements KeyListener
+class GroundItemMouseListener extends MouseAdapter
 {
-	private static final int HOTKEY = KeyEvent.VK_ALT;
-
 	@Inject
 	private GroundItemsPlugin plugin;
-
-	@Override
-	public void keyTyped(KeyEvent e)
-	{
-
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e)
-	{
-		if (e.getKeyCode() == HOTKEY)
-		{
-			plugin.setHotKeyPressed(true);
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e)
-	{
-		if (e.getKeyCode() == HOTKEY)
-		{
-			plugin.setHotKeyPressed(false);
-			plugin.setTextBoxBounds(null);
-			plugin.setHiddenBoxBounds(null);
-			plugin.setHighlightBoxBounds(null);
-		}
-	}
 
 	@Override
 	public MouseEvent mousePressed(MouseEvent e)
 	{
 		final Point mousePos = e.getPoint();
 
-		if (plugin.isHotKeyPressed())
+		if (plugin.getHotkeyListener().isPressed())
 		{
 			if (SwingUtilities.isLeftMouseButton(e))
 			{

@@ -32,7 +32,6 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import javax.inject.Inject;
@@ -44,13 +43,13 @@ import net.runelite.api.events.FocusChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseManager;
+import net.runelite.client.util.HotkeyListener;
 
 @Singleton
-public class OverlayRenderer extends MouseAdapter implements KeyListener
+public class OverlayRenderer extends MouseAdapter
 {
 	private static final int BORDER = 5;
 	private static final int BORDER_TOP = BORDER + 15;
@@ -89,7 +88,23 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		this.client = client;
 		this.overlayManager = overlayManager;
 		this.runeLiteConfig = runeLiteConfig;
-		keyManager.registerKeyListener(this);
+
+		HotkeyListener hotkeyListener = new HotkeyListener(runeLiteConfig::hotkey)
+		{
+			@Override
+			public void hotkeyPressed()
+			{
+				inOverlayDraggingMode = true;
+			}
+
+			@Override
+			public void hotkeyReleased()
+			{
+				inOverlayDraggingMode = false;
+			}
+		};
+
+		keyManager.registerKeyListener(hotkeyListener);
 		mouseManager.registerMouseListener(this);
 	}
 
@@ -335,29 +350,6 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		}
 
 		return mouseEvent;
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e)
-	{
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e)
-	{
-		if (e.isAltDown())
-		{
-			inOverlayDraggingMode = true;
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e)
-	{
-		if (!e.isAltDown())
-		{
-			inOverlayDraggingMode = false;
-		}
 	}
 
 	private void safeRender(Client client, Overlay overlay, OverlayLayer layer, Graphics2D graphics, Point point)
