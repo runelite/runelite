@@ -80,7 +80,6 @@ public class PuzzleSolverOverlay extends Overlay
 	private PuzzleSolver solver;
 	private Future<?> solverFuture;
 	private int[] cachedItems;
-	private boolean useNormalSolver;
 
 	private BufferedImage upArrow;
 	private BufferedImage leftArrow;
@@ -107,7 +106,7 @@ public class PuzzleSolverOverlay extends Overlay
 			return null;
 		}
 
-		useNormalSolver = true;
+		boolean useNormalSolver = true;
 		ItemContainer container = client.getItemContainer(InventoryID.PUZZLE_BOX);
 
 		if (container == null)
@@ -132,7 +131,7 @@ public class PuzzleSolverOverlay extends Overlay
 
 		String infoString = "Solving..";
 
-		int[] itemIds = getItemIds(container);
+		int[] itemIds = getItemIds(container, useNormalSolver);
 		boolean shouldCache = false;
 
 		if (solver != null)
@@ -344,7 +343,7 @@ public class PuzzleSolverOverlay extends Overlay
 		if (solver == null || cachedItems == null
 			|| (!shouldCache && solver.hasExceededWaitDuration() && !Arrays.equals(cachedItems, itemIds)))
 		{
-			solve(itemIds);
+			solve(itemIds, useNormalSolver);
 			shouldCache = true;
 		}
 
@@ -356,7 +355,7 @@ public class PuzzleSolverOverlay extends Overlay
 		return null;
 	}
 
-	private int[] getItemIds(ItemContainer container)
+	private int[] getItemIds(ItemContainer container, boolean useNormalSolver)
 	{
 		int[] itemIds = new int[DIMENSION * DIMENSION];
 
@@ -373,12 +372,11 @@ public class PuzzleSolverOverlay extends Overlay
 			itemIds[items.length] = BLANK_TILE_VALUE;
 		}
 
-		return convertToSolverFormat(itemIds);
+		return convertToSolverFormat(itemIds, useNormalSolver);
 	}
 
-	private int[] convertToSolverFormat(int[] items)
+	private int[] convertToSolverFormat(int[] items, boolean useNormalSolver)
 	{
-		int ratio = useNormalSolver ? 1 : 2;
 		int lowestId = Integer.MAX_VALUE;
 
 		int[] convertedItems = new int[items.length];
@@ -400,7 +398,15 @@ public class PuzzleSolverOverlay extends Overlay
 		{
 			if (items[i] != BLANK_TILE_VALUE)
 			{
-				convertedItems[i] = (items[i] - lowestId) / ratio;
+				int value = items[i] - lowestId;
+
+				// The MM puzzle has gaps
+				if (!useNormalSolver)
+				{
+					value /= 2;
+				}
+
+				convertedItems[i] = value;
 			}
 			else
 			{
@@ -417,7 +423,7 @@ public class PuzzleSolverOverlay extends Overlay
 		System.arraycopy(items, 0, cachedItems, 0, cachedItems.length);
 	}
 
-	private void solve(int[] items)
+	private void solve(int[] items, boolean  useNormalSolver)
 	{
 		if (solverFuture != null)
 		{

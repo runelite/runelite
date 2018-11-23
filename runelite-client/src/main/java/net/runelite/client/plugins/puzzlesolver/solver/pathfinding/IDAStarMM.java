@@ -53,8 +53,8 @@ public class IDAStarMM extends IDAStar
 	@Override
 	public List<PuzzleState> computePath(PuzzleState root)
 	{
-		currentState = new PuzzleState(root);
-		stateList.add(new PuzzleState(root));
+		currentState = root;
+		stateList.add(root);
 
 		List<PuzzleState> path = new ArrayList<>();
 
@@ -71,7 +71,7 @@ public class IDAStarMM extends IDAStar
 		stateList.remove(stateList.size() - 1);
 
 		//Pathfinder for 4x4
-		path.addAll(super.computePath(new PuzzleState(currentState)));
+		path.addAll(super.computePath(currentState));
 
 		path.addAll(0, stateList);
 
@@ -256,7 +256,6 @@ public class IDAStarMM extends IDAStar
 	private void alignTargetX(int valTarget, Point locTarget)
 	{
 		Point locVal = findPiece(valTarget);
-		Point locBlank;
 
 		//Check if same column
 		if (locVal.getX() == locTarget.getX())
@@ -270,7 +269,7 @@ public class IDAStarMM extends IDAStar
 		while (locVal.getX() != locTarget.getX())
 		{
 			locVal = findPiece(valTarget);
-			locBlank = findPiece(BLANK_TILE_VALUE);
+			Point locBlank = findPiece(BLANK_TILE_VALUE);
 
 			//Check if aligned
 			if (locTarget.getX() - locVal.getX() == 0)
@@ -511,7 +510,6 @@ public class IDAStarMM extends IDAStar
 	private void alignTargetY(int valTarget, Point locTarget)
 	{
 		Point locVal = findPiece(valTarget);
-		Point locBlank;
 
 		//Check if same row
 		if (locVal.getY() == locTarget.getY())
@@ -525,7 +523,7 @@ public class IDAStarMM extends IDAStar
 		while (locVal.getY() != locTarget.getY())
 		{
 			locVal = findPiece(valTarget);
-			locBlank = findPiece(BLANK_TILE_VALUE);
+			Point locBlank = findPiece(BLANK_TILE_VALUE);
 
 			//Check if aligned
 			if (locTarget.getY() - locVal.getY() == 0)
@@ -768,7 +766,7 @@ public class IDAStarMM extends IDAStar
 		PuzzleState newState = currentState.swap(p1, p2);
 
 		currentState = newState;
-		stateList.add(new PuzzleState(newState));
+		stateList.add(newState);
 	}
 
 	private Point findPiece(int val)
