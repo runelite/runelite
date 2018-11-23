@@ -196,7 +196,8 @@ class XpStateSingle
 		}
 		else
 		{
-			// So we have a decent average off the bat, lets populate all values with what we see.
+			// populate all values in our action history array with this first value that we see
+			// so the average value of our action history starts out as this first value we see
 			for (int i = 0; i < action.getActionExps().length; i++)
 			{
 				action.getActionExps()[i] = actionExp;

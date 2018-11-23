@@ -263,7 +263,7 @@ public class XpTrackerPlugin extends Plugin
 		state.setActionType(XpActionType.EXPERIENCE);
 
 		final Actor interacting = client.getLocalPlayer().getInteracting();
-		if (interacting instanceof NPC)
+		if (interacting instanceof NPC && COMBAT.contains(skill))
 		{
 			final NPC npc = (NPC) interacting;
 			xpState.updateNpcExperience(skill, npc, npcManager.getHealth(npc.getName(), npc.getCombatLevel()));
