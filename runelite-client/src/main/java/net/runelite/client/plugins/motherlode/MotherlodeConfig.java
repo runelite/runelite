@@ -43,9 +43,9 @@ public interface MotherlodeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showRockFalls",
-		name = "Show RockFall obstacles",
-		description = "Configures whether or not the RockFall obstacles are displayed."
+		keyName = "showRocks",
+		name = "Show rocks obstacles",
+		description = "Configures whether or not the fallen rocks obstacles are displayed."
 	)
 	default boolean showRockFalls()
 	{
