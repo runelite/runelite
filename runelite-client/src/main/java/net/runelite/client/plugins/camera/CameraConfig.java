@@ -22,14 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.zoom;
+package net.runelite.client.plugins.camera;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("zoom")
-public interface ZoomConfig extends Config
+@ConfigGroup("camera")
+public interface CameraConfig extends Config
 {
 	@ConfigItem(
 		keyName = "inner",
@@ -60,6 +60,17 @@ public interface ZoomConfig extends Config
 		position = 3
 	)
 	default boolean requireControlDown()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "freeRoamCamera",
+		name = "Free roam camera",
+		description = "Add option to toggle free roam camera to world map right click menu",
+		position = 5
+	)
+	default boolean freeRoamCamera()
 	{
 		return false;
 	}
