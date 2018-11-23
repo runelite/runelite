@@ -141,7 +141,7 @@ public class PuzzleSolverTest
 	{
 		for (PuzzleState state : START_STATES_MM)
 		{
-			PuzzleSolver solver = new PuzzleSolver(new IDAStarMM(new ManhattanDistance()), new PuzzleState(state.getPuzzle()));
+			PuzzleSolver solver = new PuzzleSolver(new IDAStarMM(new ManhattanDistance()), state);
 			solver.run();
 
 			assertTrue(solver.hasSolution());

@@ -77,7 +77,6 @@ public class IDAStarMM extends IDAStar
 	private void solveRow()
 	{
 		int row = 0;
-		validateInput(row);
 
 		for (int i = row; i < DIMENSION; i++)
 		{
@@ -96,7 +95,6 @@ public class IDAStarMM extends IDAStar
 	private void solveColumn()
 	{
 		int column = 0;
-		validateInput(column);
 
 		for (int i = column + 1; i < DIMENSION; i++)
 		{
@@ -112,14 +110,6 @@ public class IDAStarMM extends IDAStar
 		}
 	}
 
-	private void validateInput(int val)
-	{
-		if (val < 0 || val > DIMENSION - 2)
-		{
-			throw new IllegalArgumentException(String.format("Input: %d outside of valid range", val));
-		}
-	}
-
 	private void moveTowardsVal(int valTarget, Point locTarget, boolean rowMode)
 	{
 		//Not in place
@@ -128,7 +118,7 @@ public class IDAStarMM extends IDAStar
 		int row = locTarget.getY();
 		int column = locTarget.getX();
 
-		while (getPiece(locTarget) != valTarget)
+		while (currentState.getPiece(locTarget.getX(), locTarget.getY()) != valTarget)
 		{
 			//Find piece location
 			Point locVal = findPiece(valTarget);
@@ -773,49 +763,10 @@ public class IDAStarMM extends IDAStar
 
 	private void swap(Point p1, Point p2)
 	{
-		int[] pieces = currentState.getPuzzle().clone();
+		PuzzleState newState = currentState.swap(p1, p2);
 
-		int val1 = getPiece(p1);
-		int val2 = getPiece(p2);
-
-		if (!checkSwap(p1, p2))
-		{
-			throw new IllegalStateException(String.format("Invalid swap: %1$s, %2$s", p1.toString(), p2.toString()));
-		}
-
-		pieces[p1.getY() * DIMENSION + p1.getX()] = val2;
-		pieces[p2.getY() * DIMENSION + p2.getX()] = val1;
-
-		currentState = new PuzzleState(pieces);
-		stateList.add(new PuzzleState(currentState));
-	}
-
-	private boolean checkSwap(Point p1, Point p2)
-	{
-		int absX = Math.abs(p1.getX() - p2.getX());
-		int absY = Math.abs(p1.getY() - p2.getY());
-
-		if (getPiece(p1) != BLANK_TILE_VALUE && getPiece(p2) != BLANK_TILE_VALUE)
-		{
-			return false;
-		}
-
-		if (p1.getX() == p2.getX() && absY == 1)
-		{
-			return true;
-		}
-
-		if (p1.getY() == p2.getY() && absX == 1)
-		{
-			return true;
-		}
-
-		return false;
-	}
-
-	private int getPiece(Point p)
-	{
-		return currentState.getPiece(p.getX(), p.getY());
+		currentState = newState;
+		stateList.add(new PuzzleState(newState));
 	}
 
 	private Point findPiece(int val)

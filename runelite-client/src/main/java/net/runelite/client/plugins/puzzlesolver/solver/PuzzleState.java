@@ -28,6 +28,7 @@ package net.runelite.client.plugins.puzzlesolver.solver;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import net.runelite.api.Point;
 import net.runelite.client.plugins.puzzlesolver.solver.heuristics.Heuristic;
 import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.DIMENSION;
 import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.BLANK_TILE_VALUE;
@@ -164,11 +165,6 @@ public class PuzzleState
 		return pieces[y * DIMENSION + x];
 	}
 
-	public int[] getPuzzle()
-	{
-		return pieces;
-	}
-
 	public int getEmptyPiece()
 	{
 		return emptyPiece;
@@ -183,5 +179,46 @@ public class PuzzleState
 		}
 
 		return h;
+	}
+
+	public PuzzleState swap(Point p1, Point p2)
+	{
+		int[] pieces = this.pieces.clone();
+
+		int val1 = getPiece(p1.getX(), p1.getY());
+		int val2 = getPiece(p2.getX(), p2.getY());
+
+		if (!checkSwap(p1, p2))
+		{
+			throw new IllegalStateException(String.format("Invalid swap: %1$s, %2$s", p1.toString(), p2.toString()));
+		}
+
+		pieces[p1.getY() * DIMENSION + p1.getX()] = val2;
+		pieces[p2.getY() * DIMENSION + p2.getX()] = val1;
+
+		return new PuzzleState(pieces);
+	}
+
+	private boolean checkSwap(Point p1, Point p2)
+	{
+		int absX = Math.abs(p1.getX() - p2.getX());
+		int absY = Math.abs(p1.getY() - p2.getY());
+
+		if (getPiece(p1.getX(), p1.getY()) != BLANK_TILE_VALUE && getPiece(p2.getX(), p2.getY()) != BLANK_TILE_VALUE)
+		{
+			return false;
+		}
+
+		if (p1.getX() == p2.getX() && absY == 1)
+		{
+			return true;
+		}
+
+		if (p1.getY() == p2.getY() && absX == 1)
+		{
+			return true;
+		}
+
+		return false;
 	}
 }
