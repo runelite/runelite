@@ -32,6 +32,7 @@ uniform float brightness;
 
 out ivec3 vPosition;
 out vec4 vColor;
+out float vHsl;
 out vec4 vUv;
 
 #include hsl_to_rgb.glsl
@@ -47,5 +48,6 @@ void main()
 
   vPosition = vertex;
   vColor = vec4(rgb, 1.f - a);
+  vHsl = float(hsl);
   vUv = uv;
 }

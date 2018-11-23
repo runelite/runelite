@@ -34,10 +34,22 @@ public interface GpuPluginConfig extends Config
 	@ConfigItem(
 		keyName = "drawDistance",
 		name = "Draw Distance",
-		description = "Draw distance"
+		description = "Draw distance",
+		position = 1
 	)
 	default int drawDistance()
 	{
 		return 25;
+	}
+
+	@ConfigItem(
+		keyName = "smoothBanding",
+		name = "Remove Color Banding",
+		description = "Smooths out the color banding that is present in the CPU renderer",
+		position = 2
+	)
+	default boolean smoothBanding()
+	{
+		return false;
 	}
 }
