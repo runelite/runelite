@@ -45,21 +45,13 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.ItemID;
-import net.runelite.api.NPC;
+import net.runelite.api.*;
+
 import static net.runelite.api.Skill.SLAYER;
+
+import net.runelite.api.events.*;
 import net.runelite.api.vars.SlayerUnlock;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.ExperienceChanged;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.NpcDespawned;
-import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
@@ -172,6 +164,9 @@ public class SlayerPlugin extends Plugin
 	private boolean loginFlag;
 	private final Set<Integer> targetIds = new HashSet<>();
 
+	private int gainsThisTick = -1;
+	private List<NPC> deadThisTick = new ArrayList<>();
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -264,8 +259,38 @@ public class SlayerPlugin extends Plugin
 	}
 
 	@Subscribe
+	/**
+	 * Xp drops happen on the tick an npc dies which IS NOT the tick it despawns
+	 * so detecting death can be done on the animation change plus the isDead()
+	 * method on the NPC
+	 */
+	public void onAnimationChanged(AnimationChanged e)
+	{
+		if (!(e.getActor() instanceof NPC))
+		{
+			return;
+		}
+
+		final NPC npc = (NPC) e.getActor();
+
+		if (npc.isDead())
+		{
+			deadThisTick.add(npc);
+		}
+	}
+
+	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
+		System.out.println("=======================");
+		System.out.println("died previous tick is " + deadThisTick.toString());
+		System.out.println("gains previous tick is " + gainsThisTick);
+
+		// optimally here we pull from the map of npc id to slayer drop
+
+		deadThisTick.clear();
+		gainsThisTick = -1;
+
 		Widget npcDialog = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
 		if (npcDialog != null)
 		{
@@ -455,6 +480,8 @@ public class SlayerPlugin extends Plugin
 		}
 
 		int slayerExp = client.getSkillExperience(SLAYER);
+
+		gainsThisTick = slayerExp;
 
 		if (slayerExp <= cachedXp)
 		{
