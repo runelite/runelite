@@ -56,7 +56,8 @@ public class PatchImplementationTest
 					{
 						Assert.assertTrue(pfx + ": dead seed", s.getStage() > 0);
 					}
-					if (s.getCropState() == CropState.GROWING && s.getProduce() != Produce.WEEDS)
+					if (s.getCropState() == CropState.GROWING && s.getProduce() != Produce.WEEDS &&
+						s.getProduce() != Produce.COMPOST && s.getProduce() != Produce.SUPERCOMPOST)
 					{
 						harvestStages.computeIfAbsent(s.getProduce(), k -> new boolean[s.getProduce().getStages()])[s.getStage()] = true;
 					}
