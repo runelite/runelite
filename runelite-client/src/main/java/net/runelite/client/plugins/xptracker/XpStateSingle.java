@@ -72,21 +72,11 @@ class XpStateSingle
 
 	private int toHourly(int value)
 	{
-		if (skillTime == 0)
-		{
-			return 0;
-		}
-
 		return (int) ((1.0 / (getTimeElapsedInSeconds() / 3600.0)) * value);
 	}
 
 	private long getTimeElapsedInSeconds()
 	{
-		if (skillTime == 0)
-		{
-			return 0;
-		}
-
 		// If the skill started just now, we can divide by near zero, this results in odd behavior.
 		// To prevent that, pretend the skill has been active for a minute (60 seconds)
 		// This will create a lower estimate for the first minute,
