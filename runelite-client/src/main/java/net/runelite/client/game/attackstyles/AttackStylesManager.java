@@ -10,6 +10,7 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.events.AttackStyleChanged;
+import net.runelite.client.events.EquippedWeaponChanged;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -76,6 +77,7 @@ public class AttackStylesManager
 		if (equippedWeaponTypeVarbit == -1 || equippedWeaponTypeVarbit != client.getVar(Varbits.EQUIPPED_WEAPON_TYPE))
 		{
 			equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
+			eventBus.post(new EquippedWeaponChanged(WeaponType.getWeaponType(equippedWeaponTypeVarbit)));
 			updateAttackStyle(equippedWeaponTypeVarbit,
 					client.getVar(VarPlayer.ATTACK_STYLE),
 					client.getVar(Varbits.DEFENSIVE_CASTING_MODE));

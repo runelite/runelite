@@ -35,7 +35,6 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
@@ -47,6 +46,7 @@ import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.AttackStyleChanged;
+import net.runelite.client.events.EquippedWeaponChanged;
 import net.runelite.client.game.attackstyles.AttackStyle;
 import net.runelite.client.game.attackstyles.AttackStylesManager;
 import net.runelite.client.game.attackstyles.WeaponType;
@@ -65,6 +65,7 @@ public class AttackStylesPlugin extends Plugin
 	private boolean warnedSkillSelected = false;
 	private final Table<WeaponType, WidgetInfo, Boolean> widgetsToHide = HashBasedTable.create();
 	private AttackStyle attackStyle;
+	private WeaponType equippedWeaponType;
 
 	@Inject
 	private Client client;
@@ -158,9 +159,6 @@ public class AttackStylesPlugin extends Plugin
 	 */
 	private void processWidgets()
 	{
-		int equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
-		WeaponType equippedWeaponType = WeaponType.getWeaponType(equippedWeaponTypeVarbit);
-
 		if (widgetsToHide.containsRow(equippedWeaponType))
 		{
 			for (WidgetInfo widgetKey : widgetsToHide.row(equippedWeaponType).keySet())
@@ -187,6 +185,13 @@ public class AttackStylesPlugin extends Plugin
 	public void onAttackStyleChanged(AttackStyleChanged event)
 	{
 		attackStyle = event.getAttackStyle();
+		updateWarning(false);
+	}
+
+	@Subscribe
+	public void onEquippedWeaponChanged(EquippedWeaponChanged event)
+	{
+		equippedWeaponType = event.getEquippedWeaponType();
 		updateWarning(false);
 	}
 
@@ -257,8 +262,6 @@ public class AttackStylesPlugin extends Plugin
 
 	private void hideWarnedStyles(boolean enabled)
 	{
-		int equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
-		WeaponType equippedWeaponType = WeaponType.getWeaponType(equippedWeaponTypeVarbit);
 		if (equippedWeaponType == null)
 		{
 			return;

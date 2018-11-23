@@ -37,6 +37,11 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.events.AttackStyleChanged;
+import net.runelite.client.events.EquippedWeaponChanged;
+import net.runelite.client.game.attackstyles.AttackStyle;
+import net.runelite.client.game.attackstyles.AttackStylesManager;
+import net.runelite.client.game.attackstyles.WeaponType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -90,17 +95,15 @@ public class AttackStylesPluginTest
 		assertTrue(warnedSkills.contains(Skill.ATTACK));
 
 		// Set mock client to attack in style that gives attack xp
-		when(client.getVar(VarPlayer.ATTACK_STYLE)).thenReturn(AttackStyle.ACCURATE.ordinal());
+		attackPlugin.onAttackStyleChanged(new AttackStyleChanged(AttackStyle.ACCURATE));
 
 		// verify that earning xp in a warned skill will display red text on the widget
-		attackPlugin.onVarbitChanged(new VarbitChanged());
 		assertTrue(attackPlugin.isWarnedSkillSelected());
 
 		// Switch to attack style that doesn't give attack xp
-		when(client.getVar(VarPlayer.ATTACK_STYLE)).thenReturn(AttackStyle.AGGRESSIVE.ordinal());
+		attackPlugin.onAttackStyleChanged(new AttackStyleChanged(AttackStyle.AGGRESSIVE));
 
 		// Verify the widget will now display white text
-		attackPlugin.onVarbitChanged(new VarbitChanged());
 		warnedSkills = attackPlugin.getWarnedSkills();
 		assertTrue(warnedSkills.contains(Skill.ATTACK));
 		assertFalse(attackPlugin.isWarnedSkillSelected());
@@ -128,8 +131,7 @@ public class AttackStylesPluginTest
 		when(strWidget.isHidden()).thenAnswer(x -> isStrHidden());
 
 		// equip type_4 weapon type on player
-		when(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE)).thenReturn(WeaponType.TYPE_4.ordinal());
-		attackPlugin.onVarbitChanged(new VarbitChanged());
+		attackPlugin.onEquippedWeaponChanged(new EquippedWeaponChanged(WeaponType.TYPE_4));
 
 		// Verify there is a warned skill
 		Set<Skill> warnedSkills = attackPlugin.getWarnedSkills();
