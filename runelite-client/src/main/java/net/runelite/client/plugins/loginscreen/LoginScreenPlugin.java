@@ -178,11 +178,13 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 				// 0 is username, 1 is password
 				if (client.getCurrentLoginField() == 0)
 				{
-					client.setUsername(data);
+					// Truncate data to maximum email length if necessary
+					client.setUsername(data.substring(0, Math.min(data.length(), 254)));
 				}
 				else
 				{
-					client.setPassword(data);
+					// Truncate data to maximum password length if necessary
+					client.setPassword(data.substring(0, Math.min(data.length(), 20)));
 				}
 			}
 			catch (UnsupportedFlavorException | IOException ex)
