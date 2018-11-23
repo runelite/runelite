@@ -425,10 +425,16 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		Template template = new Template(resourceLoader);
 		String source = template.process(resourceLoader.apply("geom.glsl"));
 
+		template = new Template(resourceLoader);
+		String vertSource = template.process(resourceLoader.apply("vert.glsl"));
+
+		template = new Template(resourceLoader);
+		String fragSource = template.process(resourceLoader.apply("frag.glsl"));
+
 		GLUtil.loadShaders(gl, glProgram, glVertexShader, glGeomShader, glFragmentShader,
-			inputStreamToString(getClass().getResourceAsStream("vert.glsl")),
+			vertSource,
 			source,
-			inputStreamToString(getClass().getResourceAsStream("frag.glsl")));
+			fragSource);
 
 		glComputeProgram = gl.glCreateProgram();
 		glComputeShader = gl.glCreateShader(gl.GL_COMPUTE_SHADER);
