@@ -37,24 +37,18 @@ import java.util.List;
 import java.util.Objects;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Actor;
-import net.runelite.api.Client;
-import net.runelite.api.Experience;
-import net.runelite.api.GameState;
-import net.runelite.api.NPC;
-import net.runelite.api.Player;
-import net.runelite.api.Skill;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.WorldType;
-import net.runelite.api.events.ExperienceChanged;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.*;
+import net.runelite.api.events.*;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.NPCManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+
+import static net.runelite.client.plugins.xptracker.AttackStyle.CASTING;
+import static net.runelite.client.plugins.xptracker.AttackStyle.DEFENSIVE_CASTING;
+import static net.runelite.client.plugins.xptracker.AttackStyle.OTHER;
 import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
@@ -93,6 +87,9 @@ public class XpTrackerPlugin extends Plugin
 	@Inject
 	private NPCManager npcManager;
 
+	@Inject
+	private ClientThread clientThread;
+
 	private NavigationButton navButton;
 	private XpPanel xpPanel;
 	private XpWorldType lastWorldType;
@@ -100,8 +97,19 @@ public class XpTrackerPlugin extends Plugin
 	private long lastTickMillis = 0;
 
 	private final XpClient xpClient = new XpClient();
-	private final XpState xpState = new XpState();
+	private final XpState xpState = new XpState(this);
 	private final XpPauseState xpPauseState = new XpPauseState();
+
+	private int attackStyleVarbit = -1;
+	private int equippedWeaponTypeVarbit = -1;
+	private int castingModeVarbit = -1;
+
+	private AttackStyle attackStyle;
+
+	public AttackStyle getAttackStyle()
+	{
+		return attackStyle;
+	}
 
 	@Provides
 	XpTrackerConfig provideConfig(ConfigManager configManager)
@@ -130,6 +138,22 @@ public class XpTrackerPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(navButton);
+
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			clientThread.invoke(this::start);
+		}
+	}
+
+	private void start()
+	{
+		attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
+		equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
+		castingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
+		updateAttackStyle(
+				equippedWeaponTypeVarbit,
+				attackStyleVarbit,
+				castingModeVarbit);
 	}
 
 	@Override
@@ -301,6 +325,51 @@ public class XpTrackerPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		rebuildSkills();
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		if (attackStyleVarbit == -1 || attackStyleVarbit != client.getVar(VarPlayer.ATTACK_STYLE))
+		{
+			attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
+			updateAttackStyle(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE),
+					attackStyleVarbit,
+					client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
+		}
+
+		if (equippedWeaponTypeVarbit == -1 || equippedWeaponTypeVarbit != client.getVar(Varbits.EQUIPPED_WEAPON_TYPE))
+		{
+			equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
+			updateAttackStyle(equippedWeaponTypeVarbit,
+					client.getVar(VarPlayer.ATTACK_STYLE),
+					client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
+		}
+
+		if (castingModeVarbit == -1 || castingModeVarbit != client.getVar(Varbits.DEFENSIVE_CASTING_MODE))
+		{
+			castingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
+			updateAttackStyle(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE),
+					client.getVar(VarPlayer.ATTACK_STYLE),
+					castingModeVarbit);
+		}
+	}
+
+	private void updateAttackStyle(int equippedWeaponType, int attackStyleIndex, int castingMode)
+	{
+		AttackStyle[] attackStyles = WeaponType.getWeaponType(equippedWeaponType).getAttackStyles();
+		if (attackStyleIndex < attackStyles.length)
+		{
+			attackStyle = attackStyles[attackStyleIndex];
+			if (attackStyle == null)
+			{
+				attackStyle = OTHER;
+			}
+			else if ((attackStyle == CASTING) && (castingMode == 1))
+			{
+				attackStyle = DEFENSIVE_CASTING;
+			}
+		}
 	}
 
 	XpSnapshotSingle getSkillSnapshot(Skill skill)
