@@ -171,6 +171,7 @@ class XpState
 			action.setActionsHistoryInitialized(true);
 		}
 		interactedNPC = npc;
+		state.setActionType(XpActionType.ACTOR_HEALTH);
 	}
 
 	/**
