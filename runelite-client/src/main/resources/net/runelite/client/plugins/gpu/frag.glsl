@@ -34,13 +34,12 @@ out vec4 FragColor;
 
 void main() {
   float n = fUv.x;
-  float u = fUv.y;
-  float v = fUv.z;
 
-  if (u > 0.0f && v > 0.0f) {
+  if (n > 0.0) {
+    n -= 1.0;
     int textureIdx = int(n);
 
-    vec2 uv = vec2(u - 1, v - 1);
+    vec2 uv = fUv.yz;
     vec2 animatedUv = uv + textureOffsets[textureIdx];
 
     vec4 textureColor = texture(textures, vec3(animatedUv, n));
