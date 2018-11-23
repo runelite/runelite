@@ -27,13 +27,22 @@
 uniform sampler2DArray textures;
 uniform vec2 textureOffsets[64];
 uniform float brightness;
+uniform float smoothBanding;
 
 in vec4 Color;
+in float fHsl;
 in vec4 fUv;
+
 out vec4 FragColor;
+
+#include hsl_to_rgb.glsl
 
 void main() {
   float n = fUv.x;
+
+  int hsl = int(fHsl);
+  vec3 rgb = hslToRgb(hsl) * smoothBanding + Color.rgb * (1.f - smoothBanding);
+  vec4 smoothColor = vec4(rgb, Color.a);
 
   if (n > 0.0) {
     n -= 1.0;
@@ -45,8 +54,8 @@ void main() {
     vec4 textureColor = texture(textures, vec3(animatedUv, n));
     vec4 textureColorBrightness = pow(textureColor, vec4(brightness, brightness, brightness, 1.0f));
 
-    FragColor = textureColorBrightness * Color;
+    FragColor = textureColorBrightness * smoothColor;
   } else {
-    FragColor = Color;
+    FragColor = smoothColor;
   }
 }

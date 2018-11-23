@@ -47,9 +47,11 @@ uniform mat4 projectionMatrix;
 
 in ivec3 vPosition[];
 in vec4 vColor[];
+in float vHsl[];
 in vec4 vUv[];
 
 out vec4 Color;
+out float fHsl;
 out vec4 fUv;
 
 #include to_screen.glsl
@@ -67,18 +69,21 @@ void main() {
 
   vec4 tmp = vec4(screenA.xyz, 1.0);
   Color = vColor[0];
+  fHsl = vHsl[0];
   fUv = vUv[0];
   gl_Position  = projectionMatrix * tmp;
   EmitVertex();
 
   tmp = vec4(screenB.xyz, 1.0);
   Color = vColor[1];
+  fHsl = vHsl[1];
   fUv = vUv[1];
   gl_Position  = projectionMatrix * tmp;
   EmitVertex();
 
   tmp = vec4(screenC.xyz, 1.0);
   Color = vColor[2];
+  fHsl = vHsl[2];
   fUv = vUv[2];
   gl_Position  = projectionMatrix * tmp;
   EmitVertex();

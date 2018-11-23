@@ -220,6 +220,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniBlockSmall;
 	private int uniBlockLarge;
 	private int uniBlockMain;
+	private int uniSmoothBanding;
 
 	@Override
 	protected void startUp()
@@ -425,10 +426,16 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		Template template = new Template(resourceLoader);
 		String source = template.process(resourceLoader.apply("geom.glsl"));
 
+		template = new Template(resourceLoader);
+		String vertSource = template.process(resourceLoader.apply("vert.glsl"));
+
+		template = new Template(resourceLoader);
+		String fragSource = template.process(resourceLoader.apply("frag.glsl"));
+
 		GLUtil.loadShaders(gl, glProgram, glVertexShader, glGeomShader, glFragmentShader,
-			inputStreamToString(getClass().getResourceAsStream("vert.glsl")),
+			vertSource,
 			source,
-			inputStreamToString(getClass().getResourceAsStream("frag.glsl")));
+			fragSource);
 
 		glComputeProgram = gl.glCreateProgram();
 		glComputeShader = gl.glCreateShader(gl.GL_COMPUTE_SHADER);
@@ -463,6 +470,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	{
 		uniProjectionMatrix = gl.glGetUniformLocation(glProgram, "projectionMatrix");
 		uniBrightness = gl.glGetUniformLocation(glProgram, "brightness");
+		uniSmoothBanding = gl.glGetUniformLocation(glProgram, "smoothBanding");
 
 		uniTex = gl.glGetUniformLocation(glUiProgram, "tex");
 		uniTextures = gl.glGetUniformLocation(glProgram, "textures");
@@ -931,6 +939,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			// Brightness happens to also be stored in the texture provider, so we use that
 			gl.glUniform1f(uniBrightness, (float) textureProvider.getBrightness());
+			gl.glUniform1f(uniSmoothBanding, config.smoothBanding() ? 0f : 1f);
 
 			for (int id = 0; id < textures.length; ++id)
 			{
