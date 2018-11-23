@@ -495,7 +495,6 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
-		killedOne();
 		cachedXp = slayerExp;
 	}
 
