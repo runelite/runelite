@@ -32,17 +32,6 @@ shared int totalMappedNum[18]; // number of faces with a given adjusted priority
 shared int min10; // minimum distance to a face of priority 10
 shared int dfs[4096]; // packed face id and distance
 
-struct modelinfo {
-  int offset;   // offset into buffer
-  int uvOffset; // offset into uv buffer
-  int length;   // length in faces
-  int idx;      // write idx in target buffer
-  int flags;    // radius, orientation
-  int x;        // scene position x
-  int y;        // scene position y
-  int z;        // scene position z
-};
-
 #include comp_common.glsl
 
 layout(local_size_x = 1024) in;
