@@ -423,7 +423,7 @@ public class PuzzleSolverOverlay extends Overlay
 		System.arraycopy(items, 0, cachedItems, 0, cachedItems.length);
 	}
 
-	private void solve(int[] items, boolean  useNormalSolver)
+	private void solve(int[] items, boolean useNormalSolver)
 	{
 		if (solverFuture != null)
 		{

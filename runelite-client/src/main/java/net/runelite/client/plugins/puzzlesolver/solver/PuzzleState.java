@@ -55,31 +55,26 @@ public class PuzzleState
 		}
 
 		this.pieces = pieces;
-
-		this.emptyPiece = findEmptyPiece();
-
-		if (emptyPiece == -1)
-		{
-			throw new IllegalStateException("Incorrect empty piece passed in!");
-		}
+		findEmptyPiece();
 	}
 
-	public PuzzleState(PuzzleState state)
+	private PuzzleState(PuzzleState state)
 	{
 		this.pieces = Arrays.copyOf(state.pieces, state.pieces.length);
-		this.emptyPiece = state.findEmptyPiece();
+		this.emptyPiece = state.emptyPiece;
 	}
 
-	private int findEmptyPiece()
+	private void findEmptyPiece()
 	{
 		for (int i = 0; i < pieces.length; i++)
 		{
 			if (pieces[i] == BLANK_TILE_VALUE)
 			{
-				return i;
+				this.emptyPiece = i;
+				return;
 			}
 		}
-		return -1;
+		throw new IllegalStateException("Incorrect empty piece passed in!");
 	}
 
 	public List<PuzzleState> computeMoves()
@@ -192,7 +187,7 @@ public class PuzzleState
 		int val1 = getPiece(p1.getX(), p1.getY());
 		int val2 = getPiece(p2.getX(), p2.getY());
 
-		if (!checkSwap(p1, p2))
+		if (!isValidSwap(p1, p2))
 		{
 			throw new IllegalStateException(String.format("Invalid swap: %1$s, %2$s", p1.toString(), p2.toString()));
 		}
@@ -201,13 +196,12 @@ public class PuzzleState
 
 		newState.pieces[p1.getY() * DIMENSION + p1.getX()] = val2;
 		newState.pieces[p2.getY() * DIMENSION + p2.getX()] = val1;
-
-		newState.emptyPiece = newState.findEmptyPiece();
+		newState.findEmptyPiece();
 
 		return newState;
 	}
 
-	private boolean checkSwap(Point p1, Point p2)
+	private boolean isValidSwap(Point p1, Point p2)
 	{
 		int absX = Math.abs(p1.getX() - p2.getX());
 		int absY = Math.abs(p1.getY() - p2.getY());
