@@ -776,6 +776,7 @@ public class IDAStarMM extends IDAStar
 				}
 			}
 		}
-		throw new IllegalStateException("Empty piece wasn't found!");
+		// This should never happen
+		throw new IllegalStateException("Piece wasn't found!");
 	}
 }
