@@ -24,13 +24,23 @@
  */
 package net.runelite.client.plugins.statusbars;
 
+import com.google.common.eventbus.Subscribe;
 import javax.inject.Inject;
 import com.google.inject.Provides;
+import net.runelite.api.Client;
+import net.runelite.api.Prayer;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.itemstats.ItemStatPlugin;
+import static net.runelite.client.plugins.statusbars.StatusBarsOverlay.ACTIVE_PRAYER_COLOR;
+import static net.runelite.client.plugins.statusbars.StatusBarsOverlay.HEALTH_COLOR;
+import static net.runelite.client.plugins.statusbars.StatusBarsOverlay.POISONED_COLOR;
+import static net.runelite.client.plugins.statusbars.StatusBarsOverlay.PRAYER_COLOR;
+import static net.runelite.client.plugins.statusbars.StatusBarsOverlay.VENOMED_COLOR;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
@@ -46,6 +56,9 @@ public class StatusBarsPlugin extends Plugin
 
 	@Inject
 	private OverlayManager overlayManager;
+
+	@Inject
+	private Client client;
 
 	@Override
 	protected void startUp() throws Exception
@@ -64,4 +77,36 @@ public class StatusBarsPlugin extends Plugin
 	{
 		return configManager.getConfig(StatusBarsConfig.class);
 	}
+
+	@Subscribe
+	public void CheckVars(GameTick event)
+	{
+		final int poisonState = client.getVar(VarPlayer.IS_POISONED);
+		if (poisonState > 0 && poisonState < 50)
+		{
+			overlay.healthBar = POISONED_COLOR;
+		}
+		else if (poisonState >= 1000000)
+		{
+			overlay.healthBar = VENOMED_COLOR;
+		}
+		else
+		{
+			overlay.healthBar = HEALTH_COLOR;
+		}
+
+		for (Prayer pray : Prayer.values())
+		{
+			if (client.isPrayerActive(pray))
+			{
+				overlay.prayerBar = ACTIVE_PRAYER_COLOR;
+				break;
+			}
+			else
+			{
+				overlay.prayerBar = PRAYER_COLOR;
+			}
+		}
+	}
+
 }
