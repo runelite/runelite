@@ -143,10 +143,11 @@ public class FarmingTabPanel extends TabContentPanel
 			String storedValue = configManager.getConfiguration(group, key);
 			long unixTime = 0;
 			int value = 0;
+			int lastSeenStage = -1;
 			if (storedValue != null)
 			{
 				String[] parts = storedValue.split(":");
-				if (parts.length == 2)
+				if (parts.length >= 2)
 				{
 					try
 					{
@@ -155,6 +156,17 @@ public class FarmingTabPanel extends TabContentPanel
 					}
 					catch (NumberFormatException e)
 					{
+					}
+				}
+				if (patch.getImplementation() == PatchImplementation.COMPOST_BIN)
+				{
+					try
+					{
+						lastSeenStage = Integer.parseInt(parts[2]);
+					}
+					catch (Exception e)
+					{
+						// ignored
 					}
 				}
 			}
@@ -186,6 +198,12 @@ public class FarmingTabPanel extends TabContentPanel
 				int stage = state.getStage();
 				int stages = state.getStages();
 				int tickrate = state.getTickRate() * 60;
+
+				if (patch.getImplementation() == PatchImplementation.COMPOST_BIN && lastSeenStage != -1)
+				{
+					//Use cached stage
+					stage = lastSeenStage;
+				}
 
 				if (autoweed && state.getProduce() == Produce.WEEDS)
 				{

@@ -104,11 +104,36 @@ public class FarmingTracker
 				String key = Integer.toString(varbit.getId());
 				String strVarbit = Integer.toString(client.getVar(varbit));
 				String storedValue = configManager.getConfiguration(group, key);
+				int lastSeenStage = -1;
 
 				if (storedValue != null)
 				{
 					String[] parts = storedValue.split(":");
-					if (parts.length == 2 && parts[0].equals(strVarbit))
+					if (patch.getImplementation() == PatchImplementation.COMPOST_BIN)
+					{
+						try
+						{
+							if (Integer.parseInt(parts[0]) == client.getVar(varbit) && Integer.parseInt(parts[2]) != -1)
+							{
+								//Use cached value
+								lastSeenStage = Integer.parseInt(parts[2]);
+							}
+							else
+							{
+								//Set cached value
+								PatchState patchState = patch.getImplementation().forVarbitValue(client.getVar(varbit));
+								if (patchState != null)
+								{
+									lastSeenStage = patchState.getStage();
+								}
+							}
+						}
+						catch (Exception e)
+						{
+							// ignored
+						}
+					}
+					if (parts.length >= 2 && parts[0].equals(strVarbit))
 					{
 						long unixTime = 0;
 						try
@@ -127,6 +152,11 @@ public class FarmingTracker
 				}
 
 				String value = strVarbit + ":" + unixNow;
+				if (patch.getImplementation() == PatchImplementation.COMPOST_BIN)
+				{
+					//timetracking.<login-username>.<regionID>.<VarbitID>=<varbitValue>:<unix time>:<lastSeenStage>
+					value += ":" + lastSeenStage;
+				}
 				configManager.setConfiguration(group, key, value);
 				changed = true;
 			}
@@ -184,11 +214,12 @@ public class FarmingTracker
 				String storedValue = configManager.getConfiguration(group, key);
 				long unixTime = 0;
 				int value = 0;
+				int lastSeenStage = -1;
 
 				if (storedValue != null)
 				{
 					String[] parts = storedValue.split(":");
-					if (parts.length == 2)
+					if (parts.length >= 2)
 					{
 						try
 						{
@@ -196,6 +227,17 @@ public class FarmingTracker
 							unixTime = Long.parseLong(parts[1]);
 						}
 						catch (NumberFormatException e)
+						{
+							// ignored
+						}
+					}
+					if (patch.getImplementation() == PatchImplementation.COMPOST_BIN)
+					{
+						try
+						{
+							lastSeenStage = Integer.parseInt(parts[2]);
+						}
+						catch (Exception e)
 						{
 							// ignored
 						}
@@ -211,6 +253,12 @@ public class FarmingTracker
 				int tickrate = state.getTickRate() * 60;
 				int stage = state.getStage();
 				int stages = state.getStages();
+
+				if (patch.getImplementation() == PatchImplementation.COMPOST_BIN && lastSeenStage != -1)
+				{
+					//Use cached stage
+					stage = lastSeenStage;
+				}
 
 				if (state.getProduce() != Produce.WEEDS && state.getProduce() != Produce.SCARECROW)
 				{
