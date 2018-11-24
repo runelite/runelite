@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Infinitay <https://github.com/Infinitay>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,68 +22,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package net.runelite.api;
 
-import java.awt.Polygon;
-import javax.annotation.Nullable;
-
 /**
- * Represents a player entity in the game.
+ * An enumeration of PK skulls.
  */
-public interface Player extends Actor
+public enum SkullIcon
 {
-	@Override
-	int getCombatLevel();
-
 	/**
-	 * Gets the composition of this player.
-	 *
-	 * @return the composition
+	 * White skull from PVP world or wilderness
 	 */
-	PlayerComposition getPlayerComposition();
-
+	SKULL,
 	/**
-	 * Gets the polygons that make up the players model.
-	 *
-	 * @return the model polygons
+	 * Red skull from Tzhaar Fight Pits
 	 */
-	Polygon[] getPolygons();
-
+	SKULL_FIGHT_PIT,
 	/**
-	 * Gets the current team cape team number the player is on.
-	 *
-	 * @return team number, or 0 if not on any team
+	 * Deadman mode sprite carrying one key
 	 */
-	int getTeam();
-
+	DEAD_MAN_ONE,
 	/**
-	 * Checks whether this player is a member of the same clan as
-	 * the local player.
-	 *
-	 * @return true if the player is a clan member, false otherwise
+	 * Deadman mode sprite carrying two keys
 	 */
-	boolean isClanMember();
-
+	DEAD_MAN_TWO,
 	/**
-	 * Checks whether this player is a friend of the local player.
-	 *
-	 * @return true if the player is a friend, false otherwise
+	 * Deadman mode sprite carrying three keys
 	 */
-	boolean isFriend();
-
+	DEAD_MAN_THREE,
 	/**
-	 * Gets the displayed overhead icon of the player.
-	 *
-	 * @return the overhead icon
+	 * Deadman mode sprite carrying four keys
 	 */
-	HeadIcon getOverheadIcon();
-
+	DEAD_MAN_FOUR,
 	/**
-	 * Gets the displayed skull icon of the player.
-	 * Only works on the local player.
-	 *
-	 * @return the skull icon
+	 * Deadman mode sprite carrying five keys
 	 */
-	@Nullable
-	SkullIcon getSkullIcon();
+	DEAD_MAN_FIVE,
 }
