@@ -601,19 +601,25 @@ public class SlayerPlugin extends Plugin
 
 	private void addCounter()
 	{
-		if (!config.showInfobox() || counter != null || Strings.isNullOrEmpty(taskName))
+		System.out.println("should be adding counter");
+		System.out.println(config.showInfobox());
+		System.out.println(counter);
+		System.out.println(Strings.isNullOrEmpty(taskName));
+		if (config.showInfobox() && counter == null && !Strings.isNullOrEmpty(taskName))
 		{
-			return;
+			Task task = Task.getTask(taskName);
+			int itemSpriteId = ItemID.ENCHANTED_GEM;
+			if (task != null)
+			{
+				itemSpriteId = task.getItemSpriteId();
+			}
+
+			BufferedImage taskImg = itemManager.getImage(itemSpriteId);
+			counter = new TaskCounter(taskImg, this, amount);
+			infoBoxManager.addInfoBox(counter);
 		}
 
-		Task task = Task.getTask(taskName);
-		int itemSpriteId = ItemID.ENCHANTED_GEM;
-		if (task != null)
-		{
-			itemSpriteId = task.getItemSpriteId();
-		}
 
-		BufferedImage taskImg = itemManager.getImage(itemSpriteId);
 		String taskTooltip = ColorUtil.prependColorTag("%s</br>", new Color(255, 119, 0))
 			+ ColorUtil.wrapWithColorTag("Pts:", Color.YELLOW)
 			+ " %s</br>"
@@ -626,7 +632,6 @@ public class SlayerPlugin extends Plugin
 			taskTooltip += ColorUtil.wrapWithColorTag("Progress:", Color.YELLOW)
 					+ " %s";
 		}
-		counter = new TaskCounter(taskImg, this, amount);
 		String progressString = String.format("%s/%s", amount, initialAmount);
 		if (initialAmount == -1)
 		{
@@ -636,8 +641,6 @@ public class SlayerPlugin extends Plugin
 		{
 			counter.setTooltip(String.format(taskTooltip, capsString(taskName), points, streak, progressString));
 		}
-
-		infoBoxManager.addInfoBox(counter);
 	}
 
 	private void removeCounter()
