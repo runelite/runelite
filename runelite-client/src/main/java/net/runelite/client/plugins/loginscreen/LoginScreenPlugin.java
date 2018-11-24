@@ -174,17 +174,18 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 					.getData(DataFlavor.stringFlavor)
 					.toString()
 					.trim();
+				final int maxEmailLength = 254, maxPasswordLength = 20;
 
 				// 0 is username, 1 is password
 				if (client.getCurrentLoginField() == 0)
 				{
 					// Truncate data to maximum email length if necessary
-					client.setUsername(data.substring(0, Math.min(data.length(), 254)));
+					client.setUsername(data.substring(0, Math.min(data.length(), maxEmailLength)));
 				}
 				else
 				{
 					// Truncate data to maximum password length if necessary
-					client.setPassword(data.substring(0, Math.min(data.length(), 20)));
+					client.setPassword(data.substring(0, Math.min(data.length(), maxPasswordLength)));
 				}
 			}
 			catch (UnsupportedFlavorException | IOException ex)
