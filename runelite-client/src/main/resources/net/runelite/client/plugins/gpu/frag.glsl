@@ -61,5 +61,9 @@ void main() {
     FragColor = smoothColor;
   }
 
-  FragColor = mix(FragColor, fogColor, fogAmount);
+  // only apply fog to pixels that are not transparent. (Trees would be colored black where the texture is transparent)
+  if (FragColor.w > 0.0f)
+  {
+    FragColor = mix(FragColor, fogColor, fogAmount);
+  }
 }
