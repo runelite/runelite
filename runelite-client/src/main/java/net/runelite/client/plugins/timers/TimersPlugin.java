@@ -29,22 +29,7 @@ import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Actor;
-import net.runelite.api.AnimationID;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
-import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
-import net.runelite.api.Player;
-import net.runelite.api.Prayer;
-import net.runelite.api.Varbits;
-import net.runelite.api.WorldType;
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
@@ -119,6 +104,7 @@ public class TimersPlugin extends Plugin
 	private WorldPoint lastPoint;
 	private TeleportWidget lastTeleportClicked;
 	private int lastAnimation;
+	private SkullIcon lastSkullIcon;
 	private boolean loggedInRace;
 	private boolean widgetHiddenChangedOnPvpWorld;
 
@@ -151,6 +137,7 @@ public class TimersPlugin extends Plugin
 		lastPoint = null;
 		lastTeleportClicked = null;
 		lastAnimation = -1;
+		lastSkullIcon = null;
 		loggedInRace = false;
 		widgetHiddenChangedOnPvpWorld = false;
 	}
@@ -557,6 +544,19 @@ public class TimersPlugin extends Plugin
 			log.debug("Entered safe zone in PVP world, clearing Teleblock timer.");
 			removeTbTimers();
 		}
+
+		SkullIcon currentSkullIcon = player.getSkullIcon();
+
+		if (lastSkullIcon == null && currentSkullIcon == SkullIcon.SKULL)
+		{
+			createGameTimer(SKULL);
+		}
+		else if (currentSkullIcon == null)
+		{
+			removeGameTimer(SKULL);
+		}
+
+		lastSkullIcon = currentSkullIcon;
 	}
 
 	@Subscribe
