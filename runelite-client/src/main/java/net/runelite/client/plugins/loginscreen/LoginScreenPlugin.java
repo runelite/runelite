@@ -51,6 +51,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 @Slf4j
 public class LoginScreenPlugin extends Plugin implements KeyListener
 {
+	private static final int MAX_USERNAME_LENGTH = 254;
+	private static final int MAX_PASSWORD_LENGTH = 20;
+
 	@Inject
 	private Client client;
 
@@ -61,8 +64,6 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	private KeyManager keyManager;
 
 	private String usernameCache;
-
-	private static final int MAX_EMAIL_LENGTH = 254, MAX_PASSWORD_LENGTH = 20;
 
 	@Override
 	protected void startUp() throws Exception
@@ -180,8 +181,8 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 				// 0 is username, 1 is password
 				if (client.getCurrentLoginField() == 0)
 				{
-					// Truncate data to maximum email length if necessary
-					client.setUsername(data.substring(0, Math.min(data.length(), MAX_EMAIL_LENGTH)));
+					// Truncate data to maximum username length if necessary
+					client.setUsername(data.substring(0, Math.min(data.length(), MAX_USERNAME_LENGTH)));
 				}
 				else
 				{
