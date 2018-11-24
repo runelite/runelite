@@ -195,9 +195,9 @@ public class IDAStarMM extends IDAStar
 					{
 						//Check if already correct above
 						if (locBlank.getY() - 1 == y
-								&& validRowNumbers.get(y).contains(currentState.getPiece(locBlank.getX(), locBlank.getY() - 1))
-								&& currentState.getPiece(locBlank.getX(), locBlank.getY() - 1) < valTarget
-								&& distY <= -1)
+							&& validRowNumbers.get(y).contains(currentState.getPiece(locBlank.getX(), locBlank.getY() - 1))
+							&& currentState.getPiece(locBlank.getX(), locBlank.getY() - 1) < valTarget
+							&& distY <= -1)
 						{
 							//Move forward
 							Point locSwap = new Point(locBlank.getX() + 1, locBlank.getY());
@@ -221,9 +221,9 @@ public class IDAStarMM extends IDAStar
 					{
 						//Check if already correct to the left
 						if (locBlank.getX() - 1 == x
-								&& validColumnNumbers.get(x).contains(currentState.getPiece(locBlank.getX() - 1, locBlank.getY()))
-								&& currentState.getPiece(locBlank.getX() - 1, locBlank.getY()) < valTarget
-								&& distX <= -1)
+							&& validColumnNumbers.get(x).contains(currentState.getPiece(locBlank.getX() - 1, locBlank.getY()))
+							&& currentState.getPiece(locBlank.getX() - 1, locBlank.getY()) < valTarget
+							&& distX <= -1)
 						{
 							//Move down
 							Point locSwap = new Point(locBlank.getX(), locBlank.getY() + 1);
