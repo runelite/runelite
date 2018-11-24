@@ -601,10 +601,6 @@ public class SlayerPlugin extends Plugin
 
 	private void addCounter()
 	{
-		System.out.println("should be adding counter");
-		System.out.println(config.showInfobox());
-		System.out.println(counter);
-		System.out.println(Strings.isNullOrEmpty(taskName));
 		if (config.showInfobox() && counter == null && !Strings.isNullOrEmpty(taskName))
 		{
 			Task task = Task.getTask(taskName);
