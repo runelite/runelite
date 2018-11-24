@@ -23,15 +23,10 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#version 330
+#version 400
 
-// Define tile size
+// Define tile size.
 #define FOG_DIST_SCALE 64
-// Define min and max distance for fog start/end in tiles
-#define FOG_START_MIN_DIST FOG_DIST_SCALE * 25
-#define FOG_START_MAX_DIST FOG_DIST_SCALE * 100
-#define FOG_END_MIN_DIST FOG_DIST_SCALE * 30
-#define FOG_END_MAX_DIST FOG_DIST_SCALE * 135
 
 layout (location = 0) in ivec4 VertexPosition;
 layout (location = 1) in vec4 uv;
@@ -39,6 +34,7 @@ layout (location = 1) in vec4 uv;
 uniform float brightness;
 uniform int useFog;
 uniform int drawDistance;
+uniform ivec3 cameraPosition;
 
 out ivec3 vPosition;
 out vec4 vColor;
@@ -68,9 +64,11 @@ void main()
 
   if (useFog == 1)
   {
-    float fogDistance = length(vec3(vPosition.xyz));
-    int fogStart = clamp((drawDistance * FOG_DIST_SCALE), FOG_START_MIN_DIST, FOG_START_MAX_DIST);
-    int fogEnd = clamp((fogStart + ((drawDistance + 2) * FOG_DIST_SCALE)), FOG_END_MIN_DIST, FOG_END_MAX_DIST);
+    vec3 v = vec3(vPosition - cameraPosition);
+    float fogDistance = length(v);
+    float fogEnd = (drawDistance * 2) * FOG_DIST_SCALE;
+    float fogStart = fogEnd - ((drawDistance / 2) * FOG_DIST_SCALE);
+
     vFogAmount = fogFactorLinear(fogDistance, fogStart, fogEnd);
   }
   else
