@@ -221,6 +221,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniUseFog;
 	private int uniFogColor;
 	private int uniDrawDistance;
+	private int uniCameraPosition;
 	private int uniProjectionMatrix;
 	private int uniBrightness;
 	private int uniTex;
@@ -492,6 +493,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniDrawDistance = gl.glGetUniformLocation(glProgram, "drawDistance");
 		uniFogColor = gl.glGetUniformLocation(glProgram, "fogColor");
 		uniUseFog = gl.glGetUniformLocation(glProgram, "useFog");
+		uniCameraPosition = gl.glGetUniformLocation(glProgram, "cameraPosition");
 
 		uniTex = gl.glGetUniformLocation(glUiProgram, "tex");
 		uniTextures = gl.glGetUniformLocation(glProgram, "textures");
@@ -728,7 +730,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		drawDistance = Math.max(0, Math.min(MAX_DISTANCE, config.drawDistance()));
 		scene.setDrawDistance(drawDistance);
 	}
-
 
 	public void drawScenePaint(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,
 							SceneTilePaint paint, int tileZ, int tileX, int tileY,
@@ -983,6 +984,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			gl.glUniform1i(uniUseFog, config.enableFog() ? 1 : 0);
 			gl.glUniform1i(uniDrawDistance, drawDistance);
+			gl.glUniform3i(uniCameraPosition, client.getCameraX2(), client.getCameraY2(), client.getCameraZ2());
+
 			if (config.enableFog())
 			{
 				drawSkybox();
