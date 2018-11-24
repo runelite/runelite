@@ -619,27 +619,29 @@ public class SlayerPlugin extends Plugin
 			infoBoxManager.addInfoBox(counter);
 		}
 
+		if (counter != null && !Strings.isNullOrEmpty(taskName))
+		{
+			String taskTooltip = ColorUtil.prependColorTag("%s</br>", new Color(255, 119, 0))
+					+ ColorUtil.wrapWithColorTag("Pts:", Color.YELLOW)
+					+ " %s</br>"
+					+ ColorUtil.wrapWithColorTag("Streak:", Color.YELLOW)
+					+ " %s</br>";
 
-		String taskTooltip = ColorUtil.prependColorTag("%s</br>", new Color(255, 119, 0))
-			+ ColorUtil.wrapWithColorTag("Pts:", Color.YELLOW)
-			+ " %s</br>"
-			+ ColorUtil.wrapWithColorTag("Streak:", Color.YELLOW)
-			+ " %s</br>";
-
-		// makes it so upon updating to track initialAmount people's previously active task won't show X/-1
-		if (initialAmount != -1)
-		{
-			taskTooltip += ColorUtil.wrapWithColorTag("Progress:", Color.YELLOW)
-					+ " %s";
-		}
-		String progressString = String.format("%s/%s", amount, initialAmount);
-		if (initialAmount == -1)
-		{
-			counter.setTooltip(String.format(taskTooltip, capsString(taskName), points, streak));
-		}
-		else
-		{
-			counter.setTooltip(String.format(taskTooltip, capsString(taskName), points, streak, progressString));
+			// makes it so upon updating to track initialAmount people's previously active task won't show X/-1
+			if (initialAmount != -1)
+			{
+				taskTooltip += ColorUtil.wrapWithColorTag("Progress:", Color.YELLOW)
+						+ " %s";
+			}
+			String progressString = String.format("%s/%s", amount, initialAmount);
+			if (initialAmount == -1)
+			{
+				counter.setTooltip(String.format(taskTooltip, capsString(taskName), points, streak));
+			}
+			else
+			{
+				counter.setTooltip(String.format(taskTooltip, capsString(taskName), points, streak, progressString));
+			}
 		}
 	}
 
