@@ -625,22 +625,19 @@ public class SlayerPlugin extends Plugin
 					+ ColorUtil.wrapWithColorTag("Pts:", Color.YELLOW)
 					+ " %s</br>"
 					+ ColorUtil.wrapWithColorTag("Streak:", Color.YELLOW)
-					+ " %s</br>";
+					+ " %s";
 
 			// makes it so upon updating to track initialAmount people's previously active task won't show X/-1
 			if (initialAmount != -1)
 			{
-				taskTooltip += ColorUtil.wrapWithColorTag("Progress:", Color.YELLOW)
+				taskTooltip += "</br>"
+						+ ColorUtil.wrapWithColorTag("Start:", Color.YELLOW)
 						+ " %s";
-			}
-			String progressString = String.format("%s/%s", amount, initialAmount);
-			if (initialAmount == -1)
-			{
-				counter.setTooltip(String.format(taskTooltip, capsString(taskName), points, streak));
+				counter.setTooltip(String.format(taskTooltip, capsString(taskName), points, streak, initialAmount));
 			}
 			else
 			{
-				counter.setTooltip(String.format(taskTooltip, capsString(taskName), points, streak, progressString));
+				counter.setTooltip(String.format(taskTooltip, capsString(taskName), points, streak));
 			}
 		}
 	}
