@@ -104,6 +104,7 @@ public class FarmingTracker
 				String key = Integer.toString(varbit.getId());
 				String strVarbit = Integer.toString(client.getVar(varbit));
 				String storedValue = configManager.getConfiguration(group, key);
+				long unixTime = 0;
 				int lastSeenStage = -1;
 
 				if (storedValue != null)
@@ -135,7 +136,6 @@ public class FarmingTracker
 					}
 					if (parts.length >= 2 && parts[0].equals(strVarbit))
 					{
-						long unixTime = 0;
 						try
 						{
 							unixTime = Long.parseLong(parts[1]);
@@ -154,6 +154,16 @@ public class FarmingTracker
 				String value = strVarbit + ":" + unixNow;
 				if (patch.getImplementation() == PatchImplementation.COMPOST_BIN)
 				{
+					int tickrate = patch.getImplementation().forVarbitValue(client.getVar(varbit)).getTickRate() * 60;
+					long tickNow = unixNow / tickrate;
+					long tickTime = unixTime / tickrate;
+
+					if (tickNow - tickTime == 1 && lastSeenStage != -1)
+					{
+						//New 20 min tick, increment with 1
+						lastSeenStage++;
+					}
+
 					//timetracking.<login-username>.<regionID>.<VarbitID>=<varbitValue>:<unix time>:<lastSeenStage>
 					value += ":" + lastSeenStage;
 				}
