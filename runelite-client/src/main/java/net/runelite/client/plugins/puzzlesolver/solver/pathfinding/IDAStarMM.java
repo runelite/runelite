@@ -88,8 +88,7 @@ public class IDAStarMM extends IDAStar
 
 			if (valCurrent != valTarget)
 			{
-				Point locTarget = new Point(i, row);
-				moveTowardsVal(valTarget, locTarget,  true);
+				moveTowardsVal(valTarget, i, row,  true);
 			}
 		}
 	}
@@ -106,27 +105,37 @@ public class IDAStarMM extends IDAStar
 
 			if (valCurrent != valTarget)
 			{
-				Point locTarget = new Point(column, i);
-				moveTowardsVal(valTarget, locTarget,  false);
+				moveTowardsVal(valTarget, column, i,  false);
 			}
 		}
 	}
 
-	private void moveTowardsVal(int valTarget, Point locTarget, boolean rowMode)
+	private void moveTowardsVal(int valTarget, int x, int y, boolean rowMode)
 	{
 		//Not in place
 		boolean reached = false;
 
-		int row = locTarget.getY();
-		int column = locTarget.getX();
-
-		while (currentState.getPiece(locTarget.getX(), locTarget.getY()) != valTarget)
+		while (currentState.getPiece(x, y) != valTarget)
 		{
 			//Find piece location
 			Point locVal = findPiece(valTarget);
 			Point locBlank = findPiece(BLANK_TILE_VALUE);
 
-			if (!reached)
+			if (reached)
+			{
+				//Swap towards locTarget
+				if (rowMode)
+				{
+					alignTargetX(valTarget, x, y);
+					swapUpRow(valTarget, x, y);
+				}
+				else
+				{
+					alignTargetY(valTarget, x, y);
+					swapLeftColumn(valTarget, x, y);
+				}
+			}
+			else
 			{
 				int distX = locVal.getX() - locBlank.getX();
 				int distY = locVal.getY() - locBlank.getY();
@@ -185,10 +194,10 @@ public class IDAStarMM extends IDAStar
 					if (rowMode)
 					{
 						//Check if already correct above
-						if (locBlank.getY() - 1 == row &&
-							validRowNumbers.get(row).contains(currentState.getPiece(locBlank.getX(), locBlank.getY() - 1)) &&
-							currentState.getPiece(locBlank.getX(), locBlank.getY() - 1) < valTarget &&
-							distY <= -1)
+						if (locBlank.getY() - 1 == y
+								&& validRowNumbers.get(y).contains(currentState.getPiece(locBlank.getX(), locBlank.getY() - 1))
+								&& currentState.getPiece(locBlank.getX(), locBlank.getY() - 1) < valTarget
+								&& distY <= -1)
 						{
 							//Move forward
 							Point locSwap = new Point(locBlank.getX() + 1, locBlank.getY());
@@ -211,10 +220,10 @@ public class IDAStarMM extends IDAStar
 					else
 					{
 						//Check if already correct to the left
-						if (locBlank.getX() - 1 == column &&
-							validColumnNumbers.get(column).contains(currentState.getPiece(locBlank.getX() - 1, locBlank.getY())) &&
-							currentState.getPiece(locBlank.getX() - 1, locBlank.getY()) < valTarget &&
-							distX <= -1)
+						if (locBlank.getX() - 1 == x
+								&& validColumnNumbers.get(x).contains(currentState.getPiece(locBlank.getX() - 1, locBlank.getY()))
+								&& currentState.getPiece(locBlank.getX() - 1, locBlank.getY()) < valTarget
+								&& distX <= -1)
 						{
 							//Move down
 							Point locSwap = new Point(locBlank.getX(), locBlank.getY() + 1);
@@ -236,43 +245,29 @@ public class IDAStarMM extends IDAStar
 					}
 				}
 			}
-			else
-			{
-				//Swap towards locTarget
-				if (rowMode)
-				{
-					alignTargetX(valTarget, locTarget);
-					swapUpRow(valTarget, locTarget);
-				}
-				else
-				{
-					alignTargetY(valTarget, locTarget);
-					swapLeftColumn(valTarget, locTarget);
-				}
-			}
 		}
 	}
 
-	private void alignTargetX(int valTarget, Point locTarget)
+	private void alignTargetX(int valTarget, int x, int y)
 	{
 		Point locVal = findPiece(valTarget);
 
 		//Check if same column
-		if (locVal.getX() == locTarget.getX())
+		if (locVal.getX() == x)
 		{
 			return;
 		}
 
 		//1 = right, -1 = left
-		int direction = Integer.signum(locTarget.getX() - locVal.getX());
+		int direction = Integer.signum(x - locVal.getX());
 
-		while (locVal.getX() != locTarget.getX())
+		while (locVal.getX() != x)
 		{
 			locVal = findPiece(valTarget);
 			Point locBlank = findPiece(BLANK_TILE_VALUE);
 
 			//Check if aligned
-			if (locTarget.getX() - locVal.getX() == 0)
+			if (x - locVal.getX() == 0)
 			{
 				break;
 			}
@@ -384,19 +379,19 @@ public class IDAStarMM extends IDAStar
 	}
 
 	//Swaps up until inserted into the correct place
-	private void swapUpRow(int valTarget, Point locTarget)
+	private void swapUpRow(int valTarget, int x, int y)
 	{
 		Point locVal = findPiece(valTarget);
 		Point locBlank = findPiece(BLANK_TILE_VALUE);
 
 		//Check if already placed correct
-		if (locVal.equals(locTarget))
+		if (locVal.getX() == x && locVal.getY() == y)
 		{
 			return;
 		}
 
 		//Check if simple swap is enough
-		if (locBlank.equals(locTarget) && locVal.getY() - 1 == locTarget.getY())
+		if (locBlank.getX() == x && locBlank.getY() == y && locVal.getY() - 1 == y)
 		{
 			swap(locBlank, locVal);
 			return;
@@ -409,7 +404,7 @@ public class IDAStarMM extends IDAStar
 			locBlank = findPiece(BLANK_TILE_VALUE);
 
 			//Check if already placed correct
-			if (locVal.equals(locTarget))
+			if (locVal.getX() == x && locVal.getY() == y)
 			{
 				return;
 			}
@@ -422,7 +417,7 @@ public class IDAStarMM extends IDAStar
 					//Below
 
 					//Last piece
-					if (locTarget.getX() == DIMENSION - 1)
+					if (x == DIMENSION - 1)
 					{
 						Point loc1 = new Point(locVal.getX() - 1, locVal.getY() - 1);
 						Point loc2 = new Point(locVal.getX(), locVal.getY() - 1);
@@ -484,7 +479,7 @@ public class IDAStarMM extends IDAStar
 					//Left
 
 					//Don't remove correct pieces from row
-					if (locVal.getY() - 1 == locTarget.getY())
+					if (locVal.getY() - 1 == y)
 					{
 						//Swap blank to below and continue
 						Point loc1 = new Point(locBlank.getX(), locBlank.getY() + 1);
@@ -507,26 +502,26 @@ public class IDAStarMM extends IDAStar
 		}
 	}
 
-	private void alignTargetY(int valTarget, Point locTarget)
+	private void alignTargetY(int valTarget, int x, int y)
 	{
 		Point locVal = findPiece(valTarget);
 
 		//Check if same row
-		if (locVal.getY() == locTarget.getY())
+		if (locVal.getY() == y)
 		{
 			return;
 		}
 
 		//1 = down, -1 = up
-		int direction = Integer.signum(locTarget.getY() - locVal.getY());
+		int direction = Integer.signum(y - locVal.getY());
 
-		while (locVal.getY() != locTarget.getY())
+		while (locVal.getY() != y)
 		{
 			locVal = findPiece(valTarget);
 			Point locBlank = findPiece(BLANK_TILE_VALUE);
 
 			//Check if aligned
-			if (locTarget.getY() - locVal.getY() == 0)
+			if (y - locVal.getY() == 0)
 			{
 				break;
 			}
@@ -638,19 +633,19 @@ public class IDAStarMM extends IDAStar
 	}
 
 	//Swaps left until inserted into the correct place
-	private void swapLeftColumn(int valTarget, Point locTarget)
+	private void swapLeftColumn(int valTarget, int x, int y)
 	{
 		Point locVal = findPiece(valTarget);
 		Point locBlank = findPiece(BLANK_TILE_VALUE);
 
 		//Check if already placed correct
-		if (locVal.equals(locTarget))
+		if (locVal.getX() == x && locVal.getY() == y)
 		{
 			return;
 		}
 
 		//Check if simple swap is enough
-		if (locBlank.equals(locTarget) && locVal.getX() - 1 == locTarget.getX())
+		if (locBlank.getX() == x && locBlank.getY() == y && locVal.getX() - 1 == x)
 		{
 			swap(locBlank, locVal);
 			return;
@@ -663,7 +658,7 @@ public class IDAStarMM extends IDAStar
 			locBlank = findPiece(BLANK_TILE_VALUE);
 
 			//Check if already placed correct
-			if (locVal.equals(locTarget))
+			if (locVal.getX() == x && locVal.getY() == y)
 			{
 				return;
 			}
@@ -686,7 +681,7 @@ public class IDAStarMM extends IDAStar
 					//Above
 
 					//Don't remove correct pices from row
-					if (locVal.getX() - 1 == locTarget.getX())
+					if (locVal.getX() - 1 == x)
 					{
 						//Swap blank to right and continue
 						Point loc1 = new Point(locBlank.getX() + 1, locBlank.getY());
@@ -714,7 +709,7 @@ public class IDAStarMM extends IDAStar
 					//Right
 
 					//Last piece
-					if (locTarget.getY() == DIMENSION - 1)
+					if (y == DIMENSION - 1)
 					{
 						Point loc1 = new Point(locVal.getX() - 1, locVal.getY() - 1);
 						Point loc2 = new Point(locVal.getX() - 1, locVal.getY());
@@ -763,7 +758,7 @@ public class IDAStarMM extends IDAStar
 
 	private void swap(Point p1, Point p2)
 	{
-		PuzzleState newState = currentState.swap(p1, p2);
+		PuzzleState newState = currentState.swap(p1.getX(), p1.getY(), p2.getX(), p2.getY());
 
 		currentState = newState;
 		stateList.add(newState);
@@ -771,8 +766,6 @@ public class IDAStarMM extends IDAStar
 
 	private Point findPiece(int val)
 	{
-		Point loc = null;
-
 		for (int x = 0; x < DIMENSION; x++)
 		{
 			for (int y = 0; y < DIMENSION; y++)
@@ -783,7 +776,6 @@ public class IDAStarMM extends IDAStar
 				}
 			}
 		}
-
-		return loc;
+		throw new IllegalStateException("Empty piece wasn't found!");
 	}
 }

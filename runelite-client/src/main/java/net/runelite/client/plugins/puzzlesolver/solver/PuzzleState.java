@@ -28,7 +28,6 @@ package net.runelite.client.plugins.puzzlesolver.solver;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import net.runelite.api.Point;
 import net.runelite.client.plugins.puzzlesolver.solver.heuristics.Heuristic;
 import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.DIMENSION;
 import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.BLANK_TILE_VALUE;
@@ -182,41 +181,41 @@ public class PuzzleState
 		return h;
 	}
 
-	public PuzzleState swap(Point p1, Point p2)
+	public PuzzleState swap(int x1, int y1, int x2, int y2)
 	{
-		int val1 = getPiece(p1.getX(), p1.getY());
-		int val2 = getPiece(p2.getX(), p2.getY());
+		int val1 = getPiece(x1, y1);
+		int val2 = getPiece(x2, y2);
 
-		if (!isValidSwap(p1, p2))
+		if (!isValidSwap(x1, y1, x2, y2))
 		{
-			throw new IllegalStateException(String.format("Invalid swap: %1$s, %2$s", p1.toString(), p2.toString()));
+			throw new IllegalStateException(String.format("Invalid swap: (%1$d, %2$d), (%3$d, %4$d)", x1, y1, x2, y2));
 		}
 
 		PuzzleState newState = new PuzzleState(this);
 
-		newState.pieces[p1.getY() * DIMENSION + p1.getX()] = val2;
-		newState.pieces[p2.getY() * DIMENSION + p2.getX()] = val1;
+		newState.pieces[y1 * DIMENSION + x1] = val2;
+		newState.pieces[y2 * DIMENSION + x2] = val1;
 		newState.findEmptyPiece();
 
 		return newState;
 	}
 
-	private boolean isValidSwap(Point p1, Point p2)
+	private boolean isValidSwap(int x1, int y1, int x2, int y2)
 	{
-		int absX = Math.abs(p1.getX() - p2.getX());
-		int absY = Math.abs(p1.getY() - p2.getY());
+		int absX = Math.abs(x1 - x2);
+		int absY = Math.abs(y1 - y2);
 
-		if (getPiece(p1.getX(), p1.getY()) != BLANK_TILE_VALUE && getPiece(p2.getX(), p2.getY()) != BLANK_TILE_VALUE)
+		if (getPiece(x1, y1) != BLANK_TILE_VALUE && getPiece(x2, y2) != BLANK_TILE_VALUE)
 		{
 			return false;
 		}
 
-		if (p1.getX() == p2.getX() && absY == 1)
+		if (x1 == x2 && absY == 1)
 		{
 			return true;
 		}
 
-		if (p1.getY() == p2.getY() && absX == 1)
+		if (y1 == y2 && absX == 1)
 		{
 			return true;
 		}
