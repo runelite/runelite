@@ -62,6 +62,8 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 
 	private String usernameCache;
 
+	private static final int MAX_EMAIL_LENGTH = 254, MAX_PASSWORD_LENGTH = 20;
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -174,18 +176,17 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 					.getData(DataFlavor.stringFlavor)
 					.toString()
 					.trim();
-				final int maxEmailLength = 254, maxPasswordLength = 20;
 
 				// 0 is username, 1 is password
 				if (client.getCurrentLoginField() == 0)
 				{
 					// Truncate data to maximum email length if necessary
-					client.setUsername(data.substring(0, Math.min(data.length(), maxEmailLength)));
+					client.setUsername(data.substring(0, Math.min(data.length(), MAX_EMAIL_LENGTH)));
 				}
 				else
 				{
 					// Truncate data to maximum password length if necessary
-					client.setPassword(data.substring(0, Math.min(data.length(), maxPasswordLength)));
+					client.setPassword(data.substring(0, Math.min(data.length(), MAX_PASSWORD_LENGTH)));
 				}
 			}
 			catch (UnsupportedFlavorException | IOException ex)
