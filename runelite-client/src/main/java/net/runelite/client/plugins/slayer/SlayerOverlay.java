@@ -47,7 +47,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.QueryRunner;
 
-class SlayerOverlay extends Overlay
+class 		SlayerOverlay extends Overlay
 {
 	private final static Set<Integer> SLAYER_JEWELRY = ImmutableSet.of(
 			ItemID.SLAYER_RING_1,

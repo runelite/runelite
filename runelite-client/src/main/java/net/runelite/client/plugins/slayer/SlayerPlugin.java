@@ -149,6 +149,10 @@ public class SlayerPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
+	private int initialAmount;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private int expeditiousChargeCount;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -186,7 +190,7 @@ public class SlayerPlugin extends Plugin
 			streak = config.streak();
 			setExpeditiousChargeCount(config.expeditious());
 			setSlaughterChargeCount(config.slaughter());
-			clientThread.invoke(() -> setTask(config.taskName(), config.amount()));
+			clientThread.invoke(() -> setTask(config.taskName(), config.amount(), config.initialAmount()));
 		}
 	}
 
@@ -216,6 +220,7 @@ public class SlayerPlugin extends Plugin
 				cachedXp = 0;
 				taskName = "";
 				amount = 0;
+				initialAmount = 0;
 				loginFlag = true;
 				highlightedTargets.clear();
 				break;
@@ -228,7 +233,7 @@ public class SlayerPlugin extends Plugin
 					streak = config.streak();
 					setExpeditiousChargeCount(config.expeditious());
 					setSlaughterChargeCount(config.slaughter());
-					setTask(config.taskName(), config.amount());
+					setTask(config.taskName(), config.amount(), config.initialAmount());
 					loginFlag = false;
 				}
 				break;
@@ -238,6 +243,7 @@ public class SlayerPlugin extends Plugin
 	private void save()
 	{
 		config.amount(amount);
+		config.initialAmount(initialAmount);
 		config.taskName(taskName);
 		config.points(points);
 		config.streak(streak);
@@ -275,16 +281,16 @@ public class SlayerPlugin extends Plugin
 
 			if (mAssign.find())
 			{
-				setTask(mAssign.group(2), Integer.parseInt(mAssign.group(1)));
+				setTask(mAssign.group(2), Integer.parseInt(mAssign.group(1)), Integer.parseInt(mAssign.group(1)));
 			}
 			else if (mAssignBoss.find())
 			{
-				setTask(mAssignBoss.group(1), Integer.parseInt(mAssignBoss.group(2)));
+				setTask(mAssignBoss.group(1), Integer.parseInt(mAssignBoss.group(2)), Integer.parseInt(mAssignBoss.group(2)));
 				points = Integer.parseInt(mAssignBoss.group(3).replaceAll(",", ""));
 			}
 			else if (mCurrent.find())
 			{
-				setTask(mCurrent.group(1), Integer.parseInt(mCurrent.group(2)));
+				setTask(mCurrent.group(1), Integer.parseInt(mCurrent.group(2)), Integer.parseInt(mCurrent.group(2)));
 			}
 		}
 
@@ -407,13 +413,13 @@ public class SlayerPlugin extends Plugin
 				default:
 					log.warn("Unreachable default case for message ending in '; return to Slayer master'");
 			}
-			setTask("", 0);
+			setTask("", 0, initialAmount);
 			return;
 		}
 
 		if (chatMsg.equals(CHAT_GEM_COMPLETE_MESSAGE) || chatMsg.equals(CHAT_CANCEL_MESSAGE) || chatMsg.equals(CHAT_CANCEL_MESSAGE_JAD))
 		{
-			setTask("", 0);
+			setTask("", 0, initialAmount);
 			return;
 		}
 
@@ -429,7 +435,7 @@ public class SlayerPlugin extends Plugin
 		{
 			String gemTaskName = mProgress.group(1);
 			int gemAmount = Integer.parseInt(mProgress.group(2));
-			setTask(gemTaskName, gemAmount);
+			setTask(gemTaskName, gemAmount, initialAmount);
 			return;
 		}
 
@@ -438,7 +444,7 @@ public class SlayerPlugin extends Plugin
 		if (bracerProgress.find())
 		{
 			final int taskAmount = Integer.parseInt(bracerProgress.group(1));
-			setTask(taskName, taskAmount);
+			setTask(taskName, taskAmount, initialAmount);
 
 			// Avoid race condition (combat brace message goes through first before XP drop)
 			amount++;
@@ -578,10 +584,11 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
-	private void setTask(String name, int amt)
+	private void setTask(String name, int amt, int initAmt)
 	{
 		taskName = name;
 		amount = amt;
+		initialAmount = initAmt;
 		save();
 		removeCounter();
 		addCounter();
@@ -607,13 +614,28 @@ public class SlayerPlugin extends Plugin
 		}
 
 		BufferedImage taskImg = itemManager.getImage(itemSpriteId);
-		final String taskTooltip = ColorUtil.prependColorTag("%s</br>", new Color(255, 119, 0))
+		String taskTooltip = ColorUtil.prependColorTag("%s</br>", new Color(255, 119, 0))
 			+ ColorUtil.wrapWithColorTag("Pts:", Color.YELLOW)
 			+ " %s</br>"
 			+ ColorUtil.wrapWithColorTag("Streak:", Color.YELLOW)
-			+ " %s";
+			+ " %s</br>";
+
+		// makes it so upon updating to track initialAmount people's previously active task won't show X/-1
+		if (initialAmount != -1)
+		{
+			taskTooltip += ColorUtil.wrapWithColorTag("Progress:", Color.YELLOW)
+					+ " %s";
+		}
 		counter = new TaskCounter(taskImg, this, amount);
-		counter.setTooltip(String.format(taskTooltip, capsString(taskName), points, streak));
+		String progressString = String.format("%s/%s", amount, initialAmount);
+		if (initialAmount == -1)
+		{
+			counter.setTooltip(String.format(taskTooltip, capsString(taskName), points, streak));
+		}
+		else
+		{
+			counter.setTooltip(String.format(taskTooltip, capsString(taskName), points, streak, progressString));
+		}
 
 		infoBoxManager.addInfoBox(counter);
 	}
