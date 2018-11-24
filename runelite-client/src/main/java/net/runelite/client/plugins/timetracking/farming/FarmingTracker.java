@@ -160,11 +160,12 @@ public class FarmingTracker
 						int tickrate = patchState.getTickRate() * 60;
 						long tickNow = unixNow / tickrate;
 						long tickTime = unixTime / tickrate;
+						long tickDiff = tickNow - tickTime;
 
-						if (tickNow - tickTime == 1 && lastSeenStage != -1)
+						if (tickDiff >= 1 && lastSeenStage != -1)
 						{
-							//New 20 min tick, increment with 1
-							lastSeenStage++;
+							//New 20 min tick (possible more than 1), increment with diff
+							lastSeenStage += tickDiff;
 						}
 					}
 
