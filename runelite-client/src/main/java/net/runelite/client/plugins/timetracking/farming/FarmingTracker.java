@@ -154,14 +154,18 @@ public class FarmingTracker
 				String value = strVarbit + ":" + unixNow;
 				if (patch.getImplementation() == PatchImplementation.COMPOST_BIN)
 				{
-					int tickrate = patch.getImplementation().forVarbitValue(client.getVar(varbit)).getTickRate() * 60;
-					long tickNow = unixNow / tickrate;
-					long tickTime = unixTime / tickrate;
-
-					if (tickNow - tickTime == 1 && lastSeenStage != -1)
+					PatchState patchState = patch.getImplementation().forVarbitValue(client.getVar(varbit));
+					if (patchState != null && patchState.getCropState() != CropState.HARVESTABLE)
 					{
-						//New 20 min tick, increment with 1
-						lastSeenStage++;
+						int tickrate = patchState.getTickRate() * 60;
+						long tickNow = unixNow / tickrate;
+						long tickTime = unixTime / tickrate;
+
+						if (tickNow - tickTime == 1 && lastSeenStage != -1)
+						{
+							//New 20 min tick, increment with 1
+							lastSeenStage++;
+						}
 					}
 
 					//timetracking.<login-username>.<regionID>.<VarbitID>=<varbitValue>:<unix time>:<lastSeenStage>
