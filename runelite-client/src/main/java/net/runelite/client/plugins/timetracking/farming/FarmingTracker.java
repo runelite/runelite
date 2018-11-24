@@ -122,7 +122,7 @@ public class FarmingTracker
 							{
 								//Set cached value
 								PatchState patchState = patch.getImplementation().forVarbitValue(client.getVar(varbit));
-								if (patchState != null)
+								if (patchState != null && patchState.getCropState() != CropState.HARVESTABLE)
 								{
 									lastSeenStage = patchState.getStage();
 								}
@@ -254,7 +254,8 @@ public class FarmingTracker
 				int stage = state.getStage();
 				int stages = state.getStages();
 
-				if (patch.getImplementation() == PatchImplementation.COMPOST_BIN && lastSeenStage != -1)
+				if (patch.getImplementation() == PatchImplementation.COMPOST_BIN &&
+					lastSeenStage != -1 && state.getCropState() != CropState.HARVESTABLE)
 				{
 					//Use cached stage
 					stage = lastSeenStage;

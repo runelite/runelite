@@ -199,7 +199,8 @@ public class FarmingTabPanel extends TabContentPanel
 				int stages = state.getStages();
 				int tickrate = state.getTickRate() * 60;
 
-				if (patch.getImplementation() == PatchImplementation.COMPOST_BIN && lastSeenStage != -1)
+				if (patch.getImplementation() == PatchImplementation.COMPOST_BIN &&
+					lastSeenStage != -1 && state.getCropState() != CropState.HARVESTABLE)
 				{
 					//Use cached stage
 					stage = lastSeenStage;
